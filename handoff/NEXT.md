@@ -1,3 +1,46 @@
+# CURRENT 2026-11-02T11:58:23.186212+00:00 — 持續推進，沒有停止
+
+本節覆蓋下方所有舊活程序／ready標籤。繁體中文／英文commit；不rebase/force、不merge main、不改公理／正典／決策佇列。使用者11/2排序維持366→363→340/339/341/342/343/346/347/348→355UI15→小件/canvas拆片→R03。
+
+## 目前沒有本地活重測，不要重跑已完成原件
+
+**#367 D已全核**：source e5b0bc23b04e872a68b066bd5b51d57e2c104943，codex/canvas-validation-20261102，Draft（上游R06/344及最新main#354組合未驗）。正式41424542378十二job綠，actualCI ea163769f8f570ac06b56906ceb8cdf7dc220a1a同tree；235native5460count/5459pass/1GDI；兩片898+1419=2317／86key含0鍵；原完整full D 2317/86；原聚合逐byte等官方、六artifact負例真拒絕、獨立peer10669 PASS。actualCIea163與原S1bfee各有codex/canvas-ci-<run>-original保全refs。
+
+**harness D/M/D已完整0/1/0，禁止重跑**：F03/M02/R02=482.395251／484.041772／480.055233秒，各2100原限。F/R898/0/0、62golden；M897/2/0，唯一S2false＋golden14→13後果，同M原Node具名拒絕。M local aec3ea1bdcf46f2416dfa7cb79d28221673c315a僅false&&9bytes、未push，localrun0不冒GHA。另一peer9662PASS，737inputs前後/跨相及3native均核。307原檔900623B archive d77cc507e750c620ba2bbba2e39519f1e83a20f07f6fa38e2514a1c016b3a446已在E；所有owned服務均已收，peer現在只證15記錄PID無活，不追認歷史所有後代。F01 ENOSPC僅0captured、真完整計數unknown，F02真0assert/socket fail，原件保留且不當mutant killed。
+
+367正文與prbody **6e9a4e79e33c33434099e0894c66b23264d6a731** 已同步全部D實跑；comment6576095375。Draft／新main與上游組合未驗，不說R02UI15已閉。原235census exit1、初輪timeout124及P76 ENOENT不改判。
+
+## 新source F已採整份正式原件，等待最後CI的真終態
+
+| 線 | 公開current head與實際重產source | 真狀態與下一步 |
+|---|---|---|
+| #340 | F **edf556eedc204bb285fb4504e246e4310f4e1e88**；parent M **aca3d2a5f604848b159a0e5cdd3d3f55fcad190f** | 一般merge main e02057b4c725d6f03ae52c3bc30776bf9442b0cf→M對main17歷史evidence，其餘same；M20CI真綠（integration41430557786 actualafa52541ef2bcdd00e184e0f5d0d5e33874610ed、237/5420pass1GDI/full2286/86）。M原#366manual41430549123全10綠、9ZIP/120actualM；原verifier0/25.36秒。已把新ledger140c09...＋report/receipt正式採F（scan已same、manifest未動），F原check與架構3條全0；新F integration **41438184818** 尚待真終態，不把M綠移標F，仍draft |
+| #345 | F **f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12**；parent M **de3a56cfadecf575f8e7860cbfdafdac2af0a883** | M普通merge main e020，唯一poll0.05行＋13歷史evidence，21test methods/95assert全ASTsame、main新2回歸保留、expected21/1200不改。原check1/53stale保留；M#366manual41431971663十綠、原verifier0/26.126秒。新ledger0e18...與report/receipt採F，F原check/架構三條全0，普通FF公開PR。獨立source與採入peer PASS。F integration **41437638054** 待真終態，documents單job環境cancelled，詳下段，仍draft |
+
+兩F都只3個derived Git葉改，C/H/JS、Python測試/裁判原始碼、expected與policy全same M；刻意更新的ledger/report/receipt在F已原check/架構三條驗收，120 execution仍各自M。**不重產第二輪123、不改stamp。** 本次新版架構三裁判是205＋22、610inputs/339owned/271exclude/812edges，不借D舊205＋18。原工具adoptedMain=8f82b207e87c086705a1d8b7a00e2f215c07cbcf屬歷史欄值，**不是本次Git main e020／parent／F execution**；原artifact不改字，body需說清角色。
+
+F最終正文已API讀回且prbody：340 **47268b95788373b064b44c62008529a189036449**；345 **1992444028f3010676ea05d2c06114e40d765929**。等F真CI結果再一次改READY矩陣，別重做M已有效的20job或123。原#340最後peer /tmp/geometry-resume-20261102/pr340/main354-final-peer/REVIEW.json=PASS，9ZIP98.7MB/905innercache195.6MB全讀，限制原mutation Actions probe全log未收；root已另一次下載兩run各10完整joblogs，還待併E與peer有界追加。
+
+### #345 documents環境紅，不能當產品斷言紅
+
+F run41437638054 的job **125251333430**，11:32:32–11:42:49cancelled；原Git fetch到11:42:46『operation was canceled』，native build/font/browser都未開始，沒有產品測試計數。**原documents matrix預算實為10min**，不是15；約10:17含cleanup與它相容，未證checkout自帶另一10min timer。原log保留在pr345/final-ci-documents-cancelled/。root一次POST /actions/jobs/125251333430/rerun返回403 **The workflow run containing this job is already running**，不是token失效；未改endpoint/權限/時限、未取消整run。先收其他job真終態，run真completed後才可同原endpoint重試這一環境項；不能用略過說綠。
+
+既有peer /root/chain_inventory/peer_pr345 正在 /tmp/geometry-resume-20261102/ci-checkout-audit/ 做純讀依賴審查：是否可non-cone sparse+blob:none只排根/evidence/但完整保tests/evidence、tests/release-evidence及nested domain evidence；尚無patch/新PR/測試，未知不可自行略依賴。禁recursive ls-tree -l觸發promisor大下載。
+
+## 耐重啟原件與下一步
+
+最新遠端E **65a4a117ecb3f4c4b9fd6506394f1ab581f6471f**，codex/cloud-resume-evidence-20261102／evidence/cloud-resume-20261102/。267,018,135B／849交付檔含兩輪全部原9ZIP（執行ELF/cache真bytes）、API digest、原verifier/stdout、readable ledger及arch原件，不只留SHM；Git push和remote hash已核。新peer報告/20個manual完整joblogs及後續F真CI仍要一次補入E；原件全保，不刪objects/cache/fixtures。main最後實讀e020，不是PR.base.sha歷史標籤。
+
+1. 完成最後M/F原件peer收件與兩F新CI。340真全綠、原件核收後寫READY-TO-MERGE交最新ChatGPT審查，由本機Claude合；root不merge main。345 documents只因環境取消，依上段單項恢復，不放寬10min。
+2. **#339已merged，跳過不重開。** 340合後才341改base到main並ordinarymerge；341靜態方案 /tmp/geometry-resume-20261102/pr341/prepared-cost-audit/ 已持久E，所有bench UNRUN。main已有下游343 indexed分支，直接compact=false會漏排序，不能等價baseline；main測試14/41，不能覆成舊823的10/23。按原四類無重複/低/密/>capacity fallback，同源先證語義，work/CPU/wall/峰值不新訂門檻，perf獨占。
+3. 然後342→343→346→347→348；342/343來源祖先入main≠舊缺gate完成，R16原2.21665仍紅；348 dot11/1 nativepatch依精確source處理，不放寬600/1200或CAPACITY。355 UI15等343→346→347同源，R03等R02與PF2–6。
+4. #366已合main；#363 F4 **7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4** 三阻擋已全修、12CI原件／獨立dot6571175540可合、comment6571845252逐條回覆，READY原F4。最新API mergeable clean，但base.sha歷史df7不能當當前main實讀；Codex未合。#344 F **d794a7447b98a82fb35c1dccaedc3443e2230933** 三相full真0/1/0/20CI與peer237均齊，body/prbody707a633858f5924063942e7fc18ba5b4db99bd5a已交，未稱新main#354組合已驗。
+
+老capacity錯誤agents不重試／換model；兩個原未失敗peer現在有實際新交付，root工具可用，沒有局部阻塞就停工。SHM仍揮發，尚未推的future原件不可說持久。
+
+---
+以下歷史不作目前HEAD、活程序或合併批准
+
 # CURRENT 2026-11-02T10:58:31.340033+00:00 — 持續推進，不是停止
 
 本節取代以下歷史快照的活程序／HEAD。全程繁體中文、英文commit；不rebase/force，不合main。最新使用者排序#366→#363→串行340/339/341/342/343/346/347/348→355UI15→小件/canvas拆片→R03。
