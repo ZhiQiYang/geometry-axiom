@@ -1,44 +1,50 @@
-# 2026-11-02（台北）雲端接續：依新優先順序持續執行
+# 2026-11-02（台北）雲端接續：持續工作，這不是停止指令
 
-本節是現有雲端任務的新檢查點，不是停止指令。下方10/29與更早內容全保留為歷史；#338與#324已於11/1合入main，不能再按舊B1缺件／未採F敘述重啟舊驗收。最新查main仍為 `5775a9e9e46bca801a9a70aaeafcdab9f597bc4d`；Codex不合main，只普通merge及快轉推送。英文commit、繁體中文溝通，不改公理／閱讀器／決策佇列，不碰其他owner分支。
+本節取代先前11/2檢查點，下方10/29歷史完全保留。main最後實讀為 **df7eb43af3389ff2afc1a73aaf4e57580ae612fc**，本機Claude已合#366；Codex沒有merge main，不rebase／force，不改公理／閱讀器／決策佇列。維持使用者11/2排序，不問技術問題。
 
-## 最新工作線／來源
+## 立即先核對的活程序／容量限制
 
-1. **#366 READY-TO-MERGE（技術驗收），待最新審查與本機Claude合併。** branch `codex/mutation-evidence-tools-20261102`，head `502a64ff6214dd6060927b7f14643a533536f20d`。新integration41376852060＋mutation41376852056共20jobs全success；21官方artifact ZIP／20job raw核過；原native分片聚合復驗0、coverage真0/1/0；原mutation verifier0、123/120active＝114killed/1crashed/5equivalent/3retired，七bad-cache0/1/0。原三架構命令0；fullcanvas2267/0/0、85golden。integration實際合成execution7d2a1927e15d3c0d59b20fa6618005f19c4a6c56，tree與head相同，沒移標。正文已讀回一致，交審comment6568027211。**workflow_dispatch入口仍須工具進default branch後實測**，不能以PR事件代替。
+**#344目前唯一重測：fixed-02原完整canvas。** F=d794a7447b98a82fb35c1dccaedc3443e2230933；UTC **06:35:03.350737** 開始，原2100秒截止 **07:10:03.350737**（台北14:35–15:10）。server272560/18844、gate272806、Node272833、Chrome272840/CDP9344。實際原命令python -B tests/release_gate.py --url http://127.0.0.1:18844/ --output /dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/gate --timeout 2100 -- /tmp/geometry-resume-20261102/pr363/node-v24.22.1-linux-x64/bin/node geometry-web/cdp_test.js。
 
-2. **#340 READY-TO-MERGE（技術驗收），依序先#366再#340，由本機Claude合。** branch `codex/kernel-without-woodworking-20261023`，head `b3a248607d7eb68d3167abbb926cf491d9b35a26`，base已改main。普通merge main得1605，再普通merge已驗#366工具502，無rebase/force；對main只17原歷史evidence＋四原樣工具，產品/測試全等main。新integration41382015317＋mutation41382015277共20success；真execution fc1c9f565a2e15660e931b3884dca2220cb1b7b2同tree。230native完整、六browser過、full2267/85golden；fresh123／七bad-cache／原verify0及官方raw全核；ledger SHA52bbad63cc0a281f6d9a5304bc8ddc65ddd96213aeea98057dcb6be0b287b962。comment6568762900已交審。保留post-result server BrokenPipe鏈式traceback未定原因，不假稱所有診斷零。**#340合入main後才改#339 base並往上依序339→341→342→343→346→347→348；沒有提前改其他鏈的base。**
+先讀該相LIVE_START.json／gate原流／真PID終態，不因舊『進行中』重啟。734inputs clean、golden2267、原22scope/modifier清除，原P38預期例外保留。完整0與golden matched才進只撤app清錯一行的V，再原F恢復相；V須P53-3／P61-10／P61-11真具名紅。三相各2100，full/perf獨占，其他只有小JSON/text工作，禁止競跑native／另一Chrome。chain_inventory唯一執行者仍在跑，勿競寫。
 
-3. **#363 R06產品三阻擋已修，完整驗收進行中。** 公開head `26dc99117ac942ec8f50145d875d6e55594f3835`，branch `feat/r06-bay-repeat`，同SHA另保全`codex/r06-review-fixes-20261102`。合法derived guide/finite-grid恢復；R41 edgeKey native/draft/真Save/新profile新服務Open全鏈；mixed derived dump依賴順序。R06有限PF reader依已採I32/I56 scope，native complete:false與NotIn全PF能力原assert未改，五原子拒絕真UI過。partial assembly200/0、5native/3Node具名撤回與恢復過；原execution分列不移標。26dc新fullcanvas2317/0、golden matched；R06既有3browser撤回與native取消控制官方ZIP已核。原CI counted紅為A04舊工具needle零命中與舊expected漂移，另舊ledger stale；不當成新通過。
+三個clean私有根位/dev/shm/geometry-pr344-full-{fixed,withdrawn,restored}-20261102；V本地控制commit acd623857f2cc117b548907c2b96b638d9e1b31a，不push。source共3.608GB，最新cgroup peak20.67GB/上限34.36GB；SHM仍約14GB、/tmp約4.4GB、/workspace對uid1000可寫0。只用現有掛載，無新增quota/mount/安全／付費；不清原件／fixtures／objects／未知資料。
 
-   新Mutation41384504486完整123真過並復驗；120execution.head保26dc。診斷窄修D `2fce94bc66713dd9dd790892d79345ffbf1aa58a` 只A04 before/after保PANEL_FILL且仍只移CARD＋相應pin，六card原0/1/0與anchors3/3過，generic C/oracle/runner/compiler輸入同26dc；後採官方ledger為E `3aa03de1e309883e53829c92f064e3ebd51a0ad2`，再按既有canonical schema/Linux真原流產四架構採入A **`e9f4dd75cfd4eb9965e3af249200b918907d62db`**。這些A/D/E目前本地未推，26dc正式來源保留，不把execution改A。
+**子代理新turn容量錯誤：** pr363_r06及其最後artifact-peer皆Selected model is at capacity；既有current_ci_receipts接同模型有界交叉核亦capacity。未換模型／新cloud task，不再重試這些失敗turn。root仍可執行，接手讀既有原件完成最後收件複核。#363原source/tree/census/ledger/runtime peer PASS仍有效，但不能把未完成的新artifact-peer說成PASS。chain_inventory的已啟動Chrome原程序未受影響。
 
-   **第一輪A原完整census真exit1已收齊，不再重跑該輪。** UTC04:28:51.744831–05:01:14.155566，supervisor1942.4108秒／runner1938.4985秒，未逾原2100、無signal；232／232，5420＝5418pass＋1zombiefail＋1原允許GDI skip。唯一紅為test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left；PID1 tail不reap，已kill的兩sleep留Z。原failed expected與637原檔保全，guarded恢復舊expected後A clean。625純文字原suite原件已在audit7533的pr363/full-census-A耐重啟保存；6ELF／6sidecar保留本地，不冒稱公開。
+## 工作線／完整source與真終態
 
-   外部task-local subreaper僅waitpid已死的自有後代、排除main，零signal、不改安全／PID1／產品／斷言。原12基準／真groupkill撤回／恢復0／1／0，負控兩活sleep S不殺、原afterKill具名紅，31.156秒自然退出；兩peer核最終helper SHA05384f5ad031dbe66f2acda281cd9fd99bc49792dac57b8f687f27587b22e0f8。
+| 線 | 目前分支／完整SHA | 狀態與下一步 |
+|---|---|---|
+| #366 | codex/mutation-evidence-tools-20261102／502a64ff6214dd6060927b7f14643a533536f20d；main merge df7eb43af3389ff2afc1a73aaf4e57580ae612fc | 本機Claude已合。原20jobs／21ZIP全核；main tree910665aa同已驗502。手動入口已一次真POST204，正確S run41397499686/event workflow_dispatch/attempt1，現10jobs success但9artifact bytes待核，不以metadata說全收件 |
+| #340 | codex/kernel-without-woodworking-20261023／b3a248607d7eb68d3167abbb926cf491d9b35a26 | READY-TO-MERGE技術驗收：新20jobs原件全核、230native／5339pass／1GDI／full2267，fresh123原verify0。base main、最新df7唯讀merge-tree全等head，僅17原evidence，四tools已入main；正文已同步，待最新審查／本機Claude合。它合後才開始339→341→342→343→346→347→348 |
+| #363 R06 | feat/r06-bay-repeat與codex/r06-review-fixes-20261102／7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4 | 三產品阻擋全修，最終12/12jobs真success；最後artifact對抗複核由root接手，尚未假報新peer PASS。詳下段 |
+| #345 | codex/issue214-http-fixture-20261024／79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6 | READY-TO-MERGE技術驗收，20jobs／21ZIP／原verify全核，selected19真c8db不移標。source ledger採M，120execution仍M，E新artifact另存不追逐改head；正文現已說#366合main，待最新審查／本機Claude |
+| #344 | codex/issue320-connection-recovery-20261024／d794a7447b98a82fb35c1dccaedc3443e2230933 | F20jobs／21ZIP／20logs／原verify／7controls／159raw／arch原三CLI全核。source只採E503c官方ledger，120execution仍E，原check0。仍缺本地full F/V/F，故NOT READY。現跑上列fixed-02 |
+| canvas拆片 | codex/canvas-validation-20261102／76d311cf1507708bc63bba2ab6e4f0c3f68cabb0 | PRE_CENSUS_SOURCE_FROZEN_NOT_READY；只有expected機械合流233舊rows，兩新rows未手填。先核唯一S手動fresh123→原完整producer生成expected→artifact-only採入→canonical Linux／真兩片＋同源原full＋harness反證及final CI。未PR，未跑動態，不改S讓manual收件漂移 |
 
-   **現正唯一本地重測：第二輪A原完整census**。同A與同before worktree bytes，原`python3 tests/run_all.py --build --update-expected`／2100秒／16MiB／Node24.22.1／mutationcheck全保留。UTC05:05:27.454885起、05:40:27.454885截止（台北13:05:27–13:40:27），child203831／supervisor203780；`/tmp/geometry-resume-20261102/pr363/full-census-A-reaped/`。已越過舊紅點原12全綠；整體仍在跑，不能先算通過。先收原終態，成功才採原工具expected成F2；不手填count。26dc→A card Python helper改runtimeVersion身份，不能概括全部runtime身份相同；保execution與完整閉包，最終新head CI仍須取得。
+## #363 收尾的精確證據與範圍
 
-4. **#345 READY-TO-MERGE（技術驗收），待最新審查／本機Claude合main。** branch `codex/issue214-http-fixture-20261024`，base main，完整head **`79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6`**，parent M577b2e81967b3019352f65df5ffe6dc48eb6202f，唯一官方ledger採入。M→E185mutation inputs／C/Py/oracle/runner/build閉包同、120execution仍M；原E check0，source ledger SHA0be90a297b4f4b4fd5a2e60d528886845cc2c8d823e912ef3b0763ba68f7eb1c。新integration41387497096＋mutation41387497118已20success；真execution058f793590301e1e58074be072d0296d432e184b與E同tree，native230／5339pass／1GDI，fullcanvas2267／85golden與其他五browser全過；fresh123 114k/1crashed/5eq/3ret、原verify0、七controls0/1/0、21ZIP/20logs、三原架構CLI已全核。新E artifact ledger8af0fb4a…只是新正式收據，不再次改source追逐execution。正文已逐byte讀回，交審comment6569578171，固定audit7533/pr345/ci-final。selected19仍c8db的19/19，舊M stale紅與歷史等價撤回不改標。
+- A=e9f4dd75cfd4eb9965e3af249200b918907d62db的第二原完整census UTC05:05:27.454885–05:37:43.871、supervisor1936.416秒、exit0：232全跑、5419pass／0fail／1原GDI skip、7exit-only全0。第一輪PID1不reap造成zombie紅完整保留，task-local subreaper只reap自己已死後代、不發signal；真groupkill撤回仍兩活S／原afterKill紅，0/1/0。沒有改產品／斷言／安全設定。
+- F2=9171b0455c5f44e39e2007ae0e778aef7274cf74只採原expected cba8aa2be2c2d252050634f88a9dfc1c03e498d1d938a30ee3c55ca513df4243；3count增加與3unit labels、232集合/mode全保，原indent1/registry順序不手改。F3=3dddfcffe1b2756d56dde3063a116e7f1b029b82普通merge main df7，F4再普通merge分診器競寫3cc058ed287916aa8ab976c3f5b60e988cbeb57b；F2/F3/F4整tree都b39c4d0f71d59097db6af5efd4732ad178e28c3c。已atomic普通FF推兩refs，沒有覆蓋分診器，同項needle/pin/count都保歷史。PR留言6570059012請分診器停止自行推。
+- F4原python -B tests/mutate.py --check真0／5.3278s；185input、522oracle paths、53bridge oracle、runner/compiler對26dc逐值同。原123仍execution26dc99117ac942ec8f50145d875d6e55594f3835、114k/1crashed/5eq/3ret、七controls/159raw/binary已驗，沒有重抽／改execution。RuntimeF4=A665…仍不同26dc788…（card Py helper入身份），不能說全runtime相同。
+- 新integration41396262836真10/10與R06 mutation41396262818真2/2，actualintegration946ba6274e0cbcfab20b8fc0433386e187870d83、tree同F4。native77+78+77=232、5419pass/1GDI、原coverage0/1/0；fullCanvas125118139118 UTC05:55:22–06:27:52=1950s<原35min，full2317/0/0／golden matched、P77=134/R06=50；唯一uncaught是P38 EXPECTED。partial200另有真Save／fresh profile+新服務coldOpen與9原子負例。
+- ci-F4已有9+tiny1官方ZIP digest/268JSON PASS、原R06 native53與精確br13 kill＋3browser200 before/restored與精確assert kill／原ELF/source還原、card6、native232官方union與原coverage反證。FullCanvas trace ZIP只有406B、trace-disabled/records0，不是perf trace；四圖資ZIP僅metadata（非視覺QA）。最後extra sourceMap auditor最初誤用LF，producer為RAW；reported=本地raw=Gitblob，已按原contract更正並保原假設紅，不是新豁免。
+- 新body已讀回F4，文件PR363_BODY_F4.md；但最新12/12與artifact peer狀態尚需root最後同步。最後仍缺有界artifact獨立對抗審查，原r41 source peer有效但新turn capacity未完成，勿冒PASS。原件/tmp/geometry-resume-20261102/pr363/ci-F4/、final-F4-mutation-check/、final-F4-peer.*。
 
-5. **#344 已main/工具合流、canonical採入及普通push，真fullbrowser三相未跑。** branch `codex/issue320-connection-recovery-20261024`，base main；E **`503cfc59354893859ae9e6e4a6ab7c11d7972517`**，parent/execution S eccebabc85acf74e30274b8ea8e24db863d8843b。S Node9真0/1/0（3具名紅）、架構三CLI0／205+18／604inputs。四canonical Linux產物peer PASS、實際只report/receipt兩檔變；S execution不移標E。root已讀回push0、metadata/body均E。102份原命令/raw/closure/採入/peer已在audit3d3/pr344。
+## #344 已出現的兩個環境紅與修復（不重做已完成原件）
 
-   E integration41388718270已終態：六browser全success，native2 freshness與coverage兩真紅；mutation41388718083已10success。current_ci_receipts正核全部123官方artifact／binary／sidecar／原verify，核完由chain_inventory唯一writer採入官方ledger、原check/peer後普通FF push、取得final CI。不以API success跳過原件。
+首fixed UTC05:53:21–06:14:08，exit1／timedOut=false、1827pass/0failed/0skip、到P76截圖寫<private TMPDIR>/geometry-tests/parameter-mobile.png ENOENT。36parents/48require/38FS sink/21plugin跨agent全核後，精確原因是P1 GEOMETRY_TEST_SCREENSHOT override只建screens，P76兩個寫點無mkdir，P77才補同dir；其餘sink皆已有mkdir/mkdtemp。舊fixed目錄不回補，原紅保留。
 
-   **review6398950277 B1要求原完整canvas固定／只撤app清錯／恢復三相**，不能用FLOW partial代替。新BROWSER_PREFLIGHT已列原full三相、各2100秒、golden／skip不變、清22個舊scope/modifier、私有clean根／ports／profile／runtime／fixture與freshness預檢。待R06成功census後才排本地獨占；不是未量測的10分鐘短scope，不先啟Chrome/build。
+fixed-02起步另有0.065s原release_gate guard拒預先存在gate葉exit2、0Chrome/0assertions。只rmdir自己新建空gate葉（有父目錄probe保留），記原拒件後才上列06:35:03真正full。源/test/golden/timeout沒改；後續V/R同preflight正確父dir，不能再把要求不存在的output葉預建。兩輪原件/dev/shm/geometry-pr344-full-evidence-20261102/，完整預檢/tmp/geometry-resume-20261102/pr344/full-preparation/。
 
-6. **canvas拆片既有程式已保全，真正分片UNRUN。** branch `codex/canvas-shards-20261102`，head **`6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343`** 已普通push，無PR／無正式CI。現有兩片選完整units，保full/partial原路由及P83→P86；受控journal、父程序真exit、run/head/runtime/source/golden及完整互斥聯集嚴格聚合。純19Node＋12Python＋32舊CDP tests過，peer過；架構唯一EXCLUSION_DIGEST保留，沒有改golden/原assert/timeout或手填expected。
+F正式20jobs收件已全PASS，可讀小包/tmp/geometry-resume-20261102/ci-followup/pr344-Fd794a744/publishable/{SUMMARY.md,receipt.json}；原E231suites／5349counted＝5348pass+1GDI另uncounted freshness fail保留。尚需把此小包與本地失敗/重跑終態一次推auditbranch，不因遠端全綠洗掉本地ENV紅。
 
-   已在自己的獨立worktree依序普通merge R06 A→344 E→原canvas6c7，保原6c7不改寫。來源合流M f79e94dd20f7a5a57175d9d8e539499f13dc7cd6，三個架構衝突保R06 A原件／985identifiers+55strings不退；app精確保344、P53/P61與R41 source/golden保留。R06明確extensions ownership，現86段／2317（legacy62/898、extensions24/1419），tail22呼叫鏈順序/參數等pre-canvas A+E。後加兩registry與現cdp LF pin得本地 **e45670d9bb864dcf6b5a07fd4ccf11c188e54818**，正在受影響純Node／原CDP與三架構CLI，未push／PR／Chrome/native。Python12若沿用須核所有實際依賴而非只兩blob，保原execution。
+## 耐重啟交付與下一步
 
-   #363成功expected、#344 freshledger等後續仍需普通merge；expected不手填、ledger暫A舊bytes不冒綠。最終用#366重產並核帳本、canonical/census，再新兩片＋同source原full＋真harness撤回恢復，動態項目前均UNRUN。原NOTES誤將438940字元寫UTF8 bytes，原JSON/hash一直正確為476653bytes；新pre-canvas A+E為478849bytes且byte equality不變。保原件並寫erratum，不改golden。
+最新遠端證據 **codex/cloud-resume-evidence-20261102 @ d6ea3801d0553a9a3b737a1c895cdd7aa2358f98**，evidence/cloud-resume-20261102/PROGRESS.md；366/340/345原CI、344 E採入／F原check、canvas合流與S手動入口、363兩輪625原suite文字及成功6binary+6sidecar原bytes archive已推/讀回。Archive SHA2f65920d28513394abd41d58fca611f24be7e0e2dd8cddc629921d0532d7aefa：這些是本次nativecensus，非R8，copy storage mode600明載不冒原執行mode。大source fingerprint本地保留hash，完整Git source早已可解析。
 
-## 誰在寫、保全與下一步
-
-- root統籌遠端metadata/快轉push/證據與main合流順序；`pr363_r06`唯一R06 writer並跑census；`chain_inventory`唯一344 writer（census中只靜態/交接，不啟Chrome）；`pr366_evidence`負責canvas source（已提交待整合，不啟Chrome）；`current_ci_receipts`完成340/345原件核收與345 ledger adoption，現只讀核344 artifact。所有source用獨立worktree，沒有兩writer寫同一實體檔。重測依root排程，fullcanvas/perf獨占，本輪census也優先獨占。
-- 公用遠端證據branch **`codex/cloud-resume-evidence-20261102`**，已推到 **`7533e5472512b382f53a844fbada6831c71e9923`**，路徑`evidence/cloud-resume-20261102/PROGRESS.md`與各PR子目錄。366／340／345全CI原件核收、345 ledger採入、344原流與canonical peer、canvas原型純測試、363第一輪失敗625原suite純文已持久推送且readback核過。後續第二census／環境0/1/0／新344／canvas合流需一次補同branch，不把tmpfs本地路徑當耐重啟。官方大型binary原件留固定Actions artifact ID／digest，未任意搬複本或刪原件。
-
-- 本環境重啟後舊/tmp/SHM私有原件已不在；/workspace對uid1000仍可用0。本次新/tmp/SHM有容量、Chrome156.0.8078.79已task-local解包、Noto CJK已存在、Node24.22.1供測試；source已多數推遠端。**新的raw在tmpfs仍需保全，不刪原件/fixtures/gitobjects/使用者檔案，不重送舊取消清理。**
-- 在新回合先確認這些真PID/HEAD/status/最新GitHub審查，收原census終態，不用舊「進行中」重開。#366/#340待本機Claude審查合併是外部分工，不能自行merge main。等待時繼續344帳本核收／預檢與canvas合法整合，344完整browser三相待獨占窗口，不輪詢空等；#340沒合main前不提前動339鏈。#355 UI15仍待343→346→347同源；R03依user排R02後且前置PF2–6。325/331/333及352/353/354/357由其他owner，本線不碰。
+接續時先讀真LIVE_START/result與sourceHEAD/status，不重啟仍跑full。不換模型／不新cloud task處理容量；能做的由root接續，原writer容量錯誤與未做peer明說。所有Github留言【dot】、繁體中文、commit英文；不發未授權通知，不購買／部署／main合併，不改SSOT。#340未合main前不開#339產品寫入；#355 UI15等343→346→347同源，R03排R02後且前置PF2～6。325/331/333與352/353/354/357產品仍別人owner，不碰。
 
 ---
 
