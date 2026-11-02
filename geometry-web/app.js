@@ -9152,26 +9152,35 @@ function renderCanvasModeHint() {
    卡片,還被放在很遠的 bbox 左上角(GEO-187 的「找不到卡片」根因)。
    P 改成一次性動作:建一張預設外環的面卡 → 自動進入該面的工作區、啟用「重畫外環」
    (面內視野由 feFit 對齊面的大小,1 單位=1mm 的繪圖在面內進行)→ 畫完 Esc 返回畫布。 */
+function ocCreationOwner() {
+  const context = ReferenceWorkspace.context(), frame = ReferenceWorkspace.history.frame,
+    session = connection.session, navigation = oc.navigationSequence;
+  return () => ReferenceWorkspace.context() === context && ReferenceWorkspace.history.frame === frame &&
+    connection.session === session && connection.phase === "ready" && oc.navigationSequence === navigation;
+}
 async function objNewPolyFace({beforeCreate, canvasPosition} = {}) {
+  const current = ocCreationOwner(), revision = ReferenceWorkspace.getProjectState().revision;
   const ids = await api("newid");
+  if (!current() || ReferenceWorkspace.getProjectState().revision !== revision) return;
   if (!ids.ok) { setStatus("✗ " + (ids.error || "取不到新編號")); toast(ids.error || "取不到新編號"); return; }
   const bid = ids.boundary;
   if (beforeCreate) await beforeCreate(bid);
+  if (!current() || ReferenceWorkspace.getProjectState().revision !== revision) return;
   /* 預設外環只是佔位,進面內後被 redraw 整份取代;取常見房間大小讓 feFit 給出合適視野 */
-  const r = await api(`line boundary ${bid} outline 0,0 4000,0 4000,3000 0,3000`);
-  if (!r.ok) { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); return; }
-  /* 選單帶入動作當下的畫布位置；其他入口維持視野中心。
-     canvas-pos 是展示中繼資料,不另加歷史；在 homeless 自動排格之前送出。 */
+  /* 邊界與畫布位置同一交易；原生回覆及畫布刷新期間保留既有輸入鎖。
+     選單帶入動作當下的位置，其他入口維持視野中心。 */
   const vr = ocv.getBoundingClientRect();
   const cx = canvasPosition?.cx ?? Math.round((vr.width / 2 - oc.panX) / oc.zoom - OC_W / 2);
   const cy = canvasPosition?.cy ?? Math.round((vr.height / 2 - oc.panY) / oc.zoom - OC_H / 2);
-  await api(`line canvas-pos boundary ${bid} ${cx} ${cy}`);
+  const made = await mutate([`boundary ${bid} outline 0,0 4000,0 4000,3000 0,3000`,
+    `canvas-pos boundary ${bid} ${cx} ${cy}`],
+    {afterSettlement:committed => committed ? renderObjects() : undefined});
+  if (!made || !current() || selectObject("boundary", bid) === false) return;
   setStatus(`✓ 面 ${bid} 已建立 · Ctrl+Z 復原`);
-  await renderObjects();
-  selectObject("boundary", bid);
   if (pendingSlot && pendingSlot.bid == null) pendingSlot.bid = bid;
-  await enterFocus("face", bid);
-  if (!oc.focus || oc.focus.t !== "face" || oc.focus.id !== bid) return;
+  const opening = enterFocus("face", bid), focus = oc.focus, openingCurrent = ocCreationOwner();
+  await opening;
+  if (!openingCurrent() || oc.focus !== focus || !focus || focus.t !== "face" || focus.id !== bid) return;
   fe.newOutline = { bid, outline: JSON.stringify(oc.bmap[bid]) };
   fiShowTab("prop");
   feSetTool("redraw");
@@ -10726,15 +10735,18 @@ $("btnCollapseLibrary")?.addEventListener("click", () => {
   closeMenus(); ocApply();
 });
 async function objNewSpace({canvasPosition} = {}) {
+  const current = ocCreationOwner(), revision = ReferenceWorkspace.getProjectState().revision;
   closePanels();
   const ids = await api("newid");
+  if (!current() || ReferenceWorkspace.getProjectState().revision !== revision) return false;
   if (!ids.ok) { toast(ids.error || "取不到新編號"); return false; }
   const made = canvasPosition
     ? await mutate([`space ${ids.space}`, `canvas-pos space ${ids.space} ${canvasPosition.cx} ${canvasPosition.cy}`],
         {afterSettlement:committed => committed ? renderObjects() : undefined})
     : await emitLine(`space ${ids.space}`);
-  if (made) {
-    selectObject("space", ids.space); centerOnNode("space", ids.space);
+  if (made && current()) {
+    if (selectObject("space", ids.space) === false) return made;
+    centerOnNode("space", ids.space);
     setStatus(`✓ 空間 ${ids.space}（空容器）已建立，點進去管理成員`);
   }
   return made;
