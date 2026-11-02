@@ -91,6 +91,20 @@ jobs:
           test -x "$bridge"
           test -x "$model"
           printf 'R11_BRIDGE=%s\nR11_MODEL_BASE=%s\n' "$bridge" "$model" >> "$GITHUB_ENV"
+      - name: Configure Chrome's setuid sandbox helper as Chrome requires
+        # The hosted image ships /opt/google/chrome/chrome-sandbox as 777, which
+        # Chrome rejects (FATAL setuid_sandbox_host.cc) when unprivileged user
+        # namespaces are restricted. Chrome's documented setup is root:root 4755;
+        # this keeps the sandbox on instead of falling back to --no-sandbox.
+        if: ${{ inputs.chrome_sandbox != 'disable' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          helper=/opt/google/chrome/chrome-sandbox
+          stat -c 'before: %a %U:%G %n' "$helper" | tee "$R11_EVIDENCE/sandbox-helper.txt"
+          sudo chown root:root "$helper"
+          sudo chmod 4755 "$helper"
+          stat -c 'after: %a %U:%G %n' "$helper" | tee -a "$R11_EVIDENCE/sandbox-helper.txt"
       - name: Record source, binary and tool identities
         shell: bash
         run: |
