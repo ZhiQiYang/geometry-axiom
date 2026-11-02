@@ -1,0 +1,463 @@
+{
+  "schema": "geometry-pr342-343-source-main-vs-public-gates/1",
+  "utc": "2026-11-02T09:31:22.272123+00:00",
+  "apiObservedAt": "2026-11-02T09:29:21.134318+00:00",
+  "reviewer": "/root/pr366_evidence",
+  "status": "PASS_READONLY_DISTINCTION_WITH_OPEN_GAPS",
+  "readOnlyAuditExitCode": 0,
+  "problems": [],
+  "main": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+  "finding": "Both exact PR heads are main ancestors while both PRs remain open/draft and their latest original comments/body preserve explicit acceptance/performance gaps. No gate is cleared by this report.",
+  "items": {
+    "342": {
+      "identity": {
+        "number": 342,
+        "htmlUrl": "https://github.com/ZhiQiYang/geometry-axiom/pull/342",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "updatedAt": "2026-10-24T04:34:28Z",
+        "author": "ZhiQiYang",
+        "head": {
+          "ref": "codex/geo260-ac23-proof-20261024",
+          "sha": "df230da57619e437c30527dbede8c67fd0ec6b50",
+          "label": "ZhiQiYang:codex/geo260-ac23-proof-20261024"
+        },
+        "base": {
+          "ref": "codex/geo300-prerequisites-20261024",
+          "sha": "823729be5f4f025aebbf02c2dc85e09907c28812",
+          "label": "ZhiQiYang:codex/geo300-prerequisites-20261024"
+        },
+        "baseShaCaveat": "GitHub PR metadata base SHA; not asserted current base-ref tip.",
+        "sameHeadAsOldInventory": true
+      },
+      "sourceLayer": {
+        "exactHeadIsMainAncestor": true,
+        "main": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+        "mainAheadCommits": 155,
+        "prHeadAheadCommits": 0,
+        "remainingThreeDotFiles": [],
+        "meaning": "L3/source-incorporation only. This proves commit ancestry and no pending source delta; it does not certify acceptance, performance, stack or closure validity at current main."
+      },
+      "latestBody": {
+        "sha256Utf8": "0b43778cd54f3485b21f78e2d0dc1431da13dd6085cfcf468cf1f40815f80310",
+        "identicalToOldInventory": true,
+        "relevantExactLines": [
+          {
+            "line": 3,
+            "text": "唯一 current-state 矩陣如下。Current source C=`eb846c345881cc6fc73a53c457a291175365b88c`：普通合流 #300 `aa0e3938f17dc996ef5e7410db4844b31856d2a6`，再唯一登記 native28→30，已一般推送。Base branch=`codex/geo300-prerequisites-20261024`。Evidence head E=`df230da57619e437c30527dbede8c67fd0ec6b50` 已一般推送；新完整44在C真執行完成。歷史實跑 S=`af4fd36c17d05b5da2411b70266ed040e22a6561`、歷史證據 `5c5b63f967a33e75f299250f97629325fff2a775` 分開保留，不把歷史focused結果改標C。"
+          },
+          {
+            "line": 7,
+            "text": "| 新原完整44-case Q38閘門 | C | 原exit0；43killed、SPM24 equivalent | 39native＋5model，無裁項／explore；20:53:16→21:08:13Z，原600／900秒不變 |"
+          },
+          {
+            "line": 16,
+            "text": "| 完整native30 aggregate／6browser／帳本／架構 | 待最終整合來源 | 本分支未跑 | native30只是登記已完成；原全帳本123個M定義未改，本分支未重產 |"
+          }
+        ]
+      },
+      "reviewSources": {
+        "api": [
+          {
+            "apiPath": "/pulls/342",
+            "httpStatus": 200,
+            "responseSha256": "3d91ac7eb67b7e9215e3c78303d5877c79883de38cd5e73797e2c6ebb921aeef",
+            "link": null
+          },
+          {
+            "apiPath": "/issues/342/comments?per_page=100",
+            "httpStatus": 200,
+            "responseSha256": "a1d1734a3e9d6c3098791fe429de4b5193f023bc9460c6568adc40bd41ca5ca2",
+            "link": null
+          },
+          {
+            "apiPath": "/pulls/342/reviews?per_page=100",
+            "httpStatus": 200,
+            "responseSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "link": null
+          }
+        ],
+        "issueCommentCount": 1,
+        "formalReviewCount": 0,
+        "allIssueCommentsIdenticalToOldInventory": true,
+        "latestReviewComment": {
+          "id": 6379912805,
+          "htmlUrl": "https://github.com/ZhiQiYang/geometry-axiom/pull/342#issuecomment-6379912805",
+          "createdAt": "2026-10-24T04:34:28Z",
+          "updatedAt": "2026-10-24T04:34:28Z",
+          "author": "ZhiQiYang",
+          "declaredHead": "df230da",
+          "fullHead": "df230da57619e437c30527dbede8c67fd0ec6b50",
+          "body": "【ChatGPT 審查】PR #342 head df230da\n\n## 阻擋\n- **B1 — 登記的 native30 尚未在 current source 實跑。** `tests/run_all.expected.json:1055-1059` 已把 `py:test_section_profile_native` 設為 30，但 `evidence/geo261-final-eb846c34/geo260-ac23/PROGRESS.md:8-15` 明載 aggregate30/full native/六 browser 未跑。最小修正：在最終 closure 執行原 `run_all.py` 對應列，保存 exact source、30/30、0 fail/skip 與 strict expected exit 0。\n- **B2 — required integration 全紅且無步驟證據。** [run 40027528012](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40027528012) 的 native + 六 browser 全 failure，jobs 無 steps。最小修正：修復 runner 或提供專案正式核准、綁定同一 final source 的等價驗收，不能用 focused mutation gate 外推整合全綠。\n- **B3 — 堆疊基底尚未閉合。** 當前比較為 ahead 8 / behind 1、merge base `aa0e393`；base 是仍未完成驗收的 #341。最小修正：先讓 #341 成為已接受基底，或重疊到穩定基底，再於新 final SHA 重跑受影響 closure。\n\n## 須改\n- 維持 draft；上述三項完成後再更新正文唯一 current-state 矩陣與 head/source SHA。\n\n## 記錄\n- `tests/test_section_profile_native.py:289-311` 的 u/v 字面案例與 `tests/section_profile_mutation_check.py:287-296` 的 SPM43/44 確實鎖住 I45/R36「正面積才重疊、邊界接觸合法」；未見新增門檻或產品語義漂移。\n- `evidence/geo261-final-eb846c34/geo260-ac23/CURRENT_RESULT.json:2-25` 的 full44 在 source `eb846c3` 為 43 killed + 1 equivalent、baseline 0/0，且 source bytes/clean 有保存；這能支持 focused gate，但不能取代 B1/B2。\n\n**結論：不建議合併；維持 draft。**"
+        },
+        "allCommentIdentities": [
+          {
+            "id": 6379912805,
+            "htmlUrl": "https://github.com/ZhiQiYang/geometry-axiom/pull/342#issuecomment-6379912805",
+            "createdAt": "2026-10-24T04:34:28Z",
+            "updatedAt": "2026-10-24T04:34:28Z",
+            "declaredHead": "df230da",
+            "bodySha256Utf8": "c87d9af94e71a3186c7ce0e2a6901da7ca3c42263b48808947a9c18dad760444"
+          }
+        ]
+      },
+      "acceptanceConclusion": "PUBLIC_REVIEW_GAPS_REMAIN; no acceptance is inferred from source ancestry.",
+      "productSourceDeclaredByBody": "eb846c345881cc6fc73a53c457a291175365b88c",
+      "remainingReviewItems": [
+        {
+          "id": "B1",
+          "sourceCommentId": 6379912805,
+          "statusInLatestReview": "UNRUN at declared source C",
+          "minimumEvidence": "Align an existing valid final-closure native30 aggregate receipt if available; otherwise the original corresponding run_all.py row must show 30/30, zero fail/skip and strict expected exit 0. Registration and focused44 alone do not close this.",
+          "notRerunHere": true
+        },
+        {
+          "id": "B2",
+          "sourceCommentId": 6379912805,
+          "statusInLatestReview": "Required integration run40027528012 native + six browser failure with no steps; current PR body still full integration not run.",
+          "minimumEvidence": "Bind current final-source required CI seven jobs or the already adopted equivalent path; no runner/step absence is counted as product acceptance.",
+          "notRerunHere": true
+        },
+        {
+          "id": "B3",
+          "sourceCommentId": 6379912805,
+          "statusInLatestReview": "Stacked base #341 acceptance not closed in this review.",
+          "minimumEvidence": "After #340, resolve #341 under the existing sequence and align the final source/acceptance matrix. Ancestry alone does not close the base acceptance item.",
+          "historicalAheadBehindNumbers": "Review ahead8/behind1 is historical and is superseded by this bounded main-ancestor source check."
+        }
+      ],
+      "preservedCompletedScope": "Body reports full focused44 at C:43 killed +SPM24 equivalent, baseline native/model exit0; earlier targeted controls keep their original execution SHA. This report does not rerun or independently reverify them."
+    },
+    "343": {
+      "identity": {
+        "number": 343,
+        "htmlUrl": "https://github.com/ZhiQiYang/geometry-axiom/pull/343",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "updatedAt": "2026-10-29T04:50:34Z",
+        "author": "ZhiQiYang",
+        "head": {
+          "ref": "codex/geo300-contact-index-20261024",
+          "sha": "a934a554ae58f16f124f1b264523947f170b3f0b",
+          "label": "ZhiQiYang:codex/geo300-contact-index-20261024"
+        },
+        "base": {
+          "ref": "codex/geo260-ac23-proof-20261024",
+          "sha": "df230da57619e437c30527dbede8c67fd0ec6b50",
+          "label": "ZhiQiYang:codex/geo260-ac23-proof-20261024"
+        },
+        "baseShaCaveat": "GitHub PR metadata base SHA; not asserted current base-ref tip.",
+        "sameHeadAsOldInventory": true
+      },
+      "sourceLayer": {
+        "exactHeadIsMainAncestor": true,
+        "main": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+        "mainAheadCommits": 146,
+        "prHeadAheadCommits": 0,
+        "remainingThreeDotFiles": [],
+        "meaning": "L3/source-incorporation only. This proves commit ancestry and no pending source delta; it does not certify acceptance, performance, stack or closure validity at current main."
+      },
+      "latestBody": {
+        "sha256Utf8": "b23fb7be7fc55c1d99bfdb379ce6bfad16a38e6acdf9dafc71dd74420a409582",
+        "identicalToOldInventory": true,
+        "relevantExactLines": [
+          {
+            "line": 10,
+            "text": "| 原 wood-contact-world | **exit0**；12 方法／41 具名正常 0/1/0；0skip；147 builds全0 |"
+          },
+          {
+            "line": 13,
+            "text": "| 本 S 部分 native 合計 | **34 方法／64 控制／318 builds全0**；primary／reaper／launcher／host tool0，source HEAD／tree clean；actual peer1222／0 |"
+          },
+          {
+            "line": 14,
+            "text": "| tuple 明確撤回／恢復 | 原受影響一方法／8控制每phase，**fixed0→舊tuple撤回1→restored0**；77×3＝231 builds全0；outer0、HEAD／tree／index還原clean；actual peer693／0。不是完整15方法／全部11控制或whole-opt撤回 |"
+          },
+          {
+            "line": 17,
+            "text": "| 既定 16MiB stack | 上述三套與tuple都維持原limit並通過。本 PR 新增四個 size_t[2432] 區域陣列，兩階段共用；此64位環境陣列資料約77,824B，compiler frame／完整場景上限未另量 |"
+          },
+          {
+            "line": 18,
+            "text": "| 整條快路語意撤回 | **UNRUN**；本 S 另規劃8原正例等價0/0/0，不計killed、不冒完整12方法suite；與已完成tuple反證分開 |"
+          },
+          {
+            "line": 19,
+            "text": "| 性能／正式 P-189／容量512 | **UNMEASURED／UNRUN／未完成未驗**；沒有新數值門檻 |"
+          },
+          {
+            "line": 20,
+            "text": "| 完整 native、browser、全帳本、架構 | 本 S **UNRUN**；最終全帳本／架構由主代理統一處理 |"
+          },
+          {
+            "line": 21,
+            "text": "| skip／仍紅／READY | 本 S 上述原三套與tuple皆0skip，指定範圍綠；舊Scc2紅保留，其他未跑不計通過。性能／512未完成，**NOT READY** |"
+          }
+        ]
+      },
+      "reviewSources": {
+        "api": [
+          {
+            "apiPath": "/pulls/343",
+            "httpStatus": 200,
+            "responseSha256": "ac7c32d18df732d110b1ef1e3a9512d621739cdc6ed5d6383a2d30b1438b1661",
+            "link": null
+          },
+          {
+            "apiPath": "/issues/343/comments?per_page=100",
+            "httpStatus": 200,
+            "responseSha256": "5a4badd40d5973c4be6c33b6296fe2582028fc07eefaf5fd52f90871c010c9ab",
+            "link": null
+          },
+          {
+            "apiPath": "/pulls/343/reviews?per_page=100",
+            "httpStatus": 200,
+            "responseSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "link": null
+          }
+        ],
+        "issueCommentCount": 2,
+        "formalReviewCount": 0,
+        "allIssueCommentsIdenticalToOldInventory": true,
+        "latestReviewComment": {
+          "id": 6488252846,
+          "htmlUrl": "https://github.com/ZhiQiYang/geometry-axiom/pull/343#issuecomment-6488252846",
+          "createdAt": "2026-10-29T04:50:34Z",
+          "updatedAt": "2026-10-29T04:50:34Z",
+          "author": "ZhiQiYang",
+          "declaredHead": "a934a55",
+          "fullHead": "a934a554ae58f16f124f1b264523947f170b3f0b",
+          "body": "【ChatGPT 審查】PR #343 head a934a55\n\n本次只核對更新後正文，承接[前輪審查](https://github.com/ZhiQiYang/geometry-axiom/pull/343#issuecomment-6395515390)。目前 head 仍為 `a934a554ae58f16f124f1b264523947f170b3f0b`，產品 S 仍為 `ccfaf057088a80c7aad4049f1c67e5eedfc2fdec`。\n\n### 阻擋\n\n- **B1、B2 及完整整合驗收維持。** 正文仍明列效能未量、compiler frame／完整場景 stack 未量、整條快路八正例撤回未跑，以及本 S 的完整 native／browser 未跑。新增到下游 #348 的驗收，須保留其實際執行版本與適用範圍，不能直接改標成本 PR 的獨立驗收。\n\n### 須改\n\n- **前輪 C1 的正文措辭缺失已解除。** 正文已改為本 PR 新增四個 `size_t[2432]` 區域陣列、兩階段共用，並列此 64 位環境約 77,824 bytes；不再稱原本就有或沒有新增。compiler frame／完整場景的實測要求仍歸 B1，沒有因文案修正而關閉。\n\n### 記錄\n\n- 本輪讀回 PR metadata、全部留言及更新後正文；未重新執行產品、效能、whole-opt 或完整 native／browser。\n- 正式驗收按[2026-10-25 已採決策](https://github.com/ZhiQiYang/geometry-axiom/blob/405f8c5e1a637a16cbe47470faf5ae1fa02b8676/決策佇列.md#L841-L866)：同一最終來源的 CI 等價七項及本 PR 專項可在 WSL 或雲端執行；只有 `mutation:check` 因產品來源變動而 stale 的單一紅燈可依條件後補。本輪不把這項既定例外重新列為待拍板。\n\n### 結論\n\n**C1 正文措辭已核銷；其餘上述阻擋保留，仍不建議合併。** 未確認：固定最終來源的正式效能／stack、整條快路等價及完整整合終態。\n"
+        },
+        "allCommentIdentities": [
+          {
+            "id": 6395515390,
+            "htmlUrl": "https://github.com/ZhiQiYang/geometry-axiom/pull/343#issuecomment-6395515390",
+            "createdAt": "2026-10-25T08:41:00Z",
+            "updatedAt": "2026-10-25T08:41:00Z",
+            "declaredHead": "a934a55",
+            "bodySha256Utf8": "8eef982dda548b070bbf6674ea664198c9518f68fc9e852a409b0c58753d2dcb"
+          },
+          {
+            "id": 6488252846,
+            "htmlUrl": "https://github.com/ZhiQiYang/geometry-axiom/pull/343#issuecomment-6488252846",
+            "createdAt": "2026-10-29T04:50:34Z",
+            "updatedAt": "2026-10-29T04:50:34Z",
+            "declaredHead": "a934a55",
+            "bodySha256Utf8": "1c744408ab4c305090704d9382b557cea507554912cb3aa47c21c57a6903ab76"
+          }
+        ]
+      },
+      "acceptanceConclusion": "PUBLIC_REVIEW_GAPS_REMAIN; no acceptance is inferred from source ancestry.",
+      "productSourceDeclaredByBody": "ccfaf057088a80c7aad4049f1c67e5eedfc2fdec",
+      "remainingReviewItems": [
+        {
+          "id": "B1",
+          "sourceCommentIds": [
+            6395515390,
+            6488252846
+          ],
+          "statusInLatestReview": "Performance UNMEASURED; compiler frame/full-scene stack unmeasured.",
+          "minimumEvidence": "Provide final-source representative bounded-unique/duplicate/overflow before-after wall/calls/profile and compiler-frame/full-scene evidence under original 16MiB. Check existing valid receipts before scheduling any missing work; do not reclassify the old R16 overflow failure.",
+          "notRerunHere": true
+        },
+        {
+          "id": "B2",
+          "sourceCommentIds": [
+            6395515390,
+            6488252846
+          ],
+          "statusInLatestReview": "Whole fast-path eight-positive-case 0/0/0 withdrawal UNRUN.",
+          "minimumEvidence": "Bind exact whole-optimization withdrawal/restoration receipts with identical input and byte/field equality plus path-hit proof; completed tuple control is scoped separately.",
+          "notRerunHere": true
+        },
+        {
+          "id": "B3 / full integration",
+          "sourceCommentIds": [
+            6395515390,
+            6488252846
+          ],
+          "statusInLatestReview": "Full native/browser/ledger/architecture at product S and base acceptance remain unclosed.",
+          "minimumEvidence": "Align final-source required seven-job/equivalent integration and applicable dedicated gates with accepted #341/#342 boundary; no downstream #348 execution may be relabeled as this PR independent execution.",
+          "notRerunHere": true
+        }
+      ],
+      "closedReviewItem": {
+        "id": "C1 wording only",
+        "closedByCommentId": 6488252846,
+        "htmlUrl": "https://github.com/ZhiQiYang/geometry-axiom/pull/343#issuecomment-6488252846",
+        "scope": "Body now correctly calls four size_t[2432] arrays newly added, shared by two phases, about77824 bytes on the stated64-bit environment. The comment explicitly leaves actual compiler-frame/full-scene evidence under B1.",
+        "independentlyVerifiedThisTurn": "Latest API body and closing comment wording read; no dynamic/frame/stack execution was performed."
+      },
+      "preservedCompletedScope": "Body reports three selected suites34 methods/64 controls/318 successful builds and separate tuple0/1/0. These remain scoped to their recorded S; neither source ancestry nor this audit promotes them to whole-opt/performance/full integration acceptance.",
+      "R16MemberOverflow": {
+        "status": "UNRESOLVED_ROOT_REPORTED_RED; NOT INDEPENDENTLY REVERIFIED",
+        "sourceOfConclusion": "Root current task explicitly preserves prior #343 R16 member-overflow2.21665 over-limit conclusion.",
+        "rootProvidedValue": 2.21665,
+        "originalExecutionHead": "unknown in the bounded materials read",
+        "originalCommentOrReceiptId": "unknown in the bounded materials read",
+        "newClosingEvidenceInAllCurrent343IssueComments": false,
+        "newClosingEvidenceInLatest343Body": false,
+        "closureCommentId": null,
+        "apiReviewBoundary": "Latest #343 comment6488252846 explicitly maintains B1 performance/stack and B2/full-integration gaps; neither it nor preceding6395515390 contains an R16 clearance.",
+        "existingInventorySearch": {
+          "argv": [
+            "rg",
+            "-n",
+            "R16|2[.]21665|member[-_ ]overflow|member.*overflow",
+            "/tmp/geometry-resume-20261102/chain/pr-343-comments.md",
+            "/tmp/geometry-resume-20261102/chain/pr-343-body.md",
+            "/tmp/geometry-resume-20261102/chain/pr-348-latest-review.md",
+            "/tmp/geometry-resume-20261102/chain/pr-348-comments.md"
+          ],
+          "exitCode": 1,
+          "meaning": "No matching R16 source in these existing inventory texts; no broad artifact/source search or old performance rerun was attempted."
+        },
+        "minimumUnfinishedAction": "Retain the original R16 red in any future matrix. Before closing it, identify its original execution/threshold/receipt and bind an explicit final-source accepted resolution; this report supplies no new threshold or clearance."
+      }
+    }
+  },
+  "formalSequence": "Complete #340 into main first, then the bounded #341 base/source check under the existing one-at-a-time sequence. This report does not start #342/#343 product work or alter PR status.",
+  "limits": [
+    "Only latest live PR body, all current issue comments and formal review metadata were read; no new product review, test, build, performance measurement or CI was run.",
+    "This is not an exhaustive audit of current-main/downstream execution artifacts. Public PR UNRUN labels are reported at their declared source and are not proof that no applicable later receipt exists.",
+    "R16 value/failure is root-provided and preserved as unresolved; its original receipt/head/limit was not present in the bounded texts and was not independently verified here.",
+    "The adopted2026-10-25 equivalent-gate path cited in latest#343 review is retained. This audit does not add an approval requirement or new numeric threshold."
+  ],
+  "sourcePreservation": {
+    "worktree": "/tmp/geometry-pr340-20261102",
+    "head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+    "indexSha256": "b26a02bb4b8609bf04f95d0226845107756987f7e91a889cda3522f9a6b0d10a",
+    "sourceChanges": [],
+    "pushCommentBaseOrPrChanges": [],
+    "active367CheckoutIndexProcessesAccessed": false
+  },
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "b3a248607d7eb68d3167abbb926cf491d9b35a26\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "rev-parse",
+        "--git-path",
+        "index"
+      ],
+      "exitCode": 0,
+      "stdout": "/tmp/geometry-live-20261102/.git/worktrees/geometry-pr340-20261102/index\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "merge-base",
+        "--is-ancestor",
+        "df230da57619e437c30527dbede8c67fd0ec6b50",
+        "df7eb43af3389ff2afc1a73aaf4e57580ae612fc"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "diff",
+        "--name-status",
+        "df7eb43af3389ff2afc1a73aaf4e57580ae612fc...df230da57619e437c30527dbede8c67fd0ec6b50"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "rev-list",
+        "--left-right",
+        "--count",
+        "df7eb43af3389ff2afc1a73aaf4e57580ae612fc...df230da57619e437c30527dbede8c67fd0ec6b50"
+      ],
+      "exitCode": 0,
+      "stdout": "155\t0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "merge-base",
+        "--is-ancestor",
+        "a934a554ae58f16f124f1b264523947f170b3f0b",
+        "df7eb43af3389ff2afc1a73aaf4e57580ae612fc"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "diff",
+        "--name-status",
+        "df7eb43af3389ff2afc1a73aaf4e57580ae612fc...a934a554ae58f16f124f1b264523947f170b3f0b"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "rev-list",
+        "--left-right",
+        "--count",
+        "df7eb43af3389ff2afc1a73aaf4e57580ae612fc...a934a554ae58f16f124f1b264523947f170b3f0b"
+      ],
+      "exitCode": 0,
+      "stdout": "146\t0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "b3a248607d7eb68d3167abbb926cf491d9b35a26\n",
+      "stderr": ""
+    }
+  ],
+  "oldReportReused": {
+    "path": "/tmp/geometry-resume-20261102/chain/pr339-after366-preflight.json",
+    "sha256": "a402c53cef453a5038eabf6821bfc770a86fef46ff5233509b26ead3289a0717",
+    "scope": "Prior source/main/API inventory only; prior file left unchanged."
+  }
+}

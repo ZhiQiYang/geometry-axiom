@@ -1,0 +1,202 @@
+{
+  "schema": "geometry-completed-census-bounded-review/1",
+  "reviewedUtc": "2026-11-02T09:51:15.028103+00:00",
+  "status": "Complete observed census verified; emitted expected bytes remain DRAFT. Additional Node fixture failures require the root's original aggregate green before the supplemental path is accepted.",
+  "actualPremiseAmendment": "The prior sole-counted-failure hypothesis is not satisfied: the completed CLI has the expected old-set coverage failure plus four Node callback ENOENT failures. This review records those extra red cases and does not retroactively claim the earlier premises held.",
+  "sourceExecution": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "completedProducer": {
+    "actualCliExit": 1,
+    "supervisorExit": 1,
+    "elapsedSeconds": 2075.0591543160263,
+    "under2100Seconds": true,
+    "timedOut": false,
+    "signals": [],
+    "remainingAdoptedChildren": [],
+    "all235Ran": true,
+    "registryErrors": [],
+    "expectedProblems": [],
+    "sourceHeadUnchanged": true,
+    "changedTrackedInputs": [
+      "tests/run_all.expected.json"
+    ],
+    "runnerEnvProblemRows": 0,
+    "rawFixtureFailuresStillPresent": 4,
+    "unallowlistedSkipped": 0,
+    "originalAllowedSkipped": 1,
+    "failedRows": [
+      {
+        "name": "py:test_unittest_runner",
+        "counted": true,
+        "total": 12,
+        "passed": 11,
+        "failed": 1,
+        "skipped": 0,
+        "seconds": 2.907590627670288,
+        "ran": true,
+        "process_exit_code": 1,
+        "allowed_skips": 0,
+        "env_problem": false,
+        "crashed": false,
+        "expected_problem": ""
+      },
+      {
+        "name": "node:tests-js",
+        "counted": true,
+        "total": 756,
+        "passed": 752,
+        "failed": 4,
+        "skipped": 0,
+        "seconds": 136.64481830596924,
+        "ran": true,
+        "process_exit_code": 1,
+        "allowed_skips": 0,
+        "env_problem": false,
+        "crashed": false,
+        "expected_problem": ""
+      }
+    ]
+  },
+  "expectedDelta": {
+    "beforeRows": 233,
+    "afterRows": 235,
+    "added": {
+      "py:test_canvas_evidence": {
+        "mode": "count",
+        "count": 12,
+        "unit": "test"
+      },
+      "node:canvas_shards": {
+        "mode": "count",
+        "count": 19,
+        "unit": "node test"
+      }
+    },
+    "removed": [],
+    "all233ExistingRowsModesCountsUnitsExact": true,
+    "otherTopLevelFieldsExact": true,
+    "all235RowsEqualActualWriterObservedTotalsOrExitCodeOnlyMode": true,
+    "expectedBeforeSha256": "b71d8444f946231afbf59a5d26f08abf78d6d5f5e38e60dee9d184c0e8dfd469",
+    "expectedAfterSha256": "32a43acee9103a483edfe3d0875a36857e5036ef2aef8975de6af52fdede2a86",
+    "handFilledNumbers": false
+  },
+  "fourNodeErrors": {
+    "originalLog": "/dev/shm/geometry-canvas-count-producer-20261102/original-node_tests-js.log",
+    "tests": 756,
+    "passed": 752,
+    "failed": 4,
+    "skipped": 0,
+    "allFourAreOpenENOENT": true,
+    "fixtureUseCounts": {
+      "tests/evidence/k2a-collection-capacity-20261012/legacy6a.gcanvas": 1,
+      "tests/evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas": 2,
+      "tests/evidence/k2a-collection-capacity-20261012/legacy6a-with-scene.gcanvas": 1
+    },
+    "testFiles": [
+      "tests/test_grid_drafts_lifecycle_capacity.js",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "classification": "The raw failures are missing exact tracked ZIPs inside already-registered test callbacks. They are not yet evidence that the product assertions following those reads pass.",
+    "noAdditionalFailureKindInTheseFourBlocks": true
+  },
+  "fixtureInspection": {
+    "exactGitFixtures": [
+      {
+        "path": "tests/evidence/k2a-collection-capacity-20261012/legacy6a.gcanvas",
+        "bytes": 133167,
+        "sha256": "69f37d46587a98dc757cfbe16d0b0c4b44bd6da0a8746eab5627449823e2e007",
+        "exactGitBytes": true,
+        "originalFailureUses": 1
+      },
+      {
+        "path": "tests/evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas",
+        "bytes": 131575,
+        "sha256": "791089400a54bb3ec53f8dc94046fe292d712b77bb16696d45b8c3f3d3673db8",
+        "exactGitBytes": true,
+        "originalFailureUses": 2
+      },
+      {
+        "path": "tests/evidence/k2a-collection-capacity-20261012/legacy6a-with-scene.gcanvas",
+        "bytes": 133210,
+        "sha256": "3d5d3e19341356bad6a8b498cf75111e33a8bc61a4ef5c0c5dd615cbc12ffc0c",
+        "exactGitBytes": true,
+        "originalFailureUses": 1
+      },
+      {
+        "path": "tests/fixtures/k2a-legacy-live-ref-9e136db.gcanvas",
+        "bytes": 132761,
+        "sha256": "0febd171aa37e59efd1bfcae853e28fe1d69a714e9bd3511384031a6a7c7fcf6",
+        "exactGitBytes": true,
+        "originalFailureUses": 0
+      },
+      {
+        "path": "tests/fixtures/native_available_capabilities.json",
+        "bytes": 140,
+        "sha256": "f1f9e8c4a16d6164198b3276e32516a7919a294eac4a69a937f38362fcf491e4",
+        "exactGitBytes": true,
+        "originalFailureUses": 0
+      }
+    ],
+    "threeRestoredZipsTotalBytes": 397952,
+    "readFileSyncCallsites": {
+      "tests/test_grid_drafts_lifecycle_capacity.js": 2,
+      "tests/test_reference_workspace_races.js": 6
+    },
+    "additionalExistingDataInputs": [
+      "tests/fixtures/k2a-legacy-live-ref-9e136db.gcanvas",
+      "tests/fixtures/native_available_capabilities.json"
+    ],
+    "sourceInputsAndVmDefaults": [
+      "geometry-web/reference-workspace.js",
+      "geometry-web/grid-system-workspace.js",
+      "geometry-web/scenario-integration.js",
+      "geometry-web/project-store.js",
+      "geometry-web/feature-attachments.js",
+      "geometry-web/vendor/fflate/umd/index.js"
+    ],
+    "otherDataArchivesAfterTheFailedReadsFound": false,
+    "noAdditionalMissingExternalFixtureFoundInTheseTwoFiles": true,
+    "scopeLimit": "These two test files and their read callsites were inspected, not the entire repository's possible future fixtures. The two extra existing data inputs are explicitly retained rather than claiming only three total references.",
+    "registrationEffect": "The four missing reads occur in registered test callbacks, not a conditional test-discovery branch. No further test registrations or external archive reads occur after those reads in the four failed callback bodies."
+  },
+  "draftSafetyJudgment": {
+    "conditionalAnswer": "Yes. The original writer deliberately emits observed totals despite ordinary counted failures, and all 235 rows were actually observed with the 233 old entries unchanged. Once exact fixture materialization is followed by the same original complete Node aggregate 756/756 with all four named tests passing, those narrowly repaired environment failures can be covered by the user-authorized affected-item rerun. The original complete expected bytes may remain a draft, followed by unchanged candidate strict235/coverage0-1-0 acceptance.",
+    "pendingRequiredNodeEvidence": [
+      "Same unmodified Node aggregate command/registry and original 16MiB environment; no test-name filter, skip, assertion or fixture edits.",
+      "Actual terminal child/runner exit 0, 756 tests, 756 pass, 0 fail/error/cancel/skip, and the four original failing names genuinely pass.",
+      "Same test/product inputs apart from exact Git-byte materialization of the three original ZIPs; preserve their bytes/hash and the original four-red log.",
+      "Count remains 756 and expected metadata is not rewritten from the partial retry."
+    ],
+    "notAFullPass": "Keep producer CLI/report exit 1 and original 752/4 Node row untouched. Do not splice the later green row into the failed full report or change its exit.",
+    "formalAcceptanceStillRequired": "On one frozen candidate source, unchanged original strict three-shard reports must have real exit0 and disjoint exact union235, matching expected/profile/commit identities and original limits; original NativeShardCoverage baseline/mutant/restored must be0/1/0 with named assertion, errors/skips0. Full native/browser/other required gates are not waived.",
+    "noAutomaticRepeatOfWholeProducer": "A further full producer is not required merely to re-discover the same counts after this bounded fixture-only repair, under the user's affected-item rerun rule and the stated later full strict validation. This does not declare this failed producer green.",
+    "stopConditions": [
+      "Node retry still has any product/assertion error, another missing dependency, changed discovery count, skipped/cancelled tests or nonzero terminal exit.",
+      "The initial observed-census/data hashes cannot be authenticated, any suite was actually unrun, writer refused/missed rows, or a census-affecting source/test/registry input changes.",
+      "Any condition fails: keep the draft unaccepted, diagnose/review rather than waiving the failure; rerun the original full-only producer when a fresh trustworthy census is needed."
+    ]
+  },
+  "previousReviewPreserved": "/tmp/geometry-resume-20261102/canvas-sharding/count-producer-recovery/EXPECTED_BOOTSTRAP_REVIEW.json",
+  "notReadOrWaitedFor": "The live node-aggregate-restored report/result was not read; this peer does not assert it is green.",
+  "productDefectObserved": "No product/assertion defect is established by the four supplied error stacks; assertions after missing reads are still unverified until the root's original rerun.",
+  "evidenceSha256": {
+    "/dev/shm/geometry-canvas-count-producer-20261102/result.json": "48d9c8793a95a04e59ce851a1b328553c844ec9508f86360c007eaa5457bfb76",
+    "/dev/shm/geometry-canvas-count-producer-20261102/run-all-report.json": "345fc3f063143cc9d238c0911fb668e06871f10f9c678e58547c6d3c198c3495",
+    "/dev/shm/geometry-canvas-count-producer-20261102/expected-before.json": "b71d8444f946231afbf59a5d26f08abf78d6d5f5e38e60dee9d184c0e8dfd469",
+    "/dev/shm/geometry-canvas-count-producer-20261102/expected-after.json": "32a43acee9103a483edfe3d0875a36857e5036ef2aef8975de6af52fdede2a86",
+    "/dev/shm/geometry-canvas-count-producer-20261102/stdout.log": "a381c7cf86d5d2491d036172d734fef77536a15dcd8175f1998fdc064293f26b",
+    "/dev/shm/geometry-canvas-count-producer-20261102/original-node_tests-js.log": "c228d444422262e9dc5610869660065f6e528a8d6725ebaa1527e8affbd6ad9e",
+    "/dev/shm/geometry-canvas-count-producer-20261102/original-py_test_unittest_runner.json": "af9994ce32799f3aaeb9a2aef028734256f0f79adf477decebb24531bb44a4e1",
+    "/dev/shm/geometry-canvas-count-producer-20261102/original-py_test_unittest_runner.unittest.log": "1d6b2d1cfda205d10ea6a8f6b616be3e4de11ff5a898116983e294fc4ed66875",
+    "/tmp/geometry-resume-20261102/canvas-sharding/count-producer-recovery/NODE_FIXTURES_RESTORED.json": "2c7cf5f346cc7647f2ccf9040e974cea31417cbfbacee0c50e911386fb4a56de",
+    "/tmp/geometry-canvas-shards-20261102/tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+    "/tmp/geometry-canvas-shards-20261102/tests/test_reference_workspace_races.js": "acc0deabc5a05247905c6d8586b0a0e0927f0e161fb20edc5dac826e6c1dcebf"
+  },
+  "boundedReadOnly": {
+    "testsOrProductExecuted": false,
+    "sourceOrProducerModified": false,
+    "liveRetryResultRead": false,
+    "newAgents": 0,
+    "modelChanged": false,
+    "onlyOutputWritten": "/tmp/geometry-resume-20261102/canvas-sharding/count-producer-recovery/COMPLETED_CENSUS_REVIEW.json"
+  }
+}

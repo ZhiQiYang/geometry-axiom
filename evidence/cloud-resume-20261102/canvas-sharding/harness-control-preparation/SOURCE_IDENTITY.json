@@ -1,0 +1,103 @@
+{
+  "schema": "geometry-canvas-harness-control-preparation/1",
+  "utc": "2026-11-02T10:18:44.291395+00:00",
+  "mode": "LOCAL_PREPARATION_ONLY",
+  "tests_executed": 0,
+  "chrome_started": false,
+  "server_started": false,
+  "builds_executed": 0,
+  "pushed": false,
+  "D": {
+    "sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+    "tree": "79ab857da822431b248cfed3d4a4a9f9f552e97c",
+    "cdp": {
+      "bytes": 519599,
+      "sha256": "14291f6f1114a9f4dd5ceaf3b6b02297b673870d5b903282fdd4090a31ff49e7",
+      "blob": "35540b6cb1eb6d75321b0239ae907aeb9cdce9d5"
+    }
+  },
+  "M": {
+    "sha": "aec3ea1bdcf46f2416dfa7cb79d28221673c315a",
+    "parent": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+    "tree": "0049d27031a2d839ab2114d9dc35b419a331d0cb",
+    "branch": "codex/canvas-false-control-20261102",
+    "subject": "Prepare isolated false S2 harness control",
+    "cdp": {
+      "bytes": 519608,
+      "sha256": "141f215ee52a9a86708bbe3d3b0a97ce63c9754636dca92a241af24fe67174d7",
+      "blob": "3b8b6012b27fa6483eed5a1e06ae8bdc5a465a68"
+    },
+    "clean": true
+  },
+  "worktree": {
+    "path": "/tmp/geometry-canvas-false-control-20261102",
+    "created_no_checkout": true,
+    "sparse_non_cone_pattern": "/geometry-web/cdp_test.js",
+    "physical_files": [
+      ".git",
+      "geometry-web/cdp_test.js"
+    ],
+    "product_runtime_and_fixture_checkout_expanded": false,
+    "runnable_now": false,
+    "rootD_files_server_outputs_touched": false
+  },
+  "delta": {
+    "paths": [
+      "geometry-web/cdp_test.js"
+    ],
+    "needle_occurrences_in_D": 1,
+    "needle": "s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 4 ? \"✓\" : \"✗\"",
+    "replacement": "false && s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 4 ? \"✓\" : \"✗\"",
+    "exact_bytes_equal_D_replace_once": true,
+    "inserted_bytes": 9,
+    "all_other_git_tree_entries_unchanged": true,
+    "patch": {
+      "path": "/tmp/geometry-resume-20261102/canvas-sharding/harness-control-preparation/CONTROL.patch",
+      "bytes": 983,
+      "sha256": "0587cd226fcba5b476c5d6a2da37e6f16f0bd44f01e95fc57cc7537a900cbda5"
+    },
+    "raw": {
+      "path": "/tmp/geometry-resume-20261102/canvas-sharding/harness-control-preparation/CONTROL_DELTA.raw",
+      "bytes": 124,
+      "sha256": "fa9f70bafb8558e535ffbf158470f3735615f87c1038872c8e59bc23250a66ff"
+    },
+    "git_diff_check": 0
+  },
+  "historical_plan": {
+    "path": "/tmp/geometry-resume-20261102/canvas-sharding/prepared-acceptance/HARNESS_CONTROL_PLAN.json",
+    "bytes": 1516,
+    "sha256": "6a5ddda8c2d53ca33cad6bafd7582df4b271ca00cf0690e25d163c76df9b8140",
+    "historical_source": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+    "historical_cdp_hash_equals_D": true,
+    "rebound_to_D_not_relabelled": true
+  },
+  "golden": {
+    "path": "geometry-web/cdp_sections.golden.json",
+    "bytes": 1337,
+    "sha256": "2d6f939894d7e38f76e46aa520252c17ad77792e6997d6b35994cefc765aa16d",
+    "D_M_blob_equal": true
+  },
+  "expected_legacy_projection": {
+    "assertions": 898,
+    "sections": 62,
+    "units": [
+      "legacy"
+    ],
+    "basis": "/tmp/geometry-resume-20261102/canvas-sharding/ci-first-extensions/original/plan.json",
+    "basis_sha256": "f8e44d64d49aa95747c550f081ae24ec2d19a2a38bfc959f76bf9fc474cd9a8f",
+    "basis_closure_files": 54,
+    "D_changes_in_basis_closure": [
+      ".github/workflows/integration-tests.yml"
+    ],
+    "basis_golden_exact_D": true,
+    "static_only_no_plan_JS_executed": true
+  },
+  "completed_census_preservation": {
+    "review_path": "/tmp/geometry-resume-20261102/canvas-sharding/count-producer-recovery/COMPLETED_CENSUS_REVIEW.json",
+    "review_sha256": "5bad61087581ca7bb130d1675eac9a1835c6f3243c94d4b3b4c6f0086f3b6522",
+    "original_full_cli_exit": 1,
+    "original_full_result": "Retained failure; never reclassified PASS. Four original ENOENT diagnostics and NativeShardCoverage mismatch remain raw evidence.",
+    "later_Node_aggregate_and_candidate_strict_checks": "Root reports real 756/0/0 and D check/new suites/coverage 0/1/0 green; not independently re-executed or relabelled by this preparation.",
+    "review_was_not_overwritten": true
+  }
+}

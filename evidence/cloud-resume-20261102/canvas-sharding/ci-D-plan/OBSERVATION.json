@@ -1,0 +1,56 @@
+{
+  "observedAt": "2026-11-02T10:16:49.254950+00:00",
+  "requestedHead": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+  "requestedIntegrationRun": 41424542378,
+  "requests": [
+    {
+      "apiPath": "/actions/runs/41424542378/artifacts?per_page=100",
+      "file": "run-41424542378-artifacts.json",
+      "httpStatus": 200,
+      "startedAt": "2026-11-02T10:16:48.567343+00:00",
+      "finishedAt": "2026-11-02T10:16:48.865894+00:00",
+      "bytes": 8695,
+      "sha256": "5dc262f1260d570e56ba7c52975d64dd80b34c939d384995f268348baf91dd0a",
+      "link": null,
+      "exitCode": 0
+    },
+    {
+      "apiPath": "/actions/runs/41424542378/jobs?per_page=100",
+      "file": "run-41424542378-jobs.json",
+      "httpStatus": 200,
+      "startedAt": "2026-11-02T10:16:48.566755+00:00",
+      "finishedAt": "2026-11-02T10:16:49.254423+00:00",
+      "bytes": 28793,
+      "sha256": "63eeafe46debbc0ff51a9ca250b1c4a37ae44c48b6ba33771cf9e83bd17257db",
+      "link": null,
+      "exitCode": 0
+    },
+    {
+      "apiPath": "/actions/runs/41424542378",
+      "file": "run-41424542378.json",
+      "httpStatus": 200,
+      "startedAt": "2026-11-02T10:16:48.564012+00:00",
+      "finishedAt": "2026-11-02T10:16:48.948843+00:00",
+      "bytes": 13297,
+      "sha256": "2189398a5da478eb29d74808f6c24aa13724d7c486201cc7c5bd7e127eaae53a",
+      "link": null,
+      "exitCode": 0
+    },
+    {
+      "apiPath": "/actions/runs?head_sha=e5b0bc23b04e872a68b066bd5b51d57e2c104943&per_page=100",
+      "file": "same-head-runs.json",
+      "httpStatus": 200,
+      "startedAt": "2026-11-02T10:16:48.565001+00:00",
+      "finishedAt": "2026-11-02T10:16:49.079198+00:00",
+      "bytes": 13333,
+      "sha256": "ca9f918e940426b7ae82a0b441255d94a31d31aea77498fc5e38e7bea380a775",
+      "link": null,
+      "exitCode": 0
+    }
+  ],
+  "runIds": [
+    41424542378
+  ],
+  "singleObservation": true,
+  "testsBuildChromeOrArtifactDownloads": []
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "geometry-native-shard/1",
+  "shard": null,
+  "commit_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "universe": [
+    "node:tests-js"
+  ],
+  "selected": [
+    "node:tests-js"
+  ],
+  "rows": [
+    {
+      "name": "node:tests-js",
+      "counted": true,
+      "total": 756,
+      "passed": 756,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 143.72157073020935,
+      "ran": true,
+      "process_exit_code": 0,
+      "allowed_skips": 0,
+      "env_problem": false,
+      "crashed": false,
+      "expected_problem": ""
+    }
+  ],
+  "exit_code": 0,
+  "seconds": 143.91974527802086,
+  "registry_errors": [],
+  "expected_problems": [],
+  "expected_sha256": "32a43acee9103a483edfe3d0875a36857e5036ef2aef8975de6af52fdede2a86",
+  "timings_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"
+}

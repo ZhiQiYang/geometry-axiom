@@ -1,0 +1,14 @@
+test_partition_covers_actual_suite_registry_once (test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once) ... FAIL
+
+======================================================================
+FAIL: test_partition_covers_actual_suite_registry_once (test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-canvas-shards-20261102/tests/test_unittest_runner.py", line 40, in test_partition_covers_actual_suite_registry_once
+    self.assertEqual(actual, Counter({name:1 for name in expected['suites']}),
+AssertionError: Counter({'py:test_assembly_bay_repeat': 1, 'py:test[8389 chars]: 1}) != Counter({'c:integrity': 1, 'core:run_tests': 1, 'mu[8407 chars]: 1}) : 分片必須完整涵蓋原套件清單，且每個suite恰好一次
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+FAILED (failures=1)

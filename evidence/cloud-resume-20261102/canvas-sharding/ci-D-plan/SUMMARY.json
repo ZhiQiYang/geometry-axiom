@@ -1,0 +1,1016 @@
+{
+  "requestedHead": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+  "runs": [
+    {
+      "run": {
+        "id": 41424542378,
+        "name": "Geometry integration",
+        "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+        "head_branch": "codex/canvas-validation-20261102",
+        "event": "pull_request",
+        "run_attempt": 1,
+        "status": "queued",
+        "conclusion": null,
+        "created_at": "2026-11-02T09:55:11Z",
+        "updated_at": "2026-11-02T09:55:11Z",
+        "html_url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41424542378",
+        "path": ".github/workflows/integration-tests.yml",
+        "check_suite_id": 112257031729
+      },
+      "jobsTotalCount": 11,
+      "jobs": [
+        {
+          "id": 125207846426,
+          "name": "native (1/3)",
+          "status": "completed",
+          "conclusion": "success",
+          "runner_id": 1000011164,
+          "runner_name": "GitHub Actions 1000011164",
+          "runner_group_name": "GitHub Actions",
+          "started_at": "2026-11-02T09:55:13Z",
+          "completed_at": "2026-11-02T10:10:22Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 3,
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 4,
+              "name": "Build and run assigned non-browser suites",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 5,
+              "name": "Preserve original shard receipts",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 6,
+              "name": "Preserve original suite logs",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 11,
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 12,
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 13,
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 125207846549,
+          "name": "browser (documents)",
+          "status": "completed",
+          "conclusion": "success",
+          "runner_id": 1000011161,
+          "runner_name": "GitHub Actions 1000011161",
+          "runner_group_name": "GitHub Actions",
+          "started_at": "2026-11-02T09:55:18Z",
+          "completed_at": "2026-11-02T09:57:48Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 3,
+              "name": "Build current native executables",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 4,
+              "name": "Install Chinese fonts for visual verification",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 5,
+              "name": "Run actual browser regression group",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 6,
+              "name": "Preserve canvas wait trace",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 7,
+              "name": "Preserve assembly authoring screenshots",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 8,
+              "name": "Preserve grid trial screenshots",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 9,
+              "name": "Preserve document reader screenshots",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 10,
+              "name": "Preserve actual canvas shard raw and source receipts",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 20,
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 21,
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 125207846569,
+          "name": "browser (canvas:extensions)",
+          "status": "in_progress",
+          "conclusion": null,
+          "runner_id": 1000011179,
+          "runner_name": "GitHub Actions 1000011179",
+          "runner_group_name": "GitHub Actions",
+          "started_at": "2026-11-02T10:06:27Z",
+          "completed_at": null,
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 3,
+              "name": "Build current native executables",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 4,
+              "name": "Install Chinese fonts for visual verification",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 5,
+              "name": "Run actual browser regression group",
+              "status": "in_progress",
+              "conclusion": null
+            },
+            {
+              "number": 6,
+              "name": "Preserve canvas wait trace",
+              "status": "pending",
+              "conclusion": null
+            },
+            {
+              "number": 7,
+              "name": "Preserve assembly authoring screenshots",
+              "status": "pending",
+              "conclusion": null
+            },
+            {
+              "number": 8,
+              "name": "Preserve grid trial screenshots",
+              "status": "pending",
+              "conclusion": null
+            },
+            {
+              "number": 9,
+              "name": "Preserve document reader screenshots",
+              "status": "pending",
+              "conclusion": null
+            },
+            {
+              "number": 10,
+              "name": "Preserve actual canvas shard raw and source receipts",
+              "status": "pending",
+              "conclusion": null
+            },
+            {
+              "number": 20,
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "pending",
+              "conclusion": null
+            }
+          ]
+        },
+        {
+          "id": 125207846590,
+          "name": "native (2/3)",
+          "status": "completed",
+          "conclusion": "success",
+          "runner_id": 1000011162,
+          "runner_name": "GitHub Actions 1000011162",
+          "runner_group_name": "GitHub Actions",
+          "started_at": "2026-11-02T09:55:13Z",
+          "completed_at": "2026-11-02T10:07:53Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 3,
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 4,
+              "name": "Build and run assigned non-browser suites",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 5,
+              "name": "Preserve original shard receipts",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 6,
+              "name": "Preserve original suite logs",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 11,
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 12,
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 13,
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 125207846599,
+          "name": "browser (canvas:legacy)",
+          "status": "completed",
+          "conclusion": "success",
+          "runner_id": 1000011176,
+          "runner_name": "GitHub Actions 1000011176",
+          "runner_group_name": "GitHub Actions",
+          "started_at": "2026-11-02T10:00:57Z",
+          "completed_at": "2026-11-02T10:11:13Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 3,
+              "name": "Build current native executables",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 4,
+              "name": "Install Chinese fonts for visual verification",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 5,
+              "name": "Run actual browser regression group",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 6,
+              "name": "Preserve canvas wait trace",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 7,
+              "name": "Preserve assembly authoring screenshots",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 8,
+              "name": "Preserve grid trial screenshots",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 9,
+              "name": "Preserve document reader screenshots",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 10,
+              "name": "Preserve actual canvas shard raw and source receipts",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 20,
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 21,
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 125207846614,
+          "name": "browser (assembly)",
+          "status": "completed",
+          "conclusion": "success",
+          "runner_id": 1000011165,
+          "runner_name": "GitHub Actions 1000011165",
+          "runner_group_name": "GitHub Actions",
+          "started_at": "2026-11-02T09:55:13Z",
+          "completed_at": "2026-11-02T10:00:45Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 3,
+              "name": "Build current native executables",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 4,
+              "name": "Install Chinese fonts for visual verification",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 5,
+              "name": "Run actual browser regression group",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 6,
+              "name": "Preserve canvas wait trace",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 7,
+              "name": "Preserve assembly authoring screenshots",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 8,
+              "name": "Preserve grid trial screenshots",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 9,
+              "name": "Preserve document reader screenshots",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 10,
+              "name": "Preserve actual canvas shard raw and source receipts",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 20,
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 21,
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 125207846650,
+          "name": "browser (grid)",
+          "status": "completed",
+          "conclusion": "success",
+          "runner_id": 1000011170,
+          "runner_name": "GitHub Actions 1000011170",
+          "runner_group_name": "GitHub Actions",
+          "started_at": "2026-11-02T09:57:50Z",
+          "completed_at": "2026-11-02T10:06:25Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 3,
+              "name": "Build current native executables",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 4,
+              "name": "Install Chinese fonts for visual verification",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 5,
+              "name": "Run actual browser regression group",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 6,
+              "name": "Preserve canvas wait trace",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 7,
+              "name": "Preserve assembly authoring screenshots",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 8,
+              "name": "Preserve grid trial screenshots",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 9,
+              "name": "Preserve document reader screenshots",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 10,
+              "name": "Preserve actual canvas shard raw and source receipts",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "number": 20,
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 21,
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 125207846678,
+          "name": "native (3/3)",
+          "status": "completed",
+          "conclusion": "success",
+          "runner_id": 1000011163,
+          "runner_name": "GitHub Actions 1000011163",
+          "runner_group_name": "GitHub Actions",
+          "started_at": "2026-11-02T09:55:14Z",
+          "completed_at": "2026-11-02T10:12:23Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 3,
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 4,
+              "name": "Build and run assigned non-browser suites",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 5,
+              "name": "Preserve original shard receipts",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 6,
+              "name": "Preserve original suite logs",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 11,
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 12,
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 13,
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 125207846764,
+          "name": "browser (space)",
+          "status": "in_progress",
+          "conclusion": null,
+          "runner_id": 1000011184,
+          "runner_name": "GitHub Actions 1000011184",
+          "runner_group_name": "GitHub Actions",
+          "started_at": "2026-11-02T10:11:15Z",
+          "completed_at": null,
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 3,
+              "name": "Build current native executables",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 4,
+              "name": "Install Chinese fonts for visual verification",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 5,
+              "name": "Run actual browser regression group",
+              "status": "in_progress",
+              "conclusion": null
+            },
+            {
+              "number": 6,
+              "name": "Preserve canvas wait trace",
+              "status": "pending",
+              "conclusion": null
+            },
+            {
+              "number": 7,
+              "name": "Preserve assembly authoring screenshots",
+              "status": "pending",
+              "conclusion": null
+            },
+            {
+              "number": 8,
+              "name": "Preserve grid trial screenshots",
+              "status": "pending",
+              "conclusion": null
+            },
+            {
+              "number": 9,
+              "name": "Preserve document reader screenshots",
+              "status": "pending",
+              "conclusion": null
+            },
+            {
+              "number": 10,
+              "name": "Preserve actual canvas shard raw and source receipts",
+              "status": "pending",
+              "conclusion": null
+            },
+            {
+              "number": 20,
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "pending",
+              "conclusion": null
+            }
+          ]
+        },
+        {
+          "id": 125207846855,
+          "name": "browser (timber)",
+          "status": "queued",
+          "conclusion": null,
+          "runner_id": null,
+          "runner_name": null,
+          "runner_group_name": null,
+          "started_at": "2026-11-02T09:55:11Z",
+          "completed_at": null,
+          "steps": []
+        },
+        {
+          "id": 125215581921,
+          "name": "native complete coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "runner_id": 1000011185,
+          "runner_name": "GitHub Actions 1000011185",
+          "runner_group_name": "GitHub Actions",
+          "started_at": "2026-11-02T10:12:25Z",
+          "completed_at": "2026-11-02T10:13:34Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 3,
+              "name": "Prove real coverage test kills a removed suite",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 4,
+              "name": "Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 5,
+              "name": "Verify complete disjoint actual execution",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 6,
+              "name": "Preserve coverage and mutation proof",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 12,
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "number": 13,
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ],
+      "artifactsTotalCount": 12,
+      "artifacts": [
+        {
+          "id": 13132397128,
+          "name": "native-shard-1",
+          "size_in_bytes": 4284,
+          "digest": "sha256:17e77bac687dde18385f09740eb85358e3bfd2f06dfb2f7f54f2534d2ee12c0f",
+          "expired": false,
+          "created_at": "2026-11-02T10:10:19Z",
+          "updated_at": "2026-11-02T10:10:19Z",
+          "expires_at": "2026-11-16T10:10:19Z",
+          "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13132397128/zip",
+          "workflow_run": {
+            "id": 41424542378,
+            "repository_id": 1375165580,
+            "head_repository_id": 1375165580,
+            "head_branch": "codex/canvas-validation-20261102",
+            "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+          }
+        },
+        {
+          "id": 13132167678,
+          "name": "canvas-wait-trace-legacy",
+          "size_in_bytes": 405,
+          "digest": "sha256:b73585ee3844e813f66df0482ce62596d8765d93fb32c296778392ec981952f6",
+          "expired": false,
+          "created_at": "2026-11-02T10:11:10Z",
+          "updated_at": "2026-11-02T10:11:10Z",
+          "expires_at": "2026-11-09T10:11:10Z",
+          "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13132167678/zip",
+          "workflow_run": {
+            "id": 41424542378,
+            "repository_id": 1375165580,
+            "head_repository_id": 1375165580,
+            "head_branch": "codex/canvas-validation-20261102",
+            "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+          }
+        },
+        {
+          "id": 13132043656,
+          "name": "canvas-shard-legacy",
+          "size_in_bytes": 54544,
+          "digest": "sha256:7d2e5de0b82abaffa97eb9d8bf0a3a3c17b292cf76df3ffed0be9bc01fed0253",
+          "expired": false,
+          "created_at": "2026-11-02T10:11:11Z",
+          "updated_at": "2026-11-02T10:11:11Z",
+          "expires_at": "2026-11-16T10:11:11Z",
+          "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13132043656/zip",
+          "workflow_run": {
+            "id": 41424542378,
+            "repository_id": 1375165580,
+            "head_repository_id": 1375165580,
+            "head_branch": "codex/canvas-validation-20261102",
+            "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+          }
+        },
+        {
+          "id": 13131749015,
+          "name": "native-logs-1",
+          "size_in_bytes": 59135,
+          "digest": "sha256:c3961c8b876a8778dbca97d2e8f90292da2eb76a189e15adf90343cf2a3e2596",
+          "expired": false,
+          "created_at": "2026-11-02T10:10:20Z",
+          "updated_at": "2026-11-02T10:10:20Z",
+          "expires_at": "2026-11-16T10:10:20Z",
+          "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131749015/zip",
+          "workflow_run": {
+            "id": 41424542378,
+            "repository_id": 1375165580,
+            "head_repository_id": 1375165580,
+            "head_branch": "codex/canvas-validation-20261102",
+            "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+          }
+        },
+        {
+          "id": 13131554190,
+          "name": "native-complete-coverage",
+          "size_in_bytes": 2872,
+          "digest": "sha256:a0568027871dd618ea95ab11701823ffe5356e26f4bcd1024f6be80cd33457b6",
+          "expired": false,
+          "created_at": "2026-11-02T10:13:32Z",
+          "updated_at": "2026-11-02T10:13:32Z",
+          "expires_at": "2026-11-16T10:13:31Z",
+          "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131554190/zip",
+          "workflow_run": {
+            "id": 41424542378,
+            "repository_id": 1375165580,
+            "head_repository_id": 1375165580,
+            "head_branch": "codex/canvas-validation-20261102",
+            "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+          }
+        },
+        {
+          "id": 13131483886,
+          "name": "native-shard-3",
+          "size_in_bytes": 4279,
+          "digest": "sha256:84f794261445cec266539c0e8b75219f78d746c8bcc49d26367d88250cb2ec3b",
+          "expired": false,
+          "created_at": "2026-11-02T10:12:18Z",
+          "updated_at": "2026-11-02T10:12:18Z",
+          "expires_at": "2026-11-16T10:12:17Z",
+          "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131483886/zip",
+          "workflow_run": {
+            "id": 41424542378,
+            "repository_id": 1375165580,
+            "head_repository_id": 1375165580,
+            "head_branch": "codex/canvas-validation-20261102",
+            "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+          }
+        },
+        {
+          "id": 13131298075,
+          "name": "assembly-review-screens",
+          "size_in_bytes": 523154,
+          "digest": "sha256:f42376de00a2e07dc1ae031042d8ce0b75cc2e7e5311a13359a4e91673fbf926",
+          "expired": false,
+          "created_at": "2026-11-02T10:00:43Z",
+          "updated_at": "2026-11-02T10:00:43Z",
+          "expires_at": "2026-11-09T10:00:42Z",
+          "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131298075/zip",
+          "workflow_run": {
+            "id": 41424542378,
+            "repository_id": 1375165580,
+            "head_repository_id": 1375165580,
+            "head_branch": "codex/canvas-validation-20261102",
+            "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+          }
+        },
+        {
+          "id": 13131129743,
+          "name": "grid-trial-screens-grid",
+          "size_in_bytes": 253870,
+          "digest": "sha256:5e8aa9463530a5ec1e9aa6b8eb0d38e1fa9ee633f2fb1c811a8db8d9eb63ef24",
+          "expired": false,
+          "created_at": "2026-11-02T10:06:22Z",
+          "updated_at": "2026-11-02T10:06:22Z",
+          "expires_at": "2026-11-09T10:06:21Z",
+          "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131129743/zip",
+          "workflow_run": {
+            "id": 41424542378,
+            "repository_id": 1375165580,
+            "head_repository_id": 1375165580,
+            "head_branch": "codex/canvas-validation-20261102",
+            "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+          }
+        },
+        {
+          "id": 13131074047,
+          "name": "native-shard-2",
+          "size_in_bytes": 4314,
+          "digest": "sha256:d1f03577019c68415a38944902c9094f774ff019f22a039c29ad8eb502a65fcd",
+          "expired": false,
+          "created_at": "2026-11-02T10:07:48Z",
+          "updated_at": "2026-11-02T10:07:48Z",
+          "expires_at": "2026-11-16T10:07:47Z",
+          "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131074047/zip",
+          "workflow_run": {
+            "id": 41424542378,
+            "repository_id": 1375165580,
+            "head_repository_id": 1375165580,
+            "head_branch": "codex/canvas-validation-20261102",
+            "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+          }
+        },
+        {
+          "id": 13131049916,
+          "name": "native-logs-3",
+          "size_in_bytes": 100181,
+          "digest": "sha256:f1acaf0d993b49939d2072fe59f114175c656cd2053d7b6969688d323c9c691c",
+          "expired": false,
+          "created_at": "2026-11-02T10:12:20Z",
+          "updated_at": "2026-11-02T10:12:20Z",
+          "expires_at": "2026-11-16T10:12:18Z",
+          "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131049916/zip",
+          "workflow_run": {
+            "id": 41424542378,
+            "repository_id": 1375165580,
+            "head_repository_id": 1375165580,
+            "head_branch": "codex/canvas-validation-20261102",
+            "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+          }
+        },
+        {
+          "id": 13130964353,
+          "name": "native-logs-2",
+          "size_in_bytes": 69935,
+          "digest": "sha256:19b4aca61f836a2151c0c88a22fc93539bdb68047434fafd7bec50844ce5ff35",
+          "expired": false,
+          "created_at": "2026-11-02T10:07:50Z",
+          "updated_at": "2026-11-02T10:07:50Z",
+          "expires_at": "2026-11-16T10:07:49Z",
+          "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13130964353/zip",
+          "workflow_run": {
+            "id": 41424542378,
+            "repository_id": 1375165580,
+            "head_repository_id": 1375165580,
+            "head_branch": "codex/canvas-validation-20261102",
+            "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+          }
+        },
+        {
+          "id": 13130962764,
+          "name": "document-reader-screens",
+          "size_in_bytes": 727825,
+          "digest": "sha256:937668eae5bab47d261fdf11d612056642e9793b8d66be8d2db6b7a97a92027c",
+          "expired": false,
+          "created_at": "2026-11-02T09:57:47Z",
+          "updated_at": "2026-11-02T09:57:47Z",
+          "expires_at": "2026-11-09T09:57:46Z",
+          "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13130962764/zip",
+          "workflow_run": {
+            "id": 41424542378,
+            "repository_id": 1375165580,
+            "head_repository_id": 1375165580,
+            "head_branch": "codex/canvas-validation-20261102",
+            "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+          }
+        }
+      ]
+    }
+  ]
+}

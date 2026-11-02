@@ -1,0 +1,49 @@
+[
+  {
+    "name": "node-pure",
+    "argv": [
+      "node",
+      "--test",
+      "tests/test_canvas_shards.js"
+    ],
+    "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+    "exit": 0,
+    "seconds": 0.20418592501664534
+  },
+  {
+    "name": "python-pure",
+    "argv": [
+      "python3",
+      "-B",
+      "tests/test_canvas_evidence.py"
+    ],
+    "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+    "exit": 0,
+    "seconds": 0.12042339099571109
+  },
+  {
+    "name": "mutation-freshness",
+    "argv": [
+      "python3",
+      "-B",
+      "tests/mutate.py",
+      "--check"
+    ],
+    "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+    "exit": 0,
+    "seconds": 6.035925691016018
+  },
+  {
+    "name": "native-coverage-control",
+    "argv": [
+      "python3",
+      "-B",
+      "tests/native_sharding_mutation_check.py",
+      "--output",
+      "/tmp/geometry-resume-20261102/canvas-sharding/candidate-adoption/native-coverage-control"
+    ],
+    "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+    "exit": 0,
+    "seconds": 0.5292801579926163
+  }
+]

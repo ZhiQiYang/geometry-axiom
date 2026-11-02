@@ -1,0 +1,169 @@
+{
+  "schema": "geometry-canvas-harness-control-execution-plan/1",
+  "status": "PREPARED_NOT_EXECUTED",
+  "mode": "LOCAL_PREPARATION_ONLY",
+  "tests_executed": 0,
+  "chrome_started": false,
+  "server_started": false,
+  "builds_executed": 0,
+  "pushed": false,
+  "D": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+  "M": "aec3ea1bdcf46f2416dfa7cb79d28221673c315a",
+  "root_exclusive_window": {
+    "active_reference_start_utc": "2026-11-02T10:01:47Z",
+    "active_reference_deadline_utc": "2026-11-02T10:36:47Z",
+    "may_start_now": false,
+    "release_condition": "Root must first collect the active full terminal and explicitly assign the controls. Elapsed time alone is not permission."
+  },
+  "preconditions": [
+    "No test/browser/server/native/model process starts during this preparation.",
+    "Sparse M contains only cdp_test.js and is not runnable. After explicit assignment, materialize the original required runtime/source/fixture closure into isolated clean phase checkouts without broad historical archives.",
+    "Before each phase verify actual clean D/M/D HEAD, original tool hashes/golden, original runtime fresh:true with actual phase source identity, full fixture presence, unique output leaf absent, isolated writable output parents and profile.",
+    "Use the same Node/Chrome/runtime/environment as the released reference, capturing actual versions and source identity. Never reuse RootD server/profile/output or its in-flight evidence.",
+    "Every phase has a private TMPDIR and feedback/profile/runtime/screenshot outputs. Create path.join(require(\"node:os\").tmpdir(),\"geometry-tests\") with the original workflow mkdir and preserve && nonzero failure propagation. Feedback must be an absolute dedicated descendant of actual Node os.tmpdir().",
+    "Run strictly serial F/M/F, fresh phase-owned services/profiles/output each time; preserve raw REQUEST/RESULT/stdout/stderr/manifest/plan/runtime and outer process/timeout status. Stop and report unexpected failures; never repair a result by filtering assertions."
+  ],
+  "environment": {
+    "unset_exact_original_flags": [
+      "GEOMETRY_ROOM_OUTLINE_ONLY",
+      "GEOMETRY_TIMBER_SCHEDULE_ONLY",
+      "GEOMETRY_ASSEMBLY_ONLY",
+      "GEOMETRY_PARAMETERS_ONLY",
+      "GEOMETRY_SELECTION_CURSOR_ONLY",
+      "GEOMETRY_UX_REFINEMENT_ONLY",
+      "GEOMETRY_UIUX_FIX_ONLY",
+      "GEOMETRY_MARQUEE_ONLY",
+      "GEOMETRY_PROJECT_AUDIT_ONLY",
+      "GEOMETRY_ENGINEERING_WORKFLOW_ONLY",
+      "GEOMETRY_GRID_SYSTEM_ONLY",
+      "GEOMETRY_INFINITE_FACE_ONLY",
+      "GEOMETRY_COMPOSITION_ONLY",
+      "GEOMETRY_UI_REVIEW_ONLY",
+      "GEOMETRY_REPAIR_ONLY",
+      "GEOMETRY_FLOW_REPAIR_ONLY",
+      "GEOMETRY_REFERENCE_ONLY",
+      "GEOMETRY_CDP_FROM_P31",
+      "GEOMETRY_ENGINEERING_EXAMPLE_ONLY",
+      "GEOMETRY_ENGINEERING_NAVIGATION_ONLY",
+      "GEOMETRY_ENGINEERING_SUBGRID_ONLY",
+      "GEOMETRY_CDP_UPDATE_GOLDEN"
+    ],
+    "GEOMETRY_CDP_SHARD": "legacy is set by original supervisor; no other selectors/modifiers",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:<private phase port>/",
+    "GEOMETRY_FEEDBACK_DIR": "absolute private descendant of actual Node os.tmpdir()",
+    "GEOMETRY_CHROME_PROFILE": "fresh phase-owned directory",
+    "identity": "GITHUB_RUN_ID=0 and attempt1 explicitly designate local evidence, never a GitHub Actions run; actual execution_sha/head_sha are D/M/D, never mixed or rewritten"
+  },
+  "phases": [
+    {
+      "id": "fixed-before",
+      "actual_checkout_head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "EXPECTED_EXECUTION_SHA": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "PR_HEAD_SHA": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "GITHUB_RUN_ID": "0",
+      "GITHUB_RUN_ATTEMPT": "1",
+      "scope": "legacy",
+      "timeout_seconds": 2100,
+      "command": [
+        "python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "run",
+        "--shard",
+        "legacy",
+        "--out",
+        "<fresh dedicated absolute fixed-before output path>"
+      ],
+      "expected": "exit 0; verified manifest; 898 assertions and all 62 legacy sections; original golden projection matched"
+    },
+    {
+      "id": "mutant",
+      "actual_checkout_head": "aec3ea1bdcf46f2416dfa7cb79d28221673c315a",
+      "EXPECTED_EXECUTION_SHA": "aec3ea1bdcf46f2416dfa7cb79d28221673c315a",
+      "PR_HEAD_SHA": "aec3ea1bdcf46f2416dfa7cb79d28221673c315a",
+      "GITHUB_RUN_ID": "0",
+      "GITHUB_RUN_ATTEMPT": "1",
+      "scope": "legacy",
+      "timeout_seconds": 2100,
+      "command": [
+        "python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "run",
+        "--shard",
+        "legacy",
+        "--out",
+        "<fresh dedicated absolute mutant output path>"
+      ],
+      "expected": "nonzero with genuine S2 assertion failure; never accept timeout/crash/missing fixture as mutant kill"
+    },
+    {
+      "id": "fixed-restored",
+      "actual_checkout_head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "EXPECTED_EXECUTION_SHA": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "PR_HEAD_SHA": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "GITHUB_RUN_ID": "0",
+      "GITHUB_RUN_ATTEMPT": "1",
+      "scope": "legacy",
+      "timeout_seconds": 2100,
+      "command": [
+        "python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "run",
+        "--shard",
+        "legacy",
+        "--out",
+        "<fresh dedicated absolute fixed-restored output path>"
+      ],
+      "expected": "exit 0; verified manifest; 898 assertions and all 62 legacy sections; original golden projection matched"
+    }
+  ],
+  "deadline_contract": "Each original run uses the existing bounded invocation envelope with 2100 seconds. Do not lengthen deadlines, add retries, use the development count-producer 6300 value, or introduce a new runner. canvas_evidence.py itself has no timeout option; 2100 is enforced by the original outer invocation, preserving raw termination result.",
+  "mutant_acceptance": {
+    "original_assertion_label": "S2 結構:",
+    "raw_journal_required": {
+      "type": "assertion",
+      "label": "S2 結構:",
+      "passed": false
+    },
+    "original_Node_process": "Actual node geometry-web/cdp_test.js exits nonzero. S2 must genuinely run; only its expected assertion/golden-count consequence is acceptable. Preserve all additional diagnostic output.",
+    "original_Python_supervisor": "run writes actual process_exit and verified:false manifest, then raises CANVAS_PROCESS_FAILED on the original nonzero Node exit. It does not reach verify-shard on this path.",
+    "original_Node_trace_verifier": {
+      "command": [
+        "node",
+        "tests/helpers/canvas_shards.js",
+        "verify-shard"
+      ],
+      "stdin": "Original supervisor trace(stdout_bytes) events and the single original CDP_RESULT from this same M execution, wrapped only as {id:\"legacy\",events,result}. Preserve raw bytes separately; never fabricate or edit an event/result.",
+      "required_nonzero_diagnostic": "CANVAS_ASSERTION_FAILED: S2 結構:",
+      "reason": "verifyTrace checks event.passed===true with the exact event label before projection/count drift; run it separately because supervisor correctly rejects the failed Node process first.",
+      "source": "Use M clean checkout and original helper; load its own actual plan, not D or the historical plan.",
+      "limit": "Do this only after the real negative execution is explicitly authorized; no trace/verifier execution now."
+    },
+    "count_consequence": "Mutant has one controlled false journal assertion; failed-check golden count consequences are expected diagnostics, not permission to modify the golden or loosen thresholds."
+  },
+  "restore_acceptance": {
+    "source": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+    "required_legacy_assertions": 898,
+    "required_legacy_sections": 62,
+    "process_exit": 0,
+    "manifest_verified": true,
+    "no_skips": true,
+    "original_golden_unchanged": true,
+    "actual_source_plan": "Recompute with original tool for each real phase; M plan digest differs because cdp source hash differs. Require restored plan/runtime source equal the proper D inputs, not M.",
+    "meaning": "Only completed genuine F/M/F gives local harness control evidence. It is not full two-shard/official GHA acceptance."
+  },
+  "preserved_reds": [
+    "Original full-only count producer CLI 1 remains 1, including retained original four ENOENT errors and NativeShardCoverage failure.",
+    "Earlier original 35-minute full timeout124 remains raw failure.",
+    "First extensions CI 929-pass ENOENT failure remains raw failure."
+  ],
+  "explicit_non_claims": [
+    "No controls executed yet.",
+    "No local run is represented as a GitHub Actions execution.",
+    "No root active full result inferred or read from live unfinished outputs.",
+    "No existing assertion/golden/wait/suite timeout/product behavior changed in D.",
+    "No CompletedCensus conditional review changed to PASS."
+  ]
+}

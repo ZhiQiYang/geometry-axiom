@@ -1,0 +1,13 @@
+diff --git a/geometry-web/cdp_test.js b/geometry-web/cdp_test.js
+index 35540b6cb1eb6d75321b0239ae907aeb9cdce9d5..3b8b6012b27fa6483eed5a1e06ae8bdc5a465a68 100644
+--- a/geometry-web/cdp_test.js
++++ b/geometry-web/cdp_test.js
+@@ -498,7 +498,7 @@ async function main() {
+     zoomInCtl: document.querySelector(".canvas-controls").contains(document.getElementById("btnZoom")),
+     kbd: document.querySelectorAll(".tool-group kbd").length
+   })`);
+-  console.log("S2 結構:", JSON.stringify(s2),explicitVerdict(s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 4 ? "✓" : "✗"));
++  console.log("S2 結構:", JSON.stringify(s2),explicitVerdict(false && s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 4 ? "✓" : "✗"));
+   /* (h) A2 清單樣式:.row-copy > strong + small */
+   await eval_(`renderObjects()`); await sleep(400);
+   const rowCk = await eval_(`(()=>{const r=document.querySelector(".object-row .row-copy strong");

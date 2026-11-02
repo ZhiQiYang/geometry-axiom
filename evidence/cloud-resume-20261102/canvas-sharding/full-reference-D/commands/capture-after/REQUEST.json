@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/dev/shm/geometry-canvas-full-reference-20261102/capture_reference.py",
+    "reference",
+    "after"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "startedUtc": "2026-11-02T10:32:22.041341+00:00",
+  "environment": {
+    "TMPDIR": "/dev/shm/geometry-canvas-full-reference-20261102/tmp",
+    "TMP": null,
+    "TEMP": null,
+    "GEOMETRY_TEST_BRIDGE": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/runtime/bridge",
+    "GEOMETRY_MODEL_BASE": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/runtime/model-base",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18847/",
+    "GEOMETRY_FEEDBACK_DIR": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/feedback",
+    "PYTHONOPTIMIZE": null,
+    "CC": null,
+    "CFLAGS": null
+  }
+}

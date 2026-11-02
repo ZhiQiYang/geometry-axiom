@@ -1,0 +1,570 @@
+{
+  "schema": "geometry-canvas-D-ci-single-observation-plan/1",
+  "createdAt": "2026-11-02T10:20:45.697566+00:00",
+  "status": "SNAPSHOT_NON_TERMINAL_ARTIFACT_BYTES_UNVERIFIED",
+  "metadataAuditExitCode": 0,
+  "problems": [],
+  "observationTime": "2026-11-02T10:16:49.254950+00:00",
+  "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+  "run": {
+    "id": 41424542378,
+    "name": "Geometry integration",
+    "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+    "head_branch": "codex/canvas-validation-20261102",
+    "event": "pull_request",
+    "run_attempt": 1,
+    "status": "queued",
+    "conclusion": null,
+    "created_at": "2026-11-02T09:55:11Z",
+    "updated_at": "2026-11-02T09:55:11Z",
+    "html_url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41424542378",
+    "path": ".github/workflows/integration-tests.yml",
+    "check_suite_id": 112257031729
+  },
+  "sameHeadRunIds": [
+    41424542378
+  ],
+  "actualJobCounts": {
+    "completedSuccess": 8,
+    "inProgress": 2,
+    "queued": 1,
+    "jobsWithRealRunnerAndSteps": 10
+  },
+  "runCollectionStatusCaveat": "run.status=queued is recorded verbatim. Ten jobs already have real runners and actual steps, so collection status is not interpreted as no runner. Individual optional upload steps skipped do not imply skipped product tests.",
+  "jobsPending": [
+    {
+      "id": 125207846569,
+      "name": "browser (canvas:extensions)",
+      "status": "in_progress",
+      "conclusion": null,
+      "runner_id": 1000011179,
+      "runner_name": "GitHub Actions 1000011179",
+      "runner_group_name": "GitHub Actions",
+      "started_at": "2026-11-02T10:06:27Z",
+      "completed_at": null,
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Build current native executables",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Install Chinese fonts for visual verification",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Run actual browser regression group",
+          "status": "in_progress",
+          "conclusion": null
+        },
+        {
+          "number": 6,
+          "name": "Preserve canvas wait trace",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "number": 7,
+          "name": "Preserve assembly authoring screenshots",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "number": 8,
+          "name": "Preserve grid trial screenshots",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "number": 9,
+          "name": "Preserve document reader screenshots",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "number": 10,
+          "name": "Preserve actual canvas shard raw and source receipts",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "number": 20,
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "pending",
+          "conclusion": null
+        }
+      ]
+    },
+    {
+      "id": 125207846764,
+      "name": "browser (space)",
+      "status": "in_progress",
+      "conclusion": null,
+      "runner_id": 1000011184,
+      "runner_name": "GitHub Actions 1000011184",
+      "runner_group_name": "GitHub Actions",
+      "started_at": "2026-11-02T10:11:15Z",
+      "completed_at": null,
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Build current native executables",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Install Chinese fonts for visual verification",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Run actual browser regression group",
+          "status": "in_progress",
+          "conclusion": null
+        },
+        {
+          "number": 6,
+          "name": "Preserve canvas wait trace",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "number": 7,
+          "name": "Preserve assembly authoring screenshots",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "number": 8,
+          "name": "Preserve grid trial screenshots",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "number": 9,
+          "name": "Preserve document reader screenshots",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "number": 10,
+          "name": "Preserve actual canvas shard raw and source receipts",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "number": 20,
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "pending",
+          "conclusion": null
+        }
+      ]
+    },
+    {
+      "id": 125207846855,
+      "name": "browser (timber)",
+      "status": "queued",
+      "conclusion": null,
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_name": null,
+      "started_at": "2026-11-02T09:55:11Z",
+      "completed_at": null,
+      "steps": []
+    }
+  ],
+  "artifactIndex": {
+    "count": 12,
+    "metadataFile": "run-41424542378-artifacts.json",
+    "downloadedArchives": [],
+    "bytesVerified": false
+  },
+  "minimumOfficialArchiveDownloadsAfterPhaseGap": {
+    "available": [
+      {
+        "id": 13132397128,
+        "name": "native-shard-1",
+        "size_in_bytes": 4284,
+        "digest": "sha256:17e77bac687dde18385f09740eb85358e3bfd2f06dfb2f7f54f2534d2ee12c0f",
+        "expired": false,
+        "created_at": "2026-11-02T10:10:19Z",
+        "updated_at": "2026-11-02T10:10:19Z",
+        "expires_at": "2026-11-16T10:10:19Z",
+        "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13132397128/zip",
+        "workflow_run": {
+          "id": 41424542378,
+          "repository_id": 1375165580,
+          "head_repository_id": 1375165580,
+          "head_branch": "codex/canvas-validation-20261102",
+          "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        }
+      },
+      {
+        "id": 13131074047,
+        "name": "native-shard-2",
+        "size_in_bytes": 4314,
+        "digest": "sha256:d1f03577019c68415a38944902c9094f774ff019f22a039c29ad8eb502a65fcd",
+        "expired": false,
+        "created_at": "2026-11-02T10:07:48Z",
+        "updated_at": "2026-11-02T10:07:48Z",
+        "expires_at": "2026-11-16T10:07:47Z",
+        "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131074047/zip",
+        "workflow_run": {
+          "id": 41424542378,
+          "repository_id": 1375165580,
+          "head_repository_id": 1375165580,
+          "head_branch": "codex/canvas-validation-20261102",
+          "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        }
+      },
+      {
+        "id": 13131483886,
+        "name": "native-shard-3",
+        "size_in_bytes": 4279,
+        "digest": "sha256:84f794261445cec266539c0e8b75219f78d746c8bcc49d26367d88250cb2ec3b",
+        "expired": false,
+        "created_at": "2026-11-02T10:12:18Z",
+        "updated_at": "2026-11-02T10:12:18Z",
+        "expires_at": "2026-11-16T10:12:17Z",
+        "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131483886/zip",
+        "workflow_run": {
+          "id": 41424542378,
+          "repository_id": 1375165580,
+          "head_repository_id": 1375165580,
+          "head_branch": "codex/canvas-validation-20261102",
+          "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        }
+      },
+      {
+        "id": 13131749015,
+        "name": "native-logs-1",
+        "size_in_bytes": 59135,
+        "digest": "sha256:c3961c8b876a8778dbca97d2e8f90292da2eb76a189e15adf90343cf2a3e2596",
+        "expired": false,
+        "created_at": "2026-11-02T10:10:20Z",
+        "updated_at": "2026-11-02T10:10:20Z",
+        "expires_at": "2026-11-16T10:10:20Z",
+        "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131749015/zip",
+        "workflow_run": {
+          "id": 41424542378,
+          "repository_id": 1375165580,
+          "head_repository_id": 1375165580,
+          "head_branch": "codex/canvas-validation-20261102",
+          "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        }
+      },
+      {
+        "id": 13130964353,
+        "name": "native-logs-2",
+        "size_in_bytes": 69935,
+        "digest": "sha256:19b4aca61f836a2151c0c88a22fc93539bdb68047434fafd7bec50844ce5ff35",
+        "expired": false,
+        "created_at": "2026-11-02T10:07:50Z",
+        "updated_at": "2026-11-02T10:07:50Z",
+        "expires_at": "2026-11-16T10:07:49Z",
+        "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13130964353/zip",
+        "workflow_run": {
+          "id": 41424542378,
+          "repository_id": 1375165580,
+          "head_repository_id": 1375165580,
+          "head_branch": "codex/canvas-validation-20261102",
+          "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        }
+      },
+      {
+        "id": 13131049916,
+        "name": "native-logs-3",
+        "size_in_bytes": 100181,
+        "digest": "sha256:f1acaf0d993b49939d2072fe59f114175c656cd2053d7b6969688d323c9c691c",
+        "expired": false,
+        "created_at": "2026-11-02T10:12:20Z",
+        "updated_at": "2026-11-02T10:12:20Z",
+        "expires_at": "2026-11-16T10:12:18Z",
+        "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131049916/zip",
+        "workflow_run": {
+          "id": 41424542378,
+          "repository_id": 1375165580,
+          "head_repository_id": 1375165580,
+          "head_branch": "codex/canvas-validation-20261102",
+          "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        }
+      },
+      {
+        "id": 13131554190,
+        "name": "native-complete-coverage",
+        "size_in_bytes": 2872,
+        "digest": "sha256:a0568027871dd618ea95ab11701823ffe5356e26f4bcd1024f6be80cd33457b6",
+        "expired": false,
+        "created_at": "2026-11-02T10:13:32Z",
+        "updated_at": "2026-11-02T10:13:32Z",
+        "expires_at": "2026-11-16T10:13:31Z",
+        "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131554190/zip",
+        "workflow_run": {
+          "id": 41424542378,
+          "repository_id": 1375165580,
+          "head_repository_id": 1375165580,
+          "head_branch": "codex/canvas-validation-20261102",
+          "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        }
+      },
+      {
+        "id": 13132043656,
+        "name": "canvas-shard-legacy",
+        "size_in_bytes": 54544,
+        "digest": "sha256:7d2e5de0b82abaffa97eb9d8bf0a3a3c17b292cf76df3ffed0be9bc01fed0253",
+        "expired": false,
+        "created_at": "2026-11-02T10:11:11Z",
+        "updated_at": "2026-11-02T10:11:11Z",
+        "expires_at": "2026-11-16T10:11:11Z",
+        "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13132043656/zip",
+        "workflow_run": {
+          "id": 41424542378,
+          "repository_id": 1375165580,
+          "head_repository_id": 1375165580,
+          "head_branch": "codex/canvas-validation-20261102",
+          "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        }
+      }
+    ],
+    "availableZipBytes": 299544,
+    "requiredNotYetObserved": [
+      {
+        "expectedName": "canvas-shard-extensions",
+        "status": "NOT_IN_THIS_SNAPSHOT; extension job executing original browser step",
+        "id": null,
+        "size_in_bytes": null,
+        "digest": null
+      }
+    ],
+    "optionalDiagnosticOnly": [
+      {
+        "id": 13132167678,
+        "name": "canvas-wait-trace-legacy",
+        "size_in_bytes": 405,
+        "digest": "sha256:b73585ee3844e813f66df0482ce62596d8765d93fb32c296778392ec981952f6",
+        "expired": false,
+        "created_at": "2026-11-02T10:11:10Z",
+        "updated_at": "2026-11-02T10:11:10Z",
+        "expires_at": "2026-11-09T10:11:10Z",
+        "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13132167678/zip",
+        "workflow_run": {
+          "id": 41424542378,
+          "repository_id": 1375165580,
+          "head_repository_id": 1375165580,
+          "head_branch": "codex/canvas-validation-20261102",
+          "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        }
+      },
+      {
+        "id": 13131298075,
+        "name": "assembly-review-screens",
+        "size_in_bytes": 523154,
+        "digest": "sha256:f42376de00a2e07dc1ae031042d8ce0b75cc2e7e5311a13359a4e91673fbf926",
+        "expired": false,
+        "created_at": "2026-11-02T10:00:43Z",
+        "updated_at": "2026-11-02T10:00:43Z",
+        "expires_at": "2026-11-09T10:00:42Z",
+        "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131298075/zip",
+        "workflow_run": {
+          "id": 41424542378,
+          "repository_id": 1375165580,
+          "head_repository_id": 1375165580,
+          "head_branch": "codex/canvas-validation-20261102",
+          "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        }
+      },
+      {
+        "id": 13131129743,
+        "name": "grid-trial-screens-grid",
+        "size_in_bytes": 253870,
+        "digest": "sha256:5e8aa9463530a5ec1e9aa6b8eb0d38e1fa9ee633f2fb1c811a8db8d9eb63ef24",
+        "expired": false,
+        "created_at": "2026-11-02T10:06:22Z",
+        "updated_at": "2026-11-02T10:06:22Z",
+        "expires_at": "2026-11-09T10:06:21Z",
+        "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13131129743/zip",
+        "workflow_run": {
+          "id": 41424542378,
+          "repository_id": 1375165580,
+          "head_repository_id": 1375165580,
+          "head_branch": "codex/canvas-validation-20261102",
+          "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        }
+      },
+      {
+        "id": 13130962764,
+        "name": "document-reader-screens",
+        "size_in_bytes": 727825,
+        "digest": "sha256:937668eae5bab47d261fdf11d612056642e9793b8d66be8d2db6b7a97a92027c",
+        "expired": false,
+        "created_at": "2026-11-02T09:57:47Z",
+        "updated_at": "2026-11-02T09:57:47Z",
+        "expires_at": "2026-11-09T09:57:46Z",
+        "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13130962764/zip",
+        "workflow_run": {
+          "id": 41424542378,
+          "repository_id": 1375165580,
+          "head_repository_id": 1375165580,
+          "head_branch": "codex/canvas-validation-20261102",
+          "head_sha": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        }
+      }
+    ],
+    "nativeCoverageProofLogAlreadyRetained": {
+      "file": "job-125215581921.log",
+      "apiPath": "/actions/jobs/125215581921/logs",
+      "jobId": 125215581921,
+      "jobName": "native complete coverage",
+      "alreadyObservedStatus": "completed/success",
+      "limitBytes": 262144,
+      "startedAt": "2026-11-02T10:17:57.226419+00:00",
+      "apiStatus": 302,
+      "downloadStatus": 200,
+      "contentLengthHeader": "25994",
+      "exitCode": 0,
+      "bytes": 25994,
+      "sha256": "2fdba1e529933f5b17448b9573d588744bb043d51a5578905ef2a4b47ac000eb",
+      "result": "SMALL_COMPLETED_JOB_LOG_RETAINED",
+      "finishedAt": "2026-11-02T10:17:57.737456+00:00"
+    },
+    "noS1Recollection": "All listed run/artifact metadata binds D. Existing S1 archives/receipts were not fetched, copied, relabeled or reopened."
+  },
+  "sourceIdentity": {
+    "apiPrHead": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+    "actualNativeCoverageJobCheckout": "ea163769f8f570ac06b56906ceb8cdf7dc220a1a",
+    "checkoutRawLogLines": [
+      215,
+      217,
+      218
+    ],
+    "mergeDescription": "Merge D into R06 F4 7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+    "notAssumedForOtherJobs": "Other jobs execution heads remain to be read from their original receipt/log bytes; API head alone is insufficient.",
+    "localFullReference": "Root-reported ongoing original reference on D, intended2100s window10:01:47Z–10:36:47Z; no local process/worktree/raw was read. Its terminal receipt is not yet verified here.",
+    "phaseGapRequiredBinding": "Keep API head D, real CI execution checkout SHA, and local reference D separate. Prove actual immutable source/tree/input closure via the existing verifier. If a tool requires matching head, use its genuine-source path or record refusal; never fake HEAD, rewrite receipt head or relax checks."
+  },
+  "smallLogStatementsNotYetArtifactVerified": {
+    "nativeOriginalVerificationCommand": "python3 -B tests/native_shard_receipts.py --input '/home/runner/work/_temp/native-shards' --parts 3 --output '/home/runner/work/_temp/native-complete.json'",
+    "nativeOriginalNegativeControlCommand": "python3 -B tests/native_sharding_mutation_check.py --output '/home/runner/work/_temp/native-sharding-proof'",
+    "coverageLogLine": 267,
+    "coverage": {
+      "passed": true,
+      "commit_sha": "ea163769f8f570ac06b56906ceb8cdf7dc220a1a",
+      "parts": 3,
+      "suite_count": 235,
+      "executed_suites": 235,
+      "union_equals_full_registry": true,
+      "overlap": [],
+      "counted_tests": 5460,
+      "counted_passed": 5459,
+      "allowed_skips": 1,
+      "shard_suites": {
+        "1": 78,
+        "2": 79,
+        "3": 78
+      },
+      "expected_sha256": "32a43acee9103a483edfe3d0875a36857e5036ef2aef8975de6af52fdede2a86",
+      "timings_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"
+    },
+    "negativeControlLogLine": 231,
+    "negativeControl": {
+      "passed": true,
+      "baseline_mutant_restored_exit": [
+        0,
+        1,
+        0
+      ],
+      "rows": [
+        {
+          "label": "baseline",
+          "exit": 0,
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skips": 0,
+          "failure_ids": [],
+          "assertion_failure": true,
+          "removed": []
+        },
+        {
+          "label": "removed",
+          "exit": 1,
+          "tests": 1,
+          "failures": 1,
+          "errors": 0,
+          "skips": 0,
+          "failure_ids": [
+            "test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once"
+          ],
+          "assertion_failure": true,
+          "removed": [
+            "c:integrity"
+          ]
+        },
+        {
+          "label": "restored",
+          "exit": 0,
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skips": 0,
+          "failure_ids": [],
+          "assertion_failure": true,
+          "removed": []
+        }
+      ]
+    },
+    "meaning": "These are independently parsed actual completed job log statements, not a local rerun or official ZIP verification."
+  },
+  "phaseGapSinglePassOrder": [
+    "After root releases the full-reference phase gap, take one terminal jobs/artifact index for this exact D/run/attempt, recording changed/new artifact IDs and the true remaining job outcomes. No CI rerun or dispatch.",
+    "Download each required official artifact once by exact API artifact ID; preserve original ZIP bytes, compare SHA256 to API digest and size, and retain command/HTTP/exit/hash receipts. Do not re-download S1 or repackage archives.",
+    "Read original receipts/raw for both canvas shards and three native shards; bind API head/event/attempt and each real checkout head/tree/input closure. Establish the real D full-reference relationship before invoking existing aggregators.",
+    "Run only the existing artifact/receipt validators using genuine fixed source; native aggregate original CLI is retained above. Compare regenerated aggregate bytes with official native-complete-coverage and preserve original negative-control proof. No native/ELF/product execution.",
+    "For canvas, use the frozen D existing verify entry/argv and exact current universe including zero keys, original assertions/golden and disjoint complete union. Do not reuse old85-section assumptions or treat green upload steps as canvas coverage. This metadata-only task did not reread active source to invent verifier flags.",
+    "Preserve any missing shard, wrong head/source/golden/scope, overlap, raw/exit mismatch or provenance refusal as a real blocker. If original full reference has not completed, leave that comparison UNRUN."
+  ],
+  "unverified": [
+    "Run and three jobs were nonterminal at the single snapshot; future status is unknown.",
+    "No ZIP bytes, artifact payload JSON/raw, binaries, sidecars or large files were downloaded or hashed.",
+    "Canvas extensions artifact was absent; exact two-shard union/golden/reference and negative-control outcomes were not verified.",
+    "Only one small already-completed native coverage job log was read. Other job logs/test counts and real execution checkouts remain unverified.",
+    "No same-head mutation/evidence run appeared in this snapshot; no new run was requested."
+  ],
+  "actions": {
+    "githubGetRequests": 5,
+    "pollLoops": 0,
+    "chromeBuildTests": [],
+    "branchBasePrBodyChanges": [],
+    "activeLocalSourceAccess": []
+  }
+}

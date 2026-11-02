@@ -1,0 +1,18 @@
+{
+  "utc": "2026-11-02T10:18:31.675616+00:00",
+  "argv": [
+    "python3",
+    "-B",
+    ".github/scripts/canvas_evidence.py",
+    "verify",
+    "--artifacts",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-first-aggregate-negative/official-originals",
+    "--out",
+    "/tmp/geometry-resume-20261102/canvas-sharding/candidate-adoption/old-source-negative/must-not-accept"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "verifierSourceHead": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+  "actualArtifactExecution": "bfeeae21f339b244cb06c1713af0903f99de8eab",
+  "actualArtifactHead": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "scope": "Deliberately mismatched actual old official source vs current candidate; expected rejection, not attributing this candidate to the old GitHub run. No Chrome/native/ELF executed."
+}

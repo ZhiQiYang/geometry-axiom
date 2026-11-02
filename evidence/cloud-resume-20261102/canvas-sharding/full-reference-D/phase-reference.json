@@ -1,0 +1,96 @@
+{
+  "phase": "reference",
+  "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+  "tree": "79ab857da822431b248cfed3d4a4a9f9f552e97c",
+  "source": "/tmp/geometry-canvas-shards-20261102",
+  "phaseRoot": "/dev/shm/geometry-canvas-full-reference-20261102",
+  "environment": {
+    "TMPDIR": "/dev/shm/geometry-canvas-full-reference-20261102/tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GEOMETRY_FEEDBACK_DIR": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/feedback",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18847/",
+    "GEOMETRY_CHROME": "/tmp/google-chrome-local-20261102/opt/google/chrome/google-chrome",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CHROME_PROFILE": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/chrome-profile",
+    "GEOMETRY_CDP_PORT": "9357",
+    "GEOMETRY_TEST_SCREENSHOT": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/screens/phase1-shell.png",
+    "GEOMETRY_GRID_SCREENSHOT_DIR": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/screens/grid",
+    "GEOMETRY_REPAIR_SCREENSHOT_DIR": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/screens/repair",
+    "GEOMETRY_SCHEDULE_SCREENSHOT_DIR": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/screens/schedule",
+    "GEOMETRY_TEST_BRIDGE": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/runtime/bridge",
+    "GEOMETRY_BRIDGE": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/runtime/bridge",
+    "GEOMETRY_MODEL_BASE": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/runtime/model-base",
+    "GEOMETRY_TEST_CORE": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/runtime/core"
+  },
+  "unsetEnvironment": [
+    "GEOMETRY_ROOM_OUTLINE_ONLY",
+    "GEOMETRY_TIMBER_SCHEDULE_ONLY",
+    "GEOMETRY_ASSEMBLY_ONLY",
+    "GEOMETRY_PARAMETERS_ONLY",
+    "GEOMETRY_SELECTION_CURSOR_ONLY",
+    "GEOMETRY_UX_REFINEMENT_ONLY",
+    "GEOMETRY_UIUX_FIX_ONLY",
+    "GEOMETRY_MARQUEE_ONLY",
+    "GEOMETRY_PROJECT_AUDIT_ONLY",
+    "GEOMETRY_ENGINEERING_WORKFLOW_ONLY",
+    "GEOMETRY_GRID_SYSTEM_ONLY",
+    "GEOMETRY_INFINITE_FACE_ONLY",
+    "GEOMETRY_COMPOSITION_ONLY",
+    "GEOMETRY_UI_REVIEW_ONLY",
+    "GEOMETRY_REPAIR_ONLY",
+    "GEOMETRY_FLOW_REPAIR_ONLY",
+    "GEOMETRY_REFERENCE_ONLY",
+    "GEOMETRY_CDP_FROM_P31",
+    "GEOMETRY_ENGINEERING_EXAMPLE_ONLY",
+    "GEOMETRY_ENGINEERING_NAVIGATION_ONLY",
+    "GEOMETRY_ENGINEERING_SUBGRID_ONLY",
+    "GEOMETRY_CDP_UPDATE_GOLDEN",
+    "GEOMETRY_CDP_SHARD"
+  ],
+  "stackBytes": 16777216,
+  "nativeCopies": [
+    {
+      "source": "/tmp/geometry-tests/core",
+      "path": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/runtime/core",
+      "sha256": "25120e07b12dd27b0d34a143bceb646eb6a11dc8a94b35650befa0798b9be870",
+      "bytes": 959496,
+      "mode": 33216
+    },
+    {
+      "source": "/tmp/geometry-tests/core.fingerprint.json",
+      "path": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/runtime/core.fingerprint.json",
+      "sha256": "23aea87bc844698d026ee5a5b0bebd7be68ffaf238979f85275821e63328ca48",
+      "bytes": 22972,
+      "mode": 33152
+    },
+    {
+      "source": "/tmp/geometry-tests/bridge",
+      "path": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/runtime/bridge",
+      "sha256": "403346efb710f804fdeb075f8970c59bdaacdc50e52376f531151396fd383dc8",
+      "bytes": 1190224,
+      "mode": 33216
+    },
+    {
+      "source": "/tmp/geometry-tests/bridge.fingerprint.json",
+      "path": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/runtime/bridge.fingerprint.json",
+      "sha256": "e9018d0b56935be222a7db5227f25a14a84afeab6e9f89bd1be23289c7e9c615",
+      "bytes": 22986,
+      "mode": 33152
+    },
+    {
+      "source": "/tmp/geometry-tests/model-base",
+      "path": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/runtime/model-base",
+      "sha256": "4a143f978105cdfa8f2798e0af20ae7693ab4efda5547d8cfe5ca95d890106d7",
+      "bytes": 1020456,
+      "mode": 33216
+    },
+    {
+      "source": "/tmp/geometry-tests/model-base.fingerprint.json",
+      "path": "/dev/shm/geometry-canvas-full-reference-20261102/tmp/runtime/model-base.fingerprint.json",
+      "sha256": "151f544b267ea005ea1f8838df363718a12daf8c7d98ef5d1a17896056399961",
+      "bytes": 22999,
+      "mode": 33152
+    }
+  ],
+  "scope": "Original complete unsharded reference, original 2100 seconds and original exact golden. No partial or shard flags."
+}

@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "tests/run_all.py",
+    "--build",
+    "--only",
+    "node:tests-js",
+    "--report",
+    "/tmp/geometry-resume-20261102/canvas-sharding/count-producer-recovery/node-aggregate-restored-report.json"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "head": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "workingVariant": "Only original observed expected-after.json from completed full writer; three exact Git assets materialized. No code changes.",
+  "childStackBytes": 16777216,
+  "utc": "2026-11-02T09:42:50.120336+00:00",
+  "scope": "Only rerun the affected original 756-test Node aggregate after environmental fixture restoration; not full native."
+}

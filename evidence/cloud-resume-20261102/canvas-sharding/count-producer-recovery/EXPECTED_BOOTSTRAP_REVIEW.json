@@ -1,0 +1,117 @@
+{
+  "schema": "geometry-expected-bootstrap-bounded-review/1",
+  "reviewedUtc": "2026-11-02T09:30:17.427438+00:00",
+  "status": "CONDITIONALLY VALID as draft metadata only; active producer outcome not reviewed or accepted",
+  "decision": "Under the stated complete-execution premises, exact 235-row bytes actually emitted by the original full-only --update-expected writer may be retained as a reversible draft census despite its honest exit 1. It is not a formal pass. A second unsharded producer run is not required solely to turn the old-expected coverage cycle green; unchanged strict three-shard execution plus exact full-union verification and the original coverage 0/1/0 must subsequently pass on the candidate metadata source.",
+  "sourceScope": {
+    "frozenSourceReviewed": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+    "registryMethod": "Static AST/literal registry declarations plus registered source-file presence; no runner import/execution",
+    "registrySuites": 235,
+    "gitCommittedExpectedRows": 233,
+    "missingExpectedKeys": [
+      "node:canvas_shards",
+      "py:test_canvas_evidence"
+    ],
+    "orphanExpectedKeys": [],
+    "workingExpectedOrActiveAfterRead": false
+  },
+  "writerTrueContract": {
+    "entry": "tests/run_all.py:931-978",
+    "completeOnly": "main rejects --update-expected with --shard, --only, --extra-py or --simulate-missing before execution (1073-1075).",
+    "rejects": [
+      "registry errors/unregistered test files",
+      "any row not ran",
+      "env_problem or crashed/timed-out suite",
+      "failed exit-code-only suite",
+      "counted suite with total 0",
+      "skipped minus original allowed_skips > 0"
+    ],
+    "countedFailureRule": "A counted row's ordinary test-level failure is deliberately not a census blocker. The writer emits each counted suite's observed r.total and each uncounted suite's exit-code-only mode, then explicitly logs the failing suite names.",
+    "exitRule": "The later any_fail expression still includes r.failed/r.crashed. Successful metadata writing does not clear that failure, so the described run retains exit 1.",
+    "documentation": "tests/README.md explicitly says test-level fail may still record discovered counts, while env/crash/timeout/zero-count/nonallowlisted-skip/unregistered cases refuse rewriting.",
+    "skipPrecision": "The question's zero-skip premise is sufficient. Actual original contract allows only its existing precisely named ALLOWED_SKIPS; preserve their raw skip counts, do not add exemptions or relabel them pass."
+  },
+  "circularDependency": {
+    "guard": "NativeShardCoverage.test_partition_covers_actual_suite_registry_once loads old expected, partitions current build_suites into 3, and requires exact Counter equality including one occurrence per expected name.",
+    "ordering": "This counted unittest executes before update_expected is called at the end of the full run. Old expected=233 versus actual registry=235 therefore makes that assertion red before the writer can add the observed two rows.",
+    "whyNotBypass": "Do not remove/mute/xfail the guard, change its expected result, hand-add the two keys, or call the first failure a killed coverage mutant.",
+    "firstCiEvidence": {
+      "run": 41409303344,
+      "nodeCanvasShards": {
+        "observed": 19,
+        "passed": 19,
+        "failed": 0,
+        "skipped": 0
+      },
+      "pythonCanvasEvidence": {
+        "observed": 12,
+        "passed": 12,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittestRunner": {
+        "observed": 12,
+        "passed": 11,
+        "failed": 1,
+        "skipped": 0,
+        "namedFailure": "NativeShardCoverage.test_partition_covers_actual_suite_registry_once"
+      },
+      "coverageJob": "Its original baseline failed with failures=1/errors=0/skips=0 and removed=[]; no valid baseline/mutant/restored proof completed."
+    },
+    "ciCountsAreNotCandidateInput": "19/12 corroborate the missing registry keys but must not be copied into expected by hand. Only the current original full writer's actual completed observed bytes can become this draft."
+  },
+  "preconditionsBeforeDraftCanBeUsed": [
+    "Wait for the active original full-only CLI and supervisor to reach a real terminal result; do not read incomplete after files or infer success from progress.",
+    "Require exact 235-suite registry/universe/rows with every suite once, no unrun, registry/env/crash/timeout/zero-count/exit-code-only failure or new skip; preserve original named allowed skips if present.",
+    "Verify the sole ordinary counted failure and raw failure id is exactly the old-expected set-coverage assertion, with the missing expected set precisely the two registered new suites; any additional failure requires separate review.",
+    "Require the original writer actually returned its update success and wrote a parseable 235-row file. Preserve its original exit 1, stdout/stderr, row report, source before/after and old expected exact bytes/hash.",
+    "Bind the draft to its actual execution source and full raw data. Verify tracked changes are limited to expected metadata and source/head/census-affecting inputs stayed fixed.",
+    "Compare semantic entries: every existing 233 row remains supported by the actual observation; investigate any old-row count/mode/unit difference instead of hiding it. Added rows and values must come from the writer, never from this review or another partial/CI run."
+  ],
+  "mostConservativeReversibleFlow": [
+    "Keep the original 233-row bytes/Git identity, the first failure/timeout and this completed producer's honest exit separately immutable.",
+    "Archive the exact original emitted expected-after bytes as DRAFT, explicitly not acceptance; do not modify assertions, tests, registry, golden, waits, limits or skip policy.",
+    "Make an isolated, reviewable metadata-only candidate using those exact bytes; retain observed execution provenance. If combined with the independently reviewed caller mkdir fix, prove all suite/runner/census-affecting inputs still match.",
+    "On one frozen candidate SHA with one exact expected hash and timing-profile hash, run the three original strict native shard commands without --update-expected, filters or --allow-skip. Require real child/aggregate exits 0 and all original limits.",
+    "Run the unchanged native_sharding_mutation_check.py: baseline 0, drop exactly one actual suite gives the named normal AssertionError/exit 1, restored 0; testsRun=1/errors=0/skips=0 per phase. The proof wrapper itself must exit 0.",
+    "Run unchanged native_shard_receipts.py --parts 3 over all three actual reports: exact disjoint union equals all 235, no missing/duplicate/extra row, same candidate commit/expected/profile hashes, truthful counted and exit-code-only counters, real child exit 0, no failed/env/crashed/unrun/extra skip rows. Preserve its existing report-duration and identity guards.",
+    "Only these later green strict receipts can accept the metadata candidate. If validation fails, leave the candidate unaccepted or restore the exact old metadata from backup; keep both red raw records. No initial exit is retrospectively relabelled."
+  ],
+  "whenAnotherOriginalFullProducerIsRequired": [
+    "The current attempt times out/is interrupted/incomplete, refuses the writer, lacks a row/raw completeness proof, or did not actually produce the 235-row file.",
+    "There is env/crash/unrun/zero-count/uncounted-failure/nonallowlisted-skip/registry corruption, or another failure whose effect on the discovered census cannot be established.",
+    "Census-affecting registry/test/runner inputs change after the observed draft, or the emitted file cannot be authenticated to the actual complete run.",
+    "The desired count data would otherwise need to be assembled from partial runs or hand-written. --shard cannot be used with --update-expected, so fix the blocker and use the original full-only writer again."
+  ],
+  "whyNoAutomaticSecondFullProducer": "Neither update_expected nor README requires a green counted-test verdict before writing a trustworthy complete census; they explicitly allow the opposite while keeping exit 1. Once all 235 were genuinely observed and later original strict shard union/coverage controls validate the exact draft, an extra unsharded count run merely to erase the bootstrap failure is not a stated contract requirement.",
+  "unchangedAcceptance": "This is a data-bootstrap judgment, not a waiver of failed tests, uncounted mutation inventory, native/browser/CI gates, existing per-suite/time/skip rules or formal source identity.",
+  "notClaimed": [
+    "The active producer has finished, satisfied the premises or produced usable bytes.",
+    "Any actual expected candidate has been generated/edited/adopted by this peer.",
+    "The first failed CI, failed coverage baseline or 2100-second timeout was a pass.",
+    "A new formal native/coverage/browser/product acceptance has completed."
+  ],
+  "evidenceSha256": {
+    "gitSource": {
+      "tests/run_all.py": "1107f4a26744f49ab91ee974d78f8fe5b19b64133e43d81d74d21a5b55b0ddb7",
+      "tests/run_all.expected.json": "b71d8444f946231afbf59a5d26f08abf78d6d5f5e38e60dee9d184c0e8dfd469",
+      "tests/test_unittest_runner.py": "7439f59cdf0de001bd7121f6fbf25c7c510bf3209cc1d2b582fa4a4f6ca52f15",
+      "tests/native_sharding_mutation_check.py": "06f200afa059d24855f934299e46579e085c885ebcbc7d198f4db894379ccf48",
+      "tests/native_shard_receipts.py": "9ebb40552272288248d9f40ca6ec01869b2ff747c50eff58ee7eea5812d31948",
+      "tests/README.md": "90fd16cb7cc6d95f2c1b0caf1b5f415a5acbd2e97af3fb4bc48b1303934e529f"
+    },
+    "firstCiLogs": {
+      "125158432884.log": "f9c88cf730ff8d340119118e6b24c1785ca46e2dc1f7868719d13ece3a15e276",
+      "125158433005.log": "9eb7d1872ce8ef3e002fc14d99baf2f76bbc37881161341751420303b58e3ba2",
+      "125164295071.log": "63c47f9dd0ead4eb27b3f210357796b41023a095d59618508d6ce42787504273"
+    }
+  },
+  "boundedReadOnly": {
+    "newAgents": 0,
+    "modelChanged": false,
+    "sourceOrProducerModified": false,
+    "testsExecuted": false,
+    "activeProducerAfterRead": false,
+    "onlyOutputWritten": "/tmp/geometry-resume-20261102/canvas-sharding/count-producer-recovery/EXPECTED_BOOTSTRAP_REVIEW.json"
+  }
+}

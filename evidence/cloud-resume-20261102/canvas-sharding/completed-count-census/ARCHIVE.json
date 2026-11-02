@@ -1,0 +1,17 @@
+{
+  "archive": "ORIGINALS.tar.gz",
+  "sha256": "0e2cb41d095c3035c5c5dc46e5a0d329f974faeed020e9b5544529697db9bc17",
+  "bytes": 1346059,
+  "source": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "actualExit": 1,
+  "actual235Rows": true,
+  "timedOut": false,
+  "elapsedSeconds": 2075.0591543160263,
+  "actualBelowOriginal2100": true,
+  "expectedDataSha256": "32a43acee9103a483edfe3d0875a36857e5036ef2aef8975de6af52fdede2a86",
+  "originalRedRowNames": [
+    "py:test_unittest_runner",
+    "node:tests-js"
+  ],
+  "scope": "Completed original full-only discovery data. Exit1 is retained, not acceptance; four environment failures have a separate original 756-pass retry and candidate must pass strict whole CI."
+}

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/tmp/geometry-canvas-shards-20261102/.github/scripts/canvas_evidence.py", line 226, in <module>
+    verify(args.artifacts.resolve(), args.out.resolve())
+  File "/tmp/geometry-canvas-shards-20261102/.github/scripts/canvas_evidence.py", line 202, in verify
+    shards.append(verify_manifest(receipt, expected, original_plan, folder))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/geometry-canvas-shards-20261102/.github/scripts/canvas_evidence.py", line 162, in verify_manifest
+    require(receipt.get(field) == expected[field], "CANVAS_WRONG_HEAD: " + field)
+  File "/tmp/geometry-canvas-shards-20261102/.github/scripts/canvas_evidence.py", line 21, in require
+    raise ValueError(code)
+ValueError: CANVAS_WRONG_HEAD: execution_sha

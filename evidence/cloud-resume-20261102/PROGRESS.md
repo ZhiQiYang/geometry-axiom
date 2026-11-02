@@ -1,3 +1,17 @@
+# CURRENT 2026-11-02T10:33:17.552702+00:00
+
+#366已合main；#363已核收READY-TO-MERGE；#340、#345原固定來源正式CI全綠，#344三相真0/1/0＋237項獨立複核PASS，均無Codex合main。10:32新觀測main已因本機合#354變成e02057b4c725d6f03ae52c3bc30776bf9442b0cf；#340仍未合，現在先核對新main閉包並一般merge，不能把old綠移標新來源。#339已於03:14合main，340合後序列下一張是#341；#342/#343即使來源祖先已入main，缺的驗收及原R16 2.21665紅仍不能宣告完成。
+
+## #367：D完整基準已實跑，拆片與反證尚待收齊
+
+產品候選D=e5b0bc23b04e872a68b066bd5b51d57e2c104943。原full-reference於10:01:47.502878–10:31:38.930845執行，exit0、2317過/0敗/0skip、86段原golden逐段相同，原P38預期例外1。原2100秒未延長，737來源及3native/sidecar前後一致。原件見[full-reference-D](canvas-sharding/full-reference-D/PHASE_AFTER.json)。
+
+前一輪原full-only數量產生S1完整235列，2075.059秒，**原exit1保留**（4個缺Git fixture案例及舊expected Counter）；不改說通過。3份原Git ZIP補齊後，原Node aggregate獨立756/0/0、exit0。採用的235列expected只新增兩個實測suite的19/12，原233列不變；D的原coverage0/1/0與新suite快測0已完成。真正D官方CI native三片及coverage已綠，原ZIP/hash/聯集仍待核收；原census1不由後續綠覆寫。原件與獨立審查見[completed-count-census](canvas-sharding/completed-count-census/ARCHIVE.json)。
+
+D CI41424542378的execution為ea163769f8f570ac06b56906ceb8cdf7dc220a1a，API head與真execution分開。未把舊S1兩包冒充D；D對舊S1原件真拒絕CANVAS_WRONG_HEAD。舊P76 ENOENT／原35分鐘timeout124均保留。已審本地M=aec3ea1bdcf46f2416dfa7cb79d28221673c315a僅S2加false&&，已釋放獨占給原peer做真F/M/F legacy，**此刻尚未取得三相終態**。
+
+下一步：核收D官方原件與原聚合裁判、完成真UI false反證、更新#367唯一正文矩陣並交審；#340先一般merge新main及受影響驗收，本機合main後推進#341。
+
 # CURRENT 2026-11-02T09:17:28.022248+00:00
 
 #366已合main；#363三阻擋解除／12CI綠／獨立dot可合併，READY-TO-MERGE；#340／#345各20CI綠待審；#344完整F/V/F真0/1/0與20CI全核，正文／prbody已同步交新獨立審查。main最新實讀仍df7eb43af3389ff2afc1a73aaf4e57580ae612fc，340尚未合，依使用者順序不先做339。Codex未merge main。
