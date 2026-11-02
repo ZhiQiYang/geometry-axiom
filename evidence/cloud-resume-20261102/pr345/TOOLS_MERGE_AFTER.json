@@ -1,0 +1,41 @@
+{
+  "head": "577b2e81967b3019352f65df5ffe6dc48eb6202f",
+  "ledgerAfterCheck": {
+    "sha256": "b02f378106bb16d7e392d77bad6f006a20ea5558afb67606368005642da7b295",
+    "bytes": 11347295,
+    "mtimeNs": 1793588054670142287
+  },
+  "ledgerBytesAndMtimeUnchanged": true,
+  "statusCommand": [
+    "git",
+    "status",
+    "--porcelain=v1",
+    "--untracked-files=all"
+  ],
+  "statusExit": 0,
+  "statusStdout": "",
+  "mutationCheckExecutionHead": "577b2e81967b3019352f65df5ffe6dc48eb6202f",
+  "mutationCheckExit": 1,
+  "mutationCheckSeconds": 5.3846944000106305,
+  "defined": 123,
+  "records": 123,
+  "killed": 62,
+  "crashed": 1,
+  "survived": 0,
+  "equivalent": 4,
+  "invalid": 0,
+  "stale": 53,
+  "blocked": 0,
+  "retired": 3,
+  "staleCause": "bridge source/oracle restoration: original judge source changed",
+  "staleReasons": {
+    "judgeSourceChanged": 52,
+    "M110EquivalenceAuditOracleChanged": 1
+  },
+  "newFull123MutationExecution": false,
+  "freshLedgerGeneratedOrAdopted": false,
+  "newRequiredCiCompleted": false,
+  "selected19Rerun": false,
+  "selected19ActualExecutionHead": "c8db6777819c844064aa79baf089ff1ce58d5e5f",
+  "noLedgerExpectedOrFingerprintEdits": true
+}

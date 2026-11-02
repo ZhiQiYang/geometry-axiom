@@ -1,0 +1,189 @@
+{
+  "phase": "after",
+  "runtime": {
+    "/tmp/geometry-tests/core": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/core.fingerprint.json": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/bridge": {
+      "exists": true,
+      "bytes": 1126456,
+      "sha256": "7c21fcfc148d2ce5b8801ceb004898c9977ad9c358815eb684e24b53d5025551",
+      "mode": 33216,
+      "inode": 154135,
+      "device": 34,
+      "mtimeNs": 1793588313889206061
+    },
+    "/tmp/geometry-tests/bridge.fingerprint.json": {
+      "exists": true,
+      "bytes": 22986,
+      "sha256": "6166c6f5d74ca71f5a0fbda594efecb02ee83e697b9745723e07d2291ffa06b8",
+      "mode": 33152,
+      "inode": 154139,
+      "device": 34,
+      "mtimeNs": 1793588314031114741
+    },
+    "/tmp/geometry-tests/pf3-algorithm": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/pf3-algorithm.fingerprint.json": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/integrity": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/integrity.fingerprint.json": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/gdi-contract": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/gdi-contract.fingerprint.json": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/model-base": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/model-base.fingerprint.json": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/engineering-json-test": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/engineering-json-test.fingerprint.json": {
+      "exists": false
+    }
+  },
+  "rowLogs": {
+    "/tmp/geometry-tests/run_all-logs/py_test_rule_case_workbench_http.log": {
+      "exists": true,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 33152,
+      "inode": 154619,
+      "device": 34,
+      "mtimeNs": 1793588341702759741
+    },
+    "/tmp/geometry-tests/run_all-logs/py_test_rule_case_workbench_http.json": {
+      "exists": true,
+      "bytes": 360,
+      "sha256": "9e8b1739f27adf3352f1c05034b311c9aa30e7e90e73406ddf5a5baac26b8a4b",
+      "mode": 33152,
+      "inode": 154616,
+      "device": 34,
+      "mtimeNs": 1793588341678684990
+    },
+    "/tmp/geometry-tests/run_all-logs/py_test_rule_case_workbench_http.unittest.log": {
+      "exists": true,
+      "bytes": 119,
+      "sha256": "5f59346491147a5003a159ca7d84942eefc32e93be4aa8462a56b2229d2de4ce",
+      "mode": 33152,
+      "inode": 154149,
+      "device": 34,
+      "mtimeNs": 1793588341674760144
+    }
+  },
+  "sourceHead": "c8db6777819c844064aa79baf089ff1ce58d5e5f",
+  "protectedSources": {
+    "AGENTS.md": {
+      "exists": true,
+      "bytes": 19140,
+      "sha256": "d3fcb30f0e711a4130f032a2ae8edab70c0cd69897c37ae504cd5f3416d3cbca",
+      "mode": 33152,
+      "inode": 112760,
+      "device": 34,
+      "mtimeNs": 1793587998559336062
+    },
+    "公理層.md": {
+      "exists": true,
+      "bytes": 323066,
+      "sha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7",
+      "mode": 33152,
+      "inode": 138929,
+      "device": 34,
+      "mtimeNs": 1793588000834720612
+    },
+    "決策佇列.md": {
+      "exists": true,
+      "bytes": 244340,
+      "sha256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740",
+      "mode": 33152,
+      "inode": 142641,
+      "device": 34,
+      "mtimeNs": 1793588054674142244
+    },
+    "geometry-guide/公理層-閱讀器.html": {
+      "exists": true,
+      "bytes": 7024570,
+      "sha256": "768be0fe5aa1b4e06a0823492030749a08965dee4a9eeabf89b0cd2ee0e6a342",
+      "mode": 33152,
+      "inode": 114539,
+      "device": 34,
+      "mtimeNs": 1793587998666742984
+    },
+    "tests/binaries.py": {
+      "exists": true,
+      "bytes": 33058,
+      "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651",
+      "mode": 33152,
+      "inode": 116256,
+      "device": 34,
+      "mtimeNs": 1793587998951172634
+    },
+    "tests/run_all.py": {
+      "exists": true,
+      "bytes": 68863,
+      "sha256": "1b7765959ba7afd5af8533ce64f762058d95580280f09090db064a4fceb555ad",
+      "mode": 33152,
+      "inode": 142630,
+      "device": 34,
+      "mtimeNs": 1793588054674142244
+    },
+    "tests/run_all.expected.json": {
+      "exists": true,
+      "bytes": 25286,
+      "sha256": "54e86fa13c93080ed45ec7f81dd474d2fcbefa6d5f30b6c75c35d9954f002ca1",
+      "mode": 33152,
+      "inode": 142629,
+      "device": 34,
+      "mtimeNs": 1793588054674142244
+    },
+    "tests/test_rule_case_workbench_http.py": {
+      "exists": true,
+      "bytes": 24718,
+      "sha256": "82e248c664c2e591cd320037a141bfa4d52924ac2397274ad23af9fb7864b7fc",
+      "mode": 33152,
+      "inode": 138887,
+      "device": 34,
+      "mtimeNs": 1793588000830720653
+    }
+  },
+  "privateBridge": {
+    "name": "bridge",
+    "state": "fresh",
+    "reason": "來源與 binary SHA-256 相符（建於 2026-11-02T02:58:34+00:00）",
+    "path": "/tmp/geometry-resume-20261102/pr345/runtime/bridge"
+  },
+  "privateBridgeIdentity": {
+    "exists": true,
+    "bytes": 1126456,
+    "sha256": "7c21fcfc148d2ce5b8801ceb004898c9977ad9c358815eb684e24b53d5025551",
+    "mode": 33216,
+    "inode": 154701,
+    "device": 34,
+    "mtimeNs": 1793588313889206061
+  },
+  "restoredRowLogs": {
+    "/tmp/geometry-tests/run_all-logs/py_test_rule_case_workbench_http.log": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/run_all-logs/py_test_rule_case_workbench_http.json": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/run_all-logs/py_test_rule_case_workbench_http.unittest.log": {
+      "exists": false
+    }
+  }
+}

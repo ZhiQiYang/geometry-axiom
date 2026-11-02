@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/geometry-resume-20261102/pr345/confirm_tools_after.py", line 28, in <module>
+    assert all('bridge source/oracle restoration' in s and '裁判已變' in s for s in stale)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

@@ -25,7 +25,7 @@ PR head `502a64ff6214dd6060927b7f14643a533536f20d`；base main `5775a9e9e46bca80
 ## #363、#345 與後序
 
 - #363 唯一子代理正在獨立 codex 分支修三個 dot 阻擋；已收齊具名原紅，原生與 Node focused 綠，真 UI 仍在補保存／fresh reopen。尚未宣告 final 或推作者分支；舊 head9367 不冒作新候選通過。
-- #345 本地普通 merge main source `c8db6777819c844064aa79baf089ff1ce58d5e5f`，只餘 poll_interval 原一行及13歷史 evidence；原 selected19 真 19／19、零 fail/skip、exit0。尚未推送／改 base／取得 required CI。
+- #345 已改base main並快轉推新source `577b2e81967b3019352f65df5ffe6dc48eb6202f`：先普通merge main得到c8db，再普通merge#366原工具502。原selected19 execution仍c8db，真19／19、零fail/skip、exit0；source/tests/build closure未因四工具改變。新M的原mutation check真exit1／53bridge stale，原ledger未改，待新Mutation evidence完整123生成及正式integration；不能以partial19冒全綠。同行peer PASS，原命令/raw/identity在pr345，runtime ELF未包含在此小型公開子集。
 - 後序維持 #339→341→342→343→346→347→348；#355 UI15 待同源鏈。#344、canvas 拆片及 R03 按使用者順序，未冒稱已實作。
 
 本輪不 rebase、不 force、不合 main、不改 SSOT／正典閱讀器／決策佇列。重啟後舊 tmpfs 原件已不可讀；本次新原件不假稱為舊私有 R07 的保存或驗證。

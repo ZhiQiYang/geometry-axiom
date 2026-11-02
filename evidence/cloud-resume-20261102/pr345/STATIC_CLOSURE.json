@@ -1,0 +1,179 @@
+{
+  "head": "c8db6777819c844064aa79baf089ff1ce58d5e5f",
+  "parents": [
+    "99646d418bc5e886a92bfdabe33e68780e88fe3b",
+    "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d"
+  ],
+  "main": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+  "originalPrHead": "99646d418bc5e886a92bfdabe33e68780e88fe3b",
+  "sourceTargetBlobUnchangedFromOriginalPr": "dbf5f766f84a536153286a3cfa30b1cf67fde25c",
+  "deltaFromMain": {
+    "evidence/geo345-final-2199cda8/ANALYSIS.json": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "d616bb5d8c2f85ffaa65155a388b071246d7b1ed"
+      }
+    },
+    "evidence/geo345-final-2199cda8/PROGRESS.md": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "9f426a2d674ccfb2791237cea86233fe2fbc0129"
+      }
+    },
+    "evidence/geo345-final-2199cda8/PUBLICATION_INDEX.json": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "780a91445152db7edd5b7dd2307c6b9e501a4145"
+      }
+    },
+    "evidence/geo345-final-2199cda8/raw/ORIGINAL_SIX_PHASES_AND_ANALYSIS.tar.gz": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "bdefff54d19c8815acc6da3df25cf9c5cf58b176"
+      }
+    },
+    "evidence/geo345-final-2199cda8/raw/RAW_INDEX.json": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "f9c1344c4ac6abba6f0c3f47de5d88541434e667"
+      }
+    },
+    "evidence/geo345-final-2199cda8/raw/SUMMARY.json": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "e9bed91049116d5a5ec71decd75d2b05b2a6f87c"
+      }
+    },
+    "evidence/geo345-final-2199cda8/tools/collect_originals.py": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "4fe0e40e7f77541080bc2b950ee6b0a97c68498b"
+      }
+    },
+    "evidence/geo345-final-2199cda8/tools/publish.py": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "acca02c3098c6c18bebbaa28f4231d6e23899525"
+      }
+    },
+    "evidence/issue214-fixture-2199cda8/INDEX.json": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "c23befd5c2d3a5d25795e66a2d804e3409e68523"
+      }
+    },
+    "evidence/issue214-fixture-2199cda8/PROGRESS.md": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "df33f1227a579e31a8d08986344064a230f6eba8"
+      }
+    },
+    "evidence/issue214-fixture-2199cda8/completed-preparation-originals.tar.gz": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "eb6b426dbf232acb8271af905cf1abac1e816117"
+      }
+    },
+    "evidence/issue214-fixture-2199cda8/runtime-materialization/INDEX.json": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "dee84a5a6027e9f4952a18bfc219e0686067e4be"
+      }
+    },
+    "evidence/issue214-fixture-2199cda8/runtime-materialization/runtime-preparation-originals.tar.gz": {
+      "main": null,
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "bee1f747a082144aad428b4fbc7c7556ee8d9ceb"
+      }
+    },
+    "tests/test_rule_case_workbench_http.py": {
+      "main": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "271c4213c8373c3ea4c0ab7c4790a93d799ccfb1"
+      },
+      "head": {
+        "mode": "100644",
+        "type": "blob",
+        "blob": "dbf5f766f84a536153286a3cfa30b1cf67fde25c"
+      }
+    }
+  },
+  "evidenceBytesRetainedByExactGitEntry": [
+    "evidence/geo345-final-2199cda8/ANALYSIS.json",
+    "evidence/geo345-final-2199cda8/PROGRESS.md",
+    "evidence/geo345-final-2199cda8/PUBLICATION_INDEX.json",
+    "evidence/geo345-final-2199cda8/raw/ORIGINAL_SIX_PHASES_AND_ANALYSIS.tar.gz",
+    "evidence/geo345-final-2199cda8/raw/RAW_INDEX.json",
+    "evidence/geo345-final-2199cda8/raw/SUMMARY.json",
+    "evidence/geo345-final-2199cda8/tools/collect_originals.py",
+    "evidence/geo345-final-2199cda8/tools/publish.py",
+    "evidence/issue214-fixture-2199cda8/INDEX.json",
+    "evidence/issue214-fixture-2199cda8/PROGRESS.md",
+    "evidence/issue214-fixture-2199cda8/completed-preparation-originals.tar.gz",
+    "evidence/issue214-fixture-2199cda8/runtime-materialization/INDEX.json",
+    "evidence/issue214-fixture-2199cda8/runtime-materialization/runtime-preparation-originals.tar.gz"
+  ],
+  "treeCounts": {
+    "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d": 38671,
+    "99646d418bc5e886a92bfdabe33e68780e88fe3b": 27075,
+    "c8db6777819c844064aa79baf089ff1ce58d5e5f": 38684
+  },
+  "treeEntryDigests": {
+    "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d": "b0b558cd8bab2c4f210343fb0361215668a58742be7515d144a2ea1ccfb17cd1",
+    "99646d418bc5e886a92bfdabe33e68780e88fe3b": "1baddabf712d3d0201fa4fa2ef48bae9bb8ffe5ae1dbf3918bfafec58631b215",
+    "c8db6777819c844064aa79baf089ff1ce58d5e5f": "11f821ec4df8b320c3940ba9edcab863bfda55a3e0a02d0b61d1dec4ee608f54"
+  },
+  "bridgeSourceInputCount": 195,
+  "bridgeFingerprint": "4dfd8b89342efd1c4ace8f5c5251ea0401f981ab5e79f1e61e7478501ab894ee",
+  "bridgeInputsEqualMainByGitEntry": true,
+  "selected": {
+    "name": "py:test_rule_case_workbench_http",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "/tmp/geometry-pr345-20261102/tests/_unittest_runner.py",
+      "/tmp/geometry-pr345-20261102/tests/test_rule_case_workbench_http.py"
+    ],
+    "needs": [
+      "bridge"
+    ],
+    "timeoutSeconds": 1200,
+    "expected": {
+      "mode": "count",
+      "count": 19,
+      "unit": "test"
+    },
+    "testMethods": 19,
+    "registryErrors": []
+  },
+  "statusPorcelain": "",
+  "testsExecuted": false,
+  "historyReceiptExecutionSha": "2199cda8896b47c7ad2b6c10479e5e0cbdb67c83",
+  "historyReceiptRelabelledAsCurrentExecution": false
+}

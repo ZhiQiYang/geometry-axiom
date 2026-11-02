@@ -1,0 +1,170 @@
+[
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutSha256": "3b069780a1b7d5f35e9fe5a27d67da1d1683e1d341168ac5caebcabd9bfd4c31",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "show",
+      "-s",
+      "--format=%P",
+      "HEAD"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutSha256": "40fbde95d9a2ec9e3c7c592791c232b9f62176883548fa585cdaad14b8185d91",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--name-only",
+      "c8db6777819c844064aa79baf089ff1ce58d5e5f",
+      "577b2e81967b3019352f65df5ffe6dc48eb6202f"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutSha256": "d2e10435a3b5d0c11baee782209ba14e2e03ecb3983bedf399fd52b6f4e2a2f2",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--raw",
+      "--no-abbrev",
+      "c8db6777819c844064aa79baf089ff1ce58d5e5f",
+      "577b2e81967b3019352f65df5ffe6dc48eb6202f"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutSha256": "34f9af69382d6eae6673f00a034be2743b7d6b78ac329b1e696c7f3d52f3dcae",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "ls-tree",
+      "-z",
+      "577b2e81967b3019352f65df5ffe6dc48eb6202f",
+      "--",
+      ".github/scripts/architecture_evidence.py",
+      ".github/scripts/mutation_evidence.py",
+      ".github/workflows/mutation-evidence.yml",
+      "tests/MUTATION-EVIDENCE.md"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutSha256": "a3ac37c52fa66e1e90326e732fcd5ae07852ad546c018f4d73ab00b713709b83",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "ls-tree",
+      "-z",
+      "502a64ff6214dd6060927b7f14643a533536f20d",
+      "--",
+      ".github/scripts/architecture_evidence.py",
+      ".github/scripts/mutation_evidence.py",
+      ".github/workflows/mutation-evidence.yml",
+      "tests/MUTATION-EVIDENCE.md"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutSha256": "a3ac37c52fa66e1e90326e732fcd5ae07852ad546c018f4d73ab00b713709b83",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "ls-tree",
+      "-z",
+      "577b2e81967b3019352f65df5ffe6dc48eb6202f",
+      "--",
+      "AGENTS.md",
+      "公理層.md",
+      "決策佇列.md",
+      "geometry-guide/公理層-閱讀器.html",
+      "tests/binaries.py",
+      "tests/run_all.py",
+      "tests/run_all.expected.json",
+      "tests/test_rule_case_workbench_http.py",
+      "tests/mutate.py",
+      "tests/mutants_results.json"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutSha256": "b9be8b4f754d64d1606fff704f88447426d18dd61f0ddb83d459041d32b1c608",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "ls-tree",
+      "-z",
+      "c8db6777819c844064aa79baf089ff1ce58d5e5f",
+      "--",
+      "AGENTS.md",
+      "公理層.md",
+      "決策佇列.md",
+      "geometry-guide/公理層-閱讀器.html",
+      "tests/binaries.py",
+      "tests/run_all.py",
+      "tests/run_all.expected.json",
+      "tests/test_rule_case_workbench_http.py",
+      "tests/mutate.py",
+      "tests/mutants_results.json"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutSha256": "b9be8b4f754d64d1606fff704f88447426d18dd61f0ddb83d459041d32b1c608",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=all"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "ls-tree",
+      "-z",
+      "577b2e81967b3019352f65df5ffe6dc48eb6202f",
+      "--",
+      "tests/mutants_results.json"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutSha256": "3822eb8f162959fdc5fd84f1b35656fd99caa4718f81cff843e6529e9d6e1b8e",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

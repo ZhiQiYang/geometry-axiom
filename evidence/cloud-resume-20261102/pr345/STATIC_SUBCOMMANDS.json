@@ -1,0 +1,118 @@
+[
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutBytes": 41,
+    "stdoutSha256": "bb73908fcbb0b27ecbb6d641bba0add5e5b55a0a68ccb14f9d2df5a4b812dbe0",
+    "stderrBytes": 0,
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "show",
+      "-s",
+      "--format=%P",
+      "HEAD"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutBytes": 82,
+    "stdoutSha256": "5f82581423bc8ebc74323d1ebec9019562d724bdd06cbfe2acc45c0a4125f9bc",
+    "stderrBytes": 0,
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "ls-tree",
+      "-r",
+      "-z",
+      "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutBytes": 6180556,
+    "stdoutSha256": "c3e3181489918fc48b3b8f9d2b5ad3f6f87fccb99a12beacb7d9765520f1fba9",
+    "stderrBytes": 0,
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "ls-tree",
+      "-r",
+      "-z",
+      "99646d418bc5e886a92bfdabe33e68780e88fe3b"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutBytes": 4357322,
+    "stdoutSha256": "99c5a8f2c1e61bda9c6f03aabc312ecbdb2d83029043d5b47f44f56578137ab1",
+    "stderrBytes": 0,
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "ls-tree",
+      "-r",
+      "-z",
+      "c8db6777819c844064aa79baf089ff1ce58d5e5f"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutBytes": 6181999,
+    "stdoutSha256": "a30f405bbef4a034bacc786687115d323c4e1daf6b51b944a86b4de565f863d5",
+    "stderrBytes": 0,
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+      "c8db6777819c844064aa79baf089ff1ce58d5e5f",
+      "--",
+      "tests/test_rule_case_workbench_http.py"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutBytes": 891,
+    "stdoutSha256": "b9a7f40c922eea6f2372c6bba9f0e8c44b2f64b27bdd7602834abf2ebfd0f1e8",
+    "stderrBytes": 0,
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutBytes": 0,
+    "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderrBytes": 0,
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=all"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "exit": 0,
+    "stdoutBytes": 0,
+    "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderrBytes": 0,
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]
