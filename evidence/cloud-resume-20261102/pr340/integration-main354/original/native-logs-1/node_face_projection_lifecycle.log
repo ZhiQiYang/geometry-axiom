@@ -1,0 +1,22 @@
+✔ old cancel close delivered during-source-read cannot retire the next projection session (6.725533ms)
+✔ old cancel close delivered after-reopen cannot retire the next projection session (1.618078ms)
+✔ old save close delivered during-source-read cannot retire the next projection session (2.337629ms)
+✔ old save close delivered after-reopen cannot retire the next projection session (1.516809ms)
+✔ old clear close delivered during-source-read cannot retire the next projection session (1.543148ms)
+✔ old clear close delivered after-reopen cannot retire the next projection session (1.391055ms)
+✔ cancel discards only the uncommitted projection draft (1.396735ms)
+✔ close-button discards only the uncommitted projection draft (1.171234ms)
+✔ escape discards only the uncommitted projection draft (1.61411ms)
+✔ Escape invalidates an in-flight apply before its delayed close event is delivered (1.62474ms)
+✔ a newer open rejects the previous open source reply (1.462658ms)
+✔ closing the old visible session cannot cancel a newer pending open (1.429696ms)
+✔ a replaced project rejects an old open source reply (1.328577ms)
+✔ a changed source still rejects apply and keeps the saved definition (1.186523ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 94.096708

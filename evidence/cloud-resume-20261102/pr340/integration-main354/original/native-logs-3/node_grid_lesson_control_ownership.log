@@ -1,0 +1,21 @@
+✔ held operation locks grid mutations without borrowing lesson controls or admitting a second operation (7.31079ms)
+✔ K2a M14b replacement requires old/new confirmation and rejects a previously lost identity (1.284216ms)
+✔ K2a M15 two-way comparison follows integer and signed-cell parsing rather than raw spelling (1.857544ms)
+✔ K2a M05 changed input pin blocks preview until an explicitly selected current pin is recorded (10.883359ms)
+✔ K2a M12 a late flush from the retired draft cannot write after another draft owns the editor (2.792161ms)
+✔ same-owner operation failures restore original grid bits and preserve raw input (3.024458ms)
+✔ successful owner replacement cannot carry disabled lesson nodes or unlock the new owner (2.023546ms)
+✔ project save locking is idempotent and restores only its owned controls after the lesson moves (1.275789ms)
+✔ retiring a project-save owner leaves replacement raw and locks unchanged (1.248478ms)
+✔ held confirmation admission waits for the result and connection, then preserves rejected raw (1.9142ms)
+✔ recovered native commit replaces the held owner without locking the shared lesson or releasing new controls (1.699957ms)
+✔ a replacement during held recovery read prevents old reveal or reopen and preserves new raw (1.926363ms)
+✔ orphan restrictions keep raw mutations locked and Discard available without disabling the shared lesson on repeat sync (2.314633ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 118.164777

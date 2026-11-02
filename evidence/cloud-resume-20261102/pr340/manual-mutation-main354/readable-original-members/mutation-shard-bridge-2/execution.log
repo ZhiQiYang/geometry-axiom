@@ -1,0 +1,21 @@
+Cloning into '/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/aca3d2a5f604848b159a0e5cdd3d3f55fcad190f/repo'...
+HEAD is now at aca3d2a5 Merge remote-tracking branch 'origin/main' into codex/kernel-main-convergence-20261102
+M62 KILLED I38：同鍵卡片已重建就跳過未處理引用
+M65 KILLED I38/P129：grid單軸宣告錯誤涵蓋未宣告軸
+M68 KILLED I38/D44/P141：漏列面材試排gap/stagger/threshold參數引用
+M78 KILLED I38/I74 P142-B2：原生擁有者領頭的拒絕只計數、不指名同欄可改綁的引用者
+M80 KILLED I38/P142-S1：網格系統逐欄引用仍歸為無法同候選改綁的原生擁有者
+M82 KILLED P065/P142-S2：同候選曾刪除的欄位即使已重建仍走刪除前快取（整合後逐欄得27非99）
+M100 KILLED I24/#314 MS2：移除隔離重放豁免，舊雙軸場景必須仍能讀回
+M103 KILLED I24/#314 MS5：移除同ParameterRef改卡例外
+M106 KILLED I24/#314 MS8：來源變更不再比較有效值
+M109 KILLED I24/#314 MP2：漏接batch提交前基線，整批新增第二軸必拒絕
+M112 KILLED I24/#314 ordered：換來源整批豁免會錯放450反例
+M115 KILLED I24/#314 ordered：有序事實必須綁定最終來源和值
+M118 KILLED I24/#314 ordered：當下來源值誤讀axis快取，先改卡再保值解除的正例應轉紅
+M121 KILLED I24/#314 ordered：final同參數引用不能遮掉非保值換來源
+M142 KILLED I19/R6/#318 閱讀A：real-rc-plane；撤回須抓到 collinear-rc-subdivision-joined
+M145 KILLED I19/R6/#318 閱讀A：span-partial；撤回須抓到 span-accepts-partial-end
+M148 KILLED I19/R6/#318 閱讀A：revalidate-still-collides；撤回須抓到 partial-does-not-skip-world-collision
+M151 KILLED I19/R6/#318 閱讀A：rc-lining；撤回須抓到 lined-rc-short-run-permitted
+本次 18:殺死 killed 18 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0

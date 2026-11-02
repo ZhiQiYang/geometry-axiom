@@ -1,0 +1,39 @@
+{
+  "schema": "geometry-mutation-ci-shard/1",
+  "head": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+  "shard": "bridge-2",
+  "ids": [
+    "M62",
+    "M65",
+    "M68",
+    "M78",
+    "M80",
+    "M82",
+    "M100",
+    "M103",
+    "M106",
+    "M109",
+    "M112",
+    "M115",
+    "M118",
+    "M121",
+    "M142",
+    "M145",
+    "M148",
+    "M151"
+  ],
+  "run_id": "41430549123",
+  "run_attempt": "1",
+  "platform": "posix",
+  "tool_sha256": "2b23de2a7c7c9b612aeb09aeb987cf317bca89331d0afa25fcf8349e4099bfa0",
+  "supervisor_sha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc",
+  "ledger_sha256": "04061309974c3ad858fcf4b14287455b7c9cd6a8c7c0a4e3551197d9174450a4",
+  "cache_sha256": "cc33614d4a93d963ff3daecebd6725830aa0ab7b608199ab487f0eac2d46f9f1",
+  "execution_log_sha256": "ff7bcc386de49b03310648d8abbac55769a045a099ab561ca0bdd8cd8f587fc4",
+  "negative_cache_probe": {
+    "id": "M62",
+    "expected": "bridge executable artifact changed",
+    "strict_exit": 1
+  },
+  "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+}

@@ -1,0 +1,691 @@
+﻿2026-11-02T10:50:57.2099241Z Current runner version: '2.338.2'
+2026-11-02T10:50:57.2139803Z ##[group]Runner Image Provisioner
+2026-11-02T10:50:57.2141520Z Hosted Compute Agent
+2026-11-02T10:50:57.2142667Z Version: 20261021.618
+2026-11-02T10:50:57.2143706Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-02T10:50:57.2144879Z Build Date: 2026-10-21T00:45:21Z
+2026-11-02T10:50:57.2146366Z Worker ID: {a06cac39-e274-4c0c-8bf0-10e7d8156c68}
+2026-11-02T10:50:57.2147648Z Region: eastus
+2026-11-02T10:50:57.2148662Z Cloud: Azure
+2026-11-02T10:50:57.2149619Z ##[endgroup]
+2026-11-02T10:50:57.2152603Z ##[group]Operating System
+2026-11-02T10:50:57.2153777Z Ubuntu
+2026-11-02T10:50:57.2154631Z 24.04.5
+2026-11-02T10:50:57.2155555Z LTS
+2026-11-02T10:50:57.2156457Z ##[endgroup]
+2026-11-02T10:50:57.2157507Z ##[group]Runner Image
+2026-11-02T10:50:57.2158641Z Image: ubuntu-24.04
+2026-11-02T10:50:57.2159570Z Version: 20261025.353.1
+2026-11-02T10:50:57.2171188Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-02T10:50:57.2184066Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-02T10:50:57.2185775Z ##[endgroup]
+2026-11-02T10:50:57.2187972Z ##[group]GITHUB_TOKEN Permissions
+2026-11-02T10:50:57.2191808Z Contents: read
+2026-11-02T10:50:57.2192956Z Metadata: read
+2026-11-02T10:50:57.2194058Z ##[endgroup]
+2026-11-02T10:50:57.2197753Z Secret source: Actions
+2026-11-02T10:50:57.2199465Z Cache mode: write
+2026-11-02T10:50:57.2201317Z Prepare workflow directory
+2026-11-02T10:50:57.3057947Z Prepare all required actions
+2026-11-02T10:50:57.3142499Z Getting action download info
+2026-11-02T10:50:57.4738831Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-02T10:50:57.6139059Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-02T10:50:57.8480205Z Complete job name: browser (space)
+2026-11-02T10:50:57.9423566Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-02T10:50:57.9424691Z with:
+2026-11-02T10:50:57.9425186Z   persist-credentials: false
+2026-11-02T10:50:57.9425767Z   repository: ZhiQiYang/geometry-axiom
+2026-11-02T10:50:57.9429753Z   token: ***
+2026-11-02T10:50:57.9430235Z   ssh-strict: true
+2026-11-02T10:50:57.9431208Z   ssh-user: git
+2026-11-02T10:50:57.9431687Z   clean: true
+2026-11-02T10:50:57.9432146Z   sparse-checkout-cone-mode: true
+2026-11-02T10:50:57.9432695Z   fetch-depth: 1
+2026-11-02T10:50:57.9433139Z   fetch-tags: false
+2026-11-02T10:50:57.9433595Z   show-progress: true
+2026-11-02T10:50:57.9434062Z   lfs: false
+2026-11-02T10:50:57.9434484Z   submodules: false
+2026-11-02T10:50:57.9434952Z   set-safe-directory: true
+2026-11-02T10:50:57.9435758Z env:
+2026-11-02T10:50:57.9436277Z   GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+2026-11-02T10:50:57.9436999Z   GEOMETRY_FEEDBACK_DIR: /tmp/geometry-integration-feedback
+2026-11-02T10:50:57.9437779Z   GEOMETRY_CHROME: /usr/bin/google-chrome
+2026-11-02T10:50:57.9438402Z   GEOMETRY_CHROME_FLAGS: --no-sandbox
+2026-11-02T10:50:57.9438966Z   GEOMETRY_BROWSER_SUITE: space
+2026-11-02T10:50:57.9439622Z   GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR: /tmp/geometry-grid-screens
+2026-11-02T10:50:57.9440496Z   GEOMETRY_DOCUMENT_SCREENSHOT_DIR: /tmp/geometry-document-screens
+2026-11-02T10:50:57.9441382Z ##[endgroup]
+2026-11-02T10:50:58.2809087Z Syncing repository: ZhiQiYang/geometry-axiom
+2026-11-02T10:50:58.2812914Z ##[group]Getting Git version info
+2026-11-02T10:50:58.2814234Z Working directory is '/home/runner/work/geometry-axiom/geometry-axiom'
+2026-11-02T10:50:58.2815610Z [command]/usr/bin/git version
+2026-11-02T10:50:58.2954189Z git version 2.56.0
+2026-11-02T10:50:58.2992126Z ##[endgroup]
+2026-11-02T10:50:58.3037007Z Temporarily overriding HOME='/home/runner/work/_temp/dd57a3c3-60de-4531-80a6-844ad42e59ad' before making global git config changes
+2026-11-02T10:50:58.3053509Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T10:50:58.3057372Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T10:50:58.3147095Z Deleting the contents of '/home/runner/work/geometry-axiom/geometry-axiom'
+2026-11-02T10:50:58.3157024Z ##[group]Initializing the repository
+2026-11-02T10:50:58.3171165Z [command]/usr/bin/git init /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T10:50:58.3303592Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-02T10:50:58.3306017Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-02T10:50:58.3308367Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-02T10:50:58.3309898Z hint: call:
+2026-11-02T10:50:58.3311385Z hint:
+2026-11-02T10:50:58.3313677Z hint: 	git config --global init.defaultBranch <name>
+2026-11-02T10:50:58.3314971Z hint:
+2026-11-02T10:50:58.3316156Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-02T10:50:58.3317970Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-02T10:50:58.3319270Z hint:
+2026-11-02T10:50:58.3319761Z hint: 	git branch -m <name>
+2026-11-02T10:50:58.3320325Z hint:
+2026-11-02T10:50:58.3321595Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-02T10:50:58.3323803Z Initialized empty Git repository in /home/runner/work/geometry-axiom/geometry-axiom/.git/
+2026-11-02T10:50:58.3337429Z [command]/usr/bin/git remote add origin https://github.com/ZhiQiYang/geometry-axiom
+2026-11-02T10:50:58.4362722Z ##[endgroup]
+2026-11-02T10:50:58.4364565Z ##[group]Disabling automatic garbage collection
+2026-11-02T10:50:58.4368452Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-02T10:50:58.4424871Z ##[endgroup]
+2026-11-02T10:50:58.4427305Z ##[group]Setting up auth
+2026-11-02T10:50:58.4433736Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T10:50:58.4836740Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T10:50:58.5276475Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T10:50:58.5443075Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T10:50:58.5619002Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-02T10:50:58.5676116Z ##[endgroup]
+2026-11-02T10:50:58.5677148Z ##[group]Fetching the repository
+2026-11-02T10:50:58.5691059Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +afa52541ef2bcdd00e184e0f5d0d5e33874610ed:refs/remotes/pull/340/merge
+2026-11-02T10:51:44.5696409Z From https://github.com/ZhiQiYang/geometry-axiom
+2026-11-02T10:51:44.5697926Z  * [new ref]           afa52541ef2bcdd00e184e0f5d0d5e33874610ed -> pull/340/merge
+2026-11-02T10:51:44.5702060Z ##[endgroup]
+2026-11-02T10:51:44.5703430Z ##[group]Determining the checkout info
+2026-11-02T10:51:44.5709578Z ##[endgroup]
+2026-11-02T10:51:44.5718510Z [command]/usr/bin/git sparse-checkout disable
+2026-11-02T10:51:44.5784853Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-02T10:51:44.5840792Z ##[group]Checking out the ref
+2026-11-02T10:51:44.5847312Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/340/merge
+2026-11-02T10:51:46.1642305Z Updating files:  14% (5422/38720)
+2026-11-02T10:51:46.6363783Z Updating files:  15% (5808/38720)
+2026-11-02T10:51:47.0007412Z Updating files:  15% (6088/38720)
+2026-11-02T10:51:47.1667582Z Updating files:  16% (6196/38720)
+2026-11-02T10:51:47.2126564Z Updating files:  17% (6583/38720)
+2026-11-02T10:51:47.2286251Z Updating files:  18% (6970/38720)
+2026-11-02T10:51:47.2475863Z Updating files:  19% (7357/38720)
+2026-11-02T10:51:47.2662987Z Updating files:  20% (7744/38720)
+2026-11-02T10:51:47.3133507Z Updating files:  21% (8132/38720)
+2026-11-02T10:51:47.3541811Z Updating files:  22% (8519/38720)
+2026-11-02T10:51:47.5140068Z Updating files:  23% (8906/38720)
+2026-11-02T10:51:47.6089661Z Updating files:  24% (9293/38720)
+2026-11-02T10:51:47.6362271Z Updating files:  25% (9680/38720)
+2026-11-02T10:51:47.6481299Z Updating files:  25% (9887/38720)
+2026-11-02T10:51:47.6739708Z Updating files:  26% (10068/38720)
+2026-11-02T10:51:47.6995357Z Updating files:  27% (10455/38720)
+2026-11-02T10:51:47.7370182Z Updating files:  28% (10842/38720)
+2026-11-02T10:51:47.9011083Z Updating files:  29% (11229/38720)
+2026-11-02T10:51:47.9192780Z Updating files:  30% (11616/38720)
+2026-11-02T10:51:47.9345661Z Updating files:  31% (12004/38720)
+2026-11-02T10:51:47.9679737Z Updating files:  32% (12391/38720)
+2026-11-02T10:51:47.9887198Z Updating files:  33% (12778/38720)
+2026-11-02T10:51:48.1558874Z Updating files:  34% (13165/38720)
+2026-11-02T10:51:48.6437871Z Updating files:  35% (13552/38720)
+2026-11-02T10:51:48.9721931Z Updating files:  35% (13866/38720)
+2026-11-02T10:51:49.0441225Z Updating files:  36% (13940/38720)
+2026-11-02T10:51:49.2855694Z Updating files:  37% (14327/38720)
+2026-11-02T10:51:49.3127006Z Updating files:  38% (14714/38720)
+2026-11-02T10:51:49.4082366Z Updating files:  39% (15101/38720)
+2026-11-02T10:51:49.4356168Z Updating files:  40% (15488/38720)
+2026-11-02T10:51:49.4601084Z Updating files:  41% (15876/38720)
+2026-11-02T10:51:49.4774655Z Updating files:  42% (16263/38720)
+2026-11-02T10:51:49.6646872Z Updating files:  43% (16650/38720)
+2026-11-02T10:51:49.9857680Z Updating files:  43% (16746/38720)
+2026-11-02T10:51:50.0166033Z Updating files:  44% (17037/38720)
+2026-11-02T10:51:50.1817942Z Updating files:  45% (17424/38720)
+2026-11-02T10:51:50.2585317Z Updating files:  46% (17812/38720)
+2026-11-02T10:51:50.2971370Z Updating files:  47% (18199/38720)
+2026-11-02T10:51:50.3174012Z Updating files:  48% (18586/38720)
+2026-11-02T10:51:50.3696189Z Updating files:  49% (18973/38720)
+2026-11-02T10:51:50.4210498Z Updating files:  50% (19360/38720)
+2026-11-02T10:51:50.5450501Z Updating files:  51% (19748/38720)
+2026-11-02T10:51:50.6226699Z Updating files:  52% (20135/38720)
+2026-11-02T10:51:50.6382772Z Updating files:  53% (20522/38720)
+2026-11-02T10:51:50.7077339Z Updating files:  53% (20576/38720)
+2026-11-02T10:51:50.8036421Z Updating files:  54% (20909/38720)
+2026-11-02T10:51:50.8549360Z Updating files:  55% (21296/38720)
+2026-11-02T10:51:50.9959015Z Updating files:  56% (21684/38720)
+2026-11-02T10:51:51.0421990Z Updating files:  57% (22071/38720)
+2026-11-02T10:51:51.0872048Z Updating files:  58% (22458/38720)
+2026-11-02T10:51:51.1600255Z Updating files:  59% (22845/38720)
+2026-11-02T10:51:51.1781634Z Updating files:  60% (23232/38720)
+2026-11-02T10:51:51.2131897Z Updating files:  61% (23620/38720)
+2026-11-02T10:51:51.2594283Z Updating files:  62% (24007/38720)
+2026-11-02T10:51:51.2987460Z Updating files:  63% (24394/38720)
+2026-11-02T10:51:51.3406899Z Updating files:  64% (24781/38720)
+2026-11-02T10:51:51.4160062Z Updating files:  65% (25168/38720)
+2026-11-02T10:51:51.5120870Z Updating files:  66% (25556/38720)
+2026-11-02T10:51:51.5563793Z Updating files:  67% (25943/38720)
+2026-11-02T10:51:51.6377898Z Updating files:  68% (26330/38720)
+2026-11-02T10:51:51.6501077Z Updating files:  68% (26688/38720)
+2026-11-02T10:51:51.7586763Z Updating files:  69% (26717/38720)
+2026-11-02T10:51:51.8330114Z Updating files:  70% (27104/38720)
+2026-11-02T10:51:51.9112987Z Updating files:  71% (27492/38720)
+2026-11-02T10:51:51.9858314Z Updating files:  72% (27879/38720)
+2026-11-02T10:51:52.0137876Z Updating files:  73% (28266/38720)
+2026-11-02T10:51:52.0684197Z Updating files:  74% (28653/38720)
+2026-11-02T10:51:52.1101309Z Updating files:  75% (29040/38720)
+2026-11-02T10:51:52.1596031Z Updating files:  76% (29428/38720)
+2026-11-02T10:51:52.1909650Z Updating files:  77% (29815/38720)
+2026-11-02T10:51:52.2137732Z Updating files:  78% (30202/38720)
+2026-11-02T10:51:52.2277925Z Updating files:  79% (30589/38720)
+2026-11-02T10:51:52.3294121Z Updating files:  80% (30976/38720)
+2026-11-02T10:51:52.5479781Z Updating files:  81% (31364/38720)
+2026-11-02T10:51:52.5649863Z Updating files:  82% (31751/38720)
+2026-11-02T10:51:52.5933512Z Updating files:  83% (32138/38720)
+2026-11-02T10:51:52.6235663Z Updating files:  84% (32525/38720)
+2026-11-02T10:51:52.6361822Z Updating files:  85% (32912/38720)
+2026-11-02T10:51:52.6685074Z Updating files:  85% (33102/38720)
+2026-11-02T10:51:52.7781006Z Updating files:  86% (33300/38720)
+2026-11-02T10:51:52.8154054Z Updating files:  87% (33687/38720)
+2026-11-02T10:51:52.8943219Z Updating files:  88% (34074/38720)
+2026-11-02T10:51:52.9141275Z Updating files:  89% (34461/38720)
+2026-11-02T10:51:52.9889810Z Updating files:  90% (34848/38720)
+2026-11-02T10:51:53.0313425Z Updating files:  91% (35236/38720)
+2026-11-02T10:51:53.0694271Z Updating files:  92% (35623/38720)
+2026-11-02T10:51:53.1115015Z Updating files:  93% (36010/38720)
+2026-11-02T10:51:53.1455743Z Updating files:  94% (36397/38720)
+2026-11-02T10:51:53.1795947Z Updating files:  95% (36784/38720)
+2026-11-02T10:51:53.2552380Z Updating files:  96% (37172/38720)
+2026-11-02T10:51:53.3795857Z Updating files:  97% (37559/38720)
+2026-11-02T10:51:53.3974385Z Updating files:  98% (37946/38720)
+2026-11-02T10:51:53.4334226Z Updating files:  99% (38333/38720)
+2026-11-02T10:51:53.4335171Z Updating files: 100% (38720/38720)
+2026-11-02T10:51:53.4335951Z Updating files: 100% (38720/38720), done.
+2026-11-02T10:51:53.5290816Z Note: switching to 'refs/remotes/pull/340/merge'.
+2026-11-02T10:51:53.5291669Z 
+2026-11-02T10:51:53.5292126Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-02T10:51:53.5293208Z changes and commit them, and you can discard any commits you make in this
+2026-11-02T10:51:53.5294658Z state without impacting any branches by switching back to a branch.
+2026-11-02T10:51:53.5295341Z 
+2026-11-02T10:51:53.5295765Z If you want to create a new branch to retain commits you create, you may
+2026-11-02T10:51:53.5296780Z do so (now or later) by using -c with the switch command. Example:
+2026-11-02T10:51:53.5297368Z 
+2026-11-02T10:51:53.5297598Z   git switch -c <new-branch-name>
+2026-11-02T10:51:53.5297983Z 
+2026-11-02T10:51:53.5298203Z Or undo this operation with:
+2026-11-02T10:51:53.5298557Z 
+2026-11-02T10:51:53.5298745Z   git switch -
+2026-11-02T10:51:53.5299001Z 
+2026-11-02T10:51:53.5299482Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-02T10:51:53.5299928Z 
+2026-11-02T10:51:53.5300433Z HEAD is now at afa52541 Merge aca3d2a5f604848b159a0e5cdd3d3f55fcad190f into e02057b4c725d6f03ae52c3bc30776bf9442b0cf
+2026-11-02T10:51:53.5845782Z ##[endgroup]
+2026-11-02T10:51:53.5915301Z [command]/usr/bin/git log -1 --format=%H
+2026-11-02T10:51:53.5950725Z afa52541ef2bcdd00e184e0f5d0d5e33874610ed
+2026-11-02T10:51:53.5964584Z ##[group]Removing auth
+2026-11-02T10:51:53.5969049Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T10:51:53.6019576Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T10:51:53.6388007Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T10:51:53.6436727Z http.https://github.com/.extraheader
+2026-11-02T10:51:53.6443152Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-02T10:51:53.7314532Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T10:51:53.7675941Z ##[endgroup]
+2026-11-02T10:51:53.7934896Z ##[group]Run npm run build
+2026-11-02T10:51:53.7935482Z [36;1mnpm run build[0m
+2026-11-02T10:51:53.7960224Z shell: /usr/bin/bash -e {0}
+2026-11-02T10:51:53.7960527Z env:
+2026-11-02T10:51:53.7961237Z   GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+2026-11-02T10:51:53.7961657Z   GEOMETRY_FEEDBACK_DIR: /tmp/geometry-integration-feedback
+2026-11-02T10:51:53.7962066Z   GEOMETRY_CHROME: /usr/bin/google-chrome
+2026-11-02T10:51:53.7962389Z   GEOMETRY_CHROME_FLAGS: --no-sandbox
+2026-11-02T10:51:53.7962693Z   GEOMETRY_BROWSER_SUITE: space
+2026-11-02T10:51:53.7963065Z   GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR: /tmp/geometry-grid-screens
+2026-11-02T10:51:53.7963565Z   GEOMETRY_DOCUMENT_SCREENSHOT_DIR: /tmp/geometry-document-screens
+2026-11-02T10:51:53.7963958Z ##[endgroup]
+2026-11-02T10:51:54.2048311Z 
+2026-11-02T10:51:54.2049304Z > geometry-axiom-dev@0.0.0 build
+2026-11-02T10:51:54.2050072Z > python3 geometry-web/start_local.py --build-only
+2026-11-02T10:51:54.2050527Z 
+2026-11-02T10:52:51.6757716Z   core：建置（找不到 /tmp/geometry-runtime/448ce1528fc03eea5f56/core）…
+2026-11-02T10:52:51.6758798Z   bridge：建置（找不到 /tmp/geometry-runtime/448ce1528fc03eea5f56/bridge）…
+2026-11-02T10:52:51.6759971Z   model-base：建置（找不到 /tmp/geometry-runtime/448ce1528fc03eea5f56/model-base）…
+2026-11-02T10:52:51.6761327Z core: built — 建好 /tmp/geometry-runtime/448ce1528fc03eea5f56/core
+2026-11-02T10:52:51.6762014Z bridge: built — 建好 /tmp/geometry-runtime/448ce1528fc03eea5f56/bridge
+2026-11-02T10:52:51.6762756Z model-base: built — 建好 /tmp/geometry-runtime/448ce1528fc03eea5f56/model-base
+2026-11-02T10:52:51.7713796Z LOCAL_RUNTIME {"root": "/home/runner/work/geometry-axiom/geometry-axiom", "binaryDirectory": "/tmp/geometry-runtime/448ce1528fc03eea5f56", "executables": {"core": "/tmp/geometry-runtime/448ce1528fc03eea5f56/core", "bridge": "/tmp/geometry-runtime/448ce1528fc03eea5f56/bridge", "model-base": "/tmp/geometry-runtime/448ce1528fc03eea5f56/model-base"}, "port": null, "managedPreview": false}
+2026-11-02T10:52:51.7963141Z ##[group]Run sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
+2026-11-02T10:52:51.7964022Z [36;1msudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update[0m
+2026-11-02T10:52:51.7964885Z [36;1msudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk[0m
+2026-11-02T10:52:51.7986592Z shell: /usr/bin/bash -e {0}
+2026-11-02T10:52:51.7986854Z env:
+2026-11-02T10:52:51.7987091Z   GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+2026-11-02T10:52:51.7987489Z   GEOMETRY_FEEDBACK_DIR: /tmp/geometry-integration-feedback
+2026-11-02T10:52:51.7987862Z   GEOMETRY_CHROME: /usr/bin/google-chrome
+2026-11-02T10:52:51.7988157Z   GEOMETRY_CHROME_FLAGS: --no-sandbox
+2026-11-02T10:52:51.7988429Z   GEOMETRY_BROWSER_SUITE: space
+2026-11-02T10:52:51.7988758Z   GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR: /tmp/geometry-grid-screens
+2026-11-02T10:52:51.7989267Z   GEOMETRY_DOCUMENT_SCREENSHOT_DIR: /tmp/geometry-document-screens
+2026-11-02T10:52:51.7989644Z ##[endgroup]
+2026-11-02T10:52:51.8893508Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-11-02T10:52:51.9404208Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-11-02T10:52:51.9424640Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-11-02T10:52:51.9428680Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-11-02T10:52:51.9529021Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-11-02T10:52:51.9572979Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-11-02T10:52:52.1164332Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [617 kB]
+2026-11-02T10:52:52.1329359Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [682 kB]
+2026-11-02T10:52:52.1799373Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1408 kB]
+2026-11-02T10:52:52.1877576Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [311 kB]
+2026-11-02T10:52:52.1912333Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1707 kB]
+2026-11-02T10:52:52.1990534Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [343 kB]
+2026-11-02T10:52:52.2043181Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1813 kB]
+2026-11-02T10:52:52.2111519Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [412 kB]
+2026-11-02T10:52:52.2146059Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse Translation-en [14.3 kB]
+2026-11-02T10:52:52.3425597Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1146 kB]
+2026-11-02T10:52:52.3520015Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+2026-11-02T10:52:52.3551393Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1223 kB]
+2026-11-02T10:52:52.4026409Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [246 kB]
+2026-11-02T10:52:56.0605115Z Fetched 10.5 MB in 1s (8947 kB/s)
+2026-11-02T10:52:57.3403844Z Reading package lists...
+2026-11-02T10:52:57.3844846Z Reading package lists...
+2026-11-02T10:52:57.6763808Z Building dependency tree...
+2026-11-02T10:52:57.6772320Z Reading state information...
+2026-11-02T10:52:57.9938688Z Suggested packages:
+2026-11-02T10:52:57.9939151Z   fonts-noto-cjk-extra
+2026-11-02T10:52:58.0178896Z The following NEW packages will be installed:
+2026-11-02T10:52:58.0192522Z   fonts-noto-cjk
+2026-11-02T10:52:58.0463681Z 0 upgraded, 1 newly installed, 0 to remove and 6 not upgraded.
+2026-11-02T10:52:58.0464426Z Need to get 61.2 MB of archives.
+2026-11-02T10:52:58.0465413Z After this operation, 93.2 MB of additional disk space will be used.
+2026-11-02T10:52:58.0465920Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-11-02T10:52:58.0857640Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-noto-cjk all 1:20230817+repack1-3 [61.2 MB]
+2026-11-02T10:52:58.7621246Z Fetched 61.2 MB in 0s (147 MB/s)
+2026-11-02T10:52:58.7898897Z Selecting previously unselected package fonts-noto-cjk.
+2026-11-02T10:52:58.8233475Z (Reading database ... 
+2026-11-02T10:52:58.8233970Z (Reading database ... 5%
+2026-11-02T10:52:58.8234347Z (Reading database ... 10%
+2026-11-02T10:52:58.8234713Z (Reading database ... 15%
+2026-11-02T10:52:58.8235047Z (Reading database ... 20%
+2026-11-02T10:52:58.8235376Z (Reading database ... 25%
+2026-11-02T10:52:58.8236375Z (Reading database ... 30%
+2026-11-02T10:52:58.8236843Z (Reading database ... 35%
+2026-11-02T10:52:58.8237195Z (Reading database ... 40%
+2026-11-02T10:52:58.8237523Z (Reading database ... 45%
+2026-11-02T10:52:58.8237847Z (Reading database ... 50%
+2026-11-02T10:52:58.8290010Z (Reading database ... 55%
+2026-11-02T10:52:58.9832634Z (Reading database ... 60%
+2026-11-02T10:52:59.1803030Z (Reading database ... 65%
+2026-11-02T10:52:59.3737055Z (Reading database ... 70%
+2026-11-02T10:52:59.5816748Z (Reading database ... 75%
+2026-11-02T10:52:59.6812151Z (Reading database ... 80%
+2026-11-02T10:52:59.7998052Z (Reading database ... 85%
+2026-11-02T10:52:59.8794395Z (Reading database ... 90%
+2026-11-02T10:53:00.0330505Z (Reading database ... 95%
+2026-11-02T10:53:00.0331282Z (Reading database ... 100%
+2026-11-02T10:53:00.0331942Z (Reading database ... 215504 files and directories currently installed.)
+2026-11-02T10:53:00.0391433Z Preparing to unpack .../fonts-noto-cjk_1%3a20230817+repack1-3_all.deb ...
+2026-11-02T10:53:00.0512347Z Unpacking fonts-noto-cjk (1:20230817+repack1-3) ...
+2026-11-02T10:53:00.6938691Z Setting up fonts-noto-cjk (1:20230817+repack1-3) ...
+2026-11-02T10:53:00.7022363Z Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...
+2026-11-02T10:53:01.5154478Z 
+2026-11-02T10:53:01.5155156Z Running kernel seems to be up-to-date.
+2026-11-02T10:53:01.5155503Z 
+2026-11-02T10:53:01.5156033Z No services need to be restarted.
+2026-11-02T10:53:01.5156275Z 
+2026-11-02T10:53:01.5156409Z No containers need to be restarted.
+2026-11-02T10:53:01.5156635Z 
+2026-11-02T10:53:01.5156803Z No user sessions are running outdated binaries.
+2026-11-02T10:53:01.5157101Z 
+2026-11-02T10:53:01.5157365Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-11-02T10:53:02.8986164Z ##[group]Run ulimit -s 16384
+2026-11-02T10:53:02.8986705Z [36;1mulimit -s 16384[0m
+2026-11-02T10:53:02.8986967Z [36;1mtest -x "$GEOMETRY_CHROME"[0m
+2026-11-02T10:53:02.8987245Z [36;1m# WSL canvas wait trace[0m
+2026-11-02T10:53:02.8987543Z [36;1m# Clear inherited flags for all other jobs.[0m
+2026-11-02T10:53:02.8987854Z [36;1munset GEOMETRY_WAIT_TRACE[0m
+2026-11-02T10:53:02.8988130Z [36;1munset GEOMETRY_WAIT_TRACE_RUN_ID[0m
+2026-11-02T10:53:02.8988462Z [36;1mcase "$GEOMETRY_BROWSER_SUITE:$(uname -r)" in[0m
+2026-11-02T10:53:02.8988850Z [36;1m  canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;[0m
+2026-11-02T10:53:02.8989198Z [36;1mesac[0m
+2026-11-02T10:53:02.8989430Z [36;1mif [ "${GEOMETRY_WAIT_TRACE-}" = 1 ]; then[0m
+2026-11-02T10:53:02.8989884Z [36;1m  export GEOMETRY_WAIT_TRACE_RUN_ID="$(python3 geometry-web/prepare_wait_trace.py)"[0m
+2026-11-02T10:53:02.8990316Z [36;1mfi[0m
+2026-11-02T10:53:02.8990532Z [36;1mif [ -n "${GITHUB_ENV-}" ]; then[0m
+2026-11-02T10:53:02.8991395Z [36;1m  printf 'GEOMETRY_WAIT_TRACE=%s\n' "${GEOMETRY_WAIT_TRACE-}" >> "$GITHUB_ENV"[0m
+2026-11-02T10:53:02.8991804Z [36;1mfi[0m
+2026-11-02T10:53:02.8992233Z [36;1mpython3 -u geometry-web/start_local.py --port 18839 > /tmp/geometry-integration-server.log 2>&1 &[0m
+2026-11-02T10:53:02.8992730Z [36;1mserver=$![0m
+2026-11-02T10:53:02.8992943Z [36;1mcleanup() {[0m
+2026-11-02T10:53:02.8993175Z [36;1m  original_status=$?[0m
+2026-11-02T10:53:02.8993426Z [36;1m  set +e[0m
+2026-11-02T10:53:02.8993665Z [36;1m  kill "$server" 2>/dev/null || true[0m
+2026-11-02T10:53:02.8993988Z [36;1m  wait "$server" 2>/dev/null || true[0m
+2026-11-02T10:53:02.8994327Z [36;1m  if [ "$GEOMETRY_BROWSER_SUITE" = canvas ]; then[0m
+2026-11-02T10:53:02.8994833Z [36;1m    python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact[0m
+2026-11-02T10:53:02.8995283Z [36;1m    archive_status=$?[0m
+2026-11-02T10:53:02.8995753Z [36;1m    if [ "$original_status" -eq 0 ] && [ "$archive_status" -ne 0 ]; then original_status=$archive_status; fi[0m
+2026-11-02T10:53:02.8996234Z [36;1m  fi[0m
+2026-11-02T10:53:02.8996440Z [36;1m  exit "$original_status"[0m
+2026-11-02T10:53:02.8996688Z [36;1m}[0m
+2026-11-02T10:53:02.8996892Z [36;1mtrap cleanup EXIT[0m
+2026-11-02T10:53:02.8997146Z [36;1mfor attempt in $(seq 1 30); do[0m
+2026-11-02T10:53:02.8997457Z [36;1m  if ! kill -0 "$server" 2>/dev/null; then[0m
+2026-11-02T10:53:02.8997963Z [36;1m    cat /tmp/geometry-integration-server.log[0m
+2026-11-02T10:53:02.8998350Z [36;1m    exit 1[0m
+2026-11-02T10:53:02.8998553Z [36;1m  fi[0m
+2026-11-02T10:53:02.8998949Z [36;1m  if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi[0m
+2026-11-02T10:53:02.8999410Z [36;1m  sleep 1[0m
+2026-11-02T10:53:02.8999606Z [36;1mdone[0m
+2026-11-02T10:53:02.8999883Z [36;1mpython3 geometry-web/runtime_version.py --probe 18839[0m
+2026-11-02T10:53:02.9000351Z [36;1m# Independent matrix jobs expose each result promptly. They use[0m
+2026-11-02T10:53:02.9001173Z [36;1m# separate runners/servers and do not cancel siblings on failure.[0m
+2026-11-02T10:53:02.9001628Z [36;1m# The full canvas run retains its strict golden comparison.[0m
+2026-11-02T10:53:02.9001967Z [36;1mset +e[0m
+2026-11-02T10:53:02.9002184Z [36;1mcase "$GEOMETRY_BROWSER_SUITE" in[0m
+2026-11-02T10:53:02.9002656Z [36;1m  assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;[0m
+2026-11-02T10:53:02.9003299Z [36;1m  grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;[0m
+2026-11-02T10:53:02.9003790Z [36;1m  canvas) node geometry-web/cdp_test.js ;;[0m
+2026-11-02T10:53:02.9004429Z [36;1m  space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;[0m
+2026-11-02T10:53:02.9005020Z [36;1m  timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;[0m
+2026-11-02T10:53:02.9005816Z [36;1m  documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;[0m
+2026-11-02T10:53:02.9006289Z [36;1m  *) echo "Unknown browser suite"; exit 2 ;;[0m
+2026-11-02T10:53:02.9006575Z [36;1mesac[0m
+2026-11-02T10:53:02.9006768Z [36;1mstatus=$?[0m
+2026-11-02T10:53:02.9007024Z [36;1mcat /tmp/geometry-integration-server.log[0m
+2026-11-02T10:53:02.9007331Z [36;1mexit "$status"[0m
+2026-11-02T10:53:02.9029967Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-02T10:53:02.9030338Z env:
+2026-11-02T10:53:02.9030830Z   GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+2026-11-02T10:53:02.9031232Z   GEOMETRY_FEEDBACK_DIR: /tmp/geometry-integration-feedback
+2026-11-02T10:53:02.9031613Z   GEOMETRY_CHROME: /usr/bin/google-chrome
+2026-11-02T10:53:02.9031908Z   GEOMETRY_CHROME_FLAGS: --no-sandbox
+2026-11-02T10:53:02.9032191Z   GEOMETRY_BROWSER_SUITE: space
+2026-11-02T10:53:02.9032528Z   GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR: /tmp/geometry-grid-screens
+2026-11-02T10:53:02.9032979Z   GEOMETRY_DOCUMENT_SCREENSHOT_DIR: /tmp/geometry-document-screens
+2026-11-02T10:53:02.9033341Z ##[endgroup]
+2026-11-02T10:53:04.5817755Z {"schema": "geometry-runtime/1", "version": "d7e9b1d4f07426cf44a87c54355c71311e4f5048ef5eb632d02d8f18c9ae768e", "fresh": true, "root": "/home/runner/work/geometry-axiom/geometry-axiom", "pid": 2846, "session": "027d25e590fa4fdba628bef083b7da10"}
+2026-11-02T10:53:04.6405982Z SPACE_SCOPE {"mode":"full-space-suite","filters":[],"included":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","projection-close"],"omitted":["timber-material","timber-source-guards"],"url":"http://127.0.0.1:18839/","feedbackDirectory":"/tmp/geometry-integration-feedback"}
+2026-11-02T10:53:04.7329260Z PASS server serves the intended space-model release
+2026-11-02T10:53:04.8662288Z PASS current release explicitly supports timber preview and engineering sources
+2026-11-02T10:53:16.5685847Z PASS close-race during-source-read: explicit clear commits without changing geometry
+2026-11-02T10:53:16.5722278Z PASS close-race during-source-read: delayed notification is browser generated
+2026-11-02T10:53:16.7442642Z PASS close-race during-source-read: requested overlap is reached
+2026-11-02T10:53:16.7680920Z PASS close-race during-source-read: old notification does not cancel the new open
+2026-11-02T10:53:17.7593334Z PASS close-race during-source-read: the new session accepts and saves its own definition
+2026-11-02T10:53:17.7688011Z PASS close-race during-source-read: source World stays byte identical
+2026-11-02T10:53:21.0941557Z PASS close-race after-reopen: explicit clear commits without changing geometry
+2026-11-02T10:53:21.0950447Z PASS close-race after-reopen: delayed notification is browser generated
+2026-11-02T10:53:21.2967832Z PASS close-race after-reopen: requested overlap is reached
+2026-11-02T10:53:21.3004785Z PASS close-race after-reopen: old notification does not cancel the new open
+2026-11-02T10:53:22.4461530Z PASS close-race after-reopen: the new session accepts and saves its own definition
+2026-11-02T10:53:22.4562410Z PASS close-race after-reopen: source World stays byte identical
+2026-11-02T10:53:24.6152232Z PASS close-race ordinary cancel discards the draft
+2026-11-02T10:53:25.7557571Z PASS close-race ordinary escape discards the draft
+2026-11-02T10:53:26.8634526Z PASS a newly drawn face has no inferred projection definition
+2026-11-02T10:53:26.8649473Z PASS own-plan modeling visibly requires a definition before preview or create
+2026-11-02T10:53:26.8662850Z PASS projection definition works without importing a PDF or image
+2026-11-02T10:53:27.9058203Z PASS projection dialog defaults to general purpose without a saved projection or interior role
+2026-11-02T10:53:27.9069580Z PASS projection dialog shows source z and a visible outline container
+2026-11-02T10:53:29.1207417Z PASS cancel leaves the face definition and source geometry unchanged
+2026-11-02T10:53:30.3586896Z PASS explicit bottom-view interior projection records all four semantics
+2026-11-02T10:53:30.3598523Z PASS projection apply preserves previously entered wall bottom and height
+2026-11-02T10:53:30.3610190Z PASS source summary explains bottom view, interior and outward walls
+2026-11-02T10:53:32.4206674Z PASS bottom-view control selects bottom and the camera looks from negative world Z
+2026-11-02T10:53:35.7919661Z PASS changing projection during an in-flight preview rejects its late result and preserves fields
+2026-11-02T10:53:37.9088595Z PASS undo removes the projection definition without changing source geometry
+2026-11-02T10:53:38.5703099Z PASS redo restores the exact explicit projection definition
+2026-11-02T10:53:39.7298021Z PASS general purpose explicitly clears the projection and disables own-plan preview
+2026-11-02T10:53:41.5567846Z PASS deleting and recreating the same face and placement ids does not inherit metadata
+2026-11-02T10:53:42.6728749Z PASS a vertical face cannot be saved as a horizontal boundary plan
+2026-11-02T10:53:43.5996135Z PASS existing-face assembly bypasses only the plan-definition gate
+2026-11-02T10:53:44.1736951Z PASS an undefined vertical face can still be an explicit open-shell member
+2026-11-02T10:53:46.2734290Z PASS supported service opens the guided workspace without a redundant release badge
+2026-11-02T10:53:47.5854165Z PASS rectangle example has actual engine mesh
+2026-11-02T10:53:47.5864815Z PASS rectangle example uses the 3000 mm default height
+2026-11-02T10:53:47.5865733Z PASS rectangle enclosed volume comes from the engine result
+2026-11-02T10:53:47.5877140Z PASS computed volume is displayed in cubic metres
+2026-11-02T10:53:47.5887711Z PASS working wall thickness is 100 mm
+2026-11-02T10:53:47.5898491Z PASS creating requires explicit boundary confirmation
+2026-11-02T10:53:47.5987471Z PASS preview leaves source scene unchanged
+2026-11-02T10:53:47.6495702Z PASS 3D preview visibly renders colored geometry
+2026-11-02T10:53:47.8069632Z PASS roof visibility changes mesh display without changing the definition
+2026-11-02T10:53:48.1082839Z PASS material-wall visibility is independent of the enclosure
+2026-11-02T10:53:48.5535715Z PASS 1280x720 desktop gives the model at least 220px canvas height
+2026-11-02T10:53:48.5536766Z PASS compact desktop renders a useful model footprint
+2026-11-02T10:53:48.9626997Z PASS mobile setup genuinely hides the preview canvas
+2026-11-02T10:53:49.2330290Z PASS fit after a hidden tab restores a visible model instead of a tiny speck
+2026-11-02T10:53:49.5165072Z PASS returning from mobile preserves the compact desktop fit
+2026-11-02T10:53:50.1006254Z PASS pointer drag rotates the actual model
+2026-11-02T10:53:50.2287561Z PASS focused model supports keyboard rotation
+2026-11-02T10:53:50.3575005Z PASS focused model supports keyboard zoom
+2026-11-02T10:53:50.5072319Z PASS Shift dragging pans without rotating the model
+2026-11-02T10:53:51.1537952Z PASS rectangle commits a stored model
+2026-11-02T10:53:51.1558511Z PASS ready-to-use examples carry their explicit plan definition without configuring the user scene
+2026-11-02T10:53:51.1641286Z PASS creating a model preserves original source scene
+2026-11-02T10:53:51.1657608Z PASS model-only project is marked unsaved
+2026-11-02T10:53:51.1672268Z PASS model-only unsaved project requests leave confirmation
+2026-11-02T10:53:51.4209100Z PASS ISSUE159 1400px library retains the original Undo, Redo and native Save nodes
+2026-11-02T10:53:51.4234906Z PASS ISSUE159 1400px library history controls have 44px real hit targets without overflow
+2026-11-02T10:53:51.6034169Z PASS ISSUE159 1400px real library removal is one local history step and preserves native source
+2026-11-02T10:53:51.8569161Z PASS ISSUE159 1400px Undo restores the complete saved model bytes and creation history
+2026-11-02T10:53:51.8584565Z PASS ISSUE159 1400px completed Undo retains its original enabled keyboard focus
+2026-11-02T10:53:52.0627228Z PASS ISSUE159 1400px trusted Ctrl+Y redoes removal once from the retained Undo focus
+2026-11-02T10:53:52.3083710Z PASS ISSUE159 1400px trusted Ctrl+Z restores the exact model while keeping Undo focused
+2026-11-02T10:53:52.4451717Z PASS ISSUE159 1400px real Tab reaches the available original Redo button
+2026-11-02T10:53:52.6178548Z PASS ISSUE159 1400px Enter redoes removal and hands focus to the remaining enabled Undo
+2026-11-02T10:53:52.8616437Z PASS ISSUE159 1400px restored keyboard focus can undo again without changing saved source or mesh
+2026-11-02T10:53:52.8644948Z PASS ISSUE159 1400px all history refreshes preserve the same Save handler node and original controls
+2026-11-02T10:53:53.2247714Z PASS ISSUE159 390px library retains the original Undo, Redo and native Save nodes
+2026-11-02T10:53:53.2917533Z PASS ISSUE159 390px library history controls have 44px real hit targets without overflow
+2026-11-02T10:53:53.4718350Z PASS ISSUE159 390px real library removal is one local history step and preserves native source
+2026-11-02T10:53:53.6561777Z PASS ISSUE159 390px Undo restores the complete saved model bytes and creation history
+2026-11-02T10:53:53.6578223Z PASS ISSUE159 390px completed Undo retains its original enabled keyboard focus
+2026-11-02T10:53:53.8326186Z PASS ISSUE159 390px trusted Ctrl+Y redoes removal once from the retained Undo focus
+2026-11-02T10:53:54.0175797Z PASS ISSUE159 390px trusted Ctrl+Z restores the exact model while keeping Undo focused
+2026-11-02T10:53:54.2636204Z PASS ISSUE159 390px real Tab reaches the available original Redo button
+2026-11-02T10:53:54.4356232Z PASS ISSUE159 390px Enter redoes removal and hands focus to the remaining enabled Undo
+2026-11-02T10:53:54.6199736Z PASS ISSUE159 390px restored keyboard focus can undo again without changing saved source or mesh
+2026-11-02T10:53:54.6237130Z PASS ISSUE159 390px all history refreshes preserve the same Save handler node and original controls
+2026-11-02T10:53:56.4266197Z PASS ISSUE159 a valid current-face builder blocks library history and removal without changing raw draft, source or saved model
+2026-11-02T10:53:56.7955814Z PASS ISSUE159 canvas Undo removes the original model creation while preserving the exact native world and raw height
+2026-11-02T10:53:57.0347348Z PASS ISSUE159 stale source history leaves the real library Redo available without discarding raw height
+2026-11-02T10:53:57.2568424Z PASS ISSUE159 library Redo restores the complete first model and world while retaining raw height 3210
+2026-11-02T10:53:57.6506228Z PASS core edit after model creation succeeds
+2026-11-02T10:53:57.9826578Z PASS first undo removes core edit and keeps model
+2026-11-02T10:53:58.1595080Z PASS second undo removes model and keeps original source
+2026-11-02T10:53:58.3453001Z PASS first redo restores model without core edit
+2026-11-02T10:53:58.5832461Z PASS second redo restores core edit with model
+2026-11-02T10:54:01.9153359Z PASS L-shaped preview retains a nonrectangular boundary mesh
+2026-11-02T10:54:01.9154249Z PASS L-shaped volume is not replaced by its bounding box
+2026-11-02T10:54:02.4587504Z PASS L-shaped model commits independently
+2026-11-02T10:54:02.7672869Z PASS new local edit invalidates abandoned core redo
+2026-11-02T10:54:03.3593327Z PASS library reopens real stored model geometry
+2026-11-02T10:54:03.3604736Z PASS saved plan model exposes the existing model editing entry
+2026-11-02T10:54:04.9839614Z PASS changed inputs immediately invalidate prior preview
+2026-11-02T10:54:05.1450486Z PASS cancelling edits preserves source and stored models
+2026-11-02T10:54:05.6517386Z PASS current own face remains gated until its projection purpose is explicitly confirmed
+2026-11-02T10:54:05.6543192Z PASS source z=2500 stays independent from the blank bottom and default height 3000
+2026-11-02T10:54:06.7914162Z PASS apply-and-build returns to the same face and preserves the independent height fields
+2026-11-02T10:54:06.9549907Z PASS missing vertical range is a visible actionable rejection
+2026-11-02T10:54:09.3541212Z PASS explicit heights control result z bounds
+2026-11-02T10:54:11.2475879Z PASS own face at z=2500 previews the explicitly requested 0..2800 space
+2026-11-02T10:54:11.6915598Z PASS own placed face creates a persistent closed space using its real source
+2026-11-02T10:54:11.6920458Z PASS the created model snapshots projection purpose, view, interior and wall side
+2026-11-02T10:54:12.3329810Z PASS created plan model keeps saved-source height separate from explicit current-source adoption
+2026-11-02T10:54:12.9825404Z PASS cancelled height edit leaves the stored model and source intact
+2026-11-02T10:54:14.8630877Z PASS cancel during an in-flight preview ignores its late result
+2026-11-02T10:54:15.6539760Z PASS non-positive wall height visibly rejects without mutating the model
+2026-11-02T10:54:17.0873570Z PASS height preview recalculates enclosure, walls and z bounds
+2026-11-02T10:54:17.1101746Z PASS preview requires confirmation and preserves the prior saved result
+2026-11-02T10:54:17.4444392Z PASS mobile height editing and apply controls remain reachable without horizontal overflow
+2026-11-02T10:54:17.7244433Z PASS applying the height update preserves model identity, creation time and provenance
+2026-11-02T10:54:17.7348382Z PASS height update changes only the requested input and recalculated result
+2026-11-02T10:54:18.7178818Z PASS undo restores the complete pre-edit model without affecting its source
+2026-11-02T10:54:18.9838004Z PASS redo restores the edited model and regenerated geometry
+2026-11-02T10:54:20.0423135Z PASS model library offers the same direct height editor with the updated value
+2026-11-02T10:54:22.7384063Z PASS open space does not display a definite enclosed volume
+2026-11-02T10:54:23.1238531Z PASS explicitly open space can still be created
+2026-11-02T10:54:23.2877976Z PASS current-face conversion retains the source face at z=2500
+2026-11-02T10:54:26.4250368Z PASS 390px workspace has no horizontal overflow
+2026-11-02T10:54:26.6149590Z PASS mobile preview and confirmation remain reachable
+2026-11-02T10:54:26.7997371Z PASS mobile create control remains reachable after confirmation
+2026-11-02T10:54:26.9763241Z PASS cancelling a ready mobile example does not create a model
+2026-11-02T10:54:27.2442514Z PASS saved v3 package contains all model definitions and face projection metadata
+2026-11-02T10:54:27.3202518Z PASS reset removes models from the active project
+2026-11-02T10:54:34.5702373Z PASS reopen validates and restores all models exactly
+2026-11-02T10:54:34.5918257Z PASS saved and reopened model retains its edited 3200 mm height and recalculated volume
+2026-11-02T10:54:34.5969637Z PASS reopen restores the original source scene
+2026-11-02T10:54:34.5980795Z PASS reopen restores the independently saved per-face projection definition
+2026-11-02T10:54:35.0171629Z PASS reopened model remains viewable from the library
+2026-11-02T10:54:35.3772002Z PASS tampered but structurally valid model rejects before replacing the open project
+2026-11-02T10:54:42.3894996Z PASS legacy v2 models load without inventing per-face or model projection metadata
+2026-11-02T10:54:42.8402452Z PASS legacy model explicitly reports its missing projection definition
+2026-11-02T10:54:44.6599667Z PASS a legacy model remains height-editable using saved geometry without a fabricated view
+2026-11-02T10:54:45.1551643Z PASS legacy v1 scenes open as unconfigured faces without model metadata
+2026-11-02T10:54:52.2172124Z PASS restoring v3 after legacy projects restores exact model snapshots and face definitions
+2026-11-02T10:54:58.1052727Z PASS six existing faces and explicit orientations form a closed 33.6m3 space
+2026-11-02T10:54:58.1065572Z PASS existing-face volume is visible in the interface
+2026-11-02T10:54:58.4784609Z PASS existing-face mode saves all six real references and directions
+2026-11-02T10:54:58.4795159Z PASS a model assembled from faces has no single wall-height editor
+2026-11-02T10:54:58.4885002Z PASS combining existing faces does not recreate or modify source geometry
+2026-11-02T10:55:00.5128242Z PASS one existing face gives a legitimate open space without a volume
+2026-11-02T10:55:00.9024303Z PASS one-face open space can be stored independently
+2026-11-02T10:55:00.9122826Z PASS open-face creation also preserves the original placed faces
+2026-11-02T10:55:03.2574937Z PASS projection dialog targets the selected placement rather than the first placement of its boundary
+2026-11-02T10:55:03.4519450Z PASS editing z exposes the actual placement form without a covering modal
+2026-11-02T10:55:03.8911027Z PASS z editing updates only the selected placement and keeps its sibling unchanged
+2026-11-02T10:55:04.2600957Z PASS selected-placement z edit is one undoable geometry change
+2026-11-02T10:55:04.5453714Z PASS redo restores the same selected-placement z change
+2026-11-02T10:55:05.3841347Z PASS legal placement id zero is preserved by the face projection entry
+2026-11-02T10:55:06.5144317Z PASS interior confirmation remains visible above the outline at 689x668
+2026-11-02T10:55:06.7253064Z PASS mobile projection configuration and apply-build are visible, touch-sized and do not overflow
+2026-11-02T10:55:07.3882169Z PASS placement id zero retains its explicit bottom-view definition when starting a model
+2026-11-02T10:55:09.1299148Z PASS a legal placement-zero source creates an independently stored space
+2026-11-02T10:55:09.2859767Z PASS changing a live face definition does not rewrite an already-created model snapshot or its displayed semantics
+2026-11-02T10:55:10.9534544Z PASS saved height editing uses the saved projection snapshot even when the live face definition differs
+2026-11-02T10:55:11.1201914Z PASS cancelling this height edit leaves the original model record byte-equivalent
+2026-11-02T10:55:11.7099311Z PASS 390px drawer exposes touch-sized inspector projection and model entries
+2026-11-02T10:55:12.9288654Z SOURCE_LOAD_GATE {"closeFirst":false,"gate":{"phase":"held","context":"a9c464ae-84f9-41f1-a17d-86d21feeb13f","caller":"Error\n    at interceptedFetch (eval at <anonymous> (:1:141), <anonymous>:10:20)\n    at apiRequest (http://127.0.0.1:18839/app.js:650:21)\n    at api (http://127.0.0.1:18839/app.js:702:24)\n    at Object.openCurrentFace (http://127.0.0.1:18839/space-workspace.js:445:24)\n    at HTMLDocument.<anonymous> (http://127.0.0.1:18839/app.js:179:49)","claimed":1,"held":1,"nativeOK":true,"ignored":[]},"context":"a9c464ae-84f9-41f1-a17d-86d21feeb13f","snapshot":{"phase":"loading","sourceKind":null,"resultSummary":null,"createdId":null,"editingId":null,"supportsTimbers":true,"timberCandidates":[],"stale":true,"previewRevision":-1,"inputRevision":108,"viewer":{"objectCount":0,"triangleCount":0,"bounds":null,"labels":[],"view":"custom","yaw":-1.0853981633974485,"pitch":0.7554797086703874,"zoom":1,"pan":{"x":0,"y":0},"width":980,"height":692.875,"destroyed":false,"selection":null}},"open":true}
+2026-11-02T10:55:13.4003668Z PASS switching project during source load cannot bind the old response to the new project
+2026-11-02T10:55:14.2335888Z SOURCE_LOAD_GATE {"closeFirst":true,"gate":{"phase":"held","context":"ab64d0c6-cddf-4405-9f17-5cf6f79e1f60","caller":"Error\n    at interceptedFetch (eval at <anonymous> (:1:141), <anonymous>:10:20)\n    at apiRequest (http://127.0.0.1:18839/app.js:650:21)\n    at api (http://127.0.0.1:18839/app.js:702:24)\n    at Object.openCurrentFace (http://127.0.0.1:18839/space-workspace.js:445:24)\n    at HTMLDocument.<anonymous> (http://127.0.0.1:18839/app.js:179:49)","claimed":1,"held":1,"nativeOK":true,"ignored":[]},"context":"ab64d0c6-cddf-4405-9f17-5cf6f79e1f60","snapshot":{"phase":"loading","sourceKind":null,"resultSummary":null,"createdId":null,"editingId":null,"supportsTimbers":true,"timberCandidates":[],"stale":true,"previewRevision":-1,"inputRevision":109,"viewer":{"objectCount":0,"triangleCount":0,"bounds":null,"labels":[],"view":"custom","yaw":-1.0853981633974485,"pitch":0.7554797086703874,"zoom":1,"pan":{"x":0,"y":0},"width":980,"height":692.875,"destroyed":false,"selection":null}},"open":true}
+2026-11-02T10:55:14.8711737Z PASS closing a loading source and switching project cannot bind the old response to the new project
+2026-11-02T10:55:14.8722343Z PASS a late old-project response cannot reopen the closed workspace
+2026-11-02T10:55:17.2974839Z PASS GEO244 reuses projection confirmation to expose a real placement alignment
+2026-11-02T10:55:17.7072377Z PASS GEO244 alignment changes only the selected frame and preserves local outline, sibling placement and world bounds
+2026-11-02T10:55:17.7095260Z PASS GEO244 alignment preserves the entered wall bottom, height and thickness
+2026-11-02T10:55:19.4479957Z PASS GEO244 the actual aligned model preserves source z and exact volume
+2026-11-02T10:55:19.4645423Z PASS GEO244 real top-view pixels retain the asymmetric left-bottom extension and empty left-top corner
+2026-11-02T10:55:19.6313491Z PASS GEO244 creating a preview does not mutate the aligned source
+2026-11-02T10:55:20.0906328Z PASS GEO244 one undo restores the exact old placement and retains its projection
+2026-11-02T10:55:20.3902458Z PASS GEO244 one redo restores the exact aligned placement
+2026-11-02T10:55:23.0262808Z PASS GEO244 complete project saving records the aligned placement and actual producer input
+2026-11-02T10:55:25.7748959Z PASS GEO244 project import restores aligned source and saved model without inferred geometry
+2026-11-02T10:55:26.5695035Z PASS GEO244 saved-model top view preserves the same original-drawing corner after reopening
+2026-11-02T10:55:28.2039146Z PASS GEO244 stale source alignment is rejected without changing the current world
+2026-11-02T10:55:30.1747053Z PASS GEO244 cancelling the native timber impact preview preserves the exact scene and projection
+2026-11-02T10:55:33.2072778Z PASS committing top in the full dialog synchronizes the inline selector and alignment action
+2026-11-02T10:55:34.0637429Z PASS ordinary settings rendering preserves the unconfirmed inline direction without saving it
+2026-11-02T10:55:34.7513978Z PASS cancelling the full dialog preserves the saved top definition and unconfirmed inline draft
+2026-11-02T10:55:35.9896244Z PASS committing bottom synchronizes the selector and preserves height without changing placement
+2026-11-02T10:55:37.8584719Z PASS the synchronized top action aligns native V instead of writing bottom back
+2026-11-02T10:55:38.3978314Z PASS reopening retains the committed top direction and aligned native placement
+2026-11-02T10:55:39.7617656Z FONT main canvas {"min":11,"sel":"KBD"}
+2026-11-02T10:55:39.7621334Z PASS main canvas preserves the P20 11px minimum font contract
+2026-11-02T10:55:39.9853658Z FONT existing face workspace {"min":11,"sel":"#workspaceBackButton.workspace-back-button"}
+2026-11-02T10:55:39.9855007Z PASS existing face workspace preserves the P20 11px minimum font contract
+2026-11-02T10:55:39.9885851Z PASS documented face header rows fit at 1382px
+2026-11-02T10:55:40.1369436Z PASS documented face header rows fit at 1160px
+2026-11-02T10:55:40.3415319Z PASS documented face header rows fit at 900px
+2026-11-02T10:55:40.4851178Z PASS documented face header rows fit at 680px
+2026-11-02T10:55:40.6215113Z PASS documented face header rows fit at 600px
+2026-11-02T10:55:41.0068953Z FONT existing six-face space workspace {"min":11,"sel":"#workspaceBackButton.workspace-back-button"}
+2026-11-02T10:55:41.0070385Z PASS existing six-face space workspace preserves the P20 11px minimum font contract
+2026-11-02T10:55:43.0281699Z FONT new space-model desktop workspace {"min":11,"sel":"KBD"}
+2026-11-02T10:55:43.0283138Z PASS new space-model desktop workspace preserves the P20 11px minimum font contract
+2026-11-02T10:55:43.0392827Z COMPACT {"canvasWidth":895,"canvasHeight":290,"pixelWidth":229,"pixelHeight":240,"pixels":38637,"docWidth":1280,"innerWidth":1280}
+2026-11-02T10:55:43.0394132Z PASS 11px fonts preserve 1280x720 canvas height and actual model visibility
+2026-11-02T10:55:43.0411849Z PASS desktop primary actions retain 44px hit targets
+2026-11-02T10:55:43.5106888Z FONT new space-model mobile preview {"min":11,"sel":".statusbar"}
+2026-11-02T10:55:43.5107840Z PASS new space-model mobile preview preserves the P20 11px minimum font contract
+2026-11-02T10:55:43.5137673Z PASS mobile fit retains a real visible model within the compact preview area
+2026-11-02T10:55:43.9184108Z PASS hiding and restoring the mobile preview retains the same visible model size
+2026-11-02T10:55:43.9197840Z PASS 11px mobile preview has no horizontal overflow and a 44px next action
+2026-11-02T10:55:44.1200398Z FONT new space-model mobile setup {"min":11,"sel":".statusbar"}
+2026-11-02T10:55:44.1201625Z PASS new space-model mobile setup preserves the P20 11px minimum font contract
+2026-11-02T10:55:44.1212409Z PASS mobile setup primary actions retain 44px hit targets
+2026-11-02T10:55:44.2571680Z PASS 11px mobile confirmation leaves the create action reachable
+2026-11-02T10:55:44.4487556Z PASS return-to-canvas button closes the workspace with a real pointer click
+2026-11-02T10:55:45.3938331Z PASS GEO210 own horizontal face opens directly with inline explicit semantics and no nested modal
+2026-11-02T10:55:45.3949759Z PASS GEO210 first-use instructions and advanced source/boundary choices start collapsed
+2026-11-02T10:55:45.3962694Z PASS GEO210 wall bottom stays explicit with independent 3000 height and 100 thickness defaults
+2026-11-02T10:55:45.8773925Z PASS GEO210 undefined projection retains a usable setup area and fully visible primary confirmation at 690x668
+2026-11-02T10:55:46.2180080Z PASS GEO210 undefined projection retains a usable setup area and fully visible primary confirmation at 390x844
+2026-11-02T10:55:46.7148266Z PASS GEO210 selecting a viewing direction alone does not declare projection semantics
+2026-11-02T10:55:47.4059888Z PASS GEO210 keyboard Enter confirms inline projection and stores all four semantics
+2026-11-02T10:55:47.4211347Z PASS GEO210 confirming projection preserves the source geometry
+2026-11-02T10:55:47.5707766Z PASS GEO210 the streamlined flow still rejects unspecified wall bottom
+2026-11-02T10:55:47.7153771Z PASS GEO210 keyboard Enter activates the explicit zero shortcut without taking source z as bottom
+2026-11-02T10:55:48.8044361Z PASS GEO210 default quick path produces exact 0..3000 geometry and 36m3 volume
+2026-11-02T10:55:48.8056401Z PASS GEO210 confirmation is colocated with create in the persistent footer and remains unchecked
+2026-11-02T10:55:49.3274787Z PASS GEO210 confirmation and create fit without hiding setup at 690x668
+2026-11-02T10:55:49.6663104Z PASS GEO210 confirmation and create fit without hiding setup at 390x844
+2026-11-02T10:55:50.0109392Z PASS GEO210 review disclosure opens the actual generated face list
+2026-11-02T10:55:50.6126048Z PASS GEO210 changing a field still invalidates preview and clears confirmation
+2026-11-02T10:55:52.3144087Z PASS GEO210 same-source reopen preserves entered height but demands a fresh preview and review
+2026-11-02T10:55:53.7221630Z PASS GEO210 creation clearly exposes save as a separate next step
+2026-11-02T10:55:53.8744652Z PASS GEO210 cancelling the save picker leaves the model dirty and the save reminder accurate
+2026-11-02T10:55:54.0858373Z PASS GEO210 fallback download asks the user to confirm completion and does not claim a saved file
+2026-11-02T10:55:54.2952814Z PASS GEO210 successful save updates the next-step notice instead of continuing to request saving
+2026-11-02T10:55:54.3130991Z PASS GEO210 the Save button writes a reopenable gcanvas with exact model and projection
+2026-11-02T10:55:54.9702513Z PASS GEO210 created model settings are not silently recycled into a new source draft
+2026-11-02T10:55:56.3209275Z PASS GEO210 saved-model view hides new-source shortcuts and retains its saved height
+2026-11-02T10:55:57.5482832Z PASS GEO210 cancelled saved-height editing cannot overwrite an independent source draft
+2026-11-02T10:55:59.2117571Z PASS GEO210 FREE edges initially remain unselected and holes remain explicitly undefined
+2026-11-02T10:55:59.5015540Z PASS GEO210 an unspecified hole still rejects preview with an actionable visible control
+2026-11-02T10:56:03.8116717Z PASS GEO210 close and reopen restores same-source name, heights, thickness, holes, caps, edges, obstacle and timber choices
+2026-11-02T10:56:03.8127346Z PASS GEO210 draft restoration does not revive preview or confirmation
+2026-11-02T10:56:03.8230194Z PASS GEO210 editing and restoring a draft does not mutate the world, undo history or dirty state
+2026-11-02T10:56:04.5592487Z PASS GEO210 importing a different project context with identical face ids cannot reuse the old draft
+2026-11-02T10:56:06.2466532Z PASS GEO210 history test returns to the exact original source world
+2026-11-02T10:56:06.6725170Z PASS GEO210 same-dump undo cannot revalidate an earlier draft
+2026-11-02T10:56:08.7872706Z PASS GEO210 deleting and reusing source ids does not inherit draft values or projection semantics
+2026-11-02T10:56:10.3420853Z INLINE_PROJECTION_GATE {"action":"close","gate":{"phase":"held","caller":"Error\n    at callerStack (eval at <anonymous> (:1:141), <anonymous>:1:66)\n    at scope.fetch (eval at <anonymous> (:1:141), <anonymous>:9:20)\n    at apiRequest (http://127.0.0.1:18839/app.js:650:21)\n    at api (http://127.0.0.1:18839/app.js:702:24)\n    at HTMLButtonElement.confirmProjection (http://127.0.0.1:18839/space-workspace.js:501:24)","command":"dump","matched":true},"open":true,"pending":true,"projections":[null,null]}
+2026-11-02T10:56:10.6083227Z INLINE_PROJECTION_RELEASE {"action":"close","projectionsAfter":[null,null]}
+2026-11-02T10:56:10.6084299Z PASS GEO210 late inline confirmation cannot save after close
+2026-11-02T10:56:11.6799986Z INLINE_PROJECTION_GATE {"action":"source","gate":{"phase":"held","caller":"Error\n    at callerStack (eval at <anonymous> (:1:141), <anonymous>:1:66)\n    at scope.fetch (eval at <anonymous> (:1:141), <anonymous>:9:20)\n    at apiRequest (http://127.0.0.1:18839/app.js:650:21)\n    at api (http://127.0.0.1:18839/app.js:702:24)\n    at HTMLButtonElement.confirmProjection (http://127.0.0.1:18839/space-workspace.js:501:24)","command":"dump","matched":true},"open":true,"pending":true,"projections":[null,null]}
+2026-11-02T10:56:12.2656259Z INLINE_PROJECTION_RELEASE {"action":"source","projectionsAfter":[null,null]}
+2026-11-02T10:56:12.2657261Z PASS GEO210 late inline confirmation cannot save after source
+2026-11-02T10:56:13.5372247Z INLINE_PROJECTION_GATE {"action":"context","gate":{"phase":"held","caller":"Error\n    at callerStack (eval at <anonymous> (:1:141), <anonymous>:1:66)\n    at scope.fetch (eval at <anonymous> (:1:141), <anonymous>:9:20)\n    at apiRequest (http://127.0.0.1:18839/app.js:650:21)\n    at api (http://127.0.0.1:18839/app.js:702:24)\n    at HTMLButtonElement.confirmProjection (http://127.0.0.1:18839/space-workspace.js:501:24)","command":"dump","matched":true},"open":true,"pending":true,"projections":[null,null]}
+2026-11-02T10:56:13.8049978Z INLINE_PROJECTION_RELEASE {"action":"context","projectionsAfter":[null,null]}
+2026-11-02T10:56:13.8051254Z PASS GEO210 late inline confirmation cannot save after context
+2026-11-02T10:56:15.0048991Z INLINE_PROJECTION_GATE {"action":"direction","gate":{"phase":"held","caller":"Error\n    at callerStack (eval at <anonymous> (:1:141), <anonymous>:1:66)\n    at scope.fetch (eval at <anonymous> (:1:141), <anonymous>:9:20)\n    at apiRequest (http://127.0.0.1:18839/app.js:650:21)\n    at api (http://127.0.0.1:18839/app.js:702:24)\n    at HTMLButtonElement.confirmProjection (http://127.0.0.1:18839/space-workspace.js:501:24)","command":"dump","matched":true},"open":true,"pending":true,"projections":[null,null]}
+2026-11-02T10:56:15.0057234Z PASS GEO210 pending confirmation prevents user changes to viewing direction
+2026-11-02T10:56:15.2003744Z INLINE_PROJECTION_RELEASE {"action":"direction","projectionsAfter":[null,null]}
+2026-11-02T10:56:15.2004682Z PASS GEO210 late inline confirmation cannot save after direction
+2026-11-02T10:56:15.3379095Z PASS no uncaught browser exceptions
+2026-11-02T10:56:15.3379699Z PASS no browser console errors
+2026-11-02T10:56:15.7049827Z SPACE_RESULT {"schema":"geometry-space-result/1","scope":{"mode":"full-space-suite","filters":[],"included":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","projection-close"],"omitted":["timber-material","timber-source-guards"],"url":"http://127.0.0.1:18839/","feedbackDirectory":"/tmp/geometry-integration-feedback"},"completed":true,"groups":{"setup":{"expected":2,"passed":2,"failed":0,"completed":true},"space-height-library":{"expected":112,"passed":112,"failed":0,"completed":true},"projection-lifecycle":{"expected":18,"passed":18,"failed":0,"completed":true},"projection-placement":{"expected":36,"passed":36,"failed":0,"completed":true},"font-layout":{"expected":19,"passed":19,"failed":0,"completed":true},"space-flow":{"expected":39,"passed":39,"failed":0,"completed":true},"projection-close":{"expected":14,"passed":14,"failed":0,"completed":true},"browser-health":{"expected":2,"passed":2,"failed":0,"completed":true}},"completenessProblems":[],"passed":242,"failed":0,"exceptions":[],"consoleErrors":[]}
+2026-11-02T10:56:15.7156622Z RESULT 242 passed / 0 failed; completed: true; scope: full-space-suite; omitted groups: timber-material,timber-source-guards; artifacts: /tmp/geometry-tests/space-model-2856
+2026-11-02T10:56:15.7159008Z core: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-11-02T10:52:11+00:00））
+2026-11-02T10:56:15.7160056Z bridge: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-11-02T10:52:33+00:00））
+2026-11-02T10:56:15.7161404Z model-base: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-11-02T10:52:51+00:00））
+2026-11-02T10:56:15.7164457Z LOCAL_RUNTIME {"root": "/home/runner/work/geometry-axiom/geometry-axiom", "binaryDirectory": "/tmp/geometry-runtime/448ce1528fc03eea5f56", "executables": {"core": "/tmp/geometry-runtime/448ce1528fc03eea5f56/core", "bridge": "/tmp/geometry-runtime/448ce1528fc03eea5f56/bridge", "model-base": "/tmp/geometry-runtime/448ce1528fc03eea5f56/model-base"}, "port": 18839, "managedPreview": false}
+2026-11-02T10:56:15.7167787Z http://localhost:18839  （Ctrl-C 結束；版本=d7e9b1d4f074；bridge=/tmp/geometry-runtime/448ce1528fc03eea5f56/bridge）
+2026-11-02T10:56:15.7168770Z I8a preview 1: valid; confirm token to apply
+2026-11-02T10:56:15.7169326Z  timber 11 center 1178 -> 1178 length 3633 -> 3633
+2026-11-02T10:56:15.7170298Z   surface 2 origin [5002,1165,2700] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 2 origin [5002,4538,2700] axes [1,0,0]/[0,-1,0]/[0,0,-1]
+2026-11-02T10:56:15.7171802Z input:75: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+2026-11-02T10:56:15.7172676Z I8a preview 2: valid; confirm token to apply
+2026-11-02T10:56:15.7173333Z  timber 0 center 13 -> 0 length 4000 -> 0 (unavailable/deleted)
+2026-11-02T10:56:15.7174102Z   surface 321 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+2026-11-02T10:56:15.7175126Z input:109: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+2026-11-02T10:56:15.7464863Z Post job cleanup.
+2026-11-02T10:56:15.8619932Z [command]/usr/bin/git version
+2026-11-02T10:56:15.8751806Z git version 2.56.0
+2026-11-02T10:56:15.8781551Z Temporarily overriding HOME='/home/runner/work/_temp/96ca9b96-78f0-43bf-aae7-edb387c99a18' before making global git config changes
+2026-11-02T10:56:15.8785597Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T10:56:15.8791908Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T10:56:15.8871875Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T10:56:15.8941743Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T10:56:15.9494425Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T10:56:15.9552585Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T10:56:16.0164670Z Cleaning up orphan processes
+2026-11-02T10:56:16.0671270Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

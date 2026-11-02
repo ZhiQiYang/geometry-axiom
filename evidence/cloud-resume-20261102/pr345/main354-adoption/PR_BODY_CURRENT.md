@@ -1,0 +1,20 @@
+只縮短HTTP fixture serve_forever輪詢至0.05秒，保留原timeout、21個方法與95次assert；本機main新增的兩個回歸完整保留。
+
+完整current head：**f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12**。base **main**；已一般merge精確 e02057b4c725d6f03ae52c3bc30776bf9442b0cf，再採正式重產原件。**Draft／當前F整合CI待收，未達合併條件**；只一般merge與快轉推送，Codex未合main。
+
+| 唯一current-state gate | 真結果／execution與界線 |
+|---|---|
+| 最新main合流source M | de3a56cfadecf575f8e7860cbfdafdac2af0a883；root與獨立peer記錄parent／逐leaf閉包，main產品與新回歸完整保留。不是rebase／force |
+| #366整份重產 | [run41431971663](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41431971663)，event workflow_dispatch／attempt1、10/10success；9原ZIP/cache byte校驗，原verifier真exit0、official ledger與summary逐byte相同，下載ELF執行0 |
+| 本次正式ledger | **已採入tracked tests/mutants_results.json**，SHA256 0e18b72514c6fd471f25117db31dcd4cb5e124c6b3a46db8bc0a3a9729b11165；123＝114killed／1crashed／5equivalent／3retired，其餘stale/blocked/survived/invalid/unrun全0；七個badcache負控各strict1。120個active execution.head仍全部M，不改標F；M20仍crashed而不是assert-killed |
+| 架構正式產物 | 採該run原scan/report/receipt，manifest保持原policy input；scan本來就與原件相同。M→F實際只ledger、PRODUCT-ARCHITECTURE.md、receipt三leaf改變；C/H/JS/Python tests、expected、judge、policy全同M |
+| F新原帳本check | **已實跑**`python3 -B tests/mutate.py --check`，exit0，無stale／blocked／survived。此為正式新ledger的check，不拿舊有效檢查代新採入 |
+| F架構三條原裁判 | **已實跑全0**：`python3 -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json`；`python3 -B tests/test_architecture_contract.py`；`python3 -B tests/test_product_architecture.py`。新receipt真execution仍M，未改stamp |
+| 前輪正式結果 | 舊公開79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6的20CI、19個HTTP方法及原full2267/85golden保持歷史；不移標新M/F。M曾check1、53bridge judge stale，原紅保留，現已用本次整份新ledger修復。 |
+| 新F正式integration | [{'id': 41437638054, 'name': 'Geometry integration', 'event': 'pull_request', 'status': 'queued'}]；**原件與真終態尚未收齊，不能寫已通過**。原每native/browser job時限、assert/golden/skip完全不變 |
+| 重產與重跑界線 | M→F只精確採入已驗原derived bytes、所有product/test/judge inputs同M，不再重跑第二次123。F新正式CI由原workflow自動執行；舊M/source的execution留原身份 |
+| 合併判斷 | 待F required CI全綠、原件核收、最新獨立審查後才READY-TO-MERGE；合main由本機Claude，不由Codex處理 |
+
+[已發布證據總索引與歷史原紅](https://github.com/ZhiQiYang/geometry-axiom/tree/48da3fa2b054ca74da2e13277db1522a6e6133ce/evidence/cloud-resume-20261102)。新sourceM/F的整份ZIP/cache、全量ledger、架構三條stdout/stderr、真SHA/退出碼正沿相同獨立evidence分支持久交付；目前可直接由上述正式Actions下載原件。沒有用本機路徑冒充已推送。
+
+#339已合main；#340合後按341→342→343→346→347→348推進，不把來源祖先已在main當成缺的效能／whole-opt驗收完成。未放寬斷言、golden、時限、允許skip；未改公理層、閱讀器、決策佇列。

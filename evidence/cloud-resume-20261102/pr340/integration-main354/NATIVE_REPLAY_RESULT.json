@@ -1,0 +1,23 @@
+{
+  "at": "2026-11-02T11:18:04.131279+00:00",
+  "command": [
+    "python3",
+    "-B",
+    "tests/native_shard_receipts.py",
+    "--input",
+    "/tmp/geometry-resume-20261102/pr340/integration-main354/native-replay-input",
+    "--parts",
+    "3",
+    "--output",
+    "/tmp/geometry-resume-20261102/pr340/integration-main354/native-replay-summary.json"
+  ],
+  "exit": 0,
+  "execution": "afa52541ef2bcdd00e184e0f5d0d5e33874610ed",
+  "productHead": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+  "executionTreeExactM": true,
+  "sourceClean": true,
+  "materializedBytes": 40896868,
+  "files": 1175,
+  "officialSummaryBytesEqual": true,
+  "noNativeOrELFExecuted": true
+}

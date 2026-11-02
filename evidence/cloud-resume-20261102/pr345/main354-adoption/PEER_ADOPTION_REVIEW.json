@@ -1,0 +1,361 @@
+{
+  "schema": "geometry-pr345-main354-adoption-static-peer/1",
+  "at": "2026-11-02T11:42:27.752265+00:00",
+  "status": "PASS_BOUNDED_ADOPTION_REVIEW_FORMAL_F_CI_PENDING",
+  "scope": "Pure read-only M→F tree identity, four specific official ZIP members and saved original result/stream review. No test/verifier/build/browser/native/model execution, API/network acquisition or branch/source/cache changes.",
+  "identity": {
+    "M": "de3a56cfadecf575f8e7860cbfdafdac2af0a883",
+    "F": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+    "FParents": [
+      "de3a56cfadecf575f8e7860cbfdafdac2af0a883"
+    ],
+    "FTree": "393343916f975cf5bf76e178bbc23c995af5c981",
+    "worktreeAtFClean": true,
+    "publicRemoteTrackingHead": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+    "savedPushRaw": {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-adoption/push.stderr",
+      "bytes": 119,
+      "sha256": "e0ea83bd283bc9aadeff8c59026256e18feba7e79a8917990369656cc50e0a0f"
+    },
+    "ordinaryFastForwardPushObserved": true
+  },
+  "adoptionScope": {
+    "adoptedOfficialTargets": 4,
+    "actualGitChangedEntries": 3,
+    "rawGitDelta": [
+      {
+        "path": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+        "oldMode": "100644",
+        "newMode": "100644",
+        "oldBlob": "ce43fb73e9993cbaa8714c52852109e160584ade",
+        "newBlob": "2a3e99c4f9c64ed7cd050b0cc9267518a83c99cb",
+        "status": "M"
+      },
+      {
+        "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+        "oldMode": "100644",
+        "newMode": "100644",
+        "oldBlob": "b951e60cc8d12845940aedbd5a42d1c4e81f897b",
+        "newBlob": "dcc40a9f0e717192e9156daf97e6bb211ea7e8ef",
+        "status": "M"
+      },
+      {
+        "path": "tests/mutants_results.json",
+        "oldMode": "100644",
+        "newMode": "100644",
+        "oldBlob": "aa39cedf5116abd67e868fa5fb7b0d555bf89aaf",
+        "newBlob": "4f47a2b9c4726c60878539020e1ebb4744cb2611",
+        "status": "M"
+      }
+    ],
+    "officialMemberComparisons": [
+      {
+        "path": "tests/mutants_results.json",
+        "member": "mutants_results.json",
+        "artifactName": "mutation-complete-evidence",
+        "artifactId": 13136264945,
+        "bytes": 11347298,
+        "sha256": "0e18b72514c6fd471f25117db31dcd4cb5e124c6b3a46db8bc0a3a9729b11165",
+        "mainSourceMBytesSha256": "1a6b09ac7ed560be994615ecfc36e5129b79d3036c9f73fc0241f18ef767da79",
+        "FBlob": "4f47a2b9c4726c60878539020e1ebb4744cb2611",
+        "MBlob": "aa39cedf5116abd67e868fa5fb7b0d555bf89aaf",
+        "gitFWorktreeOfficialZipAndOriginalExtractedBytesExact": true,
+        "changedFromM": true
+      },
+      {
+        "path": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+        "member": "PRODUCT-ARCHITECTURE.md",
+        "artifactName": "pr357-architecture-refresh",
+        "artifactId": 13134423545,
+        "bytes": 811,
+        "sha256": "425f499867cffc4c1995aea6239caa5fa476d7d815d8a1bada150c2151ae05fc",
+        "mainSourceMBytesSha256": "98599a76ddb51348b9af80a2f2b889de90cfd475bab803ee746f85005ac224ca",
+        "FBlob": "2a3e99c4f9c64ed7cd050b0cc9267518a83c99cb",
+        "MBlob": "ce43fb73e9993cbaa8714c52852109e160584ade",
+        "gitFWorktreeOfficialZipAndOriginalExtractedBytesExact": true,
+        "changedFromM": true
+      },
+      {
+        "path": "geometry-core/domain-decoupling/product-architecture-scan.json",
+        "member": "product-architecture-scan.json",
+        "artifactName": "pr357-architecture-refresh",
+        "artifactId": 13134423545,
+        "bytes": 134601,
+        "sha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+        "mainSourceMBytesSha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+        "FBlob": "417ca8a32aba28ae755dcc2817d749c9288b7d80",
+        "MBlob": "417ca8a32aba28ae755dcc2817d749c9288b7d80",
+        "gitFWorktreeOfficialZipAndOriginalExtractedBytesExact": true,
+        "changedFromM": false
+      },
+      {
+        "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+        "member": "product-architecture-receipt.json",
+        "artifactName": "pr357-architecture-refresh",
+        "artifactId": 13134423545,
+        "bytes": 105107,
+        "sha256": "9fb9d941f299df0df359d6eb26de7feaad349ec735b37d91674dbfbd6a0a8797",
+        "mainSourceMBytesSha256": "8233f4190041dd8c5e412615bc44ec1aca4f35a12d32ff3b7d47e707e5aef9f9",
+        "FBlob": "dcc40a9f0e717192e9156daf97e6bb211ea7e8ef",
+        "MBlob": "b951e60cc8d12845940aedbd5a42d1c4e81f897b",
+        "gitFWorktreeOfficialZipAndOriginalExtractedBytesExact": true,
+        "changedFromM": true
+      }
+    ],
+    "scanWasAlreadyExactMBytes": true,
+    "explanation": "Four official outputs adopted; scan was byte-identical already, so only ledger/report/receipt changed in Git. No fourth Git change is invented.",
+    "allOtherGitSourceTestJudgeExpectedBuildPolicyEntriesUnchangedFromM": true,
+    "explicitUnchangedGuards": {
+      "geometry-core/domain-decoupling/product-architecture.json": {
+        "MBlob": "dc533f28864e1abc20d6f6a0d73cd896634a170d",
+        "FBlob": "dc533f28864e1abc20d6f6a0d73cd896634a170d",
+        "modeTypeBlobUnchanged": true
+      },
+      "tests/run_all.py": {
+        "MBlob": "3c101c2d63ab7971f5987797d349505d48be6644",
+        "FBlob": "3c101c2d63ab7971f5987797d349505d48be6644",
+        "modeTypeBlobUnchanged": true
+      },
+      "tests/run_all.expected.json": {
+        "MBlob": "21a65c724e2cf0c14e318b5c66b7f1710b62e60a",
+        "FBlob": "21a65c724e2cf0c14e318b5c66b7f1710b62e60a",
+        "modeTypeBlobUnchanged": true
+      },
+      "tests/test_rule_case_workbench_http.py": {
+        "MBlob": "478893b3cd1bc1f93dbb7df5ebbbfc13bbe91431",
+        "FBlob": "478893b3cd1bc1f93dbb7df5ebbbfc13bbe91431",
+        "modeTypeBlobUnchanged": true
+      },
+      "tests/mutate.py": {
+        "MBlob": "6e07b61aeb83b1e0899d485614e4137ec72252e8",
+        "FBlob": "6e07b61aeb83b1e0899d485614e4137ec72252e8",
+        "modeTypeBlobUnchanged": true
+      },
+      "tests/architecture_contract.py": {
+        "MBlob": "e50f263d1d79f5a0a801ba4d49cb49e2d9e2bd0b",
+        "FBlob": "e50f263d1d79f5a0a801ba4d49cb49e2d9e2bd0b",
+        "modeTypeBlobUnchanged": true
+      },
+      "tests/test_architecture_contract.py": {
+        "MBlob": "a5da9437fc22d49dbca209276e3e5bacfca91361",
+        "FBlob": "a5da9437fc22d49dbca209276e3e5bacfca91361",
+        "modeTypeBlobUnchanged": true
+      },
+      "tests/test_product_architecture.py": {
+        "MBlob": "4fcbe42d623dc1a509ef4187a8ecf7e1223cea12",
+        "FBlob": "4fcbe42d623dc1a509ef4187a8ecf7e1223cea12",
+        "modeTypeBlobUnchanged": true
+      },
+      ".github/scripts/mutation_evidence.py": {
+        "MBlob": "a64122c1d53784fad4e879884a15aa8e11786a8d",
+        "FBlob": "a64122c1d53784fad4e879884a15aa8e11786a8d",
+        "modeTypeBlobUnchanged": true
+      },
+      ".github/scripts/architecture_evidence.py": {
+        "MBlob": "4b456e67391e8b634b87ccfc47125e3a9e2afa3a",
+        "FBlob": "4b456e67391e8b634b87ccfc47125e3a9e2afa3a",
+        "modeTypeBlobUnchanged": true
+      },
+      ".github/workflows/integration-tests.yml": {
+        "MBlob": "4f6d18b9ade4dfdbf5849d801cadaade0f1dcde4",
+        "FBlob": "4f6d18b9ade4dfdbf5849d801cadaade0f1dcde4",
+        "modeTypeBlobUnchanged": true
+      },
+      ".github/workflows/mutation-evidence.yml": {
+        "MBlob": "58e4d12490a60b88c6b52715555a2b0e630a19c5",
+        "FBlob": "58e4d12490a60b88c6b52715555a2b0e630a19c5",
+        "modeTypeBlobUnchanged": true
+      }
+    },
+    "strictHTTPExpectedRow": {
+      "mode": "count",
+      "count": 21,
+      "unit": "test"
+    },
+    "noNewExemptionsOrThresholdChanges": true
+  },
+  "officialArtifacts": {
+    "sourceRun": {
+      "id": 41431971663,
+      "run_attempt": 1,
+      "head_sha": "de3a56cfadecf575f8e7860cbfdafdac2af0a883",
+      "head_branch": "codex/issue214-main354-source-20261102",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41431971663"
+    },
+    "usedOnlyTwoSmallCurrentZipArchives": {
+      "mutation-complete-evidence": {
+        "id": 13136264945,
+        "archive": "/dev/shm/geometry-pr345-mutation-raw-20261102/official-zips/13136264945.zip",
+        "bytes": 1621165,
+        "sha256": "026eada943d5e0ef8b6d1fc664eec8d022edcbd57b926ce97d5cf3e874b3f692",
+        "digestMatchesSavedOfficialAPI": true
+      },
+      "pr357-architecture-refresh": {
+        "id": 13134423545,
+        "archive": "/dev/shm/geometry-pr345-mutation-raw-20261102/official-zips/13134423545.zip",
+        "bytes": 54110,
+        "sha256": "a068ffbc3a4993747076ef3e74088bc8e16a8e749575e9e5d9b9d9149fc9899b",
+        "digestMatchesSavedOfficialAPI": true
+      }
+    },
+    "onlyReadFourTargetMembers": true,
+    "cacheTarELFAndHistoricalPayloadMembersRead": false,
+    "savedOriginalVerifierResult": {
+      "actual_exit": 0,
+      "elapsed_seconds": 26.126283278979827,
+      "ended_utc": "2026-11-02T11:29:24.572185+00:00",
+      "stdout_sha256": "c8e93d5334af324df2bb5f1724defda5a454bc8cff05a40f2b750e62d44307dd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "downloaded_elf_executions": 0
+    },
+    "savedAcceptance": {
+      "path": "/dev/shm/geometry-pr345-mutation-raw-20261102/ACCEPTANCE.json",
+      "bytes": 12650,
+      "sha256": "e27529e3412c1d525b591749b10ab7bdaa39efdc924bf5f99d5aabb05fb6b44d"
+    },
+    "verifierNotRerunByPeer": true
+  },
+  "ledger": {
+    "bytes": 11347298,
+    "sha256": "0e18b72514c6fd471f25117db31dcd4cb5e124c6b3a46db8bc0a3a9729b11165",
+    "records": 123,
+    "activeExecutionHeads": {
+      "de3a56cfadecf575f8e7860cbfdafdac2af0a883": 120
+    },
+    "executionHeadsRemainMNotF": true,
+    "completeRawBytesAndAllFieldsExactOfficialZip": true,
+    "storedVerdicts": {
+      "killed": 114,
+      "equivalent": 5,
+      "retired": 3,
+      "crashed": 1
+    },
+    "M20StillCrashed": true,
+    "oldMCheck1With53StaleRetainedAt": "/tmp/geometry-resume-20261102/pr345/main354-merge/ledger-check.stdout",
+    "originalFLogicalCheck0ReadFromSavedRawNotRerun": true
+  },
+  "architecture": {
+    "allThreeDerivedOutputsExactOfficialZip": true,
+    "manifestPolicyInputUntouched": true,
+    "receiptOriginalSourceHead": "de3a56cfadecf575f8e7860cbfdafdac2af0a883",
+    "receiptOriginalRunId": "41431971663",
+    "receiptOriginalRunAttempt": "1",
+    "receiptOriginalAdoptedMainTag": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
+    "tagInterpretation": "Original official receipt tag8f82 is retained verbatim; it is not rewritten to F or represented as M actual Git parent/main e020. M/F source preservation is separately established from actual Git.",
+    "receiptInputCount": 610,
+    "ownedCount": 339,
+    "exclusionCount": 271,
+    "edgeCount": 812,
+    "diagnosticCount": 0,
+    "manifestLfSha256MatchesUnchangedFPolicy": true,
+    "originalFContractStdout": {
+      "ok": true,
+      "sourceCount": 339,
+      "diagnosticCount": 0
+    }
+  },
+  "savedOriginalFCommands": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "cwd": "/tmp/geometry-pr345-20261102",
+      "head": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+      "exit": 0
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "cwd": "/tmp/geometry-pr345-20261102",
+      "head": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+      "exit": 0
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "cwd": "/tmp/geometry-pr345-20261102",
+      "head": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+      "exit": 0
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "cwd": "/tmp/geometry-pr345-20261102",
+      "head": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+      "exit": 0
+    }
+  ],
+  "rawCommandStreams": [
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-adoption/00.stdout",
+      "bytes": 538,
+      "sha256": "df9b3e28b34453d22855a57b5fbbc127b6dd6855e9843c35f9b021978e6a1c2c"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-adoption/00.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-adoption/01.stdout",
+      "bytes": 134601,
+      "sha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-adoption/01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-adoption/02.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-adoption/02.stderr",
+      "bytes": 29577,
+      "sha256": "02c8d8a6d06d1f51b9d0b1ccf6467e2dedf141e6fb51641295ba022b445a7b39"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-adoption/03.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-adoption/03.stderr",
+      "bytes": 122,
+      "sha256": "87beb460f934b056387fb170dfcf07b7a61c31e86980847d0629e7673ad3ea2f"
+    }
+  ],
+  "remaining": {
+    "FFormalCIState": "Terminal results/artifacts for required fresh F integration CI have not been taken or accepted in this bounded scope; adoption RESULT.ready remains false. No CI pass is inferred.",
+    "pushStepSuperseded": "RESULT remaining text includes a then-future push; saved actual FF push and current remote-tracking F confirm this step is now complete.",
+    "newFullMutationProduction": "No new mutation product execution is claimed at F. Existing official M mutation executions stay M; exact unchanged source/test/judge/policy entries and original F logical check0 support adoption without relabelling.",
+    "historical20GreenJobsRemainHistorical": true,
+    "requirement": "Collect and verify fresh required F CI source/execution identities, originals and latest review before merge readiness."
+  },
+  "limits": [
+    "This is adoption/source integrity PASS, not whole-product, new CI or merge acceptance.",
+    "Read only the four target members of the already saved current official archives; no cache/ELF/tar payloads executed or inspected.",
+    "Saved original CLI/verifier results were reviewed, not re-executed by this peer."
+  ]
+}

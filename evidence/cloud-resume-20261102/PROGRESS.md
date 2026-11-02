@@ -1,3 +1,16 @@
+# CURRENT 2026-11-02T11:43Z — 新原件已實際採入並持久交付
+
+#340 current F=edf556eedc204bb285fb4504e246e4310f4e1e88；#345 current F=f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12。兩者都已把各自原#366整份新ledger和新report/receipt exact bytes採入trackedfiles、普通FF推送，原F check與架構三條全0。實際M→F各只有3Git葉；scan原本byte同、manifest policy未動。120執行仍各自M aca3d2a...／de3a56...，沒有改寫成F。新F integration已自動啟：340 run41438184818、345 run41437638054，**未收終態不可標全綠**；M全20綠保留execution。
+
+兩輪完整原verifier各0（25.360/26.126秒），各9官方原ZIP與所有執行過的ELF/cache bytes、API digest/manifest/readable ledger/原raw現已一併交付本E；每個ZIP保原bytes未重新包裝，下載ELF執行0。ledger 340 SHA140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef、345 SHA0e18b72514c6fd471f25117db31dcd4cb5e124c6b3a46db8bc0a3a9729b11165；皆123=114k/1crashed/5eq/3ret、0 stale/blocked/survived，7badcache各strict1。無第二輪123重產、無重抽R8。340 M正式native237/5420pass/1GDI/fullcanvas2286/86全部原件亦已交付；不能移標為F已驗。
+
+#367獨立D真12CI／2317full／原聚合逐byte相等／六artifact負控／真harness0/1/0及peer10669+9662已全完成，正文與prbody6e9a4e79e33c33434099e0894c66b23264d6a731已同步，仍draft：上游與最新main#354組合未驗。F01只捕捉0assert、真完整計數unknown，F02真0assert/socket fail；不當mutation credit。
+
+下一步：兩F正式CI/最後peer→正文READY/交最新審查→本機合340→341。341已有精確四類成本方案但UNRUN；不把compact=false當等價baseline、不把來源已在main當效能已驗。355 UI15及R03按原前置繼續，Codex不merge main。
+
+---
+以下歷史原件與狀態不作目前終態
+
 # CURRENT 2026-11-02T11:29Z — 新里程碑已完成，持續工作
 
 **#367本地真harness D/M/D完整0/1/0已完成**：F03/M02/R02各482.395251／484.041772／480.055233秒；F/R898過0敗0skip與62段projection，M897過2敗0skip＝唯一S2 false＋原golden計數後果，原Node同journal具名拒絕1。原2100每相上限、run0 LOCAL、737來源/3native前後一致；M唯一cdp不同且未push。另一peer獨立9662checks PASS，原307檔900623B封包sha d77cc507e750c620ba2bbba2e39519f1e83a20f07f6fa38e2514a1c016b3a446 已持久交付。

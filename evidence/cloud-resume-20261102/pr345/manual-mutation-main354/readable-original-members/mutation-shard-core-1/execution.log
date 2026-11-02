@@ -1,0 +1,44 @@
+Mutation scope: partial M01, M05, M59, M11, M98, M17, M21, M25, M29, M57, M56, M33, M37, M71, M75, M87, M91, M95
+BASELINE exe 已重編
+BASELINE OK: 166/166 全過(未變異原始碼)
+M01  exe 已重編
+M01  KILLED    I5：邊上判定:含端點改嚴格(端點不在邊上)  <- _ax_i5_collinear_vertex_rect_corner.scene: FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 有合法跨距但都不接觸引用的邊
+M05  exe 已重編
+M05  KILLED    I5：直立邊在矩形邊界上也算穿入(<= 改 <)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6/I5/I6 timber 80: 中線上沒有任何合法跨距
+M59  exe 已重編
+M59  KILLED    I5：拿掉「矩形中心必須在環內」檢查(凹槽內四角貼壁的矩形放行)  <- _ax_i5_notch_cell_corners_on_ring.scene: FAIL 應拒絕但接受 (L=['20'])
+M11  exe 已重編
+M11  KILLED    I5：停用孔完全罩住矩形的精確中心檢查（孔內矩形錯誤放行）  <- _test_hole_auto.scene: FAIL 應接受但拒絕: <repo>/_test_hole_auto.scene:15: V_CUT_PRIORITY：角材 2 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC
+M98  exe 已重編
+M98  KILLED    I11：W 最終世界重驗的兩兩檢查拿掉「只比同承載面」過濾(world_validation.c)；同上場景必轉紅  <- _i11_two_surfaces_same_uv_accept.scene: FAIL 應接受但拒絕: <repo>/_i11_two_surfaces_same_uv_accept.scene:14: 場景重驗失敗
+M17  exe 已重編
+M17  KILLED    D11：擋面涵蓋檢查:邊界相等不算涵蓋(> 改 >=)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6/I5/I6 timber 80: 跨距起點沒有擋面（端面懸空）
+M21  exe 已重編
+M21  KILLED    R6(d)：拿掉「終點必須有擋面」檢查  <- _edge_straddle.scene: FAIL 錯誤不符: 期望含「端面懸空」實得「<repo>/_edge_straddle.scene:7: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」
+M25  exe 已重編
+M25  KILLED    R6(c)：跨距歧義放行:多區間自動選第一段  <- _test_ambiguous.scene: FAIL 錯誤不符: 期望含「跨距歧義」實得「<repo>/_test_ambiguous.scene:10: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」
+M29  exe 已重編
+M29  KILLED    I13：外輪廓材料側反轉(footprint 長到面外)  <- _demo_ceiling.scene: FAIL 應接受但拒絕: <repo>/_demo_ceiling.scene:33: R6/I5/I6 timber 2: 中線上沒有任何合法跨距
+M57  exe 已重編
+M57  KILLED    R21：between 的 FREE 邊檢查反轉(明寫就放行自由邊)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:17: R6/I5/I6 timber 3: between 指名的擋面是自由邊（頂到空氣）
+M56  exe 已重編
+M56  EQUIVALENT I23：I23(b) 不再檢查被錨定的索引是否仍推導得出  <- 等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild → reference_place_geometry 對每個 AT_GRID 角材已先跑同一個 grid_anchor_line_coord(同 grids/count/grid/placement/axis/index/has_band/band;boundary 若為自帶 rect 的合成輪廓,其 bounds/area 與 NULL boundary 的 rect 路徑相同),索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。
+M33  exe 已重編
+M33  KILLED    I13：at-grid 軸向守門員反轉  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: I13/I23 timber 1: missing grid or face/axis mismatch (垂直)
+M37  exe 已重編
+M37  KILLED    I11：碰撞兩兩檢查變成自己也算(j=i+1 改 j=i)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: 場景重驗失敗
+M71  exe 已重編
+M71  KILLED    R7/#198 A：以 bbox 冒充單 slab 的多段交集  <- _ax_r7_notch_disconnected.scene: FAIL 錯誤不符: 期望含「R7: 投影接觸非單一矩形」實得「<repo>/_ax_r7_notch_disconnected.scene:4: 套用投影後有物件失效（輪廓退化/空間成員衝突）」
+M75  exe 已重編
+M75  KILLED    R14/R15/#202：未裁切 strip 提前成功、忽略其餘項及選片  <- _ax_r15_uncut_strip_missing_item.scene: FAIL 應拒絕但接受 (L=[])
+M87  exe 已重編
+M87  KILLED    I22/S1：拿掉「非 boundary 角材的 footprint 不得超出定位邊」的拒絕(V_EXTENSION)；primary 整支穿過凹角的 _s1_p8 必轉紅  <- _role_priority_mutant.scene: FAIL 錯誤不符: 期望含「V_EXTENSION：非 boundary 角材（1）」實得「<repo>/_role_priority_mutant.scene:8: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」
+M91  exe 已重編
+M91  KILLED    I22/#299：V_EXTENSION 訊息拿掉定位邊區間 [edge_lo,edge_hi] mm；p8、p8b 必轉紅  <- _s1_p8_l_room_primary_through_reflex_extension.scene: FAIL 錯誤不符: 期望含「V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍」且含「定位邊 e3 [3000,4800] mm」且含「低端超出 [27,3000] mm」且不含「高端超出」實得「<repo>/_s1_p8_l_room_primary_through_reflex_extension.scene:15: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍——定位邊 e3，低端超出 [27,3000] mm」
+M95  exe 已重編
+M95  KILLED    I22/#299：V_EXTENSION 訊息的「高端超出」不論有沒有超出都印(多印一段假區間)；_s1_p8 的 error_not 必轉紅  <- _s1_p8_l_room_primary_through_reflex_extension.scene: FAIL 錯誤不符: 期望含「V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍」且含「定位邊 e3 [3000,4800] mm」且含「低端超出 [27,3000] mm」且不含「高端超出」實得「<repo>/_s1_p8_l_room_primary_through_reflex_extension.scene:15: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍——定位邊 e3 [3000,4800] mm，低端超出 [27,3000] mm，高端超出 [4800,4773] mm」
+
+本次 18:殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0
+歷次紀錄(不是本次覆蓋)18:殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0 / 未跑 unrun 52
+  (過期明細用 --check 列出)
+本次 18:殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0

@@ -1,0 +1,12 @@
+✔ a second history action cannot overtake a deferred native result (2.769054ms)
+✔ the history action stays busy until the actual repaint finishes (0.773482ms)
+✔ a native refusal releases the gate without reporting success (0.756471ms)
+✔ native and repaint exceptions both release the gate (2.477811ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 65.827277

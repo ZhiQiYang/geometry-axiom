@@ -1,0 +1,508 @@
+﻿2026-11-02T10:39:32.8362540Z Current runner version: '2.338.2'
+2026-11-02T10:39:32.8386739Z ##[group]Runner Image Provisioner
+2026-11-02T10:39:32.8387732Z Hosted Compute Agent
+2026-11-02T10:39:32.8388349Z Version: 20261021.618
+2026-11-02T10:39:32.8389098Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-02T10:39:32.8390384Z Build Date: 2026-10-21T00:45:21Z
+2026-11-02T10:39:32.8391115Z Worker ID: {d412947c-4ac0-49b2-b5ea-e7062e33c244}
+2026-11-02T10:39:32.8391944Z Region: westus
+2026-11-02T10:39:32.8392505Z Cloud: Azure
+2026-11-02T10:39:32.8393091Z ##[endgroup]
+2026-11-02T10:39:32.8395004Z ##[group]Operating System
+2026-11-02T10:39:32.8395684Z Ubuntu
+2026-11-02T10:39:32.8396315Z 24.04.5
+2026-11-02T10:39:32.8396860Z LTS
+2026-11-02T10:39:32.8397472Z ##[endgroup]
+2026-11-02T10:39:32.8398107Z ##[group]Runner Image
+2026-11-02T10:39:32.8398732Z Image: ubuntu-24.04
+2026-11-02T10:39:32.8399590Z Version: 20261025.353.1
+2026-11-02T10:39:32.8400909Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-02T10:39:32.8402589Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-02T10:39:32.8403578Z ##[endgroup]
+2026-11-02T10:39:32.8404725Z ##[group]GITHUB_TOKEN Permissions
+2026-11-02T10:39:32.8406620Z Contents: read
+2026-11-02T10:39:32.8407401Z Metadata: read
+2026-11-02T10:39:32.8408030Z ##[endgroup]
+2026-11-02T10:39:32.8410479Z Secret source: Actions
+2026-11-02T10:39:32.8411583Z Cache mode: write
+2026-11-02T10:39:32.8412263Z Prepare workflow directory
+2026-11-02T10:39:32.8747758Z Prepare all required actions
+2026-11-02T10:39:32.8798787Z Getting action download info
+2026-11-02T10:39:33.2515900Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-02T10:39:33.3457993Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-02T10:39:33.5595479Z Complete job name: native (1/3)
+2026-11-02T10:39:33.6482615Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-02T10:39:33.6483690Z with:
+2026-11-02T10:39:33.6484160Z   persist-credentials: false
+2026-11-02T10:39:33.6484719Z   repository: ZhiQiYang/geometry-axiom
+2026-11-02T10:39:33.6488450Z   token: ***
+2026-11-02T10:39:33.6488904Z   ssh-strict: true
+2026-11-02T10:39:33.6489552Z   ssh-user: git
+2026-11-02T10:39:33.6489992Z   clean: true
+2026-11-02T10:39:33.6490449Z   sparse-checkout-cone-mode: true
+2026-11-02T10:39:33.6490986Z   fetch-depth: 1
+2026-11-02T10:39:33.6491433Z   fetch-tags: false
+2026-11-02T10:39:33.6491893Z   show-progress: true
+2026-11-02T10:39:33.6492366Z   lfs: false
+2026-11-02T10:39:33.6492800Z   submodules: false
+2026-11-02T10:39:33.6493270Z   set-safe-directory: true
+2026-11-02T10:39:33.6494041Z ##[endgroup]
+2026-11-02T10:39:33.9336940Z Syncing repository: ZhiQiYang/geometry-axiom
+2026-11-02T10:39:33.9340454Z ##[group]Getting Git version info
+2026-11-02T10:39:33.9342266Z Working directory is '/home/runner/work/geometry-axiom/geometry-axiom'
+2026-11-02T10:39:33.9344718Z [command]/usr/bin/git version
+2026-11-02T10:39:33.9431598Z git version 2.56.0
+2026-11-02T10:39:33.9459506Z ##[endgroup]
+2026-11-02T10:39:33.9487157Z Temporarily overriding HOME='/home/runner/work/_temp/a71ef389-9896-45b8-873a-fa0711924cef' before making global git config changes
+2026-11-02T10:39:33.9490800Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T10:39:33.9493824Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T10:39:33.9568228Z Deleting the contents of '/home/runner/work/geometry-axiom/geometry-axiom'
+2026-11-02T10:39:33.9571970Z ##[group]Initializing the repository
+2026-11-02T10:39:33.9601290Z [command]/usr/bin/git init /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T10:39:33.9696528Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-02T10:39:33.9701116Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-02T10:39:33.9702539Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-02T10:39:33.9704294Z hint: call:
+2026-11-02T10:39:33.9704992Z hint:
+2026-11-02T10:39:33.9706384Z hint: 	git config --global init.defaultBranch <name>
+2026-11-02T10:39:33.9707881Z hint:
+2026-11-02T10:39:33.9709652Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-02T10:39:33.9712238Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-02T10:39:33.9716639Z hint:
+2026-11-02T10:39:33.9717580Z hint: 	git branch -m <name>
+2026-11-02T10:39:33.9718452Z hint:
+2026-11-02T10:39:33.9719846Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-02T10:39:33.9721951Z Initialized empty Git repository in /home/runner/work/geometry-axiom/geometry-axiom/.git/
+2026-11-02T10:39:33.9725765Z [command]/usr/bin/git remote add origin https://github.com/ZhiQiYang/geometry-axiom
+2026-11-02T10:39:33.9774613Z ##[endgroup]
+2026-11-02T10:39:33.9776309Z ##[group]Disabling automatic garbage collection
+2026-11-02T10:39:33.9779178Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-02T10:39:33.9818710Z ##[endgroup]
+2026-11-02T10:39:33.9820854Z ##[group]Setting up auth
+2026-11-02T10:39:33.9824878Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T10:39:33.9866213Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T10:39:34.0258980Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T10:39:34.0313137Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T10:39:34.0568125Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-02T10:39:34.0620064Z ##[endgroup]
+2026-11-02T10:39:34.0621282Z ##[group]Fetching the repository
+2026-11-02T10:39:34.0634190Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +afa52541ef2bcdd00e184e0f5d0d5e33874610ed:refs/remotes/pull/340/merge
+2026-11-02T10:41:42.9214442Z From https://github.com/ZhiQiYang/geometry-axiom
+2026-11-02T10:41:42.9215063Z  * [new ref]           afa52541ef2bcdd00e184e0f5d0d5e33874610ed -> pull/340/merge
+2026-11-02T10:41:42.9218802Z ##[endgroup]
+2026-11-02T10:41:42.9220879Z ##[group]Determining the checkout info
+2026-11-02T10:41:42.9222425Z ##[endgroup]
+2026-11-02T10:41:42.9228682Z [command]/usr/bin/git sparse-checkout disable
+2026-11-02T10:41:42.9285535Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-02T10:41:42.9327775Z ##[group]Checking out the ref
+2026-11-02T10:41:42.9334022Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/340/merge
+2026-11-02T10:41:44.4503060Z Updating files:  14% (5424/38720)
+2026-11-02T10:41:45.0365417Z Updating files:  15% (5808/38720)
+2026-11-02T10:41:45.2579739Z Updating files:  15% (6093/38720)
+2026-11-02T10:41:45.4176353Z Updating files:  16% (6196/38720)
+2026-11-02T10:41:45.4613989Z Updating files:  17% (6583/38720)
+2026-11-02T10:41:45.4759651Z Updating files:  18% (6970/38720)
+2026-11-02T10:41:45.4941089Z Updating files:  19% (7357/38720)
+2026-11-02T10:41:45.5121960Z Updating files:  20% (7744/38720)
+2026-11-02T10:41:45.5567731Z Updating files:  21% (8132/38720)
+2026-11-02T10:41:45.5910860Z Updating files:  22% (8519/38720)
+2026-11-02T10:41:45.7447905Z Updating files:  23% (8906/38720)
+2026-11-02T10:41:45.8278095Z Updating files:  24% (9293/38720)
+2026-11-02T10:41:45.8655154Z Updating files:  25% (9680/38720)
+2026-11-02T10:41:45.8983704Z Updating files:  26% (10068/38720)
+2026-11-02T10:41:45.9279686Z Updating files:  27% (10455/38720)
+2026-11-02T10:41:45.9640978Z Updating files:  28% (10842/38720)
+2026-11-02T10:41:46.0952413Z Updating files:  29% (11229/38720)
+2026-11-02T10:41:46.1193127Z Updating files:  29% (11324/38720)
+2026-11-02T10:41:46.1389579Z Updating files:  30% (11616/38720)
+2026-11-02T10:41:46.1535962Z Updating files:  31% (12004/38720)
+2026-11-02T10:41:46.1862047Z Updating files:  32% (12391/38720)
+2026-11-02T10:41:46.2055614Z Updating files:  33% (12778/38720)
+2026-11-02T10:41:46.3669574Z Updating files:  34% (13165/38720)
+2026-11-02T10:41:46.9774599Z Updating files:  35% (13552/38720)
+2026-11-02T10:41:46.9775312Z Updating files:  36% (13940/38720)
+2026-11-02T10:41:47.0463203Z Updating files:  36% (13941/38720)
+2026-11-02T10:41:47.2777504Z Updating files:  37% (14327/38720)
+2026-11-02T10:41:47.3041880Z Updating files:  38% (14714/38720)
+2026-11-02T10:41:47.3983360Z Updating files:  39% (15101/38720)
+2026-11-02T10:41:47.4254510Z Updating files:  40% (15488/38720)
+2026-11-02T10:41:47.4496997Z Updating files:  41% (15876/38720)
+2026-11-02T10:41:47.4655534Z Updating files:  42% (16263/38720)
+2026-11-02T10:41:47.9651026Z Updating files:  43% (16650/38720)
+2026-11-02T10:41:47.9778264Z Updating files:  44% (17037/38720)
+2026-11-02T10:41:47.9949155Z Updating files:  44% (17089/38720)
+2026-11-02T10:41:48.2645369Z Updating files:  45% (17424/38720)
+2026-11-02T10:41:48.3396829Z Updating files:  46% (17812/38720)
+2026-11-02T10:41:48.3770401Z Updating files:  47% (18199/38720)
+2026-11-02T10:41:48.3968319Z Updating files:  48% (18586/38720)
+2026-11-02T10:41:48.4457697Z Updating files:  49% (18973/38720)
+2026-11-02T10:41:48.4966070Z Updating files:  50% (19360/38720)
+2026-11-02T10:41:48.6196065Z Updating files:  51% (19748/38720)
+2026-11-02T10:41:48.6965870Z Updating files:  52% (20135/38720)
+2026-11-02T10:41:48.7829751Z Updating files:  53% (20522/38720)
+2026-11-02T10:41:48.9774835Z Updating files:  54% (20909/38720)
+2026-11-02T10:41:49.0568532Z Updating files:  54% (20974/38720)
+2026-11-02T10:41:49.1053423Z Updating files:  55% (21296/38720)
+2026-11-02T10:41:49.1544670Z Updating files:  56% (21684/38720)
+2026-11-02T10:41:49.2003481Z Updating files:  57% (22071/38720)
+2026-11-02T10:41:49.2446958Z Updating files:  58% (22458/38720)
+2026-11-02T10:41:49.3190236Z Updating files:  59% (22845/38720)
+2026-11-02T10:41:49.3393265Z Updating files:  60% (23232/38720)
+2026-11-02T10:41:49.3734498Z Updating files:  61% (23620/38720)
+2026-11-02T10:41:49.4179983Z Updating files:  62% (24007/38720)
+2026-11-02T10:41:49.4563104Z Updating files:  63% (24394/38720)
+2026-11-02T10:41:49.4976365Z Updating files:  64% (24781/38720)
+2026-11-02T10:41:49.5588979Z Updating files:  65% (25168/38720)
+2026-11-02T10:41:49.6480584Z Updating files:  66% (25556/38720)
+2026-11-02T10:41:49.6907375Z Updating files:  67% (25943/38720)
+2026-11-02T10:41:49.7908608Z Updating files:  68% (26330/38720)
+2026-11-02T10:41:49.8914466Z Updating files:  69% (26717/38720)
+2026-11-02T10:41:49.9622647Z Updating files:  70% (27104/38720)
+2026-11-02T10:41:49.9821533Z Updating files:  71% (27492/38720)
+2026-11-02T10:41:50.0394694Z Updating files:  71% (27547/38720)
+2026-11-02T10:41:50.1115276Z Updating files:  72% (27879/38720)
+2026-11-02T10:41:50.1384483Z Updating files:  73% (28266/38720)
+2026-11-02T10:41:50.1916363Z Updating files:  74% (28653/38720)
+2026-11-02T10:41:50.2379710Z Updating files:  75% (29040/38720)
+2026-11-02T10:41:50.2879627Z Updating files:  76% (29428/38720)
+2026-11-02T10:41:50.3179134Z Updating files:  77% (29815/38720)
+2026-11-02T10:41:50.3407077Z Updating files:  78% (30202/38720)
+2026-11-02T10:41:50.3541554Z Updating files:  79% (30589/38720)
+2026-11-02T10:41:50.4508955Z Updating files:  80% (30976/38720)
+2026-11-02T10:41:50.6645183Z Updating files:  81% (31364/38720)
+2026-11-02T10:41:50.6812157Z Updating files:  82% (31751/38720)
+2026-11-02T10:41:50.7083812Z Updating files:  83% (32138/38720)
+2026-11-02T10:41:50.7374180Z Updating files:  84% (32525/38720)
+2026-11-02T10:41:50.7807307Z Updating files:  85% (32912/38720)
+2026-11-02T10:41:50.8737493Z Updating files:  86% (33300/38720)
+2026-11-02T10:41:50.9098280Z Updating files:  87% (33687/38720)
+2026-11-02T10:41:50.9776008Z Updating files:  88% (34074/38720)
+2026-11-02T10:41:50.9878314Z Updating files:  88% (34355/38720)
+2026-11-02T10:41:51.0105437Z Updating files:  89% (34461/38720)
+2026-11-02T10:41:51.0853882Z Updating files:  90% (34848/38720)
+2026-11-02T10:41:51.1251032Z Updating files:  91% (35236/38720)
+2026-11-02T10:41:51.1618095Z Updating files:  92% (35623/38720)
+2026-11-02T10:41:51.2017089Z Updating files:  93% (36010/38720)
+2026-11-02T10:41:51.2356486Z Updating files:  94% (36397/38720)
+2026-11-02T10:41:51.3080558Z Updating files:  95% (36784/38720)
+2026-11-02T10:41:51.3748483Z Updating files:  96% (37172/38720)
+2026-11-02T10:41:51.4903321Z Updating files:  97% (37559/38720)
+2026-11-02T10:41:51.5087293Z Updating files:  98% (37946/38720)
+2026-11-02T10:41:51.5442057Z Updating files:  99% (38333/38720)
+2026-11-02T10:41:51.5442501Z Updating files: 100% (38720/38720)
+2026-11-02T10:41:51.5443041Z Updating files: 100% (38720/38720), done.
+2026-11-02T10:41:51.7294502Z Note: switching to 'refs/remotes/pull/340/merge'.
+2026-11-02T10:41:51.7294948Z 
+2026-11-02T10:41:51.7295279Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-02T10:41:51.7295953Z changes and commit them, and you can discard any commits you make in this
+2026-11-02T10:41:51.7296606Z state without impacting any branches by switching back to a branch.
+2026-11-02T10:41:51.7296927Z 
+2026-11-02T10:41:51.7297137Z If you want to create a new branch to retain commits you create, you may
+2026-11-02T10:41:51.7297763Z do so (now or later) by using -c with the switch command. Example:
+2026-11-02T10:41:51.7298065Z 
+2026-11-02T10:41:51.7298186Z   git switch -c <new-branch-name>
+2026-11-02T10:41:51.7298381Z 
+2026-11-02T10:41:51.7298491Z Or undo this operation with:
+2026-11-02T10:41:51.7298676Z 
+2026-11-02T10:41:51.7298767Z   git switch -
+2026-11-02T10:41:51.7298904Z 
+2026-11-02T10:41:51.7299837Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-02T10:41:51.7300312Z 
+2026-11-02T10:41:51.7300729Z HEAD is now at afa52541 Merge aca3d2a5f604848b159a0e5cdd3d3f55fcad190f into e02057b4c725d6f03ae52c3bc30776bf9442b0cf
+2026-11-02T10:41:51.7962584Z ##[endgroup]
+2026-11-02T10:41:51.8018943Z [command]/usr/bin/git log -1 --format=%H
+2026-11-02T10:41:51.8056393Z afa52541ef2bcdd00e184e0f5d0d5e33874610ed
+2026-11-02T10:41:51.8067300Z ##[group]Removing auth
+2026-11-02T10:41:51.8071775Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T10:41:51.8112490Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T10:41:51.8437922Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T10:41:51.8478320Z http.https://github.com/.extraheader
+2026-11-02T10:41:51.8486064Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-02T10:41:51.9250872Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T10:41:51.9563436Z ##[endgroup]
+2026-11-02T10:41:52.2287096Z ##[group]Run ulimit -s 16384
+2026-11-02T10:41:52.2287463Z [36;1mulimit -s 16384[0m
+2026-11-02T10:41:52.2288193Z [36;1mpython3 tests/run_all.py --build --shard '1/3' --report '/home/runner/work/_temp/native-shard-1/shard-1.json'[0m
+2026-11-02T10:41:52.2312557Z shell: /usr/bin/bash -e {0}
+2026-11-02T10:41:52.2312839Z ##[endgroup]
+2026-11-02T10:43:09.0303002Z 分片1/3：79／完整237個suite；完整登記檢查仍執行
+2026-11-02T10:43:09.0303721Z 二進位輸出目錄：/tmp/geometry-tests
+2026-11-02T10:43:09.0304473Z [build] 只建置 stale/missing：bridge, core, gdi, integrity, model-base
+2026-11-02T10:43:09.0305240Z   bridge：建置（找不到 /tmp/geometry-tests/bridge）…
+2026-11-02T10:43:09.0305998Z   core：建置（找不到 /tmp/geometry-tests/core）…
+2026-11-02T10:43:09.0306442Z   integrity：建置（找不到 /tmp/geometry-tests/integrity）…
+2026-11-02T10:43:09.0306882Z   model-base：建置（找不到 /tmp/geometry-tests/model-base）…
+2026-11-02T10:43:09.0307307Z   bridge     built          建好 /tmp/geometry-tests/bridge
+2026-11-02T10:43:09.0307775Z   core       built          建好 /tmp/geometry-tests/core
+2026-11-02T10:43:09.0308124Z   gdi        n/a            僅 Windows
+2026-11-02T10:43:09.0308491Z   integrity  built          建好 /tmp/geometry-tests/integrity
+2026-11-02T10:43:09.0308934Z   model-base built          建好 /tmp/geometry-tests/model-base
+2026-11-02T10:43:09.0309555Z [binaries]
+2026-11-02T10:43:09.0310061Z   bridge     fresh    來源與 binary SHA-256 相符（建於 2026-11-02T10:42:12+00:00）
+2026-11-02T10:43:09.0310567Z   core       fresh    來源與 binary SHA-256 相符（建於 2026-11-02T10:42:28+00:00）
+2026-11-02T10:43:09.0310951Z   gdi        n/a      僅 Windows
+2026-11-02T10:43:09.0311345Z   integrity  fresh    來源與 binary SHA-256 相符（建於 2026-11-02T10:42:52+00:00）
+2026-11-02T10:43:09.0311870Z   model-base fresh    來源與 binary SHA-256 相符（建於 2026-11-02T10:43:08+00:00）
+2026-11-02T10:43:09.0312363Z [環境] CC=未設定（繼承自外殼；僅影響 binaries.py 在非 Windows 的編譯）
+2026-11-02T10:43:09.0312932Z [環境] 已清除外殼繼承的 GEOMETRY_*：（無）
+2026-11-02T10:43:09.0313865Z [環境] run_all 設給子行程的 GEOMETRY_*：GEOMETRY_ENGINEERING_BRIDGE、GEOMETRY_MODEL_BASE、GEOMETRY_TEST_BRIDGE、GEOMETRY_TEST_CORE
+2026-11-02T10:43:09.0314456Z [1/79] c:integrity …
+2026-11-02T10:43:16.4058378Z [2/79] py:test_assembly_native_diagnostics …
+2026-11-02T10:43:17.9719663Z [3/79] py:test_axiom_reader …
+2026-11-02T10:46:49.6378822Z [4/79] py:test_bridge_integrity …
+2026-11-02T10:47:31.0945978Z [5/79] py:test_datum_contract …
+2026-11-02T10:47:41.6567515Z [6/79] py:test_domain_decoupling_compatibility …
+2026-11-02T10:47:43.6312256Z [7/79] py:test_engineering_model_compatibility …
+2026-11-02T10:47:54.5822476Z [8/79] py:test_evidence_link_native …
+2026-11-02T10:47:55.9738940Z [9/79] py:test_gdi_contract …
+2026-11-02T10:47:56.1657167Z [10/79] py:test_geo261_assembly_graph_product …
+2026-11-02T10:48:05.4019648Z [11/79] py:test_geo261_derived_policy_sources …
+2026-11-02T10:48:09.3067693Z [12/79] py:test_geo261_domain_product …
+2026-11-02T10:48:16.8525990Z [13/79] py:test_geo261_draw_annotation …
+2026-11-02T10:48:23.2536798Z [14/79] py:test_geo261_graph_product …
+2026-11-02T10:48:30.0831845Z [15/79] py:test_geo261_grid_sources …
+2026-11-02T10:48:34.9906740Z [16/79] py:test_geo261_host_authority …
+2026-11-02T10:48:51.1347804Z [17/79] py:test_geo261_host_placement_definition …
+2026-11-02T10:48:58.2958909Z [18/79] py:test_geo261_linear_definition_sources …
+2026-11-02T10:49:00.9236429Z [19/79] py:test_geo261_load_residual …
+2026-11-02T10:50:26.6729021Z [20/79] py:test_geo261_mutation_migration …
+2026-11-02T10:50:31.8854760Z [21/79] py:test_geo261_native_candidate …
+2026-11-02T10:50:35.4116941Z [22/79] py:test_geo261_native_enclosures …
+2026-11-02T10:50:39.1738561Z [23/79] py:test_geo261_native_entrypoints …
+2026-11-02T10:50:47.0512180Z [24/79] py:test_geo261_native_geometry …
+2026-11-02T10:50:52.4215316Z [25/79] py:test_geo261_native_grid_product …
+2026-11-02T10:51:00.1744635Z [26/79] py:test_geo261_native_regions …
+2026-11-02T10:51:03.5284747Z [27/79] py:test_geo261_native_versions …
+2026-11-02T10:51:07.1989710Z [28/79] py:test_geo261_panel_native …
+2026-11-02T10:51:11.2326974Z [29/79] py:test_geo261_parameter_definition_sources …
+2026-11-02T10:51:14.0819966Z [30/79] py:test_geo261_parameter_sources …
+2026-11-02T10:51:20.8226794Z [31/79] py:test_geo261_placement_definition …
+2026-11-02T10:51:26.7566747Z [32/79] py:test_geo261_section_profile_authority …
+2026-11-02T10:51:31.5792848Z [33/79] py:test_geo261_wood_contacts_product …
+2026-11-02T10:51:36.9157215Z [34/79] py:test_geo261_wood_derived_placement …
+2026-11-02T10:51:43.0185762Z [35/79] py:test_geo261_wood_engineering …
+2026-11-02T10:51:50.0560034Z [36/79] py:test_geo261_wood_finish …
+2026-11-02T10:51:57.3932829Z [37/79] py:test_geo261_wood_grid_application …
+2026-11-02T10:52:04.8549710Z [38/79] py:test_geo261_wood_grid_cells …
+2026-11-02T10:52:10.7410892Z [39/79] py:test_geo261_wood_section_profile …
+2026-11-02T10:52:18.0389630Z [40/79] py:test_geo314_stagger_commit …
+2026-11-02T10:52:28.2726732Z [41/79] py:test_geometry_host_native …
+2026-11-02T10:52:46.6744721Z [42/79] py:test_geometry_host_world …
+2026-11-02T10:52:47.0085237Z [43/79] py:test_geometry_kernel_isolation …
+2026-11-02T10:52:48.9986186Z [44/79] py:test_geometry_kernel_transactions …
+2026-11-02T10:52:49.2937876Z [45/79] py:test_grid_system_contract …
+2026-11-02T10:52:54.1734213Z [46/79] py:test_grid_trial_contract …
+2026-11-02T10:52:55.2490655Z [47/79] py:test_k1_mutation_runners …
+2026-11-02T10:52:55.4468191Z [48/79] py:test_local_launcher …
+2026-11-02T10:52:57.9108867Z [49/79] py:test_modeling_runtime …
+2026-11-02T10:53:02.9957109Z [50/79] py:test_mutation_anchors …
+2026-11-02T10:53:03.4388460Z [51/79] py:test_panel_fill_host …
+2026-11-02T10:53:13.5892499Z [52/79] py:test_parameters_candidate_value_history …
+2026-11-02T10:53:16.8740777Z [53/79] py:test_parameters_core …
+2026-11-02T10:53:28.2721845Z [54/79] py:test_parameters_deleted_unbind …
+2026-11-02T10:53:32.0067229Z [55/79] py:test_parameters_final_candidate …
+2026-11-02T10:53:33.2830037Z [56/79] py:test_parameters_unbind_scope …
+2026-11-02T10:53:35.5272439Z [57/79] py:test_product_architecture …
+2026-11-02T10:53:57.5210171Z [58/79] py:test_rectangular_template …
+2026-11-02T10:53:58.5249573Z [59/79] py:test_release_gate …
+2026-11-02T10:53:59.0906345Z [60/79] py:test_rule_case_catalog …
+2026-11-02T10:54:01.9307609Z [61/79] py:test_rule_case_executor …
+2026-11-02T10:54:09.1567273Z [62/79] py:test_rule_case_workbench_http …
+2026-11-02T10:54:55.2941796Z [63/79] py:test_scenario_verify …
+2026-11-02T10:55:46.1513525Z [64/79] py:test_scene_import …
+2026-11-02T10:55:49.9710715Z [65/79] py:test_section_profile_native …
+2026-11-02T10:56:06.2271113Z [66/79] py:test_source_inspector …
+2026-11-02T10:56:11.8083852Z [67/79] py:test_witness_diagnostics …
+2026-11-02T10:56:12.0385048Z [68/79] node:cdp_confirmation_gate …
+2026-11-02T10:56:12.0692490Z [69/79] node:cutting_layering …
+2026-11-02T10:56:12.9084646Z [70/79] node:cutting_plan …
+2026-11-02T10:56:13.0668752Z [71/79] node:draw_annotation …
+2026-11-02T10:56:13.1795135Z [72/79] node:woodworking_frontend …
+2026-11-02T10:56:13.3109086Z [73/79] node:parameter_confirmation_settlement …
+2026-11-02T10:56:13.4544296Z [74/79] node:face_projection_lifecycle …
+2026-11-02T10:56:13.5858768Z [75/79] node:history_operation …
+2026-11-02T10:56:13.6872227Z [76/79] node:cdp_settle …
+2026-11-02T10:56:13.7993115Z [77/79] node:cdp_card_position …
+2026-11-02T10:56:14.0121618Z [78/79] node:evidence_project_store …
+2026-11-02T10:56:14.2877535Z [79/79] node:grid_definition_diagram …
+2026-11-02T10:56:14.4349435Z 
+2026-11-02T10:56:14.4350391Z suite                                        測試數  pass  fail  skip     秒  備註
+2026-11-02T10:56:14.4351145Z ------------------------------------------------------------------------------
+2026-11-02T10:56:14.4352245Z c:integrity                                     432   432     0     0    7.4  C 檢查點數（非 test 級）
+2026-11-02T10:56:14.4353025Z py:test_assembly_native_diagnostics               8     8     0     0    1.6
+2026-11-02T10:56:14.4353847Z py:test_axiom_reader                             51    51     0     0  211.7
+2026-11-02T10:56:14.4355048Z py:test_bridge_integrity                         24    24     0     0   41.5
+2026-11-02T10:56:14.4355874Z py:test_datum_contract                            9     9     0     0   10.6
+2026-11-02T10:56:14.4356645Z py:test_domain_decoupling_compatibility          14    14     0     0    2.0
+2026-11-02T10:56:14.4357402Z py:test_engineering_model_compatibility          44    44     0     0   11.0
+2026-11-02T10:56:14.4358123Z py:test_evidence_link_native                      6     6     0     0    1.4
+2026-11-02T10:56:14.4360164Z py:test_gdi_contract                              1     0     0     1    0.2  skip：requires compiled Windows GDI contract harness ×1（其中 1 個在具名允許清單，平台固有，不計入 exit 3）；日誌 /tmp/geometry-tests/run_all-logs/py_test_gdi_contract.log
+2026-11-02T10:56:14.4361996Z py:test_geo261_assembly_graph_product             4     4     0     0    9.2
+2026-11-02T10:56:14.4362818Z py:test_geo261_derived_policy_sources            14    14     0     0    3.9
+2026-11-02T10:56:14.4363624Z py:test_geo261_domain_product                     9     9     0     0    7.5
+2026-11-02T10:56:14.4364332Z py:test_geo261_draw_annotation                    4     4     0     0    6.4
+2026-11-02T10:56:14.4364816Z py:test_geo261_graph_product                      5     5     0     0    6.8
+2026-11-02T10:56:14.4365266Z py:test_geo261_grid_sources                      12    12     0     0    4.9
+2026-11-02T10:56:14.4365707Z py:test_geo261_host_authority                    18    18     0     0   16.1
+2026-11-02T10:56:14.4366171Z py:test_geo261_host_placement_definition          7     7     0     0    7.2
+2026-11-02T10:56:14.4366646Z py:test_geo261_linear_definition_sources         15    15     0     0    2.6
+2026-11-02T10:56:14.4367107Z py:test_geo261_load_residual                     14    14     0     0   85.7
+2026-11-02T10:56:14.4367543Z py:test_geo261_mutation_migration                15    15     0     0    5.2
+2026-11-02T10:56:14.4367986Z py:test_geo261_native_candidate                  17    17     0     0    3.5
+2026-11-02T10:56:14.4368440Z py:test_geo261_native_enclosures                 19    19     0     0    3.8
+2026-11-02T10:56:14.4368892Z py:test_geo261_native_entrypoints                 3     3     0     0    7.9
+2026-11-02T10:56:14.4369641Z py:test_geo261_native_geometry                    7     7     0     0    5.4
+2026-11-02T10:56:14.4370110Z py:test_geo261_native_grid_product                5     5     0     0    7.8
+2026-11-02T10:56:14.4370571Z py:test_geo261_native_regions                    13    13     0     0    3.4
+2026-11-02T10:56:14.4371009Z py:test_geo261_native_versions                   14    14     0     0    3.7
+2026-11-02T10:56:14.4371454Z py:test_geo261_panel_native                      10    10     0     0    4.0
+2026-11-02T10:56:14.4371912Z py:test_geo261_parameter_definition_sources      20    20     0     0    2.8
+2026-11-02T10:56:14.4372365Z py:test_geo261_parameter_sources                 12    12     0     0    6.7
+2026-11-02T10:56:14.4372810Z py:test_geo261_placement_definition              19    19     0     0    5.9
+2026-11-02T10:56:14.4373266Z py:test_geo261_section_profile_authority         15    15     0     0    4.8
+2026-11-02T10:56:14.4373723Z py:test_geo261_wood_contacts_product              1     1     0     0    5.3
+2026-11-02T10:56:14.4374180Z py:test_geo261_wood_derived_placement            14    14     0     0    6.1
+2026-11-02T10:56:14.4374630Z py:test_geo261_wood_engineering                  12    12     0     0    7.0
+2026-11-02T10:56:14.4375067Z py:test_geo261_wood_finish                       12    12     0     0    7.3
+2026-11-02T10:56:14.4375503Z py:test_geo261_wood_grid_application             23    23     0     0    7.5
+2026-11-02T10:56:14.4375946Z py:test_geo261_wood_grid_cells                   13    13     0     0    5.9
+2026-11-02T10:56:14.4376394Z py:test_geo261_wood_section_profile              12    12     0     0    7.3
+2026-11-02T10:56:14.4376836Z py:test_geo314_stagger_commit                    47    47     0     0   10.2
+2026-11-02T10:56:14.4377430Z py:test_geometry_host_native                     30    30     0     0   18.4
+2026-11-02T10:56:14.4377877Z py:test_geometry_host_world                       8     8     0     0    0.3
+2026-11-02T10:56:14.4378317Z py:test_geometry_kernel_isolation                 2     2     0     0    2.0
+2026-11-02T10:56:14.4378775Z py:test_geometry_kernel_transactions             31    31     0     0    0.3
+2026-11-02T10:56:14.4379544Z py:test_grid_system_contract                     15    15     0     0    4.9
+2026-11-02T10:56:14.4380018Z py:test_grid_trial_contract                       5     5     0     0    1.1
+2026-11-02T10:56:14.4380473Z py:test_k1_mutation_runners                       4     4     0     0    0.2
+2026-11-02T10:56:14.4381070Z py:test_local_launcher                           17    17     0     0    2.5
+2026-11-02T10:56:14.4381515Z py:test_modeling_runtime                         46    46     0     0    5.1
+2026-11-02T10:56:14.4381953Z py:test_mutation_anchors                          3     3     0     0    0.4
+2026-11-02T10:56:14.4382378Z py:test_panel_fill_host                          32    32     0     0   10.2
+2026-11-02T10:56:14.4382832Z py:test_parameters_candidate_value_history       12    12     0     0    3.3
+2026-11-02T10:56:14.4383283Z py:test_parameters_core                          40    40     0     0   11.4
+2026-11-02T10:56:14.4383727Z py:test_parameters_deleted_unbind                14    14     0     0    3.7
+2026-11-02T10:56:14.4384200Z py:test_parameters_final_candidate                4     4     0     0    1.3
+2026-11-02T10:56:14.4384652Z py:test_parameters_unbind_scope                   8     8     0     0    2.2
+2026-11-02T10:56:14.4385110Z py:test_product_architecture                     22    22     0     0   22.0
+2026-11-02T10:56:14.4385582Z py:test_rectangular_template                     13    13     0     0    1.0
+2026-11-02T10:56:14.4386056Z py:test_release_gate                             21    21     0     0    0.6
+2026-11-02T10:56:14.4386702Z py:test_rule_case_catalog                        14    14     0     0    2.8
+2026-11-02T10:56:14.4387441Z py:test_rule_case_executor                       40    40     0     0    7.2
+2026-11-02T10:56:14.4388203Z py:test_rule_case_workbench_http                 21    21     0     0   46.1
+2026-11-02T10:56:14.4388676Z py:test_scenario_verify                          37    37     0     0   50.9
+2026-11-02T10:56:14.4389158Z py:test_scene_import                             10    10     0     0    3.8
+2026-11-02T10:56:14.4389917Z py:test_section_profile_native                   30    30     0     0   16.3
+2026-11-02T10:56:14.4390350Z py:test_source_inspector                         18    18     0     0    5.6
+2026-11-02T10:56:14.4390785Z py:test_witness_diagnostics                       2     2     0     0    0.2
+2026-11-02T10:56:14.4391510Z node:cdp_confirmation_gate                        -    ok     -     -    0.0  僅結束碼：腳本式，無 test 級計數，以 exit code 判定
+2026-11-02T10:56:14.4392034Z node:cutting_layering                            15    15     0     0    0.8
+2026-11-02T10:56:14.4392483Z node:cutting_plan                                20    20     0     0    0.2
+2026-11-02T10:56:14.4392896Z node:draw_annotation                              7     7     0     0    0.1
+2026-11-02T10:56:14.4393330Z node:woodworking_frontend                        17    17     0     0    0.1
+2026-11-02T10:56:14.4393788Z node:parameter_confirmation_settlement           16    16     0     0    0.1
+2026-11-02T10:56:14.4394249Z node:face_projection_lifecycle                   14    14     0     0    0.1
+2026-11-02T10:56:14.4394686Z node:history_operation                            4     4     0     0    0.1
+2026-11-02T10:56:14.4395090Z node:cdp_settle                                  10    10     0     0    0.1
+2026-11-02T10:56:14.4395505Z node:cdp_card_position                           21    21     0     0    0.2
+2026-11-02T10:56:14.4395934Z node:evidence_project_store                       7     7     0     0    0.3
+2026-11-02T10:56:14.4396846Z node:grid_definition_diagram                     13    13     0     0    0.1
+2026-11-02T10:56:14.4397880Z ------------------------------------------------------------------------------
+2026-11-02T10:56:14.4398733Z 合計(已執行、有計數者)                         1637  1636     0     1  785.4
+2026-11-02T10:56:14.4399929Z 未納入                                            -     -     -     -      -  需 Chrome，另行執行：geometry-web/cdp_test.js、geometry-web/space_model_test.js
+2026-11-02T10:56:14.4400587Z 必要 owner／browser 整合與模組驗證另驗（不計入上述 pass/skip）：
+2026-11-02T10:56:14.4401505Z   tests/test_issue123_create_feedback_browser.py：Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite；獨立執行，本 aggregate 未驗。
+2026-11-02T10:56:14.4402953Z   tests/integration/issue77_attachment_owner.js：5項 required；source-rooms owner 接口未實作時 exit3/pending_implementation，不是環境 skip或pass。
+2026-11-02T10:56:14.4404259Z   tests/scenario_browser_check.cjs：Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)；獨立執行，本 aggregate 未驗。
+2026-11-02T10:56:14.4405662Z   tests/test_issue77_browser.js：Required real app/native/Chromium room acceptance; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。
+2026-11-02T10:56:14.4406959Z   tests/test_issue77_exit_browser.js：Required real app/native/Chromium room draft-exit gate; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。
+2026-11-02T10:56:14.4408518Z   tests/test_issue77_recovery_browser.js：Required real app/native/Chromium room recovery gate; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。
+2026-11-02T10:56:14.4429627Z   tests/test_issue77_remove_browser.js：Required real app/native/Chromium room unlink/removal gate; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。
+2026-11-02T10:56:14.4431494Z   tests/test_scenario_grid_interface.js：Required real GridDraft owner-validator compatibility; PR104 is not on main; execute with actual owner validator, never count missing-injection skip as pass (INTEGRATION-GATES.md)；獨立執行，本 aggregate 未驗。
+2026-11-02T10:56:14.4432929Z   tests/k2a_drafts_browser.cjs：27 real 1280/390 collection continuation, source repin/cancel and lost save checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4434017Z   tests/k2a_native_browser.cjs：42 actual native confirmation/deletion receipts, history and permanent lost browser owner checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4435181Z   tests/k2a_source_repin_browser.cjs：14 explicit binding source selection, stale cancel and permanent same-ID lost rejection checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4436400Z   tests/k2a_zip_browser.cjs：89 true ZIP and cold isolated native reopen including permanent lost; distinct service sessions required checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4437639Z   tests/k2a_rule_repin_browser.cjs：35 actual D19a rule changed/deleted repin with valid/invalid raw, cancellation and close preservation checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4439091Z   tests/room_multi_candidate_browser.js：34 real same-page multiroom import/calibration/select/review/accept/park/save/new/Open; explicit late Worker and lost-response injections checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4440846Z   tests/test_section_profile_browser.js：68 real desktop/390 Q38 authoring, typed sources, exact models, source impact/cancel, placement conversion, shared history and /16 Save/Open checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4442499Z   tests/integration/q38_save_roundtrip.py：18 native-authored complete section fixture; real download/fresh-browser chooser, full World and exact mesh oracle; explicit download fallback, not OS picker checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4443991Z   tests/integration/model_library_history_browser.py：35 real model-library/native Undo, Web Locks, drafts and explicit late-owner injections checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4445503Z   tests/integration/save_roundtrip_acceptance.cjs：33 real form/native/model/download/file-chooser roundtrip and explicit save-failure injection checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4446588Z   tests/rule-case-workbench-browser.cjs：91 standalone component/native checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4447404Z   tests/test_rule_case_app_browser.js：76 formal app/native/ZIP/history checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4448159Z   tests/test_rule_case_app_races.js：30 formal app/native/context races checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4449108Z   tests/room_outline_keyboard_browser.js：396 real keyboard/click parity; synthetic composition and stale DOM guards checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4450607Z   tests/room_outline_acceptance_browser.js：253 formal room app/PDF-image/UI/ZIP/model checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4451605Z   tests/room_outline_pan_browser.js：32 real input/native preservation; API fixture and injected pointercancel checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4452688Z   tests/room_outline_worker_browser.js：78 native Worker/UI invalidation with injected late-consumer delivery checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4453907Z   geometry-web/feedback_resize_observer_test.js：38 real ResizeObserver/error/manual-report events; owned fresh/root/source/runtime identity required checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4454996Z   tests/test_grid_rule_reader_browser.js：34 formal app/native/grid/ZIP checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4455846Z   geometry-web/evidence_links_browser_check.js：67 independent injected-backend adapter checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4456728Z   geometry-web/evidence_links_integration_test.js：110 formal app/PDF/ZIP/history checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4457821Z   geometry-web/grid_raw_provenance_browser_test.py：207 formal raw enum/pin provenance, ZIP cold reopen, explicit correction and native Undo/Redo checks required；本 aggregate 未驗。
+2026-11-02T10:56:14.4458463Z 
+2026-11-02T10:56:14.4458608Z ==== 部分／示範執行，不可當完整驗收 ====
+2026-11-02T10:56:14.4458869Z 使用了：--shard 1/3
+2026-11-02T10:56:14.4458997Z 
+2026-11-02T10:56:14.4459375Z exit 0：所選 suite 沒有 fail、沒有環境問題、沒有可避免的 skip（只代表所選範圍，沒選到的沒跑）
+2026-11-02T10:56:14.4547341Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-02T10:56:14.4547779Z with:
+2026-11-02T10:56:14.4547988Z   name: native-shard-1
+2026-11-02T10:56:14.4548263Z   path: /home/runner/work/_temp/native-shard-1/
+2026-11-02T10:56:14.4548569Z   if-no-files-found: error
+2026-11-02T10:56:14.4548803Z   retention-days: 14
+2026-11-02T10:56:14.4549019Z   compression-level: 6
+2026-11-02T10:56:14.4549548Z   overwrite: false
+2026-11-02T10:56:14.4549782Z   include-hidden-files: false
+2026-11-02T10:56:14.4550023Z ##[endgroup]
+2026-11-02T10:56:14.6298675Z (node:15031) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-02T10:56:14.6299698Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-02T10:56:14.6351726Z With the provided path, there will be 1 file uploaded
+2026-11-02T10:56:14.6360263Z Artifact name is valid!
+2026-11-02T10:56:14.6361093Z Root directory input is valid!
+2026-11-02T10:56:15.0515213Z Beginning upload of artifact content to blob storage
+2026-11-02T10:56:15.0801011Z (node:15031) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-02T10:56:15.3619637Z Uploaded bytes 4326
+2026-11-02T10:56:15.4409018Z Finished uploading artifact content to blob storage!
+2026-11-02T10:56:15.4411183Z SHA256 digest of uploaded artifact zip is 7a1c949d3ccf29f9d4851460712ceae5f5b1bfe86223321109c010dd052eae34
+2026-11-02T10:56:15.4412118Z Finalizing artifact upload
+2026-11-02T10:56:15.9460971Z Artifact native-shard-1.zip successfully finalized. Artifact ID 13134643411
+2026-11-02T10:56:15.9462005Z Artifact native-shard-1 has been successfully uploaded! Final size is 4326 bytes. Artifact ID is 13134643411
+2026-11-02T10:56:15.9463044Z Artifact download URL: https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41430557786/artifacts/13134643411
+2026-11-02T10:56:15.9643527Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-02T10:56:15.9643958Z with:
+2026-11-02T10:56:15.9644160Z   name: native-logs-1
+2026-11-02T10:56:15.9644418Z   path: /tmp/geometry-tests/run_all-logs/
+2026-11-02T10:56:15.9644717Z   if-no-files-found: error
+2026-11-02T10:56:15.9644957Z   retention-days: 14
+2026-11-02T10:56:15.9645196Z   compression-level: 6
+2026-11-02T10:56:15.9645422Z   overwrite: false
+2026-11-02T10:56:15.9645641Z   include-hidden-files: false
+2026-11-02T10:56:15.9645882Z ##[endgroup]
+2026-11-02T10:56:16.1335328Z (node:15043) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-02T10:56:16.1336198Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-02T10:56:16.1731982Z With the provided path, there will be 211 files uploaded
+2026-11-02T10:56:16.1738212Z Artifact name is valid!
+2026-11-02T10:56:16.1738867Z Root directory input is valid!
+2026-11-02T10:56:16.5520956Z Beginning upload of artifact content to blob storage
+2026-11-02T10:56:16.7321184Z (node:15043) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-02T10:56:17.1422485Z Uploaded bytes 60705
+2026-11-02T10:56:17.2210658Z Finished uploading artifact content to blob storage!
+2026-11-02T10:56:17.2211528Z SHA256 digest of uploaded artifact zip is 66eaaa9bbd0baf2e59657de7939ebc25cebb9a8bd17b1126e0b87c08c1280e60
+2026-11-02T10:56:17.2213954Z Finalizing artifact upload
+2026-11-02T10:56:17.7246391Z Artifact native-logs-1.zip successfully finalized. Artifact ID 13135720626
+2026-11-02T10:56:17.7247593Z Artifact native-logs-1 has been successfully uploaded! Final size is 60705 bytes. Artifact ID is 13135720626
+2026-11-02T10:56:17.7254976Z Artifact download URL: https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41430557786/artifacts/13135720626
+2026-11-02T10:56:17.7498823Z Post job cleanup.
+2026-11-02T10:56:17.8401381Z [command]/usr/bin/git version
+2026-11-02T10:56:17.8448462Z git version 2.56.0
+2026-11-02T10:56:17.8487355Z Temporarily overriding HOME='/home/runner/work/_temp/82672d20-42d1-4508-875f-76372f8f8053' before making global git config changes
+2026-11-02T10:56:17.8488852Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T10:56:17.8494202Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T10:56:17.8537287Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T10:56:17.8578176Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T10:56:17.8962404Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T10:56:17.9004970Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T10:56:17.9517239Z Cleaning up orphan processes
+2026-11-02T10:56:17.9930490Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

@@ -1,0 +1,38 @@
+{
+  "schema": "geometry-mutation-ci-shard/1",
+  "head": "de3a56cfadecf575f8e7860cbfdafdac2af0a883",
+  "shard": "core-3",
+  "ids": [
+    "M03",
+    "M07",
+    "M09",
+    "M13",
+    "M15",
+    "M19",
+    "M23",
+    "M27",
+    "M31",
+    "M51",
+    "M54",
+    "M35",
+    "M39",
+    "M73",
+    "M77",
+    "M89",
+    "M93"
+  ],
+  "run_id": "41431971663",
+  "run_attempt": "1",
+  "platform": "posix",
+  "tool_sha256": "2b23de2a7c7c9b612aeb09aeb987cf317bca89331d0afa25fcf8349e4099bfa0",
+  "supervisor_sha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc",
+  "ledger_sha256": "7c4d312840736ca365ad7fc6ba655c9dcd7a512a7281b5f8dca5195586a206bd",
+  "cache_sha256": "0a411803bbe4dd6015680317a7f5957450332f50831371585aa9f4ac5462bd2a",
+  "execution_log_sha256": "85391fe645935b1f74d667f3a64f2a1bd4bf75dc2cc397d02e77cfa290b519ec",
+  "negative_cache_probe": {
+    "id": "M03",
+    "expected": "cached binary differs from executed receipt",
+    "strict_exit": 1
+  },
+  "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+}

@@ -1,0 +1,40 @@
+Mutation scope: partial M03, M07, M09, M13, M15, M19, M23, M27, M31, M51, M54, M35, M39, M73, M77, M89, M93
+M51  RETIRED    I23：I23(a) 拿掉座標比對(移動已錨定的線也放行)
+M35  RETIRED    明寫長度允許 L=0(<= 改 <)
+BASELINE exe 已重編
+BASELINE OK: 166/166 全過(未變異原始碼)
+M03  exe 已重編
+M03  KILLED    I5：射線只數直立邊 -> 改數水平邊  <- _wit_d30_infinite_grid_binding.scene: FAIL 應接受但拒絕: <repo>/_wit_d30_infinite_grid_binding.scene:3: 邊界面輪廓不合法：邊要軸平行、不零長、不自交；孔要在外輪廓內且互不重疊
+M07  exe 已重編
+M07  KILLED    I5：直立邊 v 區間零長度接觸也算穿入(< 改 <=)  <- _test_lshape.scene: FAIL 錯誤不符: 期望含「沒有擋面」實得「<repo>/_test_lshape.scene:17: R6/I5/I6 timber 2: 中線上沒有任何合法跨距」
+M09  exe 已重編
+M09  EQUIVALENT I5：孔 bbox 邊界相接也當相交(<= 改 <)  <- 等價變異(GEO-172 實證):bbox 恰好相切時孔的所有點都在 u<=min_u(或對稱軸)一側,後續三道細查(頂點嚴格在內/邊穿過內部/孔罩住矩形)都不可能成立,快退與細查得到同一答案。
+M13  exe 已重編
+M13  KILLED    I11：auto 跨距的碰撞障礙只收同承載面已放角材 -> 改收不同承載面(!= 改 ==)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC
+M15  exe 已重編
+M15  KILLED    D11：角材側面涵蓋範圍用錯軸(u 範圍改成 v 範圍)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: R6/I5/I6 timber 1: 跨距起點沒有擋面（端面懸空）
+M19  exe 已重編
+M19  KILLED    R6(c)：through 選段:邊界座標不算在區間內(<= 改 <)  <- _mut_through_boundary.scene: FAIL 應接受但拒絕: <repo>/_mut_through_boundary.scene:9: R6/I5/I6 timber 2: through 座標不在任何合法跨距內
+M23  exe 已重編
+M23  EQUIVALENT R6(d)：擋面歧義放行(hits>1 不拒絕)  <- 等價變異(GEO-172 實證):hits>1 需要兩個邊類擋面在同一座標且都涵蓋角材全寬。輪廓邊+孔邊 → 孔要貼輪廓,核心拒絕;兩孔共邊/共角 → 核心拒絕(兩孔分開才接受);任一為角材側面 → stop_face_shadowed 只留一個;同一簡單多邊形不可能兩邊同座標又涵蓋同段。該分支在合法輸入下不可達,改掉不改變行為。
+M27  exe 已重編
+M27  KILLED    深度側反轉:角材往面下長  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: R6/I5/I6 timber 1: 跨距歧義： [0,2960] [2980,3000]
+M31  exe 已重編
+M31  KILLED    I10：格線座標遞增改非嚴格(<= 改 <)  <- _mut_grid_dup.scene: FAIL 錯誤不符: 期望含「嚴格遞增」實得「<repo>/_mut_grid_dup.scene:5: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」
+M54  exe 已重編
+M54  KILLED    D10a：產生條件由嚴格小於放寬成小於等於(多出尾端一條)  <- _mut_grid_panel_edge.scene: FAIL 錯誤不符: 期望含「本軸共 7 條」實得「<repo>/_mut_grid_panel_edge.scene:7: R6/I5/I6 timber 1: 中線上沒有任何合法跨距」
+M39  exe 已重編
+M39  KILLED    R6(a)：切點去重用 < 不去重(零長 cell 出現)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6/I5/I6 timber 80: 中線上沒有任何合法跨距
+M73  exe 已重編
+M73  KILLED    R7/#202：丟棄正面積矩形外的孤立線／點接觸  <- _ax_r7_rectangle_plus_line.scene: FAIL 應拒絕但接受 (L=[])
+M77  exe 已重編
+M77  KILLED    R7/#202：以同側遠處貼邊豁免純角點接觸  <- _ax_r7_remote_flush_corner.scene: FAIL 應拒絕但接受 (L=[])
+M89  exe 已重編
+M89  KILLED    I22/#299：V_EXTENSION 訊息的料件欄位拿掉(角材編號固定印成 0)；p8、p8b、_role_priority_mutant 必轉紅  <- _role_priority_mutant.scene: FAIL 錯誤不符: 期望含「V_EXTENSION：非 boundary 角材（1）」實得「<repo>/_role_priority_mutant.scene:8: V_EXTENSION：非 boundary 角材（0）的 footprint 超出定位邊範圍——定位邊 e2 [2000,4000] mm，低端超出 [0,2000] mm」
+M93  exe 已重編
+M93  KILLED    I22/#299：V_EXTENSION 訊息拿掉「高端超出」區間；凹角在定位邊高端的 _s1_p8b 必轉紅  <- _s1_p8b_l_room_primary_through_reflex_extension_hi.scene: FAIL 錯誤不符: 期望含「V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍」且含「定位邊 e1 [0,1800] mm」且含「高端超出 [1800,4773] mm」且不含「低端超出」實得「<repo>/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene:12: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍——定位邊 e1 [0,1800] mm」
+
+本次 17:殺死 killed 13 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 2 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 2
+歷次紀錄(不是本次覆蓋)17:殺死 killed 13 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 2 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 2 / 未跑 unrun 53
+  (過期明細用 --check 列出)
+本次 17:殺死 killed 13 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 2 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 2

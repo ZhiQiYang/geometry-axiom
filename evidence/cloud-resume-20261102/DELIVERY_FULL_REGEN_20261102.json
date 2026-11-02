@@ -1,0 +1,4241 @@
+{
+  "at": "2026-11-02T11:44:37.090741+00:00",
+  "scope": "Both full original mutation runs with all nine authenticated official ZIPs including executed ELF/cache bytes preserved. Originals remain in SHM too; downloaded ELF executions zero. Readable original ledgers/commands/raw alongside archives; no retarring/relabelled source.",
+  "files": [
+    {
+      "path": "pr340/manual-mutation-main354/ACCEPTANCE.json",
+      "bytes": 12650,
+      "sha256": "4f952187afeec61bbd15c16cc14068251556d88da8edbbdc32f7a33e300bf041"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/VERIFY_RESULT.json",
+      "bytes": 323,
+      "sha256": "0e97dd28d8e9bc95bbc31a9654dd747c8f75d1ec3309d13226c9eeceeac41d8c"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/verify.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/verify.stdout",
+      "bytes": 2959,
+      "sha256": "8c54b489384e887d7e4a163ae2f062566a2a102440fd529bc8b694f2b2332ab6"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/VERIFY_REQUEST.json",
+      "bytes": 1537,
+      "sha256": "3381b1f11998a214d8dfa047b9d17d8a4eaf7cdad7f51918e203b30b2fc042ea"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/ARTIFACT_BYTES.json",
+      "bytes": 10774,
+      "sha256": "49d2ee2c71272ac62e410c2264adad1008c4e8ac1a4b4ec6910114d0aad75657"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/DOWNLOAD_PLAN.json",
+      "bytes": 10483,
+      "sha256": "af7b32348673fa72febf9fe1d6fbdeefe7c51cde101495cb65ef6f6cad1bed97"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/START.json",
+      "bytes": 302,
+      "sha256": "42afd9837ce0c0fc61f706c67561e3187bb746364e2257f94bfd2665fe07cb5c"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/collector.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/collector.stdout",
+      "bytes": 347,
+      "sha256": "079f33626f0603472eb185352f81b5bd0eea739aa8ef209ccdd42004423c3db3"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/RESOURCE_PLAN.json",
+      "bytes": 517,
+      "sha256": "234fc126509cbe12bde345ac51e2c27908d7bb4ef0bebf44c870dec12fcaff4e"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/collect_original_evidence.py",
+      "bytes": 8172,
+      "sha256": "c2f001e17d4e10d843e55da33e08968e0235ec842c26c5b10bd47639cc8512cf"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/official-zips/13133419821.zip",
+      "bytes": 8669210,
+      "sha256": "a63ce6a6d0b5a3320951cd8b1c84dedbb5ccc22bdd97cbaf7a824428f017fbf4"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/official-zips/13133829331.zip",
+      "bytes": 7754680,
+      "sha256": "1dae2c68f6830d0bc83101cd982f8e5af88dfcb93dd6aefdaa2e75bf51be0b43"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/official-zips/13133538430.zip",
+      "bytes": 54108,
+      "sha256": "ab90d8ab45e9d78c08f5b9d532c3f8e028a8bdc13f7d235a683afea916033d6e"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/official-zips/13134148912.zip",
+      "bytes": 7300194,
+      "sha256": "c0ebc5d4b81f79edaabea30d89ef3f6bd6eb1e4c6201824c14113890a7c5dda1"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/official-zips/13134787618.zip",
+      "bytes": 8664972,
+      "sha256": "6105b39318bf9d900054288269b153288e05006e1e794f8c724014e85e95b25d"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/official-zips/13134989503.zip",
+      "bytes": 21961645,
+      "sha256": "77c10481137fff77bc500c2077c817680bc74e837002063c41e34469837398c1"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/official-zips/13135518393.zip",
+      "bytes": 20740142,
+      "sha256": "d1de3e0d8c4bf97198718a0ddb20118042731236dd10784142c703259c87bf6d"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/official-zips/13135612486.zip",
+      "bytes": 21926996,
+      "sha256": "89780b09fabe81acaf82ffa78fe8d79a5f70f8b04f17f95a29041661024dfd83"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/official-zips/13136595872.zip",
+      "bytes": 1621388,
+      "sha256": "43bb174d1b4a786afe1ac8591dfbad67cfd298cf74067cc52b9f10bece6d8c7a"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/api/20261102T112441Z/artifacts.json",
+      "bytes": 6672,
+      "sha256": "56c4d5c823a65ea6fd983ab07e976e81b218aee8932ca96441bb0acfdad40db0"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/api/20261102T112441Z/jobs.json",
+      "bytes": 20886,
+      "sha256": "e7e1cae2a2036d66df2b2638a4e8a4b4230da8b13bc7df794f40d7523a0caebc"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/api/20261102T112441Z/run.json",
+      "bytes": 13288,
+      "sha256": "6f3ecd1eb34351f5fefc8d8b7c167d0da02fa3d631620866d522325fc24449cc"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/original-verifier-replay/summary.json",
+      "bytes": 10322,
+      "sha256": "e924d6bbcbd8b12d314666e855b8707e7e85af32d986227ec175ad5c330017c3"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/original-verifier-replay/mutants_results.json",
+      "bytes": 11347298,
+      "sha256": "140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-core-2/execution.log",
+      "bytes": 5890,
+      "sha256": "092f47aa58198a7dffdb4e4ed30ec76d832166caf520ac712c280cdd53288aa9"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-core-2/mutants_results.json",
+      "bytes": 1041150,
+      "sha256": "eb2f942850ce310d82839088bc63de5b83910bbbb60c58e58853499172b901a5"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-core-2/manifest.json",
+      "bytes": 1252,
+      "sha256": "c0f749d20b541211a01384575e55213819c1796d6646a6bd0c653847ca69a29a"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-core-4/execution.log",
+      "bytes": 7067,
+      "sha256": "caf6e5690346582a5fd6735a07122ee686ba84a00b7ec3a053f5aa925e74c0c7"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-core-4/manifest.json",
+      "bytes": 1241,
+      "sha256": "fae90e98d00a057067822d1ab0d4ba51f497dbe9c0a7be6dd7499b565f19a5af"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-core-4/mutants_results.json",
+      "bytes": 951170,
+      "sha256": "484390dd87fca53c2895429e08d44057f4ee752d4822141fdd5ef217cb991f78"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-core-3/execution.log",
+      "bytes": 5464,
+      "sha256": "85391fe645935b1f74d667f3a64f2a1bd4bf75dc2cc397d02e77cfa290b519ec"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-core-3/manifest.json",
+      "bytes": 1241,
+      "sha256": "818c9d39f378b84e0a254f48e02f08776826fe94a60d99f40c4447639443253c"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-core-3/mutants_results.json",
+      "bytes": 861947,
+      "sha256": "9be82af91d2df1985d216a3cf5ad648d145627d1efd2765b8f8d29d49f878f26"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-core-1/execution.log",
+      "bytes": 6762,
+      "sha256": "a71b0af62e0bacb1be75ed377dc4c27aa8b3a7a5f3bf37eaa27885818a8b74c5"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-core-1/mutants_results.json",
+      "bytes": 1011525,
+      "sha256": "9feeb460b6ba2f2bb2d06d89520c7139abd9b458ac10ad051fa3dd0a6f65b157"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-core-1/manifest.json",
+      "bytes": 1252,
+      "sha256": "0cc84a0b2094ba69f8b9ec8990e440ccc114b6cf3d270d957e18d4e63476aa21"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-bridge-2/execution.log",
+      "bytes": 1956,
+      "sha256": "ff7bcc386de49b03310648d8abbac55769a045a099ab561ca0bdd8cd8f587fc4"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-bridge-2/mutants_results.json",
+      "bytes": 2119549,
+      "sha256": "04061309974c3ad858fcf4b14287455b7c9cd6a8c7c0a4e3551197d9174450a4"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-bridge-2/manifest.json",
+      "bytes": 1257,
+      "sha256": "680826b9466f9964fa9cfab7733704247e98030a262428d6b0f3944d1e230b74"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-bridge-3/execution.log",
+      "bytes": 1934,
+      "sha256": "923289aa6bfd6175f9942c983e81f93a80c9cc5ba8ffd302ceeb28677e4d8628"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-bridge-3/mutants_results.json",
+      "bytes": 1964616,
+      "sha256": "e88bf594d08807099ea907c5473d9b01d88e2c47bd5e7a8dcfda6841b88c2259"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-bridge-3/manifest.json",
+      "bytes": 1245,
+      "sha256": "541ec762231001d32b2062038ffff2056a3eebad7c30916aff2d69a77fe655db"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-bridge-1/execution.log",
+      "bytes": 2197,
+      "sha256": "def76b058bf0b0d37225170b91314925450920abec83dcb7a9eb12dfbb4b5888"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-bridge-1/mutants_results.json",
+      "bytes": 2077517,
+      "sha256": "00043e4cd2ca587cf90663412b9cd7e6523521151d457728fe72d0880dba45c1"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-shard-bridge-1/manifest.json",
+      "bytes": 1256,
+      "sha256": "d18de0f0e83a5262b871014d22f5f72385ef30d193cbc9848f7102d7928ee169"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/product-architecture-scan.json",
+      "bytes": 134601,
+      "sha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/product-architecture-receipt.json",
+      "bytes": 105107,
+      "sha256": "cb0d96b54896c89a380243b410f659261e97364808dbc9a7821cc33bf416fbf0"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/architecture-unit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/architecture-unit.stderr",
+      "bytes": 29577,
+      "sha256": "95eb1b1ad43bfbac5730c31c82c9cfe951584da03548702f8778268b411a6821"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/architecture-product.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/architecture-product.stderr",
+      "bytes": 122,
+      "sha256": "276eede91845cfb3391a783894179e34601bf0dade15c77e90ad151db8d5f3f2"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/architecture-cli.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/architecture-cli.stdout",
+      "bytes": 134601,
+      "sha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/PRODUCT-ARCHITECTURE.md",
+      "bytes": 811,
+      "sha256": "d5122be829cb753cba2cb6efaa6ee5aec5887c86a2923591cdcb5a58615343d3"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-complete-evidence/summary.json",
+      "bytes": 10322,
+      "sha256": "e924d6bbcbd8b12d314666e855b8707e7e85af32d986227ec175ad5c330017c3"
+    },
+    {
+      "path": "pr340/manual-mutation-main354/readable-original-members/mutation-complete-evidence/mutants_results.json",
+      "bytes": 11347298,
+      "sha256": "140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef"
+    },
+    {
+      "path": "pr340/main354-adoption/BODY_SYNC_RESULT.json",
+      "bytes": 380,
+      "sha256": "0f9a92887296f06fd776f815b22c22a6a58cefe620ce0e06e868b45d2ab2dd8d"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-08-response.json",
+      "bytes": 6011,
+      "sha256": "0e691b9d32fa7296d8e85bfd9dd1d25dba44ecc886c13e533fe153681e6d1be9"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-07-response.json",
+      "bytes": 495,
+      "sha256": "2134f66f3e6ab45868cf33acc154743fd4d15311d3f0d98e186b6ac5aae3d6e7"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-07-request.json",
+      "bytes": 67,
+      "sha256": "8d12832c5710dbeca61275e52a9f75969fa935743a60299efb0ed7e010b831d9"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-06-response.json",
+      "bytes": 1210,
+      "sha256": "75f49a60ce65a5558b8868d78909ec70f0186b53ca9c9f474ef3a4c78536b271"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-06-request.json",
+      "bytes": 179,
+      "sha256": "e96bf6b444a4938cbe368cd406e4d15df9e40fbeafbbc7fa01d92c0b14b1bddd"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-05-response.json",
+      "bytes": 416,
+      "sha256": "53fb6ed525784a0bf9931a6492bcc3f643f7c6a6ef66c9646bd2fbb261b94387"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-05-request.json",
+      "bytes": 176,
+      "sha256": "f9455d2f996741d1e53f4de4e018e790d38b1cf02636f1a38fe58d4999d9f3ca"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-04-response.json",
+      "bytes": 163,
+      "sha256": "0abd69378deddef4e2996f5c1b6be8b0dc43f49db744082ea0a2f8cdef598354"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-04-request.json",
+      "bytes": 4849,
+      "sha256": "07b0d434122ba832c5379866e3e4a7091fd55e342f2d5d06f80bfc3eb2aa4683"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-03-response.json",
+      "bytes": 1177,
+      "sha256": "c8a5a67db9ae2e977aa025cb6c5b817ccb829a84026689838b517ce8088c0b04"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-02-response.json",
+      "bytes": 495,
+      "sha256": "548308316654750be2bd6a947c71d6e7bfa0eebe707f710df207fcbd267fb804"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-01-response.json",
+      "bytes": 19867,
+      "sha256": "c0d92b55d0de759c8ce65c207a865de973a919ad761728cbff6165b41d8c53ec"
+    },
+    {
+      "path": "pr340/main354-adoption/body-sync-01-request.json",
+      "bytes": 3639,
+      "sha256": "968f1f4472837afdd07ed7059d6dc03c679308b8cf80e5a3d5617d5812d26c47"
+    },
+    {
+      "path": "pr340/main354-adoption/PR_BODY_CURRENT.md",
+      "bytes": 3608,
+      "sha256": "d1472b5afc4be3b352a721327810ab1528302e96486f220aa0112aeac3aba33c"
+    },
+    {
+      "path": "pr340/main354-adoption/RUNS_FIRST.json",
+      "bytes": 13340,
+      "sha256": "fbc5d3e3024452d52617ab816cff9eaf36f16a2159fa0a9e4780c18810e07562"
+    },
+    {
+      "path": "pr340/main354-adoption/push.stderr",
+      "bytes": 124,
+      "sha256": "d1ad8922369afab83a0b0164c363f7d35da9f9a1bd7f0bd1c6a241ca853d48c5"
+    },
+    {
+      "path": "pr340/main354-adoption/push.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/main354-adoption/RESULT.json",
+      "bytes": 3305,
+      "sha256": "c49e822c9089a21d4b152bf04df07b99a9d43702792299a9b519722b8a23a6f8"
+    },
+    {
+      "path": "pr340/main354-adoption/03.stderr",
+      "bytes": 122,
+      "sha256": "5f81f4a4de150591557037922716540762de0a0c02d847f560b49000af00cf94"
+    },
+    {
+      "path": "pr340/main354-adoption/03.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/main354-adoption/02.stderr",
+      "bytes": 29577,
+      "sha256": "2d2ccdc9bff56a753082b65d40b39879c496a8fd6a472664254ad58c24696375"
+    },
+    {
+      "path": "pr340/main354-adoption/02.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/main354-adoption/01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/main354-adoption/01.stdout",
+      "bytes": 134601,
+      "sha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6"
+    },
+    {
+      "path": "pr340/main354-adoption/00.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/main354-adoption/00.stdout",
+      "bytes": 538,
+      "sha256": "efca22db4f9fc05f07e5bde95965ac2058c36c11c902150083328139866a56d8"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/ACCEPTANCE.json",
+      "bytes": 12650,
+      "sha256": "e27529e3412c1d525b591749b10ab7bdaa39efdc924bf5f99d5aabb05fb6b44d"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/VERIFY_RESULT.json",
+      "bytes": 323,
+      "sha256": "48b5af806423c023f1034d2efbfcc68472de0e901698e5e21be829fbce31ee57"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/verify.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/verify.stdout",
+      "bytes": 2959,
+      "sha256": "c8e93d5334af324df2bb5f1724defda5a454bc8cff05a40f2b750e62d44307dd"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/VERIFY_REQUEST.json",
+      "bytes": 1537,
+      "sha256": "8e3c42391a3f2a8de49362aa17f04399d8f348a0fd9305036bdcb7806678a66f"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/ARTIFACT_BYTES.json",
+      "bytes": 10774,
+      "sha256": "4ac023f299cca083d2e220c1004c66ee4fb445ca28f891a957bc13718a1760f1"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/DOWNLOAD_PLAN.json",
+      "bytes": 10456,
+      "sha256": "95bc9476476edb12a52a210ae5783e17efd821486902d1ca74bf761b9fe9e629"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/START.json",
+      "bytes": 367,
+      "sha256": "e7a6c35daa5e712823cff252ae7cae0f3845d07123593c82820cdbf30fd9608a"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/collector.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/collector.stdout",
+      "bytes": 347,
+      "sha256": "7bb7848c36cd3fa437d3c5c44810ecb76a853b5847ff7b3786b4906c932fd0b0"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/collect_original_evidence.py",
+      "bytes": 8172,
+      "sha256": "3679ba74a89b2c446fd8dd64501654c3236574ff38433d8d06b1495a781d09b8"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/official-zips/13134974110.zip",
+      "bytes": 8665001,
+      "sha256": "ab2eab35207cbb8d7824ad3f70d372ea29bf1cf0454c0435bba2bd5c4e988a8a"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/official-zips/13134423545.zip",
+      "bytes": 54110,
+      "sha256": "a068ffbc3a4993747076ef3e74088bc8e16a8e749575e9e5d9b9d9149fc9899b"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/official-zips/13134987777.zip",
+      "bytes": 7300279,
+      "sha256": "84c5a481e3c850587a5e403af6053358791ed130d20b51c47854ff4bc547b9ce"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/official-zips/13135581391.zip",
+      "bytes": 7754685,
+      "sha256": "51ed7e944488cba5629d22262ec92a287fb861998c7b29cb17386a029952c785"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/official-zips/13136053889.zip",
+      "bytes": 21926803,
+      "sha256": "450f96a42fd2950be5851ec40aed795bb85aaee4883d2b0165b0239c7ef77c68"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/official-zips/13136263789.zip",
+      "bytes": 21961814,
+      "sha256": "a8d895e5b9a315daf23876a768bad772cc1753c1915433fafcba5abd8091f181"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/official-zips/13136264945.zip",
+      "bytes": 1621165,
+      "sha256": "026eada943d5e0ef8b6d1fc664eec8d022edcbd57b926ce97d5cf3e874b3f692"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/official-zips/13136273350.zip",
+      "bytes": 20739769,
+      "sha256": "f357ff272e3c581771738495970387aa16dfa9d95bed3aba9ecfadd61a4d96ac"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/official-zips/13136310606.zip",
+      "bytes": 8669294,
+      "sha256": "7f850d965e648b0b4ddca93261b7be86af026dbe08e667c4f5a0660183b5e8dc"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/api/20261102T112851Z/artifacts.json",
+      "bytes": 6645,
+      "sha256": "590c61750dea854d4d6b0c2b6c604cb866f90aa9a5d6c8f5713a3804cf50a08a"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/api/20261102T112851Z/jobs.json",
+      "bytes": 20856,
+      "sha256": "63710e4b2d077a0bf9caa9c5579d50932ba06ce26c69665c37f17ce6167b778b"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/api/20261102T112851Z/run.json",
+      "bytes": 12844,
+      "sha256": "e1b713973f4ebe7a88c0575a17206d9648a5169fa38c5ef3a316f22910ba4f41"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/original-verifier-replay/summary.json",
+      "bytes": 10322,
+      "sha256": "9450aa17ea9138affab8924ddfa0de763950971bf56c4aedf31d0195e8ce96d4"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/original-verifier-replay/mutants_results.json",
+      "bytes": 11347298,
+      "sha256": "0e18b72514c6fd471f25117db31dcd4cb5e124c6b3a46db8bc0a3a9729b11165"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-core-1/execution.log",
+      "bytes": 6762,
+      "sha256": "a71b0af62e0bacb1be75ed377dc4c27aa8b3a7a5f3bf37eaa27885818a8b74c5"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-core-1/manifest.json",
+      "bytes": 1252,
+      "sha256": "33801c1dac62920828ae43d804f1a2b224fcdc7c286d113426a00cd6e29d79df"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-core-1/mutants_results.json",
+      "bytes": 1011525,
+      "sha256": "76a05cae0865f52ef0c6d2f01fc56bb5a1e695942af3fda489f4714bc63e9227"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-core-3/execution.log",
+      "bytes": 5464,
+      "sha256": "85391fe645935b1f74d667f3a64f2a1bd4bf75dc2cc397d02e77cfa290b519ec"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-core-3/mutants_results.json",
+      "bytes": 861947,
+      "sha256": "7c4d312840736ca365ad7fc6ba655c9dcd7a512a7281b5f8dca5195586a206bd"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-core-3/manifest.json",
+      "bytes": 1241,
+      "sha256": "05230adfc0822c15cfe32e1897a79389addc851ea10e76548fb2974433a93e3f"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-core-4/execution.log",
+      "bytes": 7067,
+      "sha256": "caf6e5690346582a5fd6735a07122ee686ba84a00b7ec3a053f5aa925e74c0c7"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-core-4/mutants_results.json",
+      "bytes": 951170,
+      "sha256": "d12e102345cfed4998329d9b9efb29e1bc5f79e28f95bb4550c5fdbdfca6ef2e"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-core-4/manifest.json",
+      "bytes": 1241,
+      "sha256": "a0523c0bbb9f4da2e39f32991f4138e33ae7a8a95a82e3af66bddcbb2b2f7feb"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-bridge-1/execution.log",
+      "bytes": 2212,
+      "sha256": "637c5cb5e203b508d3b13a66307d341cf23f32b2151222fe44df0dfc02337221"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-bridge-1/mutants_results.json",
+      "bytes": 2077517,
+      "sha256": "ab7724f34bb1a9169aa9a22ee173a6eacfe57490050a25ed49697922f235bda4"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-bridge-1/manifest.json",
+      "bytes": 1256,
+      "sha256": "fec7686c8b3deb705603d0c1e5f10b635e47c5a672e4487bce1d6a7dcb433e00"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-bridge-2/execution.log",
+      "bytes": 1971,
+      "sha256": "0205ad3516e6253ab917532c72706fe9cb57a0ef97fafb076cc66430a0b5407a"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-bridge-2/mutants_results.json",
+      "bytes": 2119549,
+      "sha256": "98734e7715281ad9245f145811a67e9d3b08a95cca933df34a1451ca2255c107"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-bridge-2/manifest.json",
+      "bytes": 1257,
+      "sha256": "eb6d4e575d0e1c2a0f191265211ccf89c69590c03eee0447e80a7016b0378d5b"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-bridge-3/execution.log",
+      "bytes": 1949,
+      "sha256": "dae57f8fce12207e121e23994101ace5ceb8fe27a036f45d59d4890220c21898"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-bridge-3/mutants_results.json",
+      "bytes": 1964616,
+      "sha256": "88e21326e212a289730fcababd2f438ea9dc40ea3bb4652097685595eb0bf204"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-bridge-3/manifest.json",
+      "bytes": 1245,
+      "sha256": "4b9bbc639bea45d532184f4dcd6d25109a6197e525d0e1dade5baf84a31c51f7"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-core-2/execution.log",
+      "bytes": 5890,
+      "sha256": "092f47aa58198a7dffdb4e4ed30ec76d832166caf520ac712c280cdd53288aa9"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-core-2/manifest.json",
+      "bytes": 1252,
+      "sha256": "567df165d6c028f14dca91aa730954ef4ab394a906e1c0e21ceca8f4840aeba1"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-shard-core-2/mutants_results.json",
+      "bytes": 1041150,
+      "sha256": "097772595d9159a66dd17ad5895f2367c6cadc834d517c241739eb0a6d5c2eed"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/product-architecture-scan.json",
+      "bytes": 134601,
+      "sha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/product-architecture-receipt.json",
+      "bytes": 105107,
+      "sha256": "9fb9d941f299df0df359d6eb26de7feaad349ec735b37d91674dbfbd6a0a8797"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/architecture-unit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/architecture-unit.stderr",
+      "bytes": 29577,
+      "sha256": "108e4dcb4f70e9e0f482666ed524018972f064e48e0fcac4b9111bb079977c13"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/architecture-product.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/architecture-product.stderr",
+      "bytes": 122,
+      "sha256": "9716d3501d5ae8373a53173fe04fc749dbc32eb2b374e36d40c106bb77e3436b"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/architecture-cli.stdout",
+      "bytes": 134601,
+      "sha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/architecture-cli.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/pr357-architecture-refresh/PRODUCT-ARCHITECTURE.md",
+      "bytes": 811,
+      "sha256": "425f499867cffc4c1995aea6239caa5fa476d7d815d8a1bada150c2151ae05fc"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-complete-evidence/summary.json",
+      "bytes": 10322,
+      "sha256": "9450aa17ea9138affab8924ddfa0de763950971bf56c4aedf31d0195e8ce96d4"
+    },
+    {
+      "path": "pr345/manual-mutation-main354/readable-original-members/mutation-complete-evidence/mutants_results.json",
+      "bytes": 11347298,
+      "sha256": "0e18b72514c6fd471f25117db31dcd4cb5e124c6b3a46db8bc0a3a9729b11165"
+    },
+    {
+      "path": "pr345/main354-adoption/PEER_ADOPTION_REVIEW.json",
+      "bytes": 15012,
+      "sha256": "05f88da58f109e0a9e08b65113c70d2e64b82ca9885459702bbd6d3507a3aac1"
+    },
+    {
+      "path": "pr345/main354-adoption/BODY_SYNC_RESULT.json",
+      "bytes": 380,
+      "sha256": "872be501495bb2e2446ae70a1713ed2127db98c8a76d75062c273533a338ba4b"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-08-response.json",
+      "bytes": 5932,
+      "sha256": "f413b2b22c3605ab4b9c003fc0d706473126585ff5113054796312fcd1b4e331"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-07-response.json",
+      "bytes": 479,
+      "sha256": "006c7bf0121a36eab5f1c56d82651713a54db39d6efbd3130f4e8f950e9f175a"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-07-request.json",
+      "bytes": 67,
+      "sha256": "768d33760f7fc16db1666b78802af1740f71947a33241219c1340792bacd5a0c"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-06-response.json",
+      "bytes": 1210,
+      "sha256": "ec9952b2c8064d28bb97e66d58b34f74429444ad3b1f99f63daa0d26a415e31b"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-06-request.json",
+      "bytes": 179,
+      "sha256": "174fd77dfd641c2c495522a3ebcd74fd31643a83a9fe4cb2dd54d0bae33d16c1"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-05-response.json",
+      "bytes": 46793,
+      "sha256": "47b8c74b8ecff954a7b33122ed5bef1cffc3124e32ed9e8a0ff973e31e567dc9"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-05-request.json",
+      "bytes": 176,
+      "sha256": "f90e9f8a0d2f35bb682f017cf70303b85d1f9d7a1e292ffabcdc8b5e347bfbc1"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-04-response.json",
+      "bytes": 163,
+      "sha256": "dd988d7f37695cf9502c559a1dc8db758e1415243694daa100c7502d800cd216"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-04-request.json",
+      "bytes": 4797,
+      "sha256": "3f9c769ba2acc881089e581b893356e024470f6703e54384d20793c6b70428b7"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-03-response.json",
+      "bytes": 1156,
+      "sha256": "b866ac5ca2896e67e2aeafa55e9fc3714744b97b6fe78221eb33d4bdb1652bcd"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-02-response.json",
+      "bytes": 479,
+      "sha256": "75dcebcd546e91389d7e743b56e845a0829305ea3771304516d920b9662f4c4a"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-01-response.json",
+      "bytes": 19803,
+      "sha256": "450f7ce29f9d005263a089c7968ff4ad279e314a76e08ff6e7d40fd2047229d9"
+    },
+    {
+      "path": "pr345/main354-adoption/body-sync-01-request.json",
+      "bytes": 3601,
+      "sha256": "263c2ee74d9df4b1147c720d5ed9f8591ba75155209cb4204c852ca839d7405c"
+    },
+    {
+      "path": "pr345/main354-adoption/PR_BODY_CURRENT.md",
+      "bytes": 3570,
+      "sha256": "392df53acf2006446915864639e0fb2877d2ee4f457efb6f1cf90807ea00207c"
+    },
+    {
+      "path": "pr345/main354-adoption/RUNS_FIRST.json",
+      "bytes": 13303,
+      "sha256": "46f88c0096841f1621533bb571171b371055f01833d67dfae3e6b5d321df03b9"
+    },
+    {
+      "path": "pr345/main354-adoption/push.stderr",
+      "bytes": 119,
+      "sha256": "e0ea83bd283bc9aadeff8c59026256e18feba7e79a8917990369656cc50e0a0f"
+    },
+    {
+      "path": "pr345/main354-adoption/push.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr345/main354-adoption/RESULT.json",
+      "bytes": 3530,
+      "sha256": "c9e083481cde7d2e0ba54ea6ce964648ceb67360b3c562a367cf2b970d377c59"
+    },
+    {
+      "path": "pr345/main354-adoption/03.stderr",
+      "bytes": 122,
+      "sha256": "87beb460f934b056387fb170dfcf07b7a61c31e86980847d0629e7673ad3ea2f"
+    },
+    {
+      "path": "pr345/main354-adoption/03.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr345/main354-adoption/02.stderr",
+      "bytes": 29577,
+      "sha256": "02c8d8a6d06d1f51b9d0b1ccf6467e2dedf141e6fb51641295ba022b445a7b39"
+    },
+    {
+      "path": "pr345/main354-adoption/02.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr345/main354-adoption/01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr345/main354-adoption/01.stdout",
+      "bytes": 134601,
+      "sha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6"
+    },
+    {
+      "path": "pr345/main354-adoption/00.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr345/main354-adoption/00.stdout",
+      "bytes": 538,
+      "sha256": "df9b3e28b34453d22855a57b5fbbc127b6dd6855e9843c35f9b021978e6a1c2c"
+    },
+    {
+      "path": "pr345/main354-merge/PEER_SOURCE_REVIEW.json",
+      "bytes": 17957,
+      "sha256": "4d28b9f14e0eb5fcf341c535bdaa8a924ef01a617a3c43a61c5b3b38817df4dd"
+    },
+    {
+      "path": "pr340/integration-main354/NATIVE_REPLAY_RESULT.json",
+      "bytes": 664,
+      "sha256": "0b53941e36779f2bade830e74f1aa56fad8effb6888241e3f95ee805bd741264"
+    },
+    {
+      "path": "pr340/integration-main354/native-replay.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/native-replay.stdout",
+      "bytes": 467,
+      "sha256": "3f485302a7050057723b28cb7b0d24a0d5a71ef2e6d35684251aa7095d5edb3f"
+    },
+    {
+      "path": "pr340/integration-main354/native-replay-summary.json",
+      "bytes": 511,
+      "sha256": "875cec7f4d51d84f8bdcdb43a4e4fad05da044fc1afa54712c11c54d6b1100d0"
+    },
+    {
+      "path": "pr340/integration-main354/fetch-ci-commit.stderr",
+      "bytes": 127,
+      "sha256": "e714d47290fc8adbb2c1b87db7f5cf57627ab26601204d975cdeab1683f570a9"
+    },
+    {
+      "path": "pr340/integration-main354/fetch-ci-commit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/ACQUISITION_FIRST.json",
+      "bytes": 9047,
+      "sha256": "5dd9022c71c8b3a79a1251dd1e752d5510a284019a0d8b2cfed1a187ee6f1389"
+    },
+    {
+      "path": "pr340/integration-main354/jobs.json",
+      "bytes": 26480,
+      "sha256": "25f0014aafd1246d552ffa65ade9c05326485626ee7f23006a67f975ca5e41ff"
+    },
+    {
+      "path": "pr340/integration-main354/run.json",
+      "bytes": 13337,
+      "sha256": "545af59762fafbc6e97e0c1922696d67608dec5ba45a061f96e3e43bda5d8bbb"
+    },
+    {
+      "path": "pr340/integration-main354/artifacts.json",
+      "bytes": 8802,
+      "sha256": "a719de7030cf97dad83f7ac8d82131600a92d22076521f69a02a663e96e4282f"
+    },
+    {
+      "path": "pr340/integration-main354/native-replay-input/shard-3.json",
+      "bytes": 40048,
+      "sha256": "6868f5fe88579d2d2cf1dbce1652d40086275c194e0c4f7d7eeeb87542686c56"
+    },
+    {
+      "path": "pr340/integration-main354/native-replay-input/shard-2.json",
+      "bytes": 39930,
+      "sha256": "afd6057685e1bc0b30066f5782a900c3e640f352ab3745cd1d79e1d089a69bbd"
+    },
+    {
+      "path": "pr340/integration-main354/native-replay-input/shard-1.json",
+      "bytes": 40020,
+      "sha256": "7fdad3817f0a62f9228c484177d26ae7d0c9c7fcde96eb0c698793bd7ad86004"
+    },
+    {
+      "path": "pr340/integration-main354/job-logs/125235090782.log",
+      "bytes": 25863,
+      "sha256": "100afd0cb547f7024246c84944fe68b24d6dff3109ff45c46dc6d95bcbaa628d"
+    },
+    {
+      "path": "pr340/integration-main354/job-logs/125227767991.log",
+      "bytes": 372112,
+      "sha256": "1b24128cc347e4257a155d53652f14789eb359077ae4eac36a5b7c4dfcd32d84"
+    },
+    {
+      "path": "pr340/integration-main354/job-logs/125227768336.log",
+      "bytes": 62440,
+      "sha256": "fdb687c3faafb922e7392f40014e63db8495b93e2cbbe1e70fe7a64629f9a5cf"
+    },
+    {
+      "path": "pr340/integration-main354/job-logs/125227768059.log",
+      "bytes": 66068,
+      "sha256": "92989663efb44e4a40db68f5efd67ae0845ad603e848bda46a36c9270f3f53fc"
+    },
+    {
+      "path": "pr340/integration-main354/job-logs/125227767896.log",
+      "bytes": 45479,
+      "sha256": "796b994410136aa3e0b53123d16e774b9a55f8a398b136189edce4a510320897"
+    },
+    {
+      "path": "pr340/integration-main354/job-logs/125227767879.log",
+      "bytes": 44957,
+      "sha256": "1966487898ac132ab89a273884e626f7cefb9bc5acc1a0bbb1b2e9efbe795c2f"
+    },
+    {
+      "path": "pr340/integration-main354/job-logs/125227767768.log",
+      "bytes": 748754,
+      "sha256": "aabf85e1af2b010a4dba49e39c81b0144d835c57199f4445b89aecd202ffd117"
+    },
+    {
+      "path": "pr340/integration-main354/job-logs/125227767840.log",
+      "bytes": 45618,
+      "sha256": "62f3ec47a7456c280a4fd1fb2b3575cfd5368b347c669d70bc8a04b7a7ec236d"
+    },
+    {
+      "path": "pr340/integration-main354/job-logs/125227767789.log",
+      "bytes": 39706,
+      "sha256": "4d4f861d51283fa37b079a0e795cbbbf9b061323a8184f9163e7735ed5f492d9"
+    },
+    {
+      "path": "pr340/integration-main354/job-logs/125227767380.log",
+      "bytes": 46034,
+      "sha256": "b8d04ce5e15cf80cd5e4eb6af21faf7736de9f31e079345cefc0ddc8294a5dce"
+    },
+    {
+      "path": "pr340/integration-main354/zips/13134956948-native-logs-3.zip",
+      "bytes": 99755,
+      "sha256": "035cc5015596c8c7c4ba829c6c75777bda27ee93cdd4e9020c6270c1236de43f"
+    },
+    {
+      "path": "pr340/integration-main354/zips/13133779773-native-logs-2.zip",
+      "bytes": 69563,
+      "sha256": "4fd02cbd9803aebe08401dac3fbb7ea90d6ff6c8a9f0aaf444e532ee69ada246"
+    },
+    {
+      "path": "pr340/integration-main354/zips/13134643411-native-shard-1.zip",
+      "bytes": 4326,
+      "sha256": "7a1c949d3ccf29f9d4851460712ceae5f5b1bfe86223321109c010dd052eae34"
+    },
+    {
+      "path": "pr340/integration-main354/zips/13135720626-native-logs-1.zip",
+      "bytes": 60705,
+      "sha256": "66eaaa9bbd0baf2e59657de7939ebc25cebb9a8bd17b1126e0b87c08c1280e60"
+    },
+    {
+      "path": "pr340/integration-main354/zips/13135455599-native-shard-3.zip",
+      "bytes": 4277,
+      "sha256": "f5a4cced4fac4ead41426e3287712c0a80dfcd47aef35044751fba6326d8daa4"
+    },
+    {
+      "path": "pr340/integration-main354/zips/13135605635-native-complete-coverage.zip",
+      "bytes": 2872,
+      "sha256": "1be6e8e36ca851b5654cec212311da8f9b88b588b2af42e9fb7c9f6550298790"
+    },
+    {
+      "path": "pr340/integration-main354/zips/13135095762-native-shard-2.zip",
+      "bytes": 4341,
+      "sha256": "e833bc30bad4ba8c76fb3c7384a1eb90ae22757e40b69afe76d8e8222940ce83"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_wait_trace.unittest.log",
+      "bytes": 119,
+      "sha256": "64dd39843707147ac108f4d4ffb482b528b392419656a401774e148f213a1fb4"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_wait_trace.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_wait_trace.json",
+      "bytes": 344,
+      "sha256": "d589364e0c80140392d68d9e6bb0061696058a65c13fa822126b047391614ecf"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_timber_support_projection.unittest.log",
+      "bytes": 113,
+      "sha256": "c1caa33651cc389e7c70635cf12f5660a9e37df92d936ed175e305cdc954e7a3"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_timber_support_projection.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_timber_support_projection.json",
+      "bytes": 361,
+      "sha256": "767139ad96ed5357b2a1e8ff92bf2c09ee0d49b5862404ca6f6e8e43ada729bb"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_subgrid_contract.unittest.log",
+      "bytes": 131,
+      "sha256": "f193e6edc5b5205298e56870010aa187f60d6aac73d7854895c13b095c739ee7"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_subgrid_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_subgrid_contract.json",
+      "bytes": 352,
+      "sha256": "ce585af160c23e733958ad9ab6595ba815665a19aeed2ef997a2d9395f737e9b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_source_inspector_transport.unittest.log",
+      "bytes": 100,
+      "sha256": "fe008aab760eb03ccac7578e2b84665b1b50b0d7f855b17a0c7a8d039435b658"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_source_inspector_transport.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_source_inspector_transport.json",
+      "bytes": 358,
+      "sha256": "118e4ba6247f01842307993d49f428cd4e1953e7b6781eff627416c3b35d0069"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_rule_case_request.unittest.log",
+      "bytes": 103,
+      "sha256": "959603d0b72488057dbc5daa752234ada8c8939d2f86b87b3939041c0b0ca0a7"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_rule_case_request.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_rule_case_request.json",
+      "bytes": 349,
+      "sha256": "4f3d02afdf6712cc5fb84490644f86c2e0a8dd5a7eb8438eba55cc33cf88c870"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_rule_case_definition.unittest.log",
+      "bytes": 126,
+      "sha256": "72d76df02a3953f784868aad870b6255e7d059ae787685e9969b9e63cba8c245"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_rule_case_definition.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_rule_case_definition.json",
+      "bytes": 355,
+      "sha256": "43d50e3b4046300a2730f05bd612833b24e6e4e030a2bf0676c9d23f10084db2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_reference_contract.unittest.log",
+      "bytes": 151,
+      "sha256": "11afe4572a3675c90bc3c0be22254c92574a7525a3dffc3cf1920f9eb1fed2cb"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_reference_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_reference_contract.json",
+      "bytes": 354,
+      "sha256": "c64e21223ddfc76ede2cfed1e85e4e04d7d5c6bb59e678d66d77e4719423431b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_rectangular_python.unittest.log",
+      "bytes": 107,
+      "sha256": "b9a1ab9e3f2ca17738b530cb2c5f3174b5ab8dc38313dbef2c62c46d49bf2716"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_rectangular_python.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_rectangular_bridge.unittest.log",
+      "bytes": 100,
+      "sha256": "325e4e06bddb230c55255bb612f5334976ccf3911c4f88b7db481e0c1dd5f90e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_rectangular_python.json",
+      "bytes": 350,
+      "sha256": "7f6784d24785500c4bb6e7f0becb1a31703b69810a12ed1d24946fba66ac867b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_rectangular_bridge.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_rectangular_bridge.json",
+      "bytes": 350,
+      "sha256": "eb4a982895f0c9b4db54bc748c4b8eff5694d5c7159c2626b4274c38655c3726"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_parameter_netzero.unittest.log",
+      "bytes": 102,
+      "sha256": "244715879a604625a25619aaf21c4ffcce282cac7d0950c99274a17d0aa6a47c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_parameter_netzero.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_parameter_netzero.json",
+      "bytes": 349,
+      "sha256": "8275b8ea325edcc53b018fd7cd70d0aff9a5d75b77ac2a40f1433a590625da08"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_modeling_degenerate.unittest.log",
+      "bytes": 123,
+      "sha256": "adf5d2cea42c9d05110e2384ec2f1ab372847fc8b0c69bb8e092ad1287fb5be5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_modeling_degenerate.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_modeling_degenerate.json",
+      "bytes": 353,
+      "sha256": "9390db35de0532670b623e6234721c3bc21a0dec746b7a544bc418a7716125e6"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_grid_inspector_contract.unittest.log",
+      "bytes": 101,
+      "sha256": "1543411a6691f20c9f2db43c02ef7245b01baa2e47ad7f2dc03cdc09f35620d4"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_grid_inspector_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_grid_inspector_contract.json",
+      "bytes": 355,
+      "sha256": "6ecec89f6a5f1167ee48f3fc98ee3be4f8058e53e6493dfe944b0ad421c524b7"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geometry_kernel_session.unittest.log",
+      "bytes": 103,
+      "sha256": "c5482fc158fe87c8ab6b9c2e80b5a883e75b29d226d06ef73ad9ada708841100"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geometry_kernel_session.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geometry_kernel_session.json",
+      "bytes": 355,
+      "sha256": "0f7ecbd0d5e17a3abb82de71c945da8b30f62841c0a89c5e3a126ee269c85748"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geometry_kernel_runtime.unittest.log",
+      "bytes": 109,
+      "sha256": "f97256099cf249bdd31c88414f76d3703e9569ee326d106b654cabba4a36fbf7"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geometry_kernel_runtime.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geometry_kernel_runtime.json",
+      "bytes": 358,
+      "sha256": "d653e5aaaa374aa18cbd1d9b8516da48d2d36306f97c7162ee56e217e95d078b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geometry_kernel_graph.unittest.log",
+      "bytes": 129,
+      "sha256": "67f26592d6cea1a9eb3cddfa6a9f2ecca843da80d31ba0a65374d867fca64921"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geometry_kernel_graph.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geometry_kernel_graph.json",
+      "bytes": 355,
+      "sha256": "478115276c15e0cfcc68b21ec390c9e6040b87e9d57f8e0b020e9f36ed0b56f5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geometry_host_sources.unittest.log",
+      "bytes": 144,
+      "sha256": "a3f916ba00161b6e0c2da670f887438e3a63a65e8db84dad0838854048970bdd"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geometry_host_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geometry_host_sources.json",
+      "bytes": 356,
+      "sha256": "fd7abb6bf5ced9e2f5197557ad25386fefca9eafbe3a5112bcb2932e5fdb6398"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo318_reading_a_oracle.log",
+      "bytes": 3732,
+      "sha256": "25cb10b2c7a75f7e636c2f178c214bf62025782aec77124f275e7dc641a2caef"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo318_reading_a_oracle.unittest.log",
+      "bytes": 113,
+      "sha256": "8ae029d4d67289a589eaf52cb73808175d61ed645b41a9760c4219ce4bc022c6"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo318_reading_a_oracle.json",
+      "bytes": 358,
+      "sha256": "b3fb3d9efb79d15ea2dd0c2cdccbc344c24e76d70240c35e03a0670392a0b0d5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo314_ordered_facts.unittest.log",
+      "bytes": 114,
+      "sha256": "e0a2ef798892b3536fe28df9ff2626d46b0b9fc8de760af5aa767ac4fdd1ec80"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo314_ordered_facts.log",
+      "bytes": 63464,
+      "sha256": "27481379e86613276edb1466ea8fa1d30d5573e3c14de8ec8018a48839db1096"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo314_ordered_facts.json",
+      "bytes": 356,
+      "sha256": "6212bb89c8b09cb0d0883cf18b0ca6c4b67702f321202f032e09006aa02292f1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_world_validation.unittest.log",
+      "bytes": 113,
+      "sha256": "27ad3b4ea7cbeb38d54dbccfaa9b2d5c710d818e3bc7d35fc0db994cd3bbb833"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_world_validation.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_world_validation.json",
+      "bytes": 363,
+      "sha256": "5548f8c925e7637620b628ba14857158680f726c0c7036c0d842ccbc04b8e62c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_supports_product.unittest.log",
+      "bytes": 100,
+      "sha256": "784e9712b3361e6201c7f6e3af20b8a542083ebc2ddae6e322a9674843e8c971"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_supports_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_supports_product.json",
+      "bytes": 360,
+      "sha256": "a4c0e8b39f5bb06dd0d4d99fc60c14e01db096ac82f13f3ad3bd2ffb2457c7a9"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_supports.unittest.log",
+      "bytes": 112,
+      "sha256": "20f2d32c23e04ec2b42b618490633c7e322c8fe534a8175adebd67b67304dd6a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_supports.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_supports.json",
+      "bytes": 355,
+      "sha256": "21b1c2982d01417fe2a7a9c999cc4b2c41790dfc16df9298558fc1bd6c6c7e77"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_members.unittest.log",
+      "bytes": 109,
+      "sha256": "7455fe8b33e136b527d387bc64b532e659a8a18d3e996aaacd389cc79021bb09"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_members.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_members.json",
+      "bytes": 354,
+      "sha256": "c44f4d448dc6f9e886ec16d5e314aa15d8ae4f3aa7dfb593d12c8a2e2a92a69a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_member_declaration.unittest.log",
+      "bytes": 107,
+      "sha256": "85ae306d055b7170f7b0c3fcb3000124ce39b61ab32c7f283e65f57a5dfe1a92"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_member_declaration.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_member_declaration.json",
+      "bytes": 362,
+      "sha256": "f88fdb61d50982199d31685fd8fcf2866f1c9e1b291c97027688393cfd25abfa"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_contact_world.unittest.log",
+      "bytes": 114,
+      "sha256": "eb6bad56698cded279e2e36cead0f46cf6982721c1b28f6e9602c20b71340f49"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_contact_world.log",
+      "bytes": 420,
+      "sha256": "734e484ea3b23116397124225de0ef3b4ae9b0d26e0a855fe30b972158e5b6d5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_contact_world.json",
+      "bytes": 361,
+      "sha256": "b4450a8c3460b216e6f146eaf9a49b72c7ab1aee1b43b797e0898d35d4da7290"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_assembly.unittest.log",
+      "bytes": 112,
+      "sha256": "c45598a4245595055c5765328febadc79d3884850beb9f126d68fb6003ad6cc8"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_assembly.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_wood_assembly.json",
+      "bytes": 355,
+      "sha256": "58695d274644c1f74189fe97dbe55c5736da5c2102fedca437df787a6a2e98ab"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_staged_candidate_graph.unittest.log",
+      "bytes": 105,
+      "sha256": "968ef61202c1593cf95759ce4e6c52c0bf2780e4c24fd2795a94ce6c874c61a8"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_staged_candidate_graph.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_staged_candidate_graph.json",
+      "bytes": 361,
+      "sha256": "4cbfea1edb0171bd9d6c317b7f2ca74cfb896a60e9d7f5cf4854d0d0f3a6d860"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_section_profile_sources.unittest.log",
+      "bytes": 107,
+      "sha256": "678617b98f32ef8ae57e06040c244ccb27435b1d4e2f14a47cca210a53a906cb"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_section_profile_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_regions_product.unittest.log",
+      "bytes": 100,
+      "sha256": "50d6703fb4d81f5bb24217cc525d1e6e5bd3a44a19e93285cfdee63a4f2e1f01"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_section_profile_sources.json",
+      "bytes": 362,
+      "sha256": "751bee238d9369276d241f156e5d62c4df301cce6b6c539dd4a3d904db06b1de"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_regions_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_regions_product.json",
+      "bytes": 354,
+      "sha256": "1afb52fcecac14bb875cd19baf51f67440535592ac0e524a7217113c7c88f30a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_placement_sources.unittest.log",
+      "bytes": 120,
+      "sha256": "45fe6c49f8f6e3996744359162b1ab301d45d02a619fc731ab3cb59aacbb1dc0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_placement_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_placement_sources.json",
+      "bytes": 359,
+      "sha256": "e02a6dc4db35d8eeeb8172aa90a548b77e6d6c8a11ac277638f78b48501c76c0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_sources.unittest.log",
+      "bytes": 107,
+      "sha256": "a8b4b3bd4789459ce4f546c29f7132f6aafe616c04a8c8c1960de5fc565bc923"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_sources.json",
+      "bytes": 353,
+      "sha256": "65f6fb34fa23d4f03bda44c4244cd42847b88376eeadcfa0f34b0e8eebfd3e02"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_placements.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_placements.unittest.log",
+      "bytes": 111,
+      "sha256": "ffc34159c3cca56f0b7d158d2a1b5aae69caa121f3642b188254836b59579515"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_placements.json",
+      "bytes": 358,
+      "sha256": "1a03fb648a41472da6acd6ee681b4b515b793c9a457f2517735227dc338cdf1c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_parameters.unittest.log",
+      "bytes": 107,
+      "sha256": "c7f4daab293a72d62d3a31e6611a2647348de85ce7287b1d2b861303c1b80cc1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_parameters.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_parameters.json",
+      "bytes": 355,
+      "sha256": "bf2dd4715f9a13f217ed39c4715fa13a5998a6ba2afc54c05de8a37fde2bac03"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_guides.unittest.log",
+      "bytes": 112,
+      "sha256": "b9964cc27ce458ef944b5539c12bc6e5b14b732e96d128e00b86ef347287ea40"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_guides.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_guides.json",
+      "bytes": 355,
+      "sha256": "0ea4dbc5af07f2c6c3454e71ba3268ce9f9437ef781c5c32865cae0237bef2d0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_grid_rules.unittest.log",
+      "bytes": 107,
+      "sha256": "a2b5b10710bfdc8b9de4e882a4507af890c03b8e9b0dfbd751a0ebeea822ed06"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_grid_rules.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_grid_rules.json",
+      "bytes": 356,
+      "sha256": "17eb9d9b3472278fa6414b492905f85922eff617338011e37b786a752c05fbb5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_grid.unittest.log",
+      "bytes": 106,
+      "sha256": "32424437c593f096d66aee2eff6d9f472f3018cd306ad2f5b9f8c792e33cbd9e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_grid.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_grid.json",
+      "bytes": 350,
+      "sha256": "852e6dd9f0c38ee93f274fa7196d095d353d3891ac8a58ea4e299bd4684d829a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_document.unittest.log",
+      "bytes": 109,
+      "sha256": "be7316a8bf3347307f2b9934b370de61c61d8e34d8b5f4faa0769fa92083fde2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_document.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_native_document.json",
+      "bytes": 356,
+      "sha256": "dddee3f91ce682162635c95654baecf5d896137e6021acb540a34943a2401b6d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_model_semantics_authority.unittest.log",
+      "bytes": 112,
+      "sha256": "667ef828b922270088d7e0f56cefc82400d5da8afad692e6a5a34126186dbc5b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_model_semantics_authority.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_model_semantics_authority.json",
+      "bytes": 368,
+      "sha256": "137da210bd9ac5a58336d9a52481d6dc407eed6430b0e41a37896633c2c7bcfd"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_model_base_replay.unittest.log",
+      "bytes": 105,
+      "sha256": "70a53b188e926122fd43013c2255c76211fc212cf85859a4f4e00bfd9d769c5a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_model_base_replay.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_model_base_replay.json",
+      "bytes": 357,
+      "sha256": "56633b1983529171c56299e14a9383a10ec25a31162ee5a2fecfefda53443887"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_member_reference.unittest.log",
+      "bytes": 110,
+      "sha256": "ba853962a372a8b6d7060998c7992677ca0e3e5ef12224906e654cdce4b59ce4"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_member_reference.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_member_reference.json",
+      "bytes": 358,
+      "sha256": "ac1f6576303a120ad06b0dc33d85bc94957cdb93d1da79e14dca8e46fc4b48c0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_linear_definition_graph_product.unittest.log",
+      "bytes": 106,
+      "sha256": "17028f2e0700c8257c5140dbe0a615aabb417064846190e190754e2efbe44588"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_linear_definition_graph_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_linear_definition_graph_product.json",
+      "bytes": 370,
+      "sha256": "69702c7644f4c5d4c2c89219cb3afdc5e5be873c43060efca0a374e6cbc29f2a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_host_facts_authority.unittest.log",
+      "bytes": 122,
+      "sha256": "46c6ca2e878cbba26f666b7c565272eaf3bebf80fe5531bd992578d5b3378430"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_host_facts_authority.log",
+      "bytes": 7018,
+      "sha256": "549e7df07f4fefdc8bfb164211de3081c21c0ff0d1c1315b35be7031128d264f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_host_facts_authority.json",
+      "bytes": 363,
+      "sha256": "6a27e65a03380a6aefea5f9fe59a053a7e39e752fbb4c99c16332f8913f499a2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_grid_definitions_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_grid_definitions_product.unittest.log",
+      "bytes": 103,
+      "sha256": "3121f4d5f60944ac8caf3cb1002c0324db8faa9facdd00cc54e88f7c8082ce56"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_grid_definitions_product.json",
+      "bytes": 363,
+      "sha256": "cc63e64e597d27004be6c885f7a5e26abce341ce88fa79448380d71205329d81"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_grid_definition_codec.unittest.log",
+      "bytes": 112,
+      "sha256": "e3fc1f57305d4ad141aaf7d77a9a8f9b8d4d8c32f48bb9259b35a087a25926f1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_grid_definition_codec.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_finish_sources.unittest.log",
+      "bytes": 106,
+      "sha256": "505459854e11d6873d9b639aa66552807ef9a24068f41f9fc68ddb267b277e12"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_grid_definition_codec.json",
+      "bytes": 363,
+      "sha256": "5e4a8e3db07f9c32885990551b4d35782e12f1fa20b8567d4842a229e40cc6e3"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_finish_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_finish_sources.json",
+      "bytes": 353,
+      "sha256": "6dff7d8d14ed881a107c8692d0986cc58d2a1df75c04ab883d7edb943fc7d05f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_engineering_sources.unittest.log",
+      "bytes": 117,
+      "sha256": "e440e158bb9c08b5499a1efc09c57b7c67e60c2bf563bfc02a7de4f6a72fe041"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_engineering_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_engineering_sources.json",
+      "bytes": 361,
+      "sha256": "b7050ee042851d2199a1626f4d1d497fdfe05872f120d669390f4802dcbd7080"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_engineering_parameter_authority.unittest.log",
+      "bytes": 116,
+      "sha256": "ba65f31e15852f51ab43ac8b81e65db2e279b4bda91a039849538224fddbbd60"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_engineering_parameter_authority.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_engineering_parameter_authority.json",
+      "bytes": 373,
+      "sha256": "c1d65dcc6010b7a23ee2f7583b277a62e37b3f2c09ac514817ad011f475fdf77"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_enclosure_sources.unittest.log",
+      "bytes": 112,
+      "sha256": "57611c117768e1552fad658e39b5dc69f3383bc13912712654fa0f76f5b1b59e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_enclosure_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_enclosure_sources.json",
+      "bytes": 359,
+      "sha256": "7a373a0bd489bab48f4c8c736926371ac5ab9de3b9138c8c9c7735af66f1db85"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_derived_policy_graph_product.unittest.log",
+      "bytes": 103,
+      "sha256": "90afc7258993218c00225e6dae4e5ca0b854a276abbb02c10ff7a88f5b3cfaa3"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_derived_policy_graph_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_derived_policy_graph_product.json",
+      "bytes": 368,
+      "sha256": "06b8aee141f5c657d36c3c526fde514af660453e17efe99650c13affa654c380"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_definition_graph_product.unittest.log",
+      "bytes": 103,
+      "sha256": "3175d1aba649cb00128fcfa70b7ecbe3feb0159f9b9b100b0e036002ba77a4f7"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_definition_graph_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_definition_graph_product.json",
+      "bytes": 363,
+      "sha256": "97fc0c81f5e3f33e759bc6a2c441b2c6b450d816354e1574d9a8bf86f05083c0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_default_native.unittest.log",
+      "bytes": 112,
+      "sha256": "7dc20192156d5bc283cdd62332376be86c8c3615ddf814b2ecd654383a37a2f2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_default_native.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_default_native.json",
+      "bytes": 356,
+      "sha256": "96eaec2b0518ba59d43dc4c68bf803b4a44b21f4b641efe376c6f1e689b15330"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_contact_sources.unittest.log",
+      "bytes": 114,
+      "sha256": "24dba637dfb7be2ddda3be29c2307f27915f2e34043affb30d9b48eeadc66383"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_contact_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_contact_sources.json",
+      "bytes": 357,
+      "sha256": "59c2317be6cf285dcc3ccb2f4920dc73a755d06e6006b2395e39dbb98361d5b1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_candidate_product.unittest.log",
+      "bytes": 126,
+      "sha256": "6e0f1f90697ce6bf48dbc6dc12155f638c8e5b38b693e759b8efc7faf864f996"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_candidate_product.log",
+      "bytes": 6864,
+      "sha256": "46e9b1e222295dc1570bd7ecf93d25376e6f42ced0673399c0be8e070262526b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_candidate_product.json",
+      "bytes": 360,
+      "sha256": "14e1a7c2549546da2548f3299718813c1aa23db39ab3fc2c3ec74e64b76facfc"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_candidate_deferred_sha.unittest.log",
+      "bytes": 110,
+      "sha256": "c5ad02b1241aee86c2ded8d10b3ac702d604530b12274b1758f2232ded94e9b7"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_candidate_deferred_sha.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_candidate_deferred_sha.json",
+      "bytes": 364,
+      "sha256": "1cfb743825eb73392614dde78ded09d095da1acd97df83f1716c4d72d8a0c758"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_candidate_cache.unittest.log",
+      "bytes": 117,
+      "sha256": "0d505296f947543817756ad5cce83a4d0b780d2721667def8b5aa3e005b07aa9"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_candidate_cache.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_candidate_cache.json",
+      "bytes": 357,
+      "sha256": "9821929a9552f0f4fcafba24ced5c6eb79023d783d2d9043386d259303bcd471"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_application_closure.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_application_closure.unittest.log",
+      "bytes": 113,
+      "sha256": "3eb64e6e18d4aeb9698bffc29b51d260a320db530c32e6bc11d64fc8d968ed13"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_geo261_application_closure.json",
+      "bytes": 361,
+      "sha256": "c126fffd62f6048405f9c545df93ce7e4645b7f27762c5ae9d850e4ce0fbb281"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_feedback_store.unittest.log",
+      "bytes": 110,
+      "sha256": "7dbb8429daeb53e841e615adccd134c10e21779b69d7575a66c0a66da55ba092"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_feedback_store.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_feedback_store.json",
+      "bytes": 349,
+      "sha256": "8b99e3e865b233b333d7485777297c496cac242c11515b29b3c6aec49393eade"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_engineering_transport.unittest.log",
+      "bytes": 105,
+      "sha256": "670a39115e7523a8984e4842e16547cb2094b03fad392b037b4b9dc8b2656e62"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_engineering_transport.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_engineering_transport.json",
+      "bytes": 353,
+      "sha256": "22ed039993f654f4e7bd9e3967b3c52da837bc76e62a5749f014dbb12644948e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_engineering_terminal.unittest.log",
+      "bytes": 105,
+      "sha256": "6ba5a7bae81ad1f20827db3e2892e4c490c4916ead353fd89481455ac040004b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_engineering_terminal.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_engineering_terminal.json",
+      "bytes": 352,
+      "sha256": "e8b49b1564d9d23e47f489402be6d5b95359575a1ec7f9961ed3b8a84480478c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_engineering_model_sources.unittest.log",
+      "bytes": 102,
+      "sha256": "8b30660444a30be14f0ee7c46d3e0cf2c5f15791741be1ef62d786bbf5164dce"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_engineering_model_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_engineering_model_sources.json",
+      "bytes": 357,
+      "sha256": "6ed858196c958f3390b1a3fc1cbddedd9c2618672743b5f22c0250f27dfdb2ae"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_engineering_core.unittest.log",
+      "bytes": 117,
+      "sha256": "cf16c6f15d1e6c732b5a3b2b82ef5543024afa2b92febee38285ff7e7266f09f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_engineering_core.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_engineering_core.json",
+      "bytes": 351,
+      "sha256": "3094e7039fbfe0adc20ff2893a81b73cb2554f672bb77dd28e34a6e6893fb9ce"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_domain_decoupling_adoption.unittest.log",
+      "bytes": 114,
+      "sha256": "a4738caab4a72ceb11f471cd90344c5bbc6f773744483cef99ce9b4af5d81e16"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_domain_decoupling_adoption.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_domain_decoupling_adoption.json",
+      "bytes": 361,
+      "sha256": "335fba28e74922eed7dccb81b8158cbffed1920c53f06c2042a85bcd61b6b11d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_cli_args.unittest.log",
+      "bytes": 104,
+      "sha256": "209919fbd554fcfe200f47d13d9dfab50206ad377fc2ea704865079aa00fa9e2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_cli_args.json",
+      "bytes": 340,
+      "sha256": "55362c6102400abc063be3a9fcf82fb3caf8ada8faa490906b04e0278b3a800f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_cli_args.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_binaries.unittest.log",
+      "bytes": 135,
+      "sha256": "acf611297462cff12531c278ec147f764fd1408391e9ccd6d2b84a787d64e0c5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_binaries.log",
+      "bytes": 990,
+      "sha256": "b758a74edbbc770b14b1f5e486aa3b8d44bb4b4168bfc4b7016d164295f13eb1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_binaries.json",
+      "bytes": 343,
+      "sha256": "a0348041d4778fbcf1becc1aced4021609fdbcbd0ca2ba2eae28a92cdc9257cc"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_assembly_rules.unittest.log",
+      "bytes": 135,
+      "sha256": "c36c2521bd36bfc685004ba04abab1208ce2bffc81f4d3c620f23c1fed0cdb18"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_assembly_rules.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_assembly_capacity.unittest.log",
+      "bytes": 103,
+      "sha256": "d52929cece35dd6fd94b195c1d2fe7987680121e1415b28c83543a1fe541601e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_assembly_rules.json",
+      "bytes": 349,
+      "sha256": "b3b35884ad611538d6d3153297a6c1a3d32708baedd749f23838c1453745e452"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_assembly_capacity.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_assembly_capacity.json",
+      "bytes": 349,
+      "sha256": "21200f0aa7697596db6120f016150c7b0bafb7945e1aba8fd3cd8f2d6e89ec83"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_assembly_candidate_impact.unittest.log",
+      "bytes": 102,
+      "sha256": "b01f13afd9e0370b5c284c6f02bad22a31d8fededdb4458fd14a99785f703c64"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_assembly_candidate_impact.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/py_test_assembly_candidate_impact.json",
+      "bytes": 357,
+      "sha256": "005495fa4287b90b9cb2844b0604158f40c34aff067786e9bff023d5bb7befaa"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/oracle_framing-selftest.log",
+      "bytes": 39820,
+      "sha256": "fbac4ed1dde4edfd45a2d7c9b8c33e95e3ecb379b9732410c020dc746deac7dd"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/node_tests-js.log",
+      "bytes": 112345,
+      "sha256": "e69195a5b48a9feeeed89bc309ab460058b47ad42a18d862e35cc52654730d69"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/node_space_test_floor.log",
+      "bytes": 1069,
+      "sha256": "8609908dfba074524b613bea6b0ed026677e586e68ab7fdf30d3b9e3c5be1291"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/node_model_viewer.log",
+      "bytes": 147,
+      "sha256": "19db3e52065be25b070156bd2766d4081675149a87c87f3afccec70ee36cd048"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/node_grid_lesson_control_ownership.log",
+      "bytes": 1555,
+      "sha256": "748cf3979a76703ab5ad69a0035cef672b66b67379011265e9b3b196db0366f9"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/node_feedback_events.log",
+      "bytes": 3086,
+      "sha256": "90dece4cdc9611bf4f7b9598890e9323824335fd86d5d584a67f850792f9c6f4"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/node_face_paint_scheduler.log",
+      "bytes": 720,
+      "sha256": "6f89a268a1703c317ca677af15bf4c2265ebbc6bf15cb81a891faf9d355fba85"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/node_document_format.log",
+      "bytes": 86,
+      "sha256": "6e51ba76e038240a59db0561ac137b7616bba19fc2714e8457175fc5098ecfba"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/node_document_cases.log",
+      "bytes": 329,
+      "sha256": "67de34061d16797b612dcadd3245650d92e2ae695ba7abac842b0cb1d88757d6"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/node_cutting_session.log",
+      "bytes": 1108,
+      "sha256": "4510796467846ae3b83103a39129e3ab8710410cd45f7e5a1eaa0befe7339eeb"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/node_background_grid_viewport.log",
+      "bytes": 814,
+      "sha256": "7161a0db30d84f41a3bfaf44213e23ee4a4882da756aaedf796b2836615bff9d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/node_cdp_navigation.log",
+      "bytes": 63,
+      "sha256": "7ddbfbd95acaa2e9b6a82dc42854ee57b1d346d955140ce4b7266d9e2b1962d1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-3/node_anchor_band_clip.log",
+      "bytes": 1293,
+      "sha256": "4378b777c71c9c1c724f2e0f227dcf1703bb07a446b534b7386f5670cd1e8bc5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_witness_marks.unittest.log",
+      "bytes": 104,
+      "sha256": "9b0fd0e0e3fe13eecc11207b26ee4368ed41a9b8fdee58792bfa772e14954fcb"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_witness_marks.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_witness_marks.json",
+      "bytes": 345,
+      "sha256": "9115b0e559a36976c4ae0a44e8c51a8c6257a34053557cfb3aaa7b58650fe784"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_unittest_runner.unittest.log",
+      "bytes": 111,
+      "sha256": "36d45001b32ca675a6a52e452b2f98be8efda6ea71d3783cbd9e05da89038a54"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_unittest_runner.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_unittest_runner.json",
+      "bytes": 350,
+      "sha256": "34a2615c8e581c5bdd33b4d253084cf79b1b5eacb2b9ca69b1066f3c65d32581"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_space_modeling.unittest.log",
+      "bytes": 140,
+      "sha256": "65f751d58845bbf6c0abd38de1b91e85cfa0c9aa370160e986d49d44b512c1e2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_space_modeling.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_source_closure_memo.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_source_closure_memo.unittest.log",
+      "bytes": 115,
+      "sha256": "22768ea513fceac8c5b22bdb548e294f542aa57dfb9c8f06840313eeef785840"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_space_modeling.json",
+      "bytes": 349,
+      "sha256": "ea5e80c51c0fa2ac4043e036523453b36338f68e0b8ed90a2e7ba9f6919fd19e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_source_closure_memo.json",
+      "bytes": 354,
+      "sha256": "64273ebf144ee5afcff85a54f54c2565cfb93ee6d1d2bcbec2d916aef03effbc"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_serve.unittest.log",
+      "bytes": 151,
+      "sha256": "6b0b94a2a2f63d23276fd37ad41c299d1c0b19e02b462fb8db608d7c12678537"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_serve.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_serve.json",
+      "bytes": 341,
+      "sha256": "f27c418b89ed63575bf10b663b53292022b0909ce9032bfc7df440989d922a1e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_section_profile_mutation_check.unittest.log",
+      "bytes": 129,
+      "sha256": "1b9af5fa1206bcc7b86cebf25d9825cec788f8c3ff0cd3d0d2da1eea2f35d872"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_section_profile_mutation_check.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_section_profile_modeling.unittest.log",
+      "bytes": 119,
+      "sha256": "b8e207cdff6d70629e68dbfbf2599eaeb2619710c0ea281b5a50368515afd478"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_section_profile_mutation_check.json",
+      "bytes": 365,
+      "sha256": "3701a3812c993d015ede40f8bec00d68a3df6b1db967be88f70b12f25dd44900"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_section_profile_modeling.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_section_profile_modeling.json",
+      "bytes": 359,
+      "sha256": "918ff722d791ea2047e760baaf8f56abe890eae5435395e9e6c96ca6752d39ed"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_runtime_version.unittest.log",
+      "bytes": 130,
+      "sha256": "3f1c8dfe3d186e483786fac891974e1d24cde3a43d998b123d29660bdef7a328"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_runtime_version.json",
+      "bytes": 349,
+      "sha256": "e67d3e0ce25b1644f17133e25ca08c33724b421c773251f70c0c1b2395182808"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_runtime_version.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_rule_case_host.unittest.log",
+      "bytes": 112,
+      "sha256": "252b9395cca1914eb3c9f6bd8aa396c7f0e50abd09d79be260ff5a783bc409b1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_rule_case_host.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_rule_case_host.json",
+      "bytes": 349,
+      "sha256": "a591970b7f39279d5e2dffffc9e11b106b37c6d9ff52824d072657f8190687c0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_recorded_api_receipts.unittest.log",
+      "bytes": 116,
+      "sha256": "59f977807b06c4e42e94cf76f2bef9706d3723f5b8c8c66abbdac5b97bba7a09"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_recorded_api_receipts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_recorded_api_receipts.json",
+      "bytes": 356,
+      "sha256": "0e5481e6cacbbb0adaa9f849dd9c51c08cbdad88420ac74ae7d26692a3454578"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_parameters_upstream_unbind.unittest.log",
+      "bytes": 111,
+      "sha256": "40a54cfabb553e1d9d0d08b32ab98de348cc232e68c3875adba38b5a9a8ece2b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_parameters_upstream_unbind.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_parameters_upstream_unbind.json",
+      "bytes": 361,
+      "sha256": "af83df19eb2de5fad9406cd87648f24ef60d9558be9cf653bcc39bc1348f6e1d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_parameter_retirement_scope.unittest.log",
+      "bytes": 104,
+      "sha256": "225a45b0ce552a563f26e75bebff47436c7430f1b0f025a1a072169ebbb009ab"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_parameter_retirement_scope.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_parameter_retirement_scope.json",
+      "bytes": 358,
+      "sha256": "93472a9d58da342e1d7bc4547da8982074ff6b74d153a938d27d1d2a12c42a0d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_panel_fill_support.unittest.log",
+      "bytes": 120,
+      "sha256": "5624c451aa5426cd90f170b032284953be8222e095d741f64b0175770309b0cb"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_panel_fill_support.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_panel_fill_support.json",
+      "bytes": 354,
+      "sha256": "f48df51cae4ea9bb38c9ccb39c7bf718a66abce1969dab474029f865304b7d61"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_panel_fill_layout.unittest.log",
+      "bytes": 117,
+      "sha256": "5098d27f1a1eac0927ba0d2ea0b2da18a35d28d9578a29ad86c7c42856195fee"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_panel_fill_layout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_panel_fill_layout.json",
+      "bytes": 352,
+      "sha256": "16195a7c14edca35183df79a02bbd8f7d1e76505ba3b34187d7e93a30332d98c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_panel_fill_finish_surface.unittest.log",
+      "bytes": 121,
+      "sha256": "b436f2ccf5b6b60373e7de6388bed504e1dfce737a0b7f084fd7ef9102c2b76e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_panel_fill_finish_surface.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_panel_fill_finish_surface.json",
+      "bytes": 360,
+      "sha256": "2c2d5ce0ec21c7277da1e2772768e45d19608e538675c05abf1cf3946b7a985c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_mutation_freshness.unittest.log",
+      "bytes": 173,
+      "sha256": "dc97798a726116d847b2ec2ccc1fcfe4ee2491dd5198c93884463b56ef27e245"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_mutation_freshness.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_mutation_freshness.json",
+      "bytes": 353,
+      "sha256": "6300757da05c22e83199f7e59235a984821f84dfeaa588376897a9a5b4dd30d8"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_modeling_transport.unittest.log",
+      "bytes": 101,
+      "sha256": "28ee5f4d9958e3f3f5383f70f59294d68ea4aa9a10245642139112189a7ac38e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_modeling_transport.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_modeling_transport.json",
+      "bytes": 350,
+      "sha256": "17b3c681b13eab3ebdae47f8c4086e7630db041b07b3faf027138fad64e85cb4"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_model_update.unittest.log",
+      "bytes": 127,
+      "sha256": "2d6a665044743a3143af5b9e4d67728b8d22c94780f0dedb9e01a447f33c86a6"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_model_update.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_model_update.json",
+      "bytes": 349,
+      "sha256": "77833b374bfb3e089918ec0167f05c02ac7328ab60a20feeed57f0be24800a7c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_infinite_grid_contract.unittest.log",
+      "bytes": 124,
+      "sha256": "650b40ebcf828cd8c22c5b4c9369bccd7780dd08da95b8c889e12168a0137a55"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_infinite_grid_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_infinite_grid_contract.json",
+      "bytes": 357,
+      "sha256": "bece6084ad16bd260aa1092f20e1d1b7bf1b7609c56df5de56182cf7d440b9ec"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_guide_panels.unittest.log",
+      "bytes": 98,
+      "sha256": "9152bd257679336b40c628719f593ad31d6a57b4b0f6b839cb7ee8dbb189fcb2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_guide_panels.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_guide_panels.json",
+      "bytes": 344,
+      "sha256": "bdd01b82c5f63da5a2fffd2c5a5337e82431bd8710e0448dfbda03b58dda5314"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_grid_subdivision_oracle.unittest.log",
+      "bytes": 141,
+      "sha256": "3593ab1df8cf8451dc5a7e769b3b8d2b2fa420f67db53014e26499f4972bc07c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_grid_subdivision_oracle.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_grid_subdivision_oracle.json",
+      "bytes": 359,
+      "sha256": "0d65131d7b60fabe479849816c6c043da1e9c17de4b5c61c2a481e3636861c46"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_grid_card_reference.unittest.log",
+      "bytes": 143,
+      "sha256": "443d33e8e64a395b89f53a958112451c22dfa0e1b6b28fbc6465c94118cf2b73"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_grid_card_reference.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_grid_card_reference.json",
+      "bytes": 355,
+      "sha256": "2cb26a8e8b590fbc2535b4eb26ac9a748386fb3112b6bd243cb7982cbb3caf2a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geometry_source_runtime.unittest.log",
+      "bytes": 109,
+      "sha256": "d41be795261b6be2c8c7b7754b2c8ed15d5f12384fb36aed688b54a29e192cde"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geometry_source_runtime.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geometry_source_runtime.json",
+      "bytes": 357,
+      "sha256": "44116f36adf48ac91a85dea47b25da9d324750fd1d4d88ce5181eb068c4569db"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geometry_kernel_geometry.unittest.log",
+      "bytes": 119,
+      "sha256": "92a22a228b1edfa3e109936db9edca24ccd7f92c711e60fad9f5b55ebc95674a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geometry_kernel_geometry.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geometry_kernel_compatibility.unittest.log",
+      "bytes": 98,
+      "sha256": "76e4dd0da49684bfecf1d0b1e43bef5ffc0afd07b37a4a33fcb60d2406e7b8d3"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geometry_kernel_geometry.json",
+      "bytes": 359,
+      "sha256": "2a737123af0a01445104d0ab3cfea041bbd1342ee86009fafe38c5c9a36911b7"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geometry_kernel_compatibility.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geometry_kernel_compatibility.json",
+      "bytes": 361,
+      "sha256": "2315006ffa53161c627408629b9a1db11a3ede891bd18643111daf875dd0d212"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo318_reading_a_native.unittest.log",
+      "bytes": 105,
+      "sha256": "05ebca0cb52246f2bd14d4be4593750ab46e923d985b494a205ce8121c5d1b82"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo318_reading_a_native.log",
+      "bytes": 5981,
+      "sha256": "343a4739b5392d66cf7cb98a39cd3366a0ba74b06270ea39d5f5fd2d7355f102"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo318_reading_a_native.json",
+      "bytes": 355,
+      "sha256": "753b7ec881d3a2fb55249fdec7b2ce4be0a4702f04339d36c4a52be5fac5bcb2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo314_commit_paths.unittest.log",
+      "bytes": 110,
+      "sha256": "31f28687d91e649a699f7bbcc3b892dcd48a6a6cd8858aa87e5b26f08d171326"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo314_commit_paths.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo314_commit_paths.json",
+      "bytes": 354,
+      "sha256": "8fa5b4947c9ca24d475dffe84626d52a063a187484c10d650e208bd9be39e439"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_report_policy.unittest.log",
+      "bytes": 106,
+      "sha256": "15e506a9ec77c6e3b87716b2c76481adec90b34d1502f8443cec8d85f550619c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_report_policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_product.unittest.log",
+      "bytes": 100,
+      "sha256": "a875fe75dfc8b06ec9cb92ba785ab7d563726e30df98961b88e6f339da2cc37b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_report_policy.json",
+      "bytes": 357,
+      "sha256": "578f875d955d2ac768465c39c98c188b0112185918879d711c44da9c0b9ae334"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_product.json",
+      "bytes": 350,
+      "sha256": "17110c2cc2db516228c37ede5c3ff605becd833771e2fd3528de2e9892fbe622"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_grid_engineering.unittest.log",
+      "bytes": 113,
+      "sha256": "e71b656403034bec88fddb4c38885744c382e171ef8a14208c02e74b2b487071"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_grid_engineering.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_grid_engineering.json",
+      "bytes": 362,
+      "sha256": "642f5b75d1a9eca84c10019e91c872c8874daf45387219b90f04ab9288cea6b0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_engineering_operations.unittest.log",
+      "bytes": 114,
+      "sha256": "697ddc9f226d686fe5bf2d7213d1ab5a4552a07be07ce8ef103b5aa3ff490277"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_engineering_operations.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_engineering_operations.json",
+      "bytes": 369,
+      "sha256": "2ce0915393c8b1fdd6626b82f375b90b646c8020ff69e5e7b2d1406dd7d1e7d7"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_contacts.unittest.log",
+      "bytes": 109,
+      "sha256": "82eff7b7528a7ec28c1241b9ccb8a52b118982b94a0b3f8ba06ba11fdba1dc75"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_contacts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_wood_contacts.json",
+      "bytes": 355,
+      "sha256": "08df9f4e28bb1213b60c636a1560a5d01d34819c67535cca77942f3e7fedf33d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_version_field_sources.unittest.log",
+      "bytes": 118,
+      "sha256": "184ed8048da88ea432885e1cb873b69ff85b08664637d1b019b85407701197c1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_version_field_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_version_field_sources.json",
+      "bytes": 363,
+      "sha256": "7af29e4028cac7471dc05d937b9d33aad9637842a66f969f2fdf2fb624dc7852"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_version_activation.unittest.log",
+      "bytes": 109,
+      "sha256": "e76f928a5c98d6c6ae5d8edc25423b77dd7162c7c8b67ac32b7fcb9786b477de"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_version_activation.json",
+      "bytes": 360,
+      "sha256": "2afd86c29ad04945ab809d750302c3994a8d35f591ef71814847f865cc29072e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_version_activation.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_source_index.unittest.log",
+      "bytes": 117,
+      "sha256": "c4abd33c95e5c293bdc66704810c04f12cb52a2902ab6dd022877ac036d39093"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_source_index.log",
+      "bytes": 2205,
+      "sha256": "6d5f377fe9f7a99373971d75ad67c63b73b1c0b49c7129d24c9ebaa8430d9c79"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_source_index.json",
+      "bytes": 353,
+      "sha256": "b2f801a979080e6a1feb728b9339d8201659d6d7cdf46908ebacbf875b9046ae"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_source_describe.unittest.log",
+      "bytes": 105,
+      "sha256": "af593738cf63aaad73e9be5dea94ce90e931b7c382aa1965d9d010812aa0f0c3"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_source_describe.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_source_describe.json",
+      "bytes": 354,
+      "sha256": "74884ba99414ea1a7b63e698f9f5e33e09878642b54aaea6d6d561979b5b89e5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_source_context.unittest.log",
+      "bytes": 106,
+      "sha256": "f8756cc77c03145bccd646c3e8af304df1d856efe9c5948786b0c5f4e9e19254"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_source_context.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_source_context.json",
+      "bytes": 353,
+      "sha256": "9527db1c39621f4ea566fe2252dd843d3320230cce4d41f31ac376a65caed109"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_region_key_sources.unittest.log",
+      "bytes": 114,
+      "sha256": "27ddbcfc3db738c03cfee3bf724a07a054d7698e81fcf2ad96cf8179bef39ee1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_region_key_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_region_key_sources.json",
+      "bytes": 360,
+      "sha256": "b5a26af327eec6f6f5401d35ed9f43f6d6d653bfb35f3f2ed9ddddbf04eca303"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_region_edges.unittest.log",
+      "bytes": 106,
+      "sha256": "7b6563be943eafa49201e47c7bdb3ad307eb8eaf93dd221aea3154b99b2c2ef1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_region_edges.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_region_edges.json",
+      "bytes": 351,
+      "sha256": "e175eb9524ccdd08ec8e4562239963fb1cae77632901770cacd48eb2b99e6c5d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_native_linear.unittest.log",
+      "bytes": 104,
+      "sha256": "969b3ba62d623f1cb753897bc69ed5f1388baa41c9b4f296fee58d26a9dc3d04"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_native_linear.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_native_linear.json",
+      "bytes": 352,
+      "sha256": "441a6dfebfa189bb2ffe19cd98ecda634c155613369ea4046b28d04d18151597"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_native_kernel.unittest.log",
+      "bytes": 112,
+      "sha256": "951f1004df05bdc39acbb6412f787feb1b34e8b53a1035090fbdb1a976ea15a4"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_native_kernel.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_native_kernel.json",
+      "bytes": 355,
+      "sha256": "3d11b9176d0c4952f181441d08aeb57e0ec39acd0e8ea598adc97388f8ec7552"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_native_grid_store.unittest.log",
+      "bytes": 117,
+      "sha256": "f268567572ae36f9872cfbb780764c478fb619114ab27526911fe9b5b1c16ff6"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_native_grid_store.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_native_grid_store.json",
+      "bytes": 359,
+      "sha256": "ddc5d22fd9d369d8c7784371c9af499555de3461d6bc97a9e1f6f90f10047f7c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_native_datums.unittest.log",
+      "bytes": 105,
+      "sha256": "c08faf18b9f1544654eb52baa9e00432080abe74874b0e01c23e9d977b028fb5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_native_datums.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_native_datums.json",
+      "bytes": 352,
+      "sha256": "01acf9fc65ce7233373fc8ea27b60eabaff71a09c9b354d602a74470fc5b9142"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_model_vertex_ledger.unittest.log",
+      "bytes": 106,
+      "sha256": "19ce50719cab3848aed74429f8f416e194db90ed0f274a318b283ccca4d4bba4"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_model_vertex_ledger.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_model_vertex_ledger.json",
+      "bytes": 359,
+      "sha256": "fa78bb5e37866148140fe5b507df49921b989ea085df19f17360f29a7044c504"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_model_sources.unittest.log",
+      "bytes": 111,
+      "sha256": "fef10fe8e44f12dcfbdbb230bb8051ccf0e246c88b964cb27f8deb41093de186"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_model_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_model_sources.json",
+      "bytes": 355,
+      "sha256": "981d8159b69c7efb67386d3ed0515df8afbb85f9ee16203196c6f9c08c8d5aa1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_host_history.unittest.log",
+      "bytes": 112,
+      "sha256": "ed400aaa5bf3605254019478d63ddf50acafab5c706efe580446bb1484378f37"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_host_history.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_host_history.json",
+      "bytes": 354,
+      "sha256": "3bd4e068396a02b3debf3ce42777099f8443ae8c636965996b82d6df20d26e78"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_host_candidate.unittest.log",
+      "bytes": 116,
+      "sha256": "ce2c9e9485a1b1433f7b1713d4d50230d415c228b4bbcf3a2c678cb7dd8b9387"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_host_candidate.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_host_candidate.json",
+      "bytes": 356,
+      "sha256": "c75035ff316458e763c1e12c75b7c3ae8ca3d0d70ea44d417a8e1230949e0572"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_guides_product.unittest.log",
+      "bytes": 100,
+      "sha256": "146a3736301d48c6ca987521f8c04f2812e9762ff75370843b1ca8c83732ae1e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_guides_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_guides_product.json",
+      "bytes": 353,
+      "sha256": "059347cc630960a260ed549f6d1e7785d82e635c11fbabda6aa749283fc99d70"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_grid_definition_authority.unittest.log",
+      "bytes": 112,
+      "sha256": "29113a68f077302bdb605850a1e732df4303a86a421efff5c04e11226e354751"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_grid_definition_authority.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_grid_definition_authority.json",
+      "bytes": 367,
+      "sha256": "639e440181d713faa4c316b6c97676bed53df9f067c02505c8aa857221b20781"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_finish_definition_authority.unittest.log",
+      "bytes": 113,
+      "sha256": "66ca71d8ba6f227436666a3c144cdc3240d1198e824da295924dd51f7f07cff3"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_finish_definition_authority.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_enclosure_product.unittest.log",
+      "bytes": 103,
+      "sha256": "13eeace755861a60a4cf92ad10e1abcb10a4038c371b7044764d052fd5e405c4"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_finish_definition_authority.json",
+      "bytes": 369,
+      "sha256": "b0164761eba195eb8aa7a2b582e34915417914048afda8a691b2836c009bb111"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_enclosure_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_enclosure_product.json",
+      "bytes": 356,
+      "sha256": "3ef0a643386656aaaf35759a152782b1fcd6c818940c5566264b19a15e78d511"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_enclosure_definition_authority.unittest.log",
+      "bytes": 113,
+      "sha256": "e9cfdc04a444a69db7ce1c67fbc52848b06f1e206c057638a35e60545f6c3753"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_enclosure_definition_authority.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_enclosure_definition_authority.json",
+      "bytes": 372,
+      "sha256": "94e70a459be04fb268a899dd2d64d81943e112c62a4fd87781f04d5c79a5acc2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_definition_sources.unittest.log",
+      "bytes": 107,
+      "sha256": "1abca32d2ecdceae8b2165d3417bcd1a155bf3d53349ca5da15ddd4bcd104018"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_definition_sources.json",
+      "bytes": 357,
+      "sha256": "a42ef7a5c2cf0ca645948abbb51bb5fa1cd7dc5d63fe0436935469f4c88df664"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_definition_sources.log",
+      "bytes": 10074,
+      "sha256": "9b4e68f958812e6c0e090fe21cea5b1dfce353f5f7a22c020aae419064b98d79"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_deferred_product.unittest.log",
+      "bytes": 110,
+      "sha256": "8d61a0ab3c993e9eb2914dbf94f6dd7721968182b2db420aca575967c138271c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_deferred_product.log",
+      "bytes": 2083,
+      "sha256": "3f60ab2db0733f389466f8b72e8887dbf0acff7b4608e019992a933d9768a4de"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_deferred_product.json",
+      "bytes": 359,
+      "sha256": "55c0fee5ee9c126cc5b9c3a7f972125c3cf9d9f00627b277da7b1462974108d9"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_deferred_candidate.unittest.log",
+      "bytes": 152,
+      "sha256": "890ff140613c0e22b25a9ca5ee5b1ac05d1306474a13122e1f6316a2f946d975"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_deferred_candidate.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_deferred_candidate.json",
+      "bytes": 360,
+      "sha256": "5510786c96e41ea30d152a0a299ad27204150c47ef3dc23230d17f5aab22c61f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_assembly_sources.unittest.log",
+      "bytes": 106,
+      "sha256": "94cf14d9d47ded3bbc954bc02f3c2e26dd5ff6624dd89f5414f089aa27391c32"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_assembly_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_assembly_sources.json",
+      "bytes": 355,
+      "sha256": "95afbff7b9eaafb475a87d4e6e1f88604c4c96067ba0efffa6fe0d0e6b2a91d6"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_assembly_definition_authority.unittest.log",
+      "bytes": 114,
+      "sha256": "4a6baef9516eed5483d675f283cbc9cb5fc5aa2005d2ae106d64ef412e09a576"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_assembly_definition_authority.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_geo261_assembly_definition_authority.json",
+      "bytes": 371,
+      "sha256": "21e59c1298fc88694b42abba53a6850e738b28026e76e0c351b40b0a1aba3a70"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_engineering_json.unittest.log",
+      "bytes": 105,
+      "sha256": "f8971c099203b8051e66bc762eae4c9a2f9d4fd2071c639e8731db6c6d39befa"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_engineering_json.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_engineering_json.json",
+      "bytes": 348,
+      "sha256": "5bf0aad4a3db63d0e4cc1e7ce299cad98de3b0a5279a09faebfdf93a32a4888d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_domain_source_pins.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_domain_source_pins.unittest.log",
+      "bytes": 115,
+      "sha256": "294dc581abaf2bdba1eed393b7358b9f32f844cd4194591487fd8f03f6a0c1bb"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_domain_source_pins.json",
+      "bytes": 353,
+      "sha256": "be69882de3d4ff3d7eb31d4b89f1fcc99fffda6e3881ebfec9d648bc752628cd"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_domain_decoupling_proposal.unittest.log",
+      "bytes": 128,
+      "sha256": "010c24a7936ff1122dea7e46b085dc37f759294c9ac0963e611b006d1a6d8f1d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_domain_decoupling_proposal.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_domain_decoupling_proposal.json",
+      "bytes": 361,
+      "sha256": "0ed8afef8649376dcd99c831163adea98aab099502a7dd6902ffd85616204c2a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_assembly_parameter_refs.unittest.log",
+      "bytes": 101,
+      "sha256": "1752b952b2c1ebe42caae22e4920623174c375f00b2a4e6ab84e528c1eeb5b26"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_assembly_parameter_refs.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_assembly_parameter_refs.json",
+      "bytes": 355,
+      "sha256": "8f7b8466206e6a45fdf1ed4844b9deef6cfd7c66fa9e6a6578205678c65d2ec3"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_assembly_mutation_check.unittest.log",
+      "bytes": 111,
+      "sha256": "465e1dba319ec0426bd20c2dd672712de944354ecb13184996db6eb98d98918c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_assembly_mutation_check.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_assembly_mutation_check.json",
+      "bytes": 358,
+      "sha256": "d8b612cc29d8499ed5e85e5b9c71f64aa8b0c419b12ba70f2f3aa3fffd1311b3"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_assembly_generation.unittest.log",
+      "bytes": 121,
+      "sha256": "2c57f5e623c9613864350a7cd25ea59bfc94798f372c2ade7a6dfcfc82e2f2f5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_assembly_generation.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_architecture_contract.unittest.log",
+      "bytes": 305,
+      "sha256": "eee200d07fc4e619b0287269e1e9ca2ca81d14536d776888b74ee38016109bbd"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_assembly_generation.json",
+      "bytes": 354,
+      "sha256": "beeba6d88faaeb4dc1197ad152cac9dc5de1c9d6ac6938a1492de2528fc1f267"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_architecture_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/py_test_architecture_contract.json",
+      "bytes": 359,
+      "sha256": "e51fa31e75381f7e2438f2bb3400c190c765eda163cde7d6ab3b686dcd32c586"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_workspace_shell_history.log",
+      "bytes": 3029,
+      "sha256": "0add60a7cf9a22656c6fb2899230f457c25b726d43c82dc66df3b2b5d6ce457c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_room_outline_worker.log",
+      "bytes": 699,
+      "sha256": "228344032b35b3e2def0fb240ffbd9a96243c026cfdbc7852cfac47c9bc7ef1f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_room_outline_closeout.log",
+      "bytes": 2406,
+      "sha256": "31af0cb80dd62fcc3fd6eab406b587cbd461f9dfada5c734c9a2459690db6b07"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_polydraft.log",
+      "bytes": 9929,
+      "sha256": "223b95f1ce6919305078db83b03ef2bf5783b74da52603ccc00aabe38889e600"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_hover_pick_scheduler.log",
+      "bytes": 1683,
+      "sha256": "3346d9e30e6c1a223f556e5d435dcf5caab874ff35497a95ee5ffd0102f3539f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_grid_inspector_command.log",
+      "bytes": 778,
+      "sha256": "52d7773a75caed40b997e2cfb0ee2a81112e7b5fcf999aa859f657be8398780b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_face_reference_settlement.log",
+      "bytes": 1933,
+      "sha256": "e388d3e6d3322dca7f8e5dcb1d82a4b4312071784e4d40c46a868cd74fcf723f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_evidence_links.log",
+      "bytes": 2746,
+      "sha256": "e422c8d7378f7ee59fdc308ef72d4853105cc5bdc5ba1570a75f229160fa1681"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_cutting_project_store.log",
+      "bytes": 1379,
+      "sha256": "1c384a923c56d69f464d48c672ce53b33fdb3e295caf000a562a99f51e37d169"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_cutting_owner.log",
+      "bytes": 454,
+      "sha256": "f49e8efbba782b4f251e9c20e1138ce63e5f27bf11b89040e1d37daf3f620358"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_context_operations.log",
+      "bytes": 1376,
+      "sha256": "155fc31f9308620da1975c27d68f021bede927680803eb5becc9569efff6133c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_cdp_evaluation.log",
+      "bytes": 904,
+      "sha256": "72920b94bed6193ccb6de435e96fa58b7b4aa06f1440b01e921dc19ea3fa851f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/node_canvas_direct.log",
+      "bytes": 11529,
+      "sha256": "9903abfc91c5c4b7a1ae9cda5dd2626d9981db6e1799393b8124ca4cd8ee16f0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/mutation_check.log",
+      "bytes": 557,
+      "sha256": "dfe9879b0e23a07ebc66b10de77b78259991c37804ea2e57d70c311efad4d29d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/core_run_tests.log",
+      "bytes": 25163,
+      "sha256": "7d380b7bf1a384b3199d4d90545ff91542e29b908f6d660283d992cdb1ddb64c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-2/canvas_shim.marker",
+      "bytes": 36,
+      "sha256": "5647060edf67643a8d6fdc7fa216d3fd071f6bb8f6bce764117ed5bd5cb88e6b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-shard-1/shard-1.json",
+      "bytes": 40020,
+      "sha256": "7fdad3817f0a62f9228c484177d26ae7d0c9c7fcde96eb0c698793bd7ad86004"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_witness_diagnostics.unittest.log",
+      "bytes": 100,
+      "sha256": "fe008aab760eb03ccac7578e2b84665b1b50b0d7f855b17a0c7a8d039435b658"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_witness_diagnostics.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_witness_diagnostics.json",
+      "bytes": 351,
+      "sha256": "9f78e5258f808ec3441e30216d72057eed538765620eead73c296b9be1868c41"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_source_inspector.unittest.log",
+      "bytes": 117,
+      "sha256": "26b0e8af37addbc272f799000616902580b95882ba62e67aab1238fe871026e8"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_source_inspector.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_source_inspector.json",
+      "bytes": 351,
+      "sha256": "a135fd7ce9777fc4f6869d168df7ef208d0b4d1a344be2b739b068f1f877c7e3"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_section_profile_native.unittest.log",
+      "bytes": 130,
+      "sha256": "98223e8f32c77cbe7b161b35ff0bac3e1d94f1d3b54b6dfce7911c1bab46451e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_section_profile_native.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_scene_import.unittest.log",
+      "bytes": 109,
+      "sha256": "2f44f9fb69f7c38164955b223c4ba6d252a2de5d781eaf0ad05865d04886613f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_section_profile_native.json",
+      "bytes": 357,
+      "sha256": "4043fa33058a0f73ac52617282c27a2a637026ef59b79eb06cc0179bd9e84136"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_scene_import.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_scene_import.json",
+      "bytes": 347,
+      "sha256": "527c52b52640fab34be668edb7f6e6969b1673e03d7f24ee02d6f99c2e0b47a3"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_scenario_verify.unittest.log",
+      "bytes": 137,
+      "sha256": "7e182bfa034b7ab4fef523735ca012b62814180e79a95e7930388b556e9dc0d2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_scenario_verify.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_scenario_verify.json",
+      "bytes": 351,
+      "sha256": "a379d24c09ee380a0d8a9b47464c56a43521ae74d62e44aefc79b8e33021dbb6"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_rule_case_workbench_http.unittest.log",
+      "bytes": 121,
+      "sha256": "5e4cbd4d508cc3e9c22275979961efee1ae991c210d62cce76be382ac2550b74"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_rule_case_workbench_http.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_rule_case_workbench_http.json",
+      "bytes": 360,
+      "sha256": "e01b7dc0bfab2afe42992ddbdcdcf3eb7329fca4c3c96f4cae39856c43aa8e65"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_rule_case_executor.unittest.log",
+      "bytes": 139,
+      "sha256": "372e94f6e766fb25c597195bcd0169bc6ae129d905b760b55954d372d6dca130"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_rule_case_executor.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_rule_case_executor.json",
+      "bytes": 353,
+      "sha256": "4dbda2a186da7e114eb0f1d63ad09fb83b26c360ff6f491177888f5eb3ec8071"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_rule_case_catalog.unittest.log",
+      "bytes": 113,
+      "sha256": "bdcde068ab648aa2c9a6419076fc2dde1887fb677f11b68eea27b94e618eb727"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_rule_case_catalog.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_rule_case_catalog.json",
+      "bytes": 352,
+      "sha256": "2292dfa46a2da670d3c558d0195807ba7a01b7bd61d9da1137ae4049c66e52fb"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_release_gate.unittest.log",
+      "bytes": 120,
+      "sha256": "ed5c3d9f7ac33017682ea3f2cb07c44eba7a82dbf08154c13db9dc47e18a077e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_release_gate.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_release_gate.json",
+      "bytes": 347,
+      "sha256": "49fd82f1eb1c8c4b0b162b2ec111aedb908557e922826e99158f1ace18c359e2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_rectangular_template.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_rectangular_template.unittest.log",
+      "bytes": 112,
+      "sha256": "7e0b85c6e178eb37ab071e7713926b69c62e9064195911b0dafb5edb46a534e1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_rectangular_template.json",
+      "bytes": 355,
+      "sha256": "1a7a355d713e77f760eadecc1cd1b6f7f1ce7a2de9613b4f21f45fa6a854f84f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_product_architecture.unittest.log",
+      "bytes": 122,
+      "sha256": "61ec808fd1aecb0a9b2fe4d7eb5eea74b6b84cffb608734b3b4872522d72964d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_product_architecture.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_product_architecture.json",
+      "bytes": 356,
+      "sha256": "ed0764380c63410c739c9b1542aea409fcec65453a6d251cad52ef01e2c60526"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_unbind_scope.unittest.log",
+      "bytes": 106,
+      "sha256": "187f5ae4433cdabd745602fd78bb6826404f26cd5edde2faf0d323e6f52a00ca"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_unbind_scope.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_unbind_scope.json",
+      "bytes": 355,
+      "sha256": "6ed07cff44f6c05678bf9dab5374835337101cd1acf82708d32b036b9bba77fa"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_final_candidate.unittest.log",
+      "bytes": 102,
+      "sha256": "a15172e546cb76a37080c803ce244a0c6b555a9a2f7201b1a2275f7faa4a1461"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_final_candidate.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_deleted_unbind.unittest.log",
+      "bytes": 113,
+      "sha256": "748ee98461816909e279404bed63fde3ea6e3635dffbb128ca2b4a4094b4ddce"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_final_candidate.json",
+      "bytes": 358,
+      "sha256": "756e7a992a0d4a36299848986f76a5df5e872f3a7e691e23fe03838e887b8611"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_deleted_unbind.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_deleted_unbind.json",
+      "bytes": 360,
+      "sha256": "90ec1817bc4f35d83ffa70be45569201e5e3e61a6726f7752fbda0ad78ed812a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_core.unittest.log",
+      "bytes": 140,
+      "sha256": "c01636a169b00d77be31406dbb62b3db3cf5d70df1808a9914dfc05a4e55f09d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_core.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_core.json",
+      "bytes": 351,
+      "sha256": "7895f9dc330870185908d3f8c005e0e93143b6f5d97df5fe11239ff8aa9e6e66"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_candidate_value_history.unittest.log",
+      "bytes": 111,
+      "sha256": "9e68ad336bacf32def4998e0d49f6c23e9d705642b8dd4a967d9b1f20bc091e7"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_candidate_value_history.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_parameters_candidate_value_history.json",
+      "bytes": 369,
+      "sha256": "c8ad0018e7fd0adf3f310590812d598b47ae9256db854dbcedd1f9aaf2ceffc1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_panel_fill_host.unittest.log",
+      "bytes": 131,
+      "sha256": "45bd073b07e401e54414ec235826a185017131e1be23826567d819d9d64ebee2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_panel_fill_host.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_panel_fill_host.json",
+      "bytes": 350,
+      "sha256": "4a597d9a296a7c757e6ac3b1ebf3f3f71340e73056d9c1ee2fe46fe43a8e1e67"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_mutation_anchors.unittest.log",
+      "bytes": 101,
+      "sha256": "c2a1ed1bbdeadfddde61892b4a30ed86d0dac18bfb6661b57df35ff9796a6a0c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_mutation_anchors.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_mutation_anchors.json",
+      "bytes": 348,
+      "sha256": "da9b383b3fb93459020253471fd9877a89513efde6dcd2da11c587b21bcf13f0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_modeling_runtime.unittest.log",
+      "bytes": 145,
+      "sha256": "9137dc5e027f6fbf0b227736ee9a1bc05c40bb9d824d3e539eed058caee39dd4"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_modeling_runtime.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_modeling_runtime.json",
+      "bytes": 351,
+      "sha256": "d29dee2e1e342d20559dd3103f32397451b91fb9a45ddd7aa21859bfac4d2459"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_local_launcher.unittest.log",
+      "bytes": 116,
+      "sha256": "33533f85c89f988a39e4703e5e9601ace0031cbb1662b34ec8a2d98c70e31b97"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_local_launcher.log",
+      "bytes": 896,
+      "sha256": "d3f705d2e45d19a897fc50c203ccf2e1531c754d7132606fd3f7d2d7a9f80ab5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_local_launcher.json",
+      "bytes": 348,
+      "sha256": "0a9b1c7e4cfbdca7b021ea9f87d1170dc89d5c8771e9915e002a2f809d524346"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_k1_mutation_runners.unittest.log",
+      "bytes": 102,
+      "sha256": "d52cbb1058abf83e3acb402d1c2b8ee089749613d6075f5d973dd66c8ef09200"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_k1_mutation_runners.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_k1_mutation_runners.json",
+      "bytes": 351,
+      "sha256": "522fb01d6f72d896a00b475bed398a9c753f215ae7eb1ddc2d7236095ce5959d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_grid_trial_contract.unittest.log",
+      "bytes": 103,
+      "sha256": "dad6c2bc9b6a48ca6f194331daf66e96c97386b33ca8bf02c9d5a4264bdad3f1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_grid_trial_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_grid_trial_contract.json",
+      "bytes": 351,
+      "sha256": "2b66e0d4ef137bd6e4a70725e8084bbb5fb136f0a1cb650e847462e96cc38510"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_grid_system_contract.unittest.log",
+      "bytes": 114,
+      "sha256": "3a231c60515f50c2673a2bbcbcf98d8f613c8f2e080a0848c474fd041624fb80"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_grid_system_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_grid_system_contract.json",
+      "bytes": 355,
+      "sha256": "b2e2a5821a1447a4054833e54b3d408752fc9004061c9581a4504d710f481dd0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geometry_kernel_transactions.unittest.log",
+      "bytes": 130,
+      "sha256": "abb9497231ea59e0de97abdccf0dec27c3653f7e3e3ec2f79e0d72996f28352d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geometry_kernel_transactions.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geometry_kernel_transactions.json",
+      "bytes": 363,
+      "sha256": "4a3985256e5cf061991fb6001c31a6bf2741bf1adc8072fb0b1dc16f31273f8c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geometry_kernel_isolation.unittest.log",
+      "bytes": 100,
+      "sha256": "23398f51add697ed2d71a23bdcd55c5a26a1489d545b8475f4ca40663cf77232"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geometry_kernel_isolation.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geometry_kernel_isolation.json",
+      "bytes": 357,
+      "sha256": "7d98bb709a277aac1869ddbdc42a2c756099069735ff0b1a8ff22a7980870362"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geometry_host_world.unittest.log",
+      "bytes": 106,
+      "sha256": "a9c199bb0815a7b52a3d2e9557612f346083a2ce10987206094238eea8e13936"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geometry_host_world.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geometry_host_world.json",
+      "bytes": 351,
+      "sha256": "f7f61f8a9d29977d5dd6361c30fe8ff0e63525444d88d7c85f7c075549ce6686"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geometry_host_native.unittest.log",
+      "bytes": 130,
+      "sha256": "55f0fe79b65b728dc85aea5d39f8ffefb2eb214ff0ed962a31f96747dadf59f2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geometry_host_native.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geometry_host_native.json",
+      "bytes": 356,
+      "sha256": "e51ff797b6c6333067d9d21ac64b7454941ea7460fd8922cc73254a3a109ebb6"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo314_stagger_commit.unittest.log",
+      "bytes": 146,
+      "sha256": "b6c0f26979a5b4f5d29890a515678773b404b85ff1f36dfb59292c08349b84fc"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo314_stagger_commit.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo314_stagger_commit.json",
+      "bytes": 357,
+      "sha256": "865712c61bffac7488bb38d0e015ceea4292a0f44603c3550f03818424944353"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_section_profile.unittest.log",
+      "bytes": 111,
+      "sha256": "8eee39378056ca13121413099b032604d9dd3c01fc285b058a5e971c5b7d7247"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_section_profile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_section_profile.json",
+      "bytes": 362,
+      "sha256": "53d5ba1e9dee64c0c318968d543216f0e9aa5db60d8986170276ae017df00c9a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_grid_cells.unittest.log",
+      "bytes": 112,
+      "sha256": "615292e5c9126512f7ca542dfdcb2891ea44f1cddc5345151dde8f6463787dc6"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_grid_cells.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_grid_cells.json",
+      "bytes": 357,
+      "sha256": "6d8cd82730b7f75d0298391e589833968c33fc1e510bb95732c7e8a639f0c108"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_grid_application.unittest.log",
+      "bytes": 122,
+      "sha256": "1574065582b7d0b9565a4778629756f30f4fbcc83f94d390a803c8b234b57f7e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_grid_application.log",
+      "bytes": 6266,
+      "sha256": "f1d85ba9430e2d99c94e49544e2cdd6c7952edc13ff69b849d91ab4a90453263"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_grid_application.json",
+      "bytes": 362,
+      "sha256": "f78f0152bddae1e84a597224745b70fa5576cabc6a658ae5f3755c4ee15731fc"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_finish.unittest.log",
+      "bytes": 111,
+      "sha256": "5d800e2650ed5723fc51fdb9701c65757a0c3d3da1d6f3eefad50ed438b5b5bc"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_finish.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_finish.json",
+      "bytes": 353,
+      "sha256": "ed7c8eeaabb806f000c0f9968686152f890e1352f192ebe0c55316325f104a8d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_engineering.unittest.log",
+      "bytes": 111,
+      "sha256": "eb3b4825e6056b8e0682ba693d062be22f052b3e7d1a550bea76e678c26fa4da"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_engineering.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_engineering.json",
+      "bytes": 358,
+      "sha256": "a4ffd44bf4348772d761d7a30a8af701e75b1ecd8b4589d5200da30e02a199aa"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_derived_placement.unittest.log",
+      "bytes": 113,
+      "sha256": "47f80cbbb7d64eee0d848592ab676f6eb87c360245d405700e97e87c901047f9"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_derived_placement.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_derived_placement.json",
+      "bytes": 364,
+      "sha256": "02913749c0548ad1bb99c7f77cda4ecfd696ebcd56907b837a4d26dd735f1aa5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_contacts_product.unittest.log",
+      "bytes": 98,
+      "sha256": "04f257c2fb2775e339f715a115612c651d083546bec8b960de63d8af9f2fae96"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_contacts_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_wood_contacts_product.json",
+      "bytes": 360,
+      "sha256": "8a871e1baacdc9653374145fb9e447a07bb0b0a61a29960a6b88264341bfc7a5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_section_profile_authority.unittest.log",
+      "bytes": 114,
+      "sha256": "365ea6208159bcbeea120c16ce6c1f100646a59131bf3bff6defa1cf79115dd6"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_section_profile_authority.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_section_profile_authority.json",
+      "bytes": 367,
+      "sha256": "d5fd8e4ec00f8d5351adba502026bc26dfbb1f88a4dc712bdf6618e1317e4bda"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_placement_definition.unittest.log",
+      "bytes": 118,
+      "sha256": "ca54cf24b4d74c72c2827f0a854cd5e3e6212379c0a1e8e33983fd7d07777805"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_placement_definition.log",
+      "bytes": 10585,
+      "sha256": "f7b3335f93b950ce749ea5b21d0f77572695535b822beb6c4c8f9b36894e9547"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_placement_definition.json",
+      "bytes": 362,
+      "sha256": "4a86c5948adb3d422d4d416385e76ba71d1fc9b658f247e55cd9e17d44602ab5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_parameter_sources.json",
+      "bytes": 359,
+      "sha256": "33e74274b76f256bd9dcc78101b6236acd642f2d1aed8955d87ca8d8df4ed387"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_parameter_sources.unittest.log",
+      "bytes": 111,
+      "sha256": "ffed2e17768ec8d99df8b983e58c287059d91734c2ca0d8350976224dd187baa"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_parameter_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_parameter_definition_sources.unittest.log",
+      "bytes": 119,
+      "sha256": "64b8c9350da35be654989df41c17936eab4e7c874a4637443efc4f76a4f6c180"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_parameter_definition_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_parameter_definition_sources.json",
+      "bytes": 370,
+      "sha256": "6e7bf2539c9f52982691819ec28a95b032c127a6ac74fed552fc18f4281a0def"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_panel_native.unittest.log",
+      "bytes": 109,
+      "sha256": "4762c7ed10126850a75659bcdd85dc47fab90807498b3d2b92c3aaa16568e001"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_panel_native.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_panel_native.json",
+      "bytes": 354,
+      "sha256": "00dd2342c00198fb181298e71a0158bc8694a3562ff63da96a6a167c51ad4961"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_versions.unittest.log",
+      "bytes": 113,
+      "sha256": "5b269816ea0251b4c2fbc5800a8306aab1d4224c33bbfddd70663f1cd0725d07"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_versions.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_versions.json",
+      "bytes": 357,
+      "sha256": "a5fa464a98b0395fc8d7e287cd703b6de6f40d623a0db1925d298f3cd137d241"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_regions.unittest.log",
+      "bytes": 112,
+      "sha256": "a1f4e7fbd90516c7eca6677b355020ce8eef691b6a7764f4c2c761e52c9283be"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_regions.json",
+      "bytes": 356,
+      "sha256": "d3c255d3908dabee2d49d7be2728be8e2e0604c111f27c348a9c320c87f3c1ca"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_regions.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_grid_product.unittest.log",
+      "bytes": 103,
+      "sha256": "56b8503b63ef237fe42d34b1152ba05858fe9b5a69703387e98030992d7ba3e5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_grid_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_grid_product.json",
+      "bytes": 358,
+      "sha256": "80206d205453ce6ad8df028504dd2466d392b4e58817bbd97d3ec26f0b166f7f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_geometry.unittest.log",
+      "bytes": 105,
+      "sha256": "48915c1e87f9177702e543b37940d88106984d13c209df6b12d22cee42661a6e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_geometry.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_geometry.json",
+      "bytes": 354,
+      "sha256": "4a73a079114f5492d13fb0b7e1cbe751fe8b35d04377f1f7e67f157e55ac6ed3"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_entrypoints.unittest.log",
+      "bytes": 101,
+      "sha256": "137f5af0e7f2bf5046c9a48a77f34219b7dd9b0a2e17dc4ea16160895323c129"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_entrypoints.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_entrypoints.json",
+      "bytes": 357,
+      "sha256": "b12744e4188865f38a7f3c491390955dcc4f21be7161152634a9016f57f4ffe0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_enclosures.unittest.log",
+      "bytes": 118,
+      "sha256": "fb45f15391039d6163235c1d5f3dd50847efeb5e4f7f08f2c923939a0373683a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_enclosures.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_enclosures.json",
+      "bytes": 358,
+      "sha256": "7eee59ea4a8e4644026f20e4e6a129bc13c568351a24c1e4ba1780bcc81ff9ab"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_candidate.unittest.log",
+      "bytes": 116,
+      "sha256": "8cd908336dba01db9a23558f5532a8416c6ceec0dc5f35245236091a6447ff82"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_candidate.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_native_candidate.json",
+      "bytes": 358,
+      "sha256": "db611678453956477bc68e41b316a654ac751458c565a1ca1c7fe5dd36e6febd"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_mutation_migration.unittest.log",
+      "bytes": 114,
+      "sha256": "9fd7b177b5d443e854815421bbc5c0898bb15a915cb1b759c22306001f1ac29f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_mutation_migration.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_mutation_migration.json",
+      "bytes": 360,
+      "sha256": "45436176a35ba0061d869730ead77d001d354050da0472578bda8579dbd945e8"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_load_residual.unittest.log",
+      "bytes": 114,
+      "sha256": "46c4f23c7712d95ef9c29c88c1b013e71d8a40153f9e03b9e1650ab0635ab4cb"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_load_residual.json",
+      "bytes": 356,
+      "sha256": "c1aad52bb7d79f6820affeea0bbcb3c0cfa214aa408f2456a09b899bda8d0fd4"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_load_residual.log",
+      "bytes": 5889,
+      "sha256": "d55b79028023e95ea872224d95c007c3375343945d065a8a3ee329b0ab654150"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_linear_definition_sources.unittest.log",
+      "bytes": 114,
+      "sha256": "64c39d82d302ad494564b9e47c6ef0bbf48d42fd59f711a16be011277574b1ac"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_linear_definition_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_linear_definition_sources.json",
+      "bytes": 367,
+      "sha256": "a4422d4d7c810cd78546ed3aeddb9b63b612e9dc517bc4860c53d86405a9c9e5"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_host_placement_definition.unittest.log",
+      "bytes": 105,
+      "sha256": "13a22b39e58db8a2c755ce58eb412772617c4a398adcf71804d8aac9259c29a2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_host_placement_definition.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_host_placement_definition.json",
+      "bytes": 363,
+      "sha256": "ad4207bf547ebdc610ac1419b04a55b0c5cf969116d47f12f91ac6c1f07c4423"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_host_authority.unittest.log",
+      "bytes": 118,
+      "sha256": "21a3f76fdd3c3bd69e362c447668923146e55b10ead1cc6b3ed20cfa7eff84b6"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_host_authority.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_host_authority.json",
+      "bytes": 357,
+      "sha256": "4165464e71d92340a67aa52376226074454b412824e9a78c286290abb0efdc47"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_grid_sources.unittest.log",
+      "bytes": 111,
+      "sha256": "83b2267ac7e506293db92c753dc75efb1b512aa45e78921ec547d089e3a2767c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_grid_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_grid_sources.json",
+      "bytes": 354,
+      "sha256": "c006964bf1f83bec9bb96cff623bfca589cf605ee92be7a6692020e459185e05"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_graph_product.unittest.log",
+      "bytes": 103,
+      "sha256": "36fc9b66246f3d5affd2b186b3baf3e168e1770cfa31003b6e1dc22c99e947b2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_graph_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_graph_product.json",
+      "bytes": 352,
+      "sha256": "38432a7f7947a835cb35766b25aad33e52c3de46d0363a3e019208fd4c965abe"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_draw_annotation.unittest.log",
+      "bytes": 102,
+      "sha256": "b91d1d29bb2ef4f83758d322489aad70f98e8691499461552707545796b2cb89"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_draw_annotation.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_draw_annotation.json",
+      "bytes": 354,
+      "sha256": "d23eabdbf2bee2b1c8941831da0baa9ca0aaa1c13c419f24eecee3a73d947526"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_domain_product.unittest.log",
+      "bytes": 107,
+      "sha256": "18ca79f7bc543a36478d91a8f5e0bd3d976daee0d14c998f72d1aafa72a156e7"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_domain_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_domain_product.json",
+      "bytes": 353,
+      "sha256": "518eb3d855cb5334b4373f91c6120ac306a0ffcd6b780405b981e0979b7d80c1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_derived_policy_sources.unittest.log",
+      "bytes": 113,
+      "sha256": "299f8b1adbf40d1551110e1082ccc0856ecb018b58706ba4ed57a196ff27463d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_derived_policy_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_derived_policy_sources.json",
+      "bytes": 364,
+      "sha256": "c3cd3b87bb0b21803c4ad6f7e52ac6381bc13309998b2455ab7ece5dec390b56"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_assembly_graph_product.unittest.log",
+      "bytes": 102,
+      "sha256": "8378805a5c6d45e588a908bb1b936dbfcc81cda2024537affc0627791f9479b0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_assembly_graph_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_geo261_assembly_graph_product.json",
+      "bytes": 361,
+      "sha256": "3c3e410f7b6ba09cac447e0471f18f1d45dad01e34e69892db5c977bf29c01bc"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_gdi_contract.unittest.log",
+      "bytes": 110,
+      "sha256": "16ba752c32957f3b2943ad473825fe6f0c70e1f1be428ad10b951d3af1a90efe"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_gdi_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_gdi_contract.json",
+      "bytes": 696,
+      "sha256": "1bf722c95cac58742b4f334ff9dc89c98f8f0881f44131135deba4eb9095b70b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_evidence_link_native.unittest.log",
+      "bytes": 104,
+      "sha256": "816d8b5ac9c71c11f6436d69ac389897146accd0d8ee55a6916adc65a41e0104"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_evidence_link_native.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_evidence_link_native.json",
+      "bytes": 352,
+      "sha256": "383157e43d7027e88c9a15dd01ec0203281a1243f7bd7236fd173045f4f6c40f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_engineering_model_compatibility.unittest.log",
+      "bytes": 144,
+      "sha256": "cab4e6a908cd7b80c041668190c32f04eaad958c24beae22dbcc77f3711580de"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_engineering_model_compatibility.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_engineering_model_compatibility.json",
+      "bytes": 367,
+      "sha256": "9017a7773eb07f87c29b0620112c9f0cdcd0ba9cf504f212f3ea196ec5d578dc"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_domain_decoupling_compatibility.unittest.log",
+      "bytes": 113,
+      "sha256": "35f98bc1f1e5c1c7bf05f72ef984c45d5f691e7709f8d3261efda26b29f60a79"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_domain_decoupling_compatibility.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_domain_decoupling_compatibility.json",
+      "bytes": 366,
+      "sha256": "2d93c92f6aa0a52c528ca8914901895a52e8587504d4708c9aa5247298cc267f"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_datum_contract.unittest.log",
+      "bytes": 108,
+      "sha256": "1bf9a257d008cda8707a01927bd3bf67d786aa38b3a5a86f7b52753bbe640200"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_datum_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_datum_contract.json",
+      "bytes": 347,
+      "sha256": "2bb13f886c43e661857e56107cfc0e0e7be3132919a6c829b5990221be56ad6b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_bridge_integrity.unittest.log",
+      "bytes": 124,
+      "sha256": "59546a000c42280d55afef557c7a06767f350dbdf5aa7286379f78be57a3962d"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_bridge_integrity.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_bridge_integrity.json",
+      "bytes": 351,
+      "sha256": "f1d8528be6bfb3a36250a7fd70ad6a5646fff1dad1f1cd8d3e68ba0e8cc566d6"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_axiom_reader.unittest.log",
+      "bytes": 152,
+      "sha256": "5604b83247c3f23aeaa437b11cf99bc8c0742ce38447fc28cc601d4d361d0142"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_axiom_reader.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_axiom_reader.json",
+      "bytes": 348,
+      "sha256": "d8e01f8a4b43884eb60e33eb24444c47f13fe9547d7e50443ce0035994c077af"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_assembly_native_diagnostics.unittest.log",
+      "bytes": 106,
+      "sha256": "b41ddf4e011f780e5b3ae5cb1c6063286bbe7f51e34d6d7865e30f86c9a5c53b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_assembly_native_diagnostics.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/py_test_assembly_native_diagnostics.json",
+      "bytes": 359,
+      "sha256": "775dd1feaddf6d5f381a4efb999913d449e5aeac8aa43358f470fdbfcde664f2"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/node_woodworking_frontend.log",
+      "bytes": 1795,
+      "sha256": "57701b8e52019ef295023689afdc85510c6d12e29ef1b0822efce5a1b879192e"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/node_parameter_confirmation_settlement.log",
+      "bytes": 1808,
+      "sha256": "6fac5b943f91b1ce1cbc7dcf1c050e6fa34c60b6bdf51e64ca30bf43b15de327"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/node_history_operation.log",
+      "bytes": 424,
+      "sha256": "b1358511747b7c8cc643f0956cf232634c1cdad1b0667e8599d6bede64dd035b"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/node_grid_definition_diagram.log",
+      "bytes": 1370,
+      "sha256": "030a2bbd09dba9d98827e8a34930f4e9e1d584d177bc6d7f24a1efbd3762cead"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/node_face_projection_lifecycle.log",
+      "bytes": 1345,
+      "sha256": "d27306323a83c4a7e42f44bdbee184ae852c42c277f2d89b5feb03b2e0be7c92"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/node_evidence_project_store.log",
+      "bytes": 876,
+      "sha256": "55f6a2b01891cfcab4277b4375b4a3694af5b939d7e8251d1f55a757ecbba330"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/node_draw_annotation.log",
+      "bytes": 775,
+      "sha256": "eeb8a25fae03e2147c6acde9b857997ee62ac0232d6e62e20520f62245414c30"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/node_cutting_plan.log",
+      "bytes": 1993,
+      "sha256": "1c3167c1c78aca49395bb30f4d09b24e49e36ad4ca0007aff25351add7f3e87a"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/node_cutting_layering.log",
+      "bytes": 1545,
+      "sha256": "fde7dd22ca1d48bc12888599319ae8773185ab5fe6144eb5a2094f265417d5f1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/node_cdp_settle.log",
+      "bytes": 1007,
+      "sha256": "fd0ef5b945013293cfb014eb51caf2ada019c168bd23d6fdd9e8da934fc9a2ce"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/node_cdp_confirmation_gate.log",
+      "bytes": 107,
+      "sha256": "853ca1715c18dfe8550f6dea91218a6665ae1385c84fc4b99593c54154a56114"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/node_cdp_card_position.log",
+      "bytes": 1495,
+      "sha256": "ebcdcdb3c49db6c592552b5dd79f4efe03c2e0c4fe7dc3b1b0c9bd0a48fc5475"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-logs-1/c_integrity.log",
+      "bytes": 5857,
+      "sha256": "de71669e13286944b645688bf0af37f4d1cda3a0d057368daaa57b238be5d286"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-shard-3/shard-3.json",
+      "bytes": 40048,
+      "sha256": "6868f5fe88579d2d2cf1dbce1652d40086275c194e0c4f7d7eeeb87542686c56"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-complete-coverage/native-complete.json",
+      "bytes": 511,
+      "sha256": "875cec7f4d51d84f8bdcdb43a4e4fad05da044fc1afa54712c11c54d6b1100d0"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-shard-2/shard-2.json",
+      "bytes": 39930,
+      "sha256": "afd6057685e1bc0b30066f5782a900c3e640f352ab3745cd1d79e1d089a69bbd"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-complete-coverage/native-sharding-proof/restored.log",
+      "bytes": 245,
+      "sha256": "0c7a4bce5941c10422c2b6c9d3761614e6eaf6500b188804aefa2416829b8c78"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-complete-coverage/native-sharding-proof/restored.json",
+      "bytes": 130,
+      "sha256": "809992eb780586d50fdc2a6c3f635de745c848f63926dedcf4b50ec7d67f01c1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-complete-coverage/native-sharding-proof/removed.log",
+      "bytes": 1045,
+      "sha256": "ab158dc137cbf48dd417394134bf54c317b09e359075a56d70502744618ece97"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-complete-coverage/native-sharding-proof/removed.json",
+      "bytes": 250,
+      "sha256": "7e852548fe92183043625daa84ab71961dcb10db7cff3842cb5adb75b53dbb4c"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-complete-coverage/native-sharding-proof/baseline.json",
+      "bytes": 130,
+      "sha256": "809992eb780586d50fdc2a6c3f635de745c848f63926dedcf4b50ec7d67f01c1"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-complete-coverage/native-sharding-proof/receipt.json",
+      "bytes": 867,
+      "sha256": "107efd037037fd00ca23ea06efc659cfefffe8f116acd257893ac094335d5410"
+    },
+    {
+      "path": "pr340/integration-main354/original/native-complete-coverage/native-sharding-proof/baseline.log",
+      "bytes": 245,
+      "sha256": "ad8dd8226d35323000fc866a290fa0cc74669cc528b5033fc3709f94b51b8eb6"
+    },
+    {
+      "path": "canvas-sharding/pr-publication/PR_BODY_D_VALIDATED.md",
+      "bytes": 6295,
+      "sha256": "b2d17a2671cf87513cb0b21cd21cc5be6612293ae1898f297034f4e4b8b9133b"
+    },
+    {
+      "path": "canvas-sharding/pr-publication/D_VALIDATED_BODY_REQUEST.json",
+      "bytes": 6331,
+      "sha256": "9a7cdf3ebe70c212f1f22af94ad81ba699b831c453de88419dd2a4158f5e60c8"
+    },
+    {
+      "path": "canvas-sharding/pr-publication/D_VALIDATED_BODY_READBACK.json",
+      "bytes": 22565,
+      "sha256": "a95d5a4f2121ea65d3efa825024c3f3ad8349033fa7366f0ebedb559b680ec90"
+    },
+    {
+      "path": "canvas-sharding/pr-publication/D_VALIDATED_COMMENT_REQUEST.json",
+      "bytes": 573,
+      "sha256": "43acc456d57e775ded38270654cce2096cf1c4253bae5d3d78c5f667a9fb7c68"
+    },
+    {
+      "path": "canvas-sharding/pr-publication/D_VALIDATED_COMMENT.json",
+      "bytes": 3885,
+      "sha256": "18a7988da81a8bf39355d534441126f368c3eb07ced0b7f03a965db3e39466d8"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "at": "2026-11-02T11:32:20.146670+00:00",
+  "sourceM": "de3a56cfadecf575f8e7860cbfdafdac2af0a883",
+  "finalHead": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+  "changedOnlyDerivedOutputs": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json",
+    "tests/mutants_results.json"
+  ],
+  "adoptedOfficialBytes": [
+    {
+      "path": "tests/mutants_results.json",
+      "beforeSha256": "1a6b09ac7ed560be994615ecfc36e5129b79d3036c9f73fc0241f18ef767da79",
+      "afterSha256": "0e18b72514c6fd471f25117db31dcd4cb5e124c6b3a46db8bc0a3a9729b11165",
+      "officialArtifactOriginalBytes": "/dev/shm/geometry-pr345-mutation-raw-20261102/original-verifier-replay/mutants_results.json"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+      "beforeSha256": "98599a76ddb51348b9af80a2f2b889de90cfd475bab803ee746f85005ac224ca",
+      "afterSha256": "425f499867cffc4c1995aea6239caa5fa476d7d815d8a1bada150c2151ae05fc",
+      "officialArtifactOriginalBytes": "/dev/shm/geometry-pr345-mutation-raw-20261102/extracted/other/pr357-architecture-refresh/PRODUCT-ARCHITECTURE.md"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture-scan.json",
+      "beforeSha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+      "afterSha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+      "officialArtifactOriginalBytes": "/dev/shm/geometry-pr345-mutation-raw-20261102/extracted/other/pr357-architecture-refresh/product-architecture-scan.json"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+      "beforeSha256": "8233f4190041dd8c5e412615bc44ec1aca4f35a12d32ff3b7d47e707e5aef9f9",
+      "afterSha256": "9fb9d941f299df0df359d6eb26de7feaad349ec735b37d91674dbfbd6a0a8797",
+      "officialArtifactOriginalBytes": "/dev/shm/geometry-pr345-mutation-raw-20261102/extracted/other/pr357-architecture-refresh/product-architecture-receipt.json"
+    }
+  ],
+  "old53StaleRetained": true,
+  "freshOriginalCheckAndArchitecture": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "cwd": "/tmp/geometry-pr345-20261102",
+      "head": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+      "exit": 0
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "cwd": "/tmp/geometry-pr345-20261102",
+      "head": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+      "exit": 0
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "cwd": "/tmp/geometry-pr345-20261102",
+      "head": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+      "exit": 0
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "cwd": "/tmp/geometry-pr345-20261102",
+      "head": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+      "exit": 0
+    }
+  ],
+  "mutationExecutionsRemainM": true,
+  "run": 41431971663,
+  "manifestIsOriginalUnchangedPolicyInput": true,
+  "ready": false,
+  "remaining": "Push original branch fast-forward, fresh full integration CI at F and independent review; no second full mutation production because source/test/judge closure unchanged M to F."
+}

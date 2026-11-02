@@ -1,0 +1,19 @@
+✔ T14 plan, display and export are read-only; a single references response determines all scopes (13.190339ms)
+✔ T16 world invalidates export without producing a Blob (3.305908ms)
+✔ T16 settings invalidates export without producing a Blob (2.060015ms)
+✔ T16 context invalidates export without producing a Blob (1.896316ms)
+✔ T16 revision invalidates export without producing a Blob (1.437904ms)
+✔ T16 scope invalidates export without producing a Blob (1.437534ms)
+✔ T16 late references and repeated clicks produce zero or one download respectively (3.562691ms)
+✔ session scopes clear at project context change and late calculation cannot install a plan (1.162727ms)
+✔ invalid settings draft must be saved before calculation; no absent setting receives a default (1.897629ms)
+✔ unrelated undo changes the frame receipt but keeps scopes in the same project context (1.950238ms)
+✔ T8b diagnostics identify the required section and complete native material key (0.422985ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 94.772436

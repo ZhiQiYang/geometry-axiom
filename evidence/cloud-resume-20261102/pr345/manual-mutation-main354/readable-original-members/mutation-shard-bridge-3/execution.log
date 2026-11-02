@@ -1,0 +1,20 @@
+Cloning into '/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/de3a56cfadecf575f8e7860cbfdafdac2af0a883/repo'...
+HEAD is now at de3a56cf Merge commit 'e02057b4c725d6f03ae52c3bc30776bf9442b0cf' into codex/issue214-main-convergence-20261102
+M63 KILLED I38：欄位鍵已重建就跳過省略重建的引用保護
+M66 KILLED I8a/P129：預覽隱藏刪除後明確重新宣告的引用者
+M69 KILLED P065/P141：重建後解除來源錯用刪除前快取而非當下99
+M84 KILLED I38/P142-B2：引用者名單不檢查剩餘長度，名稱在255位元組處被截斷
+M81 KILLED I38/P129/P142-S1：put-grid-system 未宣告其逐欄來源，刪後重建同鍵無法改綁
+M83 KILLED R60/P142-S2：整卡轉直接值因同候選曾刪除一律拒絕，不讀已重建的當步值
+M101 KILLED I24/#314 MS3：移除新建／新增第二軸M1拒絕
+M104 KILLED I24/#314 MS6：把一軸誤判為雙軸，合法換方向必轉紅
+M107 KILLED I24/#314 MS9：移除缺store的fail-closed拒絕；正常ASSERT而非NULL crash
+M110 EQUIVALENT I24/#314 MP3：漏接confirm基線，單獨被preview遮蔽
+M113 KILLED I24/#314 ordered：丟掉相鄰事實的來源和值連續性
+M116 KILLED I24/#314 ordered：只留最終store丟失原操作事實，500正例應轉紅
+M119 KILLED I24/#314 ordered：移除facts內容封存檢查，正常tamper ASSERT必轉紅
+M140 KILLED I19/R6/#318 閱讀A：partial-admission；撤回須抓到 positive-contact-without-new-minimum
+M143 KILLED I19/R6/#318 閱讀A：contact-side；撤回須抓到 wrong-side-feature-not-contact
+M146 KILLED I19/R6/#318 閱讀A：between-required-source；撤回須抓到 between-required-face-must-itself-contact
+M149 KILLED R6(e)/#318：真H collector重套舊全寬規則，部分接觸見證須正常拒絕斷言轉紅
+本次 17:殺死 killed 16 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0

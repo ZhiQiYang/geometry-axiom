@@ -1,0 +1,188 @@
+{
+  "at": "2026-11-02T11:13:27.207020+00:00",
+  "exit": 0,
+  "scope": "Original currently completed native artifacts/job logs. Missing in-flight canvas outcome not inferred.",
+  "requests": [
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/41430557786",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/run.json",
+      "http_status": 200,
+      "bytes": 13337,
+      "sha256": "545af59762fafbc6e97e0c1922696d67608dec5ba45a061f96e3e43bda5d8bbb",
+      "content_type": "application/json; charset=utf-8"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/41430557786/jobs?per_page=100",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/jobs.json",
+      "http_status": 200,
+      "bytes": 26480,
+      "sha256": "25f0014aafd1246d552ffa65ade9c05326485626ee7f23006a67f975ca5e41ff",
+      "content_type": "application/json; charset=utf-8"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/41430557786/artifacts?per_page=100",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/artifacts.json",
+      "http_status": 200,
+      "bytes": 8802,
+      "sha256": "a719de7030cf97dad83f7ac8d82131600a92d22076521f69a02a663e96e4282f",
+      "content_type": "application/json; charset=utf-8"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13135720626/zip",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/zips/13135720626-native-logs-1.zip",
+      "http_status": 200,
+      "bytes": 60705,
+      "sha256": "66eaaa9bbd0baf2e59657de7939ebc25cebb9a8bd17b1126e0b87c08c1280e60",
+      "content_type": "application/zip",
+      "apiDigest": "sha256:66eaaa9bbd0baf2e59657de7939ebc25cebb9a8bd17b1126e0b87c08c1280e60",
+      "artifactId": 13135720626,
+      "digestMatch": true
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13135605635/zip",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/zips/13135605635-native-complete-coverage.zip",
+      "http_status": 200,
+      "bytes": 2872,
+      "sha256": "1be6e8e36ca851b5654cec212311da8f9b88b588b2af42e9fb7c9f6550298790",
+      "content_type": "application/zip",
+      "apiDigest": "sha256:1be6e8e36ca851b5654cec212311da8f9b88b588b2af42e9fb7c9f6550298790",
+      "artifactId": 13135605635,
+      "digestMatch": true
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13135455599/zip",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/zips/13135455599-native-shard-3.zip",
+      "http_status": 200,
+      "bytes": 4277,
+      "sha256": "f5a4cced4fac4ead41426e3287712c0a80dfcd47aef35044751fba6326d8daa4",
+      "content_type": "application/zip",
+      "apiDigest": "sha256:f5a4cced4fac4ead41426e3287712c0a80dfcd47aef35044751fba6326d8daa4",
+      "artifactId": 13135455599,
+      "digestMatch": true
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13135095762/zip",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/zips/13135095762-native-shard-2.zip",
+      "http_status": 200,
+      "bytes": 4341,
+      "sha256": "e833bc30bad4ba8c76fb3c7384a1eb90ae22757e40b69afe76d8e8222940ce83",
+      "content_type": "application/zip",
+      "apiDigest": "sha256:e833bc30bad4ba8c76fb3c7384a1eb90ae22757e40b69afe76d8e8222940ce83",
+      "artifactId": 13135095762,
+      "digestMatch": true
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13134956948/zip",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/zips/13134956948-native-logs-3.zip",
+      "http_status": 200,
+      "bytes": 99755,
+      "sha256": "035cc5015596c8c7c4ba829c6c75777bda27ee93cdd4e9020c6270c1236de43f",
+      "content_type": "application/zip",
+      "apiDigest": "sha256:035cc5015596c8c7c4ba829c6c75777bda27ee93cdd4e9020c6270c1236de43f",
+      "artifactId": 13134956948,
+      "digestMatch": true
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13134643411/zip",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/zips/13134643411-native-shard-1.zip",
+      "http_status": 200,
+      "bytes": 4326,
+      "sha256": "7a1c949d3ccf29f9d4851460712ceae5f5b1bfe86223321109c010dd052eae34",
+      "content_type": "application/zip",
+      "apiDigest": "sha256:7a1c949d3ccf29f9d4851460712ceae5f5b1bfe86223321109c010dd052eae34",
+      "artifactId": 13134643411,
+      "digestMatch": true
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13133779773/zip",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/zips/13133779773-native-logs-2.zip",
+      "http_status": 200,
+      "bytes": 69563,
+      "sha256": "4fd02cbd9803aebe08401dac3fbb7ea90d6ff6c8a9f0aaf444e532ee69ada246",
+      "content_type": "application/zip",
+      "apiDigest": "sha256:4fd02cbd9803aebe08401dac3fbb7ea90d6ff6c8a9f0aaf444e532ee69ada246",
+      "artifactId": 13133779773,
+      "digestMatch": true
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125227767380/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/job-logs/125227767380.log",
+      "http_status": 200,
+      "bytes": 46034,
+      "sha256": "b8d04ce5e15cf80cd5e4eb6af21faf7736de9f31e079345cefc0ddc8294a5dce",
+      "content_type": "text/plain"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125227767768/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/job-logs/125227767768.log",
+      "http_status": 200,
+      "bytes": 748754,
+      "sha256": "aabf85e1af2b010a4dba49e39c81b0144d835c57199f4445b89aecd202ffd117",
+      "content_type": "text/plain"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125227767789/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/job-logs/125227767789.log",
+      "http_status": 200,
+      "bytes": 39706,
+      "sha256": "4d4f861d51283fa37b079a0e795cbbbf9b061323a8184f9163e7735ed5f492d9",
+      "content_type": "text/plain"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125227767840/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/job-logs/125227767840.log",
+      "http_status": 200,
+      "bytes": 45618,
+      "sha256": "62f3ec47a7456c280a4fd1fb2b3575cfd5368b347c669d70bc8a04b7a7ec236d",
+      "content_type": "text/plain"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125227767879/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/job-logs/125227767879.log",
+      "http_status": 200,
+      "bytes": 44957,
+      "sha256": "1966487898ac132ab89a273884e626f7cefb9bc5acc1a0bbb1b2e9efbe795c2f",
+      "content_type": "text/plain"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125227767896/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/job-logs/125227767896.log",
+      "http_status": 200,
+      "bytes": 45479,
+      "sha256": "796b994410136aa3e0b53123d16e774b9a55f8a398b136189edce4a510320897",
+      "content_type": "text/plain"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125227767991/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/job-logs/125227767991.log",
+      "http_status": 200,
+      "bytes": 372112,
+      "sha256": "1b24128cc347e4257a155d53652f14789eb359077ae4eac36a5b7c4dfcd32d84",
+      "content_type": "text/plain"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125227768059/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/job-logs/125227768059.log",
+      "http_status": 200,
+      "bytes": 66068,
+      "sha256": "92989663efb44e4a40db68f5efd67ae0845ad603e848bda46a36c9270f3f53fc",
+      "content_type": "text/plain"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125227768336/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/job-logs/125227768336.log",
+      "http_status": 200,
+      "bytes": 62440,
+      "sha256": "fdb687c3faafb922e7392f40014e63db8495b93e2cbbe1e70fe7a64629f9a5cf",
+      "content_type": "text/plain"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125235090782/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/integration-main354/job-logs/125235090782.log",
+      "http_status": 200,
+      "bytes": 25863,
+      "sha256": "100afd0cb547f7024246c84944fe68b24d6dff3109ff45c46dc6d95bcbaa628d",
+      "content_type": "text/plain"
+    }
+  ]
+}
