@@ -305,7 +305,12 @@ module.exports = async function canvasContextMenu(deps) {
   async function openParameter() {
     await createEntry('#btnNewParameter');
     await wait('PARAMETER_DRAFT_READY',`ParameterUI.pending&&$('paramName')?.value==='參數'`,'precondition');
-    if(await visible('#paramGridLessonClose'))await ctl('#paramGridLessonClose');
+    // Fixed precondition: the param-grid lesson's open/closed state is page memory
+    // that earlier sections change, so expand it (setup, not an assertion) and then
+    // always dismiss it through the real control: one reachability check per call
+    // in every order, isolated or full.
+    await read(`document.getElementById('paramGridLessonOpen')?.click();void 0`);
+    await ctl('#paramGridLessonClose');
   }
   async function settleParameterDraft() {
     // Typing arms parameters.js's 450 ms debounce. A real explicit preview
