@@ -9,10 +9,10 @@ R06 從衍生承載面建立重複開間，保留 R41 來源鍵與冷重放順�
 | ③ 混合 derived dump 冷重放 | 原 F4 已修、冷重放／undo／redo與順序反例已驗；未改無 host 的 dump 順序 |
 | F4 正式驗收與舊可合審查 | F4 的12 CI／原 artifacts／獨立6571175540可合與逐條回覆6571845252保留為固定舊來源；不得移標到尚未驗完的新 main 合流 |
 | 新 main 的實際阻擋 | PF-H finite-profile 的 readerCapabilities 五參數與 K1 cutting 兩參數 options 相交；prepareProjectScene 若盲選一側，會遺失 PF-H 重開或 cutting 能力。mergeable clean 不證明契約相容 |
-| 隔離合流候選 P | **c2eb5edc99d2880a65583f46085617d99a6f191b**，一般 merge F4＋精確 fca3，14衝突保雙側契約；**尚未採入本 PR、尚未推送，不把本地 SHA 冒成公開來源**。待跨 agent 審查後才採入 |
-| P 已實跑範圍 | 原4套純 Node 契約51/51；新增8案固定與恢復8/8，撤回PF-H reader、workspace options、cutting opt-in各具名紅。原 O2 bridge編譯 exit0／24.062s，未執行該ELF；42個既有R06 mutant anchors preflight匹配，未當成39個mutants已重跑 |
-| P 未完成項 | 真 fresh-profile／native World／完整 native與六 browser仍未跑；不能用上述純契約測試替代。P 原帳本 check exit1、120 stale／3retired，保留原紅，待 #366 最終整份重產與架構重產 |
-| 兩側預期資料合流 | 原 golden 各段值不改，88段精確 union／total2360只是合併資料，**新完整 canvas 未驗**；Node aggregate原740明列待原完整 producer，不手算、取max或局部拼接新數字 |
+| 隔離合流候選 P | **c2eb5edc99d2880a65583f46085617d99a6f191b**，一般 merge F4＋精確 fca3，14衝突保雙側契約；**已推至自己的 codex/r06-main359-integration-20261102 保存來源分支，尚未採入本 PR**。關鍵六leaf與原件已有跨 agent 151項核對通過；其餘正式驗收不借此代替 |
+| P 相關局部實跑範圍 | 原4套純 Node 契約51/51；新增8案固定與恢復8/8，撤回PF-H reader、workspace options、cutting opt-in各具名紅。原 O2 bridge編譯 exit0／24.062s，未執行該ELF；42個既有R06 mutant anchors preflight匹配，未當成39個mutants已重跑 |
+| P 未完成項 | 原完整native producer與真 fresh-profile／native World／完整 native與六 browser仍未跑；不能用上述純契約測試替代。P 原帳本 check exit1、120 stale／3retired，保留原紅，原#366整份重產41461882643正在跑，架構job已success；120execution仍需固定P的新原件，不能手改hash |
+| 兩側預期資料合流 | 原 golden 各段值不改，88段精確 union／total2360只是合併資料，**新完整 canvas 未驗**；原 `run_all.py --build --only node:tests-js` 已真759/759 pass、0fail/skip，outer exit1只因預期740不符；這是局部診斷，不把759手填或局部拼接成完整producer |
 | 合併判斷 | 新來源完整採入、原 producer／整份帳本與架構、正式UI／CI及最新審查完成前，保持 draft。Codex不合main，不force、不rebase、不改公理層／正典／決策佇列 |
 
-[已發布固定歷史證據索引](https://github.com/ZhiQiYang/geometry-axiom/tree/59f2cac42862dec39a5d0216b4e1bff0f4b0ccc9/evidence/cloud-resume-20261102)。新 P 原件目前在雲端隔離工作區，尚未持久發布；發布時會另列 E、完整 source SHA 和實際 execution，不追改原 F4 的身份。
+[已發布固定歷史證據索引](https://github.com/ZhiQiYang/geometry-axiom/tree/63c7ad7fe0e733968e95ccee0429b0adf2f49dd1/evidence/cloud-resume-20261102)。新P源碼已在自己的codex來源分支公開可解析；合流/三撤回/C編譯與原Node759局部原件已持久發布於固定E **63c7ad7fe0e733968e95ccee0429b0adf2f49dd1**，見 evidence/cloud-resume-20261102/pr363/。原PR head仍F4，未追改原F4的execution身份。
