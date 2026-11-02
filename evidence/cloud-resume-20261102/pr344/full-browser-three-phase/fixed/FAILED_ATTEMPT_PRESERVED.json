@@ -1,0 +1,27 @@
+{
+  "at": "2026-11-02T06:25:19.068544+00:00",
+  "source": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+  "phase": "fixed-first-attempt",
+  "execution": {
+    "started": "2026-11-02T05:53:22.011530+00:00",
+    "exitCode": 1,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 250754,
+    "finished": "2026-11-02T06:14:08.265179+00:00"
+  },
+  "gateExit": 1,
+  "completed": false,
+  "passed": 1827,
+  "failedAssertions": 0,
+  "skipped": [],
+  "goldenCompare": "not compared (run did not complete)",
+  "classification": "environment output parent absent",
+  "missingParentAtFailure": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/geometry-tests",
+  "missingOutput": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/geometry-tests/parameter-mobile.png",
+  "originalFatal": "ENOENT: no such file or directory, open '/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/geometry-tests/parameter-mobile.png'",
+  "input734AndBinaryAndGoldenUnchanged": true,
+  "retryPausedForBoundedSinkAudit": true,
+  "serverStop": "own verified PID250570 SIGINT; intentional child exit -2",
+  "unknownOrPriorDataDeleted": false
+}

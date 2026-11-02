@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    ".github/scripts/mutation_evidence.py",
+    "verify",
+    "--artifacts",
+    "/tmp/geometry-resume-20261102/canvas-sharding/manual-mutation-S/extracted/shards",
+    "--out",
+    "/tmp/geometry-resume-20261102/canvas-sharding/manual-mutation-S/original-verifier-replay"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "head": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0",
+  "tree": "52494659bb0a966e62c5cee6e8919daed3df7d47",
+  "run": 41397499686,
+  "attempt": 1,
+  "downloaded_binary_execution": false,
+  "collector_sha256": "131c2fb25847bcd05b98a7a8fe81436f37e95a332b10a357d83895ce75301e97",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "node": "v24.22.1",
+  "environment": {
+    "PATH": "/tmp/geometry-resume-20261102/pr363/node-v24.22.1-linux-x64/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "CC": null,
+    "CFLAGS": null,
+    "MUTATE_CACHE": null,
+    "MUTATE_RESULTS": null,
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "started_utc": "2026-11-02T07:34:02.824843+00:00"
+}

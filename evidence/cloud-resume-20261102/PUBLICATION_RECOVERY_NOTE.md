@@ -1,0 +1,1 @@
+前次收件腳本遇既有manual目錄的FileExistsError，沒有覆寫任何原件。shell未啟用fail-fast而先提交已完成拷貝部分e740c5e3e；本提交以每檔bytes全等檢查接續剩餘收件，兩提交均保留，不amend或force。產品測試沒有重跑。

@@ -1,0 +1,74 @@
+{
+  "at": "2026-11-02T05:54:35.729143+00:00",
+  "processes": [
+    {
+      "pid": 250754,
+      "exe": "/tmp/geometry-resume-20261102/pr363/node-v24.22.1-linux-x64/bin/node",
+      "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "argv": "/tmp/geometry-resume-20261102/pr363/node-v24.22.1-linux-x64/bin/node geometry-web/cdp_test.js "
+    },
+    {
+      "pid": 250761,
+      "exe": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome",
+      "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "argv": "/tmp/google-chrome-local-20261102/opt/google/chrome/google-chrome --headless=new --disable-gpu --no-first-run --remote-debugging-port=9344 --window-size=1400,900 --user-data-dir=/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/chrome-profile --no-sandbox about:blank "
+    },
+    {
+      "pid": 250770,
+      "exe": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome",
+      "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "argv": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome --type=zygote --no-zygote-sandbox --no-sandbox --headless=new --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/chrome-profile --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl "
+    },
+    {
+      "pid": 250772,
+      "exe": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome",
+      "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "argv": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome --type=zygote --no-sandbox --headless=new --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/chrome-profile --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl "
+    },
+    {
+      "pid": 250797,
+      "exe": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome",
+      "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "argv": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome --type=gpu-process --gpu-recent-crash-count=0 --no-sandbox --headless=new --ozone-platform=headless --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/chrome-profile --change-stack-guard-on-fork=enable --gpu-preferences=YAAAAAAAAAAgAAAEAAAAAAAAAAAAAGAASAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAMAAAAAQAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=3,i,8427315821476376694,17870213726811176573,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,899248810733516805,10102108575929078759,4 --trace-process-track-uuid=3190708988185955192 "
+    },
+    {
+      "pid": 250799,
+      "exe": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome",
+      "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "argv": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --no-sandbox --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/chrome-profile --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,8427315821476376694,17870213726811176573,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,899248810733516805,10102108575929078759,4 --trace-process-track-uuid=3190708989122997041 "
+    },
+    {
+      "pid": 250815,
+      "exe": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome",
+      "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "argv": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome --type=utility --utility-sub-type=storage.mojom.StorageService --lang=en-US --service-sandbox-type=utility --no-sandbox --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/chrome-profile --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,8427315821476376694,17870213726811176573,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,899248810733516805,10102108575929078759,4 --trace-process-track-uuid=3190708990060038890 "
+    },
+    {
+      "pid": 250845,
+      "exe": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome",
+      "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "argv": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/chrome-profile --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9344 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --launch-time-ticks=253114802788 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,8427315821476376694,17870213726811176573,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,899248810733516805,10102108575929078759,4 --trace-process-track-uuid=3190708990997080739 "
+    },
+    {
+      "pid": 250858,
+      "exe": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome",
+      "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "argv": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/chrome-profile --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9344 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=6 --launch-time-ticks=253114826737 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,8427315821476376694,17870213726811176573,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,899248810733516805,10102108575929078759,4 --trace-process-track-uuid=3190708991934122588 "
+    },
+    {
+      "pid": 251103,
+      "exe": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome",
+      "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "argv": "/tmp/google-chrome-local-20261102/opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/chrome-profile --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9344 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=20 --launch-time-ticks=253118014275 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,8427315821476376694,17870213726811176573,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,899248810733516805,10102108575929078759,4 --trace-process-track-uuid=3190709005052708474 "
+    }
+  ],
+  "devtoolsVersion": {
+    "Browser": "Chrome/156.0.8078.79",
+    "File-Path-Style": "posix",
+    "Protocol-Version": "1.3",
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+    "V8-Version": "15.6.75.27",
+    "WebKit-Version": "537.36 (@a21ce95c24ce3964416f09ae1862f53f319eb4d0)",
+    "webSocketDebuggerUrl": "ws://127.0.0.1:9344/devtools/browser/1e1a0487-c0ae-44f4-bb98-34c0336330f0"
+  }
+}

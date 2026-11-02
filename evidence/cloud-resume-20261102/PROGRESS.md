@@ -1,3 +1,20 @@
+# CURRENT — 2026-11-02 07:49 UTC（以下矩陣為本檢查點）
+
+| 工作 | 完整head／狀態 | 下一步 |
+|---|---|---|
+| #366 | 502a64ff6214dd6060927b7f14643a533536f20d 已由本機Claude合main df7eb43af3389ff2afc1a73aaf4e57580ae612fc | 真manual run41397499686在canvas S全10綠；9ZIP完整bytes＋原verify exit0、123=114k/1crashed/5eq/3ret、7cache負控1；入口已實跑核收，不再待bytes |
+| #363 | 7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4；READY-TO-MERGE #363（技術及07:02固定head獨立dot審查「可合併」） | 12/12CI全綠，原件新交付pr363/ci-F4；主代理bounded收件PASS，新artifact子peer因capacity未完成不冒PASS；交本機Claude，不合main |
+| #340 | b3a248607d7eb68d3167abbb926cf491d9b35a26；READY-TO-MERGE技術驗收，已轉非draft | main最新仍df7，PR尚未合；待最新審查/本機Claude。它合入後才推339 |
+| #345 | 79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6；20/20CI綠、已轉非draft | 待最新審查/本機Claude |
+| #344 | d794a7447b98a82fb35c1dccaedc3443e2230933；20/20CI綠 | fixed-02完整2267/0/0；V完整2264/5/0（3具名產品紅＋2golden後果），原時限內exit1。恢復R07:41:42Z真啟動，原2100秒截止08:16:42Z，未完成不得算通過 |
+| canvas拆片 | 76d311cf1507708bc63bba2ab6e4f0c3f68cabb0，凍結S | 手動fresh123原verify已0，準備採官方ledger；兩新expected、真正兩片/原full/harness反證/finalCI未跑 |
+
+#344三相原件在pr344/full-browser-three-phase，保留首次P76 ENOENT與gate葉拒絕，不洗紅。R尚活，不冒稱三相完成。重測只此一個full，其他僅文字收件。
+
+---
+
+## 以下為歷史檢查點，進行中敘述以頂部CURRENT為準
+
 # 雲端接續進度（2026-11-02，台北）
 
 ## #366 已由本機Claude合入main，手動入口已實際觸發新來源

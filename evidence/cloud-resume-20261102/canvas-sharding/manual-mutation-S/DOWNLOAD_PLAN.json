@@ -1,0 +1,258 @@
+{
+  "run": 41397499686,
+  "head": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0",
+  "source_tree": "52494659bb0a966e62c5cee6e8919daed3df7d47",
+  "api_folder": "/tmp/geometry-resume-20261102/canvas-sharding/manual-mutation-S/api/20261102T073356Z",
+  "acquisitions": [
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/41397499686",
+      "file": "/tmp/geometry-resume-20261102/canvas-sharding/manual-mutation-S/api/20261102T073356Z/run.json",
+      "http_status": 200,
+      "bytes": 12796,
+      "sha256": "4abae5fc7abee948b0cc75cd829620acccf92e4d1a6b5b5b5aa5e8fc01a4edb0",
+      "content_type": "application/json; charset=utf-8"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/41397499686/jobs?per_page=100",
+      "file": "/tmp/geometry-resume-20261102/canvas-sharding/manual-mutation-S/api/20261102T073356Z/jobs.json",
+      "http_status": 200,
+      "bytes": 20796,
+      "sha256": "1357b3bc9c996725c439168263bfbf351ac8685ccaffc9f94309506735475356",
+      "content_type": "application/json; charset=utf-8"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/41397499686/artifacts?per_page=100",
+      "file": "/tmp/geometry-resume-20261102/canvas-sharding/manual-mutation-S/api/20261102T073356Z/artifacts.json",
+      "http_status": 200,
+      "bytes": 6591,
+      "sha256": "ede2b41074887ebbea092a5ce6bb9509c1786fc97d682bd2e54cc0097769d2cb",
+      "content_type": "application/json; charset=utf-8"
+    }
+  ],
+  "artifact_total_zip_bytes": 103701640,
+  "artifacts": [
+    {
+      "id": 13121765139,
+      "node_id": "MDg6QXJ0aWZhY3QxMzEyMTc2NTEzOQ==",
+      "name": "mutation-shard-bridge-2",
+      "size_in_bytes": 23048637,
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13121765139",
+      "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13121765139/zip",
+      "expired": false,
+      "digest": "sha256:6de079f5c1b1ed51b8487ef1cb8a916a8b650fb9b930ac6295c8b4c55e0c2574",
+      "created_at": "2026-11-02T06:37:05Z",
+      "updated_at": "2026-11-02T06:37:05Z",
+      "expires_at": "2026-12-02T06:37:04Z",
+      "workflow_run": {
+        "id": 41397499686,
+        "repository_id": 1375165580,
+        "head_repository_id": 1375165580,
+        "head_branch": "codex/canvas-validation-20261102",
+        "head_sha": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0"
+      }
+    },
+    {
+      "id": 13121561275,
+      "node_id": "MDg6QXJ0aWZhY3QxMzEyMTU2MTI3NQ==",
+      "name": "mutation-complete-evidence",
+      "size_in_bytes": 1622749,
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13121561275",
+      "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13121561275/zip",
+      "expired": false,
+      "digest": "sha256:3be849b0a0ba4959e76b6273b2b4b754523615bb70fcf92a4955ae1312003cf4",
+      "created_at": "2026-11-02T06:38:41Z",
+      "updated_at": "2026-11-02T06:38:41Z",
+      "expires_at": "2026-12-02T06:38:40Z",
+      "workflow_run": {
+        "id": 41397499686,
+        "repository_id": 1375165580,
+        "head_repository_id": 1375165580,
+        "head_branch": "codex/canvas-validation-20261102",
+        "head_sha": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0"
+      }
+    },
+    {
+      "id": 13121296422,
+      "node_id": "MDg6QXJ0aWZhY3QxMzEyMTI5NjQyMg==",
+      "name": "mutation-shard-bridge-1",
+      "size_in_bytes": 23014406,
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13121296422",
+      "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13121296422/zip",
+      "expired": false,
+      "digest": "sha256:9dc3e2c1f83dd272b97daa1f6b395c35180a52093ad898b195286115e4076cf9",
+      "created_at": "2026-11-02T06:32:10Z",
+      "updated_at": "2026-11-02T06:32:10Z",
+      "expires_at": "2026-12-02T06:32:08Z",
+      "workflow_run": {
+        "id": 41397499686,
+        "repository_id": 1375165580,
+        "head_repository_id": 1375165580,
+        "head_branch": "codex/canvas-validation-20261102",
+        "head_sha": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0"
+      }
+    },
+    {
+      "id": 13121048693,
+      "node_id": "MDg6QXJ0aWZhY3QxMzEyMTA0ODY5Mw==",
+      "name": "mutation-shard-bridge-3",
+      "size_in_bytes": 21763066,
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13121048693",
+      "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13121048693/zip",
+      "expired": false,
+      "digest": "sha256:6502690a371e6ada0850e5cfef4aea6043291efc0f59906ed0ec20b8a33b7d30",
+      "created_at": "2026-11-02T06:36:04Z",
+      "updated_at": "2026-11-02T06:36:04Z",
+      "expires_at": "2026-12-02T06:36:02Z",
+      "workflow_run": {
+        "id": 41397499686,
+        "repository_id": 1375165580,
+        "head_repository_id": 1375165580,
+        "head_branch": "codex/canvas-validation-20261102",
+        "head_sha": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0"
+      }
+    },
+    {
+      "id": 13120985153,
+      "node_id": "MDg6QXJ0aWZhY3QxMzEyMDk4NTE1Mw==",
+      "name": "mutation-shard-core-4",
+      "size_in_bytes": 8188198,
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13120985153",
+      "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13120985153/zip",
+      "expired": false,
+      "digest": "sha256:f26bfc2ffc5c76a1c9dc4fee47fc570853383314b9f5807ec2e79241334fbec3",
+      "created_at": "2026-11-02T06:13:58Z",
+      "updated_at": "2026-11-02T06:13:58Z",
+      "expires_at": "2026-12-02T06:13:56Z",
+      "workflow_run": {
+        "id": 41397499686,
+        "repository_id": 1375165580,
+        "head_repository_id": 1375165580,
+        "head_branch": "codex/canvas-validation-20261102",
+        "head_sha": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0"
+      }
+    },
+    {
+      "id": 13120955022,
+      "node_id": "MDg6QXJ0aWZhY3QxMzEyMDk1NTAyMg==",
+      "name": "mutation-shard-core-1",
+      "size_in_bytes": 9149412,
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13120955022",
+      "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13120955022/zip",
+      "expired": false,
+      "digest": "sha256:33d70ebaf535ea8a84843201b9c7b3a4cc6146891c96a9f43e7eacc9fa03d2d9",
+      "created_at": "2026-11-02T06:14:32Z",
+      "updated_at": "2026-11-02T06:14:32Z",
+      "expires_at": "2026-12-02T06:14:31Z",
+      "workflow_run": {
+        "id": 41397499686,
+        "repository_id": 1375165580,
+        "head_repository_id": 1375165580,
+        "head_branch": "codex/canvas-validation-20261102",
+        "head_sha": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0"
+      }
+    },
+    {
+      "id": 13120895754,
+      "node_id": "MDg6QXJ0aWZhY3QxMzEyMDg5NTc1NA==",
+      "name": "mutation-shard-core-3",
+      "size_in_bytes": 7707814,
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13120895754",
+      "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13120895754/zip",
+      "expired": false,
+      "digest": "sha256:15eeaf30bb2c2cca529cfa2630169e3b18d58dd5274189748032ee0b02a90ea7",
+      "created_at": "2026-11-02T06:15:38Z",
+      "updated_at": "2026-11-02T06:15:38Z",
+      "expires_at": "2026-12-02T06:15:36Z",
+      "workflow_run": {
+        "id": 41397499686,
+        "repository_id": 1375165580,
+        "head_repository_id": 1375165580,
+        "head_branch": "codex/canvas-validation-20261102",
+        "head_sha": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0"
+      }
+    },
+    {
+      "id": 13120816879,
+      "node_id": "MDg6QXJ0aWZhY3QxMzEyMDgxNjg3OQ==",
+      "name": "mutation-shard-core-2",
+      "size_in_bytes": 9153674,
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13120816879",
+      "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13120816879/zip",
+      "expired": false,
+      "digest": "sha256:5d87aa1dfd0f0017984b19fd9116242e1a84ce389cc957f6fcf5d0da72f4268a",
+      "created_at": "2026-11-02T06:18:07Z",
+      "updated_at": "2026-11-02T06:18:07Z",
+      "expires_at": "2026-12-02T06:18:05Z",
+      "workflow_run": {
+        "id": 41397499686,
+        "repository_id": 1375165580,
+        "head_repository_id": 1375165580,
+        "head_branch": "codex/canvas-validation-20261102",
+        "head_sha": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0"
+      }
+    },
+    {
+      "id": 13119549734,
+      "node_id": "MDg6QXJ0aWZhY3QxMzExOTU0OTczNA==",
+      "name": "pr357-architecture-refresh",
+      "size_in_bytes": 53684,
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13119549734",
+      "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13119549734/zip",
+      "expired": false,
+      "digest": "sha256:aa1cbffbcf0e34c0ae21f5ada6df83a558b89f334bf3e6048949c4e120f99bc5",
+      "created_at": "2026-11-02T06:04:11Z",
+      "updated_at": "2026-11-02T06:04:11Z",
+      "expires_at": "2026-12-02T06:04:10Z",
+      "workflow_run": {
+        "id": 41397499686,
+        "repository_id": 1375165580,
+        "head_repository_id": 1375165580,
+        "head_branch": "codex/canvas-validation-20261102",
+        "head_sha": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0"
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "id": 125121890401,
+      "name": "Verify merged architecture with original commands"
+    },
+    {
+      "id": 125122340491,
+      "name": "plan"
+    },
+    {
+      "id": 125122661362,
+      "name": "mutation (bridge-2)"
+    },
+    {
+      "id": 125122661388,
+      "name": "mutation (core-3)"
+    },
+    {
+      "id": 125122661400,
+      "name": "mutation (bridge-1)"
+    },
+    {
+      "id": 125122661405,
+      "name": "mutation (core-4)"
+    },
+    {
+      "id": 125122661417,
+      "name": "mutation (bridge-3)"
+    },
+    {
+      "id": 125122661481,
+      "name": "mutation (core-1)"
+    },
+    {
+      "id": 125122661490,
+      "name": "mutation (core-2)"
+    },
+    {
+      "id": 125132727624,
+      "name": "Verify complete mutation evidence"
+    }
+  ],
+  "mode": "metadata only; original verifier not yet replayed"
+}

@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "tests/release_gate.py",
+    "--url",
+    "http://127.0.0.1:18844/",
+    "--output",
+    "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/gate",
+    "--timeout",
+    "2100",
+    "--",
+    "/tmp/geometry-resume-20261102/pr363/node-v24.22.1-linux-x64/bin/node",
+    "geometry-web/cdp_test.js"
+  ],
+  "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+  "startedUtc": "2026-11-02T05:53:21.678084+00:00",
+  "environment": {
+    "TMPDIR": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp",
+    "TMP": null,
+    "TEMP": null,
+    "GEOMETRY_TEST_BRIDGE": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/runtime/bridge",
+    "GEOMETRY_MODEL_BASE": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/runtime/model-base",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18844/",
+    "GEOMETRY_FEEDBACK_DIR": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/feedback",
+    "PYTHONOPTIMIZE": null,
+    "CC": null,
+    "CFLAGS": null
+  }
+}

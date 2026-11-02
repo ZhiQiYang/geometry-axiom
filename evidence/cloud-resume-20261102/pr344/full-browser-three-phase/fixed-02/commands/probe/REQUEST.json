@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "geometry-web/runtime_version.py",
+    "--probe",
+    "18844"
+  ],
+  "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+  "startedUtc": "2026-11-02T06:34:07.050906+00:00",
+  "environment": {
+    "TMPDIR": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/tmp",
+    "TMP": null,
+    "TEMP": null,
+    "GEOMETRY_TEST_BRIDGE": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/tmp/runtime/bridge",
+    "GEOMETRY_MODEL_BASE": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/tmp/runtime/model-base",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18844/",
+    "GEOMETRY_FEEDBACK_DIR": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/tmp/feedback",
+    "PYTHONOPTIMIZE": null,
+    "CC": null,
+    "CFLAGS": null
+  }
+}

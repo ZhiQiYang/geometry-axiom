@@ -1,0 +1,127 @@
+{
+  "schema": "geometry-release-command/1",
+  "created": "2026-11-02T05:53:21.735108+00:00",
+  "command": [
+    "/tmp/geometry-resume-20261102/pr363/node-v24.22.1-linux-x64/bin/node",
+    "geometry-web/cdp_test.js"
+  ],
+  "cwd": "/dev/shm/geometry-pr344-full-fixed-20261102",
+  "url": "http://127.0.0.1:18844/",
+  "timeoutSeconds": 2100.0,
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "status": "command-failed",
+  "executionVerified": false,
+  "releaseApproved": false,
+  "problems": [],
+  "limitations": [
+    "Only this command is covered; independent delivery gates remain separate.",
+    "Native receipts attest configured files; /runtime does not attest the running native process.",
+    "Before/after identity checks do not prove absence of transient source changes."
+  ],
+  "environment": {
+    "GEOMETRY_FEEDBACK_DIR": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/feedback",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18844/",
+    "GEOMETRY_CHROME": "/tmp/google-chrome-local-20261102/opt/google/chrome/google-chrome",
+    "GEOMETRY_CDP_PORT": "9344",
+    "GEOMETRY_TEST_BRIDGE": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/runtime/bridge",
+    "GEOMETRY_BRIDGE": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/runtime/bridge",
+    "GEOMETRY_MODEL_BASE": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/runtime/model-base"
+  },
+  "kind": "cdp",
+  "before": {
+    "at": "2026-11-02T05:53:21.736748+00:00",
+    "root": "/dev/shm/geometry-pr344-full-fixed-20261102",
+    "problems": [],
+    "git": {
+      "root": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "head": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "tree": "51b669da21513fbccf90620faf55b7aad77703b6",
+      "status": ""
+    },
+    "sourceVersion": "8b8751249abf6f7956aadca0065411a99d56b6b74ee77c759ee6932e32c9a99e",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "8b8751249abf6f7956aadca0065411a99d56b6b74ee77c759ee6932e32c9a99e",
+      "fresh": true,
+      "root": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "pid": 250570,
+      "session": "ea4ff0d58642472d8fe60824c052dcd1"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-11-02T02:58:34+00:00）",
+        "path": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/runtime/bridge",
+        "fingerprint": "4dfd8b89342efd1c4ace8f5c5251ea0401f981ab5e79f1e61e7478501ab894ee",
+        "sha256": "7c21fcfc148d2ce5b8801ceb004898c9977ad9c358815eb684e24b53d5025551",
+        "sidecarSha256": "6166c6f5d74ca71f5a0fbda594efecb02ee83e697b9745723e07d2291ffa06b8"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-11-02T05:50:57+00:00）",
+        "path": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/runtime/model-base",
+        "fingerprint": "e8d469d3efc62e009c1f76d5f34338ebdd73d12d378e07d4feb85892d83f4eb1",
+        "sha256": "8ad16a7306416e8c9b4afbe0f2250f0dc5185108f294ab0ef4a5f5aacbbdd53b",
+        "sidecarSha256": "c19cf7643046bc9e71a616b292bcb0d888c41d9c307cd372586beb4007927440"
+      }
+    }
+  },
+  "execution": {
+    "started": "2026-11-02T05:53:22.011530+00:00",
+    "exitCode": 1,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 250754,
+    "finished": "2026-11-02T06:14:08.265179+00:00"
+  },
+  "after": {
+    "at": "2026-11-02T06:14:08.265381+00:00",
+    "root": "/dev/shm/geometry-pr344-full-fixed-20261102",
+    "problems": [],
+    "git": {
+      "root": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "head": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "tree": "51b669da21513fbccf90620faf55b7aad77703b6",
+      "status": ""
+    },
+    "sourceVersion": "8b8751249abf6f7956aadca0065411a99d56b6b74ee77c759ee6932e32c9a99e",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "8b8751249abf6f7956aadca0065411a99d56b6b74ee77c759ee6932e32c9a99e",
+      "fresh": true,
+      "root": "/dev/shm/geometry-pr344-full-fixed-20261102",
+      "pid": 250570,
+      "session": "ea4ff0d58642472d8fe60824c052dcd1"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-11-02T02:58:34+00:00）",
+        "path": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/runtime/bridge",
+        "fingerprint": "4dfd8b89342efd1c4ace8f5c5251ea0401f981ab5e79f1e61e7478501ab894ee",
+        "sha256": "7c21fcfc148d2ce5b8801ceb004898c9977ad9c358815eb684e24b53d5025551",
+        "sidecarSha256": "6166c6f5d74ca71f5a0fbda594efecb02ee83e697b9745723e07d2291ffa06b8"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-11-02T05:50:57+00:00）",
+        "path": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/tmp/runtime/model-base",
+        "fingerprint": "e8d469d3efc62e009c1f76d5f34338ebdd73d12d378e07d4feb85892d83f4eb1",
+        "sha256": "8ad16a7306416e8c9b4afbe0f2250f0dc5185108f294ab0ef4a5f5aacbbdd53b",
+        "sidecarSha256": "c19cf7643046bc9e71a616b292bcb0d888c41d9c307cd372586beb4007927440"
+      }
+    }
+  },
+  "log": {
+    "path": "/dev/shm/geometry-pr344-full-evidence-20261102/fixed/gate/command.log",
+    "bytes": 324964,
+    "sha256": "a3146d0930f9f26828c19910ddd4adaabdb0f84fb961c39715d7135174ad6fe9"
+  },
+  "finished": "2026-11-02T06:14:08.523315+00:00",
+  "gateExitCode": 1
+}
