@@ -19,6 +19,20 @@ def without_terminal(value):
     return value
 
 
+# Capabilities that features after the 405f8c5e baseline append to
+# engineering-read state, in order. Exact and named, so the comparison below
+# still isolates K1-a's terminal fields; any other difference stays red.
+LATER_ENGINEERING_CAPABILITIES = (
+    "definition-import/1",  # R08 #359: definition import across projects
+)
+
+
+def with_later_capabilities(original):
+    expected = json.loads(json.dumps(original))
+    expected["engineering-read"]["state"]["capabilities"].extend(LATER_ENGINEERING_CAPABILITIES)
+    return expected
+
+
 class EngineeringTerminal(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -138,7 +152,7 @@ class EngineeringTerminal(unittest.TestCase):
         self.assertEqual(replies["references"]["engineeringSources"], replies["engineering-read"]["state"]["sources"])
         self.assertEqual(before, (self.command("dump"), self.read()["revision"]))
         baseline = Path(os.environ.get("GEOMETRY_TERMINAL_BASELINE", ROOT / "tests/fixtures/k1_terminal_legacy_replies.json"))
-        original = json.loads(baseline.read_text(encoding="utf-8"))
+        original = with_later_capabilities(json.loads(baseline.read_text(encoding="utf-8")))
         self.assertEqual(json.dumps(original, ensure_ascii=False, separators=(",", ":")),
                          json.dumps(without_terminal(replies), ensure_ascii=False, separators=(",", ":")),
                          "K1-a: non-terminal fields/order changed relative to the independently built baseline")
