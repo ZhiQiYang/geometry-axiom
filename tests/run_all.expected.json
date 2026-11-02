@@ -55,9 +55,29 @@
       "count": 12,
       "unit": "node test"
     },
-    "node:definition_import": {
+    "node:cutting_layering": {
       "mode": "count",
-      "count": 9,
+      "count": 15,
+      "unit": "node test"
+    },
+    "node:cutting_owner": {
+      "mode": "count",
+      "count": 3,
+      "unit": "node test"
+    },
+    "node:cutting_plan": {
+      "mode": "count",
+      "count": 20,
+      "unit": "node test"
+    },
+    "node:cutting_project_store": {
+      "mode": "count",
+      "count": 12,
+      "unit": "node test"
+    },
+    "node:cutting_session": {
+      "mode": "count",
+      "count": 11,
       "unit": "node test"
     },
     "node:document_cases": {
@@ -157,7 +177,7 @@
     "node:tests-js": {
       "mode": "count",
       "unit": "node test",
-      "count": 737
+      "count": 740
     },
     "node:woodworking_frontend": {
       "mode": "count",
@@ -237,16 +257,6 @@
       "count": 9,
       "unit": "test"
     },
-    "py:test_definition_import": {
-      "mode": "count",
-      "count": 13,
-      "unit": "test"
-    },
-    "py:test_definition_import_transport": {
-      "mode": "count",
-      "count": 6,
-      "unit": "test"
-    },
     "py:test_domain_decoupling_adoption": {
       "mode": "count",
       "count": 15,
@@ -285,6 +295,11 @@
     "py:test_engineering_model_sources": {
       "mode": "count",
       "count": 4,
+      "unit": "test"
+    },
+    "py:test_engineering_terminal": {
+      "mode": "count",
+      "count": 7,
       "unit": "test"
     },
     "py:test_engineering_transport": {
@@ -882,6 +897,11 @@
       "count": 25,
       "unit": "test"
     },
+    "py:test_k1_mutation_runners": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
     "py:test_local_launcher": {
       "mode": "count",
       "count": 17,
@@ -979,7 +999,7 @@
     },
     "py:test_product_architecture": {
       "mode": "count",
-      "count": 18,
+      "count": 22,
       "unit": "test"
     },
     "py:test_recorded_api_receipts": {
@@ -1039,7 +1059,7 @@
     },
     "py:test_rule_case_workbench_http": {
       "mode": "count",
-      "count": 19,
+      "count": 21,
       "unit": "test"
     },
     "py:test_runtime_version": {
@@ -1151,6 +1171,21 @@
       "mode": "count",
       "count": 7,
       "unit": "unittest"
+    },
+    "node:definition_import": {
+      "mode": "count",
+      "count": 9,
+      "unit": "node test"
+    },
+    "py:test_definition_import": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_definition_import_transport": {
+      "mode": "count",
+      "count": 6,
+      "unit": "test"
     }
   }
 }

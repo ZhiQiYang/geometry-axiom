@@ -42,7 +42,7 @@
       "path": "geometry-app/application.js",
       "layer": "H",
       "language": "javascript",
-      "purpose": "Application/runtime/protocol or workspace host application; composes explicit K/W providers where needed"
+      "purpose": "固定且不可選的 woodworking/1 與裁切 W 組裝；為宿主提供同一 frozen provider，沒有停用或任意替換模板的公開入口"
     },
     {
       "path": "geometry-app/geometry_app/__init__.py",
@@ -2059,6 +2059,36 @@
       "layer": "H",
       "language": "python",
       "purpose": "Runtime-imported native binary provenance registry/package; also used by tests, but real rule_cases runtime depends on it"
+    },
+    {
+      "path": "geometry-web/cutting-plan.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "H 原生來源與既有 timber-schedule 料單的唯讀轉接，建立明確需求後委派固定 W 求值；保留公開回傳包裝與 CSV bytes，無配料或 FFD 政策"
+    },
+    {
+      "path": "geometry-web/cutting-settings.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "H 裁切附件精確 schema、key 高水位與單調保存、canonical codec 與指紋；材料/截面、數值與原材在用限制委派固定 W"
+    },
+    {
+      "path": "geometry-web/cutting-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "裁切工作區 DOM、專案附件設定、需求範圍與匯出新鮮度宿主編排"
+    },
+    {
+      "path": "geometry-core/interval-allocation.js",
+      "layer": "K",
+      "language": "javascript",
+      "purpose": "I60 中性一維區間守恆；只接受明示整數可用區間、具型別需求身分、配置、消耗與末餘，以精確加法驗證，不含木工配料或損耗預設"
+    },
+    {
+      "path": "geometry-templates/woodworking/cutting.js",
+      "layer": "W",
+      "language": "javascript",
+      "purpose": "固定 woodworking/1 的 D46–D50、I58/I59/I61、R47–R49 裁切政策：材料與無序截面配對、設定限制、餘料優先、FFD、切序與耗損分類；I60 共用守恆只委派 K"
     }
   ],
   "exclusions": [
@@ -2665,7 +2695,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "f324b6a77b1600f3eb8bbaeeea159ce59c80373a776bcf1fbda7a0491ea7d171",
+      "sha256": "391305036c62e83902e4606bb3a5c6194869d1aa88e191abef29ab013d6e2d22",
       "hashMode": "lf"
     },
     {
@@ -3687,6 +3717,12 @@
       "reason": "Reading A independent numeric source-withdrawal witness for constructor/checker 0/1/0; an explicitly invoked dedicated test driver that loads a supplied oracle source path, not a product-loaded module or product entry point.",
       "sha256": "fe786d9f12cb664fe0188dc87803855449eaa86a8d115969e13bef5213fb3d95",
       "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/cutting_plan_test.js",
+      "reason": "P89 真瀏覽器裁切驗收外掛，由 cdp_test.js 載入；不是產品 runtime 模組。",
+      "sha256": "a648eb206e8e4a80775f6cbdd6fae97ed7e277bcbb00431b0a543a161be2b833",
+      "hashMode": "lf"
     }
   ],
   "htmlScriptRoutes": [
@@ -3707,6 +3743,18 @@
       "src": "/app.js",
       "target": "geometry-web/work-manager/static/app.js",
       "purpose": "work-manager serve.py fixed static application route"
+    },
+    {
+      "source": "geometry-web/index.html",
+      "src": "kernel/interval-allocation.js",
+      "target": "geometry-core/interval-allocation.js",
+      "purpose": "runtime_version.py fixed neutral I60 interval verification browser module route"
+    },
+    {
+      "source": "geometry-web/index.html",
+      "src": "templates/woodworking-cutting.js",
+      "target": "geometry-templates/woodworking/cutting.js",
+      "purpose": "runtime_version.py fixed woodworking/1 cutting policy browser module route"
     }
   ],
   "javascriptImportRoutes": [
@@ -4794,7 +4842,14 @@
       "wood_support_max",
       "wood_support_min",
       "wood_world_validate_members",
-      "wood_world_validate_obstacles"
+      "wood_world_validate_obstacles",
+      "GeometryWoodworkingCutting",
+      "materialKey",
+      "stockIdentity",
+      "sectionKey",
+      "kerf",
+      "minRemnant",
+      "allowance"
     ],
     "forbiddenStrings": [
       "calcium-silicate-6",
