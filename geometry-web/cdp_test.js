@@ -7,6 +7,8 @@ const cdp = require('./cdp_helpers.js');
 const {createRetainedEvaluator} = require('./cdp_evaluation.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
 const {createTransportFailureTrace,installClientTransportTrace} = require('./transport_failure_trace.js');
+const canvasShards = require('../tests/helpers/canvas_shards.js');
+let shardPlan=null,shardJournal=null;
 let transportFailureTrace;
 const SCOPE_FLAGS = ['GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
@@ -24,7 +26,18 @@ function runConfiguration(env = process.env) {
   if(filters.length>1)throw Error('Choose only one CDP scope flag; combined filters can silently omit every suite');
   if(modifiers.length>1)throw Error('Choose only one engineering workflow modifier');
   if(modifiers.length && env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY!=='1')throw Error('Engineering modifiers require GEOMETRY_ENGINEERING_WORKFLOW_ONLY=1');
-  return {mode:filters.length?'partial':'full',filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
+  const configuration={mode:filters.length?'partial':'full',filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
+  if(env.GEOMETRY_CDP_SHARD===undefined)return configuration;
+  shardPlan ||= canvasShards.loadPlan();
+  return canvasShards.configure(env,configuration,shardPlan,SCOPE_FLAGS,ENGINEERING_MODIFIERS);
+}
+function ownsCanvasUnit(id,legacyPredicate) {
+  return canvasShards.selected(shardPlan,scope,id,legacyPredicate);
+}
+async function runCanvasUnit(id,action) {
+  shardJournal?.begin(id);
+  await action();
+  shardJournal?.end(id);
 }
 // Legacy checks log a verdict as a separate argument. Never scan arbitrary
 // diagnostics or page console strings for checkmark characters.
@@ -114,7 +127,13 @@ let expectedBeforeUnloadUntil=0;
 let expectedNativeDialog=null;
 let expectedException=null, scope, skipped=[];
 const assetRequests=new Map(), assetFailures=[];
-const _log = console.log;
+const originalLog = console.log;
+// Shard receipts must survive the original immediate process.exit path. Keep
+// the original console behavior for full/partial; shard raw/journal is synced.
+const _log = (...args) => {
+  if(scope?.mode==='shard')fs.writeSync(1,require('node:util').format(...args)+'\n');
+  else originalLog(...args);
+};
 function observeAssetNetwork(message) {
   if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin);
   transportFailureTrace.observe(message, currentTestStep);
@@ -138,10 +157,13 @@ function recordLog(...args) {
   const s = args.join(" ");
   if(s.startsWith('===')){
     currentTestStep=s;
-    currentSection=floor.sectionOf(s)||currentSection;
+    const section=floor.sectionOf(s);
+    currentSection=section||currentSection;
+    if(section)shardJournal?.section(section,s);
     sectionPass[currentSection]=sectionPass[currentSection]||0;
   }
   for(const passed of assertionVerdicts(args)){
+    shardJournal?.assertion(passed,args[0]);
     if(passed){passN++;sectionPass[currentSection]=(sectionPass[currentSection]||0)+1;}
     else{failN++;sectionFail[currentSection]=(sectionFail[currentSection]||0)+1;}
   }
@@ -339,6 +361,14 @@ function evaluateSections() {
   const wantUpdate=process.env.GEOMETRY_CDP_UPDATE_GOLDEN;
   _log('CDP_SECTIONS '+Object.keys(actual.sections).length+' 段,合計 '+total+' 通過斷言');
   if(wantUpdate!==undefined && wantUpdate!=='1'){failN++;_log('[CDP FLOOR] GEOMETRY_CDP_UPDATE_GOLDEN 只接受 1');}
+  if(scope.mode==='shard'){
+    shardJournal.finish();
+    const diffs=floor.compare({sections:canvasShards.projection(shardPlan,scope.shardId)},actual);
+    for(const diff of diffs){failN++;_log('[CDP FLOOR]',diff.message);}
+    if(diffs.length)return 'mismatch ('+diffs.length+')';
+    _log('[CDP FLOOR] 與原 golden 的擁有段投影逐段相符');
+    return 'matched (shard projection)';
+  }
   if(scope.mode!=='full'){
     if(wantUpdate){failN++;_log('[CDP FLOOR] 部分模式不可更新 golden(golden 只記完整模式)');return 'update-refused (partial mode)';}
     _log('[CDP FLOOR] 部分模式,未比對 golden。各段通過數:'+JSON.stringify(actual.sections));
@@ -397,7 +427,8 @@ async function main() {
     throw Error('Application did not finish loading: '+JSON.stringify(await eval_(`({state:document.readyState,url:location.href,api:typeof api,message:document.querySelector('#connectionMessage')?.textContent})`)));
   if (!process.env.GEOMETRY_ROOM_OUTLINE_ONLY) {
   if (!process.env.GEOMETRY_PARAMETERS_ONLY && !process.env.GEOMETRY_ASSEMBLY_ONLY && !process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY) {
-  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY) {
+  if (ownsCanvasUnit('legacy', !process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)) {
+  shardJournal?.begin('legacy');
   if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY && !process.env.GEOMETRY_CDP_FROM_P31) {
   /* 清世界 + 建一個乾淨的測試場：一片游離面、一個空容器 */
   console.log('=== Setup. 確認重置隔離驗收專案 ===');
@@ -7119,43 +7150,46 @@ async function main() {
     await ctl('#smClose');
   }
 
+  shardJournal?.end('legacy');
   }
-  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
-    await require('./project_audit_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
-    await require('./engineering_workflow_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
-    await require('./marquee_test.js')({send, eval_, sleep, click, dblclick, drag, dragMod, pressDownMod, moveMod, waitForUI, exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
-    await require('./grid_system_test.js')({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
-    await require('./grid_rule_editor_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
-    await require('./grid_rule_lines_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  if (ownsCanvasUnit('project-audit', !process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY))
+    await runCanvasUnit('project-audit',()=>require('./project_audit_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}));
+  if (ownsCanvasUnit('engineering', !process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY))
+    await runCanvasUnit('engineering',()=>require('./engineering_workflow_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN}));
+  if (ownsCanvasUnit('marquee', !process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY))
+    await runCanvasUnit('marquee',()=>require('./marquee_test.js')({send, eval_, sleep, click, dblclick, drag, dragMod, pressDownMod, moveMod, waitForUI, exceptionCount:()=>excN}));
+  if (ownsCanvasUnit('grid-system',scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY))
+    await runCanvasUnit('grid-system',()=>require('./grid_system_test.js')({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount:()=>excN}));
+  if (ownsCanvasUnit('grid-rule-editor',scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY))
+    await runCanvasUnit('grid-rule-editor',()=>require('./grid_rule_editor_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN}));
+  if (ownsCanvasUnit('grid-rule-lines',scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY))
+    await runCanvasUnit('grid-rule-lines',()=>require('./grid_rule_lines_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN}));
   if (process.env.GEOMETRY_INFINITE_FACE_ONLY)
     await require('./infinite_grid_face_test.js')({send,eval_,sleep,click,waitForUI});
-  if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)
-    await require('./composition_canvas_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)
-    await require('./grid_inspector_rename_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_UIUX_FIX_ONLY)
-    await require('./uiux_review_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_UX_REFINEMENT_ONLY)
-    await require('./ux_refinement_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,expectBeforeUnload:()=>{expectedBeforeUnloadUntil=Date.now()+15000;},exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_SELECTION_CURSOR_ONLY)
-    await require('./selection_cursor_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
+  if (ownsCanvasUnit('composition',scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY))
+    await runCanvasUnit('composition',()=>require('./composition_canvas_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN}));
+  if (ownsCanvasUnit('grid-rename',scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY))
+    await runCanvasUnit('grid-rename',()=>require('./grid_inspector_rename_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN}));
+  if (ownsCanvasUnit('uiux',scope.mode==='full' || process.env.GEOMETRY_UIUX_FIX_ONLY))
+    await runCanvasUnit('uiux',()=>require('./uiux_review_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN}));
+  if (ownsCanvasUnit('ux-refinement',scope.mode==='full' || process.env.GEOMETRY_UX_REFINEMENT_ONLY))
+    await runCanvasUnit('ux-refinement',()=>require('./ux_refinement_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,expectBeforeUnload:()=>{expectedBeforeUnloadUntil=Date.now()+15000;},exceptionCount:()=>excN}));
+  if (ownsCanvasUnit('selection-cursor',scope.mode==='full' || process.env.GEOMETRY_SELECTION_CURSOR_ONLY))
+    await runCanvasUnit('selection-cursor',()=>require('./selection_cursor_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN}));
 
   }
-  if(scope.mode==='full'||process.env.GEOMETRY_PARAMETERS_ONLY)await require('./parameter_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_workflow_test.js')({send,eval_,sleep,click,dblclick,drag,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_context_entry_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_schedule_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_supports_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./source_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(ownsCanvasUnit('parameters',scope.mode==='full'||process.env.GEOMETRY_PARAMETERS_ONLY))await runCanvasUnit('parameters',()=>require('./parameter_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}));
+  if(ownsCanvasUnit('assembly',scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY))await runCanvasUnit('assembly',()=>require('./assembly_workflow_test.js')({send,eval_,sleep,click,dblclick,drag,waitForUI,exceptionCount:()=>excN}));
+  if(ownsCanvasUnit('assembly-context',scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY))await runCanvasUnit('assembly-context',()=>require('./assembly_context_entry_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}));
+  if(ownsCanvasUnit('timber-schedule',scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY))await runCanvasUnit('timber-schedule',()=>require('./timber_schedule_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}));
+  if(ownsCanvasUnit('timber-supports',scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY))await runCanvasUnit('timber-supports',()=>require('./timber_supports_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}));
+  if(ownsCanvasUnit('source-navigation',scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY))await runCanvasUnit('source-navigation',()=>require('./source_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}));
   }
-  if(scope.mode==='full'||process.env.GEOMETRY_ROOM_OUTLINE_ONLY)await require('./room_outline_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full')await require('./model_snapshot_schedule_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if(scope.mode==='full')await require('./model_snapshot_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(ownsCanvasUnit('room-outline',scope.mode==='full'||process.env.GEOMETRY_ROOM_OUTLINE_ONLY))await runCanvasUnit('room-outline',()=>require('./room_outline_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN}));
+  if(ownsCanvasUnit('model-snapshots',scope.mode==='full'))await runCanvasUnit('model-snapshots',async()=>{
+    await require('./model_snapshot_schedule_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+    await require('./model_snapshot_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  });
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
   const goldenCompare=evaluateSections();
@@ -7183,6 +7217,6 @@ async function fatal(e) {
   }
 }
 if(require.main===module){
-  try {scope=runConfiguration();console.log=recordLog;(async()=>{await assertPortAvailable(PORT);chrome=startBrowser();chrome.on('error',fatal);_log('CDP_SCOPE '+JSON.stringify(scope));await main();})().catch(fatal);}
+  try {scope=runConfiguration();if(scope.mode==='shard')shardJournal=canvasShards.createJournal(shardPlan,scope.shardId,event=>_log('CANVAS_SHARD_EVENT '+canvasShards.stable(event)));console.log=recordLog;(async()=>{await assertPortAvailable(PORT);chrome=startBrowser();chrome.on('error',fatal);_log('CDP_SCOPE '+JSON.stringify(scope));await main();})().catch(fatal);}
   catch(error){_log('CDP preflight failed:',error.message);process.exitCode=1;}
 } else module.exports={runConfiguration,assertionVerdicts,evaluationValue,explicitVerdict,assertPortAvailable,verifyBrowserOwnership};
