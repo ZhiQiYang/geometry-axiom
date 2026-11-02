@@ -1,0 +1,127 @@
+{
+  "files": [
+    {
+      "path": "environment/3.stderr",
+      "bytes": 114,
+      "sha256": "1f4ef37e45f1fa7c85707503fa5a8fdf16040f4cc13d013a8a5f16ce82e361b4"
+    },
+    {
+      "path": "environment/receipt.json",
+      "bytes": 1930,
+      "sha256": "95e356e030e6e3ef1aee8f941394c4a72bacd2e04aa5131fe8776f5637303ba6"
+    },
+    {
+      "path": "environment/smoke-explicit-profile.json",
+      "bytes": 591,
+      "sha256": "771227017757af0b6bf975fd2d3bc3780e58cba5f5f8219c605b46cfb46d15aa"
+    },
+    {
+      "path": "pr340/merge-main.json.gz",
+      "bytes": 129555,
+      "sha256": "7ef7a4af2dc4c9d369accc05e4e258643b1d269af49abd9358d0777465da7c7b"
+    },
+    {
+      "path": "pr340/original-gates/0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/original-gates/0.stdout",
+      "bytes": 538,
+      "sha256": "efca22db4f9fc05f07e5bde95965ac2058c36c11c902150083328139866a56d8"
+    },
+    {
+      "path": "pr340/original-gates/1.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/original-gates/1.stdout",
+      "bytes": 132559,
+      "sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    {
+      "path": "pr340/original-gates/2.stderr",
+      "bytes": 29577,
+      "sha256": "e0832030b601229324e01447d203c7ef48530ff28fcf50c60cd4dfaa4a328f63"
+    },
+    {
+      "path": "pr340/original-gates/2.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/original-gates/3.stderr",
+      "bytes": 118,
+      "sha256": "5a0248f12fb5b0165f711b864438e99b614b2d993741f49707ca4b6f0ef0bb75"
+    },
+    {
+      "path": "pr340/original-gates/3.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pr340/original-gates/RESULT.json",
+      "bytes": 2333,
+      "sha256": "0aa2143f451c90b5d85c415709699d2cc74505c67f27d584ce81fffd6988b071"
+    },
+    {
+      "path": "pr366/acceptance.json",
+      "bytes": 13553,
+      "sha256": "1690840be11a97af2104f5c5d15cce44f2b811ecccda879f7c9f6ef4165e45ee"
+    },
+    {
+      "path": "pr366/architecture-audit.json",
+      "bytes": 2288,
+      "sha256": "87a086976ea64c36c6d9bc8d08a735c167226f44382917144ef746a8597f02a0"
+    },
+    {
+      "path": "pr366/artifact-byte-audit.json",
+      "bytes": 136506,
+      "sha256": "e9082c1725c9f98315c157344e200070195db1d97ab4d9ec851438a9090bdd0c"
+    },
+    {
+      "path": "pr366/check_downloaded_native_browser.py",
+      "bytes": 15712,
+      "sha256": "da961cd5d4d6d0dd4d06224633eabcbc1c2b0460817b9c4e2305d34d80863852"
+    },
+    {
+      "path": "pr366/independent-native-browser-check.json",
+      "bytes": 107946,
+      "sha256": "a8984334f26a430ca51fe3df8870570ebead607566cbb3ca8c6609dfe38ed2b4"
+    },
+    {
+      "path": "pr366/independent-native-browser-review.md",
+      "bytes": 8899,
+      "sha256": "2c5aaf3b3c3845a872e3aa72492320cbdc2a260bbe5157affe1dda98a74de2a3"
+    },
+    {
+      "path": "pr366/mutation-verify-receipt.json",
+      "bytes": 11898,
+      "sha256": "c62c133346d64a1a50e86b2aa5859687bd5de93f7f6243db05dd87ccb897fc47"
+    },
+    {
+      "path": "pr366/native-control-receipt.json",
+      "bytes": 1454,
+      "sha256": "54d78356feb24ef09ef878b794926a9ea83bf72530450d1ab2bf19bbb434e18f"
+    },
+    {
+      "path": "pr366/native-reverify-receipt.json",
+      "bytes": 2670,
+      "sha256": "67490c60263761a1a96ae9fd2c2e9557560478543f2a68e59447651f2da31df7"
+    },
+    {
+      "path": "pr366/source-tool-adversarial-review.md",
+      "bytes": 5596,
+      "sha256": "fad7191b95980eed9f91f98f35d7f0582b7f2781a2932385d9c06cff2a52ff2f"
+    },
+    {
+      "path": "pr366/verification-status.md",
+      "bytes": 5357,
+      "sha256": "291c1b8f850070b3757f9df45b80a554f6dc9cd6a082239088cdc614100915b0"
+    }
+  ],
+  "count": 24,
+  "bytes": 609194,
+  "scope": "Cloud receipt re-verification and metadata; official full raw binary artifacts remain at fixed GitHub Actions URLs."
+}

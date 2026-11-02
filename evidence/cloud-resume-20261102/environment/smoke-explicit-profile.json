@@ -1,0 +1,16 @@
+{
+  "observed_utc": "2026-11-02T02:52:00.438731+00:00",
+  "command": [
+    "/tmp/google-chrome-local-20261102/opt/google/chrome/google-chrome",
+    "--headless",
+    "--no-sandbox",
+    "--disable-gpu",
+    "--user-data-dir=/tmp/geometry-chrome-smoke-20261102",
+    "--dump-dom",
+    "about:blank"
+  ],
+  "exit": 0,
+  "stdout": "<html><head></head><body></body></html>\n",
+  "diagnosis": "Default headless profile tried full home overlay; explicit task-local profile follows project CDP harness isolation. Original exit1 retained.",
+  "scope": "Environment smoke, zero product assertions"
+}

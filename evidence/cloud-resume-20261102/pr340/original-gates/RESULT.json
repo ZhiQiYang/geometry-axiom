@@ -1,0 +1,65 @@
+{
+  "observed_utc": "2026-11-02T02:53:35.982650+00:00",
+  "source_sha": "1605a6c27c97c2aa5e6405bddc7d3b31f1fdd965",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "cwd": "/tmp/geometry-pr340-20261102",
+      "source_sha": "1605a6c27c97c2aa5e6405bddc7d3b31f1fdd965",
+      "exit": 0,
+      "seconds": 5.575640903000021,
+      "stdout_sha256": "efca22db4f9fc05f07e5bde95965ac2058c36c11c902150083328139866a56d8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "cwd": "/tmp/geometry-pr340-20261102",
+      "source_sha": "1605a6c27c97c2aa5e6405bddc7d3b31f1fdd965",
+      "exit": 0,
+      "seconds": 5.4762301220034715,
+      "stdout_sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "cwd": "/tmp/geometry-pr340-20261102",
+      "source_sha": "1605a6c27c97c2aa5e6405bddc7d3b31f1fdd965",
+      "exit": 0,
+      "seconds": 0.5291563339997083,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e0832030b601229324e01447d203c7ef48530ff28fcf50c60cd4dfaa4a328f63"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "cwd": "/tmp/geometry-pr340-20261102",
+      "source_sha": "1605a6c27c97c2aa5e6405bddc7d3b31f1fdd965",
+      "exit": 0,
+      "seconds": 10.863169551012106,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "5a0248f12fb5b0165f711b864438e99b614b2d993741f49707ca4b6f0ef0bb75"
+    }
+  ],
+  "scope": "Original ledger freshness check and architecture judges only; no native/browser or mutation generation. Cache absent does not prove original executable bytes."
+}

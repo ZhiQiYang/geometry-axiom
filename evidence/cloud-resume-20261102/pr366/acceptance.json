@@ -1,0 +1,410 @@
+{
+  "command": "read-only terminal API/source/receipt cross-check and sha256 inventory",
+  "exit_code": 0,
+  "snapshot": "/tmp/geometry-resume-20261102/pr366/api/20261102T025323Z",
+  "runs": [
+    {
+      "kind": "integration",
+      "run_id": 41376852060,
+      "head_sha": "502a64ff6214dd6060927b7f14643a533536f20d",
+      "run_attempt": 1,
+      "event": "pull_request",
+      "conclusion": "success",
+      "jobs": 10,
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41376852060"
+    },
+    {
+      "kind": "mutation",
+      "run_id": 41376852056,
+      "head_sha": "502a64ff6214dd6060927b7f14643a533536f20d",
+      "run_attempt": 1,
+      "event": "pull_request",
+      "conclusion": "success",
+      "jobs": 10,
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41376852056"
+    }
+  ],
+  "jobs_success": 20,
+  "artifact_zips_verified": 21,
+  "mutation_records": 123,
+  "mutation_active": 120,
+  "mutation_counts": {
+    "killed": 114,
+    "crashed": 1,
+    "survived": 0,
+    "equivalent": 5,
+    "invalid": 0,
+    "stale": 0,
+    "blocked": 0,
+    "retired": 3,
+    "unrun": 0
+  },
+  "ledger_sha256": "102c541d59a82e18ba44c6fc0d1ed8116bc581baf759837f734e6fff1d17a5cc",
+  "summary_sha256": "055477f48cc8288dc1f8a4914fa2b97c7c1eec39778de153bd17ebf721fe5a14",
+  "source_clean": true,
+  "inventory": [
+    {
+      "path": "acquire_evidence.py",
+      "bytes": 6287,
+      "sha256": "572bc90c0dbd427471fff3f5b00ea6c45542a2548c178bb7630418aa8dc8cb12"
+    },
+    {
+      "path": "architecture-audit.json",
+      "bytes": 2288,
+      "sha256": "87a086976ea64c36c6d9bc8d08a735c167226f44382917144ef746a8597f02a0"
+    },
+    {
+      "path": "artifact-byte-audit.json",
+      "bytes": 136506,
+      "sha256": "e9082c1725c9f98315c157344e200070195db1d97ab4d9ec851438a9090bdd0c"
+    },
+    {
+      "path": "audit_downloads.py",
+      "bytes": 20918,
+      "sha256": "03ceebfba1a01aa655d5a33917b4cdfe3a94891271cd0ed10b78e2aab8c37e93"
+    },
+    {
+      "path": "check_downloaded_native_browser.py",
+      "bytes": 15712,
+      "sha256": "da961cd5d4d6d0dd4d06224633eabcbc1c2b0460817b9c4e2305d34d80863852"
+    },
+    {
+      "path": "independent-native-browser-check.json",
+      "bytes": 107946,
+      "sha256": "a8984334f26a430ca51fe3df8870570ebead607566cbb3ca8c6609dfe38ed2b4"
+    },
+    {
+      "path": "independent-native-browser-review.md",
+      "bytes": 8899,
+      "sha256": "2c5aaf3b3c3845a872e3aa72492320cbdc2a260bbe5157affe1dda98a74de2a3"
+    },
+    {
+      "path": "job-logs/125058860128.txt",
+      "bytes": 314520,
+      "sha256": "4e7a6e332d9922e04f0d35abecd5b91d212e20dc780643077180206b987f85f4"
+    },
+    {
+      "path": "job-logs/125058860321.txt",
+      "bytes": 45548,
+      "sha256": "6385691f87c670751aa0347429d03b8af690a4a920a526ed294012f6c58df633"
+    },
+    {
+      "path": "job-logs/125058860472.txt",
+      "bytes": 44955,
+      "sha256": "1143854c7a49ceb5936c4a6359edb26282bfbcbcd528e24f0bac05dd3416c4b2"
+    },
+    {
+      "path": "job-logs/125058860505.txt",
+      "bytes": 39906,
+      "sha256": "f3663457a434631fb51d72e84e107aa16cba3b124ec35fe4e8b964ea3739d008"
+    },
+    {
+      "path": "job-logs/125058860519.txt",
+      "bytes": 45026,
+      "sha256": "45701871ad3edb3a4c8b1402488af45e9be6c59c2bb71e73fde813e435982aab"
+    },
+    {
+      "path": "job-logs/125058860527.txt",
+      "bytes": 45235,
+      "sha256": "88ec6576676981d7ea8b908696c48cb10a6eabea522f283b75827844104eeaf0"
+    },
+    {
+      "path": "job-logs/125058860539.txt",
+      "bytes": 62347,
+      "sha256": "d2372406c6dc4c6de6e43d95150b0ca1efdb6ad3e8e9f571b4d23100a7461b05"
+    },
+    {
+      "path": "job-logs/125058860545.txt",
+      "bytes": 66199,
+      "sha256": "9add55cbf1eba9dcb0962ae4263bb31ae5f941d036aea935f84a7cf0864e9d4c"
+    },
+    {
+      "path": "job-logs/125058860586.txt",
+      "bytes": 371698,
+      "sha256": "2bf7ac75bdff9eda1273cc95ab2f17f49a70ea394e923a5c7902782dd61c2f99"
+    },
+    {
+      "path": "job-logs/125058860626.txt",
+      "bytes": 742571,
+      "sha256": "d3c3cb3ba7cf70f2c44dc1cdb5bfd37192a2f3631af34dc611d689b6a89b6abc"
+    },
+    {
+      "path": "job-logs/125059281178.txt",
+      "bytes": 17716,
+      "sha256": "8707ce90b2069272aee8c9a1937d5ffdc1a5ff5ed2788cf12802443c72676b38"
+    },
+    {
+      "path": "job-logs/125059558177.txt",
+      "bytes": 24240,
+      "sha256": "3365e73acb7da16e71af1bbdf57dd45efdd3203891dc137e455539c62e2ef75d"
+    },
+    {
+      "path": "job-logs/125059558184.txt",
+      "bytes": 28896,
+      "sha256": "fb2f9cb6b9dfbb23677b98b0a56b4beb7aa065eb9eb56e40bf60444c11e936be"
+    },
+    {
+      "path": "job-logs/125059558192.txt",
+      "bytes": 29899,
+      "sha256": "fc52327a70e1598b69925e7d0531fbe6dcd5de2d704dc10fdea926c670600585"
+    },
+    {
+      "path": "job-logs/125059558196.txt",
+      "bytes": 30973,
+      "sha256": "557996a121c05072a111b131ef3c1fa12b12f914e5ad23be521aa48f1a09c53a"
+    },
+    {
+      "path": "job-logs/125059558199.txt",
+      "bytes": 24291,
+      "sha256": "075f45e91190263c180fd69f028d23bed8865aab268dc4ba28b10068cece09e9"
+    },
+    {
+      "path": "job-logs/125059558249.txt",
+      "bytes": 24533,
+      "sha256": "69709717979eb1dee815f9c8a8da3f83a5d62e8e6fa0ac6a5467f90f48f29413"
+    },
+    {
+      "path": "job-logs/125059558393.txt",
+      "bytes": 28303,
+      "sha256": "e49848cda621b7b6b943a071047e9eb47d81a209f7e6aa13b30ed7cdf2df5588"
+    },
+    {
+      "path": "job-logs/125063099657.txt",
+      "bytes": 25925,
+      "sha256": "0d2aad556b8b08259d0e7c00c81b0b8dcdf84fbe210c2631172c7825cf4e52a3"
+    },
+    {
+      "path": "job-logs/125067730521.txt",
+      "bytes": 31660,
+      "sha256": "9573a5dd2120b74736ad8e53367a736d5b506327668facd4b7ae591be4261dc9"
+    },
+    {
+      "path": "mutation-shard-audit.json",
+      "bytes": 7023,
+      "sha256": "3d102edc6f75e667469cee78d28fd9f5751a6b4af2c5ae74d0a5d1d7f642f65f"
+    },
+    {
+      "path": "mutation-shard-audit.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "mutation-shard-audit.stdout",
+      "bytes": 9289,
+      "sha256": "16f3b6f9d05ca7f2f4ceda7a098d578841bd3218c2aefdf883f4cfbfccc991f5"
+    },
+    {
+      "path": "mutation-verify-receipt.json",
+      "bytes": 11898,
+      "sha256": "c62c133346d64a1a50e86b2aa5859687bd5de93f7f6243db05dd87ccb897fc47"
+    },
+    {
+      "path": "mutation-verify.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "mutation-verify.stdout",
+      "bytes": 2829,
+      "sha256": "5cb4be88cba70c955336bfd38832ba85c5bd5600c82a7e96623d9b46f023a193"
+    },
+    {
+      "path": "native-control-receipt.json",
+      "bytes": 1454,
+      "sha256": "54d78356feb24ef09ef878b794926a9ea83bf72530450d1ab2bf19bbb434e18f"
+    },
+    {
+      "path": "native-control.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-control.stdout",
+      "bytes": 615,
+      "sha256": "17b76e2cd7bd58a0a9538c5b5c6bb906c561e9c739d6b54a139f994c76301ca8"
+    },
+    {
+      "path": "native-reverified.json",
+      "bytes": 511,
+      "sha256": "eaa4792b38f80d7b6927d4883e4a784e9577ed586e8cdcb226d903aabf3b38c3"
+    },
+    {
+      "path": "native-reverify-receipt.json",
+      "bytes": 2670,
+      "sha256": "67490c60263761a1a96ae9fd2c2e9557560478543f2a68e59447651f2da31df7"
+    },
+    {
+      "path": "native-reverify.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-reverify.stdout",
+      "bytes": 467,
+      "sha256": "fac93fc6acef7022572508177534e4294df0183ef29600edbdc5b35968793a3b"
+    },
+    {
+      "path": "official-run-log-audit.json",
+      "bytes": 5991,
+      "sha256": "894ff05373282fae35cbf529bb14733dda104971a32a3e8f046e62210c357918"
+    },
+    {
+      "path": "official-run-logs/integration-41376852060.zip",
+      "bytes": 581876,
+      "sha256": "e6c803301da2b76ae36ef23f0733e94f26f3183aa8cc9669c4eb2c482eb92d94"
+    },
+    {
+      "path": "official-run-logs/integration-41376852060.zip.acquisition.json",
+      "bytes": 442,
+      "sha256": "ffa0d334ab555254da8f1fd7374cc5403195e7b3d86c7fabee98405df5b60f33"
+    },
+    {
+      "path": "official-run-logs/mutation-41376852056.zip",
+      "bytes": 250531,
+      "sha256": "22c15e146713d24366440fe57e8903ac1090861d8360e47bc7241271dc571383"
+    },
+    {
+      "path": "official-run-logs/mutation-41376852056.zip.acquisition.json",
+      "bytes": 439,
+      "sha256": "e1f95394bb91e4fec7f03e786a3ea9b5a688f5ea0d10a97b1afd088a66d7ba12"
+    },
+    {
+      "path": "official-zips/13111214065-native-shard-2.zip",
+      "bytes": 4212,
+      "sha256": "db977cf1e2682dcc41d354349368b78ae21d62a12e28f4ec405c01ec158e3dcf"
+    },
+    {
+      "path": "official-zips/13111513478-native-logs-2.zip",
+      "bytes": 64794,
+      "sha256": "ee3d30005783edee5368b83319a2ff54a92efd7afa8a4704268ea51d902d5e8c"
+    },
+    {
+      "path": "official-zips/13111561782-pr357-architecture-refresh.zip",
+      "bytes": 53426,
+      "sha256": "63d2660c3a657df77b0aef56f85eeaeb49bfd971d0fbb98cf73b260aae2f51f0"
+    },
+    {
+      "path": "official-zips/13111654091-mutation-shard-core-4.zip",
+      "bytes": 7745319,
+      "sha256": "b678fbc5e8388fddc8d74d29f97459875a137e42caeec3fa1beaabdc3a4bc96c"
+    },
+    {
+      "path": "official-zips/13111744471-native-shard-1.zip",
+      "bytes": 4211,
+      "sha256": "527ebab8b61dccf6d94ab6f18ef3209537bd2c4944f2c2af865ca5ff9b7836d2"
+    },
+    {
+      "path": "official-zips/13111747626-mutation-shard-core-3.zip",
+      "bytes": 7291199,
+      "sha256": "a5ed346122db1eadd9d23afc96de2707375740cbb008844ef47f3c9708e6fefa"
+    },
+    {
+      "path": "official-zips/13111901905-grid-trial-screens-grid.zip",
+      "bytes": 253870,
+      "sha256": "48a3e3f2a1aa5a2c34fcfb1e9b0adcd4eaa287a6df201306281737d346efd28f"
+    },
+    {
+      "path": "official-zips/13111951583-assembly-review-screens.zip",
+      "bytes": 528318,
+      "sha256": "4bb17cce88500c85a11222fa41d1078c5d4b0d44fe46586222e1dc90b55e9b67"
+    },
+    {
+      "path": "official-zips/13111959299-canvas-wait-trace.zip",
+      "bytes": 406,
+      "sha256": "4a500473da7ce55da5a53e712b287eab475bfdde173b6e79fd61e911af0beaf9"
+    },
+    {
+      "path": "official-zips/13112008182-native-shard-3.zip",
+      "bytes": 4195,
+      "sha256": "90e8e71c0be7a4601c45d7635b622f2ef74c12d21e637cc22300f1530dbf0644"
+    },
+    {
+      "path": "official-zips/13112155526-document-reader-screens.zip",
+      "bytes": 727825,
+      "sha256": "3b90de7213c1c2bff2665bd82251cdb93e03a6d3b78f2c526369565dcec7db73"
+    },
+    {
+      "path": "official-zips/13112192479-native-logs-3.zip",
+      "bytes": 98844,
+      "sha256": "2e77f3ae610c6ef303068cd69fae85cd3e3061ea74db1cf478fbb40f75873a43"
+    },
+    {
+      "path": "official-zips/13112271277-mutation-shard-core-1.zip",
+      "bytes": 8652909,
+      "sha256": "3182ddece60a4797540e41f03959b72db19ce5273d5cd0333e6736e707bf4915"
+    },
+    {
+      "path": "official-zips/13112371351-native-logs-1.zip",
+      "bytes": 60622,
+      "sha256": "d20f2597689ad53bec1002ea5f71a5b7d901496741897648079b0912b8e4b493"
+    },
+    {
+      "path": "official-zips/13112406351-native-complete-coverage.zip",
+      "bytes": 2875,
+      "sha256": "75695112e4bc62e82b8adb079372e50d4bc844926f2f66c9ed0a01731b810c6f"
+    },
+    {
+      "path": "official-zips/13112485522-mutation-shard-core-2.zip",
+      "bytes": 8657264,
+      "sha256": "c1fc2217594609fb6bde24157e275bce3a945af1ae308ac1a4401eade45eba7e"
+    },
+    {
+      "path": "official-zips/13112488168-mutation-shard-bridge-1.zip",
+      "bytes": 21888622,
+      "sha256": "192413485c4c3748afcf72045c99b9a7a93f6c50ecf937af6877ec380e1ffa33"
+    },
+    {
+      "path": "official-zips/13112632452-mutation-shard-bridge-3.zip",
+      "bytes": 20699744,
+      "sha256": "9737be3427ec0bc6604dd4fa9dd73da2d285d475e62a09abc4474d09f85506d5"
+    },
+    {
+      "path": "official-zips/13113005613-mutation-shard-bridge-2.zip",
+      "bytes": 21925084,
+      "sha256": "57352b14734eaa81f20092b4010e8ff4f122a69a822cd6a3b4f8da7be575e70b"
+    },
+    {
+      "path": "official-zips/13113065664-grid-trial-screens-canvas.zip",
+      "bytes": 253746,
+      "sha256": "f465157e99328336437478bfefa8ca352618b25ef365b41cc34dde92ec0b63a0"
+    },
+    {
+      "path": "official-zips/13113345761-mutation-complete-evidence.zip",
+      "bytes": 1621379,
+      "sha256": "3b9d5450d2179a6db94b9b1ea3f46c3d10de6e39456b27a251b30b090380d605"
+    },
+    {
+      "path": "source-tool-adversarial-review.md",
+      "bytes": 5596,
+      "sha256": "fad7191b95980eed9f91f98f35d7f0582b7f2781a2932385d9c06cff2a52ff2f"
+    },
+    {
+      "path": "verification-status.md",
+      "bytes": 5357,
+      "sha256": "291c1b8f850070b3757f9df45b80a554f6dc9cd6a082239088cdc614100915b0"
+    }
+  ],
+  "unverified": [
+    "workflow_dispatch before default branch adoption",
+    "local product tests and downloaded binary execution intentionally not performed",
+    "screenshot visual QA not performed"
+  ],
+  "independent_check": {
+    "command": "python -B check_downloaded_native_browser.py",
+    "exit_code": 0,
+    "assertions": 1403,
+    "input_hashes": 642,
+    "browser_assertions_by_group": [
+      150,
+      356,
+      47,
+      242,
+      79,
+      2267
+    ],
+    "browser_failed": 0,
+    "canvas_golden": "matched",
+    "canvas_expected_uncaught_exceptions": 1,
+    "canvas_unexpected_exceptions": 0
+  }
+}

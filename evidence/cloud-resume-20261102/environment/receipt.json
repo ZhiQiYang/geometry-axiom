@@ -1,0 +1,54 @@
+{
+  "observed_utc": "2026-11-02T02:50:03.616468+00:00",
+  "install": "Official google-chrome-stable deb extracted into task-owned /tmp; no system packages or security policy changed",
+  "deb_sha256": "be1a1e161419f5c8272432f6860912550d8e29985e925913fa800493a0d0c955",
+  "original_ci_no_sandbox_flag": true,
+  "commands": [
+    {
+      "command": [
+        "/tmp/google-chrome-local-20261102/opt/google/chrome/google-chrome",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Google Chrome 156.0.8078.79 \n",
+      "stderr_file": "0.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v24.19.0\n",
+      "stderr_file": "1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "fc-list",
+        ":lang=zh",
+        "family"
+      ],
+      "exit": 0,
+      "stdout": "Noto Serif CJK JP\nNoto Serif CJK KR\nNoto Serif CJK HK\nNoto Serif CJK SC\nNoto Serif CJK TC\nNoto Sans Mono CJK SC\nNoto Sans Mono CJK TC\nNoto Sans Mono CJK JP\nNoto Sans Mono CJK HK\nNoto Sans Mono CJK KR\nNoto Sans CJK HK\nNoto Sans CJK KR\nNoto Sans CJK JP\nNoto Sans CJK SC\nNoto Sans CJK TC\n",
+      "stderr_file": "2.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/tmp/google-chrome-local-20261102/opt/google/chrome/google-chrome",
+        "--headless",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--dump-dom",
+        "about:blank"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr_file": "3.stderr",
+      "stderr_sha256": "1f4ef37e45f1fa7c85707503fa5a8fdf16040f4cc13d013a8a5f16ce82e361b4"
+    }
+  ],
+  "scope": "Environment version/launch smoke only; zero product assertions"
+}
