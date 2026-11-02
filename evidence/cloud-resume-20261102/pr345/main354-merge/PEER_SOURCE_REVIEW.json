@@ -1,0 +1,435 @@
+{
+  "schema": "geometry-pr345-main354-static-peer/1",
+  "at": "2026-11-02T11:26:30.496679+00:00",
+  "status": "PASS_STATIC_SOURCE_REVIEW_NOT_MERGE_READY",
+  "reviewScope": "Bounded read-only Git existing-object and saved original Git/API/command evidence review; no test, compiler, browser, native/model, cache mutation, source/branch/PR/API operation",
+  "identity": {
+    "candidate": "de3a56cfadecf575f8e7860cbfdafdac2af0a883",
+    "tree": "c23a57f72116d6f9e32fbeb6491762c430d5122e",
+    "parentsInOrder": [
+      "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    ],
+    "currentOriginMain": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+    "publicPR345HeadGitAndSavedAPI40Hex": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+    "publicPRRef": "codex/issue214-http-fixture-20261024",
+    "preservationBranch": "codex/issue214-main354-source-20261102",
+    "remoteTrackingExactCandidate": true,
+    "worktreeHeadCandidateAndClean": true
+  },
+  "headLabelCorrection": {
+    "incorrectRetainedLabel": "79cf0f16bca9ce55b2b19e793650d5e4e2c5e6",
+    "incorrectLength": 38,
+    "actualCorrectedHead": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+    "correctLength": 40,
+    "actualSources": [
+      "Git first-parent object",
+      "head-before.stdout",
+      "PR_OBSERVED_AFTER_STAGING.json head.sha",
+      "PR_BODY_READBACK.json head.sha"
+    ],
+    "correctionOriginalAndCorrectedBothPreserved": true,
+    "earlier38CharacterDraftNotUsedAsIdentity": true
+  },
+  "mainToCandidateDelta": {
+    "pathCount": 14,
+    "historicalEvidenceCount": 13,
+    "entries": [
+      {
+        "path": "evidence/geo345-final-2199cda8/ANALYSIS.json",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "d616bb5d8c2f85ffaa65155a388b071246d7b1ed",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "evidence/geo345-final-2199cda8/PROGRESS.md",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "9f426a2d674ccfb2791237cea86233fe2fbc0129",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "evidence/geo345-final-2199cda8/PUBLICATION_INDEX.json",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "780a91445152db7edd5b7dd2307c6b9e501a4145",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "evidence/geo345-final-2199cda8/raw/ORIGINAL_SIX_PHASES_AND_ANALYSIS.tar.gz",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "bdefff54d19c8815acc6da3df25cf9c5cf58b176",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "evidence/geo345-final-2199cda8/raw/RAW_INDEX.json",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "f9c1344c4ac6abba6f0c3f47de5d88541434e667",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "evidence/geo345-final-2199cda8/raw/SUMMARY.json",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "e9bed91049116d5a5ec71decd75d2b05b2a6f87c",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "evidence/geo345-final-2199cda8/tools/collect_originals.py",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "4fe0e40e7f77541080bc2b950ee6b0a97c68498b",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "evidence/geo345-final-2199cda8/tools/publish.py",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "acca02c3098c6c18bebbaa28f4231d6e23899525",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "evidence/issue214-fixture-2199cda8/INDEX.json",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "c23befd5c2d3a5d25795e66a2d804e3409e68523",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "evidence/issue214-fixture-2199cda8/PROGRESS.md",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "df33f1227a579e31a8d08986344064a230f6eba8",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "evidence/issue214-fixture-2199cda8/completed-preparation-originals.tar.gz",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "eb6b426dbf232acb8271af905cf1abac1e816117",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "evidence/issue214-fixture-2199cda8/runtime-materialization/INDEX.json",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "dee84a5a6027e9f4952a18bfc219e0686067e4be",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "evidence/issue214-fixture-2199cda8/runtime-materialization/runtime-preparation-originals.tar.gz",
+        "oldMode": "000000",
+        "newMode": "100644",
+        "oldBlob": "0000000000000000000000000000000000000000",
+        "newBlob": "bee1f747a082144aad428b4fbc7c7556ee8d9ceb",
+        "status": "A",
+        "modeTypeBlobExactFirstParent": true
+      },
+      {
+        "path": "tests/test_rule_case_workbench_http.py",
+        "oldMode": "100644",
+        "newMode": "100644",
+        "oldBlob": "64a69d2ed420ded6f315d147d901650cb2872e3b",
+        "newBlob": "478893b3cd1bc1f93dbb7df5ebbbfc13bbe91431",
+        "status": "M"
+      }
+    ],
+    "allOtherSourceProductTestsToolsExpectedLedgerEntriesEqualMain": true,
+    "historyProof": "Each of 13 historical files has exact same mode/type/blob as original public first parent. This verifies preservation without materializing old archives."
+  },
+  "fixture": {
+    "path": "tests/test_rule_case_workbench_http.py",
+    "exactWholeFileRelation": "candidate bytes = main bytes.replace unique threading.Thread serve_forever daemon=True with added kwargs poll_interval0.05; no other byte change",
+    "mainSha256": "8f2209a3ba21b617763953b4f7ae33c6362df5e3421b5d2ce76033413f47d668",
+    "candidateSha256": "f120ef7f545188a1fbbea56c62862b8ba3063c5e6287395a1d8586ef414b6b91",
+    "publicOldSha256": "82e248c664c2e591cd320037a141bfa4d52924ac2397274ad23af9fb7864b7fc",
+    "methodCounts": {
+      "main": 21,
+      "candidate": 21,
+      "publicOld": 19
+    },
+    "all21MethodsASTIdenticalMainToCandidate": true,
+    "assertionCallsMain": 95,
+    "assertionCallsCandidate": 95,
+    "mainAddedMethods": [
+      {
+        "name": "test_new_receipt_projection_roundtrip_and_foreign_terminal_rejection",
+        "sourceSha256MainAndCandidate": "4111a3141a5bfa88f7eec3066abeb450750b25dfdab85581ced385182eff35a8",
+        "assertionCalls": 7,
+        "completeASTExact": true
+      },
+      {
+        "name": "test_rejected_native_terminal_only_drift_is_not_hidden_by_projection",
+        "sourceSha256MainAndCandidate": "3f0cdb64303e2ddadefd687e770c097d8e94a68fc6a7a88040eb8acf4095efa5",
+        "assertionCalls": 4,
+        "completeASTExact": true
+      }
+    ],
+    "strictExpectedRow": {
+      "mode": "count",
+      "count": 21,
+      "unit": "test"
+    },
+    "unittestSuiteTimeoutSeconds": 1200,
+    "timeoutSource": "tests/run_all.py:547 creates registered Python suite with1200",
+    "strictCountSource": "tests/run_all.py compare_expected lines901-925 and normal non-update branch lines1189-1191; expected problems feed failure at1213",
+    "newMethodCountNotOld20CIJobCount": true
+  },
+  "unchangedGuardsAndTools": {
+    "tests/run_all.expected.json": {
+      "mainBlob": "21a65c724e2cf0c14e318b5c66b7f1710b62e60a",
+      "candidateBlob": "21a65c724e2cf0c14e318b5c66b7f1710b62e60a",
+      "identical": true
+    },
+    "tests/run_all.py": {
+      "mainBlob": "3c101c2d63ab7971f5987797d349505d48be6644",
+      "candidateBlob": "3c101c2d63ab7971f5987797d349505d48be6644",
+      "identical": true
+    },
+    "tests/mutate.py": {
+      "mainBlob": "6e07b61aeb83b1e0899d485614e4137ec72252e8",
+      "candidateBlob": "6e07b61aeb83b1e0899d485614e4137ec72252e8",
+      "identical": true
+    },
+    ".github/scripts/mutation_evidence.py": {
+      "mainBlob": "a64122c1d53784fad4e879884a15aa8e11786a8d",
+      "candidateBlob": "a64122c1d53784fad4e879884a15aa8e11786a8d",
+      "identical": true
+    },
+    ".github/workflows/mutation-evidence.yml": {
+      "mainBlob": "58e4d12490a60b88c6b52715555a2b0e630a19c5",
+      "candidateBlob": "58e4d12490a60b88c6b52715555a2b0e630a19c5",
+      "identical": true
+    }
+  },
+  "ledger": {
+    "conflictOnlyPath": [
+      "tests/mutants_results.json"
+    ],
+    "resolutionCommand": {
+      "at": "2026-11-02T10:48:21.788718+00:00",
+      "command": [
+        "git",
+        "checkout",
+        "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+        "--",
+        "tests/mutants_results.json"
+      ],
+      "exit": 0
+    },
+    "blobMainAndCandidate": "aa39cedf5116abd67e868fa5fb7b0d555bf89aaf",
+    "rawBytes": 11347298,
+    "sha256": "1a6b09ac7ed560be994615ecfc36e5129b79d3036c9f73fc0241f18ef767da79",
+    "candidateGitMainGitAndWorktreeExactRawBytes": true,
+    "rawStoredVerdictsNotCurrentFreshness": {
+      "killed": 114,
+      "equivalent": 5,
+      "retired": 3,
+      "crashed": 1
+    },
+    "unchangedRawExecutionHeads": {
+      "5e3e3b38de849d0b99723a1737a4d573f92536ce": 120
+    },
+    "rawM20Verdict": "crashed",
+    "rawM20Why": "基準線已通過；連跑 3 次都在同一夾具以存取違規結束（_test_lshape.scene；INFRA abnormal executable exit -11: ）。算被偵測到，但不是斷言殺死。",
+    "savedOriginalCheck": {
+      "at": "2026-11-02T10:48:28.225241+00:00",
+      "command": [
+        "python3",
+        "-B",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "exit": 1
+    },
+    "savedOriginalCheckStdout": {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/ledger-check.stdout",
+      "bytes": 7166,
+      "sha256": "c447661d3c8cc91135e5eda5a7ab5a993e02ea4ea880e63927ffb61cb97f51ec"
+    },
+    "savedOriginalCheckStderr": {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/ledger-check.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logicalCurrentCheckOutcome": {
+      "exit": 1,
+      "records": 123,
+      "definitions": 123,
+      "killed": 62,
+      "crashed": 1,
+      "equivalent": 4,
+      "stale": 53,
+      "retired": 3,
+      "survived": 0,
+      "invalid": 0,
+      "blocked": 0
+    },
+    "stale53OriginalLinesAllBridgeSourceOracleRestoration": true,
+    "freshnessGuardNotWeakened": true,
+    "noLedgerSpliceOrExecutionHeadRelabel": true
+  },
+  "stagingAndDispatch": {
+    "rawPushStderr": {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/stage-push.stderr",
+      "bytes": 358,
+      "sha256": "461d8178cc3c13e4bb1f8fa10a749e54c84c924e666317c6a0ebedbd8fa7a9e4"
+    },
+    "savedRun": {
+      "id": 41431971663,
+      "run_attempt": 1,
+      "event": "workflow_dispatch",
+      "path": ".github/workflows/mutation-evidence.yml",
+      "head_branch": "codex/issue214-main354-source-20261102",
+      "head_sha": "de3a56cfadecf575f8e7860cbfdafdac2af0a883",
+      "status": "in_progress",
+      "conclusion": null,
+      "created_at": "2026-11-02T10:50:17Z",
+      "updated_at": "2026-11-02T10:50:26Z",
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41431971663"
+    },
+    "originalDispatchRequest": {
+      "ref": "codex/issue214-main354-source-20261102"
+    },
+    "readOnlyReviewDidNotDispatchOrPush": true,
+    "snapshotOnlyNoNewTerminalClaim": true
+  },
+  "publicBodyAndDraftProvenance": {
+    "publicHeadUnchangedInBothSavedRESTResponses": true,
+    "bodyReadbackAt": "2026-11-02T10:51:50Z",
+    "bodyExplicitlyKeepsOld20JobsAtOriginalExecution": true,
+    "bodyExplicitlyMarksNewMStale53AndNewIntegrationPending": true,
+    "restDraftBeforeConversion": false,
+    "savedLaterGraphQLDraftResult": {
+      "data": {
+        "convertPullRequestToDraft": {
+          "pullRequest": {
+            "isDraft": true,
+            "number": 345
+          }
+        }
+      }
+    },
+    "draftChronology": "Saved REST body readback predates separate GraphQL convert-to-draft success; no live current API state is inferred beyond these saved observations."
+  },
+  "requiredBeforeNewMergeReadiness": [
+    "Complete and verify original #366 new source-M run41431971663 artifacts, actual execution/source identity, full fresh ledger, verifier/cache controls and original architecture gates. No terminal/artifact acceptance reviewed here.",
+    "Adopt exact verified official new ledger bytes in an ordinary new commit without changing its original execution.head; run the unchanged original mutate.py --check to actual0. Current retained result remains1/53stale.",
+    "Only then ordinary fast-forward public PR and collect newly source-bound full required CI/native/browser/architecture results and latest review; retain the historical old20-job green and selected19/c8 execution at their original heads.",
+    "Current HTTP suite expected/method count is21 with original1200 bound. Old19 selected result or20CI jobs cannot stand in for a new21-method execution."
+  ],
+  "limitsAndObservedReadFailure": [
+    {
+      "command": "git diff --stat main candidate with GIT_NO_LAZY_FETCH=1",
+      "exit": 128,
+      "why": "Historical PROGRESS.md blob df33f1227a579e31a8d08986344064a230f6eba8 unavailable locally; lazy fetching explicitly disabled. No fetch or archive materialization performed.",
+      "replacementProof": "Existing tree raw mode/blob entries and exact first-parent entries prove all13 historical preserves; scope does not re-open historical payload archives."
+    },
+    "No product/test execution, mutation check re-execution, artifact ELF execution/download, new API fetch, or CI terminal polling was performed.",
+    "This PASS is source-convergence integrity only, not fresh ledger/CI/merge acceptance."
+  ],
+  "originalEvidenceFiles": [
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/head-before.stdout",
+      "bytes": 41,
+      "sha256": "f9732664ca81839596c247060aa8a7843882181f0ac5be44505a73614fb3f0b7"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/head-after.stdout",
+      "bytes": 41,
+      "sha256": "d12ba3bcdcd912d529ec786fecbe890a1437be04265f9969084637338571fb1a"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/merge.stdout",
+      "bytes": 223,
+      "sha256": "2af2e84ab66b7a9539c14be17398ce3d8a0968618cf99f6d45aed4f0542ea65c"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/merge.json",
+      "bytes": 168,
+      "sha256": "728fa50212beba142ff06df41e4636f094dfa41f88d7b01c8b1f65ae73339050"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/unmerged-leaves.stdout",
+      "bytes": 27,
+      "sha256": "ae08bdf21ee4b3bde1233c3a1a2321e27e54cb3efce3818feb045e46f641d959"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/adopt-main-ledger.json",
+      "bytes": 198,
+      "sha256": "68fb1c2b31231181f7038fcd8a2eb6a75ef253072021c7eddc17bd88b9170f86"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/finish-merge.json",
+      "bytes": 121,
+      "sha256": "26acd2d272e866f11bea43d3390c066bb0dde842d327d0347f9211de261437db"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/main-to-new.stdout",
+      "bytes": 793,
+      "sha256": "b66a3412aee044f0007278320c769480000da2b750040a18488b704a9334e5f5"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/RESULT.json",
+      "bytes": 1058,
+      "sha256": "bf15461e69bb513db5121612bce5901189b60953a1ea7cee51965358d8581db6"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/RESULT_BEFORE_HEAD_LABEL_CORRECTION.json",
+      "bytes": 901,
+      "sha256": "66e460e87807c9ed41f15f624e7c399bb99875b3facbee5c4909cbce7d95f6a2"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/PR_OBSERVED_AFTER_STAGING.json",
+      "bytes": 21509,
+      "sha256": "1b8e51ab59fc48968eee41b373a22d5cd5c4f969b4e12205d4ba8468c44d18f3"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/PR_BODY_READBACK.json",
+      "bytes": 18466,
+      "sha256": "d6bd11f4e8aaaa4bd205313b71c89a90e3a94d5c6f61bda0710930fd4b648e06"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/RUNS_FIRST.json",
+      "bytes": 12877,
+      "sha256": "9246a0aac8b1270187ff92571f714989a66fdaca251be23377f2e3602a0725c8"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/dispatch-request.json",
+      "bytes": 49,
+      "sha256": "cfca1979bae4e02bc8ca5253b0b2e1afee8ec51b8789cb7b520559bb80e5c038"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr345/main354-merge/draft-result.json",
+      "bytes": 84,
+      "sha256": "0e28b9075bbc4f315937f84c2cacd2f203c50e317b5e091a632258129c1c78ed"
+    }
+  ]
+}

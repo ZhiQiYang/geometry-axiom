@@ -1,0 +1,43 @@
+{
+  "main": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+  "fixed341": "823729be5f4f025aebbf02c2dc85e09907c28812",
+  "method": "four exact nonrecursive ls-tree entries without -l; existing blobs only; lazy fetch disabled",
+  "rows": [
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "fixed341Blob": "1d4d1f23f9a94394b821766e6036a62d9415df15",
+      "mainBlob": "c111cdce93a149f1854b315191f12713a74fd6ec",
+      "equal": false,
+      "entry": "100644 blob c111cdce93a149f1854b315191f12713a74fd6ec\tgeometry-templates/woodworking/native/contact_world.c",
+      "entryReadExit": 0,
+      "existingMainBlobReadExit": 0
+    },
+    {
+      "path": "tests/geo261_contact_world_harness.c",
+      "fixed341Blob": "1f2c4b1c16360223fd5c421d95a8b0268d696c47",
+      "mainBlob": "9bf935b42472c03b67d9e2ceed57d3fc398379c6",
+      "equal": false,
+      "entry": "100644 blob 9bf935b42472c03b67d9e2ceed57d3fc398379c6\ttests/geo261_contact_world_harness.c",
+      "entryReadExit": 0,
+      "existingMainBlobReadExit": 0
+    },
+    {
+      "path": "tests/test_geo261_wood_contact_world.py",
+      "fixed341Blob": "9c8d7b19dd2f6c6f3e95cd0a46096e3f8b57a26b",
+      "mainBlob": "26711ad20061d4ff2aec910d2d11de011a1102eb",
+      "equal": false,
+      "entry": "100644 blob 26711ad20061d4ff2aec910d2d11de011a1102eb\ttests/test_geo261_wood_contact_world.py",
+      "entryReadExit": 0,
+      "existingMainBlobReadExit": 0
+    },
+    {
+      "path": "tests/run_all.expected.json",
+      "fixed341Blob": "6b4c030575283c30d87a58aa77439439ff3ec638",
+      "mainBlob": "21a65c724e2cf0c14e318b5c66b7f1710b62e60a",
+      "equal": false,
+      "entry": "100644 blob 21a65c724e2cf0c14e318b5c66b7f1710b62e60a\ttests/run_all.expected.json",
+      "entryReadExit": 0,
+      "existingMainBlobReadExit": 0
+    }
+  ]
+}

@@ -1,0 +1,266 @@
+{
+  "schema": "geometry-pr341-b1-static-cost-preparation/1",
+  "utc": "2026-11-02T11:15:15.847867+00:00",
+  "status": "PREPARED_STATIC_ALL_DYNAMIC_FIELDS_UNRUN",
+  "fixedReadHead": "823729be5f4f025aebbf02c2dc85e09907c28812",
+  "comparisonMain": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+  "formalOrder": "No formal341 implementation/branch/base change until340 genuinely merged/accepted; do not poll its two new runs.",
+  "latestReview": {
+    "id": 6378848374,
+    "permalink": "https://github.com/ZhiQiYang/geometry-axiom/pull/341#issuecomment-6378848374",
+    "utc": "2026-10-24T02:38:34Z",
+    "head": "823729be5f4f025aebbf02c2dc85e09907c28812",
+    "originalLocalFile": "/tmp/geometry-resume-20261102/chain/next-after340-checkpoint/pr341-latest-chatgpt-review.md",
+    "sha256": "1b7c10e5feddfc0c775f8094a54ecb6a570af3742c65fff59ce9386fc47db357"
+  },
+  "sourceFinding": {
+    "allFourFullLeavesEqualMain": false,
+    "entries": [
+      {
+        "path": "geometry-templates/woodworking/native/contact_world.c",
+        "fixed341Blob": "1d4d1f23f9a94394b821766e6036a62d9415df15",
+        "mainBlob": "c111cdce93a149f1854b315191f12713a74fd6ec",
+        "equal": false,
+        "entry": "100644 blob c111cdce93a149f1854b315191f12713a74fd6ec\tgeometry-templates/woodworking/native/contact_world.c",
+        "entryReadExit": 0,
+        "existingMainBlobReadExit": 0
+      },
+      {
+        "path": "tests/geo261_contact_world_harness.c",
+        "fixed341Blob": "1f2c4b1c16360223fd5c421d95a8b0268d696c47",
+        "mainBlob": "9bf935b42472c03b67d9e2ceed57d3fc398379c6",
+        "equal": false,
+        "entry": "100644 blob 9bf935b42472c03b67d9e2ceed57d3fc398379c6\ttests/geo261_contact_world_harness.c",
+        "entryReadExit": 0,
+        "existingMainBlobReadExit": 0
+      },
+      {
+        "path": "tests/test_geo261_wood_contact_world.py",
+        "fixed341Blob": "9c8d7b19dd2f6c6f3e95cd0a46096e3f8b57a26b",
+        "mainBlob": "26711ad20061d4ff2aec910d2d11de011a1102eb",
+        "equal": false,
+        "entry": "100644 blob 26711ad20061d4ff2aec910d2d11de011a1102eb\ttests/test_geo261_wood_contact_world.py",
+        "entryReadExit": 0,
+        "existingMainBlobReadExit": 0
+      },
+      {
+        "path": "tests/run_all.expected.json",
+        "fixed341Blob": "6b4c030575283c30d87a58aa77439439ff3ec638",
+        "mainBlob": "21a65c724e2cf0c14e318b5c66b7f1710b62e60a",
+        "equal": false,
+        "entry": "100644 blob 21a65c724e2cf0c14e318b5c66b7f1710b62e60a\ttests/run_all.expected.json",
+        "entryReadExit": 0,
+        "existingMainBlobReadExit": 0
+      }
+    ],
+    "originalLiveSetLoopAndCompactionTextRetainedInMain": true,
+    "mechanismEvidence": "MECHANISM_COMPARISON.json",
+    "fixed341Ast": {
+      "methods": 10,
+      "controls": 23
+    },
+    "mainAst": {
+      "methods": 14,
+      "controls": 41
+    },
+    "interpretation": "Main contains the341 mechanism with later343 indexed sorting/dedup consumers. Four whole leaves differ; source incorporation is not B1 performance acceptance, and old10/23 evidence cannot be relabeled to main14/41."
+  },
+  "variants": {
+    "H_C": {
+      "source": "823729be5f4f025aebbf02c2dc85e09907c28812",
+      "meaning": "Historical341 candidate,3 product/test leaves plus original expected10",
+      "status": "UNRUN_COST"
+    },
+    "H_R": {
+      "source": "Same fixed341 tree plus only the proposed private whole-active withdrawal; no file/patch materialized",
+      "file": "geometry-templates/woodworking/native/contact_world.c",
+      "range": [
+        100,
+        122
+      ],
+      "originalRangeSha256": "5ce7d06d42995b3b418e403d6eb1f6a012b77bec2f16a6bd7728e6a97b04f209",
+      "preciseWithdrawal": [
+        "Remove active array/init, compact flag/remaining, inactive-j skip, inactive mark/decrement and final compaction/returnremaining.",
+        "Keep the existing duplicate predicate and exact loop order; every duplicate immediately executes the already embedded memmove(out+i,out+i+1,(count-i-1)*sizeof *out);--count; continue same i. Returncount.",
+        "Preserve all collection/filtering, atomic pair capacity, sorting, ContactOrderIndex min/last semantics, full coordinates, strict overlap/one-full-cover predicate and all other code."
+      ],
+      "meaning": "Isolates historical341 active/live-set/final compact only, not preexisting K/order indexes. It does not certify final main.",
+      "status": "UNMATERIALIZED_UNRUN"
+    },
+    "F_C": {
+      "source": "Future genuine final source after340/main convergence, not assigned here",
+      "meaning": "Current composition including343 must remain intact",
+      "status": "UNFROZEN_UNRUN"
+    },
+    "F_R": {
+      "source": "Same future F_C plus proposed private fallback-local withdrawal; no patch materialized",
+      "preciseScope": [
+        "Leave main lines227-238 sorting guard and full indexed sort/dedup path intact.",
+        "Retain active allocation/initialization and final compaction for the343 indexed path, which depends on fixed out indexes.",
+        "Only the nonindexed else fallback at main250-264 may use the original immediate memmove deletion; skip bitmap init/active skips/final compaction only for that fallback.",
+        "Prove actual path hits and all public outputs first; exact future source anchors and resulting SHA still pending."
+      ],
+      "attribution": "Fallback-local341 cost only. Main unique-ID U/S keep343 unchanged; their results cannot establish isolated341 gain. Active stack allocation can remain required by343 in both variants, so no standalone bitmap-memory saving may be claimed.",
+      "status": "UNMATERIALIZED_UNRUN"
+    },
+    "forbiddenShortcut": {
+      "change": "Globally set compact=false or replace entire main contact_world.c with823 version",
+      "why": "Main can skip insertion sort under the unique guard but then skip indexed_dedup when compact=false; ordering may be lost. Removing active also invalidates343 fixed-out-index consumers. Whole-main removal therefore mixes343 or breaks semantics.",
+      "status": "REJECTED_STATIC_PLAN"
+    }
+  },
+  "workloads": [
+    {
+      "id": "U",
+      "class": "no geometric duplicate/shadow; unique public IDs",
+      "recipe": "Reuse regions_and_capacity lines59-60 member/fact constructor: N=WOOD_CONTACT_MEMBER_CAPACITY; IDs100+i; order64-i; footprint{10000+i*10,200,10002+i*10,210}; world placement7, no regions; output capWOOD_CONTACT_FACE_CAPACITY. Keep coordinates/role/placement/validity from original constructor.",
+      "sourceLines": [
+        "tests/geo261_contact_world_harness.c:59-60",
+        "tests/geo261_contact_world_harness.c:20-27"
+      ],
+      "newProductRule": false,
+      "derivedReplayNotExistingExecution": true,
+      "currentMainPath": "bounded/indexed/unique:343 indexed route; R_F must keep it unchanged, so this is a pipeline/path control, not isolated341 benefit",
+      "status": "UNRUN"
+    },
+    {
+      "id": "S",
+      "class": "one duplicate full-cover pair; remaining facts disjoint",
+      "recipe": "Same N/IDs/orders/coordinates asU, changing only facts[1].footprint=facts[0].footprint. This replays the existing ordering full-cover assignment/order witness within the capacity-derived array; do not change equal-order handling or combine partial covers.",
+      "sourceLines": [
+        "tests/geo261_contact_world_harness.c:28-33",
+        "tests/geo261_contact_world_harness.c:59-60"
+      ],
+      "newProductRule": false,
+      "derivedReplayNotExistingExecution": true,
+      "currentMainPath": "unique IDs still select343 indexed route; no pure341 attribution on current main",
+      "status": "UNRUN"
+    },
+    {
+      "id": "D",
+      "class": "dense coincident facts and duplicate public IDs",
+      "recipe": "Use the original active_dedup many generator but the bounded prefix N=WOOD_CONTACT_MEMBER_CAPACITY: every fact uses the same member42 pointer, orderi and original footprint{0,0,100,27}; output capWOOD_CONTACT_FACE_CAPACITY. This preserves last-order/minimum-order live-set semantics; do not turn deleted faces into later witnesses.",
+      "sourceLines": [
+        "tests/geo261_contact_world_harness.c:65-76",
+        "tests/geo261_contact_world_harness.c:89-97"
+      ],
+      "newProductRule": false,
+      "derivedReplayNotExistingExecution": true,
+      "currentMainPath": "duplicate public IDs disable343 indexed route: eligible for R_F fallback-local341 comparison",
+      "status": "UNRUN"
+    },
+    {
+      "id": "X",
+      "class": ">existing face capacity public-buffer fallback",
+      "recipe": "Use original active_dedup block without resizing product constants: MANY=WOOD_CONTACT_FACE_CAPACITY/2+1 (1217), facts same member42 with orderi and{0,0,100,27}; capMANY*2 (2434), storageMANY*2+1; preserve exact original final-pair and untouched-tail CHECKs.",
+      "sourceLines": [
+        "tests/geo261_contact_world_harness.c:89-97"
+      ],
+      "newProductRule": false,
+      "derivedReplayNotExistingExecution": false,
+      "currentMainPath": "count2434>existing2432 and members>64: original memmove fallback in both C/R, a no-regression/null-path control",
+      "status": "UNRUN"
+    }
+  ],
+  "attributionDependency": {
+    "status": "OPEN_NOT_A_PRODUCT_SPEC_QUESTION",
+    "issue": "No globally pure341 withdrawal exists at current integrated source for all unique-ID paths while keeping343 active/compact consumers unchanged.",
+    "acceptableClaims": [
+      "Historical H_C/H_R pair is explicitly historical source only.",
+      "F_C/F_R pair supports only actual nonindexed fallback paths.",
+      "A full integrated pipeline-vs-original fallback comparison would be a341+343 combined claim and must be named that way; it cannot automatically close standalone B1."
+    ],
+    "notAuthorized": "This preparation does not implement a joint withdrawal, revise product rules or decide final acceptance.",
+    "filteredDuplicateCaveat": "If a later writer forces fallback with the existing filtered-duplicate fixture, same-ID min/last order must remain unchanged and the workload must be labeled public fallback stress rather than generic host unique path. No such additional fixture was made here."
+  },
+  "measurement": {
+    "allResults": "UNRUN",
+    "compile": {
+      "tool": "NativeBuild in tests/test_geo261_native_kernel.py:32,155-190",
+      "linuxArguments": [
+        "CC resolved by original tool",
+        "-std=c11",
+        "-O0",
+        "-Werror=implicit-function-declaration",
+        "original kernel includes/defines",
+        "-lm at original link"
+      ],
+      "windowsOriginal": "/Od; /STACK:16777216; no cross-platform numbers pooled",
+      "sameForBoth": "Compiler version/path, all flags, full source/include/judge/input closure, objects other than changed contact-world object, input fields/cap/order/sentinel and env. Build time excluded from subject CPU/wall.",
+      "newOptimisationMode": "NONE; do not compareO0 withO2 or claim compiler-mode gains as341 gains."
+    },
+    "workVector": [
+      "collector calls/admitted faces and true indexed-vs-fallback path",
+      "bitmap-init writes, active flag writes, inactive-j skips",
+      "pair-loop candidate visits/full-cover checks; contact_order/contact_earlier calls",
+      "duplicate removals; compaction scan iterations and actual face moves",
+      "memmove calls and actual bytes=(count-i-1)*sizeof(WoodStopFace); record ABI sizeof rather than assume"
+    ],
+    "instrumentation": "Separate private instrumented copies only; removal of counters must restore exact uninstru source SHA. Match complete public-field outputs/sentinels against uninstru C/R first. Do not use instrumented elapsed times as primary speed results; no weighted synthetic work score.",
+    "wallCpu": "Use same private uninstru executable driver per variant. Keep immutable world setup/serialization outside collector-timed interval; record CLOCK_MONOTONIC wall and getrusage user/system deltas. Also preserve external /usr/bin/time -v or wait4 child wall/user/sys/maxrss/exit as whole-process evidence. Report both boundaries and timer granularity.",
+    "peakMemory": "Fresh process per sample, same input allocation and output sentinel buffers; child ru_maxrss with platform units recorded (LinuxKiB). Original16MiB stack limit retained and actual rlimit captured. Page/RSS quantization or shared343 frame may mask a2432-bool delta: report unresolved/zero observed, not proof of zero storage. Optional compiler frame diagnostic is separately labeled, never a new cap.",
+    "finiteProposedSampling": {
+      "status": "PROPOSED_UNRUN",
+      "schedule": [
+        "R",
+        "C",
+        "C",
+        "R"
+      ],
+      "blocks": 3,
+      "boundedCallsPerProcess": "WOOD_CONTACT_MEMBER_CAPACITY (64), identical C/R",
+      "overflowCallsPerProcess": 1,
+      "limits": "Keep original20s native child limit and300s compile limit; any crash/timeout/setup issue is retained and not a performance pass or killed mutant. No higher time limit or cherry-picked retry.",
+      "interpretation": "Sampling counts are workload choices, not new product/acceptance thresholds. If timing resolution is insufficient, markUNMEASURABLE and retain deterministic work counts; no invented speedup requirement."
+    },
+    "reporting": "Retain every input/output/source/object/executable hash and command/env/exit plus raw sample; report paired differences, medians and spread per category with regressions/zero benefit visible. No new numerical speed/memory threshold and no adaptive stop once green.",
+    "scopeLimit": "Collector/native microbenchmark only; not full scene/load, host App latency, capacity512 completion or global343 performance acceptance."
+  },
+  "semanticEvidence": {
+    "mustPreserve": [
+      "Same declaration/order/RC prefix and full nine WoodStopFace public fields:kind,boundary_id,timber_id,hole_index,edge_index,fixity,fixed,lo,hi.",
+      "Exact returned count/order, original output-tail sentinel bytes and borrowed-member pointer identity/exclusion cases. Compare fields, not uninitialized returned-struct padding.",
+      "count+2<=cap and truncate-before-sort/dedup; no refill after deletion. No two half intervals combined into a cover. Strict overlap, full64-bit coordinates, equal-order and min/last duplicate-ID behavior unchanged."
+    ],
+    "historicalEligible": "Sc49332 methods/46 named controls remain valid at their actual recorded source and scope; preserve existing receipts, no gratuitous historical rerun and no promotion to main. The C493→aa0 closure JSON is retained as prior evidence, not newly re-executed.",
+    "currentEligible": "If root existing final-source CI/native receipts cover the complete real executable+judge+fixture/compiler closure, reuse those exact executions. Do not infer closure from only two test blobs; latest340 runs were not read here.",
+    "mustAddIfMissing": [
+      "True whole-withdrawal positive C/R/C0/0/0 with exact output equality for the accepted scope; an equivalent optimization withdrawal is not a killed semantic mutant.",
+      "Any new derived benchmark replay must first pass the original numeric C judges and C/R field/tail checks; no expected values generated from candidate output.",
+      "Only genuinely changed/uncovered final-source native semantic/negative-control closure needs new execution. Main canonical14/41 supersedes historical10/23, and current mutation anchor applicability must be proven.",
+      "Instrumentation round-trip source-byte check and counter-path proof before interpreting work; separate uninstru timer samples."
+    ],
+    "originalFive341Controls": [
+      "inactive-shadow",
+      "compact-active-only",
+      "compact-survivor-count",
+      "dedup-strict-overlap",
+      "dedup-full-coordinate"
+    ],
+    "baselineCaution": "Do not run candidate-only source-anchor mutants against a withdrawal lacking those anchors and call their setup failure a semantic kill."
+  },
+  "lockedDecisions": {
+    "unchanged": [
+      "SSOT/decision queue/Reading A and RC continuous-run rules",
+      "WOOD_CONTACT_FACE_CAPACITY2432/member64/component8",
+      "16MiB original stack and original timeouts",
+      "No old draft2MiB/30s or new speedup threshold"
+    ],
+    "scope": "No new woodworking rule or geometric admission inference is used; recipes are existing native constructors/witnesses and literal assignments. No decision text/#333FIELD-RULES-based new spec reasoning was performed. If future implementation goes beyond those fixtures, read the designated adopted decision and#333FIELD-RULES first; this plan does not authorize that expansion."
+  },
+  "sourceAcquisition": {
+    "first": "SOURCE_ACQUISITION.json",
+    "tools": "ORIGINAL_TOOL_ACQUISITION.json",
+    "method": "Existing exact Git blobs where available; otherwise fixed-head single-file contents GET only. No recursive tree-l, promisor fetch, checkout, tar acquisition or source branch edit.",
+    "nonBlocking404": "tests/native_build.py is not present at fixed head; actual NativeBuild lives in tests/test_geo261_native_kernel.py and its real flags were read."
+  },
+  "nextMinimalAction": "After340 actually merged/accepted, freeze the real final341 composition, retain all downstream leaves, and choose honest historical-vs-fallback-vs-combined attribution before writing a private benchmark/withdrawal. Reuse exact available canonical semantic receipts; all new cost/whole-withdrawal execution staysUNRUN until root schedules its exclusive slot.",
+  "executed": {
+    "build": 0,
+    "chrome": 0,
+    "performanceSamples": 0,
+    "productTests": 0,
+    "newVariantsMaterialized": 0,
+    "branchBasePrChanges": 0
+  }
+}

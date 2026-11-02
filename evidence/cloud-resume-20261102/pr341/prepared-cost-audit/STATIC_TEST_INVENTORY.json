@@ -1,0 +1,436 @@
+{
+  "fixed341": {
+    "astOnly": true,
+    "testMethodCount": 10,
+    "classes": {
+      "ContactWorldBoundary": [
+        "test_public_contact_policy_uses_only_explicit_geometry_and_member_facts",
+        "test_main_consumers_have_callers_delegate_and_keep_original_member_identity"
+      ],
+      "WoodContactWorld": [
+        "test_d11_placement_order_stable_ties_dedup_and_partial_contact_shadow",
+        "test_multiple_regions_outline_hole_ids_fixities_and_atomic_capacity_pairs",
+        "test_live_set_duplicate_ids_strict_overlap_and_large_buffer_fallback",
+        "test_positioning_interval_real_geometry_notch_hole_and_i5_precedence",
+        "test_owner_extension_fixed_segment_axis_role_and_original_candidate_pointer",
+        "test_end_face_first_error_free_width_shadow_priority_and_extension_exemption",
+        "test_actual_guard_controls_fail_the_named_numeric_assertions",
+        "test_same_owner_extension_guard_controls_the_actual_atomic_bridge_placement"
+      ]
+    },
+    "controlCount": 23,
+    "controls": [
+      {
+        "name": "placement-order",
+        "line": 136,
+        "case": "ordering",
+        "assertion": "placement-order-before-declaration"
+      },
+      {
+        "name": "stable-ties",
+        "line": 137,
+        "case": "ordering",
+        "assertion": "placement-stable-equal-order-sides"
+      },
+      {
+        "name": "equal-order-dedup",
+        "line": 138,
+        "case": "ordering",
+        "assertion": "equal-order-not-deduplicated"
+      },
+      {
+        "name": "partial-shadow",
+        "line": 139,
+        "case": "ordering",
+        "assertion": "partial-shadow-retains-exposed-face"
+      },
+      {
+        "name": "outline-component-index",
+        "line": 140,
+        "case": "regions",
+        "assertion": "region-outline-index-encoded"
+      },
+      {
+        "name": "hole-component-index",
+        "line": 141,
+        "case": "regions",
+        "assertion": "region-hole-index-encoded"
+      },
+      {
+        "name": "paired-capacity",
+        "line": 142,
+        "case": "regions",
+        "assertion": "member-capacity-pair-atomic"
+      },
+      {
+        "name": "complete-footprint",
+        "line": 143,
+        "case": "intervals",
+        "assertion": "i5-notched-footprint-deferred"
+      },
+      {
+        "name": "owner-identity",
+        "line": 144,
+        "case": "extensions",
+        "assertion": "owner-pointer-not-id"
+      },
+      {
+        "name": "owner-extension",
+        "line": 145,
+        "case": "extensions",
+        "assertion": "owner-extension-outside-fixed-part"
+      },
+      {
+        "name": "fixed-inclusive",
+        "line": 146,
+        "case": "extensions",
+        "assertion": "owner-fixed-interval-inclusive"
+      },
+      {
+        "name": "free-end",
+        "line": 147,
+        "case": "ends",
+        "assertion": "free-end-faces-ignored"
+      },
+      {
+        "name": "full-contact-width",
+        "line": 148,
+        "case": "ends",
+        "assertion": "narrow-end-face-ignored"
+      },
+      {
+        "name": "contact-shadow",
+        "line": 149,
+        "case": "ends",
+        "assertion": "partial-earlier-face-shadows-only-contact"
+      },
+      {
+        "name": "end-order",
+        "line": 150,
+        "case": "ends",
+        "assertion": "start-end-before-global-placement-order"
+      },
+      {
+        "name": "stop-identity",
+        "line": 151,
+        "case": "ordering",
+        "assertion": "stop-exclusion-keeps-candidate-identity"
+      },
+      {
+        "name": "extension-end",
+        "line": 152,
+        "case": "ends",
+        "assertion": "self-boundary-extension-end-exempt"
+      },
+      {
+        "name": "edge-index-output",
+        "line": 153,
+        "case": "intervals",
+        "assertion": "boundary-edge-index-horizontal"
+      },
+      {
+        "name": "inactive-shadow",
+        "line": 154,
+        "case": "active-dedup",
+        "assertion": "dedup-mutual-duplicate-id-leaves-final-pair"
+      },
+      {
+        "name": "compact-active-only",
+        "line": 155,
+        "case": "ordering",
+        "assertion": "earlier-full-cover-deduplicates"
+      },
+      {
+        "name": "compact-survivor-count",
+        "line": 156,
+        "case": "active-dedup",
+        "assertion": "dedup-mutual-duplicate-id-leaves-final-pair"
+      },
+      {
+        "name": "dedup-strict-overlap",
+        "line": 157,
+        "case": "active-dedup",
+        "assertion": "dedup-zero-span-strict-overlap-preserved"
+      },
+      {
+        "name": "dedup-full-coordinate",
+        "line": 158,
+        "case": "active-dedup",
+        "assertion": "dedup-full-width-planes-preserved"
+      }
+    ]
+  },
+  "main_e020": {
+    "astOnly": true,
+    "testMethodCount": 14,
+    "classes": {
+      "ContactWorldBoundary": [
+        "test_public_contact_policy_uses_only_explicit_geometry_and_member_facts",
+        "test_main_consumers_have_callers_delegate_and_keep_original_member_identity"
+      ],
+      "WoodContactWorld": [
+        "test_d11_placement_order_stable_ties_dedup_and_partial_contact_shadow",
+        "test_multiple_regions_outline_hole_ids_fixities_and_atomic_capacity_pairs",
+        "test_live_set_duplicate_ids_strict_overlap_and_large_buffer_fallback",
+        "test_positioning_interval_real_geometry_notch_hole_and_i5_precedence",
+        "test_owner_extension_fixed_segment_axis_role_and_original_candidate_pointer",
+        "test_end_face_first_error_free_width_shadow_priority_and_extension_exemption",
+        "test_actual_guard_controls_fail_the_named_numeric_assertions",
+        "test_unique_id_prefix_query_keeps_public_degenerate_and_filtered_facts",
+        "test_stable_index_merge_preserves_complete_sequence_and_fallback",
+        "test_monotonic_sort_preserves_full_fields_and_linear_sorted_lookup_work",
+        "test_cached_plane_ranges_match_linear_oracle_and_remove_repeat_search",
+        "test_same_owner_extension_guard_controls_the_actual_atomic_bridge_placement"
+      ]
+    },
+    "controlCount": 41,
+    "controls": [
+      {
+        "name": "placement-order",
+        "line": 136,
+        "case": "ordering",
+        "assertion": "placement-order-before-declaration"
+      },
+      {
+        "name": "stable-ties",
+        "line": 137,
+        "case": "ordering",
+        "assertion": "placement-stable-equal-order-sides"
+      },
+      {
+        "name": "equal-order-dedup",
+        "line": 138,
+        "case": "ordering",
+        "assertion": "equal-order-not-deduplicated"
+      },
+      {
+        "name": "partial-shadow",
+        "line": 139,
+        "case": "ordering",
+        "assertion": "partial-shadow-retains-exposed-face"
+      },
+      {
+        "name": "outline-component-index",
+        "line": 140,
+        "case": "regions",
+        "assertion": "region-outline-index-encoded"
+      },
+      {
+        "name": "hole-component-index",
+        "line": 141,
+        "case": "regions",
+        "assertion": "region-hole-index-encoded"
+      },
+      {
+        "name": "paired-capacity",
+        "line": 142,
+        "case": "regions",
+        "assertion": "member-capacity-pair-atomic"
+      },
+      {
+        "name": "complete-footprint",
+        "line": 143,
+        "case": "intervals",
+        "assertion": "i5-notched-footprint-deferred"
+      },
+      {
+        "name": "owner-identity",
+        "line": 144,
+        "case": "extensions",
+        "assertion": "owner-pointer-not-id"
+      },
+      {
+        "name": "owner-extension",
+        "line": 145,
+        "case": "extensions",
+        "assertion": "owner-extension-outside-fixed-part"
+      },
+      {
+        "name": "fixed-inclusive",
+        "line": 146,
+        "case": "extensions",
+        "assertion": "owner-fixed-interval-inclusive"
+      },
+      {
+        "name": "free-end",
+        "line": 147,
+        "case": "ends",
+        "assertion": "free-end-faces-ignored"
+      },
+      {
+        "name": "full-contact-width",
+        "line": 148,
+        "case": "ends",
+        "assertion": "narrow-end-face-ignored"
+      },
+      {
+        "name": "contact-shadow",
+        "line": 149,
+        "case": "ends",
+        "assertion": "partial-earlier-face-shadows-only-contact"
+      },
+      {
+        "name": "end-order",
+        "line": 150,
+        "case": "ends",
+        "assertion": "start-end-before-global-placement-order"
+      },
+      {
+        "name": "stop-identity",
+        "line": 151,
+        "case": "ordering",
+        "assertion": "stop-exclusion-keeps-candidate-identity"
+      },
+      {
+        "name": "extension-end",
+        "line": 152,
+        "case": "ends",
+        "assertion": "self-boundary-extension-end-exempt"
+      },
+      {
+        "name": "edge-index-output",
+        "line": 153,
+        "case": "intervals",
+        "assertion": "boundary-edge-index-horizontal"
+      },
+      {
+        "name": "inactive-shadow",
+        "line": 154,
+        "case": "active-dedup",
+        "assertion": "dedup-mutual-duplicate-id-leaves-final-pair"
+      },
+      {
+        "name": "compact-active-only",
+        "line": 155,
+        "case": "ordering",
+        "assertion": "earlier-full-cover-deduplicates"
+      },
+      {
+        "name": "compact-survivor-count",
+        "line": 156,
+        "case": "active-dedup",
+        "assertion": "dedup-mutual-duplicate-id-leaves-final-pair"
+      },
+      {
+        "name": "dedup-strict-overlap",
+        "line": 157,
+        "case": "active-dedup",
+        "assertion": "dedup-zero-span-strict-overlap-preserved"
+      },
+      {
+        "name": "dedup-full-coordinate",
+        "line": 158,
+        "case": "active-dedup",
+        "assertion": "dedup-full-width-planes-preserved"
+      },
+      {
+        "name": "indexed-unique-facts",
+        "line": 159,
+        "case": "indexed-dedup",
+        "assertion": "indexed-filtered-duplicate-order"
+      },
+      {
+        "name": "indexed-rc-free-prefix",
+        "line": 160,
+        "case": "ordering",
+        "assertion": "boundary-even-free-owns-coincident-face"
+      },
+      {
+        "name": "indexed-strict-lo",
+        "line": 161,
+        "case": "indexed-dedup",
+        "assertion": "indexed-zero-lower-strict"
+      },
+      {
+        "name": "indexed-strict-hi",
+        "line": 162,
+        "case": "indexed-dedup",
+        "assertion": "indexed-zero-upper-strict"
+      },
+      {
+        "name": "indexed-plane-coordinate",
+        "line": 163,
+        "case": "indexed-dedup",
+        "assertion": "indexed-full-coordinate-plane"
+      },
+      {
+        "name": "indexed-plane-offset",
+        "line": 164,
+        "case": "indexed-dedup",
+        "assertion": "indexed-full-coordinate-plane"
+      },
+      {
+        "name": "indexed-single-witness",
+        "line": 165,
+        "case": "indexed-dedup",
+        "assertion": "indexed-two-halves-not-one-cover"
+      },
+      {
+        "name": "indexed-survivor-count",
+        "line": 166,
+        "case": "ordering",
+        "assertion": "earlier-full-cover-deduplicates"
+      },
+      {
+        "name": "indexed-reversed-skip",
+        "line": 167,
+        "case": "indexed-dedup",
+        "assertion": "indexed-enclosed-reversed-span"
+      },
+      {
+        "name": "legacy-partial-shadow",
+        "line": 168,
+        "case": "indexed-dedup",
+        "assertion": "indexed-duplicate-fallback-keeps-partial-shadow"
+      },
+      {
+        "name": "legacy-placement-order",
+        "line": 169,
+        "case": "indexed-sort",
+        "assertion": "sort-legacy-last-order"
+      },
+      {
+        "name": "legacy-stable-ties",
+        "line": 170,
+        "case": "indexed-sort",
+        "assertion": "sort-legacy-stable-fields"
+      },
+      {
+        "name": "sort-rc-prefix",
+        "line": 171,
+        "case": "indexed-sort",
+        "assertion": "sort-rc-prefix-preserved"
+      },
+      {
+        "name": "sort-cycle-close",
+        "line": 172,
+        "case": "indexed-sort",
+        "assertion": "sort-cycle-every-field"
+      },
+      {
+        "name": "sort-cycle-step",
+        "line": 173,
+        "case": "indexed-sort",
+        "assertion": "sort-cycle-every-field"
+      },
+      {
+        "name": "sort-full-order",
+        "line": 174,
+        "case": "indexed-sort",
+        "assertion": "sort-full-uint64-order"
+      },
+      {
+        "name": "sort-duplicate-sort-guard",
+        "line": 175,
+        "case": "indexed-sort",
+        "assertion": "sort-legacy-last-order"
+      },
+      {
+        "name": "sort-overflow-sort-guard",
+        "line": 176,
+        "case": "indexed-sort",
+        "assertion": "sort-overflow-linear-last-order"
+      }
+    ]
+  }
+}

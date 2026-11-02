@@ -1,3 +1,18 @@
+# CURRENT 2026-11-02T11:29Z — 新里程碑已完成，持續工作
+
+**#367本地真harness D/M/D完整0/1/0已完成**：F03/M02/R02各482.395251／484.041772／480.055233秒；F/R898過0敗0skip與62段projection，M897過2敗0skip＝唯一S2 false＋原golden計數後果，原Node同journal具名拒絕1。原2100每相上限、run0 LOCAL、737來源/3native前後一致；M唯一cdp不同且未push。另一peer獨立9662checks PASS，原307檔900623B封包sha d77cc507e750c620ba2bbba2e39519f1e83a20f07f6fa38e2514a1c016b3a446 已持久交付。
+
+**更正原環境失敗界線**：F01只有0「捕捉到的」assert，原實際完整計數unknown；F02真completed:false/0assert/socket fail。兩者都沒有mutation credit，歷史先前簡寫0assert不作完整實跑結論。獨立peer現在直接查15個記錄PID全無活程序，只證當下15PID，未追認歷史全部後代；不用此代替任何產品判斷。
+
+**#340新source aca3d2a5f604848b159a0e5cdd3d3f55fcad190f正式20CI全success**，integration真execution afa52541ef2bcdd00e184e0f5d0d5e33874610ed同tree；原native237/5421counted/5420pass/1允許GDI，原CLI重放0/summary逐byte等官方，fullcanvas2286/86golden與5其他browser綠。#366manual41430549123全10綠，9原ZIP/cache與原verifier真0（25.360秒）／123=114killed1crashed5equivalent3retired、7badcache strict1，原120execution均M；新全量ledgerSHA140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef。目前在收最後完整原件、獨立peer及唯一正文，尚未冒稱main已合；root不合main。
+
+**#345 sourceM de3a56cfadecf575f8e7860cbfdafdac2af0a883整份#366重產也全success**；原collector已啟，待真verifier／原ZIP核收後採新ledger且check0，再快轉公開PR與新CI。新靜態peer確認相對main精確13歷史evidence＋poll一行，21個test methods／95assert calls全AST一致，main新添2回歸全保，expected21及1200未改；舊公開source19methods／20CI jobs是兩種數字不得混用。
+
+#341只讀方案已完成且附獨立peer：main四leaf有下游343改動、14methods/41controls；直接compact=false會漏排序，不作等價baseline。所有4類work/CPU/wall/峰值及whole-opt仍UNRUN，正式進341需340先由本機合main，再凍結真正source／比較範圍。#367雖獨立D全部驗證齊，仍draft／上游與最新main#354整合未跑，不宣告main同源已過；355UI15、R03仍按原依賴。
+
+---
+以下歷史供比對，活狀態以上段為準
+
 # ACTIVE CHECKPOINT 2026-11-02T11:08Z
 
 #367真UI harness：F03(D)原exit0／482.395秒、898pass0fail0skip／62golden；M=aec3ea1bdcf46f2416dfa7cb79d28221673c315a原完整exit1／484.041772秒、CDP897pass2fail0skip、898journal唯一false為S2結構(seq13/ordinal11)。另一fail只是原golden section1 14→13後果；原Node verify-shard另真exit1，具名CANVAS_ASSERTION_FAILED: S2 結構:。不把環境紅當killed，不把2fail改說1fail。三native/golden/737inputs前後同，M未push。

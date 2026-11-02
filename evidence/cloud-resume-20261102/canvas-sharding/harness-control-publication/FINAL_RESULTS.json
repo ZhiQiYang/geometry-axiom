@@ -1,0 +1,236 @@
+{
+  "schema": "geometry-local-canvas-harness-fmf/1",
+  "utc": "2026-11-02T11:16:53.121549+00:00",
+  "status": "PASS_LOCAL_HARNESS_FMF_CONTROLS",
+  "identity": "LOCAL run_id 0 / attempt1; not a GitHub Actions run",
+  "D": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+  "M": "aec3ea1bdcf46f2416dfa7cb79d28221673c315a",
+  "M_parent": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+  "M_branch": "codex/canvas-false-control-20261102",
+  "M_pushed": false,
+  "onlyTemporaryMDelta": {
+    "paths": [
+      "geometry-web/cdp_test.js"
+    ],
+    "needle_occurrences_in_D": 1,
+    "needle": "s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 4 ? \"✓\" : \"✗\"",
+    "replacement": "false && s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 4 ? \"✓\" : \"✗\"",
+    "exact_bytes_equal_D_replace_once": true,
+    "inserted_bytes": 9,
+    "all_other_git_tree_entries_unchanged": true,
+    "patch": {
+      "path": "/tmp/geometry-resume-20261102/canvas-sharding/harness-control-preparation/CONTROL.patch",
+      "bytes": 983,
+      "sha256": "0587cd226fcba5b476c5d6a2da37e6f16f0bd44f01e95fc57cc7537a900cbda5"
+    },
+    "raw": {
+      "path": "/tmp/geometry-resume-20261102/canvas-sharding/harness-control-preparation/CONTROL_DELTA.raw",
+      "bytes": 124,
+      "sha256": "fa9f70bafb8558e535ffbf158470f3735615f87c1038872c8e59bc23250a66ff"
+    },
+    "git_diff_check": 0
+  },
+  "originalCommand": [
+    "python3",
+    "-B",
+    ".github/scripts/canvas_evidence.py",
+    "run",
+    "--shard",
+    "legacy",
+    "--out",
+    "<each fresh dedicated phase output>"
+  ],
+  "originalOuterCommandGate": "tests/release_gate.py --timeout2100; outer receipt kind=command, no full-product completion claim",
+  "originalExitSequence": [
+    0,
+    1,
+    0
+  ],
+  "eachTimeoutSeconds": 2100,
+  "phases": [
+    {
+      "phase": "fixed-before-03",
+      "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "source": "/dev/shm/geometry-canvas-harness-fixed-before-20261102",
+      "tree": "79ab857da822431b248cfed3d4a4a9f9f552e97c",
+      "launchedUtc": "2026-11-02T10:48:31.989926+00:00",
+      "deadlineUtc": "2026-11-02T11:23:31.989926+00:00",
+      "originalExecution": {
+        "started": "2026-11-02T10:48:32.325951+00:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "interrupted": false,
+        "pid": 488027,
+        "finished": "2026-11-02T10:56:34.163136+00:00"
+      },
+      "originalGateAndSupervisorExit": 0,
+      "elapsedRecorderSeconds": 482.3952507209615,
+      "passedAssertions": 898,
+      "failedAssertions": 0,
+      "skipped": [],
+      "sectionCount": 62,
+      "goldenCompare": "matched (shard projection)",
+      "journalAssertionCount": 898,
+      "falseJournalEvents": [],
+      "expectedExceptionLines": [
+        "[EXPECTED EXCEPTION] Error: fb-auto-probe"
+      ],
+      "uncaughtBrowserExceptionsOriginalValue": 1,
+      "sourceInputCount": 737,
+      "sourceInputsBeforeAfterIdentical": true,
+      "native3BeforeAfterIdentical": true,
+      "goldenBytesUnchanged": true,
+      "sourceCleanAtFinal": true,
+      "nativeBuilds": 0,
+      "originalRuntimeShowsReused3": true,
+      "ownedRuntimeStopReturncode": -2,
+      "phaseAfterSha256": "9d64f61fdb1e588c0b608a5b09200d5b21565fe8296dba7a9ff05729bfcfda29",
+      "nodeVerifier": null
+    },
+    {
+      "phase": "mutant-02",
+      "head": "aec3ea1bdcf46f2416dfa7cb79d28221673c315a",
+      "source": "/tmp/geometry-canvas-false-control-20261102",
+      "tree": "0049d27031a2d839ab2114d9dc35b419a331d0cb",
+      "launchedUtc": "2026-11-02T10:57:42.463126+00:00",
+      "deadlineUtc": "2026-11-02T11:32:42.463126+00:00",
+      "originalExecution": {
+        "started": "2026-11-02T10:57:42.788374+00:00",
+        "exitCode": 1,
+        "timedOut": false,
+        "interrupted": false,
+        "pid": 497687,
+        "finished": "2026-11-02T11:05:46.319033+00:00"
+      },
+      "originalGateAndSupervisorExit": 1,
+      "elapsedRecorderSeconds": 484.0417718749959,
+      "passedAssertions": 897,
+      "failedAssertions": 2,
+      "skipped": [],
+      "sectionCount": 62,
+      "goldenCompare": "mismatch (1)",
+      "journalAssertionCount": 898,
+      "falseJournalEvents": [
+        {
+          "label": "S2 結構:",
+          "ordinal": 11,
+          "passed": false,
+          "section": "1",
+          "seq": 13,
+          "type": "assertion",
+          "unit": "legacy"
+        }
+      ],
+      "expectedExceptionLines": [
+        "[EXPECTED EXCEPTION] Error: fb-auto-probe"
+      ],
+      "uncaughtBrowserExceptionsOriginalValue": 1,
+      "sourceInputCount": 737,
+      "sourceInputsBeforeAfterIdentical": true,
+      "native3BeforeAfterIdentical": true,
+      "goldenBytesUnchanged": true,
+      "sourceCleanAtFinal": true,
+      "nativeBuilds": 0,
+      "originalRuntimeShowsReused3": true,
+      "ownedRuntimeStopReturncode": -2,
+      "phaseAfterSha256": "8285a13b0d4026c6652e36c0eaf6c35ce955dec9cdb364e8e5831cd7793d0092",
+      "nodeVerifier": {
+        "actualProcessReturncode": 1,
+        "elapsedSeconds": 0.0509541510255076,
+        "namedRejection": "CANVAS_ASSERTION_FAILED: S2 結構:",
+        "stderrSha256": "8574dd59510155617eb88098384e61a56dd37b692bd5d932438d3d940216d200"
+      }
+    },
+    {
+      "phase": "fixed-restored-02",
+      "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "source": "/dev/shm/geometry-canvas-harness-fixed-restored-20261102",
+      "tree": "79ab857da822431b248cfed3d4a4a9f9f552e97c",
+      "launchedUtc": "2026-11-02T11:06:25.057164+00:00",
+      "deadlineUtc": "2026-11-02T11:41:25.057164+00:00",
+      "originalExecution": {
+        "started": "2026-11-02T11:06:25.411587+00:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "interrupted": false,
+        "pid": 507226,
+        "finished": "2026-11-02T11:14:24.870100+00:00"
+      },
+      "originalGateAndSupervisorExit": 0,
+      "elapsedRecorderSeconds": 480.0552332510124,
+      "passedAssertions": 898,
+      "failedAssertions": 0,
+      "skipped": [],
+      "sectionCount": 62,
+      "goldenCompare": "matched (shard projection)",
+      "journalAssertionCount": 898,
+      "falseJournalEvents": [],
+      "expectedExceptionLines": [
+        "[EXPECTED EXCEPTION] Error: fb-auto-probe"
+      ],
+      "uncaughtBrowserExceptionsOriginalValue": 1,
+      "sourceInputCount": 737,
+      "sourceInputsBeforeAfterIdentical": true,
+      "native3BeforeAfterIdentical": true,
+      "goldenBytesUnchanged": true,
+      "sourceCleanAtFinal": true,
+      "nativeBuilds": 0,
+      "originalRuntimeShowsReused3": true,
+      "ownedRuntimeStopReturncode": -2,
+      "phaseAfterSha256": "1bc583f187bebfe195711317354ae0d81635036e3336153b57018077aa250280",
+      "nodeVerifier": null
+    }
+  ],
+  "sourceContentAcrossPhases": {
+    "D_F_equals_D_restore_all737": true,
+    "onlyD_to_M_contentDifference": [
+      "geometry-web/cdp_test.js"
+    ],
+    "each737InputsByteHashSizeModeMtimeBeforeAfterUnchanged": true
+  },
+  "originalGoldenAndAssertionsUnchangedInD": true,
+  "MFailureMeaning": "Actual full 898-event journal contains exactly one controlled false S2 assertion. Actual result897pass2fail is retained: controlled assertion plus original strict floor count consequence. Original Python rejects CANVAS_PROCESS_FAILED:1; original Node verifier on the same untouched trace independently rejects CANVAS_ASSERTION_FAILED: S2 結構:.",
+  "preservedEarlierAttempts": [
+    {
+      "path": "first-fixed-enospc-originals",
+      "outcome": "Environment-aborted capture/receipt ENOSPC; no complete original result and no product/negative-control credit"
+    },
+    {
+      "path": "fixed-before-02",
+      "outcome": "Original gate1; completed:false;0assertions; Chrome socket path too long. No control credit."
+    },
+    {
+      "path": "chrome-short-tmpdir-smoke",
+      "outcome": "Genuine CDP response observed but client error while closing browser, Node1; retained failure, no product assertions"
+    },
+    {
+      "path": "chrome-short-tmpdir-smoke-02",
+      "outcome": "Port bind preflight failure, no Chrome/Node launched"
+    },
+    {
+      "path": "chrome-short-tmpdir-smoke-03",
+      "outcome": "Original Chrome flags, original ownership validation, genuine Browser.getVersion; Node0/Chrome0; separate smoke profile, no product assertions"
+    }
+  ],
+  "environmentCorrections": "Only move raw/metadata to SHM after shared ENOSPC and shorten separate private TMPDIR (socket budgets66/64/64<108). All prior originals retained. No source guard/assert/golden/wait/timeout changes.",
+  "completedCensusReview": {
+    "path": "/tmp/geometry-resume-20261102/canvas-sharding/count-producer-recovery/COMPLETED_CENSUS_REVIEW.json",
+    "sha256": "5bad61087581ca7bb130d1675eac9a1835c6f3243c94d4b3b4c6f0086f3b6522",
+    "unchanged": true,
+    "originalCensusCLI1Relabelled": false
+  },
+  "cleanup": {
+    "path": "CLEANUP.json",
+    "sha256": "5a3b73e036a15aed0c434f32abe1f07de86031b13509a70ca18c0c43c3d5413c",
+    "liveOwnedRelevantProcesses": 0,
+    "canonicalDHeadUnchangedAndClean": true
+  },
+  "scopeLimits": [
+    "Local original legacy harness controls only; no official GHA run identity or full two-shard acceptance is claimed.",
+    "Root original full-reference result remains separately bound to D; none of its output was rewritten.",
+    "Earlier original full timeout124, original failed extensions CI, original census CLI1 and failed local attempts remain failures.",
+    "No mutation ledger/expected counts edited and no product assertion thresholds relaxed."
+  ],
+  "artifactStorage": "/dev/shm/geometry-canvas-harness-actual-20261102",
+  "persistence": "All new raw and metadata in SHM; root to persist the final small metadata/raw archive once."
+}

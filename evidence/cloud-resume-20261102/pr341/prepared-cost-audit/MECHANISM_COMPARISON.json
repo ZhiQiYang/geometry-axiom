@@ -1,0 +1,50 @@
+{
+  "status": "STATIC_ONLY_NOT_PERFORMANCE_ACCEPTANCE",
+  "rows": [
+    {
+      "component": "original_live_set_loop",
+      "fixed341Lines": [
+        103,
+        117
+      ],
+      "mainLines": [
+        250,
+        264
+      ],
+      "exactTextEqual": true,
+      "fixed341Sha256": "da1e698128269cee15e652f1d11eb17a2296a20f78a6be72bb4baeea66d83cf0",
+      "mainSha256": "da1e698128269cee15e652f1d11eb17a2296a20f78a6be72bb4baeea66d83cf0"
+    },
+    {
+      "component": "final_compaction",
+      "fixed341Lines": [
+        118,
+        121
+      ],
+      "mainLines": [
+        266,
+        269
+      ],
+      "exactTextEqual": true,
+      "fixed341Sha256": "833a1d3e93ea56159f0f9cb65852caae9bce57532fcf88e3762d06ee61730d55",
+      "mainSha256": "833a1d3e93ea56159f0f9cb65852caae9bce57532fcf88e3762d06ee61730d55"
+    },
+    {
+      "component": "fixed341_whole_active_region",
+      "lines": [
+        100,
+        122
+      ],
+      "sha256": "5ce7d06d42995b3b418e403d6eb1f6a012b77bec2f16a6bd7728e6a97b04f209"
+    },
+    {
+      "component": "main_whole_active_region",
+      "lines": [
+        243,
+        270
+      ],
+      "sha256": "f919f03ae8149f282113367edbd780c071065a230382761139b64e0943ee155c"
+    }
+  ],
+  "interpretation": "The41/14 downstream source still contains the exact original live-set loop and final compaction, with an additional indexed route sharing active. Four full leaves differ; absence of identical full blobs does not mean#341 mechanism is absent."
+}

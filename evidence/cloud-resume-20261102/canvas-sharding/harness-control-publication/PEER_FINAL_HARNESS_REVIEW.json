@@ -1,0 +1,528 @@
+{
+  "schema": "geometry-canvas-local-harness-final-independent-peer/1",
+  "utc": "2026-11-02T11:25:43.497493+00:00",
+  "reviewer": "/root/pr366_evidence",
+  "status": "PASS_LOCAL_FMF_ORIGINALS_WITH_PROCESS_SCOPE_LIMIT",
+  "auditExitCode": 0,
+  "checkCount": 9662,
+  "problems": [],
+  "method": "Independent archive/member/manifest byte verification and raw command/result/journal/737-source/native-byte recomputation. No test, browser, native executable, Node verifier or producer rerun.",
+  "package": {
+    "path": "/dev/shm/geometry-canvas-harness-actual-20261102-evidence.tar.gz",
+    "bytes": 900623,
+    "sha256": "d77cc507e750c620ba2bbba2e39519f1e83a20f07f6fa38e2514a1c016b3a446",
+    "members": 307,
+    "manifestEntries": 306,
+    "all307ActualMembersByteEqualRetainedOriginal": true,
+    "manifestSha256": "070f798792d150676c36d8132ac560303508f0e4715069f05c0b4c220dc8ebb7",
+    "memberMapSha256": "920dae0d35d26543395d2a5e37a91198c3c156d38a252ecf48d20599bb2b66d0",
+    "excludedOperationalRoots": [
+      "fixed-before-02/tmp/"
+    ],
+    "excludedOperationalFilesReported": 19
+  },
+  "sourceControl": {
+    "D": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+    "M": "aec3ea1bdcf46f2416dfa7cb79d28221673c315a",
+    "MParents": [
+      "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+    ],
+    "DTREE": "79ab857da822431b248cfed3d4a4a9f9f552e97c",
+    "MTREE": "0049d27031a2d839ab2114d9dc35b419a331d0cb",
+    "onlyChangedPath": [
+      "geometry-web/cdp_test.js"
+    ],
+    "exactFalseAndInsertionBytes": 9,
+    "originalAndMutatedCdpSha256": [
+      "14291f6f1114a9f4dd5ceaf3b6b02297b673870d5b903282fdd4090a31ff49e7",
+      "141f215ee52a9a86708bbe3d3b0a97ce63c9754636dca92a241af24fe67174d7"
+    ],
+    "helperUnchanged": true,
+    "gitReads": [
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-false-control-20261102",
+          "cat-file",
+          "-p",
+          "aec3ea1bdcf46f2416dfa7cb79d28221673c315a"
+        ],
+        "exitCode": 0,
+        "bytes": 260,
+        "sha256": "f02eda1461a26592e82b7ca9250b505b294e5cee4ce11d639de350c1bf045633",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-false-control-20261102",
+          "rev-parse",
+          "e5b0bc23b04e872a68b066bd5b51d57e2c104943^{tree}"
+        ],
+        "exitCode": 0,
+        "bytes": 41,
+        "sha256": "cc3b4e2cce2567ba8189f5614e95c0971be97ce91cf96181a18c17e52b22c27b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-false-control-20261102",
+          "rev-parse",
+          "aec3ea1bdcf46f2416dfa7cb79d28221673c315a^{tree}"
+        ],
+        "exitCode": 0,
+        "bytes": 41,
+        "sha256": "442fda37bd89c1a1d3a1803ec297a06491ee5c086716850a1fd12c7bb9875004",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-false-control-20261102",
+          "diff",
+          "--raw",
+          "--no-abbrev",
+          "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+          "aec3ea1bdcf46f2416dfa7cb79d28221673c315a"
+        ],
+        "exitCode": 0,
+        "bytes": 124,
+        "sha256": "fa9f70bafb8558e535ffbf158470f3735615f87c1038872c8e59bc23250a66ff",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-false-control-20261102",
+          "diff",
+          "--name-only",
+          "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+          "aec3ea1bdcf46f2416dfa7cb79d28221673c315a"
+        ],
+        "exitCode": 0,
+        "bytes": 25,
+        "sha256": "296fe29d460d7169090e13edbbf87f2d23c1e1ed2fa843da4c6e6e8afeb475a4",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-false-control-20261102",
+          "show",
+          "e5b0bc23b04e872a68b066bd5b51d57e2c104943:geometry-web/cdp_test.js"
+        ],
+        "exitCode": 0,
+        "bytes": 519599,
+        "sha256": "14291f6f1114a9f4dd5ceaf3b6b02297b673870d5b903282fdd4090a31ff49e7",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-false-control-20261102",
+          "show",
+          "aec3ea1bdcf46f2416dfa7cb79d28221673c315a:geometry-web/cdp_test.js"
+        ],
+        "exitCode": 0,
+        "bytes": 519608,
+        "sha256": "141f215ee52a9a86708bbe3d3b0a97ce63c9754636dca92a241af24fe67174d7",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-false-control-20261102",
+          "show",
+          "e5b0bc23b04e872a68b066bd5b51d57e2c104943:tests/helpers/canvas_shards.js"
+        ],
+        "exitCode": 0,
+        "bytes": 12147,
+        "sha256": "299209a835ed0cb689ca7fcc6c1a320cb8a53e3f7861ddce17e9e05c661e357d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-false-control-20261102",
+          "show",
+          "aec3ea1bdcf46f2416dfa7cb79d28221673c315a:tests/helpers/canvas_shards.js"
+        ],
+        "exitCode": 0,
+        "bytes": 12147,
+        "sha256": "299209a835ed0cb689ca7fcc6c1a320cb8a53e3f7861ddce17e9e05c661e357d",
+        "stderr": ""
+      }
+    ]
+  },
+  "phases": [
+    {
+      "phase": "fixed-before-03",
+      "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "tree": "79ab857da822431b248cfed3d4a4a9f9f552e97c",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "run",
+        "--shard",
+        "legacy",
+        "--out",
+        "/dev/shm/geometry-canvas-harness-actual-20261102/fixed-before-03/canvas-evidence"
+      ],
+      "timeoutSeconds": 2100.0,
+      "actualExit": 0,
+      "elapsedSeconds": 481.837185,
+      "started": "2026-11-02T10:48:32.325951+00:00",
+      "finished": "2026-11-02T10:56:34.163136+00:00",
+      "passed": 898,
+      "failed": 0,
+      "sections": 62,
+      "journalVerdicts": 898,
+      "falseEvents": [],
+      "projectionMismatch": {},
+      "scope": {
+        "mode": "shard",
+        "filters": [],
+        "modifiers": [],
+        "url": "http://127.0.0.1:18857/",
+        "feedbackDirectory": "/dev/shm/gch-f03-20261102/feedback",
+        "shardId": "legacy",
+        "planSha256": "85e3c04f030254bf3978f7408b8323268ec64fc0249b2891acc1a872eae85c7f",
+        "browserProfile": "/dev/shm/gch-f03-20261102/chrome-profile",
+        "cdpPort": 9367,
+        "browserPid": 488072
+      },
+      "source737BeforeAfterEqual": true,
+      "rawStdoutSha256": "5e414c265aecb95d9233edc54edd9287bd6b09db7cddecab78debf8df8d88469",
+      "gateLogSha256": "dfd784826c55ddc3b3f8225cad44eaf7a307901af1072dafac2d37a5e505d393",
+      "actualRetainedNativeIdentity": {
+        "core": {
+          "state": "fresh",
+          "fingerprint": "754074ec83afc959d6d5b1d8378a508add41d39b46ff0357b4855b6be22c627b",
+          "sha256": "25120e07b12dd27b0d34a143bceb646eb6a11dc8a94b35650befa0798b9be870",
+          "sidecarSha256": "23aea87bc844698d026ee5a5b0bebd7be68ffaf238979f85275821e63328ca48",
+          "bytes": 959496,
+          "mtimeNs": 1793593747718374450,
+          "mode": 33216
+        },
+        "bridge": {
+          "state": "fresh",
+          "fingerprint": "d24a3bfb7132d6a3561f599fa8a97f9db64b7a206495ed66785755344ec4a87a",
+          "sha256": "403346efb710f804fdeb075f8970c59bdaacdc50e52376f531151396fd383dc8",
+          "sidecarSha256": "e9018d0b56935be222a7db5227f25a14a84afeab6e9f89bd1be23289c7e9c615",
+          "bytes": 1190224,
+          "mtimeNs": 1793589777579742614,
+          "mode": 33216
+        },
+        "model-base": {
+          "state": "fresh",
+          "fingerprint": "7b849a1640c03cffa391de080fbde983e1a158dd911dc33b69c9ea44478c5429",
+          "sha256": "4a143f978105cdfa8f2798e0af20ae7693ab4efda5547d8cfe5ca95d890106d7",
+          "sidecarSha256": "151f544b267ea005ea1f8838df363718a12daf8c7d98ef5d1a17896056399961",
+          "bytes": 1020456,
+          "mtimeNs": 1793593788482063202,
+          "mode": 33216
+        }
+      }
+    },
+    {
+      "phase": "mutant-02",
+      "head": "aec3ea1bdcf46f2416dfa7cb79d28221673c315a",
+      "tree": "0049d27031a2d839ab2114d9dc35b419a331d0cb",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "run",
+        "--shard",
+        "legacy",
+        "--out",
+        "/dev/shm/geometry-canvas-harness-actual-20261102/mutant-02/canvas-evidence"
+      ],
+      "timeoutSeconds": 2100.0,
+      "actualExit": 1,
+      "elapsedSeconds": 483.530659,
+      "started": "2026-11-02T10:57:42.788374+00:00",
+      "finished": "2026-11-02T11:05:46.319033+00:00",
+      "passed": 897,
+      "failed": 2,
+      "sections": 62,
+      "journalVerdicts": 898,
+      "falseEvents": [
+        {
+          "label": "S2 結構:",
+          "ordinal": 11,
+          "passed": false,
+          "section": "1",
+          "seq": 13,
+          "type": "assertion",
+          "unit": "legacy"
+        }
+      ],
+      "projectionMismatch": {
+        "1": {
+          "expected": 14,
+          "actual": 13
+        }
+      },
+      "scope": {
+        "mode": "shard",
+        "filters": [],
+        "modifiers": [],
+        "url": "http://127.0.0.1:18858/",
+        "feedbackDirectory": "/dev/shm/gch-m-20261102/feedback",
+        "shardId": "legacy",
+        "planSha256": "2d3a7e2e57ef3fe820dae769f76c4598fa14be19570928e2e726dc5be96d4bbb",
+        "browserProfile": "/dev/shm/gch-m-20261102/chrome-profile",
+        "cdpPort": 9368,
+        "browserPid": 497732
+      },
+      "source737BeforeAfterEqual": true,
+      "rawStdoutSha256": "4e9228935274afb49159861d0382cacb5a35dd03743cadb5980e22fab9f78602",
+      "gateLogSha256": "00d9b3c91231001e256403869a6d64fca8ba7fc99fd34cb6a96ccf10ac829042",
+      "actualRetainedNativeIdentity": {
+        "core": {
+          "state": "fresh",
+          "fingerprint": "754074ec83afc959d6d5b1d8378a508add41d39b46ff0357b4855b6be22c627b",
+          "sha256": "25120e07b12dd27b0d34a143bceb646eb6a11dc8a94b35650befa0798b9be870",
+          "sidecarSha256": "23aea87bc844698d026ee5a5b0bebd7be68ffaf238979f85275821e63328ca48",
+          "bytes": 959496,
+          "mtimeNs": 1793593747718374450,
+          "mode": 33216
+        },
+        "bridge": {
+          "state": "fresh",
+          "fingerprint": "d24a3bfb7132d6a3561f599fa8a97f9db64b7a206495ed66785755344ec4a87a",
+          "sha256": "403346efb710f804fdeb075f8970c59bdaacdc50e52376f531151396fd383dc8",
+          "sidecarSha256": "e9018d0b56935be222a7db5227f25a14a84afeab6e9f89bd1be23289c7e9c615",
+          "bytes": 1190224,
+          "mtimeNs": 1793589777579742614,
+          "mode": 33216
+        },
+        "model-base": {
+          "state": "fresh",
+          "fingerprint": "7b849a1640c03cffa391de080fbde983e1a158dd911dc33b69c9ea44478c5429",
+          "sha256": "4a143f978105cdfa8f2798e0af20ae7693ab4efda5547d8cfe5ca95d890106d7",
+          "sidecarSha256": "151f544b267ea005ea1f8838df363718a12daf8c7d98ef5d1a17896056399961",
+          "bytes": 1020456,
+          "mtimeNs": 1793593788482063202,
+          "mode": 33216
+        }
+      }
+    },
+    {
+      "phase": "fixed-restored-02",
+      "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "tree": "79ab857da822431b248cfed3d4a4a9f9f552e97c",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "run",
+        "--shard",
+        "legacy",
+        "--out",
+        "/dev/shm/geometry-canvas-harness-actual-20261102/fixed-restored-02/canvas-evidence"
+      ],
+      "timeoutSeconds": 2100.0,
+      "actualExit": 0,
+      "elapsedSeconds": 479.458513,
+      "started": "2026-11-02T11:06:25.411587+00:00",
+      "finished": "2026-11-02T11:14:24.870100+00:00",
+      "passed": 898,
+      "failed": 0,
+      "sections": 62,
+      "journalVerdicts": 898,
+      "falseEvents": [],
+      "projectionMismatch": {},
+      "scope": {
+        "mode": "shard",
+        "filters": [],
+        "modifiers": [],
+        "url": "http://127.0.0.1:18859/",
+        "feedbackDirectory": "/dev/shm/gch-r-20261102/feedback",
+        "shardId": "legacy",
+        "planSha256": "85e3c04f030254bf3978f7408b8323268ec64fc0249b2891acc1a872eae85c7f",
+        "browserProfile": "/dev/shm/gch-r-20261102/chrome-profile",
+        "cdpPort": 9369,
+        "browserPid": 507271
+      },
+      "source737BeforeAfterEqual": true,
+      "rawStdoutSha256": "980c4a062bdacc90b295db3db9cbdb051049a07f7c7ff3f6370418aaa70c9b66",
+      "gateLogSha256": "09e961dcc34b080ffd09821cc5a4383b126322e4d6f6133078507fc1f52a8510",
+      "actualRetainedNativeIdentity": {
+        "core": {
+          "state": "fresh",
+          "fingerprint": "754074ec83afc959d6d5b1d8378a508add41d39b46ff0357b4855b6be22c627b",
+          "sha256": "25120e07b12dd27b0d34a143bceb646eb6a11dc8a94b35650befa0798b9be870",
+          "sidecarSha256": "23aea87bc844698d026ee5a5b0bebd7be68ffaf238979f85275821e63328ca48",
+          "bytes": 959496,
+          "mtimeNs": 1793593747718374450,
+          "mode": 33216
+        },
+        "bridge": {
+          "state": "fresh",
+          "fingerprint": "d24a3bfb7132d6a3561f599fa8a97f9db64b7a206495ed66785755344ec4a87a",
+          "sha256": "403346efb710f804fdeb075f8970c59bdaacdc50e52376f531151396fd383dc8",
+          "sidecarSha256": "e9018d0b56935be222a7db5227f25a14a84afeab6e9f89bd1be23289c7e9c615",
+          "bytes": 1190224,
+          "mtimeNs": 1793589777579742614,
+          "mode": 33216
+        },
+        "model-base": {
+          "state": "fresh",
+          "fingerprint": "7b849a1640c03cffa391de080fbde983e1a158dd911dc33b69c9ea44478c5429",
+          "sha256": "4a143f978105cdfa8f2798e0af20ae7693ab4efda5547d8cfe5ca95d890106d7",
+          "sidecarSha256": "151f544b267ea005ea1f8838df363718a12daf8c7d98ef5d1a17896056399961",
+          "bytes": 1020456,
+          "mtimeNs": 1793593788482063202,
+          "mode": 33216
+        }
+      }
+    }
+  ],
+  "crossPhase": {
+    "originalExitSequence": [
+      0,
+      1,
+      0
+    ],
+    "journalVerdictCountSequence": [
+      898,
+      898,
+      898
+    ],
+    "sameJournalEventIdentityExceptPassed": true,
+    "F_R_All737ContentModeEntriesEqual": true,
+    "D_M_OnlyInputDifference": [
+      "geometry-web/cdp_test.js"
+    ],
+    "all737FullRecordsBeforeAfterEqualEachPhase": true,
+    "retained3NativeSidecarsBytesIdenticalAllPhases": true,
+    "sameOriginalGoldenAndUnits": true
+  },
+  "sameMNodeVerifier": {
+    "requestSha256": "cb2883d187a7e9725c64f9dad208a004bbbf5341d74125619ed90850db02e3d9",
+    "stdinSha256": "8546bdc542421ff39dd47b5d1b3376945199302afc0a1ffc75b6d29a037ceee8",
+    "sameActualTrace": true,
+    "exit": 1,
+    "namedRejection": "CANVAS_ASSERTION_FAILED: S2 結構:",
+    "stderrSha256": "8574dd59510155617eb88098384e61a56dd37b692bd5d932438d3d940216d200"
+  },
+  "preservedEnvironmentFailures": {
+    "F01": {
+      "capturedAssertionEvents": 0,
+      "completeOriginalResult": false,
+      "actualFullAssertionCount": "unknown because capture/receipt failed ENOSPC",
+      "meaning": "Environment/incomplete capture only; no intended mutant or product pass/fail credit."
+    },
+    "F02": {
+      "completed": false,
+      "actualPassedAssertions": 0,
+      "actualFailedAssertions": 0,
+      "exit": 1,
+      "cause": "Original Chrome socket path too long",
+      "meaning": "Environment startup failure; no mutation killed credit."
+    },
+    "smokeAttempts": "All archived smoke/preflight files were byte-verified; none contributes product assertions/control verdicts."
+  },
+  "processAttestation": {
+    "savedCleanupUtc": "2026-11-02T11:16:53.121263+00:00",
+    "savedCleanupReportsLiveOwnedCount": 0,
+    "independentlyAttestHistoricalAllOwnedZero": false,
+    "reason": "Static saved cleanup is producer evidence, not an independent observation at11:16:53. Historical complete descendant identity/liveness cannot be reconstructed from the package alone.",
+    "currentDirectProcObservationUtc": "2026-11-02T11:25:43.499482+00:00",
+    "currentRecordedOwnedPidProbes": [
+      {
+        "pid": 487776,
+        "exists": false
+      },
+      {
+        "pid": 487777,
+        "exists": false
+      },
+      {
+        "pid": 487975,
+        "exists": false
+      },
+      {
+        "pid": 488027,
+        "exists": false
+      },
+      {
+        "pid": 488072,
+        "exists": true,
+        "state": "Z",
+        "startTicks": "27082538",
+        "cmdline": ""
+      },
+      {
+        "pid": 497604,
+        "exists": false
+      },
+      {
+        "pid": 497627,
+        "exists": false
+      },
+      {
+        "pid": 497635,
+        "exists": false
+      },
+      {
+        "pid": 497687,
+        "exists": false
+      },
+      {
+        "pid": 497732,
+        "exists": true,
+        "state": "Z",
+        "startTicks": "27137577",
+        "cmdline": ""
+      },
+      {
+        "pid": 507145,
+        "exists": false
+      },
+      {
+        "pid": 507168,
+        "exists": false
+      },
+      {
+        "pid": 507174,
+        "exists": false
+      },
+      {
+        "pid": 507226,
+        "exists": false
+      },
+      {
+        "pid": 507271,
+        "exists": true,
+        "state": "Z",
+        "startTicks": "27189841",
+        "cmdline": ""
+      }
+    ],
+    "currentLiveRecordedPidCount": 0,
+    "currentScope": "Only15 known phase supervisor/runtime/gate/browser PIDs were probed read-only. This does not attest unrecorded descendants or historical complete process absence; no signal or process launch occurred."
+  },
+  "unverifiedBoundaries": [
+    "Run0/attempt1 is local, not GitHub Actions or full two-shard product acceptance. This control covers the original legacy harness only.",
+    "Retained current native+sidecar bytes and all recorded endpoint identities were checked; this does not prove absence of a transient mid-phase change or identify every running native OS image historically.",
+    "737 source snapshot entries were independently compared before/after/across phases; only exact D/M immutable source delta and the two cdp/helper blobs were read from Git, without broad tree/blob fetching.",
+    "F01 retains zero captured assertions but incomplete original capture; do not assert a known total original test execution count from missing raw. F02 independently has a complete fatal canonical result with0 assertions.",
+    "Historical owned-process cleanup0 remains a preserved producer snapshot; present /proc probes cannot be relabeled as historical independent attestation.",
+    "No later new-main#354 convergence, full product delivery readiness, count producer acceptance or unrelated CI is certified here."
+  ],
+  "sourceOrOriginalPackageChanges": []
+}
