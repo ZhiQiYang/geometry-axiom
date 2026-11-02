@@ -12,8 +12,9 @@ static void json_assembly_state(const World *w,bool geometry)
             for(int k=0;k<geo_json_size(&j,array);++k){int slot=geo_json_at(&j,array,k);uint32_t id=0;eng_u32(&j,geo_json_member(&j,slot,"slotId"),&id,true);printf("%s{\"slotId\":%u",k?",":"",id);
                 for(int axis=0;axis<2;++axis){int token=geo_json_member(&j,slot,axis?"B":"A");EngDimensionSource source;EngTarget target={1,0,0,axis};Coord value;char path[192];
                     printf(",\"%c\":",axis?'B':'A');
-                    if(!geo_json_is_null(&j,token)&&eng_source_parse(&j,token,&source,false)&&eng_resolve((World*)w,&source,&target,UINT32_MAX,0,&value,path,sizeof path)){
-                        printf("{\"value\":%lld,\"path\":",(long long)value);js_string(path);putchar('}');}else fputs("null",stdout);}
+                    EngTerminal terminal={0};
+                    if(!geo_json_is_null(&j,token)&&eng_source_parse(&j,token,&source,false)&&eng_resolve_terminal((World*)w,&source,&target,UINT32_MAX,0,&value,path,sizeof path,&terminal)){
+                        printf("{\"value\":%lld,\"path\":",(long long)value);js_string(path);fputs(",\"terminal\":",stdout);json_eng_terminal(&terminal);putchar('}');}else fputs("null",stdout);}
                 putchar('}');}}
         geo_json_free(&j);fputs("]}",stdout);
     }fputs("],\"instances\":[",stdout);

@@ -3,10 +3,11 @@
   const api = factory(typeof module === "object" && module.exports ? require("./source-plane.js") : root.GeometrySourcePlane,
     typeof module === "object" && module.exports ? require("./evidence-links.js") : root.EvidenceLinks,
     typeof module === "object" && module.exports ? require("./rule-case-data.js") : root.GeometryRuleCaseData,
-    typeof module === "object" && module.exports ? require("./room-candidate-draft.js") : root.GeometryRoomCandidateDraft);
+    typeof module === "object" && module.exports ? require("./room-candidate-draft.js") : root.GeometryRoomCandidateDraft,
+    typeof module === "object" && module.exports ? require("./cutting-settings.js") : root.CuttingSettings);
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.GeometryFeatureAttachments = api;
-})(typeof globalThis !== "undefined" ? globalThis : this, function (Rooms, Evidence, Cases, RoomCandidates) {
+})(typeof globalThis !== "undefined" ? globalThis : this, function (Rooms, Evidence, Cases, RoomCandidates, Cutting) {
   "use strict";
   const SCHEMA = "geometry-feature-attachments/1";
   const CASE_KIND=Cases.KIND, CASE_SCHEMA=Cases.SCHEMA;
@@ -16,7 +17,7 @@
   const ROOM_HISTORY_SCHEMA = "source-rooms/2", ROOM_HISTORY_CAPABILITY = "source-room-history/1";
   const ROOM_DISPLAY_SCHEMA = "source-rooms/3", ROOM_DISPLAY_CAPABILITY = "source-room-display/1";
   const ROOM_CANDIDATE_KIND = RoomCandidates.KIND, ROOM_CANDIDATE_SCHEMA = RoomCandidates.SCHEMA, ROOM_CANDIDATE_CAPABILITY = RoomCandidates.CAPABILITY;
-  const MAX_BYTES = 128 * 1024, MAX_STRING = 4096, MAX_ATTACHMENT_RECORDS = 5;
+  const MAX_BYTES = 128 * 1024, MAX_STRING = 4096, MAX_ATTACHMENT_RECORDS = 6; /* one record per kind: grid, room, room candidate, evidence, rule case, cutting */
   const MAX_ROOM_BYTES = 8 * 1024 * 1024;
   const sourceFields = ["igName", "igMainAlong", ...["U", "V"].flatMap(axis => [
     "Source", ...["Step", "Phase", "Panel", "Gap", "Anchor", "Stagger"].flatMap(field => [field, field + "Source"])
@@ -312,6 +313,8 @@
       if (record.value?.schema !== record.schema) fail("房間來源附件版本不一致。");
       Rooms.validate(record.value);
       if (bytes + lifecycleReserve(record.value) > MAX_ROOM_BYTES) fail("功能附件未保留房間狀態更新所需容量。");
+    } else if (record.kind === Cutting.KIND && record.schema === Cutting.SCHEMA) {
+      boundedJSON(record);Cutting.validate(record.value);
     } else if (record.kind === CASE_KIND && record.schema === CASE_SCHEMA) {
       Cases.validate(record.value);
     } else if (record.kind === Evidence.KIND && record.schema === Evidence.SCHEMA) {
@@ -338,15 +341,15 @@
       fail("功能附件未保留房間狀態更新所需容量。");
     return envelope;
   }
-  function assertKind(kind) { if (![GRID_KIND, ROOM_KIND, ROOM_CANDIDATE_KIND, Evidence.KIND, CASE_KIND].includes(kind)) fail("功能附件種類不支援。"); }
+  function assertKind(kind) { if (![GRID_KIND, ROOM_KIND, ROOM_CANDIDATE_KIND, Evidence.KIND, CASE_KIND, Cutting.KIND].includes(kind)) fail("功能附件種類不支援。"); }
   function record(kind, value, stored = false) {
     assertKind(kind);
-    const schema = value !== null && typeof value === "object" ? Object.getOwnPropertyDescriptor(value,"schema")?.value : undefined;
+    const schema = kind===Cutting.KIND ? Cutting.SCHEMA : value !== null && typeof value === "object" ? Object.getOwnPropertyDescriptor(value,"schema")?.value : undefined;
     return validateRecord({kind, schema, value},stored);
   }
   function capabilities(envelope) { validate(envelope,true); return [...new Set(envelope.records.flatMap(record => record.kind === GRID_KIND ?
     (record.schema === GRID_DRAFTS_SCHEMA ? [GRID_DRAFTS_SCHEMA,...record.value.drafts.map(d=>d.schema)] : [record.schema]) :
-    record.kind === Evidence.KIND ? [Evidence.SCHEMA] : record.kind === CASE_KIND ? [CASE_SCHEMA] :
+    record.kind === Evidence.KIND ? [Evidence.SCHEMA] : record.kind === CASE_KIND ? [CASE_SCHEMA] : record.kind === Cutting.KIND ? [Cutting.CAPABILITY] :
     record.kind === ROOM_CANDIDATE_KIND ? [ROOM_CANDIDATE_CAPABILITY] :
     [ROOM_CAPABILITY,...(record.schema===ROOM_DISPLAY_SCHEMA?[ROOM_DISPLAY_CAPABILITY]:[]),
       ...((record.schema===ROOM_HISTORY_SCHEMA||record.value.legacyHistory?.length)?[ROOM_HISTORY_CAPABILITY]:[])]))].sort(); }
@@ -384,7 +387,7 @@
   function changedRoomBoundary(value, id) { return Rooms.boundaryChanged(validateRecord(record(ROOM_KIND, value)).value, id); }
   function unknownRoomHistory(value) { return Rooms.unknownHistory(validateRecord(record(ROOM_KIND, value)).value); }
   function references(value) { validateGridDraft(value); return JSON.parse(JSON.stringify([...(value.baseRef === null ? [] : [value.baseRef]), ...value.inputRefs])); }
-  return {ReferenceDisplay:Rooms.Display,Evidence,Cases,RoomCandidates,CASE_KIND,CASE_SCHEMA, evidenceLinks, sourceIds, SCHEMA, GRID_SCHEMA, GRID_RULE_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, ROOM_DISPLAY_SCHEMA, ROOM_DISPLAY_CAPABILITY, ROOM_CANDIDATE_KIND, ROOM_CANDIDATE_SCHEMA, ROOM_CANDIDATE_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
+  return {ReferenceDisplay:Rooms.Display,Evidence,Cases, Cutting, RoomCandidates,CASE_KIND,CASE_SCHEMA, evidenceLinks, sourceIds, SCHEMA, GRID_SCHEMA, GRID_RULE_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, ROOM_DISPLAY_SCHEMA, ROOM_DISPLAY_CAPABILITY, ROOM_CANDIDATE_KIND, ROOM_CANDIDATE_SCHEMA, ROOM_CANDIDATE_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
     validateSourceRecords:Rooms.validateSourceRecords, validateReconstructionReviews:Rooms.validateReconstructionReviews,
     sourceFields:Object.freeze(sourceFields), bindingFields:Object.freeze(bindingFields), ruleFields:Object.freeze(ruleFields),
     gridSourceDefinition, gridSourceKey, ruleAwareSource,

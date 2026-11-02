@@ -34,7 +34,7 @@ const ReferenceWorkspace = (() => {
     if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
   }
   function beginNativeOperation(command) {
-    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return null;
+    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
     return () => {if (!ended) {ended = true; nativePending--;}};
@@ -430,8 +430,8 @@ const ReferenceWorkspace = (() => {
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
     if (result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
       dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
-    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
-    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm) /.test(cmd) && result.history_changed !== false) dirty();
+    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
+    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|definition-import-confirm) /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
@@ -589,9 +589,10 @@ const ReferenceWorkspace = (() => {
         throw new Error("舊網格草稿介面不能取代集合或失效草稿。");
     }
     const proposal = featureProposal(kind,value,kind===P.Features.GRID_KIND&&options.gridWrite===gridDraftWrite&&options.storedGrid===true), previous = readFeatureAttachment(kind);
+    if(kind===P.Features.Cutting.KIND)P.Features.Cutting.transition(previous,value);
     if (sameModelData(previous, value)) return previous;
     const next = structuredClone(proposal);
-    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : kind === P.Features.ROOM_CANDIDATE_KIND ? (value === null ? "捨棄房間候選草稿" : "編輯房間候選草稿") : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
+    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.Cutting.KIND ? "裁切設定" : kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : kind === P.Features.ROOM_CANDIDATE_KIND ? (value === null ? "捨棄房間候選草稿" : "編輯房間候選草稿") : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
     if (kind === E.KIND) window.dispatchEvent(new CustomEvent("evidence-links-changed"));
     return readFeatureAttachment(kind);
@@ -1944,7 +1945,7 @@ const ReferenceWorkspace = (() => {
       token=candidate.token;
       assertWritableLease();assertCurrent();
       P.validateProjectObjectRefs(manifest,candidate.final_objects);
-      P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities));
+      P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities,{cutting:true}));
       P.validateProjectCapabilities(candidate.required_capabilities);
       const policy=P.formatPolicy(manifest.format);
       if (policy.engineeringCandidate) {
