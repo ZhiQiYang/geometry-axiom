@@ -1,6 +1,6 @@
 只縮短HTTP fixture serve_forever輪詢至0.05秒，保留原timeout、21個方法與95次assert；本機main新增的兩個回歸完整保留。
 
-完整current head：**f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12**。base **main**；已一般merge精確 e02057b4c725d6f03ae52c3bc30776bf9442b0cf，再採正式重產原件。**Draft／當前F整合CI待收，未達合併條件**；只一般merge與快轉推送，Codex未合main。
+完整current head：**f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12**。base **main**；已一般merge精確 e02057b4c725d6f03ae52c3bc30776bf9442b0cf，再採正式重產原件。**VALIDATED-WAITING-REVIEW：F required gates已核收，交當前F最新審查，未有合併批准**；只一般merge與快轉推送，Codex未合main。
 
 | 唯一current-state gate | 真結果／execution與界線 |
 |---|---|
@@ -11,10 +11,14 @@
 | F新原帳本check | **已實跑**`python3 -B tests/mutate.py --check`，exit0，無stale／blocked／survived。此為正式新ledger的check，不拿舊有效檢查代新採入 |
 | F架構三條原裁判 | **已實跑全0**：`python3 -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json`；`python3 -B tests/test_architecture_contract.py`；`python3 -B tests/test_product_architecture.py`。新receipt真execution仍M，未改stamp |
 | 前輪正式結果 | 舊公開79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6的20CI、19個HTTP方法及原full2267/85golden保持歷史；不移標新M/F。M曾check1、53bridge judge stale，原紅保留，現已用本次整份新ledger修復。 |
-| 新F正式integration | [{'id': 41437638054, 'name': 'Geometry integration', 'event': 'pull_request', 'status': 'queued'}]；**原件與真終態尚未收齊，不能寫已通過**。原每native/browser job時限、assert/golden/skip完全不變 |
-| 重產與重跑界線 | M→F只精確採入已驗原derived bytes、所有product/test/judge inputs同M，不再重跑第二次123。F新正式CI由原workflow自動執行；舊M/source的execution留原身份 |
-| 合併判斷 | 待F required CI全綠、原件核收、最新獨立審查後才READY-TO-MERGE；合main由本機Claude，不由Codex處理 |
+| 新F正式integration | **十個logical gates全成功**：[41437638054](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41437638054)，latest attempt2；九個原attempt1成功＋新documents attempt2 job125268717592，其他attempt2九列是繼承status，不算再跑。十個原log checkout皆d917902400dc18294191a6c50aa990178fe279a0、tree同F；12ZIP/API digest全驗，原native聚合CLI0/summary bytes等官方。237/237 suites、5421counted/5420pass/1原GDI；fullcanvas2286/86golden/0fail/0skip/P38預期1，其他4原browser成功，新documents原DOCUMENTS_RESULT **47pass0fail** |
+| 重產與重跑界線 | M→F只三個derived Git葉，產品碼、測試/裁判原始碼、expected及policy同M；刻意更新的derived資料已在F原check與架構三條驗收，不宣稱derived bytes與M舊檔同。120execution仍M，不第二次重產123 |
+| 合併判斷 | **F驗收齊，交當前F最新獨立審查**；最新舊ChatGPT審查仍綁996，不冒稱批准F。新審查可合後才READY-TO-MERGE，由本機Claude合main，Codex不合main |
 
-[已發布證據總索引與歷史原紅](https://github.com/ZhiQiYang/geometry-axiom/tree/48da3fa2b054ca74da2e13277db1522a6e6133ce/evidence/cloud-resume-20261102)。新sourceM/F的整份ZIP/cache、全量ledger、架構三條stdout/stderr、真SHA/退出碼正沿相同獨立evidence分支持久交付；目前可直接由上述正式Actions下載原件。沒有用本機路徑冒充已推送。
+[已發布證據總索引與歷史原紅](https://github.com/ZhiQiYang/geometry-axiom/tree/e23a234e8e4d3073102726f216b5d5bf9bb78e4c/evidence/cloud-resume-20261102)。新sourceM/F整份原ZIP/cache、全量ledger、架構三條原流及最後十個logical gates原件已持久推到固定E，remote SHA已核；不把SHM路徑當已交付。
 
 #339已合main；#340合後按341→342→343→346→347→348推進，不把來源祖先已在main當成缺的效能／whole-opt驗收完成。未放寬斷言、golden、時限、允許skip；未改公理層、閱讀器、決策佇列。
+
+[當前F原件與attempt界線](https://github.com/ZhiQiYang/geometry-axiom/blob/e23a234e8e4d3073102726f216b5d5bf9bb78e4c/evidence/cloud-resume-20261102/pr345/integration-final-F/FINAL_ACCEPTANCE.json)，[獨立採入peer](https://github.com/ZhiQiYang/geometry-axiom/blob/e23a234e8e4d3073102726f216b5d5bf9bb78e4c/evidence/cloud-resume-20261102/pr345/main354-adoption/PEER_ADOPTION_REVIEW.json)。原native/fullcanvas在attempt1，documents47在attempt2；不是二十次新執行。原documents attempt1 fetch取消，build/browser未開始，原whole-job10min；原取消與root唯一API rerun403都保留。後來已存在的attempt2發起者未由本任務證實，不歸功root、不再重跑，也未增加任何時限。
+
+架構原receipt sourceHead=M/run41431971663、adoptedMain=8f82b207e87c086705a1d8b7a00e2f215c07cbcf歷史錨點全留原；本次Git main parent=e020、current head=F，不能混同。
