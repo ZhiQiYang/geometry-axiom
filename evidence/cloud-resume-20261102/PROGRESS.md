@@ -1,3 +1,19 @@
+# CURRENT 2026-11-02T10:56:33.147620+00:00 — 持續推進
+
+main最新實讀e02057b4c725d6f03ae52c3bc30776bf9442b0cf（本機已合#354，#366亦已入main）。#363固定F4的三阻擋已全解除且獨立dot可合；Codex未合main。
+
+- **#340已一般merge新main**：公開head aca3d2a5f604848b159a0e5cdd3d3f55fcad190f，無衝突、tree26ef5dfd1c6f838887a30c9968021e513e2dc460，對main精確僅17歷史evidence；舊20綠不移標。新check0，已一次正式重產#366 run41430549123與integration41430557786，待真終態／原件，PR已draft以免舊ready冒用。最新正文/API回讀已同步。#339已merged，不重開；340由本機合後才341。
+- **#367 D正式原件已全核**：run41424542378／12jobs全部真success；實際CI execution ea163769f8f570ac06b56906ceb8cdf7dc220a1a、產品D e5b0bc23b04e872a68b066bd5b51d57e2c104943同tree。10ZIP/654members/12joblogs已保留；原native與canvas聚合各0、summary逐byte等官方。235native/5460 counted/5459pass/1原GDI，兩片898+1419=2317、86key（含0鍵），與D原full精確相同。獨立peer10669checks PASS，見[原件](canvas-sharding/ci-D-terminal/ARCHIVE.json)與[peer](canvas-sharding/ci-D-terminal/PEER_D_OFFICIAL_REVIEW.json)。原235census的exit1仍1，不能因候選strict CI全綠覆寫原report。
+- **artifact真反證完成**：缺片、錯attempt、改raw、duplicate manifest shard、錯manifest.plan_sha256、偽summary六種原CLI各具名exit1，原件恢復0／summary byte相同；duplicate/plan只改manifest欄位，不外推整ZIP重複或golden payload破壞。原S1紅與D拒舊source均保留。D與S1的actual CI commit已正常push保全原ref並讀回hash，execution沒有改標。
+- **真UI harness仍未完成**：既有peer獨占D/M/D legacy。首F遭root取件lazy-fetch ENOSPC，F02 Chrome長TMPDIR Socket path too long，兩個都是0assert環境失敗原件，不當mutant killed。已修成短獨立SHM TMP/profile並實際原Chrome/CDP smoke0，F03於10:48:31.989926Z真啟，supervisor487975、原2100 deadline11:23:31.989926Z、18857/CDP9367，raw /dev/shm/geometry-canvas-harness-actual-20261102/fixed-before-03。先查真原流／exit，不重啟活程序；F綠才M/R，所有assert/golden/時限不變。
+- **#344獨立237複核PASS已同步正文／prbody**：完整F/V/F真0/1/0與20CI原execution保持，bodybranch707a633858f5924063942e7fc18ba5b4db99bd5a；新main#354尚未合本F，不宣稱新main整合已過。
+- **#345新main合流候選已保全，不冒綠**：source de3a56cfadecf575f8e7860cbfdafdac2af0a883於codex/issue214-main354-source-20261102；公開PR仍原head 79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6。選精確main ledger解唯一衝突後，check1明報53 bridge judge stale；完整原#366重產run41431971663已一次啟動。原main新增HTTP回歸全保，只poll_interval一行；待正式新原件採入／check0才快轉公開PR。已draft並更新唯一正文，原頭標文字誤字與修正都留存，未偽造source。
+
+下一步：收harness真三相與#340/#345兩套正式原件；340合main後逐張341→342→343→346→347→348。#342/#343來源祖先入main不等於舊未驗gate已完成，R16原2.21665紅仍保留；#355 UI15及R03依使用者排序，沒有借舊綠宣告通過。
+
+---
+以下歷史快照不作目前終態
+
 # CURRENT 2026-11-02T10:33:17.552702+00:00
 
 #366已合main；#363已核收READY-TO-MERGE；#340、#345原固定來源正式CI全綠，#344三相真0/1/0＋237項獨立複核PASS，均無Codex合main。10:32新觀測main已因本機合#354變成e02057b4c725d6f03ae52c3bc30776bf9442b0cf；#340仍未合，現在先核對新main閉包並一般merge，不能把old綠移標新來源。#339已於03:14合main，340合後序列下一張是#341；#342/#343即使來源祖先已入main，缺的驗收及原R16 2.21665紅仍不能宣告完成。

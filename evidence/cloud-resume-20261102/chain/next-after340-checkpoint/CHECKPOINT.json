@@ -1,0 +1,459 @@
+{
+  "schema": "geometry-next-after340-api-pure-git-checkpoint/1",
+  "utc": "2026-11-02T10:39:10.991154+00:00",
+  "apiSnapshotUtc": "2026-11-02T10:32:23.405316+00:00",
+  "status": "PASS_MERGE_CLOSURE_WITH_CONTENT_DIFF_UNVERIFIED",
+  "auditExitCode": 0,
+  "problems": [],
+  "main": {
+    "source": {
+      "apiPath": "/git/commits/e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+      "file": "main-git-commit.json",
+      "startedAt": "2026-11-02T10:33:02.056514+00:00",
+      "finishedAt": "2026-11-02T10:33:02.489559+00:00",
+      "httpStatus": 200,
+      "bytes": 2755,
+      "sha256": "1a8afc056cb762e8e243c5f6b98fb418d59ed4433921ec815f6f0f42586d0ea6",
+      "link": null,
+      "exitCode": 0
+    },
+    "value": {
+      "sha": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+      "message": "Merge pull request #354 from ZhiQiYang/grok/r05-k1-recovery-20261028\n\nR05: 回收 K1 裁切分支（terminal 與前端）",
+      "parents": [
+        "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+        "ec3ffcca315dc762d615f85fc331443f444058a1"
+      ],
+      "tree": "91b7a5dfafbd1cffd95a384a62d69b08c481e248",
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2026-11-02T09:41:42Z"
+      },
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom/commit/e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    }
+  },
+  "pr339": {
+    "state": "closed",
+    "merged": true,
+    "merged_at": "2026-11-02T03:14:39Z",
+    "merge_commit_sha": "8fd6c984f73ae66d0f60ebfa6761ebf408848a2b",
+    "head": {
+      "ref": "codex/geo324-faces-20261024",
+      "sha": "8f39025be6708bd9d58e576ed5b349b7ef628624",
+      "label": "ZhiQiYang:codex/geo324-faces-20261024"
+    },
+    "base": {
+      "ref": "codex/kernel-without-woodworking-20261023",
+      "sha": "175cee44c56c89871803d955c0c525236727ba65",
+      "label": "ZhiQiYang:codex/kernel-without-woodworking-20261023"
+    },
+    "html_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/339"
+  },
+  "pr340": {
+    "state": "open",
+    "draft": false,
+    "merged": false,
+    "merged_at": null,
+    "head": {
+      "ref": "codex/kernel-without-woodworking-20261023",
+      "sha": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+      "label": "ZhiQiYang:codex/kernel-without-woodworking-20261023"
+    },
+    "base": {
+      "ref": "main",
+      "sha": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+      "label": "ZhiQiYang:main"
+    },
+    "html_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/340",
+    "assignees": [],
+    "requestedReviewers": []
+  },
+  "pr341": {
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "merged_at": null,
+    "head": {
+      "ref": "codex/geo300-prerequisites-20261024",
+      "sha": "823729be5f4f025aebbf02c2dc85e09907c28812",
+      "label": "ZhiQiYang:codex/geo300-prerequisites-20261024"
+    },
+    "base": {
+      "ref": "codex/geo324-faces-20261024",
+      "sha": "dcdf22655e0cf8ed47cd0b7f66d89f3a7beca694",
+      "label": "ZhiQiYang:codex/geo324-faces-20261024"
+    },
+    "html_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/341",
+    "assignees": [],
+    "requestedReviewers": []
+  },
+  "baseShaCaveat": "API base.sha values are historical PR metadata, not current base-ref tips. Actual current main is bound above.",
+  "reviews": {
+    "340": {
+      "id": 6379912948,
+      "permalink": "https://github.com/ZhiQiYang/geometry-axiom/pull/340#issuecomment-6379912948",
+      "createdUtc": "2026-10-24T04:34:29Z",
+      "updatedUtc": "2026-10-24T04:34:29Z",
+      "originalFile": "pr340-latest-chatgpt-review.md",
+      "declaredOldHeadFull": "04959e04c334ceaf03f865514f76b1cac8ee91f2",
+      "scope": "Latest tagged ChatGPT review still refers to049, not current b3a."
+    },
+    "340LatestAuthorFollowup": {
+      "id": 6570850986,
+      "permalink": "https://github.com/ZhiQiYang/geometry-axiom/pull/340#issuecomment-6570850986",
+      "createdUtc": "2026-11-02T06:40:52Z",
+      "updatedUtc": "2026-11-02T06:40:52Z",
+      "originalFile": "pr340-latest-comment.md",
+      "declaredHead": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+      "declaredMain": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "scope": "dot technical-readiness/closure followup at old df7; not an acceptance review at e020."
+    },
+    "341": {
+      "id": 6378848374,
+      "permalink": "https://github.com/ZhiQiYang/geometry-axiom/pull/341#issuecomment-6378848374",
+      "createdUtc": "2026-10-24T02:38:34Z",
+      "updatedUtc": "2026-10-24T02:38:34Z",
+      "originalFile": "pr341-latest-chatgpt-review.md",
+      "declaredHeadFull": "823729be5f4f025aebbf02c2dc85e09907c28812",
+      "remainingAsReported": [
+        "B1 whole optimization withdrawal plus work/CPU/wall original/candidate samples for unique, sparse/dense duplicate and >capacity fallback.",
+        "B2 full native and affected timber/browser plus required checks at final source.",
+        "C1 accepted-base ordinary merge/current matrix and affected closure bytes.",
+        "C2 original strict aggregate count10 in final closure."
+      ],
+      "scope": "Original remaining review items only; no new product audit or assertion that applicable later receipts are absent."
+    },
+    "formalReviewCounts": {
+      "340": 0,
+      "341": 0
+    }
+  },
+  "340AlreadyMergedIntoNewMain": {
+    "value": false,
+    "apiMerged": false,
+    "ancestryMetadata": {
+      "source": {
+        "apiPath": "/compare/b3a248607d7eb68d3167abbb926cf491d9b35a26...e02057b4c725d6f03ae52c3bc30776bf9442b0cf?per_page=1&page=2",
+        "file": "340-main-ancestry.json",
+        "startedAt": "2026-11-02T10:33:02.057396+00:00",
+        "finishedAt": "2026-11-02T10:33:03.427404+00:00",
+        "httpStatus": 200,
+        "bytes": 11393,
+        "sha256": "33f4f03c3d15d03c576e360cfef80e2d0f4cbf5faebfc045b90607c3ef00de6e",
+        "link": "<https://api.github.com/repositories/1375165580/compare/b3a248607d7eb68d3167abbb926cf491d9b35a26...e02057b4c725d6f03ae52c3bc30776bf9442b0cf?per_page=1&page=26>; rel=\"last\", <https://api.github.com/repositories/1375165580/compare/b3a248607d7eb68d3167abbb926cf491d9b35a26...e02057b4c725d6f03ae52c3bc30776bf9442b0cf?per_page=1&page=3>; rel=\"next\", <https://api.github.com/repositories/1375165580/compare/b3a248607d7eb68d3167abbb926cf491d9b35a26...e02057b4c725d6f03ae52c3bc30776bf9442b0cf?per_page=1&page=1>; rel=\"first\", <https://api.github.com/repositories/1375165580/compare/b3a248607d7eb68d3167abbb926cf491d9b35a26...e02057b4c725d6f03ae52c3bc30776bf9442b0cf?per_page=1&page=1>; rel=\"prev\"",
+        "exitCode": 0
+      },
+      "value": {
+        "status": "diverged",
+        "ahead_by": 26,
+        "behind_by": 3,
+        "total_commits": 26,
+        "html_url": "https://github.com/ZhiQiYang/geometry-axiom/compare/b3a248607d7eb68d3167abbb926cf491d9b35a26...e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+        "permalink_url": "https://github.com/ZhiQiYang/geometry-axiom/compare/ZhiQiYang:b3a2486...ZhiQiYang:e02057b",
+        "merge_base_commit": "502a64ff6214dd6060927b7f14643a533536f20d",
+        "filesReturned": 0,
+        "commitsReturned": [
+          "4d6e9e08f5b829c285de7a991bcdf56b8ba2cb61"
+        ]
+      }
+    },
+    "meaning": "Exact b3a is not an ancestor of e020:diverged/main ahead26 behind3/merge-base502. Compare page2 intentionally excludes files; no zero-diff claim uses its empty file list."
+  },
+  "gitClosure": {
+    "head340": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+    "targetMain": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+    "mergeParentOrder": [
+      "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+      "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    ],
+    "fetchPerformed": true,
+    "fetchExitCode": 0,
+    "fetchRawReceipt": "GIT_PREFLIGHT_RAW.json",
+    "mergeTreeExitCode": 0,
+    "mergeTree": "26ef5dfd1c6f838887a30c9968021e513e2dc460",
+    "conflicts": [],
+    "remainingVsMain": [
+      {
+        "path": "evidence/geo340-convergence-175cee44/AGGREGATE_RESULT.json",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 06e976f0226f51ebff6bca7a222aec43dcf5b4ff A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/CURRENT_STATE.json",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 bc6ec2bc5a9098cb4e698b984b223cdb0c5c0844 A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/MERGE_RESULT.json",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 ac40d948071de3d4723fc84207e39b8ac7e62e3a A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/PROGRESS.md",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 aa8a5d53231dd07dc97cafefbda5c1de62e6df50 A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/PUBLICATION_INDEX.json",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 8f995908aedd3899146774500c5b2ea980fdb8c4 A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/peer/PEER_AND_REVIEW_RECORDS.tar.gz",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 a7029ceb61d61fc93ca42963cf1e75827d9e4039 A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/peer/PEER_AND_REVIEW_RECORDS_MANIFEST.json",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 684f48ceaeac2f8f6605eff54fc7d9991157e902 A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS.tar.gz",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 616b279df3be6304797b144824a60d6814059aec A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS_MANIFEST.json",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 d65693408e4d224efeca240e1e809fa86f9dcca1 A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/raw/AGGREGATE_ORIGINALS.tar.gz",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 3ab1e3d2d3f110572e32a85b8ed05fbfdb86ff49 A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/raw/AGGREGATE_ORIGINALS_MANIFEST.json",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 fc9f6e380cb077df4616da3cb93bf1707da7fa25 A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/raw/FACES_CLOSURE_ORIGINALS.tar.gz",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 3eb055c9b8f1be7f433f133b8acb4d80c6f76bcc A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/raw/FACES_CLOSURE_ORIGINALS_MANIFEST.json",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 1536444c649a171d46c725323a458d97cc2afdd6 A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/raw/MERGE_ORIGINALS.tar.gz",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 4a429b849d39ca1e7d0628c282ea06b72248390c A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/raw/MERGE_ORIGINALS_MANIFEST.json",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 00067138d9e9845e00ac9b192f90bd3bba510a15 A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/tools/publish.py",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 bd75bfc9b1853e4af764e8e210c8f4b53ccb38e7 A"
+      },
+      {
+        "path": "evidence/geo340-convergence-175cee44/tools/publish_r2.py",
+        "rawEntry": ":000000 100644 0000000000000000000000000000000000000000 e1c1a32dfdcfa09a22898e913d958cfbfa571007 A"
+      }
+    ],
+    "remainingCount": 17,
+    "allOtherPathModeTypeBlobEntriesEqualNewMain": true,
+    "productTestsJudgesRegistrySsotDifferenceVsMain": [],
+    "newMainDeltaVsOld340Count": 77,
+    "newMainDeltaStatuses": {
+      "M": 49,
+      "A": 28
+    },
+    "deltaExactlyEquals354Vs366MainEntries": true,
+    "fullEntryDelta": "NEW_MAIN_ENTRY_DELTA.json",
+    "closureImpacts": {
+      "nativeAndInputs": [
+        "geometry-app/native/reference_sources.inc",
+        "geometry-core/engineering.inc",
+        "geometry-templates/woodworking/native/assembly_sources.c",
+        "geometry-templates/woodworking/native/engineering.c",
+        "geometry-templates/woodworking/native/engineering.h",
+        "geometry-templates/woodworking/native/engineering_sources.c",
+        "geometry-templates/woodworking/native/engineering_sources.h",
+        "geometry-templates/woodworking/native/finish_sources.c",
+        "geometry-templates/woodworking/native/grid_sources.c",
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "geometry-web/assembly_bridge.inc",
+        "geometry-web/engineering_bridge.inc",
+        "tests/geo261_assembly_sources_harness.c",
+        "tests/geo261_finish_sources_harness.c",
+        "tests/geo261_frontend_mutations.py",
+        "tests/geo261_grid_sources_harness.c"
+      ],
+      "ledger": [
+        "tests/mutants_results.json"
+      ],
+      "registryExpected": [
+        "tests/run_all.expected.json",
+        "tests/run_all.py"
+      ],
+      "architecturePolicyJudgesDerived": [
+        "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+        "geometry-core/domain-decoupling/product-architecture-receipt.json",
+        "geometry-core/domain-decoupling/product-architecture-scan.json",
+        "geometry-core/domain-decoupling/product-architecture.json",
+        "tests/test_product_architecture.py"
+      ],
+      "browserHarnessGolden": [
+        "geometry-web/app.css",
+        "geometry-web/app.js",
+        "geometry-web/assembly_bridge.inc",
+        "geometry-web/cdp_sections.golden.json",
+        "geometry-web/cdp_test.js",
+        "geometry-web/cutting-plan.js",
+        "geometry-web/cutting-settings.js",
+        "geometry-web/cutting-workspace.js",
+        "geometry-web/cutting_plan_test.js",
+        "geometry-web/docs/CUTTING-PLAN.md",
+        "geometry-web/docs/DOM-CONTRACT.md",
+        "geometry-web/docs/MODEL-SNAPSHOT-SCHEDULE.md",
+        "geometry-web/docs/REFERENCE-PROJECT.md",
+        "geometry-web/docs/TIMBER-SCHEDULE.md",
+        "geometry-web/engineering_bridge.inc",
+        "geometry-web/feature-attachments.js",
+        "geometry-web/index.html",
+        "geometry-web/project-store.js",
+        "geometry-web/reference-workspace.js",
+        "geometry-web/runtime_version.py",
+        "geometry-web/scenario-integration.js",
+        "geometry-web/scenario-snapshots.js",
+        "geometry-web/timber-schedule.js"
+      ],
+      "newTestFiles": [
+        "tests/test_cutting_layering.js",
+        "tests/test_cutting_owner.js",
+        "tests/test_cutting_plan.js",
+        "tests/test_cutting_project_store.js",
+        "tests/test_cutting_session.js",
+        "tests/test_cutting_summary.js",
+        "tests/test_engineering_terminal.py",
+        "tests/test_k1_mutation_runners.py"
+      ],
+      "newBrowserPlugins": [
+        "geometry-web/cutting_plan_test.js"
+      ],
+      "newMutationJudges": [
+        "tests/mutate_k1_frontend.py",
+        "tests/mutate_k1_terminal.py"
+      ],
+      "newFixtures": [
+        "tests/fixtures/cutting_legacy_cd4bc880.json",
+        "tests/fixtures/k1_terminal_legacy_replies.json",
+        "tests/fixtures/k1_terminal_legacy_replies.provenance.json"
+      ],
+      "otherChangedTestJudges": [
+        "tests/test_assembly_rules.py",
+        "tests/test_product_architecture.py",
+        "tests/test_rule_case_workbench_http.py",
+        "tests/test_runtime_version.py",
+        "tests/test_shared_format17.js",
+        "tests/test_woodworking_frontend.js"
+      ],
+      "ssotClauseDecisionChanges": []
+    },
+    "headIndexPreserved": true,
+    "originalHead": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+    "originalIndexSha256": "b26a02bb4b8609bf04f95d0226845107756987f7e91a889cda3522f9a6b0d10a"
+  },
+  "unverifiedContentDiff": {
+    "receipt": "new-main-test-judge-registry-command.json",
+    "exitCode": 128,
+    "stderr": "warning: lazy fetching disabled; some objects may not be available\nfatal: could not fetch dc533f28864e1abc20d6f6a0d73cd896634a170d from promisor remote\n",
+    "scope": "Five selected registry/expected/architecture/golden text diffs blocked by absent promisor blob with lazy fetching disabled. Exact old/new Git entries and added names are preserved; internal rows/counts/assertions/manifest/golden contents were not reviewed. No additional large blob fetch or gate run."
+  },
+  "executionBoundary": "All old b3a20-green receipts keep their actual source/execution. New main adds77 product/test/fixture/judge/ledger/architecture leaves, so old unchanged-closure/20-green claims cannot be relabeled to the new composition. No #354 product or acceptance review was performed.",
+  "nextConcreteAction": "Root ordinary-merges frozen e020 into existing #340 branch, retaining exact new-main77 leaves plus17 historical evidence files; records real new SHA/parents and complete-entry closure; updates sole current-state/body and performs necessary original checks/CI on the new source. No old20-green execution is relabeled. #341 follows only after #340 accepted/merged; skip already incorporated #339.",
+  "sourcePreservation": {
+    "worktree": "/tmp/geometry-pr340-20261102",
+    "headIndexUnchanged": true,
+    "activeFullDCheckoutIndexProcessesAccessed": false,
+    "testsBuildChromeCiZipBinaryHash": [],
+    "branchBasePrBodyOrExistingReceiptChanges": []
+  },
+  "apiSources": {
+    "main": {
+      "apiPath": "/branches/main",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.518653+00:00",
+      "finishedAt": "2026-11-02T10:32:22.937832+00:00",
+      "bytes": 5319,
+      "sha256": "f084c832a844403183f25d2853a57b33253bdb2076c01938c32f115793d23b32",
+      "file": "main.json",
+      "exitCode": 0
+    },
+    "pr339": {
+      "apiPath": "/pulls/339",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.519309+00:00",
+      "finishedAt": "2026-11-02T10:32:22.934850+00:00",
+      "bytes": 25670,
+      "sha256": "70b2fc40a94ab6c078f3f873bf1545023f8f57781313dc59140afbb444638727",
+      "file": "pr339.json",
+      "exitCode": 0
+    },
+    "pr340": {
+      "apiPath": "/pulls/340",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.520062+00:00",
+      "finishedAt": "2026-11-02T10:32:22.974996+00:00",
+      "bytes": 20537,
+      "sha256": "a0e5f04bdd8281cf4fc938250a0a352d68c2553a774f388523f772d3ca1ea9ea",
+      "file": "pr340.json",
+      "exitCode": 0
+    },
+    "pr341": {
+      "apiPath": "/pulls/341",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.520636+00:00",
+      "finishedAt": "2026-11-02T10:32:23.088142+00:00",
+      "bytes": 22213,
+      "sha256": "fc0c49ca35d1f247c9c4f2aa4b92db1489bfa2a788e10a306032691ca171dc56",
+      "file": "pr341.json",
+      "exitCode": 0
+    },
+    "comments340": {
+      "apiPath": "/issues/340/comments?per_page=100",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.935171+00:00",
+      "finishedAt": "2026-11-02T10:32:23.327552+00:00",
+      "bytes": 18549,
+      "sha256": "559283c7116dc34716d08a24c4c9b66c1e2613438d5b48954a5abb95fed9b87e",
+      "file": "comments340.json",
+      "exitCode": 0
+    },
+    "comments341": {
+      "apiPath": "/issues/341/comments?per_page=100",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.938125+00:00",
+      "finishedAt": "2026-11-02T10:32:23.184412+00:00",
+      "bytes": 5047,
+      "sha256": "f22c566a757429c8867b27d875473426c5b8c3d5acbbc21c2a5fcaee46725f35",
+      "file": "comments341.json",
+      "exitCode": 0
+    },
+    "reviews340": {
+      "apiPath": "/pulls/340/reviews?per_page=100",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.975260+00:00",
+      "finishedAt": "2026-11-02T10:32:23.404702+00:00",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "file": "reviews340.json",
+      "exitCode": 0
+    },
+    "reviews341": {
+      "apiPath": "/pulls/341/reviews?per_page=100",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:23.088427+00:00",
+      "finishedAt": "2026-11-02T10:32:23.398050+00:00",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "file": "reviews341.json",
+      "exitCode": 0
+    }
+  },
+  "reportAssemblyDiagnostic": {
+    "initialExit": 1,
+    "error": "KeyError:'extra' while assembling report from saved ANCESTRY JSON; corrected lookup. No source or validation result changed."
+  }
+}

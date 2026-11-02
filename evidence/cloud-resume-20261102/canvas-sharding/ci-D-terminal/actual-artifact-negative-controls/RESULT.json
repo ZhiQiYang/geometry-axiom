@@ -1,0 +1,142 @@
+{
+  "at": "2026-11-02T10:44:11.376899+00:00",
+  "execution": "ea163769f8f570ac06b56906ceb8cdf7dc220a1a",
+  "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+  "runId": 41424542378,
+  "attempt": 1,
+  "baselineOriginalVerifyExit": 0,
+  "negativeRows": [
+    {
+      "name": "missing-shard",
+      "command": [
+        "python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "verify",
+        "--artifacts",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/actual-artifact-negative-controls/missing-shard/artifacts",
+        "--out",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/actual-artifact-negative-controls/missing-shard/must-not-exist-summary"
+      ],
+      "exit": 1,
+      "seconds": 0.3909974719863385,
+      "expectedNamedRejection": "CANVAS_MISSING_SHARD",
+      "namedRejectionPresent": true,
+      "noFalseSummary": true,
+      "mutationScope": "Private artifact copy fault injection, not new product execution or UI mutant"
+    },
+    {
+      "name": "wrong-attempt",
+      "command": [
+        "python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "verify",
+        "--artifacts",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/actual-artifact-negative-controls/wrong-attempt/artifacts",
+        "--out",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/actual-artifact-negative-controls/wrong-attempt/must-not-exist-summary"
+      ],
+      "exit": 1,
+      "seconds": 0.2763430940103717,
+      "expectedNamedRejection": "CANVAS_WRONG_RUN_ATTEMPT: run_attempt",
+      "namedRejectionPresent": true,
+      "noFalseSummary": true,
+      "mutationScope": "Private artifact copy fault injection, not new product execution or UI mutant"
+    },
+    {
+      "name": "changed-raw",
+      "command": [
+        "python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "verify",
+        "--artifacts",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/actual-artifact-negative-controls/changed-raw/artifacts",
+        "--out",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/actual-artifact-negative-controls/changed-raw/must-not-exist-summary"
+      ],
+      "exit": 1,
+      "seconds": 0.27149980200920254,
+      "expectedNamedRejection": "CANVAS_RAW_CHANGED: stdout.log",
+      "namedRejectionPresent": true,
+      "noFalseSummary": true,
+      "mutationScope": "Private artifact copy fault injection, not new product execution or UI mutant"
+    },
+    {
+      "name": "duplicate-shard",
+      "command": [
+        "python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "verify",
+        "--artifacts",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/actual-artifact-negative-controls/duplicate-shard/artifacts",
+        "--out",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/actual-artifact-negative-controls/duplicate-shard/must-not-exist-summary"
+      ],
+      "exit": 1,
+      "seconds": 0.2742925279890187,
+      "expectedNamedRejection": "CANVAS_DUPLICATE_SHARD",
+      "namedRejectionPresent": true,
+      "noFalseSummary": true,
+      "mutationScope": "Private artifact copy fault injection, not new product execution or UI mutant"
+    },
+    {
+      "name": "changed-plan",
+      "command": [
+        "python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "verify",
+        "--artifacts",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/actual-artifact-negative-controls/changed-plan/artifacts",
+        "--out",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/actual-artifact-negative-controls/changed-plan/must-not-exist-summary"
+      ],
+      "exit": 1,
+      "seconds": 0.27858793997438625,
+      "expectedNamedRejection": "CANVAS_SOURCE_OR_GOLDEN_CHANGED",
+      "namedRejectionPresent": true,
+      "noFalseSummary": true,
+      "mutationScope": "Private artifact copy fault injection, not new product execution or UI mutant"
+    },
+    {
+      "name": "false-summary",
+      "command": [
+        "python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "verify",
+        "--artifacts",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/actual-artifact-negative-controls/false-summary/artifacts",
+        "--out",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/actual-artifact-negative-controls/false-summary/must-not-exist-summary"
+      ],
+      "exit": 1,
+      "seconds": 0.30568949703592807,
+      "expectedNamedRejection": "CANVAS_FAKE_SUMMARY",
+      "namedRejectionPresent": true,
+      "noFalseSummary": true,
+      "mutationScope": "Private artifact copy fault injection, not new product execution or UI mutant"
+    }
+  ],
+  "restoredOriginalVerifyExit": 0,
+  "restoredOfficialSummaryByteEqual": true,
+  "originalFilesAllBeforeAfterEqual": {
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original/canvas-shard-legacy/stdout.log": "cd47af010a87282f0365510f3eecd5e882cfdb24f6d32313af855a395aca2c38",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original/canvas-shard-legacy/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original/canvas-shard-legacy/runtime.stdout": "c6776d661409413b0dcaa127b5ee949a0a506687a1627f18fd2d3d88d1b67d74",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original/canvas-shard-legacy/runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original/canvas-shard-legacy/plan.json": "8ba838052339cc1b577991c9f16d7e65c3552f303065c60fe6891df2cf158119",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original/canvas-shard-legacy/manifest.json": "8b4da54140404aa9785a06d1448596f2baafad7eeea4f7819a33c160f458cd62",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original/canvas-shard-extensions/stdout.log": "97c18e7821655c065d0468e6d77f0e3d17bb166579d733b5f9d557a42bac1ecd",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original/canvas-shard-extensions/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original/canvas-shard-extensions/runtime.stdout": "212f57264eb2e418ebef2abb55e63585197d270793bb9d9f09773a6f8d6f6e52",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original/canvas-shard-extensions/plan.json": "8ba838052339cc1b577991c9f16d7e65c3552f303065c60fe6891df2cf158119",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original/canvas-shard-extensions/runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original/canvas-shard-extensions/manifest.json": "db4232d394750f69e3ee811930b26f7322294535df4be14877b8ae07ee6ae11e"
+  },
+  "noProductOrELFOrChromeExecuted": true,
+  "scope": "Actual original CLI against preserved official bytes and private corrupted copies; UI harness separate and still running."
+}

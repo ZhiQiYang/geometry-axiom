@@ -1,0 +1,69 @@
+{
+  "at": "2026-11-02T10:42:37.886815+00:00",
+  "exit": 0,
+  "commands": [
+    {
+      "command": [
+        "node",
+        "tests/helpers/canvas_shards.js",
+        "plan"
+      ],
+      "cwd": "/tmp/geometry-canvas-D-official-replay-20261102",
+      "exit": 0,
+      "seconds": 0.05416489898925647,
+      "execution": "ea163769f8f570ac06b56906ceb8cdf7dc220a1a",
+      "apiHead": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "run": 41424542378,
+      "attempt": 1
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/native_shard_receipts.py",
+        "--input",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/native-replay-input",
+        "--parts",
+        "3",
+        "--output",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/native-replay-summary.json"
+      ],
+      "cwd": "/tmp/geometry-canvas-D-official-replay-20261102",
+      "exit": 0,
+      "seconds": 0.061302606016397476,
+      "execution": "ea163769f8f570ac06b56906ceb8cdf7dc220a1a",
+      "apiHead": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "run": 41424542378,
+      "attempt": 1
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        ".github/scripts/canvas_evidence.py",
+        "verify",
+        "--artifacts",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/original",
+        "--out",
+        "/tmp/geometry-resume-20261102/canvas-sharding/ci-D-terminal/canvas-replay-complete"
+      ],
+      "cwd": "/tmp/geometry-canvas-D-official-replay-20261102",
+      "exit": 0,
+      "seconds": 0.5538959660334513,
+      "execution": "ea163769f8f570ac06b56906ceb8cdf7dc220a1a",
+      "apiHead": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "run": 41424542378,
+      "attempt": 1
+    }
+  ],
+  "execution": "ea163769f8f570ac06b56906ceb8cdf7dc220a1a",
+  "apiHead": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+  "sameTrees": true,
+  "planExactBothOriginalArtifacts": true,
+  "nativeOriginalSummaryBytesEqual": true,
+  "canvasOriginalSummaryBytesEqual": true,
+  "fullReferenceSource": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+  "fullReferenceSectionsExact": true,
+  "fullReferenceAssertions": 2317,
+  "noNativeOrBrowserExecuted": true
+}

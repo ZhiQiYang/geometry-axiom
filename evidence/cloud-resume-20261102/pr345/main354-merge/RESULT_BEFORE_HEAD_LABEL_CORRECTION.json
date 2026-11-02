@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-02T10:50:17.502429+00:00",
+  "main": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+  "sourceCandidate": "de3a56cfadecf575f8e7860cbfdafdac2af0a883",
+  "sourcePreservationBranch": "codex/issue214-main354-source-20261102",
+  "sourceRemoteVerified": true,
+  "originalPRHeadUnchanged": "79cf0f16bca9ce55b2b19e793650d5e4e2c5e6",
+  "originalPRNotYetPushed": true,
+  "ledgerConflictResolution": "Exact latest main bytes; old ledger retained in original Git ancestor. No splice/relabel.",
+  "sourceDeltaFromMain": "Only poll_interval=0.05 in tests/test_rule_case_workbench_http.py plus historical evidence; new main added regression retained",
+  "checkExit": 1,
+  "staleBridgeJudges": 53,
+  "noWeakening": "No freshness threshold changed; original #366 full regeneration dispatched once on source candidate, then adopt official raw ledger and push PR only after check0",
+  "dispatchExit": 0
+}

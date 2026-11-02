@@ -1,0 +1,734 @@
+{
+  "schema": "geometry-canvas-D-official-independent-peer/1",
+  "utc": "2026-11-02T10:53:54.133569+00:00",
+  "reviewer": "/root/pr366_evidence",
+  "status": "PASS_OFFICIAL_D_BYTES_AND_AGGREGATES",
+  "auditExitCode": 0,
+  "checkCount": 10669,
+  "problems": [],
+  "method": "Independent read-only Python recomputation of retained official ZIP/API/member/raw integrity, journal unit ownership/order/counts, native deterministic partition/strict expected rows, full-reference canonical equality and actual six private corruption causes. Existing producer/verifier conclusions were compared after independent reconstruction; no original tool or product was rerun.",
+  "source": {
+    "apiHead": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+    "trueExecution": "ea163769f8f570ac06b56906ceb8cdf7dc220a1a",
+    "mergeParents": [
+      "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+      "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+    ],
+    "tree": "79ab857da822431b248cfed3d4a4a9f9f552e97c",
+    "exactSourceInputs": 54,
+    "planSha256": "85e3c04f030254bf3978f7408b8323268ec64fc0249b2891acc1a872eae85c7f",
+    "sourceInputMismatches": [],
+    "immutableBlobMismatches": [],
+    "gitReads": [
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-D-official-replay-20261102",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exitCode": 0,
+        "stdoutBytes": 41,
+        "stdoutSha256": "1d7a0bb096b45f731cfc908d96832b9da1396dcbb537e16dc6e8cf4c3eaecd49",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-D-official-replay-20261102",
+          "cat-file",
+          "-p",
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "exitCode": 0,
+        "stdoutBytes": 1196,
+        "stdoutSha256": "80560128d0eecdea042a6a56ad599cb35e679656fa621f285ece26676560c2cc",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-D-official-replay-20261102",
+          "rev-parse",
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a^{tree}"
+        ],
+        "exitCode": 0,
+        "stdoutBytes": 41,
+        "stdoutSha256": "cc3b4e2cce2567ba8189f5614e95c0971be97ce91cf96181a18c17e52b22c27b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-D-official-replay-20261102",
+          "rev-parse",
+          "e5b0bc23b04e872a68b066bd5b51d57e2c104943^{tree}"
+        ],
+        "exitCode": 0,
+        "stdoutBytes": 41,
+        "stdoutSha256": "cc3b4e2cce2567ba8189f5614e95c0971be97ce91cf96181a18c17e52b22c27b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/geometry-canvas-D-official-replay-20261102",
+          "cat-file",
+          "--batch"
+        ],
+        "exitCode": 0,
+        "stdoutBytes": 1566702,
+        "stdoutSha256": "5ffe9912619a16e1ac9681d614027e95823342aa4255a0ea04ff669c6bbbb322",
+        "stderr": ""
+      }
+    ]
+  },
+  "apiAndRaw": {
+    "run": 41424542378,
+    "event": "pull_request",
+    "attempt": 1,
+    "jobCount": 12,
+    "allJobsRealSuccess": true,
+    "jobs": [
+      {
+        "id": 125207846426,
+        "name": "native (1/3)",
+        "runner": "GitHub Actions 1000011164",
+        "stepCount": 9,
+        "checkoutSha": [
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "logSha256": "b4e81290c2984077b77c8210d0cedfd80fbf92ff73aa0d527f44e1259152d3be"
+      },
+      {
+        "id": 125207846549,
+        "name": "browser (documents)",
+        "runner": "GitHub Actions 1000011161",
+        "stepCount": 12,
+        "checkoutSha": [
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "logSha256": "25bf8220f16cb95f0e9b32ddc329d8341af6b93b841fdf95c03d6017b254597a"
+      },
+      {
+        "id": 125207846569,
+        "name": "browser (canvas:extensions)",
+        "runner": "GitHub Actions 1000011179",
+        "stepCount": 12,
+        "checkoutSha": [
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "logSha256": "4b658192e0713ef1b344e37dc972f3b3c282412b1d81d050e81b771d00bcfde1"
+      },
+      {
+        "id": 125207846590,
+        "name": "native (2/3)",
+        "runner": "GitHub Actions 1000011162",
+        "stepCount": 9,
+        "checkoutSha": [
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "logSha256": "19fe580931af34d2cb342dc6ccef79bd425a73c864964d097a7b614ef8c58622"
+      },
+      {
+        "id": 125207846599,
+        "name": "browser (canvas:legacy)",
+        "runner": "GitHub Actions 1000011176",
+        "stepCount": 12,
+        "checkoutSha": [
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "logSha256": "d468f45f4c31185afa7aa0af5188171b0005b4e5b5a9852eae67e3028727bd5c"
+      },
+      {
+        "id": 125207846614,
+        "name": "browser (assembly)",
+        "runner": "GitHub Actions 1000011165",
+        "stepCount": 12,
+        "checkoutSha": [
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "logSha256": "037635c85ac0c82f4c9df4952c2a8dbbef4ecab3e478c069db6c66e461b230f0"
+      },
+      {
+        "id": 125207846650,
+        "name": "browser (grid)",
+        "runner": "GitHub Actions 1000011170",
+        "stepCount": 12,
+        "checkoutSha": [
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "logSha256": "e873ae354c0f56483a09c642ae2c5c6141330d75674867d734cb3e69d7bddc7f"
+      },
+      {
+        "id": 125207846678,
+        "name": "native (3/3)",
+        "runner": "GitHub Actions 1000011163",
+        "stepCount": 9,
+        "checkoutSha": [
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "logSha256": "553245b73f9115afecdf63d7f1d387a8eb7b1f00058ade994fd46c9b11558f0b"
+      },
+      {
+        "id": 125207846764,
+        "name": "browser (space)",
+        "runner": "GitHub Actions 1000011184",
+        "stepCount": 12,
+        "checkoutSha": [
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "logSha256": "76d8539edff53ed656a3836021f31c683d94d7215775377a0b7475298f0e62fd"
+      },
+      {
+        "id": 125207846855,
+        "name": "browser (timber)",
+        "runner": "GitHub Actions 1000011186",
+        "stepCount": 12,
+        "checkoutSha": [
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "logSha256": "3a2ef4e8e2e523bab65f76a880dbaa95cdf949649f010266119b74afe3807db0"
+      },
+      {
+        "id": 125215581921,
+        "name": "native complete coverage",
+        "runner": "GitHub Actions 1000011185",
+        "stepCount": 8,
+        "checkoutSha": [
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "logSha256": "2fdba1e529933f5b17448b9573d588744bb043d51a5578905ef2a4b47ac000eb"
+      },
+      {
+        "id": 125223309190,
+        "name": "canvas complete coverage",
+        "runner": "GitHub Actions 1000011187",
+        "stepCount": 8,
+        "checkoutSha": [
+          "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        ],
+        "logSha256": "ea5b9fddd4695a76b484c99fa3c8575e781bd0b4176fcb7a70875ef5c81e649f"
+      }
+    ],
+    "acquisitionEntryCount": 25,
+    "officialZipCount": 10,
+    "officialMemberCount": 654,
+    "zips": [
+      {
+        "id": 13130964353,
+        "name": "native-logs-2",
+        "zipBytes": 69935,
+        "sha256": "19b4aca61f836a2151c0c88a22fc93539bdb68047434fafd7bec50844ce5ff35",
+        "memberCount": 208,
+        "uncompressedBytes": 177372,
+        "memberHashMapSha256": "8c3e6dc920a5d9bf8275093d6a4a103f66eb794738fe1e63dbcc0e667d3c210c"
+      },
+      {
+        "id": 13131049916,
+        "name": "native-logs-3",
+        "zipBytes": 100181,
+        "sha256": "f1acaf0d993b49939d2072fe59f114175c656cd2053d7b6969688d323c9c691c",
+        "memberCount": 210,
+        "uncompressedBytes": 220953,
+        "memberHashMapSha256": "eab94cf6f27ac9f89690a6feb92b65190b7671af74e6b597994c46b21991ad33"
+      },
+      {
+        "id": 13131074047,
+        "name": "native-shard-2",
+        "zipBytes": 4314,
+        "sha256": "d1f03577019c68415a38944902c9094f774ff019f22a039c29ad8eb502a65fcd",
+        "memberCount": 1,
+        "uncompressedBytes": 39811,
+        "memberHashMapSha256": "cd897cf88638244a56e3abed2bb761df44e5110dfe8b6c8c3e8d1b6a391e10dd"
+      },
+      {
+        "id": 13131483886,
+        "name": "native-shard-3",
+        "zipBytes": 4279,
+        "sha256": "84f794261445cec266539c0e8b75219f78d746c8bcc49d26367d88250cb2ec3b",
+        "memberCount": 1,
+        "uncompressedBytes": 39682,
+        "memberHashMapSha256": "629a4cd31cc6ebc4e9b9ccec53bae7d2e71009b6e4393abc50ca5fb15345140b"
+      },
+      {
+        "id": 13131554190,
+        "name": "native-complete-coverage",
+        "zipBytes": 2872,
+        "sha256": "a0568027871dd618ea95ab11701823ffe5356e26f4bcd1024f6be80cd33457b6",
+        "memberCount": 8,
+        "uncompressedBytes": 3423,
+        "memberHashMapSha256": "f506f9a4102ec7291c1f74f41e34f48c2cc0cd1a5e8f9d3785189d6b365c2091"
+      },
+      {
+        "id": 13131749015,
+        "name": "native-logs-1",
+        "zipBytes": 59135,
+        "sha256": "c3961c8b876a8778dbca97d2e8f90292da2eb76a189e15adf90343cf2a3e2596",
+        "memberCount": 212,
+        "uncompressedBytes": 71990,
+        "memberHashMapSha256": "b9433ff5cd19f8a1d3797ce699d297670a2950aed18dda556b9fdcfc708fa537"
+      },
+      {
+        "id": 13132043656,
+        "name": "canvas-shard-legacy",
+        "zipBytes": 54544,
+        "sha256": "7d2e5de0b82abaffa97eb9d8bf0a3a3c17b292cf76df3ffed0be9bc01fed0253",
+        "memberCount": 6,
+        "uncompressedBytes": 307722,
+        "memberHashMapSha256": "5cdf2f01ba13bb9770477c93aeec3b2858bead0bb00fb79d8bbd1e7c27ea30b2"
+      },
+      {
+        "id": 13132397128,
+        "name": "native-shard-1",
+        "zipBytes": 4284,
+        "sha256": "17e77bac687dde18385f09740eb85358e3bfd2f06dfb2f7f54f2534d2ee12c0f",
+        "memberCount": 1,
+        "uncompressedBytes": 39604,
+        "memberHashMapSha256": "74e03edcceb81af23e91e81a1a068ab00f659fef5c0c67168d4f4ec1d3139d52"
+      },
+      {
+        "id": 13132649519,
+        "name": "canvas-shard-extensions",
+        "zipBytes": 69899,
+        "sha256": "6bab4b2a6010196814868ef69d0b493debd333806f296f071999a937ab17bd83",
+        "memberCount": 6,
+        "uncompressedBytes": 528219,
+        "memberHashMapSha256": "69cd4bb6856bb57190b2f32de8556f4e362882e93e3b46cb0a866822013792b0"
+      },
+      {
+        "id": 13132912496,
+        "name": "canvas-complete-evidence",
+        "zipBytes": 2131,
+        "sha256": "2f411f1baf561e66126f397df1395225ed4f60193103978dce4f20fd88a414b5",
+        "memberCount": 1,
+        "uncompressedBytes": 8130,
+        "memberHashMapSha256": "00896226c4766f576d2f66ae2efe5706c1669434f6cc7526a270664d103c8f2a"
+      }
+    ]
+  },
+  "canvas": {
+    "parts": [
+      {
+        "shard": "legacy",
+        "assertions": 898,
+        "sections": 62,
+        "events": 981,
+        "units": [
+          "legacy"
+        ],
+        "zeroKeys": [
+          "Setup",
+          "8",
+          "10"
+        ],
+        "scope": {
+          "mode": "shard",
+          "filters": [],
+          "modifiers": [],
+          "url": "http://127.0.0.1:18839/",
+          "feedbackDirectory": "/tmp/geometry-integration-feedback",
+          "shardId": "legacy",
+          "planSha256": "85e3c04f030254bf3978f7408b8323268ec64fc0249b2891acc1a872eae85c7f",
+          "browserProfile": "/tmp/geometry-cdp-0BXcUT",
+          "cdpPort": 9333,
+          "browserPid": 2862
+        },
+        "rawSha256": "cd47af010a87282f0365510f3eecd5e882cfdb24f6d32313af855a395aca2c38",
+        "manifestSha256": "8b4da54140404aa9785a06d1448596f2baafad7eeea4f7819a33c160f458cd62",
+        "runtimeVersion": "99bef701395da610d0c552fb9208ff17dfb96ed3266f84345441b7f3ab5e11e1"
+      },
+      {
+        "shard": "extensions",
+        "assertions": 1419,
+        "sections": 24,
+        "events": 1489,
+        "units": [
+          "project-audit",
+          "engineering",
+          "marquee",
+          "grid-system",
+          "grid-rule-editor",
+          "grid-rule-lines",
+          "composition",
+          "grid-rename",
+          "uiux",
+          "ux-refinement",
+          "selection-cursor",
+          "parameters",
+          "assembly",
+          "assembly-context",
+          "assembly-bay-repeat",
+          "timber-schedule",
+          "timber-supports",
+          "source-navigation",
+          "room-outline",
+          "model-snapshots"
+        ],
+        "zeroKeys": [],
+        "scope": {
+          "mode": "shard",
+          "filters": [],
+          "modifiers": [],
+          "url": "http://127.0.0.1:18839/",
+          "feedbackDirectory": "/tmp/geometry-integration-feedback",
+          "shardId": "extensions",
+          "planSha256": "85e3c04f030254bf3978f7408b8323268ec64fc0249b2891acc1a872eae85c7f",
+          "browserProfile": "/tmp/geometry-cdp-V5C8JL",
+          "cdpPort": 9333,
+          "browserPid": 2697
+        },
+        "rawSha256": "97c18e7821655c065d0468e6d77f0e3d17bb166579d733b5f9d557a42bac1ecd",
+        "manifestSha256": "db4232d394750f69e3ee811930b26f7322294535df4be14877b8ae07ee6ae11e",
+        "runtimeVersion": "99bef701395da610d0c552fb9208ff17dfb96ed3266f84345441b7f3ab5e11e1"
+      }
+    ],
+    "assertions": 2317,
+    "sectionCount": 86,
+    "zeroKeys": [
+      "Setup",
+      "8",
+      "10"
+    ],
+    "sections": {
+      "Setup": 0,
+      "1": 14,
+      "2": 3,
+      "3": 1,
+      "4": 1,
+      "5": 1,
+      "6": 1,
+      "7": 1,
+      "8": 0,
+      "9": 12,
+      "P3": 14,
+      "P4": 11,
+      "P5": 2,
+      "P6": 4,
+      "P7": 54,
+      "P8": 116,
+      "P9": 9,
+      "P10": 9,
+      "P11": 12,
+      "P12": 8,
+      "P13": 4,
+      "P14": 16,
+      "P15": 6,
+      "P16": 10,
+      "P17": 11,
+      "P18": 20,
+      "P19": 17,
+      "10": 0,
+      "BF2": 5,
+      "BF3": 1,
+      "BF4": 9,
+      "P20": 10,
+      "P21": 4,
+      "P22": 45,
+      "P32": 34,
+      "P33": 9,
+      "P34": 7,
+      "P35": 14,
+      "P36": 2,
+      "P37": 19,
+      "P38": 13,
+      "P39": 8,
+      "P40": 4,
+      "P41": 3,
+      "P42": 12,
+      "P43": 12,
+      "P44": 19,
+      "P45": 2,
+      "P46": 7,
+      "P47": 9,
+      "P48": 14,
+      "P49": 17,
+      "P50": 33,
+      "P51": 13,
+      "P52": 43,
+      "P53": 28,
+      "P57": 56,
+      "P62": 38,
+      "P63": 18,
+      "P64": 24,
+      "P65": 5,
+      "P66": 4,
+      "P68": 36,
+      "P69": 160,
+      "P67": 96,
+      "P70": 121,
+      "P71": 9,
+      "P78": 23,
+      "P87": 60,
+      "P88": 143,
+      "P72": 52,
+      "P72B": 50,
+      "P73": 69,
+      "P74": 52,
+      "P75": 37,
+      "P76": 87,
+      "P77": 134,
+      "P82": 16,
+      "R06": 50,
+      "P80": 23,
+      "P81": 14,
+      "P85": 31,
+      "P79": 87,
+      "P84": 33,
+      "P83": 16,
+      "P86": 20
+    },
+    "officialSummarySha256": "40b3c37b21c9b8d09902695ad531fcc10f200c95881460eb3ca0f62a0c42031d",
+    "officialAndReplayByteEqual": true,
+    "fullReferenceHead": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+    "fullReferenceTree": "79ab857da822431b248cfed3d4a4a9f9f552e97c",
+    "fullReferenceRawSha256": "42de6b32f0dd57e2ff8a059075f0d04d59a905c4d06643e3dcc1d78b6aa3ca4d",
+    "fullReferenceActualExit": 0,
+    "fullReferenceTimeout": 2100.0,
+    "fullReferenceStarted": "2026-11-02T10:01:47.502878+00:00",
+    "fullReferenceFinished": "2026-11-02T10:31:38.930845+00:00",
+    "fullReference737InputRecordsEqual": true,
+    "fullReferenceBinarySidecarEndpointMetadataEqual": true,
+    "fullReferenceSectionCountsExact": true,
+    "fullReferenceRawHeaderSequenceEqualsConcatenatedShards": true,
+    "printedActualVerdictGroups": [
+      {
+        "shard": "legacy",
+        "printedAssertionGroups": 801,
+        "coveredOriginalVerdicts": 898,
+        "additionalDecorativeTickCharacters": 5,
+        "badGroups": [],
+        "explanation": "Original assertionVerdicts counts explicit verdict arguments, not substrings in formatted details. Legacy can print multiple true arguments per console row; five decorative status ticks are not extra assertions."
+      },
+      {
+        "shard": "extensions",
+        "printedAssertionGroups": 1419,
+        "coveredOriginalVerdicts": 1419,
+        "additionalDecorativeTickCharacters": 0,
+        "badGroups": [],
+        "explanation": "Original assertionVerdicts counts explicit verdict arguments, not substrings in formatted details. Legacy can print multiple true arguments per console row; five decorative status ticks are not extra assertions."
+      }
+    ]
+  },
+  "native": {
+    "independentlyRecomputedSummary": {
+      "passed": true,
+      "commit_sha": "ea163769f8f570ac06b56906ceb8cdf7dc220a1a",
+      "parts": 3,
+      "suite_count": 235,
+      "executed_suites": 235,
+      "union_equals_full_registry": true,
+      "overlap": [],
+      "counted_tests": 5460,
+      "counted_passed": 5459,
+      "allowed_skips": 1,
+      "shard_suites": {
+        "1": 78,
+        "2": 79,
+        "3": 78
+      },
+      "expected_sha256": "32a43acee9103a483edfe3d0875a36857e5036ef2aef8975de6af52fdede2a86",
+      "timings_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"
+    },
+    "suiteRawLogsPresent": 235,
+    "pythonRawJsonCountsCompared": 197,
+    "nodeOriginalFootersCompared": 28,
+    "oneDeclaredGdiSkip": [
+      {
+        "name": "py:test_gdi_contract",
+        "counted": true,
+        "total": 1,
+        "passed": 0,
+        "failed": 0,
+        "skipped": 1,
+        "seconds": 0.22716188430786133,
+        "ran": true,
+        "process_exit_code": 0,
+        "allowed_skips": 1,
+        "env_problem": false,
+        "crashed": false,
+        "expected_problem": ""
+      }
+    ],
+    "officialSummarySha256": "0ac80ddc19cbca85228157d333346437e87525c0bc5c96f3585a391eb8e29e95",
+    "officialAndReplayByteEqual": true,
+    "removedSuiteProof": {
+      "passed": true,
+      "baseline_mutant_restored_exit": [
+        0,
+        1,
+        0
+      ],
+      "rows": [
+        {
+          "label": "baseline",
+          "exit": 0,
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skips": 0,
+          "failure_ids": [],
+          "assertion_failure": true,
+          "removed": []
+        },
+        {
+          "label": "removed",
+          "exit": 1,
+          "tests": 1,
+          "failures": 1,
+          "errors": 0,
+          "skips": 0,
+          "failure_ids": [
+            "test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once"
+          ],
+          "assertion_failure": true,
+          "removed": [
+            "c:integrity"
+          ]
+        },
+        {
+          "label": "restored",
+          "exit": 0,
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skips": 0,
+          "failure_ids": [],
+          "assertion_failure": true,
+          "removed": []
+        }
+      ]
+    }
+  },
+  "actualArtifactNegativeControls": {
+    "resultSha256": "96eeaf7c1b18f2005bd337ec21ad179ac6bd9476b3ed90c9843dc272266567ab",
+    "baselineRestoreExits": [
+      0,
+      0
+    ],
+    "original12FilesMatchOfficialZipAndCurrentAndEndpointMap": true,
+    "cases": [
+      {
+        "name": "missing-shard",
+        "exit": 1,
+        "namedRejection": "CANVAS_MISSING_SHARD",
+        "rawStderrSha256": "1560700460d03d3a7e7cfaf17197bf6977179ac5c91ec56269e801d451561855",
+        "privateDiff": {
+          "canvas-shard-extensions/stdout.log": {
+            "official": "97c18e7821655c065d0468e6d77f0e3d17bb166579d733b5f9d557a42bac1ecd",
+            "private": null
+          },
+          "canvas-shard-extensions/manifest.json": {
+            "official": "db4232d394750f69e3ee811930b26f7322294535df4be14877b8ae07ee6ae11e",
+            "private": null
+          },
+          "canvas-shard-extensions/runtime.stdout": {
+            "official": "212f57264eb2e418ebef2abb55e63585197d270793bb9d9f09773a6f8d6f6e52",
+            "private": null
+          },
+          "canvas-shard-extensions/runtime.stderr": {
+            "official": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "private": null
+          },
+          "canvas-shard-extensions/plan.json": {
+            "official": "8ba838052339cc1b577991c9f16d7e65c3552f303065c60fe6891df2cf158119",
+            "private": null
+          },
+          "canvas-shard-extensions/stderr.log": {
+            "official": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "private": null
+          }
+        }
+      },
+      {
+        "name": "wrong-attempt",
+        "exit": 1,
+        "namedRejection": "CANVAS_WRONG_RUN_ATTEMPT: run_attempt",
+        "rawStderrSha256": "04a5b44116ab7fda8ac6fd32149e2799da26631536ca3f289bd5a2ffd173f9d0",
+        "privateDiff": {
+          "canvas-shard-extensions/manifest.json": {
+            "official": "db4232d394750f69e3ee811930b26f7322294535df4be14877b8ae07ee6ae11e",
+            "private": "b53fd8c3c4c2285ab7bbbc242ce1189df4c75f0400e7eeccb3a47643d45adaa1"
+          }
+        }
+      },
+      {
+        "name": "changed-raw",
+        "exit": 1,
+        "namedRejection": "CANVAS_RAW_CHANGED: stdout.log",
+        "rawStderrSha256": "31d5b798e9d8acf508782a6e120789dc7c6371558e163f3ef85535772cb7bcd5",
+        "privateDiff": {
+          "canvas-shard-extensions/stdout.log": {
+            "official": "97c18e7821655c065d0468e6d77f0e3d17bb166579d733b5f9d557a42bac1ecd",
+            "private": "977015cb5fba9689263ee5a029232e72e7ab312cdc8c97078ca5f60c608adce0"
+          }
+        }
+      },
+      {
+        "name": "duplicate-shard",
+        "exit": 1,
+        "namedRejection": "CANVAS_DUPLICATE_SHARD",
+        "rawStderrSha256": "49991747dc38c3f8059a64377f04b214daf9e9f53f2d3463334e7cb5d824128e",
+        "privateDiff": {
+          "canvas-shard-legacy/manifest.json": {
+            "official": "8b4da54140404aa9785a06d1448596f2baafad7eeea4f7819a33c160f458cd62",
+            "private": "d231dbce11a95c53e382d3ae94450ec2e417a8429edc727986b5a290880ef28a"
+          }
+        },
+        "actualMutation": "Only legacy manifest.shard changes legacy→extensions, creating two claimed extensions receipts. All12 package files remain present; no whole ZIP/package duplication was performed."
+      },
+      {
+        "name": "changed-plan",
+        "exit": 1,
+        "namedRejection": "CANVAS_SOURCE_OR_GOLDEN_CHANGED",
+        "rawStderrSha256": "29070f8c2c774b97bef1a0399116803648bf96f4887ab5c0c9b44be57c5e9931",
+        "privateDiff": {
+          "canvas-shard-extensions/manifest.json": {
+            "official": "db4232d394750f69e3ee811930b26f7322294535df4be14877b8ae07ee6ae11e",
+            "private": "7ba2d0a19a572fea88b7c474504d1e6c906b0ffab7248c222f5c15d3003707e8"
+          }
+        },
+        "actualMutation": "Only extensions manifest.plan_sha256 is set to64 zeroes. plan.json and golden payload bytes remain official; this exercises wrong plan identity, not actual source/golden payload corruption."
+      },
+      {
+        "name": "false-summary",
+        "exit": 1,
+        "namedRejection": "CANVAS_FAKE_SUMMARY",
+        "rawStderrSha256": "859d89e2a510532019d029781281abde84d13bcb484249ea2488b537dad87862",
+        "privateDiff": {
+          "canvas-shard-extensions/manifest.json": {
+            "official": "db4232d394750f69e3ee811930b26f7322294535df4be14877b8ae07ee6ae11e",
+            "private": "1b6b2e592808b911fde3b0e74a08f95902c5ef43338875a6a6c82a264cfb61e3"
+          }
+        }
+      }
+    ],
+    "restoredSummaryByteEqualOfficial": true,
+    "scopeClarification": "Six genuine distinct original-CLI receipt/package fault refusals were verified. Duplicate-shard and changed-plan names refer precisely to the two single-field manifest identity mutations documented per case; they do not prove actual duplicate ZIP content or changed plan/golden payload refusal."
+  },
+  "unverifiedBoundaries": [
+    "No Chrome/product/native/ELF/test/build command was executed, no API/ZIP download or Git fetch was performed, and no active F/M/F or #340 CI run was touched.",
+    "Native/sidecar binary bytes were not hashed or executed; full-reference before/after source-input records and binary/sidecar identity metadata were compared. Historical endpoint snapshots cannot prove absence of a transient mid-command change.",
+    "Native235 receipt rows/expected/partition were independently reconstructed;197 Python raw JSON reports and available standard Node footers were compared. Other native raw logs were integrity-bound and present, without rejudging every individual product assertion semantic.",
+    "The six actual-artifact private-copy refusals are not the independent UI harness D/M/D proof, nor a claim that every unit-only fault model was newly exercised against actual official packages. That separate live UI task remains outside this review.",
+    "Public cad7 evidence completeness and later source/main#354 convergence were not fetched or re-audited. This PASS applies only to exact D/executionE source and the retained original run1 artifacts.",
+    "Previous ls-tree-l/ENOSPC incident was not rerun or hidden by a fresh product execution; this audit used only exact54 existing Git blobs with lazy fetching disabled.",
+    "No actual golden/source payload corruption or whole-package duplicate injection was newly established by the six cases; the observed plan/shard single-field identity refusals are retained at their true scope."
+  ],
+  "sourceOrOriginalMutations": [],
+  "reviewerCheckerCorrections": {
+    "initialCheckerResultSha256": "808ea38032fb6b7cad0ea213467627579ae4054a8a0f28fcb19b1a939a98cf5e",
+    "supersededAssumptions": [
+      "Changed-plan exact private diff",
+      "Duplicate private exact diff",
+      "Raw printed assertions match actual journal labels legacy"
+    ],
+    "reason": "Three extra reviewer assertions incorrectly assumed one formatted stdout row per assertion and different private mutation implementations. Reading the preserved logger/actual private field diffs corrected these assumptions; no official/source/raw/producer evidence was modified or rerun.",
+    "replacementChecks": "Actual print groups cover all898/1419 original verdict events with correct prefix/markers; private corruptions are verified as precisely isolated shard/plan_sha256 field changes. All other10664 original independent checks retained."
+  }
+}

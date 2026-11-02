@@ -1,0 +1,154 @@
+{
+  "utc": "2026-11-02T10:34:40.028782+00:00",
+  "targetMain": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+  "head340": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+  "sourceHeadBefore": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+  "indexSha256Before": "b26a02bb4b8609bf04f95d0226845107756987f7e91a889cda3522f9a6b0d10a",
+  "objectsInitiallyAvailable": false,
+  "fetchPerformed": true,
+  "fetchExit": 0,
+  "objectPostFetchExit": 0,
+  "mergeTreeExit": 0,
+  "mergeTree": "26ef5dfd1c6f838887a30c9968021e513e2dc460",
+  "sourceHeadIndexPreserved": true,
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "b3a248607d7eb68d3167abbb926cf491d9b35a26\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "rev-parse",
+        "--git-path",
+        "index"
+      ],
+      "exitCode": 0,
+      "stdout": "/tmp/geometry-live-20261102/.git/worktrees/geometry-pr340-20261102/index\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "cat-file",
+        "-e",
+        "e02057b4c725d6f03ae52c3bc30776bf9442b0cf^{commit}"
+      ],
+      "exitCode": 128,
+      "stdout": "",
+      "stderr": "fatal: Not a valid object name e02057b4c725d6f03ae52c3bc30776bf9442b0cf^{commit}\n"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "fetch",
+        "--no-tags",
+        "--no-write-fetch-head",
+        "origin",
+        "refs/heads/main:refs/codex-readonly/next-after340-checkpoint/main"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "From https://github.com/ZhiQiYang/geometry-axiom\n * [new branch]        main       -> refs/codex-readonly/next-after340-checkpoint/main\n   df7eb43a..e02057b4  main       -> origin/main\n"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "cat-file",
+        "-e",
+        "e02057b4c725d6f03ae52c3bc30776bf9442b0cf^{commit}"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "merge-tree",
+        "--write-tree",
+        "--messages",
+        "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+        "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+      ],
+      "exitCode": 0,
+      "stdout": "26ef5dfd1c6f838887a30c9968021e513e2dc460\n\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "diff",
+        "--raw",
+        "--no-abbrev",
+        "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+        "26ef5dfd1c6f838887a30c9968021e513e2dc460"
+      ],
+      "exitCode": 0,
+      "stdout": ":000000 100644 0000000000000000000000000000000000000000 06e976f0226f51ebff6bca7a222aec43dcf5b4ff A\tevidence/geo340-convergence-175cee44/AGGREGATE_RESULT.json\n:000000 100644 0000000000000000000000000000000000000000 bc6ec2bc5a9098cb4e698b984b223cdb0c5c0844 A\tevidence/geo340-convergence-175cee44/CURRENT_STATE.json\n:000000 100644 0000000000000000000000000000000000000000 ac40d948071de3d4723fc84207e39b8ac7e62e3a A\tevidence/geo340-convergence-175cee44/MERGE_RESULT.json\n:000000 100644 0000000000000000000000000000000000000000 aa8a5d53231dd07dc97cafefbda5c1de62e6df50 A\tevidence/geo340-convergence-175cee44/PROGRESS.md\n:000000 100644 0000000000000000000000000000000000000000 8f995908aedd3899146774500c5b2ea980fdb8c4 A\tevidence/geo340-convergence-175cee44/PUBLICATION_INDEX.json\n:000000 100644 0000000000000000000000000000000000000000 a7029ceb61d61fc93ca42963cf1e75827d9e4039 A\tevidence/geo340-convergence-175cee44/peer/PEER_AND_REVIEW_RECORDS.tar.gz\n:000000 100644 0000000000000000000000000000000000000000 684f48ceaeac2f8f6605eff54fc7d9991157e902 A\tevidence/geo340-convergence-175cee44/peer/PEER_AND_REVIEW_RECORDS_MANIFEST.json\n:000000 100644 0000000000000000000000000000000000000000 616b279df3be6304797b144824a60d6814059aec A\tevidence/geo340-convergence-175cee44/publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS.tar.gz\n:000000 100644 0000000000000000000000000000000000000000 d65693408e4d224efeca240e1e809fa86f9dcca1 A\tevidence/geo340-convergence-175cee44/publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS_MANIFEST.json\n:000000 100644 0000000000000000000000000000000000000000 3ab1e3d2d3f110572e32a85b8ed05fbfdb86ff49 A\tevidence/geo340-convergence-175cee44/raw/AGGREGATE_ORIGINALS.tar.gz\n:000000 100644 0000000000000000000000000000000000000000 fc9f6e380cb077df4616da3cb93bf1707da7fa25 A\tevidence/geo340-convergence-175cee44/raw/AGGREGATE_ORIGINALS_MANIFEST.json\n:000000 100644 0000000000000000000000000000000000000000 3eb055c9b8f1be7f433f133b8acb4d80c6f76bcc A\tevidence/geo340-convergence-175cee44/raw/FACES_CLOSURE_ORIGINALS.tar.gz\n:000000 100644 0000000000000000000000000000000000000000 1536444c649a171d46c725323a458d97cc2afdd6 A\tevidence/geo340-convergence-175cee44/raw/FACES_CLOSURE_ORIGINALS_MANIFEST.json\n:000000 100644 0000000000000000000000000000000000000000 4a429b849d39ca1e7d0628c282ea06b72248390c A\tevidence/geo340-convergence-175cee44/raw/MERGE_ORIGINALS.tar.gz\n:000000 100644 0000000000000000000000000000000000000000 00067138d9e9845e00ac9b192f90bd3bba510a15 A\tevidence/geo340-convergence-175cee44/raw/MERGE_ORIGINALS_MANIFEST.json\n:000000 100644 0000000000000000000000000000000000000000 bd75bfc9b1853e4af764e8e210c8f4b53ccb38e7 A\tevidence/geo340-convergence-175cee44/tools/publish.py\n:000000 100644 0000000000000000000000000000000000000000 e1c1a32dfdcfa09a22898e913d958cfbfa571007 A\tevidence/geo340-convergence-175cee44/tools/publish_r2.py\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "diff",
+        "--raw",
+        "--no-abbrev",
+        "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+        "26ef5dfd1c6f838887a30c9968021e513e2dc460"
+      ],
+      "exitCode": 0,
+      "stdout": ":100644 100644 ab5aed59152957e99b86bba9876279afd221b73c d9d0b7a935492790bf2a5bc151127b0065028b37 M\t.gitignore\n:100644 100644 610cd00186e7a11e1401f8c39dd7ab187dd80870 8be38a3b74e75c0b6bef37485c43287377e298fe M\tBACKLOG.md\n:100644 100644 256c97c6bc3795687d9851bf970c3574187fffd1 cfe0a27a1a6db6f6cdff41eb5ee3af11369f5bd2 M\tgeometry-app/application.js\n:100644 100644 a3191419d0a847a362308ac22e44d289c9ba2d61 c438b964a7ac2991951e37c876adb42f26d8cc79 M\tgeometry-app/native/reference_sources.inc\n:100644 100644 afa58cc5f7252507a74d266effc02e788000adc1 ce43fb73e9993cbaa8714c52852109e160584ade M\tgeometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md\n:100644 100644 0d3c363beb3fd7aeee2ec43f85f1af0e813046a3 b951e60cc8d12845940aedbd5a42d1c4e81f897b M\tgeometry-core/domain-decoupling/product-architecture-receipt.json\n:100644 100644 c2070aa3fe2a612d5fd9a3faa9443824c9e39739 417ca8a32aba28ae755dcc2817d749c9288b7d80 M\tgeometry-core/domain-decoupling/product-architecture-scan.json\n:100644 100644 2fd23c08df71ea569c2947b65f4a31bb4de8d6e5 dc533f28864e1abc20d6f6a0d73cd896634a170d M\tgeometry-core/domain-decoupling/product-architecture.json\n:100644 100644 aec5becaeff7b6685f525c16504bd2c3925e35f3 b426d0cdb3678a28e2b4e16c16bef81afba7aa7b M\tgeometry-core/engineering.inc\n:000000 100644 0000000000000000000000000000000000000000 ddbb7839bd6e4c4af03084fc4b930597ed6c267a A\tgeometry-core/interval-allocation.js\n:100644 100644 33b28dee6f935f34a3c8bcdf29f975c7b8b26141 bdc3c2f6783776c963d2d32b3a8251c6f280f800 M\tgeometry-core/rule_cases/executor.py\n:000000 100644 0000000000000000000000000000000000000000 c96da33a0bf914aa47fb8db9c092fce29b5e197f A\tgeometry-templates/woodworking/cutting.js\n:100644 100644 236a327004119919c374fb18454bc3c5d8bf38df d49af783d067447e23daf71d28ac882510ad93f0 M\tgeometry-templates/woodworking/native/assembly_sources.c\n:100644 100644 9075e679f8b51b246e67e2c7008927fe60fadeb6 bfa0ea7baf00758c1b14c523ac8b2a376c877cd8 M\tgeometry-templates/woodworking/native/engineering.c\n:100644 100644 a7e5fe290c1966a9ac6d5c6704e9ed9e85da91aa e943995157d0b0f7bff9fdaed33c5e8ad3f3f275 M\tgeometry-templates/woodworking/native/engineering.h\n:100644 100644 84cf20f79f88519a0ef69abbbd4b7989b9cc9368 32005372b97ec324fd166336d4441322d71eb83c M\tgeometry-templates/woodworking/native/engineering_sources.c\n:100644 100644 f6265d7ba4e85740e77ee25f92e4f822adcc04ce 1f00edaa21f9c006a4702d4f02ea8693fdfff002 M\tgeometry-templates/woodworking/native/engineering_sources.h\n:100644 100644 ab640f2d1c4ec233c20ef989a1ebe783c4e17201 6e526adf1fc40e66d61a01f8996103022745275a M\tgeometry-templates/woodworking/native/finish_sources.c\n:100644 100644 1445593828290b55b94c3d50c5a6cab417dd4292 1df164a91d067cebae353b99f3cd0fd27ec46c34 M\tgeometry-templates/woodworking/native/grid_sources.c\n:100644 100644 18aeda56501ca765e5254c47d0d3b00033fece23 4fe9c5fedce1bc58e15944968c46960958d7c0cf M\tgeometry-templates/woodworking/native/section_profile_sources.c\n:100644 100644 aff3faa2d632e66aae9ea1d8d4799632d0410561 248d26ecb8ac4abe087b04b1698c3f553d63df52 M\tgeometry-web/app.css\n:100644 100644 8b557a62cbdc5d315c082a97b6fa0bd7811bdaf8 d2c39af19ed9300ecb0438f82d4f208273344bb0 M\tgeometry-web/app.js\n:100644 100644 7fcab13702e23501c006d0d1d9751b6bcfaf8554 0bddeb1e1ce30f6462eb0b5be0b4b751764b3ec8 M\tgeometry-web/assembly_bridge.inc\n:100644 100644 098a0ba7ee14215c184bdcfa30f50706f2f05c12 a8baf649b71a7cb80f48f4064e029eebb115671d M\tgeometry-web/cdp_sections.golden.json\n:100644 100644 ef229af148f664cc4a45d488abc8773f65aa2775 178740f2084c1a6e9e8789898f53d8cbe4b3ee23 M\tgeometry-web/cdp_test.js\n:000000 100644 0000000000000000000000000000000000000000 73c90818bc910b4284bcb530178970bb166c7246 A\tgeometry-web/cutting-plan.js\n:000000 100644 0000000000000000000000000000000000000000 17e12213c323257ec7e916ba7c44719dbbc9b300 A\tgeometry-web/cutting-settings.js\n:000000 100644 0000000000000000000000000000000000000000 f6ea94d717774c5ec71f00be576aac58005f5708 A\tgeometry-web/cutting-workspace.js\n:000000 100644 0000000000000000000000000000000000000000 f3eb8954e0224c21736ffc18083e06cad448e308 A\tgeometry-web/cutting_plan_test.js\n:000000 100644 0000000000000000000000000000000000000000 8671e05c2b4e540a939fedbbf4c7c596f79e6a0a A\tgeometry-web/docs/CUTTING-PLAN.md\n:100644 100644 b4ee62ad078bb947afd611496ee6ab8e5629170d e654a1afec00f6c5a30574595826b9d15f6e266e M\tgeometry-web/docs/DOM-CONTRACT.md\n:100644 100644 f730f2ee48270ad719f662839d53b97ec4ca933d 98b1433a28068351490abe4b26a8fef7be6ad02a M\tgeometry-web/docs/MODEL-SNAPSHOT-SCHEDULE.md\n:100644 100644 3e206b1c7b67b708de50c310b3299d32abc6a415 d28e3370168a207829503a1ef82c1b87edd4a304 M\tgeometry-web/docs/REFERENCE-PROJECT.md\n:100644 100644 b6fd2b69e50238e76ea2226163d9b231020b80e2 cd4071e51709acb5b81ee7afa741f37c8be1deb3 M\tgeometry-web/docs/TIMBER-SCHEDULE.md\n:100644 100644 b16130a22c9218c9248f667ec73841fec092b437 5ab2419859d6cdd3e3b421aeffbdc48155e616b1 M\tgeometry-web/engineering_bridge.inc\n:100644 100644 7db220ab5cd528aaacef41747b8360452145131a a01f470f16c3f4babd25afc97b4aa3d823da8b0a M\tgeometry-web/feature-attachments.js\n:100644 100644 c3f9b251c1ad881455e91b0ae1acf8ac28c29234 aa522456e07780efb0e000cc748d008accbffb5a M\tgeometry-web/index.html\n:100644 100644 961088f6fe27433f95f9e425d333a90352cd59dd c7269404607f7b468be1f5fd8699aad8efed5e13 M\tgeometry-web/project-store.js\n:100644 100644 435e95f5971454c9f0cad87e865359b7c13f7a47 25e72a67e3c428713d24a93de51c8b984a7e75fd M\tgeometry-web/reference-workspace.js\n:100644 100644 90f4fcf6cc5e76f7bfe1f1380ce546294d4c4697 d52d3c4520cfd81f5f4d8f08d1403e3ca2a2559b M\tgeometry-web/runtime_version.py\n:100644 100644 f0463373065ec461eaed86e208bb4673f989cda2 a9e8451a1028d85138efedba9ba8330903a194ad M\tgeometry-web/scenario-integration.js\n:100644 100644 4283dbd903dfb51b749dcd1964f65e597da9d955 1a7f687555b27f30010ddceacc4e6a6c089161af M\tgeometry-web/scenario-snapshots.js\n:100644 100644 d390c0e57ead9c1feb8ad4f0f29b7bcde4a07f42 c634957ad21e16377fab55fcf7edc7c5e6239392 M\tgeometry-web/timber-schedule.js\n:000000 100644 0000000000000000000000000000000000000000 9a1cc05918bdf13a9e917484dae4575ad99e33f5 A\ttests/cutting_legacy_cases.js\n:000000 100644 0000000000000000000000000000000000000000 f91c09ebf516908b406df2d5ffbaec4925cde9e4 A\ttests/evidence/k1-frontend-20261011/README.md\n:000000 100644 0000000000000000000000000000000000000000 163eba265e64d1e0acbe28503d33d05b6df23183 A\ttests/evidence/k1-frontend-20261011/frontend-baseline.log\n:000000 100644 0000000000000000000000000000000000000000 b3b30a354871672f5d4fdd9e4f5cf487b94d6a55 A\ttests/evidence/k1-frontend-20261011/mutation-diagnoses.json\n:000000 100644 0000000000000000000000000000000000000000 ecf9139711ce9b8b1b00a95d3c286efa1679ef17 A\ttests/evidence/k1-frontend-20261011/mutations.json\n:000000 100644 0000000000000000000000000000000000000000 b9d08cb8808de43627fcf6f6b0062242ffe0761a A\ttests/evidence/k1-frontend-20261011/run-all-cutting.log\n:000000 100644 0000000000000000000000000000000000000000 360733a0d726f919491703fa860287e9cdb924d2 A\ttests/fixtures/cutting_legacy_cd4bc880.json\n:000000 100644 0000000000000000000000000000000000000000 82ddde180fc2a2283717c1716f6381ec0822a396 A\ttests/fixtures/k1_terminal_legacy_replies.json\n:000000 100644 0000000000000000000000000000000000000000 4816bd5ba0dd1db26b53369f060c6dfa035992c3 A\ttests/fixtures/k1_terminal_legacy_replies.provenance.json\n:000000 100644 0000000000000000000000000000000000000000 305574e61ad96cc3d834dbe79553a8653cec0f47 A\ttests/generate_cutting_legacy_fixture.js\n:000000 100644 0000000000000000000000000000000000000000 626ebf1ce20af57df942b5a483b49f296f37695c A\ttests/generate_k1_terminal_baseline.py\n:100644 100644 aa8430d470fe470d3002f1a2c57dd1c57a5c1af9 6c7d30d7aad68c17639b0d7e67023e2c1510304f M\ttests/geo261_assembly_sources_harness.c\n:100644 100644 e6419ddfffafac0a1d5bda00295507f1cb450b8f 6cfaf48b2f81dc3e4a62f0b8a80aee9780f56c5c M\ttests/geo261_finish_sources_harness.c\n:100644 100644 b89d95a0c61b4e90cc31d0b16982d842f6ea50ef 9451d4cddc2e40f8b2102a9b83d26b24fab09ff0 M\ttests/geo261_frontend_mutations.py\n:100644 100644 6ff62529c2cc55260574abb9dd31e3dfcf75b69e 60d9149d70d11b43ddac4a25fdabdbe7f3e40469 M\ttests/geo261_grid_sources_harness.c\n:100644 100644 3a0b3012c604d0533b1222903a09c772011fd9d1 aa39cedf5116abd67e868fa5fb7b0d555bf89aaf M\ttests/mutants_results.json\n:000000 100644 0000000000000000000000000000000000000000 dfd009afbb1df59506e76dcb12585cb756dfcfef A\ttests/mutate_k1_frontend.py\n:000000 100644 0000000000000000000000000000000000000000 2c173a530d376e0ec5331fc5573ca06872b1782d A\ttests/mutate_k1_terminal.py\n:100644 100644 090da27c049cc7ef122600c371eb9b5ec3ec63df 21a65c724e2cf0c14e318b5c66b7f1710b62e60a M\ttests/run_all.expected.json\n:100644 100644 c5a777f508cab4dd08dca9b175a9e671b6bf866d 3c101c2d63ab7971f5987797d349505d48be6644 M\ttests/run_all.py\n:100644 100644 acd485990c5dacf724d7bb0890ea181ba18c7cf4 d92c6b2767e4b43e85e3ecc20f1e36e62c4e32e0 M\ttests/test_assembly_rules.py\n:000000 100644 0000000000000000000000000000000000000000 c0ba7dea8d65fabd0e229b5ea475df8fe8aea8ee A\ttests/test_cutting_layering.js\n:000000 100644 0000000000000000000000000000000000000000 fb68e5f0f86baa82044d609ab2b94a21d4c60154 A\ttests/test_cutting_owner.js\n:000000 100644 0000000000000000000000000000000000000000 ba123f32c9a1df4b6ec4bce05f1d6e9bc307d13a A\ttests/test_cutting_plan.js\n:000000 100644 0000000000000000000000000000000000000000 89eeca3a3405211f567107212d8a28a1308f1782 A\ttests/test_cutting_project_store.js\n:000000 100644 0000000000000000000000000000000000000000 06aff7ca68aeb676dd81d89b20317bfe5ecaab5f A\ttests/test_cutting_session.js\n:000000 100644 0000000000000000000000000000000000000000 b256a90fca897b381668c07e2cf428f36d430a05 A\ttests/test_cutting_summary.js\n:000000 100644 0000000000000000000000000000000000000000 d00b99abefe61c4c342767daf6dcc511bf0f5c6b A\ttests/test_engineering_terminal.py\n:000000 100644 0000000000000000000000000000000000000000 de670c24f27230fc85f3544b5b0f73d13396a4da A\ttests/test_k1_mutation_runners.py\n:100644 100644 a08b68de611126182dadfa77c7aec6970924acc4 4fcbe42d623dc1a509ef4187a8ecf7e1223cea12 M\ttests/test_product_architecture.py\n:100644 100644 271c4213c8373c3ea4c0ab7c4790a93d799ccfb1 64a69d2ed420ded6f315d147d901650cb2872e3b M\ttests/test_rule_case_workbench_http.py\n:100644 100644 45550c57e86f9617958265d32f01941c441b13be 75a8843b40011e29bb7dcc191c8e3d1a094c6434 M\ttests/test_runtime_version.py\n:100644 100644 125efb2d64a02b595756f84ad232e4c25c902c28 9d6b567f9abdcf1a42f818e452db5c85aea1d08f M\ttests/test_shared_format17.js\n:100644 100644 b4daad939b227e6b93c730104ff2ecbe130c1293 6fc28f10c8887cf8c04ce19ea64dde6eaa29d2bc M\ttests/test_woodworking_frontend.js\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "diff",
+        "--raw",
+        "--no-abbrev",
+        "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+        "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+      ],
+      "exitCode": 0,
+      "stdout": ":100644 100644 ab5aed59152957e99b86bba9876279afd221b73c d9d0b7a935492790bf2a5bc151127b0065028b37 M\t.gitignore\n:100644 100644 610cd00186e7a11e1401f8c39dd7ab187dd80870 8be38a3b74e75c0b6bef37485c43287377e298fe M\tBACKLOG.md\n:100644 100644 256c97c6bc3795687d9851bf970c3574187fffd1 cfe0a27a1a6db6f6cdff41eb5ee3af11369f5bd2 M\tgeometry-app/application.js\n:100644 100644 a3191419d0a847a362308ac22e44d289c9ba2d61 c438b964a7ac2991951e37c876adb42f26d8cc79 M\tgeometry-app/native/reference_sources.inc\n:100644 100644 afa58cc5f7252507a74d266effc02e788000adc1 ce43fb73e9993cbaa8714c52852109e160584ade M\tgeometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md\n:100644 100644 0d3c363beb3fd7aeee2ec43f85f1af0e813046a3 b951e60cc8d12845940aedbd5a42d1c4e81f897b M\tgeometry-core/domain-decoupling/product-architecture-receipt.json\n:100644 100644 c2070aa3fe2a612d5fd9a3faa9443824c9e39739 417ca8a32aba28ae755dcc2817d749c9288b7d80 M\tgeometry-core/domain-decoupling/product-architecture-scan.json\n:100644 100644 2fd23c08df71ea569c2947b65f4a31bb4de8d6e5 dc533f28864e1abc20d6f6a0d73cd896634a170d M\tgeometry-core/domain-decoupling/product-architecture.json\n:100644 100644 aec5becaeff7b6685f525c16504bd2c3925e35f3 b426d0cdb3678a28e2b4e16c16bef81afba7aa7b M\tgeometry-core/engineering.inc\n:000000 100644 0000000000000000000000000000000000000000 ddbb7839bd6e4c4af03084fc4b930597ed6c267a A\tgeometry-core/interval-allocation.js\n:100644 100644 33b28dee6f935f34a3c8bcdf29f975c7b8b26141 bdc3c2f6783776c963d2d32b3a8251c6f280f800 M\tgeometry-core/rule_cases/executor.py\n:000000 100644 0000000000000000000000000000000000000000 c96da33a0bf914aa47fb8db9c092fce29b5e197f A\tgeometry-templates/woodworking/cutting.js\n:100644 100644 236a327004119919c374fb18454bc3c5d8bf38df d49af783d067447e23daf71d28ac882510ad93f0 M\tgeometry-templates/woodworking/native/assembly_sources.c\n:100644 100644 9075e679f8b51b246e67e2c7008927fe60fadeb6 bfa0ea7baf00758c1b14c523ac8b2a376c877cd8 M\tgeometry-templates/woodworking/native/engineering.c\n:100644 100644 a7e5fe290c1966a9ac6d5c6704e9ed9e85da91aa e943995157d0b0f7bff9fdaed33c5e8ad3f3f275 M\tgeometry-templates/woodworking/native/engineering.h\n:100644 100644 84cf20f79f88519a0ef69abbbd4b7989b9cc9368 32005372b97ec324fd166336d4441322d71eb83c M\tgeometry-templates/woodworking/native/engineering_sources.c\n:100644 100644 f6265d7ba4e85740e77ee25f92e4f822adcc04ce 1f00edaa21f9c006a4702d4f02ea8693fdfff002 M\tgeometry-templates/woodworking/native/engineering_sources.h\n:100644 100644 ab640f2d1c4ec233c20ef989a1ebe783c4e17201 6e526adf1fc40e66d61a01f8996103022745275a M\tgeometry-templates/woodworking/native/finish_sources.c\n:100644 100644 1445593828290b55b94c3d50c5a6cab417dd4292 1df164a91d067cebae353b99f3cd0fd27ec46c34 M\tgeometry-templates/woodworking/native/grid_sources.c\n:100644 100644 18aeda56501ca765e5254c47d0d3b00033fece23 4fe9c5fedce1bc58e15944968c46960958d7c0cf M\tgeometry-templates/woodworking/native/section_profile_sources.c\n:100644 100644 aff3faa2d632e66aae9ea1d8d4799632d0410561 248d26ecb8ac4abe087b04b1698c3f553d63df52 M\tgeometry-web/app.css\n:100644 100644 8b557a62cbdc5d315c082a97b6fa0bd7811bdaf8 d2c39af19ed9300ecb0438f82d4f208273344bb0 M\tgeometry-web/app.js\n:100644 100644 7fcab13702e23501c006d0d1d9751b6bcfaf8554 0bddeb1e1ce30f6462eb0b5be0b4b751764b3ec8 M\tgeometry-web/assembly_bridge.inc\n:100644 100644 098a0ba7ee14215c184bdcfa30f50706f2f05c12 a8baf649b71a7cb80f48f4064e029eebb115671d M\tgeometry-web/cdp_sections.golden.json\n:100644 100644 ef229af148f664cc4a45d488abc8773f65aa2775 178740f2084c1a6e9e8789898f53d8cbe4b3ee23 M\tgeometry-web/cdp_test.js\n:000000 100644 0000000000000000000000000000000000000000 73c90818bc910b4284bcb530178970bb166c7246 A\tgeometry-web/cutting-plan.js\n:000000 100644 0000000000000000000000000000000000000000 17e12213c323257ec7e916ba7c44719dbbc9b300 A\tgeometry-web/cutting-settings.js\n:000000 100644 0000000000000000000000000000000000000000 f6ea94d717774c5ec71f00be576aac58005f5708 A\tgeometry-web/cutting-workspace.js\n:000000 100644 0000000000000000000000000000000000000000 f3eb8954e0224c21736ffc18083e06cad448e308 A\tgeometry-web/cutting_plan_test.js\n:000000 100644 0000000000000000000000000000000000000000 8671e05c2b4e540a939fedbbf4c7c596f79e6a0a A\tgeometry-web/docs/CUTTING-PLAN.md\n:100644 100644 b4ee62ad078bb947afd611496ee6ab8e5629170d e654a1afec00f6c5a30574595826b9d15f6e266e M\tgeometry-web/docs/DOM-CONTRACT.md\n:100644 100644 f730f2ee48270ad719f662839d53b97ec4ca933d 98b1433a28068351490abe4b26a8fef7be6ad02a M\tgeometry-web/docs/MODEL-SNAPSHOT-SCHEDULE.md\n:100644 100644 3e206b1c7b67b708de50c310b3299d32abc6a415 d28e3370168a207829503a1ef82c1b87edd4a304 M\tgeometry-web/docs/REFERENCE-PROJECT.md\n:100644 100644 b6fd2b69e50238e76ea2226163d9b231020b80e2 cd4071e51709acb5b81ee7afa741f37c8be1deb3 M\tgeometry-web/docs/TIMBER-SCHEDULE.md\n:100644 100644 b16130a22c9218c9248f667ec73841fec092b437 5ab2419859d6cdd3e3b421aeffbdc48155e616b1 M\tgeometry-web/engineering_bridge.inc\n:100644 100644 7db220ab5cd528aaacef41747b8360452145131a a01f470f16c3f4babd25afc97b4aa3d823da8b0a M\tgeometry-web/feature-attachments.js\n:100644 100644 c3f9b251c1ad881455e91b0ae1acf8ac28c29234 aa522456e07780efb0e000cc748d008accbffb5a M\tgeometry-web/index.html\n:100644 100644 961088f6fe27433f95f9e425d333a90352cd59dd c7269404607f7b468be1f5fd8699aad8efed5e13 M\tgeometry-web/project-store.js\n:100644 100644 435e95f5971454c9f0cad87e865359b7c13f7a47 25e72a67e3c428713d24a93de51c8b984a7e75fd M\tgeometry-web/reference-workspace.js\n:100644 100644 90f4fcf6cc5e76f7bfe1f1380ce546294d4c4697 d52d3c4520cfd81f5f4d8f08d1403e3ca2a2559b M\tgeometry-web/runtime_version.py\n:100644 100644 f0463373065ec461eaed86e208bb4673f989cda2 a9e8451a1028d85138efedba9ba8330903a194ad M\tgeometry-web/scenario-integration.js\n:100644 100644 4283dbd903dfb51b749dcd1964f65e597da9d955 1a7f687555b27f30010ddceacc4e6a6c089161af M\tgeometry-web/scenario-snapshots.js\n:100644 100644 d390c0e57ead9c1feb8ad4f0f29b7bcde4a07f42 c634957ad21e16377fab55fcf7edc7c5e6239392 M\tgeometry-web/timber-schedule.js\n:000000 100644 0000000000000000000000000000000000000000 9a1cc05918bdf13a9e917484dae4575ad99e33f5 A\ttests/cutting_legacy_cases.js\n:000000 100644 0000000000000000000000000000000000000000 f91c09ebf516908b406df2d5ffbaec4925cde9e4 A\ttests/evidence/k1-frontend-20261011/README.md\n:000000 100644 0000000000000000000000000000000000000000 163eba265e64d1e0acbe28503d33d05b6df23183 A\ttests/evidence/k1-frontend-20261011/frontend-baseline.log\n:000000 100644 0000000000000000000000000000000000000000 b3b30a354871672f5d4fdd9e4f5cf487b94d6a55 A\ttests/evidence/k1-frontend-20261011/mutation-diagnoses.json\n:000000 100644 0000000000000000000000000000000000000000 ecf9139711ce9b8b1b00a95d3c286efa1679ef17 A\ttests/evidence/k1-frontend-20261011/mutations.json\n:000000 100644 0000000000000000000000000000000000000000 b9d08cb8808de43627fcf6f6b0062242ffe0761a A\ttests/evidence/k1-frontend-20261011/run-all-cutting.log\n:000000 100644 0000000000000000000000000000000000000000 360733a0d726f919491703fa860287e9cdb924d2 A\ttests/fixtures/cutting_legacy_cd4bc880.json\n:000000 100644 0000000000000000000000000000000000000000 82ddde180fc2a2283717c1716f6381ec0822a396 A\ttests/fixtures/k1_terminal_legacy_replies.json\n:000000 100644 0000000000000000000000000000000000000000 4816bd5ba0dd1db26b53369f060c6dfa035992c3 A\ttests/fixtures/k1_terminal_legacy_replies.provenance.json\n:000000 100644 0000000000000000000000000000000000000000 305574e61ad96cc3d834dbe79553a8653cec0f47 A\ttests/generate_cutting_legacy_fixture.js\n:000000 100644 0000000000000000000000000000000000000000 626ebf1ce20af57df942b5a483b49f296f37695c A\ttests/generate_k1_terminal_baseline.py\n:100644 100644 aa8430d470fe470d3002f1a2c57dd1c57a5c1af9 6c7d30d7aad68c17639b0d7e67023e2c1510304f M\ttests/geo261_assembly_sources_harness.c\n:100644 100644 e6419ddfffafac0a1d5bda00295507f1cb450b8f 6cfaf48b2f81dc3e4a62f0b8a80aee9780f56c5c M\ttests/geo261_finish_sources_harness.c\n:100644 100644 b89d95a0c61b4e90cc31d0b16982d842f6ea50ef 9451d4cddc2e40f8b2102a9b83d26b24fab09ff0 M\ttests/geo261_frontend_mutations.py\n:100644 100644 6ff62529c2cc55260574abb9dd31e3dfcf75b69e 60d9149d70d11b43ddac4a25fdabdbe7f3e40469 M\ttests/geo261_grid_sources_harness.c\n:100644 100644 3a0b3012c604d0533b1222903a09c772011fd9d1 aa39cedf5116abd67e868fa5fb7b0d555bf89aaf M\ttests/mutants_results.json\n:000000 100644 0000000000000000000000000000000000000000 dfd009afbb1df59506e76dcb12585cb756dfcfef A\ttests/mutate_k1_frontend.py\n:000000 100644 0000000000000000000000000000000000000000 2c173a530d376e0ec5331fc5573ca06872b1782d A\ttests/mutate_k1_terminal.py\n:100644 100644 090da27c049cc7ef122600c371eb9b5ec3ec63df 21a65c724e2cf0c14e318b5c66b7f1710b62e60a M\ttests/run_all.expected.json\n:100644 100644 c5a777f508cab4dd08dca9b175a9e671b6bf866d 3c101c2d63ab7971f5987797d349505d48be6644 M\ttests/run_all.py\n:100644 100644 acd485990c5dacf724d7bb0890ea181ba18c7cf4 d92c6b2767e4b43e85e3ecc20f1e36e62c4e32e0 M\ttests/test_assembly_rules.py\n:000000 100644 0000000000000000000000000000000000000000 c0ba7dea8d65fabd0e229b5ea475df8fe8aea8ee A\ttests/test_cutting_layering.js\n:000000 100644 0000000000000000000000000000000000000000 fb68e5f0f86baa82044d609ab2b94a21d4c60154 A\ttests/test_cutting_owner.js\n:000000 100644 0000000000000000000000000000000000000000 ba123f32c9a1df4b6ec4bce05f1d6e9bc307d13a A\ttests/test_cutting_plan.js\n:000000 100644 0000000000000000000000000000000000000000 89eeca3a3405211f567107212d8a28a1308f1782 A\ttests/test_cutting_project_store.js\n:000000 100644 0000000000000000000000000000000000000000 06aff7ca68aeb676dd81d89b20317bfe5ecaab5f A\ttests/test_cutting_session.js\n:000000 100644 0000000000000000000000000000000000000000 b256a90fca897b381668c07e2cf428f36d430a05 A\ttests/test_cutting_summary.js\n:000000 100644 0000000000000000000000000000000000000000 d00b99abefe61c4c342767daf6dcc511bf0f5c6b A\ttests/test_engineering_terminal.py\n:000000 100644 0000000000000000000000000000000000000000 de670c24f27230fc85f3544b5b0f73d13396a4da A\ttests/test_k1_mutation_runners.py\n:100644 100644 a08b68de611126182dadfa77c7aec6970924acc4 4fcbe42d623dc1a509ef4187a8ecf7e1223cea12 M\ttests/test_product_architecture.py\n:100644 100644 271c4213c8373c3ea4c0ab7c4790a93d799ccfb1 64a69d2ed420ded6f315d147d901650cb2872e3b M\ttests/test_rule_case_workbench_http.py\n:100644 100644 45550c57e86f9617958265d32f01941c441b13be 75a8843b40011e29bb7dcc191c8e3d1a094c6434 M\ttests/test_runtime_version.py\n:100644 100644 125efb2d64a02b595756f84ad232e4c25c902c28 9d6b567f9abdcf1a42f818e452db5c85aea1d08f M\ttests/test_shared_format17.js\n:100644 100644 b4daad939b227e6b93c730104ff2ecbe130c1293 6fc28f10c8887cf8c04ce19ea64dde6eaa29d2bc M\ttests/test_woodworking_frontend.js\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "b3a248607d7eb68d3167abbb926cf491d9b35a26\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "git",
+    "-C",
+    "/tmp/geometry-pr340-20261102",
+    "diff",
+    "--no-ext-diff",
+    "--no-color",
+    "--unified=2",
+    "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+    "26ef5dfd1c6f838887a30c9968021e513e2dc460",
+    "--",
+    "tests/run_all.py",
+    "tests/run_all.expected.json",
+    "tests/test_product_architecture.py",
+    "geometry-core/domain-decoupling/product-architecture.json",
+    "geometry-web/cdp_sections.golden.json"
+  ],
+  "exitCode": 128,
+  "stderr": "warning: lazy fetching disabled; some objects may not be available\nfatal: could not fetch dc533f28864e1abc20d6f6a0d73cd896634a170d from promisor remote\n",
+  "bytes": 0
+}

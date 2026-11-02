@@ -1,0 +1,95 @@
+{
+  "observedAt": "2026-11-02T10:32:23.405316+00:00",
+  "singleObservation": true,
+  "sources": {
+    "main": {
+      "apiPath": "/branches/main",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.518653+00:00",
+      "finishedAt": "2026-11-02T10:32:22.937832+00:00",
+      "bytes": 5319,
+      "sha256": "f084c832a844403183f25d2853a57b33253bdb2076c01938c32f115793d23b32",
+      "file": "main.json",
+      "exitCode": 0
+    },
+    "pr339": {
+      "apiPath": "/pulls/339",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.519309+00:00",
+      "finishedAt": "2026-11-02T10:32:22.934850+00:00",
+      "bytes": 25670,
+      "sha256": "70b2fc40a94ab6c078f3f873bf1545023f8f57781313dc59140afbb444638727",
+      "file": "pr339.json",
+      "exitCode": 0
+    },
+    "pr340": {
+      "apiPath": "/pulls/340",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.520062+00:00",
+      "finishedAt": "2026-11-02T10:32:22.974996+00:00",
+      "bytes": 20537,
+      "sha256": "a0e5f04bdd8281cf4fc938250a0a352d68c2553a774f388523f772d3ca1ea9ea",
+      "file": "pr340.json",
+      "exitCode": 0
+    },
+    "pr341": {
+      "apiPath": "/pulls/341",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.520636+00:00",
+      "finishedAt": "2026-11-02T10:32:23.088142+00:00",
+      "bytes": 22213,
+      "sha256": "fc0c49ca35d1f247c9c4f2aa4b92db1489bfa2a788e10a306032691ca171dc56",
+      "file": "pr341.json",
+      "exitCode": 0
+    },
+    "comments340": {
+      "apiPath": "/issues/340/comments?per_page=100",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.935171+00:00",
+      "finishedAt": "2026-11-02T10:32:23.327552+00:00",
+      "bytes": 18549,
+      "sha256": "559283c7116dc34716d08a24c4c9b66c1e2613438d5b48954a5abb95fed9b87e",
+      "file": "comments340.json",
+      "exitCode": 0
+    },
+    "comments341": {
+      "apiPath": "/issues/341/comments?per_page=100",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.938125+00:00",
+      "finishedAt": "2026-11-02T10:32:23.184412+00:00",
+      "bytes": 5047,
+      "sha256": "f22c566a757429c8867b27d875473426c5b8c3d5acbbc21c2a5fcaee46725f35",
+      "file": "comments341.json",
+      "exitCode": 0
+    },
+    "reviews340": {
+      "apiPath": "/pulls/340/reviews?per_page=100",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:22.975260+00:00",
+      "finishedAt": "2026-11-02T10:32:23.404702+00:00",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "file": "reviews340.json",
+      "exitCode": 0
+    },
+    "reviews341": {
+      "apiPath": "/pulls/341/reviews?per_page=100",
+      "httpStatus": 200,
+      "link": null,
+      "startedAt": "2026-11-02T10:32:23.088427+00:00",
+      "finishedAt": "2026-11-02T10:32:23.398050+00:00",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "file": "reviews341.json",
+      "exitCode": 0
+    }
+  },
+  "testsBuildChromeZipOrPoll": []
+}
