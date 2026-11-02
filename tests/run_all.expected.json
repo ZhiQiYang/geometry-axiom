@@ -29,6 +29,11 @@
       "count": 408,
       "unit": "斷言"
     },
+    "node:canvas_creation_owner": {
+      "mode": "count",
+      "count": 22,
+      "unit": "node test"
+    },
     "node:cdp_card_position": {
       "mode": "count",
       "count": 21,
@@ -53,6 +58,31 @@
     "node:context_operations": {
       "mode": "count",
       "count": 12,
+      "unit": "node test"
+    },
+    "node:cutting_layering": {
+      "mode": "count",
+      "count": 15,
+      "unit": "node test"
+    },
+    "node:cutting_owner": {
+      "mode": "count",
+      "count": 3,
+      "unit": "node test"
+    },
+    "node:cutting_plan": {
+      "mode": "count",
+      "count": 20,
+      "unit": "node test"
+    },
+    "node:cutting_project_store": {
+      "mode": "count",
+      "count": 12,
+      "unit": "node test"
+    },
+    "node:cutting_session": {
+      "mode": "count",
+      "count": 11,
       "unit": "node test"
     },
     "node:document_cases": {
@@ -165,7 +195,7 @@
     "node:tests-js": {
       "mode": "count",
       "unit": "node test",
-      "count": 737
+      "count": 741
     },
     "node:woodworking_frontend": {
       "mode": "count",
@@ -283,6 +313,11 @@
     "py:test_engineering_model_sources": {
       "mode": "count",
       "count": 4,
+      "unit": "test"
+    },
+    "py:test_engineering_terminal": {
+      "mode": "count",
+      "count": 7,
       "unit": "test"
     },
     "py:test_engineering_transport": {
@@ -880,6 +915,11 @@
       "count": 25,
       "unit": "test"
     },
+    "py:test_k1_mutation_runners": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
     "py:test_local_launcher": {
       "mode": "count",
       "count": 17,
@@ -977,7 +1017,7 @@
     },
     "py:test_product_architecture": {
       "mode": "count",
-      "count": 18,
+      "count": 22,
       "unit": "test"
     },
     "py:test_pr353_legacy_snapshot": {
@@ -1042,7 +1082,7 @@
     },
     "py:test_rule_case_workbench_http": {
       "mode": "count",
-      "count": 19,
+      "count": 21,
       "unit": "test"
     },
     "py:test_runtime_version": {
@@ -1154,6 +1194,56 @@
       "mode": "count",
       "count": 7,
       "unit": "unittest"
+    },
+    "node:definition_import": {
+      "mode": "count",
+      "count": 9,
+      "unit": "node test"
+    },
+    "py:test_definition_import": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_definition_import_transport": {
+      "mode": "count",
+      "count": 6,
+      "unit": "test"
+    },
+    "node:feature_attachments_vm": {
+      "mode": "count",
+      "count": 1,
+      "unit": "node test"
+    },
+    "node:room_candidate_cold_contract": {
+      "mode": "count",
+      "count": 8,
+      "unit": "node test"
+    },
+    "node:room_candidate_draft": {
+      "mode": "count",
+      "count": 7,
+      "unit": "node test"
+    },
+    "node:room_candidate_native_pins": {
+      "mode": "count",
+      "count": 29,
+      "unit": "node test"
+    },
+    "node:room_candidate_transaction_review": {
+      "mode": "count",
+      "count": 11,
+      "unit": "node test"
+    },
+    "node:room_candidate_workspace_review": {
+      "mode": "count",
+      "count": 19,
+      "unit": "node test"
+    },
+    "py:test_zero_room_native": {
+      "mode": "count",
+      "count": 1,
+      "unit": "test"
     }
   }
 }

@@ -866,13 +866,13 @@ window.ParameterUI = (() => {
     discard();
     return true;
   }
-  async function create() {
+  async function create({canvasPosition} = {}) {
     if(!mayLeave())return;const context=ReferenceWorkspace.context(),support=await apiRequest('engineering-read');
     if(context!==ReferenceWorkspace.context())return;
     if(!support.ok||!support.state?.capabilities?.includes('parameters/1')){toast('目前服務尚未支援參數卡，請重新啟動更新後的服務。','error');return;}
     const ids=await apiRequest('newid');if(!ids.ok||context!==ReferenceWorkspace.context())return;
     if(oc.focus){oc.stack=[];await leaveFocus();}if(view3)await setView3(false);
-    closePanels();ocSetSelection([]);oc.parameterCreating=true;state={context,card:{id:ids.parameter,name:'參數',nextFieldId:2,fields:[{id:1,name:'尺寸',type:'dimension',input:'0'}]},fresh:true,changed:true,generation:0,busy:false,preview:null,results:new Map(),failure:null,template:'single',activeId:null,previewKind:'put',draftPos:null};
+    closePanels();ocSetSelection([]);oc.parameterCreating=true;state={context,card:{id:ids.parameter,name:'參數',nextFieldId:2,fields:[{id:1,name:'尺寸',type:'dimension',input:'0'}]},fresh:true,changed:true,generation:0,busy:false,preview:null,results:new Map(),failure:null,template:'single',activeId:null,previewKind:'put',draftPos:canvasPosition ? {...canvasPosition} : null};
     drawObjects();if(innerWidth<=900)openPanel('right',$('toggleRight'));$('paramName')?.focus();
   }
   async function jump(kind,id) {

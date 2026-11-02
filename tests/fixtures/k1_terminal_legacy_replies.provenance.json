@@ -1,0 +1,9 @@
+{
+  "sourceCommit": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+  "sourceRepository": "ZhiQiYang/geometry-axiom",
+  "sourceVerification": "191 個獨立 main 原生檔逐一核對 Git blob SHA；不使用 PR 回覆推導基線",
+  "buildCommand": "gcc -std=c11 -O2 geometry-web/web_bridge.c -lm -o /tmp/dot-r354-main-bridge",
+  "generateCommand": "python3 tests/generate_k1_terminal_baseline.py --bridge /tmp/dot-r354-main-bridge --source-sha 405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+  "fixtureSha256": "06dd2e1a96d4f739f5ce4a5f87fba3e941f0e0411d332c7ce545985d877de4fc",
+  "comparison": "保留 without_terminal 後完整 JSON 欄位及順序相等；未刪除 capabilities、pins 或指紋"
+}
