@@ -1,3 +1,18 @@
+# CURRENT 2026-11-02T12:36:27.411484+00:00 — 兩F required gates實際收齊
+
+**#340 F edf556eedc204bb285fb4504e246e4310f4e1e88已交最新審查**，非draft；body/prbody d3c21db3bc4762fd21cadaf0a4e42d947853632c、comment6577119692已回讀。VALIDATED-WAITING-REVIEW，不冒稱已有F可合或main合併；#339已merged，340合後才341。
+
+**#345 F f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12現在真10個logical gates全成功**：run41437638054 latest attempt2已success；真正執行是九個原attempt1成功job＋一個attempt2 documents新job125268717592，其他attempt2九列只是舊執行的繼承status，沒有再跑九次。所有原log checkout同d917902400dc18294191a6c50aa990178fe279a0且tree同F；native237/5420pass/1原GDI、原聚合CLI0/summary逐byte等官方；fullcanvas2286/86golden；**documents新原result47/0**。12原ZIP/API digest及10實際執行原logs已核收並持久。
+
+原documents attempt1取消與root一次rerun403原件全保留；本任務沒有成功發出第二個rerun，這次已存在的attempt2發起執行者未由可用證據確認，不歸功root，也不再重跑。最新正文/交審將明分兩attempt、sourceM全量新ledger0e18..採F及120execution仍M；不改原SOURCE日期與計數。
+
+Docs-only checkout936B小修已有雙peer靜態依賴/selector審查；另一peer獨占codex/ci-documents-checkout-20261102 branch實作/commit/push/draft PR中，root不競寫。只docs sparse排根/evidence保所有primary，原10min/其他job/credentials/#366/helper不改；CI尚未跑不寫pass。這是降低無用2.659GB logical展開，不聲稱wire量或實測加速。
+
+下一步：345正式正文交最新審查；讀新review/main，340由本機合後開341。若待審，持續做utility真CI與未阻塞準備，沒有自行merge或停工。
+
+---
+以下歷史不作目前頭或合併批准
+
 # CURRENT 2026-11-02T12:19:38.193187+00:00 — #340 F驗收齊，交最新審查
 
 **#340 VALIDATED-WAITING-REVIEW**：公開F edf556eedc204bb285fb4504e246e4310f4e1e88、正式integration41438184818全部10success，真execution27feb429dd4690097bb3d330b2fbbc62c3619636與F同tree；12原ZIP＋10原log已全核。原native237/5420pass/1GDI，原聚合CLI0且summary逐byte同官方；fullcanvas2286/86golden、0fail/skip、其他5browser成功。原M#36610綠/123fresh＋7badcache真0/1/0、F精確採入與原check/架構三0全部有獨立peer。最新當前F的【ChatGPT 審查】尚待，**不是main合併批准，不先冒READY-TO-MERGE**；root將正文/完整SHA同步並轉待審，請本機Claude待可合再合。

@@ -1,0 +1,28 @@
+✔ T1 exact FFD coordinates, procurement, kerf and both leftover classes (12.827846ms)
+✔ T2 T3 T3b original end, shortened last kerf, and last-cut expectation (3.534824ms)
+✔ T4 T11 T13 T25 finish trim, allowance, usable threshold and nonnegative usable (2.573488ms)
+✔ T5 T5b smallest usable remnant first; unused remnants have no cuts or CSV rows (2.037796ms)
+✔ T6 T6b union uses timber identity including zero, never dimensions (1.604588ms)
+✔ T7 T18 T21 T22 request phases reject wrong world, capacities, stale selection, and empty scope (19.548201ms)
+✔ T8 T8b T9 material triplets and unordered section determine stock, never path (2.283907ms)
+✔ T10 T10b T10c unresolved, mixed and missing terminal remain distinct (1.528285ms)
+✔ T15 T15b canonical settings, candidate order and CSV ignore input/view ordering (3.720381ms)
+✔ R1.1 R5 canonical fingerprints ignore both declaration array orders (2.029803ms)
+✔ T19 T28 missing settings follow overlength diagnostics and severity (2.30703ms)
+✔ R47 material diagnostics precede overlength and missing-setting phases (1.094906ms)
+✔ T23 T23b exhaustion is per-group first failure, and overlength considers every remnant (1.388414ms)
+✔ T26 T27 fingerprint mismatch precedes section mismatch; unnamed material is not inferred (1.490494ms)
+✔ typed derive errors preserve old messages; no empty-scope second diagnosis (1.999626ms)
+✔ conservation detects corrupted positions and repeated demand identity (2.324643ms)
+✔ E1 E2 engineering proposal lengths produce overlength or six exact stocks (1.49342ms)
+✔ CSV fixed 30 columns, empty end/piece cells, mm, escaping; all computation is read-only (0.867761ms)
+✔ F4a CSV byte equality removes terminal while owned rows retain the native slot terminal (2.711986ms)
+✔ R1.1 each exhausted material group contributes its first unplaced demand (1.271776ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 130.842497
