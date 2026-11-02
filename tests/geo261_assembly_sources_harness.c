@@ -145,6 +145,9 @@ static int partial_case(void)
 static int lifetime_case(void)
 {
     Fixture *a=fixture(true),*b=fixture(true);CHECK(a&&b&&attach(a)&&attach(b),"lifetime-fixtures");b->depth=51;WoodAssemblyContext wrong=b->context;wrong.evaluation=NULL;CHECK(!wood_assembly_sources_bind(a->sources,&wrong),"reject-cross-candidate-context");
+    CHECK(a->context.engineering.last_terminal!=NULL,"lifetime-terminal-hook-bound");
+    wrong=a->context;wrong.engineering.last_terminal=NULL;CHECK(!wood_assembly_sources_bind(a->sources,&wrong),"reject-other-terminal-hook");
+    wrong=a->context;CHECK(wood_assembly_sources_bind(a->sources,&wrong),"accept-same-terminal-hook");
     char error[512]="";CHECK(wood_assembly_rebuild(&a->context,error,sizeof error)&&wood_assembly_rebuild(&b->context,error,sizeof error),"candidate-rebuilds");GeoCoord aa,ab,ba,bb;
     CHECK(wood_assembly_sources_owned_dimensions(a->sources,3,&aa,&ab)&&wood_assembly_sources_owned_dimensions(b->sources,3,&ba,&bb)&&aa==40&&ba==40&&ab==50&&bb==51&&a->pose_calls==0&&b->pose_calls==0,"owned-dimensions-isolated-without-pose");
     AsmOwner saved=a->state.owners[0];a->state.owners[0].instance=999;CHECK(!wood_assembly_sources_owned_dimensions(a->sources,saved.timber,&aa,&ab),"invalid-owner-is-safe");a->state.owners[0]=saved;
