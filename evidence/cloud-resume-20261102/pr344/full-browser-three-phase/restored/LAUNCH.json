@@ -1,0 +1,109 @@
+{
+  "phase": "restored",
+  "source": "/dev/shm/geometry-pr344-full-restored-20261102",
+  "head": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+  "tree": "51b669da21513fbccf90620faf55b7aad77703b6",
+  "phaseRoot": "/dev/shm/geometry-pr344-full-evidence-20261102/restored",
+  "environment": {
+    "TMPDIR": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GEOMETRY_FEEDBACK_DIR": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/feedback",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18846/",
+    "GEOMETRY_CHROME": "/tmp/google-chrome-local-20261102/opt/google/chrome/google-chrome",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CHROME_PROFILE": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/chrome-profile",
+    "GEOMETRY_CDP_PORT": "9346",
+    "GEOMETRY_TEST_SCREENSHOT": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/screens/phase1-shell.png",
+    "GEOMETRY_GRID_SCREENSHOT_DIR": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/screens/grid",
+    "GEOMETRY_REPAIR_SCREENSHOT_DIR": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/screens/repair",
+    "GEOMETRY_SCHEDULE_SCREENSHOT_DIR": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/screens/schedule",
+    "GEOMETRY_TEST_BRIDGE": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/runtime/bridge",
+    "GEOMETRY_BRIDGE": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/runtime/bridge",
+    "GEOMETRY_MODEL_BASE": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/runtime/model-base",
+    "GEOMETRY_TEST_CORE": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/runtime/core"
+  },
+  "unsetEnvironment": [
+    "GEOMETRY_ROOM_OUTLINE_ONLY",
+    "GEOMETRY_TIMBER_SCHEDULE_ONLY",
+    "GEOMETRY_ASSEMBLY_ONLY",
+    "GEOMETRY_PARAMETERS_ONLY",
+    "GEOMETRY_SELECTION_CURSOR_ONLY",
+    "GEOMETRY_UX_REFINEMENT_ONLY",
+    "GEOMETRY_UIUX_FIX_ONLY",
+    "GEOMETRY_MARQUEE_ONLY",
+    "GEOMETRY_PROJECT_AUDIT_ONLY",
+    "GEOMETRY_ENGINEERING_WORKFLOW_ONLY",
+    "GEOMETRY_GRID_SYSTEM_ONLY",
+    "GEOMETRY_INFINITE_FACE_ONLY",
+    "GEOMETRY_COMPOSITION_ONLY",
+    "GEOMETRY_UI_REVIEW_ONLY",
+    "GEOMETRY_REPAIR_ONLY",
+    "GEOMETRY_FLOW_REPAIR_ONLY",
+    "GEOMETRY_REFERENCE_ONLY",
+    "GEOMETRY_CDP_FROM_P31",
+    "GEOMETRY_ENGINEERING_EXAMPLE_ONLY",
+    "GEOMETRY_ENGINEERING_NAVIGATION_ONLY",
+    "GEOMETRY_ENGINEERING_SUBGRID_ONLY",
+    "GEOMETRY_CDP_UPDATE_GOLDEN"
+  ],
+  "candidateBridge": {
+    "name": "bridge",
+    "state": "fresh",
+    "reason": "來源與 binary SHA-256 相符（建於 2026-11-02T02:58:34+00:00）",
+    "path": "/tmp/geometry-resume-20261102/pr345/runtime/bridge"
+  },
+  "privateBridge": {
+    "name": "bridge",
+    "state": "fresh",
+    "reason": "來源與 binary SHA-256 相符（建於 2026-11-02T02:58:34+00:00）",
+    "path": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/runtime/bridge"
+  },
+  "bridgeFingerprint": "4dfd8b89342efd1c4ace8f5c5251ea0401f981ab5e79f1e61e7478501ab894ee",
+  "bridgeInputCount": 195,
+  "bridgeCommand": "cc -std=c11 -O2 geometry-web/web_bridge.c -lm -> bridge",
+  "bridgeCopies": [
+    {
+      "source": "/tmp/geometry-resume-20261102/pr345/runtime/bridge",
+      "path": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/runtime/bridge",
+      "bytes": 1126456,
+      "sha256": "7c21fcfc148d2ce5b8801ceb004898c9977ad9c358815eb684e24b53d5025551",
+      "mtimeNs": 1793588313889206061,
+      "mode": 33216
+    },
+    {
+      "source": "/tmp/geometry-resume-20261102/pr345/runtime/bridge.fingerprint.json",
+      "path": "/dev/shm/geometry-pr344-full-evidence-20261102/restored/tmp/runtime/bridge.fingerprint.json",
+      "bytes": 22986,
+      "sha256": "6166c6f5d74ca71f5a0fbda594efecb02ee83e697b9745723e07d2291ffa06b8",
+      "mtimeNs": 1793588314031114741,
+      "mode": 33152
+    }
+  ],
+  "pendingOfficialBuildTargets": [
+    "core",
+    "model-base"
+  ],
+  "appSha256": "c5f055915a039d90138824248b146552776286beb7544380c279a5586707ab60",
+  "testSha256": "1f3e2e36283ed7bbf6c4ad2cf3dc12c685667356d186d9fbd47bc5f0520f07ee",
+  "goldenSha256": "de99e9d0073b57e0b80856823cb4c49eb48c3c1629d57b7134bd3311197ad86f",
+  "sourceClean": true,
+  "productOrElfOrCompilerExecuted": false,
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "tests/release_gate.py",
+    "--url",
+    "http://127.0.0.1:18846/",
+    "--output",
+    "/dev/shm/geometry-pr344-full-evidence-20261102/restored/gate",
+    "--timeout",
+    "2100",
+    "--",
+    "/tmp/geometry-resume-20261102/pr363/node-v24.22.1-linux-x64/bin/node",
+    "geometry-web/cdp_test.js"
+  ],
+  "utc": "2026-11-02T07:41:42.542028+00:00",
+  "deadlineUtc": "2026-11-02T08:16:42.542028+00:00",
+  "timeoutSeconds": 2100,
+  "mode": "original full canvas restored phase; all partial filters unset"
+}

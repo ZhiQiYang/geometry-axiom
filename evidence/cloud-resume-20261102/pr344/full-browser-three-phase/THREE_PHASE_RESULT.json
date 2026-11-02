@@ -1,0 +1,87 @@
+{
+  "utc": "2026-11-02T08:12:40.178610+00:00",
+  "productHead": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+  "withdrawalLocalControlHead": "acd623857f2cc117b548907c2b96b638d9e1b31a",
+  "phases": {
+    "fixed-02": {
+      "head": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "tree": "51b669da21513fbccf90620faf55b7aad77703b6",
+      "started": "2026-11-02T06:35:03.660794+00:00",
+      "finished": "2026-11-02T07:03:05.337328+00:00",
+      "elapsedSeconds": 1681.676534,
+      "originalGateExit": 0,
+      "passed": 2267,
+      "failed": 0,
+      "skip": [],
+      "golden": "matched",
+      "floorConsequences": [
+        "[CDP FLOOR] 與 golden 逐段相符(85 段)"
+      ],
+      "sourceInputsBeforeAfterUnchanged": true,
+      "nativeBeforeAfterUnchanged": true,
+      "goldenBytesUnchanged": true,
+      "expectedP38": 1,
+      "receiptSha256": "106d70fdf1f2a42a70c9588327c58e47afd0034dce321d617fe3bba5924d6b5a",
+      "commandLogSha256": "c512e65997c70dc1868da9f00ce2d144ef3a139dd78fa85668f1528a51b548ea",
+      "namedFailureLines": []
+    },
+    "withdrawn": {
+      "head": "acd623857f2cc117b548907c2b96b638d9e1b31a",
+      "tree": "b0845b6e71a1af58b286ae4fa34da4f1db721d47",
+      "started": "2026-11-02T07:04:01.148771+00:00",
+      "finished": "2026-11-02T07:32:10.751893+00:00",
+      "elapsedSeconds": 1689.603122,
+      "originalGateExit": 1,
+      "passed": 2264,
+      "failed": 5,
+      "skip": [],
+      "golden": "mismatch (2)",
+      "floorConsequences": [
+        "[CDP FLOOR] 段 P53:預期 28,實得 27(變少)",
+        "[CDP FLOOR] 段 P57:預期 56,實得 54(變少)"
+      ],
+      "sourceInputsBeforeAfterUnchanged": true,
+      "nativeBeforeAfterUnchanged": true,
+      "goldenBytesUnchanged": true,
+      "expectedP38": 1,
+      "receiptSha256": "13dfb57ded41dbe3540ae6a7a25efb85b40bc05e170f9e972cfa6f10b189a68d",
+      "commandLogSha256": "f1d4bf7b9d4235bf780c20b7962dc843b845738e7c069412ad1b419444a436ec",
+      "namedFailureLines": [
+        "P53-3 重試只讀取，不重送修改 ✗ {\"commands\":[\"dump\",\"dump\",\"objects\",\"surfaces\",\"boundary 1\",\"surfaces\"],\"count\":\"1\",\"hidden\":true,\"error\":\"此網址未獲服務允許（403）。請使用啟動服務時顯示的本機網址。\"}",
+        "P61-10 載入未送達時，重試連線保留原幾何與來源 ✗ {\"confirmIntercepted\":true,\"blocked\":true,\"importFailure\":{\"name\":\"TypeError\",\"message\":\"test upload disconnected\"},\"seed\":{\"phase\":\"error\",\"error\":\"無法確認載入結果，已暫停編輯。請確認服務後重試。\"},\"phase\":\"ready\",\"error\":\"無法確認載入結果，已暫停編輯。請確認服務後重試。\",\"beforeDump\":\"boundary 1 outline 0,0 800,0 800,400 2000,400 2000,1000 0,1000\\ncanvas-pos boundary 1 60 60\\n\",\"afterDump\":\"boundary 1 outline 0,0 800,0 800,400 2000,400 2000,1000 0,1000\\ncanvas-pos boundary 1 60 60\\n\",\"dumpMatches\":true,\"sourceId\":\"b0bff1f1-51d4-4b7c-a41e-69985d328495\",\"expectedSourceId\":\"b0bff1f1-51d4-4b7c-a41e-69985d328495\",\"sourceMatches\":true,\"passed\":false}",
+        "P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源 ✗ {\"confirmIntercepted\":true,\"confirmationResponseReceived\":true,\"confirmationResponseOK\":true,\"confirmationStatus\":200,\"blocked\":true,\"importFailure\":{\"name\":\"TypeError\",\"message\":\"test response lost\"},\"seed\":{\"phase\":\"error\",\"error\":\"無法確認載入結果，已暫停編輯。請確認服務後重試。\"},\"phase\":\"ready\",\"error\":\"無法確認載入結果，已暫停編輯。請確認服務後重試。\",\"expectedDump\":\"boundary 1 outline 0,0 2000,0 2000,1000 0,1000\\ncanvas-pos boundary 1 60 60\\n\",\"afterDump\":\"boundary 1 outline 0,0 2000,0 2000,1000 0,1000\\ncanvas-pos boundary 1 60 60\\n\",\"dumpMatches\":true,\"distanceMm\":1600,\"scenePath\":\"/dev/shm/geometry-pr344-full-evidence-20261102/withdrawn/tmp/tmpd1wj4fss.scene\",\"passed\":false}"
+      ]
+    },
+    "restored": {
+      "head": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "tree": "51b669da21513fbccf90620faf55b7aad77703b6",
+      "started": "2026-11-02T07:41:42.896723+00:00",
+      "finished": "2026-11-02T08:09:57.778115+00:00",
+      "elapsedSeconds": 1694.881392,
+      "originalGateExit": 0,
+      "passed": 2267,
+      "failed": 0,
+      "skip": [],
+      "golden": "matched",
+      "floorConsequences": [
+        "[CDP FLOOR] 與 golden 逐段相符(85 段)"
+      ],
+      "sourceInputsBeforeAfterUnchanged": true,
+      "nativeBeforeAfterUnchanged": true,
+      "goldenBytesUnchanged": true,
+      "expectedP38": 1,
+      "receiptSha256": "afaabb33f7084e58e6b4bb20db25ea1a54a9f733df06f88bcbe51fe2e79839ed",
+      "commandLogSha256": "620386afc54ad63e0a645495f575d7415163f20163fb812a4431a09778a67e55",
+      "namedFailureLines": []
+    }
+  },
+  "crossPhaseNative3AndSidecarIdentical": true,
+  "fixedRestoredAll734InputHashesIdentical": true,
+  "withdrawnOnlyRuntimeInputDifference": [
+    "geometry-web/app.js"
+  ],
+  "exactWithdrawalPatchSha256": "7ffd99218d703f5816497e66d75c07a6e21641850fc591d7115faedc590ae2ef",
+  "allOriginalGoldenBytesUnchanged": true,
+  "reviewer": "primary root bounded receipt/source audit; original independent fixed-02 peer PASS retained; new all-phase child peer unavailable due model capacity",
+  "status": "ORIGINAL_FULL_0_1_0_VERIFIED_PRIMARY_REVIEW"
+}

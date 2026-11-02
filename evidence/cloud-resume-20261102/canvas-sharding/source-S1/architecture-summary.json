@@ -1,0 +1,115 @@
+{
+  "executionHead": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "actualAdoptedMain": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+  "inputClosureSha256": "7b763cd7856ec3314e1e32d92dba9888c5b4347064dd2ea626d8e0b6ae50b074",
+  "counts": {
+    "executableFiles": 607,
+    "ownedSources": 335,
+    "exclusions": 272,
+    "edges": 803,
+    "diagnostics": 0,
+    "layers": {
+      "H": 193,
+      "K": 69,
+      "W": 67,
+      "vendor": 6
+    },
+    "languages": {
+      "c": 191,
+      "javascript": 65,
+      "python": 75,
+      "html": 4
+    },
+    "forbiddenIdentifiers": 985,
+    "forbiddenStrings": 55
+  },
+  "sourceAndInputsUnchanged": true,
+  "commands": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "acceptance_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+      "source_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+      "source_variant": "architecture-cli",
+      "environment": "local managed cloud Linux; unchanged original CLI; no GitHub run ID",
+      "startedUtc": "2026-11-02T08:11:06.653511+00:00",
+      "endedUtc": "2026-11-02T08:11:12.087042+00:00",
+      "actual_process_returncode": 0,
+      "exitCode": 0,
+      "timeout_expired": false,
+      "elapsedSeconds": 5.433534298994346,
+      "stdout_sha256": "9a73fde16858a2577bd79508689e0fd691ca4575f8c32106b7a4b7b90a6f7c74",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 133269,
+      "stderr_bytes": 0,
+      "stdout_file": "/tmp/geometry-resume-20261102/canvas-sharding/canonical-S1/architecture-cli.stdout",
+      "stderr_file": "/tmp/geometry-resume-20261102/canvas-sharding/canonical-S1/architecture-cli.stderr"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "acceptance_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+      "source_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+      "source_variant": "architecture-unit",
+      "environment": "local managed cloud Linux; unchanged original CLI; no GitHub run ID",
+      "startedUtc": "2026-11-02T08:11:12.087370+00:00",
+      "endedUtc": "2026-11-02T08:11:12.530880+00:00",
+      "actual_process_returncode": 0,
+      "exitCode": 0,
+      "timeout_expired": false,
+      "elapsedSeconds": 0.4435291189874988,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "1f73b8c20c10de817520f6d22f0f63b554984a5d3740c70a875498c5a12a006d",
+      "stdout_bytes": 0,
+      "stderr_bytes": 29577,
+      "stdout_file": "/tmp/geometry-resume-20261102/canvas-sharding/canonical-S1/architecture-unit.stdout",
+      "stderr_file": "/tmp/geometry-resume-20261102/canvas-sharding/canonical-S1/architecture-unit.stderr",
+      "testsRun": 205,
+      "skipped": 0
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "acceptance_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+      "source_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+      "source_variant": "architecture-product",
+      "environment": "local managed cloud Linux; unchanged original CLI; no GitHub run ID",
+      "startedUtc": "2026-11-02T08:11:12.531368+00:00",
+      "endedUtc": "2026-11-02T08:11:23.714547+00:00",
+      "actual_process_returncode": 0,
+      "exitCode": 0,
+      "timeout_expired": false,
+      "elapsedSeconds": 11.183203396009048,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "de7ed0284844f562ae1dcaa33811beb68b1070b1ec8c29cbace43c1db5d64801",
+      "stdout_bytes": 0,
+      "stderr_bytes": 118,
+      "stdout_file": "/tmp/geometry-resume-20261102/canvas-sharding/canonical-S1/architecture-product.stdout",
+      "stderr_file": "/tmp/geometry-resume-20261102/canvas-sharding/canonical-S1/architecture-product.stderr",
+      "testsRun": 18,
+      "skipped": 0
+    }
+  ],
+  "artifacts": {
+    "PRODUCT-ARCHITECTURE.md": "4a29bc7624db052e4fdbe91c904c5fcdecfdffe85d923437bfe3dbcab56f9be1",
+    "product-architecture-receipt.json": "7d5ba8d8fcaeceb629ef6b7801d751d2dbb0de675bbc0b323c52702ba8c16152",
+    "product-architecture-scan.json": "9a73fde16858a2577bd79508689e0fd691ca4575f8c32106b7a4b7b90a6f7c74",
+    "product-architecture.json": "923705c107ce9f255b41cb9620b3e1475804b0b54345d1cec0507d305da4741a"
+  }
+}

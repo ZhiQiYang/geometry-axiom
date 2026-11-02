@@ -1,0 +1,74 @@
+{
+  "schema": "geometry-pr344-fixed-complete-peer/1",
+  "reviewedUtc": "2026-11-02T07:06:21.639002+00:00",
+  "status": "PASS for completed original fixed-02 full canvas only",
+  "sourceF": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+  "phase": "fixed-02",
+  "terminal": {
+    "actualOuterExit": 0,
+    "gateExit": 0,
+    "commandExit": 0,
+    "endedUtc": "2026-11-02T07:03:05.598512+00:00",
+    "outerSeconds": 1682.2476519080228,
+    "originalTimeoutSeconds": 2100,
+    "completed": true,
+    "scope": "full",
+    "filters": [],
+    "modifiers": [],
+    "passedAssertions": 2267,
+    "failedAssertions": 0,
+    "skipped": [],
+    "goldenCompare": "matched",
+    "goldenSectionsEqual": true
+  },
+  "identity": {
+    "savedRuntimeInputsBeforeAfterExact": 734,
+    "savedRuntimeInputFieldsCompared": "entire path/sha256/bytes/mtimeNs/mode entries",
+    "binaryAndSidecarIdentityTargetsExact": 3,
+    "sourceCleanBeforeAfter": true,
+    "headTreeBeforeAfterExact": true,
+    "runtimeRootVersionSessionPidBeforeAfterExact": true,
+    "goldenRawSha256": "de99e9d0073b57e0b80856823cb4c49eb48c3c1629d57b7134bd3311197ad86f"
+  },
+  "targetAssertionLines": {
+    "P53-3": "P53-3 重試只讀取，不重送修改 ✓ {\"commands\":[\"dump\",\"dump\",\"objects\",\"surfaces\",\"boundary 1\",\"surfaces\"],\"count\":\"1\",\"hidden\":true,\"error\":\"\"}",
+    "P61-10": "P61-10 載入未送達時，重試連線保留原幾何與來源 ✓ ",
+    "P61-11": "P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源 ✓ "
+  },
+  "expectedP38Exception": {
+    "rawUncaughtBrowserExceptions": 1,
+    "expectedExceptionLines": [
+      "[EXPECTED EXCEPTION] Error: fb-auto-probe"
+    ],
+    "unexpectedExceptionMarkerCount": 0,
+    "notRelabelledAsZero": true
+  },
+  "priorFailuresPreserved": {
+    "firstFixed": {
+      "exit": 1,
+      "completed": false,
+      "passed": 1827,
+      "failedAssertions": 0,
+      "reason": "ENOENT missing private TMPDIR/geometry-tests"
+    },
+    "fixed02PrelaunchGateRefusal": {
+      "exit": 2,
+      "reason": "own preflight gate output leaf already existed",
+      "distinctFromCompletedCommand": true
+    }
+  },
+  "inputSha256": {
+    "/dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/PHASE_BEFORE.json": "d490371a86737bf3a53015d7f1fd60aa27d4bf09345b33499d742abf8d9f62ee",
+    "/dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/PHASE_AFTER.json": "0107516bb8c974fe36059740e0ec5f524291f9526695b55529d6c5ec249660a4",
+    "/dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/runtime-source-inputs-before.json": "5bdd9609d8da0db1dab9239d6220c570e4daa0e60164caae47a92a9fb0f43ae6",
+    "/dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/runtime-source-inputs-after.json": "5bdd9609d8da0db1dab9239d6220c570e4daa0e60164caae47a92a9fb0f43ae6",
+    "/dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/gate/receipt.json": "106d70fdf1f2a42a70c9588327c58e47afd0034dce321d617fe3bba5924d6b5a",
+    "/dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/gate/command.log": "c512e65997c70dc1868da9f00ce2d144ef3a139dd78fa85668f1528a51b548ea",
+    "/dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/commands/release-full-execution/REQUEST.json": "9d38324d887a4c3eb2d6677ab40be01b295399efa01dd63eb017325af884ff15",
+    "/dev/shm/geometry-pr344-full-evidence-20261102/fixed-02/commands/release-full-execution/RESULT.json": "3749bf4651ee2c324d6744ab25a87b1d4ea91d9aa9f2b6ad0ce7b716f8d42311"
+  },
+  "limits": [
+    "Saved receipts/raw files compared only; no source-global hash tool, runtime/live snapshot, test, Chrome, server, product, native or model was run/refreshed.",
+    "This accepts the fixed-02 terminal result only; V and restored phases and whole-PR acceptance remain separate."
+  ]
+}

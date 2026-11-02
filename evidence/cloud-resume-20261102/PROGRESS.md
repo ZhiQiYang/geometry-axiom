@@ -1,3 +1,16 @@
+# CURRENT 2026-11-02T08:14:38.443745+00:00
+
+- #366已合main，工具及manual真入口均完整核收。#363三阻擋已解除、12CI綠且07:02固定head獨立dot判可合併，READY-TO-MERGE交本機Claude。#340、#345各20CI綠待審，未合main；340合後才339。
+- **#344真完整三相已收齊0／1／0**：F=d794a7447b98a82fb35c1dccaedc3443e2230933，V=acd623857f2cc117b548907c2b96b638d9e1b31a local-only。fixed2267/0/0、V2264/5/0（3具名＋2floor）、restored2267/0/0；原golden不變、各1681.677/1689.603/1694.881秒<2100，734input前後與native3+sidecar全核。正式F20CI另已綠。新完整原件在pr344/full-browser-three-phase，主代理bounded核收PASS，新子peercapacity未完成明列；接續更新正文交最新獨立審查，不冒merge approval。
+- #367 draft，head9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2／base363，仍依賴344。獨立run41409303344真legacy與extensions兩runner均已啟動，08:03 metadata documents/assembly成功，其餘未終態不得當綠。
+- **本地唯一重測已改為#367完整native producer**，原S1 clean source，原`python3 -u tests/run_all.py --build --update-expected --report ...`，16MiB／2100秒，**08:11:25.142246Z實際開始／08:46:25.142246Z原截止**；supervisor347708/child347754，原流/dev/shm/geometry-canvas-full-census-20261102/stdout.log。既有reaper05384f5a只收自身死後代／零signal，不改原判準。未完成不得報235全過或手填expected。
+- #367 S1架構三原CLI已0/0/0、205+18／607inputs／803edges／policy985+55全保，產物在checkout外尚未採入。固定S1跑完native／同source原full，再一次採成功expected與canonical，避免反覆改head。真harness及artifact負控仍未跑；計畫不是通過。
+
+不開另一local Chrome，不與full native競跑重測；未知修改／原件／fixtures／Git objects全保。詳實際原件與先前歷史如下。
+
+---
+## 以下為歷史檢查點，以最上方CURRENT為準
+
 # CURRENT 2026-11-02T07:56:27.291006+00:00
 
 - #366已完成並合main；manual入口真10jobs／9ZIP／原verify0，完整帳本分類與7cache反證核收。

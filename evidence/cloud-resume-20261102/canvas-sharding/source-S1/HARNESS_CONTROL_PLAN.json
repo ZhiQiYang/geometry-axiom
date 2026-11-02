@@ -1,0 +1,21 @@
+{
+  "utc": "2026-11-02T08:07:06.491909+00:00",
+  "source": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "path": "geometry-web/cdp_test.js",
+  "originalSha256": "14291f6f1114a9f4dd5ceaf3b6b02297b673870d5b903282fdd4090a31ff49e7",
+  "exactNeedle": "s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 4 ? \"✓\" : \"✗\"",
+  "replacement": "false && s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 4 ? \"✓\" : \"✗\"",
+  "expectedNamedOriginalAssertion": "S2 結構:",
+  "scope": "legacy; real Chrome and original predicate location; all original unit/section/assertion order and original golden unchanged",
+  "notYetApplied": true,
+  "testsExecuted": 0,
+  "prerequisite": "Actual same-source baseline legacy green; #344 full terminal and native producer done. Control isolated clean checkout/local commit, never applied to product branch.",
+  "expectedEvidence": [
+    "Real journal contains passed:false for S2 結構:",
+    "Original node process nonzero, only named assertion and its golden count consequence",
+    "Original Python supervisor rejects CANVAS_PROCESS_FAILED",
+    "Original Node trace verifier rejects CANVAS_ASSERTION_FAILED with exact label",
+    "Restore clean fixed source/profile and require original legacy green again"
+  ],
+  "localRunIdentity": "Any actual local control uses explicitly declared local run_id 0 / attempt1; never impersonate the real GitHub run. Official artifact replay uses actual run/attempt/execution identity."
+}

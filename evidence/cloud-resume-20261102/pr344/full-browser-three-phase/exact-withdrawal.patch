@@ -1,0 +1,13 @@
+diff --git a/geometry-web/app.js b/geometry-web/app.js
+index e82ff16e7..8b557a62c 100644
+--- a/geometry-web/app.js
++++ b/geometry-web/app.js
+@@ -590,7 +590,7 @@ async function recoverConnection() {
+     }
+     if (!oc.on) await render();
+     if (connection.phase === "error") return;
+-    connection.phase = "ready"; connection.known = true; connection.error = "";
++    connection.phase = "ready"; connection.known = true;
+     ReferenceWorkspace.sync();
+     showConnectionState(); drawObjects();
+   } catch (e) {
