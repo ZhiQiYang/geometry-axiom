@@ -1,0 +1,14 @@
+{
+  "utc": "2026-11-02T09:01:22.095430+00:00",
+  "oldActualTimeout": 124,
+  "oldExternalWatchdog": 2100,
+  "sourceAuthority": "Current unchanged .github/workflows/integration-tests.yml native three-shard job and tests/run_all.py full-only update_expected entry; neither defines a 35-minute global full data-generation cutoff.",
+  "formalCiShardLimitSeconds": 2100,
+  "formalCiShardCount": 3,
+  "perSuiteLimitsChanged": false,
+  "formalAcceptanceLimitsChanged": false,
+  "developmentCountWatchdogSeconds": 6300,
+  "calculation": "3 * existing 2100-second shard work budgets, used only as the external maintenance-step bound.",
+  "why": "Root had incorrectly carried old unsharded acceptance-job total onto full-only expected-data generation after #364; preserve first actual 2100 timeout and do not count it as pass.",
+  "scope": "No product, golden, assertion, skip, original runner or CI file modified for this correction. The candidate still must pass unchanged complete strict native and coverage controls, and actual full browser within its original limit."
+}

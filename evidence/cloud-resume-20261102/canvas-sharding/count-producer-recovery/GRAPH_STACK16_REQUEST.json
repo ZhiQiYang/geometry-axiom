@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "tests/run_all.py",
+    "--build",
+    "--only",
+    "py:test_geo261_graph_product",
+    "--report",
+    "/tmp/geometry-resume-20261102/canvas-sharding/count-producer-recovery/graph-target-stack16-report.json"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "head": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "parentStack": [
+    8388608,
+    -1
+  ],
+  "childStackBytes": 16777216,
+  "utc": "2026-11-02T09:02:15.251659+00:00",
+  "classification": "Prior narrow probe omitted original native 16MiB stack and hit native BridgeClosed/-11; correct the caller only. Original full attempt used 16MiB and four relevant tests passed; original raw retained."
+}

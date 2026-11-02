@@ -1,0 +1,25 @@
+把既有完整canvas拆成legacy／extensions兩個真正執行單位，保存原具名verdict journal，聚合嚴格核同run/attempt／來源／runtime／原golden精確聯集。
+
+目前完整head **9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2**，依賴#363及#344。**Draft／未達合併條件**；上游合main後一般merge收斂，不rebase／force。
+
+| 唯一current-state項目 | 已實跑／未跑與來源 |
+|---|---|
+| 首輪正式CI | run41409303344已終態failure，12jobs中7綠5紅；真execution bfeeae21f339b244cb06c1713af0903f99de8eab與head同tree25ae2c97838387b6c0826c69f199a6e58b0d9d00，不移標 |
+| 真legacy片 | 898pass/0fail/0skip、62段、原投影golden符合；官方artifact13125263407 ZIP SHA256 06e4442a66ca2b12cdf587b545b76118cd45837381f982bb907298e4691a9ccb。已核API digest，在精確execution detached source核54plan inputs／runtime，原Node verifier復驗0 |
+| 真extensions片 | 929pass/0assertfail/0skip，但P76 FATAL ENOENT parameter-mobile.png，completed:false／golden未比較，process1。官方artifact13126127304 ZIP hash4275bf1639c9b1d309febe72a2d8ebe84566e8fa1f72e379b92db51ed3babc9b及原raw保存，零assertfail不算通過 |
+| caller窄修 | extensions不再經legacy P1建立截圖父目錄，start_local原生在另一專用geometry-runtime目錄。只補workflow caller用Node真os.tmpdir建立原geometry-tests父目錄，&&保準備失敗非零；原JS／斷言／golden／wait／35min不改。修正保全codex/canvas-output-preflight-20261102 @8e3c80bc78953626878e00a0bcfc211e88c65bbf，未採PR。FS0/1/0＋bash-n0，不冒修後真Chrome綠 |
+| native首輪CI | 兩新suite本身19/19、12/12過，但expected少兩row；原NativeShardCoverage集合斷言及其負控baseline也正確拒絕舊233集合。native1/2＋nativecomplete紅；不修改原覆蓋斷言，不手填count |
+| 第一次local完整數量產生 | 真source本head，08:11:25–08:46:25UTC，原外部2100秒守門觸發，exit124／child-15，到第205/235套，沒有產生expected、tracked inputs零變動。完整原timeout／599份該輪suite logs與197份JSON已保留；不能算完整通過或數量依據 |
+| 來源環境修復 | 稀疏checkout漏一個原grid fixture，依固定Git blob與成功A原bytes補齊；原graph suite在正確16MiB stack下重跑5/5、exit0。誤用8MiB的定向probe出現BridgeClosed/-11原件另留，不當產品bug。未修改fixture／test／Git blob |
+| 開發用全量數量產生重啟 | 原run_all.py --build --update-expected full-only命令／16MiB／每suite原上限保持，9:03UTC於同source重啟，結果尚未完成。先前把舊單一native job35min套到此維護步驟是外部排程錯誤；現行正式CI仍三片各35min，完全不變。新維護步驟外部總watchdog取三片原預算合計6300秒，不作任何release／效能通過門檻。原35min失敗不改標。若原CLI因expected自我引用輸出1，原發現數量也只作provisional data，原strict完整native＋coverage／負控仍須候選全綠 |
+| 真artifact負控 | 原Python完整聚合器對兩份真官方原件重放exit1／CANVAS_PROCESS_FAILED，未發布假green summary；這不是兩片完整正例或真Chrome harness mutant |
+| 其他browser | 同run documents／assembly／grid／space／timber成功；canvascomplete因extensions未成功依原守門紅，不能用partial代完整canvas |
+| 原裁判保全 | 86keys／2317計畫＝legacy62／898＋extensions24／1419，R06=50歸extensions。原legacy478849 UTF8 bytes、22tail原序及P83→P86同片保留；1419不是本輪extensions實測完成數 |
+| 純工具與peer | 舊Node19／CDP32／架構205+18及Python12原execution保留；新CI又實跑19與12各過。原source兩peer PASS有效，新artifact子peer同模型capacity未完成，由主代理核原件明列，不冒新子peer PASS |
+| #366正式帳本 | 真S76d311cf1507708bc63bba2ab6e4f0c3f68cabb0的manual41397499686，10/10成功、9ZIP全核／原verify0；123=114killed/1crashed/5equivalent/3retired，其餘0、7cache負控strict1。ledger b39b1f20fa267628ee656cf40464af7812ae70d5a19aef52e3a53054eb4599fe只採目前head，39264其他entries同，120execution仍S，原--check0；不執行下載ELF |
+| S1架構 | 本head原三CLI0／205+18、607inputs／335owned+272excluded／803edges／0diag，policy985/55保全；Linux四產物在checkout外尚未採，原raw已公開 |
+| 未完成 | 修後真兩片全綠、同source原full、真harness false撤回／恢復、兩綠artifact原聚合及額外負控、原CLI數量採入與最終required CI。維持draft |
+
+[首輪固定E完整原件、官方ZIP/raw、精確execution復驗、caller patch／FS控制與架構原件](https://github.com/ZhiQiYang/geometry-axiom/tree/aaaecec6c87427239f035e7a9d8778c6e5592ede/evidence/cloud-resume-20261102/canvas-sharding)。後續timeout、fixture／stack修復及新維護步驟真原件持續補入同一證據分支；沒有把本地路徑當已公開。
+
+外部collector曾因Git非ASCII quotePath與稀疏checkout漏plan helper被原guard拒絕；原錯保留，補原54inputs後legacy復驗0，未改產品／official bytes／判準。現本機唯一重測是開發用完整數量產生；正式CI／fullbrowser時限原樣，不以6300秒維護watchdog宣告正式native／性能通過。未合main、未改公理／閱讀器／決策佇列、未改斷言／golden／skip。

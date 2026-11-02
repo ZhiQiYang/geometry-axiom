@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "tests/run_all.py",
+    "--build",
+    "--only",
+    "py:test_geo261_graph_product",
+    "--report",
+    "/tmp/geometry-resume-20261102/canvas-sharding/count-producer-recovery/graph-target-report.json"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "source": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "utc": "2026-11-02T08:59:44.115794+00:00",
+  "scope": "Only rerun original graph suite after exact fixture materialization; not complete native"
+}

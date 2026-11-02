@@ -1,3 +1,24 @@
+# CURRENT 2026-11-02T09:17:28.022248+00:00
+
+#366已合main；#363三阻擋解除／12CI綠／獨立dot可合併，READY-TO-MERGE；#340／#345各20CI綠待審；#344完整F/V/F真0/1/0與20CI全核，正文／prbody已同步交新獨立審查。main最新實讀仍df7eb43af3389ff2afc1a73aaf4e57580ae612fc，340尚未合，依使用者順序不先做339。Codex未merge main。
+
+## #367：原timeout及來源前置紅件均保留，現原full-only數量產生在跑
+
+首輪CI41409303344 7綠5紅、兩個原因：extensions P76截圖父目錄ENOENT（929pass但fatal1），及expected少兩new suite row連帶原native覆蓋set斷言拒絕。legacy898/62原golden＋官方54input重放0，完整聚合對不完整原件真拒絕1。窄修workflow caller已保全8e3c80bc78953626878e00a0bcfc211e88c65bbf，FS0/1/0、bash-n0；未採PR、修後真Chrome綠仍未驗。source/first原件Eaaaecec6c87427239f035e7a9d8778c6e5592ede。
+
+第一次本地count producer於08:46:25原2100總guard觸發，supervisor124／child-15；只到205/235，無完整report、未生成expected，前後source與expected都未變。599份該輪log及197json、source before/after、所有原件已標準tar封存並逐成員hash讀回，見count-producer-recovery/first-timeout-originals.tar.gz及manifest；3個residual PID已確認均Z，沒有活程序／沒有另發signal。不能宣稱完整235已過。
+
+原graph suite另因稀疏checkout漏fixture錯誤；精確Git blob與成功A原bytes補齊唯一實際test依賴，原16MiB下定向5/5過。誤用8MiB的定向probe造成BridgeClosed/-11也保留。歷史receipt17177檔／1,012,860,159B不屬測試依賴，過寬盤點在materialize前因256MiB規劃guard停止，沒有放大拷貝或刪資料；只補必要fixture、Git blobs零變更。
+
+**目前唯一local重測：開發用原full-only count writer，source S1=9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2，09:03:30.014669Z實際開始，supervisor406773／child406819；原流/dev/shm/geometry-canvas-count-producer-20261102/stdout.log。** full-only CLI／16MiB／每suite原限不變。Root先前把舊單一native job35min誤套到此維護步驟，已據現行workflow三片各35min與原CLI無global cutoff修正外部watchdog為3×2100=6300秒、開發截止10:48:30.014669Z；**正式CI每片35min、原fullbrowser35min、所有per-suite／assert／golden／skip全未改**。原timeout124不改說通過；6300不是release或性能通過門檻。
+
+仍須收齊原producer真結果；原CLI若因expected自我引用回1，觀測數量也僅provisional，必須候選不變的完整strict CI＋coverage/負控實際全綠後才驗收。未手填、未把失敗expected當已通過。之後一次採caller窄修與實測數量、必要閉包與正式CI／原full／harness控制；仍draft。
+
+兩位**先前完成且未失敗**的既有peer已接一次新有界唯讀審查（不是重試failed turns／換model／新cloud task）：#344完整三相與#367caller窄修／watchdog範圍；目前running，未先冒PASS。舊failed agents未重試。當前沒有另一local Chrome或heavy test競跑。
+
+---
+## 以下為歷史檢查點，以最上方CURRENT為準
+
 # CURRENT 2026-11-02T08:42:31.183667+00:00
 
 #344三相及20CI已完成並公開769d12426cf6e7a4634ab5b05add4d3435b18a88；正文／prbody同步、留言6572361014交新獨立審查，未冒merge approval。#363已獨立dot可合併＋12CI綠、READY-TO-MERGE。#340／#345各20CI綠待審，main合併交本機Claude，340合後才339。
