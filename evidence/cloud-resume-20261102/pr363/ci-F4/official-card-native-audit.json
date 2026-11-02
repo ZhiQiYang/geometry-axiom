@@ -1,0 +1,129 @@
+{
+  "ok": true,
+  "headF4": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+  "executedMergePreserved": "946ba6274e0cbcfab20b8fc0433386e187870d83",
+  "nativeSummaryEqualsOfficialAggregate": {
+    "passed": true,
+    "commit_sha": "946ba6274e0cbcfab20b8fc0433386e187870d83",
+    "parts": 3,
+    "suite_count": 232,
+    "executed_suites": 232,
+    "union_equals_full_registry": true,
+    "overlap": [],
+    "counted_tests": 5420,
+    "counted_passed": 5419,
+    "allowed_skips": 1,
+    "shard_suites": {
+      "1": 77,
+      "2": 78,
+      "3": 77
+    },
+    "expected_sha256": "cba8aa2be2c2d252050634f88a9dfc1c03e498d1d938a30ee3c55ca513df4243",
+    "timings_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"
+  },
+  "nativeLeafJsonValidated": 196,
+  "nativeShardingNegativeControl": {
+    "passed": true,
+    "baseline_mutant_restored_exit": [
+      0,
+      1,
+      0
+    ],
+    "rows": [
+      {
+        "label": "baseline",
+        "exit": 0,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [],
+        "assertion_failure": true,
+        "removed": []
+      },
+      {
+        "label": "removed",
+        "exit": 1,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [
+          "test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once"
+        ],
+        "assertion_failure": true,
+        "removed": [
+          "c:integrity"
+        ]
+      },
+      {
+        "label": "restored",
+        "exit": 0,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [],
+        "assertion_failure": true,
+        "removed": []
+      }
+    ]
+  },
+  "cardCases": [
+    {
+      "name": "A01-format",
+      "verdict": "killed",
+      "expectedTag": "CR20 NO_SILENT_DOWNGRADE",
+      "redExit": 1,
+      "redFailures": 2,
+      "restoredExit": 0
+    },
+    {
+      "name": "A02-manifest",
+      "verdict": "killed",
+      "expectedTag": "CR20 manifest capability",
+      "redExit": 1,
+      "redFailures": 3,
+      "restoredExit": 0
+    },
+    {
+      "name": "A03-source-markers",
+      "verdict": "killed",
+      "expectedTag": "CR20 manifest capability",
+      "redExit": 1,
+      "redFailures": 1,
+      "restoredExit": 0
+    },
+    {
+      "name": "A04-reader",
+      "verdict": "killed",
+      "expectedTag": "CR20 reader",
+      "redExit": 1,
+      "redFailures": 2,
+      "restoredExit": 0
+    },
+    {
+      "name": "A05-version",
+      "verdict": "killed",
+      "expectedTag": "CR19 CARD_SAVE_ROUNDTRIP",
+      "redExit": 1,
+      "redFailures": 4,
+      "restoredExit": 0
+    },
+    {
+      "name": "A06-nested",
+      "verdict": "killed",
+      "expectedTag": "CR19 snapshot-only",
+      "redExit": 1,
+      "redFailures": 1,
+      "restoredExit": 0
+    }
+  ],
+  "originalRowAndPartitionFunctionsUsed": true,
+  "originalNativeCliExecutedInCIAt": "946ba6274e0cbcfab20b8fc0433386e187870d83",
+  "localReviewMethod": "Unmodified row/partition validators plus preserved executed-merge identity and API-proven equal tree; no local main CLI pass at a different Git HEAD is claimed.",
+  "r06SelectedSourceMapRawEntriesMatchF4": 972,
+  "fullSourceMapDigestsVerifiedBy": "official-r06-browser-audit.json",
+  "downloadedElfExecutions": 0,
+  "productReruns": 0
+}

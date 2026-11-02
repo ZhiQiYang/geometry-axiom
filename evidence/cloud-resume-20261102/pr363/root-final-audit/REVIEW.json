@@ -1,0 +1,175 @@
+{
+  "schema": "geometry-primary-bounded-adversarial-audit/1",
+  "head": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+  "execution_sha": "946ba6274e0cbcfab20b8fc0433386e187870d83",
+  "tree": "b39c4d0f71d59097db6af5efd4732ad178e28c3c",
+  "native_union": 232,
+  "native_totals": {
+    "total": 5420,
+    "passed": 5419,
+    "failed": 0,
+    "skipped": 1,
+    "allowed_skips": 1
+  },
+  "jobs": {
+    "41396262836": [
+      {
+        "id": 125118138855,
+        "name": "native (2/3)",
+        "conclusion": "success"
+      },
+      {
+        "id": 125118139058,
+        "name": "browser (space)",
+        "conclusion": "success"
+      },
+      {
+        "id": 125118139099,
+        "name": "native (3/3)",
+        "conclusion": "success"
+      },
+      {
+        "id": 125118139118,
+        "name": "browser (canvas)",
+        "conclusion": "success"
+      },
+      {
+        "id": 125118139183,
+        "name": "browser (grid)",
+        "conclusion": "success"
+      },
+      {
+        "id": 125118139186,
+        "name": "browser (documents)",
+        "conclusion": "success"
+      },
+      {
+        "id": 125118139191,
+        "name": "native (1/3)",
+        "conclusion": "success"
+      },
+      {
+        "id": 125118139196,
+        "name": "browser (assembly)",
+        "conclusion": "success"
+      },
+      {
+        "id": 125118139240,
+        "name": "browser (timber)",
+        "conclusion": "success"
+      },
+      {
+        "id": 125122949462,
+        "name": "native complete coverage",
+        "conclusion": "success"
+      }
+    ],
+    "41396262818": [
+      {
+        "id": 125118138713,
+        "name": "card-archive-mutations",
+        "conclusion": "success"
+      },
+      {
+        "id": 125118138993,
+        "name": "browser-mutations",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "official_saved_zips_rehashed": 10,
+  "zip_records": [
+    {
+      "id": 13120545474,
+      "sha256": "5d54a288dfe7b2d2c8165e50ce1a7c3e3d90f602b44e9528ea0395c8706bebfe",
+      "members": 8
+    },
+    {
+      "id": 13119996762,
+      "sha256": "43a256cf5b4e7c5499e890b0229f208e7443ac067f2ea6d5878a58c933ec9d43",
+      "members": 207
+    },
+    {
+      "id": 13119902501,
+      "sha256": "68ac4ec4f5caf41d5e28fd45038d54cac2bf5c93e8851f7dfbb249c93ed0dda4",
+      "members": 211
+    },
+    {
+      "id": 13119897542,
+      "sha256": "dba8fafd8a992d9f68ae8383ffbd20e6903dd2d66e49c6003eecb068bf0516ec",
+      "members": 1
+    },
+    {
+      "id": 13119788195,
+      "sha256": "6b1e78fc1c7295e976f8a79c30bb9b5655a6dff5a843c3aceeac7a6dfc7c04af",
+      "members": 1
+    },
+    {
+      "id": 13119609799,
+      "sha256": "8e7f84c0921d9390e440866b568de73727aae5b936304de537a5cbb5eea53e74",
+      "members": 207
+    },
+    {
+      "id": 13119604566,
+      "sha256": "f73438c6121c3b92bddda9a036ff7847b2e5a411f4b2d4867a0b2a819c74b36d",
+      "members": 1
+    },
+    {
+      "id": 13120665899,
+      "sha256": "224375084bc609e07cd72b2e4425165f0528e3371689dba11559b9a119a4b789",
+      "members": 168
+    },
+    {
+      "id": 13118903439,
+      "sha256": "f3b852d7c5c6e2b910aa3d78cdd507ed770916e77bbb77c3f2101c4f779e179a",
+      "members": 28
+    }
+  ],
+  "full_canvas": {
+    "passed": 2317,
+    "failed": 0,
+    "skip": 0,
+    "golden": "matched",
+    "expected_P38": 1
+  },
+  "original_card_tags_from_immutable_source": {
+    "A01-format": "CR20 NO_SILENT_DOWNGRADE",
+    "A02-manifest": "CR20 manifest capability",
+    "A03-source-markers": "CR20 manifest capability",
+    "A04-reader": "CR20 reader",
+    "A05-version": "CR19 CARD_SAVE_ROUNDTRIP",
+    "A06-nested": "CR19 snapshot-only"
+  },
+  "downloaded_elf_executions": 0,
+  "product_tests_rerun": 0,
+  "reviewer": "root primary; final artifact child-peer unavailable due unchanged-model service capacity",
+  "source_peer": "Existing final-F4-peer.json PASS preserved; no new child artifact-peer PASS claimed.",
+  "images_metadata_only": [
+    {
+      "id": 13120778492,
+      "name": "grid-trial-screens-canvas",
+      "size_in_bytes": 253746,
+      "digest": "sha256:b39e844d78db4a360a62c1f4ca9cb677b74a7bfc440e1613cd1766eb3a213660"
+    },
+    {
+      "id": 13119487716,
+      "name": "document-reader-screens",
+      "size_in_bytes": 727825,
+      "digest": "sha256:328b6e25bf8976f1875c24be1346178c33d010965686e915ad4ac00b3c64e298"
+    },
+    {
+      "id": 13119209070,
+      "name": "grid-trial-screens-grid",
+      "size_in_bytes": 253870,
+      "digest": "sha256:0e8015a94ec82d22e47faaadb6c5b1fa4ccc6f4c6b89b0847b8113922e692a3e"
+    },
+    {
+      "id": 13119093647,
+      "name": "assembly-review-screens",
+      "size_in_bytes": 523154,
+      "digest": "sha256:56ce7301582ac3e04d898e0370fb088cc8e2cd279fb74df9c3a85b7cb0fc6f91"
+    }
+  ],
+  "status": "PASS_PRIMARY_BOUNDED_REVIEW",
+  "elapsed_seconds": 1.9979524060036056
+}

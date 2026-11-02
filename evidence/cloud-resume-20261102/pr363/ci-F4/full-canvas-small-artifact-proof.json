@@ -1,0 +1,63 @@
+{
+  "artifactId": 13121086931,
+  "artifactName": "canvas-wait-trace",
+  "zipBytes": 406,
+  "apiDigest": "sha256:945bc54a4bb9c38201ca88790c767641feb99da0fae41bbe42bda7f79c3c924a",
+  "download": {
+    "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13121086931/zip",
+    "file": "/tmp/geometry-resume-20261102/pr363/ci-F4/official-zips/13121086931.zip",
+    "http_status": 200,
+    "bytes": 406,
+    "sha256": "945bc54a4bb9c38201ca88790c767641feb99da0fae41bbe42bda7f79c3c924a",
+    "content_type": "application/zip"
+  },
+  "members": [
+    {
+      "path": "receipt.json",
+      "bytes": 386,
+      "sha256": "4d6358433f3c4bc44be70f492697ca76e07c566af0061aafa0b0d91a73868ff4",
+      "parsed": {
+        "effectiveEnvironment": {
+          "GEOMETRY_WAIT_TRACE": null,
+          "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-integration-feedback",
+          "GEOMETRY_BROWSER_SUITE": "canvas",
+          "GEOMETRY_WAIT_TRACE_RUN_ID": null
+        },
+        "kernel": "7.0.0-1017-azure",
+        "platform": "Linux",
+        "head": "946ba6274e0cbcfab20b8fc0433386e187870d83",
+        "status": "trace-disabled-for-this-runner",
+        "records": 0
+      }
+    }
+  ],
+  "downloadedElfExecutions": 0,
+  "job": 125118139118,
+  "headF4": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+  "remainingImageArtifactsMetadataOnly": [
+    {
+      "id": 13120778492,
+      "name": "grid-trial-screens-canvas",
+      "size_in_bytes": 253746,
+      "digest": "sha256:b39e844d78db4a360a62c1f4ca9cb677b74a7bfc440e1613cd1766eb3a213660"
+    },
+    {
+      "id": 13119487716,
+      "name": "document-reader-screens",
+      "size_in_bytes": 727825,
+      "digest": "sha256:328b6e25bf8976f1875c24be1346178c33d010965686e915ad4ac00b3c64e298"
+    },
+    {
+      "id": 13119209070,
+      "name": "grid-trial-screens-grid",
+      "size_in_bytes": 253870,
+      "digest": "sha256:0e8015a94ec82d22e47faaadb6c5b1fa4ccc6f4c6b89b0847b8113922e692a3e"
+    },
+    {
+      "id": 13119093647,
+      "name": "assembly-review-screens",
+      "size_in_bytes": 523154,
+      "digest": "sha256:56ce7301582ac3e04d898e0370fb088cc8e2cd279fb74df9c3a85b7cb0fc6f91"
+    }
+  ]
+}

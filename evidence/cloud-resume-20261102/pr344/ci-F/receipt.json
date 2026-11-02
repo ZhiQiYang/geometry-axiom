@@ -1,0 +1,797 @@
+{
+  "schema": "geometry-official-CI-bytes-acceptance/1",
+  "pr": 344,
+  "official_remote_F_accepted": true,
+  "source_F": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+  "actual_integration_checkout": "4ad5a0a831073334c8f125d76ea366af3c325f34",
+  "tree": "51b669da21513fbccf90620faf55b7aad77703b6",
+  "merge_parents": [
+    "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+    "d794a7447b98a82fb35c1dccaedc3443e2230933"
+  ],
+  "runs": {
+    "integration": {
+      "id": 41393748904,
+      "event": "pull_request",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "job_count": 10,
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41393748904"
+    },
+    "mutation": {
+      "id": 41393748942,
+      "event": "pull_request",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "job_count": 10,
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41393748942"
+    }
+  },
+  "all20jobs_success": true,
+  "official_artifact_count": 21,
+  "artifact_metadata_and_verified_digests": [
+    {
+      "id": 13120070303,
+      "name": "grid-trial-screens-canvas",
+      "run_id": 41393748904,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 253746,
+      "API_digest": "sha256:826fadddaf0927cc0e8ca532a28ec6534d62d044c2358b924f1b82f01460209c",
+      "verified_ZIP_sha256": "826fadddaf0927cc0e8ca532a28ec6534d62d044c2358b924f1b82f01460209c",
+      "member_count": 4
+    },
+    {
+      "id": 13119205974,
+      "name": "native-logs-1",
+      "run_id": 41393748904,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 60564,
+      "API_digest": "sha256:215ae308bee9a7085cbe4b4927f5d64d5de74f01d6642f63297b0c87b4e03ae8",
+      "verified_ZIP_sha256": "215ae308bee9a7085cbe4b4927f5d64d5de74f01d6642f63297b0c87b4e03ae8",
+      "member_count": 207
+    },
+    {
+      "id": 13119106240,
+      "name": "native-shard-1",
+      "run_id": 41393748904,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 4224,
+      "API_digest": "sha256:3be9440f5c29b21980c9f178d153bb41495b1aafbe73ba781397b6b95082acdf",
+      "verified_ZIP_sha256": "3be9440f5c29b21980c9f178d153bb41495b1aafbe73ba781397b6b95082acdf",
+      "member_count": 1
+    },
+    {
+      "id": 13118929513,
+      "name": "canvas-wait-trace",
+      "run_id": 41393748904,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 406,
+      "API_digest": "sha256:d2b4ef45cb98ad6da1b97dd2219fef2aa601d0d472469b9b4872fdafe5876e36",
+      "verified_ZIP_sha256": "d2b4ef45cb98ad6da1b97dd2219fef2aa601d0d472469b9b4872fdafe5876e36",
+      "member_count": 1
+    },
+    {
+      "id": 13118842131,
+      "name": "native-complete-coverage",
+      "run_id": 41393748904,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 2873,
+      "API_digest": "sha256:1ad69546814cbaa31f603731cd437672a7b99e16b36c7938854f4cb138740e57",
+      "verified_ZIP_sha256": "1ad69546814cbaa31f603731cd437672a7b99e16b36c7938854f4cb138740e57",
+      "member_count": 8
+    },
+    {
+      "id": 13118658824,
+      "name": "native-logs-3",
+      "run_id": 41393748904,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 96061,
+      "API_digest": "sha256:dbfbade16a40f0f48d2c2c30d4bff95f9cfe516579bb75ae13a1fc500e0dfcb8",
+      "verified_ZIP_sha256": "dbfbade16a40f0f48d2c2c30d4bff95f9cfe516579bb75ae13a1fc500e0dfcb8",
+      "member_count": 207
+    },
+    {
+      "id": 13118623913,
+      "name": "native-shard-3",
+      "run_id": 41393748904,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 4199,
+      "API_digest": "sha256:9b1689af9a97885081561fef9751d711eeb9aaeb7b7e7bf05b869ed8c8c80178",
+      "verified_ZIP_sha256": "9b1689af9a97885081561fef9751d711eeb9aaeb7b7e7bf05b869ed8c8c80178",
+      "member_count": 1
+    },
+    {
+      "id": 13118623312,
+      "name": "native-logs-2",
+      "run_id": 41393748904,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 68205,
+      "API_digest": "sha256:9a2d39c35a3f0b272ceaccdf85615749c6148f011b40f2b5dc06e2f85e77e131",
+      "verified_ZIP_sha256": "9a2d39c35a3f0b272ceaccdf85615749c6148f011b40f2b5dc06e2f85e77e131",
+      "member_count": 206
+    },
+    {
+      "id": 13118598328,
+      "name": "native-shard-2",
+      "run_id": 41393748904,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 4266,
+      "API_digest": "sha256:51af8c3e74d939d17a4c53dd003c6d99eb6995e3c4d41890cbdd07efd97c4805",
+      "verified_ZIP_sha256": "51af8c3e74d939d17a4c53dd003c6d99eb6995e3c4d41890cbdd07efd97c4805",
+      "member_count": 1
+    },
+    {
+      "id": 13118562262,
+      "name": "grid-trial-screens-grid",
+      "run_id": 41393748904,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 253870,
+      "API_digest": "sha256:72723ec88af1740ab283a5eb89b973c856d1a67a2023942e3910442df0a6d4fc",
+      "verified_ZIP_sha256": "72723ec88af1740ab283a5eb89b973c856d1a67a2023942e3910442df0a6d4fc",
+      "member_count": 4
+    },
+    {
+      "id": 13118268204,
+      "name": "document-reader-screens",
+      "run_id": 41393748904,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 727825,
+      "API_digest": "sha256:f42fc3a740470624bea22e50905bd824bef0000969feb6cd59d8325a771f60f6",
+      "verified_ZIP_sha256": "f42fc3a740470624bea22e50905bd824bef0000969feb6cd59d8325a771f60f6",
+      "member_count": 8
+    },
+    {
+      "id": 13118129730,
+      "name": "assembly-review-screens",
+      "run_id": 41393748904,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 528318,
+      "API_digest": "sha256:942063a239ad6c465a2c16e9ae7c2e5be491b287cc78d4034a81743a424fb036",
+      "verified_ZIP_sha256": "942063a239ad6c465a2c16e9ae7c2e5be491b287cc78d4034a81743a424fb036",
+      "member_count": 9
+    },
+    {
+      "id": 13119723303,
+      "name": "mutation-complete-evidence",
+      "run_id": 41393748942,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 1621350,
+      "API_digest": "sha256:7380f0095871db34213727c4498a577437ea4a90ed7f36ddd6c5971f6a398679",
+      "verified_ZIP_sha256": "7380f0095871db34213727c4498a577437ea4a90ed7f36ddd6c5971f6a398679",
+      "member_count": 2
+    },
+    {
+      "id": 13119608101,
+      "name": "mutation-shard-bridge-1",
+      "run_id": 41393748942,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 21888096,
+      "API_digest": "sha256:392db4b6069045c2ace1c88b96efb5def6309cdaa8cf8b73ef5053bf33259624",
+      "verified_ZIP_sha256": "392db4b6069045c2ace1c88b96efb5def6309cdaa8cf8b73ef5053bf33259624",
+      "member_count": 4
+    },
+    {
+      "id": 13119568547,
+      "name": "mutation-shard-bridge-3",
+      "run_id": 41393748942,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 20699424,
+      "API_digest": "sha256:bcd2030a507ed01be16aff89414b7744acc405b6a2780a2b167a78575d0fe7cf",
+      "verified_ZIP_sha256": "bcd2030a507ed01be16aff89414b7744acc405b6a2780a2b167a78575d0fe7cf",
+      "member_count": 4
+    },
+    {
+      "id": 13119267755,
+      "name": "mutation-shard-bridge-2",
+      "run_id": 41393748942,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 21924524,
+      "API_digest": "sha256:e18713224063d1c6f9c77231fab3e240021defdaecf43773cb0a5966ec173d84",
+      "verified_ZIP_sha256": "e18713224063d1c6f9c77231fab3e240021defdaecf43773cb0a5966ec173d84",
+      "member_count": 4
+    },
+    {
+      "id": 13119151085,
+      "name": "mutation-shard-core-3",
+      "run_id": 41393748942,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 7291261,
+      "API_digest": "sha256:f9a8225023346e6aaf25630c0d2e98aec71562877ecad2db20095b49fb1cdbe3",
+      "verified_ZIP_sha256": "f9a8225023346e6aaf25630c0d2e98aec71562877ecad2db20095b49fb1cdbe3",
+      "member_count": 4
+    },
+    {
+      "id": 13119072220,
+      "name": "mutation-shard-core-2",
+      "run_id": 41393748942,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 8657411,
+      "API_digest": "sha256:7b19bace13e5ea08ca334737088e735d4ff670faf4bb02ae9dc046b52e425b2a",
+      "verified_ZIP_sha256": "7b19bace13e5ea08ca334737088e735d4ff670faf4bb02ae9dc046b52e425b2a",
+      "member_count": 4
+    },
+    {
+      "id": 13118797017,
+      "name": "mutation-shard-core-4",
+      "run_id": 41393748942,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 7745308,
+      "API_digest": "sha256:1923960865ae548243a233825c773b4a2be9cf88afdb81b9b38f1428d3b60092",
+      "verified_ZIP_sha256": "1923960865ae548243a233825c773b4a2be9cf88afdb81b9b38f1428d3b60092",
+      "member_count": 4
+    },
+    {
+      "id": 13118667395,
+      "name": "mutation-shard-core-1",
+      "run_id": 41393748942,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 8652921,
+      "API_digest": "sha256:b6e88cf8833140d20cd914d2899702dad272834ac8803c5e43b632d96bea5dda",
+      "verified_ZIP_sha256": "b6e88cf8833140d20cd914d2899702dad272834ac8803c5e43b632d96bea5dda",
+      "member_count": 4
+    },
+    {
+      "id": 13117659799,
+      "name": "pr357-architecture-refresh",
+      "run_id": 41393748942,
+      "head_sha": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "reported_bytes": 53434,
+      "API_digest": "sha256:22f8a4f9a1730d802e5ca27339cdae6f2f941eb72d930e5927cc871407761a3c",
+      "verified_ZIP_sha256": "22f8a4f9a1730d802e5ca27339cdae6f2f941eb72d930e5927cc871407761a3c",
+      "member_count": 9
+    }
+  ],
+  "all20whole_job_logs_equal_run_ZIP_members": true,
+  "whole_job_log_receipts": [
+    {
+      "run_id": 41393748904,
+      "job_id": 125110525128,
+      "name": "native (2/3)",
+      "archive_member": "9_native (2_3).txt",
+      "bytes": 45629,
+      "sha256": "e16d2decbf6ea61c4bcdf06cce4b6e6f984026d2e901f77bc0b16aae0eb2f0f3",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748904,
+      "job_id": 125110525278,
+      "name": "browser (grid)",
+      "archive_member": "8_browser (grid).txt",
+      "bytes": 372360,
+      "sha256": "add6b4252054136d4be92d59f055b1c0747b0a14989124be277d2e64b8e4ed54",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748904,
+      "job_id": 125110525286,
+      "name": "browser (space)",
+      "archive_member": "5_browser (space).txt",
+      "bytes": 66140,
+      "sha256": "d324f7c71d62c6730fd68cef8587b7e5451ff586033c1559c765519f2e7b1671",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748904,
+      "job_id": 125110525370,
+      "name": "browser (canvas)",
+      "archive_member": "7_browser (canvas).txt",
+      "bytes": 744066,
+      "sha256": "eaa34efdd659aefe2c861553051f3426fcdcb0945a06c69df86c00eff1149296",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748904,
+      "job_id": 125110525399,
+      "name": "native (3/3)",
+      "archive_member": "1_native (3_3).txt",
+      "bytes": 45190,
+      "sha256": "473da2bdde9c9bd909f64578bba3d506d12e406bfcb259132ce7152c66c8a8b0",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748904,
+      "job_id": 125110525402,
+      "name": "native (1/3)",
+      "archive_member": "2_native (1_3).txt",
+      "bytes": 45536,
+      "sha256": "e5c6da394daa31b61b97f7a90525be82dd23f8eea86f82266dd82f649f3112cc",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748904,
+      "job_id": 125110525425,
+      "name": "browser (documents)",
+      "archive_member": "4_browser (documents).txt",
+      "bytes": 39769,
+      "sha256": "3f42868e8e555bf123dadab91085f63d3c8198df718df31ddfb06e32b8d737ea",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748904,
+      "job_id": 125110525428,
+      "name": "browser (timber)",
+      "archive_member": "6_browser (timber).txt",
+      "bytes": 45083,
+      "sha256": "05e764def6cac2653ed775168d8918e428da9f9cc48adf7cc7862e850964c5a9",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748904,
+      "job_id": 125110525446,
+      "name": "browser (assembly)",
+      "archive_member": "3_browser (assembly).txt",
+      "bytes": 62521,
+      "sha256": "4506253f345e5d7e5e350e486d683277f63edfdb11bd7e48710cbd2a4b21b35b",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748904,
+      "job_id": 125114742379,
+      "name": "native complete coverage",
+      "archive_member": "0_native complete coverage.txt",
+      "bytes": 25862,
+      "sha256": "d21108e047cce6a0f2790414b28e4acb9b3cb18ba8dcd8be8faa9852d023aba7",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748942,
+      "job_id": 125110525816,
+      "name": "Verify merged architecture with original commands",
+      "archive_member": "9_Verify merged architecture with original commands.txt",
+      "bytes": 314443,
+      "sha256": "489c27d9019536f9589e09394b880e8f3215ec6b1975f77b886cb03fc06bf5c6",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748942,
+      "job_id": 125110992686,
+      "name": "plan",
+      "archive_member": "8_plan.txt",
+      "bytes": 17890,
+      "sha256": "ad2b40a437e0fd18600cbad6ba860227b37230aba1fb4940b08af4571338b97e",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748942,
+      "job_id": 125111305032,
+      "name": "mutation (bridge-2)",
+      "archive_member": "7_mutation (bridge-2).txt",
+      "bytes": 24392,
+      "sha256": "67a8f6120225c1de19e7daeae0bc4c13ef13fe671f263dbe0ad17fbb07eef6d0",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748942,
+      "job_id": 125111305074,
+      "name": "mutation (core-3)",
+      "archive_member": "4_mutation (core-3).txt",
+      "bytes": 28351,
+      "sha256": "1c48c97670d2e4c6aff3d84e39395be5ee4f01034344a3374a6b5fc635d7d1db",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748942,
+      "job_id": 125111305088,
+      "name": "mutation (core-1)",
+      "archive_member": "6_mutation (core-1).txt",
+      "bytes": 29818,
+      "sha256": "1072441e7fa5b683c3aad14ac04a0527c5caedbf874e3d4e1bd08809f720c5e8",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748942,
+      "job_id": 125111305089,
+      "name": "mutation (core-4)",
+      "archive_member": "2_mutation (core-4).txt",
+      "bytes": 31027,
+      "sha256": "53aef4d0758aca06e9072a851abe4a85d47959b69d1aa7a71da897dd4eaeefa4",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748942,
+      "job_id": 125111305092,
+      "name": "mutation (core-2)",
+      "archive_member": "3_mutation (core-2).txt",
+      "bytes": 29076,
+      "sha256": "25269db677e5c0794d14a03b56414ac5cadfb45aa753a5ff08e6936bc37abf6e",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748942,
+      "job_id": 125111305100,
+      "name": "mutation (bridge-3)",
+      "archive_member": "5_mutation (bridge-3).txt",
+      "bytes": 24338,
+      "sha256": "d6edd53a320965199cf1a58c3b63a5e02041ae59fa905321c20d1280e9858541",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748942,
+      "job_id": 125111305192,
+      "name": "mutation (bridge-1)",
+      "archive_member": "1_mutation (bridge-1).txt",
+      "bytes": 24568,
+      "sha256": "2771a957a49395bff93f1096b8113ecc71b5f9e57e2bac862883b7b2a0ff5be2",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41393748942,
+      "job_id": 125120758716,
+      "name": "Verify complete mutation evidence",
+      "archive_member": "0_Verify complete mutation evidence.txt",
+      "bytes": 31702,
+      "sha256": "2590bfc314e1a9e16e58a8a50fcefd78555adb37d1d989a98d1ca6a2eb96e6bf",
+      "byte_equal": true
+    }
+  ],
+  "native": {
+    "passed": true,
+    "commit_sha": "4ad5a0a831073334c8f125d76ea366af3c325f34",
+    "parts": 3,
+    "suite_count": 231,
+    "executed_suites": 231,
+    "union_equals_full_registry": true,
+    "overlap": [],
+    "counted_tests": 5349,
+    "counted_passed": 5348,
+    "allowed_skips": 1,
+    "shard_suites": {
+      "1": 77,
+      "2": 77,
+      "3": 77
+    },
+    "expected_sha256": "ece8752bd32cee9941940d0d2a9513b1fc5b3c8bfd408a9f1f74babcacbdf924",
+    "timings_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"
+  },
+  "official_native_negative_control": {
+    "passed": true,
+    "baseline_mutant_restored_exit": [
+      0,
+      1,
+      0
+    ],
+    "rows": [
+      {
+        "label": "baseline",
+        "exit": 0,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [],
+        "assertion_failure": true,
+        "removed": []
+      },
+      {
+        "label": "removed",
+        "exit": 1,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [
+          "test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once"
+        ],
+        "assertion_failure": true,
+        "removed": [
+          "c:integrity"
+        ]
+      },
+      {
+        "label": "restored",
+        "exit": 0,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [],
+        "assertion_failure": true,
+        "removed": []
+      }
+    ]
+  },
+  "browser": [
+    {
+      "name": "browser (grid)",
+      "passed": 356,
+      "failed": 0
+    },
+    {
+      "name": "browser (space)",
+      "passed": 242,
+      "failed": 0
+    },
+    {
+      "name": "browser (canvas)",
+      "passed": 2267,
+      "failed": 0
+    },
+    {
+      "name": "browser (documents)",
+      "passed": 47,
+      "failed": 0
+    },
+    {
+      "name": "browser (timber)",
+      "passed": 79,
+      "failed": 0
+    },
+    {
+      "name": "browser (assembly)",
+      "passed": 150,
+      "failed": 0
+    }
+  ],
+  "fullcanvas_sections": 85,
+  "fullcanvas_assertions": 2267,
+  "mutation": {
+    "schema": "geometry-mutation-ci-summary/1",
+    "head": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+    "table_size": 123,
+    "active": 120,
+    "counts": {
+      "killed": 114,
+      "crashed": 1,
+      "survived": 0,
+      "equivalent": 5,
+      "invalid": 0,
+      "stale": 0,
+      "blocked": 0,
+      "retired": 3,
+      "unrun": 0
+    },
+    "ledger_sha256": "4b02cae010f9b629ef55372468146e82bfbc73026cf21ab79ae9fe7897c263f8",
+    "binary_bytes_verified": true,
+    "full_table_strict_exit": 0
+  },
+  "new_F_artifact_ledger_sha256": "4b02cae010f9b629ef55372468146e82bfbc73026cf21ab79ae9fe7897c263f8",
+  "new_F_artifact_summary_sha256": "38dd9b26e53eb6735b4e86f17c89e59b611506b5c293123a38641ede1996d50c",
+  "source_committed_E_execution_ledger_sha256": "aaaad44b2470d5f5d937a8ba8f431dd554f0ee95a82958f9ff48b19aa86a5ee8",
+  "source_ledger_not_replaced": true,
+  "official_seven_binary_controls": "strict0/1/0, raw logs and manifests verified; no local negative-control test rerun",
+  "bridge_raw_result_count": 159,
+  "architecture": {
+    "inputs": 604,
+    "edges": 798,
+    "diagnostics": 0,
+    "input_closure_sha256": "ed3ec250d6a30f23697abaf400bcd8b4110f1cf93a06cc5a89786535fffa94ed"
+  },
+  "original_commands": [
+    {
+      "label": "original-native-reaggregation",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tests/native_shard_receipts.py",
+        "--input",
+        "/tmp/geometry-resume-20261102/ci-followup/pr344-Fd794a744/native-original-input",
+        "--parts",
+        "3",
+        "--output",
+        "/tmp/geometry-resume-20261102/ci-followup/pr344-Fd794a744/native-reverified.json"
+      ],
+      "cwd": "/tmp/geometry-pr344-20261102",
+      "env": {
+        "GIT_DIR": "/tmp/geometry-resume-20261102/ci-followup/pr344-Fd794a744/native-verifier-git",
+        "GIT_WORK_TREE": "/tmp/geometry-pr344-20261102",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "exit_code": 0,
+      "stdout_sha256": "951ea96caf4dd70f2342c7655f9ca1353991b4eb750420d743a7c1eeaabbc329",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "original-mutation-verifier",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        ".github/scripts/mutation_evidence.py",
+        "verify",
+        "--artifacts",
+        "/tmp/geometry-resume-20261102/ci-followup/pr344-Fd794a744/extracted",
+        "--out",
+        "/tmp/geometry-resume-20261102/ci-followup/pr344-Fd794a744/mutation-local-verified"
+      ],
+      "cwd": "/tmp/geometry-pr344-20261102",
+      "exit_code": 0,
+      "stdout_sha256": "b9f5861a4164dbbcf3315d075a7399c159dbdc2902e770f5b1a24a6a9e6c3ebc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "architecture-cli",
+      "command": [
+        "<python>",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "cwd": "<repo>",
+      "exitCode": 0,
+      "stdout": "architecture-cli.stdout",
+      "stderr": "architecture-cli.stderr",
+      "stdoutSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "architecture-unit",
+      "command": [
+        "<python>",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "cwd": "<repo>",
+      "exitCode": 0,
+      "stdout": "architecture-unit.stdout",
+      "stderr": "architecture-unit.stderr",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "4bcde98cfca5f091cb43d7c5f29deb3da137749f2effc2d36c9e0164554ca29c",
+      "testsRun": 205
+    },
+    {
+      "label": "architecture-product",
+      "command": [
+        "<python>",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "cwd": "<repo>",
+      "exitCode": 0,
+      "stdout": "architecture-product.stdout",
+      "stderr": "architecture-product.stderr",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "8050d07b20ba114b7df30d219c55335c1c05e1723180f11ca0d7828f5ff679f8",
+      "testsRun": 18
+    }
+  ],
+  "original_source_tools": [
+    {
+      "path": ".github/scripts/architecture_evidence.py",
+      "sha256": "9899d18b3fb80a750308e2342d8309ca7a2470ec5aab4f977bc3213690b07b5b",
+      "lf_sha256": "9899d18b3fb80a750308e2342d8309ca7a2470ec5aab4f977bc3213690b07b5b"
+    },
+    {
+      "path": ".github/scripts/mutation_evidence.py",
+      "sha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc",
+      "lf_sha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc"
+    },
+    {
+      "path": ".github/workflows/integration-tests.yml",
+      "sha256": "feef73e7602c0f276a8e0436fc89f320ac60c3a4af4fa7921c803ae989c8a71f",
+      "lf_sha256": "feef73e7602c0f276a8e0436fc89f320ac60c3a4af4fa7921c803ae989c8a71f"
+    },
+    {
+      "path": ".github/workflows/mutation-evidence.yml",
+      "sha256": "c5d39c10de1df05ff1a582f228b4ee5fb088d0637337dc96c552d993a35d1fdb",
+      "lf_sha256": "c5d39c10de1df05ff1a582f228b4ee5fb088d0637337dc96c552d993a35d1fdb"
+    },
+    {
+      "path": "geometry-web/cdp_sections.golden.json",
+      "sha256": "de99e9d0073b57e0b80856823cb4c49eb48c3c1629d57b7134bd3311197ad86f",
+      "lf_sha256": "de99e9d0073b57e0b80856823cb4c49eb48c3c1629d57b7134bd3311197ad86f"
+    },
+    {
+      "path": "geometry-web/cdp_test.js",
+      "sha256": "1f3e2e36283ed7bbf6c4ad2cf3dc12c685667356d186d9fbd47bc5f0520f07ee",
+      "lf_sha256": "1f3e2e36283ed7bbf6c4ad2cf3dc12c685667356d186d9fbd47bc5f0520f07ee"
+    },
+    {
+      "path": "tests/mutate.py",
+      "sha256": "bd2d0c768439a93e7f848ff0299a5b164aabe1d80a0f4e9a5bcb7ab83eb4b315",
+      "lf_sha256": "bd2d0c768439a93e7f848ff0299a5b164aabe1d80a0f4e9a5bcb7ab83eb4b315"
+    },
+    {
+      "path": "tests/mutation_bridge.py",
+      "sha256": "7febe80ba29a3c0e7821277f47102a57a0c9ab0610a02e8981bb0eb2a79b3c58",
+      "lf_sha256": "7febe80ba29a3c0e7821277f47102a57a0c9ab0610a02e8981bb0eb2a79b3c58"
+    },
+    {
+      "path": "tests/native_shard_receipts.py",
+      "sha256": "9ebb40552272288248d9f40ca6ec01869b2ff747c50eff58ee7eea5812d31948",
+      "lf_sha256": "9ebb40552272288248d9f40ca6ec01869b2ff747c50eff58ee7eea5812d31948"
+    },
+    {
+      "path": "tests/native_shard_timings.json",
+      "sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6",
+      "lf_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"
+    },
+    {
+      "path": "tests/native_sharding_mutation_check.py",
+      "sha256": "06f200afa059d24855f934299e46579e085c885ebcbc7d198f4db894379ccf48",
+      "lf_sha256": "06f200afa059d24855f934299e46579e085c885ebcbc7d198f4db894379ccf48"
+    },
+    {
+      "path": "tests/native_shards.py",
+      "sha256": "549ef5a462da9c26d91ba4ad2edcaca5847e01339111877648ac1ba0fb0ffe9f",
+      "lf_sha256": "549ef5a462da9c26d91ba4ad2edcaca5847e01339111877648ac1ba0fb0ffe9f"
+    },
+    {
+      "path": "tests/run_all.expected.json",
+      "sha256": "ece8752bd32cee9941940d0d2a9513b1fc5b3c8bfd408a9f1f74babcacbdf924",
+      "lf_sha256": "ece8752bd32cee9941940d0d2a9513b1fc5b3c8bfd408a9f1f74babcacbdf924"
+    },
+    {
+      "path": "tests/run_all.py",
+      "sha256": "33a18c6d3fe6c7f96b9e543a42107679a9d608eb8cf32f55740f43627ec3923f",
+      "lf_sha256": "33a18c6d3fe6c7f96b9e543a42107679a9d608eb8cf32f55740f43627ec3923f"
+    },
+    {
+      "path": "tests/run_tests.py",
+      "sha256": "a2dedfa2cf511770d87eb524ca34892e8b7dd3bea48f3c56bed6305b7c100185",
+      "lf_sha256": "a2dedfa2cf511770d87eb524ca34892e8b7dd3bea48f3c56bed6305b7c100185"
+    },
+    {
+      "path": "tests/test_unittest_runner.py",
+      "sha256": "7439f59cdf0de001bd7121f6fbf25c7c510bf3209cc1d2b582fa4a4f6ca52f15",
+      "lf_sha256": "7439f59cdf0de001bd7121f6fbf25c7c510bf3209cc1d2b582fa4a4f6ca52f15"
+    }
+  ],
+  "local_receipt_references": [
+    {
+      "path": "provenance.json",
+      "sha256": "ee22e44e79f2dc94414b25a703e0c8b6cf95eafb23ce20fdb7a13338969f00ec"
+    },
+    {
+      "path": "F-source-versus-artifact-identity.json",
+      "sha256": "a2a93b03dbe59ce36466d1aef4e94b886360cf63d3000085344c61c845d6246b"
+    },
+    {
+      "path": "artifact-byte-audit.json",
+      "sha256": "251aa66dd3bfabcefbca05f462706ffdc9c3e22f96c395665d3ab165b4f1c03a"
+    },
+    {
+      "path": "native-reverify-receipt.json",
+      "sha256": "2ba66aa4a6627a60e0ed065392ab3c485e84681965b50bcc4f449e2e993d32f8"
+    },
+    {
+      "path": "architecture-audit.json",
+      "sha256": "74dc27213c0695423da8ad7eaefb8a88cddab24f687e2b5269b1a381b560388e"
+    },
+    {
+      "path": "mutation-verify-receipt.json",
+      "sha256": "2fa71ca173a9d3c3edab3a9c6b0d5a1a7c156a6c6e09c83cdc0f9841aabb3e4e"
+    },
+    {
+      "path": "mutation-shard-audit.json",
+      "sha256": "b3d2d7ef3149a670730924f2f5860c21e6c812db0a88d6287ebea18565fe37e4"
+    },
+    {
+      "path": "official-run-log-audit.json",
+      "sha256": "8183a17f243bfabc72895e3d9e7f67a8fdf85e621f0c6e0b637b90979da52a63"
+    },
+    {
+      "path": "independent-review/light-native-browser-and-receipt-review.json",
+      "sha256": "d30fbde60bf4c01e27a687098f8a4d94cabf8ef6e0c275f2edd0bd46bdec9fd1"
+    }
+  ],
+  "independent_lightweight_review_checks": 1750,
+  "old_E_integration_preserved": {
+    "source": "503cfc59354893859ae9e6e4a6ab7c11d7972517",
+    "run_id": 41388718270,
+    "conclusion": "failure",
+    "failed_jobs": [
+      "native (2/3)",
+      "native complete coverage"
+    ],
+    "not_relabelled": true
+  },
+  "separate_local_full_result": {
+    "accepted_or_reverified_here": false,
+    "scope": "Root/owner reported separate local06:14:08 P76 privateTMP geometry-tests parent ENOENT actualexit1 with1827/0; official remote acceptance does not cover or overwrite that result."
+  },
+  "phase_scope": {
+    "explicit_root_gap_received": true,
+    "artifact_workers_used": 1,
+    "heavy_artifact_phase_completed_by": "2026-11-02T06:27:47Z",
+    "source_or_PR_changed": false,
+    "downloaded_ELF_executed": false,
+    "product_Chrome_build_or_native_suite_ran": false,
+    "manual_CI_dispatch_or_rerun": false
+  },
+  "blockers_to_official_remote_F_acceptance": []
+}

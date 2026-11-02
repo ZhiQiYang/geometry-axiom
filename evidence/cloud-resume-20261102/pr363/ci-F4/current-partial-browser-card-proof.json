@@ -1,0 +1,108 @@
+{
+  "headF4": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+  "integrationExecutedMerge": "946ba6274e0cbcfab20b8fc0433386e187870d83",
+  "mergeTreeEqualsF4": true,
+  "mergeApiAcquisition": {
+    "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits/946ba6274e0cbcfab20b8fc0433386e187870d83",
+    "file": "/tmp/geometry-resume-20261102/pr363/ci-F4/synthetic-merge.json",
+    "http_status": 200,
+    "bytes": 2695,
+    "sha256": "f608f42a4c349645c2fa5571eafca01f2bcc5f2af09f633380595264d7a8dffb",
+    "content_type": "application/json; charset=utf-8"
+  },
+  "assemblyJob": 125118139196,
+  "cardJob": 125118138713,
+  "cardExecutedHead": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+  "sixPrintedCardVerdicts": [
+    "A01-format",
+    "A02-manifest",
+    "A03-source-markers",
+    "A04-reader",
+    "A05-version",
+    "A06-nested"
+  ],
+  "assemblyFooter": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_ASSEMBLY_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:18839/",
+      "feedbackDirectory": "/tmp/geometry-integration-feedback",
+      "browserProfile": "/tmp/geometry-cdp-vP67GZ",
+      "cdpPort": 9367,
+      "browserPid": 2655
+    },
+    "firstTransportFailure": {
+      "source": "api-result",
+      "transport": true,
+      "command": "assembly-confirm 13",
+      "requestedAt": "2026-11-02T05:52:57.384Z",
+      "requestedMonotonic": 36987,
+      "failedAt": "2026-11-02T05:52:57.488Z",
+      "failedMonotonic": 37090.79999999999,
+      "error": "Injected lost success response",
+      "expectedFault": {
+        "schema": "geometry-cdp-injected-transport/1",
+        "fixture": "assembly-review-confirm-response",
+        "mode": "unknown",
+        "command": "assembly-confirm 13",
+        "error": "Injected lost success response",
+        "serverOk": true
+      },
+      "sessionId": null,
+      "step": "=== P77 review #33 #35 #36 #37 ==="
+    },
+    "apiTransportFailures": [
+      {
+        "source": "api-result",
+        "transport": true,
+        "command": "assembly-confirm 13",
+        "requestedAt": "2026-11-02T05:52:57.384Z",
+        "requestedMonotonic": 36987,
+        "failedAt": "2026-11-02T05:52:57.488Z",
+        "failedMonotonic": 37090.79999999999,
+        "error": "Injected lost success response",
+        "expectedFault": {
+          "schema": "geometry-cdp-injected-transport/1",
+          "fixture": "assembly-review-confirm-response",
+          "mode": "unknown",
+          "command": "assembly-confirm 13",
+          "error": "Injected lost success response",
+          "serverOk": true
+        },
+        "sessionId": null,
+        "step": "=== P77 review #33 #35 #36 #37 ==="
+      }
+    ],
+    "apiTransportTraceComplete": true,
+    "firstNetworkFailure": null,
+    "completed": true,
+    "passedAssertions": 200,
+    "failedAssertions": 0,
+    "skipped": [],
+    "sections": {
+      "P77": 134,
+      "P82": 16,
+      "R06": 50
+    },
+    "goldenCompare": "not compared (partial mode)",
+    "uncaughtBrowserExceptions": 0,
+    "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+  },
+  "r41NamedPassedAssertions": [
+    "R06_R41_NATIVE",
+    "R06_R41_HISTORY",
+    "R06_R41_SAVE_FILE",
+    "R06_R41_SAVE",
+    "R06_R41_COLD_REOPEN",
+    "R06_R41_UNSUPPORTED_RECORD_ATOMIC",
+    "R06_R41_NATIVE_PROFILE_REJECT",
+    "R06_R41_ENGINEERING_CLOSURE_REJECT",
+    "R06_R41_COLD_CONTROLS"
+  ],
+  "sourceRawLogsUnchanged": true,
+  "fullGoldenClaim": false
+}

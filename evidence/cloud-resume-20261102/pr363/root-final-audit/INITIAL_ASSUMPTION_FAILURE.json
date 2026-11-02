@@ -1,0 +1,10 @@
+{
+  "scope": "External primary receipt auditor, not product or CI",
+  "original_command": "ad hoc python3 stdin bounded audit",
+  "actual_exit": 1,
+  "original_stderr": "Traceback (most recent call last):\n  File \"<stdin>\", line 44, in <module>\nAssertionError\n",
+  "bad_predicate": "all six archive mutations expectedTag == CR20 NO_SILENT_DOWNGRADE",
+  "cause": "Original immutable run_archive_mutations.py uses six per-case expected tag entries including CR19 and CR20 labels. The initial reviewer wrongly generalized A01 to all cases.",
+  "correction": "Saved review script derives the exact existing dictionary from F4 source AST and checks each case against its original tag. Product/tests/golden/timeout/skip unchanged.",
+  "new_child_peer": "not executed: Selected model is at capacity; no model switch or repeated failing turn."
+}

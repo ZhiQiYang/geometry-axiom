@@ -1,0 +1,121 @@
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+import re
+import sys
+
+root = Path('/tmp/geometry-pr363-20261102')
+out = Path('/tmp/geometry-resume-20261102/pr363/ci-F4')
+extracted = out / 'extracted'
+head = '7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4'
+executed_merge = '946ba6274e0cbcfab20b8fc0433386e187870d83'
+
+def read(path):
+    return json.loads(path.read_text())
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+card = read(extracted / '13118903439/report.json')
+source = (root / 'geometry-web/project-store.js').read_bytes()
+assert card['source_sha256'] == sha(source)
+spec = importlib.util.spec_from_file_location('original_card_mutation_definitions', root / 'geometry-core/card-reference/run_archive_mutations.py')
+tool = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(tool)
+assert len(card['mutants']) == len(tool.MUTATIONS) == 6
+expected_tags = {'A01-format': 'CR20 NO_SILENT_DOWNGRADE', 'A02-manifest': 'CR20 manifest capability',
+                 'A03-source-markers': 'CR20 manifest capability', 'A04-reader': 'CR20 reader',
+                 'A05-version': 'CR19 CARD_SAVE_ROUNDTRIP', 'A06-nested': 'CR19 snapshot-only'}
+
+def check_node_raw(directory, observation):
+    text = (directory / 'stdout.log').read_text() + (directory / 'stderr.log').read_text()
+    for field, marker in [('failures', 'fail'), ('skips', 'skipped')]:
+        match = re.search(r'(?:#|ℹ) ' + marker + r' (\d+)', text)
+        assert match and int(match[1]) == observation[field]
+    assert observation['failed_names'] == [line for line in text.splitlines() if line.startswith(('✖ ', 'not ok '))]
+
+assert card['baseline']['exit_code'] == card['baseline']['failures'] == card['baseline']['skips'] == 0
+check_node_raw(extracted / '13118903439/baseline', card['baseline'])
+card_rows = []
+for row, (name, patches) in zip(card['mutants'], tool.MUTATIONS):
+    assert row['id'] == name and row['patches'] == [list(p) for p in patches]
+    mutated = source.decode()
+    for before, after in patches:
+        assert mutated.count(before) == 1
+        mutated = mutated.replace(before, after, 1)
+    assert sha(mutated.encode()) == row['mutant_sha256']
+    red, restored = row['red'], row['restored']
+    check_node_raw(extracted / '13118903439' / name, red)
+    check_node_raw(extracted / '13118903439' / name / 'restored', restored)
+    verdict = 'killed' if red['exit_code'] == 1 and red['failures'] and red['skips'] == 0 and restored['exit_code'] == 0 and any(expected_tags[name] in value for value in red['failed_names']) else 'NOT_KILLED'
+    assert row['verdict'] == verdict == 'killed'
+    assert restored['failures'] == restored['skips'] == 0 and restored['failed_names'] == []
+    card_rows.append({'name': name, 'verdict': verdict, 'expectedTag': expected_tags[name],
+                      'redExit': red['exit_code'], 'redFailures': red['failures'], 'restoredExit': restored['exit_code']})
+
+sys.path.insert(0, str(root / 'tests'))
+import native_shard_receipts
+import native_shards
+import run_all
+assert run_all.check_registry() == []
+suites = run_all.build_suites()
+expected, error = run_all.load_expected()
+assert not error
+parts = native_shards.partition_suites(suites, 3)
+native_shards.validate_partition(suites, parts)
+ids = ['13119897542', '13119788195', '13119604566']
+rows = []
+reports = []
+for index, identifier in enumerate(ids, 1):
+    report = read(extracted / identifier / f'shard-{index}.json')
+    assert report['schema'] == 'geometry-native-shard/1' and report['shard'] == [index, 3]
+    assert report['commit_sha'] == executed_merge and report['exit_code'] == 0
+    assert report['registry_errors'] == report['expected_problems'] == []
+    assert report['expected_sha256'] == sha((root / 'tests/run_all.expected.json').read_bytes())
+    assert report['timings_sha256'] == native_shards.profile_digest()
+    assert report['universe'] == [s.name for s in suites]
+    assert report['selected'] == [s.name for s in parts[index - 1]]
+    assert 0 <= report['seconds'] < 1200
+    native_shard_receipts.validate_rows(report['selected'], report['rows'], expected['suites'])
+    rows += report['rows']
+    reports.append(report)
+native_shard_receipts.validate_rows([s.name for s in suites], rows, expected['suites'])
+official = read(extracted / '13120545474/native-complete.json')
+derived = dict(passed=True, commit_sha=executed_merge, parts=3, suite_count=len(suites),
+               executed_suites=len(rows), union_equals_full_registry=True, overlap=[],
+               counted_tests=sum(r['total'] for r in rows if r['counted']),
+               counted_passed=sum(r['passed'] for r in rows if r['counted']),
+               allowed_skips=sum(r['allowed_skips'] for r in rows),
+               shard_suites={str(i + 1): len(p) for i, p in enumerate(parts)},
+               expected_sha256=sha((root / 'tests/run_all.expected.json').read_bytes()),
+               timings_sha256=native_shards.profile_digest())
+assert derived == official
+proof = read(extracted / '13120545474/native-sharding-proof/receipt.json')
+assert proof['passed'] and proof['baseline_mutant_restored_exit'] == [0, 1, 0]
+assert proof['rows'][1]['failure_ids'] == ['test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once']
+assert proof['rows'][1]['removed'] == ['c:integrity']
+leaf_count = 0
+for identifier in ['13119902501', '13119996762', '13119609799']:
+    for path in (extracted / identifier).glob('py_*.json'):
+        record = read(path)
+        assert record['total'] == record['run'] and record['failed'] == 0
+        assert not record['import_error'] and record['extra_errors'] == 0 and record['blocked_by_error'] == 0
+        leaf_count += 1
+assert leaf_count == 196
+for part in ['r06-native-cancel-evidence', 'r06-browser-evidence']:
+    sources = read(extracted / '13120665899' / part / 'mutations/sources.json')
+    for rel, digest in sources.items():
+        assert sha((root / rel).read_bytes().replace(b'\r\n', b'\n')) == digest, rel
+result = {'ok': True, 'headF4': head, 'executedMergePreserved': executed_merge,
+          'nativeSummaryEqualsOfficialAggregate': derived, 'nativeLeafJsonValidated': leaf_count,
+          'nativeShardingNegativeControl': proof, 'cardCases': card_rows,
+          'originalRowAndPartitionFunctionsUsed': True,
+          'originalNativeCliExecutedInCIAt': executed_merge,
+          'localReviewMethod': 'Unmodified row/partition validators plus preserved executed-merge identity and API-proven equal tree; no local main CLI pass at a different Git HEAD is claimed.',
+          'r06SourceMapsMatchCurrentF4Bytes': True, 'downloadedElfExecutions': 0, 'productReruns': 0}
+(out / 'official-card-native-audit.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps({'ok': True, 'nativeSuites': len(rows), 'nativeLeafJsonValidated': leaf_count,
+                  'countedTests': derived['counted_tests'], 'countedPassed': derived['counted_passed'],
+                  'allowedSkips': derived['allowed_skips'], 'cardKills': len(card_rows),
+                  'officialAggregateEqual': True, 'r06SourceMapsMatchCurrentF4Bytes': True}, ensure_ascii=False))

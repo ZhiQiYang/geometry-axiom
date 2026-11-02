@@ -1,0 +1,6 @@
+PASS: official ZIP/API SHA256 and every extracted member match.
+HEAD 7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4; Node v24.22.1.
+Native baseline/restored: 53/53, one cancellation mutation killed only by br13:cancelled-token.
+Browser baseline/restored: 200/0, P77=134 P82=16 R06=50; three exact assertion kills.
+Restored binaries match original bytes; source-restoration/checkout-unchanged reports are true.
+Coverage: partial GEOMETRY_ASSEMBLY_ONLY; golden not compared; not full canvas.
