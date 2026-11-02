@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "git",
+    "checkout",
+    "--theirs",
+    "--",
+    "tests/mutants_results.json"
+  ],
+  "cwd": "/tmp/geometry-pr340-20261102",
+  "utc": "2026-11-02T13:32:27.758613+00:00",
+  "seconds": 0.08095345098990947,
+  "exit": 0,
+  "environment": {
+    "GIT_NO_LAZY_FETCH": "1",
+    "GIT_OPTIONAL_LOCKS": "0",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  }
+}

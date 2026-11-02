@@ -1,0 +1,19 @@
+保留核心 K＋矩形格網的有限建置與木工 include 具名反證，使用一般 merge 收斂 main；不放寬原裁判或時限。
+
+完整 current head：**abbf1465e4617110f16892ba3925b20615345177**。base **main**，已一般 merge 精確 **fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d**（本機合入 #359 R08）。目前 **draft／未達合併條件**，新來源正式驗收正在跑。Codex 未合 main、未 rebase 或 force push。
+
+| 唯一 current-state gate | 狀態、真實來源與界線 |
+|---|---|
+| 新 main 合流 | 已完成。parents 是前輪 F `edf556eedc204bb285fb4504e246e4310f4e1e88` 與新 main `fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d`。相對新 main：17 個歷史 evidence 葉與2份待重產架構衍生檔；產品、測試、裁判、expected、manifest policy 與新 main 相同。沒有把 R08 改動覆回舊來源 |
+| 合併衝突 | 唯一 `tests/mutants_results.json`；採新 main 完整原 bytes，不手工拼接或改狀態。第一次 partial Git 缺 blob 失敗保留，逐 changed-path 的3方 Git blob 精確取回與 hash 核對後完成標準 merge；沒有下載整個歷史 evidence |
+| 原帳本 check | **已實跑** `python3 -B tests/mutate.py --check`，exit **0**；123＝114 killed／1 crashed／5 equivalent／3 retired，stale／blocked／survived／invalid 全0。這證明採入的新 main 原帳本有效，不代表新 #366 重產已完成 |
+| 新 #366 整份重產 | **執行中**：[41453934297](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41453934297)，一次 workflow_dispatch，固定新 source `abbf1465e4617110f16892ba3925b20615345177`。待9原 ZIP/cache、原 verify、全量帳本、架構原產物及七組 badcache 真0/1/0核收；未完成不填綠 |
+| 新 source 原正式 integration | **已啟動、未收終態**：[41453943080](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41453943080)。新 R08 改變 runtime／測試閉包，不能用舊 F 的綠燈改標為這輪已驗。native三片＋原 complete coverage、完整 canvas 與其他5 browser 仍照原參數、timeout、golden、允許 skip |
+| 新架構／最終採入 | **待新原件**。新 main manifest 增 R08；不能借前輪610-input的receipt宣告本次架構完成。原工具的 adoptedMain 歷史欄值不當現在 Git main；採入後重新跑原帳本 check 與架構三裁判 |
+| 合併判斷 | **未達條件**。新收據採入後固定最終 F，重跑受影響 gate，交當前完整 head 最新審查；只有判可合才標 READY-TO-MERGE，由本機 Claude 合 main。#339 已合，340之後直接341 |
+
+前輪 F `edf556eedc204bb285fb4504e246e4310f4e1e88` 的 integration41438184818 真10綠、237 native／5420pass／1原GDI、fullcanvas2286／86golden，及 source M `aca3d2a5f604848b159a0e5cdd3d3f55fcad190f` 的 #366 41430549123 全量新帳本與架構，**全部保留為固定舊來源歷史**；120個 execution.head 仍M，沒有改標新 head，也沒有把原 M20 crash 改為 assertion kill。
+
+[前輪完整原件與唯一歷史索引](https://github.com/ZhiQiYang/geometry-axiom/tree/bfa401c1d7f350b572c0b1e5816ebbd268993f86/evidence/cloud-resume-20261102)。兩輪原9ZIP/cache真bytes、全 logs、原 verify、派生採入與獨立 peer 皆已發布；新 main 合流與新 runs 會另留固定收據，不以本機 tmpfs 路徑冒充持久發布。
+
+#341～#348 尚有各自效能／whole-opt／整合阻擋，來源祖先在 main 不等於驗收完成。R02 #355 UI15 等 #343→#346→#347 同源閉合，R03 照 R02及PF2～6前置。未改公理層、正典閱讀器、決策佇列。

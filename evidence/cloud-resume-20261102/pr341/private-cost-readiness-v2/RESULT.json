@@ -1,0 +1,79 @@
+{
+  "schema": "geometry-pr341-private-readiness-result/2",
+  "utc": "2026-11-02T13:35:48.058516+00:00",
+  "status": "READY_FOR_ROOT_REVIEW_ENVELOPE_ONLY",
+  "fixedSource": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+  "sealSha256": "32352be140c5037123cd384ec962f9355f5bb8e8a81056eccff3ce1929d97363",
+  "sealedInputCount": 158,
+  "sealedReferencedInputBytes": 36897027,
+  "sealCreatedBeforeSynthetic": true,
+  "mandatoryExternalExpectedDigest": true,
+  "argvAllowlistedBeforePopen": true,
+  "fullOriginalV1TreeUnchanged": true,
+  "v1ResultSha256": "ba76daf5c930d1e1d7eb7945c18b9963b41774d62f86e5091553e4bb6e89fa6b",
+  "originalToolSourcesUnchanged": true,
+  "synthetic": {
+    "supervisorExits": [
+      0,
+      null,
+      0
+    ],
+    "actualProcessReturncodes": [
+      0,
+      -9,
+      0
+    ],
+    "timedOut": [
+      false,
+      true,
+      false
+    ],
+    "allRawMarkersExact": true,
+    "timeoutOriginalExitNullPreserved": true,
+    "timeoutGroupCheckedAndEmpty": true
+  },
+  "wrongSealControl": {
+    "argvFile": "commands/wrong-seal/COMMAND.json",
+    "actualExit": 1,
+    "reason": "SEAL_DIGEST_MISMATCH before Popen, including Python-O.",
+    "productExecutions": 0
+  },
+  "geometryExecutions": 0,
+  "builds": 0,
+  "performanceSamples": 0,
+  "v1PositiveRunsRepeated": 0,
+  "limits": {
+    "stackBytes": 16777216,
+    "nativeSubjectSeconds": 20,
+    "originalBuildSeconds": 300,
+    "syntheticTimeoutSeconds": 0.04
+  },
+  "unchangedSourceBranchPr": true,
+  "unverified": [
+    "Actual geometry20-second or build300-second timeout; optional NativeBuild dispatch hook is static only.",
+    "Unflushed userspace output, arbitrary descendants or historic cleanup not independently attested by these direct shell/sleep children.",
+    "Timed/counter pilot driver and binaries remain UNBUILT; all work/CPU/wall/RSS samples UNRUN.",
+    "Future final340/main source cannot inherit this F340 identity without complete input comparison/new seal."
+  ],
+  "pilotPlan": {
+    "path": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-plan/PLAN.md",
+    "sha256": "c893d2df8b93d777602a0f421bd1e530403867fbb78f04a69c955a4598985353",
+    "status": "PLAN_READY_SAMPLES_UNRUN",
+    "maximumGroups": 12,
+    "maximumChildInvocations": 24,
+    "expectedWindowSecondsUnder": 5,
+    "maximumExclusiveWindowSeconds": 60,
+    "noNewLaunchAfterSeconds": 30,
+    "perChildTimeoutSeconds": 20,
+    "cleanupSecondsAtMost": 5,
+    "rootReviewAndExplicitWindowRequired": true
+  },
+  "usableCommand": [
+    "python",
+    "-B",
+    "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/readiness.py",
+    "check",
+    "--expected",
+    "32352be140c5037123cd384ec962f9355f5bb8e8a81056eccff3ce1929d97363"
+  ]
+}

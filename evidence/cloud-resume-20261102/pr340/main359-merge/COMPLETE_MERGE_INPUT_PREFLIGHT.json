@@ -1,0 +1,1100 @@
+{
+  "utc": "2026-11-02T13:31:48.743938+00:00",
+  "base": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+  "ours": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+  "theirs": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+  "allChangedPaths": [
+    "BACKLOG.md",
+    "evidence/geo340-convergence-175cee44/AGGREGATE_RESULT.json",
+    "evidence/geo340-convergence-175cee44/CURRENT_STATE.json",
+    "evidence/geo340-convergence-175cee44/MERGE_RESULT.json",
+    "evidence/geo340-convergence-175cee44/PROGRESS.md",
+    "evidence/geo340-convergence-175cee44/PUBLICATION_INDEX.json",
+    "evidence/geo340-convergence-175cee44/peer/PEER_AND_REVIEW_RECORDS.tar.gz",
+    "evidence/geo340-convergence-175cee44/peer/PEER_AND_REVIEW_RECORDS_MANIFEST.json",
+    "evidence/geo340-convergence-175cee44/publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS.tar.gz",
+    "evidence/geo340-convergence-175cee44/publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS_MANIFEST.json",
+    "evidence/geo340-convergence-175cee44/raw/AGGREGATE_ORIGINALS.tar.gz",
+    "evidence/geo340-convergence-175cee44/raw/AGGREGATE_ORIGINALS_MANIFEST.json",
+    "evidence/geo340-convergence-175cee44/raw/FACES_CLOSURE_ORIGINALS.tar.gz",
+    "evidence/geo340-convergence-175cee44/raw/FACES_CLOSURE_ORIGINALS_MANIFEST.json",
+    "evidence/geo340-convergence-175cee44/raw/MERGE_ORIGINALS.tar.gz",
+    "evidence/geo340-convergence-175cee44/raw/MERGE_ORIGINALS_MANIFEST.json",
+    "evidence/geo340-convergence-175cee44/tools/publish.py",
+    "evidence/geo340-convergence-175cee44/tools/publish_r2.py",
+    "geometry-core/ASSEMBLY-RULES-CONTRACT.md",
+    "geometry-core/DEFINITION-IMPORT-CONTRACT.md",
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json",
+    "geometry-core/domain-decoupling/product-architecture.json",
+    "geometry-core/transactions.inc",
+    "geometry-web/app.css",
+    "geometry-web/app.js",
+    "geometry-web/cdp_sections.golden.json",
+    "geometry-web/cdp_test.js",
+    "geometry-web/definition-import.js",
+    "geometry-web/definition_import_bridge.inc",
+    "geometry-web/definition_import_browser_test.js",
+    "geometry-web/definition_import_transport.py",
+    "geometry-web/engineering_bridge.inc",
+    "geometry-web/index.html",
+    "geometry-web/project-store.js",
+    "geometry-web/reference-workspace.js",
+    "geometry-web/scenario_verify.py",
+    "geometry-web/serve.py",
+    "geometry-web/web_bridge.c",
+    "tests/diagnostics/definition_import_mutation_probe.py",
+    "tests/mutants_results.json",
+    "tests/run_all.expected.json",
+    "tests/run_all.py",
+    "tests/test_definition_import.js",
+    "tests/test_definition_import.py",
+    "tests/test_definition_import_transport.py",
+    "tests/test_engineering_terminal.py",
+    "tests/test_geo314_commit_paths.py"
+  ],
+  "blobs": [
+    {
+      "sha": "8be38a3b74e75c0b6bef37485c43287377e298fe",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "BACKLOG.md",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "BACKLOG.md",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "f880dfe05e1f6cc05e4c007f4fdcb562c6e11b26",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-core/ASSEMBLY-RULES-CONTRACT.md",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-core/ASSEMBLY-RULES-CONTRACT.md",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "ce43fb73e9993cbaa8714c52852109e160584ade",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+          "mode": "100644"
+        },
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "b951e60cc8d12845940aedbd5a42d1c4e81f897b",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+          "mode": "100644"
+        },
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "dc533f28864e1abc20d6f6a0d73cd896634a170d",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-core/domain-decoupling/product-architecture.json",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-core/domain-decoupling/product-architecture.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "6ebf89222c78240fee4c96872ad4caf7537594a8",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-core/transactions.inc",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-core/transactions.inc",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "248d26ecb8ac4abe087b04b1698c3f553d63df52",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-web/app.css",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-web/app.css",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "d2c39af19ed9300ecb0438f82d4f208273344bb0",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-web/app.js",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-web/app.js",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "a8baf649b71a7cb80f48f4064e029eebb115671d",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-web/cdp_sections.golden.json",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-web/cdp_sections.golden.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "178740f2084c1a6e9e8789898f53d8cbe4b3ee23",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-web/cdp_test.js",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-web/cdp_test.js",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "5ab2419859d6cdd3e3b421aeffbdc48155e616b1",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-web/engineering_bridge.inc",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-web/engineering_bridge.inc",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "aa522456e07780efb0e000cc748d008accbffb5a",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-web/index.html",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-web/index.html",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "c7269404607f7b468be1f5fd8699aad8efed5e13",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-web/project-store.js",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-web/project-store.js",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "25e72a67e3c428713d24a93de51c8b984a7e75fd",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-web/reference-workspace.js",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-web/reference-workspace.js",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "27ba23af9c8ea5c5733832cd4308dca007471ccf",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-web/scenario_verify.py",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-web/scenario_verify.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "705958a4b95857817d653bf211b69bf1809a040a",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-web/serve.py",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-web/serve.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "e4774fde313c8d54c27fa0f4aea27ec819fb6834",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "geometry-web/web_bridge.c",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-web/web_bridge.c",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "aa39cedf5116abd67e868fa5fb7b0d555bf89aaf",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "tests/mutants_results.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "21a65c724e2cf0c14e318b5c66b7f1710b62e60a",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "tests/run_all.expected.json",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "tests/run_all.expected.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "3c101c2d63ab7971f5987797d349505d48be6644",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "tests/run_all.py",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "tests/run_all.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "d00b99abefe61c4c342767daf6dcc511bf0f5c6b",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "tests/test_engineering_terminal.py",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "tests/test_engineering_terminal.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "fa16e27659ad9120a45d17f19f838266ac538ed0",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+          "path": "tests/test_geo314_commit_paths.py",
+          "mode": "100644"
+        },
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "tests/test_geo314_commit_paths.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "06e976f0226f51ebff6bca7a222aec43dcf5b4ff",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/AGGREGATE_RESULT.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "bc6ec2bc5a9098cb4e698b984b223cdb0c5c0844",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/CURRENT_STATE.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "ac40d948071de3d4723fc84207e39b8ac7e62e3a",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/MERGE_RESULT.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "aa8a5d53231dd07dc97cafefbda5c1de62e6df50",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/PROGRESS.md",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "8f995908aedd3899146774500c5b2ea980fdb8c4",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/PUBLICATION_INDEX.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "a7029ceb61d61fc93ca42963cf1e75827d9e4039",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/peer/PEER_AND_REVIEW_RECORDS.tar.gz",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "684f48ceaeac2f8f6605eff54fc7d9991157e902",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/peer/PEER_AND_REVIEW_RECORDS_MANIFEST.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "616b279df3be6304797b144824a60d6814059aec",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS.tar.gz",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "d65693408e4d224efeca240e1e809fa86f9dcca1",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS_MANIFEST.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "3ab1e3d2d3f110572e32a85b8ed05fbfdb86ff49",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/raw/AGGREGATE_ORIGINALS.tar.gz",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "fc9f6e380cb077df4616da3cb93bf1707da7fa25",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/raw/AGGREGATE_ORIGINALS_MANIFEST.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "3eb055c9b8f1be7f433f133b8acb4d80c6f76bcc",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/raw/FACES_CLOSURE_ORIGINALS.tar.gz",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "1536444c649a171d46c725323a458d97cc2afdd6",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/raw/FACES_CLOSURE_ORIGINALS_MANIFEST.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "4a429b849d39ca1e7d0628c282ea06b72248390c",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/raw/MERGE_ORIGINALS.tar.gz",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "00067138d9e9845e00ac9b192f90bd3bba510a15",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/raw/MERGE_ORIGINALS_MANIFEST.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "bd75bfc9b1853e4af764e8e210c8f4b53ccb38e7",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/tools/publish.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "e1c1a32dfdcfa09a22898e913d958cfbfa571007",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "evidence/geo340-convergence-175cee44/tools/publish_r2.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "cd546fc08717413e685cb5fc325f4a52a95b6446",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "8201aa802c48085e19f8eccce18de971e63454a1",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "8e7cc71fabe47d9ae5efdcfc24828f1317fe80f9",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+          "path": "tests/mutants_results.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "34b47158881972aa728b8603d47b5c9c2f174b07",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "BACKLOG.md",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 580988,
+      "sha256": "cf9a3682fe092c44616497a29c593f016edfd91e5c8d6ab35d24c4677ae995c3"
+    },
+    {
+      "sha": "9bef15c89aa7adeca16d0da593114e9b0776c601",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-core/ASSEMBLY-RULES-CONTRACT.md",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 16684,
+      "sha256": "07a1ccb1b420dccd36fa472d89f9d0455bc47d14ffcb72708e47278edaddc61c"
+    },
+    {
+      "sha": "8ad219050c38295f99ba084ea88ad72542e02df0",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-core/DEFINITION-IMPORT-CONTRACT.md",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 2873,
+      "sha256": "c1540a67c0c49e2dd4ea240f12dde7d99855cb79e98b051156f22fd3fbcbc0fb"
+    },
+    {
+      "sha": "fcc1563836ea5fdf1ea9099319ee4d3838337923",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-core/domain-decoupling/product-architecture.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 225526,
+      "sha256": "25c0e91890daee7f7b118dcb461cdc3ed684c41ea1fa03d30b470012e132f7c3"
+    },
+    {
+      "sha": "7d217db56c7aa648a42bebc08f53ad65caf3b985",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-core/transactions.inc",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 53753,
+      "sha256": "961445bed925a98ea29d0f2948fd4f2198c53dd2ccc0681f5561bf776a368f50"
+    },
+    {
+      "sha": "86e3aef83cc5201dc123b6ac3940e23071a579b2",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/app.css",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 192578,
+      "sha256": "b5ca58f12cf0a34e952f16b541f4ceceff335ac5a74185d81df298ffdabf3ba1"
+    },
+    {
+      "sha": "2489b84ee0b1d17b2f37b512d40b9c4dd9b6ace4",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/app.js",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 627944,
+      "sha256": "4a8770b4bca9471c00f91048b771405b0b2cf5d9e3b1bf1a52777591a7dd2910"
+    },
+    {
+      "sha": "2796ad5f61fcc38b07c39dceb1fd9c9b0edb8f08",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/cdp_sections.golden.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 1353,
+      "sha256": "1c078a1be8651af61cf9a082ddb468008c235d3068bf7d355144674c320e3bd9"
+    },
+    {
+      "sha": "6a3c361206412420075508f2cf12995b52ded1b5",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/cdp_test.js",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 514130,
+      "sha256": "391305036c62e83902e4606bb3a5c6194869d1aa88e191abef29ab013d6e2d22"
+    },
+    {
+      "sha": "de4c84d4ac39b5e931700d4554df272783a537e4",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/definition-import.js",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 18979,
+      "sha256": "da3dec642cd176b3f3e5a58c763ba8a68737623206d11bd125b9fb352dc0e2e9"
+    },
+    {
+      "sha": "5f15f3ff244ed86b814491df4424e34f8b194597",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/definition_import_bridge.inc",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 42864,
+      "sha256": "9dca03c67087693067d4d0fd0ac11050831484aa49ee5e2f6b32f25a6f6a48a6"
+    },
+    {
+      "sha": "e85a9f8f491eeb4459a5897dfa1abf98f1e11f7e",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/definition_import_browser_test.js",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 19673,
+      "sha256": "08a84778a52afb2448cbe29550841e34df686210092c0b186d8435ab2f26ede1"
+    },
+    {
+      "sha": "752d6741f60c19a64ca46d028d4239e8b07713ea",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/definition_import_transport.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 4155,
+      "sha256": "fdd083f306c238c092eb0b3dd0d3680a60706810c4e7b241546557c3013b4a69"
+    },
+    {
+      "sha": "858a5301fe2b7978472c6b24d2c62ac05d15a72c",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/engineering_bridge.inc",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 23063,
+      "sha256": "883cda43acb69d934a64b66674c79c6fc35fc763a67b06691e49c465e1517145"
+    },
+    {
+      "sha": "d3400d607386f934bc698048e51155170037c7c0",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/index.html",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 53662,
+      "sha256": "951996a97ff06c77509cf449c3569af96a820ac51d00162ae5f843d185c21822"
+    },
+    {
+      "sha": "eae50b4c2c5cdee1f0cf085918ccdde71625d6cc",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/project-store.js",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 84168,
+      "sha256": "788479b5ec6dddd1982e99bd1e6a3cc8217e579be83cd023edf49b4a7eb571f1"
+    },
+    {
+      "sha": "f050172a642d5af27798ca97df3d210f9f121b8c",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/reference-workspace.js",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 164437,
+      "sha256": "8048e95d36912d214a9a77175b25595c98137f16ea747463c7136192dc12cef3"
+    },
+    {
+      "sha": "afe3e458db9e6b723bf6a253ef33778c58c6a737",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/scenario_verify.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 36198,
+      "sha256": "bade90545ffc559801099b09e74ef5bc3f186ea3b2e19b84105c9a4f53bf8be0"
+    },
+    {
+      "sha": "195326b8eb31363efd247904e0cbba4423fb7ddc",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/serve.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 40251,
+      "sha256": "ab6f240f3c85a638c9bfb2533943ee6f17302485a34f32dde7dc903167d97298"
+    },
+    {
+      "sha": "eab7ee24bdd8be54bd1dd6ab37d0c81007821dd2",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "geometry-web/web_bridge.c",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 52976,
+      "sha256": "ae4d6080e5c80429aaa44da2f3bed9d41b324e5f1656672640589ba4f3fc198d"
+    },
+    {
+      "sha": "85972326d7f6ff522c5531a9aa3d301080072463",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "tests/diagnostics/definition_import_mutation_probe.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 2493,
+      "sha256": "a4c890014fe19195de54f3b2ff7ce0eaf4b717cad0fea5d51febdecc386aa84c"
+    },
+    {
+      "sha": "3eb60543b813c5114662997dc2113e40ce5523a3",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "tests/mutants_results.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": true
+    },
+    {
+      "sha": "2456593dd55673e7fc7a563540266de0f2dbcfb4",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "tests/run_all.expected.json",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 26350,
+      "sha256": "9263ae1245074944dff52ad6eef4ca7dd6839ff86475e37872f35bee2b1be35c"
+    },
+    {
+      "sha": "bc2049c72fe989a8518603cf3a3e7c722bda1c3f",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "tests/run_all.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 69734,
+      "sha256": "cf4333072e3719b27f5c12602a4f941c34484be384eb3b1d027900b27d02d86b"
+    },
+    {
+      "sha": "bde5f47e8e552c673527e3d181faca213332a90a",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "tests/test_definition_import.js",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 3125,
+      "sha256": "8b55aa73f0b48d42638a1b61e14827a412c0ce946913da0aed0003d0fd75d424"
+    },
+    {
+      "sha": "9090029b06e02643ae366bf9396af33f96925980",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "tests/test_definition_import.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 16024,
+      "sha256": "297883929863d3183cda5bc16637c7c4d38537ada52cc0103ab86fc8e592947d"
+    },
+    {
+      "sha": "64e9555857b0eb8c8a1bdd55c403434eb09ddf51",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "tests/test_definition_import_transport.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 5541,
+      "sha256": "eb6c2ea3ae30f05e81c5982d4d1b301bc3ea8fec74e6921b8b2662b423d0c8ea"
+    },
+    {
+      "sha": "a8eb7e37f93ad8f61550dfccebcd6bbae9311c6a",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "tests/test_engineering_terminal.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 9558,
+      "sha256": "e8466c188e03b9e9d029494a1e54447ed524594d4adf18f2175febd90e6bbe8d"
+    },
+    {
+      "sha": "cb4969ebb054b7e223f62b55c34a5ab873a81503",
+      "type": "blob",
+      "paths": [
+        {
+          "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+          "path": "tests/test_geo314_commit_paths.py",
+          "mode": "100644"
+        }
+      ],
+      "presentBefore": false,
+      "hydratedExactGitBlob": true,
+      "bytes": 24404,
+      "sha256": "49822d64767d885b2401eeedef5943316431684f8ec6077d9e9ea7b48fd3a0f1"
+    }
+  ],
+  "noRecursiveBlobSizeFetch": true
+}

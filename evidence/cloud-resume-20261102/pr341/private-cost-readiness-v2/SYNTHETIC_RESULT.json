@@ -1,0 +1,144 @@
+{
+  "status": "PASS_ENVELOPE_ONLY",
+  "sealSha256": "32352be140c5037123cd384ec962f9355f5bb8e8a81056eccff3ce1929d97363",
+  "cases": [
+    {
+      "case": "normal",
+      "pass": true,
+      "outcome": {
+        "originalSupervisorExit": 0,
+        "timedOut": false,
+        "observedPopenCount": 1,
+        "actualProcessReturncode": 0,
+        "processGroup": null,
+        "sealSha256": "32352be140c5037123cd384ec962f9355f5bb8e8a81056eccff3ce1929d97363",
+        "inputChecksAfter": true,
+        "inputCheckError": null,
+        "syntheticOnly": true,
+        "completedNormally": true,
+        "notAPerformanceSample": true,
+        "streams": {
+          "stdout": {
+            "path": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/normal/stdout",
+            "resolved": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/normal/stdout",
+            "bytes": 10,
+            "sha256": "0a34b42dd2e789f81c9794a8cc4e326590d06ece1516b1efd134c5aa99c2d5ab"
+          },
+          "stderr": {
+            "path": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/normal/stderr",
+            "resolved": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/normal/stderr",
+            "bytes": 10,
+            "sha256": "455227262c59e6aa8a1e2e8a2a038a74b7e14a526246281d877f578c1bbffa0c"
+          }
+        },
+        "originalExecutionJson": {
+          "path": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/normal/execution.json",
+          "resolved": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/normal/execution.json",
+          "bytes": 250,
+          "sha256": "272069239879ad6bb1a8cda9bd8158435a6e7d23244a17863d48ad6ae64fc642"
+        },
+        "meaning": "Timeout keeps original exit=None and timedOut=true; observed negative signal returncode is separate, never promoted to normal success."
+      }
+    },
+    {
+      "case": "timeout",
+      "pass": true,
+      "outcome": {
+        "originalSupervisorExit": null,
+        "timedOut": true,
+        "observedPopenCount": 1,
+        "actualProcessReturncode": -9,
+        "processGroup": {
+          "pgid": 526354,
+          "checked": true,
+          "beforeKill": [
+            {
+              "pid": 526354,
+              "comm": "sleep",
+              "state": "S",
+              "pgrp": 526354,
+              "session": 526354,
+              "cmdline": "/bin/sleep 0.08"
+            }
+          ],
+          "afterKill": [],
+          "secondsUntilGone": 0.02
+        },
+        "sealSha256": "32352be140c5037123cd384ec962f9355f5bb8e8a81056eccff3ce1929d97363",
+        "inputChecksAfter": true,
+        "inputCheckError": null,
+        "syntheticOnly": true,
+        "completedNormally": false,
+        "notAPerformanceSample": true,
+        "streams": {
+          "stdout": {
+            "path": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/timeout/stdout",
+            "resolved": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/timeout/stdout",
+            "bytes": 11,
+            "sha256": "df47a7fc417a4ec4181dff4f9403ccd1b33757ff47fcd29b41fc4f75b38504b5"
+          },
+          "stderr": {
+            "path": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/timeout/stderr",
+            "resolved": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/timeout/stderr",
+            "bytes": 11,
+            "sha256": "920efcf8b9fcf6afc9a731fb612eae06f7a5105f6ff4cc8d66587a0d81feccf4"
+          }
+        },
+        "originalExecutionJson": {
+          "path": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/timeout/execution.json",
+          "resolved": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/timeout/execution.json",
+          "bytes": 562,
+          "sha256": "455c2a3eabaf88255bc19411cfe684b045a58fe0b69da63893cecda18fb1de27"
+        },
+        "meaning": "Timeout keeps original exit=None and timedOut=true; observed negative signal returncode is separate, never promoted to normal success."
+      }
+    },
+    {
+      "case": "restored",
+      "pass": true,
+      "outcome": {
+        "originalSupervisorExit": 0,
+        "timedOut": false,
+        "observedPopenCount": 1,
+        "actualProcessReturncode": 0,
+        "processGroup": null,
+        "sealSha256": "32352be140c5037123cd384ec962f9355f5bb8e8a81056eccff3ce1929d97363",
+        "inputChecksAfter": true,
+        "inputCheckError": null,
+        "syntheticOnly": true,
+        "completedNormally": true,
+        "notAPerformanceSample": true,
+        "streams": {
+          "stdout": {
+            "path": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/restored/stdout",
+            "resolved": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/restored/stdout",
+            "bytes": 12,
+            "sha256": "f5c9376ddeb6758ae2d3d5490da81f8066d02e5b2baea60a25daf3392db99779"
+          },
+          "stderr": {
+            "path": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/restored/stderr",
+            "resolved": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/restored/stderr",
+            "bytes": 12,
+            "sha256": "a15c53c229a14b17342033fc8ba8ce5d2acc6c58db5c39ba9ccee17663d19eb6"
+          }
+        },
+        "originalExecutionJson": {
+          "path": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/restored/execution.json",
+          "resolved": "/tmp/geometry-resume-20261102/pr341/private-cost-readiness-v2/synthetic/restored/execution.json",
+          "bytes": 254,
+          "sha256": "e6fa04e9fc210a591fc9a6a89b2555c13703658435a8a5b25f2c23028c5283bc"
+        },
+        "meaning": "Timeout keeps original exit=None and timedOut=true; observed negative signal returncode is separate, never promoted to normal success."
+      }
+    }
+  ],
+  "geometryExecutions": 0,
+  "performanceSamples": 0,
+  "builds": 0,
+  "restoredInputSealMatches": true,
+  "limitations": [
+    "Only direct tiny shell/sleep children tested; no descendant-tree cleanup attestation beyond original observed group record.",
+    "No geometry timeout/build-timeout execution. The optional build hook is statically prepared only.",
+    "Only already-written raw bytes are retained; unflushed child userspace buffers cannot be recovered."
+  ]
+}

@@ -1,3 +1,18 @@
+# CURRENT 2026-11-02T13:40:11.122823+00:00 — 新 main 合流已實作，原件持續交付
+
+**#340 新 current source abbf1465e4617110f16892ba3925b20615345177** 已一般 merge main fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d（本機合 #359 R08）。唯一 ledger conflict 採新 main 原 bytes，原 check 真0/stale0；相對新 main 17歷史 evidence＋2份待重產架構衍生檔，產品/tests/judge/expected/manifest全同。新 source #366 run41453934297與 integration41453943080 已各一次啟動，**尚未收終態**；前輪 edf 的正式10綠與原 full ledger/cache 有效但不移標新來源。目前draft，正文/prbody9e54a67e800d06c700c9d46e7d47f8e3ae5110a2及comment6578557252已精確回讀。
+
+**#368 source U b2432c9ea79a6927675883ddde04f629b159be2d 全10 CI真綠並核原件**：41447885087真execution310bebb505ea04309634279b7025c1849a35d88d，tree與U同、父base仍e020，不冒新main fca3已驗。12官方ZIP/667members/10真logs、1810檢查0差，原native聚合CLI0/summary逐byte同官方、237suite5420pass1原GDI、fullcanvas2286/86golden0fail、documents47/0。新專用checkout真成功/舊step真skipped，105s是原10min內真終態、不是受控加速倍率。原件3797828B／archive SHA8483a492f4f8f9b1d458e4217e4315eb89a9a4c5b6eb5567f29c9cafc43e31cb現已交付；正文由唯一writer準備，仍draft，不代合。
+
+**#341私有工具準備已真完成，不冒正式perf**：v2 seal32352be140c5037123cd384ec962f9355f5bb8e8a81056eccff3ce1929d97363凍158inputs；shell normal0/timeout真-9且原exit null/恢復0，兩raw marker與group cleanup真保留，錯seal在Popen前拒。v1原36正例未重跑。新的bounded24child pilot僅計畫核准，外部driver/counter copy尚準備中；樣本、正式B1/R16/512World仍UNRUN，未授權performance窗口。root已merge的340 WT與oldedf私有資料身份分開，不改seal接受新bytes。
+
+**R03純讀另經交叉peer372checks/0實質問題**；51manifest及原決策逐byte核，唯一非阻擋勘誤為原REPORT L17 anchor L238→L239，原件未改、peer ERRATA保留。沒有把規格採納、oracle/native或產品進main誤稱App L4；新產品runtime全UNRUN。
+
+#345 F f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12真10logical gates與final peer3574有效於舊e020合流；新main fca3尚未merge入該F，不冒最新整合。#363原F4已有可合review/12CI，最新API仍未merged且clean；不由Codex代合。#367 D全部獨立驗證完成，仍draft等待上游與main組合，不重跑有效D。#339已merged，340正式可合/本機合後才341依序。沒有rebase/force/mainmerge/SSOT變更或刪原件。
+
+---
+以下是固定歷史，不作目前head或活程序
+
 # CURRENT 2026-11-02T13:08:59.905834+00:00 — 實際交付持續增加
 
 兩F340/345 final CI又經全新獨立peer3574checks/0 findings：24官方ZIP/1334members、各10logical gates、原native/canvas/正確47 docs來源、source/tree與345兩attempt角色均符，未重跑runtime或讀200MBcache。原review b28456952db555e9afb6c16c8975197416415f85e7582d3e34474b10befdc495已持久交付。#340已comment6577119692交當前F審；#345 final交審正文/API回讀/prbody也已完成，待可合再READY、本機才merge。

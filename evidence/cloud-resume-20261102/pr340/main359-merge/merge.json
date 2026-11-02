@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "git",
+    "merge",
+    "--no-ff",
+    "origin/main",
+    "-m",
+    "Merge current main with definition import into kernel validation"
+  ],
+  "cwd": "/tmp/geometry-pr340-20261102",
+  "started": "2026-11-02T13:29:40.579689+00:00",
+  "seconds": 10.129658232966904,
+  "exit": 128,
+  "environment": {
+    "GIT_NO_LAZY_FETCH": "1",
+    "GIT_OPTIONAL_LOCKS": "0",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  }
+}

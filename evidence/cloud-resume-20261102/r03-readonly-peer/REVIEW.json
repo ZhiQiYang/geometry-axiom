@@ -1,0 +1,2709 @@
+{
+  "schema": "geometry-r03-readonly-peer/1",
+  "createdUTC": "2026-11-02T13:25:43.038769+00:00",
+  "author_relation": "原報告由另一代理撰寫；本審查獨立唯讀交叉核對，決策／FIELD／QUESTIONS另由子審查代理逐字複核。",
+  "scope": {
+    "input_directory": "/tmp/geometry-resume-20261102/r03-readonly-scope",
+    "main": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+    "pr355Head": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff",
+    "execution": "native／產品／browser／mutation／cost 全部 UNRUN；沒有新 source／branch／PR／測試／API 輪詢或下載。",
+    "output_directory": "/tmp/geometry-resume-20261102/r03-readonly-peer"
+  },
+  "verdict": "通過只讀準備範圍，附一項非阻擋引文行號勘誤；沒有把已決項重開為使用者問題。",
+  "issues": [],
+  "errata": [
+    {
+      "id": "E1",
+      "severity": "非阻擋／引用精度",
+      "target": "/tmp/geometry-resume-20261102/r03-readonly-scope/REPORT.md",
+      "line": 17,
+      "finding": "需求原話的 URL anchor 是 L238；原話實際在固定決策佇列 L239。兩行同節，原引文內容本身正確。",
+      "evidence": {
+        "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/決策佇列.md",
+        "actual_quote_line": 239,
+        "actual_line": "  > 我跟一個木工師傅 討論某個圖面或者是指定封閉面 上  我要 \"下角材\" 怎麼下 這個介面我可以方便的操作去下角材示意給他看  "
+      },
+      "recommendation": "只將該需求原話連結的 #L238 改為 #L239；不改任何已決內容。"
+    }
+  ],
+  "counts": {
+    "independent_checks": 372,
+    "failed_checks": 0,
+    "manifest_files": 51,
+    "fixed_main_sources_compared_to_existing_git": 20,
+    "other_fixed_source_bindings": 7,
+    "metadata_refs": 172,
+    "open_PRs": 27,
+    "FIELD_exact_quotes": 38,
+    "nonblocking_errata": 1
+  },
+  "key_findings": [
+    "真正工單為 #205。FT-S1=A 與不另設固定累積退縫總量上限均已採納。",
+    "QUESTIONS 區分已決選項、仍呈閱的公理差異、正式寫入證據與前置交付缺口；未要求使用者重選。",
+    "main native 的 finite record scope 與 complete:false 不能替代 App；main reader 未支援 panel-fill/1 或 /19。",
+    "PR355 五個保存 source 的 Git blob 均等於其固定 head 目錄 API 中的 blob；新增 /19 reader 與有限 uiContract 不代表 PF4／5／6 或 R03 完成。",
+    "PF-H 的原語實有，完整 PF5 空間流程仍未閉；PF4 from-fill 與 PF6 外層 candidate builder 的缺口保留。",
+    "172 refs／27 open PR 只支持該快照與已查 prefix 的 owner 盤點；不排除未推送或其他 prefix 的 writer。",
+    "38 FIELD 引文逐字命中固定 main 決策，FIELD blob 與 #333 final API 相同；#333 已 merged。"
+  ],
+  "owner_observation": {
+    "refs": [
+      {
+        "prefix": "codex",
+        "count": 148,
+        "snapshot": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/refs-codex.json"
+      },
+      {
+        "prefix": "grok",
+        "count": 11,
+        "snapshot": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/refs-grok.json"
+      },
+      {
+        "prefix": "feat",
+        "count": 13,
+        "snapshot": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/refs-feat.json"
+      }
+    ],
+    "openPRs": 27,
+    "no_dedicated_R03_in_queried_metadata": true,
+    "unknowns": [
+      "Private/unpushed work and unqueried branch prefixes cannot be excluded.",
+      "No capability/run output was executed; source availability does not prove current operational delivery.",
+      "PR descriptions are author metadata and are not independently reverified dynamic evidence in this inventory."
+    ]
+  },
+  "fixed_source_bindings": [
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/request-ledger.md",
+      "source_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/contents/%E9%9C%80%E6%B1%82%E5%B8%B3.md?ref=78dfb1129ce72719fbdb71ce5e71800eefcb3a68",
+      "git_blob": "05cc0ff7f4d308e9e373a095aa1c1198af69855e",
+      "bytes_match_saved_API_content": true
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/handoff-next.md",
+      "source_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/contents/handoff/NEXT.md?ref=0919c4c6e00c496d0941b12047b281ec6c90348a",
+      "git_blob": "56316542bc35239da50272f271f2bd16467b7124",
+      "bytes_match_saved_API_content": true
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/app.js",
+      "source_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/contents/geometry-web/app.js?ref=b5a61bbc0cb33a1f188112cc5c7982bffbec93ff",
+      "git_blob": "82214d268d034f7a80daeeaf611dcd0e2c13eef7",
+      "computed_git_blob": "82214d268d034f7a80daeeaf611dcd0e2c13eef7"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/panel-fill-adapter.js",
+      "source_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/contents/geometry-web/panel-fill-adapter.js?ref=b5a61bbc0cb33a1f188112cc5c7982bffbec93ff",
+      "git_blob": "005cc98a011af5719d8dcb03737a23cc536a8e8f",
+      "computed_git_blob": "005cc98a011af5719d8dcb03737a23cc536a8e8f"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/panel-fill-workspace.js",
+      "source_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/contents/geometry-web/panel-fill-workspace.js?ref=b5a61bbc0cb33a1f188112cc5c7982bffbec93ff",
+      "git_blob": "9ac76c63599a6e70d01568bdc093d75491cb4d26",
+      "computed_git_blob": "9ac76c63599a6e70d01568bdc093d75491cb4d26"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/panel_fill_bridge.inc",
+      "source_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/contents/geometry-web/panel_fill_bridge.inc?ref=b5a61bbc0cb33a1f188112cc5c7982bffbec93ff",
+      "git_blob": "e0e07953624c37e4191bb883083592ff0f08991b",
+      "computed_git_blob": "e0e07953624c37e4191bb883083592ff0f08991b"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/project-store.js",
+      "source_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/contents/geometry-web/project-store.js?ref=b5a61bbc0cb33a1f188112cc5c7982bffbec93ff",
+      "git_blob": "e1c6c05eee31808b6d629fd1520675e56892e48c",
+      "computed_git_blob": "e1c6c05eee31808b6d629fd1520675e56892e48c"
+    }
+  ],
+  "field": {
+    "git_blob": "5a5e7e4c712d1628a56d30528bb75553d4c41a94",
+    "pr333_merge": "425c092eaf16f90256d76433243baebde45163ac",
+    "quotes": [
+      {
+        "field_line": 17,
+        "quote": "> 還有1830 * 915 的面材 角材間距不超過特定尺寸例如是  1830/5 的話 理應 是  每一片面材 1830 * 915 面材之間除了邊緣之稱的角材之外應該只有4支角材等分 1830這個方向的尺寸阿  這你也是亂做嗎 子網格是這樣設計的嗎",
+        "decision_lines": [
+          153
+        ]
+      },
+      {
+        "field_line": 18,
+        "quote": "> 就是1830/5這個為 1830方向的角材之間的最大間距並且以這個當作模數 阿 你聽得懂嗎",
+        "decision_lines": [
+          157
+        ]
+      },
+      {
+        "field_line": 22,
+        "quote": "> 當作一個完整cell內下角材4支 5格的情況下每一格的間距是一樣的 間距阿",
+        "decision_lines": [
+          166
+        ]
+      },
+      {
+        "field_line": 23,
+        "quote": "> 以這個間距當作模數",
+        "decision_lines": [
+          170
+        ]
+      },
+      {
+        "field_line": 24,
+        "quote": "> 還有就是雖然說是固定模數但是差1mm的差異也不影響阿  更應該說都在間距上限以內",
+        "decision_lines": [
+          174
+        ]
+      },
+      {
+        "field_line": 25,
+        "quote": "> ... 我之前不是說過了 不超過上限  那你取一個模數 讓餘數 加在剩下的那一格 不超過上限不就好了嗎",
+        "decision_lines": [
+          178
+        ]
+      },
+      {
+        "field_line": 33,
+        "quote": "> 柱子理應是要有邊角材的 還有",
+        "decision_lines": [
+          161,
+          193
+        ]
+      },
+      {
+        "field_line": 34,
+        "quote": "> 我們固定主支上做記號都是使用相同間距去畫記號 下角材根據記號去再相應的位置連接角材的",
+        "decision_lines": [
+          162,
+          194
+        ]
+      },
+      {
+        "field_line": 40,
+        "quote": "> 這個不是很重要 你可以去反推 記號位置 重點是最後每一格都盡可能一樣 盡可能可能有些模糊 所以我那時候材直接給了上限 你可以允許有誤差 在現場施工 間隔差了1~2mm影響不大  就是要保持相鄰角材的位置是一樣的這樣兩隻之間的連接角材 才會正交/平行  我對這個問題有點厭煩了 因為這明明是非常單純的問題 卻給我在這邊鑽牛角尖 反覆問我  重要的是 主網格 中格線使得 面材邊緣都有支撐  然後 子網格中 的副支位置使得 副支之間的艱鉅部會太遠 ...你可以不要在這種問題上煩我了嗎  你自己推演看看這個 在滿足上限以內 角材間距 誤差過大 到底對結構上會造成什麼致命影響 間距一致 只是我們在做記號的時候 可以非常方便做記號 一樣的製具 去畫線  可能最後一步 會有點誤差 但是在上限以內就完全不影響 間距上限以內是為了避免支撐角材間距過大 已經滿足目標了",
+        "decision_lines": [
+          430
+        ]
+      },
+      {
+        "field_line": 44,
+        "quote": "> 乙 同一治具 367",
+        "decision_lines": [
+          670
+        ]
+      },
+      {
+        "field_line": 50,
+        "quote": "> 因為角材的端面 頂到角材材能固定 不能直接頂到RC",
+        "decision_lines": [
+          198
+        ]
+      },
+      {
+        "field_line": 51,
+        "quote": "> 端面頂的是角材才能固定  ...那你讓 要頂的地方如果是RC的話 就固定一支角材貼在那個邊界這樣端面不就能固定了嗎 ",
+        "decision_lines": [
+          202
+        ]
+      },
+      {
+        "field_line": 52,
+        "quote": "> ...",
+        "decision_lines": [
+          203
+        ]
+      },
+      {
+        "field_line": 56,
+        "quote": "> 算衝突 但是整支連續代表他是連續的傳遞到RC 不是中間斷開為了接其他角材而斷開  然後傳遞到RC 和 端面不能直接固定到RC不衝突 因為RC就是預設要有邊界材 讓面材支撐 你們都沒有推演過  空間邏輯嗎 面材邊緣要有支撐你不知道嗎  還有面材能和RC衝突嗎 你不知道碰撞嗎你是真的理解空間關係 才不知道為什麼完成面邊緣要有角材 你完成面能夠無視RC的邊界嗎",
+        "decision_lines": [
+          442
+        ]
+      },
+      {
+        "field_line": 62,
+        "quote": "> 我能接受",
+        "decision_lines": [
+          686
+        ]
+      },
+      {
+        "field_line": 66,
+        "quote": "> 主要是你這個角材端面只能固定在角材上 你是不是聽不懂?",
+        "decision_lines": [
+          762
+        ]
+      },
+      {
+        "field_line": 70,
+        "quote": "> 這是可以的",
+        "decision_lines": [
+          788
+        ]
+      },
+      {
+        "field_line": 76,
+        "quote": "> ??? 主支為什麼要斷開 ?",
+        "decision_lines": [
+          217
+        ]
+      },
+      {
+        "field_line": 77,
+        "quote": "> 不能斷開阿",
+        "decision_lines": [
+          218
+        ]
+      },
+      {
+        "field_line": 83,
+        "quote": "> 為什麼我面材封板的時候從邊緣開始封還要裁切成小片的面材 你是不是有病?",
+        "decision_lines": [
+          228
+        ]
+      },
+      {
+        "field_line": 87,
+        "quote": "> 對,只在對牆、不置中",
+        "decision_lines": [
+          436
+        ]
+      },
+      {
+        "field_line": 93,
+        "quote": "> 我之前也強調過很多次了 依賴於封板  面材邊緣要有支撐  然後 結構上要有角材是連續的不中斷的從一端到另一端  ",
+        "decision_lines": [
+          242
+        ]
+      },
+      {
+        "field_line": 94,
+        "quote": "> 然後角材之間的 間距 這些條件滿足 你不需要一根一根擺完全部 理應 有一個封閉面 有這些規則應該資訊已經滿足了對吧",
+        "decision_lines": [
+          243
+        ]
+      },
+      {
+        "field_line": 98,
+        "quote": "> 邊緣要有支撐 這樣讓網格系統中每一個cell是不是都決定了",
+        "decision_lines": [
+          247
+        ]
+      },
+      {
+        "field_line": 99,
+        "quote": "> 角材的間距上限是不是 也決定了子網格功能 ",
+        "decision_lines": [
+          248
+        ]
+      },
+      {
+        "field_line": 100,
+        "quote": "> 組構規則是不是也有規定了哪支角材 接哪支角材滿足結構上的需求 像是要有 一整支結構是連續的要求",
+        "decision_lines": [
+          249
+        ]
+      },
+      {
+        "field_line": 106,
+        "quote": "> 左下起鋪,板長沿Y\t衝突\t板端縫太靠近 RC,縫上的副支撞到邊界角材  這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好  你是不是聽不懂我說過的話?",
+        "decision_lines": [
+          572
+        ]
+      },
+      {
+        "field_line": 107,
+        "quote": "> 我以為這種判斷已經夠簡單了 竟然連這種都無法判斷?",
+        "decision_lines": [
+          573
+        ]
+      },
+      {
+        "field_line": 113,
+        "quote": "> 我要的意思是 這支角材 不能 超過範圍阿 ",
+        "decision_lines": [
+          506
+        ]
+      },
+      {
+        "field_line": 114,
+        "quote": "> 你聽得懂嗎  在界內 和界外的差別 界內代表你貼著切齊 等等這些都還在裡面阿 ",
+        "decision_lines": [
+          507
+        ]
+      },
+      {
+        "field_line": 115,
+        "quote": "> 意思是不能在外面的意思聽懂嗎",
+        "decision_lines": [
+          508
+        ]
+      },
+      {
+        "field_line": 116,
+        "quote": "> RC牆面 是不是 角材不能穿過去?  RC柱子是不是不能穿過去 物理碰撞你懂嗎  ",
+        "decision_lines": [
+          509
+        ]
+      },
+      {
+        "field_line": 117,
+        "quote": "> 已經有角材的部分是不是也不能穿過去 物理碰撞 ...",
+        "decision_lines": [
+          510
+        ]
+      },
+      {
+        "field_line": 123,
+        "quote": "> 為什麼會有靠側面釘入的規則? 哪怕我們真實施工是斜著打進去角材 讓角材端面 與另一支角材側面連接 的工法 也不影響我這個應用實作的功能阿  是不是沒事 亂塞一堆無關的內容?",
+        "decision_lines": [
+          448
+        ]
+      },
+      {
+        "field_line": 129,
+        "quote": "> C 規則不改，換登錄",
+        "decision_lines": [
+          588
+        ]
+      },
+      {
+        "field_line": 135,
+        "quote": "> 27 mm(料寬)",
+        "decision_lines": [
+          606
+        ]
+      },
+      {
+        "field_line": 136,
+        "quote": "> 不放(短於 27 一律不放)",
+        "decision_lines": [
+          616
+        ]
+      },
+      {
+        "field_line": 142,
+        "quote": "> 用這個",
+        "decision_lines": [
+          715
+        ]
+      }
+    ]
+  },
+  "interface_evidence": [
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-web/panel_fill_bridge.inc",
+      "line": 17,
+      "text": "    fputs(\"{\\\"status\\\":\\\"pending\\\",\\\"clause\\\":\\\"I53/R41\\\",\\\"reason\\\":\\\"full two-layer judgement needs a derived placement h; PF-2 reports the panel layer per fill, while the timber layer remains pending\\\"}\",stdout);"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-web/panel_fill_bridge.inc",
+      "line": 122,
+      "text": "    printf(\"{\\\"ok\\\":true,\\\"schema\\\":\\\"%s\\\",\\\"capability\\\":\\\"%s\\\",\\\"complete\\\":false,\\\"supportedRecords\\\":[\\\"finish-surface\\\",\\\"panel-fill\\\",\\\"derived-placement\\\"],\""
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/panel_fill_bridge.inc",
+      "line": 124,
+      "text": "    fputs(\",\\\"uiContract\\\":{\\\"schema\\\":\\\"panel-fill-workspace/1\\\",\\\"supportedActions\\\":[\\\"read\\\",\\\"edit-definitions\\\",\\\"read-layout\\\",\\\"read-support\\\"],\\\"scope\\\":\",stdout);"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/panel_fill_bridge.inc",
+      "line": 130,
+      "text": "    printf(\",\\\"completeForScope\\\":%s,\\\"errors\\\":[\",valid&&!g_pf_ui_error_count?\"true\":\"false\");"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/panel-fill-workspace.js",
+      "line": 203,
+      "text": "      <details class=\"pf-source-preparation\"><summary>來源與本片能力</summary><p>材料與尺寸參數須先在既有工程規格獨立確認。取消本次鋪排不會撤回先前已正式確認的來源。</p><button type=\"button\" data-pf-action=\"sources\"${['confirming','unknown'].includes(s.phase)?' disabled':''}>前往既有工程規格準備來源</button><p>本片：完成面、鋪排、板縫支撐與派生宿主（PF1–3＋PF-H）。PF-6 角材建議、PF-4 主格轉接、PF-5 空間流程尚未提供，沒有可執行動作。整體 complete:false。</p><p>服務支援：${esc(s.contract?.supportedActions.join('、')??'尚未取得相容契約')}；範圍完整：${s.contract?String(s.contract.completeForScope):'未知'}。</p></details>"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/project-store.js",
+      "line": 14,
+      "text": "  const PANEL_FILL_FORMAT = \"geometry-canvas/19\", PANEL_FILL_CAPABILITY = \"panel-fill/1\";"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-web/project-store.js",
+      "line": 267,
+      "text": "  function validateProjectCapabilities(capabilities) {"
+    }
+  ],
+  "decision_review": {
+    "delegated_peer": "/root/final_ci_peer/r03_decisions_questions",
+    "read_scope": "決策10/12–15、10/22/23/24與FIELD全頁，僅逐字核已定，不新增物理語意或門檻。",
+    "result": "未見實質錯誤；E1引用anchor可修。"
+  },
+  "boundaries": [
+    "結論只適用保存的 e020 main 與 b5a61 #355 source／metadata 快照，不推斷遠端最新狀態。",
+    "沒有重新核收 #355 browser receipts、343→346→347 各原動態收據、R04容量或任一成本實績。報告中這些數字仍是已標明的 author metadata／設計依賴。",
+    "main 20個固定 source 與本地已有 Git blob 相符；355、ledger、handoff未在pool全具備，沒有 fetch，改以既存API內容／Git blob hash核實。",
+    "API_ACQUISITION有5次metadata請求的status/hash紀錄；其餘既存API原件有manifest hash與內容／關係核對，本次未補作網路來源認證。",
+    "不以 native／oracle 可行推成完整可見 App、.gcanvas closure、fresh native 或 OS picker 已完成。",
+    "不新增物理語意、懸空毫米上限、間距／退距／容量／時間門檻；不實作越過 PF2–6 及原生見證前置。",
+    "既定項不重問使用者；正式採納全文與commit是追溯證據工作，不是新的選項審批。"
+  ],
+  "source_manifest": {
+    "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/SOURCE_MANIFEST.json",
+    "bytes": 10985,
+    "sha256": "bc9f7bb71c6fcdb0f8c4d3a30e496300a8622f262340b3f39cfc04318c5164c9"
+  },
+  "inputs": [
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/API_ACQUISITION.json",
+      "bytes": 1530,
+      "sha256": "1b9ddd83ecef913531ec6c0ae881a3fa26783f00d394109f507af6ed685d8d18"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/FIELD_QUOTE_READBACK.json",
+      "bytes": 7657,
+      "sha256": "b620b2a4af7ff195b5144c6b24274d66bf6aa656f4ff3e6be079d279b4e56b31"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/OWNER_AND_DEPENDENCIES.json",
+      "bytes": 42242,
+      "sha256": "c2e27218e0d1c4f24193f4e9cdec473857785d6b3d2bc23a561c84ab4ebce7ef"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/QUESTIONS.md",
+      "bytes": 1901,
+      "sha256": "23c78fd20045eeccd5df74be976b3405691ee27c083d1f69c1cefeefa8b6f305"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/REPORT.md",
+      "bytes": 15549,
+      "sha256": "163703b091d375f24c89ddd07de33e57d5f7444133e2b08e113aba2a454f8af5"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/SOURCE_READS.json",
+      "bytes": 4788,
+      "sha256": "1fc47b90b8971f4a25ebba2a8ae097d6a6593f620bf73f345ecc542f6a90a11e"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/handoff-next.json",
+      "bytes": 170402,
+      "sha256": "f5d7c92487d2c6d9d5af0699485d1cfa187b495a70de4a79d9a95561e094f887"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/handoff-ref.json",
+      "bytes": 439,
+      "sha256": "ef31e37b35d9e922502371c3f004214edeaf54d878c515dcf94be282201d8455"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/issue128.json",
+      "bytes": 12054,
+      "sha256": "c92ac8a68e292fbca22b5c699a1e8a4bb80674d5cf7d0fe4b284e4926113c5df"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/issue205.json",
+      "bytes": 6856,
+      "sha256": "e49dc59a881691ffad84b3c7a96ed8432cd9c5465bc8003c55984bd4618afbc5"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/open-prs.json",
+      "bytes": 656050,
+      "sha256": "2f172a91e796f27220292d30ba52c75156d69776f06d67d2fb9afe828a8a2cf2"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/pr221.json",
+      "bytes": 20545,
+      "sha256": "186b5a947f101410de88e2c440d15a80e603acc5c6c42ebd70973fcd89088253"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/pr333-files.json",
+      "bytes": 130424,
+      "sha256": "f9bbe5db8e7e29eb044ce61ee2d5f9650da6cc384e520badbcf17027cb746fef"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/pr333.json",
+      "bytes": 19137,
+      "sha256": "0348a7492c2e146cbff78ec03a17fd3d541ea4256cc7c959672d0c8c7744852c"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/pr355-web-directory.json",
+      "bytes": 206714,
+      "sha256": "16fdc5cd4685bc106be4a1dd9d6d98b601806ccf80cb95230da3ec9f69ef073b"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/r03-adopted-A.json",
+      "bytes": 5761,
+      "sha256": "e05c2f9a04f5c6739b3bf1baddad45298205b048027021a6e39345ee54bdebfc"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/r03-cumulative-retreat-adopted.json",
+      "bytes": 4563,
+      "sha256": "ba5da9622bbfb3a57e44ad56c56288247c3b59223ea93272b463029cf892ae74"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/r03-design.json",
+      "bytes": 66718,
+      "sha256": "7555d381154ed97a13b5d2a058df6dde9433ba82294305ed02f2dbda687b28f3"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/refs-codex.json",
+      "bytes": 69159,
+      "sha256": "03575d992acb2f1b08bc8c44740180ad3632c89ca6b628719bd62a41f93b2096"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/refs-feat.json",
+      "bytes": 5730,
+      "sha256": "1178d37c393e3d2553b8237e1250b2ac9cffe05f82c0440d12bca57fa931ec4a"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/refs-grok.json",
+      "bytes": 4891,
+      "sha256": "9ee31dac7d6813968bc8d1fa6dfbf601f4cce148ecb6e6b735dbcc82ea6b4a48"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/request-ledger.json",
+      "bytes": 39124,
+      "sha256": "73aee39c9cddf9f7b115cf57f9f97247fdf25d414d4579d82fb4bf97e4d24030"
+    },
+    {
+      "path": "handoff/NEXT.md",
+      "bytes": 122933,
+      "sha256": "4c4afbc12cc8a105f21e4f4386617b15f28330f64cc1a24f48bd2665294de019",
+      "sourceCommit": "0919c4c6e00c496d0941b12047b281ec6c90348a"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/r03-cumulative-retreat-adopted.md",
+      "bytes": 1220,
+      "sha256": "6113b28c69262312685f7b18c026566d012364248e5481f3647771a5b676a89a"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/r03-design.md",
+      "bytes": 62759,
+      "sha256": "719b7831d4f485fad73b5bb1d84214363a385eb97f67b37c410ebfd1baae562c"
+    },
+    {
+      "path": "需求帳.md",
+      "bytes": 27609,
+      "sha256": "b3ed3a19f09a63f6947760081e061243025148e7e6f30f7af50ae2f49fe015ae",
+      "sourceCommit": "78dfb1129ce72719fbdb71ce5e71800eefcb3a68"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/BACKLOG.md",
+      "bytes": 580819,
+      "sha256": "ce626b9901c55aba97b5bb8c6232c4a93592332c4e3676e86cd0b37ba1fab48a",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-core/finish_surfaces.inc",
+      "bytes": 10059,
+      "sha256": "427f7bcaffaf1f11389ea36a59cbb959ff5f7e4b8983bc6681794c70f9e8be1c",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-core/framing-template/PROPOSAL.md",
+      "bytes": 38213,
+      "sha256": "8f6efd7a9f414d3410c4c46be854630cdd8330c776900c639d380ee4679a88f9",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-core/framing-template/oracle/README.md",
+      "bytes": 97823,
+      "sha256": "0cdb3c26acc81c68d669c277987277ca33c0d185d3cd5e5354242c1f56d17d6f",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-core/panel-fill/PF2-NATIVE.md",
+      "bytes": 5741,
+      "sha256": "355d0b0e616af285ae8bd6941cb0a6bab7148c7adbe877b860e3187b95123054",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-core/panel-fill/PF3-DEPENDENCY.md",
+      "bytes": 2090,
+      "sha256": "d0b90abf6ec83b86e304029b00bef1a9e7b7f13ad600718cb270af6e12a2bbf2",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-core/panel-fill/PF3-NATIVE.md",
+      "bytes": 9083,
+      "sha256": "351bb8b1e5bf162de1087bba9617335058fba97ed92c9d8e2dbf580ffead5b21",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-core/panel-fill/PFH-NATIVE.md",
+      "bytes": 4845,
+      "sha256": "8d2e0273fd8e5f30f3244ae1952e0c12fe448a00e3867bb3bac912c02568937f",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-core/panel-fill/README.md",
+      "bytes": 1567,
+      "sha256": "639d92a64252f257fcf5ee939a192bd50b04f79fde01ba374e0352b326b2a578",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-templates/woodworking/FIELD-RULES.md",
+      "bytes": 11811,
+      "sha256": "3305d8000af9814b91c2646cfcbbc841e1ead813fe3390e482f8bfc2a71c0ab2",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-templates/woodworking/native/finish.c",
+      "bytes": 28866,
+      "sha256": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-templates/woodworking/native/finish.h",
+      "bytes": 6537,
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-templates/woodworking/native/finish_sources.c",
+      "bytes": 41102,
+      "sha256": "457a6470680a62b10153137dcd25a2ac5a1805dfc38e89ada9fdccfdc4ec7935",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-web/app.js",
+      "bytes": 627837,
+      "sha256": "165a39d28e5b278851eec880679d23b9594d6e1516d16f290fe5d58c85feaed6",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-web/panel_fill_bridge.inc",
+      "bytes": 10612,
+      "sha256": "93485d330445a2913b04a506cd03e2e8c34078e533ca685525b393e1cdbcc460",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-web/project-store.js",
+      "bytes": 83915,
+      "sha256": "18ecca3658f4304177c643c54a7dd601c25975153e3a8ba7da9162f4a7932f90",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-web/serve.py",
+      "bytes": 39416,
+      "sha256": "0cc26da01c7dd6fcc5dff84f8fd2b615b5a04b434df085d01644b984d4c6f828",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-web/web_bridge.c",
+      "bytes": 52474,
+      "sha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/公理層.md",
+      "bytes": 323066,
+      "sha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/決策佇列.md",
+      "bytes": 244340,
+      "sha256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/app.js",
+      "bytes": 629836,
+      "sha256": "c59c6c37108b5faec444fefd2cadd1d68ef3532f870a408a72b60a6dcebb6727",
+      "sourceCommit": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/panel-fill-adapter.js",
+      "bytes": 24303,
+      "sha256": "ebc8c325685b817854aeefec8fe46a9c86be0376425fb37d0b1b5420e6da7b7d",
+      "sourceCommit": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/panel-fill-workspace.js",
+      "bytes": 35305,
+      "sha256": "d394e0d49767cc3869dc491d0cf6f02b511665ba704f63411a4f70d5d256cb5a",
+      "sourceCommit": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/panel_fill_bridge.inc",
+      "bytes": 15679,
+      "sha256": "c8d5ba5102fb3eda85a4b18e3313f29a0dc3b922a7b4cb176d62c42f97e3ccdd",
+      "sourceCommit": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-pr355/geometry-web/project-store.js",
+      "bytes": 86270,
+      "sha256": "f33bc3c271896749392b48d3666cc146ab918dbb3ab8780ff155da6f7f908549",
+      "sourceCommit": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff"
+    }
+  ],
+  "checks": [
+    {
+      "category": "manifest",
+      "check": "API_ACQUISITION.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "FIELD_QUOTE_READBACK.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "OWNER_AND_DEPENDENCIES.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "QUESTIONS.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "REPORT.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "SOURCE_READS.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/handoff-next.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/handoff-ref.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/issue128.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/issue205.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/open-prs.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/pr221.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/pr333-files.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/pr333.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/pr355-web-directory.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/r03-adopted-A.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/r03-cumulative-retreat-adopted.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/r03-design.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/refs-codex.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/refs-feat.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/refs-grok.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "api/request-ledger.json",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "handoff-next.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "r03-cumulative-retreat-adopted.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "r03-design.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "request-ledger.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/BACKLOG.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-core/finish_surfaces.inc",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-core/framing-template/PROPOSAL.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-core/framing-template/oracle/README.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-core/panel-fill/PF2-NATIVE.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-core/panel-fill/PF3-DEPENDENCY.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-core/panel-fill/PF3-NATIVE.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-core/panel-fill/PFH-NATIVE.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-core/panel-fill/README.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-templates/woodworking/FIELD-RULES.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-templates/woodworking/native/finish.c",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-templates/woodworking/native/finish.h",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-templates/woodworking/native/finish_sources.c",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-web/app.js",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-web/panel_fill_bridge.inc",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-web/project-store.js",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-web/serve.py",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/公理層.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-main-e020/決策佇列.md",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-pr355/geometry-web/app.js",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-pr355/geometry-web/panel-fill-adapter.js",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-pr355/geometry-web/panel-fill-workspace.js",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-pr355/geometry-web/panel_fill_bridge.inc",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "source-pr355/geometry-web/project-store.js",
+      "passed": true
+    },
+    {
+      "category": "manifest",
+      "check": "51 manifest entries",
+      "passed": true
+    },
+    {
+      "category": "api_acquisition",
+      "check": "refs-codex",
+      "passed": true
+    },
+    {
+      "category": "api_acquisition",
+      "check": "refs-grok",
+      "passed": true
+    },
+    {
+      "category": "api_acquisition",
+      "check": "refs-feat",
+      "passed": true
+    },
+    {
+      "category": "api_acquisition",
+      "check": "open-prs",
+      "passed": true
+    },
+    {
+      "category": "api_acquisition",
+      "check": "handoff-ref",
+      "passed": true
+    },
+    {
+      "category": "source_binding",
+      "check": "request-ledger.md",
+      "passed": true
+    },
+    {
+      "category": "source_binding",
+      "check": "handoff-next.md",
+      "passed": true
+    },
+    {
+      "category": "source_binding",
+      "check": "PR355 app.js",
+      "passed": true
+    },
+    {
+      "category": "source_binding",
+      "check": "PR355 panel-fill-adapter.js",
+      "passed": true
+    },
+    {
+      "category": "source_binding",
+      "check": "PR355 panel-fill-workspace.js",
+      "passed": true
+    },
+    {
+      "category": "source_binding",
+      "check": "PR355 panel_fill_bridge.inc",
+      "passed": true
+    },
+    {
+      "category": "source_binding",
+      "check": "PR355 project-store.js",
+      "passed": true
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/BACKLOG.md",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "ce626b9901c55aba97b5bb8c6232c4a93592332c4e3676e86cd0b37ba1fab48a"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-core/finish_surfaces.inc",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "427f7bcaffaf1f11389ea36a59cbb959ff5f7e4b8983bc6681794c70f9e8be1c"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-core/framing-template/PROPOSAL.md",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "8f6efd7a9f414d3410c4c46be854630cdd8330c776900c639d380ee4679a88f9"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-core/framing-template/oracle/README.md",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "0cdb3c26acc81c68d669c277987277ca33c0d185d3cd5e5354242c1f56d17d6f"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-core/panel-fill/PF2-NATIVE.md",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "355d0b0e616af285ae8bd6941cb0a6bab7148c7adbe877b860e3187b95123054"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-core/panel-fill/PF3-DEPENDENCY.md",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "d0b90abf6ec83b86e304029b00bef1a9e7b7f13ad600718cb270af6e12a2bbf2"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-core/panel-fill/PF3-NATIVE.md",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "351bb8b1e5bf162de1087bba9617335058fba97ed92c9d8e2dbf580ffead5b21"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-core/panel-fill/PFH-NATIVE.md",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "8d2e0273fd8e5f30f3244ae1952e0c12fe448a00e3867bb3bac912c02568937f"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-core/panel-fill/README.md",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "639d92a64252f257fcf5ee939a192bd50b04f79fde01ba374e0352b326b2a578"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-templates/woodworking/FIELD-RULES.md",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "3305d8000af9814b91c2646cfcbbc841e1ead813fe3390e482f8bfc2a71c0ab2"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-templates/woodworking/native/finish.c",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-templates/woodworking/native/finish.h",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-templates/woodworking/native/finish_sources.c",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "457a6470680a62b10153137dcd25a2ac5a1805dfc38e89ada9fdccfdc4ec7935"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-web/app.js",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "165a39d28e5b278851eec880679d23b9594d6e1516d16f290fe5d58c85feaed6"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-web/panel_fill_bridge.inc",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "93485d330445a2913b04a506cd03e2e8c34078e533ca685525b393e1cdbcc460"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-web/project-store.js",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "18ecca3658f4304177c643c54a7dd601c25975153e3a8ba7da9162f4a7932f90"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-web/serve.py",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "0cc26da01c7dd6fcc5dff84f8fd2b615b5a04b434df085d01644b984d4c6f828"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/geometry-web/web_bridge.c",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/公理層.md",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"
+      }
+    },
+    {
+      "category": "source_binding",
+      "check": "main fixed blob bytes: source-main-e020/決策佇列.md",
+      "passed": true,
+      "evidence": {
+        "method": "本次前段 git cat-file blob 對照既存 e020 物件，相符；沒有 fetch。",
+        "sha256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740"
+      }
+    },
+    {
+      "category": "owner_inventory",
+      "check": "codex count",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/adopted-ui-single-room-closeout-20261009",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/canvas-ci-41409303344-original",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/canvas-ci-41424542378-original",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/canvas-output-preflight-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/canvas-shards-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/canvas-validation-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/canvas-validation-20261102-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/ci-documents-checkout-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/ci-documents-checkout-20261102-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/cloud-resume-evidence-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/cloud-takeover-closeout-20261009",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/final-release-closeout-20261008",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo198-reader-sync-20261012",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo260-ac23-proof-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo260-ac23-proof-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-closeout-20261021",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-final-prbody-20261022",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-final-prbody-20261023",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-assembly-g07-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-assembly-guide-regression-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-engineering-unplaced-oracle-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-finish-fractional-oracle-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-grid-child-fixture-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-gridrule-tail-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-m11-live-anchor-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-member-dimensions-adapter-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-native-fallback-closure-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-perf-candidate-sha-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-perf-default-replay-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-perf-owned-replay-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-perf-suite-diagnostic-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-placement-source-contract-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-policy-exception-protocol-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-root-catalog-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-scenario-bounds-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-fix-validation-report-20261018",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-host-authority-anchor-fix-20261021",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-load-residual-20261020",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-load-residual-20261020-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-p189-footprint-revert-control-20261021",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-source-index-20261020",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo261-source-index-20261020-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo288-oracle-final-20261023",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo288-oracle-final-20261023-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo288-p73-final-20261023",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo288-p73-final-20261023-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo288-p88-final-grid-20261023",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo288-p88-final-grid-20261023-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo288-p88-final-native-20261023",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo288-p88-final-native-20261023-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo288-p88-stable-click-20261023",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo288-p88-stable-click-20261023-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo299-316-combined-20261022",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo299-316-combined-20261022-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-capacity512-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-capacity512-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-consumer-scope-20261028",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-contact-index-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-contact-index-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-cut-list-storage-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-cut-list-storage-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-dependency-hints-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-hint-capacity-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-hotpath-candidate-20261028",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-hotpath-candidate-20261028-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-ordered-runs-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-prerequisites-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-prerequisites-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo300-scope-h7-receipts-20261028",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo314-one-axis-stagger-20261022",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo314-one-axis-stagger-20261022-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo324-faces-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo324-faces-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo346-chain-private-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/geo347-chain-private-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/identity-cold-open-probe-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/integration-closeout-20261008-r2",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue116-context-menu-b",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue118-browser-build-20261006",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue118-cost-evidence-20261006",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue118-guide-ownership-20261006",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue118-parent-result-counts-20261006",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue118-pdf-resources-20261006",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue118-selection-20261006",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue123-f6-font-20261005",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue123-g3-contrast-20261005",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue123-library-history-20261006",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue123-s5-short-height-20261006",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue128-empty-panel-rows-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue128-empty-panel-rows-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue134-browser-followup-20261007",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue159-browser-followup-20261007",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue214-http-fixture-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue214-http-fixture-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue214-main354-source-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue318-reading-a-20261023",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue318-reading-a-20261023-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue320-connection-recovery-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue320-connection-recovery-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue320-connection-recovery-withdrawal-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue46-adoption-integration-20261005",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue48-evidence-integration-20261005",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue49-data-reader-preparation-20261005",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue49-rule-case-workbench-20261005",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue54-room-outline-closeout",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue54-room-outline-enter",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue61-rule-editor-slice1-20261005",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/issue61-rule-line-display-20261005",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/kernel-without-woodworking-20261023",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/kernel-without-woodworking-20261023-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/mutation-evidence-tools-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/native-shards-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/p67-wait-complete-state-20261017",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/pr338-b2-closure-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/pr338-p189-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/pr338-p189-20261029-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/pr338-r8-repro-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/r02-ui1-panel-fill-20261028",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/r02-ui1-panel-fill-20261028-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/r02-ui1-receipts-20261028",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/r06-review-fixes-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/r10-evidence-links-recovery-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/release-readiness-20261007",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/retarget-pr340-main5775-candidate-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/retarget-pr344-main5775-candidate-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/retarget-pr345-main5775-candidate-20261102",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/safe-resume-closeout-20261009",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/section-profile-core-20261008",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/t4-reference-display-retention-20261005",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train-20261016-19",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train-337-continue-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train-337-continue-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train18-p157-20261017",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-edge-probe-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-edge-probe-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-monotonic-sort-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-monotonic-sort-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-native-validation-20261027",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-node-hint-diagnostic-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-node-hint-diagnostic-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-plane-ranges-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-plane-ranges-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-provider-hint-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-provider-hint-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-recovered-evidence-20261026",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-recovered-evidence-20261026-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-reference-local-init-20261024",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/codex/train337-reference-local-init-20261024-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "grok count",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/grok/axiom-layering-draft-20261022",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/grok/backlog-reconcile-20261022",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/grok/geo261-faces-keyerror-322",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/grok/r05-k1-recovery-20261028",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/grok/r07-zero-room-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/grok/r08-definition-import-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/grok/r09a-identity-ledger-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/grok/r09a-k3-44-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/grok/r10-evidence-links-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/grok/woodworking-field-rules-20261023",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/grok/woodworking-field-rules-20261023-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "feat count",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/116-object-canvas-menu-20261027",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/assembly-generation-minimal-20261002",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/card-reference-core-20261015",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/framing-core-probe-20261017",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/framing-oracle-20261015",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/k1a-cutting-native-20261011",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/k1b-cutting-frontend-20261011",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/lan-test-mode-20261011",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/r01-grid-card-entry-20261027",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/r06-bay-repeat",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/r06-bay-repeat-prbody",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/r11-timber-reuse-20261029",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "refs/heads/feat/sketchup-framing-plugin-20261013",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "172 refs total",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "27 open PR snapshot rows",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 368",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 367",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 365",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 363",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 362",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 360",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 359",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 358",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 356",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 355",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 353",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 352",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 350",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 348",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 347",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 346",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 345",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 344",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 343",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 342",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 341",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 340",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 331",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 325",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 323",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 213",
+      "passed": true
+    },
+    {
+      "category": "owner_inventory",
+      "check": "PR 194",
+      "passed": true
+    },
+    {
+      "category": "owner_dependencies",
+      "check": "340",
+      "passed": true
+    },
+    {
+      "category": "owner_dependencies",
+      "check": "341",
+      "passed": true
+    },
+    {
+      "category": "owner_dependencies",
+      "check": "342",
+      "passed": true
+    },
+    {
+      "category": "owner_dependencies",
+      "check": "343",
+      "passed": true
+    },
+    {
+      "category": "owner_dependencies",
+      "check": "346",
+      "passed": true
+    },
+    {
+      "category": "owner_dependencies",
+      "check": "347",
+      "passed": true
+    },
+    {
+      "category": "owner_dependencies",
+      "check": "348",
+      "passed": true
+    },
+    {
+      "category": "owner_dependencies",
+      "check": "355",
+      "passed": true
+    },
+    {
+      "category": "owner_boundaries",
+      "check": "explicit scheduling and limited absence claim",
+      "passed": true
+    },
+    {
+      "category": "issue",
+      "check": "actual issue205 metadata",
+      "passed": true
+    },
+    {
+      "category": "issue",
+      "check": "ledger R03 L63 product L1/oracle L3",
+      "passed": true,
+      "evidence": "| R03 | 下角材模式(選封閉面＋平釘天花，一次排好骨架) | 🔒 10-12、10-13「通過審查就直接實作」;#205、#221、#251 | 規則 oracle:L3(#307、#327);產品:L1 | App 與核心入口;提案寫明前置是 R02 的 PF-2~6。FT-S1 A 已拍板：保存配方意圖，確認後成為一般正式物件([#205 決策](https://github.com/ZhiQiYang/geometry-axiom/issues/205#issuecomment-6436162610)) | ≥1 |"
+    },
+    {
+      "category": "issue",
+      "check": "scheduler L160 cloud Codex after R02",
+      "passed": true,
+      "evidence": "| R03 | 前置是 R02 的 PF-2～6 | 雲端 Codex | 排在 R02 之後 |"
+    },
+    {
+      "category": "issue",
+      "check": "handoff L3 preserves order",
+      "passed": true,
+      "evidence": "本節覆蓋下方所有舊活程序／ready標籤。繁體中文／英文commit；不rebase/force、不merge main、不改公理／正典／決策佇列。使用者11/2排序維持366→363→340/339/341/342/343/346/347/348→355UI15→小件/canvas拆片→R03。"
+    },
+    {
+      "category": "decisions",
+      "check": "FT-S1 A explicit selected/closed",
+      "passed": true
+    },
+    {
+      "category": "decisions",
+      "check": "A output ownership/source recomputation explicit",
+      "passed": true
+    },
+    {
+      "category": "decisions",
+      "check": "retreat upper total limit already decided",
+      "passed": true
+    },
+    {
+      "category": "decisions",
+      "check": "design saved markdown exact API body",
+      "passed": true
+    },
+    {
+      "category": "decisions",
+      "check": "retreat saved markdown exact API body",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L17",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L18",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L22",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L23",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L24",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L25",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L33",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L34",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L40",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L44",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L50",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L51",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L52",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L56",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L62",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L66",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L70",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L76",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L77",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L83",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L87",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L93",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L94",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L98",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L99",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L100",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L106",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L107",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L113",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L114",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L115",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L116",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L117",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L123",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L129",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L135",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L136",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD L142",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "38 FIELD quotes",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "FIELD blob matches #333 final",
+      "passed": true
+    },
+    {
+      "category": "field_quotes",
+      "check": "#333 merged metadata",
+      "passed": true
+    },
+    {
+      "category": "questions",
+      "check": "Q1 does not reopen FT-S1 ownership",
+      "passed": true
+    },
+    {
+      "category": "questions",
+      "check": "Q2 prerequisite evidence not user choice",
+      "passed": true
+    },
+    {
+      "category": "questions",
+      "check": "Q3 Reading A and measurement already decided",
+      "passed": true
+    },
+    {
+      "category": "questions",
+      "check": "Q4 absence observation remains bounded",
+      "passed": true
+    },
+    {
+      "category": "questions",
+      "check": "Q5 closes already decided items",
+      "passed": true
+    },
+    {
+      "category": "capability",
+      "check": "native read complete false and finite supported records",
+      "passed": true
+    },
+    {
+      "category": "capability",
+      "check": "native layer pending explicitly retained",
+      "passed": true
+    },
+    {
+      "category": "capability",
+      "check": "main commands and HTTP preview actual source",
+      "passed": true
+    },
+    {
+      "category": "capability",
+      "check": "main app no dedicated panel fill source wiring",
+      "passed": true
+    },
+    {
+      "category": "capability",
+      "check": "main reader no panel-fill capability/19",
+      "passed": true
+    },
+    {
+      "category": "capability",
+      "check": "355 saved source UI integration",
+      "passed": true
+    },
+    {
+      "category": "capability",
+      "check": "355 reader adds /19 and panel-fill/1",
+      "passed": true
+    },
+    {
+      "category": "capability",
+      "check": "355 uiContract exact supported actions",
+      "passed": true
+    },
+    {
+      "category": "capability",
+      "check": "355 completeForScope is bounded and global complete false",
+      "passed": true
+    },
+    {
+      "category": "capability",
+      "check": "355 UI says PF6/4/5 not executable",
+      "passed": true
+    },
+    {
+      "category": "capability",
+      "check": "no framing-template route wiring in read main entrypoints",
+      "passed": true
+    },
+    {
+      "category": "capability",
+      "check": "panel-fill whitelist has finite ops without D7 generator",
+      "passed": true,
+      "evidence": [
+        "delete-derived-placement",
+        "delete-finish-surface",
+        "delete-panel-fill",
+        "put-derived-placement",
+        "put-finish-surface",
+        "put-panel-fill",
+        "put-parameter",
+        "set-override",
+        "set-source",
+        "unbind-source"
+      ]
+    },
+    {
+      "category": "save_scope",
+      "check": "PF2 scene saved definitions and no app closure",
+      "passed": true
+    },
+    {
+      "category": "save_scope",
+      "check": "PF3 source says save valid red and recompute",
+      "passed": true
+    },
+    {
+      "category": "save_scope",
+      "check": "PF3 explicit PF4/5/6 excluded",
+      "passed": true
+    },
+    {
+      "category": "save_scope",
+      "check": "PFH actual primitive retained",
+      "passed": true,
+      "evidence": {
+        "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/source-main-e020/geometry-core/panel-fill/PFH-NATIVE.md",
+        "lines": [
+          8,
+          11,
+          18,
+          24
+        ],
+        "note": "PF-H原語有直接來源；PF5未交付的排除另見PF3 scope與355 UI。"
+      }
+    },
+    {
+      "category": "prerequisites",
+      "check": "proposal PF2–6 before template and witness",
+      "passed": true
+    },
+    {
+      "category": "dependency_metadata",
+      "check": "#355 UI15 author says UNRUN",
+      "passed": true,
+      "evidence": {
+        "path": "/tmp/geometry-resume-20261102/r03-readonly-scope/api/open-prs.json",
+        "PR": 355,
+        "body_lines": [
+          3,
+          27
+        ],
+        "actual_terms": "UI15 未跑；未跑／未達合併條件。原報告以 UNRUN 表同一未執行狀態。"
+      }
+    },
+    {
+      "category": "runtime_scope",
+      "check": "report expressly no new runtime and author source only",
+      "passed": true
+    },
+    {
+      "category": "erratum_evidence",
+      "check": "quoted sentence actual L239",
+      "passed": true
+    }
+  ]
+}
