@@ -8,26 +8,29 @@
     "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
     "geometry-core/domain-decoupling/product-architecture-receipt.json"
   ],
-  "inputClosureExclusionReason": "非執行性衍生產物；receipt不hash自身。",
+  "inputClosureExclusionReason": "Non-executable derived artifacts; receipt does not hash itself.",
   "notClaimed": [
     "native",
-    "ledger",
+    "fresh mutation ledger",
     "browser",
-    "readingA dynamic",
-    "Windows supplemental probes",
-    "new W lexicon completeness audit"
+    "new performance comparison",
+    "Windows probes",
+    "new W lexicon completeness audit",
+    "historical controls rerun"
   ],
-  "headBinding": "Original three judges executed at a6; later same-source snapshot and four-file assembly are explicitly separate; no rerun or source relabelling.",
-  "createdUtc": "2026-10-26T10:12:56.075282+00:00",
-  "basis": "Original Linux inventory/hash/schema; closed a6 original gates; unchanged937 manifest and scan.",
-  "sourceBaseHead": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-  "headObservedBefore": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-  "headObservedAfter": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-  "manifestSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
+  "headBinding": "Original three commands ran at this exact clean source; 604 raw/LF/Git identities are identical before and after. Assembly remains outside tracked source.",
+  "createdUtc": "2026-11-02T03:39:19.064243+00:00",
+  "basis": "Existing local product-architecture receipt schema, original three unchanged judges, current-main policies and exact original PR CDP digest.",
+  "sourceBaseHead": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+  "headObservedBefore": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+  "headObservedAfter": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+  "actualAdoptedMain": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+  "executionEnvironment": "local managed cloud Linux; no GitHub run ID",
+  "manifestSha256": "f0c0b4db4ca01d4825883b73d73bf8644af313cd2bcab4c9b23638b9bbd93d32",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
-  "reportSha256": "65232fe9f275bc37db539380a6c51a9abbeba84185b1b991ded2f8810621d4f9",
-  "inputClosureSha256": "8d47b6202e793aa5755a887ea2cbb6b90506c68ca4270e0c0df0716142ca3b89",
+  "reportSha256": "a0e9ccd3f0916396ee46ee635d4063aa90bc6d9dfa4ddef43e255516a0c52aa4",
+  "inputClosureSha256": "d7da9f09b7c6acc910ce7760a825bcf8594e57bc708d69e5e2c3144eadf3c991",
   "counts": {
     "executableFiles": 604,
     "ownedSources": 334,
@@ -42,9 +45,9 @@
     },
     "languages": {
       "c": 191,
-      "html": 4,
       "javascript": 64,
-      "python": 75
+      "python": 75,
+      "html": 4
     },
     "forbiddenIdentifiers": 937,
     "forbiddenStrings": 55
@@ -52,7 +55,7 @@
   "scanPassed": true,
   "actualCliScan": {
     "command": [
-      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "python",
       "-B",
       "tests/architecture_contract.py",
       "--root",
@@ -60,136 +63,106 @@
       "--manifest",
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
-    "cwd": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-source-20261026",
-    "acceptance_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-    "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+    "cwd": "/tmp/geometry-pr344-20261102",
+    "acceptance_sha": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+    "source_sha": "eccebabc85acf74e30274b8ea8e24db863d8843b",
     "source_variant": "architecture-contract",
     "environment": {
-      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
-      "LANG": "C.UTF-8",
-      "LC_ALL": "C.UTF-8",
-      "PYTHONIOENCODING": "utf-8",
-      "PYTHONDONTWRITEBYTECODE": "1",
+      "TMPDIR": null,
+      "TMP": null,
+      "TEMP": null,
+      "GEOMETRY_TEST_BRIDGE": null,
+      "GEOMETRY_MODEL_BASE": null,
+      "GEOMETRY_TEST_URL": null,
+      "GEOMETRY_FEEDBACK_DIR": null,
       "PYTHONOPTIMIZE": null,
-      "TMPDIR": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/tmp",
       "CC": null,
-      "CFLAGS": null,
-      "CPPFLAGS": null,
-      "LDFLAGS": null,
-      "C_INCLUDE_PATH": null,
-      "CPATH": null,
-      "LIBRARY_PATH": null,
-      "LD_LIBRARY_PATH": null,
-      "GCC_EXEC_PREFIX": null,
-      "COMPILER_PATH": null
+      "CFLAGS": null
     },
-    "started_epoch": 1793008991.8197656,
-    "stdin_provided": false,
-    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "startedUtc": "2026-11-02T03:35:17.218865+00:00",
+    "endedUtc": "2026-11-02T03:35:22.226629+00:00",
     "actual_process_returncode": 0,
+    "exitCode": 0,
     "timeout_expired": false,
-    "directory": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/subcommands/000004",
-    "ended_epoch": 1793008997.556318,
+    "elapsedSeconds": 5.007585080980789,
+    "directory": "/tmp/geometry-resume-20261102/pr344/commands/15-architecture-cli",
     "stdout_sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "stdout_bytes": 132559,
-    "stderr_bytes": 0,
-    "exitCode": 0
+    "stderr_bytes": 0
   },
   "validation": [
     {
       "command": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "python",
         "-B",
         "tests/test_architecture_contract.py"
       ],
-      "cwd": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-source-20261026",
-      "acceptance_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-      "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+      "cwd": "/tmp/geometry-pr344-20261102",
+      "acceptance_sha": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+      "source_sha": "eccebabc85acf74e30274b8ea8e24db863d8843b",
       "source_variant": "architecture-unit",
       "environment": {
-        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
-        "LANG": "C.UTF-8",
-        "LC_ALL": "C.UTF-8",
-        "PYTHONIOENCODING": "utf-8",
-        "PYTHONDONTWRITEBYTECODE": "1",
+        "TMPDIR": null,
+        "TMP": null,
+        "TEMP": null,
+        "GEOMETRY_TEST_BRIDGE": null,
+        "GEOMETRY_MODEL_BASE": null,
+        "GEOMETRY_TEST_URL": null,
+        "GEOMETRY_FEEDBACK_DIR": null,
         "PYTHONOPTIMIZE": null,
-        "TMPDIR": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/tmp",
         "CC": null,
-        "CFLAGS": null,
-        "CPPFLAGS": null,
-        "LDFLAGS": null,
-        "C_INCLUDE_PATH": null,
-        "CPATH": null,
-        "LIBRARY_PATH": null,
-        "LD_LIBRARY_PATH": null,
-        "GCC_EXEC_PREFIX": null,
-        "COMPILER_PATH": null
+        "CFLAGS": null
       },
-      "started_epoch": 1793008997.5568783,
-      "stdin_provided": false,
-      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "startedUtc": "2026-11-02T03:35:55.115760+00:00",
+      "endedUtc": "2026-11-02T03:35:55.722385+00:00",
       "actual_process_returncode": 0,
+      "exitCode": 0,
       "timeout_expired": false,
-      "directory": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/subcommands/000005",
-      "ended_epoch": 1793008998.0941834,
+      "elapsedSeconds": 0.6064719060086645,
+      "directory": "/tmp/geometry-resume-20261102/pr344/commands/16-architecture-unit",
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "51eab918e4e0ffdd0f9c72b216441e6c44650bc75e2dc28eae83723b7a8e97c7",
+      "stderr_sha256": "0d84dc112c886b1d051ff626a095900bcd057ecfb19186f195455b05dd12a00e",
       "stdout_bytes": 0,
       "stderr_bytes": 29577,
-      "exitCode": 0,
-      "tests": 205,
-      "passed": 205,
-      "failed": 0,
-      "skipped": 0,
-      "unittestSeconds": 0.435
+      "testsRun": 205,
+      "skipped": 0
     },
     {
       "command": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "python",
         "-B",
         "tests/test_product_architecture.py"
       ],
-      "cwd": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-source-20261026",
-      "acceptance_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-      "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-      "source_variant": "product-architecture-unit",
+      "cwd": "/tmp/geometry-pr344-20261102",
+      "acceptance_sha": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+      "source_sha": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+      "source_variant": "architecture-product",
       "environment": {
-        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
-        "LANG": "C.UTF-8",
-        "LC_ALL": "C.UTF-8",
-        "PYTHONIOENCODING": "utf-8",
-        "PYTHONDONTWRITEBYTECODE": "1",
+        "TMPDIR": null,
+        "TMP": null,
+        "TEMP": null,
+        "GEOMETRY_TEST_BRIDGE": null,
+        "GEOMETRY_MODEL_BASE": null,
+        "GEOMETRY_TEST_URL": null,
+        "GEOMETRY_FEEDBACK_DIR": null,
         "PYTHONOPTIMIZE": null,
-        "TMPDIR": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/tmp",
         "CC": null,
-        "CFLAGS": null,
-        "CPPFLAGS": null,
-        "LDFLAGS": null,
-        "C_INCLUDE_PATH": null,
-        "CPATH": null,
-        "LIBRARY_PATH": null,
-        "LD_LIBRARY_PATH": null,
-        "GCC_EXEC_PREFIX": null,
-        "COMPILER_PATH": null
+        "CFLAGS": null
       },
-      "started_epoch": 1793008998.0948424,
-      "stdin_provided": false,
-      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "startedUtc": "2026-11-02T03:36:01.628017+00:00",
+      "endedUtc": "2026-11-02T03:36:13.109560+00:00",
       "actual_process_returncode": 0,
+      "exitCode": 0,
       "timeout_expired": false,
-      "directory": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/subcommands/000006",
-      "ended_epoch": 1793009011.0868874,
+      "elapsedSeconds": 11.481433642009506,
+      "directory": "/tmp/geometry-resume-20261102/pr344/commands/17-architecture-product",
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "f593cb32a44a5eaa1a6c40bbf028e1be474cca05c4bbe4becf815bef7a4a7f40",
+      "stderr_sha256": "b7d7b775ec305fbb87f0e3d92f0f27ca879646769b4c07e341983bda45ff1269",
       "stdout_bytes": 0,
       "stderr_bytes": 118,
-      "exitCode": 0,
-      "tests": 18,
-      "passed": 18,
-      "failed": 0,
-      "skipped": 0,
-      "unittestSeconds": 12.895
+      "testsRun": 18,
+      "skipped": 0
     }
   ],
   "inputs": [
@@ -1575,7 +1548,7 @@
     },
     {
       "path": "geometry-web/app.js",
-      "sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+      "sha256": "c5f055915a039d90138824248b146552776286beb7544380c279a5586707ab60"
     },
     {
       "path": "geometry-web/archive_wait_trace.py",
@@ -1647,7 +1620,7 @@
     },
     {
       "path": "geometry-web/cdp_test.js",
-      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e"
+      "sha256": "1f3e2e36283ed7bbf6c4ad2cf3dc12c685667356d186d9fbd47bc5f0520f07ee"
     },
     {
       "path": "geometry-web/composition_canvas_test.js",
@@ -2610,194 +2583,15 @@
       "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "manifestRefresh": {
-    "manifestByteUnchangedFromExecutionSource": true,
-    "scanByteUnchangedFromExecutionSource": true,
-    "allPolicyFieldsEqualToPrevious": true,
-    "onlyPolicyDelta": {
-      "addedIdentifiers": [],
-      "removedIdentifiers": [],
-      "otherManifestFieldsEqual": true
-    },
-    "sourceClassificationsUnchanged": true,
-    "previousSource": "6e50aef65513b7b38f93228919272c6d40d6c196",
-    "previousArtifactCommit": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
-    "previousOutputs": {
-      "product-architecture.json": {
-        "bytes": 221953,
-        "rawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
-        "lfSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
-      },
-      "product-architecture-scan.json": {
-        "bytes": 132559,
-        "rawSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
-        "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
-      },
-      "PRODUCT-ARCHITECTURE.md": {
-        "bytes": 1444,
-        "rawSha256": "fa1357b249c19708824d480993a80821b7bfeccb7606be773a000395f28aafd6",
-        "lfSha256": "fa1357b249c19708824d480993a80821b7bfeccb7606be773a000395f28aafd6"
-      },
-      "product-architecture-receipt.json": {
-        "bytes": 131843,
-        "rawSha256": "00a33c42ca07a9077aa5abf758ed8b0a3650a031cdc8387128f285050b7c13af",
-        "lfSha256": "00a33c42ca07a9077aa5abf758ed8b0a3650a031cdc8387128f285050b7c13af"
-      }
-    },
-    "changedPriorInputs": [],
-    "sourceReceiptEvidenceDirectory": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-four-original-20261026",
-    "originalThreeGateExits": [
-      0,
-      0,
-      0
-    ],
-    "manifestProof": [],
-    "historicalGuardEvidence": {
-      "source": "6e50aef65513b7b38f93228919272c6d40d6c196",
-      "artifactCommit": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
-      "receiptRawSha256": "00a33c42ca07a9077aa5abf758ed8b0a3650a031cdc8387128f285050b7c13af"
-    },
-    "note": "No inherited proof relabelled; current three gate records are original a6 executions; supplemental proofs remain historical."
-  },
-  "completeInventoryVerification": {
-    "sourceRoots": [
-      "geometry-core",
-      "geometry-app",
-      "geometry-templates",
-      "geometry-web",
-      "geometry-guide"
-    ],
-    "sourceFiles": [
-      "current_geometry.c",
-      "tests/__init__.py",
-      "tests/binaries.py"
-    ],
-    "filesBefore": 604,
-    "filesAfter": 604,
-    "allRawAndLfInputsUnchanged": true,
-    "toolHashesBefore": {
-      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
-      "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
-      "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
-    },
-    "toolHashesAfter": {
-      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
-      "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
-      "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
-    },
-    "inputClosureSha256Before": "8d47b6202e793aa5755a887ea2cbb6b90506c68ca4270e0c0df0716142ca3b89",
-    "inputClosureSha256After": "8d47b6202e793aa5755a887ea2cbb6b90506c68ca4270e0c0df0716142ca3b89",
-    "protectedSsotBefore": {
-      "公理層.md": {
-        "bytes": 323066,
-        "rawSha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7",
-        "lfSha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"
-      },
-      "決策佇列.md": {
-        "bytes": 244340,
-        "rawSha256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740",
-        "lfSha256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740"
-      }
-    },
-    "protectedSsotAfter": {
-      "公理層.md": {
-        "bytes": 323066,
-        "rawSha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7",
-        "lfSha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"
-      },
-      "決策佇列.md": {
-        "bytes": 244340,
-        "rawSha256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740",
-        "lfSha256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740"
-      }
-    },
-    "snapshotTiming": "Fresh assembly before/after, after original gate terminal; not concurrent with actual a6 original three gate execution."
-  },
-  "supplementalStaticGuardProbes": {
-    "executedAtCurrentHead": false,
-    "newIdentifiers": 0,
-    "guardIdentifiersRetested": 0,
-    "neutralCases": 0,
-    "legacyWindowsSupplementalExecuted": false,
-    "historicalExecutionSource": "6e50aef65513b7b38f93228919272c6d40d6c196",
-    "historicalAdoptionCommit": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
-    "historicalReceiptRawSha256": "00a33c42ca07a9077aa5abf758ed8b0a3650a031cdc8387128f285050b7c13af",
-    "historicalSupplementalStaticGuardProbes": {
-      "executedAtCurrentHead": true,
-      "newIdentifiers": 0,
-      "guardIdentifiersRetested": 9,
-      "historicalBaselineSource": "ca7838e0f4950452b9befcf40899d606db9b81fa",
-      "historicalBaselineRawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525",
-      "fixedWithdrawnRestored": [
-        0,
-        1,
-        0
-      ],
-      "neutralCases": 2,
-      "legacyWindowsSupplementalExecuted": false
-    },
-    "note": "Nine0/1/0 and two neutral controls are historical actual M6e50 results, not rerun or relabelled at a6."
-  },
-  "nativeAcceptance": "Separate original receipts required; this architecture receipt does not certify runtime behavior.",
-  "refreshDriver": {
-    "bytes": 23288,
-    "rawSha256": "97da235f9a9d69b4cdfbc67dc3f49e5b447b574176e39e3300ffd887993fab62",
-    "lfSha256": "97da235f9a9d69b4cdfbc67dc3f49e5b447b574176e39e3300ffd887993fab62",
-    "path": "/tmp/geo337-a6-architecture-preparation-20261026/assemble_a6.py",
-    "argv": [
-      "/tmp/geo337-a6-architecture-preparation-20261026/assemble_a6.py",
-      "--root",
-      "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-source-20261026",
-      "--sha",
-      "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-      "--out",
-      "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-four-original-20261026",
-      "--root-execution-lease",
-      "--bindings",
-      "/dev/shm/geometry-axiom-geo337-20261025/a6-assembly-root-original-20261026/BINDINGS.json",
-      "--bindings-sha256",
-      "1e6ba3cef1d24e25ff1d922c36f0df7f80ead5bb021265dc07922ddbd6bcdf01"
-    ],
-    "recorderSha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
-    "runDirectory": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-four-original-20261026",
-    "originalThreeGateBatch": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026",
-    "originalThreeGateBatchSha256": "1dd78c0ef53d715316da892886bdb20d475a2a03e3dccf8a84c3f060e26b6f25",
-    "originalGatePeerSha256": "5b28a6e10719570dc02d64a17257e20a2fb8a8a51e5308c8f020ed27be113bee",
-    "sourcePrepPeerSha256": "59e9ac0d16fcfdf30b57bf11201755c1ddede4294bf70bfcf4cb79b5b36b305a",
-    "originalJudgesRerun": false
-  },
   "environment": {
-    "originalGateEnvironment": {
-      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
-      "LANG": "C.UTF-8",
-      "LC_ALL": "C.UTF-8",
-      "PYTHONIOENCODING": "utf-8",
-      "PYTHONDONTWRITEBYTECODE": "1",
-      "PYTHONOPTIMIZE": null,
-      "TMPDIR": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/tmp",
-      "CC": null,
-      "CFLAGS": null,
-      "CPPFLAGS": null,
-      "LDFLAGS": null,
-      "C_INCLUDE_PATH": null,
-      "CPATH": null,
-      "LIBRARY_PATH": null,
-      "LD_LIBRARY_PATH": null,
-      "GCC_EXEC_PREFIX": null,
-      "COMPILER_PATH": null
-    },
-    "assemblyPython": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
-    "assemblyGitEnvironment": {
-      "GIT_OPTIONAL_LOCKS": "0",
-      "GIT_INDEX_FILE": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-four-original-20261026/private-index",
-      "GIT_CONFIG_COUNT": "1",
-      "GIT_CONFIG_KEY_0": "core.splitIndex",
-      "GIT_CONFIG_VALUE_0": "false"
-    }
+    "pythonExecutable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "pythonVersion": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "nodeVersion": "v24.19.0"
   },
   "uncertainties": [
-    "Original gates and assembly snapshots are separate execution times at the same source SHA.",
-    "Nine controls and two neutral probes remain historical actual M6e50.",
-    "Full native/browser/ledger/performance are separate gates; generated outputs require separate normal commit/push."
+    "No true-browser S/V/S or full canvas execution in this phase.",
+    "No full 123 mutation regeneration or required CI terminal state.",
+    "Repository historical derived files remain unchanged and are not relabelled."
   ]
 }
