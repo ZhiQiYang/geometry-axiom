@@ -1,0 +1,13 @@
+diff --git a/geometry-core/domain-decoupling/product-architecture.json b/geometry-core/domain-decoupling/product-architecture.json
+index 2fd23c08d..2e38f21fd 100644
+--- a/geometry-core/domain-decoupling/product-architecture.json
++++ b/geometry-core/domain-decoupling/product-architecture.json
+@@ -2647,7 +2647,7 @@
+     {
+       "path": "geometry-web/cdp_test.js",
+       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+-      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
++      "sha256": "1f3e2e36283ed7bbf6c4ad2cf3dc12c685667356d186d9fbd47bc5f0520f07ee",
+       "hashMode": "lf"
+     },
+     {

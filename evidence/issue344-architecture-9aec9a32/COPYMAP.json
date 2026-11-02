@@ -1,0 +1,3199 @@
+{
+  "schema": "geo344-original-files-map/1",
+  "source_sha": "9aec9a32630fc65f94c53d49e99969e546574d6e",
+  "copy_map_self_excluded": true,
+  "files": [
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/RESULT.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/RESULT.json",
+      "bytes": 4896,
+      "sha256": "8dddc6d2ae8d2f715cc9d3f3625ae573a3cbd5e91c3417fa88aeb35dabde99dc"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/execution-source-originals/PRODUCT-ARCHITECTURE.md",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/execution-source-originals/PRODUCT-ARCHITECTURE.md",
+      "bytes": 1445,
+      "sha256": "28f365862a3a66c43b59b13939f32d0288f8d16caf7aa01778bc09067a6b94ac"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/execution-source-originals/product-architecture-receipt.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/execution-source-originals/product-architecture-receipt.json",
+      "bytes": 131983,
+      "sha256": "80b2b52deec27b5194a3773c5fc1926f8c6f288b4db6a39576afb27c77884765"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/execution-source-originals/product-architecture-scan.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/execution-source-originals/product-architecture-scan.json",
+      "bytes": 132559,
+      "sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/execution-source-originals/product-architecture.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/execution-source-originals/product-architecture.json",
+      "bytes": 221953,
+      "sha256": "f0c0b4db4ca01d4825883b73d73bf8644af313cd2bcab4c9b23638b9bbd93d32"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/historical-928-manifest.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/historical-928-manifest.json",
+      "bytes": 221591,
+      "sha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/historical-928-with-current-cdp-digest.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/historical-928-with-current-cdp-digest.json",
+      "bytes": 221591,
+      "sha256": "2661beb6a5223d2aeecd64d708194261d97f0a738c1fc3adb22ff431c07bbbb8"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/historical-guard-baseline.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/historical-guard-baseline.json",
+      "bytes": 2819,
+      "sha256": "3b76b177d92ace8ce2e7571e17acc0a1191bbc0b802eff396f4098ae8af9833e"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/new/PRODUCT-ARCHITECTURE.md",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/new/PRODUCT-ARCHITECTURE.md",
+      "bytes": 1826,
+      "sha256": "6fdae7f419a8a744d04aac7d74731d07c0dfd36007495d0f9d554e6017502a30"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/new/product-architecture-receipt.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/new/product-architecture-receipt.json",
+      "bytes": 145277,
+      "sha256": "b2d828fbbd7f585210cc3a0eb81d6ba148d08b7139c0e0915848354a638f81f6"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/new/product-architecture-scan.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/new/product-architecture-scan.json",
+      "bytes": 132559,
+      "sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/new/product-architecture.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/new/product-architecture.json",
+      "bytes": 221953,
+      "sha256": "f0c0b4db4ca01d4825883b73d73bf8644af313cd2bcab4c9b23638b9bbd93d32"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/policy-guard-inventory.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/policy-guard-inventory.json",
+      "bytes": 10688,
+      "sha256": "80e2df9d6cc7fab17c44b01d0397565fd67deab06802622d6c2fb8e91df0bfb9"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/previous-artifact/PRODUCT-ARCHITECTURE.md",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/previous-artifact/PRODUCT-ARCHITECTURE.md",
+      "bytes": 1445,
+      "sha256": "28f365862a3a66c43b59b13939f32d0288f8d16caf7aa01778bc09067a6b94ac"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/previous-artifact/product-architecture-receipt.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/previous-artifact/product-architecture-receipt.json",
+      "bytes": 131983,
+      "sha256": "80b2b52deec27b5194a3773c5fc1926f8c6f288b4db6a39576afb27c77884765"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/previous-artifact/product-architecture-scan.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/previous-artifact/product-architecture-scan.json",
+      "bytes": 132559,
+      "sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/previous-artifact/product-architecture.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/previous-artifact/product-architecture.json",
+      "bytes": 221953,
+      "sha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/single-cdp-digest-withdrawn.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/single-cdp-digest-withdrawn.json",
+      "bytes": 221953,
+      "sha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/single-exclusion-digest-proof.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/single-exclusion-digest-proof.json",
+      "bytes": 7380,
+      "sha256": "86a3c19c68ffc29ea20c31bd3487edacd0ba7f2c826384faad4f1c831f4ea953"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/source-inputs.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/source-inputs.json",
+      "bytes": 197267,
+      "sha256": "da66e9ea8f47fd132f897f65fea0fe3e65c10057a7168e61583ed45704314085"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000001/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000001/request.json",
+      "bytes": 1526,
+      "sha256": "2f461cb608dd3a1b8fbcfb7659c6e0f85ef299837073d0e3d828dce6d9ebd246"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000001/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000001/result.json",
+      "bytes": 1777,
+      "sha256": "339c3caa7882ba9c6fe67ced0a2d8848ee6147b79b6a1a1da38fe1bdacc2b795"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000001/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000001/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000001/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "1b6afa5bd924b99e473d90511e742cadb6ab89e6f2444b00464956b7f811b5d5"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000002/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000002/request.json",
+      "bytes": 1562,
+      "sha256": "0bbef747c9eb6135967c0fe8d3dc08a5db5079b2c8d68eda7a8b0ebad794de73"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000002/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000002/result.json",
+      "bytes": 1811,
+      "sha256": "9c53aa5f878e25bf87c5b12919585aaed5f77f4732d212e793cd1c4cf7a9e056"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000002/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000002/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000002/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000003/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000003/request.json",
+      "bytes": 1632,
+      "sha256": "de107650482537297c6ff27c71ac9c01b5ef328a27f5f1b41e84ff6612ba8bb7"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000003/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000003/result.json",
+      "bytes": 1882,
+      "sha256": "9c1a49b3378940f6d00618b475b870df113847d39d1689ce8fae998a436a512a"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000003/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000003/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000003/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000004/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000004/request.json",
+      "bytes": 1672,
+      "sha256": "061f4e732ff5092ca7a36aa7f9a121cde123e50ceac2615c7287e249b89ba1e6"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000004/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000004/result.json",
+      "bytes": 1923,
+      "sha256": "322f45b2fe583b1cf58e63fd7b36d4726006f4d69056e3995541c66c44773084"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000004/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000004/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000004/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000004/stdout.bin",
+      "bytes": 58,
+      "sha256": "8c8828806ce62a3023f0b806f800247a1940fc0373c879daff2fb541654ef41d"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000005/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000005/request.json",
+      "bytes": 1620,
+      "sha256": "b9e41a307672bd07acc2b7163688ff912383300760ad113d1d412861f91c67b6"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000005/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000005/result.json",
+      "bytes": 1871,
+      "sha256": "062f6803b9e956ceaa71bf943ca3108160eeba4e153dde60b4318253540c6e89"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000005/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000005/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000005/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000005/stdout.bin",
+      "bytes": 41,
+      "sha256": "a2bc89afa364924a6302698910019ea975135904edc25e81494b91bead446dec"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000006/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000006/request.json",
+      "bytes": 1632,
+      "sha256": "aeee23b8ef8bad28bf70a4e806dc124ddd4a126c44fd7168a4377c703e51f008"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000006/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000006/result.json",
+      "bytes": 1881,
+      "sha256": "bb41486ae799e1ec6fe7a0eb93c26492881b67ed5e07dd8bbd076b28b3b2e4e3"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000006/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000006/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000006/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000006/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000007/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000007/request.json",
+      "bytes": 1615,
+      "sha256": "0bbfbf8dd1e41d1497774c268c1723dc57ba4abf627bd4aa66d6485b70470ec8"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000007/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000007/result.json",
+      "bytes": 1870,
+      "sha256": "505a0472d63caddcf0e103e7f87d2fe683bfa6258a4c9758f166cc096a28dd73"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000007/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000007/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000007/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000007/stdout.bin",
+      "bytes": 221953,
+      "sha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000008/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000008/request.json",
+      "bytes": 1571,
+      "sha256": "c22d91fe9733bb2d5829be80b7535b0fec5f0abf1d2ec0ac2ac7f33ea2289f32"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000008/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000008/result.json",
+      "bytes": 1822,
+      "sha256": "9ea4fb0ab24ac736564c6c8d403470739ce76c607f86495d39a646671832550f"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000008/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000008/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000008/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000008/stdout.bin",
+      "bytes": 41,
+      "sha256": "46210a2b41e9437aa16aa9d0800e3d61c5cb09c15e83c96b7325cd26c84b3c6a"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000009/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000009/request.json",
+      "bytes": 1632,
+      "sha256": "7f33e504d02b7a2b6c197396339c96f0d54b95b5e91f030d378059f2e3b72084"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000009/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000009/result.json",
+      "bytes": 1882,
+      "sha256": "7ace094a3ec31b7b02919a1603b1a037183dba9fb3517077af9d351401aad7f5"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000009/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000009/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000009/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000010/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000010/request.json",
+      "bytes": 1655,
+      "sha256": "b85c129f340c814b2f5738dc344263926cb5b06538a3d12c2061a4e5d769fa95"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000010/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000010/result.json",
+      "bytes": 1909,
+      "sha256": "36bd2c78a34b4114eedefc6d5de8ec114c940bfec3b3a52d8cc3867cd7bbce87"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000010/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000010/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000010/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000010/stdout.bin",
+      "bytes": 221591,
+      "sha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000011/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000011/request.json",
+      "bytes": 1620,
+      "sha256": "a576e8515e76637fa10a638d127f459429099cec49624dd5018c82ec9b3fd58e"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000011/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000011/result.json",
+      "bytes": 1875,
+      "sha256": "68bddb3862c3e38081af325dbd5d3b8c2e8a3c6a51196c69e1cb2ef7d704702a"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000011/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000011/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000011/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000011/stdout.bin",
+      "bytes": 132559,
+      "sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000012/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000012/request.json",
+      "bytes": 1613,
+      "sha256": "42f8b4813172ace97c70ab2012a1367bd536ce363296ec103e96c4811f6b47b5"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000012/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000012/result.json",
+      "bytes": 1865,
+      "sha256": "24fe2ba3b9324a2211cbba0b6355a31a05e38d12aec70e7f25486433866fee7f"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000012/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000012/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000012/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000012/stdout.bin",
+      "bytes": 1445,
+      "sha256": "28f365862a3a66c43b59b13939f32d0288f8d16caf7aa01778bc09067a6b94ac"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000013/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000013/request.json",
+      "bytes": 1623,
+      "sha256": "9cbbbf85ae385eb1a9b71f162c0fbf487376ad918c27dc23cddb1b7e3e44de08"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000013/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000013/result.json",
+      "bytes": 1878,
+      "sha256": "516dd2eb078ff1ea494431cf8bfaa5495c7395eeb33f2038e737f078e37748ff"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000013/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000013/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000013/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000013/stdout.bin",
+      "bytes": 131983,
+      "sha256": "80b2b52deec27b5194a3773c5fc1926f8c6f288b4db6a39576afb27c77884765"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000014/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000014/request.json",
+      "bytes": 1775,
+      "sha256": "6d0d12c194da18bf7bc9af863bbbf0d801b9a57b6425cc7cced414428989f5cf"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000014/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000014/result.json",
+      "bytes": 2029,
+      "sha256": "dd7a76091cd031470b70e320d4d8977abb25bdc4ba923962f3ad77ed84284862"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000014/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000014/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000014/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000014/stdout.bin",
+      "bytes": 380094,
+      "sha256": "f2a7a26d5ecdb6eff8e3ceeb7103cd63ae0fe0558c41aca0d938471c1ebed7fa"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000015/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000015/request.json",
+      "bytes": 1775,
+      "sha256": "778eb29d4ed50a9ae3841416e3134166f9cf27decc282ea2b6cacd428cad703a"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000015/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000015/result.json",
+      "bytes": 2030,
+      "sha256": "1996abc328afd1936cdf1dc8aeb7cd32c907f472298651f5d9adc61528aa5f7a"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000015/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000015/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000015/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000015/stdout.bin",
+      "bytes": 380094,
+      "sha256": "427f9e38da698a42bb4e0a63fd05a5a62892a2c1f807cf8a279facbe97ec415b"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000016/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000016/request.json",
+      "bytes": 1588,
+      "sha256": "7ec20919a902464d9fe81a356b87c8324b5a178aef3c657b19ce6cdf43c19159"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000016/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000016/result.json",
+      "bytes": 1841,
+      "sha256": "d3c534f274e4f98ebbecd15dee31f5275db6e8fc798868fb7bf2b6a450acafc4"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000016/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000016/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000016/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000016/stdout.bin",
+      "bytes": 86895,
+      "sha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000017/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000017/request.json",
+      "bytes": 1592,
+      "sha256": "3927840f337eaa837d3e69ebea1586729411bf38d4d360f8acc423eada6f8bb4"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000017/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000017/result.json",
+      "bytes": 1846,
+      "sha256": "90f7e99ba157df88e825d50635c09b787a0a1637ed8fc4e2a411ae1ae0e33ac3"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000017/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000017/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000017/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000017/stdout.bin",
+      "bytes": 66632,
+      "sha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000018/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000018/request.json",
+      "bytes": 1592,
+      "sha256": "70d51e3a702e4bc282b290eb45c2f4b39c13cf056d2d5063c822490502ce3561"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000018/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000018/result.json",
+      "bytes": 1846,
+      "sha256": "cecbd3a4563646adae38b540dcde307d50f798d59a34e7f57cc4db0c7ff05322"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000018/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000018/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000018/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000018/stdout.bin",
+      "bytes": 11793,
+      "sha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000019/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000019/request.json",
+      "bytes": 1570,
+      "sha256": "a373c6e4fe774a24dca85cebf282a601edd78146b99658d9b24d672d865d6e99"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000019/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000019/result.json",
+      "bytes": 1825,
+      "sha256": "bf07cd48dc01219cacb28837b097a9a19a27c7ef57e912902d40194eaa918dd9"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000019/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000019/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000019/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000019/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000019/stdout.bin",
+      "bytes": 323066,
+      "sha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000020/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000020/request.json",
+      "bytes": 1573,
+      "sha256": "c0f31ac7e8c8227e34d2804e643c5871db995cb478a1a48953eff3b710d60f42"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000020/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000020/result.json",
+      "bytes": 1826,
+      "sha256": "d2fd510b17a22d4a7e5b484cfe528821deb57a63fb6ceb3af1c0c42a25d51108"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000020/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000020/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000020/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000020/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000020/stdout.bin",
+      "bytes": 237973,
+      "sha256": "cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000021/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000021/request.json",
+      "bytes": 1655,
+      "sha256": "97b9096a79de43e7b44d68bfd20b56dd0cea0cb51f2322579775367bfabe96f2"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000021/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000021/result.json",
+      "bytes": 1910,
+      "sha256": "1ae7cf167aa3b29a251f56b81d358a68f9ab4ad81a215cd42d4e8ca19f7ce6c2"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000021/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000021/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000021/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000021/stdout.bin",
+      "bytes": 132559,
+      "sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000022/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000022/request.json",
+      "bytes": 1554,
+      "sha256": "73a415d185f4d154f4ac63e35fe5e111cd0a8618c39ddb83052459417154c7af"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000022/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000022/result.json",
+      "bytes": 1808,
+      "sha256": "e1cc359bf8390eb74c2eff3bd97346f8d4681c26853ba37d059812d5358f7bf0"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000022/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000022/stderr.bin",
+      "bytes": 29577,
+      "sha256": "9faa63cf4bad9addc9b9570a57c38bfa39908f4afacdcda45bf1d721c8dd6f2b"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000022/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000022/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000022/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000022/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000023/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000023/request.json",
+      "bytes": 1553,
+      "sha256": "4a1d570933c741e4db958ceeb3903ac388551349d0ce0586fcbb7fb4ee178a32"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000023/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000023/result.json",
+      "bytes": 1804,
+      "sha256": "7b51bd62603f5997734fdb45968a5297b5402db410295f4d8753d7fba705d284"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000023/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000023/stderr.bin",
+      "bytes": 118,
+      "sha256": "23901c2dd1fbc965b917ea0463b0948a3a170fce6752af2cff4483c579b85075"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000023/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000023/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000023/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000023/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000024/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000024/request.json",
+      "bytes": 1711,
+      "sha256": "975794f773d63f2411d7e4b3f1292cef264d8f3eadf5fc2b9142c4af2cd37c57"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000024/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000024/result.json",
+      "bytes": 1966,
+      "sha256": "28e80cab2f1076a9d2c74343bf82dcd727ecf0546cb8a3c8a40a3fde34486495"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000024/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000024/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000024/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000024/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000024/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000024/stdout.bin",
+      "bytes": 132559,
+      "sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000025/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000025/request.json",
+      "bytes": 1696,
+      "sha256": "5f62dd4491bb603626365a682c1b435f2979c9d82922d1e18380e7f65b98c54a"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000025/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000025/result.json",
+      "bytes": 1948,
+      "sha256": "3a99bb5c0133dc84ef3877e38c211b2e56444645b7e12b34a05793b0d3faf84e"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000025/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000025/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000025/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000025/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000025/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000025/stdout.bin",
+      "bytes": 317,
+      "sha256": "3457fbdb97a1158d949a38d390414df1d433e9200129939fb1260c1bdfb77165"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000026/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000026/request.json",
+      "bytes": 1713,
+      "sha256": "760ca695943bb78110d10bf1077bf932c7b4fda390e16f06013ce80b4675c4d0"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000026/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000026/result.json",
+      "bytes": 1968,
+      "sha256": "833ee08b83987d047cbc5fe3b46d111a1eb62d4a9eb3f847a24688e7b1c579ef"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000026/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000026/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000026/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000026/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000026/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000026/stdout.bin",
+      "bytes": 132559,
+      "sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000027/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000027/request.json",
+      "bytes": 2823,
+      "sha256": "265f851ed1bb307be5a5fe96fe03e6af92114e6057c29641a7419e7c6b2b8573"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000027/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000027/result.json",
+      "bytes": 3075,
+      "sha256": "8235ac9d548a3a4099838a485198238d2fc40c2b581e407ae7422a2b1cdc1339"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000027/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000027/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000027/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000027/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000027/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000027/stdout.bin",
+      "bytes": 299,
+      "sha256": "456e23682b3d00e4e1154fe5356dc24190b5cdcb6a5861e78ac291b2f71f8d20"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000028/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000028/request.json",
+      "bytes": 2799,
+      "sha256": "2055b395da187a470adc55ba22bda802d8cdaedb65b0aab3030a4ed2d94a5463"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000028/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000028/result.json",
+      "bytes": 3052,
+      "sha256": "2436aa7b587c20529dfddbf098dd327f0e895faf2cda578b09aba342e7a48e7d"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000028/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000028/stderr.bin",
+      "bytes": 159,
+      "sha256": "97fc674cb30c0ed3af54e379b9b823db67e1b2336dc631b0d7d075d55a2ec7a5"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000028/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000028/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000028/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000028/stdout.bin",
+      "bytes": 63,
+      "sha256": "bc42fc05292e0af486485ea40ea3c77b873c0a0972e04f2b06b0127f243d6ea0"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000029/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000029/request.json",
+      "bytes": 2826,
+      "sha256": "31405c51fc16e963a5ed5adb7af9bfacaabcaede7c7451b16dc2e2b37d53b1f8"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000029/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000029/result.json",
+      "bytes": 3078,
+      "sha256": "a6b31f1037e069a07033f30f34586ef7bf4ee087afea79560cb73bb384ffcfed"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000029/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000029/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000029/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000029/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000029/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000029/stdout.bin",
+      "bytes": 299,
+      "sha256": "456e23682b3d00e4e1154fe5356dc24190b5cdcb6a5861e78ac291b2f71f8d20"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000030/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000030/request.json",
+      "bytes": 2824,
+      "sha256": "5aa7ad215067fd8b88254761f44f09898b9ab9e92e8f17dc56537efda9870fa9"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000030/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000030/result.json",
+      "bytes": 3076,
+      "sha256": "12986186652537964abec2e8388251a83877324f8447d81135628a4232ebe5b7"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000030/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000030/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000030/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000030/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000030/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000030/stdout.bin",
+      "bytes": 301,
+      "sha256": "2aa534e70f509931a6b04ccef462e4bc8a576403394179f556e784babad387e8"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000031/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000031/request.json",
+      "bytes": 2800,
+      "sha256": "e192b419c6a825d68c88e7936268f8f05121f99609f94074d4b54ee4a9f324d9"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000031/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000031/result.json",
+      "bytes": 3053,
+      "sha256": "76a1006efbd6b78312af1c37855b27fd33fb6b695adba3d6a7b5080839bd56b3"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000031/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000031/stderr.bin",
+      "bytes": 160,
+      "sha256": "9177f115e2069657808dd4823777b35e64d62d9da83db3d4c1408868aad1a95b"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000031/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000031/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000031/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000031/stdout.bin",
+      "bytes": 64,
+      "sha256": "607ae693b8445fa191908efc8f017d249e2eccbb1953b5e2045f848357208e95"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000032/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000032/request.json",
+      "bytes": 2827,
+      "sha256": "b815b68e2e9ec65274b40d9ee431013d6124d477c12c6ed4c0d725d6bdd44e64"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000032/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000032/result.json",
+      "bytes": 3079,
+      "sha256": "4719f0fa299c259435158cb3eb3cd8f4c222c5277c90fd350bee8fdee1f66a14"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000032/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000032/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000032/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000032/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000032/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000032/stdout.bin",
+      "bytes": 301,
+      "sha256": "2aa534e70f509931a6b04ccef462e4bc8a576403394179f556e784babad387e8"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000033/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000033/request.json",
+      "bytes": 2823,
+      "sha256": "07a3f692759372303c1969bab49d27dfe6d1aabb97ae8f850117aff51de6bcba"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000033/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000033/result.json",
+      "bytes": 3075,
+      "sha256": "24b8cef048dcd472317ee4d6d5d51626bd426e05c9c939f2a6c850a514942196"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000033/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000033/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000033/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000033/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000033/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000033/stdout.bin",
+      "bytes": 299,
+      "sha256": "9eaa723efb7f8a0ee22f2d8e912d953f35b6c79131aafcfafd671310237f631d"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000034/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000034/request.json",
+      "bytes": 2798,
+      "sha256": "f70cfc6d768744a2f40b021161f34cc1c0e4dc74b62843af9a983067968b5bca"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000034/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000034/result.json",
+      "bytes": 3050,
+      "sha256": "e0d17d860fa72c360261a51b3b3deaafba53544e8e10713e788f88a9d1371080"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000034/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000034/stderr.bin",
+      "bytes": 159,
+      "sha256": "278cc1d38a62fab181511a16aa4415790e12600df1deb757696c460446cdf6a8"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000034/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000034/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000034/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000034/stdout.bin",
+      "bytes": 63,
+      "sha256": "7a597feb3226088457c434edeee60f0f6faf6f230f89f089810171b1141f56cc"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000035/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000035/request.json",
+      "bytes": 2825,
+      "sha256": "78f2ba7cd4a8838a029a77d55aa52d925f8586afb942ffcd6446afad3786c9be"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000035/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000035/result.json",
+      "bytes": 3077,
+      "sha256": "4d9853029975e60fca5a1624b0a2124f3eafc2443aab9d40ece9343d437d877e"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000035/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000035/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000035/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000035/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000035/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000035/stdout.bin",
+      "bytes": 299,
+      "sha256": "9eaa723efb7f8a0ee22f2d8e912d953f35b6c79131aafcfafd671310237f631d"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000036/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000036/request.json",
+      "bytes": 2822,
+      "sha256": "9b009c378a741fc72cce6322afd4577bbac735287ac5f574c1ddc1ea152a71c2"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000036/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000036/result.json",
+      "bytes": 3074,
+      "sha256": "ac26ac540ff994b10d7926c2db16052e4c8ed2065bd8fa8566322d27b8016492"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000036/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000036/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000036/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000036/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000036/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000036/stdout.bin",
+      "bytes": 297,
+      "sha256": "c60754fc060642795e189e2d071fc119634a3813d7d25bd77a35e770a469b05e"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000037/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000037/request.json",
+      "bytes": 2798,
+      "sha256": "b79996815b890024aee24478a5c051f508e38c4e27a704c5778c20a650e09027"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000037/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000037/result.json",
+      "bytes": 3051,
+      "sha256": "e4dfddf1d72023a2b0c8b01a5957e6129bbaa24bcbe4ec293aa2b8eb8f2a65bb"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000037/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000037/stderr.bin",
+      "bytes": 158,
+      "sha256": "6599b2ad1bb375e1f0d806aa2dae866a8a8342edd1a5833ac99b1b955e1d8463"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000037/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000037/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000037/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000037/stdout.bin",
+      "bytes": 62,
+      "sha256": "76ff2862a94c00677a1a5f79be837a62424ed76f6a75f7916b12a63db8127a2a"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000038/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000038/request.json",
+      "bytes": 2825,
+      "sha256": "c6b95a58b035eefefcd68b96d2204c2cbe342db4f2313027d6b72d8564fc8bde"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000038/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000038/result.json",
+      "bytes": 3077,
+      "sha256": "4b0f88ee85aaf10fa212adb68c06a7ebecfc40f5f3f251cc8a9e403ddc3a5194"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000038/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000038/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000038/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000038/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000038/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000038/stdout.bin",
+      "bytes": 297,
+      "sha256": "c60754fc060642795e189e2d071fc119634a3813d7d25bd77a35e770a469b05e"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000039/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000039/request.json",
+      "bytes": 2833,
+      "sha256": "df282ae6f8fa668810089082f837e31de7b422490b11088552b48964d61d91b9"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000039/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000039/result.json",
+      "bytes": 3084,
+      "sha256": "782938f183c9c922c527a88e262eceb346b22efdc014ffa8633d4b8481f4f8a8"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000039/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000039/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000039/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000039/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000039/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000039/stdout.bin",
+      "bytes": 319,
+      "sha256": "431ce77c262f6d5a90a0083d3dc49dffc492f10f84b4686fd4b8e80c28138b98"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000040/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000040/request.json",
+      "bytes": 2809,
+      "sha256": "815e3f77de4eec6322af0266165d9fcce709ed61d48438c253a74cf360729213"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000040/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000040/result.json",
+      "bytes": 3061,
+      "sha256": "a4a8307fa2f7d5a50a7f7ab83131a4248beda819a95fcec05369d0c9d75dec52"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000040/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000040/stderr.bin",
+      "bytes": 169,
+      "sha256": "264bda1bba0fa016946280f8fa481aea20186199d2f226883dc7c7933b75eebb"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000040/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000040/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000040/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000040/stdout.bin",
+      "bytes": 73,
+      "sha256": "b2192294823406c64ae233638a8a88c0874f7c632b0b069a283f47b06f3a3878"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000041/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000041/request.json",
+      "bytes": 2836,
+      "sha256": "140847d404cc103eaf269ccd467e1ce9c37a9005eb1f8d909ae8c6a8b35485ac"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000041/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000041/result.json",
+      "bytes": 3088,
+      "sha256": "36dd3701ae2c0c1b73ff9f05291fa2c19b0c9766c6a5810690896e170f74f48c"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000041/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000041/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000041/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000041/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000041/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000041/stdout.bin",
+      "bytes": 319,
+      "sha256": "431ce77c262f6d5a90a0083d3dc49dffc492f10f84b4686fd4b8e80c28138b98"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000042/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000042/request.json",
+      "bytes": 2841,
+      "sha256": "2e155e87fc503a534e726ede7020d3de4c3676962fa4b133681a0b95f4f46612"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000042/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000042/result.json",
+      "bytes": 3093,
+      "sha256": "af69471dd70d1f12eeb28b4a2f754a369410221675932ba84c85c20d1e0fc39a"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000042/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000042/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000042/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000042/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000042/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000042/stdout.bin",
+      "bytes": 335,
+      "sha256": "76479cd1816eb8f949e2a20833e1f423c3b125cf08f3facba16ccc7e0d986eb3"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000043/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000043/request.json",
+      "bytes": 2817,
+      "sha256": "0f04fe4bf3ffc299298db4b2ae77ceac139bf7f51f3a351531499c1db959d1e6"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000043/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000043/result.json",
+      "bytes": 3070,
+      "sha256": "bd47ca1998a1ee20f0ea55f32b8377454db862aa40648bf2d58e2f00a6bab8ef"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000043/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000043/stderr.bin",
+      "bytes": 177,
+      "sha256": "c02172ee7c5ab66babdcf7fc45504e5e2eef01e12f94e6731e832fe12082355b"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000043/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000043/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000043/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000043/stdout.bin",
+      "bytes": 81,
+      "sha256": "d50f29f8e0bd90d00907eebaf905536039e225098021fa4edcdb5b76f22402cf"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000044/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000044/request.json",
+      "bytes": 2844,
+      "sha256": "41f46d378b225122e5f9d288e335a9e3f5304810084cb4e186292afa603d6282"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000044/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000044/result.json",
+      "bytes": 3096,
+      "sha256": "e8d2c087ecac476c9734c57521e1548e5c063768df8b6295cc39b8e6776bdf9c"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000044/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000044/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000044/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000044/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000044/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000044/stdout.bin",
+      "bytes": 335,
+      "sha256": "76479cd1816eb8f949e2a20833e1f423c3b125cf08f3facba16ccc7e0d986eb3"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000045/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000045/request.json",
+      "bytes": 2828,
+      "sha256": "8adf1ba09070cf3246874a9fce8bd629089d89cb53da7994a91818e4ccd71a8b"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000045/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000045/result.json",
+      "bytes": 3080,
+      "sha256": "f08b6aec764dc9b77e62e9912f1011b3157d3995bef15529ec7685f1da765cf0"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000045/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000045/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000045/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000045/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000045/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000045/stdout.bin",
+      "bytes": 309,
+      "sha256": "7533a0d9a6c21eeb5e74343a72e25040250b9c811de346f5183838b2fbf1d73c"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000046/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000046/request.json",
+      "bytes": 2804,
+      "sha256": "f91b2ff2d5edb354d65a832a40bbca0ecdba5c204d7d8365f143a485f944286d"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000046/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000046/result.json",
+      "bytes": 3057,
+      "sha256": "2a257c63395419582be6662aa56b4f156062765c759d1dbc1b85a82e1c968319"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000046/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000046/stderr.bin",
+      "bytes": 164,
+      "sha256": "fb805e755d03efa5eb8f0b8f07bf04cc2d37df3c18340c10fecf10b5cdfc1dad"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000046/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000046/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000046/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000046/stdout.bin",
+      "bytes": 68,
+      "sha256": "d40d9ce43a66af32dcafd70192e012bc674413056b72532c8cdc72846d7bfdeb"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000047/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000047/request.json",
+      "bytes": 2831,
+      "sha256": "14ef79bd8a7257d62c72243571953f8fcbecc01d74f8e1fc54b016e444caeed3"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000047/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000047/result.json",
+      "bytes": 3083,
+      "sha256": "8214eb78eb7a679a9af5420ded90bb7cbee653b0ce499377f16fbfc0a52fb901"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000047/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000047/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000047/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000047/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000047/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000047/stdout.bin",
+      "bytes": 309,
+      "sha256": "7533a0d9a6c21eeb5e74343a72e25040250b9c811de346f5183838b2fbf1d73c"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000048/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000048/request.json",
+      "bytes": 2825,
+      "sha256": "985ce20ad82a0a7454e205324abe2267605821fa19800176ab1efeb8768bc88b"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000048/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000048/result.json",
+      "bytes": 3077,
+      "sha256": "378cd2bc80cb61eadbe3bd8b5b92a947bbb665435a47d28bc8facf2a1f088ef8"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000048/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000048/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000048/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000048/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000048/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000048/stdout.bin",
+      "bytes": 303,
+      "sha256": "ff7793b75771de5ebc092911e0a5729eab1953c6a0fa8c3d6eb2c3b91deaaa42"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000049/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000049/request.json",
+      "bytes": 2801,
+      "sha256": "e19f7a74a36b22a3e0a787a342642525a33f3807a60748f858318f588f371c31"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000049/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000049/result.json",
+      "bytes": 3054,
+      "sha256": "9412ea640e026381b9828af13e65afba1e3742b418adc5803878e0729f82bbb4"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000049/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000049/stderr.bin",
+      "bytes": 161,
+      "sha256": "b13ffec2c36b8c7862a6b9fdb063a5ace1b9f6661b641e9f18d2c24467f86b36"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000049/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000049/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000049/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000049/stdout.bin",
+      "bytes": 65,
+      "sha256": "e97d9adcb173fe67c8d830360407bebc2d4a174e6c78d3f79127e8e5104ba619"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000050/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000050/request.json",
+      "bytes": 2827,
+      "sha256": "e9840d14a00f04dec4e9c126301efd2543b542d676479f4203df8ba9fbbd95db"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000050/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000050/result.json",
+      "bytes": 3079,
+      "sha256": "99bfe91e8d05690ca5e12fc1b2c94cad421f1d71b299802a6ffd590a78ca4206"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000050/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000050/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000050/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000050/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000050/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000050/stdout.bin",
+      "bytes": 303,
+      "sha256": "ff7793b75771de5ebc092911e0a5729eab1953c6a0fa8c3d6eb2c3b91deaaa42"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000051/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000051/request.json",
+      "bytes": 2835,
+      "sha256": "549bbc2f2f7b08f6c01f770f83af1e65d43d2c0874a7a9cf71df5fc4626ef7c8"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000051/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000051/result.json",
+      "bytes": 3086,
+      "sha256": "53e4497f5006dc132fd32616b0dd445091d1066719b4fd6f79520a4ae9f037b9"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000051/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000051/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000051/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000051/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000051/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000051/stdout.bin",
+      "bytes": 323,
+      "sha256": "6045db9ee8014dd9a9e160c47c200bb0cf2f0bafbc2dbf32ad6d38fa16a558a8"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000052/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000052/request.json",
+      "bytes": 2811,
+      "sha256": "354a99f0f92541f05baf47746184f37349ca6a350c5ac4c5ca6e45086c759301"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000052/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000052/result.json",
+      "bytes": 3063,
+      "sha256": "977f5c7afe05987597f7fd2f0d776f4db0944e50d8af135eedf670e40da60b52"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000052/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000052/stderr.bin",
+      "bytes": 171,
+      "sha256": "6115a2f9cd5878ebf1d88262e916a77bc8cecc3da77156c3eea0ec238411ef03"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000052/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000052/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000052/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000052/stdout.bin",
+      "bytes": 75,
+      "sha256": "4940026ca6d8bcb758899c29f5729c8161eba24a5b4b17cde62af28423289718"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000053/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000053/request.json",
+      "bytes": 2838,
+      "sha256": "b2bbfbdbcc7a242464b6d2a7a9392b42f16e67474b873a1cea91163a09379cee"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000053/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000053/result.json",
+      "bytes": 3090,
+      "sha256": "bbcd74466d02196fd6c2214829fc8b79511afb31e5e62bc8a227d429bb7c83fe"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000053/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000053/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000053/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000053/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000053/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000053/stdout.bin",
+      "bytes": 323,
+      "sha256": "6045db9ee8014dd9a9e160c47c200bb0cf2f0bafbc2dbf32ad6d38fa16a558a8"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000054/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000054/request.json",
+      "bytes": 2590,
+      "sha256": "169ae4497b5803187af96563462c57372f828f68a2e785fc8553fdc24d003e24"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000054/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000054/result.json",
+      "bytes": 2841,
+      "sha256": "7b0d7a3e413ab91bb431855c8695411ac7bb1e2491abdc83f15abf592a6cf87e"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000054/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000054/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000054/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000054/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000054/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000054/stdout.bin",
+      "bytes": 71,
+      "sha256": "31288be887758ae1070dadc8c6bb0e0aa8d6a7f2e3967281117d292f2c973cc7"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000055/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000055/request.json",
+      "bytes": 2618,
+      "sha256": "b87e98fbd20512ac94b400fa00442600046a4fdca8f0ed1ba7aadcdb02c4fb4e"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000055/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000055/result.json",
+      "bytes": 2869,
+      "sha256": "1e26644d76776685e10424b28b08c6992d68e01474e72286dbf4571dddf7d7be"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000055/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000055/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000055/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000055/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000055/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000055/stdout.bin",
+      "bytes": 71,
+      "sha256": "31288be887758ae1070dadc8c6bb0e0aa8d6a7f2e3967281117d292f2c973cc7"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000056/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000056/request.json",
+      "bytes": 1526,
+      "sha256": "f6ac788e69cf118a7050edeb5f95b2421fc5574258079902f79ae4a0393ce926"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000056/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000056/result.json",
+      "bytes": 1776,
+      "sha256": "c446b534cdbaae8efe406b35ba9b4b4ed3fa01362b15e4f5b9b797196ab85324"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000056/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000056/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000056/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000056/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000056/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000056/stdout.bin",
+      "bytes": 41,
+      "sha256": "1b6afa5bd924b99e473d90511e742cadb6ab89e6f2444b00464956b7f811b5d5"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000057/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000057/request.json",
+      "bytes": 1562,
+      "sha256": "a17313da0a9d7cb00308817fc5d1e980d127aafc1cd81865cf40cfa50662d458"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000057/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000057/result.json",
+      "bytes": 1812,
+      "sha256": "62bc835d345d82d2c923442e848c9735134ce6e8097fee938db914cb654eb217"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000057/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000057/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000057/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000057/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands/000057/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000057/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/subcommands.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/subcommands.json",
+      "bytes": 146301,
+      "sha256": "474b19248fcf951fcce57aeebbabf10d712580ea7e95b0d160c7cbf5ad83eac4"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/tools/capture.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/tools/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/tools/policy_probe.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/tools/policy_probe.py",
+      "bytes": 878,
+      "sha256": "350fc09a16660d33144fe7b7a8198032e8251e37a67a61179ec96eba39e1e739"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/tools/refresh_architecture_cdp_exclusion.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/tools/refresh_architecture_cdp_exclusion.py",
+      "bytes": 24714,
+      "sha256": "71cb2e314a3d3e7c3419bbe436f2c308a702d6b3be5f9668594fe729248de2de"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/withdrawn-manifest.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/originals/withdrawn-manifest.json",
+      "bytes": 221591,
+      "sha256": "2661beb6a5223d2aeecd64d708194261d97f0a738c1fc3adb22ff431c07bbbb8"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/ADAPTER.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/ADAPTER.py",
+      "bytes": 24714,
+      "sha256": "71cb2e314a3d3e7c3419bbe436f2c308a702d6b3be5f9668594fe729248de2de"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/LAUNCHER.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/LAUNCHER.py",
+      "bytes": 6764,
+      "sha256": "1dc3e7ee783dda593a4ab539e09b12903dd88193fd49b732d5cf4dbb261aa3d6"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/MATERIALIZED.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/MATERIALIZED.json",
+      "bytes": 199,
+      "sha256": "cc6357d8cc9e43b63cde8af3869cf61351e80f7d73ab5ae410f211e6bdbd1a88"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/RESOURCE_PLAN.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/RESOURCE_PLAN.json",
+      "bytes": 113295,
+      "sha256": "2fdffc4be1b41e28ffb4f0efb0b6954568b8eae74442529616d293798b08f9ea"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/RESULT.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/RESULT.json",
+      "bytes": 2523,
+      "sha256": "fd333556c4bc2ea7e0a561761ba623eef3f2ded8d363f28877dbfac739fd34bd"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/STACK.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/STACK.json",
+      "bytes": 115,
+      "sha256": "afddc7eddfb02daa14da4897cda69a22f9d8147c99eb2bae75243be6838db004"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/capture.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/sparse-after.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/sparse-after.bin",
+      "bytes": 33546,
+      "sha256": "2b94d5d65a589f7c34302527d7c8ab9027be5b22c8b08c2fba47c276495d2d17"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/sparse-before.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/sparse-before.bin",
+      "bytes": 360,
+      "sha256": "64e58cf18293d95b6d682eb9cadacc13561a9d3969670e25e3e76dfacac186f9"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000001/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000001/request.json",
+      "bytes": 1518,
+      "sha256": "f3f774e506b0d554389e8a7791e32c5d0ef54ff1c980dc676c949adcc8a25108"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000001/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000001/result.json",
+      "bytes": 1769,
+      "sha256": "a7b5c6a800671712b0481af2862cae564fade4754dd8990b18558f8640c72c89"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000001/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000001/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000001/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "1b6afa5bd924b99e473d90511e742cadb6ab89e6f2444b00464956b7f811b5d5"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000002/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000002/request.json",
+      "bytes": 1524,
+      "sha256": "0f98cce4bab60c26b6a49b13169c5a47f7d0aef19f7a8153bb14c130bb35917b"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000002/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000002/result.json",
+      "bytes": 1775,
+      "sha256": "d37587b2d04fa2329182a334a8ff9fe9598aa067b54fc6c3f6cec91719ec66ad"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000002/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000002/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000002/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000002/stdout.bin",
+      "bytes": 44,
+      "sha256": "56da0cb58287394415bd4d2b719afe5e0055e93090c7d7a73df79e572b8a29b6"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000003/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000003/request.json",
+      "bytes": 1554,
+      "sha256": "6c36ed7313411633613bc61c1031ff6f623a627a4e0c371d87398c5f869587aa"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000003/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000003/result.json",
+      "bytes": 1804,
+      "sha256": "0675b3d61f00e458909aae45cd7cc7753b22918a7c2b0d0f92632248742fcead"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000003/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000003/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000003/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000004/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000004/request.json",
+      "bytes": 1582,
+      "sha256": "60b1ef34366ece07d776074455597f896c18687f9ab0c4240c342c94cfeaa73a"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000004/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000004/result.json",
+      "bytes": 1832,
+      "sha256": "d3adc902f6aaf0fe283aa04b605d203d28605bf7bc94a2f8c69dcd5c4187bd83"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000004/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000004/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000004/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000004/stdout.bin",
+      "bytes": 96,
+      "sha256": "972b54c35b4ff9ebf52a3184ebb9d72155fe6e30b3253a0fbbd1027e0fb66b3d"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000005/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000005/request.json",
+      "bytes": 38456,
+      "sha256": "3abe2f708e81dcd8ff293dcf397d3910363e66c374615821b857b6475d58ef5a"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000005/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000005/result.json",
+      "bytes": 38710,
+      "sha256": "500f0fab13beacf2ef355d0481fe09902e4771159bb8d7e18fa3cd25554e1c33"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000005/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000005/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000005/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000005/stdout.bin",
+      "bytes": 69966,
+      "sha256": "17461e7ab6cac3e3d2ce11a734678c9f6af53d1dd5964e0743854af187edaf26"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000006/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000006/request.json",
+      "bytes": 1551,
+      "sha256": "d84c7375716db804be8a8221f64ef694f7041667a12510f854b4a9f61cc3169c"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000006/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000006/result.json",
+      "bytes": 1802,
+      "sha256": "1f0cabde72831a95ccb4e9a57188b6d1fb7dbce3a689a35fb4ffd1980bcdde1f"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000006/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000006/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000006/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000006/stdout.bin",
+      "bytes": 85,
+      "sha256": "67508892a639d484c0a78e00979afc4faf961dd561c9ac785eafc36056f07a77"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000007/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000007/request.json",
+      "bytes": 1537,
+      "sha256": "65e687061b446f73b66ee2b4666b856e67f5b8cb68e6ce478ded5599cba58e53"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000007/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000007/result.json",
+      "bytes": 1788,
+      "sha256": "01230718e3254368b62b14a8c39520c13be13dbce820fb95c8ddd866fb3a81a9"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000007/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000007/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000007/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000007/stdout.bin",
+      "bytes": 70,
+      "sha256": "01bf3ab234038af7f21caf15c41f1d0779f39cbed6d80d537e3e743f4134ab78"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000008/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000008/request.json",
+      "bytes": 1537,
+      "sha256": "87c09f70d3e1429c35dcb2c66775e559d5837d5f956f5fe0eb9d0e788f82829c"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000008/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000008/result.json",
+      "bytes": 1785,
+      "sha256": "753ed1cdc2aa3c8de063fff1b35a48f916c156f689409fb860e0c340608926c0"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000008/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000008/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000008/stdin.bin",
+      "bytes": 33186,
+      "sha256": "a80950fb6392fef908f0be5c131c044965cd96dfcb406ae984a33df4d12236ec"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000008/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000009/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000009/request.json",
+      "bytes": 1554,
+      "sha256": "ddd797edc958ac7a3e1963c35b61731fe06eb42ff351e4dd3ddb9a8df7f12b0b"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000009/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000009/result.json",
+      "bytes": 1804,
+      "sha256": "0516a3af75d658255e8de6b063c06fbe534c170370b8855d27b32567e29005ec"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000009/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000009/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000009/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000010/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000010/request.json",
+      "bytes": 1517,
+      "sha256": "7fade7cca5912085ed0e6987f031699c2f8e10279961a70e3a800a2c5b46b3e1"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000010/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000010/result.json",
+      "bytes": 1768,
+      "sha256": "9e53a7a627e58cba4348a7dcfc775899e53e02244224844b4b09a28ea192e18a"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000010/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000010/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000010/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000010/stdout.bin",
+      "bytes": 41,
+      "sha256": "1b6afa5bd924b99e473d90511e742cadb6ab89e6f2444b00464956b7f811b5d5"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000011/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000011/request.json",
+      "bytes": 1856,
+      "sha256": "3926249d09f43f376a30be7fc51e622b3b97cb9813324beeab787ca02372f105"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000011/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000011/result.json",
+      "bytes": 2107,
+      "sha256": "fd9648b1052deb4f092ff4da5381cda5823b9c9db046c79276316777cb177932"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000011/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000011/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands/000011/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000011/stdout.bin",
+      "bytes": 153,
+      "sha256": "c0007f3c224678bc40304f6e9db50331936e1d9c35e72a218a2a325606d528c0"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-outer-20261025/subcommands.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/outer/subcommands.json",
+      "bytes": 59122,
+      "sha256": "9de4aec34150a4e9d59fb7656a1b1dbe96d4078ce62c94331b63e4feb97d52f6"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/BEFORE.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/BEFORE.json",
+      "bytes": 570,
+      "sha256": "38c226e605a83a268d07e37fd9c989e2d3fa149f8865be3c7a8075230736f148"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/PREPARER.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/PREPARER.py",
+      "bytes": 4408,
+      "sha256": "f84f310dcde93c4acf757cbff5ae2db11aa0fcded30e04478c36a104326ced89"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/RESULT.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/RESULT.json",
+      "bytes": 577,
+      "sha256": "c9e34fd11da7fbf394cbd0aef5e3de280506220aa1b21f4597e3806cacfb5957"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/capture.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/fix-exclusion-digest.patch",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/fix-exclusion-digest.patch",
+      "bytes": 561,
+      "sha256": "73c0379d0860a84032257092d8c46d5eb7702b7f0400ccfcd3ab9e4ec91f236f"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/sparse-after.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/sparse-after.bin",
+      "bytes": 360,
+      "sha256": "64e58cf18293d95b6d682eb9cadacc13561a9d3969670e25e3e76dfacac186f9"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/sparse-before.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/sparse-before.bin",
+      "bytes": 301,
+      "sha256": "a4ee3f6af0ffb74861b4ff6be5ebfc0956df2c946fd533dc3305ae9b14168721"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000001/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000001/request.json",
+      "bytes": 1517,
+      "sha256": "51fb42f98dda42a1002c36e32df8694743a6a780b52813b71d29c12507c0014a"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000001/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000001/result.json",
+      "bytes": 1768,
+      "sha256": "7ec9787d2b53dc2f933186a503cf8c913df28b9fd30c5a98c012a2a6339a9b0b"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000001/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000001/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000001/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "632ebcb5ce6ac71252e34e21b8cea96ac757c8fc16249664b64b1169d931533f"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000002/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000002/request.json",
+      "bytes": 1524,
+      "sha256": "4c8f642424ba075dfadd1dc219ab642bd000c48c274f6ae1f4b74cc7e92895f7"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000002/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000002/result.json",
+      "bytes": 1775,
+      "sha256": "3c10a5559d37aaae72b81f286d5b933054f1b7864987c4d5949dc04588769da9"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000002/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000002/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000002/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000002/stdout.bin",
+      "bytes": 44,
+      "sha256": "56da0cb58287394415bd4d2b719afe5e0055e93090c7d7a73df79e572b8a29b6"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000003/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000003/request.json",
+      "bytes": 1553,
+      "sha256": "7eef40b938ef2bc701ac4a90b9fae76d6eff5167f01f3bc26dcebcc97ae56797"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000003/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000003/result.json",
+      "bytes": 1803,
+      "sha256": "47b69b845cff7818e18f782dcac57541f08b2163ca515a29ebfd4e342c3b13cd"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000003/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000003/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000003/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000004/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000004/request.json",
+      "bytes": 1580,
+      "sha256": "bbc12fa248543868ce9d4aed7b3951498aebf843126bce68610905afc888954b"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000004/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000004/result.json",
+      "bytes": 1828,
+      "sha256": "2983578a9e16fb27e97aa5c724d2648db742ad732b43f69ea8c97bccab79b706"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000004/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000004/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000004/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000004/stdout.bin",
+      "bytes": 96,
+      "sha256": "3ff6724eee57b8198948a6248bd46d0bf54b7862fc395e4eca724b35a6f225a1"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000005/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000005/request.json",
+      "bytes": 1550,
+      "sha256": "8e062f001d22b63d510a5efcf91e84f0e83e41ba6ca9c9e1a80ac74d7d348811"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000005/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000005/result.json",
+      "bytes": 1801,
+      "sha256": "b944104d34a034582414a5f4a5c031a809c7b8fac3ecd4728d1c2058acd41452"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000005/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000005/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000005/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000005/stdout.bin",
+      "bytes": 85,
+      "sha256": "67508892a639d484c0a78e00979afc4faf961dd561c9ac785eafc36056f07a77"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000006/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000006/request.json",
+      "bytes": 1536,
+      "sha256": "72ed15eb9958cf0e3b3d3b05c0c1b327164080df37db7437ae49a5a825e91120"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000006/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000006/result.json",
+      "bytes": 1786,
+      "sha256": "0067268c2c156b1e05376775bf136cc04eb02c1389419cdc4c7ca4f7dce3e1f0"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000006/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000006/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000006/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000006/stdout.bin",
+      "bytes": 70,
+      "sha256": "01bf3ab234038af7f21caf15c41f1d0779f39cbed6d80d537e3e743f4134ab78"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000007/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000007/request.json",
+      "bytes": 1536,
+      "sha256": "cca9ebdf8a6c57eb7ceca0c34abb44b99ec84fc2ec21b23ac646e3b0926eff20"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000007/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000007/result.json",
+      "bytes": 1786,
+      "sha256": "e3398c4c974fc258003fcef052fcea0ac21eeb8b99ad5edac2d24b40d3aea1e3"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000007/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000007/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000007/stdin.bin",
+      "bytes": 59,
+      "sha256": "7f76ad5123aa7569acaaaf76fa560e2de5d3014c61e53a4117f3fb87f0f12661"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000007/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000007/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000008/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000008/request.json",
+      "bytes": 1553,
+      "sha256": "d74e1b796e6f3c869b5bc4ab4fac54de1a2d917ddc62e72d709eceba6777a64c"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000008/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000008/result.json",
+      "bytes": 1803,
+      "sha256": "60455189dd54968c0bf40cfc8d401b63cc70cf0cca12940851b78b6136f6946e"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000008/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000008/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000008/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000009/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000009/request.json",
+      "bytes": 1600,
+      "sha256": "f4d7e9eaf8a246d72fc3be8c06fbb42a9c8027372209fc4b728de477bf34c6f2"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000009/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000009/result.json",
+      "bytes": 1850,
+      "sha256": "9bab7c044dda70da90b495b0709c0dca5a567c5da563847c6e4c65e1ae6a15d7"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000009/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000009/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000009/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000010/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000010/request.json",
+      "bytes": 1584,
+      "sha256": "a16eb2c1aaaaa0f95684df8f8d5b071fd08fe196ad7e8a52b7e6747ab51b639b"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000010/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000010/result.json",
+      "bytes": 1834,
+      "sha256": "c337df094632e841b921f67fcab7281b33e0a3ea851fd9ecfb3a7a66ab3b7854"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000010/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000010/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000010/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000010/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000011/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000011/request.json",
+      "bytes": 1515,
+      "sha256": "c7a98a0d7de15c631f4ed1079f0f55a581e64cf4f46b49d79e22cff7e9474847"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000011/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000011/result.json",
+      "bytes": 1765,
+      "sha256": "fc2ec19f1b0afc5848cb5736e0eb41513a40da52d8a3695624de2dfac91efa3c"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000011/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000011/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000011/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000011/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000012/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000012/request.json",
+      "bytes": 1519,
+      "sha256": "137fa546d2926de81c4fc91993ff12e36cf0ef1f0e5bfd572bddd088146d97ab"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000012/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000012/result.json",
+      "bytes": 1770,
+      "sha256": "6f71d60f6c1738078bd0b8a361ff71b0269962b8b8952b60d11dfa29ec4bd6bd"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000012/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000012/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000012/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000012/stdout.bin",
+      "bytes": 58,
+      "sha256": "8c8828806ce62a3023f0b806f800247a1940fc0373c879daff2fb541654ef41d"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000013/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000013/request.json",
+      "bytes": 1575,
+      "sha256": "6add70b58bd0917d45f407c1e900784529ba1cc1083b81f14dea603085a9c4dd"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000013/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000013/result.json",
+      "bytes": 1826,
+      "sha256": "283f7d98d1f8490f1ce40480c3fce7eacdf84393e63a0f0eb759fbd87edac8b3"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000013/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000013/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000013/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000013/stdout.bin",
+      "bytes": 726,
+      "sha256": "37991a9f3bccc194a6073cf45acb266b0917b3cb74eeb313e09e9b9a953dc9f4"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000014/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000014/request.json",
+      "bytes": 1574,
+      "sha256": "4625e5e8318c20e4e55c1b7818fb6d112e01ffc81d0fbfe5097491711d7aa845"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000014/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000014/result.json",
+      "bytes": 1824,
+      "sha256": "b6de25fa611a55778a65d85562e15305be6e72d58815059d1a7adf3202eb6229"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000014/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000014/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000014/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000014/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000015/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000015/request.json",
+      "bytes": 1577,
+      "sha256": "a93ebe7887e4051c2d2d47e6669cc72356f5470be5f7fdd6f82ecc395b2ac536"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000015/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000015/result.json",
+      "bytes": 1829,
+      "sha256": "06f0f87a9d3df96a02ecfa4f1fec02a5872fc9881b3415129b4d5f8bedaf3c30"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000015/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000015/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000015/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000015/stdout.bin",
+      "bytes": 161,
+      "sha256": "1e197f5a252daf8c1c3edfab6cbbfff5861140182f0ed520888fe3e14cb49807"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000016/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000016/request.json",
+      "bytes": 1517,
+      "sha256": "12da82a72e2775f640a4532a4baab724f2121f2e0367664c3d0eefe7a489ae29"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000016/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000016/result.json",
+      "bytes": 1768,
+      "sha256": "02c809522017af0ddde5db6d578437305e0073d2d444b889360bb75da21ee100"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000016/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000016/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000016/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000016/stdout.bin",
+      "bytes": 41,
+      "sha256": "1b6afa5bd924b99e473d90511e742cadb6ab89e6f2444b00464956b7f811b5d5"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000017/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000017/request.json",
+      "bytes": 1518,
+      "sha256": "7507308e15629fd805b53e796b5515f8166e9ca6c3a4249eb2c170d3b3111b91"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000017/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000017/result.json",
+      "bytes": 1769,
+      "sha256": "c682e3812477f3e8c5474b10975b719162f3076fdfc443e85b911816db2e8e11"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000017/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000017/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000017/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000017/stdout.bin",
+      "bytes": 41,
+      "sha256": "632ebcb5ce6ac71252e34e21b8cea96ac757c8fc16249664b64b1169d931533f"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000018/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000018/request.json",
+      "bytes": 1568,
+      "sha256": "203764bebb7b7b7cf8d597e594565bfbfc0f1e2001f2575b1e54d2188457069f"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000018/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000018/result.json",
+      "bytes": 1819,
+      "sha256": "05ec950dded2194400dbf6749e52dcab02dee3340143891d978cc5b31c20ddb5"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000018/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000018/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000018/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000018/stdout.bin",
+      "bytes": 58,
+      "sha256": "8c8828806ce62a3023f0b806f800247a1940fc0373c879daff2fb541654ef41d"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000019/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000019/request.json",
+      "bytes": 1551,
+      "sha256": "5abbe61844097a9811289b9339be79bfc6b90e7a0e1b552add4da374c625cf67"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000019/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000019/result.json",
+      "bytes": 1801,
+      "sha256": "a55bb21b29e93ec4bbbe1ff5df7c14ba7f52ef648c7de17a17fdc3c62a997e81"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000019/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000019/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000019/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000019/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000019/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000020/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000020/request.json",
+      "bytes": 1581,
+      "sha256": "bb331b3c39b265e7db44ca2d3c50fb2e82eb006434118f575db9b70002aadef3"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000020/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000020/result.json",
+      "bytes": 1833,
+      "sha256": "b6c26aeb62ee507683d7857856f0c0726301e57dc8789aa87c0104bfab2dc362"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000020/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000020/stderr.bin",
+      "bytes": 128,
+      "sha256": "e172cab32fbded897776e35532494c319b5d874062fa2af529bde3e8cff682b6"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000020/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000020/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000020/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000021/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000021/request.json",
+      "bytes": 1581,
+      "sha256": "764cb6e97f965644a7e1d3dbab65ee45f4e0426328f7690b5c7da0aaf1991691"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000021/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000021/result.json",
+      "bytes": 1832,
+      "sha256": "97a7d3073527f998dd2713a3bdd8693afe92ffe21eec3ebc2971600c5605eb81"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000021/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000021/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands/000021/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000021/stdout.bin",
+      "bytes": 96,
+      "sha256": "972b54c35b4ff9ebf52a3184ebb9d72155fe6e30b3253a0fbbd1027e0fb66b3d"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-publication-20261025/subcommands.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands.json",
+      "bytes": 39648,
+      "sha256": "dc82a7cd0066f63201f40cb16a210f14d2295a2c8ebc412f6fbbc238017732c2"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/DRY_PLAN.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/DRY_PLAN.json",
+      "bytes": 2019,
+      "sha256": "e824174818be7368b78644c86d2cb26d3755829cbd8c4320259d8c4149bb7dd7"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/DRY_PLAN_RESULT.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/DRY_PLAN_RESULT.json",
+      "bytes": 6991,
+      "sha256": "916da4aa2ce99219f6c00eeb4a9690c7732dd126c350889d264deb67e975d84f"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/HISTORICAL_DERIVATION_PREPARATION.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/HISTORICAL_DERIVATION_PREPARATION.json",
+      "bytes": 641,
+      "sha256": "900ce044ba6dc9cb593baced404cb93689a4ec5d7b49409c51f8d1cce7c7d1de"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/ORIGINAL_TO_ADAPTER.diff",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/ORIGINAL_TO_ADAPTER.diff",
+      "bytes": 30394,
+      "sha256": "0376021e78a4e9ad1e1d5f46b011976b8a6c0ebc9512f9b3107e491255b93698"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/PINS.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/PINS.json",
+      "bytes": 4499,
+      "sha256": "200c249e2107d87eb69fd7b773ac94fe1e2e3731c6b033e1dccf68c2acb202c2"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/PREPARATION.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/PREPARATION.json",
+      "bytes": 1708,
+      "sha256": "644d4812026e1ab65774add4732bc8f33842abceb5c7de023889f22161a89217"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/README.md",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/README.md",
+      "bytes": 3747,
+      "sha256": "6eac7a119bf8527244c2d13ee91b128606502e13f5a19c8b1c5af93eea23fcba"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000001/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000001/request.json",
+      "bytes": 1742,
+      "sha256": "38c0573e914da13d87a1f6a80f02bcac2a481d9b9fcd25e6b27632b8a2fb4d92"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000001/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000001/result.json",
+      "bytes": 1995,
+      "sha256": "fe759d02ee54f50e1d61671b177f254ed40fa66f617b3226891100a7c645f8b7"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000001/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000001/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000001/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000001/stdout.bin",
+      "bytes": 2019,
+      "sha256": "e824174818be7368b78644c86d2cb26d3755829cbd8c4320259d8c4149bb7dd7"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000002/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000002/request.json",
+      "bytes": 1755,
+      "sha256": "4225d516fc2391b1928164fbc22c809b9a63bf8fb54b93eb885f9685e3887bdc"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000002/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000002/result.json",
+      "bytes": 2006,
+      "sha256": "43db4cbd55fb0832bae5ed669d35db09f36a7b99236860c43fd25b17b4a2c087"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000002/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000002/stderr.bin",
+      "bytes": 363,
+      "sha256": "db7a4c2deb94eb39ab719c2e134a71377e49d22b0ff304e0c15e7939b9fc98ed"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000002/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000002/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000003/request.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000003/request.json",
+      "bytes": 1750,
+      "sha256": "35cf0088db8f93402fb26649b1ff948e12f78ee0037e0dbcace1c676180b1f72"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000003/result.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000003/result.json",
+      "bytes": 2003,
+      "sha256": "b3e5b8332e84f1f901f022b61fe7a23e2790d5720c712338e745c1996ce7d8ae"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000003/stderr.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000003/stdin.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands/000003/stdout.bin",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000003/stdout.bin",
+      "bytes": 2019,
+      "sha256": "e824174818be7368b78644c86d2cb26d3755829cbd8c4320259d8c4149bb7dd7"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/dry-plan-original-capture/subcommands.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands.json",
+      "bytes": 6258,
+      "sha256": "e9c01c90f39388f22cc93cdeb37697129756ee3835350552f9b6910c4d3b7344"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/original_driver.py.txt",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/original_driver.py.txt",
+      "bytes": 16730,
+      "sha256": "5b76f54d810a736e1008450eb2822f8c0d5a427cbd3e7d3138a578909203a7fb"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/prepare_adapter.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/prepare_adapter.py",
+      "bytes": 17012,
+      "sha256": "2ad9255df16a5e5af1d7da493c35e8d13af79b625c71c32c57f38b62aeb0606c"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-preparation-20261025/refresh_architecture_cdp_exclusion.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-preparation/refresh_architecture_cdp_exclusion.py",
+      "bytes": 24714,
+      "sha256": "71cb2e314a3d3e7c3419bbe436f2c308a702d6b3be5f9668594fe729248de2de"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-actual-peer-20261025/REVIEW.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/actual-peer/REVIEW.json",
+      "bytes": 3015,
+      "sha256": "0e68746969b66f9e3cf59cbe2a31fce322311da0bb63e367818356ade5618b94"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-actual-peer-20261025/review.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/actual-peer/review.py",
+      "bytes": 12019,
+      "sha256": "cda0eb6e3315f626b437a103dc801cfff091359c212072f43e38daf833b38a0e"
+    },
+    {
+      "source_path": "/workspace/geo344-manifest-source-publication-actual-peer-20261025/REVIEW.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication-peer/REVIEW.json",
+      "bytes": 1331,
+      "sha256": "ae368ac62dcc9b487156615fd464a14d55612717e65782651617aac88d6c9063"
+    },
+    {
+      "source_path": "/workspace/geo344-manifest-source-publication-actual-peer-20261025/review.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/source-publication-peer/review.py",
+      "bytes": 5047,
+      "sha256": "c91ab92efff9e2b083f1b5559dda98a7f79c20d81dace073210e9b8d5c1e7eac"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-static-peer-20261025/REVIEW.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-static-peer/REVIEW.json",
+      "bytes": 9527,
+      "sha256": "d67dabba634029add3cae81f1b19b8f4a844109492ffd71d4e6ca65cee3bd9ca"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-static-peer-20261025/REVIEW.md",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-static-peer/REVIEW.md",
+      "bytes": 618,
+      "sha256": "a03d064363d0fcd1b5968e8bda2d328c117dccbfbed2ba17960809c4c71f0ac0"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-adapter-static-peer-20261025/review.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/adapter-static-peer/review.py",
+      "bytes": 10048,
+      "sha256": "28e81b7a13e968ff5c3f44968eeae52b794eabd98317749526993378c63b3024"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-launcher-static-peer-20261025/REVIEW.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/launcher-static-peer/REVIEW.json",
+      "bytes": 2053,
+      "sha256": "fe224210e17edecbc046c1ff9c1f623f928323e9c81493dda634db89076b6cae"
+    },
+    {
+      "source_path": "/workspace/geo344-architecture-launcher-static-peer-20261025/review.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/launcher-static-peer/review.py",
+      "bytes": 5662,
+      "sha256": "c242a4f5107f6e6449f5de02e5ba6d81b53c1d1e76c8c66bcfcc268b091f5976"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-publication-preparation-20261025/PROGRESS.md",
+      "destination": "evidence/issue344-architecture-9aec9a32/PROGRESS.md",
+      "bytes": 4975,
+      "sha256": "9b9ce448610d6a9fb26d2bbe867af89b31fbee0b4f1a9f5cc81d6968545b7144"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-publication-preparation-20261025/SCOPE.md",
+      "destination": "evidence/issue344-architecture-9aec9a32/SCOPE.md",
+      "bytes": 1647,
+      "sha256": "9c73697ab1448cb6260866394ed68b6406972233777ad6648b3e7ea5a7d81e1f"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-publication-preparation-20261025/prepare.py",
+      "destination": "evidence/issue344-architecture-9aec9a32/prepare.py",
+      "bytes": 4692,
+      "sha256": "6ee0e3e74e69374d8ff37be813be8e0ce7b6c210689008f83d5f371e09210aa8"
+    },
+    {
+      "source_path": "/tmp/geo344-manifest-source-EXEC_FINAL-20261025.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/geo344-manifest-source-EXEC_FINAL-20261025.json",
+      "bytes": 319,
+      "sha256": "b3daa4a0d60f486eceb60a6bb67b38594ec59f249851a64db9346d483838d418"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-EXEC_FINAL-20261025.json",
+      "destination": "evidence/issue344-architecture-9aec9a32/geo344-architecture-EXEC_FINAL-20261025.json",
+      "bytes": 278,
+      "sha256": "ab827a7e10e0897f0a21c9221149231b3f655cfe3aaeced2ffa53021853e8ad1"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/new/PRODUCT-ARCHITECTURE.md",
+      "destination": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+      "bytes": 1826,
+      "sha256": "6fdae7f419a8a744d04aac7d74731d07c0dfd36007495d0f9d554e6017502a30"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/new/product-architecture-receipt.json",
+      "destination": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+      "bytes": 145277,
+      "sha256": "b2d828fbbd7f585210cc3a0eb81d6ba148d08b7139c0e0915848354a638f81f6"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/new/product-architecture-scan.json",
+      "destination": "geometry-core/domain-decoupling/product-architecture-scan.json",
+      "bytes": 132559,
+      "sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    {
+      "source_path": "/tmp/geo344-architecture-exact-20261025/new/product-architecture.json",
+      "destination": "geometry-core/domain-decoupling/product-architecture.json",
+      "bytes": 221953,
+      "sha256": "f0c0b4db4ca01d4825883b73d73bf8644af313cd2bcab4c9b23638b9bbd93d32"
+    }
+  ]
+}
