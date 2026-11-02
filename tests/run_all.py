@@ -334,6 +334,7 @@ NODE_PURE_TEST_FILES = {
     'node:cdp_evaluation': 'tests/test_cdp_evaluation.js',
     'node:cdp_settle': 'tests/test_cdp_settle.js',
     'node:cdp_card_position': 'tests/test_cdp_card_position.js',
+    'node:canvas_creation_owner': 'tests/test_canvas_creation_owner.cjs',
     'node:background_grid_viewport': 'tests/test_background_grid_viewport.js',
     'node:anchor_band_clip': 'tests/test_anchor_band_clip.js',
     'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
