@@ -1,0 +1,11 @@
+{
+  "error": "Original verifier rejected CANVAS_FAKE_SCOPE",
+  "cause": "The external sparse replay checkout covered runtime inputs but omitted the original plan test-helper closure. Guard correctly rejected a different local plan.",
+  "missingPlanInputs": [
+    "tests/reference_pdf_fixture.js",
+    "tests/room_outline_fixture.js"
+  ],
+  "productOrOfficialArtifactChanged": false,
+  "firstVerifierStdout": "verify-original-node.stdout",
+  "firstVerifierStderr": "verify-original-node.stderr"
+}

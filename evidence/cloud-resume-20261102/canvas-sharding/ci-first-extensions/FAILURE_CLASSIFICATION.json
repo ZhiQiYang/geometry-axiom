@@ -1,0 +1,89 @@
+{
+  "utc": "2026-11-02T08:32:16.798623+00:00",
+  "run": 41409303344,
+  "attempt": 1,
+  "actualExecution": "bfeeae21f339b244cb06c1713af0903f99de8eab",
+  "prHead": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "artifactId": 13126127304,
+  "zipSha256": "4275bf1639c9b1d309febe72a2d8ebe84566e8fa1f72e379b92db51ed3babc9b",
+  "apiDigestVerified": true,
+  "manifestVerified": false,
+  "realProcessExit": 1,
+  "canonicalResult": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "shard",
+      "filters": [],
+      "modifiers": [],
+      "url": "http://127.0.0.1:18839/",
+      "feedbackDirectory": "/tmp/geometry-integration-feedback",
+      "shardId": "extensions",
+      "planSha256": "9e8eb712fdf834b69d1662821e4b5cdcdcfe319167ca342f43731424f317b8a0",
+      "browserProfile": "/tmp/geometry-cdp-V5rouq",
+      "cdpPort": 9333,
+      "browserPid": 2699
+    },
+    "firstTransportFailure": {
+      "source": "api-result",
+      "transport": true,
+      "command": "grid-query binding 801 rect 100 200 1300 1000 mode sample limit 16",
+      "requestedAt": "2026-11-02T08:19:41.008Z",
+      "requestedMonotonic": 7951,
+      "failedAt": "2026-11-02T08:19:41.009Z",
+      "failedMonotonic": 7951.400000000023,
+      "error": "場景尚未讀取完成",
+      "sessionId": null,
+      "step": "=== P74. 標註、教學、屬性、選單、共用保存與專案恢復 ==="
+    },
+    "apiTransportFailures": [
+      {
+        "source": "api-result",
+        "transport": true,
+        "command": "grid-query binding 801 rect 100 200 1300 1000 mode sample limit 16",
+        "requestedAt": "2026-11-02T08:19:41.008Z",
+        "requestedMonotonic": 7951,
+        "failedAt": "2026-11-02T08:19:41.009Z",
+        "failedMonotonic": 7951.400000000023,
+        "error": "場景尚未讀取完成",
+        "sessionId": null,
+        "step": "=== P74. 標註、教學、屬性、選單、共用保存與專案恢復 ==="
+      }
+    ],
+    "apiTransportTraceComplete": true,
+    "firstNetworkFailure": null,
+    "completed": false,
+    "passedAssertions": 929,
+    "failedAssertions": 0,
+    "fatal": "ENOENT: no such file or directory, open '/tmp/geometry-tests/parameter-mobile.png'",
+    "skipped": [],
+    "sections": {
+      "P68": 36,
+      "P69": 160,
+      "P67": 96,
+      "P70": 121,
+      "P71": 9,
+      "P78": 23,
+      "P87": 60,
+      "P88": 143,
+      "P72": 52,
+      "P72B": 50,
+      "P73": 69,
+      "P74": 52,
+      "P75": 37,
+      "P76": 21
+    },
+    "currentSection": "P76",
+    "goldenCompare": "not compared (run did not complete)"
+  },
+  "classification": "Infrastructure/test-caller output precondition missing after splitting; fatal filesystem ENOENT at P76, zero assertion failure. Original full legacy P1 had made this parent. No timeout, assertion, golden or skip relaxed.",
+  "repair": "Prepare Node os.tmpdir()/geometry-tests in the canvas workflow caller before each independent shard; never use native build cache identity as a screenshot directory assumption.",
+  "download": {
+    "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/13126127304/zip",
+    "file": "/tmp/geometry-resume-20261102/canvas-sharding/ci-first-extensions/13126127304.zip",
+    "http_status": 200,
+    "bytes": 48599,
+    "sha256": "4275bf1639c9b1d309febe72a2d8ebe84566e8fa1f72e379b92db51ed3babc9b",
+    "content_type": "application/zip"
+  },
+  "actualNewChromeGreenAfterFix": false
+}

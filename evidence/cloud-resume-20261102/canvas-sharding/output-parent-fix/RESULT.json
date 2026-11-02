@@ -1,0 +1,55 @@
+{
+  "utc": "2026-11-02T08:30:24.847959+00:00",
+  "baseHead": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "localFixHead": "8e3c80bc78953626878e00a0bcfc211e88c65bbf",
+  "sourcePath": "/tmp/geometry-canvas-output-fix-20261102",
+  "soleChangedFile": ".github/workflows/integration-tests.yml",
+  "sourceNativeProducerUnchanged": true,
+  "newTestCount": 0,
+  "goldenOrAssertionsOrTimeoutChanged": false,
+  "exactPreparationShell": "node -e 'require(\"node:fs\").mkdirSync(require(\"node:path\").join(require(\"node:os\").tmpdir(),\"geometry-tests\"),{recursive:true})'",
+  "filesystemControl": [
+    {
+      "phase": "fixed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr363/node-v24.22.1-linux-x64/bin/node",
+        "-e",
+        "require(\"node:fs\").mkdirSync(require(\"node:path\").join(require(\"node:os\").tmpdir(),\"geometry-tests\"),{recursive:true});require(\"node:fs\").writeFileSync(require(\"node:path\").join(require(\"node:os\").tmpdir(),\"geometry-tests\",\"caller-parent.write-probe\"),\"preflight\")"
+      ],
+      "TMPDIR": "/tmp/geometry-resume-20261102/canvas-sharding/output-parent-fix/fixed",
+      "exit": 0,
+      "expected": 0,
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "withdrawn",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr363/node-v24.22.1-linux-x64/bin/node",
+        "-e",
+        "require(\"node:fs\").writeFileSync(require(\"node:path\").join(require(\"node:os\").tmpdir(),\"geometry-tests\",\"caller-parent.write-probe\"),\"preflight\")"
+      ],
+      "TMPDIR": "/tmp/geometry-resume-20261102/canvas-sharding/output-parent-fix/withdrawn",
+      "exit": 1,
+      "expected": 1,
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "1cc0e6e2964bd4008e43725f0853e14d08a0914695b37005d415256ce21f5896"
+    },
+    {
+      "phase": "restored",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr363/node-v24.22.1-linux-x64/bin/node",
+        "-e",
+        "require(\"node:fs\").mkdirSync(require(\"node:path\").join(require(\"node:os\").tmpdir(),\"geometry-tests\"),{recursive:true});require(\"node:fs\").writeFileSync(require(\"node:path\").join(require(\"node:os\").tmpdir(),\"geometry-tests\",\"caller-parent.write-probe\"),\"preflight\")"
+      ],
+      "TMPDIR": "/tmp/geometry-resume-20261102/canvas-sharding/output-parent-fix/restored",
+      "exit": 0,
+      "expected": 0,
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "scope": "Three real filesystem 0/1/0 controls only, not Chrome or screenshots. Original actual extensions Chrome failure is independently preserved. A new actual Chrome green is still required.",
+  "pushed": false,
+  "reasonNotPushed": "Keep active original producer and first CI run receipts complete; once counts arrive, adopt successful generated metadata and caller fix together, avoid known expected-red repeated CI."
+}

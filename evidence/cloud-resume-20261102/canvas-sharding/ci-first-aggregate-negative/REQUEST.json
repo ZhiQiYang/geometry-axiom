@@ -1,0 +1,18 @@
+{
+  "utc": "2026-11-02T08:33:36.471901+00:00",
+  "cwd": "/tmp/geometry-canvas-official-replay-20261102",
+  "actualExecution": "bfeeae21f339b244cb06c1713af0903f99de8eab",
+  "argv": [
+    "python3",
+    "-B",
+    ".github/scripts/canvas_evidence.py",
+    "verify",
+    "--artifacts",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-first-aggregate-negative/official-originals",
+    "--out",
+    "/tmp/geometry-resume-20261102/canvas-sharding/ci-first-aggregate-negative/must-not-accept"
+  ],
+  "run": 41409303344,
+  "attempt": 1,
+  "scope": "Replay unchanged complete verifier against both actual first-CI artifacts, one verified legacy and one actual incomplete extensions; expected strict rejection, not a green aggregate."
+}

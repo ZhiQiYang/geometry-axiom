@@ -1,3 +1,27 @@
+# CURRENT 2026-11-02T08:42:31.183667+00:00
+
+#344三相及20CI已完成並公開769d12426cf6e7a4634ab5b05add4d3435b18a88；正文／prbody同步、留言6572361014交新獨立審查，未冒merge approval。#363已獨立dot可合併＋12CI綠、READY-TO-MERGE。#340／#345各20CI綠待審，main合併交本機Claude，340合後才339。
+
+## #367 首輪完整CI紅件已收齊，只有兩個根因、修正不放寬裁判
+
+固定head S1=9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2，真execution bfeeae21f339b244cb06c1713af0903f99de8eab，tree全等25ae2c97838387b6c0826c69f199a6e58b0d9d00。run41409303344已終態failure：12jobs中7綠5紅；紅是native1/2、nativecomplete、extensions、canvascomplete，不能宣告全綠。
+
+- legacy真898/0/0、62段、原投影golden符合；官方artifact13125263407 ZIP hash06e4442a66ca2b12cdf587b545b76118cd45837381f982bb907298e4691a9ccb。已在精確execution detached source重跑原Node verifier exit0，原54plan inputs及runtime版本完全符合。
+- extensions真929pass/0assertfail/0skip但P76 FATAL ENOENT parameter-mobile.png、completed:false／未比golden，process1。這是獨立拆片未經legacy P1創建os.tmpdir()/geometry-tests的caller前置缺失；官方artifact13126127304完整raw及原joblog已保存。沒有把零assertfail當通過。
+- 窄修只在workflow canvas caller用Node的真os.tmpdir建立原截圖父目錄，&&保準備失敗回非零；原JS／斷言／golden／wait／timeout全不變。已保存branch codex/canvas-output-preflight-20261102 @ **8e3c80bc78953626878e00a0bcfc211e88c65bbf**，尚未採入PR367，避免動正在full producer的source。FS固定／撤回／恢復真0/1/0及bash-n0分列，**不是修後真Chrome綠**；需新正式CI補。
+- native兩新suite本身19/19及12/12通過，舊expected少兩row，並連帶使原NativeShardCoverage集合斷言紅、其負控baseline也紅。這是數量登錄的自我引用，不刪／改原覆蓋斷言，不手填expected。
+- 兩個真官方artifact交原完整聚合器重放，實際exit1／CANVAS_PROCESS_FAILED，沒有發布假green summary。原first CI的失敗全保留，與未做真harnessfalse控制分清。
+- 外部collector曾因Git非ASCII quotePath與稀疏checkout缺plan helper而拒絕；原guard紅件保留，改用NUL路徑及原plan54輸入補齊，未改產品／official bytes／裁判，也沒重新跑Chrome。
+
+## 活的唯一local重測
+
+完整native235 producer仍在原S1，08:11:25.142246Z啟動、**08:46:25.142246Z原截止**，supervisor347708／child347754，原流/dev/shm/geometry-canvas-full-census-20261102/stdout.log。原16MiB／2100／reaper05384f5a／無skip豁免不變。所有原結果先收齊；若唯一紅是expected新集合循環，原CLI生成數量只能作provisional data，須保持原完整strict native＋coverage/負控綠後才驗收，不得把原producer1改說0。尚未採任何失敗資料為通過。沒有改正在執行的ROOT／HEAD。
+
+S1三架構原CLI0／205+18／607inputs／803edges／policy985+55，四產物仍在checkout外，現在完整raw在canonical-S1。下一步收native真終態、分類全部紅，再一次合caller窄修與原CLI實測expected，必要check／正式CI／原full／harness反證，仍draft未達合併條件。
+
+---
+## 以下為歷史檢查點，以最上方CURRENT為準
+
 # CURRENT 2026-11-02T08:14:38.443745+00:00
 
 - #366已合main，工具及manual真入口均完整核收。#363三阻擋已解除、12CI綠且07:02固定head獨立dot判可合併，READY-TO-MERGE交本機Claude。#340、#345各20CI綠待審，未合main；340合後才339。

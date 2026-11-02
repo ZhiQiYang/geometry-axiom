@@ -1,0 +1,15 @@
+--- a/.github/workflows/integration-tests.yml
++++ b/.github/workflows/integration-tests.yml
+@@ -174,7 +174,11 @@
+           case "$GEOMETRY_BROWSER_SUITE" in
+             assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;
+             grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;
+-            canvas) EXPECTED_EXECUTION_SHA='${{ github.sha }}' PR_HEAD_SHA='${{ github.event.pull_request.head.sha || github.sha }}' python3 -B .github/scripts/canvas_evidence.py run --shard '${{ matrix.shard }}' --out "$RUNNER_TEMP/canvas-evidence" ;;
++            canvas)
++              # Legacy P1 created this screenshot parent; extensions must prepare it independently.
++              node -e 'require("node:fs").mkdirSync(require("node:path").join(require("node:os").tmpdir(),"geometry-tests"),{recursive:true})' &&
++                EXPECTED_EXECUTION_SHA='${{ github.sha }}' PR_HEAD_SHA='${{ github.event.pull_request.head.sha || github.sha }}' python3 -B .github/scripts/canvas_evidence.py run --shard '${{ matrix.shard }}' --out "$RUNNER_TEMP/canvas-evidence"
++              ;;
+             space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;
+             timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;
+             documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;

@@ -1,0 +1,10 @@
+{
+  "error": "Read-only collector assertion: paths <= text git-ls-files output",
+  "cause": "Default core.quotePath quotes non-ASCII filenames. Two valid tracked SSOT paths were misclassified by the external collector, not missing from repository.",
+  "affected": [
+    "公理層.md",
+    "geometry-guide/公理層-閱讀器.html"
+  ],
+  "repair": "Use original Git NUL-delimited paths, preserve already downloaded ZIP and existing new empty replay checkout; no red product test or official artifact was changed.",
+  "originalVerifierRan": false
+}

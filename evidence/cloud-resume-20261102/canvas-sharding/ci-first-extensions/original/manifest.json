@@ -1,0 +1,44 @@
+{
+  "schema": "geometry-canvas-shard/1",
+  "execution_sha": "bfeeae21f339b244cb06c1713af0903f99de8eab",
+  "head_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "tree": "25ae2c97838387b6c0826c69f199a6e58b0d9d00",
+  "run_id": "41409303344",
+  "run_attempt": "1",
+  "shard": "extensions",
+  "command": [
+    "node",
+    "geometry-web/cdp_test.js"
+  ],
+  "runtime_command": [
+    "<python>",
+    "-B",
+    "geometry-web/runtime_version.py",
+    "--probe",
+    "18839"
+  ],
+  "process_exit": 1,
+  "runtime_exit": 0,
+  "plan_sha256": "9e8eb712fdf834b69d1662821e4b5cdcdcfe319167ca342f43731424f317b8a0",
+  "execution_root": "/home/runner/work/geometry-axiom/geometry-axiom",
+  "runtime_version": "99bef701395da610d0c552fb9208ff17dfb96ed3266f84345441b7f3ab5e11e1",
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18839/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-integration-feedback",
+    "GEOMETRY_CHROME": "/usr/bin/google-chrome",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CDP_PORT": null,
+    "GEOMETRY_CDP_SHARD": "extensions"
+  },
+  "platform": "linux",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "node": "v22.23.4",
+  "files": {
+    "plan.json": "f8e44d64d49aa95747c550f081ae24ec2d19a2a38bfc959f76bf9fc474cd9a8f",
+    "stdout.log": "9276dedca12d5fc4140a2e27fbde1e5763070ef6b4790933c9fb3684dced14e8",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "runtime.stdout": "adb7acac4d4ee4ac3132fa30dfc352aaca720500d6bbee69a48d5cb3c6a21774",
+    "runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "verified": false
+}
