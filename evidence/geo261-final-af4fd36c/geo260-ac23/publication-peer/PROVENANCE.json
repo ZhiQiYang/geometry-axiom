@@ -1,0 +1,15 @@
+{
+  "peerReportSHA256": "a81e4c9f165f7a8436bb33b380cc33cbf57a544ac11858a98f0c2ef55507a28b",
+  "peerChecks": 2354,
+  "findings": 0,
+  "publicPackageEvidence": "023339af1d4f2388570d39b39ea5136db6852a6b",
+  "scope": "Independent original Git archive bytes/raw inventory/publication commands/body candidate; not a subject rerun.",
+  "initialPeerFailure": {
+    "classification": "metadata checker treated git: locator as filesystem path",
+    "exit": 1,
+    "rawToolOutputOnlyInPeerThread": true,
+    "separateRawCaptureExists": false,
+    "originalScript": "review_geo260_publication_initial_git_locator_error.py.txt",
+    "subjectRerun": false
+  }
+}

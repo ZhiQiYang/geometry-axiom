@@ -1,0 +1,983 @@
+{
+  "schema": "m151-owner-map-original-python-actual-peer/1",
+  "source_sha": "8f9301fc1b78712d930ffc68074437e44d068aab",
+  "withdraw_test_leaf_sha": "f7026c110b4800ee87f9ecc1eff0cc14d535841a",
+  "check_count": 241,
+  "checks": [
+    {
+      "name": "originalsource exact",
+      "pass": true
+    },
+    {
+      "name": "originalcriterion",
+      "pass": true
+    },
+    {
+      "name": "fixedGitbatch0",
+      "pass": true
+    },
+    {
+      "name": "source exactGit current_geometry.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/app_candidate.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/app_candidate.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/candidate_unity.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/definition_texts.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/document.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/domains.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/enclosure_sources.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/grid_adapter.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/grid_context.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/history.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/history.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/history_unity.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/legacy_json.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/reference_sources.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/stagger_facts.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/versions_adapter.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/woodworking_unity.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/world_candidate.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-app/native/world_validation.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/assembly.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/assembly_generation.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/assembly_types.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/boundary_vertex_keys.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/card_reference.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/derived_placements.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/engineering.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/engineering_commands.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/engineering_types.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/finish_surface_types.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/finish_surfaces.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/grid_bindings.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/grid_lattice.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/grid_subdivision.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/grid_subdivision_query.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/grid_systems.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/candidate.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/candidate.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/clip.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/clip.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/codec.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/codec.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/datums.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/datums.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/document.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/document.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/enclosure.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/enclosure.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/enclosure_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/enclosure_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/exact.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/exact.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/geometry.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/geometry.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/grid.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/grid.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/grid_store.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/grid_store.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/guides.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/guides.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/internal/datums.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/internal/document.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/internal/enclosures.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/internal/grid_store.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/internal/guides.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/internal/named_values.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/internal/parameter_store.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/internal/placements.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/internal/regions.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/internal/versions.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/kernel_unity.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/linear.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/linear.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/linear_definition_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/linear_definition_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/named_values.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/named_values.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/parameter_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/parameter_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/parameters.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/parameters.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/placement_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/placement_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/placements.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/placements.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/region_key_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/region_key_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/regions.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/regions.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/source.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/source.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/types.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/version_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/version_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/versions.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/kernel/versions.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/panel_fill_layout.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/panel_fill_support.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/panel_layout_math.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/parameter_types.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/parameters.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/reference_types.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/references.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/section_profile_conversion.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/section_profile_types.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/section_profiles.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/subgrid_commands.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/subgrid_rebind.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/subgrid_world.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/subgrids.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-core/transactions.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/assembly.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/assembly.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/assembly_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/assembly_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/boundary_policy.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/boundary_policy.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/contact_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/contact_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/contact_world.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/contact_world.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/contacts.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/contacts.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/cut_list.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/cut_list.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/definition_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/definition_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/derived_placement.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/derived_placement.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/document.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/domain_values.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/engineering.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/engineering.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/engineering_operations.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/engineering_operations.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/engineering_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/engineering_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/finish.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/finish.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/finish_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/finish_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/grid_application.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/grid_application.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/grid_cells.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/grid_definition_codec.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/grid_definition_codec.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/grid_rules.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/grid_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/grid_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/member_declaration.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/member_declaration.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/member_placement.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/member_reference.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/member_reference.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/members.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/members.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/obstacles.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/panel_layout.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/panel_layout.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/panel_support.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/panel_support.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/section_profile.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/section_profile.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/section_profile_sources.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/section_profile_sources.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/supports.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/supports.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/world_validation.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-templates/woodworking/native/world_validation.h",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/assembly_bridge.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/engineering_bridge.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/grid_binding_bridge.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/grid_subdivision_bridge.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/grid_system_bridge.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/panel_fill_bridge.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/panel_layout_bridge.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/parameter_bridge.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/reference_bridge.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/scene-import-bridge.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/section_profile_bridge.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/section_profile_diagnostics.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/section_profile_source_index.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/source-inspector-bridge.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/timber_support_projection.inc",
+      "pass": true
+    },
+    {
+      "name": "source exactGit geometry-web/web_bridge.c",
+      "pass": true
+    },
+    {
+      "name": "source exactGit tests/binaries.py",
+      "pass": true
+    },
+    {
+      "name": "source exactGit tests/mutate.py",
+      "pass": true
+    },
+    {
+      "name": "source exactGit tests/mutation_bridge.py",
+      "pass": true
+    },
+    {
+      "name": "source exactGit tests/run_tests.py",
+      "pass": true
+    },
+    {
+      "name": "source exactGit tests/test_geo261_mutation_migration.py",
+      "pass": true
+    },
+    {
+      "name": "batch fullyparsed",
+      "pass": true
+    },
+    {
+      "name": "baseline exactrecord",
+      "pass": true
+    },
+    {
+      "name": "baseline originalargv",
+      "pass": true
+    },
+    {
+      "name": "baseline sourcebefore fullinventory",
+      "pass": true
+    },
+    {
+      "name": "baseline stdout hash",
+      "pass": true
+    },
+    {
+      "name": "baseline stderr hash",
+      "pass": true
+    },
+    {
+      "name": "baseline all15noskip",
+      "pass": true
+    },
+    {
+      "name": "baseline ordinary expected status",
+      "pass": true
+    },
+    {
+      "name": "baseline clean env",
+      "pass": true
+    },
+    {
+      "name": "withdrawn exactrecord",
+      "pass": true
+    },
+    {
+      "name": "withdrawn originalargv",
+      "pass": true
+    },
+    {
+      "name": "withdrawn sourcebefore fullinventory",
+      "pass": true
+    },
+    {
+      "name": "withdrawn stdout hash",
+      "pass": true
+    },
+    {
+      "name": "withdrawn stderr hash",
+      "pass": true
+    },
+    {
+      "name": "withdrawn all15noskip",
+      "pass": true
+    },
+    {
+      "name": "withdrawn ordinary expected status",
+      "pass": true
+    },
+    {
+      "name": "withdrawn clean env",
+      "pass": true
+    },
+    {
+      "name": "restored exactrecord",
+      "pass": true
+    },
+    {
+      "name": "restored originalargv",
+      "pass": true
+    },
+    {
+      "name": "restored sourcebefore fullinventory",
+      "pass": true
+    },
+    {
+      "name": "restored stdout hash",
+      "pass": true
+    },
+    {
+      "name": "restored stderr hash",
+      "pass": true
+    },
+    {
+      "name": "restored all15noskip",
+      "pass": true
+    },
+    {
+      "name": "restored ordinary expected status",
+      "pass": true
+    },
+    {
+      "name": "restored clean env",
+      "pass": true
+    },
+    {
+      "name": "15methods preserved",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction setUp",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction write",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction assert_nested_result",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_nested_target_exact_output_and_original_bytes_unchanged",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_removing_injection_fails_the_exact_target_oracle",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_direct_main_target_leaves_all_includes_intact",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_missing_or_duplicate_anchor_is_rejected_before_emission",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_target_included_twice_is_rejected",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_two_distinct_include_paths_are_rejected",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_missing_target_and_unreachable_target_are_rejected",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_missing_include_inside_emitted_target_is_rejected",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_repository_escape_is_rejected",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_cycle_on_target_path_is_rejected",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_guarded_cycle_in_unexpanded_sibling_remains_an_include",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_nested_dependency_changes_original_closure_hash",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_generated_source_fingerprint_invalidates_cache_when_emitter_changes",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction test_invalid_injection_and_compile_failure_never_become_killed",
+      "pass": true
+    },
+    {
+      "name": "other originalfunction fake_compile",
+      "pass": true
+    },
+    {
+      "name": "only exact new mapping and exact cardinality",
+      "pass": true
+    },
+    {
+      "name": "fullregistry equality not relaxed",
+      "pass": true
+    },
+    {
+      "name": "one originalM151",
+      "pass": true
+    },
+    {
+      "name": "M151 realowner contactworld",
+      "pass": true
+    }
+  ],
+  "findings": [],
+  "exit_code": 0,
+  "source_file_count": 190,
+  "reviewer_initial_error": "初版把原 dict(id=...) 誤按 ast.Dict 掃描，IndexError exit1，未跑subject；原helper保留，修為 ast.Call keywords。",
+  "scope": "原15純Python methods三輪0/1/0與exactGit薄來源；未重跑、未編譯C。",
+  "classification": "撤回唯一期望紅在原完整registry dictionary equality；新M151 contact_world owner映射補齊，11→12/72→73精確隨一筆新增，不縮斷言集合。",
+  "limits": [
+    "固定來源是8f9301fc薄源，非Git checkout；收據明列此角色，不冒cloud formal full native。",
+    "本peer只讀manifest保存原bytes與每phase前清單、完整原streams；原工具沒有OS級exec追蹤，未將C未啟動敘述升格為獨立system-call證明。",
+    "整體full ledger及新root merge後正式驗收仍需另綁SHA。"
+  ]
+}

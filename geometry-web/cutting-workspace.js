@@ -71,6 +71,9 @@
    message(`${p.status} · ${p.label}`);for(const d of p.diagnostics){const text=document.createElement('p');text.textContent=diagnosticText(d);area.append(text);}
    const unit=$('cuttingUnit').value,dimension=n=>unit==='cm'?String(n/10):String(n);
    for(const g of p.groups){const section=document.createElement('section'),h=document.createElement('h3');h.textContent=`${g.stockType.name} · 新料需購入 ${g.newStockCount} 支`;section.append(h);
+    const summary=document.createElement('p');summary.dataset.cuttingSummary=g.stockTypeKey;
+    const leftovers=kind=>{const rows=g.stocks.map(s=>s.leftover).filter(r=>r?.class===kind);return `${rows.length} 段，實長 ${dimension(rows.reduce((sum,r)=>sum+r.length,0))} ${unit}，可用 ${dimension(rows.reduce((sum,r)=>sum+r.usable,0))} ${unit}`;};
+    summary.textContent=`件間及末刀耗損：${dimension(g.kerfLoss)} ${unit}；實際端修整耗損：${dimension(g.trimLoss)} ${unit}；可留用剩料：${leftovers('reusable')}；廢料：${leftovers('waste')}；已用宣告餘料：${g.stocks.filter(s=>/^R\d+$/.test(s.label)).map(s=>s.label).join('、')||'無'}`;section.append(summary);
     for(const s of g.stocks){const title=document.createElement('h4');title.textContent=`${s.label} · 實長 ${dimension(s.length)} ${unit} · 下刀 ${s.cuts} 次`;section.append(title);
      const table=document.createElement('table'),head=document.createElement('tr');for(const label of ['構件','承載面','完成長度 '+unit,'加工長度 '+unit,'在料上的區間 '+unit]){const th=document.createElement('th');th.textContent=label;head.append(th);}table.append(head);
      const pieces=[...s.pieces].sort($('cuttingOrder').value==='length'?(a,b)=>a.L-b.L||a.timberId-b.timberId:(a,b)=>a.timberId-b.timberId);

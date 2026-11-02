@@ -1,0 +1,105 @@
+{
+  "schema": "geo300-independent-static-report-final-review/1",
+  "reviewed_utc": "2026-10-26T10:42:30.557412+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "scope": "本地原件hash、AST literal、記憶體byte反向比對與原H7邊界審核；不執Git/API/generator/編譯/產品或效能測試",
+  "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "capacity_head": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+  "historical_H7_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+  "reviewed_report": {
+    "path": "/tmp/geo300-capacity-static-20261026/REPORT.md",
+    "bytes": 8856,
+    "sha256": "c3c9bc8d57a6558f618a1001045fd9d4a83480af321f512139a3d78841059a74"
+  },
+  "reviewed_analysis": {
+    "path": "/tmp/geo300-capacity-static-20261026/ANALYSIS.json",
+    "bytes": 5888,
+    "sha256": "78cebe39dbe33146a6b8e99893b02bb5c45ab03d98239b9581a3f4b2443c80de"
+  },
+  "reviewed_manifest": {
+    "path": "/tmp/geo300-capacity-static-20261026/MANIFEST.json",
+    "bytes": 18756,
+    "sha256": "cabbf4c8c182f4fa8d7277e0a4d892f238e44ea5fcf96ba1576e1c5987f38ca9"
+  },
+  "initial_report_preserved": {
+    "path": "/tmp/geo300-capacity-static-20261026/REPORT.before-peer-corrections.md",
+    "bytes": 7962,
+    "sha256": "023edfe7880a4d4efc86d5c349c11ed4801cce3f9a87e9ff22601efaf7cd40d1"
+  },
+  "initial_manifest_preserved": {
+    "path": "/tmp/geo300-capacity-static-20261026/MANIFEST.before-peer-corrections.json",
+    "bytes": 18259,
+    "sha256": "9b505c7ffb7dc2750dec503c78160b8b1bc894c2e0897cbeafc1018c3d8a7172"
+  },
+  "correction_receipt": {
+    "path": "/tmp/geo300-capacity-static-20261026/PEER_CORRECTIONS.json",
+    "bytes": 1242,
+    "sha256": "3e2f5a916f44668106f0f9d89c31083c5305dfc57247b9a6d35da0b51083739a"
+  },
+  "supporting_independent_reviews": [
+    {
+      "path": "/tmp/geo300-capacity-static-peer-20261026/BYTE_REVIEW.json",
+      "bytes": 8883,
+      "sha256": "1978370e6efc1e2f7b51ccceb02e8adf9cd021a9f4c885eaa0601e58070cf69a"
+    },
+    {
+      "path": "/tmp/geo300-capacity-static-peer-20261026/H7_REVIEW.json",
+      "bytes": 12222,
+      "sha256": "1e11a2d5a94695619e163b2ebd6d08031238de6d6838972b31e005580192b056"
+    }
+  ],
+  "initial_findings": {
+    "path": "/tmp/geo300-capacity-static-peer-20261026/INITIAL_FINDINGS.md",
+    "bytes": 1652,
+    "sha256": "1fa949bb299736c324d7aef70db068a891c5f40be569d3ce36d8980ff13accf0"
+  },
+  "local_byte_audit_tool": {
+    "path": "/tmp/geo300-capacity-static-peer-20261026/audit_local_bytes.py",
+    "bytes": 7647,
+    "sha256": "b22eca11aab204dce2634383c53c6b5e93b0d51ed6f8a91bea18cbbb29e752eb"
+  },
+  "checks": {
+    "initial_manifest_files": 112,
+    "final_manifest_files": 115,
+    "capture_stream_pairs": 33,
+    "initial_final_common_file_changes": [
+      "REPORT.md"
+    ],
+    "removed_original_files": [],
+    "two_full_C_file_reversals_exact": true,
+    "all_four_individually_necessary_for_reported_equality": true,
+    "H7_four_originals_fixed_index_hash_size_verified": true,
+    "same_140_byte_four_command_batch": true,
+    "actual_timeout_600_seconds_preserved": true,
+    "captured_false_not_zero_bytes": true,
+    "no_loadfile_causal_attribution": true
+  },
+  "resolved_findings": [
+    {
+      "id": "C1-existing-exception-retention",
+      "resolution": "新版明示observer6a85e3…已有exception stdout/stderr retain；None才captured:false，撤回重造既有功能建議。未改observer。"
+    },
+    {
+      "id": "C2-current-versus-historical-batch",
+      "resolution": "新版將1048綁9a8584f…AST（21 suffix）；F0f為19 suffix，同1026 DSL下1046。兩者都不是79/83真正140B四命令。"
+    }
+  ],
+  "can_conclude": [
+    "F的兩指定C檔反向撤去四組現有優化後，逐byte等於固定#348 head原件；可作同步前置盤點。",
+    "H7 79/83同為140B的loadfile/dump/objects/references四命令批次，兩次TimeoutExpired原件仍保留。",
+    "新版靜態報告與此review可收進evidence；無剩餘靜態文字阻擋。"
+  ],
+  "cannot_conclude": [
+    "不能說四項優化一定修好512逾時，或推定512幾何/產品/效能已通過。",
+    "不能把兩檔byte關係擴成整分支包含/merge無衝突/所有驗收皆有效。",
+    "不能把None/未捕捉當零bytes，或把returncode:null改成1/124/-9。",
+    "不能判定loadfile獨占600秒，不能判定已跑到1048或1046 sequential/history/undo/redo。",
+    "不能把fixed index核4個原件說成整tar6369成員重新驗畢；不能移標F0f紅燈成新F收據。"
+  ],
+  "formal_runtime": "NOT_RERUN",
+  "historical_H7_result": "FAIL (unchanged)",
+  "ready_to_merge_claimed": false,
+  "product_source_or_original_tool_modified": false,
+  "source_and_capture_files_changed_during_report_correction": false
+}

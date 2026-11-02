@@ -1,0 +1,596 @@
+{
+  "schema": "geo337-final-L-original-browser-terminal-collection/1",
+  "sourceSHA": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "job": "assembly",
+  "createdUTC": "2026-10-23T23:29:10.003942+00:00",
+  "originalExit": 0,
+  "wrapperExit": 0,
+  "passed": true,
+  "overOriginalCITimeout": false,
+  "originalCITimeoutMinutes": 15,
+  "elapsedSeconds": 191.69236098701367,
+  "sourceBefore": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "root": "/workspace/train337-browser-pool-L-7af8c5d8/layout/jobs/assembly/source",
+    "status": ""
+  },
+  "sourceAfter": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "root": "/workspace/train337-browser-pool-L-7af8c5d8/layout/jobs/assembly/source",
+    "status": ""
+  },
+  "versions": [
+    {
+      "argv": [
+        "google-chrome",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Google Chrome 156.0.8078.47 \n"
+    },
+    {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v24.19.0\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Python 3.12.14\n"
+    },
+    {
+      "argv": [
+        "cc",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "cc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+    },
+    {
+      "argv": [
+        "dpkg-query",
+        "-W",
+        "-f=${Status} ${Version}\n",
+        "fonts-noto-cjk"
+      ],
+      "exit": 0,
+      "stdout": "install ok installed 1:20240730+repack1-1\n"
+    }
+  ],
+  "originalPoolGuardLogs": [
+    {
+      "phase": "before_guard",
+      "directory": "/workspace/train337-browser-pool-L-7af8c5d8/layout/guard-logs/guard-pxw4oup0",
+      "selection": "unique completed directory mtime within original guard command interval; no later guard/later GUARD_LATEST relabeled"
+    },
+    {
+      "phase": "after_guard",
+      "directory": "/workspace/train337-browser-pool-L-7af8c5d8/layout/guard-logs/guard-uy1byz0t",
+      "selection": "unique completed directory mtime within original guard command interval; no later guard/later GUARD_LATEST relabeled"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Cache/Cache_Data/index",
+      "bytes": 24,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Cache/Cache_Data/index-dir/the-real-index",
+      "bytes": 48,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Cache/No_Vary_Search/journal.baj",
+      "bytes": 4,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Cache/No_Vary_Search/snapshot.baf",
+      "bytes": 20,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/0593be59aa1e97cf_0",
+      "bytes": 236,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/08522f99816a1694_0",
+      "bytes": 205,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/089394a79523b128_0",
+      "bytes": 218,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/09eff9471a822615_0",
+      "bytes": 204,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/0aadb7219ec13e40_0",
+      "bytes": 495,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/0abf5ce1cd446210_0",
+      "bytes": 203,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/0fd13a6be2e0dfc5_0",
+      "bytes": 250,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/13542d60bc5d3c9a_0",
+      "bytes": 218,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/147f1bf4ea9afd2f_0",
+      "bytes": 243,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/1c26def978381204_0",
+      "bytes": 215,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/1cb9f95b426ba2bf_0",
+      "bytes": 211,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/1e2a901fb73e1f78_0",
+      "bytes": 211,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/29eb006989b9fec5_0",
+      "bytes": 205,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/30c0bbccc1fd0c9d_0",
+      "bytes": 201,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/37339616e21501dc_0",
+      "bytes": 227,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/3c9907601d211b53_0",
+      "bytes": 211,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/3d749cd5c3b4db4d_0",
+      "bytes": 268,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/3d8aa81e3c033696_0",
+      "bytes": 250,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/45edc1a72c1a5abc_0",
+      "bytes": 262,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/492c8758a5d50e52_0",
+      "bytes": 202,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/556a1d21b97997f4_0",
+      "bytes": 212,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/55785679457a7c02_0",
+      "bytes": 209,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/5873ffbd09ce68e9_0",
+      "bytes": 208,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/59e57d72f13cdafb_0",
+      "bytes": 207,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/60ba68e09e996a12_0",
+      "bytes": 208,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/7c82f15201beeca7_0",
+      "bytes": 219,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/7ed978176375e742_0",
+      "bytes": 218,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/7f21f4104f0bac1b_0",
+      "bytes": 212,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/7f5690a9336e3f1d_0",
+      "bytes": 320,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/849330331a865126_0",
+      "bytes": 396,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/8d7bae26596e0fe3_0",
+      "bytes": 265,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/8fe03bfb83fab7df_0",
+      "bytes": 315,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/9737d97de9ba2d04_0",
+      "bytes": 592,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/9743c9ee42af22aa_0",
+      "bytes": 210,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/97e713dece53a866_0",
+      "bytes": 199,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/9aa99f358976be47_0",
+      "bytes": 206,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/9bb0aff001f79258_0",
+      "bytes": 260,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/a2af95fcfa57ef4f_0",
+      "bytes": 205,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/acadd059e15e4bd9_0",
+      "bytes": 209,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/ad65e966cc7c413c_0",
+      "bytes": 229,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/b414e50d5cf59530_0",
+      "bytes": 219,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/b536b8ad8a928064_0",
+      "bytes": 210,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/ba678a2fbd8c358c_0",
+      "bytes": 298,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/bbf7f5ef011a3589_0",
+      "bytes": 796,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/c3332f3e4cebddd2_0",
+      "bytes": 202,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/c7a28282909f3e1e_0",
+      "bytes": 208,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/d184eecb917f9c50_0",
+      "bytes": 410,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/d8843712722177f3_0",
+      "bytes": 209,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/dd7fb5fe6b31d3f2_0",
+      "bytes": 209,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/e8054d98284d56f8_0",
+      "bytes": 210,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/eb5376cbd9918aca_0",
+      "bytes": 207,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/ee3d2e198264563b_0",
+      "bytes": 219,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/f23a15422707398e_0",
+      "bytes": 205,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/fbe97ad3f7ea1b79_0",
+      "bytes": 215,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/index",
+      "bytes": 24,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/js/index-dir/the-real-index",
+      "bytes": 1344,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/wasm/index",
+      "bytes": 24,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/Code Cache/wasm/index-dir/the-real-index",
+      "bytes": 48,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/DawnGraphiteCache/data_0",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/DawnGraphiteCache/data_1",
+      "bytes": 270336,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/DawnGraphiteCache/data_2",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/DawnGraphiteCache/data_3",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/DawnGraphiteCache/index",
+      "bytes": 262512,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/DawnWebGPUCache/data_0",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/DawnWebGPUCache/data_1",
+      "bytes": 270336,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/DawnWebGPUCache/data_2",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/DawnWebGPUCache/data_3",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/DawnWebGPUCache/index",
+      "bytes": 262512,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/GPUCache/data_0",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/GPUCache/data_1",
+      "bytes": 270336,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/GPUCache/data_2",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/GPUCache/data_3",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/Default/GPUCache/index",
+      "bytes": 262512,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/GPUPersistentCache/GPUCache/BKIBWHCDX5RLPFAGTT5JW47JQF44XTYC/cache.db",
+      "bytes": 4096,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/GPUPersistentCache/GPUCache/BKIBWHCDX5RLPFAGTT5JW47JQF44XTYC/cache.db-wal",
+      "bytes": 12392,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-cdp-JlIOXO/GPUPersistentCache/GPUCache/BKIBWHCDX5RLPFAGTT5JW47JQF44XTYC/cache.journal",
+      "bytes": 0,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-runtime/9c005c8346e074d98bac/bridge",
+      "bytes": 1122224,
+      "reason": "rebuildable ELF payload only; original file retained; fingerprint sidecar included",
+      "sha256": "59c541297d82179ce5b3aebe1e76024b681f1499bd9622a0d8ef7c34966fd58c"
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-runtime/9c005c8346e074d98bac/core",
+      "bytes": 904000,
+      "reason": "rebuildable ELF payload only; original file retained; fingerprint sidecar included",
+      "sha256": "bbbf1813c94093cb29f1adc92a1a5b0d7b8d56e6a798aec8ad345de6226ed79e"
+    },
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/geometry-runtime/9c005c8346e074d98bac/model-base",
+      "bytes": 968896,
+      "reason": "rebuildable ELF payload only; original file retained; fingerprint sidecar included",
+      "sha256": "abf7d236ab7aefa5948d91616c28330137a7cea3059b4a9bb6ada276b8384ac3"
+    }
+  ],
+  "nonRegularNodes": [
+    {
+      "path": "/workspace/train337-browser-L-assembly/tmp/original/assembly/com.google.Chrome.1x6RPN/SingletonSocket",
+      "mode": "0o140700",
+      "bytes": 0,
+      "reason": "non-regular IPC node; no serializable file payload, retained in place"
+    }
+  ],
+  "noExistingFileDeleted": true,
+  "noSubjectRerun": true,
+  "limits": [
+    "Original exposed command stdout/stderr only; no hidden compiler/test pipe interception or files already removed by original cleanup are reconstructed.",
+    "No ROOT/SEED/pool/Git/source payload copied; pool immutable plan/tree/raw preparation and original completed guard command streams are included.",
+    "GUARD_LATEST.json is shared mutable state and may already have been replaced by later jobs; it is not relabeled as the documents original. Original per-guard closed Git logs and actual guard argv/exit/fullstreams are retained.",
+    "Terminal profile non-cache files/symlinks retained; Chrome cache payloads excluded with inventory, no removal. ELF payloads excluded with actual hashes; original fingerprint sidecars retained.",
+    "GitHub artifact upload actions are preserved as original local artifact saves, not claimed uploaded to GitHub.",
+    "No independently predecoded host API launcher pipe is invented."
+  ]
+}

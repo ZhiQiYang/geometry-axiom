@@ -5,6 +5,7 @@
 #define GEOMETRY_WOODWORKING_MEMBER_REFERENCE_H
 #include "members.h"
 #include "supports.h"
+#include "contact_world.h"
 #ifndef GEO_KERNEL_GRID_STORE_H
 #include "grid_store.h"
 #endif
@@ -42,6 +43,7 @@ typedef struct {
     bool through;GeoCoord through_at;
     bool between;WoodStopRef stops[2];
     bool scoped;GeoRect2 scope;
+    const WoodMember *self;
 } WoodMemberSpanRequest;
 typedef struct {
     void *user;bool use_current_values;
@@ -103,6 +105,12 @@ typedef struct {
     GeoRegionSetView domain;
     const GeoRect2 *obstacles;size_t obstacle_count;
     const WoodStopFace *stops;size_t stop_count;
+    /* Boundary endpoints are checked before complete-face selection too, so
+     * a full RC candidate cannot hide an explicit bare-RC refusal. H supplies
+     * current facts; its adapter delegates policy to W. */
+    bool (*boundary_end)(void *,const WoodMember *,bool,
+        GeoCoord,GeoCoord,GeoCoord,GeoCoord,int,const WoodStopFace *,size_t,const WoodStopFace *,WoodBoundaryEndAdmission *);
+    void *boundary_user;
 } WoodMemberSpanFacts;
 WoodMemberSpanStatus wood_member_resolve_span(const WoodMemberSpanFacts *,
     const WoodMemberSpanRequest *,GeoCoord *,GeoCoord *,char *,size_t);

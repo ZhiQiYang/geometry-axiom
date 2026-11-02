@@ -1,0 +1,19 @@
+{
+  "schema": "emergency12-cold105-metadata-collector-and-registry-static-peer/1",
+  "checks": 180,
+  "exit_code": 0,
+  "findings": [],
+  "collector_sha256": "af535a120f4250510a43249cdc3fcd5f2c9b5e7069a46022af0e8c490a004802",
+  "registry_sha256": "5281f8652558d72e82564dbba7d5d0e09849baa2a4e358742bb06e4df37d324d",
+  "resource_plan_sha256": "b7e74a5ba785bc0409874caddc0f91078ff672a46bbeaf1a1927c43a71135054",
+  "archive_groups": 12,
+  "immutable_archive_paths": 61,
+  "cold_source_paths": 105,
+  "limits": [
+    "Static collector scope/core and current small registry metadata only; no archive body rehash or package generation by reviewer.",
+    "105 preserved original source payload tar must be separately published alongside metadata tar; it is deliberately not nested or claimed inside this metadata package.",
+    "Original packager selfref avoided; eventual actual package peer remains an external attachment.",
+    "Resource plan is preparatory and does not certify source transition, available disk, final product source or acceptance.",
+    "Storage maintenance does not change any historical original red verdict; all old alias reservations remain."
+  ]
+}

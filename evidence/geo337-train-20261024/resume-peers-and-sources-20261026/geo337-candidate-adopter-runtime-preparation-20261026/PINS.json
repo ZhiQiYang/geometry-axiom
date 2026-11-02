@@ -1,0 +1,43 @@
+{
+  "state": "PREPARATION_ONLY_RUNTIME_UNRUN",
+  "formal_adoption_executed": false,
+  "subject": {
+    "path": "/tmp/geo337-resume-final-source-plan-20261026/adopt_candidate_three_leaves.py",
+    "bytes": 19066,
+    "sha256": "71b0b4eb9ddde59f6b8e9ab90eb2492f8e403d1469a645d81864585a631fefba"
+  },
+  "files": [
+    {
+      "path": "/tmp/geo337-candidate-adopter-runtime-preparation-20261026/tiny_candidate_phase.py",
+      "bytes": 11416,
+      "sha256": "473e8668b6120179b102da9437d87e204566d50cf0b10ea78f894b85617206a7"
+    },
+    {
+      "path": "/tmp/geo337-candidate-adopter-runtime-preparation-20261026/run_candidate_tiny.py",
+      "bytes": 5456,
+      "sha256": "ef136f13a7037f37e98e19f0e7e72f9da6fd8d3e07e446031c7ba7bb8d381d0c"
+    },
+    {
+      "path": "/tmp/geo337-candidate-adopter-runtime-preparation-20261026/REQUEST.UNBOUND.json",
+      "bytes": 719,
+      "sha256": "62bdf60088d02e6843a5ff6df3aa3714bcd064a68e6df4a51b88cd9a978e6628"
+    },
+    {
+      "path": "/tmp/geo337-candidate-adopter-runtime-preparation-20261026/README.md",
+      "bytes": 3273,
+      "sha256": "d0455c9a5a57143c37853c29a7dc0f6dc599434843b3484a34bf6f354873f116"
+    }
+  ],
+  "phases": 9,
+  "groups": [
+    "cas",
+    "scope",
+    "preservation"
+  ],
+  "expected_group_exits": [
+    0,
+    1,
+    0
+  ],
+  "additional_bound_bytes": 16777216
+}

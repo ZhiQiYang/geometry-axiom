@@ -1,0 +1,53 @@
+{
+  "schema": "recovery-evidence-publisher-list-static-peer/1",
+  "reviewed_utc": "2026-10-26T09:25:51.492500+00:00",
+  "subject_sha256": "c6a44de7ada360b6017a0e578507b81867471f583d8e9b6b591d56581ba41368",
+  "executor_sha256": "c6a44de7ada360b6017a0e578507b81867471f583d8e9b6b591d56581ba41368",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "checks": 18,
+  "passed_checks": 18,
+  "prior_independent_peer": {
+    "path": "/tmp/geo337-recovery-publisher-peer-20261026/REVIEW.json",
+    "sha256": "0d5444510737023d0c5706f312dfffa6f1ebb20af3fc3c81331b08fd1a4f0a55",
+    "subject_sha256": "b2037b477e115afcc061d5e673318f8864f0941216cba298b6583244a8d6c005",
+    "checks": 24,
+    "exit_code": 0,
+    "environment_counterproof_exits": [
+      0,
+      1,
+      0
+    ]
+  },
+  "original_peer_files_preserved": {
+    "ACTUAL_TOOL_RESULT.json": "2eee7473d532c8aa4c649ad34e6d08b5c6dd18886df50380ad91312e069bac1e",
+    "REVIEW.json": "0d5444510737023d0c5706f312dfffa6f1ebb20af3fc3c81331b08fd1a4f0a55",
+    "SUBJECT.final.py": "b2037b477e115afcc061d5e673318f8864f0941216cba298b6583244a8d6c005",
+    "review.py": "7648cfcf3d62ab3f148b5c9a7023037433a16f2cc553a29e323e9a4508b3835d",
+    "REVIEW.initial.json": "fed9446d20709b0b05c42e585018b33dfcacc078f36f69c7a73ba774a0fb0b6f",
+    "SUBJECT.initial.py": "0f99c801fadbe2f1191bc77567e54a93dd8c359beb5c13a48fa664643999d942"
+  },
+  "delta": "Only REMOTE_BLOBS.json representation changed from OID-to-identity mapping to list of dict(blob_oid=OID, **identity).",
+  "serialization_preserves_all_verified_identity_fields": true,
+  "original_capacity_validation_push_and_remote_guards_byte_unchanged": true,
+  "retirement_consumer_sha256": "612de38f3cdcc84febf77c7dcbbff455f76c0887d4fd91e37ac439dff6402fba",
+  "original_consumer_expression": "[r for r in remote if r['bytes'] == size and r['sha256'] == pin]",
+  "serialization_counterproof_actual_exits": [
+    0,
+    1,
+    0
+  ],
+  "proof_sha256": "d72645144f806a58803475b3f21733ec41d90b384fd3d607764f2f8c688c4f53",
+  "formal_product_tests_executed": false,
+  "git_fixture_created": false,
+  "network_used": false,
+  "publication_executed": false,
+  "retirement_executed": false,
+  "original_subjects_modified": false,
+  "reviewer_sha256": "4fadcd92f57316c64fda39dd025ecb0d7309f8132728867cfb7ae9adf232445e",
+  "limits": [
+    "Static one-line compatibility review and pure in-memory schema counterproof only; not a delivery receipt.",
+    "Root must bind the new publisher pin and use actual completed RESULT/REMOTE_BLOBS plus independent actual publication review before any retirement.",
+    "This change does not authorize deletion, publication concurrency, or any capacity/identity guard exemption."
+  ]
+}

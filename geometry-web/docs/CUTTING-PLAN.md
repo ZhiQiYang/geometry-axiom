@@ -14,6 +14,6 @@ P-047：只有裁切設定的編輯及其復原／重做還原宣告；方案、
 
 匯出重新核對世界指紋、設定指紋、context/frame、revision 與範圍；遲到回覆、來源變更及取消均不得產生下載；連點只處理一次。F4a 與模型快照共用的 CSV 序列化剔除新增 terminal，既有 CSV 不變。
 
-GEO-219 減項：把既有獨立「排序」控制合併為「料單檢視」，保留原來兩種排序及 DOM id，加入裁切檢視。沒有新增常駐工具列。裁切對話框只有一塊常駐操作說明，狀態與拒絕原因按需顯示；料單原有狀態列維持。
+GEO-219 入口合併紀錄：復用原有 `timberScheduleOrder` 選單，將「排序」標籤改為「料單檢視」，保留原來兩種排序並加入裁切選項，沒有另增料單工具列按鈕。沒有刪除既有控制。裁切對話框新增一塊常駐操作說明，沒有移除舊說明；狀態與拒絕原因按需顯示，料單原有狀態列維持。此入口合併是否滿足減項要求仍待審查判定，見 BACKLOG GEO-251。
 
 前端求值、附件／ZIP、metadata owner 及匯出 race 測試在 `tests/test_cutting_*.js`，以 `python tests/run_all.py --only cutting` 執行。`tests/mutate_k1_frontend.py --out <TEMP>/mutations.json` 在一次性副本移除各行為並保留紅燈診斷，不改工作區。真 native／瀏覽器另由 `cdp_test.js` 的 P89 執行；未取得瀏覽器與 WSL 收據前不可宣稱完整驗收。

@@ -1,0 +1,14 @@
+{
+  "sourceSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+  "evidenceParent": "e9ee6d088b0cad4e3984aa2842a50acc311c2351",
+  "bodyParent": "e1b5b1716333223436c3ba232aafa27b1e938182",
+  "evidenceHead": null,
+  "bodyHead": null,
+  "errors": [
+    "Traceback (most recent call last):\n  File \"/workspace/geo339-publication-20261024/resume_preserving_raw_review_v2.py\", line 89, in <module>\n    run(['git', 'rm', '--cached', '--', PREFIX + '/LATEST_REVIEW_339.md'])\n  File \"/workspace/geo339-publication-20261024/resume_preserving_raw_review_v2.py\", line 59, in run\n    need(row['actual_process_returncode'] == 0, 'publication command failed: ' + str(row['directory']))\n  File \"/workspace/geo339-publication-20261024/resume_preserving_raw_review_v2.py\", line 27, in need\n    raise RuntimeError(message)\nRuntimeError: publication command failed: /workspace/geo339-publication-20261024/publication-resume-v2/subcommands/000036\n"
+  ],
+  "exitCode": 1,
+  "resumerSHA256": "936498d63c053e8e3040aebc3afabdee20627db342f687b6684b795b897a9d92",
+  "startedUTC": "2026-10-24T01:22:03.839295+00:00",
+  "endedUTC": "2026-10-24T01:22:05.206215+00:00"
+}

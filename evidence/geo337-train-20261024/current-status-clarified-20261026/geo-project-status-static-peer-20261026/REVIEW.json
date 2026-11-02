@@ -1,0 +1,85 @@
+{
+  "schema": "geo-project-status-compact-independent-review/1",
+  "reviewed_utc": "2026-10-26T11:07:25.187707+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "review_scope": "僅本地已保存API/Git原件及報告；未新API/Git/重測試，未執行build_snapshot或修改來源",
+  "inputs": {
+    "REPORT.md": {
+      "path": "/tmp/geo-project-status-20261026/REPORT.md",
+      "bytes": 23543,
+      "sha256": "39b5c7bb3c33f3c142f5c444148f9e6157422f8d91619020ddef7a6aa846d4f5"
+    },
+    "MANIFEST.json": {
+      "path": "/tmp/geo-project-status-20261026/MANIFEST.json",
+      "bytes": 7154,
+      "sha256": "17978f419ea4af932648c292012353fbf8e7dffc214feef241ce4748bd878883"
+    },
+    "SNAPSHOT.json": {
+      "path": "/tmp/geo-project-status-20261026/SNAPSHOT.json",
+      "bytes": 39105,
+      "sha256": "ad56392e56fb295e67f487c363d11730b19ec49e7ca4019164640aa6f8f0a685"
+    }
+  },
+  "checks": {
+    "manifest_files_exact": 43,
+    "manifest_payload_bytes": 657772,
+    "capture_stream_pairs_exact": 13,
+    "query_pages": [
+      20,
+      20,
+      6
+    ],
+    "unique_open_issues_no_PR": 46,
+    "category_counts": {
+      "仍驗收缺口": 39,
+      "待核實使用者決定": 6,
+      "已合入可候選關閉": 1
+    },
+    "decision_verification_ids": [
+      203,
+      204,
+      205,
+      230,
+      233,
+      335
+    ],
+    "closure_candidates": [
+      198
+    ],
+    "responsible_PR_count": 8,
+    "responsible_PRs_all_open": true,
+    "PR323_base_name": "main",
+    "PR344_mergeable_snapshot": "CONFLICTING",
+    "PR333_merged_to_main_ancestry_exit": 0,
+    "PR202_closed_but_not_itself_merged": true,
+    "PR202_head_ancestor_main_exit": 0,
+    "initial_issue230_query_exit": 1,
+    "corrected_historical_query_exit": 0,
+    "historical_failure_not_product": true,
+    "backlog_blob_same_at_main_and_candidate": true,
+    "backlog_excerpt_bytes_match": true
+  },
+  "semantic_limits_verified": [
+    "46是2026-10-26 10:53:57～11:00:35 UTC非原子API快照，非整個專案完成或全留言審核。",
+    "39驗收缺口表示本輪未取得完成證據，不能改稱39個已重現產品bug。",
+    "6待核實決定表示須查既有原始批准，不代表使用者尚未決定，也不新建語意批准。",
+    "#198只候選：PR202本身CLOSED/merged=false，head已在main祖先；未核原始反例與最新回歸前不得關閉。",
+    "#323 base現在main；舊retarget、N32/base及帳本紅不直接套新F；#338 a6 checkpoint與新F分開。",
+    "#344 CONFLICTING為機械狀態；其他MERGEABLE及reviewDecision:null不是可合併審查。",
+    "#333已merged且合併提交是固定main祖先；Grok分支仍不由此工作寫入。",
+    "BACKLOG 10-19內容保留，只建議由#325負責人新增日期快照；不得抹除原紅或重寫舊狀態。"
+  ],
+  "wording_changes_required": [],
+  "optional_wording": [
+    {
+      "text": "目前 main",
+      "suggestion": "此API快照的 main（2026-10-26 10:54 UTC）",
+      "reason": "表頭日期與非原子快照限制已足以限定；額外時間字樣可減少日後引用時誤讀，非阻擋。"
+    }
+  ],
+  "can_conclude": "可將此包收作帶日期、帶範圍的工作分流盤點。",
+  "cannot_conclude": "不可據此關issue、標READY-TO-MERGE、認定新批准、宣告驗收全綠或專案完成。",
+  "source_or_ref_mutation": false,
+  "actual_issue_or_PR_state_changed": false
+}

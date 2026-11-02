@@ -1,0 +1,41 @@
+{
+  "scope": "One parent-authorized small observation only, not golden generation/formal acceptance/native",
+  "source_sha": "2039b477a9669a9e3fcaad740283605b8de8a8f4",
+  "argv": [
+    "timeout",
+    "--signal=TERM",
+    "15s",
+    "python3",
+    "-B",
+    "/workspace/geo318-reading-a-prep/observe_reading_a.py",
+    "--root",
+    "/workspace/geo318-reading-a-work",
+    "--output",
+    "/workspace/geo318-reading-a-prep/observation-small.json"
+  ],
+  "cwd": "/workspace/geo318-reading-a-work",
+  "utc": "2026-10-23T11:06:14.436555+00:00",
+  "elapsed_seconds": 0.667862200003583,
+  "exit_code": 0,
+  "stdout": "{\n  \"elapsed_seconds\": 0.5041387910023332,\n  \"rows\": [\n    {\n      \"room\": \"FZ120\",\n      \"layout\": \"左上起鋪,板長沿Y\",\n      \"policy\": \"current\",\n      \"verdict\": \"core_limited\",\n      \"core_limits\": [\n        {\n          \"code\": \"CORE_LIMIT_EXTENSION_END_FREE\",\n          \"end\": 1000,\n          \"check\": \"C8_EXTENSION_END_FREE\",\n          \"why\": \"邊界材 [1000, 3645, 4100, 3672] 越過凹角的延伸段停在 1000,端面有 (3645, 3648) 懸空;物理上側面固定、端面懸空不影響承接,核心 I22 要延伸段的端面頂到料或牆\",\n          \"id\": 1\n        }\n      ],\n      \"seams_a\": [\n        916,\n        1833,\n        2750,\n        3667\n      ],\n      \"seams_b\": [\n        1831,\n        3631\n      ]\n    },\n    {\n      \"room\": \"FZ120\",\n      \"layout\": \"左上起鋪,板長沿Y\",\n      \"policy\": \"withdrawn\",\n      \"verdict\": \"core_limited\",\n      \"core_limits\": [\n        {\n          \"code\": \"CORE_LIMIT_BOUNDARY_END_FREE\",\n          \"end\": 1000,\n          \"check\": \"C8_I19_BOUNDARY_END\",\n          \"at\": [\n            1000,\n            3675\n          ],\n          \"free\": [\n            3672,\n            3675\n          ],\n          \"why\": \"邊界材 [0, 3648, 1000, 3675] 在牆端 1000 的端面有 3 mm 落在室內、沒有別的 boundary 可頂;越過凹角延伸會撞到另一支外牆邊界材(兩支寬向重疊)。物理上這支料側面釘牆、端面懸空不影響承接;核心 I19 只准 boundary 端面的室內部分頂另一支 boundary\",\n          \"id\": 3\n        },\n        {\n          \"code\": \"CORE_LIMIT_EXTENSION_END_FREE\",\n          \"end\": 1000,\n          \"check\": \"C8_EXTENSION_END_FREE\",\n          \"why\": \"邊界材 [1000, 3645, 4100, 3672] 越過凹角的延伸段停在 1000,端面有 (3645, 3648) 懸空;物理上側面固定、端面懸空不影響承接,核心 I22 要延伸段的端面頂到料或牆\",\n          \"id\": 1\n        }\n      ],\n      \"seams_a\": [\n        916,\n        1833,\n        2750,\n        3667\n      ],\n      \"seams_b\": [\n        1831,\n        3631\n      ]\n    },\n    {\n      \"room\": \"FZ120\",\n      \"layout\": \"左下起鋪,板長沿Y\",\n      \"policy\": \"current\",\n      \"verdict\": \"core_limited\",\n      \"core_limits\": [\n        {\n          \"code\": \"CORE_LIMIT_EXTENSION_END_FREE\",\n          \"end\": 1000,\n          \"check\": \"C8_EXTENSION_END_FREE\",\n          \"why\": \"邊界材 [1000, 3645, 4100, 3672] 越過凹角的延伸段停在 1000,端面有 (3645, 3648) 懸空;物理上側面固定、端面懸空不影響承接,核心 I22 要延伸段的端面頂到料或牆\",\n          \"id\": 1\n        }\n      ],\n      \"seams_a\": [\n        916,\n        1833,\n        2750,\n        3667\n      ],\n      \"seams_b\": [\n        1889,\n        57\n      ]\n    },\n    {\n      \"room\": \"FZ120\",\n      \"layout\": \"左下起鋪,板長沿Y\",\n      \"policy\": \"withdrawn\",\n      \"verdict\": \"core_limited\",\n      \"core_limits\": [\n        {\n          \"code\": \"CORE_LIMIT_BOUNDARY_END_FREE\",\n          \"end\": 1000,\n          \"check\": \"C8_I19_BOUNDARY_END\",\n          \"at\": [\n            1000,\n            3675\n          ],\n          \"free\": [\n            3672,\n            3675\n          ],\n          \"why\": \"邊界材 [0, 3648, 1000, 3675] 在牆端 1000 的端面有 3 mm 落在室內、沒有別的 boundary 可頂;越過凹角延伸會撞到另一支外牆邊界材(兩支寬向重疊)。物理上這支料側面釘牆、端面懸空不影響承接;核心 I19 只准 boundary 端面的室內部分頂另一支 boundary\",\n          \"id\": 3\n        },\n        {\n          \"code\": \"CORE_LIMIT_EXTENSION_END_FREE\",\n          \"end\": 1000,\n          \"check\": \"C8_EXTENSION_END_FREE\",\n          \"why\": \"邊界材 [1000, 3645, 4100, 3672] 越過凹角的延伸段停在 1000,端面有 (3645, 3648) 懸空;物理上側面固定、端面懸空不影響承接,核心 I22 要延伸段的端面頂到料或牆\",\n          \"id\": 1\n        }\n      ],\n      \"seams_a\": [\n        916,\n        1833,\n        2750,\n        3667\n      ],\n      \"seams_b\": [\n        1889,\n        57\n      ]\n    },\n    {\n      \"room\": \"FZ107\",\n      \"layout\": \"左上起鋪,板長沿Y\",\n      \"policy\": \"current\",\n      \"verdict\": \"buildable\",\n      \"core_limits\": [],\n      \"seams_a\": [\n        916,\n        1833,\n        2750,\n        3667\n      ],\n      \"seams_b\": [\n        1831,\n        3659\n      ]\n    },\n    {\n      \"room\": \"FZ114\",\n      \"layout\": \"右上起鋪,板長沿Y\",\n      \"policy\": \"current\",\n      \"verdict\": \"buildable\",\n      \"core_limits\": [],\n      \"seams_a\": [\n        3184,\n        2267,\n        1350,\n        491\n      ],\n      \"seams_b\": [\n        1831,\n        3656\n      ]\n    },\n    {\n      \"room\": \"FZ114\",\n      \"layout\": \"左上起鋪,板長沿X\",\n      \"policy\": \"current\",\n      \"verdict\": \"buildable\",\n      \"core_limits\": [],\n      \"seams_a\": [\n        916,\n        1833,\n        2750,\n        3544\n      ],\n      \"seams_b\": [\n        1831,\n        3663\n      ]\n    },\n    {\n      \"room\": \"STEP20\",\n      \"layout\": \"左上起鋪,板長沿Y\",\n      \"policy\": \"current\",\n      \"verdict\": \"buildable\",\n      \"core_limits\": [],\n      \"seams_a\": [\n        916,\n        1833,\n        2750,\n        3667\n      ],\n      \"seams_b\": [\n        1831,\n        3639\n      ]\n    }\n  ]\n}\n",
+  "stderr": "",
+  "tool_sha256": "a39dcd12d0f1219abf4f26af24607f703f1e8e41bf126169fd383e16ef947a03",
+  "environment": {
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "designated_diagnostic_exit_marker": "/workspace/geo288-main-merge-20261023/p88-priority/actual-query-render-controlled-launch.exit.json",
+  "diagnostic_exit_marker_sha256": "ebae62025ee4a3fcbd379bd7e8717ccbc027d8458c4a9a67affa0903f35af29e",
+  "diagnostic_exit_marker": {
+    "actual_process_returncode": 2,
+    "ended_utc": "2026-10-23T11:06:14.079728+00:00",
+    "stdout_sha256": "9ee4cf14f75ef20381af688fd872335f0953ac12590cf739bcf6640a693917f3",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "r3_lock": "/tmp/g261r3/heavy.lock",
+  "lock_mode": "exclusive nonblocking acquisition after marker; held only for observer"
+}

@@ -1,0 +1,2072 @@
+[
+  {
+    "suite": "c:integrity",
+    "total": "432",
+    "pass": "432",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.6",
+    "note": "C 檢查點數（非 test 級）"
+  },
+  {
+    "suite": "core:run_tests",
+    "total": "166",
+    "pass": "166",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "14.4",
+    "note": ""
+  },
+  {
+    "suite": "mutation:check",
+    "total": "-",
+    "pass": "-",
+    "fail": "-",
+    "skip": "-",
+    "seconds": "5.0",
+    "note": "mutation inventory freshness (not test assertions); exit 0"
+  },
+  {
+    "suite": "oracle:framing-selftest",
+    "total": "-",
+    "pass": "ok",
+    "fail": "-",
+    "skip": "-",
+    "seconds": "99.6",
+    "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+  },
+  {
+    "suite": "py:test_architecture_contract",
+    "total": "205",
+    "pass": "205",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_assembly_candidate_impact",
+    "total": "4",
+    "pass": "4",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_assembly_capacity",
+    "total": "5",
+    "pass": "5",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_assembly_generation",
+    "total": "22",
+    "pass": "22",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "7.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_assembly_mutation_check",
+    "total": "12",
+    "pass": "12",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_assembly_native_diagnostics",
+    "total": "8",
+    "pass": "8",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_assembly_parameter_refs",
+    "total": "3",
+    "pass": "3",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_assembly_rules",
+    "total": "36",
+    "pass": "36",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_axiom_reader",
+    "total": "51",
+    "pass": "51",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "153.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_binaries",
+    "total": "36",
+    "pass": "36",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_bridge_integrity",
+    "total": "24",
+    "pass": "24",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "30.8",
+    "note": ""
+  },
+  {
+    "suite": "py:test_cli_args",
+    "total": "6",
+    "pass": "6",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_datum_contract",
+    "total": "9",
+    "pass": "9",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "8.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_domain_decoupling_adoption",
+    "total": "15",
+    "pass": "15",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.8",
+    "note": ""
+  },
+  {
+    "suite": "py:test_domain_decoupling_compatibility",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_domain_decoupling_proposal",
+    "total": "29",
+    "pass": "29",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_domain_source_pins",
+    "total": "16",
+    "pass": "16",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.8",
+    "note": ""
+  },
+  {
+    "suite": "py:test_engineering_core",
+    "total": "18",
+    "pass": "18",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.8",
+    "note": ""
+  },
+  {
+    "suite": "py:test_engineering_json",
+    "total": "7",
+    "pass": "7",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_engineering_model_compatibility",
+    "total": "44",
+    "pass": "44",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "8.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_engineering_model_sources",
+    "total": "4",
+    "pass": "4",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_engineering_transport",
+    "total": "7",
+    "pass": "7",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_evidence_link_native",
+    "total": "6",
+    "pass": "6",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_feedback_store",
+    "total": "11",
+    "pass": "11",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_gdi_contract",
+    "total": "1",
+    "pass": "0",
+    "fail": "0",
+    "skip": "1",
+    "seconds": "0.2",
+    "note": "skip：requires compiled Windows GDI contract harness ×1（其中 1 個在具名允許清單，平台固有，不計入 exit 3）；日誌 /tmp/geometry-tests/run_all-logs/py_test_gdi_contract.log"
+  },
+  {
+    "suite": "py:test_geo261_application_closure",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_assembly_definition_authority",
+    "total": "15",
+    "pass": "15",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_assembly_graph_product",
+    "total": "4",
+    "pass": "4",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "7.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_assembly_sources",
+    "total": "8",
+    "pass": "8",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_candidate_cache",
+    "total": "18",
+    "pass": "18",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_candidate_deferred_sha",
+    "total": "11",
+    "pass": "11",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_candidate_product",
+    "total": "26",
+    "pass": "26",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "9.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_contact_sources",
+    "total": "15",
+    "pass": "15",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_default_native",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_deferred_candidate",
+    "total": "53",
+    "pass": "53",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.8",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_deferred_product",
+    "total": "10",
+    "pass": "10",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "14.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_definition_graph_product",
+    "total": "5",
+    "pass": "5",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_definition_sources",
+    "total": "9",
+    "pass": "9",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.8",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_derived_policy_graph_product",
+    "total": "4",
+    "pass": "4",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "11.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_derived_policy_sources",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_domain_product",
+    "total": "9",
+    "pass": "9",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_draw_annotation",
+    "total": "4",
+    "pass": "4",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_enclosure_definition_authority",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_enclosure_product",
+    "total": "5",
+    "pass": "5",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "7.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_enclosure_sources",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_engineering_parameter_authority",
+    "total": "17",
+    "pass": "17",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_engineering_sources",
+    "total": "18",
+    "pass": "18",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.8",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_finish_definition_authority",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_finish_sources",
+    "total": "8",
+    "pass": "8",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_graph_product",
+    "total": "5",
+    "pass": "5",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_grid_definition_authority",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_grid_definition_codec",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_grid_definitions_product",
+    "total": "5",
+    "pass": "5",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "7.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_grid_sources",
+    "total": "12",
+    "pass": "12",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_guides_product",
+    "total": "2",
+    "pass": "2",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_host_authority",
+    "total": "18",
+    "pass": "18",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "13.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_host_candidate",
+    "total": "17",
+    "pass": "17",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_host_facts_authority",
+    "total": "22",
+    "pass": "22",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "31.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_host_history",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_host_placement_definition",
+    "total": "7",
+    "pass": "7",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_linear_definition_graph_product",
+    "total": "8",
+    "pass": "8",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "8.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_linear_definition_sources",
+    "total": "15",
+    "pass": "15",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_load_residual",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "70.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_member_reference",
+    "total": "11",
+    "pass": "11",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_model_base_replay",
+    "total": "6",
+    "pass": "6",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "16.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_model_semantics_authority",
+    "total": "12",
+    "pass": "12",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "16.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_model_sources",
+    "total": "12",
+    "pass": "12",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_model_vertex_ledger",
+    "total": "7",
+    "pass": "7",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "13.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_mutation_migration",
+    "total": "15",
+    "pass": "15",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_candidate",
+    "total": "17",
+    "pass": "17",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_datums",
+    "total": "7",
+    "pass": "7",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_document",
+    "total": "10",
+    "pass": "10",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_enclosures",
+    "total": "19",
+    "pass": "19",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_entrypoints",
+    "total": "3",
+    "pass": "3",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_geometry",
+    "total": "7",
+    "pass": "7",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_grid",
+    "total": "8",
+    "pass": "8",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.8",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_grid_product",
+    "total": "5",
+    "pass": "5",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_grid_rules",
+    "total": "9",
+    "pass": "9",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_grid_store",
+    "total": "18",
+    "pass": "18",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_guides",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_kernel",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.8",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_linear",
+    "total": "6",
+    "pass": "6",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_parameters",
+    "total": "9",
+    "pass": "9",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_placements",
+    "total": "12",
+    "pass": "12",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_regions",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_sources",
+    "total": "9",
+    "pass": "9",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_native_versions",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_panel_native",
+    "total": "10",
+    "pass": "10",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_parameter_definition_sources",
+    "total": "20",
+    "pass": "20",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_parameter_sources",
+    "total": "12",
+    "pass": "12",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_placement_definition",
+    "total": "19",
+    "pass": "19",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_placement_sources",
+    "total": "21",
+    "pass": "21",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_region_edges",
+    "total": "8",
+    "pass": "8",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_region_key_sources",
+    "total": "15",
+    "pass": "15",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_regions_product",
+    "total": "2",
+    "pass": "2",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_section_profile_authority",
+    "total": "15",
+    "pass": "15",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_section_profile_sources",
+    "total": "9",
+    "pass": "9",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_source_context",
+    "total": "8",
+    "pass": "8",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_source_describe",
+    "total": "7",
+    "pass": "7",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_source_index",
+    "total": "18",
+    "pass": "18",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_staged_candidate_graph",
+    "total": "7",
+    "pass": "7",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_version_activation",
+    "total": "10",
+    "pass": "10",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_version_field_sources",
+    "total": "19",
+    "pass": "19",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "7.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_assembly",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_contact_world",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "10.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_contacts",
+    "total": "10",
+    "pass": "10",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_contacts_product",
+    "total": "1",
+    "pass": "1",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_derived_placement",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_engineering",
+    "total": "12",
+    "pass": "12",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.8",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_engineering_operations",
+    "total": "15",
+    "pass": "15",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_finish",
+    "total": "12",
+    "pass": "12",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_grid_application",
+    "total": "23",
+    "pass": "23",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_grid_cells",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_grid_engineering",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_member_declaration",
+    "total": "9",
+    "pass": "9",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_members",
+    "total": "10",
+    "pass": "10",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_product",
+    "total": "2",
+    "pass": "2",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_report_policy",
+    "total": "8",
+    "pass": "8",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_section_profile",
+    "total": "12",
+    "pass": "12",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_supports",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_supports_product",
+    "total": "2",
+    "pass": "2",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo261_wood_world_validation",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "9.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo314_commit_paths",
+    "total": "11",
+    "pass": "10",
+    "fail": "1",
+    "skip": "0",
+    "seconds": "0.4",
+    "note": "日誌 /tmp/geometry-tests/run_all-logs/py_test_geo314_commit_paths.log"
+  },
+  {
+    "suite": "py:test_geo314_ordered_facts",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "18.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo314_stagger_commit",
+    "total": "47",
+    "pass": "47",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "7.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo318_reading_a_native",
+    "total": "7",
+    "pass": "7",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geo318_reading_a_oracle",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geometry_host_native",
+    "total": "30",
+    "pass": "30",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "16.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geometry_host_sources",
+    "total": "45",
+    "pass": "45",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.8",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geometry_host_world",
+    "total": "8",
+    "pass": "8",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geometry_kernel_compatibility",
+    "total": "1",
+    "pass": "1",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geometry_kernel_geometry",
+    "total": "20",
+    "pass": "20",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geometry_kernel_graph",
+    "total": "30",
+    "pass": "30",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geometry_kernel_isolation",
+    "total": "2",
+    "pass": "2",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.8",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geometry_kernel_runtime",
+    "total": "10",
+    "pass": "10",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geometry_kernel_session",
+    "total": "5",
+    "pass": "5",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geometry_kernel_transactions",
+    "total": "31",
+    "pass": "31",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_geometry_source_runtime",
+    "total": "10",
+    "pass": "10",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_grid_card_reference",
+    "total": "43",
+    "pass": "43",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "11.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_grid_inspector_contract",
+    "total": "3",
+    "pass": "3",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_grid_subdivision_oracle",
+    "total": "41",
+    "pass": "41",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "11.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_grid_system_contract",
+    "total": "15",
+    "pass": "15",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_grid_trial_contract",
+    "total": "5",
+    "pass": "5",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_guide_panels",
+    "total": "1",
+    "pass": "1",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_infinite_grid_contract",
+    "total": "25",
+    "pass": "25",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "7.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_local_launcher",
+    "total": "17",
+    "pass": "17",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_model_update",
+    "total": "26",
+    "pass": "26",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "156.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_modeling_degenerate",
+    "total": "24",
+    "pass": "24",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_modeling_runtime",
+    "total": "46",
+    "pass": "46",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_modeling_transport",
+    "total": "3",
+    "pass": "3",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_mutation_anchors",
+    "total": "3",
+    "pass": "3",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_mutation_freshness",
+    "total": "74",
+    "pass": "74",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_panel_fill_finish_surface",
+    "total": "22",
+    "pass": "22",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_panel_fill_host",
+    "total": "32",
+    "pass": "32",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "9.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_panel_fill_layout",
+    "total": "18",
+    "pass": "18",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "5.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_panel_fill_support",
+    "total": "20",
+    "pass": "20",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "12.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_parameter_netzero",
+    "total": "4",
+    "pass": "4",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_parameter_retirement_scope",
+    "total": "6",
+    "pass": "6",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_parameters_candidate_value_history",
+    "total": "12",
+    "pass": "12",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_parameters_core",
+    "total": "40",
+    "pass": "40",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "9.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_parameters_deleted_unbind",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_parameters_final_candidate",
+    "total": "4",
+    "pass": "4",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_parameters_unbind_scope",
+    "total": "8",
+    "pass": "8",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_parameters_upstream_unbind",
+    "total": "12",
+    "pass": "12",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_product_architecture",
+    "total": "18",
+    "pass": "18",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "11.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_recorded_api_receipts",
+    "total": "17",
+    "pass": "17",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_rectangular_bridge",
+    "total": "2",
+    "pass": "2",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_rectangular_python",
+    "total": "9",
+    "pass": "9",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_rectangular_template",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_reference_contract",
+    "total": "51",
+    "pass": "51",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "23.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_release_gate",
+    "total": "21",
+    "pass": "21",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_rule_case_catalog",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_rule_case_definition",
+    "total": "27",
+    "pass": "27",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.3",
+    "note": ""
+  },
+  {
+    "suite": "py:test_rule_case_executor",
+    "total": "40",
+    "pass": "40",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_rule_case_host",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_rule_case_request",
+    "total": "5",
+    "pass": "5",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_rule_case_workbench_http",
+    "total": "19",
+    "pass": "19",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "32.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_runtime_version",
+    "total": "31",
+    "pass": "31",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_scenario_verify",
+    "total": "37",
+    "pass": "37",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "40.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_scene_import",
+    "total": "10",
+    "pass": "10",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "3.1",
+    "note": ""
+  },
+  {
+    "suite": "py:test_section_profile_modeling",
+    "total": "20",
+    "pass": "20",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_section_profile_mutation_check",
+    "total": "30",
+    "pass": "30",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_section_profile_native",
+    "total": "30",
+    "pass": "30",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "15.6",
+    "note": ""
+  },
+  {
+    "suite": "py:test_serve",
+    "total": "51",
+    "pass": "51",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "38.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_source_closure_memo",
+    "total": "16",
+    "pass": "16",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "1.5",
+    "note": ""
+  },
+  {
+    "suite": "py:test_source_inspector",
+    "total": "18",
+    "pass": "18",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.9",
+    "note": ""
+  },
+  {
+    "suite": "py:test_source_inspector_transport",
+    "total": "2",
+    "pass": "2",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_space_modeling",
+    "total": "40",
+    "pass": "40",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "61.0",
+    "note": ""
+  },
+  {
+    "suite": "py:test_subgrid_contract",
+    "total": "31",
+    "pass": "31",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "9.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_timber_support_projection",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "21.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_unittest_runner",
+    "total": "1",
+    "pass": "1",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "2.7",
+    "note": ""
+  },
+  {
+    "suite": "py:test_wait_trace",
+    "total": "20",
+    "pass": "20",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "4.4",
+    "note": ""
+  },
+  {
+    "suite": "py:test_witness_diagnostics",
+    "total": "2",
+    "pass": "2",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.2",
+    "note": ""
+  },
+  {
+    "suite": "py:test_witness_marks",
+    "total": "6",
+    "pass": "6",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.3",
+    "note": ""
+  },
+  {
+    "suite": "node:tests-js",
+    "total": "737",
+    "pass": "737",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "115.3",
+    "note": ""
+  },
+  {
+    "suite": "node:model_viewer",
+    "total": "-",
+    "pass": "ok",
+    "fail": "-",
+    "skip": "-",
+    "seconds": "0.1",
+    "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+  },
+  {
+    "suite": "node:polydraft",
+    "total": "75",
+    "pass": "75",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "22.6",
+    "note": ""
+  },
+  {
+    "suite": "node:canvas_direct",
+    "total": "408",
+    "pass": "408",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "6.3",
+    "note": "斷言數；preload 已把 web_bridge.exe 的 spawn 轉向 /tmp/geometry-tests/bridge（標記檔 1 筆為證）"
+  },
+  {
+    "suite": "node:document_format",
+    "total": "-",
+    "pass": "ok",
+    "fail": "-",
+    "skip": "-",
+    "seconds": "0.1",
+    "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+  },
+  {
+    "suite": "node:document_cases",
+    "total": "-",
+    "pass": "ok",
+    "fail": "-",
+    "skip": "-",
+    "seconds": "1.1",
+    "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+  },
+  {
+    "suite": "node:cdp_navigation",
+    "total": "-",
+    "pass": "ok",
+    "fail": "-",
+    "skip": "-",
+    "seconds": "0.1",
+    "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+  },
+  {
+    "suite": "node:cdp_confirmation_gate",
+    "total": "-",
+    "pass": "ok",
+    "fail": "-",
+    "skip": "-",
+    "seconds": "0.0",
+    "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+  },
+  {
+    "suite": "node:draw_annotation",
+    "total": "7",
+    "pass": "7",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:woodworking_frontend",
+    "total": "17",
+    "pass": "17",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:grid_inspector_command",
+    "total": "9",
+    "pass": "9",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:grid_lesson_control_ownership",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:parameter_confirmation_settlement",
+    "total": "16",
+    "pass": "16",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:face_reference_settlement",
+    "total": "18",
+    "pass": "18",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:face_projection_lifecycle",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:workspace_shell_history",
+    "total": "28",
+    "pass": "28",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.2",
+    "note": ""
+  },
+  {
+    "suite": "node:feedback_events",
+    "total": "41",
+    "pass": "41",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.2",
+    "note": ""
+  },
+  {
+    "suite": "node:space_test_floor",
+    "total": "10",
+    "pass": "10",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:history_operation",
+    "total": "4",
+    "pass": "4",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:context_operations",
+    "total": "12",
+    "pass": "12",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:cdp_evaluation",
+    "total": "9",
+    "pass": "9",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:cdp_settle",
+    "total": "10",
+    "pass": "10",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:cdp_card_position",
+    "total": "21",
+    "pass": "21",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.2",
+    "note": ""
+  },
+  {
+    "suite": "node:background_grid_viewport",
+    "total": "9",
+    "pass": "9",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:anchor_band_clip",
+    "total": "14",
+    "pass": "14",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:hover_pick_scheduler",
+    "total": "19",
+    "pass": "19",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.2",
+    "note": ""
+  },
+  {
+    "suite": "node:face_paint_scheduler",
+    "total": "7",
+    "pass": "7",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:room_outline_worker",
+    "total": "6",
+    "pass": "6",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:room_outline_closeout",
+    "total": "24",
+    "pass": "24",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.2",
+    "note": ""
+  },
+  {
+    "suite": "node:evidence_links",
+    "total": "29",
+    "pass": "29",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  },
+  {
+    "suite": "node:evidence_project_store",
+    "total": "7",
+    "pass": "7",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.2",
+    "note": ""
+  },
+  {
+    "suite": "node:grid_definition_diagram",
+    "total": "13",
+    "pass": "13",
+    "fail": "0",
+    "skip": "0",
+    "seconds": "0.1",
+    "note": ""
+  }
+]

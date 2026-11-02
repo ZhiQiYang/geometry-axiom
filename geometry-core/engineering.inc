@@ -74,11 +74,11 @@ static bool eng_target_context(const World *w,const EngTarget *t,uint32_t *pid,i
 static bool eng_resolve_terminal(World *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,Coord *value,char *path,size_t cap,EngTerminal *terminal)
 {WoodEngineeringContext c=app_eng_context(w);return wood_eng_resolve_terminal(&c,s,target,pid,role,value,path,cap,terminal);}
 static bool eng_resolve(World *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,Coord *value,char *path,size_t cap)
-{return eng_resolve_terminal(w,s,target,pid,role,value,path,cap,NULL);}
+{WoodEngineeringContext c=app_eng_context(w);return wood_eng_resolve(&c,s,target,pid,role,value,path,cap);}
 static bool eng_effective_terminal(World *w,const EngBinding *b,Coord *value,char *path,size_t cap,EngTerminal *terminal)
 {WoodEngineeringContext c=app_eng_context(w);return wood_eng_effective_terminal(&c,b,value,path,cap,terminal);}
 static bool eng_effective(World *w,const EngBinding *b,Coord *value,char *path,size_t cap)
-{return eng_effective_terminal(w,b,value,path,cap,NULL);}
+{WoodEngineeringContext c=app_eng_context(w);return wood_eng_effective(&c,b,value,path,cap);}
 static void engineering_drop_owned(World *w,const char *kind,uint32_t id)
 {WoodEngineeringContext c=app_eng_context(w);wood_engineering_drop_owned(&c,kind,id);}
 static bool engineering_follow_fragment(World *w,uint32_t old_pid)

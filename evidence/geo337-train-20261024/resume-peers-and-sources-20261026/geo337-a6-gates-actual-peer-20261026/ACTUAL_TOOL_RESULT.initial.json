@@ -1,0 +1,7 @@
+{
+  "chunk_id": "f9314a",
+  "wall_time_seconds": 0.000027851,
+  "exit_code": 1,
+  "original_token_count": 67,
+  "output": "Traceback (most recent call last):\n  File \"/tmp/geo337-a6-gates-actual-peer-20261026/audit.py\", line 40, in <module>\n    decision=next(x for x in inputs if x['path']=='決策佇列.md')\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nStopIteration\n"
+}

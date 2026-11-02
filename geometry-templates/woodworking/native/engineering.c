@@ -1,5 +1,4 @@
 #include "engineering.h"
-#include "engineering_sources.h"
 #include <stdio.h>
 #include <string.h>
 /* Match the host diagnostic truncation without borrowing host globals. */
@@ -402,8 +401,8 @@ bool wood_eng_resolve_terminal(WoodEngineeringContext *w,const EngDimensionSourc
         if(!w->resolve_source(w->sources,s,target,pid,role,value,path,cap))return false;
         /* The provider evaluates a copy of this context, so the leaf is stored
          * on the sources object and copied out after the hook returns. */
-        if(terminal&&w->sources){
-            const EngTerminal *leaf=wood_engineering_sources_last_terminal(w->sources);
+        if(terminal&&w->last_terminal){
+            const EngTerminal *leaf=w->last_terminal(w->sources);
             if(leaf&&leaf->valid)*terminal=*leaf;
         }
         return true;
@@ -478,8 +477,8 @@ bool wood_eng_effective_terminal(WoodEngineeringContext *w,const EngBinding *b,G
     if(terminal)memset(terminal,0,sizeof *terminal);
     if(w->resolve_binding){
         if(!w->resolve_binding(w->sources,b,value,path,cap))return false;
-        if(terminal&&w->sources){
-            const EngTerminal *leaf=wood_engineering_sources_last_terminal(w->sources);
+        if(terminal&&w->last_terminal){
+            const EngTerminal *leaf=w->last_terminal(w->sources);
             if(leaf&&leaf->valid)*terminal=*leaf;
         }
         return true;

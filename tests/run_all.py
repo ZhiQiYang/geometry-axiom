@@ -5,6 +5,7 @@
     python tests/run_all.py --build         # build stale/missing binaries first (tests/binaries.py), then run
     python tests/run_all.py --only bridge   # only suites whose name contains "bridge"  (repeatable)   [PARTIAL run]
     python tests/run_all.py --list          # show the suites and what each needs
+    python tests/run_all.py --shard 1/3     # deterministic measured-cost partition; aggregate every shard for full coverage
     python tests/run_all.py --allow-skip    # skips no longer affect the exit code
     python tests/run_all.py --simulate-missing GEOMETRY_MODEL_BASE   # run as if that variable were unset [DEMO run, never exit 0]
     python tests/run_all.py --update-expected   # full run only: rewrite tests/run_all.expected.json from what was discovered
@@ -13,7 +14,7 @@ Exit codes (lowest number wins): 1 any test failed / suite crashed / timed out /
 run_all.expected.json / unregistered test file; 2 environment problem (stale or missing binary, SAC block, node missing,
 canvas shim did not redirect, run_tests exit 2, another run_all or build is running); 3 only skips (unless --allow-skip);
 4 a --simulate-missing demo that would otherwise have been 0; 0 everything that was selected passed.
-A complete run (no --only / --extra-py / --simulate-missing) that exits 0 means: every suite ran, every suite found exactly
+A complete run (no --only / --extra-py / --simulate-missing / --shard) that exits 0 means: every suite ran, every suite found exactly
 the number of tests listed in tests/run_all.expected.json, none failed, none was skipped (the only exemption is the named
 allowlist ALLOWED_SKIPS, e.g. the POSIX-only /dev/full test on Windows).  Partial/demo runs say so in their last lines.
 
@@ -33,11 +34,13 @@ import subprocess
 import sys
 import time
 import unicodedata
+import hashlib
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 import binaries  # noqa: E402
+from native_shards import parse_shard, partition_suites, profile_digest, validate_partition
 
 IS_WIN = os.name == 'nt'
 LOG_DIR = binaries.OUT_DIR / 'run_all-logs'
@@ -48,6 +51,11 @@ EXPECTED_FILE = HERE / 'run_all.expected.json'
 # Every tests/test_*.py MUST appear here (value = native binaries it needs; [] is a deliberate "needs none").
 # A test file that is on disk but not listed makes run_all fail and name it.
 PY_NEEDS = {
+    'test_geo318_reading_a_oracle': [],
+    'test_geo318_reading_a_native': [],
+    'test_geo314_stagger_commit': ['bridge'],
+    'test_geo314_commit_paths': [],
+    'test_geo314_ordered_facts': [],
     'test_architecture_contract': [],
     'test_product_architecture': [],
     'test_assembly_capacity': ['bridge'],
@@ -184,6 +192,7 @@ PY_NEEDS = {
     'test_geo261_section_profile_authority': [],
     'test_geo261_source_describe': [],
     'test_geo261_source_index': [],
+    'test_geo261_load_residual': [],
     'test_geo261_version_activation': [],
     'test_geo261_wood_contact_world': [],
     'test_geo261_wood_derived_placement': [],
@@ -221,6 +230,7 @@ PY_NEEDS = {
     'test_release_gate': [],
     'test_local_launcher': ['core', 'bridge', 'model-base'],
     'test_rule_case_workbench_http': ['bridge'],
+    'test_k1_mutation_runners': [],
     'test_rule_case_host': ['bridge'],
     'test_rule_case_catalog': ['bridge'],
     'test_rule_case_definition': [],
@@ -271,6 +281,7 @@ NODE_TEST_FILES = [
     'tests/test_card_reference_project_store.js',
     'tests/test_project_store.js',
     'tests/test_shared_format17.js',
+    'tests/test_cutting_summary.js',
     'tests/test_subdivision_project_store.js',
     'tests/test_reference_workspace_races.js',
     'tests/test_room_outline.js',
@@ -298,13 +309,15 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:cutting_layering': 'tests/test_cutting_layering.js',
     'node:cutting_owner': 'tests/test_cutting_owner.js',
     'node:cutting_plan': 'tests/test_cutting_plan.js',
     'node:cutting_project_store': 'tests/test_cutting_project_store.js',
     'node:cutting_session': 'tests/test_cutting_session.js',
     'node:draw_annotation': 'tests/test_draw_annotation.js',
     'node:woodworking_frontend': 'tests/test_woodworking_frontend.js',
-    'node:grid_inspector_command': 'tests/test_grid_inspector_command.js',    'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
+    'node:grid_inspector_command': 'tests/test_grid_inspector_command.js',
+    'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
     'node:parameter_confirmation_settlement': 'tests/test_parameter_confirmation_settlement.js',
     'node:face_reference_settlement': 'tests/test_face_reference_settlement.js',
     'node:face_projection_lifecycle': 'tests/test_face_projection_lifecycle.js',
@@ -327,6 +340,8 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/cutting_legacy_cases.js': 'Fixed inputs for the independently pinned pre-layering cutting oracle; no tests registered',
+    'tests/generate_cutting_legacy_fixture.js': 'Explicit regeneration/check of fixed cd4bc880 Git blobs in an isolated VM; never reads current product sources',
     'tests/k1b_cutting_settings_fixture.cjs': 'Pinned K1-b validator fixture for the shared /17 owner-dispatch contract; not an executable test',
     'tests/k2a_browser_receipt.cjs': 'Shared browser receipt/identity helper; registers no tests',
     'tests/k2a_rule_repin_browser.cjs': 'Required actual source-rule raw preservation and two-way repin comparison gate',
@@ -471,11 +486,18 @@ class Row:
         self.seconds = 0.0
         self.note = ''
         self.ran = False
+        self.process_exit_code = None  # actual child status; inventory checks are not assertions
         self.allowed_skips = 0      # skips matched by the named ALLOWED_SKIPS list: shown, but not an exit-3 reason
         self.env_problem = False    # counts towards exit code 2
         self.crashed = False        # counts towards exit code 1 even without a failed test
         self.expected_problem = ''  # discovered count differs from run_all.expected.json
         self.details = []
+
+
+def report_row(row):
+    keys = ['name', 'counted', 'total', 'passed', 'failed', 'skipped', 'seconds', 'ran',
+            'process_exit_code', 'allowed_skips', 'env_problem', 'crashed', 'expected_problem']
+    return {key: getattr(row, key) for key in keys}
 
 
 def node_exe():
@@ -724,6 +746,7 @@ def run_suite(suite, env, infos):
     else:
         res = run_process([node_exe(), *suite.cmd], env, suite.timeout)
     code, out, secs, timed_out = res.code, res.out, res.seconds, res.timed_out
+    row.process_exit_code = code
     row.seconds = secs
     row.ran = True
     log_file.write_text(out, encoding='utf-8')
@@ -875,7 +898,7 @@ def load_expected():
     return data, ''
 
 
-def compare_expected(rows, suites, expected, err, full):
+def compare_expected(rows, suites, expected, err, full, universe=None):
     """Strict equality of each suite's discovered count with run_all.expected.json.  Returns [(suite, message)]."""
     if expected is None:
         return [('(expected 檔)', err)]
@@ -900,9 +923,10 @@ def compare_expected(rows, suites, expected, err, full):
         if msg:
             r.expected_problem = msg
             problems.append((r.name, msg))
-    if full:
+    if full or universe is not None:
+        registered = {s.name for s in universe} if universe is not None else by_name
         for name in entries:
-            if name not in by_name:
+            if name not in registered:
                 problems.append((name, '%s 登記了這個 suite，但 run_all 已沒有它' % EXPECTED_FILE.name))
     return problems
 
@@ -1021,6 +1045,8 @@ def partial_flags(args):
         flags.append('--extra-py ' + extra)
     for var in args.simulate_missing:
         flags.append('--simulate-missing ' + var)
+    if getattr(args, 'shard', None):
+        flags.append('--shard %d/%d' % args.shard)
     return flags
 
 
@@ -1036,17 +1062,35 @@ def main(argv=None):
                         help='模擬缺少某環境變數（僅供驗證 skip 是否可見；示範跑，exit code 絕不為 0）')
     parser.add_argument('--update-expected', action='store_true',
                         help='完整跑之後重寫 tests/run_all.expected.json（不能與 --only／--extra-py／--simulate-missing 併用）')
+    parser.add_argument('--shard', type=parse_shard, metavar='i/n',
+                        help='依固定CI耗時分片，1起算；各片仍嚴格核對expected，完整驗收須彙總全部片')
+    parser.add_argument('--report', type=Path, help='寫出本次原始suite執行收據，供跨片完整性核對')
     args = parser.parse_args(argv)
     if hasattr(sys.stdout, 'reconfigure'):
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
     partial = partial_flags(args)
+    if args.shard and (args.only or args.extra_py or args.simulate_missing):
+        print('--shard不能與--only／--extra-py／--simulate-missing混用')
+        return 2
     if args.update_expected and partial:
         print('--update-expected 只能在完整跑使用；你同時給了：%s' % '、'.join(partial))
         return 2
     registry_errors = check_registry()
 
     suites = build_suites()
+    args._shard_universe = list(suites) if args.shard else None
+    if args.shard:
+        index, count = args.shard
+        try:
+            parts = partition_suites(suites, count)
+            validate_partition(suites, parts)
+        except ValueError as exc:
+            print('分片規劃錯誤：%s' % exc)
+            return 2
+        suites = parts[index-1]
+        print('分片%d/%d：%d／完整%d個suite；完整登記檢查仍執行' %
+              (index, count, len(suites), len(args._shard_universe)))
     for extra in args.extra_py:
         extra_path = Path(extra).resolve()
         suites.append(Suite('extra:' + extra_path.stem, 'unittest', [sys.executable, str(RUNNER), str(extra_path)], [], 300,
@@ -1077,6 +1121,7 @@ def main(argv=None):
 
 
 def run(args, suites, registry_errors, partial):
+    started = time.monotonic()
     # which binaries the selected suites need (a binary whose every env variable is simulated-missing is not needed)
     simulated = set(args.simulate_missing)
     ignored = {b.name for b in binaries.REGISTRY if b.envs and all(v in simulated for v in b.envs)}
@@ -1142,7 +1187,8 @@ def run(args, suites, registry_errors, partial):
         updated = update_expected(rows, suites, registry_errors)
     else:
         expected, exp_err = load_expected()
-        expected_problems = compare_expected(rows, suites, expected, exp_err, full)
+        expected_problems = compare_expected(rows, suites, expected, exp_err, full,
+                                             universe=getattr(args, '_shard_universe', None))
 
     print()
     print_table(rows)
@@ -1197,6 +1243,18 @@ def run(args, suites, registry_errors, partial):
     elif args.allow_skip:
         meaning += '；注意：本次用了 --allow-skip，skip 已不影響結果'
     print('\nexit %d：%s' % (code, meaning))
+    if getattr(args, 'report', None):
+        universe = getattr(args, '_shard_universe', None) or suites
+        report = dict(schema='geometry-native-shard/1', shard=args.shard,
+                      commit_sha=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+                      universe=[s.name for s in universe], selected=[s.name for s in suites],
+                      rows=[report_row(row) for row in rows],
+                      exit_code=code, seconds=time.monotonic()-started,
+                      registry_errors=registry_errors, expected_problems=expected_problems,
+                      expected_sha256=hashlib.sha256(EXPECTED_FILE.read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
+                      timings_sha256=profile_digest())
+        args.report.parent.mkdir(parents=True, exist_ok=True)
+        args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
     return code
 
 

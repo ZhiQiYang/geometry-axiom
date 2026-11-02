@@ -1,0 +1,861 @@
+{
+  "original_driver_exit": 0,
+  "original_passed": true,
+  "original_phases": [
+    {
+      "name": "formal",
+      "original_argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/train337-final-p52-p189-prep/p52/p52-formal.py",
+        "--repo",
+        "/tmp/train337-323-f64d638f-source",
+        "--main-repo",
+        "/workspace/geo288-main-merge-20261023/reference/main",
+        "--sha",
+        "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "--out",
+        "/tmp/g337p52L/formal",
+        "--heavy-lock",
+        "/tmp/g261r3/heavy.lock"
+      ],
+      "outer_command": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/geo261-environment/reap_children.py",
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/tmp/train337-final-p52-p189-prep/p52/p52-formal.py",
+          "--repo",
+          "/tmp/train337-323-f64d638f-source",
+          "--main-repo",
+          "/workspace/geo288-main-merge-20261023/reference/main",
+          "--sha",
+          "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+          "--out",
+          "/tmp/g337p52L/formal",
+          "--heavy-lock",
+          "/tmp/g261r3/heavy.lock"
+        ],
+        "cwd": "/tmp/train337-323-f64d638f-source",
+        "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "source_variant": "final-original-special",
+        "environment": {
+          "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/tmp/g337p52L/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792806675.8214028,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/tmp/g337p52L/subcommands/000006",
+        "ended_epoch": 1792807030.7841227,
+        "stdout_sha256": "1c5ed7c3e0b14ae6f4927e04f9b82fc0978b7d4518f8ab3839fbee6ddc0d2c76",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 752,
+        "stderr_bytes": 0
+      },
+      "reaper_log": "/tmp/g337p52L/formal-reaper.jsonl",
+      "primary_returncode": 0,
+      "reaper_sha256": "342278220994850f4e5144c92ee81d3c4013d38b61a9eec54cc56ca958047752"
+    },
+    {
+      "name": "verifier",
+      "original_argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/train337-final-p52-p189-prep/p52-verifier/run.py",
+        "--sha",
+        "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "--formal-out",
+        "/tmp/g337p52L/formal",
+        "--out",
+        "/tmp/g337p52L/verifier"
+      ],
+      "outer_command": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/geo261-environment/reap_children.py",
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/tmp/train337-final-p52-p189-prep/p52-verifier/run.py",
+          "--sha",
+          "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+          "--formal-out",
+          "/tmp/g337p52L/formal",
+          "--out",
+          "/tmp/g337p52L/verifier"
+        ],
+        "cwd": "/tmp/train337-323-f64d638f-source",
+        "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "source_variant": "final-original-special",
+        "environment": {
+          "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/tmp/g337p52L/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792807030.7849486,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/tmp/g337p52L/subcommands/000007",
+        "ended_epoch": 1792807030.894302,
+        "stdout_sha256": "2e7ecfc9e1ac0ea78c3dfa4b94c16667401100daec429e093a543e8c8ca85344",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 199,
+        "stderr_bytes": 0
+      },
+      "reaper_log": "/tmp/g337p52L/verifier-reaper.jsonl",
+      "primary_returncode": 0,
+      "reaper_sha256": "ee5cf092e13d456381510c333fc55ada3018d64779cefcc832019985cc1e7896"
+    }
+  ],
+  "source_before": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "tree": "0a9f5ecf3f2b43478049ae5a5fcd463cca6fb2a7",
+    "status": "",
+    "index_sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0",
+    "refs_sha256": "7ad654d3dabfe19ddcf726f26cd004dffbbc2493cf1d225611d39a0cfc711848"
+  },
+  "source_after": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "tree": "0a9f5ecf3f2b43478049ae5a5fcd463cca6fb2a7",
+    "status": "",
+    "index_sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0",
+    "refs_sha256": "7ad654d3dabfe19ddcf726f26cd004dffbbc2493cf1d225611d39a0cfc711848"
+  },
+  "original_errors": [],
+  "started_utc": "2026-10-24T01:51:15.757282+00:00",
+  "ended_utc": "2026-10-24T01:57:10.946642+00:00",
+  "original_timing_criterion": "medians['fix'] <= medians['main']",
+  "original_order": [
+    "main",
+    "fix",
+    "fix",
+    "main"
+  ],
+  "repetitions_per_block": 8,
+  "samples_per_side": 16,
+  "original_controls": [
+    "normal",
+    "delay",
+    "revert-delay",
+    "wrong",
+    "missing"
+  ],
+  "schema": "original-performance-terminal-collection/1",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "gate": "p52",
+  "original_outer_exits": {
+    "p52": 0
+  },
+  "original_capture_rows": [
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000001",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000002",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000003",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000004",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000005",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000006",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000007",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000008",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000009",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000010",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000011",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000012",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000013",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000014",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000015",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000016",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000017",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000018",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000019",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000020",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000021",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000022",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000023",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000024",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000025",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000026",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000027",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000028",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000029",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000030",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000031",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000032",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000033",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000034",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000035",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000036",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000037",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000038",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000039",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000040",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000041",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000042",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000043",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000044",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000045",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000046",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000047",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000048",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000049",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000050",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000051",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000052",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000053",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000054",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000055",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000056",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000057",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000058",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000059",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000060",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000061",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000062",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000063",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000064",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000065",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/formal/subcommands.json",
+      "directory": "/tmp/g337p52L/formal/subcommands/000066",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/subcommands.json",
+      "directory": "/tmp/g337p52L/subcommands/000001",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/subcommands.json",
+      "directory": "/tmp/g337p52L/subcommands/000002",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/subcommands.json",
+      "directory": "/tmp/g337p52L/subcommands/000003",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/subcommands.json",
+      "directory": "/tmp/g337p52L/subcommands/000004",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/subcommands.json",
+      "directory": "/tmp/g337p52L/subcommands/000005",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/subcommands.json",
+      "directory": "/tmp/g337p52L/subcommands/000006",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/subcommands.json",
+      "directory": "/tmp/g337p52L/subcommands/000007",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/subcommands.json",
+      "directory": "/tmp/g337p52L/subcommands/000008",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/subcommands.json",
+      "directory": "/tmp/g337p52L/subcommands/000009",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/subcommands.json",
+      "directory": "/tmp/g337p52L/subcommands/000010",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/subcommands.json",
+      "directory": "/tmp/g337p52L/subcommands/000011",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/subcommands.json",
+      "directory": "/tmp/g337p52L/subcommands/000012",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/tmp/g337p52L/verifier/subcommands.json",
+      "directory": "/tmp/g337p52L/verifier/subcommands/000001",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/train337-L-p52-original-launch-20261024/subcommands.json",
+      "directory": "/workspace/train337-L-p52-original-launch-20261024/subcommands/000001",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/train337-final-performance-collection-preparation/p52-collection-launch/subcommands.json",
+      "directory": "/workspace/train337-final-performance-collection-preparation/p52-collection-launch/subcommands/000001",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/train337-final-performance-collection-preparation/p52-v2-collection-launch/subcommands.json",
+      "directory": "/workspace/train337-final-performance-collection-preparation/p52-v2-collection-launch/subcommands/000001",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    }
+  ],
+  "elf_payload_excluded_count": 6,
+  "elf_payload_excluded_bytes": 4610784,
+  "no_existing_file_deleted": true,
+  "no_subject_executed": true,
+  "limitations": [
+    "Only original exposed outputs are retained. No hidden pipe, missing receipt or already-cleaned source snapshot is invented.",
+    "All excluded ELF payloads remain at original paths with hashes; no executable body is archived or unlinked.",
+    "Original source guards establish historical identity; current shared ROOT/cache is not read.",
+    "Timing-only never changes original full P189 red. Each GEO323 stage execution, cumulative CLI result and quantitative target is distinct.",
+    "Original v4 source_role/source_sha heuristic may label orchestration base because argv contains --base; original fields remain unmodified.",
+    "A collection roundtrip success only verifies evidence bytes, not acceptance success.",
+    "Only exact terminal P52 Chrome Singleton IPC paths are metadata-only exclusions. Symlink bytes/targets and lstat are recorded without following links; socket payload is not representable and is not claimed archived. All original IPC paths remain. The initial collector failure and exact old collector bytes are retained separately inside this package.",
+    "Only the original P52 formal ledger may append effective_environment/legacy_probe_log after c387 result persistence. No original common OS field may differ; both original files and their exact annotation mapping are preserved. Both initial collector failures remain separate from the original product result."
+  ],
+  "terminal_chrome_ipc_metadata_count": 45,
+  "original_p52_post_capture_annotation_rows": 65
+}

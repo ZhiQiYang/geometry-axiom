@@ -1,0 +1,43 @@
+"""Bind completed Q38 originals to the existing one-part collector format; no archive/test execution."""
+from pathlib import Path,PurePosixPath
+import hashlib,json,os,stat,tarfile,time
+HERE=Path('/workspace/geo337-F9-q38-collection-preparation-20261025')
+SELECT=Path('/workspace/geo337-F9-q38-package-selection-v2-20261025/ROOT_SELECTION.json')
+F='4f8a794f4167c3562eb182045102e86e9e37cca9';RESERVE=64*1024*1024;META=2*1024*1024
+
+def h(p):
+ z=hashlib.sha256()
+ with p.open('rb') as f:
+  for b in iter(lambda:f.read(1024*1024),b''):z.update(b)
+ return z.hexdigest()
+def need(x,message):
+ if not x:raise RuntimeError(message)
+def J(p):return json.loads(p.read_bytes())
+def state(p):
+ s=p.lstat();return [s.st_dev,s.st_ino,s.st_mode,s.st_size,s.st_mtime_ns,s.st_nlink]
+def write(name,data):(HERE/name).write_text(json.dumps(data,ensure_ascii=False,separators=(',',':'))+'\n')
+def overhead(n):return (n+4095)//4096+(n+16383)//16384+(n+33554431)//33554432+1024
+
+def main():
+ need(not HERE.exists(),'fresh preparation required');need(h(SELECT)=='64da4885e6f4288317feb0c71708d4073c79d3334ec4c308839dd9a40745cde1','accepted selection changed')
+ selection=J(SELECT);need(selection['source_sha']==F,'original F9 source required');invref=selection['raw']['inventory'];ip=Path(invref['path']);need(h(ip)==invref['sha256'],'original inventory pin changed');raw=J(ip)
+ root=Path(selection['raw']['source_root']);actual=J(root/'receipt.json');need(actual['source_sha']==F and actual['launcher_exit_code']==0 and actual['passed'] is True,'original Q38 terminal0 required')
+ need(h(Path('/workspace/geo337-F9-q38-actual-independent-peer-20261025/REVIEW.json'))=='9e6a2906cbd37b0615b252a69deb95155423fb225cd63d093cb11807b1b3c9d0','independent actual peer changed')
+ roots=[];rows=[];names=set()
+ def add(prefix,source,files,whole=False):
+  source=Path(source);ri=len(roots);roots.append({'prefix':prefix,'source_root':str(source),'selection':'whole-tree'if whole else'exact-files','exact_files':None if whole else[x[0]for x in files]})
+  for rel,size,pin in sorted(files):
+   p=source/rel;name=prefix+'/'+rel;s=state(p);need(stat.S_ISREG(s[2])and s[3]==size and h(p)==pin,'original source bytes/type/hash changed: '+str(p));need(state(p)==s,'source changed during read')
+   need(name not in names and not PurePosixPath(name).is_absolute()and'..'not in PurePosixPath(name).parts,'unsafe/duplicate member');names.add(name)
+   info=tarfile.TarInfo(name);info.mode=s[2]&0o777;info.mtime=s[4]//1000000000;info.size=size;need(len(info.tobuf(tarfile.PAX_FORMAT))+511<=4096,'member header/padding exceeds bound');rows.append([ri,rel,'regular',size,pin,s,None])
+ rawfiles=[(Path(x['path']).relative_to(root).as_posix(),x['bytes'],x['sha256'])for x in raw];need(len(rawfiles)==300 and sum(x[1]for x in rawfiles)==14309477,'exact original300 scope')
+ actual_paths={p.relative_to(root).as_posix()for p in root.rglob('*')if not p.is_dir()};need(actual_paths=={x[0]for x in rawfiles},'whole original Q38 leafset changed');add('q38-original',root,rawfiles,True)
+ for group in selection['additional_groups'].values():add(group['archive_prefix'],group['source_root'],group['files'])
+ admission=Path('/dev/shm/geometry-axiom-geo337-20261025/q38-root-admission-20261025.json');request=J(admission);need(request['source_sha']==F and request['gate']=='q38'and request['root_source_exclusive']is True,'original Q38 root admission mismatch');need(request['subject_tool_sha256']=='45c78d779e5db243c10a10990929eb24280380dbc57c94dc9ba94c67d242479d'and request['peer_sha256']=='505abceeddf75b56360ad42d4a7be2de220a468b67653c36204b4fb9de31080d','original admission tool/peer pins');add('root-admission',admission.parent,[(admission.name,admission.stat().st_size,h(admission))])
+ need(len(rows)==346,'345 selected originals plus one bound admission')
+ logical=sum(r[3]for r in rows);n=logical+4096*len(rows)+11264;gz=n+overhead(n)
+ inv={'schema':'geo337-complete-q38-compact-inventory/1','source_sha':F,'roots':roots,'record_fields':['root','relative','type','bytes','sha256','state','target'],'state_fields':['device','inode','mode','bytes','mtime_ns','nlink'],'records':rows,'original_raw_regular_files':300,'original_raw_symlinks':0,'original_raw_regular_bytes':14309477,'subject_rerun':False,'selection_sha256':h(SELECT),'original_Q38_summary':{'killed':43,'equivalent':1},'selection':'All300 retained original Q38 raw files including baseline model-base; actual runner lifecycle already removed temporary ELF/copies. Exact45 tools/peers plus original admission. No source checkout or git objects copied.'}
+ part={'part':1,'members':len(rows),'logical_regular_bytes':logical,'header_padding_bound':4096*len(rows),'tar_end_alignment_bound':11264,'tar_upper_bytes':n,'gzip_worst_case_overhead':overhead(n),'gzip_upper_bytes':gz,'metadata_bytes':META,'reserve_bytes':RESERVE,'required_fresh_bytes':gz+META+RESERVE,'members_exact':[roots[r[0]]['prefix']+'/'+r[1]for r in rows]}
+ HERE.mkdir();write('INVENTORY.json',inv);write('PARTS.json',[part]);(HERE/'prepare_inventory.py').write_bytes(Path(__file__).read_bytes());write('RESULT.json',{'schema':'geo337-q38-inventory-preparation/1','inventory_exit':0,'source_sha':F,'inventory_sha256':h(HERE/'INVENTORY.json'),'parts_sha256':h(HERE/'PARTS.json'),'inventory_regular_files':len(rows),'inventory_regular_bytes':logical,'inventory_symlinks':0,'part_count':1,'maximum_required_fresh_bytes':part['required_fresh_bytes'],'current_execution_admitted':False,'archive_created':False,'subject_rerun':False,'prepare_sha256':h(HERE/'prepare_inventory.py'),'root_admission_binding':{'path':str(admission),'bytes':admission.stat().st_size,'sha256':h(admission)},'epoch':time.time()})
+ print(json.dumps({'path':str(HERE),'inventory_sha256':h(HERE/'INVENTORY.json'),'parts_sha256':h(HERE/'PARTS.json'),'result_sha256':h(HERE/'RESULT.json'),'files':len(rows),'logical_bytes':logical,'required_fresh_bytes':part['required_fresh_bytes'],'archive_created':False}))
+if __name__=='__main__':main()

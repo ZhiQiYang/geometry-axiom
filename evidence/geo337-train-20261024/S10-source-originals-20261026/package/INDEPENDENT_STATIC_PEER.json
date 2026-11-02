@@ -1,0 +1,301 @@
+{
+  "schema": "geo337-S10-closed-collector-static-peer/1",
+  "exit_code": 0,
+  "collector_sha256": "a0f8f4b37db678ced028297f52f8294daa339a2a9340d076dbdf047a5d8513a1",
+  "inventory_sha256": "6a5d9a92aa8a32edfa16faec30c34b44cd378ebafe69bcdb16e9c63959d572a9",
+  "parts_sha256": "64037b6dd69ad57602383dad5fa5896949feb37a27a677302daa8296b713063e",
+  "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "verdict": "靜態準備可接受；未執行 collection，未授予執行額度。",
+  "blocking_findings": [],
+  "scope": {
+    "static_code_and_frozen_metadata_only": true,
+    "collection_executed": false,
+    "subject_rerun": false,
+    "oracle_revalidated": false,
+    "shm_read_or_write": false,
+    "active_F10_pool_cache_read": false,
+    "original_raw_payload_rehashed": false,
+    "archive_created": false,
+    "current_execution_admitted": false,
+    "refs_changed": false
+  },
+  "inputs": [
+    {
+      "path": "/tmp/geo337-S10-closed-original-collection-preparation-20261025/collect_s10_closed.py",
+      "bytes": 12140,
+      "sha256": "a0f8f4b37db678ced028297f52f8294daa339a2a9340d076dbdf047a5d8513a1"
+    },
+    {
+      "path": "/tmp/geo337-S10-closed-original-collection-preparation-20261025/INVENTORY.json",
+      "bytes": 199357,
+      "sha256": "6a5d9a92aa8a32edfa16faec30c34b44cd378ebafe69bcdb16e9c63959d572a9"
+    },
+    {
+      "path": "/tmp/geo337-S10-closed-original-collection-preparation-20261025/PARTS.json",
+      "bytes": 59884,
+      "sha256": "64037b6dd69ad57602383dad5fa5896949feb37a27a677302daa8296b713063e"
+    },
+    {
+      "path": "/workspace/geo337-F9-q38-collection-preparation-20261025/collect_q38.py",
+      "bytes": 11720,
+      "sha256": "65a25be44032bff390584123e86740c78e4ff0a5e7709b317b8f9e3fc785f820"
+    },
+    {
+      "path": "/tmp/geo337-S10-closed-original-collection-preparation-20261025/RESULT.json",
+      "bytes": 697,
+      "sha256": "1507a579566842c4c6b48a26a0f2d6e1f9bf0083a4ab8ed81fdf788d051eabb9"
+    },
+    {
+      "path": "/tmp/geo337-S10-closed-original-collection-preparation-20261025/prepare_inventory.py",
+      "bytes": 7317,
+      "sha256": "9eb404bad39d6865e0443ccdad5f7c3e4f53ddf9d20e86cfd657af9c25ea304c"
+    },
+    {
+      "path": "/tmp/geo337-S10-closed-original-collection-preparation-20261025/COLLECTOR_INPUTS_ONLY.diff",
+      "bytes": 8358,
+      "sha256": "e3292b4a3aaab622e453f2a2f60f14311ddcad0ae3aba08fe0570aad2387d1c2"
+    },
+    {
+      "path": "/tmp/geo337-S10-closed-original-collection-preparation-20261025/PINS.json",
+      "bytes": 1274,
+      "sha256": "f62d6977e2368bab109039a771f3a5d7bc4c98e72f768c65b953fc165d53c2f5"
+    },
+    {
+      "path": "/tmp/geo337-S10-closed-original-collection-preparation-20261025/README.md",
+      "bytes": 3443,
+      "sha256": "6042d55228f2429ee608655b3c24a539fb2f4867af5c10e39302cb7360572063"
+    },
+    {
+      "path": "/tmp/geo337-S10-closed-original-collection-preparation-20261025/COLLECTION_REQUEST.unbound.json",
+      "bytes": 706,
+      "sha256": "03314de5c3fd2fb9a3049c6e69e4626532e219240f979af965d8872e75662287"
+    }
+  ],
+  "code_comparison": {
+    "seven_helpers_AST_equal": [
+      "sha",
+      "digest",
+      "J",
+      "state",
+      "write",
+      "verify",
+      "overhead"
+    ],
+    "recorded_diff_exactly_equals_fresh_unified_diff": true,
+    "scope_helper_change": "verify_scope 只將 Q38 的 300 原件範圍改為三個封閉 S10 根的精確檔數與 bytes；其 whole-tree／exact-files 檢查保持。",
+    "other_changes": "僅來源／input pins／schema、允許 output 名稱、archive/result 名稱及原 gate 結果標籤。",
+    "guards_static_confirmed": [
+      "非 execute 入口只回 PREPARATION_ONLY；執行需非 optimized Python、明確 root lease 與 execute true",
+      "exact collector/inventory/parts/preparation/preparer pins；independent peer SHA、整數 exit 0 及三 pins",
+      "所有成員安全相對路徑、唯一且單包恰好一次；三個 closed 根 scope 精確",
+      "out 限指定 SHM OWN 下新直接子目錄，parent 不得 symlink",
+      "逐來源前後 state 與 SHA、最終 scope/state/SHA；stream tar exact order/type/size/bytes hash",
+      "完整 gzip EOF 讀取檢查 CRC/trailer；64 MiB reserve、2 MiB metadata 與完整 gzip 上界公式保持",
+      "失敗保留 traceback 與 collection_exit 1；成功保留原 gate 紅燈、volatile／published／remote_hash／delivered 界線"
+    ]
+  },
+  "selected_scope_from_inventory": {
+    "roots": [
+      {
+        "prefix": "source-preparation",
+        "source_root": "/dev/shm/geometry-axiom-geo337-20261025/F10-source-preparation-reserve-anchor",
+        "selection": "whole-tree",
+        "files": 1038,
+        "bytes": 11542171
+      },
+      {
+        "prefix": "source-root-original",
+        "source_root": "/dev/shm/geometry-axiom-geo337-20261025/S10-source-preparation-root-original-20261025",
+        "selection": "whole-tree",
+        "files": 9,
+        "bytes": 18194
+      },
+      {
+        "prefix": "preledger-original",
+        "source_root": "/dev/shm/geometry-axiom-geo337-20261025/S10-preledger-checks-original-20261025",
+        "selection": "whole-tree",
+        "files": 65,
+        "bytes": 11689691
+      },
+      {
+        "prefix": "source-tool-preparation",
+        "source_root": "/workspace/geo337-F10-source-reserve-anchor-preparation-20261025",
+        "selection": "whole-tree",
+        "files": 88,
+        "bytes": 174229
+      },
+      {
+        "prefix": "source-tool-static-peer",
+        "source_root": "/workspace/geo337-F10-source-reserve-anchor-static-peer-20261025",
+        "selection": "whole-tree",
+        "files": 1,
+        "bytes": 1827
+      },
+      {
+        "prefix": "source-actual-peer",
+        "source_root": "/workspace/geo337-S10-source-preparation-actual-peer-20261025",
+        "selection": "whole-tree",
+        "files": 1,
+        "bytes": 3694
+      },
+      {
+        "prefix": "source-reviewer-history",
+        "source_root": "/workspace/geo337-S10-source-preparation-actual-peer-preparation-20261025",
+        "selection": "whole-tree",
+        "files": 2,
+        "bytes": 8836
+      },
+      {
+        "prefix": "preledger-actual-peer",
+        "source_root": "/workspace/geo337-S10-preledger-actual-peer-20261025",
+        "selection": "whole-tree",
+        "files": 2,
+        "bytes": 31198
+      },
+      {
+        "prefix": "host-and-reviewers",
+        "source_root": "/workspace",
+        "selection": "exact-files",
+        "files": 6,
+        "bytes": 28712
+      },
+      {
+        "prefix": "original-recorder",
+        "source_root": "/workspace/geo261-environment/final-f-contact-checker-proof-tools",
+        "selection": "exact-files",
+        "files": 1,
+        "bytes": 2819
+      },
+      {
+        "prefix": "original-admission-sampler",
+        "source_root": "/workspace/geo337-F9-browser-sampler-preparation-20261025",
+        "selection": "exact-files",
+        "files": 1,
+        "bytes": 9510
+      }
+    ],
+    "closed_raw_regular_files": 1112,
+    "closed_raw_regular_bytes": 23250056,
+    "all_regular_members": 1214,
+    "all_regular_bytes": 23510881,
+    "symlinks": 0,
+    "safe_unique_member_paths": true,
+    "parts_members_exactly_equal_inventory_order": true,
+    "no_active_pool_cache_or_git_root_selected": true,
+    "history": "source-reviewer-history 包含 INITIAL_REVIEW_FAILURE.json 與 review.initial.py；錯猜 immutable Git 路徑 exit 128 由 preledger peer 原 argv/exit/hash 說明保留，不宣稱另有未存 pipe。"
+  },
+  "budget": {
+    "part": 1,
+    "members": 1214,
+    "logical_regular_bytes": 23510881,
+    "header_padding_bound": 4972544,
+    "tar_end_alignment_bound": 11264,
+    "tar_upper_bytes": 28494689,
+    "gzip_worst_case_overhead": 9722,
+    "gzip_upper_bytes": 28504411,
+    "metadata_bytes": 2097152,
+    "reserve_bytes": 67108864,
+    "required_fresh_bytes": 97710427
+  },
+  "budget_verification": {
+    "formula": "n = logical_bytes + 4096 * members + 11264; gzip = n + ceil(n/4096) + ceil(n/16384) + ceil(n/33554432) + 1024; required = gzip + 64 MiB + 2 MiB",
+    "recomputed_required_fresh_bytes": 97710427,
+    "compression_ratio_assumed": false,
+    "fresh_free_or_global_envelope_checked": false,
+    "root_obligation": "root 另綁 accepted peer/request，記錄當次共同 SHM 用量、其他已承諾容量與 2 GiB envelope；單 filesystem free 不足以代表全域 admission。"
+  },
+  "accepted_existing_peers": [
+    {
+      "path": "/workspace/geo337-S10-source-preparation-actual-peer-20261025/REVIEW.json",
+      "bytes": 3694,
+      "sha256": "c01f6d7337297ad36f617eecf1c9067cbb4bf9ce53ba4dd942930c723d38c1ed",
+      "exit_code": 0,
+      "checks": 18498,
+      "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+      "reread_scope": "僅已存 REVIEW bytes/hash 與判定欄位，未重做 18498 項"
+    },
+    {
+      "path": "/workspace/geo337-S10-preledger-actual-peer-20261025/REVIEW.json",
+      "bytes": 30393,
+      "sha256": "1f945f9e84d04fe74c807388dc95d4076ff6ad814ac35e2fb93ff465efbaafd3",
+      "exit_code": 0,
+      "checks": 198,
+      "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+      "original_wrapper_exit": 0,
+      "original_gate_exits": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "all_original_gates_passed": false,
+      "reread_scope": "僅已存 REVIEW bytes/hash 與判定欄位，未重做 198 項"
+    }
+  ],
+  "original_preparation_capture": {
+    "directory": "/tmp/geo337-S10-closed-inventory-original-read-20261025",
+    "actual_process_returncode": 0,
+    "timeout_expired": false,
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "/tmp/prepare_geo337_S10_closed_collection_20261025.py"
+    ],
+    "stdout_bytes": 435,
+    "stderr_bytes": 0,
+    "stdout_output_pins_match_current_inventory_parts_result": true,
+    "original_preparer_bytes_equal_frozen_copy": true,
+    "archive_created": false,
+    "pins": [
+      {
+        "path": "/tmp/geo337-S10-closed-inventory-original-read-20261025/RESULT.json",
+        "bytes": 2089,
+        "sha256": "dca57ed6ff53da3fc330e7a9306bccdc192f50f7c729f4869bfc8e37d856b6ab"
+      },
+      {
+        "path": "/tmp/geo337-S10-closed-inventory-original-read-20261025/subcommands.json",
+        "bytes": 2006,
+        "sha256": "35527269f5b89831b37f1d3aa7a94ab6607d7d105ce3f562b935dbd1a29de205"
+      },
+      {
+        "path": "/tmp/geo337-S10-closed-inventory-original-read-20261025/subcommands/000001/request.json",
+        "bytes": 1668,
+        "sha256": "ba4512dd0b6c2eedbb14db800e8d61951c00b0ead4172135d2c18d762df79d85"
+      },
+      {
+        "path": "/tmp/geo337-S10-closed-inventory-original-read-20261025/subcommands/000001/result.json",
+        "bytes": 1920,
+        "sha256": "df4b380e67b082034dfacbf9fbadb6b8a96ba1fc93ba5ec027776d70239751c1"
+      },
+      {
+        "path": "/tmp/geo337-S10-closed-inventory-original-read-20261025/subcommands/000001/stdin.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/tmp/geo337-S10-closed-inventory-original-read-20261025/subcommands/000001/stdout.bin",
+        "bytes": 435,
+        "sha256": "406b4ceabf5a524e6a095825b3598c6e92eb2183552cb01528a470d733a05af5"
+      },
+      {
+        "path": "/tmp/geo337-S10-closed-inventory-original-read-20261025/subcommands/000001/stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "initial_failure_metadata": {
+    "path": "/workspace/geo337-S10-source-preparation-actual-peer-preparation-20261025/INITIAL_REVIEW_FAILURE.json",
+    "bytes": 361,
+    "sha256": "e351b8896696e999e1c2e3d1f9ee137a1f9429292562efb2b43760b8a5b3ce7d"
+  },
+  "limitations": [
+    "這是 frozen metadata 與程式靜審；未讀 SHM 三根或重新 hash 23 MB 原 raw，當前原件是否仍在且 unchanged 留待未執行 collector 驗證。",
+    "原 source peer 18498/0、preledger peer 198/0 為既有判定 pins；本審查的 0 不表示 preledger 全綠，原 gate exits 必須保持 [1,0,0,0,0,0]。",
+    "collect_s10_closed.py 未執行、未 import；只以 AST／diff／靜態內容審核。沒有新的 archive、roundtrip 或 CRC 實測結果。",
+    "原 collector roundtrip 實作驗 exact name/type/size/content hash；寫入原 mode/mtime，但沒有獨立逐項 readback 比較 mode/mtime，不把它誇稱成已驗證。",
+    "尚未 admission、收件、publication、push 或 remote hash；volatile 包仍不得稱已交付。"
+  ]
+}

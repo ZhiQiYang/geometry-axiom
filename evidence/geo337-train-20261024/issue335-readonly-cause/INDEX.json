@@ -1,0 +1,1406 @@
+{
+  "schema": "issue335-read-only-originals-publication/1",
+  "createdUTC": "2026-10-23T22:59:29.584636+00:00",
+  "productSHA": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "freshHandoffSHA": "339096a7af711bb86224af27e2a981cdeae824c8",
+  "subjectExecutions": 0,
+  "productOrSourceChanged": false,
+  "analysisStatus": "known CLI placement gap; design/SSOT approval required; no fix adopted",
+  "archive": {
+    "path": "/workspace/train337-issue335-readonly-publication/issue335-originals-analysis-and-peer.tar.gz",
+    "bytes": 336629,
+    "sha256": "7ce9623cab87b24c2452de61eff76100a8edc44c75e57c13718f8ffd3e67cce1",
+    "members": 195,
+    "logicalMemberBytes": 1448747,
+    "tarHardlinkMembers": 89
+  },
+  "members": [
+    {
+      "name": "CLI_ORIGINALS.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/CLI_ORIGINALS.json",
+      "bytes": 27586,
+      "sha256": "34097e96bc846cca1dad91a40357f2481b6d5c7d5d3d9e3edff44cd2ecf743c7",
+      "mode": 384
+    },
+    {
+      "name": "CLOSURE.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/CLOSURE.json",
+      "bytes": 3157,
+      "sha256": "c961a80a1119ba2519ea0f8853ff1b4d689c3301c9a137677a2dee628c291b6a",
+      "mode": 384
+    },
+    {
+      "name": "DELIVERY.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/DELIVERY.json",
+      "bytes": 1430,
+      "sha256": "69df24ff55ce4a8c83f605f6174fd8206337d551ea1b379ec2aa759d28e05dd2",
+      "mode": 384
+    },
+    {
+      "name": "FRESH_HANDOFF.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/FRESH_HANDOFF.json",
+      "bytes": 683,
+      "sha256": "a35579f55ae310a4f5748ec4ffd6ef2e251eb1a395f120916069d479c5b3403c",
+      "mode": 384
+    },
+    {
+      "name": "ORIGINALS.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/ORIGINALS.json",
+      "bytes": 2624,
+      "sha256": "9407426553a5858e57ca343747aacabba59812e0a9f9cc42fa0d4256a92b7c6a",
+      "mode": 384
+    },
+    {
+      "name": "QUESTIONS.md",
+      "source_path": "/tmp/train337-issue335-readonly-prep/QUESTIONS.md",
+      "bytes": 1394,
+      "sha256": "ba41bbe3ef98899e8f10a2bfa65b9c1580a3d9b357a6f5e8658daaea51bba1d0",
+      "mode": 384
+    },
+    {
+      "name": "QUESTIONS_ADOPTION.md",
+      "source_path": "/tmp/train337-issue335-readonly-prep/QUESTIONS_ADOPTION.md",
+      "bytes": 1106,
+      "sha256": "00258bde2591db17ebe6df46efe48c3e62307e492ca80273928447426c89464c",
+      "mode": 384
+    },
+    {
+      "name": "REPORT.md",
+      "source_path": "/tmp/train337-issue335-readonly-prep/REPORT.md",
+      "bytes": 7832,
+      "sha256": "7eddfb6bb3527953e0202cb3071dddb3968d290c0ffddaebbe6c5f0b945a46a1",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/commands.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/commands.json",
+      "bytes": 21400,
+      "sha256": "9d823f844c05421b35119ffb630bcbce92d1cab9858f2015996034eb9f8de656",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000001/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000001/request.json",
+      "bytes": 1576,
+      "sha256": "aaa23b9690d5824d2845c34e68f1a1559c9260cfd4d7df5bbdb8b1760679b52d",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000001/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000001/result.json",
+      "bytes": 1831,
+      "sha256": "02d1b78fc392f7196a36e95b20058bca2e1d702d6e9ed3d7761709a4927a160b",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000001/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000001/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000001/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000001/stdout.bin",
+      "bytes": 323066,
+      "sha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000002/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000002/request.json",
+      "bytes": 1589,
+      "sha256": "bd99336884e35e090adcf4f7bde15a7b647601bd6f01f4ed9b0261fbdb797d52",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000002/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000002/result.json",
+      "bytes": 1843,
+      "sha256": "070fabd5894755766f748c8ccc9390a9ed0809e0aa9e51334e45beab4c111cf1",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000002/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000002/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000002/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000002/stdout.bin",
+      "bytes": 28393,
+      "sha256": "ffa570dae26fbfe8bab2d24a9e0663d4b6943983567097fb96553ebab5e42be6",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000003/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000003/request.json",
+      "bytes": 1590,
+      "sha256": "f8db00d9efe3ffdd59d944d9d0e2fd902ccfbb432c144b37f67d2bb6c1ceee0d",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000003/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000003/result.json",
+      "bytes": 1844,
+      "sha256": "d35e0d3b465e14e32a283abba67d6a3bef39c7f865f9900f868dbee36957cf2a",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000003/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000003/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000003/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000003/stdout.bin",
+      "bytes": 64355,
+      "sha256": "1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000004/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000004/request.json",
+      "bytes": 1604,
+      "sha256": "6c4757400a24e2913c5bd8cad922bf7c75c95c81f03be21895ea6e08301823aa",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000004/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000004/result.json",
+      "bytes": 1858,
+      "sha256": "fc872955313cbc6f19dcc0d81982648c5da7a67b03abd61f76229ab5f572a666",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000004/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000004/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000004/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000004/stdout.bin",
+      "bytes": 63190,
+      "sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000005/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000005/request.json",
+      "bytes": 1620,
+      "sha256": "6ea81323643cee50f55ecdebc2bbf02dece2d5465af98b7bfdfdb3b04b997925",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000005/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000005/result.json",
+      "bytes": 1874,
+      "sha256": "932e48ac3dd9ca1415cff9d541ea51d5301744aa9349df3b53d196f4a7a08677",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000005/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000005/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000005/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000005/stdout.bin",
+      "bytes": 34169,
+      "sha256": "003675f6ddb3f679ec5444f49af3103321ed235d0c5106bc5448bf40778db28e",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000006/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000006/request.json",
+      "bytes": 1619,
+      "sha256": "13c611c9b12cf073525e3b85eb15b2b320676a10c0930a54c824062133f4b9ad",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000006/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000006/result.json",
+      "bytes": 1872,
+      "sha256": "3bf8b17c7c2b19a326a8a12479b9763dfb140245935247298f658fc25baf49bd",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000006/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000006/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000006/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000006/stdout.bin",
+      "bytes": 6909,
+      "sha256": "ad7d61d9cb72bb0c4ce9c44493b2cb7caca1fa91cf8b6d0b93bf72b1bf3934a8",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000007/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000007/request.json",
+      "bytes": 1616,
+      "sha256": "413e07be3e69c7e75dbed8f8f0093e9c86cc14d0a7636446ca4b0372e4a29887",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000007/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000007/result.json",
+      "bytes": 1870,
+      "sha256": "79d167f6da6a287cea1b98f457460a611f4d628d5acd9be9f96db6c154884130",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000007/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000007/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000007/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000007/stdout.bin",
+      "bytes": 18808,
+      "sha256": "fbc88b0aac9ab33dedbb1e27ab3aec8f10b7caeb525ffad9e6b8d6baa88dabfb",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000008/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000008/request.json",
+      "bytes": 1617,
+      "sha256": "fdcebe892081b0c61af2b65fbe9c7dc1be748d5b29a77cbc04c94b67e260065c",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000008/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000008/result.json",
+      "bytes": 1870,
+      "sha256": "735da8e18f9a97ec613279c73ba14e5e777888fccfe0fa842f5e04959c6b8381",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000008/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000008/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000008/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000008/stdout.bin",
+      "bytes": 4185,
+      "sha256": "03bf7a5f0cdd844d74c220e51c4b6ad34336fe338d47e80192898c9fab4a026d",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000009/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000009/request.json",
+      "bytes": 1619,
+      "sha256": "df7be9d61d69c354704c8d3805ef8b82e3d41e55fbb47fb2df03302ebb827de8",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000009/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000009/result.json",
+      "bytes": 1873,
+      "sha256": "79f4e4adc4b58957b61b0152d62fd3f4643b764a3ce8e8a41d113ea8c900407f",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000009/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000009/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000009/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000009/stdout.bin",
+      "bytes": 12554,
+      "sha256": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000010/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000010/request.json",
+      "bytes": 1619,
+      "sha256": "a22a276b8edf4a6dcff157d1ba4779b7bccbf7b234b3941df22f929574977284",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000010/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000010/result.json",
+      "bytes": 1872,
+      "sha256": "5c983945c81e9e8ec6205b211692f3711ea2f0f044d4cd8c79f6ce2113e76d6b",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000010/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000010/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000010/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000010/stdout.bin",
+      "bytes": 2853,
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000011/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000011/request.json",
+      "bytes": 1601,
+      "sha256": "7498925f88488394c93f7f7168008dc02c19f2224b840d3c48309705ca91f6cf",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000011/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000011/result.json",
+      "bytes": 1855,
+      "sha256": "f9829d3666b935f4c33d25b41c4464c37ee049e62fb01b946bcc82bc11ea88ff",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000011/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000011/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands/000011/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands/000011/stdout.bin",
+      "bytes": 11410,
+      "sha256": "67c8aaf8475416a230b06fdc7e4252a43844d7b94d90a6a6354c80a94b40316a",
+      "mode": 384
+    },
+    {
+      "name": "closure-collection/subcommands.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/closure-collection/subcommands.json",
+      "bytes": 21400,
+      "sha256": "9d823f844c05421b35119ffb630bcbce92d1cab9858f2015996034eb9f8de656",
+      "mode": 384
+    },
+    {
+      "name": "commands.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/commands.json",
+      "bytes": 13458,
+      "sha256": "7521661c6fe4d0fa94012df8b2076505e8fc009461d6f9b2449c48818f35b2d0",
+      "mode": 384
+    },
+    {
+      "name": "issue335-read-once/commands.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/issue335-read-once/commands.json",
+      "bytes": 1957,
+      "sha256": "3a6c913cd0376c95dac66160fd11ae531e2600f3e4808bd8478a0f620f3895e7",
+      "mode": 384
+    },
+    {
+      "name": "issue335-read-once/subcommands/000001/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/issue335-read-once/subcommands/000001/request.json",
+      "bytes": 1609,
+      "sha256": "fcc1f8d60a8ce115467d3d879ed4efa8bcce6a0705bb01144a189138ec0543ef",
+      "mode": 384
+    },
+    {
+      "name": "issue335-read-once/subcommands/000001/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/issue335-read-once/subcommands/000001/result.json",
+      "bytes": 1861,
+      "sha256": "4114f4c7d187b47e17801ec181d54dee6993bf75e76b104e14a9b9d4814c3730",
+      "mode": 384
+    },
+    {
+      "name": "issue335-read-once/subcommands/000001/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/issue335-read-once/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "issue335-read-once/subcommands/000001/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/issue335-read-once/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "issue335-read-once/subcommands/000001/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/issue335-read-once/subcommands/000001/stdout.bin",
+      "bytes": 2546,
+      "sha256": "f58d0e8f966e984b47355e23022e98599fc32bc2a1efbf6050810ec024c53204",
+      "mode": 384
+    },
+    {
+      "name": "issue335-read-once/subcommands.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/issue335-read-once/subcommands.json",
+      "bytes": 1957,
+      "sha256": "3a6c913cd0376c95dac66160fd11ae531e2600f3e4808bd8478a0f620f3895e7",
+      "mode": 384
+    },
+    {
+      "name": "originals/L-DECISIONS.md",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/L-DECISIONS.md",
+      "bytes": 237973,
+      "sha256": "cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0",
+      "mode": 384
+    },
+    {
+      "name": "originals/L-FIELD-RULES.md",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/L-FIELD-RULES.md",
+      "bytes": 11811,
+      "sha256": "3305d8000af9814b91c2646cfcbbc841e1ead813fe3390e482f8bfc2a71c0ab2",
+      "mode": 384
+    },
+    {
+      "name": "originals/claude-followup/README.md",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/claude-followup/README.md",
+      "bytes": 4331,
+      "sha256": "43373cd693d6e10f28e231586b3f739f43197f53f44f24591f8e712b57f9731f",
+      "mode": 384
+    },
+    {
+      "name": "originals/claude-followup/q318-1-cli/core.sha256",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/claude-followup/q318-1-cli/core.sha256",
+      "bytes": 91,
+      "sha256": "f902cf433af9daa47076377a8d3b1adccb5a55ef9f02f8c815e773d8756716e5",
+      "mode": 384
+    },
+    {
+      "name": "originals/claude-followup/q318-1-cli/exits.txt",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/claude-followup/q318-1-cli/exits.txt",
+      "bytes": 43,
+      "sha256": "739dc73e2a3e132065cef8b2038220263b3366c637210ccb39d2e202b31eed08",
+      "mode": 384
+    },
+    {
+      "name": "originals/claude-followup/q318-1-cli/only2.err",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/claude-followup/q318-1-cli/only2.err",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "originals/claude-followup/q318-1-cli/only2.out",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/claude-followup/q318-1-cli/only2.out",
+      "bytes": 2595,
+      "sha256": "010c886b2400b78ac6325383d8cdcc6a7ab6ed3743e5e39cea7ec31e54f44083",
+      "mode": 384
+    },
+    {
+      "name": "originals/claude-followup/q318-1-cli/only2.scene",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/claude-followup/q318-1-cli/only2.scene",
+      "bytes": 162,
+      "sha256": "e871ee658d22df8349aa0a2f3306398126b98d21db71d3563e60d50d73f79ed1",
+      "mode": 384
+    },
+    {
+      "name": "originals/claude-followup/q318-1-cli/order12.err",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/claude-followup/q318-1-cli/order12.err",
+      "bytes": 79,
+      "sha256": "348d66da91d751226fef69bc2865ccf0d8b426f05285d6855b0bb61c398d7d9e",
+      "mode": 384
+    },
+    {
+      "name": "originals/claude-followup/q318-1-cli/order12.out",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/claude-followup/q318-1-cli/order12.out",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "originals/claude-followup/q318-1-cli/order12.scene",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/claude-followup/q318-1-cli/order12.scene",
+      "bytes": 281,
+      "sha256": "bcd9ffd33617c8b1c3dcca4dbfc6df6d3490f70f52a68bb0a0afad7ae1bc1960",
+      "mode": 384
+    },
+    {
+      "name": "originals/claude-followup/q318-1-cli/order21.err",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/claude-followup/q318-1-cli/order21.err",
+      "bytes": 70,
+      "sha256": "a959f22a4becc9f175b29c65f5df60a6be372d756f809ae29026a53a6fd15d9b",
+      "mode": 384
+    },
+    {
+      "name": "originals/claude-followup/q318-1-cli/order21.out",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/claude-followup/q318-1-cli/order21.out",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "originals/claude-followup/q318-1-cli/order21.scene",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/claude-followup/q318-1-cli/order21.scene",
+      "bytes": 281,
+      "sha256": "798ece0ef38b356ea69250993cc54fba952b5aceaf3827565d6cb9fee12fbd71",
+      "mode": 384
+    },
+    {
+      "name": "originals/handoff-HANDOFF.md",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/handoff-HANDOFF.md",
+      "bytes": 15419,
+      "sha256": "992b47471d868551bdadcbea7ec68e1d6f7df8ba61f0d335c9db02286bca01df",
+      "mode": 384
+    },
+    {
+      "name": "originals/handoff-NEXT.md",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/handoff-NEXT.md",
+      "bytes": 8311,
+      "sha256": "0c964ffdc0e6cf716393a7f92a710b1b168030101c9903908491bc1f49e3a051",
+      "mode": 384
+    },
+    {
+      "name": "originals/issue335-live.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/issue335-live.json",
+      "bytes": 2546,
+      "sha256": "f58d0e8f966e984b47355e23022e98599fc32bc2a1efbf6050810ec024c53204",
+      "mode": 384
+    },
+    {
+      "name": "originals/review337.md",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/review337.md",
+      "bytes": 8786,
+      "sha256": "7dcfe0144e9a8e3a8736d1150ee369c967ee98b88b94b7141cfc86492ae83350",
+      "mode": 384
+    },
+    {
+      "name": "originals/review338.md",
+      "source_path": "/tmp/train337-issue335-readonly-prep/originals/review338.md",
+      "bytes": 3290,
+      "sha256": "b2c2009e086b189ea8ce52d3de25a2333f622ce0adf175c589dd2c697e308fff",
+      "mode": 384
+    },
+    {
+      "name": "peer/ISSUE335_READONLY_CAUSE_POLICY_PEER.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/peer/ISSUE335_READONLY_CAUSE_POLICY_PEER.json",
+      "bytes": 856,
+      "sha256": "4d749b90b9dc9aacaada43ffb16ef7d6a584f13f2703708c227ca2428e2f9d51",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/commands.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/commands.json",
+      "bytes": 23865,
+      "sha256": "73f02c7452a227c5d6aaa8218467850a5fff39dff9384a400b4bcd55077e3ada",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000001/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000001/request.json",
+      "bytes": 1641,
+      "sha256": "009987eac80f505301d0ed347fc0c4a1649fea7f55c722f385249c9954ea737c",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000001/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000001/result.json",
+      "bytes": 1894,
+      "sha256": "bd3b2cb6de8aac349732f3a45ec863cf5ee872cbf8db87b51ffc9ee788ec735a",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000001/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000001/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000001/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000001/stdout.bin",
+      "bytes": 4331,
+      "sha256": "43373cd693d6e10f28e231586b3f739f43197f53f44f24591f8e712b57f9731f",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000002/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000002/request.json",
+      "bytes": 1654,
+      "sha256": "af1853b1ffdca84436b78d35557f65ca422e80079b533c2ae2ad477f5b1ac953",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000002/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000002/result.json",
+      "bytes": 1905,
+      "sha256": "c2ed0adbd052ac66e4cfd5b6f7c704626b8a04d3c5c2c0d191318b229cbb9438",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000002/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000002/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000002/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000002/stdout.bin",
+      "bytes": 91,
+      "sha256": "f902cf433af9daa47076377a8d3b1adccb5a55ef9f02f8c815e773d8756716e5",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000003/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000003/request.json",
+      "bytes": 1652,
+      "sha256": "0c8c3f12298c248c01e5f02ad45cef4ce4231c74dcd55213e7ae483e4aafaab3",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000003/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000003/result.json",
+      "bytes": 1903,
+      "sha256": "7da413dc95b84ff86d398104234fbadea6aa64dd01ca41cb97842e8bd83b82fb",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000003/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000003/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000003/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000003/stdout.bin",
+      "bytes": 43,
+      "sha256": "739dc73e2a3e132065cef8b2038220263b3366c637210ccb39d2e202b31eed08",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000004/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000004/request.json",
+      "bytes": 1651,
+      "sha256": "3f68b5e35d12864f33f5e4c7f1daf398ce7183fc8dc856635d4efb5b3e77c87b",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000004/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000004/result.json",
+      "bytes": 1899,
+      "sha256": "5c25d3eb9eab9a78a327af61fa063dfb2ee48af8f5fe59e8f47bc63e9e69879d",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000004/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000004/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000004/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000004/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000005/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000005/request.json",
+      "bytes": 1652,
+      "sha256": "9227e625a3a3be3f9f31445cc8baf9de4eed42f1aa3dc44562c8dd95293a9322",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000005/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000005/result.json",
+      "bytes": 1905,
+      "sha256": "d6694fdbc82d0a05f29788a60635ffaf22e60abf838b5d712d7a293e8dabb800",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000005/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000005/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000005/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000005/stdout.bin",
+      "bytes": 2595,
+      "sha256": "010c886b2400b78ac6325383d8cdcc6a7ab6ed3743e5e39cea7ec31e54f44083",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000006/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000006/request.json",
+      "bytes": 1653,
+      "sha256": "d0bd57955f450919741ee5684c6055fc590ac6cc85616f5674937032b25cc96a",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000006/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000006/result.json",
+      "bytes": 1905,
+      "sha256": "d8d82b7b6f6449d6eac673b4eaa4105f3332573a4a209d291b58c6724334e9e9",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000006/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000006/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000006/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000006/stdout.bin",
+      "bytes": 162,
+      "sha256": "e871ee658d22df8349aa0a2f3306398126b98d21db71d3563e60d50d73f79ed1",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000007/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000007/request.json",
+      "bytes": 1654,
+      "sha256": "681c400960187cb153edebeb05716370720282e0ed9cf8809da5323a1a2d435f",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000007/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000007/result.json",
+      "bytes": 1905,
+      "sha256": "086941506785636295dc39baa7c141856b4e8c0d24f880e4286b9e54073bde9b",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000007/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000007/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000007/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000007/stdout.bin",
+      "bytes": 79,
+      "sha256": "348d66da91d751226fef69bc2865ccf0d8b426f05285d6855b0bb61c398d7d9e",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000008/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000008/request.json",
+      "bytes": 1654,
+      "sha256": "ed92ed57a8d951d8363d77df8edbd194e96be59f31850ba14dd753cf5a3a6e21",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000008/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000008/result.json",
+      "bytes": 1904,
+      "sha256": "618a509435a8f7719eab4ab97295c3671abe30888ada24e5fe44062997bb7042",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000008/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000008/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000008/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000009/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000009/request.json",
+      "bytes": 1656,
+      "sha256": "17c2fe2e21f7360ce01a13f4b42a10be5a3fca477f3fb10064ab2d9f6c8703c6",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000009/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000009/result.json",
+      "bytes": 1908,
+      "sha256": "c88375865f2cdb17af0a6d8c033740ca22d1d3ddd9042ddae6f14398b1032d16",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000009/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000009/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000009/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000009/stdout.bin",
+      "bytes": 281,
+      "sha256": "bcd9ffd33617c8b1c3dcca4dbfc6df6d3490f70f52a68bb0a0afad7ae1bc1960",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000010/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000010/request.json",
+      "bytes": 1654,
+      "sha256": "c28160e31e1690830d077e55f229065115cbefeaeab036742c2bc6b2380c5f12",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000010/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000010/result.json",
+      "bytes": 1905,
+      "sha256": "e344f134d6ebafdc2938fd9266f0274426bfc2e0ba6b15dae5c8be447ab0729d",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000010/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000010/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000010/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000010/stdout.bin",
+      "bytes": 70,
+      "sha256": "a959f22a4becc9f175b29c65f5df60a6be372d756f809ae29026a53a6fd15d9b",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000011/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000011/request.json",
+      "bytes": 1654,
+      "sha256": "8af13ce6890a99fe25e3b04c7e50576113807761ecb4b6c970038acff81fc295",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000011/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000011/result.json",
+      "bytes": 1903,
+      "sha256": "1b675e60d1c49f2fb9ac7652a0679e0f4ca3e551895d4ce099151073534adcb6",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000011/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000011/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000011/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000011/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000012/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000012/request.json",
+      "bytes": 1655,
+      "sha256": "c3fd856b955c3c2664e65df926d55022da926db0a923a55d8af591ae9326b936",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000012/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000012/result.json",
+      "bytes": 1906,
+      "sha256": "7c0f8e81137503808ddda4339a5d794a37f419c21904596444cab919da386590",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000012/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000012/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands/000012/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands/000012/stdout.bin",
+      "bytes": 281,
+      "sha256": "798ece0ef38b356ea69250993cc54fba952b5aceaf3827565d6cb9fee12fbd71",
+      "mode": 384
+    },
+    {
+      "name": "source-collection/subcommands.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/source-collection/subcommands.json",
+      "bytes": 23865,
+      "sha256": "73f02c7452a227c5d6aaa8218467850a5fff39dff9384a400b4bcd55077e3ada",
+      "mode": 384
+    },
+    {
+      "name": "static-identity/074-to-3cb-native-source-diff.stderr",
+      "source_path": "/tmp/train337-issue335-readonly-prep/static-identity/074-to-3cb-native-source-diff.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "static-identity/074-to-3cb-native-source-diff.stdout",
+      "source_path": "/tmp/train337-issue335-readonly-prep/static-identity/074-to-3cb-native-source-diff.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "static-identity/3cb-to-L-reference-source.diff",
+      "source_path": "/tmp/train337-issue335-readonly-prep/static-identity/3cb-to-L-reference-source.diff",
+      "bytes": 3973,
+      "sha256": "3676f1173d6f117c080dc0ded4d2e00d3a0f0d841aa8ce4fea667650dc353d5d",
+      "mode": 384
+    },
+    {
+      "name": "static-identity/IDENTITIES.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/static-identity/IDENTITIES.json",
+      "bytes": 6395,
+      "sha256": "90ed362e0ac1f276036e74bfdbf85567f44240f963b62cfd0d4b517922bcd282",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000001/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000001/request.json",
+      "bytes": 1575,
+      "sha256": "229f99ebc9c93486b70949aaa03bae29986ec53c3cf850c95544704f67af51bb",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000001/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000001/result.json",
+      "bytes": 1830,
+      "sha256": "ec40e7dccd69e3213103e4e85e398ab8b03f776a22d34e2cbb16cc0a71d00f12",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000001/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000001/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000001/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000001/stdout.bin",
+      "bytes": 237973,
+      "sha256": "cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000002/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000002/request.json",
+      "bytes": 1605,
+      "sha256": "fdb8288d914cbd8a9a9bb34878af6471f721e26956ebd4f403c29d7d17424a0a",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000002/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000002/result.json",
+      "bytes": 1859,
+      "sha256": "006c0b34a95598ea1059582dea5a0a1f25000fd0b45707be73d4bcf4aa8013a9",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000002/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000002/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000002/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000002/stdout.bin",
+      "bytes": 11811,
+      "sha256": "3305d8000af9814b91c2646cfcbbc841e1ead813fe3390e482f8bfc2a71c0ab2",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000003/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000003/request.json",
+      "bytes": 1585,
+      "sha256": "aa91a9357b1841ef0538ea31a46a348167386781016d020aac392669c5a0d966",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000003/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000003/result.json",
+      "bytes": 1839,
+      "sha256": "a8825ed551934632f285322f23efd4f1bdccb331d4698a3fda571772c6993277",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000003/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000003/stderr.bin",
+      "bytes": 101,
+      "sha256": "d7acf9ceea17395407876d09723d7a0f067440216626c319758647634877136e",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000003/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000003/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000004/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000004/request.json",
+      "bytes": 1585,
+      "sha256": "4e05d72113b37da02d0d68a0c37e4426442c5df4643765fd409539e7c5eaa0a8",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000004/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000004/result.json",
+      "bytes": 1838,
+      "sha256": "69b08e8ee59b596f66e8c22c4a1e9029479825ea84eb2c16899977fcf55f87e6",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000004/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000004/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000004/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000004/stdout.bin",
+      "bytes": 8786,
+      "sha256": "7dcfe0144e9a8e3a8736d1150ee369c967ee98b88b94b7141cfc86492ae83350",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000005/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000005/request.json",
+      "bytes": 1584,
+      "sha256": "e2d9125379fc9408f912476650573bb9019254562f7c073436faa580500e922e",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000005/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000005/result.json",
+      "bytes": 1836,
+      "sha256": "432a7b90d0913169b81137da2b01e59c7db00ba33382c30b8ff468317dcc6d9e",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000005/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000005/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000005/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000005/stdout.bin",
+      "bytes": 3290,
+      "sha256": "b2c2009e086b189ea8ce52d3de25a2333f622ce0adf175c589dd2c697e308fff",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000006/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000006/request.json",
+      "bytes": 1575,
+      "sha256": "ea4ec0e6c5df1b230afea7d7122f98504c4fd3d1acb0efb400cb659371000f45",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000006/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000006/result.json",
+      "bytes": 1828,
+      "sha256": "1c254302aa20c7ad2531a21b5f6efacf3b75233002372681ebbd7d0c2709c6be",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000006/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000006/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000006/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000006/stdout.bin",
+      "bytes": 8311,
+      "sha256": "0c964ffdc0e6cf716393a7f92a710b1b168030101c9903908491bc1f49e3a051",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000007/request.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000007/request.json",
+      "bytes": 1577,
+      "sha256": "0111c70ec13b8ba439c167dc10d8d93cad9e81e45c8af051b4969d1f55afe93f",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000007/result.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000007/result.json",
+      "bytes": 1830,
+      "sha256": "ae5306bcea8e61ddf4a227107a113b58648f2e4ce9093aaddfb71e1d3781f9fa",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000007/stderr.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000007/stdin.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "name": "subcommands/000007/stdout.bin",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands/000007/stdout.bin",
+      "bytes": 15419,
+      "sha256": "992b47471d868551bdadcbea7ec68e1d6f7df8ba61f0d335c9db02286bca01df",
+      "mode": 384
+    },
+    {
+      "name": "subcommands.json",
+      "source_path": "/tmp/train337-issue335-readonly-prep/subcommands.json",
+      "bytes": 13458,
+      "sha256": "7521661c6fe4d0fa94012df8b2076505e8fc009461d6f9b2449c48818f35b2d0",
+      "mode": 384
+    }
+  ],
+  "roundtrip": {
+    "allMemberBytesAndHashes": true,
+    "allSourceFilesStillExact": true,
+    "noFilesystemHardlinksCreated": true
+  },
+  "included": [
+    "once-read issue335 full stdout/stderr/request/exit/environment",
+    "historical three CLI scenes/full stdout/full stderr/exits/corehash and origin README",
+    "L decision/FIELD authority and fresh337/338 handoff originals",
+    "all completed c387 immutable Git-read original streams/metadata, including missing335 handoff exit128",
+    "source identity/diff analysis, REPORT/QUESTIONS/adoption paragraph, unchanged independent84/0 peer"
+  ],
+  "exclusions": [
+    "expanded closure/ source copies: immutable Git sources are identified by full SHA/hash; completed c387 source-read stdout remains complete",
+    "separate backlog214 exploration/raw/NEXT_NONPOLICY.json",
+    "Git repositories/objects/index/source checkouts/ELF/cache/live ROOT/SEED/ledger/Chrome"
+  ],
+  "limits": [
+    "historical source labels074/3cb are retained separately; no historical argv/buildenv was invented",
+    "same selected source/function bytes are static evidence, not L CLI execution",
+    "tar backward hardlinks deduplicate archive payload only; every member full bytes was reopened and verified"
+  ]
+}

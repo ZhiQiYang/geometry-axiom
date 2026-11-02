@@ -1,0 +1,18 @@
+--- S81-draft/prepare_plan.py
++++ S144-required/prepare_plan.py
+@@ -10,7 +10,7 @@
+  if n=='prepare_source.py':
+   a="fs=os.statvfs('/workspace');report['free_bytes_before']=fs.f_bavail*fs.f_frsize";b="fs=os.statvfs(target.parent);report['free_bytes_before']=fs.f_bavail*fs.f_frsize;report['resource_filesystem']=str(target.parent)";assert s.count(a)==1;s=s.replace(a,b)
+  if n=='bind_final_request.py':
+-  a='df66452e7a514032453bea93b8b18ab74d7b1457';assert s.count(a)==1;s=s.replace(a,'81b6c388f8b73e9aaf885b1d948e5f306b77bafd')
++  a='df66452e7a514032453bea93b8b18ab74d7b1457';assert s.count(a)==1;s=s.replace(a,'1449d430d1c4734bb1bc3a9f91f3851c845cc0f3')
+  if n=='start_five.py':
+   s=s.replace('import argparse,json,re,sys,traceback','import argparse,json,os,re,sys,traceback').replace('new R6 source required','new R7 source required')
+   a="  need(request['source_sha']==S,'one fixed public R');rec.run(['df','-B1','/workspace','/tmp'],root)"
+@@ -32,5 +32,5 @@
+ for n,pin in r['tool_files'].items():
+  b=(Path(r['original_tools'])/n).read_bytes();assert H(b)==pin['sha256'] and len(b)==pin['bytes']
+ for n in ['REQUEST.unbound.json','REQUEST.template.json']:(D/n).write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n')
+-plan={'source_unbound':True,'source_materialized':False,'C_run':False,'formal_run':False,'required_ancestor':'81b6c388f8b73e9aaf885b1d948e5f306b77bafd','new_raw_filesystem':'/tmp','tool_changes':rows,'unchanged':['original launch_stages.py all bytes','accepted v5 six runtime tools and original source/sample/scene/profile/golden/threshold/600-second semantics','both nonblocking global locks plus new private inner stage lock','collect all five stages despite red; separate cumulative CLI and own execution exit','R5/R6 original red records remain untouched'],'resource_only_change':{'before_materialization_and_before_formal':r['full_round_min_free_bytes'],'round_estimate_bytes':r['estimated_round_bytes'],'native_reserve_bytes':r['native_reserve_bytes'],'unit_note':'Use MiB conservatively for root 138MB round request; this is disk admission, never a numerical product threshold'}}
++plan={'source_unbound':True,'source_materialized':False,'C_run':False,'formal_run':False,'required_ancestor':'1449d430d1c4734bb1bc3a9f91f3851c845cc0f3','new_raw_filesystem':'/tmp','tool_changes':rows,'unchanged':['original launch_stages.py all bytes','accepted v5 six runtime tools and original source/sample/scene/profile/golden/threshold/600-second semantics','both nonblocking global locks plus new private inner stage lock','collect all five stages despite red; separate cumulative CLI and own execution exit','R5/R6 original red records remain untouched'],'resource_only_change':{'before_materialization_and_before_formal':r['full_round_min_free_bytes'],'round_estimate_bytes':r['estimated_round_bytes'],'native_reserve_bytes':r['native_reserve_bytes'],'unit_note':'Use MiB conservatively for root 138MB round request; this is disk admission, never a numerical product threshold'}}
+ (D/'PLAN.json').write_text(json.dumps(plan,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'prepared':str(D),'formal_run':False,'tmp_min_free_bytes':r['full_round_min_free_bytes']}))

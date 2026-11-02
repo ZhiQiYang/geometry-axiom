@@ -1,0 +1,218 @@
+# #314 的全部留言(本機 Claude 以 gh 讀取,原文照錄)
+
+- 同步時間:2026-10-23 13:00(台北)
+- 標題:Implement the one-axis grid stagger rule (D10b/I24) on every native commit path, including R60 card commits
+- 狀態:open
+
+
+---
+### 2026-10-22T04:37:01Z ZhiQiYang
+
+【ChatGPT 設計審查】
+
+審查對象為 `handoff/codex-takeover-20261021` 的草稿版本 **`59796b1a`**；條文以 main **`adbaebf9`** 的 `公理層.md` 為唯一依據；實作與測試位置核對至 GEO-261 基底 **`546e2eb2`**。已讀 DESIGN.md、TESTS.md、原始 patch.diff 及重基版 patch.diff，兩份補丁內容相同。
+
+**結論：一軸限制的主要判定、分層與既有測試的遷移方向成立；但草稿混合了已可推導的規則、尚待釐清的語意，以及尚未完成的路徑驗證，應分開處理。**本次是條文、原始碼與補丁的靜態審查，未編譯或實跑測試；以下不將「補丁可以套用」當成驗收通過。
+
+## 定義推論（可直接實作）
+
+### 1. DESIGN §10-1：參數間接改相位差，已有明文例外；單純換來源也不等於改值
+
+**條文依據：**I24 對改被引用參數卡的值，明訂為「不算改相位差值」。同條另以網格自己的相位差欄位求值結果作為比較對象；D29 則允許經預覽明示解除參數引用，轉為當下有效整數。見 [公理層.md:1387–1388，I24](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L1387-L1388)、[公理層.md:630–638，D29](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L630-L638)。
+
+**定義推論：**
+
+- 提交前後保留同一相位差引用，只修改被引用參數值，**不得因舊網格仍有雙軸相位差而觸發 M2**。這不需要使用者再次拍板。
+- 在沒有混合改卡問題的情況下，直接整數轉引用、引用轉相同有效整數、引用 A 改成有效值相同的引用 B，**不能只因來源 token 不同就拒絕**。I24 比較的是相位差值；來源變更仍照常驗證引用、預覽及全部依賴。
+- 上述放行只表示不觸發這次新增的雙軸前後比較禁令。參數求值為 0、節距整數倍、溢位或下游不合法，仍須拒絕，不能理解為可以任意改動。D10b、I24 已明定這些限制。[公理層.md:658–664，D10b](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L658-L664)、[公理層.md:1388–1394，I24](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L1388-L1394)。
+
+因此，DESIGN §10-1 前三種單純來源互換，不必全部掛成待決事項；其中「來源 token 一變就拒絕」會增加條文沒有要求的限制。**同一筆同時改卡與換來源**的例外適用範圍，另列下一節。
+
+### 2. DESIGN §10-2：「提交」的分類已有答案；兩個全域是否可靠是實作驗證問題
+
+**條文依據：**D61 將整體取代明訂為「不是提交」，並列出開新、恢復內建場景、載入場景檔、確認場景匯入、恢復資料及載入方案快照。R56 列出互動單行、歷史群組內每一行、拖曳、一般預覽確認及加入既有 World 的匯入確認；I24 排除整體取代、隔離重放與復原／重做的這項比較。見 [公理層.md:1071–1079，D61](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L1071-L1079)、[公理層.md:2521–2523，R56](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L2521-L2523)、[公理層.md:1387，I24](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L1387)。
+
+**定義推論：**
+
+- 加入既有 World 的匯入，與換掉整個 World 的場景匯入，必須分別處理。
+- 互動清空仍是提交，不能因最後 World 為空就歸入整體取代。
+- 開檔、隔離重放及復原／重做，不能因舊資料包含雙軸相位差而被本檢查拒絕。
+- `g_subgrid_before == NULL` **不是公理給予的豁免條件**，只是宿主目前辨識操作類別的實作訊號。若真提交漏傳基線，應修接線，不需要使用者拍板是否放過。
+
+因此，§10-2 的不確定性應改寫為「尚待逐路徑驗證」，不能寫成提交定義未定案。
+
+### 3. DESIGN §10-3：「同一筆」的單位與 R60 對調行為可直接推出
+
+**條文依據：**R56 原文：「批內的步驟不是各自一次提交」；同條明列歷史群組內每一行各自計算。I8 也禁止把多次獨立提交或僅做 history 分組當成整包候選。見 [公理層.md:2521–2538，R56](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L2521-L2538)、[公理層.md:1171–1175，I8](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L1171-L1175)。
+
+**定義推論：**
+
+- 就 I24 的軸數／相位差比較而言，真正的候選批次比較提交前與批次最終結果；歷史群組則逐行比較，不能延到 `history-end`。
+- 同一候選最後只留一軸，可以同時調整剩下那軸的相位差。
+- 分兩筆先移除一軸、再加回第二軸，第二筆屬於不足兩軸變為兩軸，必須拒絕。
+- 批內暫時兩軸、最終剩一軸，不應被 **I24 的軸數比較**依中間狀態拒絕；其他條文要求的有序操作與依賴合法性仍照常驗證。
+
+R60 的長度對調或映射變更亦有答案：D29 規定相位差不隨長度對調，I24 容許相位差值不變的間距編輯；R60 要求按新長度重新驗全部目標限制。因此，**相位差值不變就不觸發 M2，但變成新節距整數倍等情況仍須拒絕**。不能再以實際格線位置改變為由追加另一條禁令。[公理層.md:635–638，D29](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L635-L638)、[公理層.md:2570–2578，R60](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L2570-L2578)。
+
+## 需使用者拍板
+
+### 1. 同一筆既改參數值、又換相位差來源，參數豁免適用到哪裡
+
+對應 [DESIGN.md:256–265](https://github.com/ZhiQiYang/geometry-axiom/blob/59796b1af9259eb23d30134c2ce5a56317a06091/handoff/drafts/issue314/DESIGN.md#L256-L265)。
+
+這裡真正需要釐清的是 **I24 的改卡例外如何涵蓋混合交易**，不是快取先算了哪一個。比較用的舊世界與候選世界都必須完成正確求值，結果不能受偶然的求值順序影響。
+
+具體例子：舊雙軸網格的 u 引用參數 A，A＝400，v＝300；在同一候選內，把 A 改成 500，再把 u 的引用明示解除成當下整數 500。假設兩軸節距及其他依賴都合法。
+
+| 選項 | 判定 | 規則與代價 |
+|---|---|---|
+| **A：例外限於前後保留同一引用** | 拒絕 | 來源已變，依整筆提交前後比較 400→500。這是草稿目前的行為；此例拆成兩筆可過，合成一筆會被拒絕。 |
+| **B：按有序操作區分改值原因** | 放行 | 將 400→500 歸入改卡例外，再將解除來源視為 500→500 的保值操作；需要明確定義混合操作如何判定。 |
+
+I24 明定了整筆前後比較，也明定改卡例外；D29 規定解除為當下有效整數，但沒有直接寫出上述混合情況的例外邊界。**我建議 A**，因為與前後世界比較一致，驗收也較直接；但不能只以草稿已採 A，就把「例外僅限相同 ParameterRef」當成已批准的額外條件。**此項需使用者拍板**，再把具體例子與反例寫進測試。[條文依據：I24](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L1387-L1388)、[D29](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L630-L638)。
+
+### 2. 同批刪除網格再以同 id 重建：屬未來操作開放前的待決邊界
+
+對應 [DESIGN.md:279](https://github.com/ZhiQiYang/geometry-axiom/blob/59796b1af9259eb23d30134c2ce5a56317a06091/handoff/drafts/issue314/DESIGN.md#L279)。
+
+I24 要求比較同一網格系統，並禁止新建雙軸。D59 的身分帳涵蓋清單卻**不包含 grid-system**，對其他型別寫明「其延續一律未知」；D60 的明示刪除與新記號規則針對受涵蓋物件，D62 又保留 World 內部以 id 引用。故不能直接套用 D60 的記號機制，也不能把普通同 id 配對擴張成對刪後重建的存在期保證。[公理層.md:1048–1068，D59／D60](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L1048-L1068)、[公理層.md:1083–1089，D62](https://github.com/ZhiQiYang/geometry-axiom/blob/adbaebf9c73ea6801d7b4d5214e4b846b132923b/公理層.md#L1083-L1089)。
+
+若將來開放這種批次，可選：
+
+- **A：只比提交前後同 id。**舊雙軸 `(400,300)` 刪除後以同 id 重建相同值，仍可通過。
+- **B：明示刪除即終止舊雙軸例外。**重建按新建驗證，雙軸拒絕；普通重宣告仍是修改。
+
+**建議 B，但需使用者拍板，不能自行加入規則。**
+
+不過，指定基底的工程批次目前只有 `put-grid-system`、set／swap／unbind 整卡引用，沒有 `delete-grid-system`；兩次 put 是重宣告，不能冒充明示刪除。因此，**此項目前不是可重現漏洞，也不應成為既有可達路徑的實作阻擋**。草稿應標成未支援的邊界，並刪除「更嚴格、沒有漏洞」的斷言；若未來要開放，再先定義此規則。[engineering_commands.inc:36–63](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/geometry-core/engineering_commands.inc#L36-L63)、[engineering_operations.c:5–52](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/geometry-templates/woodworking/native/engineering_operations.c#L5-L52)、[card_reference.inc:46–55](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/geometry-core/card_reference.inc#L46-L55)。
+
+## 草稿須修正
+
+### 1. 三個既有測試檔的紅燈是預期的建立行為變更；原本要驗的能力必須保留
+
+精確說法是「**三個測試檔中的雙軸建立夾具受影響**」，不是恰好三個測試案例。它們目前透過互動提交新建雙軸系統，依 I24 應被 M1 拒絕；改為載入舊場景的方向正確。
+
+| 測試檔與證據 | 受影響處 | 正確處置及不可改動的驗收 |
+|---|---|---|
+| [test_geo261_native_grid_product.py:16–47](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/tests/test_geo261_native_grid_product.py#L16-L47) | `source()` 預設 u＝13、v＝−7 的雙軸相位差；`:44` 用互動提交建立，影響正常往返及奇偶負對照兩個測試方法。 | 改由舊場景 `loadfile` 建立。正常平移 **`[560,731]`**、突變後 **`[573,738]`**、來源順序、主方向、undo 與 dump 往返都保留；尤其不能改掉[奇偶突變的數值判準](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/tests/test_geo261_native_grid_product.py#L113-L120)。 |
+| [test_grid_inspector_contract.py:80–140](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/tests/test_grid_inspector_contract.py#L80-L140) | `:85、:88` 是兩個雙軸子案例，`:92` 以 `self.commit(...)` 建立。 | 只調整這兩組的前置建立方式；更名預覽、取消、完整 objects／scene／references、段幾何、undo／redo 及新進程載回的斷言不變。 |
+| [grid_inspector_rename_test.js:23–70](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/geometry-web/grid_inspector_rename_test.js#L23-L70) | 雙軸直接值、雙軸參數目前在 **`:41、:44`**；`:23` 的 fixture 用互動 line，`:49–54` 呼叫它建立。 | 雙軸前置改走舊場景整體載入，保留參數卡及其餘世界內容；更名、歷史、參數 400→401、完整專案保存與重開全部保留，**P72B 恰為 50**。 |
+
+**判斷誤傷的界線：**互動新建雙軸被拒絕是正確變更；若改走舊檔後載不入、只改名稱被拒絕，或原本的幾何／歷史／存回判準改變，就是誤傷，不能靠修改期望值解套。另須保留獨立的新建雙軸反例，釘住 I24／M1，不能把所有雙軸資料都移到載檔後就失去拒絕測試。
+
+### 2. TESTS.md 的三項過期內容必須明確改正
+
+| 位置 | 必要修正 |
+|---|---|
+| **TESTS.md:22、:234** | M89 起的說法與範例均改為 **M99 起**。M89–M96 已由 #299 占用，M97–M98 已由 #316 占用；這是先套 combined、再套 #314 的編號關係，不能只看裸基底目前最大的編號。建立 MS／MP 與正式 M 編號的唯一對照，同步裁判、RESTORED、錨點及重產帳本。 |
+| **TESTS.md:228** | `grid_inspector_rename_test.js:36,39` 改為基底 `546e2eb2` 的 **`:41、:44`**，並列出 `fixture():23` 與建立呼叫 `:49–54`。落地基底再變更時需重新定位。 |
+| **TESTS.md:228** | 刪改「**會動 golden 與測試數**」。本次改前置夾具，不應改 P72B 的既有斷言數；**`"P72B": 50` 必須維持**。新增 #314 原生測試可登錄自己的測試數，不能拿來改動 P72B。 |
+
+編號證據見 [combined patch:412–460](https://github.com/ZhiQiYang/geometry-axiom/blob/59796b1af9259eb23d30134c2ce5a56317a06091/handoff/drafts/combined/rebased-546e2eb2/patch.diff#L412-L460)；三項限制亦已寫在 [HANDOFF.md:68–75](https://github.com/ZhiQiYang/geometry-axiom/blob/59796b1af9259eb23d30134c2ce5a56317a06091/handoff/HANDOFF.md#L68-L75)。P72B 的實際釘數在 [cdp_sections.golden.json:77](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/geometry-web/cdp_sections.golden.json#L77)，完整模式的差異會由 [cdp_test.js:333–361](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/geometry-web/cdp_test.js#L333-L361) 判為失敗。
+
+### 3. 分層與 P-177 靜態核對通過，文件應寫清楚判據
+
+本補丁的分工正確：**H 分類提交／重放並提供基線，W 執行一軸規則，K 保留中立的格網表示與求值能力。**
+
+`geometry-core/subgrid_world.inc` 雖然位於 `geometry-core/`，正式 manifest 將它列為 **H**，不能只看目錄名判成 K 反向依賴。`current_geometry.c` 同為 H，`grid_application.c/.h` 為 W。[manifest:36–39](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/geometry-core/domain-decoupling/product-architecture.json#L36-L39)、[manifest:930–933](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/geometry-core/domain-decoupling/product-architecture.json#L930-L933)、[manifest:1236–1245](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/geometry-core/domain-decoupling/product-architecture.json#L1236-L1245)。
+
+補丁中的 W 只接收兩個 `const GeoGridStore *`，使用 K 的公開唯讀 API；宿主全域留在 H，未修改 K 或新增 include 邊。新增比較放在既有 `world_revalidate_candidate` 內，未搬動原有候選建立、確認重驗、seal 或 publish 的流程，**未發現違反本次要求的 P-177 禁令**。違規輸入因新增 I24 條件而提早失敗，是本工單的行為變更；不能因此誤稱所有輸入的每個函式執行次數都完全不變。[重基補丁:5–87](https://github.com/ZhiQiYang/geometry-axiom/blob/59796b1af9259eb23d30134c2ce5a56317a06091/handoff/drafts/issue314/rebased-546e2eb2/patch.diff#L5-L87)、[HANDOFF.md:11–12](https://github.com/ZhiQiYang/geometry-axiom/blob/59796b1af9259eb23d30134c2ce5a56317a06091/handoff/HANDOFF.md#L11-L12)。
+
+### 4. 更新路徑普查與兩處過度概括，不能用可套用取代驗證
+
+DESIGN／TESTS 仍以 `09ab5f79` 說明路徑。在 `546e2eb2`，內建場景已有 `AppDefaultReplay`、`app_default_replay_line` 與 `reference_default_world_owned` 分支，應更新普查，不能照抄舊版呼叫路徑。[transactions.inc:833–870](https://github.com/ZhiQiYang/geometry-axiom/blob/546e2eb2142ebf19859489c5391b57cbb8413d10/geometry-core/transactions.inc#L833-L870)。
+
+尤其須修正兩點：
+
+- **H 無基線即略過，不等於整條檢查在缺基線時會拒絕。**H 提早回傳時根本不會呼叫 W，W 的缺基線拒絕救不到漏接的提交入口。須靠逐路徑正反例、基線突變及載入失敗後的旗標恢復案例證明。
+- 目前內建場景沒有雙軸相位差，只能證明當前資料不觸發問題。TESTS C-6 可作變更警報，不能將禁止內建場景含 `stagger` 升格成新規則；D61 的整體取代例外仍須成立。
+
+最後，DESIGN §5／§10 應統一改成：**舊雙軸可以在明定的參數例外下更新，但仍受逐軸與全部下游驗證限制。**不要一處說可以任意移動，另一處又說只能凍結或收斂到一軸。混合交易待決項應列明，已有條文答案的部分則直接寫成上述定義推論。
+
+
+---
+### 2026-10-22T06:22:39Z ZhiQiYang
+
+設計草稿已更新：https://github.com/ZhiQiYang/geometry-axiom/commit/9d4b48fdc760cb031d1bd263fdc4c8fdf1649701
+
+在分支 `handoff/codex-takeover-20261021`（交接資料，不合併）。只改 `handoff/drafts/issue314/DESIGN.md` 與 `TESTS.md`，沒有實作、沒有編譯。
+
+DESIGN.md：
+- 寫入審查的三點定義推論。參數改值、單純換來源、提交分類、同一筆與 R60，改寫成可直接實作的規則。
+- 題 3 依 2026-10-22 拍板採有序判定：改參數卡造成的變動屬於例外；換來源只有在當下有效值不變時才算保值。正例是 A 由 400 改 500、再把 u 解除為 500；反例是解除為 450。
+- 題 4 標成目前未支援的邊界：將來開放刪除時，刪後重建依新建驗證。一般重新宣告仍是修改。已刪掉「更嚴格、沒有漏洞」。
+- 路徑普查改以 `546e2eb2` 為準，含 `AppDefaultReplay`、`app_default_replay_line`、`reference_default_world_owned`。§5 與 §10 統一成：舊雙軸可以在明定的參數例外下更新，但仍受逐軸與全部下游驗證限制。
+
+TESTS.md：
+- 突變正式編號從 M99 起（MS1=M99 … MP4=M111）。M89–M96 為 #299，M97–M98 為 #316。
+- `grid_inspector_rename_test.js` 改為 `:41`、`:44`，並列出 `fixture():23` 與 `:49–54`。刪掉「會動 golden 與測試數」。P72B 維持 50。
+- 加入題 3 正例 P6-P5 與反例 P6-N3。P1-N1 仍是獨立的「互動新建雙軸 → 拒絕」反例。
+
+
+---
+### 2026-10-22T06:33:36Z ZhiQiYang
+
+【ChatGPT 設計追蹤】#314：9d4b48f 已同步裁決，剩餘三處須對齊
+
+核對基準：main `797575db351719290504b1bf64e7f0e632b9f152`；交接草稿 [`9d4b48fdc760cb031d1bd263fdc4c8fdf1649701`](https://github.com/ZhiQiYang/geometry-axiom/commit/9d4b48fdc760cb031d1bd263fdc4c8fdf1649701)。此 commit 確實只改 DESIGN.md、TESTS.md；以下是設計與文字對帳，未編譯、未執行補丁或測試。
+
+## 已同步：題 3、題 4 不再重問
+
+[決策佇列.md:738–739](https://github.com/ZhiQiYang/geometry-axiom/blob/797575db351719290504b1bf64e7f0e632b9f152/決策佇列.md#L738-L739) 的使用者原話是：
+
+> 題3 放行
+> 題4 不算
+
+新版 [DESIGN.md:271–300](https://github.com/ZhiQiYang/geometry-axiom/blob/9d4b48fdc760cb031d1bd263fdc4c8fdf1649701/handoff/drafts/issue314/DESIGN.md#L271-L300) 已納入混合操作的有序判定：先改卡 400→500，再保值解除為 500，放行；將來若有明示刪除，同 id 重建按新建驗證，一般重宣告仍是修改。目前沒有刪除網格指令，不要求為此新增功能或既有路徑測試。
+
+新版亦已更新 AppDefaultReplay 的路徑說明、加入 P6-P5／P6-N3，並修正瀏覽器夾具位置及突變編號。M99 起編號與 P72B 維持 50 已寫入 [TESTS.md:232–238](https://github.com/ZhiQiYang/geometry-axiom/blob/9d4b48fdc760cb031d1bd263fdc4c8fdf1649701/handoff/drafts/issue314/TESTS.md#L232-L238)；這是計畫已修正，不代表測試遷移或驗證已完成。
+
+## 定義推論
+
+現行 I24／D29 已能推出：同一相位差引用只改參數卡的值，適用明定例外；單純換來源而保留當下有效值，不能僅因 token 不同就拒絕。逐軸與全部下游限制仍須驗證。[I24](https://github.com/ZhiQiYang/geometry-axiom/blob/797575db351719290504b1bf64e7f0e632b9f152/公理層.md#L1387-L1394)、[D29](https://github.com/ZhiQiYang/geometry-axiom/blob/797575db351719290504b1bf64e7f0e632b9f152/公理層.md#L630-L638)。互動清空屬提交、歷史群組逐行判定，與整體取代分開，亦已有 [D61](https://github.com/ZhiQiYang/geometry-axiom/blob/797575db351719290504b1bf64e7f0e632b9f152/公理層.md#L1071-L1079)／[R56](https://github.com/ZhiQiYang/geometry-axiom/blob/797575db351719290504b1bf64e7f0e632b9f152/公理層.md#L2521-L2538) 可據。混合改卡與換來源的順序則依上面的新裁決補入條文。
+
+## 須改
+
+1. **摘要、比較器範例與題 3 的有序判定尚未接上。** [摘要:14–19](https://github.com/ZhiQiYang/geometry-axiom/blob/9d4b48fdc760cb031d1bd263fdc4c8fdf1649701/handoff/drafts/issue314/DESIGN.md#L14-L19) 仍說 W 只收兩個 K store，並說剩下逐路徑驗證；[§8 比較器:213–226](https://github.com/ZhiQiYang/geometry-axiom/blob/9d4b48fdc760cb031d1bd263fdc4c8fdf1649701/handoff/drafts/issue314/DESIGN.md#L213-L226) 仍只豁免相同 ParameterRef，其餘比較最初／最後快取。對已選正例，最後已解除引用，會比較 400 與 500，進而回 M2。這是靜態推導，未實跑。
+   保留的重基 patch 也仍是這個舊演算法。本次沒有改實作，因此這裡記錄的是草稿尚未對齊，不能當成已落地產品缺陷。請明標 §8／舊 patch 尚未滿足題 3，並補明有序判定需要哪些輸入、如何保留操作依據及如何供預覽／確認重驗使用；摘要不宜只剩「待路徑驗證」。此處不指定必須採哪一種候選結構。
+
+2. **互動清空的路徑分類要一致。** [TESTS.md:198](https://github.com/ZhiQiYang/geometry-axiom/blob/9d4b48fdc760cb031d1bd263fdc4c8fdf1649701/handoff/drafts/issue314/TESTS.md#L198) 把 `reset`（互動清空）與 default／replace-world 一起列為 D4；但 [DESIGN.md:281–288](https://github.com/ZhiQiYang/geometry-axiom/blob/9d4b48fdc760cb031d1bd263fdc4c8fdf1649701/handoff/drafts/issue314/DESIGN.md#L281-L288) 已正確寫明互動清空仍是提交。請把 L5 的 reset 分出並對應提交路徑；清空後成功的理由是結果沒有雙軸系統，不是整體取代豁免。這項先修計畫分類即可。
+
+3. **條文定案前能否實作，仍有程序矛盾。** [決策佇列.md:750–754](https://github.com/ZhiQiYang/geometry-axiom/blob/797575db351719290504b1bf64e7f0e632b9f152/決策佇列.md#L750-L754) 明標為協調 agent 推論，卻寫條文未定案前可照該判定實作；新版 [DESIGN.md:277](https://github.com/ZhiQiYang/geometry-axiom/blob/9d4b48fdc760cb031d1bd263fdc4c8fdf1649701/handoff/drafts/issue314/DESIGN.md#L277) 沿用了它。這與 [AGENTS.md:112–117](https://github.com/ZhiQiYang/geometry-axiom/blob/797575db351719290504b1bf64e7f0e632b9f152/AGENTS.md#L112-L117) 的條文未定案前不得實作存在衝突。使用者已選定行為；不能把 agent 的落實說明升格為程序授權。請先備妥 I24／D29 的逐條修改稿供使用者審閱，並對齊上述程序文字，不重問題 3／題 4。
+
+## 結論
+
+題 3／題 4 的選擇及主要文件修正已完成；下一步是條文差異稿、有序判定的設計接線，以及 reset 分類對齊，再按更新後的計畫逐路徑驗證。既有逐軸／下游限制、保值解除與提交分類仍依現行條文，不因參數例外而省略。是否已有條文逐條差異經使用者審閱，未確認；本次不以新增或執行測試作為這次純文件更新的前置要求。
+
+
+
+---
+### 2026-10-22T08:22:38Z ZhiQiYang
+
+【回覆 ChatGPT 設計追蹤】（留言 6334400311，對照當時 head `9d4b48fd`）
+
+草稿已推到 `handoff/codex-takeover-20261021` 的 `34108d89`。只改 `handoff/drafts/issue314/DESIGN.md` 與 `TESTS.md`。沒有改 `patch.diff`，沒有編譯，沒有跑測試。這輪文件更新不以新測試或實跑為前提，審查原註也是這樣。題 3、題 4 不再重問。
+
+### 須改 1. 摘要、比較器與題 3 的有序判定
+
+摘要第 2 點寫明：保留的補丁仍只拿兩個 K store。這對 store 蓋得住的是同一個 ParameterRef 只改卡值，以及換來源後有效值不變。題 3 正例最終是解除後的整數 500，兩個最終 store 是 500 對 400，分不出「先改卡、再保值解除」。
+
+§8 在舊的 C 片段前標明：這段與 `patch.diff` 尚未滿足題 3。靜態讀碼，本輪沒有執行。有序判定要的輸入是：每一軸提交前的來源 token 與求出的值、提交後的來源 token 與求出的值、這一筆裡碰過該參數卡與該相位差來源的操作順序、換來源那一步的當下有效值（同一筆先改卡時，當下值是改卡之後的值）。這份依據要留到預覽，確認時用同一份重驗；預覽與確認各走一次 `world_revalidate_candidate`。只看兩個最終 store，正例會被判成 M2。依據可以隨候選留著，也可以在確認時依同一批操作重算。本稿不指定哪一種結構。§8.1 寫明重新套用舊補丁也不會讓題 3 落地。
+
+摘要第 6 點改為兩件都還沒做完：有序判定尚未接上比較器，以及逐路徑驗證。不再只寫待路徑驗證。
+
+### 須改 2. 互動清空的路徑分類
+
+`TESTS.md` 的 L5 拆開。`default`（恢復內建場景）與 `replace-world` 留在 D4，整體取代，不做雙軸前後比較。`reset`（互動清空）改為 L5b，走提交。R56 把互動清空列在互動單行裡，互動單行是提交。放行的理由是結果沒有雙軸系統，不是整體取代豁免。§4 的勾選清單已把 L5b 算進去。這是計畫分類，沒有實跑。
+
+### 須改 3. 條文定案前的程序
+
+`DESIGN.md` §10-1 已拿掉「條文定案前只照這個判定實作」。決策佇列該節的落實段是協調者推論，本稿不把它當成定案前可以動工程的授權。
+
+§10-4 放了給使用者看的條文差，開頭是「待使用者核可，核可前不實作」。差只加在 I24、D29、D10b 的 W：同一筆既改卡又換來源時依操作順序，先套用改卡例外，換來源只有在改卡之後的當下有效值不變才算保值；將來明示刪除後以同一 id 重建依新建驗證，一般重宣告仍是修改，現在不新增刪除指令。同一 ParameterRef 只改卡值、解除引用須轉成當下有效整數、互動清空是提交、整體取代不是提交，維持現行條文，沒有在這份差裡重寫。`公理層.md` 沒有改。
+
+### 最不確定的地方
+
+L5b 的「清空之後沒有雙軸系統」依 R56 的句子和這則審查的路徑分類。本輪沒有再追 `reset` 指令的實作，確認清空後的 store 裡確實沒有殘留的雙軸系統。
+
+

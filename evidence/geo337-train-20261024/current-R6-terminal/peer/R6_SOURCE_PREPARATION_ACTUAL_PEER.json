@@ -1,0 +1,27 @@
+{
+  "schema": "R6-fixed-source-preparation-actual-peer-v1",
+  "checks": 3353,
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "2bbe54f19b2d19e8a816530f0c4edca950629a34",
+  "binding_exit": 0,
+  "preparation_exit": 0,
+  "original_commands": 386,
+  "source_files": 447,
+  "source_bytes": 4291233,
+  "formal_run": false,
+  "request_sha256": "44ba0889e854d38279b96a1f58d81390a15bf01c84d0e024772afc8bcd9c1b60",
+  "not_rehashed_original_streams": [
+    {
+      "path": "/workspace/geo323-final-r6-stage-tools-20261024/preparation/commands/006/stdout",
+      "bytes": 5271757,
+      "original_sha256": "7f95e96b77145ef9f071d98ab84d697d38eba7bcfbea47f388012b34f40579a2"
+    }
+  ],
+  "limits": [
+    "No C/acceptance/performance executed; reviewed actual original binding/preparation and4.3MB private selected source only.",
+    "Whole-repository5.27MB original ls-tree stdout not rehashed; its original capture hash retained, individual selected Gitblob identity independently recomputed from materialized bytes.",
+    "34 quoted include-dir relative names are not unresolved compiler verdict; all C/H/inc selected, formal build still required.",
+    "Original minimum40MiB admits materialization only; root must reserve full original performance output and exclusive locks."
+  ]
+}

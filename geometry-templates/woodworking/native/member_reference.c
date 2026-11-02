@@ -109,6 +109,7 @@ bool wood_member_reference_place(const WoodMemberReferenceContext *w,size_t ti)
         GeoCoord start,end;char err[256]="";
         WoodMemberSpanRequest request={along,widths[k][0],widths[k][1],contact,contact?contacts[k][0]:0,contact?contacts[k][1]:0,
             a->has_through,a->through,a->has_between,{between[0],between[1]},scoped,child_scope};
+        request.self=t;
         if(!w->span(w->user,p.id,&request,&start,&end,err,sizeof err)){snprintf(last,sizeof last,"%s",err);continue;}
         if(!geo_coord_in_range(end-start)){snprintf(last,sizeof last,"D1 auto length exceeds 100000000 mm");continue;}
         GeoRect2 rect=along?(GeoRect2){widths[k][0],start,widths[k][1],end}:(GeoRect2){start,widths[k][0],end,widths[k][1]};
@@ -378,6 +379,28 @@ bool wood_member_place_a0(WoodMember *timber,const GeoFrame *frame,const GeoRegi
     return true;
 }
 
+static bool wood_reference_boundary_end(const WoodMemberSpanFacts *facts,const WoodMemberSpanRequest *request,
+    GeoCoord start,GeoCoord end,int which,const WoodStopFace *required,WoodBoundaryEndAdmission *admission)
+{
+    *admission=WOOD_BOUNDARY_END_ORDINARY;
+    if(!request->self||request->self->role!=WOOD_MEMBER_ROLE_BOUNDARY||!facts->boundary_end)return true;
+    return facts->boundary_end(facts->boundary_user,request->self,request->along_v,start,end,
+        request->cross_lo,request->cross_hi,which,facts->stops,facts->stop_count,required,admission);
+}
+
+static size_t wood_reference_partial_ref_candidates(const WoodMemberSpanFacts *facts,
+    const WoodMemberSpanRequest *request,const WoodStopRef *ref,const WoodStopFace **out,size_t count,size_t cap)
+{
+    if(!request->self||request->self->role!=WOOD_MEMBER_ROLE_BOUNDARY||!facts->boundary_end)return count;
+    for(size_t i=0;i<facts->stop_count&&count<cap;++i){const WoodStopFace *face=&facts->stops[i];
+        if(face->kind!=WOOD_STOP_MEMBER_SIDE||face->fixity==WOOD_STOP_FREE||!wood_stop_matches_ref(face,ref)||
+           (face->lo<=request->cross_lo&&face->hi>=request->cross_hi)||
+           face->lo>=request->cross_hi||face->hi<=request->cross_lo)continue;
+        out[count++]=face;
+    }
+    return count;
+}
+
 WoodMemberSpanStatus wood_member_resolve_span(const WoodMemberSpanFacts *facts,const WoodMemberSpanRequest *request,
     GeoCoord *out_start,GeoCoord *out_end,char *err,size_t err_cap)
 {
@@ -464,6 +487,8 @@ WoodMemberSpanStatus wood_member_resolve_span(const WoodMemberSpanFacts *facts,c
                                         cross_lo, cross_hi,
                                         cb, WOOD_MEMBER_SPAN_MEMBER_CAPACITY * 2,
                                         &free_b, &narrow_b);
+        na=wood_reference_partial_ref_candidates(facts,request,&between[0],ca,na,WOOD_MEMBER_SPAN_MEMBER_CAPACITY*2);
+        nb=wood_reference_partial_ref_candidates(facts,request,&between[1],cb,nb,WOOD_MEMBER_SPAN_MEMBER_CAPACITY*2);
 
         if (na == 0 || nb == 0) {
             const bool is_free = (na == 0 && free_a) || (nb == 0 && free_b);
@@ -486,6 +511,7 @@ WoodMemberSpanStatus wood_member_resolve_span(const WoodMemberSpanFacts *facts,c
 
         GeoInterval hit[WOOD_MEMBER_SPAN_MEMBER_CAPACITY * 4];
         size_t hit_count = 0;
+        bool bare_rc = false;
 
         for (size_t x = 0; x < na; ++x) {
             for (size_t y = 0; y < nb; ++y) {
@@ -516,6 +542,22 @@ WoodMemberSpanStatus wood_member_resolve_span(const WoodMemberSpanFacts *facts,c
                     continue;   /* R6: between pairs must be fully inside the child scope. */
                 }
 
+                const WoodStopFace *pair[2]={ca[x],cb[y]};bool supported=true;
+                for(size_t side=0;side<2;++side){const WoodStopFace *face=pair[side];
+                    WoodBoundaryEndAdmission admission;
+                    if(!wood_reference_boundary_end(facts,request,s,e,face->fixed==s?0:1,NULL,&admission)){
+                        snprintf(err,err_cap,"I8: ordered boundary-end facts unavailable");return WOOD_SPAN_BETWEEN_BLOCKED;
+                    }
+                    if(admission==WOOD_BOUNDARY_END_BARE_RC){bare_rc=true;supported=false;break;}
+                    if(face->lo<=cross_lo&&face->hi>=cross_hi)continue;
+                    if(!wood_reference_boundary_end(facts,request,s,e,face->fixed==s?0:1,face,&admission)){
+                        snprintf(err,err_cap,"I8: ordered boundary-end facts unavailable");return WOOD_SPAN_BETWEEN_BLOCKED;
+                    }
+                    if(admission==WOOD_BOUNDARY_END_BARE_RC)bare_rc=true;
+                    if(admission!=WOOD_BOUNDARY_END_PARTIAL){supported=false;break;}
+                }
+                if(!supported)continue;
+
                 if (hit_count < WOOD_MEMBER_SPAN_MEMBER_CAPACITY * 4) {
                     hit[hit_count].start = s;
                     hit[hit_count].end = e;
@@ -525,6 +567,10 @@ WoodMemberSpanStatus wood_member_resolve_span(const WoodMemberSpanFacts *facts,c
         }
 
         if (hit_count == 0) {
+            if(bare_rc){
+                snprintf(err,err_cap,"V_CUT_PRIORITY：between 固定段端點有裸露的可放料 RC 面，必須先貼角材");
+                return WOOD_SPAN_BETWEEN_BLOCKED;
+            }
             snprintf(err, err_cap,
                      "between 指名的兩端之間沒有合法跨距"
                      "（被實體擋住，或兩端座標相同）");
@@ -590,6 +636,15 @@ WoodMemberSpanStatus wood_member_resolve_span(const WoodMemberSpanFacts *facts,c
 
     hits = wood_stop_pick(faces, face_count, span_start,
                      cross_lo, cross_hi, &stop);
+    {WoodBoundaryEndAdmission admission;
+        if(!wood_reference_boundary_end(facts,request,span_start,span_end,0,NULL,&admission)){
+            snprintf(err,err_cap,"I8: ordered boundary-end facts unavailable");return WOOD_SPAN_START_UNSUPPORTED;
+        }
+        if(admission==WOOD_BOUNDARY_END_BARE_RC){
+            snprintf(err,err_cap,"V_CUT_PRIORITY：固定段起點有裸露的可放料 RC 面，必須先貼角材");return WOOD_SPAN_START_UNSUPPORTED;
+        }
+        if(admission==WOOD_BOUNDARY_END_PARTIAL)goto supported_start;
+    }
     if (hits == 0) {
         snprintf(err, err_cap, "跨距起點沒有擋面（端面懸空）");
         return WOOD_SPAN_START_UNSUPPORTED;
@@ -603,8 +658,18 @@ WoodMemberSpanStatus wood_member_resolve_span(const WoodMemberSpanFacts *facts,c
         return WOOD_SPAN_FREE_EDGE_END;
     }
 
+supported_start:
     hits = wood_stop_pick(faces, face_count, span_end,
                      cross_lo, cross_hi, &stop);
+    {WoodBoundaryEndAdmission admission;
+        if(!wood_reference_boundary_end(facts,request,span_start,span_end,1,NULL,&admission)){
+            snprintf(err,err_cap,"I8: ordered boundary-end facts unavailable");return WOOD_SPAN_END_UNSUPPORTED;
+        }
+        if(admission==WOOD_BOUNDARY_END_BARE_RC){
+            snprintf(err,err_cap,"V_CUT_PRIORITY：固定段終點有裸露的可放料 RC 面，必須先貼角材");return WOOD_SPAN_END_UNSUPPORTED;
+        }
+        if(admission==WOOD_BOUNDARY_END_PARTIAL)goto supported_end;
+    }
     if (hits == 0) {
         snprintf(err, err_cap, "跨距終點沒有擋面（端面懸空）");
         return WOOD_SPAN_END_UNSUPPORTED;
@@ -618,6 +683,7 @@ WoodMemberSpanStatus wood_member_resolve_span(const WoodMemberSpanFacts *facts,c
         return WOOD_SPAN_FREE_EDGE_END;
     }
 
+supported_end:
     *out_start = span_start;
     *out_end = span_end;
     return WOOD_SPAN_OK;

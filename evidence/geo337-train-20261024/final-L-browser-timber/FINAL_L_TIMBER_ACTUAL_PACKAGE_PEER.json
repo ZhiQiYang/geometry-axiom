@@ -1,0 +1,34 @@
+{
+  "schema": "independent-final-L-timber-actual-package-peer/1",
+  "checks": 3383,
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "original_exit": 0,
+  "wrapper_exit": 0,
+  "passed_assertions": 79,
+  "failed_assertions": 0,
+  "groups": {
+    "setup": 2,
+    "timber-material": 48,
+    "timber-source-guards": 8,
+    "font-layout": 19,
+    "browser-health": 2
+  },
+  "workflow_upload_artifacts": 0,
+  "elapsed_seconds": 124.23609746200964,
+  "ci_timeout_minutes": 20,
+  "archive_sha256": "a0765752370609ad48816af7b94989074bfc51ce5af6d52782011fdb440c1b37",
+  "member_count": 660,
+  "raw_original_bytes": 32206640,
+  "limits": [
+    "Original exposed command stdout/stderr only; no hidden compiler/test pipe interception or files already removed by original cleanup are reconstructed.",
+    "No ROOT/SEED/pool/Git/source payload copied; pool immutable plan/tree/raw preparation and original completed guard command streams are included.",
+    "GUARD_LATEST.json is shared mutable state and may already have been replaced by later jobs; it is not relabeled as the documents original. Original per-guard closed Git logs and actual guard argv/exit/fullstreams are retained.",
+    "Terminal profile non-cache files/symlinks retained; Chrome cache payloads excluded with inventory, no removal. ELF payloads excluded with actual hashes; original fingerprint sidecars retained.",
+    "GitHub artifact upload actions are preserved as original local artifact saves, not claimed uploaded to GitHub.",
+    "No independently predecoded host API launcher pipe is invented."
+  ],
+  "scope_caveat": "Original workflow GEOMETRY_TIMBER_ONLY partial groups with original SPACE_RESULT marker; five space groups omitted by original workflow, separate space job covers them. No upload artifact applies, all original non-cache TMP output retained. Not full canvas. No other native/browser result inferred.",
+  "scope": "All archived members compared with immutable original bytes/symlinks; exact L workflow, original job/launcher/reaper raw, prior pool guards, source fingerprint inputs and declared exclusions verified. No browser/test rerun."
+}
