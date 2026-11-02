@@ -1,0 +1,48 @@
+name: 身分帳冷重開原裁判複驗
+
+on:
+  push:
+    branches: [codex/identity-cold-open-probe-20261102]
+
+permissions:
+  contents: read
+
+jobs:
+  cold-open:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+      GEOMETRY_FEEDBACK_DIR: /tmp/geometry-identity-probe-feedback
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+      GEOMETRY_IDENTITY_LEDGER_ONLY: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Build current native executables
+        run: npm run build
+      - name: Run the unchanged cold-open assertions in an isolated real browser
+        shell: bash
+        run: |
+          set -o pipefail
+          ulimit -s 16384
+          mkdir -p "$RUNNER_TEMP/cold-open"
+          python3 -u geometry-web/start_local.py --port 18839 > "$RUNNER_TEMP/cold-open/server.log" 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true; wait "$server" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if ! kill -0 "$server" 2>/dev/null; then cat "$RUNNER_TEMP/cold-open/server.log"; exit 1; fi
+            if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          python3 geometry-web/runtime_version.py --probe 18839
+          node geometry-web/cdp_test.js 2>&1 | tee "$RUNNER_TEMP/cold-open/browser.log"
+      - name: Preserve the original browser and service output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: identity-cold-open-original-output
+          path: ${{ runner.temp }}/cold-open/
+          if-no-files-found: error
