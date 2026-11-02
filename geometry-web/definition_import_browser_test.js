@@ -128,7 +128,11 @@ module.exports = async ({send, eval_, sleep, click, waitForUI, exceptionCount}) 
     window.__diRealApi = api;
     window.__diCancelLog = [];
     window.__diCancelMode = 'pass';
+    window.__diConfirmMode = 'pass';
     window.api = async cmd => {
+      // Same shape as apiRequest's local guards: refused before the bridge, no transport flag.
+      if (typeof cmd === 'string' && cmd.startsWith('definition-import-confirm ') && window.__diConfirmMode === 'local-refusal')
+        return {ok:false, error:'測試：本機拒絕確認'};
       if (typeof cmd === 'string' && cmd.startsWith('definition-import-cancel ')) {
         window.__diCancelLog.push(cmd.slice('definition-import-cancel '.length));
         if (window.__diCancelMode === 'transport') return {ok:false, transport:true, error:'測試：取消結果尚未確認'};
@@ -180,6 +184,17 @@ module.exports = async ({send, eval_, sleep, click, waitForUI, exceptionCount}) 
     await ctl('#definitionImportPreview');
     await wait(`!$('definitionImportConfirm').disabled && $('definitionImportClosure').textContent.includes('規格 柱寬 → 柱寬匯入（rename）')`);
 
+    // A confirm refused before it reaches the bridge must not orphan the
+    // server-side preview: it is released, and the next preview still works.
+    await read(`window.__diCancelLog = []; window.__diConfirmMode = 'local-refusal'; true`);
+    await ctl('#definitionImportConfirm');
+    await wait(`$('definitionImportStatus').textContent.includes('測試：本機拒絕確認') && window.__diCancelLog.length === 1`);
+    check('確認被本機拒絕時同時釋放伺服器上的預覽', await read(unchanged));
+    await read(`window.__diConfirmMode = 'pass'; true`);
+    await ctl('#definitionImportPreview');
+    await wait(`!$('definitionImportConfirm').disabled && $('definitionImportClosure').textContent.includes('規格 柱寬 → 柱寬匯入（rename）')`);
+    check('本機拒絕確認後仍可重新預覽', await read(`!$('definitionImportStatus').textContent.includes('請先確認或取消')`));
+
     // B3: an unconfirmed cancel keeps the dialog and the token for a retry.
     await read(`window.__diCancelLog = []; window.__diCancelMode = 'transport'; true`);
     await ctl('#definitionImportClose');
@@ -194,7 +209,7 @@ module.exports = async ({send, eval_, sleep, click, waitForUI, exceptionCount}) 
     await wait(`!$('definitionImportDialog').open`);
     check('重試取消用同一個權杖並關閉', await read(`window.__diCancelLog.length === 3 && window.__diCancelLog[2] === window.__diCancelLog[0]`));
   } finally {
-    await read(`if (window.__diRealApi) { window.api = window.__diRealApi; delete window.__diRealApi; } window.__diCancelMode = 'pass'; if (window.__diReleaseCancel) window.__diReleaseCancel(); true`);
+    await read(`if (window.__diRealApi) { window.api = window.__diRealApi; delete window.__diRealApi; } window.__diCancelMode = 'pass'; window.__diConfirmMode = 'pass'; if (window.__diReleaseCancel) window.__diReleaseCancel(); true`);
   }
 
   // Reopen the same source for the original cancel / confirm path.

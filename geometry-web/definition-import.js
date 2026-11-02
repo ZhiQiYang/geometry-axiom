@@ -370,7 +370,11 @@
         })
       });
       const result = await response.json();
-      if (!sameProject()) { if (result.preview?.token) await api("definition-import-cancel " + result.preview.token); return; }
+      if (!sameProject()) {
+        // Keep the token until its cancel is confirmed, as everywhere else.
+        if (result.preview?.token) { token = result.preview.token; lastMap = null; await cancelToken(); }
+        return;
+      }
       if (!result.ok) { setLine(result.error || "預覽沒有建立。"); return; }
       const preview = result.preview || {};
       if (at !== gate.snapshot()) {
@@ -412,11 +416,20 @@
     try {
       const result = await api("definition-import-confirm " + current);
       if (result.transport) { setLine(result.error || "匯入結果尚未確認。"); return; }
+      if (!result.ok) {
+        // A refusal may come from a local guard before the request reaches the
+        // bridge, so release the server-side preview like a cancel instead of
+        // only forgetting the token; an unconfirmed cancel keeps it for a retry.
+        $("definitionImportConfirm").disabled = true;
+        await cancelToken();
+        setLine(result.error || "匯入沒有寫入。");
+        return;
+      }
       token = null;
       lastMap = null;
+      gate.drop();
       $("definitionImportConfirm").disabled = true;
       if (!sameProject()) return;
-      if (!result.ok) { setLine(result.error || "匯入沒有寫入。"); return; }
       await renderObjects();
       if (map) await placeNew(map);
       setLine(`已匯入 ${importedCount(map)} 項，可復原`);
