@@ -1,0 +1,22 @@
+{
+  "capturedUtc": "2026-11-02T04:39:47.893371+00:00",
+  "pids": {
+    "1": {
+      "stat": "1 (tail) S 0 1 1 0 -1 4194560 1143 0 0 0 570 603 0 0 20 0 1 0 27 3129344 160 18446744073709551615 94092847493120 94092847539833 140733334635840 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 94092847564944 94092847567040 94093271855104 140733334640338 140733334640356 140733334640356 140733334642666 0\n",
+      "status": "Name:\ttail\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t1\nNgid:\t0\nPid:\t1\nPPid:\t0\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t256\nGroups:\t \nNStgid:\t1\nNSpid:\t1\nNSpgid:\t1\nNSsid:\t1\nKthread:\t0\nVmPeak:\t    3056 kB\nVmSize:\t    3056 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t     880 kB\nVmRSS:\t     880 kB\nRssAnon:\t     120 kB\nRssFile:\t     760 kB\nRssShmem:\t       0 kB\nVmData:\t     224 kB\nVmStk:\t     132 kB\nVmExe:\t      48 kB\nVmLib:\t    1588 kB\nVmPTE:\t      48 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t1\nSigQ:\t181/136275\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1f\nCpus_allowed_list:\t0-4\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t248682\nnonvoluntary_ctxt_switches:\t26\n",
+      "comm": "tail\n"
+    },
+    "161808": {
+      "stat": "161808 (sleep) Z 1 161807 161807 0 -1 4228364 284 0 0 0 0 0 0 0 20 0 1 0 24828465 0 0 18446744073709551615 0 0 0 0 0 0 0 6 0 1 0 0 17 2 0 0 0 0 0 0 0 0 0 0 0 0 9\n",
+      "status": "Name:\tsleep\nState:\tZ (zombie)\nTgid:\t161808\nNgid:\t0\nPid:\t161808\nPPid:\t1\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t161808\nNSpid:\t161808\nNSpgid:\t161807\nNSsid:\t161807\nKthread:\t0\nThreads:\t1\nSigQ:\t181/136275\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000100\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000006\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1f\nCpus_allowed_list:\t0-4\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+      "comm": "sleep\n"
+    },
+    "161809": {
+      "stat": "161809 (sleep) Z 1 161807 161807 0 -1 4228108 237 0 0 0 0 0 0 0 20 0 1 0 24828465 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 9\n",
+      "status": "Name:\tsleep\nState:\tZ (zombie)\nTgid:\t161809\nNgid:\t0\nPid:\t161809\nPPid:\t1\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t161809\nNSpid:\t161809\nNSpgid:\t161807\nNSsid:\t161807\nKthread:\t0\nThreads:\t1\nSigQ:\t181/136275\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000100\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1f\nCpus_allowed_list:\t0-4\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t3\nnonvoluntary_ctxt_switches:\t0\n",
+      "comm": "sleep\n"
+    }
+  },
+  "productAndTestsUnchanged": true,
+  "proposedRecovery": "Task-local child subreaper; no PID1 mutation, no assertion or timeout changes"
+}

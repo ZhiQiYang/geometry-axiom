@@ -1,0 +1,6 @@
+plane-whole phase=fixed CASE work faces=16 plane_comparisons=0
+plane-whole phase=withdrawn CASE work faces=16 plane_comparisons=84
+plane-whole phase=restored CASE work faces=16 plane_comparisons=0
+monotonic-whole phase=fixed CASE work faces=128 first=2 order_calls=128
+monotonic-whole phase=withdrawn CASE work faces=128 first=2 order_calls=896
+monotonic-whole phase=restored CASE work faces=128 first=2 order_calls=128

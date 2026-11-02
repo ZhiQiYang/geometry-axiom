@@ -1,0 +1,31 @@
+.......F....
+======================================================================
+FAIL: test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left (test_assembly_mutation_check.AssemblyMutationCheck.test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-pr363-20261102/tests/test_assembly_mutation_check.py", line 288, in test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left
+    self.assertEqual([], group['afterKill'])
+AssertionError: Lists differ: [] != [{'pid': 161808, 'comm': 'sleep', 'state':[149 chars] ''}]
+
+Second list contains 2 additional elements.
+First extra element 0:
+{'pid': 161808, 'comm': 'sleep', 'state': 'Z', 'pgrp': 161807, 'session': 161807, 'cmdline': ''}
+
+- []
++ [{'cmdline': '',
++   'comm': 'sleep',
++   'pgrp': 161807,
++   'pid': 161808,
++   'session': 161807,
++   'state': 'Z'},
++  {'cmdline': '',
++   'comm': 'sleep',
++   'pgrp': 161807,
++   'pid': 161809,
++   'session': 161807,
++   'state': 'Z'}]
+
+----------------------------------------------------------------------
+Ran 12 tests in 8.048s
+
+FAILED (failures=1)

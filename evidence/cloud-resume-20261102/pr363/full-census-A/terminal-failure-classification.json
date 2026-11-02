@@ -1,0 +1,117 @@
+{
+  "executionHead": "e9f4dd75cfd4eb9965e3af249200b918907d62db",
+  "sourceStayedFrozen": true,
+  "exitCode": 1,
+  "timedOut": false,
+  "suiteCount": 232,
+  "originalRunnerSeconds": 1938.4985145080136,
+  "supervisorSeconds": 1942.4107879160147,
+  "countedTotals": {
+    "total": 5420,
+    "passed": 5418,
+    "failed": 1,
+    "skipped": 1,
+    "allowed_skips": 1
+  },
+  "failedRows": [
+    {
+      "name": "py:test_assembly_mutation_check",
+      "counted": true,
+      "total": 12,
+      "passed": 11,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 8.257449388504028,
+      "ran": true,
+      "process_exit_code": 1,
+      "allowed_skips": 0,
+      "env_problem": false,
+      "crashed": false,
+      "expected_problem": ""
+    }
+  ],
+  "generatedExpectedAdopted": false,
+  "expectedDifferencesNotAdopted": [
+    {
+      "suite": "node:tests-js",
+      "before": {
+        "mode": "count",
+        "unit": "node test",
+        "count": 753
+      },
+      "generatedButNotAdopted": {
+        "mode": "count",
+        "count": 756,
+        "unit": "node test"
+      }
+    },
+    {
+      "suite": "node:woodworking_frontend",
+      "before": {
+        "mode": "count",
+        "count": 17,
+        "unit": "node test"
+      },
+      "generatedButNotAdopted": {
+        "mode": "count",
+        "count": 18,
+        "unit": "node test"
+      }
+    },
+    {
+      "suite": "py:test_assembly_bay_repeat",
+      "before": {
+        "mode": "count",
+        "count": 48,
+        "unit": "test"
+      },
+      "generatedButNotAdopted": {
+        "mode": "count",
+        "count": 53,
+        "unit": "test"
+      }
+    },
+    {
+      "suite": "py:test_geo318_reading_a_native",
+      "before": {
+        "mode": "count",
+        "count": 7,
+        "unit": "unittest"
+      },
+      "generatedButNotAdopted": {
+        "mode": "count",
+        "count": 7,
+        "unit": "test"
+      }
+    },
+    {
+      "suite": "py:test_geo318_reading_a_oracle",
+      "before": {
+        "mode": "count",
+        "count": 14,
+        "unit": "unittest"
+      },
+      "generatedButNotAdopted": {
+        "mode": "count",
+        "count": 14,
+        "unit": "test"
+      }
+    },
+    {
+      "suite": "py:test_rectangular_template",
+      "before": {
+        "mode": "count",
+        "count": 13,
+        "unit": "unittest"
+      },
+      "generatedButNotAdopted": {
+        "mode": "count",
+        "count": 13,
+        "unit": "test"
+      }
+    }
+  ],
+  "expectedGeneratedSha256": "cba8aa2be2c2d252050634f88a9dfc1c03e498d1d938a30ee3c55ca513df4243",
+  "restoredExpectedOriginalSha256": "b7a71ee637b91ade3d3e25a9c7877a2a9abc6bb5b784d5dddcbce81a083277bd",
+  "classification": "The strict process-group cleanup assertion correctly detects dead sleeps unreaped by container PID1 tail. Original assertion, 2-second timeout, 5-second wait, counts and exit status remain unchanged."
+}

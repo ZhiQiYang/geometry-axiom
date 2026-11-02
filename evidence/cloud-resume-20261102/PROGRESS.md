@@ -30,13 +30,19 @@ READY-TO-MERGE #340僅標技術驗收，請最新審查；合併順序由本機C
 
 該source完整native首輪有A04舊literal錨點斷言、帳本stale與三個expected count drift，整體真紅；card A04是注入前needle零命中，不冒稱killed。完整123官方Mutation evidence已全綠、原verifier復驗0。窄修A04保持只撤CARD且原CR20不變，採入原官方ledger，再依原Linux schema產架構四檔，得到尚未推送候選 A `e9f4dd75cfd4eb9965e3af249200b918907d62db`；保留每個原execution SHA，不將26dc執行改標A。
 
-原命令 `python3 tests/run_all.py --build --update-expected` 於 **2026-11-02 04:28:51.744831 UTC** 啟動，16MiB stack、原2100秒期限，最遲05:03:51.744831 UTC；收據 `/tmp/geometry-resume-20261102/pr363/full-census-A/`。此輪仍在收齊，已有 `test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left` 真紅：PID1為tail不reap，兩個已被kill的sleep留為PID1 zombie。原斷言／5秒等待／時限不改，本輪即使原工具產expected也不採入。下一步用僅回收自身死後代的隔離subreaper驗證環境修復，且撤掉真正groupkill仍須同名紅；不殺活子程序代替產品防線。不以inProgress宣稱通過。
+原命令 `python3 tests/run_all.py --build --update-expected` 第一輪於 **2026-11-02 04:28:51.744831–05:01:14.155566 UTC**，外層1942.410788秒、原runner1938.4985秒，未逾2100秒、未發signal；232／232，5420＝5418pass＋1fail＋1原允許GDI skip，真exit1。唯一紅為 `test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left`：PID1為tail不reap，兩個已被kill的sleep留為PID1 zombie。原failed expected逐byte保存、guarded恢復舊bytes，A clean；未採入失敗結果。625份完整純文字suite原件、REQUEST／RESULT／expected前後／恢復收據與分類已存pr363/full-census-A；637原件總manifest保留，6binary／6sidecar另於原環境保全而非冒稱公開。
 
-## #345：官方新帳本已採入並快轉推送，E CI 原件核收中
+環境修復僅由外部隔離subreaper回收自身已死後代，不發signal、不改PID1／安全設定／產品／原斷言：原12 fixed／只撤真groupkill／restored為0／1／0。負控兩個sleep仍活S、action none，原afterKill具名斷言紅，31.156秒自然退出；恢復12／12。最終helper SHA256 `05384f5ad031dbe66f2acda281cd9fd99bc49792dac57b8f687f27587b22e0f8`，兩位peer只讀核過WNOWAIT／PPID fallback與Popen主exit。第一輪PID1兩Z仍保原狀。
+
+第二輪同A、同before worktree bytes，原命令／16MiB／Node24.22.1／2100秒與mutation check不變，**2026-11-02 05:05:27.454885 UTC** 已真正啟動，最遲05:40:27.454885 UTC；原件 `/tmp/geometry-resume-20261102/pr363/full-census-A-reaped/`。仍在執行、不算已通過；不放寬任何count／golden／時限。
+
+## READY-TO-MERGE #345：官方新帳本採入後，E二十正式jobs全綠
 
 目前完整 head E `79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6`，base main。sole parent M `577b2e81967b3019352f65df5ffe6dc48eb6202f`，唯一改動為逐byte等官方artifact的ledger；SHA256 `0be90a297b4f4b4fd5a2e60d528886845cc2c8d823e912ef3b0763ba68f7eb1c`，120個execution.head全保留M。38688其他來源身分與185個mutation inputs等閉包已核，獨立原 `--check` exit0、stale0。完整命令、peer與採入前後hash在pr345/adoption；大型逐檔身分JSON與舊ledger只列hash，原件未刪，舊ledger仍可從Git還原。
 
-新自動 integration41387497096／mutation41387497118 原件核收中，不宣稱全綠。M舊integration41382891799因未計數freshnessfail／聚合拒絕而紅，Mutation41382891805完整123綠均保原件。原selected19仍是c8db6777的真19／19、0fail／skip、exit0，不移標E；runtime ELF未包含在小型公開子集。正文已同步E並逐byte讀回，維持draft。
+新自動 integration41387497096／mutation41387497118 已20jobs全success，21官方ZIP digest與20job原log逐byte全核；真integration execution `058f793590301e1e58074be072d0296d432e184b` 與E同tree、parents為main5775＋E。原native reaggregate0、230suite／5339pass／1原GDI skip；六browser皆過、fullcanvas2267／85golden一致，原coverage反證0／1／0。原mutation verifier0、123／120active＝114killed／1crashed／5equivalent／3retired，其餘0、七cache guards0／1／0、159bridge原raw已核；三原架構裁判0。此輪E artifact ledger SHA256 `8af0fb4ab26d997a4b9f11e8552388277f167c20c08e60966631af3c97bf773d`，來源已採帳本仍是上述M的0be90…，沒有為追逐新artifact重寫execution或再改source。最後bridge2實跑20分49秒，低於原45分鐘，不能從run建立時間誤判超時。可讀固定原件與命令／exit／hash在pr345/ci-final。
+
+M舊integration41382891799因未計數freshnessfail／聚合拒絕而紅，Mutation41382891805完整123綠均保原件。原selected19仍是c8db6777的真19／19、0fail／skip、exit0，不移標E；runtime ELF未包含在小型公開子集。READY-TO-MERGE只標技術驗收，仍待最新審查與本機Claude合main，Codex不合併。
 
 ## #344：base main、架構四檔採入，真browser反證未跑
 

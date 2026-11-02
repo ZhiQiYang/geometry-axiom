@@ -1,0 +1,870 @@
+{
+  "schema": "geometry-official-ci-acceptance-summary/1",
+  "accepted": true,
+  "pr": 345,
+  "source_head": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+  "actual_integration_checkout": "058f793590301e1e58074be072d0296d432e184b",
+  "tree": "c05e281326b3fe9b959e9ea8d59fcac28c067137",
+  "merge_parents": [
+    "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+    "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6"
+  ],
+  "terminal_snapshot": "2026-11-02T04:55:57Z",
+  "runs": {
+    "integration": {
+      "id": 41387497096,
+      "event": "pull_request",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "job_count": 10,
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41387497096"
+    },
+    "mutation": {
+      "id": 41387497118,
+      "event": "pull_request",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "job_count": 10,
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41387497118"
+    }
+  },
+  "job_count": 20,
+  "native": {
+    "passed": true,
+    "commit_sha": "058f793590301e1e58074be072d0296d432e184b",
+    "parts": 3,
+    "suite_count": 230,
+    "executed_suites": 230,
+    "union_equals_full_registry": true,
+    "overlap": [],
+    "counted_tests": 5340,
+    "counted_passed": 5339,
+    "allowed_skips": 1,
+    "shard_suites": {
+      "1": 77,
+      "2": 76,
+      "3": 77
+    },
+    "expected_sha256": "54e86fa13c93080ed45ec7f81dd474d2fcbefa6d5f30b6c75c35d9954f002ca1",
+    "timings_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"
+  },
+  "native_official_negative_control": {
+    "passed": true,
+    "baseline_mutant_restored_exit": [
+      0,
+      1,
+      0
+    ],
+    "rows": [
+      {
+        "label": "baseline",
+        "exit": 0,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [],
+        "assertion_failure": true,
+        "removed": []
+      },
+      {
+        "label": "removed",
+        "exit": 1,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [
+          "test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once"
+        ],
+        "assertion_failure": true,
+        "removed": [
+          "c:integrity"
+        ]
+      },
+      {
+        "label": "restored",
+        "exit": 0,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [],
+        "assertion_failure": true,
+        "removed": []
+      }
+    ]
+  },
+  "browser": [
+    {
+      "name": "browser (canvas)",
+      "passed": 2267,
+      "failed": 0
+    },
+    {
+      "name": "browser (grid)",
+      "passed": 356,
+      "failed": 0
+    },
+    {
+      "name": "browser (timber)",
+      "passed": 79,
+      "failed": 0
+    },
+    {
+      "name": "browser (assembly)",
+      "passed": 150,
+      "failed": 0
+    },
+    {
+      "name": "browser (documents)",
+      "passed": 47,
+      "failed": 0
+    },
+    {
+      "name": "browser (space)",
+      "passed": 242,
+      "failed": 0
+    }
+  ],
+  "E_canvas_has_old_M_BrokenPipe_diagnostic": false,
+  "mutation": {
+    "schema": "geometry-mutation-ci-summary/1",
+    "head": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+    "table_size": 123,
+    "active": 120,
+    "counts": {
+      "killed": 114,
+      "crashed": 1,
+      "survived": 0,
+      "equivalent": 5,
+      "invalid": 0,
+      "stale": 0,
+      "blocked": 0,
+      "retired": 3,
+      "unrun": 0
+    },
+    "ledger_sha256": "8af0fb4ab26d997a4b9f11e8552388277f167c20c08e60966631af3c97bf773d",
+    "binary_bytes_verified": true,
+    "full_table_strict_exit": 0
+  },
+  "new_E_ci_ledger_sha256": "8af0fb4ab26d997a4b9f11e8552388277f167c20c08e60966631af3c97bf773d",
+  "new_E_ci_summary_sha256": "90b760258bc6870ec517838cf413b28011d54a67d13152ee3eae111cc96764ba",
+  "already_adopted_M_execution_ledger_in_source_sha256": "0be90a297b4f4b4fd5a2e60d528886845cc2c8d823e912ef3b0763ba68f7eb1c",
+  "official_cache_negative_probe_count": 7,
+  "official_cache_negative_baseline_mutant_restored_exit": [
+    0,
+    1,
+    0
+  ],
+  "bridge_raw_results_reparsed": 159,
+  "official_ZIP_count": 21,
+  "artifacts": [
+    {
+      "id": 13117581125,
+      "name": "canvas-wait-trace",
+      "run_id": 41387497096,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:d142123d19e2c6c420acdc1752310686b4f0a64ede8816da651a4671d52dee8d",
+      "zip_sha256": "d142123d19e2c6c420acdc1752310686b4f0a64ede8816da651a4671d52dee8d",
+      "member_count": 1
+    },
+    {
+      "id": 13117087194,
+      "name": "grid-trial-screens-canvas",
+      "run_id": 41387497096,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:e910f8da66e284b69c6bc4ae1a38ba7c168f177811cefd91d44709c37442a198",
+      "zip_sha256": "e910f8da66e284b69c6bc4ae1a38ba7c168f177811cefd91d44709c37442a198",
+      "member_count": 4
+    },
+    {
+      "id": 13116746776,
+      "name": "native-shard-1",
+      "run_id": 41387497096,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:c0ce0e4fc83543104692dc18df040e48c791db365a79a94a66120134cb1460fa",
+      "zip_sha256": "c0ce0e4fc83543104692dc18df040e48c791db365a79a94a66120134cb1460fa",
+      "member_count": 1
+    },
+    {
+      "id": 13116455873,
+      "name": "document-reader-screens",
+      "run_id": 41387497096,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:630d6663663a50862513252e08dfd6deb3970639ecd9b2ee2fd4b2612d23b3b5",
+      "zip_sha256": "630d6663663a50862513252e08dfd6deb3970639ecd9b2ee2fd4b2612d23b3b5",
+      "member_count": 8
+    },
+    {
+      "id": 13116353297,
+      "name": "native-logs-2",
+      "run_id": 41387497096,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:a17cf763b38c8f220da08e39bad9dca6636c32ba02a55cbae92cdb2e60963e61",
+      "zip_sha256": "a17cf763b38c8f220da08e39bad9dca6636c32ba02a55cbae92cdb2e60963e61",
+      "member_count": 203
+    },
+    {
+      "id": 13116313781,
+      "name": "native-logs-1",
+      "run_id": 41387497096,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:00a2b9bd154908d86b54c5030426f5242e233b7f2f63c285f0c50960c2a57d9d",
+      "zip_sha256": "00a2b9bd154908d86b54c5030426f5242e233b7f2f63c285f0c50960c2a57d9d",
+      "member_count": 211
+    },
+    {
+      "id": 13116253671,
+      "name": "native-shard-2",
+      "run_id": 41387497096,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:0168aa1e1617357b36953b72e84e74702c3709589e4a7eedda51fb3cd8000e80",
+      "zip_sha256": "0168aa1e1617357b36953b72e84e74702c3709589e4a7eedda51fb3cd8000e80",
+      "member_count": 1
+    },
+    {
+      "id": 13116068085,
+      "name": "native-complete-coverage",
+      "run_id": 41387497096,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:5d348e6f3763e6dca241b263db0cf2b2e5369439d85a395a6ee3904256c1cf70",
+      "zip_sha256": "5d348e6f3763e6dca241b263db0cf2b2e5369439d85a395a6ee3904256c1cf70",
+      "member_count": 8
+    },
+    {
+      "id": 13116057577,
+      "name": "native-logs-3",
+      "run_id": 41387497096,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:b69be06f9f357d51e82d17d5ba06fa84830cf98ca959ffff9c14b1ae460ada5c",
+      "zip_sha256": "b69be06f9f357d51e82d17d5ba06fa84830cf98ca959ffff9c14b1ae460ada5c",
+      "member_count": 205
+    },
+    {
+      "id": 13115768226,
+      "name": "native-shard-3",
+      "run_id": 41387497096,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:2699571c1b421e349cc26b8a409fc8f4856d50f5d5b545a4d81ac39d2b13ff37",
+      "zip_sha256": "2699571c1b421e349cc26b8a409fc8f4856d50f5d5b545a4d81ac39d2b13ff37",
+      "member_count": 1
+    },
+    {
+      "id": 13115763756,
+      "name": "assembly-review-screens",
+      "run_id": 41387497096,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:75bb419a10f70131789a266f795db6885f74deb7e0d4fa00dd1995c6ca4331e7",
+      "zip_sha256": "75bb419a10f70131789a266f795db6885f74deb7e0d4fa00dd1995c6ca4331e7",
+      "member_count": 9
+    },
+    {
+      "id": 13115668576,
+      "name": "grid-trial-screens-grid",
+      "run_id": 41387497096,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:f2434ef4f052ea553d15c4441ab1c4630222bbb6dd3c36a96fc9e442a697b0c3",
+      "zip_sha256": "f2434ef4f052ea553d15c4441ab1c4630222bbb6dd3c36a96fc9e442a697b0c3",
+      "member_count": 4
+    },
+    {
+      "id": 13117791005,
+      "name": "mutation-complete-evidence",
+      "run_id": 41387497118,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:19f510eaba7c85f64ad3f4ec9a5d03e899082b2847915e66ace567f34dd6be76",
+      "zip_sha256": "19f510eaba7c85f64ad3f4ec9a5d03e899082b2847915e66ace567f34dd6be76",
+      "member_count": 2
+    },
+    {
+      "id": 13117700018,
+      "name": "mutation-shard-bridge-1",
+      "run_id": 41387497118,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:59c2bfa1f39d424c9f392fc11f9d885e23e353576883ce56be84815a7935148d",
+      "zip_sha256": "59c2bfa1f39d424c9f392fc11f9d885e23e353576883ce56be84815a7935148d",
+      "member_count": 4
+    },
+    {
+      "id": 13117436614,
+      "name": "mutation-shard-bridge-2",
+      "run_id": 41387497118,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:f74a8ddbd10401524f0ce963d9c18ecc9aec437fedfa1228086b2f1aa94b8787",
+      "zip_sha256": "f74a8ddbd10401524f0ce963d9c18ecc9aec437fedfa1228086b2f1aa94b8787",
+      "member_count": 4
+    },
+    {
+      "id": 13116840460,
+      "name": "mutation-shard-core-3",
+      "run_id": 41387497118,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:98ef0f48f832ff53c8737cae219ced401e1e493744d795359464d56f2e15e04c",
+      "zip_sha256": "98ef0f48f832ff53c8737cae219ced401e1e493744d795359464d56f2e15e04c",
+      "member_count": 4
+    },
+    {
+      "id": 13116729894,
+      "name": "mutation-shard-bridge-3",
+      "run_id": 41387497118,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:76c0121d400f1bfc1f60d078874dd4f413a60507f4a478e9a609dc869a709b6c",
+      "zip_sha256": "76c0121d400f1bfc1f60d078874dd4f413a60507f4a478e9a609dc869a709b6c",
+      "member_count": 4
+    },
+    {
+      "id": 13116545231,
+      "name": "pr357-architecture-refresh",
+      "run_id": 41387497118,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:4754fda3d734d3c1f2a1724426e5b6981f7cc67fa75b99dd0fa16ff0d999e4bc",
+      "zip_sha256": "4754fda3d734d3c1f2a1724426e5b6981f7cc67fa75b99dd0fa16ff0d999e4bc",
+      "member_count": 9
+    },
+    {
+      "id": 13116253680,
+      "name": "mutation-shard-core-4",
+      "run_id": 41387497118,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:ba2c84f143b0f064ee0bc354f808b6b280db25776b604f636cde9178057ea7eb",
+      "zip_sha256": "ba2c84f143b0f064ee0bc354f808b6b280db25776b604f636cde9178057ea7eb",
+      "member_count": 4
+    },
+    {
+      "id": 13115983392,
+      "name": "mutation-shard-core-1",
+      "run_id": 41387497118,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:19ba91e7e7ba197b7bf12a15e838b5f1fa9eb9c1604858ca7c619553d71f2200",
+      "zip_sha256": "19ba91e7e7ba197b7bf12a15e838b5f1fa9eb9c1604858ca7c619553d71f2200",
+      "member_count": 4
+    },
+    {
+      "id": 13115584166,
+      "name": "mutation-shard-core-2",
+      "run_id": 41387497118,
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "github_digest": "sha256:843e08657ef4582b0f5dc29f498a9fc8df1cbcf45fe6cbd976999252a78b399c",
+      "zip_sha256": "843e08657ef4582b0f5dc29f498a9fc8df1cbcf45fe6cbd976999252a78b399c",
+      "member_count": 4
+    }
+  ],
+  "whole_job_logs_byte_equal": [
+    {
+      "run_id": 41387497096,
+      "job_id": 125091476209,
+      "name": "native (2/3)",
+      "archive_member": "9_native (2_3).txt",
+      "bytes": 45549,
+      "sha256": "c97b044ffa484a6916f92ce11a99af9cd973fa0c7dfd1fbfbd3f120861120a6b",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497096,
+      "job_id": 125091476424,
+      "name": "browser (canvas)",
+      "archive_member": "7_browser (canvas).txt",
+      "bytes": 743037,
+      "sha256": "57cd3496aed0d36147efa5c37e885722b5146edb75ac3b96d00ca3405e62df2c",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497096,
+      "job_id": 125091476436,
+      "name": "browser (grid)",
+      "archive_member": "8_browser (grid).txt",
+      "bytes": 371823,
+      "sha256": "49575325949556acb22c03a2ee224f554945f52e3be42dedc9665ac023834448",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497096,
+      "job_id": 125091476437,
+      "name": "native (1/3)",
+      "archive_member": "4_native (1_3).txt",
+      "bytes": 45231,
+      "sha256": "7c4b1c218a9acfdd6276aff543e9ea552ddd641561b9a2a981f0a273cacb5d9b",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497096,
+      "job_id": 125091476447,
+      "name": "native (3/3)",
+      "archive_member": "3_native (3_3).txt",
+      "bytes": 45150,
+      "sha256": "4f213f50a5e6d8457c15c23f16a6bfca554e5e88aa81bd0635fdb257f0abff45",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497096,
+      "job_id": 125091476457,
+      "name": "browser (timber)",
+      "archive_member": "6_browser (timber).txt",
+      "bytes": 44955,
+      "sha256": "df5046d8599143f81c2f0f57cb10237fb021af9de466080dcdcf47a2fe5f1d94",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497096,
+      "job_id": 125091476473,
+      "name": "browser (assembly)",
+      "archive_member": "1_browser (assembly).txt",
+      "bytes": 61808,
+      "sha256": "a66405fc59479b886b1c63d41fbafe13246e3ca0ffd11ed9c8bb23f5c1b49a30",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497096,
+      "job_id": 125091476521,
+      "name": "browser (documents)",
+      "archive_member": "5_browser (documents).txt",
+      "bytes": 39838,
+      "sha256": "9815e30719ffb29dfeebf429e808821b95fd4f60da4b9a31bb607d366e6fe9db",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497096,
+      "job_id": 125091476545,
+      "name": "browser (space)",
+      "archive_member": "2_browser (space).txt",
+      "bytes": 66141,
+      "sha256": "c10906c569adf6b1518f1de4e68c56f18c0592b0959cd5ee6adb0f0ddcb25545",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497096,
+      "job_id": 125096044616,
+      "name": "native complete coverage",
+      "archive_member": "0_native complete coverage.txt",
+      "bytes": 25803,
+      "sha256": "fffe87a5928c38896e049ff067cb95df04f94d1eef89ec76da333e3bf9eca7db",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497118,
+      "job_id": 125091476076,
+      "name": "Verify merged architecture with original commands",
+      "archive_member": "9_Verify merged architecture with original commands.txt",
+      "bytes": 314515,
+      "sha256": "40f26416ca621ee6ac9ec16fc2ab02f446c83ebbd120e566c13b94ffcf36f717",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497118,
+      "job_id": 125091861061,
+      "name": "plan",
+      "archive_member": "8_plan.txt",
+      "bytes": 17712,
+      "sha256": "69dc37134c50c8ca8e930ab0f00569209f80ac5fd89713573a0698e772c1211c",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497118,
+      "job_id": 125092244669,
+      "name": "mutation (core-4)",
+      "archive_member": "4_mutation (core-4).txt",
+      "bytes": 30905,
+      "sha256": "130195201ebefae7b75f7252911912894f601706e9034fb296df60b75611cdd2",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497118,
+      "job_id": 125092244672,
+      "name": "mutation (bridge-3)",
+      "archive_member": "6_mutation (bridge-3).txt",
+      "bytes": 24232,
+      "sha256": "bd1fed134a7b1d99f236fd34d73e5252ef9a2726a257693ec4f868056d55bc45",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497118,
+      "job_id": 125092244692,
+      "name": "mutation (bridge-2)",
+      "archive_member": "7_mutation (bridge-2).txt",
+      "bytes": 24287,
+      "sha256": "43797e6c3f26d6098f320cf755bb313eadc76134fbbaa40ef1bc288fdd9c235f",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497118,
+      "job_id": 125092244694,
+      "name": "mutation (core-1)",
+      "archive_member": "3_mutation (core-1).txt",
+      "bytes": 29827,
+      "sha256": "b918d9d19e6dcebbd84ec7e3d0ea184ff39eaaf706d82fc13c9cd6a733982441",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497118,
+      "job_id": 125092244709,
+      "name": "mutation (bridge-1)",
+      "archive_member": "5_mutation (bridge-1).txt",
+      "bytes": 24653,
+      "sha256": "b47d6530ee6829fe3cf5c33cfba39ab5e2f860321a9702c863faf8608c96337f",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497118,
+      "job_id": 125092244729,
+      "name": "mutation (core-3)",
+      "archive_member": "2_mutation (core-3).txt",
+      "bytes": 28298,
+      "sha256": "dca3c132db3243abc70328c73c6026583007c05e8ebec1cfceed9bad482505e6",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497118,
+      "job_id": 125092244741,
+      "name": "mutation (core-2)",
+      "archive_member": "1_mutation (core-2).txt",
+      "bytes": 28892,
+      "sha256": "c59f557094b8d893f66eb093da200b1437f99a3b4505c0f939f5f6ef25a17c3f",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41387497118,
+      "job_id": 125101280571,
+      "name": "Verify complete mutation evidence",
+      "archive_member": "0_Verify complete mutation evidence.txt",
+      "bytes": 31650,
+      "sha256": "e99d35daf9c1e0b26a0cc2252367d49b0e0268cd8495136fc350276249e8a03b",
+      "byte_equal": true
+    }
+  ],
+  "original_commands": [
+    {
+      "name": "native-original-reaggregation",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tests/native_shard_receipts.py",
+        "--input",
+        "/tmp/geometry-resume-20261102/ci-followup/pr345-E79cf0f16/native-original-input",
+        "--parts",
+        "3",
+        "--output",
+        "/tmp/geometry-resume-20261102/ci-followup/pr345-E79cf0f16/native-reverified.json"
+      ],
+      "cwd": "/tmp/geometry-pr345-20261102",
+      "env": {
+        "GIT_DIR": "/tmp/geometry-resume-20261102/ci-followup/pr345-E79cf0f16/native-verifier-git",
+        "GIT_WORK_TREE": "/tmp/geometry-pr345-20261102",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "exit_code": 0,
+      "stdout_sha256": "31e79f434bff39f82bf46f393aaad5775efedff7b28f7dc1fdc21b2d7f8cc0e5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "mutation-original-verifier",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        ".github/scripts/mutation_evidence.py",
+        "verify",
+        "--artifacts",
+        "/tmp/geometry-resume-20261102/ci-followup/pr345-E79cf0f16/extracted",
+        "--out",
+        "/tmp/geometry-resume-20261102/ci-followup/pr345-E79cf0f16/mutation-local-verified"
+      ],
+      "cwd": "/tmp/geometry-pr345-20261102",
+      "exit_code": 0,
+      "stdout_sha256": "0f1286545b414b6b7882b7ba3f52feba3b901e2d41d7ce333341ca544e71ef76",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "official-architecture-cli",
+      "label": "architecture-cli",
+      "command": [
+        "<python>",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "cwd": "<repo>",
+      "exitCode": 0,
+      "stdout": "architecture-cli.stdout",
+      "stderr": "architecture-cli.stderr",
+      "stdoutSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "official-architecture-unit",
+      "label": "architecture-unit",
+      "command": [
+        "<python>",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "cwd": "<repo>",
+      "exitCode": 0,
+      "stdout": "architecture-unit.stdout",
+      "stderr": "architecture-unit.stderr",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "0471388038c7e4ed6b6fc1ae34908ddde08ab2fe86979d3f75e4b045d19f6b52",
+      "testsRun": 205
+    },
+    {
+      "name": "official-architecture-product",
+      "label": "architecture-product",
+      "command": [
+        "<python>",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "cwd": "<repo>",
+      "exitCode": 0,
+      "stdout": "architecture-product.stdout",
+      "stderr": "architecture-product.stderr",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "a898a20d61d548e2281d7a97474a2bc2f7c6b91f6d23d276941cc7d92ee6e159",
+      "testsRun": 18
+    }
+  ],
+  "original_source_tools": [
+    {
+      "path": ".github/scripts/architecture_evidence.py",
+      "sha256": "9899d18b3fb80a750308e2342d8309ca7a2470ec5aab4f977bc3213690b07b5b",
+      "lf_sha256": "9899d18b3fb80a750308e2342d8309ca7a2470ec5aab4f977bc3213690b07b5b"
+    },
+    {
+      "path": ".github/scripts/mutation_evidence.py",
+      "sha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc",
+      "lf_sha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc"
+    },
+    {
+      "path": ".github/workflows/integration-tests.yml",
+      "sha256": "feef73e7602c0f276a8e0436fc89f320ac60c3a4af4fa7921c803ae989c8a71f",
+      "lf_sha256": "feef73e7602c0f276a8e0436fc89f320ac60c3a4af4fa7921c803ae989c8a71f"
+    },
+    {
+      "path": ".github/workflows/mutation-evidence.yml",
+      "sha256": "c5d39c10de1df05ff1a582f228b4ee5fb088d0637337dc96c552d993a35d1fdb",
+      "lf_sha256": "c5d39c10de1df05ff1a582f228b4ee5fb088d0637337dc96c552d993a35d1fdb"
+    },
+    {
+      "path": "geometry-web/cdp_sections.golden.json",
+      "sha256": "de99e9d0073b57e0b80856823cb4c49eb48c3c1629d57b7134bd3311197ad86f",
+      "lf_sha256": "de99e9d0073b57e0b80856823cb4c49eb48c3c1629d57b7134bd3311197ad86f"
+    },
+    {
+      "path": "geometry-web/cdp_test.js",
+      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "lf_sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e"
+    },
+    {
+      "path": "tests/mutants_results.json",
+      "sha256": "0be90a297b4f4b4fd5a2e60d528886845cc2c8d823e912ef3b0763ba68f7eb1c",
+      "lf_sha256": "0be90a297b4f4b4fd5a2e60d528886845cc2c8d823e912ef3b0763ba68f7eb1c"
+    },
+    {
+      "path": "tests/mutate.py",
+      "sha256": "bd2d0c768439a93e7f848ff0299a5b164aabe1d80a0f4e9a5bcb7ab83eb4b315",
+      "lf_sha256": "bd2d0c768439a93e7f848ff0299a5b164aabe1d80a0f4e9a5bcb7ab83eb4b315"
+    },
+    {
+      "path": "tests/mutation_bridge.py",
+      "sha256": "7febe80ba29a3c0e7821277f47102a57a0c9ab0610a02e8981bb0eb2a79b3c58",
+      "lf_sha256": "7febe80ba29a3c0e7821277f47102a57a0c9ab0610a02e8981bb0eb2a79b3c58"
+    },
+    {
+      "path": "tests/native_shard_receipts.py",
+      "sha256": "9ebb40552272288248d9f40ca6ec01869b2ff747c50eff58ee7eea5812d31948",
+      "lf_sha256": "9ebb40552272288248d9f40ca6ec01869b2ff747c50eff58ee7eea5812d31948"
+    },
+    {
+      "path": "tests/native_shard_timings.json",
+      "sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6",
+      "lf_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"
+    },
+    {
+      "path": "tests/native_sharding_mutation_check.py",
+      "sha256": "06f200afa059d24855f934299e46579e085c885ebcbc7d198f4db894379ccf48",
+      "lf_sha256": "06f200afa059d24855f934299e46579e085c885ebcbc7d198f4db894379ccf48"
+    },
+    {
+      "path": "tests/native_shards.py",
+      "sha256": "549ef5a462da9c26d91ba4ad2edcaca5847e01339111877648ac1ba0fb0ffe9f",
+      "lf_sha256": "549ef5a462da9c26d91ba4ad2edcaca5847e01339111877648ac1ba0fb0ffe9f"
+    },
+    {
+      "path": "tests/run_all.expected.json",
+      "sha256": "54e86fa13c93080ed45ec7f81dd474d2fcbefa6d5f30b6c75c35d9954f002ca1",
+      "lf_sha256": "54e86fa13c93080ed45ec7f81dd474d2fcbefa6d5f30b6c75c35d9954f002ca1"
+    },
+    {
+      "path": "tests/run_all.py",
+      "sha256": "1b7765959ba7afd5af8533ce64f762058d95580280f09090db064a4fceb555ad",
+      "lf_sha256": "1b7765959ba7afd5af8533ce64f762058d95580280f09090db064a4fceb555ad"
+    },
+    {
+      "path": "tests/run_tests.py",
+      "sha256": "a2dedfa2cf511770d87eb524ca34892e8b7dd3bea48f3c56bed6305b7c100185",
+      "lf_sha256": "a2dedfa2cf511770d87eb524ca34892e8b7dd3bea48f3c56bed6305b7c100185"
+    },
+    {
+      "path": "tests/test_unittest_runner.py",
+      "sha256": "7439f59cdf0de001bd7121f6fbf25c7c510bf3209cc1d2b582fa4a4f6ca52f15",
+      "lf_sha256": "7439f59cdf0de001bd7121f6fbf25c7c510bf3209cc1d2b582fa4a4f6ca52f15"
+    }
+  ],
+  "last_mutation_job_timing": {
+    "head": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+    "run_id": 41387497118,
+    "job_id": 125092244692,
+    "name": "mutation (bridge-2)",
+    "status": "completed",
+    "conclusion": "success",
+    "run_created_at": "2026-11-02T04:16:05Z",
+    "job_created_at": "2026-11-02T04:18:48Z",
+    "started_at": "2026-11-02T04:30:23Z",
+    "completed_at": "2026-11-02T04:51:12Z",
+    "job_created_to_started_wait_seconds": 695.0,
+    "actual_job_elapsed_seconds": 1249.0,
+    "workflow_job_timeout_minutes": 45,
+    "run_created_to_job_started_seconds": 858.0,
+    "latest_step": {
+      "number": 9,
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-02T04:51:09Z",
+      "completed_at": "2026-11-02T04:51:09Z"
+    },
+    "original_mutation_step": {
+      "number": 3,
+      "name": "Execute assigned mutations with new receipts and exact binary checks",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-02T04:31:21Z",
+      "completed_at": "2026-11-02T04:51:07Z"
+    },
+    "mutation_step_elapsed_seconds": 1186.0,
+    "all_steps": [
+      {
+        "number": 1,
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T04:30:24Z",
+        "completed_at": "2026-11-02T04:30:24Z"
+      },
+      {
+        "number": 2,
+        "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T04:30:24Z",
+        "completed_at": "2026-11-02T04:31:21Z"
+      },
+      {
+        "number": 3,
+        "name": "Execute assigned mutations with new receipts and exact binary checks",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T04:31:21Z",
+        "completed_at": "2026-11-02T04:51:07Z"
+      },
+      {
+        "number": 4,
+        "name": "Preserve receipts, executed binaries and logs",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T04:51:07Z",
+        "completed_at": "2026-11-02T04:51:09Z"
+      },
+      {
+        "number": 8,
+        "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T04:51:09Z",
+        "completed_at": "2026-11-02T04:51:09Z"
+      },
+      {
+        "number": 9,
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T04:51:09Z",
+        "completed_at": "2026-11-02T04:51:09Z"
+      }
+    ],
+    "workflow_path": "/tmp/geometry-pr345-20261102/.github/workflows/mutation-evidence.yml",
+    "workflow_sha256": "c5d39c10de1df05ff1a582f228b4ee5fb088d0637337dc96c552d993a35d1fdb",
+    "classification": "Completed success within original job timeout; no interruption/rerun needed.",
+    "time_boundary": "Run creation is not mutation job start. Job-created-to-started includes matrix/runner scheduling wait; original execute step and total actual job duration are recorded separately."
+  },
+  "local_receipt_references": [
+    {
+      "path": "provenance.json",
+      "sha256": "2da75c1ac8230f2be05531124b5123a9ab160aaa0e778adeec12dedafc4ffd68"
+    },
+    {
+      "path": "artifact-byte-audit.json",
+      "sha256": "f75e8da504d90c6b170e88d30a9229e6b82cfb5677a45ea65e8aa9435d5761f1"
+    },
+    {
+      "path": "native-reverify-receipt.json",
+      "sha256": "6c53cd502b3e3f4daf399c125b7278f33de3e6c54f06c7f25fc8a0f28ffcae43"
+    },
+    {
+      "path": "architecture-audit.json",
+      "sha256": "63dfb3648183a2ae7d554df76768ab073d795b91732a464318966a76de4d230a"
+    },
+    {
+      "path": "mutation-verify-receipt.json",
+      "sha256": "d46153d1f4998003e3926937a5a98b532e50a7ed9f0076be24c6597678389263"
+    },
+    {
+      "path": "mutation-shard-audit.json",
+      "sha256": "bd33aca9d7a42cc0ba11d454d52e87b36ff218ae5b4ded189b95c16c9ea9479c"
+    },
+    {
+      "path": "official-run-log-audit.json",
+      "sha256": "47393695eebebf9afba9105596edfd35fe74d6050d728f9d4e5e568acaf581e0"
+    },
+    {
+      "path": "last-mutation-job-timing.json",
+      "sha256": "8a4c2a6d7fa1f4dcd39eac2ba2e32a7096089ca6446bd907bba535a7c54f3482"
+    },
+    {
+      "path": "independent-review/independent-native-browser-check.json",
+      "sha256": "c000911db800a98299bda5d47e1b864787efdf5117dec0176d04ffcd2fa17494"
+    },
+    {
+      "path": "independent-review/envelope-and-body-review.json",
+      "sha256": "5e4a50401eb69a7bfadc98e1e478f224c61366a2330a5d53a80af3290682ec23"
+    },
+    {
+      "path": "independent-review/E_MUTATION_REVIEW.json",
+      "sha256": "820616d8f67f0a8d949c2f3414088c2e017b52661ec822cb29985aca3b9925f8"
+    }
+  ],
+  "old_M_integration": {
+    "source": "577b2e81967b3019352f65df5ffe6dc48eb6202f",
+    "run_id": 41382891799,
+    "conclusion": "failure",
+    "failed_jobs": [
+      "native (2/3)",
+      "native complete coverage"
+    ],
+    "counted_tests": 5340,
+    "counted_passed": 5339,
+    "counted_failed": 0,
+    "allowed_GDI_skip": 1,
+    "additional_uncounted_freshness_failure": 1,
+    "not_relabelled": true
+  },
+  "PR_body_review": "M counts/raw identity description has no concrete misstatement; exact reviewed body snapshot and SHA retained. No body was edited here.",
+  "blockers": [],
+  "source_clean": true,
+  "scope": "Read-only API/download/hash/original receipt validation. No local product suite, native negative-control unittest, browser, build/compiler, downloaded binary execution, source/PR write, CI dispatch or rerun. All original raw files remain in the parent evidence folder."
+}
