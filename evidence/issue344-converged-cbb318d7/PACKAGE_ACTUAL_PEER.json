@@ -1,0 +1,17 @@
+{
+  "exit_code": 0,
+  "checks": 1707,
+  "findings": [],
+  "archive_sha256": "a4c566382a0009488f5ccb9101213f51324371bd07c48129e0d408d2b54d6c25",
+  "source_sha": "cbb318d76d7d242ae0db760ae15d57ef1cad4aa0",
+  "members": 425,
+  "original_bytes": 6307253,
+  "index_sha256": "908720564121d2eef546457165951fa284a586a51796f6686357f17a87598e83",
+  "semantic_peer_sha256": "6bf98d3f1c8707f649b09a814b4e43d5f9df10220ba839378b7cf910141aa20f",
+  "scope": "Every original425 tar member compared byte-for-byte to retained original, exact archive hash/size and index. No duplicate archive, no Node/C/Git or ELF body read.",
+  "limits": [
+    "Earlier merge semantics use retained original merge peer; this package check validates bytes, not new merge execution.",
+    "Selected277/0 certifies only strictNode9 and source publication; full native/browser and new VM triple remain unrun.",
+    "Actual final E/D publication is separate; this report does not claim this local package pushed."
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "status": "FROZEN_AFTER_INDEPENDENT_ROW_AND_PACKAGE_PEERS",
+  "source_sha": "cbb318d76d7d242ae0db760ae15d57ef1cad4aa0",
+  "files": [
+    {
+      "name": "ORIGINAL_MERGE_AND_STRICT_ROW.tar.gz",
+      "source": "/tmp/geo344-cbb-convergence-package-20261024/ORIGINAL_MERGE_AND_STRICT_ROW.tar.gz",
+      "bytes": 1109597,
+      "sha256": "a4c566382a0009488f5ccb9101213f51324371bd07c48129e0d408d2b54d6c25"
+    },
+    {
+      "name": "RAW_INDEX.json",
+      "source": "/tmp/geo344-cbb-convergence-package-20261024/RAW_INDEX.json",
+      "bytes": 112962,
+      "sha256": "908720564121d2eef546457165951fa284a586a51796f6686357f17a87598e83"
+    },
+    {
+      "name": "SUMMARY.json",
+      "source": "/tmp/geo344-cbb-convergence-package-20261024/SUMMARY.json",
+      "bytes": 557,
+      "sha256": "af6ab02c7d55da2888550d9c3417a8a0b6f46250042d12f71e3d7dea727c1ee7"
+    },
+    {
+      "name": "PROGRESS.md",
+      "source": "/tmp/geo344-cbb-convergence-publication-tools-20261024/PROGRESS.md",
+      "bytes": 1555,
+      "sha256": "3bd0162396a97b46b9e1c10a768203db017f111db14fcc714292cce01c2a2f37"
+    },
+    {
+      "name": "collect.py",
+      "source": "/tmp/geo344-cbb-convergence-publication-tools-20261024/collect.py",
+      "bytes": 2656,
+      "sha256": "f3f4f46ad456e5314d31cdd5db549f77bd2027885248d5f65c070d777dfbb5e6"
+    },
+    {
+      "name": "publish.py",
+      "source": "/tmp/geo344-cbb-convergence-publication-tools-20261024/publish.py",
+      "bytes": 6358,
+      "sha256": "cc9655c974664775fa6cef13f0078d8e51138755c8df7366b733cec14a445aca"
+    },
+    {
+      "name": "ROW_ACTUAL_PEER.json",
+      "source": "/tmp/geo344-cbb-actual-storage-peer-20261024/REVIEW.json",
+      "bytes": 869,
+      "sha256": "6bf98d3f1c8707f649b09a814b4e43d5f9df10220ba839378b7cf910141aa20f"
+    },
+    {
+      "name": "ROW_ACTUAL_CHECKS.json",
+      "source": "/tmp/geo344-cbb-actual-storage-peer-20261024/CHECKS.json",
+      "bytes": 20497,
+      "sha256": "f2c78bb2a063f0755caed18f725a5bc667e0cfb3dff61cb4b0c221a47aed5807"
+    },
+    {
+      "name": "review_row_actual.py",
+      "source": "/tmp/storage-maintenance-followup-20261024/review_geo344_cbb_actual.py",
+      "bytes": 7965,
+      "sha256": "c5d6886457f79cc9d325a9e237de079741f35876d402b7920e1bd6ab01cd6561"
+    },
+    {
+      "name": "PACKAGE_ACTUAL_PEER.json",
+      "source": "/tmp/geo344-cbb-package-storage-peer-20261024/REVIEW.json",
+      "bytes": 980,
+      "sha256": "14adcd3fbc8fae84ec3520e57e6fe847774734cf6c258cdac648133c320f5026"
+    },
+    {
+      "name": "PACKAGE_ACTUAL_CHECKS.json",
+      "source": "/tmp/geo344-cbb-package-storage-peer-20261024/CHECKS.json",
+      "bytes": 206858,
+      "sha256": "4a514097975d37935267d1bb41535088998269f5960ccb5503f66f4c54ad9a9c"
+    },
+    {
+      "name": "review_package_actual.py",
+      "source": "/tmp/storage-maintenance-followup-20261024/review_geo344_cbb_package.py",
+      "bytes": 3120,
+      "sha256": "a610e675715bd0f32d9ebdc535644731b232c9bd238f90372872eb6bddb068e2"
+    }
+  ],
+  "publisher_sha256": "cc9655c974664775fa6cef13f0078d8e51138755c8df7366b733cec14a445aca",
+  "body_sha256": "19bd5681ad76c25178ae2ab49db242cbd9924083becb03bce123f30bca7f0867",
+  "payload_bytes": 1473974
+}

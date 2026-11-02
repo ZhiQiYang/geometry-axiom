@@ -1,0 +1,24 @@
+{
+  "exit_code": 0,
+  "checks": 257,
+  "failed_checks": [],
+  "source_sha": "9aec9a32630fc65f94c53d49e99969e546574d6e",
+  "parent_sha": "a5ec136baf3909453867b3eed50f1b93b229ca59",
+  "original_commands": 21,
+  "normal_push_verified_from_original": true,
+  "changed_paths": [
+    "geometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "manifest_sha256": "f0c0b4db4ca01d4825883b73d73bf8644af313cd2bcab4c9b23638b9bbd93d32",
+  "original_result_sha256": "c9e34fd11da7fbf394cbd0aef5e3de280506220aa1b21f4597e3806cacfb5957",
+  "recorded_driver_sha256": "f84f310dcde93c4acf757cbff5ae2db11aa0fcded30e04478c36a104326ced89",
+  "formal_architecture": "UNRUN",
+  "tests_rerun": false,
+  "limitations": [
+    "Source publication review only; does not replace #344 architecture judges/counterfactual/browser gates.",
+    "Captured original ls-remote proves the pushed head at publication time; no new network request or branch mutation performed.",
+    "Original driver is assertion-based; reported root startup was python3 -B without -O. Child command environments preserve PYTHONOPTIMIZE=None. Startup claim is not independently inferred from child environments.",
+    "Existing absolute git-path outputs were used. No claim about portability to a relative git-path layout."
+  ],
+  "created_utc": "2026-10-25T12:22:58.392969+00:00"
+}
