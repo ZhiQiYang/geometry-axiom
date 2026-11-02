@@ -902,7 +902,7 @@ const RoomCollectionWorkspace = (() => {
   function otherAttachments() {
     // R52: every project attachment except source rooms and the room-candidate draft.
     const F=typeof GeometryFeatureAttachments!=='undefined'?GeometryFeatureAttachments:null;
-    const kinds=F?[F.GRID_KIND,F.Evidence?.KIND,F.CASE_KIND]:['grid-draft','evidence-links','rule-cases'];
+    const kinds=F?[F.GRID_KIND,F.Evidence?.KIND,F.CASE_KIND,F.Cutting?.KIND]:['grid-draft','evidence-links','rule-cases','cutting-settings'];
     return kinds.filter(Boolean).map(kind=>[kind,W().readFeatureAttachment(kind,token())]);
   }
   async function commitRoomDraft(pts) {

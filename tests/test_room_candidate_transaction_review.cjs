@@ -5,6 +5,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const base=(process.env.GEOMETRY_ROOM_WORKSPACE_ROOT||require('node:path').resolve(__dirname,'../geometry-web'))+'/';
+const F=require(base+'feature-attachments.js');
 const S=require(base+'source-plane.js'),R=require(base+'room-collection.js'),D=require(base+'room-candidate-draft.js'),O=require(base+'room-outline.js'),E=require(base+'evidence-links.js');
 const clone=x=>structuredClone(x),same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const source='ab'.repeat(32),pin='cd'.repeat(32),hostLoop={verts:[[0,0],[3000,0],[3000,2000],[0,2000]],fixity:[1,1,1,1]};
@@ -34,11 +35,11 @@ function harness(options={}) {
   const outlineWorkspace={get hasWork(){return !!outline;},loadCandidate:(bid,row)=>{outline={candidateId:row.id,points:clone(row.points),dimensions:clone(row.dimensions),rawInputs:clone(row.rawInputs),revision:row.revision};},
     snapshot:()=>clone(outline),beforeCommit:()=>({...clone(outline),collectionCandidate:true}),reset:()=>{outline=null;},afterCommit:()=>{},paneHTML:()=>''};
   function element(tag){return {tag,children:[],append(...x){this.children.push(...x);},addEventListener(){},close(){this.open=false;},remove(){},focus(){},showModal(){this.open=true;queueMicrotask(()=>this.children.find(x=>x.id==='roomConfirm').onclick());}};}
-  const context={GeometrySourcePlane:S,GeometryRoomCollection:R,GeometryRoomCandidateDraft:D,RoomOutline:O,RoomOutlineWorkspace:outlineWorkspace,ReferenceWorkspace:W,
+  const context={GeometryFeatureAttachments:F,GeometrySourcePlane:S,GeometryRoomCollection:R,GeometryRoomCandidateDraft:D,RoomOutline:O,RoomOutlineWorkspace:outlineWorkspace,ReferenceWorkspace:W,
     structuredClone,TextEncoder,PolyDraft:{createState:()=>({pts:[]})},feSyncDraftMirror:()=>{},feLenShow:()=>{},crypto:{randomUUID:()=>`id-${++serial}`},console,window:{addEventListener:(n,f)=>{events[n]=f;}},document:{createElement:element,body:{append(){}},getElementById:()=>null},
     oc,fe,connection:{phase:'ready',session:'session-a'},innerWidth:1000,prompt:()=> 'Probe room',appendGridDefinitionImpact:()=>{},
     feUlImgToMm:(_p,x,y)=>[x*10,y*10],feSetTool:()=>{},fiShowTab:()=>{},openPanel:()=>{},drawFaceEditor:()=>{},setStatus:()=>{},toast:()=>{},
-    cleanDraft:()=>{fe.draft.pts=[];},renderObjects:async()=>{if(options.tamperOldCollection){const changed=clone(attachments['source-rooms']);changed.collections.find(c=>c.id==='other-collection').roomIds.reverse();W.setFeatureAttachment('source-rooms',changed,'ctx',{recordHistory:true});}if(options.tamperOther)W.setFeatureAttachment(E.KIND,E.empty(),'ctx',{recordHistory:true});if(options.tamperDraft){const changed=clone(attachments[D.KIND]);changed.rows[1].rawInputs.refRoomLength='999';W.setFeatureAttachment(D.KIND,changed,'ctx',{recordHistory:true});}},
+    cleanDraft:()=>{fe.draft.pts=[];},renderObjects:async()=>{if(options.tamperCutting){assert.equal(ownedLease,null,'native group releases its room lease before rendering');const changed=clone(attachments[F.Cutting.KIND]);changed.kerf++;F.Cutting.transition(attachments[F.Cutting.KIND],changed);W.setFeatureAttachment(F.Cutting.KIND,changed,'ctx',{recordHistory:true});}if(options.tamperOldCollection){const changed=clone(attachments['source-rooms']);changed.collections.find(c=>c.id==='other-collection').roomIds.reverse();W.setFeatureAttachment('source-rooms',changed,'ctx',{recordHistory:true});}if(options.tamperOther)W.setFeatureAttachment(E.KIND,E.empty(),'ctx',{recordHistory:true});if(options.tamperDraft){const changed=clone(attachments[D.KIND]);changed.rows[1].rawInputs.refRoomLength='999';W.setFeatureAttachment(D.KIND,changed,'ctx',{recordHistory:true});}},
     enterFocus:async(t,id)=>{oc.edit={bid:id};oc.focus={t,id};},renderFaceInspector:()=>{if(workspace&&oc.edit)workspace.paneHTML(oc.edit.bid);},
     apiRequest:async(command,l)=>{const settle=workspace?.beginNativeRequest(command);commands.push(command);let result;try{
       if(command==='newid')result={ok:true,boundary:2};
@@ -134,4 +135,23 @@ test('R358-06 extra R52: changed pre-existing collection prevents first-room con
   await h.commit().catch(()=>{});
   assert.deepEqual(h.attachments['source-rooms'].collections.find(c=>c.id==='other-collection').roomIds,['other-room-4','other-room-3']);
   assert.equal(h.workspace.candidateSnapshot().stale,true,'R52 must reject continuation when a pre-existing collection changed');
+});
+
+const cuttingSettings=()=>({kerf:3,allowance:0,minRemnant:300,
+  stockTypes:[{key:1,name:'stock',section:[27,33],material:null,length:3636,endTrim:5}],
+  remnants:[],nextStockKey:2,nextRemnantKey:1});
+test('R52 unchanged cutting settings permit remaining candidate continuation',async()=>{
+  const h=harness({attachments:{[F.Cutting.KIND]:cuttingSettings()}});
+  await h.start();assert.equal(await h.commit(),true);
+  assert.equal(h.workspace.candidateSnapshot().stale,false);
+  assert.deepEqual(h.attachments[F.Cutting.KIND],cuttingSettings());
+});
+test('R52 cutting edit during post-commit rendering expires remaining candidate work',async()=>{
+  const h=harness({attachments:{[F.Cutting.KIND]:cuttingSettings()},tamperCutting:true});
+  await h.start();await assert.rejects(h.commit(),/其他專案附件已變更/);
+  assert.equal(h.attachments[F.Cutting.KIND].kerf,4);
+  assert.equal(h.native[2].id,2,'the committed room remains');
+  const session=h.workspace.candidateSnapshot();
+  assert.equal(session.stale,true);assert.equal(session.expired,true);assert.equal(session.active,null);
+  assert.equal(h.attachments[D.KIND].rows[0].status,'accepted','the grouped stored draft remains authoritative');
 });
