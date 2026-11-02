@@ -1,0 +1,722 @@
+[
+  {
+    "member": "controlled-V-publication/REQUEST.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/REQUEST.json",
+    "bytes": 598,
+    "sha256": "dc4b4c57577a589591e73017ca7e90bf7c661eeeb2dce357bd3638640be95cbc"
+  },
+  {
+    "member": "controlled-V-publication/RESULT.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/RESULT.json",
+    "bytes": 1412,
+    "sha256": "45a639a65c846a2d917a042dca3baf8896948d19ad95fa3681849c84a34cdaff"
+  },
+  {
+    "member": "controlled-V-publication/WITHDRAW_ONLY_CLEAR.patch",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/WITHDRAW_ONLY_CLEAR.patch",
+    "bytes": 514,
+    "sha256": "6b23f2a4ef96b0213633fdaf8f1622bb3b1a5cd024a52fd1bdf2b1477e60b5eb"
+  },
+  {
+    "member": "controlled-V-publication/app-original.js.txt",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/app-original.js.txt",
+    "bytes": 627555,
+    "sha256": "c5f055915a039d90138824248b146552776286beb7544380c279a5586707ab60"
+  },
+  {
+    "member": "controlled-V-publication/app-withdrawn.js.txt",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/app-withdrawn.js.txt",
+    "bytes": 627532,
+    "sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  {
+    "member": "controlled-V-publication/subcommands.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands.json",
+    "bytes": 34654,
+    "sha256": "988ecb2f6d112711d5f36d1714bfee50ba064c81af9916a9dd08d57082ab845a"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000001/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000001/request.json",
+    "bytes": 1521,
+    "sha256": "38203bea9df5c0b54106dc4d82b28a7dd4cb44f553119750a71fbfd566f1cd30"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000001/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000001/result.json",
+    "bytes": 1772,
+    "sha256": "3477217a406ecc0243dbabe22b2bfa5fb75b51f121de378622c50a0e454886e9"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000001/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000001/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000001/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000001/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000001/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000001/stdout.bin",
+    "bytes": 41,
+    "sha256": "0d905581954b7fc4e930ffa5133eb0fb305d00337d9a69deb090de56f208f626"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000002/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000002/request.json",
+    "bytes": 1557,
+    "sha256": "6c7f9f864187bc8de7ab0f6c51a7d6f6efb59e42ab72d875699fe7d037417996"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000002/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000002/result.json",
+    "bytes": 1805,
+    "sha256": "8825e537aeccab355fcceb257b96517a04d8a1238f3b4ea10c7c764ebee29d35"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000002/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000002/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000002/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000002/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000002/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000002/stdout.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000003/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000003/request.json",
+    "bytes": 1610,
+    "sha256": "7c99f01e3bbaa44ac81fbb4d66303c5dd14153598c62fcb7f81ecc7309be95ee"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000003/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000003/result.json",
+    "bytes": 1860,
+    "sha256": "6178330d3ba2d1553cc955ba8bc6b984c1363b5969d64d9b9a3b4824a1297b6b"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000003/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000003/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000003/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000003/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000003/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000003/stdout.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000004/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000004/request.json",
+    "bytes": 1572,
+    "sha256": "10cc0b960141504367596ffcd420124a8e7077147d1983a81be7b2bb8a52dfde"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000004/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000004/result.json",
+    "bytes": 1827,
+    "sha256": "1628996e16d35d3066d69dd5df554442cad563c5c665eb187fefe3223fb3e8bb"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000004/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000004/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000004/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000004/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000004/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000004/stdout.bin",
+    "bytes": 627555,
+    "sha256": "c5f055915a039d90138824248b146552776286beb7544380c279a5586707ab60"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000005/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000005/request.json",
+    "bytes": 1535,
+    "sha256": "cf1b8874a02ee9090d9340ddface49a7d3c5143b9c213c03fa74c056c54fa610"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000005/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000005/result.json",
+    "bytes": 1786,
+    "sha256": "6c7228e959187d4242379009f803ed59f792ad77edcbc470b21e955a8e30e008"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000005/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000005/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000005/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000005/stdin.bin",
+    "bytes": 627532,
+    "sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000005/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000005/stdout.bin",
+    "bytes": 41,
+    "sha256": "75354230f0a49c7b416f6b2d0ed11feee96a8174a9406e6a536ffeb3db06c1df"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000006/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000006/request.json",
+    "bytes": 1577,
+    "sha256": "a9fff0be8bb36b02ff5e6f27c02a4f9c15b550daa7235df8f1a52acec9d62ed1"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000006/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000006/result.json",
+    "bytes": 1830,
+    "sha256": "07e0aa6d15f7ff8f60cd17bf0bc04c89786f38d98c78a49fc275bd35812a30e4"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000006/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000006/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000006/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000006/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000006/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000006/stdout.bin",
+    "bytes": 13567,
+    "sha256": "6e79c0575d23a6c22b49ac21b8ac21f1db838d38f981cebaa9b89487f1eb62a2"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000007/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000007/request.json",
+    "bytes": 1515,
+    "sha256": "10eebd9f71c739913362f6f3d2f81aface3359245798fc1bbf37743cac9a5b65"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000007/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000007/result.json",
+    "bytes": 1766,
+    "sha256": "53c73aa7748efa54a944f65b0e8252b3d6ec852cbb6c818d4b4911cc437b9d05"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000007/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000007/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000007/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000007/stdin.bin",
+    "bytes": 13567,
+    "sha256": "daa88b38bd1c548f63437561507282d668368a7af84279c0aa09058f2cd0f755"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000007/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000007/stdout.bin",
+    "bytes": 41,
+    "sha256": "7563e9518e07b9533256a5031fc75fcdd8c0a9e4980e2c53e38d533080888dd4"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000008/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000008/request.json",
+    "bytes": 1565,
+    "sha256": "32ef2607b3c0337b1bb0d18b4b34e4bb75a39b7b1f7cdc1b35fc2abb1f418823"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000008/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000008/result.json",
+    "bytes": 1819,
+    "sha256": "47ac64f98a603d0ffac2c2611fd7930b73c683e6c294aa0ebd06f4e4f7163c27"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000008/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000008/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000008/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000008/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000008/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000008/stdout.bin",
+    "bytes": 15349,
+    "sha256": "7b7f8d6aeb1e7eccab91db9ea886e41cbebf7418298712aba48584dc46c123cb"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000009/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000009/request.json",
+    "bytes": 1515,
+    "sha256": "229c0c28556ca6f26cdefd02c9a06c9b0a284746d5b328111b79bef60b2d1521"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000009/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000009/result.json",
+    "bytes": 1766,
+    "sha256": "f97ba28adbf89cba1f0a21267683b663a28ad11195f249a441a3c9a39629722f"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000009/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000009/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000009/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000009/stdin.bin",
+    "bytes": 15349,
+    "sha256": "0efe58d42945d3c5369556c89bd4b02f263990e51f87bc1275a4258556fb1b9e"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000009/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000009/stdout.bin",
+    "bytes": 41,
+    "sha256": "8ef7fecaf4bfb52366ff4c8c3b50631015e0bd57edfdd16cf4ece05d28da5b38"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000010/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000010/request.json",
+    "bytes": 1692,
+    "sha256": "bd0128de91254d8ea4a3f6baf853f88de5f84ddfa4e7ee92c8e45935404f62b7"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000010/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000010/result.json",
+    "bytes": 1943,
+    "sha256": "7c4da9a8756b8c12f2db873eb87f4700ce63064efab2afadb86c52e16d4950a9"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000010/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000010/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000010/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000010/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000010/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000010/stdout.bin",
+    "bytes": 41,
+    "sha256": "b925a18e3aeb3ba50d97ff2d6976a723ac8e5b2789e7a8817e94beba2032cba4"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000011/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000011/request.json",
+    "bytes": 1589,
+    "sha256": "2ab017c41158383a34aeea465add97ec644c7bbc5104f2ece9a3a5d4da39af45"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000011/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000011/result.json",
+    "bytes": 1840,
+    "sha256": "1663727993c55287d49241b201d293347cec036f69ee7b323596661035bd48ef"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000011/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000011/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000011/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000011/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000011/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000011/stdout.bin",
+    "bytes": 41,
+    "sha256": "827ddd8189a0081a6add05587dc3a5e2a0317121ccc10daa60adc6e61aba33b7"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000012/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000012/request.json",
+    "bytes": 1648,
+    "sha256": "752aae60ef35e88b911347cbcde19aa39d11d40ce0948168469ce2608a7ecb6e"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000012/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000012/result.json",
+    "bytes": 1900,
+    "sha256": "9bff27e1e02430787ce9bfe3a38d4385a8ed424df0592fd2da5746e863c66763"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000012/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000012/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000012/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000012/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000012/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000012/stdout.bin",
+    "bytes": 119,
+    "sha256": "678ae00d62ff19f159e1811ef6ae4b4bc9c2d621b4165d1164dc6eb5e1c0cd76"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000013/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000013/request.json",
+    "bytes": 1658,
+    "sha256": "197987b3ce32fa6f5feec3ac2c94182f36da28cdfb829d50eb225b04c594a90e"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000013/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000013/result.json",
+    "bytes": 1910,
+    "sha256": "f19d236d489e1d377d4640351f7a7248c5d4a547b722984f92f7dd030a99bbe5"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000013/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000013/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000013/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000013/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000013/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000013/stdout.bin",
+    "bytes": 514,
+    "sha256": "6b23f2a4ef96b0213633fdaf8f1622bb3b1a5cd024a52fd1bdf2b1477e60b5eb"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000014/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000014/request.json",
+    "bytes": 1679,
+    "sha256": "1a689614ad3546c52dd32a27124697231eee3ec5311f3962d0c7bfa6da182340"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000014/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000014/result.json",
+    "bytes": 1929,
+    "sha256": "fa2ecf7acfd89dd613f417e5435857950f13be51123779ccbc7848a0bde05294"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000014/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000014/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000014/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000014/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000014/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000014/stdout.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000015/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000015/request.json",
+    "bytes": 1657,
+    "sha256": "cb808fd66ba44fb772b48cab5677f08b88e52bc70e58d8eb56e69d4058a4ac9a"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000015/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000015/result.json",
+    "bytes": 1908,
+    "sha256": "c77d2a989e556f5e6b2df468bc192e399ee2aa1b1b988c4937e0ef8606abfdd3"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000015/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000015/stderr.bin",
+    "bytes": 456,
+    "sha256": "84155e78d8b0fb68fa4b6fa2f85b770e34fb090b5ff71d4e43f1049d9414ed12"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000015/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000015/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000015/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000015/stdout.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000016/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000016/request.json",
+    "bytes": 1615,
+    "sha256": "ace40f14dc213f326f9813f0da007e1490bcd1430daff40638d16bcba3179d3e"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000016/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000016/result.json",
+    "bytes": 1867,
+    "sha256": "b93c57ce2d91f2732727ec8327b65c871ed5ab9fa91146919d93e11568cce179"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000016/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000016/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000016/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000016/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000016/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000016/stdout.bin",
+    "bytes": 107,
+    "sha256": "f16ada19a1d3cf5432bd2e0f9389e3b428cc4379d856d3a322ea48ebbd366ded"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000017/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000017/request.json",
+    "bytes": 1521,
+    "sha256": "0b0948f910690c11f15a49dee410d3a0c91adc11bc984d5fe219654b4750b758"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000017/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000017/result.json",
+    "bytes": 1772,
+    "sha256": "9f40ba3080b88d82307aa12f23556fd7609a96a5b7e92d8b51c51bc24bbf611d"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000017/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000017/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000017/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000017/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000017/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000017/stdout.bin",
+    "bytes": 41,
+    "sha256": "0d905581954b7fc4e930ffa5133eb0fb305d00337d9a69deb090de56f208f626"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000018/request.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000018/request.json",
+    "bytes": 1556,
+    "sha256": "97df99c178cc6e0a984e47c5c5ed72eeb0d3f0d9d3ddf23ee4a3ad6ddfe4083f"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000018/result.json",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000018/result.json",
+    "bytes": 1805,
+    "sha256": "87f92885079aafb93bc90189d142fa62e34a77110465186fb2dcae825f3110b0"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000018/stderr.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000018/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000018/stdin.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000018/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "controlled-V-publication/subcommands/000018/stdout.bin",
+    "originalPath": "/workspace/issue320-20261024/controlled-withdrawal-source-publication/subcommands/000018/stdout.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "full-canvas-port-path-preparation/FROZEN_INVENTORY.json",
+    "originalPath": "/workspace/issue320-20261024/full-canvas-three-phase-preparation/FROZEN_INVENTORY.json",
+    "bytes": 1341,
+    "sha256": "3af59ccf6da28f68c51d1733b8905fa664bb79653fd0e9d4181f048d01379f9f"
+  },
+  {
+    "member": "full-canvas-port-path-preparation/PLAN.json",
+    "originalPath": "/workspace/issue320-20261024/full-canvas-three-phase-preparation/PLAN.json",
+    "bytes": 13728,
+    "sha256": "da7990df6facb6a090db34281e8a6e7f3e74059acbe2199be9c0212293a374b5"
+  },
+  {
+    "member": "full-canvas-port-path-preparation/PORT_PATH_BINDING.diff",
+    "originalPath": "/workspace/issue320-20261024/full-canvas-three-phase-preparation/PORT_PATH_BINDING.diff",
+    "bytes": 4912,
+    "sha256": "6f5edc9a4fad77822e73314843d4303b5eed94569716cf450be6f439ab4c73ba"
+  },
+  {
+    "member": "full-canvas-port-path-preparation/README.md",
+    "originalPath": "/workspace/issue320-20261024/full-canvas-three-phase-preparation/README.md",
+    "bytes": 1341,
+    "sha256": "9db1a3f42d4ce96b6e0d4daed59c0de3ab04600532406e85c51aa14dc71eee89"
+  },
+  {
+    "member": "full-canvas-port-path-preparation/fixed.REQUEST.json",
+    "originalPath": "/workspace/issue320-20261024/full-canvas-three-phase-preparation/fixed.REQUEST.json",
+    "bytes": 2934,
+    "sha256": "334e5aa87823afe068710a1610a38b2ce6c5830114b90728e07c5da4f20d5dd8"
+  },
+  {
+    "member": "full-canvas-port-path-preparation/restored.REQUEST.json",
+    "originalPath": "/workspace/issue320-20261024/full-canvas-three-phase-preparation/restored.REQUEST.json",
+    "bytes": 2955,
+    "sha256": "5da3ddc2465b77b4a5543c4ffd370648f4011789ca5110680ade3c34d7121c03"
+  },
+  {
+    "member": "full-canvas-port-path-preparation/withdrawn.REQUEST.json",
+    "originalPath": "/workspace/issue320-20261024/full-canvas-three-phase-preparation/withdrawn.REQUEST.json",
+    "bytes": 3265,
+    "sha256": "bf58b68bec023604225130684a9a98c294c193f2dd891a7b9433b95cfce3828e"
+  },
+  {
+    "member": "full-canvas-port-path-preparation/workflow-driver-fixed.py",
+    "originalPath": "/workspace/issue320-20261024/full-canvas-three-phase-preparation/workflow-driver-fixed.py",
+    "bytes": 20361,
+    "sha256": "ed39470079c68436bb0307886203cd443bf017331f21c6b3ca7137ab251dd94a"
+  },
+  {
+    "member": "full-canvas-port-path-preparation/workflow-driver-restored.py",
+    "originalPath": "/workspace/issue320-20261024/full-canvas-three-phase-preparation/workflow-driver-restored.py",
+    "bytes": 20361,
+    "sha256": "dbe556b1f565a11ea51866e22f716d0c66de5f7a4527e26f9fd32763bfffbf80"
+  },
+  {
+    "member": "full-canvas-port-path-preparation/workflow-driver-withdrawn.py",
+    "originalPath": "/workspace/issue320-20261024/full-canvas-three-phase-preparation/workflow-driver-withdrawn.py",
+    "bytes": 20361,
+    "sha256": "d424b405ba9a2a25b087162cab3281e828f36e53503493687bbd1c98553eca1d"
+  },
+  {
+    "member": "peer/V-and-three-phases-static/REVIEW.json",
+    "originalPath": "/tmp/issue344-clean-v-phase-kernel-peer/REVIEW.json",
+    "bytes": 36992,
+    "sha256": "437571db71f813fde9318ced568e79ee1274f914309bb6a77a551d5610ac39c6"
+  },
+  {
+    "member": "peer/V-and-three-phases-static/subcommands.json",
+    "originalPath": "/tmp/issue344-clean-v-phase-kernel-peer/subcommands.json",
+    "bytes": 1833,
+    "sha256": "40ce841c842df4e3ed364e494a13589647dd24b5704e04f4b90f304369f6886c"
+  },
+  {
+    "member": "peer/V-and-three-phases-static/subcommands/000001/request.json",
+    "originalPath": "/tmp/issue344-clean-v-phase-kernel-peer/subcommands/000001/request.json",
+    "bytes": 1493,
+    "sha256": "ee5208b3c7ea62ee00cdac741507c8435367c6b93384b98899174b7a6a9385d7"
+  },
+  {
+    "member": "peer/V-and-three-phases-static/subcommands/000001/result.json",
+    "originalPath": "/tmp/issue344-clean-v-phase-kernel-peer/subcommands/000001/result.json",
+    "bytes": 1745,
+    "sha256": "f6384909a4865dd97031fd1fc830574c4aae42660ec3fef2e6406ef789173dd7"
+  },
+  {
+    "member": "peer/V-and-three-phases-static/subcommands/000001/stderr.bin",
+    "originalPath": "/tmp/issue344-clean-v-phase-kernel-peer/subcommands/000001/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "peer/V-and-three-phases-static/subcommands/000001/stdin.bin",
+    "originalPath": "/tmp/issue344-clean-v-phase-kernel-peer/subcommands/000001/stdin.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "member": "peer/V-and-three-phases-static/subcommands/000001/stdout.bin",
+    "originalPath": "/tmp/issue344-clean-v-phase-kernel-peer/subcommands/000001/stdout.bin",
+    "bytes": 276,
+    "sha256": "5bfa2ae05539604b166990b11b2c39f1f08d6ebed38477bc4d63a99ecdb6210a"
+  },
+  {
+    "member": "peer/VM_COUNT_FIELD_NOTE.json",
+    "originalPath": "/tmp/issue320-vm-7b45013d-kernel-peer-r2/COUNT_FIELD_NOTE.json",
+    "bytes": 568,
+    "sha256": "8b64bbb1040433c87c7914eaae7b2c5b30d2cdd231ffdd00dd3465cae6e5955f"
+  },
+  {
+    "member": "peer/prior-VM-publication/CHECKS.json",
+    "originalPath": "/tmp/issue344-7b45013d-public-body-peer/CHECKS.json",
+    "bytes": 210694,
+    "sha256": "e56c04c816a86a0a32e0993b632b871d9020d4fd71d1d3e2627a51719d8d9883"
+  },
+  {
+    "member": "peer/review_issue344_v_phase_preparation.py",
+    "originalPath": "/tmp/review_issue344_v_phase_preparation.py",
+    "bytes": 10470,
+    "sha256": "9058e2820374aea8e213b64c76b760b8b8647ea1c8aa68381739a7a5e1551a2c"
+  },
+  {
+    "member": "tools/capture.py",
+    "originalPath": "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py",
+    "bytes": 2819,
+    "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+  },
+  {
+    "member": "tools/prepare_full_canvas_three_phases.py",
+    "originalPath": "/workspace/issue320-20261024/prepare_full_canvas_three_phases.py",
+    "bytes": 9485,
+    "sha256": "1e974565934655109ce24a50057938b048a2de32b331c5eec6147fc5ece50ce5"
+  },
+  {
+    "member": "tools/publish_clean_withdrawal_variant.py",
+    "originalPath": "/workspace/issue320-20261024/publish_clean_withdrawal_variant.py",
+    "bytes": 5686,
+    "sha256": "033c565fabdb2fe3601839c11ea44be542001e3ee204fdade5456e8d463c8091"
+  },
+  {
+    "member": "tools/publish_reviewed_canvas_preparation.py",
+    "originalPath": "/workspace/issue320-20261024/publish_reviewed_canvas_preparation.py",
+    "bytes": 9660,
+    "sha256": "5077fd1da1790b29de2b2f1339f2eaca93b295093edd95ca96df295efb578063"
+  }
+]

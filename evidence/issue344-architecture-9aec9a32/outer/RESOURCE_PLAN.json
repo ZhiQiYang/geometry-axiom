@@ -1,0 +1,3705 @@
+{
+  "source_sha": "9aec9a32630fc65f94c53d49e99969e546574d6e",
+  "source_files": 604,
+  "materialized_needed": 613,
+  "paths": [
+    {
+      "path": "current_geometry.c",
+      "bytes": 401655,
+      "oid": "7ab45730e2cbed909daa9a073310e8dff40e3315",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/application.js",
+      "bytes": 703,
+      "oid": "256c97c6bc3795687d9851bf970c3574187fffd1",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/geometry_app/__init__.py",
+      "bytes": 75,
+      "oid": "083bfd4f97c59d6ee8e0665873dce25e5ef5fac3",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/geometry_app/bootstrap.py",
+      "bytes": 759,
+      "oid": "32e26e315c9128048545dd1545d4039935afc2c5",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/geometry_app/kernel_errors.py",
+      "bytes": 1300,
+      "oid": "ee4f48c6adda158b01010e13faf2b184f4c1ef56",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/geometry_app/model_codec.py",
+      "bytes": 9284,
+      "oid": "e082cb8e6832d4a27adac80dada80c7b426db2a6",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/geometry_app/model_common.py",
+      "bytes": 3568,
+      "oid": "b0a51a4e6fc85fa81b3dc397dc1e0174fe184102",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/geometry_app/model_geometry.py",
+      "bytes": 5488,
+      "oid": "48402f250308f209efdaec7e9d2a424f1c217110",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/geometry_app/model_native.py",
+      "bytes": 14187,
+      "oid": "b8e0ad4794ced856f0de9e9543aa833d51433f3e",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/geometry_app/model_profile_compat.py",
+      "bytes": 2207,
+      "oid": "4c87a1c3e8cab24abb608c22d0140834077a58d1",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/geometry_app/model_runtime.py",
+      "bytes": 20698,
+      "oid": "fd5a52451a1e4251d655af754cd30be717909a1a",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/geometry_app/model_sources.py",
+      "bytes": 26570,
+      "oid": "69960aa88a223fb8506d7bfdb6bc75dab39f04b0",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/geometry_app/model_world.py",
+      "bytes": 4638,
+      "oid": "a2cfb8be4e8ee7438395814a826b36ee4e50be3d",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/geometry_app/source_closure.py",
+      "bytes": 10260,
+      "oid": "b1e4b1b586e16c65e820be9933fae89cb989b2f2",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/app_candidate.c",
+      "bytes": 8674,
+      "oid": "a38b1c4cd34ace710b6ce09abf2a26bd416e8f09",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/app_candidate.h",
+      "bytes": 3141,
+      "oid": "0bb27e32ac6f5400e2e942d9c82457a2afde77d6",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/candidate_unity.inc",
+      "bytes": 273,
+      "oid": "b6ae508d736cf1cbdd9c3288f763adc2733b098a",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/definition_texts.h",
+      "bytes": 567,
+      "oid": "30514b0bd8826fc677adaa36a5de1b7132a3786d",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/document.h",
+      "bytes": 1526,
+      "oid": "ab8c490a22769ed90dff6b9c68cc08005b68a88f",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/domains.inc",
+      "bytes": 8008,
+      "oid": "b8b0edc9529b8e344a082e018756e49da88603f5",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/enclosure_sources.inc",
+      "bytes": 2790,
+      "oid": "b1121c1c06c03629be9575ece26c881668aa5a37",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/grid_adapter.inc",
+      "bytes": 1567,
+      "oid": "347e8b81844ede4bcb69542bae7f8d261ee5b033",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/grid_context.inc",
+      "bytes": 1949,
+      "oid": "7e199443e9a0bce6fa2a7387f195ca6c1a0d89d3",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/history.c",
+      "bytes": 3945,
+      "oid": "e94ef56cbf2dbefa13a3ba94bea0102e8c4c2dbb",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/history.h",
+      "bytes": 1840,
+      "oid": "11277892a152faca1f94e3227dadb4eeed608312",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/history_unity.inc",
+      "bytes": 156,
+      "oid": "08912ef58743d2789d82fb06e213dbeba3a78cd2",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/kernel_storage.h",
+      "bytes": 239,
+      "oid": "949ec69a0ef2be11edf95b72451db2f1f7a93d8f",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/legacy_json.inc",
+      "bytes": 664,
+      "oid": "94f36f2edbb09697b513d11aed4b3f07eff94f17",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/model_sources.inc",
+      "bytes": 30960,
+      "oid": "2ed744e887aba84c2420fbdd1e0c42406f6527b0",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/reference_sources.inc",
+      "bytes": 63190,
+      "oid": "a3191419d0a847a362308ac22e44d289c9ba2d61",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/stagger_facts.inc",
+      "bytes": 4901,
+      "oid": "2335628f2c86448e0c54573e517467b13ec255f0",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/versions_adapter.inc",
+      "bytes": 274,
+      "oid": "f9dafe33dad0a68ea75e28c5ed66c819a72c8db3",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/woodworking_unity.inc",
+      "bytes": 4344,
+      "oid": "4b281d60d633c2678a2591945a5a898b920d6875",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/world_candidate.inc",
+      "bytes": 7497,
+      "oid": "9d9c82159d62496c507972fd95d14efa7e827d97",
+      "missing": true
+    },
+    {
+      "path": "geometry-app/native/world_validation.inc",
+      "bytes": 8603,
+      "oid": "f25bbc12c356f9fb7c3ac66b33c275ff76e5914d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/assembly.inc",
+      "bytes": 8966,
+      "oid": "22450dcb06a0b96db5391cccbc2a68b5913ec9ae",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/assembly_generation.inc",
+      "bytes": 7246,
+      "oid": "5c9d4fa579271a6ea642aaf990b1515c432c973d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/assembly_types.h",
+      "bytes": 205,
+      "oid": "faecb721a523091470ce1143c106148fa708322d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/boundary_vertex_keys.inc",
+      "bytes": 15832,
+      "oid": "c3a4965bebf32d3c0fbad5323bccb44d72fa215a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/card-reference/archive_roundtrip.cjs",
+      "bytes": 1178,
+      "oid": "4f22a101513e9b1ea5b72f0ca4c62af1f09d8761",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/card-reference/confirmation_probe.c",
+      "bytes": 2328,
+      "oid": "393784fa992f60c43401d84828eb6c572d4bae93",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/card-reference/measure_capture_memory.py",
+      "bytes": 3308,
+      "oid": "10a545cd6837faa6bc8550cfdba28ec18f882589",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/card-reference/mutations.py",
+      "bytes": 18122,
+      "oid": "16c234e6164baa7f854b2cdd1923cdb78d05795b",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/card-reference/probe_cr29_precondition.py",
+      "bytes": 5594,
+      "oid": "334c0a33262dc63bef12bc1c6e9a4dcb2d21c7e9",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/card-reference/probe_model_admission.cjs",
+      "bytes": 5892,
+      "oid": "dee8b14befa357bd7392d192712905ffe139e951",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/card-reference/run_archive_mutations.py",
+      "bytes": 3929,
+      "oid": "0907b559eed132aab21af6936d84598b9a2cee73",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/card-reference/run_axiom_mutations.py",
+      "bytes": 6124,
+      "oid": "7a906469cd519548cb5626817ae8ba798b0cce4a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/card-reference/run_mutations.py",
+      "bytes": 8819,
+      "oid": "2da41d0a6c915366a7ee3be8664ec41230ecf0e7",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/card_reference.inc",
+      "bytes": 7907,
+      "oid": "81f2bd1b813229aa52b1e4d93f565d8f4b79cfd8",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/derived_placements.inc",
+      "bytes": 4310,
+      "oid": "fc0b24ba8c6f6ff6d3eacbdd224c70b9d5d6f826",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+      "bytes": 1445,
+      "oid": "ec023949612bfecff6435ad9f7f364c730798987",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/extract_evidence.py",
+      "bytes": 2124,
+      "oid": "75fd0319a0fa9f9831589b7b8e7d4f7f7d9cb8a3",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/finalize_publication.py",
+      "bytes": 1229,
+      "oid": "0535610fc8a713194574620637e2a593e707cf97",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/prepare_publication.py",
+      "bytes": 11040,
+      "oid": "5847c79f9d37f04a9787c771ec86c8db1f2f628c",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/build-baseline.py",
+      "bytes": 6922,
+      "oid": "af1c5b1b097fed94e3b935399de87611efa4300b",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/datum-baseline-witness/prepare-input.py",
+      "bytes": 1225,
+      "oid": "c3c43d94c6c404aeb04a82abc91584c2d1233d43",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/datum-baseline-witness/run.py",
+      "bytes": 4444,
+      "oid": "64fb28156fb3a8e0c50541a566651576454a3d6f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-annotation.py",
+      "bytes": 1938,
+      "oid": "b32f6ded68df6eb75eb1b6883b7c234164fcbcc9",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-datums-c28.py",
+      "bytes": 1971,
+      "oid": "4408851b8c6ce8b63303d43ac30e4cffcc09520d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-datums.py",
+      "bytes": 1971,
+      "oid": "4408851b8c6ce8b63303d43ac30e4cffcc09520d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-geometry.py",
+      "bytes": 2023,
+      "oid": "32a0496d899c5b206a05ad0d6a935441430f379a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-grid.py",
+      "bytes": 1933,
+      "oid": "d45eb6c8d5918dc307691158e595fe7d3b63141a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-grid49.py",
+      "bytes": 1933,
+      "oid": "2b99059060d487afce8356b0cc55bb2a874fad43",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-kernel.py",
+      "bytes": 1930,
+      "oid": "1077aaaa3944b6b85193d9d7b24dc33c050a73c0",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-linear.py",
+      "bytes": 1961,
+      "oid": "341c96247ffdb7cb02216c09643ae037df35f129",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-parameters.py",
+      "bytes": 1947,
+      "oid": "c0a3c79d206368815181637636bb2e088b6a7e95",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-parameters-legacy.py",
+      "bytes": 4061,
+      "oid": "f146395f7b09ce5434effdd4c8c0821383c4ce26",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-region-edges.py",
+      "bytes": 2200,
+      "oid": "7b3c7328ab25ce8377d9633d011bc0ae9d3742fe",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/fixture-reopen/run_native_pair.py",
+      "bytes": 17464,
+      "oid": "9b01926088755fd5a025970e30afd81bea7a2b48",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-99eeabe1/exercise-native-receipt.py",
+      "bytes": 7242,
+      "oid": "b7f022979e5f83a0ac4db627c80d21570d81f11d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-99eeabe1/prepare.py",
+      "bytes": 2499,
+      "oid": "66d4f39eaceba942325d07fbe43589eb4b84c194",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-99eeabe1/run-native-receipt.py",
+      "bytes": 4526,
+      "oid": "3a4ec34e949e0f0d9cdb4c48027485ccd6b36a5f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-a3aeef41/exercise-native-receipt.py",
+      "bytes": 7242,
+      "oid": "b7f022979e5f83a0ac4db627c80d21570d81f11d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-a3aeef41/prepare.py",
+      "bytes": 2911,
+      "oid": "ee9bd9615def0596d0e515517741c954b866ae89",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-a3aeef41/run-native-receipt.py",
+      "bytes": 4526,
+      "oid": "3a4ec34e949e0f0d9cdb4c48027485ccd6b36a5f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-b21334a2/exercise-native-receipt.py",
+      "bytes": 7242,
+      "oid": "b7f022979e5f83a0ac4db627c80d21570d81f11d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-b21334a2/prepare.py",
+      "bytes": 1842,
+      "oid": "8830d455864c43b9fbd5c49914e7565ea2150b28",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-b21334a2/run-native-receipt.py",
+      "bytes": 4526,
+      "oid": "3a4ec34e949e0f0d9cdb4c48027485ccd6b36a5f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/exercise-legacy-receipt.py",
+      "bytes": 4521,
+      "oid": "9b0564a7c863843474d8a643fdcd0ba948ecb7e8",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/exercise-native-receipt.py",
+      "bytes": 3696,
+      "oid": "4b232b5e0b70bf4aa074d34c3a961fb6ee60a2a4",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/exercise-region-edges.py",
+      "bytes": 2200,
+      "oid": "7b3c7328ab25ce8377d9633d011bc0ae9d3742fe",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/prepare-corrected-db65132a.py",
+      "bytes": 3522,
+      "oid": "bbd7ad9b7cdc3a5468fb78cc3cb37323bc181567",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/prepare-legacy-receipt.py",
+      "bytes": 1657,
+      "oid": "ef5f6b5e4cc871e4823c2c27eea1a1ee3ae833f3",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/prepare-region-v2.py",
+      "bytes": 1262,
+      "oid": "e8e9e7fae3073afd34919f842accaa06ef23c101",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/prepare-rename-v3.py",
+      "bytes": 1006,
+      "oid": "da89df5bb187511961b8679039d45b73c1a4bcc9",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-legacy-receipt.py",
+      "bytes": 743,
+      "oid": "44c09d118f2ca4ac092d9ea1bcfac91e4affe700",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-native-receipt.py",
+      "bytes": 4526,
+      "oid": "3a4ec34e949e0f0d9cdb4c48027485ccd6b36a5f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-next-stages.py",
+      "bytes": 2588,
+      "oid": "29a08a4762796d89ddcc9edaff11414bef0bb5cf",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-region-edges-v2.py",
+      "bytes": 6019,
+      "oid": "6f279d7c8becb6b599be6ca185b8776f648596b4",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-rename-native-v3.py",
+      "bytes": 5723,
+      "oid": "c7ee619432fb52192e43493dcfdd42a6eb78c64b",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/pf3-a3aeef41/prepare.py",
+      "bytes": 3190,
+      "oid": "db33dca20aae23b183fe3e3900562ce832a4a19d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/pf3-a3aeef41/run.py",
+      "bytes": 6859,
+      "oid": "5fc14faf087673e0c70963933a0f65a7c2ae6d97",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-annotation-runner.py",
+      "bytes": 1227,
+      "oid": "3a6b38722583bd001438596a976f163c14fad984",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-datums-c28-runner.py",
+      "bytes": 800,
+      "oid": "b2d9ac6e76448bcf3c7e3162809fe4affb46eeba",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-datums-runner.py",
+      "bytes": 1112,
+      "oid": "8966b09be8755dd945ca07b7951b75c8e5c0399f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-grid49-runner.py",
+      "bytes": 926,
+      "oid": "d62d7c53cb50f0f8ffc0401ba37e4a8d0bfcf08e",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-linear-runner.py",
+      "bytes": 1084,
+      "oid": "6dd114887d49019ef1a9e82878a026ab9c17c265",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-parameters-runner.py",
+      "bytes": 1040,
+      "oid": "c4a39434537435db34649eba19cc62c5cade7837",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/producer/produce_fixtures.py",
+      "bytes": 6573,
+      "oid": "2bd095ea9855fc56e95c26e552f9c1516dba73f7",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/producer/produce_fixtures_v2.py",
+      "bytes": 6573,
+      "oid": "2bd095ea9855fc56e95c26e552f9c1516dba73f7",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/producer/produce_fixtures_v3.py",
+      "bytes": 6573,
+      "oid": "05333745232136d69d1e4aabe9fca2c4ab659fe7",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/producer/produce_fixtures_v4.py",
+      "bytes": 6598,
+      "oid": "3a1d878480f53b2acd4c76457e701863cbf4cb9a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/retry-producer.py",
+      "bytes": 3966,
+      "oid": "40bf3b5986028041e694242ff57506f499ed7a0e",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-continuation-stages.py",
+      "bytes": 2530,
+      "oid": "2ccc2080ca172a8ff1427b0d903c91abc663d3c2",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-annotation.py",
+      "bytes": 3448,
+      "oid": "041d0d802b4dc501e81d22bb6adf7a2282874fe0",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-datums-c28.py",
+      "bytes": 3430,
+      "oid": "40055291970af6cf96a791e9e897a80699e284a0",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-datums.py",
+      "bytes": 3418,
+      "oid": "56f1e864437dc4e0685142740d3a2d4c49b7d817",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-geometry.py",
+      "bytes": 3515,
+      "oid": "596fa1b203920c80873e457670151cbca2faf89f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-grid.py",
+      "bytes": 3389,
+      "oid": "54bcb0e5f09dc4bfeb3c25603195016a7c109ce0",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-grid49.py",
+      "bytes": 3395,
+      "oid": "c50ef4f2f295dd04623357fb83831384a1b06d33",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-kernel.py",
+      "bytes": 3701,
+      "oid": "aafd8701ac0eed4f3f497bdc7764d75f972ed58a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-linear.py",
+      "bytes": 3404,
+      "oid": "6bbc40ed43a4d6db041e2c197ebb68a34b56d805",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-parameters.py",
+      "bytes": 3437,
+      "oid": "ec75b13c5aff01b79ba962dd669dd13cf4284ab4",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-parameters-legacy.py",
+      "bytes": 300,
+      "oid": "df03ecf9612c5283dac61a028d18649182c9d808",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-rectangular-template.py",
+      "bytes": 4503,
+      "oid": "58bc0eb63e471ac1b5c37525cfbc6836b1cc8854",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-region-edges.py",
+      "bytes": 5976,
+      "oid": "94f86eeb0337c294b9db7752cb9359f88f852bb4",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-rename-native-v2.py",
+      "bytes": 5723,
+      "oid": "caa2c93135c4e31db4dfaf543c5cb2f7e65effc6",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-rename-native.py",
+      "bytes": 4464,
+      "oid": "61258777f00f412df3497330d7218f0188a4e292",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-stages.py",
+      "bytes": 1577,
+      "oid": "d53b050022d769d1a5148116518da795e6c9fbbb",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/verify_publication.py",
+      "bytes": 22069,
+      "oid": "f927e14c91fbed1e22be2b54528a76bd65f089c0",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/extract_evidence.py",
+      "bytes": 2655,
+      "oid": "3ba9a76b6285974af6d274c18cd12f406e7515ce",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/finalize_publication.py",
+      "bytes": 1321,
+      "oid": "81411104f1c01c6cd55807c24eccb7b06c517311",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/prepare_publication.py",
+      "bytes": 12342,
+      "oid": "142a1c2a47dbe909127aca511bd2a8862e0f3ea4",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/verify_publication.py",
+      "bytes": 16941,
+      "oid": "5cca9c559d78dae619271543e81462f79bc45674",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/extract_evidence.py",
+      "bytes": 2655,
+      "oid": "3ba9a76b6285974af6d274c18cd12f406e7515ce",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/finalize_publication.py",
+      "bytes": 1321,
+      "oid": "dff0d160abbf07e5adfa08c03917df8038587a3b",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/prepare_publication.py",
+      "bytes": 16936,
+      "oid": "c42f36885a5472284fcb770e51abde82f5765bc9",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/readable/watchdog-envelope-v1/recovered-selftest-source-868c0864cbf91da304ca37e7ebee140cfe68542fccc3d6f764f0d27a7f8dd9ac.py",
+      "bytes": 11312,
+      "oid": "828d36e5c3630dccda55404752af212bb9cb4d62",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/verify_publication.py",
+      "bytes": 27489,
+      "oid": "b30daec04dd243c96a858b756fff6d9753aac4a3",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/extract_evidence.py",
+      "bytes": 2124,
+      "oid": "75fd0319a0fa9f9831589b7b8e7d4f7f7d9cb8a3",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/finalize_publication.py",
+      "bytes": 1229,
+      "oid": "0535610fc8a713194574620637e2a593e707cf97",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/prepare_publication.py",
+      "bytes": 10525,
+      "oid": "4a60a5204dc552db5a31e756623a73fae1fca9de",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/extract-14ab-readonly.py",
+      "bytes": 1703,
+      "oid": "7f5f5f43912108245c7f7238dd1cefc77b37ea79",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-14ab395d/exercise-native-receipt.py",
+      "bytes": 7242,
+      "oid": "b7f022979e5f83a0ac4db627c80d21570d81f11d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-14ab395d/prepare.py",
+      "bytes": 2963,
+      "oid": "2276be05be1e8a238703cd27935472ecc3b55571",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-14ab395d/run-native-receipt.py",
+      "bytes": 4526,
+      "oid": "3a4ec34e949e0f0d9cdb4c48027485ccd6b36a5f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-6f1fd92f/exercise-native-receipt.py",
+      "bytes": 7242,
+      "oid": "b7f022979e5f83a0ac4db627c80d21570d81f11d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-6f1fd92f/prepare.py",
+      "bytes": 2963,
+      "oid": "0bb82fef2ff2cd0ebdd129ee692359937b4c93fa",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-6f1fd92f/run-native-receipt.py",
+      "bytes": 4526,
+      "oid": "3a4ec34e949e0f0d9cdb4c48027485ccd6b36a5f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/section-runs-diagnostic-6f1fd92f/run.py",
+      "bytes": 4283,
+      "oid": "f54a3e6adc61f46135db87726303a705f791e4f7",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/codec-client.c",
+      "bytes": 2857,
+      "oid": "70aa52b8099c120f287f8ea1d14a2fe19d586b49",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/exact-client.c",
+      "bytes": 919,
+      "oid": "e9a8b60af2eccf30f80cc75e7a59c435a1b2a22e",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d/run.py",
+      "bytes": 8973,
+      "oid": "49d92deb25b127bb31d697e89f76f6ce1e1ae130",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/verify_followup.py",
+      "bytes": 15975,
+      "oid": "c0d7861d2ca307b3331b151ac4ce7be4ef9fa287",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/verify_publication.py",
+      "bytes": 22765,
+      "oid": "21520a31c1696141fbe5f5a9d369b8bb94514b22",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-stage-20261016/executed-portable-runner.py",
+      "bytes": 1659,
+      "oid": "5b192931f4eb559b9f3762c6f224d67bfd66d28f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+      "bytes": 131983,
+      "oid": "10cdac24a8ab07f87396c2cb8e02c487b2d3e69f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture-scan.json",
+      "bytes": 132559,
+      "oid": "c2070aa3fe2a612d5fd9a3faa9443824c9e39739",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture.json",
+      "bytes": 221953,
+      "oid": "2e38f21fdbda7cb184e83231439182ad9485b7af",
+      "missing": false
+    },
+    {
+      "path": "geometry-core/engineering.inc",
+      "bytes": 13998,
+      "oid": "aec5becaeff7b6685f525c16504bd2c3925e35f3",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/engineering_commands.inc",
+      "bytes": 8621,
+      "oid": "96bfa503ae40fc564652e3af84641a1368040ec1",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/engineering_json.inc",
+      "bytes": 1587,
+      "oid": "aea7347c8f6867715f65b23126654bff23bc4cab",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/engineering_types.h",
+      "bytes": 121,
+      "oid": "9ce94d4e875d18e7e90d9cd884e6941bf9f8edff",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/finish_surface_types.h",
+      "bytes": 134,
+      "oid": "631d79d8530be15a1d24144f4e76fb18f7d99915",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/finish_surfaces.inc",
+      "bytes": 10059,
+      "oid": "c95ea0cf91d037d50c25a978752996d64c5c0b7b",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
+      "bytes": 37603,
+      "oid": "551e138e9810c7e6c63adfcf10724c1d914fccf6",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/mutation_check.py",
+      "bytes": 10039,
+      "oid": "c872c480e57ca10f3bf0399b7afc143b025449b0",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/parse_results.py",
+      "bytes": 21689,
+      "oid": "2ee91f5e6483668544489a8f84fa412379740fde",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scene_reader.py",
+      "bytes": 13887,
+      "oid": "bd6d89d7a02c543827c6e60706654cb52c96d917",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
+      "bytes": 64845,
+      "oid": "bf62e7245c3987553d934a21e9f59857c0aadcfe",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/framing_oracle.py",
+      "bytes": 139970,
+      "oid": "eb458a9b4606294d189b683c12bcaca0d63d3396",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/make_golden.py",
+      "bytes": 5014,
+      "oid": "e228f5eec47cf1edac4fda5af53d174302d1859a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/quote_check.py",
+      "bytes": 25787,
+      "oid": "a0fa93ea58ec9e397444c45e8b819573b2ff22c0",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/reading_a_cases.py",
+      "bytes": 1575,
+      "oid": "a1736dcd0482301386393403d100254c2560308c",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/reading_a_source_control.py",
+      "bytes": 1221,
+      "oid": "74db12fbc02bb540f3d2fdca18a7d4143a0cd2ca",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/render.py",
+      "bytes": 8874,
+      "oid": "bb4a11573a21b7ae09f5e5de88fbd2696cc222fb",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/selftest.py",
+      "bytes": 141042,
+      "oid": "f158e8a13920da56bf35116a5c3a4203c3733415",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/geometry_kernel/__init__.py",
+      "bytes": 2080,
+      "oid": "1f0bc188f0ad6d1de8ee196d0cd255b3ff19bb1e",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/geometry_kernel/canonical.py",
+      "bytes": 2022,
+      "oid": "d3b0f71800e9668475006b815aed653c8c874f87",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/geometry_kernel/errors.py",
+      "bytes": 1671,
+      "oid": "2129f83ea59b2e98808202f7b74326920f47ca66",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/geometry_kernel/evaluate.py",
+      "bytes": 14970,
+      "oid": "81a6729ce1c969591808c1053a3cc41c070a2169",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/geometry_kernel/geometry.py",
+      "bytes": 24534,
+      "oid": "1661537287a228e00c43a547ac382c37d294e816",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/geometry_kernel/graph.py",
+      "bytes": 24627,
+      "oid": "008d50495219fa6eade24cc51fd56ba480207877",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/geometry_kernel/session.py",
+      "bytes": 2551,
+      "oid": "0ec083e51878dc9c97909f5470ebe997e2e30dbc",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/geometry_kernel/transactions.py",
+      "bytes": 7362,
+      "oid": "e0e548f01a798ef9febace03cb499a21fd730d25",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/geometry_kernel/types.py",
+      "bytes": 13140,
+      "oid": "f6225b57a9d597efab4f982d71e974fb73216c2a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/grid_bindings.inc",
+      "bytes": 14291,
+      "oid": "d0df8603f56053f37754b1521f82e4466341d3a0",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/grid_lattice.inc",
+      "bytes": 2925,
+      "oid": "9e33593c60f33d194891c71ae680837f5efbe1c9",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/grid_subdivision.inc",
+      "bytes": 9728,
+      "oid": "4fb24f1d516d95fe4deb50574f1cab2008ac155c",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/grid_subdivision_query.inc",
+      "bytes": 13965,
+      "oid": "59fcc0e1e0752668fa1ed725c97f023d60d0fa5a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/grid_systems.inc",
+      "bytes": 18267,
+      "oid": "cc8a321fd8680bd449055274fecca85dd6d73ca5",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/candidate.c",
+      "bytes": 12611,
+      "oid": "6e676a67066780a3b9e022f2de0d5928ca64c2c9",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/candidate.h",
+      "bytes": 4366,
+      "oid": "ecc0d88a3772fe79f75d44ecbbf217482b82e6d6",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/clip.c",
+      "bytes": 7551,
+      "oid": "47a99f85aa8a4781d22627cddd0a258549a50b56",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/clip.h",
+      "bytes": 1597,
+      "oid": "d768fef9e4eb43296629c8f73ff252e24ed74655",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/codec.c",
+      "bytes": 23308,
+      "oid": "2fff36ec258268a59b42ca6f3e3d0ab7c605b98d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/codec.h",
+      "bytes": 2393,
+      "oid": "c45d028024ff6e58897558d1dd03c20e193d2218",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/datums.c",
+      "bytes": 4222,
+      "oid": "1f044a02f799c44406814948345f9c3a7f0c963e",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/datums.h",
+      "bytes": 1829,
+      "oid": "50be94aca3e3fa99d8918b0b1f47a44e2292dc49",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/document.c",
+      "bytes": 2636,
+      "oid": "ce93ad1234c1666c2508787ed35dcd5b6b01372a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/document.h",
+      "bytes": 2016,
+      "oid": "527b3f63f36c7410855f7d400049e9410da43c61",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/enclosure.c",
+      "bytes": 7871,
+      "oid": "611f2bf8d6d908df9853d311a1563145d5348018",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/enclosure.h",
+      "bytes": 3604,
+      "oid": "56365a2bfedcc2d8fae9413a3bc7fc516c3de740",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/enclosure_sources.c",
+      "bytes": 17213,
+      "oid": "0dbb0d9b0f32e23fc795cf9bb0f8a8ab90247836",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/enclosure_sources.h",
+      "bytes": 3799,
+      "oid": "be76a232dbcc4950d36e6a1b14fb76a70cc2fcd4",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/exact.c",
+      "bytes": 3243,
+      "oid": "49d76ea6005ebcc3afbde5122368284d2a6f3996",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/exact.h",
+      "bytes": 1104,
+      "oid": "8046e2e1923810710df412e9cf290c3aed7b511c",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/geometry.c",
+      "bytes": 29994,
+      "oid": "61221a6cbb0c39d1971836fc39769a36195d2c6d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/geometry.h",
+      "bytes": 5583,
+      "oid": "3b91ec7f17ecae540527ced17d1e6a2daec21899",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/grid.c",
+      "bytes": 8062,
+      "oid": "694149d1b4ed5266ee6d7ee7fc8063b36dc53311",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/grid.h",
+      "bytes": 2696,
+      "oid": "24d02d170e1a2b7f15af9d4ab7508f1c6ae058c2",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/grid_store.c",
+      "bytes": 24010,
+      "oid": "ba2cbfaaf6f7201ac5a41fd750c5230cf89e1ae2",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/grid_store.h",
+      "bytes": 8400,
+      "oid": "b17f44fd5d0f5c87fc318da6f305ae65cfa96d02",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/guides.c",
+      "bytes": 6022,
+      "oid": "18adf993bc94ce5ede38b782c5de87ed747936e7",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/guides.h",
+      "bytes": 3115,
+      "oid": "5d3215367f532412447dfa7f6d9e7a14d661a295",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/internal/datums.h",
+      "bytes": 178,
+      "oid": "59864a9a6b37d77f7e7644037807dbd40ca319bd",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/internal/document.h",
+      "bytes": 897,
+      "oid": "7e749fdd27088148d83e8935c794f1bca7b4a1ed",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/internal/enclosures.h",
+      "bytes": 273,
+      "oid": "27d052fb8f96383b01ef76ce24878305c7dac368",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/internal/grid_store.h",
+      "bytes": 301,
+      "oid": "042a38c1342ed0e0b098fc37015ea160415103e5",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/internal/guides.h",
+      "bytes": 181,
+      "oid": "5d89c4c359df3a9b7d33ce2664d61676a4f3414e",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/internal/named_values.h",
+      "bytes": 219,
+      "oid": "da9abca50e5e9771c27607e6e81f8661aa8a7c5e",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/internal/parameter_store.h",
+      "bytes": 453,
+      "oid": "d3275f1c0d71aee598321a1f8f4346f47f8a1535",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/internal/placements.h",
+      "bytes": 301,
+      "oid": "0220141ef6aaf95ac66125fbd090c8dae28b291a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/internal/regions.h",
+      "bytes": 410,
+      "oid": "88e6b62966577863ab1fb45d6aef2ba80b76f488",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/internal/versions.h",
+      "bytes": 704,
+      "oid": "16fa3832206c3823f9dbd17ec7b075a72a8dff2b",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/kernel_unity.inc",
+      "bytes": 1440,
+      "oid": "ab266f20113d83239283faa55f9bc755e0319341",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/linear.c",
+      "bytes": 4333,
+      "oid": "181cc864ad3b620ce8ae2f54a05409cb353a73ef",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/linear.h",
+      "bytes": 1619,
+      "oid": "5b4335616ccbef1678d79e901271e59337cfa5ca",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/linear_definition_sources.c",
+      "bytes": 11033,
+      "oid": "a52d6b97df0e222f02c2fcd1e3879a4075501ed4",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/linear_definition_sources.h",
+      "bytes": 2013,
+      "oid": "afe43a5a07a3d1659cef9b20c35238ec00109821",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/named_values.c",
+      "bytes": 2105,
+      "oid": "8da04772039b24e67005a99cf4cc7d9eea128fe2",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/named_values.h",
+      "bytes": 891,
+      "oid": "2252ba3cbf25619457905f39c3ac32ac9e3e9dd1",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/parameter_sources.c",
+      "bytes": 21934,
+      "oid": "2c15992bb8ebcdf1d411ee4ee3089c0e1ca2d61a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/parameter_sources.h",
+      "bytes": 3907,
+      "oid": "3853bf9d591b733dfdfb04c533bbd4236a11c504",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/parameters.c",
+      "bytes": 18594,
+      "oid": "bfa16cc046d7633791cd4043f9e4b2bd3987fa8c",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/parameters.h",
+      "bytes": 6267,
+      "oid": "e991adb2069be7da02b164a5462d6a066d98d2d9",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/placement_sources.c",
+      "bytes": 16248,
+      "oid": "75bf739592d3708a45de7605751401a4f853d8b3",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/placement_sources.h",
+      "bytes": 3775,
+      "oid": "2935cc739f8c57287507d0e818a5f9054193d9f8",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/placements.c",
+      "bytes": 10229,
+      "oid": "9008413e516b299caa3c91427b8938c3876b1396",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/placements.h",
+      "bytes": 3593,
+      "oid": "19f96cc42adbbef565d1d82e470b49618cb128e3",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/region_key_sources.c",
+      "bytes": 9853,
+      "oid": "373f70f28a8a2afc5b2f0d2e0a39d751995a0c66",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/region_key_sources.h",
+      "bytes": 2876,
+      "oid": "8c6a62dd3e6fe39483befd294e5be2d3b49b9a87",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/regions.c",
+      "bytes": 11576,
+      "oid": "49f967ea2d8f04fab0cd9fbce13d112248fb26f4",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/regions.h",
+      "bytes": 3901,
+      "oid": "b3c21ab7418a8476d0a3c07cc399f2d8b9693eae",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/source.c",
+      "bytes": 17442,
+      "oid": "f1f0a602593d94c88e86d1057b37bc8e6f7a6cc7",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/source.h",
+      "bytes": 5373,
+      "oid": "83f211d28453ef71eeac88574b6bc6c4563536aa",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/types.h",
+      "bytes": 394,
+      "oid": "1942edd61798d9edafc89682b33ccfe7b38dc442",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/version_sources.c",
+      "bytes": 11550,
+      "oid": "1ad53bec2f8b31c760f131b32a0da362e88c6a06",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/version_sources.h",
+      "bytes": 2496,
+      "oid": "2d5e5c25e736a941d43052dd5f13e1399107e12f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/versions.c",
+      "bytes": 14772,
+      "oid": "870b72e80c34e07aaae5bcfc3d9d7ea07a027c1e",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/kernel/versions.h",
+      "bytes": 5439,
+      "oid": "a5089a717d88f8e8b391d45793ba0380dc3bca63",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/model_base.c",
+      "bytes": 28393,
+      "oid": "571938ccb7686c8819fec04ba88345f871219902",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/modeling/__init__.py",
+      "bytes": 29048,
+      "oid": "1b1aaf6435dde48986b43cf00cdf36f111c2b930",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/modeling/_host.py",
+      "bytes": 444,
+      "oid": "0632d43e5314f3cc3f1f020d26d71d5eba30dc61",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/modeling/base.py",
+      "bytes": 837,
+      "oid": "44a36a13d9fed21e63269e7e09372e96029f319c",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/modeling/common.py",
+      "bytes": 193,
+      "oid": "1c0112653914269862a927e44a88929db84e6966",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/modeling/engine.py",
+      "bytes": 832,
+      "oid": "b4769ffc17df0cb13c1ded785370137bde41528d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/modeling/geometry.py",
+      "bytes": 235,
+      "oid": "fadeaba81fcbb3911356528719e0b202d4a6f2ac",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/modeling/kernel_errors.py",
+      "bytes": 139,
+      "oid": "b907d07a83baaac548ff47722cd3f7c48082aa49",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/modeling/section_profile.py",
+      "bytes": 154,
+      "oid": "29a850b973f14debd2a8d74cee33014098cb8a93",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/modeling_cli.py",
+      "bytes": 6328,
+      "oid": "bc988d3615542908ab33d444588d6988ebc3626d",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/panel_fill_layout.inc",
+      "bytes": 3027,
+      "oid": "104b7832d24981d55e36a0676b887f3756c90528",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/panel_fill_support.inc",
+      "bytes": 5085,
+      "oid": "20e99e26b64fcd95534635e0c05c6578d6297fae",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/panel_layout_math.h",
+      "bytes": 652,
+      "oid": "a95e78ab7869e5a7e4f563cacacf2e8a68fc4f1a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/parameter_types.h",
+      "bytes": 629,
+      "oid": "f3303a385f4b8d72935b464451b3f3b132b84194",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/parameters.inc",
+      "bytes": 64486,
+      "oid": "9bb07770ac255f2bcc162604d1303ad1ac55139a",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/reference_types.h",
+      "bytes": 674,
+      "oid": "c0e17b3ee47db9ecf2f4b50a501dd021604e2ef9",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/references.inc",
+      "bytes": 64355,
+      "oid": "22708285f6b0f531dcce07eecd6c73aea64ab2d9",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/rule_cases/__init__.py",
+      "bytes": 465,
+      "oid": "927f5cf685d449624953aed6c6f4e8a20fcfce34",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/rule_cases/__main__.py",
+      "bytes": 1297,
+      "oid": "e746ad364c93f82e303e22ccc5136331f9b5a242",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/rule_cases/catalog.py",
+      "bytes": 9586,
+      "oid": "a48c0e73ecd38106beffdc06f2b4fa999ff5d3c8",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/rule_cases/definition.py",
+      "bytes": 27503,
+      "oid": "c935b4f84caf358e341012e7d0f8fea1591ee6fa",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/rule_cases/executor.py",
+      "bytes": 29149,
+      "oid": "33b28dee6f935f34a3c8bcdf29f975c7b8b26141",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/rule_cases/request.py",
+      "bytes": 1142,
+      "oid": "f47a79b8171b838f393ca4fc1de60a0d4d1de5a4",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/rule_cases/runtime.py",
+      "bytes": 3261,
+      "oid": "8035c99994094c3f973849655b3edf2954b18e2f",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/section_profile_conversion.inc",
+      "bytes": 2077,
+      "oid": "7cfecc5be15f58f1f6b79605dbeb56208d13c113",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/section_profile_types.h",
+      "bytes": 137,
+      "oid": "fcbe21d079678fd32aa6f306f845d1227b677490",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/section_profiles.inc",
+      "bytes": 9287,
+      "oid": "4319c6436e0998b8799682e9818bda123284a884",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/subgrid_commands.inc",
+      "bytes": 4590,
+      "oid": "5f6f5832f59a53e99d77607352b1840e516877ae",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/subgrid_rebind.inc",
+      "bytes": 2352,
+      "oid": "abe8ff414e2508e6f056d4cd6f75faf79d9d1aa9",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/subgrid_world.inc",
+      "bytes": 1882,
+      "oid": "d9895cb47ee78a11b29b79b084eb895d0036e043",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/subgrids.inc",
+      "bytes": 4857,
+      "oid": "55b47a366e8279eb1a4a6e638849eed5b25987d7",
+      "missing": true
+    },
+    {
+      "path": "geometry-core/transactions.inc",
+      "bytes": 53668,
+      "oid": "6ebf89222c78240fee4c96872ad4caf7537594a8",
+      "missing": true
+    },
+    {
+      "path": "geometry-guide/axiom_examples.py",
+      "bytes": 12541,
+      "oid": "e8dab3c728b8d9a20f4e81b02696506c2e41c837",
+      "missing": true
+    },
+    {
+      "path": "geometry-guide/axiom_matrix.py",
+      "bytes": 9710,
+      "oid": "e6cecdddf0cb655b39041fa06304d80f4aca685a",
+      "missing": true
+    },
+    {
+      "path": "geometry-guide/axiom_transcripts.py",
+      "bytes": 7618,
+      "oid": "3d6942210dc11c56e1164da4b1a11187c22d5953",
+      "missing": true
+    },
+    {
+      "path": "geometry-guide/check_panels.py",
+      "bytes": 3489,
+      "oid": "c8d866e92394106861e60866419c9da4d496e3cf",
+      "missing": true
+    },
+    {
+      "path": "geometry-guide/current_geometry-導讀.html",
+      "bytes": 483511,
+      "oid": "749f22012f6c141c45e53fe2e69b467aa2d32fd7",
+      "missing": true
+    },
+    {
+      "path": "geometry-guide/make_guide.py",
+      "bytes": 76788,
+      "oid": "4e2e2884c7aa8165a907ad68bf3acf1fc574f1d0",
+      "missing": true
+    },
+    {
+      "path": "geometry-guide/sync_axiom_reader.py",
+      "bytes": 121853,
+      "oid": "8e74ba5908a5a24277d8df7e96413c99427aad94",
+      "missing": true
+    },
+    {
+      "path": "geometry-guide/witness.py",
+      "bytes": 37822,
+      "oid": "e30e6ac6b2633453fd86a8f2c958bae831a1b088",
+      "missing": true
+    },
+    {
+      "path": "geometry-guide/公理層-閱讀器.html",
+      "bytes": 7024570,
+      "oid": "0a21f66f512d5ebdeeb3c9f4a8c35e3204ae22c7",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
+      "bytes": 1909,
+      "oid": "52054a425eaf4bec19fa10eccca3db96dc7288ad",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/rectangular-grid/geometry_rectangular/protocol.py",
+      "bytes": 7677,
+      "oid": "b2dbef59ec374ec691d706c25ea8d340f77bc63a",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/rectangular-grid/rectangular_grid.c",
+      "bytes": 5164,
+      "oid": "92ad8c37e7bcd250e2341bd2eb366413c1a2a412",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/rectangular-grid/rectangular_grid.h",
+      "bytes": 2444,
+      "oid": "72ac18cb052ef10da06f3c19f381c14886338062",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/frontend.js",
+      "bytes": 6895,
+      "oid": "e0d588aa5912c2a40477dc50917cf10492190618",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "bytes": 74,
+      "oid": "753a8b04c51f008ec044b19462cc0f97a2525d59",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "bytes": 2969,
+      "oid": "db11966605f8030282b0281d60fd2fcccafd2dc0",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "bytes": 7757,
+      "oid": "f8f9be53f3b3753a58ae7cc03241e803052c7722",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "bytes": 3452,
+      "oid": "dfc095d3a8b4084fa746f4e0cf6d58a256617a61",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/assembly.c",
+      "bytes": 42150,
+      "oid": "f093b03d58cf20a32ef74c0d9126a3722846c667",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/assembly.h",
+      "bytes": 7625,
+      "oid": "af0e9e6450cf831416c80eed08bc0575fcdf0f10",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/assembly_sources.c",
+      "bytes": 35784,
+      "oid": "236a327004119919c374fb18454bc3c5d8bf38df",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/assembly_sources.h",
+      "bytes": 3302,
+      "oid": "37247914454a1f0d007e7d32da3eb82d583d3a58",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/boundary_policy.c",
+      "bytes": 162,
+      "oid": "a376338a00927f7e02c232a715d86554afd462c9",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/boundary_policy.h",
+      "bytes": 926,
+      "oid": "3a5af9b793c09418dcc2e64957e789cb0979fdeb",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_sources.c",
+      "bytes": 12554,
+      "oid": "3b3c3aa059cd74f6bb1525fa7adf8a41601c6e51",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_sources.h",
+      "bytes": 2853,
+      "oid": "837968fa4dd66ccccb42450ac4f3d1498b441932",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "bytes": 26976,
+      "oid": "c111cdce93a149f1854b315191f12713a74fd6ec",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.h",
+      "bytes": 4185,
+      "oid": "e785a70ce4d864716f8bb6c9e5c927c0755fccdd",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contacts.c",
+      "bytes": 3301,
+      "oid": "74e65bb183bd9ada91b6e6a498edddd417030e88",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contacts.h",
+      "bytes": 1670,
+      "oid": "081cb5b0e33a181ed718faf5a71eab439c507c3f",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/cut_list.c",
+      "bytes": 1562,
+      "oid": "0de824904470eb516baed45a6e55abee2fba0e7e",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/cut_list.h",
+      "bytes": 682,
+      "oid": "11d94f8639f91523c411d6fcc51e5d24263d201e",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/definition_sources.c",
+      "bytes": 17633,
+      "oid": "cec25676981e7f5e773d721c5599f4b4ea967cc5",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/definition_sources.h",
+      "bytes": 2767,
+      "oid": "409fc90f011f40d36947e8700407d0e153495f18",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/derived_placement.c",
+      "bytes": 18770,
+      "oid": "1f4b9e631efcf2d1fb0c951dae7fa6dd333fe995",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/derived_placement.h",
+      "bytes": 3282,
+      "oid": "9fc7a6e22a664853b0c9907aa7752ba6aad10d4e",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/document.h",
+      "bytes": 1413,
+      "oid": "4f2210a169045478182b4ff13615d665a7183cc4",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/domain_values.h",
+      "bytes": 691,
+      "oid": "b731a7516152f4d2d26e45362c60a678c05ff188",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering.c",
+      "bytes": 44177,
+      "oid": "9075e679f8b51b246e67e2c7008927fe60fadeb6",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering.h",
+      "bytes": 9689,
+      "oid": "a7e5fe290c1966a9ac6d5c6704e9ed9e85da91aa",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering_operations.c",
+      "bytes": 7119,
+      "oid": "de566cc6f97db741efc6bd11dd09661fa2677e72",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering_operations.h",
+      "bytes": 1359,
+      "oid": "1c4bbe0914732bf238bd0d629ce69a48d17c8632",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering_sources.c",
+      "bytes": 34395,
+      "oid": "84cf20f79f88519a0ef69abbbd4b7989b9cc9368",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering_sources.h",
+      "bytes": 3668,
+      "oid": "f6265d7ba4e85740e77ee25f92e4f822adcc04ce",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/finish.c",
+      "bytes": 28866,
+      "oid": "4545ac42639e3c6c11634574fed7c5a90e9c9dd5",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/finish.h",
+      "bytes": 6537,
+      "oid": "36f3b38bb4733a033163cb4d8554fa0bcab39f79",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/finish_sources.c",
+      "bytes": 41066,
+      "oid": "ab640f2d1c4ec233c20ef989a1ebe783c4e17201",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/finish_sources.h",
+      "bytes": 3568,
+      "oid": "3473bae51b631e1cfc3e3a8b5a1f2cd0cfd6db66",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_application.c",
+      "bytes": 34339,
+      "oid": "3ee1122e77057e37a6f93d18615770ecd6d0929d",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_application.h",
+      "bytes": 10475,
+      "oid": "1c577f247862735ce3467837918a1f2873f789af",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_cells.c",
+      "bytes": 19552,
+      "oid": "796a4e0547b2991beea7f2212ac321779f68dda6",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_definition_codec.c",
+      "bytes": 17281,
+      "oid": "1cc911020102dc3f710c674d47b7ba031fb15e37",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_definition_codec.h",
+      "bytes": 3055,
+      "oid": "af1eb7bfc63015b03db6b2e8c8c551f5572212d3",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_rules.c",
+      "bytes": 13805,
+      "oid": "1ea223b5c774c175081d454c498f181154de6458",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_sources.c",
+      "bytes": 44570,
+      "oid": "1445593828290b55b94c3d50c5a6cab417dd4292",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_sources.h",
+      "bytes": 3227,
+      "oid": "756dbeb58078f8627bd4b3392a4a793cd5f133a8",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_declaration.c",
+      "bytes": 2335,
+      "oid": "3a9ab68eed7680ea4c7a7526cfa3b1980ff879bb",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_declaration.h",
+      "bytes": 894,
+      "oid": "8a7893bfaf87ed3263413590acd295228749f188",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_placement.h",
+      "bytes": 1549,
+      "oid": "8da23bf549b5c32df38c32a27af27027d87eecc0",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_reference.c",
+      "bytes": 34169,
+      "oid": "1b8b4b5e0f09ad0f7d52a42372ba8cddaf5ee621",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_reference.h",
+      "bytes": 6909,
+      "oid": "4c7d676852a6b890025486123e10e224560b4740",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/members.c",
+      "bytes": 3533,
+      "oid": "3a7622d4ef12e231b7016acfb23f605a80517ebc",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/members.h",
+      "bytes": 2131,
+      "oid": "0c727bd5b67f059a8669ccc474ec394c0915447e",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/obstacles.h",
+      "bytes": 682,
+      "oid": "aee726f7ae030f6bf802bf080a19c9b3a708943e",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_layout.c",
+      "bytes": 5350,
+      "oid": "4c80b6d549c8c7740d08a8c7ac108982fb4fc3b2",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_layout.h",
+      "bytes": 1566,
+      "oid": "1422c924329662b30b05a39e2c775a3a6fac24b3",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_support.c",
+      "bytes": 7069,
+      "oid": "4eae0988c03c27327222a83e61d9813ed45677cf",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_support.h",
+      "bytes": 1440,
+      "oid": "8da3ff0861ed7516f650fb44b728118b91fdccf0",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/section_profile.c",
+      "bytes": 24441,
+      "oid": "7d80bea2288bf9c311700a332218a1de1c79edcb",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/section_profile.h",
+      "bytes": 6289,
+      "oid": "722f4a73f975b0ebb21dd22dceb756350b602e1c",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/section_profile_sources.c",
+      "bytes": 29307,
+      "oid": "18aeda56501ca765e5254c47d0d3b00033fece23",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/section_profile_sources.h",
+      "bytes": 2772,
+      "oid": "a3b8c690b1bce3c3ad148e4492a82c259b634c4b",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/supports.c",
+      "bytes": 4658,
+      "oid": "f1f1a6ab682f5144ac8a39e1f099b0cc6611285e",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/supports.h",
+      "bytes": 2727,
+      "oid": "13dca465a25dd576e0fb501b47cd5ee958f753fa",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/world_validation.c",
+      "bytes": 8084,
+      "oid": "acea27664f8aae74c212a085a74d9afb9c4bb1d5",
+      "missing": true
+    },
+    {
+      "path": "geometry-templates/woodworking/native/world_validation.h",
+      "bytes": 2087,
+      "oid": "7a734d53a9f32a7b8357d229c206d0f3e7988cc3",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/app.js",
+      "bytes": 627555,
+      "oid": "e82ff16e7c0a671081cc763ec97a373b9bf9d3eb",
+      "missing": false
+    },
+    {
+      "path": "geometry-web/archive_wait_trace.py",
+      "bytes": 3402,
+      "oid": "06d7b4a15f60090702baa2729c4f67d063b191ec",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/assembly-workspace.js",
+      "bytes": 54171,
+      "oid": "cff960cffa9274678ad4d52ed5bd892e57a62f08",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/assembly_binding_source_browser_check.js",
+      "bytes": 11276,
+      "oid": "b2a2a7d6c085d866a84d926ed19d90f3233e0879",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/assembly_bridge.inc",
+      "bytes": 5532,
+      "oid": "7fcab13702e23501c006d0d1d9751b6bcfaf8554",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/assembly_candidate_impact_test.js",
+      "bytes": 3631,
+      "oid": "9be0d73c5c92489cb96a9eba9b8e04208793344c",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/assembly_context_entry_test.js",
+      "bytes": 15562,
+      "oid": "210dbcb7dc2008d2b495c3f04b85cbe3e5aca2e8",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/assembly_generation_test.js",
+      "bytes": 11239,
+      "oid": "7d57bad6c843d71e0ec39a93613c984ca15e1b9e",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/assembly_id_test.js",
+      "bytes": 9292,
+      "oid": "a76d7d5c1eca265de7e0e01237048510a5369d22",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/assembly_review_test.js",
+      "bytes": 21295,
+      "oid": "30154669c531accc576dc40cbe91a01567628328",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/assembly_workflow_test.js",
+      "bytes": 16461,
+      "oid": "850eded62bb6c78efe4fd0542831aa71772b4131",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/async_reply_ui_test.js",
+      "bytes": 14619,
+      "oid": "1430a93797afc19eddb830cd9d63a571ee99ab17",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/canvas_test.js",
+      "bytes": 43114,
+      "oid": "7672802f5d7a95c079f999731ae3004d03ae935a",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/cdp_confirmation_gate.js",
+      "bytes": 1811,
+      "oid": "932432c4da2b822c2d7f5f97e6c3c4282d5633d5",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/cdp_evaluation.js",
+      "bytes": 1407,
+      "oid": "48192ad7e13ec6979a5b74ee16a1c97dfde84780",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/cdp_floor.js",
+      "bytes": 4505,
+      "oid": "4338f9db4843f56a62f8f02d8d6c88bf0c1d0126",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/cdp_helpers.js",
+      "bytes": 17770,
+      "oid": "9fcab63d4f4e171c3fc6c4270b303c2a1da767cf",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/cdp_navigation.js",
+      "bytes": 3037,
+      "oid": "5b847da516743fce7caf6855e2a272cd57dbe03d",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/cdp_test.js",
+      "bytes": 515779,
+      "oid": "3f632a24935f0c47fcd05f3c9d58fe53089a9185",
+      "missing": false
+    },
+    {
+      "path": "geometry-web/composition_canvas_test.js",
+      "bytes": 27531,
+      "oid": "f30a77c7a60ddf4beaa077c8589cc3aae3fd22b8",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/context-menu-shell.js",
+      "bytes": 12742,
+      "oid": "a36922f06a12721390e5247faf2e9e6cc15f12a0",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/context-operations.js",
+      "bytes": 5410,
+      "oid": "52a1ac9420a614777d55e1335bf5a7b9bfdd1abc",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/cursor-v2.js",
+      "bytes": 15042,
+      "oid": "232b3a4c3255417ada8a263a9aaa817437aaf1ee",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/env/common.py",
+      "bytes": 2046,
+      "oid": "117b254222b3a0fdc73a0e0b212cc017b642c7b5",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/env/p1_browser.py",
+      "bytes": 1288,
+      "oid": "4aee8ae2b24a652126bb7c2b867df2935f9cfc31",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/main-negative-height/scan.py",
+      "bytes": 3717,
+      "oid": "1a63b73d89ca60fde3724912aa3a0c369bea5ee2",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_lib.py",
+      "bytes": 6871,
+      "oid": "2ed936d1ec36db4cb95ca96210abf9ca9b4d5725",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_run1.py",
+      "bytes": 1926,
+      "oid": "a9b6ae24406d26a23c9d779107918265fcf3203f",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_run2.py",
+      "bytes": 9241,
+      "oid": "ae2486aee9eb8f3cfe0f95b344d6f4c975546d3b",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_run3.py",
+      "bytes": 5074,
+      "oid": "c3a816f05dd80678a3708a06f509b8e3e3000c6d",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_run4.py",
+      "bytes": 6759,
+      "oid": "71f27f7ae2905295550b4e0de9e9b8bd0a1dd300",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr152/w13_probe.py",
+      "bytes": 700,
+      "oid": "bcb2bc81a404d40a14b70dc2b2b07591b158a055",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr152/w_test.py",
+      "bytes": 12151,
+      "oid": "3634534dff305228793424a8b3db0699e45bdac5",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr152/w_test2.py",
+      "bytes": 4416,
+      "oid": "e002d65914b54a83e245e19754381e09b0a0136b",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr156/g8_run.py",
+      "bytes": 4238,
+      "oid": "6e7ebbe385fe6a65c483448419db230dc73598ec",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr156/g_run.py",
+      "bytes": 5888,
+      "oid": "645e4760fcebc2ac203382bf5bf5e38bf00f02d9",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/geo263-20261016/compile_probe.py",
+      "bytes": 1045,
+      "oid": "4e035bc5f6129f2c92a08b495c094f67c593cb64",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/geo263-20261016/verify.py",
+      "bytes": 2706,
+      "oid": "6b75bb8bd066c3bd0e4ffa3c69bc9ab0362f1ce4",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/geo263-p153-20261016/verify.py",
+      "bytes": 3323,
+      "oid": "6401f5f344046300ba43972c5cb9c58c1f9d3e30",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/issue61-3bd31dd-20261005/supplement/model-collections.cjs",
+      "bytes": 5112,
+      "oid": "98c9c09bef7aafe8c351c2a7b6b98cd43896388e",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/fixtures/gen_synthetic_pdfs.py",
+      "bytes": 10019,
+      "oid": "40ebcf08e28c21b9b7e1fb83f370a600f25f0d63",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/tools/build_qa.py",
+      "bytes": 10811,
+      "oid": "ccc0b131301b665644f429610134278235507917",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/tools/qa_cdp.js",
+      "bytes": 23007,
+      "oid": "e448485aedc48f93d5010d5997a760aabadeb1f4",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/tools/qa_server.py",
+      "bytes": 5489,
+      "oid": "8f5925aabbdf52a618f90cc40a82d2e51f48cdab",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/wp60-a-20261004/browser-base.cjs",
+      "bytes": 7197,
+      "oid": "cbd3cece4346ac38ce3a32dfe7fe7b17012b4126",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-legacy-browser-green.cjs",
+      "bytes": 4329,
+      "oid": "f4d50c6aff599a22493600e9162e91c6eab176c1",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c",
+      "bytes": 816,
+      "oid": "2fa73899c0bd681e2f906ec14ea4116f3a1b97a5",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.py",
+      "bytes": 825,
+      "oid": "c13e11c653cad248a923fea7c5694b18fe86519e",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/cloud-qa/p3-acceptance/p3-css-acceptance.py",
+      "bytes": 9614,
+      "oid": "2dd6374cc23da657bcfe97ed2e27a7e94f920833",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/cloud-qa/p3-acceptance/p3-first-click-repro.py",
+      "bytes": 2820,
+      "oid": "c784151c4d8d77817d579389bf35120d4b0cc739",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/combined-pr125/chromium-environment.cjs",
+      "bytes": 644,
+      "oid": "20f3fdec65c49825ed2ae869d7d8d864eb41f2ce",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/combined-pr125/mixed-attempt1-flow.py",
+      "bytes": 16515,
+      "oid": "e2e1725d8976104f3c057af7882b2ad9cde919f8",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/combined-pr125/mixed-flow.py",
+      "bytes": 16525,
+      "oid": "23ebb45aeb2ed609dbfb654b54bce2fda33b822f",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/combined-pr125/run-gates.py",
+      "bytes": 2852,
+      "oid": "34072898fc2b51cadad92e3e5790678c63c574da",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/combined-pr125/setup.py",
+      "bytes": 4148,
+      "oid": "37f25bc07b2ad9dd5c9f9f7208584e8dfd13bd1c",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-c-pending-tests/repro/build_t3_json.py",
+      "bytes": 1664,
+      "oid": "19cb5bb252088fb5f17e7813aa5a52d33bf7f7d9",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-c-pending-tests/repro/common.py",
+      "bytes": 2869,
+      "oid": "b6986bcc453b016ae6a227a0cace999c7e80275a",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-c-pending-tests/repro/t1_focus.py",
+      "bytes": 3314,
+      "oid": "9aef4f93b8078aa01be0a59a0074d1d9affbf3fa",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-c-pending-tests/repro/t1b_toolbar.py",
+      "bytes": 2746,
+      "oid": "e81c398864ee366f856bc2665f9fb51d2f4ab841",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-c-pending-tests/repro/t2_b6.py",
+      "bytes": 5504,
+      "oid": "2d7c8869bb59dc74bf6a1232869ba2f26426769c",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-c-pending-tests/repro/t5_g3_delete.py",
+      "bytes": 8418,
+      "oid": "d98ea436d15104c3c53413406f8a18f892d06cc7",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/common.py",
+      "bytes": 2134,
+      "oid": "6261c5482d896174334c07b8fbd73f929bd48c5d",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/css-evidence.mjs",
+      "bytes": 2214,
+      "oid": "d47d4dad26a98c0d238cba2d786f1f4871264ec6",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/cssq.mjs",
+      "bytes": 949,
+      "oid": "0baefff5c8dd839df1e5b15f82f8d88e39726679",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/explore1.py",
+      "bytes": 1295,
+      "oid": "38216029967c6e89eb2fc312e9d6b56c223bffbb",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/stage_f.py",
+      "bytes": 6262,
+      "oid": "62c91a907a6ec1e0641eac094545594c0261c1eb",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/stage_f2_explore2.py",
+      "bytes": 2808,
+      "oid": "9d794195b1ddcae089049414c20204e5a8b646ab",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/stage_g.py",
+      "bytes": 8865,
+      "oid": "68aca83323301a7d44c5431d7e47a23509fc5ec5",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/stage_h.py",
+      "bytes": 2776,
+      "oid": "88883822c7ed2912fcff693565c84b0331f493c0",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/stage_x1.py",
+      "bytes": 6728,
+      "oid": "50f71bfc7c3425d3ccbb6b086ad33b8391bdbd0f",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/issue123-feedback-overlay/run-gates.py",
+      "bytes": 3471,
+      "oid": "a1fa5f6954544320e59cb7f62f0bea8054457cce",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/prototype-構形Canvas-v2.html",
+      "bytes": 215162,
+      "oid": "980b8a6e729ff94ebe0441fba81661005131c852",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/UI-UX 審查報告.dc.html",
+      "bytes": 11179,
+      "oid": "a7d12d99a82e0183159f3f83fbf63e7e500a9bb4",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/review-data.js",
+      "bytes": 15442,
+      "oid": "957ac83a91602a4fb1141f522090e3f845c1d042",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/shapeops.js",
+      "bytes": 5879,
+      "oid": "3b3f28a50d68888500ce48d7009befafc0cb691d",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/support.js",
+      "bytes": 69150,
+      "oid": "cb009b69ec6b5e00f48c6287a587fe7e0c6c421b",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/建議-主畫布 v2.dc.html",
+      "bytes": 39566,
+      "oid": "106b6e42cd6f8703d0346997a20c49c4ee2e44af",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/建議-建立參數 4a.dc.html",
+      "bytes": 29326,
+      "oid": "80748f90da34f4b6deb5369983d7a345cd435635",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/建議-面內工作區 v2.dc.html",
+      "bytes": 26292,
+      "oid": "cc01e34da005a72a8e92460a25a0eb2f24617bc2",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/形狀編輯 步驟板.dc.html",
+      "bytes": 4852,
+      "oid": "fea0b936ba44bd47f20aefaddbb19659089934bf",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/形狀編輯提案.dc.html",
+      "bytes": 103764,
+      "oid": "b5322318b15cd77d3c159c80cdc4a6265a36be44",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/現況-三視圖總覽.dc.html",
+      "bytes": 11498,
+      "oid": "b39f9621d0712b4db18fbee25d657cf8ad6de495",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/現況-主畫布.dc.html",
+      "bytes": 38346,
+      "oid": "b4001b4f65bdc64d79459da605a216427f470d7f",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/現況-空間工作區.dc.html",
+      "bytes": 14747,
+      "oid": "6ae57206487a90daeeadadf7aca451e4fd213089",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/現況-面內工作區.dc.html",
+      "bytes": 20358,
+      "oid": "a6627971b93e693b0014c1201889e4dbb9853d11",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/組構規則-原版與修正.html",
+      "bytes": 24441,
+      "oid": "591bd080fa21ba6421051942fc90b7d17b9f25a0",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/document-cases.js",
+      "bytes": 41713,
+      "oid": "c6936f32f280f9cf8a5002036a9a8cfd93deadcc",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/document-format.js",
+      "bytes": 5902,
+      "oid": "f442cff81f2dc70015729a482771a25e8d174b4d",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/documents.js",
+      "bytes": 25551,
+      "oid": "e33017ca26d005c92cd315758f85dcbd36531ecc",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/documents_browser_test.js",
+      "bytes": 23966,
+      "oid": "34e870337ba801b406adac9d4a031a77be5c71d7",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/edge_draft_redraw_test.js",
+      "bytes": 21105,
+      "oid": "2fdae602c6d4d1d9ec0d928ec2b01949a8cd962b",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/engineering-adapter.js",
+      "bytes": 14937,
+      "oid": "4b7ae98ad22149314b6c929adb7d782c9c440b56",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/engineering-workspace.js",
+      "bytes": 102814,
+      "oid": "c70305108985206751df64db6f57ed512393e9db",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/engineering_bridge.inc",
+      "bytes": 22339,
+      "oid": "b16130a22c9218c9248f667ec73841fec092b437",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/engineering_transport.py",
+      "bytes": 2730,
+      "oid": "f4bdac365133a029d6759112fa47e11a468a200e",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/engineering_workflow_test.js",
+      "bytes": 50068,
+      "oid": "3c125c37be71c6cc698d739fddaadc88491ee1c2",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/evidence-links-app.js",
+      "bytes": 9716,
+      "oid": "bea6ee8a5dcc94533476b469159955c0ba557a43",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/evidence-links-ui.js",
+      "bytes": 17963,
+      "oid": "9978c9c7e025f5af793b018652303eabd1533f03",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/evidence-links.js",
+      "bytes": 17328,
+      "oid": "c2ce6a6c6fdcab2ffbdd7aa495282f72fb28b728",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/evidence_links_browser_check.js",
+      "bytes": 36614,
+      "oid": "5315307440b2d694a0a2ea0c77076b181b45db03",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/evidence_links_integration_test.js",
+      "bytes": 30276,
+      "oid": "b27adbd26339b23ad5eca5cb99bc583243628b86",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/face-context-menu.js",
+      "bytes": 13355,
+      "oid": "bcb90eb88393b104e07fd8d77919e285407bd6ee",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/face-menu-icons.js",
+      "bytes": 972,
+      "oid": "6ea61e62af3ddc5b2c83bd86c44d8ce023a943de",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/feature-attachments.js",
+      "bytes": 26229,
+      "oid": "7db220ab5cd528aaacef41747b8360452145131a",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/feedback.js",
+      "bytes": 20561,
+      "oid": "ce150ec54a0357c6c5fbd3167373dc96e74574d9",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/feedback_cli.py",
+      "bytes": 5161,
+      "oid": "6dfe59951653c08d991e459de5c1b8f701027333",
+      "missing": false
+    },
+    {
+      "path": "geometry-web/feedback_resize_observer_test.js",
+      "bytes": 29901,
+      "oid": "97ad375f417b89ddca84cf8bf4e42b253e436a1f",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/feedback_store.py",
+      "bytes": 10814,
+      "oid": "bb738f8fb07dd9cd3fde73c3697eb36346cee66e",
+      "missing": false
+    },
+    {
+      "path": "geometry-web/grid-anchor-positions.js",
+      "bytes": 596,
+      "oid": "c6e7a47e934123337420eaf488109f58d0246f5b",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid-inspector.js",
+      "bytes": 21426,
+      "oid": "114badc89a61a45ad680330fb40e3e4fb6b649c3",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid-rule-lines.js",
+      "bytes": 17264,
+      "oid": "f1863cd529b6d703fc34192641991ce3bf686435",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid-system-workspace.js",
+      "bytes": 127655,
+      "oid": "968bc61f57ab55c2365b7bf86fd5e66802ef105f",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid-trial.js",
+      "bytes": 11540,
+      "oid": "550464c2aaa98477b89a4de62c9e17745a3da3ae",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_binding_bridge.inc",
+      "bytes": 13466,
+      "oid": "2baa00850ddbc872419457f646eb966194400777",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_definition_interaction_browser_test.py",
+      "bytes": 15639,
+      "oid": "48b70f8aa43cf6bf91f72ac9e7a00e0fac726f7a",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_inspector_rename_test.js",
+      "bytes": 15925,
+      "oid": "19d268bcb9784130007d95f8ca1d1f949464fd81",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_material_entry_test.js",
+      "bytes": 26175,
+      "oid": "d014c88eb4089e4aeea227828d2f3230f093c2ae",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_portable_browser_test.py",
+      "bytes": 21329,
+      "oid": "6ca3f043fc6e636c95575c83ca5202f26ca4efd7",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_raw_provenance_browser_test.py",
+      "bytes": 16256,
+      "oid": "162b37c72c6f315aa066197837bbf5be00f2f4b7",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_rule_editor_test.js",
+      "bytes": 31954,
+      "oid": "2cbc82d36bf5d0199fd7d0d5ff89c29fbda3d5f0",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_rule_lines_test.js",
+      "bytes": 50886,
+      "oid": "e92f5b57f0ef50710136a05e6225f9331a5d97a8",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_subdivision_bridge.inc",
+      "bytes": 5220,
+      "oid": "c8528d237b16d596181eb10e9255cb91eb2c35fb",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_system_bridge.inc",
+      "bytes": 5925,
+      "oid": "3c4257dfcc0ef845494cdbe890f70c1cb3381107",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_system_test.js",
+      "bytes": 56504,
+      "oid": "d48c3bb8e6ea4a0e236d38ae0598f87120760372",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_trial_test.js",
+      "bytes": 10480,
+      "oid": "7f1fe6c9860ba0793392d7e3913f74c75d5f7b28",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/grid_workspace_draft_test.js",
+      "bytes": 8110,
+      "oid": "e52c9556b11cdc6a593b233db39d35a1b3f7b473",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/index.html",
+      "bytes": 52256,
+      "oid": "c3f9b251c1ad881455e91b0ae1acf8ac28c29234",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/infinite_grid_face_test.js",
+      "bytes": 8475,
+      "oid": "9094449553845cd23390f04517b7552a3de2695c",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/marquee_test.js",
+      "bytes": 47683,
+      "oid": "eae9013aa115a768000cde7c0bd7acc4a7a0a12e",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/model-update-app.js",
+      "bytes": 29728,
+      "oid": "0c37ec7af5980bbbb8fbdda9715ff1aa0e5663d3",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/model-update.js",
+      "bytes": 12432,
+      "oid": "e7bfb20729de53b679046536e7bffc0c2d651cbf",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/model-viewer.js",
+      "bytes": 27767,
+      "oid": "6f7344818976a004af81cdbf2b791bd5d98c72e1",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/model_snapshot_navigation_test.js",
+      "bytes": 11615,
+      "oid": "39808a2fe9ce8eb765e708e98ed9fe8201a8d6e0",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/model_snapshot_schedule_test.js",
+      "bytes": 18861,
+      "oid": "d20a09188eaaa812100df161a7ae0b6466c87963",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/model_update.py",
+      "bytes": 26479,
+      "oid": "aaafa096d5338c5f00d570250dfd972f4c74915f",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/model_update_browser_check.js",
+      "bytes": 22673,
+      "oid": "6a6c163d2fbcef843ad2d3699c3302b9d4a2b1b7",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/native-transport.js",
+      "bytes": 794,
+      "oid": "b8c7b830badc9b104d3c07161760bffdfd03cce9",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/native_context.py",
+      "bytes": 2237,
+      "oid": "1e30dd95bdfeb4819144374fd9fae281d25b20e9",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/native_reader_browser_test.py",
+      "bytes": 7083,
+      "oid": "5f451379aafe055acfdfbe79041d3c853324d40c",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/panel_fill_bridge.inc",
+      "bytes": 10612,
+      "oid": "4f034a0ffc9b7221b03e5974beafe34604437bd2",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/panel_layout_bridge.inc",
+      "bytes": 4737,
+      "oid": "405b669dc04db1ea86b68bddc87f86eb0d18e6cc",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/parameter_bridge.inc",
+      "bytes": 4949,
+      "oid": "8a86eb3047dba6ccd8e1fcab075ffaece7525b44",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/parameter_confirmation_test.js",
+      "bytes": 5604,
+      "oid": "a07df0b9708079c618f300a831b5af26ac046b4a",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/parameter_preview_ownership_test.js",
+      "bytes": 9085,
+      "oid": "7ba93120fbcd6dbed0d5819dbdb61e504a679e1c",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/parameter_workflow_test.js",
+      "bytes": 52461,
+      "oid": "7141c37cb2cb72d62199235e8e080a71750b22ab",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/parameters.js",
+      "bytes": 71565,
+      "oid": "4b979fa4b81beafaad711f1945389d832e3f5218",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/pdf_tracing_snap_test.js",
+      "bytes": 10402,
+      "oid": "9d42524afcfb79bdb7e47bf947a6cc129f4efe73",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/polydraft.js",
+      "bytes": 26858,
+      "oid": "c7241c9961008b4d347141d8b74a65963bb4f407",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/polydraft_test.js",
+      "bytes": 93888,
+      "oid": "f6a8516fd5360f3eb02d6d4320e1be00436e9ad3",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prepare_wait_trace.py",
+      "bytes": 591,
+      "oid": "c64741a210f87183e660668a52d46059fa9377f0",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/project-store.js",
+      "bytes": 82418,
+      "oid": "961088f6fe27433f95f9e425d333a90352cd59dd",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/project-ui.js",
+      "bytes": 4873,
+      "oid": "a3fd43e195a29eea9d7a2f649cebe9a382a2813c",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/project_audit_test.js",
+      "bytes": 16952,
+      "oid": "49152dd0cd450570a38c091827d03e29c90a6db3",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/project_import_final_objects_test.js",
+      "bytes": 8832,
+      "oid": "c9bbcba0b54812ac63ca0be3d838526eb5f8d204",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/projection_close_probe.js",
+      "bytes": 10888,
+      "oid": "a1dc204a5c69a08a9dc534e61b4fd803ff7dda91",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/design/compare.py",
+      "bytes": 947,
+      "oid": "a8437db666371258d4045ce266860f77422260fe",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/index.html",
+      "bytes": 349,
+      "oid": "923059188eff2cab56b21f794ffd47f23d311cb6",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/scripts/prepare-sites-build.mjs",
+      "bytes": 910,
+      "oid": "86a9e8c1bbd01b1e379996db66b9bcfeb6b519ee",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/App.jsx",
+      "bytes": 35568,
+      "oid": "2e41104d9c1490a3a928c4a57a654d80ae7a1755",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/GeometryCanvas.jsx",
+      "bytes": 15151,
+      "oid": "d1729254d419828fed385f417c67840dd57873dd",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/InlinePanelEditor.jsx",
+      "bytes": 7583,
+      "oid": "31fccfc57a3399c4887e12153e5e6325b9f42b5e",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/SpecificationLibrary.jsx",
+      "bytes": 34112,
+      "oid": "15e4aee4b4cd93ff07f7407b80d664ed7eff5a0c",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/canvasGestures.js",
+      "bytes": 2183,
+      "oid": "17597a214644f6a38c235a68298b38ea52166522",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/catalog.js",
+      "bytes": 11903,
+      "oid": "6a111dd68366b30ec9ba60a75060b6371ff22936",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/catalogPresets.js",
+      "bytes": 1089,
+      "oid": "3bc3a82a11de76fb936f8091060408ab410e70d3",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/geometry.js",
+      "bytes": 5146,
+      "oid": "dcb86948c1bb6fa00641024e7a7f7fa65256909a",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/inlinePanelDraft.js",
+      "bytes": 5218,
+      "oid": "e22063205007a9c356664d504c16faf4a22ac9fd",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/libraryDraft.js",
+      "bytes": 9092,
+      "oid": "b52d310d1566f54b1796ff976e4cbb744055a195",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/main.jsx",
+      "bytes": 242,
+      "oid": "78c0e05d2b00a8e971fca21460e5b6a5552bb2cb",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/persistence.js",
+      "bytes": 2863,
+      "oid": "5096e1a73721037b8448e4113c4752da4fe9220d",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/previewChanges.js",
+      "bytes": 2310,
+      "oid": "e3c78e75dda072d953d0230d76340214320ad28f",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/canvas-gestures.test.mjs",
+      "bytes": 3808,
+      "oid": "15c8c5cb6da324862614ba2ff2b4f3ceda35f908",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/catalog.test.mjs",
+      "bytes": 12859,
+      "oid": "62776b1c27e69606a9de1bde8c01bfd341db385b",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/inline-panel-draft.test.mjs",
+      "bytes": 13033,
+      "oid": "e4755108bca3d7970b172c56b594c2724c29d954",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/library-draft.test.mjs",
+      "bytes": 11826,
+      "oid": "0ac85a9b369fdef2ac381b305969c3042e86c067",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/persistence.test.mjs",
+      "bytes": 7971,
+      "oid": "118fd9cd90729da0cfad2c27cb2187f32bae2fed",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/preview-changes.test.mjs",
+      "bytes": 3047,
+      "oid": "41856a479cff8e7d435edd8b97186722156a5b70",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/sites-worker.test.mjs",
+      "bytes": 2219,
+      "oid": "64f277e76964cd78f59ec5c31dfbd4cf1e92015f",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/vite.config.mjs",
+      "bytes": 382,
+      "oid": "888d6c663ff916a134c4c1627c2454010f71c759",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/worker/index.js",
+      "bytes": 483,
+      "oid": "5f35412463f5c8e96e36dda4008c267c4a7c96ce",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/reference-display.js",
+      "bytes": 1122,
+      "oid": "8210d4428e44a9b8edf0dd4c4073ba6667076f0e",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/reference-ui.js",
+      "bytes": 35191,
+      "oid": "90037d3d5731c1bf1f2ac7d09a1e46dd23001c34",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/reference-workspace.js",
+      "bytes": 164205,
+      "oid": "435e95f5971454c9f0cad87e865359b7c13f7a47",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/reference_bridge.inc",
+      "bytes": 26300,
+      "oid": "7c94564351df9520b78416d509d63bff5c717a4d",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/room-collection-workspace.js",
+      "bytes": 43691,
+      "oid": "3aeaaa26f6375c162248665bcae695c73a90f386",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/room-collection.js",
+      "bytes": 16483,
+      "oid": "567e53da9bdb7a46070221d01aace73aac580156",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/room-outline-worker.js",
+      "bytes": 1058,
+      "oid": "2fed4a764bee0095aa97502bcbe06037506396ae",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/room-outline-workspace.js",
+      "bytes": 26921,
+      "oid": "0700ec47da7a83fc0518b04bc8d54d072234eafd",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/room-outline.js",
+      "bytes": 21592,
+      "oid": "edfc93201b8eeee572b4c5ad39fe2240c475ca48",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/room_outline_test.js",
+      "bytes": 38129,
+      "oid": "9e784f68f379c90d3f6868fd1fbbdca7d894fd0b",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/rule-case-data.js",
+      "bytes": 19105,
+      "oid": "70851c203947c054ad10861a65f5ba07715da67c",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/rule-case-host.js",
+      "bytes": 6239,
+      "oid": "6f3bef0d23328d301b16639ec8e99677bd855a10",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/rule-case-workbench.js",
+      "bytes": 24044,
+      "oid": "f4b7b6f95234344df5eebd3d133a4f3a56946049",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/rule_case_host.py",
+      "bytes": 7564,
+      "oid": "e84b1b378f294ecb7a7663e9ce107cbf7bc96afc",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/rule_case_workbench_adapter.py",
+      "bytes": 22029,
+      "oid": "9ee6be93a6b7cbbf78c87839570c8c212742c450",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/rule_case_workbench_standalone.py",
+      "bytes": 7555,
+      "oid": "47eb6e12c9a75d76ae3c21a962e34e0e79e89be2",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/runtime_version.py",
+      "bytes": 10179,
+      "oid": "90f4fcf6cc5e76f7bfe1f1380ce546294d4c4697",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/save_reopen_synthetic_test.js",
+      "bytes": 20215,
+      "oid": "854f95cf28f89c53ec319dbe4c9de2dbd21ad03b",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/scenario-catalog.js",
+      "bytes": 7752,
+      "oid": "b0ef33f08ddc20bb33c5a0b278a1a395037a5724",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/scenario-diff.js",
+      "bytes": 13219,
+      "oid": "119937a8f98e90b1aaae1d069e9a0a5a4b69e461",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/scenario-integration.js",
+      "bytes": 4116,
+      "oid": "f0463373065ec461eaed86e208bb4673f989cda2",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/scenario-snapshots.js",
+      "bytes": 34485,
+      "oid": "4283dbd903dfb51b749dcd1964f65e597da9d955",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/scenario-workspace.js",
+      "bytes": 25011,
+      "oid": "e9959d9915eae7b5dd6e9dedc28891a9ec4ef371",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/scenario_verify.py",
+      "bytes": 36026,
+      "oid": "27ba23af9c8ea5c5733832cd4308dca007471ccf",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/scene-import-bridge.inc",
+      "bytes": 5136,
+      "oid": "c6ef1102822bf0910330b92a6622a49112adf224",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/section-profile-workspace.js",
+      "bytes": 34398,
+      "oid": "6ba9dde3a6487c2879116b0af2bab478d4bcd96e",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/section_profile_bridge.inc",
+      "bytes": 8605,
+      "oid": "74e226fd43ea961644ce7c3db7a6d7780b0e36bc",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/section_profile_diagnostics.inc",
+      "bytes": 4625,
+      "oid": "a6db0304e43506542ca5d91fddb037c7628557ff",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/section_profile_source_index.inc",
+      "bytes": 3211,
+      "oid": "03df4da59fa3e270c621714e63679ccf19b59806",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/section_profile_transport.py",
+      "bytes": 1973,
+      "oid": "5cb5257c60d6f870a48291f38b19140f8b7c2e09",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/selection_cursor_test.js",
+      "bytes": 12707,
+      "oid": "07d11d349483a364209df13916fb1fea205abb98",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/serve.py",
+      "bytes": 39416,
+      "oid": "705958a4b95857817d653bf211b69bf1809a040a",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/source-inspector-app.js",
+      "bytes": 7640,
+      "oid": "0aa70e522fd7e8a56b97347b4a6419d133239218",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/source-inspector-bridge.inc",
+      "bytes": 32352,
+      "oid": "961bb8d27b6cb48e4d56f9f6b9344a7aeda64d82",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/source-inspector.js",
+      "bytes": 36644,
+      "oid": "9aef2a92084f656798879386ca190fedd83e306f",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/source-plane.js",
+      "bytes": 18205,
+      "oid": "5f985604472f4dda5c0000318326b08dc33e44cd",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/source_inspector_browser_check.js",
+      "bytes": 17964,
+      "oid": "df5f03a1408a0e0d10ca89e01257e3efb53ffe00",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/source_inspector_transport.py",
+      "bytes": 983,
+      "oid": "4e45057df5ed23a850a27b9fc52982a8df6fb31e",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/source_navigation_test.js",
+      "bytes": 14110,
+      "oid": "d65967642b7b6ab7b6807b51e485b4ca3b3aeee8",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/space-short-height-acceptance.cjs",
+      "bytes": 15181,
+      "oid": "81321b18d00ea6d7e0c76a027f19366166e8efc7",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/space-workspace.js",
+      "bytes": 96627,
+      "oid": "7a15455ee139367007382dedd6183cc725e8317b",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/space_model_test.js",
+      "bytes": 152226,
+      "oid": "b68518f0443781a45f11cde42447ba05361def2e",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/space_modeling.py",
+      "bytes": 30671,
+      "oid": "4b878bb98d35d79d5e1c38516c9b55fbe5fcfa6c",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/space_test_floor.js",
+      "bytes": 2511,
+      "oid": "55b0c0a9f1f2fb85b9e6eb8718d49228f2c0b6ef",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/start_local.py",
+      "bytes": 7031,
+      "oid": "8d100790377f991cfae854885392fce19023c408",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/timber-schedule.js",
+      "bytes": 5815,
+      "oid": "d390c0e57ead9c1feb8ad4f0f29b7bcde4a07f42",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/timber-supports.js",
+      "bytes": 6584,
+      "oid": "e5504aa10bce16e9168dc204c50577afdd18c299",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/timber_schedule_test.js",
+      "bytes": 13542,
+      "oid": "176647698e525b0cc7d5a549ad4d8fa05868d7bf",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/timber_support_projection.inc",
+      "bytes": 9188,
+      "oid": "7219cdf09388993e8cacae06adafccb45b0cd51c",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/timber_supports_browser_test.js",
+      "bytes": 7759,
+      "oid": "d9d3c7363ba4d644200507cc87d44e9a05134186",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/transport_failure_trace.js",
+      "bytes": 2764,
+      "oid": "65debc2852c579b59951d721bff38fe35faba584",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/uiux_review_test.js",
+      "bytes": 31370,
+      "oid": "2d9563679f2a5c5da69c989c90504d90829fdf3d",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/ux_refinement_test.js",
+      "bytes": 36766,
+      "oid": "8f556f5ca7124b4796bae486b2a7fc0dac346eda",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/vendor/fflate/umd/index.js",
+      "bytes": 33044,
+      "oid": "df762372e3ff721a72a8e9b5cf1e58f2f3ee4ea8",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
+      "bytes": 860384,
+      "oid": "c55a629aa4482ce73d02e19d4e5eddeba8976e97",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/vendor/pdfjs-dist/build/pdf.worker.mjs",
+      "bytes": 2228489,
+      "oid": "ab24e0df4fe5a9b2b98f0a270982eb9c23197d82",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/vendor/pdfjs-dist/wasm/jbig2_nowasm_fallback.js",
+      "bytes": 145703,
+      "oid": "c86528f05912cef7320491b555d487715ecf394e",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/vendor/pdfjs-dist/wasm/openjpeg_nowasm_fallback.js",
+      "bytes": 451590,
+      "oid": "0df96aed34f98a6c88a2a11656673b547f41e4c1",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/vendor/pdfjs-dist/wasm/quickjs-eval.js",
+      "bytes": 6232,
+      "oid": "f087fb29602352e8be9a6e7f7d766ccdb0dda038",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/wait_trace.py",
+      "bytes": 7923,
+      "oid": "cdc2eb274dbded70552a44cf553969447391e183",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/web_bridge.c",
+      "bytes": 52474,
+      "oid": "e4774fde313c8d54c27fa0f4aea27ec819fb6834",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/adapter.py",
+      "bytes": 17300,
+      "oid": "cddbafb0b31286c7d8733679ef2fc9809ad011c8",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/cli.py",
+      "bytes": 4081,
+      "oid": "5239ff46945b4ded9f48049be7bb854f5c1e10dc",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/screenshot.py",
+      "bytes": 3133,
+      "oid": "3e704f107b46b24d5d59843d341265cb5f251c0c",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/server.py",
+      "bytes": 5382,
+      "oid": "87162eb65846380d66ec6c32b3a6e8d54506f097",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/static/app.js",
+      "bytes": 61393,
+      "oid": "89fb1027ef8b90978b7681bb47ed041a0cec23ec",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/static/index.html",
+      "bytes": 9287,
+      "oid": "8d957f5855c8de16ae84bdae5bbfa43b026f597d",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/store.py",
+      "bytes": 92706,
+      "oid": "7fe8f44aa51e87c1e7f6f5cb91ffc039ca429d10",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/test_acceptance.py",
+      "bytes": 27107,
+      "oid": "a1d3b6eb206e942ff027d02c7b88eb9a99fd3d04",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/test_adapter.py",
+      "bytes": 9435,
+      "oid": "74ac78780798c20eefc119210f7c83b722d34a1f",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/test_adapter_independent.py",
+      "bytes": 19459,
+      "oid": "87b371ca77ed59a29582afe4b840c1b19e4c70c9",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/test_coverage.py",
+      "bytes": 12010,
+      "oid": "0a4df3dd6685078eff71e77ca770b8e64be0db13",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/test_legacy_upgrade.py",
+      "bytes": 10599,
+      "oid": "457def68ba865a2a01d4d135973c3d26d2eba6df",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/test_review_regressions.py",
+      "bytes": 22609,
+      "oid": "112e0a9bf554d3edbef188d36cdcc806d5c17576",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/work-manager/test_store.py",
+      "bytes": 29093,
+      "oid": "38d4e3064a8eda66c6eb7671964869d096dea54d",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/workspace-guidance.js",
+      "bytes": 3091,
+      "oid": "4880237cf3fba08ab7b3ad57efd84739a3ed3fc7",
+      "missing": true
+    },
+    {
+      "path": "geometry-web/workspace-shell.js",
+      "bytes": 9556,
+      "oid": "2a6822c0c7a5c3e073a12a581735a24bf8104e22",
+      "missing": true
+    },
+    {
+      "path": "tests/__init__.py",
+      "bytes": 344,
+      "oid": "679e83a8ef1077d03023bf46ed214e91574299bd",
+      "missing": true
+    },
+    {
+      "path": "tests/architecture_contract.py",
+      "bytes": 86895,
+      "oid": "e50f263d1d79f5a0a801ba4d49cb49e2d9e2bd0b",
+      "missing": true
+    },
+    {
+      "path": "tests/binaries.py",
+      "bytes": 33058,
+      "oid": "972615734fa48868df62c8f62651e6276c53795e",
+      "missing": true
+    },
+    {
+      "path": "tests/test_architecture_contract.py",
+      "bytes": 66632,
+      "oid": "a5da9437fc22d49dbca209276e3e5bacfca91361",
+      "missing": true
+    },
+    {
+      "path": "tests/test_product_architecture.py",
+      "bytes": 11793,
+      "oid": "a08b68de611126182dadfa77c7aec6970924acc4",
+      "missing": true
+    },
+    {
+      "path": "公理層.md",
+      "bytes": 323066,
+      "oid": "bac4c5ef1fa7d64e54d1aa81ecdf8efd1636cdff",
+      "missing": true
+    },
+    {
+      "path": "決策佇列.md",
+      "bytes": 237973,
+      "oid": "f866ef8eefef203f856d8ec92df33094dc466fe1",
+      "missing": true
+    }
+  ],
+  "missing_alloc4K": 21893120,
+  "temporary_index_bytes": 6000628,
+  "source_directory_allowance": 299008,
+  "workspace_free": 60583936,
+  "tmp_free": 54394880,
+  "root_workspace_admission_bytes": 60000000,
+  "tmp_estimated_peak_with_reserve": 43935064,
+  "tmp_basis": {
+    "full_product_snapshot_alloc4K": 22048768,
+    "concurrent_K_snapshot_alloc4K": 626688,
+    "directories4K": 299008,
+    "artifact_eightfold_allowance": 3903520,
+    "tree_fourfold_allowance": 279864,
+    "generic_fixture_and_metadata_reserve": 16777216
+  },
+  "scope": "resource admission only; no product threshold, assertion, golden or timeout changed",
+  "environment_cleared": [
+    "GIT_PAGER"
+  ],
+  "python_optimization": 0
+}
