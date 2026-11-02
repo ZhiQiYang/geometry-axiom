@@ -225,16 +225,41 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
     try{
       await observeOpen(cold);await openAndWait(cold,saved.file);
       const restored=await cold.read(`Promise.all([apiRequest('assembly-read'),apiRequest('dump')]).then(([a,d])=>({instances:a.state.instances,scene:d.text,drafts:ReferenceWorkspace.getAssemblyDrafts()}))`);
-      await cold.ctl('#btnNewAssembly');await cold.ctl('[data-asm-binding="1"]');await cold.ctl('#asmInstanceEdit'+original.value.source.id);
+      check('R06_R41_COLD_REOPEN 新profile新服務正式Open重算R41來源鍵',cold.info.service.session!==cold.info.sourceRuntime.session&&same(restored.instances,[original])&&same(restored.drafts,drafts)&&restored.scene===committed&&cold.errors.length===0,{restored,errors:cold.errors});
+      await derivedHostRejections(cold,saved);
+      await serviceCapabilityRejections(cold,saved.file,'R06_R41_ENGINEERING_CLOSURE_REJECT',['engineering-spec/1','parameters/1']);
+      await cdp.openCreateObjectMenu(cold.read,cold.ctl)('#btnNewAssembly');
+      await cold.ctl('#btnNewAssembly');await cold.wait(`!!document.querySelector('[data-asm-binding="1"]')`);
+      await cold.ctl('[data-asm-binding="1"]');await cold.wait(`!!$('asmInstanceEdit${original.value.source.id}')`);
+      await cold.ctl('#asmInstanceEdit'+original.value.source.id);await cold.wait(`!!$('asmPrimaryEdge1')&&!!$('asmPrimaryEdge2')`);
       const controls=await cold.read(`[$('asmPrimaryEdge1').value,$('asmPrimaryEdge2').value]`);
-      check('R06_R41_COLD_REOPEN 新profile新服務正式Open重算並重選原R41來源鍵',cold.info.service.session!==cold.info.sourceRuntime.session&&same(restored.instances,[original])&&same(restored.drafts,drafts)&&restored.scene===committed&&same(controls,[key(3),key(1)])&&cold.errors.length===0,{restored,controls,errors:cold.errors});
+      check('R06_R41_COLD_CONTROLS 重開的實例草稿仍明選原R41來源鍵',same(controls,[key(3),key(1)])&&cold.errors.length===0,{controls,errors:cold.errors});
     }finally{await cold.close();}
     await screenshot('r06-derived-outline-saved');
   }
 
-  async function serviceCapabilityRejections(client,file,marker){
+  async function derivedHostRejections(client,saved){
+    const files=zip.unzipSync(saved.bytes),decode=b=>new TextDecoder().decode(b),encode=s=>new TextEncoder().encode(s),evidence=[];
+    for(const label of ['marker-only','unsupported-record']){
+      const altered={...files},manifest=JSON.parse(decode(files['manifest.json']));let scene=decode(files['world.scene']);
+      if(label==='marker-only'){delete manifest.assemblyDrafts;scene=scene.split('\n').filter(line=>!line.startsWith('owned ')).join('\n');}
+      else scene+='\npanel-fill-actions 1 unsupported\n';
+      manifest.sceneHash=crypto.createHash('sha256').update(scene).digest('hex');altered['world.scene']=encode(scene);altered['manifest.json']=encode(JSON.stringify(manifest));
+      const file=path.join(io.directory,'r41-'+label+'.gcanvas');fs.writeFileSync(file,zip.zipSync(altered));
+      const before=await portableState(client);await openAndWait(client,file);const after=await portableState(client),status=await client.read(`$('status')?.textContent||''`);
+      evidence.push({label,ok:same(before,after)&&status.includes('未能完成開啟專案'),status});
+    }
+    check('R06_R41_UNSUPPORTED_RECORD_ATOMIC 偽R06標記與未知PF記錄經正式Open原子拒絕',evidence.length===2&&evidence.every(e=>e.ok),evidence);
+    await client.read(`(()=>{window.__r41NativeFetch=window.fetch;window.__r41ProfileFault={prepare:0,confirm:0,cancel:0,changed:0};window.fetch=async function(...args){const url=new URL(typeof args[0]==='string'?args[0]:args[0].url,location.href).pathname,s=window.__r41ProfileFault;if(url==='/upload/prepare')s.prepare++;if(url==='/upload/confirm')s.confirm++;if(url==='/upload/cancel')s.cancel++;const response=await window.__r41NativeFetch.apply(this,args);if(url!=='/upload/prepare'||!response.ok)return response;const value=await response.clone().json();if(!value.native_capabilities?.includes('panel-fill-native/1'))throw Error('missing original native profile');value.native_capabilities=value.native_capabilities.filter(c=>c!=='panel-fill-native/1');s.changed++;return new Response(JSON.stringify(value),{status:response.status,statusText:response.statusText,headers:response.headers});};})()`);
+    try{
+      const before=await portableState(client);await openAndWait(client,saved.file);const after=await portableState(client),stats=await client.read('window.__r41ProfileFault'),status=await client.read(`$('status')?.textContent||''`);
+      check('R06_R41_NATIVE_PROFILE_REJECT 服務缺有限native profile時零confirm且原子拒絕',stats.prepare===1&&stats.changed===1&&stats.confirm===0&&stats.cancel===1&&same(before,after)&&status.includes('未能完成開啟專案'),{stats,status});
+    }finally{await client.read(`(()=>{window.fetch=window.__r41NativeFetch;delete window.__r41NativeFetch;delete window.__r41ProfileFault;})()`);}
+  }
+
+  async function serviceCapabilityRejections(client,file,marker,capabilities=['assembly-timber-generation/1','assembly-bay-repeat/1']){
     const evidence=[];
-    for(const capability of ['assembly-timber-generation/1','assembly-bay-repeat/1']){
+    for(const capability of capabilities){
       await client.read(`(()=>{window.__r06ServiceOpenPin={context:ReferenceWorkspace.context(),frame:ReferenceWorkspace.history.frame,undo:[...ReferenceWorkspace.history.undo],redo:[...ReferenceWorkspace.history.redo]};const original=window.fetch;window.__r06ServiceFetchOriginal=original;window.__r06ServiceFault={prepare:0,confirm:0,cancel:0,changed:0,before:null,after:null};window.fetch=async function(...args){const url=new URL(typeof args[0]==='string'?args[0]:args[0].url,location.href).pathname,stats=window.__r06ServiceFault;if(url==='/upload/prepare')stats.prepare++;if(url==='/upload/confirm')stats.confirm++;if(url==='/upload/cancel')stats.cancel++;const response=await original.apply(this,args);if(url!=='/upload/prepare'||!response.ok)return response;const candidate=await response.clone().json();if(!Array.isArray(candidate.capabilities))return response;stats.before=[...candidate.capabilities];candidate.capabilities=candidate.capabilities.filter(c=>c!==${JSON.stringify(capability)});stats.after=[...candidate.capabilities];stats.changed++;return new Response(JSON.stringify(candidate),{status:response.status,statusText:response.statusText,headers:response.headers});};})()`);
       try{
         const before=await portableState(client);await openAndWait(client,file);const after=await portableState(client);

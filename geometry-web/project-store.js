@@ -169,7 +169,9 @@
     if (usesCard && (!declared.has(CARD_CAPABILITY) || !declared.has(PARAMETER_CAPABILITY))) fail("整卡場景缺少 grid-card-reference/1 或 parameters/1 能力宣告。");
     if ((usesBayRepeat || declared.has(BAY_REPEAT_CAPABILITY)) && (!declared.has(BAY_REPEAT_CAPABILITY) || !declared.has(GENERATION_CAPABILITY))) fail("重複開間場景缺少 assembly-bay-repeat/1 或 assembly-timber-generation/1 能力宣告。");
     if (usesSection && !declared.has(SECTION_CAPABILITY)) fail("斷面場景缺少 section-profile/1 能力宣告。");
-    if (usesPanelFill && !declared.has(PANEL_FILL_CAPABILITY)) fail("衍生承載面場景缺少 panel-fill/1 能力宣告。");
+    if ((usesPanelFill || declared.has(PANEL_FILL_CAPABILITY)) &&
+        (!declared.has(PANEL_FILL_CAPABILITY) || !declared.has(ENGINEERING_CAPABILITY) || !declared.has(PARAMETER_CAPABILITY)))
+      fail("衍生承載面場景缺少 panel-fill/1、engineering-spec/1 或 parameters/1 能力宣告。");
     if (usesSubdivision && !declared.has(SUBDIVISION_CAPABILITY)) fail("來源子規則場景缺少 grid-subdivision-rules/1 能力宣告。");
     return [...result].sort();
   }
@@ -179,8 +181,14 @@
       (typeof pkg?.definitions?.base_scene === "string" && sceneCapabilities(pkg.definitions.base_scene).length));
   }
   const hasCaseData = m => !!m.featureAttachments?.records?.some(r=>r.kind===Features.CASE_KIND) || !!m.scenarioCatalog?.scenarios.some(s=>hasCaseData(s.snapshot.projectManifest));
+  function hasRepeatDefinitions(manifest,scene){
+    if(manifest.assemblyDrafts){validateAssemblyDrafts(manifest.assemblyDrafts);
+      if(manifest.assemblyDrafts.records.some(r=>r.kind==='instance'&&r.data.layout==='bay-repeat'))return true;}
+    return typeof scene==='string'&&/^owned\s+\d+\s+bay-(?:primary|secondary)\b/m.test(scene);
+  }
   function projectFormat(manifest, scene = "") {
     if(projectCapabilities(manifest,scene).includes(BAY_REPEAT_CAPABILITY)) return BAY_REPEAT_FORMAT;
+    if(projectCapabilities(manifest,scene).includes(PANEL_FILL_CAPABILITY)) fail("衍生承載面的完整專案須保留重複開間來源或草稿。");
     if(projectCapabilities(manifest,scene).includes(CARD_CAPABILITY)) return CARD_FORMAT;
     if(projectCapabilities(manifest,scene).some(capability=>format17Capabilities.includes(capability))) return GRID_DRAFTS_FORMAT;
     if(projectCapabilities(manifest,scene).includes(SECTION_CAPABILITY)) return SECTION_FORMAT;
@@ -328,8 +336,21 @@
       fail("專案需要尚未支援的能力。");
     return capabilities;
   }
-  function readerCapabilities(nativeCapabilities) {
-    return [...nativeReaderCapabilities(nativeCapabilities), Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY];
+  function readerCapabilities(nativeCapabilities,nativeProfiles=[],manifest=null,scene=null,recordProfile=null) {
+    const supported=nativeReaderCapabilities(nativeCapabilities);
+    if(!Array.isArray(nativeProfiles)||nativeProfiles.length>43||new Set(nativeProfiles).size!==nativeProfiles.length||nativeProfiles.some(c=>!str(c,100)||!c.length))fail('服務原生子能力清單不合法。');
+    // This H reader owns only R06's /19 host-definition replay scope. The
+    // existing native profile supports finish-surface/panel-fill/derived-placement;
+    // it does not advertise the complete panel-fill UI/actions capability.
+    if(manifest?.format===BAY_REPEAT_FORMAT&&typeof scene==='string'&&
+       hasRepeatDefinitions(manifest,scene)&&
+       nativeProfiles.includes('panel-fill-native/1')&&
+       recordProfile?.ok===true&&recordProfile.schema==='panel-fill-native/1'&&recordProfile.capability===PANEL_FILL_CAPABILITY&&recordProfile.complete===false&&
+       Array.isArray(recordProfile.supportedRecords)&&recordProfile.supportedRecords.length===3&&
+       ['finish-surface','panel-fill','derived-placement'].every(record=>recordProfile.supportedRecords.includes(record))&&
+       [ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY].every(c=>supported.includes(c))&&!supported.includes(PANEL_FILL_CAPABILITY))
+      supported.push(PANEL_FILL_CAPABILITY);
+    return [...supported, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY];
   }
   function projectCapabilities(manifest, scene) {
     const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);
@@ -369,6 +390,10 @@
     if((repeat || manifest.requiredCapabilities?.includes(BAY_REPEAT_CAPABILITY) || manifest.format===BAY_REPEAT_FORMAT) &&
       (!repeat || manifest.format!==BAY_REPEAT_FORMAT || !manifest.requiredCapabilities?.includes(BAY_REPEAT_CAPABILITY) || !manifest.requiredCapabilities?.includes(GENERATION_CAPABILITY)))
       fail("重複開間須使用第 19 版格式並保留 assembly-bay-repeat/1 與 assembly-timber-generation/1 能力。");
+    const panelFill=scene===null?manifest.requiredCapabilities?.includes(PANEL_FILL_CAPABILITY):needed.includes(PANEL_FILL_CAPABILITY);
+    if((panelFill||manifest.requiredCapabilities?.includes(PANEL_FILL_CAPABILITY))&&
+       (!panelFill||!repeat||manifest.format!==BAY_REPEAT_FORMAT||scene!==null&&!hasRepeatDefinitions(manifest,scene)||![PANEL_FILL_CAPABILITY,ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY].every(c=>manifest.requiredCapabilities?.includes(c))))
+      fail("衍生承載面須使用第 19 版重複開間格式並保留完整來源能力。");
     if ((needed.includes(Features.GRID_DRAFTS_SCHEMA) || manifest.requiredCapabilities?.includes(Features.GRID_DRAFTS_SCHEMA)) &&
         (!needed.includes(Features.GRID_DRAFTS_SCHEMA) || !manifest.requiredCapabilities?.includes(Features.GRID_DRAFTS_SCHEMA))) fail("草稿集合須使用第 17 版格式並保留集合附件及能力。");
     if((needed.some(capability=>format17Capabilities.includes(capability))||manifest.requiredCapabilities?.some(capability=>format17Capabilities.includes(capability)))&&![GRID_DRAFTS_FORMAT,CARD_FORMAT, BAY_REPEAT_FORMAT].includes(manifest.format))fail("第 17 版附件不可降版。");

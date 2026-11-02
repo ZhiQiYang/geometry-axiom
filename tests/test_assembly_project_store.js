@@ -106,14 +106,33 @@ test('R06 R41 exact outer edge keys survive draft Save and fresh archive reopen'
  await assert.doesNotReject(async()=>{bytes=await bayArchive(record);},'KILLER[r06-r41:draft-key-writer]');
  const reopened=await P.unpack(bytes,zip);
  assert.deepEqual(reopened.manifest.assemblyDrafts.records,[record],'KILLER[r06-r41:draft-key-reopen]');
- const scene='requires panel-fill/1\nrequires assembly-bay-repeat/1\nrequires assembly-timber-generation/1\nfinish-surface 1 on boundary 1\npanel-fill 1 definition-hex 7b7d\nderived-placement 10 definition-hex 7b7d\n';
+ const scene='requires engineering-spec/1\nrequires parameters/1\nrequires panel-fill/1\nrequires assembly-bay-repeat/1\nrequires assembly-timber-generation/1\nfinish-surface 1 on boundary 1\npanel-fill 1 definition-hex 7b7d\nderived-placement 10 definition-hex 7b7d\n';
  let derived;
  await assert.doesNotReject(async()=>{derived=await pack(scene,{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[record]}});},'KILLER[r06-r41:host-capability-writer]');
  const host=await P.unpack(derived,zip);
  assert.ok(host.manifest.requiredCapabilities.includes('panel-fill/1'));
  assert.deepEqual(host.manifest.assemblyDrafts.records,[record]);assert.equal(host.scene,scene);
  assert.throws(()=>P.assertProjectCapabilities(host.manifest,P.readerCapabilities(['assembly-rule-authoring/1','assembly-bay-repeat/1','assembly-timber-generation/1'])));
- assert.doesNotThrow(()=>P.assertProjectCapabilities(host.manifest,P.readerCapabilities(['assembly-rule-authoring/1','assembly-bay-repeat/1','assembly-timber-generation/1','panel-fill/1'])));
+ const native=['engineering-spec/1','parameters/1','assembly-rule-authoring/1','assembly-bay-repeat/1','assembly-timber-generation/1'];
+ const profile={ok:true,schema:'panel-fill-native/1',capability:'panel-fill/1',complete:false,supportedRecords:['finish-surface','panel-fill','derived-placement']};
+ assert.doesNotThrow(()=>P.assertProjectCapabilities(host.manifest,P.readerCapabilities(native,['panel-fill-native/1'],host.manifest,scene,profile)),'KILLER[r06-r41:finite-host-reader]');
+ assert.ok(!native.includes('panel-fill/1'));
+ for(const profiles of [[],['panel-fill-native/2']])assert.throws(()=>P.assertProjectCapabilities(host.manifest,P.readerCapabilities(native,profiles,host.manifest,scene)));
+ for(const change of [p=>p.complete=true,p=>p.schema='panel-fill-native/2',p=>p.supportedRecords.pop(),p=>p.supportedRecords.push('from-fill-grid')]){
+  const invalid=structuredClone(profile);change(invalid);
+  assert.throws(()=>P.assertProjectCapabilities(host.manifest,P.readerCapabilities(native,['panel-fill-native/1'],host.manifest,scene,invalid)));
+ }
+ assert.throws(()=>P.assertProjectCapabilities(host.manifest,P.readerCapabilities(native,['panel-fill-native/1'],host.manifest,null,profile)));
+ const markerOnly={...host.manifest,assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[]}};
+ assert.throws(()=>P.assertProjectCapabilities(markerOnly,P.readerCapabilities(native,['panel-fill-native/1'],markerOnly,scene,profile)),'R06_PF_MARKER_ONLY_REJECT');
+ await assert.rejects(()=>pack(scene),'R06_PF_MARKER_ONLY_REJECT');
+ for(const missing of ['engineering-spec/1','parameters/1']){
+  assert.throws(()=>P.assertProjectCapabilities(host.manifest,P.readerCapabilities(native.filter(c=>c!==missing),['panel-fill-native/1'],host.manifest,scene)));
+  await assert.rejects(()=>pack(scene.replace('requires '+missing+'\n',''),{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[record]}}));
+  await assert.rejects(()=>P.unpack(rewrite(derived,m=>{m.requiredCapabilities=m.requiredCapabilities.filter(c=>c!==missing);}),zip));
+ }
+ for(const format of ['geometry-canvas/5','geometry-canvas/6','geometry-canvas/18'])await assert.rejects(()=>P.unpack(rewrite(derived,m=>{m.format=format;}),zip));
+ await assert.rejects(()=>pack('requires engineering-spec/1\nrequires parameters/1\nrequires panel-fill/1\n'));
  for(const command of ['finish-surface 1 on boundary 1','panel-fill 1 definition-hex 7b7d','derived-placement 10 definition-hex 7b7d'])
   assert.throws(()=>P.sceneCapabilities(command+'\n'));
  await assert.rejects(()=>P.unpack(rewrite(derived,m=>{m.requiredCapabilities=m.requiredCapabilities.filter(c=>c!=='panel-fill/1');}),zip));

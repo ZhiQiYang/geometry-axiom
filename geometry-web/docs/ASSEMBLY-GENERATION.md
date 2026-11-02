@@ -22,6 +22,8 @@
 
 外輪廓定位以 `{"kind":"outline-edge","edge":3}` 引用一般面的邊；衍生面改存 `{"kind":"outline-edge","edgeKey":[["e3",0,1]]}` 的完整 R41 來源鍵。兩種欄位互斥；衍生面不接受數字索引，一般面不接受衍生鍵，孔鍵或不再完全相等的段號／總段數亦拒絕。草稿與完整專案原樣保存來源鍵，重開時仍由原生重新求值。
 
+衍生宿主隨實際 R06 定義或已驗草稿保存於 `/19`，保留 I56 的 `panel-fill/1`、`engineering-spec/1`、`parameters/1` 宣告；不改舊 `/1–6` 或啟用獨立 PF 專案。H reader 在同一服務的原生隔離候選已重放、提供 canonical scene 後，另以既有 `panel-fill-read` 的 `panel-fill-native/1`／`complete:false`／恰三種 `supportedRecords` 核對有限宿主重放範圍；不將該 read 的舊 World 幾何當成候選結果，不改全域 PF 能力。這承接 [#128 已採有限保存設計 §5.0、§8](https://github.com/ZhiQiYang/geometry-axiom/issues/128#issuecomment-6435620807)，未提供 PF-4／5／6 入口或語法。
+
 W 固定模板在 `geometry-templates/woodworking/` 實作重複政策，H 只提供同候選幾何事實、交易及傳輸；K 不引用 W。新增 H adapter `geometry-web/assembly-provenance.js` 已登記 `product-architecture.json`，只核對原生完整身分與固定槽位，供材料表、支撐與來源檢視共用，不推導開間。
 
 測試入口：`tests/test_assembly_bay_repeat.py`（真 C bridge）、`tests/test_assembly_bay_projection.js`（正式唯讀 JS 消費端）、既有 ProjectStore 測試的新 R06 保存案例，以及正式 `cdp_test.js` 的 R06 真入口流程與具名突變。實際執行結果、未能執行的環境限制及 P／T 分離補丁，以 issue #25 的 R06 交付回執為準；本文件不將未跑過的瀏覽器／平台測試寫成通過。
