@@ -1,0 +1,20 @@
+{
+  "schema": "two-ELF-cache-maintenance-package-peer/1",
+  "archive_sha256": "847aff3f56106e108f9c497bef1d834b1d4471bfddc5aec578d5be1ebd365e83",
+  "inventory_sha256": "dd8451fc5a6f003c02581d148066af6870ff948b425c6d7b9d05b30ed330804a",
+  "checks": 200,
+  "exit_code": 0,
+  "findings": [],
+  "original_members": 47,
+  "archive_members_including_inventory": 48,
+  "original_bytes": 656653,
+  "compressed_bytes": 102813,
+  "active_b6_immutable_rawguard_sha256": "9f85c76bddf2bb5738b697f9a4c8862f4951a510b08c6e9bf7e828b17c2f6218",
+  "retired_oldELF_vs_exact_rawguard_path_intersection": [],
+  "scope": "Streamed package plus every47 original byte hash and complete new execution directories. No extraction, ELF archive, product gate or cleanup.",
+  "limits": [
+    "New maintenance raw only; preserved historical source/build streams/sidecars remain at original paths and historical published package, not duplicated into this small archive.",
+    "Exact-path intersection0 concerns before-original-raw checks only, not a claim that every possible active process resource was observed.",
+    "Package not yet claimed pushed at review time."
+  ]
+}

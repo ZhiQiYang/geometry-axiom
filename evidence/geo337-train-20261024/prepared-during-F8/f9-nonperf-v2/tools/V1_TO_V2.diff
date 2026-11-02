@@ -1,0 +1,11 @@
+--- /tmp/geo337-F9-nonperf-original-tools-20261025/run_original_specials.py
++++ /tmp/geo337-F9-nonperf-original-tools-v2-20261025/run_original_specials.py
+@@ -62,7 +62,7 @@
+         need(values['head'].decode().strip()==a.sha and not values['status']and not values['diff'],'exact clean final F9 required; no reset/clean performed')
+         row,_,_=run(['git','merge-base','--is-ancestor',F8,a.sha],'ledger-only-source-ancestry')
+         ancestor_exit=row['actual_process_returncode']
+-        delta_row,delta,_=run(['git','diff','--name-only','-z',F8,a.sha],'ledger-only-source-delta')
++        delta_row,delta,_=run(['git','diff','--no-renames','--name-only','-z',F8,a.sha],'ledger-only-source-delta')
+         need(delta_row['actual_process_returncode']==0,'F8/F9 closure Git diff failed')
+         closure=validate_delta(a.sha,ancestor_exit,[p.decode('utf-8') for p in delta.split(b'\0') if p])
+         result={'head':a.sha,'tree':values['tree'].decode().strip(),'status':'','index_sha256':sha(values['index']),'refs_sha256':sha(values['refs']),'ledger_only_closure':closure};save(folder/(label+'-source.json'),result);return result

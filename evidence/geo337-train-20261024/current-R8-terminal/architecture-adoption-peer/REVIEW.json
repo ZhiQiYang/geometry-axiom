@@ -1,0 +1,29 @@
+{
+  "schema": "geo337-h-architecture-adoption-actual-peer/1",
+  "utc": "2026-10-25T06:46:23.964705+00:00",
+  "exit_code": 0,
+  "findings": [],
+  "actual_architecture_source": "6e50aef65513b7b38f93228919272c6d40d6c196",
+  "adoption_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "original_files": 380,
+  "original_bytes": 4630676,
+  "adoption_command_count": 12,
+  "normal_push_verified_from_original": true,
+  "changed_non_evidence": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json"
+  ],
+  "originals_match_git_blobs": true,
+  "unique_current_state": true,
+  "bindings": {
+    "/tmp/geo337-h-architecture-adoption-20261025/RESULT.json": "f61c6208f81d8102f759f75f3d435aa46d16d93ad372dfdd7d458ddd4abdf9f9",
+    "/tmp/geo337-h-architecture-adoption-20261025/subcommands.json": "0cae973571e902f57b9be38880b475f08500b04445b5ebb49e86e69a6a5bc85f",
+    "/tmp/geo337-h-adoption-resume-peer-20261025/STATIC_REVIEW.json": "468b33b460e09e0d4ea3de5160f6abb8d23f08d9df8d12ce82a703d820cd4f29",
+    "/tmp/geo337-h-adoption-resume-peer-20261025/audit_adoption.py": "1e41206913bf4db6ca5b3e5e9ccf0e27c41000bd5fe9a329d442b1cf8c8a9d2f"
+  },
+  "limits": [
+    "No network reads or product gate reruns.",
+    "Architecture actually executed at M; F8 adoption does not rewrite execution source.",
+    "R8/native/browser/ledger gates remain separate."
+  ]
+}

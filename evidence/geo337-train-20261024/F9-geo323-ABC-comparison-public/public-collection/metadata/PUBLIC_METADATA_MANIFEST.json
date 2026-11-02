@@ -1,0 +1,101 @@
+{
+  "schema": "geo323-public-tool-metadata-manifest/1",
+  "files": [
+    {
+      "relative_path": "PUBLIC_EXCLUSIONS.json",
+      "bytes": 1509,
+      "sha256": "8c811e191c924a6e1960597b5008bfa69d55ecdae878224ad082ed51fa696d24"
+    },
+    {
+      "relative_path": "PUBLIC_INVENTORY_DELTA.json",
+      "bytes": 47492,
+      "sha256": "576e266ab77394da4b9aaeb877bc4b3c64a47546834be02f4cc170a488dbd4fd"
+    },
+    {
+      "relative_path": "PROFILE_SCAN.json",
+      "bytes": 2989,
+      "sha256": "fc4c14241913c0c63c75a11ddf6868f00bd0f8b7f4ff8a046af998213a696306"
+    },
+    {
+      "relative_path": "SAFE_AUTHORITY_LOCATOR.json",
+      "bytes": 1493,
+      "sha256": "0e72b129e08d054b8482a1e91ce9075732b0bd16bf819152d32275852b1d6e98"
+    },
+    {
+      "relative_path": "scan_profile_scope.py",
+      "bytes": 12146,
+      "sha256": "9dfe7dd170477ffc99d2cbbf580325a300d4437649c9b40737a7a30a1321422a"
+    },
+    {
+      "relative_path": "test_encoded_profile.py",
+      "bytes": 1957,
+      "sha256": "e74f91521fbbcb7efcdcdd1362929024d703e3e4afd332a59e36d4b1fd1da9a4"
+    },
+    {
+      "relative_path": "prove_decoder_guard.py",
+      "bytes": 1788,
+      "sha256": "c10e0d869eb95d75cc42f1492646b0be16a56a337386328851c98d2f2432ddec"
+    },
+    {
+      "relative_path": "scan.stdout",
+      "bytes": 211,
+      "sha256": "90e51f8e9a051689cf68227641b0264525c48136de3ad6fd814e80dfc59b6c35"
+    },
+    {
+      "relative_path": "scan.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "relative_path": "encoding-proof/RESULT.json",
+      "bytes": 247,
+      "sha256": "df481fa4cb33581838b23d3f4ff90441daf9418b36bc1ed49dc2269fb8bee09b"
+    },
+    {
+      "relative_path": "encoding-proof/before.json",
+      "bytes": 1485,
+      "sha256": "5d41432e8b4bdb15ef489e2f6832089e121ede20afad97dce90b4d8807722d36"
+    },
+    {
+      "relative_path": "encoding-proof/before.stderr",
+      "bytes": 98,
+      "sha256": "d10ffbd9f0faa72cd6837063279524e199b59fbc3d035051302a1e8dbc4b36ad"
+    },
+    {
+      "relative_path": "encoding-proof/before.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "relative_path": "encoding-proof/restored.json",
+      "bytes": 1486,
+      "sha256": "f8924d5de70cb3b157d93f87e3aa3fee45a3a1a0e7d1a4b18d2b187260f303f5"
+    },
+    {
+      "relative_path": "encoding-proof/restored.stderr",
+      "bytes": 98,
+      "sha256": "d10ffbd9f0faa72cd6837063279524e199b59fbc3d035051302a1e8dbc4b36ad"
+    },
+    {
+      "relative_path": "encoding-proof/restored.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "relative_path": "encoding-proof/withdrawn.json",
+      "bytes": 1514,
+      "sha256": "8db13b0620db9292064b6f76b1ab0eab6f43e2b37b652225e123061a7d526de2"
+    },
+    {
+      "relative_path": "encoding-proof/withdrawn.stderr",
+      "bytes": 3924,
+      "sha256": "8caf2ccb731dd0a91956f2543cbb2b0a2a907660a4a39dcd25d968110276acd4"
+    },
+    {
+      "relative_path": "encoding-proof/withdrawn.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "full_profile_payload_included": false
+}

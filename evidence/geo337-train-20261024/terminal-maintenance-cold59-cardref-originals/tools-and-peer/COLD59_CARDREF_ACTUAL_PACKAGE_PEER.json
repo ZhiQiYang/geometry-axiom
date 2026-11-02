@@ -1,0 +1,19 @@
+{
+  "schema": "independent-cold59-cardref-original-package-peer-v1",
+  "checks": 30026,
+  "exit_code": 0,
+  "findings": [],
+  "archive_sha256": "0c9cb4ef4f425d7cb7ab7542c0b183ac55f09d6ada7350ea7e4e36bf7c95fcdb",
+  "archive_members": 7487,
+  "original_members": 7486,
+  "original_bytes": 20684123,
+  "root_sequential_external_path": "/workspace/cold59-root-sequential-execution-20261024.json",
+  "root_sequential_external_sha256": "21fbf9dcd4942517d7eea0861bcfdf119d8dee9a132c916adb1f77536724840d",
+  "limits": [
+    "All packaged original small metadata and full streams were independently byte-compared; no large cold receipt body or controlled ELF body rehash.",
+    "All295 cold groups and2 separate cardref ELF groups retain write/reuse bans until every alias delinked.",
+    "Both original actual metadata peers had already been independently checked; this verifies their exact packaged bytes, not a product gate.",
+    "Collector producer c387 outer and root sequential execution JSON are external attachments, not members of this fixed tar.",
+    "Configured allocated savings286375936 plus79196160 are not concurrent global free-space deltas."
+  ]
+}

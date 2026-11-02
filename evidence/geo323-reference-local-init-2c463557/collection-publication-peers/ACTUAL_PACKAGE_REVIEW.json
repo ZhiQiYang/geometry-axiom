@@ -1,0 +1,35 @@
+{
+  "reviewer": "/root/h_init_actual_review",
+  "reviewed_utc": "2026-10-25T06:43:12.302596+00:00",
+  "source_sha": "2c4635577a8fcb11e88b346547f7bb1c7b739fb7",
+  "checks": 7658,
+  "groups": {
+    "identity": 4,
+    "exit": 3,
+    "inventory": 3,
+    "archive": 3,
+    "member": 5092,
+    "original": 2546,
+    "capture": 5,
+    "scope": 2
+  },
+  "failures": [],
+  "exit": 0,
+  "archive": {
+    "path": "/tmp/geo337-h-init-evidence-preparation-20261025/package/ORIGINAL_REFERENCE_LOCAL_INIT_EVIDENCE.tar.gz",
+    "bytes": 6369236,
+    "sha256": "7011e2b2fcf35f15e53deac9f2e5d27aabf4429ffe32f275465d8abd4c5d4388",
+    "members": 2546
+  },
+  "logical_bytes": 29033543,
+  "bindings": {
+    "PACKAGE_PLAN.json": "5123d82a4b372e167398309db262e9fa43f43ddce82cc22660a96998b2677b92",
+    "package/RAW_INDEX.json": "e16224489ea8dae81fd42a920a3d4c2a5d9aebf03a29ea713ce75ae736929a75",
+    "package/SUMMARY.json": "55b7b837726f2ad6332a85278f73d5c2ad29846948ab3c6c8a882b9b1b439ac9",
+    "collection-launch/RESULT.json": "9b0722d4c496964b45f28175b50b18b5eb543b2afca413fff948c5343f951a1b",
+    "ORIGINAL_TOOL_INITIAL.json": "726b7e198373a0e5dae621b657d4c82e38939f384ba52cadd0a506d98d18ee13",
+    "ORIGINAL_TOOL_FINAL.json": "097c5e5efb91cc24d24df813c9a9cc7fc64a3cbcac5e7510014266821b0b68b3",
+    "collect.py": "164b736aa3edb334f7c1cf556e257ce13d8d8cf342bd494fb9af5338e4670cf0"
+  },
+  "scope": "complete actual archive member-by-member and original capture verification; no product rerun/publication claim"
+}

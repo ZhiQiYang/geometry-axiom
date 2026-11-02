@@ -1,0 +1,778 @@
+{
+  "schema": "geo341-cost-v2-adversarial-delta/1",
+  "utc": "2026-10-25T08:14:50.370939+00:00",
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "subject": "/tmp/geo341-cost-preparation-v2-20261025",
+  "pins_sha256": "008b50d645074777e38c2d2b61074d510a28e7069319b9afc79d20e2966cbeab",
+  "checks": 188,
+  "failed_checks": [],
+  "checks_performed": [
+    {
+      "name": "submitted v2 PINS",
+      "passed": true
+    },
+    {
+      "name": "v2 pin run_costs.py",
+      "passed": true
+    },
+    {
+      "name": "v2 pin prepare_instrumentation.py",
+      "passed": true
+    },
+    {
+      "name": "v2 pin test_metadata_guards.py",
+      "passed": true
+    },
+    {
+      "name": "v2 pin cost_harness.c",
+      "passed": true
+    },
+    {
+      "name": "v2 pin fixed.c",
+      "passed": true
+    },
+    {
+      "name": "v2 pin withdrawn.c",
+      "passed": true
+    },
+    {
+      "name": "v2 pin restored.c",
+      "passed": true
+    },
+    {
+      "name": "v2 pin fixed-diagnostic.c",
+      "passed": true
+    },
+    {
+      "name": "v2 pin withdrawn-diagnostic.c",
+      "passed": true
+    },
+    {
+      "name": "v2 pin restored-diagnostic.c",
+      "passed": true
+    },
+    {
+      "name": "v2 pin INSTRUMENTATION.json",
+      "passed": true
+    },
+    {
+      "name": "v2 pin WITHDRAWAL.json",
+      "passed": true
+    },
+    {
+      "name": "v2 pin WITHDRAW_FALLBACK.patch",
+      "passed": true
+    },
+    {
+      "name": "v2 pin PROVENANCE.json",
+      "passed": true
+    },
+    {
+      "name": "v2 pin PLAN.md",
+      "passed": true
+    },
+    {
+      "name": "v2 pin run_metadata_proof.py",
+      "passed": true
+    },
+    {
+      "name": "v2 pin metadata-original-capture/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "v2 pin test_output_guards.py",
+      "passed": true
+    },
+    {
+      "name": "v2 pin run_protocol_proofs.py",
+      "passed": true
+    },
+    {
+      "name": "v2 pin V2_DIFF.patch",
+      "passed": true
+    },
+    {
+      "name": "v2 pin protocol-original-capture/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "no C/corpus/instrumentation change fixed.c",
+      "passed": true
+    },
+    {
+      "name": "no C/corpus/instrumentation change withdrawn.c",
+      "passed": true
+    },
+    {
+      "name": "no C/corpus/instrumentation change restored.c",
+      "passed": true
+    },
+    {
+      "name": "no C/corpus/instrumentation change fixed-diagnostic.c",
+      "passed": true
+    },
+    {
+      "name": "no C/corpus/instrumentation change withdrawn-diagnostic.c",
+      "passed": true
+    },
+    {
+      "name": "no C/corpus/instrumentation change restored-diagnostic.c",
+      "passed": true
+    },
+    {
+      "name": "no C/corpus/instrumentation change cost_harness.c",
+      "passed": true
+    },
+    {
+      "name": "no C/corpus/instrumentation change INSTRUMENTATION.json",
+      "passed": true
+    },
+    {
+      "name": "no C/corpus/instrumentation change WITHDRAWAL.json",
+      "passed": true
+    },
+    {
+      "name": "no C/corpus/instrumentation change COMMAND_PLAN.json",
+      "passed": true
+    },
+    {
+      "name": "no C/corpus/instrumentation change prepare_instrumentation.py",
+      "passed": true
+    },
+    {
+      "name": "driver delta only parser/re import/two actual caller arguments",
+      "passed": true
+    },
+    {
+      "name": "both actual callers supply requested identities",
+      "passed": true
+    },
+    {
+      "name": "PLAN exact v2 entry",
+      "passed": true
+    },
+    {
+      "name": "PLAN preserves scope",
+      "passed": true
+    },
+    {
+      "name": "five exact protocol groups",
+      "passed": true
+    },
+    {
+      "name": "true group exits source",
+      "passed": true
+    },
+    {
+      "name": "true process exit source fixed",
+      "passed": true
+    },
+    {
+      "name": "stdout pin source fixed",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty source fixed",
+      "passed": true
+    },
+    {
+      "name": "source fixed source fixed",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw source fixed",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim source fixed",
+      "passed": true
+    },
+    {
+      "name": "known suite count source fixed",
+      "passed": true
+    },
+    {
+      "name": "fixed/restored all cases good source fixed",
+      "passed": true
+    },
+    {
+      "name": "true process exit source withdrawn",
+      "passed": true
+    },
+    {
+      "name": "stdout pin source withdrawn",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty source withdrawn",
+      "passed": true
+    },
+    {
+      "name": "source fixed source withdrawn",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw source withdrawn",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim source withdrawn",
+      "passed": true
+    },
+    {
+      "name": "known suite count source withdrawn",
+      "passed": true
+    },
+    {
+      "name": "true process exit source restored",
+      "passed": true
+    },
+    {
+      "name": "stdout pin source restored",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty source restored",
+      "passed": true
+    },
+    {
+      "name": "source fixed source restored",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw source restored",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim source restored",
+      "passed": true
+    },
+    {
+      "name": "known suite count source restored",
+      "passed": true
+    },
+    {
+      "name": "fixed/restored all cases good source restored",
+      "passed": true
+    },
+    {
+      "name": "true group exits count",
+      "passed": true
+    },
+    {
+      "name": "true process exit count fixed",
+      "passed": true
+    },
+    {
+      "name": "stdout pin count fixed",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty count fixed",
+      "passed": true
+    },
+    {
+      "name": "source fixed count fixed",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw count fixed",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim count fixed",
+      "passed": true
+    },
+    {
+      "name": "known suite count count fixed",
+      "passed": true
+    },
+    {
+      "name": "fixed/restored all cases good count fixed",
+      "passed": true
+    },
+    {
+      "name": "true process exit count withdrawn",
+      "passed": true
+    },
+    {
+      "name": "stdout pin count withdrawn",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty count withdrawn",
+      "passed": true
+    },
+    {
+      "name": "source fixed count withdrawn",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw count withdrawn",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim count withdrawn",
+      "passed": true
+    },
+    {
+      "name": "known suite count count withdrawn",
+      "passed": true
+    },
+    {
+      "name": "true process exit count restored",
+      "passed": true
+    },
+    {
+      "name": "stdout pin count restored",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty count restored",
+      "passed": true
+    },
+    {
+      "name": "source fixed count restored",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw count restored",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim count restored",
+      "passed": true
+    },
+    {
+      "name": "known suite count count restored",
+      "passed": true
+    },
+    {
+      "name": "fixed/restored all cases good count restored",
+      "passed": true
+    },
+    {
+      "name": "true group exits identity",
+      "passed": true
+    },
+    {
+      "name": "true process exit identity fixed",
+      "passed": true
+    },
+    {
+      "name": "stdout pin identity fixed",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty identity fixed",
+      "passed": true
+    },
+    {
+      "name": "source fixed identity fixed",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw identity fixed",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim identity fixed",
+      "passed": true
+    },
+    {
+      "name": "known suite count identity fixed",
+      "passed": true
+    },
+    {
+      "name": "fixed/restored all cases good identity fixed",
+      "passed": true
+    },
+    {
+      "name": "true process exit identity withdrawn",
+      "passed": true
+    },
+    {
+      "name": "stdout pin identity withdrawn",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty identity withdrawn",
+      "passed": true
+    },
+    {
+      "name": "source fixed identity withdrawn",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw identity withdrawn",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim identity withdrawn",
+      "passed": true
+    },
+    {
+      "name": "known suite count identity withdrawn",
+      "passed": true
+    },
+    {
+      "name": "true process exit identity restored",
+      "passed": true
+    },
+    {
+      "name": "stdout pin identity restored",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty identity restored",
+      "passed": true
+    },
+    {
+      "name": "source fixed identity restored",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw identity restored",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim identity restored",
+      "passed": true
+    },
+    {
+      "name": "known suite count identity restored",
+      "passed": true
+    },
+    {
+      "name": "fixed/restored all cases good identity restored",
+      "passed": true
+    },
+    {
+      "name": "true group exits numeric",
+      "passed": true
+    },
+    {
+      "name": "true process exit numeric fixed",
+      "passed": true
+    },
+    {
+      "name": "stdout pin numeric fixed",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty numeric fixed",
+      "passed": true
+    },
+    {
+      "name": "source fixed numeric fixed",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw numeric fixed",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim numeric fixed",
+      "passed": true
+    },
+    {
+      "name": "known suite count numeric fixed",
+      "passed": true
+    },
+    {
+      "name": "fixed/restored all cases good numeric fixed",
+      "passed": true
+    },
+    {
+      "name": "true process exit numeric withdrawn",
+      "passed": true
+    },
+    {
+      "name": "stdout pin numeric withdrawn",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty numeric withdrawn",
+      "passed": true
+    },
+    {
+      "name": "source fixed numeric withdrawn",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw numeric withdrawn",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim numeric withdrawn",
+      "passed": true
+    },
+    {
+      "name": "known suite count numeric withdrawn",
+      "passed": true
+    },
+    {
+      "name": "true process exit numeric restored",
+      "passed": true
+    },
+    {
+      "name": "stdout pin numeric restored",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty numeric restored",
+      "passed": true
+    },
+    {
+      "name": "source fixed numeric restored",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw numeric restored",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim numeric restored",
+      "passed": true
+    },
+    {
+      "name": "known suite count numeric restored",
+      "passed": true
+    },
+    {
+      "name": "fixed/restored all cases good numeric restored",
+      "passed": true
+    },
+    {
+      "name": "true group exits duplicates",
+      "passed": true
+    },
+    {
+      "name": "true process exit duplicates fixed",
+      "passed": true
+    },
+    {
+      "name": "stdout pin duplicates fixed",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty duplicates fixed",
+      "passed": true
+    },
+    {
+      "name": "source fixed duplicates fixed",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw duplicates fixed",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim duplicates fixed",
+      "passed": true
+    },
+    {
+      "name": "known suite count duplicates fixed",
+      "passed": true
+    },
+    {
+      "name": "fixed/restored all cases good duplicates fixed",
+      "passed": true
+    },
+    {
+      "name": "true process exit duplicates withdrawn",
+      "passed": true
+    },
+    {
+      "name": "stdout pin duplicates withdrawn",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty duplicates withdrawn",
+      "passed": true
+    },
+    {
+      "name": "source fixed duplicates withdrawn",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw duplicates withdrawn",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim duplicates withdrawn",
+      "passed": true
+    },
+    {
+      "name": "known suite count duplicates withdrawn",
+      "passed": true
+    },
+    {
+      "name": "true process exit duplicates restored",
+      "passed": true
+    },
+    {
+      "name": "stdout pin duplicates restored",
+      "passed": true
+    },
+    {
+      "name": "stderr pin and empty duplicates restored",
+      "passed": true
+    },
+    {
+      "name": "source fixed duplicates restored",
+      "passed": true
+    },
+    {
+      "name": "declared result matches raw duplicates restored",
+      "passed": true
+    },
+    {
+      "name": "no product/performance claim duplicates restored",
+      "passed": true
+    },
+    {
+      "name": "known suite count duplicates restored",
+      "passed": true
+    },
+    {
+      "name": "fixed/restored all cases good duplicates restored",
+      "passed": true
+    },
+    {
+      "name": "one surgical count guard",
+      "passed": true
+    },
+    {
+      "name": "original counterexample fixed",
+      "passed": true
+    },
+    {
+      "name": "specific count rejection fixed",
+      "passed": true
+    },
+    {
+      "name": "original counterexample withdrawn",
+      "passed": true
+    },
+    {
+      "name": "original counterexample restored",
+      "passed": true
+    },
+    {
+      "name": "specific count rejection restored",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-proof/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-proof/restored.stderr",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-proof/restored.stdout",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-proof/withdrawn.stderr",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-proof/withdrawn.stdout",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-proof/fixed.stderr",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-proof/fixed.stdout",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "historical proof exact metadata-original-capture/subcommands/000001/stdin.bin",
+      "passed": true
+    }
+  ],
+  "exit": 0,
+  "passed": true,
+  "resolved_finding": "TRUNCATED_FACE_FINDING.json; the original one-row none/N8 counterexample is now rejected by exact row count",
+  "original_review": "/tmp/geo341-cost-tool-peer-20261025/INITIAL_REVIEW.json",
+  "original_review_sha256": "7157e99dbdce5129497df849f32f387099be7b7ef03b29ce2306fbeae9e69ffb",
+  "writer_exit_scope": "INITIAL_REVIEW verdict was 1 while its writer completed0; INITIAL_EXIT_SCOPE.json retains this distinction",
+  "reviewer_correction": "An interim message mistakenly treated the v1 PLAN command as v2. Fresh v2 PLAN line50 is correct and subject remained unchanged; that documentation finding is withdrawn.",
+  "scope": "Permission to schedule this pinned external F8 fallback collector only after root exclusive lease and actual capacity admission; not performance acceptance.",
+  "limits": [
+    "C compilation, eight semantic cases, 14-input work/CPU/wall measurements remain UNRUN.",
+    "No product/compiler/performance/Chrome commands were executed by this reviewer.",
+    "Historical Sc493 whole-withdrawal B1 remains separate and unexecuted.",
+    "Current F8 full123 and live source/cache were untouched.",
+    "Protocol proof uses synthetic complete rows; it is not an independent geometric oracle. Original C assertions and exact cross-variant FACE comparison remain."
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "schema": "a6-original-three-architecture-gates-actual-peer/1",
+  "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+  "gate_result_sha256": "1dd78c0ef53d715316da892886bdb20d475a2a03e3dccf8a84c3f060e26b6f25",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "checks": 819,
+  "reviewed_utc": "2026-10-26T10:07:56.392558+00:00",
+  "outer_result_sha256": "eb7b45821fd8454b3ccda5903b66f95612683e17d2ad9efa383fdb9e78c4d007",
+  "gates": [
+    {
+      "name": "architecture-contract",
+      "exit_code": 0,
+      "test_count": null,
+      "skips": 0,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "stdout_bytes": 132559,
+      "stdout_sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_utc": "2026-10-26T10:03:11.819766+00:00",
+      "ended_utc": "2026-10-26T10:03:17.556318+00:00",
+      "elapsed_seconds": 5.736552476882935
+    },
+    {
+      "name": "architecture-unit",
+      "exit_code": 0,
+      "test_count": 205,
+      "skips": 0,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 29577,
+      "stderr_sha256": "51eab918e4e0ffdd0f9c72b216441e6c44650bc75e2dc28eae83723b7a8e97c7",
+      "started_utc": "2026-10-26T10:03:17.556878+00:00",
+      "ended_utc": "2026-10-26T10:03:18.094183+00:00",
+      "elapsed_seconds": 0.5373051166534424
+    },
+    {
+      "name": "product-architecture-unit",
+      "exit_code": 0,
+      "test_count": 18,
+      "skips": 0,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 118,
+      "stderr_sha256": "f593cb32a44a5eaa1a6c40bbf028e1be474cca05c4bbe4becf815bef7a4a7f40",
+      "started_utc": "2026-10-26T10:03:18.094842+00:00",
+      "ended_utc": "2026-10-26T10:03:31.086887+00:00",
+      "elapsed_seconds": 12.992044925689697
+    }
+  ],
+  "generic_test_count": 205,
+  "product_test_count": 18,
+  "skip_count": 0,
+  "input_count": 604,
+  "source_inputs_sha256": "57ff6c1b4f172fde46df05f5ecb1632af53ad62a809f0571a08f3f929a290956",
+  "source_before_after_equal": true,
+  "original_command_count": 10,
+  "original_raw_stream_count": 30,
+  "original_raw_stream_bytes": 11713389,
+  "original_raw_catalog_sha256": "6b278c69cc7bdb4ffa180d6258cfc76af1de2f10fb4f8eb80a10a36acb85d3c0",
+  "original_physical_index_preservation_basis": "Original pinned gate driver checks original physical index bytes/device/inode/size/mtime before returning0. RESULT index field is the captured git ls-files --stage output hash, not a separately archived pair of physical-index hashes.",
+  "S10_results_relabelled": false,
+  "formal_judges_rerun_by_peer": false,
+  "full_native_or_full123_run": false,
+  "reviewer_initial_error": {
+    "retained": "ACTUAL_TOOL_RESULT.initial.json",
+    "exit_code": 1,
+    "exception": "StopIteration",
+    "cause": "The reader incorrectly expected 決策佇列.md inside604 architecture_paths. It is an additional file in the 3763-file a6 source manifest. Corrected reader keeps the exact604 closure and independently verifies a6 source manifest/HEAD binding; no judge, threshold, result or original source changed."
+  },
+  "limits": [
+    "This accepts the three original architecture judges executed at a6 only; it does not adopt four artifacts or prove any later final SHA.",
+    "All captured original argv/environment/stdin/stdout/stderr were verified without rerunning judges.",
+    "The peer compares original source snapshots and materialization metadata; it does not scan the live source tree or grant a writer/cleanup lease."
+  ]
+}

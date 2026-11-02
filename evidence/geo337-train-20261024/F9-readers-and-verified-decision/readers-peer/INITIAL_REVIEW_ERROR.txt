@@ -1,0 +1,1 @@
+初版 reviewer 在 old_nativeROOT_unchanged 存取首輪 RESULT 的 native_before 欄位時 KeyError。原首輪 schema 實際欄位為 original_before/original_after；retry schema 才是 native_before/native_after。這是 reviewer schema 適配錯誤，不是原閱讀器失敗。原 review.py 保留，v2 只換此二欄。

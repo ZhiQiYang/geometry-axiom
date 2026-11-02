@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/tmp/train337-final-p52-p189-prep/p189/p189_verify.py", line 241, in <module>
+    main()
+  File "/tmp/train337-final-p52-p189-prep/p189/p189_verify.py", line 195, in main
+    assert raw['base'] == raw['fix'], f'dump 不同：{name}'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: dump 不同：repo-_role_priority_mutant.scene

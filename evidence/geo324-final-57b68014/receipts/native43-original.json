@@ -1,0 +1,171 @@
+{
+  "request": {
+    "sourceSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+    "source": "/tmp/geo324-predicate-source-57b68014",
+    "originalRunner": "tests/_unittest_runner.py",
+    "originalSuites": [
+      "test_geometry_host_native",
+      "test_geo261_default_native"
+    ],
+    "expectedMethods": [
+      30,
+      13
+    ],
+    "originalSuiteTimeoutSeconds": 1200,
+    "buildHelper": "/tmp/geo324-owner-20261024/native43-preparation/build_private_native.py",
+    "buildHelperSha256": "7ce1df108c78a22622306c88d9b4231f6a88774d006ed92f83ae05f041e575ca",
+    "driverSha256": "25fb9fc7690d49ee9ba567bdfb8cfb2789f872433a0f9a9ff0615a03ea70f15b",
+    "captureSha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
+    "inputPlanSha256": "b4ff17ba27b50e27810cae2f3ba778e7ff44aa835f461db23a245f2bf4eca682",
+    "privateBinaries": "/tmp/geo324-native43-57b68014-r1/binaries",
+    "phaseOverrides": {
+      "host_native": {
+        "GEOMETRY_MODEL_BASE": null,
+        "GEOMETRY_TEST_BRIDGE": null
+      },
+      "default_native": {
+        "GEOMETRY_MODEL_BASE": "/tmp/geo324-native43-57b68014-r1/binaries/model-base",
+        "GEOMETRY_TEST_BRIDGE": "/tmp/geo324-native43-57b68014-r1/binaries/bridge"
+      }
+    },
+    "removedGeometryVariableNames": [],
+    "environment": {
+      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+      "TMPDIR": "/tmp/geo324-native43-57b68014-r1/tmp",
+      "CC": null,
+      "CFLAGS": null,
+      "CPPFLAGS": null,
+      "LDFLAGS": null,
+      "PYTHONOPTIMIZE": null,
+      "PYTHONPATH": null,
+      "PYTHONHOME": null,
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "GITHUB_SHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b"
+    },
+    "limits": "原compile900s/host fallback60s/default capture30s均不改；外層build兩目標總2100s只用於收集，不取代原限制。",
+    "scope": "兩原Python module與其真C transport；PARTIAL project，非完整native/browser/全importers。",
+    "startedUTC": "2026-10-23T20:22:53.874493+00:00"
+  },
+  "rows": [
+    {
+      "suite": "test_geometry_host_native",
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geometry_host_native.py",
+        "total": 30,
+        "run": 30,
+        "passed": 30,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 18.38
+      },
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_host_native.py",
+        "--json-out",
+        "/tmp/geo324-native43-57b68014-r1/test_geometry_host_native/result.json",
+        "--log",
+        "/tmp/geo324-native43-57b68014-r1/test_geometry_host_native/unittest.log"
+      ],
+      "expectedContract": {
+        "mode": "count",
+        "count": 30,
+        "unit": "test"
+      }
+    },
+    {
+      "suite": "test_geo261_default_native",
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geo261_default_native.py",
+        "total": 13,
+        "run": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 5.52
+      },
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geo261_default_native.py",
+        "--json-out",
+        "/tmp/geo324-native43-57b68014-r1/test_geo261_default_native/result.json",
+        "--log",
+        "/tmp/geo324-native43-57b68014-r1/test_geo261_default_native/unittest.log"
+      ],
+      "expectedContract": {
+        "mode": "count",
+        "count": 13,
+        "unit": "test"
+      }
+    }
+  ],
+  "errors": [],
+  "exitCode": 0,
+  "nativeProjectFull": false,
+  "sourceModified": false,
+  "internalPipeLimit": "原tests/binaries.py與module內部subprocess有capture_output；僅原程序實際公開的stdout/stderr完整封存，不另聲稱內部全部pipes均由外部逐筆公開。",
+  "buildOriginalProcessExit": 0,
+  "buildTimeout": false,
+  "sourceAfter": {
+    "head": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+    "porcelain": "",
+    "inputsEqualBefore": true,
+    "indexEqualBefore": true
+  },
+  "binaryArtifacts": [
+    {
+      "path": "/tmp/geo324-native43-57b68014-r1/binaries/bridge",
+      "bytes": 1122224,
+      "sha256": "aa60b023418c62020d80a2bbd85cf98741bc53e5d2ea4ede8b4afa4d80783d36"
+    },
+    {
+      "path": "/tmp/geo324-native43-57b68014-r1/binaries/bridge.fingerprint.json",
+      "bytes": 22986,
+      "sha256": "d0c66f9d445910df92cfd8fe1767c3d1f05f84ac976d731fb8abf5dc05f5b274"
+    },
+    {
+      "path": "/tmp/geo324-native43-57b68014-r1/binaries/build.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/geo324-native43-57b68014-r1/binaries/model-base",
+      "bytes": 968896,
+      "sha256": "908b16a4b09c119b251e314d645f69799401da37a85ecd08c22b87023ac5e2f7"
+    },
+    {
+      "path": "/tmp/geo324-native43-57b68014-r1/binaries/model-base.fingerprint.json",
+      "bytes": 22998,
+      "sha256": "f5f386f62ca53cb0af81f3bf0155e9f15995b735d4ad40b98a9a5cbd5e8c7097"
+    }
+  ],
+  "endedUTC": "2026-10-23T20:23:54.804659+00:00",
+  "commandCount": 11
+}

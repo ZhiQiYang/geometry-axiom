@@ -1,0 +1,24 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--hostname",
+    "github.com",
+    "--include",
+    "user"
+  ],
+  "actual_process_returncode": 0,
+  "started_epoch": 1792926158.316376,
+  "ended_epoch": 1792926158.673482,
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "complete_account_stdout_sha256": "b8939b00b88600ac7c4e96dcb45f38d75ffa5b5eddf7a3fa3f24d8109f6d9f29",
+  "complete_account_stdout_bytes": 2795,
+  "complete_account_response_preserved_local": "/tmp/geo337-decision-349-api-verification-20261025/connected-user/subcommands/000001/stdout.bin",
+  "public_account_fields": {
+    "login": "ZhiQiYang",
+    "id": 59477728,
+    "node_id": "MDQ6VXNlcjU5NDc3NzI4",
+    "type": "User"
+  },
+  "limitation": "Full authenticated account profile is preserved locally; only identity fields and binding are published to avoid publishing unrelated private profile fields. Original comment response is published in full."
+}

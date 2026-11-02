@@ -1,0 +1,26 @@
+{
+  "sourceSHA": "8033aa756c62f654333c24d1276d4b61beb31a45",
+  "scope": "static metadata only; no gates executed",
+  "expectedCounts": {
+    "py:test_geo261_contact_sources": {
+      "mode": "count",
+      "count": 15,
+      "unit": "test"
+    },
+    "py:test_geo261_host_facts_authority": {
+      "mode": "count",
+      "count": 22,
+      "unit": "test"
+    },
+    "py:test_geo261_load_residual": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo314_stagger_commit": {
+      "mode": "count",
+      "count": 47,
+      "unit": "test"
+    }
+  }
+}

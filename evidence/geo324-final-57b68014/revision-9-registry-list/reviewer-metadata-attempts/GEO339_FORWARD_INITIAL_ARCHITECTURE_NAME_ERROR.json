@@ -1,0 +1,1635 @@
+{
+  "schema": "geo339-forward-340-source-and-package-peer/1",
+  "current_source": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+  "original_execution": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "evidence_head": "8db79c254365b43104e596b0680df47b67f52232",
+  "prbody_head": "bbd963046a9ed0c4f805a784195c23a93875fd60",
+  "check_count": 358,
+  "checks": [
+    {
+      "name": "ordinary exact parents",
+      "pass": true
+    },
+    {
+      "name": "incoming only exact three source leaves",
+      "pass": true
+    },
+    {
+      "name": "E only evidence",
+      "pass": true
+    },
+    {
+      "name": "original S leaf geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "original S leaf tests/test_geometry_host_sources.py",
+      "pass": true
+    },
+    {
+      "name": "exact expected faces45 union noWood13",
+      "pass": true
+    },
+    {
+      "name": "incoming protected 公理層.md",
+      "pass": true
+    },
+    {
+      "name": "incoming protected 決策佇列.md",
+      "pass": true
+    },
+    {
+      "name": "product differences only architecture-derived four",
+      "pass": false
+    },
+    {
+      "name": "exact archive pin",
+      "pass": true
+    },
+    {
+      "name": "inventory168 no exclusions",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/REQUEST.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/REQUEST.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r1-missing-object/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r1-missing-object/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/REQUEST.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/REQUEST.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000012/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000012/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000012/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000012/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000012/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000012/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000012/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000012/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000012/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000012/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000013/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000013/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000013/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000013/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000013/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000013/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000013/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000013/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000013/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000013/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000014/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000014/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000014/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000014/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000014/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000014/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000014/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000014/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000014/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000014/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000015/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000015/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000015/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000015/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000015/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000015/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000015/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000015/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000015/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000015/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000016/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000016/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000016/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000016/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000016/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000016/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000016/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000016/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000016/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000016/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000017/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000017/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000017/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000017/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000017/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000017/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000017/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000017/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000017/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000017/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000018/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000018/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000018/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000018/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000018/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000018/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000018/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000018/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000018/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000018/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000019/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000019/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000019/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000019/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000019/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000019/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000019/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000019/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000019/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000019/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000020/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000020/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000020/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000020/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000020/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000020/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000020/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000020/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000020/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000020/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000021/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000021/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000021/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000021/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000021/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000021/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000021/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000021/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r2-committed-sparse-read-failure/subcommands/000021/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r2-committed-sparse-read-failure/subcommands/000021/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/REQUEST.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/REQUEST.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular merge-r3-blob-read-finish/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "exact archived original merge-r3-blob-read-finish/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "safe regular tools/capture.py",
+      "pass": true
+    },
+    {
+      "name": "exact archived original tools/capture.py",
+      "pass": true
+    },
+    {
+      "name": "safe regular tools/finish_merge_340_baton_r3.py",
+      "pass": true
+    },
+    {
+      "name": "exact archived original tools/finish_merge_340_baton_r3.py",
+      "pass": true
+    },
+    {
+      "name": "safe regular tools/merge_340_baton.py",
+      "pass": true
+    },
+    {
+      "name": "exact archived original tools/merge_340_baton.py",
+      "pass": true
+    },
+    {
+      "name": "safe regular tools/merge_340_baton_r2.py",
+      "pass": true
+    },
+    {
+      "name": "exact archived original tools/merge_340_baton_r2.py",
+      "pass": true
+    },
+    {
+      "name": "exact member set",
+      "pass": true
+    },
+    {
+      "name": "attempt raw receipt retained merge-340-4d3a17c3",
+      "pass": true
+    },
+    {
+      "name": "attempt raw receipt retained merge-340-4d3a17c3-r2",
+      "pass": true
+    },
+    {
+      "name": "r2 real merge0 collector1",
+      "pass": true
+    },
+    {
+      "name": "attempt raw receipt retained merge-340-4d3a17c3-r3",
+      "pass": true
+    },
+    {
+      "name": "r3 publication0 actualnotrerun",
+      "pass": true
+    },
+    {
+      "name": "matrix 4oldpass12unrun",
+      "pass": true
+    },
+    {
+      "name": "separate currentM/executionS",
+      "pass": true
+    },
+    {
+      "name": "body exact pin",
+      "pass": true
+    },
+    {
+      "name": "body explicit pending forwardpeer",
+      "pass": true
+    },
+    {
+      "name": "one matrix twelveunrun",
+      "pass": true
+    }
+  ],
+  "findings": [
+    {
+      "name": "product differences only architecture-derived four",
+      "pass": false
+    }
+  ],
+  "exit_code": 1,
+  "git_reads": [
+    {
+      "argv": [
+        "show",
+        "-s",
+        "--format=%P",
+        "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599"
+      ],
+      "exit": 0,
+      "stdout_sha256": "49e42c46d130cb803f3539da9e57d9daf55cc5156567eceeef920a9dd872c7c4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "diff",
+        "--name-only",
+        "4d3a17c306cad42057589c5cfd964f1c32b755c4",
+        "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599"
+      ],
+      "exit": 0,
+      "stdout_sha256": "290cd3ec5374d62d16c219bcdcf12e45cc0c7c0dba8900c5aab71b0202e480f2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "diff",
+        "--name-only",
+        "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+        "8db79c254365b43104e596b0680df47b67f52232"
+      ],
+      "exit": 0,
+      "stdout_sha256": "ce4c085265622bf4794b17969d104b9363d26a696b1a16b48bd4c114f2b3e3a2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "rev-parse",
+        "57b680140da2c6b77ab0d362a72029d8d7c9334b:geometry-templates/woodworking/geometry_woodworking/model_sources.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "102bee1cb93708807b0610831cb91616b511e909e826ac43f07ada139a1d16b7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "rev-parse",
+        "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599:geometry-templates/woodworking/geometry_woodworking/model_sources.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "102bee1cb93708807b0610831cb91616b511e909e826ac43f07ada139a1d16b7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "rev-parse",
+        "57b680140da2c6b77ab0d362a72029d8d7c9334b:tests/test_geometry_host_sources.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "7c11a0c2678ca2c04656231a190b1c0acf89a504d8e3a657486ab2e3511f60cb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "rev-parse",
+        "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599:tests/test_geometry_host_sources.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "7c11a0c2678ca2c04656231a190b1c0acf89a504d8e3a657486ab2e3511f60cb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "4d3a17c306cad42057589c5cfd964f1c32b755c4:tests/run_all.expected.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "b6b309e5bf4d490ef6ae4cd13e412d2c8a6431653aa287665882dcf3ae6c5f2a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599:tests/run_all.expected.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e6ea0c3020a88deec44b3abaca3b7a96a1608e7ae8c336d594e6f8bcec76fb80",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "rev-parse",
+        "4d3a17c306cad42057589c5cfd964f1c32b755c4:公理層.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "087ffd8e2add10cf178cbba6cc4d799fe3f6f636289e4ef153a61d88c9646dc2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "rev-parse",
+        "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599:公理層.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "087ffd8e2add10cf178cbba6cc4d799fe3f6f636289e4ef153a61d88c9646dc2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "rev-parse",
+        "4d3a17c306cad42057589c5cfd964f1c32b755c4:決策佇列.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "46aca93446068b80520e956d129f3d0abfc45f244e3f51bdb91af9e94ff83442",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "rev-parse",
+        "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599:決策佇列.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "46aca93446068b80520e956d129f3d0abfc45f244e3f51bdb91af9e94ff83442",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "diff",
+        "--name-only",
+        "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+        "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+        "--",
+        "geometry-core",
+        "geometry-app",
+        "geometry-web",
+        "geometry-templates",
+        "current_geometry.c"
+      ],
+      "exit": 0,
+      "stdout_sha256": "4abe8c0bc78a1007a6e4a1c7d3749cc29318a4abc6fef3474f6a5f3b946fefa4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "8db79c254365b43104e596b0680df47b67f52232:evidence/geo324-final-57b68014/raw/forward-merge-340-1f0ebd3e.tar.gz"
+      ],
+      "exit": 0,
+      "stdout_sha256": "4d681d72760691eb538e1190872141565f778b2708b73b68352f5e8030d39b98",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "8db79c254365b43104e596b0680df47b67f52232:evidence/geo324-final-57b68014/raw/forward-merge-340-1f0ebd3e.inventory.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e9cf581c8ca142752233b3092af88c1769c46906e5895cd5b7c620f46ce581a5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "8db79c254365b43104e596b0680df47b67f52232:evidence/geo324-final-57b68014/CURRENT_STATE.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "8aa117835a34001fffa6a69741c376fa8ada70c080365d6b1593e36db1b7c5da",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "bbd963046a9ed0c4f805a784195c23a93875fd60:PR_BODY.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "07a45b483ac99fe4b258fabda914adb5f3057caf8e1204be0b55264bb0d508fc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "scope": "普通merge父提交／唯一產品patch聯集／168包member逐原bytes／current矩陣來源分欄；無重測。",
+  "pending": [
+    "九module透過fixtures/helpers/child scripts/source_inventory的執行閉包，由獨立323owner靜審另報；這份不聲稱完整transitive依賴已核。"
+  ],
+  "limits": [
+    "原142及predicate仍綁S57，不能稱新M動態重跑。",
+    "完整native/browser/ledger/架構等12項當前包仍UNRUN；原metadata失敗保留。"
+  ]
+}

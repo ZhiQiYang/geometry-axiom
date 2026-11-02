@@ -1,0 +1,32 @@
+{
+  "schema": "full123-filesystem-admission/1",
+  "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "paths": {
+    "root": "/dev/shm/geometry-axiom-geo337-20261025/F10-pool",
+    "cache": "/dev/shm/geometry-axiom-geo337-20261025/F10-cache",
+    "job": "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job",
+    "tmp": "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-tmp",
+    "resource_anchor": "/dev/shm/geometry-axiom-geo337-20261025/F10-cache"
+  },
+  "filesystems": [
+    {
+      "labels": [
+        "root",
+        "cache",
+        "job",
+        "tmp",
+        "resource_anchor"
+      ],
+      "device": 26,
+      "additional_bytes": {
+        "binaries_additional": 335544320,
+        "raw_ledger_additional": 100663296,
+        "compiler_peak_additional": 402653184,
+        "metadata_additional": 100663296,
+        "reserve_additional": 134217728
+      },
+      "minimum_free_bytes": 1073741824,
+      "basis": "Explicit actual-cache mount. Original 272MiB guard retained on actual data mount, with 1GiB additional filesystem plan covering original aggregate 512MiB and conservative transient allowance. Existing pool/seed/archives excluded from additional count. This is a planning estimate, not measured peak; no product, timeout or oracle change."
+    }
+  ]
+}

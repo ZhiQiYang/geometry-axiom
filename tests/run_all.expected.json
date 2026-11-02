@@ -8,7 +8,7 @@
     },
     "core:run_tests": {
       "mode": "count",
-      "count": 165,
+      "count": 166,
       "unit": "場景"
     },
     "mutation:check": {
@@ -349,7 +349,7 @@
     },
     "py:test_geo261_contact_sources": {
       "mode": "count",
-      "count": 13,
+      "count": 15,
       "unit": "test"
     },
     "py:test_geo261_default_native": {
@@ -474,7 +474,7 @@
     },
     "py:test_geo261_host_facts_authority": {
       "mode": "count",
-      "count": 19,
+      "count": 22,
       "unit": "test"
     },
     "py:test_geo261_host_history": {
@@ -679,6 +679,11 @@
     },
     "py:test_geo261_source_index": {
       "mode": "count",
+      "count": 18,
+      "unit": "test"
+    },
+    "py:test_geo261_load_residual": {
+      "mode": "count",
       "count": 14,
       "unit": "test"
     },
@@ -704,7 +709,7 @@
     },
     "py:test_geo261_wood_contact_world": {
       "mode": "count",
-      "count": 10,
+      "count": 14,
       "unit": "test"
     },
     "py:test_geo261_wood_contacts": {
@@ -739,7 +744,7 @@
     },
     "py:test_geo261_wood_grid_application": {
       "mode": "count",
-      "count": 11,
+      "count": 23,
       "unit": "test"
     },
     "py:test_geo261_wood_grid_cells": {
@@ -799,7 +804,7 @@
     },
     "py:test_geometry_host_sources": {
       "mode": "count",
-      "count": 39,
+      "count": 45,
       "unit": "test"
     },
     "py:test_geometry_host_world": {
@@ -914,8 +919,8 @@
     },
     "py:test_mutation_freshness": {
       "mode": "count",
-      "unit": "test",
-      "count": 73
+      "count": 74,
+      "unit": "test"
     },
     "py:test_panel_fill_finish_surface": {
       "mode": "count",
@@ -999,7 +1004,7 @@
     },
     "py:test_rectangular_template": {
       "mode": "count",
-      "count": 11,
+      "count": 13,
       "unit": "unittest"
     },
     "py:test_reference_contract": {
@@ -1069,7 +1074,7 @@
     },
     "py:test_section_profile_native": {
       "mode": "count",
-      "count": 28,
+      "count": 30,
       "unit": "test"
     },
     "py:test_serve": {
@@ -1109,7 +1114,7 @@
     },
     "py:test_unittest_runner": {
       "mode": "count",
-      "count": 1,
+      "count": 12,
       "unit": "test"
     },
     "py:test_wait_trace": {
@@ -1131,6 +1136,31 @@
       "mode": "count",
       "count": 1,
       "unit": "test"
+    },
+    "py:test_geo314_stagger_commit": {
+      "mode": "count",
+      "count": 47,
+      "unit": "test"
+    },
+    "py:test_geo314_commit_paths": {
+      "mode": "count",
+      "count": 11,
+      "unit": "test"
+    },
+    "py:test_geo314_ordered_facts": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo318_reading_a_oracle": {
+      "mode": "count",
+      "count": 14,
+      "unit": "unittest"
+    },
+    "py:test_geo318_reading_a_native": {
+      "mode": "count",
+      "count": 7,
+      "unit": "unittest"
     }
   }
 }

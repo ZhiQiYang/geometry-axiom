@@ -94,7 +94,7 @@ CASES = [
      SOURCE_TEST, 'missing-source:literal-zero'),
     # Two layers: the confirm guard on g_preview.ready, and the candidate discard that cancel performs.
     ('cancelled-preview', [(BRIDGE, '||!g_preview.ready||!mine||g_preview.token!=token', '||!mine||g_preview.token!=token'),
-                           (BRIDGE, 'if(cancelled){g_preview.ready=false;app_candidate_discard(g_preview.transaction->control);}',
+                           (BRIDGE, 'if(cancelled){g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);}',
                             'if(cancelled){g_preview.ready=false;}')],
      CANCEL_TEST, 'cancelled-preview:confirm-after-cancel'),
 ]

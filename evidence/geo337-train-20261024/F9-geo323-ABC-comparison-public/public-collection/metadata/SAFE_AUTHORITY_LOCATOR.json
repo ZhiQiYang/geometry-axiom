@@ -1,0 +1,23 @@
+{
+  "schema": "geo323-public-safe-authority-locator/1",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "connected_account_identity": {
+    "login": "ZhiQiYang",
+    "id": 59477728,
+    "node_id": "MDQ6VXNlcjU5NDc3NzI4",
+    "type": "User"
+  },
+  "original_full_profile_raw_sha256": "b8939b00b88600ac7c4e96dcb45f38d75ffa5b5eddf7a3fa3f24d8109f6d9f29",
+  "original_full_profile_raw_bytes": 2795,
+  "safe_original_witness": {
+    "private_inventory_index": 4621,
+    "member": "comparison/tools-frozen/authority/IDENTITY_AND_ORIGINAL_COMMENT.json",
+    "sha256": "a8f03fddb979e168e86558230b2d3bd1c4ed9c906943404dbce14e8d5e9efc00",
+    "bytes": 2568
+  },
+  "existing_public_proof": "https://github.com/ZhiQiYang/geometry-axiom/tree/c32e70aa2c848f89a0e2e9fd92ed232a4dd27bcc/evidence/geo337-train-20261024/F9-readers-and-verified-decision/",
+  "approved_comment": "https://github.com/ZhiQiYang/geometry-axiom/pull/338#issuecomment-6396611849",
+  "approval_source_sha": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+  "api_request_and_result_retained": "comparison/tools-frozen/authority/connected-user/subcommands/000001/{request.json,result.json}; stdout raw is the explicitly excluded auxiliary profile.",
+  "original_policy_guard_inputs_disclosure": "The executed authority guard and original binding are retained unchanged. The public package intentionally lacks the excluded full-profile input; private originals and their hashes remain available for original full-input replay."
+}

@@ -1,0 +1,73 @@
+{
+  "role": "Original Linux four-artifact schema adaptation, not runtime/ledger acceptance",
+  "sourceSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+  "sourceBeforeAfterClean": true,
+  "originalGateExits": [
+    0,
+    0,
+    0
+  ],
+  "manifestProofExits": [
+    0,
+    1,
+    0
+  ],
+  "inputCount": 604,
+  "changedPriorReceiptInputs": [
+    {
+      "path": "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "sha256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73"
+    }
+  ],
+  "originalPriorReceiptSource": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
+  "manifestBytesUnchanged": true,
+  "scanBytesUnchanged": true,
+  "actualDerivedDiffCount": 2,
+  "counts": {
+    "executableFiles": 604,
+    "ownedSources": 334,
+    "exclusions": 270,
+    "edges": 798,
+    "diagnostics": 0,
+    "layers": {
+      "H": 192,
+      "K": 69,
+      "W": 67,
+      "vendor": 6
+    },
+    "languages": {
+      "c": 191,
+      "html": 4,
+      "javascript": 64,
+      "python": 75
+    },
+    "forbiddenIdentifiers": 928,
+    "forbiddenStrings": 55
+  },
+  "inputClosureSHA256": "de2a5856529c18ec7e49decaf0f03cfb50b4299562f893eea085f70c40aa53cf",
+  "outputs": {
+    "product-architecture.json": {
+      "bytes": 221591,
+      "rawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525",
+      "lfSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
+    },
+    "product-architecture-scan.json": {
+      "bytes": 132559,
+      "rawSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    "PRODUCT-ARCHITECTURE.md": {
+      "bytes": 43178,
+      "rawSha256": "1f548c95683eea1cca2890c32d343dcba54944c58a184dbb175444f321a41daa",
+      "lfSha256": "1f548c95683eea1cca2890c32d343dcba54944c58a184dbb175444f321a41daa"
+    },
+    "product-architecture-receipt.json": {
+      "bytes": 116125,
+      "rawSha256": "23b6b4d7c6bb1d9990d7e93ad277c7b2d7a45a0dfb9d5d0ff56e7a5b89973974",
+      "lfSha256": "23b6b4d7c6bb1d9990d7e93ad277c7b2d7a45a0dfb9d5d0ff56e7a5b89973974"
+    }
+  },
+  "sourceCheckoutModified": false,
+  "ledgerOriginalExit": 1,
+  "ledgerRegenerated": false
+}

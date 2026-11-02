@@ -1,0 +1,32 @@
+{
+  "schema": "F9-nonperf-original-rebind-draft/1",
+  "original_wrapper": "/tmp/train337-final-nonperf-specials-prep/run_original_specials.py",
+  "original_wrapper_sha256": "6789d3e346b94f3f38a13049a87d410de2fe444bc69992215253cfe663d8ea23",
+  "product_F8": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "F9": null,
+  "formal_executed": false,
+  "preparation_sha256": "593ab353216e0cd50d49c92dd48d1b532bc43154ba46e494daf65cf11d8be72c",
+  "draft_wrapper_sha256": "993ee0102107e13e3391e31ffbc84ae88e6c6979673ebc1c42ca794ef6c1b8e9",
+  "metadata_checks_sha256": "28a4813c2f6bb55adbf0f1da646048aaf78ed85c264e6c6b5cad7d659fcda3b3",
+  "v5_original_path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5",
+  "changes": [
+    "exact F8 original judge pins",
+    "original8 registry18/14 total681",
+    "complete original44 Q38 AST identity",
+    "newF9 only ledger/evidence delta guard",
+    "existing reviewedv5 recorder instead ofv4; original formal commands unchanged"
+  ],
+  "untouched": [
+    "product",
+    "tests",
+    "golden",
+    "timeouts",
+    "R8 receipts",
+    "native originaldriver",
+    "memo originalguard"
+  ],
+  "revision": 2,
+  "previous_preparation_sha256": "a45164977620449c4052a33855d220431e77b47a241b7f343cdff06b254c1a28",
+  "change_from_v1": "Only --no-renames in Git changed-path closure; README path/version note. Original tools/counts/gates/env/timeouts/metadata guard helper are byte-identical.",
+  "metadata_checks_execution_source": "/tmp/geo337-F9-nonperf-original-tools-20261025/METADATA_CHECKS.json"
+}

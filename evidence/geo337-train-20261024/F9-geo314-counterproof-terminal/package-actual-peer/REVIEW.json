@@ -1,0 +1,92 @@
+{
+  "schema": "geo314-v2-v3-full-package-actual-peer/1",
+  "utc": "2026-10-25T15:16:45.629204+00:00",
+  "exit_code": 0,
+  "checks": 14194,
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "package_result_sha256": "2adc68d2c7a385f19bd32d3aa4057244f1e05910fc3d652f56f33c19d11e46cc",
+  "inventory_sha256": "f4378afa28017f9ee44a01337fe952f8c79f773e18f07a7c103df83d02968a7a",
+  "parts_sha256": "a705824d20939485dac2c3d1719e615c53bd5ab505701aff4c64199d51c0123c",
+  "outer_result_sha256": "36acb3b3d1160ddf6843c9ced3625b6d834998ca38b3b4e7715025b5337c2b63",
+  "host_final_sha256": "810f8fedcd68e8d86cee41cca23985d26ffbbbe007926c778cfd169fdd2533bb",
+  "regular_files": 1826,
+  "logical_regular_bytes": 36200174,
+  "symlinks": 0,
+  "hash_only_exclusions": 0,
+  "archives": [
+    {
+      "part": 1,
+      "archive_path": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-terminal-package-20261025/ORIGINAL_GEO314_COUNTERPROOF_PART1.tar.gz",
+      "archive_sha256": "6627b71c10230f6ff39ad357bff76d3dc8a4c82e36f37e23497aeb65f5724aba",
+      "archive_bytes": 2971865,
+      "members": 204,
+      "logical_regular_bytes": 13578903,
+      "roundtrip_complete": true,
+      "fresh_free_after": 17269940224
+    },
+    {
+      "part": 2,
+      "archive_path": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-terminal-package-20261025/ORIGINAL_GEO314_COUNTERPROOF_PART2.tar.gz",
+      "archive_sha256": "d1aa989f9827e34103190326fe8497b8cd8695f3c97a04a0bc8fd29618c48d46",
+      "archive_bytes": 2912842,
+      "members": 6,
+      "logical_regular_bytes": 13227566,
+      "roundtrip_complete": true,
+      "fresh_free_after": 17267019776
+    },
+    {
+      "part": 3,
+      "archive_path": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-terminal-package-20261025/ORIGINAL_GEO314_COUNTERPROOF_PART3.tar.gz",
+      "archive_sha256": "c933e410399068f59bbf43a5f5d1549590b20d1d9868d7f7b2fa2d10bf881b85",
+      "archive_bytes": 2034291,
+      "members": 1616,
+      "logical_regular_bytes": 9393705,
+      "roundtrip_complete": true,
+      "fresh_free_after": 17264979968
+    }
+  ],
+  "archive_bytes": 7918998,
+  "gzip_crc_checks": [
+    {
+      "part": 1,
+      "decompressed_tar_bytes": 13721600,
+      "crc_trailer_verified": true
+    },
+    {
+      "part": 2,
+      "decompressed_tar_bytes": 13240320,
+      "crc_trailer_verified": true
+    },
+    {
+      "part": 3,
+      "decompressed_tar_bytes": 11243520,
+      "crc_trailer_verified": true
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": "v2",
+      "exit": 1,
+      "formal_F9_pass": false,
+      "counterproof_passed": true,
+      "restoration_errors": [
+        "Traceback (most recent call last):\n  File \"/workspace/geo314-F9-counterproof-shm-placement-20261025/run_counterproof_v2_shm.py\", line 348, in main\n    path,raw,m=index_before;now,mm=read_owned(path);need(now==raw and mm==m,'original ROOT index bytes/inode/metadata untouched')\n                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/geo314-F9-counterproof-shm-placement-20261025/run_counterproof_v2_shm.py\", line 33, in need\n    raise AssertionError(text)\nAssertionError: original ROOT index bytes/inode/metadata untouched\n"
+      ]
+    },
+    {
+      "attempt": "v3",
+      "exit": 0,
+      "formal_F9_pass": false,
+      "counterproof_passed": true,
+      "restoration_errors": []
+    }
+  ],
+  "blocking_findings": [],
+  "limits": [
+    "唯讀正式 require_escalated；未重跑產品、未重收封包、未讀活動 NATIVE/seed、未改來源或分支。",
+    "全部1826原件完整雜湊、3tar全部成員 bytes/type/mode/mtime、gzip EOF/CRC、完整兩root葉集合與1357固定補件均核；private Git objects/index完整保留。",
+    "v2原exit1及INDEX_AFTER_FAILURE保全，v3局部反證exit0；完整F9 native仍1，無全專案READY主張。",
+    "原語意反證沿用349項獨審，不另抽產品樣本；本次是證據完整性審查。",
+    "SHM封包仍volatile，只有後續普通push及完整遠端blob核對才算delivered；本報告不宣稱已公開。"
+  ]
+}

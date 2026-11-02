@@ -1,0 +1,137 @@
+{
+  "schema": "supplemental-publication-independent-actual-peer/1",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "reviewed_utc": "2026-10-26T11:07:14.114676+00:00",
+  "checked_count": 23510,
+  "evidence_head": "f99b6e63d52b1a87e6fe3546e2604cdf9bbb2304",
+  "parent_evidence_head": "f90db245f228b7a95a800cab176c3f9ca497133f",
+  "product_anchor_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "branch": "codex/train337-recovered-evidence-20261026",
+  "publication_execution_source_sha": null,
+  "files": 302,
+  "distinct_remote_blobs": 256,
+  "total_publication_file_bytes": 8433567,
+  "total_unique_remote_bytes": 8415761,
+  "raw_original_commands_checked": 724,
+  "actual_outer_exit": 0,
+  "actual_inner_exit": 0,
+  "source_identity_rule": "E2 and its evidence parent identify publication only. Per-file original A/S10/F/synthetic/API identities remain unchanged.",
+  "expected_parent_CAS": {
+    "old": "f90db245f228b7a95a800cab176c3f9ca497133f",
+    "new": "f99b6e63d52b1a87e6fe3546e2604cdf9bbb2304",
+    "ref": "refs/heads/codex/train337-recovered-evidence-20261026",
+    "ordinary_push": true,
+    "exact_one_ref_update": true,
+    "remote_before_after_sequence": [
+      "f90db245f228b7a95a800cab176c3f9ca497133f",
+      "f90db245f228b7a95a800cab176c3f9ca497133f",
+      "f99b6e63d52b1a87e6fe3546e2604cdf9bbb2304",
+      "f99b6e63d52b1a87e6fe3546e2604cdf9bbb2304"
+    ]
+  },
+  "scope": {
+    "manifest_sha256": "926d504d6c2ef425686370e5fea91d2a85f9ba4387dc7f6ef61cf33a11adb0aa",
+    "recursive_tree_delta_exactly_302_evidence_paths": true,
+    "existing_evidence_overwrites": [
+      "evidence/geo337-train-20261024/resume-20261026/PROGRESS.md"
+    ],
+    "old_progress_blob": "a7af4575b419763b5b48e459a9c9e2dfca33e772",
+    "new_regular_blobs_only": true,
+    "product_modified": false,
+    "train_ref_modified": false,
+    "fixed_F_to_parent_product_closure_unchanged": true,
+    "groups": {
+      "evidence/geo337-train-20261024/final-cbf0fb62-20261026/first-publication": 4,
+      "evidence/geo337-train-20261024/final-cbf0fb62-20261026/first-publication-outer": 2,
+      "evidence/geo337-train-20261024/final-cbf0fb62-20261026/host-final": 4,
+      "evidence/geo337-train-20261024/resume-20261026/PROGRESS.md": 1,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo300-capacity-static-20261026": 116,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo300-capacity-static-peer-20261026": 6,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-a6-architecture-actual-peer-20261026": 2,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-a6-architecture-preparation-20261026": 15,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-a6-gates-actual-peer-20261026": 5,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-a6-source-actual-peer-20261026": 2,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-candidate-adopter-runtime-actual-peer-20261026": 2,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-candidate-adopter-runtime-preparation-20261026": 7,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-candidate-three-leaf-actual-peer-20261026": 2,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-closed-first-publication-actual-peer-20261026": 3,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-closed-originals-collection-static-peer-20261026": 7,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-closed-originals-package-actual-peer-20261026": 2,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-final-light-gates-actual-peer-20261026": 2,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-final-light-gates-preparation-20261026": 9,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-final-light-gates-static-peer-20261026": 9,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-final-thin-executor-static-peer-20261026": 1,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-recovery-evidence-append-peer-20261026": 6,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-recovery-evidence-append-preparation-20261026": 17,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-recovery-native-focused-actual-peer-20261026": 3,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-recovery-prbody-actual-peer-20261026": 3,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-recovery-publication-actual-peer-20261026": 8,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo337-resume-final-source-plan-20261026": 13,
+      "evidence/geo337-train-20261024/resume-peers-and-sources-20261026/geo338-original-approval-audit-20261026": 51
+    },
+    "source_mapping_identity_sha256": "db064ab499096d9ecec2eeffc12953258b9cdede84ea9b0bff9851b39ff130e7"
+  },
+  "writer_preservation": {
+    "historical_HEAD": "3e4f2560aa11ed2a626db98ba5ed6f129e791052",
+    "historical_branch": "codex/train-337-continue-20261024",
+    "three_HEAD_branch_status_snapshots_match": true,
+    "index_runtime_pre_post_hash_equality_guard_executed": true,
+    "index_independent_archived_pre_post_values_available": false,
+    "limitation": "Exact pinned executor compares raw index SHA256 before push and after all remote reads; actual exit0 proves both equality guards passed. Individual before/after values were not separately emitted and no independent archived index byte snapshot is claimed."
+  },
+  "remote_full_reads": {
+    "raw_blob_api_calls": 256,
+    "every_byte_SHA256_and_Git_blob_OID_independently_verified": true,
+    "all_streams_captured_after_successful_push": true,
+    "all_captured_request_result_and_stream_hashes_verified": true,
+    "same_content_deduplicated_for_302_paths": true,
+    "remote_bindings_identity_sha256": "52115ea5c98c0c34ef8612b60ae4d9930e550a5e91294828ed09973d830f6eed",
+    "first_remote_started_epoch": 1793012181.0471692,
+    "last_remote_ended_epoch": 1793012283.02585
+  },
+  "original_receipts": {
+    "inner_result_sha256": "a0d4bda803aa678360e1b1c13c4768372758d81fb2fa9f7bf885beba43b3c3ad",
+    "outer_result_sha256": "9416f17515ab5ae22eb58d6841eda0e62bc99223211c828446e7d0a5d8abc88b",
+    "inner_subcommands_sha256": "302135c491f261e3248fb17e978cee2141d9ca389d1d599c49ad565eca9af090",
+    "outer_subcommands_sha256": "f77bf1937a7721165c6421dfb01868d7d109af1490e67f3de1f1a0a339b989ea",
+    "executor_sha256": "988a3b851db4417d41c073d02e8d3e440ea7dd22c10c53421490da79174cb720",
+    "remote_blobs_metadata_sha256": "6b22f10617194e1e7eab69c408f52e088343528a260c20951c909957830524ec",
+    "E1_actual_peer_sha256": "79f5995387e6c5c4c41ac2be0750b3c0348639c3c474c0bab3554b27865edcc0"
+  },
+  "persistent_delivery_scope": "Only the exact 302 E2 manifest files: complete selected peer/tool drafts, API originals, #300 static materials, E1 publication metadata, terminal receipts and updated PROGRESS.",
+  "limits": [
+    "This audit certifies historical E2 remote raw bytes captured at the recorded times, not a new live Git/API observation.",
+    "Publication of #300 static findings is not a capacity-512 runtime verdict.",
+    "No full native, six browser, full123, performance threshold, axiom approval or all-product passing verdict is established by this publication audit.",
+    "E1 complete 17-root archive remains under its own unchanged proof; E2 does not replace or rerun it.",
+    "Index preservation is supported by exact executed runtime equality guards; individual hash values were not separately archived.",
+    "No duplicate INDEX, archive or remote payload was written; only compact review and audit script are created.",
+    "Only PROGRESS advanced locally after the closed E2 publication: historical 5747 bytes are verified against manifest, recorded hash-object, commit tree and complete remote raw bytes; current 6022 bytes are not claimed delivered by E2. The initial strict current-source audit exit1 is preserved."
+  ],
+  "audit_git_or_network_executed": false,
+  "audit_product_tests_rerun": false,
+  "audit_SHM_mutation": false,
+  "originals_removed": false,
+  "durable_delivery_verified": true,
+  "local_source_drift_classification": [
+    {
+      "path": "/tmp/geo337-current-PROGRESS-cbf0fb62-20261026.md",
+      "destination": "evidence/geo337-train-20261024/resume-20261026/PROGRESS.md",
+      "historical_bytes": 5747,
+      "historical_sha256": "71f838b5b5230f392e55332ee1bf7c7bec74f4f2cb4955130a8254d712812c26",
+      "current": {
+        "bytes": 6022,
+        "sha256": "148402318284618623b950e330e877c9ccf46e39e0b2aafd5c3a0796c2c37956",
+        "blob_oid": "68c262c4bffd0b176bf7bb872588628c4ce8947a"
+      },
+      "historical_blob_oid": "a0e1f7008e2585b332295d1c5e3f2c52023b1b01",
+      "historical_remote_must_match": true,
+      "current_bytes_not_claimed_delivered": true
+    }
+  ],
+  "current_local_sources_matching_publication": 301,
+  "initial_audit_exit": 1,
+  "initial_audit_failure_retained": "INITIAL_FAILURE.json",
+  "initial_audit_script_retained": "review.initial.py"
+}
