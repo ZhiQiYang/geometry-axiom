@@ -177,7 +177,7 @@
     "node:tests-js": {
       "mode": "count",
       "unit": "node test",
-      "count": 740
+      "count": 741
     },
     "node:woodworking_frontend": {
       "mode": "count",
@@ -1185,6 +1185,41 @@
     "py:test_definition_import_transport": {
       "mode": "count",
       "count": 6,
+      "unit": "test"
+    },
+    "node:feature_attachments_vm": {
+      "mode": "count",
+      "count": 1,
+      "unit": "node test"
+    },
+    "node:room_candidate_cold_contract": {
+      "mode": "count",
+      "count": 8,
+      "unit": "node test"
+    },
+    "node:room_candidate_draft": {
+      "mode": "count",
+      "count": 7,
+      "unit": "node test"
+    },
+    "node:room_candidate_native_pins": {
+      "mode": "count",
+      "count": 29,
+      "unit": "node test"
+    },
+    "node:room_candidate_transaction_review": {
+      "mode": "count",
+      "count": 11,
+      "unit": "node test"
+    },
+    "node:room_candidate_workspace_review": {
+      "mode": "count",
+      "count": 19,
+      "unit": "node test"
+    },
+    "py:test_zero_room_native": {
+      "mode": "count",
+      "count": 1,
       "unit": "test"
     }
   }

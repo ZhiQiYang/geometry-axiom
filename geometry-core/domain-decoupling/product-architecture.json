@@ -1725,6 +1725,12 @@
       "purpose": "Application/runtime/protocol or workspace host reference bridge; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-web/room-candidate-draft.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host room-candidate draft; project attachment, not a scene capability"
+    },
+    {
       "path": "geometry-web/room-collection-workspace.js",
       "layer": "H",
       "language": "javascript",
@@ -2695,7 +2701,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "391305036c62e83902e4606bb3a5c6194869d1aa88e191abef29ab013d6e2d22",
+      "sha256": "be205b7263198d60d5c58cae7877d6e1f1a101b9169fbfc7978ee84c071aa963",
       "hashMode": "lf"
     },
     {
@@ -3097,7 +3103,7 @@
     {
       "path": "geometry-web/evidence_links_integration_test.js",
       "reason": "Dedicated acceptance/test driver evidence_links_integration_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "244d6b583d77fb481d250cfc1ca5ded9e88d9819f0833743667ab64f9e9a2d00",
+      "sha256": "a55deb928812dd21a0d90b13b93321cb32bae03e11856b3f20abfd2a92a904a9",
       "hashMode": "lf"
     },
     {
@@ -3401,6 +3407,12 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-web/room_candidate_browser_test.js",
+      "reason": "Dedicated acceptance/test driver room_candidate_browser_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "03be7c8a28178a9bc524f0e989e3b69d3bdf8a1b2621749f4a393859303151fe",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-web/room_outline_test.js",
       "reason": "Dedicated acceptance/test driver room_outline_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
       "sha256": "a388f9a976b3c8af0fc217274c340b0ffe0d9bf2fccedd1533acf984196aba3a",
@@ -3601,7 +3613,7 @@
     {
       "path": "geometry-core/card-reference/run_archive_mutations.py",
       "reason": "Dedicated GEO-262 archive mutation runner run_archive_mutations.py; test tooling, not a product-loaded module.",
-      "sha256": "5bc6d308bec20fa3c484f8ed5e769f23bb9ebcbfe61075d170ed1b950de88251",
+      "sha256": "aa27a581e289c9c9c4165e74de4d4068775fd5b50e0f79b101e261b053b6e6bd",
       "hashMode": "lf"
     },
     {
@@ -3717,6 +3729,24 @@
       "reason": "Reading A independent numeric source-withdrawal witness for constructor/checker 0/1/0; an explicitly invoked dedicated test driver that loads a supplied oracle source path, not a product-loaded module or product entry point.",
       "sha256": "fe786d9f12cb664fe0188dc87803855449eaa86a8d115969e13bef5213fb3d95",
       "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/cdp_room_candidate_contract.js",
+      "reason": "Dedicated acceptance/test driver cdp_room_candidate_contract.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "hashMode": "lf",
+      "sha256": "6f0bdad7aab51249cd803a1bdadbad9bdbd860c15540fec112be5dea47dc3212"
+    },
+    {
+      "path": "geometry-web/cdp_room_candidate_io.js",
+      "reason": "Dedicated acceptance/test driver cdp_room_candidate_io.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "hashMode": "lf",
+      "sha256": "fe3f1fdec5ef875d2dee16b424cb53ec28a95f7905b3fce43e5e12bc9ea76abc"
+    },
+    {
+      "path": "geometry-web/room_candidate_cold_test.js",
+      "reason": "Dedicated acceptance/test driver room_candidate_cold_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "hashMode": "lf",
+      "sha256": "f3e2966f0ab99de6da43159ff09d74e4363df81ebd9d451c255d702507474013"
     },
     {
       "path": "geometry-web/cutting_plan_test.js",
