@@ -1,0 +1,186 @@
+{
+  "command": "python audit_downloads.py terminal-logs /tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/api/20261102T050911Z",
+  "exit_code": 0,
+  "jobs": [
+    {
+      "run_id": 41388718270,
+      "job_id": 125095200469,
+      "name": "browser (assembly)",
+      "archive_member": "9_browser (assembly).txt",
+      "bytes": 61920,
+      "sha256": "bbc7fef6e000222603919b4500646f57448681d8c7b07fb9aa1a4b8f1ef149a8",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718270,
+      "job_id": 125095200687,
+      "name": "browser (space)",
+      "archive_member": "8_browser (space).txt",
+      "bytes": 66132,
+      "sha256": "fe672004e5bb404b330050918f4096f95ccaebeded48ab211eddc8dc501b53e3",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718270,
+      "job_id": 125095200716,
+      "name": "browser (canvas)",
+      "archive_member": "7_browser (canvas).txt",
+      "bytes": 744298,
+      "sha256": "dd827b64ca6558ac40e164aa9c3f6f5fdc673d9fe1130209533dc00bd1bab58d",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718270,
+      "job_id": 125095200739,
+      "name": "browser (timber)",
+      "archive_member": "5_browser (timber).txt",
+      "bytes": 45146,
+      "sha256": "eb2bd3988a015e5d5796686efe92c4cd21d70c5159c2d42c99485ce63ba3c5be",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718270,
+      "job_id": 125095200745,
+      "name": "browser (documents)",
+      "archive_member": "6_browser (documents).txt",
+      "bytes": 39769,
+      "sha256": "228ce26fa9968ef98746da17a911f23819885f6d4265c72287d2767cfe040e30",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718270,
+      "job_id": 125095200772,
+      "name": "native (3/3)",
+      "archive_member": "3_native (3_3).txt",
+      "bytes": 45194,
+      "sha256": "e06eec51f791e040b3cf52fc1b9ab4a1eb05e0f54630f57fc32a7bd0c7af4e02",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718270,
+      "job_id": 125095200791,
+      "name": "native (1/3)",
+      "archive_member": "1_native (1_3).txt",
+      "bytes": 45405,
+      "sha256": "4758a0474734a64156530ff3f621cb992280238075f92945c1599b6121559397",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718270,
+      "job_id": 125095200802,
+      "name": "browser (grid)",
+      "archive_member": "4_browser (grid).txt",
+      "bytes": 372296,
+      "sha256": "34dd14d8bcb05fff2d64e1623cb02c36c800ed13ea6724eab7b8649abe6cd2fc",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718270,
+      "job_id": 125095200859,
+      "name": "native (2/3)",
+      "archive_member": "2_native (2_3).txt",
+      "bytes": 47189,
+      "sha256": "5bdea3ed47a260d40dc7b35ed67108c4211fe53d2db4fbe960ec64f899dbcdce",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718270,
+      "job_id": 125099677269,
+      "name": "native complete coverage",
+      "archive_member": "0_native complete coverage.txt",
+      "bytes": 26067,
+      "sha256": "73877f923d15253e0a4f7be37c41898454b87e8e0c81eb9c90e55db9f6ae8863",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718083,
+      "job_id": 125095200135,
+      "name": "Verify merged architecture with original commands",
+      "archive_member": "9_Verify merged architecture with original commands.txt",
+      "bytes": 314468,
+      "sha256": "3972a8cd9884750b5245b694a5a349653252cf51a2128323aa7e3efbe36a87df",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718083,
+      "job_id": 125095640605,
+      "name": "plan",
+      "archive_member": "8_plan.txt",
+      "bytes": 17718,
+      "sha256": "0a7e5c6b99b758a527ae743c4693526606c7e6d4b22e23517112f4d46d6538ca",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718083,
+      "job_id": 125095924823,
+      "name": "mutation (core-2)",
+      "archive_member": "7_mutation (core-2).txt",
+      "bytes": 29160,
+      "sha256": "1734349437332ef4f06869901d2497e0d64dec8e07a1982d4f64147cb446e75a",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718083,
+      "job_id": 125095924849,
+      "name": "mutation (core-1)",
+      "archive_member": "6_mutation (core-1).txt",
+      "bytes": 29839,
+      "sha256": "2c01703175fd0f9f4eb226899530215ac839ddd4e444da7bdc197e0a8a2ccef2",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718083,
+      "job_id": 125095924850,
+      "name": "mutation (core-4)",
+      "archive_member": "5_mutation (core-4).txt",
+      "bytes": 31050,
+      "sha256": "29975f799d4578fd955747d9196d95f927e477c5959c7e428a4f114a090790c2",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718083,
+      "job_id": 125095924903,
+      "name": "mutation (bridge-2)",
+      "archive_member": "3_mutation (bridge-2).txt",
+      "bytes": 24432,
+      "sha256": "9523dc4f015bfc88a82d165c27f1c201a273490676cde258eb3cb49d894903d9",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718083,
+      "job_id": 125095924923,
+      "name": "mutation (core-3)",
+      "archive_member": "4_mutation (core-3).txt",
+      "bytes": 28372,
+      "sha256": "14e7339b3a56e9acd7d5262ecabdf5e417c2b04557c563f3a8a35d8492f49478",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718083,
+      "job_id": 125095924925,
+      "name": "mutation (bridge-3)",
+      "archive_member": "2_mutation (bridge-3).txt",
+      "bytes": 24317,
+      "sha256": "4a4231c259fac2733542e6cc5b0b33f47984bf32d3d66a4c6b7cdd95be889a4f",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718083,
+      "job_id": 125095924926,
+      "name": "mutation (bridge-1)",
+      "archive_member": "1_mutation (bridge-1).txt",
+      "bytes": 24609,
+      "sha256": "19c66bef584e68f54840bc72f320a9f8e47debe0ca68eac790439773b555534f",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41388718083,
+      "job_id": 125104701233,
+      "name": "Verify complete mutation evidence",
+      "archive_member": "0_Verify complete mutation evidence.txt",
+      "bytes": 31716,
+      "sha256": "572ed1a9ad796bcb7f32b21adeb3a5c6110020e01f5be3584c75835230fc0ff1",
+      "byte_equal": true
+    }
+  ]
+}

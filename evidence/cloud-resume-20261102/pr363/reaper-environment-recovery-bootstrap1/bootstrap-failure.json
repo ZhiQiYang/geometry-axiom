@@ -1,0 +1,6 @@
+{
+  "exitCode": 1,
+  "stage": "before subreaper enabled and before any Popen/test child",
+  "exception": "FileNotFoundError: kernel lacks /proc/self/task/PID/children",
+  "repair": "Fallback direct-child PPID scan; WNOWAIT exit peek preserves Popen main exit status"
+}

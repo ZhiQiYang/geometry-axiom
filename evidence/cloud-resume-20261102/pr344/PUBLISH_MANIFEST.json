@@ -8,7 +8,7 @@
   "actualMain": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
   "toolDependency": "502a64ff6214dd6060927b7f14643a533536f20d",
   "fileCount": 102,
-  "totalBytes": 642229,
+  "totalBytes": 648279,
   "files": [
     {
       "path": "PUBLISH_INDEX.md",
@@ -17,18 +17,18 @@
     },
     {
       "path": "HANDOFF.md",
-      "bytes": 7715,
-      "sha256": "13f0b0af92cab1109fa72730b689f5d0f319d1fc8ac375697e5ae993d3201847"
+      "bytes": 7958,
+      "sha256": "9c15741781b89d6aea732ada50e8f2c61c39e074e1ce713ef81f496da7c52fd0"
     },
     {
       "path": "PEER_REVIEW.md",
-      "bytes": 2019,
-      "sha256": "801a99c0cb0b7b452db4c261f1925a3554246239a214eca61f9844d1a05cf39d"
+      "bytes": 2532,
+      "sha256": "5498b04b27dbaa81e4e095de061655f75466e1a8491af17024b5e2fb22bf3227"
     },
     {
       "path": "BROWSER_PREFLIGHT.md",
-      "bytes": 5696,
-      "sha256": "400443b70595c473037693f6e04217a1d5243c4b7abc17c331e23f72f54ee1d7"
+      "bytes": 10990,
+      "sha256": "d094c63a4eebf7e0f9f4ec04ffb4743cdcd18e4c37b7459b1b78214c6c374fb5"
     },
     {
       "path": "SOURCE_IDENTITY.json",
@@ -590,5 +590,21 @@
       "script": "close_receipt.py",
       "result": "only two policy key paths corrected; original gates not rerun"
     }
-  ]
+  ],
+  "staticPlanRevision": {
+    "at": "2026-11-02T05:03:51.559950+00:00",
+    "supersedesManifestSha256": "ad3ca4b624a615f123414ab524e32e8120d5aa123e3ac9f73a451a71ba4e4066",
+    "governingReview": 6398950277,
+    "formalBrowserMode": "full",
+    "phaseCount": 3,
+    "phaseTimeoutSeconds": 2100,
+    "scopeFilters": [],
+    "modifiers": [],
+    "flowScopeDiagnosticOnly": true,
+    "testsExecutedForRevision": false,
+    "sourceModifiedForRevision": false,
+    "staticPeerReview": "PASS",
+    "clearedExistingFlagCount": 22,
+    "noBrowserOrBuildExecution": true
+  }
 }

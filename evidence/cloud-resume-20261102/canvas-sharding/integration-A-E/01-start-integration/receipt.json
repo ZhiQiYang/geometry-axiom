@@ -1,0 +1,28 @@
+{
+  "label": "01-start-integration",
+  "command": [
+    "git",
+    "switch",
+    "-c",
+    "codex/canvas-validation-20261102",
+    "502a64ff6214dd6060927b7f14643a533536f20d"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "before": {
+    "head": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+    "commit": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343 502a64ff6214dd6060927b7f14643a533536f20d b873823a98553c06ba8cac849d426f1921d3d78d",
+    "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unmerged_stage_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty": []
+  },
+  "exit_code": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "d6303b81887c9cc3617d0cc73e1787b568322afb7f1f9bc1a27a375dfdc85546",
+  "after": {
+    "head": "502a64ff6214dd6060927b7f14643a533536f20d",
+    "commit": "502a64ff6214dd6060927b7f14643a533536f20d df347537c920b5a51ca157d7886857a7d0547d5b 5775a9e9e46bca801a9a70aaeafcdab9f597bc4d 910665aa55b5be4830de2f729a7aca5db1cbe8cc",
+    "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unmerged_stage_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty": []
+  }
+}

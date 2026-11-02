@@ -1,0 +1,174 @@
+{
+  "base": "502a64ff6214dd6060927b7f14643a533536f20d",
+  "heads": {
+    "R06_A": "e9f4dd75cfd4eb9965e3af249200b918907d62db",
+    "recovery_E": "503cfc59354893859ae9e6e4a6ab7c11d7972517",
+    "canvas": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343"
+  },
+  "order": [
+    "R06_A",
+    "recovery_E",
+    "canvas"
+  ],
+  "status": "owner-confirmed fixed product candidates; final ledger/census pending",
+  "changed": {
+    "R06_A": {
+      "total": 70,
+      "non_evidence": [
+        ".github/workflows/integration-tests.yml",
+        ".github/workflows/r06-bay-repeat.yml",
+        "BACKLOG.md",
+        "current_geometry.c",
+        "geometry-app/native/reference_sources.inc",
+        "geometry-app/native/world_candidate.inc",
+        "geometry-core/assembly.inc",
+        "geometry-core/assembly_generation.inc",
+        "geometry-core/card-reference/run_archive_mutations.py",
+        "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+        "geometry-core/domain-decoupling/product-architecture-receipt.json",
+        "geometry-core/domain-decoupling/product-architecture-scan.json",
+        "geometry-core/domain-decoupling/product-architecture.json",
+        "geometry-core/engineering_commands.inc",
+        "geometry-core/references.inc",
+        "geometry-core/transactions.inc",
+        "geometry-templates/woodworking/frontend.js",
+        "geometry-templates/woodworking/native/assembly.c",
+        "geometry-templates/woodworking/native/assembly.h",
+        "geometry-templates/woodworking/native/assembly_sources.c",
+        "geometry-templates/woodworking/native/assembly_sources.h",
+        "geometry-templates/woodworking/native/grid_sources.c",
+        "geometry-templates/woodworking/native/grid_sources.h",
+        "geometry-web/assembly-provenance.js",
+        "geometry-web/assembly-workspace.css",
+        "geometry-web/assembly-workspace.js",
+        "geometry-web/assembly_bay_repeat_test.js",
+        "geometry-web/assembly_bridge.inc",
+        "geometry-web/assembly_review_test.js",
+        "geometry-web/cdp_bay_repeat_io.js",
+        "geometry-web/cdp_floor.js",
+        "geometry-web/cdp_sections.golden.json",
+        "geometry-web/cdp_test.js",
+        "geometry-web/docs/ASSEMBLY-GENERATION.md",
+        "geometry-web/docs/DOM-CONTRACT.md",
+        "geometry-web/engineering_bridge.inc",
+        "geometry-web/index.html",
+        "geometry-web/project-store.js",
+        "geometry-web/reference-ui.js",
+        "geometry-web/reference-workspace.js",
+        "geometry-web/reference_bridge.inc",
+        "geometry-web/rule-case-data.js",
+        "geometry-web/rule_case_workbench_adapter.py",
+        "geometry-web/scenario_verify.py",
+        "geometry-web/source-inspector-bridge.inc",
+        "geometry-web/source-inspector.js",
+        "geometry-web/timber-schedule.js",
+        "geometry-web/timber-supports.js",
+        "geometry-web/timber_support_projection.inc",
+        "geometry-web/transport_failure_trace.js",
+        "geometry-web/web_bridge.c",
+        "tests/NATIVE-SHARDING.md",
+        "tests/bay_repeat_mutation_check.py",
+        "tests/bay_repeat_mutations.json",
+        "tests/bay_repeat_node_runner.cjs",
+        "tests/mutants_results.json",
+        "tests/run_all.expected.json",
+        "tests/run_all.py",
+        "tests/test_assembly_bay_projection.js",
+        "tests/test_assembly_bay_repeat.py",
+        "tests/test_assembly_project_store.js",
+        "tests/test_assembly_workspace.js",
+        "tests/test_bay_repeat_mutation_check.py",
+        "tests/test_cdp_floor.js",
+        "tests/test_grid_rule_draft.js",
+        "tests/test_reference_workspace_races.js",
+        "tests/test_rule_case_workbench_http.py",
+        "tests/test_scenario_project_store.js",
+        "tests/test_transport_failure_trace.js",
+        "tests/test_woodworking_frontend.js"
+      ],
+      "evidence_count": 0,
+      "commit": "e9f4dd75cfd4eb9965e3af249200b918907d62db 3aa03de1e309883e53829c92f064e3ebd51a0ad2 75814afdda70d5ca9c0216e0be5cc75f37f7df4e",
+      "merge_base": "502a64ff6214dd6060927b7f14643a533536f20d"
+    },
+    "recovery_E": {
+      "total": 582,
+      "non_evidence": [
+        "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+        "geometry-core/domain-decoupling/product-architecture-receipt.json",
+        "geometry-core/domain-decoupling/product-architecture.json",
+        "geometry-web/app.js",
+        "geometry-web/cdp_test.js",
+        "tests/run_all.expected.json",
+        "tests/run_all.py",
+        "tests/test_connection_recovery.js"
+      ],
+      "evidence_count": 574,
+      "commit": "503cfc59354893859ae9e6e4a6ab7c11d7972517 eccebabc85acf74e30274b8ea8e24db863d8843b ff068df7b220d63e64832d3648a0b81ff8cbca57",
+      "merge_base": "502a64ff6214dd6060927b7f14643a533536f20d"
+    },
+    "canvas": {
+      "total": 7,
+      "non_evidence": [
+        ".github/scripts/canvas_evidence.py",
+        ".github/workflows/integration-tests.yml",
+        "geometry-web/cdp_test.js",
+        "tests/CANVAS-EVIDENCE.md",
+        "tests/helpers/canvas_shards.js",
+        "tests/test_canvas_evidence.py",
+        "tests/test_canvas_shards.js"
+      ],
+      "evidence_count": 0,
+      "commit": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343 502a64ff6214dd6060927b7f14643a533536f20d b873823a98553c06ba8cac849d426f1921d3d78d",
+      "merge_base": "502a64ff6214dd6060927b7f14643a533536f20d"
+    }
+  },
+  "overlap": {
+    "R06_A__recovery_E": [
+      "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+      "geometry-core/domain-decoupling/product-architecture-receipt.json",
+      "geometry-core/domain-decoupling/product-architecture.json",
+      "geometry-web/cdp_test.js",
+      "tests/run_all.expected.json",
+      "tests/run_all.py"
+    ],
+    "R06_A__canvas": [
+      ".github/workflows/integration-tests.yml",
+      "geometry-web/cdp_test.js"
+    ],
+    "recovery_E__canvas": [
+      "geometry-web/cdp_test.js"
+    ]
+  },
+  "manifests": {
+    "R06_A": {
+      "sha256": "4f9256ff0f0e5f221a0b911dace2874b8ac94b066b110dc9ccff230a6b52e32b",
+      "list_sizes": {
+        "sourceRoots": 5,
+        "sourceFiles": 3,
+        "searchRoots": 3,
+        "sources": 335,
+        "exclusions": 272,
+        "htmlScriptRoutes": 3,
+        "javascriptImportRoutes": 2,
+        "policy": 7,
+        "htmlEmbedRoutes": 1,
+        "trustedVendorBundles": 1
+      }
+    },
+    "recovery_E": {
+      "sha256": "f0c0b4db4ca01d4825883b73d73bf8644af313cd2bcab4c9b23638b9bbd93d32",
+      "list_sizes": {
+        "sourceRoots": 5,
+        "sourceFiles": 3,
+        "searchRoots": 3,
+        "sources": 334,
+        "exclusions": 270,
+        "htmlScriptRoutes": 3,
+        "javascriptImportRoutes": 2,
+        "policy": 7,
+        "htmlEmbedRoutes": 1,
+        "trustedVendorBundles": 1
+      }
+    }
+  }
+}

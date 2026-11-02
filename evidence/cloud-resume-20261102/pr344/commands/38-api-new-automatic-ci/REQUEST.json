@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "python",
+    "-c",
+    "\nimport concurrent.futures,json,os,pathlib,urllib.request\nroot=pathlib.Path(\"/tmp/geometry-resume-20261102/pr344/ledger-adoption\"); f=\"d794a7447b98a82fb35c1dccaedc3443e2230933\"; base=\"https://api.github.com/repos/ZhiQiYang/geometry-axiom\"; headers={\"Accept\":\"application/vnd.github+json\",\"User-Agent\":\"Codex-pr344-ledger-readback\"}\nfor key in [\"GH_TOKEN\",\"GITHUB_TOKEN\"]:\n if os.environ.get(key): headers[\"Authorization\"]=\"Bearer \"+os.environ[key]; break\ndef get(item):\n path,name=item\n with urllib.request.urlopen(urllib.request.Request(base+path,headers=headers),timeout=45) as response: raw=response.read()\n (root/name).write_bytes(raw); return name,json.loads(raw)\nwith concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool: results=dict(pool.map(get,[(\"/pulls/344\",\"api-pr344-F.json\"),(\"/actions/runs?head_sha=\"+f+\"&per_page=30\",\"api-runs-F.json\")]))\np=results[\"api-pr344-F.json\"]; assert p[\"head\"][\"sha\"]==f and p[\"base\"][\"ref\"]==\"main\"; runs=results[\"api-runs-F.json\"][\"workflow_runs\"]; summary={\"head\":p[\"head\"][\"sha\"],\"base\":p[\"base\"][\"ref\"],\"draft\":p[\"draft\"],\"state\":p[\"state\"],\"runs\":[{k:r.get(k) for k in [\"id\",\"name\",\"event\",\"head_sha\",\"head_branch\",\"run_attempt\",\"status\",\"conclusion\",\"created_at\",\"html_url\"]} for r in runs],\"manualDispatchOrRerun\":False}; (root/\"AUTOMATIC_CI_READBACK.json\").write_text(json.dumps(summary,ensure_ascii=False,indent=2)+\"\\n\"); print(json.dumps(summary,ensure_ascii=False))\n"
+  ],
+  "cwd": "/tmp/geometry-pr344-20261102",
+  "startedUtc": "2026-11-02T05:25:12.784328+00:00",
+  "environment": {
+    "TMPDIR": null,
+    "TMP": null,
+    "TEMP": null,
+    "GEOMETRY_TEST_BRIDGE": null,
+    "GEOMETRY_MODEL_BASE": null,
+    "GEOMETRY_TEST_URL": null,
+    "GEOMETRY_FEEDBACK_DIR": null,
+    "PYTHONOPTIMIZE": null,
+    "CC": null,
+    "CFLAGS": null
+  }
+}

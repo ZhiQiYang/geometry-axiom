@@ -1,0 +1,8 @@
+{
+  "file": "tests/assembly_mutation_check.py",
+  "before": "os.killpg(process.pid, signal.SIGKILL)",
+  "after": "process.kill()",
+  "beforeSha256": "2777a76d3463aca186806f593dfb46e9b7480522329f2f8d680610bb8635226a",
+  "afterSha256": "b9234400181f7918346e722891efbf82eeff71d1142d3463c72d6f9207f5dc6b",
+  "meaning": "Kill the Popen shell only; deliberately omit the process-group kill. Assertions, 2-second run timeout and 5-second group wait remain original."
+}

@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "python",
+    "-c",
+    "\nimport hashlib,json,pathlib,subprocess\nr=pathlib.Path(\"/tmp/geometry-pr344-20261102\"); o=pathlib.Path(\"/tmp/geometry-resume-20261102/pr344/ledger-adoption\"); a=json.loads((o/\"fresh-source-before.json\").read_text()); b=json.loads((o/\"fresh-source-after-check.json\").read_text()); keys=[\"source\",\"source_head\",\"source_tree\",\"source_ROOT\",\"mutation_source_input_count\",\"mutation_source_hashes\",\"mutation_closure_sha256\",\"original_tool_sha256\",\"compile_sha256\",\"core_oracle_sha256\",\"bridge_oracle_sha256\",\"mutation_table_sha256\",\"native_build_inputs\",\"native_build_input_entries\",\"selected_default_cache\"]; assert all(a[k]==b[k] for k in keys); assert b[\"source_status\"]==\"M tests/mutants_results.json\"; expected=\"aaaad44b2470d5f5d937a8ba8f431dd554f0ee95a82958f9ff48b19aa86a5ee8\"; raw=(r/\"tests/mutants_results.json\").read_bytes(); assert hashlib.sha256(raw).hexdigest()==expected==b[\"committed_ledger_before_sha256\"]; ledger=json.loads(raw); assert len(ledger)==123; active=[v for v in ledger.values() if v[\"verdict\"]!=\"retired\"]; assert len(active)==120 and {v[\"execution\"][\"head\"] for v in active}=={a[\"source_head\"]}; changed=subprocess.check_output([\"git\",\"diff\",\"--name-only\"],cwd=r).decode().splitlines(); assert changed==[\"tests/mutants_results.json\"]; subprocess.run([\"git\",\"diff\",\"--check\"],cwd=r,check=True); result=json.loads((o.parent/\"commands/29-adopted-ledger-original-check/RESULT.json\").read_text()); assert result[\"actualProcessReturncode\"]==0; d={\"sourceHeadBeforeCommit\":a[\"source_head\"],\"sourceTreeBeforeCommit\":a[\"source_tree\"],\"officialLedgerSha256\":expected,\"all120ExecutionHeadsRemain\":a[\"source_head\"],\"closureComparedFields\":keys,\"allClosuresEqual\":True,\"onlyChangedPath\":changed,\"originalCheckExit\":0,\"originalCheckSeconds\":result[\"elapsedSeconds\"],\"nativeProductOrDownloadedBinaryExecuted\":False,\"cacheBefore\":a[\"selected_default_cache\"],\"cacheAfter\":b[\"selected_default_cache\"],\"cacheNotModified\":True,\"logicalFreshnessOnlyWithOfficialArtifactVerificationElsewhere\":True}; (o/\"AFTER_CHECK_IDENTITY.json\").write_text(json.dumps(d,indent=2)+\"\\n\"); print(json.dumps(d))\n"
+  ],
+  "cwd": "/tmp/geometry-pr344-20261102",
+  "startedUtc": "2026-11-02T05:21:31.193405+00:00",
+  "environment": {
+    "TMPDIR": null,
+    "TMP": null,
+    "TEMP": null,
+    "GEOMETRY_TEST_BRIDGE": null,
+    "GEOMETRY_MODEL_BASE": null,
+    "GEOMETRY_TEST_URL": null,
+    "GEOMETRY_FEEDBACK_DIR": null,
+    "PYTHONOPTIMIZE": null,
+    "CC": null,
+    "CFLAGS": null
+  }
+}

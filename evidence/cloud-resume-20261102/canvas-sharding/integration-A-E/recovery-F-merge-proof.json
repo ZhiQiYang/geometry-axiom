@@ -1,0 +1,38 @@
+{
+  "before_head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+  "incoming_F": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+  "new_head": "27e6f6911abb5518c089c0f688fadca5734735ea",
+  "actual_parents": [
+    "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+    "d794a7447b98a82fb35c1dccaedc3443e2230933"
+  ],
+  "old_tree": "80c6f74fc76d68af0d46a38907f2e7ef2c1e1bd9",
+  "new_tree": "80c6f74fc76d68af0d46a38907f2e7ef2c1e1bd9",
+  "tree_equal": true,
+  "all_git_leaf_entries_byte_equal": true,
+  "git_leaf_entry_count": 39265,
+  "git_entry_fields": "mode,type,object-id,path; NUL-delimited full recursive tree",
+  "entry_bytes": 6258778,
+  "entry_closure_sha256": "66531ed4af2d1a4188ac4dbfb52a235c54c21bc32889ac6d02b0ccc1751ef02d",
+  "entry_closure_file": "recovery-F-equal-tree-entries.bin",
+  "changed_paths": [],
+  "merge_command": "git merge --no-ff -m ... d794a7447b98a82fb35c1dccaedc3443e2230933",
+  "merge_initial_exit": 1,
+  "actual_conflict": [
+    "tests/mutants_results.json"
+  ],
+  "resolution": "entire existing A ledger selected; no record mixing, execution.head edits or ledger generation",
+  "ledger_sha256": "5dddce17a6cda9cfe935f075ca33647e1c28ed2bacd7a8ff1f62202ab54300c8",
+  "ledger_equals_A": "e9f4dd75cfd4eb9965e3af249200b918907d62db",
+  "canonical_F_ledger_sha256": "aaaad44b2470d5f5d937a8ba8f431dd554f0ee95a82958f9ff48b19aa86a5ee8",
+  "source_clean": true,
+  "pure_tests_rerun": false,
+  "actual_pure_execution_kept_at": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+  "actual_python12_execution_kept_at": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+  "freshness_claim": false,
+  "push": false,
+  "PR": false,
+  "Chrome_build_native_full_mutants_started": false,
+  "waiting_for": "root-approved final R06 F2 and later final freeze",
+  "exit_code": 0
+}

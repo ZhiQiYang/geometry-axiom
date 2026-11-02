@@ -1,0 +1,40 @@
+✔ preserves global lexical lookup, statements and synchronous values (3.246433ms)
+✔ holds the exact pending promise until the CDP response then releases it (5.798669ms)
+✔ concurrent evaluations retain independent roots and release only their own entry (5.455883ms)
+✔ rejected browser work propagates its original error and releases the root (1.741687ms)
+✔ syntax errors release even the empty registry created before evaluation (1.62843ms)
+✔ protocol failure never repeats an expression that already mutated state (2.053117ms)
+✔ cleanup failure cannot replace the original evaluation failure (0.326313ms)
+✔ cleanup failure after a successful evaluation is not hidden (0.251302ms)
+✔ a replaced document is not populated or stripped of unrelated retained work (1.819892ms)
+✔ 全等 → 無差異 (1.915343ms)
+✔ 某段數字變小 → 有差異,訊息指名該段與兩個數字 (0.309157ms)
+✔ 某段數字變大 → 有差異(嚴格相等,新增斷言須明確更新 golden) (0.390308ms)
+✔ 某段消失 → 有差異 (0.181769ms)
+✔ 多出 golden 沒有的段 → 有差異 (0.194798ms)
+✔ 多種差異同時出現 → 逐條列出,不只報第一條 (0.257481ms)
+✔ 段被保留但計數為 0 與整段消失是兩回事,0 也要與 golden 相等 (0.155319ms)
+✔ {min:N} 下限:達到(含超過)通過,低於才算差異;消失仍算差異 (0.423346ms)
+✔ golden 缺 sections 或 actual 缺 sections 不會丟例外 (0.230701ms)
+✔ sectionOf 只取主編號,子標頭歸到同一段 (0.609222ms)
+✔ buildGolden 總數等於各段加總,且自己通過 validateGolden 與 compare (0.387693ms)
+✔ validateGolden 擋下格式錯誤 (0.26414ms)
+✔ 已提交的 cdp_sections.golden.json 結構合格,且 total 等於各段加總(無 min 段時) (0.368215ms)
+✔ successful condition before the deadline preserves the wait and logs elapsed time (3.442153ms)
+✔ late true reply after 15000 ms cannot become a successful wait (6.152644ms)
+✔ an unresolved condition is bounded and its eventual reply cannot change the verdict (1.464947ms)
+✔ a hanging diagnostic uses the same deadline instead of starting a second budget (1.444998ms)
+✔ no fresh diagnostic starts after the deadline (4.045775ms)
+✔ hard timeout names the site and preserves bounded diagnostic information (2.336507ms)
+✔ non-timeout evaluation errors retain their identity (2.406801ms)
+✔ section 7 timeout stays red even if the vertex would arrive during the extra settle (1.91289ms)
+✔ section 7 permanent no-op fails without extra settling or another vertex read (1.055261ms)
+✔ section 7 timely success still uses the original vertex comparison exactly once (1.458608ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 110.610688

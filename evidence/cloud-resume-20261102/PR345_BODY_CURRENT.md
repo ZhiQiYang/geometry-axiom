@@ -1,4 +1,4 @@
-Workbench HTTP fixture 的關閉輪詢改為 `poll_interval=0.05`，保留原19項斷言與1200秒時限。已普通 merge main 與 #366 工具來源，base 已改 main，並普通快轉推送官方新帳本。維持 draft；最終新 CI 尚在核收，不宣告 READY-TO-MERGE。
+Workbench HTTP fixture 的關閉輪詢改為 `poll_interval=0.05`，保留原19項斷言與1200秒時限。已普通 merge main 與 #366 工具來源，base 已改 main，並普通快轉推送官方新帳本。新 head 的20個正式CI jobs與官方原件已全部核收通過。READY-TO-MERGE（技術驗收），仍待最新審查；合main由本機Claude處理，Codex不合併。
 
 | 項目 | 唯一 current-state |
 |---|---|
@@ -12,10 +12,14 @@ Workbench HTTP fixture 的關閉輪詢改為 `poll_interval=0.05`，保留原19�
 | selected19 正式局部 | execution仍 `c8db6777819c844064aa79baf089ff1ce58d5e5f`；`python -B tests/run_all.py --build --only test_rule_case_workbench_http`：19／19、0 fail／skip、strict19、exit0，unittest27.48秒，含build外層47.284686秒；不移標 M／E |
 | selected→M→E 閉包 | 195個 bridge source inputs 逐Git entry等main；M→E除ledger外所有來源／產品／測試一致。相對main的唯一fixture差異仍為輪詢單行，另有四原樣工具與13歷史evidence |
 | M 首輪整合紅燈（保留） | [41382891799](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41382891799)：native2／3的舊帳本check失敗，complete coverage依原規則拒絕聚合；230 suites已跑、5339 pass／0 counted fail／1原允許GDI skip，但有未計數 freshness fail，整體不算通過。六browser皆過。舊M check為53 bridge stale，不回寫成綠 |
-| E 正式整合／突變 | 新自動PR run [integration41387497096](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41387497096)／[mutation41387497118](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41387497118) 已觸發，原件核收中；尚不宣告全綠。API synthetic merge `058f793590301e1e58074be072d0296d432e184b` 與E同tree，實際execution仍須從各job原log核對 |
+| E 正式整合／突變 | [integration41387497096](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41387497096)／[mutation41387497118](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41387497118) 已20jobs全success。真integration execution `058f793590301e1e58074be072d0296d432e184b`、tree與E相同、parents為main5775＋E；不是只憑API合成merge猜測 |
+| E 原件核收 | 21官方ZIP digest與20job log全符；原native聚合復驗exit0、230suite／5339pass／1原GDI skip、覆蓋反證0／1／0；六browser全過、fullcanvas2267／85golden matched；原mutation verifier0、123＝114killed／1crashed／5equivalent／3retired、其餘0、7cache controls0／1／0、159bridge raw核過；三原架構命令0 |
+| E 新生成artifact身分 | ledger SHA256 `8af0fb4ab26d997a4b9f11e8552388277f167c20c08e60966631af3c97bf773d`，summary `90b760258bc6870ec517838cf413b28011d54a67d13152ee3eae111cc96764ba`；source已採帳本仍保留上述M的execution與0be90…，不為追新artifact再改source／移標 |
 
 [本輪 selected19 的原命令／退出碼／完整輸出／身分與peer](https://github.com/ZhiQiYang/geometry-axiom/tree/4d44c1c2d20c57ce4fae892e9e18d17988754327/evidence/cloud-resume-20261102/pr345) 已普通推送；未將runtime ELF冒稱包含在小型公開子集。E 的 ledger bytes 可從目前 head 與上述官方 artifact 直接核對。
 
 歷史正式比較 execution `2199cda8896b47c7ad2b6c10479e5e0cbdb67c83`、六次 correctness exit0 與等價撤回0／0／0保留。撤回只恢復等待時間，沒有宣稱 killed mutant；本輪單次27.48秒也不是新的A／B效能證據。歷史原件仍在 `evidence/geo345-final-2199cda8/` 與 `evidence/issue214-fixture-2199cda8/`。
 
-未降低斷言、golden、時限、expected或允許skip，未改產品、公理、正典閱讀器或決策；新CI終態核收後再交審，合main由本機Claude處理。
+未降低斷言、golden、時限、expected或允許skip，未改產品、公理、正典閱讀器或決策；請最新審查；合main由本機Claude處理。
+
+[最終E原件核收、命令／exit／環境／完整SHA與hash](https://github.com/ZhiQiYang/geometry-axiom/tree/7533e5472512b382f53a844fbada6831c71e9923/evidence/cloud-resume-20261102/pr345/ci-final) 已普通推送且遠端逐byte讀回。最後bridge2實跑20分49秒，低於原45分鐘；排隊時間不算產品逾時。

@@ -1,0 +1,82 @@
+{
+  "old_actual_execution_head": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+  "current_head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+  "rerun": false,
+  "test_methods": 12,
+  "source_files": [
+    {
+      "path": "tests/test_canvas_evidence.py",
+      "sha256": "005dbfc2a3cceef218bc5f612f49e2522e37f109d2017d88d715e7d468b579eb",
+      "byte_equal_to_old_execution": true,
+      "imports": [
+        "copy",
+        "importlib.util",
+        "json",
+        "pathlib",
+        "tempfile",
+        "unittest",
+        "unittest.mock"
+      ]
+    },
+    {
+      "path": ".github/scripts/canvas_evidence.py",
+      "sha256": "0082e47cdaf4805080fea7410b1c60147d029b00ff1dc03b66faaf2eff3ec534",
+      "byte_equal_to_old_execution": true,
+      "imports": [
+        "argparse",
+        "hashlib",
+        "importlib.util",
+        "json",
+        "os",
+        "pathlib",
+        "subprocess",
+        "sys",
+        "threading",
+        "urllib.parse"
+      ]
+    }
+  ],
+  "direct_supervisor_function_calls": [
+    "read_json",
+    "sha",
+    "source_identity",
+    "trace",
+    "verify_manifest"
+  ],
+  "transitive_tested_functions": [
+    "verify_manifest",
+    "runtime_endpoint",
+    "require",
+    "sha",
+    "read_json + unique hook",
+    "trace",
+    "source_identity with git mocked"
+  ],
+  "real_repository_input_reads": [
+    "module loading tests/test_canvas_evidence.py",
+    "module loading .github/scripts/canvas_evidence.py"
+  ],
+  "file_data_reads": "Only sha/read_json/trace on TemporaryDirectory fixture files; fixture plan, runtime, scope, source identities and version strings are fabricated test data unchanged in both code blobs.",
+  "source_identity_boundary": "Both source_identity tests patch evidence.git and source environment completely; fake_git supplies all status/HEAD/commit/tree data. No real Git or product source is read.",
+  "not_called": [
+    "runtime_version",
+    "plan",
+    "node_verify",
+    "run",
+    "verify",
+    "capture"
+  ],
+  "changed_repository_files_not_read": [
+    "geometry-web/cdp_test.js",
+    "geometry-web/cdp_sections.golden.json",
+    "geometry-web/runtime_version.py",
+    "real helper plan/source closure",
+    "R06 or recovery fixtures"
+  ],
+  "module_import_boundary": "Only stdlib imports and static ROOT/constants at import; __main__ is false under spec.loader.exec_module. runtime_version dynamic import is inside uncalled runtime_version().",
+  "python_environment_matches_original_receipt": true,
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "ROOT_path_same": "/tmp/geometry-canvas-shards-20261102",
+  "claim": "The 12-test execution remains attached to old commit; file/function/input closure is unchanged, so it is applicable as unchanged-code evidence, not a new-head rerun.",
+  "exit_code": 0
+}

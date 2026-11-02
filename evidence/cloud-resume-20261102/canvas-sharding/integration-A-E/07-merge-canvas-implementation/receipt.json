@@ -1,0 +1,79 @@
+{
+  "label": "07-merge-canvas-implementation",
+  "command": [
+    "git",
+    "merge",
+    "--no-ff",
+    "-m",
+    "Merge canvas ownership routing after R06 and recovery sources",
+    "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "before": {
+    "head": "93c1553d3254abd65f3147eb6802b4e8c5f0deab",
+    "commit": "93c1553d3254abd65f3147eb6802b4e8c5f0deab 86282523501608c7fdece026ab529182e668f840 503cfc59354893859ae9e6e4a6ab7c11d7972517 111b8b4d08bab0a856812e3c43010a986f9e8e70",
+    "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unmerged_stage_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty": []
+  },
+  "exit_code": 1,
+  "stdout_sha256": "26181bc94a2db5939e0baf3e3fae823588bede4bdd5cb4e1f123e9b77b11f62d",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "after": {
+    "head": "93c1553d3254abd65f3147eb6802b4e8c5f0deab",
+    "commit": "93c1553d3254abd65f3147eb6802b4e8c5f0deab 86282523501608c7fdece026ab529182e668f840 503cfc59354893859ae9e6e4a6ab7c11d7972517 111b8b4d08bab0a856812e3c43010a986f9e8e70",
+    "status_sha256": "d8921640e016ec610ef34dc14a4af32b470826bf2a58f77c108c699cc57b3dde",
+    "unmerged_stage_bytes_sha256": "b01ffe00737a9c1cfecab14b4e8a27cc8ccb771d508d93f8909966b2f710f714",
+    "dirty": [
+      {
+        "path": ".github/scripts/canvas_evidence.py",
+        "present": true,
+        "bytes": 11687,
+        "sha256": "0082e47cdaf4805080fea7410b1c60147d029b00ff1dc03b66faaf2eff3ec534",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/07-merge-canvas-implementation/after/.github/scripts/canvas_evidence.py"
+      },
+      {
+        "path": ".github/workflows/integration-tests.yml",
+        "present": true,
+        "bytes": 11007,
+        "sha256": "60780fb7ccc482e8d206f2ebea1d9e57e32e2430be9239824c756b142117a798",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/07-merge-canvas-implementation/after/.github/workflows/integration-tests.yml"
+      },
+      {
+        "path": "geometry-web/cdp_test.js",
+        "present": true,
+        "bytes": 520639,
+        "sha256": "5202d40a3a303c74e0f6f7166d8640b0d22a30f2ad7ef0c646ab99a40165e5d2",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/07-merge-canvas-implementation/after/geometry-web/cdp_test.js"
+      },
+      {
+        "path": "tests/CANVAS-EVIDENCE.md",
+        "present": true,
+        "bytes": 2726,
+        "sha256": "2030fc6d7374b7d78a0e1cb46569f0a18e4bd3be81811d86fecf237f82314ddc",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/07-merge-canvas-implementation/after/tests/CANVAS-EVIDENCE.md"
+      },
+      {
+        "path": "tests/helpers/canvas_shards.js",
+        "present": true,
+        "bytes": 12088,
+        "sha256": "98f4d1c8fbdc13039c936bba858dee620aaa7547e49f08adce3358f06678d4e7",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/07-merge-canvas-implementation/after/tests/helpers/canvas_shards.js"
+      },
+      {
+        "path": "tests/test_canvas_evidence.py",
+        "present": true,
+        "bytes": 8582,
+        "sha256": "005dbfc2a3cceef218bc5f612f49e2522e37f109d2017d88d715e7d468b579eb",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/07-merge-canvas-implementation/after/tests/test_canvas_evidence.py"
+      },
+      {
+        "path": "tests/test_canvas_shards.js",
+        "present": true,
+        "bytes": 9837,
+        "sha256": "22dc93b5c9a6a7cf8acb87169490208da7f084652e48678601b180bb7f739476",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/07-merge-canvas-implementation/after/tests/test_canvas_shards.js"
+      }
+    ]
+  }
+}

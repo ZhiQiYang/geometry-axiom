@@ -1,0 +1,42 @@
+{
+  "label": "12-commit-registry-and-pin",
+  "command": [
+    "git",
+    "commit",
+    "-m",
+    "Register merged canvas gates and pin the integrated harness"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "before": {
+    "head": "f79e94dd20f7a5a57175d9d8e539499f13dc7cd6",
+    "commit": "f79e94dd20f7a5a57175d9d8e539499f13dc7cd6 93c1553d3254abd65f3147eb6802b4e8c5f0deab 6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343 df76212e0f4f91d41f1bdca66d04b3b4bc137b41",
+    "status_sha256": "9972e6c8d827e2adc0ce09b155c12e62469821b5ed8223c6bcf23c0f4268aa52",
+    "unmerged_stage_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty": [
+      {
+        "path": "geometry-core/domain-decoupling/product-architecture.json",
+        "present": true,
+        "bytes": 224306,
+        "sha256": "923705c107ce9f255b41cb9620b3e1475804b0b54345d1cec0507d305da4741a",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/12-commit-registry-and-pin/before/geometry-core/domain-decoupling/product-architecture.json"
+      },
+      {
+        "path": "tests/run_all.py",
+        "present": true,
+        "bytes": 69345,
+        "sha256": "1107f4a26744f49ab91ee974d78f8fe5b19b64133e43d81d74d21a5b55b0ddb7",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/12-commit-registry-and-pin/before/tests/run_all.py"
+      }
+    ]
+  },
+  "exit_code": 0,
+  "stdout_sha256": "1a8f8d8aa7b933c9b6f3c4834f8f457bfbd879de89d60861c5db522f38a9dc96",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "after": {
+    "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+    "commit": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818 f79e94dd20f7a5a57175d9d8e539499f13dc7cd6 80c6f74fc76d68af0d46a38907f2e7ef2c1e1bd9",
+    "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unmerged_stage_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty": []
+  }
+}

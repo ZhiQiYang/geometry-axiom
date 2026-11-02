@@ -1,0 +1,42 @@
+{
+  "head": "e9f4dd75cfd4eb9965e3af249200b918907d62db",
+  "files": {
+    "tests/__init__.py": {
+      "bytes": 344,
+      "sha256": "02319f9494b104f0476594148d609710685ee440786c2e991bf114dfbc20d596"
+    },
+    "tests/_bridge.py": {
+      "bytes": 12285,
+      "sha256": "dddeaec72eaed7e6255bb6c37013180b68364dc65f2f5aa4edd6f9fab6456423"
+    },
+    "tests/binaries.py": {
+      "bytes": 33058,
+      "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
+    },
+    "tests/_unittest_runner.py": {
+      "bytes": 14941,
+      "sha256": "f4e72e7a771f903094d6973874da8ccb2c98ddb4ff51571cb9179eabe284290e"
+    },
+    "tests/assembly_mutation_check.py": {
+      "bytes": 44790,
+      "sha256": "2777a76d3463aca186806f593dfb46e9b7480522329f2f8d680610bb8635226a"
+    },
+    "tests/test_assembly_mutation_check.py": {
+      "bytes": 18995,
+      "sha256": "e53d1fa41f202657202a7019dbe5ae32ce5fcec085ee09706b2f9c1f63091649"
+    },
+    "tests/test_assembly_rules.py": {
+      "bytes": 36841,
+      "sha256": "f29e13796b8df5ad05914a4c8b6cc04d124c1dbf81a6672363d56719f0ff2b2a"
+    },
+    "geometry-templates/woodworking/native/assembly.c": {
+      "bytes": 80040,
+      "sha256": "759995a8d7fd88d2e3b301dbd0dd812483d6d3483b277e449b884984fc468891"
+    },
+    "geometry-web/engineering_bridge.inc": {
+      "bytes": 22416,
+      "sha256": "a10598d027c8a580fe401cdbe91b8c04426e63ee624d2643ff19cb4b2ac72466"
+    }
+  },
+  "scope": "Exact original inputs read by all 12 no-compiler assembly mutation unit tests."
+}

@@ -1,0 +1,65 @@
+{
+  "phase": "missing-group-kill-negative",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-u",
+    "/tmp/geometry-resume-20261102/pr363/reaper-environment-recovery/source/tests/_unittest_runner.py",
+    "/tmp/geometry-resume-20261102/pr363/reaper-environment-recovery/source/tests/test_assembly_mutation_check.py",
+    "--json-out",
+    "/tmp/geometry-resume-20261102/pr363/reaper-environment-recovery/missing-group-kill-negative/result.json",
+    "--log",
+    "/tmp/geometry-resume-20261102/pr363/reaper-environment-recovery/missing-group-kill-negative/unittest.log"
+  ],
+  "cwd": "/tmp/geometry-resume-20261102/pr363/reaper-environment-recovery/source",
+  "mainPid": 203490,
+  "exitCode": 1,
+  "blocked": false,
+  "elapsedSeconds": 31.156032027007313,
+  "remainingAdoptedChildren": [],
+  "events": [
+    {
+      "event": "observed-live-adopted-child",
+      "pid": 203541,
+      "observedState": "S",
+      "action": "none",
+      "utc": "2026-11-02T05:04:05.555459+00:00"
+    },
+    {
+      "event": "observed-live-adopted-child",
+      "pid": 203542,
+      "observedState": "S",
+      "action": "none",
+      "utc": "2026-11-02T05:04:05.555626+00:00"
+    },
+    {
+      "event": "main-exit-observed-by-Popen",
+      "pid": 203490,
+      "exitCode": 1,
+      "utc": "2026-11-02T05:04:10.608683+00:00"
+    },
+    {
+      "event": "reaped-adopted-child",
+      "pid": 203541,
+      "observedState": "terminated-exit-peek",
+      "waitStatus": 0,
+      "exitCode": 0,
+      "utc": "2026-11-02T05:04:33.555113+00:00"
+    },
+    {
+      "event": "reaped-adopted-child",
+      "pid": 203542,
+      "observedState": "terminated-exit-peek",
+      "waitStatus": 0,
+      "exitCode": 0,
+      "utc": "2026-11-02T05:04:33.555376+00:00"
+    },
+    {
+      "event": "drain-finished",
+      "remainingAdoptedChildren": [],
+      "action": "none",
+      "utc": "2026-11-02T05:04:33.569317+00:00"
+    }
+  ],
+  "finishedUtc": "2026-11-02T05:04:33.569388+00:00",
+  "signalsSentByReaperOrProbe": []
+}

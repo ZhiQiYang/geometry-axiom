@@ -1,0 +1,15 @@
+{"event": "enabled", "pid": 203450, "subreaper": 1, "policy": "Never signal children; waitpid WNOHANG only on adopted direct children excluding the Popen main child.", "utc": "2026-11-02T05:03:59.028223+00:00"}
+{"event": "reaped-adopted-child", "pid": 203487, "observedState": "terminated-exit-peek", "waitStatus": 9, "exitCode": -9, "utc": "2026-11-02T05:04:02.293940+00:00"}
+{"event": "reaped-adopted-child", "pid": 203488, "observedState": "terminated-exit-peek", "waitStatus": 9, "exitCode": -9, "utc": "2026-11-02T05:04:02.294165+00:00"}
+{"event": "main-exit-observed-by-Popen", "pid": 203485, "exitCode": 0, "utc": "2026-11-02T05:04:02.389947+00:00"}
+{"event": "drain-finished", "remainingAdoptedChildren": [], "action": "none", "utc": "2026-11-02T05:04:02.404969+00:00"}
+{"event": "observed-live-adopted-child", "pid": 203541, "observedState": "S", "action": "none", "utc": "2026-11-02T05:04:05.555459+00:00"}
+{"event": "observed-live-adopted-child", "pid": 203542, "observedState": "S", "action": "none", "utc": "2026-11-02T05:04:05.555626+00:00"}
+{"event": "main-exit-observed-by-Popen", "pid": 203490, "exitCode": 1, "utc": "2026-11-02T05:04:10.608683+00:00"}
+{"event": "reaped-adopted-child", "pid": 203541, "observedState": "terminated-exit-peek", "waitStatus": 0, "exitCode": 0, "utc": "2026-11-02T05:04:33.555113+00:00"}
+{"event": "reaped-adopted-child", "pid": 203542, "observedState": "terminated-exit-peek", "waitStatus": 0, "exitCode": 0, "utc": "2026-11-02T05:04:33.555376+00:00"}
+{"event": "drain-finished", "remainingAdoptedChildren": [], "action": "none", "utc": "2026-11-02T05:04:33.569317+00:00"}
+{"event": "reaped-adopted-child", "pid": 203716, "observedState": "terminated-exit-peek", "waitStatus": 9, "exitCode": -9, "utc": "2026-11-02T05:04:36.822099+00:00"}
+{"event": "reaped-adopted-child", "pid": 203717, "observedState": "terminated-exit-peek", "waitStatus": 9, "exitCode": -9, "utc": "2026-11-02T05:04:36.822212+00:00"}
+{"event": "main-exit-observed-by-Popen", "pid": 203710, "exitCode": 0, "utc": "2026-11-02T05:04:36.890438+00:00"}
+{"event": "drain-finished", "remainingAdoptedChildren": [], "action": "none", "utc": "2026-11-02T05:04:36.903315+00:00"}

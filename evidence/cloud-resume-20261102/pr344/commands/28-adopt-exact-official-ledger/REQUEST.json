@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "python",
+    "-c",
+    "\nimport hashlib,json,os,pathlib,subprocess\nroot=pathlib.Path(\"/tmp/geometry-pr344-20261102\"); out=pathlib.Path(\"/tmp/geometry-resume-20261102/pr344/ledger-adoption\"); evidence=pathlib.Path(\"/tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59\"); prior=json.loads((evidence/\"adoption-source-identity.json\").read_text()); fresh=json.loads((out/\"fresh-source-before.json\").read_text()); handoff=json.loads((evidence/\"LEDGER_ADOPTION_HANDOFF.json\").read_text())\nkeys=[\"source_head\",\"source_tree\",\"source_ROOT\",\"mutation_source_input_count\",\"mutation_source_hashes\",\"mutation_closure_sha256\",\"original_tool_sha256\",\"compile_sha256\",\"core_oracle_sha256\",\"bridge_oracle_sha256\",\"mutation_table_sha256\",\"native_build_inputs\",\"native_build_input_entries\",\"committed_ledger_before_sha256\",\"committed_ledger_execution_heads\",\"selected_default_cache\"]\nassert all(fresh[k]==prior[k] for k in keys); assert fresh[\"source_head\"]==\"503cfc59354893859ae9e6e4a6ab7c11d7972517\" and fresh[\"source_status\"]==\"\"; assert os.environ.get(\"MUTATE_RESULTS\") is None\nremote=(out.parent/\"commands/26-ledger-adoption-remote-guard/stdout.bin\").read_text().split()[0]; assert remote==fresh[\"source_head\"]\nledger=root/\"tests/mutants_results.json\"; old=ledger.read_bytes(); official=pathlib.Path(handoff[\"official_ledger_exact_path\"]); raw=official.read_bytes(); sha=lambda b:hashlib.sha256(b).hexdigest(); assert sha(raw)==handoff[\"ledger_sha256\"]==\"aaaad44b2470d5f5d937a8ba8f431dd554f0ee95a82958f9ff48b19aa86a5ee8\"; assert sha(old)==fresh[\"committed_ledger_before_sha256\"]\nrows=json.loads(raw); active=[r for r in rows.values() if r[\"verdict\"]!=\"retired\"]; assert len(rows)==123 and len(active)==120; assert {r[\"execution\"][\"head\"] for r in active}=={fresh[\"source_head\"]}\n(out/\"mutants_results.before-E503cfc59.json\").write_bytes(old); ledger.write_bytes(raw); assert ledger.read_bytes()==raw; changed=subprocess.check_output([\"git\",\"diff\",\"--name-only\"],cwd=root).decode().splitlines(); assert changed==[\"tests/mutants_results.json\"]\nenvkeys=[\"MUTATE_RESULTS\",\"TMPDIR\",\"TMP\",\"TEMP\",\"CC\",\"CFLAGS\",\"CPPFLAGS\",\"LDFLAGS\",\"PYTHONOPTIMIZE\",\"PYTHONDONTWRITEBYTECODE\",\"GEOMETRY_TEST_BRIDGE\",\"GEOMETRY_MODEL_BASE\"]; (out/\"CHECK_ENVIRONMENT.json\").write_text(json.dumps({k:os.environ.get(k) for k in envkeys},indent=2)+\"\\n\")\nproof={\"executionSource\":fresh[\"source_head\"],\"officialLedgerPath\":str(official),\"officialLedgerSha256\":sha(raw),\"previousLedgerSha256\":sha(old),\"sourceClosureExactComparedFields\":keys,\"mutationSourceInputs\":185,\"bridgeOracleEntries\":53,\"nativeBuildInputs\":1369,\"onlyChangedPath\":changed,\"all120ExecutionHeadsPreserved\":fresh[\"source_head\"],\"copiedBytesExact\":True,\"officialVerifyAccepted\":handoff[\"mutation_evidence_accepted\"],\"officialIntegrationAccepted\":False,\"selectedDefaultCache\":fresh[\"selected_default_cache\"],\"downloadedBinaryOrProductExecuted\":False}\n(out/\"EXACT_ADOPTION.json\").write_text(json.dumps(proof,indent=2)+\"\\n\"); print(json.dumps(proof))\n"
+  ],
+  "cwd": "/tmp/geometry-pr344-20261102",
+  "startedUtc": "2026-11-02T05:19:03.412230+00:00",
+  "environment": {
+    "TMPDIR": null,
+    "TMP": null,
+    "TEMP": null,
+    "GEOMETRY_TEST_BRIDGE": null,
+    "GEOMETRY_MODEL_BASE": null,
+    "GEOMETRY_TEST_URL": null,
+    "GEOMETRY_FEEDBACK_DIR": null,
+    "PYTHONOPTIMIZE": null,
+    "CC": null,
+    "CFLAGS": null
+  }
+}

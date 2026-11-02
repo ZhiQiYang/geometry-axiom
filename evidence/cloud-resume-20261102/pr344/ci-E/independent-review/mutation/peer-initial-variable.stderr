@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/independent-review/mutation/MUTATION_PEER.py", line 186, in <module>
+    assert record['closure_sha256'] == identity['mutation_closure_sha256']
+                                       ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'mutation_closure_sha256'

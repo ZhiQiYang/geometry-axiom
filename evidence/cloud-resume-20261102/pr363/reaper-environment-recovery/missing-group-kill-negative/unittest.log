@@ -1,0 +1,31 @@
+.......F....
+======================================================================
+FAIL: test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left (test_assembly_mutation_check.AssemblyMutationCheck.test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-resume-20261102/pr363/reaper-environment-recovery/source/tests/test_assembly_mutation_check.py", line 288, in test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left
+    self.assertEqual([], group['afterKill'])
+AssertionError: Lists differ: [] != [{'pid': 203541, 'comm': 'sleep', 'state':[165 chars]30'}]
+
+Second list contains 2 additional elements.
+First extra element 0:
+{'pid': 203541, 'comm': 'sleep', 'state': 'S', 'pgrp': 203540, 'session': 203540, 'cmdline': 'sleep 30'}
+
+- []
++ [{'cmdline': 'sleep 30',
++   'comm': 'sleep',
++   'pgrp': 203540,
++   'pid': 203541,
++   'session': 203540,
++   'state': 'S'},
++  {'cmdline': 'sleep 30',
++   'comm': 'sleep',
++   'pgrp': 203540,
++   'pid': 203542,
++   'session': 203540,
++   'state': 'S'}]
+
+----------------------------------------------------------------------
+Ran 12 tests in 8.085s
+
+FAILED (failures=1)

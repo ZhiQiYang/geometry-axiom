@@ -1,0 +1,289 @@
+{
+  "command": "python audit_downloads.py mutation /tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/api/20261102T050911Z",
+  "exit_code": 0,
+  "head": "503cfc59354893859ae9e6e4a6ab7c11d7972517",
+  "run_id": 41388718083,
+  "run_attempt": 1,
+  "complete": true,
+  "downloaded_shards": 7,
+  "records": 123,
+  "counts": {
+    "killed": 114,
+    "equivalent": 5,
+    "retired": 3,
+    "crashed": 1
+  },
+  "shards": [
+    {
+      "shard": "bridge-1",
+      "ids": [
+        "M61",
+        "M64",
+        "M67",
+        "M70",
+        "M79",
+        "M85",
+        "M99",
+        "M102",
+        "M105",
+        "M108",
+        "M111",
+        "M114",
+        "M117",
+        "M120",
+        "M141",
+        "M144",
+        "M147",
+        "M150"
+      ],
+      "records": 18,
+      "counts": {
+        "killed": 18
+      },
+      "binary_bytes_and_sidecars_verified": true,
+      "strict_exit": 0,
+      "negative_probe": {
+        "id": "M61",
+        "expected": "bridge executable artifact changed",
+        "strict_exit": 1
+      },
+      "negative_probe_log": "2026-11-02T05:02:49.6164622Z   STALE M61(原 killed):bridge executable artifact changed",
+      "job_id": 125095924926,
+      "job_log_sha256": "19c66bef584e68f54840bc72f320a9f8e47debe0ca68eac790439773b555534f",
+      "bridge_raw_markers_reparsed": 54
+    },
+    {
+      "shard": "bridge-2",
+      "ids": [
+        "M62",
+        "M65",
+        "M68",
+        "M78",
+        "M80",
+        "M82",
+        "M100",
+        "M103",
+        "M106",
+        "M109",
+        "M112",
+        "M115",
+        "M118",
+        "M121",
+        "M142",
+        "M145",
+        "M148",
+        "M151"
+      ],
+      "records": 18,
+      "counts": {
+        "killed": 18
+      },
+      "binary_bytes_and_sidecars_verified": true,
+      "strict_exit": 0,
+      "negative_probe": {
+        "id": "M62",
+        "expected": "bridge executable artifact changed",
+        "strict_exit": 1
+      },
+      "negative_probe_log": "2026-11-02T05:03:40.3272187Z   STALE M62(原 killed):bridge executable artifact changed",
+      "job_id": 125095924903,
+      "job_log_sha256": "9523dc4f015bfc88a82d165c27f1c201a273490676cde258eb3cb49d894903d9",
+      "bridge_raw_markers_reparsed": 54
+    },
+    {
+      "shard": "bridge-3",
+      "ids": [
+        "M63",
+        "M66",
+        "M69",
+        "M84",
+        "M81",
+        "M83",
+        "M101",
+        "M104",
+        "M107",
+        "M110",
+        "M113",
+        "M116",
+        "M119",
+        "M140",
+        "M143",
+        "M146",
+        "M149"
+      ],
+      "records": 17,
+      "counts": {
+        "killed": 16,
+        "equivalent": 1
+      },
+      "binary_bytes_and_sidecars_verified": true,
+      "strict_exit": 0,
+      "negative_probe": {
+        "id": "M63",
+        "expected": "bridge executable artifact changed",
+        "strict_exit": 1
+      },
+      "negative_probe_log": "2026-11-02T05:01:58.7835174Z   STALE M63(原 killed):bridge executable artifact changed",
+      "job_id": 125095924925,
+      "job_log_sha256": "4a4231c259fac2733542e6cc5b0b33f47984bf32d3d66a4c6b7cdd95be889a4f",
+      "bridge_raw_markers_reparsed": 51
+    },
+    {
+      "shard": "core-1",
+      "ids": [
+        "M01",
+        "M05",
+        "M59",
+        "M11",
+        "M98",
+        "M17",
+        "M21",
+        "M25",
+        "M29",
+        "M57",
+        "M56",
+        "M33",
+        "M37",
+        "M71",
+        "M75",
+        "M87",
+        "M91",
+        "M95"
+      ],
+      "records": 18,
+      "counts": {
+        "killed": 17,
+        "equivalent": 1
+      },
+      "binary_bytes_and_sidecars_verified": true,
+      "strict_exit": 0,
+      "negative_probe": {
+        "id": "M01",
+        "expected": "cached binary differs from executed receipt",
+        "strict_exit": 1
+      },
+      "negative_probe_log": "2026-11-02T04:44:24.1737218Z   STALE M01(原 killed):execution receipt invalid: cached binary differs from executed receipt",
+      "job_id": 125095924849,
+      "job_log_sha256": "2c01703175fd0f9f4eb226899530215ac839ddd4e444da7bdc197e0a8a2ccef2",
+      "bridge_raw_markers_reparsed": 0
+    },
+    {
+      "shard": "core-2",
+      "ids": [
+        "M02",
+        "M06",
+        "M60",
+        "M12",
+        "M14",
+        "M18",
+        "M22",
+        "M26",
+        "M30",
+        "M58",
+        "M53",
+        "M34",
+        "M38",
+        "M72",
+        "M76",
+        "M88",
+        "M92",
+        "M96"
+      ],
+      "records": 18,
+      "counts": {
+        "killed": 18
+      },
+      "binary_bytes_and_sidecars_verified": true,
+      "strict_exit": 0,
+      "negative_probe": {
+        "id": "M02",
+        "expected": "cached binary differs from executed receipt",
+        "strict_exit": 1
+      },
+      "negative_probe_log": "2026-11-02T04:42:46.4671667Z   STALE M02(原 killed):execution receipt invalid: cached binary differs from executed receipt",
+      "job_id": 125095924823,
+      "job_log_sha256": "1734349437332ef4f06869901d2497e0d64dec8e07a1982d4f64147cb446e75a",
+      "bridge_raw_markers_reparsed": 0
+    },
+    {
+      "shard": "core-3",
+      "ids": [
+        "M03",
+        "M07",
+        "M09",
+        "M13",
+        "M15",
+        "M19",
+        "M23",
+        "M27",
+        "M31",
+        "M51",
+        "M54",
+        "M35",
+        "M39",
+        "M73",
+        "M77",
+        "M89",
+        "M93"
+      ],
+      "records": 17,
+      "counts": {
+        "killed": 13,
+        "equivalent": 2,
+        "retired": 2
+      },
+      "binary_bytes_and_sidecars_verified": true,
+      "strict_exit": 0,
+      "negative_probe": {
+        "id": "M03",
+        "expected": "cached binary differs from executed receipt",
+        "strict_exit": 1
+      },
+      "negative_probe_log": "2026-11-02T04:41:55.7267240Z   STALE M03(原 killed):execution receipt invalid: cached binary differs from executed receipt",
+      "job_id": 125095924923,
+      "job_log_sha256": "14e7339b3a56e9acd7d5262ecabdf5e417c2b04557c563f3a8a35d8492f49478",
+      "bridge_raw_markers_reparsed": 0
+    },
+    {
+      "shard": "core-4",
+      "ids": [
+        "M04",
+        "M08",
+        "M10",
+        "M97",
+        "M16",
+        "M20",
+        "M24",
+        "M28",
+        "M32",
+        "M52",
+        "M55",
+        "M36",
+        "M40",
+        "M74",
+        "M86",
+        "M90",
+        "M94"
+      ],
+      "records": 17,
+      "counts": {
+        "killed": 14,
+        "crashed": 1,
+        "equivalent": 1,
+        "retired": 1
+      },
+      "binary_bytes_and_sidecars_verified": true,
+      "strict_exit": 0,
+      "negative_probe": {
+        "id": "M04",
+        "expected": "cached binary differs from executed receipt",
+        "strict_exit": 1
+      },
+      "negative_probe_log": "2026-11-02T04:41:22.5572554Z   STALE M04(原 killed):execution receipt invalid: cached binary differs from executed receipt",
+      "job_id": 125095924850,
+      "job_log_sha256": "29975f799d4578fd955747d9196d95f927e477c5959c7e428a4f114a090790c2",
+      "bridge_raw_markers_reparsed": 0
+    }
+  ],
+  "missing_shards": []
+}

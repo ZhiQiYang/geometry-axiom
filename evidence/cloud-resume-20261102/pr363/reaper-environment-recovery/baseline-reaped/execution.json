@@ -1,0 +1,51 @@
+{
+  "phase": "baseline-reaped",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-u",
+    "/tmp/geometry-resume-20261102/pr363/reaper-environment-recovery/source/tests/_unittest_runner.py",
+    "/tmp/geometry-resume-20261102/pr363/reaper-environment-recovery/source/tests/test_assembly_mutation_check.py",
+    "--json-out",
+    "/tmp/geometry-resume-20261102/pr363/reaper-environment-recovery/baseline-reaped/result.json",
+    "--log",
+    "/tmp/geometry-resume-20261102/pr363/reaper-environment-recovery/baseline-reaped/unittest.log"
+  ],
+  "cwd": "/tmp/geometry-resume-20261102/pr363/reaper-environment-recovery/source",
+  "mainPid": 203485,
+  "exitCode": 0,
+  "blocked": false,
+  "elapsedSeconds": 3.3682345210108906,
+  "remainingAdoptedChildren": [],
+  "events": [
+    {
+      "event": "reaped-adopted-child",
+      "pid": 203487,
+      "observedState": "terminated-exit-peek",
+      "waitStatus": 9,
+      "exitCode": -9,
+      "utc": "2026-11-02T05:04:02.293940+00:00"
+    },
+    {
+      "event": "reaped-adopted-child",
+      "pid": 203488,
+      "observedState": "terminated-exit-peek",
+      "waitStatus": 9,
+      "exitCode": -9,
+      "utc": "2026-11-02T05:04:02.294165+00:00"
+    },
+    {
+      "event": "main-exit-observed-by-Popen",
+      "pid": 203485,
+      "exitCode": 0,
+      "utc": "2026-11-02T05:04:02.389947+00:00"
+    },
+    {
+      "event": "drain-finished",
+      "remainingAdoptedChildren": [],
+      "action": "none",
+      "utc": "2026-11-02T05:04:02.404969+00:00"
+    }
+  ],
+  "finishedUtc": "2026-11-02T05:04:02.405071+00:00",
+  "signalsSentByReaperOrProbe": []
+}

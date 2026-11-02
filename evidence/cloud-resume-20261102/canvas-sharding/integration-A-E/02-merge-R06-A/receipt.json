@@ -1,0 +1,29 @@
+{
+  "label": "02-merge-R06-A",
+  "command": [
+    "git",
+    "merge",
+    "--no-ff",
+    "-m",
+    "Merge fixed R06 source for canvas integration",
+    "e9f4dd75cfd4eb9965e3af249200b918907d62db"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "before": {
+    "head": "502a64ff6214dd6060927b7f14643a533536f20d",
+    "commit": "502a64ff6214dd6060927b7f14643a533536f20d df347537c920b5a51ca157d7886857a7d0547d5b 5775a9e9e46bca801a9a70aaeafcdab9f597bc4d 910665aa55b5be4830de2f729a7aca5db1cbe8cc",
+    "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unmerged_stage_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty": []
+  },
+  "exit_code": 0,
+  "stdout_sha256": "762a404f99e2b6a291c8ca74bfd8adc423352f3a54e806d3eaeecef1ba9dc17e",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "after": {
+    "head": "86282523501608c7fdece026ab529182e668f840",
+    "commit": "86282523501608c7fdece026ab529182e668f840 502a64ff6214dd6060927b7f14643a533536f20d e9f4dd75cfd4eb9965e3af249200b918907d62db 75814afdda70d5ca9c0216e0be5cc75f37f7df4e",
+    "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unmerged_stage_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty": []
+  }
+}

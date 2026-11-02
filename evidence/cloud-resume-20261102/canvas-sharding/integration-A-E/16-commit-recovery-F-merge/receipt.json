@@ -1,0 +1,26 @@
+{
+  "label": "16-commit-recovery-F-merge",
+  "command": [
+    "git",
+    "commit",
+    "--no-edit"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "before": {
+    "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+    "commit": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818 f79e94dd20f7a5a57175d9d8e539499f13dc7cd6 80c6f74fc76d68af0d46a38907f2e7ef2c1e1bd9",
+    "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unmerged_stage_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty": []
+  },
+  "exit_code": 0,
+  "stdout_sha256": "aa6226b859877e87cb2b3735d58bc1e6a0aef89f13a19da0371a3377599c44ce",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "after": {
+    "head": "27e6f6911abb5518c089c0f688fadca5734735ea",
+    "commit": "27e6f6911abb5518c089c0f688fadca5734735ea e45670d9bb864dcf6b5a07fd4ccf11c188e54818 d794a7447b98a82fb35c1dccaedc3443e2230933 80c6f74fc76d68af0d46a38907f2e7ef2c1e1bd9",
+    "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unmerged_stage_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty": []
+  }
+}

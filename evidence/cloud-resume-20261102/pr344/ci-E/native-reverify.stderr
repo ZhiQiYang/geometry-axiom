@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/tmp/geometry-pr344-20261102/tests/native_shard_receipts.py", line 94, in <module>
+    main()
+  File "/tmp/geometry-pr344-20261102/tests/native_shard_receipts.py", line 76, in main
+    raise ValueError('分片身分／規劃／真實退出不符：'+str(path))
+ValueError: 分片身分／規劃／真實退出不符：/tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/native-original-input/shard-2.json

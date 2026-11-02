@@ -1,0 +1,92 @@
+{
+  "schema": "geometry-ledger-adoption-handoff/1",
+  "pr": 344,
+  "mutation_evidence_accepted": true,
+  "overall_integration_accepted": false,
+  "source_E": "503cfc59354893859ae9e6e4a6ab7c11d7972517",
+  "source_tree": "ff068df7b220d63e64832d3648a0b81ff8cbca57",
+  "actual_integration_checkout": "56250470746f8a7bf6b4a235a586f2744ae3cddf",
+  "integration_run_id": 41388718270,
+  "integration_conclusion": "failure",
+  "exact_failed_jobs": [
+    "native (2/3)",
+    "native complete coverage"
+  ],
+  "mutation_run_id": 41388718083,
+  "mutation_conclusion": "success",
+  "run_attempt": 1,
+  "official_ledger_exact_path": "/tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/extracted/mutation-complete-evidence/mutants_results.json",
+  "ledger_sha256": "aaaad44b2470d5f5d937a8ba8f431dd554f0ee95a82958f9ff48b19aa86a5ee8",
+  "summary_sha256": "cad001944ec1e2a5792be56a8d2f03b14c0fd039cf66a67f558dc2b36117513d",
+  "original_verify_actual_exit": 0,
+  "table_size": 123,
+  "active": 120,
+  "counts": {
+    "killed": 114,
+    "crashed": 1,
+    "survived": 0,
+    "equivalent": 5,
+    "invalid": 0,
+    "stale": 0,
+    "blocked": 0,
+    "retired": 3,
+    "unrun": 0
+  },
+  "execution_heads_preserve": [
+    "503cfc59354893859ae9e6e4a6ab7c11d7972517"
+  ],
+  "identity_exact_path": "/tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/adoption-source-identity.json",
+  "mutation_source_inputs": 185,
+  "mutation_closure_sha256": "208ec6e6e512b5c49ea832523bd2c0b56e75c0756e55aef323c78a92f5d0187a",
+  "source_ROOT": {
+    "mutate": "/tmp/geometry-pr344-20261102",
+    "binaries": "/tmp/geometry-pr344-20261102",
+    "supervisor_source": "/tmp/geometry-pr344-20261102/.github/scripts/mutation_evidence.py"
+  },
+  "seven_native_build_inputs": 1369,
+  "committed_ledger_before_sha256": "b02f378106bb16d7e392d77bad6f006a20ea5558afb67606368005642da7b295",
+  "selected_default_cache": {
+    "path": "/tmp/geometry-tests/mutants",
+    "exists": false,
+    "modified": false,
+    "overrides_added": false
+  },
+  "source_clean_at_handoff": true,
+  "required_adoption_boundary": "Ledger-only exact-byte adoption by chain_inventory; preserve E in all execution records, backup old Git E bytes/hash, compare before/after identities, original logical --check and bounded actor-peer, ordinary FF push. No product/build/Chrome or manual CI rerun.",
+  "preserved_red": "231 native suites executed; 5349 counted=5348pass+1allowedGDI skip, countedfail0, plus one uncounted mutation:check failure caused by53bridge stale. Original aggregate rejects shard2 actualexit1; old raw retained.",
+  "local_evidence": [
+    {
+      "path": "mutation-verify-receipt.json",
+      "sha256": "4835567a68c03fdb17bb04873ff497730d93711ba9673ddf03aa61c8eab6b761"
+    },
+    {
+      "path": "mutation-shard-audit.json",
+      "sha256": "88fbe5286c1d24a339d8f1d9b65126466f99afb5d127b9faa5b31b1e7b7193c2"
+    },
+    {
+      "path": "architecture-audit.json",
+      "sha256": "230f2a5a1c4fab15ec145fda39c1716c633cc22e80f6b0ad90ad2e034e1d448f"
+    },
+    {
+      "path": "artifact-byte-audit.json",
+      "sha256": "89a2a944dd184f5e6e271a1c7ae57a5478cfdfc315381a2f467ad6c9c3f958a7"
+    },
+    {
+      "path": "official-run-log-audit.json",
+      "sha256": "b959c73c7e6268d38d3ea8738e442287433c0a7dacdf73e3ecc234c549a4ceb3"
+    },
+    {
+      "path": "adoption-source-identity.json",
+      "sha256": "184eca3516b895f14568e6918bdac43b6d21d8168d5200e8f5cbdb5d8c423258"
+    },
+    {
+      "path": "native-rejection-receipt.json",
+      "sha256": "d7d1481600cfeedc94bd608545e40ff72b56cebb1857e7f6d53ad886d7343571"
+    },
+    {
+      "path": "independent-review/native-browser/native-browser-review.json",
+      "sha256": "7f448fc410af0205369913beb1bc6d5fd09fca86a029ad74cd32ea1a862a3ebf"
+    }
+  ],
+  "scope": "Read-only acquisition and original receipt/hash verification only. No source/body/base mutation or downloaded-binary execution."
+}

@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "python",
+    "-c",
+    "\nimport hashlib,json,pathlib,subprocess\nr=pathlib.Path(\"/tmp/geometry-pr344-20261102\"); o=pathlib.Path(\"/tmp/geometry-resume-20261102/pr344/ledger-adoption\"); g=lambda *a:subprocess.check_output([\"git\",*a],cwd=r).decode().strip(); f=g(\"rev-parse\",\"HEAD\"); e=g(\"rev-parse\",\"HEAD^1\"); assert e==\"503cfc59354893859ae9e6e4a6ab7c11d7972517\"; assert g(\"diff\",\"--name-only\",e,f)==\"tests/mutants_results.json\"; assert g(\"status\",\"--porcelain=v1\",\"--untracked-files=all\")==\"\"; raw=(r/\"tests/mutants_results.json\").read_bytes(); sha=hashlib.sha256(raw).hexdigest(); assert sha==\"aaaad44b2470d5f5d937a8ba8f431dd554f0ee95a82958f9ff48b19aa86a5ee8\"; rows=json.loads(raw); heads=sorted({v[\"execution\"][\"head\"] for v in rows.values() if v[\"verdict\"]!=\"retired\"}); assert heads==[e]; d={\"adoptionHeadF\":f,\"parentExecutionHeadE\":e,\"treeF\":g(\"rev-parse\",\"HEAD^{tree}\"),\"onlyChangedPath\":\"tests/mutants_results.json\",\"ledgerSha256\":sha,\"all120ActiveExecutionHeads\":heads,\"checkExecutionWorkingHead\":e,\"checkWorkingDelta\":\"official ledger bytes only, exact adopted F contents\",\"logicalCheckActualExit\":0,\"nonLedgerSourceEntriesEqualE\":True,\"worktreeClean\":True,\"downloadedBinaryExecuted\":False,\"productOrBuildExecuted\":False}; (o/\"ADOPTION_COMMIT.json\").write_text(json.dumps(d,indent=2)+\"\\n\"); print(json.dumps(d))\n"
+  ],
+  "cwd": "/tmp/geometry-pr344-20261102",
+  "startedUtc": "2026-11-02T05:22:53.527287+00:00",
+  "environment": {
+    "TMPDIR": null,
+    "TMP": null,
+    "TEMP": null,
+    "GEOMETRY_TEST_BRIDGE": null,
+    "GEOMETRY_MODEL_BASE": null,
+    "GEOMETRY_TEST_URL": null,
+    "GEOMETRY_FEEDBACK_DIR": null,
+    "PYTHONOPTIMIZE": null,
+    "CC": null,
+    "CFLAGS": null
+  }
+}

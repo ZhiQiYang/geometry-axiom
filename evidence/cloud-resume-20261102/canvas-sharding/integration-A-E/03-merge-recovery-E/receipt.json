@@ -1,0 +1,2382 @@
+{
+  "label": "03-merge-recovery-E",
+  "command": [
+    "git",
+    "merge",
+    "--no-ff",
+    "-m",
+    "Merge fixed connection recovery source for canvas integration",
+    "503cfc59354893859ae9e6e4a6ab7c11d7972517"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "before": {
+    "head": "86282523501608c7fdece026ab529182e668f840",
+    "commit": "86282523501608c7fdece026ab529182e668f840 502a64ff6214dd6060927b7f14643a533536f20d e9f4dd75cfd4eb9965e3af249200b918907d62db 75814afdda70d5ca9c0216e0be5cc75f37f7df4e",
+    "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unmerged_stage_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty": []
+  },
+  "exit_code": 1,
+  "stdout_sha256": "71fa8e9343c28239bb57099943a1f932cdced2266e1c61cf26dc6e5fb166ddd7",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "after": {
+    "head": "86282523501608c7fdece026ab529182e668f840",
+    "commit": "86282523501608c7fdece026ab529182e668f840 502a64ff6214dd6060927b7f14643a533536f20d e9f4dd75cfd4eb9965e3af249200b918907d62db 75814afdda70d5ca9c0216e0be5cc75f37f7df4e",
+    "status_sha256": "a383e3464a23ee4b419a0743807c8da54d33f3d669a1ecb8e8be10deb2a72ae9",
+    "unmerged_stage_bytes_sha256": "071e8cbab2c6993d6c8479ad215b332b1cab73f56cf4b2b2ae5663ceea3fd4de",
+    "dirty": [
+      {
+        "path": "evidence/issue320-final-7b45013d/CURRENT_STATE.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue320-final-7b45013d/MANIFEST.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue320-final-7b45013d/PACKAGE.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue320-final-7b45013d/PROGRESS.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue320-final-7b45013d/RAW_INVENTORY.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue320-final-7b45013d/raw/cdp-proposal-and-original-nine-vm-7b45013d.tar.gz",
+        "present": false
+      },
+      {
+        "path": "evidence/issue320-final-c1113f6f/CURRENT_STATE.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue320-final-c1113f6f/MANIFEST.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue320-final-c1113f6f/PACKAGE.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue320-final-c1113f6f/PROGRESS.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue320-final-c1113f6f/RAW_INVENTORY.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue320-final-c1113f6f/raw/originals-and-peer-c1113f6f.tar.gz",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/COPYMAP.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/PROGRESS.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/SCOPE.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/actual-peer/REVIEW.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/actual-peer/review.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/DRY_PLAN.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/DRY_PLAN_RESULT.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/HISTORICAL_DERIVATION_PREPARATION.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/ORIGINAL_TO_ADAPTER.diff",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/PINS.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/PREPARATION.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/README.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000001/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000001/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000001/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000001/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000001/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000002/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000002/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000002/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000002/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000002/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000003/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000003/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000003/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000003/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/dry-plan-original-capture/subcommands/000003/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/original_driver.py.txt",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/prepare_adapter.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-preparation/refresh_architecture_cdp_exclusion.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-static-peer/REVIEW.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-static-peer/REVIEW.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/adapter-static-peer/review.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/geo344-architecture-EXEC_FINAL-20261025.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/geo344-manifest-source-EXEC_FINAL-20261025.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/launcher-static-peer/REVIEW.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/launcher-static-peer/review.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/RESULT.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/execution-source-originals/PRODUCT-ARCHITECTURE.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/execution-source-originals/product-architecture-receipt.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/execution-source-originals/product-architecture-scan.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/execution-source-originals/product-architecture.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/historical-928-manifest.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/historical-928-with-current-cdp-digest.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/historical-guard-baseline.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/new/PRODUCT-ARCHITECTURE.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/new/product-architecture-receipt.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/new/product-architecture-scan.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/new/product-architecture.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/policy-guard-inventory.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/previous-artifact/PRODUCT-ARCHITECTURE.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/previous-artifact/product-architecture-receipt.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/previous-artifact/product-architecture-scan.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/previous-artifact/product-architecture.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/single-cdp-digest-withdrawn.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/single-exclusion-digest-proof.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/source-inputs.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000001/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000001/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000001/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000001/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000001/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000002/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000002/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000002/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000002/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000002/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000003/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000003/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000003/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000003/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000003/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000004/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000004/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000004/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000004/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000004/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000005/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000005/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000005/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000005/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000005/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000006/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000006/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000006/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000006/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000006/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000007/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000007/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000007/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000007/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000007/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000008/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000008/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000008/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000008/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000008/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000009/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000009/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000009/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000009/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000009/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000010/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000010/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000010/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000010/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000010/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000011/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000011/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000011/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000011/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000011/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000012/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000012/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000012/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000012/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000012/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000013/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000013/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000013/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000013/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000013/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000014/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000014/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000014/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000014/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000014/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000015/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000015/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000015/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000015/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000015/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000016/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000016/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000016/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000016/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000016/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000017/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000017/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000017/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000017/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000017/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000018/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000018/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000018/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000018/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000018/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000019/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000019/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000019/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000019/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000019/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000020/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000020/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000020/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000020/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000020/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000021/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000021/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000021/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000021/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000021/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000022/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000022/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000022/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000022/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000022/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000023/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000023/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000023/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000023/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000023/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000024/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000024/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000024/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000024/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000024/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000025/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000025/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000025/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000025/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000025/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000026/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000026/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000026/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000026/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000026/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000027/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000027/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000027/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000027/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000027/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000028/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000028/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000028/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000028/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000028/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000029/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000029/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000029/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000029/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000029/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000030/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000030/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000030/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000030/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000030/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000031/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000031/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000031/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000031/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000031/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000032/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000032/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000032/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000032/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000032/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000033/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000033/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000033/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000033/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000033/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000034/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000034/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000034/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000034/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000034/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000035/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000035/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000035/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000035/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000035/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000036/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000036/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000036/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000036/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000036/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000037/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000037/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000037/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000037/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000037/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000038/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000038/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000038/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000038/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000038/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000039/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000039/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000039/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000039/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000039/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000040/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000040/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000040/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000040/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000040/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000041/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000041/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000041/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000041/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000041/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000042/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000042/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000042/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000042/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000042/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000043/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000043/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000043/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000043/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000043/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000044/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000044/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000044/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000044/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000044/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000045/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000045/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000045/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000045/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000045/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000046/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000046/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000046/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000046/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000046/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000047/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000047/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000047/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000047/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000047/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000048/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000048/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000048/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000048/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000048/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000049/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000049/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000049/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000049/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000049/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000050/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000050/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000050/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000050/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000050/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000051/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000051/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000051/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000051/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000051/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000052/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000052/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000052/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000052/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000052/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000053/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000053/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000053/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000053/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000053/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000054/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000054/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000054/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000054/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000054/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000055/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000055/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000055/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000055/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000055/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000056/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000056/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000056/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000056/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000056/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000057/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000057/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000057/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000057/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/subcommands/000057/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/tools/capture.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/tools/policy_probe.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/tools/refresh_architecture_cdp_exclusion.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/originals/withdrawn-manifest.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/ADAPTER.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/LAUNCHER.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/MATERIALIZED.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/RESOURCE_PLAN.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/RESULT.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/STACK.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/capture.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/sparse-after.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/sparse-before.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000001/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000001/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000001/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000001/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000001/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000002/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000002/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000002/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000002/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000002/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000003/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000003/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000003/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000003/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000003/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000004/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000004/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000004/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000004/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000004/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000005/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000005/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000005/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000005/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000005/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000006/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000006/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000006/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000006/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000006/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000007/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000007/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000007/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000007/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000007/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000008/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000008/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000008/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000008/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000008/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000009/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000009/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000009/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000009/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000009/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000010/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000010/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000010/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000010/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000010/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000011/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000011/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000011/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000011/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/outer/subcommands/000011/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/prepare.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication-peer/REVIEW.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication-peer/review.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/BEFORE.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/PREPARER.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/RESULT.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/capture.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/fix-exclusion-digest.patch",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/sparse-after.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/sparse-before.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000001/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000001/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000001/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000001/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000001/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000002/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000002/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000002/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000002/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000002/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000003/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000003/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000003/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000003/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000003/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000004/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000004/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000004/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000004/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000004/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000005/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000005/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000005/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000005/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000005/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000006/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000006/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000006/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000006/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000006/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000007/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000007/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000007/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000007/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000007/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000008/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000008/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000008/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000008/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000008/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000009/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000009/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000009/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000009/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000009/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000010/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000010/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000010/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000010/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000010/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000011/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000011/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000011/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000011/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000011/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000012/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000012/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000012/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000012/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000012/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000013/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000013/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000013/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000013/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000013/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000014/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000014/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000014/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000014/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000014/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000015/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000015/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000015/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000015/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000015/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000016/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000016/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000016/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000016/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000016/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000017/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000017/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000017/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000017/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000017/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000018/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000018/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000018/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000018/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000018/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000019/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000019/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000019/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000019/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000019/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000020/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000020/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000020/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000020/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000020/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000021/request.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000021/result.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000021/stderr.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000021/stdin.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-architecture-9aec9a32/source-publication/subcommands/000021/stdout.bin",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-5402765c/ORIGINAL_MERGE_AND_CLOSURE.tar.gz",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-5402765c/PROGRESS.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-5402765c/PUBLICATION_INDEX.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-5402765c/RAW_INDEX.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-5402765c/SUMMARY.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-5402765c/collect.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-5402765c/publish.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/ORIGINAL_MERGE_AND_STRICT_ROW.tar.gz",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/PACKAGE_ACTUAL_CHECKS.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/PACKAGE_ACTUAL_PEER.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/PROGRESS.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/PUBLICATION_INDEX.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/RAW_INDEX.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/ROW_ACTUAL_CHECKS.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/ROW_ACTUAL_PEER.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/SUMMARY.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/collect.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/publish.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/review_package_actual.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-converged-cbb318d7/review_row_actual.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-real-cdp-preparation-7b45013d/CURRENT_STATE.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-real-cdp-preparation-7b45013d/MANIFEST.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-real-cdp-preparation-7b45013d/PACKAGE.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-real-cdp-preparation-7b45013d/PROGRESS.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-real-cdp-preparation-7b45013d/RAW_INVENTORY.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-real-cdp-preparation-7b45013d/raw/clean-V-and-reviewed-full-canvas-preparation.tar.gz",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-vm9-5402765c/ORIGINAL_VM9_AND_STRICT_ROW.tar.gz",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-vm9-5402765c/PROGRESS.md",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-vm9-5402765c/PUBLICATION_INDEX.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-vm9-5402765c/RAW_INDEX.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-vm9-5402765c/SUMMARY.json",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-vm9-5402765c/collect.py",
+        "present": false
+      },
+      {
+        "path": "evidence/issue344-vm9-5402765c/publish.py",
+        "present": false
+      },
+      {
+        "path": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+        "present": true,
+        "bytes": 2468,
+        "sha256": "813f7ebf0fedaa7a452f853564f56da3c3ac23ed60d17627bbaefe9999860647",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/03-merge-recovery-E/after/geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md"
+      },
+      {
+        "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+        "present": true,
+        "bytes": 113334,
+        "sha256": "dbfca23e0299f8919611dcccefba4f725ccefedbb668a97d3f4cdab5a6eba9d8",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/03-merge-recovery-E/after/geometry-core/domain-decoupling/product-architecture-receipt.json"
+      },
+      {
+        "path": "geometry-core/domain-decoupling/product-architecture.json",
+        "present": true,
+        "bytes": 224460,
+        "sha256": "ee523f9cf644e612b2cfef159c79d7e9931ad2723b529a5f9089b0731cbb8aba",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/03-merge-recovery-E/after/geometry-core/domain-decoupling/product-architecture.json"
+      },
+      {
+        "path": "geometry-web/app.js",
+        "present": true,
+        "bytes": 627555,
+        "sha256": "c5f055915a039d90138824248b146552776286beb7544380c279a5586707ab60",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/03-merge-recovery-E/after/geometry-web/app.js"
+      },
+      {
+        "path": "geometry-web/cdp_test.js",
+        "present": true,
+        "bytes": 516646,
+        "sha256": "024ca9a584ec819bf37992f517c9ae97dcf0c626944b15506172f06d0f251cf8",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/03-merge-recovery-E/after/geometry-web/cdp_test.js"
+      },
+      {
+        "path": "tests/run_all.expected.json",
+        "present": true,
+        "bytes": 25613,
+        "sha256": "a23479fe7f6e275a013873d7684f587a1a9528f326d18e7366e7a2679378debf",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/03-merge-recovery-E/after/tests/run_all.expected.json"
+      },
+      {
+        "path": "tests/run_all.py",
+        "present": true,
+        "bytes": 69256,
+        "sha256": "67fbf0382b8c522d092a299af8b18b3363186ec6d8e0a799655caee61766fd35",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/03-merge-recovery-E/after/tests/run_all.py"
+      },
+      {
+        "path": "tests/test_connection_recovery.js",
+        "present": true,
+        "bytes": 7166,
+        "sha256": "061a0f232ddcd9f8b0582f8907ca2d45788d32bd13435991813cdae5a30ee44d",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/03-merge-recovery-E/after/tests/test_connection_recovery.js"
+      }
+    ]
+  }
+}

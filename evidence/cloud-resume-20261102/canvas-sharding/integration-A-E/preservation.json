@@ -1,0 +1,50 @@
+{
+  "status": "UNACCEPTED_SOURCE_PRESERVATION_ONLY",
+  "branch": "codex/canvas-validation-20261102",
+  "branch_url": "https://github.com/ZhiQiYang/geometry-axiom/tree/codex/canvas-validation-20261102",
+  "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+  "remote_before": "absent (ls-remote exit 2)",
+  "push_command": "git push origin HEAD:refs/heads/codex/canvas-validation-20261102",
+  "push_exit_code": 0,
+  "remote_after": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+  "ls_remote_exit_code": 0,
+  "original_canvas_branch_unchanged": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+  "source_clean": true,
+  "PR_opened": false,
+  "CI_dispatch_started": false,
+  "matching_nonmain_push_workflow": false,
+  "commit_urls_resolved": [
+    {
+      "label": "validation",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/commit/e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+      "api_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits/e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+      "http_status": 200,
+      "sha": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+      "tree": "80c6f74fc76d68af0d46a38907f2e7ef2c1e1bd9",
+      "parents": [
+        "f79e94dd20f7a5a57175d9d8e539499f13dc7cd6"
+      ],
+      "api_raw_sha256": "faac3dc426348eb28fcfbcb6fcdecdcfba57f8c3f3a6cacd0b9598d32185a124"
+    },
+    {
+      "label": "R06_A_ancestor",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/commit/e9f4dd75cfd4eb9965e3af249200b918907d62db",
+      "api_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits/e9f4dd75cfd4eb9965e3af249200b918907d62db",
+      "http_status": 200,
+      "sha": "e9f4dd75cfd4eb9965e3af249200b918907d62db",
+      "tree": "75814afdda70d5ca9c0216e0be5cc75f37f7df4e",
+      "parents": [
+        "3aa03de1e309883e53829c92f064e3ebd51a0ad2"
+      ],
+      "api_raw_sha256": "bbce7ab95b7beb8956358f6a5fc4673326e5e7e420105f30f4a41c318ede9359"
+    }
+  ],
+  "UNRUN": [
+    "full/native/mutation acceptance",
+    "actual Chrome shards",
+    "same-source original full canvas",
+    "real harness false assertion 0/1/0"
+  ],
+  "future_source_changes": "none until root supplies final PR363/PR344 commits for ordinary merge",
+  "exit_code": 0
+}

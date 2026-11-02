@@ -108,10 +108,13 @@ The existing true-browser fixed/app-only-withdrawn/restored requirement remains
 the other browser gates, full native, fresh full123 mutation ledger and final
 required CI remain **UNRUN**. No browser, server, Chrome, C build or shared-cache
 operation was started in this phase; #363's real UI work was left undisturbed.
-Root reserved the current window for #363's census. `BROWSER_PREFLIGHT.md` records
-the unchanged existing FLOW_REPAIR_ONLY commands/scope and2100-second per-phase
-upper limit. No browser/server/native-build command was started. Root must
-schedule that window before this phase starts; it is not a full-canvas run.
+Root reserved the current window for #363's census. `BROWSER_PREFLIGHT.md` now
+records the governing review's original full-canvas fixed/only-app-withdrawn/
+restored commands, serially with2100seconds per phase, unchanged golden and zero
+added skips. It requires a fresh root source pin after official ledger adoption.
+FLOW_REPAIR_ONLY is retained only as an optional diagnostic and cannot substitute
+for any formal full phase. No browser/server/native-build command was started;
+root must schedule the window after census and official ledger verification.
 
 Root may review E and the peer report, verify the original remote head remains
 df39d193, and fast-forward the original source branch while setting the PR base

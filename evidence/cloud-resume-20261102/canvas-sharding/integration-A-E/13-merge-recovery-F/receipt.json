@@ -1,0 +1,37 @@
+{
+  "label": "13-merge-recovery-F",
+  "command": [
+    "git",
+    "merge",
+    "--no-ff",
+    "-m",
+    "Merge canonical recovery ledger ancestry for canvas validation",
+    "d794a7447b98a82fb35c1dccaedc3443e2230933"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "before": {
+    "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+    "commit": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818 f79e94dd20f7a5a57175d9d8e539499f13dc7cd6 80c6f74fc76d68af0d46a38907f2e7ef2c1e1bd9",
+    "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unmerged_stage_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty": []
+  },
+  "exit_code": 1,
+  "stdout_sha256": "1711c95a4c7e658a01bfa825374aff83e86b8a34b912805ffe56808154b9ad42",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "after": {
+    "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+    "commit": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818 f79e94dd20f7a5a57175d9d8e539499f13dc7cd6 80c6f74fc76d68af0d46a38907f2e7ef2c1e1bd9",
+    "status_sha256": "b192223eef3f242e7043f3c8bda0df301e1ddf7d45799e08d1adeb8f37c1cf59",
+    "unmerged_stage_bytes_sha256": "3de3ddd15aa241d059b18f63938facc54d2d13c4ab622e69451bc165f7fa12c3",
+    "dirty": [
+      {
+        "path": "tests/mutants_results.json",
+        "present": true,
+        "bytes": 11559682,
+        "sha256": "a2ba1fece6d743011bcaf6aeb8d4da3cee39fa728a821a387bb6f8e404d316b4",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/13-merge-recovery-F/after/tests/mutants_results.json"
+      }
+    ]
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+  "tree": "80c6f74fc76d68af0d46a38907f2e7ef2c1e1bd9",
+  "source": "/tmp/geometry-canvas-shards-20261102",
+  "commands": [
+    {
+      "label": "canvas-node",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=spec",
+        "tests/test_canvas_shards.js"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+      "exit_code": 0,
+      "stdout": "canvas-node.stdout",
+      "stderr": "canvas-node.stderr",
+      "stdout_sha256": "9b1a0c13e043f0bbd4dcc056a26ea7e8bf036997f4f46057645068bfdfc146af",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests": 19
+    },
+    {
+      "label": "original-pure-cdp",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=spec",
+        "tests/test_cdp_floor.js",
+        "tests/test_cdp_evaluation.js",
+        "tests/test_cdp_settle.js"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+      "exit_code": 0,
+      "stdout": "original-pure-cdp.stdout",
+      "stderr": "original-pure-cdp.stderr",
+      "stdout_sha256": "52b77044afeffed4d742babfa115fb7eb410fc4d8b58f92b3b959380dcea80f9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests": 32
+    },
+    {
+      "label": "architecture-cli",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+      "exit_code": 0,
+      "stdout": "architecture-cli.stdout",
+      "stderr": "architecture-cli.stderr",
+      "stdout_sha256": "9a73fde16858a2577bd79508689e0fd691ca4575f8c32106b7a4b7b90a6f7c74",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "diagnostics": 0,
+      "edges": 803,
+      "sources": 335
+    },
+    {
+      "label": "architecture-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+      "exit_code": 0,
+      "stdout": "architecture-unit.stdout",
+      "stderr": "architecture-unit.stderr",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "d597f6cd3548bcd0a493f3a221c851a862a5ce75ca37383f6160d3d6990fef33",
+      "tests": 205
+    },
+    {
+      "label": "architecture-product",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+      "exit_code": 0,
+      "stdout": "architecture-product.stdout",
+      "stderr": "architecture-product.stderr",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "5acc6690e1b90be411935fd7efbafc7a70bc1f9a36c2d8c50ef4931c8f4da4be",
+      "tests": 18
+    },
+    {
+      "label": "current-plan",
+      "command": [
+        "node",
+        "tests/helpers/canvas_shards.js",
+        "plan"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+      "exit_code": 0,
+      "stdout": "current-plan.stdout",
+      "stderr": "current-plan.stderr",
+      "stdout_sha256": "1d635d75b422ec91f4871c887ec85ef28abd4285d0d2e24af44572be986857d2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "current_golden_sections": 86,
+      "current_golden_assertions": 2317,
+      "plan_sha256": "9e8eb712fdf834b69d1662821e4b5cdcdcfe319167ca342f43731424f317b8a0"
+    }
+  ],
+  "environment": {
+    "node": "v24.19.0",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "linux",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "unchanged_python_control": {
+    "rerun": false,
+    "original_head": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+    "original_tests": 12,
+    "reason": "Both test_canvas_evidence.py and canvas_evidence.py are byte-identical to that already tested commit; old result is not relabeled as a new execution."
+  },
+  "UNRUN": [
+    "actual canvas shards",
+    "same-source original full browser gate",
+    "real harness false assertion 0/1/0",
+    "native/build/full census",
+    "fresh mutation execution or official artifact verification"
+  ],
+  "expected_and_ledger": "Preserved original source values; future final source adoption pending root.",
+  "source_clean_after": true,
+  "all_requested_affected_checks_passed": true
+}

@@ -1,0 +1,52 @@
+{
+  "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+  "source_clean": true,
+  "original_canvas_ref": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+  "events": {
+    "integration-tests.yml": {
+      "pull_request": null,
+      "push": {
+        "branches": [
+          "main"
+        ]
+      }
+    },
+    "mutation-evidence.yml": {
+      "workflow_dispatch": null,
+      "pull_request": {
+        "paths": [
+          ".github/workflows/mutation-evidence.yml",
+          ".github/scripts/mutation_evidence.py",
+          "tests/MUTATION-EVIDENCE.md",
+          ".github/scripts/architecture_evidence.py"
+        ]
+      }
+    },
+    "pr338-b1-recovery-audit.yml": {
+      "pull_request": {
+        "paths": [
+          ".github/workflows/pr338-b1-recovery-audit.yml",
+          "evidence/pr338-b1-recovery-20261102/**"
+        ]
+      }
+    },
+    "r06-bay-repeat.yml": {
+      "pull_request": {
+        "paths": [
+          ".github/workflows/r06-bay-repeat.yml",
+          "geometry-templates/woodworking/**",
+          "geometry-web/assembly*",
+          "geometry-web/cdp_bay_repeat_io.js",
+          "geometry-web/project-store.js",
+          "geometry-web/reference*",
+          "tests/*bay_repeat*"
+        ]
+      },
+      "workflow_dispatch": null
+    }
+  },
+  "non_main_push_matches": false,
+  "PR_opened": false,
+  "dispatch_started": false,
+  "exit_code": 0
+}

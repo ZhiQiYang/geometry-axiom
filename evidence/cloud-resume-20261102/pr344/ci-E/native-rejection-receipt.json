@@ -1,0 +1,80 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "tests/native_shard_receipts.py",
+    "--input",
+    "/tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/native-original-input",
+    "--parts",
+    "3",
+    "--output",
+    "/tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/native-reverified.json"
+  ],
+  "cwd": "/tmp/geometry-pr344-20261102",
+  "env": {
+    "GIT_DIR": "/tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/native-verifier-git",
+    "GIT_WORK_TREE": "/tmp/geometry-pr344-20261102",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "exit_code": 1,
+  "sourceHead": "503cfc59354893859ae9e6e4a6ab7c11d7972517",
+  "executionHead": "56250470746f8a7bf6b4a235a586f2744ae3cddf",
+  "tree": "ff068df7b220d63e64832d3648a0b81ff8cbca57",
+  "merge_parents": [
+    "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+    "503cfc59354893859ae9e6e4a6ab7c11d7972517"
+  ],
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "45e8c07fb33828ccb11d3d28eae881b7dbefb7c3d8b1ab447608e02f97c4db0c",
+  "expected_native_rejection": true,
+  "failure": "ValueError: 分片身分／規劃／真實退出不符：/tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/native-original-input/shard-2.json",
+  "native_complete_summary_present": false,
+  "official_negative_control": {
+    "passed": true,
+    "baseline_mutant_restored_exit": [
+      0,
+      1,
+      0
+    ],
+    "rows": [
+      {
+        "label": "baseline",
+        "exit": 0,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [],
+        "assertion_failure": true,
+        "removed": []
+      },
+      {
+        "label": "removed",
+        "exit": 1,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [
+          "test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once"
+        ],
+        "assertion_failure": true,
+        "removed": [
+          "c:integrity"
+        ]
+      },
+      {
+        "label": "restored",
+        "exit": 0,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [],
+        "assertion_failure": true,
+        "removed": []
+      }
+    ]
+  }
+}

@@ -35,3 +35,12 @@ exactly equal the independently reviewed external originals. Product/test bytes
 did not change; actual execution remains S, adopted main5775, local Linux and no
 GitHub run. Commands22–24 stream hashes match and the worktree is clean. No gate
 was rerun for adoption.
+
+## Static formal full-canvas scheduling correction
+
+Peer PASS for the revised `BROWSER_PREFLIGHT.md`: three original full commands,
+2100 seconds per phase, all 22 existing selector/modifier/golden-update variables
+cleared, serial F/V/F private environments, and no FLOW substitution. The original
+P38 expected exception count is preserved; withdrawn retains the original golden
+and its corresponding comparator mismatch diagnostics. This review was static
+only and adds no browser/native/build execution credit.

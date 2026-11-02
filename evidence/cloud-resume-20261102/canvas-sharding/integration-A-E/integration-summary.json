@@ -1,0 +1,242 @@
+{
+  "head": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+  "tree": "80c6f74fc76d68af0d46a38907f2e7ef2c1e1bd9",
+  "branch": "codex/canvas-validation-20261102",
+  "source_clean": true,
+  "original_canvas_ref_unchanged": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+  "inputs": {
+    "R06_A": "e9f4dd75cfd4eb9965e3af249200b918907d62db",
+    "recovery_E": "503cfc59354893859ae9e6e4a6ab7c11d7972517",
+    "canvas": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343"
+  },
+  "actual_steps": [
+    {
+      "label": "01-start-integration",
+      "command": [
+        "git",
+        "switch",
+        "-c",
+        "codex/canvas-validation-20261102",
+        "502a64ff6214dd6060927b7f14643a533536f20d"
+      ],
+      "exit_code": 0,
+      "before_head": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+      "after_commit": "502a64ff6214dd6060927b7f14643a533536f20d df347537c920b5a51ca157d7886857a7d0547d5b 5775a9e9e46bca801a9a70aaeafcdab9f597bc4d 910665aa55b5be4830de2f729a7aca5db1cbe8cc",
+      "receipt_sha256": "9564953b21c1feb9b15552558574c6957750b410441613f6ebf8f842c7f44265"
+    },
+    {
+      "label": "02-merge-R06-A",
+      "command": [
+        "git",
+        "merge",
+        "--no-ff",
+        "-m",
+        "Merge fixed R06 source for canvas integration",
+        "e9f4dd75cfd4eb9965e3af249200b918907d62db"
+      ],
+      "exit_code": 0,
+      "before_head": "502a64ff6214dd6060927b7f14643a533536f20d",
+      "after_commit": "86282523501608c7fdece026ab529182e668f840 502a64ff6214dd6060927b7f14643a533536f20d e9f4dd75cfd4eb9965e3af249200b918907d62db 75814afdda70d5ca9c0216e0be5cc75f37f7df4e",
+      "receipt_sha256": "3687d4e05508011b805c41836ddcd40e8f051c952cb24617dda19a745b5ec2d7"
+    },
+    {
+      "label": "03-merge-recovery-E",
+      "command": [
+        "git",
+        "merge",
+        "--no-ff",
+        "-m",
+        "Merge fixed connection recovery source for canvas integration",
+        "503cfc59354893859ae9e6e4a6ab7c11d7972517"
+      ],
+      "exit_code": 1,
+      "before_head": "86282523501608c7fdece026ab529182e668f840",
+      "after_commit": "86282523501608c7fdece026ab529182e668f840 502a64ff6214dd6060927b7f14643a533536f20d e9f4dd75cfd4eb9965e3af249200b918907d62db 75814afdda70d5ca9c0216e0be5cc75f37f7df4e",
+      "receipt_sha256": "c220fe49688efdbc0bea59921291ca63165e9fffda5698933011d5bc123f5d65"
+    },
+    {
+      "label": "04-keep-A-policy-originals",
+      "command": [
+        "git",
+        "restore",
+        "--ours",
+        "--worktree",
+        "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+        "geometry-core/domain-decoupling/product-architecture-receipt.json",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "exit_code": 0,
+      "before_head": "86282523501608c7fdece026ab529182e668f840",
+      "after_commit": "86282523501608c7fdece026ab529182e668f840 502a64ff6214dd6060927b7f14643a533536f20d e9f4dd75cfd4eb9965e3af249200b918907d62db 75814afdda70d5ca9c0216e0be5cc75f37f7df4e",
+      "receipt_sha256": "a26f46b1555269a930cee8edf1ea9c96e5c07e20e3c0907996194b876dc094d5"
+    },
+    {
+      "label": "05-stage-E-resolution",
+      "command": [
+        "git",
+        "add",
+        "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+        "geometry-core/domain-decoupling/product-architecture-receipt.json",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "exit_code": 0,
+      "before_head": "86282523501608c7fdece026ab529182e668f840",
+      "after_commit": "86282523501608c7fdece026ab529182e668f840 502a64ff6214dd6060927b7f14643a533536f20d e9f4dd75cfd4eb9965e3af249200b918907d62db 75814afdda70d5ca9c0216e0be5cc75f37f7df4e",
+      "receipt_sha256": "f0b5eb41e204b64a5d31024127e8fb75e2ae57c02058f56fa2812a72edc6a787"
+    },
+    {
+      "label": "06-commit-E-merge",
+      "command": [
+        "git",
+        "commit",
+        "--no-edit"
+      ],
+      "exit_code": 0,
+      "before_head": "86282523501608c7fdece026ab529182e668f840",
+      "after_commit": "93c1553d3254abd65f3147eb6802b4e8c5f0deab 86282523501608c7fdece026ab529182e668f840 503cfc59354893859ae9e6e4a6ab7c11d7972517 111b8b4d08bab0a856812e3c43010a986f9e8e70",
+      "receipt_sha256": "fbcd3edc6ab79d0b6e668e9a0c038cb8cd67fb5d33ec4a7d0712639aae6636ee"
+    },
+    {
+      "label": "07-merge-canvas-implementation",
+      "command": [
+        "git",
+        "merge",
+        "--no-ff",
+        "-m",
+        "Merge canvas ownership routing after R06 and recovery sources",
+        "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343"
+      ],
+      "exit_code": 1,
+      "before_head": "93c1553d3254abd65f3147eb6802b4e8c5f0deab",
+      "after_commit": "93c1553d3254abd65f3147eb6802b4e8c5f0deab 86282523501608c7fdece026ab529182e668f840 503cfc59354893859ae9e6e4a6ab7c11d7972517 111b8b4d08bab0a856812e3c43010a986f9e8e70",
+      "receipt_sha256": "1670dd53c6cf4460c3f0420f2b2153328f357280b8df64a30b0afefd579e089d"
+    },
+    {
+      "label": "08-check-canvas-resolution",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "before_head": "93c1553d3254abd65f3147eb6802b4e8c5f0deab",
+      "after_commit": "93c1553d3254abd65f3147eb6802b4e8c5f0deab 86282523501608c7fdece026ab529182e668f840 503cfc59354893859ae9e6e4a6ab7c11d7972517 111b8b4d08bab0a856812e3c43010a986f9e8e70",
+      "receipt_sha256": "0682359e3105e5b068df5583603d48fc95d52cbad96141f52b7df9cfbf128fea"
+    },
+    {
+      "label": "09-stage-canvas-resolution",
+      "command": [
+        "git",
+        "add",
+        "geometry-web/cdp_test.js",
+        "tests/helpers/canvas_shards.js",
+        "tests/test_canvas_shards.js"
+      ],
+      "exit_code": 0,
+      "before_head": "93c1553d3254abd65f3147eb6802b4e8c5f0deab",
+      "after_commit": "93c1553d3254abd65f3147eb6802b4e8c5f0deab 86282523501608c7fdece026ab529182e668f840 503cfc59354893859ae9e6e4a6ab7c11d7972517 111b8b4d08bab0a856812e3c43010a986f9e8e70",
+      "receipt_sha256": "425c01932b58bce2e6d5acff10da2ea837a24e9fba7cdc2e16c97b972ae8ff87"
+    },
+    {
+      "label": "10-commit-canvas-merge",
+      "command": [
+        "git",
+        "commit",
+        "--no-edit"
+      ],
+      "exit_code": 0,
+      "before_head": "93c1553d3254abd65f3147eb6802b4e8c5f0deab",
+      "after_commit": "f79e94dd20f7a5a57175d9d8e539499f13dc7cd6 93c1553d3254abd65f3147eb6802b4e8c5f0deab 6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343 df76212e0f4f91d41f1bdca66d04b3b4bc137b41",
+      "receipt_sha256": "70f9a31c7f80243513402e6b5b0faf6950fdbd5e3571caee3614998fc043b0c3"
+    },
+    {
+      "label": "11-stage-registry-and-pin",
+      "command": [
+        "git",
+        "add",
+        "tests/run_all.py",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "exit_code": 0,
+      "before_head": "f79e94dd20f7a5a57175d9d8e539499f13dc7cd6",
+      "after_commit": "f79e94dd20f7a5a57175d9d8e539499f13dc7cd6 93c1553d3254abd65f3147eb6802b4e8c5f0deab 6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343 df76212e0f4f91d41f1bdca66d04b3b4bc137b41",
+      "receipt_sha256": "bc4bd295de4f3644eb6ae2f498d3ca465336398546c1beacb7df123f5a3d62af"
+    },
+    {
+      "label": "12-commit-registry-and-pin",
+      "command": [
+        "git",
+        "commit",
+        "-m",
+        "Register merged canvas gates and pin the integrated harness"
+      ],
+      "exit_code": 0,
+      "before_head": "f79e94dd20f7a5a57175d9d8e539499f13dc7cd6",
+      "after_commit": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818 f79e94dd20f7a5a57175d9d8e539499f13dc7cd6 80c6f74fc76d68af0d46a38907f2e7ef2c1e1bd9",
+      "receipt_sha256": "5c5fb112b5b5f28d1e2b2c5af680cf812f287098c0c886a2027d1b737fc91c27"
+    }
+  ],
+  "policy_counts": [
+    985,
+    55
+  ],
+  "owned_excluded": [
+    335,
+    272
+  ],
+  "current_golden": [
+    86,
+    2317
+  ],
+  "expected_missing_new_entries": [
+    "node:canvas_shards",
+    "py:test_canvas_evidence"
+  ],
+  "expected_manual_edits": false,
+  "ledger_sha256": "5dddce17a6cda9cfe935f075ca33647e1c28ed2bacd7a8ff1f62202ab54300c8",
+  "ledger_byte_equal_A": true,
+  "pure_checks": [
+    {
+      "label": "canvas-node",
+      "exit_code": 0,
+      "tests": 19
+    },
+    {
+      "label": "original-pure-cdp",
+      "exit_code": 0,
+      "tests": 32
+    },
+    {
+      "label": "architecture-cli",
+      "exit_code": 0,
+      "tests": null
+    },
+    {
+      "label": "architecture-unit",
+      "exit_code": 0,
+      "tests": 205
+    },
+    {
+      "label": "architecture-product",
+      "exit_code": 0,
+      "tests": 18
+    },
+    {
+      "label": "current-plan",
+      "exit_code": 0,
+      "tests": null
+    }
+  ],
+  "unchanged_python_closure": "python-control-closure.json",
+  "peer": "independent static peer PASS at this fixed head",
+  "UNRUN": [
+    "actual canvas shards",
+    "same-source original full browser gate",
+    "real harness false assertion 0/1/0",
+    "native/build/full census",
+    "fresh mutation execution or official artifact verification"
+  ],
+  "pushed": false,
+  "PR_opened": false,
+  "exit_code": 0
+}

@@ -1,0 +1,128 @@
+{
+  "label": "09-stage-canvas-resolution",
+  "command": [
+    "git",
+    "add",
+    "geometry-web/cdp_test.js",
+    "tests/helpers/canvas_shards.js",
+    "tests/test_canvas_shards.js"
+  ],
+  "cwd": "/tmp/geometry-canvas-shards-20261102",
+  "before": {
+    "head": "93c1553d3254abd65f3147eb6802b4e8c5f0deab",
+    "commit": "93c1553d3254abd65f3147eb6802b4e8c5f0deab 86282523501608c7fdece026ab529182e668f840 503cfc59354893859ae9e6e4a6ab7c11d7972517 111b8b4d08bab0a856812e3c43010a986f9e8e70",
+    "status_sha256": "d49ba6e772199637e14476cfec278328deaa03f038e12dae53d8cdcc1dae0ad0",
+    "unmerged_stage_bytes_sha256": "b01ffe00737a9c1cfecab14b4e8a27cc8ccb771d508d93f8909966b2f710f714",
+    "dirty": [
+      {
+        "path": ".github/scripts/canvas_evidence.py",
+        "present": true,
+        "bytes": 11687,
+        "sha256": "0082e47cdaf4805080fea7410b1c60147d029b00ff1dc03b66faaf2eff3ec534",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/before/.github/scripts/canvas_evidence.py"
+      },
+      {
+        "path": ".github/workflows/integration-tests.yml",
+        "present": true,
+        "bytes": 11007,
+        "sha256": "60780fb7ccc482e8d206f2ebea1d9e57e32e2430be9239824c756b142117a798",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/before/.github/workflows/integration-tests.yml"
+      },
+      {
+        "path": "geometry-web/cdp_test.js",
+        "present": true,
+        "bytes": 519599,
+        "sha256": "14291f6f1114a9f4dd5ceaf3b6b02297b673870d5b903282fdd4090a31ff49e7",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/before/geometry-web/cdp_test.js"
+      },
+      {
+        "path": "tests/CANVAS-EVIDENCE.md",
+        "present": true,
+        "bytes": 2726,
+        "sha256": "2030fc6d7374b7d78a0e1cb46569f0a18e4bd3be81811d86fecf237f82314ddc",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/before/tests/CANVAS-EVIDENCE.md"
+      },
+      {
+        "path": "tests/helpers/canvas_shards.js",
+        "present": true,
+        "bytes": 12147,
+        "sha256": "299209a835ed0cb689ca7fcc6c1a320cb8a53e3f7861ddce17e9e05c661e357d",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/before/tests/helpers/canvas_shards.js"
+      },
+      {
+        "path": "tests/test_canvas_evidence.py",
+        "present": true,
+        "bytes": 8582,
+        "sha256": "005dbfc2a3cceef218bc5f612f49e2522e37f109d2017d88d715e7d468b579eb",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/before/tests/test_canvas_evidence.py"
+      },
+      {
+        "path": "tests/test_canvas_shards.js",
+        "present": true,
+        "bytes": 10207,
+        "sha256": "faf8f1766b20adfc1eb3b43621dbeb7a01fa9232f2a4a8ba697b4a2df58c8794",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/before/tests/test_canvas_shards.js"
+      }
+    ]
+  },
+  "exit_code": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "after": {
+    "head": "93c1553d3254abd65f3147eb6802b4e8c5f0deab",
+    "commit": "93c1553d3254abd65f3147eb6802b4e8c5f0deab 86282523501608c7fdece026ab529182e668f840 503cfc59354893859ae9e6e4a6ab7c11d7972517 111b8b4d08bab0a856812e3c43010a986f9e8e70",
+    "status_sha256": "f6d2de3aac8eaa65b86b21110e28132e55ada391f273fc2aa26887d6fa663f67",
+    "unmerged_stage_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty": [
+      {
+        "path": ".github/scripts/canvas_evidence.py",
+        "present": true,
+        "bytes": 11687,
+        "sha256": "0082e47cdaf4805080fea7410b1c60147d029b00ff1dc03b66faaf2eff3ec534",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/after/.github/scripts/canvas_evidence.py"
+      },
+      {
+        "path": ".github/workflows/integration-tests.yml",
+        "present": true,
+        "bytes": 11007,
+        "sha256": "60780fb7ccc482e8d206f2ebea1d9e57e32e2430be9239824c756b142117a798",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/after/.github/workflows/integration-tests.yml"
+      },
+      {
+        "path": "geometry-web/cdp_test.js",
+        "present": true,
+        "bytes": 519599,
+        "sha256": "14291f6f1114a9f4dd5ceaf3b6b02297b673870d5b903282fdd4090a31ff49e7",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/after/geometry-web/cdp_test.js"
+      },
+      {
+        "path": "tests/CANVAS-EVIDENCE.md",
+        "present": true,
+        "bytes": 2726,
+        "sha256": "2030fc6d7374b7d78a0e1cb46569f0a18e4bd3be81811d86fecf237f82314ddc",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/after/tests/CANVAS-EVIDENCE.md"
+      },
+      {
+        "path": "tests/helpers/canvas_shards.js",
+        "present": true,
+        "bytes": 12147,
+        "sha256": "299209a835ed0cb689ca7fcc6c1a320cb8a53e3f7861ddce17e9e05c661e357d",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/after/tests/helpers/canvas_shards.js"
+      },
+      {
+        "path": "tests/test_canvas_evidence.py",
+        "present": true,
+        "bytes": 8582,
+        "sha256": "005dbfc2a3cceef218bc5f612f49e2522e37f109d2017d88d715e7d468b579eb",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/after/tests/test_canvas_evidence.py"
+      },
+      {
+        "path": "tests/test_canvas_shards.js",
+        "present": true,
+        "bytes": 10207,
+        "sha256": "faf8f1766b20adfc1eb3b43621dbeb7a01fa9232f2a4a8ba697b4a2df58c8794",
+        "copy": "/tmp/geometry-resume-20261102/canvas-sharding/integration-A-E/09-stage-canvas-resolution/after/tests/test_canvas_shards.js"
+      }
+    ]
+  }
+}

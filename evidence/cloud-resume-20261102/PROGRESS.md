@@ -28,7 +28,7 @@ READY-TO-MERGE #340僅標技術驗收，請最新審查；合併順序由本機C
 
 公開 source `26dc99117ac942ec8f50145d875d6e55594f3835` 的正式 CI 已完成 fullcanvas 2317／0、golden matched；真 execution 為同tree的合成merge，不移標。三產品修正包含合法衍生host、R41 key全保存／新profile新服務重開、混合derived dump順序；局部assembly200／0／0、五個native與三個Node具名撤回／恢復原件均保留。舊P77的R06段拆成獨立R06段並增加11項，其餘84段不變，不能宣稱85段全未變。
 
-該source完整native首輪有A04舊literal錨點斷言、帳本stale與三個expected count drift，整體真紅；card A04是注入前needle零命中，不冒稱killed。完整123官方Mutation evidence已全綠、原verifier復驗0。窄修A04保持只撤CARD且原CR20不變，採入原官方ledger，再依原Linux schema產架構四檔，得到尚未推送候選 A `e9f4dd75cfd4eb9965e3af249200b918907d62db`；保留每個原execution SHA，不將26dc執行改標A。
+該source完整native首輪有A04舊literal錨點斷言、帳本stale與三個expected count drift，整體真紅；card A04是注入前needle零命中，不冒稱killed。完整123官方Mutation evidence已全綠、原verifier復驗0。窄修A04保持只撤CARD且原CR20不變，採入原官方ledger，再依原Linux schema產架構四檔，得到候選 A `e9f4dd75cfd4eb9965e3af249200b918907d62db`；已經由canvas-validation來源保全分支的祖先普通推送，A commit URL實際HTTP200，但尚未採入PR363 head。保留每個原execution SHA，不將26dc執行改標A。
 
 原命令 `python3 tests/run_all.py --build --update-expected` 第一輪於 **2026-11-02 04:28:51.744831–05:01:14.155566 UTC**，外層1942.410788秒、原runner1938.4985秒，未逾2100秒、未發signal；232／232，5420＝5418pass＋1fail＋1原允許GDI skip，真exit1。唯一紅為 `test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left`：PID1為tail不reap，兩個已被kill的sleep留為PID1 zombie。原failed expected逐byte保存、guarded恢復舊bytes，A clean；未採入失敗結果。625份完整純文字suite原件、REQUEST／RESULT／expected前後／恢復收據與分類已存pr363/full-census-A；637原件總manifest保留，6binary／6sidecar另於原環境保全而非冒稱公開。
 
@@ -44,17 +44,25 @@ READY-TO-MERGE #340僅標技術驗收，請最新審查；合併順序由本機C
 
 M舊integration41382891799因未計數freshnessfail／聚合拒絕而紅，Mutation41382891805完整123綠均保原件。原selected19仍是c8db6777的真19／19、0fail／skip、exit0，不移標E；runtime ELF未包含在小型公開子集。READY-TO-MERGE只標技術驗收，仍待最新審查與本機Claude合main，Codex不合併。
 
-## #344：base main、架構四檔採入，真browser反證未跑
+## #344：base main、架構與官方帳本均採入，真fullbrowser三相未跑
 
-普通push的完整head E `503cfc59354893859ae9e6e4a6ab7c11d7972517`，parent S `eccebabc85acf74e30274b8ea8e24db863d8843b`。S已普通merge main與#366；原Node9固定／撤回／恢復exit0／1／0、pass9／6／9；原架構三CLI全0、205＋18。四個canonical產物與peer核的Linux原件逐byte一致，manifest／scan原已相同，E實際只改report／receipt，execution仍S。
+前階段架構採入E `503cfc59354893859ae9e6e4a6ab7c11d7972517`，parent S `eccebabc85acf74e30274b8ea8e24db863d8843b`；目前PR head已前進為下列F。S已普通merge main與#366；原Node9固定／撤回／恢復exit0／1／0、pass9／6／9；原架構三CLI全0、205＋18。四個canonical產物與peer核的Linux原件逐byte一致，manifest／scan原已相同，E實際只改report／receipt，execution仍S。
 
-S原check有53bridge stale；同final head正式CI待核收。P53-3／P61-10／P61-11真browser三相仍UNRUN，原FLOW scope比三案更廣、每相原35分鐘不改；等待目前獨占census完成後安排，不將Node VM替身當browser證據。574個歷史evidence保留；不改SSOT／斷言／golden。
+S原check53bridge stale保留。E正式integration41388718270為六browser通過、native2 freshness fail與原coverage ValueError紅：231suites／5349counted＝5348pass＋1原GDI skip，另1uncounted freshness fail；真execution56250470746f8a7bf6b4a235a586f2744ae3cddf不移標。E正式Mutation41388718083全10success、原verify0／123＝114k／1crashed／5eq／3ret、其餘0；七cache真0／1／0、binary／sidecar／159raw／架構三原CLI、21ZIP／20joblogs全部核過，原件摘要在pr344/ci-E。
+
+新官方ledger原bytes SHA256 `aaaad44b2470d5f5d937a8ba8f431dd554f0ee95a82958f9ff48b19aa86a5ee8` 已單一writer／peer採入成 **F `d794a7447b98a82fb35c1dccaedc3443e2230933`**，普通FF push0、remote/API一致，sole parent E503c、唯一ledger變更，120execution全仍E。185inputs／53oracle／7native build1369inputs閉包全同，原check0；actual working execution為E＋sole官方ledger bytes，同F tree，不冒稱已跑F產品。defaultcache原本absent，未改／未override。新自動integration41393748904／mutation41393748942待核；無dispatch／重送CI。詳細原流、採入與peer在pr344/ledger-adoption與commands26–38。
+
+P53-3／P61-10／P61-11真browser三相仍UNRUN。最新review6398950277要求原完整canvas固定／只撤清錯／恢復三相，各原2100秒、golden／skip不變，原FLOW partial僅診斷不能替代；清既有scope/modifier並用各自clean根／port／profile／native runtime，靜態preflight已peer。待目前獨占census完成後安排，不將Node VM替身當browser證據。574個歷史evidence保留；不改SSOT／斷言／golden。
 
 ## Canvas拆片：實作已保存，動態驗收與最終合流未跑
 
-分支 `codex/canvas-shards-20261102` 已正常推送 `6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343`。兩個完整執行單位legacy／extensions、原斷言journal及嚴格來源／run／attempt／golden覆蓋驗證已實作；原legacy438940bytes與tail21呼叫鏈保持等價，P83→P86同unit。純Node19／Python12／原CDP32均exit0，兩輪peer已核。
+分支 `codex/canvas-shards-20261102` 已正常推送 `6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343`。兩個完整執行單位legacy／extensions、原斷言journal及嚴格來源／run／attempt／golden覆蓋驗證已實作；原legacy476653 UTF8 bytes與tail21呼叫鏈保持等價，P83→P86同unit。原NOTES將438940字元誤寫為UTF8 bytes，原equivalence JSON的476653與SHA256記載一直正確，現更正本表述、保留原件；byte equality結論不變。純Node19／Python12／原CDP32均exit0，兩輪peer已核。
 
-尚未開PR；真雙Chrome shards、同source原full及真harness撤回／恢復仍未跑。架構目前只報CDP exclusion digest紅，待最終#363→#344→canvas普通merge後只更新該LF pin，保留較強policy；新兩測試登錄與expected須由原工具產生，不能手填。原型計畫／原命令／純測試原輸出已存canvas-sharding。
+尚未開PR；真雙Chrome shards、同source原full及真harness撤回／恢復仍未跑。原6c階段唯一CDP exclusion digest紅、兩新測試未登錄，已於下列e456合流後更新唯一LF pin及登錄；expected仍須由原工具產生，不能手填。原型計畫／原命令／純測試原輸出已存canvas-sharding。
+
+後續本地A→344E→canvas普通merge已完成，加兩registry與唯一現CDP LF pin成 **e45670d9bb864dcf6b5a07fd4ccf11c188e54818**，已普通推新保全分支codex/canvas-validation-20261102，舊6c7分支未動、無PR／CI。新Node19／原CDP32／原三架構CLI205＋18全0，335sources／803edges／0diag；Python12完整隔離fixtures/import closure未變，仍保原6c execution。R06=50獨立段明確extensions ownership：86keys／2317＝legacy62／898＋extensions24／1419；新legacy478849 UTF8 bytes精確等pre-canvas A+E、22tail次序／參數不動，A政策985／55、R41與E app/P53/P61／完整transport trace均peer核過。
+
+再普通merge344F得到本地 `27e6f6911abb5518c089c0f688fadca5734735ea`（未推）；sole ledger衝突保A原bytes，F原官方blob在history，沒有拼接或改execution。新舊tree全等、39265完整Git entries全等，故不重跑有效純tests、不改execution。expected仍缺兩新項、ledger因新registry待最終完整重產，不宣稱fresh；等R06 F2原expected後再普通merge、固定final源。全部動態Chrome／fresh mutations／fullnative仍UNRUN。來源合流、closure、原gates與保全命令在canvas-sharding/integration-A-E。
 
 後序維持 #339→341→342→343→346→347→348；先由本機Claude合#340再開始下一張。#355 UI15待同源鏈；R03仍在R02與PF2～6之後。
 

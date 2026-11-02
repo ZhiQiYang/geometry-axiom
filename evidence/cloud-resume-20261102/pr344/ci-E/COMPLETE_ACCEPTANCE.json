@@ -1,0 +1,103 @@
+{
+  "schema": "geometry-final-ledger-acceptance/1",
+  "pr": 344,
+  "source_E": "503cfc59354893859ae9e6e4a6ab7c11d7972517",
+  "mutation_evidence_accepted": true,
+  "integration_accepted": false,
+  "source_tree": "ff068df7b220d63e64832d3648a0b81ff8cbca57",
+  "actual_integration_checkout": "56250470746f8a7bf6b4a235a586f2744ae3cddf",
+  "integration_run_id": 41388718270,
+  "mutation_run_id": 41388718083,
+  "job_count": 20,
+  "success_jobs": 18,
+  "failed_jobs": [
+    "native (2/3)",
+    "native complete coverage"
+  ],
+  "official_zip_count": 21,
+  "all_job_logs_equal_run_ZIP": true,
+  "official_ledger_exact_path": "/tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/extracted/mutation-complete-evidence/mutants_results.json",
+  "ledger_sha256": "aaaad44b2470d5f5d937a8ba8f431dd554f0ee95a82958f9ff48b19aa86a5ee8",
+  "summary_sha256": "cad001944ec1e2a5792be56a8d2f03b14c0fd039cf66a67f558dc2b36117513d",
+  "original_mutation_verify_exit": 0,
+  "mutation_table_size": 123,
+  "mutation_active": 120,
+  "counts": {
+    "killed": 114,
+    "crashed": 1,
+    "survived": 0,
+    "equivalent": 5,
+    "invalid": 0,
+    "stale": 0,
+    "blocked": 0,
+    "retired": 3,
+    "unrun": 0
+  },
+  "native": {
+    "native_suites": 231,
+    "counted_tests": 5349,
+    "counted_passed": 5348,
+    "counted_failed": 0,
+    "allowed_skips": 1,
+    "stale_bridge_count": 53
+  },
+  "core_and_bridge_original_negative_controls": "Seven official CI strict baseline/mutant/restored0/1/0, raw independently verified; no local repetition.",
+  "bridge_raw_count": 159,
+  "mutation_source_inputs": 185,
+  "native_build_input_entries": 1369,
+  "adoption_writer": "chain_inventory only; no source/PR action by this collector.",
+  "independent_review_passed": true,
+  "blockers_to_exact_ledger_adoption": [],
+  "formal_red_preserved": true,
+  "receipts": [
+    {
+      "path": "LEDGER_ADOPTION_HANDOFF.json",
+      "sha256": "282f887217ad1d44caa7d8fb7ccdd1257aee1bac703099c99897ffa6605d96f0"
+    },
+    {
+      "path": "LEDGER_ADOPTION_HANDOFF.md",
+      "sha256": "1c1853968b5a6de9cb7659c6bbc17d1fefd9716c299ff3639ab15355bbf88527"
+    },
+    {
+      "path": "adoption-source-identity.json",
+      "sha256": "184eca3516b895f14568e6918bdac43b6d21d8168d5200e8f5cbdb5d8c423258"
+    },
+    {
+      "path": "recompute_source_identity.py",
+      "sha256": "ec6e0509cf9a6781bd795774887cea240c7def2bbc1c9c39f1b51c0cadf27f57"
+    },
+    {
+      "path": "INTEGRATION_FAILURE_PRESERVED.json",
+      "sha256": "1132af9645f901e0234b804a208a22ab6722d52278d73edd94fa98c4838e3fea"
+    },
+    {
+      "path": "mutation-verify-receipt.json",
+      "sha256": "4835567a68c03fdb17bb04873ff497730d93711ba9673ddf03aa61c8eab6b761"
+    },
+    {
+      "path": "mutation-shard-audit.json",
+      "sha256": "88fbe5286c1d24a339d8f1d9b65126466f99afb5d127b9faa5b31b1e7b7193c2"
+    },
+    {
+      "path": "architecture-audit.json",
+      "sha256": "230f2a5a1c4fab15ec145fda39c1716c633cc22e80f6b0ad90ad2e034e1d448f"
+    },
+    {
+      "path": "artifact-byte-audit.json",
+      "sha256": "89a2a944dd184f5e6e271a1c7ae57a5478cfdfc315381a2f467ad6c9c3f958a7"
+    },
+    {
+      "path": "official-run-log-audit.json",
+      "sha256": "b959c73c7e6268d38d3ea8738e442287433c0a7dacdf73e3ecc234c549a4ceb3"
+    },
+    {
+      "path": "independent-review/native-browser/native-browser-review.json",
+      "sha256": "7f448fc410af0205369913beb1bc6d5fd09fca86a029ad74cd32ea1a862a3ebf"
+    },
+    {
+      "path": "independent-review/mutation/MUTATION_PEER.json",
+      "sha256": "d386f4ad6632dceaf13e25b97be0ae9496a92e35390c341795589fa5de0a31a7"
+    }
+  ],
+  "scope": "Fixed-E API/artifact/raw/original hash/receipt verification, no product/build/Chrome/binary execution/CI dispatch/source/body change."
+}

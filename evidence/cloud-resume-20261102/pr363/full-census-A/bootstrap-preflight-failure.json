@@ -1,0 +1,7 @@
+{
+  "stage": "before child launch",
+  "exception": "FileNotFoundError for tracked but absent sparse-worktree evidence/architecture-gate-99455b9f/README.md",
+  "exitCode": 1,
+  "childStarted": false,
+  "repair": "snapshot explicitly records presentInWorktree:false without modifying source"
+}

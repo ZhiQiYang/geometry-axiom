@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/independent-review/mutation/MUTATION_PEER.py", line 117, in <module>
+    'mutation_run_id':RUN,'mutation_conclusion':'success','original_verifier_actual_exit':verify['exit_code'],
+                                                                                          ^^^^^^
+NameError: name 'verify' is not defined
