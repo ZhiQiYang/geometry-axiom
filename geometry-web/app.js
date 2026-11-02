@@ -614,7 +614,7 @@ document.addEventListener("keydown", e => {
 }, true);
 async function apiRequest(cmd, roomLease = null) {
   const rollback = cmd === "line history-abort";
-  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd)) {
+  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd)) {
     try { if (roomLease) RoomCollectionWorkspace.assertTransaction(roomLease); else { ReferenceWorkspace.assertAssemblyIdle(); if (!rollback) ReferenceWorkspace.assertEditable?.(); } }
     catch (error) { return {ok:false,error:error.message}; }
   }
@@ -628,7 +628,7 @@ async function apiRequest(cmd, roomLease = null) {
   const releaseNativeOperation = ReferenceWorkspace.beginNativeOperation?.(cmd);
   try {
   const t0 = performance.now();
-  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) ? crypto.randomUUID() : null;
+  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd) ? crypto.randomUUID() : null;
   const ack = [...acknowledgedApiResults];
   let confirmation = null;
   const featureToken=cmd.match(/^line confirm (\S+)$/)?.[1];
@@ -637,7 +637,7 @@ async function apiRequest(cmd, roomLease = null) {
     try{confirmation=ReferenceWorkspace.beginFeatureConfirmation(featureToken);}catch(error){return {ok:false,error:error.message};}
     if(confirmation)pendingAssemblyConfirmations.set(requestId,confirmation);
   }
-  if (/^(assembly-confirm|section-profile-confirm) /.test(cmd)) {
+  if (/^(assembly-confirm|section-profile-confirm|definition-import-confirm) /.test(cmd)) {
     if (!requestId) return {ok:false,error:"請先確認服務連線，再確認組構變更。"};
     try { confirmation = ReferenceWorkspace.beginAssemblyConfirmation(); }
     catch (error) { return {ok:false,error:error.message}; }
@@ -690,7 +690,7 @@ async function apiRequest(cmd, roomLease = null) {
   if (current) ReferenceWorkspace.observe(cmd, res);
   if (confirmation) { ReferenceWorkspace.finishAssemblyConfirmation(confirmation); pendingAssemblyConfirmations.delete(requestId); }
   if (current && res.ok && !res.preview && res.history_changed !== false &&
-      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) &&
+      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd) &&
       !/^line\s+(?:$|#|preview\b|cancel-preview\b|history-(?:begin|end)\b|canvas\b)/.test(cmd))
     window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
   window.fbRecord?.("api", { cmd: String(cmd).slice(0, 500), ok: res.ok !== false, error: res.error,
@@ -7293,7 +7293,7 @@ function renderFaceLayers(projectionDraft = feProjectionDraft()) {
     catch(error) { const note=document.createElement("p");note.id="timberScheduleStatus";note.textContent=error.message;schedulePane?.append(note); }
     const view=fe.scheduleView;
     const controls=document.createElement("div");controls.className="timber-schedule-controls";
-    controls.innerHTML='<label>範圍<select id="timberScheduleScope"><option value="surface">此承載面的全部角材</option><option value="selection">所選角材集合</option></select></label><label>顯示單位<select id="timberScheduleUnit"><option>mm</option><option>cm</option></select></label><label>排序<select id="timberScheduleOrder"><option value="id">構件身分</option><option value="length">完成長度</option></select></label><button type="button" id="timberScheduleCSV" class="btn">匯出精確 mm CSV</button>';
+    controls.innerHTML='<label>範圍<select id="timberScheduleScope"><option value="surface">此承載面的全部角材</option><option value="selection">所選角材集合</option></select></label><label>顯示單位<select id="timberScheduleUnit"><option>mm</option><option>cm</option></select></label><label>料單檢視<select id="timberScheduleOrder"><option value="id">構件身分</option><option value="length">完成長度</option><option value="cutting">裁切與採購…</option></select></label><button type="button" id="timberScheduleCSV" class="btn">匯出精確 mm CSV</button>';
     schedulePane?.append(controls);
     controls.querySelector('#timberScheduleScope').value=view.ids===null?'surface':'selection';
     controls.querySelector('#timberScheduleScope').onchange=ev=>{
@@ -7303,7 +7303,10 @@ function renderFaceLayers(projectionDraft = feProjectionDraft()) {
     controls.querySelector('#timberScheduleUnit').value=view.unit;
     controls.querySelector('#timberScheduleUnit').onchange=ev=>{view.unit=ev.target.value;renderFaceLayers();};
     controls.querySelector('#timberScheduleOrder').value=view.order;
-    controls.querySelector('#timberScheduleOrder').onchange=ev=>{view.order=ev.target.value;renderFaceLayers();};
+    controls.querySelector('#timberScheduleOrder').onchange=ev=>{
+      if(ev.target.value==='cutting'){ev.target.value=view.order;CuttingWorkspace.open({workspace:ReferenceWorkspace,references:()=>apiRequest('references'),scope:{surface:view.surface,ids:view.ids===null?null:[...view.ids]}});return;}
+      view.order=ev.target.value;renderFaceLayers();
+    };
     controls.querySelector('#timberScheduleCSV').disabled=!schedule?.rows.length;
     controls.querySelector('#timberScheduleCSV').onclick=feExportTimberSchedule;
     if(schedule){const status=document.createElement('p');status.id='timberScheduleStatus';status.className='fi-note';status.textContent=`承載面 ${schedule.surface} · ${schedule.rows.length} 支正式角材 · 材料／加工未設定者保持未知`;schedulePane?.append(status);}

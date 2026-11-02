@@ -208,7 +208,7 @@ static bool reference_derived_resolve(ReferenceEval *ctx,const PlacementSurface 
         direct.finish.parameter_coord=app_fs_parameter_coord;direct.finish.parameter_value=app_fs_parameter_value;
         direct.finish.engineering_operation=app_fs_engineering_operation;direct.finish.derived_operation=app_fs_derived_operation;
         WoodEngineeringContext *engineering=&direct.finish.engineering;engineering->sources=NULL;
-        engineering->resolve_source=NULL;engineering->resolve_binding=NULL;engineering->source_named=NULL;
+        engineering->resolve_source=NULL;engineering->resolve_binding=NULL;engineering->last_terminal=NULL;engineering->source_named=NULL;
         engineering->source_parameter=NULL;engineering->depend_definition=NULL;engineering->validate_application=NULL;engineering->source_version_field=NULL;engineering->source_version_definition=NULL;engineering->source_application=NULL;
         direct.placement_read=app_dp_read;direct.placement_write=app_dp_write;direct.placement_remove=app_dp_remove;
         direct.placement_count=app_dp_count;direct.remove_canvas_position=app_dp_remove_position;
