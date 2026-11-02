@@ -1,3 +1,38 @@
+# 2026-11-02（台北）雲端接續：依新優先順序持續執行
+
+本節是現有雲端任務的新檢查點，不是停止指令。下方10/29與更早內容全保留為歷史；#338與#324已於11/1合入main，不能再按舊B1缺件／未採F敘述重啟舊驗收。最新查main仍為 `5775a9e9e46bca801a9a70aaeafcdab9f597bc4d`；Codex不合main，只普通merge及快轉推送。英文commit、繁體中文溝通，不改公理／閱讀器／決策佇列，不碰其他owner分支。
+
+## 最新工作線／來源
+
+1. **#366 READY-TO-MERGE（技術驗收），待最新審查與本機Claude合併。** branch `codex/mutation-evidence-tools-20261102`，head `502a64ff6214dd6060927b7f14643a533536f20d`。新integration41376852060＋mutation41376852056共20jobs全success；21官方artifact ZIP／20job raw核過；原native分片聚合復驗0、coverage真0/1/0；原mutation verifier0、123/120active＝114killed/1crashed/5equivalent/3retired，七bad-cache0/1/0。原三架構命令0；fullcanvas2267/0/0、85golden。integration實際合成execution7d2a1927e15d3c0d59b20fa6618005f19c4a6c56，tree與head相同，沒移標。正文已讀回一致，交審comment6568027211。**workflow_dispatch入口仍須工具進default branch後實測**，不能以PR事件代替。
+
+2. **#340 READY-TO-MERGE（技術驗收），依序先#366再#340，由本機Claude合。** branch `codex/kernel-without-woodworking-20261023`，head `b3a248607d7eb68d3167abbb926cf491d9b35a26`，base已改main。普通merge main得1605，再普通merge已驗#366工具502，無rebase/force；對main只17原歷史evidence＋四原樣工具，產品/測試全等main。新integration41382015317＋mutation41382015277共20success；真execution fc1c9f565a2e15660e931b3884dca2220cb1b7b2同tree。230native完整、六browser過、full2267/85golden；fresh123／七bad-cache／原verify0及官方raw全核；ledger SHA52bbad63cc0a281f6d9a5304bc8ddc65ddd96213aeea98057dcb6be0b287b962。comment6568762900已交審。保留post-result server BrokenPipe鏈式traceback未定原因，不假稱所有診斷零。**#340合入main後才改#339 base並往上依序339→341→342→343→346→347→348；沒有提前改其他鏈的base。**
+
+3. **#363 R06產品三阻擋已修，完整驗收進行中。** 公開head `26dc99117ac942ec8f50145d875d6e55594f3835`，branch `feat/r06-bay-repeat`，同SHA另保全`codex/r06-review-fixes-20261102`。合法derived guide/finite-grid恢復；R41 edgeKey native/draft/真Save/新profile新服務Open全鏈；mixed derived dump依賴順序。R06有限PF reader依已採I32/I56 scope，native complete:false與NotIn全PF能力原assert未改，五原子拒絕真UI過。partial assembly200/0、5native/3Node具名撤回與恢復過；原execution分列不移標。26dc新fullcanvas2317/0、golden matched；R06既有3browser撤回與native取消控制官方ZIP已核。原CI counted紅為A04舊工具needle零命中與舊expected漂移，另舊ledger stale；不當成新通過。
+
+   新Mutation41384504486完整123真過並復驗；120execution.head保26dc。診斷窄修D `2fce94bc66713dd9dd790892d79345ffbf1aa58a` 只A04 before/after保PANEL_FILL且仍只移CARD＋相應pin，六card原0/1/0與anchors3/3過，generic C/oracle/runner/compiler輸入同26dc；後採官方ledger為E `3aa03de1e309883e53829c92f064e3ebd51a0ad2`，再按既有canonical schema/Linux真原流產四架構採入A **`e9f4dd75cfd4eb9965e3af249200b918907d62db`**。這些A/D/E目前本地未推，26dc正式來源保留，不把execution改A。
+
+   **現正唯一活的本地重測：A完整census**。原命令`python3 tests/run_all.py --build --update-expected`、2100秒、stack16777216、Node24.22.1、原mutationcheck不跳；開始UTC04:28:51.744831（台北12:28:51），截止UTC05:03:51.744831（台北13:03:51），child161075/supervisor161026。收據`/tmp/geometry-resume-20261102/pr363/full-census-A`。先讀原結果/PID是否仍活，不重啟同輪；成功才採新expected原bytes成F2，失敗不採。26dc→A有card Python helper令runtimeVersion身份hash改變，不能概括全部runtime身份同一；須依完整閉包決定26dc fullcanvas哪些可沿用，保真execution，最終required新head CI仍須取得。
+
+4. **#345 已採新完整帳本並推新head，等待新正式CI。** branch `codex/issue214-http-fixture-20261024`，base main，head **`79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6`**，parent577b2e81967b3019352f65df5ffe6dc48eb6202f。先普通merge main得c8db，再普通merge四工具502；產品diff仍原poll_interval單行。c8db原selected19真19/19/0skip/exit0，沒有移標。M577b integration只有ledger freshness造成native2與coverage兩紅，其餘229suite及六browser過；新Mutation41382891805全10success，原verify/21ZIP/raw/七guards皆過。官方ledger SHA0be90a297b4f4b4fd5a2e60d528886845cc2c8d823e912ef3b0763ba68f7eb1c已原bytes採入79cf，唯一JSON變更、M→E全部C/Py/oracle/runner/build輸入同一、原E check0；120 execution仍M，不改head。新E integration41387497096、mutation41387497118自動啟動，未稱全綠。下一步核收它們、同步正文並交審，不再本地重跑有效19。
+
+5. **#344 已main/工具合流與canonical採入，真browser尚未跑。** 本地branch `codex/issue320-main-convergence-20261102`，S eccebabc85acf74e30274b8ea8e24db863d8843b；artifact-only E **`503cfc59354893859ae9e6e4a6ab7c11d7972517`**。已由root將base main並正常快轉推原`codex/issue320-connection-recovery-20261024`（publishing原回傳需讀publication/pr344-push.json確認）。main目前recoverConnection尚需原清error一行；保main app/CDP/registry/policy，不整份覆舊。S Node9真0/1/0（3具名紅），原三架構CLI0、205/18、604inputs同一；53bridge stale正確保留、帳本未改。四外置canonical原bytes採E（manifest/scan本來相同故只2衍生檔changed），S source/main5775/Linux身分不移標。FLOW_REPAIR_ONLY短scope S/V/S仍UNRUN，census期間未准Chrome/重native；待root先看原命令/覆蓋/原上限，給窗口後實跑。後續用#366產fresh ledger、原fullcensus處理expected，正式CI待核，不READY。
+
+6. **canvas拆片既有程式已保全，真正分片UNRUN。** branch `codex/canvas-shards-20261102`，head **`6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343`** 已普通push，無PR／無正式CI。現有兩片選完整units，保full/partial原路由及P83→P86；受控journal、父程序真exit、run/head/runtime/source/golden及完整互斥聯集嚴格聚合。純19Node＋12Python＋32舊CDP tests過，peer過；架構唯一EXCLUSION_DIGEST保留，沒有改golden/原assert/timeout或手填expected。
+
+   後合順序由root指定 **#363修後→#344修後→canvas commit**，普通merge保前者；最後同步cdp_test.js實際LF pin，保policy分類不變。新registry待統一：`PY_NEEDS['test_canvas_evidence']=[]`；`NODE_PURE_TEST_FILES['node:canvas_shards']='tests/test_canvas_shards.js'`，count必須最終實跑產生，不抄暫時觀測。再#366 freshledger/架構/census，一次取得新兩片＋原full守門＋真harness false assertion撤回恢復，當前均未跑。不能沿用舊85/2267移標合入R06的新universe。
+
+## 誰在寫、保全與下一步
+
+- root統籌遠端metadata/快轉push/證據與main合流順序；`pr363_r06`唯一R06 writer並跑census；`chain_inventory`唯一344 writer（census中只靜態/交接，不啟Chrome）；`pr366_evidence`負責canvas source（已提交待整合，不啟Chrome）；`current_ci_receipts`完成340/345原件核收與345 ledger adoption。所有source用獨立worktree，沒有兩writer寫同一實體檔。重測依root排程，fullcanvas/perf獨占，本輪census也優先獨占。
+- 公用遠端證據branch **`codex/cloud-resume-evidence-20261102`**，已推到 **`d8cf5e96caee0282c5fda0df4fbd8171f78f5e6e`**，路徑`evidence/cloud-resume-20261102/PROGRESS.md`與各PR子目錄；含340新CI原件核收、原aggregate ZIP、363局部真收據/原紅、345 selected19原流及peer。後續E79cf採入與新CI、344、canvas、census仍需root分批補遠端證據及正文，不把本地路徑當耐重啟交付。
+- 本環境重啟後舊/tmp/SHM私有原件已不在；/workspace對uid1000仍可用0。本次新/tmp/SHM有容量、Chrome156.0.8078.79已task-local解包、Noto CJK已存在、Node24.22.1供測試；source已多數推遠端。**新的raw在tmpfs仍需保全，不刪原件/fixtures/gitobjects/使用者檔案，不重送舊取消清理。**
+- 在新回合先確認這些真PID/HEAD/status/最新GitHub審查，收原census終態，不用舊「進行中」重開。#366/#340待本機Claude審查合併是外部分工，不能自行merge main。等待時繼續344短browser、345正式CI與canvas合法整合，不輪詢空等；#340沒合main前不提前動339鏈。#355 UI15仍待343→346→347同源；R03依user排R02後且前置PF2–6。325/331/333及352/353/354/357由其他owner，本線不碰。
+
+---
+
+## 下方全部為10/29與更早歷史，不能作目前main／PR阻擋現況
+
 # 2026-10-29（台北）#338 接續：B2／B3 已閉合，B1 原 ELF 尚缺
 
 本節僅更新 #338；下方舊 #338 現況全部保留作歷史，不能再據其 native UNRUN／F 尚未採入等文字重跑。沒有合併 PR/main、force push、部署或修改公理。
