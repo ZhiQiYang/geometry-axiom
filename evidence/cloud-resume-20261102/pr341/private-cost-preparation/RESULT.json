@@ -1,0 +1,116 @@
+{
+  "schema": "geometry-pr341-private-cost-preparation/1",
+  "utc": "2026-11-02T12:54:35.279555+00:00",
+  "status": "PASS_PRIVATE_MINIMAL_FUNCTIONAL_PREPARATION_NOT_B1",
+  "fixedSource": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+  "originalPre341": "d1578d22f6d085ebd109ae1ce5a82b41c9d6a8a2",
+  "originalSourceSha256": "83fd46c25acead96ebc724f673f405176fdc5463296fd8b3b77b72fd66f7798b",
+  "pre341SourceSha256": "fbc88b0aac9ab33dedbb1e27ab3aec8f10b7caeb525ffad9e6b8d6baa88dabfb",
+  "variants": {
+    "C": {
+      "sha256": "83fd46c25acead96ebc724f673f405176fdc5463296fd8b3b77b72fd66f7798b",
+      "bytes": 26976
+    },
+    "R_fallback": {
+      "sha256": "b4edc864a787e43b34ce46b50c4bd0cafb9081d98f629c92d7d4fdae9301e9e4",
+      "bytes": 27020
+    },
+    "R_joint": {
+      "sha256": "4060c8b5703ceaf0172fdaf62f712fe49cf5688c970b060dabb32daf4c9b6733",
+      "bytes": 25889
+    }
+  },
+  "patches": {
+    "R_fallback.diff": "001ed2a071f4ac553da6c96fd35a6948d979872bc482c90e86a27c8f1012f425",
+    "R_joint.diff": "2b52f9ba40b7eaf56dcd04884c99f277c3180984607dab5c16bc1f7ac1a79e43"
+  },
+  "whole341Attribution": "R_fallback isolates only nonindexed341 route; R_joint withdraws341+343 indexed pipeline while retaining uncalled helper definitions and shared order bookkeeping. Neither is an isolated341 cost claim over all inputs.",
+  "fixtureRecipes": "README.md table; exact replay.c and original fixture hashes in FILE_SHA256.json",
+  "execution": {
+    "originalSubjectCases": [
+      "ordering",
+      "regions",
+      "active-dedup",
+      "indexed-dedup",
+      "indexed-sort",
+      "intervals",
+      "extensions",
+      "ends"
+    ],
+    "privateReplayCases": [
+      "U",
+      "S",
+      "D",
+      "X"
+    ],
+    "variantCount": 3,
+    "actualRunCount": 36,
+    "allNormalExit0": true,
+    "exactReplayOutputsEqual": {
+      "U": {
+        "R_fallback": true,
+        "R_joint": true
+      },
+      "S": {
+        "R_fallback": true,
+        "R_joint": true
+      },
+      "D": {
+        "R_fallback": true,
+        "R_joint": true
+      },
+      "X": {
+        "R_fallback": true,
+        "R_joint": true
+      }
+    },
+    "rlimitStack": [
+      16777216,
+      -1
+    ],
+    "perSubjectTimeoutSeconds": 20,
+    "perBuildTimeoutSeconds": 300,
+    "originalFixtureUnchanged": true,
+    "originalPythonJudgeUnchanged": true,
+    "full14Methods41Controls": "UNRUN",
+    "dynamicRestoredC": "UNRUN",
+    "costSamples": "UNRUN",
+    "timedOrCounterHarness": "NOT_IMPLEMENTED",
+    "sourceAndBranchesChanged": false
+  },
+  "postExecutionInputReadback": {
+    "checks": 66,
+    "status": "PASS_POST_EXECUTION_INPUT_READBACK",
+    "sha256": "bdc53f81f0ee2b32a900ed7905a03d032f9c9998117bad8d96bacb46dfdd8fa6"
+  },
+  "limitations": [
+    "No formal B1, CPU/wall/RSS/work samples, numerical thresholds or performance verdict.",
+    "No claim of running complete14methods/41controls or their absent/unreachable baseline anchors.",
+    "No separate pre-execution replay hash manifest; exact compiled copy and reviewed driver match at post-execution readback.",
+    "All36normal runs finished; timeout partial-output capture was not exercised and needs correction before formal sampling.",
+    "Standalone original-assertion client uses only necessary five implementation objects; not the full canonical native executable closure."
+  ],
+  "sourceActionCounts": {
+    "worktreeEdits": 0,
+    "branchChanges": 0,
+    "commits": 0,
+    "pushes": 0,
+    "prs": 0,
+    "ciRuns": 0,
+    "chromeRuns": 0,
+    "performanceSamples": 0
+  },
+  "nextMinimalAction": "Root review scope/patch/evidence; after340genuinely merges freeze final source and compare complete inputs. Before formal cost implement pre-execution freeze and timeout raw capture; then reversible instrumentation with the existing finite schedule, preserving every red/zero/regression.",
+  "manifest": {
+    "path": "/tmp/geometry-resume-20261102/pr341/private-cost-preparation/FILE_SHA256.json",
+    "sha256": "798daf1d2dccaa4c2e3f94970ec361dca496357835cd99c79c26c9597da1001c"
+  },
+  "outBytes": 1273708,
+  "maximumNewBytes": 134217728,
+  "independentStaticPeer": {
+    "path": "/tmp/geometry-resume-20261102/pr341/private-cost-preparation/STATIC_BASELINE_PEER.json",
+    "status": "PASS_PRIVATE_PREPARATION_ONLY",
+    "sha256": "6d90c7c0a3cdb04ce4f9d445332e5f0405276be31dcafa8d278038e4b7877a58",
+    "scope": "Independent static patch/fixture checks and receipt read only; no repeated product execution."
+  }
+}

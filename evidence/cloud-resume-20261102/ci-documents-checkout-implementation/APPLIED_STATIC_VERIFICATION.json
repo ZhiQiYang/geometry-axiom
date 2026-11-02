@@ -1,0 +1,112 @@
+{
+  "at": "2026-11-02T12:43:29.434891+00:00",
+  "base": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+  "path": ".github/workflows/integration-tests.yml",
+  "fileBytes": 9113,
+  "fileSha256": "2425ac0a1b09153a188dee1c121e914dd89fc2dea7e90fe48dde6a0fed8f0b02",
+  "canonicalUnifiedPatchBytes": 936,
+  "canonicalUnifiedPatchSha256": "b677cc0e1630792ad50c96b3ab7f81f7caf2a89485a5d82b3b5780e506bd8f68",
+  "fileAndPatchExactCandidate": true,
+  "changedOnlyWorkflow": true,
+  "yamlParsed": true,
+  "allOriginalWorkflowObjectsEqualAfterRestoringCheckoutPair": true,
+  "nativeNativeCompleteUnchanged": true,
+  "browserCommandsEnvironmentMatrixUploadsAndTimeoutsUnchanged": true,
+  "documentsWholeJobTimeoutMinutes": 10,
+  "persistCredentialsFalseOnBoth": true,
+  "otherWorkflowFilesUnchanged": true,
+  "actualCanonicalAndPolicyInputIdentities": [
+    {
+      "path": "公理層.md",
+      "baseGitEntry": "100644 blob bac4c5ef1fa7d64e54d1aa81ecdf8efd1636cdff\t\"\\345\\205\\254\\347\\220\\206\\345\\261\\244.md\"",
+      "worktreeRawSha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": "geometry-guide/公理層-白話.md",
+      "baseGitEntry": "100644 blob b6e0d12968b90a9a70bce0ebd803179d5690a384\t\"geometry-guide/\\345\\205\\254\\347\\220\\206\\345\\261\\244-\\347\\231\\275\\350\\251\\261.md\"",
+      "worktreeRawSha256": "7c8263ef4a59f9c0b0f5215b7dde8f915aa5b38d5a3969bace160937b441ee8c",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": "geometry-guide/公理層-閱讀器.html",
+      "baseGitEntry": "100644 blob 0a21f66f512d5ebdeeb3c9f4a8c35e3204ae22c7\t\"geometry-guide/\\345\\205\\254\\347\\220\\206\\345\\261\\244-\\351\\226\\261\\350\\256\\200\\345\\231\\250.html\"",
+      "worktreeRawSha256": "768be0fe5aa1b4e06a0823492030749a08965dee4a9eeabf89b0cd2ee0e6a342",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture.json",
+      "baseGitEntry": "100644 blob dc533f28864e1abc20d6f6a0d73cd896634a170d\tgeometry-core/domain-decoupling/product-architecture.json",
+      "worktreeRawSha256": "84b64977c3fa0dd22cc60da4ad027657dd6e1ecd0e370cb363c2512a8886a0ee",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture-scan.json",
+      "baseGitEntry": "100644 blob 417ca8a32aba28ae755dcc2817d749c9288b7d80\tgeometry-core/domain-decoupling/product-architecture-scan.json",
+      "worktreeRawSha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+      "baseGitEntry": "100644 blob b951e60cc8d12845940aedbd5a42d1c4e81f897b\tgeometry-core/domain-decoupling/product-architecture-receipt.json",
+      "worktreeRawSha256": "8233f4190041dd8c5e412615bc44ec1aca4f35a12d32ff3b7d47e707e5aef9f9",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+      "baseGitEntry": "100644 blob ce43fb73e9993cbaa8714c52852109e160584ade\tgeometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+      "worktreeRawSha256": "98599a76ddb51348b9af80a2f2b889de90cfd475bab803ee746f85005ac224ca",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": "tests/run_all.py",
+      "baseGitEntry": "100644 blob 3c101c2d63ab7971f5987797d349505d48be6644\ttests/run_all.py",
+      "worktreeRawSha256": "da75a49758c1e5b9a529efd886d034b14bbc3af1d9ef98ccd923ecdaf034d43b",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": "tests/run_all.expected.json",
+      "baseGitEntry": "100644 blob 21a65c724e2cf0c14e318b5c66b7f1710b62e60a\ttests/run_all.expected.json",
+      "worktreeRawSha256": "cf69410538f68df168031c2ee1bf5ff32649f871f4e62b5d59ecb18456649554",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": "tests/mutate.py",
+      "baseGitEntry": "100644 blob 6e07b61aeb83b1e0899d485614e4137ec72252e8\ttests/mutate.py",
+      "worktreeRawSha256": "bd2d0c768439a93e7f848ff0299a5b164aabe1d80a0f4e9a5bcb7ab83eb4b315",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": "tests/mutation_bridge.py",
+      "baseGitEntry": "100644 blob e6c588ab2913a6d8326ae121723c5b1dda069578\ttests/mutation_bridge.py",
+      "worktreeRawSha256": "7febe80ba29a3c0e7821277f47102a57a0c9ab0610a02e8981bb0eb2a79b3c58",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": ".github/workflows/mutation-evidence.yml",
+      "baseGitEntry": "100644 blob 58e4d12490a60b88c6b52715555a2b0e630a19c5\t.github/workflows/mutation-evidence.yml",
+      "worktreeRawSha256": "c5d39c10de1df05ff1a582f228b4ee5fb088d0637337dc96c552d993a35d1fdb",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": ".github/scripts/mutation_evidence.py",
+      "baseGitEntry": "100644 blob a64122c1d53784fad4e879884a15aa8e11786a8d\t.github/scripts/mutation_evidence.py",
+      "worktreeRawSha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": ".github/scripts/architecture_evidence.py",
+      "baseGitEntry": "100644 blob 4b456e67391e8b634b87ccfc47125e3a9e2afa3a\t.github/scripts/architecture_evidence.py",
+      "worktreeRawSha256": "9899d18b3fb80a750308e2342d8309ca7a2470ec5aab4f977bc3213690b07b5b",
+      "trackedDiffAbsent": true
+    },
+    {
+      "path": "geometry-web/documents_browser_test.js",
+      "baseGitEntry": "100644 blob 34e870337ba801b406adac9d4a031a77be5c71d7\tgeometry-web/documents_browser_test.js",
+      "worktreeRawSha256": "0ab5cec0dd5f497e9501c68dce6970658f1d39c1f8a2c62183744b47b5826886",
+      "trackedDiffAbsent": true
+    }
+  ],
+  "sourceTestsExpectedMutationInputsUnchanged": true,
+  "noProductTestBuildOrBrowserRun": true
+}

@@ -1,0 +1,295 @@
+{
+  "schema": "geometry-r03-readonly-inventory/1",
+  "createdUTC": "2026-11-02T13:03:27.059788+00:00",
+  "fixedMain": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+  "pr355Head": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff",
+  "ledgerHead": "78dfb1129ce72719fbdb71ce5e71800eefcb3a68",
+  "handoffHead": "0919c4c6e00c496d0941b12047b281ec6c90348a",
+  "scope": "metadata and individual fixed files; no source/branch/SSOT changes, no fetch/build/test/API writes",
+  "files": [
+    {
+      "file": "API_ACQUISITION.json",
+      "bytes": 1530,
+      "sha256": "1b9ddd83ecef913531ec6c0ae881a3fa26783f00d394109f507af6ed685d8d18"
+    },
+    {
+      "file": "FIELD_QUOTE_READBACK.json",
+      "bytes": 7657,
+      "sha256": "b620b2a4af7ff195b5144c6b24274d66bf6aa656f4ff3e6be079d279b4e56b31"
+    },
+    {
+      "file": "OWNER_AND_DEPENDENCIES.json",
+      "bytes": 42242,
+      "sha256": "c2e27218e0d1c4f24193f4e9cdec473857785d6b3d2bc23a561c84ab4ebce7ef"
+    },
+    {
+      "file": "QUESTIONS.md",
+      "bytes": 1901,
+      "sha256": "23c78fd20045eeccd5df74be976b3405691ee27c083d1f69c1cefeefa8b6f305"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 15549,
+      "sha256": "163703b091d375f24c89ddd07de33e57d5f7444133e2b08e113aba2a454f8af5"
+    },
+    {
+      "file": "SOURCE_READS.json",
+      "bytes": 4788,
+      "sha256": "1fc47b90b8971f4a25ebba2a8ae097d6a6593f620bf73f345ecc542f6a90a11e"
+    },
+    {
+      "file": "api/handoff-next.json",
+      "bytes": 170402,
+      "sha256": "f5d7c92487d2c6d9d5af0699485d1cfa187b495a70de4a79d9a95561e094f887"
+    },
+    {
+      "file": "api/handoff-ref.json",
+      "bytes": 439,
+      "sha256": "ef31e37b35d9e922502371c3f004214edeaf54d878c515dcf94be282201d8455"
+    },
+    {
+      "file": "api/issue128.json",
+      "bytes": 12054,
+      "sha256": "c92ac8a68e292fbca22b5c699a1e8a4bb80674d5cf7d0fe4b284e4926113c5df"
+    },
+    {
+      "file": "api/issue205.json",
+      "bytes": 6856,
+      "sha256": "e49dc59a881691ffad84b3c7a96ed8432cd9c5465bc8003c55984bd4618afbc5"
+    },
+    {
+      "file": "api/open-prs.json",
+      "bytes": 656050,
+      "sha256": "2f172a91e796f27220292d30ba52c75156d69776f06d67d2fb9afe828a8a2cf2"
+    },
+    {
+      "file": "api/pr221.json",
+      "bytes": 20545,
+      "sha256": "186b5a947f101410de88e2c440d15a80e603acc5c6c42ebd70973fcd89088253"
+    },
+    {
+      "file": "api/pr333-files.json",
+      "bytes": 130424,
+      "sha256": "f9bbe5db8e7e29eb044ce61ee2d5f9650da6cc384e520badbcf17027cb746fef"
+    },
+    {
+      "file": "api/pr333.json",
+      "bytes": 19137,
+      "sha256": "0348a7492c2e146cbff78ec03a17fd3d541ea4256cc7c959672d0c8c7744852c"
+    },
+    {
+      "file": "api/pr355-web-directory.json",
+      "bytes": 206714,
+      "sha256": "16fdc5cd4685bc106be4a1dd9d6d98b601806ccf80cb95230da3ec9f69ef073b"
+    },
+    {
+      "file": "api/r03-adopted-A.json",
+      "bytes": 5761,
+      "sha256": "e05c2f9a04f5c6739b3bf1baddad45298205b048027021a6e39345ee54bdebfc"
+    },
+    {
+      "file": "api/r03-cumulative-retreat-adopted.json",
+      "bytes": 4563,
+      "sha256": "ba5da9622bbfb3a57e44ad56c56288247c3b59223ea93272b463029cf892ae74"
+    },
+    {
+      "file": "api/r03-design.json",
+      "bytes": 66718,
+      "sha256": "7555d381154ed97a13b5d2a058df6dde9433ba82294305ed02f2dbda687b28f3"
+    },
+    {
+      "file": "api/refs-codex.json",
+      "bytes": 69159,
+      "sha256": "03575d992acb2f1b08bc8c44740180ad3632c89ca6b628719bd62a41f93b2096"
+    },
+    {
+      "file": "api/refs-feat.json",
+      "bytes": 5730,
+      "sha256": "1178d37c393e3d2553b8237e1250b2ac9cffe05f82c0440d12bca57fa931ec4a"
+    },
+    {
+      "file": "api/refs-grok.json",
+      "bytes": 4891,
+      "sha256": "9ee31dac7d6813968bc8d1fa6dfbf601f4cce148ecb6e6b735dbcc82ea6b4a48"
+    },
+    {
+      "file": "api/request-ledger.json",
+      "bytes": 39124,
+      "sha256": "73aee39c9cddf9f7b115cf57f9f97247fdf25d414d4579d82fb4bf97e4d24030"
+    },
+    {
+      "file": "handoff-next.md",
+      "bytes": 122933,
+      "sha256": "4c4afbc12cc8a105f21e4f4386617b15f28330f64cc1a24f48bd2665294de019",
+      "sourceCommit": "0919c4c6e00c496d0941b12047b281ec6c90348a",
+      "path": "handoff/NEXT.md"
+    },
+    {
+      "file": "r03-cumulative-retreat-adopted.md",
+      "bytes": 1220,
+      "sha256": "6113b28c69262312685f7b18c026566d012364248e5481f3647771a5b676a89a"
+    },
+    {
+      "file": "r03-design.md",
+      "bytes": 62759,
+      "sha256": "719b7831d4f485fad73b5bb1d84214363a385eb97f67b37c410ebfd1baae562c"
+    },
+    {
+      "file": "request-ledger.md",
+      "bytes": 27609,
+      "sha256": "b3ed3a19f09a63f6947760081e061243025148e7e6f30f7af50ae2f49fe015ae",
+      "sourceCommit": "78dfb1129ce72719fbdb71ce5e71800eefcb3a68",
+      "path": "需求帳.md"
+    },
+    {
+      "file": "source-main-e020/BACKLOG.md",
+      "bytes": 580819,
+      "sha256": "ce626b9901c55aba97b5bb8c6232c4a93592332c4e3676e86cd0b37ba1fab48a",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-core/finish_surfaces.inc",
+      "bytes": 10059,
+      "sha256": "427f7bcaffaf1f11389ea36a59cbb959ff5f7e4b8983bc6681794c70f9e8be1c",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-core/framing-template/PROPOSAL.md",
+      "bytes": 38213,
+      "sha256": "8f6efd7a9f414d3410c4c46be854630cdd8330c776900c639d380ee4679a88f9",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-core/framing-template/oracle/README.md",
+      "bytes": 97823,
+      "sha256": "0cdb3c26acc81c68d669c277987277ca33c0d185d3cd5e5354242c1f56d17d6f",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-core/panel-fill/PF2-NATIVE.md",
+      "bytes": 5741,
+      "sha256": "355d0b0e616af285ae8bd6941cb0a6bab7148c7adbe877b860e3187b95123054",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-core/panel-fill/PF3-DEPENDENCY.md",
+      "bytes": 2090,
+      "sha256": "d0b90abf6ec83b86e304029b00bef1a9e7b7f13ad600718cb270af6e12a2bbf2",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-core/panel-fill/PF3-NATIVE.md",
+      "bytes": 9083,
+      "sha256": "351bb8b1e5bf162de1087bba9617335058fba97ed92c9d8e2dbf580ffead5b21",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-core/panel-fill/PFH-NATIVE.md",
+      "bytes": 4845,
+      "sha256": "8d2e0273fd8e5f30f3244ae1952e0c12fe448a00e3867bb3bac912c02568937f",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-core/panel-fill/README.md",
+      "bytes": 1567,
+      "sha256": "639d92a64252f257fcf5ee939a192bd50b04f79fde01ba374e0352b326b2a578",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-templates/woodworking/FIELD-RULES.md",
+      "bytes": 11811,
+      "sha256": "3305d8000af9814b91c2646cfcbbc841e1ead813fe3390e482f8bfc2a71c0ab2",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-templates/woodworking/native/finish.c",
+      "bytes": 28866,
+      "sha256": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-templates/woodworking/native/finish.h",
+      "bytes": 6537,
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-templates/woodworking/native/finish_sources.c",
+      "bytes": 41102,
+      "sha256": "457a6470680a62b10153137dcd25a2ac5a1805dfc38e89ada9fdccfdc4ec7935",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-web/app.js",
+      "bytes": 627837,
+      "sha256": "165a39d28e5b278851eec880679d23b9594d6e1516d16f290fe5d58c85feaed6",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-web/panel_fill_bridge.inc",
+      "bytes": 10612,
+      "sha256": "93485d330445a2913b04a506cd03e2e8c34078e533ca685525b393e1cdbcc460",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-web/project-store.js",
+      "bytes": 83915,
+      "sha256": "18ecca3658f4304177c643c54a7dd601c25975153e3a8ba7da9162f4a7932f90",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-web/serve.py",
+      "bytes": 39416,
+      "sha256": "0cc26da01c7dd6fcc5dff84f8fd2b615b5a04b434df085d01644b984d4c6f828",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/geometry-web/web_bridge.c",
+      "bytes": 52474,
+      "sha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/公理層.md",
+      "bytes": 323066,
+      "sha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-main-e020/決策佇列.md",
+      "bytes": 244340,
+      "sha256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740",
+      "sourceCommit": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf"
+    },
+    {
+      "file": "source-pr355/geometry-web/app.js",
+      "bytes": 629836,
+      "sha256": "c59c6c37108b5faec444fefd2cadd1d68ef3532f870a408a72b60a6dcebb6727",
+      "sourceCommit": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff"
+    },
+    {
+      "file": "source-pr355/geometry-web/panel-fill-adapter.js",
+      "bytes": 24303,
+      "sha256": "ebc8c325685b817854aeefec8fe46a9c86be0376425fb37d0b1b5420e6da7b7d",
+      "sourceCommit": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff"
+    },
+    {
+      "file": "source-pr355/geometry-web/panel-fill-workspace.js",
+      "bytes": 35305,
+      "sha256": "d394e0d49767cc3869dc491d0cf6f02b511665ba704f63411a4f70d5d256cb5a",
+      "sourceCommit": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff"
+    },
+    {
+      "file": "source-pr355/geometry-web/panel_fill_bridge.inc",
+      "bytes": 15679,
+      "sha256": "c8d5ba5102fb3eda85a4b18e3313f29a0dc3b922a7b4cb176d62c42f97e3ccdd",
+      "sourceCommit": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff"
+    },
+    {
+      "file": "source-pr355/geometry-web/project-store.js",
+      "bytes": 86270,
+      "sha256": "f33bc3c271896749392b48d3666cc146ab918dbb3ab8780ff155da6f7f908549",
+      "sourceCommit": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff"
+    }
+  ]
+}

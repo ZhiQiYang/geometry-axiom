@@ -1,3 +1,18 @@
+# CURRENT 2026-11-02T13:08:59.905834+00:00 — 實際交付持續增加
+
+兩F340/345 final CI又經全新獨立peer3574checks/0 findings：24官方ZIP/1334members、各10logical gates、原native/canvas/正確47 docs來源、source/tree與345兩attempt角色均符，未重跑runtime或讀200MBcache。原review b28456952db555e9afb6c16c8975197416415f85e7582d3e34474b10befdc495已持久交付。#340已comment6577119692交當前F審；#345 final交審正文/API回讀/prbody也已完成，待可合再READY、本機才merge。
+
+**新draft #368已真開出**：codex/ci-documents-checkout-20261102 headb2432c9ea79a6927675883ddde04f629b159be2d，唯一workflow936B差異，原ledger/check0、其他source/policy/timeout/credentials全保。prbody479ff4384e94e14ea5ce46ece21fbaab0ae37137；CI41447885087正在跑，**documents原47/0已實際核收**：新專用checkout成功、舊generic step真skipped、raw證實blob:none與根/evidence排除，12:49:57–12:51:42完成，原whole-job10min不變。這不是受控網路加速倍率測量；其他required終態未收，不標全部通過。新CI actual checkout310bebb505ea04309634279b7025c1849a35d88d與source head角色分開。Root app attach呼叫cell390無ack後終止，backend效果unknown，不冒attached，child工具unavailable紀錄亦保留。
+
+**#341私人準備有新實跑，非正式perf**：固定F340源，C/Rf/Rj共36功能正例全0（各8原subject＋4replay），四replay返回count內9欄/順序/未收集tail全等、原fixture/assert未改；66readback、15build/link全0，source16files118494B，OUT1.27MB。Rf只撤fallback，Rj聯合341+343pipeline撤回且保共同unique bookkeeping，不能當獨立341或全343收益。完整14/41、恢復相、CPU/wall/work/RSS樣本仍UNRUN；先補sampling manifest/timeout raw再正式量測，340真合後凍結source。原小包已逐member hash核並持久。
+
+**R03已派純讀盤點，不誤提前實作**：172refs/27open PR一次盤點無dedicated產品owner；真issue205，FT-S1 A/不設累積退距總上限已決，不重問。main e020有PF2/3/PFH native/API，App PF入口未main；355 b5a61有UI1+/19但UI15未閉、complete:false、PF6/4/5不支援。PF5有frame/typed障礙/雙層D4原語，不能說全無或完整App已交。R04 108–116支仍等512；38FIELD引文已核原決策，產品實作UNRUN，scope/QUESTIONS只作保守準備，不把技術缺口當新用戶拍板。
+
+下一步先讀main/review：340合後341正式依序；等待時收368 required CI/修真紅、根據已審private baseline準備完整同源量測。沒有force/rebase/mainmerge/SSOT變更，沒有停工。
+
+---
+以下歷史不作目前head/ready
+
 # CURRENT 2026-11-02T12:36:27.411484+00:00 — 兩F required gates實際收齊
 
 **#340 F edf556eedc204bb285fb4504e246e4310f4e1e88已交最新審查**，非draft；body/prbody d3c21db3bc4762fd21cadaf0a4e42d947853632c、comment6577119692已回讀。VALIDATED-WAITING-REVIEW，不冒稱已有F可合或main合併；#339已merged，340合後才341。

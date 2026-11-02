@@ -1,0 +1,235 @@
+{
+  "schema": "geometry-documents-checkout-utility-delivery/1",
+  "at": "2026-11-02T12:57:04.254408+00:00",
+  "status": "DRAFT_PR_SOURCE_AND_BODY_PUSHED_INITIAL_CI_STARTED_APP_ATTACH_UNAVAILABLE",
+  "pr": {
+    "number": 368,
+    "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/368",
+    "draft": true,
+    "head": "b2432c9ea79a6927675883ddde04f629b159be2d",
+    "base": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+    "onlyChangedFile": ".github/workflows/integration-tests.yml",
+    "bodySha256": "b8aeefe0c74692341657164548bc82e864ef43898f106bd0daa949ded90f7f15",
+    "postedBodyAndPublicBodyFileExact": true
+  },
+  "source": {
+    "head": "b2432c9ea79a6927675883ddde04f629b159be2d",
+    "tree": "37255a53c002dd39960ff85b0d2404c710912faa",
+    "parent": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+    "branch": "codex/ci-documents-checkout-20261102",
+    "root": "/dev/shm/geometry-ci-documents-checkout-20261102",
+    "clean": true,
+    "changedOnly": ".github/workflows/integration-tests.yml",
+    "fileSha256": "2425ac0a1b09153a188dee1c121e914dd89fc2dea7e90fe48dde6a0fed8f0b02",
+    "canonicalPatchSha256": "b677cc0e1630792ad50c96b3ab7f81f7caf2a89485a5d82b3b5780e506bd8f68",
+    "exactCandidateFileAndPatch": true,
+    "protectedOtherBranchesUnchanged": {
+      "refs/heads/codex/kernel-main-convergence-20261102": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+      "refs/heads/codex/issue214-main-convergence-20261102": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+      "refs/heads/codex/canvas-validation-20261102": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "refs/heads/codex/canvas-false-control-20261102": "aec3ea1bdcf46f2416dfa7cb79d28221673c315a"
+    }
+  },
+  "bodyBranch": {
+    "branch": "codex/ci-documents-checkout-20261102-prbody",
+    "head": "479ff4384e94e14ea5ce46ece21fbaab0ae37137",
+    "parentSourceHead": "b2432c9ea79a6927675883ddde04f629b159be2d",
+    "onlyAddedFile": "PR_BODY.md",
+    "publicBodyUrl": "https://github.com/ZhiQiYang/geometry-axiom/blob/479ff4384e94e14ea5ce46ece21fbaab0ae37137/PR_BODY.md",
+    "clean": true,
+    "ordinaryPushVerified": true
+  },
+  "mutateCheck": {
+    "request": "/tmp/geometry-resume-20261102/ci-documents-checkout-implementation/commands/mutation-check/REQUEST.json",
+    "result": {
+      "actualProcessReturncode": 0,
+      "elapsedSeconds": 6.880075193010271,
+      "endedUtc": "2026-11-02T12:44:34.130399+00:00",
+      "head": "b2432c9ea79a6927675883ddde04f629b159be2d",
+      "cacheAbsentAfter": true,
+      "ledgerSha256After": "1a6b09ac7ed560be994615ecfc36e5129b79d3036c9f73fc0241f18ef767da79",
+      "ledgerUnchanged": true,
+      "streams": {
+        "stdout.bin": {
+          "bytes": 558,
+          "sha256": "54450d25805ff98c0cbfacde15f9e09a459b97eddfe83a4fb19c4ea7e71c531a"
+        },
+        "stderr.bin": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "logicalOutcome": {
+      "definitions": 123,
+      "records": 123,
+      "killed": 114,
+      "crashed": 1,
+      "equivalent": 5,
+      "retired": 3,
+      "stale": 0,
+      "blocked": 0,
+      "invalid": 0,
+      "survived": 0
+    },
+    "ledgerExecutionHeadsAndBytesNotRelabelled": true,
+    "fullMutationRegeneration": false,
+    "downloadedELFOrProductExecution": false,
+    "cacheMeaning": "Task-only absent logical cache; source/tool/closure/receipts were checked. No binary freshness/runtime/product pass is inferred."
+  },
+  "validation": {
+    "staticFile": "/tmp/geometry-resume-20261102/ci-documents-checkout-implementation/APPLIED_STATIC_VERIFICATION.json",
+    "yamlAllOriginalObjectsSameAfterRestoringCheckoutPair": true,
+    "actualCanonicalAndPolicyInputsUnchanged": true,
+    "originalDocsTimeoutMinutes": 10,
+    "originalOtherTimeoutsCredentialsPermissionsCommandsUnchanged": true,
+    "primaryInputAudit": "/tmp/geometry-resume-20261102/ci-checkout-audit/DOCUMENTS_INPUT_PRESERVATION.json",
+    "independent19StaticChecks": "/tmp/geometry-resume-20261102/ci-checkout-documents-candidate/PEER_PATCH_REVIEW.json",
+    "newLocalTestsBuildsChromeRuns": 0
+  },
+  "CI": {
+    "run": 41447885087,
+    "url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41447885087",
+    "event": "pull_request",
+    "head": "b2432c9ea79a6927675883ddde04f629b159be2d",
+    "attempt": 1,
+    "initialRunStatus": "queued",
+    "initialJobsObservation": "/tmp/geometry-resume-20261102/ci-documents-checkout-implementation/CI_INITIAL_JOBS_API.json",
+    "documentsAPIObserved": {
+      "id": 125285440529,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-02T12:49:57Z",
+      "completed_at": "2026-11-02T12:51:42Z",
+      "head_sha": "b2432c9ea79a6927675883ddde04f629b159be2d",
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41447885087/job/125285440529"
+    },
+    "documentsStepAPIObserved": [
+      {
+        "number": 1,
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T12:49:58Z",
+        "completed_at": "2026-11-02T12:49:59Z"
+      },
+      {
+        "number": 2,
+        "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+        "status": "completed",
+        "conclusion": "skipped",
+        "started_at": "2026-11-02T12:49:59Z",
+        "completed_at": "2026-11-02T12:49:59Z"
+      },
+      {
+        "number": 3,
+        "name": "Checkout document job primary sources",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T12:49:59Z",
+        "completed_at": "2026-11-02T12:50:21Z"
+      },
+      {
+        "number": 4,
+        "name": "Build current native executables",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T12:50:21Z",
+        "completed_at": "2026-11-02T12:51:14Z"
+      },
+      {
+        "number": 5,
+        "name": "Install Chinese fonts for visual verification",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T12:51:14Z",
+        "completed_at": "2026-11-02T12:51:24Z"
+      },
+      {
+        "number": 6,
+        "name": "Run actual browser regression group",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T12:51:24Z",
+        "completed_at": "2026-11-02T12:51:39Z"
+      },
+      {
+        "number": 7,
+        "name": "Preserve canvas wait trace",
+        "status": "completed",
+        "conclusion": "skipped",
+        "started_at": "2026-11-02T12:51:39Z",
+        "completed_at": "2026-11-02T12:51:39Z"
+      },
+      {
+        "number": 8,
+        "name": "Preserve assembly authoring screenshots",
+        "status": "completed",
+        "conclusion": "skipped",
+        "started_at": "2026-11-02T12:51:39Z",
+        "completed_at": "2026-11-02T12:51:39Z"
+      },
+      {
+        "number": 9,
+        "name": "Preserve grid trial screenshots",
+        "status": "completed",
+        "conclusion": "skipped",
+        "started_at": "2026-11-02T12:51:39Z",
+        "completed_at": "2026-11-02T12:51:39Z"
+      },
+      {
+        "number": 10,
+        "name": "Preserve document reader screenshots",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T12:51:39Z",
+        "completed_at": "2026-11-02T12:51:41Z"
+      },
+      {
+        "number": 20,
+        "name": "Post Checkout document job primary sources",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T12:51:41Z",
+        "completed_at": "2026-11-02T12:51:41Z"
+      },
+      {
+        "number": 21,
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-02T12:51:41Z",
+        "completed_at": "2026-11-02T12:51:41Z"
+      }
+    ],
+    "documents47RawLogOrArtifactValidatedHere": false,
+    "completeRequiredCITerminalAccepted": false,
+    "ownershipHandoff": "Root collects fresh original documents47 and full required CI artifacts/terminal results plus independent review. This operator stops after initial scheduling/readback."
+  },
+  "appAttach": {
+    "attemptRecord": "/tmp/geometry-resume-20261102/ci-documents-checkout-implementation/APP_ATTACH_ATTEMPT.json",
+    "recordSha256": "4bc8b78c483f1c1fa907e40a13943891836dfc5f0a9c662eca82aeee61e584b0",
+    "actualResult": "UNAVAILABLE_NO_CALLABLE_APP_ATTACHMENT_TOOL",
+    "attached": false,
+    "backendRequestSent": false,
+    "why": "No callable GitHub/app attachment capability exists among this session20 enabled tools. Discovery was repeated after PR creation; unrelated onboarding tool not used.",
+    "needsRootCapabilityIfAvailable": true
+  },
+  "oldPR345KeptSeparate": {
+    "run": 41437638054,
+    "attempt": 2,
+    "documentsJob": 125268717592,
+    "head": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+    "observedConclusion": "success",
+    "meaning": "Independent existing sourceF retry success, not utility validation or caused by the earlier403 request",
+    "APIObservation": "/tmp/geometry-resume-20261102/ci-documents-checkout-implementation/PR345_ATTEMPT2_JOBS_OBSERVED.json"
+  },
+  "scopePreserved": [
+    "No branch340/345/367 or local false-control M changed",
+    "No main merge/rebase/force/approval or deadline/credential/security relaxation",
+    "No mutation helper/workflow/test/product/ledger/expected/policy source changed",
+    "No cache or objects cleared and no root evidence payload materialized in the new worktrees",
+    "No GitHub comments posted; PR body begins required【dot】prefix"
+  ],
+  "remaining": "Draft stays pending root original47/full required CI artifact acceptance and independent review; app attachment is unavailable in this operator context and not completed."
+}

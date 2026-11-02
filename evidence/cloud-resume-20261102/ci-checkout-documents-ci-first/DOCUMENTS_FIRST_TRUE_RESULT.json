@@ -1,0 +1,30 @@
+{
+  "at": "2026-11-02T13:01:17.069854+00:00",
+  "pr": 368,
+  "productHead": "b2432c9ea79a6927675883ddde04f629b159be2d",
+  "actualCheckoutObserved": "310bebb505ea04309634279b7025c1849a35d88d",
+  "run": 41447885087,
+  "job": 125285440529,
+  "started": "2026-11-02T12:49:57Z",
+  "finished": "2026-11-02T12:51:42Z",
+  "originalWholeJobMinutes": 10,
+  "actualDocumentsResult": {
+    "passedAssertions": 47,
+    "failedAssertions": 0,
+    "screenshots": "/tmp/geometry-document-screens",
+    "viewport": [
+      1400,
+      900,
+      390,
+      844
+    ],
+    "coverage": "Trusted pointer/keyboard navigation plus synthetic file fixtures; PDF page rendering and safe Markdown checks."
+  },
+  "newSparseCheckoutSuccess": true,
+  "oldGenericCheckoutActuallySkipped": true,
+  "blobNoneAndRootExclusionPresentInOriginalLog": true,
+  "originalLogSha256": "0a15240e7380424277984ea6a8b807511be2929f2274536f9c63dfbc489ed019",
+  "notAControlledNetworkPerformanceComparison": true,
+  "otherRequiredJobsStillToCollect": true,
+  "externalCheckerPreflightCorrection": "Original substring step matcher also matched Post cleanup and stopped before acceptance; use exact action step name. Original source/job/log bytes not changed."
+}

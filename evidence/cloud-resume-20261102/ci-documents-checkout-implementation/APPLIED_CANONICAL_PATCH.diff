@@ -1,0 +1,24 @@
+--- a/.github/workflows/integration-tests.yml
++++ b/.github/workflows/integration-tests.yml
+@@ -109,8 +109,19 @@
+       GEOMETRY_DOCUMENT_SCREENSHOT_DIR: /tmp/geometry-document-screens
+     steps:
+       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+-        with:
+-          persist-credentials: false
++        if: matrix.suite != 'documents'
++        with:
++          persist-credentials: false
++      - name: Checkout document job primary sources
++        if: matrix.suite == 'documents'
++        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
++        with:
++          persist-credentials: false
++          filter: blob:none
++          sparse-checkout-cone-mode: false
++          sparse-checkout: |
++            /*
++            !/evidence/
+       - name: Build current native executables
+         run: npm run build
+       - name: Install Chinese fonts for visual verification

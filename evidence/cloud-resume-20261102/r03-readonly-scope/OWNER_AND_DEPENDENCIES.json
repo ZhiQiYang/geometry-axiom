@@ -1,0 +1,1133 @@
+{
+  "schema": "geometry-r03-owner-dependency-readonly/1",
+  "observedUTC": "2026-11-02T13:03:27.047179+00:00",
+  "oneBoundedInventoryNoPolling": true,
+  "fixedMain": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+  "requirementLedger": {
+    "head": "78dfb1129ce72719fbdb71ce5e71800eefcb3a68",
+    "path": "需求帳.md",
+    "r03Line": 63,
+    "issue": 205,
+    "assignmentLine": 160,
+    "scope": "Explicit scheduler owner is cloud Codex; no dedicated active R03 product branch/PR owner evidenced in queried metadata."
+  },
+  "handoff": {
+    "head": "0919c4c6e00c496d0941b12047b281ec6c90348a",
+    "path": "handoff/NEXT.md",
+    "orderLines": [
+      3,
+      36,
+      156
+    ]
+  },
+  "queriedRefPrefixes": {
+    "codex": {
+      "count": 148,
+      "refs": [
+        {
+          "name": "refs/heads/codex/adopted-ui-single-room-closeout-20261009",
+          "head": "72a3cbf44814d86606531e6fcbd811aeab11548f"
+        },
+        {
+          "name": "refs/heads/codex/canvas-ci-41409303344-original",
+          "head": "bfeeae21f339b244cb06c1713af0903f99de8eab"
+        },
+        {
+          "name": "refs/heads/codex/canvas-ci-41424542378-original",
+          "head": "ea163769f8f570ac06b56906ceb8cdf7dc220a1a"
+        },
+        {
+          "name": "refs/heads/codex/canvas-output-preflight-20261102",
+          "head": "8e3c80bc78953626878e00a0bcfc211e88c65bbf"
+        },
+        {
+          "name": "refs/heads/codex/canvas-shards-20261102",
+          "head": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343"
+        },
+        {
+          "name": "refs/heads/codex/canvas-validation-20261102",
+          "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943"
+        },
+        {
+          "name": "refs/heads/codex/canvas-validation-20261102-prbody",
+          "head": "6e9a4e79e33c33434099e0894c66b23264d6a731"
+        },
+        {
+          "name": "refs/heads/codex/ci-documents-checkout-20261102",
+          "head": "b2432c9ea79a6927675883ddde04f629b159be2d"
+        },
+        {
+          "name": "refs/heads/codex/ci-documents-checkout-20261102-prbody",
+          "head": "479ff4384e94e14ea5ce46ece21fbaab0ae37137"
+        },
+        {
+          "name": "refs/heads/codex/cloud-resume-evidence-20261102",
+          "head": "e23a234e8e4d3073102726f216b5d5bf9bb78e4c"
+        },
+        {
+          "name": "refs/heads/codex/cloud-takeover-closeout-20261009",
+          "head": "37c217e323b737424b6acf0c27cae0a58d2c29c5"
+        },
+        {
+          "name": "refs/heads/codex/final-release-closeout-20261008",
+          "head": "a7bff8f4c7a0d61a3133b6e42d0d513dfe96367e"
+        },
+        {
+          "name": "refs/heads/codex/geo198-reader-sync-20261012",
+          "head": "14afc2b6d0c6df6ee68e1128744fb2d4eb81a469"
+        },
+        {
+          "name": "refs/heads/codex/geo260-ac23-proof-20261024",
+          "head": "df230da57619e437c30527dbede8c67fd0ec6b50"
+        },
+        {
+          "name": "refs/heads/codex/geo260-ac23-proof-20261024-prbody",
+          "head": "be1f69dc5ca7f9cdc2f00d22a1940d877f6002bb"
+        },
+        {
+          "name": "refs/heads/codex/geo261-closeout-20261021",
+          "head": "5373fc088acc8a16a5c8ed931d0d866379da5fa2"
+        },
+        {
+          "name": "refs/heads/codex/geo261-final-prbody-20261022",
+          "head": "09a58c69bbaa40a1d7ccb91648289f19e77ef8fe"
+        },
+        {
+          "name": "refs/heads/codex/geo261-final-prbody-20261023",
+          "head": "e008dc52510d8cdb34fe07c796835f2667e0ebaa"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-assembly-g07-20261018",
+          "head": "eb74dbce4ff42830a47a0da02f898b18e939f69a"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-assembly-guide-regression-20261018",
+          "head": "ee24a30679b83ca5eed850f3756570c8e8de763f"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-engineering-unplaced-oracle-20261018",
+          "head": "2ba07fa77cab15896643e5a8b0769d44dd14346e"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-finish-fractional-oracle-20261018",
+          "head": "e831d5ed7c81bbccbb5038e7e59c380613e4cb3e"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-grid-child-fixture-20261018",
+          "head": "0a4ab081fb402246aedc0d69ec8bfcc9ae4fe199"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-gridrule-tail-20261018",
+          "head": "74c2d2c67d92f673d13545b4bd98fe1d37ec6b75"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-m11-live-anchor-20261018",
+          "head": "35fa4d1ac333f75c1a11cc5c83d242cfaceeabda"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-member-dimensions-adapter-20261018",
+          "head": "4a2484d3c913bdb77d5dc13ae4881d9663b18cf4"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-native-fallback-closure-20261018",
+          "head": "254ea25d8fea3a14bdc8d54be92eb209d7c7fdd3"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-perf-candidate-sha-20261018",
+          "head": "875235e2227d93336b798d9b4548e2c2fa67c3fe"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-perf-default-replay-20261018",
+          "head": "be381603c8ecdd513dbab58625a1f0ba60900281"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-perf-owned-replay-20261018",
+          "head": "a7d8a94fe1d95fb595812f1fe06f8b13a3222aea"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-perf-suite-diagnostic-20261018",
+          "head": "7055e3f14427428c382b00e74e004801c311aff4"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-placement-source-contract-20261018",
+          "head": "33a99624e5b27b06766798a89342d9c20692420b"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-policy-exception-protocol-20261018",
+          "head": "b0e5dfef4f121cc281c25d3db26de3b04742c256"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-root-catalog-20261018",
+          "head": "4e0def58cc495a238bc68dc5b68d32a0bea8e0e5"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-scenario-bounds-20261018",
+          "head": "8128c4852cdcc0a4d0d819fb5d9afa32f2a4c9f4"
+        },
+        {
+          "name": "refs/heads/codex/geo261-fix-validation-report-20261018",
+          "head": "d5423381bcdfa7c67366bedca92eb47a06209879"
+        },
+        {
+          "name": "refs/heads/codex/geo261-host-authority-anchor-fix-20261021",
+          "head": "19401ca5448e162ee6140fed37b64b83b31ddec8"
+        },
+        {
+          "name": "refs/heads/codex/geo261-load-residual-20261020",
+          "head": "4ea6c50796711ed1e79bae89c93d07037d317837"
+        },
+        {
+          "name": "refs/heads/codex/geo261-load-residual-20261020-prbody",
+          "head": "aed9c627053132fcd501dc187b8c950e117fcb95"
+        },
+        {
+          "name": "refs/heads/codex/geo261-p189-footprint-revert-control-20261021",
+          "head": "4bd19f91c434417f1c4431128c55285f4b11d3c3"
+        },
+        {
+          "name": "refs/heads/codex/geo261-source-index-20261020",
+          "head": "9f21280d0481c751f246b0c2105d50eea75b7ba9"
+        },
+        {
+          "name": "refs/heads/codex/geo261-source-index-20261020-prbody",
+          "head": "4375abf1beb56cd90c70b53e8836d53cb27db193"
+        },
+        {
+          "name": "refs/heads/codex/geo288-oracle-final-20261023",
+          "head": "c4ce17a3c80e20024614bb055dd47f0bfd2aba5a"
+        },
+        {
+          "name": "refs/heads/codex/geo288-oracle-final-20261023-prbody",
+          "head": "89f96d2ece05c63bc0fe68d185bb84b52e53c353"
+        },
+        {
+          "name": "refs/heads/codex/geo288-p73-final-20261023",
+          "head": "77d1e3438d7e952230ce501bf3dddbd9a4e18580"
+        },
+        {
+          "name": "refs/heads/codex/geo288-p73-final-20261023-prbody",
+          "head": "1addc7930576e45444cb6399b05fef2ca0b3c532"
+        },
+        {
+          "name": "refs/heads/codex/geo288-p88-final-grid-20261023",
+          "head": "b12172860c59fe091c0e490630b548281b2eb53a"
+        },
+        {
+          "name": "refs/heads/codex/geo288-p88-final-grid-20261023-prbody",
+          "head": "c587249d45f40f6ead97196b0b192605ab942bbc"
+        },
+        {
+          "name": "refs/heads/codex/geo288-p88-final-native-20261023",
+          "head": "c7214307d5ffc6a867089c8d832fef4bc94ae27c"
+        },
+        {
+          "name": "refs/heads/codex/geo288-p88-final-native-20261023-prbody",
+          "head": "9329e1105a4f5bec3383e2bb5405a3cbbc7bd692"
+        },
+        {
+          "name": "refs/heads/codex/geo288-p88-stable-click-20261023",
+          "head": "6418593fd0bcf802ceff2787c467d5f7d7b12d5f"
+        },
+        {
+          "name": "refs/heads/codex/geo288-p88-stable-click-20261023-prbody",
+          "head": "03b61ca1e2ab3d6d6c0df782a575f43a948a979f"
+        },
+        {
+          "name": "refs/heads/codex/geo299-316-combined-20261022",
+          "head": "ebbd6d19ddf64ac64fd3c902eec6e40f4484582d"
+        },
+        {
+          "name": "refs/heads/codex/geo299-316-combined-20261022-prbody",
+          "head": "92b3cdb38d73bc75faab3c14ac90b90edf2a52f0"
+        },
+        {
+          "name": "refs/heads/codex/geo300-capacity512-20261024",
+          "head": "86c8f0bbe68275e2948d3b1959207aba4225e0c7"
+        },
+        {
+          "name": "refs/heads/codex/geo300-capacity512-20261024-prbody",
+          "head": "05336a0ce47a4cdf86bb220a7be412f71636bfc1"
+        },
+        {
+          "name": "refs/heads/codex/geo300-consumer-scope-20261028",
+          "head": "2ac7126205f0079feda8a282663996a75ea12d87"
+        },
+        {
+          "name": "refs/heads/codex/geo300-contact-index-20261024",
+          "head": "a934a554ae58f16f124f1b264523947f170b3f0b"
+        },
+        {
+          "name": "refs/heads/codex/geo300-contact-index-20261024-prbody",
+          "head": "9d3931a70c442c640bba155c1735362f69f76a61"
+        },
+        {
+          "name": "refs/heads/codex/geo300-cut-list-storage-20261024",
+          "head": "eaf15e239324a6464a04740647afccce3a3c17c7"
+        },
+        {
+          "name": "refs/heads/codex/geo300-cut-list-storage-20261024-prbody",
+          "head": "4e6a42e908f66ef4475704e0ce97a068e65a8ff6"
+        },
+        {
+          "name": "refs/heads/codex/geo300-dependency-hints-20261029",
+          "head": "256747c5c8f8f8934eeb08ae404dee1f67591508"
+        },
+        {
+          "name": "refs/heads/codex/geo300-hint-capacity-20261029",
+          "head": "1cff9d8c3deab815d5ae6562f3163c95e6f82ac9"
+        },
+        {
+          "name": "refs/heads/codex/geo300-hotpath-candidate-20261028",
+          "head": "f5806c60c6067a64776f979f77981e4aba087df3"
+        },
+        {
+          "name": "refs/heads/codex/geo300-hotpath-candidate-20261028-prbody",
+          "head": "ca4edcebef39e59251f213e4beabde60c6342186"
+        },
+        {
+          "name": "refs/heads/codex/geo300-ordered-runs-20261029",
+          "head": "b05288e2be691dd5229937ab6c9a1f555b3f64e2"
+        },
+        {
+          "name": "refs/heads/codex/geo300-prerequisites-20261024",
+          "head": "823729be5f4f025aebbf02c2dc85e09907c28812"
+        },
+        {
+          "name": "refs/heads/codex/geo300-prerequisites-20261024-prbody",
+          "head": "ea1a153b2da2203c3c0aac7a1f631d9caa1bf67b"
+        },
+        {
+          "name": "refs/heads/codex/geo300-scope-h7-receipts-20261028",
+          "head": "d60d90b0a10ebd80a198e49c9c48092c271bae02"
+        },
+        {
+          "name": "refs/heads/codex/geo314-one-axis-stagger-20261022",
+          "head": "f426be38fdf297d66296fb527309a7b8912ab034"
+        },
+        {
+          "name": "refs/heads/codex/geo314-one-axis-stagger-20261022-prbody",
+          "head": "f5669af88dcc62066aa2e5be3f16a2c3a82a81d3"
+        },
+        {
+          "name": "refs/heads/codex/geo324-faces-20261024",
+          "head": "8f39025be6708bd9d58e576ed5b349b7ef628624"
+        },
+        {
+          "name": "refs/heads/codex/geo324-faces-20261024-prbody",
+          "head": "283d1e245f724e13644a1379cba5cd34f3dae9d9"
+        },
+        {
+          "name": "refs/heads/codex/geo346-chain-private-20261029",
+          "head": "4c9f5031edb7940f80975fb45363b40b6aaed95f"
+        },
+        {
+          "name": "refs/heads/codex/geo347-chain-private-20261029",
+          "head": "291511caf4860638d6286b3b5b0cd17335c3b921"
+        },
+        {
+          "name": "refs/heads/codex/identity-cold-open-probe-20261102",
+          "head": "8e99a573a9e413a3870e78039649ad2c8116f253"
+        },
+        {
+          "name": "refs/heads/codex/integration-closeout-20261008-r2",
+          "head": "9029a8f6bc00a9ff8de1d2b0deb844f331e032e3"
+        },
+        {
+          "name": "refs/heads/codex/issue116-context-menu-b",
+          "head": "5a82f4435443872b9cb66ede3da456dad75e4424"
+        },
+        {
+          "name": "refs/heads/codex/issue118-browser-build-20261006",
+          "head": "d497096f495a26e766aa3f8b92e6f0346082fc83"
+        },
+        {
+          "name": "refs/heads/codex/issue118-cost-evidence-20261006",
+          "head": "e3d448fb6635fbf4f891a4543cf866f6b5f9dfe5"
+        },
+        {
+          "name": "refs/heads/codex/issue118-guide-ownership-20261006",
+          "head": "2a7d9cba8d199a33f703e721553034400c0c5764"
+        },
+        {
+          "name": "refs/heads/codex/issue118-parent-result-counts-20261006",
+          "head": "2c3ba8faf907737e33e4c1432e22525da284a75e"
+        },
+        {
+          "name": "refs/heads/codex/issue118-pdf-resources-20261006",
+          "head": "83769b9baef0ba23d3fd41f1058de90cf1f360ac"
+        },
+        {
+          "name": "refs/heads/codex/issue118-selection-20261006",
+          "head": "35a9fa20087d49eefd4e2ac11a17c12a2b5fa678"
+        },
+        {
+          "name": "refs/heads/codex/issue123-f6-font-20261005",
+          "head": "aa91cd25c62a67e2587e7ddd0cb0a6f96dd55d21"
+        },
+        {
+          "name": "refs/heads/codex/issue123-g3-contrast-20261005",
+          "head": "fb321eb1a998db47a9cd808b6df9ee36f68b3d15"
+        },
+        {
+          "name": "refs/heads/codex/issue123-library-history-20261006",
+          "head": "e3ddd74e5a17b55b97c164cf7f69b6f0aeedab41"
+        },
+        {
+          "name": "refs/heads/codex/issue123-s5-short-height-20261006",
+          "head": "abe74e611b6dc14e55729932c63c45c3706acf12"
+        },
+        {
+          "name": "refs/heads/codex/issue128-empty-panel-rows-20261024",
+          "head": "8bb0359331365c6f3a96872620427cf7847fcb50"
+        },
+        {
+          "name": "refs/heads/codex/issue128-empty-panel-rows-20261024-prbody",
+          "head": "066bc6606503f29b57b6ff54d07e1a0d13f1617a"
+        },
+        {
+          "name": "refs/heads/codex/issue134-browser-followup-20261007",
+          "head": "2228da155b49d349a616b1e2737074f299e1d57d"
+        },
+        {
+          "name": "refs/heads/codex/issue159-browser-followup-20261007",
+          "head": "92ded635e01aa42ea8a999e70da41b736c8b5a92"
+        },
+        {
+          "name": "refs/heads/codex/issue214-http-fixture-20261024",
+          "head": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12"
+        },
+        {
+          "name": "refs/heads/codex/issue214-http-fixture-20261024-prbody",
+          "head": "a0e6b74e691bb416af4ab7c8d7adadd6458c84dc"
+        },
+        {
+          "name": "refs/heads/codex/issue214-main354-source-20261102",
+          "head": "de3a56cfadecf575f8e7860cbfdafdac2af0a883"
+        },
+        {
+          "name": "refs/heads/codex/issue318-reading-a-20261023",
+          "head": "9c534879b05058d2d62d8082be76038605ef0268"
+        },
+        {
+          "name": "refs/heads/codex/issue318-reading-a-20261023-prbody",
+          "head": "4e4e4f59cea41dbec018dd8779f2db190d320bd9"
+        },
+        {
+          "name": "refs/heads/codex/issue320-connection-recovery-20261024",
+          "head": "d794a7447b98a82fb35c1dccaedc3443e2230933"
+        },
+        {
+          "name": "refs/heads/codex/issue320-connection-recovery-20261024-prbody",
+          "head": "707a633858f5924063942e7fc18ba5b4db99bd5a"
+        },
+        {
+          "name": "refs/heads/codex/issue320-connection-recovery-withdrawal-20261024",
+          "head": "082feb0662fea32131f3f7fb8ca451679ab6421d"
+        },
+        {
+          "name": "refs/heads/codex/issue46-adoption-integration-20261005",
+          "head": "38975775cf42e9dc454aab2e25fc186d9fbd759d"
+        },
+        {
+          "name": "refs/heads/codex/issue48-evidence-integration-20261005",
+          "head": "8f8955554e7af6bdc50d4735b6a09210feb08078"
+        },
+        {
+          "name": "refs/heads/codex/issue49-data-reader-preparation-20261005",
+          "head": "d0c5671c5cb009e2549c0c4829dd4ca2a5a21369"
+        },
+        {
+          "name": "refs/heads/codex/issue49-rule-case-workbench-20261005",
+          "head": "823fc91754bd3dbb7cb9fd2b27c045a739d3b14f"
+        },
+        {
+          "name": "refs/heads/codex/issue54-room-outline-closeout",
+          "head": "349e2a590f98ab783b7d3eeb952e95151db8e39e"
+        },
+        {
+          "name": "refs/heads/codex/issue54-room-outline-enter",
+          "head": "f1e020cba5051a331dd150d567698060bf1642b1"
+        },
+        {
+          "name": "refs/heads/codex/issue61-rule-editor-slice1-20261005",
+          "head": "e2f851d30b8033756475155b7d40a19b0ee1cb86"
+        },
+        {
+          "name": "refs/heads/codex/issue61-rule-line-display-20261005",
+          "head": "b88545e00c13ccf5e238d4caec1c7b0d78cdc639"
+        },
+        {
+          "name": "refs/heads/codex/kernel-without-woodworking-20261023",
+          "head": "edf556eedc204bb285fb4504e246e4310f4e1e88"
+        },
+        {
+          "name": "refs/heads/codex/kernel-without-woodworking-20261023-prbody",
+          "head": "d3c21db3bc4762fd21cadaf0a4e42d947853632c"
+        },
+        {
+          "name": "refs/heads/codex/mutation-evidence-tools-20261102",
+          "head": "502a64ff6214dd6060927b7f14643a533536f20d"
+        },
+        {
+          "name": "refs/heads/codex/native-shards-20261102",
+          "head": "c7c94335de7c0458ae2a6f9cf2e94b23bd3a3157"
+        },
+        {
+          "name": "refs/heads/codex/p67-wait-complete-state-20261017",
+          "head": "9d0aa6161fecfd713ab237287725b3ffe216c80d"
+        },
+        {
+          "name": "refs/heads/codex/pr338-b2-closure-20261029",
+          "head": "1ea29be90ef2e26044f7d71fa1cfa674fa7c0f00"
+        },
+        {
+          "name": "refs/heads/codex/pr338-p189-20261029",
+          "head": "288a8688ceffdcd1a9232bb81fcef13bde4c788b"
+        },
+        {
+          "name": "refs/heads/codex/pr338-p189-20261029-prbody",
+          "head": "6ece2e747b3b5797df3a3554c17be391d24fcdee"
+        },
+        {
+          "name": "refs/heads/codex/pr338-r8-repro-20261102",
+          "head": "8bed03a23fd1d4b79c8fb7bc946566752383643f"
+        },
+        {
+          "name": "refs/heads/codex/r02-ui1-panel-fill-20261028",
+          "head": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff"
+        },
+        {
+          "name": "refs/heads/codex/r02-ui1-panel-fill-20261028-prbody",
+          "head": "34fbb81b0203db8f0a0d13f42ac51b997066621b"
+        },
+        {
+          "name": "refs/heads/codex/r02-ui1-receipts-20261028",
+          "head": "dc926f5d88a6a4b16ec8a5a7d2c67da381a017f1"
+        },
+        {
+          "name": "refs/heads/codex/r06-review-fixes-20261102",
+          "head": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4"
+        },
+        {
+          "name": "refs/heads/codex/r10-evidence-links-recovery-20261102",
+          "head": "13d9a5b1ab373be63aab9d05473cb65bb437024d"
+        },
+        {
+          "name": "refs/heads/codex/release-readiness-20261007",
+          "head": "8b9b6f80078c17238286e43da54b751e8d3b5b23"
+        },
+        {
+          "name": "refs/heads/codex/retarget-pr340-main5775-candidate-20261102",
+          "head": "b264dbfe895770a48c2b9d5fe3324e051be4e675"
+        },
+        {
+          "name": "refs/heads/codex/retarget-pr344-main5775-candidate-20261102",
+          "head": "df39d1933402c76b2f8b35ca013412daf16ed4c9"
+        },
+        {
+          "name": "refs/heads/codex/retarget-pr345-main5775-candidate-20261102",
+          "head": "95099bd08b17f596b14c19d1d38a206c1b1cd265"
+        },
+        {
+          "name": "refs/heads/codex/safe-resume-closeout-20261009",
+          "head": "4a57b1213ddaa57d29d43c31b7cefd34b8f6c4ed"
+        },
+        {
+          "name": "refs/heads/codex/section-profile-core-20261008",
+          "head": "fb6ef45cf651235250523aa88a7fa89d0e6acb34"
+        },
+        {
+          "name": "refs/heads/codex/t4-reference-display-retention-20261005",
+          "head": "6ae8e11d74b12f21fc4294e3bd068fbbc539a209"
+        },
+        {
+          "name": "refs/heads/codex/train-20261016-19",
+          "head": "945ae87ccd6f49dbfc22d439b3f9c28fed4ac40c"
+        },
+        {
+          "name": "refs/heads/codex/train-337-continue-20261024",
+          "head": "9230a3dc04233e50c0bf97141a7fbe692828b2ca"
+        },
+        {
+          "name": "refs/heads/codex/train-337-continue-20261024-prbody",
+          "head": "e83d478a9e9fe7060a976a92bc10935e4f7dfd91"
+        },
+        {
+          "name": "refs/heads/codex/train18-p157-20261017",
+          "head": "e8eb1da51f3b21df15869338a7e36e76e584ff9e"
+        },
+        {
+          "name": "refs/heads/codex/train337-edge-probe-20261024",
+          "head": "9b41d395fb2c5d6c971de4b13d4d2ac6701ff22c"
+        },
+        {
+          "name": "refs/heads/codex/train337-edge-probe-20261024-prbody",
+          "head": "853a7a294b9201236da01d3a34ba397e62e29ecd"
+        },
+        {
+          "name": "refs/heads/codex/train337-monotonic-sort-20261024",
+          "head": "39eaf977d76204f1506830e63beeaa645cfa6431"
+        },
+        {
+          "name": "refs/heads/codex/train337-monotonic-sort-20261024-prbody",
+          "head": "9c0dcc3876a783121c04b7701bfa42b1cfc71487"
+        },
+        {
+          "name": "refs/heads/codex/train337-native-validation-20261027",
+          "head": "2ef9062284849ec9a46517f1137abd3e4d0a03c8"
+        },
+        {
+          "name": "refs/heads/codex/train337-node-hint-diagnostic-20261024",
+          "head": "c650099273f502d2161240f977f68e4d9f546ef6"
+        },
+        {
+          "name": "refs/heads/codex/train337-node-hint-diagnostic-20261024-prbody",
+          "head": "60ba3e4d00041c0512c2e729e7c4aef946d41266"
+        },
+        {
+          "name": "refs/heads/codex/train337-plane-ranges-20261024",
+          "head": "e7f6dbc907106fb5312875183212656d113d0a11"
+        },
+        {
+          "name": "refs/heads/codex/train337-plane-ranges-20261024-prbody",
+          "head": "f90491e22ed7c3c03eb7a0e000775093eaf1602f"
+        },
+        {
+          "name": "refs/heads/codex/train337-provider-hint-20261024",
+          "head": "4d3ac4bf42f431c23833c8841e4a7a597d275dbd"
+        },
+        {
+          "name": "refs/heads/codex/train337-provider-hint-20261024-prbody",
+          "head": "ae5e9431bfb8feb3b8b8aa9ecce523af3135a5ea"
+        },
+        {
+          "name": "refs/heads/codex/train337-recovered-evidence-20261026",
+          "head": "c5c6c81ad270136d7ff22826bfbea60e0d05be3e"
+        },
+        {
+          "name": "refs/heads/codex/train337-recovered-evidence-20261026-prbody",
+          "head": "41b65b02a14ec419d14ce9aaa510d0816ea7a045"
+        },
+        {
+          "name": "refs/heads/codex/train337-reference-local-init-20261024",
+          "head": "74a0a289b48f21f0211c4906808c79138b22b741"
+        },
+        {
+          "name": "refs/heads/codex/train337-reference-local-init-20261024-prbody",
+          "head": "11a93b5b82a5c630b307da0d49bf79349149f58e"
+        }
+      ]
+    },
+    "grok": {
+      "count": 11,
+      "refs": [
+        {
+          "name": "refs/heads/grok/axiom-layering-draft-20261022",
+          "head": "02086a3689d27d41fbfac470f707e4d6b17b7e70"
+        },
+        {
+          "name": "refs/heads/grok/backlog-reconcile-20261022",
+          "head": "c16f9255383823fa3ce7610c69262905b64c1ff9"
+        },
+        {
+          "name": "refs/heads/grok/geo261-faces-keyerror-322",
+          "head": "4e176e830b691269cc72d021ce7e1bc0b167d621"
+        },
+        {
+          "name": "refs/heads/grok/r05-k1-recovery-20261028",
+          "head": "ec3ffcca315dc762d615f85fc331443f444058a1"
+        },
+        {
+          "name": "refs/heads/grok/r07-zero-room-20261029",
+          "head": "49fc8bce377c14a9df0157d66924af83d440fdd6"
+        },
+        {
+          "name": "refs/heads/grok/r08-definition-import-20261029",
+          "head": "ccbd88f891160543ac604bfa5781d8f1a8c029e7"
+        },
+        {
+          "name": "refs/heads/grok/r09a-identity-ledger-20261029",
+          "head": "8bc9f3f0298fcf6b4120dd1ea99ab30abd7da743"
+        },
+        {
+          "name": "refs/heads/grok/r09a-k3-44-20261029",
+          "head": "2ba0875d4380fa85d21d4e7d3d5fc9f4cd68f921"
+        },
+        {
+          "name": "refs/heads/grok/r10-evidence-links-20261029",
+          "head": "5b5bff83307c3e81567200fe4a476746a7669d8c"
+        },
+        {
+          "name": "refs/heads/grok/woodworking-field-rules-20261023",
+          "head": "7eaa359063b04a9f02aa72a05aeeca41ab17675a"
+        },
+        {
+          "name": "refs/heads/grok/woodworking-field-rules-20261023-prbody",
+          "head": "a6a2aed6a6d9b326a92c73835970b834bb40e5a7"
+        }
+      ]
+    },
+    "feat": {
+      "count": 13,
+      "refs": [
+        {
+          "name": "refs/heads/feat/116-object-canvas-menu-20261027",
+          "head": "2bc8ade1d12a0f6e5a7c00cf75781b93a9f38dda"
+        },
+        {
+          "name": "refs/heads/feat/assembly-generation-minimal-20261002",
+          "head": "869e4228e716922a2e3144442a75c71a37167560"
+        },
+        {
+          "name": "refs/heads/feat/card-reference-core-20261015",
+          "head": "e180a2688ae06c36a32d4d0097fcb808d1dcd449"
+        },
+        {
+          "name": "refs/heads/feat/framing-core-probe-20261017",
+          "head": "bc3fb622131a55c6f3e5135caab6d4c39e4b2b4c"
+        },
+        {
+          "name": "refs/heads/feat/framing-oracle-20261015",
+          "head": "3d858c31e84e025d34c62b0c6be6a9b73ce55a8d"
+        },
+        {
+          "name": "refs/heads/feat/k1a-cutting-native-20261011",
+          "head": "ba428b29c025e060a34f542a457a49523e292c14"
+        },
+        {
+          "name": "refs/heads/feat/k1b-cutting-frontend-20261011",
+          "head": "e35c52384519fae77e6067e7a3305f860b9d3a12"
+        },
+        {
+          "name": "refs/heads/feat/lan-test-mode-20261011",
+          "head": "a3304b11a157dc3ae8877d5b4b45299f2f2d4a8c"
+        },
+        {
+          "name": "refs/heads/feat/r01-grid-card-entry-20261027",
+          "head": "cfd4d6788913a279656382e74adc3beea5c5a55a"
+        },
+        {
+          "name": "refs/heads/feat/r06-bay-repeat",
+          "head": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4"
+        },
+        {
+          "name": "refs/heads/feat/r06-bay-repeat-prbody",
+          "head": "e29abde6e0b92066f4c43c4324fbf6c74d2a2a81"
+        },
+        {
+          "name": "refs/heads/feat/r11-timber-reuse-20261029",
+          "head": "90a2a20b4814d6eae9eafd7ac78e3eab13f3f955"
+        },
+        {
+          "name": "refs/heads/feat/sketchup-framing-plugin-20261013",
+          "head": "4ec65e263a85f1f5570ec980b0a07b0ca0959f36"
+        }
+      ]
+    }
+  },
+  "openPRCount": 27,
+  "checkedOpenPRs": [
+    {
+      "number": 368,
+      "title": "ci: Skip root evidence in documents checkout",
+      "headBranch": "codex/ci-documents-checkout-20261102",
+      "head": "b2432c9ea79a6927675883ddde04f629b159be2d",
+      "baseBranch": "main",
+      "base": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 367,
+      "title": "Split canvas validation into source-bound execution shards",
+      "headBranch": "codex/canvas-validation-20261102",
+      "head": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "baseBranch": "feat/r06-bay-repeat",
+      "base": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 365,
+      "title": "R10：恢復證據連結與身分帳的獨立審查（承接 #361）",
+      "headBranch": "codex/r10-evidence-links-recovery-20261102",
+      "head": "13d9a5b1ab373be63aab9d05473cb65bb437024d",
+      "baseBranch": "grok/r09a-identity-ledger-20261029",
+      "base": "8bc9f3f0298fcf6b4120dd1ea99ab30abd7da743",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 363,
+      "title": "R06：有限重複開間生成、保存與嚴格瀏覽器突變驗收",
+      "headBranch": "feat/r06-bay-repeat",
+      "head": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+      "baseBranch": "main",
+      "base": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "draft": false,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 362,
+      "title": "Record model source identity only after the ledger is active.",
+      "headBranch": "grok/r09a-k3-44-20261029",
+      "head": "2ba0875d4380fa85d21d4e7d3d5fc9f4cd68f921",
+      "baseBranch": "codex/r10-evidence-links-recovery-20261102",
+      "base": "13d9a5b1ab373be63aab9d05473cb65bb437024d",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 360,
+      "title": "Add the first identity-ledger slice",
+      "headBranch": "grok/r09a-identity-ledger-20261029",
+      "head": "8bc9f3f0298fcf6b4120dd1ea99ab30abd7da743",
+      "baseBranch": "main",
+      "base": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 359,
+      "title": "R08: preview definition import and reassign colliding ids (K2b-2)",
+      "headBranch": "grok/r08-definition-import-20261029",
+      "head": "ccbd88f891160543ac604bfa5781d8f1a8c029e7",
+      "baseBranch": "main",
+      "base": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 358,
+      "title": "Keep unaccepted room candidates across reload (K2b-1)",
+      "headBranch": "grok/r07-zero-room-20261029",
+      "head": "49fc8bce377c14a9df0157d66924af83d440fdd6",
+      "baseBranch": "main",
+      "base": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 356,
+      "title": "feat(#116): 同面普通角材的重用與批改（R11 第二片，A）",
+      "headBranch": "feat/r11-timber-reuse-20261029",
+      "head": "90a2a20b4814d6eae9eafd7ac78e3eab13f3f955",
+      "baseBranch": "feat/116-object-canvas-menu-20261027",
+      "base": "5c5700b5c151390f8f5c22a74655ee446ecfd2f0",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 355,
+      "title": "feat(r02): add the first face panel-fill App workflow",
+      "headBranch": "codex/r02-ui1-panel-fill-20261028",
+      "head": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff",
+      "baseBranch": "main",
+      "base": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 353,
+      "title": "feat(R01): 網格直接引用整張參數卡的畫面入口",
+      "headBranch": "feat/r01-grid-card-entry-20261027",
+      "head": "cfd4d6788913a279656382e74adc3beea5c5a55a",
+      "baseBranch": "main",
+      "base": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 352,
+      "title": "feat(#116): 物件畫布右鍵選單(K4 PR-c 第一片,需求 R11)",
+      "headBranch": "feat/116-object-canvas-menu-20261027",
+      "head": "2bc8ade1d12a0f6e5a7c00cf75781b93a9f38dda",
+      "baseBranch": "main",
+      "base": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 350,
+      "title": "docs: 使用者需求帳與 agent 規則(L0–L5,完成=App 裡用得到)",
+      "headBranch": "docs/user-requests-ledger-20261027",
+      "head": "78dfb1129ce72719fbdb71ce5e71800eefcb3a68",
+      "baseBranch": "main",
+      "base": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 348,
+      "title": "feat(GEO-300): 將角材容量一致擴至 512",
+      "headBranch": "codex/geo300-capacity512-20261024",
+      "head": "86c8f0bbe68275e2948d3b1959207aba4225e0c7",
+      "baseBranch": "codex/issue128-empty-panel-rows-20261024",
+      "base": "8bb0359331365c6f3a96872620427cf7847fcb50",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 347,
+      "title": "perf(PF-2): 略過沒有板片的空列舉",
+      "headBranch": "codex/issue128-empty-panel-rows-20261024",
+      "head": "8bb0359331365c6f3a96872620427cf7847fcb50",
+      "baseBranch": "codex/geo300-cut-list-storage-20261024",
+      "base": "eaf15e239324a6464a04740647afccce3a3c17c7",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 346,
+      "title": "refactor(GEO-300): 下料清單改用單一自有 ID 池",
+      "headBranch": "codex/geo300-cut-list-storage-20261024",
+      "head": "eaf15e239324a6464a04740647afccce3a3c17c7",
+      "baseBranch": "codex/geo300-contact-index-20261024",
+      "base": "a934a554ae58f16f124f1b264523947f170b3f0b",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 345,
+      "title": "test: 縮短 workbench HTTP fixture 關閉輪詢",
+      "headBranch": "codex/issue214-http-fixture-20261024",
+      "head": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+      "baseBranch": "main",
+      "base": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+      "draft": false,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 344,
+      "title": "fix: 成功恢復連線後清除過時錯誤 (#320)",
+      "headBranch": "codex/issue320-connection-recovery-20261024",
+      "head": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "baseBranch": "main",
+      "base": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+      "draft": false,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 343,
+      "title": "perf(GEO-300): 索引唯一 ID 的擋面遮蓋查詢",
+      "headBranch": "codex/geo300-contact-index-20261024",
+      "head": "a934a554ae58f16f124f1b264523947f170b3f0b",
+      "baseBranch": "codex/geo260-ac23-proof-20261024",
+      "base": "df230da57619e437c30527dbede8c67fd0ec6b50",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 342,
+      "title": "test(Q38): pin AC23 panel contact in the mutation gate (GEO-260)",
+      "headBranch": "codex/geo260-ac23-proof-20261024",
+      "head": "df230da57619e437c30527dbede8c67fd0ec6b50",
+      "baseBranch": "codex/geo300-prerequisites-20261024",
+      "base": "823729be5f4f025aebbf02c2dc85e09907c28812",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 341,
+      "title": "perf(GEO-300): 保留活集合順序並一次壓緊擋面",
+      "headBranch": "codex/geo300-prerequisites-20261024",
+      "head": "823729be5f4f025aebbf02c2dc85e09907c28812",
+      "baseBranch": "codex/geo324-faces-20261024",
+      "base": "dcdf22655e0cf8ed47cd0b7f66d89f3a7beca694",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 340,
+      "title": "test: isolate kernel and rectangular grid from woodworking imports",
+      "headBranch": "codex/kernel-without-woodworking-20261023",
+      "head": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+      "baseBranch": "main",
+      "base": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+      "draft": false,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 331,
+      "title": "草稿：公理層逐條分核心、宿主、木工、混合",
+      "headBranch": "grok/axiom-layering-draft-20261022",
+      "head": "02086a3689d27d41fbfac470f707e4d6b17b7e70",
+      "baseBranch": "main",
+      "base": "f6a1589153ce1f910cbec5d705b5b3bf9df6488d",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 325,
+      "title": "docs(backlog): continue the ledger after 2026-10-19",
+      "headBranch": "grok/backlog-reconcile-20261022",
+      "head": "c16f9255383823fa3ce7610c69262905b64c1ff9",
+      "baseBranch": "main",
+      "base": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 323,
+      "title": "perf(geo261): reuse per-validation footprint source reads without dropping dependencies (#300 prerequisite)",
+      "headBranch": "codex/geo261-load-residual-20261020",
+      "head": "4ea6c50796711ed1e79bae89c93d07037d317837",
+      "baseBranch": "main",
+      "base": "eda91c8593f0795278f7f16ff8b93d147a4fdaa7",
+      "draft": false,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 213,
+      "title": "SketchUp 插件:下角材(平釘天花 + 斷面設計)",
+      "headBranch": "feat/sketchup-framing-plugin-20261013",
+      "head": "4ec65e263a85f1f5570ec980b0a07b0ca0959f36",
+      "baseBranch": "main",
+      "base": "fc43f755c0aaffb5de5005818defa37dbbf35760",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    },
+    {
+      "number": 194,
+      "title": "serve: opt-in LAN test mode for real-device acceptance (W-B, P-008)",
+      "headBranch": "feat/lan-test-mode-20261011",
+      "head": "a3304b11a157dc3ae8877d5b4b45299f2f2d4a8c",
+      "baseBranch": "fix/serve-get-host-check-20261011",
+      "base": "b40620cd433ae36c6a3905c4293313dfd6e7f745",
+      "draft": true,
+      "author": "ZhiQiYang",
+      "assignees": []
+    }
+  ],
+  "noDedicatedR03PRObserved": true,
+  "relatedHistoricalBranches": [
+    {
+      "ref": "refs/heads/feat/framing-core-probe-20261017",
+      "node_id": "REF_kwDOUfdcjNoAK3JlZnMvaGVhZHMvZmVhdC9mcmFtaW5nLWNvcmUtcHJvYmUtMjAyNjEwMTc",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/refs/heads/feat/framing-core-probe-20261017",
+      "object": {
+        "sha": "bc3fb622131a55c6f3e5135caab6d4c39e4b2b4c",
+        "type": "commit",
+        "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits/bc3fb622131a55c6f3e5135caab6d4c39e4b2b4c"
+      }
+    },
+    {
+      "ref": "refs/heads/feat/framing-oracle-20261015",
+      "node_id": "REF_kwDOUfdcjNoAJ3JlZnMvaGVhZHMvZmVhdC9mcmFtaW5nLW9yYWNsZS0yMDI2MTAxNQ",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/refs/heads/feat/framing-oracle-20261015",
+      "object": {
+        "sha": "3d858c31e84e025d34c62b0c6be6a9b73ce55a8d",
+        "type": "commit",
+        "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits/3d858c31e84e025d34c62b0c6be6a9b73ce55a8d"
+      }
+    },
+    {
+      "ref": "refs/heads/feat/sketchup-framing-plugin-20261013",
+      "node_id": "REF_kwDOUfdcjNoAMHJlZnMvaGVhZHMvZmVhdC9za2V0Y2h1cC1mcmFtaW5nLXBsdWdpbi0yMDI2MTAxMw",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/refs/heads/feat/sketchup-framing-plugin-20261013",
+      "object": {
+        "sha": "4ec65e263a85f1f5570ec980b0a07b0ca0959f36",
+        "type": "commit",
+        "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits/4ec65e263a85f1f5570ec980b0a07b0ca0959f36"
+      }
+    }
+  ],
+  "relatedCurrentDependencyPRs": {
+    "340": {
+      "head": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+      "base": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+      "baseRef": "main",
+      "draft": false,
+      "assignees": []
+    },
+    "341": {
+      "head": "823729be5f4f025aebbf02c2dc85e09907c28812",
+      "base": "dcdf22655e0cf8ed47cd0b7f66d89f3a7beca694",
+      "baseRef": "codex/geo324-faces-20261024",
+      "draft": true,
+      "assignees": []
+    },
+    "342": {
+      "head": "df230da57619e437c30527dbede8c67fd0ec6b50",
+      "base": "823729be5f4f025aebbf02c2dc85e09907c28812",
+      "baseRef": "codex/geo300-prerequisites-20261024",
+      "draft": true,
+      "assignees": []
+    },
+    "343": {
+      "head": "a934a554ae58f16f124f1b264523947f170b3f0b",
+      "base": "df230da57619e437c30527dbede8c67fd0ec6b50",
+      "baseRef": "codex/geo260-ac23-proof-20261024",
+      "draft": true,
+      "assignees": []
+    },
+    "346": {
+      "head": "eaf15e239324a6464a04740647afccce3a3c17c7",
+      "base": "a934a554ae58f16f124f1b264523947f170b3f0b",
+      "baseRef": "codex/geo300-contact-index-20261024",
+      "draft": true,
+      "assignees": []
+    },
+    "347": {
+      "head": "8bb0359331365c6f3a96872620427cf7847fcb50",
+      "base": "eaf15e239324a6464a04740647afccce3a3c17c7",
+      "baseRef": "codex/geo300-cut-list-storage-20261024",
+      "draft": true,
+      "assignees": []
+    },
+    "348": {
+      "head": "86c8f0bbe68275e2948d3b1959207aba4225e0c7",
+      "base": "8bb0359331365c6f3a96872620427cf7847fcb50",
+      "baseRef": "codex/issue128-empty-panel-rows-20261024",
+      "draft": true,
+      "assignees": []
+    },
+    "355": {
+      "head": "b5a61bbc0cb33a1f188112cc5c7982bffbec93ff",
+      "base": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+      "baseRef": "main",
+      "draft": true,
+      "assignees": []
+    }
+  },
+  "fieldRules": {
+    "mainBlob": "5a5e7e4c712d1628a56d30528bb75553d4c41a94",
+    "equalsPR333FinalFieldBlob": true,
+    "pr333Head": "7eaa359063b04a9f02aa72a05aeeca41ab17675a",
+    "pr333Merge": "425c092eaf16f90256d76433243baebde45163ac",
+    "mergedAt": "2026-10-23T18:40:27Z",
+    "exactQuoteLines": 38,
+    "allFoundInFixedMainDecisions": true
+  },
+  "unknowns": [
+    "Private/unpushed work and unqueried branch prefixes cannot be excluded.",
+    "No capability/run output was executed; source availability does not prove current operational delivery.",
+    "PR descriptions are author metadata and are not independently reverified dynamic evidence in this inventory."
+  ]
+}

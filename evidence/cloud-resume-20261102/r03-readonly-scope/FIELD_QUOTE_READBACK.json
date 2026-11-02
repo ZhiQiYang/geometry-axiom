@@ -1,0 +1,161 @@
+{
+  "fixedMain": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+  "fieldBlob": "5a5e7e4c712d1628a56d30528bb75553d4c41a94",
+  "pr333FieldBlob": "5a5e7e4c712d1628a56d30528bb75553d4c41a94",
+  "quoteLineCount": 38,
+  "allExactMatches": true,
+  "rows": [
+    {
+      "quote": "> 還有1830 * 915 的面材 角材間距不超過特定尺寸例如是  1830/5 的話 理應 是  每一片面材 1830 * 915 面材之間除了邊緣之稱的角材之外應該只有4支角材等分 1830這個方向的尺寸阿  這你也是亂做嗎 子網格是這樣設計的嗎",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 就是1830/5這個為 1830方向的角材之間的最大間距並且以這個當作模數 阿 你聽得懂嗎",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 當作一個完整cell內下角材4支 5格的情況下每一格的間距是一樣的 間距阿",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 以這個間距當作模數",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 還有就是雖然說是固定模數但是差1mm的差異也不影響阿  更應該說都在間距上限以內",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> ... 我之前不是說過了 不超過上限  那你取一個模數 讓餘數 加在剩下的那一格 不超過上限不就好了嗎",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 柱子理應是要有邊角材的 還有",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 我們固定主支上做記號都是使用相同間距去畫記號 下角材根據記號去再相應的位置連接角材的",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 這個不是很重要 你可以去反推 記號位置 重點是最後每一格都盡可能一樣 盡可能可能有些模糊 所以我那時候材直接給了上限 你可以允許有誤差 在現場施工 間隔差了1~2mm影響不大  就是要保持相鄰角材的位置是一樣的這樣兩隻之間的連接角材 才會正交/平行  我對這個問題有點厭煩了 因為這明明是非常單純的問題 卻給我在這邊鑽牛角尖 反覆問我  重要的是 主網格 中格線使得 面材邊緣都有支撐  然後 子網格中 的副支位置使得 副支之間的艱鉅部會太遠 ...你可以不要在這種問題上煩我了嗎  你自己推演看看這個 在滿足上限以內 角材間距 誤差過大 到底對結構上會造成什麼致命影響 間距一致 只是我們在做記號的時候 可以非常方便做記號 一樣的製具 去畫線  可能最後一步 會有點誤差 但是在上限以內就完全不影響 間距上限以內是為了避免支撐角材間距過大 已經滿足目標了",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 乙 同一治具 367",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 因為角材的端面 頂到角材材能固定 不能直接頂到RC",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 端面頂的是角材才能固定  ...那你讓 要頂的地方如果是RC的話 就固定一支角材貼在那個邊界這樣端面不就能固定了嗎 ",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> ...",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 算衝突 但是整支連續代表他是連續的傳遞到RC 不是中間斷開為了接其他角材而斷開  然後傳遞到RC 和 端面不能直接固定到RC不衝突 因為RC就是預設要有邊界材 讓面材支撐 你們都沒有推演過  空間邏輯嗎 面材邊緣要有支撐你不知道嗎  還有面材能和RC衝突嗎 你不知道碰撞嗎你是真的理解空間關係 才不知道為什麼完成面邊緣要有角材 你完成面能夠無視RC的邊界嗎",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 我能接受",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 主要是你這個角材端面只能固定在角材上 你是不是聽不懂?",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 這是可以的",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> ??? 主支為什麼要斷開 ?",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 不能斷開阿",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 為什麼我面材封板的時候從邊緣開始封還要裁切成小片的面材 你是不是有病?",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 對,只在對牆、不置中",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 我之前也強調過很多次了 依賴於封板  面材邊緣要有支撐  然後 結構上要有角材是連續的不中斷的從一端到另一端  ",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 然後角材之間的 間距 這些條件滿足 你不需要一根一根擺完全部 理應 有一個封閉面 有這些規則應該資訊已經滿足了對吧",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 邊緣要有支撐 這樣讓網格系統中每一個cell是不是都決定了",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 角材的間距上限是不是 也決定了子網格功能 ",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 組構規則是不是也有規定了哪支角材 接哪支角材滿足結構上的需求 像是要有 一整支結構是連續的要求",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 左下起鋪,板長沿Y\t衝突\t板端縫太靠近 RC,縫上的副支撞到邊界角材  這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好  你是不是聽不懂我說過的話?",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 我以為這種判斷已經夠簡單了 竟然連這種都無法判斷?",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 我要的意思是 這支角材 不能 超過範圍阿 ",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 你聽得懂嗎  在界內 和界外的差別 界內代表你貼著切齊 等等這些都還在裡面阿 ",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 意思是不能在外面的意思聽懂嗎",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> RC牆面 是不是 角材不能穿過去?  RC柱子是不是不能穿過去 物理碰撞你懂嗎  ",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 已經有角材的部分是不是也不能穿過去 物理碰撞 ...",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 為什麼會有靠側面釘入的規則? 哪怕我們真實施工是斜著打進去角材 讓角材端面 與另一支角材側面連接 的工法 也不影響我這個應用實作的功能阿  是不是沒事 亂塞一堆無關的內容?",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> C 規則不改，換登錄",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 27 mm(料寬)",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 不放(短於 27 一律不放)",
+      "presentExactInDecisionQueue": true
+    },
+    {
+      "quote": "> 用這個",
+      "presentExactInDecisionQueue": true
+    }
+  ]
+}

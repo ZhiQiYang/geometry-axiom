@@ -1,0 +1,107 @@
+{
+  "at": "2026-11-02T12:48:42.278617+00:00",
+  "branch": "codex/ci-documents-checkout-20261102-prbody",
+  "head": "479ff4384e94e14ea5ce46ece21fbaab0ae37137",
+  "parentUtilityHead": "b2432c9ea79a6927675883ddde04f629b159be2d",
+  "onlyAddedPath": "PR_BODY.md",
+  "bodySha256": "b8aeefe0c74692341657164548bc82e864ef43898f106bd0daa949ded90f7f15",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-C",
+        "/dev/shm/geometry-ci-documents-checkout-20261102",
+        "worktree",
+        "add",
+        "--no-checkout",
+        "-b",
+        "codex/ci-documents-checkout-20261102-prbody",
+        "/dev/shm/geometry-ci-documents-checkout-prbody-20261102",
+        "b2432c9ea79a6927675883ddde04f629b159be2d"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Preparing worktree (new branch 'codex/ci-documents-checkout-20261102-prbody')\n"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-C",
+        "/dev/shm/geometry-ci-documents-checkout-prbody-20261102",
+        "sparse-checkout",
+        "set",
+        "--no-cone",
+        "/PR_BODY.md"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-C",
+        "/dev/shm/geometry-ci-documents-checkout-prbody-20261102",
+        "read-tree",
+        "-mu",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-ci-documents-checkout-prbody-20261102",
+        "add",
+        "--",
+        "PR_BODY.md"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "The following paths are ignored by one of your .gitignore files:\nPR_BODY.md\nhint: Use -f if you really want to add them.\nhint: Disable this message with \"git config set advice.addIgnoredFile false\"\n"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-ci-documents-checkout-prbody-20261102",
+        "add",
+        "-f",
+        "--",
+        "PR_BODY.md"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "meaning": "Explicitly authorized PR_BODY.md on separate body branch only"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-C",
+        "/dev/shm/geometry-ci-documents-checkout-prbody-20261102",
+        "commit",
+        "-m",
+        "docs: Record documents checkout utility review state"
+      ],
+      "exit": 0,
+      "stdout": "[codex/ci-documents-checkout-20261102-prbody 479ff438] docs: Record documents checkout utility review state\n 1 file changed, 21 insertions(+)\n create mode 100644 PR_BODY.md\n",
+      "stderr": ""
+    }
+  ],
+  "physicalFiles": [
+    "PR_BODY.md",
+    ".git"
+  ]
+}

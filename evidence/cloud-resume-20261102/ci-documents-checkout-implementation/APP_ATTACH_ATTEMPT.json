@@ -1,0 +1,31 @@
+{
+  "schema": "geometry-app-attachment-attempt/1",
+  "at": "2026-11-02T12:51:26.277Z",
+  "pr": "https://github.com/ZhiQiYang/geometry-axiom/pull/368",
+  "requestedOperation": "Attach the newly created draft PR through the available app capability",
+  "discovery": {
+    "enabledToolCount": 20,
+    "queries": [
+      "github",
+      "attach pull request",
+      "attach PR app",
+      "link pull request"
+    ],
+    "matchingCallableTools": [
+      {
+        "name": "image_gen__imagegen",
+        "description": "The `image_gen.imagegen` tool enables image generation from descriptions and editing of existing images based on specific instructions. Use it when:\n\n- The user requests an image based on a scene desc"
+      },
+      {
+        "name": "mcp__codex_apps__cloud_environment_onboarding_update_environment_config_draft",
+        "description": "Save a partial cloud environment configuration draft for the user to review. Set or revise the setup script, start instructions, network access, environment variables, or secret requirements. Use envi"
+      }
+    ]
+  },
+  "result": "UNAVAILABLE_NO_CALLABLE_APP_ATTACHMENT_TOOL",
+  "attached": false,
+  "backendAttachRequestSent": false,
+  "toolHang": false,
+  "meaning": "Attempted capability discovery after PR creation. No attachment backend can be called in this session; this is not a successful attachment. The unrelated cloud_environment_onboarding_update_environment_config_draft tool was not misused.",
+  "continuation": "PR/body publication and initial GitHub Actions collection proceed. Root can attach using a capability available in its own context."
+}

@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-02T12:44:27.250332+00:00",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "tests/mutate.py",
+    "--check"
+  ],
+  "cwd": "/dev/shm/geometry-ci-documents-checkout-20261102",
+  "head": "b2432c9ea79a6927675883ddde04f629b159be2d",
+  "environmentOverrides": {
+    "MUTATE_CACHE": "/dev/shm/geometry-ci-documents-checkout-logical-cache-not-materialized-20261102",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "GIT_NO_LAZY_FETCH": "1"
+  },
+  "environmentUnset": [],
+  "logicalCacheAbsentBefore": true,
+  "ledgerSha256Before": "1a6b09ac7ed560be994615ecfc36e5129b79d3036c9f73fc0241f18ef767da79",
+  "meaning": "Original logical source/tool/closure/receipt freshness only; no downloaded binary/runtime product execution and no fresh binary validation claim",
+  "outerBoundSeconds": 120
+}

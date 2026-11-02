@@ -1,0 +1,45 @@
+{
+  "utc": "2026-11-02T12:54:33.594078+00:00",
+  "rows": [
+    {
+      "name": "refs-codex",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/matching-refs/heads/codex/",
+      "status": 200,
+      "bytes": 69159,
+      "sha256": "03575d992acb2f1b08bc8c44740180ad3632c89ca6b628719bd62a41f93b2096",
+      "nextLink": null
+    },
+    {
+      "name": "refs-grok",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/matching-refs/heads/grok/",
+      "status": 200,
+      "bytes": 4891,
+      "sha256": "9ee31dac7d6813968bc8d1fa6dfbf601f4cce148ecb6e6b735dbcc82ea6b4a48",
+      "nextLink": null
+    },
+    {
+      "name": "refs-feat",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/matching-refs/heads/feat/",
+      "status": 200,
+      "bytes": 5730,
+      "sha256": "1178d37c393e3d2553b8237e1250b2ac9cffe05f82c0440d12bca57fa931ec4a",
+      "nextLink": null
+    },
+    {
+      "name": "open-prs",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/pulls?state=open&per_page=100",
+      "status": 200,
+      "bytes": 656050,
+      "sha256": "2f172a91e796f27220292d30ba52c75156d69776f06d67d2fb9afe828a8a2cf2",
+      "nextLink": null
+    },
+    {
+      "name": "handoff-ref",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/ref/heads/handoff/codex-takeover-20261021",
+      "status": 200,
+      "bytes": 439,
+      "sha256": "ef31e37b35d9e922502371c3f004214edeaf54d878c515dcf94be282201d8455",
+      "nextLink": null
+    }
+  ]
+}
