@@ -1,3 +1,14 @@
+# ACTIVE CHECKPOINT 2026-11-02T11:08Z
+
+#367真UI harness：F03(D)原exit0／482.395秒、898pass0fail0skip／62golden；M=aec3ea1bdcf46f2416dfa7cb79d28221673c315a原完整exit1／484.041772秒、CDP897pass2fail0skip、898journal唯一false為S2結構(seq13/ordinal11)。另一fail只是原golden section1 14→13後果；原Node verify-shard另真exit1，具名CANVAS_ASSERTION_FAILED: S2 結構:。不把環境紅當killed，不把2fail改說1fail。三native/golden/737inputs前後同，M未push。
+
+R(D)已於11:06:25.057164Z真啟，supervisor507174、18859/CDP9369、session96044，原2100截止11:41:25.057164Z，raw /dev/shm/geometry-canvas-harness-actual-20261102/fixed-restored-02；仍待真終態，禁止再開local heavy或重啟。原F/F02環境失敗保留，F03成功不覆寫。完整三相收據待R終態一次封存公開。
+
+#340新main正式CI9/10success只canvas仍跑；#340／#345原#366重產各6success、3bridge shard仍實際執行，均無failure、未全綠，詳新觀測new-main-1107。#341 peer靜態查出main已含343下游indexed排序，不能用compact=false當341等價baseline：會漏排序。只準備精確反證／成對比較方案，正式bench仍UNRUN，不與現canvas競跑。
+
+---
+以下為固定交付快照；最新活程序以上段為準
+
 # CURRENT 2026-11-02T10:56:33.147620+00:00 — 持續推進
 
 main最新實讀e02057b4c725d6f03ae52c3bc30776bf9442b0cf（本機已合#354，#366亦已入main）。#363固定F4的三阻擋已全解除且獨立dot可合；Codex未合main。
