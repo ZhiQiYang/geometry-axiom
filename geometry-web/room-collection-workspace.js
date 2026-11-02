@@ -357,7 +357,7 @@ const RoomCollectionWorkspace = (() => {
     try {
       const value = writeSavedCandidates(s, {recordHistory: false, roomLease: payload.lease, contextToken: payload.lease.contextToken},
         Drafts().persistValue(draftFromSession(s, anchor)));
-      s.pendingAcceptance = {index, previousStatus, previousRoom, anchor, value: value === null ? null : structuredClone(value)};
+      s.pendingAcceptance = {index, previousStatus, previousRoom, anchor, roomsValue: structuredClone(data), value: value === null ? null : structuredClone(value)};
     } catch (error) {
       revertAcceptance(s, {index, previousStatus, previousRoom});
       throw error;
@@ -549,8 +549,18 @@ const RoomCollectionWorkspace = (() => {
   async function startCandidateAnalysis(bid,pane) {
     if(instance?.intent||lease||instance?.busy)throw Error('請先完成或取消房間草稿。');
     retireForeignSession();
+    const analysisInput=()=>{
+      const {owner,roomsPin,unknownNative,...input}=candidateStamp(bid);
+      return {...input,owner:{context:owner.context,frame:owner.frame,contextToken:owner.contextToken}};
+    };
+    const ownerToken=token(),navigationBid=oc.edit?.bid,expectedInput=analysisInput();
+    const assertAnalysisCurrent=(requirePane=false)=>{
+      if(token()!==ownerToken||oc.edit?.bid!==navigationBid||!same(analysisInput(),expectedInput)||
+        (requirePane&&(!pane.isConnected||pane!==document.getElementById('faceInspectorContent'))))
+        throw Error('房間候選分析的專案、圖頁或工作區已變更；請從目前圖頁重新開始。');
+    };
     // Read the referenced D3 fingerprints first: a failed read must leave any draft untouched.
-    await readNativePins(bid);
+    await readNativePins(bid);assertAnalysisCurrent(true);
     if(instance?.intent||lease||instance?.busy)throw Error('請先完成或取消房間草稿。');
     const s=ownsSession(candidateSession)?candidateSession:null,stored=W().readFeatureAttachment(Drafts().KIND,token());
     if(stored!==null){
@@ -558,6 +568,8 @@ const RoomCollectionWorkspace = (() => {
       if(!confirm('已有房間候選草稿。重新分析前須先捨棄它（捨棄可復原）；已接受的房間保留。要捨棄並重新分析嗎？'))return;
       await discardDraft(s,true);
     }else if(s&&!confirm('重新分析會放棄本分頁尚未接受的候選與修正；已接受房間保留。繼續嗎？'))return;
+    // Discard can redraw this pane; retain its chosen options but recheck ownership and source.
+    assertAnalysisCurrent();
     await RoomOutlineWorkspace.collect(bid,pane);
   }
   function candidatesHTML(bid) {
@@ -821,6 +833,7 @@ const RoomCollectionWorkspace = (() => {
       // (still no draft when the group removed it) and every other attachment is unchanged.
       if(!grouped||grouped.index!==index||!same(W().readFeatureAttachment(Drafts().KIND,s.ownerToken),grouped.value))
         throw Error('房間候選草稿不是同一交易剛寫入的值；剩餘候選已失效。');
+      if(!same(state(),grouped.roomsValue))throw Error('房間來源附件不是同一交易剛寫入的值；剩餘候選已失效。');
       if(!same(otherAttachments(),others))throw Error('房間交易期間其他專案附件已變更；剩餘候選已失效。');
       if(next.kind!=='collection'||next.collectionId!==grouped.anchor.collectionId||next.plane.id!==grouped.anchor.planeId||
         next.planePin!==grouped.anchor.planePin||next.roomsPin!==grouped.anchor.roomsPin)throw Error('新增後的集合錨點無法由回執證明；剩餘候選已失效。');

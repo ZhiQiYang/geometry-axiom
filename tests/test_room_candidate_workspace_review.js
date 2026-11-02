@@ -26,7 +26,7 @@ function fixture(owner = null) {
   owner ||= {token:'A',revision:1,pages:{1:page('page-1'),2:page('page-2')},attachments:{A:{'source-rooms':S.empty(),'room-candidates':null},B:{'source-rooms':S.empty(),'room-candidates':null}},writes:[],protocol:[],confirms:0,collects:0,notices:[],allowConfirm:true};
   const W = {getProjectState:()=>({id:owner.projectId||owner.token,contextToken:owner.token,revision:owner.revision}),getModelOperationState:()=>({context:owner.projectId||owner.token,contextToken:owner.token,frame:owner.token,revision:owner.revision,blocked:false,group:false}),
     readFeatureAttachment:(kind,token)=>{assert.equal(token,owner.token);return copy(owner.attachments[owner.token][kind]);},
-    setFeatureAttachment:(kind,value,token,options)=>{assert.equal(token,owner.token);if(value&&kind===D.KIND)D.validate(value);owner.writes.push({kind,value:copy(value),token,options:copy(options)});owner.protocol.push(value===null?'discard':'write');owner.attachments[owner.token][kind]=copy(value);owner.revision++;},
+    setFeatureAttachment:(kind,value,token,options)=>{assert.equal(token,owner.token);if(value&&kind===D.KIND)D.validate(value);owner.writes.push({kind,value:copy(value),token,options:copy(options)});owner.protocol.push(value===null?'discard':'write');owner.attachments[owner.token][kind]=copy(value);owner.revision++;if(owner.onWrite)owner.onWrite(kind,value);},
     active:bid=>owner.pages[bid],assertEditable(){},escape:value=>String(value),history:{group:null},sync(){}};
   const window = new EventTarget(), oc = {edit:{bid:1},bmap:{1:[{verts:rect}],2:[{verts:rect}]}};
   const nativeCalls = [], nativeRows = {1:{ok:true,id:1,geometryFingerprint:'bb'.repeat(32),loops:[{verts:rect}]}};
@@ -35,7 +35,7 @@ function fixture(owner = null) {
     document:{getElementById:id=>id==='faceInspectorContent'?pane:null},fe:{draft:{pts:[]}},connection:{phase:'ready'},
     RoomOutlineWorkspace:{hasWork:false,reset(){},paneHTML:()=>'',collect:async bid=>{owner.collects++;owner.protocol.push('analyze');if(owner.onCollect)await owner.onCollect(bid);}},
     renderFaceInspector(){},drawFaceEditor(){},feSetTool(){},toast:message=>owner.notices.push(message),confirm:()=>{owner.confirms++;return owner.allowConfirm;},
-    apiRequest:async command=>{nativeCalls.push(command);const id=Number(command.replace(/^boundary /,''));return copy(nativeRows[id]||{ok:false,error:'BOUNDARY_NOT_FOUND'});},
+    apiRequest:async command=>{nativeCalls.push(command);if(owner.onNative)await owner.onNative(command);const id=Number(command.replace(/^boundary /,''));return copy(nativeRows[id]||{ok:false,error:'BOUNDARY_NOT_FOUND'});},
     feUlImgToMm:(_,x,y)=>[x,y],RoomOutline:{integerProposal:points=>({points,deviation:0}),canonicalLoop:JSON.stringify}};
   vm.runInNewContext(source,sandbox,{filename:path.join(root,'geometry-web/room-collection-workspace.js')});
   const workspace = window.RoomCollectionWorkspace;
@@ -119,4 +119,59 @@ test('control: fresh same-project pending draft sync retains its rows and anchor
   const f=fixture(),original=savedDraft();f.owner.attachments.A[D.KIND]=copy(original);f.workspace.paneHTML(1);
   assert.equal(f.workspace.candidateSnapshot().stale,false);f.workspace.flushCandidates();
   assert.deepEqual(f.owner.attachments.A[D.KIND],original);assert.equal(f.owner.writes[0].token,'A');
+});
+
+
+// R358-02/03: preflight itself is asynchronous, before collect captures a worker owner.
+function analysisDeferred() { let resolve; const promise=new Promise(r=>resolve=r);return {promise,resolve}; }
+function nativePreflightFixture() {
+  const f=fixture(),plane=S.fromPage(f.owner.pages[1],'image/png','plane-a');
+  const room={id:'room-a',name:'room',boundaryRef:{kind:'boundary',id:1,associationPin:'aa'.repeat(32)},acceptedBasisRevision:1,reviewState:'needs-review'};
+  f.owner.attachments.A['source-rooms']={...S.empty(),planes:[plane],collections:[{id:'collection-a',planeId:plane.id,roomIds:[room.id]}],rooms:[room]};
+  const started=analysisDeferred(),release=analysisDeferred();let delayed=false;
+  f.owner.onNative=async command=>{if(command==='boundary 1'&&!delayed){delayed=true;started.resolve();await release.promise;}};
+  return {f,started,release};
+}
+test('R358-02 control: unchanged owner continues after native preflight',async()=>{
+  const {f,started,release}=nativePreflightFixture(),pane=f.makePane(1);await pane.change();
+  f.owner.onCollect=bid=>f.receive(1,bid);const pending=pane.click('#roomNew');await started.promise;
+  release.resolve();await pending;f.workspace.flushCandidates();
+  assert.equal(f.owner.collects,1);assert.equal(f.owner.writes.length,1);assert.equal(f.owner.writes[0].token,'A');
+});
+for(const kind of ['project','undo'])test('R358-02 native preflight cannot rebind a stale start after '+kind,async()=>{
+  const {f,started,release}=nativePreflightFixture();if(kind==='undo')f.owner.projectId='same-project';
+  const pane=f.makePane(1);await pane.change();
+  f.owner.onCollect=bid=>f.receive(1,bid);const pending=pane.click('#roomNew');await started.promise;
+  const next=kind==='project'?'B':'A-after-undo';
+  f.owner.attachments[next]={'source-rooms':S.empty(),'room-candidates':null};f.owner.token=next;
+  pane.pane.isConnected=false;f.makePane(1);f.window.dispatchEvent(new Event('project-info-changed'));
+  release.resolve();await pending;f.workspace.flushCandidates();
+  assert.equal(f.owner.collects,0,'old click must not initiate analysis under the replacement owner');
+  assert.equal(f.owner.writes.length,0);assert.equal(f.owner.attachments[next][D.KIND],null);
+});
+test('R358-02 native preflight cannot resume a detached inspector',async()=>{
+  const {f,started,release}=nativePreflightFixture(),pane=f.makePane(1);await pane.change();
+  const pending=pane.click('#roomNew');await started.promise;
+  pane.pane.isConnected=false;f.oc.edit.bid=2;f.makePane(2);
+  release.resolve();await pending;
+  assert.equal(f.owner.collects,0);assert.equal(f.owner.writes.length,0);
+});
+for(const accept of [true,false])test('R358-03 stale start never offers or executes B discard, confirm='+accept,async()=>{
+  const {f,started,release}=nativePreflightFixture(),pane=f.makePane(1);await pane.change();
+  const pending=pane.click('#roomNew');await started.promise;
+  const original=savedDraft(page('page-2'),2,'project-b-existing');
+  f.owner.attachments.B[D.KIND]=copy(original);f.owner.token='B';f.owner.allowConfirm=accept;
+  pane.pane.isConnected=false;f.makePane(1);f.window.dispatchEvent(new Event('project-info-changed'));
+  release.resolve();await pending;
+  assert.deepEqual(f.owner.attachments.B[D.KIND],original);assert.equal(f.owner.writes.length,0);
+  assert.equal(f.owner.confirms,0,'retired A action must not ask to discard B work');assert.equal(f.owner.collects,0);
+});
+test('R358-03 control: own discard may redraw inspector before valid analysis',async()=>{
+  const f=fixture();f.owner.attachments.A[D.KIND]=savedDraft();f.oc.edit.bid=2;
+  const pane=f.makePane(2);await pane.change();
+  f.owner.onWrite=(kind,value)=>{if(kind===D.KIND&&value===null){pane.pane.isConnected=false;f.makePane(2);}};
+  f.owner.onCollect=bid=>f.receive(1,bid);await pane.click('#roomNew');
+  assert.equal(f.owner.confirms,1);assert.equal(f.owner.collects,1);
+  assert.deepEqual(f.owner.protocol.slice(0,2),['discard','analyze']);assert.equal(f.owner.writes.length,1);
+  assert.equal(f.owner.writes[0].options.recordHistory,true);assert.equal(f.workspace.candidateSnapshot().ownerToken,'A');
 });

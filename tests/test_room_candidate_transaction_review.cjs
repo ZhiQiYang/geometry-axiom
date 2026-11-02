@@ -38,7 +38,7 @@ function harness(options={}) {
     structuredClone,TextEncoder,PolyDraft:{createState:()=>({pts:[]})},feSyncDraftMirror:()=>{},feLenShow:()=>{},crypto:{randomUUID:()=>`id-${++serial}`},console,window:{addEventListener:(n,f)=>{events[n]=f;}},document:{createElement:element,body:{append(){}},getElementById:()=>null},
     oc,fe,connection:{phase:'ready',session:'session-a'},innerWidth:1000,prompt:()=> 'Probe room',appendGridDefinitionImpact:()=>{},
     feUlImgToMm:(_p,x,y)=>[x*10,y*10],feSetTool:()=>{},fiShowTab:()=>{},openPanel:()=>{},drawFaceEditor:()=>{},setStatus:()=>{},toast:()=>{},
-    cleanDraft:()=>{fe.draft.pts=[];},renderObjects:async()=>{if(options.tamperOther)W.setFeatureAttachment(E.KIND,E.empty(),'ctx',{recordHistory:true});if(options.tamperDraft){const changed=clone(attachments[D.KIND]);changed.rows[1].rawInputs.refRoomLength='999';W.setFeatureAttachment(D.KIND,changed,'ctx',{recordHistory:true});}},
+    cleanDraft:()=>{fe.draft.pts=[];},renderObjects:async()=>{if(options.tamperOldCollection){const changed=clone(attachments['source-rooms']);changed.collections.find(c=>c.id==='other-collection').roomIds.reverse();W.setFeatureAttachment('source-rooms',changed,'ctx',{recordHistory:true});}if(options.tamperOther)W.setFeatureAttachment(E.KIND,E.empty(),'ctx',{recordHistory:true});if(options.tamperDraft){const changed=clone(attachments[D.KIND]);changed.rows[1].rawInputs.refRoomLength='999';W.setFeatureAttachment(D.KIND,changed,'ctx',{recordHistory:true});}},
     enterFocus:async(t,id)=>{oc.edit={bid:id};oc.focus={t,id};},renderFaceInspector:()=>{if(workspace&&oc.edit)workspace.paneHTML(oc.edit.bid);},
     apiRequest:async(command,l)=>{commands.push(command);let result;
       if(command==='newid')result={ok:true,boundary:2};
@@ -46,7 +46,7 @@ function harness(options={}) {
       else if(command.startsWith('line preview boundary ')){const id=Number(command.split(' ')[3]),points=command.split(' outline ')[1].split(' ').map(p=>p.split(',').map(Number));snapshot={id,kind:'unspecified',geometryFingerprint:'ef'.repeat(32),loops:[{verts:points,fixity:points.map(()=>1)}]};result={ok:true,preview:{valid:true,token:7,boundaries:[{id,before:null,after:clone(snapshot)}]}};}
       else if(command==='line history-begin'){history.group={base:capture(),dirty:false};result={ok:true};}
       else if(command==='line confirm 7'){native[2]=clone(snapshot);oc.bmap[2]=clone(snapshot.loops);history.group.dirty=true;result={ok:true};}
-      else if(command==='line history-end'){if(options.fail==='history-end')result={ok:false,error:'injected history-end failure'};else {history.undo.push({before:history.group.base,after:capture()});history.group=null;result={ok:true};}}
+      else if(command==='line history-end'){if(options.fail==='history-end-unknown')result={ok:false,transport:true,error:'injected unknown history-end'};else if(options.fail==='history-end')result={ok:false,error:'injected history-end failure'};else {history.undo.push({before:history.group.base,after:capture()});history.group=null;result={ok:true};}}
       else if(command==='line history-abort'){restore(history.group.base);history.group=null;result={ok:true};}
       else if(command==='line cancel-preview'){snapshot=null;result={ok:true};}
       else throw Error('unexpected command '+command);
@@ -97,4 +97,38 @@ test('R358-06 continuation rejects any changed other attachment',async()=>{
 test('R358-06 continuation verifies candidate attachment equals grouped write',async()=>{
   const h=harness({tamperDraft:true});await h.start();await h.commit().catch(()=>{});
   assert.equal(h.workspace.candidateSnapshot().stale,true,'candidate persisted value changed after group, so no automatic continuation');
+});
+
+
+function withOtherCollection(tamperOldCollection=false) {
+  const initial=S.upgradeDisplay(S.empty());
+  const otherPage={...page,id:'other-page',sourceId:'12'.repeat(32)};
+  initial.planes.push(S.fromPage(otherPage,'image/png','other-plane'));
+  initial.collections.push({id:'other-collection',planeId:'other-plane',roomIds:['other-room-3','other-room-4']});
+  for(const id of [3,4])initial.rooms.push({id:'other-room-'+id,name:'Other '+id,
+    boundaryRef:{kind:'boundary',id,associationPin:pin},acceptedBasisRevision:1,reviewState:'confirmed',
+    display:{crop:page.crop,opacity:page.opacity,locked:false}});
+  S.validate(initial);
+  const native=Object.fromEntries([1,3,4].map(id=>[id,{id,kind:'unspecified',geometryFingerprint:pin,loops:[hostLoop]}]));
+  return harness({attachments:{'source-rooms':initial},native,tamperOldCollection});
+}
+test('R358-06 extra control: unrelated collection remains exact and first-room continuation succeeds',async()=>{
+  const h=withOtherCollection();
+  assert.equal(h.workspace.captureCandidateStamp(1).kind,'page');
+  await h.start();assert.equal(await h.commit(),true);
+  assert.equal(h.workspace.candidateSnapshot().stale,false);
+  assert.deepEqual(h.attachments['source-rooms'].collections.find(c=>c.id==='other-collection').roomIds,['other-room-3','other-room-4']);
+});
+test('R358-06 extra unknown history-end expires live work and prevents later flush',async()=>{
+  const h=harness({fail:'history-end-unknown'});await h.start();
+  await assert.rejects(h.commit(),/injected unknown history-end/);
+  const s=h.workspace.candidateSnapshot();assert.equal(s.stale,true);assert.equal(s.expired,true);
+  assert.notEqual(h.lease,null);const before=h.capture(),writes=h.writes.length;
+  h.workspace.flushCandidates();assert.equal(same(h.capture(),before),true);assert.equal(h.writes.length,writes);
+});
+test('R358-06 extra R52: changed pre-existing collection prevents first-room continuation',async()=>{
+  const h=withOtherCollection(true);await h.start();
+  await h.commit().catch(()=>{});
+  assert.deepEqual(h.attachments['source-rooms'].collections.find(c=>c.id==='other-collection').roomIds,['other-room-4','other-room-3']);
+  assert.equal(h.workspace.candidateSnapshot().stale,true,'R52 must reject continuation when a pre-existing collection changed');
 });
