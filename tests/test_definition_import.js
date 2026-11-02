@@ -21,6 +21,27 @@ test("撤掉實作：撞號仍沿用來源號碼", () => {
   assert.equal(used.has(3), true);
 });
 
+test("撤掉實作：輸入變更後舊預覽仍可確認", () => {
+  const gate = DefinitionImport.createPreviewGate();
+  assert.equal(gate.current(), false);
+  gate.accept(gate.snapshot());
+  assert.equal(gate.current(), true);
+  gate.edit();
+  assert.equal(gate.current(), false);
+});
+
+test("a preview built before an edit is never confirmable", () => {
+  const gate = DefinitionImport.createPreviewGate();
+  const at = gate.snapshot();
+  gate.edit();
+  gate.accept(at);
+  assert.equal(gate.current(), false);
+  gate.accept(gate.snapshot());
+  assert.equal(gate.current(), true);
+  gate.drop();
+  assert.equal(gate.current(), false);
+});
+
 test("empty used set starts at 1", () => {
   const used = new Set();
   assert.strictEqual(DefinitionImport.allocateImportedId(used, 7), 1);

@@ -1,5 +1,5 @@
 /* H: definition-import/1. The native preview is the authority for ids and closure.
-   This file mirrors allocation only so tests can name the fresh-id mutation. */
+   Allocation and the preview gate are exported so tests can name their mutations. */
 (function (root) {
   "use strict";
 
@@ -56,7 +56,21 @@
     return { ok: true };
   }
 
-  root.DefinitionImport = { allocateImportedId, allocateCardId, specNameValid, rootsSchema };
+  /* Every edit to the roots or name choices starts a new generation. A preview
+     can be confirmed only for the generation its request was built from. */
+  function createPreviewGate() {
+    let generation = 0;
+    let previewed = -1;
+    return {
+      edit() { generation += 1; },
+      snapshot() { return generation; },
+      accept(at) { previewed = at; },
+      drop() { previewed = -1; },
+      current() { return previewed === generation; /* DI-PREVIEW-CURRENT */ }
+    };
+  }
+
+  root.DefinitionImport = { allocateImportedId, allocateCardId, specNameValid, rootsSchema, createPreviewGate };
   if (typeof document === "undefined") return;
 
   const $ = id => document.getElementById(id);
@@ -69,6 +83,7 @@
   let token = null;
   let lastMap = null;
   let busy = false;
+  const gate = createPreviewGate();
 
   function sameProject() {
     return ReferenceWorkspace.getProjectState().contextToken === sessionToken;
@@ -256,19 +271,42 @@
     }
     token = null;
     lastMap = null;
+    gate.drop();
     $("definitionImportConfirm").disabled = true;
     return result.ok !== false;
+  }
+  /* Cancels share the busy lock with preview and confirm, so a confirm can
+     never be sent while the cancel of the same token is in flight. */
+  async function releaseToken(done) {
+    if (busy) return;
+    busy = true;
+    try {
+      if ((await cancelToken()) && done) setLine(done);
+    } finally {
+      busy = false;
+    }
+  }
+  /* Runs synchronously inside the input event: the shown preview is stale
+     before any other handler can confirm it. */
+  function invalidatePreview() {
+    gate.edit();
+    $("definitionImportConfirm").disabled = true;
+    if (token) void releaseToken();
   }
   async function closeDialog() {
     if (busy) return;
     busy = true;
-    try { await cancelToken(); }
-    finally { busy = false; $("definitionImportDialog").close(); }
+    let released = false;
+    try { released = await cancelToken(); }
+    finally { busy = false; }
+    // An unconfirmed cancel keeps the dialog and its token so it can be retried.
+    if (released) $("definitionImportDialog").close();
   }
   async function openFile(file) {
     if (busy) return;
     busy = true;
     try {
+      if (!(await cancelToken())) return;
       sessionToken = ReferenceWorkspace.getProjectState().contextToken;
       const bytes = new Uint8Array(await file.arrayBuffer());
       const opened = await GeometryProject.readForImport(bytes, fflate);
@@ -318,6 +356,7 @@
       }
       syncNameRows(collidingNames(state.state.specs || []));
       if (!(await cancelToken())) return;
+      const at = gate.snapshot();
       const response = await fetch("/definition-import/preview", {
         method: "POST",
         headers: { "Content-Type": "application/json", "X-Geometry-Version": runtimeVersion() },
@@ -334,11 +373,18 @@
       if (!sameProject()) { if (result.preview?.token) await api("definition-import-cancel " + result.preview.token); return; }
       if (!result.ok) { setLine(result.error || "預覽沒有建立。"); return; }
       const preview = result.preview || {};
+      if (at !== gate.snapshot()) {
+        // The roots or names changed while this preview was in flight.
+        if (preview.token) { token = preview.token; lastMap = null; await cancelToken(); }
+        setLine("選擇已變更，請重新預覽。");
+        return;
+      }
       renderMap(preview);
       const notes = noteText(preview);
       if (preview.valid && preview.token) {
         token = preview.token;
         lastMap = preview.map;
+        gate.accept(at);
         $("definitionImportConfirm").disabled = false;
         $("definitionImportCancel").disabled = false;
         setLine(notes || "預覽可以確認。");
@@ -359,7 +405,7 @@
     }
   }
   async function confirmImport() {
-    if (busy || !token || !sameProject()) return;
+    if (busy || !token || !gate.current() || !sameProject()) return;
     busy = true;
     const map = lastMap;
     const current = token;
@@ -392,9 +438,11 @@
   });
   $("definitionImportPreview")?.addEventListener("click", () => { void previewImport(); });
   $("definitionImportConfirm")?.addEventListener("click", () => { void confirmImport(); });
-  $("definitionImportCancel")?.addEventListener("click", () => { void cancelToken().then(ok => { if (ok) setLine("已取消預覽。"); }); });
+  $("definitionImportCancel")?.addEventListener("click", () => { void releaseToken("已取消預覽。"); });
   $("definitionImportClose")?.addEventListener("click", () => { void closeDialog(); });
   $("definitionImportDialog")?.addEventListener("cancel", event => { event.preventDefault(); void closeDialog(); });
-  $("definitionImportRules")?.addEventListener("change", () => { void cancelToken(); });
-  $("definitionImportBindings")?.addEventListener("change", () => { void cancelToken(); });
+  $("definitionImportRules")?.addEventListener("change", invalidatePreview);
+  $("definitionImportBindings")?.addEventListener("change", invalidatePreview);
+  $("definitionImportNames")?.addEventListener("change", invalidatePreview);
+  $("definitionImportNames")?.addEventListener("input", invalidatePreview);
 })(typeof globalThis !== "undefined" ? globalThis : this);
