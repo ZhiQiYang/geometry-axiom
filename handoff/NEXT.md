@@ -1,3 +1,23 @@
+# 2026-11-02 07:24 UTC 活狀態覆蓋（持續工作，不是停止）
+
+以下舊檢查點的fixed-02活PID已過時；**目前唯一重測是#344撤回相V**，UTC07:04:00.839646起，原2100截止07:39:00.839646。source acd623857f2cc117b548907c2b96b638d9e1b31a，server297314/18845、gate297351、Node297378、Chrome297385/CDP9345；原流/dev/shm/geometry-pr344-full-evidence-20261102/withdrawn/gate/command.log。P53-3/P61-10/P61-11三具名已真紅，繼續完整full，未timeout／未進R。先回收真終態，再用已有capture_phase.py withdrawn after核前後734inputs／native3+sidecar／golden與唯一三紅。所有子代理新turn皆Selected model is at capacity，**不再重試／不換model／不新cloud task**；root工具仍可用，自行接續收件與R。V原測試進程獨立存活，不因agent turn錯誤重啟或殺掉。
+
+fixed-02已07:03:05.598512真exit0、1682.247652秒<2100、完整2267pass/0fail/0skip／golden matched、P38預期1；前後source/native/golden全同，server272560已正常停。第一輪P76 ENOENT及0.065秒gate葉預建拒件原件都保留，沒有洗成綠。
+
+**R尚未啟。** 來源/dev/shm/geometry-pr344-full-restored-20261102為F=d794a7447b98a82fb35c1dccaedc3443e2230933；既有phase設定/tmp/geometry-resume-20261102/pr344/full-preparation/phase-restored.json、prepare_private_runtime.py、capture_phase.py可重用。每相原full2100、22scope/modifier清除、golden2267與原skip不變，output gate葉必須不存在。36parent writeprobe／Node私有TMPDIR geometry-tests已備，勿重踩P76或預建gate葉；不改source／測試／數字。V結束後核自己server297314 cmd/cwd再正常SIGINT，不碰別人PID，預備R的port18846/CDP9346、profile/feedback/TMPDIR隔離；完成後原F全綠才算三相收齊。
+
+#363 F4=7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4 已12/12 CI success。原source/census/ledger/runtime子peer PASS有效，最後新artifact子peer capacity未完成不能冒PASS；root已用保存原件獨立完成有界bytes/來源/232union/2317fullFooter/原精確assert驗收，root-final-audit/REVIEW.json=PASS_PRIMARY_BOUNDED_REVIEW（約2秒，不新產品測試）。修正的是root外部auditor原均一CR20假設，按不可變F4原始script AST逐case正確CR19/CR20，原失敗另保留；未改任何產品／測試／門檻。待一次推最後ci-F4/10 ZIP/primary proof與更新正文、留言交最新獨立審查；不宣稱新子peer已做。
+
+#366已合main df7eb43af3389ff2afc1a73aaf4e57580ae612fc；真正需fresh的canvas S=76d311cf1507708bc63bba2ab6e4f0c3f68cabb0已一次manual run41397499686，10jobs success，9 artifacts尚待原verifier完整bytes核。可在V→R的無Chrome空檔做這個收件，不新dispatch、不重抽R8或已有效#363 generic123。S持續凍結，233既有expected rows/兩新缺項，不能手填；先fresh ledger再原全量producer，再canonical/真雙片/full/harness反證與最終CI。local重測不能與canvas競跑。
+
+#340及#345已於07:23正常markPullRequestReadyForReview，REST讀回draft=false/merged=false，原source SHA與20綠不動；沒有main合併。等待最新審查／本機Claude合#340，之後才實作#339。#363也可在完整交審資訊後轉待審，但不可把source-peer與新artifact-peer容量限制混為一談。
+
+耐重啟證據目前codex/cloud-resume-evidence-20261102 @ d6ea3801d0553a9a3b737a1c895cdd7aa2358f98；F4全部產品改動／canvas S／344 F都已公開可解析。07:24以後新ci-F4、#344正式F收件小包與本地fixed失敗/重跑終態仍待root一次補audit。不要把SHM本地路徑當已持久化。
+
+---
+
+## 以下06:49及更早快照供歷史比對，活程序以最上段為準
+
 # 2026-11-02（台北）雲端接續：持續工作，這不是停止指令
 
 本節取代先前11/2檢查點，下方10/29歷史完全保留。main最後實讀為 **df7eb43af3389ff2afc1a73aaf4e57580ae612fc**，本機Claude已合#366；Codex沒有merge main，不rebase／force，不改公理／閱讀器／決策佇列。維持使用者11/2排序，不問技術問題。
