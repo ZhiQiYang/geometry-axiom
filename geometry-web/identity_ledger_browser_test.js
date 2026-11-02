@@ -34,6 +34,15 @@ module.exports = async function identityLedgerBrowser({send, eval_, sleep, click
   const confirmed = await eval_(`window.__ilResult`);
   check('preview confirm creates the boundary', confirmed.ok === true);
 
+  // 直接 API 建立的物件尚未經過畫布排版；先走正式渲染，保存完整 D12 位置。
+  // 冷重開仍須逐字比對整份 World，不能略去重開時才補出的 canvas-pos。
+  const positioned = await eval_(`(async () => {
+    await renderObjects();
+    const objects = await api('objects');
+    return objects.ok === true && objects.faces.some(face => face.kind === 'boundary' && face.id === 1 && face.hasPos === true);
+  })()`);
+  if (positioned !== true) throw Error('IL save setup did not persist the boundary canvas position');
+
   const activated = await eval_(`api('line identity-ledger activate')`);
   check('activate', activated.ok === true);
   const second = await eval_(`api('line identity-ledger activate')`);
@@ -106,6 +115,10 @@ module.exports = async function identityLedgerBrowser({send, eval_, sleep, click
   }
   await waitForUI(`typeof ReferenceWorkspace === 'object' && !ReferenceWorkspace.busy`, 30000);
   const reopenedWorld = await eval_(`api('dump')`);
+  if (!(reopened && reopened.ok && reopened.active === true &&
+    JSON.stringify(reopened.marks) === JSON.stringify(before.marks) && reopened.nextSerial >= cold.ledger.nextSerial &&
+    reopenedWorld.ok === true && reopenedWorld.text === savedWorld.text))
+    console.log('IL_REOPEN_STATE ' + JSON.stringify({before, reopened, cold, savedWorld, reopenedWorld}));
   check('reopen keeps the mark', !!(reopened && reopened.ok && reopened.active === true &&
     JSON.stringify(reopened.marks) === JSON.stringify(before.marks) && reopened.nextSerial >= cold.ledger.nextSerial &&
     reopenedWorld.ok === true && reopenedWorld.text === savedWorld.text));
