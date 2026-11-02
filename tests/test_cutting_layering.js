@@ -5,8 +5,9 @@ const ROOT=path.resolve(process.env.GEOMETRY_CUTTING_TEST_ROOT||path.join(__dirn
 const {cases,verifyCases,applyChanges}=require('./cutting_legacy_cases.js');
 const golden=require('./fixtures/cutting_legacy_cd4bc880.json');
 const clone=v=>JSON.parse(JSON.stringify(v)),sha=b=>crypto.createHash('sha256').update(b).digest('hex');
-/* Text sources are hashed as LF: a Windows core.autocrlf checkout must not look like a changed oracle. */
-const lf=b=>b.toString('utf8').replace(/\r\n/g,'\n');
+/* The pin and --check share the generator's LF comparison, so a Windows core.autocrlf
+   checkout cannot look like a changed oracle. */
+const {helperSha,fixtureMatches}=require('./generate_cutting_legacy_fixture.js');
 const read=p=>{assert.ok(fs.existsSync(path.join(ROOT,p)),'required layer source: '+p);return fs.readFileSync(path.join(ROOT,p),'utf8');};
 const K_PATH='geometry-core/interval-allocation.js',W_PATH='geometry-templates/woodworking/cutting.js';
 function load(relative){assert.ok(fs.existsSync(path.join(ROOT,relative)),'required layer source: '+relative);return require(path.join(ROOT,relative));}
@@ -31,7 +32,7 @@ function hostContext({kernel=true,template=true,application=true}={}){
 test('R357 legacy oracle is pinned independently with all fixed input hashes',()=>{
  assert.equal(golden.sourceCommit,'cd4bc8803016943e6ec7bf98f0c90bc0312cfa06');
  assert.deepEqual(golden.sources.map(s=>s.blob),['d7cac099298d42018c5a278a5217bc625d8598a7','c634957ad21e16377fab55fcf7edc7c5e6239392','feb3b9ab98e73f9cbe7e022f71e3d7e354b71c73']);
- assert.equal(golden.inputHelperSha256,sha(lf(fs.readFileSync(path.join(__dirname,'cutting_legacy_cases.js')))));
+ assert.equal(golden.inputHelperSha256,helperSha(fs.readFileSync(path.join(__dirname,'cutting_legacy_cases.js'))));
  assert.equal(golden.cases.length,53);
  assert.deepEqual(cases().map(c=>[c.id,sha(JSON.stringify(c))]),golden.cases.map(c=>[c.id,c.inputSha256]));
 });
@@ -64,11 +65,25 @@ test('R357 W evaluates native rows without H, DOM, Window, Schedule or Settings'
  }
  assert.equal(count,29,'all independently derived valid-row cases must run');
 });
-test('R357 helper hash ignores the checkout line ending',()=>{
- const helper=fs.readFileSync(path.join(__dirname,'cutting_legacy_cases.js'),'utf8').replace(/\r\n/g,'\n');
- assert.equal(sha(lf(Buffer.from(helper.replace(/\n/g,'\r\n')))),golden.inputHelperSha256,'CRLF checkout of the fixed helper');
- assert.equal(sha(lf(Buffer.from(helper))),golden.inputHelperSha256,'LF checkout of the fixed helper');
- assert.notEqual(sha(Buffer.from(helper.replace(/\n/g,'\r\n'))),golden.inputHelperSha256,'raw CRLF bytes differ, so the LF step is load-bearing');
+test('R357 a CRLF checkout keeps the oracle pin and --check green with exact CSV bytes',()=>{
+ const asLf=text=>text.replace(/\r\n/g,'\n'),asCrlf=text=>Buffer.from(asLf(text).replace(/\n/g,'\r\n'));
+ const helper=fs.readFileSync(path.join(__dirname,'cutting_legacy_cases.js'),'utf8');
+ const fixture=fs.readFileSync(path.join(__dirname,'fixtures/cutting_legacy_cd4bc880.json'),'utf8');
+ const regenerated=Buffer.from(asLf(fixture));
+ assert.equal(helperSha(asCrlf(helper)),golden.inputHelperSha256,'oracle pin on a CRLF helper copy');
+ assert.notEqual(sha(asCrlf(helper)),golden.inputHelperSha256,'raw CRLF helper bytes differ from the pin');
+ assert.ok(fixtureMatches(regenerated,asCrlf(fixture)),'--check accepts a CRLF fixture copy');
+ assert.ok(!fixtureMatches(Buffer.from(asLf(fixture).replace('"sourceCommit"','"sourceCommit "')),asCrlf(fixture)),'--check still rejects a changed fixture');
+ const copied=JSON.parse(asCrlf(fixture).toString('utf8')).cases.filter(c=>typeof c.csv==='string');
+ assert.equal(copied.length,16,'CSV-bearing legacy cases');
+ for(const c of copied){
+  const want=golden.cases.find(g=>g.id===c.id).csv;
+  assert.ok(Buffer.from(c.csv).equals(Buffer.from(want)),c.id+' CSV bytes survive the CRLF checkout');
+  assert.ok(c.csv.startsWith('\uFEFF'),c.id+' CSV keeps its BOM');
+  assert.ok(c.csv.endsWith('\r\n'),c.id+' last CSV row ends in CRLF');
+  assert.equal(c.csv.split('\r\n').length,want.split('\r\n').length,c.id+' CRLF row terminators unchanged');
+  assert.equal(c.csv.replace(/\r\n/g,'').split('\n').length,want.replace(/\r\n/g,'').split('\n').length,c.id+' newlines inside quoted fields unchanged');
+ }
 });
 test('R357 W delegates identity, each allocation and full conservation to shared K',()=>{
  const context=vm.createContext({TextEncoder});
@@ -167,7 +182,7 @@ test('R357 four real layer mutations must fail named behavior assertions',()=>{
  ];
  const work=fs.mkdtempSync(path.join(os.tmpdir(),'geometry-cutting-layer-mutations-'));
  const files=[K_PATH,W_PATH,'geometry-app/application.js','geometry-templates/woodworking/frontend.js','geometry-web/cutting-settings.js','geometry-web/cutting-plan.js','geometry-web/timber-schedule.js'];
- const tests=['test_cutting_layering.js','cutting_legacy_cases.js','fixtures/cutting_legacy_cd4bc880.json'];
+ const tests=['test_cutting_layering.js','cutting_legacy_cases.js','generate_cutting_legacy_fixture.js','fixtures/cutting_legacy_cd4bc880.json'];
  const evidence=process.env.GEOMETRY_CUTTING_MUTATION_EVIDENCE;
  const report={schema:'cutting-layer-mutations/1',sources:{},tests:{},results:[]};
  const save=(name,body)=>{if(evidence){fs.mkdirSync(evidence,{recursive:true});fs.writeFileSync(path.join(evidence,name),body);}};

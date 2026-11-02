@@ -12,6 +12,8 @@ const SOURCES=[
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 /* Text read from the working tree is compared as LF; Git blobs above are already LF. */
 const lf=b=>b.toString('utf8').replace(/\r\n/g,'\n');
+const helperSha=bytes=>sha(lf(bytes));
+const fixtureMatches=(generated,onDisk)=>generated.equals(Buffer.from(lf(onDisk)));
 async function generate(){
  const context=vm.createContext({crypto:crypto.webcrypto,TextEncoder});
  for(const source of SOURCES){
@@ -47,14 +49,14 @@ async function generate(){
   for(const method of ['verify','csv'])try{output[method]={value:JSON.stringify(vm.runInContext('CuttingPlan.'+method+'(plan)',context))};}catch(error){output[method]={error:{code:error.code??null,message:error.message}};}
   verification.push(output);
  }
- return {schema:'cutting-legacy-oracle/1',sourceCommit:PIN,sources:SOURCES,inputHelperSha256:sha(lf(fs.readFileSync(path.join(__dirname,'cutting_legacy_cases.js')))),cases:entries,verification};
+ return {schema:'cutting-legacy-oracle/1',sourceCommit:PIN,sources:SOURCES,inputHelperSha256:helperSha(fs.readFileSync(path.join(__dirname,'cutting_legacy_cases.js'))),cases:entries,verification};
 }
 if(require.main===module)generate().then(data=>{
  const bytes=Buffer.from(JSON.stringify(data,null,2)+'\n');
  if(process.argv.slice(2).join(' ')==='--check'){
-  if(!fs.existsSync(OUTPUT)||!bytes.equals(Buffer.from(lf(fs.readFileSync(OUTPUT)))))throw Error('Independent legacy fixture differs');
+  if(!fs.existsSync(OUTPUT)||!fixtureMatches(bytes,fs.readFileSync(OUTPUT)))throw Error('Independent legacy fixture differs');
  }else if(process.argv.length===2){fs.mkdirSync(path.dirname(OUTPUT),{recursive:true});fs.writeFileSync(OUTPUT,bytes);}
  else throw Error('Usage: node tests/generate_cutting_legacy_fixture.js [--check]');
  console.log(JSON.stringify({sourceCommit:PIN,cases:data.cases.length,sha256:sha(bytes),mode:process.argv.includes('--check')?'verified':'generated'}));
 }).catch(e=>{console.error(e);process.exitCode=1;});
-module.exports={PIN,SOURCES,generate};
+module.exports={PIN,SOURCES,generate,helperSha,fixtureMatches};
