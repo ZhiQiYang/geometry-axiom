@@ -2898,6 +2898,7 @@ static bool assembly_rebuild(World *,char *,size_t);
 static bool assembly_owned(const World *,uint32_t);
 static void assembly_owned_prefix(const World *,uint32_t,const char *,FILE *);
 static bool assembly_generation_prepare(World *);
+static bool assembly_bay_prepare(World *);
 static bool assembly_generation_check(const World *);
 static bool assembly_generation_integrity(const World *);
 static const AsmRuleVersion *assembly_rule(const World *,uint32_t,uint32_t);
@@ -6166,23 +6167,22 @@ static bool world_replace_object(
     size_t size
 )
 {
-    /* World 是 POD（固定容量陣列），整份 memcpy 就是快照。 */
-    World backup = *world;
-
-    memcpy(slot, replacement, size);
-
-    if (!world_revalidate(world)) {
-        *world = backup;
-        return false;
-    }
-
-    return true;
+    /* A full definition snapshot must not compound large parser stack frames. */
+    World *backup=malloc(sizeof *backup);
+    if(!backup){set_revalidate_error("CAPACITY: replacement snapshot unavailable");return false;}
+    *backup=*world;
+    memcpy(slot,replacement,size);
+    bool ok=world_revalidate(world);
+    if(!ok)*world=*backup;
+    free(backup);return ok;
 }
 
 static bool app_boundary_replace(World *world,const SpaceBoundarySurface *value)
-{World backup=*world;if(!app_boundary_stage(world,value)||!world_revalidate(world)){*world=backup;return false;}return true;}
+{World *backup=malloc(sizeof *backup);if(!backup){set_revalidate_error("CAPACITY: boundary snapshot unavailable");return false;}*backup=*world;
+ bool ok=app_boundary_stage(world,value)&&world_revalidate(world);if(!ok)*world=*backup;free(backup);return ok;}
 static bool app_placement_replace(World *world,const PlacementSurface *value)
-{World backup=*world;if(!app_placement_stage(world,value)||!world_revalidate(world)){*world=backup;return false;}return true;}
+{World *backup=malloc(sizeof *backup);if(!backup){set_revalidate_error("CAPACITY: placement snapshot unavailable");return false;}*backup=*world;
+ bool ok=app_placement_stage(world,value)&&world_revalidate(world);if(!ok)*world=*backup;free(backup);return ok;}
 
 /*
  * World 全量重驗：
@@ -6269,6 +6269,9 @@ static bool world_revalidate_candidate(World *world,World *candidate)
     char grid_error[256]="";
     if (!boundary_keys_reconcile(candidate,g_subgrid_before,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+    }
+    if (!assembly_bay_prepare(candidate)) {
+        set_revalidate_error(g_engineering_error); reference_capture_trial(candidate); return false;
     }
     if (!reference_parameters_rebuild(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
@@ -7487,10 +7490,12 @@ static bool apply_grid_line(
 
     /* I8a: preserve the parsed candidate even when parent count locking rejects it. */
     {
-        World trial=*world;
-        if (existing) trial.wood.grid_applications.items[existing-world->wood.grid_applications.items]=candidate;
-        else if (trial.wood.grid_applications.count<WORLD_MAX_GRIDS) trial.wood.grid_applications.items[trial.wood.grid_applications.count++]=candidate;
-        reference_capture_trial(&trial);
+        World *trial=malloc(sizeof *trial);
+        if(!trial){scene_error(path,line_no,"CAPACITY: grid trial snapshot unavailable");return false;}
+        *trial=*world;
+        if (existing) trial->wood.grid_applications.items[existing-world->wood.grid_applications.items]=candidate;
+        else if (trial->wood.grid_applications.count<WORLD_MAX_GRIDS) trial->wood.grid_applications.items[trial->wood.grid_applications.count++]=candidate;
+        reference_capture_trial(trial);free(trial);
     }
 
     char direct_error[320]="";
@@ -7509,15 +7514,14 @@ static bool apply_grid_line(
             return false;
         }
     } else {
-        World backup = *world;
-
+        World *backup=malloc(sizeof *backup);
+        if(!backup){scene_error(path,line_no,"CAPACITY: grid snapshot unavailable");return false;}
+        *backup=*world;
         world->wood.grid_applications.items[world->wood.grid_applications.count++] = candidate;
-
-        if (!world_revalidate(world)) {
-            *world = backup;
-            scene_error(path, line_no, "新增網格後有物件失效（已回滾）");
-            return false;
-        }
+        bool valid=world_revalidate(world);
+        if(!valid)*world=*backup;
+        free(backup);
+        if(!valid){scene_error(path,line_no,"新增網格後有物件失效（已回滾）");return false;}
     }
 
     return true;
@@ -9668,6 +9672,7 @@ static void world_dump_dsl(const World *world, FILE *out)
     engineering_dump_applications(world,out);
     if(!world->wood.finish_surfaces.host_count) world_dump_grids(world,out);
     if(world->wood.assembly.instance_count)fputs("requires assembly-timber-generation/1\n",out);
+    if(world->wood.assembly.bay_required)fputs("requires assembly-bay-repeat/1\n",out);
     if(!world->wood.finish_surfaces.host_count) reference_dump(world, out);
 
     for (size_t i = 0; i < geo_enclosures_count(&world->geo.enclosures); ++i) {
@@ -9722,10 +9727,10 @@ static void world_dump_dsl(const World *world, FILE *out)
                 (long long)b->z_hi);
     }
 
-    assembly_dump(world,out);
+    if(!world->wood.finish_surfaces.host_count)assembly_dump(world,out);
     sp_dump(world,out);
     fs_dump(world,out);
-    if(world->wood.finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);}
+    if(world->wood.finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);assembly_dump(world,out);}
     /* 畫布座標最後寫：它引用的物件要先存在。 */
     for (size_t i = 0; i < world->app.canvas_pos_count; ++i) {
         const CanvasPos *p = &world->app.canvas_pos[i];
@@ -9850,7 +9855,7 @@ static const struct {
     { "grid-source-rule", 4, 16, false, "grid-source-rule SID create|key K name-hex HEX selector all-cells|cell I J divide U V", apply_grid_source_rule },
     { "grid-source-rule-highwater", 4, 4, false, "grid-source-rule-highwater SID next K|exhausted (file only)", apply_grid_source_rule_highwater },
     { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line },
-    { "owned", 5, 20, false, "owned timber|place instance member native-arguments", apply_assembly_owned_line },
+    { "owned", 5, 32, false, "owned instance member|bay-primary|bay-secondary native-arguments", apply_assembly_owned_line },
     { "section-profile", 3, 3, false, "section-profile profile|member|run base64-json (atomic scene only)", apply_section_profile_line },
     { "panel-fill", 4, 4, false, "panel-fill id definition-hex HEX (atomic scene only)", apply_panel_fill_line },
     { "derived-placement", 4, 4, false, "derived-placement id definition-hex HEX (atomic scene only)", apply_derived_placement_line },

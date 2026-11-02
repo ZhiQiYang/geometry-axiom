@@ -243,6 +243,12 @@ bool wood_grid_sources_definition(WoodGridSources *s,uint32_t id,WoodGridApplica
     return wood_grid_root_get(s,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value,NULL,0)&&
         value.kind==GEO_SOURCE_DEFINITION&&wood_grid_decode_application(&value.as.definition,id,wood_grid_find(s->base.state,id),out);
 }
+bool wood_grid_sources_application_value(WoodGridSources *s,uint32_t id,WoodGridApplication *out)
+{
+    if(!s||!out)return false;GeoSourceValue value;
+    return wood_grid_root_get(s,WOOD_GRID_SOURCE_APPLICATION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&value,NULL,0)&&
+        value.kind==GEO_SOURCE_DEFINITION&&wood_grid_decode_application_value(&value.as.definition,id,out);
+}
 static bool wood_grid_install_application(WoodGridSources *s,uint32_t id,const GeoSourceValue *value,bool evaluated)
 {
     WoodGridApplication application;

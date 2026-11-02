@@ -116,7 +116,7 @@ let expectedException=null, scope, skipped=[];
 const assetRequests=new Map(), assetFailures=[];
 const _log = console.log;
 function observeAssetNetwork(message) {
-  if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin);
+  if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin,undefined,{allApi:true});
   transportFailureTrace.observe(message, currentTestStep);
   const p=message.params,key=(message.sessionId||'main')+':'+p.requestId;
   if(message.method==='Network.requestWillBeSent'){
@@ -167,10 +167,10 @@ async function connect() {
           else if (['Network.requestWillBeSent','Network.responseReceived','Network.loadingFailed','Network.loadingFinished'].includes(m.method))observeAssetNetwork(m);
           else if (m.method === 'Runtime.bindingCalled' && m.params.name === '__geometryCdpTransportFailure') {
             try {
-              if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin);
+              if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin,undefined,{allApi:true});
               transportFailureTrace.observeApiFailure({...JSON.parse(m.params.payload),sessionId:m.sessionId||null,step:currentTestStep});
-              _log('[API TRANSPORT FAILURE]',JSON.stringify(transportFailureTrace.apiFirst()));
-            } catch(error) {_log('[TRANSPORT DIAGNOSTIC ERROR]',error.message);}
+              _log('[API TRANSPORT FAILURE]',JSON.stringify(transportFailureTrace.apiFailures().at(-1)));
+            } catch(error) {transportFailureTrace?.invalidateApiTrace();_log('[TRANSPORT DIAGNOSTIC ERROR]',error.message);}
           }
           else if (m.method === "Runtime.consoleAPICalled")
             console.log("[console]", m.params.args.map(a => a.value ?? a.description).join(" "));
@@ -370,7 +370,12 @@ async function main() {
   await send('Runtime.addBinding',{name:'__geometryCdpTransportFailure'});
   await send('Page.addScriptToEvaluateOnNewDocument',{source:`(()=>{
     const install=${installClientTransportTrace.toString()};
-    const start=()=>install(window,record=>window.__geometryCdpTransportFailure(JSON.stringify(record)));
+    const start=()=>install(window,record=>window.__geometryCdpTransportFailure(JSON.stringify(record)),undefined,{all:true,expectedFault:record=>{
+      const receipts=window.__geometryExpectedTransportFaults;
+      if(!Array.isArray(receipts))return null;
+      const index=receipts.findIndex(receipt=>receipt.command===record.command&&receipt.error===record.error);
+      return index<0?null:receipts.splice(index,1)[0];
+    }});
     if(typeof window.apiRequest==='function')start();
     else document.addEventListener('DOMContentLoaded',start,{once:true});
   })()`});
@@ -7149,6 +7154,7 @@ async function main() {
   if(scope.mode==='full'||process.env.GEOMETRY_PARAMETERS_ONLY)await require('./parameter_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if(scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_workflow_test.js')({send,eval_,sleep,click,dblclick,drag,waitForUI,exceptionCount:()=>excN});
   if(scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_context_entry_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_bay_repeat_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
   if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_schedule_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_supports_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./source_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
@@ -7160,7 +7166,7 @@ async function main() {
   if(passN+failN===0){failN++;_log('No assertions executed');}
   const goldenCompare=evaluateSections();
   _log(`\n=== 結果:${passN} 通過斷言 / ${failN} 失敗斷言 / ${skipped.length} 略過群組 (${scope.mode}) ===`);
-  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,firstNetworkFailure:transportFailureTrace?.first()||null,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),goldenCompare,uncaughtBrowserExceptions:excN,coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
+  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),goldenCompare,uncaughtBrowserExceptions:excN,coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
   process.exit(failN > 0 ? 1 : 0);
 }
 async function fatal(e) {
@@ -7178,7 +7184,7 @@ async function fatal(e) {
     }
   } catch(captureError) {_log('FATAL_CAPTURE_FAILED:',captureError.message);}
   finally {
-    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,firstNetworkFailure:transportFailureTrace?.first()||null,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),currentSection,goldenCompare:'not compared (run did not complete)'}));
+    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),currentSection,goldenCompare:'not compared (run did not complete)'}));
     chrome?.kill();process.exit(1);
   }
 }

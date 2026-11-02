@@ -8,51 +8,53 @@
     "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
     "geometry-core/domain-decoupling/product-architecture-receipt.json"
   ],
-  "inputClosureExclusionReason": "非執行性衍生產物；receipt不hash自身。",
+  "inputClosureExclusionReason": "Non-executable derived artifacts; receipt does not hash itself.",
   "notClaimed": [
-    "native",
-    "ledger",
-    "browser",
-    "readingA dynamic",
-    "Windows supplemental probes",
+    "native execution at this head",
+    "generic mutation rerun at this head",
+    "browser execution at this head",
+    "new performance comparison",
+    "Windows probes",
     "new W lexicon completeness audit"
   ],
-  "headBinding": "Original three judges executed at a6; later same-source snapshot and four-file assembly are explicitly separate; no rerun or source relabelling.",
-  "createdUtc": "2026-10-26T10:12:56.075282+00:00",
-  "basis": "Original Linux inventory/hash/schema; closed a6 original gates; unchanged937 manifest and scan.",
-  "sourceBaseHead": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-  "headObservedBefore": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-  "headObservedAfter": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-  "manifestSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
+  "headBinding": "Original three unchanged judges ran at this exact clean source; all declared input raw/LF/index identities were equal before and after. Canonical artifact assembly follows outside the source tree.",
+  "createdUtc": "2026-11-02T04:22:47.520351+00:00",
+  "basis": "Existing canonical geometry-product-architecture-receipt/1 schema; source-bound original three commands and unchanged adopted policies.",
+  "sourceBaseHead": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
+  "headObservedBefore": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
+  "headObservedAfter": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
+  "actualAdoptedMain": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+  "executionEnvironment": "local managed cloud Linux; no GitHub run ID",
+  "manifestSha256": "4f9256ff0f0e5f221a0b911dace2874b8ac94b066b110dc9ccff230a6b52e32b",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
-  "scanSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
-  "reportSha256": "65232fe9f275bc37db539380a6c51a9abbeba84185b1b991ded2f8810621d4f9",
-  "inputClosureSha256": "8d47b6202e793aa5755a887ea2cbb6b90506c68ca4270e0c0df0716142ca3b89",
+  "scanSha256": "9a73fde16858a2577bd79508689e0fd691ca4575f8c32106b7a4b7b90a6f7c74",
+  "reportSha256": "3785baedfdc3c59ece2e65618413a60d46bcb7f7765c71aa11eab970f793ad19",
+  "inputClosureSha256": "28c9ef4ecbf3d13091f5117fc7dcd38c48a2015458e8b292d78523cb689359b6",
   "counts": {
-    "executableFiles": 604,
-    "ownedSources": 334,
-    "exclusions": 270,
-    "edges": 798,
+    "executableFiles": 607,
+    "ownedSources": 335,
+    "exclusions": 272,
+    "edges": 803,
     "diagnostics": 0,
     "layers": {
-      "H": 192,
+      "H": 193,
       "K": 69,
       "W": 67,
       "vendor": 6
     },
     "languages": {
       "c": 191,
-      "html": 4,
-      "javascript": 64,
-      "python": 75
+      "javascript": 65,
+      "python": 75,
+      "html": 4
     },
-    "forbiddenIdentifiers": 937,
+    "forbiddenIdentifiers": 985,
     "forbiddenStrings": 55
   },
   "scanPassed": true,
   "actualCliScan": {
     "command": [
-      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
       "-B",
       "tests/architecture_contract.py",
       "--root",
@@ -60,142 +62,82 @@
       "--manifest",
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
-    "cwd": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-source-20261026",
-    "acceptance_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-    "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-    "source_variant": "architecture-contract",
-    "environment": {
-      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
-      "LANG": "C.UTF-8",
-      "LC_ALL": "C.UTF-8",
-      "PYTHONIOENCODING": "utf-8",
-      "PYTHONDONTWRITEBYTECODE": "1",
-      "PYTHONOPTIMIZE": null,
-      "TMPDIR": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/tmp",
-      "CC": null,
-      "CFLAGS": null,
-      "CPPFLAGS": null,
-      "LDFLAGS": null,
-      "C_INCLUDE_PATH": null,
-      "CPATH": null,
-      "LIBRARY_PATH": null,
-      "LD_LIBRARY_PATH": null,
-      "GCC_EXEC_PREFIX": null,
-      "COMPILER_PATH": null
-    },
-    "started_epoch": 1793008991.8197656,
-    "stdin_provided": false,
-    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cwd": "/tmp/geometry-pr363-20261102",
+    "acceptance_sha": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
+    "source_sha": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
+    "source_variant": "architecture-cli",
+    "environment": "local managed cloud Linux; unchanged original CLI; no GitHub run ID",
+    "startedUtc": "2026-11-02T04:22:30.207468+00:00",
+    "endedUtc": "2026-11-02T04:22:36.038143+00:00",
     "actual_process_returncode": 0,
+    "exitCode": 0,
     "timeout_expired": false,
-    "directory": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/subcommands/000004",
-    "ended_epoch": 1793008997.556318,
-    "stdout_sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+    "elapsedSeconds": 5.830677591002313,
+    "stdout_sha256": "9a73fde16858a2577bd79508689e0fd691ca4575f8c32106b7a4b7b90a6f7c74",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "stdout_bytes": 132559,
+    "stdout_bytes": 133269,
     "stderr_bytes": 0,
-    "exitCode": 0
+    "stdout_file": "/tmp/geometry-resume-20261102/pr363/canonical-architecture-E/architecture-cli.stdout",
+    "stderr_file": "/tmp/geometry-resume-20261102/pr363/canonical-architecture-E/architecture-cli.stderr"
   },
   "validation": [
     {
       "command": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
         "-B",
         "tests/test_architecture_contract.py"
       ],
-      "cwd": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-source-20261026",
-      "acceptance_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-      "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+      "cwd": "/tmp/geometry-pr363-20261102",
+      "acceptance_sha": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
+      "source_sha": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
       "source_variant": "architecture-unit",
-      "environment": {
-        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
-        "LANG": "C.UTF-8",
-        "LC_ALL": "C.UTF-8",
-        "PYTHONIOENCODING": "utf-8",
-        "PYTHONDONTWRITEBYTECODE": "1",
-        "PYTHONOPTIMIZE": null,
-        "TMPDIR": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/tmp",
-        "CC": null,
-        "CFLAGS": null,
-        "CPPFLAGS": null,
-        "LDFLAGS": null,
-        "C_INCLUDE_PATH": null,
-        "CPATH": null,
-        "LIBRARY_PATH": null,
-        "LD_LIBRARY_PATH": null,
-        "GCC_EXEC_PREFIX": null,
-        "COMPILER_PATH": null
-      },
-      "started_epoch": 1793008997.5568783,
-      "stdin_provided": false,
-      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment": "local managed cloud Linux; unchanged original CLI; no GitHub run ID",
+      "startedUtc": "2026-11-02T04:22:36.038454+00:00",
+      "endedUtc": "2026-11-02T04:22:36.482821+00:00",
       "actual_process_returncode": 0,
+      "exitCode": 0,
       "timeout_expired": false,
-      "directory": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/subcommands/000005",
-      "ended_epoch": 1793008998.0941834,
+      "elapsedSeconds": 0.44438381399959326,
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "51eab918e4e0ffdd0f9c72b216441e6c44650bc75e2dc28eae83723b7a8e97c7",
+      "stderr_sha256": "7129f754feae3cc8aac2f62ff2e83a1b5d4b3dd5f2dc4c7829226905a2557e5e",
       "stdout_bytes": 0,
       "stderr_bytes": 29577,
-      "exitCode": 0,
-      "tests": 205,
-      "passed": 205,
-      "failed": 0,
-      "skipped": 0,
-      "unittestSeconds": 0.435
+      "stdout_file": "/tmp/geometry-resume-20261102/pr363/canonical-architecture-E/architecture-unit.stdout",
+      "stderr_file": "/tmp/geometry-resume-20261102/pr363/canonical-architecture-E/architecture-unit.stderr",
+      "testsRun": 205,
+      "skipped": 0
     },
     {
       "command": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
         "-B",
         "tests/test_product_architecture.py"
       ],
-      "cwd": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-source-20261026",
-      "acceptance_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-      "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-      "source_variant": "product-architecture-unit",
-      "environment": {
-        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
-        "LANG": "C.UTF-8",
-        "LC_ALL": "C.UTF-8",
-        "PYTHONIOENCODING": "utf-8",
-        "PYTHONDONTWRITEBYTECODE": "1",
-        "PYTHONOPTIMIZE": null,
-        "TMPDIR": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/tmp",
-        "CC": null,
-        "CFLAGS": null,
-        "CPPFLAGS": null,
-        "LDFLAGS": null,
-        "C_INCLUDE_PATH": null,
-        "CPATH": null,
-        "LIBRARY_PATH": null,
-        "LD_LIBRARY_PATH": null,
-        "GCC_EXEC_PREFIX": null,
-        "COMPILER_PATH": null
-      },
-      "started_epoch": 1793008998.0948424,
-      "stdin_provided": false,
-      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cwd": "/tmp/geometry-pr363-20261102",
+      "acceptance_sha": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
+      "source_sha": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
+      "source_variant": "architecture-product",
+      "environment": "local managed cloud Linux; unchanged original CLI; no GitHub run ID",
+      "startedUtc": "2026-11-02T04:22:36.483367+00:00",
+      "endedUtc": "2026-11-02T04:22:47.393526+00:00",
       "actual_process_returncode": 0,
+      "exitCode": 0,
       "timeout_expired": false,
-      "directory": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/subcommands/000006",
-      "ended_epoch": 1793009011.0868874,
+      "elapsedSeconds": 10.910179544996936,
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "f593cb32a44a5eaa1a6c40bbf028e1be474cca05c4bbe4becf815bef7a4a7f40",
+      "stderr_sha256": "0ea1f4e75c9140b54d8d6ffbaf888181d3c42df66227ac9aad987d92c3201c0f",
       "stdout_bytes": 0,
       "stderr_bytes": 118,
-      "exitCode": 0,
-      "tests": 18,
-      "passed": 18,
-      "failed": 0,
-      "skipped": 0,
-      "unittestSeconds": 12.895
+      "stdout_file": "/tmp/geometry-resume-20261102/pr363/canonical-architecture-E/architecture-product.stdout",
+      "stderr_file": "/tmp/geometry-resume-20261102/pr363/canonical-architecture-E/architecture-product.stderr",
+      "testsRun": 18,
+      "skipped": 0
     }
   ],
   "inputs": [
     {
       "path": "current_geometry.c",
-      "sha256": "7d28ec7c8fce3632d5bcc9d04e95e24b8cb289804a1114e368b2e9dae0878d70"
+      "sha256": "8558606ba09103596af3dfca1643b4502eda9d8a683dc47ca055aa4a5c1d4262"
     },
     {
       "path": "geometry-app/application.js",
@@ -311,7 +253,7 @@
     },
     {
       "path": "geometry-app/native/reference_sources.inc",
-      "sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56"
+      "sha256": "78a1fbb56b8ee1d3fd8ae41ab546831513b4675dab3f9a962df96c14fc820f08"
     },
     {
       "path": "geometry-app/native/stagger_facts.inc",
@@ -327,7 +269,7 @@
     },
     {
       "path": "geometry-app/native/world_candidate.inc",
-      "sha256": "d2343c7d8110763d2b01d82639f72473a12790b7a306efd4d8104ab6696a8791"
+      "sha256": "4088c43059205a1d04c44d37c7960b88b99afac9e9ec3e26ea1dc570b06f0a59"
     },
     {
       "path": "geometry-app/native/world_validation.inc",
@@ -335,11 +277,11 @@
     },
     {
       "path": "geometry-core/assembly.inc",
-      "sha256": "9f411b3f0018ef5c61fcda002db7b8e0f8ebf6fce3d0fca6c1427c4d639e4bf9"
+      "sha256": "384e4f75ecda6f143e0cc276cb7f712b5fb5bac1109d889aa64a893720bfd7ea"
     },
     {
       "path": "geometry-core/assembly_generation.inc",
-      "sha256": "7a1b4585b2742135c2dcea2ecc7d268c4d7d2c4b0d6bb818f5a7bfc1a16257e4"
+      "sha256": "0ee6ebead01dc85fdb16cbbaed6d2e9748f8cb5362ec343676f42bc7f271af70"
     },
     {
       "path": "geometry-core/assembly_types.h",
@@ -375,7 +317,7 @@
     },
     {
       "path": "geometry-core/card-reference/run_archive_mutations.py",
-      "sha256": "5bc6d308bec20fa3c484f8ed5e769f23bb9ebcbfe61075d170ed1b950de88251"
+      "sha256": "dfe6e326074fc0e204255648429719565f85a095aff6222c8dfb828fb9d8b5a9"
     },
     {
       "path": "geometry-core/card-reference/run_axiom_mutations.py",
@@ -779,7 +721,7 @@
     },
     {
       "path": "geometry-core/engineering_commands.inc",
-      "sha256": "3e996cef86dc3498138aa4ba7cdfa798a67042a7daa4239d936aa2487ff0b039"
+      "sha256": "088778ab40e95b722cbd8bf92db8478d7c39870f41ee66ceceabe729b08b8e30"
     },
     {
       "path": "geometry-core/engineering_json.inc",
@@ -1207,7 +1149,7 @@
     },
     {
       "path": "geometry-core/references.inc",
-      "sha256": "2f915779b14272a3cd9d2014d02d9476b05841145885e3d4b0717657e0a0378c"
+      "sha256": "bf1b396dd2654a9db43ecb6bd4285557406c515ddd986d7265e8d088417b0026"
     },
     {
       "path": "geometry-core/rule_cases/__init__.py",
@@ -1267,7 +1209,7 @@
     },
     {
       "path": "geometry-core/transactions.inc",
-      "sha256": "669dca3b7ce1d2e7704b5220ec2707800251f96fbbc88e95cd7683ba8f73ba01"
+      "sha256": "62ec94b5d9fe0d0b0a1c3fe6977a9e97d9413c53978148d4c5d8c8ab93686f13"
     },
     {
       "path": "geometry-guide/axiom_examples.py",
@@ -1323,7 +1265,7 @@
     },
     {
       "path": "geometry-templates/woodworking/frontend.js",
-      "sha256": "fe6c93eeafae0496d16bf74620681251347227997bcc33fbbb8ce774a54033f3"
+      "sha256": "21501906ddf12d4ab441ef56e2055d3a174a74389633d6fd52fee38e85bbe7f7"
     },
     {
       "path": "geometry-templates/woodworking/geometry_woodworking/__init__.py",
@@ -1343,19 +1285,19 @@
     },
     {
       "path": "geometry-templates/woodworking/native/assembly.c",
-      "sha256": "7bfe7537c5c865762d4f7597d92579db381cd4f6d3a91080aa6da9a90197e57f"
+      "sha256": "759995a8d7fd88d2e3b301dbd0dd812483d6d3483b277e449b884984fc468891"
     },
     {
       "path": "geometry-templates/woodworking/native/assembly.h",
-      "sha256": "acf8d1115699db097b11a74dea882acf90af5f303bfc7c14c9774e9b3477c0ab"
+      "sha256": "0855f264cb41400689dd44973d91e96fdb67079f4367208ab73b2e639beb0cb1"
     },
     {
       "path": "geometry-templates/woodworking/native/assembly_sources.c",
-      "sha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a"
+      "sha256": "1f52220464674e151babe764007e4a12caeb8b02cf75fbc38e1a4023babd05ac"
     },
     {
       "path": "geometry-templates/woodworking/native/assembly_sources.h",
-      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a"
+      "sha256": "89a838b1f2e78d8b7996e9ad17ba6d3fd37adcb9a067d1f211dd38693209e99a"
     },
     {
       "path": "geometry-templates/woodworking/native/boundary_policy.c",
@@ -1487,11 +1429,11 @@
     },
     {
       "path": "geometry-templates/woodworking/native/grid_sources.c",
-      "sha256": "414f39a8629a4fc5ea005bc7c606d460caf8fb89dc82afd5199f79b6bc7083b9"
+      "sha256": "23cced49184bbc07ccae649d91781b957bb8b778ff93f3c735286351759896c7"
     },
     {
       "path": "geometry-templates/woodworking/native/grid_sources.h",
-      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0"
+      "sha256": "50943515399698ab2a4f01b65b1c2c7a952bd96f7519a45a40163b7b5f604f06"
     },
     {
       "path": "geometry-templates/woodworking/native/member_declaration.c",
@@ -1582,8 +1524,16 @@
       "sha256": "7a77178ba0891290e692ea2d43b89ce2fabbad1e298cd25b38e4ca98470e0799"
     },
     {
+      "path": "geometry-web/assembly-provenance.js",
+      "sha256": "43bb13ef5a5041daf69f4d8ce07475ccb36624e81c83982d3c51312731ec2dea"
+    },
+    {
       "path": "geometry-web/assembly-workspace.js",
-      "sha256": "ee8cf52fe760fd36e2f8bda26ed7e774bc485a124fd54f92b50151e2aa14f422"
+      "sha256": "b8562dde293c6fd417e602d0b35af3164de80d96b7a90ebedd3b4af5c1c8e56f"
+    },
+    {
+      "path": "geometry-web/assembly_bay_repeat_test.js",
+      "sha256": "1051766843ca924b43fed6667b4973feb962e942ac6f6260e0e7a573bb0781dc"
     },
     {
       "path": "geometry-web/assembly_binding_source_browser_check.js",
@@ -1591,7 +1541,7 @@
     },
     {
       "path": "geometry-web/assembly_bridge.inc",
-      "sha256": "e9927fb3da3878c71df2386bb3e86152df9e0853d2a770e46642011fd623081b"
+      "sha256": "b0ad7d403c6ee39fc6b4aefbee659d92bb941c04e32b231153f370419b845e2d"
     },
     {
       "path": "geometry-web/assembly_candidate_impact_test.js",
@@ -1611,7 +1561,7 @@
     },
     {
       "path": "geometry-web/assembly_review_test.js",
-      "sha256": "52f153475b7a85c197f8850b4026a576ade9c5ef81d3579382753d54078df950"
+      "sha256": "8e288cf3c21ed7e3dae291f851202dead21ac34f77817e394ad826551d745239"
     },
     {
       "path": "geometry-web/assembly_workflow_test.js",
@@ -1626,6 +1576,10 @@
       "sha256": "6d097c3031fe2e49ad5f324b08ef631aed6faa2e2333304b089c88cc19b4f569"
     },
     {
+      "path": "geometry-web/cdp_bay_repeat_io.js",
+      "sha256": "1f1ae69a212cf669f509fdeaee43d0f763e97185b2ebe2f2496b6358ef9ed8f3"
+    },
+    {
       "path": "geometry-web/cdp_confirmation_gate.js",
       "sha256": "59a839da0785adc43b05c0c4234b714bbf6581306954d083b3007beafb85c851"
     },
@@ -1635,7 +1589,7 @@
     },
     {
       "path": "geometry-web/cdp_floor.js",
-      "sha256": "37f297942735fba950d81668c18485a434afb0dc38b0e34835cdf633a7edc32e"
+      "sha256": "1969e2780b5f0ce6ccbdfe8249323d4f2bef12e03df6cb8e539c285bda8264a9"
     },
     {
       "path": "geometry-web/cdp_helpers.js",
@@ -1647,7 +1601,7 @@
     },
     {
       "path": "geometry-web/cdp_test.js",
-      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e"
+      "sha256": "249ab8e43431c72d3788932f218ef53b9dc9914f8ec1c8652b394de445cb48cd"
     },
     {
       "path": "geometry-web/composition_canvas_test.js",
@@ -1947,7 +1901,7 @@
     },
     {
       "path": "geometry-web/engineering_bridge.inc",
-      "sha256": "c98a3d33ec62748e180c2ac3b05fc2124e081232c86f513083a17b8268a5013f"
+      "sha256": "a10598d027c8a580fe401cdbe91b8c04426e63ee624d2643ff19cb4b2ac72466"
     },
     {
       "path": "geometry-web/engineering_transport.py",
@@ -2079,7 +2033,7 @@
     },
     {
       "path": "geometry-web/index.html",
-      "sha256": "7edc961b36652f0368bf043c42c8be35b41534c62a67b0e548cc13ccb4f913e9"
+      "sha256": "506cfdfe977296d2d781e51c31a345d9d13e06e0728ede4d513208312c277a70"
     },
     {
       "path": "geometry-web/infinite_grid_face_test.js",
@@ -2175,7 +2129,7 @@
     },
     {
       "path": "geometry-web/project-store.js",
-      "sha256": "388346e5cbb5c3e9a8395e781d42fc86c5db2d0a78dfb1619a69ef29ae484e37"
+      "sha256": "a2ecd951b190781e63c322b2ec6e09527748e610d7ab0cbf63b1089eb4904919"
     },
     {
       "path": "geometry-web/project-ui.js",
@@ -2299,15 +2253,15 @@
     },
     {
       "path": "geometry-web/reference-ui.js",
-      "sha256": "fb6c97ede5111d611c25b7bfd36a084e807aa641b26b6c23cbb1392effc9c9a7"
+      "sha256": "e88e51ede3e8a3a2e393ede3df1c60ab8e47dc6969064b3b89e0862f07f6031e"
     },
     {
       "path": "geometry-web/reference-workspace.js",
-      "sha256": "60a84da109f6c55dd321b1af76d1c54da085efb2b1fe07137bb631afcc55591f"
+      "sha256": "5939bfebb9401f2bd916bcb8d08614674183574331f404dee3d0e7501e5fe853"
     },
     {
       "path": "geometry-web/reference_bridge.inc",
-      "sha256": "8d46bda5a8340d44363fb8df5f74cc007eb47664cd043be1a2a5acb02ee58cb8"
+      "sha256": "fd2be0ee510843cbb83de0ab18967db159e73f7ae1f108f4e063b1644e331b93"
     },
     {
       "path": "geometry-web/room-collection-workspace.js",
@@ -2335,7 +2289,7 @@
     },
     {
       "path": "geometry-web/rule-case-data.js",
-      "sha256": "ee0e81832fd10bcd3dc240c1c456ed0f9d31839ccbbef35ee50ad9663c9c8c3e"
+      "sha256": "d38ba9b60d259c864617f8ea3f533dc034c43b34aec2168a5f5e216478246489"
     },
     {
       "path": "geometry-web/rule-case-host.js",
@@ -2351,7 +2305,7 @@
     },
     {
       "path": "geometry-web/rule_case_workbench_adapter.py",
-      "sha256": "52d77dd25b2cf87a0b4777c677430fdd9666902085a6cc57cb0bbb72046992be"
+      "sha256": "47e4cd8643473eec7d0ebe8177aa8aadad7338b3c8fc3576b6d4bbdb4cad9fe5"
     },
     {
       "path": "geometry-web/rule_case_workbench_standalone.py",
@@ -2387,7 +2341,7 @@
     },
     {
       "path": "geometry-web/scenario_verify.py",
-      "sha256": "63c929b9e8ff9de7bc7bba0b7a7da5aaf8c6d3e90e93c73379b42b9e7ddc3bee"
+      "sha256": "147535e2ec861c2b6b1f6fbca97275bf358da7dba4a1bcb0c818f717929a7600"
     },
     {
       "path": "geometry-web/scene-import-bridge.inc",
@@ -2427,11 +2381,11 @@
     },
     {
       "path": "geometry-web/source-inspector-bridge.inc",
-      "sha256": "e9e386edb4450f38ceec5fee47a71477c5ecbd41f3edd16fe5b4de2599250af3"
+      "sha256": "8ee00a074a6a95af179c5f6134b5dfb6c7ee510d9f20369f121b0a9dc4ace6f4"
     },
     {
       "path": "geometry-web/source-inspector.js",
-      "sha256": "c5f4c783648a177b2a2de1801030cc00b3ecfe26faa5f5951629993f70d7ba81"
+      "sha256": "f95ceef47dcd7ecfd72eee3140e20c57b3e3dc05c827b7a567cbd67240364f99"
     },
     {
       "path": "geometry-web/source-plane.js",
@@ -2475,11 +2429,11 @@
     },
     {
       "path": "geometry-web/timber-schedule.js",
-      "sha256": "764ec9fe3fa2b78b280d83dfbbf22ee95a79fbeb8d062e59e21cc16d5a54c0c5"
+      "sha256": "8a2ff41e08e6fdc9c0052760ce897247544d294b84159bfdb6a6e64d7deb2834"
     },
     {
       "path": "geometry-web/timber-supports.js",
-      "sha256": "be4f4c0277e5827d6707ceb2bcf9af200d5a0ab13d338b67589a000e839debf2"
+      "sha256": "d9ca2be425c3155d4414ba89c04e9643dc52040608f807c8f70e839d274d4711"
     },
     {
       "path": "geometry-web/timber_schedule_test.js",
@@ -2487,7 +2441,7 @@
     },
     {
       "path": "geometry-web/timber_support_projection.inc",
-      "sha256": "c47b43bd886ca735e3a4ae52a6a30544a9fa02786faf1868243f52d3cc5c206c"
+      "sha256": "d6844070c3242b3df3847c95e017e10bd28ee6614860eda67f4bd436334b9eca"
     },
     {
       "path": "geometry-web/timber_supports_browser_test.js",
@@ -2495,7 +2449,7 @@
     },
     {
       "path": "geometry-web/transport_failure_trace.js",
-      "sha256": "23ddb860213285cb6ab900c10a7009ce4e225bad24898d88836657e7d381e8f4"
+      "sha256": "f22ca71bf311c724f1c38d80bf6ec8bc1f8bff4a25d26cc10a651e95ba2ebc30"
     },
     {
       "path": "geometry-web/uiux_review_test.js",
@@ -2535,7 +2489,7 @@
     },
     {
       "path": "geometry-web/web_bridge.c",
-      "sha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c"
+      "sha256": "5b97df6860d613ae916a3a7df16f73c2a86f8b5961e0b013f7e3335ad38b4f12"
     },
     {
       "path": "geometry-web/work-manager/adapter.py",
@@ -2610,194 +2564,10 @@
       "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "manifestRefresh": {
-    "manifestByteUnchangedFromExecutionSource": true,
-    "scanByteUnchangedFromExecutionSource": true,
-    "allPolicyFieldsEqualToPrevious": true,
-    "onlyPolicyDelta": {
-      "addedIdentifiers": [],
-      "removedIdentifiers": [],
-      "otherManifestFieldsEqual": true
-    },
-    "sourceClassificationsUnchanged": true,
-    "previousSource": "6e50aef65513b7b38f93228919272c6d40d6c196",
-    "previousArtifactCommit": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
-    "previousOutputs": {
-      "product-architecture.json": {
-        "bytes": 221953,
-        "rawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
-        "lfSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
-      },
-      "product-architecture-scan.json": {
-        "bytes": 132559,
-        "rawSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
-        "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
-      },
-      "PRODUCT-ARCHITECTURE.md": {
-        "bytes": 1444,
-        "rawSha256": "fa1357b249c19708824d480993a80821b7bfeccb7606be773a000395f28aafd6",
-        "lfSha256": "fa1357b249c19708824d480993a80821b7bfeccb7606be773a000395f28aafd6"
-      },
-      "product-architecture-receipt.json": {
-        "bytes": 131843,
-        "rawSha256": "00a33c42ca07a9077aa5abf758ed8b0a3650a031cdc8387128f285050b7c13af",
-        "lfSha256": "00a33c42ca07a9077aa5abf758ed8b0a3650a031cdc8387128f285050b7c13af"
-      }
-    },
-    "changedPriorInputs": [],
-    "sourceReceiptEvidenceDirectory": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-four-original-20261026",
-    "originalThreeGateExits": [
-      0,
-      0,
-      0
-    ],
-    "manifestProof": [],
-    "historicalGuardEvidence": {
-      "source": "6e50aef65513b7b38f93228919272c6d40d6c196",
-      "artifactCommit": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
-      "receiptRawSha256": "00a33c42ca07a9077aa5abf758ed8b0a3650a031cdc8387128f285050b7c13af"
-    },
-    "note": "No inherited proof relabelled; current three gate records are original a6 executions; supplemental proofs remain historical."
-  },
-  "completeInventoryVerification": {
-    "sourceRoots": [
-      "geometry-core",
-      "geometry-app",
-      "geometry-templates",
-      "geometry-web",
-      "geometry-guide"
-    ],
-    "sourceFiles": [
-      "current_geometry.c",
-      "tests/__init__.py",
-      "tests/binaries.py"
-    ],
-    "filesBefore": 604,
-    "filesAfter": 604,
-    "allRawAndLfInputsUnchanged": true,
-    "toolHashesBefore": {
-      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
-      "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
-      "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
-    },
-    "toolHashesAfter": {
-      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
-      "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
-      "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
-    },
-    "inputClosureSha256Before": "8d47b6202e793aa5755a887ea2cbb6b90506c68ca4270e0c0df0716142ca3b89",
-    "inputClosureSha256After": "8d47b6202e793aa5755a887ea2cbb6b90506c68ca4270e0c0df0716142ca3b89",
-    "protectedSsotBefore": {
-      "公理層.md": {
-        "bytes": 323066,
-        "rawSha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7",
-        "lfSha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"
-      },
-      "決策佇列.md": {
-        "bytes": 244340,
-        "rawSha256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740",
-        "lfSha256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740"
-      }
-    },
-    "protectedSsotAfter": {
-      "公理層.md": {
-        "bytes": 323066,
-        "rawSha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7",
-        "lfSha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"
-      },
-      "決策佇列.md": {
-        "bytes": 244340,
-        "rawSha256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740",
-        "lfSha256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740"
-      }
-    },
-    "snapshotTiming": "Fresh assembly before/after, after original gate terminal; not concurrent with actual a6 original three gate execution."
-  },
-  "supplementalStaticGuardProbes": {
-    "executedAtCurrentHead": false,
-    "newIdentifiers": 0,
-    "guardIdentifiersRetested": 0,
-    "neutralCases": 0,
-    "legacyWindowsSupplementalExecuted": false,
-    "historicalExecutionSource": "6e50aef65513b7b38f93228919272c6d40d6c196",
-    "historicalAdoptionCommit": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
-    "historicalReceiptRawSha256": "00a33c42ca07a9077aa5abf758ed8b0a3650a031cdc8387128f285050b7c13af",
-    "historicalSupplementalStaticGuardProbes": {
-      "executedAtCurrentHead": true,
-      "newIdentifiers": 0,
-      "guardIdentifiersRetested": 9,
-      "historicalBaselineSource": "ca7838e0f4950452b9befcf40899d606db9b81fa",
-      "historicalBaselineRawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525",
-      "fixedWithdrawnRestored": [
-        0,
-        1,
-        0
-      ],
-      "neutralCases": 2,
-      "legacyWindowsSupplementalExecuted": false
-    },
-    "note": "Nine0/1/0 and two neutral controls are historical actual M6e50 results, not rerun or relabelled at a6."
-  },
-  "nativeAcceptance": "Separate original receipts required; this architecture receipt does not certify runtime behavior.",
-  "refreshDriver": {
-    "bytes": 23288,
-    "rawSha256": "97da235f9a9d69b4cdfbc67dc3f49e5b447b574176e39e3300ffd887993fab62",
-    "lfSha256": "97da235f9a9d69b4cdfbc67dc3f49e5b447b574176e39e3300ffd887993fab62",
-    "path": "/tmp/geo337-a6-architecture-preparation-20261026/assemble_a6.py",
-    "argv": [
-      "/tmp/geo337-a6-architecture-preparation-20261026/assemble_a6.py",
-      "--root",
-      "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-source-20261026",
-      "--sha",
-      "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
-      "--out",
-      "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-four-original-20261026",
-      "--root-execution-lease",
-      "--bindings",
-      "/dev/shm/geometry-axiom-geo337-20261025/a6-assembly-root-original-20261026/BINDINGS.json",
-      "--bindings-sha256",
-      "1e6ba3cef1d24e25ff1d922c36f0df7f80ead5bb021265dc07922ddbd6bcdf01"
-    ],
-    "recorderSha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
-    "runDirectory": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-four-original-20261026",
-    "originalThreeGateBatch": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026",
-    "originalThreeGateBatchSha256": "1dd78c0ef53d715316da892886bdb20d475a2a03e3dccf8a84c3f060e26b6f25",
-    "originalGatePeerSha256": "5b28a6e10719570dc02d64a17257e20a2fb8a8a51e5308c8f020ed27be113bee",
-    "sourcePrepPeerSha256": "59e9ac0d16fcfdf30b57bf11201755c1ddede4294bf70bfcf4cb79b5b36b305a",
-    "originalJudgesRerun": false
-  },
   "environment": {
-    "originalGateEnvironment": {
-      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
-      "LANG": "C.UTF-8",
-      "LC_ALL": "C.UTF-8",
-      "PYTHONIOENCODING": "utf-8",
-      "PYTHONDONTWRITEBYTECODE": "1",
-      "PYTHONOPTIMIZE": null,
-      "TMPDIR": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-gates-original-20261026/tmp",
-      "CC": null,
-      "CFLAGS": null,
-      "CPPFLAGS": null,
-      "LDFLAGS": null,
-      "C_INCLUDE_PATH": null,
-      "CPATH": null,
-      "LIBRARY_PATH": null,
-      "LD_LIBRARY_PATH": null,
-      "GCC_EXEC_PREFIX": null,
-      "COMPILER_PATH": null
-    },
-    "assemblyPython": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
-    "assemblyGitEnvironment": {
-      "GIT_OPTIONAL_LOCKS": "0",
-      "GIT_INDEX_FILE": "/dev/shm/geometry-axiom-geo337-20261025/a6-architecture-four-original-20261026/private-index",
-      "GIT_CONFIG_COUNT": "1",
-      "GIT_CONFIG_KEY_0": "core.splitIndex",
-      "GIT_CONFIG_VALUE_0": "false"
-    }
-  },
-  "uncertainties": [
-    "Original gates and assembly snapshots are separate execution times at the same source SHA.",
-    "Nine controls and two neutral probes remain historical actual M6e50.",
-    "Full native/browser/ledger/performance are separate gates; generated outputs require separate normal commit/push."
-  ]
+    "pythonExecutable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "pythonVersion": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "nodeVersion": "v24.22.1"
+  }
 }

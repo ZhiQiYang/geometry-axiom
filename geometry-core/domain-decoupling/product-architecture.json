@@ -1419,6 +1419,12 @@
       "purpose": "Application/runtime/protocol or workspace host archive wait trace; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-web/assembly-provenance.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "R06 host adapter compares native typed assembly owners and projects fixed W member slots without deriving bays or geometry"
+    },
+    {
       "path": "geometry-web/assembly-workspace.js",
       "layer": "H",
       "language": "javascript",
@@ -2561,6 +2567,12 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-web/assembly_bay_repeat_test.js",
+      "reason": "R06 formal CDP acceptance driver; invoked by cdp_test.js only, never a product runtime entry point.",
+      "sha256": "1051766843ca924b43fed6667b4973feb962e942ac6f6260e0e7a573bb0781dc",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-web/assembly_binding_source_browser_check.js",
       "reason": "Dedicated acceptance/test driver assembly_binding_source_browser_check.js; invoked by test harnesses, not by product runtime or served application entry points.",
       "sha256": "90dc577aeb06e05c61cf1608b7912bcaf6de2734e514ea7b2d4f76b0667164ea",
@@ -2593,7 +2605,7 @@
     {
       "path": "geometry-web/assembly_review_test.js",
       "reason": "Dedicated acceptance/test driver assembly_review_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "52f153475b7a85c197f8850b4026a576ade9c5ef81d3579382753d54078df950",
+      "sha256": "8e288cf3c21ed7e3dae291f851202dead21ac34f77817e394ad826551d745239",
       "hashMode": "lf"
     },
     {
@@ -2615,6 +2627,12 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-web/cdp_bay_repeat_io.js",
+      "reason": "R06 formal CDP archive I/O test helper; owns download, fresh browser profile and isolated native service only during acceptance tests; never loaded by product entry points.",
+      "sha256": "1f1ae69a212cf669f509fdeaee43d0f763e97185b2ebe2f2496b6358ef9ed8f3",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-web/cdp_confirmation_gate.js",
       "reason": "Dedicated acceptance/test driver cdp_confirmation_gate.js; invoked by test harnesses, not by product runtime or served application entry points.",
       "sha256": "59a839da0785adc43b05c0c4234b714bbf6581306954d083b3007beafb85c851",
@@ -2629,7 +2647,7 @@
     {
       "path": "geometry-web/cdp_floor.js",
       "reason": "Dedicated acceptance/test driver cdp_floor.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "37f297942735fba950d81668c18485a434afb0dc38b0e34835cdf633a7edc32e",
+      "sha256": "1969e2780b5f0ce6ccbdfe8249323d4f2bef12e03df6cb8e539c285bda8264a9",
       "hashMode": "lf"
     },
     {
@@ -2647,7 +2665,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "sha256": "249ab8e43431c72d3788932f218ef53b9dc9914f8ec1c8652b394de445cb48cd",
       "hashMode": "lf"
     },
     {
@@ -3409,7 +3427,7 @@
     {
       "path": "geometry-web/transport_failure_trace.js",
       "reason": "Dedicated acceptance/test driver transport_failure_trace.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "23ddb860213285cb6ab900c10a7009ce4e225bad24898d88836657e7d381e8f4",
+      "sha256": "f22ca71bf311c724f1c38d80bf6ec8bc1f8bff4a25d26cc10a651e95ba2ebc30",
       "hashMode": "lf"
     },
     {
@@ -3547,7 +3565,7 @@
     {
       "path": "geometry-core/card-reference/run_archive_mutations.py",
       "reason": "Dedicated GEO-262 archive mutation runner run_archive_mutations.py; test tooling, not a product-loaded module.",
-      "sha256": "5bc6d308bec20fa3c484f8ed5e769f23bb9ebcbfe61075d170ed1b950de88251",
+      "sha256": "dfe6e326074fc0e204255648429719565f85a095aff6222c8dfb828fb9d8b5a9",
       "hashMode": "lf"
     },
     {
@@ -3834,6 +3852,35 @@
       }
     ],
     "forbiddenIdentifiers": [
+      "ASM_AT_GRID",
+      "ASM_AT_GUIDE",
+      "ASM_AT_OUTLINE",
+      "ASM_BAY_CAPABILITY",
+      "ASM_BAY_CELL_MAX",
+      "ASM_BAY_LINE_MAX",
+      "ASM_BAY_OMIT_MAX",
+      "ASM_BAY_PATH_MAX",
+      "ASM_BAY_PRIMARY_MAX",
+      "ASM_DEP_DATUM",
+      "ASM_DEP_GRID",
+      "ASM_DEP_GUIDE",
+      "ASM_DEP_OUTLINE",
+      "ASM_DEP_TIMBER",
+      "ASM_ID_MEMBER",
+      "ASM_ID_PRIMARY",
+      "ASM_ID_SECONDARY",
+      "AsmBayCell",
+      "AsmBayCellReport",
+      "AsmBayIssue",
+      "AsmBayLine",
+      "AsmBayPrimary",
+      "AsmBayPrimaryReport",
+      "AsmBayReport",
+      "AsmIdentity",
+      "AsmIdentityKind",
+      "AsmLocation",
+      "AsmLocationKind",
+      "AsmMapping",
       "Scene",
       "SpaceBoundarySurface",
       "TIMBER_ROLE_PRIMARY",
@@ -3846,6 +3893,10 @@
       "WOOD_ANCHOR_AT_GUIDES",
       "WOOD_ANCHOR_AT_LINE",
       "WOOD_ANCHOR_AT_RULE",
+      "WOOD_ASSEMBLY_SOURCE_BAY_GENERATED",
+      "WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_A",
+      "WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_B",
+      "WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_DEFINITION",
       "WOOD_ASSEMBLY_SOURCE_BINDING_CHECK",
       "WOOD_ASSEMBLY_SOURCE_BINDING_DEFINITION",
       "WOOD_ASSEMBLY_SOURCE_GENERATED",
@@ -4023,11 +4074,14 @@
       "WOOD_STOP_MEMBER_SIDE",
       "WOOD_STOP_OUTLINE_EDGE",
       "WOOD_VERSION_METADATA_MAX",
+      "WoodAssemblyBaySourceKey",
       "WoodAssemblyContext",
       "WoodAssemblyDefinition",
+      "WoodAssemblyDependency",
       "WoodAssemblyEvaluation",
       "WoodAssemblyGuide",
       "WoodAssemblyMember",
+      "WoodAssemblyPosition",
       "WoodAssemblySourceKey",
       "WoodAssemblySourceKind",
       "WoodAssemblySourceResult",
@@ -4177,6 +4231,12 @@
       "wood_asm_rule_immutable",
       "wood_asm_validate_rule",
       "wood_assembly_apply_slot",
+      "wood_assembly_bay_check",
+      "wood_assembly_bay_failure",
+      "wood_assembly_bay_member_definition_direct",
+      "wood_assembly_bay_parse",
+      "wood_assembly_bay_prepare",
+      "wood_assembly_bay_source_ref",
       "wood_assembly_binding",
       "wood_assembly_binding_hook",
       "wood_assembly_binding_rebuild_direct",
@@ -4201,6 +4261,7 @@
       "wood_assembly_generation_prepare",
       "wood_assembly_get",
       "wood_assembly_identity",
+      "wood_assembly_identity_equal",
       "wood_assembly_instance",
       "wood_assembly_instance_check_direct",
       "wood_assembly_instance_definition_parse",
@@ -4212,9 +4273,13 @@
       "wood_assembly_load_generated",
       "wood_assembly_load_instance",
       "wood_assembly_load_rule",
+      "wood_assembly_mapping_at",
+      "wood_assembly_mapping_count",
+      "wood_assembly_mapping_index",
       "wood_assembly_member_definition_direct",
       "wood_assembly_operation",
       "wood_assembly_owned",
+      "wood_assembly_owner_identity",
       "wood_assembly_publish",
       "wood_assembly_put_binding",
       "wood_assembly_quantity",
@@ -4587,6 +4652,7 @@
       "wood_grid_source_ref",
       "wood_grid_source_remove",
       "wood_grid_sources_application",
+      "wood_grid_sources_application_value",
       "wood_grid_sources_bind",
       "wood_grid_sources_cell",
       "wood_grid_sources_create",

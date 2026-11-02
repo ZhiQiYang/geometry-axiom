@@ -569,6 +569,27 @@ async function openFixture(options={}) {
   return {...f,bytes,requests,refreshed};
 }
 
+test('R06_PF_PROFILE_LATE_CONTEXT_REJECT: a delayed native profile cannot confirm a stale project candidate',async()=>{
+ for(const switchContext of [true,false]){
+  const f=await openFixture(),gate=deferred(),entered=deferred(),old=f.w.context(),original=f.env.fetch;
+  const scene='requires engineering-spec/1\nrequires parameters/1\nrequires panel-fill/1\nrequires assembly-timber-generation/1\nrequires assembly-bay-repeat/1\nfinish-surface 1 on boundary 8\n';
+  const data={id:1,name:'raw derived repeat',bindingId:1,rule:{id:1,version:1,fingerprint:'a'.repeat(64)},surfaceId:null,layout:'bay-repeat',
+   primaries:[1,2].map(key=>({key,at:null,ends:{start:{kind:'timber',id:null},finish:{kind:'timber',id:null}}})),secondaryLines:[{key:1,at:null}],omit:[]};
+  const bytes=await P.pack(scene,{projectId:'derived-open',name:'derived',sources:[],faces:[],assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[{id:'raw-derived',kind:'instance',base_ref:null,data,updated_at:'2026-11-02T00:00:00Z'}]}},new Map(),zip);
+  f.env.apiRequest=async command=>{assert.equal(command,'panel-fill-read');entered.resolve();await gate.promise;return {ok:true,revision:0,schema:'panel-fill-native/1',capability:'panel-fill/1',complete:false,supportedRecords:['finish-surface','panel-fill','derived-placement']};};
+  f.env.fetch=async(url,request)=>{
+   if(url==='/upload/prepare'){f.requests.push({url,request});return {ok:true,json:async()=>({ok:true,token:1,capabilities:nativeCapabilities,native_capabilities:['panel-fill-native/1'],required_capabilities:P.sceneCapabilities(scene),final_scene:scene,final_objects:{boundaries:[8],placements:[]}})};}
+   return original(url,request);
+  };
+  const opening=f.w.importBytes(bytes),rejected=assert.rejects(opening,/目前工程已有變更|原生來源.*變更/,'R06_PF_PROFILE_LATE_CONTEXT_REJECT');
+  await entered.promise;
+  if(switchContext)f.w.observe('line reset',{ok:true,revision:1});else f.w.observe('line spec changed 1',{ok:true,revision:1});
+  const current=f.w.context(),count=f.w.history.undo.length;gate.resolve();await rejected;
+  assert.equal(f.w.context(),current);assert.equal(f.w.history.undo.length,count);assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
+  if(!switchContext)assert.equal(current,old);
+ }
+});
+
 // Cross-PR ownership: the scenario reader validates complete leaf projects,
 // creating disposable PDF tasks even though it keeps only their saved bytes.
 // Execute production archive/reader/transaction code; only native/PDF transports
@@ -1251,6 +1272,13 @@ function prepareSnapshotCase(data,runPython=require('node:child_process').execFi
 }
 test('caller mutation during real hashes cannot replace the detached snapshot verified by the core',async()=>{
   const {definition,receipt,data}=structuredClone(snapshotCaseFixture);
+  assert.strictEqual(P.Features.Cases.validate(data),data,'R06 native capacity facts remain part of the exact portable receipt');
+  const legacy=structuredClone(data);for(const key of ['before','after'])delete legacy.receipts[0].receipt.observations[key].limits;
+  assert.strictEqual(P.Features.Cases.validate(legacy),legacy,'Historical observations without capacity facts remain readable');
+  for(const alter of [v=>v.instances=0,v=>v.ownedTimbers=true,v=>v.worldTimbers=4294967296,v=>v.unknown=1,v=>delete v.bayOmit]){
+    const malformed=structuredClone(data);alter(malformed.receipts[0].receipt.observations.after.limits);
+    assert.throws(()=>P.Features.Cases.validate(malformed),'Unknown, missing or malformed capacity facts must still reject');
+  }
   assert.equal(receipt.status,'passed');
   receipt.observations.after.rules[0].value.members[0].slotId=13;P.Features.Cases.validate(data);
   const reached=deferred(),gate=deferred(),f=await fixture({projectOverride:{Features:{...P.Features,Cases:{...P.Features.Cases,

@@ -54,6 +54,22 @@ function instanceFixture(options={}){
   f.setWorld({rules:[r],bindings:[b],instances:[]});f.setIds({assemblyInstance:7});
   return {...f,r,b};
 }
+test('R06 workspace selects and restores exact derived outer edge keys',()=>{
+ const f=instanceFixture(),key=[['e3',0,1]],other=[['e1',0,1]],data={id:7,name:'derived',bindingId:4,
+  rule:{id:1,version:1,fingerprint:'a'.repeat(64)},surfaceId:10,layout:'bay-repeat',
+  primaries:[1,2].map(k=>({key:k,at:{kind:'outline-edge',edgeKey:k===1?key:other},
+   ends:{start:{kind:'timber',id:100},finish:{kind:'timber',id:101}}})),
+  secondaryLines:[{key:1,at:{kind:'guide',id:13}}],omit:[]};
+ f.state.draft={id:'derived-draft',kind:'instance',base_ref:null,data,updated_at:'2026-11-02T00:00:00Z'};
+ f.context().assemblyDrafts=[copy(f.state.draft)];f.state.draftsRef=f.context().assemblyDrafts;
+ f.state.surfaces=[{id:10,outerEdges:[{axis:'v',edgeKey:key},{axis:'v',edgeKey:other}]}];
+ f.state.references={guides:[],grids:[],timbers:[]};f.t.render();
+ assert.ok(f.element('asmEditor').innerHTML.includes('外輪廓來源鍵'));
+ f.element('asmPrimaryEdge1').handlers.change({target:{value:JSON.stringify(other)}});
+ assert.deepEqual(copy(f.state.draft.data.primaries[0].at),{kind:'outline-edge',edgeKey:other},'KILLER[r06-r41:workspace-select]');
+ f.w.flush();assert.deepEqual(f.context().assemblyDrafts[0].data.primaries[0].at,{kind:'outline-edge',edgeKey:other});
+ f.t.render();assert.ok(f.element('asmEditor').innerHTML.includes('&quot;e1&quot;'));
+});
 test('actual instance creation consumes the template before ID allocation and preserves host provenance',async()=>{
   const seen=[],members=[{memberId:9,role:'custom',guideId:0,dir:'-v',depthSide:'-n',ends:{start:{kind:'timber',id:0},finish:{kind:'timber',id:0}}}];
   const f=instanceFixture({application:{woodworking:{assemblyInstanceMembers(r){seen.push(copy(r));assert.ok(!f.calls.includes('newid'));return copy(members);}}}});
