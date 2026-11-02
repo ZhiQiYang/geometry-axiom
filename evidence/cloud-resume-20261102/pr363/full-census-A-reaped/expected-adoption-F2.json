@@ -1,0 +1,110 @@
+{
+  "adoptionHeadF2": "9171b0455c5f44e39e2007ae0e778aef7274cf74",
+  "parentHeadA": "e9f4dd75cfd4eb9965e3af249200b918907d62db",
+  "tree": "b39c4d0f71d59097db6af5efd4732ad178e28c3c",
+  "branch": "codex/r06-review-fixes-20261102",
+  "clean": true,
+  "pushed": false,
+  "changedPaths": [
+    "tests/run_all.expected.json"
+  ],
+  "expectedSha256": "cba8aa2be2c2d252050634f88a9dfc1c03e498d1d938a30ee3c55ca513df4243",
+  "expectedGitBlob": "70483732cbaf437b5a58b7fc1e43d753e34bc5f4",
+  "executionHeadPreserved": "e9f4dd75cfd4eb9965e3af249200b918907d62db",
+  "censusSourceBeforeWorktreeSha256": "bf4e000b29a01d23ee5f0cb39e19506058bfadf097c1c9476c0144e3b8d189c9",
+  "finalContentWorktreeSha256": "d5d1ed75e9e3dea385059073e356c0a24e5d38c2751ca5f97f34d1fdc1ec1b1a",
+  "finalContentHashProvenance": "Actual source-after census byte fingerprint; only git commit metadata changed afterward, and the final clean tree differs from A only in the exact generated expected file.",
+  "suiteCount": 232,
+  "countedTotals": {
+    "total": 5420,
+    "passed": 5419,
+    "failed": 0,
+    "skipped": 1,
+    "allowed_skips": 1
+  },
+  "expectedDifferences": [
+    {
+      "suite": "node:tests-js",
+      "before": {
+        "mode": "count",
+        "unit": "node test",
+        "count": 753
+      },
+      "after": {
+        "mode": "count",
+        "count": 756,
+        "unit": "node test"
+      }
+    },
+    {
+      "suite": "node:woodworking_frontend",
+      "before": {
+        "mode": "count",
+        "count": 17,
+        "unit": "node test"
+      },
+      "after": {
+        "mode": "count",
+        "count": 18,
+        "unit": "node test"
+      }
+    },
+    {
+      "suite": "py:test_assembly_bay_repeat",
+      "before": {
+        "mode": "count",
+        "count": 48,
+        "unit": "test"
+      },
+      "after": {
+        "mode": "count",
+        "count": 53,
+        "unit": "test"
+      }
+    },
+    {
+      "suite": "py:test_geo318_reading_a_native",
+      "before": {
+        "mode": "count",
+        "count": 7,
+        "unit": "unittest"
+      },
+      "after": {
+        "mode": "count",
+        "count": 7,
+        "unit": "test"
+      }
+    },
+    {
+      "suite": "py:test_geo318_reading_a_oracle",
+      "before": {
+        "mode": "count",
+        "count": 14,
+        "unit": "unittest"
+      },
+      "after": {
+        "mode": "count",
+        "count": 14,
+        "unit": "test"
+      }
+    },
+    {
+      "suite": "py:test_rectangular_template",
+      "before": {
+        "mode": "count",
+        "count": 13,
+        "unit": "unittest"
+      },
+      "after": {
+        "mode": "count",
+        "count": 13,
+        "unit": "test"
+      }
+    }
+  ],
+  "originalRunnerSeconds": 1932.1795578550082,
+  "supervisorSeconds": 1936.4162754119898,
+  "canvasClosure": "A to F2 changes only tests/run_all.expected.json, outside every functional and runtime identity group in canvas-closure-peer.json. The original 26dc execution is not relabeled.",
+  "failedPreviousCensusPreserved": "../full-census-A",
+  "successfulOriginalExpected": "expected-after.json"
+}

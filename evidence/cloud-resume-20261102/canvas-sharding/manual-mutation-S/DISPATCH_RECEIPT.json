@@ -1,0 +1,17 @@
+{
+  "observed_utc": "2026-11-02T06:02:41.750512+00:00",
+  "method": "POST",
+  "endpoint": "/repos/ZhiQiYang/geometry-axiom/actions/workflows/mutation-evidence.yml/dispatches",
+  "request": {
+    "ref": "codex/canvas-validation-20261102"
+  },
+  "expected_head": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0",
+  "default_main_tool_commit": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+  "workflow_source_byte_equal_to_default": true,
+  "http_status": 204,
+  "response_bytes": 0,
+  "existing_manual_runs_before": 0,
+  "attempts_sent": 1,
+  "scope": "One new S needed for freshness and workflow_dispatch entry test; no rerun of old main/R8 or other passed product suites.",
+  "readback_runs": []
+}

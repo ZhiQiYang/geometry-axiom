@@ -1,0 +1,57 @@
+{
+  "observed_utc": "2026-11-02T05:46:57.016537+00:00",
+  "scope": "Read-only merge-tree closure, no ref or working tree changed; original execution labels preserved. New main adds only four already-adopted tool blobs.",
+  "rows": [
+    {
+      "pr": 340,
+      "main": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+      "command": [
+        "git",
+        "merge-tree",
+        "--write-tree",
+        "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+        "b3a248607d7eb68d3167abbb926cf491d9b35a26"
+      ],
+      "exit": 0,
+      "stdout": "e5180e9cc72fea9a608bd92f781eab1a56d443b5\n",
+      "stderr": "",
+      "head_tree": "e5180e9cc72fea9a608bd92f781eab1a56d443b5",
+      "merge_tree_equal_to_head_tree": true
+    },
+    {
+      "pr": 345,
+      "main": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "head": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "command": [
+        "git",
+        "merge-tree",
+        "--write-tree",
+        "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+        "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6"
+      ],
+      "exit": 0,
+      "stdout": "c05e281326b3fe9b959e9ea8d59fcac28c067137\n",
+      "stderr": "",
+      "head_tree": "c05e281326b3fe9b959e9ea8d59fcac28c067137",
+      "merge_tree_equal_to_head_tree": true
+    },
+    {
+      "pr": 344,
+      "main": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "head": "d794a7447b98a82fb35c1dccaedc3443e2230933",
+      "command": [
+        "git",
+        "merge-tree",
+        "--write-tree",
+        "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+        "d794a7447b98a82fb35c1dccaedc3443e2230933"
+      ],
+      "exit": 0,
+      "stdout": "51b669da21513fbccf90620faf55b7aad77703b6\n",
+      "stderr": "",
+      "head_tree": "51b669da21513fbccf90620faf55b7aad77703b6",
+      "merge_tree_equal_to_head_tree": true
+    }
+  ]
+}

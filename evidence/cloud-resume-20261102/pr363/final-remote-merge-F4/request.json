@@ -1,0 +1,15 @@
+{
+  "headF3": "3dddfcffe1b2756d56dde3063a116e7f1b029b82",
+  "remoteHead": "3cc058ed287916aa8ab976c3f5b60e988cbeb57b",
+  "tree": "b39c4d0f71d59097db6af5efd4732ad178e28c3c",
+  "command": [
+    "git",
+    "merge",
+    "--quiet",
+    "--no-stat",
+    "--no-commit",
+    "3cc058ed287916aa8ab976c3f5b60e988cbeb57b"
+  ],
+  "allowedConflict": "tests/run_all.expected.json",
+  "retainedExpectedSha256": "cba8aa2be2c2d252050634f88a9dfc1c03e498d1d938a30ee3c55ca513df4243"
+}

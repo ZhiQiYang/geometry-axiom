@@ -1,6 +1,6 @@
 # 雲端接續進度（2026-11-02，台北）
 
-## READY-TO-MERGE #366：技術驗收全綠，交審後由本機 Claude 合併
+## #366 已由本機Claude合入main，手動入口已實際觸發新來源
 
 PR head `502a64ff6214dd6060927b7f14643a533536f20d`；base main `5775a9e9e46bca801a9a70aaeafcdab9f597bc4d`。四個工具檔原 blob 逐 byte 相同，對 main 精確四檔、517 insertions，沒有產品／斷言／timeout／expected／原 mutation runner 變更。
 
@@ -12,7 +12,9 @@ PR head `502a64ff6214dd6060927b7f14643a533536f20d`；base main `5775a9e9e46bca80
 
 原件固定在 [integration run](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41376852060)、[mutation run](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41376852056)。聚合 artifact `13113345761`，architecture `13111561782`，native coverage `13112406351`。同目錄 pr366 保存可讀核收收據與原命令／hash，完整二進位 raw 留官方 artifact；不是另跑產品 suites。
 
-未驗：工具進 default branch 前的 workflow_dispatch 入口、截圖視覺 QA。未合 main，待最新 ChatGPT 審查與本機 Claude 合併；手動入口在採入 default branch 後再實測。
+本機Claude已於2026-11-02合併#366，main merge commit **df7eb43af3389ff2afc1a73aaf4e57580ae612fc**；main整tree910665aa精確等已驗502，沒有變更產品／測試／工具內容。原驗收的execution仍7d2／502，不改標main新跑。官方合併留言6569891163已核；Codex沒有merge main。
+
+workflow_dispatch入口已實際送出一次POST、HTTP204，readback唯一 **run41397499686／event workflow_dispatch／attempt1／head76d311cf1507708bc63bba2ab6e4f0c3f68cabb0**，ref為真正需要fresh ledger的canvas-validation。不是為測入口重抽已通過main／R8。原件在canvas-sharding/manual-mutation-S；入口已建立正確來源run，完整10jobs結果／artifact仍待核，未把204當全通過。截圖視覺QA未驗。
 
 ## READY-TO-MERGE #340：新來源20正式jobs全綠，待#366先合與最新審查
 
@@ -22,19 +24,25 @@ PR head `502a64ff6214dd6060927b7f14643a533536f20d`；base main `5775a9e9e46bca80
 
 正式 [integration41382015317](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41382015317) 與 [mutation41382015277](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41382015277) 已20jobs全success，兩個head皆b3a；真integration execution是同tree的合成merge `fc1c9f565a2e15660e931b3884dca2220cb1b7b2`。native230／5339pass／1原GDI skip、六browser全過且fullcanvas2267／85golden matched；原mutation verifier復驗0、123／120active、114k／1crashed／5equiv／3retired，其餘異常0，七個cache guards0／1／0。ledger SHA256 `52bbad63cc0a281f6d9a5304bc8ddc65ddd96213aeea98057dcb6be0b287b962`，與官方逐byte相同。21ZIP/20log已核，完整原件與可讀證據在pr340/ci-final。保留原canvas後附server log的BrokenPipe鏈式traceback（原因未確定），不冒稱browser例外或被測assert失敗；原expected exception仍為P38。
 
-READY-TO-MERGE #340僅標技術驗收，請最新審查；合併順序由本機Claude先#366再#340，再開始#339。用PR事件生成新帳本，不冒稱default branch已採#366或已實測workflow_dispatch。未合main。
+READY-TO-MERGE #340僅標技術驗收，請最新審查；上游#366已由本機Claude合，下一張#340仍由本機Claude合、之後才開始#339。main366-closure記錄新main df7與#340／#345／#344三個精確head的唯讀merge-tree全exit0，結果tree各自精確等目前head，四工具已在雙方、沒有產品／測試／裁判／環境內容變動，因此不重跑有效收據、不改真execution。未合main。
 
 ## #363：三修正已公開；完整原生 census 保留環境紅燈，持續收齊
 
-公開 source `26dc99117ac942ec8f50145d875d6e55594f3835` 的正式 CI 已完成 fullcanvas 2317／0、golden matched；真 execution 為同tree的合成merge，不移標。三產品修正包含合法衍生host、R41 key全保存／新profile新服務重開、混合derived dump順序；局部assembly200／0／0、五個native與三個Node具名撤回／恢復原件均保留。舊P77的R06段拆成獨立R06段並增加11項，其餘84段不變，不能宣稱85段全未變。
+首輪公開 source `26dc99117ac942ec8f50145d875d6e55594f3835`（歷史，現head為下列F4）的正式 CI 已完成 fullcanvas 2317／0、golden matched；真 execution 為同tree的合成merge，不移標。三產品修正包含合法衍生host、R41 key全保存／新profile新服務重開、混合derived dump順序；局部assembly200／0／0、五個native與三個Node具名撤回／恢復原件均保留。舊P77的R06段拆成獨立R06段並增加11項，其餘84段不變，不能宣稱85段全未變。
 
-該source完整native首輪有A04舊literal錨點斷言、帳本stale與三個expected count drift，整體真紅；card A04是注入前needle零命中，不冒稱killed。完整123官方Mutation evidence已全綠、原verifier復驗0。窄修A04保持只撤CARD且原CR20不變，採入原官方ledger，再依原Linux schema產架構四檔，得到候選 A `e9f4dd75cfd4eb9965e3af249200b918907d62db`；已經由canvas-validation來源保全分支的祖先普通推送，A commit URL實際HTTP200，但尚未採入PR363 head。保留每個原execution SHA，不將26dc執行改標A。
+該source完整native首輪有A04舊literal錨點斷言、帳本stale與三個expected count drift，整體真紅；card A04是注入前needle零命中，不冒稱killed。完整123官方Mutation evidence已全綠、原verifier復驗0。窄修A04保持只撤CARD且原CR20不變，採入原官方ledger，再依原Linux schema產架構四檔，得到候選 A `e9f4dd75cfd4eb9965e3af249200b918907d62db`；先經canvas-validation祖先保全，後已包含在PR363最終F4。保留每個原execution SHA，不將26dc執行改標A或F4。
 
 原命令 `python3 tests/run_all.py --build --update-expected` 第一輪於 **2026-11-02 04:28:51.744831–05:01:14.155566 UTC**，外層1942.410788秒、原runner1938.4985秒，未逾2100秒、未發signal；232／232，5420＝5418pass＋1fail＋1原允許GDI skip，真exit1。唯一紅為 `test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left`：PID1為tail不reap，兩個已被kill的sleep留為PID1 zombie。原failed expected逐byte保存、guarded恢復舊bytes，A clean；未採入失敗結果。625份完整純文字suite原件、REQUEST／RESULT／expected前後／恢復收據與分類已存pr363/full-census-A；637原件總manifest保留，6binary／6sidecar另於原環境保全而非冒稱公開。
 
 環境修復僅由外部隔離subreaper回收自身已死後代，不發signal、不改PID1／安全設定／產品／原斷言：原12 fixed／只撤真groupkill／restored為0／1／0。負控兩個sleep仍活S、action none，原afterKill具名斷言紅，31.156秒自然退出；恢復12／12。最終helper SHA256 `05384f5ad031dbe66f2acda281cd9fd99bc49792dac57b8f687f27587b22e0f8`，兩位peer只讀核過WNOWAIT／PPID fallback與Popen主exit。第一輪PID1兩Z仍保原狀。
 
-第二輪同A、同before worktree bytes，原命令／16MiB／Node24.22.1／2100秒與mutation check不變，**2026-11-02 05:05:27.454885 UTC** 已真正啟動，最遲05:40:27.454885 UTC；原件 `/tmp/geometry-resume-20261102/pr363/full-census-A-reaped/`。仍在執行、不算已通過；不放寬任何count／golden／時限。
+第二輪起始記錄：同A、同before worktree bytes，原命令／16MiB／Node24.22.1／2100秒與mutation check不變，**2026-11-02 05:05:27.454885 UTC** 啟動、原截止05:40:27.454885 UTC；原件 `/tmp/geometry-resume-20261102/pr363/full-census-A-reaped/`。沒有放寬任何count／golden／時限，真終態如下。
+
+**第二輪已真終態exit0，UTC05:37:43.871：supervisor1936.416秒／runner1932.1796秒，小於原2100，無timeout／signal。232套全執行，225counted＝5420／5419pass／0fail／1原GDI skip，7個exit-only全0，含原mutation:check。** 成功原CLI expected bytes cba8aa2be2c2d252050634f88a9dfc1c03e498d1d938a30ee3c55ca513df4243採F2；只有3counts增加與3unit label改動、232集合與mode全保，原indent1／registry order不手動重排。625完整suite純文字＋外層／request／result／expected前後與語意review已保全。另以標準tar保存六個實際native binary原bytes與sidecar（非R8 ELF），archive SHA256 2f65920d28513394abd41d58fca611f24be7e0e2dd8cddc629921d0532d7aefa；storage copy mode600明載、不冒稱原執行mode。
+
+目前公開最終head **F4 `7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4`** 已atomic普通FF推owncodex與原feat。F2=9171b045→F3=3dddfcff（普通merge新main df7）→F4（普通merge分診器競寫3cc），三者tree全同b39c4d0f；Grok的A04同patch／exclusion pin／三count原樣保歷史，expected衝突保成功原CLI bytes。root已留言6570059012協調分診器停自行推，不force／rebase。F4原check5.3278秒exit0，185inputs／522oracle paths／53bridge oracle／compiler閉包與26dc核實同一，官方123仍保26dc真execution，不重抽。
+
+F4新自動integration41396262836與R06browser-mutation41396262818原件待齊；已真讀F4 card六mutants全killed及assembly partial200／0／0（P77=134/P82=16/R06=50），含R41真Save／fresh profile＋新服務coldOpen與九原子負例；真integration checkout946ba6274e0cbcfab20b8fc0433386e187870d83與F4同tree。尚不宣稱最終strict fullcanvas／整體required CI通過，舊26dc full2317不移標。完整成功輪／F4peer／logicalcheck／remote合流原件在pr363下各同名子目錄。
 
 ## READY-TO-MERGE #345：官方新帳本採入後，E二十正式jobs全綠
 
@@ -62,7 +70,9 @@ P53-3／P61-10／P61-11真browser三相仍UNRUN。最新review6398950277要求�
 
 後續本地A→344E→canvas普通merge已完成，加兩registry與唯一現CDP LF pin成 **e45670d9bb864dcf6b5a07fd4ccf11c188e54818**，已普通推新保全分支codex/canvas-validation-20261102，舊6c7分支未動、無PR／CI。新Node19／原CDP32／原三架構CLI205＋18全0，335sources／803edges／0diag；Python12完整隔離fixtures/import closure未變，仍保原6c execution。R06=50獨立段明確extensions ownership：86keys／2317＝legacy62／898＋extensions24／1419；新legacy478849 UTF8 bytes精確等pre-canvas A+E、22tail次序／參數不動，A政策985／55、R41與E app/P53/P61／完整transport trace均peer核過。
 
-再普通merge344F得到本地 `27e6f6911abb5518c089c0f688fadca5734735ea`（未推）；sole ledger衝突保A原bytes，F原官方blob在history，沒有拼接或改execution。新舊tree全等、39265完整Git entries全等，故不重跑有效純tests、不改execution。expected仍缺兩新項、ledger因新registry待最終完整重產，不宣稱fresh；等R06 F2原expected後再普通merge、固定final源。全部動態Chrome／fresh mutations／fullnative仍UNRUN。來源合流、closure、原gates與保全命令在canvas-sharding/integration-A-E。
+中間點27：再普通merge344F得到 `27e6f6911abb5518c089c0f688fadca5734735ea`，後包含在下列已推S；sole ledger衝突保A原bytes，F原官方blob在history，沒有拼接或改execution。新舊tree全等、39265完整Git entries全等，故不重跑有效純tests、不改execution。當時尚待R06 expected，已於下列S機械合流。來源合流、closure、原gates與保全命令在canvas-sharding/integration-A-E。
+
+最新pre-census source **S `76d311cf1507708bc63bba2ab6e4f0c3f68cabb0`** 已普通merge精確R06 F4並一次FF推validation branch，tree52494659；F4完整232 rows加回原父的connection recovery完整既有row，機械合流233，canvas兩個新row仍缺／UNRUN，沒有手填數值。相對e456唯一expected差異，其餘39264完整Git entries與607架構實際inputs全等，保原pure execution。S乾淨已凍結、無PR；canonical Linux四檔待phase gap重產。root已對S一次manual run41397499686重產真正需要fresh的123；原full expected producer／真兩片／同source原full／harness反證／final required CI尚未跑。不得以舊6c／e456純測試冒稱動態驗收。
 
 後序維持 #339→341→342→343→346→347→348；先由本機Claude合#340再開始下一張。#355 UI15待同源鏈；R03仍在R02與PF2～6之後。
 

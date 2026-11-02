@@ -1,0 +1,8 @@
+PASS final F4 7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4
+F2/F3/F4 tree b39c4d0f71d59097db6af5efd4732ad178e28c3c; both merges retain ordinary two-parent ancestry.
+Expected raw cba8aa2b...df4243 is exactly the successful original CLI output; owner needle/pin and all three counts retained.
+Official ledger raw 5dddce17...4300c8 retained; all 120 execution heads stay at 26dc.
+Original failure and successful recovery both remain at A; 232 suites all ran; successful totals 5419 passed, 0 failed, 1 allowed skip.
+A to F4 changes only the generated expected JSON. Product/tests/generic oracle/compiler/canvas closures unchanged.
+Runtime identity A=F4 665280ef41f549e4273da012f9708cf5ac8bf2ea8c9b8c87a164bd87a7d3d1e6; differs from 26dc 788f2f34a6cfadea86af8dbd7be6d211822a5bc5ef6800931c4a486199e10702.
+Read-only verification; no product/test/browser/build/API execution and no execution.head rewrite.

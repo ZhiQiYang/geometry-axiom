@@ -1,0 +1,28 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-u",
+    "tests/run_all.py",
+    "--build",
+    "--update-expected",
+    "--report",
+    "/tmp/geometry-resume-20261102/pr363/full-census-A-reaped/run-all-report.json"
+  ],
+  "cwd": "/tmp/geometry-pr363-20261102",
+  "head": "e9f4dd75cfd4eb9965e3af249200b918907d62db",
+  "startedUtc": "2026-11-02T05:05:27.454885+00:00",
+  "deadlineUtc": "2026-11-02T05:40:27.454885+00:00",
+  "timeoutSeconds": 2100,
+  "stackBytes": 16777216,
+  "supervisorPid": 203780,
+  "childPid": 203831,
+  "taskChildReaperSha256": "05384f5ad031dbe66f2acda281cd9fd99bc49792dac57b8f687f27587b22e0f8",
+  "reapingPolicy": "One main Popen child; reap only terminated adopted direct children, never signal live adopted children or compete for the main exit code.",
+  "environmentOverrides": {
+    "PATH": "/tmp/geometry-resume-20261102/pr363/node-v24.22.1-linux-x64/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "MUTATE_CACHE": "/tmp/geometry-resume-20261102/pr363/logical-mutation-cache-after-adoption",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-resume-20261102/pr363/full-census-A-reaped/feedback"
+  },
+  "nodeVersion": "v24.22.1",
+  "cacheMeaning": "Task-only logical source validation cache; official CI ELF bytes were separately verified without executing downloads."
+}

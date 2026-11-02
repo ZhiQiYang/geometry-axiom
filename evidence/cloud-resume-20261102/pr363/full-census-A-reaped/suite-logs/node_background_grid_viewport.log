@@ -1,0 +1,17 @@
+✔ 100 km boundaries at 100% only draw screen-sized work (1.106025ms)
+✔ negative coordinates retain world-zero alignment (0.148019ms)
+✔ pan covers newly exposed local coordinates at unchanged spacing (0.123562ms)
+✔ zoom converts the actual SVG viewport to local bounds (2.335122ms)
+✔ extreme fit zoom samples decoration only on global major lines (0.214216ms)
+✔ tiny faces and off-face pans respect the original face padding (0.140387ms)
+✔ invalid or unrepresentable camera inputs cannot create runaway loops (0.249448ms)
+✔ even a huge synthetic viewport keeps a finite line budget (0.132005ms)
+✔ pan updates only the noninteractive grid and preserves captured scene nodes (1.193804ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 66.882893

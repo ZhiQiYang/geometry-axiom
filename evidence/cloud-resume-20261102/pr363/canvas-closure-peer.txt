@@ -1,0 +1,12 @@
+BASE 26dc99117ac942ec8f50145d875d6e55594f3835
+TARGET e9f4dd75cfd4eb9965e3af249200b918907d62db
+EXECUTED f23c0a8bf8e6c2dcd82a98b15116220a0622a51e; tree identical to BASE
+CI full canvas: 2317/0; golden matched; uncaughtBrowserExceptions=1, expected fb-auto-probe.
+Full path/hash manifest: 3894 paths; 50 recursive literal CDP require paths.
+Functional driver/native build/static assets/fixtures/golden/server imports: byte-identical.
+Runtime identity input differs: geometry-core/card-reference/run_archive_mutations.py (.py recursively read by runtime_version.source_files).
+Other five changed md/json paths are outside the runtime suffix/static routes, native build and canvas functional input groups.
+Runtime source_version BASE 788f2f34a6cfadea86af8dbd7be6d211822a5bc5ef6800931c4a486199e10702
+Runtime source_version TARGET 665280ef41f549e4273da012f9708cf5ac8bf2ea8c9b8c87a164bd87a7d3d1e6
+A to future census-only tests/run_all.expected.json: outside all audited canvas functional and runtime identity inputs; no future SHA/count predicted.
+No product/browser/build/cache/test execution. Do not rewrite execution.head or claim all runtime-read inputs identical.

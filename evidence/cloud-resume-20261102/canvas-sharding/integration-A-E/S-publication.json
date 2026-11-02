@@ -1,0 +1,62 @@
+{
+  "S": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0",
+  "tree": "52494659bb0a966e62c5cee6e8919daed3df7d47",
+  "ref": "codex/canvas-validation-20261102",
+  "url": "https://github.com/ZhiQiYang/geometry-axiom/commit/76d311cf1507708bc63bba2ab6e4f0c3f68cabb0",
+  "ordinary_FF_push_command": "git push origin HEAD:refs/heads/codex/canvas-validation-20261102",
+  "push_exit_code": 0,
+  "remote_before": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+  "remote_after": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0",
+  "ls_remote_raw": "76d311cf1507708bc63bba2ab6e4f0c3f68cabb0\trefs/heads/codex/canvas-validation-20261102",
+  "source_clean": true,
+  "PR": false,
+  "dispatch": false,
+  "source_status": "PRE_CENSUS_SOURCE_FROZEN_NOT_READY",
+  "fresh_ledger_expected_canonical_and_required_CI": "PENDING root ordered pipeline",
+  "new_tests_or_arch_suites_run": false,
+  "original_pure_execution": "e45670d9bb864dcf6b5a07fd4ccf11c188e54818",
+  "Python12_execution": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+  "files": [
+    {
+      "path": "F4-before.json",
+      "bytes": 3227,
+      "sha256": "77d32d0a703e57167893341096a0e6b2439a5b3cc043de85bcfd15622a6e32d5"
+    },
+    {
+      "path": "F4-expected-adoption.json",
+      "bytes": 866,
+      "sha256": "ac09225bdbcec57445fd4fd4d4323c4c530c978199c9266f587f669c4beab31b"
+    },
+    {
+      "path": "S-freeze-proof.json",
+      "bytes": 2014,
+      "sha256": "313025735950232cb455520fd3ef4520d1eac4d0e3a320a9e8520f21632918f4"
+    },
+    {
+      "path": "S-static-plan.stdout",
+      "bytes": 9930,
+      "sha256": "1d635d75b422ec91f4871c887ec85ef28abd4285d0d2e24af44572be986857d2"
+    },
+    {
+      "path": "S-static-plan.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "S-push-before.json",
+      "bytes": 1849,
+      "sha256": "43e838283a408ecad07c7ef171f721813158ec3fd0cba9577a14f0fcee7acd87"
+    },
+    {
+      "path": "S-open-pr-check.json",
+      "bytes": 301,
+      "sha256": "b8b27e788fa39be88b3851707500fc6a878d11c125a5005a39b292ce32144f2f"
+    },
+    {
+      "path": "S-HANDOFF.md",
+      "bytes": 4006,
+      "sha256": "53f974a73f8e0392ceb4bfa8d3abf3a56c2b3ea2b37c135c751d39da324186ec"
+    }
+  ],
+  "exit_code": 0
+}

@@ -1,0 +1,33 @@
+{
+  "same232SuiteUniverse": true,
+  "unchangedModes": true,
+  "changedCounts": {
+    "node:tests-js": [
+      753,
+      756
+    ],
+    "node:woodworking_frontend": [
+      17,
+      18
+    ],
+    "py:test_assembly_bay_repeat": [
+      48,
+      53
+    ]
+  },
+  "changedUnits": {
+    "py:test_rectangular_template": [
+      "unittest",
+      "test"
+    ],
+    "py:test_geo318_reading_a_oracle": [
+      "unittest",
+      "test"
+    ],
+    "py:test_geo318_reading_a_native": [
+      "unittest",
+      "test"
+    ]
+  },
+  "rawFormatting": "Original run_all.py output uses indent=1 and suite registry order; prior main artifact used indent=2 and alphabetic suite order. Both LF. Adopted raw output is unmodified; the sorted diff is only for review."
+}

@@ -1,0 +1,14 @@
+{
+  "head": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "tests/mutate.py",
+    "--check"
+  ],
+  "cwd": "/tmp/geometry-pr363-20261102",
+  "startedUtc": "2026-11-02T05:55:27.991813+00:00",
+  "MUTATE_CACHE": "/tmp/geometry-resume-20261102/pr363/logical-mutation-cache-after-adoption",
+  "MUTATE_RESULTS": "/tmp/geometry-pr363-20261102/tests/mutants_results.json",
+  "scope": "Original strict logical source check. Existing official 26dc ELF bytes were separately verified earlier; no downloaded ELF is executed or rebuilt."
+}

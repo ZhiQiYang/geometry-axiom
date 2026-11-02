@@ -1,0 +1,12 @@
+{"event": "enabled", "pid": 203780, "subreaper": 1, "policy": "Never signal children; waitpid WNOHANG only on adopted direct children excluding the Popen main child.", "utc": "2026-11-02T05:05:27.454723+00:00"}
+{"event": "reaped-adopted-child", "pid": 204936, "observedState": "terminated-exit-peek", "waitStatus": 9, "exitCode": -9, "utc": "2026-11-02T05:08:37.251798+00:00"}
+{"event": "reaped-adopted-child", "pid": 204937, "observedState": "terminated-exit-peek", "waitStatus": 9, "exitCode": -9, "utc": "2026-11-02T05:08:37.251963+00:00"}
+{"event": "reaped-adopted-child", "pid": 240641, "observedState": "terminated-exit-peek", "waitStatus": 0, "exitCode": 0, "utc": "2026-11-02T05:29:09.677221+00:00"}
+{"event": "reaped-adopted-child", "pid": 241299, "observedState": "terminated-exit-peek", "waitStatus": 9, "exitCode": -9, "utc": "2026-11-02T05:30:46.656395+00:00"}
+{"event": "reaped-adopted-child", "pid": 242734, "observedState": "terminated-exit-peek", "waitStatus": 9, "exitCode": -9, "utc": "2026-11-02T05:31:55.672230+00:00"}
+{"event": "reaped-adopted-child", "pid": 244888, "observedState": "terminated-exit-peek", "waitStatus": 0, "exitCode": 0, "utc": "2026-11-02T05:35:14.140806+00:00"}
+{"event": "reaped-adopted-child", "pid": 245339, "observedState": "terminated-exit-peek", "waitStatus": 0, "exitCode": 0, "utc": "2026-11-02T05:35:29.032657+00:00"}
+{"event": "reaped-adopted-child", "pid": 246173, "observedState": "terminated-exit-peek", "waitStatus": 0, "exitCode": 0, "utc": "2026-11-02T05:36:19.674664+00:00"}
+{"event": "reaped-adopted-child", "pid": 248278, "observedState": "terminated-exit-peek", "waitStatus": 15, "exitCode": -15, "utc": "2026-11-02T05:37:35.037998+00:00"}
+{"event": "reaped-adopted-child", "pid": 248279, "observedState": "terminated-exit-peek", "waitStatus": 0, "exitCode": 0, "utc": "2026-11-02T05:37:35.058280+00:00"}
+{"event": "main-exit-observed-by-Popen", "pid": 203831, "exitCode": 0, "utc": "2026-11-02T05:37:39.729713+00:00"}

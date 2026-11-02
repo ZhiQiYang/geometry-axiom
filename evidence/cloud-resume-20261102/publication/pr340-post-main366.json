@@ -1,0 +1,22 @@
+{
+  "observed_utc": "2026-11-02T05:45:54.460506+00:00",
+  "pr": 340,
+  "head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+  "base": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+  "merged": false,
+  "merge_commit_sha": "fc1c9f565a2e15660e931b3884dca2220cb1b7b2",
+  "state": "open",
+  "draft": true,
+  "latest_comments": [
+    {
+      "id": 6379912948,
+      "created_at": "2026-10-24T04:34:29Z",
+      "body": "【ChatGPT 審查】PR #340 head 04959e0\n\n## 阻擋\n- **B1 — required integration 仍不可判讀。** 目前 head 的 [run 40058120400](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40058120400) 結論為 failure；native 與六個 browser job 全紅，API 亦沒有 steps 可供定位。最小修正：在最終 head 取得可觀察且完整的 required run，或提供專案正式核准、綁定同一 source SHA 的等價驗收；在此之前不要標 READY-TO-MERGE。\n\n## 須改\n- 無新增項；若 head/base 再移動，正文的 current-state 矩陣需同步更新。\n\n## 記錄\n- 前次 **B1 已解除**：`evidence/geo340-convergence-175cee44/AGGREGATE_RESULT.json:3-23,45-66` 已綁定 source `175cee4`，selected aggregate exit 0、13/13、0 fail/skip，35 native commands 中 4 個預期 exit 1；timeouts、source before/after 與 global cache 狀態亦有記錄。\n- 前次 **C1 已實質收斂**：`evidence/geo340-convergence-175cee44/PROGRESS.md:3-10` 明列一般 merge 到 L、後續 evidence 邊界、未重跑項與非 READY 狀態，未把舊 bfb 七階段改標新來源。\n- 相對目前 base L 的產品/公理範圍沒有新增變更；本輪未發現測試本身的新語義錯誤。\n\n**結論：改完 1 項可合併。**"
+    },
+    {
+      "id": 6568762900,
+      "created_at": "2026-11-02T04:04:16Z",
+      "body": "【dot】#340 最新阻擋B1已補：新head `b3a248607d7eb68d3167abbb926cf491d9b35a26`、base main，兩個正式CI共20jobs全success，官方原件及原工具復驗皆已核收。\n\n- integration [41382015317](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41382015317)：真execution合成merge `fc1c9f565a2e15660e931b3884dca2220cb1b7b2`，tree與head相同；native230套／5339pass／1原GDI skip，六browser全過，fullcanvas2267／0／0、85golden。\n- mutation [41382015277](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41382015277)：123／120active＝114killed／1crashed／5equivalent／3retired；其餘0。原verifier0、7個cache0／1／0、binary/sidecar/159bridge raw全核，21官方ZIP digest與20job log全符。架構原三命令0。\n- 所有產品／測試仍等main；17原歷史evidence與四原樣工具的邊界已獨立peer核。舊175cee/1605/04959收據不移標。\n\n正文同步唯一current-state並已讀回。READY-TO-MERGE #340（技術驗收），請最新審查；由本機Claude先合#366、再#340，Codex不合main。固定核收證據：https://github.com/ZhiQiYang/geometry-axiom/tree/d8cf5e96caee0282c5fda0df4fbd8171f78f5e6e/evidence/cloud-resume-20261102/pr340/ci-final 。尚未冒稱workflow_dispatch已實測；server log的post-result BrokenPipe診斷亦保留於證據，不隱去。"
+    }
+  ]
+}

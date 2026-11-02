@@ -1,0 +1,87 @@
+{
+  "schema": "final-F4-peer/1",
+  "head": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+  "clean": true,
+  "trees": {
+    "9171b0455c5f44e39e2007ae0e778aef7274cf74": "b39c4d0f71d59097db6af5efd4732ad178e28c3c",
+    "3dddfcffe1b2756d56dde3063a116e7f1b029b82": "b39c4d0f71d59097db6af5efd4732ad178e28c3c",
+    "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4": "b39c4d0f71d59097db6af5efd4732ad178e28c3c"
+  },
+  "ordinaryParents": {
+    "9171b0455c5f44e39e2007ae0e778aef7274cf74": [
+      "e9f4dd75cfd4eb9965e3af249200b918907d62db"
+    ],
+    "3dddfcffe1b2756d56dde3063a116e7f1b029b82": [
+      "9171b0455c5f44e39e2007ae0e778aef7274cf74",
+      "df7eb43af3389ff2afc1a73aaf4e57580ae612fc"
+    ],
+    "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4": [
+      "3dddfcffe1b2756d56dde3063a116e7f1b029b82",
+      "3cc058ed287916aa8ab976c3f5b60e988cbeb57b"
+    ]
+  },
+  "sameTreeAsF2": true,
+  "localAndRemoteTrackingRefs": [
+    "refs/heads/codex/r06-review-fixes-20261102 7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+    "refs/remotes/origin/codex/r06-review-fixes-20261102 7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+    "refs/remotes/origin/feat/r06-bay-repeat 7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4"
+  ],
+  "AtoF4ChangedPaths": [
+    "tests/run_all.expected.json"
+  ],
+  "expectedSha256": "cba8aa2be2c2d252050634f88a9dfc1c03e498d1d938a30ee3c55ca513df4243",
+  "exactGeneratedExpectedBytesPreserved": true,
+  "ownerNeedleAndArchitectureBytesPreserved": {
+    "geometry-core/card-reference/run_archive_mutations.py": "dfe6e326074fc0e204255648429719565f85a095aff6222c8dfb828fb9d8b5a9",
+    "geometry-core/domain-decoupling/product-architecture.json": "4f9256ff0f0e5f221a0b911dace2874b8ac94b066b110dc9ccff230a6b52e32b"
+  },
+  "ownerThreeCountsPreserved": {
+    "node:tests-js": 756,
+    "node:woodworking_frontend": 18,
+    "py:test_assembly_bay_repeat": 53
+  },
+  "ledgerSha256": "5dddce17a6cda9cfe935f075ca33647e1c28ed2bacd7a8ff1f62202ab54300c8",
+  "ledgerRawEqualsOfficialArtifact": true,
+  "ledgerRecordCount": 123,
+  "ledgerExecutionCount": 120,
+  "ledgerExecutionHeadsUnchanged": {
+    "26dc99117ac942ec8f50145d875d6e55594f3835": 120
+  },
+  "census": {
+    "original_failure": {
+      "executionHead": "e9f4dd75cfd4eb9965e3af249200b918907d62db",
+      "suiteCount": 232,
+      "totals": {
+        "total": 5420,
+        "passed": 5418,
+        "failed": 1,
+        "skipped": 1,
+        "allowed_skips": 1
+      },
+      "exitCode": 1,
+      "reportSha256": "a913941c74a248439641a9241857f319200adec25a32773776ffa5b59e6ededb",
+      "stdoutSha256": "f58d800eb43a0a5ba7e4132df48ebe0c2409b290fc811e09d1b75ff83edf2976",
+      "sourceBeforeWorktreeSha256": "bf4e000b29a01d23ee5f0cb39e19506058bfadf097c1c9476c0144e3b8d189c9"
+    },
+    "reaped_recovery": {
+      "executionHead": "e9f4dd75cfd4eb9965e3af249200b918907d62db",
+      "suiteCount": 232,
+      "totals": {
+        "total": 5420,
+        "passed": 5419,
+        "failed": 0,
+        "skipped": 1,
+        "allowed_skips": 1
+      },
+      "exitCode": 0,
+      "reportSha256": "135a8765d3dad6c2b30163d7a506146124912d37dc077bb75d458c6062b8a677",
+      "stdoutSha256": "66a9a7f9e892717db49b57acaf0df87490f5c5039991f906da8aea7b4b1e8893",
+      "sourceBeforeWorktreeSha256": "bf4e000b29a01d23ee5f0cb39e19506058bfadf097c1c9476c0144e3b8d189c9"
+    }
+  },
+  "runtimeIdentityAEqualsF4": "665280ef41f549e4273da012f9708cf5ac8bf2ea8c9b8c87a164bd87a7d3d1e6",
+  "runtimeIdentity26dcDifferent": "788f2f34a6cfadea86af8dbd7be6d211822a5bc5ef6800931c4a486199e10702",
+  "productTestOracleCompilerClosure": "A to F4 changes only original census-generated tests/run_all.expected.json; all product sources, executable tests, generic mutation oracle inputs, compiler/registry inputs, and canvas functional/runtime-identity paths stay unchanged.",
+  "executionAttribution": "Census executions remain attributed to A; official mutation execution heads remain 26dc; CI full canvas remains attributed to f23c (tree=26dc). No evidence head was rewritten.",
+  "method": "Git object/file hashes and existing raw receipts only. No test, compiler, browser, cache or API execution."
+}

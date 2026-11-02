@@ -1,0 +1,50 @@
+--- expected-before (review normalization only)
++++ expected-after (review normalization only)
+@@ -150,12 +150,12 @@
+       "unit": "node test"
+     },
+     "node:tests-js": {
+-      "count": 753,
++      "count": 756,
+       "mode": "count",
+       "unit": "node test"
+     },
+     "node:woodworking_frontend": {
+-      "count": 17,
++      "count": 18,
+       "mode": "count",
+       "unit": "node test"
+     },
+@@ -173,7 +173,7 @@
+       "unit": "test"
+     },
+     "py:test_assembly_bay_repeat": {
+-      "count": 48,
++      "count": 53,
+       "mode": "count",
+       "unit": "test"
+     },
+@@ -805,12 +805,12 @@
+     "py:test_geo318_reading_a_native": {
+       "count": 7,
+       "mode": "count",
+-      "unit": "unittest"
++      "unit": "test"
+     },
+     "py:test_geo318_reading_a_oracle": {
+       "count": 14,
+       "mode": "count",
+-      "unit": "unittest"
++      "unit": "test"
+     },
+     "py:test_geometry_host_native": {
+       "count": 30,
+@@ -1020,7 +1020,7 @@
+     "py:test_rectangular_template": {
+       "count": 13,
+       "mode": "count",
+-      "unit": "unittest"
++      "unit": "test"
+     },
+     "py:test_reference_contract": {
+       "count": 51,
