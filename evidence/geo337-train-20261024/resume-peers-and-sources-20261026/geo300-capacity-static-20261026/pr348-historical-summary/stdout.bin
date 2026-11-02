@@ -1,0 +1,110 @@
+{
+  "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+  "archive": "ORIGINAL_W7_H7_AND_HELPER_TRIPLES.tar.gz",
+  "archive_bytes": 12616070,
+  "archive_sha256": "dbe988b880024aee708d85d3b0364adf5ab61c9587f861271d8e2170755b37a7",
+  "member_count": 6369,
+  "original_exit": 1,
+  "original_accepted": false,
+  "source_clean_after": true,
+  "phases": [
+    {
+      "label": "W7",
+      "variant": "fixed",
+      "state": "COMPLETED",
+      "actual_exit": 0,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "H7",
+      "variant": "fixed",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": false,
+      "observation_complete": true
+    },
+    {
+      "label": "count-fixed",
+      "variant": "fixed",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": false,
+      "observation_complete": true
+    },
+    {
+      "label": "count-withdrawn",
+      "variant": "withdrawn",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "count-restored",
+      "variant": "restored",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": false,
+      "observation_complete": true
+    },
+    {
+      "label": "population-fixed",
+      "variant": "fixed",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": false,
+      "observation_complete": true
+    },
+    {
+      "label": "population-withdrawn",
+      "variant": "withdrawn",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "population-restored",
+      "variant": "restored",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": false,
+      "observation_complete": true
+    },
+    {
+      "label": "unplaced_replay-fixed",
+      "variant": "fixed",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": false,
+      "observation_complete": true
+    },
+    {
+      "label": "unplaced_replay-withdrawn",
+      "variant": "withdrawn",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": false,
+      "observation_complete": true
+    },
+    {
+      "label": "unplaced_replay-restored",
+      "variant": "restored",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": false,
+      "observation_complete": true
+    }
+  ],
+  "roundtrip_all_bytes_equal": true,
+  "original_bytes": 81271864,
+  "created_utc": "2026-10-24T04:23:34.136962+00:00",
+  "limits": [
+    "Only original W7/H7 and three helper triples; not full native/browser/ledger/architecture or performance.",
+    "Original compiler text=True outputs retain decoded-text representation; original binary run/Bridge pipes captured before decoding.",
+    "Original subprocess TimeoutExpired may have no CompletedProcess returncode or output; do not invent a child exit.",
+    "Actual scene supplement is a point-in-time copy while H7 is active, not pre-execution capture. Later short phase fixtures may be represented by original source and input paths only.",
+    "Original NativeBuild cleanup retained unchanged; source/command/ELF hashes are not retained ELF payloads."
+  ]
+}

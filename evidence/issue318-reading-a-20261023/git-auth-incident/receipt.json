@@ -1,0 +1,78 @@
+{
+  "utc": "2026-10-23T10:36:21.023796+00:00",
+  "first_push": "git push origin codex/issue318-reading-a-20261023",
+  "first_error": "fatal: could not read Username for 'https://github.com': No such device or address",
+  "retry_argv": [
+    "git",
+    "push",
+    "origin",
+    "codex/issue318-reading-a-20261023"
+  ],
+  "retry_env": {
+    "GIT_TERMINAL_PROMPT": "0"
+  },
+  "retry_exit": 128,
+  "retry_stderr": "fatal: could not read Username for 'https://github.com': terminal prompts disabled\n",
+  "local_unpushed_head": "a43186d261562c72cbea9b97ceb84a46b912178e",
+  "diagnostics": [
+    {
+      "repository": "/workspace/geo318-reading-a-work",
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "config",
+        "--null",
+        "--name-only",
+        "--show-origin",
+        "--list"
+      ],
+      "exit_code": 0,
+      "keys_only": [
+        {
+          "origin_file": "file:/workspace/geo318-reading-a-prep/meta.git/config",
+          "key_name": "remote.origin.url"
+        },
+        {
+          "origin_file": "file:/workspace/geo318-reading-a-prep/meta.git/config",
+          "key_name": "remote.origin.promisor"
+        },
+        {
+          "origin_file": "file:/workspace/geo318-reading-a-prep/meta.git/config",
+          "key_name": "remote.origin.partialclonefilter"
+        }
+      ],
+      "stderr": ""
+    },
+    {
+      "repository": "/workspace/geometry-axiom",
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "config",
+        "--null",
+        "--name-only",
+        "--show-origin",
+        "--list"
+      ],
+      "exit_code": 0,
+      "keys_only": [
+        {
+          "origin_file": "file:.git/config",
+          "key_name": "remote.origin.url"
+        },
+        {
+          "origin_file": "file:.git/config",
+          "key_name": "remote.origin.fetch"
+        },
+        {
+          "origin_file": "file:.git/config",
+          "key_name": "remote.origin.tagopt"
+        }
+      ],
+      "stderr": ""
+    }
+  ],
+  "credential_values_printed": false
+}

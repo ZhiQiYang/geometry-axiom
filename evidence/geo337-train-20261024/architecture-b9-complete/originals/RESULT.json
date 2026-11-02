@@ -1,0 +1,51 @@
+{
+  "sourceSHA": "b9c9fb818f031828530994a4d66f1976da0d8138",
+  "sourceBeforeAfterClean": true,
+  "originalGateExits": [
+    0,
+    0,
+    0
+  ],
+  "newGuardProofExits": [
+    0,
+    1,
+    0
+  ],
+  "newGuardCases": 9,
+  "inputCount": 604,
+  "changedPriorReceiptInputs": [
+    {
+      "path": "geometry-core/kernel/source.c",
+      "sha256": "b5e6c4825c7c729c489a1bcd34a03c0b4b5a085de2c209ad7572e1b0849a6ddf"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "sha256": "02473416994421585fbb05288af78c7bb598e23e8e3a768391af3720dfad9859"
+    }
+  ],
+  "inputClosureSHA256": "2373af45191d585e9f5b1652935e7802a9d154075d7d2de07a8ede37baa91773",
+  "outputs": {
+    "product-architecture.json": {
+      "bytes": 221953,
+      "rawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
+      "lfSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
+    },
+    "product-architecture-scan.json": {
+      "bytes": 132559,
+      "rawSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    "PRODUCT-ARCHITECTURE.md": {
+      "bytes": 1159,
+      "rawSha256": "5cf002a54a777e5a2e90d79f55a9a79ddb9e59c1aaee948d17e45bf232701763",
+      "lfSha256": "5cf002a54a777e5a2e90d79f55a9a79ddb9e59c1aaee948d17e45bf232701763"
+    },
+    "product-architecture-receipt.json": {
+      "bytes": 123023,
+      "rawSha256": "cf48d2b2409b7ed4e6b7385c0b2129f5d72894c65e6ec5b26f827978065efa0e",
+      "lfSha256": "cf48d2b2409b7ed4e6b7385c0b2129f5d72894c65e6ec5b26f827978065efa0e"
+    }
+  },
+  "sourceCheckoutModified": false,
+  "ledgerRegenerated": false
+}

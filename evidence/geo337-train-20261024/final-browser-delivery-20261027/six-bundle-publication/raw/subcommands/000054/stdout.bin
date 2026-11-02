@@ -1,0 +1,260 @@
+{
+  "schema": 1,
+  "exit_code": 0,
+  "root_terminal_observation": {
+    "source": "root message, not child repoll",
+    "session": 81963,
+    "chunk": "7ac488",
+    "exit_code": 0
+  },
+  "checks": [
+    {
+      "name": "root terminal process attribution distinct",
+      "passed": true
+    },
+    {
+      "name": "same six frozen groups",
+      "passed": true
+    },
+    {
+      "name": "fixed plan hash",
+      "passed": true
+    },
+    {
+      "name": "fixed parent",
+      "passed": true
+    },
+    {
+      "name": "no publish/deletion",
+      "passed": true
+    },
+    {
+      "name": "F-assembly full bytes/hash",
+      "passed": true
+    },
+    {
+      "name": "F-assembly roundtrip driver0",
+      "passed": true
+    },
+    {
+      "name": "F-assembly source identity",
+      "passed": true
+    },
+    {
+      "name": "F-assembly gzip footer and exact tar",
+      "passed": true
+    },
+    {
+      "name": "F-assembly original count/bytes",
+      "passed": true
+    },
+    {
+      "name": "F-assembly no compression assumption bound",
+      "passed": true
+    },
+    {
+      "name": "F-grid full bytes/hash",
+      "passed": true
+    },
+    {
+      "name": "F-grid roundtrip driver0",
+      "passed": true
+    },
+    {
+      "name": "F-grid source identity",
+      "passed": true
+    },
+    {
+      "name": "F-grid gzip footer and exact tar",
+      "passed": true
+    },
+    {
+      "name": "F-grid original count/bytes",
+      "passed": true
+    },
+    {
+      "name": "F-grid no compression assumption bound",
+      "passed": true
+    },
+    {
+      "name": "withdrawn-assembly full bytes/hash",
+      "passed": true
+    },
+    {
+      "name": "withdrawn-assembly roundtrip driver0",
+      "passed": true
+    },
+    {
+      "name": "withdrawn-assembly source identity",
+      "passed": true
+    },
+    {
+      "name": "withdrawn-assembly gzip footer and exact tar",
+      "passed": true
+    },
+    {
+      "name": "withdrawn-assembly original count/bytes",
+      "passed": true
+    },
+    {
+      "name": "withdrawn-assembly no compression assumption bound",
+      "passed": true
+    },
+    {
+      "name": "withdrawn-documents-ledger full bytes/hash",
+      "passed": true
+    },
+    {
+      "name": "withdrawn-documents-ledger roundtrip driver0",
+      "passed": true
+    },
+    {
+      "name": "withdrawn-documents-ledger source identity",
+      "passed": true
+    },
+    {
+      "name": "withdrawn-documents-ledger gzip footer and exact tar",
+      "passed": true
+    },
+    {
+      "name": "withdrawn-documents-ledger original count/bytes",
+      "passed": true
+    },
+    {
+      "name": "withdrawn-documents-ledger no compression assumption bound",
+      "passed": true
+    },
+    {
+      "name": "transport full bytes/hash",
+      "passed": true
+    },
+    {
+      "name": "transport roundtrip driver0",
+      "passed": true
+    },
+    {
+      "name": "transport source identity",
+      "passed": true
+    },
+    {
+      "name": "transport gzip footer and exact tar",
+      "passed": true
+    },
+    {
+      "name": "transport original count/bytes",
+      "passed": true
+    },
+    {
+      "name": "transport no compression assumption bound",
+      "passed": true
+    },
+    {
+      "name": "cleanup-supplements full bytes/hash",
+      "passed": true
+    },
+    {
+      "name": "cleanup-supplements roundtrip driver0",
+      "passed": true
+    },
+    {
+      "name": "cleanup-supplements source identity",
+      "passed": true
+    },
+    {
+      "name": "cleanup-supplements gzip footer and exact tar",
+      "passed": true
+    },
+    {
+      "name": "cleanup-supplements original count/bytes",
+      "passed": true
+    },
+    {
+      "name": "cleanup-supplements no compression assumption bound",
+      "passed": true
+    }
+  ],
+  "result_sha256": "bc8f8cc31ebd7e1fc55518053ad2731714bab63faa365c9a58b78db0f3d4ff2f",
+  "plan_sha256": "820a069df2c39e4ada7525f03e9708653af7d3e1339a2f0452cebe0531dc1990",
+  "archives": [
+    {
+      "index_sha256": "04e56095fcc2258a1adc4da948a61b2c9cbbc5b577350967289c8c6d97a7b12c",
+      "members": 1406,
+      "name": "F-assembly",
+      "original_bytes": 40679555,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/F-assembly.tar.gz",
+      "regular_original_files": 611,
+      "roundtrip_exit": 0,
+      "sha256": "3823d762c01de4e5cf91c7608bac456522c2ae711085f047555597d327728f0e",
+      "size": 7129907,
+      "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "tar_bytes": 43376640
+    },
+    {
+      "index_sha256": "297b8cb13fa306dcdf5f575445d7f3a3995e877ab742ea435e9b5a9bed1edc7a",
+      "members": 1418,
+      "name": "F-grid",
+      "original_bytes": 47276257,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/F-grid.tar.gz",
+      "regular_original_files": 616,
+      "roundtrip_exit": 0,
+      "sha256": "8a43e6b7b4d372038bb13854c8ca9f39479ab1300ef31154c350531141eb14d4",
+      "size": 10301483,
+      "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "tar_bytes": 49930240
+    },
+    {
+      "index_sha256": "606906ad27c4e44e7e7243add3901fedab37a13db8da81f1747e2e18da246ced",
+      "members": 2155,
+      "name": "withdrawn-assembly",
+      "original_bytes": 69190716,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/withdrawn-assembly.tar.gz",
+      "regular_original_files": 930,
+      "roundtrip_exit": 0,
+      "sha256": "f5b905047d25b718eea02f433f8f3bdda52111a9fb9b44adf8a0a6dd22113217",
+      "size": 11209371,
+      "source_sha": "a4bd77e8090f5a82f0c8934c30c5335782293922",
+      "tar_bytes": 73000960
+    },
+    {
+      "index_sha256": "70a14082e5ad58c0889573ca4b5846dd439e0bffa79d5e1caecdcca79cd1c886",
+      "members": 1473,
+      "name": "withdrawn-documents-ledger",
+      "original_bytes": 34985660,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/withdrawn-documents-ledger.tar.gz",
+      "regular_original_files": 664,
+      "roundtrip_exit": 0,
+      "sha256": "bbb1826d435cdba9e58b7c90576527d9a41fe12182cd464a57cad8f4cf8f8f4c",
+      "size": 7292937,
+      "source_sha": "a4bd77e8090f5a82f0c8934c30c5335782293922",
+      "tar_bytes": 37775360
+    },
+    {
+      "index_sha256": "e40c8293e1610fc0d92f58bd27c58a189036d309e5cf978d03a350618ed7456c",
+      "members": 1051,
+      "name": "transport",
+      "original_bytes": 78570609,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/transport.tar.gz",
+      "regular_original_files": 810,
+      "roundtrip_exit": 0,
+      "sha256": "1e6cfdbcf5bd1967f58262856af0c397969e677ca448c131ee0c8cf316f76fb9",
+      "size": 57804722,
+      "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "tar_bytes": 80261120
+    },
+    {
+      "index_sha256": "695ede4f85ad405faf71de55258edab552aee81b011e7b8ca07a18335555e00e",
+      "members": 1568,
+      "name": "cleanup-supplements",
+      "original_bytes": 4799111,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/cleanup-supplements.tar.gz",
+      "regular_original_files": 276,
+      "roundtrip_exit": 0,
+      "sha256": "21074da6d1a366a2164f348ce8c628ca3ac2814eb1493bfba18f0d537703581e",
+      "size": 2092483,
+      "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "tar_bytes": 7403520
+    }
+  ],
+  "scope": "One complete independent SHA256 read of each final archive; no product rerun, tar re-extraction, repack or API. Original driver already performed full streamed roundtrip.",
+  "no_publish": true
+}

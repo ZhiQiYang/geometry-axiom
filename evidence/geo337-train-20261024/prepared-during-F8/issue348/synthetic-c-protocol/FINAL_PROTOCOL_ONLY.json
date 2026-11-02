@@ -1,0 +1,280 @@
+{
+  "schema": "geo348-protocol-only-final-artifact/1",
+  "utc": "2026-10-25T08:13:16.114763+00:00",
+  "author": "/root/r8_terminal_peer/geo348_plan_peer",
+  "executed_round": "first-only",
+  "r2_executed": false,
+  "checks": 61,
+  "all_checks_passed": true,
+  "inner_commands": 26,
+  "first_result": {
+    "path": "/tmp/geo348-synthetic-c-protocol-20261025/RESULT.json",
+    "bytes": 13297,
+    "sha256": "58310d85b42628c2fc55bb790cd51bb23d803def2454bde225e56b0bdf8afa11"
+  },
+  "outer_driver_receipt": {
+    "path": "/tmp/geo348-synthetic-c-protocol-20261025/DRIVER_COMMAND_RESULT.json",
+    "bytes": 590,
+    "sha256": "46f92d4494a9071f46ff886868e4209b43b052f7ea05435cdca8e2427625b414"
+  },
+  "c_withdrawal": {
+    "path": "/tmp/geo348-synthetic-c-protocol-20261025/C_WITHDRAWAL_PROOF.json",
+    "bytes": 11329,
+    "sha256": "d5fcfe5baffa90ebfb3ce316d73ef7a69f00d8233bd842a352cd63601c2463cc"
+  },
+  "parent_python_guards_readonly_review": {
+    "path": "/tmp/geo348-synthetic-c-protocol-20261025/REPAIRED_GUARDS_READONLY_REVIEW.json",
+    "bytes": 28628,
+    "sha256": "39a8f7cd7a8ad41f00a1e2ff6603855d4af6b949193a93eebe385c9d4a6af2b0"
+  },
+  "readme": {
+    "path": "/tmp/geo348-synthetic-c-protocol-20261025/README.md",
+    "bytes": 3652,
+    "sha256": "458e6c8fddfe27c89be8b009c618fc4cc912e905249e24f38f839cb7cee715f0"
+  },
+  "verified_command_receipts": [
+    {
+      "name": "001-cc-version",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/001-cc-version/COMMAND_RESULT.json",
+        "bytes": 882,
+        "sha256": "1df5fd261203c8694709c6d447504672aaabae1b54124c5ffb8046bf0289ee2f"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "002-compile-unwrapped",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/002-compile-unwrapped/COMMAND_RESULT.json",
+        "bytes": 1077,
+        "sha256": "85120eb64d92d54f3d926fcccffffbc545e56694f0c6c70f6c4b2d96dcf78c80"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "006-nm-unwrapped",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/006-nm-unwrapped/COMMAND_RESULT.json",
+        "bytes": 949,
+        "sha256": "cc2a44c305597b4ca17d9f707ddabd611b52c67e9a3e9dd37f758d8aee8db933"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "003-compile-fixed",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/003-compile-fixed/COMMAND_RESULT.json",
+        "bytes": 1193,
+        "sha256": "813d09cc4c8f250995e40fe37d0bbccf240105a45cce9780e7bc1bec41dc2d6b"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "007-nm-fixed",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/007-nm-fixed/COMMAND_RESULT.json",
+        "bytes": 941,
+        "sha256": "f839cbdf4a40bf7edad6df58c8f77c30fde65e136ec44061bcf61255e089b931"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "004-compile-withdrawn",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/004-compile-withdrawn/COMMAND_RESULT.json",
+        "bytes": 1205,
+        "sha256": "f84ff239a01bf9199790227fd1e836684d559fe9f6d55394344c572024e6dd78"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "008-nm-withdrawn",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/008-nm-withdrawn/COMMAND_RESULT.json",
+        "bytes": 949,
+        "sha256": "26fb73c0af04d15aac28246f9367b6c46f2f4cb8585207db2ba0fa6b01b34795"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "005-compile-restored",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/005-compile-restored/COMMAND_RESULT.json",
+        "bytes": 1202,
+        "sha256": "5159daedd8504018d58a77f5dec5e56b9cbf467ac266ba14d39fae604e77ebc3"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "009-nm-restored",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/009-nm-restored/COMMAND_RESULT.json",
+        "bytes": 947,
+        "sha256": "c0f8d62a66eabaaa57e7ac67f76c1ccafdaf4c8ec3be608193fc15489e0602f3"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "020-unwrapped-normal",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/020-unwrapped-normal/COMMAND_RESULT.json",
+        "bytes": 1383,
+        "sha256": "a7925c58def98289d669e034fbd81f35f501c84cec4d1d5b496f0d9eb510561b"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "021-fixed-normal",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/021-fixed-normal/COMMAND_RESULT.json",
+        "bytes": 1787,
+        "sha256": "9c1f75a4236af1a826e6ea6f9050cf5b6ef72c918e0417eb2c7b87444635ae47"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "022-unwrapped-stress",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/022-unwrapped-stress/COMMAND_RESULT.json",
+        "bytes": 1386,
+        "sha256": "c1b164b302de304be085f0e278b4e8982821e7742bc2f2e87ebaba5e8c1bec1c"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "023-fixed-stress",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/023-fixed-stress/COMMAND_RESULT.json",
+        "bytes": 1790,
+        "sha256": "e6eec86c2131e2e967600159233e0845fd40cbec149ad2e92f5d3cce7f401393"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "024-unwrapped-stdin_error",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/024-unwrapped-stdin_error/COMMAND_RESULT.json",
+        "bytes": 1398,
+        "sha256": "174d51197c8ceb191123f0020d101b9ba892a67b3b3f1f491eb5c2e1aa20cfcf"
+      },
+      "returncode": 23
+    },
+    {
+      "name": "025-fixed-stdin_error",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/025-fixed-stdin_error/COMMAND_RESULT.json",
+        "bytes": 1811,
+        "sha256": "f7a4b4635a461081b8916c6f55bd688cf9a84c3307c24b7684eef8515789c39a"
+      },
+      "returncode": 23
+    },
+    {
+      "name": "026-unwrapped-stdout_error",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/026-unwrapped-stdout_error/COMMAND_RESULT.json",
+        "bytes": 1401,
+        "sha256": "af0ad88624a3692cf744e9f787d0d48d91bcf9aa9b81fda04de20b2ce7b97dec"
+      },
+      "returncode": 24
+    },
+    {
+      "name": "027-fixed-stdout_error",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/027-fixed-stdout_error/COMMAND_RESULT.json",
+        "bytes": 1816,
+        "sha256": "c482e333ec345cd30f14831596d5384c14e720a672480830370158071e6f1b29"
+      },
+      "returncode": 24
+    },
+    {
+      "name": "030-event-write-failure",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/COMMAND_RESULT.json",
+        "bytes": 1825,
+        "sha256": "5538700d7c7de624211a84d6d7e547ddb590ca39f2c706d05108363760998633"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "031-real-timeout-0.25s",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/031-real-timeout-0.25s/COMMAND_RESULT.json",
+        "bytes": 1952,
+        "sha256": "15a58dc786ddc7d08ebcc558a8743448bfddd32472a6ae081a56d0a3976b58c4"
+      },
+      "returncode": null
+    },
+    {
+      "name": "032-real-pipe-chunks",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/032-real-pipe-chunks/COMMAND_RESULT.json",
+        "bytes": 1318,
+        "sha256": "cf7c028fca0471dc40b0bae4be2fdd87fedf356c22ba935b37f20f4a9227c43b"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "040-c-control-fixed",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/040-c-control-fixed/COMMAND_RESULT.json",
+        "bytes": 1799,
+        "sha256": "dc3b492295eaaf6bc2bf5db8b8223ee7657bc9820301163fb9f8752d3d889dd2"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "043-guard-fixed",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/043-guard-fixed/COMMAND_RESULT.json",
+        "bytes": 1102,
+        "sha256": "38f0f5db0c68078afddc01d14274c1966e6180be305af353057f25db62b7382a"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "041-c-control-withdrawn",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/041-c-control-withdrawn/COMMAND_RESULT.json",
+        "bytes": 1819,
+        "sha256": "9e751cf315c1f59a6e093f8b6be212041e1dfcd0cf3ab75aa99d62ae058ba9c3"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "044-guard-withdrawn",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/044-guard-withdrawn/COMMAND_RESULT.json",
+        "bytes": 1109,
+        "sha256": "06ca8b636a3da848c09801d238190485c91f4f1ac11f234647af6eb6b8b1b3a4"
+      },
+      "returncode": 1
+    },
+    {
+      "name": "042-c-control-restored",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/042-c-control-restored/COMMAND_RESULT.json",
+        "bytes": 1814,
+        "sha256": "2b0108ea3e018c7aafa011e729e41d277c428ef0138e1dceb31e34980fa62cb1"
+      },
+      "returncode": 0
+    },
+    {
+      "name": "045-guard-restored",
+      "receipt": {
+        "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/045-guard-restored/COMMAND_RESULT.json",
+        "bytes": 1108,
+        "sha256": "2e948193948a50dadeed09909cc6c7ea2f334f95cb0d699ebe7235fdd2728407"
+      },
+      "returncode": 0
+    }
+  ],
+  "limits": [
+    "首輪缺執行前Python optimize與disk preflight封存，未補造；r2只有UNRUN草稿。",
+    "校準對象為最小synthetic stub，product ELF calibration / N512 / perf / gate / root cause均UNRUN。",
+    "真pipe使用獨立校準driver，不代表原launcher已整合相同真pipe控制。"
+  ],
+  "product_sources_compiled": false,
+  "product_process_executed": false,
+  "product_gate_verdict": null,
+  "root_cause": null
+}

@@ -1,0 +1,492 @@
+{
+  "schema": "reading-a-L-mutants-terminal-package-peer/1",
+  "createdUTC": "2026-10-23T22:47:23.428141+00:00",
+  "scope": "Only immutable mutants-only standalone archive bytes/source mapping; no live quick or outer aggregate read, no actual gate repeated.",
+  "archiveSHA256": "707b85d069c17d3be7f50047a3789c90ccc0720f61d17ec0340e857d257245c0",
+  "checkCount": 119,
+  "checks": [
+    {
+      "label": "original21122B archive pin",
+      "passed": true
+    },
+    {
+      "label": "inventory pin",
+      "passed": true
+    },
+    {
+      "label": "56 unique regular safe members",
+      "passed": true
+    },
+    {
+      "label": "exact55 originalsplusself",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash oracle-mutants/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes oracle-mutants/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash outer-mutants-command/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes outer-mutants-command/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash outer-mutants-command/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes outer-mutants-command/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash outer-mutants-command/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes outer-mutants-command/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash outer-mutants-command/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes outer-mutants-command/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash outer-mutants-command/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes outer-mutants-command/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash SOURCE_BINDING.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes SOURCE_BINDING.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash SCOPE.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes SCOPE.json",
+      "passed": true
+    },
+    {
+      "label": "inventory archived bytes exact",
+      "passed": true
+    },
+    {
+      "label": "108124 original bytes",
+      "passed": true
+    },
+    {
+      "label": "no quick files",
+      "passed": true
+    },
+    {
+      "label": "no live outeraggregate files",
+      "passed": true
+    },
+    {
+      "label": "scope explicitly partial terminal",
+      "passed": true
+    }
+  ],
+  "findings": [],
+  "limits": [
+    "Original actual46-check CLI/reaper peer is separate and remains frozen.",
+    "This is filesystem package roundtrip only, not Git publication verification.",
+    "Full quick and final aggregate result not inferred."
+  ],
+  "exitCode": 0
+}

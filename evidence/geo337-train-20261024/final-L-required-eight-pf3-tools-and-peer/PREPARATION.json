@@ -1,0 +1,10 @@
+{
+  "original": "/tmp/train337-section7-terminal-collection/collect_original_section7.py",
+  "original_sha256": "b2a148d1851ce50f96b48c0b5110e464be2bed395a8bc4030aeaff78061e44b2",
+  "collector": "/workspace/train337-final-required8-pf3-collection/collect_original_nonperf.py",
+  "collector_sha256": "ce93f88fa5bd8f409977adf7731dcbd418f286afe64838ec3e2d5cad80acfeb4",
+  "patch_sha256": "f1c6a031832cd37c8b97111ab286d0af2daa4aaaccb0467b94697f405ffbd105",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "changes": "Only gate choices/schema/archive label and original nested-stage summary collection replace the unrelated cardref-specific summary; source guards, byte capture, ELF retention/exclusion and full roundtrip remain.",
+  "subject_executed": false
+}

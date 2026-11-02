@@ -1,0 +1,9 @@
+{
+  "schema": "reviewer-initial-schema-error",
+  "exit_code": 1,
+  "error": "KeyError: ended_utc at line42: original outer RESULT has only source_sha/gate/actual_exit/command. Terminal time is original command.ended_epoch.",
+  "helper_v1_sha256": "f6a34b619d53800126b3c2a088f396b87663beb4f0f87c692640232f2bd02edc",
+  "product_changed": false,
+  "evidence_changed": false,
+  "correction": "Use original command.ended_epoch, retain original actual exit/timeout checks. No subject rerun."
+}

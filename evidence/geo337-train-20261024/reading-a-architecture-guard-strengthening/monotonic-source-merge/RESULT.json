@@ -1,0 +1,19 @@
+{
+  "product_source": "48f6e79d1192c8bcdb37cee631795bf147e2445b",
+  "previous_evidence_head": "4d0ef8dee14873256efae1ee646c01d8dcfe947f",
+  "child_test_source": "aa16e73d6e1f2965e0a911581e2a545aaaf66870",
+  "published": true,
+  "push_exit": 0,
+  "parents": [
+    "4d0ef8dee14873256efae1ee646c01d8dcfe947f",
+    "aa16e73d6e1f2965e0a911581e2a545aaaf66870"
+  ],
+  "changed_product_test_paths": [
+    "geometry-templates/woodworking/native/contact_world.c",
+    "tests/geo343_monotonic_sort_harness.c",
+    "tests/run_all.expected.json",
+    "tests/test_geo261_wood_contact_world.py"
+  ],
+  "same_non_evidence_tree_as_child": true,
+  "full_native_browser_performance_ledger_at_new_source": false
+}

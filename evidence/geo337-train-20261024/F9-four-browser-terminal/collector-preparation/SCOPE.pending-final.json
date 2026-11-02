@@ -1,0 +1,66 @@
+{
+  "state": "PREPARATION_ONLY",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "jobs": [
+    {
+      "job": "documents",
+      "request": "/dev/shm/geo337-F9-browsers-20261025/requests/documents.json",
+      "launch": "/dev/shm/geo337-F9-browsers-20261025/launches/documents",
+      "storage": "/dev/shm/geo337-F9-browsers-20261025/r/d",
+      "sampler": "/dev/shm/geo337-F9-browsers-20261025/sampled/documents",
+      "plan": "/dev/shm/geo337-F9-browsers-20261025/plans/documents",
+      "template_sha256": "c6e97615ca77530add452792ad52ad6aa44a988db5ff083bb60f171e3bb4511c",
+      "ci_timeout_minutes": 10,
+      "host_final_path": "/workspace/geo337-F9-documents-SHM-EXEC_FINAL-20261025.json",
+      "final_bound_for_collection": false,
+      "observed_host_final_sha256": "deff4489932845b5864f35f2f6a13f573535d9e0bceb9da728f8072aacdb632c",
+      "observed_actual_exit": 0
+    },
+    {
+      "job": "grid",
+      "request": "/dev/shm/geo337-F9-browsers-20261025/requests/grid.json",
+      "launch": "/dev/shm/geo337-F9-browsers-20261025/launches/grid",
+      "storage": "/dev/shm/geo337-F9-browsers-20261025/r/g",
+      "sampler": "/dev/shm/geo337-F9-browsers-20261025/sampled/grid",
+      "plan": "/dev/shm/geo337-F9-browsers-20261025/plans/grid",
+      "template_sha256": "9d9cb8166bc3e30569e0e155e1039721162c645ef3810b61127191ab5ed34f5d",
+      "ci_timeout_minutes": 15,
+      "host_final_path": "/workspace/geo337-F9-grid-SHM-EXEC_FINAL-20261025.json",
+      "final_bound_for_collection": false,
+      "observed_host_final_sha256": null,
+      "observed_actual_exit": null
+    },
+    {
+      "job": "space",
+      "request": "/dev/shm/geo337-F9-browsers-20261025/requests/space.json",
+      "launch": "/dev/shm/geo337-F9-browsers-20261025/launches/space",
+      "storage": "/dev/shm/geo337-F9-browsers-20261025/r/s",
+      "sampler": "/dev/shm/geo337-F9-browsers-20261025/sampled/space",
+      "plan": "/dev/shm/geo337-F9-browsers-20261025/plans/space",
+      "template_sha256": "900d5ff380ee297894f727cd9b7fee5490d659a0805502c0a779dc866efc1629",
+      "ci_timeout_minutes": 15,
+      "host_final_path": "/workspace/geo337-F9-space-SHM-EXEC_FINAL-20261025.json",
+      "final_bound_for_collection": false,
+      "observed_host_final_sha256": null,
+      "observed_actual_exit": null
+    },
+    {
+      "job": "timber",
+      "request": "/dev/shm/geo337-F9-browsers-20261025/requests/timber.json",
+      "launch": "/dev/shm/geo337-F9-browsers-20261025/launches/timber",
+      "storage": "/dev/shm/geo337-F9-browsers-20261025/r/t",
+      "sampler": "/dev/shm/geo337-F9-browsers-20261025/sampled/timber",
+      "plan": "/dev/shm/geo337-F9-browsers-20261025/plans/timber",
+      "template_sha256": "05da53e3078753f62548cb9a0359b6fccb55f2e05e1d9011bb8dc87f2c3bcf40",
+      "ci_timeout_minutes": 20,
+      "host_final_path": "/workspace/geo337-F9-timber-SHM-EXEC_FINAL-20261025.json",
+      "final_bound_for_collection": false,
+      "observed_host_final_sha256": null,
+      "observed_actual_exit": null
+    }
+  ],
+  "collector_executed": false,
+  "SHM_read_or_written": false,
+  "scope": "Each named full launch/storage/sampler and separate sourceplan/host preparation. All four true pinned terminal files required before payload collection. Original failed attempts must be added explicitly; no replacement or omission.",
+  "parent_algorithm": "Pending assembly static review; no independent archive algorithm or test rerun."
+}

@@ -1,0 +1,25 @@
+{
+  "reviewer": "/root/r02_architecture_audit",
+  "review_kind": "independent read-only closure review, no product rerun or original large-archive reread",
+  "finding": "both initial closure findings closed; no blocking findings",
+  "checks": {
+    "fallbacks": 30,
+    "gcc_MM_exits": [
+      0,
+      0
+    ],
+    "baseActualClosure": 184,
+    "fixActualClosure": 185,
+    "performanceRowsBound": 36,
+    "abcRowsBound": 700,
+    "originalR8FailurePreserved": true,
+    "actualF8F9ExecutionPreserved": true,
+    "B1MissingOriginalElfBodiesPreserved": true
+  },
+  "reviewedFileSha256": {
+    "B2_FALLBACK_HEADERS.json": "b25dc1ee9d8f569c5c3e703912b907a4d7bc33dcb17e205868715799d7e022f7",
+    "B2_COMMAND_BINDINGS.json": "25fc5970f27be865e802c5f37ee9977d68944a61bf736503dfd3db334346022d",
+    "B2.md": "affe16564ad912831ff1da588d1370f1e6c19a00f6c5af0d9e268f4adad7b80a",
+    "DELIVERY_MANIFEST.json": "4620a3466b967be4ad626d1869e2267d9d40e77aa6c98ce919471fee3a9f1af7"
+  }
+}

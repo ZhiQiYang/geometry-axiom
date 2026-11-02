@@ -1,0 +1,505 @@
+{
+  "schema": "reading-a-L-quick-and-outer-r2-actual-peer/1",
+  "createdUTC": "2026-10-23T22:49:38.172686+00:00",
+  "scope": "Terminal original quick + final outer source/index/22inputs and19 completed c387 commands only; does not redo original mutants46 review or execute any subject.",
+  "L": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "originalQuickExit": 0,
+  "outerBothStages": [
+    0,
+    0
+  ],
+  "reportedMainSweepBuildCount": 39850,
+  "separatelyReportedOddRuns": 1872,
+  "actualReportedQuickSweepSeconds": 365,
+  "knownExistingT4C11Count": 6,
+  "originalCommandResultsVerified": 19,
+  "checkCount": 119,
+  "checks": [
+    {
+      "label": "quicktrue terminal L",
+      "passed": true
+    },
+    {
+      "label": "original unshortened quick CLI",
+      "passed": true
+    },
+    {
+      "label": "CLI/reaper0 and no tool error",
+      "passed": true
+    },
+    {
+      "label": "original stage L clean both guards",
+      "passed": true
+    },
+    {
+      "label": "explicit environment/16MiB",
+      "passed": true
+    },
+    {
+      "label": "outertrue terminal passed",
+      "passed": true
+    },
+    {
+      "label": "both original stage0 in originalorder",
+      "passed": true
+    },
+    {
+      "label": "outer22bytebindingsidentical",
+      "passed": true
+    },
+    {
+      "label": "outerfullstageandindexsame",
+      "passed": true
+    },
+    {
+      "label": "source repaired sameL not newer source",
+      "passed": true
+    },
+    {
+      "label": "original command count /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000001/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000001/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000002/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000002/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000003/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000003/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000004/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000004/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000005/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000005/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000006/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000006/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000007/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000007/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000008/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000008/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000009/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000009/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "original command count /workspace/train337-L-reading-a-results-7af8c5d8-r2",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000001/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000001/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000002/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000002/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000003/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000003/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000004/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000004/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000005/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000005/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000006/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000006/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000007/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000007/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000008/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000008/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000009/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000009/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "original metadata /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000010",
+      "passed": true
+    },
+    {
+      "label": "original process0 /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000010",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000010/stdout",
+      "passed": true
+    },
+    {
+      "label": "streambytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000010/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdinbytes /workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000010",
+      "passed": true
+    },
+    {
+      "label": "original39824Bquickoutputpin",
+      "passed": true
+    },
+    {
+      "label": "originalstdout mainSweep39850quickfail0",
+      "passed": true
+    },
+    {
+      "label": "originalstdout reflex579x8",
+      "passed": true
+    },
+    {
+      "label": "originalstdout step410x8",
+      "passed": true
+    },
+    {
+      "label": "originalstdout mirror820x8",
+      "passed": true
+    },
+    {
+      "label": "originalstdout odd1872separate",
+      "passed": true
+    },
+    {
+      "label": "originalstdout frozen528coverage",
+      "passed": true
+    },
+    {
+      "label": "originalstdout frozen1056coverage",
+      "passed": true
+    },
+    {
+      "label": "originalstdout t10mirror392",
+      "passed": true
+    },
+    {
+      "label": "originalstdout knownoriginalt4six",
+      "passed": true
+    },
+    {
+      "label": "originalquickgriddefinitions",
+      "passed": true
+    },
+    {
+      "label": "sourcearithmetic9402and14208",
+      "passed": true
+    }
+  ],
+  "findings": [],
+  "limits": [
+    "39850 is the original main sweep footer count, not a claim to include separately counted1872 odd cases or preliminary controls.",
+    "9402/14208 rectangle counts are static arithmetic from the exact original quick loops plus its successful actual command/footer, not independently instrumented counters.",
+    "Original t4 six C11_MAIN_NOT_BUTTED cases remain known and allowed by the unchanged judge; this peer does not claim they are fixed or create a new skip.",
+    "Original r1 missing-module environment failures remain preserved separately.",
+    "Outer host session19147 exit0 is API-observed only; full original driver/stage/CLI/reaper c387 streams and final outer source guards are verified."
+  ],
+  "rawIndexSHA256": "9539628756b9c8650dec4825db4d77257bb77ec38e755be894643c3e89f95576",
+  "exitCode": 0
+}
