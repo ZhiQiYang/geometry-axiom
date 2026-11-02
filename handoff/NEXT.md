@@ -1,3 +1,37 @@
+# CURRENT 2026-11-02T10:58:31.340033+00:00 — 持續推進，不是停止
+
+本節取代以下歷史快照的活程序／HEAD。全程繁體中文、英文commit；不rebase/force，不合main。最新使用者排序#366→#363→串行340/339/341/342/343/346/347/348→355UI15→小件/canvas拆片→R03。
+
+- main最新實讀 **e02057b4c725d6f03ae52c3bc30776bf9442b0cf**，本機已合#354、#366；#340尚未合。#339已03:14合main，序列340合後直接341，不重開339。#342/#343來源祖先已入main≠缺的正式驗收完成，R16原2.21665倍紅仍保留。
+- **#340已一般merge新main並推送**：source **aca3d2a5f604848b159a0e5cdd3d3f55fcad190f**，對e020只有17歷史evidence，其他產品/tests/judge entries全等。原check0；#366整份新重產run41430549123、integration41430557786已啟。當前draft，原b3a20綠不移標。回收新原件、採有效新ledger並跑最終CI/審查；本機Claude才合。
+- **#363 READY-TO-MERGE原固定F4**：7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4，三阻擋源碼/草稿/存檔fresh-profile完整200/53與mutants實證，12CI原件全核，獨立dot6571175540可合。正文/逐條回覆6571845252、prbody e29abde6已交；不重跑有效F4收件、不把main#354自動當F4一部分。
+- **#344三相已全部完成**（下方舊in-progress過時）：F=d794a7447b98a82fb35c1dccaedc3443e2230933；F2267/0/0，V=acd623857f2cc117b548907c2b96b638d9e1b31a真2264/5/0＝三具名產品紅＋兩golden計數後果，R2267/0/0，原2100及85golden全保。20CI原件全核；新既有peer獨立237 checks PASS，已同步正文與prbody707a633858f5924063942e7fc18ba5b4db99bd5a，主代理未代合。新main#354尚未合其F，不冒稱最新main整合已跑。
+- **#345新source候選，公開PR尚未前進**：source de3a56cfadecf575f8e7860cbfdafdac2af0a883在codex/issue214-main354-source-20261102，main新回歸保留，只poll_interval一行＋歷史evidence；main ledger衝突取原main bytes，check1明報53 judge stale，未放寬。#366新重產run41431971663已一次啟；待原verifier及官方ledger採入/check0才快轉公開PR原79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6並做新CI。已draft，唯一正文已標未達條件。
+
+## #367 active 重測，勿競跑／重啟
+
+公開source D **e5b0bc23b04e872a68b066bd5b51d57e2c104943**，codex/canvas-validation-20261102。Draft，baseR06 F4，依賴344。D官方run41424542378 **12/12真success**，actualexecution **ea163769f8f570ac06b56906ceb8cdf7dc220a1a**；10ZIP/654members/12logs、原native與canvas聚合0／summary逐byte等官方、獨立peer10669 PASS。native235/5460counted/5459pass/1原GDI，canvas898+1419=2317／86keys含零key，與D原full精確相同。actualsynthetic與舊S1 bfee原件各已正常push保全codex/canvas-ci-41424542378-original、codex/canvas-ci-41409303344-original，兩execution不移標。
+
+D原**full reference已10:31:38真完成0**，29:51、2317/0/0、86golden，737source/native3+sidecar/golden前後同，owned18847已停。不要重跑。原S1 full-only235 census2075秒但原exit1（old expected Counter+4缺原Git ZIP），資料只新增兩suite19/12且原233列不變；補fixture原Node756/0/0另留，D strict235全CI綠才證候選有效，絕不把原1改0。兩個舊原timeout124與extensions P76 ENOENT保留。
+
+**目前唯一local重測：既有peer /root/chain_inventory/peer_pr345 的D/M/D legacy，F03。** 真啟10:48:31.989926Z，supervisor487975、18857/CDP9367、原2100 deadline11:23:31.989926Z，source /dev/shm/geometry-canvas-harness-fixed-before-20261102，raw/metadata /dev/shm/geometry-canvas-harness-actual-20261102/fixed-before-03，短TMPDIR /dev/shm/gch-f03-20261102。先核實際原程序/退出碼，不因歷史inProgress重啟。F綠才M aec3ea1bdcf46f2416dfa7cb79d28221673c315a（S2唯一false&&9bytes）再R D；每相898/62、2100原限、原golden/flags不變，run_id0明示LOCAL；M須原S2具名紅及原Node trace拒絕，不把環境紅當killed。
+
+已保留F1 root lazy-fetch/index-pack ENOSPC、F02長TMPDIR Chromium SingletonSocket超108B，皆0assert環境失敗。修復只有停止取件、禁lazyfetch/不帶-l樹清單、補原sparse index、短獨立SHM TMP/profile及原Chrome/CDP smoke0。沒刪Git objects/pack/原件或改安全設定。F/M/F獨占，本地不得同時native/build/另一Chrome/perf；root與另一peer只小型artifact讀/hash/文案。六artifact私有拷貝反證已有0/1×6/0，與真UI harness分開。
+
+## 耐重啟交付與確切下一步
+
+最新遠端E **737cd241fc0dd93faf09ff3a52dcd92ffebdbd30**，分支codex/cloud-resume-evidence-20261102，證據根evidence/cloud-resume-20261102/；Git push與remote hash已核。含D完整參照原流、官方10ZIP/所有raw/六負例一次archive＋readback manifest、peer10669、340新合流/dispatch、345的53 stale原紅、344peer237及正文同步。SHM本地harness新原件尚未發布，不能當耐重啟。
+
+1. 回收既有peer F/M/F真終態，不重啟已有活程序；只有全三相0/具名1/0才更新367最終正文/PR_BODY與交審。
+2. 收340兩run、345manual原終態；用原#366 verifier，別手填／正規化status／重標execution／執行下載ELF。原123現114k/1crashed/5eq/3ret，check stale必如實處理。
+3. 340新source所有正式checks綠後標READY並交最新審查，本機Claude合main；再341一般merge/base=main，補4類whole-opt work/CPU/wall（性能須獨占，不能與harness同跑）及正式native/browser。已有peer只在pr341/prepared-cost-audit做靜態方案，未執行、不算驗收。
+4. 依序342/343/346/347/348，dot11-1的348patch依原精確source處理；355UI15等343→346→347同源閉合，R03依PF2–6，不跳過依賴。
+
+舊capacity失敗turn不重試、不換模型；兩個原未失敗peer現在可用且已交可核成果，不把所有子代理都說不可用。所有未知修改/fixtures/原收據/Git objects保留；/workspace仍不可寫，現有/tmp、SHM有空間但易揮發，正式新原件一次推送E才算持久。
+
+---
+以下完整保留為歷史，不作目前HEAD或活程序
+
 # CURRENT 2026-11-02T07:48:36.408572+00:00 — 持續工作，不是停止
 
 - #366已由本機Claude合main df7eb43af3389ff2afc1a73aaf4e57580ae612fc；manual workflow_dispatch41397499686的真S=76d311cf1507708bc63bba2ab6e4f0c3f68cabb0已10/10綠、9ZIP full bytes與原verify exit0，123=114k/1crashed/5eq/3ret，7cache負控strict1。ledger已真採入validation新head **9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2**（唯一ledger變更，39264其他entries相同），原source check0；execution120仍S。兩新expected、canonical、真2片/full/反證仍未完成。
