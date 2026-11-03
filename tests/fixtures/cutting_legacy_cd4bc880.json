@@ -2050,3 +2050,41 @@
       "csv": {
         "error": {
           "code": null,
+          "message": "CONSERVATION：件的位置或加工長度不守恆。"
+        }
+      }
+    },
+    {
+      "id": "earlier-group-loss-before-later-group-duplicate",
+      "inputSha256": "29d1ac44143e7512f3a96902132c1992e970d21010d1254748e8d8ade05277e3",
+      "verify": {
+        "error": {
+          "code": null,
+          "message": "CONSERVATION：耗損彙總不守恆。"
+        }
+      },
+      "csv": {
+        "error": {
+          "code": null,
+          "message": "CONSERVATION：耗損彙總不守恆。"
+        }
+      }
+    },
+    {
+      "id": "later-group-duplicate-before-same-piece-geometry",
+      "inputSha256": "9439cdc832168e3e2ab4d21028bca9d577adb287819ab2e41d288f36c2610f6d",
+      "verify": {
+        "error": {
+          "code": null,
+          "message": "DEMAND_IDENTITY：需求件重複。"
+        }
+      },
+      "csv": {
+        "error": {
+          "code": null,
+          "message": "DEMAND_IDENTITY：需求件重複。"
+        }
+      }
+    }
+  ]
+}
