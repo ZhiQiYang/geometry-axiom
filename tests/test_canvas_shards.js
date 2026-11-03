@@ -46,6 +46,8 @@ test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍�
   assert.deepEqual([...all].sort(), Object.keys(golden.sections).sort());
   const owner = plan.shards.find(s => s.sections.includes('P359'));
   assert.equal(owner.sections.at(-1), 'P359');
+  assert.equal(plan.shards[0].sections.includes('P353'), false, 'R369_P353_SHARD: P353 is not in shard 1');
+  assert.deepEqual(plan.shards[1].sections.slice(-2), ['P353', 'P359'], 'R369_P353_ORDER: P353 immediately precedes the storage-reset suite');
   assert.equal(plan.boundaries[0].after, plan.shards[0].sections.at(-1));
   assert.equal(plan.boundaries[0].before, plan.shards[1].sections[0]);
   // R369-HANDOFF: CI run 41644829616, job 125947334153, P88 cut at 2026-11-03T13:48:55Z.
@@ -58,6 +60,10 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.deepEqual(verdict.problems, []);
   assert.equal(verdict.passed, true);
   assert.equal(verdict.summary.total, golden.total);
+  // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
+  assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
+  assert.equal(golden.total, 4002, 'R369_P353_UNION: 3647 existing assertions plus 355');
+  assert.equal(Object.keys(golden.sections).length, 91);
   assert.equal(verdict.summary.sectionCount, Object.keys(golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });
@@ -220,6 +226,39 @@ test('workflow：canvas 兩片並行、每片仍 35 分鐘，彙總核對收據�
   assert.match(job, /node --test --test-reporter=spec tests\/test_canvas_shards\.js/);
   assert.match(job, /pattern: canvas-shard-\*/);
   assert.match(job, /node geometry-web\/canvas_shards\.js verify --input .* --commit "\$\(git rev-parse HEAD\)" --output /);
+  // Execute the real P353/P359 dispatch statements with inert suite callbacks.
+  // This tests driver routing, not browser behavior or the suites' assertions.
+  const driverFile = path.join(ROOT, 'geometry-web/cdp_test.js');
+  const driver = require(driverFile), driverSource = fs.readFileSync(driverFile, 'utf8');
+  const env = {GEOMETRY_TEST_URL:'http://127.0.0.1:1', GEOMETRY_FEEDBACK_DIR:path.join(os.tmpdir(),'r369-config')};
+  assert.equal(driver.runConfiguration({...env, GEOMETRY_GRID_CARD_ENTRY_ONLY:'1'}).mode, 'partial', 'R369_P353_SCOPE');
+  assert.throws(() => driver.runConfiguration({...env, GEOMETRY_GRID_CARD_ENTRY_ONLY:'1', GEOMETRY_CDP_SHARD:'2/2'}), /one contiguous block/, 'R369_P353_NO_FILTERED_SHARD');
+  assert.throws(() => driver.runConfiguration({...env, GEOMETRY_GRID_CARD_ENTRY_CASE:'C01'}), /requires GEOMETRY_GRID_CARD_ENTRY_ONLY/, 'R369_P353_NO_PARTIAL_FULL');
+  const rows=driverSource.split('\n'), selected=[];
+  for (const moduleName of ['./grid_card_entry_test.js','./definition_import_browser_test.js']) {
+    const hits=rows.flatMap((row,index)=>row.includes("await require('"+moduleName+"')")?[index]:[]);
+    assert.equal(hits.length,1,'R369_P353_DISPATCH_PRESENT: '+moduleName);
+    const index=hits[0], line=rows[index];
+    const statement=/^\s*if\s*\(/.test(line)?line:rows[index-1]+'\n'+line;
+    assert.match(statement,/^\s*if\s*\(/,'R369_P353_GUARDED_DISPATCH');
+    selected.push({index,statement});
+  }
+  selected.sort((a,b)=>a.index-b.index);
+  const dispatch=new (async function(){}).constructor('scope','process','inSequence','require','send','eval_','sleep','click','waitForUI','expectNativeDialog','excN',selected.map(row=>row.statement).join('\n'));
+  const cases=[
+    [{mode:'full'}, {}, ['./grid_card_entry_test.js','./definition_import_browser_test.js']],
+    [{mode:'shard',shard:{index:1}}, {}, []],
+    [{mode:'shard',shard:{index:2}}, {}, ['./grid_card_entry_test.js','./definition_import_browser_test.js']],
+    [{mode:'partial'}, {GEOMETRY_GRID_CARD_ENTRY_ONLY:'1'}, ['./grid_card_entry_test.js']],
+    [{mode:'partial'}, {GEOMETRY_DEFINITION_IMPORT_ONLY:'1'}, ['./definition_import_browser_test.js']],
+    [{mode:'partial'}, {GEOMETRY_PARAMETERS_ONLY:'1'}, []]
+  ];
+  for (const [scope, flags, expected] of cases) {
+    const calls=[],noop=async()=>{};
+    await dispatch(scope,{env:flags},n=>scope.mode==='full'||scope.mode==='shard'&&scope.shard.index===n,
+      name=>async()=>{calls.push(name);},noop,noop,noop,noop,noop,noop,0);
+    assert.deepEqual(calls,expected,'R369_P353_ROUTING: '+JSON.stringify({scope,flags}));
+  }
   // R369-P76: load the real complete P76 module with only its TEMP location
   // redirected. Stop at its first browser call, then exercise the real disk.
   // A fresh second shard has never run P1's screenshot directory creation.
