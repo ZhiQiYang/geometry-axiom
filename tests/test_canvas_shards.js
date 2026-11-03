@@ -197,3 +197,16 @@ test('CLI verify：完整收據 exit 0，缺一片 exit 1，摘要皆寫出', ()
   } finally { fs.rmSync(root, {recursive: true, force: true}); }
 });
 
+test('workflow：canvas 兩片並行、每片仍 35 分鐘，彙總 job 等待全部瀏覽器 job 並核對收據', () => {
+  const workflow = fs.readFileSync(path.join(ROOT, '.github/workflows/integration-tests.yml'), 'utf8').replace(/\r\n/g, '\n');
+  const entries = [...workflow.matchAll(/- suite: canvas\n\s+shard: (\d+)\n\s+timeout: (\d+)/g)].map(m => [Number(m[1]), Number(m[2])]);
+  assert.deepEqual(entries, plan.shards.map(s => [s.index, 35]));
+  assert.ok(!/- suite: canvas\n\s+timeout:/.test(workflow), 'unsharded canvas entry must be gone');
+  assert.match(workflow, /GEOMETRY_CDP_SHARD="\$GEOMETRY_CANVAS_SHARD\/2" node geometry-web\/cdp_test\.js/);
+  const job = workflow.split('\n  browser-canvas-complete:\n')[1];
+  assert.ok(job, 'aggregator job exists');
+  assert.match(job, /\n    needs: browser\n    if: always\(\)\n/);
+  assert.match(job, /node --test --test-reporter=spec tests\/test_canvas_shards\.js/);
+  assert.match(job, /pattern: canvas-shard-\*/);
+  assert.match(job, /node geometry-web\/canvas_shards\.js verify --input .* --commit "\$\(git rev-parse HEAD\)" --output /);
+});
