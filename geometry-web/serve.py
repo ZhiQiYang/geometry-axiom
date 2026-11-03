@@ -54,6 +54,8 @@ POST_MAX_BYTES = {
     "/engineering/preview": 1024 * 1024,
     "/engineering/validate-project": 1024 * 1024,
     "/engineering/read": 1024 * 1024,
+    "/definition-import/read": 16 * 1024 * 1024,
+    "/definition-import/preview": 20 * 1024 * 1024,
     "/sources/snapshot": 1024 * 1024,
     "/scenarios/verify-native": 9 * 1024 * 1024,
     "/scenarios/editor": 1024,
@@ -127,7 +129,7 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("橋接指令不得為空")
     if any(c in cmd for c in "\r\n\0"):
         return err_json("指令不得含換行或 NUL")
-    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file "):
+    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file ", "definition-import-read ", "definition-import-preview "):
         if cmd.startswith(prefix):
             cmd = prefix + to_bridge_path(cmd[len(prefix):])
             break
@@ -664,6 +666,20 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return
         if self.path == "/engineering/read":
             self._send(ask_bridge('engineering-read'))
+            return
+        if self.path == "/definition-import/read":
+            from definition_import_transport import read_request
+            try:
+                self._send(read_request(body, ask_bridge))
+            except OSError:
+                self._send(err_json('無法建立匯入來源暫存檔，場景未變更。'))
+            return
+        if self.path == "/definition-import/preview":
+            from definition_import_transport import preview_request
+            try:
+                self._send(preview_request(body, ask_bridge))
+            except OSError:
+                self._send(err_json('無法建立匯入預覽暫存檔，場景未變更。'))
             return
         if self.path == "/sources/snapshot":
             from source_inspector_transport import snapshot_request

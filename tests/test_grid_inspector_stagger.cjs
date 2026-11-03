@@ -108,12 +108,14 @@ async function run(testContext) {
       const s={mode:'source',source:structuredClone(g),rawOverrides:new Map(),staggerOpen:{u:true,v:false}};
       const field=(id,value)=>{const node=element(String(value));node.dispatchEvent=event=>{if(event.type==='change')refs.delete(id.replace(/Source$/,''));};fields.set(id,node);};
       field('igName','removed');field('igMainAlong','none');
+      for(const id of ['igCard','igCardU','igCardV'])field(id,'');
       for(const a of ['u','v']){const p='ig'+a.toUpperCase(),d=g[a+'Definition'];field(p+'Source',d.source);
         for(const key of ['Phase','Step','Panel','Gap','Anchor','Stagger']){
           const lower=key.toLowerCase();field(p+key,d[lower]??'');field(p+key+'Source',d.parameterRefs?.[lower]?'90:1':'');
           if(d.parameterRefs?.[lower])refs.set(p+key,d.parameterRefs[lower]);
         }}
       const slice=(from,to)=>{const start=source.indexOf(from),end=source.indexOf(to,start);assert.ok(start>=0&&end>start,from);return source.slice(start,end);};
+      const cardSource=slice("  const cardOn=()=>","  const cardOf=");
       const intSource=slice('  const int = (id, title, min = -LIMIT, max = LIMIT) => {','  const signed =');
       const draftSource=slice('  function sourceDraft(s) {','  function anchor(');
       const removeSource=slice('      const a = b.dataset.igRemoveStagger,','\n    };\n    $(\'igSourceForm\')');
@@ -125,7 +127,7 @@ async function run(testContext) {
       vm.runInContext('(function(){'+removeSource+'})()',inputContext);
       assert.equal(fields.get('igUStagger').value,'','GEO263_REMOVE_CLEARS_INPUT');
       assert.equal(refs.has('igUStagger'),false,'GEO263_REMOVE_CLEARS_REFERENCE');
-      const draft=vm.runInContext(intSource+draftSource+'\nsourceDraft(s)',inputContext);
+      const draft=vm.runInContext(cardSource+intSource+draftSource+'\nsourceDraft(s)',inputContext);
       assert.equal(Object.hasOwn(draft.uDefinition,'stagger'),false,'GEO263_SOURCE_DRAFT_MUST_NOT_RESTORE_REMOVED_STAGGER');
       assert.equal(Object.hasOwn(draft.uDefinition.parameterRefs,'stagger'),false);
       const declaration=command(draft,7);assert.ok(!declaration.includes('stagger'),'explicit removal must not copy the old stagger');
