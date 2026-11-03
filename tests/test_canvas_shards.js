@@ -48,6 +48,9 @@ test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍�
   assert.equal(owner.sections.at(-1), 'P359');
   assert.equal(plan.boundaries[0].after, plan.shards[0].sections.at(-1));
   assert.equal(plan.boundaries[0].before, plan.shards[1].sections[0]);
+  // R369-HANDOFF: CI run 41644829616, job 125947334153, P88 cut at 2026-11-03T13:48:55Z.
+  const observed = {"geometry-param-grid-lesson":{"kind":"param-grid-lesson-token"},"geometry-tool-lessons-v1":{"kind":"string-set","values":["canvas:pan","canvas:rect","canvas:select","engineering:first","face:grid","face:guide","face:hole","face:pan","face:redraw","face:select","face:timber","grid:infinite-first"]}};
+  assert.deepEqual(plan.boundaries[0].localStorage, observed, 'R369_HANDOFF_ACTUAL: use the real P88 cut, not estimated lessons');
 });
 
 test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 golden', () => {
@@ -134,6 +137,14 @@ test('執行時的計畫或 golden 與彙總 checkout 不同必紅；golden 多�
   const grown = clone(golden);grown.sections.P999 = 3;grown.total += 3;
   assert.match(shards.validatePlan(plan, grown).join('\n'), /golden 的段 P999 沒有排進任何一片/);
   red(complete(), /分片計畫：golden 的段 P999/, {...context, golden: grown});
+  // R369-DIGEST: exact source bytes, not a copied expected hash.
+  const architecture = JSON.parse(fs.readFileSync(path.join(ROOT, 'geometry-core/domain-decoupling/product-architecture.json'), 'utf8'));
+  for (const relative of ['geometry-web/cdp_test.js', 'geometry-web/parameter_workflow_test.js']) {
+    const entry = architecture.exclusions.find(row => row.path === relative);
+    assert.ok(entry, 'R369_EXCLUSION_PRESENT: ' + relative);
+    assert.equal(entry.hashMode, 'lf');
+    assert.equal(entry.sha256, shards.lfSha256(fs.readFileSync(path.join(ROOT, relative))), 'R369_EXCLUSION_DIGEST: ' + relative);
+  }
   const overlapping = clone(plan);overlapping.shards[1].sections.unshift('P88');
   assert.match(shards.validatePlan(overlapping, golden).join('\n'), /段 P88 重複排在第 1 片與第 2 片/);
 });
@@ -197,7 +208,7 @@ test('CLI verify：完整收據 exit 0，缺一片 exit 1，摘要皆寫出', ()
   } finally { fs.rmSync(root, {recursive: true, force: true}); }
 });
 
-test('workflow：canvas 兩片並行、每片仍 35 分鐘，彙總 job 等待全部瀏覽器 job 並核對收據', () => {
+test('workflow：canvas 兩片並行、每片仍 35 分鐘，彙總核對收據且 P76 自備輸出目錄', async () => {
   const workflow = fs.readFileSync(path.join(ROOT, '.github/workflows/integration-tests.yml'), 'utf8').replace(/\r\n/g, '\n');
   const entries = [...workflow.matchAll(/- suite: canvas\n\s+shard: (\d+)\n\s+timeout: (\d+)/g)].map(m => [Number(m[1]), Number(m[2])]);
   assert.deepEqual(entries, plan.shards.map(s => [s.index, 35]));
@@ -209,4 +220,30 @@ test('workflow：canvas 兩片並行、每片仍 35 分鐘，彙總 job 等待�
   assert.match(job, /node --test --test-reporter=spec tests\/test_canvas_shards\.js/);
   assert.match(job, /pattern: canvas-shard-\*/);
   assert.match(job, /node geometry-web\/canvas_shards\.js verify --input .* --commit "\$\(git rev-parse HEAD\)" --output /);
+  // R369-P76: load the real complete P76 module with only its TEMP location
+  // redirected. Stop at its first browser call, then exercise the real disk.
+  // A fresh second shard has never run P1's screenshot directory creation.
+  const fresh = fs.mkdtempSync(path.join(os.tmpdir(), 'r369-p76-'));
+  const file = path.join(ROOT, 'geometry-web/parameter_workflow_test.js');
+  const requireAtFile = require('node:module').createRequire(file);
+  const moduleObject = {exports: {}};
+  const scopedRequire = name => name === 'os' ? {...os, tmpdir: () => fresh} : requireAtFile(name);
+  const stop = new Error('R369_P76_FIRST_BROWSER_CALL');
+  const calls = [];
+  try {
+    require('node:vm').runInNewContext(fs.readFileSync(file, 'utf8'), {
+      require: scopedRequire, module: moduleObject, Buffer, console: {log() {}}
+    }, {filename: file});
+    await assert.rejects(moduleObject.exports({
+      send: async command => {calls.push(command); throw stop;},
+      eval_: async () => {}, sleep: async () => {}, click: async () => {},
+      waitForUI: async () => {}, exceptionCount: () => 0
+    }), error => error === stop);
+    assert.deepEqual(calls, ['Emulation.setDeviceMetricsOverride']);
+    const target = path.join(fresh, 'geometry-tests', 'parameter-mobile.png');
+    assert.ok(fs.existsSync(path.dirname(target)), 'R369_P76_OUTPUT_DIR: fresh shard owns its screenshot directory');
+    const bytes = Buffer.from('r369-screenshot-io-probe');
+    fs.writeFileSync(target, bytes);
+    assert.deepEqual(fs.readFileSync(target), bytes);
+  } finally { fs.rmSync(fresh, {recursive: true, force: true}); }
 });
