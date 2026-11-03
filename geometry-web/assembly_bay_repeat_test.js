@@ -176,10 +176,39 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
     await danglingReference();await unsupportedTopology();
     await upstreamPointer();await upstreamGrid();await derivedOutlineArchive();
     check('R06_NO_BROWSER_EXCEPTION 正式操作沒有新增未處理例外',exceptionCount()===errors);
+    if(process.env.GEOMETRY_R06_MAIN_INTEGRATION==='1')await integratedArchive();
   }finally{
     if(io)await io.close();
     await read(`(()=>{if(window.__r06FetchOriginal){window.fetch=window.__r06FetchOriginal;delete window.__r06FetchOriginal;}delete window.__r06PreviewLog;})()`);
     await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
+  }
+
+  async function integratedArchive(){
+    console.log('=== R06I 衍生重複開間與裁切合流保存 ===');
+    check('R06_INT_OWNER 正式頁面提供裁切宣告與既有重複開間來源',await read(`typeof CuttingSettings==='object'&&typeof ReferenceWorkspace.setFeatureAttachment==='function'`)===true);
+    const expected={instances:(await state()).instances,scene:await dump(),drafts:await readDrafts()};
+    const cutting={kerf:3,allowance:0,minRemnant:300,stockTypes:[{key:1,name:'R06 integration stock',section:[27,33],material:null,length:3636,endTrim:5}],remnants:[],nextStockKey:2,nextRemnantKey:1};
+    await read(`ReferenceWorkspace.setFeatureAttachment(CuttingSettings.KIND,${JSON.stringify(cutting)},ReferenceWorkspace.getProjectState().contextToken)`);
+    check('R06_INT_SOURCE 裁切宣告不改原生幾何或R41草稿',same(await read(`ReferenceWorkspace.readFeatureAttachment(CuttingSettings.KIND)`),cutting)&&(await dump())===expected.scene&&same(await readDrafts(),expected.drafts));
+    const saved=await io.save(),archive=await unpackFile(saved);
+    check('R06_INT_SAVE 真下載檔同時保存R41來源草稿與裁切設定',saved.completed===true&&saved.size>0&&fs.existsSync(saved.file)&&archive.manifest.format==='geometry-canvas/19'&&['assembly-bay-repeat/1','assembly-timber-generation/1','panel-fill/1','cutting-plan/1'].every(c=>archive.manifest.requiredCapabilities.includes(c))&&archive.scene===expected.scene&&same(archive.manifest.assemblyDrafts.records,expected.drafts)&&same(archive.manifest.featureAttachments.records.find(r=>r.kind==='cutting-settings')?.value,cutting),archive.manifest);
+    const cold=await io.cold();
+    try{
+      await observeOpen(cold);await openAndWait(cold,saved.file);
+      const actual=await cold.read(`Promise.all([apiRequest('assembly-read'),apiRequest('dump')]).then(([a,d])=>({instances:a.state.instances,scene:d.text,drafts:ReferenceWorkspace.getAssemblyDrafts(),cutting:ReferenceWorkspace.readFeatureAttachment(CuttingSettings.KIND),status:$('status')?.textContent||''}))`);
+      check('R06_INT_COLD 新profile新原生服務正式Open保留兩側能力與來源',cold.info.service.session!==cold.info.sourceRuntime.session&&actual.status.includes('已開啟專案')&&same(actual.instances,expected.instances)&&actual.scene===expected.scene&&same(actual.drafts,expected.drafts)&&same(actual.cutting,cutting)&&cold.errors.length===0,{actual,errors:cold.errors});
+      const entries=zip.unzipSync(saved.bytes),manifest=JSON.parse(new TextDecoder().decode(entries['manifest.json']));
+      manifest.requiredCapabilities=manifest.requiredCapabilities.filter(c=>c!=='cutting-plan/1');
+      entries['manifest.json']=new TextEncoder().encode(JSON.stringify(manifest));
+      const stripped=path.join(io.directory,'r06-integration-without-cutting.gcanvas');fs.writeFileSync(stripped,zip.zipSync(entries));
+      await cold.read(`(()=>{window.__r06IntOriginal=window.fetch;window.__r06IntConfirms=0;window.__r06IntPin={context:ReferenceWorkspace.context(),frame:ReferenceWorkspace.history.frame,undo:[...ReferenceWorkspace.history.undo],redo:[...ReferenceWorkspace.history.redo]};window.fetch=function(...args){if(new URL(typeof args[0]==='string'?args[0]:args[0].url,location.href).pathname==='/upload/confirm')window.__r06IntConfirms++;return window.__r06IntOriginal.apply(this,args);};})()`);
+      try{
+        const before=await portableState(cold);await openAndWait(cold,stripped);const after=await portableState(cold);
+        const rejected=await cold.read(`(()=>{const p=window.__r06IntPin,h=ReferenceWorkspace.history;return {confirms:window.__r06IntConfirms,status:$('status')?.textContent||'',cutting:ReferenceWorkspace.readFeatureAttachment(CuttingSettings.KIND),same:p.context===ReferenceWorkspace.context()&&p.frame===h.frame&&p.undo.length===h.undo.length&&p.redo.length===h.redo.length&&p.undo.every((x,i)=>x===h.undo[i])&&p.redo.every((x,i)=>x===h.redo[i])};})()`);
+        check('R06_INT_STRIPPED 剝裁切能力由正式Open拒絕且零confirm與全狀態保全',rejected.confirms===0&&rejected.status.includes('未能完成開啟專案')&&rejected.same&&same(before,after)&&same(rejected.cutting,cutting),rejected);
+      }finally{await cold.read(`(()=>{window.fetch=window.__r06IntOriginal;delete window.__r06IntOriginal;delete window.__r06IntPin;delete window.__r06IntConfirms;})()`);}
+      check('R06_INT_ERRORS 合流保存與冷開沒有新增未處理例外',cold.errors.length===0&&exceptionCount()===errors,{cold:cold.errors,source:exceptionCount()-errors});
+    }finally{await cold.close();}
   }
 
   async function derivedOutlineArchive(){
