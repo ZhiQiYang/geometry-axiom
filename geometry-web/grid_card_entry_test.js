@@ -400,9 +400,12 @@ module.exports = async function gridCardEntryTests({
         state:ReferenceWorkspace.getProjectState()
       }), cursor);
       check(code + '_REJECTED', /能力/.test(observed.message), observed);
-      // Background recovery may read dump after the rejected import finishes.
-      // Its read is allowed; every other command (including any mutation) fails.
-      check(code + '_NO_NATIVE_WRITE', observed.calls.every(row => row.command === 'dump' && row.result?.ok === true), observed.calls);
+      // Background recovery may read dump after the rejected import finishes, and
+      // opening the file menu runs R08's definition-import capability probe
+      // (definition-import.js refreshEntry), a plain engineering-read. Those two
+      // reads are allowed; every other command (including any mutation) fails.
+      const READS_ALLOWED = ['dump', 'engineering-read'];
+      check(code + '_NO_NATIVE_WRITE', observed.calls.every(row => READS_ALLOWED.includes(row.command) && row.result?.ok === true), observed.calls);
       check(code + '_PROJECT_UNCHANGED', same(observed.state,before.state) &&
         (await dump()) === before.world && (await query('engineering-read')).revision === before.nativeRevision &&
         same(await allRaw(),before.drafts) && same(await page(() => ReferenceWorkspace.manifest()),before.metadata) &&
