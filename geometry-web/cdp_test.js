@@ -11,6 +11,7 @@ const {createTransportFailureTrace,installClientTransportTrace} = require('./tra
 let transportFailureTrace;
 const SCOPE_FLAGS = ['GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_ROOM_CANDIDATE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_DEFINITION_IMPORT_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
+SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY');
 /* main() 以 inSequence(n)/notOtherShard(n) 把完整序列切成這麼多個連續區段;canvas_shards.json 的片數必須相同。 */
 const CANVAS_SHARDS=2;
 function runConfiguration(env = process.env) {
@@ -27,6 +28,10 @@ function runConfiguration(env = process.env) {
   if(filters.length>1)throw Error('Choose only one CDP scope flag; combined filters can silently omit every suite');
   if(modifiers.length>1)throw Error('Choose only one engineering workflow modifier');
   if(modifiers.length && env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY!=='1')throw Error('Engineering modifiers require GEOMETRY_ENGINEERING_WORKFLOW_ONLY=1');
+  if(Object.hasOwn(env,'GEOMETRY_GRID_CARD_ENTRY_CASE')){
+    if(env.GEOMETRY_GRID_CARD_ENTRY_ONLY!=='1')throw Error('GEOMETRY_GRID_CARD_ENTRY_CASE requires GEOMETRY_GRID_CARD_ENTRY_ONLY=1; full mode must run all card-entry cases');
+    require('./grid_card_entry_test.js').selectCases(env.GEOMETRY_GRID_CARD_ENTRY_CASE);
+  }
   if(env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES!==undefined){
     const cases=env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES.split(',');
     if(env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY!=='1'||!cases.length||new Set(cases).size!==cases.length||cases.some(id=>!/^C(?:0[1-9]|1[0-6])$/.test(id)))
@@ -489,6 +494,7 @@ async function main() {
   if(process.env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY){
     await runCanvasContextMenu();
   } else {
+  if (!process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY) {
   if (!process.env.GEOMETRY_ROOM_OUTLINE_ONLY && !process.env.GEOMETRY_ROOM_CANDIDATE_ONLY) {
   if (!process.env.GEOMETRY_PARAMETERS_ONLY && !process.env.GEOMETRY_ASSEMBLY_ONLY && !process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY) {
   if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY && !process.env.GEOMETRY_DEFINITION_IMPORT_ONLY && notOtherShard(1)) {
@@ -7259,6 +7265,9 @@ async function main() {
   if(inSequence(2))await require('./model_snapshot_schedule_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if(inSequence(2))await require('./model_snapshot_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if(inSequence(2))await runCanvasContextMenu();
+  }
+  if(inSequence(2)||process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY)
+    await require('./grid_card_entry_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   /* Last on purpose: its fresh reopen wipes origin storage, which would reset state later sections rely on.
      It also stays last in the last canvas shard. */
   if(inSequence(2)||process.env.GEOMETRY_DEFINITION_IMPORT_ONLY)await require('./definition_import_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
