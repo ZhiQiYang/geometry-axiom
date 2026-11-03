@@ -116,6 +116,16 @@
       "count": 4,
       "unit": "node test"
     },
+    "node:identity_context_history": {
+      "mode": "count",
+      "count": 3,
+      "unit": "node test"
+    },
+    "node:identity_recovery_contract": {
+      "mode": "count",
+      "count": 9,
+      "unit": "node test"
+    },
     "node:identity_ledger": {
       "mode": "count",
       "count": 13,
@@ -865,6 +875,26 @@
     "py:test_guide_panels": {
       "mode": "count",
       "count": 1,
+      "unit": "test"
+    },
+    "py:test_identity_host_runtime": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_identity_content_contract": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_identity_ledger_review": {
+      "mode": "count",
+      "count": 19,
+      "unit": "test"
+    },
+    "py:test_identity_ledger_faults": {
+      "mode": "count",
+      "count": 4,
       "unit": "test"
     },
     "py:test_identity_host_gate_shape": {
