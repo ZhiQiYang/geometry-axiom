@@ -704,6 +704,65 @@ MUTANTS += [
 ]
 
 
+# #360 R09a: these are native product mutations, judged by actual g_world
+# transactions. The old JS settleKey probe is not evidence for these rows.
+R09A_REVIEW = "tests.test_identity_ledger_review.IdentityLedgerReview."
+R09A_REBUILD = [R09A_REVIEW + "test_L21_" + route + "_same_key_rebuild"
+               for route in ("engineering", "assembly", "generation", "section")]
+MUTANTS += [
+    dict(id="R09A_N01_ZERO_ID_REOPEN", desc="I70(e)/B1：重加全類型零號拒絕，真新行程保存重開須紅", binary="bridge",
+         file="geometry-app/native/identity_ledger.inc",
+         old="(!id && kind == APP_IDENTITY_BOUNDARY)", new="!id",
+         tests=[R09A_REVIEW + "test_B1_zero_ids_save_and_reopen_in_a_new_process"]),
+    dict(id="R09A_N02_EXPLICIT_DELETE", desc="D60/L21：結算忽略明示刪除，四批次同鍵重建不得沿用", binary="bridge",
+         file="geometry-app/native/identity_ledger.inc",
+         old="bool explicit_delete = identity_explicit_has(explicit_keys, explicit_count, &after_keys[i]);",
+         new="bool explicit_delete = false;", tests=R09A_REBUILD),
+    dict(id="R09A_N03_COUNT_REBIRTH", desc="D61/L21：漏計重建鍵需用的序號，正式高水位斷言須紅", binary="bridge",
+         file="geometry-app/native/identity_ledger.inc",
+         old="bool fresh = !before_on || identity_explicit_has(explicit_keys, explicit_count, &after_keys[i]) || !identity_find_mark(before, &after_keys[i]);",
+         new="bool fresh = !before_on || !identity_find_mark(before, &after_keys[i]);", tests=R09A_REBUILD),
+    dict(id="R09A_N04_PREVIEW_DELETIONS", desc="R56/L21：候選遺失明示刪除集合，四批次確認須紅", binary="bridge",
+         file="geometry-core/transactions.inc",
+         old="AppIdentityCommit commit={g_preview.identity_explicit,g_preview.identity_explicit_count,g_preview.identity_explicit_overflow,false,false};",
+         new="AppIdentityCommit commit={NULL,0,false,false,false};", tests=R09A_REBUILD),
+    dict(id="R09A_N05_PARAMETER_DELETE", desc="D60/L21：parameter_remove漏記卡片明示刪除", binary="bridge",
+         file="geometry-core/parameters.inc", old="identity_note_key(APP_IDENTITY_PARAMETER,id,0);", new="/* mutation: omitted parameter deletion */",
+         tests=R09A_REBUILD),
+    dict(id="R09A_N06_FIELD_DELETE", desc="D60/L21：parameter_retire_field漏記欄位明示刪除", binary="bridge",
+         file="geometry-core/parameters.inc", old="identity_note_key(APP_IDENTITY_FIELD,id,field);", new="/* mutation: omitted field deletion */",
+         tests=R09A_REBUILD),
+    dict(id="R09A_N07_BATCH_SETTLEMENT", desc="I70/L18c：略過批次結算，已確認新卡的記號必缺", binary="bridge",
+         file="geometry-core/transactions.inc", old="const AppIdentityCommit *commit=opaque;",
+         new="const AppIdentityCommit *commit=opaque; if(!commit->scratch)return true;", tests=R09A_REBUILD),
+    dict(id="R09A_N08_LINE_NOOP_RECEIPT", desc="B3：成功同值line謊報新增歷史", binary="bridge",
+         file="geometry-web/web_bridge.c", old='ok&&g_definition_revision!=before_revision?"true":"false"',
+         new='ok?"true":"false"', tests=[R09A_REVIEW + "test_B3_line_noop_receipt_matches_native_undo_active_and_inactive"]),
+    dict(id="R09A_N09_DRAG_NOOP_RECEIPT", desc="B3：零位移drag謊報新增歷史", binary="bridge",
+         file="geometry-web/reference_bridge.inc", old='ok&&g_definition_revision!=before_revision?"true":"false"',
+         new='ok?"true":"false"', tests=[R09A_REVIEW + "test_B3_drag_noop_receipt_does_not_consume_history"]),
+    dict(id="R09A_N10_REPLACEMENT_EPOCH", desc="D61：撤掉成功整體取代清區段，reset/default/load/confirm須紅", binary="bridge",
+         file="geometry-app/native/identity_ledger.inc", old="g_identity_epoch_set = false;", new="/* mutation: stale epoch retained */",
+         tests=[R09A_REVIEW + "test_S1_whole_replacement_clears_epoch_only_on_success"]),
+    dict(id="R09A_N11_DERIVED_COVERAGE", desc="D59：再次排除衍生placement，啟用與保存重開須紅", binary="bridge",
+         file="geometry-app/native/identity_ledger.inc", old="const PlacementSurface *p = world_placement_at(w, i);",
+         new="const PlacementSurface *p = world_placement_at(w, i); if(p->derived_fill_id)continue;",
+         tests=[R09A_REVIEW + "test_S2_derived_placement_covered_and_cold_reopened"]),
+    dict(id="R09A_N12_DERIVED_DELETE", desc="D60：撤掉衍生placement明示刪除，同候選重建須換記號", binary="bridge",
+         file="geometry-core/derived_placements.inc", old="identity_note_key(APP_IDENTITY_PLACEMENT,id,0);",
+         new="/* mutation: omitted derived placement deletion */",
+         tests=[R09A_REVIEW + "test_S2_derived_explicit_delete_rebuild_is_new_incarnation"]),
+    dict(id="R09A_N13_CHANGED_INCLUDES_MARKS", desc="R56/L18i：changed只看去身分定義，重建記號歷史收據須紅", binary="bridge",
+         file="geometry-web/engineering_bridge.inc",
+         old="bool changed=!world_definitions_equal(&g_world,&g_preview.transaction->after)||issued;uint64_t before=g_definition_revision;",
+         new="char old_hash[65],new_hash[65];eng_definition_hash(&g_world,old_hash);eng_definition_hash(&g_preview.transaction->after,new_hash);bool changed=strcmp(old_hash,new_hash)!=0;uint64_t before=g_definition_revision;",
+         tests=R09A_REBUILD),
+    dict(id="R09A_N14_CONTINUED_MARKS", desc="R56/L18j：延續鍵重新取號，內容不變批次與既有記號須紅", binary="bridge",
+         file="geometry-app/native/identity_ledger.inc", old="if (before_on && !explicit_delete && old) {", new="if (false) {",
+         tests=R09A_REBUILD),
+]
+
+
 def run_cmd(cmd, cwd, timeout=120):
     return subprocess.run(cmd, cwd=cwd, capture_output=True,
                           text=True, encoding="utf-8", errors="replace",

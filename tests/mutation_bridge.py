@@ -95,6 +95,19 @@ RESTORED += [
 RESTORED += ['tests.test_geo318_reading_a_native.ReadingANative.test_actual_host_collector_partial_and_i11_wiring_on_explicit_world']
 
 
+# #360 R09a: native judges must pass before and after every official mutation.
+RESTORED += ["tests.test_identity_ledger_review.IdentityLedgerReview." + name for name in [
+    "test_B1_zero_ids_save_and_reopen_in_a_new_process",
+    "test_B3_line_noop_receipt_matches_native_undo_active_and_inactive",
+    "test_B3_drag_noop_receipt_does_not_consume_history",
+    "test_L21_engineering_same_key_rebuild", "test_L21_assembly_same_key_rebuild",
+    "test_L21_generation_same_key_rebuild", "test_L21_section_same_key_rebuild",
+    "test_S1_whole_replacement_clears_epoch_only_on_success",
+    "test_S2_derived_placement_covered_and_cold_reopened",
+    "test_S2_derived_explicit_delete_rebuild_is_new_incarnation",
+]]
+
+
 def sha(data):
     return hashlib.sha256(data).hexdigest()
 
