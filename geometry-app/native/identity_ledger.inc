@@ -1,10 +1,8 @@
 /* Identity ledger (D59–D62, I70–I72, R56–R58). Layer H: coverage skips
  * assembly-owned timbers via assembly_owned(). Epoch and the serial counter
  * are process state, not World fields, so undo restores marks without
- * rewinding the counter. Derived placements (derived_fill_id != 0) are left
- * out of coverage: world_dump_dsl already skips them and world_revalidate
- * recreates them after identity lines. D59 names every placement; that
- * exclusion is an open question, not a settled exception. */
+ * rewinding the counter. D59 includes derived placements; scene replay
+ * reconstructs them before identity_finish_load checks the complete table. */
 static uint8_t g_identity_epoch[16];
 static bool g_identity_epoch_set;
 static bool g_identity_serial_exhausted;
@@ -16,6 +14,12 @@ static bool g_identity_explicit_preview;
 static bool g_identity_explicit_overflow;
 static AppIdentityKey g_identity_explicit[APP_IDENTITY_MARK_CAPACITY];
 static size_t g_identity_explicit_count;
+
+static void identity_clear_epoch(void)
+{
+    memset(g_identity_epoch, 0, sizeof g_identity_epoch);
+    g_identity_epoch_set = false;
+}
 
 static void identity_explicit_reset(void)
 {
@@ -145,7 +149,6 @@ static bool identity_collect(const World *w, AppIdentityKey *keys, size_t *count
         if (!identity_push_key(keys, count, APP_IDENTITY_BOUNDARY, world_boundary_at(w, i)->id, 0)) return false;
     for (size_t i = 0; i < world_placement_count(w); ++i) {
         const PlacementSurface *p = world_placement_at(w, i);
-        if (p->derived_fill_id) continue;
         if (!identity_push_key(keys, count, APP_IDENTITY_PLACEMENT, p->id, 0)) return false;
     }
     for (size_t i = 0; i < w->wood.column_count; ++i)
@@ -458,7 +461,7 @@ static bool apply_identity_line(const char *path, int line_no, char *tokens[], i
     }
     uint32_t id = 0, field_id = 0;
     const char *mark_text = tokens[field ? 4 : 3];
-    if (!parse_u32(tokens[2], &id) || !id || (field && !parse_u32(tokens[3], &field_id))) {
+    if (!parse_u32(tokens[2], &id) || (!id && kind == APP_IDENTITY_BOUNDARY) || (field && !parse_u32(tokens[3], &field_id))) {
         scene_error(path, line_no, "I70: 記號格式不符");
         return false;
     }

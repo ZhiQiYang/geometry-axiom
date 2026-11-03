@@ -923,7 +923,6 @@
         }
         return;
       }
-      if (["engineering-confirm", "assembly-confirm", "section-profile-confirm"].includes(op) && result.history_changed === false) return;
       if (op === "cancel-preview") {this.boundaryPreview = null; return;}
       if (op === "canvas-pos" || op === "preview") return;
       if (op === "history-begin") { this.group = { base: this.snapshot(), dirty: false }; return; }
@@ -956,6 +955,12 @@
           to.push({ ...before, kind: "core" }); if (to.length > this.limit) to.shift();
         }
         this.group = null; return;
+      }
+      // Controls and undo/redo above have their own history semantics. An
+      // ordinary successful no-op has no native frame to pair with ours.
+      if (result.history_changed === false) {
+        if (op === "confirm") this.boundaryPreview = null;
+        return;
       }
       if (command === "reset" || command === "default") { this.undo = []; this.redo = []; this.group = null; this.blockCoreRedo = false; }
       else if (this.group) this.group.dirty = true;
