@@ -92,17 +92,17 @@
       async inspectIdentity(next) {
         const graph = await readIdentityGraph();
         if (current.before?.sourceIdentity) {
-          current.judged = IdentityLedger.judgeRoots(current.before.sourceIdentity, graph.nodes);
+          current.judged = IdentityLedger.judgeRoots(current.before.sourceIdentity, graph);
           if (!IdentityLedger.previewAllowed(withDecisions(current.judged))) throw Error('有來源已不存在、已重建或衝突。請明確移除或改指後再預覽。');
         } else current.judged = null;
         current.builtIdentity = IdentityLedger.buildSourceIdentity({...next.input, boundary_id:next.source?.boundary_id}, graph.nodes);
-        const roots = (current.judged || []).map(root => ({role:root.role, kind:root.kind, id:root.id, before:root.incarnation, current:root.incarnation, status:root.status}));
+        const roots = (current.judged || []).map(root => ({role:root.role, kind:root.kind, id:root.id, before:root.incarnation, current:root.currentIncarnation, status:root.status}));
         return {schema:'geometry-model-update-candidate/2', identity:{ledger:'identity-ledger/1', roots}};
       },
       async confirmIdentity(_review, next) {
         const graph = await readIdentityGraph();
         if (current.before?.sourceIdentity) {
-          const again = IdentityLedger.judgeRoots(current.before.sourceIdentity, graph.nodes);
+          const again = IdentityLedger.judgeRoots(current.before.sourceIdentity, graph);
           const verdict = IdentityLedger.confirmIdentity(current.judged, again);
           if (!verdict.ok) return verdict;
         }
@@ -190,7 +190,7 @@
   }
   function prefilledPlacement(current) {
     if (!current?.ledgerActive || !current.before?.sourceIdentity || !globalThis.IdentityLedger || !current.graph) return null;
-    const judged = IdentityLedger.judgeRoots(current.before.sourceIdentity, current.graph.nodes);
+    const judged = IdentityLedger.judgeRoots(current.before.sourceIdentity, current.graph);
     const placement = IdentityLedger.prefillRoots(judged).find(root => root.role === 'placement');
     if (!placement || !current.surfaces.some(surface => surface.id === placement.id)) return null;
     current.judged = judged;
@@ -199,7 +199,7 @@
   function applyIdentityChoice(current) {
     dialog.querySelector('#muDecisions')?.remove();
     if (!current?.ledgerActive || !current.before?.sourceIdentity || !globalThis.IdentityLedger) return;
-    const judged = IdentityLedger.judgeRoots(current.before.sourceIdentity, current.graph.nodes);
+    const judged = IdentityLedger.judgeRoots(current.before.sourceIdentity, current.graph);
     current.judged = judged;
     const picked = new Set(IdentityLedger.prefillRoots(judged).map(root => root.kind + ':' + root.id));
     const sameSurface = current.before.input?.placement_id === current.surface.id;

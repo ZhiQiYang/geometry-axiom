@@ -122,7 +122,7 @@
     let ledger=typeof IdentityLedger!=='undefined'&&IdentityLedger?IdentityLedger:null;
     if(!ledger&&typeof module==='object'&&module.exports)ledger=require('./identity-ledger.js');
     if(!ledger||typeof ledger.judgeRoots!=='function')return {token:'unknown',text:'物件延續性未知',listed:[]};
-    return ledger.continuitySummary({roots:ledger.judgeRoots(record.sourceIdentity,graph?.nodes||null)});
+    return ledger.continuitySummary({roots:ledger.judgeRoots(record.sourceIdentity,graph||null)});
   }
   function deriveModelSchedule(record,result,timberSchedule,project){
     if(typeof project?.validateSpaceModel!=='function'||typeof timberSchedule?.derive!=='function')throw Error('保存快照料單能力尚未核對。');

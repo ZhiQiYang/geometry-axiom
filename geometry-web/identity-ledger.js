@@ -21,6 +21,8 @@
 
   const SCHEMA = "model-source-identity/1";
   const MARK = /^[a-f0-9]{32}:[1-9][0-9]*$/;
+  const validMark = value => typeof value === 'string' && MARK.test(value) &&
+    value.length <= 53 && BigInt(value.slice(33)) <= 18446744073709551615n;
   const STATUSES = ["unknown", "conflict", "absent", "replaced", "continuous"];
   const fail = (code, message) => { throw Object.assign(new Error(message), {code}); };
   const copy = value => JSON.parse(JSON.stringify(value));
@@ -51,7 +53,7 @@
     const uncovered = Object.hasOwn(root, "uncovered");
     if (uncovered) {
       if (root.uncovered !== "assembly-owned" || root.kind !== "timber" || root.incarnation !== null) return false;
-    } else if (typeof root.incarnation !== "string" || !MARK.test(root.incarnation)) return false;
+    } else if (!validMark(root.incarnation)) return false;
     if (Object.hasOwn(root, "fieldId") && (!Number.isSafeInteger(root.fieldId) || root.fieldId < 0)) return false;
     if (Object.hasOwn(root, "status") && !STATUSES.includes(root.status)) return false;
     return true;
@@ -100,20 +102,29 @@
   }
 
   function judgeRoots(identity, live) {
+    // Product callers pass the complete pinned graph so R57's active-state
+    // guard precedes every per-key test. A direct Map is an already active
+    // ledger view used by the pure adapter tests.
+    const graph = live && live.nodes ? live : null;
+    const active = graph ? graph.data?.identityLedger?.schema === 'identity-ledger/1' &&
+      graph.data.identityLedger.active === true : !!live;
+    const current = graph ? graph.nodes : live;
+    const entries = current && typeof current.entries === 'function' ? [...current.entries()] : Object.entries(current || {});
     const roots = identity?.roots || [];
     return roots.map(root => {
       const savedId = root.id;
-      if (!rootValid(root) || root.incarnation == null || root.uncovered) {
-        return {...copy(root), id: savedId, status: "unknown", confirmed: false};
+      const node = liveOf(current, root);
+      const currentIncarnation = validMark(node?.incarnation) ? node.incarnation : null;
+      if (!active || !rootValid(root) || root.incarnation == null || root.uncovered) {
+        return {...copy(root), id: savedId, currentIncarnation, status: "unknown", confirmed: false};
       }
-      const node = liveOf(live, root);
       let status = "absent";
-      if (node?.conflict === true) status = "conflict";
+      if (node?.conflict === true || entries.some(([key, value]) => key !== liveKey(root) && value?.incarnation === root.incarnation)) status = "conflict";
       else if (node && node.incarnation == null) status = "unknown";
       else if (node && node.incarnation === root.incarnation) status = "continuous";
       else if (node) status = "replaced";
       const livePin = node?.definitionFingerprint || node?.definitionPin || null;
-      return {...copy(root), id: savedId, status, definitionPin: livePin, previousDefinitionPin: root.definitionPin ?? null, confirmed: false};
+      return {...copy(root), id: savedId, currentIncarnation, status, definitionPin: livePin, previousDefinitionPin: root.definitionPin ?? null, confirmed: false};
     });
   }
 
@@ -137,6 +148,9 @@
     if (!Array.isArray(reviewed) || !Array.isArray(live) || reviewed.length !== live.length) return {ok: false, code: "STALE"};
     for (let i = 0; i < reviewed.length; i += 1) {
       if (reviewed[i].status !== live[i].status || reviewed[i].incarnation !== live[i].incarnation || reviewed[i].id !== live[i].id) return {ok: false, code: "STALE"};
+      if (['role','kind','fieldId'].some(key => reviewed[i][key] !== live[i][key])) return {ok: false, code: "STALE"};
+      const observed = root => Object.hasOwn(root,'currentIncarnation') ? root.currentIncarnation : root.incarnation;
+      if (observed(reviewed[i]) !== observed(live[i])) return {ok: false, code: "STALE"};
     }
     return {ok: true};
   }
@@ -176,7 +190,7 @@
         if (root.kind === "timber") fail("UNSUPPORTED", "faces＋timbers 與 assembly-owned 首版不支援");
         fail("MODEL_IDENTITY", "這個根沒有存在期記號，不能寫入來源身分。");
       }
-      if (typeof node.incarnation !== "string" || !MARK.test(node.incarnation)) fail("MODEL_IDENTITY", "存在期記號不合法。");
+      if (!validMark(node.incarnation)) fail("MODEL_IDENTITY", "存在期記號不合法。");
       const definitionPin = node.definitionFingerprint || node.definitionPin || null;
       return {...root, incarnation: node.incarnation, ...(definitionPin ? {definitionPin} : {})};
     });
