@@ -3743,6 +3743,12 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-web/canvas_shards.js",
+      "reason": "Dedicated CI test driver canvas_shards.js: canvas browser-shard plan, cut-point storage handoff and complete-coverage receipt verifier, loaded only by cdp_test.js shard mode, the CI complete-coverage job and tests/test_canvas_shards.js; not loaded by product runtime or served application entry points.",
+      "sha256": "57cf679ead32795891c20b10f3a8aba263724bdcf58d1376010792b3c2d40d71",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-web/browser_mutation_check.py",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
       "sha256": "7ad42d2ef3ad9e3b35dd463dbf0e963a6afc961c583cc4d7faca419b110015db",
