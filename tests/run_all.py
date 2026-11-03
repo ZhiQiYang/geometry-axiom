@@ -86,6 +86,7 @@ PY_NEEDS = {
     'test_engineering_model_sources': ['bridge', 'model-base'],
     'test_engineering_transport': [],
     'test_evidence_link_native': ['bridge'],
+    'test_evidence_contract_mutations': [],
     'test_feedback_store': [],
     'test_gdi_contract': ['gdi'],
     # These suites build isolated K objects and their actual product witness;
