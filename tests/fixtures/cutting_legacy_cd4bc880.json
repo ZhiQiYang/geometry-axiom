@@ -1156,3 +1156,378 @@
       "id": "original-end",
       "inputSha256": "d62a5ea87cdb361f702774cfb558909e160e8093914ebad0a9b849b9c983a2c6",
       "plan": "{\"status\":\"COMPLETE\",\"diagnostics\":[],\"worldFingerprint\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"settingsFingerprint\":\"2debe2c0f55c6124a9134303840432a4fd4ad8892a296fb612cf06578c79f9a1\",\"label\":\"本次找到的方案\",\"groups\":[{\"stockTypeKey\":1,\"stockType\":{\"key\":1,\"name\":\"試用料\",\"section\":[27,33],\"material\":null,\"length\":3000,\"endTrim\":0},\"kerf\":3,\"newStockCount\":1,\"stocks\":[{\"label\":\"S1-N1\",\"length\":3000,\"headTrim\":0,\"tailTrim\":0,\"pieces\":[{\"timberId\":1,\"surface\":1,\"L\":1500,\"allowance\":0,\"C\":1500,\"seq\":1,\"start\":0,\"end\":1500},{\"timberId\":2,\"surface\":1,\"L\":1497,\"allowance\":0,\"C\":1497,\"seq\":2,\"start\":1503,\"end\":3000}],\"tail\":{\"kind\":\"none\",\"consumed\":0,\"cuts\":0},\"cuts\":1,\"leftover\":null}],\"unusedRemnants\":[],\"kerfLoss\":3,\"trimLoss\":0}]}",
+      "csv": "﻿\"row_kind\",\"plan_status\",\"plan_label\",\"world_fingerprint\",\"settings_fingerprint\",\"stock_type_key\",\"stock_type_name\",\"section_mm\",\"material_id\",\"material_version\",\"material_fingerprint\",\"stock_label\",\"stock_length_mm\",\"head_trim_mm\",\"tail_trim_mm\",\"kerf_mm\",\"seq\",\"timber_id\",\"surface_id\",\"finished_length_mm\",\"allowance_mm\",\"cut_length_mm\",\"start_mm\",\"end_mm\",\"tail_kind\",\"tail_consumed_mm\",\"cuts\",\"leftover_mm\",\"leftover_usable_mm\",\"leftover_class\"\r\n\"piece\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"2debe2c0f55c6124a9134303840432a4fd4ad8892a296fb612cf06578c79f9a1\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3000\",\"0\",\"0\",\"3\",\"1\",\"1\",\"1\",\"1500\",\"0\",\"1500\",\"0\",\"1500\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n\"piece\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"2debe2c0f55c6124a9134303840432a4fd4ad8892a296fb612cf06578c79f9a1\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3000\",\"0\",\"0\",\"3\",\"2\",\"2\",\"1\",\"1497\",\"0\",\"1497\",\"1503\",\"3000\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n\"end\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"2debe2c0f55c6124a9134303840432a4fd4ad8892a296fb612cf06578c79f9a1\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3000\",\"0\",\"0\",\"3\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"none\",\"0\",\"1\",\"\",\"\",\"\"\r\n",
+      "nativeRows": [
+        {
+          "kind": "timber",
+          "id": 1,
+          "surface": 1,
+          "role": "primary",
+          "A": 27,
+          "B": 33,
+          "L": 1500,
+          "dir": "+v",
+          "side": "+n",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "finish": [
+            0,
+            1500,
+            0
+          ],
+          "anchor": "未提供",
+          "selector": "依 R6 自動推導；支撐身分未提供",
+          "sources": [],
+          "assembly": null,
+          "sourceFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "kind": "timber",
+          "id": 2,
+          "surface": 1,
+          "role": "primary",
+          "A": 27,
+          "B": 33,
+          "L": 1497,
+          "dir": "+v",
+          "side": "+n",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "finish": [
+            0,
+            1497,
+            0
+          ],
+          "anchor": "未提供",
+          "selector": "依 R6 自動推導；支撐身分未提供",
+          "sources": [],
+          "assembly": null,
+          "sourceFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "short-last-kerf",
+      "inputSha256": "efaa00d99a8781f17827a6aafd1eff848e2c1f8a61f52d204878978607870a9e",
+      "plan": "{\"status\":\"COMPLETE\",\"diagnostics\":[],\"worldFingerprint\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"settingsFingerprint\":\"2debe2c0f55c6124a9134303840432a4fd4ad8892a296fb612cf06578c79f9a1\",\"label\":\"本次找到的方案\",\"groups\":[{\"stockTypeKey\":1,\"stockType\":{\"key\":1,\"name\":\"試用料\",\"section\":[27,33],\"material\":null,\"length\":3000,\"endTrim\":0},\"kerf\":3,\"newStockCount\":1,\"stocks\":[{\"label\":\"S1-N1\",\"length\":3000,\"headTrim\":0,\"tailTrim\":0,\"pieces\":[{\"timberId\":1,\"surface\":1,\"L\":1500,\"allowance\":0,\"C\":1500,\"seq\":1,\"start\":0,\"end\":1500},{\"timberId\":2,\"surface\":1,\"L\":1496,\"allowance\":0,\"C\":1496,\"seq\":2,\"start\":1503,\"end\":2999}],\"tail\":{\"kind\":\"separate\",\"consumed\":1,\"cuts\":1},\"cuts\":2,\"leftover\":null}],\"unusedRemnants\":[],\"kerfLoss\":4,\"trimLoss\":0}]}",
+      "csv": "﻿\"row_kind\",\"plan_status\",\"plan_label\",\"world_fingerprint\",\"settings_fingerprint\",\"stock_type_key\",\"stock_type_name\",\"section_mm\",\"material_id\",\"material_version\",\"material_fingerprint\",\"stock_label\",\"stock_length_mm\",\"head_trim_mm\",\"tail_trim_mm\",\"kerf_mm\",\"seq\",\"timber_id\",\"surface_id\",\"finished_length_mm\",\"allowance_mm\",\"cut_length_mm\",\"start_mm\",\"end_mm\",\"tail_kind\",\"tail_consumed_mm\",\"cuts\",\"leftover_mm\",\"leftover_usable_mm\",\"leftover_class\"\r\n\"piece\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"2debe2c0f55c6124a9134303840432a4fd4ad8892a296fb612cf06578c79f9a1\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3000\",\"0\",\"0\",\"3\",\"1\",\"1\",\"1\",\"1500\",\"0\",\"1500\",\"0\",\"1500\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n\"piece\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"2debe2c0f55c6124a9134303840432a4fd4ad8892a296fb612cf06578c79f9a1\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3000\",\"0\",\"0\",\"3\",\"2\",\"2\",\"1\",\"1496\",\"0\",\"1496\",\"1503\",\"2999\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n\"end\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"2debe2c0f55c6124a9134303840432a4fd4ad8892a296fb612cf06578c79f9a1\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3000\",\"0\",\"0\",\"3\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"separate\",\"1\",\"2\",\"\",\"\",\"\"\r\n",
+      "nativeRows": [
+        {
+          "kind": "timber",
+          "id": 1,
+          "surface": 1,
+          "role": "primary",
+          "A": 27,
+          "B": 33,
+          "L": 1500,
+          "dir": "+v",
+          "side": "+n",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "finish": [
+            0,
+            1500,
+            0
+          ],
+          "anchor": "未提供",
+          "selector": "依 R6 自動推導；支撐身分未提供",
+          "sources": [],
+          "assembly": null,
+          "sourceFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "kind": "timber",
+          "id": 2,
+          "surface": 1,
+          "role": "primary",
+          "A": 27,
+          "B": 33,
+          "L": 1496,
+          "dir": "+v",
+          "side": "+n",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "finish": [
+            0,
+            1496,
+            0
+          ],
+          "anchor": "未提供",
+          "selector": "依 R6 自動推導；支撐身分未提供",
+          "sources": [],
+          "assembly": null,
+          "sourceFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "normal-last-kerf",
+      "inputSha256": "a4f0bf752fbd5ec4e1526eb3331f9e711a60dbc985cff0ef74716caa8d763d41",
+      "plan": "{\"status\":\"COMPLETE\",\"diagnostics\":[],\"worldFingerprint\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"settingsFingerprint\":\"2debe2c0f55c6124a9134303840432a4fd4ad8892a296fb612cf06578c79f9a1\",\"label\":\"本次找到的方案\",\"groups\":[{\"stockTypeKey\":1,\"stockType\":{\"key\":1,\"name\":\"試用料\",\"section\":[27,33],\"material\":null,\"length\":3000,\"endTrim\":0},\"kerf\":3,\"newStockCount\":1,\"stocks\":[{\"label\":\"S1-N1\",\"length\":3000,\"headTrim\":0,\"tailTrim\":0,\"pieces\":[{\"timberId\":1,\"surface\":1,\"L\":1500,\"allowance\":0,\"C\":1500,\"seq\":1,\"start\":0,\"end\":1500},{\"timberId\":2,\"surface\":1,\"L\":1490,\"allowance\":0,\"C\":1490,\"seq\":2,\"start\":1503,\"end\":2993}],\"tail\":{\"kind\":\"separate\",\"consumed\":3,\"cuts\":1},\"cuts\":2,\"leftover\":{\"length\":4,\"usable\":4,\"class\":\"waste\"}}],\"unusedRemnants\":[],\"kerfLoss\":6,\"trimLoss\":0}]}",
+      "csv": "﻿\"row_kind\",\"plan_status\",\"plan_label\",\"world_fingerprint\",\"settings_fingerprint\",\"stock_type_key\",\"stock_type_name\",\"section_mm\",\"material_id\",\"material_version\",\"material_fingerprint\",\"stock_label\",\"stock_length_mm\",\"head_trim_mm\",\"tail_trim_mm\",\"kerf_mm\",\"seq\",\"timber_id\",\"surface_id\",\"finished_length_mm\",\"allowance_mm\",\"cut_length_mm\",\"start_mm\",\"end_mm\",\"tail_kind\",\"tail_consumed_mm\",\"cuts\",\"leftover_mm\",\"leftover_usable_mm\",\"leftover_class\"\r\n\"piece\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"2debe2c0f55c6124a9134303840432a4fd4ad8892a296fb612cf06578c79f9a1\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3000\",\"0\",\"0\",\"3\",\"1\",\"1\",\"1\",\"1500\",\"0\",\"1500\",\"0\",\"1500\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n\"piece\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"2debe2c0f55c6124a9134303840432a4fd4ad8892a296fb612cf06578c79f9a1\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3000\",\"0\",\"0\",\"3\",\"2\",\"2\",\"1\",\"1490\",\"0\",\"1490\",\"1503\",\"2993\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n\"end\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"2debe2c0f55c6124a9134303840432a4fd4ad8892a296fb612cf06578c79f9a1\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3000\",\"0\",\"0\",\"3\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"separate\",\"3\",\"2\",\"4\",\"4\",\"waste\"\r\n",
+      "nativeRows": [
+        {
+          "kind": "timber",
+          "id": 1,
+          "surface": 1,
+          "role": "primary",
+          "A": 27,
+          "B": 33,
+          "L": 1500,
+          "dir": "+v",
+          "side": "+n",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "finish": [
+            0,
+            1500,
+            0
+          ],
+          "anchor": "未提供",
+          "selector": "依 R6 自動推導；支撐身分未提供",
+          "sources": [],
+          "assembly": null,
+          "sourceFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "kind": "timber",
+          "id": 2,
+          "surface": 1,
+          "role": "primary",
+          "A": 27,
+          "B": 33,
+          "L": 1490,
+          "dir": "+v",
+          "side": "+n",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "finish": [
+            0,
+            1490,
+            0
+          ],
+          "anchor": "未提供",
+          "selector": "依 R6 自動推導；支撐身分未提供",
+          "sources": [],
+          "assembly": null,
+          "sourceFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "remnant-threshold-equal",
+      "inputSha256": "4001753c9021f8d8adab875c81b2f8859aa9dbbef5f76194adb96e017e2e8504",
+      "plan": "{\"status\":\"COMPLETE\",\"diagnostics\":[],\"worldFingerprint\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"settingsFingerprint\":\"9bfe3036515aac3640d1f5bc174049ea547bf1bbc5f8507bda5b8fd0fa899f93\",\"label\":\"本次找到的方案\",\"groups\":[{\"stockTypeKey\":1,\"stockType\":{\"key\":1,\"name\":\"試用料\",\"section\":[27,33],\"material\":null,\"length\":3636,\"endTrim\":5},\"kerf\":3,\"newStockCount\":1,\"stocks\":[{\"label\":\"S1-N1\",\"length\":3636,\"headTrim\":5,\"tailTrim\":5,\"pieces\":[{\"timberId\":1,\"surface\":1,\"L\":3323,\"allowance\":0,\"C\":3323,\"seq\":1,\"start\":5,\"end\":3328}],\"tail\":{\"kind\":\"separate\",\"consumed\":3,\"cuts\":1},\"cuts\":2,\"leftover\":{\"length\":305,\"usable\":300,\"class\":\"reusable\"}}],\"unusedRemnants\":[],\"kerfLoss\":3,\"trimLoss\":5}]}",
+      "csv": "﻿\"row_kind\",\"plan_status\",\"plan_label\",\"world_fingerprint\",\"settings_fingerprint\",\"stock_type_key\",\"stock_type_name\",\"section_mm\",\"material_id\",\"material_version\",\"material_fingerprint\",\"stock_label\",\"stock_length_mm\",\"head_trim_mm\",\"tail_trim_mm\",\"kerf_mm\",\"seq\",\"timber_id\",\"surface_id\",\"finished_length_mm\",\"allowance_mm\",\"cut_length_mm\",\"start_mm\",\"end_mm\",\"tail_kind\",\"tail_consumed_mm\",\"cuts\",\"leftover_mm\",\"leftover_usable_mm\",\"leftover_class\"\r\n\"piece\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"9bfe3036515aac3640d1f5bc174049ea547bf1bbc5f8507bda5b8fd0fa899f93\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3636\",\"5\",\"5\",\"3\",\"1\",\"1\",\"1\",\"3323\",\"0\",\"3323\",\"5\",\"3328\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n\"end\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"9bfe3036515aac3640d1f5bc174049ea547bf1bbc5f8507bda5b8fd0fa899f93\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3636\",\"5\",\"5\",\"3\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"separate\",\"3\",\"2\",\"305\",\"300\",\"reusable\"\r\n",
+      "nativeRows": [
+        {
+          "kind": "timber",
+          "id": 1,
+          "surface": 1,
+          "role": "primary",
+          "A": 27,
+          "B": 33,
+          "L": 3323,
+          "dir": "+v",
+          "side": "+n",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "finish": [
+            0,
+            3323,
+            0
+          ],
+          "anchor": "未提供",
+          "selector": "依 R6 自動推導；支撐身分未提供",
+          "sources": [],
+          "assembly": null,
+          "sourceFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "remnant-threshold-below",
+      "inputSha256": "6811380d688e98c6a9eb68e5373a89c7fe216e19bb01a7c9c2e5c7d04cd8504d",
+      "plan": "{\"status\":\"COMPLETE\",\"diagnostics\":[],\"worldFingerprint\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"settingsFingerprint\":\"9bfe3036515aac3640d1f5bc174049ea547bf1bbc5f8507bda5b8fd0fa899f93\",\"label\":\"本次找到的方案\",\"groups\":[{\"stockTypeKey\":1,\"stockType\":{\"key\":1,\"name\":\"試用料\",\"section\":[27,33],\"material\":null,\"length\":3636,\"endTrim\":5},\"kerf\":3,\"newStockCount\":1,\"stocks\":[{\"label\":\"S1-N1\",\"length\":3636,\"headTrim\":5,\"tailTrim\":5,\"pieces\":[{\"timberId\":1,\"surface\":1,\"L\":3324,\"allowance\":0,\"C\":3324,\"seq\":1,\"start\":5,\"end\":3329}],\"tail\":{\"kind\":\"separate\",\"consumed\":3,\"cuts\":1},\"cuts\":2,\"leftover\":{\"length\":304,\"usable\":299,\"class\":\"waste\"}}],\"unusedRemnants\":[],\"kerfLoss\":3,\"trimLoss\":5}]}",
+      "csv": "﻿\"row_kind\",\"plan_status\",\"plan_label\",\"world_fingerprint\",\"settings_fingerprint\",\"stock_type_key\",\"stock_type_name\",\"section_mm\",\"material_id\",\"material_version\",\"material_fingerprint\",\"stock_label\",\"stock_length_mm\",\"head_trim_mm\",\"tail_trim_mm\",\"kerf_mm\",\"seq\",\"timber_id\",\"surface_id\",\"finished_length_mm\",\"allowance_mm\",\"cut_length_mm\",\"start_mm\",\"end_mm\",\"tail_kind\",\"tail_consumed_mm\",\"cuts\",\"leftover_mm\",\"leftover_usable_mm\",\"leftover_class\"\r\n\"piece\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"9bfe3036515aac3640d1f5bc174049ea547bf1bbc5f8507bda5b8fd0fa899f93\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3636\",\"5\",\"5\",\"3\",\"1\",\"1\",\"1\",\"3324\",\"0\",\"3324\",\"5\",\"3329\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n\"end\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"9bfe3036515aac3640d1f5bc174049ea547bf1bbc5f8507bda5b8fd0fa899f93\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3636\",\"5\",\"5\",\"3\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"separate\",\"3\",\"2\",\"304\",\"299\",\"waste\"\r\n",
+      "nativeRows": [
+        {
+          "kind": "timber",
+          "id": 1,
+          "surface": 1,
+          "role": "primary",
+          "A": 27,
+          "B": 33,
+          "L": 3324,
+          "dir": "+v",
+          "side": "+n",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "finish": [
+            0,
+            3324,
+            0
+          ],
+          "anchor": "未提供",
+          "selector": "依 R6 自動推導；支撐身分未提供",
+          "sources": [],
+          "assembly": null,
+          "sourceFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "usable-zero",
+      "inputSha256": "2e6f1f1885db3fda9008155fdd30e671b54ca02f7a47054b13d5486e200a9fd9",
+      "plan": "{\"status\":\"COMPLETE\",\"diagnostics\":[],\"worldFingerprint\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"settingsFingerprint\":\"5287625864a0e86deef5c50a731997987fd01b3db0ff46ffcaf47c3a1095f3c0\",\"label\":\"本次找到的方案\",\"groups\":[{\"stockTypeKey\":1,\"stockType\":{\"key\":1,\"name\":\"試用料\",\"section\":[27,33],\"material\":null,\"length\":3000,\"endTrim\":5},\"kerf\":3,\"newStockCount\":1,\"stocks\":[{\"label\":\"S1-N1\",\"length\":3000,\"headTrim\":5,\"tailTrim\":5,\"pieces\":[{\"timberId\":1,\"surface\":1,\"L\":2989,\"allowance\":0,\"C\":2989,\"seq\":1,\"start\":5,\"end\":2994}],\"tail\":{\"kind\":\"separate\",\"consumed\":3,\"cuts\":1},\"cuts\":2,\"leftover\":{\"length\":3,\"usable\":0,\"class\":\"waste\"}}],\"unusedRemnants\":[],\"kerfLoss\":3,\"trimLoss\":5}]}",
+      "csv": "﻿\"row_kind\",\"plan_status\",\"plan_label\",\"world_fingerprint\",\"settings_fingerprint\",\"stock_type_key\",\"stock_type_name\",\"section_mm\",\"material_id\",\"material_version\",\"material_fingerprint\",\"stock_label\",\"stock_length_mm\",\"head_trim_mm\",\"tail_trim_mm\",\"kerf_mm\",\"seq\",\"timber_id\",\"surface_id\",\"finished_length_mm\",\"allowance_mm\",\"cut_length_mm\",\"start_mm\",\"end_mm\",\"tail_kind\",\"tail_consumed_mm\",\"cuts\",\"leftover_mm\",\"leftover_usable_mm\",\"leftover_class\"\r\n\"piece\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"5287625864a0e86deef5c50a731997987fd01b3db0ff46ffcaf47c3a1095f3c0\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3000\",\"5\",\"5\",\"3\",\"1\",\"1\",\"1\",\"2989\",\"0\",\"2989\",\"5\",\"2994\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n\"end\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"5287625864a0e86deef5c50a731997987fd01b3db0ff46ffcaf47c3a1095f3c0\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3000\",\"5\",\"5\",\"3\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"separate\",\"3\",\"2\",\"3\",\"0\",\"waste\"\r\n",
+      "nativeRows": [
+        {
+          "kind": "timber",
+          "id": 1,
+          "surface": 1,
+          "role": "primary",
+          "A": 27,
+          "B": 33,
+          "L": 2989,
+          "dir": "+v",
+          "side": "+n",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "finish": [
+            0,
+            2989,
+            0
+          ],
+          "anchor": "未提供",
+          "selector": "依 R6 自動推導；支撐身分未提供",
+          "sources": [],
+          "assembly": null,
+          "sourceFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "explicit-allowance",
+      "inputSha256": "5a5eb73aa12d11c35037602cfd787c6434f352fc51df5f0d9a5a7993c6cb0784",
+      "plan": "{\"status\":\"COMPLETE\",\"diagnostics\":[],\"worldFingerprint\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"settingsFingerprint\":\"f705041bef4430d8afcf57afa61a4c11f14d74e4f6c9144f18c6b738d9451904\",\"label\":\"本次找到的方案\",\"groups\":[{\"stockTypeKey\":1,\"stockType\":{\"key\":1,\"name\":\"試用料\",\"section\":[27,33],\"material\":null,\"length\":3636,\"endTrim\":5},\"kerf\":3,\"newStockCount\":1,\"stocks\":[{\"label\":\"S1-N1\",\"length\":3636,\"headTrim\":5,\"tailTrim\":5,\"pieces\":[{\"timberId\":1,\"surface\":1,\"L\":890,\"allowance\":10,\"C\":900,\"seq\":1,\"start\":5,\"end\":905}],\"tail\":{\"kind\":\"separate\",\"consumed\":3,\"cuts\":1},\"cuts\":2,\"leftover\":{\"length\":2728,\"usable\":2723,\"class\":\"reusable\"}}],\"unusedRemnants\":[],\"kerfLoss\":3,\"trimLoss\":5}]}",
+      "csv": "﻿\"row_kind\",\"plan_status\",\"plan_label\",\"world_fingerprint\",\"settings_fingerprint\",\"stock_type_key\",\"stock_type_name\",\"section_mm\",\"material_id\",\"material_version\",\"material_fingerprint\",\"stock_label\",\"stock_length_mm\",\"head_trim_mm\",\"tail_trim_mm\",\"kerf_mm\",\"seq\",\"timber_id\",\"surface_id\",\"finished_length_mm\",\"allowance_mm\",\"cut_length_mm\",\"start_mm\",\"end_mm\",\"tail_kind\",\"tail_consumed_mm\",\"cuts\",\"leftover_mm\",\"leftover_usable_mm\",\"leftover_class\"\r\n\"piece\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"f705041bef4430d8afcf57afa61a4c11f14d74e4f6c9144f18c6b738d9451904\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3636\",\"5\",\"5\",\"3\",\"1\",\"1\",\"1\",\"890\",\"10\",\"900\",\"5\",\"905\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n\"end\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"f705041bef4430d8afcf57afa61a4c11f14d74e4f6c9144f18c6b738d9451904\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"S1-N1\",\"3636\",\"5\",\"5\",\"3\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"separate\",\"3\",\"2\",\"2728\",\"2723\",\"reusable\"\r\n",
+      "nativeRows": [
+        {
+          "kind": "timber",
+          "id": 1,
+          "surface": 1,
+          "role": "primary",
+          "A": 27,
+          "B": 33,
+          "L": 890,
+          "dir": "+v",
+          "side": "+n",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "finish": [
+            0,
+            890,
+            0
+          ],
+          "anchor": "未提供",
+          "selector": "依 R6 自動推導；支撐身分未提供",
+          "sources": [],
+          "assembly": null,
+          "sourceFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "smallest-remnant-first",
+      "inputSha256": "d1b920f58a5e63e7120982d5a59d3b518507f133ebdc796f3b818dd79958d80f",
+      "plan": "{\"status\":\"COMPLETE\",\"diagnostics\":[],\"worldFingerprint\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"settingsFingerprint\":\"b706f15d1e2f5c9fa646d5b4e718ba2a71ca079b95c12bbfa4b6ba77d7d0560d\",\"label\":\"本次找到的方案\",\"groups\":[{\"stockTypeKey\":1,\"stockType\":{\"key\":1,\"name\":\"試用料\",\"section\":[27,33],\"material\":null,\"length\":3636,\"endTrim\":5},\"kerf\":3,\"newStockCount\":0,\"stocks\":[{\"label\":\"R2\",\"length\":600,\"headTrim\":0,\"tailTrim\":5,\"pieces\":[{\"timberId\":2,\"surface\":1,\"L\":590,\"allowance\":0,\"C\":590,\"seq\":1,\"start\":0,\"end\":590}],\"tail\":{\"kind\":\"separate\",\"consumed\":3,\"cuts\":1},\"cuts\":1,\"leftover\":{\"length\":7,\"usable\":2,\"class\":\"waste\"}},{\"label\":\"R1\",\"length\":1000,\"headTrim\":0,\"tailTrim\":5,\"pieces\":[{\"timberId\":1,\"surface\":1,\"L\":900,\"allowance\":0,\"C\":900,\"seq\":1,\"start\":0,\"end\":900}],\"tail\":{\"kind\":\"separate\",\"consumed\":3,\"cuts\":1},\"cuts\":1,\"leftover\":{\"length\":97,\"usable\":92,\"class\":\"waste\"}}],\"unusedRemnants\":[],\"kerfLoss\":6,\"trimLoss\":0}]}",
+      "csv": "﻿\"row_kind\",\"plan_status\",\"plan_label\",\"world_fingerprint\",\"settings_fingerprint\",\"stock_type_key\",\"stock_type_name\",\"section_mm\",\"material_id\",\"material_version\",\"material_fingerprint\",\"stock_label\",\"stock_length_mm\",\"head_trim_mm\",\"tail_trim_mm\",\"kerf_mm\",\"seq\",\"timber_id\",\"surface_id\",\"finished_length_mm\",\"allowance_mm\",\"cut_length_mm\",\"start_mm\",\"end_mm\",\"tail_kind\",\"tail_consumed_mm\",\"cuts\",\"leftover_mm\",\"leftover_usable_mm\",\"leftover_class\"\r\n\"piece\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"b706f15d1e2f5c9fa646d5b4e718ba2a71ca079b95c12bbfa4b6ba77d7d0560d\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"R2\",\"600\",\"0\",\"5\",\"3\",\"1\",\"2\",\"1\",\"590\",\"0\",\"590\",\"0\",\"590\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n\"end\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"b706f15d1e2f5c9fa646d5b4e718ba2a71ca079b95c12bbfa4b6ba77d7d0560d\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"R2\",\"600\",\"0\",\"5\",\"3\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"separate\",\"3\",\"1\",\"7\",\"2\",\"waste\"\r\n\"piece\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"b706f15d1e2f5c9fa646d5b4e718ba2a71ca079b95c12bbfa4b6ba77d7d0560d\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"R1\",\"1000\",\"0\",\"5\",\"3\",\"1\",\"1\",\"1\",\"900\",\"0\",\"900\",\"0\",\"900\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n\"end\",\"COMPLETE\",\"本次找到的方案\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"b706f15d1e2f5c9fa646d5b4e718ba2a71ca079b95c12bbfa4b6ba77d7d0560d\",\"1\",\"試用料\",\"27x33\",\"\",\"\",\"\",\"R1\",\"1000\",\"0\",\"5\",\"3\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"separate\",\"3\",\"1\",\"97\",\"92\",\"waste\"\r\n",
+      "nativeRows": [
+        {
+          "kind": "timber",
+          "id": 1,
+          "surface": 1,
+          "role": "primary",
+          "A": 27,
+          "B": 33,
+          "L": 900,
+          "dir": "+v",
+          "side": "+n",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "finish": [
+            0,
+            900,
+            0
+          ],
+          "anchor": "未提供",
+          "selector": "依 R6 自動推導；支撐身分未提供",
+          "sources": [],
+          "assembly": null,
+          "sourceFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "kind": "timber",
+          "id": 2,
+          "surface": 1,
+          "role": "primary",
+          "A": 27,
+          "B": 33,
+          "L": 590,
+          "dir": "+v",
+          "side": "+n",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "finish": [
+            0,
+            590,
+            0
+          ],
+          "anchor": "未提供",
+          "selector": "依 R6 自動推導；支撐身分未提供",
+          "sources": [],
+          "assembly": null,
+          "sourceFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "unused-remnant",
+      "inputSha256": "59b83877d91c49775d630b5fdb07b0ea1c7caff9b5c22efce47d9e6c5156a8b0",
