@@ -332,6 +332,8 @@ NODE_PURE_TEST_FILES = {
     'node:room_outline_closeout': 'tests/test_room_outline_closeout.js',
     'node:evidence_links': 'tests/test_evidence_links.js',
     'node:evidence_ledger_links': 'tests/test_evidence_ledger_links.js',
+    'node:evidence_owner_contract': 'tests/test_evidence_owner_contract.cjs',
+    'node:evidence_app_contract': 'tests/test_evidence_app_contract.cjs',
     'node:evidence_project_store': 'tests/test_evidence_project_store.js',
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
