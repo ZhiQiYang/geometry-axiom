@@ -75,6 +75,7 @@ PY_NEEDS = {
     'test_assembly_generation': ['bridge'],
     'test_assembly_bay_repeat': ['bridge'],
     'test_bay_repeat_mutation_check': [],
+    'test_bay_repeat_integration_runner': [],
     'test_axiom_reader': [],
     'test_binaries': [],
     'test_bridge_integrity': ['bridge'],

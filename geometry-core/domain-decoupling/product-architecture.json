@@ -42,7 +42,7 @@
       "path": "geometry-app/application.js",
       "layer": "H",
       "language": "javascript",
-      "purpose": "Application/runtime/protocol or workspace host application; composes explicit K/W providers where needed"
+      "purpose": "固定且不可選的 woodworking/1 與裁切 W 組裝；為宿主提供同一 frozen provider，沒有停用或任意替換模板的公開入口"
     },
     {
       "path": "geometry-app/geometry_app/__init__.py",
@@ -1437,6 +1437,12 @@
       "purpose": "Application/runtime/protocol or workspace host assembly bridge; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-web/canvas-context-menu.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host canvas context menu; composes explicit K/W providers where needed"
+    },
+    {
       "path": "geometry-web/context-menu-shell.js",
       "layer": "H",
       "language": "javascript",
@@ -1453,6 +1459,24 @@
       "layer": "H",
       "language": "javascript",
       "purpose": "Application/runtime/protocol or workspace host cursor v2; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/definition-import.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application host for definition-import/1 preview, confirm, and canvas placement; composes the bridge and project reader"
+    },
+    {
+      "path": "geometry-web/definition_import_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Bridge host for definition-import/1 read, preview, confirm, and cancel; composes parameter, spec, material, and assembly operations"
+    },
+    {
+      "path": "geometry-web/definition_import_transport.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Server-owned file transport for definition-import/1; keeps the source scene off the bridge command line"
     },
     {
       "path": "geometry-web/document-cases.js",
@@ -1711,6 +1735,12 @@
       "layer": "H",
       "language": "c",
       "purpose": "Application/runtime/protocol or workspace host reference bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/room-candidate-draft.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host room-candidate draft; project attachment, not a scene capability"
     },
     {
       "path": "geometry-web/room-collection-workspace.js",
@@ -2047,6 +2077,36 @@
       "layer": "H",
       "language": "python",
       "purpose": "Runtime-imported native binary provenance registry/package; also used by tests, but real rule_cases runtime depends on it"
+    },
+    {
+      "path": "geometry-web/cutting-plan.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "H 原生來源與既有 timber-schedule 料單的唯讀轉接，建立明確需求後委派固定 W 求值；保留公開回傳包裝與 CSV bytes，無配料或 FFD 政策"
+    },
+    {
+      "path": "geometry-web/cutting-settings.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "H 裁切附件精確 schema、key 高水位與單調保存、canonical codec 與指紋；材料/截面、數值與原材在用限制委派固定 W"
+    },
+    {
+      "path": "geometry-web/cutting-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "裁切工作區 DOM、專案附件設定、需求範圍與匯出新鮮度宿主編排"
+    },
+    {
+      "path": "geometry-core/interval-allocation.js",
+      "layer": "K",
+      "language": "javascript",
+      "purpose": "I60 中性一維區間守恆；只接受明示整數可用區間、具型別需求身分、配置、消耗與末餘，以精確加法驗證，不含木工配料或損耗預設"
+    },
+    {
+      "path": "geometry-templates/woodworking/cutting.js",
+      "layer": "W",
+      "language": "javascript",
+      "purpose": "固定 woodworking/1 的 D46–D50、I58/I59/I61、R47–R49 裁切政策：材料與無序截面配對、設定限制、餘料優先、FFD、切序與耗損分類；I60 共用守恆只委派 K"
     }
   ],
   "exclusions": [
@@ -2569,7 +2629,7 @@
     {
       "path": "geometry-web/assembly_bay_repeat_test.js",
       "reason": "R06 formal CDP acceptance driver; invoked by cdp_test.js only, never a product runtime entry point.",
-      "sha256": "1051766843ca924b43fed6667b4973feb962e942ac6f6260e0e7a573bb0781dc",
+      "sha256": "06e822d48d25d76d27ead2def97c8e18241dd0458c77b8b9a57a6e8575277924",
       "hashMode": "lf"
     },
     {
@@ -2647,7 +2707,7 @@
     {
       "path": "geometry-web/cdp_floor.js",
       "reason": "Dedicated acceptance/test driver cdp_floor.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "1969e2780b5f0ce6ccbdfe8249323d4f2bef12e03df6cb8e539c285bda8264a9",
+      "sha256": "0768b237c9f2a343a1a4b96be6b863077613c078ec5bf826e83d62c123e2d1e0",
       "hashMode": "lf"
     },
     {
@@ -2665,13 +2725,19 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "249ab8e43431c72d3788932f218ef53b9dc9914f8ec1c8652b394de445cb48cd",
+      "sha256": "9fb2020796ccce69002d52d8a49671fe255ed36747619204f2d0304d67749404",
       "hashMode": "lf"
     },
     {
       "path": "geometry-web/composition_canvas_test.js",
       "reason": "Dedicated acceptance/test driver composition_canvas_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
       "sha256": "ef6e9c4a94e32e39099e939ba93f8b3e62abd869c695891f37003415f4969dea",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/definition_import_browser_test.js",
+      "reason": "Dedicated acceptance/test driver definition_import_browser_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "08a84778a52afb2448cbe29550841e34df686210092c0b186d8435ab2f26ede1",
       "hashMode": "lf"
     },
     {
@@ -3061,7 +3127,7 @@
     {
       "path": "geometry-web/evidence_links_integration_test.js",
       "reason": "Dedicated acceptance/test driver evidence_links_integration_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "244d6b583d77fb481d250cfc1ca5ded9e88d9819f0833743667ab64f9e9a2d00",
+      "sha256": "a55deb928812dd21a0d90b13b93321cb32bae03e11856b3f20abfd2a92a904a9",
       "hashMode": "lf"
     },
     {
@@ -3109,7 +3175,7 @@
     {
       "path": "geometry-web/grid_rule_lines_test.js",
       "reason": "Dedicated acceptance/test driver grid_rule_lines_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+      "sha256": "08278e91ccba7cdef65c0fa9b16d26b2502bd10aa89b73fea9aac28973a61a98",
       "hashMode": "lf"
     },
     {
@@ -3362,6 +3428,12 @@
       "path": "geometry-web/prototypes/engineering-spec/worker/index.js",
       "reason": "Separate engineering-spec UI prototype index.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
       "sha256": "2dd0615a445143933d88d4271f54f5d63ee951421fcd08c5a7617bb09c564389",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/room_candidate_browser_test.js",
+      "reason": "Dedicated acceptance/test driver room_candidate_browser_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "03be7c8a28178a9bc524f0e989e3b69d3bdf8a1b2621749f4a393859303151fe",
       "hashMode": "lf"
     },
     {
@@ -3671,6 +3743,30 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-web/canvas_context_menu_test.js",
+      "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
+      "sha256": "4b0b810701bc97633ceb728ad9d73924747f2da2f98450a3b900cf91b6542334",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_context_menu_cases_a.js",
+      "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
+      "sha256": "730162d4bc4e2f5d38479bf839dea4b4c619a4494d658da330a1d33864671623",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_context_menu_cases_b.js",
+      "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
+      "sha256": "c7453f8578b6207d5f7c00af4e6f860aed6a8b9536f09a6de327447e3d6fe701",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/browser_mutation_check.py",
+      "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
+      "sha256": "7ad42d2ef3ad9e3b35dd463dbf0e963a6afc961c583cc4d7faca419b110015db",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-core/framing-template/oracle/reading_a_cases.py",
       "reason": "Reading A frozen approval-identity loader and missing/wrong-verdict coverage judge, imported only by the excluded framing oracle self-test and dedicated tests; not loaded by an owned product source or product entry point. Its 528/1056 identity fixture is independently pinned to the pre-policy approval list.",
       "sha256": "b7d5ad2dcfbdedeed03998e4380d10437936e0e1f5c4e4845fd077ec9a9cd73f",
@@ -3680,6 +3776,30 @@
       "path": "geometry-core/framing-template/oracle/reading_a_source_control.py",
       "reason": "Reading A independent numeric source-withdrawal witness for constructor/checker 0/1/0; an explicitly invoked dedicated test driver that loads a supplied oracle source path, not a product-loaded module or product entry point.",
       "sha256": "fe786d9f12cb664fe0188dc87803855449eaa86a8d115969e13bef5213fb3d95",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/cdp_room_candidate_contract.js",
+      "reason": "Dedicated acceptance/test driver cdp_room_candidate_contract.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "hashMode": "lf",
+      "sha256": "6f0bdad7aab51249cd803a1bdadbad9bdbd860c15540fec112be5dea47dc3212"
+    },
+    {
+      "path": "geometry-web/cdp_room_candidate_io.js",
+      "reason": "Dedicated acceptance/test driver cdp_room_candidate_io.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "hashMode": "lf",
+      "sha256": "fe3f1fdec5ef875d2dee16b424cb53ec28a95f7905b3fce43e5e12bc9ea76abc"
+    },
+    {
+      "path": "geometry-web/room_candidate_cold_test.js",
+      "reason": "Dedicated acceptance/test driver room_candidate_cold_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "hashMode": "lf",
+      "sha256": "f3e2966f0ab99de6da43159ff09d74e4363df81ebd9d451c255d702507474013"
+    },
+    {
+      "path": "geometry-web/cutting_plan_test.js",
+      "reason": "P89 真瀏覽器裁切驗收外掛，由 cdp_test.js 載入；不是產品 runtime 模組。",
+      "sha256": "a648eb206e8e4a80775f6cbdd6fae97ed7e277bcbb00431b0a543a161be2b833",
       "hashMode": "lf"
     }
   ],
@@ -3701,6 +3821,18 @@
       "src": "/app.js",
       "target": "geometry-web/work-manager/static/app.js",
       "purpose": "work-manager serve.py fixed static application route"
+    },
+    {
+      "source": "geometry-web/index.html",
+      "src": "kernel/interval-allocation.js",
+      "target": "geometry-core/interval-allocation.js",
+      "purpose": "runtime_version.py fixed neutral I60 interval verification browser module route"
+    },
+    {
+      "source": "geometry-web/index.html",
+      "src": "templates/woodworking-cutting.js",
+      "target": "geometry-templates/woodworking/cutting.js",
+      "purpose": "runtime_version.py fixed woodworking/1 cutting policy browser module route"
     }
   ],
   "javascriptImportRoutes": [
@@ -4836,7 +4968,14 @@
       "wood_support_max",
       "wood_support_min",
       "wood_world_validate_members",
-      "wood_world_validate_obstacles"
+      "wood_world_validate_obstacles",
+      "GeometryWoodworkingCutting",
+      "materialKey",
+      "stockIdentity",
+      "sectionKey",
+      "kerf",
+      "minRemnant",
+      "allowance"
     ],
     "forbiddenStrings": [
       "calcium-silicate-6",
@@ -4916,7 +5055,7 @@
       "driver": "geometry-web/scenario-workspace.js",
       "driverSha256": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
       "router": "geometry-web/serve.py",
-      "routerSha256": "0cc26da01c7dd6fcc5dff84f8fd2b615b5a04b434df085d01644b984d4c6f828",
+      "routerSha256": "ab6f240f3c85a638c9bfb2533943ee6f17302485a34f32dde7dc903167d97298",
       "receiver": "owner.frame",
       "queryValue": "context",
       "srcPrefix": "/?scenario=",
