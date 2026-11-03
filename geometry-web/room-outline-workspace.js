@@ -148,7 +148,7 @@ const RoomOutlineWorkspace=(()=>{
       sourcePoints:candidate.sourcePoints,estimated,deviation:candidate.deviation??integer.deviation,warnings:candidate.warnings,reviewed:false,
       dimensions:structuredClone(candidate.dimensions||[]),rawInputs:structuredClone(candidate.rawInputs||{}),revision:(candidate.revision||0)+1,committing:false};
     fe.draft={...PolyDraft.createState(),pts:structuredClone(candidate.points||integer.points)};fe.draftPreview=null;feSyncDraftMirror();
-    message='此候選接受後建立新房間；既有房間保留。未接受修正只留本分頁。';
+    message='此候選接受後建立新房間；既有房間保留。未接受的修正可暫停寫入專案，重新開啟後仍在。';
     // Inspector preservation belongs to a page; a different candidate is a
     // different editor, even on that same page. Do not inherit its edge/raw input.
     const pane=document.getElementById('faceInspectorContent');if(pane)pane.dataset.referencePage='';

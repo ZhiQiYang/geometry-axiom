@@ -4,12 +4,24 @@ const RoomCollectionWorkspace = (() => {
   const S = GeometrySourcePlane, R = GeometryRoomCollection;
   const pages = new Map(),renders=new Map();
   let overviewCollectionId = null, overviewContextToken = null;
-  let candidateSession = null, candidateGeneration = 0, candidateMode = 'manual';
+  let candidateSession = null, candidateGeneration = 0, candidateMode = 'manual', zeroMode = 'adopt';
+  let writingCandidates = false;
   let instance = null, activeBid = null, lease = null, ownedPreviewToken = null, ownedPreviewCommand = null, currentDialog = null, retireDialog = null, integration = null, cleaningUI = false;
+  // R51 needs each referenced D3's *current native* fingerprint. Native boundary
+  // reports are remembered per owner token and D3 incarnation; any native change
+  // that may overlap a report forgets it, so a remembered value is never older
+  // than the last observed change.
+  const nativePins = new Map(), previewBoundaries = new Map(), nativeRefresh = new Map();
+  let nativeEpoch = 0, nativeSettled = 0, nativeReadOrder = 0, nativeGroup = null, nativeReadFailure = null, nativeObjects = null;
+  const nativeChanging = new Set();
   const W = () => ReferenceWorkspace;
   const token = () => W().getProjectState().contextToken;
   const state = () => W().readFeatureAttachment("source-rooms", token()) || S.empty();
   const escape = value => W().escape(value);
+  const isHash = value => typeof value === "string" && /^[a-f0-9]{64}$/.test(value);
+  const NATIVE_CHANGE = /^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/;
+  // Commands that never change a committed boundary definition when they succeed.
+  const NATIVE_STEADY = /^line (?:$|preview\b|cancel-preview\b|history-(?:begin|end)\b|canvas-pos\b)/;
   function ensureReady() {
     if (!W().readFeatureAttachment || !W().setFeatureAttachment || !integration) throw new Error("房間來源接線尚未啟用。");
   }
@@ -17,6 +29,87 @@ const RoomCollectionWorkspace = (() => {
     for (const name of ["readSource", "readIncarnation", "beginTransaction", "assertTransaction", "endTransaction", "preflightAttachment", "groupOpen", "labelTransaction", "adoptLegacySource"])
       if (typeof adapter?.[name] !== "function") throw new Error("房間來源缺少 owner 接口：" + name);
     integration = adapter;
+  }
+  function nativeCommand(command) {
+    if (typeof command !== "string") return "";
+    return command.startsWith("line ") ? "line " + command.slice(5).split("#", 1)[0].trim() : command.trim();
+  }
+  function pinScope() {
+    try { return integration && W()?.getModelOperationState ? W().getModelOperationState().contextToken : null; } catch (_) { return null; }
+  }
+  function forgetNativePins(ids = null) {
+    if (ids === null) {nativeObjects = null; nativePins.clear(); previewBoundaries.clear();}
+    else for (const id of ids) {nativePins.delete(id); nativeObjects?.unknown.add(id);}
+  }
+  // Applies one settled result of a changing command to the remembered fingerprints.
+  function noteNativeChange(command, result) {
+    if (result?.ok !== true) {
+      if (result?.stale === true) return; // Version rejection did not reach native.
+      // Unknown delivery: anything may have changed.
+      if (!result || result.transport) {forgetNativePins(); nativeGroup = null; return;}
+      // A known rejection changes nothing, except that the core rolls back an open group
+      // (a rejected preview keeps it): values learnt inside that group no longer hold.
+      if (nativeGroup && !/^line preview\b/.test(command)) {forgetNativePins(nativeGroup); nativeGroup = null;}
+      return;
+    }
+    if (/^line preview\b/.test(command)) {
+      const preview = result.preview;
+      if (preview?.valid === true && Number.isInteger(preview.token) && Array.isArray(preview.boundaries) && preview.boundaries.every(row => Number.isInteger(row?.id))) {
+        previewBoundaries.set(String(preview.token), {scope: pinScope(), ids: preview.boundaries.map(row => row.id)});
+        if (previewBoundaries.size > 32) previewBoundaries.delete(previewBoundaries.keys().next().value);
+      }
+      return;
+    }
+    if (/^line history-begin\b/.test(command)) {nativeGroup = new Set(); return;}
+    if (/^line history-end\b/.test(command)) {nativeGroup = null; return;}
+    if (/^line history-abort\b/.test(command)) {forgetNativePins(nativeGroup); nativeGroup = null; return;}
+    if (NATIVE_STEADY.test(command)) return;
+    const confirmed = command.match(/^line confirm (\d+)$/), recorded = confirmed && previewBoundaries.get(confirmed[1]);
+    if (confirmed) previewBoundaries.delete(confirmed[1]);
+    // A confirmed preview changes exactly its listed boundaries; anything else may change any of them.
+    if (recorded && recorded.scope === pinScope()) forgetNativePins(recorded.ids); else forgetNativePins();
+  }
+  function rememberBoundaryRead(command, result, scope, order, ownerRevision) {
+    const match = command.match(/^boundary (\d+)$/);
+    if (!match) return;
+    const id = Number(match[1]);
+    let incarnation = null;
+    if (scope === null || scope !== pinScope()) return;
+    if ((nativePins.get(id)?.order ?? 0) > order) return;
+    try { incarnation = integration.readIncarnation(id, token()) ?? null; } catch (_) { return; }
+    if (!result?.ok || result.id !== id || !isHash(result.geometryFingerprint)) {
+      nativePins.delete(id); return;
+    }
+    nativePins.set(id, {scope, incarnation, pin: result.geometryFingerprint, order, ownerRevision});
+    nativeGroup?.add(id);
+  }
+  function rememberObjects(result, scope, order, ownerRevision) {
+    if (scope === null || scope !== pinScope()) return;
+    if ((nativeObjects?.order ?? 0) > order) return;
+    if (!result?.ok || !Array.isArray(result.faces) || result.faces.some(face =>
+        !Number.isSafeInteger(face?.id) || face.id <= 0 || typeof face.kind !== "string")) {nativeObjects = null; return;}
+    nativeObjects = {scope, ids: new Set(result.faces.filter(face => face.kind === "boundary").map(face => face.id)), unknown: new Set(), order, ownerRevision};
+  }
+  // apiRequest calls this once, immediately before delivery, and settles it once.
+  // Diagnostic wrappers never own this observation and cannot make it run twice.
+  function beginNativeRequest(text) {
+    const command = nativeCommand(text), change = NATIVE_CHANGE.test(command), steady = change && NATIVE_STEADY.test(command), scope = pinScope();
+    const order = ++nativeReadOrder, ownerRevision = W().getModelOperationState().revision;
+    const ticket = {};
+    if (change && !steady) {nativeEpoch++; nativeChanging.add(ticket);}
+    const epoch = nativeEpoch;
+    let settled = false;
+    return result => {
+      if (settled) return; settled = true; nativeChanging.delete(ticket);
+      try {
+        nativeSettled++;
+        if (change) {if (!steady || result?.ok !== true) nativeEpoch++; noteNativeChange(command, result);}
+        else if (epoch === nativeEpoch && !nativeChanging.size) {
+          if (command === "objects") rememberObjects(result, scope, order, ownerRevision);
+          else rememberBoundaryRead(command, result, scope, order, ownerRevision);
+        }
+      } catch (_) { /* Observation must not change the request's result. */ }
+    };
   }
   function request(command) { return apiRequest(command, lease); }
   function assertTransaction(ownerLease) {ensureReady(); return integration.assertTransaction(ownerLease);}
@@ -66,7 +159,13 @@ const RoomCollectionWorkspace = (() => {
         await cancelOwnedCandidate(); integration.endTransaction(lease); lease = null;
       },
       changeMetadata: (next, {label, stamp}) => W().setFeatureAttachment("source-rooms", next, stamp.contextToken, {recordHistory: true, reason: label}),
-      commitWithMetadata: async ({token: previewToken, boundaryId, label, assertCurrent, makeAttachment,proposeAttachment}) => {
+      assertHost(host) {
+        const page = W().active(host.boundaryId), D = GeometryRoomCandidateDraft;
+        if (!page?.calibration || page.id !== host.pageId || D.pagePin(page) !== D.pagePin(host.page)) throw new Error("宿主圖頁已變更，請取消草稿後重新操作。");
+        if (state().planes.some(item => item.sourceId === page.sourceId && item.page === page.page)) throw new Error("此來源頁已有共享來源，請從該集合新增房間。");
+      },
+      afterGroupedRooms(payload) { acceptCandidateRow(payload); },
+      commitWithMetadata: async ({token: previewToken, boundaryId, label, assertCurrent, makeAttachment, proposeAttachment, afterGroupedRooms}) => {
         assertCurrent(); integration.assertTransaction(lease);
         if (ownedPreviewToken !== previewToken) throw new Error("房間預覽識別已變更。");
         let begun = false, unknown = false;
@@ -77,6 +176,7 @@ const RoomCollectionWorkspace = (() => {
           const native = await checked("boundary " + boundaryId);
           const attachment = await makeAttachment(native); integration.assertTransaction(lease);
           W().setFeatureAttachment("source-rooms", attachment, lease.contextToken, {recordHistory: false, roomLease: lease, reason: label});
+          if (afterGroupedRooms) await afterGroupedRooms({boundaryId, attachment, lease});
           await checked("line history-end"); begun = false;
           integration.labelTransaction(lease, label);
           return {ok: true};
@@ -148,13 +248,210 @@ const RoomCollectionWorkspace = (() => {
     return room ? data.collections.find(c => c.roomIds.includes(room.id)) : null;
   }
   const same = (a,b) => JSON.stringify(a) === JSON.stringify(b);
+  const Drafts = () => GeometryRoomCandidateDraft;
+  // R51: [roomId, boundaryId, current native fingerprint of the referenced D3 (null when it
+  // does not exist), acceptedBasisRevision, reviewState]. undefined = not known yet.
+  function currentNativePin(room, known = {}) {
+    if (Object.hasOwn(known, room.id)) return known[room.id];
+    if (nativeChanging.size) return undefined;
+    const id = room.boundaryRef.id, scope = pinScope(), incarnation = integration.readIncarnation(id, token()) ?? null;
+    const report = nativePins.get(id);
+    if (report && report.scope === scope && report.incarnation === incarnation) return report.pin;
+    // A missing runtime incarnation can mean objects has not synchronized yet.
+    // Only the current native object list proves absence; metadata is a receipt.
+    if (nativeObjects?.scope === scope && !nativeObjects.unknown.has(id) && !nativeObjects.ids.has(id)) return null;
+    return undefined;
+  }
+  function collectionRoomsPin(data, collection, unknown = [], known = {}) {
+    const rooms = collection.roomIds.map(id => {
+      const room = data.rooms.find(item => item.id === id), pin = currentNativePin(room, known);
+      if (pin === undefined) unknown.push(room.boundaryRef.id);
+      return {id: room.id, boundaryRef: {id: room.boundaryRef.id, geometryFingerprint: pin ?? null},
+        acceptedBasisRevision: room.acceptedBasisRevision, reviewState: room.reviewState};
+    });
+    return unknown.length ? null : Drafts().roomsPin(rooms);
+  }
+  async function readNativePins(bid) {
+    // Reads the referenced D3 definitions whose current native fingerprint is not known yet.
+    // A report that overlapped a native change is discarded and read again (bounded).
+    const scope = pinScope(), owner = W().getModelOperationState(), firstRead = nativeReadOrder;
+    const assertOwner = () => {
+      if (pinScope() !== scope || !same(W().getModelOperationState(), owner)) {
+        // Retire only reports learnt by obsolete work. A newer independent read
+        // must survive this late rejection (including a save during refresh).
+        for (const [id, report] of nativePins) if (report.scope === scope && report.order > firstRead && report.ownerRevision === owner.revision) nativePins.delete(id);
+        if (nativeObjects?.scope === scope && nativeObjects.order > firstRead && nativeObjects.ownerRevision === owner.revision) nativeObjects = null;
+        throw new Error("房間原生幾何讀取期間專案或版本已變更，請重新操作。");
+      }
+    };
+    for (let attempt = 0; attempt < 3; attempt++) {
+      assertOwner();
+      const stamp = candidateStamp(bid);
+      if (stamp.kind !== "collection" || !stamp.unknownNative.length) return stamp;
+      if (nativeObjects?.scope !== scope || stamp.unknownNative.some(id => nativeObjects.unknown.has(id))) {
+        const objects = await request("objects"); assertOwner();
+        if (!objects.ok) throw new Error("房間原生物件清單讀取失敗：" + (objects.error || "未知錯誤"));
+      }
+      for (const id of candidateStamp(bid).unknownNative) {
+        const result = await request("boundary " + id); assertOwner();
+        if (!result.ok) throw Object.assign(new Error("房間 D3 " + id + " 的原生幾何讀取失敗：" + (result.error || "未知錯誤")), {transport: result.transport});
+      }
+    }
+    const after = candidateStamp(bid);
+    if (after.kind === "collection" && after.roomsPin === null) throw new Error("房間原生幾何在讀取期間持續變更，請稍候重新操作。");
+    return after;
+  }
   function candidateStamp(bid) {
-    const data=state(),collection=collectionFor(bid),page=W().active(bid);
-    if(!collection||!page?.calibration)throw Error('同頁候選需要已校準的共享來源。');
-    const {blocked,group,...owner}=W().getModelOperationState();
-    return {owner,collectionId:collection.id,plane:structuredClone(data.planes.find(p=>p.id===collection.planeId)),
-      crop:[...page.crop],rooms:structuredClone(data.rooms),collections:structuredClone(data.collections),
-      geometry:structuredClone(data.rooms.map(r=>[r.boundaryRef.id,integration.readIncarnation(r.boundaryRef.id,token()),oc.bmap[r.boundaryRef.id]]))};
+    const data = state(), page = W().active(bid), D = Drafts();
+    if (!page?.calibration) throw Error("同頁候選需要已校準的圖頁。");
+    const {blocked, group, ...owner} = W().getModelOperationState();
+    const base = {owner, crop: [...page.crop], rooms: structuredClone(data.rooms), collections: structuredClone(data.collections), planes: structuredClone(data.planes)};
+    const direct = collectionFor(bid);
+    const covering = direct || data.collections.find(item => {
+      const plane = data.planes.find(entry => entry.id === item.planeId);
+      return plane && plane.sourceId === page.sourceId && plane.page === page.page;
+    });
+    if (covering) {
+      const plane = data.planes.find(entry => entry.id === covering.planeId), unknownNative = [];
+      return {...base, kind: "collection", collectionId: covering.id, plane: structuredClone(plane), planePin: D.planePin(plane),
+        roomsPin: collectionRoomsPin(data, covering, unknownNative), unknownNative,
+        geometry: structuredClone(data.rooms.map(room => [room.boundaryRef.id, integration.readIncarnation(room.boundaryRef.id, token()), oc.bmap[room.boundaryRef.id]]))};
+    }
+    return {...base, kind: "page", bid, pageId: page.id, pagePin: D.pagePin(page), hostBoundaryId: bid,
+      geometry: structuredClone([[bid, integration.readIncarnation(bid, token()), oc.bmap[bid]]])};
+  }
+  // The persistent D53 anchor is fixed when the analysis is received (or read back) and
+  // changes only inside the acceptance transaction (R52). The observed stamp never repins it.
+  function anchorFromStamp(stamp) {
+    if (stamp.kind === "page") return {kind: "page", boundaryId: stamp.hostBoundaryId, pageId: stamp.pageId, pagePin: stamp.pagePin};
+    if (!isHash(stamp.roomsPin)) throw new Error("房間原生幾何指紋尚未讀取，無法固定候選錨點；請稍候重新分析。");
+    return {kind: "collection", collectionId: stamp.collectionId, planeId: stamp.plane.id, planePin: stamp.planePin, roomsPin: stamp.roomsPin};
+  }
+  function draftFromSession(s, anchor = s.anchor) {
+    return {schema: Drafts().SCHEMA, draftId: s.draftId, anchor: structuredClone(anchor), analysis: s.analysis, rows: Drafts().rowsFromLive(s.candidates)};
+  }
+  // A session belongs to the owner frame (project and history frame) that produced it.
+  // Project switches and undo/redo create a new frame; an older session never writes again.
+  function ownsSession(s) { return !!s && s.ownerToken === token(); }
+  function retireForeignSession() {
+    const s = candidateSession;
+    if (!s || ownsSession(s) || s.active !== null || s.committing) return false;
+    candidateSession = null; candidateGeneration++; return true;
+  }
+  function foreignSessionError() { return new Error("房間候選工作屬於先前的專案或復原前的狀態；未變更目前專案的草稿。"); }
+  function writeSavedCandidates(s, options, value = Drafts().persistValue(draftFromSession(s))) {
+    if (!ownsSession(s) || (options.contextToken || s.ownerToken) !== s.ownerToken) throw foreignSessionError();
+    writingCandidates = true;
+    try {
+      W().setFeatureAttachment(Drafts().KIND, value, s.ownerToken, options);
+      // A grouped acceptance write is confirmed only by the R52 continuation proof.
+      if (options.recordHistory !== false && s === candidateSession && !s.stale) {
+        try { s.stamp = candidateStamp(s.bid); } catch (error) { s.stale = true; s.reason = error.message; }
+      }
+    } finally { writingCandidates = false; }
+    return value;
+  }
+  function revertAcceptance(s, pending) {
+    const row = s.candidates[pending.index];
+    if (!row) return;
+    row.status = pending.previousStatus;
+    if (pending.previousRoom === undefined) delete row.roomId; else row.roomId = pending.previousRoom;
+  }
+  function acceptCandidateRow(payload) {
+    const s = candidateSession;
+    if (!s || s.active === null) return;
+    if (!ownsSession(s) || payload.lease?.contextToken !== s.ownerToken) throw foreignSessionError();
+    const index = s.active, row = s.candidates[index], previousStatus = row.status, previousRoom = row.roomId;
+    // I65/R52: the grouped draft update already anchors the remaining rows to the committed
+    // collection, so a same-transaction save and a cold reopen agree with the continued work.
+    const data = payload.attachment, collection = data.collections.find(item => item.id === payload.collectionId);
+    const plane = collection && data.planes.find(item => item.id === collection.planeId);
+    const accepted = data.rooms.find(item => item.id === payload.roomId);
+    if (!plane || !accepted || !collection.roomIds.includes(accepted.id)) throw new Error("新增房間的共享來源無法確認，未寫入候選草稿。");
+    // The new room's fingerprint was read from native inside this transaction (makeAttachment).
+    const roomsPin = collectionRoomsPin(data, collection, [], {[accepted.id]: accepted.boundaryRef.associationPin});
+    if (!isHash(roomsPin)) throw new Error("房間原生幾何指紋無法確認，未寫入候選草稿。");
+    const anchor = {kind: "collection", collectionId: collection.id, planeId: plane.id, planePin: Drafts().planePin(plane), roomsPin};
+    row.status = "accepted"; row.roomId = payload.roomId; row.reviewed = false;
+    try {
+      const value = writeSavedCandidates(s, {recordHistory: false, roomLease: payload.lease, contextToken: payload.lease.contextToken},
+        Drafts().persistValue(draftFromSession(s, anchor)));
+      s.pendingAcceptance = {index, previousStatus, previousRoom, anchor, roomsValue: structuredClone(data), value: value === null ? null : structuredClone(value)};
+    } catch (error) {
+      revertAcceptance(s, {index, previousStatus, previousRoom});
+      throw error;
+    }
+  }
+  // Reads missing D3 fingerprints for a restored draft, then re-renders so the draft is
+  // judged again from its stored value. One read per owner token and pane; a failure is
+  // not retried until another native result has settled (at most three times).
+  function refreshRestoredPins(key, bid) {
+    if (nativeRefresh.has(key)) return;
+    const scope = pinScope();
+    nativeRefresh.set(key, readNativePins(bid).then(() => {nativeReadFailure = null;}, error => {
+      const attempts = nativeReadFailure?.key === key ? nativeReadFailure.attempts + 1 : 1;
+      nativeReadFailure = {key, settled: nativeSettled, attempts, message: "房間原生幾何指紋讀取失敗：" + error.message};
+    }).finally(() => {nativeRefresh.delete(key); if (scope === pinScope()) {invalidateCandidates(); renderFaceInspector();}}));
+  }
+  const canonical = value => JSON.stringify(value, (_, item) => item && typeof item === "object" && !Array.isArray(item)
+    ? Object.fromEntries(Object.keys(item).sort().map(key => [key, item[key]])) : item);
+  // A stale restored session that still equals the stored draft holds no work of its own;
+  // it is judged again from storage (R51 fingerprints only) instead of keeping a runtime verdict.
+  function mirrorsStoredDraft(s, bid) {
+    if (!s.parked || (!s.stale && !s.nativePending) || s.expired || s.active !== null || s.committing || s.bid !== bid || !ownsSession(s)) return false;
+    try { return canonical(Drafts().persistValue(draftFromSession(s))) === canonical(W().readFeatureAttachment(Drafts().KIND, token())); }
+    catch (_) { return false; }
+  }
+  function restoreSavedCandidates(bid) {
+    if (!W().readFeatureAttachment || !integration) return;
+    retireForeignSession();
+    if (candidateSession) {
+      if (!mirrorsStoredDraft(candidateSession, bid)) return;
+      candidateSession = null; candidateGeneration++;
+    }
+    let saved;
+    try { saved = W().readFeatureAttachment(Drafts().KIND, token()); } catch { return; }
+    if (!saved?.rows) return;
+    const page = W().active(bid);
+    if (!page) return;
+    const anchor = saved.anchor;
+    if (anchor?.kind === "page" && (anchor.boundaryId !== bid || anchor.pageId !== page.id)) return;
+    if (anchor?.kind === "collection") {
+      const data = state(), collection = data.collections.find(item => item.id === anchor.collectionId);
+      const plane = collection && data.planes.find(item => item.id === collection.planeId);
+      const here = collectionFor(bid);
+      if (!here && !(plane && plane.sourceId === page.sourceId && plane.page === page.page)) return;
+    }
+    const candidates = saved.rows.map(row => ({id: row.rowKey, sourcePoints: row.sourcePoints, points: row.pointsMm, deviation: row.deviation, method: row.method,
+      warnings: row.warnings, dimensions: row.dimensions, rawInputs: row.rawInputs, reviewed: false, revision: row.draftRevision,
+      status: row.status === "existing" ? "accepted" : row.status, existing: row.status === "existing", ...(row.roomId ? {roomId: row.roomId} : {})}));
+    let stamp, stale = false, reason = "", nativePending = false;
+    try { stamp = candidateStamp(bid); }
+    catch (error) { stale = true; reason = error.message; stamp = {kind: anchor.kind, owner: {}, crop: saved.analysis?.crop || [], rooms: [], collections: [], planes: []}; }
+    // R51 freshness compares the persisted anchor with the current domain fingerprints only.
+    if (!stale && anchor.kind === "page" && (stamp.kind !== "page" || stamp.pagePin !== anchor.pagePin || stamp.pageId !== anchor.pageId)) { stale = true; reason = "圖頁已變更"; }
+    if (!stale && anchor.kind === "collection" && stamp.kind === "collection" && stamp.collectionId === anchor.collectionId &&
+        stamp.planePin === anchor.planePin && stamp.roomsPin === null) {
+      const key = pinScope() + "\n" + bid, failed = nativeReadFailure?.key === key ? nativeReadFailure : null;
+      nativePending = true;
+      if (failed && failed.settled === nativeSettled) reason = failed.message;
+      else {reason = "正在讀取房間原生幾何指紋"; refreshRestoredPins(key, bid);}
+    }
+    else if (!stale && anchor.kind === "collection" && (stamp.collectionId !== anchor.collectionId || stamp.planePin !== anchor.planePin || stamp.roomsPin !== anchor.roomsPin)) { stale = true; reason = "共享來源或房間清單已變更"; }
+    candidateSession = {bid, stamp, anchor: structuredClone(anchor), ownerToken: token(), expired: false, nativePending,
+      request: saved.analysis?.options || {}, runId: saved.draftId, draftId: saved.draftId, generation: ++candidateGeneration,
+      candidates, total: saved.analysis?.total || candidates.length, complete: saved.analysis?.complete !== false, ignoredNested: saved.analysis?.ignoredNested || 0,
+      analysis: saved.analysis, active: null, parked: true, stale, committing: false, reason};
+  }
+  function flushCandidates() {
+    const s = candidateSession;
+    if (!s) return;
+    // R358-02: work from an earlier project or a pre-undo frame never writes into this one.
+    if (!ownsSession(s)) {retireForeignSession(); return;}
+    // Expired candidate work (R52) is no longer the source of the draft; the stored value stays.
+    if (s.expired) return;
+    if (s.active !== null) snapshotActive(s);
+    writeSavedCandidates(s, {recordHistory: true});
   }
   function assertCandidates(s=candidateSession) {
     if(!s||s!==candidateSession||s.stale||s.nativePending||s.expired||!ownsSession(s)||!same(s.stamp,candidateStamp(s.bid)))throw Error('來源、房間或專案已變更，或原生指紋尚未確認；候選目前不可接受。');
