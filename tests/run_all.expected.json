@@ -124,8 +124,8 @@
   },
   "py:test_engineering_model_compatibility": {
    "mode": "count",
-   "count": 44,
-   "unit": "test"
+   "unit": "test",
+   "count": 44
   },
   "py:test_engineering_model_sources": {
    "mode": "count",
@@ -134,8 +134,8 @@
   },
   "py:test_engineering_transport": {
    "mode": "count",
-   "count": 7,
-   "unit": "test"
+   "unit": "test",
+   "count": 7
   },
   "py:test_evidence_link_native": {
    "mode": "count",
@@ -734,8 +734,8 @@
   },
   "py:test_grid_system_contract": {
    "mode": "count",
-   "count": 15,
-   "unit": "test"
+   "unit": "test",
+   "count": 15
   },
   "py:test_grid_trial_contract": {
    "mode": "count",
@@ -789,23 +789,23 @@
   },
   "py:test_panel_fill_finish_surface": {
    "mode": "count",
-   "count": 22,
-   "unit": "test"
+   "unit": "test",
+   "count": 22
   },
   "py:test_panel_fill_host": {
    "mode": "count",
-   "count": 32,
-   "unit": "test"
+   "unit": "test",
+   "count": 32
   },
   "py:test_panel_fill_layout": {
    "mode": "count",
-   "count": 18,
-   "unit": "test"
+   "unit": "test",
+   "count": 18
   },
   "py:test_panel_fill_support": {
    "mode": "count",
-   "count": 20,
-   "unit": "test"
+   "unit": "test",
+   "count": 20
   },
   "py:test_parameter_netzero": {
    "mode": "count",
@@ -929,13 +929,13 @@
   },
   "py:test_section_profile_modeling": {
    "mode": "count",
-   "count": 20,
-   "unit": "test"
+   "unit": "test",
+   "count": 20
   },
   "py:test_section_profile_mutation_check": {
    "mode": "count",
-   "count": 30,
-   "unit": "test"
+   "unit": "test",
+   "count": 30
   },
   "py:test_section_profile_native": {
    "mode": "count",
@@ -944,8 +944,8 @@
   },
   "py:test_serve": {
    "mode": "count",
-   "count": 51,
-   "unit": "test"
+   "unit": "test",
+   "count": 51
   },
   "py:test_source_closure_memo": {
    "mode": "count",
@@ -964,8 +964,8 @@
   },
   "py:test_space_modeling": {
    "mode": "count",
-   "count": 40,
-   "unit": "test"
+   "unit": "test",
+   "count": 40
   },
   "py:test_subgrid_contract": {
    "mode": "count",
@@ -1044,8 +1044,8 @@
   },
   "node:grid_lesson_control_ownership": {
    "mode": "count",
-   "count": 13,
-   "unit": "node test"
+   "unit": "node test",
+   "count": 13
   },
   "node:parameter_confirmation_settlement": {
    "mode": "count",
@@ -1059,8 +1059,8 @@
   },
   "node:face_projection_lifecycle": {
    "mode": "count",
-   "count": 14,
-   "unit": "node test"
+   "unit": "node test",
+   "count": 14
   },
   "node:workspace_shell_history": {
    "mode": "count",
@@ -1094,8 +1094,8 @@
   },
   "node:cdp_settle": {
    "mode": "count",
-   "count": 10,
-   "unit": "node test"
+   "unit": "node test",
+   "count": 10
   },
   "node:cdp_card_position": {
    "mode": "count",
@@ -1147,10 +1147,120 @@
    "count": 13,
    "unit": "node test"
   },
+  "node:canvas_creation_owner": {
+   "mode": "count",
+   "count": 22,
+   "unit": "node test"
+  },
+  "node:cutting_layering": {
+   "mode": "count",
+   "count": 15,
+   "unit": "node test"
+  },
+  "node:cutting_owner": {
+   "mode": "count",
+   "count": 3,
+   "unit": "node test"
+  },
+  "node:cutting_plan": {
+   "mode": "count",
+   "count": 20,
+   "unit": "node test"
+  },
+  "node:cutting_project_store": {
+   "mode": "count",
+   "count": 12,
+   "unit": "node test"
+  },
+  "node:cutting_session": {
+   "mode": "count",
+   "count": 11,
+   "unit": "node test"
+  },
+  "py:test_engineering_terminal": {
+   "mode": "count",
+   "count": 7,
+   "unit": "test"
+  },
+  "py:test_k1_mutation_runners": {
+   "mode": "count",
+   "count": 4,
+   "unit": "test"
+  },
+  "node:definition_import": {
+   "mode": "count",
+   "count": 9,
+   "unit": "node test"
+  },
+  "py:test_definition_import": {
+   "mode": "count",
+   "count": 13,
+   "unit": "test"
+  },
+  "py:test_definition_import_transport": {
+   "mode": "count",
+   "count": 6,
+   "unit": "test"
+  },
+  "node:feature_attachments_vm": {
+   "mode": "count",
+   "count": 1,
+   "unit": "node test"
+  },
+  "node:room_candidate_cold_contract": {
+   "mode": "count",
+   "count": 8,
+   "unit": "node test"
+  },
+  "node:room_candidate_draft": {
+   "mode": "count",
+   "count": 7,
+   "unit": "node test"
+  },
+  "node:room_candidate_native_pins": {
+   "mode": "count",
+   "count": 29,
+   "unit": "node test"
+  },
+  "node:room_candidate_transaction_review": {
+   "mode": "count",
+   "count": 11,
+   "unit": "node test"
+  },
+  "node:room_candidate_workspace_review": {
+   "mode": "count",
+   "count": 19,
+   "unit": "node test"
+  },
+  "py:test_zero_room_native": {
+   "mode": "count",
+   "count": 1,
+   "unit": "test"
+  },
   "node:r06_main_integration": {
    "mode": "count",
    "count": 12,
    "unit": "node test"
+  },
+  "node:cutting_summary": {
+   "mode": "count",
+   "count": 3,
+   "unit": "node test"
+  },
+  "node:r07_candidate_save_warning": {
+   "mode": "count",
+   "count": 1,
+   "unit": "node test"
+  },
+  "py:test_k1_product_architecture": {
+   "mode": "count",
+   "count": 4,
+   "unit": "test"
+  },
+  "py:test_k1_rule_case_workbench_http": {
+   "mode": "count",
+   "count": 2,
+   "unit": "test"
   }
  }
 }
