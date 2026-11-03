@@ -7,6 +7,7 @@
   const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
   const stamp=()=>R.getEvidenceState();
   const current=s=>same(s,stamp())&&!s.blocked;
+  const selectedObjects=()=>[oc.sel?.kind==='boundary'?{kind:'boundary',id:oc.sel.id}:null,fe.sel?.kind==='timber'?{kind:'timber',id:fe.sel.id}:null].filter(Boolean);
   const page=()=>oc.edit&&R.active(oc.edit.bid);
   const pageIdentity=()=>{const p=page();return p?[p.id,p.sourceId,p.page,GeometryProject.reviewBasis(p)]:null;};
   async function readNative(initial) {
@@ -21,7 +22,7 @@
     const initial=stamp(),{graph,read}=await readNative(initial);
     const key=target.kind==='parameter-field'?S.key('parameter-field',target.parameterId,0,target.fieldId):S.key(target.kind,target.id);
     const node=graph.nodes.get(key);
-    const identityStatus=!node?'absent':node.incarnation&&node.incarnation===target.incarnation?'continuous':node.incarnation?'replaced':'unknown';
+    const identityStatus=E.identityStatusFromGraph(target,graph,initial.projectScope);
     if(!Object.hasOwn(target,'valuePin'))return {document:R.readEvidenceDocument(document),target:node&&target.kind==='parameter-field'?E.targetFromNode(initial.projectScope,node):null,
       modelValue:target.kind==='parameter-field'?modelValue(read,target):null,nativeRevision:read.revision,identityStatus};
     const live=node?{projectScope:initial.projectScope,kind:target.kind,definitionPin:node.definitionFingerprint,valuePin:node.valueFingerprint,incarnation:node.incarnation,
@@ -29,14 +30,17 @@
     return {document:R.readEvidenceDocument(document),target:live,modelValue:target.kind==='parameter-field'?modelValue(read,target):null,nativeRevision:read.revision,identityStatus};
   }
   async function readSelection() {
-    const initial=stamp(),identity=pageIdentity(),{graph,read}=await readNative(initial),p=page();
-    if(!same(identity,pageIdentity()))throw Error('參考頁已切換，請重新框選。');
+    const initial=stamp(),identity=pageIdentity(),objects=selectedObjects(),{graph,read}=await readNative(initial),p=page();
+    if(!same(identity,pageIdentity())||!same(objects,selectedObjects()))throw Error('參考頁或所選目標已切換，請重新框選。');
     const source=p&&R.context().sources.get(p.sourceId);
+    const objectTargets=objects.map(t=>({target:{projectScope:initial.projectScope,...t},node:graph.nodes.get(S.key(t.kind,t.id))}))
+      .filter(({node})=>node&&(node.kind!=='timber'||node.nativeOwner===null))
+      .map(({target,node})=>({target,label:(target.kind==='boundary'?'邊界':'角材')+' #'+target.id+' · '+node.label,modelValue:null}));
     return {stamp:initial,document:p&&source?.meta.type==='application/pdf'?E.documentFromReference(p,source):null,
       targets:[...graph.nodes.values()].filter(n=>n.kind==='parameter-field').map(n=>{
         const target=E.targetFromNode(initial.projectScope,n);
         return {target,label:n.label+' · #'+n.id+':'+n.fieldId,modelValue:modelValue(read,target)};
-      })};
+      }).concat(objectTargets)};
   }
   function getController() {
     const state=stamp(),identity=state.contextToken+':'+state.session;
@@ -44,21 +48,26 @@
       controller=E.createController({getStamp:stamp,getNavigationStamp:R.getEvidenceNavigationStamp,readCurrent,readFeatureAttachment:R.readFeatureAttachment,setFeatureAttachment:R.setFeatureAttachment,
         locateDocument:E.createLocator({getSourceStamp:R.getReferenceNavigationStamp,prepare:(...args)=>R.prepareReferencePage(...args),commit:(...args)=>R.commitPreparedReferencePage(...args)}),
         ledger:{
-          async ensureActive(){
+          async ensureActive({assertCurrent}){
             /* 有預覽仍啟用 */
+            assertCurrent();
             const read=await apiRequest('identity-read');
+            assertCurrent();
             if(!read.ok)throw Error(read.error||'無法讀取身分帳。');
             if(read.active)return;
             const line=await apiRequest('line identity-ledger activate');
-            if(!line.ok)throw Error(line.error||'未能啟用物件身分。');
+            assertCurrent();if(!line.ok)throw Error(line.error||'未能啟用物件身分。');
           },
           async readTarget(target){
-            const graph=S.index(await apiRequest('source-inspect'));
+            const initial=stamp(),graph=S.index(await apiRequest('source-inspect'));
+            if(!current(initial)||graph.data.revision!==initial.nativeRevision||graph.data.live!==true||graph.data.complete!==true||graph.data.identityLedger?.active!==true)
+              throw Error('專案或原生身分帳已變更，請重新明選目標。');
             const key=target.kind==='parameter-field'?S.key('parameter-field',target.parameterId,0,target.fieldId):S.key(target.kind,target.id);
             const node=graph.nodes.get(key);
             if(!node)throw Error('目標不存在。');
-            if(target.kind==='timber'&&node.incarnation==null)throw Object.assign(new Error('組構所有角材首版不支援。'),{code:'EVIDENCE_ASSEMBLY'});
+            if(target.kind==='timber'&&(node.nativeOwner!==null||node.incarnation==null))throw Object.assign(new Error('組構所有角材首版不支援。'),{code:'EVIDENCE_ASSEMBLY'});
             if(typeof node.incarnation!=='string')throw Error('目標沒有存在期記號。');
+            if(E.identityStatusFromGraph({...target,projectScope:initial.projectScope,incarnation:node.incarnation},graph,initial.projectScope)!=='continuous')throw Error('目標身分有衝突，未建立證據。');
             return {definitionPin:node.definitionFingerprint,valuePin:node.valueFingerprint,incarnation:node.incarnation,assemblyOwned:false};
           }}});
     }
