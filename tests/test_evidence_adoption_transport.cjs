@@ -2,26 +2,52 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const {fixture,prepare,clone,E,sourceHash}=require('./fixtures/evidence_adoption_host.cjs');
 const tick=()=>new Promise(r=>setImmediate(r));
+const F=require('../geometry-web/project-store.js').Features;
+function otherOwnerDraft(f){
+  const draft={schema:F.GRID_SCHEMA,draftId:'other-owner-grid',kind:'source',intent:'edit',
+    baseRef:{kind:'grid-system',id:77,fingerprint:'1'.repeat(64)},
+    inputRefs:[{kind:'parameter-field',parameterId:99,fieldId:0,fingerprint:'2'.repeat(64)}],
+    rawForm:Object.fromEntries(F.sourceFields.map(k=>[k,k==='igUStep'?' 1e ':k==='igName'?' other owner raw ':'']))};
+  f.w.setGridDraft(draft.draftId,draft,f.w.getProjectState().contextToken);
+  return draft;
+}
+function markOtherOwnerFromLateRead(f,draft){
+  // This is the same public observation path used by a late readonly objects
+  // response. The confirmation lease blocks edits, but this automatic scan
+  // must still make missing source flags permanent.
+  f.w.observe('objects',{ok:true,revision:7,faces:[],parameters:[],gridSystems:[],gridBindings:[]});
+  const value=f.w.readFeatureAttachment(F.GRID_KIND),c=F.gridDrafts(value);
+  assert.equal(c.drafts[0].inputRefs[0].lost,true,'R365_SETUP_AUTOMATIC_OTHER_OWNER_LOST');
+  assert.deepEqual(c.orphans,[draft.draftId],'R365_SETUP_AUTOMATIC_OTHER_OWNER_ORPHAN');
+  assert.deepEqual(c.drafts[0].rawForm,draft.rawForm);
+  return value;
+}
 test('R365 native confirmation and adoption are exactly one ContextHistory step',async()=>{
-  const f=fixture(),{bundle}=prepare(f),count=f.w.history.undo.length;
+  const f=fixture(),draft=otherOwnerDraft(f),{bundle}=prepare(f),count=f.w.history.undo.length;
   const pending=f.api('engineering-confirm 7');await tick();
   assert.deepEqual(f.w.readFeatureAttachment(E.KIND),bundle,'R365_NO_ATTACHMENT_BEFORE_NATIVE_SUCCESS');
   assert.throws(()=>f.w.assertEditable(),/確認/,'R365_ADOPTION_HOLDS_OWNER');
+  const marked=markOtherOwnerFromLateRead(f,draft);
   f.gate.resolve();assert.equal((await pending).ok,true);
   assert.equal(f.w.history.undo.length,count+1,'R365_ONE_HISTORY_STEP');
+  assert.deepEqual(f.w.readFeatureAttachment(F.GRID_KIND),marked,'R365_ADOPTION_PRESERVES_OTHER_OWNER_MARKING');
   const after=f.w.readFeatureAttachment(E.KIND),link=after.links[0];
   assert.ok(link.adoption,'R365_ADOPTION_ACTUALLY_SAVED');
   assert.equal(link.adoption.literal,'3235','R365_ADOPTION_ACTUALLY_SAVED');
   assert.equal(link.target.definitionPin,'d'.repeat(64));assert.equal(link.humanConfirmation.definitionPin,link.target.definitionPin);
   assert.equal(E.assessBound(link,{document:link.document,target:link.target,identityStatus:'continuous'},{identityStatus:'continuous'}).status,'confirmed-content');
   f.w.observe('line undo',{ok:true});assert.deepEqual(f.w.readFeatureAttachment(E.KIND),bundle,'R365_UNDO_RESTORES_ADOPTION_AND_PINS');
+  assert.deepEqual(f.w.readFeatureAttachment(F.GRID_KIND),marked,'R365_UNDO_RETAINS_OTHER_OWNER_MARKING');
   f.w.observe('line redo',{ok:true});assert.deepEqual(f.w.readFeatureAttachment(E.KIND),after);
+  assert.deepEqual(f.w.readFeatureAttachment(F.GRID_KIND),marked,'R365_REDO_RETAINS_OTHER_OWNER_MARKING');
 });
 test('R365 value noop still records one local adoption step without a fake native step',async()=>{
-  const f=fixture({result:{ok:true,history_changed:false,before_revision:7,revision:7,transaction_id:7,definition_sha256:sourceHash}}),{bundle}=prepare(f),count=f.w.history.undo.length;
-  const pending=f.api('engineering-confirm 7');f.gate.resolve();await pending;
+  const f=fixture({result:{ok:true,history_changed:false,before_revision:7,revision:7,transaction_id:7,definition_sha256:sourceHash}}),draft=otherOwnerDraft(f),{bundle}=prepare(f),count=f.w.history.undo.length;
+  const pending=f.api('engineering-confirm 7'),marked=markOtherOwnerFromLateRead(f,draft);f.gate.resolve();await pending;
+  assert.deepEqual(f.w.readFeatureAttachment(F.GRID_KIND),marked,'R365_NOOP_RETAINS_OTHER_OWNER_MARKING');
   assert.equal(f.w.history.undo.length,count+1,'R365_NOOP_METADATA_HISTORY');assert.equal(f.w.history.undo.at(-1).kind,'local');
   assert.equal(f.w.tryLocalHistory('line undo').ok,true);assert.deepEqual(f.w.readFeatureAttachment(E.KIND),bundle);
+  assert.deepEqual(f.w.readFeatureAttachment(F.GRID_KIND),marked,'R365_LOCAL_UNDO_RETAINS_OTHER_OWNER_MARKING');
   assert.equal(f.requests.filter(r=>r.cmd==='line undo').length,0,'R365_METADATA_UNDO_DOES_NOT_UNDO_OLDER_NATIVE');
 });
 test('R365 native rejection and cancellation preserve adoption and history',async()=>{
@@ -42,10 +68,12 @@ test('R365 prepared adoption refuses native revision, session, context and attac
   }
 });
 test('R365 lost native response retains one exact receipt lease and never resends confirmation',async()=>{
-  const f=fixture({lostResponse:true,failedReceipts:1}),{bundle}=prepare(f),count=f.w.history.undo.length;
+  const f=fixture({lostResponse:true,failedReceipts:1}),draft=otherOwnerDraft(f),{bundle}=prepare(f),count=f.w.history.undo.length;
   const pending=f.api('engineering-confirm 7');f.gate.resolve();assert.equal((await pending).transport,true);
   assert.throws(()=>f.w.assertEditable(),/確認/);assert.deepEqual(f.w.readFeatureAttachment(E.KIND),bundle);assert.equal(f.w.history.undo.length,count);
+  const marked=markOtherOwnerFromLateRead(f,draft);
   await f.recover();assert.equal(f.w.history.undo.length,count+1);assert.equal(f.w.readFeatureAttachment(E.KIND).links[0].adoption.literal,'3235','R365_EXACT_RECOVERY_SEALS_ADOPTION');
+  assert.deepEqual(f.w.readFeatureAttachment(F.GRID_KIND),marked,'R365_RECOVERY_RETAINS_OTHER_OWNER_MARKING');
   assert.doesNotThrow(()=>f.w.assertEditable(),'R365_EXACT_RECOVERY_RELEASES_OWNER');
   await f.recover();assert.equal(f.w.history.undo.length,count+1);assert.equal(f.requests.filter(r=>r.cmd==='engineering-confirm 7').length,1);
 });
