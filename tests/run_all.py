@@ -338,7 +338,12 @@ NODE_PURE_TEST_FILES = {
     'node:evidence_project_store': 'tests/test_evidence_project_store.js',
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
+NODE_MODEL_TEST_FILES = {
+    'node:model_update_faces_review': 'tests/test_model_update_faces_review.js',
+    'node:model_update_faces_app': 'tests/test_model_update_faces_app.js',
+}
 NODE_EXCLUDED = {
+    'tests/_model_update_dom.js': 'Finite DOM/event fixture used by registered node:model_update_faces_app; registers no tests',
     'tests/k1b_cutting_settings_fixture.cjs': 'Pinned K1-b validator fixture for the shared /17 owner-dispatch contract; not an executable test',
     'tests/k2a_browser_receipt.cjs': 'Shared browser receipt/identity helper; registers no tests',
     'tests/k2a_rule_repin_browser.cjs': 'Required actual source-rule raw preservation and two-way repin comparison gate',
@@ -513,9 +518,9 @@ def check_registry():
         problems.append('PY_NEEDS 登記了 %s，但 tests/%s.py 不存在' % (stem, stem))
     disk_js = {'tests/' + p.name for pattern in ('*.js', '*.cjs', '*.mjs') for p in HERE.glob(pattern)}
     known = (set(NODE_TEST_FILES) | {NODE_SCRIPT_FILE} | set(NODE_DOCUMENT_SCRIPT_FILES.values()) |
-             set(NODE_PURE_TEST_FILES.values()) | set(NODE_EXCLUDED))
+             set(NODE_PURE_TEST_FILES.values()) | set(NODE_MODEL_TEST_FILES.values()) | set(NODE_EXCLUDED))
     for rel in sorted(disk_js - known):
-        problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_PURE_TEST_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
+        problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_PURE_TEST_FILES／NODE_MODEL_TEST_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
     for rel in sorted(known - disk_js):
         problems.append('run_all.py 登記了 %s，但該檔不存在' % rel)
     for rel in REQUIRED_OWNER_GATES:
@@ -557,6 +562,8 @@ def build_suites():
                for name, file in NODE_DOCUMENT_SCRIPT_FILES.items()]
     suites += [Suite(name, 'node-test', ['--test', '--test-reporter=spec', file], [], 300,
                      needs_node=True, label=file) for name, file in NODE_PURE_TEST_FILES.items()]
+    suites += [Suite(name, 'node-test', ['--test', '--test-reporter=spec', file], ['bridge', 'model-base'], 900,
+                     needs_node=True, label=file) for name, file in NODE_MODEL_TEST_FILES.items()]
     return suites
 
 
