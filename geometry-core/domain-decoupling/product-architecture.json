@@ -3767,6 +3767,12 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-web/grid_card_entry_test.js",
+      "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
+      "sha256": "2e1529c6ea88a77eb8d742e0efe7c7ecd130b385bc7d8e0a844b8cb7014f8fc0",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-web/cdp_room_candidate_contract.js",
       "reason": "Dedicated acceptance/test driver cdp_room_candidate_contract.js; invoked by test harnesses, not by product runtime or served application entry points.",
       "hashMode": "lf",

@@ -145,7 +145,8 @@ test('執行時的計畫或 golden 與彙總 checkout 不同必紅；golden 多�
   red(complete(), /分片計畫：golden 的段 P999/, {...context, golden: grown});
   // R369-DIGEST: exact source bytes, not a copied expected hash.
   const architecture = JSON.parse(fs.readFileSync(path.join(ROOT, 'geometry-core/domain-decoupling/product-architecture.json'), 'utf8'));
-  for (const relative of ['geometry-web/cdp_test.js', 'geometry-web/parameter_workflow_test.js']) {
+  for (const relative of ['geometry-web/cdp_test.js', 'geometry-web/parameter_workflow_test.js',
+    'geometry-web/canvas_shards.js', 'geometry-web/grid_card_entry_test.js']) {
     const entry = architecture.exclusions.find(row => row.path === relative);
     assert.ok(entry, 'R369_EXCLUSION_PRESENT: ' + relative);
     assert.equal(entry.hashMode, 'lf');
