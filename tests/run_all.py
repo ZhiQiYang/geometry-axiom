@@ -216,6 +216,7 @@ PY_NEEDS = {
     'test_modeling_runtime': ['model-base'],
     'test_modeling_transport': ['bridge', 'model-base'],
     'test_model_update': ['bridge', 'model-base'],
+    'test_model_update_identity_faces': ['bridge', 'model-base'],
     'test_mutation_freshness': [],
     'test_parameters_core': ['bridge', 'model-base'],
     'test_parameter_retirement_scope': ['bridge'],
