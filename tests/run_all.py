@@ -87,6 +87,7 @@ PY_NEEDS = {
     'test_engineering_transport': [],
     'test_evidence_link_native': ['bridge'],
     'test_evidence_contract_mutations': [],
+    'test_evidence_adoption_native': ['bridge'],
     'test_feedback_store': [],
     'test_gdi_contract': ['gdi'],
     # These suites build isolated K objects and their actual product witness;
@@ -335,6 +336,9 @@ NODE_PURE_TEST_FILES = {
     'node:evidence_ledger_links': 'tests/test_evidence_ledger_links.js',
     'node:evidence_owner_contract': 'tests/test_evidence_owner_contract.cjs',
     'node:evidence_app_contract': 'tests/test_evidence_app_contract.cjs',
+    'node:evidence_adoption_app': 'tests/test_evidence_adoption_app.cjs',
+    'node:evidence_parameter_adoption': 'tests/test_evidence_parameter_adoption.cjs',
+    'node:evidence_adoption_transport': 'tests/test_evidence_adoption_transport.cjs',
     'node:evidence_project_store': 'tests/test_evidence_project_store.js',
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
@@ -542,7 +546,7 @@ def build_suites():
         f = HERE / (stem + '.py')
         if f.is_file():
             suites.append(Suite('py:' + stem, 'unittest', [py, str(RUNNER), str(f)], PY_NEEDS[stem], 1200,
-                                needs_node=(stem == 'test_evidence_link_native'), label='tests/%s' % f.name))
+                                needs_node=(stem in ('test_evidence_link_native', 'test_evidence_adoption_native')), label='tests/%s' % f.name))
     js = [rel for rel in sorted(NODE_TEST_FILES) if (ROOT / rel).is_file()]
     suites += [
         Suite('node:tests-js', 'node-test', ['--test', '--test-reporter=spec', *js], ['bridge', 'model-base'], 900,
