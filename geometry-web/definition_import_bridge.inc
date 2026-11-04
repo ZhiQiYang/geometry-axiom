@@ -578,20 +578,23 @@ done:
 }
 static void cmd_definition_import_confirm(const char *arg)
 {
+    identity_drop_serials();
     uint32_t token;
     if (!arg || !parse_u32(arg, &token) || !g_preview.ready || !g_preview.definition_import || g_preview.token != token || !g_preview.valid || g_di_sha_token != token) { eng_bridge_error("TOKEN", "需要有效的定義匯入預覽權杖"); return; }
     if (g_history.grouping || g_preview.revision != g_definition_revision || !app_world_candidate_current(g_preview.transaction, &g_world)) { g_preview.ready = false; eng_bridge_error("STALE", "定義匯入預覽已過期"); return; }
     if (!assembly_versions_immutable(&g_world, &g_preview.transaction->after)) { g_preview.ready = false; eng_bridge_error("INVALID", g_engineering_error); return; }
     if (!app_world_candidate_revalidate(g_preview.transaction, &g_world)) { g_preview.ready = false; eng_bridge_error("INVALID", g_revalidate_error); return; }
-    bool changed = !world_definitions_equal(&g_world, &g_preview.transaction->after); uint64_t before = g_definition_revision;
+    bool changed = !world_definitions_equal(&g_world, &g_preview.transaction->after) || g_identity_pending_count != 0; uint64_t before = g_definition_revision;
     if (changed) history_record(&g_world);
-    if (!app_world_candidate_publish(g_preview.transaction, &g_world, true)) { if (changed) history_unrecord(); g_preview.ready = false; eng_bridge_error("STALE", "定義匯入預覽已過期"); return; }
-    if (changed) ++g_definition_revision;
+    if (!app_world_candidate_publish(g_preview.transaction, &g_world, true)) { if (changed) history_unrecord(); identity_drop_serials(); g_preview.ready = false; eng_bridge_error("STALE", "定義匯入預覽已過期"); return; }
+    if (changed) { identity_commit_serials(); ++g_definition_revision; }
+    else identity_drop_serials();
     g_preview.ready = false; g_di_sha_token = 0;
     printf("{\"ok\":true,\"history_changed\":%s,\"revision\":%llu,\"before_revision\":%llu,\"transaction_id\":%u}\n", changed ? "true" : "false", (unsigned long long)g_definition_revision, (unsigned long long)before, token);
 }
 static void cmd_definition_import_cancel(const char *arg)
 {
+    identity_drop_serials();
     uint32_t token; if (!arg || !parse_u32(arg, &token)) { eng_bridge_error("TOKEN", "取消需要定義匯入預覽權杖"); return; }
     bool cancelled = g_preview.ready && g_preview.definition_import && g_preview.token == token;
     if (cancelled) { g_preview.ready = false; g_di_sha_token = 0; app_candidate_discard(g_preview.transaction->control); }
