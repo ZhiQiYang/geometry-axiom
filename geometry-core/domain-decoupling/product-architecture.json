@@ -2725,7 +2725,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "052c6fe1773287c81fe729d771e7890b248ce82182c76d7c39633fb257575a6d",
+      "sha256": "3a7edd704a60c9d3e32cf1c0cd9c0854820f12c25232ab97f16a6204cbcc2ee0",
       "hashMode": "lf"
     },
     {
@@ -3247,7 +3247,7 @@
     {
       "path": "geometry-web/parameter_workflow_test.js",
       "reason": "Dedicated acceptance/test driver parameter_workflow_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "7c017128b7dbfb917305c8b56e3e9ca6ab0f8fd2afbd2b97b92cb71ce4edbdd8",
+      "sha256": "485ce2315da52b1c918b745099ea5e7affc465635584b8d8f2a85b2418dbe011",
       "hashMode": "lf"
     },
     {
@@ -3758,6 +3758,12 @@
       "path": "geometry-web/canvas_context_menu_cases_b.js",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
       "sha256": "c7453f8578b6207d5f7c00af4e6f860aed6a8b9536f09a6de327447e3d6fe701",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_shards.js",
+      "reason": "Dedicated CI test driver canvas_shards.js: canvas browser-shard plan, cut-point storage handoff and complete-coverage receipt verifier, loaded only by cdp_test.js shard mode, the CI complete-coverage job and tests/test_canvas_shards.js; not loaded by product runtime or served application entry points.",
+      "sha256": "57cf679ead32795891c20b10f3a8aba263724bdcf58d1376010792b3c2d40d71",
       "hashMode": "lf"
     },
     {

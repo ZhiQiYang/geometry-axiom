@@ -1,0 +1,24 @@
+{
+  "_說明": "browser (canvas) 的兩個並行分片（2026-11-03，比照 P-186 native：每片仍 35 分鐘，不放寬時限）。shards[i].sections 是 cdp_test.js 完整模式的實際執行順序（main 333b9bc7 的 GitHub 完整 canvas run 41525007633 逐段標頭），兩片合起來恰好等於 cdp_sections.golden.json 的 92 段；新增或改名段落時，golden 與本檔必須一起改，否則該片與彙總都會紅。切點選在 P88（grid_rule_lines_test.js）之後、P72（composition_canvas_test.js）之前：P72 一開始就自訂視窗、關閉對話框、重置世界並建立自己的夾具，P72B 之後頁面整頁重載，P90 之後清空整個 origin 儲存。boundaries[0].localStorage 是第 1 片結束時（也是完整模式在同一切點）的 localStorage：完整模式與第 1 片在切點逐項核對、不符即紅並印出實際值；第 2 片開頭先寫入它再整頁重載，讓「工具教學已看過」「參數圖解已收合」等狀態與完整模式相同。kind=string-set 是集合比對，param-grid-lesson-token 表示值等於當版 ParamGridLesson.token()，exact 逐字比對。R06（重複開間 50 斷言）在第 2 片 P82 之後。P353（已合入 main 的整卡入口 355 斷言）排在 P359 之前。P359（definition import 會清空 origin 儲存）維持在第 2 片最後。",
+  "schema": "geometry-cdp-shards/1",
+  "shards": [
+    {
+      "index": 1,
+      "sections": ["Setup", "1", "2", "3", "4", "5", "6", "7", "8", "9", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15", "P16", "P17", "P18", "P19", "10", "BF2", "BF3", "BF4", "P20", "P21", "P22", "P32", "P33", "P34", "P35", "P36", "P37", "P38", "P39", "P40", "P41", "P42", "P43", "P44", "P45", "P46", "P47", "P48", "P49", "P50", "P51", "P52", "P53", "P57", "P62", "P63", "P64", "P65", "P66", "P68", "P69", "P67", "P70", "P71", "P78", "P87", "P88"]
+    },
+    {
+      "index": 2,
+      "sections": ["P72", "P72B", "P73", "P74", "P75", "P76", "P77", "P82", "R06", "P80", "P89", "P81", "P85", "P79", "P84", "P90", "P358", "P83", "P86", "P352", "P353", "P359"]
+    }
+  ],
+  "boundaries": [
+    {
+      "after": "P88",
+      "before": "P72",
+      "localStorage": {
+        "geometry-param-grid-lesson": {"kind": "param-grid-lesson-token"},
+        "geometry-tool-lessons-v1": {"kind": "string-set", "values": ["canvas:pan", "canvas:rect", "canvas:select", "engineering:first", "face:grid", "face:guide", "face:hole", "face:pan", "face:redraw", "face:select", "face:timber", "grid:infinite-first"]}
+      }
+    }
+  ]
+}

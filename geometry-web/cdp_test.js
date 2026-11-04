@@ -3,6 +3,7 @@ const { spawn } = require("child_process");
 const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
 const floor = require('./cdp_floor.js');
+const shards = require('./canvas_shards.js');
 const cdp = require('./cdp_helpers.js');
 const {createRetainedEvaluator} = require('./cdp_evaluation.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
@@ -11,6 +12,8 @@ let transportFailureTrace;
 const SCOPE_FLAGS = ['GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_ROOM_CANDIDATE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_DEFINITION_IMPORT_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY');
+/* main() 以 inSequence(n)/notOtherShard(n) 把完整序列切成這麼多個連續區段;canvas_shards.json 的片數必須相同。 */
+const CANVAS_SHARDS=2;
 function runConfiguration(env = process.env) {
   if (!env.GEOMETRY_TEST_URL) throw Error('GEOMETRY_TEST_URL is required: use an explicitly isolated test service. No browser or reset was started.');
   const url = new URL(env.GEOMETRY_TEST_URL);
@@ -40,6 +43,16 @@ function runConfiguration(env = process.env) {
   if(env.GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY!==undefined&&
       (env.GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES!=='C05'))
     throw Error('GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY=1 requires ONLY=1 and CASES=C05 exactly');
+  /* 分片模式:只跑完整序列中 canvas_shards.json 指定的一個連續區段,本片逐段與 golden 嚴格比對。
+     它不是部分模式:不可與任何範圍旗標並用,也不可更新 golden。 */
+  if(env.GEOMETRY_CDP_SHARD!==undefined){
+    if(filters.length||modifiers.length)throw Error('GEOMETRY_CDP_SHARD runs one contiguous block of the complete sequence; remove every scope flag and modifier');
+    if(env.GEOMETRY_CDP_UPDATE_GOLDEN!==undefined)throw Error('GEOMETRY_CDP_SHARD never updates golden; regenerate it from one complete full-mode run');
+    const plan=shards.loadPlan(),shard=shards.parseShardSpec(env.GEOMETRY_CDP_SHARD,plan);
+    if(shard.count!==CANVAS_SHARDS)throw Error('cdp_test.js gates exactly '+CANVAS_SHARDS+' canvas shards; canvas_shards.json declares '+shard.count);
+    return {mode:'shard',shard:{...shard,planSha256:shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)),goldenSha256:shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))},
+      filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
+  }
   return {mode:filters.length?'partial':'full',filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
 }
 // Legacy checks log a verdict as a separate argument. Never scan arbitrary
@@ -122,10 +135,17 @@ let ws, mid = 0, pending = {};
 /* ✓/✗ 計數：所有印出的判定一律計入，exit code 依此決定。 */
 let passN = 0, failN = 0;
 let excN = 0;            /* Runtime.exceptionThrown 計數(BF2 驗收用) */
+let unexpectedExcN = 0;  /* 其中未預期者(每次也已 failN++);分片收據要求為 0 */
 let currentTestStep='connecting to isolated test browser';
 /* 每段斷言數(cdp_floor.js 的 sectionOf 由 `=== ` 標頭取主編號);CDP_RESULT.sections 與 golden 比對都用它。 */
 let currentSection=floor.NO_SECTION;
 const sectionPass={}, sectionFail={};
+/* 各段第一次出現的實際順序(物件鍵會把 "1"…"10" 排到最前,不能拿來證明連續區段)。 */
+const sectionOrder=[];
+const touchSection=name=>{if(!sectionOrder.includes(name))sectionOrder.push(name);};
+/* 分片切點的瀏覽器儲存交接:outgoing 是本片結束時核對的,incoming 是本片開頭套用的。 */
+const shardHandoff={};
+const startedAt=Date.now();
 let expectedBeforeUnloadUntil=0;
 let expectedNativeDialog=null;
 let expectedException=null, scope, skipped=[];
@@ -156,8 +176,10 @@ function recordLog(...args) {
     currentTestStep=s;
     currentSection=floor.sectionOf(s)||currentSection;
     sectionPass[currentSection]=sectionPass[currentSection]||0;
+    touchSection(currentSection);
   }
   for(const passed of assertionVerdicts(args)){
+    touchSection(currentSection);
     if(passed){passN++;sectionPass[currentSection]=(sectionPass[currentSection]||0)+1;}
     else{failN++;sectionFail[currentSection]=(sectionFail[currentSection]||0)+1;}
   }
@@ -195,7 +217,7 @@ async function connect() {
             const description=m.params.exceptionDetails.exception?.description || m.params.exceptionDetails.text || '';
             const expected=expectedException && Date.now()<expectedException.until && description.split('\n')[0]===expectedException.message;
             if(expected){expectedException=null;_log('[EXPECTED EXCEPTION]',description);}
-            else {failN++;_log('[UNEXPECTED EXCEPTION]',currentTestStep,description);}
+            else {failN++;unexpectedExcN++;_log('[UNEXPECTED EXCEPTION]',currentTestStep,description);}
           }
           else if (m.method === 'Page.javascriptDialogOpening' && expectedNativeDialog && m.params.type===expectedNativeDialog.type && m.params.message===expectedNativeDialog.message) {
             const expectation=expectedNativeDialog;expectedNativeDialog=null;expectation.seen=true;
@@ -348,15 +370,34 @@ async function rightClick(x, y) {
     await send("Input.dispatchMouseEvent", { type, x, y, button: "right", clickCount: 1 });
 }
 
-/* 每段斷言數地板:完整模式與 golden 嚴格比對(差異 → failN 增加);部分模式只印不比。
+/* 每段斷言數地板:完整模式與 golden 嚴格比對(差異 → failN 增加);分片模式只與 golden 中
+   本片的段落嚴格比對,且實跑順序必須等於 canvas_shards.json;部分模式只印不比。
    GEOMETRY_CDP_UPDATE_GOLDEN=1 才會重寫 golden(僅完整模式、且本次零失敗)。 */
 const GOLDEN_PATH=path.join(__dirname,'cdp_sections.golden.json');
+function evaluateShardSections(actual,wantUpdate) {
+  const label=scope.shard.index+'/'+scope.shard.count;
+  if(wantUpdate){failN++;_log('[CDP FLOOR] 分片模式不可更新 golden(golden 只記完整模式)');return 'update-refused (shard mode)';}
+  let golden,plan;
+  try {golden=JSON.parse(fs.readFileSync(GOLDEN_PATH,'utf8'));plan=shards.loadPlan();}
+  catch(error){failN++;_log('[CDP FLOOR] 讀不到 golden 或分片計畫:'+error.message);return 'golden or shard plan unreadable';}
+  const problems=[...floor.validateGolden(golden),...shards.validatePlan(plan,golden)];
+  if(problems.length){failN++;for(const problem of problems)_log('[CDP FLOOR] golden／分片計畫格式錯誤:'+problem);return 'golden or shard plan invalid';}
+  const planned=plan.shards[scope.shard.index-1].sections;
+  const diffs=floor.compare({sections:shards.expectedSections(golden,plan,scope.shard.index)},actual);
+  for(const diff of diffs){failN++;_log('[CDP FLOOR] 第 '+label+' 片',diff.message);}
+  const ordered=JSON.stringify(sectionOrder)===JSON.stringify(planned);
+  if(!ordered){failN++;_log('[CDP FLOOR] 第 '+label+' 片實跑段落順序與 canvas_shards.json 不同:'+JSON.stringify(sectionOrder));}
+  if(diffs.length||!ordered)return 'mismatch ('+(diffs.length+(ordered?0:1))+')';
+  _log('[CDP FLOOR] 第 '+label+' 片與 golden 中本片的 '+planned.length+' 段逐段相符,順序同計畫');
+  return 'matched (shard '+label+')';
+}
 function evaluateSections() {
   const actual={sections:{...sectionPass}};
   const total=Object.values(actual.sections).reduce((a,b)=>a+b,0);
   const wantUpdate=process.env.GEOMETRY_CDP_UPDATE_GOLDEN;
   _log('CDP_SECTIONS '+Object.keys(actual.sections).length+' 段,合計 '+total+' 通過斷言');
   if(wantUpdate!==undefined && wantUpdate!=='1'){failN++;_log('[CDP FLOOR] GEOMETRY_CDP_UPDATE_GOLDEN 只接受 1');}
+  if(scope.mode==='shard')return evaluateShardSections(actual,wantUpdate);
   if(scope.mode!=='full'){
     if(wantUpdate){failN++;_log('[CDP FLOOR] 部分模式不可更新 golden(golden 只記完整模式)');return 'update-refused (partial mode)';}
     _log('[CDP FLOOR] 部分模式,未比對 golden。各段通過數:'+JSON.stringify(actual.sections));
@@ -378,6 +419,38 @@ function evaluateSections() {
   if(diffs.length)return 'mismatch ('+diffs.length+')';
   _log('[CDP FLOOR] 與 golden 逐段相符('+Object.keys(golden.sections).length+' 段)');
   return 'matched';
+}
+
+/* 分片切點的瀏覽器儲存交接(canvas_shards.json 的 boundaries)。後一片從全新的 profile 與服務開始;
+   完整模式在切點時 localStorage 裡留著前面各段的「工具教學已看過」「參數圖解已收合」等偏好,
+   會改變後面各段看到的教學卡。完整模式與前一片在同一切點逐項核對(不符即 failN++ 並印出實際值),
+   後一片開頭照它寫入後整頁重載。兩者都不印判定、不計入任何段。 */
+async function verifyShardHandoff(boundary) {
+  const rules=shards.loadPlan().boundaries[boundary-1].localStorage;
+  const actual=shards.normalizeStorage(await eval_(shards.SNAPSHOT_EXPRESSION));
+  const diffs=shards.compareStorage(rules,actual);
+  shardHandoff.outgoing={boundary,localStorage:actual,matched:diffs.length===0};
+  if(!diffs.length){_log('[CDP SHARD] 第 '+boundary+' 個切點的瀏覽器儲存與 canvas_shards.json 相符:'+JSON.stringify(actual));return;}
+  failN++;
+  _log('[CDP SHARD] 第 '+boundary+' 個切點的瀏覽器儲存與 canvas_shards.json 不符,後一片會從不同的狀態開始:'+JSON.stringify(diffs));
+  _log('[CDP SHARD] 本次切點實際值(確認來源後整段替換 boundaries['+(boundary-1)+'].localStorage):'+JSON.stringify(actual));
+}
+async function applyShardHandoff(boundary) {
+  const rules=shards.loadPlan().boundaries[boundary-1].localStorage;
+  const storage=shards.materializeStorage(rules,(await eval_(shards.SNAPSHOT_EXPRESSION)).paramGridLessonToken);
+  const marker=require('crypto').randomUUID();
+  const injected=await send('Page.addScriptToEvaluateOnNewDocument',{source:'window.__cdpExpectedNavigationMarker='+JSON.stringify(marker)+';'});
+  try {
+    await eval_(shards.applyExpression(storage));
+    await send('Page.reload',{});
+    await waitForExpectedNavigation({evaluate:eval_,marker,label:'canvas shard handoff reload',timeout:30000,pollInterval:100,
+      condition:`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`});
+  } finally {await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:injected.result.identifier});}
+  const applied=shards.normalizeStorage(await eval_(shards.SNAPSHOT_EXPRESSION));
+  const diffs=shards.compareStorage(rules,applied);
+  if(diffs.length)throw Error('Canvas shard handoff did not survive the reload: '+JSON.stringify(diffs));
+  shardHandoff.incoming={boundary,localStorage:applied};
+  _log('[CDP SHARD] 已套用第 '+boundary+' 個切點的瀏覽器儲存並重載:'+JSON.stringify(applied));
 }
 
 async function main() {
@@ -418,6 +491,10 @@ async function main() {
   await waitForUI(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`,30000);
   if (!await eval_(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`))
     throw Error('Application did not finish loading: '+JSON.stringify(await eval_(`({state:document.readyState,url:location.href,api:typeof api,message:document.querySelector('#connectionMessage')?.textContent})`)));
+  // 完整序列的區塊歸屬:完整模式全部執行,分片模式只執行本片的連續區段;部分模式維持原本的旗標條件。
+  const inSequence=n=>scope.mode==='full'||(scope.mode==='shard'&&scope.shard.index===n);
+  const notOtherShard=n=>scope.mode!=='shard'||scope.shard.index===n;
+  if(scope.mode==='shard'&&scope.shard.index>1)await applyShardHandoff(scope.shard.index-1);
   const runCanvasContextMenu=()=>require('./canvas_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
   if(process.env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY){
     await runCanvasContextMenu();
@@ -425,7 +502,7 @@ async function main() {
   if (!process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY) {
   if (!process.env.GEOMETRY_ROOM_OUTLINE_ONLY && !process.env.GEOMETRY_ROOM_CANDIDATE_ONLY) {
   if (!process.env.GEOMETRY_PARAMETERS_ONLY && !process.env.GEOMETRY_ASSEMBLY_ONLY && !process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY) {
-  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY && !process.env.GEOMETRY_DEFINITION_IMPORT_ONLY) {
+  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY && !process.env.GEOMETRY_DEFINITION_IMPORT_ONLY && notOtherShard(1)) {
   if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY && !process.env.GEOMETRY_CDP_FROM_P31) {
   /* 清世界 + 建一個乾淨的測試場：一片游離面、一個空容器 */
   console.log('=== Setup. 確認重置隔離驗收專案 ===');
@@ -7148,60 +7225,64 @@ async function main() {
   }
 
   }
-  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY && notOtherShard(1))
     await require('./project_audit_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY && notOtherShard(1))
     await require('./engineering_workflow_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY && notOtherShard(1))
     await require('./marquee_test.js')({send, eval_, sleep, click, dblclick, drag, dragMod, pressDownMod, moveMod, waitForUI, exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
+  if (inSequence(1) || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./grid_system_test.js')({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
+  if (inSequence(1) || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./grid_rule_editor_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
+  if (inSequence(1) || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./grid_rule_lines_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  /* 第 1 個分片切點(P88 之後、P72 之前):完整模式與第 1 片在此核對交給第 2 片的瀏覽器儲存。 */
+  if (inSequence(1))
+    await verifyShardHandoff(1);
   if (process.env.GEOMETRY_INFINITE_FACE_ONLY)
     await require('./infinite_grid_face_test.js')({send,eval_,sleep,click,waitForUI});
-  if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (inSequence(2) || process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./composition_canvas_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (inSequence(2) || process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./grid_inspector_rename_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_UIUX_FIX_ONLY)
+  if (inSequence(2) || process.env.GEOMETRY_UIUX_FIX_ONLY)
     await require('./uiux_review_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_UX_REFINEMENT_ONLY)
+  if (inSequence(2) || process.env.GEOMETRY_UX_REFINEMENT_ONLY)
     await require('./ux_refinement_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,expectBeforeUnload:()=>{expectedBeforeUnloadUntil=Date.now()+15000;},exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_SELECTION_CURSOR_ONLY)
+  if (inSequence(2) || process.env.GEOMETRY_SELECTION_CURSOR_ONLY)
     await require('./selection_cursor_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
 
   }
-  if(scope.mode==='full'||process.env.GEOMETRY_PARAMETERS_ONLY)await require('./parameter_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_workflow_test.js')({send,eval_,sleep,click,dblclick,drag,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_context_entry_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_bay_repeat_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_schedule_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./cutting_plan_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_supports_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./source_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_PARAMETERS_ONLY)await require('./parameter_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_workflow_test.js')({send,eval_,sleep,click,dblclick,drag,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_context_entry_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_bay_repeat_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_schedule_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./cutting_plan_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_supports_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./source_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   }
-  if(scope.mode==='full'||process.env.GEOMETRY_ROOM_OUTLINE_ONLY)await require('./room_outline_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_ROOM_CANDIDATE_ONLY){
+  if(inSequence(2)||process.env.GEOMETRY_ROOM_OUTLINE_ONLY)await require('./room_outline_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_ROOM_CANDIDATE_ONLY){
     await require('./room_candidate_browser_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
     await require('./room_candidate_cold_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN,browserProfile:scope.browserProfile});
   }
-  if(scope.mode==='full')await require('./model_snapshot_schedule_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if(scope.mode==='full')await require('./model_snapshot_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full')await runCanvasContextMenu();
+  if(inSequence(2))await require('./model_snapshot_schedule_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  if(inSequence(2))await require('./model_snapshot_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2))await runCanvasContextMenu();
   }
-  if(scope.mode==='full'||process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY)
+  if(inSequence(2)||process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY)
     await require('./grid_card_entry_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  /* Last on purpose: its fresh reopen wipes origin storage, which would reset state later sections rely on. */
-  if(scope.mode==='full'||process.env.GEOMETRY_DEFINITION_IMPORT_ONLY)await require('./definition_import_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  /* Last on purpose: its fresh reopen wipes origin storage, which would reset state later sections rely on.
+     It also stays last in the last canvas shard. */
+  if(inSequence(2)||process.env.GEOMETRY_DEFINITION_IMPORT_ONLY)await require('./definition_import_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   }
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
   const goldenCompare=evaluateSections();
   _log(`\n=== 結果:${passN} 通過斷言 / ${failN} 失敗斷言 / ${skipped.length} 略過群組 (${scope.mode}) ===`);
-  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),goldenCompare,uncaughtBrowserExceptions:excN,coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
+  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),sectionOrder,goldenCompare,uncaughtBrowserExceptions:excN,unexpectedBrowserExceptions:unexpectedExcN,elapsedSeconds:Math.round((Date.now()-startedAt)/1000),...(Object.keys(shardHandoff).length?{handoff:shardHandoff}:{}),coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
   process.exit(failN > 0 ? 1 : 0);
 }
 async function fatal(e) {
@@ -7219,7 +7300,7 @@ async function fatal(e) {
     }
   } catch(captureError) {_log('FATAL_CAPTURE_FAILED:',captureError.message);}
   finally {
-    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),currentSection,goldenCompare:'not compared (run did not complete)'}));
+    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),sectionOrder,currentSection,goldenCompare:'not compared (run did not complete)',uncaughtBrowserExceptions:excN,unexpectedBrowserExceptions:unexpectedExcN,elapsedSeconds:Math.round((Date.now()-startedAt)/1000),...(Object.keys(shardHandoff).length?{handoff:shardHandoff}:{})}));
     chrome?.kill();process.exit(1);
   }
 }
