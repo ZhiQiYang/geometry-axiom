@@ -760,6 +760,13 @@ MUTANTS += [
     dict(id="R09A_N14_CONTINUED_MARKS", desc="R56/L18j：延續鍵重新取號，內容不變批次與既有記號須紅", binary="bridge",
          file="geometry-app/native/identity_ledger.inc", old="if (before_on && !explicit_delete && old) {", new="if (false) {",
          tests=R09A_REBUILD),
+    dict(id="R09A_N17_DEFINITION_IMPORT_SERIAL_COMMIT", desc="R09a／R01 合流：定義匯入須提交身分序號，後續新增與 Undo 分支不得重用記號", binary="bridge",
+         file="geometry-web/definition_import_bridge.inc",
+         old="if (changed) { identity_commit_serials(); ++g_definition_revision; }",
+         new="if (changed) { ++g_definition_revision; }",
+         tests=["tests.test_identity_definition_import_merge.IdentityDefinitionImportMerge." + name for name in [
+             "test_successful_import_commits_serials_before_the_next_covered_key",
+             "test_undo_of_import_does_not_reuse_its_serials_on_a_new_branch"]]),
 ]
 
 

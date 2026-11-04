@@ -25,4 +25,4 @@ python3 tests/native_sharding_mutation_check.py --output /tmp/native-sharding-pr
 
 `--shard`拒絕與`--only`／`--extra-py`／`--simulate-missing`混用，也不能更新expected。原`--allow-skip`的人工用途及具名允許清單不變；CI不設它，彙總只接受原允許skip。
 
-本機只編輯與靜態檢視，所有執行、反證及效能量測以GitHub Actions原收據為準。新tests Python會使bridge突變裁判雜湊過期；必須由GitHub真重產完整帳本並保留原strict check，不手改hash或當成環境豁免。
+本機只編輯與靜態檢視，所有執行、反證及效能量測以GitHub Actions原收據為準。bridge突變裁判另涵蓋`tests/*.py`、`tests/*.c`、`tests/fixtures/**/*.scene`與根目錄場景；這些來源改變會使舊收據過期，必須由GitHub真重產完整帳本並保留原strict check，不手改hash或當成環境豁免。

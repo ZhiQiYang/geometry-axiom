@@ -106,6 +106,10 @@ RESTORED += ["tests.test_identity_ledger_review.IdentityLedgerReview." + name fo
     "test_S2_derived_placement_covered_and_cold_reopened",
     "test_S2_derived_explicit_delete_rebuild_is_new_incarnation",
 ]]
+RESTORED += ["tests.test_identity_definition_import_merge.IdentityDefinitionImportMerge." + name for name in [
+    "test_successful_import_commits_serials_before_the_next_covered_key",
+    "test_undo_of_import_does_not_reuse_its_serials_on_a_new_branch",
+]]
 
 
 def sha(data):

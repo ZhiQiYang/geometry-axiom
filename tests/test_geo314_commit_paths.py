@@ -52,6 +52,9 @@ PUBLISH_SITES = (
     ("current_geometry.c", "world_revalidate", 1, "submission/replay helper"),
     ("geometry-core/transactions.inc", "apply_scene_line_candidate", 2, "submission/replay lines"),
     ("geometry-web/engineering_bridge.inc", "batch_confirm", 1, "submission"),
+    # R08: confirming a definition-import preview is an interactive submission,
+    # validated against the pre-submission World like batch_confirm.
+    ("geometry-web/definition_import_bridge.inc", "cmd_definition_import_confirm", 1, "submission"),
     ("geometry-web/web_bridge.c", "app_replace_world", 1, "replacement"),
     ("geometry-web/web_bridge.c", "cmd_loadfile", 1, "replacement"),
     ("geometry-web/scene-import-bridge.inc", "cmd_load_confirm", 1, "replacement"),
@@ -75,6 +78,7 @@ REVALIDATE_SITES = (
     ("geometry-core/references.inc", "reference_snap", 1),
     ("geometry-core/subgrid_commands.inc", "apply_subgrid_line", 1),
     ("geometry-web/engineering_bridge.inc", "app_batch_candidate_apply", 1),
+    ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", 1),
     ("geometry-web/web_bridge.c", "app_replace_evaluate", 1),
 )
 STAGED_SITES = (
@@ -101,6 +105,8 @@ BASELINE_ASSIGNMENTS = (
     ("geometry-core/transactions.inc", "app_scene_candidate_apply", "previous_baseline"),
     ("geometry-web/engineering_bridge.inc", "app_batch_candidate_apply", "call->before"),
     ("geometry-web/engineering_bridge.inc", "app_batch_candidate_apply", "previous"),
+    ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", "call->before"),
+    ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", "previous"),
     ("geometry-web/web_bridge.c", "app_scene_load_evaluate", "NULL"),
     ("geometry-web/web_bridge.c", "app_scene_load_evaluate", "previous"),
     ("geometry-web/source-inspector-bridge.inc", "cmd_source_inspect_file", "NULL"),
