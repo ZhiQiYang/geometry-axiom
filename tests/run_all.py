@@ -227,6 +227,7 @@ PY_NEEDS = {
     'test_modeling_runtime': ['model-base'],
     'test_modeling_transport': ['bridge', 'model-base'],
     'test_model_update': ['bridge', 'model-base'],
+    'test_model_update_identity_faces': ['bridge', 'model-base'],
     'test_mutation_freshness': [],
     'test_parameters_core': ['bridge', 'model-base'],
     'test_parameter_retirement_scope': ['bridge'],
@@ -342,8 +343,12 @@ NODE_PURE_TEST_FILES = {
     'node:workspace_shell_history': 'tests/test_workspace_shell_history.js',
     'node:feedback_events': 'tests/test_feedback_events.js',
     'node:space_test_floor': 'tests/test_space_test_floor.js',
+    'node:space_library_actions': 'tests/test_space_library_actions.js',
     'node:history_operation': 'tests/test_history_operation.js',
     'node:identity_ledger': 'tests/test_identity_ledger.js',
+    'node:model_source_identity': 'tests/test_model_source_identity.js',
+    'node:model_stack_archive': 'tests/test_model_stack_archive.cjs',
+    'node:model_identity_review': 'tests/test_model_identity_review.js',
     'node:identity_main_merge': 'tests/test_identity_main_merge.js',
     'node:evidence_stack_merge': 'tests/test_evidence_stack_merge.js',
     'node:context_operations': 'tests/test_context_operations.js',
@@ -374,6 +379,11 @@ NODE_PURE_TEST_FILES = {
     'node:evidence_adoption_transport': 'tests/test_evidence_adoption_transport.cjs',
     'node:evidence_project_store': 'tests/test_evidence_project_store.js',
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
+    'node:model_creation_identity_pin': 'tests/test_model_creation_identity_pin.js',
+}
+NODE_MODEL_TEST_FILES = {
+    'node:model_update_faces_review': 'tests/test_model_update_faces_review.js',
+    'node:model_update_faces_app': 'tests/test_model_update_faces_app.js',
 }
 
 # Separate native-backed suites keep all existing golden counts unchanged.
@@ -382,6 +392,7 @@ NODE_NATIVE_TEST_FILES = {
     'node:identity_recovery_contract': 'tests/test_identity_recovery_contract.js',
 }
 NODE_EXCLUDED = {
+    'tests/_model_update_dom.js': 'Finite DOM/event fixture used by registered node:model_update_faces_app; registers no tests',
     'tests/pr353_legacy_reader.js': 'Immutable legacy-reader fixture/materialization helper; registers no tests; exercised by the PR353 compatibility and snapshot suites',
     'tests/cutting_legacy_cases.js': 'Fixed inputs for the independently pinned pre-layering cutting oracle; no tests registered',
     'tests/generate_cutting_legacy_fixture.js': 'Explicit regeneration/check of fixed cd4bc880 Git blobs in an isolated VM; never reads current product sources',
@@ -559,9 +570,10 @@ def check_registry():
         problems.append('PY_NEEDS 登記了 %s，但 tests/%s.py 不存在' % (stem, stem))
     disk_js = {'tests/' + p.name for pattern in ('*.js', '*.cjs', '*.mjs') for p in HERE.glob(pattern)}
     known = (set(NODE_TEST_FILES) | {NODE_SCRIPT_FILE} | set(NODE_DOCUMENT_SCRIPT_FILES.values()) |
-             set(NODE_PURE_TEST_FILES.values()) | set(NODE_NATIVE_TEST_FILES.values()) | set(NODE_EXCLUDED))
+             set(NODE_PURE_TEST_FILES.values()) | set(NODE_MODEL_TEST_FILES.values()) |
+             set(NODE_NATIVE_TEST_FILES.values()) | set(NODE_EXCLUDED))
     for rel in sorted(disk_js - known):
-        problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_PURE_TEST_FILES／NODE_NATIVE_TEST_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
+        problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_PURE_TEST_FILES／NODE_MODEL_TEST_FILES／NODE_NATIVE_TEST_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
     for rel in sorted(known - disk_js):
         problems.append('run_all.py 登記了 %s，但該檔不存在' % rel)
     for rel in REQUIRED_OWNER_GATES:
@@ -603,6 +615,8 @@ def build_suites():
                for name, file in NODE_DOCUMENT_SCRIPT_FILES.items()]
     suites += [Suite(name, 'node-test', ['--test', '--test-reporter=spec', file], [], 300,
                      needs_node=True, label=file) for name, file in NODE_PURE_TEST_FILES.items()]
+    suites += [Suite(name, 'node-test', ['--test', '--test-reporter=spec', file], ['bridge', 'model-base'], 900,
+                     needs_node=True, label=file) for name, file in NODE_MODEL_TEST_FILES.items()]
     suites += [Suite(name, 'node-test', ['--test', '--test-reporter=spec', file], ['bridge'], 300,
                      needs_node=True, label=file) for name, file in NODE_NATIVE_TEST_FILES.items()]
     return suites
