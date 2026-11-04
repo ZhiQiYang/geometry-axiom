@@ -224,6 +224,24 @@ static void si_json(SiIndex *s,const World *w,bool live)
 }
 static void cmd_source_inspect(void)
 {SiIndex *s=si_build(&g_world);if(!s){eng_bridge_error("MEMORY","Cannot allocate readonly source index");return;}si_json(s,&g_world,true);free(s);}
+/* Adoption reads the exact retained candidate. No publish, settlement, serial
+ * allocation, history mutation or frontend reconstruction occurs here. */
+static void cmd_engineering_preview_source(const char *arg)
+{
+    uint32_t token;
+    if(!arg||!parse_u32(arg,&token)||!g_preview.ready||!batch_token_kind(0)||
+       g_preview.token!=token||!g_preview.valid||!g_preview.transaction){
+        eng_bridge_error("TOKEN","Engineering candidate is not available for source inspection");return;
+    }
+    if(g_history.grouping||g_preview.revision!=g_definition_revision||
+       !app_world_candidate_current(g_preview.transaction,&g_world)){
+        eng_bridge_error("STALE","Engineering candidate source has changed");return;
+    }
+    const World *candidate=&g_preview.transaction->after;
+    SiIndex *s=si_build(candidate);
+    if(!s){eng_bridge_error("MEMORY","Cannot allocate candidate source index");return;}
+    si_json(s,candidate,false);free(s);
+}
 static void cmd_source_inspect_file(const char *path)
 {
     size_t length=0;char *text=eng_read_file(path,&length);if(!text){eng_bridge_error("INPUT","Cannot read bounded source snapshot");return;}bool encoded=!memchr(text,0,length)&&utf8_is_valid(text);free(text);if(!encoded){eng_bridge_error("ENCODING","Snapshot must be UTF-8 without NUL");return;}

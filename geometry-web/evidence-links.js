@@ -116,6 +116,17 @@
     const next={schema:SCHEMA_V2,links};validate(next);return next;
   }
   function identityVerdict(checks){for(const status of IDENTITY_ORDER)if(checks&&checks[status])return status;return 'unknown';}
+  function identityStatusFromGraph(target,graph,projectScope){
+    if(!target||!identity(projectScope)||target.projectScope!==projectScope||!mark(target.incarnation)||
+       graph?.data?.complete!==true||graph.data.identityLedger?.active!==true||!graph.nodes?.values)
+      return 'unknown';
+    const key=target.kind==='parameter-field'?`parameter-field:${target.parameterId}:f${target.fieldId}`:`${target.kind}:${target.id}`;
+    for(const node of graph.nodes.values())if(node.incarnation===target.incarnation&&node.key!==key)return 'conflict';
+    const current=graph.nodes.get(key);
+    if(!current)return 'absent';
+    if(!mark(current.incarnation))return 'unknown';
+    return current.incarnation===target.incarnation?'continuous':'replaced';
+  }
   function assessBound(link,current,options={}){
     if(!link.identityBasis)return assess(link,current,options);
     validate({schema:SCHEMA_V2,links:[link]});
@@ -134,6 +145,8 @@
     if(verdict==='absent'||!current.target)return {status:'target-missing',canConfirm:false};
     if(verdict==='replaced')return {status:'target-replaced',canConfirm:false};
     if(verdict!=='continuous')return {status:'needs-reassociation',canConfirm:false};
+    if(!targetValidV2({...current.target,identityBasis:'ledger'})||targetKey(current.target)!==targetKey(link.target)||current.target.incarnation!==link.target.incarnation)
+      return {status:'needs-reassociation',canConfirm:false};
     if(current.target.definitionPin!==link.target.definitionPin||current.target.valuePin!==link.target.valuePin)return {status:'target-changed',canConfirm:true};
     const confirmed=!!link.humanConfirmation&&link.humanConfirmation.definitionPin===link.target.definitionPin&&link.humanConfirmation.valuePin===link.target.valuePin;
     return {status:confirmed?'confirmed-content':'unchecked',canConfirm:true};
@@ -159,11 +172,13 @@
     if(field?.type!=='dimension'||field.formula||!field.rawValue||(field.unit!=='mm'&&field.unit!=='cm'))fail('ADOPTION_FIELD','只能採用尺寸字面值。');
     const value=parseLiteral(field.rawValue,field.unit);
     const literal=value.den==='1'?value.num:`${value.num}/${value.den}`;
-    return {ok:true,requiresPreview:true,writesGeometry:false,parameterId:link.target.parameterId,fieldId:link.target.fieldId,literal,value,definitionPinBefore:link.target.definitionPin};
+    return {ok:true,requiresPreview:true,writesGeometry:false,parameterId:link.target.parameterId,fieldId:link.target.fieldId,literal,value,definitionPinBefore:live.target.definitionPin};
   }
-  function sealAdoption(link,receipt){
-    if(!receipt||receipt.previewed!==true||receipt.confirmed!==true)fail('ADOPTION_PREVIEW','採用必須先預覽並確認。');
+  function buildAdoption(link,receipt){
     const plan=planAdoption(link,receipt.live,receipt.field);
+    const observed=link.observations[receipt.observation];
+    if(!observed||observed.rawValue!==receipt.field.rawValue||observed.unit!==receipt.field.unit)
+      fail('ADOPTION_OBSERVATION','所選觀察值已變更，未採用。');
     if(receipt.value?.num!==plan.value.num||receipt.value?.den!==plan.value.den)fail('ADOPTION_RATIONAL','原生解析與精確換算不同，已中止。');
     if(!hash(receipt.definitionPinAfter)||!hash(receipt.valuePinAfter)||!iso(receipt.adoptedAt))fail('ADOPTION_RECEIPT','確認回執不完整。');
     const next=clone(link);
@@ -172,6 +187,14 @@
     if(next.humanConfirmation){next.humanConfirmation.definitionPin=next.target.definitionPin;next.humanConfirmation.valuePin=next.target.valuePin;}
     validate({schema:SCHEMA_V2,links:[next]});
     return next;
+  }
+  function previewAdoption(link,receipt){
+    if(!receipt||receipt.previewed!==true)fail('ADOPTION_PREVIEW','採用必須先預覽。');
+    return buildAdoption(link,receipt);
+  }
+  function sealAdoption(link,receipt){
+    if(!receipt||receipt.previewed!==true||receipt.confirmed!==true)fail('ADOPTION_PREVIEW','採用必須先預覽並確認。');
+    return buildAdoption(link,receipt);
   }
   function linksFor(links,target){
     return links.filter(l=>l.target.projectScope===target.projectScope&&l.target.kind===target.kind&&(target.kind==='parameter-field'?l.target.parameterId===target.parameterId&&(target.fieldId===undefined||l.target.fieldId===target.fieldId):l.target.id===target.id));
@@ -240,26 +263,42 @@
       if(request.kind==='boundary'||request.kind==='timber')return {projectScope:scope,kind:request.kind,id:request.id,definitionPin:read.definitionPin,valuePin:read.valuePin,incarnation:read.incarnation};
       fail('EVIDENCE_TARGET','請明選邊界、角材或參數欄位。');
     }
+    function ledgerOwner(request,seq){
+      const initial=stamp();
+      if(initial.blocked)fail('EVIDENCE_STALE','目前專案不可編輯，未新增或重新關聯。');
+      if(Object.hasOwn(request,'projectScope')&&request.projectScope!==initial.projectScope)
+        fail('EVIDENCE_SCOPE','目標屬於另一份專案。');
+      const guardOwner=()=>{
+        const live=stamp();
+        if(seq!==sequence||live.blocked||live.projectScope!==initial.projectScope||live.contextToken!==initial.contextToken||live.session!==initial.session)
+          fail('EVIDENCE_STALE','操作已取消或專案已變更，請重新核對。');
+      };
+      return {guardOwner};
+    }
     async function addLedger(input){
       boundedJSON(input);if(!keys(input,['document','region','target','observations']))fail('EVIDENCE_INVALID','新增證據欄位不合法。');
-      const seq=++sequence;
-      await ledger.ensureActive(); /* 有預覽仍啟用 */
+      input=clone(input);const seq=++sequence,{guardOwner}=ledgerOwner(input.target,seq);
+      const activated=await ledger.ensureActive({assertCurrent:guardOwner}); /* 有預覽仍啟用 */
+      guardOwner();const s=stamp();
+      if(activated?.stamp&&!stable(s,activated.stamp))fail('EVIDENCE_STALE','啟用回覆後專案已變更，未新增。');
       const read=await ledger.readTarget(clone(input.target));boundedJSON(read);
-      const s=stamp();let v=bundle();if(v.schema===SCHEMA)v=upgradePackage(v);
+      guard(s,seq);guardOwner();let v=bundle();if(v.schema===SCHEMA)v=upgradePackage(v);
       const target=ledgerTarget(s.projectScope,input.target,read);
       const l={evidenceId:uuid(),document:clone(input.document),region:clone(input.region),target,observations:clone(input.observations),humanConfirmation:null,identityBasis:'ledger',adoption:null};
       validate({schema:SCHEMA_V2,links:[l]});if(l.target.projectScope!==s.projectScope)fail('EVIDENCE_SCOPE','目標屬於另一份專案。');
-      const c=await current(l,s,seq);if(!assessBound(l,{...c,target},{identityStatus:'continuous'}).canConfirm)fail('EVIDENCE_ASSOCIATION','明選的來源或目標已變更。');
+      const c=await current(l,s,seq);if(!assessBound(l,c,{identityStatus:'continuous'}).canConfirm)fail('EVIDENCE_ASSOCIATION','明選的來源或目標已變更。');
       v.links.push(l);commit(v,s,seq,l);return clone(l);
     }
     async function rebindLedger(evidenceId,target){
-      boundedJSON(target);const seq=++sequence;
-      await ledger.ensureActive();
+      boundedJSON(target);target=clone(target);const seq=++sequence,{guardOwner}=ledgerOwner(target,seq);
+      const activated=await ledger.ensureActive({assertCurrent:guardOwner});
+      guardOwner();const s=stamp();
+      if(activated?.stamp&&!stable(s,activated.stamp))fail('EVIDENCE_STALE','啟用回覆後專案已變更，未重新關聯。');
       const read=await ledger.readTarget(clone(target));boundedJSON(read);
-      const s=stamp();let v=bundle();if(v.schema===SCHEMA)v=upgradePackage(v);const l=find(v,evidenceId);
+      guard(s,seq);guardOwner();let v=bundle();if(v.schema===SCHEMA)v=upgradePackage(v);const l=find(v,evidenceId);
       l.target=ledgerTarget(s.projectScope,target,read);l.identityBasis='ledger';l.humanConfirmation=null;l.adoption=null;
       validate({schema:SCHEMA_V2,links:[l]});
-      const c=await current(l,s,seq);if(!assessBound(l,{...c,target:l.target},{identityStatus:'continuous'}).canConfirm)fail('EVIDENCE_ASSOCIATION','來源或目標已變更，請重新選擇。');
+      const c=await current(l,s,seq);if(!assessBound(l,c,{identityStatus:'continuous'}).canConfirm)fail('EVIDENCE_ASSOCIATION','來源或目標已變更，請重新選擇。');
       commit(v,s,seq,l);return clone(l);
     }
     async function add(input){
@@ -274,7 +313,7 @@
       const c=await current(l,s,seq),state=assess(l,c,{identityKnown:true});if(!state.canConfirm)fail('EVIDENCE_ASSOCIATION','明選的來源或參數欄位已變更。');v.links.push(l);commit(v,s,seq,l);return clone(l);
     }
     async function readView(){
-      const seq=++sequence,s=stamp(),v=bundle();const links=[];
+      const seq=sequence,s=stamp(),v=bundle();const links=[];
       for(const l of v.links){const c=await current(l,s,seq);const known=leaseKnown(l,s)&&l.target.projectScope===s.projectScope;
         const state=l.identityBasis?assessBound(l,c,{identityKnown:known,identityStatus:c.identityStatus||'unknown'}):assess(l,c,{identityKnown:known});
         links.push({...clone(l),...state,modelValue:clone(c?.modelValue??null)});}guard(s,seq);
@@ -309,5 +348,5 @@
     }
     return {add,readView,setReviewed,rebind,locate,cancel(){++sequence;}};
   }
-  return Object.freeze({KIND,SCHEMA,SCHEMA_V2,COORDINATES,MAX_LINKS,MAX_BYTES,empty,validate,references,documentFromReference,targetFromNode,targetKey,assess,assessBound,upgradePackage,identityVerdict,parseLiteral,planAdoption,sealAdoption,linksFor,adoptionSteps,validateSourceClosure,createLocator,createController});
+  return Object.freeze({KIND,SCHEMA,SCHEMA_V2,COORDINATES,MAX_LINKS,MAX_BYTES,empty,validate,references,documentFromReference,targetFromNode,targetKey,assess,assessBound,upgradePackage,identityVerdict,identityStatusFromGraph,parseLiteral,planAdoption,previewAdoption,sealAdoption,linksFor,adoptionSteps,validateSourceClosure,createLocator,createController});
 });

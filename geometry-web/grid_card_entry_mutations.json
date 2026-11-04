@@ -1,0 +1,358 @@
+{
+  "schema": "geometry-browser-mutations/1",
+  "suite": "grid-card-entry-353",
+  "scope": "GEOMETRY_GRID_CARD_ENTRY_ONLY",
+  "caseFilter": "GEOMETRY_GRID_CARD_ENTRY_CASE",
+  "resultPrefix": "P353_CASE_RESULT ",
+  "cases": [
+    "entry",
+    "explicit_mapping",
+    "commit_cancel",
+    "swap",
+    "equal_swap",
+    "reopen",
+    "native_rejection",
+    "raw_roundtrip",
+    "archive_roundtrip",
+    "history",
+    "lost_source",
+    "stale_preview",
+    "binding_effective",
+    "pin_preserve_untouched",
+    "pin_reacquire_cancel",
+    "pin_reacquire_confirm",
+    "pin_shared_consumers",
+    "lost_card_existing_pins",
+    "lost_card_same_id_rebuild",
+    "card_render_repeat_repeat",
+    "card_render_repeat_panel",
+    "card_render_panel_panel",
+    "inspector_repeat_repeat",
+    "inspector_repeat_panel",
+    "inspector_panel_panel",
+    "inspector_direct_control",
+    "inspector_parameter_control",
+    "compat_raw_capability",
+    "compat_legacy_unchanged",
+    "compat_raw_rule_roundtrip",
+    "compat_mixed_roundtrip",
+    "compat_reader_rejection_atomic",
+    "compat_historical_pins",
+    "compat_geo219_reduction"
+  ],
+  "inputs": [
+    "geometry-web/cdp_test.js",
+    "geometry-web/grid_card_entry_test.js",
+    "geometry-web/browser_mutation_check.py",
+    "geometry-web/grid_card_entry_mutations.json",
+    "tests/test_pr353_pin_regressions.js",
+    "tests/test_pr353_display_regressions.js",
+    "tests/pr353_legacy_reader.js",
+    "tests/fixtures/pr353-legacy-reader-405f8c5e.json"
+  ],
+  "mutations": [
+    {
+      "id": "p353_hide_entry",
+      "case": "entry",
+      "assertions": [
+        "ENTRY_CARD_VISIBLE"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "<div class=\"ig-card-ref\" id=\"igCardRef\">",
+          "after": "<div class=\"ig-card-ref\" id=\"igCardRef\" style=\"display:none\">"
+        }
+      ]
+    },
+    {
+      "id": "p353_swap_noop",
+      "case": "swap",
+      "assertions": [
+        "SWAP_MAPPING_ONLY"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "const u = $('igCardU').value; $('igCardU').value = $('igCardV').value; $('igCardV').value = u;",
+          "after": "const u = $('igCardU').value; $('igCardU').value = u; $('igCardV').value = $('igCardV').value;"
+        }
+      ]
+    },
+    {
+      "id": "p353_flatten_card_token",
+      "case": "commit_cancel",
+      "assertions": [
+        "CREATE_NATIVE_PREVIEW",
+        "CREATE_PREVIEW_VALID"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "if(v.cardLength&&key===(v.source==='repeat'?'step':'panel'))return 'card';",
+          "after": "if(v.cardLength&&key===(v.source==='repeat'?'step':'panel'))return v[key];"
+        }
+      ]
+    },
+    {
+      "id": "p353_drop_raw_mapping",
+      "case": "raw_roundtrip",
+      "assertions": [
+        "RAW_SOURCE_MAPPING"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "if(s.mode==='source'&&cardOn())for(const id of CARD_IDS)form[id]=$(id)?.value??'';",
+          "after": "if(false&&s.mode==='source'&&cardOn())for(const id of CARD_IDS)form[id]=$(id)?.value??'';"
+        }
+      ]
+    },
+    {
+      "id": "p353_drop_card_pins",
+      "case": "raw_roundtrip",
+      "assertions": [
+        "RAW_TYPED_PINS"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "if(pin)nextPins.set(key,copy(pin));",
+          "after": "if(pin)void pin;"
+        }
+      ]
+    },
+    {
+      "id": "p353_repin_untouched_axis",
+      "case": "pin_preserve_untouched",
+      "assertions": [
+        "UNTOUCHED_AXIS_PIN_RETAINED"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "if(before&&!selectedIds.includes(id))continue;",
+          "after": "if(before&&!selectedIds.includes(id)){if(pin)nextPins.set(key,copy(pin));continue;}"
+        }
+      ]
+    },
+    {
+      "id": "p353_forget_shared_card_user",
+      "case": "pin_shared_consumers",
+      "assertions": [
+        "SHARED_CARD_PIN_SURVIVES_PHASE_RELEASE"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "if(before&&!parameterUseKeys(form).has(before))s.inputPins.delete(before);",
+          "after": "if(before&&!parameterSelections(form).some(([,selected])=>selected===before))s.inputPins.delete(before);"
+        }
+      ]
+    },
+    {
+      "id": "p353_skip_reacquire_confirmation",
+      "case": "pin_reacquire_cancel",
+      "assertions": [
+        "REACQUIRE_OLD_NEW_CONFIRMATION"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "if(before&&!approveInputReplacement(before,pin))return false;",
+          "after": "if(false&&before&&!approveInputReplacement(before,pin))return false;"
+        }
+      ]
+    },
+    {
+      "id": "p353_reject_existing_replacement_pins",
+      "case": "lost_card_existing_pins",
+      "assertions": [
+        "REPOINT_EXISTING_PINS_ATOMIC_COMPLETE"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/reference-workspace.js",
+          "before": "if(fields.length||card)continue;",
+          "after": "if(fields.length)continue;"
+        }
+      ]
+    },
+    {
+      "id": "p353_canvas_literal_length",
+      "case": "card_render_repeat_repeat",
+      "assertions": [
+        "RENDER_CARD_EFFECTIVE"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/app.js",
+          "before": "const axisLength = (d,key) => d?.[key+'Source']==='card' ? d?.[key==='step'?'effectiveStep':'effectivePanel'] : d?.[key];",
+          "after": "const axisLength = (d,key) => d?.[key];"
+        }
+      ]
+    },
+    {
+      "id": "p353_inspector_card_editable",
+      "case": "inspector_repeat_repeat",
+      "assertions": [
+        "INSPECTOR_CARD_READONLY"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-inspector.js",
+          "before": "d.stepSource==='card'||d.parameterRefs?.step?' readonly aria-readonly=\"true\"':''",
+          "after": "d.parameterRefs?.step?' readonly aria-readonly=\"true\"':''"
+        }
+      ]
+    },
+    {
+      "id": "p353_inspector_false_dirty",
+      "case": "inspector_repeat_repeat",
+      "assertions": [
+        "INSPECTOR_UNEDITED_BINDING_ENABLED"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-inspector.js",
+          "before": "field.value.trim()!==String(axisLength(s.object[a+'Definition'],'step'))",
+          "after": "field.value.trim()!==String(s.object[a+'Definition'].step)"
+        }
+      ]
+    },
+    {
+      "id": "p353_inspector_flatten_card_token",
+      "case": "inspector_panel_panel",
+      "assertions": [
+        "INSPECTOR_SERIALIZED_CARD_TOKENS"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-inspector.js",
+          "before": "if(d[key+'Source']==='card')return 'card';",
+          "after": "if(false&&d[key+'Source']==='card')return 'card';"
+        }
+      ]
+    },
+    {
+      "id": "p353_inspector_drop_card_mapping",
+      "case": "inspector_repeat_repeat",
+      "assertions": [
+        "INSPECTOR_SERIALIZED_CARD_IDENTITY"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-inspector.js",
+          "before": "const c=s.object.cardReference,card=c?` card-reference ${c.parameterId} ${c.uFieldId} ${c.vFieldId}`:'';",
+          "after": "const c=null,card=c?` card-reference ${c.parameterId} ${c.uFieldId} ${c.vFieldId}`:'';"
+        }
+      ]
+    },
+    {
+      "id": "p353_compat_drop_raw_capability",
+      "case": "compat_raw_capability",
+      "assertions": [
+        "COMPAT_RAW_CAPABILITY_DECLARED"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/feature-attachments.js",
+          "before": "const gridCardDraft = draft => draft.kind === \"source\" && sourceCardFields.some(field => Object.hasOwn(draft.rawForm,field));",
+          "after": "const gridCardDraft = draft => false && draft.kind === \"source\" && sourceCardFields.some(field => Object.hasOwn(draft.rawForm,field));"
+        }
+      ]
+    },
+    {
+      "id": "p353_compat_synthesize_legacy_card",
+      "case": "compat_legacy_unchanged",
+      "assertions": [
+        "COMPAT_LEGACY_CARDLESS_false",
+        "COMPAT_LEGACY_RESTORE_EXACT_false"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "if(s.mode==='source'&&cardOn())for(const id of CARD_IDS)form[id]=$(id)?.value??'';",
+          "after": "if(s.mode==='source')for(const id of CARD_IDS)form[id]=$(id)?.value??'';"
+        }
+      ]
+    },
+    {
+      "id": "p353_compat_drop_rule_draft",
+      "case": "compat_raw_rule_roundtrip",
+      "assertions": [
+        "COMPAT_RULE_RAW_CAPTURE"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "...(s.draftSchema===F.GRID_RULE_SCHEMA?{ruleDraft:ruleDraftValue(s)}:{})",
+          "after": "...(s.draftSchema===F.GRID_RULE_SCHEMA?{ruleDraft:null}:{})"
+        }
+      ]
+    },
+    {
+      "id": "p353_compat_drop_mixed_editor_capability",
+      "case": "compat_mixed_roundtrip",
+      "assertions": [
+        "FORMAL_SAVE_FILE"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "if (Object.hasOwn(manifest, \"featureAttachments\")) for (const capability of Features.capabilities(manifest.featureAttachments)) required.add(capability);",
+          "after": "if (Object.hasOwn(manifest, \"featureAttachments\") && !required.has(CARD_CAPABILITY)) for (const capability of Features.capabilities(manifest.featureAttachments)) required.add(capability);"
+        }
+      ]
+    },
+    {
+      "id": "p353_compat_skip_raw_declaration_guard",
+      "case": "compat_reader_rejection_atomic",
+      "assertions": [
+        "COMPAT_UNDECLARED_RAW_REJECTED",
+        "COMPAT_UNDECLARED_RAW_NO_NATIVE_WRITE",
+        "COMPAT_UNDECLARED_RAW_PROJECT_UNCHANGED"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "if(needed.includes(Features.GRID_CARD_CAPABILITY)!==!!manifest.requiredCapabilities?.includes(Features.GRID_CARD_CAPABILITY))fail(\"整卡原始草稿與 grid-card-draft/1 能力宣告不一致。\");",
+          "after": "if(false&&needed.includes(Features.GRID_CARD_CAPABILITY)!==!!manifest.requiredCapabilities?.includes(Features.GRID_CARD_CAPABILITY))fail(\"整卡原始草稿與 grid-card-draft/1 能力宣告不一致。\");"
+        },
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "needed.some(c => !manifest.requiredCapabilities?.includes(c))",
+          "after": "needed.some(c => c!==Features.GRID_CARD_CAPABILITY && !manifest.requiredCapabilities?.includes(c))"
+        }
+      ]
+    },
+    {
+      "id": "p353_compat_recompute_historical_pins",
+      "case": "compat_historical_pins",
+      "assertions": [
+        "COMPAT_HISTORICAL_PINS_NOT_RECOMPUTED"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "inputPins:new Map((restored?.inputRefs||[]).map(ref=>[pinKey(ref),copy(ref)]))",
+          "after": "inputPins:new Map((restored?.inputRefs||[]).map(ref=>[pinKey(ref),copy(pins.get(pinKey(ref))||ref)]))"
+        }
+      ]
+    },
+    {
+      "id": "p353_compat_restore_duplicate_help",
+      "case": "compat_geo219_reduction",
+      "assertions": [
+        "COMPAT_GEO219_ONE_HELP_BLOCK"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "<div id=\"igDefStage\" class=\"ig-def-stage\"></div></div>",
+          "after": "<div id=\"igDefStage\" class=\"ig-def-stage\"></div><p class=\"ig-def-hint\">點圖上的尺寸或卡片標題，對應的軸與欄位會反白。</p></div>"
+        }
+      ]
+    }
+  ]
+}

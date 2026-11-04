@@ -134,9 +134,12 @@ static void json_reference_preview(void)
     }
     fputs("]}",stdout);
 }
-static void cmd_reference_result(bool ok,uint32_t old_token)
+static void cmd_reference_result(bool ok,uint32_t old_token,uint64_t before_revision)
 {
     printf("{\"ok\":%s",ok?"true":"false");
+    printf(",\"history_changed\":%s,\"revision\":%llu,\"before_revision\":%llu",
+        ok&&g_definition_revision!=before_revision?"true":"false",
+        (unsigned long long)g_definition_revision,(unsigned long long)before_revision);
     if (!ok) { fputs(",\"error\":",stdout); js_string(scene_last_error()); }
     if (g_preview.ready && g_preview.token!=old_token) { fputs(",\"preview\":",stdout); json_reference_preview(); }
     fputs("}\n",stdout);
