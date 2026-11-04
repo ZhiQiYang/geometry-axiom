@@ -4,6 +4,7 @@
 const cdp = require('./cdp_helpers.js');
 
 module.exports = async function identityLedgerBrowser({send, eval_, sleep, click, waitForUI}) {
+  console.log('=== P360. 物件身分帳啟用、保存與重開 ===');
   const check = cdp.makeCheck({prefix: 'IL ', throwOnFail: true});
   const boundary = 'boundary 1 outline 0,0 2000,0 2000,1000 0,1000';
 
