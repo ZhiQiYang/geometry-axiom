@@ -1172,6 +1172,8 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_source_inspect();
         } else if (strcmp(line,"source-inspect-file")==0 && arg) {
             cmd_source_inspect_file(arg);
+        } else if (strcmp(line,"engineering-preview-source")==0 && arg) {
+            cmd_engineering_preview_source(arg);
         } else if (strcmp(line,"engineering-read")==0 && !arg) {
             cmd_engineering_read();
         } else if (strcmp(line,"engineering-preview")==0 && arg) {

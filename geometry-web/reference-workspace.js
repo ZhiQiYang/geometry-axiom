@@ -14,6 +14,7 @@ const ReferenceWorkspace = (() => {
   let assemblyConfirmation = null, preparingSceneLoad = false, sceneTransaction = null;
   let roomTransaction = null;
   const featureConfirmations=new Map();
+  const evidenceConfirmations=new Map();
   let presentedModelContext = null, presentedModels = null;
   let presentedProjectionContext = null, presentedProjections = null;
   let presentedDraftContext = null, presentedDrafts = null;
@@ -60,7 +61,7 @@ const ReferenceWorkspace = (() => {
   };
   function notifySceneChange(){recoveryChannel?.postMessage({peer:recoveryPeer,session:typeof connection!=="undefined"?connection.session:null});}
   function assertConfirmationIdle(){
-    if(assemblyConfirmation)throw new Error((assemblyConfirmation.featureCommand?'網格變更':'組構')+"確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
+    if(assemblyConfirmation)throw new Error((assemblyConfirmation.evidenceCommand?'證據採用':assemblyConfirmation.featureCommand?'網格變更':'組構')+"確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
   }
   function assertAssemblyIdle(){assertConfirmationIdle();if(roomTransaction)throw new Error("房間操作尚未確認，請先確認、取消或恢復結果。");}
   function assertEditorLease(){
@@ -117,6 +118,30 @@ const ReferenceWorkspace = (() => {
     featureProposal(kind,P.Features.gridDraftValue(drafts,orphans,true,readFeatureAttachment(kind)?.schema===P.Features.GRID_DRAFTS_SCHEMA),true);
   }
   function cancelFeatureConfirmation(token){featureConfirmations.delete(featureTokenKey(token));}
+  function prepareEvidenceConfirmation(token,intent,expectedStamp){
+    assertEditable();const key=featureTokenKey(token),initial=getEvidenceState();
+    if(key===null||initial.blocked||!sameModelData(initial,expectedStamp)||busy||oc.busy||history.group||
+       !intent||!/^[a-f0-9]{64}$/.test(intent.sourceFingerprint))throw new Error("採用或專案已變更，請重新預覽。");
+    const frozen=structuredClone(intent),before=readFeatureAttachment(E.KIND);
+    E.validate(before);const index=before.links.findIndex(link=>link.evidenceId===frozen.before?.evidenceId);
+    if(index<0||!sameModelData(before.links[index],frozen.before))throw new Error("證據已變更，請重新選擇採用值。");
+    const after=structuredClone(before);after.links[index]=E.previewAdoption(before.links[index],frozen.candidate);
+    const proposal=structuredClone(featureProposal(E.KIND,after));
+    evidenceConfirmations.clear();evidenceConfirmations.set(key,{context:context(),frame:history.frame,
+      revision:revision(context()),session:connection.session,nativeRevision,key,before,after,proposal,intent:frozen,index});
+  }
+  function beginEvidenceConfirmation(token){
+    const key=featureTokenKey(token),prepared=evidenceConfirmations.get(key);if(!prepared)return null;
+    evidenceConfirmations.delete(key);assertEditable();
+    if(busy||oc.busy||history.group||!assemblyConfirmationCurrent(prepared)||prepared.revision!==revision(context())||
+       prepared.session!==connection.session||prepared.nativeRevision!==nativeRevision||!sameModelData(readFeatureAttachment(E.KIND),prepared.before))
+      throw new Error("採用候選已過期，未送出確認。");
+    // Revalidate full attachment/root capacity immediately before the native
+    // lease. Success is published only in observe of this exact receipt.
+    featureProposal(E.KIND,prepared.after);
+    assemblyConfirmation={...prepared,evidenceCommand:"engineering-confirm "+key};schedulePresentation();return assemblyConfirmation;
+  }
+  function cancelEvidenceConfirmation(token){evidenceConfirmations.delete(featureTokenKey(token));}
   function finishAssemblyConfirmation(stamp){if(assemblyConfirmation===stamp){assemblyConfirmation=null;schedulePresentation();scheduleRecovery();}}
   const safe = fn => async (...args) => { try { return await fn(...args); } catch (e) { toast(e.message || "參考資料操作失敗"); } };
   function group(bid, create = false) {
@@ -430,6 +455,11 @@ const ReferenceWorkspace = (() => {
       cmd = "line " + cmd.slice(5).split("#", 1)[0].trim();
       if (cmd === "line ") return;
     }
+    const adoption=assemblyConfirmation?.evidenceCommand===cmd?assemblyConfirmation:null;
+    if(adoption&&result.ok&&assemblyConfirmationCurrent(adoption)&&
+       (String(result.transaction_id)!==adoption.key||result.definition_sha256!==adoption.intent.sourceFingerprint)){
+      contextConflict=true;throw new Error("原生確認收據與採用候選不符；未寫入採用紀錄，請保留場景並重新核對。");
+    }
     const hadModels = context().models.length || context().modelsDirty;
     const hadProjections = context().faceProjections.size || context().faceProjectionsDirty;
     const previousProjections = context().faceProjections;
@@ -438,6 +468,18 @@ const ReferenceWorkspace = (() => {
     if (roomTransaction && result.ok && cmd === "line history-end") roomTransaction.entry = history.undo.at(-1);
     window.RoomCollectionWorkspace?.observeNativeResult?.(cmd, result);
     const feature=assemblyConfirmation;
+    if(result.ok&&adoption&&assemblyConfirmationCurrent(adoption)){
+      if(!sameModelData(readFeatureAttachment(E.KIND),adoption.before)){
+        contextConflict=true;throw new Error("採用收據抵達前附件已變更；未覆寫證據。");
+      }
+      const sealed=E.sealAdoption(adoption.before.links[adoption.index],{...adoption.intent.candidate,confirmed:true});
+      if(!sameModelData(sealed,adoption.after.links[adoption.index])){
+        contextConflict=true;throw new Error("採用收據無法核對，未覆寫證據。");
+      }
+      if(result.history_changed===false)history.push(history.snapshot(),"local","採用證據值");
+      context().featureAttachments=structuredClone(adoption.proposal);
+      dirty();window.dispatchEvent(new CustomEvent("evidence-links-changed"));
+    }
     if(result.ok&&feature?.featureCommand===cmd&&assemblyConfirmationCurrent(feature)&&sameModelData(feature.kind===P.Features.GRID_KIND?readGridDraft(feature.value.draftId):readFeatureAttachment(feature.kind),feature.value)){
       if(feature.kind===P.Features.GRID_KIND){const c=readGridDrafts();replaceGridDrafts(c.drafts.filter(d=>d.draftId!==feature.value.draftId),c.orphans.filter(id=>id!==feature.value.draftId));}
       else context().featureAttachments=context().featureAttachments.filter(record=>record.kind!==feature.kind);
@@ -2147,6 +2189,7 @@ const ReferenceWorkspace = (() => {
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
     readGridDrafts,setGridDraft,repinGridDraft,
     prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(featureTokenKey(token)),
+    prepareEvidenceConfirmation,beginEvidenceConfirmation,cancelEvidenceConfirmation,hasEvidenceConfirmation:token=>evidenceConfirmations.has(featureTokenKey(token)),
     featureConfirmationPending:()=>!!assemblyConfirmation?.featureCommand,
     newProject:()=>replaceWithEmpty(false),clearContents:()=>replaceWithEmpty(true),
     noteSceneSource:({name,kind="scene-file"})=>markSceneSource(name,kind),

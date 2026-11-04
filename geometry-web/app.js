@@ -637,6 +637,12 @@ async function apiRequest(cmd, roomLease = null) {
     try{confirmation=ReferenceWorkspace.beginFeatureConfirmation(featureToken);}catch(error){return {ok:false,error:error.message};}
     if(confirmation)pendingAssemblyConfirmations.set(requestId,confirmation);
   }
+  const evidenceToken=cmd.match(/^engineering-confirm (\S+)$/)?.[1];
+  if(evidenceToken&&ReferenceWorkspace.hasEvidenceConfirmation(evidenceToken)){
+    if(!requestId)return {ok:false,error:"請先確認服務連線，再確認證據採用。"};
+    try{confirmation=ReferenceWorkspace.beginEvidenceConfirmation(evidenceToken);}catch(error){return {ok:false,error:error.message};}
+    if(confirmation)pendingAssemblyConfirmations.set(requestId,confirmation);
+  }
   if (/^(assembly-confirm|section-profile-confirm) /.test(cmd)) {
     if (!requestId) return {ok:false,error:"請先確認服務連線，再確認組構變更。"};
     try { confirmation = ReferenceWorkspace.beginAssemblyConfirmation(); }
@@ -6923,7 +6929,7 @@ function feTbSelectedHTML(bid) {
   if (!t2) return "";
   const surf = feSurf(bid);
   const roleOpts = TB_ROLE_OPTS;
-  const technical = `<div class="kv"><span>角材編號</span><b>${t2.id}</b></div><div class="kv"><span>角色代碼</span><b>${esc(t2.role || "—")}</b></div><p class="inspector-code">定位：${esc(t2.definition?.anchor || "尚未提供")} ${esc(t2.definition?.selector || "")}</p>`;
+  const technical = `<div class="kv"><span>角材編號</span><b>${t2.id}</b></div><div class="kv"><span>角色代碼</span><b>${esc(t2.role || "—")}</b></div><p class="inspector-code">定位：${esc(t2.definition?.anchor || "尚未提供")} ${esc(t2.definition?.selector || "")}</p><div data-object-evidence-host data-evidence-kind="timber" data-evidence-id="${t2.id}"></div>`;
   if(t2.engineeringSources?.length)return `<div class="inspector-block" id="tbSelected"><div class="ib-title">${timberRoleName(t2.role)} · 角材 ${t2.id}</div><p>截面 ${esc(t2.A ?? "—")} × ${esc(t2.B ?? "—")} mm · 長度 ${esc(t2.L ?? "—")} mm</p><p>尺寸引用工程規格；修改來源或本物件覆寫時會一起檢查相關物件。</p><details id="tbTechnicalDetails" class="inspector-technical"><summary>詳細資料 · 工程來源與定位</summary>${technical}${engineeringSourceSummary(t2.engineeringSources)}</details><button type="button" class="btn primary-button" data-engineering-open data-placement-id="${surf.id}">編輯工程來源與覆寫</button> <button class="btn danger" id="tbSelDelete" type="button">刪除角材</button></div>`;
   return `<div class="inspector-block" id="tbSelected">` +
     `<div class="ib-title">${timberRoleName(t2.role)} · 角材 ${t2.id}</div>` +
@@ -9585,6 +9591,7 @@ function renderInspectorBody() {
     (bLoops && bLoops.length
       ? `<div class="kv"><span>外環</span><b>${bLoops[0].verts.length} 頂點</b></div>` +
         `<div class="kv"><span>孔</span><b>${bLoops.length - 1}</b></div>` : "") +
+    (sel.kind === "boundary" ? `<div data-object-evidence-host data-evidence-kind="boundary" data-evidence-id="${sel.id}"></div>` : "") +
     `</details></div>` +
     (sel.kind === "boundary" ? (o.placed
       ? `<div class="inspector-block"><details class="ib-row"><summary>位置與朝向 · ${placedSurf ? surfNormalLabel(placedSurf) : "已放置"} · 修改…</summary>${placeFormHTML(sel.id)}</details></div>`

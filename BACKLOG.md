@@ -1,5 +1,11 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 2026-11-03 PR #365 R10 審查補項（ChatGPT 實作候選）
+
+- 接通已採納 K3-48 的具型別證據目標、R57 判讀、尺寸字面值採用；採用仍由既有參數預覽及原生確認決定，附件與原生確認同一復原步。候選來源讀取為唯讀，不以前端計算取代原生內容指紋。
+- UI 減項／合併：移除原本未接確認流程的直接 DOM 預填做法，改接同一參數卡編輯器；圖面與量測採用合併為一個觀察選擇器和原有單一「採用」鈕，只有兩項皆可用時顯示選擇器。邊界與角材反向證據合併到既有「詳細資料」，不另增常駐說明區塊或證據副本。
+- 交付仍須固定最終 #360、最新 main 的一般合流、正式 CI 及最終 head 獨立審查；本條不是完成或可合併宣告。不更動已拍板條文、既有 golden 計數或舊收據來源。
+
 ## 2026-10-19 帳本續補（本輪 GitHub 來源快照）
 
 - 基底 main `a63e1999b5ebdc29ee30f25db6b319d6469bdac3`。依 `gh pr list --state merged --search "merged:>=2026-10-15" --limit 200 --json number,title,mergedAt,mergeCommit,body` 回讀 **24 張**。上一節表格裡的 PR 編號都不在這 24 張裡。下表在這 24 張之外補上 #246，共 25 列。日期把 GitHub `mergedAt` 換算成 Asia/Taipei。八碼是該 PR 的 merge commit，不是受測 head。這是帳本查核，沒有重跑那些 PR 的測試。各列 merge commit（含補上的 #246）都用 `git merge-base --is-ancestor <merge commit> origin/main` 核對，當時 origin/main 是 `a63e1999`。只有 #289 的 `00428c5b` 不是祖先。
