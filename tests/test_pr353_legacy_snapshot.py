@@ -121,6 +121,8 @@ fs.writeFileSync(file,JSON.stringify(fixture));
             "pr353_current_node_mutations", ROOT / "tests/run_pr353_compat_mutations.py")
         node_runner = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(node_runner)
+        self.assertEqual(len(node_runner.INPUTS), len(set(node_runner.INPUTS)),
+                         "R353_INPUTS_UNIQUE: each declared mutation input must occur exactly once")
         current_reader = """
 const path=require('node:path'),P=require('./geometry-web/project-store.js');
 if(typeof P.pack!=='function'||typeof P.unpack!=='function')throw Error('Current reader API unavailable');
