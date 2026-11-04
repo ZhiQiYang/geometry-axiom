@@ -745,7 +745,7 @@ window.SpaceModelWorkspace = (() => {
   }
   function libraryList() {
     const models = ReferenceWorkspace.getSpaceModels?.() || [];
-    $("smLibraryList").innerHTML=models.length?models.map(m=>`<article class="sm-model-card"><div class="sm-model-symbol" aria-hidden="true">▱</div><div><h3>${esc(m.name)}</h3><p>${wallRequirementMissing(m.input,m.result)?"材料牆缺失 · 未滿足要求":m.result.summary.closed?"封閉空間":"開放空間"} · ${m.result.summary.face_count} 個面 · ${esc(metric(m.result.summary.volume_mm3))} · 角材 ${esc(m.result.summary.timber_count||0)} 支</p><small>${esc(new Date(m.created_at).toLocaleString("zh-TW"))} · 來源${m.source.kind==="example"?"範例":"面 #"+m.source.boundary_id}</small></div><div class="sm-model-actions"><button class="sm-button" data-sm-open-model="${esc(m.id)}" type="button">開啟 3D</button>${m.input.mode==="plan"?`<button class="sm-button" data-sm-edit-height="${esc(m.id)}" type="button">修改模型</button>`:""}<button class="sm-button sm-danger" data-sm-remove-model="${esc(m.id)}" type="button">移除</button></div></article>`).join(""):"";
+    $("smLibraryList").innerHTML=models.length?models.map(m=>`<article class="sm-model-card"><div class="sm-model-symbol" aria-hidden="true">▱</div><div><h3>${esc(m.name)}</h3><p>${wallRequirementMissing(m.input,m.result)?"材料牆缺失 · 未滿足要求":m.result.summary.closed?"封閉空間":"開放空間"} · ${m.result.summary.face_count} 個面 · ${esc(metric(m.result.summary.volume_mm3))} · 角材 ${esc(m.result.summary.timber_count||0)} 支</p><small>${esc(new Date(m.created_at).toLocaleString("zh-TW"))} · 來源${m.source.kind==="example"?"範例":"面 #"+m.source.boundary_id}</small></div><div class="sm-model-actions"><button class="sm-button" data-sm-open-model="${esc(m.id)}" type="button">開啟 3D</button><button class="sm-button" data-sm-edit-height="${esc(m.id)}" type="button">修改模型</button><button class="sm-button sm-danger" data-sm-remove-model="${esc(m.id)}" type="button">移除</button></div></article>`).join(""):"";
     sectionProfileLibraryList();
   }
   function openLibrary(){void window.SectionProfileWorkspace?.refreshLibrary();clearSnapshotNavigation();if(state.editing)cancelHeightEdit();if(!show(openLibrary))return;libraryList();$("smLibraryPanel").hidden=false;$("smMain").hidden=true;libraryLease=captureLibraryLease();dialog.classList.add("sm-in-library");WorkspaceShell.refresh(dialog);syncLibraryActions();window.dispatchEvent(new Event('space-model-view-changed'));}
@@ -761,7 +761,7 @@ window.SpaceModelWorkspace = (() => {
     state.source={kind:record.source.kind,name:record.name,base_scene:input.base_scene,placement_id:record.source.placement_id,boundary_id:record.source.boundary_id,source_z:s.source_z,projection:record.source.projection?copy(record.source.projection):null,context_id:contextId()};
     state.result=copy(record.result);state.input=copy(input);state.previewRevision=state.revision;state.createdId=id;state.recordSignature=JSON.stringify(record);state.phase="created";state.readonly=true;
     savedContext=ctx;
-    $("smPreviewTitle").textContent=record.name;$("smModelName").value=record.name;$("smSourceSummary").innerHTML=`<strong>${esc(record.name)}</strong><span>已建立的空間 · ${s.face_count} 個面 · 角材 ${s.timber_count||0} 支${input.mode==="plan"?` · 牆高 ${esc(input.settings.height)} mm`:""}</span><small>${input.mode==="plan"?"可用「修改牆高」更新此模型。輪廓沿用保存的定義，不會自動讀取畫布的新變更。":"這是保存的各面定義。若要改變成員，請重新選取放置面建立。"}</small>`;
+    $("smPreviewTitle").textContent=record.name;$("smModelName").value=record.name;$("smSourceSummary").innerHTML=`<strong>${esc(record.name)}</strong><span>已建立的空間 · ${s.face_count} 個面 · 角材 ${s.timber_count||0} 支${input.mode==="plan"?` · 牆高 ${esc(input.settings.height)} mm`:""}</span><small>${input.mode==="plan"?"可用「修改牆高」更新此模型。輪廓沿用保存的定義，不會自動讀取畫布的新變更。":"這是保存的各面定義。可從「已建立空間」的「修改模型」明選現行來源，保留面數、順序、朝向與用途。"}</small>`;
     $("smMode").value=input.mode;$("smSourceSelectWrap").hidden=true;$("smSettings").disabled=true;$("smConfirmFaces").checked=true;toggleMode(false);renderResult(state.result);updateActions();$("smPreview").disabled=true;setTab("preview");message(wallRequirementMissing(input,state.result)?"此保存模型的材料牆缺失，未滿足原建模要求。原記錄保留；可查看已有邊界，修改仍須完整通過預覽。":"已開啟保存的模型。可旋轉查看、匯出模型或保存專案。",wallRequirementMissing(input,state.result)?"warning":"success");
     window.dispatchEvent(new Event('space-model-view-changed'));
   }
@@ -773,7 +773,12 @@ window.SpaceModelWorkspace = (() => {
   }
   function beginHeightEdit(id = state.createdId) {
     const record=ReferenceWorkspace.getSpaceModels().find(m=>m.id===id);
-    if(!record||record.input.mode!=="plan")return;
+    if(!record)return;
+    if(record.input.mode==="faces") {
+      if(typeof window.ModelUpdateApp?.open!=="function"){message("目前缺少來源更新能力，未修改模型。","warning");return;}
+      close();void window.ModelUpdateApp.open(id);return;
+    }
+    if(record.input.mode!=="plan")return;
     if(!state.viewer&&!show(()=>beginHeightEdit(id)))return;
     openRecord(id);
     state.editing={record:copy(record),context_id:contextId()};state.createdId=null;state.phase="editing";state.previewRevision=-1;

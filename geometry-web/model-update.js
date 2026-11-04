@@ -21,6 +21,17 @@
   }
   const same = (a, b) => canonical(a) === canonical(b);
   function selectionValid(s) {
+    if (s?.mode === 'faces') {
+      if (!own(s, ['mode', 'uses', 'obstacles']) || !Array.isArray(s.uses) || !s.uses.length || s.uses.length > 512 ||
+          !s.uses.every(use => own(use, ['placement_id']) && uint(use.placement_id)) ||
+          new Set(s.uses.map(use => use.placement_id)).size !== s.uses.length ||
+          !Array.isArray(s.obstacles) || s.obstacles.length > 512 ||
+          !s.obstacles.every(ref => own(ref, ['kind', 'id']) && ['column', 'beam'].includes(ref.kind) && uint(ref.id)) ||
+          new Set(s.obstacles.map(ref => ref.kind + ':' + ref.id)).size !== s.obstacles.length)
+        throw Error('請按原順序明選完整且不重複的承載面與柱樑清單；朝向和用途沿用原模型。');
+      canonical(s);
+      return clone(s);
+    }
     if (!own(s, ['placement_id', 'boundary_id', 'edges', 'obstacles', 'timbers', 'projection']) ||
         !uint(s.placement_id) || !uint(s.boundary_id) ||
         !Array.isArray(s.edges) || !s.edges.length || s.edges.length > 512 || !s.edges.every(uint) ||
@@ -78,7 +89,11 @@
         const stamp = {...state()}, record = host.getRecord(id);
         if (!record) throw Error('找不到要更新的模型。');
         host.validateRecord(record);
-        if (record.input.mode !== 'plan') throw Error('本版只支援普通單一平面模型更新。');
+        if (!['plan', 'faces'].includes(record.input.mode)) throw Error('本版只支援普通單一平面或多承載面模型更新。');
+        if (record.input.mode === 'faces' && (Object.hasOwn(record.input, 'timbers') || record.result.summary.source_placement !== null ||
+            record.result.summary.source_z !== null || record.result.summary.bottom !== null || record.result.summary.top !== null ||
+            record.result.summary.generated_faces.length !== 0))
+          throw Error('這份紀錄仍含普通單一平面結果或角材，不能當成多承載面模型更新。');
         operation = {id, stamp, record: clone(record), signature: canonical(record), generation,
           controller: null, candidate: null, review: null};
         return clone(record);
@@ -97,7 +112,7 @@
     async function diff(before, after) {
       return {source: {before: clone(before.source), after: clone(after.source)},
         input: {before: clone(before.input), after: clone(after.input)},
-        settings: {before: clone(before.input.settings), after: clone(after.input.settings)},
+        settings: {before: clone(before.input.settings ?? null), after: clone(after.input.settings ?? null)},
         summary: {before: clone(before.result.summary), after: clone(after.result.summary)},
         packages: await Promise.all(PACKAGES.map(async kind => ({kind,
           before: before.result[kind] ? await digest(canonical(before.result[kind].manifest)) : null,
@@ -118,14 +133,22 @@
         throw Error('原生執行版本未知，不能確認模型更新。');
       host.validateRecord(candidate.record);
       const next = candidate.record, old = op.record;
+      const chosen = request.selection, faces = old.input.mode === 'faces';
+      const sameMode = next.input.mode === old.input.mode && faces === (chosen.mode === 'faces');
+      const sourceMatches = faces ? next.source.placement_id === null && next.source.boundary_id === null &&
+        !Object.hasOwn(next.source, 'projection') && !Object.hasOwn(next.input, 'timbers') &&
+        chosen.uses.length === old.input.uses.length && next.input.uses.length === old.input.uses.length &&
+        next.input.uses.every((use, index) => use.placement_id === chosen.uses[index].placement_id &&
+          use.orientation === old.input.uses[index].orientation && use.purpose === old.input.uses[index].purpose) :
+        next.input.placement_id === chosen.placement_id && next.source.placement_id === chosen.placement_id &&
+        next.source.boundary_id === chosen.boundary_id &&
+        same({...next.input.settings, edges: old.input.settings.edges}, old.input.settings) &&
+        same(next.input.settings.edges, chosen.edges) && same(next.input.timbers || [], chosen.timbers) &&
+        same(next.source.projection || null, chosen.projection);
       if (next.id !== old.id || next.name !== old.name || next.created_at !== old.created_at ||
-          next.input.mode !== 'plan' || !same(candidate.selection, request.selection) ||
-          next.input.placement_id !== request.selection.placement_id || next.source.kind !== 'scene' ||
-          next.source.placement_id !== request.selection.placement_id || next.source.boundary_id !== request.selection.boundary_id ||
-          !same({...next.input.settings, edges: old.input.settings.edges}, old.input.settings) ||
-          !same(next.input.settings.edges, request.selection.edges) || !same(next.input.obstacles, request.selection.obstacles) ||
-          !same(next.input.timbers || [], request.selection.timbers) ||
-          !same(next.source.projection || null, request.selection.projection) ||
+          Object.hasOwn(next, 'sourceIdentity') ||
+          !sameMode || !sourceMatches || !same(candidate.selection, chosen) || next.source.kind !== 'scene' ||
+          !same(next.input.obstacles, chosen.obstacles) ||
           next.source.scene_hash !== next.result.source_sha256 ||
           candidate.old_record_sha256 !== await digest(op.signature) ||
           candidate.current_scene_sha256 !== await digest(source.scene) ||
@@ -143,6 +166,9 @@
       if (!previous || ['producing', 'confirming', 'committed'].includes(phase)) throw Error('請先開啟模型並明選來源。');
       guard(previous);
       const chosen = selectionValid(selection);
+      if ((previous.record.input.mode === 'faces') !== (chosen.mode === 'faces') ||
+          (chosen.mode === 'faces' && chosen.uses.length !== previous.record.input.uses.length))
+        throw Error('更新必須保留模型模式與原承載面的數量及順序。');
       const op = {...previous, generation: ++generation, controller: new AbortController(), candidate: null, review: null};
       previous.controller?.abort(); operation = op; phase = 'producing'; lastError = null;
       try {
@@ -151,12 +177,13 @@
         if (!same(await read(op), source)) throw Error('預覽期間來源已變更，請重新明選來源。');
         let identityReceipt = null;
         if (typeof host.inspectIdentity === 'function') {
-          identityReceipt = await host.inspectIdentity(clone(candidate.record), source);
+          const observed = await host.inspectIdentity(clone(candidate.record), source);
+          identityReceipt = observed == null ? null : clone(observed);
           guard(op);
           if (identityReceipt != null && identityReceipt.schema !== 'geometry-model-update-candidate/2')
             throw Error('來源身分收據不合法，未更新模型。');
         }
-        const reviewId = await digest(canonical({generation: op.generation, candidate}));
+        const reviewId = await digest(canonical({generation: op.generation, candidate, ...(identityReceipt ? {identityReceipt} : {})}));
         guard(op);
         op.source = source; op.request = request; op.candidate = candidate;
         op.review = {reviewId, identity: 'unknown', before: clone(op.record), after: clone(candidate.record), diff: clone(candidate.diff),
