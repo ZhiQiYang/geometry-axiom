@@ -337,6 +337,7 @@ NODE_PURE_TEST_FILES = {
     'node:evidence_ledger_links': 'tests/test_evidence_ledger_links.js',
     'node:evidence_project_store': 'tests/test_evidence_project_store.js',
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
+    'node:model_creation_identity_pin': 'tests/test_model_creation_identity_pin.js',
 }
 NODE_MODEL_TEST_FILES = {
     'node:model_update_faces_review': 'tests/test_model_update_faces_review.js',
