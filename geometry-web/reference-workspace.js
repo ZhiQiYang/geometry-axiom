@@ -477,7 +477,13 @@ const ReferenceWorkspace = (() => {
         contextConflict=true;throw new Error("採用收據無法核對，未覆寫證據。");
       }
       if(result.history_changed===false)history.push(history.snapshot(),"local","採用證據值");
-      context().featureAttachments=structuredClone(adoption.proposal);
+      // The lease owns this evidence record. A late readonly objects response
+      // may already have marked another owner's grid sources lost/orphaned.
+      // Keep those current records; the adopted record was validated before
+      // the native request, including the reserved automatic marking capacity.
+      const current=context().featureAttachments.filter(record=>record.kind!==E.KIND);
+      const adopted=adoption.proposal.find(record=>record.kind===E.KIND);
+      context().featureAttachments=structuredClone([...current,adopted]);
       dirty();window.dispatchEvent(new CustomEvent("evidence-links-changed"));
     }
     if(result.ok&&feature?.featureCommand===cmd&&assemblyConfirmationCurrent(feature)&&sameModelData(feature.kind===P.Features.GRID_KIND?readGridDraft(feature.value.draftId):readFeatureAttachment(feature.kind),feature.value)){

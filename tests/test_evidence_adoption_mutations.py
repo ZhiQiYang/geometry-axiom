@@ -23,6 +23,7 @@ TRANSPORT='geometry-web/app.js'
 NATIVE='geometry-web/source-inspector-bridge.inc'
 TESTS=['tests/test_evidence_adoption_app.cjs','tests/test_evidence_parameter_adoption.cjs','tests/test_evidence_adoption_transport.cjs']
 CASES=[
+ ('R365_ADOPTION_KEEPS_OTHER_OWNERS',OWNER,"      // The lease owns this evidence record. A late readonly objects response\n      // may already have marked another owner's grid sources lost/orphaned.\n      // Keep those current records; the adopted record was validated before\n      // the native request, including the reserved automatic marking capacity.\n      const current=context().featureAttachments.filter(record=>record.kind!==E.KIND);\n      const adopted=adoption.proposal.find(record=>record.kind===E.KIND);\n      context().featureAttachments=structuredClone([...current,adopted]);",'      context().featureAttachments=structuredClone(adoption.proposal);','R365_ADOPTION_PRESERVES_OTHER_OWNER_MARKING'),
  ('R365_PREPARE_BEFORE_PARAMETER_CONFIRM',PARAM,'if(s.evidenceAdoption){','if(false){','R365_PREPARE_BEFORE_CONFIRM'),
  ('R365_ADOPTION_OBSERVE',OWNER,'if(result.ok&&adoption&&assemblyConfirmationCurrent(adoption)){','if(false){','R365_ADOPTION_ACTUALLY_SAVED'),
  ('R365_ONE_CORE_METADATA_STEP',OWNER,'if(result.history_changed===false)history.push(history.snapshot(),"local","採用證據值");','if(true)history.push(history.snapshot(),"local","採用證據值");','R365_ONE_HISTORY_STEP'),
