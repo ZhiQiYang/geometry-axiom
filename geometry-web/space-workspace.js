@@ -295,16 +295,42 @@ window.SpaceModelWorkspace = (() => {
     message("已啟用物件身分追蹤。重新預覽後建立的模型才會帶來源身分。", "success");
     updateActions();
   }
-  async function attachSourceIdentity(record) {
-    if (record.source?.kind !== "scene" || !globalThis.IdentityLedger || !globalThis.SourceInspector) return;
-    let read;
-    try { read = await api("identity-read"); }
-    catch (_) { return; }
-    if (!read?.ok || read.active !== true) return;
-    const graph = SourceInspector.index(await api("source-inspect"));
-    const normalized = String(record.input.base_scene).replace(/\r\n/g, "\n");
-    if (IdentityLedger.deidentifiedBase(normalized) !== normalized) throw new Error("來源基準仍含身分記號，未建立模型。");
-    record.sourceIdentity = IdentityLedger.buildSourceIdentity({...record.input, boundary_id:record.source.boundary_id}, graph.nodes);
+  function creationOwner() {
+    const context=ReferenceWorkspace.context(), model=ReferenceWorkspace.getModelOperationState(), evidence=ReferenceWorkspace.getEvidenceState();
+    if (!context || !model || !evidence || model.blocked || evidence.blocked) throw new Error("目前專案尚不能建立模型，請完成原操作後重新預覽。");
+    return {context,model,evidence};
+  }
+  function assertCreationOwner(owner, revision=null) {
+    const now=creationOwner();
+    if (now.context!==owner.context || ['context','frame','revision','contextToken','undo','redo','group'].some(key=>now.model[key]!==owner.model[key]) ||
+        ['contextToken','revision','session','undo','redo'].some(key=>now.evidence[key]!==owner.evidence[key]) ||
+        revision!==null && now.evidence.nativeRevision!==revision) throw new Error("專案、來源或工作階段已變更，未建立模型；請重新預覽。");
+  }
+  function creationPin(dump, source) {
+    if (dump?.ok!==true || dump.text!==source || !Number.isSafeInteger(dump.revision) || dump.revision<0 ||
+        typeof dump.definition_sha256!=='string' || !/^[a-f0-9]{64}$/.test(dump.definition_sha256)) throw new Error("來源場景已修改或版本無法核對，請重新「使用目前面」並更新預覽。");
+    return {scene:dump.text,revision:dump.revision,fingerprint:dump.definition_sha256};
+  }
+  async function attachSourceIdentity(record, owner, pin) {
+    if (record.source?.kind !== "scene") return;
+    if (!globalThis.IdentityLedger || !globalThis.SourceInspector) throw new Error("來源身分模組尚未載入，未建立模型。");
+    const read=await api("identity-read");
+    assertCreationOwner(owner,pin.revision);
+    if (read?.ok!==true || typeof read.active!=='boolean') throw new Error("無法確認身分帳，未建立模型。");
+    if (read.active) {
+      const data=await api("source-inspect");
+      assertCreationOwner(owner,pin.revision);
+      if (data?.live!==true || data.complete!==true || data.revision!==pin.revision || data.sourceFingerprint!==pin.fingerprint ||
+          data.identityLedger?.schema!=='identity-ledger/1' || data.identityLedger.active!==true) throw new Error("來源版本或身分帳已變更，請重新預覽。");
+      const graph=SourceInspector.index(data), normalized=String(record.input.base_scene).replace(/\r\n/g,"\n");
+      if (IdentityLedger.deidentifiedBase(normalized)!==normalized) throw new Error("來源基準仍含身分記號，未建立模型。");
+      record.sourceIdentity=IdentityLedger.buildSourceIdentity({...record.input,boundary_id:record.source.boundary_id},graph.nodes);
+    }
+    // Even an inactive read must be bracketed: activation itself expires this
+    // preview. Never turn a failed or stale read into a legacy model silently.
+    const final=creationPin(await api("dump-deidentified"),pin.scene);
+    assertCreationOwner(owner,pin.revision);
+    if (final.revision!==pin.revision || final.fingerprint!==pin.fingerprint) throw new Error("讀取身分期間來源已改變，未建立模型；請重新預覽。");
     GeometryProject.validateSpaceModel(record);
   }
   function show(resume) {
@@ -713,13 +739,17 @@ window.SpaceModelWorkspace = (() => {
         message(`「${record.name}」牆高已更新為 ${record.input.settings.height} mm。可復原這次修改；請保存專案。`,"success");
         return;
       }
-      if(state.source.kind==="scene") {const dump=await api("dump-deidentified");if(!dump.ok||dump.text!==state.source.base_scene)throw new Error("來源場景已修改。請重新「使用目前面」並更新預覽，避免保存過期幾何。");}
+      const source=state.source,owner=creationOwner();let pin=null;
+      if(source.kind==="scene") {pin=creationPin(await api("dump-deidentified"),source.base_scene);assertCreationOwner(owner,pin.revision);}
       if(seq!==state.sequence||revision!==state.revision)throw new Error("設定已改變，請更新預覽後再建立。");
       assertSourceHistory();
       if(state.source.context_id!==contextId())throw new Error("目前專案已切換，請重新選取來源並更新預覽。");
       assertPlanProjection();
       const record={id:crypto.randomUUID(),name:$("smModelName").value.trim()||"未命名空間",created_at:new Date().toISOString(),source:{kind:state.source.kind,placement_id:state.source.placement_id,boundary_id:state.source.boundary_id,scene_hash:state.result.source_sha256,...(state.input.mode==="plan"?{projection:copy(state.source.projection)}:{})},input:copy(state.input),result:copy(state.result)};
-      await attachSourceIdentity(record);
+      await attachSourceIdentity(record,owner,pin);
+      assertCreationOwner(owner,pin?.revision??null);
+      if(seq!==state.sequence||revision!==state.revision||state.previewRevision!==revision||state.source!==source)throw new Error("設定或預覽已改變，未建立模型；請重新預覽。");
+      assertSourceHistory();assertPlanProjection();
       ReferenceWorkspace.addSpaceModel(record); draft=null;state.createdId=record.id;state.recordSignature=JSON.stringify(record);state.phase="created";message(`「${record.name}」已加入目前專案，尚未保存成檔案。請按「保存專案 .gcanvas」，之後可完整重開。`,"success");refresh();
     }catch(e){if(seq===state.sequence){state.phase="error";state.previewRevision=-1;message(e.message,"error");}}
     finally{updateActions();}
