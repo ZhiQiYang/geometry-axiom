@@ -12,6 +12,8 @@ const plain = value => JSON.parse(JSON.stringify(value));
 
 function browserComposition(loadTemplate = true) {
   const context = vm.createContext({});
+  vm.runInContext(read('geometry-core/interval-allocation.js'), context);
+  vm.runInContext(read('geometry-templates/woodworking/cutting.js'), context);
   if (loadTemplate) vm.runInContext(read('geometry-templates/woodworking/frontend.js'), context);
   vm.runInContext(read('geometry-app/application.js'), context);
   return context;

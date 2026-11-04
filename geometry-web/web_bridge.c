@@ -216,7 +216,7 @@ static bool app_replace_world(World *world,bool use_default)
     AppReplacement operation={use_default,g_definition_revision};
     bool ok=app_world_candidate_evaluate(candidate,app_replace_evaluate,&operation)==GEO_CANDIDATE_OK;
     if(ok)ok=app_world_candidate_seal(candidate)&&app_world_candidate_publish(candidate,world,false);
-    if(ok){g_definition_revision=operation.completed_revision+1;history_clear();g_preview.ready=false;}
+    if(ok){g_definition_revision=operation.completed_revision+1;history_clear();g_preview.ready=false;identity_clear_epoch();}
     app_world_candidate_destroy(candidate);return ok;
 }
 /* 內建預設 = room_a.scene 的內容，走同一條解析路。 */
@@ -314,8 +314,9 @@ static void cmd_drag(int guide_idx, int v, Coord x, Coord y)
     }
     snprintf(command,sizeof command,"move %u %s",g->id,expr);
     uint32_t token=g_preview.token;
+    uint64_t before_revision=g_definition_revision;
     bool ok=feed_line("drag",++g_input_line_no,command,&g_world);
-    cmd_reference_result(ok,token);
+    cmd_reference_result(ok,token,before_revision);
 }
 
 /* A batch may delete and recreate a field before its final World is compared.
@@ -379,11 +380,15 @@ static void json_deleted_objects(const World *before,bool all)
 static void cmd_line(const char *text)
 {
     uint32_t token=g_preview.token;
+    uint64_t before_revision=g_definition_revision;
     World *before=malloc(sizeof *before);
     if(!before){fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
     *before=g_world;
     bool ok=feed_line("input",++g_input_line_no,text,&g_world);
     printf("{\"ok\":%s",ok?"true":"false");
+    printf(",\"history_changed\":%s,\"revision\":%llu,\"before_revision\":%llu",
+        ok&&g_definition_revision!=before_revision?"true":"false",
+        (unsigned long long)g_definition_revision,(unsigned long long)before_revision);
     if(!ok){fputs(",\"error\":",stdout);js_string(scene_last_error());}
     if(g_preview.ready && g_preview.token!=token){fputs(",\"preview\":",stdout);json_reference_preview();}
     /* These are observed removals, not inferred identity from a fingerprint.
@@ -453,6 +458,7 @@ static void cmd_loadfile(const char *path)
         if(!app_world_candidate_publish(transaction,&g_world,false)){
             history_unrecord();app_world_candidate_destroy(transaction);
             fputs("{\"ok\":false,\"error\":\"Scene import candidate changed during validation\"}\n",stdout);return;}
+        identity_clear_epoch();
         g_preview.ready=false;
         ++g_definition_revision;
         char hash[65]; bool hashed=eng_definition_hash(&g_world,hash);
@@ -1087,6 +1093,7 @@ static void cmd_host_gate_check(const char *arg)
 }
 
 #include "engineering_bridge.inc"
+#include "definition_import_bridge.inc"
 #include "section_profile_bridge.inc"
 #include "panel_fill_bridge.inc"
 #include "scene-import-bridge.inc"
@@ -1184,6 +1191,14 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_engineering_cancel(arg);
         } else if (strcmp(line,"engineering-validate")==0 && arg) {
             cmd_engineering_validate(arg);
+        } else if (strcmp(line,"definition-import-read")==0 && arg) {
+            cmd_definition_import_read(arg);
+        } else if (strcmp(line,"definition-import-preview")==0 && arg) {
+            cmd_definition_import_preview(arg);
+        } else if (strcmp(line,"definition-import-confirm")==0) {
+            cmd_definition_import_confirm(arg);
+        } else if (strcmp(line,"definition-import-cancel")==0) {
+            cmd_definition_import_cancel(arg);
         } else if (strcmp(line, "grid-preview") == 0 && arg != NULL) {
             cmd_grid_preview(arg);
         } else if (strcmp(line, "grid-rule-query") == 0) {
