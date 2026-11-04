@@ -2719,7 +2719,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "92c3920aa15ca6dd4c9aea5054d4e7c9028d4af011d6df2e5fc815c23d694b13",
+      "sha256": "7ef340396eb920b7e899c233b0d364913122bcce290a937028127abb6e5ef2fd",
       "hashMode": "lf"
     },
     {
@@ -3193,7 +3193,7 @@
     {
       "path": "geometry-web/identity_ledger_browser_test.js",
       "reason": "Dedicated acceptance/test driver identity_ledger_browser_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "3a385d164e9d92192625d503386e77c2f28ebd4fcff00c22f14ff717d49caddb",
+      "sha256": "aa9bd77d5f43da876e60e5f0249f8a34e2c13855b1e340bfd69b7d940d95917c",
       "hashMode": "lf"
     },
     {
@@ -3247,7 +3247,7 @@
     {
       "path": "geometry-web/parameter_workflow_test.js",
       "reason": "Dedicated acceptance/test driver parameter_workflow_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "7c017128b7dbfb917305c8b56e3e9ca6ab0f8fd2afbd2b97b92cb71ce4edbdd8",
+      "sha256": "485ce2315da52b1c918b745099ea5e7affc465635584b8d8f2a85b2418dbe011",
       "hashMode": "lf"
     },
     {
@@ -3745,7 +3745,7 @@
     {
       "path": "geometry-web/canvas_context_menu_test.js",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
-      "sha256": "4b0b810701bc97633ceb728ad9d73924747f2da2f98450a3b900cf91b6542334",
+      "sha256": "7381c6f60c04d395970b9357eafb8c9eabeef4257ed829467d2b82b0357567b5",
       "hashMode": "lf"
     },
     {
@@ -3806,6 +3806,12 @@
       "path": "geometry-web/cutting_plan_test.js",
       "reason": "P89 真瀏覽器裁切驗收外掛，由 cdp_test.js 載入；不是產品 runtime 模組。",
       "sha256": "a648eb206e8e4a80775f6cbdd6fae97ed7e277bcbb00431b0a543a161be2b833",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_shards.js",
+      "reason": "Dedicated CI test driver canvas_shards.js: canvas browser-shard plan, cut-point storage handoff and complete-coverage receipt verifier, loaded only by cdp_test.js shard mode, the CI complete-coverage job and tests/test_canvas_shards.js; not loaded by product runtime or served application entry points.",
+      "sha256": "57cf679ead32795891c20b10f3a8aba263724bdcf58d1376010792b3c2d40d71",
       "hashMode": "lf"
     }
   ],
