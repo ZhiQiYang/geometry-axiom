@@ -326,7 +326,8 @@
       boundedJSON(record);Cutting.validate(record.value);
     } else if (record.kind === CASE_KIND && record.schema === CASE_SCHEMA) {
       Cases.validate(record.value);
-    } else if (record.kind === Evidence.KIND && record.schema === Evidence.SCHEMA) {
+    } else if (record.kind === Evidence.KIND && (record.schema === Evidence.SCHEMA || record.schema === Evidence.SCHEMA_V2)) {
+      if (record.value?.schema !== record.schema) fail("證據附件版本不一致。");
       Evidence.validate(record.value);
     } else if (record.kind === ROOM_CANDIDATE_KIND && record.schema === ROOM_CANDIDATE_SCHEMA) {
       if (!RoomCandidates || RoomCandidates.SCHEMA !== ROOM_CANDIDATE_SCHEMA) fail("房間候選驗證器尚未就緒。");
@@ -360,7 +361,7 @@
   function capabilities(envelope) { validate(envelope,true); return [...new Set(envelope.records.flatMap(record => record.kind === GRID_KIND ?
     [...(record.schema === GRID_DRAFTS_SCHEMA ? [GRID_DRAFTS_SCHEMA,...record.value.drafts.map(d=>d.schema)] : [record.schema]),
       ...((record.schema === GRID_DRAFTS_SCHEMA ? record.value.drafts : [record.value]).some(gridCardDraft) ? [GRID_CARD_CAPABILITY] : [])] :
-    record.kind === Evidence.KIND ? [Evidence.SCHEMA] : record.kind === CASE_KIND ? [CASE_SCHEMA] : record.kind === Cutting.KIND ? [Cutting.CAPABILITY] :
+    record.kind === Evidence.KIND ? [record.schema] : record.kind === CASE_KIND ? [CASE_SCHEMA] : record.kind === Cutting.KIND ? [Cutting.CAPABILITY] :
     record.kind === ROOM_CANDIDATE_KIND ? [ROOM_CANDIDATE_CAPABILITY] :
     [ROOM_CAPABILITY,...(record.schema===ROOM_DISPLAY_SCHEMA?[ROOM_DISPLAY_CAPABILITY]:[]),
       ...((record.schema===ROOM_HISTORY_SCHEMA||record.value.legacyHistory?.length)?[ROOM_HISTORY_CAPABILITY]:[])]))].sort(); }

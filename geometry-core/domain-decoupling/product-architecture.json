@@ -189,6 +189,12 @@
       "purpose": "Application/runtime/protocol or workspace host history unity; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-app/native/identity_ledger.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host identity ledger; composes explicit K/W providers where needed"
+    },
+    {
       "path": "geometry-app/native/kernel_storage.h",
       "layer": "H",
       "language": "c",
@@ -1617,6 +1623,12 @@
       "purpose": "Application/runtime/protocol or workspace host grid system bridge; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-web/identity-ledger.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host identity ledger; composes explicit K/W providers where needed"
+    },
+    {
       "path": "geometry-web/index.html",
       "layer": "H",
       "language": "html",
@@ -2677,7 +2689,7 @@
     {
       "path": "geometry-web/cdp_confirmation_gate.js",
       "reason": "Dedicated acceptance/test driver cdp_confirmation_gate.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "59a839da0785adc43b05c0c4234b714bbf6581306954d083b3007beafb85c851",
+      "sha256": "d67c2c1eb48563259eccb96366121c6adc0c0b0b4fea54480907e9522159e95c",
       "hashMode": "lf"
     },
     {
@@ -2707,7 +2719,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "db8733b87e7e3fd6a8a92c618520e378b5ae03fb8715d4189bde9c14d104ba26",
+      "sha256": "7ef340396eb920b7e899c233b0d364913122bcce290a937028127abb6e5ef2fd",
       "hashMode": "lf"
     },
     {
@@ -3179,6 +3191,12 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-web/identity_ledger_browser_test.js",
+      "reason": "Dedicated acceptance/test driver identity_ledger_browser_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "aa9bd77d5f43da876e60e5f0249f8a34e2c13855b1e340bfd69b7d940d95917c",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-web/infinite_grid_face_test.js",
       "reason": "Dedicated acceptance/test driver infinite_grid_face_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
       "sha256": "b41ab1cbb739ab8c827201c84ee6d881af61894dd8078200a2244e3829cd15bf",
@@ -3457,7 +3475,7 @@
     {
       "path": "geometry-web/space_model_test.js",
       "reason": "Dedicated acceptance/test driver space_model_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "f1a0129baddedfe8aa56f0e5e1d8d960e5d6ee77c117acfd8740390cd832cfad",
+      "sha256": "92d06b1542568b10561b6fb91fee94d21f8a5dffaef98bbafd22fa3a727bf92d",
       "hashMode": "lf"
     },
     {
@@ -3619,7 +3637,7 @@
     {
       "path": "geometry-core/card-reference/run_archive_mutations.py",
       "reason": "Dedicated GEO-262 archive mutation runner run_archive_mutations.py; test tooling, not a product-loaded module.",
-      "sha256": "aa27a581e289c9c9c4165e74de4d4068775fd5b50e0f79b101e261b053b6e6bd",
+      "sha256": "8195732f8a3847c769078d4eb5c2d8a6c4bfa83ab443e99f68f27f742bb867e5",
       "hashMode": "lf"
     },
     {
@@ -3727,7 +3745,7 @@
     {
       "path": "geometry-web/canvas_context_menu_test.js",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
-      "sha256": "4b0b810701bc97633ceb728ad9d73924747f2da2f98450a3b900cf91b6542334",
+      "sha256": "7381c6f60c04d395970b9357eafb8c9eabeef4257ed829467d2b82b0357567b5",
       "hashMode": "lf"
     },
     {
@@ -3740,12 +3758,6 @@
       "path": "geometry-web/canvas_context_menu_cases_b.js",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
       "sha256": "c7453f8578b6207d5f7c00af4e6f860aed6a8b9536f09a6de327447e3d6fe701",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-web/canvas_shards.js",
-      "reason": "Dedicated CI test driver canvas_shards.js: canvas browser-shard plan, cut-point storage handoff and complete-coverage receipt verifier, loaded only by cdp_test.js shard mode, the CI complete-coverage job and tests/test_canvas_shards.js; not loaded by product runtime or served application entry points.",
-      "sha256": "57cf679ead32795891c20b10f3a8aba263724bdcf58d1376010792b3c2d40d71",
       "hashMode": "lf"
     },
     {
@@ -3794,6 +3806,12 @@
       "path": "geometry-web/cutting_plan_test.js",
       "reason": "P89 真瀏覽器裁切驗收外掛，由 cdp_test.js 載入；不是產品 runtime 模組。",
       "sha256": "a648eb206e8e4a80775f6cbdd6fae97ed7e277bcbb00431b0a543a161be2b833",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_shards.js",
+      "reason": "Dedicated CI test driver canvas_shards.js: canvas browser-shard plan, cut-point storage handoff and complete-coverage receipt verifier, loaded only by cdp_test.js shard mode, the CI complete-coverage job and tests/test_canvas_shards.js; not loaded by product runtime or served application entry points.",
+      "sha256": "57cf679ead32795891c20b10f3a8aba263724bdcf58d1376010792b3c2d40d71",
       "hashMode": "lf"
     }
   ],
@@ -5001,7 +5019,7 @@
       "driver": "geometry-web/scenario-workspace.js",
       "driverSha256": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
       "router": "geometry-web/serve.py",
-      "routerSha256": "ab6f240f3c85a638c9bfb2533943ee6f17302485a34f32dde7dc903167d97298",
+      "routerSha256": "d4ac1acbf8d33504ee7183838452c536c7a56c65ad223b6dee6ed60839de2f63",
       "receiver": "owner.frame",
       "queryValue": "context",
       "srcPrefix": "/?scenario=",

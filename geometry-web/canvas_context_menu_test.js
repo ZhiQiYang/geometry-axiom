@@ -8,7 +8,7 @@ const cdp = require('./cdp_helpers.js');
 const {isDeepStrictEqual: same} = require('util');
 
 const IDS = Array.from({length:16}, (_, i) => 'C' + String(i + 1).padStart(2, '0'));
-const READ_COMMAND = /^(?:dump|objects|surfaces|references|engineering-read|source-inspect|render|boundary \d+|obstacles \d+)$/;
+const READ_COMMAND = /^(?:dump|dump-deidentified|objects|surfaces|references|engineering-read|source-inspect|render|boundary \d+|obstacles \d+)$/;
 const FIXTURES = {
   cards: [
     'boundary 41 outline 0,0 1000,0 1000,800 0,800', 'canvas-pos boundary 41 80 100',
