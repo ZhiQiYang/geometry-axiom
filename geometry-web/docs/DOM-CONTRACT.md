@@ -90,9 +90,14 @@ GEO-219 實際減項：移除新建 ready 與 Resume-ready 分支在同一 `#sce
 `#faceLayerList` 的 `[data-timber-id]` 列保留定位／選取與刪除；料單控制及完成尺寸移入構件→角材的唯一 `#faceTimberSchedule`，不另建清單工作區。
 `[data-schedule-timber]` 是可鍵盤操作的定位按鈕，`aria-pressed` 與畫布角材選取同步。
 `#timberScheduleScope` 明選承載面全部或當次選取的 ID 集合；`#timberScheduleUnit` 只格式化 mm/cm；
-`#timberScheduleOrder` 按身分或完成長度排序。`#timberScheduleCSV` 導出同一集合的精確 mm，
+`#timberScheduleOrder` 合併為「料單檢視」：`id`／`length` 按身分或完成長度排序，`cutting` 開啟裁切並加入當次範圍。`#timberScheduleCSV` 導出同一集合的精確 mm，
 `#timberScheduleStatus` 顯示正式件數／失效原因。來源細節在 `.timber-schedule-source` 展開。
 數據契約與剩餘追溯限制見 [TIMBER-SCHEDULE.md](TIMBER-SCHEDULE.md)。
+
+## 裁切、宣告餘料與採購（#47 K1）
+
+`#cuttingDialog` 是上述合併選單開啟的對話框；沒有新增常駐工具列。`#cuttingGlobals`、`#cuttingStocks`、`#cuttingRemnants` 保存明示整數 mm 設定，`#cuttingSave` 原子驗證並記一筆「裁切設定」歷史；未填欄位保持未設定。`#cuttingScopes` 是當次 session 的需求範圍，可移除、跨面加入；切專案清空。
+`#cuttingCalculate` 唯讀求方案，`#cuttingPlan` 顯示採購支數、件區間、下刀與剩料分類；`#cuttingUnit`／`#cuttingOrder` 只改顯示。`#cuttingExport` 只有 COMPLETE 能匯出，且重新驗證世界、設定、範圍及 context。`#cuttingStatus` 按需顯示狀態／拒絕理由；只有一塊常駐操作說明。資料、P-047 及能力契約見 [CUTTING-PLAN.md](CUTTING-PLAN.md)。
 
 ## 保存模型角材快照料單（#47 GEO-241）
 
@@ -935,6 +940,11 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
   `#connectionRetry` 重新讀取場景；不重送失敗操作。載入與錯誤期間主工作區
   使用 `inert`，文件快捷鍵也停用。未讀到場景的計數顯示 `—`，不顯示建立第一物件的空狀態。
   已讀到過則保留最後完整快取，明示可能過期。HTTP 403 不放寬來源驗證。
+- `#canvasOfflineView`：只有已知快取的物件畫布在離線時使用，位於 `#app` 外，
+  暫放原 `#ocv` 提供既有右鍵／系統選單鍵的純檢視動作；`#app` 與 `#objectWorkspace`
+  仍維持 `inert`。一般點擊、拖曳、滾輪及編輯快捷鍵不放行；右鍵保留原生選單事件，
+  不傳入一般畫布手勢處理器。恢復連線後同一 SVG 回原位置，不複製資料或重綁事件。
+  只讀容器依原 viewport 的尺寸與位置更新，浮動右欄保持在畫布上方。
 - `#faceDraftNotice`：重畫外環時在畫布上方占獨立列，不能遮住落點。
   `#faceDraftTitle` 顯示草稿頂點數，`#faceDraftMessage` 說明原輪廓、面積與返回保留。
   `#faceDraftFinish` 走既有閉合驗證；`#faceDraftCancel` 只清草稿，不刪面。

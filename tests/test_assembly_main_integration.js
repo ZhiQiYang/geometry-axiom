@@ -33,7 +33,16 @@ function roomDraft(sourceId,host){
   rows:[{rowKey:'room-row',ordinal:1,method:'image-lines',sourcePoints:[[0,0],[10,0],[10,10],[0,10]],warnings:[],deviation:0,
    pointsMm:[[0,0],[1000,0],[1000,1000],[0,1000]],dimensions:[],rawInputs:{refRoomVertices:'0,0\n1000,0\n1000,1000\n0,1000',refRoomLength:'',refRoomEdge:'0'},draftRevision:0,status:'pending'}]};
 }
-async function archive({repeat=true,cutting=true,room=false,derived=repeat}={}){
+function gridCardRaw(){
+ assert.equal(P.Features.GRID_CARD_CAPABILITY,'grid-card-draft/1','KILLER[r06-353:raw-capability-owner]');
+ const rawForm=Object.fromEntries(P.Features.sourceFields.map(key=>[key,'']));
+ Object.assign(rawForm,{igName:'  R01 未提交整卡  ',igMainAlong:'none',igUSource:'repeat',igVSource:'repeat',
+  igUStep:' 0900 ',igVStep:' 0600 ',igUPhase:' - ',igVPhase:'007',igCard:'10',igCardU:'3',igCardV:'8'});
+ return {schema:P.Features.GRID_SCHEMA,draftId:'r06-r01-card',kind:'source',intent:'create',baseRef:null,
+  inputRefs:[{kind:'parameter-field',parameterId:10,fieldId:3,fingerprint:'a'.repeat(64)},
+   {kind:'parameter-field',parameterId:10,fieldId:8,fingerprint:'b'.repeat(64)}],rawForm};
+}
+async function archive({repeat=true,cutting=true,room=false,grid=false,derived=repeat}={}){
  const m={projectId:'r06-main-integration',name:'合流保存',sources:[],faces:[]},sources=new Map(),records=[];
  if(repeat)m.assemblyDrafts={schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[repeatDraft()]};
  if(cutting){assert.ok(P.Features.Cutting,'KILLER[r06-main:cutting-owner]');records.push(P.Features.record(P.Features.Cutting.KIND,settings()));}
@@ -45,6 +54,7 @@ async function archive({repeat=true,cutting=true,room=false,derived=repeat}={}){
   m.faces=[{bid:1,activePageId:host.id,pages:[{...host,crop:[0,0,100,80],reviewRequired:false,records:[]}]}];sources.set(hash,bytes);
   const candidate=roomDraft(hash,host);records.push(P.Features.record(P.Features.RoomCandidates.KIND,candidate));
  }
+ if(grid)records.push(P.Features.record(P.Features.GRID_KIND,gridCardRaw()));
  if(records.length)m.featureAttachments={schema:P.Features.SCHEMA,records};
  const scene=derived?derivedScene:plainScene,bytes=await P.pack(scene,m,sources,zip);
  return {bytes,opened:await freshProject().unpack(new Uint8Array(bytes),zip)};
@@ -65,6 +75,13 @@ test('R06 integration keeps explicit K1 reader options',()=>{
  assert.ok(!P.readerCapabilities([],{cutting:false}).includes(CUTTING));
  assert.throws(()=>P.readerCapabilities([],{cutting:'true'}),/選項/);
  assert.throws(()=>P.readerCapabilities([],{cutting:true,profile:'forged'}));
+ assert.equal(P.Features.GRID_CARD_CAPABILITY,'grid-card-draft/1','KILLER[r06-353:raw-reader-capability]');
+ assert.ok(P.readerCapabilities([],{cutting:true}).includes('grid-card-draft/1'),'KILLER[r06-353:k1-options-retain-raw-reader]');
+ assert.ok(!P.nativeReaderCapabilities(['grid-card-draft/1']).includes('grid-card-draft/1'));
+ const source={id:4,mode:'infinite',name:'same-name',mainAlong:null,uDefinition:{source:'repeat',stepSource:'card',effectiveStep:900,phase:0},vDefinition:{source:'repeat',stepSource:'card',effectiveStep:600,phase:0},
+  cardReference:{parameterId:10,uFieldId:3,vFieldId:8}};
+ const other=structuredClone(source);other.cardReference.parameterId=20;
+ assert.notEqual(P.Features.gridSourceKey(source),P.Features.gridSourceKey(other),'KILLER[r06-353:card-source-identity]');
 });
 test('R06 integration preserves R41 and cutting through fresh archive read',async()=>{
  const {bytes,opened}=await archive();
@@ -116,6 +133,19 @@ test('R06 integration retains room and repeat drafts together in format 19',asyn
  assert.equal(opened.manifest.featureAttachments.records.length,2);
  assert.deepEqual(opened.manifest.assemblyDrafts.records[0],repeatDraft());
  assert.doesNotThrow(()=>P.assertProjectCapabilities(opened.manifest,reader(opened.manifest)),'KILLER[r06-main:mixed-reader]');
+ const mixed=await archive({room:true,grid:true}),raw=gridCardRaw(),mm=mixed.opened.manifest;
+ assert.equal(mm.format,'geometry-canvas/19');
+ assert.equal(mm.featureAttachments.records.length,3);
+ assert.deepEqual(mm.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value,raw,'KILLER[r06-353:raw-archive-exact]');
+ assert.deepEqual(mm.assemblyDrafts.records[0].data.primaries[0].at.edgeKey,KEY);
+ for(const cap of [ROOM,CUTTING,P.BAY_REPEAT_CAPABILITY,P.GENERATION_CAPABILITY,'panel-fill/1','grid-card-draft/1'])
+  assert.ok(mm.requiredCapabilities.includes(cap),'KILLER[r06-353:mixed-required-capabilities] '+cap);
+ assert.ok(!mm.requiredCapabilities.includes(P.CARD_CAPABILITY),'raw alone is not a committed native card');
+ assert.doesNotThrow(()=>P.assertProjectCapabilities(mm,reader(mm)),'KILLER[r06-353:finite-reader-plus-card-raw]');
+ assert.throws(()=>P.assertProjectCapabilities(mm,reader(mm).filter(c=>c!=='grid-card-draft/1')),/不支援/);
+ await assert.rejects(P.unpack(rewrite(mixed.bytes,m=>{m.requiredCapabilities=m.requiredCapabilities.filter(c=>c!=='grid-card-draft/1');}),zip),/能力/);
+ const again=await freshProject().unpack(mixed.bytes,zip);
+ assert.deepEqual(again.manifest,mm,'KILLER[r06-353:fresh-reader-preserves-all-owners]');
 });
 test('R06 integration rejects missing owners and downgrade in shared format 19',async()=>{
  const {bytes}=await archive({room:true});
@@ -201,4 +231,8 @@ test('R06 integration keeps cutting highwater across repeat draft undo redo',asy
  h.push(h.snapshot(),'local','編輯組構草稿');h.frame.context.assemblyDrafts[0].data.name='修改但未套用';
  assert.equal(h.step('undo'),true);value=h.frame.context.featureAttachments.find(r=>r.kind===Cutting.KIND).value;
  assert.equal(h.frame.context.assemblyDrafts[0].data.name,m.assemblyDrafts.records[0].data.name);assert.deepEqual(value,first);
+ const golden=JSON.parse(fs.readFileSync(path.join(ROOT,'geometry-web/cdp_sections.golden.json'),'utf8'));
+ assert.equal(golden.sections.R06,50,'KILLER[r06-353:keep-r06-golden]');
+ assert.equal(golden.sections.P353,355,'KILLER[r06-353:keep-p353-golden]');
+ assert.equal(golden.total,Object.values(golden.sections).reduce((sum,n)=>sum+n,0),'KILLER[r06-353:golden-union-total]');
 });

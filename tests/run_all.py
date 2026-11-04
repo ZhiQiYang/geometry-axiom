@@ -229,6 +229,7 @@ PY_NEEDS = {
     'test_parameters_unbind_scope': ['bridge'],
     'test_parameters_deleted_unbind': ['bridge'],
     'test_parameters_upstream_unbind': ['bridge'],
+    'test_pr353_legacy_snapshot': [],  # Real snapshot/fixture checks need Node and Git, not a native bridge.
     'test_parameters_candidate_value_history': ['bridge'],
     'test_reference_contract': ['bridge'],
     'test_rectangular_template': [],
@@ -311,6 +312,7 @@ NODE_TEST_FILES = [
 ]
 NODE_SCRIPT_FILE = 'tests/test_model_viewer.cjs'
 NODE_DOCUMENT_SCRIPT_FILES = {
+    'node:pr353_display_regressions': 'tests/test_pr353_display_regressions.js',
     'node:document_format': 'tests/test_document_format.js',
     'node:document_cases': 'tests/test_document_cases.js',
     'node:cdp_navigation': 'tests/test_cdp_navigation.js',
@@ -320,6 +322,8 @@ NODE_PURE_TEST_FILES = {
     'node:cutting_summary': 'tests/test_cutting_summary.js',
     'node:r07_candidate_save_warning': 'tests/test_room_candidate_save_warning.js',
     'node:r06_main_integration': 'tests/test_assembly_main_integration.js',
+    'node:pr353_compatibility': 'tests/test_pr353_compatibility.js',
+    'node:pr353_pin_regressions': 'tests/test_pr353_pin_regressions.js',
     'node:cutting_layering': 'tests/test_cutting_layering.js',
     'node:cutting_owner': 'tests/test_cutting_owner.js',
     'node:cutting_plan': 'tests/test_cutting_plan.js',
@@ -360,6 +364,7 @@ NODE_PURE_TEST_FILES = {
 }
 NODE_EXCLUDED = {
     'tests/bay_repeat_node_runner.cjs': 'R06 mutation-runner child adapter; invoked by bay_repeat_mutation_check.py with a selected Node oracle and output destination, not a standalone suite',
+    'tests/pr353_legacy_reader.js': 'Immutable legacy-reader fixture/materialization helper; registers no tests; exercised by the PR353 compatibility and snapshot suites',
     'tests/cutting_legacy_cases.js': 'Fixed inputs for the independently pinned pre-layering cutting oracle; no tests registered',
     'tests/generate_cutting_legacy_fixture.js': 'Explicit regeneration/check of fixed cd4bc880 Git blobs in an isolated VM; never reads current product sources',
     'tests/k1b_cutting_settings_fixture.cjs': 'Pinned K1-b validator fixture for the shared /17 owner-dispatch contract; not an executable test',
@@ -565,7 +570,7 @@ def build_suites():
         f = HERE / (stem + '.py')
         if f.is_file():
             suites.append(Suite('py:' + stem, 'unittest', [py, str(RUNNER), str(f)], PY_NEEDS[stem], 1200,
-                                needs_node=(stem == 'test_evidence_link_native'), label='tests/%s' % f.name))
+                                needs_node=(stem in ('test_evidence_link_native', 'test_pr353_legacy_snapshot')), label='tests/%s' % f.name))
     js = [rel for rel in sorted(NODE_TEST_FILES) if (ROOT / rel).is_file()]
     suites += [
         Suite('node:tests-js', 'node-test', ['--test', '--test-reporter=spec', *js], ['bridge', 'model-base'], 900,

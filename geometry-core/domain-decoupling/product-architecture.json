@@ -2725,7 +2725,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "9fb2020796ccce69002d52d8a49671fe255ed36747619204f2d0304d67749404",
+      "sha256": "052c6fe1773287c81fe729d771e7890b248ce82182c76d7c39633fb257575a6d",
       "hashMode": "lf"
     },
     {
@@ -3776,6 +3776,12 @@
       "path": "geometry-core/framing-template/oracle/reading_a_source_control.py",
       "reason": "Reading A independent numeric source-withdrawal witness for constructor/checker 0/1/0; an explicitly invoked dedicated test driver that loads a supplied oracle source path, not a product-loaded module or product entry point.",
       "sha256": "fe786d9f12cb664fe0188dc87803855449eaa86a8d115969e13bef5213fb3d95",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/grid_card_entry_test.js",
+      "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
+      "sha256": "2e1529c6ea88a77eb8d742e0efe7c7ecd130b385bc7d8e0a844b8cb7014f8fc0",
       "hashMode": "lf"
     },
     {
