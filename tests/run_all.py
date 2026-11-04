@@ -343,6 +343,7 @@ NODE_PURE_TEST_FILES = {
     'node:workspace_shell_history': 'tests/test_workspace_shell_history.js',
     'node:feedback_events': 'tests/test_feedback_events.js',
     'node:space_test_floor': 'tests/test_space_test_floor.js',
+    'node:space_library_actions': 'tests/test_space_library_actions.js',
     'node:history_operation': 'tests/test_history_operation.js',
     'node:identity_ledger': 'tests/test_identity_ledger.js',
     'node:model_source_identity': 'tests/test_model_source_identity.js',
