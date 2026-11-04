@@ -171,8 +171,11 @@ test('L12 model source owner reads a deidentified sourcePin from the live native
   const env={guard(){},guardSelection(){},projectionFor:()=>null,same:(a,c)=>JSON.stringify(a)===JSON.stringify(c),DOMException,
     read:async command=>{calls.push(command);return b.ok(command);}};
   vm.runInNewContext(code+'\nglobalThis.pinRead=readPinnedSource;',env);
-  const current={sequence:1,surface:{id:1},projection:null,sourcePin:{scene:bare,revision:graph.revision,fingerprint:graph.sourceFingerprint}};
-  const result=await env.pinRead(current,{signal:new AbortController().signal});
+  // The shipped open() sets current.before from controller.begin(id).
+  const current={before:{input:{mode:'plan'}},sequence:1,surface:{id:1},projection:null,sourcePin:{scene:bare,revision:graph.revision,fingerprint:graph.sourceFingerprint}};
+  let result;
+  await assert.doesNotReject(async()=>{result=await env.pinRead(current,{signal:new AbortController().signal});},
+    'R362_STACK_L12_CURRENT_RECORD');
   assert.equal(result.scene,bare);assert.ok(calls.includes('dump-deidentified'),'L12 current_scene must read the deidentified source owner');assert.ok(!calls.includes('dump'));
 });
 

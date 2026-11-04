@@ -4004,13 +4004,18 @@
     },
     {
       "source": "geometry-web/project-store.js",
+      "target": "geometry-web/identity-ledger.js",
+      "line": 500
+    },
+    {
+      "source": "geometry-web/project-store.js",
       "target": "geometry-web/scenario-catalog.js",
       "line": 3
     },
     {
       "source": "geometry-web/reference-workspace.js",
       "target": "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
-      "line": 804
+      "line": 852
     },
     {
       "source": "geometry-web/reference_bridge.inc",
@@ -4346,6 +4351,11 @@
       "source": "geometry-web/source-inspector-bridge.inc",
       "target": "geometry-web/section_profile_source_index.inc",
       "line": 144
+    },
+    {
+      "source": "geometry-web/source-inspector.js",
+      "target": "geometry-web/identity-ledger.js",
+      "line": 123
     },
     {
       "source": "geometry-web/source-plane.js",
