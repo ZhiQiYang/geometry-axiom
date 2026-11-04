@@ -1,9 +1,16 @@
-# Product architecture — R06 fixed-source canonical receipt
+# Product architecture — GitHub 新來源收據
 
-Actual execution source `3aa03de1e309883e53829c92f064e3ebd51a0ad2`; adopted main `5775a9e9e46bca801a9a70aaeafcdab9f597bc4d`; verified tool dependency `502a64ff6214dd6060927b7f14643a533536f20d`. This is a local managed-cloud Linux execution of the original three commands, with no GitHub run ID.
+來源 `6daa7276c568f6d163b01954e8cfbd6355b2e9aa`；採入 main `8f82b207e87c086705a1d8b7a00e2f215c07cbcf`；Actions run `41749071611`。
 
-All three commands exited 0; generic 205 and product 18 tests completed without skips. 607 inputs, 335 owned sources, 272 exclusions, 803 edges, 0 diagnostics. LF input closure `28c9ef4ecbf3d13091f5117fc7dcd38c48a2015458e8b292d78523cb689359b6`. Source, index, and every input raw/LF identity were unchanged across execution.
+這份衍生資料來自原 scanner CLI 與原兩支 unittest 的實際執行；三命令均 exit 0、零 skip。它只證明靜態依賴契約，不能替代演算法責任審查、原生／突變／瀏覽器或 SSOT 驗證。
 
-The manifest preserves the adopted K/W/H policy. R06 adds typed repeat provenance and its finite derived-host reader scope; current test-driver and archive-mutator exclusions are pinned to their actual LF bytes. The four canonical outputs are derived artifacts and are excluded from their own input closure.
+本次 628 inputs、345 owned、283 exclusions、824 edges、0 diagnostics；architecture-unit=205、architecture-product=18。完整命令、原始輸出與雜湊在同 artifact。
 
-This receipt certifies the static graph and its two unchanged architecture judges only. Native mutation execution at 26dc99117, downloaded official binaries, the original full census, and browser execution retain their separate source-bound receipts. It does not relabel them as execution at this head, or claim a new performance, Windows, dynamic reading-A, or W-lexicon audit.
+| Layer | Sources |
+|---|---:|
+| H | 201 |
+| K | 70 |
+| W | 68 |
+| vendor | 6 |
+
+main 的歷史收據保留在 Git `8f82b207e87c086705a1d8b7a00e2f215c07cbcf`，本次沒有改寫其來源或沿用其綠燈。
