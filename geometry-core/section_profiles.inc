@@ -80,6 +80,7 @@ static bool sp_operation(World *w,GeoJson *j,int t)
     if(!strcmp(op,"convert-run-to-advanced")||!strcmp(op,"convert-run-to-simple"))return sp_convert_run(w,j,t,!strcmp(op,"convert-run-to-simple"));
     if(!strcmp(op,"delete-placement")){
         uint32_t id;if(!geo_json_keys(j,t,"op,id","")||!eng_u32(j,geo_json_member(j,t,"id"),&id,false))return sp_error("I49: invalid placement identity");
+        identity_note_key(APP_IDENTITY_PLACEMENT,id,0);
         if(!app_placement_remove(w,id))return sp_error("I49: placement does not exist");
         for(size_t i=0;i<w->app.canvas_pos_count;++i)if(w->app.canvas_pos[i].kind==CANVAS_POS_PLACEMENT&&w->app.canvas_pos[i].id==id){memmove(w->app.canvas_pos+i,w->app.canvas_pos+i+1,(w->app.canvas_pos_count-i-1)*sizeof w->app.canvas_pos[0]);memset(&w->app.canvas_pos[--w->app.canvas_pos_count],0,sizeof w->app.canvas_pos[0]);break;}
         return true;
