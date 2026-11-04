@@ -36,8 +36,8 @@ CASES = (
         "name": "撤掉實作：cm 用浮點",
     },
     {
-        "needle": "await ledger.ensureActive(); /* 有預覽仍啟用 */",
-        "mutant": "if(!ledger.previewPending)await ledger.ensureActive(); /* 有預覽仍啟用 */",
+        "needle": "const activated=await ledger.ensureActive({assertCurrent:guardOwner}); /* 有預覽仍啟用 */",
+        "mutant": "const activated=ledger.previewPending?undefined:await ledger.ensureActive({assertCurrent:guardOwner}); /* 有預覽仍啟用 */",
         "name": "撤掉實作：有預覽就拒絕啟用",
     },
 )

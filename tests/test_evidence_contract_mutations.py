@@ -31,7 +31,7 @@ MUTATIONS = [
      "for(const node of graph.nodes.values())if(node.incarnation===target.incarnation&&node.key!==key)return 'conflict';", "", 1,
      "R365_CONFLICT_BEFORE_ABSENT"),
     ("R365_ACTIVATION_WRITE_OWNER", APP,
-     "const read=await apiRequest('identity-read');\n            assertCurrent();",
+     "const read=await apiRequest('identity-read');\n            assertCurrent();\n            if(!current(initial))throw Error('讀取身分帳期間專案已變更，未啟用。');",
      "const read=await apiRequest('identity-read');", 1,
      "R365_ACTIVATION_BEFORE_NATIVE_WRITE"),
     ("R365_SELECTED_OBJECT_TARGETS", APP,
