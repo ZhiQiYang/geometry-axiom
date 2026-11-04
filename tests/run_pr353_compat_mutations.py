@@ -21,6 +21,9 @@ INPUTS = [
     "geometry-web/reference-display.js", "geometry-web/scenario-snapshots.js",
     "geometry-web/reference-workspace.js", "geometry-web/grid-system-workspace.js",
     "geometry-web/vendor/fflate/umd/index.js",
+    "geometry-web/room-candidate-draft.js", "geometry-web/cutting-settings.js",
+    "geometry-app/application.js", "geometry-templates/woodworking/frontend.js",
+    "geometry-templates/woodworking/cutting.js", "geometry-core/interval-allocation.js",
     "tests/test_pr353_compatibility.js", "tests/pr353_legacy_reader.js",
     "tests/pr353_compat_mutations.json", "tests/run_pr353_compat_mutations.py",
 ]
