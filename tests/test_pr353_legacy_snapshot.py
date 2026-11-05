@@ -114,6 +114,40 @@ fs.writeFileSync(file,JSON.stringify(fixture));
         self.assertEqual(len(receipt["files"]), 7)
         self.assertEqual(sum(row["bytes"] for row in receipt["files"]), 172159)
 
+        # Observe the current reader's real CommonJS closure in the full tree,
+        # independently of the mutation runner's declared copy list. Loading
+        # the fixed legacy reader alone cannot cover new main dependencies.
+        spec = importlib.util.spec_from_file_location(
+            "pr353_current_node_mutations", ROOT / "tests/run_pr353_compat_mutations.py")
+        node_runner = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(node_runner)
+        self.assertEqual(len(node_runner.INPUTS), len(set(node_runner.INPUTS)),
+                         "R353_INPUTS_UNIQUE: each declared mutation input must occur exactly once")
+        current_reader = """
+const path=require('node:path'),P=require('./geometry-web/project-store.js');
+if(typeof P.pack!=='function'||typeof P.unpack!=='function')throw Error('Current reader API unavailable');
+console.log(JSON.stringify(Object.keys(require.cache).map(file=>path.relative(process.cwd(),file).split(path.sep).join('/')).sort()));
+"""
+        observed = subprocess.run(["node", "-e", current_reader], cwd=ROOT,
+                                  env=self.env, text=True, encoding="utf-8",
+                                  capture_output=True, timeout=30)
+        self.assertEqual(observed.returncode, 0, observed.stderr)
+        closure = json.loads(observed.stdout)
+        self.assertIn("geometry-web/project-store.js", closure)
+        self.assertEqual(sorted(set(closure) - set(node_runner.INPUTS)), [],
+                         "R353_CURRENT_CJS_CLOSURE: declared mutation inputs omit real current-reader dependencies")
+        current_copy = self.work / "current-node-inputs"
+        for name in node_runner.INPUTS:
+            target = current_copy / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / name, target)
+        isolated = subprocess.run(["node", "-e", current_reader], cwd=current_copy,
+                                  env=self.env, text=True, encoding="utf-8",
+                                  capture_output=True, timeout=30)
+        self.assertEqual(isolated.returncode, 0, isolated.stderr)
+        self.assertEqual(json.loads(isolated.stdout), closure,
+                         "R353_CURRENT_CJS_CLOSURE: isolated reader changed its module closure")
+
     def test_missing_untracked_fixture_blocks_snapshot(self):
         source = self.directory / "missing-input-source"
         shutil.copytree(self.source, source)
