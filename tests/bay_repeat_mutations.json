@@ -827,8 +827,8 @@
       "patches": [
         {
           "file": "geometry-web/project-store.js",
-          "before": "PANEL_FILL_CAPABILITY=\"panel-fill/1\"",
-          "after": "PANEL_FILL_CAPABILITY=\"panel-fill/unsupported\""
+          "before": "PANEL_FILL_CAPABILITY = \"panel-fill/1\"",
+          "after": "PANEL_FILL_CAPABILITY = \"panel-fill/unsupported\""
         }
       ]
     },
