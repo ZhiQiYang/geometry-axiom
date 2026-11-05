@@ -9,7 +9,7 @@ const {createRetainedEvaluator} = require('./cdp_evaluation.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
 const {createTransportFailureTrace,installClientTransportTrace} = require('./transport_failure_trace.js');
 let transportFailureTrace;
-const SCOPE_FLAGS = ['GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_ROOM_CANDIDATE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_DEFINITION_IMPORT_ONLY','GEOMETRY_CDP_FROM_P31'];
+const SCOPE_FLAGS = ['GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_ROOM_CANDIDATE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_DEFINITION_IMPORT_ONLY','GEOMETRY_CDP_FROM_P31','GEOMETRY_IDENTITY_LEDGER_ONLY'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY');
 /* main() 以 inSequence(n)/notOtherShard(n) 把完整序列切成這麼多個連續區段;canvas_shards.json 的片數必須相同。 */
@@ -500,7 +500,7 @@ async function main() {
     await runCanvasContextMenu();
   } else {
   if (!process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY) {
-  if (!process.env.GEOMETRY_ROOM_OUTLINE_ONLY && !process.env.GEOMETRY_ROOM_CANDIDATE_ONLY) {
+  if (!process.env.GEOMETRY_ROOM_OUTLINE_ONLY && !process.env.GEOMETRY_ROOM_CANDIDATE_ONLY && !process.env.GEOMETRY_IDENTITY_LEDGER_ONLY) {
   if (!process.env.GEOMETRY_PARAMETERS_ONLY && !process.env.GEOMETRY_ASSEMBLY_ONLY && !process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY) {
   if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY && !process.env.GEOMETRY_DEFINITION_IMPORT_ONLY && notOtherShard(1)) {
   if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY && !process.env.GEOMETRY_CDP_FROM_P31) {
@@ -6471,7 +6471,7 @@ async function main() {
     await ctl('#connectionRetry');
     await until(`connection.phase === 'ready'`);
     const recovered = await eval_(`({commands:__g197Commands.slice(),count:$('objectCountBadge').textContent,hidden:$('connectionNotice').hidden})`);
-    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden, recovered);
+    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|dump-deidentified|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden, recovered);
     check('P53-4 重試前後世界逐字相同', typeof beforeConnection === 'string' && await eval_(`api('dump').then(r=>r.text)`) === beforeConnection);
     const cached = await eval_(`JSON.stringify([oc.faces,oc.surfs,oc.bmap])`);
     await eval_(`__g197Mode='partial';renderObjects()`);
@@ -7264,6 +7264,7 @@ async function main() {
   if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./source_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   }
   if(inSequence(2)||process.env.GEOMETRY_ROOM_OUTLINE_ONLY)await require('./room_outline_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_IDENTITY_LEDGER_ONLY)await require('./identity_ledger_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if(inSequence(2)||process.env.GEOMETRY_ROOM_CANDIDATE_ONLY){
     await require('./room_candidate_browser_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
     await require('./room_candidate_cold_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN,browserProfile:scope.browserProfile});

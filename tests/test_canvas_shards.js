@@ -66,14 +66,19 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(verdict.summary.total, golden.total);
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
-  // Preserve #369's exact 91-section/4002-assertion contract as a projection.
-  // R06's already measured independent section is the only permitted addition.
-  const prior = {...golden.sections};delete prior.R06;
-  assert.equal(sum(prior), 4002, 'R369_P353_UNION: 3647 existing assertions plus 355');
-  assert.equal(Object.keys(prior).length, 91);
+  // #360 and R06 add independent sections. Keep the original 4002/91 contract
+  // and every original per-section value, then verify the exact extension.
+  const originalSections = {"1":14,"2":3,"3":1,"4":1,"5":1,"6":1,"7":1,"8":0,"9":12,"10":0,"P89":19,"Setup":0,"P3":14,"P4":11,"P5":2,"P6":4,"P7":54,"P8":116,"P9":9,"P10":9,"P11":12,"P12":8,"P13":4,"P14":16,"P15":6,"P16":10,"P17":11,"P18":20,"P19":17,"BF2":5,"BF3":1,"BF4":9,"P20":10,"P21":4,"P22":45,"P32":34,"P33":9,"P34":7,"P35":14,"P36":2,"P37":19,"P38":13,"P39":8,"P40":4,"P41":3,"P42":12,"P43":12,"P44":19,"P45":2,"P46":7,"P47":9,"P48":14,"P49":17,"P50":33,"P51":13,"P52":43,"P53":28,"P57":56,"P62":38,"P63":18,"P64":24,"P65":5,"P66":4,"P68":36,"P69":160,"P67":96,"P70":121,"P71":9,"P78":23,"P87":60,"P88":143,"P72":52,"P72B":50,"P73":69,"P74":52,"P75":37,"P76":87,"P77":134,"P82":16,"P80":23,"P81":14,"P85":31,"P79":87,"P84":33,"P83":16,"P86":20,"P352":1313,"P359":24,"P90":8,"P358":16,"P353":355};
+  const original = Object.fromEntries(Object.keys(originalSections).map(name => [name, golden.sections[name]]));
+  assert.deepEqual(original, originalSections, 'R369_MAIN_SECTIONS_UNCHANGED');
+  assert.equal(sum(original), 4002, 'R369_P353_UNION: 3647 existing assertions plus 355');
+  assert.equal(Object.keys(original).length, 91);
+  const additions = Object.fromEntries(Object.entries(golden.sections).filter(([name]) => !(name in originalSections)));
+  assert.deepEqual(additions, {P360:13, R06:50}, 'R363_SEPARATE_ADDITIONS: P360 13 and R06 50');
+  assert.equal(golden.total, sum(original) + sum(additions), 'R360_COMPLETE_COUNT_UNION');
   assert.equal(golden.sections.R06, 50, 'R06_CANVAS_GOLDEN: retain the independently measured section');
-  assert.equal(golden.total, 4052, 'R06_CANVAS_UNION: unchanged 4002 plus R06 50');
-  assert.equal(Object.keys(golden.sections).length, 92);
+  assert.equal(golden.total, 4065, 'R363_CANVAS_UNION: unchanged 4002 plus P360 13 plus R06 50');
+  assert.equal(Object.keys(golden.sections).length, 93);
   assert.equal(verdict.summary.sectionCount, Object.keys(golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });

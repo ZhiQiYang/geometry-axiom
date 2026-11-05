@@ -1,4 +1,4 @@
-/* Test-only fault injection: hold confirmation's dump, never background recovery. */
+/* Test-only fault injection: hold confirmation's deidentified dump, never background recovery. */
 'use strict';
 function installConfirmationDumpGate(scope, callerStack = () => new Error().stack || '') {
   const original = scope.fetch;
@@ -11,7 +11,7 @@ function installConfirmationDumpGate(scope, callerStack = () => new Error().stac
     const caller = callerStack();
     let command;
     try { command = JSON.parse(args[1]?.body || '{}').cmd; } catch (_) {}
-    const targeted = evidence.phase === 'armed' && String(args[0]) === '/api' && command === 'dump' &&
+    const targeted = evidence.phase === 'armed' && String(args[0]) === '/api' && command === 'dump-deidentified' &&
       /(?:^|\n)\s*at (?:async )?(?:HTMLButtonElement\.)?confirmProjection(?: \[as onclick\])?\s*\(/.test(caller);
     if (targeted) {
       // Reserve the target before awaiting its response; concurrent background dumps cannot steal it.

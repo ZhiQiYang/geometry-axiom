@@ -27,7 +27,7 @@ async function fixture(options = {}) {
     document:{getElementById:element,querySelectorAll:()=>[],querySelector:()=>element('scroll'),addEventListener(){},
       createElement:tag=>tag==='canvas'?{getContext:()=>({}),toDataURL:()=> 'data:image/png;base64,rendered'}:element(tag)},
     oc:{busy:false,faces:[{id:1,kind:'boundary'}],bmap:{},edit:null},fe:{feats:{}},connection:{phase:'ready'},
-    api:async command=>{if(options.api)return options.api(command);assert.equal(command,'dump');calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
+    api:async command=>{if(options.api)return options.api(command);assert.ok(command==='dump'||command==='dump-deidentified','Unexpected API command: '+command);calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
     setStatus:s=>statuses.push(s),toast:s=>statuses.push(s),drawFaceEditor(){},renderFaceInspector(){},
     innerWidth:1280,feUlImgToMm:(_p,x,y)=>[x,y],feFit(){}};
   // Only the PDF library provider is faked here; production validation/cleanup
