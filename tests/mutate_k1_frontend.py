@@ -51,7 +51,7 @@ CASES = [
  ('stock-capacity',POLICY,'stockTypes.length>32','false','T18 settings'),
  ('undo-highwater','project-store.js','cutting=Features.Cutting.preserveHighwater(cutting,highwater)','cutting=cutting||Features.Cutting.empty()','P-047'),
  ('new-capability','project-store.js','capability!==CUTTING_CAPABILITY||cutting','capability!==CUTTING_CAPABILITY','T17 archive'),
- ('old-format','project-store.js','![GRID_DRAFTS_FORMAT,CARD_FORMAT, BAY_REPEAT_FORMAT].includes(manifest.format)','false','T17b'),
+ ('old-format','project-store.js','![GRID_DRAFTS_FORMAT,CARD_FORMAT, ROOM_CANDIDATE_FORMAT].includes(manifest.format)','false','T17b'),
  ('export-state','cutting-workspace.js','function guard(before){','function guard(before){return;','T16'),
  ('export-world','cutting-workspace.js','latest.sourceFingerprint!==candidate.worldFingerprint','false','T16 world'),
  ('export-reentry','cutting-workspace.js','if(exporting)return false;','if(false)return false;','T16 late'),
