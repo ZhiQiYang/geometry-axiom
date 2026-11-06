@@ -17,7 +17,11 @@ static bool app_dp_write(void *user,const WoodDerivedValue *value)
     memcpy(p.components,value->components,sizeof p.components);return app_placement_stage((World *)user,&p);
 }
 static bool app_dp_remove(void *user,uint32_t id)
-{return app_placement_remove((World *)user,id);}
+{
+    if(!app_placement_remove((World *)user,id))return false;
+    identity_note_key(APP_IDENTITY_PLACEMENT,id,0);
+    return true;
+}
 static size_t app_dp_count(void *user)
 {return world_placement_count((const World *)user);}
 static void app_dp_remove_position(void *user,uint32_t id)

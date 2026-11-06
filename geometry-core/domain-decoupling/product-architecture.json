@@ -189,6 +189,12 @@
       "purpose": "Application/runtime/protocol or workspace host history unity; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-app/native/identity_ledger.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host identity ledger; composes explicit K/W providers where needed"
+    },
+    {
       "path": "geometry-app/native/kernel_storage.h",
       "layer": "H",
       "language": "c",
@@ -1419,6 +1425,12 @@
       "purpose": "Application/runtime/protocol or workspace host archive wait trace; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-web/assembly-provenance.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "R06 host adapter compares native typed assembly owners and projects fixed W member slots without deriving bays or geometry"
+    },
+    {
       "path": "geometry-web/assembly-workspace.js",
       "layer": "H",
       "language": "javascript",
@@ -1615,6 +1627,12 @@
       "layer": "H",
       "language": "c",
       "purpose": "Application/runtime/protocol or workspace host grid system bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/identity-ledger.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host identity ledger; composes explicit K/W providers where needed"
     },
     {
       "path": "geometry-web/index.html",
@@ -2621,6 +2639,12 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-web/assembly_bay_repeat_test.js",
+      "reason": "R06 formal CDP acceptance driver; invoked by cdp_test.js only, never a product runtime entry point.",
+      "sha256": "06e822d48d25d76d27ead2def97c8e18241dd0458c77b8b9a57a6e8575277924",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-web/assembly_binding_source_browser_check.js",
       "reason": "Dedicated acceptance/test driver assembly_binding_source_browser_check.js; invoked by test harnesses, not by product runtime or served application entry points.",
       "sha256": "90dc577aeb06e05c61cf1608b7912bcaf6de2734e514ea7b2d4f76b0667164ea",
@@ -2653,7 +2677,7 @@
     {
       "path": "geometry-web/assembly_review_test.js",
       "reason": "Dedicated acceptance/test driver assembly_review_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "52f153475b7a85c197f8850b4026a576ade9c5ef81d3579382753d54078df950",
+      "sha256": "8e288cf3c21ed7e3dae291f851202dead21ac34f77817e394ad826551d745239",
       "hashMode": "lf"
     },
     {
@@ -2675,9 +2699,15 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-web/cdp_bay_repeat_io.js",
+      "reason": "R06 formal CDP archive I/O test helper; owns download, fresh browser profile and isolated native service only during acceptance tests; never loaded by product entry points.",
+      "sha256": "1f1ae69a212cf669f509fdeaee43d0f763e97185b2ebe2f2496b6358ef9ed8f3",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-web/cdp_confirmation_gate.js",
       "reason": "Dedicated acceptance/test driver cdp_confirmation_gate.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "59a839da0785adc43b05c0c4234b714bbf6581306954d083b3007beafb85c851",
+      "sha256": "d67c2c1eb48563259eccb96366121c6adc0c0b0b4fea54480907e9522159e95c",
       "hashMode": "lf"
     },
     {
@@ -2689,7 +2719,7 @@
     {
       "path": "geometry-web/cdp_floor.js",
       "reason": "Dedicated acceptance/test driver cdp_floor.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "37f297942735fba950d81668c18485a434afb0dc38b0e34835cdf633a7edc32e",
+      "sha256": "0768b237c9f2a343a1a4b96be6b863077613c078ec5bf826e83d62c123e2d1e0",
       "hashMode": "lf"
     },
     {
@@ -2707,7 +2737,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "db8733b87e7e3fd6a8a92c618520e378b5ae03fb8715d4189bde9c14d104ba26",
+      "sha256": "aa8b444d5fe18de09eaa8982de6f1c77ea627186ddcf0266b8c399035271f8dd",
       "hashMode": "lf"
     },
     {
@@ -3179,6 +3209,12 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-web/identity_ledger_browser_test.js",
+      "reason": "Dedicated acceptance/test driver identity_ledger_browser_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "aa9bd77d5f43da876e60e5f0249f8a34e2c13855b1e340bfd69b7d940d95917c",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-web/infinite_grid_face_test.js",
       "reason": "Dedicated acceptance/test driver infinite_grid_face_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
       "sha256": "b41ab1cbb739ab8c827201c84ee6d881af61894dd8078200a2244e3829cd15bf",
@@ -3457,7 +3493,7 @@
     {
       "path": "geometry-web/space_model_test.js",
       "reason": "Dedicated acceptance/test driver space_model_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "f1a0129baddedfe8aa56f0e5e1d8d960e5d6ee77c117acfd8740390cd832cfad",
+      "sha256": "92d06b1542568b10561b6fb91fee94d21f8a5dffaef98bbafd22fa3a727bf92d",
       "hashMode": "lf"
     },
     {
@@ -3481,7 +3517,7 @@
     {
       "path": "geometry-web/transport_failure_trace.js",
       "reason": "Dedicated acceptance/test driver transport_failure_trace.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "23ddb860213285cb6ab900c10a7009ce4e225bad24898d88836657e7d381e8f4",
+      "sha256": "f22ca71bf311c724f1c38d80bf6ec8bc1f8bff4a25d26cc10a651e95ba2ebc30",
       "hashMode": "lf"
     },
     {
@@ -3619,7 +3655,7 @@
     {
       "path": "geometry-core/card-reference/run_archive_mutations.py",
       "reason": "Dedicated GEO-262 archive mutation runner run_archive_mutations.py; test tooling, not a product-loaded module.",
-      "sha256": "aa27a581e289c9c9c4165e74de4d4068775fd5b50e0f79b101e261b053b6e6bd",
+      "sha256": "bc8f61e13ccf1f47b409ba0d3682422e73ded3bbf2c2e16c63bfb0cc86249ae0",
       "hashMode": "lf"
     },
     {
@@ -3727,7 +3763,7 @@
     {
       "path": "geometry-web/canvas_context_menu_test.js",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
-      "sha256": "4b0b810701bc97633ceb728ad9d73924747f2da2f98450a3b900cf91b6542334",
+      "sha256": "7381c6f60c04d395970b9357eafb8c9eabeef4257ed829467d2b82b0357567b5",
       "hashMode": "lf"
     },
     {
@@ -3740,12 +3776,6 @@
       "path": "geometry-web/canvas_context_menu_cases_b.js",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
       "sha256": "c7453f8578b6207d5f7c00af4e6f860aed6a8b9536f09a6de327447e3d6fe701",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-web/canvas_shards.js",
-      "reason": "Dedicated CI test driver canvas_shards.js: canvas browser-shard plan, cut-point storage handoff and complete-coverage receipt verifier, loaded only by cdp_test.js shard mode, the CI complete-coverage job and tests/test_canvas_shards.js; not loaded by product runtime or served application entry points.",
-      "sha256": "57cf679ead32795891c20b10f3a8aba263724bdcf58d1376010792b3c2d40d71",
       "hashMode": "lf"
     },
     {
@@ -3794,6 +3824,12 @@
       "path": "geometry-web/cutting_plan_test.js",
       "reason": "P89 真瀏覽器裁切驗收外掛，由 cdp_test.js 載入；不是產品 runtime 模組。",
       "sha256": "a648eb206e8e4a80775f6cbdd6fae97ed7e277bcbb00431b0a543a161be2b833",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_shards.js",
+      "reason": "Dedicated CI test driver canvas_shards.js: canvas browser-shard plan, cut-point storage handoff and complete-coverage receipt verifier, loaded only by cdp_test.js shard mode, the CI complete-coverage job and tests/test_canvas_shards.js; not loaded by product runtime or served application entry points.",
+      "sha256": "57cf679ead32795891c20b10f3a8aba263724bdcf58d1376010792b3c2d40d71",
       "hashMode": "lf"
     }
   ],
@@ -3978,6 +4014,35 @@
       }
     ],
     "forbiddenIdentifiers": [
+      "ASM_AT_GRID",
+      "ASM_AT_GUIDE",
+      "ASM_AT_OUTLINE",
+      "ASM_BAY_CAPABILITY",
+      "ASM_BAY_CELL_MAX",
+      "ASM_BAY_LINE_MAX",
+      "ASM_BAY_OMIT_MAX",
+      "ASM_BAY_PATH_MAX",
+      "ASM_BAY_PRIMARY_MAX",
+      "ASM_DEP_DATUM",
+      "ASM_DEP_GRID",
+      "ASM_DEP_GUIDE",
+      "ASM_DEP_OUTLINE",
+      "ASM_DEP_TIMBER",
+      "ASM_ID_MEMBER",
+      "ASM_ID_PRIMARY",
+      "ASM_ID_SECONDARY",
+      "AsmBayCell",
+      "AsmBayCellReport",
+      "AsmBayIssue",
+      "AsmBayLine",
+      "AsmBayPrimary",
+      "AsmBayPrimaryReport",
+      "AsmBayReport",
+      "AsmIdentity",
+      "AsmIdentityKind",
+      "AsmLocation",
+      "AsmLocationKind",
+      "AsmMapping",
       "Scene",
       "SpaceBoundarySurface",
       "TIMBER_ROLE_PRIMARY",
@@ -3990,6 +4055,10 @@
       "WOOD_ANCHOR_AT_GUIDES",
       "WOOD_ANCHOR_AT_LINE",
       "WOOD_ANCHOR_AT_RULE",
+      "WOOD_ASSEMBLY_SOURCE_BAY_GENERATED",
+      "WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_A",
+      "WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_B",
+      "WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_DEFINITION",
       "WOOD_ASSEMBLY_SOURCE_BINDING_CHECK",
       "WOOD_ASSEMBLY_SOURCE_BINDING_DEFINITION",
       "WOOD_ASSEMBLY_SOURCE_GENERATED",
@@ -4167,11 +4236,14 @@
       "WOOD_STOP_MEMBER_SIDE",
       "WOOD_STOP_OUTLINE_EDGE",
       "WOOD_VERSION_METADATA_MAX",
+      "WoodAssemblyBaySourceKey",
       "WoodAssemblyContext",
       "WoodAssemblyDefinition",
+      "WoodAssemblyDependency",
       "WoodAssemblyEvaluation",
       "WoodAssemblyGuide",
       "WoodAssemblyMember",
+      "WoodAssemblyPosition",
       "WoodAssemblySourceKey",
       "WoodAssemblySourceKind",
       "WoodAssemblySourceResult",
@@ -4321,6 +4393,12 @@
       "wood_asm_rule_immutable",
       "wood_asm_validate_rule",
       "wood_assembly_apply_slot",
+      "wood_assembly_bay_check",
+      "wood_assembly_bay_failure",
+      "wood_assembly_bay_member_definition_direct",
+      "wood_assembly_bay_parse",
+      "wood_assembly_bay_prepare",
+      "wood_assembly_bay_source_ref",
       "wood_assembly_binding",
       "wood_assembly_binding_hook",
       "wood_assembly_binding_rebuild_direct",
@@ -4345,6 +4423,7 @@
       "wood_assembly_generation_prepare",
       "wood_assembly_get",
       "wood_assembly_identity",
+      "wood_assembly_identity_equal",
       "wood_assembly_instance",
       "wood_assembly_instance_check_direct",
       "wood_assembly_instance_definition_parse",
@@ -4356,9 +4435,13 @@
       "wood_assembly_load_generated",
       "wood_assembly_load_instance",
       "wood_assembly_load_rule",
+      "wood_assembly_mapping_at",
+      "wood_assembly_mapping_count",
+      "wood_assembly_mapping_index",
       "wood_assembly_member_definition_direct",
       "wood_assembly_operation",
       "wood_assembly_owned",
+      "wood_assembly_owner_identity",
       "wood_assembly_publish",
       "wood_assembly_put_binding",
       "wood_assembly_quantity",
@@ -4731,6 +4814,7 @@
       "wood_grid_source_ref",
       "wood_grid_source_remove",
       "wood_grid_sources_application",
+      "wood_grid_sources_application_value",
       "wood_grid_sources_bind",
       "wood_grid_sources_cell",
       "wood_grid_sources_create",
@@ -5001,7 +5085,7 @@
       "driver": "geometry-web/scenario-workspace.js",
       "driverSha256": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
       "router": "geometry-web/serve.py",
-      "routerSha256": "ab6f240f3c85a638c9bfb2533943ee6f17302485a34f32dde7dc903167d97298",
+      "routerSha256": "d4ac1acbf8d33504ee7183838452c536c7a56c65ad223b6dee6ed60839de2f63",
       "receiver": "owner.frame",
       "queryValue": "context",
       "srcPrefix": "/?scenario=",

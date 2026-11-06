@@ -1,18 +1,19 @@
 /* #47 F4a: read projection only. Include after core and bridge JSON helpers.
  * R6/R21/D11 remain the relationship authority; this never rebuilds a World. */
-static const AsmInstance *schedule_support_owner(const World *w,uint32_t timber,uint32_t *member)
+static const AsmInstance *schedule_support_owner(const World *w,uint32_t timber,AsmMapping *mapping)
 {
     const AsmInstance *found=NULL; size_t hits=0;
     for(size_t i=0;i<w->wood.assembly.instance_count;++i)
-        for(int m=0;m<3;++m) if(w->wood.assembly.instances[i].timber[m]==timber) {
-            found=&w->wood.assembly.instances[i]; *member=found->member[m]; ++hits;
+        for(size_t m=0;m<wood_assembly_mapping_count(&w->wood.assembly.instances[i]);++m) {
+            AsmMapping value=wood_assembly_mapping_at(&w->wood.assembly.instances[i],m);
+            if(value.timber==timber){found=&w->wood.assembly.instances[i];*mapping=value;++hits;}
         }
     if(hits!=1) return NULL;
     size_t owned=0;
     for(size_t i=0;i<w->wood.assembly.owner_count;++i) {
         const AsmOwner *o=&w->wood.assembly.owners[i];
         if(o->timber==timber) {
-            if(o->instance!=found->id || o->member!=*member) return NULL;
+            if(o->instance!=found->id || !wood_assembly_identity_equal(wood_assembly_owner_identity(o),mapping->identity)) return NULL;
             ++owned;
         }
     }
@@ -21,7 +22,7 @@ static const AsmInstance *schedule_support_owner(const World *w,uint32_t timber,
 
 static void json_schedule_support_owner(const World *w,uint32_t timber)
 {
-    uint32_t member=0; const AsmInstance *a=schedule_support_owner(w,timber,&member);
+    AsmMapping mapping={0}; const AsmInstance *a=schedule_support_owner(w,timber,&mapping);
     if(!a) { fputs("null",stdout); return; }
     const AsmBinding *b=NULL;
     for(size_t i=0;i<w->wood.assembly.binding_count;++i)
@@ -34,9 +35,13 @@ static void json_schedule_support_owner(const World *w,uint32_t timber)
     char instance_hash[65],binding_hash[65];
     geo_sha256(a->content,strlen(a->content),instance_hash);
     geo_sha256(b->content,strlen(b->content),binding_hash);
-    printf("{\"instanceId\":%u,\"memberId\":%u,\"bindingId\":%u,\"ruleId\":%u,\"ruleVersion\":%u,"
+    if(mapping.identity.kind==ASM_ID_MEMBER)printf("{\"instanceId\":%u,\"memberId\":%u",a->id,mapping.identity.key);
+    else if(mapping.identity.kind==ASM_ID_PRIMARY)printf("{\"instanceId\":%u,\"identity\":{\"primary\":%u}",a->id,mapping.identity.key);
+    else if(mapping.identity.kind==ASM_ID_SECONDARY)printf("{\"instanceId\":%u,\"identity\":{\"secondary\":{\"line\":%u,\"left\":%u,\"right\":%u}}",a->id,mapping.identity.key,mapping.identity.left,mapping.identity.right);
+    else {fputs("null",stdout);return;}
+    printf(",\"bindingId\":%u,\"ruleId\":%u,\"ruleVersion\":%u,"
            "\"ruleFingerprint\":\"%s\",\"instanceFingerprint\":\"%s\",\"bindingFingerprint\":\"%s\"}",
-           a->id,member,a->binding_id,a->rule_id,a->rule_version,a->rule_hash,instance_hash,binding_hash);
+           a->binding_id,a->rule_id,a->rule_version,a->rule_hash,instance_hash,binding_hash);
 }
 
 /* StopFace.edge_index is a UV min/max ordinal, never a local B0/B1 label.

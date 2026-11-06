@@ -9,7 +9,7 @@ const {createRetainedEvaluator} = require('./cdp_evaluation.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
 const {createTransportFailureTrace,installClientTransportTrace} = require('./transport_failure_trace.js');
 let transportFailureTrace;
-const SCOPE_FLAGS = ['GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_ROOM_CANDIDATE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_DEFINITION_IMPORT_ONLY','GEOMETRY_CDP_FROM_P31'];
+const SCOPE_FLAGS = ['GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_ROOM_CANDIDATE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_DEFINITION_IMPORT_ONLY','GEOMETRY_CDP_FROM_P31','GEOMETRY_IDENTITY_LEDGER_ONLY'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY');
 /* main() 以 inSequence(n)/notOtherShard(n) 把完整序列切成這麼多個連續區段;canvas_shards.json 的片數必須相同。 */
@@ -152,7 +152,7 @@ let expectedException=null, scope, skipped=[];
 const assetRequests=new Map(), assetFailures=[];
 const _log = console.log;
 function observeAssetNetwork(message) {
-  if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin);
+  if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin,undefined,{allApi:true});
   transportFailureTrace.observe(message, currentTestStep);
   const p=message.params,key=(message.sessionId||'main')+':'+p.requestId;
   if(message.method==='Network.requestWillBeSent'){
@@ -205,10 +205,10 @@ async function connect() {
           else if (['Network.requestWillBeSent','Network.responseReceived','Network.loadingFailed','Network.loadingFinished'].includes(m.method))observeAssetNetwork(m);
           else if (m.method === 'Runtime.bindingCalled' && m.params.name === '__geometryCdpTransportFailure') {
             try {
-              if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin);
+              if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin,undefined,{allApi:true});
               transportFailureTrace.observeApiFailure({...JSON.parse(m.params.payload),sessionId:m.sessionId||null,step:currentTestStep});
-              _log('[API TRANSPORT FAILURE]',JSON.stringify(transportFailureTrace.apiFirst()));
-            } catch(error) {_log('[TRANSPORT DIAGNOSTIC ERROR]',error.message);}
+              _log('[API TRANSPORT FAILURE]',JSON.stringify(transportFailureTrace.apiFailures().at(-1)));
+            } catch(error) {transportFailureTrace?.invalidateApiTrace();_log('[TRANSPORT DIAGNOSTIC ERROR]',error.message);}
           }
           else if (m.method === "Runtime.consoleAPICalled")
             console.log("[console]", m.params.args.map(a => a.value ?? a.description).join(" "));
@@ -461,7 +461,12 @@ async function main() {
   await send('Runtime.addBinding',{name:'__geometryCdpTransportFailure'});
   await send('Page.addScriptToEvaluateOnNewDocument',{source:`(()=>{
     const install=${installClientTransportTrace.toString()};
-    const start=()=>install(window,record=>window.__geometryCdpTransportFailure(JSON.stringify(record)));
+    const start=()=>install(window,record=>window.__geometryCdpTransportFailure(JSON.stringify(record)),undefined,{all:true,expectedFault:record=>{
+      const receipts=window.__geometryExpectedTransportFaults;
+      if(!Array.isArray(receipts))return null;
+      const index=receipts.findIndex(receipt=>receipt.command===record.command&&receipt.error===record.error);
+      return index<0?null:receipts.splice(index,1)[0];
+    }});
     if(typeof window.apiRequest==='function')start();
     else document.addEventListener('DOMContentLoaded',start,{once:true});
   })()`});
@@ -495,7 +500,7 @@ async function main() {
     await runCanvasContextMenu();
   } else {
   if (!process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY) {
-  if (!process.env.GEOMETRY_ROOM_OUTLINE_ONLY && !process.env.GEOMETRY_ROOM_CANDIDATE_ONLY) {
+  if (!process.env.GEOMETRY_ROOM_OUTLINE_ONLY && !process.env.GEOMETRY_ROOM_CANDIDATE_ONLY && !process.env.GEOMETRY_IDENTITY_LEDGER_ONLY) {
   if (!process.env.GEOMETRY_PARAMETERS_ONLY && !process.env.GEOMETRY_ASSEMBLY_ONLY && !process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY) {
   if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY && !process.env.GEOMETRY_DEFINITION_IMPORT_ONLY && notOtherShard(1)) {
   if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY && !process.env.GEOMETRY_CDP_FROM_P31) {
@@ -6466,7 +6471,7 @@ async function main() {
     await ctl('#connectionRetry');
     await until(`connection.phase === 'ready'`);
     const recovered = await eval_(`({commands:__g197Commands.slice(),count:$('objectCountBadge').textContent,hidden:$('connectionNotice').hidden})`);
-    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden, recovered);
+    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|dump-deidentified|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden, recovered);
     check('P53-4 重試前後世界逐字相同', typeof beforeConnection === 'string' && await eval_(`api('dump').then(r=>r.text)`) === beforeConnection);
     const cached = await eval_(`JSON.stringify([oc.faces,oc.surfs,oc.bmap])`);
     await eval_(`__g197Mode='partial';renderObjects()`);
@@ -7252,12 +7257,14 @@ async function main() {
   if(inSequence(2)||process.env.GEOMETRY_PARAMETERS_ONLY)await require('./parameter_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if(inSequence(2)||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_workflow_test.js')({send,eval_,sleep,click,dblclick,drag,waitForUI,exceptionCount:()=>excN});
   if(inSequence(2)||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_context_entry_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_bay_repeat_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
   if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_schedule_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./cutting_plan_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_supports_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./source_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   }
   if(inSequence(2)||process.env.GEOMETRY_ROOM_OUTLINE_ONLY)await require('./room_outline_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_IDENTITY_LEDGER_ONLY)await require('./identity_ledger_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if(inSequence(2)||process.env.GEOMETRY_ROOM_CANDIDATE_ONLY){
     await require('./room_candidate_browser_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
     await require('./room_candidate_cold_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN,browserProfile:scope.browserProfile});
@@ -7276,7 +7283,7 @@ async function main() {
   if(passN+failN===0){failN++;_log('No assertions executed');}
   const goldenCompare=evaluateSections();
   _log(`\n=== 結果:${passN} 通過斷言 / ${failN} 失敗斷言 / ${skipped.length} 略過群組 (${scope.mode}) ===`);
-  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,firstNetworkFailure:transportFailureTrace?.first()||null,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),sectionOrder,goldenCompare,uncaughtBrowserExceptions:excN,unexpectedBrowserExceptions:unexpectedExcN,elapsedSeconds:Math.round((Date.now()-startedAt)/1000),...(Object.keys(shardHandoff).length?{handoff:shardHandoff}:{}),coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
+  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),sectionOrder,goldenCompare,uncaughtBrowserExceptions:excN,unexpectedBrowserExceptions:unexpectedExcN,elapsedSeconds:Math.round((Date.now()-startedAt)/1000),...(Object.keys(shardHandoff).length?{handoff:shardHandoff}:{}),coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
   process.exit(failN > 0 ? 1 : 0);
 }
 async function fatal(e) {
@@ -7294,7 +7301,7 @@ async function fatal(e) {
     }
   } catch(captureError) {_log('FATAL_CAPTURE_FAILED:',captureError.message);}
   finally {
-    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,firstNetworkFailure:transportFailureTrace?.first()||null,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),sectionOrder,currentSection,goldenCompare:'not compared (run did not complete)',uncaughtBrowserExceptions:excN,unexpectedBrowserExceptions:unexpectedExcN,elapsedSeconds:Math.round((Date.now()-startedAt)/1000),...(Object.keys(shardHandoff).length?{handoff:shardHandoff}:{})}));
+    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),sectionOrder,currentSection,goldenCompare:'not compared (run did not complete)',uncaughtBrowserExceptions:excN,unexpectedBrowserExceptions:unexpectedExcN,elapsedSeconds:Math.round((Date.now()-startedAt)/1000),...(Object.keys(shardHandoff).length?{handoff:shardHandoff}:{})}));
     chrome?.kill();process.exit(1);
   }
 }

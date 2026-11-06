@@ -39,7 +39,7 @@ function red(receipts, pattern, ctx = context) {
 const moveSection = (r, name, from) => { r.sections[name] = from.sections[name]; r.sectionOrder.unshift(name); r.passedAssertions = sum(r.sections); };
 
 test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍是所在片的最後一段', () => {
-  assert.deepEqual(shards.validatePlan(plan, golden), []);
+  assert.deepEqual(shards.validatePlan(plan, golden), [], 'R06_CANVAS_PLAN: every existing golden section must be assigned');
   assert.equal(COUNT, 2);
   const all = plan.shards.flatMap(s => s.sections);
   assert.equal(new Set(all).size, all.length);
@@ -48,6 +48,10 @@ test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍�
   assert.equal(owner.sections.at(-1), 'P359');
   assert.equal(plan.shards[0].sections.includes('P353'), false, 'R369_P353_SHARD: P353 is not in shard 1');
   assert.deepEqual(plan.shards[1].sections.slice(-2), ['P353', 'P359'], 'R369_P353_ORDER: P353 immediately precedes the storage-reset suite');
+  assert.equal(plan.shards[0].sections.includes('R06'), false, 'R06_CANVAS_PLAN: R06 belongs to shard 2');
+  const repeatAt = plan.shards[1].sections.indexOf('R06');
+  assert.ok(repeatAt > 0, 'R06_CANVAS_PLAN: R06 must appear once after P82');
+  assert.deepEqual(plan.shards[1].sections.slice(repeatAt - 1, repeatAt + 2), ['P82', 'R06', 'P80'], 'R06_CANVAS_ORDER');
   assert.equal(plan.boundaries[0].after, plan.shards[0].sections.at(-1));
   assert.equal(plan.boundaries[0].before, plan.shards[1].sections[0]);
   // R369-HANDOFF: CI run 41644829616, job 125947334153, P88 cut at 2026-11-03T13:48:55Z.
@@ -62,8 +66,19 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(verdict.summary.total, golden.total);
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
-  assert.equal(golden.total, 4002, 'R369_P353_UNION: 3647 existing assertions plus 355');
-  assert.equal(Object.keys(golden.sections).length, 91);
+  // #360 and R06 add independent sections. Keep the original 4002/91 contract
+  // and every original per-section value, then verify the exact extension.
+  const originalSections = {"1":14,"2":3,"3":1,"4":1,"5":1,"6":1,"7":1,"8":0,"9":12,"10":0,"P89":19,"Setup":0,"P3":14,"P4":11,"P5":2,"P6":4,"P7":54,"P8":116,"P9":9,"P10":9,"P11":12,"P12":8,"P13":4,"P14":16,"P15":6,"P16":10,"P17":11,"P18":20,"P19":17,"BF2":5,"BF3":1,"BF4":9,"P20":10,"P21":4,"P22":45,"P32":34,"P33":9,"P34":7,"P35":14,"P36":2,"P37":19,"P38":13,"P39":8,"P40":4,"P41":3,"P42":12,"P43":12,"P44":19,"P45":2,"P46":7,"P47":9,"P48":14,"P49":17,"P50":33,"P51":13,"P52":43,"P53":28,"P57":56,"P62":38,"P63":18,"P64":24,"P65":5,"P66":4,"P68":36,"P69":160,"P67":96,"P70":121,"P71":9,"P78":23,"P87":60,"P88":143,"P72":52,"P72B":50,"P73":69,"P74":52,"P75":37,"P76":87,"P77":134,"P82":16,"P80":23,"P81":14,"P85":31,"P79":87,"P84":33,"P83":16,"P86":20,"P352":1313,"P359":24,"P90":8,"P358":16,"P353":355};
+  const original = Object.fromEntries(Object.keys(originalSections).map(name => [name, golden.sections[name]]));
+  assert.deepEqual(original, originalSections, 'R369_MAIN_SECTIONS_UNCHANGED');
+  assert.equal(sum(original), 4002, 'R369_P353_UNION: 3647 existing assertions plus 355');
+  assert.equal(Object.keys(original).length, 91);
+  const additions = Object.fromEntries(Object.entries(golden.sections).filter(([name]) => !(name in originalSections)));
+  assert.deepEqual(additions, {P360:13, R06:50}, 'R363_SEPARATE_ADDITIONS: P360 13 and R06 50');
+  assert.equal(golden.total, sum(original) + sum(additions), 'R360_COMPLETE_COUNT_UNION');
+  assert.equal(golden.sections.R06, 50, 'R06_CANVAS_GOLDEN: retain the independently measured section');
+  assert.equal(golden.total, 4065, 'R363_CANVAS_UNION: unchanged 4002 plus P360 13 plus R06 50');
+  assert.equal(Object.keys(golden.sections).length, 93);
   assert.equal(verdict.summary.sectionCount, Object.keys(golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });
@@ -260,6 +275,42 @@ test('workflow：canvas 兩片並行、每片仍 35 分鐘，彙總核對收據�
       name=>async()=>{calls.push(name);},noop,noop,noop,noop,noop,noop,0);
     assert.deepEqual(calls,expected,'R369_P353_ROUTING: '+JSON.stringify({scope,flags}));
   }
+  // R06-CANVAS-CONTRACT-BEGIN: execute the actual routing and receipt statements.
+  // The callbacks are inert; this verifies harness routing, not browser behavior.
+  const repeatRows = driverSource.split('\n').filter(row => row.includes("await require('./assembly_bay_repeat_test.js')"));
+  assert.equal(repeatRows.length, 1, 'R06_CANVAS_DISPATCH: one formal R06 entry');
+  const repeatDispatch = new (async function(){}).constructor('scope','process','inSequence','require','send','eval_','sleep','click','drag','waitForUI','excN',repeatRows[0]);
+  for (const [scope, flags, expected] of [
+    [{mode:'full'}, {}, ['./assembly_bay_repeat_test.js']],
+    [{mode:'shard',shard:{index:1}}, {}, []],
+    [{mode:'shard',shard:{index:2}}, {}, ['./assembly_bay_repeat_test.js']],
+    [{mode:'partial'}, {GEOMETRY_ASSEMBLY_ONLY:'1'}, ['./assembly_bay_repeat_test.js']],
+    [{mode:'partial'}, {GEOMETRY_PARAMETERS_ONLY:'1'}, []]
+  ]) {
+    const calls=[],noop=async()=>{};
+    await repeatDispatch(scope,{env:flags},n=>scope.mode==='full'||scope.mode==='shard'&&scope.shard.index===n,
+      name=>async()=>{calls.push(name);},noop,noop,noop,noop,noop,noop,0);
+    assert.deepEqual(calls,expected,'R06_CANVAS_ROUTING: '+JSON.stringify({scope,flags}));
+  }
+  const footers = driverSource.split('\n').filter(row => row.includes("_log('CDP_RESULT '+JSON.stringify("));
+  assert.equal(footers.length,2,'R06_CANVAS_TRACE: success and fatal receipts both exist');
+  const first={kind:'controlled-test-event'},failureList=[first],handoff={outgoing:{boundary:1,matched:true}},order=['P77','R06'];
+  for (const line of footers) {
+    const emitted=[];
+    new Function('_log','scope','transportFailureTrace','passN','failN','skipped','sectionPass','sectionFail',
+      'sectionOrder','goldenCompare','excN','unexpectedExcN','startedAt','shardHandoff','currentSection','e',line)(
+      value=>emitted.push(JSON.parse(value.slice('CDP_RESULT '.length))),{mode:'partial'},
+      {apiFirst:()=>first,apiFailures:()=>failureList,apiComplete:()=>true,first:()=>null},
+      50,0,[],{R06:50},{},order,'matched',1,0,Date.now(),handoff,'R06',{message:'controlled-fixture'});
+    assert.equal(emitted.length,1,'R06_CANVAS_TRACE');
+    assert.deepEqual(emitted[0].firstTransportFailure,first,'R06_CANVAS_TRACE');
+    assert.deepEqual(emitted[0].apiTransportFailures,failureList,'R06_CANVAS_TRACE: preserve the complete R06 API trace');
+    assert.equal(emitted[0].apiTransportTraceComplete,true,'R06_CANVAS_TRACE');
+    assert.deepEqual(emitted[0].sectionOrder,order,'R06_CANVAS_RECEIPT: preserve #369 order');
+    assert.deepEqual(emitted[0].handoff,handoff,'R06_CANVAS_RECEIPT: preserve #369 handoff');
+    assert.equal(emitted[0].unexpectedBrowserExceptions,0,'R06_CANVAS_RECEIPT');
+  }
+  // R06-CANVAS-CONTRACT-END.
   // R369-P76: load the real complete P76 module with only its TEMP location
   // redirected. Stop at its first browser call, then exercise the real disk.
   // A fresh second shard has never run P1's screenshot directory creation.
