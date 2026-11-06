@@ -181,7 +181,7 @@ test('R357 four real layer mutations must fail named behavior assertions',()=>{
   {id:'H-bypass-W',file:'geometry-web/cutting-plan.js',before:'return Policy.evaluateRows([...rows.values()],settings,p);',after:'return p;',pattern:'R357 all 53 legacy JSON outputs'},
  ];
  const work=fs.mkdtempSync(path.join(os.tmpdir(),'geometry-cutting-layer-mutations-'));
- const files=[K_PATH,W_PATH,'geometry-app/application.js','geometry-templates/woodworking/frontend.js','geometry-web/cutting-settings.js','geometry-web/cutting-plan.js','geometry-web/timber-schedule.js'];
+ const files=[K_PATH,W_PATH,'geometry-app/application.js','geometry-templates/woodworking/frontend.js','geometry-web/cutting-settings.js','geometry-web/cutting-plan.js','geometry-web/timber-schedule.js','geometry-web/assembly-provenance.js'];
  const tests=['test_cutting_layering.js','cutting_legacy_cases.js','generate_cutting_legacy_fixture.js','fixtures/cutting_legacy_cd4bc880.json'];
  const evidence=process.env.GEOMETRY_CUTTING_MUTATION_EVIDENCE;
  const report={schema:'cutting-layer-mutations/1',sources:{},tests:{},results:[]};

@@ -19,9 +19,16 @@ def without_terminal(value):
     return value
 
 
-# Capabilities that features after the 405f8c5e baseline append to
-# engineering-read state, in order. Exact and named, so the comparison below
-# still isolates K1-a's terminal fields; any other difference stays red.
+# Keep the independent 405f8c5e fixture byte-for-byte. The exact additive
+# contracts below come from R06 F4 (7a876ed6: assembly_bridge.inc,
+# engineering_bridge.inc and test_assembly_bay_repeat.LIMITS) and R08 #359.
+# Do not derive expected fields, values, or ordering from the bridge under test.
+R06_CAPABILITY = "assembly-bay-repeat/1"
+R06_LIMITS = {
+    "instances": 16, "ownedTimbers": 48, "worldTimbers": 64,
+    "instanceRecordBytes": 8191, "bayPrimaries": 12,
+    "baySecondaryLines": 24, "bayOmit": 24,
+}
 LATER_ENGINEERING_CAPABILITIES = (
     "definition-import/1",  # R08 #359: definition import across projects
 )
@@ -29,7 +36,21 @@ LATER_ENGINEERING_CAPABILITIES = (
 
 def with_later_capabilities(original):
     expected = json.loads(json.dumps(original))
-    expected["engineering-read"]["state"]["capabilities"].extend(LATER_ENGINEERING_CAPABILITIES)
+    capabilities = expected["engineering-read"]["state"]["capabilities"]
+    capabilities.insert(capabilities.index("assembly-timber-generation/1") + 1,
+                        R06_CAPABILITY)
+    capabilities.extend(LATER_ENGINEERING_CAPABILITIES)
+    for parent, key in ((expected["references"], "assembly"),
+                        (expected["engineering-read"]["state"], "assembly"),
+                        (expected["assembly-read"], "state")):
+        assembly = parent[key]
+        expanded = {}
+        for field, value in assembly.items():
+            expanded[field] = value
+            if field == "capabilities":
+                value.append(R06_CAPABILITY)
+                expanded["limits"] = dict(R06_LIMITS)
+        parent[key] = expanded
     return expected
 
 

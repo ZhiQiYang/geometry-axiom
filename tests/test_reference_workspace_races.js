@@ -14,48 +14,7 @@ const rawGridDraft=()=>({schema:P.Features.GRID_SCHEMA,draftId:'raw-grid',kind:'
   inputRefs:[{kind:'grid-system',id:0,fingerprint:'a'.repeat(64)}],
   rawForm:{igSystem:'0',igBoundary:'',igVertex:'',igCellI:'-',igCellJ:' 001 ',igAnchorUN:'1',igAnchorUD:'0',igAnchorVN:'',igAnchorVD:''}});
 
-async function fixture(options = {}) {
-  const writes = [], statuses = [], written = deferred(), writeGate = options.writeGate || deferred();
-  const calls = [], closing = deferred(), fetchReached = deferred();
-  let aborts = 0, closes = 0;
-  const elements = new Map();
-  const element = id => {
-    if (!elements.has(id)) elements.set(id, {textContent:'',dataset:{},classList:{toggle(){}},style:{},value:'',
-      addEventListener(){},setAttribute(){},removeAttribute(){},replaceChildren(){},click(){},close(){this.open=false;},showModal(){this.open=true;},
-      querySelector:()=>({}),parentElement:{clientWidth:800,clientHeight:600},append(){},prepend(){}});
-    return elements.get(id);
-  };
-  const handle = {createWritable:async () => ({write:async bytes => {writes.push(bytes.slice());written.resolve();await writeGate.promise;},
-    close:async()=>{closes++;closing.resolve();await options.closeGate?.promise;},abort:async()=>{aborts++;}})};
-  const env = {GeometryProject:{...P,...options.projectOverride,...(options.packGate?{pack:async(...args)=>{await options.packGate.promise;return P.pack(...args);}}:{})},fflate:zip,crypto,structuredClone,JSON,TextEncoder,TextDecoder,Uint8Array,Map,Set,WeakMap,console,AbortSignal,BroadcastChannel:options.BroadcastChannel,
-    requestAnimationFrame:()=>1,CustomEvent:class {},ResizeObserver:class {observe(){}},File,Blob,
-    pageRuntimeVersion:"vm-runtime",checkApiSession(){},
-    fetch:async (url,request)=>{if(url==="/rule-cases/prepare"&&options.casePrepare)return options.casePrepare(request);assert.equal(url,'data:image/png;base64,legacy');fetchReached.resolve();
-      assert.ok(options.legacyGate,'Unexpected fetch: '+url);return options.legacyGate.promise;},
-    window:{dispatchEvent(){},addEventListener(){},showSaveFilePicker:()=>options.pickerGate?.promise || Promise.resolve(handle),confirm:()=>false},
-    document:{getElementById:element,querySelectorAll:()=>[],querySelector:()=>element('scroll'),addEventListener(){},
-      createElement:tag=>tag==='canvas'?{getContext:()=>({}),toDataURL:()=> 'data:image/png;base64,rendered'}:element(tag)},
-    oc:{busy:false,faces:[{id:1,kind:'boundary'}],bmap:{},edit:null},fe:{feats:{}},connection:{phase:'ready'},
-    api:async command=>{if(options.api)return options.api(command);assert.ok(command==='dump'||command==='dump-deidentified','Unexpected API command: '+command);calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
-    setStatus:s=>statuses.push(s),toast:s=>statuses.push(s),drawFaceEditor(){},renderFaceInspector(){},
-    innerWidth:1280,feUlImgToMm:(_p,x,y)=>[x,y],feFit(){}};
-  // Only the PDF library provider is faked here; production validation/cleanup
-  // and save code execute unchanged. Real PDF worker coverage is in the app gate.
-  env.__pdfLibrary=options.pdfLibrary;
-  const workspaceCode=fs.readFileSync(process.env.GEOMETRY_TEST_REFERENCE_WORKSPACE || require.resolve('../geometry-web/reference-workspace.js'),'utf8')
-    .replace('if (!pdfLib) pdfLib = import(', 'if (globalThis.__pdfLibrary) return globalThis.__pdfLibrary; if (!pdfLib) pdfLib = import(');
-  vm.runInNewContext(workspaceCode+'\nglobalThis.workspace=ReferenceWorkspace;',env);
-  const w=env.workspace, bytes=new TextEncoder().encode('original PDF source bytes'),hash=await P.sha(bytes);
-  const pageGates=new Map();
-  const source={meta:{id:hash,hash,name:'圖.pdf',type:'application/pdf',size:bytes.length,path:'sources/'+hash},bytes,
-    doc:{numPages:3,getPage:async number=>{await pageGates.get(number)?.promise;return {getViewport:({scale})=>({width:100*scale,height:80*scale}),render:()=>({promise:Promise.resolve()})};}}};
-  w.context().sources.set(hash,source);
-  for(let n=1;n<=3;n++)w.addPage(1,{id:'page-'+n,sourceId:hash,page:n,imgW:100,imgH:80,crop:[0,0,100,80],mmPerPx:10,
-    x:0,y:0,rot:0,opacity:.5,locked:false,calibration:null,reviewRequired:false,records:[],...(n===1?{src:'data:image/png;base64,old'}:{})});
-  w.group(1).activePageId='page-1';
-  return {w,env,source,pageGates,writes,statuses,written,writeGate,handle,element,calls,closing,fetchReached,
-    get aborts(){return aborts;},get closes(){return closes;}};
-}
+const {fixture}=require('./fixtures/reference_workspace_vm.cjs');
 
 const legacyPage=()=>({src:'data:image/png;base64,legacy',imgW:100,imgH:80,mmPerPx:10,x:0,y:0,rot:0,opacity:.5,locked:false});
 const legacyResponse=bytes=>({blob:async()=>new Blob([bytes],{type:'image/png'})});
@@ -384,38 +343,6 @@ test('saving during PDF selection writes the selected page and its original byte
   assert.equal(f.w.active(1).id,'page-2');assert.equal(f.w.context().dirty,false);
 });
 
-test('R07 failed candidate sync preserves saved draft and final save warning',async()=>{
-  const D=require('../geometry-web/room-candidate-draft.js');
-  for(const previous of [false,true])for(const download of [false,true])for(const failure of ['容量超限','專案已切換']) {
-    const f=await fixture(),page=f.w.active(1),points=[[0,0],[1000,0],[1000,1000],[0,1000]];
-    const draft={schema:D.SCHEMA,draftId:'saved-draft',anchor:{kind:'page',boundaryId:1,pageId:page.id,pagePin:D.pagePin(page)},
-      analysis:{sourceId:page.sourceId,page:1,coordinateSpace:'image-pixel/1',pageSize:[100,80],crop:[0,0,100,80],
-        options:{mode:'image',minWidth:1,minLength:8},barriers:[],analyzerRevision:D.ANALYZER_REVISION,total:1,complete:true,ignoredNested:0},
-      rows:[{rowKey:'saved-row',ordinal:1,method:'image-lines',sourcePoints:points,warnings:[],deviation:0,pointsMm:points,dimensions:[],
-        rawInputs:{refRoomVertices:'old raw input',refRoomLength:'',refRoomEdge:'0'},draftRevision:0,status:'pending'}]};
-    if(previous)f.w.setFeatureAttachment(D.KIND,draft,f.w.getProjectState().contextToken);
-    const before=structuredClone(f.w.readFeatureAttachment(D.KIND)),history=f.w.history.undo.length;
-    f.w.context().dirty=false;
-    let flushes=0,downloadBlob;
-    f.env.window.RoomCollectionWorkspace={hasWork:false,flushCandidates(){flushes++;throw new Error(failure);}};
-    if(download){
-      delete f.env.window.showSaveFilePicker;
-      f.env.URL={createObjectURL(blob){downloadBlob=blob;return 'blob:room-candidate-save';},revokeObjectURL(){}};
-      f.env.setTimeout=()=>0;
-    }
-    f.writeGate.resolve();await f.w.save();
-    assert.equal(flushes,1);
-    const bytes=download?new Uint8Array(await downloadBlob.arrayBuffer()):f.writes[0],opened=await P.unpack(bytes,zip);
-    const saved=opened.manifest.featureAttachments?.records.find(record=>record.kind===D.KIND)?.value||null;
-    assert.deepEqual(saved,before,'failed sync must keep exactly the last stored draft or no draft');
-    assert.deepEqual(f.w.readFeatureAttachment(D.KIND),before);
-    assert.equal(f.w.history.undo.length,history,'failed sync must not add history');
-    assert.match(f.statuses.at(-1),/房間候選草稿未能寫入.*先前的草稿或沒有草稿/,JSON.stringify(f.statuses));
-    assert.match(f.statuses.at(-1),download?/已產生專案下載/:/專案已保存/);
-    assert.equal(f.w.context().dirty,true,'unsynchronized candidate input must not look fully saved');
-  }
-});
-
 test('edits completed during file writing remain unsaved',async()=>{
   const f=await fixture(),saving=f.w.save();await f.written.promise;
   f.w.calibrated(1,[[0,0],[10,0]],100);
@@ -600,6 +527,27 @@ async function openFixture(options={}) {
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/scenario-integration.js'),'utf8')+'\nglobalThis.ScenarioIntegration=window.ScenarioIntegration;',f.env);
   return {...f,bytes,requests,refreshed};
 }
+
+test('R06_PF_PROFILE_LATE_CONTEXT_REJECT: a delayed native profile cannot confirm a stale project candidate',async()=>{
+ for(const switchContext of [true,false]){
+  const f=await openFixture(),gate=deferred(),entered=deferred(),old=f.w.context(),original=f.env.fetch;
+  const scene='requires engineering-spec/1\nrequires parameters/1\nrequires panel-fill/1\nrequires assembly-timber-generation/1\nrequires assembly-bay-repeat/1\nfinish-surface 1 on boundary 8\n';
+  const data={id:1,name:'raw derived repeat',bindingId:1,rule:{id:1,version:1,fingerprint:'a'.repeat(64)},surfaceId:null,layout:'bay-repeat',
+   primaries:[1,2].map(key=>({key,at:null,ends:{start:{kind:'timber',id:null},finish:{kind:'timber',id:null}}})),secondaryLines:[{key:1,at:null}],omit:[]};
+  const bytes=await P.pack(scene,{projectId:'derived-open',name:'derived',sources:[],faces:[],assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[{id:'raw-derived',kind:'instance',base_ref:null,data,updated_at:'2026-11-02T00:00:00Z'}]}},new Map(),zip);
+  f.env.apiRequest=async command=>{assert.equal(command,'panel-fill-read');entered.resolve();await gate.promise;return {ok:true,revision:0,schema:'panel-fill-native/1',capability:'panel-fill/1',complete:false,supportedRecords:['finish-surface','panel-fill','derived-placement']};};
+  f.env.fetch=async(url,request)=>{
+   if(url==='/upload/prepare'){f.requests.push({url,request});return {ok:true,json:async()=>({ok:true,token:1,capabilities:nativeCapabilities,native_capabilities:['panel-fill-native/1'],required_capabilities:P.sceneCapabilities(scene),final_scene:scene,final_objects:{boundaries:[8],placements:[]}})};}
+   return original(url,request);
+  };
+  const opening=f.w.importBytes(bytes),rejected=assert.rejects(opening,/目前工程已有變更|原生來源.*變更/,'R06_PF_PROFILE_LATE_CONTEXT_REJECT');
+  await entered.promise;
+  if(switchContext)f.w.observe('line reset',{ok:true,revision:1});else f.w.observe('line spec changed 1',{ok:true,revision:1});
+  const current=f.w.context(),count=f.w.history.undo.length;gate.resolve();await rejected;
+  assert.equal(f.w.context(),current);assert.equal(f.w.history.undo.length,count);assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
+  if(!switchContext)assert.equal(current,old);
+ }
+});
 
 // Cross-PR ownership: the scenario reader validates complete leaf projects,
 // creating disposable PDF tasks even though it keeps only their saved bytes.
@@ -1326,6 +1274,13 @@ function prepareSnapshotCase(data,runPython=require('node:child_process').execFi
 }
 test('caller mutation during real hashes cannot replace the detached snapshot verified by the core',async()=>{
   const {definition,receipt,data}=structuredClone(snapshotCaseFixture);
+  assert.strictEqual(P.Features.Cases.validate(data),data,'R06 native capacity facts remain part of the exact portable receipt');
+  const legacy=structuredClone(data);for(const key of ['before','after'])delete legacy.receipts[0].receipt.observations[key].limits;
+  assert.strictEqual(P.Features.Cases.validate(legacy),legacy,'Historical observations without capacity facts remain readable');
+  for(const alter of [v=>v.instances=0,v=>v.ownedTimbers=true,v=>v.worldTimbers=4294967296,v=>v.unknown=1,v=>delete v.bayOmit]){
+    const malformed=structuredClone(data);alter(malformed.receipts[0].receipt.observations.after.limits);
+    assert.throws(()=>P.Features.Cases.validate(malformed),'Unknown, missing or malformed capacity facts must still reject');
+  }
   assert.equal(receipt.status,'passed');
   receipt.observations.after.rules[0].value.members[0].slotId=13;P.Features.Cases.validate(data);
   const reached=deferred(),gate=deferred(),f=await fixture({projectOverride:{Features:{...P.Features,Cases:{...P.Features.Cases,

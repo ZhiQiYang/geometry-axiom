@@ -12,6 +12,9 @@ static bool app_asm_remove(void *,uint32_t);
 static void app_asm_write(void *,const WoodMember *,const WoodAssemblyDefinition *);
 static bool app_asm_anchor_matches(void *,uint32_t,const WoodAssemblyDefinition *);
 static bool app_asm_instance_content(void *,AsmInstance *,GeoJson *,int);
+static bool app_asm_position(void *,uint32_t,const AsmLocation *,WoodAssemblyPosition *);
+static bool app_asm_dependencies(void *,WoodAssemblyDependency,WoodAssemblyDependency *,size_t,size_t *,bool);
+static bool app_asm_external_reference(void *,uint32_t,uint32_t,char *,size_t);
 static bool app_asm_json(void *user,GeoJson *j,const char *text)
 {(void)user;return app_json_parse(j,text);}
 static void app_asm_drop_position(void *user,bool rule,uint32_t id)
@@ -25,7 +28,10 @@ static bool app_assembly_sources_bind(const World *,WoodAssemblyContext *);
 static WoodAssemblyContext app_asm_context(const World *world)
 {
     World *w=(World *)world;WoodAssemblyContext c={0};c.state=&w->wood.assembly;c.engineering=app_eng_context(w);c.diagnostic=&g_asm_diagnostic;c.parameter_dimension_error=&g_parameter_dimension_error;c.user=w;c.scene_loading=g_parsing_scene_file;
-    c.json_parse=app_asm_json;c.drop_position=app_asm_drop_position;c.other_operation=app_asm_other;c.declare_binding=app_asm_declare_binding;c.surface=app_asm_surface;c.guide=app_asm_guide;c.member=app_asm_member;c.footprint=app_asm_footprint;c.member_count=app_asm_member_count;c.member_capacity=WORLD_MAX_TIMBERS;c.allocate_member=app_asm_allocate;c.remove_member=app_asm_remove;c.write_member=app_asm_write;c.anchor_matches=app_asm_anchor_matches;c.instance_content=app_asm_instance_content;app_assembly_sources_bind(world,&c);return c;
+    c.json_parse=app_asm_json;c.drop_position=app_asm_drop_position;c.other_operation=app_asm_other;c.declare_binding=app_asm_declare_binding;c.surface=app_asm_surface;c.guide=app_asm_guide;c.member=app_asm_member;c.footprint=app_asm_footprint;c.member_count=app_asm_member_count;c.member_capacity=WORLD_MAX_TIMBERS;c.allocate_member=app_asm_allocate;c.remove_member=app_asm_remove;c.write_member=app_asm_write;c.anchor_matches=app_asm_anchor_matches;c.instance_content=app_asm_instance_content;
+    c.position=app_asm_position;c.dependencies=app_asm_dependencies;c.external_reference=app_asm_external_reference;
+    if(g_active_app_candidate&&world==&g_active_app_candidate->after)c.bay_report=&g_active_app_candidate->bay_report;
+    app_assembly_sources_bind(world,&c);return c;
 }
 static bool asm_error(const char *format,...)
 {
