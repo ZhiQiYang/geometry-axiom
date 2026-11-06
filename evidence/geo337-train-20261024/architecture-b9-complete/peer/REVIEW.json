@@ -1,0 +1,54 @@
+{
+  "scope": "Independent original raw command and four-artifact current-source audit; no rerun or root edit",
+  "source_sha": "b9c9fb818f031828530994a4d66f1976da0d8138",
+  "result_sha256": "968e15e47c99823efa7a912f7b1c63bb38afd4ad770f373c763356db78cc0466",
+  "passed": 1696,
+  "failed": 0,
+  "exit": 0,
+  "checks_by_group": {
+    "general": 65,
+    "commands": 288,
+    "origins": 54,
+    "inputs": 1208,
+    "proofs": 81
+  },
+  "failures": [],
+  "original_commands": 48,
+  "input_files": 604,
+  "original_gates": [
+    0,
+    0,
+    0
+  ],
+  "generic_tests": 205,
+  "product_tests": 18,
+  "same_source_guard_triples": 9,
+  "neutral_controls": 2,
+  "limits": [
+    "No native/browser/ledger/performance execution certified.",
+    "Old artifact928 and current execution937 explicitly separated; same bytes scan is accepted only because current raw CLI stdout is preserved.",
+    "604 actual file/Git raw/LF equality checked from retained ls-tree and current source bytes; producer before/after guards retained."
+  ],
+  "outputs": {
+    "product-architecture.json": {
+      "bytes": 221953,
+      "rawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
+      "lfSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
+    },
+    "product-architecture-scan.json": {
+      "bytes": 132559,
+      "rawSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    "PRODUCT-ARCHITECTURE.md": {
+      "bytes": 1159,
+      "rawSha256": "5cf002a54a777e5a2e90d79f55a9a79ddb9e59c1aaee948d17e45bf232701763",
+      "lfSha256": "5cf002a54a777e5a2e90d79f55a9a79ddb9e59c1aaee948d17e45bf232701763"
+    },
+    "product-architecture-receipt.json": {
+      "bytes": 123023,
+      "rawSha256": "cf48d2b2409b7ed4e6b7385c0b2129f5d72894c65e6ec5b26f827978065efa0e",
+      "lfSha256": "cf48d2b2409b7ed4e6b7385c0b2129f5d72894c65e6ec5b26f827978065efa0e"
+    }
+  }
+}

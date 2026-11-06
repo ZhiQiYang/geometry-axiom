@@ -22,6 +22,27 @@ static bool prepare(const char *path)
 }
 static bool preview(void){return line("preview spec x 600")&&g_preview.ready&&g_preview.valid;}
 static bool confirm(void){char text[64];snprintf(text,sizeof text,"confirm %u",g_preview.token);return line(text);}
+static int identity_incomplete_before(const char *path,const char *epoch)
+{
+    CHECK(prepare(path),"identity-incomplete-setup");char error[192];
+    CHECK(identity_set_epoch(&g_world,epoch,error,sizeof error),"identity-incomplete-epoch");
+    CHECK(line("identity-ledger activate")&&g_world.app.identity_active&&g_world.app.identity_mark_count>0,
+          "identity-incomplete-active-baseline");
+    /* Damage only the live test World. An ordinary edit must not repair it. */
+    g_world.app.identity_mark_count=0;
+    World *before=malloc(sizeof *before);CHECK(before,"identity-incomplete-memory");memcpy(before,&g_world,sizeof *before);
+    AppHistory history;memcpy(&history,&g_history,sizeof history);
+    uint64_t serial=g_identity_next_serial,revision=g_definition_revision;
+    CHECK(!g_identity_pending_count,"identity-incomplete-no-pending-reservation");
+    CHECK(!line("spec identity_integrity_probe 7"),"identity-incomplete-edit-rejected");
+    CHECK(strstr(scene_last_error(),"I70:")&&strstr(scene_last_error(),"boundary 1"),"identity-incomplete-original-diagnostic");
+    CHECK(!memcmp(before,&g_world,sizeof *before)&&g_world.app.identity_mark_count==0,"identity-incomplete-not-repaired-or-published");
+    CHECK(g_identity_next_serial==serial&&!g_identity_pending_count,"identity-incomplete-does-not-consume-serial");
+    CHECK(g_definition_revision==revision&&!memcmp(&history,&g_history,sizeof history),"identity-incomplete-keeps-revision-and-history");
+    CHECK(line("undo")&&!g_world.app.identity_active&&identity_dump_ok(&g_world,error,sizeof error),"identity-incomplete-undo-restores-legal-world");
+    CHECK(g_identity_next_serial==serial&&!g_identity_pending_count,"identity-incomplete-undo-keeps-counter");
+    free(before);return 0;
+}
 static int lifecycle(const char *path)
 {
     CHECK(prepare(path),"setup");World *before=malloc(sizeof *before);CHECK(before,"memory");*before=g_world;
@@ -180,6 +201,8 @@ static bool replay_frame(void *after,GeoEvalContext *sources,void *opaque)
         unsigned char before[sizeof frame.owner->operation];
         memset(&frame.owner->operation,0xa5,sizeof frame.owner->operation);
         frame.owner->operation.boundary_keyed=false;frame.owner->operation.boundary_id=91;
+        frame.owner->operation.stagger_count=0;frame.owner->operation.stagger_steps=0;
+        memset(frame.owner->operation.stagger_seal,0,sizeof frame.owner->operation.stagger_seal);
         memcpy(before,&frame.owner->operation,sizeof before);
         FRAME_CHECK(feed_line("file-replay-witness",2,"boundary 1 outline 0,0 1000,0 1000,1000 0,1000",world),"replay-keyed-boundary");
         FRAME_CHECK(feed_line("file-replay-witness",3,"boundary-vertex-keys 1 outer 1 2 3 4 next-key 5",world),"replay-keyed-keys");
@@ -276,6 +299,8 @@ static int default_owned_candidate(const char *path,bool scratch_oom)
     World *before=malloc(sizeof *before);CHECK(before,"default-before-memory");memcpy(before,&g_world,sizeof *before);
     AppWorldCandidate *owner=app_world_candidate_create(&g_world);CHECK(owner,"default-owner");
     memset(&owner->operation,0xa5,sizeof owner->operation);owner->operation.boundary_keyed=false;owner->operation.boundary_id=91;
+    owner->operation.stagger_count=0;owner->operation.stagger_steps=0;
+    memset(owner->operation.stagger_seal,0,sizeof owner->operation.stagger_seal);
     unsigned char operation_bytes[sizeof owner->operation];memcpy(operation_bytes,&owner->operation,sizeof operation_bytes);
     AppReplacement operation={true,g_definition_revision};uint64_t revision=g_definition_revision,serial=g_app_candidate_serial;
     default_candidate_count=0;default_observe_candidates=true;
@@ -389,6 +414,7 @@ static int default_program_guard(void)
 
 int main(int argc,char **argv)
 {
+    if(argc==4&&!strcmp(argv[1],"identity-incomplete-before"))return identity_incomplete_before(argv[2],argv[3]);
     if(argc!=3)return 2;
     if(!strcmp(argv[1],"default-cost"))return default_owned_candidate(argv[2],false);
     if(!strcmp(argv[1],"default-scratch-oom"))return default_owned_candidate(argv[2],true);

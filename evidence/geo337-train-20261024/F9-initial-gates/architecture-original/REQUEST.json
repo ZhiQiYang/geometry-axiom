@@ -1,0 +1,29 @@
+{
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "argv": [
+    [
+      "python",
+      "-B",
+      "tests/architecture_contract.py",
+      "--root",
+      ".",
+      "--manifest",
+      "geometry-core/domain-decoupling/product-architecture.json"
+    ],
+    [
+      "python",
+      "-B",
+      "tests/test_architecture_contract.py"
+    ],
+    [
+      "python",
+      "-B",
+      "tests/test_product_architecture.py"
+    ]
+  ],
+  "free_before": {
+    "/workspace": 91267072,
+    "/tmp": 159281152
+  },
+  "original_three_judges": true
+}

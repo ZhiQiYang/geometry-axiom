@@ -1,0 +1,54 @@
+{
+  "schema": "independent-geo339-F38da-original-affected-actual-peer/1",
+  "checks": 6636,
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+  "archive_sha256": "c2d2c75b39536d7e801cb31af2cc49d0de3aafd130a0a0cdd27b6701b8abc435",
+  "members": 1469,
+  "original_files": 1468,
+  "original_bytes": 21576812,
+  "capture_rows": 251,
+  "actual_original_exits": {
+    "0": 248,
+    "1": 3
+  },
+  "modules": {
+    "test_geometry_host_sources": 45,
+    "test_geometry_source_runtime": 10,
+    "test_geometry_kernel_runtime": 10,
+    "test_rectangular_python": 9,
+    "test_geometry_host_world": 8,
+    "test_geometry_kernel_compatibility": 1,
+    "test_domain_source_pins": 16,
+    "test_geometry_host_native": 30,
+    "test_geo261_default_native": 13
+  },
+  "original_methods_total": 142,
+  "original_methods_passed": 142,
+  "original_skip": 0,
+  "predicate_triplets": {
+    "list": [
+      0,
+      1,
+      0
+    ],
+    "dict": [
+      0,
+      1,
+      0
+    ],
+    "feature": [
+      0,
+      1,
+      0
+    ]
+  },
+  "limits": [
+    "Only specified nine importer modules and three original predicate proofs. Full project native, six browser jobs, ledger and architecture are not inferred.",
+    "Three withdraw phases exit1 through named original AssertionError diagnostics; raw underlying TypeError/AttributeError context is retained, not misclassified as an infrastructure crash.",
+    "The original #339 wrapper uses private binaries and original thresholds. No subject was rerun by this reviewer.",
+    "Two private ELF payloads are retained at original paths and fingerprinted; archive omits only their body.",
+    "Source materialization first four original Git captures bind prior M; formal captures bind F. No source relabeling."
+  ]
+}

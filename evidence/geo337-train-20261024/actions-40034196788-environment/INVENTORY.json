@@ -1,0 +1,424 @@
+{
+  "schema": "pr338-actions40034196788-completed-originals-and-peer/1",
+  "scope": "Original readonly14commands including initial gh compatibility1, exact run/jobs/7annotations plus independent144-check peer; no product pass or B3 resolution inferred.",
+  "files": {
+    "original/ANNOTATIONS.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/ANNOTATIONS.json",
+      "bytes": 22529,
+      "sha256": "b566e31486f7dd4a8dc953f6136591c0cd7ab9900e3f6572170287aef260d53b"
+    },
+    "original/CLASSIFICATION.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/CLASSIFICATION.json",
+      "bytes": 32608,
+      "sha256": "93fea17de6740e92f942b9a8a6420eb0ec22fd74f5226873891a9ebe40f8e23e"
+    },
+    "original/HANDOFF_SOURCE.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/HANDOFF_SOURCE.json",
+      "bytes": 163,
+      "sha256": "f58dceb820c28616ef15a8484ec973738a7ee230f2b7681eba76af3027d3cd7e"
+    },
+    "original/LATEST_REVIEW_338.md": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/LATEST_REVIEW_338.md",
+      "bytes": 4890,
+      "sha256": "5fb1404099cd52c88ae2916ea89e96e2590b19e63f5890aec45e6b12588fb1c9"
+    },
+    "original/READ_REQUEST.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/READ_REQUEST.json",
+      "bytes": 12607,
+      "sha256": "cc1311e141e734efa30baa6aad6e7d24ddbcff65fabe643782f0010c81cee2d4"
+    },
+    "original/RUN.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/RUN.json",
+      "bytes": 2496,
+      "sha256": "5061f157cb5a95b1a27f4785950e4f44dd293d8eb8674b25a48c7a3ab33ef8a3"
+    },
+    "original/SUMMARY.md": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/SUMMARY.md",
+      "bytes": 1701,
+      "sha256": "2755932c815c305a5ac893115a24b044953f05d6b7f12f7d779f9abb7f075523"
+    },
+    "original/classify.py": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/classify.py",
+      "bytes": 9178,
+      "sha256": "7b7918bafa78b9ae96c960a39dc8e9f3efe578b8683bb3909cce53ba32d7543f"
+    },
+    "original/original-metadata/subcommands/000001/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000001/request.json",
+      "bytes": 1649,
+      "sha256": "63588ba1a94d60649b853535d36d77a170abdfa92291e804dc7f99460d376247"
+    },
+    "original/original-metadata/subcommands/000001/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000001/result.json",
+      "bytes": 1901,
+      "sha256": "d3d3eab17e929cd4d4371de577cb18d4d145b97352f31138322eb7a8cdbd8bb0"
+    },
+    "original/original-metadata/subcommands/000001/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000001/stderr.bin",
+      "bytes": 141,
+      "sha256": "5a6a800d68e8cb18f2f675ebf4589267386928fea31916e7511c39da4e1afd48"
+    },
+    "original/original-metadata/subcommands/000001/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000001/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000001/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000002/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000002/request.json",
+      "bytes": 1567,
+      "sha256": "121dce2315a57ab8b75952d7e4c911c211cbeb5196b2f3676d5ddeed118a533b"
+    },
+    "original/original-metadata/subcommands/000002/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000002/result.json",
+      "bytes": 1817,
+      "sha256": "b7305865986f55829a79fc72c1de15b52f477a025545bed0ca1b3861da2f0f99"
+    },
+    "original/original-metadata/subcommands/000002/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000002/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000002/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000002/stdout.bin",
+      "bytes": 41,
+      "sha256": "265500e12469e6f4edc236e5b372cbe150ca0a38bc1feec78287a40d9224e96b"
+    },
+    "original/original-metadata/subcommands/000003/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000003/request.json",
+      "bytes": 1581,
+      "sha256": "d31f7eb6e8e4d20f2619ef04345380422906b486d12358c4dfe2400b9630021e"
+    },
+    "original/original-metadata/subcommands/000003/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000003/result.json",
+      "bytes": 1834,
+      "sha256": "89350173c93e757f79b36d40c1404df22e02df77764c9c524fd3148ed9260997"
+    },
+    "original/original-metadata/subcommands/000003/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000003/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000003/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000003/stdout.bin",
+      "bytes": 4890,
+      "sha256": "5fb1404099cd52c88ae2916ea89e96e2590b19e63f5890aec45e6b12588fb1c9"
+    },
+    "original/original-metadata/subcommands/000004/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000004/request.json",
+      "bytes": 1762,
+      "sha256": "7aeec4cb0e68819ff053b56ee7b34f77f604bb80ec613ad311a3b13ed7c63039"
+    },
+    "original/original-metadata/subcommands/000004/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000004/result.json",
+      "bytes": 2013,
+      "sha256": "60319d31c73bdb520dab0fef8e2e8a133a0cb5094a87ee43173b057f36d4b5bb"
+    },
+    "original/original-metadata/subcommands/000004/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000004/stderr.bin",
+      "bytes": 230,
+      "sha256": "8bdaec42e84f25419bf989389278fa373a266617ec2684ea8026890daccb52a2"
+    },
+    "original/original-metadata/subcommands/000004/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000004/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000004/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000005/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000005/request.json",
+      "bytes": 1583,
+      "sha256": "a5ff28f62b6666829291ac1364ba3f34a5d63da9d403102971d704687601b422"
+    },
+    "original/original-metadata/subcommands/000005/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000005/result.json",
+      "bytes": 1836,
+      "sha256": "db693d52481690394e837f2cc31183d6d2c6495c3c5adab806c8b805b975556a"
+    },
+    "original/original-metadata/subcommands/000005/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000005/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000005/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000005/stdout.bin",
+      "bytes": 3375,
+      "sha256": "e456736877399b24af78d0cc60a7ef1bc1530700ad7b25046d064cb90a672f4e"
+    },
+    "original/original-metadata/subcommands/000006/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000006/request.json",
+      "bytes": 1592,
+      "sha256": "35fe70f202013f7cc138167056d226b10b6757738a5ea4ee95e7696bb93c0599"
+    },
+    "original/original-metadata/subcommands/000006/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000006/result.json",
+      "bytes": 1845,
+      "sha256": "b2c29bdf87ca1d11f200f2b1b9b5198c96324245fe55a862a911d2f780f2dff6"
+    },
+    "original/original-metadata/subcommands/000006/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000006/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000006/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000006/stdout.bin",
+      "bytes": 6346,
+      "sha256": "f3824c67134002a9b68a783aa028214a3f2ceca6d60fa32e5ed5b2807819ce06"
+    },
+    "original/original-metadata/subcommands/000007/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000007/request.json",
+      "bytes": 1748,
+      "sha256": "f404540318a6d71eddc0f968276ee8014c8340d03b077257e77ef506f52bd35f"
+    },
+    "original/original-metadata/subcommands/000007/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000007/result.json",
+      "bytes": 2001,
+      "sha256": "0d0bdb559abdebc0a0b5d22a07955e14aa2a8921e89117af36fe0c331cffaee5"
+    },
+    "original/original-metadata/subcommands/000007/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000007/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000007/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000007/stdout.bin",
+      "bytes": 2496,
+      "sha256": "5061f157cb5a95b1a27f4785950e4f44dd293d8eb8674b25a48c7a3ab33ef8a3"
+    },
+    "original/original-metadata/subcommands/000008/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000008/request.json",
+      "bytes": 1591,
+      "sha256": "233b79b73dc920ab9d431b014dac68544358788ddaddba99f2647308da62214d"
+    },
+    "original/original-metadata/subcommands/000008/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000008/result.json",
+      "bytes": 1843,
+      "sha256": "4820608eff59de8e7b098e41282627fd1a8620e25bf68897a1b108312a89d6b7"
+    },
+    "original/original-metadata/subcommands/000008/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000008/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000008/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000008/stdout.bin",
+      "bytes": 868,
+      "sha256": "dd212af5b9588ac4ef52645a03d3a7950740b71d680146b887663439ebac7441"
+    },
+    "original/original-metadata/subcommands/000009/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000009/request.json",
+      "bytes": 1592,
+      "sha256": "316a5191e424c4c62032d6dee78ea45e02ae92a3ef8f5582de73d771758f96b3"
+    },
+    "original/original-metadata/subcommands/000009/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000009/result.json",
+      "bytes": 1844,
+      "sha256": "d2e6930f3462284b11237d467d4a301f2b2665c030008732f5ec18f2c72465d3"
+    },
+    "original/original-metadata/subcommands/000009/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000009/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000009/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000009/stdout.bin",
+      "bytes": 868,
+      "sha256": "dd212af5b9588ac4ef52645a03d3a7950740b71d680146b887663439ebac7441"
+    },
+    "original/original-metadata/subcommands/000010/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000010/request.json",
+      "bytes": 1592,
+      "sha256": "3f32fdccd0d9f65790a1dcc6abb7f4c062b8e1a931ab8e5b73a67a1568b41ea7"
+    },
+    "original/original-metadata/subcommands/000010/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000010/result.json",
+      "bytes": 1843,
+      "sha256": "9a446cc168ef8afc66f98afc9cd623988c6bd721f92ad1fd23451cff27b08ded"
+    },
+    "original/original-metadata/subcommands/000010/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000010/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000010/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000010/stdout.bin",
+      "bytes": 868,
+      "sha256": "dd212af5b9588ac4ef52645a03d3a7950740b71d680146b887663439ebac7441"
+    },
+    "original/original-metadata/subcommands/000011/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000011/request.json",
+      "bytes": 1590,
+      "sha256": "524e9a26d15e04c8a3b6215223f8dc36eea52b5bde0eb28678453ccda6f7d529"
+    },
+    "original/original-metadata/subcommands/000011/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000011/result.json",
+      "bytes": 1842,
+      "sha256": "bd1d34c325b72712029df3cdcb229a210822016df3cc8ea7b5ea7770f5ee8b7b"
+    },
+    "original/original-metadata/subcommands/000011/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000011/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000011/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000011/stdout.bin",
+      "bytes": 868,
+      "sha256": "dd212af5b9588ac4ef52645a03d3a7950740b71d680146b887663439ebac7441"
+    },
+    "original/original-metadata/subcommands/000012/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000012/request.json",
+      "bytes": 1591,
+      "sha256": "35186e879725d07e20affb396960def71b957d191d5e43f021fc4c023ffbef95"
+    },
+    "original/original-metadata/subcommands/000012/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000012/result.json",
+      "bytes": 1843,
+      "sha256": "b57055a3ef930c54fcd2307ca5ef5a3714c992baeaba8612a1c0cb94278b5f4a"
+    },
+    "original/original-metadata/subcommands/000012/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000012/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000012/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000012/stdout.bin",
+      "bytes": 868,
+      "sha256": "dd212af5b9588ac4ef52645a03d3a7950740b71d680146b887663439ebac7441"
+    },
+    "original/original-metadata/subcommands/000013/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000013/request.json",
+      "bytes": 1592,
+      "sha256": "ad0e164ade8f3eaadc8cfd0d789ce416ca0ea4cff5585b1760c4fdc23bde0e07"
+    },
+    "original/original-metadata/subcommands/000013/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000013/result.json",
+      "bytes": 1843,
+      "sha256": "19821e6758cbf7334b6a38226cc267eef3a4c9b5bb328ef56ca5eea09ea0ab33"
+    },
+    "original/original-metadata/subcommands/000013/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000013/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000013/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000013/stdout.bin",
+      "bytes": 868,
+      "sha256": "dd212af5b9588ac4ef52645a03d3a7950740b71d680146b887663439ebac7441"
+    },
+    "original/original-metadata/subcommands/000014/request.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000014/request.json",
+      "bytes": 1592,
+      "sha256": "b519862f28d79790fa31c85c36dfe6af79a406b78b84a9c1a2094cfd73437b3c"
+    },
+    "original/original-metadata/subcommands/000014/result.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000014/result.json",
+      "bytes": 1844,
+      "sha256": "d9ebd3c8c0b91676103c73909af5315164bc6e1f7859a532c94499ef74aee95a"
+    },
+    "original/original-metadata/subcommands/000014/stderr.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000014/stdin.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/original-metadata/subcommands/000014/stdout.bin": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands/000014/stdout.bin",
+      "bytes": 868,
+      "sha256": "dd212af5b9588ac4ef52645a03d3a7950740b71d680146b887663439ebac7441"
+    },
+    "original/original-metadata/subcommands.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/original-metadata/subcommands.json",
+      "bytes": 27360,
+      "sha256": "a60d86d5792435178dcc45346ce3a615f36f5d0642dc246e9826574dd4d8fab6"
+    },
+    "original/read_annotations.py": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/read_annotations.py",
+      "bytes": 1897,
+      "sha256": "84c20b6257dfdd5a3dbc467275b82a12364673d00bd50a363cd60f3c204e0971"
+    },
+    "original/read_original_metadata.py": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/read_original_metadata.py",
+      "bytes": 2470,
+      "sha256": "db7f7fb773e62fd61dce1cd0a75994c4bdf1ae7cc416d18d74ed850381cb976e"
+    },
+    "original/RAW_INVENTORY.json": {
+      "originalPath": "/tmp/pr338-actions-40034196788-environment-classification/RAW_INVENTORY.json",
+      "bytes": 13382,
+      "sha256": "ee2f0b89d57f355366eff76eb9641eb390e02e55f71b027ebce2920969466871"
+    },
+    "peer/CHECKS.json": {
+      "originalPath": "/tmp/CI-B3-40034196788-peer/CHECKS.json",
+      "bytes": 12525,
+      "sha256": "c90a6908828d696cfa49a22ec8694fa348e471499929b77e6f1bcadaf13c2c79"
+    }
+  },
+  "originalFileCount": 83,
+  "originalBytes": 216172,
+  "selfExcluded": true
+}

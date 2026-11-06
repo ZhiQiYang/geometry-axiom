@@ -1,0 +1,151 @@
+{
+  "schema": "combined-immutable-single-anchor-review/1",
+  "source_sha": "6cad1a3cb76d7bd910125a1d70ecfffdc9183813",
+  "parents": [
+    "1722b55445b53ac37b6eac1be7b379e79c73eaa8",
+    "3b0b634feb54266700cc61f26c34d7aeac4c0314"
+  ],
+  "previous_evidence_head": "1722b55445b53ac37b6eac1be7b379e79c73eaa8",
+  "changed_paths": [
+    "evidence/geo314-refresh-8033aa75/INVENTORY.json",
+    "evidence/geo314-refresh-8033aa75/LATEST_REVIEW.md",
+    "evidence/geo314-refresh-8033aa75/PR288_ASSEMBLY_DOCUMENTS_AUDIT.md",
+    "evidence/geo314-refresh-8033aa75/PROGRESS.md",
+    "evidence/geo314-refresh-8033aa75/REVIEW_NO_WOOD_PREP.md",
+    "evidence/geo314-refresh-8033aa75/SHARED_UNION.json",
+    "evidence/geo314-refresh-8033aa75/SOURCE_STATIC.json",
+    "evidence/geo314-refresh-8033aa75/collect_source_static.py",
+    "evidence/geo314-refresh-8033aa75/reader-sync-source/receipt.json",
+    "evidence/geo314-refresh-8033aa75/reader-sync-source/stderr.txt",
+    "evidence/geo314-refresh-8033aa75/reader-sync-source/stdout.txt",
+    "evidence/geo314-refresh-8033aa75/run_reader_sync.py",
+    "tests/test_geo261_wood_grid_application.py"
+  ],
+  "only_non_evidence_change": [
+    "tests/test_geo261_wood_grid_application.py"
+  ],
+  "exact_one_string_change": true,
+  "old_anchor_occurrences": 1,
+  "new_anchor_occurrences": 1,
+  "methods_before": [
+    "test_policy_has_no_host_world_or_ambient_candidate_dependency",
+    "test_roles_follow_source_identity_across_kernel_remove_and_reinsert",
+    "test_direct_source_identity_lock_declarations_and_capacity",
+    "test_source_application_admission_engineering_locks_and_unchanged_rejections",
+    "test_child_parent_type_index_space_and_stagger_order",
+    "test_delete_child_guide_timber_order_and_source_binding_closure",
+    "test_callback_facts_belong_to_candidate_and_original_stays_unchanged",
+    "test_removed_engineering_guard_fails_admission_assertion",
+    "test_removed_child_identity_guard_fails_parent_change_assertion",
+    "test_removed_guide_delete_guard_fails_ordered_rejection_assertion",
+    "test_stagger_commit_decision_table_and_ordered_sources",
+    "test_stagger_removed_new_two_axis_guard_fails_new_system_assertion",
+    "test_stagger_removed_legacy_value_guard_fails_changed_axis_assertion",
+    "test_stagger_removed_same_reference_exception_fails_card_edit_assertion",
+    "test_stagger_treating_one_axis_as_two_fails_switch_direction_assertion",
+    "test_stagger_ignoring_v_axis_fails_v_change_assertion",
+    "test_stagger_ignoring_source_value_fails_unbind_assertion",
+    "test_stagger_removed_missing_store_guard_fails_assertion_without_crash",
+    "test_stagger_source_switch_blanket_exemption_fails_present_value_assertion",
+    "test_stagger_missing_contiguity_fails_ordered_chain_assertion",
+    "test_stagger_missing_order_fails_sequence_assertion",
+    "test_stagger_missing_final_source_binding_fails_endpoint_assertion",
+    "test_removed_direct_lock_fails_public_client_and_actual_bridge"
+  ],
+  "methods_after": [
+    "test_policy_has_no_host_world_or_ambient_candidate_dependency",
+    "test_roles_follow_source_identity_across_kernel_remove_and_reinsert",
+    "test_direct_source_identity_lock_declarations_and_capacity",
+    "test_source_application_admission_engineering_locks_and_unchanged_rejections",
+    "test_child_parent_type_index_space_and_stagger_order",
+    "test_delete_child_guide_timber_order_and_source_binding_closure",
+    "test_callback_facts_belong_to_candidate_and_original_stays_unchanged",
+    "test_removed_engineering_guard_fails_admission_assertion",
+    "test_removed_child_identity_guard_fails_parent_change_assertion",
+    "test_removed_guide_delete_guard_fails_ordered_rejection_assertion",
+    "test_stagger_commit_decision_table_and_ordered_sources",
+    "test_stagger_removed_new_two_axis_guard_fails_new_system_assertion",
+    "test_stagger_removed_legacy_value_guard_fails_changed_axis_assertion",
+    "test_stagger_removed_same_reference_exception_fails_card_edit_assertion",
+    "test_stagger_treating_one_axis_as_two_fails_switch_direction_assertion",
+    "test_stagger_ignoring_v_axis_fails_v_change_assertion",
+    "test_stagger_ignoring_source_value_fails_unbind_assertion",
+    "test_stagger_removed_missing_store_guard_fails_assertion_without_crash",
+    "test_stagger_source_switch_blanket_exemption_fails_present_value_assertion",
+    "test_stagger_missing_contiguity_fails_ordered_chain_assertion",
+    "test_stagger_missing_order_fails_sequence_assertion",
+    "test_stagger_missing_final_source_binding_fails_endpoint_assertion",
+    "test_removed_direct_lock_fails_public_client_and_actual_bridge"
+  ],
+  "test_sha256": "c387f9cbc6cdbc7bc8c09296c8057f84eb4ef92c26360ad043bb0613d21ec58f",
+  "old_assert_tail_preserved": true,
+  "protected": [
+    {
+      "path": "公理層.md",
+      "before_blob": "c34e8d6acf862455db2d47978feb04cd43324284",
+      "after_blob": "c34e8d6acf862455db2d47978feb04cd43324284",
+      "unchanged": true
+    },
+    {
+      "path": "決策佇列.md",
+      "before_blob": "12d718fd62d3337c65eed7e3b13361475b948e9e",
+      "after_blob": "12d718fd62d3337c65eed7e3b13361475b948e9e",
+      "unchanged": true
+    },
+    {
+      "path": "tests/mutate.py",
+      "before_blob": "109fc14614963c66c34e59b38b3e6a1cfadb974b",
+      "after_blob": "109fc14614963c66c34e59b38b3e6a1cfadb974b",
+      "unchanged": true
+    },
+    {
+      "path": "tests/run_all.expected.json",
+      "before_blob": "31f778608cbfdcaefdf24c2a2445e8eda55343f6",
+      "after_blob": "31f778608cbfdcaefdf24c2a2445e8eda55343f6",
+      "unchanged": true
+    },
+    {
+      "path": "tests/mutants_results.json",
+      "before_blob": "80e09c5e018e865e6d3624e23c24be0ece0dbca7",
+      "after_blob": "80e09c5e018e865e6d3624e23c24be0ece0dbca7",
+      "unchanged": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture.json",
+      "before_blob": "e5a741ad6f1b4355a860a8e6f50ce8989c73fc6e",
+      "after_blob": "e5a741ad6f1b4355a860a8e6f50ce8989c73fc6e",
+      "unchanged": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/ADOPTION-RECEIPT.json",
+      "before_blob": "ab5f37e07023c64db8f67a260fce1fc006b5507d",
+      "after_blob": "ab5f37e07023c64db8f67a260fce1fc006b5507d",
+      "unchanged": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/ADOPTION-RECEIPT.md",
+      "before_blob": "a13a404856a100a4c8d2b8fa8cf60111afc4f5e9",
+      "after_blob": "a13a404856a100a4c8d2b8fa8cf60111afc4f5e9",
+      "unchanged": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+      "before_blob": "543def9773304aaf4e531f6e70ed1409b6e3e025",
+      "after_blob": "543def9773304aaf4e531f6e70ed1409b6e3e025",
+      "unchanged": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture-scan.json",
+      "before_blob": "e33373b03e7c1c9e87c2ee55049515477f01229f",
+      "after_blob": "e33373b03e7c1c9e87c2ee55049515477f01229f",
+      "unchanged": true
+    }
+  ],
+  "source_call_sites": [
+    "6cad1a3cb76d7bd910125a1d70ecfffdc9183813:geometry-templates/woodworking/native/grid_application.c:244:static bool wood_grid_stagger_value_changed(const GeoGridAxisDef *old,const GeoGridAxisDef *now,",
+    "6cad1a3cb76d7bd910125a1d70ecfffdc9183813:geometry-templates/woodworking/native/grid_application.c:306:        for(int axis=0;axis<2;++axis)if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis],now->id,(unsigned)axis,facts,count)){"
+  ],
+  "dynamic_tests_run": false,
+  "git_or_worktree_mutations": false,
+  "remote_verification": "Only producer original push/ls-remote receipts reviewed; no independent network command in this review."
+}

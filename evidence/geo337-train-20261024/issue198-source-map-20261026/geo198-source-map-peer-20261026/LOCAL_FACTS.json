@@ -1,0 +1,133 @@
+{
+  "exit_code": 0,
+  "manifest_files_checked": 149,
+  "capture_stream_pairs_checked": 45,
+  "A_B_probe_outputs": {
+    "A": {
+      "before_query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "hole",
+            "rect": [
+              30,
+              50,
+              70,
+              80
+            ]
+          }
+        ]
+      },
+      "before_apply": {
+        "ok": false,
+        "error": "line 3: 套用投影後有物件失效（輪廓退化/空間成員衝突）"
+      },
+      "after_query": {
+        "ok": false,
+        "error": "R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      },
+      "after_apply": {
+        "ok": false,
+        "error": "line 3: R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      }
+    },
+    "B": {
+      "before_query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": []
+      },
+      "before_apply": {
+        "ok": false,
+        "error": "line 3: apply-proj 的項目在此面上不存在（整筆拒絕）"
+      },
+      "after_query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "split",
+            "rect": [
+              40,
+              70,
+              60,
+              80
+            ]
+          }
+        ]
+      },
+      "after_apply": {
+        "ok": true
+      }
+    }
+  },
+  "original_probe_head_not_clean_source_claim": true,
+  "historical_withdrawal_matrix": {
+    "removed": {
+      "exits": {
+        "native": 1,
+        "bridge": 1,
+        "scenes": 1
+      },
+      "native_first_line": "147/164 integrity checks passed (World=2904880 bytes)",
+      "scene_counts": {
+        "pass": 143,
+        "fail": 4,
+        "infrastructure": 0
+      },
+      "three_scenes": {
+        "_ax_r7_notch_disconnected.scene": "fail",
+        "_ax_r7_ridge_crossing.scene": "fail",
+        "_ax_r7_ridge_strip.scene": "fail"
+      }
+    },
+    "restored": {
+      "exits": {
+        "native": 0,
+        "bridge": 0,
+        "scenes": 0
+      },
+      "native_first_line": "164/164 integrity checks passed (World=2904880 bytes)",
+      "scene_counts": {
+        "pass": 147,
+        "fail": 0,
+        "infrastructure": 0
+      },
+      "three_scenes": {
+        "_ax_r7_notch_disconnected.scene": "pass",
+        "_ax_r7_ridge_crossing.scene": "pass",
+        "_ax_r7_ridge_strip.scene": "pass"
+      }
+    }
+  },
+  "fragment_refs": {
+    "base196": "635dd86ee368579aec444fb3ba16e48bccf4877e",
+    "pr202": "137427563de2e94e41d067282266c232f176f0d8",
+    "train291": "e8eb1da51f3b21df15869338a7e36e76e584ff9e",
+    "main": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+    "geo288_f13": "13d02c1db7022145a52ee063286a558e595eb212"
+  },
+  "C_fragment_texts_independently_rehashed": true,
+  "bridge_method_hashes_each": 18,
+  "recorded_full_current_geometry_hashes": {
+    "base196": "9e2ae4fb4f133c5df604ddf3a30962f3c84da8fe5f8ba77b3b4145a78fe35f89",
+    "pr202": "a21854a90dc127af4768f183c309db9709f13aad410fa736d0f3e7eed4aa2fcf",
+    "train291": "75db8d975e55f0aa46aed56848638e9741da29d99061692fce26d6dfec5b261b",
+    "main": "f91cfa7d3160558a0bed1d0d41381d7af1cc5dd0bcda2e016b2fd7275d49c996",
+    "geo288_f13": "f91cfa7d3160558a0bed1d0d41381d7af1cc5dd0bcda2e016b2fd7275d49c996"
+  },
+  "F13_main_single_C_blob_recorded_hash_equal": true,
+  "full_closure_proven": false,
+  "scope_limit": "18方法/fixture與完整C blob身分依已保存的Git讀取命令/hash紀錄；C函式原文可獨立重hash。此包未保存所有歷史完整Git show stdout，不擴大為完整closure。",
+  "original_probe_ELF_rehashed_now": false,
+  "product_Git_API_executed": false,
+  "reviewer_preparation_error": "前一個臨時唯讀audit腳本else0排字SyntaxError，未開始執行；本稿已修正，非產品紅。"
+}

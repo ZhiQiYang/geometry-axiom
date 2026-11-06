@@ -1,0 +1,35 @@
+{
+  "schema": "nowood-completed-original-package/1",
+  "product_sha": "bfbab207a92a809fca50fefcefb3fa4b2af05ea9",
+  "actual_driver_exit": 0,
+  "outer_exit": 0,
+  "baseline_test_methods": 13,
+  "phase_exits": [
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0
+  ],
+  "expected_skips": [],
+  "archive": "nowood-original-bfbab207.tar.gz",
+  "archive_bytes": 317049,
+  "archive_sha256": "bcb8dfacbc3c20f7e7b25b279502c03b0d9d1e7fb2f496dc948927b985522819",
+  "members": 384,
+  "uncompressed_bytes": 1855836,
+  "member_hashes_sha256": "0a65017c7668c437e497ecf9d592c9fcd4facda96d8408f616294ff9052ae81a",
+  "full_original_python_pipe_bytes_retained": true,
+  "compiler_capture": "Unchanged original native-commands.json retains complete text output/argv/exit; separate raw compiler pipes and removed temporary ELF/C scratch were not retained.",
+  "phase_source_bytes_and_precise_external_patches_retained": true,
+  "ledger_regenerated": false,
+  "project_wide_train_validation_claimed": false,
+  "source_sha_bound_to_original_parent_and_each_phase": true,
+  "archive_roundtrip_all_members_verified": true,
+  "all_inputs_unchanged_after_packaging": true,
+  "included_peer_paths": [
+    "peer/NOWOOD_BFB_ACTUAL_PEER.json",
+    "peer/NOWOOD_BFB_LAUNCH_STATIC_PEER.json"
+  ]
+}

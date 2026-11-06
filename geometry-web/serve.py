@@ -13,6 +13,7 @@ import os
 import pathlib
 import queue
 import re
+import secrets
 import shlex
 import subprocess
 import sys
@@ -54,6 +55,8 @@ POST_MAX_BYTES = {
     "/engineering/preview": 1024 * 1024,
     "/engineering/validate-project": 1024 * 1024,
     "/engineering/read": 1024 * 1024,
+    "/definition-import/read": 16 * 1024 * 1024,
+    "/definition-import/preview": 20 * 1024 * 1024,
     "/sources/snapshot": 1024 * 1024,
     "/scenarios/verify-native": 9 * 1024 * 1024,
     "/scenarios/editor": 1024,
@@ -120,6 +123,72 @@ def to_bridge_path(path: str) -> str:
     return "/mnt/" + m.group(1).lower() + "/" + m.group(2).replace("\\", "/")
 
 
+_EPOCH_IN_MARK = "配號區段已出現在目前記號"
+_REPLACE_HEADS = {"reset", "default", "loadfile", "load-confirm"}
+
+
+def _command_replaces_world(cmd: str, response: bytes) -> bool:
+    if cmd.split(" ", 1)[0] not in _REPLACE_HEADS:
+        return False
+    try:
+        data = json.loads(response.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError, AttributeError):
+        return False
+    return isinstance(data, dict) and data.get("ok") is True
+
+
+def _write_epoch(native) -> None:
+    """Caller holds native.bridge_lock. An unknown bridge stays usable."""
+    if native.bridge_failure is not None:
+        return
+    responses = getattr(native, "bridge_responses", None)
+    stdin = getattr(getattr(native, "bridge", None), "stdin", None)
+    if type(responses) is not queue.Queue or not hasattr(stdin, "write"):
+        return
+    for _ in range(4):
+        line = f"identity-epoch {secrets.token_hex(16)}\n".encode("ascii")
+        try:
+            if wait_trace.ENABLED:
+                wait_trace.call("stdin_write", lambda: stdin.write(line))
+                wait_trace.call("stdin_flush", stdin.flush)
+                response = wait_trace.call("response_queue", lambda: responses.get(timeout=BRIDGE_TIMEOUT))
+            else:
+                stdin.write(line)
+                stdin.flush()
+                response = responses.get(timeout=BRIDGE_TIMEOUT)
+        except queue.Empty:
+            native.bridge_failure = "橋接器回應逾時，請重新啟動服務"
+            return
+        except (OSError, ValueError):
+            native.bridge_failure = "橋接器連線中斷，請重新啟動服務"
+            return
+        if not response:
+            native.bridge_failure = "橋接器已結束，請重新啟動服務"
+            return
+        try:
+            data = json.loads(response.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            return
+        if isinstance(data, dict) and data.get("ok") is True:
+            return
+        error = data.get("error", "") if isinstance(data, dict) else ""
+        if isinstance(error, str) and _EPOCH_IN_MARK in error:
+            continue
+        return
+
+
+def install_epoch(native) -> None:
+    lock = getattr(native, "bridge_lock", None)
+    if lock is None or not hasattr(lock, "acquire"):
+        return
+    if not lock.acquire(timeout=BRIDGE_TIMEOUT):
+        return
+    try:
+        _write_epoch(native)
+    finally:
+        lock.release()
+
+
 def ask_bridge(cmd: str) -> bytes:
     """送一行指令、收一行 JSON（原樣回傳 bytes，不再解析）。"""
     native = current_native_context()
@@ -127,7 +196,9 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("橋接指令不得為空")
     if any(c in cmd for c in "\r\n\0"):
         return err_json("指令不得含換行或 NUL")
-    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file "):
+    if cmd.split(" ", 1)[0] == "identity-epoch":
+        return err_json("配號區段只由宿主設定。")
+    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file ", "definition-import-read ", "definition-import-preview "):
         if cmd.startswith(prefix):
             cmd = prefix + to_bridge_path(cmd[len(prefix):])
             break
@@ -154,6 +225,8 @@ def ask_bridge(cmd: str) -> bytes:
             native.bridge_failure = "橋接器連線中斷，請重新啟動服務"
         else:
             if response:
+                if _command_replaces_world(cmd, response):
+                    _write_epoch(native)
                 return response
             native.bridge_failure = "橋接器已結束，請重新啟動服務"
         return err_json(native.bridge_failure)
@@ -528,7 +601,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 data = json.loads(body.decode('utf-8'))
                 readonly = isinstance(data, dict) and ('receipt' in data or
                            data.get('cmd', '').split(' ', 1)[0] in
-                           {'dump', 'objects', 'surfaces', 'boundary', 'references', 'obstacles', 'render', 'pick', 'bhit', 'source-inspect'})
+                           {'dump', 'dump-deidentified', 'identity-read', 'objects', 'surfaces', 'boundary', 'references', 'obstacles', 'render', 'pick', 'bhit', 'source-inspect'})
             except (ValueError, UnicodeDecodeError, AttributeError):
                 pass
         client_version = self.headers.get('X-Geometry-Version')
@@ -608,6 +681,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
                             native=scenario_contexts[previous['context']]
                         else:
                             native = wait_trace.native(NativeContext([command]))
+                            install_epoch(native)
                             scenario_contexts[native.session] = native
                             root_context.editor_sequence=data['sequence']
                             root_context.editor_creations[data['requestId']]={'sequence':data['sequence'],'context':native.session}
@@ -664,6 +738,20 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return
         if self.path == "/engineering/read":
             self._send(ask_bridge('engineering-read'))
+            return
+        if self.path == "/definition-import/read":
+            from definition_import_transport import read_request
+            try:
+                self._send(read_request(body, ask_bridge))
+            except OSError:
+                self._send(err_json('無法建立匯入來源暫存檔，場景未變更。'))
+            return
+        if self.path == "/definition-import/preview":
+            from definition_import_transport import preview_request
+            try:
+                self._send(preview_request(body, ask_bridge))
+            except OSError:
+                self._send(err_json('無法建立匯入預覽暫存檔，場景未變更。'))
             return
         if self.path == "/sources/snapshot":
             from source_inspector_transport import snapshot_request
@@ -755,6 +843,7 @@ if __name__ == "__main__":
             os._exit(0)
         signal.signal(signal.SIGTERM, stop_traced_service)
     try:
+        install_epoch(root_context)
         host = "0.0.0.0" if os.environ.get("GEOMETRY_MANAGED_PREVIEW") == "1" and PORT == 4173 else "127.0.0.1"
         server = PreviewHTTPServer((host, PORT), Handler)
         print(f"http://localhost:{PORT}  （Ctrl-C 結束；版本={RUNTIME.version[:12]}；bridge={BRIDGE_CMD[0]}）", flush=True)

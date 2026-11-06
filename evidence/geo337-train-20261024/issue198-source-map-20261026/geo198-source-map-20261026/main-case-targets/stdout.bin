@@ -1,0 +1,6 @@
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/geo198/base_reader.py:17:    with tempfile.TemporaryDirectory(prefix='geo198-parent-reader-') as temp:
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/geo198/refresh_mutations.py:24:    scratch = Path(tempfile.mkdtemp(prefix='geo198-mutations-'))
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/geo198/remove_fix.py:66:                assert outcomes['_ax_r7_notch_disconnected.scene']=='fail' and outcomes['_ax_r7_ridge_crossing.scene']=='fail'
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_geo261_native_geometry.py:48:        control=self.product_notch(build.bridge())
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_geo261_native_geometry.py:54:        broken=self.product_notch(bridge)
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_geo261_native_geometry.py:57:        self.assertFalse(self.product_notch(build.bridge())["ok"])

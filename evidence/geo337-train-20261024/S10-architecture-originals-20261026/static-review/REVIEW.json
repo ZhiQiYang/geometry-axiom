@@ -1,0 +1,64 @@
+{
+  "schema": "S10-architecture-assembly-static-peer/1",
+  "exit_code": 0,
+  "checks": 402,
+  "blocking_findings": [],
+  "executor_sha256": "b51110ff9756326a2b47d2ae4a6aded2a7995d92e2a882ddf9ec4065fae87d17",
+  "preparation_sha256": "96b628bcd285002ed8676fdefb7e58eaa2257a630eb04a1081aedcf47e4467bc",
+  "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "static_only": true,
+  "source_or_shm_accessed": false,
+  "product_or_proof_tests_rerun": false,
+  "resolved_v1_finding": {
+    "executor_sha256": "7b36177dee9eb1d2a54425162d46d617bfeee40be88905efe32d9026d8968af0",
+    "issue": "Late error could leave inner exit0; v2 now explicitly sets1 before preserving error and raising.",
+    "proof_actual_exits": [
+      0,
+      1,
+      0
+    ]
+  },
+  "existing_original_proofs": {
+    "four_binding_groups_exits": [
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0
+    ],
+    "late_failure_group_exits": [
+      0,
+      1,
+      0
+    ],
+    "only_metadata_not_formal": true
+  },
+  "reviewed_controls": [
+    "Source read after explicit root lease and both original NB locks.",
+    "Original full index parsed and copied to private OUT; operational Git env uses private index plus optional-locks0/splitIndexfalse; final real-index bytes/inode/mtime guard.",
+    "Closed three original gate argv/source/rc/request/result/fullstreams/counts205/18 retained; no new judge command.",
+    "New snapshot timing distinct from gate execution; strict604 prior/raw/LF/Git equality; source four outputs untouched.",
+    "Old9guards+2neutral remain actualM6e50, not rerun or labelledS10.",
+    "Manifest/scan byte hard pins; only report/receipt change; receipt does not hash its future commit."
+  ],
+  "limits": [
+    "Static preparation review only; formal root lease remains false, full123 source/cache was not read.",
+    "Root still must schedule capacity after full123 terminal and use formal require_escalated.",
+    "Actual new artifacts need their original runtime result and independent actual review, ordinary publication; this peer0 is no product pass.",
+    "Base H94574 helper provenance and full tiny originals must accompany publication as PUBLICATION_SCOPE states."
+  ],
+  "utc": "2026-10-25T16:35:08.468885+00:00",
+  "reviewer_preparation_error": {
+    "original_exit": 1,
+    "record": "/tmp/geo337-S10-architecture-assembly-static-peer-20261025/INITIAL_REVIEW_ERROR.json",
+    "initial_source": "/tmp/geo337-S10-architecture-assembly-static-peer-20261025/review_readonly.initial.py",
+    "scope": "Direct-vs-wrapped recorder row schema only; corrected reader rerun, no subject/proof rerun."
+  }
+}

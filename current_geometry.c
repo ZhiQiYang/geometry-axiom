@@ -2898,6 +2898,7 @@ static bool assembly_rebuild(World *,char *,size_t);
 static bool assembly_owned(const World *,uint32_t);
 static void assembly_owned_prefix(const World *,uint32_t,const char *,FILE *);
 static bool assembly_generation_prepare(World *);
+static bool assembly_bay_prepare(World *);
 static bool assembly_generation_check(const World *);
 static bool assembly_generation_integrity(const World *);
 static const AsmRuleVersion *assembly_rule(const World *,uint32_t,uint32_t);
@@ -3042,6 +3043,20 @@ static bool history_redo(World *w)
 static void history_group_rollback(World *world)
 {app_history_group_abort(&g_history,world);}
 
+/* Host mode is process state. Only gdi_show_three_views assigns desktop.
+ * Web, CLI, and core tests leave it unset and never read it. */
+static int g_host_mode;
+
+static bool host_gate_rejects(int mode, const World *world, char *tokens[], int count, char *message, size_t cap)
+{
+    if (message && cap) message[0] = '\0';
+    if (mode != 1 || !world || !world->app.identity_active) return false;
+    if (count == 1 && tokens && tokens[0] &&
+        (!strcmp(tokens[0], "undo") || !strcmp(tokens[0], "redo"))) return false;
+    if (message && cap) snprintf(message, cap, "%s", "桌面版尚不支援身分帳，唯讀開啟");
+    return true;
+}
+
 /* 互動入口共用：undo/redo・歷史群組攔截 + 變更前記快照（失敗自動取消）。
  * 回傳值同 apply_scene_line。 */
 static bool apply_interactive_tokens(
@@ -3111,12 +3126,17 @@ static bool apply_interactive_tokens(
         return ok;
     }
 
-    if (!g_history.grouping) {
+    bool recorded = !g_history.grouping;
+    if (recorded) {
         history_record(world);
     }
     uint32_t preview_before = reference_preview_token();
+    uint64_t revision_before = g_definition_revision;
     if (apply_scene_line(path, line_no, tokens, count, world)) {
-        app_history_group_mark_dirty(&g_history);
+        /* A successful no-op does not create history or discard redo. */
+        if (g_definition_revision == revision_before) {
+            if (recorded) history_unrecord();
+        } else app_history_group_mark_dirty(&g_history);
         return true;
     }
     if (g_history.grouping) {
@@ -3889,6 +3909,12 @@ static void interactive_apply_line(GdiApp *app, HWND window, const char *text)
     int count = split_tokens(line, tokens, SCENE_MAX_TOKENS);
 
     if (count <= 0) {
+        return;
+    }
+
+    char gate_message[160];
+    if (host_gate_rejects(g_host_mode, app->world, tokens, count, gate_message, sizeof gate_message)) {
+        gdi_set_status(app, gate_message);
         return;
     }
 
@@ -4681,7 +4707,10 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                                         path, sizeof path, NULL, NULL) > 1) {
                     FILE *f = fopen(path, "wb");
                     if (f != NULL) {
+                        bool saved_marks = g_identity_include_marks;
+                        g_identity_include_marks = false;
                         world_dump_dsl(app->world, f);
+                        g_identity_include_marks = saved_marks;
                         fclose(f);
                         gdi_set_status(app, "✓ 已匯出 .scene");
                     } else {
@@ -5053,6 +5082,7 @@ static bool gdi_show_three_views(World *world)
 
     MSG msg;
 
+    g_host_mode = 1;
     while (GetMessageW(&msg, NULL, 0, 0) > 0) {
         if (!TranslateAcceleratorW(window, haccel, &msg)) {
             TranslateMessage(&msg);
@@ -5755,9 +5785,6 @@ static bool uv_rects_overlap(
     return geo_rect_overlap_positive(&a,&b);
 }
 
-/* 候選矩形是否與同承載面上任何已放角材正面積重疊。 */
-/* 公理 I11：同面任兩支已放角材的 footprint 正面積不得相交
- *（端點/邊相接 = 零面積 = 合法接觸）。 */
 #include "geometry-templates/woodworking/native/contact_world.h"
 static bool app_contact_sources_collect(const World *,uint32_t,bool,const WoodMember *,WoodStopFace *,size_t,bool *,size_t *);
 static bool app_reference_sources_valid(const World *);
@@ -5821,13 +5848,6 @@ static bool app_contact_resolve_stops(void *opaque,bool along_v,const WoodMember
     bool ok=app_contact_sources_collect(context->world,context->facts->placement_id,along_v,exclude,out,capacity,&handled,count);
     if(handled)return ok;
     *count=wood_contact_collect_stops(context->facts,along_v,exclude,out,capacity);return true;
-}
-static bool world_footprint_collides(const World *world,const PlacementSurface *placement,
-    const SurfaceRegion2 *rect,const Timber *exclude)
-{
-    if(!world||!placement||!rect)return true;
-    AppContactFacts facts;app_contact_facts(world,placement,world_placement_boundary(world,placement),&facts);
-    return wood_contact_footprint_collides(&facts.world,rect,exclude);
 }
 
 /* ============================================================
@@ -5965,24 +5985,6 @@ static bool timber_role_props(
 }
 
 /*
- * 定位邊在角材長度軸上的區間（D16 的固定段/延伸段切分要用它）。
- *
- * D16 寫的是「與它所覆蓋的那條外輪廓 FIXED 邊（boundaryEdge）在長度軸上
- * 重疊的部分」，而 R18 明寫 boundaryEdge 是**純幾何、不看宣告與錨法**，
- * 還特別點名「用 through 放的料貼齊邊一樣 onBoundary」。
- * 所以這裡只能問幾何，不能問 anchor_kind：同一支料用 at-face 放、
- * 或用 at／through 放在同一個位置，footprint 完全相同，固定段就必須相同。
- *
- * dump 往返保存引用與放置順序（R4），角色属性仍由幾何推導、
- * 丟掉放法記錄，但幾何沒變，推導結果因此不變。
- *
- * 只看外輪廓、不看孔邊——孔邊是柱擋面，沒有延伸段語意（I20、I21 同一分界）。
- */
-static bool boundary_edge_interval(const SpaceBoundarySurface *boundary,bool along_v,
-    Coord span_lo,Coord span_hi,Coord cross_lo,Coord cross_hi,Coord *out_lo,Coord *out_hi)
-{return wood_contact_boundary_interval(boundary,along_v,span_lo,span_hi,cross_lo,cross_hi,out_lo,out_hi);}
-
-/*
  * I20 邊界材整條覆蓋：`boundary` 的固定段在長度軸上必須 ⊇ 它所覆蓋那條邊的
  * 整個區間，且該邊是外輪廓的 FIXED 邊、與主支軸垂直（D17）。
  *
@@ -6013,16 +6015,6 @@ static bool timber_boundary_role_check(
         along_v?cross_hi:span_hi,along_v?span_hi:cross_hi);
     return wood_member_boundary_role_check(timber,&outline,fixities,inside,along_v,span_lo,span_hi,cross_lo,cross_hi,err,err_cap);
 }
-
-/*
- * 擋面接觸範圍 [lo,hi]（擋面擁有者長度軸上的座標）是否落在
- * owner 的延伸段上——I22：延伸段的側面作擋面時以優先級 2 計。
- * 只有「at-face 外輪廓邊錨的 boundary」才有固定段/延伸段之分;
- * 其餘 owner 一律回傳 false（擋面優先級 = owner.cut_priority）。
- */
-static bool stop_in_owner_extension(const World *world,const PlacementSurface *placement,
-    const SpaceBoundarySurface *boundary,const Timber *owner,Coord lo,Coord hi)
-{AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);return wood_contact_owner_extension(&facts.world,owner,lo,hi);}
 
 /*
  * I19/I22 端面檢查：角材兩端面所頂擋面的裁切優先序。
@@ -6087,6 +6079,21 @@ typedef char app_span_scratch_bound_check[SPAN_CUT_MAX==WOOD_MEMBER_SPAN_CUT_CAP
  *   out_start/out_end  解析結果（長度軸座標）
  *   err/err_cap        失敗時的人話訊息
  */
+typedef struct {
+    const World *world;const PlacementSurface *placement;const SpaceBoundarySurface *boundary;
+} AppMemberSpanEndContext;
+static bool app_reference_boundary_end_policy(const World *,const PlacementSurface *,const SpaceBoundarySurface *,
+    const WoodMember *,bool,Coord,Coord,Coord,Coord,int,const WoodStopFace *,size_t,const WoodStopFace *,WoodBoundaryEndAdmission *);
+static bool app_member_span_end_admission(void *user,const WoodMember *self,bool along_v,
+    Coord start,Coord end,Coord cross_lo,Coord cross_hi,int which,const WoodStopFace *faces,size_t count,
+    const WoodStopFace *required,WoodBoundaryEndAdmission *admission)
+{
+    const AppMemberSpanEndContext *context=user;
+    GeoRect2 rect={along_v?cross_lo:start,along_v?start:cross_lo,along_v?cross_hi:end,along_v?end:cross_hi};
+    const SpaceBoundarySurface *selected=placement_boundary_for_rect(context->placement,context->boundary,&rect);
+    return app_reference_boundary_end_policy(context->world,context->placement,selected,self,along_v,
+        start,end,cross_lo,cross_hi,which,faces,count,required,admission);
+}
 static SpanStatus resolve_auto_span(
     const World *world,
     const PlacementSurface *placement,
@@ -6104,9 +6111,11 @@ static SpanStatus resolve_auto_span(
     Coord *out_start,
     Coord *out_end,
     char *err,
-    size_t err_cap
+    size_t err_cap,
+    const Timber *self
 )
 {
+    const SpaceBoundarySurface *span_boundary=boundary;
     GeoLoop2View region_holes[DP_COMPONENT_MAX][POLY_MAX_HOLES];
     GeoRegionView regions[DP_COMPONENT_MAX];GeoPoint2 rectangle[4];
     size_t region_count=placement->derived_fill_id?placement->component_count:1;
@@ -6121,6 +6130,10 @@ static SpanStatus resolve_auto_span(
             regions[c]=(GeoRegionView){{rectangle,4},NULL,0};
         }
     }
+    /* I11 的同承載面過濾（放置當下）：只有同一承載面上已放的角材才是障礙物（M13）；正面積判式在 K
+     * （geo_strip_intervals → geo_rect_overlap_positive，M12）。同一條公理在全量重驗另有兩個檢查點，
+     * 各有自己的同承載面過濾：reference_check_all（geometry-core/references.inc，M97）與
+     * W wood_world_validate_members（world_validation.c，M98）。 */
     GeoRect2 obstacles[WORLD_MAX_TIMBERS];size_t obstacle_count=0;
     for(size_t i=0;i<world->wood.timber_count;++i){
         const Timber *t=&world->wood.timbers[i];const TimberAnchor *a=&world->wood.anchors[i];
@@ -6128,11 +6141,14 @@ static SpanStatus resolve_auto_span(
         if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;
     }
     StopFace faces[STOP_FACE_MAX];size_t face_count=collect_stop_faces(world,placement,boundary,along_v,NULL,faces,STOP_FACE_MAX);
-    WoodMemberSpanFacts facts={{regions,region_count},obstacles,obstacle_count,faces,face_count};
+    AppMemberSpanEndContext end_context={world,placement,span_boundary};
+    WoodMemberSpanFacts facts={{regions,region_count},obstacles,obstacle_count,faces,face_count,
+        app_member_span_end_admission,&end_context};
     WoodMemberSpanRequest request={along_v,cross_lo,cross_hi,has_contact,contact_lo,contact_hi,has_through,through,
         between!=NULL,{{0},{0}},scope!=NULL,{0}};
     if(between){request.stops[0]=between[0];request.stops[1]=between[1];}
     if(scope)request.scope=*scope;
+    request.self=self;
     return (SpanStatus)wood_member_resolve_span(&facts,&request,out_start,out_end,err,err_cap);
 }
 
@@ -6180,23 +6196,22 @@ static bool world_replace_object(
     size_t size
 )
 {
-    /* World 是 POD（固定容量陣列），整份 memcpy 就是快照。 */
-    World backup = *world;
-
-    memcpy(slot, replacement, size);
-
-    if (!world_revalidate(world)) {
-        *world = backup;
-        return false;
-    }
-
-    return true;
+    /* A full definition snapshot must not compound large parser stack frames. */
+    World *backup=malloc(sizeof *backup);
+    if(!backup){set_revalidate_error("CAPACITY: replacement snapshot unavailable");return false;}
+    *backup=*world;
+    memcpy(slot,replacement,size);
+    bool ok=world_revalidate(world);
+    if(!ok)*world=*backup;
+    free(backup);return ok;
 }
 
 static bool app_boundary_replace(World *world,const SpaceBoundarySurface *value)
-{World backup=*world;if(!app_boundary_stage(world,value)||!world_revalidate(world)){*world=backup;return false;}return true;}
+{World *backup=malloc(sizeof *backup);if(!backup){set_revalidate_error("CAPACITY: boundary snapshot unavailable");return false;}*backup=*world;
+ bool ok=app_boundary_stage(world,value)&&world_revalidate(world);if(!ok)*world=*backup;free(backup);return ok;}
 static bool app_placement_replace(World *world,const PlacementSurface *value)
-{World backup=*world;if(!app_placement_stage(world,value)||!world_revalidate(world)){*world=backup;return false;}return true;}
+{World *backup=malloc(sizeof *backup);if(!backup){set_revalidate_error("CAPACITY: placement snapshot unavailable");return false;}*backup=*world;
+ bool ok=app_placement_stage(world,value)&&world_revalidate(world);if(!ok)*world=*backup;free(backup);return ok;}
 
 /*
  * World 全量重驗：
@@ -6249,7 +6264,8 @@ static bool world_validate_derived(const World *world)
         }
     }
 
-    WoodWorldValidationContext context=app_world_validation_context(world);
+    AppValidationInputs inputs={0};
+    WoodWorldValidationContext context=app_world_validation_context(world,&inputs);
     char error[256]="";
     if(!wood_world_validate_members(&context,error,sizeof error)){
         if(error[0])set_revalidate_error(error);return false;
@@ -6283,6 +6299,9 @@ static bool world_revalidate_candidate(World *world,World *candidate)
     if (!boundary_keys_reconcile(candidate,g_subgrid_before,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
+    if (!assembly_bay_prepare(candidate)) {
+        set_revalidate_error(g_engineering_error); reference_capture_trial(candidate); return false;
+    }
     if (!reference_parameters_rebuild(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
@@ -6299,6 +6318,9 @@ static bool world_revalidate_candidate(World *world,World *candidate)
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
     if (!grid_systems_rebuild(candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+    }
+    if (!grid_stagger_submission_valid(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
     if (!grid_bindings_rebuild(candidate,grid_error,sizeof grid_error)) {
@@ -6390,18 +6412,39 @@ static bool app_world_revalidate_staged(World *world,World *staged)
     memcpy(world,staged,sizeof *world);return true;
 }
 
-/* I8a confirmation revalidates the same retained candidate. The existing
- * sealed bytes and provider set must pass before its resolver can be reopened. */
-static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live)
+/* Commit finalization runs after full revalidation and before H captures the
+ * evaluated after bytes. Preview construction never calls this commit path. */
+typedef bool (*AppWorldCommitFinalizer)(AppWorldCandidate *,void *);
+typedef struct {
+    AppWorldCandidate *candidate;AppWorldCommitFinalizer finalize;void *opaque;
+} AppWorldCommitCall;
+static bool app_world_commit_revalidate_evaluate(void *after,GeoEvalContext *sources,void *opaque)
 {
-    if(!app_world_candidate_current(candidate,live)||app_candidate_reopen(candidate->control,live,g_definition_revision,app_world_provider_stamp(),
+    AppWorldCommitCall *call=opaque;
+    if(!app_world_revalidate_evaluate(after,sources,&call->candidate->before))return false;
+    return call->finalize(call->candidate,call->opaque);
+}
+/* The old seal, revision, providers, live World and keyed operation must pass
+ * before the same candidate and buffers receive a fresh complete evaluation. */
+static bool app_world_candidate_revalidate_commit(AppWorldCandidate *candidate,const World *live,
+    AppWorldCommitFinalizer finalize,void *opaque)
+{
+    if(!finalize||!app_world_candidate_current(candidate,live)||app_candidate_reopen(candidate->control,live,g_definition_revision,app_world_provider_stamp(),
         app_world_candidate_equal,NULL)!=GEO_CANDIDATE_OK)return false;
     const World *previous=g_subgrid_before;g_subgrid_before=&candidate->before;
     bool previous_keyed=g_boundary_keyed_update;uint32_t previous_keyed_id=g_boundary_keyed_id;
     g_boundary_keyed_update=candidate->operation.boundary_keyed;g_boundary_keyed_id=candidate->operation.boundary_id;
-    bool ok=app_world_candidate_evaluate(candidate,app_world_revalidate_evaluate,&candidate->before)==GEO_CANDIDATE_OK;
+    AppWorldCommitCall call={candidate,finalize,opaque};
+    bool ok=app_world_candidate_evaluate(candidate,app_world_commit_revalidate_evaluate,&call)==GEO_CANDIDATE_OK;
     g_boundary_keyed_update=previous_keyed;g_boundary_keyed_id=previous_keyed_id;g_subgrid_before=previous;
     return ok&&app_world_candidate_seal(candidate);
+}
+static bool app_world_candidate_revalidate_retained(AppWorldCandidate *candidate,const World *live);
+/* I8a confirmation revalidates the same retained candidate. The existing
+ * sealed bytes and provider set must pass before its resolver can be reopened. */
+static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live)
+{
+    return app_world_candidate_revalidate_retained(candidate,live);
 }
 
 /* ---- 共用小解析工具 ---- */
@@ -7497,10 +7540,12 @@ static bool apply_grid_line(
 
     /* I8a: preserve the parsed candidate even when parent count locking rejects it. */
     {
-        World trial=*world;
-        if (existing) trial.wood.grid_applications.items[existing-world->wood.grid_applications.items]=candidate;
-        else if (trial.wood.grid_applications.count<WORLD_MAX_GRIDS) trial.wood.grid_applications.items[trial.wood.grid_applications.count++]=candidate;
-        reference_capture_trial(&trial);
+        World *trial=malloc(sizeof *trial);
+        if(!trial){scene_error(path,line_no,"CAPACITY: grid trial snapshot unavailable");return false;}
+        *trial=*world;
+        if (existing) trial->wood.grid_applications.items[existing-world->wood.grid_applications.items]=candidate;
+        else if (trial->wood.grid_applications.count<WORLD_MAX_GRIDS) trial->wood.grid_applications.items[trial->wood.grid_applications.count++]=candidate;
+        reference_capture_trial(trial);free(trial);
     }
 
     char direct_error[320]="";
@@ -7519,15 +7564,14 @@ static bool apply_grid_line(
             return false;
         }
     } else {
-        World backup = *world;
-
+        World *backup=malloc(sizeof *backup);
+        if(!backup){scene_error(path,line_no,"CAPACITY: grid snapshot unavailable");return false;}
+        *backup=*world;
         world->wood.grid_applications.items[world->wood.grid_applications.count++] = candidate;
-
-        if (!world_revalidate(world)) {
-            *world = backup;
-            scene_error(path, line_no, "新增網格後有物件失效（已回滾）");
-            return false;
-        }
+        bool valid=world_revalidate(world);
+        if(!valid)*world=*backup;
+        free(backup);
+        if(!valid){scene_error(path,line_no,"新增網格後有物件失效（已回滾）");return false;}
     }
 
     return true;
@@ -7548,7 +7592,11 @@ static bool apply_span_auto_line(const char *p, int n, char **t, int c, World *w
 static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 { return apply_reference_move(p, n, t, c, w); }
 
+static void identity_note_key(uint8_t kind, uint32_t id, uint32_t field_id);
+static bool identity_accept_requires(const char *path, int line_no, World *world);
+
 #include "geometry-core/parameters.inc"
+#include "geometry-app/native/stagger_facts.inc"
 #include "geometry-core/references.inc"
 #include "geometry-app/native/enclosure_sources.inc"
 #include "geometry-core/engineering.inc"
@@ -7564,6 +7612,7 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 #include "geometry-core/panel_fill_layout.inc"
 #include "geometry-core/derived_placements.inc"
 #include "geometry-core/panel_fill_support.inc"
+#include "geometry-app/native/identity_ledger.inc"
 
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
@@ -9211,6 +9260,7 @@ static bool apply_delete_line(
             scene_error(path,line_no,"I37: boundary is still referenced by a grid-binding");return false;
         }
         (void)geo_region_keys_remove(&world->geo.region_data,id);
+        identity_note_key(APP_IDENTITY_BOUNDARY, id, 0);
         if(!app_boundary_remove(world,id)){*world=backup;return false;}
         /* 空間成員是參照：剔除後用剩下的成員重建空間。 */
         for(size_t index=0;index<geo_enclosures_count(&world->geo.enclosures);++index){
@@ -9275,6 +9325,7 @@ static bool apply_delete_line(
                 return false;
             }
         }
+        identity_note_key(APP_IDENTITY_PLACEMENT, id, 0);
         if(!app_placement_remove(world,id)){*world=backup;return false;}
         world_drop_canvas_pos(world, CANVAS_POS_PLACEMENT, id);
     } else if (strcmp(kind, "datum") == 0) {
@@ -9323,6 +9374,7 @@ static bool apply_delete_line(
             scene_error(path, line_no, "這支角材不存在");
             return false;
         }
+        identity_note_key(APP_IDENTITY_TIMBER, id, 0);
         memmove(&world->wood.timbers[ti], &world->wood.timbers[ti + 1],
                 (world->wood.timber_count - ti - 1) * sizeof world->wood.timbers[0]);
         memmove(&world->wood.anchors[ti], &world->wood.anchors[ti + 1],
@@ -9356,6 +9408,7 @@ static bool apply_delete_line(
             scene_error(path, line_no, "這根柱不存在");
             return false;
         }
+        identity_note_key(APP_IDENTITY_COLUMN, id, 0);
         memmove(&world->wood.columns[ci], &world->wood.columns[ci + 1],
                 (world->wood.column_count - ci - 1) * sizeof world->wood.columns[0]);
         --world->wood.column_count;
@@ -9370,6 +9423,7 @@ static bool apply_delete_line(
             scene_error(path, line_no, "這根樑不存在");
             return false;
         }
+        identity_note_key(APP_IDENTITY_BEAM, id, 0);
         memmove(&world->wood.beams[bi], &world->wood.beams[bi + 1],
                 (world->wood.beam_count - bi - 1) * sizeof world->wood.beams[0]);
         --world->wood.beam_count;
@@ -9483,7 +9537,10 @@ static bool apply_reset_line(
     (void)tokens;
 
     *world = (World){ 0 };
-    if(g_parsing_scene_file)memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
+    if(g_parsing_scene_file){
+        memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
+        g_identity_requires_seen=false;
+    }
     return true;
 }
 
@@ -9677,6 +9734,8 @@ static void world_dump_dsl(const World *world, FILE *out)
     engineering_dump_applications(world,out);
     if(!world->wood.finish_surfaces.host_count) world_dump_grids(world,out);
     if(world->wood.assembly.instance_count)fputs("requires assembly-timber-generation/1\n",out);
+    if(world->wood.assembly.bay_required)fputs("requires assembly-bay-repeat/1\n",out);
+    identity_dump_requires(world,out);
     if(!world->wood.finish_surfaces.host_count) reference_dump(world, out);
 
     for (size_t i = 0; i < geo_enclosures_count(&world->geo.enclosures); ++i) {
@@ -9731,10 +9790,10 @@ static void world_dump_dsl(const World *world, FILE *out)
                 (long long)b->z_hi);
     }
 
-    assembly_dump(world,out);
+    if(!world->wood.finish_surfaces.host_count)assembly_dump(world,out);
     sp_dump(world,out);
     fs_dump(world,out);
-    if(world->wood.finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);}
+    if(world->wood.finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);assembly_dump(world,out);}
     /* 畫布座標最後寫：它引用的物件要先存在。 */
     for (size_t i = 0; i < world->app.canvas_pos_count; ++i) {
         const CanvasPos *p = &world->app.canvas_pos[i];
@@ -9747,6 +9806,7 @@ static void world_dump_dsl(const World *world, FILE *out)
                 p->kind == CANVAS_POS_ASSEMBLY_RULE ? "assembly-rule" : p->kind == CANVAS_POS_ASSEMBLY_BINDING ? "assembly-binding" : p->kind == CANVAS_POS_PARAMETER ? "parameter" : p->kind == CANVAS_POS_GRID_BINDING ? "grid-binding" : p->kind == CANVAS_POS_GRID_SYSTEM ? "grid-system" : "beam",
                 (unsigned)p->id, (long long)p->x, (long long)p->y);
     }
+    identity_dump_lines(world,out);
 }
 
 /*
@@ -9859,7 +9919,7 @@ static const struct {
     { "grid-source-rule", 4, 16, false, "grid-source-rule SID create|key K name-hex HEX selector all-cells|cell I J divide U V", apply_grid_source_rule },
     { "grid-source-rule-highwater", 4, 4, false, "grid-source-rule-highwater SID next K|exhausted (file only)", apply_grid_source_rule_highwater },
     { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line },
-    { "owned", 5, 20, false, "owned timber|place instance member native-arguments", apply_assembly_owned_line },
+    { "owned", 5, 32, false, "owned instance member|bay-primary|bay-secondary native-arguments", apply_assembly_owned_line },
     { "section-profile", 3, 3, false, "section-profile profile|member|run base64-json (atomic scene only)", apply_section_profile_line },
     { "panel-fill", 4, 4, false, "panel-fill id definition-hex HEX (atomic scene only)", apply_panel_fill_line },
     { "derived-placement", 4, 4, false, "derived-placement id definition-hex HEX (atomic scene only)", apply_derived_placement_line },
@@ -9964,6 +10024,8 @@ static const struct {
         "canvas-pos boundary|placement|space|column|beam id x y",
         apply_canvaspos_line
     },
+    { "identity-ledger", 2, 2, false, "identity-ledger activate", apply_identity_ledger_line },
+    { "identity", 4, 5, false, "identity boundary|placement|column|beam|timber|parameter id mark | identity parameter-field id field mark", apply_identity_line },
     { NULL, 0, 0, false, NULL, NULL }
 };
 
@@ -10023,6 +10085,8 @@ static bool parse_scene_file(const char *path, World *out_world)
     }
 
     g_parsing_scene_file = true;
+    g_identity_requires_seen = false;
+    identity_explicit_reset();
     memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
     g_rule_scene_required=false;
     sp_scene_required=false;
@@ -10140,6 +10204,7 @@ static bool parse_scene_file(const char *path, World *out_world)
                 : "場景收尾重驗失敗");
         ok = false;
     }
+    if (ok && !identity_finish_load(path, line_no, out_world)) ok = false;
 
     g_parsing_scene_file = false;
     g_parameter_scene_loading = false;

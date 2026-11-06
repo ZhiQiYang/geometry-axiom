@@ -1,0 +1,1 @@
+Synthetic metadata fixture only.

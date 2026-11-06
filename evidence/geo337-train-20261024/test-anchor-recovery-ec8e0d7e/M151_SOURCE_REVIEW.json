@@ -1,0 +1,107 @@
+{
+  "schema": "m151-owner-map-independent-static-and-purepy-review/1",
+  "base_claude_sha": "f7026c110b4800ee87f9ecc1eff0cc14d535841a",
+  "reviewed_claude_sha": "8f9301fc1b78712d930ffc68074437e44d068aab",
+  "current_train_sha_read_only": "4f4a24d76e816274bfae06868b4dbf31f0860299",
+  "diff_paths_count": 61,
+  "evidence_paths_count": 60,
+  "only_non_evidence_path": [
+    "tests/test_geo261_mutation_migration.py"
+  ],
+  "changed_leaf_sha256": "b87dd1c460da53a9a50ea3c64013b02242b57784a443be65c95f4cd883fa0422",
+  "original_test_methods": 15,
+  "method_names": [
+    "test_nested_target_exact_output_and_original_bytes_unchanged",
+    "test_removing_injection_fails_the_exact_target_oracle",
+    "test_direct_main_target_leaves_all_includes_intact",
+    "test_missing_or_duplicate_anchor_is_rejected_before_emission",
+    "test_target_included_twice_is_rejected",
+    "test_two_distinct_include_paths_are_rejected",
+    "test_missing_target_and_unreachable_target_are_rejected",
+    "test_missing_include_inside_emitted_target_is_rejected",
+    "test_repository_escape_is_rejected",
+    "test_cycle_on_target_path_is_rejected",
+    "test_guarded_cycle_in_unexpanded_sibling_remains_an_include",
+    "test_nested_dependency_changes_original_closure_hash",
+    "test_generated_source_fingerprint_invalidates_cache_when_emitter_changes",
+    "test_invalid_injection_and_compile_failure_never_become_killed",
+    "test_all_fifty_definitions_keep_live_or_retired_targets"
+  ],
+  "blob_ids": {
+    "tests/mutate.py": {
+      "f7026c110b4800ee87f9ecc1eff0cc14d535841a": "6e07b61aeb83b1e0899d485614e4137ec72252e8",
+      "8f9301fc1b78712d930ffc68074437e44d068aab": "6e07b61aeb83b1e0899d485614e4137ec72252e8",
+      "4f4a24d76e816274bfae06868b4dbf31f0860299": "6e07b61aeb83b1e0899d485614e4137ec72252e8"
+    },
+    "tests/mutation_bridge.py": {
+      "f7026c110b4800ee87f9ecc1eff0cc14d535841a": "e6c588ab2913a6d8326ae121723c5b1dda069578",
+      "8f9301fc1b78712d930ffc68074437e44d068aab": "e6c588ab2913a6d8326ae121723c5b1dda069578",
+      "4f4a24d76e816274bfae06868b4dbf31f0860299": "e6c588ab2913a6d8326ae121723c5b1dda069578"
+    },
+    "tests/test_geo261_mutation_migration.py": {
+      "f7026c110b4800ee87f9ecc1eff0cc14d535841a": "85f511f7e02e107dae75424adfddacd1baa0075a",
+      "8f9301fc1b78712d930ffc68074437e44d068aab": "cec2f33e8b8f686a3bf3dce2cacb49ef84282d44",
+      "4f4a24d76e816274bfae06868b4dbf31f0860299": "85f511f7e02e107dae75424adfddacd1baa0075a"
+    },
+    "tests/run_all.expected.json": {
+      "f7026c110b4800ee87f9ecc1eff0cc14d535841a": "137bc75dda81340e8b1534bd07b9ee383678f10c",
+      "8f9301fc1b78712d930ffc68074437e44d068aab": "137bc75dda81340e8b1534bd07b9ee383678f10c",
+      "4f4a24d76e816274bfae06868b4dbf31f0860299": "137bc75dda81340e8b1534bd07b9ee383678f10c"
+    },
+    "geometry-core/domain-decoupling/product-architecture.json": {
+      "f7026c110b4800ee87f9ecc1eff0cc14d535841a": "8ea141e594872b70ed4c144e5ba327bb9abef6cf",
+      "8f9301fc1b78712d930ffc68074437e44d068aab": "8ea141e594872b70ed4c144e5ba327bb9abef6cf",
+      "4f4a24d76e816274bfae06868b4dbf31f0860299": "8ea141e594872b70ed4c144e5ba327bb9abef6cf"
+    }
+  },
+  "M151_current_train_registration": {
+    "id": "M151",
+    "file": "geometry-templates/woodworking/native/contact_world.c",
+    "binary": "bridge",
+    "tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces"
+    ]
+  },
+  "proof": {
+    "receipt": "/tmp/train337-m151-owner-map-static-20261024/PROOF_RECEIPT.json",
+    "receipt_sha256": "26e9193460705049615a97c09e2bc732432f6fecdae2d26127c57fbeb1f7ce8a",
+    "sourcebase": "8f9301fc1b78712d930ffc68074437e44d068aab",
+    "source_kind": "isolated exact Git-byte thin source, not a Git checkout",
+    "exits": [
+      0,
+      1,
+      0
+    ],
+    "passed": true,
+    "normal_named_assertion_negative": true,
+    "no_compile_or_C_or_ledger_command": true,
+    "scope": "15 original Python unit methods on isolated exact Git-byte thin source, not full native or final train checkout."
+  },
+  "closure_assessment": {
+    "native_C_and_include_closure_change_from_this_leaf": false,
+    "mutant_definitions_change_from_this_leaf": false,
+    "core_scene_oracle_change_from_this_leaf": false,
+    "bridge_oracle_change_from_this_leaf": true,
+    "basis": "mutation_bridge.oracle_hash() directly includes every tests/*.py, plus tests/*.c, tests/fixtures/**/*.scene and root *.scene. This leaf belongs to that conservative judge closure.",
+    "current_4f4_ledger": "Current run remains evidence for original 4f4 only. Merge of this leaf changes bridge oracle hash; do not relabel current records as fresh under new final SHA. Root must regenerate/check final ledger under agreed complete-run rules.",
+    "architecture": "This leaf is a test, not an H-layer product change; no C/build command/source fingerprint changed by this patch. Final architecture receipts still must bind the actual final manifest closure."
+  },
+  "decision_questions": [
+    {
+      "id": "Q314-SSOT-DEFERRED",
+      "authority": "origin/main 決策佇列.md 2026-10-22 題3/4鎖定有序語意；handoff337 2026-10-23T19:44:03Z轉述使用者2026-10-24先不寫I24/D29/D10b。",
+      "classification": "Known approved behavior vs deferred SSOT text; preserve separate status, not permission to modify axiom/queue.",
+      "question": "何時重新提出逐字條文採納？此輪維持先不寫；如需採納，根代理另循使用者逐字核可、POST_APPROVAL_REVISIONS、reader同步和AXIOM_REVISION流程。",
+      "scope_limit": "handoff先不寫是Claude轉述，不能冒使用者逐字核可文本。"
+    },
+    {
+      "id": "Q335-PLACEMENT-PATH-GAP",
+      "authority": "handoff337 19:44 Known gap: approved 13mm thin-step positive B not expressible by CLI in either placement order; issue335 policy advances first, placement design deferred.",
+      "classification": "Documented product capability gap outside M151 owner-map fix; do not count as passed/allowed skip.",
+      "question": "依既有使用者選擇保留缺口與後續具名owner/issue335，不能藉本輪owner-map修正宣稱CLI正例已可放置。"
+    }
+  ],
+  "findings": [],
+  "verdict": "No static blocker in the one-leaf M151 registry-owner fix; original 15 tests and exact withdrawal/restoration proof accepted. Other final train gates not claimed by this pure-Python run.",
+  "worktree_mutations": "None to root, active ROOT/SEED/CACHE or Claude/train branch. Only isolated thin-source leaf changed and restored."
+}

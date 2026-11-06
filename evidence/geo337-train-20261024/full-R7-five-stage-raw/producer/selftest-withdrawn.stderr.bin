@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/geo323-r7-full-collection-20261024/selftest_terminal_contracts.py", line 26, in <module>
+    for message in messages:check(evaluate(expressions[message]),'current original R7 snapshot accepted: '+message)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/geo323-r7-full-collection-20261024/selftest_terminal_contracts.py", line 10, in check
+    assert value,message
+           ^^^^^
+AssertionError: current original R7 snapshot accepted: all original target values and verdicts retained, never inferred from R6

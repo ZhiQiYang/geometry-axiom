@@ -1,0 +1,243 @@
+"""Shared plumbing for the tests that drive the native bridge (geometry-web/web_bridge.c).
+
+Every bridge-backed test file used to carry its own copy of "find an exe -> start a child -> send a line -> read one
+JSON line -> stop".  This module is the one copy.
+
+    from tests import _bridge            # works for `python tests/x.py` and `python -m unittest tests.x`
+    path = _bridge.find_bridge()         # unittest.SkipTest (with a how-to-build hint) when there is no trustworthy exe
+    with _bridge.BridgeSession() as s:   # or BridgeSession(path); s.command('reset') -> parsed JSON (s.send is an alias)
+        s.line('surface 1 ...')          # == s.command('line surface 1 ...')
+    p = _bridge.run_once('reset\\ndump\\n')  # one-shot batch (stdin in, CompletedProcess out; BridgeClosed if it died)
+
+Which exe (find_bridge), first match wins:
+  1. $GEOMETRY_TEST_BRIDGE (run_all.py sets it to a fresh exe). Its sidecar and actual bytes must be fresh.
+  2. $GEOMETRY_ENGINEERING_BRIDGE: the old name of the same variable; still read, prints a deprecation notice once.
+  3. tests/binaries.py: the bridge it built, only when its source fingerprint is fresh.  On non-Windows a stale or
+     missing one is (re)built with `cc` into /tmp/geometry-tests (binaries.build_one, under the build lock).
+     On Windows it is never built here (Smart App Control blocks newly appearing exes): stale/missing -> SkipTest.
+There is deliberately NO fallback to geometry-web/web_bridge.exe: that file is not checked against the sources, and a
+green run on a stale exe is worse than a red one.  Nothing is ever printed for a *good* lookup other than step 2's notice.
+"""
+from __future__ import annotations
+
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+import unittest
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
+if str(HERE) not in sys.path:
+    sys.path.insert(0, str(HERE))
+import binaries  # noqa: E402
+
+ENV_PRIMARY = 'GEOMETRY_TEST_BRIDGE'
+ENV_LEGACY = 'GEOMETRY_ENGINEERING_BRIDGE'   # deprecated alias, kept so existing shells/scripts keep working
+BUILD_HINT = ('python tests/binaries.py build（只重編 stale/missing 的；Windows 上 Smart App Control 會擋新編的 exe，'
+              '所以不會在測試裡自動編），或用 %s 指向你自己編好的 bridge' % ENV_PRIMARY)
+
+_warned_legacy = False
+
+
+def _explicit(value):
+    info = binaries.inspect_one(binaries.BY_NAME['bridge'], path=value)
+    if info.state == 'fresh':
+        return 'ok', str(info.path)
+    return 'skip', 'explicit bridge 不是 fresh：%s（%s）；%s' % (info.state, info.reason, BUILD_HINT)
+
+
+def _lookup():
+    global _warned_legacy
+    primary = os.environ.get(ENV_PRIMARY)
+    if primary:
+        return _explicit(primary)
+    legacy = os.environ.get(ENV_LEGACY)
+    if legacy:
+        if not _warned_legacy:
+            _warned_legacy = True
+            print('[tests/_bridge] %s 已棄用，請改設 %s（同一支 bridge；目前暫時沿用舊名）。' % (ENV_LEGACY, ENV_PRIMARY),
+                  file=sys.stderr)
+        return _explicit(legacy)
+
+    info = binaries.inspect_one(binaries.BY_NAME['bridge'])
+    if info.state == 'n/a':
+        return 'skip', 'bridge 在這個平台不適用：%s' % info.reason
+    if info.state != 'fresh' and not binaries.IS_WIN:
+        cc = shutil.which(os.environ.get('CC', 'cc'))
+        if not cc:
+            return 'skip', 'bridge %s（%s），且找不到 C 編譯器 cc；設 %s 指向已編好的 bridge' % (
+                info.state, info.reason, ENV_PRIMARY)
+        try:
+            with binaries.ProcessLock('build'):
+                result = binaries.build_one(binaries.BY_NAME['bridge'], log=lambda *_: None)
+        except binaries.LockBusy as exc:
+            return 'skip', 'bridge %s（%s），而且無法自己建：%s' % (info.state, info.reason, exc)
+        if not result.ok:
+            return 'skip', 'bridge 建置失敗（%s）：%s' % (result.status, (result.detail or '').splitlines()[0] if result.detail else '')
+        info = binaries.inspect_one(binaries.BY_NAME['bridge'])
+    if info.state == 'fresh':
+        return 'ok', str(info.path)
+    return 'skip', 'bridge 不是 fresh：%s（%s）；修法：%s' % (info.state, info.reason, BUILD_HINT)
+
+
+def find_bridge() -> str:
+    """Path of the bridge exe to test against; raises unittest.SkipTest (never falls back to geometry-web/web_bridge.exe)."""
+    kind, value = _lookup()
+    if kind == 'skip':
+        raise unittest.SkipTest(value)
+    return value
+
+
+def _checked_explicit(value):
+    # Direct callers also use freshly compiled, deliberately instrumented harnesses
+    # (e.g. _timber_support_bridge). Those are outside the registry contract.
+    # Registry paths and copied registry sidecars must never bypass freshness.
+    path = binaries.resolve_executable(value)
+    if (path != binaries.BY_NAME['bridge'].path.resolve()
+            and not path.with_name(path.name + binaries.SIDECAR_SUFFIX).exists()):
+        return str(path)
+    kind, path = _explicit(path)
+    if kind == 'skip':
+        raise unittest.SkipTest(path)
+    return path
+
+
+class BridgeClosed(AssertionError):
+    """The bridge child died under the test (crash, abort, OOM kill, or an unexpected exit): a session's stdout hit
+    EOF while a reply was still owed, or a run_once() batch ended with an exit status other than 0.
+
+    It is still an AssertionError carrying the same message as before, so every existing caller, `assertRaises`
+    and unittest's failure/error split behaves exactly as it did (run_once's callers all assert exit status 0 right
+    after the call, so they still record a failure, one line earlier).  What it adds is the *structured* fact the
+    mutation oracle needs to tell "the mutated bridge died" from "an assertion about the bridge's answer failed"
+    (tests/bridge_mutation_oracle.py labels it, tests/mutation_bridge.py::classify reads the label):
+      bridge_closed  class-level marker, so the oracle recognises the type without importing this module
+                     (`tests._bridge` and `_bridge` would be two class objects);
+      returncode     the dead child's exit status; None when stdout closed but the child had not exited yet,
+                     i.e. its death is not established;
+      completed      run_once() only: the subprocess.CompletedProcess of the batch (stdout, stderr), else None."""
+    bridge_closed = True
+
+    def __init__(self, message, returncode=None, completed=None):
+        super().__init__(message)
+        self.returncode = returncode
+        self.completed = completed
+
+
+class BridgeSession:
+    """One bridge child process speaking the line protocol: one command line in, one JSON line out.
+
+    stderr goes to an anonymous temp file (read back for the failure message when the child dies mid-conversation).
+    stop() closes stdin so the bridge exits by itself; if it has not exited after `stop_timeout` seconds it is killed
+    (on Windows Popen.kill() *is* TerminateProcess, i.e. terminate())."""
+
+    def __init__(self, bridge=None, *, stop_timeout=10, cwd=None, env=None):
+        self.bridge = _checked_explicit(bridge) if bridge is not None else find_bridge()
+        self.stop_timeout = stop_timeout
+        self._stopped = False
+        self._death_reported = False     # command() already raised BridgeClosed with an exit status
+        self.stderr = tempfile.TemporaryFile(mode='w+b')
+        try:
+            self.process = subprocess.Popen([self.bridge], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                            stderr=self.stderr, text=True, encoding='utf-8', cwd=cwd, env=env)
+        except BaseException:
+            self.stderr.close()
+            raise
+
+    def stderr_text(self) -> str:
+        self.stderr.seek(0)
+        return self.stderr.read().decode('utf-8', errors='replace')
+
+    def command(self, text):
+        try:
+            self.process.stdin.write(text + '\n')
+            self.process.stdin.flush()
+        except OSError:
+            # BrokenPipeError / EINVAL: the child was already gone when the command was written.  Only a child that
+            # really has exited is "bridge closed"; any other write failure stays the OSError it was.
+            code = self._exit_status()
+            if code is None:
+                raise
+            self._death_reported = True
+            raise BridgeClosed('bridge closed: ' + self.stderr_text(), code) from None
+        line = self.process.stdout.readline()
+        if not line:
+            code = self._exit_status()      # reap first so stderr below is complete
+            self._death_reported = code is not None
+            raise BridgeClosed('bridge closed: ' + self.stderr_text(), code)
+        return json.loads(line)
+
+    def _exit_status(self, timeout=5):
+        """Exit status of the child after its stdout closed; None when it is still running after `timeout` seconds."""
+        try:
+            return self.process.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            return None
+
+    send = command
+
+    def line(self, text):
+        """`line <text>`: the transactional command form most tests use."""
+        return self.command('line ' + text)
+
+    def stop(self):
+        """Close stdin and reap the bridge.  The bridge's only orderly end is exit status 0 after EOF on stdin
+        (web_bridge.c `main`), so a child that ends by itself with any other status died under the test (a mutant
+        that crashes on EOF, an outside kill): that raises BridgeClosed with the status, exactly as a death during
+        command() does, unless command() already reported this death.  A child that had to be killed here (it hung)
+        says nothing about itself and raises nothing."""
+        if self._stopped:
+            return
+        self._stopped = True
+        code, stderr, failed = None, '', False
+        try:
+            try:
+                self.process.stdin.close()
+            except OSError:
+                pass    # the child already died and the pipe is broken: closing re-flushes a command nobody can read
+            try:
+                code = self.process.wait(timeout=self.stop_timeout)
+            except subprocess.TimeoutExpired:
+                self.process.kill()
+                self.process.wait()
+            failed = type(code) is int and code != 0       # (a mocked Popen hands back a non-int: no status, no death)
+            if failed:
+                stderr = self.stderr_text()
+        finally:
+            self.process.stdout.close()
+            self.stderr.close()
+        if failed and not self._death_reported:
+            raise BridgeClosed('bridge closed: exit status %d at stop: %s' % (code, stderr), code)
+
+    close = stop
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        self.stop()
+        return False
+
+
+def run_once(data, *, text=True, timeout=20, bridge=None):
+    """Feed all of `data` to a fresh bridge on stdin and collect everything (subprocess.CompletedProcess).
+
+    text=True: `data` is str, output decoded as UTF-8.  text=False: bytes in, bytes out (for deliberately invalid UTF-8).
+
+    The bridge's only orderly end is exit status 0 after EOF on stdin (web_bridge.c `main`).  Any other status means it
+    died before finishing the batch (crash, abort, exit(), an outside kill), so it raises BridgeClosed with that status
+    and the CompletedProcess, as a session whose bridge dies does: a test asserting on the output of a dead bridge
+    must not read as an assertion about its answers (tests/bridge_mutation_oracle.py).  A bridge that exits 0 early
+    cannot be told apart from one that answered less, so status 0 is returned as before."""
+    kwargs = dict(input=data, capture_output=True, timeout=timeout)
+    if text:
+        kwargs.update(text=True, encoding='utf-8')
+    p = subprocess.run([_checked_explicit(bridge) if bridge is not None else find_bridge()], **kwargs)
+    if type(p.returncode) is int and p.returncode != 0:
+        stderr = p.stderr.decode('utf-8', errors='replace') if isinstance(p.stderr, bytes) else (p.stderr or '')
+        raise BridgeClosed('bridge closed: exit status %d: %s' % (p.returncode, stderr), p.returncode, completed=p)
+    return p

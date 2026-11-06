@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/tmp/geo337-F8-full123-terminal-preparation-v2-20261025/verify_terminal.py", line 9, in <module>
+    with terminal_lease():
+         ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/tmp/geo337-F8-full123-terminal-preparation-v2-20261025/terminal_guard.py", line 44, in terminal_lease
+    try:cwd=(d/'cwd').resolve()
+            ^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1240, in resolve
+    s = self._flavour.realpath(self, strict=strict)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 424, in realpath
+  File "<frozen posixpath>", line 491, in _joinrealpath
+PermissionError: [Errno 13] Permission denied: '/proc/208/cwd'

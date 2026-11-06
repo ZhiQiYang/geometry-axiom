@@ -2,6 +2,8 @@
 const cdp=require('./cdp_helpers.js');
 module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   const fs=require('fs'),path=require('path'),os=require('os'),errors=exceptionCount();
+  // Each canvas shard starts on a clean runner; P76 owns its screenshot output.
+  fs.mkdirSync(path.join(os.tmpdir(),'geometry-tests'),{recursive:true});
   const check=cdp.makeCheck({prefix:'P76 ',throwOnFail:true,detail:'none',failMessage:name=>'P76 '+name});
   const read=eval_,wait=cdp.makeWait(waitForUI,15000);
   const editorTop=async()=>{await read(`(()=>{let n=$('parameterEditor');while(n){n.scrollTop=0;n=n.parentElement;}})()`);};

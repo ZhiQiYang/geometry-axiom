@@ -1,0 +1,26 @@
+{
+  "schema": "F2bbe-architecture-adoption-and-tracked-check-actual-peer-v1",
+  "checks": 704,
+  "exit_code": 0,
+  "findings": [],
+  "actual_architecture_execution_source": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+  "current_product_source": "2bbe54f19b2d19e8a816530f0c4edca950629a34",
+  "original_architecture_gates": [
+    0,
+    0,
+    0
+  ],
+  "original_architecture_peer": 1755,
+  "adopted_files": 302,
+  "adopted_bytes": 4999779,
+  "ledger_check_original_exit": 1,
+  "ledger_regenerated": false,
+  "adoption_result_sha256": "6b994c1ade881778109ebd29f98be541c7c496b6074730c9dde7ad2328d4d0e9",
+  "ledger_result_sha256": "4384a7f8589cbb53f0fb937c2306b863fc7d2574528390e4c05b3ea8a0a76c97",
+  "limits": [
+    "No network/C/new tests/604source closure reread; original small streams/inventory/Git blobs and prior1755/0 actual checked.",
+    "Architecture executed at M and report/receipt adopted at F; execution identity not relabeled.",
+    "Original ledger --check1 is authoritative despite outer tool completion0; full123 still not regenerated.",
+    "No required CI run for current F checked here; historical runs may not be moved to F."
+  ]
+}
