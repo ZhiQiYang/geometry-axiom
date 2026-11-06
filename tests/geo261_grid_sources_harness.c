@@ -159,6 +159,9 @@ static int child_value_case(void)
 static int lifetime_case(void)
 {
     Fixture *a=fixture(100),*b=fixture(200);CHECK(a&&b&&attach(a)&&attach(b),"lifetime-fixtures");WoodGridContext wrong=b->context;wrong.evaluation=NULL;CHECK(!wood_grid_sources_bind(a->sources,&wrong),"reject-cross-candidate-bind");char error[1024]="";GeoCoord x,y;
+    CHECK(a->context.engineering.last_terminal!=NULL,"lifetime-terminal-hook-bound");
+    wrong=a->context;wrong.engineering.last_terminal=NULL;CHECK(!wood_grid_sources_bind(a->sources,&wrong),"reject-other-terminal-hook");
+    wrong=a->context;CHECK(wood_grid_sources_bind(a->sources,&wrong),"accept-same-terminal-hook");
     CHECK(wood_grid_sources_line(a->sources,3,9,0,2,false,false,0,&x,NULL,error,sizeof error)&&wood_grid_sources_line(b->sources,3,9,0,2,false,false,0,&y,NULL,error,sizeof error)&&x==210&&y==410,"candidate-values-remain-independent");
     GeoSourceValue defa,defb;CHECK(get(a,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,1,&defa)&&get(b,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,1,&defb)&&defa.as.definition.content_size==defb.as.definition.content_size&&!memcmp(defa.as.definition.content,defb.as.definition.content,defa.as.definition.content_size),"definitions-exclude-evaluated-parameter-cache");
     WoodGridSourceKey key,again;GeoSourceRef ref=wood_grid_line_source_ref(GS_GRID,3,9,1,INT64_MIN,true,true,INT64_MAX,&key);wood_grid_line_source_ref(GS_GRID,3,9,1,INT64_MIN,true,true,INT64_MAX,&again);WoodGridSourceKind kind;uint32_t id;

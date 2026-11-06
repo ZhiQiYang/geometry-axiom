@@ -1,0 +1,12 @@
+{
+  "subject_sha256": "cb04d3ebf4f0d29691fcc603987490f2f99b85fe22cdbceb49fd7e0536c5b971",
+  "static_exit_code": 1,
+  "blocking_findings": [
+    {
+      "id": "B1",
+      "reason": "Original protected metadata function omitted /workspace/geometry-axiom/.git; oldWS changes would be undetected."
+    }
+  ],
+  "resolution": "New dde59544 pin snapshots both original Gitdirs; no product guard relaxed.",
+  "formal_execution_occurred": false
+}

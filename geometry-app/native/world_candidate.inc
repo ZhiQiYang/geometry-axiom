@@ -11,6 +11,7 @@ typedef struct {
     AppCandidate *control;
     AppWorldOperation operation;
     char operation_seal[65];
+    AsmBayReport bay_report;
     WoodGridStaggerFact *stagger_facts;
     size_t stagger_capacity;
 } AppWorldCandidate;

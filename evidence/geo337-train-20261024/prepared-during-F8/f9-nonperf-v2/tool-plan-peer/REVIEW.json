@@ -1,0 +1,408 @@
+{
+  "schema": "F9-original-gate-plan-v2-static-peer/1",
+  "reviewed_utc": "2026-10-25T07:53:40.082938+00:00",
+  "subject": "/tmp/geo337-F9-original-gate-command-plan-v2-20261025",
+  "index_sha256": "3268a259fb899d661a0ec9b3ac9f30a9c47df9fa4dc8941981da9c88736a3047",
+  "nonperf_v2_preparation_sha256": "593ab353216e0cd50d49c92dd48d1b532bc43154ba46e494daf65cf11d8be72c",
+  "checks": [
+    {
+      "id": "INDEX-pin",
+      "passed": true
+    },
+    {
+      "id": "plan-file-PLAN.md",
+      "passed": true
+    },
+    {
+      "id": "plan-file-COMMANDS.json",
+      "passed": true
+    },
+    {
+      "id": "plan-file-TOOL_PINS.json",
+      "passed": true
+    },
+    {
+      "id": "tool-/tmp/native-final-executable-preparation/run_full_native_workflow_v2.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/workspace/launch_geo337_L_browser.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/workspace/train337-browser-pool-L-7af8c5d8/workflow-driver-browser-workspace.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/tmp/browser_readonly_pool_preparer_v3_seed.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/tmp/geo337-F9-nonperf-original-tools-v2-20261025/run_original_specials.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/tmp/geo337-F9-nonperf-original-tools-v2-20261025/binding_guards.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/tmp/geo337-F9-nonperf-original-tools-v2-20261025/PREPARATION.json",
+      "passed": true
+    },
+    {
+      "id": "tool-/tmp/train337-final-p52-p189-prep/run_special.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/tmp/train337-final-p52-p189-prep/PREPARATION.json",
+      "passed": true
+    },
+    {
+      "id": "tool-/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/workspace/geo318-reading-a-prep/formal-tools/native_with_compile_log_retention.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/workspace/train337-L-reading-a-preparation/launch_two_original_stages.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/workspace/train337-L-reading-a-preparation/prepare_source.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/workspace/train337-L-reading-a-preparation/repair_source_r2.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/tmp/train337-reading-a-sweep-plan/run_original_rc_method.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/tmp/train337-reading-a-sweep-plan/RC_PROOF_REQUEST_TEMPLATE.json",
+      "passed": true
+    },
+    {
+      "id": "tool-/tmp/launch_L_readers_and_rc.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/workspace/geo314-owner-20261023/run_m121_proof.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/tmp/geo314-train-f64d638f-launch/run_native_now.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/tmp/geo323-train337-lineage-20261024/memo-proof-tools/run.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/workspace/geo261-environment/reap_children.py",
+      "passed": true
+    },
+    {
+      "id": "tool-/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py",
+      "passed": true
+    },
+    {
+      "id": "v2-preparation-pin",
+      "passed": true
+    },
+    {
+      "id": "only-code-delta-no-renames",
+      "passed": true
+    },
+    {
+      "id": "unchanged-preparation-required_eight_expected",
+      "passed": true
+    },
+    {
+      "id": "unchanged-preparation-original_judges_sha256",
+      "passed": true
+    },
+    {
+      "id": "unchanged-preparation-external_tools",
+      "passed": true
+    },
+    {
+      "id": "unchanged-preparation-binding_policy",
+      "passed": true
+    },
+    {
+      "id": "unchanged-helper",
+      "passed": true
+    },
+    {
+      "id": "original-metadata-not-relabelled",
+      "passed": true
+    },
+    {
+      "id": "v2-file-run_original_specials.py",
+      "passed": true
+    },
+    {
+      "id": "v2-file-binding_guards.py",
+      "passed": true
+    },
+    {
+      "id": "v2-file-REQUESTS.json",
+      "passed": true
+    },
+    {
+      "id": "v2-file-README.md",
+      "passed": true
+    },
+    {
+      "id": "exact-37-distinct",
+      "passed": true
+    },
+    {
+      "id": "unexecuted-all",
+      "passed": true
+    },
+    {
+      "id": "argv-native",
+      "passed": true
+    },
+    {
+      "id": "argv-browser-canvas",
+      "passed": true
+    },
+    {
+      "id": "argv-browser-assembly",
+      "passed": true
+    },
+    {
+      "id": "argv-browser-documents",
+      "passed": true
+    },
+    {
+      "id": "argv-browser-grid",
+      "passed": true
+    },
+    {
+      "id": "argv-browser-space",
+      "passed": true
+    },
+    {
+      "id": "argv-browser-timber",
+      "passed": true
+    },
+    {
+      "id": "argv-q38",
+      "passed": true
+    },
+    {
+      "id": "argv-cardref",
+      "passed": true
+    },
+    {
+      "id": "argv-axiom",
+      "passed": true
+    },
+    {
+      "id": "argv-required-eight",
+      "passed": true
+    },
+    {
+      "id": "argv-pf3",
+      "passed": true
+    },
+    {
+      "id": "argv-p52",
+      "passed": true
+    },
+    {
+      "id": "argv-p189",
+      "passed": true
+    },
+    {
+      "id": "argv-p189-timing",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-reader-generate",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-reader-check",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-reader-unit",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-native-7",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-oracle-13",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-golden-source-proof",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-golden-generate",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-golden-compare",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-oracle-mutants",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-oracle-quick",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-cli-build",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-cli-order",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-architecture-contract",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-architecture-unit",
+      "passed": true
+    },
+    {
+      "id": "argv-readingA-product-architecture",
+      "passed": true
+    },
+    {
+      "id": "argv-RC-builder-whole-face-baseline",
+      "passed": true
+    },
+    {
+      "id": "argv-RC-builder-whole-face-withdrawn",
+      "passed": true
+    },
+    {
+      "id": "argv-RC-builder-whole-face-restored",
+      "passed": true
+    },
+    {
+      "id": "argv-RC-checker-whole-face-baseline",
+      "passed": true
+    },
+    {
+      "id": "argv-RC-checker-whole-face-withdrawn",
+      "passed": true
+    },
+    {
+      "id": "argv-RC-checker-whole-face-restored",
+      "passed": true
+    },
+    {
+      "id": "argv-314-node-inspector",
+      "passed": true
+    },
+    {
+      "id": "native-original-complete",
+      "passed": true
+    },
+    {
+      "id": "six-private-ports",
+      "passed": true
+    },
+    {
+      "id": "original-CI-browser-limits",
+      "passed": true
+    },
+    {
+      "id": "canvas-exclusive",
+      "passed": true
+    },
+    {
+      "id": "nonperf-bind-q38",
+      "passed": true
+    },
+    {
+      "id": "nonperf-bind-cardref",
+      "passed": true
+    },
+    {
+      "id": "nonperf-bind-axiom",
+      "passed": true
+    },
+    {
+      "id": "nonperf-bind-required-eight",
+      "passed": true
+    },
+    {
+      "id": "nonperf-bind-pf3",
+      "passed": true
+    },
+    {
+      "id": "all-original-15-readingA-stages",
+      "passed": true
+    },
+    {
+      "id": "readingA-shared-artifact-parent",
+      "passed": true
+    },
+    {
+      "id": "RC-010-builder-whole-face",
+      "passed": true
+    },
+    {
+      "id": "RC-010-checker-whole-face",
+      "passed": true
+    },
+    {
+      "id": "M121-do-not-redraw",
+      "passed": true
+    },
+    {
+      "id": "memo-preserve-F8",
+      "passed": true
+    },
+    {
+      "id": "R8-preserve-F8",
+      "passed": true
+    },
+    {
+      "id": "pending-browser-rebind-explicit",
+      "passed": true
+    },
+    {
+      "id": "full123-no-terminal-claim",
+      "passed": true
+    },
+    {
+      "id": "pending-memo-explicit",
+      "passed": true
+    },
+    {
+      "id": "no-policy-implied",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "exit": 0,
+  "errors": [],
+  "formal_executed": false,
+  "scope": "37個原命令計畫、22小工具pins、v2一行--no-renames差分；不執行版本/build/browser/judge。",
+  "limits": [
+    "這是未綁F9的計畫，不是正式驗收。",
+    "browser launcher/完整seed/資源入場仍需獨審；memo另處理原錨點漂移。",
+    "v1 closure審查接受結論已撤回；v2需另附owner tiny Git rename反證原流，本報告先核靜態差分。",
+    "full123仍不可預稱通過；M121引用須待真終態且精確索引。"
+  ]
+}

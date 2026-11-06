@@ -1,0 +1,211 @@
+name: R11 canvas context menu browser mutation evidence
+
+# PR #352 scope only: the canvas context menu sources, its mutation manifest,
+# runner and regression. Other PRs that touch shared files (app.js holds the M5
+# site, cdp_test.js wires the scope) can run it through workflow_dispatch.
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/r11-canvas-context-menu-mutations.yml'
+      - '.github/scripts/r11_mutation_receipt_check.py'
+      - 'geometry-web/canvas-context-menu.js'
+      - 'geometry-web/context-menu-shell.js'
+      - 'geometry-web/canvas_context_menu_*'
+      - 'geometry-web/browser_mutation_check.py'
+      - 'tests/test_canvas_creation_owner.cjs'
+  workflow_dispatch:
+    inputs:
+      chrome_sandbox:
+        description: 'keep = Chrome sandbox on (default); disable = --no-sandbox, the flag the integration canvas job uses'
+        type: choice
+        options:
+          - keep
+          - disable
+        default: keep
+
+permissions:
+  contents: read
+
+concurrency:
+  group: r11-canvas-menu-mutations-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  architecture:
+    name: Regenerate architecture evidence with the original commands
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Run original scanner and architecture test commands
+        run: python3 .github/scripts/architecture_evidence.py --out "$RUNNER_TEMP/pr352-architecture"
+      - name: Preserve derived architecture evidence and raw outputs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pr352-architecture-refresh-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/pr352-architecture/
+          if-no-files-found: error
+          retention-days: 30
+
+  browser-mutations:
+    name: Baseline C01-C16 plus M1-M8 mutant/restored
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: ${{ inputs.chrome_sandbox == 'disable' && '--no-sandbox' || '' }}
+      R11_EVIDENCE: /tmp/r11-352-evidence
+      R11_NATIVE: /tmp/r11-352-native
+      R11_MANIFEST: geometry-web/canvas_context_menu_mutations.json
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Install Chinese fonts for actual browser rendering
+        run: |
+          sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
+          sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
+      - name: Build bridge and model-base from this exact source
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          mkdir -p "$R11_EVIDENCE"
+          start=$(date +%s.%N)
+          python3 -u geometry-web/start_local.py --build-only --binary-dir "$R11_NATIVE" 2>&1 | tee "$R11_EVIDENCE/native-build.log"
+          end=$(date +%s.%N)
+          python3 -c 'import sys; print(round(float(sys.argv[2]) - float(sys.argv[1]), 3))' "$start" "$end" > "$R11_EVIDENCE/native-build-elapsed-seconds.txt"
+          line=$(grep '^LOCAL_RUNTIME ' "$R11_EVIDENCE/native-build.log" | tail -n 1)
+          test -n "$line"
+          printf '%s\n' "${line#LOCAL_RUNTIME }" > "$R11_EVIDENCE/local-runtime.json"
+          bridge=$(python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["executables"]["bridge"])' "$R11_EVIDENCE/local-runtime.json")
+          model=$(python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["executables"]["model-base"])' "$R11_EVIDENCE/local-runtime.json")
+          test -x "$bridge"
+          test -x "$model"
+          printf 'R11_BRIDGE=%s\nR11_MODEL_BASE=%s\n' "$bridge" "$model" >> "$GITHUB_ENV"
+      - name: Configure Chrome's setuid sandbox helper as Chrome requires
+        # The hosted image ships /opt/google/chrome/chrome-sandbox as 777, which
+        # Chrome rejects (FATAL setuid_sandbox_host.cc) when unprivileged user
+        # namespaces are restricted. Chrome's documented setup is root:root 4755;
+        # this keeps the sandbox on instead of falling back to --no-sandbox.
+        if: ${{ inputs.chrome_sandbox != 'disable' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          helper=/opt/google/chrome/chrome-sandbox
+          stat -c 'before: %a %U:%G %n' "$helper" | tee "$R11_EVIDENCE/sandbox-helper.txt"
+          sudo chown root:root "$helper"
+          sudo chmod 4755 "$helper"
+          stat -c 'after: %a %U:%G %n' "$helper" | tee -a "$R11_EVIDENCE/sandbox-helper.txt"
+      - name: Record source, binary and tool identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$R11_EVIDENCE"
+          git rev-parse HEAD | tee "$E/head-sha.txt"
+          git rev-parse 'HEAD^{tree}' > "$E/tree-sha.txt"
+          git log -1 --format='%H %P' > "$E/commit-and-parents.txt"
+          git ls-files -s -- "$R11_MANIFEST" geometry-web/cdp_test.js geometry-web/canvas_context_menu_test.js \
+            geometry-web/canvas_context_menu_cases_a.js geometry-web/canvas_context_menu_cases_b.js \
+            geometry-web/browser_mutation_check.py geometry-web/canvas-context-menu.js \
+            geometry-web/context-menu-shell.js geometry-web/app.js > "$E/source-git-blobs.txt"
+          sha256sum "$R11_MANIFEST" geometry-web/cdp_test.js geometry-web/canvas_context_menu_test.js \
+            geometry-web/canvas_context_menu_cases_a.js geometry-web/canvas_context_menu_cases_b.js \
+            geometry-web/browser_mutation_check.py geometry-web/canvas-context-menu.js \
+            geometry-web/context-menu-shell.js geometry-web/app.js > "$E/source-sha256.txt"
+          sha256sum "$R11_BRIDGE" "$R11_MODEL_BASE" | tee "$E/binary-sha256.txt"
+          mkdir -p "$E/binaries"
+          cp "$R11_BRIDGE" "$E/binaries/bridge"
+          cp "$R11_MODEL_BASE" "$E/binaries/model-base"
+          {
+            echo "runner-image: ${ImageOS:-unknown} ${ImageVersion:-unknown}"
+            echo "uname: $(uname -a)"
+            grep -E '^(PRETTY_NAME|VERSION_ID)=' /etc/os-release
+            echo "python: $(python3 --version 2>&1)"
+            echo "node: $(node --version)"
+            echo "chrome: $("$GEOMETRY_CHROME" --version)"
+            echo "cc: $(cc --version | head -n 1)"
+            echo "chrome-flags: '${GEOMETRY_CHROME_FLAGS}'"
+            echo "chrome-sandbox-helper: $(stat -c '%a %U:%G %n' /opt/google/chrome/chrome-sandbox 2>&1 || true)"
+            echo "userns-restriction: $(sysctl -n kernel.apparmor_restrict_unprivileged_userns 2>&1 || true)"
+          } | tee "$E/versions.txt"
+      - name: Provide disk space for the runner's nine full-repository snapshots
+        # browser_mutation_check.py copies every tracked file once for the baseline
+        # and once per mutation, keeping all copies until it exits.
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$R11_EVIDENCE"
+          need=$(git ls-files -z | xargs -0 stat -c %s -- | awk '{s += $1} END {printf "%d\n", s * 10}')
+          echo "snapshot bytes needed (10 x tracked size): $need" | tee "$E/disk.txt"
+          target=""
+          for base in /mnt /tmp; do
+            [ -d "$base" ] || continue
+            sudo mkdir -p "$base/r11-352-snapshots"
+            sudo chown "$(id -u):$(id -g)" "$base/r11-352-snapshots"
+            free=$(df -B1 --output=avail "$base/r11-352-snapshots" | tail -n 1 | tr -d ' ')
+            echo "$base available bytes: $free" | tee -a "$E/disk.txt"
+            if [ "$free" -ge "$need" ]; then target="$base/r11-352-snapshots"; break; fi
+          done
+          if [ -z "$target" ]; then
+            # Ephemeral hosted runner only: drop preinstalled SDKs this job never uses.
+            echo "removing unused preinstalled SDKs" | tee -a "$E/disk.txt"
+            sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL
+            free=$(df -B1 --output=avail /tmp/r11-352-snapshots | tail -n 1 | tr -d ' ')
+            echo "/tmp available bytes after cleanup: $free" | tee -a "$E/disk.txt"
+            test "$free" -ge "$need"
+            target=/tmp/r11-352-snapshots
+          fi
+          df -h | tee -a "$E/disk.txt"
+          echo "snapshot TMPDIR: $target" | tee -a "$E/disk.txt"
+          printf 'R11_SNAPSHOT_TMP=%s\n' "$target" >> "$GITHUB_ENV"
+      - name: Pure-node creation owner regression before browser controls
+        shell: bash
+        run: |
+          set -o pipefail
+          node --test --test-reporter=tap tests/test_canvas_creation_owner.cjs 2>&1 | tee "$R11_EVIDENCE/canvas-creation-owner.tap"
+      - name: Run full baseline, eight named mutants and restored controls
+        shell: bash
+        run: |
+          ulimit -s 16384
+          test -x "$GEOMETRY_CHROME"
+          E="$R11_EVIDENCE"
+          start=$(date +%s.%N)
+          set +e
+          # TMPDIR only for the runner: its snapshots, feedback directories and
+          # browser profiles must share the tmpdir that cdp_test.js and serve.py check.
+          TMPDIR="$R11_SNAPSHOT_TMP" python3 -u geometry-web/browser_mutation_check.py --manifest "$R11_MANIFEST" \
+            --bridge "$R11_BRIDGE" --model-base "$R11_MODEL_BASE" \
+            --output-dir "$E/mutations" --timeout 900 > "$E/runner.stdout" 2> "$E/runner.stderr"
+          status=$?
+          end=$(date +%s.%N)
+          printf '%s\n' "$status" > "$E/runner-exit-code.txt"
+          python3 -c 'import sys; print(round(float(sys.argv[2]) - float(sys.argv[1]), 3))' "$start" "$end" > "$E/runner-elapsed-seconds.txt"
+          cat "$E/runner.stdout"
+          cat "$E/runner.stderr"
+          echo "runner exit $status after $(cat "$E/runner-elapsed-seconds.txt") s"
+          exit "$status"
+      - name: Re-check the receipt against this head, manifest and binaries
+        if: always()
+        shell: bash
+        run: |
+          python3 .github/scripts/r11_mutation_receipt_check.py \
+            --receipt "$R11_EVIDENCE/mutations/receipt.json" --manifest "$R11_MANIFEST" \
+            --head "$(git rev-parse HEAD)" --bridge "${R11_BRIDGE:-/missing-bridge}" \
+            --model-base "${R11_MODEL_BASE:-/missing-model-base}" --summary "$R11_EVIDENCE/receipt-check.json"
+      - name: Preserve receipt, raw logs, identities and executed binaries
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r11-browser-mutations-${{ github.event.pull_request.head.sha || github.sha }}
+          path: /tmp/r11-352-evidence/
+          if-no-files-found: error
+          retention-days: 30

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--hostname",
+    "github.com",
+    "-H",
+    "Accept: application/vnd.github.raw+json",
+    "repos/ZhiQiYang/geometry-axiom/contents/geometry-templates/woodworking/native/contact_world.c?ref=9a8584f57be7935604c3bad4c2481945a6ec3d9f"
+  ],
+  "cwd": "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+  "exit_code": 0,
+  "timestamp_utc": "2026-10-26T10:24:39.059411+00:00",
+  "stdout_sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 26113,
+  "stderr_bytes": 0
+}

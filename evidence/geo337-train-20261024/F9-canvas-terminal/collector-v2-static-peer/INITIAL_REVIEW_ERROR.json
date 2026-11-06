@@ -1,0 +1,9 @@
+{
+  "classification": "reviewer metadata assertion error, not subject defect",
+  "original_tool_chunk_id": "58b5a3",
+  "original_process_exit_code": 1,
+  "original_error": "AssertionError: new field refs exact4",
+  "cause": "fresh_output_free occurs three times: keyword, admission lookup, event lookup; reviewer incorrectly expected four.",
+  "correction": "Expect the actual three exact occurrences, while whole-source equality against the three permitted substitutions remains mandatory.",
+  "subject_modified": false
+}

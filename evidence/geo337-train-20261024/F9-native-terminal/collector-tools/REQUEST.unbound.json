@@ -1,0 +1,31 @@
+{
+  "schema": "geo337-F9-native-terminal-collection/1",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "root_source_cache_collection_lease": false,
+  "job": "/tmp/geo337-F9-native-4f8a794f-20261025",
+  "outer": "/tmp/geo337-F9-native-launch-20261025",
+  "destination": "/tmp/geo337-F9-native-terminal-package-20261025",
+  "minimum_archive_reserve_bytes": 67108864,
+  "terminal_files": {
+    "exec_final": {
+      "path": "/tmp/UNBOUND-F9-native-EXEC_FINAL.json",
+      "sha256": "UNBOUND_SHA256"
+    },
+    "outer": {
+      "path": "/tmp/geo337-F9-native-launch-20261025/RESULT.json",
+      "sha256": "UNBOUND_SHA256"
+    },
+    "native": {
+      "path": "/tmp/geo337-F9-native-4f8a794f-20261025/RECEIPT.json",
+      "sha256": "UNBOUND_SHA256"
+    },
+    "workflow": {
+      "path": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/receipt.json",
+      "sha256": "UNBOUND_SHA256"
+    }
+  },
+  "independent_static_review": {
+    "path": "/tmp/UNBOUND-peer/REVIEW.json",
+    "sha256": "UNBOUND_SHA256"
+  }
+}

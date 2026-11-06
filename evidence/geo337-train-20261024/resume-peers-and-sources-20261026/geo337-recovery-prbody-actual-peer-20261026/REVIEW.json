@@ -1,0 +1,47 @@
+{
+  "schema": "recovery-prbody-delivery-independent-actual-peer/1",
+  "reviewed_utc": "2026-10-26T10:14:57.855902+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "checks": 567,
+  "body_commit": "ce0c3f0ad5af51670cbfd5266d3dd4474843026a",
+  "body_sha256": "14d3271cc50438aaf82415031044070f2d22065804214c65631aeea08ccc6137",
+  "body_bytes": 4537,
+  "root_result_sha256": "261fb5b169565a1e82db38378b44bc3623eae5416854ae5e5e9d7e96f048e029",
+  "inner_result_sha256": "314fd88e1f310cd7196971e115171a7aa80e78014cc04fc4443813a0fbca85a2",
+  "published": true,
+  "full_remote_body_verified": true,
+  "original_writer_HEAD_index_train_unchanged": true,
+  "original_physical_index_sha256": "7a0cdcc3cc447eb2fae06aec47e97cf24f192aa62ed383839dc7b21e18942842",
+  "existing_PR_338_updated": false,
+  "original_command_count": 31,
+  "original_raw_stream_count": 93,
+  "original_raw_stream_bytes": 57840,
+  "original_raw_catalog_sha256": "4717a372cce962707e19f4e7381b22c418974bdc9e974295f43aadefe653cbdd",
+  "remote_body_observed_utc": "2026-10-26T09:54:33.878601+00:00",
+  "current_state_update_notes": [
+    {
+      "item": "a6 三原裁判",
+      "severity": "update-next-body",
+      "note": "最新已完成的 a6 0/0/0、205/18 零skip尚未寫入此版架構列；應列當次來源/結果，與仍待相符四檔採用及新final分開。",
+      "actual_peer": "/tmp/geo337-a6-gates-actual-peer-20261026/REVIEW.json"
+    },
+    {
+      "item": "108 個空cache目錄",
+      "severity": "approval-scope-detail",
+      "note": "正文說3156葉被拒，未明載原executor另會rmdir63子目錄+45白名單cache根目錄。供範圍批准時應同時引用精確批准包；不得默認原批准涵蓋。",
+      "approval_scope": "/tmp/geo337-retirement-approval-packet-20261026/SCOPE.json"
+    },
+    {
+      "item": "native transition工具focused",
+      "severity": "optional-progress-detail",
+      "note": "原8case及四組0/1/0現已actual審核，可記工具準備完成；不可寫成native正式通過。"
+    }
+  ],
+  "limits": [
+    "Readonly original capture/bytes review; no network repeat, Git/ref update, body edit or test rerun.",
+    "Delivery integrity0 does not certify every historical gate anew or establish a final SHA.",
+    "Cleanup denial reason and request revocation are preserved as root/coordinator reported state; these31 publication commands contain no cleanup and do not independently audit every task action.",
+    "This review verifies the private publisher HEAD/index/train snapshots, not all possible external Claude environments or remote main writers."
+  ]
+}

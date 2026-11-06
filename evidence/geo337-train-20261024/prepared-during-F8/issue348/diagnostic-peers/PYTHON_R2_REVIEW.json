@@ -1,0 +1,259 @@
+{
+  "schema": "geo348-python-r2-readonly-peer-review/1",
+  "utc": "2026-10-25T08:00:31.531730+00:00",
+  "reviewer": "/root/r8_terminal_peer/geo348_plan_peer",
+  "language": "zh-Hant",
+  "scope": {
+    "package": "/tmp/geo348-command-boundary-diagnostic-tools-20261025",
+    "operations": [
+      "讀原件",
+      "SHA256與byte比較",
+      "解析既有JSON收據",
+      "靜態來源及README審查"
+    ],
+    "reran_selftests": false,
+    "executed_proof_driver": false,
+    "compiled_c": false,
+    "linked_c": false,
+    "executed_product": false,
+    "executed_n512": false,
+    "executed_git_or_fetch": false,
+    "modified_originals": false,
+    "writes": [
+      "/tmp/geo348-command-boundary-diagnostic-peer-20261025/PYTHON_R2_REVIEW.md",
+      "/tmp/geo348-command-boundary-diagnostic-peer-20261025/PYTHON_R2_REVIEW.json"
+    ]
+  },
+  "verdict": {
+    "python_r2_receipts_and_sources_consistent": true,
+    "phase_exit_codes": [
+      0,
+      1,
+      0
+    ],
+    "checks_per_phase": 32,
+    "withdrawn_only_failed_check": "reject-wrong-command-line-length",
+    "withdrawal_exactly_one_input_length_check": true,
+    "open_readme_findings": 0,
+    "c_wrapper_calibrated": false,
+    "actual_pipe_pressure_tested": false,
+    "actual_kill_reap_tested": false,
+    "formal_gate_verdict": null,
+    "product_root_cause": null
+  },
+  "phases": [
+    {
+      "phase": "fixed",
+      "exit": 0,
+      "test_count": 32,
+      "failed": [],
+      "receipt_stream_and_test_result_consistent": true,
+      "phase_source_matches_current": {
+        "sidecar.py": true,
+        "launch_diagnostic.py": true,
+        "selftest_protocol.py": true
+      },
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof-r2/fixed/selftest_protocol.py",
+        "--out",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof-r2/fixed/TEST_RESULT.json"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof-r2/fixed"
+    },
+    {
+      "phase": "withdrawn",
+      "exit": 1,
+      "test_count": 32,
+      "failed": [
+        "reject-wrong-command-line-length"
+      ],
+      "receipt_stream_and_test_result_consistent": true,
+      "phase_source_matches_current": {
+        "sidecar.py": false,
+        "launch_diagnostic.py": true,
+        "selftest_protocol.py": true
+      },
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof-r2/withdrawn/selftest_protocol.py",
+        "--out",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof-r2/withdrawn/TEST_RESULT.json"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof-r2/withdrawn"
+    },
+    {
+      "phase": "restored",
+      "exit": 0,
+      "test_count": 32,
+      "failed": [],
+      "receipt_stream_and_test_result_consistent": true,
+      "phase_source_matches_current": {
+        "sidecar.py": true,
+        "launch_diagnostic.py": true,
+        "selftest_protocol.py": true
+      },
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof-r2/restored/selftest_protocol.py",
+        "--out",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof-r2/restored/TEST_RESULT.json"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof-r2/restored"
+    }
+  ],
+  "reviewed_repairs": [
+    {
+      "id": "PY1",
+      "status": "resolved",
+      "detail": "close OSError被收集，保留原例外物件並將可寫RESULT標invalid；合成原timeout身份檢查已保留於r2。"
+    },
+    {
+      "id": "PY2",
+      "status": "resolved",
+      "detail": "validate_fixture硬綁760a7169ea3577341b4b0ec1b56ea39c21c85c777434325ec906debe0a816f10與45154bytes；不能換小fixture並自填一致hash。"
+    },
+    {
+      "id": "PY3",
+      "status": "resolved",
+      "detail": "parser要求flush-enter rc=0、flags/length非負；非零CompletedProcess只要求合法前綴，不偽造完整成功。"
+    },
+    {
+      "id": "DOC1",
+      "status": "resolved",
+      "detail": "README新增真pipe分段到達／大量stderr壓力及kill/reap未驗；PLAN5 I/O實校尚未完整完成。",
+      "previous_readme_sha256": "d136f827e455222fc92b08719a4cbe2b49781b971c94e65da2cb6c189baf92d7",
+      "reviewed_readme_sha256": "0b6e49e83028d762f1da198acb4a2d74637971edea9ec42363593ecd0a6e035b"
+    }
+  ],
+  "limitations": [
+    "32項為Python injected runner／合成event工具檢查；synthetic-never-launched argv未執行。",
+    "原600秒只驗轉交參數與呼叫次數；沒有等待600秒、製造真實timeout或驗證kill/reap。",
+    "保存partial bytes不等於已測真正pipe分段到達與大量stderr排空。",
+    "C wrapper未編譯/link/ABI/符號/原CLI校準，Python 0/1/0不能替代C故障注入或產品撤回反證。",
+    "N512／正式gate／根因未判；仍須root在full123後排獨占時槽。",
+    "本peer只核既有收據與靜態來源，未獨立重跑。"
+  ],
+  "original_review_files_unchanged": {
+    "REVIEW.md": "cee8c9465b521f1caca0a779a256569bc4e160c4504ca86852ad55c44781e613",
+    "REVIEW.json": "0d7712a3d0fe301f275b9e7b62427ba09266f9e2293c38f71ea376c1ac1e46ca"
+  },
+  "bindings": {
+    "sidecar.py": {
+      "bytes": 4507,
+      "sha256": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142"
+    },
+    "launch_diagnostic.py": {
+      "bytes": 10354,
+      "sha256": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89"
+    },
+    "selftest_protocol.py": {
+      "bytes": 10685,
+      "sha256": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+    },
+    "prove_python_protocol.py": {
+      "bytes": 2427,
+      "sha256": "74f3d1de10ce606f6bfe61a7d9a7d5a9083266059cdb7452b2b313d0d0bffca5"
+    },
+    "trace_wrap.c": {
+      "bytes": 8616,
+      "sha256": "1a3cb2ae9cc0cad814dce190aae5d7e39f839e9440425f3cf3c33583fc8ed75d"
+    },
+    "README.md": {
+      "bytes": 5048,
+      "sha256": "0b6e49e83028d762f1da198acb4a2d74637971edea9ec42363593ecd0a6e035b"
+    },
+    "python-proof-r2/RESULT.json": {
+      "bytes": 3179,
+      "sha256": "242deb4a1d1c59cb7f4f4a2d34a94b4dabb311bc10944deb5840aa49abdc068d"
+    },
+    "python-proof-r2/fixed/COMMAND_RESULT.json": {
+      "bytes": 838,
+      "sha256": "9447305b5797df0eedc4ef2b8d877beb5c4fa1e46caf87de270c5f574b3471be"
+    },
+    "python-proof-r2/fixed/TEST_RESULT.json": {
+      "bytes": 3002,
+      "sha256": "adb337919ea02b8ee46ae983a2138605f31ee19459e138f90ba7ef8a804e266d"
+    },
+    "python-proof-r2/fixed/stdout.bin": {
+      "bytes": 39,
+      "sha256": "e954ed95df1836b197dae3cd3557c45444231cc1c62574f23049d1762533522e"
+    },
+    "python-proof-r2/fixed/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "python-proof-r2/fixed/sidecar.py": {
+      "bytes": 4507,
+      "sha256": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142"
+    },
+    "python-proof-r2/fixed/launch_diagnostic.py": {
+      "bytes": 10354,
+      "sha256": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89"
+    },
+    "python-proof-r2/fixed/selftest_protocol.py": {
+      "bytes": 10685,
+      "sha256": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+    },
+    "python-proof-r2/withdrawn/COMMAND_RESULT.json": {
+      "bytes": 850,
+      "sha256": "84c7d0aaffe1561f6b84996a7514fdf528c26ab5d7a572429f9c7538b268c441"
+    },
+    "python-proof-r2/withdrawn/TEST_RESULT.json": {
+      "bytes": 3003,
+      "sha256": "ba6fa1d2571fe11d67b413abaa5095b5a3bc799c429344e0c17883072e982ca0"
+    },
+    "python-proof-r2/withdrawn/stdout.bin": {
+      "bytes": 73,
+      "sha256": "d59a8f15042d907f2e45f8962552f3786be3835993adfbedb3deb473cb0dcdae"
+    },
+    "python-proof-r2/withdrawn/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "python-proof-r2/withdrawn/sidecar.py": {
+      "bytes": 4494,
+      "sha256": "75d7e86421ed8b98761cf2e7bdc6127299b2b14da9794c282d279b20767eafb3"
+    },
+    "python-proof-r2/withdrawn/launch_diagnostic.py": {
+      "bytes": 10354,
+      "sha256": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89"
+    },
+    "python-proof-r2/withdrawn/selftest_protocol.py": {
+      "bytes": 10685,
+      "sha256": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+    },
+    "python-proof-r2/restored/COMMAND_RESULT.json": {
+      "bytes": 847,
+      "sha256": "abd386757e55676e87b7ccfd5e6921530c300631a5983eb19759ecd1460e19f1"
+    },
+    "python-proof-r2/restored/TEST_RESULT.json": {
+      "bytes": 3002,
+      "sha256": "adb337919ea02b8ee46ae983a2138605f31ee19459e138f90ba7ef8a804e266d"
+    },
+    "python-proof-r2/restored/stdout.bin": {
+      "bytes": 39,
+      "sha256": "e954ed95df1836b197dae3cd3557c45444231cc1c62574f23049d1762533522e"
+    },
+    "python-proof-r2/restored/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "python-proof-r2/restored/sidecar.py": {
+      "bytes": 4507,
+      "sha256": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142"
+    },
+    "python-proof-r2/restored/launch_diagnostic.py": {
+      "bytes": 10354,
+      "sha256": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89"
+    },
+    "python-proof-r2/restored/selftest_protocol.py": {
+      "bytes": 10685,
+      "sha256": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+    }
+  },
+  "markdown_sha256": "d99df0fcb1b98b1e8c42e693ebb55eecec71d0b5a86fc2bcdc168e5ae3c749c9"
+}

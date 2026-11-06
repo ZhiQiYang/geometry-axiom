@@ -81,6 +81,9 @@ static bool app_asm_remove(void *,uint32_t);
 static void app_asm_write(void *,const WoodMember *,const WoodAssemblyDefinition *);
 static bool app_asm_anchor_matches(void *,uint32_t,const WoodAssemblyDefinition *);
 static bool app_asm_instance_content(void *,AsmInstance *,GeoJson *,int);
+static bool app_asm_position(void *,uint32_t,const AsmLocation *,WoodAssemblyPosition *);
+static bool app_asm_dependencies(void *,WoodAssemblyDependency,WoodAssemblyDependency *,size_t,size_t *,bool);
+static bool app_asm_external_reference(void *,uint32_t,uint32_t,char *,size_t);
 static bool app_sp_resolve_dimension_sources(World *,GeoParameterSources *,WoodEngineeringSources *,const EngDimensionSource *,const EngTarget *,Coord *);
 static bool app_sp_live_host(void *,uint32_t,GeoFrame *,WoodBoundaryRegion *,bool *);
 static bool app_fs_boundary(void *,uint32_t,WoodBoundaryRegion *);
@@ -116,7 +119,7 @@ typedef struct {
     WoodContactSources *contact_sources;
     WoodAssemblySources *assembly_sources;
     WoodFinishSourceKey placement_binding_key;
-    bool use_current_values,source_failure;
+    bool use_current_values,source_failure,bay_planning;
     bool wanted[WORLD_MAX_TIMBERS];
     /* 每次候選驗證均重建整份求值狀態。成功的定義／幾何解碼可共用，
      * 每個 consumer 的依賴登記仍須逐筆執行。 */
@@ -714,11 +717,13 @@ static bool reference_parameters_rebuild(World *w,char *error,size_t cap)
 }
 static bool reference_rebuild(World *w)
 {
-    ReferenceEval local={0},*ctx=&local;bool persistent=false;
+    ReferenceEval local,*ctx;bool persistent=false;
     if(g_active_app_candidate&&w==&g_active_app_candidate->after){
         ctx=app_candidate_evaluation_state(g_active_app_candidate->control);
         if(!ctx||ctx->world!=w)ctx=reference_sources_begin_candidate(w);
         if(!ctx)return false;persistent=true;
+    }else{
+        local=(ReferenceEval){0};ctx=&local;
     }
     ctx->world=w;bool ok=true;
     geo_guides_reset_resolved(&w->geo.guide_lines);

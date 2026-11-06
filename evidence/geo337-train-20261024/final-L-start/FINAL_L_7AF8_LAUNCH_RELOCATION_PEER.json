@@ -1,0 +1,21 @@
+{
+  "schema": "final-L-original-launch-and-cache-relocation-peer/1",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "checks": 899,
+  "exit_code": 0,
+  "findings": [],
+  "full_launch_request_sha256": "c9b2fb2f748dd9c13615c4e318a3d1d4d53f963c5ab1bd2925a1fff23a959431",
+  "relocation_sha256": "8851c33a5cf87bf9fa7b2bc9118ee63338ba919e7dbf77c13aac0d67aa8e80b4",
+  "metadata_copies": 175,
+  "core_pairs": 68,
+  "bridge_pairs": 107,
+  "original_tracked_check_exit": 0,
+  "full_cli_status": "RUNNING; no final verdict inspected or inferred",
+  "limits": [
+    "只讀已凍結launch/preflight/relocation snapshots與175 immutable舊sidecar副本，未讀/改live ledger rows或active cache內容。",
+    "175 pair各原sourcehash/bytecount/binaryidentity與已受審b6INDEX吻合；live後續builder可合法更新newcache，沒有要求新sidecar永久等舊。",
+    "sourceL trackedJSON逐byte等原b6結果，120 execution heads仍b6保真；本次external RESULTS新fullCLI將自行產生L heads，尚未判定完成。",
+    "preflight request初始passedfalse/exit1是尚未終態欄，不能當subject紅；本報告只接受真tracked--check0與啟動，不冒full123綠。",
+    "原16MiB、無IDs、outerNone、原子時限皆保；最終仍須四phase全0及原完整raw再審。"
+  ]
+}

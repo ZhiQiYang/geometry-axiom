@@ -1,0 +1,87 @@
+{
+  "schema": "two-gate-publication-manifest-static-peer/1",
+  "verdict": "metadata-integrity-no-open-finding",
+  "blocking_findings": [],
+  "pins": [
+    {
+      "path": "/workspace/geo337-F9-PUBLIC-and-axiom-publication-manifest-20261025.json",
+      "bytes": 52047,
+      "sha256": "4088ff56b7368ee55fa1fa59520e65763cd4d70eddd1572c488f2b2b840ea44d"
+    },
+    {
+      "path": "/workspace/geo323-F9-PUBLIC-publication-manifest-base-20261025.json",
+      "bytes": 29828,
+      "sha256": "da7048a7707e35f59b4d91ca563136786b714dbc3ba949346bdcd6ed2d37f13f"
+    },
+    {
+      "path": "/workspace/geo337-F9-axiom-publication-manifest-20261025.json",
+      "bytes": 10362,
+      "sha256": "24638e3b6c47e32547703fcd4490013e9022c61d558ff51aba74976dcd232566"
+    },
+    {
+      "path": "/workspace/geo323-F9-PUBLIC-actual-peer-6h6cb92w/REVIEW.json",
+      "bytes": 6368,
+      "sha256": "cd3aafe6087daa27f05caba66862343e14d4652dca50068e6364482373e558c0"
+    }
+  ],
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "merge": {
+    "PUBLIC_base_leaves_preserved_exact": 76,
+    "axiom_base_leaves_preserved_exact": 28,
+    "new_metadata_leaves": 33,
+    "new_metadata_bytes": 120054,
+    "new_workspace_pins_verified": 33,
+    "destination_leaves": 137,
+    "total_bytes": 6905067,
+    "unique_SHA256_blobs": 116,
+    "duplicate_or_unsafe_destinations": 0
+  },
+  "archives": {
+    "count": 6,
+    "PUBLIC_four_reused_parts": [
+      1,
+      2,
+      3,
+      5
+    ],
+    "new_PUBLIC_part4_sha256": "5469298a36389c94f423e21e8f989d018679bf3a6794f5605d0f5b8307919037",
+    "new_PUBLIC_part4_bytes": 467826,
+    "private_ORIGINAL_COMPARISON_PART4_selected": false,
+    "axiom_archive_count": 1,
+    "statement": "六筆archive完全承接兩份base；未讀SHM或重算archive hash/roundtrip。"
+  },
+  "proof_coverage": {
+    "v1_original_KeyError_exit": 1,
+    "v2_actual_checks": 159,
+    "v2_actual_exit": 0,
+    "v1_v2_manifest_cli_groups_each_have": "RESULT+subcommands index+request/result+stdin/stdout/stderr",
+    "v1_v2_checker_sources_included": true,
+    "manifest_generator_source_included": true,
+    "producer_actual_report_included": true,
+    "independent_actual_peer_three_files_included": true,
+    "independent_actual_peer_exit": 0,
+    "v1_failure_preserved_not_overwritten": true
+  },
+  "public_scope": {
+    "auxiliary_full_profile_public": false,
+    "full_authority_input_replay_publicly_self_contained": false,
+    "original_R8_outer_exit_remains": 1,
+    "published": false,
+    "remote_hash_verified": false,
+    "delivered": false,
+    "basis": "base PUBLIC限制及cd3aafe既有actual-peer，WS PUBLIC_PLAN/PUBLIC_EXCLUSIONS交叉核對；未讀SHM SCOPE_PEER本體。"
+  },
+  "publication_precondition": {
+    "expected_parent": "ROOT_MUST_BIND_CURRENT_HEAD",
+    "note": "root發布時須綁current HEAD；本審查不宣稱已發布或已遠端驗證。"
+  },
+  "scope": {
+    "manifest_metadata_only": true,
+    "SHM_read": false,
+    "archive_rehashed_or_extracted": false,
+    "product_or_checker_rerun": false,
+    "Git_used": false,
+    "gate_verdict_created": false,
+    "no_remote_or_delivery_claim": true
+  }
+}

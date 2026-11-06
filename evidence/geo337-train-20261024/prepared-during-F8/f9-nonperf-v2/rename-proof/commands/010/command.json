@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/tmp/geo337-F9-no-rename-metadata-proof-20261025/check_guard.py",
+    "--repo",
+    "/tmp/geo337-F9-no-rename-metadata-proof-20261025/fixture",
+    "--base",
+    "029bbf73068a16a494bbd4bf556ab0c59dba8d11",
+    "--tip",
+    "1895bc1ccec04e91b28ce1927554dbf6c5008eb4",
+    "--mode",
+    "fixed"
+  ],
+  "cwd": "/tmp/geo337-F9-no-rename-metadata-proof-20261025/fixture",
+  "actual_exit": 0,
+  "expected_exit": 0,
+  "stdout": "/tmp/geo337-F9-no-rename-metadata-proof-20261025/commands/010/stdout.bin",
+  "stdout_bytes": 867,
+  "stdout_sha256": "5ba11cb0a578da3be567b606c4ff7e6c2dff1d0f37b10883f315a323c2f604bf",
+  "stderr": "/tmp/geo337-F9-no-rename-metadata-proof-20261025/commands/010/stderr.bin",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

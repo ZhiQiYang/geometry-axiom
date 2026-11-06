@@ -1,0 +1,34 @@
+{
+  "original_source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+  "exact_published_index_sha256": "c120a959ee708c0061f4e36bb9c50d530aac412804f482911cdc7c66d5b2c81f",
+  "originals": [
+    {
+      "member": "formal/H7/observed/command-000079/input.bin",
+      "source": "/workspace/geo348-F0f695866-formal/H7/observed/command-000079/input.bin",
+      "bytes": 140,
+      "sha256": "6589eb1c26654effdceee204dd0871d688f8a10c5bbe663ffc974983d63339ff"
+    },
+    {
+      "member": "formal/H7/observed/command-000079/receipt.json",
+      "source": "/workspace/geo348-F0f695866-formal/H7/observed/command-000079/receipt.json",
+      "bytes": 2031,
+      "sha256": "cee88cc07759310ef6c3966dc2d4dffc347c838381edfa8ef402fe486f5b18f3"
+    },
+    {
+      "member": "formal/H7/observed/command-000083/input.bin",
+      "source": "/workspace/geo348-F0f695866-formal/H7/observed/command-000083/input.bin",
+      "bytes": 140,
+      "sha256": "6589eb1c26654effdceee204dd0871d688f8a10c5bbe663ffc974983d63339ff"
+    },
+    {
+      "member": "formal/H7/observed/command-000083/receipt.json",
+      "source": "/workspace/geo348-F0f695866-formal/H7/observed/command-000083/receipt.json",
+      "bytes": 2031,
+      "sha256": "03082d156084c43a03aecc6dfb4f9daa0239addb0b75f39b3781b81d52ed6ff6"
+    }
+  ],
+  "same_input": true,
+  "no_completed_process_returncode": true,
+  "original_partial_stdout_not_captured": true,
+  "limits": "Cannot attribute the 600s whole-batch timeout to loadfile; no stage-level output retained. Sequential history batch was not this failed four-command payload. No original process was restarted."
+}

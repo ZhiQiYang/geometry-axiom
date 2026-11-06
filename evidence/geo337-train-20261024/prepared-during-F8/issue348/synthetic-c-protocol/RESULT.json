@@ -1,0 +1,450 @@
+{
+  "schema": "geo348-synthetic-c-protocol-only/1",
+  "synthetic_protocol_only": true,
+  "product_sources_compiled": false,
+  "product_elf_calibrated": false,
+  "n512_executed": false,
+  "performance_tested": false,
+  "browser_used": false,
+  "heavy_lock_used": false,
+  "synthetic_timeout_seconds": 0.25,
+  "original_product_timeout_seconds_unchanged": 600,
+  "checks": [
+    {
+      "name": "compile-unwrapped",
+      "passed": true
+    },
+    {
+      "name": "nm-unwrapped",
+      "passed": true
+    },
+    {
+      "name": "compile-fixed",
+      "passed": true
+    },
+    {
+      "name": "nm-fixed",
+      "passed": true
+    },
+    {
+      "name": "wrap-symbols-fixed",
+      "passed": true
+    },
+    {
+      "name": "compile-withdrawn",
+      "passed": true
+    },
+    {
+      "name": "nm-withdrawn",
+      "passed": true
+    },
+    {
+      "name": "wrap-symbols-withdrawn",
+      "passed": true
+    },
+    {
+      "name": "compile-restored",
+      "passed": true
+    },
+    {
+      "name": "nm-restored",
+      "passed": true
+    },
+    {
+      "name": "wrap-symbols-restored",
+      "passed": true
+    },
+    {
+      "name": "020-unwrapped-normal-exit",
+      "passed": true
+    },
+    {
+      "name": "020-unwrapped-normal-reaped",
+      "passed": true
+    },
+    {
+      "name": "021-fixed-normal-exit",
+      "passed": true
+    },
+    {
+      "name": "021-fixed-normal-reaped",
+      "passed": true
+    },
+    {
+      "name": "021-fixed-normal-valid-observation",
+      "passed": true
+    },
+    {
+      "name": "021-fixed-normal-13-events",
+      "passed": true
+    },
+    {
+      "name": "normal-unwrapped-wrapped-raw-equal",
+      "passed": true
+    },
+    {
+      "name": "022-unwrapped-stress-exit",
+      "passed": true
+    },
+    {
+      "name": "022-unwrapped-stress-reaped",
+      "passed": true
+    },
+    {
+      "name": "023-fixed-stress-exit",
+      "passed": true
+    },
+    {
+      "name": "023-fixed-stress-reaped",
+      "passed": true
+    },
+    {
+      "name": "023-fixed-stress-valid-observation",
+      "passed": true
+    },
+    {
+      "name": "023-fixed-stress-13-events",
+      "passed": true
+    },
+    {
+      "name": "stress-unwrapped-wrapped-raw-equal",
+      "passed": true
+    },
+    {
+      "name": "024-unwrapped-stdin_error-exit",
+      "passed": true
+    },
+    {
+      "name": "024-unwrapped-stdin_error-reaped",
+      "passed": true
+    },
+    {
+      "name": "025-fixed-stdin_error-exit",
+      "passed": true
+    },
+    {
+      "name": "025-fixed-stdin_error-reaped",
+      "passed": true
+    },
+    {
+      "name": "025-fixed-stdin_error-valid-observation",
+      "passed": true
+    },
+    {
+      "name": "stdin-error-not-eof",
+      "passed": true
+    },
+    {
+      "name": "stdin_error-unwrapped-wrapped-raw-equal",
+      "passed": true
+    },
+    {
+      "name": "026-unwrapped-stdout_error-exit",
+      "passed": true
+    },
+    {
+      "name": "026-unwrapped-stdout_error-reaped",
+      "passed": true
+    },
+    {
+      "name": "027-fixed-stdout_error-exit",
+      "passed": true
+    },
+    {
+      "name": "027-fixed-stdout_error-reaped",
+      "passed": true
+    },
+    {
+      "name": "027-fixed-stdout_error-valid-observation",
+      "passed": true
+    },
+    {
+      "name": "flush-error-recorded",
+      "passed": true
+    },
+    {
+      "name": "stdout_error-unwrapped-wrapped-raw-equal",
+      "passed": true
+    },
+    {
+      "name": "nonmatching-file-NULL-flush-and-errno",
+      "passed": true
+    },
+    {
+      "name": "stress-real-256KiB-stderr",
+      "passed": true
+    },
+    {
+      "name": "observer-write-fault-detected",
+      "passed": true
+    },
+    {
+      "name": "observer-write-fault-preserves-raw-and-errno",
+      "passed": true
+    },
+    {
+      "name": "actual-timeout-original-exception-preserved",
+      "passed": true
+    },
+    {
+      "name": "actual-timeout-null-returncode-and-reaped",
+      "passed": true
+    },
+    {
+      "name": "actual-timeout-has-partial-raw",
+      "passed": true
+    },
+    {
+      "name": "actual-timeout-command2-prefix",
+      "passed": true
+    },
+    {
+      "name": "real-pipe-stress-reaped-and-observed",
+      "passed": true
+    },
+    {
+      "name": "real-pipe-raw-equals-run-stress",
+      "passed": true
+    },
+    {
+      "name": "real-stdout-arrived-in-partial-chunks",
+      "passed": true,
+      "chunks": 5
+    },
+    {
+      "name": "040-c-control-fixed-stub-exit",
+      "passed": true
+    },
+    {
+      "name": "040-c-control-fixed-raw-equal-baseline",
+      "passed": true
+    },
+    {
+      "name": "real-guard-fixed",
+      "passed": true
+    },
+    {
+      "name": "041-c-control-withdrawn-stub-exit",
+      "passed": true
+    },
+    {
+      "name": "041-c-control-withdrawn-raw-equal-baseline",
+      "passed": true
+    },
+    {
+      "name": "real-guard-withdrawn",
+      "passed": true
+    },
+    {
+      "name": "042-c-control-restored-stub-exit",
+      "passed": true
+    },
+    {
+      "name": "042-c-control-restored-raw-equal-baseline",
+      "passed": true
+    },
+    {
+      "name": "real-guard-restored",
+      "passed": true
+    },
+    {
+      "name": "original-wrapper-unchanged",
+      "passed": true
+    },
+    {
+      "name": "original-parser-unchanged",
+      "passed": true
+    }
+  ],
+  "exit": 0,
+  "original_wrapper": {
+    "path": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/trace_wrap.c",
+    "bytes": 8616,
+    "sha256": "1a3cb2ae9cc0cad814dce190aae5d7e39f839e9440425f3cf3c33583fc8ed75d"
+  },
+  "original_parser": {
+    "path": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/sidecar.py",
+    "bytes": 4507,
+    "sha256": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142"
+  },
+  "stub": {
+    "path": "/tmp/geo348-synthetic-c-protocol-20261025/stub.c",
+    "bytes": 5455,
+    "sha256": "aa72daa998384998a5b05980d9e7914566e2d804ab7a4176c4f1623b52b15363"
+  },
+  "driver": {
+    "path": "/tmp/geo348-synthetic-c-protocol-20261025/driver.py",
+    "bytes": 17051,
+    "sha256": "89e761515592a4659db0d83dbcaec9bde3a3bfc00805435651badafe00574c90"
+  },
+  "guard": {
+    "path": "/tmp/geo348-synthetic-c-protocol-20261025/guard.py",
+    "bytes": 776,
+    "sha256": "0993fa6559bce201901875c9eb5903cf29154a5389e10a0d03533f1ec228ddc1"
+  },
+  "commands": [
+    {
+      "name": "001-cc-version",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/001-cc-version/COMMAND_RESULT.json",
+      "bytes": 882,
+      "sha256": "1df5fd261203c8694709c6d447504672aaabae1b54124c5ffb8046bf0289ee2f"
+    },
+    {
+      "name": "002-compile-unwrapped",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/002-compile-unwrapped/COMMAND_RESULT.json",
+      "bytes": 1077,
+      "sha256": "85120eb64d92d54f3d926fcccffffbc545e56694f0c6c70f6c4b2d96dcf78c80"
+    },
+    {
+      "name": "006-nm-unwrapped",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/006-nm-unwrapped/COMMAND_RESULT.json",
+      "bytes": 949,
+      "sha256": "cc2a44c305597b4ca17d9f707ddabd611b52c67e9a3e9dd37f758d8aee8db933"
+    },
+    {
+      "name": "003-compile-fixed",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/003-compile-fixed/COMMAND_RESULT.json",
+      "bytes": 1193,
+      "sha256": "813d09cc4c8f250995e40fe37d0bbccf240105a45cce9780e7bc1bec41dc2d6b"
+    },
+    {
+      "name": "007-nm-fixed",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/007-nm-fixed/COMMAND_RESULT.json",
+      "bytes": 941,
+      "sha256": "f839cbdf4a40bf7edad6df58c8f77c30fde65e136ec44061bcf61255e089b931"
+    },
+    {
+      "name": "004-compile-withdrawn",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/004-compile-withdrawn/COMMAND_RESULT.json",
+      "bytes": 1205,
+      "sha256": "f84ff239a01bf9199790227fd1e836684d559fe9f6d55394344c572024e6dd78"
+    },
+    {
+      "name": "008-nm-withdrawn",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/008-nm-withdrawn/COMMAND_RESULT.json",
+      "bytes": 949,
+      "sha256": "26fb73c0af04d15aac28246f9367b6c46f2f4cb8585207db2ba0fa6b01b34795"
+    },
+    {
+      "name": "005-compile-restored",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/005-compile-restored/COMMAND_RESULT.json",
+      "bytes": 1202,
+      "sha256": "5159daedd8504018d58a77f5dec5e56b9cbf467ac266ba14d39fae604e77ebc3"
+    },
+    {
+      "name": "009-nm-restored",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/009-nm-restored/COMMAND_RESULT.json",
+      "bytes": 947,
+      "sha256": "c0f8d62a66eabaaa57e7ac67f76c1ccafdaf4c8ec3be608193fc15489e0602f3"
+    },
+    {
+      "name": "020-unwrapped-normal",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/020-unwrapped-normal/COMMAND_RESULT.json",
+      "bytes": 1383,
+      "sha256": "a7925c58def98289d669e034fbd81f35f501c84cec4d1d5b496f0d9eb510561b"
+    },
+    {
+      "name": "021-fixed-normal",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/021-fixed-normal/COMMAND_RESULT.json",
+      "bytes": 1787,
+      "sha256": "9c1f75a4236af1a826e6ea6f9050cf5b6ef72c918e0417eb2c7b87444635ae47"
+    },
+    {
+      "name": "022-unwrapped-stress",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/022-unwrapped-stress/COMMAND_RESULT.json",
+      "bytes": 1386,
+      "sha256": "c1b164b302de304be085f0e278b4e8982821e7742bc2f2e87ebaba5e8c1bec1c"
+    },
+    {
+      "name": "023-fixed-stress",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/023-fixed-stress/COMMAND_RESULT.json",
+      "bytes": 1790,
+      "sha256": "e6eec86c2131e2e967600159233e0845fd40cbec149ad2e92f5d3cce7f401393"
+    },
+    {
+      "name": "024-unwrapped-stdin_error",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/024-unwrapped-stdin_error/COMMAND_RESULT.json",
+      "bytes": 1398,
+      "sha256": "174d51197c8ceb191123f0020d101b9ba892a67b3b3f1f491eb5c2e1aa20cfcf"
+    },
+    {
+      "name": "025-fixed-stdin_error",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/025-fixed-stdin_error/COMMAND_RESULT.json",
+      "bytes": 1811,
+      "sha256": "f7a4b4635a461081b8916c6f55bd688cf9a84c3307c24b7684eef8515789c39a"
+    },
+    {
+      "name": "026-unwrapped-stdout_error",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/026-unwrapped-stdout_error/COMMAND_RESULT.json",
+      "bytes": 1401,
+      "sha256": "af0ad88624a3692cf744e9f787d0d48d91bcf9aa9b81fda04de20b2ce7b97dec"
+    },
+    {
+      "name": "027-fixed-stdout_error",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/027-fixed-stdout_error/COMMAND_RESULT.json",
+      "bytes": 1816,
+      "sha256": "c482e333ec345cd30f14831596d5384c14e720a672480830370158071e6f1b29"
+    },
+    {
+      "name": "030-event-write-failure",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/COMMAND_RESULT.json",
+      "bytes": 1825,
+      "sha256": "5538700d7c7de624211a84d6d7e547ddb590ca39f2c706d05108363760998633"
+    },
+    {
+      "name": "031-real-timeout-0.25s",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/031-real-timeout-0.25s/COMMAND_RESULT.json",
+      "bytes": 1952,
+      "sha256": "15a58dc786ddc7d08ebcc558a8743448bfddd32472a6ae081a56d0a3976b58c4"
+    },
+    {
+      "name": "032-real-pipe-chunks",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/032-real-pipe-chunks/COMMAND_RESULT.json",
+      "bytes": 1318,
+      "sha256": "cf7c028fca0471dc40b0bae4be2fdd87fedf356c22ba935b37f20f4a9227c43b"
+    },
+    {
+      "name": "040-c-control-fixed",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/040-c-control-fixed/COMMAND_RESULT.json",
+      "bytes": 1799,
+      "sha256": "dc3b492295eaaf6bc2bf5db8b8223ee7657bc9820301163fb9f8752d3d889dd2"
+    },
+    {
+      "name": "043-guard-fixed",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/043-guard-fixed/COMMAND_RESULT.json",
+      "bytes": 1102,
+      "sha256": "38f0f5db0c68078afddc01d14274c1966e6180be305af353057f25db62b7382a"
+    },
+    {
+      "name": "041-c-control-withdrawn",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/041-c-control-withdrawn/COMMAND_RESULT.json",
+      "bytes": 1819,
+      "sha256": "9e751cf315c1f59a6e093f8b6be212041e1dfcd0cf3ab75aa99d62ae058ba9c3"
+    },
+    {
+      "name": "044-guard-withdrawn",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/044-guard-withdrawn/COMMAND_RESULT.json",
+      "bytes": 1109,
+      "sha256": "06ca8b636a3da848c09801d238190485c91f4f1ac11f234647af6eb6b8b1b3a4"
+    },
+    {
+      "name": "042-c-control-restored",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/042-c-control-restored/COMMAND_RESULT.json",
+      "bytes": 1814,
+      "sha256": "2b0108ea3e018c7aafa011e729e41d277c428ef0138e1dceb31e34980fa62cb1"
+    },
+    {
+      "name": "045-guard-restored",
+      "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/045-guard-restored/COMMAND_RESULT.json",
+      "bytes": 1108,
+      "sha256": "2e948193948a50dadeed09909cc6c7ea2f334f95cb0d699ebe7235fdd2728407"
+    }
+  ],
+  "artifact_bytes_before_result": 1050168,
+  "limits": [
+    "Only this synthetic stub ELF was compiled and calibrated.",
+    "No geometry/product source or product ELF was compiled or run.",
+    "Original N512, performance, and product gate remain UNRUN.",
+    "0.25 seconds applies only to the synthetic hanging stub."
+  ]
+}

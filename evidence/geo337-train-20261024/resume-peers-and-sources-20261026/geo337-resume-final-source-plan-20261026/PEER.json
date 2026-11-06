@@ -1,0 +1,51 @@
+{
+  "schema": "candidate-final-source-plan-adversarial-review/1",
+  "exit_code": 0,
+  "scope": "Read-only static review of plan and non-executable request template; no SHM/network/product/source read or execution.",
+  "subjects": [
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/PLAN.md",
+      "bytes": 9905,
+      "sha256": "f885558859620cf175e00897ad6913aff504a036a7c7c9177ea2e23e0335c006"
+    },
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/REQUEST_TEMPLATE.json",
+      "bytes": 1108,
+      "sha256": "fc2fe4c7276a15560dab85ad588b25dfccb48aaaeaddb227658148d025034e92"
+    }
+  ],
+  "reference_code": [
+    "/tmp/geo337-S10-three-leaf-adoption-preparation-20261025/adopt_three_leaves.py",
+    "/tmp/geo337-native-final-source-transition-preparation-20261025/transition_native_final.py"
+  ],
+  "blocking_findings": [],
+  "required_implementation_notes": [
+    {
+      "id": "split_candidate_and_historical_provider_branch",
+      "source": "adopt_three_leaves.py:116",
+      "finding": "The original old_snapshot guard uses the same BRANCH constant as remote publication. Changing that constant globally to the recovery branch would reject the unchanged historical WS provider, which remains on train.",
+      "required": "Use separate exact CANDIDATE_BRANCH and HISTORICAL_PROVIDER_BRANCH constants; preserve the old-provider train branch check. Do not remove that guard or switch/reset the historical provider merely to make the candidate adoption pass.",
+      "scope": "Implementation clarification, not an assertion that the current non-executable plan modified or weakened this guard."
+    }
+  ],
+  "accepted_plan_properties": [
+    "Ledger execution heads and original record bytes remain S10; final tracked check determines validity.",
+    "Architecture source A and adoption F are distinct; F's actual gate receipt remains evidence, preventing self-referential new-SHA loops.",
+    "Evidence parent E must match A outside evidence; E to F changes exactly the three existing allowed artifact leaves.",
+    "All other source changes remain rejected and manifest/scan remain exact.",
+    "Candidate branch compare-and-swap followed by ordinary named-ref push does not require moving existing publisher HEAD or index.",
+    "Original old-provider, exact-byte, current-remote and full-blob checks remain required.",
+    "Native five-path allowlist and transition64MiB/native128MiB thresholds are preserved.",
+    "Native v2 static acceptance is not represented as runtime acceptance.",
+    "Readonly hardlinks are conditional on verified immutable aliases, not pre-authorized writes.",
+    "New P-189 approval remains unverified; no comparator extension or new waiver is claimed.",
+    "Original R8 samples remain original and unrun gates remain unrun.",
+    "Request template is execute=false, leases=false, missing bindings=null and explicitly not accepted by any current executable."
+  ],
+  "not_verified": [
+    "Reported Git SHAs, source deltas, ledger results and approval provenance were treated as parent-supplied facts, not revalidated.",
+    "No new adopter, architecture checkout or final source exists or has been exercised by this review.",
+    "No runtime counterproof, mutation, native, browser or oracle was executed."
+  ],
+  "writes": "Only this PEER.json; subject plan/template not edited."
+}

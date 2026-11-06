@@ -1,0 +1,39 @@
+{
+  "scope": "timing-only; original full P189 dump assertion remains red",
+  "overall_P189_passed": false,
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "original_full_out": "/workspace/g337p189L",
+  "original_full_receipt_sha256": "3e704c7fd54f325c09eae97e90367ef7470bef64598891324c66834ce86077c8",
+  "original_full_exit": 1,
+  "binary_identities": [
+    {
+      "side": "main",
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "from": "/workspace/g337p189L/work/main/bridge",
+      "path": "/workspace/g337p189L-timing/work/main/bridge",
+      "bytes": 673216,
+      "sha256": "8f9b8ed6498986d33b6789d2839761d3b9814d91782a0ad2e98f6f4eda08c045"
+    },
+    {
+      "side": "base",
+      "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "from": "/workspace/g337p189L/work/base/bridge",
+      "path": "/workspace/g337p189L-timing/work/base/bridge",
+      "bytes": 1100248,
+      "sha256": "b8c16ffceee42f33c6452d91942473ad84af6d71d1fe5307f824819d4821212f"
+    },
+    {
+      "side": "fix",
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "from": "/workspace/g337p189L/work/fix/bridge",
+      "path": "/workspace/g337p189L-timing/work/fix/bridge",
+      "bytes": 1122224,
+      "sha256": "345339f2762ee8733183ca9534024ab4ac95f3c4fbcce39407458be628c0232c"
+    }
+  ],
+  "dump_equivalence_executed_in_this_stage": false,
+  "sampling_retried": false,
+  "original_timing_tail_source": "p189_verify.original.py.txt",
+  "original_tail_ast_sha256": "d8ff5896588e0f167bc6f8d4ec24214c7c57ec02329885170ea16d00ccc348c7",
+  "timing_tail_exit": 0
+}

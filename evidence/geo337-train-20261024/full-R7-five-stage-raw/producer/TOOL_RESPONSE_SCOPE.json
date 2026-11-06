@@ -1,0 +1,27 @@
+{
+  "source_sha": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+  "tool_session_id": 73841,
+  "stdout_stderr_reconstructed": false,
+  "supplied_api_files": [
+    {
+      "path": "/tmp/geo323-final-r7-stage-tools-20261024/EXEC_TOOL_POLL_01.json",
+      "bytes": 131,
+      "sha256": "6b4fcb52a68e52fb365e6db091e6cf5c7a4b9f48183356a2983423eecf5efb06",
+      "scope": "Unmodified owner-supplied original API tool response"
+    },
+    {
+      "path": "/tmp/geo323-final-r7-stage-tools-20261024/EXEC_TOOL_POLL_02.json",
+      "bytes": 131,
+      "sha256": "26e45b8ceb038972e462b0b79d9cc5b966ddee2a3df20bdf680e69c9e6a81cfd",
+      "scope": "Unmodified owner-supplied original API tool response"
+    },
+    {
+      "path": "/tmp/geo323-final-r7-stage-tools-20261024/EXEC_TOOL_POLL_03.json",
+      "bytes": 230,
+      "sha256": "adae7b082c43d966723c8d2a70794ea52782595d1973e300e81811e54f9efb79",
+      "scope": "Unmodified owner-supplied original API tool response"
+    }
+  ],
+  "sequence_completeness": "No claim of complete API response sequence. These three exact poll responses were supplied by the execution owner; initial launch response is not supplied here.",
+  "actual_original_streams": "outer-five Recorder and launch-five retain actual full subprocess streams and exits; these are separate from API object completeness."
+}

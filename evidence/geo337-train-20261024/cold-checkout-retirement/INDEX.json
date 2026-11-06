@@ -1,0 +1,108 @@
+{
+  "schema": "geo337.cold-checkout-retirement.publication/1",
+  "source_sha": "9a05ae785846446ce8982379b4cb66f4ffde6e5c",
+  "product_test_gate": false,
+  "archive": "complete-originals.tar.gz",
+  "archive_sha256": "c76ec505e259873cea3bd677ddfaab9183f3b2db47965548e7a74cf41743e30a",
+  "archive_bytes": 7025514,
+  "members": [
+    {
+      "path": "geo337-cold-retirement-20261023/EXECUTED.json",
+      "bytes": 2118813,
+      "sha256": "4b765b5f1083a5dc6386b8a2aca1b10e7f8275fe93b26bc71edde17886d9a638"
+    },
+    {
+      "path": "geo337-cold-retirement-20261023/PREPARED.json",
+      "bytes": 5504,
+      "sha256": "6032106c410f384e16faa00c7c2597149de11de650971aa323de6d273bbc62bc"
+    },
+    {
+      "path": "geo337-cold-retirement-20261023/immediate-before-execute-consumers.json",
+      "bytes": 5259,
+      "sha256": "7fdb46cf52ddb9eb2991b02deb4049ec8f7026cfb6cc8d88386f71b7b1f0673f"
+    },
+    {
+      "path": "geo337-cold-retirement-20261023/original-code-payloads-and-path-map.tar.gz",
+      "bytes": 6204042,
+      "sha256": "446b16704d49a0aa808e8cd63748929d8eff8af0f51d1b3ec0d0be67d88fcaea"
+    },
+    {
+      "path": "geo337-cold-retirement-20261023/prepare-consumers.json",
+      "bytes": 4808,
+      "sha256": "0a9f422cdadd7b6102f49136283e3e02763d12e840ce443b05410780475e804e"
+    },
+    {
+      "path": "geo337-cold-retirement-execute-launch-20261023/receipt.json",
+      "bytes": 2147,
+      "sha256": "9e34554e25f85c98b22398fcd77d7b5f80d99892ce924fa067d3502cd3afece8"
+    },
+    {
+      "path": "geo337-cold-retirement-execute-launch-20261023/subcommands/000001/request.json",
+      "bytes": 1542,
+      "sha256": "83e718a6e005c24d435234c57ca3232c3b5453ecd375541c4e8edb2326da414b"
+    },
+    {
+      "path": "geo337-cold-retirement-execute-launch-20261023/subcommands/000001/result.json",
+      "bytes": 1794,
+      "sha256": "8517a0ad290457b042cfc0010f93abc9deca59e44606311750952f9051857265"
+    },
+    {
+      "path": "geo337-cold-retirement-execute-launch-20261023/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "geo337-cold-retirement-execute-launch-20261023/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "geo337-cold-retirement-execute-launch-20261023/subcommands/000001/stdout.bin",
+      "bytes": 152,
+      "sha256": "ec87c6b2781ebfa848798a5c10da022a64533774f4b8a4c987f454e850fd2532"
+    },
+    {
+      "path": "geo337-cold-retirement-execute-launch-20261023/subcommands.json",
+      "bytes": 1882,
+      "sha256": "aeae67dfaf6b46c9c907d17f016b7bf0312354eac70b2ac400decd62a03376d2"
+    },
+    {
+      "path": "peer/COLD_SOURCE_FIXED_SCOPE_PEER.json",
+      "bytes": 1677,
+      "sha256": "9b08ecc8d199794efcd11bb4a880010e7c9de906ebd4d565dfa5f3a96dd5fe6d"
+    },
+    {
+      "path": "peer/COLD_PREPARED_ARCHIVE_PEER.json",
+      "bytes": 1627136,
+      "sha256": "7e1e02da279555a1094f890db6926009c667f572482ae45b944156c44a7a1120"
+    },
+    {
+      "path": "peer/COLD_PREPARED_INITIAL_DRIVER_ADVANCED_DURING_REVIEW.json",
+      "bytes": 1626833,
+      "sha256": "c90455d76d03c73c52648bb27b1accae618a0399e2eeb528ba172584d709fecb"
+    },
+    {
+      "path": "peer/COLD_RETIREMENT_ACTUAL_PEER.json",
+      "bytes": 1482299,
+      "sha256": "e864be94f70c22293bd6a71b3476592d4d88218957adfd826a8ed6161ba21acf"
+    },
+    {
+      "path": "tools/geo337-cold-retirement.py",
+      "bytes": 8072,
+      "sha256": "1ef679ea1d26881fac4280e26bb4c3fe2b324ae8c0e9d231635cbf8595994a84"
+    },
+    {
+      "path": "tools/geo337-cold-retirement.v1.py",
+      "bytes": 7901,
+      "sha256": "5cfdad8609d825fd8e4786a540eef0fccf861330400e2fc2656cc483daf513a2"
+    },
+    {
+      "path": "tools/geo337-cold-retirement-launch.py",
+      "bytes": 1588,
+      "sha256": "52439460f04d34f53055b11a6d1f530b6e2f0136bae98b42be3cdaa80c36d6fe"
+    }
+  ],
+  "removed_immutable_copies": 9510,
+  "allocated_bytes_reclaimed": 216199168,
+  "limits": "Own retired checkout materializations only. Complete original payloads/maps, Git/objects/index/refs, fixtures, receipts, mutant/trace sources and gmon remain. Existing failed producers stay failed. This is storage maintenance, not an acceptance gate."
+}

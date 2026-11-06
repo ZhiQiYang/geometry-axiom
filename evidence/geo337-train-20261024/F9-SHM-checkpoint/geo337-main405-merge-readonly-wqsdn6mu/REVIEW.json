@@ -1,0 +1,479 @@
+{
+  "schema": "geo337-main405-readonly-merge-analysis/1",
+  "created_utc": "2026-10-25T13:37:19.248553+00:00",
+  "exit_code": 0,
+  "scope": "唯讀Git merge-base/diff/show/grep與記憶體文字分析；未merge/merge-tree/write-tree/commit/checkout，未修改branch或決策，未跑驗收。",
+  "repository": "/workspace/geometry-axiom",
+  "observed_integration_branch": "codex/train-337-continue-20261024",
+  "observed_evidence_head": "70d00309d7985db722c339c77331c436d26a7ab1",
+  "product_source_F9": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "fixed_main": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+  "handoff": "9529067629486edff726faded5798af2f9fad4da",
+  "common_base_F9_and_E": "425c092eaf16f90256d76433243baebde45163ac",
+  "handoff_review": {
+    "path": "handoff/pr-reviews/338.md",
+    "B3_review_source_lines": [
+      170,
+      184
+    ],
+    "conflict_note_source_lines": [
+      186,
+      196
+    ],
+    "raw_file_bytes": 18664,
+    "raw_file_sha256": "fd6809406e59414070c814b45f3bd36ef6fd9b3d335526ed58aa243c9eb50d1e",
+    "excerpt_sha256": "80e75f666def0ba72a07eb832dfb07df910b9f4a439afd303cb0df936da1895e",
+    "classification": "12:42是ChatGPT B3；12:47是Claude衝突說明，未以其宣稱取代本次read-only diff證據。"
+  },
+  "main_complete_delta": [
+    {
+      "path": "決策佇列.md",
+      "status": "M",
+      "inserted_lines": 28,
+      "deleted_lines": 0,
+      "inserted_bytes": 3623,
+      "base_blob_oid": "b5d96d2f8465e553d120c2034485740aabb3ca3e",
+      "main_blob_oid": "2527a31a562643e129ee360a0dac6e9a0a201273",
+      "mode_before_after": "100644（未改mode）",
+      "only_operation": "同一位置新增一個原文區塊，無刪改其他bytes"
+    }
+  ],
+  "current_E_relative_to_F9": {
+    "changed_path_count": 1008,
+    "all_paths_under_evidence": true,
+    "non_evidence_paths": [],
+    "names_raw_sha256": "9641fb39376e09cb0e300859fcc0fec3fe0942e95b2f0f15f3691d3287782c20",
+    "decision_raw_identical": true
+  },
+  "decision_blobs": [
+    {
+      "sha": "425c092eaf16f90256d76433243baebde45163ac",
+      "path": "決策佇列.md",
+      "bytes": 234334,
+      "lines": 1690,
+      "raw_sha256": "a9f14cdd3cf2846c65d0a7cc32f02bf3a12ba60e817cd9223c59e4da6f4734e5"
+    },
+    {
+      "sha": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+      "path": "決策佇列.md",
+      "bytes": 237957,
+      "lines": 1718,
+      "raw_sha256": "ef34a8b1717ec90d4da1d7a011eb5e8993a0e7f99f0ae2c02f69dbaf3c67aeb8"
+    },
+    {
+      "sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "path": "決策佇列.md",
+      "bytes": 237973,
+      "lines": 1721,
+      "raw_sha256": "cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0"
+    },
+    {
+      "sha": "70d00309d7985db722c339c77331c436d26a7ab1",
+      "path": "決策佇列.md",
+      "bytes": 237973,
+      "lines": 1721,
+      "raw_sha256": "cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0"
+    }
+  ],
+  "conflict_localization": {
+    "only_overlapping_changed_path": "決策佇列.md",
+    "base_insert_position": 839,
+    "main_insertion": {
+      "old_zero_based_insert_offset": 839,
+      "source_first_line": 840,
+      "source_last_line": 867,
+      "lines": 28,
+      "bytes": 3623,
+      "raw_sha256": "37ed6c03d84a80a9d3c7c6a920eff083be8f3239d3c4c044c0ecdcc7e3b31edb"
+    },
+    "train_insertion": {
+      "old_zero_based_insert_offset": 839,
+      "source_first_line": 840,
+      "source_last_line": 870,
+      "lines": 31,
+      "bytes": 3639,
+      "raw_sha256": "855c00c9769d3f8f11b9a872f59c047de74f3fc89bec58bf8d2cf14df1367da3"
+    },
+    "previous_existing_heading_before_insert": {
+      "line": 807,
+      "heading": "### 2026-10-23 #318 柱跨牆階條文：核可「閱讀 A」🔒"
+    },
+    "cause": "兩側都只在原2026-10-10 PF-0節之前的同一base位置新增；main沒有其他檔案變更，故沒有其他檔級重疊候選。",
+    "merge_conflict_command_executed": false
+  },
+  "exact_resolution_recipe": {
+    "concatenation": "base raw lines[:839] + TRAIN_INSERTION.exact.bin + MAIN_INSERTION.exact.bin + base raw lines[839:]",
+    "date_order": "完整列車補記/2026-10-24節 → main2026-10-25 #338節 → 原2026-10-10 PF-0節",
+    "train_binding_note": "列車insert前六行含非heading的D11/I19/R6條文寫入綁定，必須整塊保留在其原2026-10-23節內，不能只取10/24 heading後正文。",
+    "base_existing_prefix_sha256": "ed284cc5eed07040a2c31ab318906b534833260a7c287ad38edc3e13b3110a78",
+    "base_existing_suffix_sha256": "58dd379c732440fbc61bc65219bec44b18eb25d211c9a16d131cea163010eef0",
+    "result_bytes_in_memory_only": 241596,
+    "result_lines_in_memory_only": 1749,
+    "result_raw_sha256_in_memory_only": "fe822051b5413fb79490b333e23f3c9d6b96959c01f937c274d3246772c15e14",
+    "expected_heading_positions": [
+      {
+        "line": 846,
+        "heading": "### 2026-10-24 #318 閱讀 A：放不放得下料寬，量 RC 面上還沒貼料的那段 🔒"
+      },
+      {
+        "line": 872,
+        "heading": "### 2026-10-25 #338 列車:Q-323-ABC 接受三筆診斷文字差異、CI 替代驗收延伸到所有 PR、突變帳本可後補 🔒"
+      },
+      {
+        "line": 900,
+        "heading": "### 2026-10-10 PF-0 依授權 L 的暫定裁決（寫入公理層時併入）"
+      }
+    ],
+    "merged_file_written": false,
+    "all_base_existing_bytes_retained_in_order": true,
+    "all_two_insert_blocks_exact_once": true
+  },
+  "closure_impact": {
+    "main_changes_product_code": false,
+    "main_changes_test_code": false,
+    "main_changes_workflow_or_expected_or_scenes": false,
+    "architecture_manifest_sources": 334,
+    "architecture_manifest_exclusions": 270,
+    "architecture_receipt_input_count": 604,
+    "decision_in_architecture_inputs": false,
+    "decision_only_in_architecture_receipt": "completeInventoryVerification/protectedSsotBefore and protectedSsotAfter，舊F9真執行前後快照，非scanner/inputClosure項目。不得回寫成新merge的快照。",
+    "mutation_source_rules": "F9 tests/mutate.py:856–886只取current_geometry.c/bridge quoted-include閉包；889–904 oracle只取run_tests.py及其TESTS場景；1271–1276 tool只取mutate.py+mutation_bridge.py。此次新增決策文件不進這三種指紋。",
+    "test_runtime_input_not_code": "F9 tests/test_domain_decoupling_adoption.py:341–381按精確heading與其下一節前的bullet/quote綁定；485–489及531–532直接讀決策佇列.md。新增完整10/25節在10/24全塊後，保留原已核可heading/answers唯一性；此為靜態影響判斷，不宣稱測試0。",
+    "expected_unchanged_input_fingerprints": true,
+    "acceptance_result_reused_as_new_SHA": false,
+    "main_changes_axiom_md": false,
+    "main_changes_decision_record": true
+  },
+  "next_actions": [
+    "root批次正常整合固定main405f8，僅依上述raw concatenation解決策一檔衝突；其他原文/🔒行不改字，不force、不在本分析產merge objects。",
+    "實際merge後用新SHA檢查與原E的完整差異恰為決策新增28行及預定其他批次修正，逐塊hash對本報告；來源有額外改動要另列影響。",
+    "依12:42 B3固定新final SHA並跑受影響gate；至少決策採納文案讀取是實際runtime input。新final驗收/帳本/架構範圍由root整批決策，不把F9既有收據自動改標。"
+  ],
+  "not_claimed": [
+    "未實際merge，故不宣稱Git本次實跑僅一衝突；同點插入及唯一共同改檔已由readonlydiff定位。",
+    "docs-only不等於驗收豁免：決策文字是部分正式tests的runtime input；所有既有F9原紅/未跑狀態仍保留。",
+    "本報告不新增/修改任何裁決，不把Claude12:47整理當新使用者授權。"
+  ],
+  "read_only_commands": [
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "merge-base",
+        "4f8a794f4167c3562eb182045102e86e9e37cca9",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 41,
+      "stdout_sha256": "84eaab9666dee304d30efa8404619ef0b4e8c7434f38b0b204b23385e6b1ed6e",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "merge-base",
+        "70d00309d7985db722c339c77331c436d26a7ab1",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 41,
+      "stdout_sha256": "84eaab9666dee304d30efa8404619ef0b4e8c7434f38b0b204b23385e6b1ed6e",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "425c092eaf16f90256d76433243baebde45163ac:決策佇列.md"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 234334,
+      "stdout_sha256": "a9f14cdd3cf2846c65d0a7cc32f02bf3a12ba60e817cd9223c59e4da6f4734e5",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676:決策佇列.md"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 237957,
+      "stdout_sha256": "ef34a8b1717ec90d4da1d7a011eb5e8993a0e7f99f0ae2c02f69dbaf3c67aeb8",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "4f8a794f4167c3562eb182045102e86e9e37cca9:決策佇列.md"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 237973,
+      "stdout_sha256": "cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "70d00309d7985db722c339c77331c436d26a7ab1:決策佇列.md"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 237973,
+      "stdout_sha256": "cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "diff",
+        "--name-only",
+        "-z",
+        "--no-renames",
+        "425c092eaf16f90256d76433243baebde45163ac",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 16,
+      "stdout_sha256": "952520f92df785be42781bb888634edf17a355612281c6b92af86f165d67605f",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "diff",
+        "--numstat",
+        "425c092eaf16f90256d76433243baebde45163ac",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+        "--",
+        "決策佇列.md"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 21,
+      "stdout_sha256": "cec6afc234f6009b5b002b028fb471b260f2ecc5309dd95df19b531233173527",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "diff",
+        "--name-only",
+        "-z",
+        "--no-renames",
+        "4f8a794f4167c3562eb182045102e86e9e37cca9",
+        "70d00309d7985db722c339c77331c436d26a7ab1"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 108856,
+      "stdout_sha256": "9641fb39376e09cb0e300859fcc0fec3fe0942e95b2f0f15f3691d3287782c20",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "9529067629486edff726faded5798af2f9fad4da:handoff/pr-reviews/338.md"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 18664,
+      "stdout_sha256": "fd6809406e59414070c814b45f3bd36ef6fd9b3d335526ed58aa243c9eb50d1e",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "4f8a794f4167c3562eb182045102e86e9e37cca9:geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 221953,
+      "stdout_sha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "4f8a794f4167c3562eb182045102e86e9e37cca9:geometry-core/domain-decoupling/product-architecture-receipt.json"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 131843,
+      "stdout_sha256": "00a33c42ca07a9077aa5abf758ed8b0a3650a031cdc8387128f285050b7c13af",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "diff",
+        "--no-ext-diff",
+        "--no-renames",
+        "--unified=5",
+        "425c092eaf16f90256d76433243baebde45163ac",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+        "--",
+        "決策佇列.md"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 5151,
+      "stdout_sha256": "bc8eeb4defb6b73fa49f2b3f035fed353971979bf680ea156e4a2e5cb22068ae",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "425c092eaf16f90256d76433243baebde45163ac:決策佇列.md"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 41,
+      "stdout_sha256": "911df20e365325fdfaa94a6786490d2772eca56540c5c4223deb8a94559c48dd",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676:決策佇列.md"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 41,
+      "stdout_sha256": "d453c0d69edc52dcca9410579b9833beca4381a8b98a362af8cd44e18382ee4d",
+      "stderr_hex": ""
+    }
+  ]
+}

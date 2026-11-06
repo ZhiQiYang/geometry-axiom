@@ -1,0 +1,80 @@
+{
+  "schema": "candidate-three-leaf-adoption-actual-peer/1",
+  "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+  "result_sha256": "51dc88fae03dfca5dc08ba20aadd8c7beea42cbcb5e9dc292e77d9f8c1019558",
+  "final_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "published": true,
+  "delivered": true,
+  "product_tests_executed_by_peer": false,
+  "git_or_network_commands_rerun_by_peer": false,
+  "source_or_refs_modified_by_peer": false,
+  "reviewed_utc": "2026-10-26T10:22:27.368142+00:00",
+  "branch": "codex/train337-recovered-evidence-20261026",
+  "previous_head": "9a57aea2128a7bc3985064932c24e2229fd8fcb8",
+  "final_tree_sha": "f7cb88b66ac2ca9224b924e431118bd1c08028b7",
+  "changed_paths": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json",
+    "tests/mutants_results.json"
+  ],
+  "push_exit": 0,
+  "cas_expected_parent": "9a57aea2128a7bc3985064932c24e2229fd8fcb8",
+  "full_remote_delivery_verified": true,
+  "remote_three_blobs": [
+    {
+      "path": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+      "oid": "afa58cc5f7252507a74d266effc02e788000adc1",
+      "bytes": 1396,
+      "sha256": "65232fe9f275bc37db539380a6c51a9abbeba84185b1b991ded2f8810621d4f9"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+      "oid": "0d3c363beb3fd7aeee2ec43f85f1af0e813046a3",
+      "bytes": 118552,
+      "sha256": "70984629e344ef4e5f3609133e35c616bb6115cf8d50ee9f951b97c696161d9f"
+    },
+    {
+      "path": "tests/mutants_results.json",
+      "oid": "363b1e5a4f36bcd1478dc17dd028402c52451d98",
+      "bytes": 10045581,
+      "sha256": "a4b5f1957e4bde6d30e4c05328e8a8dc1282fa811c52260eb01670cd560d56e7"
+    }
+  ],
+  "remote_blobs_sha256": "76bbe0782c6dc2f9319edc50c02f6151fd4db0a477ad145ed0f4473d8f911d1d",
+  "remote_commit_url": "https://github.com/ZhiQiYang/geometry-axiom/commit/cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "ledger_execution_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "ledger_records": 123,
+  "ledger_execution_head_counts": {
+    "82c922a3941525d3a094ac0158bdc7dea57ea360": 120
+  },
+  "retired_ids": [
+    "M35",
+    "M51",
+    "M55"
+  ],
+  "architecture_execution_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+  "source_execution_heads_rewritten": false,
+  "manifest_scan_byte_unchanged": true,
+  "other_product_test_ssot_unchanged": true,
+  "historical_publisher_unchanged": true,
+  "old_repo_changed": false,
+  "original_commands": 109,
+  "original_full_stream_bytes": 12406062,
+  "original_subject_sha256": "71b0b4eb9ddde59f6b8e9ab90eb2492f8e403d1469a645d81864585a631fefba",
+  "original_request_sha256": "4d64b7d1a6b1ca9d0c42ee54966b03c8b73f18601faa7d872a55d67ec5ee1fc0",
+  "outer_result_sha256": "a151e7dfcf319cb8ce53606638a3e3bed66217b22c1c1ebcf950789f3e20769d",
+  "original_publisher_snapshot_sha256": "934f2d496f0a3abdb3452b2221ceabb1721b7b0d353e3e5821e468ffbf51d1b6",
+  "old_workspace_snapshot_sha256": "034f257380aab9391dd113436da77b2bed1ecc04b8f9f36212c6919c0992b70d",
+  "formal_product_tests_executed": false,
+  "new_final_tracked_check": "UNRUN in this adoption; requires separate actual receipt at F",
+  "limits": [
+    "This verifies actual byte-exact adoption, expected-parent CAS, ordinary push and full original remote GitHub commit/ref/blob responses. It does not rerun network calls or claim the remote branch cannot later advance.",
+    "S10 full-ledger execution heads and a6 architecture receipt remain their actual execution sources; no test is relabelled F. The final tracked mutation check and affected formal gates at F are separate work.",
+    "Current original publisher HEAD/index/train and old workspace protected Git metadata/PROGRESS match original snapshots; object storage additions and the intended separate candidate-ref advancement are allowed effects. Full old product payload was not reread.",
+    "The three adopted artifact blobs are verified remotely in full. Publication of this adopter raw receipt packet is a separate delivery step.",
+    "No product test, Git command, network request, source mutation, ref update or cleanup was executed by this peer."
+  ],
+  "checked_count": 5019
+}

@@ -284,7 +284,7 @@ async function main(){
  current='setup';fs.writeFileSync(path.join(OUT,'multi.pdf'),multiPDF());
  await newProject();await importSource(path.join(OUT,'multi.pdf'));await calibrate(4000);
  await propose();await confirm();const aNative=await read(`api('boundary ${bid}')`);
- await ctl('#roomSourceCreate');await wait(`!!RoomCollectionWorkspace.roomForBoundary(${bid})`);
+ await ctl('#roomNew');await wait(`!!RoomCollectionWorkspace.roomForBoundary(${bid})`);
  await select('#roomNewMethod','candidates');await ctl('#roomNew');
  await wait(`RoomCollectionWorkspace.candidateSnapshot()?.total===3`);
  let s=await session();await check('three independent candidate regions, A exact duplicate suppressed',s.total===3&&s.candidates[0].existing&&s.candidates[1].status==='pending'&&s.candidates[2].status==='pending',s);

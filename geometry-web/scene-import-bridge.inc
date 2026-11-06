@@ -63,6 +63,7 @@ static void cmd_load_confirm(const char *arg)
     history_record(&g_world);
     if(!app_world_candidate_publish(g_load_transaction,&g_world,false)){
         history_unrecord();eng_bridge_error("STALE","Current World changed during scene import; open the project again");return;}
+    identity_clear_epoch();
     ++g_definition_revision;g_preview.ready=false;
     char hash[65];bool hashed=eng_definition_hash(&g_world,hash);
     printf("{\"ok\":true,\"revision\":%llu,",(unsigned long long)g_definition_revision);json_engineering_capabilities(&g_world);
