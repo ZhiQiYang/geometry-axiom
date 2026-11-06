@@ -19,6 +19,39 @@ def without_terminal(value):
     return value
 
 
+# Capabilities that features after the 405f8c5e baseline append to
+# engineering-read state, in order. Exact and named, so the comparison below
+# still isolates K1-a's terminal fields; any other difference stays red.
+LATER_ENGINEERING_CAPABILITIES = (
+    "definition-import/1",  # R08 #359: definition import across projects
+)
+
+
+def with_later_capabilities(original):
+    expected = json.loads(json.dumps(original))
+    expected["engineering-read"]["state"]["capabilities"].extend(LATER_ENGINEERING_CAPABILITIES)
+    return expected
+
+
+def project_identity_capability(case, value):
+    """I72 declares one new capability; preserve the external K1 baseline.
+
+    Extract only this reviewed extension at its fixed position. The caller
+    still compares every remaining field, value and JSON key order exactly.
+    """
+    projected = json.loads(json.dumps(value))
+    capabilities = projected["engineering-read"]["state"]["capabilities"]
+    case.assertEqual(1, capabilities.count("identity-ledger/1"),
+                     "K1_R09A_CAPABILITY_EXACTLY_ONCE")
+    at = capabilities.index("identity-ledger/1")
+    case.assertEqual(len(capabilities) - len(LATER_ENGINEERING_CAPABILITIES) - 1, at,
+                     "K1_R09A_CAPABILITY_BEFORE_NAMED_LATER_EXTENSIONS")
+    case.assertEqual(list(LATER_ENGINEERING_CAPABILITIES), capabilities[at + 1:],
+                     "K1_R09A_LATER_EXTENSION_ORDER")
+    del capabilities[at]
+    return projected
+
+
 class EngineeringTerminal(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -138,10 +171,44 @@ class EngineeringTerminal(unittest.TestCase):
         self.assertEqual(replies["references"]["engineeringSources"], replies["engineering-read"]["state"]["sources"])
         self.assertEqual(before, (self.command("dump"), self.read()["revision"]))
         baseline = Path(os.environ.get("GEOMETRY_TERMINAL_BASELINE", ROOT / "tests/fixtures/k1_terminal_legacy_replies.json"))
-        original = json.loads(baseline.read_text(encoding="utf-8"))
-        self.assertEqual(json.dumps(original, ensure_ascii=False, separators=(",", ":")),
-                         json.dumps(without_terminal(replies), ensure_ascii=False, separators=(",", ":")),
-                         "K1-a: non-terminal fields/order changed relative to the independently built baseline")
+        original = with_later_capabilities(json.loads(baseline.read_text(encoding="utf-8")))
+        expected_json = json.dumps(original, ensure_ascii=False, separators=(",", ":"))
+
+        def compare(value):
+            projected = project_identity_capability(self, without_terminal(value))
+            self.assertEqual(expected_json,
+                             json.dumps(projected, ensure_ascii=False, separators=(",", ":")),
+                             "K1-a: non-terminal fields/order changed relative to the independently built baseline")
+
+        unchanged = json.dumps(replies, ensure_ascii=False, separators=(",", ":"))
+        compare(replies)
+        self.assertEqual(unchanged, json.dumps(replies, ensure_ascii=False, separators=(",", ":")),
+                         "K1_R09A_PROJECTION_IS_READONLY")
+        # The extension must not hide a missing, extra, moved capability, an
+        # unrelated field change, or the original baseline's JSON key order.
+        for fault in ("missing", "duplicate", "moved", "unknown", "legacy-order", "material", "reply-order"):
+            with self.subTest(identity_projection_negative=fault):
+                probe = json.loads(json.dumps(replies))
+                state = probe["engineering-read"]["state"]
+                caps = state["capabilities"]
+                at = caps.index("identity-ledger/1")
+                if fault == "missing":
+                    del caps[at]
+                elif fault == "duplicate":
+                    caps.insert(at, "identity-ledger/1")
+                elif fault == "moved":
+                    caps[0], caps[at] = caps[at], caps[0]
+                elif fault == "unknown":
+                    caps.append("unreviewed-capability/1")
+                elif fault == "legacy-order":
+                    caps[0], caps[1] = caps[1], caps[0]
+                elif fault == "material":
+                    state["materials"][0]["name"] += "-changed"
+                else:
+                    first = next(iter(probe["references"]))
+                    probe["references"][first] = probe["references"].pop(first)
+                with self.assertRaises(AssertionError, msg="K1_R09A_NEGATIVE_" + fault):
+                    compare(probe)
 
 
 if __name__ == "__main__":

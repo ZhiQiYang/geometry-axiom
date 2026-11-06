@@ -1,6 +1,46 @@
 {
   "_說明": "run_all.py 的各 suite「發現到的測試／斷言數」；完整跑時逐 suite 嚴格相等，不符即 fail。新增或刪除測試後請在一次完整跑之後用 --update-expected 明確更新（並在 commit 中說明）。exit-code-only 表示該 suite 只有結束碼、沒有可數的 test。",
   "suites": {
+    "node:evidence_adoption_app": {
+      "mode": "count",
+      "count": 10,
+      "unit": "node test"
+    },
+    "node:evidence_parameter_adoption": {
+      "mode": "count",
+      "count": 7,
+      "unit": "node test"
+    },
+    "node:evidence_adoption_transport": {
+      "mode": "count",
+      "count": 7,
+      "unit": "node test"
+    },
+    "py:test_evidence_adoption_native": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_evidence_adoption_mutations": {
+      "mode": "count",
+      "count": 1,
+      "unit": "test"
+    },
+    "node:evidence_owner_contract": {
+      "mode": "count",
+      "count": 9,
+      "unit": "node test"
+    },
+    "node:evidence_app_contract": {
+      "mode": "count",
+      "count": 6,
+      "unit": "node test"
+    },
+    "py:test_evidence_contract_mutations": {
+      "mode": "count",
+      "count": 1,
+      "unit": "test"
+    },
     "c:integrity": {
       "mode": "count",
       "count": 432,
@@ -28,6 +68,11 @@
       "mode": "count",
       "count": 408,
       "unit": "斷言"
+    },
+    "node:canvas_creation_owner": {
+      "mode": "count",
+      "count": 22,
+      "unit": "node test"
     },
     "node:cdp_card_position": {
       "mode": "count",
@@ -96,9 +141,14 @@
       "count": 29,
       "unit": "node test"
     },
+    "node:evidence_ledger_links": {
+      "mode": "count",
+      "count": 16,
+      "unit": "node test"
+    },
     "node:evidence_project_store": {
       "mode": "count",
-      "count": 7,
+      "count": 8,
       "unit": "node test"
     },
     "node:face_paint_scheduler": {
@@ -141,6 +191,21 @@
       "count": 4,
       "unit": "node test"
     },
+    "node:identity_context_history": {
+      "mode": "count",
+      "count": 3,
+      "unit": "node test"
+    },
+    "node:identity_recovery_contract": {
+      "mode": "count",
+      "count": 9,
+      "unit": "node test"
+    },
+    "node:identity_ledger": {
+      "mode": "count",
+      "count": 13,
+      "unit": "node test"
+    },
     "node:hover_pick_scheduler": {
       "mode": "count",
       "count": 19,
@@ -157,6 +222,19 @@
     "node:polydraft": {
       "mode": "count",
       "count": 75,
+      "unit": "node test"
+    },
+    "node:pr353_compatibility": {
+      "mode": "count",
+      "count": 10,
+      "unit": "node test"
+    },
+    "node:pr353_display_regressions": {
+      "mode": "exit-code-only"
+    },
+    "node:pr353_pin_regressions": {
+      "mode": "count",
+      "count": 14,
       "unit": "node test"
     },
     "node:room_outline_closeout": {
@@ -177,7 +255,7 @@
     "node:tests-js": {
       "mode": "count",
       "unit": "node test",
-      "count": 740
+      "count": 742
     },
     "node:woodworking_frontend": {
       "mode": "count",
@@ -354,7 +432,7 @@
     },
     "py:test_geo261_candidate_product": {
       "mode": "count",
-      "count": 26,
+      "count": 27,
       "unit": "test"
     },
     "py:test_geo261_contact_sources": {
@@ -892,6 +970,36 @@
       "count": 1,
       "unit": "test"
     },
+    "py:test_identity_host_runtime": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_identity_content_contract": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_identity_ledger_review": {
+      "mode": "count",
+      "count": 19,
+      "unit": "test"
+    },
+    "py:test_identity_ledger_faults": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_identity_host_gate_shape": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "py:test_identity_ledger": {
+      "mode": "count",
+      "count": 16,
+      "unit": "test"
+    },
     "py:test_infinite_grid_contract": {
       "mode": "count",
       "count": 25,
@@ -1002,6 +1110,11 @@
       "count": 22,
       "unit": "test"
     },
+    "py:test_pr353_legacy_snapshot": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
     "py:test_recorded_api_receipts": {
       "mode": "count",
       "count": 17,
@@ -1095,7 +1208,7 @@
     "py:test_serve": {
       "mode": "count",
       "unit": "test",
-      "count": 51
+      "count": 53
     },
     "py:test_source_closure_memo": {
       "mode": "count",
@@ -1171,6 +1284,121 @@
       "mode": "count",
       "count": 7,
       "unit": "unittest"
+    },
+    "node:definition_import": {
+      "mode": "count",
+      "count": 9,
+      "unit": "node test"
+    },
+    "py:test_definition_import": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_definition_import_transport": {
+      "mode": "count",
+      "count": 6,
+      "unit": "test"
+    },
+    "node:feature_attachments_vm": {
+      "mode": "count",
+      "count": 1,
+      "unit": "node test"
+    },
+    "node:room_candidate_cold_contract": {
+      "mode": "count",
+      "count": 8,
+      "unit": "node test"
+    },
+    "node:room_candidate_draft": {
+      "mode": "count",
+      "count": 7,
+      "unit": "node test"
+    },
+    "node:room_candidate_native_pins": {
+      "mode": "count",
+      "count": 29,
+      "unit": "node test"
+    },
+    "node:room_candidate_transaction_review": {
+      "mode": "count",
+      "count": 11,
+      "unit": "node test"
+    },
+    "node:room_candidate_workspace_review": {
+      "mode": "count",
+      "count": 19,
+      "unit": "node test"
+    },
+    "py:test_zero_room_native": {
+      "mode": "count",
+      "count": 1,
+      "unit": "test"
+    },
+    "py:test_identity_definition_import_merge": {
+      "mode": "count",
+      "count": 5,
+      "unit": "unittest methods"
+    },
+    "node:identity_main_merge": {
+      "mode": "count",
+      "count": 5,
+      "unit": "node test"
+    },
+    "node:evidence_stack_merge": {
+      "mode": "count",
+      "count": 3,
+      "unit": "node test"
+    },
+    "node:canvas_shards": {
+      "mode": "count",
+      "count": 20,
+      "unit": "node test"
+    },
+    "node:identity_canvas_merge": {
+      "mode": "count",
+      "count": 4,
+      "unit": "node test"
+    },
+    "node:model_source_identity": {
+      "mode": "count",
+      "count": 20,
+      "unit": "node test"
+    },
+    "node:model_identity_review": {
+      "mode": "count",
+      "count": 6,
+      "unit": "node test"
+    },
+    "py:test_model_update_identity_faces": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "node:model_update_faces_review": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "node:model_update_faces_app": {
+      "mode": "count",
+      "count": 6,
+      "unit": "test"
+    },
+    "node:model_creation_identity_pin": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "node:model_stack_archive": {
+      "mode": "count",
+      "count": 1,
+      "unit": "node test"
+    },
+    "node:space_library_actions": {
+      "mode": "count",
+      "count": 3,
+      "unit": "node test"
     }
   }
 }

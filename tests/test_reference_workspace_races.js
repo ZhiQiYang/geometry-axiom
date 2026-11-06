@@ -36,7 +36,7 @@ async function fixture(options = {}) {
     document:{getElementById:element,querySelectorAll:()=>[],querySelector:()=>element('scroll'),addEventListener(){},
       createElement:tag=>tag==='canvas'?{getContext:()=>({}),toDataURL:()=> 'data:image/png;base64,rendered'}:element(tag)},
     oc:{busy:false,faces:[{id:1,kind:'boundary'}],bmap:{},edit:null},fe:{feats:{}},connection:{phase:'ready'},
-    api:async command=>{if(options.api)return options.api(command);assert.equal(command,'dump');calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
+    api:async command=>{if(options.api)return options.api(command);assert.ok(command==='dump'||command==='dump-deidentified','Unexpected API command: '+command);calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
     setStatus:s=>statuses.push(s),toast:s=>statuses.push(s),drawFaceEditor(){},renderFaceInspector(){},
     innerWidth:1280,feUlImgToMm:(_p,x,y)=>[x,y],feFit(){}};
   // Only the PDF library provider is faked here; production validation/cleanup
@@ -382,6 +382,38 @@ test('saving during PDF selection writes the selected page and its original byte
   assert.deepEqual(loaded.sources.get(f.source.meta.id),f.source.bytes);
   assert.equal(loaded.manifest.format,P.FEATURE_FORMAT);assert.deepEqual(loaded.manifest.featureAttachments.records[0].value,rawGridDraft());
   assert.equal(f.w.active(1).id,'page-2');assert.equal(f.w.context().dirty,false);
+});
+
+test('R07 failed candidate sync preserves saved draft and final save warning',async()=>{
+  const D=require('../geometry-web/room-candidate-draft.js');
+  for(const previous of [false,true])for(const download of [false,true])for(const failure of ['容量超限','專案已切換']) {
+    const f=await fixture(),page=f.w.active(1),points=[[0,0],[1000,0],[1000,1000],[0,1000]];
+    const draft={schema:D.SCHEMA,draftId:'saved-draft',anchor:{kind:'page',boundaryId:1,pageId:page.id,pagePin:D.pagePin(page)},
+      analysis:{sourceId:page.sourceId,page:1,coordinateSpace:'image-pixel/1',pageSize:[100,80],crop:[0,0,100,80],
+        options:{mode:'image',minWidth:1,minLength:8},barriers:[],analyzerRevision:D.ANALYZER_REVISION,total:1,complete:true,ignoredNested:0},
+      rows:[{rowKey:'saved-row',ordinal:1,method:'image-lines',sourcePoints:points,warnings:[],deviation:0,pointsMm:points,dimensions:[],
+        rawInputs:{refRoomVertices:'old raw input',refRoomLength:'',refRoomEdge:'0'},draftRevision:0,status:'pending'}]};
+    if(previous)f.w.setFeatureAttachment(D.KIND,draft,f.w.getProjectState().contextToken);
+    const before=structuredClone(f.w.readFeatureAttachment(D.KIND)),history=f.w.history.undo.length;
+    f.w.context().dirty=false;
+    let flushes=0,downloadBlob;
+    f.env.window.RoomCollectionWorkspace={hasWork:false,flushCandidates(){flushes++;throw new Error(failure);}};
+    if(download){
+      delete f.env.window.showSaveFilePicker;
+      f.env.URL={createObjectURL(blob){downloadBlob=blob;return 'blob:room-candidate-save';},revokeObjectURL(){}};
+      f.env.setTimeout=()=>0;
+    }
+    f.writeGate.resolve();await f.w.save();
+    assert.equal(flushes,1);
+    const bytes=download?new Uint8Array(await downloadBlob.arrayBuffer()):f.writes[0],opened=await P.unpack(bytes,zip);
+    const saved=opened.manifest.featureAttachments?.records.find(record=>record.kind===D.KIND)?.value||null;
+    assert.deepEqual(saved,before,'failed sync must keep exactly the last stored draft or no draft');
+    assert.deepEqual(f.w.readFeatureAttachment(D.KIND),before);
+    assert.equal(f.w.history.undo.length,history,'failed sync must not add history');
+    assert.match(f.statuses.at(-1),/房間候選草稿未能寫入.*先前的草稿或沒有草稿/,JSON.stringify(f.statuses));
+    assert.match(f.statuses.at(-1),download?/已產生專案下載/:/專案已保存/);
+    assert.equal(f.w.context().dirty,true,'unsynchronized candidate input must not look fully saved');
+  }
 });
 
 test('edits completed during file writing remain unsaved',async()=>{
@@ -757,6 +789,44 @@ test('missing final native targets cancel without losing source bytes, metadata 
   assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
 });
 
+test('scene-only identity requires advertised native support before project confirmation',async()=>{
+  for(const supported of [false,true]){
+    const f=await openFixture(),old=f.w.context(),project=await P.unpack(f.bytes,zip);
+    const epoch=crypto.randomUUID().replaceAll('-','');
+    const scene=project.scene+'requires identity-ledger/1\nidentity boundary 8 '+epoch+':1\n';
+    const bytes=await P.pack(scene,project.manifest,project.sources,zip);
+    const archive=await P.unpack(bytes,zip);
+    assert.equal(archive.manifest.format,P.FORMAT);
+    assert.equal(Object.hasOwn(archive.manifest,'requiredCapabilities'),false);
+    assert.equal(archive.scene,scene);
+    const undo=f.w.history.undo.length,state=f.w.getProjectState(),sourceBytes=f.source.bytes.slice(),fetch=f.env.fetch;
+    f.env.fetch=async(url,request)=>{
+      const response=await fetch(url,request);
+      if(url!=='/upload/prepare')return response;
+      assert.equal(request.body,scene,'the native reader receives the complete identity scene');
+      const candidate=await response.json();
+      const capabilities=nativeCapabilities.filter(value=>value!=='identity-ledger/1');
+      if(supported)capabilities.push('identity-ledger/1');
+      return {...response,json:async()=>({...candidate,capabilities,required_capabilities:['identity-ledger/1'],final_scene:scene})};
+    };
+    if(supported){
+      await f.w.importBytes(bytes);
+      assert.notEqual(f.w.context(),old);
+      assert.deepEqual(f.requests.filter(r=>r.url.startsWith('/upload/')).map(r=>r.url),['/upload/prepare','/upload/confirm']);
+    }else{
+      await assert.rejects(()=>f.w.importBytes(bytes),/目前服務不支援此專案所需/);
+      assert.equal(f.w.context(),old);
+      assert.equal(f.w.history.undo.length,undo);
+      const after=f.w.getProjectState();
+      for(const key of ['dirty','dirtyReason','saved','downloaded'])assert.equal(after[key],state[key]);
+      assert.deepEqual(old.sources.get(f.source.meta.id).bytes,sourceBytes);
+      assert.deepEqual(f.requests.filter(r=>r.url.startsWith('/upload/')).map(r=>r.url),['/upload/prepare','/upload/cancel']);
+      assert.equal(f.requests.filter(r=>r.url==='/upload/confirm').length,0);
+    }
+    assert.equal(f.w.busy,false);
+  }
+});
+
 test('late confirm rejects local metadata edits and preserves externally invalidated context without import history',async()=>{
   let channel;const f=await openFixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}}}),gate=deferred(),entered=deferred(),fetch=f.env.fetch;
   f.env.connection.session='service-one';
@@ -983,8 +1053,9 @@ async function recoveryRecord(f,scene) {
 
 test('matching reload restores complete project context without uploading or inventing undo',async()=>{
   const f=await openFixture(),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene);
-  const records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
+  const commands=[],records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async command=>{commands.push(command);return {ok:true,text:loaded.scene};};
   assert.equal((await f.w.restoreSession()).state,'restored');assert.deepEqual(f.requests.map(r=>r.url),['/scenarios/verify-native']);
+  assert.deepEqual(commands,['dump-deidentified','dump-deidentified','dump']);
   assert.equal(f.w.context().id,'opened');assert.equal(f.w.context().name,'試用工程');assert.equal(f.w.context().dirty,true);
   assert.equal(f.w.getProjectInfo().sourceKind,'example');assert.equal(f.w.getProjectInfo().undoLabel,null);
   assert.match(f.w.getProjectInfo().historyNote,/較早/);
@@ -1005,9 +1076,10 @@ test('reload refuses different server or geometry and preserves the original bac
   for(const mismatch of ['session','scene']) {
     const f=await openFixture(),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene),before=f.w.context();
     if(mismatch==='session')record.session='other-service';
-    const records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});
-    f.env.api=async()=>({ok:true,text:mismatch==='scene'?'boundary 55 outline 0,0 1,0 1,1\n':loaded.scene});
+    const commands=[],records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});
+    f.env.api=async command=>{commands.push(command);return {ok:true,text:mismatch==='scene'?'boundary 55 outline 0,0 1,0 1,1\n':loaded.scene};};
     assert.equal((await f.w.restoreSession()).state,'mismatch');assert.equal(f.w.context(),before);assert.equal(f.requests.length,0);
+    assert.deepEqual(commands,mismatch==='scene'?['dump-deidentified']:[]);
     await f.w.persistSession();assert.equal(records.get('tab-one'),record);
   }
 });
@@ -1036,11 +1108,14 @@ test('another tab invalidates saving, metadata editing and local undo until expl
 });
 
 test('external mutation during final reload fingerprint cannot commit the earlier local context',async()=>{
-  let channel,hashes=0;const reached=deferred(),gate=deferred();
+  let channel,finalFingerprint=false;const reached=deferred(),gate=deferred();
   const f=await openFixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}},projectOverride:{sha:async bytes=>{
-    if(++hashes===3){reached.resolve();await gate.promise;}return P.sha(bytes);
+    if(finalFingerprint){reached.resolve();await gate.promise;}return P.sha(bytes);
   }}}),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene),before=f.w.context();
-  recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
+  recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async command=>{
+    assert.ok(command==='dump'||command==='dump-deidentified','Unexpected API command: '+command);
+    if(command==='dump')finalFingerprint=true;return {ok:true,text:loaded.scene};
+  };
   const restoring=f.w.restoreSession();await reached.promise;
   channel.onmessage({data:{peer:'other-tab',session:'service-one'}});gate.resolve();
   assert.equal((await restoring).state,'external');assert.equal(f.w.context(),before);assert.deepEqual(f.requests.map(r=>r.url),['/scenarios/verify-native']);

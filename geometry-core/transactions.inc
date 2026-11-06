@@ -1,7 +1,7 @@
 /* I8/I8a: one atomic entry point shared by file parser, CLI, GDI and bridge. */
 typedef struct {
     bool ready, valid;
-    bool engineering_batch, assembly_batch, profile_batch, finish_batch;
+    bool engineering_batch, assembly_batch, profile_batch, finish_batch, definition_import;
     AsmDiagnostic assembly_diagnostic;
     uint64_t revision;
     uint32_t token;
@@ -9,12 +9,48 @@ typedef struct {
     char command[SCENE_MAX_LINE];
     ReferenceIssue issues[REFERENCE_MAX_ISSUES];
     size_t issue_count;
+    AppIdentityKey identity_explicit[APP_IDENTITY_MARK_CAPACITY];
+    size_t identity_explicit_count;
+    bool identity_explicit_overflow;
 } ReferencePreview;
 static ReferencePreview g_preview;
 static uint32_t g_preview_serial;
 static bool reference_preview_pending(void) { return g_preview.ready; }
 static bool reference_preview_valid(void) { return g_preview.ready && g_preview.valid; }
 static uint32_t reference_preview_token(void) { return g_preview.token; }
+
+typedef struct {
+    const AppIdentityKey *keys;size_t count;bool overflow,scratch,activate;
+} AppIdentityCommit;
+static bool app_world_identity_finalize(AppWorldCandidate *candidate,void *opaque)
+{
+    const AppIdentityCommit *commit=opaque;
+    char problem[192];
+    if(candidate->before.app.identity_active&&!identity_check_world(&candidate->before,problem,sizeof problem)){
+        identity_fail(problem);identity_drop_serials();set_revalidate_error(g_scene_last_error);return false;
+    }
+    if(commit->activate){
+        if(candidate->before.app.identity_active||!candidate->after.app.identity_active){
+            identity_fail("I71: 身分帳啟用候選與原狀態不符");
+            identity_drop_serials();set_revalidate_error(g_scene_last_error);return false;
+        }
+    }else candidate->after.app.identity_active=candidate->before.app.identity_active;
+    bool ok=commit->scratch?identity_prepare_scratch(&candidate->before,&candidate->after):
+        identity_prepare(&candidate->before,&candidate->after,commit->keys,commit->count,commit->overflow);
+    if(!ok)set_revalidate_error(g_scene_last_error);
+    return ok;
+}
+/* Only retained confirmation uses this wrapper. Its recorded deletion keys
+ * belong to the retained candidate; previews never prepare marks or serials. */
+static bool app_world_candidate_revalidate_retained(AppWorldCandidate *candidate,const World *live)
+{
+    identity_drop_serials();
+    if(candidate!=g_preview.transaction)return false;
+    AppIdentityCommit commit={g_preview.identity_explicit,g_preview.identity_explicit_count,g_preview.identity_explicit_overflow,false,false};
+    bool ok=app_world_candidate_revalidate_commit(candidate,live,app_world_identity_finalize,&commit);
+    if(!ok)identity_drop_serials();
+    return ok;
+}
 
 static void reference_pose_text(const World *w,int index,char *out,size_t cap)
 {
@@ -486,7 +522,7 @@ static void reference_stage(AppWorldCandidate *transaction,char **tokens,int cou
     g_preview.transaction=transaction;
     g_preview.ready=true; g_preview.valid=valid; g_preview.token=++g_preview_serial;
     g_preview.assembly_diagnostic=(AsmDiagnostic){0};
-    g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.profile_batch=false; g_preview.finish_batch=false; g_preview.revision=g_definition_revision;
+    g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.profile_batch=false; g_preview.finish_batch=false; g_preview.definition_import=false; g_preview.revision=g_definition_revision;
     g_preview.issue_count=g_reference_issue_count;
     memcpy(g_preview.issues,g_reference_issues,g_preview.issue_count*sizeof(ReferenceIssue));
     if (!valid && !g_preview.issue_count) {
@@ -501,6 +537,7 @@ static void reference_stage(AppWorldCandidate *transaction,char **tokens,int cou
         if (n<0 || (size_t)n>=sizeof g_preview.command-used) { g_preview.valid=false; break; }
         used+=(size_t)n;
     }
+    identity_explicit_capture(g_preview.identity_explicit,APP_IDENTITY_MARK_CAPACITY,&g_preview.identity_explicit_count,&g_preview.identity_explicit_overflow);
 }
 static void reference_preview_text(void)
 {
@@ -559,6 +596,7 @@ typedef struct {
 static bool app_scene_candidate_apply(void *after,GeoEvalContext *sources,void *opaque)
 {
     (void)sources;AppSceneCandidateCall *call=opaque;World *candidate=after;
+    identity_explicit_reset();
     g_reference_trial=*candidate;g_reference_capturing=true;
     const World *previous_baseline=g_subgrid_before;g_subgrid_before=call->before;
     bool ok=apply_scene_line_unchecked(call->path,call->line_no,call->tokens,call->count,candidate);
@@ -567,6 +605,7 @@ static bool app_scene_candidate_apply(void *after,GeoEvalContext *sources,void *
 static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens[],int count,World *world,AppWorldCandidate *transaction,bool *retained)
 {
     World *candidate=&transaction->after;
+    identity_drop_serials();
     if (!count) return true;
     if (!strcmp(tokens[0],"cancel-preview")) {
         if (count!=1) return false;
@@ -576,7 +615,7 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     }
     if (!strcmp(tokens[0],"confirm")) {
         uint32_t token;
-        if (count!=2 || !parse_u32(tokens[1],&token) || !g_preview.ready || token!=g_preview.token || !g_preview.valid || g_preview.engineering_batch) {
+        if (count!=2 || !parse_u32(tokens[1],&token) || !g_preview.ready || token!=g_preview.token || !g_preview.valid || g_preview.engineering_batch || g_preview.definition_import) {
             scene_error(path,line_no,"I8a: missing/invalid preview token; cannot apply"); return false;
         }
         /* Canvas layout does not invalidate geometry approval (D12/I14). */
@@ -587,11 +626,15 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
         if(!app_world_candidate_revalidate(g_preview.transaction,world)){
             g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I8: invalid definition/reference; World unchanged");return false;
         }
-        bool changed=!world_definitions_equal(world,&g_preview.transaction->after);
+        bool issued=g_identity_pending_count!=0;
+        bool changed=!world_definitions_equal(world,&g_preview.transaction->after)||issued;
         if(!app_world_candidate_publish(g_preview.transaction,world,true)){
+            identity_drop_serials();
             g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);scene_error(path,line_no,"I8a: preview is stale; preview again against the current world");return false;
         }
-        g_preview.ready=false;app_world_candidate_clear_stagger(g_preview.transaction);if(changed&&!g_parsing_scene_file)++g_definition_revision;
+        g_preview.ready=false;app_world_candidate_clear_stagger(g_preview.transaction);
+        if((changed||issued)&&!g_parsing_scene_file){identity_commit_serials();++g_definition_revision;}
+        else identity_drop_serials();
         return true;
     }
     bool explicit_preview=!strcmp(tokens[0],"preview");
@@ -602,7 +645,10 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     if(!app_scene_direct_dimensions_allowed(path,line_no,tokens,count,world))return false;
     g_scene_last_error[0]='\0'; g_engineering_error[0]='\0'; g_reference_issue_count=0;
     AppSceneCandidateCall call={path,line_no,tokens,count,world};
+    bool saved_identity_preview=g_identity_explicit_preview;
+    if(explicit_preview)g_identity_explicit_preview=true;
     bool ok=app_world_candidate_evaluate(transaction,app_scene_candidate_apply,&call)==GEO_CANDIDATE_OK;
+    g_identity_explicit_preview=saved_identity_preview;
     bool affects=reference_may_affect(world,tokens,count);
     const World *impact_candidate=ok?candidate:&g_reference_trial;
     bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->wood.engineering,&candidate->wood.engineering,sizeof world->wood.engineering) || memcmp(&world->wood.assembly,&candidate->wood.assembly,sizeof world->wood.assembly) || memcmp(&world->wood.section_profiles,&impact_candidate->wood.section_profiles,sizeof world->wood.section_profiles));
@@ -634,11 +680,32 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
         if (!g_scene_last_error[0]) scene_error(path,line_no,"I8: invalid definition/reference; World unchanged");
         return false;
     }
-    bool changed=!g_parsing_scene_file&&strcmp(tokens[0],"canvas-pos")&&!world_definitions_equal(world,candidate);
-    if(!app_world_candidate_seal(transaction)||!app_world_candidate_publish(transaction,world,false)){
+    bool skip_identity=g_parsing_scene_file||!strcmp(tokens[0],"canvas-pos");
+    char identity_error[512];
+    if(!skip_identity){
+        identity_drop_serials();
+        bool activate=count==2&&!strcmp(tokens[0],"identity-ledger")&&!strcmp(tokens[1],"activate");
+        AppIdentityCommit commit={NULL,0,false,true,activate};
+        bool prepared=app_world_candidate_seal(transaction)&&
+            app_world_candidate_revalidate_commit(transaction,world,app_world_identity_finalize,&commit);
+        if(!prepared){
+            const char *problem=g_scene_last_error[0]?g_scene_last_error:
+                g_revalidate_error[0]?g_revalidate_error:"I8: candidate seal failed; World unchanged";
+            snprintf(identity_error,sizeof identity_error,"%s",problem);
+            identity_drop_serials();
+            scene_error(path,line_no,identity_error);
+            return false;
+        }
+    }
+    bool issued=!skip_identity&&g_identity_pending_count!=0;
+    bool changed=!g_parsing_scene_file&&strcmp(tokens[0],"canvas-pos")&&(!world_definitions_equal(world,candidate)||issued);
+    if((skip_identity&&!app_world_candidate_seal(transaction))||!app_world_candidate_publish(transaction,world,false)){
+        identity_drop_serials();
         scene_error(path,line_no,"I8: candidate seal failed; World unchanged");return false;
     }
-    if(changed)++g_definition_revision;return true;
+    if((changed||issued)&&!g_parsing_scene_file){identity_commit_serials();++g_definition_revision;}
+    else identity_drop_serials();
+    return true;
 }
 
 /* Only app_scene_load_evaluate opts into this private file replay frame.

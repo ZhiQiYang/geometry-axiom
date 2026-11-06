@@ -77,6 +77,9 @@ PY_NEEDS = {
     'test_bridge_integrity': ['bridge'],
     'test_cli_args': ['core'],
     'test_datum_contract': ['bridge'],
+    'test_definition_import': ['bridge'],
+    'test_identity_definition_import_merge': ['bridge'],
+    'test_definition_import_transport': [],
     'test_domain_decoupling_proposal': [],
     'test_domain_decoupling_adoption': [],
     'test_domain_decoupling_compatibility': ['model-base'],
@@ -87,6 +90,9 @@ PY_NEEDS = {
     'test_engineering_model_sources': ['bridge', 'model-base'],
     'test_engineering_transport': [],
     'test_evidence_link_native': ['bridge'],
+    'test_evidence_contract_mutations': [],
+    'test_evidence_adoption_native': ['bridge'],
+    'test_evidence_adoption_mutations': [],
     'test_feedback_store': [],
     'test_gdi_contract': ['gdi'],
     # These suites build isolated K objects and their actual product witness;
@@ -210,11 +216,18 @@ PY_NEEDS = {
     'test_grid_subdivision_oracle': ['bridge'],
     'test_grid_trial_contract': ['bridge'],
     'test_guide_panels': [],
+    'test_identity_ledger': ['bridge'],
+    'test_identity_ledger_review': ['bridge'],
+    'test_identity_ledger_faults': [],
+    'test_identity_host_runtime': ['bridge'],
+    'test_identity_content_contract': ['bridge', 'model-base'],
+    'test_identity_host_gate_shape': [],
     'test_infinite_grid_contract': ['bridge'],
     'test_modeling_degenerate': ['model-base'],
     'test_modeling_runtime': ['model-base'],
     'test_modeling_transport': ['bridge', 'model-base'],
     'test_model_update': ['bridge', 'model-base'],
+    'test_model_update_identity_faces': ['bridge', 'model-base'],
     'test_mutation_freshness': [],
     'test_parameters_core': ['bridge', 'model-base'],
     'test_parameter_retirement_scope': ['bridge'],
@@ -223,6 +236,7 @@ PY_NEEDS = {
     'test_parameters_unbind_scope': ['bridge'],
     'test_parameters_deleted_unbind': ['bridge'],
     'test_parameters_upstream_unbind': ['bridge'],
+    'test_pr353_legacy_snapshot': [],  # Real snapshot/fixture checks need Node and Git, not a native bridge.
     'test_parameters_candidate_value_history': ['bridge'],
     'test_reference_contract': ['bridge'],
     'test_rectangular_template': [],
@@ -249,6 +263,7 @@ PY_NEEDS = {
     'test_unittest_runner': [],
     'test_witness_diagnostics': [],
     'test_witness_marks': [],
+    'test_zero_room_native': ['bridge'],
 }
 # Every tests/*.js|*.cjs|*.mjs MUST be in exactly one of these three (run by `node --test`, run as a script, or a
 # reasoned exclusion).  Unlisted files make run_all fail and name them.
@@ -303,12 +318,15 @@ NODE_TEST_FILES = [
 ]
 NODE_SCRIPT_FILE = 'tests/test_model_viewer.cjs'
 NODE_DOCUMENT_SCRIPT_FILES = {
+    'node:pr353_display_regressions': 'tests/test_pr353_display_regressions.js',
     'node:document_format': 'tests/test_document_format.js',
     'node:document_cases': 'tests/test_document_cases.js',
     'node:cdp_navigation': 'tests/test_cdp_navigation.js',
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:pr353_compatibility': 'tests/test_pr353_compatibility.js',
+    'node:pr353_pin_regressions': 'tests/test_pr353_pin_regressions.js',
     'node:cutting_layering': 'tests/test_cutting_layering.js',
     'node:cutting_owner': 'tests/test_cutting_owner.js',
     'node:cutting_plan': 'tests/test_cutting_plan.js',
@@ -320,26 +338,62 @@ NODE_PURE_TEST_FILES = {
     'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
     'node:parameter_confirmation_settlement': 'tests/test_parameter_confirmation_settlement.js',
     'node:face_reference_settlement': 'tests/test_face_reference_settlement.js',
+    'node:feature_attachments_vm': 'tests/test_feature_attachments_vm.js',
     'node:face_projection_lifecycle': 'tests/test_face_projection_lifecycle.js',
     'node:workspace_shell_history': 'tests/test_workspace_shell_history.js',
     'node:feedback_events': 'tests/test_feedback_events.js',
     'node:space_test_floor': 'tests/test_space_test_floor.js',
+    'node:space_library_actions': 'tests/test_space_library_actions.js',
     'node:history_operation': 'tests/test_history_operation.js',
+    'node:identity_ledger': 'tests/test_identity_ledger.js',
+    'node:model_source_identity': 'tests/test_model_source_identity.js',
+    'node:model_stack_archive': 'tests/test_model_stack_archive.cjs',
+    'node:model_identity_review': 'tests/test_model_identity_review.js',
+    'node:identity_main_merge': 'tests/test_identity_main_merge.js',
+    'node:evidence_stack_merge': 'tests/test_evidence_stack_merge.js',
     'node:context_operations': 'tests/test_context_operations.js',
+    'node:definition_import': 'tests/test_definition_import.js',
     'node:cdp_evaluation': 'tests/test_cdp_evaluation.js',
     'node:cdp_settle': 'tests/test_cdp_settle.js',
     'node:cdp_card_position': 'tests/test_cdp_card_position.js',
+    'node:canvas_creation_owner': 'tests/test_canvas_creation_owner.cjs',
+    'node:canvas_shards': 'tests/test_canvas_shards.js',
+    'node:identity_canvas_merge': 'tests/test_identity_canvas_merge.js',
     'node:background_grid_viewport': 'tests/test_background_grid_viewport.js',
     'node:anchor_band_clip': 'tests/test_anchor_band_clip.js',
     'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
     'node:face_paint_scheduler': 'tests/test_face_paint_scheduler.js',
+    'node:room_candidate_draft': 'tests/test_room_candidate_draft.js',
+    'node:room_candidate_native_pins': 'tests/test_room_candidate_native_pins.js',
+    'node:room_candidate_cold_contract': 'tests/test_room_candidate_cold_contract.cjs',
+    'node:room_candidate_transaction_review': 'tests/test_room_candidate_transaction_review.cjs',
+    'node:room_candidate_workspace_review': 'tests/test_room_candidate_workspace_review.js',
     'node:room_outline_worker': 'tests/test_room_outline_worker.js',
     'node:room_outline_closeout': 'tests/test_room_outline_closeout.js',
     'node:evidence_links': 'tests/test_evidence_links.js',
+    'node:evidence_ledger_links': 'tests/test_evidence_ledger_links.js',
+    'node:evidence_owner_contract': 'tests/test_evidence_owner_contract.cjs',
+    'node:evidence_app_contract': 'tests/test_evidence_app_contract.cjs',
+    'node:evidence_adoption_app': 'tests/test_evidence_adoption_app.cjs',
+    'node:evidence_parameter_adoption': 'tests/test_evidence_parameter_adoption.cjs',
+    'node:evidence_adoption_transport': 'tests/test_evidence_adoption_transport.cjs',
     'node:evidence_project_store': 'tests/test_evidence_project_store.js',
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
+    'node:model_creation_identity_pin': 'tests/test_model_creation_identity_pin.js',
+}
+NODE_MODEL_TEST_FILES = {
+    'node:model_update_faces_review': 'tests/test_model_update_faces_review.js',
+    'node:model_update_faces_app': 'tests/test_model_update_faces_app.js',
+}
+
+# Separate native-backed suites keep all existing golden counts unchanged.
+NODE_NATIVE_TEST_FILES = {
+    'node:identity_context_history': 'tests/test_identity_context_history.js',
+    'node:identity_recovery_contract': 'tests/test_identity_recovery_contract.js',
 }
 NODE_EXCLUDED = {
+    'tests/_model_update_dom.js': 'Finite DOM/event fixture used by registered node:model_update_faces_app; registers no tests',
+    'tests/pr353_legacy_reader.js': 'Immutable legacy-reader fixture/materialization helper; registers no tests; exercised by the PR353 compatibility and snapshot suites',
     'tests/cutting_legacy_cases.js': 'Fixed inputs for the independently pinned pre-layering cutting oracle; no tests registered',
     'tests/generate_cutting_legacy_fixture.js': 'Explicit regeneration/check of fixed cd4bc880 Git blobs in an isolated VM; never reads current product sources',
     'tests/k1b_cutting_settings_fixture.cjs': 'Pinned K1-b validator fixture for the shared /17 owner-dispatch contract; not an executable test',
@@ -516,9 +570,10 @@ def check_registry():
         problems.append('PY_NEEDS 登記了 %s，但 tests/%s.py 不存在' % (stem, stem))
     disk_js = {'tests/' + p.name for pattern in ('*.js', '*.cjs', '*.mjs') for p in HERE.glob(pattern)}
     known = (set(NODE_TEST_FILES) | {NODE_SCRIPT_FILE} | set(NODE_DOCUMENT_SCRIPT_FILES.values()) |
-             set(NODE_PURE_TEST_FILES.values()) | set(NODE_EXCLUDED))
+             set(NODE_PURE_TEST_FILES.values()) | set(NODE_MODEL_TEST_FILES.values()) |
+             set(NODE_NATIVE_TEST_FILES.values()) | set(NODE_EXCLUDED))
     for rel in sorted(disk_js - known):
-        problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_PURE_TEST_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
+        problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_PURE_TEST_FILES／NODE_MODEL_TEST_FILES／NODE_NATIVE_TEST_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
     for rel in sorted(known - disk_js):
         problems.append('run_all.py 登記了 %s，但該檔不存在' % rel)
     for rel in REQUIRED_OWNER_GATES:
@@ -545,7 +600,7 @@ def build_suites():
         f = HERE / (stem + '.py')
         if f.is_file():
             suites.append(Suite('py:' + stem, 'unittest', [py, str(RUNNER), str(f)], PY_NEEDS[stem], 1200,
-                                needs_node=(stem == 'test_evidence_link_native'), label='tests/%s' % f.name))
+                                needs_node=(stem in ('test_evidence_link_native', 'test_evidence_adoption_native', 'test_pr353_legacy_snapshot')), label='tests/%s' % f.name))
     js = [rel for rel in sorted(NODE_TEST_FILES) if (ROOT / rel).is_file()]
     suites += [
         Suite('node:tests-js', 'node-test', ['--test', '--test-reporter=spec', *js], ['bridge', 'model-base'], 900,
@@ -560,6 +615,10 @@ def build_suites():
                for name, file in NODE_DOCUMENT_SCRIPT_FILES.items()]
     suites += [Suite(name, 'node-test', ['--test', '--test-reporter=spec', file], [], 300,
                      needs_node=True, label=file) for name, file in NODE_PURE_TEST_FILES.items()]
+    suites += [Suite(name, 'node-test', ['--test', '--test-reporter=spec', file], ['bridge', 'model-base'], 900,
+                     needs_node=True, label=file) for name, file in NODE_MODEL_TEST_FILES.items()]
+    suites += [Suite(name, 'node-test', ['--test', '--test-reporter=spec', file], ['bridge'], 300,
+                     needs_node=True, label=file) for name, file in NODE_NATIVE_TEST_FILES.items()]
     return suites
 
 

@@ -518,6 +518,7 @@ class BridgeServerTests(unittest.TestCase):
                 self.assertEqual(mod.root_context.upload_outcomes,{})
                 mod.request_context.native=mod.root_context
                 self.responses.put(b'{"ok":true,"revision":7}\n')
+                self.responses.put(b'{"ok":true}\n')
                 self.responses.put(b'{"ok":true,"text":"root A"}\n')
                 self.assertEqual(json.loads(mod.upload_scene(b'1','confirm'))['state'],'committed')
                 self.assertEqual(json.loads(native.upload_outcomes[1])['state'],'cancelled')
@@ -724,13 +725,21 @@ class BridgeServerTests(unittest.TestCase):
 
     def upload(self, base, scene, bridge_reply):
         """送一次 /upload,回傳 (解析後的回應, bridge 收到的 loadfile 路徑)。"""
+        parsed = json.loads(bridge_reply)
         self.responses.put(bridge_reply)
+        if isinstance(parsed, dict) and parsed.get("ok") is True:
+            self.responses.put(b'{"ok":true}\n')
         request = urllib.request.Request(base + "/upload", data=scene.encode("utf-8"),
                                          headers={"Content-Type": "text/plain"})
         with urllib.request.urlopen(request, timeout=2) as response:
             payload = json.load(response)
-        sent = self.process.stdin.getvalue().decode("utf-8").splitlines()[-1]
-        self.assertTrue(sent.startswith("loadfile "), sent)
+        lines = self.process.stdin.getvalue().decode("utf-8").splitlines()
+        load_at = max(index for index, line in enumerate(lines) if line.startswith("loadfile "))
+        sent = lines[load_at]
+        if isinstance(parsed, dict) and parsed.get("ok") is True:
+            self.assertTrue(lines[load_at + 1].startswith("identity-epoch "), lines)
+        else:
+            self.assertEqual(load_at, len(lines) - 1, lines)
         return payload, sent[len("loadfile "):]
 
     def test_failed_upload_keeps_the_live_scene_reloadable(self):
@@ -784,6 +793,7 @@ class BridgeServerTests(unittest.TestCase):
                 reply = b'{"ok":false,"code":"STALE"}\n' if rejected == 'stale' else b'{"ok":true,"cancelled":true}\n'
                 self.responses.put(reply)
                 if rejected == 'success':
+                    self.responses.put(b'{"ok":true}\n')
                     self.responses.put(b'{"ok":true,"text":"committed scene\\n"}\n')
                 result = json.loads(mod.upload_scene(b'7', phase))
                 self.assertIsNone(mod.root_context.prepared_upload)
@@ -816,6 +826,7 @@ class BridgeServerTests(unittest.TestCase):
         self.responses.put(b'{"ok":true,"token":32}\n')
         mod.upload_scene(b'reset\n', 'prepare')
         self.responses.put(b'{"ok":true,"revision":2}\n')
+        self.responses.put(b'{"ok":true}\n')
         self.responses.put(b'{"ok":true,"text":"reset\\n"}\n')
         committed = json.loads(mod.upload_scene(b'32', 'confirm'))
         self.assertEqual(committed['state'], 'committed')
@@ -957,6 +968,7 @@ class BridgeServerTests(unittest.TestCase):
             with patch.object(mod.tempfile, "NamedTemporaryFile", side_effect=new_temp), \
                     patch.object(mod.os, "unlink", side_effect=unlink):
                 self.responses.put(b'{"ok":true}\n')
+                self.responses.put(b'{"ok":true}\n')
                 first = threading.Thread(target=do_upload)
                 second = threading.Thread(target=reload)
                 first.start()
@@ -1022,6 +1034,25 @@ class BridgeServerTests(unittest.TestCase):
         with patch.object(mod, "ask_bridge", return_value=b'{"ok":false,"error":"invalid scene"}'):
             handler.do_POST()
         handler._send.assert_called_once()
+
+    def test_page_cannot_set_identity_epoch(self):
+        result = self.ask("identity-epoch 0123456789abcdef0123456789abcdef")
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["error"], "配號區段只由宿主設定。")
+        self.assertEqual(self.process.stdin.getvalue(), b"")
+
+    def test_successful_reset_sets_a_new_epoch_and_failure_does_not(self):
+        self.responses.put(b'{"ok":false,"error":"no"}\n')
+        self.assertFalse(self.ask("reset")["ok"])
+        self.assertEqual(self.process.stdin.getvalue(), b"reset\n")
+        self.responses.put(b'{"ok":true}\n')
+        self.responses.put(b'{"ok":true}\n')
+        self.assertTrue(self.ask("reset")["ok"])
+        lines = self.process.stdin.getvalue().decode("utf-8").splitlines()
+        self.assertEqual(lines[0], "reset")
+        self.assertEqual(lines[1], "reset")
+        self.assertTrue(lines[2].startswith("identity-epoch "), lines)
+        self.assertEqual(len(lines), 3)
 
     def test_http_rejects_empty_and_bad_json_then_recovers(self):
         server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), self.server_module.Handler)

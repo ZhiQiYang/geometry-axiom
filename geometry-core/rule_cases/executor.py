@@ -523,7 +523,7 @@ class NativeExecutor:
                 receipt["setupDiagnostics"] = seeded.get("violations", [])
                 raise _Stop("failed", "invalid-source-closure")
             command("assembly-confirm " + str(seeded["token"]))
-        before, before_dump = read(), command("dump")["text"]
+        before, before_dump = read(), command("dump-deidentified")["text"]
         _verify_record_pins(before["state"], definition["input"]["setup"])
         candidate = preview(definition["input"]["transaction"], "case.json")
         valid = candidate.get("valid")
@@ -538,7 +538,7 @@ class NativeExecutor:
             rejected = child.command("assembly-confirm " + str(candidate["token"]))
             if rejected.get("ok") is not False:
                 raise _Stop("failed", "invalid-candidate-confirmed")
-        after, after_dump = read(), command("dump")["text"]
+        after, after_dump = read(), command("dump-deidentified")["text"]
         unchanged = not valid and before == after and before_dump == after_dump
         receipt["observations"] = {"before": _portable_observation(before["state"]), "after": _portable_observation(after["state"]),
                                    "beforeRevision": before["revision"], "afterRevision": after["revision"],
