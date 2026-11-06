@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 concurrency:
   group: geometry-integration-${{ github.workflow }}-${{ github.ref }}
@@ -127,11 +128,34 @@ jobs:
           persist-credentials: false
       - name: Build current native executables
         run: npm run build
+      - name: Restore cached CJK font package
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: ${{ runner.temp }}/cjk-font-debs
+          key: fonts-noto-cjk-noble-1:20230817+repack1-3
       - name: Install Chinese fonts for visual verification
-        # Bound stalled mirror connections; keep CJK installation mandatory.
+        timeout-minutes: 8
+        # Cache hit: install the saved .deb without contacting the mirror.
+        # Cache miss: keep the existing apt download, then store fonts-noto-cjk*.deb.
+        # CJK remains mandatory; do not raise job timeouts.
         run: |
-          sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
-          sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
+          set -euo pipefail
+          cache_dir="${{ runner.temp }}/cjk-font-debs"
+          mkdir -p "$cache_dir"
+          shopt -s nullglob
+          debs=("$cache_dir"/fonts-noto-cjk*.deb)
+          if [ "${#debs[@]}" -gt 0 ]; then
+            sudo apt-get install -y "${debs[@]}"
+          else
+            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
+            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
+            cp /var/cache/apt/archives/fonts-noto-cjk*.deb "$cache_dir/"
+          fi
+          dpkg -s fonts-noto-cjk
+          if ! fc-list :lang=zh | grep -q .; then
+            echo "fc-list :lang=zh found no fonts" >&2
+            exit 1
+          fi
       - name: Run actual browser regression group
         shell: bash
         run: |
