@@ -356,6 +356,7 @@ static void timber_edit_json_preview(const AppWorldCandidate *transaction,const 
 }
 static void cmd_timber_edit_preview(const char *path)
 {
+    identity_drop_serials();
     if(g_history.grouping){eng_bridge_error("HISTORY_GROUP","Finish the existing history group first");return;}
     GeoJson j;char *text;if(!timber_edit_document(path,&j,&text))return;
     TimberEditCall call={0};char schema[40];uint64_t revision;int operations=geo_json_member(&j,0,"operations");
@@ -384,6 +385,7 @@ static void cmd_timber_edit_preview(const char *path)
         call.before=&transaction->before;g_reference_issue_count=0;g_scene_last_error[0]=0;g_revalidate_error[0]=0;
         bool valid=app_world_candidate_evaluate(transaction,timber_edit_evaluate,&call)==GEO_CANDIDATE_OK;
         if(valid&&!app_world_candidate_seal(transaction)){valid=false;eng_fail("I8: cannot seal timber candidate");}
+        if(!valid)app_world_candidate_clear_stagger(transaction);
         char error[512];snprintf(error,sizeof error,"%s",g_engineering_error[0]?g_engineering_error:"Candidate rejected");
         bool no_op=valid&&world_definitions_equal(&transaction->before,&transaction->after);
         if(!no_op){char *label="timber-edit-transaction";reference_stage(transaction,&label,1,valid);
@@ -397,33 +399,35 @@ done:geo_json_free(&j);free(text);
 }
 static void cmd_timber_edit_confirm(const char *arg)
 {
+    identity_drop_serials();
     uint32_t token;
     if(!arg||!parse_u32(arg,&token)||!g_preview.ready||!g_preview.timber_batch||g_preview.token!=token||!g_preview.valid){eng_bridge_error("TOKEN","Missing, invalid or unrelated timber preview token");return;}
     if(g_history.grouping||g_preview.revision!=g_definition_revision||!app_world_candidate_current(g_preview.transaction,&g_world)){
-        g_preview.ready=false;eng_bridge_error("STALE","Timber preview expired; read and preview again");return;
+        g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("STALE","Timber preview expired; read and preview again");return;
     }
     if(!g_timber_pending.creating)for(size_t i=0;i<g_timber_pending.count;++i){const char *reason=timber_edit_eligibility(&g_world,g_timber_pending.boundary,g_timber_pending.ids[i]);
-        if(reason){g_preview.ready=false;eng_bridge_error("TIMBER_ELIGIBILITY",reason);return;}}
+        if(reason){g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("TIMBER_ELIGIBILITY",reason);return;}}
     if(!app_world_candidate_revalidate(g_preview.transaction,&g_world)){
-        g_preview.ready=false;eng_bridge_error("INVALID",g_revalidate_error);return;
+        g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("INVALID",g_revalidate_error);return;
     }
     if(world_definitions_equal(&g_world,&g_preview.transaction->after)){
-        g_preview.ready=false;eng_bridge_error("NO_OP","No-op timber edits have no commit token");return;
+        identity_drop_serials();g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("NO_OP","No-op timber edits have no commit token");return;
     }
-    if(g_definition_revision==UINT64_MAX){g_preview.ready=false;eng_bridge_error("CAPACITY","Definition revision capacity is exhausted; World unchanged");return;}
+    if(g_definition_revision==UINT64_MAX){identity_drop_serials();g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("CAPACITY","Definition revision capacity is exhausted; World unchanged");return;}
     uint64_t before=g_definition_revision;history_record(&g_world);
     if(!app_world_candidate_publish(g_preview.transaction,&g_world,true)){
-        history_unrecord();g_preview.ready=false;eng_bridge_error("STALE","Timber candidate changed before publication");return;
+        history_unrecord();identity_drop_serials();g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("STALE","Timber candidate changed before publication");return;
     }
-    ++g_definition_revision;g_preview.ready=false;
+    identity_commit_serials();++g_definition_revision;g_preview.ready=false;app_world_candidate_clear_stagger(g_preview.transaction);
     printf("{\"ok\":true,\"history_changed\":true,\"revision\":\"%llu\",\"before_revision\":\"%llu\",\"transaction_id\":%u,\"changedIds\":[",(unsigned long long)g_definition_revision,(unsigned long long)before,token);
     if(!g_timber_pending.creating)for(size_t i=0;i<g_timber_pending.count;++i)printf("%s%u",i?",":"",g_timber_pending.ids[i]);
     fputs("],\"created\":[",stdout);if(g_timber_pending.creating)printf("{\"handle\":\"new:0\",\"kind\":\"timber\",\"id\":%u}",g_timber_pending.created_id);fputs("]}\n",stdout);
 }
 static void cmd_timber_edit_cancel(const char *arg)
 {
+    identity_drop_serials();
     uint32_t token;if(!arg||!parse_u32(arg,&token)){eng_bridge_error("TOKEN","Cancel requires a timber preview token");return;}
     bool cancelled=g_preview.ready&&g_preview.timber_batch&&g_preview.token==token;
-    if(cancelled){g_preview.ready=false;app_candidate_discard(g_preview.transaction->control);}
+    if(cancelled){g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);}
     printf("{\"ok\":true,\"cancelled\":%s,\"revision\":\"%llu\"}\n",cancelled?"true":"false",(unsigned long long)g_definition_revision);
 }

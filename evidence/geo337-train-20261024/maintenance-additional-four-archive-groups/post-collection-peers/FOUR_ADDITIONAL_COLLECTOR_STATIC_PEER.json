@@ -1,0 +1,122 @@
+{
+  "scope": "Static small-original collector review; no collection, compression or archive-body read executed",
+  "checks": 27,
+  "exit_code": 0,
+  "findings": [],
+  "collector_sha256": "dcb9f8adf69e3485c56858a366aa2167d7a2b3df91d0bc97ae9d5ac03464427b",
+  "previous_collector_sha256": "778c03422749422fb2b522f7562920edc1f52bb8705ae5de3ff220d5f44e29da",
+  "conditions": [
+    "Run only in root-authorized gap after #345 exclusive slot.",
+    "Actual package inventory/roundtrip still requires independent terminal review."
+  ],
+  "check_details": [
+    {
+      "check": "exact frozen new collector pin",
+      "passed": true
+    },
+    {
+      "check": "add exact previous AST; no new traversal/file policy",
+      "passed": true
+    },
+    {
+      "check": "tree exact previous AST; no new traversal/file policy",
+      "passed": true
+    },
+    {
+      "check": "exact original tar creation/full inventory roundtrip/after-hash byte block",
+      "passed": true
+    },
+    {
+      "check": "fresh dedicated OUT only",
+      "passed": true
+    },
+    {
+      "check": "exact new 4x7 scope and allocation total",
+      "passed": true
+    },
+    {
+      "check": "true terminal originals required",
+      "passed": true
+    },
+    {
+      "check": "actual plan binding and no outer timeout",
+      "passed": true
+    },
+    {
+      "check": "entire original prep/actual/outer small streams retained",
+      "passed": true
+    },
+    {
+      "check": "first prefix rejection entire originals retained",
+      "passed": true
+    },
+    {
+      "check": "both original producer versions retained",
+      "passed": true
+    },
+    {
+      "check": "independent peer/helper included FOUR_ADDITIONAL_ARCHIVE_GROUPS_STATIC_PEER.json",
+      "passed": true
+    },
+    {
+      "check": "independent peer/helper included review_four_additional_archive_groups.py",
+      "passed": true
+    },
+    {
+      "check": "independent peer/helper included FOUR_ADDITIONAL_ARCHIVE_GROUPS_ACTUAL_METADATA_PEER.json",
+      "passed": true
+    },
+    {
+      "check": "independent peer/helper included review_four_additional_archive_groups_actual.py",
+      "passed": true
+    },
+    {
+      "check": "actual existing peer accepts FOUR_ADDITIONAL_ARCHIVE_GROUPS_STATIC_PEER.json",
+      "passed": true
+    },
+    {
+      "check": "actual existing peer accepts FOUR_ADDITIONAL_ARCHIVE_GROUPS_ACTUAL_METADATA_PEER.json",
+      "passed": true
+    },
+    {
+      "check": "collector enforces actual independent peer acceptance",
+      "passed": true
+    },
+    {
+      "check": "28 original archive payload paths explicitly excluded",
+      "passed": true
+    },
+    {
+      "check": "original per-file size/type policy unchanged",
+      "passed": true
+    },
+    {
+      "check": "adaptation references included",
+      "passed": true
+    },
+    {
+      "check": "original historical red terminal fields and anchor bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "storage success never relabels historical product failure",
+      "passed": true
+    },
+    {
+      "check": "producer direct-exec limitation honest",
+      "passed": true
+    },
+    {
+      "check": "separate immutable leases retained",
+      "passed": true
+    },
+    {
+      "check": "allocation versus df effect separated",
+      "passed": true
+    },
+    {
+      "check": "actual package peer remains pending",
+      "passed": true
+    }
+  ]
+}

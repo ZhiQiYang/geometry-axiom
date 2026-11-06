@@ -1,0 +1,23 @@
+--- reviewed-R7/launch.template.py
++++ unexecuted-R8/launch.template.py
+@@ -9,9 +9,9 @@
+     need(digest(ROOT/'PLAN.json')=='__FROZEN_TERMINAL_PLAN_SHA256__','frozen membership plan')
+     plan=json.loads((ROOT/'PLAN.json').read_bytes())
+     pin=plan['terminal_bindings']['outer'];terminal=Path(pin['path'])
+-    need(digest(terminal)==pin['sha256'] and terminal.stat().st_size==pin['bytes'],'original R7 terminal pin')
++    need(digest(terminal)==pin['sha256'] and terminal.stat().st_size==pin['bytes'],'original R8 terminal pin')
+     k=json.loads(terminal.read_bytes())
+-    need(k['source_sha']=='6df0264f75e84f03adb70746b6ac3db07a9910fc' and type(k['exit']) is int and k['exit']==plan['expected_terminal']['outer_exit'],'actual R7 terminal before heavy collection')
++    need(k['source_sha']=='75a1e93811a52b69385cbdaf6a09d773ed9052ad' and type(k['exit']) is int and k['exit']==plan['expected_terminal']['outer_exit'],'actual R8 terminal before heavy collection')
+     held=None;slot=None
+     for name in ['/tmp/g261r3/heavy.lock','/tmp/g261r3/secondary.lock']:
+         handle=open(name,'a+b')
+@@ -22,7 +22,7 @@
+     try:
+         out=ROOT/'execution';out.mkdir(exist_ok=False)
+         command=[sys.executable,'-B',str(ROOT/'collect.py')]
+-        request={'command':command,'cwd':str(ROOT),'heavy_slot':slot,'environment':{n:os.environ.get(n) for n in ['PATH','LANG','LC_ALL','TMPDIR','PYTHONPATH','PYTHONOPTIMIZE']},'source_sha':'6df0264f75e84f03adb70746b6ac3db07a9910fc','started_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'subject_executed':False}
++        request={'command':command,'cwd':str(ROOT),'heavy_slot':slot,'environment':{n:os.environ.get(n) for n in ['PATH','LANG','LC_ALL','TMPDIR','PYTHONPATH','PYTHONOPTIMIZE']},'source_sha':'75a1e93811a52b69385cbdaf6a09d773ed9052ad','started_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'subject_executed':False}
+         (out/'request.json').write_text(json.dumps(request,ensure_ascii=False,indent=2)+'\n')
+         with (out/'stdout').open('wb') as stdout,(out/'stderr').open('wb') as stderr:
+             result=subprocess.run(command,cwd=ROOT,stdout=stdout,stderr=stderr)

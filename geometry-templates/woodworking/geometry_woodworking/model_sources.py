@@ -73,7 +73,16 @@ def bind_sources(base, sources, roots):
     for solid in base["solids"]:
         key = (solid["kind"], solid["id"])
         reference, faces = take(*key, "solid.box", ValueType.BOX)
-        expected = {face["feature"] for face in solid["faces"]}
+        # Absent or untyped faces used to escape as KeyError. Runtime only
+        # classifies a ValueError that already carries a clause. This uses the
+        # same sentence as a mismatched catalog, so every other input keeps
+        # its verdict and its text.
+        legacy_faces = solid.get("faces")
+        if (type(legacy_faces) is not list
+                or any(type(face) is not dict or type(face.get("feature")) is not str
+                       for face in legacy_faces)):
+            _fail("Native box source faces disagree with legacy provenance.")
+        expected = {face["feature"] for face in legacy_faces}
         if len(faces) != 6 or len(expected) != 6 or {face[2] for face in faces} != expected:
             _fail("Native box source faces disagree with legacy provenance.")
         by_side = {(axis, side): (feature, opaque) for axis, side, feature, opaque in faces}

@@ -40,8 +40,8 @@
       "changes": [
         {
           "file": "geometry-web/canvas-context-menu.js",
-          "before": "vp.addEventListener('contextmenu', event => {",
-          "after": "vp.addEventListener('p352-disabled-contextmenu', event => {"
+          "before": "for (const entry of [vp, offlineVp]) entry.addEventListener('contextmenu', event => {",
+          "after": "for (const entry of [vp, offlineVp]) entry.addEventListener('p352-disabled-contextmenu', event => {"
         }
       ]
     },

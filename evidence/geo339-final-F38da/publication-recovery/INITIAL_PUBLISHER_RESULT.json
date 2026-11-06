@@ -1,0 +1,14 @@
+{
+  "sourceSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+  "evidenceParent": "e9ee6d088b0cad4e3984aa2842a50acc311c2351",
+  "bodyParent": "e1b5b1716333223436c3ba232aafa27b1e938182",
+  "evidenceHead": null,
+  "bodyHead": null,
+  "errors": [
+    "Traceback (most recent call last):\n  File \"/workspace/geo339-publication-20261024/publish_completed_affected.py\", line 139, in <module>\n    run(['git', 'diff', '--cached', '--check'])\n  File \"/workspace/geo339-publication-20261024/publish_completed_affected.py\", line 70, in run\n    need(row['actual_process_returncode'] == 0, 'original publication command failed: ' + str(row['directory']))\n  File \"/workspace/geo339-publication-20261024/publish_completed_affected.py\", line 32, in need\n    raise RuntimeError(message)\nRuntimeError: original publication command failed: /workspace/geo339-publication-20261024/publication/subcommands/000016\n"
+  ],
+  "exitCode": 1,
+  "publisherSHA256": "35499f745b83be688d93029aa179b5e83cb023537b8e07bbed3165ae178a2323",
+  "startedUTC": "2026-10-24T01:17:34.053372+00:00",
+  "endedUTC": "2026-10-24T01:17:35.280885+00:00"
+}

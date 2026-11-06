@@ -232,14 +232,98 @@ class LiveMutationAnchorMigration(unittest.TestCase):
         added.update({"M85": "geometry-core/grid_systems.inc", "M86": "geometry-core/kernel/geometry.c",
                       "M87": "geometry-templates/woodworking/native/contacts.c",
                       "M88": "geometry-templates/woodworking/native/contacts.c"})
-        self.assertEqual(28, len(added))
-        self.assertEqual({**expected, **added}, {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS})
+        # #299 (I22 W V_EXTENSION names the edge and the interval): M89-M95 mutate contacts.c's message,
+        # M96 mutates contact_world.c's edge report.
+        added.update({mid: "geometry-templates/woodworking/native/contacts.c" for mid in ("M89", "M90", "M91", "M92", "M93", "M94", "M95")})
+        added["M96"] = "geometry-templates/woodworking/native/contact_world.c"
+        # #316 (the two remaining I11 same-surface filters): M97 in H references.inc, M98 in W world_validation.c.
+        added.update({"M97": "geometry-core/references.inc",
+                      "M98": "geometry-templates/woodworking/native/world_validation.c"})
+        self.assertEqual(38, len(added))
+        # #314 follows the combined M89-M98 and registers the reviewed W/H
+        # submission rules and ordered-evidence guards at their actual owners.
+        stagger = {"M%03d" % n: "geometry-templates/woodworking/native/grid_application.c"
+                   for n in [*range(101, 108), *range(112, 116)]}
+        stagger.update({"M99": "current_geometry.c", "M100": "geometry-core/subgrid_world.inc",
+                        "M108": "geometry-core/transactions.inc", "M109": "geometry-web/engineering_bridge.inc",
+                        "M110": "current_geometry.c", "M111": "geometry-core/transactions.inc",
+                        "M116": "geometry-web/engineering_bridge.inc", "M117": "current_geometry.c",
+                        "M118": "geometry-app/native/stagger_facts.inc",
+                        "M119": "geometry-app/native/world_candidate.inc",
+                        "M120": "geometry-web/engineering_bridge.inc",
+                        "M121": "geometry-templates/woodworking/native/grid_application.c"})
+        self.assertEqual(23, len(stagger))
+        added.update(stagger)
+        self.assertEqual(61, len(added))
+        reading_a = {"M"+str(n): "geometry-templates/woodworking/native/contact_world.c" for n in range(140, 145)}
+        reading_a.update({"M145": "geometry-templates/woodworking/native/member_reference.c",
+                          "M146": "geometry-templates/woodworking/native/member_reference.c",
+                          "M147": "geometry-templates/woodworking/native/world_validation.c",
+                          "M148": "geometry-templates/woodworking/native/world_validation.c"})
+        reading_a["M149"] = "geometry-core/references.inc"
+        reading_a["M150"] = "geometry-templates/woodworking/native/member_reference.c"
+        # RC run rule (2026-10-24): placed members lining the RC plane bound the run.
+        reading_a["M151"] = "geometry-templates/woodworking/native/contact_world.c"
+        self.assertEqual(12, len(reading_a))
+        added.update(reading_a)
+        self.assertEqual(73, len(added))
+        # #360 / D59-D61, I70-I72: the original 123 owners remain exact.
+        # Independently enumerate all 15 official native additions and their
+        # real bridge judges; N15/N16 are private fault probes, not ledger rows.
+        review = "tests.test_identity_ledger_review.IdentityLedgerReview."
+        rebuild = tuple(review + "test_L21_" + route + "_same_key_rebuild"
+                        for route in ("engineering", "assembly", "generation", "section"))
+        identity = {
+            "R09A_N01_ZERO_ID_REOPEN": ("geometry-app/native/identity_ledger.inc",
+                                      (review + "test_B1_zero_ids_save_and_reopen_in_a_new_process",)),
+            "R09A_N02_EXPLICIT_DELETE": ("geometry-app/native/identity_ledger.inc", rebuild),
+            "R09A_N03_COUNT_REBIRTH": ("geometry-app/native/identity_ledger.inc", rebuild),
+            "R09A_N04_PREVIEW_DELETIONS": ("geometry-core/transactions.inc", rebuild),
+            "R09A_N05_PARAMETER_DELETE": ("geometry-core/parameters.inc", rebuild),
+            "R09A_N06_FIELD_DELETE": ("geometry-core/parameters.inc", rebuild),
+            "R09A_N07_BATCH_SETTLEMENT": ("geometry-core/transactions.inc", rebuild),
+            "R09A_N08_LINE_NOOP_RECEIPT": ("geometry-web/web_bridge.c",
+                                         (review + "test_B3_line_noop_receipt_matches_native_undo_active_and_inactive",)),
+            "R09A_N09_DRAG_NOOP_RECEIPT": ("geometry-web/reference_bridge.inc",
+                                         (review + "test_B3_drag_noop_receipt_does_not_consume_history",)),
+            "R09A_N10_REPLACEMENT_EPOCH": ("geometry-app/native/identity_ledger.inc",
+                                         (review + "test_S1_whole_replacement_clears_epoch_only_on_success",)),
+            "R09A_N11_DERIVED_COVERAGE": ("geometry-app/native/identity_ledger.inc",
+                                        (review + "test_S2_derived_placement_covered_and_cold_reopened",)),
+            "R09A_N12_DERIVED_DELETE": ("geometry-core/derived_placements.inc",
+                                      (review + "test_S2_derived_explicit_delete_rebuild_is_new_incarnation",)),
+            "R09A_N13_CHANGED_INCLUDES_MARKS": ("geometry-web/engineering_bridge.inc", rebuild),
+            "R09A_N14_CONTINUED_MARKS": ("geometry-app/native/identity_ledger.inc", rebuild),
+            "R09A_N17_DEFINITION_IMPORT_SERIAL_COMMIT": (
+                "geometry-web/definition_import_bridge.inc",
+                ("tests.test_identity_definition_import_merge.IdentityDefinitionImportMerge."
+                 "test_successful_import_commits_serials_before_the_next_covered_key",
+                 "tests.test_identity_definition_import_merge.IdentityDefinitionImportMerge."
+                 "test_undo_of_import_does_not_reuse_its_serials_on_a_new_branch")),
+        }
+        self.assertEqual(15, len(identity), "R360_NATIVE_IDENTITY_EXACT_INVENTORY")
+        self.assertEqual(len(mutate.MUTANTS), len({m["id"] for m in mutate.MUTANTS}),
+                         "R360_NATIVE_NO_DUPLICATE_IDS")
+        self.assertEqual({**expected, **added},
+                         {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS if m["id"] not in identity},
+                         "R360_ORIGINAL_123_OWNERS_UNCHANGED")
+        additions = {m["id"]: m for m in mutate.MUTANTS if m["id"] in identity}
+        self.assertEqual(set(identity), set(additions), "R360_NATIVE_IDENTITY_NO_MISSING_IDS")
+        for mid, (owner, judges) in identity.items():
+            row = additions[mid]
+            self.assertEqual(owner, mutate.mutant_file(row), mid + " native owner")
+            self.assertEqual("bridge", row.get("binary"), mid + " must execute the native bridge")
+            self.assertEqual(judges, tuple(row.get("tests", ())), mid + " exact behavioral judges")
+            self.assertFalse(row.get("retired") or row.get("equivalent"), mid + " must execute, not be exempted")
+        self.assertEqual({**expected, **added, **{mid: owner for mid, (owner, _) in identity.items()}},
+                         {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS},
+                         "R360_NATIVE_COMPLETE_UNION")
         # The ten P-135/P-141 preview-only guards and the eight GEO-262 P-142
         # guards (M78-M85) run on the actual bridge.
-        self.assertEqual({"M%02d" % n for n in [*range(61, 71), *range(78, 86)]},
+        self.assertEqual({"M%02d" % n for n in [*range(61, 71), *range(78, 86)]} | set(stagger) | set(reading_a) | set(identity),
                          {m["id"] for m in mutate.MUTANTS if m.get("binary") == "bridge"})
         self.assertEqual({"M35", "M51", "M55"}, {m["id"] for m in mutate.MUTANTS if m.get("retired")})
-        self.assertEqual({"M09", "M23", "M36", "M56"}, {m["id"] for m in mutate.MUTANTS if m.get("equivalent")})
+        self.assertEqual({"M09", "M23", "M36", "M56", "M110"}, {m["id"] for m in mutate.MUTANTS if m.get("equivalent")})
         src = mutate.Sources(mutate.ROOT)
         snapshot = (dict(src.texts), dict(src.hashes), src.closure)
         with mock.patch.object(mutate, "run_cmd", side_effect=AssertionError("native commands forbidden")):

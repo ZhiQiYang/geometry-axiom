@@ -1,0 +1,17 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--hostname",
+    "github.com",
+    "--paginate",
+    "repos/ZhiQiYang/geometry-axiom/issues/300/comments?per_page=100"
+  ],
+  "cwd": "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+  "exit_code": 0,
+  "timestamp_utc": "2026-10-26T10:22:04.971752+00:00",
+  "stdout_sha256": "fb9838b7c3513579bbf4267eeb4e44987ce02726a8737dc45340ebfada397942",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 3793,
+  "stderr_bytes": 0
+}

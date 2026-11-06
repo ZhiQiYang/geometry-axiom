@@ -31,6 +31,7 @@
   <div><strong id="connectionTitle">正在讀取場景</strong><p id="connectionMessage">連線完成後即可編輯。</p></div>
   <button id="connectionRetry" type="button" class="secondary-button" hidden>重新連線</button>
 </section>
+<div id="canvasOfflineView" class="connection-canvas-view" tabindex="0" role="region" aria-label="最後讀取的物件畫布，僅供檢視" hidden></div>
 <div id="app" class="app-shell" inert>
   <header class="topbar">
     <div class="brand" aria-label="構形 Canvas">
@@ -71,6 +72,7 @@
             <h3 class="file-section-label">匯入與匯出</h3>
             <button id="btnImportReference" class="menu-item" type="button">匯入參考資料… <small>PDF／圖片</small></button>
             <button id="btnOpen" class="menu-item" type="button">開啟場景檔… <small>.scene</small></button>
+            <button id="btnDefinitionImport" class="menu-item" type="button">從其他專案匯入定義… <small>.gcanvas</small></button>
             <button id="btnExport" class="menu-item" type="button" title="匯出 .scene，包含幾何與工程來源" aria-label="匯出 .scene，不含底圖、草稿、空間模型">匯出場景檔… <small>不含底圖、草稿、空間模型</small></button>
           </section>
           <section data-file-section="resources" role="group" aria-label="工程與範例">
@@ -111,6 +113,7 @@
       <input id="file" type="file" accept=".scene" hidden>
       <input id="referenceFile" type="file" accept="application/pdf,image/png,image/jpeg,image/webp,image/gif" hidden>
       <input id="projectFile" type="file" accept=".gcanvas" hidden>
+      <input id="definitionImportFile" type="file" accept=".gcanvas" hidden>
     </div>
   </header>
 
@@ -660,11 +663,28 @@
   <div class="scenario-actions"><button id="scenarioEdit" class="btn" type="button">隔離試改右側方案</button><button id="scenarioCompare" class="btn" type="button">比較完整定義</button><button id="scenarioAdopt" class="primary-button" type="button" disabled>整體採用右側方案</button></div>
   <p id="scenarioStatus" role="status"></p><div id="scenarioDifference"></div>
 </dialog>
+<dialog id="definitionImportDialog" class="definition-import-dialog" aria-labelledby="definitionImportTitle">
+  <header><h2 id="definitionImportTitle">從其他專案匯入定義</h2><button id="definitionImportClose" type="button" class="text-button">關閉</button></header>
+  <p id="definitionImportSource"></p>
+  <div id="definitionImportRules"></div>
+  <div id="definitionImportBindings"></div>
+  <div id="definitionImportNames"></div>
+  <div id="definitionImportClosure"></div>
+  <p id="definitionImportStatus" role="status"></p>
+  <div id="definitionImportMap"></div>
+  <footer>
+    <button id="definitionImportPreview" type="button" class="btn">預覽匯入</button>
+    <button id="definitionImportConfirm" type="button" class="primary-button" disabled>確認匯入</button>
+    <button id="definitionImportCancel" type="button" class="btn" disabled>取消預覽</button>
+  </footer>
+</dialog>
 <dialog id="scenarioEditorDialog" class="scenario-editor-dialog" aria-labelledby="scenarioEditorTitle">
   <header><h2 id="scenarioEditorTitle">隔離試改</h2><button id="scenarioPauseEdit" class="btn" type="button" disabled>暫存並離開</button><button id="scenarioCancelEdit" class="btn" type="button">取消試改</button><button id="scenarioFinishEdit" class="primary-button" type="button" disabled>保存試改</button></header>
   <p id="scenarioEditorStatus" role="status"></p><iframe id="scenarioEditorFrame" title="獨立方案編輯畫布"></iframe>
 </dialog>
+<script src="kernel/interval-allocation.js"></script>
 <script src="templates/woodworking.js"></script>
+<script src="templates/woodworking-cutting.js"></script>
 <script src="application.js"></script>
 <script src="native-transport.js"></script>
 <script src="vendor/fflate/umd/index.js"></script>
@@ -673,6 +693,8 @@
 <script src="evidence-links.js"></script>
 <script src="evidence-links-ui.js"></script>
 <script src="rule-case-data.js"></script>
+<script src="room-candidate-draft.js"></script>
+<script src="cutting-settings.js"></script>
 <script src="feature-attachments.js"></script>
 <script src="scenario-catalog.js"></script>
 <script src="project-store.js"></script>
@@ -687,7 +709,10 @@
 <script src="reference-ui.js"></script>
 <script src="grid-rule-lines.js"></script>
 <script src="polydraft.js"></script>
+<script src="assembly-provenance.js"></script>
 <script src="timber-schedule.js"></script>
+<script src="cutting-plan.js"></script>
+<script src="cutting-workspace.js"></script>
 <script src="timber-supports.js"></script>
 <script src="room-outline.js"></script>
 <script src="room-outline-workspace.js"></script>
@@ -713,10 +738,12 @@
 <script src="rule-case-workbench.js"></script>
 <script src="rule-case-host.js"></script>
 <script src="assembly-workspace.js"></script>
+<script src="definition-import.js"></script>
 <script src="section-profile-workspace.js"></script>
 <script src="source-inspector.js"></script>
 <script src="source-inspector-app.js"></script>
 <script src="evidence-links-app.js"></script>
+<script src="identity-ledger.js"></script>
 <script src="model-update.js"></script>
 <script src="model-update-app.js"></script>
 <script src="scenario-workspace.js"></script>

@@ -1,0 +1,25 @@
+{
+  "schema": "geo337-h-architecture-resume-static-peer/1",
+  "utc": "2026-10-25T06:41:15.004004+00:00",
+  "source": "2c4635577a8fcb11e88b346547f7bb1c7b739fb7",
+  "prior_actual_architecture_source": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+  "adoption_source": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+  "tool_sha256": "94574f72984c26d72a88eac3536c6c2b316b67a63529c50835a9d6d988a194dc",
+  "expected_changed_architecture_input": [
+    "geometry-core/references.inc"
+  ],
+  "unchanged_policy_counts": [
+    937,
+    55
+  ],
+  "total_inputs": 604,
+  "tests_leaves_outside_architecture_roots": [
+    "tests/geo337_reference_local_init_harness.c",
+    "tests/run_all.expected.json",
+    "tests/test_geo261_load_residual.py"
+  ],
+  "product_gates_rerun": false,
+  "new_architecture_actual_pending": true,
+  "findings": [],
+  "merge_script_review_note": "Remote child existence alone does not prove source S public; requested explicit remote tip equality or ancestry binding before merge."
+}

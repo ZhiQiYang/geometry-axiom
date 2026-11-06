@@ -1,0 +1,65 @@
+from pathlib import Path
+import ast,hashlib,json,subprocess,collections
+P=Path('/workspace/geo260-ac23-full44-eb846c34');S='eb846c345881cc6fc73a53c457a291175365b88c';G='/workspace/geo318-reading-a-prep/meta.git';rows=[]
+def h(b):return hashlib.sha256(b).hexdigest()
+def ck(n,v):rows.append({'name':n,'passed':bool(v)})
+def j(p):return json.loads(p.read_bytes())
+def git(*a):return subprocess.check_output(['git','--git-dir',G,*a])
+req=j(P/'REQUEST.json');res=j(P/'RESULT.json');gate=j(P/'gate-receipt.json');inputs=j(P/'INPUTS_BEFORE.json');src=git('show',S+':tests/section_profile_mutation_check.py');ck('source exact frozen inspected',src==Path('/tmp/train337-adversarial/GEO260_EB846_MUTATION_SOURCE.py.txt').read_bytes());astroot=ast.parse(src);ns={}
+def lit(n):
+ if isinstance(n,ast.Constant):return n.value
+ if isinstance(n,ast.Name):return ns[n.id]
+ if isinstance(n,(ast.List,ast.Tuple)):return [lit(x) for x in n.elts]
+ if isinstance(n,ast.BinOp) and isinstance(n.op,ast.Add):return lit(n.left)+lit(n.right)
+ raise ValueError(ast.dump(n))
+for n in astroot.body:
+ if isinstance(n,ast.Assign) and len(n.targets)==1 and isinstance(n.targets[0],ast.Name):
+  try:ns[n.targets[0].id]=lit(n.value)
+  except (ValueError,KeyError):pass
+case_node=next(n.value for n in astroot.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='CASES' for t in n.targets));defs={}
+for n in case_node.elts:
+ id=lit(n.args[0]);kw={x.arg:lit(x.value) for x in n.keywords if x.arg in ['group','equivalent','error_types']};defs[id]={'tests':lit(n.args[6]),'cause':lit(n.args[7]),'group':kw.get('group','native'),'equivalent':kw.get('equivalent'),'error_types':kw.get('error_types',[])}
+ck('44 original definitions',set(defs)=={f'SPM{i:02d}' for i in range(1,45)});ck('44 exact result identities',len(gate['results'])==44 and {x['id'] for x in gate['results']}==set(defs));ck('groups39native5model',collections.Counter(x['group'] for x in gate['results'])=={'native':39,'model':5});ck('summary43killed1equiv',gate['summary']=={'killed':43,'equivalent':1});ck('real allgate zero',res['source']==req['source']==S and res['setupExit']==res['original44Exit']==res['driverExit']==0 and res['errors']==[]);ck('initialfinal source guard',res['headAfter']==S and res['porcelainAfter']=='' and res['allInputBytesEqualAfter'] and res['sourceAfterClean']);ck('original limits',req['stackBytes']==16777216 and req['compilerLimitSeconds']==600 and req['childLimitSeconds']==req['modelAdapterLimitSeconds']==900 and req['outerTimeout'] is None)
+for out in [P,Path('/tmp/geo260-ac23-publication/full44-launch')]:
+ cs=j(out/'subcommands.json');ck('commandcount '+str(out),len(cs)==(10 if out==P else 1))
+ for i,c in enumerate(cs,1):
+  q=Path(c['directory']);ck(f'{out.name} {i} exit0',c['actual_process_returncode']==0 and not c['timeout_expired']);ck(f'{out.name} {i} source',c['source_sha']==S)
+  for st in ['stdout','stderr']:
+   b=(q/(st+'.bin')).read_bytes();ck(f'{out.name} {i} {st}',len(b)==c[st+'_bytes'] and h(b)==c[st+'_sha256'])
+  if c.get('stdin_provided'):ck(f'{out.name} {i} stdin',h((q/'stdin.bin').read_bytes())==c['stdin_sha256'])
+cs=j(P/'subcommands.json');cmd=cs[7]['command'];ck('originalfull argv no filter',cmd[1:6]==['-B','tests/section_profile_mutation_check.py','--jobs','1','--receipt'] and '--only' not in cmd and '--explore' not in cmd and '--group' not in cmd);ck('actualenvironment',cs[7]['environment']['PYTHONOPTIMIZE'] is None and cs[7]['environment']['TMPDIR']==str(P/'tmp'))
+ck('beforeafter HEAD stdout',(Path(cs[0]['directory'])/'stdout.bin').read_text().strip()==S==(Path(cs[8]['directory'])/'stdout.bin').read_text().strip());ck('beforeafter clean raw',all((Path(cs[i]['directory'])/'stdout.bin').read_bytes()==b'' for i in [1,4,9]))
+ck('worker original pin',h(Path('/tmp/geo260-ac23-publication/run_full44.py').read_bytes())==req['workerSHA256']=='67872d98dcde8fabc7887cdcfc5a88b890fe60de7dff8028534d84dd90dcbc62')
+# Exact Git source inputs from immutable fixed commit, independent of mutable current checkout.
+ck('539 unique inputs',len(inputs)==len({x['path'] for x in inputs})==539)
+tree={}
+for entry in git('ls-tree','-rz',S).split(b'\0'):
+ if entry:
+  hdr,path=entry.split(b'\t');mode,typ,oid=hdr.split();tree[path.decode()]=(mode.decode(),typ.decode(),oid.decode())
+proc=subprocess.run(['git','--git-dir',G,'cat-file','--batch'],input=''.join(x['blob']+'\n' for x in inputs).encode(),capture_output=True,check=True);raw=proc.stdout;offset=0
+for x in inputs:
+ end=raw.index(b'\n',offset);hdr=raw[offset:end].split();size=int(hdr[2]);b=raw[end+1:end+1+size];offset=end+size+2
+ ck('Git mapping '+x['path'],tree[x['path']][1:]==('blob',x['blob']));ck('input bytes '+x['path'],hdr[0].decode()==x['blob'] and len(b)==size==x['bytes'] and h(b)==x['sha256'])
+ck('complete input stream',offset==len(raw))
+def evidence(label,code,e,expected):
+ ck(label+' requested exact',e['requested']==e['executed'] and set(e['requested'])==expected and len(e['requested'])==len(expected));ck(label+' count/skip',e['tests_run']==len(expected) and e['skipped']==e['expected_failures']==e['unexpected_successes']==0);ev=e['events'];ck(label+' counts match events',e['failures']==sum(x['kind']=='failure' for x in ev) and e['errors']==sum(x['kind']=='error' for x in ev));ck(label+' child exit',code==(1 if ev else 0));ck(label+' passed/failed partition',set(e['passed'])==expected-{x['test_id'] for x in ev});ck(label+' original exceptions',j(P/'gate-logs'/(label+'.exceptions.json'))==e);log=(P/'gate-logs'/(label+'.log')).read_text();ck(label+' raw log count',('Ran '+str(len(expected))+' test') in log);return ev
+for group,base in gate['baselines'].items():
+ module,klass=(ns['NATIVE_MODULE'],ns['NATIVE_CLASS']) if group=='native' else (ns['MODEL_MODULE'],ns['MODEL_CLASS']);expected={module+'.'+klass+'.'+n for c in defs.values() if c['group']==group for n in c['tests']}
+ # Original model baseline includes all model module methods, not only killer union.
+ if group=='model':
+  model=ast.parse(git('show',S+':tests/test_section_profile_modeling.py'));klassnode=next(n for n in model.body if isinstance(n,ast.ClassDef) and n.name==klass);expected={module+'.'+klass+'.'+n.name for n in klassnode.body if isinstance(n,ast.FunctionDef) and n.name.startswith('test_')}
+ ev=evidence(group+'-baseline',base['exit'],base['exception_evidence'],expected);ck(group+' baseline normal',not ev and base['exit']==0)
+for rec in gate['results']:
+ id=rec['id'];d=defs[id];group=d['group'];module,klass=(ns['NATIVE_MODULE'],ns['NATIVE_CLASS']) if group=='native' else (ns['MODEL_MODULE'],ns['MODEL_CLASS']);expected={module+'.'+klass+'.'+n for n in d['tests']};ev=evidence(id,rec['exit'],rec['exception_evidence'],expected);ck(id+' group exact',rec['group']==group)
+ if d['equivalent']:ck(id+' declared equivalent',id=='SPM24' and rec['verdict']=='equivalent' and rec['exit']==0 and not ev)
+ else:
+  detected=[e for e in ev if (e['kind']=='failure' and e['exception_type']=='builtins.AssertionError') or (e['kind']=='error' and e['exception_type'] in d['error_types'])];ck(id+' original named singlecause killer',rec['verdict']=='killed' and rec['exit']==1 and any(e['test_id'] in expected and all(c in e['message'] for c in d['cause']) for e in detected));ck(id+' no undeclared errors',all(e['kind']!='error' or e['exception_type'] in d['error_types'] for e in ev))
+ if group=='native':
+  c=j(P/'gate-logs'/('bridge-'+id+'.compile.json'));ck(id+' compile0/hash',c['exit']==0 and c['binary_sha256']==rec['binary_sha256'] and c['binary_sha256']!=gate['baselines']['native']['binary_sha256'])
+ elif id in ['SPM36','SPM39']:
+  c=j(P/'gate-logs'/(id+'.model-base.compile.json'));ck(id+' adaptercompile0/hash',c['exit']==0 and c['binary_sha256']==rec['adapter_sha256'] and rec['adapter_sha256']!=gate['baselines']['model']['adapter_sha256'])
+compiles=list((P/'gate-logs').glob('*compile.json'));ck('42 original compile records',len(compiles)==42)
+for p in compiles:
+ c=j(p);ck('compile exposed full text '+p.name,c['exit']==0 and isinstance(c['stdout'],str) and isinstance(c['stderr'],str) and '\ufffd' not in c['stdout']+c['stderr'])
+ck('SPM38/40 only declared ModelError',[x['id'] for x in gate['results'] if x['exception_evidence']['errors']]==['SPM38','SPM40']);ck('baseline native29 model20',[gate['baselines'][k]['exception_evidence']['tests_run'] for k in ['native','model']]==[29,20]);ck('optional observer1 retained',j(P/'environment-observation/PARTIAL_OBSERVATION.json')['observerProcessExit']==1)
+r={'scope':'GEO260 original full44 actual independent peer; no subject rerun; fixed Git source539 and original evidence/causes inspected','source_sha':S,'checks':rows,'findings':[x for x in rows if not x['passed']],'exit_code':int(any(not x['passed'] for x in rows)),'accepted_results':{'cases':44,'groups':{'native':39,'model':5},'killed':43,'equivalent':1,'baselines':{'native':29,'model':20},'compile_json_records':42},'limitations':['No per-build C/ELF payload retention in full44; only original compile exposed text and source/binary hashes.','Nested original rows have no SHA field; bind via parent request/command and immutable inputs, without adding invented fields.','Optional Chrome alias observer failure remains separate; no browser gate is implied.','Exploratory metadata read first assumed equivalent SPM24 had first_failure and raised KeyError in reviewer tool; no subject command rerun or receipt changed.']};out=Path('/tmp/train337-adversarial/GEO260_EB846_FULL44_ACTUAL_PEER.json');out.write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'path':str(out),'sha256':h(out.read_bytes()),'checks':len(rows),'exit':r['exit_code'],'findings':r['findings']}));raise SystemExit(r['exit_code'])

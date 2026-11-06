@@ -479,7 +479,7 @@
     if(result.ok)await settled(value,result);
     else {form=null;value.closed=true;toast(result.error || '這次候選未提交，請重新選取。');}
   }
-  async function applyLegacyFields(id) {
+  async function applyLegacyFields(id, releasePreflight = () => {}) {
     const stamp=snapshot(), ids=selectedIds();if(ids.length!==1||ids[0]!==id)return false;
     const input=Object.fromEntries(['A','B','Dir','Side','Role','Pri','Anchor','Selector'].map(key=>[key,$('tbEdit'+key)?.value ?? '']));
     const priorityEdited=input.Pri!==$('tbEditPri')?.getAttribute('value');
@@ -488,6 +488,7 @@
       const old=result.timbers[0],placement=old.definition.placement;
       if(!current(stamp) || Object.entries(input).some(([key,text])=>$('tbEdit'+key)?.value!==text))throw Error('輸入已變更，請重新核對。');
       if(input.Anchor!==placement.anchor || input.Selector.trim()!==placement.selector || input.Side!==placement.side)return false;
+      releasePreflight();
       const value=start('batch');value.read=result;renderBatch(value);
       const set=(field,id,text)=>{document.querySelector(`[data-timber-patch="${field}"]`).checked=true;$(id).value=text;};
       for(const field of ['A','B'])if(Number(input[field])!==old.effective[field]){set(field,'timberEdit'+field+'Mode','direct');$('timberEdit'+field+'Value').value=input[field];}

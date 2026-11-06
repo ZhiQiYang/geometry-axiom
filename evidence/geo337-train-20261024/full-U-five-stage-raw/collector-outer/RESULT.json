@@ -1,0 +1,24 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo323-union-full-collection-20261024/collect.py"
+  ],
+  "cwd": "/workspace/geo323-union-full-collection-20261024",
+  "heavy_slot": "/tmp/g261r3/heavy.lock",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": null,
+    "PYTHONPATH": null,
+    "PYTHONOPTIMIZE": null
+  },
+  "source_sha": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+  "started_utc": "2026-10-24T04:29:12.919716+00:00",
+  "subject_executed": false,
+  "actual_process_exit": 0,
+  "ended_utc": "2026-10-24T04:29:17.382441+00:00",
+  "stdout_sha256": "24bf87401a2643f16e95390369bc4a3e66038ad52d092f789769d98022250b6c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

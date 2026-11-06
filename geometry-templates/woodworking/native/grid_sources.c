@@ -243,6 +243,12 @@ bool wood_grid_sources_definition(WoodGridSources *s,uint32_t id,WoodGridApplica
     return wood_grid_root_get(s,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value,NULL,0)&&
         value.kind==GEO_SOURCE_DEFINITION&&wood_grid_decode_application(&value.as.definition,id,wood_grid_find(s->base.state,id),out);
 }
+bool wood_grid_sources_application_value(WoodGridSources *s,uint32_t id,WoodGridApplication *out)
+{
+    if(!s||!out)return false;GeoSourceValue value;
+    return wood_grid_root_get(s,WOOD_GRID_SOURCE_APPLICATION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&value,NULL,0)&&
+        value.kind==GEO_SOURCE_DEFINITION&&wood_grid_decode_application_value(&value.as.definition,id,out);
+}
 static bool wood_grid_install_application(WoodGridSources *s,uint32_t id,const GeoSourceValue *value,bool evaluated)
 {
     WoodGridApplication application;
@@ -455,7 +461,7 @@ bool wood_grid_sources_bind(WoodGridSources *s,WoodGridContext *c)
 {
     if(!s||!c)return false;const WoodGridContext *b=&s->base;const WoodEngineeringContext *e=&c->engineering,*a=&b->engineering;
     if((c->evaluation&&c->evaluation!=&s->hooks)||c->state!=b->state||c->sources!=b->sources||c->user!=b->user||c->host!=b->host||c->coordinate!=b->coordinate||c->vertex!=b->vertex||c->reference!=b->reference||c->parameter_error!=b->parameter_error||c->before!=b->before||
-       e->state!=a->state||e->versions!=a->versions||e->user!=a->user||e->error!=a->error||e->error_capacity!=a->error_capacity||e->sources!=a->sources||e->placement!=a->placement||e->target!=a->target||e->named_value!=a->named_value||e->parameter!=a->parameter||e->member_owned!=a->member_owned||e->write_dimension!=a->write_dimension||e->serializable!=a->serializable||e->resolve_source!=a->resolve_source||e->resolve_binding!=a->resolve_binding||e->source_named!=a->source_named||e->source_parameter!=a->source_parameter||e->depend_definition!=a->depend_definition||e->validate_application!=a->validate_application||e->source_version_field!=a->source_version_field||e->source_version_definition!=a->source_version_definition||e->source_application!=a->source_application)return false;
+       e->state!=a->state||e->versions!=a->versions||e->user!=a->user||e->error!=a->error||e->error_capacity!=a->error_capacity||e->sources!=a->sources||e->placement!=a->placement||e->target!=a->target||e->named_value!=a->named_value||e->parameter!=a->parameter||e->member_owned!=a->member_owned||e->write_dimension!=a->write_dimension||e->serializable!=a->serializable||e->resolve_source!=a->resolve_source||e->resolve_binding!=a->resolve_binding||e->last_terminal!=a->last_terminal||e->source_named!=a->source_named||e->source_parameter!=a->source_parameter||e->depend_definition!=a->depend_definition||e->validate_application!=a->validate_application||e->source_version_field!=a->source_version_field||e->source_version_definition!=a->source_version_definition||e->source_application!=a->source_application)return false;
     c->evaluation=&s->hooks;return true;
 }
 bool wood_grid_sources_definitions(WoodGridSources *s,char *error,size_t cap)

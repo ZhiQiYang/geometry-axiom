@@ -55,13 +55,34 @@ typedef struct {
 } AsmBinding;
 #define ASM_INSTANCE_MAX 16
 #define ASM_GENERATION_CAPABILITY "assembly-timber-generation/1"
+#define ASM_BAY_CAPABILITY "assembly-bay-repeat/1"
+#define ASM_OWNER_MAX 48
+#define ASM_BAY_PRIMARY_MAX 12
+#define ASM_BAY_LINE_MAX 24
+#define ASM_BAY_OMIT_MAX 24
+#define ASM_BAY_CELL_MAX ((ASM_BAY_PRIMARY_MAX-1)*ASM_BAY_LINE_MAX)
+typedef enum { ASM_ID_MEMBER=0, ASM_ID_PRIMARY=1, ASM_ID_SECONDARY=2 } AsmIdentityKind;
+typedef struct { int kind; uint32_t key,left,right; } AsmIdentity;
+typedef enum { ASM_AT_GUIDE=1, ASM_AT_GRID=2, ASM_AT_OUTLINE=3 } AsmLocationKind;
+typedef struct { int kind,axis,edge; uint32_t id; int64_t index; char edge_key[512]; } AsmLocation;
+typedef struct { uint32_t key; AsmLocation at; uint32_t ends[2]; } AsmBayPrimary;
+typedef struct { uint32_t key; AsmLocation at; } AsmBayLine;
+typedef struct { uint32_t line,left,right; } AsmBayCell;
+typedef struct { AsmIdentity identity; uint32_t timber; } AsmMapping;
 typedef struct {
     uint32_t id,binding_id,surface_id,rule_id,rule_version;
     char name[ASM_NAME_MAX],rule_hash[65],content[ASM_RECORD_MAX];
     uint32_t member[3],timber[3],guide[3],ends[3][2];
     bool secondary[3];
+    bool bay_repeat;
+    AsmBayPrimary primaries[ASM_BAY_PRIMARY_MAX];
+    AsmBayLine lines[ASM_BAY_LINE_MAX];
+    AsmBayCell omit[ASM_BAY_OMIT_MAX];
+    AsmMapping mapping[ASM_OWNER_MAX];
+    size_t primary_count,line_count,omit_count,mapping_count;
 } AsmInstance;
-typedef struct { uint32_t timber,instance,member; } AsmOwner;
+/* Legacy member stays first: old scene records and initializers are unchanged. */
+typedef struct { uint32_t timber,instance,member; int kind; uint32_t left,right; } AsmOwner;
 typedef struct {
     AsmRuleVersion rules[ASM_RULE_MAX];
     size_t rule_count;
@@ -69,10 +90,11 @@ typedef struct {
     size_t binding_count;
     AsmInstance instances[ASM_INSTANCE_MAX];
     size_t instance_count;
-    AsmOwner owners[ASM_INSTANCE_MAX*3];
+    AsmOwner owners[ASM_OWNER_MAX];
     size_t owner_count;
     bool generation_required;
     bool loading;
+    bool bay_required;
 } AssemblyState;
 
 /* Transient diagnostics stay outside the copied definition store. */
@@ -80,11 +102,35 @@ typedef struct { int kind;uint32_t id,field_id,version; } AsmDiagnostic;
 typedef struct { uint32_t surface_id; AsmDir direction; } WoodAssemblyGuide;
 typedef struct { uint32_t surface_id; WoodMemberRole role; GeoCoord width,depth; bool placed; } WoodAssemblyMember;
 typedef struct {
+    uint32_t surface_id; int axis;
+    GeoCoord coordinate;
+    bool subgrid,phased,from_fill;
+    GeoSegment2 edge; GeoPoint2 outward;
+} WoodAssemblyPosition;
+typedef struct { int kind; uint32_t id; } WoodAssemblyDependency;
+enum { ASM_DEP_TIMBER=1,ASM_DEP_GUIDE=2,ASM_DEP_GRID=3,ASM_DEP_OUTLINE=4,ASM_DEP_DATUM=5 };
+#define ASM_BAY_PATH_MAX 64
+typedef struct {
+    char category[16],code[32],clause[32],expected[160],actual[256];
+    uint32_t instance,primary,line,owned;
+    WoodAssemblyDependency path[ASM_BAY_PATH_MAX]; size_t path_count;
+} AsmBayIssue;
+typedef struct { uint32_t instance,line,left,right,timber; bool omitted; } AsmBayCellReport;
+typedef struct { uint32_t instance,key; GeoRect2 range; } AsmBayPrimaryReport;
+/* Candidate-only evidence: never copied into World/history or serialized. */
+typedef struct {
+    AsmBayCellReport cells[ASM_INSTANCE_MAX*ASM_BAY_CELL_MAX]; size_t cell_count;
+    AsmBayPrimaryReport primaries[ASM_INSTANCE_MAX*ASM_BAY_PRIMARY_MAX]; size_t primary_count;
+    AsmBayIssue issues[ASM_OWNER_MAX]; size_t issue_count;
+    uint32_t retired[ASM_OWNER_MAX]; size_t retired_count;
+} AsmBayReport;
+typedef struct {
     GeoCoord width,depth;
     uint32_t surface_id,guide_id,between[2];
     AsmDir direction;
     WoodMemberRole role;
     uint32_t timber_id,reserved;
+    AsmLocation at;
 } WoodAssemblyDefinition;
 typedef struct {
     void *user;
@@ -100,6 +146,7 @@ typedef struct {
      * instance's original primary/secondary write sequence. */
     bool (*slot_record)(void *,uint32_t,uint32_t,char *,size_t);
     bool (*instance_definition)(void *,const AsmInstance *,const AsmInstance **);
+    bool (*bay_generated)(void *,const AsmInstance *,AsmIdentity,WoodAssemblyDefinition *);
 } WoodAssemblyEvaluation;
 /* Host callbacks expose facts, storage writes and legacy serialization only.
  * W selects topology, dimensions, roles, support dependencies and phase order. */
@@ -128,6 +175,11 @@ typedef struct {
     bool (*anchor_matches)(void *,uint32_t,const WoodAssemblyDefinition *);
     bool (*instance_content)(void *,AsmInstance *,GeoJson *,int);
     const WoodAssemblyEvaluation *evaluation;
+    AsmBayReport *bay_report;
+    /* Read-only same-candidate facts. W chooses admissibility and traversal. */
+    bool (*position)(void *,uint32_t,const AsmLocation *,WoodAssemblyPosition *);
+    bool (*dependencies)(void *,WoodAssemblyDependency,WoodAssemblyDependency *,size_t,size_t *,bool);
+    bool (*external_reference)(void *,uint32_t,uint32_t,char *,size_t);
 } WoodAssemblyContext;
 const AsmRuleVersion *wood_assembly_rule(const WoodAssemblyContext *,uint32_t,uint32_t);
 AsmBinding *wood_assembly_binding(WoodAssemblyContext *,uint32_t);
@@ -154,5 +206,15 @@ bool wood_assembly_generated_dimension_direct(WoodAssemblyContext *,const AsmIns
 bool wood_assembly_instance_check_direct(const WoodAssemblyContext *,const AsmInstance *);
 bool wood_assembly_generation_operation(WoodAssemblyContext *,GeoJson *,int);
 bool wood_assembly_instance_load(WoodAssemblyContext *,GeoJson *,int);
+bool wood_assembly_identity_equal(AsmIdentity,AsmIdentity);
+size_t wood_assembly_mapping_count(const AsmInstance *);
+AsmMapping wood_assembly_mapping_at(const AsmInstance *,size_t);
+AsmIdentity wood_assembly_owner_identity(const AsmOwner *);
+int wood_assembly_mapping_index(const AsmInstance *,AsmIdentity);
+bool wood_assembly_bay_parse(WoodAssemblyContext *,GeoJson *,int,AsmInstance *);
+bool wood_assembly_bay_prepare(WoodAssemblyContext *);
+bool wood_assembly_bay_member_definition_direct(WoodAssemblyContext *,const AsmInstance *,AsmIdentity,WoodAssemblyDefinition *);
+bool wood_assembly_bay_check(const WoodAssemblyContext *,const AsmInstance *);
+bool wood_assembly_bay_failure(const WoodAssemblyContext *,const char *,const char *,const char *,uint32_t,uint32_t,uint32_t,const char *,const char *);
 
 #endif

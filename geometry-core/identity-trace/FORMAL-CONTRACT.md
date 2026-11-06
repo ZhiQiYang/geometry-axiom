@@ -93,7 +93,7 @@ K3-L／PF 整合 owner 須以 **K3-PF-FP-1** 回報上述三例及去除來源�
 | `delete-parameter` | 卡片及其全部欄位；記錄點位於 `parameter_remove`，涵蓋工程、組構、組構生成、斷面四種批次 |
 | `put-parameter` 重宣告省略欄位 | 被省略的 parameter-field；同上四種批次。即使現行 I38 已另擋住同提交重用，仍必須記錄 |
 | `delete-placement` | 斷面批次刪除的 placement |
-| PF-0 衍生承載面刪除 | placement 鍵；本分支只有 PF-0 條文，具體 op 名待其實作切片登記。不得略過此路徑或自行虛構現存 op |
+| `delete-derived-placement` | PF 衍生承載面的 placement 鍵；H 層 `app_dp_remove` 在成功移除時記錄，涵蓋 `panel-fill-preview`／`panel-fill-confirm`。純 `wood_dp_rebuild` 重建幾何與 `put-derived-placement` 就地重宣告不結束存在期；同候選刪除再建同 id 必須換記號 |
 
 組構實例生成／更新／刪除移除的 owned timber 不受 D59 涵蓋。本清單不放寬 I7a、I23、I37、I38、I49 的刪除保護，也不把已登記的 GEO-258 缺陷當成允許行為。新增任何會移除受涵蓋物件的 op 時，必須同時更新清單及刪除集合驗收。
 

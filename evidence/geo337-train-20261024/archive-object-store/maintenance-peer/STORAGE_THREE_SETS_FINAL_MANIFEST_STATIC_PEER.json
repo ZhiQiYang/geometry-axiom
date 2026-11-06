@@ -1,0 +1,17 @@
+{
+  "schema": "three-maintenance-sets-final-publication-manifest-static-peer-v1",
+  "checks": 146,
+  "exit_code": 0,
+  "findings": [],
+  "manifest_sha256": "9f783961d15bf44016473596841003fa7a1b2d714b8840c3238c487468bafd9f",
+  "files": 46,
+  "bytes": 4806633,
+  "archive_count": 3,
+  "archive_bytes": 4634799,
+  "fresh_archive_body_reads": 0,
+  "limits": [
+    "Manifest and small metadata only; root must perform fresh executor hash and normal expected-parent publication guards. No branch/index/network mutation by reviewer.",
+    "Complete105original payload archive is required alongside metadata; no body omission accepted.",
+    "Only historical maintenance evidence; no product gate/PRbody/source state changed. Previous verdicts and historical alias registry remain unchanged."
+  ]
+}

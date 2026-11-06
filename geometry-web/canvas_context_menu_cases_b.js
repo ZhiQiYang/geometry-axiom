@@ -186,7 +186,10 @@ module.exports = s => {
       check('CTRL_A_ONLY_SELECTS_INPUT_TEXT',await read(`(() => {const n=document.querySelector(${JSON.stringify(search)});return document.activeElement===n&&n.selectionStart===0&&n.selectionEnd===n.value.length;})()`)&&await selection()===selectionBefore);
       await send('Input.insertText',{text:'空間'});await frames();
       check('UNIQUE_SPACE_SEARCH_RESULT',await read(`(() => {const n=[...$('canvasCtxMenu').querySelectorAll('.fcm-list [data-oc-act]')];return n.length===1&&n[0].dataset.ocAct==='new:btnNewSpace'&&n[0].getAttribute('aria-disabled')==='false';})()`));
-      const enter=await mark();await key('Enter','Enter',13);await settle();
+      const enter=await mark();await key('Enter','Enter',13);
+      await wait('IME_END_TRANSACTION_SETTLED',
+        `__p352.requests.slice(${enter.requests}).some(r=>r.cmd==='line history-end'&&r.settled&&r.ok===true)&&!ReferenceWorkspace.history.group&&__p352.pending===0&&!oc.busy`);
+      await settle();
       const after=await query('objects'),ids=new Set(o.spaces.map(x=>x.id)),added=after.spaces.filter(x=>!ids.has(x.id)),cmd=await commands(enter);
       check('IME_END_ONE_NATIVE_SPACE',added.length===1&&cmd.filter(c=>/^line space \d+$/.test(c)).length===1,{added,cmd});
       check('IME_END_ONE_HISTORY_STEP',await history.single(before.pin));

@@ -28,12 +28,12 @@ function installSourceDumpGate(scope, context) {
   scope.__sourceDumpHeld = false;
   const gate = new Promise(resolve => { scope.__releaseSourceDump = resolve; });
   const interceptedFetch = async (...args) => {
-    // Recovery also reads dump. Select the source owner before network I/O and
-    // reserve it immediately, so a concurrent background response cannot win.
+    // Recovery also reads scene text. Select the deidentified source owner before
+    // network I/O and reserve it, so a concurrent background response cannot win.
     const caller = new Error().stack || '';
     let command;
     try { command = JSON.parse(args[1]?.body || '{}').cmd; } catch (_) {}
-    const dump = String(args[0]) === '/api' && command === 'dump';
+    const dump = String(args[0]) === '/api' && command === 'dump-deidentified';
     const targeted = evidence.phase === 'armed' && dump &&
       /(?:^|\n)\s*at (?:async )?(?:Object\.)?openCurrentFace\s*\(/.test(caller);
     if (targeted) {

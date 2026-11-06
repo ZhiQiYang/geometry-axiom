@@ -1,0 +1,1346 @@
+{
+  "scope": "Whole W lexical proposal and original recorded27 guards+2 neutral+full scanner; no final receipt regeneration",
+  "checks": 329,
+  "exit_code": 0,
+  "findings": [],
+  "proposal_sha256": "cee137d75666a712e8f538afb29a59f59e269a49e7cc58dd556116176800033f",
+  "proof_tool_sha256": "9663a507229764733bfcf9ea4b0b7c2138225816359762c102f56058b6e9ba2e",
+  "result_sha256": "de2404496fdfe12b453e971ab191ca7bb64a10c3f3911734ab2ac65ac3fad835",
+  "candidate_manifest_sha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
+  "added_identifiers": [
+    "WOOD_BOUNDARY_END_BARE_RC",
+    "WOOD_BOUNDARY_END_ORDINARY",
+    "WOOD_BOUNDARY_END_PARTIAL",
+    "WoodBoundaryEndAdmission",
+    "wood_contact_boundary_end_admission",
+    "wood_contact_boundary_end_uses_member_facts",
+    "wood_contact_end_support_check",
+    "wood_reference_boundary_end",
+    "wood_reference_partial_ref_candidates"
+  ],
+  "original_command_count": 35,
+  "limits": [
+    "Original lexer invoked independently only; no C compile, formal test rerun, root source edit or branch mutation.",
+    "Nine guarded concrete W identifiers are mechanical union strengthening; no axiom semantics or locked decision changed.",
+    "Four architecture artifacts still require final-source regeneration and all three original judges.",
+    "Source-changing343 next merge must refresh its own source closure; do not reuse U physical execution identity."
+  ],
+  "check_details": [
+    {
+      "check": "true product U",
+      "passed": true
+    },
+    {
+      "check": "true physical E4d not relabelled U",
+      "passed": true
+    },
+    {
+      "check": "exact old manifest",
+      "passed": true
+    },
+    {
+      "check": "exact candidate manifest",
+      "passed": true
+    },
+    {
+      "check": "928 to937 identifiers",
+      "passed": true
+    },
+    {
+      "check": "all other manifest fields exactly unchanged",
+      "passed": true
+    },
+    {
+      "check": "all55 strings unchanged",
+      "passed": true
+    },
+    {
+      "check": "strict strengthening no removed prior guards",
+      "passed": true
+    },
+    {
+      "check": "original scanner exact",
+      "passed": true
+    },
+    {
+      "check": "all60 registered W C inputs",
+      "passed": true
+    },
+    {
+      "check": "whole W inventory none hand-picked",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/rectangular-grid/rectangular_grid.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/rectangular-grid/rectangular_grid.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/assembly.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/assembly.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/assembly_sources.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/boundary_policy.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/boundary_policy.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/contact_sources.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/contact_sources.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/contact_world.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/contact_world.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/contacts.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/contacts.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/cut_list.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/cut_list.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/definition_sources.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/definition_sources.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/derived_placement.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/derived_placement.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/document.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/domain_values.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/engineering.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/engineering.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/engineering_operations.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/engineering_operations.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/engineering_sources.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/engineering_sources.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/finish.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/finish.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/finish_sources.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/finish_sources.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/grid_application.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/grid_application.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/grid_cells.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/grid_definition_codec.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/grid_definition_codec.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/grid_rules.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/grid_sources.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/grid_sources.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/member_declaration.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/member_declaration.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/member_placement.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/member_reference.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/member_reference.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/members.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/members.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/obstacles.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/panel_layout.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/panel_layout.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/panel_support.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/panel_support.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/section_profile.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/section_profile.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/section_profile_sources.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/section_profile_sources.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/supports.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/supports.h",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/world_validation.c",
+      "passed": true
+    },
+    {
+      "check": "unchanged source geometry-templates/woodworking/native/world_validation.h",
+      "passed": true
+    },
+    {
+      "check": "nine exact independent lexical additions",
+      "passed": true
+    },
+    {
+      "check": "complete old plus current W union",
+      "passed": true
+    },
+    {
+      "check": "independent no new strings",
+      "passed": true
+    },
+    {
+      "check": "full lexical origins WOOD_BOUNDARY_END_BARE_RC",
+      "passed": true
+    },
+    {
+      "check": "W native origins only WOOD_BOUNDARY_END_BARE_RC",
+      "passed": true
+    },
+    {
+      "check": "full lexical origins WOOD_BOUNDARY_END_ORDINARY",
+      "passed": true
+    },
+    {
+      "check": "W native origins only WOOD_BOUNDARY_END_ORDINARY",
+      "passed": true
+    },
+    {
+      "check": "full lexical origins WOOD_BOUNDARY_END_PARTIAL",
+      "passed": true
+    },
+    {
+      "check": "W native origins only WOOD_BOUNDARY_END_PARTIAL",
+      "passed": true
+    },
+    {
+      "check": "full lexical origins WoodBoundaryEndAdmission",
+      "passed": true
+    },
+    {
+      "check": "W native origins only WoodBoundaryEndAdmission",
+      "passed": true
+    },
+    {
+      "check": "full lexical origins wood_contact_boundary_end_admission",
+      "passed": true
+    },
+    {
+      "check": "W native origins only wood_contact_boundary_end_admission",
+      "passed": true
+    },
+    {
+      "check": "full lexical origins wood_contact_boundary_end_uses_member_facts",
+      "passed": true
+    },
+    {
+      "check": "W native origins only wood_contact_boundary_end_uses_member_facts",
+      "passed": true
+    },
+    {
+      "check": "full lexical origins wood_contact_end_support_check",
+      "passed": true
+    },
+    {
+      "check": "W native origins only wood_contact_end_support_check",
+      "passed": true
+    },
+    {
+      "check": "full lexical origins wood_reference_boundary_end",
+      "passed": true
+    },
+    {
+      "check": "W native origins only wood_reference_boundary_end",
+      "passed": true
+    },
+    {
+      "check": "full lexical origins wood_reference_partial_ref_candidates",
+      "passed": true
+    },
+    {
+      "check": "W native origins only wood_reference_partial_ref_candidates",
+      "passed": true
+    },
+    {
+      "check": "documented union rule no new numerical threshold or SSOT decision",
+      "passed": true
+    },
+    {
+      "check": "nine actual triples27 original commands",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000001",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000001",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000001",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000001",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000002",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000002",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000002",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000002",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000003",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000003",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000003",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000003",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000004",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000004",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000004",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000004",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000005",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000005",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000005",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000005",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000006",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000006",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000006",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000006",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000007",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000007",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000007",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000007",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000008",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000008",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000008",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000008",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000009",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000009",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000009",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000009",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000010",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000010",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000010",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000010",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000011",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000011",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000011",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000011",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000012",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000012",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000012",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000012",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000013",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000013",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000013",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000013",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000014",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000014",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000014",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000014",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000015",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000015",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000015",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000015",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000016",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000016",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000016",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000016",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000017",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000017",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000017",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000017",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000018",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000018",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000018",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000018",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000019",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000019",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000019",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000019",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000020",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000020",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000020",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000020",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000021",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000021",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000021",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000021",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000022",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000022",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000022",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000022",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000023",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000023",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000023",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000023",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000024",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000024",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000024",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000024",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000025",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000025",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000025",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000025",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000026",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000026",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000026",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000026",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000027",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000027",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000027",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000027",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000028",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000028",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000028",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000028",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000029",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000029",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000029",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000029",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000030",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000030",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000030",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000030",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000031",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000031",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000031",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000031",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000032",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000032",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000032",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000032",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000033",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000033",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000033",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000033",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000034",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000034",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000034",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000034",
+      "passed": true
+    },
+    {
+      "check": "original capture row 000035",
+      "passed": true
+    },
+    {
+      "check": "original terminal 000035",
+      "passed": true
+    },
+    {
+      "check": "full stdout 000035",
+      "passed": true
+    },
+    {
+      "check": "full stderr 000035",
+      "passed": true
+    },
+    {
+      "check": "actual0/1/0 WOOD_BOUNDARY_END_BARE_RC",
+      "passed": true
+    },
+    {
+      "check": "actual process/source WOOD_BOUNDARY_END_BARE_RC fixed",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe WOOD_BOUNDARY_END_BARE_RC fixed",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection WOOD_BOUNDARY_END_BARE_RC fixed",
+      "passed": true
+    },
+    {
+      "check": "actual process/source WOOD_BOUNDARY_END_BARE_RC withdrawn",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe WOOD_BOUNDARY_END_BARE_RC withdrawn",
+      "passed": true
+    },
+    {
+      "check": "old policy misses specific guard WOOD_BOUNDARY_END_BARE_RC",
+      "passed": true
+    },
+    {
+      "check": "actual process/source WOOD_BOUNDARY_END_BARE_RC restored",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe WOOD_BOUNDARY_END_BARE_RC restored",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection WOOD_BOUNDARY_END_BARE_RC restored",
+      "passed": true
+    },
+    {
+      "check": "actual0/1/0 WOOD_BOUNDARY_END_ORDINARY",
+      "passed": true
+    },
+    {
+      "check": "actual process/source WOOD_BOUNDARY_END_ORDINARY fixed",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe WOOD_BOUNDARY_END_ORDINARY fixed",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection WOOD_BOUNDARY_END_ORDINARY fixed",
+      "passed": true
+    },
+    {
+      "check": "actual process/source WOOD_BOUNDARY_END_ORDINARY withdrawn",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe WOOD_BOUNDARY_END_ORDINARY withdrawn",
+      "passed": true
+    },
+    {
+      "check": "old policy misses specific guard WOOD_BOUNDARY_END_ORDINARY",
+      "passed": true
+    },
+    {
+      "check": "actual process/source WOOD_BOUNDARY_END_ORDINARY restored",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe WOOD_BOUNDARY_END_ORDINARY restored",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection WOOD_BOUNDARY_END_ORDINARY restored",
+      "passed": true
+    },
+    {
+      "check": "actual0/1/0 WOOD_BOUNDARY_END_PARTIAL",
+      "passed": true
+    },
+    {
+      "check": "actual process/source WOOD_BOUNDARY_END_PARTIAL fixed",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe WOOD_BOUNDARY_END_PARTIAL fixed",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection WOOD_BOUNDARY_END_PARTIAL fixed",
+      "passed": true
+    },
+    {
+      "check": "actual process/source WOOD_BOUNDARY_END_PARTIAL withdrawn",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe WOOD_BOUNDARY_END_PARTIAL withdrawn",
+      "passed": true
+    },
+    {
+      "check": "old policy misses specific guard WOOD_BOUNDARY_END_PARTIAL",
+      "passed": true
+    },
+    {
+      "check": "actual process/source WOOD_BOUNDARY_END_PARTIAL restored",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe WOOD_BOUNDARY_END_PARTIAL restored",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection WOOD_BOUNDARY_END_PARTIAL restored",
+      "passed": true
+    },
+    {
+      "check": "actual0/1/0 WoodBoundaryEndAdmission",
+      "passed": true
+    },
+    {
+      "check": "actual process/source WoodBoundaryEndAdmission fixed",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe WoodBoundaryEndAdmission fixed",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection WoodBoundaryEndAdmission fixed",
+      "passed": true
+    },
+    {
+      "check": "actual process/source WoodBoundaryEndAdmission withdrawn",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe WoodBoundaryEndAdmission withdrawn",
+      "passed": true
+    },
+    {
+      "check": "old policy misses specific guard WoodBoundaryEndAdmission",
+      "passed": true
+    },
+    {
+      "check": "actual process/source WoodBoundaryEndAdmission restored",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe WoodBoundaryEndAdmission restored",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection WoodBoundaryEndAdmission restored",
+      "passed": true
+    },
+    {
+      "check": "actual0/1/0 wood_contact_boundary_end_admission",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_contact_boundary_end_admission fixed",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_contact_boundary_end_admission fixed",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection wood_contact_boundary_end_admission fixed",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_contact_boundary_end_admission withdrawn",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_contact_boundary_end_admission withdrawn",
+      "passed": true
+    },
+    {
+      "check": "old policy misses specific guard wood_contact_boundary_end_admission",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_contact_boundary_end_admission restored",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_contact_boundary_end_admission restored",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection wood_contact_boundary_end_admission restored",
+      "passed": true
+    },
+    {
+      "check": "actual0/1/0 wood_contact_boundary_end_uses_member_facts",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_contact_boundary_end_uses_member_facts fixed",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_contact_boundary_end_uses_member_facts fixed",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection wood_contact_boundary_end_uses_member_facts fixed",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_contact_boundary_end_uses_member_facts withdrawn",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_contact_boundary_end_uses_member_facts withdrawn",
+      "passed": true
+    },
+    {
+      "check": "old policy misses specific guard wood_contact_boundary_end_uses_member_facts",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_contact_boundary_end_uses_member_facts restored",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_contact_boundary_end_uses_member_facts restored",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection wood_contact_boundary_end_uses_member_facts restored",
+      "passed": true
+    },
+    {
+      "check": "actual0/1/0 wood_contact_end_support_check",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_contact_end_support_check fixed",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_contact_end_support_check fixed",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection wood_contact_end_support_check fixed",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_contact_end_support_check withdrawn",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_contact_end_support_check withdrawn",
+      "passed": true
+    },
+    {
+      "check": "old policy misses specific guard wood_contact_end_support_check",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_contact_end_support_check restored",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_contact_end_support_check restored",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection wood_contact_end_support_check restored",
+      "passed": true
+    },
+    {
+      "check": "actual0/1/0 wood_reference_boundary_end",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_reference_boundary_end fixed",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_reference_boundary_end fixed",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection wood_reference_boundary_end fixed",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_reference_boundary_end withdrawn",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_reference_boundary_end withdrawn",
+      "passed": true
+    },
+    {
+      "check": "old policy misses specific guard wood_reference_boundary_end",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_reference_boundary_end restored",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_reference_boundary_end restored",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection wood_reference_boundary_end restored",
+      "passed": true
+    },
+    {
+      "check": "actual0/1/0 wood_reference_partial_ref_candidates",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_reference_partial_ref_candidates fixed",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_reference_partial_ref_candidates fixed",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection wood_reference_partial_ref_candidates fixed",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_reference_partial_ref_candidates withdrawn",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_reference_partial_ref_candidates withdrawn",
+      "passed": true
+    },
+    {
+      "check": "old policy misses specific guard wood_reference_partial_ref_candidates",
+      "passed": true
+    },
+    {
+      "check": "actual process/source wood_reference_partial_ref_candidates restored",
+      "passed": true
+    },
+    {
+      "check": "exact identifier probe wood_reference_partial_ref_candidates restored",
+      "passed": true
+    },
+    {
+      "check": "new policy exact rejection wood_reference_partial_ref_candidates restored",
+      "passed": true
+    },
+    {
+      "check": "old/new neutral identifiers actually accepted",
+      "passed": true
+    },
+    {
+      "check": "original scanner full candidate exit0",
+      "passed": true
+    },
+    {
+      "check": "full scanner no diagnostics",
+      "passed": true
+    },
+    {
+      "check": "limited external policy experiment no final receipts claimed",
+      "passed": true
+    },
+    {
+      "check": "live original manifest not rewritten by proof",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "geo324.sparse-main-merge.v1",
+  "branch": "codex/geo324-faces-20261024",
+  "grokHead": "4e176e830b691269cc72d021ce7e1bc0b167d621",
+  "mainHead": "eda91c8593f0795278f7f16ff8b93d147a4fdaa7",
+  "worktree": "/tmp/geo324-faces-work-20261024",
+  "productOrTestExecuted": false,
+  "exitCode": 0,
+  "errors": [],
+  "sourceHead": "06e492d6d59c1ab2c5505e5300f7542f7063468d",
+  "parents": [
+    "4e176e830b691269cc72d021ce7e1bc0b167d621",
+    "eda91c8593f0795278f7f16ff8b93d147a4fdaa7"
+  ],
+  "changedVersusMain": [
+    "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+    "tests/run_all.expected.json",
+    "tests/test_geometry_host_sources.py"
+  ],
+  "expectedUnion": {
+    "key": "py:test_geometry_host_sources",
+    "beforeMain": 39,
+    "after": 45,
+    "allOtherMetadataExactlyEqual": true
+  },
+  "materializedFileCount": 47,
+  "materializedFileBytes": 1037381,
+  "remoteHead": "06e492d6d59c1ab2c5505e5300f7542f7063468d",
+  "endedUTC": "2026-10-23T18:12:25.016497+00:00",
+  "commandCount": 26
+}

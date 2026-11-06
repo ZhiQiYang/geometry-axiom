@@ -1,0 +1,22 @@
+{
+  "schema": "permanent-git-object-store-storage-exclusion/1",
+  "created_utc": "2026-10-24T06:19:26.138822+00:00",
+  "store": "/tmp/geo337-published-archive-git-objects-20261024",
+  "entire_store_is_git_objects": true,
+  "never_cleanup_or_prune": true,
+  "not_a_rebuildable_cache": true,
+  "includes_all_current_and_future_objects": true,
+  "lease": {
+    "path": "/tmp/geo337-published-archive-git-objects-20261024/info/CODEX_PERMANENT_OBJECTS.json",
+    "sha256": "556c513142d9559c9497bb118d12da5487ee61b80953ee27095e49269d7c0104",
+    "bytes": 595
+  },
+  "root_actual_result": {
+    "path": "/tmp/geo337-archive-object-store-root-20261024/RESULT.json",
+    "sha256": "2b86b90052d348ee4ee831fbe4b23efef5befbfcd962ca9766b793bf4dd50380",
+    "bytes": 1322
+  },
+  "rule": "Never delete, move, prune, clean, replace, or use this entire TMP directory as a cache. Existing reader alternate depends on it. Remote push success does not permit local removal. Any future migration must copy objects first and verify every affected closure before controlled disconnection; original objects remain preserved.",
+  "actual_peer_status": "assigned exclusively to combined; not yet claimed complete",
+  "branch_publication_status": "root has only preload/connection result at registry time; commit/push separately verified"
+}

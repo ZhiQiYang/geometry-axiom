@@ -1,0 +1,66 @@
+{
+  "status": "FIXED_SOURCE_PREPARED; formal stages still UNRUN",
+  "source_sha": "2bbe54f19b2d19e8a816530f0c4edca950629a34",
+  "source_owner_repo": "/workspace/geometry-axiom",
+  "source_checkout": "/workspace/geo323-final-r6-source-20261024",
+  "acceptance_out": "/workspace/g337323R6",
+  "base": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+  "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "original_tools": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5",
+  "stages": [
+    "prepare",
+    "build",
+    "compare",
+    "perf",
+    "profile"
+  ],
+  "global_locks": [
+    "/tmp/g261r3/heavy.lock",
+    "/tmp/g261r3/secondary.lock"
+  ],
+  "inner_lock": "/workspace/g337323R6/stage.lock",
+  "source_budget_bytes": 20971520,
+  "source_resource_min_free_bytes": 41943040,
+  "source_budget_scope": "Storage admission only; no product performance threshold",
+  "tool_files": {
+    "geo323_record.py": {
+      "sha256": "c997611f5ba14298d0a06759528c192adb0619a9587cb0cab4fd051d95126810",
+      "bytes": 10675
+    },
+    "mini_gen.py": {
+      "sha256": "5613eb2bce4bdb26ec4852ee0d70e00ebd2b9b249aa9086e32e63d5259e17749",
+      "bytes": 1560
+    },
+    "profile_linux.py": {
+      "sha256": "0dda20c3d4de8c4472ed7f936fcf7bbc48c4adacfdc779bc2bda6e300a0c853c",
+      "bytes": 1630
+    },
+    "reap_children.py": {
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760",
+      "bytes": 2096
+    },
+    "run.py": {
+      "sha256": "881d618cd06b3edddf10a6676504923bbd982c8901c632410db434cfd480e849",
+      "bytes": 25764
+    },
+    "verify_linux.py": {
+      "sha256": "c3db1834c49365a08ef5720d38156253a355e9f5d5db0239486013871d0e2cac",
+      "bytes": 11459
+    }
+  },
+  "selected_final_source": "2bbe54f19b2d19e8a816530f0c4edca950629a34",
+  "recorder_fidelity": "v5 original PIPE contract; perf recorder flush deferred until original perf returns",
+  "recorder_final_pins_sha256": "b6199f36fbb5d35f3ba71140304ff2f1dbb1b1875ac201660234cb517d8cb660",
+  "same_product_v4_remeasurement": false,
+  "prior_U_preserved": "/workspace/g337323U",
+  "expected_original_samples": 36,
+  "expected_original_scenes": 175,
+  "expected_profile_points": [
+    "base32",
+    "base64",
+    "fix32",
+    "fix64"
+  ],
+  "performance_thresholds_changed": false,
+  "clock_boundaries_changed": false
+}

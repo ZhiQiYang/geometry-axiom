@@ -1,0 +1,39 @@
+{
+  "schema": "geo314-v2-v3-terminal-collector-static-peer/1",
+  "utc": "2026-10-25T15:09:50.864403+00:00",
+  "exit_code": 0,
+  "checks": 2763,
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "collector_sha256": "1c313dca29e47629da572e4afe54f42b5a3ea3c04d97bc16b3afe2de4c89b72f",
+  "launcher_sha256": "8af2986eb1680e5af2e0c2402781933e94838b4b6acfa1f20b1c420ec221bf6c",
+  "scope_sha256": "f32dc1cfd20a24f85dce10fbb0db1fe851beeb4fb44b8edc38607b6b8732ecfe",
+  "pins_sha256": "797572253a14e64d0b87c12e7b2030bbf05441bad195d4f3bc6e537e2ad84ea3",
+  "blocking_findings": [],
+  "original_exits": [
+    1,
+    0
+  ],
+  "fixed_raw_scopes": {
+    "v2": {
+      "regular_files": 204,
+      "bytes": 13578903
+    },
+    "v3": {
+      "regular_files": 258,
+      "bytes": 20191163
+    }
+  },
+  "fixed_supplements": {
+    "leaves": 1357,
+    "bytes": 1888607
+  },
+  "limits": [
+    "Static source/AST/exact diff and WS original host metadata only; no SHM or activeNATIVE payload read or collector/product execution.",
+    "Nine helpers and full archive engine match reviewed813a770 byte-for-byte except output/message labels; original64MiB+8MiB budgets retained.",
+    "Closed raw roots include privateGit objects/indexes and v2INDEX_AFTER_FAILURE, no sourceplan/hash-only exclusions. Actual set/hash/membership verification remains runtime and packagepeer.",
+    "Supplement path map is fixed, collision-free and excludes liveNATIVE/browserseed; payload hashes checked by collector at actual execution, not duplicated here.",
+    "Root must supply true closed no-more-writes lease and formal require_escalated; no global lock acquired by this review.",
+    "v2exit1/v3focusedexit0 both retained; native1/formal_F9_passfalse unchanged, historical writer not established.",
+    "Inherited launcher error text says all four named jobs but guard compares exactly v2/v3 tuple; cosmetic label only, no runtime scope expansion."
+  ]
+}

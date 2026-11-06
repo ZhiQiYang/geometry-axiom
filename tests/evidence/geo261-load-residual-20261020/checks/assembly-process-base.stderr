@@ -1,0 +1,31 @@
+.......F....
+======================================================================
+FAIL: test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left (__main__.AssemblyMutationCheck.test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geo261-residual-base/tests/test_assembly_mutation_check.py", line 288, in test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left
+    self.assertEqual([], group['afterKill'])
+AssertionError: Lists differ: [] != [{'pid': 96884, 'comm': 'sleep', 'state': [143 chars] ''}]
+
+Second list contains 2 additional elements.
+First extra element 0:
+{'pid': 96884, 'comm': 'sleep', 'state': 'Z', 'pgrp': 96883, 'session': 96883, 'cmdline': ''}
+
+- []
++ [{'cmdline': '',
++   'comm': 'sleep',
++   'pgrp': 96883,
++   'pid': 96884,
++   'session': 96883,
++   'state': 'Z'},
++  {'cmdline': '',
++   'comm': 'sleep',
++   'pgrp': 96883,
++   'pid': 96885,
++   'session': 96883,
++   'state': 'Z'}]
+
+----------------------------------------------------------------------
+Ran 12 tests in 8.206s
+
+FAILED (failures=1)

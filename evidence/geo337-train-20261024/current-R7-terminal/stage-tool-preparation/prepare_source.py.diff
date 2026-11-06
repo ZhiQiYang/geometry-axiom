@@ -1,0 +1,11 @@
+--- R6/prepare_source.py
++++ R7/prepare_source.py
+@@ -42,7 +42,7 @@
+     def git(*args,cwd=owner):return rec.run(['git','-c','gc.auto=0','-c','maintenance.auto=false',*args],cwd)
+     try:
+         pins_ok(request)
+-        fs=os.statvfs('/workspace');report['free_bytes_before']=fs.f_bavail*fs.f_frsize
++        fs=os.statvfs(target.parent);report['free_bytes_before']=fs.f_bavail*fs.f_frsize;report['resource_filesystem']=str(target.parent)
+         need(report['free_bytes_before']>=request['source_resource_min_free_bytes'],'source/index storage admission')
+         for value in (a.sha,request['base'],request['main'],'6366304eb787b2a50282e4132f45e51eb7d21290'):
+             need(git('rev-parse',value+'^{commit}').decode().strip()==value,'fixed local object missing')

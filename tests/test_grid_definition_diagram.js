@@ -101,7 +101,7 @@ function presentation(rawOverrides={}, application=GeometryApplication) {
     setAttribute(key,value){this.attrs[key]=String(value);},
     classList:{toggle:(key,on)=>on?classes.add(key):classes.delete(key)},querySelectorAll:()=>[]};};
   const nodes=new Map(Object.entries(raw).map(([id,value])=>{const n=make();n.value=value;return [id,n];}));
-  for(const id of ['igNameErr','igStateLine','igStateText','igStateDetail','igMainNote','igSourcePill'])nodes.set(id,make());
+  for(const id of ['igCard','igCardU','igCardV','igNameErr','igStateLine','igStateText','igStateDetail','igMainNote','igSourcePill'])nodes.set(id,make());
   const stage=node('div','');stage.querySelectorAll=()=>[];nodes.set('igDefStage',stage);
   const cards=Object.fromEntries(['u','v'].map(a=>{
     const summary=make(),role=make(),card=make();card.querySelector=selector=>selector==='.ig-axis-sum'?summary:selector==='.ig-role'?role:null;
@@ -112,7 +112,8 @@ function presentation(rawOverrides={}, application=GeometryApplication) {
     rawField:(_s,id)=>nodes.get(id).value,current:s=>s===state,bindingName:()=>null,
     dialog:{querySelector:selector=>cards[/data-ig-axis="([uv])"/.exec(selector)[1]].card},focusField(){}});
   const cuts=[['  const stepNoun =','  const MODE_LABEL ='],['  const intProblem =','  const bindingName ='],
-    ['  function drawDefinition(s, data) {','  // Presentation only:'],['  function syncDefinition(s) {','  function sourceDraft(s) {']];
+    ['  const cardOn=()=>','  const cardOf='],['  function drawDefinition(s, data) {','  // Presentation only:'],
+    ['  function syncDefinition(s) {','  function sourceDraft(s) {']];
   for(const [begin,finish] of cuts){const from=source.indexOf(begin),to=source.indexOf(finish,from);assert.ok(from>=0&&to>from);vm.runInContext(source.slice(from,to),context);}
   const flatten=n=>[n,...(n.children||[]).flatMap(flatten)];
   return {raw,draft,nodes,cards,state,read:()=>context.readAxes(state),sync:()=>context.syncDefinition(state),

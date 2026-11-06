@@ -118,6 +118,10 @@ class ProductArchitecture(unittest.TestCase):
                          ["geometry-core/geometry_kernel/evaluate.py", path,
                           "geometry-app/geometry_app/__init__.py"])
 
+
+
+
+
     def test_unlisted_product_file_is_rejected(self):
         path = self.root / "geometry-core/kernel/architecture_probe.c"
         try:
@@ -156,12 +160,14 @@ class ProductArchitecture(unittest.TestCase):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(self.root / entry["path"], path)
             config = deepcopy(self.manifest)
-            config.update(sourceRoots=["geometry-core/kernel", "geometry-core/geometry_kernel"],
+            config.update(sourceRoots=["geometry-core"],
                           sourceFiles=[], sources=sources, exclusions=[], htmlScriptRoutes=[],
                           javascriptImportRoutes=[], htmlEmbedRoutes=[], trustedVendorBundles=[],
-                          searchRoots={"c": [".", "geometry-core/kernel"], "python": ["geometry-core"], "javascript": []})
+                          searchRoots={"c": [".", "geometry-core/kernel"], "python": ["geometry-core"],
+                                       "javascript": ["geometry-core"]})
             self.assertFalse((target / "geometry-templates").exists())
             self.assertFalse((target / "geometry-app").exists())
+            self.assertFalse((target / "geometry-web").exists())
             result = scan(target, config)
             self.assertTrue(result.ok, [item.__dict__ for item in result.diagnostics])
             self.assertEqual(set(result.sources), {entry["path"] for entry in sources})

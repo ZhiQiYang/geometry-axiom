@@ -1,0 +1,35 @@
+{
+  "schema": "native-TMP-preservation-independent-actual-peer/1",
+  "reviewed_utc": "2026-10-26T09:21:53.327220+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "checks": 3435,
+  "archive_result_sha256": "101f12889f90c14b4ab57d11c7d0d7893513c2496bad0fc281237a8220dd0385",
+  "plan_sha256": "38e28b2e0b63ad263d2eb22beb6f80e90190073d68a40ad9cc9b81f6e1ac83be",
+  "archive_static_peer_sha256": "8f8a6d704e2eb0a7ef0d7ae913296f19437d8434d9794e352e9f22cf9495a3e7",
+  "original_payloads_verified": 26,
+  "raw_payload_bytes": 28409963,
+  "gzip_payload_bytes": 11529641,
+  "all_original_payloads_still_present": true,
+  "original_commands_verified": 127,
+  "original_raw_streams_verified": 381,
+  "preservation_file_count": 748,
+  "preservation_bytes": 46983443,
+  "retirement_executed": false,
+  "actual_freed_bytes": 0,
+  "remote_delivery_verified": false,
+  "reviewer_schema_correction": {
+    "initial_review": "REVIEW.initial-binding-schema.json",
+    "initial_exit_code": 1,
+    "cause": "Original plan binding values are {sha256,bytes} records, not bare SHA strings. Reader now checks exact dict equality for all 24 records; originals unchanged.",
+    "original_payload_failures_in_initial_run": 0
+  },
+  "ownership_basis": "Exactly the approved two private Git indices and 24 old generated ELF cache leaves; verified original ownership/fingerprint pins, exact byte/state identity, DIRC/ELF signatures. No arbitrary user source, fixture, personal file or unlisted cache added.",
+  "limits": [
+    "No unlink, retirement, lease modification, Git mutation, formal test, compiler or network operation performed.",
+    "Both complete raw_member and gzip_member must be remote-verified before the original retirement guard can accept; no gzip-only exception.",
+    "This is complete artifact preservation, not source semantics validation; indices retain original repository path metadata and ELFs retain original compiled bytes.",
+    "No claim that other processes or environments are inactive; retirement requires a fresh root lease/consumer guard.",
+    "Original frozen metadata and any old failures stay intact; no remote delivery or disk recovery claimed."
+  ]
+}

@@ -14,48 +14,7 @@ const rawGridDraft=()=>({schema:P.Features.GRID_SCHEMA,draftId:'raw-grid',kind:'
   inputRefs:[{kind:'grid-system',id:0,fingerprint:'a'.repeat(64)}],
   rawForm:{igSystem:'0',igBoundary:'',igVertex:'',igCellI:'-',igCellJ:' 001 ',igAnchorUN:'1',igAnchorUD:'0',igAnchorVN:'',igAnchorVD:''}});
 
-async function fixture(options = {}) {
-  const writes = [], statuses = [], written = deferred(), writeGate = options.writeGate || deferred();
-  const calls = [], closing = deferred(), fetchReached = deferred();
-  let aborts = 0, closes = 0;
-  const elements = new Map();
-  const element = id => {
-    if (!elements.has(id)) elements.set(id, {textContent:'',dataset:{},classList:{toggle(){}},style:{},value:'',
-      addEventListener(){},setAttribute(){},removeAttribute(){},replaceChildren(){},click(){},close(){this.open=false;},showModal(){this.open=true;},
-      querySelector:()=>({}),parentElement:{clientWidth:800,clientHeight:600},append(){},prepend(){}});
-    return elements.get(id);
-  };
-  const handle = {createWritable:async () => ({write:async bytes => {writes.push(bytes.slice());written.resolve();await writeGate.promise;},
-    close:async()=>{closes++;closing.resolve();await options.closeGate?.promise;},abort:async()=>{aborts++;}})};
-  const env = {GeometryProject:{...P,...options.projectOverride,...(options.packGate?{pack:async(...args)=>{await options.packGate.promise;return P.pack(...args);}}:{})},fflate:zip,crypto,structuredClone,JSON,TextEncoder,TextDecoder,Uint8Array,Map,Set,WeakMap,console,AbortSignal,BroadcastChannel:options.BroadcastChannel,
-    requestAnimationFrame:()=>1,CustomEvent:class {},ResizeObserver:class {observe(){}},File,Blob,
-    pageRuntimeVersion:"vm-runtime",checkApiSession(){},
-    fetch:async (url,request)=>{if(url==="/rule-cases/prepare"&&options.casePrepare)return options.casePrepare(request);assert.equal(url,'data:image/png;base64,legacy');fetchReached.resolve();
-      assert.ok(options.legacyGate,'Unexpected fetch: '+url);return options.legacyGate.promise;},
-    window:{dispatchEvent(){},addEventListener(){},showSaveFilePicker:()=>options.pickerGate?.promise || Promise.resolve(handle),confirm:()=>false},
-    document:{getElementById:element,querySelectorAll:()=>[],querySelector:()=>element('scroll'),addEventListener(){},
-      createElement:tag=>tag==='canvas'?{getContext:()=>({}),toDataURL:()=> 'data:image/png;base64,rendered'}:element(tag)},
-    oc:{busy:false,faces:[{id:1,kind:'boundary'}],bmap:{},edit:null},fe:{feats:{}},connection:{phase:'ready'},
-    api:async command=>{if(options.api)return options.api(command);assert.equal(command,'dump');calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
-    setStatus:s=>statuses.push(s),toast:s=>statuses.push(s),drawFaceEditor(){},renderFaceInspector(){},
-    innerWidth:1280,feUlImgToMm:(_p,x,y)=>[x,y],feFit(){}};
-  // Only the PDF library provider is faked here; production validation/cleanup
-  // and save code execute unchanged. Real PDF worker coverage is in the app gate.
-  env.__pdfLibrary=options.pdfLibrary;
-  const workspaceCode=fs.readFileSync(process.env.GEOMETRY_TEST_REFERENCE_WORKSPACE || require.resolve('../geometry-web/reference-workspace.js'),'utf8')
-    .replace('if (!pdfLib) pdfLib = import(', 'if (globalThis.__pdfLibrary) return globalThis.__pdfLibrary; if (!pdfLib) pdfLib = import(');
-  vm.runInNewContext(workspaceCode+'\nglobalThis.workspace=ReferenceWorkspace;',env);
-  const w=env.workspace, bytes=new TextEncoder().encode('original PDF source bytes'),hash=await P.sha(bytes);
-  const pageGates=new Map();
-  const source={meta:{id:hash,hash,name:'圖.pdf',type:'application/pdf',size:bytes.length,path:'sources/'+hash},bytes,
-    doc:{numPages:3,getPage:async number=>{await pageGates.get(number)?.promise;return {getViewport:({scale})=>({width:100*scale,height:80*scale}),render:()=>({promise:Promise.resolve()})};}}};
-  w.context().sources.set(hash,source);
-  for(let n=1;n<=3;n++)w.addPage(1,{id:'page-'+n,sourceId:hash,page:n,imgW:100,imgH:80,crop:[0,0,100,80],mmPerPx:10,
-    x:0,y:0,rot:0,opacity:.5,locked:false,calibration:null,reviewRequired:false,records:[],...(n===1?{src:'data:image/png;base64,old'}:{})});
-  w.group(1).activePageId='page-1';
-  return {w,env,source,pageGates,writes,statuses,written,writeGate,handle,element,calls,closing,fetchReached,
-    get aborts(){return aborts;},get closes(){return closes;}};
-}
+const {fixture}=require('./fixtures/reference_workspace_vm.cjs');
 
 const legacyPage=()=>({src:'data:image/png;base64,legacy',imgW:100,imgH:80,mmPerPx:10,x:0,y:0,rot:0,opacity:.5,locked:false});
 const legacyResponse=bytes=>({blob:async()=>new Blob([bytes],{type:'image/png'})});
@@ -569,6 +528,27 @@ async function openFixture(options={}) {
   return {...f,bytes,requests,refreshed};
 }
 
+test('R06_PF_PROFILE_LATE_CONTEXT_REJECT: a delayed native profile cannot confirm a stale project candidate',async()=>{
+ for(const switchContext of [true,false]){
+  const f=await openFixture(),gate=deferred(),entered=deferred(),old=f.w.context(),original=f.env.fetch;
+  const scene='requires engineering-spec/1\nrequires parameters/1\nrequires panel-fill/1\nrequires assembly-timber-generation/1\nrequires assembly-bay-repeat/1\nfinish-surface 1 on boundary 8\n';
+  const data={id:1,name:'raw derived repeat',bindingId:1,rule:{id:1,version:1,fingerprint:'a'.repeat(64)},surfaceId:null,layout:'bay-repeat',
+   primaries:[1,2].map(key=>({key,at:null,ends:{start:{kind:'timber',id:null},finish:{kind:'timber',id:null}}})),secondaryLines:[{key:1,at:null}],omit:[]};
+  const bytes=await P.pack(scene,{projectId:'derived-open',name:'derived',sources:[],faces:[],assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[{id:'raw-derived',kind:'instance',base_ref:null,data,updated_at:'2026-11-02T00:00:00Z'}]}},new Map(),zip);
+  f.env.apiRequest=async command=>{assert.equal(command,'panel-fill-read');entered.resolve();await gate.promise;return {ok:true,revision:0,schema:'panel-fill-native/1',capability:'panel-fill/1',complete:false,supportedRecords:['finish-surface','panel-fill','derived-placement']};};
+  f.env.fetch=async(url,request)=>{
+   if(url==='/upload/prepare'){f.requests.push({url,request});return {ok:true,json:async()=>({ok:true,token:1,capabilities:nativeCapabilities,native_capabilities:['panel-fill-native/1'],required_capabilities:P.sceneCapabilities(scene),final_scene:scene,final_objects:{boundaries:[8],placements:[]}})};}
+   return original(url,request);
+  };
+  const opening=f.w.importBytes(bytes),rejected=assert.rejects(opening,/目前工程已有變更|原生來源.*變更/,'R06_PF_PROFILE_LATE_CONTEXT_REJECT');
+  await entered.promise;
+  if(switchContext)f.w.observe('line reset',{ok:true,revision:1});else f.w.observe('line spec changed 1',{ok:true,revision:1});
+  const current=f.w.context(),count=f.w.history.undo.length;gate.resolve();await rejected;
+  assert.equal(f.w.context(),current);assert.equal(f.w.history.undo.length,count);assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
+  if(!switchContext)assert.equal(current,old);
+ }
+});
+
 // Cross-PR ownership: the scenario reader validates complete leaf projects,
 // creating disposable PDF tasks even though it keeps only their saved bytes.
 // Execute production archive/reader/transaction code; only native/PDF transports
@@ -755,6 +735,44 @@ test('missing final native targets cancel without losing source bytes, metadata 
   assert.equal(f.w.context(),old);assert.equal(f.w.history.undo.length,undo);
   assert.deepEqual(old.sources.get(f.source.meta.id).bytes,f.source.bytes);
   assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
+});
+
+test('scene-only identity requires advertised native support before project confirmation',async()=>{
+  for(const supported of [false,true]){
+    const f=await openFixture(),old=f.w.context(),project=await P.unpack(f.bytes,zip);
+    const epoch=crypto.randomUUID().replaceAll('-','');
+    const scene=project.scene+'requires identity-ledger/1\nidentity boundary 8 '+epoch+':1\n';
+    const bytes=await P.pack(scene,project.manifest,project.sources,zip);
+    const archive=await P.unpack(bytes,zip);
+    assert.equal(archive.manifest.format,P.FORMAT);
+    assert.equal(Object.hasOwn(archive.manifest,'requiredCapabilities'),false);
+    assert.equal(archive.scene,scene);
+    const undo=f.w.history.undo.length,state=f.w.getProjectState(),sourceBytes=f.source.bytes.slice(),fetch=f.env.fetch;
+    f.env.fetch=async(url,request)=>{
+      const response=await fetch(url,request);
+      if(url!=='/upload/prepare')return response;
+      assert.equal(request.body,scene,'the native reader receives the complete identity scene');
+      const candidate=await response.json();
+      const capabilities=nativeCapabilities.filter(value=>value!=='identity-ledger/1');
+      if(supported)capabilities.push('identity-ledger/1');
+      return {...response,json:async()=>({...candidate,capabilities,required_capabilities:['identity-ledger/1'],final_scene:scene})};
+    };
+    if(supported){
+      await f.w.importBytes(bytes);
+      assert.notEqual(f.w.context(),old);
+      assert.deepEqual(f.requests.filter(r=>r.url.startsWith('/upload/')).map(r=>r.url),['/upload/prepare','/upload/confirm']);
+    }else{
+      await assert.rejects(()=>f.w.importBytes(bytes),/目前服務不支援此專案所需/);
+      assert.equal(f.w.context(),old);
+      assert.equal(f.w.history.undo.length,undo);
+      const after=f.w.getProjectState();
+      for(const key of ['dirty','dirtyReason','saved','downloaded'])assert.equal(after[key],state[key]);
+      assert.deepEqual(old.sources.get(f.source.meta.id).bytes,sourceBytes);
+      assert.deepEqual(f.requests.filter(r=>r.url.startsWith('/upload/')).map(r=>r.url),['/upload/prepare','/upload/cancel']);
+      assert.equal(f.requests.filter(r=>r.url==='/upload/confirm').length,0);
+    }
+    assert.equal(f.w.busy,false);
+  }
 });
 
 test('late confirm rejects local metadata edits and preserves externally invalidated context without import history',async()=>{
@@ -983,8 +1001,9 @@ async function recoveryRecord(f,scene) {
 
 test('matching reload restores complete project context without uploading or inventing undo',async()=>{
   const f=await openFixture(),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene);
-  const records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
+  const commands=[],records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async command=>{commands.push(command);return {ok:true,text:loaded.scene};};
   assert.equal((await f.w.restoreSession()).state,'restored');assert.deepEqual(f.requests.map(r=>r.url),['/scenarios/verify-native']);
+  assert.deepEqual(commands,['dump-deidentified','dump-deidentified','dump']);
   assert.equal(f.w.context().id,'opened');assert.equal(f.w.context().name,'試用工程');assert.equal(f.w.context().dirty,true);
   assert.equal(f.w.getProjectInfo().sourceKind,'example');assert.equal(f.w.getProjectInfo().undoLabel,null);
   assert.match(f.w.getProjectInfo().historyNote,/較早/);
@@ -1005,9 +1024,10 @@ test('reload refuses different server or geometry and preserves the original bac
   for(const mismatch of ['session','scene']) {
     const f=await openFixture(),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene),before=f.w.context();
     if(mismatch==='session')record.session='other-service';
-    const records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});
-    f.env.api=async()=>({ok:true,text:mismatch==='scene'?'boundary 55 outline 0,0 1,0 1,1\n':loaded.scene});
+    const commands=[],records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});
+    f.env.api=async command=>{commands.push(command);return {ok:true,text:mismatch==='scene'?'boundary 55 outline 0,0 1,0 1,1\n':loaded.scene};};
     assert.equal((await f.w.restoreSession()).state,'mismatch');assert.equal(f.w.context(),before);assert.equal(f.requests.length,0);
+    assert.deepEqual(commands,mismatch==='scene'?['dump-deidentified']:[]);
     await f.w.persistSession();assert.equal(records.get('tab-one'),record);
   }
 });
@@ -1036,11 +1056,14 @@ test('another tab invalidates saving, metadata editing and local undo until expl
 });
 
 test('external mutation during final reload fingerprint cannot commit the earlier local context',async()=>{
-  let channel,hashes=0;const reached=deferred(),gate=deferred();
+  let channel,finalFingerprint=false;const reached=deferred(),gate=deferred();
   const f=await openFixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}},projectOverride:{sha:async bytes=>{
-    if(++hashes===3){reached.resolve();await gate.promise;}return P.sha(bytes);
+    if(finalFingerprint){reached.resolve();await gate.promise;}return P.sha(bytes);
   }}}),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene),before=f.w.context();
-  recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
+  recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async command=>{
+    assert.ok(command==='dump'||command==='dump-deidentified','Unexpected API command: '+command);
+    if(command==='dump')finalFingerprint=true;return {ok:true,text:loaded.scene};
+  };
   const restoring=f.w.restoreSession();await reached.promise;
   channel.onmessage({data:{peer:'other-tab',session:'service-one'}});gate.resolve();
   assert.equal((await restoring).state,'external');assert.equal(f.w.context(),before);assert.deepEqual(f.requests.map(r=>r.url),['/scenarios/verify-native']);
@@ -1251,6 +1274,13 @@ function prepareSnapshotCase(data,runPython=require('node:child_process').execFi
 }
 test('caller mutation during real hashes cannot replace the detached snapshot verified by the core',async()=>{
   const {definition,receipt,data}=structuredClone(snapshotCaseFixture);
+  assert.strictEqual(P.Features.Cases.validate(data),data,'R06 native capacity facts remain part of the exact portable receipt');
+  const legacy=structuredClone(data);for(const key of ['before','after'])delete legacy.receipts[0].receipt.observations[key].limits;
+  assert.strictEqual(P.Features.Cases.validate(legacy),legacy,'Historical observations without capacity facts remain readable');
+  for(const alter of [v=>v.instances=0,v=>v.ownedTimbers=true,v=>v.worldTimbers=4294967296,v=>v.unknown=1,v=>delete v.bayOmit]){
+    const malformed=structuredClone(data);alter(malformed.receipts[0].receipt.observations.after.limits);
+    assert.throws(()=>P.Features.Cases.validate(malformed),'Unknown, missing or malformed capacity facts must still reject');
+  }
   assert.equal(receipt.status,'passed');
   receipt.observations.after.rules[0].value.members[0].slotId=13;P.Features.Cases.validate(data);
   const reached=deferred(),gate=deferred(),f=await fixture({projectOverride:{Features:{...P.Features,Cases:{...P.Features.Cases,
