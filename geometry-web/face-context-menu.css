@@ -52,3 +52,18 @@ body.oc-busy #canvasCtxMenu :is(button,input) { pointer-events:auto; }
 .fcm-panel .fe-keep input { background:#f3fbf7; }
 .fcm-anchor { position:absolute; width:28px; height:28px; transform:translate(-50%,-50%); z-index:61; pointer-events:none; display:none; }
 @media (prefers-reduced-motion:reduce) { .cx-layer * { transition:none !important; } }
+/* R11: the existing inspector owns both single and multiple timber field edits. */
+.timber-edit { min-width: 0; }
+.timber-edit fieldset { min-width: 0; margin: 10px 0; padding: 8px; border: 1px solid var(--border); border-radius: 6px; }
+.timber-edit legend label { display: flex; align-items: center; gap: 6px; }
+.timber-edit input[type="checkbox"] { width: auto; flex: none; }
+.timber-edit-controls, .timber-edit .place-form { display: grid; grid-template-columns: minmax(0,1fr); gap: 8px; }
+.timber-edit-controls label { display: grid; gap: 4px; }
+.timber-edit input, .timber-edit select { box-sizing: border-box; width: 100%; min-width: 0; max-width: 100%; }
+.timber-edit code, .timber-edit pre, .timber-edit-definition { display: block; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; }
+.timber-edit-mixed { display: block; color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+.timber-edit-definition { padding: 6px 0; }
+.timber-edit-definition > div { margin: 4px 0; }
+.timber-edit-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.timber-edit-actions button { flex: 1 1 100px; min-height: 36px; }
+.timber-edit [hidden] { display: none !important; }

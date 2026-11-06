@@ -64,4 +64,5 @@ test('R365_STACK_CONFIRM both native import and evidence adoption retain the act
     assert.doesNotThrow(()=>f.w.assertEditable());
     if(kind==='engineering')assert.equal(f.w.readFeatureAttachment(E.KIND).links[0].adoption.literal,'3235');
   }
+  await require('./diagnostics/r356_timber_preflight.cjs').exercise();
 });

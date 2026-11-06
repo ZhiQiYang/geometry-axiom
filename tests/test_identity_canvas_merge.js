@@ -7,6 +7,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path'), os = require('node:os'), vm = require('node:vm');
 const ROOT = process.env.R360_CONTRACT_ROOT ? path.resolve(process.env.R360_CONTRACT_ROOT) : path.resolve(__dirname, '..');
 const WEB = path.join(ROOT, 'geometry-web');
+const timberExtension = require('./diagnostics/r356_canvas_extension.cjs');
 const file = name => path.join(WEB, name);
 const read = name => fs.readFileSync(file(name), 'utf8');
 const MAIN_GOLDEN = {"schema":"geometry-cdp-sections/1","mode":"full","total":4002,"sections":{"1":14,"2":3,"3":1,"4":1,"5":1,"6":1,"7":1,"8":0,"9":12,"10":0,"P89":19,"Setup":0,"P3":14,"P4":11,"P5":2,"P6":4,"P7":54,"P8":116,"P9":9,"P10":9,"P11":12,"P12":8,"P13":4,"P14":16,"P15":6,"P16":10,"P17":11,"P18":20,"P19":17,"BF2":5,"BF3":1,"BF4":9,"P20":10,"P21":4,"P22":45,"P32":34,"P33":9,"P34":7,"P35":14,"P36":2,"P37":19,"P38":13,"P39":8,"P40":4,"P41":3,"P42":12,"P43":12,"P44":19,"P45":2,"P46":7,"P47":9,"P48":14,"P49":17,"P50":33,"P51":13,"P52":43,"P53":28,"P57":56,"P62":38,"P63":18,"P64":24,"P65":5,"P66":4,"P68":36,"P69":160,"P67":96,"P70":121,"P71":9,"P78":23,"P87":60,"P88":143,"P72":52,"P72B":50,"P73":69,"P74":52,"P75":37,"P76":87,"P77":134,"P82":16,"P80":23,"P81":14,"P85":31,"P79":87,"P84":33,"P83":16,"P86":20,"P352":1313,"P359":24,"P90":8,"P358":16,"P353":355}};
@@ -14,13 +15,20 @@ const MAIN_SEQUENCES = [["Setup","1","2","3","4","5","6","7","8","9","P3","P4","
 const MAIN_BOUNDARIES = [{"after":"P88","before":"P72","localStorage":{"geometry-param-grid-lesson":{"kind":"param-grid-lesson-token"},"geometry-tool-lessons-v1":{"kind":"string-set","values":["canvas:pan","canvas:rect","canvas:select","engineering:first","face:grid","face:guide","face:hole","face:pan","face:redraw","face:select","face:timber","grid:infinite-first"]}}}];
 
 test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
-  const golden = JSON.parse(read('cdp_sections.golden.json'));
+  const rawGolden = JSON.parse(read('cdp_sections.golden.json'));
+  const golden = timberExtension.projectGolden(rawGolden);
   const legacy = Object.fromEntries(Object.keys(MAIN_GOLDEN.sections).map(name => [name, golden.sections[name]]));
   assert.deepEqual(legacy, MAIN_GOLDEN.sections, 'R360_MAIN_GOLDEN_UNCHANGED');
   assert.deepEqual(Object.keys(golden.sections).filter(name => !(name in MAIN_GOLDEN.sections)), ['P360', 'R06'], 'R360_R06_ONLY_NEW_SECTIONS');
   assert.equal(golden.sections.P360, 13, 'R360_ORIGINAL_THIRTEEN_ASSERTIONS');
   assert.equal(golden.sections.R06, 50, 'R06_ORIGINAL_FIFTY_ASSERTIONS');
   assert.equal(golden.total, MAIN_GOLDEN.total + 13 + 50, 'R360_R06_TOTAL_IS_UNCHANGED_MAIN_PLUS_BOTH_SECTIONS');
+  for (const count of [undefined, 373, 375]) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (count === undefined) delete probe.sections.P116;
+    else probe.sections.P116 = count;
+    assert.throws(() => timberExtension.projectGolden(probe), /R356_P116_EXECUTED_ASSERTION_COUNT/);
+  }
 });
 
 test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
@@ -32,7 +40,17 @@ test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
   const expected = MAIN_SEQUENCES.map(sections => sections.slice());
   expected[1].splice(expected[1].indexOf('P84') + 1, 0, 'P360');
   expected[1].splice(expected[1].indexOf('P82') + 1, 0, 'R06');
-  assert.deepEqual(plan.shards.map(row => row.sections), expected, 'R360_R06_EXACT_SECOND_SHARD_POSITIONS');
+  assert.deepEqual(timberExtension.projectPlan(plan).shards.map(row => row.sections), expected, 'R360_R06_EXACT_SECOND_SHARD_POSITIONS');
+  for (const fault of ['missing', 'duplicate', 'first-shard', 'moved']) {
+    const probe = JSON.parse(JSON.stringify(plan)), second = probe.shards[1].sections, at = second.indexOf('P116');
+    if (fault === 'duplicate') second.push('P116');
+    else {
+      second.splice(at, 1);
+      if (fault === 'first-shard') probe.shards[0].sections.push('P116');
+      else if (fault === 'moved') second.unshift('P116');
+    }
+    assert.throws(() => timberExtension.projectPlan(probe), /R356_P116_/);
+  }
   assert.deepEqual(plan.boundaries, MAIN_BOUNDARIES, 'R360_P88_HANDOFF_UNCHANGED');
   const source = read('cdp_test.js');
   const lines = source.split('\n').filter(line => line.includes("require('./identity_ledger_browser_test.js')"));
