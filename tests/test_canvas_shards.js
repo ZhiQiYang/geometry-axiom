@@ -235,13 +235,20 @@ test('workflow：canvas 兩片並行、每片仍 35 分鐘，彙總核對收據�
   const entries = [...workflow.matchAll(/- suite: canvas\n\s+shard: (\d+)\n\s+timeout: (\d+)/g)].map(m => [Number(m[1]), Number(m[2])]);
   assert.deepEqual(entries, plan.shards.map(s => [s.index, 35]));
   assert.ok(!/- suite: canvas\n\s+timeout:/.test(workflow), 'unsharded canvas entry must be gone');
-  assert.match(workflow, /GEOMETRY_CDP_SHARD="\$GEOMETRY_CANVAS_SHARD\/2" node geometry-web\/cdp_test\.js/);
+  assert.match(workflow, /python3 -B \.github\/scripts\/canvas_evidence\.py run --shard "\$GEOMETRY_CANVAS_SHARD\/2" --out "\$receipt"/, 'R367_WORKFLOW_SUPERVISOR: numeric shards must retain raw source-bound receipts');
+  const supervisor = fs.readFileSync(path.join(ROOT, '.github/scripts/canvas_evidence.py'), 'utf8');
+  assert.match(supervisor, /env = dict\(os\.environ, GEOMETRY_CDP_SHARD=shard,/);
+  assert.match(supervisor, /command = \["node", "geometry-web\/cdp_test\.js"\]/);
+  assert.match(supervisor, /status = capture\(command, out \/ "stdout\.log", out \/ "stderr\.log", env\)/);
   const job = workflow.split('\n  browser-canvas-complete:\n')[1];
   assert.ok(job, 'aggregator job exists');
   assert.match(job, /\n    needs: browser\n    if: always\(\)\n/);
   assert.match(job, /node --test --test-reporter=spec tests\/test_canvas_shards\.js/);
   assert.match(job, /pattern: canvas-shard-\*/);
-  assert.match(job, /node geometry-web\/canvas_shards\.js verify --input .* --commit "\$\(git rev-parse HEAD\)" --output /);
+  assert.match(job, /python3 -B \.github\/scripts\/canvas_evidence\.py verify --artifacts "\$RUNNER_TEMP\/canvas-shards" --out "\$RUNNER_TEMP\/canvas-complete"/, 'R367_WORKFLOW_UNIFIED_COVERAGE');
+  assert.match(job, /EXPECTED_EXECUTION_SHA: \$\{\{ github\.sha \}\}/);
+  assert.match(job, /PR_HEAD_SHA: \$\{\{ github\.event\.pull_request\.head\.sha \|\| github\.sha \}\}/);
+  assert.ok(!/shard: (?:legacy|extensions)\b|canvas_shards\.js verify --input/.test(workflow), 'R367_SINGLE_SHARD_PATH');
   // Execute the real P353/P359 dispatch statements with inert suite callbacks.
   // This tests driver routing, not browser behavior or the suites' assertions.
   const driverFile = path.join(ROOT, 'geometry-web/cdp_test.js');
@@ -337,4 +344,262 @@ test('workflow：canvas 兩片並行、每片仍 35 分鐘，彙總核對收據�
     fs.writeFileSync(target, bytes);
     assert.deepEqual(fs.readFileSync(target), bytes);
   } finally { fs.rmSync(fresh, {recursive: true, force: true}); }
+});
+
+/* The original 19 assertion-journal controls, now attached to the same numeric
+   plan as the 20 main controls above. These are pure fixtures, not UI receipts. */
+const vm = require('node:vm');
+const S = require('./helpers/canvas_shards.js');
+const H = require('../geometry-web/cdp_test.js');
+const copy = value => structuredClone(value);
+function fixturePlan(count=2) {
+  const fixtureGolden={schema:'geometry-cdp-sections/1',mode:'full',total:count+2,
+    sections:{Setup:0,'1':count,P83:1,P86:1}};
+  const numericPlan={schema:'geometry-cdp-shards/1',
+    shards:[{index:1,sections:['Setup','1']},{index:2,sections:['P83','P86']}],
+    boundaries:[{after:'1',before:'P83',localStorage:{lesson:{kind:'exact',value:'done'}}}]};
+  return S.buildPlan(fixtureGolden,numericPlan);
+}
+function fixtureShard(evidencePlan,id) {
+  const events=[],journal=S.createJournal(evidencePlan,id,event=>events.push(event));
+  for(const unit of S.unitsFor(evidencePlan,id)){
+    journal.begin(unit.id);
+    for(const key of unit.sections){
+      journal.section(key,'=== '+key+'. fixture ===');
+      for(let i=0;i<evidencePlan.golden.sections[key];i++)journal.assertion(true,key+' assertion '+i);
+    }
+    journal.end(unit.id);
+  }
+  journal.finish();
+  const sections=S.projection(evidencePlan,id),index=evidencePlan.shards.indexOf(id)+1;
+  const numericPlan=evidencePlan.numericPlan,handoff={};
+  if(numericPlan.boundaries[index-1])handoff.outgoing={boundary:index,
+    localStorage:copy(numericPlan.boundaries[index-1].localStorage),matched:true};
+  if(numericPlan.boundaries[index-2])handoff.incoming={boundary:index-1,
+    localStorage:copy(numericPlan.boundaries[index-2].localStorage)};
+  return {events,result:{schema:'geometry-cdp-result/1',completed:true,
+    passedAssertions:sum(sections),failedAssertions:0,sections,skipped:[],
+    sectionOrder:[...numericPlan.shards[index-1].sections],handoff,
+    unexpectedBrowserExceptions:0,uncaughtBrowserExceptions:0,
+    goldenCompare:'matched (shard '+id+')',
+    scope:{mode:'shard',shard:{index,count:evidencePlan.shards.length,
+      planSha256:evidencePlan.sourceHashes['geometry-web/canvas_shards.json'],
+      goldenSha256:evidencePlan.sourceHashes['geometry-web/cdp_sections.golden.json']},
+      evidencePlanSha256:evidencePlan.sha256,filters:[],modifiers:[]}}};
+}
+function rejects(code,action){assert.throws(action,error=>error.code===code,code);}
+function configEnv() {
+  return {GEOMETRY_TEST_URL:'http://127.0.0.1:18839/',
+    GEOMETRY_FEEDBACK_DIR:path.join(os.tmpdir(),'canvas-pure-config')};
+}
+
+test('current numeric plan partitions every current key exactly once without fixed counts',()=>{
+  assert.deepEqual(S.IDS,['1/2','2/2'],'R367_NUMERIC_SHARDS_ONLY');
+  const evidencePlan=S.loadPlan(ROOT),keys=evidencePlan.units.flatMap(unit=>unit.sections);
+  assert.equal(keys.length,new Set(keys).size);
+  assert.deepEqual([...keys].sort(),Object.keys(evidencePlan.golden.sections).sort());
+  assert.equal(sum(evidencePlan.golden.sections),evidencePlan.golden.total);
+  assert.deepEqual(evidencePlan.numericPlan,plan,'R367_ONE_CANONICAL_PLAN');
+  assert.deepEqual(evidencePlan.units.map(unit=>unit.id),S.IDS);
+  for(const unit of evidencePlan.units) {
+    assert.equal(unit.owner,unit.id);
+    assert.equal(unit.orderedSections,true);
+  }
+  const second=evidencePlan.units.find(unit=>unit.id==='2/2').sections;
+  assert.deepEqual(second.slice(second.indexOf('P83'),second.indexOf('P86')+1),['P83','P86']);
+  assert.deepEqual(second.slice(second.indexOf('R06')-1,second.indexOf('R06')+2),['P82','R06','P80']);
+  for(const relative of ['geometry-web/canvas_shards.json','geometry-web/canvas_shards.js',
+    'geometry-web/grid_card_entry_test.js','geometry-web/identity_ledger_browser_test.js',
+    'geometry-web/cutting_plan_test.js','geometry-web/assembly_bay_repeat_test.js']) {
+    assert.equal(evidencePlan.sourceHashes[relative],shards.lfSha256(fs.readFileSync(path.join(ROOT,relative))),
+      'R367_SOURCE_CLOSURE: '+relative);
+  }
+});
+test('new independent section requires explicit ownership in the current numeric plan',()=>{
+  const fixture=fixturePlan(),grown=copy(fixture.golden),numericPlan=copy(fixture.numericPlan);
+  grown.sections.P999=3;grown.total+=3;
+  rejects('CANVAS_PLAN_INVALID',()=>S.buildPlan(grown,numericPlan));
+  numericPlan.shards[1].sections.push('P999');
+  const evidencePlan=S.buildPlan(grown,numericPlan);
+  assert.equal(S.projection(evidencePlan,'2/2').P999,3);
+  assert.ok(!Object.hasOwn(S.projection(evidencePlan,'1/2'),'P999'));
+});
+test('full and partial predicates keep the canonical harness routing result',()=>{
+  const source=fs.readFileSync(path.join(ROOT,'geometry-web/cdp_test.js'),'utf8');
+  const lines=source.split('\n').filter(line=>/const (?:inSequence|notOtherShard)=/.test(line));
+  assert.equal(lines.length,2,'R367_CANONICAL_ROUTING');
+  const gates=new Function('scope',lines.join('\n')+';return {inSequence,notOtherShard};');
+  for(const mode of ['full','partial']) {
+    const gate=gates({mode});
+    for(const index of [1,2]) {
+      assert.equal(gate.inSequence(index),mode==='full');
+      assert.equal(gate.notOtherShard(index),true);
+    }
+  }
+  for(const index of [1,2]) {
+    const gate=gates({mode:'shard',shard:{index}});
+    for(const wanted of [1,2]) {
+      assert.equal(gate.inSequence(wanted),index===wanted);
+      assert.equal(gate.notOtherShard(wanted),index===wanted);
+    }
+  }
+  assert.ok(!/ownsCanvasUnit|runCanvasUnit/.test(source),'R367_NO_SECOND_ROUTER');
+});
+test('harness syntax and numeric outer gate retain every late first-shard block',()=>{
+  const source=fs.readFileSync(path.join(ROOT,'geometry-web/cdp_test.js'),'utf8');new vm.Script(source);
+  assert.match(source,/shardJournal=canvasEvidence\.createJournal\(/,'R367_HARNESS_JOURNAL');
+  assert.match(source,/shardJournal\.begin\(id\)/,'R367_HARNESS_JOURNAL_BEGIN');
+  assert.match(source,/shardJournal\.end\(scope\.shard\.index\+'\/'\+scope\.shard\.count\)/,'R367_HARNESS_JOURNAL_END');
+  assert.match(source,/shardJournal\.finish\(\)/,'R367_HARNESS_JOURNAL_FINISH');
+  const start=source.indexOf('const inSequence='),end=source.indexOf("await require('./project_audit_test.js')");
+  for(const key of ['P53.','P57–P61.','P62.','P63.','P64.','P65.','P66.'])
+    assert.ok(source.indexOf('=== '+key)>start&&source.indexOf('=== '+key)<end,key);
+  assert.ok(end<source.indexOf("await require('./composition_canvas_test.js')"));
+});
+test('CANVAS_FAKE_SCOPE rejects old aliases, unknown, mixed, modifier and golden-update shard scopes',()=>{
+  const env=configEnv();
+  for(const shard of ['', 'other','legacy','extensions','0/2','1/3'])
+    assert.throws(()=>H.runConfiguration({...env,GEOMETRY_CDP_SHARD:shard}),/GEOMETRY_CDP_SHARD/);
+  for(const extra of [
+    {GEOMETRY_GRID_SYSTEM_ONLY:'1'}, {GEOMETRY_GRID_SYSTEM_ONLY:''},
+    {GEOMETRY_ENGINEERING_WORKFLOW_ONLY:'1',GEOMETRY_ENGINEERING_EXAMPLE_ONLY:'1'},
+    {GEOMETRY_ENGINEERING_EXAMPLE_ONLY:''}
+  ]) rejects('CANVAS_FAKE_SCOPE',()=>H.runConfiguration({...env,GEOMETRY_CDP_SHARD:'1/2',...extra}));
+  for(const value of ['1',''])
+    assert.throws(()=>H.runConfiguration({...env,GEOMETRY_CDP_SHARD:'1/2',GEOMETRY_CDP_UPDATE_GOLDEN:value}),/never updates golden/);
+  assert.equal(H.runConfiguration(env).mode,'full');
+});
+test('controlled verdicts use actual harness hooks and repeated headers preserve section ordinals',()=>{
+  const evidencePlan=fixturePlan(3),events=[],j=S.createJournal(evidencePlan,'1/2',event=>events.push(event));
+  const file=path.join(ROOT,'geometry-web/cdp_test.js'),moduleObject={exports:{}};
+  const source=fs.readFileSync(file,'utf8')+
+    '\nmodule.exports.probeRecord=recordLog;module.exports.probeJournal=value=>{shardJournal=value;};';
+  vm.runInNewContext(source,{require:require('node:module').createRequire(file),module:moduleObject,
+    __dirname:path.dirname(file),process,Buffer,URL,console:{log(){}},setTimeout,clearTimeout},{filename:file});
+  const driver=moduleObject.exports;
+  driver.probeJournal(j);j.begin('1/2');
+  driver.probeRecord('=== Setup. fixture');
+  driver.probeRecord('=== 1. fixture');
+  assert.deepEqual(events.filter(event=>event.type==='section').map(event=>event.section),['Setup','1'],
+    'R367_HARNESS_JOURNAL_HEADERS: record the section before any controlled assertion');
+  driver.probeRecord('two verdicts',driver.explicitVerdict('✓'),driver.explicitVerdict('✓'));
+  driver.probeRecord('[console]','✓ ✗');
+  driver.probeRecord('=== 1b. repeated');
+  driver.probeRecord('third',driver.explicitVerdict('✓'));
+  assert.deepEqual(events.filter(event=>event.type==='section').map(event=>event.section),['Setup','1','1'],
+    'R367_HARNESS_JOURNAL: actual recordLog must journal every real header');
+  assert.deepEqual(events.filter(event=>event.type==='assertion').map(event=>event.ordinal),[1,2,3],
+    'R367_HARNESS_VERDICTS: actual recordLog must journal each controlled verdict');
+  j.end('1/2');j.finish();
+});
+test('original exact counts and actual zero-count events form a complete positive aggregate',()=>{
+  const evidencePlan=fixturePlan(),verified=evidencePlan.shards.map(id=>{
+    const trace=fixtureShard(evidencePlan,id);return S.verifyTrace(evidencePlan,id,trace.events,trace.result);
+  });
+  assert.deepEqual(S.verifyAggregate(evidencePlan,verified).sections,{'1':2,Setup:0,P83:1,P86:1});
+  const changed=copy(verified);changed[0].assertions++;
+  rejects('CANVAS_FAKE_SUMMARY',()=>S.verifyAggregate(evidencePlan,changed));
+});
+test('CANVAS_MISSING_SHARD rejects a missing real shard',()=>{
+  const evidencePlan=fixturePlan(),trace=fixtureShard(evidencePlan,'1/2');
+  rejects('CANVAS_MISSING_SHARD',()=>S.verifyAggregate(evidencePlan,[S.verifyTrace(evidencePlan,'1/2',trace.events,trace.result)]));
+});
+test('CANVAS_DUPLICATE_SHARD rejects duplicate ownership despite valid-looking totals',()=>{
+  const evidencePlan=fixturePlan(),trace=fixtureShard(evidencePlan,'1/2'),shard=S.verifyTrace(evidencePlan,'1/2',trace.events,trace.result);
+  rejects('CANVAS_DUPLICATE_SHARD',()=>S.verifyAggregate(evidencePlan,[shard,copy(shard)]));
+});
+test('CANVAS_GOLDEN_CHANGED rejects a changed current golden and any new min threshold',()=>{
+  const evidencePlan=fixturePlan(),trace=fixtureShard(evidencePlan,'1/2');evidencePlan.golden.sections['1']=3;
+  rejects('CANVAS_COUNT_DRIFT',()=>S.verifyTrace(evidencePlan,'1/2',trace.events,trace.result));
+  rejects('CANVAS_GOLDEN_NOT_EXACT',()=>S.buildPlan({schema:'geometry-cdp-sections/1',mode:'full',total:1,sections:{Setup:{min:1}}},{}));
+});
+test('CANVAS_ZERO_SECTION_DROPPED rejects an omitted zero key while assertion totals stay unchanged',()=>{
+  const evidencePlan=fixturePlan(),trace=fixtureShard(evidencePlan,'1/2');
+  trace.events=trace.events.filter(event=>event.section!=='Setup').map((event,seq)=>({...event,seq}));
+  rejects('CANVAS_MISSING_SECTION',()=>S.verifyTrace(evidencePlan,'1/2',trace.events,trace.result));
+});
+test('CANVAS_COUNT_DRIFT rejects both fewer and extra controlled assertions',()=>{
+  const evidencePlan=fixturePlan();
+  for(const delta of [-1,1]){
+    const changed=fixturePlan(2+delta),trace=fixtureShard(changed,'1/2');
+    trace.result.scope.evidencePlanSha256=evidencePlan.sha256;
+    rejects('CANVAS_COUNT_DRIFT',()=>S.verifyTrace(evidencePlan,'1/2',trace.events,trace.result));
+  }
+});
+test('CANVAS_FAKE_SUMMARY rejects incomplete, partial, altered-count and handoff summaries',()=>{
+  const evidencePlan=fixturePlan();
+  for(const mutate of [r=>{r.completed=false;},r=>{r.passedAssertions++;}]){
+    const trace=fixtureShard(evidencePlan,'1/2');mutate(trace.result);
+    rejects('CANVAS_FAKE_SUMMARY',()=>S.verifyTrace(evidencePlan,'1/2',trace.events,trace.result));
+  }
+  for(const mutate of [r=>{r.scope.mode='full';},r=>{r.scope.evidencePlanSha256='0'.repeat(64);},
+    r=>{r.scope.filters=['GEOMETRY_GRID_SYSTEM_ONLY'];},r=>{r.scope.modifiers=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY'];}]){
+    const trace=fixtureShard(evidencePlan,'1/2');mutate(trace.result);
+    rejects('CANVAS_FAKE_SCOPE',()=>S.verifyTrace(evidencePlan,'1/2',trace.events,trace.result));
+  }
+  for(const id of evidencePlan.shards)for(const mutate of [
+    r=>{r.sectionOrder.reverse();},r=>{r.handoff={};},
+    r=>{r.scope.shard.planSha256='0'.repeat(64);},r=>{r.scope.shard.goldenSha256='0'.repeat(64);},
+    r=>{r.unexpectedBrowserExceptions=1;}
+  ]){
+    const trace=fixtureShard(evidencePlan,id);mutate(trace.result);
+    rejects('CANVAS_NUMERIC_RECEIPT',()=>S.verifyTrace(evidencePlan,id,trace.events,trace.result));
+  }
+});
+test('CANVAS_UNOWNED_EXECUTION rejects running another shard instead of hiding assertions',()=>{
+  const evidencePlan=fixturePlan(),j=S.createJournal(evidencePlan,'1/2',()=>{});
+  rejects('CANVAS_UNOWNED_EXECUTION',()=>j.begin('2/2'));
+  j.begin('1/2');rejects('CANVAS_UNOWNED_EXECUTION',()=>j.section('P83','=== P83. unowned'));
+});
+test('CANVAS_ASSERTION_NOT_MASKED rejects a saved false verdict, with restored journal passing',()=>{
+  const evidencePlan=fixturePlan(),trace=fixtureShard(evidencePlan,'1/2');
+  const bad=copy(trace.events);bad.find(event=>event.type==='assertion').passed=false;
+  rejects('CANVAS_ASSERTION_FAILED',()=>S.verifyTrace(evidencePlan,'1/2',bad,trace.result));
+  assert.equal(S.verifyTrace(evidencePlan,'1/2',trace.events,trace.result).assertions,2);
+});
+test('CANVAS_P86_WITHOUT_PRODUCER rejects consumer execution before its real producer',()=>{
+  const evidencePlan=fixturePlan(),j=S.createJournal(evidencePlan,'2/2',()=>{});j.begin('2/2');
+  rejects('CANVAS_DEPENDENCY_ORDER',()=>j.section('P86','=== P86. consumer first'));
+});
+test('journal corruption, missing unit end and fake headers cannot certify a complete run',()=>{
+  const evidencePlan=fixturePlan(),trace=fixtureShard(evidencePlan,'1/2');
+  const bad=copy(trace.events);bad.at(-1).seq++;
+  rejects('CANVAS_JOURNAL_SEQUENCE',()=>S.verifyTrace(evidencePlan,'1/2',bad,trace.result));
+  rejects('CANVAS_MISSING_UNIT',()=>S.verifyTrace(evidencePlan,'1/2',trace.events.slice(0,-1),trace.result));
+  const header=copy(trace.events);header.find(event=>event.type==='section').header='=== P86. wrong';
+  rejects('CANVAS_SECTION_HEADER',()=>S.verifyTrace(evidencePlan,'1/2',header,trace.result));
+});
+test('original harness full/partial configuration still performs no browser work when imported',()=>{
+  const env=configEnv();
+  const helperFile=path.join(ROOT,'tests/helpers/canvas_shards.js'),moduleObject={exports:{}};
+  const requireAtFile=require('node:module').createRequire(helperFile);
+  const scopedRequire=name=>name==='../../geometry-web/canvas_shards.js'
+    ? {...requireAtFile(name),loadPlan(){throw Error('R367_IMPORT_READ_NUMERIC_PLAN');}}
+    : requireAtFile(name);
+  assert.doesNotThrow(()=>vm.runInNewContext(fs.readFileSync(helperFile,'utf8'),{
+    require:scopedRequire,module:moduleObject,__dirname:path.dirname(helperFile)
+  },{filename:helperFile}),'R367_IMPORT_MUST_NOT_READ_PLAN');
+  assert.equal(H.runConfiguration(env).mode,'full');
+  assert.equal(H.runConfiguration({...env,GEOMETRY_GRID_SYSTEM_ONLY:'1'}).mode,'partial');
+  const source=fs.readFileSync(path.join(ROOT,'geometry-web/cdp_test.js'),'utf8');
+  const boot=source.slice(source.indexOf('if(require.main===module)'));
+  const block=boot.match(/if\(scope\.mode==='shard'\)\{\n([\s\S]*?)\n    \}/);
+  assert.ok(block,'R367_HARNESS_SOURCE_BINDING: the real shard boot must bind the evidence plan');
+  const initialize=new Function('scope','canvasEvidence','_log','shardJournal',
+    block[1]+'\nreturn {scope,shardJournal};');
+  for(const id of S.IDS) {
+    const scope=H.runConfiguration({...env,GEOMETRY_CDP_SHARD:id});
+    assert.equal(scope.mode,'shard');
+    assert.equal(scope.shard.index+'/'+scope.shard.count,id);
+    const emitted=[],initialized=initialize(scope,S,line=>emitted.push(line),null);
+    assert.equal(initialized.scope.evidencePlanSha256,S.loadPlan(ROOT).sha256,'R367_HARNESS_SOURCE_BINDING');
+    assert.ok(initialized.shardJournal,'R367_HARNESS_SOURCE_BOUND_JOURNAL');
+    assert.deepEqual(emitted.map(line=>JSON.parse(line.slice('CANVAS_SHARD_EVENT '.length))),
+      [{seq:0,type:'unit-begin',unit:id}],'R367_HARNESS_SOURCE_BOUND_BEGIN');
+  }
+  rejects('CANVAS_RUNTIME_ENDPOINT',()=>H.runConfiguration({...env,GEOMETRY_TEST_URL:'http://example.com:18839/',GEOMETRY_CDP_SHARD:'1/2'}));
+});
+test('a different CDP result schema cannot reuse a valid current assertion journal',()=>{
+  const evidencePlan=fixturePlan(),trace=fixtureShard(evidencePlan,'1/2');trace.result.schema='other';
+  rejects('CANVAS_RESULT_SCHEMA',()=>S.verifyTrace(evidencePlan,'1/2',trace.events,trace.result));
 });

@@ -4,6 +4,8 @@ const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
 const floor = require('./cdp_floor.js');
 const shards = require('./canvas_shards.js');
+const canvasEvidence = require('../tests/helpers/canvas_shards.js');
+let shardJournal=null;
 const cdp = require('./cdp_helpers.js');
 const {createRetainedEvaluator} = require('./cdp_evaluation.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
@@ -46,8 +48,11 @@ function runConfiguration(env = process.env) {
   /* 分片模式:只跑完整序列中 canvas_shards.json 指定的一個連續區段,本片逐段與 golden 嚴格比對。
      它不是部分模式:不可與任何範圍旗標並用,也不可更新 golden。 */
   if(env.GEOMETRY_CDP_SHARD!==undefined){
-    if(filters.length||modifiers.length)throw Error('GEOMETRY_CDP_SHARD runs one contiguous block of the complete sequence; remove every scope flag and modifier');
+    if([...SCOPE_FLAGS,...ENGINEERING_MODIFIERS].some(name=>env[name]!==undefined))
+      throw Object.assign(Error('GEOMETRY_CDP_SHARD runs one contiguous block of the complete sequence; remove every scope flag and modifier'),{code:'CANVAS_FAKE_SCOPE'});
     if(env.GEOMETRY_CDP_UPDATE_GOLDEN!==undefined)throw Error('GEOMETRY_CDP_SHARD never updates golden; regenerate it from one complete full-mode run');
+    if(url.protocol!=='http:'||url.hostname!=='127.0.0.1'||!url.port||url.pathname!=='/'||url.search||url.hash||url.username||url.password)
+      throw Object.assign(Error('CANVAS_RUNTIME_ENDPOINT: shards must use the isolated loopback runtime probe service'),{code:'CANVAS_RUNTIME_ENDPOINT'});
     const plan=shards.loadPlan(),shard=shards.parseShardSpec(env.GEOMETRY_CDP_SHARD,plan);
     if(shard.count!==CANVAS_SHARDS)throw Error('cdp_test.js gates exactly '+CANVAS_SHARDS+' canvas shards; canvas_shards.json declares '+shard.count);
     return {mode:'shard',shard:{...shard,planSha256:shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)),goldenSha256:shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))},
@@ -150,7 +155,13 @@ let expectedBeforeUnloadUntil=0;
 let expectedNativeDialog=null;
 let expectedException=null, scope, skipped=[];
 const assetRequests=new Map(), assetFailures=[];
-const _log = console.log;
+const originalLog = console.log;
+// Shard receipts must survive the original immediate process.exit path. Keep
+// the original console behavior for full/partial; shard raw/journal is synced.
+const _log = (...args) => {
+  if(scope?.mode==='shard')fs.writeSync(1,require('node:util').format(...args)+'\n');
+  else originalLog(...args);
+};
 function observeAssetNetwork(message) {
   if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin,undefined,{allApi:true});
   transportFailureTrace.observe(message, currentTestStep);
@@ -174,11 +185,14 @@ function recordLog(...args) {
   const s = args.join(" ");
   if(s.startsWith('===')){
     currentTestStep=s;
-    currentSection=floor.sectionOf(s)||currentSection;
+    const section=floor.sectionOf(s);
+    currentSection=section||currentSection;
+    if(section)shardJournal?.section(section,s);
     sectionPass[currentSection]=sectionPass[currentSection]||0;
     touchSection(currentSection);
   }
   for(const passed of assertionVerdicts(args)){
+    shardJournal?.assertion(passed,args[0]);
     touchSection(currentSection);
     if(passed){passN++;sectionPass[currentSection]=(sectionPass[currentSection]||0)+1;}
     else{failN++;sectionFail[currentSection]=(sectionFail[currentSection]||0)+1;}
@@ -6462,16 +6476,16 @@ async function main() {
     console.log('P53 wait for injected connection error');
     await waitForExpectedNavigation({evaluate:eval_, marker:navigationMarker, label:'P53 injected connection error',
       condition:`typeof connection !== 'undefined' && connection.phase === 'error'`});
-    const failedStart = await eval_(`({message:$('connectionMessage').textContent,empty:$('emptyState').hidden,count:$('objectCountBadge').textContent,inert:$('app').inert})`);
-    check('P53-1 初始 403 明示錯誤、未知數量、停用編輯', failedStart.message.includes('403') && failedStart.empty && failedStart.count === '—' && failedStart.inert, failedStart);
+    const failedStart = await eval_(`({message:$('connectionMessage').textContent,empty:$('emptyState').hidden,count:$('objectCountBadge').textContent,inert:$('app').inert,phase:connection.phase,error:connection.error})`);
+    check('P53-1 初始 403 明示錯誤、未知數量、停用編輯', failedStart.message.includes('403') && failedStart.empty && failedStart.count === '—' && failedStart.inert && failedStart.phase === 'error' && typeof failedStart.error === 'string' && failedStart.error.length > 0 && failedStart.error.includes('403'), failedStart);
     const offlineRequests = await eval_(`__g197Commands.length`);
     await key('p','KeyP',80);
     check('P53-2 失敗時快捷鍵不送建立指令', await eval_(`__g197Commands.length`) === offlineRequests);
     await eval_(`__g197Mode='';__g197Commands=[]`);
     await ctl('#connectionRetry');
     await until(`connection.phase === 'ready'`);
-    const recovered = await eval_(`({commands:__g197Commands.slice(),count:$('objectCountBadge').textContent,hidden:$('connectionNotice').hidden})`);
-    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|dump-deidentified|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden, recovered);
+    const recovered = await eval_(`({commands:__g197Commands.slice(),count:$('objectCountBadge').textContent,hidden:$('connectionNotice').hidden,error:connection.error})`);
+    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|dump-deidentified|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden && recovered.error === '', recovered);
     check('P53-4 重試前後世界逐字相同', typeof beforeConnection === 'string' && await eval_(`api('dump').then(r=>r.text)`) === beforeConnection);
     const cached = await eval_(`JSON.stringify([oc.faces,oc.surfs,oc.bmap])`);
     await eval_(`__g197Mode='partial';renderObjects()`);
@@ -6714,18 +6728,34 @@ async function main() {
     check('P61-8b 未就緒預覽的點按不觸發例外',excN===failedPdfExceptions);
     await ctl('#refClose');
     check('P61-9 PDF 讀取失敗保留原場景',await eval_(`api('dump').then(r=>r.text===${JSON.stringify(lastDump)})`));
-    check('P61-10 載入未送達時，重試連線保留原幾何與來源',await eval_(`(async()=>{
+    const uploadNotSentRecovery = await eval_(`(async()=>{
       const oldFetch=window.fetch.bind(window),before=(await api('dump')).text,ref=ReferenceWorkspace.active(1).id;
-      window.fetch=async(input,init)=>{if(input==='/upload/confirm')throw new TypeError('test upload disconnected');return oldFetch(input,init);};
-      let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
-      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===before&&ReferenceWorkspace.active(1).id===ref;
-    })()`));
-    check('P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源',await eval_(`(async()=>{
+      let confirmIntercepted=false;
+      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){confirmIntercepted=true;throw new TypeError('test upload disconnected');}return oldFetch(input,init);};
+      let blocked=false,importFailure=null;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';importFailure={name:e.name,message:e.message};}finally{window.fetch=oldFetch;}
+      const seed={phase:connection.phase,error:connection.error};
+      await recoverConnection();
+      const after=(await api('dump')).text,source=ReferenceWorkspace.active(1).id;
+      const proof={confirmIntercepted,blocked,importFailure,seed,phase:connection.phase,error:connection.error,beforeDump:before,afterDump:after,dumpMatches:after===before,sourceId:source,expectedSourceId:ref,sourceMatches:source===ref};
+      proof.passed=confirmIntercepted&&seed.phase==='error'&&typeof seed.error==='string'&&seed.error.length>0&&blocked&&connection.phase==='ready'&&connection.error===''&&proof.dumpMatches&&proof.sourceMatches;
+      return proof;
+    })()`);
+    console.log('GEO320_RECOVERY_PROOF '+JSON.stringify({case:'P61-10',...uploadNotSentRecovery}));
+    check('P61-10 載入未送達時，重試連線保留原幾何與來源',uploadNotSentRecovery.passed,uploadNotSentRecovery);
+    const uploadResponseLostRecovery = await eval_(`(async()=>{
       const oldFetch=window.fetch.bind(window);
-      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){await oldFetch(input,init);throw new TypeError('test response lost');}return oldFetch(input,init);};
-      let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
-      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===g198Dump&&ReferenceWorkspace.active(1).calibration.distanceMm===1600&&typeof curScene.path==='string'&&curScene.path.endsWith('.scene');
-    })()`));
+      let confirmIntercepted=false,confirmationResponseReceived=false,confirmationResponseOK=false,confirmationStatus=null;
+      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){confirmIntercepted=true;const response=await oldFetch(input,init);confirmationResponseReceived=true;confirmationResponseOK=response.ok;confirmationStatus=response.status;throw new TypeError('test response lost');}return oldFetch(input,init);};
+      let blocked=false,importFailure=null;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';importFailure={name:e.name,message:e.message};}finally{window.fetch=oldFetch;}
+      const seed={phase:connection.phase,error:connection.error};
+      await recoverConnection();
+      const after=(await api('dump')).text,distanceMm=ReferenceWorkspace.active(1).calibration.distanceMm,scenePath=curScene.path;
+      const proof={confirmIntercepted,confirmationResponseReceived,confirmationResponseOK,confirmationStatus,blocked,importFailure,seed,phase:connection.phase,error:connection.error,expectedDump:g198Dump,afterDump:after,dumpMatches:after===g198Dump,distanceMm,scenePath};
+      proof.passed=confirmIntercepted&&confirmationResponseReceived&&confirmationResponseOK&&seed.phase==='error'&&typeof seed.error==='string'&&seed.error.length>0&&blocked&&connection.phase==='ready'&&connection.error===''&&proof.dumpMatches&&distanceMm===1600&&typeof scenePath==='string'&&scenePath.endsWith('.scene');
+      return proof;
+    })()`);
+    console.log('GEO320_RECOVERY_PROOF '+JSON.stringify({case:'P61-11',...uploadResponseLostRecovery}));
+    check('P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源',uploadResponseLostRecovery.passed,uploadResponseLostRecovery);
     await eval_(`ReferenceWorkspace.openSource(g198PDF,1)`);
     await field('refTarget','new');
     await eval_(`(async()=>{
@@ -7279,6 +7309,10 @@ async function main() {
      It also stays last in the last canvas shard. */
   if(inSequence(2)||process.env.GEOMETRY_DEFINITION_IMPORT_ONLY)await require('./definition_import_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   }
+  if(shardJournal){
+    shardJournal.end(scope.shard.index+'/'+scope.shard.count);
+    shardJournal.finish();
+  }
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
   const goldenCompare=evaluateSections();
@@ -7306,6 +7340,17 @@ async function fatal(e) {
   }
 }
 if(require.main===module){
-  try {scope=runConfiguration();console.log=recordLog;(async()=>{await assertPortAvailable(PORT);chrome=startBrowser();chrome.on('error',fatal);_log('CDP_SCOPE '+JSON.stringify(scope));await main();})().catch(fatal);}
+  try {
+    scope=runConfiguration();
+    if(scope.mode==='shard'){
+      const shardEvidencePlan=canvasEvidence.loadPlan();
+      scope.evidencePlanSha256=shardEvidencePlan.sha256;
+      const id=scope.shard.index+'/'+scope.shard.count;
+      shardJournal=canvasEvidence.createJournal(shardEvidencePlan,id,event=>_log('CANVAS_SHARD_EVENT '+canvasEvidence.stable(event)));
+      shardJournal.begin(id);
+    }
+    console.log=recordLog;
+    (async()=>{await assertPortAvailable(PORT);chrome=startBrowser();chrome.on('error',fatal);_log('CDP_SCOPE '+JSON.stringify(scope));await main();})().catch(fatal);
+  }
   catch(error){_log('CDP preflight failed:',error.message);process.exitCode=1;}
 } else module.exports={runConfiguration,assertionVerdicts,evaluationValue,explicitVerdict,assertPortAvailable,verifyBrowserOwnership};
