@@ -82,8 +82,11 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(golden.sections.R06, 50, 'R06_CANVAS_GOLDEN: retain the independently measured section');
   assert.equal(sum(mainSections), 4065, 'R363_CANVAS_UNION: unchanged 4002 plus P360 13 plus R06 50');
   assert.equal(Object.keys(mainSections).length, 93);
-  // P116 has no full-mode golden at the merge source. Keep this gate red until
-  // the complete run records it; a partial-mode count is not an admissible seed.
+  // Formal 2/2 run 42170766817 completed all P116 parent cases: 373 pass +
+  // one failed final C07 child assertion. The child writes a separate log and
+  // never contributes its assertion count to the parent's section. This fixes
+  // the executed contract at 374; a red receipt must still fail verification.
+  assert.equal(golden.sections.P116, 374, 'R356_P116_EXECUTED_ASSERTION_COUNT');
   assert.ok(Number.isSafeInteger(golden.sections.P116) && golden.sections.P116 > 0,
     'R356_P116_FULL_GOLDEN_REQUIRED: record the observed full-mode section before accepting shard receipts');
   assert.deepEqual(Object.keys(golden.sections).sort(), [...Object.keys(mainSections), 'P116'].sort(), 'R356_ONLY_NEW_SECTION');
@@ -260,6 +263,41 @@ test('workflow：canvas 兩片並行、每片仍 35 分鐘，彙總核對收據�
   assert.equal(driver.runConfiguration({...env, GEOMETRY_GRID_CARD_ENTRY_ONLY:'1'}).mode, 'partial', 'R369_P353_SCOPE');
   assert.throws(() => driver.runConfiguration({...env, GEOMETRY_GRID_CARD_ENTRY_ONLY:'1', GEOMETRY_CDP_SHARD:'2/2'}), /one contiguous block/, 'R369_P353_NO_FILTERED_SHARD');
   assert.throws(() => driver.runConfiguration({...env, GEOMETRY_GRID_CARD_ENTRY_CASE:'C01'}), /requires GEOMETRY_GRID_CARD_ENTRY_ONLY/, 'R369_P353_NO_PARTIAL_FULL');
+  // Execute the real C07 environment construction. Its child runs one explicit
+  // reopen case in a fresh profile, so it cannot inherit the parent's shard.
+  const timberSource = fs.readFileSync(path.join(ROOT, 'geometry-web/timber_reuse_test.js'), 'utf8');
+  const childStart = timberSource.indexOf('    const env={...process.env};');
+  const childEnd = timberSource.indexOf('    for(const pin of pins)', childStart);
+  assert.equal(timberSource.split('    const env={...process.env};').length - 1, 1,
+    'R356_C07_ONE_CHILD_ENVIRONMENT');
+  assert.ok(childStart >= 0 && childEnd > childStart, 'R356_C07_CHILD_ENVIRONMENT_BOUNDARY');
+  const childEnvironment = new Function('process', 'receiptPath', 'profile', 'port',
+    timberSource.slice(childStart, childEnd) + '\nreturn env;');
+  const parentEnvironment = {...env, GEOMETRY_CDP_SHARD:'2/2',
+    GEOMETRY_CHROME_PROFILE:path.join(os.tmpdir(), 'r356-parent-profile'), GEOMETRY_CDP_PORT:'19356'};
+  const beforeChild = clone(parentEnvironment);
+  const freshProfile = path.join(os.tmpdir(), 'r356-c07-fresh-profile');
+  const savedReceipt = path.join(os.tmpdir(), 'r356-c07-saved-receipt.json');
+  const child = childEnvironment({env:parentEnvironment}, savedReceipt, freshProfile, 29356);
+  assert.equal(Object.hasOwn(child, 'GEOMETRY_CDP_SHARD'), false, 'R356_C07_DROPS_PARENT_SHARD');
+  assert.deepEqual(parentEnvironment, beforeChild, 'R356_C07_PRESERVES_PARENT_ENVIRONMENT');
+  assert.equal(child.GEOMETRY_TIMBER_REUSE_ONLY, '1', 'R356_C07_CHILD_EXPLICIT_SCOPE');
+  assert.equal(child.GEOMETRY_TIMBER_REUSE_CASE, 'C07', 'R356_C07_CHILD_EXACT_CASE');
+  assert.equal(child.GEOMETRY_R116_FRESH_STAGE, 'open', 'R356_C07_CHILD_OPEN_STAGE');
+  assert.equal(child.GEOMETRY_R116_FRESH_RECEIPT, savedReceipt, 'R356_C07_CHILD_SAVED_RECEIPT');
+  assert.equal(child.GEOMETRY_CHROME_PROFILE, freshProfile, 'R356_C07_CHILD_FRESH_PROFILE');
+  assert.notEqual(child.GEOMETRY_CHROME_PROFILE, parentEnvironment.GEOMETRY_CHROME_PROFILE,
+    'R356_C07_CHILD_PROFILE_ISOLATED');
+  assert.equal(child.GEOMETRY_CDP_PORT, '29356', 'R356_C07_CHILD_FRESH_PORT');
+  assert.notEqual(child.GEOMETRY_CDP_PORT, parentEnvironment.GEOMETRY_CDP_PORT,
+    'R356_C07_CHILD_PORT_ISOLATED');
+  assert.equal(child.GEOMETRY_TEST_URL, parentEnvironment.GEOMETRY_TEST_URL, 'R356_C07_SAME_TEST_SERVICE');
+  assert.equal(child.GEOMETRY_FEEDBACK_DIR, parentEnvironment.GEOMETRY_FEEDBACK_DIR,
+    'R356_C07_SAME_ISOLATED_FEEDBACK');
+  const childScope = driver.runConfiguration(child);
+  assert.equal(childScope.mode, 'partial', 'R356_C07_CHILD_CONFIGURATION_ACCEPTED');
+  assert.deepEqual(childScope.filters, ['GEOMETRY_TIMBER_REUSE_ONLY'], 'R356_C07_ONLY_REOPEN_SCOPE');
+  assert.deepEqual(childScope.modifiers, [], 'R356_C07_NO_OTHER_SCOPE_MODIFIERS');
   const rows=driverSource.split('\n'), selected=[];
   for (const moduleName of ['./grid_card_entry_test.js','./definition_import_browser_test.js']) {
     const hits=rows.flatMap((row,index)=>row.includes("await require('"+moduleName+"')")?[index]:[]);
