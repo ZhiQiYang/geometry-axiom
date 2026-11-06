@@ -144,12 +144,29 @@ jobs:
           mkdir -p "$cache_dir"
           shopt -s nullglob
           debs=("$cache_dir"/fonts-noto-cjk*.deb)
+          echo "CJK_CACHE_DIR=$cache_dir"
+          echo "CJK_DEB_COUNT=${#debs[@]}"
           if [ "${#debs[@]}" -gt 0 ]; then
-            sudo apt-get install -y "${debs[@]}"
+            ls -la "${debs[@]}"
+            for deb in "${debs[@]}"; do
+              echo "CJK_DEB=$(basename "$deb") bytes=$(wc -c <"$deb")"
+            done
+            echo "CJK_INSTALL_BRANCH=cached-deb"
+            # Capture apt output; cache-hit must not fetch from the Ubuntu mirror.
+            log="$(mktemp)"
+            sudo apt-get install -y "${debs[@]}" 2>&1 | tee "$log"
+            if rg -n "https?://azure\.archive\.ubuntu\.com|Need to get .* of archives" "$log"; then
+              echo "CJK_CACHE_HIT_STILL_MIRRORED=1" >&2
+              echo "cache-hit path contacted apt mirror; see log above" >&2
+              exit 1
+            fi
+            echo "CJK_CACHE_HIT_STILL_MIRRORED=0"
           else
+            echo "CJK_INSTALL_BRANCH=apt-miss"
             sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
             sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
             cp /var/cache/apt/archives/fonts-noto-cjk*.deb "$cache_dir/"
+            ls -la "$cache_dir"/fonts-noto-cjk*.deb || true
           fi
           dpkg -s fonts-noto-cjk
           if ! fc-list :lang=zh | grep -q .; then
