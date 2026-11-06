@@ -85,7 +85,7 @@
       const timber = fe.timbers.find(t => t.id === sel?.id);
       title = multi ? `已選 ${fe.timberSelection.size} 支角材` : `角材 ${sel.id}`; typeIcon = 'timber';
       meta = multi ? `角材 ${[...fe.timberSelection].join('、')}` : `${timber?.A ?? '—'} × ${timber?.B ?? '—'} · 長 ${timber?.L ?? '—'}`;
-      tiles = [item(multi?'timber-batch':'edit',multi?'批改欄位':'編輯','edit',reuseState.batch), item('fit','顯示全部','fit'), item('delete','刪除','trash',multi?'刪除要先單選一支角材':blocked,{danger:true})];
+      tiles = [item(multi?'timber-batch':'edit',multi?'批改欄位':'編輯欄位','edit',reuseState.batch), item('fit','顯示全部','fit'), item('delete','刪除','trash',multi?'刪除要先單選一支角材':blocked,{danger:true})];
       groups = [unavailable, [props]];
     } else if (sel?.kind === 'point') {
       title = '面內一點'; meta = `u ${sel.x} · v ${sel.y}`; typeIcon = 'plus';
@@ -123,7 +123,7 @@
       document.querySelector(`#feGuidePick [data-axis="${a.act==='guide-u'?'u':'v'}"]`).click();
     } else if (a.act==='guide-edit') {fiShowTab('guide'); document.querySelector(`[data-guide-edit="${target.id}"]`)?.click();}
     else if (a.act==='guide-timber') {fiShowTab('timber'); $('tbAnchor').value=`at-line guide ${target.id}`; feTimberSuggestForm({forceRole:true}); await fePlaceTimberFromForm(oc.edit.bid);}
-    else if (['fixity','timber','edit','delete'].includes(a.act)) await feRunAction(a.act);
+    else if (['fixity','timber','edit','delete'].includes(a.act)) await feRunAction(a.act,{timberFields:a.act==='edit'});
   }
   function decoratePanel() {
     if (!shell.state || !fe.op) return;

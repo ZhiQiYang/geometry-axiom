@@ -683,7 +683,13 @@ document.addEventListener("keydown", e => {
 async function apiRequest(cmd, roomLease = null) {
   const rollback = cmd === "line history-abort";
   if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd)) {
-    try { await window.TimberEdit?.beforeWorldMutation(); }
+    try {
+      // Idle UI preflight must not move synchronous confirmation ownership to
+      // a later microtask. A real cancellation keeps its lease until this
+      // continuation immediately hands ownership to the original command.
+      const pending = window.TimberEdit?.beforeWorldMutation();
+      if (pending) { const release = await pending; release(); }
+    }
     catch (error) { return {ok:false,error:error.message}; }
   }
   if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm |timber-edit-confirm )/.test(cmd)) {
@@ -704,7 +710,7 @@ async function apiRequest(cmd, roomLease = null) {
   try {
   return roomNativeResult = await (async () => {
   const t0 = performance.now();
-  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm |timber-edit-confirm )/.test(cmd) ? crypto.randomUUID() : null;
+  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm |timber-edit-confirm |timber-edit-cancel )/.test(cmd) ? crypto.randomUUID() : null;
   const ack = [...acknowledgedApiResults];
   let confirmation = null;
   const featureToken=cmd.match(/^line confirm (\S+)$/)?.[1];
@@ -6767,14 +6773,14 @@ function feActionsFor(sel) {
     return [{ act: "op:hole", label: FE_OPS.hole.name, iconName: FE_OPS.hole.icon,
       title: FE_OPS.hole.desc, on: fe.op && fe.op.type === "hole" }];
   if (sel.kind === "timber")
-    return [{ act: "edit", label: "編輯…", iconName: "edit", title: "在右欄編輯角材", on: false },
+    return [{ act: "edit", label: "編輯…", iconName: "edit", title: "在右欄編輯角材與定位", on: false },
       { act: "delete", label: "刪除", iconName: "trash", title: "刪除角材", on: false }];
   if (sel.kind !== "corner") return [];
   return [{ act: "op:corner", label: FE_OPS.corner.name, iconName: FE_OPS.corner.icon,
     title: FE_OPS.corner.desc, on: fe.op && fe.op.type === "corner" }];
 }
 /* GEO-192 C:浮動列/右鍵選單共用的動作處理器。 */
-async function feRunAction(act) {
+async function feRunAction(act, { timberFields = false } = {}) {
   if (!feActionsFor(fe.sel).some(a => a.act === act) || oc.busy) return;
   if (act === "timber" && fe.sel?.kind === "edge" && fe.sel.loop === 0) {
     const bid = oc.edit?.bid;
@@ -6790,7 +6796,12 @@ async function feRunAction(act) {
     return;
   }
   if (act === "edit" && fe.sel?.kind === "timber") {
-    if (window.TimberEdit) { await TimberEdit.openBatch(); return; }
+    // Keep the existing single-timber placement editor. The context menu asks
+    // for typed field edits; source-bound timbers have no legacy field form.
+    const selected = fe.timbers.find(t => t.id === fe.sel.id);
+    if (window.TimberEdit && (timberFields || fe.timberSelection.size > 1 || selected?.engineeringSources?.length)) {
+      await TimberEdit.openBatch(); return;
+    }
     fiShowTab("timber");
     if (innerWidth <= 680) openPanel("right", $("workspaceToggleRight"));
     $("tbEditAnchor")?.focus();

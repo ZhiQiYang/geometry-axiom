@@ -12,6 +12,10 @@
   const directions = ['+u','-u','+v','-v'];
   let clipboard = null, repeat = null, form = null, menuRead = null, catalogSnapshot = null, closedSelection = null, serial = 0, connectionEpoch = 0;
   let composing = false, lastConnectionPhase = null;
+  // A candidate can outlive its form while cancellation is pending or failed.
+  // Keep its token/lease until an affirmative reply, including through the
+  // caller's synchronous handoff to the next mutation.
+  let retiringCandidate = null, mutationPreflight = null;
   const selectedIds = () => fe.timberSelection.size ? [...fe.timberSelection] : fe.sel?.kind === 'timber' ? [fe.sel.id] : [];
   function snapshot() {
     return {context:ReferenceWorkspace.context(), frame:ReferenceWorkspace.history.frame,
@@ -49,11 +53,21 @@
     return text;
   }
   async function post(path, body) {
+    const session = connection.session;
     const response = await fetch(path, {method:'POST',headers:{'Content-Type':'application/json','X-Geometry-Version':pageRuntimeVersion},
       body:JSON.stringify(body),signal:AbortSignal.timeout(30000)});
     checkApiSession(response);
+    if (path === '/timber-edit/preview' && (!session || response.headers.get('X-Geometry-Session') !== session || connection.session !== session))
+      throw Error('角材預覽未回傳原服務識別；請重新載入，未開放其他修改。');
     const result = await response.json();
-    if (!response.ok || !result?.ok) throw Error(result?.error || `角材服務回應失敗（HTTP ${response.status}）。`);
+    if (!response.ok || !result?.ok) {
+      const error = Error(result?.error || `角材服務回應失敗（HTTP ${response.status}）。`);
+      // These native/transport validation codes reject before creating a
+      // candidate. A bridge failure can also be ok:false, without such proof.
+      if (path === '/timber-edit/preview' && response.ok && result?.ok === false &&
+          /^(TIMBER_(INPUT|ENCODING|JSON|SCHEMA)|HISTORY_GROUP|STALE|CAPACITY|MEMORY)$/.test(result.code)) error.timberPreviewRejected = true;
+      throw error;
+    }
     return result;
   }
   function eligibility(result, ids, boundaryId) {
@@ -251,18 +265,40 @@
   }
   function cancelCandidate(value) {
     if (value.cancelling) return value.cancelling;
+    if (!value.pending && !value.lease && value.preview?.token == null) {
+      value.preview = null; return Promise.resolve();
+    }
+    retiringCandidate = value;
     const cancellation = (async () => {
-      const pending = value.pending; if (pending) await pending.catch(()=>{});
-      const token = value.preview?.token; value.preview = null;
-      try {
-        if (token != null) {
-          const result = await apiRequest('timber-edit-cancel '+token);
-          if (result.transport) throw Error('已停止本次確認；連線恢復後請重新預覽。');
-        }
-      } finally {ReferenceWorkspace.finishTimberPreview(value.lease); value.lease = null;}
+      const session = value.lease?.session ?? value.stamp.session;
+      const assertSession = () => {
+        if (session !== connection.session) throw Error('角材候選屬於先前的服務；請重新載入，未送出取消或原修改。');
+      };
+      assertSession();
+      const pending = value.pending;
+      if (pending) await pending.catch(error=>{if(error.timberPreviewRejected !== true)throw error;});
+      assertSession();
+      if (value.previewUncertain) throw Error('角材預覽結果尚未確認；請重新載入，未開放其他修改。');
+      const token = value.preview?.token;
+      if (token != null) {
+        const result = await apiRequest('timber-edit-cancel '+token);
+        if (!result || result.ok !== true || result.transport)
+          throw Error(result?.error || '角材候選取消結果尚未確認；請重新連線後再取消。');
+        // cancelled:false is also definitive: this exact token is no longer
+        // pending, including after a lost cancellation response and retry.
+        if (typeof result.cancelled !== 'boolean') throw Error('角材候選取消回應不完整，未開放其他修改。');
+        revision(result.revision);
+      }
+      value.preview = null;
+      if (mutationPreflight?.value !== value) releaseCandidate(value);
     })();
-    value.cancelling = cancellation;
-    return cancellation.finally(()=>{if(value.cancelling===cancellation)value.cancelling=null;});
+    const settled = cancellation.finally(()=>{if(value.cancelling===settled)value.cancelling=null;});
+    value.cancelling = settled;
+    return settled;
+  }
+  function releaseCandidate(value) {
+    ReferenceWorkspace.finishTimberPreview(value.lease); value.lease = null;
+    if (retiringCandidate === value) retiringCandidate = null;
   }
   function changed(value) {
     if (form !== value || value.confirming) return;
@@ -392,6 +428,7 @@
     const generation = value.generation, input = rawForm();
     value.lease = ReferenceWorkspace.beginTimberPreview();value.busy = true;updateActions(value);
     const expectedRevision = value.mode === 'create' ? value.recipe.nativeRevision : value.read.revision;
+    value.previewUncertain = true;
     const pending = post('/timber-edit/preview',{schema:'timber-edit-transaction/1',expectedRevision:revision(expectedRevision),boundaryId:value.stamp.boundaryId,operations:proposed});
     value.pending = pending;
     try {
@@ -399,19 +436,19 @@
       if (!candidate || candidate.schema !== 'timber-edit-preview-result/1' || typeof candidate.valid !== 'boolean' ||
           typeof candidate.noOp !== 'boolean' || revision(candidate.revision) !== expectedRevision ||
           !Array.isArray(candidate.before) || !Array.isArray(candidate.after) || !Array.isArray(candidate.violations) ||
-          !candidate.noOp && (!Number.isInteger(candidate.token) || candidate.token<1 || candidate.token>4294967295)) throw Error('候選資料不完整，未開放確認。');
-      value.preview = candidate; value.pending = null;
+          (candidate.noOp ? candidate.token !== null : (!Number.isInteger(candidate.token) || candidate.token<1 || candidate.token>4294967295))) throw Error('候選資料不完整，未開放確認。');
+      value.preview = candidate; value.pending = null; value.previewUncertain = false;
       if (!live(value) || generation !== value.generation || input !== rawForm()) {await cancelCandidate(value);return;}
       if (candidate.noOp) {
-        if (candidate.token !== null) throw Error('空變更候選不應具有確認識別。');
         ReferenceWorkspace.finishTimberPreview(value.lease);value.lease=null;
       } else ReferenceWorkspace.bindTimberPreview(value.lease,candidate.token);
       value.previewInput = input;impact(value);
       report(value,candidate.noOp ? '定義完全相同；不提交、不新增歷史。' : candidate.valid ? '已驗證完整候選；核對逐支來源與連動後確認。' : '完整候選未通過；正式角材保持原樣。',!candidate.valid);
     } catch (error) {
+      if (error.timberPreviewRejected === true) value.previewUncertain = false;
       value.pending = null;
       await cancelCandidate(value).catch(()=>{});
-      if (live(value)) report(value,error.message,true);
+      if (live(value)) report(value,value.previewUncertain ? '角材預覽結果尚未確認；請重新載入，未開放其他修改。' : error.message,true);
     } finally {value.pending=null;value.busy=false;if(live(value))updateActions(value);}
   }
   async function confirm(value) {
@@ -465,11 +502,24 @@
     if(connection.phase===lastConnectionPhase)return;lastConnectionPhase=connection.phase;
     if(connection.phase!=='ready'){connectionEpoch++;invalidate('連線已變更，請重新複製或選取。');}
   }
-  async function beforeWorldMutation() {
-    const value=form;if(!value)return;
+  function beforeWorldMutation() {
+    if (mutationPreflight?.pending) throw Error('角材候選正在取消，請等候結果再修改或切換專案。');
+    const value=mutationPreflight?.value || retiringCandidate || form;if(!value)return null;
     if(value.confirming)throw Error('請先取得這次角材確認回執，再修改或復原。');
-    form=null;value.closed=true;value.generation++;
-    await cancelCandidate(value);
+    if (!value.pending && !value.cancelling && !value.lease && value.preview?.token == null) {
+      if(form===value)form=null;value.closed=true;value.generation++;
+      return null;
+    }
+    if (!value.lease) value.lease = ReferenceWorkspace.beginTimberPreview();
+    const preflight={value,pending:true,context:ReferenceWorkspace.context(),
+      frame:ReferenceWorkspace.history.frame,session:connection.session}; mutationPreflight=preflight;
+    if(form===value)form=null;value.closed=true;value.generation++;
+    return cancelCandidate(value).then(()=>()=>{
+      if(mutationPreflight!==preflight)throw Error('角材取消的工作世代已變更，未開放修改。');
+      const current=ReferenceWorkspace.assemblyConfirmationCurrent(preflight) && preflight.session===connection.session;
+      releaseCandidate(value);mutationPreflight=null;
+      if(!current)throw Error('取消期間專案或服務已變更，未送出原修改。');
+    },error=>{preflight.pending=false;throw error;});
   }
   async function settleRecovered(command,result) {
     if(!command.startsWith('timber-edit-confirm '))return;
@@ -518,7 +568,8 @@
   window.addEventListener('geometry-definition-changed',()=>invalidate());
   window.DraftGate?.register(()=>{
     if(form?.confirming){toast('請先取得這次角材確認結果。');return false;}
-    if(form)close(false);return true;
+    if(mutationPreflight || retiringCandidate){toast('請先取得角材候選的取消結果。');return false;}
+    if(form)close(false);return !retiringCandidate;
   });
   window.TimberEdit={menuItems,prepareMenu,copy,openBatch,openCreate,renderInspector,afterInspectorRender,recordCreated,
     applyLegacyFields,invalidate,connectionChanged,settleRecovered,beforeWorldMutation,close,
