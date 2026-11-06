@@ -11,7 +11,7 @@ import threading
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[2]
-IDS = ("legacy", "extensions")
+IDS = ("1/2", "2/2")
 HELPER = "tests/helpers/canvas_shards.js"
 FILES = ("plan.json", "stdout.log", "stderr.log", "runtime.stdout", "runtime.stderr")
 
@@ -59,7 +59,9 @@ def source_identity():
 
 def plan():
     raw = subprocess.check_output(["node", HELPER, "plan"], cwd=ROOT)
-    return read_json(raw)
+    current = read_json(raw)
+    require(current.get("shards") == list(IDS), "CANVAS_SHARD_PLAN_CHANGED")
+    return current
 
 
 def trace(raw):
@@ -163,6 +165,7 @@ def verify_manifest(receipt, expected, original_plan, folder):
     for field in ("run_id", "run_attempt"):
         require(receipt.get(field) == expected[field], "CANVAS_WRONG_RUN_ATTEMPT: " + field)
     require(receipt.get("shard") in IDS, "CANVAS_FAKE_SCOPE")
+    require(folder.name == "canvas-shard-" + receipt["shard"].split("/")[0], "CANVAS_RECEIPT_DIRECTORY")
     require(receipt.get("verified") is True and type(receipt.get("process_exit")) is int and receipt["process_exit"] == 0
             and type(receipt.get("runtime_exit")) is int and receipt["runtime_exit"] == 0, "CANVAS_PROCESS_FAILED")
     require(receipt.get("command") == ["node", "geometry-web/cdp_test.js"], "CANVAS_COMMAND_CHANGED")
@@ -192,7 +195,11 @@ def verify_manifest(receipt, expected, original_plan, folder):
 def verify(artifacts, out):
     expected = {**source_identity(), **run_id(), "runtime_version": runtime_version()}
     original_plan = plan()
-    folders = sorted(path.parent for path in artifacts.glob("*/manifest.json"))
+    # Preserve #369's strict input set: do not silently ignore an extra folder
+    # or a failed shard whose manifest was never completed.
+    folders = sorted(artifacts.iterdir())
+    require(all(folder.is_dir() and not folder.is_symlink() and (folder / "manifest.json").is_file()
+                for folder in folders), "CANVAS_MISSING_RAW")
     require(len(folders) == len(IDS), "CANVAS_MISSING_SHARD")
     shards, manifests, seen = [], [], set()
     for folder in folders:

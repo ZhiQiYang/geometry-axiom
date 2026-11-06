@@ -63,6 +63,8 @@ jobs:
           persist-credentials: false
       - name: Prove real coverage test kills a removed suite
         run: python3 -B tests/native_sharding_mutation_check.py --output '${{ runner.temp }}/native-sharding-proof'
+      - name: Prove archive capability guards with the original mutation judge
+        run: python3 geometry-core/card-reference/run_archive_mutations.py --output '${{ runner.temp }}/archive-mutations'
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           pattern: native-shard-*
@@ -78,11 +80,13 @@ jobs:
           path: |
             ${{ runner.temp }}/native-sharding-proof/
             ${{ runner.temp }}/native-complete.json
+            ${{ runner.temp }}/archive-mutations/
           if-no-files-found: error
           retention-days: 14
 
+
   browser:
-    name: browser (${{ matrix.suite }}${{ matrix.shard && format(':{0}', matrix.shard) || '' }})
+    name: browser (${{ matrix.suite }}${{ matrix.shard && format(' {0}/2', matrix.shard) || '' }})
     runs-on: ubuntu-latest
     timeout-minutes: ${{ matrix.timeout }}
     strategy:
@@ -90,18 +94,20 @@ jobs:
       max-parallel: 2
       matrix:
         include:
+          # 2026-11-03 canvas比照P-186 native：完整序列依geometry-web/canvas_shards.json拆成兩個連續區段的並行job；
+          # 每片仍35分鐘，不放寬時限。兩片排在最前，max-parallel 2下同時開跑。
+          - suite: canvas
+            shard: 1
+            timeout: 35
+          - suite: canvas
+            shard: 2
+            timeout: 35
           - suite: assembly
             timeout: 15
           - suite: documents
             timeout: 10
           - suite: grid
             timeout: 15
-          - suite: canvas
-            shard: legacy
-            timeout: 35
-          - suite: canvas
-            shard: extensions
-            timeout: 35
           - suite: space
             timeout: 15
           - suite: timber
@@ -112,6 +118,8 @@ jobs:
       GEOMETRY_CHROME: /usr/bin/google-chrome
       GEOMETRY_CHROME_FLAGS: --no-sandbox
       GEOMETRY_BROWSER_SUITE: ${{ matrix.suite }}
+      GEOMETRY_CANVAS_SHARD: ${{ matrix.shard }}
+      PYTHONDONTWRITEBYTECODE: '1'
       GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR: /tmp/geometry-grid-screens
       GEOMETRY_DOCUMENT_SCREENSHOT_DIR: /tmp/geometry-document-screens
     steps:
@@ -169,15 +177,19 @@ jobs:
           python3 geometry-web/runtime_version.py --probe 18839
           # Independent matrix jobs expose each result promptly. They use
           # separate runners/servers and do not cancel siblings on failure.
-          # The full canvas run retains its strict golden comparison.
+          # Each canvas shard runs one contiguous block of the full sequence,
+          # compares its own sections strictly with golden, and keeps its raw
+          # output, real exit status and source-bound assertion journal for
+          # the complete-coverage job.
           set +e
           case "$GEOMETRY_BROWSER_SUITE" in
             assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;
             grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;
             canvas)
-              # Legacy P1 created this screenshot parent; extensions must prepare it independently.
+              receipt="$RUNNER_TEMP/canvas-shard-$GEOMETRY_CANVAS_SHARD"
+              # Every fresh shard prepares the screenshot parent before its harness starts.
               node -e 'require("node:fs").mkdirSync(require("node:path").join(require("node:os").tmpdir(),"geometry-tests"),{recursive:true})' &&
-                EXPECTED_EXECUTION_SHA='${{ github.sha }}' PR_HEAD_SHA='${{ github.event.pull_request.head.sha || github.sha }}' python3 -B .github/scripts/canvas_evidence.py run --shard '${{ matrix.shard }}' --out "$RUNNER_TEMP/canvas-evidence"
+                EXPECTED_EXECUTION_SHA='${{ github.sha }}' PR_HEAD_SHA='${{ github.event.pull_request.head.sha || github.sha }}' python3 -B .github/scripts/canvas_evidence.py run --shard "$GEOMETRY_CANVAS_SHARD/2" --out "$receipt"
               ;;
             space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;
             timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;
@@ -187,6 +199,14 @@ jobs:
           status=$?
           cat /tmp/geometry-integration-server.log
           exit "$status"
+      - name: Preserve canvas shard raw and source receipts
+        if: always() && matrix.suite == 'canvas'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: canvas-shard-${{ matrix.shard }}
+          path: ${{ runner.temp }}/canvas-shard-${{ matrix.shard }}/
+          if-no-files-found: error
+          retention-days: 14
       - name: Preserve canvas wait trace
         if: always() && matrix.suite == 'canvas'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -219,25 +239,21 @@ jobs:
           path: /tmp/geometry-document-screens/*.png
           if-no-files-found: ignore
           retention-days: 7
-      - name: Preserve actual canvas shard raw and source receipts
-        if: always() && matrix.suite == 'canvas'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: canvas-shard-${{ matrix.shard }}
-          path: ${{ runner.temp }}/canvas-evidence/
-          if-no-files-found: error
-          retention-days: 14
 
-  canvas-complete:
-    name: canvas complete coverage
+  browser-canvas-complete:
+    name: browser (canvas) complete coverage
     runs-on: ubuntu-latest
     needs: browser
     if: always()
     timeout-minutes: 5
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+      - name: Prove the verifier rejects missing, extra, duplicated, incomplete and drifted shards
+        run: node --test --test-reporter=spec tests/test_canvas_shards.js
       - name: Require every original browser group and canvas shard to succeed
         env:
           BROWSER_RESULT: ${{ needs.browser.result }}
@@ -245,17 +261,17 @@ jobs:
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           pattern: canvas-shard-*
-          path: ${{ runner.temp }}/canvas-download
-      - name: Verify original exact golden and disjoint actual execution receipts
+          path: ${{ runner.temp }}/canvas-shards
+      - name: Verify source-bound raw journals and complete disjoint canvas sections against golden
         env:
           EXPECTED_EXECUTION_SHA: ${{ github.sha }}
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-        run: python3 -B .github/scripts/canvas_evidence.py verify --artifacts "$RUNNER_TEMP/canvas-download" --out "$RUNNER_TEMP/canvas-verified"
-      - name: Preserve complete canvas receipt
+        run: python3 -B .github/scripts/canvas_evidence.py verify --artifacts "$RUNNER_TEMP/canvas-shards" --out "$RUNNER_TEMP/canvas-complete"
+      - name: Preserve canvas coverage summary
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: canvas-complete-evidence
-          path: ${{ runner.temp }}/canvas-verified/
+          name: canvas-complete-coverage
+          path: ${{ runner.temp }}/canvas-complete/
           if-no-files-found: error
           retention-days: 14

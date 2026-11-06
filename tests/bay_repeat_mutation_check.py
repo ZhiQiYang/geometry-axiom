@@ -284,7 +284,7 @@ def run_browser(root, directory, env, binary, timeout, manifest):
     token = uuid.uuid4().hex
     run_env = dict(env, GEOMETRY_TEST_URL='http://127.0.0.1:%d/' % port,
                    GEOMETRY_FEEDBACK_DIR=str(feedback), GEOMETRY_BRIDGE_EXECUTABLE=binary,
-                   GEOMETRY_TEST_BRIDGE=binary, GEOMETRY_ISOLATED_SERVICE='1', GEOMETRY_ASSEMBLY_ONLY='1',
+                   GEOMETRY_TEST_BRIDGE=binary, GEOMETRY_ISOLATED_SERVICE='1', GEOMETRY_ASSEMBLY_ONLY='1', GEOMETRY_R06_MAIN_INTEGRATION='1',
                    GEOMETRY_CHROME_PROFILE=str(directory / 'chrome-profile'), GEOMETRY_CDP_PORT=str(cdp_port),
                    GEOMETRY_R06_OWNER_LEDGER=str(ledger), GEOMETRY_R06_OWNER_TOKEN=token)
     server = None

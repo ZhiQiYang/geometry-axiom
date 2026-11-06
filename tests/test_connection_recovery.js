@@ -69,7 +69,9 @@ test('successful recovery clears the previous failure only after the complete re
 test('initial read still completes the handshake and publishes a known ready state', async () => {
   const box = fixture({ connection: { phase: 'loading', known: false, error: '', session: null } });
   await box.context.recoverConnection();
-  assert.deepEqual(box.calls.filter(row => row[0] === 'api'), [['api', 'dump']]);
+  // Main 343a8abe already uses the identity-neutral read handshake (#360).
+  // Keep this exact command contract together with GEO320's ready/error checks.
+  assert.deepEqual(box.calls.filter(row => row[0] === 'api'), [['api', 'dump-deidentified']], 'R367_MAIN_HANDSHAKE_DEIDENTIFIED');
   assert.equal(box.connection.phase, 'ready');
   assert.equal(box.connection.known, true);
   assert.equal(box.connection.error, '');

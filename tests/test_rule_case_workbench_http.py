@@ -246,6 +246,8 @@ class WorkbenchHTTP(unittest.TestCase):
             self.assertEqual(status, 400)
             self.assertFalse(result["ok"])
 
+
+
     def test_runtime_source_and_project_drift_keep_original_receipt_and_are_noncurrent(self):
         _, native = self.run_case("one-local-joint-new-version")
         receipt = native["receipt"]

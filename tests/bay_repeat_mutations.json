@@ -78,7 +78,19 @@
     "R06_BAY_SUPPORT_IDENTITY: every member and supporting end keeps its complete native owner tuple",
     "R06_BAY_SOURCE_GRAPH: typed native member edge and fixed rule are required for source inspection",
     "R06_BAY_CSV_IDENTITY: mixed ordinary and repeated rows use aligned columns and exact typed identity JSON",
-    "R06_SINGLE_CSV_BYTES: legacy single-member schedule remains byte-for-byte compatible"
+    "R06_SINGLE_CSV_BYTES: legacy single-member schedule remains byte-for-byte compatible",
+    "R06 integration keeps explicit K1 reader options",
+    "R06 integration preserves R41 and cutting through fresh archive read",
+    "R06 integration keeps finite PF-H guards with cutting",
+    "R06 integration shares format 19 without requiring unrelated room drafts",
+    "R06 integration shares format 19 without requiring unrelated repeat data",
+    "R06 integration retains room and repeat drafts together in format 19",
+    "R06 integration rejects missing owners and downgrade in shared format 19",
+    "R06 integration prepare forwards both PF-H and cutting contracts",
+    "R06 integration cancels on lease project or revision changes without confirm",
+    "R06 integration preserves R08 import history and both draft owners",
+    "R06 integration retains R08 pending dirty and scene notifications",
+    "R06 integration keeps cutting highwater across repeat draft undo redo"
   ],
   "nodeTags": [
     "R06_BAY_CSV_IDENTITY",
@@ -86,6 +98,7 @@
     "R06_BAY_SOURCE_GRAPH",
     "R06_BAY_SOURCE_ROW",
     "R06_BAY_SUPPORT_IDENTITY",
+    "R06_PF_MARKER_ONLY_REJECT",
     "R06_SINGLE_CSV_BYTES",
     "r06-br10:zero-reference-id",
     "r06-br12:draft-capabilities",
@@ -100,11 +113,31 @@
     "r06-br12:service-capability",
     "r06-br12:stripped-capability",
     "r06-br15:legacy-manifest-bytes",
-    "r06-r41:draft-key-writer",
+    "r06-main:both-reader-capabilities",
+    "r06-main:cutting-capability",
+    "r06-main:cutting-highwater",
+    "r06-main:cutting-opt-in",
+    "r06-main:cutting-options-call",
+    "r06-main:cutting-options-result",
+    "r06-main:cutting-owner",
+    "r06-main:empty-format19-rejected",
+    "r06-main:finite-native-closure",
+    "r06-main:import-dirty",
+    "r06-main:import-history",
+    "r06-main:import-notify",
+    "r06-main:import-pending",
+    "r06-main:import-reader",
+    "r06-main:mixed-format19",
+    "r06-main:mixed-reader",
+    "r06-main:r41-archive-key",
+    "r06-main:repeat-only-format19",
+    "r06-main:room-only-format19",
+    "r06-main:room-owner",
+    "r06-main:workspace-reader-inputs",
     "r06-r41:draft-key-reopen",
-    "r06-r41:host-capability-writer",
+    "r06-r41:draft-key-writer",
     "r06-r41:finite-host-reader",
-    "R06_PF_MARKER_ONLY_REJECT"
+    "r06-r41:host-capability-writer"
   ],
   "browserTags": [
     "R06_BR12_ARCHIVE",
@@ -143,7 +176,13 @@
     "R06_R41_COLD_CONTROLS",
     "R06_R41_UNSUPPORTED_RECORD_ATOMIC",
     "R06_R41_NATIVE_PROFILE_REJECT",
-    "R06_R41_ENGINEERING_CLOSURE_REJECT"
+    "R06_R41_ENGINEERING_CLOSURE_REJECT",
+    "R06_INT_OWNER",
+    "R06_INT_SOURCE",
+    "R06_INT_SAVE",
+    "R06_INT_COLD",
+    "R06_INT_STRIPPED",
+    "R06_INT_ERRORS"
   ],
   "nodeBaseline": [
     {
@@ -153,6 +192,10 @@
     {
       "file": "tests/test_assembly_bay_projection.js",
       "pattern": "^R06_"
+    },
+    {
+      "file": "tests/test_assembly_main_integration.js",
+      "pattern": "^R06 integration "
     }
   ],
   "cases": [
@@ -784,8 +827,8 @@
       "patches": [
         {
           "file": "geometry-web/project-store.js",
-          "before": "PANEL_FILL_CAPABILITY=\"panel-fill/1\"",
-          "after": "PANEL_FILL_CAPABILITY=\"panel-fill/unsupported\""
+          "before": "PANEL_FILL_CAPABILITY = \"panel-fill/1\"",
+          "after": "PANEL_FILL_CAPABILITY = \"panel-fill/unsupported\""
         }
       ]
     },
@@ -806,6 +849,226 @@
           "after": "if(false&&manifest?.format===BAY_REPEAT_FORMAT&&typeof scene==='string'&&"
         }
       ]
+    },
+    {
+      "name": "r06_main_cutting_without_optin",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration keeps explicit K1 reader options",
+      "assertion": "r06-main:cutting-opt-in",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "const cutting=options.cutting===true;",
+          "after": "const cutting=true;"
+        }
+      ]
+    },
+    {
+      "name": "r06_main_drop_k1_options_call",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration keeps explicit K1 reader options",
+      "assertion": "r06-main:cutting-options-call",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "if(arguments.length<=2 && keys(nativeProfiles,[],['cutting']))",
+          "after": "if(false && arguments.length<=2 && keys(nativeProfiles,[],['cutting']))"
+        }
+      ]
+    },
+    {
+      "name": "r06_main_drop_finite_pfh_reader",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration preserves R41 and cutting through fresh archive read",
+      "assertion": "r06-main:both-reader-capabilities",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "supported.push(PANEL_FILL_CAPABILITY);",
+          "after": "supported.push();"
+        }
+      ]
+    },
+    {
+      "name": "r06_main_drop_workspace_cutting",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration prepare forwards both PF-H and cutting contracts",
+      "assertion": "r06-main:workspace-reader-inputs",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/reference-workspace.js",
+          "before": "candidate.final_scene,hostRecordProfile,{cutting:true}));",
+          "after": "candidate.final_scene,hostRecordProfile));"
+        }
+      ]
+    },
+    {
+      "name": "r06_main_repeat_required_for_room19",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration shares format 19 without requiring unrelated repeat data",
+      "assertion": "r06-main:room-only-format19",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "if((repeat || manifest.requiredCapabilities?.includes(BAY_REPEAT_CAPABILITY)) &&",
+          "after": "if((repeat || manifest.requiredCapabilities?.includes(BAY_REPEAT_CAPABILITY) || manifest.format===BAY_REPEAT_FORMAT) &&"
+        }
+      ]
+    },
+    {
+      "name": "r06_main_room_required_for_repeat19",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration shares format 19 without requiring unrelated room drafts",
+      "assertion": "r06-main:repeat-only-format19",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate && manifest.format !== ROOM_CANDIDATE_FORMAT)",
+          "after": "if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate !== (manifest.format === ROOM_CANDIDATE_FORMAT))"
+        }
+      ]
+    },
+    {
+      "name": "r06_main_accept_unowned_format19",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration rejects missing owners and downgrade in shared format 19",
+      "assertion": "r06-main:empty-format19-rejected",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "if(manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate)",
+          "after": "if(false&&manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate)"
+        }
+      ]
+    },
+    {
+      "name": "r06_main_finite_reader_without_engineering_closure",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration keeps finite PF-H guards with cutting",
+      "assertion": "r06-main:finite-native-closure",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "[ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY].every(c=>supported.includes(c))&&!supported.includes(PANEL_FILL_CAPABILITY)",
+          "after": "!supported.includes(PANEL_FILL_CAPABILITY)"
+        }
+      ]
+    },
+    {
+      "name": "r06_main_drop_import_history",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration preserves R08 import history and both draft owners",
+      "assertion": "r06-main:import-history",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(command)) return;",
+          "after": "if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return;"
+        }
+      ]
+    },
+    {
+      "name": "r06_main_drop_import_pending",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration retains R08 pending dirty and scene notifications",
+      "assertion": "r06-main:import-pending",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/reference-workspace.js",
+          "before": "if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(command)) return null;",
+          "after": "if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return null;"
+        }
+      ]
+    },
+    {
+      "name": "r06_main_drop_import_dirty",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration retains R08 pending dirty and scene notifications",
+      "assertion": "r06-main:import-dirty",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/reference-workspace.js",
+          "before": "if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|definition-import-confirm) /.test(cmd) && result.history_changed !== false) dirty();",
+          "after": "if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm) /.test(cmd) && result.history_changed !== false) dirty();"
+        }
+      ]
+    },
+    {
+      "name": "r06_main_drop_import_notify",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration retains R08 pending dirty and scene notifications",
+      "assertion": "r06-main:import-notify",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/reference-workspace.js",
+          "before": "if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();",
+          "after": "if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();"
+        }
+      ]
+    },
+    {
+      "name": "r06_main_browser_drop_workspace_cutting",
+      "kind": "browser",
+      "assertion": "R06_INT_COLD",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/reference-workspace.js",
+          "before": "candidate.final_scene,hostRecordProfile,{cutting:true}));",
+          "after": "candidate.final_scene,hostRecordProfile));"
+        }
+      ],
+      "test": "formal-cdp-assembly"
     }
   ]
 }

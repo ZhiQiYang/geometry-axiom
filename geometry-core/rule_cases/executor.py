@@ -23,6 +23,19 @@ from .definition import canonical, definition_hash, digest, validate_case
 from .runtime import runtime_identity
 
 MAX_OUTPUT_BYTES = 2 * 1024 * 1024
+
+
+def _portable_observation(state):
+    """新收據的有限格式投影；原生狀態與拒絕交易的完整比對不變。"""
+    observation = deepcopy(state)
+    for binding in observation.get("bindings", []):
+        for slot in binding.get("effective", []):
+            for axis in ("A", "B"):
+                if isinstance(slot.get(axis), dict):
+                    slot[axis].pop("terminal", None)
+    return observation
+
+
 MAX_CONCURRENT_RUNS = 2
 _SLOTS = threading.BoundedSemaphore(MAX_CONCURRENT_RUNS)
 MAX_RECEIPT_BYTES = 4 * 1024 * 1024
@@ -510,7 +523,7 @@ class NativeExecutor:
                 receipt["setupDiagnostics"] = seeded.get("violations", [])
                 raise _Stop("failed", "invalid-source-closure")
             command("assembly-confirm " + str(seeded["token"]))
-        before, before_dump = read(), command("dump")["text"]
+        before, before_dump = read(), command("dump-deidentified")["text"]
         _verify_record_pins(before["state"], definition["input"]["setup"])
         candidate = preview(definition["input"]["transaction"], "case.json")
         valid = candidate.get("valid")
@@ -525,9 +538,9 @@ class NativeExecutor:
             rejected = child.command("assembly-confirm " + str(candidate["token"]))
             if rejected.get("ok") is not False:
                 raise _Stop("failed", "invalid-candidate-confirmed")
-        after, after_dump = read(), command("dump")["text"]
+        after, after_dump = read(), command("dump-deidentified")["text"]
         unchanged = not valid and before == after and before_dump == after_dump
-        receipt["observations"] = {"before": before["state"], "after": after["state"],
+        receipt["observations"] = {"before": _portable_observation(before["state"]), "after": _portable_observation(after["state"]),
                                    "beforeRevision": before["revision"], "afterRevision": after["revision"],
                                    "beforeDumpHash": hashlib.sha256(before_dump.encode()).hexdigest(),
                                    "afterDumpHash": hashlib.sha256(after_dump.encode()).hexdigest()}

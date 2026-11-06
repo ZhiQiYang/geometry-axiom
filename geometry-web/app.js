@@ -544,10 +544,53 @@ async function recoverApiResults() {
   }
   if (recoveringRoom) await window.RoomCollectionWorkspace.settleRecoveredTransaction();
 }
+// 離線只保留物件畫布右鍵的檢視入口；主工作區始終維持原 inert 保護。
+// 暫移原 SVG（不複製快取或事件）到工作區外；恢復時放回原佔位點。
+let connectionCanvasMount = null;
+function connectionCanvasView() {
+  return connection.phase !== "ready" && connection.known && oc.on && !oc.focus && !view3;
+}
+function syncConnectionCanvasView(focused = document.activeElement) {
+  const host = $("canvasOfflineView"), viewport = $("canvasViewport"), canvas = $("ocv");
+  const mounted = connectionCanvasView();
+  document.body.classList.toggle("connection-canvas-mounted", mounted);
+  if (mounted) {
+    const r = viewport.getBoundingClientRect();
+    Object.assign(host.style, {left:r.left+"px", top:r.top+"px", width:r.width+"px", height:r.height+"px"});
+    host.hidden = false;
+    if (!connectionCanvasMount) {
+      const marker = document.createComment("object canvas home");
+      canvas.before(marker);
+      connectionCanvasMount = {marker, canvas};
+      host.append(canvas);
+      if (focused === viewport) host.focus({preventScroll:true});
+      else if (canvas.contains(focused)) focused.focus({preventScroll:true});
+    }
+  } else {
+    if (connectionCanvasMount) {
+      const {marker, canvas} = connectionCanvasMount;
+      marker.replaceWith(canvas);
+      connectionCanvasMount = null;
+      if (focused === host) viewport.focus({preventScroll:true});
+      else if (canvas.contains(focused)) focused.focus({preventScroll:true});
+    }
+    host.hidden = true;
+  }
+}
+const connectionCanvasResize = typeof ResizeObserver === "function" ? new ResizeObserver(() => {
+  if (connectionCanvasMount) syncConnectionCanvasView();
+}) : null;
+connectionCanvasResize?.observe($("canvasViewport"));
+for (const type of ["resize", "scroll"]) window.addEventListener(type, () => {
+  if (connectionCanvasMount) syncConnectionCanvasView();
+}, {capture:true, passive:true});
 function showConnectionState() {
   const blocked = connection.phase !== "ready";
   $("connectionNotice").hidden = !blocked;
+  const focused = document.activeElement;
   for (const id of ["app", "objectWorkspace"]) $(id).inert = blocked;
+  syncConnectionCanvasView(focused);
+  window.CanvasContextMenu?.connectionChanged();
   document.body.classList.toggle("connection-blocked", blocked);
   $("connectionTitle").textContent = connection.phase === "error" ? "無法連線，編輯已暫停" : "正在讀取場景";
   $("connectionMessage").textContent = connection.phase === "error"
@@ -573,7 +616,7 @@ async function recoverConnection() {
     await recoverApiResults();
     if (!(await ReferenceWorkspace.recoverLoad())) { connectionFailed("仍無法確認場景載入結果，請重試。"); return; }
     if (!connection.session) {
-      const handshake = await api('dump');
+      const handshake = await api('dump-deidentified');
       if (!handshake.ok) { connectionFailed(handshake.error || '無法確認目前服務工作階段。'); return; }
     }
     await ReferenceWorkspace.restoreSession();
@@ -602,9 +645,29 @@ async function recoverConnection() {
   }
 }
 $("connectionRetry").addEventListener("click", recoverConnection);
-/* inert 擋滑鼠與焦點；文件層的快捷鍵也必須停止，保留重試按鈕的鍵盤操作。 */
+/* 只開放右鍵選單自己的檢視互動；一般畫布點擊／拖曳仍不能借離線豁免寫入。 */
+for (const type of ["pointerdown", "pointermove", "pointerup", "mousedown", "mouseup", "click", "dblclick", "auxclick", "wheel"]) {
+  document.addEventListener(type, e => {
+    if (!connectionCanvasView() || !e.target.closest?.("#canvasViewport,#canvasOfflineView")) return;
+    if (["pointerdown", "pointerup", "mousedown", "mouseup"].includes(type) && e.button === 2) {
+      // Preserve the browser's native contextmenu default action, but do not
+      // let a right release finish a canvas drag/draw that lost its connection.
+      e.stopImmediatePropagation(); return;
+    }
+    if (type === "pointerdown" && window.CanvasContextMenu?.open) {
+      CanvasContextMenu.hide(); $("canvasOfflineView").focus();
+    }
+    e.preventDefault(); e.stopImmediatePropagation();
+  }, {capture:true, passive:false});
+}
+/* 文件層快捷鍵仍停止；選單鍵、選單內鍵盤操作與重試按鈕有精確豁免。 */
 document.addEventListener("keydown", e => {
   if (connection.phase !== "ready") {
+    if (connectionCanvasView()) {
+      const menuKey = e.key === "ContextMenu" || (e.key === "F10" && e.shiftKey);
+      if ((window.CanvasContextMenu?.open && e.target.closest?.("#canvasCtxMenu")) ||
+          (e.target.closest?.("#canvasViewport,#canvasOfflineView") && (menuKey || e.key === "Tab"))) return;
+    }
     e.stopImmediatePropagation();
     if (e.key === "Escape" && window.AssemblyWorkspace?.canCloseForRecovery) {
       e.preventDefault();AssemblyWorkspace.close();$("connectionRetry").focus();return;
@@ -614,21 +677,24 @@ document.addEventListener("keydown", e => {
 }, true);
 async function apiRequest(cmd, roomLease = null) {
   const rollback = cmd === "line history-abort";
-  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd)) {
+  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd)) {
     try { if (roomLease) RoomCollectionWorkspace.assertTransaction(roomLease); else { ReferenceWorkspace.assertAssemblyIdle(); if (!rollback) ReferenceWorkspace.assertEditable?.(); } }
     catch (error) { return {ok:false,error:error.message}; }
   }
   if (rollback && pendingApiResults.size) return { ok: false, transport: true, error: "操作結果尚未確認，重新連線後再回復。" };
   const recoveredRoomCancel = roomLease && cmd === "line cancel-preview" && connection.phase === "loading" && pendingApiResults.size === 0;
   if (!rollback && !recoveredRoomCancel && (connection.phase === "error" || (connection.phase === "loading" &&
-      !/^(objects|surfaces|boundary|references|obstacles|render|pick|bhit|dump)(\s|$)/.test(cmd))))
+      !/^(objects|surfaces|boundary|references|obstacles|render|pick|bhit|dump-deidentified|identity-read|dump)(\s|$)/.test(cmd))))
     return { ok: false, transport: true, error: connection.error || "場景尚未讀取完成" };
   const localHistory = ReferenceWorkspace.tryLocalHistory?.(cmd);
   if (localHistory) return localHistory;
   const releaseNativeOperation = ReferenceWorkspace.beginNativeOperation?.(cmd);
+  const settleRoomNative = window.RoomCollectionWorkspace?.beginNativeRequest?.(cmd);
+  let roomNativeResult;
   try {
+  return roomNativeResult = await (async () => {
   const t0 = performance.now();
-  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) ? crypto.randomUUID() : null;
+  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd) ? crypto.randomUUID() : null;
   const ack = [...acknowledgedApiResults];
   let confirmation = null;
   const featureToken=cmd.match(/^line confirm (\S+)$/)?.[1];
@@ -637,7 +703,13 @@ async function apiRequest(cmd, roomLease = null) {
     try{confirmation=ReferenceWorkspace.beginFeatureConfirmation(featureToken);}catch(error){return {ok:false,error:error.message};}
     if(confirmation)pendingAssemblyConfirmations.set(requestId,confirmation);
   }
-  if (/^(assembly-confirm|section-profile-confirm) /.test(cmd)) {
+  const evidenceToken=cmd.match(/^engineering-confirm (\S+)$/)?.[1];
+  if(evidenceToken&&ReferenceWorkspace.hasEvidenceConfirmation(evidenceToken)){
+    if(!requestId)return {ok:false,error:"請先確認服務連線，再確認證據採用。"};
+    try{confirmation=ReferenceWorkspace.beginEvidenceConfirmation(evidenceToken);}catch(error){return {ok:false,error:error.message};}
+    if(confirmation)pendingAssemblyConfirmations.set(requestId,confirmation);
+  }
+  if (/^(assembly-confirm|section-profile-confirm|definition-import-confirm) /.test(cmd)) {
     if (!requestId) return {ok:false,error:"請先確認服務連線，再確認組構變更。"};
     try { confirmation = ReferenceWorkspace.beginAssemblyConfirmation(); }
     catch (error) { return {ok:false,error:error.message}; }
@@ -690,13 +762,14 @@ async function apiRequest(cmd, roomLease = null) {
   if (current) ReferenceWorkspace.observe(cmd, res);
   if (confirmation) { ReferenceWorkspace.finishAssemblyConfirmation(confirmation); pendingAssemblyConfirmations.delete(requestId); }
   if (current && res.ok && !res.preview && res.history_changed !== false &&
-      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) &&
+      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd) &&
       !/^line\s+(?:$|#|preview\b|cancel-preview\b|history-(?:begin|end)\b|canvas\b)/.test(cmd))
     window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
   window.fbRecord?.("api", { cmd: String(cmd).slice(0, 500), ok: res.ok !== false, error: res.error,
     preview: res.preview ? true : undefined, ms: Math.round(performance.now() - t0) });
   return res;
-  } finally { releaseNativeOperation?.(); }
+  })();
+  } finally { settleRoomNative?.(roomNativeResult); releaseNativeOperation?.(); }
 }
 async function api(cmd) {
   const result = await apiRequest(cmd);
@@ -1617,7 +1690,7 @@ $("v3ToolbarSurf").addEventListener("change", () => {
   $("workSurf").dispatchEvent(new Event("change"));
 });
 $("btnExport").onclick = async () => {
-  const r = await api("dump");
+  const r = await api("dump-deidentified");
   if (!r.ok) { setStatus("✗ " + (r.error || "")); return; }
   const blob = new Blob([r.text], { type: "text/plain;charset=utf-8" });
   const a = document.createElement("a");
@@ -6923,7 +6996,7 @@ function feTbSelectedHTML(bid) {
   if (!t2) return "";
   const surf = feSurf(bid);
   const roleOpts = TB_ROLE_OPTS;
-  const technical = `<div class="kv"><span>角材編號</span><b>${t2.id}</b></div><div class="kv"><span>角色代碼</span><b>${esc(t2.role || "—")}</b></div><p class="inspector-code">定位：${esc(t2.definition?.anchor || "尚未提供")} ${esc(t2.definition?.selector || "")}</p>`;
+  const technical = `<div class="kv"><span>角材編號</span><b>${t2.id}</b></div><div class="kv"><span>角色代碼</span><b>${esc(t2.role || "—")}</b></div><p class="inspector-code">定位：${esc(t2.definition?.anchor || "尚未提供")} ${esc(t2.definition?.selector || "")}</p><div data-object-evidence-host data-evidence-kind="timber" data-evidence-id="${t2.id}"></div>`;
   if(t2.engineeringSources?.length)return `<div class="inspector-block" id="tbSelected"><div class="ib-title">${timberRoleName(t2.role)} · 角材 ${t2.id}</div><p>截面 ${esc(t2.A ?? "—")} × ${esc(t2.B ?? "—")} mm · 長度 ${esc(t2.L ?? "—")} mm</p><p>尺寸引用工程規格；修改來源或本物件覆寫時會一起檢查相關物件。</p><details id="tbTechnicalDetails" class="inspector-technical"><summary>詳細資料 · 工程來源與定位</summary>${technical}${engineeringSourceSummary(t2.engineeringSources)}</details><button type="button" class="btn primary-button" data-engineering-open data-placement-id="${surf.id}">編輯工程來源與覆寫</button> <button class="btn danger" id="tbSelDelete" type="button">刪除角材</button></div>`;
   return `<div class="inspector-block" id="tbSelected">` +
     `<div class="ib-title">${timberRoleName(t2.role)} · 角材 ${t2.id}</div>` +
@@ -7293,7 +7366,7 @@ function renderFaceLayers(projectionDraft = feProjectionDraft()) {
     catch(error) { const note=document.createElement("p");note.id="timberScheduleStatus";note.textContent=error.message;schedulePane?.append(note); }
     const view=fe.scheduleView;
     const controls=document.createElement("div");controls.className="timber-schedule-controls";
-    controls.innerHTML='<label>範圍<select id="timberScheduleScope"><option value="surface">此承載面的全部角材</option><option value="selection">所選角材集合</option></select></label><label>顯示單位<select id="timberScheduleUnit"><option>mm</option><option>cm</option></select></label><label>排序<select id="timberScheduleOrder"><option value="id">構件身分</option><option value="length">完成長度</option></select></label><button type="button" id="timberScheduleCSV" class="btn">匯出精確 mm CSV</button>';
+    controls.innerHTML='<label>範圍<select id="timberScheduleScope"><option value="surface">此承載面的全部角材</option><option value="selection">所選角材集合</option></select></label><label>顯示單位<select id="timberScheduleUnit"><option>mm</option><option>cm</option></select></label><label>料單檢視<select id="timberScheduleOrder"><option value="id">構件身分</option><option value="length">完成長度</option><option value="cutting">裁切與採購…</option></select></label><button type="button" id="timberScheduleCSV" class="btn">匯出精確 mm CSV</button>';
     schedulePane?.append(controls);
     controls.querySelector('#timberScheduleScope').value=view.ids===null?'surface':'selection';
     controls.querySelector('#timberScheduleScope').onchange=ev=>{
@@ -7303,7 +7376,10 @@ function renderFaceLayers(projectionDraft = feProjectionDraft()) {
     controls.querySelector('#timberScheduleUnit').value=view.unit;
     controls.querySelector('#timberScheduleUnit').onchange=ev=>{view.unit=ev.target.value;renderFaceLayers();};
     controls.querySelector('#timberScheduleOrder').value=view.order;
-    controls.querySelector('#timberScheduleOrder').onchange=ev=>{view.order=ev.target.value;renderFaceLayers();};
+    controls.querySelector('#timberScheduleOrder').onchange=ev=>{
+      if(ev.target.value==='cutting'){ev.target.value=view.order;CuttingWorkspace.open({workspace:ReferenceWorkspace,references:()=>apiRequest('references'),scope:{surface:view.surface,ids:view.ids===null?null:[...view.ids]}});return;}
+      view.order=ev.target.value;renderFaceLayers();
+    };
     controls.querySelector('#timberScheduleCSV').disabled=!schedule?.rows.length;
     controls.querySelector('#timberScheduleCSV').onclick=feExportTimberSchedule;
     if(schedule){const status=document.createElement('p');status.id='timberScheduleStatus';status.className='fi-note';status.textContent=`承載面 ${schedule.surface} · ${schedule.rows.length} 支正式角材 · 材料／加工未設定者保持未知`;schedulePane?.append(status);}
@@ -8126,6 +8202,9 @@ const GridEditor = (() => {
    All creates, updates and applications use a validated candidate + token. */
 const GridSystemEditor = (() => {
   const axes = ["u", "v"], esc = ReferenceWorkspace.escape;
+  // Display only this native row's evaluated length; keep its source definition intact.
+  const axisLength = (d,key) => d?.[key+'Source']==='card' ? d?.[key==='step'?'effectiveStep':'effectivePanel'] : d?.[key];
+  const lengthSource = (d,key) => d?.[key+'Source']==='card' ? '（整張參數卡）' : d?.parameterRefs?.[key] ? '（參數引用）' : '';
   const modes = [["none","不設"],["explicit","明寫座標"],["series","等差"],["panel","面材＋縫"]];
   const prefix = a => "gs" + a.toUpperCase();
   let active = null;
@@ -8138,17 +8217,17 @@ const GridSystemEditor = (() => {
   const get = (s,id) => s.root.querySelector("#"+id);
   function summary(d) {
     if (!d || d.source === "none") return "未設定";
-    if (d.source === "repeat") return `無限重複 · 間距 ${d.step} mm，基準 ${d.phase} mm`;
-    if (d.source === "repeat-panel") return `無限面材 ${d.panel}＋縫 ${d.gap} mm，從 ${d.anchor} mm 起算`;
+    if (d.source === "repeat") return `無限重複 · 間距 ${axisLength(d,'step')} mm${lengthSource(d,'step')}，基準 ${d.phase} mm`;
+    if (d.source === "repeat-panel") return `無限面材 ${axisLength(d,'panel')}＋縫 ${d.gap} mm${lengthSource(d,'panel')}，從 ${d.anchor} mm 起算`;
     if (d.source === "explicit") return `座標 ${(d.coordinates || []).join("、")} mm`;
-    if (d.source === "series") return `從 ${d.start} mm，每 ${d.step} mm，共 ${d.count} 條`;
-    return `面材 ${d.panel}＋縫 ${d.gap} mm，從 ${d.anchor} mm 起算`;
+    if (d.source === "series") return `從 ${d.start} mm，每 ${axisLength(d,'step')} mm，共 ${d.count} 條`;
+    return `面材 ${axisLength(d,'panel')}＋縫 ${d.gap} mm，從 ${d.anchor} mm 起算`;
   }
   function sketch(parent, o, x, y, w, h) {
     el("rect",{x,y,width:w,height:h,rx:6,fill:"#f3f7fb",stroke:"#dce5ef"},parent);
     if (o.mode === "infinite") {
-      const definition = d => d.source === "repeat" ? {phase:d.phase,pitch:d.step} : d.source === "repeat-panel" ?
-        {phase:d.anchor+d.panel+Math.floor(d.gap/2),pitch:d.panel+d.gap} : null;
+      const definition = d => d?.source === "repeat" ? {phase:d.phase,pitch:axisLength(d,'step')} : d?.source === "repeat-panel" ?
+        {phase:d.anchor+axisLength(d,'panel')+Math.floor(d.gap/2),pitch:axisLength(d,'panel')+d.gap} : null;
       const defs=axes.map(a=>definition(o[a+"Definition"]));
       const scale=Math.min(...defs.map((d,i)=>d ? (i===0?w:h)/(d.pitch*4) : Infinity));
       const center=[x+w/2,y+h/2];
@@ -8189,10 +8268,11 @@ const GridSystemEditor = (() => {
     el("circle",{cx:17,cy:22,r:5,fill:"#467fb0"},g);
     const name=Array.from(o.name);el("text",{x:31,y:25,"font-size":15,"font-weight":700,fill:"#1d2634"},g).textContent=name.length>17 ? name.slice(0,16).join("")+"…" : o.name;
     el("text",{x:31,y:42,"font-size":12,fill:"#6d8197"},g).textContent=o.mode === "infinite" ? "網格來源 · 無限延伸" : `舊版有限網格 ${o.id} · ${o.applications.length} 個套用`;
-    el("title",{},g).textContent=`${o.name}\nu：${summary(o.uDefinition)}\nv：${summary(o.vDefinition)}\n卡片僅示意排法，沒有幾何範圍。`;
+    const cardSource=o.cardReference ? `\n整張參數卡 #${o.cardReference.parameterId}：u ← 欄位 #${o.cardReference.uFieldId}，v ← 欄位 #${o.cardReference.vFieldId}` : '';
+    el("title",{},g).textContent=`${o.name}${cardSource}\nu：${summary(o.uDefinition)}\nv：${summary(o.vDefinition)}\n卡片僅示意排法，沒有幾何範圍。`;
     el("line",{x1:0,y1:50,x2:OC_W,y2:50,stroke:"#e2eaf1"},g);
     const body=el("g",{class:"ocard-body"},g);sketch(body,o,14,58,OC_W-28,OC_H-109);
-    const pitch=d=>d.source === "repeat" ? `${d.step}` : d.source === "repeat-panel" ? `${d.panel+d.gap}` : "—";
+    const pitch=d=>d?.source === "repeat" ? `${axisLength(d,'step')}` : d?.source === "repeat-panel" ? `${axisLength(d,'panel')+d.gap}` : "—";
     el("text",{x:14,y:OC_H-30,"font-size":12.5,fill:"#6d8197"},body).textContent=o.mode === "infinite" ? `X 間距 ${pitch(o.uDefinition)} · Y 間距 ${pitch(o.vDefinition)} mm` : "舊版有限排法 · 保留原義";
     el("text",{x:14,y:OC_H-11,"font-size":12,fill:"#687487"},body).textContent=o.mode === "infinite" ? "格線向兩端無限延伸" : o.mainAlong ? `主支沿 ${o.mainAlong} · 可重複套用` : "角色未設定 · 可重複套用";
     return g;
@@ -9089,26 +9169,35 @@ function renderCanvasModeHint() {
    卡片,還被放在很遠的 bbox 左上角(GEO-187 的「找不到卡片」根因)。
    P 改成一次性動作:建一張預設外環的面卡 → 自動進入該面的工作區、啟用「重畫外環」
    (面內視野由 feFit 對齊面的大小,1 單位=1mm 的繪圖在面內進行)→ 畫完 Esc 返回畫布。 */
-async function objNewPolyFace({beforeCreate} = {}) {
+function ocCreationOwner() {
+  const context = ReferenceWorkspace.context(), frame = ReferenceWorkspace.history.frame,
+    session = connection.session, navigation = oc.navigationSequence;
+  return () => ReferenceWorkspace.context() === context && ReferenceWorkspace.history.frame === frame &&
+    connection.session === session && connection.phase === "ready" && oc.navigationSequence === navigation;
+}
+async function objNewPolyFace({beforeCreate, canvasPosition} = {}) {
+  const current = ocCreationOwner(), revision = ReferenceWorkspace.getProjectState().revision;
   const ids = await api("newid");
+  if (!current() || ReferenceWorkspace.getProjectState().revision !== revision) return;
   if (!ids.ok) { setStatus("✗ " + (ids.error || "取不到新編號")); toast(ids.error || "取不到新編號"); return; }
   const bid = ids.boundary;
   if (beforeCreate) await beforeCreate(bid);
+  if (!current() || ReferenceWorkspace.getProjectState().revision !== revision) return;
   /* 預設外環只是佔位,進面內後被 redraw 整份取代;取常見房間大小讓 feFit 給出合適視野 */
-  const r = await api(`line boundary ${bid} outline 0,0 4000,0 4000,3000 0,3000`);
-  if (!r.ok) { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); return; }
-  /* 卡片落在目前視野中心(canvas-pos 是展示中繼資料,不進歷史;搶在 renderObjects()
-     的 homeless 自動排格之前送出) */
+  /* 邊界與畫布位置同一交易；原生回覆及畫布刷新期間保留既有輸入鎖。
+     選單帶入動作當下的位置，其他入口維持視野中心。 */
   const vr = ocv.getBoundingClientRect();
-  const cx = Math.round((vr.width / 2 - oc.panX) / oc.zoom - OC_W / 2);
-  const cy = Math.round((vr.height / 2 - oc.panY) / oc.zoom - OC_H / 2);
-  await api(`line canvas-pos boundary ${bid} ${cx} ${cy}`);
+  const cx = canvasPosition?.cx ?? Math.round((vr.width / 2 - oc.panX) / oc.zoom - OC_W / 2);
+  const cy = canvasPosition?.cy ?? Math.round((vr.height / 2 - oc.panY) / oc.zoom - OC_H / 2);
+  const made = await mutate([`boundary ${bid} outline 0,0 4000,0 4000,3000 0,3000`,
+    `canvas-pos boundary ${bid} ${cx} ${cy}`],
+    {afterSettlement:committed => committed ? renderObjects() : undefined});
+  if (!made || !current() || selectObject("boundary", bid) === false) return;
   setStatus(`✓ 面 ${bid} 已建立 · Ctrl+Z 復原`);
-  await renderObjects();
-  selectObject("boundary", bid);
   if (pendingSlot && pendingSlot.bid == null) pendingSlot.bid = bid;
-  await enterFocus("face", bid);
-  if (!oc.focus || oc.focus.t !== "face" || oc.focus.id !== bid) return;
+  const opening = enterFocus("face", bid), focus = oc.focus, openingCurrent = ocCreationOwner();
+  await opening;
+  if (!openingCurrent() || oc.focus !== focus || !focus || focus.t !== "face" || focus.id !== bid) return;
   fe.newOutline = { bid, outline: JSON.stringify(oc.bmap[bid]) };
   fiShowTab("prop");
   feSetTool("redraw");
@@ -9585,6 +9674,7 @@ function renderInspectorBody() {
     (bLoops && bLoops.length
       ? `<div class="kv"><span>外環</span><b>${bLoops[0].verts.length} 頂點</b></div>` +
         `<div class="kv"><span>孔</span><b>${bLoops.length - 1}</b></div>` : "") +
+    (sel.kind === "boundary" ? `<div data-object-evidence-host data-evidence-kind="boundary" data-evidence-id="${sel.id}"></div>` : "") +
     `</details></div>` +
     (sel.kind === "boundary" ? (o.placed
       ? `<div class="inspector-block"><details class="ib-row"><summary>位置與朝向 · ${placedSurf ? surfNormalLabel(placedSurf) : "已放置"} · 修改…</summary>${placeFormHTML(sel.id)}</details></div>`
@@ -10038,21 +10128,22 @@ function ocZoomAt(f, px, py) {
 }
 $("zoomInButton").addEventListener("click", () => ocZoomAt(1.25));
 $("zoomOutButton").addEventListener("click", () => ocZoomAt(0.8));
-$("homeButton").addEventListener("click", () => {
-  oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply();
-});
+/* #116 K4 PR-c:回到原點是純檢視動作，由物件畫布選單呼叫。 */
+function ocHome() { oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply(); }
 /* GEO-187:回到 100% 以畫面中心為準;舊版直接改 zoom 不調 pan,從 2% 回 100% 時畫面中心的卡片會飛出畫面 */
 $("zoomLevelButton").addEventListener("click", () => ocZoomAt(1 / oc.zoom));
 /* 吸附 / 格線(aria-pressed 按鈕,A3) */
+function ocToggleCanvasView(id) {
+  if (!["snapToggle", "gridToggle"].includes(id)) return false;
+  const b = $(id), on = !b.classList.contains("on");
+  b.classList.toggle("on", on);
+  b.setAttribute("aria-pressed", on ? "true" : "false");
+  if (id === "gridToggle") $("canvasViewport").classList.toggle("show-grid", on);
+  ocGridApply();
+  return true;
+}
 for (const id of ["snapToggle", "gridToggle"]) {
-  $(id).addEventListener("click", () => {
-    const b = $(id), on = !b.classList.contains("on");
-    b.classList.toggle("on", on);
-    b.setAttribute("aria-pressed", on ? "true" : "false");
-    if (id === "gridToggle")
-      $("canvasViewport").classList.toggle("show-grid", on);
-    ocGridApply();
-  });
+  $(id).addEventListener("click", () => ocToggleCanvasView(id));
 }
 /* 篩選 chips(A3:aria-pressed + 計數徽章) */
 function applyFilterChips() {
@@ -10620,6 +10711,28 @@ $("btnObj").addEventListener("pointerdown", e => {
 $("btnCanvasView").addEventListener("click", () => setView3(false));
 $("btnModelLibraryMenu").addEventListener("click", () => { closeMenus(); $("btnSpaceModels").click(); });
 $("btnBack").addEventListener("click", leaveFocus);
+/* Context-menu display coordinates are not a World point. Convert only a real
+   pointer anchor, synchronously at action time, before a panel/layout or await. */
+function ocMenuCanvasPosition(anchor, kind = "boundary") {
+  if (anchor?.invocation !== "pointer" || !Number.isFinite(anchor.clientX) || !Number.isFinite(anchor.clientY))
+    throw new Error("請先在畫布指定建立位置");
+  const point = ocToCanvas(anchor);
+  const width = kind === "space" ? SP_W : OC_W, height = kind === "space" ? SP_H : OC_H;
+  return {cx:Math.round(point.x - width / 2), cy:Math.round(point.y - height / 2)};
+}
+async function ocCreateFromMenu(id, anchor) {
+  const canvasPosition = ocMenuCanvasPosition(anchor, id === "btnNewSpace" ? "space" : "boundary");
+  closeMenus(); closePanels();
+  if (id === "btnCreatePoly") return objNewPolyFace({canvasPosition});
+  if (id === "btnNewSpace") return objNewSpace({canvasPosition});
+  if (id === "btnCreateRect") return setOcTool("rect");
+  if (id === "btnNewParameter") return window.ParameterUI.create({canvasPosition});
+  // These entries start the existing candidate/editor/dialog. They do not
+  // turn canvas coordinates into geometry or submit an unconfirmed definition.
+  if (["btnQuickGrid","btnNewAssembly","btnNewSectionProfile","btnNewColumn","btnNewBeam","btnBox6"].includes(id))
+    return $(id).click();
+  throw new Error("未知的建立入口：" + id);
+}
 $("btnNewRect").addEventListener("click", () => setOcTool("rect"));
 $("btnNewPoly").addEventListener("click", () => objNewPolyFace());
 $("btnNewGridSystem").addEventListener("click", async () => {
@@ -10639,14 +10752,24 @@ $("btnCollapseLibrary")?.addEventListener("click", () => {
   $("btnCollapseLibrary").setAttribute("aria-label",collapsed ? "展開物件庫" : "收合物件庫");
   closeMenus(); ocApply();
 });
-$("btnNewSpace").addEventListener("click", async () => {
+async function objNewSpace({canvasPosition} = {}) {
+  const current = ocCreationOwner(), revision = ReferenceWorkspace.getProjectState().revision;
   closePanels();
   const ids = await api("newid");
-  if (await emitLine(`space ${ids.space}`)) {
-    selectObject("space", ids.space); centerOnNode("space", ids.space);
+  if (!current() || ReferenceWorkspace.getProjectState().revision !== revision) return false;
+  if (!ids.ok) { toast(ids.error || "取不到新編號"); return false; }
+  const made = canvasPosition
+    ? await mutate([`space ${ids.space}`, `canvas-pos space ${ids.space} ${canvasPosition.cx} ${canvasPosition.cy}`],
+        {afterSettlement:committed => committed ? renderObjects() : undefined})
+    : await emitLine(`space ${ids.space}`);
+  if (made && current()) {
+    if (selectObject("space", ids.space) === false) return made;
+    centerOnNode("space", ids.space);
     setStatus(`✓ 空間 ${ids.space}（空容器）已建立，點進去管理成員`);
   }
-});
+  return made;
+}
+$("btnNewSpace").addEventListener("click", () => objNewSpace());
 
 for (const [id, side] of [["toggleLeft","left"],["toggleRight","right"],["workspaceToggleLeft","left"],["workspaceToggleRight","right"]])
   $(id).addEventListener("click", e => togglePanel(side, e.currentTarget));

@@ -14,6 +14,7 @@ const ReferenceWorkspace = (() => {
   let assemblyConfirmation = null, preparingSceneLoad = false, sceneTransaction = null;
   let roomTransaction = null;
   const featureConfirmations=new Map();
+  const evidenceConfirmations=new Map();
   let presentedModelContext = null, presentedModels = null;
   let presentedProjectionContext = null, presentedProjections = null;
   let presentedDraftContext = null, presentedDrafts = null;
@@ -34,7 +35,7 @@ const ReferenceWorkspace = (() => {
     if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
   }
   function beginNativeOperation(command) {
-    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return null;
+    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
     return () => {if (!ended) {ended = true; nativePending--;}};
@@ -60,7 +61,7 @@ const ReferenceWorkspace = (() => {
   };
   function notifySceneChange(){recoveryChannel?.postMessage({peer:recoveryPeer,session:typeof connection!=="undefined"?connection.session:null});}
   function assertConfirmationIdle(){
-    if(assemblyConfirmation)throw new Error((assemblyConfirmation.featureCommand?'網格變更':'組構')+"確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
+    if(assemblyConfirmation)throw new Error((assemblyConfirmation.evidenceCommand?'證據採用':assemblyConfirmation.featureCommand?'網格變更':'組構')+"確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
   }
   function assertAssemblyIdle(){assertConfirmationIdle();if(roomTransaction)throw new Error("房間操作尚未確認，請先確認、取消或恢復結果。");}
   function assertEditorLease(){
@@ -117,6 +118,30 @@ const ReferenceWorkspace = (() => {
     featureProposal(kind,P.Features.gridDraftValue(drafts,orphans,true,readFeatureAttachment(kind)?.schema===P.Features.GRID_DRAFTS_SCHEMA),true);
   }
   function cancelFeatureConfirmation(token){featureConfirmations.delete(featureTokenKey(token));}
+  function prepareEvidenceConfirmation(token,intent,expectedStamp){
+    assertEditable();const key=featureTokenKey(token),initial=getEvidenceState();
+    if(key===null||initial.blocked||!sameModelData(initial,expectedStamp)||busy||oc.busy||history.group||
+       !intent||!/^[a-f0-9]{64}$/.test(intent.sourceFingerprint))throw new Error("採用或專案已變更，請重新預覽。");
+    const frozen=structuredClone(intent),before=readFeatureAttachment(E.KIND);
+    E.validate(before);const index=before.links.findIndex(link=>link.evidenceId===frozen.before?.evidenceId);
+    if(index<0||!sameModelData(before.links[index],frozen.before))throw new Error("證據已變更，請重新選擇採用值。");
+    const after=structuredClone(before);after.links[index]=E.previewAdoption(before.links[index],frozen.candidate);
+    const proposal=structuredClone(featureProposal(E.KIND,after));
+    evidenceConfirmations.clear();evidenceConfirmations.set(key,{context:context(),frame:history.frame,
+      revision:revision(context()),session:connection.session,nativeRevision,key,before,after,proposal,intent:frozen,index});
+  }
+  function beginEvidenceConfirmation(token){
+    const key=featureTokenKey(token),prepared=evidenceConfirmations.get(key);if(!prepared)return null;
+    evidenceConfirmations.delete(key);assertEditable();
+    if(busy||oc.busy||history.group||!assemblyConfirmationCurrent(prepared)||prepared.revision!==revision(context())||
+       prepared.session!==connection.session||prepared.nativeRevision!==nativeRevision||!sameModelData(readFeatureAttachment(E.KIND),prepared.before))
+      throw new Error("採用候選已過期，未送出確認。");
+    // Revalidate full attachment/root capacity immediately before the native
+    // lease. Success is published only in observe of this exact receipt.
+    featureProposal(E.KIND,prepared.after);
+    assemblyConfirmation={...prepared,evidenceCommand:"engineering-confirm "+key};schedulePresentation();return assemblyConfirmation;
+  }
+  function cancelEvidenceConfirmation(token){evidenceConfirmations.delete(featureTokenKey(token));}
   function finishAssemblyConfirmation(stamp){if(assemblyConfirmation===stamp){assemblyConfirmation=null;schedulePresentation();scheduleRecovery();}}
   const safe = fn => async (...args) => { try { return await fn(...args); } catch (e) { toast(e.message || "參考資料操作失敗"); } };
   function group(bid, create = false) {
@@ -298,27 +323,46 @@ const ReferenceWorkspace = (() => {
         if(record?.finishReceipt!==pin.packageHash){record=saved;finishPin=pin;}
       }
       if(!record){recoveryReady=true;recoveryMessage("empty","本分頁尚無恢復資料。服務上的既有幾何來源未知，不能據此推定已保存專案。");return {...recovery};}
-      const session=typeof connection!=="undefined"?connection.session:null,dump=await api("dump");assertInitial();
-      if(record.version!==1 || !session || record.session!==session || !dump.ok || record.sceneHash!==await sceneFingerprint(dump.text)){
+      const session=typeof connection!=="undefined"?connection.session:null;
+      if(record.version!==1 || !session || record.session!==session){
         recoveryMessage("mismatch","先前專案與目前服務工作階段或場景不一致，未恢復附件、草稿及專案身份，也未覆寫目前場景。請開啟正確的 .gcanvas 檔案。");return {...recovery};
       }
       const stage=label=>{busyLabel=label;present();};
-      const {loaded,c,ids}=await readProjectContext(record.bytes,"本機恢復專案",stage,assertInitial,true);
-      preparedContext=c;
-      if(await sceneFingerprint(loaded.scene)!==record.sceneHash)throw new Error("本機恢復資料的場景指紋不一致。");
+      stage("正在檢查專案完整性…");
+      const loaded=await P.unpack(record.bytes,fflate);assertInitial();
+      const archiveHash=await sceneFingerprint(loaded.scene);assertInitial();
+      if(archiveHash!==record.sceneHash)throw new Error("本機恢復資料的場景指紋不一致。");
       if(finishPin&&(loaded.manifest.projectId!==finishPin.projectId||!loaded.manifest.scenarioCatalog?.scenarios.some(s=>s.scenarioId===ticket.scenarioId)))
         throw new Error("試改完成收據與原方案身份不符，資料已保留。");
-      const verify=await api("dump");assertInitial();
-      if(!verify.ok || connection.session!==session || await sceneFingerprint(verify.text)!==record.sceneHash)throw new Error("恢復期間服務場景已變更，未恢復專案。");
-      assertInitial();
+      const probe=await sceneFingerprint(P.stripIdentityLedger(loaded.scene));assertInitial();
+      const probed=await api("dump-deidentified");assertInitial();
+      const probedHash=probed.ok?await sceneFingerprint(probed.text):null;assertInitial();
+      if(!probed.ok || probedHash!==probe){
+        recoveryMessage("mismatch","先前專案與目前服務工作階段或場景不一致，未恢復附件、草稿及專案身份，也未覆寫目前場景。請開啟正確的 .gcanvas 檔案。");return {...recovery};
+      }
+      // Reject a different live scene before native scenario checks or PDF work.
+      // Both probes remain tied to this single, integrity-checked archive.
+      const {c,ids}=await prepareProjectContext(loaded,"本機恢復專案",stage,assertInitial,true);
+      preparedContext=c;
+      const verify=await api("dump-deidentified");assertInitial();
+      const verifiedHash=verify.ok?await sceneFingerprint(verify.text):null;assertInitial();
+      if(!verify.ok || connection.session!==session || verifiedHash!==probe)throw new Error("恢復期間服務場景已變更，未恢復專案。");
+      const full=await api("dump");assertInitial();
       const p=record.project;
       if(!p || typeof p.provenance?.kind!=="string" || typeof p.provenance?.label!=="string")throw new Error("本機專案來源記錄不完整。");
-      Object.assign(c,{dirty:!!p.dirty,dirtyReason:String(p.dirtyReason || ""),saved:!!p.saved,downloaded:!!p.downloaded,provenance:{...p.provenance}});
+      const fullHash=full.ok?await sceneFingerprint(full.text):null;assertInitial();
+      const disposition=P.restoreAfterProbe(p, full.ok===true, fullHash, record.sceneHash);
+      Object.assign(c,{dirty:disposition.dirty,dirtyReason:disposition.dirtyReason,saved:disposition.saved,downloaded:disposition.downloaded,provenance:{...p.provenance}});
       history.frame={context:c,ids:new Map(ids)};history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;
       if(record.finishReceipt&&/^[a-f0-9]{64}$/.test(record.finishReceipt))recoveryFinishReceipt={session,key:recoveryKey,hash:record.finishReceipt};
       detachedPDFContexts.delete(c);
       recoveryReady=true;sync();
-      recoveryMessage("restored","已核對同一服務及場景，恢復本分頁的專案、來源附件、空間模型與工程草稿。未套用的工具草稿及較早復原歷史無法恢復；檔案保存狀態維持原紀錄。");
+      const restoredNote=disposition.dirtyReason==="身分帳不完整，須先復原上一步才能保存"
+        ?"已核對去身分場景，恢復附件與草稿。身分帳不完整，須先復原上一步才能保存。"
+        :(disposition.saved===false&&p.saved)
+        ?"已核對去身分場景，恢復附件與草稿。完整場景與恢復紀錄不同，尚未保存。"
+        :"已核對同一服務及場景，恢復本分頁的專案、來源附件、空間模型與工程草稿。未套用的工具草稿及較早復原歷史無法恢復；檔案保存狀態維持原紀錄。";
+      recoveryMessage("restored",restoredNote);
       return {...recovery};
     } catch(error) {
       if(editorLease!=="owned")editorLease="unavailable";
@@ -411,6 +455,11 @@ const ReferenceWorkspace = (() => {
       cmd = "line " + cmd.slice(5).split("#", 1)[0].trim();
       if (cmd === "line ") return;
     }
+    const adoption=assemblyConfirmation?.evidenceCommand===cmd?assemblyConfirmation:null;
+    if(adoption&&result.ok&&assemblyConfirmationCurrent(adoption)&&
+       (String(result.transaction_id)!==adoption.key||result.definition_sha256!==adoption.intent.sourceFingerprint)){
+      contextConflict=true;throw new Error("原生確認收據與採用候選不符；未寫入採用紀錄，請保留場景並重新核對。");
+    }
     const hadModels = context().models.length || context().modelsDirty;
     const hadProjections = context().faceProjections.size || context().faceProjectionsDirty;
     const previousProjections = context().faceProjections;
@@ -419,6 +468,24 @@ const ReferenceWorkspace = (() => {
     if (roomTransaction && result.ok && cmd === "line history-end") roomTransaction.entry = history.undo.at(-1);
     window.RoomCollectionWorkspace?.observeNativeResult?.(cmd, result);
     const feature=assemblyConfirmation;
+    if(result.ok&&adoption&&assemblyConfirmationCurrent(adoption)){
+      if(!sameModelData(readFeatureAttachment(E.KIND),adoption.before)){
+        contextConflict=true;throw new Error("採用收據抵達前附件已變更；未覆寫證據。");
+      }
+      const sealed=E.sealAdoption(adoption.before.links[adoption.index],{...adoption.intent.candidate,confirmed:true});
+      if(!sameModelData(sealed,adoption.after.links[adoption.index])){
+        contextConflict=true;throw new Error("採用收據無法核對，未覆寫證據。");
+      }
+      if(result.history_changed===false)history.push(history.snapshot(),"local","採用證據值");
+      // The lease owns this evidence record. A late readonly objects response
+      // may already have marked another owner's grid sources lost/orphaned.
+      // Keep those current records; the adopted record was validated before
+      // the native request, including the reserved automatic marking capacity.
+      const current=context().featureAttachments.filter(record=>record.kind!==E.KIND);
+      const adopted=adoption.proposal.find(record=>record.kind===E.KIND);
+      context().featureAttachments=structuredClone([...current,adopted]);
+      dirty();window.dispatchEvent(new CustomEvent("evidence-links-changed"));
+    }
     if(result.ok&&feature?.featureCommand===cmd&&assemblyConfirmationCurrent(feature)&&sameModelData(feature.kind===P.Features.GRID_KIND?readGridDraft(feature.value.draftId):readFeatureAttachment(feature.kind),feature.value)){
       if(feature.kind===P.Features.GRID_KIND){const c=readGridDrafts();replaceGridDrafts(c.drafts.filter(d=>d.draftId!==feature.value.draftId),c.orphans.filter(id=>id!==feature.value.draftId));}
       else context().featureAttachments=context().featureAttachments.filter(record=>record.kind!==feature.kind);
@@ -430,8 +497,8 @@ const ReferenceWorkspace = (() => {
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
     if (result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
       dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
-    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
-    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm) /.test(cmd) && result.history_changed !== false) dirty();
+    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
+    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|definition-import-confirm) /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
@@ -480,11 +547,16 @@ const ReferenceWorkspace = (() => {
       const replacements=new Set();
       for(const ref of old?.inputRefs || [])if(ref.lost&&!value.inputRefs.some(next=>P.Features.referenceKey(next)===P.Features.referenceKey(ref))){
         const fields=ref.kind==='parameter-field'?P.Features.sourceFields.filter(field=>field.endsWith('Source')&&!['igUSource','igVSource'].includes(field)&&old.rawForm[field]===`${ref.parameterId}:${ref.fieldId}`):[];
-        if(fields.length){
-          if(!fields.every(field=>value.inputRefs.some(next=>next.kind==='parameter-field'&&!next.lost&&next.parameterId!==ref.parameterId&&value.rawForm[field]===`${next.parameterId}:${next.fieldId}`)))
-            throw new Error("曾缺失來源只准逐欄改指另一個物件，不得純移除。");
-          continue;
-        }
+        const card=ref.kind==='parameter-field'&&old.kind==='source'&&old.rawForm.igCard===String(ref.parameterId)&&
+          ['igCardU','igCardV'].some(field=>old.rawForm[field]===String(ref.fieldId));
+        if(fields.length&&!fields.every(field=>value.inputRefs.some(next=>next.kind==='parameter-field'&&!next.lost&&next.parameterId!==ref.parameterId&&value.rawForm[field]===`${next.parameterId}:${next.fieldId}`)))
+          throw new Error("曾缺失來源只准逐欄改指另一個物件，不得純移除。");
+        if(card&&!(value.kind==='source'&&value.rawForm.igCard&&value.rawForm.igCard!==old.rawForm.igCard&&
+          value.rawForm.igCardU&&value.rawForm.igCardV&&value.rawForm.igCardU!==value.rawForm.igCardV&&
+          ['igCardU','igCardV'].every(field=>value.inputRefs.some(next=>next.kind==='parameter-field'&&!next.lost&&
+            String(next.parameterId)===value.rawForm.igCard&&String(next.fieldId)===value.rawForm[field]))))
+          throw new Error("曾缺失整卡來源只准以另一張卡的完整雙欄映射替換，不得純移除。");
+        if(fields.length||card)continue;
         const next=value.inputRefs.find(next=>!next.lost&&next.kind===ref.kind&&!replacements.has(P.Features.referenceKey(next))&&
           !old.inputRefs.some(existing=>P.Features.referenceKey(existing)===P.Features.referenceKey(next))&&
           (ref.kind!=='parameter-field'||next.parameterId!==ref.parameterId));
@@ -572,7 +644,7 @@ const ReferenceWorkspace = (() => {
   function setFeatureAttachment(kind, value, expectedContextToken, options = {}) {
     P.Features.assertKind(kind);
     if(kind===P.Features.CASE_KIND && options.caseAdmission!==caseCommitKey)throw new Error("規則案例必須先完成隔離資料驗證，再原子保留。");
-    const groupedRoom = kind === P.Features.ROOM_KIND && options.recordHistory === false;
+    const groupedRoom = (kind === P.Features.ROOM_KIND || kind === P.Features.ROOM_CANDIDATE_KIND) && options.recordHistory === false;
     if (groupedRoom) {
       assertRoomTransaction(options.roomLease);
       if (!roomTransaction.group || history.group !== roomTransaction.group || !history.group.dirty)
@@ -589,9 +661,10 @@ const ReferenceWorkspace = (() => {
         throw new Error("舊網格草稿介面不能取代集合或失效草稿。");
     }
     const proposal = featureProposal(kind,value,kind===P.Features.GRID_KIND&&options.gridWrite===gridDraftWrite&&options.storedGrid===true), previous = readFeatureAttachment(kind);
+    if(kind===P.Features.Cutting.KIND)P.Features.Cutting.transition(previous,value);
     if (sameModelData(previous, value)) return previous;
     const next = structuredClone(proposal);
-    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
+    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.Cutting.KIND ? "裁切設定" : kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : kind === P.Features.ROOM_CANDIDATE_KIND ? (value === null ? "捨棄房間候選草稿" : "編輯房間候選草稿") : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
     if (kind === E.KIND) window.dispatchEvent(new CustomEvent("evidence-links-changed"));
     return readFeatureAttachment(kind);
@@ -1375,7 +1448,14 @@ const ReferenceWorkspace = (() => {
     const bytes=await P.pack(r.text,m,data,fflate); assertCurrent();assertSnapshot(stamp,transactionOwner);
     return {bytes,stamp,scene:r.text,nativeRevision:r.revision??null};
   }
-  async function exportBytes() { return (await exportSnapshot()).bytes; }
+  function flushRoomCandidates() {
+    try { window.RoomCollectionWorkspace?.flushCandidates?.(); return null; }
+    catch (error) {
+      const warning="房間候選草稿未能寫入；檔案仍保留先前的草稿或沒有草稿。";
+      setStatus(warning);return warning;
+    }
+  }
+  async function exportBytes() { flushRoomCandidates(); return (await exportSnapshot()).bytes; }
   async function readScenarioProject(assertCurrent=()=>{},afterFlush=()=>{}) {
     const {bytes,stamp}=await exportSnapshot(context(),false,assertCurrent,afterFlush);assertCurrent();
     const project=await P.unpack(bytes,fflate);assertCurrent();assertSnapshot(stamp);
@@ -1635,6 +1715,7 @@ const ReferenceWorkspace = (() => {
   }
   async function freezeScenarioProject() {
     if(!scenarioContext()||scenarioFreeze)throw new Error("試改尚未就緒或已在保全中。");
+    flushRoomCandidates();
     window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertSaveReady();
     const owner=beginSceneTransaction(),session=connection.session,token=uuid();busy=true;busyLabel="正在凍結完整試改資料…";present();
     try{
@@ -1659,6 +1740,7 @@ const ReferenceWorkspace = (() => {
   }
   async function finishScenarioEditor(catalog,sources,expected,assertCurrent=()=>{}) {
     assertScenarioJournalReady();assertCurrent();
+    flushRoomCandidates();
     window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertCurrent.afterFlush?.();assertCurrent();assertSaveReady();
     const ticket=validateScenarioTicket(expected);
     if(ticket?.phase!=="active")throw new Error("試改尚未完整開啟，不能完成。");
@@ -1711,6 +1793,8 @@ const ReferenceWorkspace = (() => {
   }
   async function save() {
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
+    const roomCandidateWarning=flushRoomCandidates();
+    const reportSave=message=>setStatus(roomCandidateWarning?message+" "+roomCandidateWarning:message);
     window.AssemblyWorkspace?.flush();
     window.InfiniteGridWorkspace?.flush();
     const shellState=window.WorkspaceShell?.saveState();
@@ -1729,12 +1813,13 @@ const ReferenceWorkspace = (() => {
       if(handle){const writable=await handle.createWritable();try{await writable.write(bytes);await writable.close();}catch(e){await writable.abort().catch(()=>{});throw e;}
         c.provenance.lastSavedAt=new Date().toISOString();
         if (unchanged(stamp)) {
-          c.dirty=false;c.modelsDirty=false;c.faceProjectionsDirty=false;c.saved=true;c.downloaded=false;setStatus("✓ 專案已保存，包含場景、工程來源與草稿、參考資料及空間模型");
+          // A valid file was saved, but failed candidate synchronization leaves input unsaved.
+          c.dirty=!!roomCandidateWarning;c.modelsDirty=false;c.faceProjectionsDirty=false;c.saved=true;c.downloaded=false;reportSave("✓ 專案已保存，包含場景、工程來源與草稿、參考資料及空間模型");
         } else {
           c.dirty=true;c.downloaded=false;
-          setStatus(context()===c?"檔案已寫入；保存期間的新變更尚未保存，請再次保存。":"先前專案的檔案已寫入；目前專案的保存狀態未變更。");
+          reportSave(context()===c?"檔案已寫入；保存期間的新變更尚未保存，請再次保存。":"先前專案的檔案已寫入；目前專案的保存狀態未變更。");
         }}
-      else {assertSnapshot(stamp);download(bytes,suggested);c.downloaded=true;c.provenance.lastDownloadAt=new Date().toISOString();setStatus("已產生專案下載；請確認下載完成後再關閉。");}
+      else {assertSnapshot(stamp);download(bytes,suggested);c.downloaded=true;if(roomCandidateWarning)c.dirty=true;c.provenance.lastDownloadAt=new Date().toISOString();reportSave("已產生專案下載；請確認下載完成後再關閉。");}
     } finally {busy=false;busyLabel="";busyShort="處理中";window.InfiniteGridWorkspace?.setProjectBusy(false);present();scheduleRecovery();}
   }
   function sameModelData(a, b) {
@@ -1807,6 +1892,9 @@ const ReferenceWorkspace = (() => {
   async function readProjectContext(bytes,name,stage,assertCurrent,verifyOnly=false) {
     stage("正在檢查專案完整性…","驗證中");
     const loaded=await P.unpack(bytes,fflate); assertCurrent();
+    return prepareProjectContext(loaded,name,stage,assertCurrent,verifyOnly);
+  }
+  async function prepareProjectContext(loaded,name,stage,assertCurrent,verifyOnly=false) {
     // Detached, private copies are the exact values subsequently committed.
     loaded.manifest=structuredClone(loaded.manifest);
     loaded.sources=new Map([...loaded.sources].map(([hash,data])=>[hash,data.slice()]));
@@ -1932,14 +2020,15 @@ const ReferenceWorkspace = (() => {
       token=candidate.token;
       assertWritableLease();assertCurrent();
       P.validateProjectObjectRefs(manifest,candidate.final_objects);
-      const hostRecordProfile=manifest.requiredCapabilities?.includes('panel-fill/1')&&candidate.native_capabilities?.includes('panel-fill-native/1')?
+      const requiredCapabilities=[...new Set([...(manifest.requiredCapabilities||[]),...P.sceneCapabilities(text)])];
+      const hostRecordProfile=requiredCapabilities.includes('panel-fill/1')&&Array.isArray(candidate.native_capabilities)&&candidate.native_capabilities.includes('panel-fill-native/1')?
         await apiRequest('panel-fill-read'):null;
       assertWritableLease();assertCurrent();
-      if(hostRecordProfile&&(!Number.isSafeInteger(hostRecordProfile.revision)||
+      if(hostRecordProfile&&(!Number.isSafeInteger(hostRecordProfile.revision)||hostRecordProfile.revision<0||
          preparedNativeRevision!==null&&hostRecordProfile.revision!==preparedNativeRevision||
          nativeRevision!==null&&nativeRevision>hostRecordProfile.revision))
         throw new Error('原生來源在讀取衍生承載面能力期間已變更，請重新開啟專案。');
-      P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities,candidate.native_capabilities,manifest,candidate.final_scene,hostRecordProfile));
+      P.assertProjectCapabilities({...manifest,requiredCapabilities},P.readerCapabilities(candidate.capabilities,candidate.native_capabilities,manifest,candidate.final_scene,hostRecordProfile,{cutting:true}));
       P.validateProjectCapabilities(candidate.required_capabilities);
       const policy=P.formatPolicy(manifest.format);
       if (policy.engineeringCandidate) {
@@ -1963,7 +2052,7 @@ const ReferenceWorkspace = (() => {
   }
   function assertLoadContext(load,result=null) {
     assertWritableLease();
-    if(context()!==load.guard.context || history.frame!==load.guard.frame || revision(context())!==load.guard.revision || contextConflict!==load.guard.conflict || connection.session!==load.guard.session || result&&Number.isSafeInteger(result.revision)&&nativeRevision>result.revision)
+    if(sceneTransaction!==load.transaction || context()!==load.guard.context || history.frame!==load.guard.frame || revision(context())!==load.guard.revision || contextConflict!==load.guard.conflict || connection.session!==load.guard.session || result&&Number.isSafeInteger(result.revision)&&nativeRevision>result.revision)
       throw new Error("載入結果晚到，目前工程已有變更；未替換目前專案資料，請重新開啟。");
   }
   async function uploadScene(text,replacement=null,assertCurrent=()=>{},transaction=null) {
@@ -1982,8 +2071,9 @@ const ReferenceWorkspace = (() => {
     } catch(error) {preparingSceneLoad=false;finishSceneTransaction(owner);throw error;}
     let result,token=null;
     try {
-      if(replacement?.manifest)token=await prepareProjectScene(text,replacement.manifest,assertCurrent);
-      assertWritableLease();assertCurrent();nextLoad.token=token;pendingLoad=nextLoad;
+      const assertPreparedCurrent=()=>{assertLoadContext(nextLoad);assertCurrent();};
+      if(replacement?.manifest)token=await prepareProjectScene(text,replacement.manifest,assertPreparedCurrent);
+      assertPreparedCurrent();nextLoad.token=token;pendingLoad=nextLoad;
     } catch(error) {
       if(token!==null)try{await cancelProjectScene(token);}catch(_){}
       finishSceneTransaction(owner);
@@ -2131,6 +2221,7 @@ const ReferenceWorkspace = (() => {
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
     readGridDrafts,setGridDraft,repinGridDraft,
     prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(featureTokenKey(token)),
+    prepareEvidenceConfirmation,beginEvidenceConfirmation,cancelEvidenceConfirmation,hasEvidenceConfirmation:token=>evidenceConfirmations.has(featureTokenKey(token)),
     featureConfirmationPending:()=>!!assemblyConfirmation?.featureCommand,
     newProject:()=>replaceWithEmpty(false),clearContents:()=>replaceWithEmpty(true),
     noteSceneSource:({name,kind="scene-file"})=>markSceneSource(name,kind),
