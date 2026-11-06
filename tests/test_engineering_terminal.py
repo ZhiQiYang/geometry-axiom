@@ -73,6 +73,34 @@ def project_identity_capability(case, value):
     return projected
 
 
+def project_panel_fill_reader(case, value):
+    """Check the scoped R02 reader before comparing the independent K1 reply.
+
+    UI-1 adds this definition-reader descriptor, not the full panel-fill/1
+    product capability. Its four fields, values and insertion point are fixed
+    by the reviewed UI-1 wire contract; no value is taken from the reply being
+    tested. Every other field and its order still reaches the original check.
+    """
+    projected = json.loads(json.dumps(value))
+    state = projected["engineering-read"]["state"]
+    expected_reader = {
+        "schema": "panel-fill-definition-reader/1",
+        "capability": "panel-fill/1",
+        "supportedRecords": ["finish-surface", "panel-fill", "derived-placement"],
+        "complete": False,
+    }
+    case.assertIn("panel_fill_reader", state, "K1_PF_READER_PRESENT")
+    case.assertEqual(json.dumps(expected_reader, ensure_ascii=False, separators=(",", ":")),
+                     json.dumps(state["panel_fill_reader"], ensure_ascii=False, separators=(",", ":")),
+                     "K1_PF_READER_EXACT_CONTRACT")
+    keys = list(state)
+    at = keys.index("panel_fill_reader")
+    case.assertEqual(["native_capabilities", "panel_fill_reader", "specs"], keys[at - 1:at + 2],
+                     "K1_PF_READER_INSERTION_ORDER")
+    del state["panel_fill_reader"]
+    return projected
+
+
 class EngineeringTerminal(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -196,7 +224,9 @@ class EngineeringTerminal(unittest.TestCase):
         expected_json = json.dumps(original, ensure_ascii=False, separators=(",", ":"))
 
         def compare(value):
-            projected = project_identity_capability(self, without_terminal(value))
+            projected = value
+            projected = project_panel_fill_reader(self, projected)
+            projected = project_identity_capability(self, without_terminal(projected))
             self.assertEqual(expected_json,
                              json.dumps(projected, ensure_ascii=False, separators=(",", ":")),
                              "K1-a: non-terminal fields/order changed relative to the independently built baseline")
@@ -229,6 +259,39 @@ class EngineeringTerminal(unittest.TestCase):
                     first = next(iter(probe["references"]))
                     probe["references"][first] = probe["references"].pop(first)
                 with self.assertRaises(AssertionError, msg="K1_R09A_NEGATIVE_" + fault):
+                    compare(probe)
+
+        # The additive reader cannot conceal a wrong schema, an unsupported
+        # record, a full-product claim, or an unrelated legacy/order change.
+        for fault in ("missing", "schema", "capability", "records", "complete", "complete-type",
+                      "extra-field", "terminal-extra", "reader-key-order", "moved", "full-capability"):
+            with self.subTest(panel_fill_reader_negative=fault):
+                probe = json.loads(json.dumps(replies))
+                state = probe["engineering-read"]["state"]
+                reader = state["panel_fill_reader"]
+                if fault == "missing":
+                    del state["panel_fill_reader"]
+                elif fault == "schema":
+                    reader["schema"] = "panel-fill-definition-reader/2"
+                elif fault == "capability":
+                    reader["capability"] = "panel-fill/2"
+                elif fault == "records":
+                    reader["supportedRecords"].append("unsupported-record")
+                elif fault == "complete":
+                    reader["complete"] = True
+                elif fault == "complete-type":
+                    reader["complete"] = 0
+                elif fault == "extra-field":
+                    reader["extra"] = True
+                elif fault == "terminal-extra":
+                    reader["terminal"] = {"kind": "literal"}
+                elif fault == "reader-key-order":
+                    reader["schema"] = reader.pop("schema")
+                elif fault == "moved":
+                    state["panel_fill_reader"] = state.pop("panel_fill_reader")
+                else:
+                    state["capabilities"].append("panel-fill/1")
+                with self.assertRaises(AssertionError, msg="K1_PF_READER_NEGATIVE_" + fault):
                     compare(probe)
 
 

@@ -198,10 +198,48 @@ if (Number.isSafeInteger(r.state.panelFills[0].derived.tiles[0].fragments[0].are
         original_capabilities = ["engineering-spec/1", "parameters/1", "assembly-rule-authoring/1",
                                  "assembly-timber-generation/1", "grid-subdivision-rules/1",
                                  "section-profile/1", "grid-card-reference/1"]
+
+        def compare_capabilities(capabilities):
+            # Keep UI-1's original seven-capability oracle. Main has since
+            # adopted R06/I69, R09a/I72 and R08/I67; validate each exact additive
+            # slot before projecting it. Do not filter arbitrary capabilities
+            # or infer expected values from the native service under test.
+            projected = list(capabilities)
+            for name in ("assembly-bay-repeat/1", "identity-ledger/1", "definition-import/1"):
+                self.assertEqual(1, projected.count(name), "UI_READER_EXTENSION_EXACTLY_ONCE:" + name)
+            at = projected.index("assembly-bay-repeat/1")
+            self.assertEqual(projected.index("assembly-timber-generation/1") + 1, at,
+                             "UI_READER_R06_CAPABILITY_POSITION")
+            self.assertEqual(["identity-ledger/1", "definition-import/1"], projected[-2:],
+                             "UI_READER_IDENTITY_AND_IMPORT_SUFFIX")
+            del projected[at]
+            del projected[-2:]
+            self.assertEqual(original_capabilities, projected, "UI_READER_NO_FULL_PF_CLAIM")
+
         for response in [self.read(), self.command("engineering-read")["state"], candidate]:
-            self.assertEqual(original_capabilities, response["capabilities"], "UI_READER_NO_FULL_PF_CLAIM")
+            original = list(response["capabilities"])
+            compare_capabilities(response["capabilities"])
+            self.assertEqual(original, response["capabilities"], "UI_READER_PROJECTION_IS_READONLY")
             self.assertEqual(expected_reader, response["panel_fill_reader"], "UI_READER_RECORD_CLOSURE")
             self.assertIn("panel-fill/1", response["required_capabilities"])
+            for fault in ("missing-r06", "missing-identity", "missing-import", "duplicate", "moved",
+                          "legacy-order", "unknown", "full-pf"):
+                probe = list(original)
+                if fault.startswith("missing-"):
+                    name = {"missing-r06": "assembly-bay-repeat/1", "missing-identity": "identity-ledger/1",
+                            "missing-import": "definition-import/1"}[fault]
+                    probe.remove(name)
+                elif fault == "duplicate":
+                    probe.append("assembly-bay-repeat/1")
+                elif fault == "moved":
+                    probe.remove("assembly-bay-repeat/1")
+                    probe.insert(0, "assembly-bay-repeat/1")
+                elif fault == "legacy-order":
+                    probe[0], probe[1] = probe[1], probe[0]
+                else:
+                    probe.insert(0, "panel-fill/1" if fault == "full-pf" else "unreviewed-capability/1")
+                with self.assertRaises(AssertionError, msg="UI_READER_NEGATIVE_" + fault):
+                    compare_capabilities(probe)
         self.assertEqual(before[0], candidate["final_scene"], "UI_READER_CANONICAL_DEFINITIONS")
         self.assertEqual(before, self.snapshot(), "UI_READER_DETACHED_CANDIDATE")
         self.assertTrue(self.command("load-cancel %d" % candidate["token"])["ok"])

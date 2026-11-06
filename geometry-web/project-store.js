@@ -412,14 +412,16 @@
     // A bare full capability is not a scoped definition-reader credential.
     // nativeReaderCapabilities itself still preserves every finite scene kind.
     const supported=nativeReaderCapabilities(nativeCapabilities).filter(c=>c!==PANEL_FILL_CAPABILITY);
-    if(panelFillReader!==null && [ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY].every(c=>supported.includes(c)))
+    // A repeat archive must still prove R06's finite native host profile. The
+    // standalone PF definition-reader credential cannot replace that proof.
+    const repeatHost=manifest?.format===BAY_REPEAT_FORMAT&&typeof scene==='string'&&hasRepeatDefinitions(manifest,scene);
+    if(panelFillReader!==null && !repeatHost && [ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY].every(c=>supported.includes(c)))
       supported.push(PANEL_FILL_CAPABILITY);
     if(!Array.isArray(nativeProfiles)||nativeProfiles.length>43||new Set(nativeProfiles).size!==nativeProfiles.length||nativeProfiles.some(c=>!str(c,100)||!c.length))fail('服務原生子能力清單不合法。');
     // This H reader owns only R06's /19 host-definition replay scope. The
     // existing native profile supports finish-surface/panel-fill/derived-placement;
     // it does not advertise the complete panel-fill UI/actions capability.
-    if(manifest?.format===BAY_REPEAT_FORMAT&&typeof scene==='string'&&
-       hasRepeatDefinitions(manifest,scene)&&
+    if(repeatHost&&
        nativeProfiles.includes('panel-fill-native/1')&&
        recordProfile?.ok===true&&recordProfile.schema==='panel-fill-native/1'&&recordProfile.capability===PANEL_FILL_CAPABILITY&&recordProfile.complete===false&&
        Array.isArray(recordProfile.supportedRecords)&&recordProfile.supportedRecords.length===3&&
