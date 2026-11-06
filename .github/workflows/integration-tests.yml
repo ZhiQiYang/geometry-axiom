@@ -152,9 +152,10 @@ jobs:
               echo "CJK_DEB=$(basename "$deb") bytes=$(wc -c <"$deb")"
             done
             echo "CJK_INSTALL_BRANCH=cached-deb"
-            # Capture apt output; cache-hit must not fetch from the Ubuntu mirror.
+            # Install only the local archives; dependency/configuration errors must fail.
+            # Keep the mirror guard, without an apt repair/fallback on a cache hit.
             log="$(mktemp)"
-            sudo apt-get install -y "${debs[@]}" 2>&1 | tee "$log"
+            sudo dpkg -i "${debs[@]}" 2>&1 | tee "$log"
             if grep -E "https?://azure\.archive\.ubuntu\.com|Need to get .* of archives" "$log"; then
               echo "CJK_CACHE_HIT_STILL_MIRRORED=1" >&2
               echo "cache-hit path contacted apt mirror; see log above" >&2
@@ -169,7 +170,9 @@ jobs:
             ls -la "$cache_dir"/fonts-noto-cjk*.deb || true
           fi
           dpkg -s fonts-noto-cjk
-          if ! fc-list :lang=zh | grep -q .; then
+          # Collect stdout before grep -q so a closed pipe cannot mimic missing fonts.
+          cjk_fonts="$(fc-list :lang=zh)"
+          if ! grep -q . <<< "$cjk_fonts"; then
             echo "fc-list :lang=zh found no fonts" >&2
             exit 1
           fi
