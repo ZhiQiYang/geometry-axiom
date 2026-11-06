@@ -2010,7 +2010,7 @@ const ReferenceWorkspace = (() => {
     if(!response.ok || (await response.json()).ok!==true)throw new Error("無法確認專案候選已取消；目前場景未被替換。");
   }
   async function prepareProjectScene(text,manifest,assertCurrent) {
-    let token=null;
+    let token=null;const preparedNativeRevision=nativeRevision;
     try {
       const response=await fetch("/upload/prepare",{method:"POST",body:text,signal:AbortSignal.timeout(30000)});
       if(!response.ok)throw new Error("目前服務無法驗證專案，未變更目前專案。");
@@ -2021,7 +2021,14 @@ const ReferenceWorkspace = (() => {
       assertWritableLease();assertCurrent();
       P.validateProjectObjectRefs(manifest,candidate.final_objects);
       const requiredCapabilities=[...new Set([...(manifest.requiredCapabilities||[]),...P.sceneCapabilities(text)])];
-      P.assertProjectCapabilities({...manifest,requiredCapabilities},P.readerCapabilities(candidate.capabilities,{cutting:true}));
+      const hostRecordProfile=requiredCapabilities.includes('panel-fill/1')&&Array.isArray(candidate.native_capabilities)&&candidate.native_capabilities.includes('panel-fill-native/1')?
+        await apiRequest('panel-fill-read'):null;
+      assertWritableLease();assertCurrent();
+      if(hostRecordProfile&&(!Number.isSafeInteger(hostRecordProfile.revision)||hostRecordProfile.revision<0||
+         preparedNativeRevision!==null&&hostRecordProfile.revision!==preparedNativeRevision||
+         nativeRevision!==null&&nativeRevision>hostRecordProfile.revision))
+        throw new Error('原生來源在讀取衍生承載面能力期間已變更，請重新開啟專案。');
+      P.assertProjectCapabilities({...manifest,requiredCapabilities},P.readerCapabilities(candidate.capabilities,candidate.native_capabilities,manifest,candidate.final_scene,hostRecordProfile,{cutting:true}));
       P.validateProjectCapabilities(candidate.required_capabilities);
       const policy=P.formatPolicy(manifest.format);
       if (policy.engineeringCandidate) {
@@ -2045,7 +2052,7 @@ const ReferenceWorkspace = (() => {
   }
   function assertLoadContext(load,result=null) {
     assertWritableLease();
-    if(context()!==load.guard.context || history.frame!==load.guard.frame || revision(context())!==load.guard.revision || contextConflict!==load.guard.conflict || connection.session!==load.guard.session || result&&Number.isSafeInteger(result.revision)&&nativeRevision>result.revision)
+    if(sceneTransaction!==load.transaction || context()!==load.guard.context || history.frame!==load.guard.frame || revision(context())!==load.guard.revision || contextConflict!==load.guard.conflict || connection.session!==load.guard.session || result&&Number.isSafeInteger(result.revision)&&nativeRevision>result.revision)
       throw new Error("載入結果晚到，目前工程已有變更；未替換目前專案資料，請重新開啟。");
   }
   async function uploadScene(text,replacement=null,assertCurrent=()=>{},transaction=null) {
@@ -2064,8 +2071,9 @@ const ReferenceWorkspace = (() => {
     } catch(error) {preparingSceneLoad=false;finishSceneTransaction(owner);throw error;}
     let result,token=null;
     try {
-      if(replacement?.manifest)token=await prepareProjectScene(text,replacement.manifest,assertCurrent);
-      assertWritableLease();assertCurrent();nextLoad.token=token;pendingLoad=nextLoad;
+      const assertPreparedCurrent=()=>{assertLoadContext(nextLoad);assertCurrent();};
+      if(replacement?.manifest)token=await prepareProjectScene(text,replacement.manifest,assertPreparedCurrent);
+      assertPreparedCurrent();nextLoad.token=token;pendingLoad=nextLoad;
     } catch(error) {
       if(token!==null)try{await cancelProjectScene(token);}catch(_){}
       finishSceneTransaction(owner);

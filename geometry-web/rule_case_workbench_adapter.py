@@ -158,8 +158,18 @@ def _diagnostics(value):
 
 
 def _observed_state(value):
-    _shape(value, ("capabilities", "rules", "bindings", "instances"))
+    _shape(value, ("capabilities", "rules", "bindings", "instances"), ("limits",))
     _capabilities(value["capabilities"])
+    # R06 native reads declare capacity even for the unchanged authoring cases.
+    # Keep those exact typed facts; historical receipts may predate the field.
+    if "limits" in value:
+        fields = ("instances", "ownedTimbers", "worldTimbers", "instanceRecordBytes",
+                  "bayPrimaries", "baySecondaryLines", "bayOmit")
+        _shape(value["limits"], fields)
+        for limit in value["limits"].values():
+            _integer(limit, 4294967295)
+            if limit == 0:
+                raise AdapterError("RECEIPT", "Native capacity limits must be positive")
     # These six authoring cases cannot create construction instances.
     if value["instances"] != []:
         raise AdapterError("RECEIPT", "Authoring case observation contains unsupported instances")

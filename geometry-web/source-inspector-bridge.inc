@@ -187,7 +187,15 @@ static SiIndex *si_build(const World *w)
     for(size_t i=0;i<w->wood.engineering.binding_count;++i){const EngBinding *b=&w->wood.engineering.bindings[i];if(b->target.kind!=0)continue;si_numkey(from,"grid",b->target.id,0,0);char field[20];snprintf(field,sizeof field,"%c.%s",b->target.axis?'v':'u',b->target.field?"gap":"panel");si_source(s,from,&b->source,field,!b->has_override);if(b->has_override)si_source(s,from,&b->override_value,field,true);}
     for(size_t i=0;i<w->wood.assembly.rule_count;++i){const AsmRuleVersion *r=&w->wood.assembly.rules[i];si_reset(s);si_text(s,"%s",r->fingerprint);n=si_nnode(s,"assembly-rule",r->id,r->version,0,si_name(r->content,label,"組構規則"));if(n){snprintf(n->definition,65,"%s",r->fingerprint);snprintf(n->value,65,"%s",r->fingerprint);}si_rule_parts(s,r);}
     for(size_t i=0;i<w->wood.assembly.binding_count;++i){const AsmBinding *b=&w->wood.assembly.bindings[i];si_numkey(from,"assembly-binding",b->id,0,0);si_reset(s);si_content(s,b->content,"name");si_nnode(s,"assembly-binding",b->id,0,0,b->name);si_ref(s,from,"assembly-rule",b->rule_id,b->rule_version,0,"rule-version","rule");si_binding_sources(s,from,b->content);}
-    for(size_t i=0;i<w->wood.assembly.instance_count;++i){const AsmInstance *a=&w->wood.assembly.instances[i];si_numkey(from,"assembly-instance",a->id,0,0);si_reset(s);si_content(s,a->content,"");si_nnode(s,"assembly-instance",a->id,0,0,a->name);si_ref(s,from,"assembly-binding",a->binding_id,0,0,"dimension","binding");si_ref(s,from,"assembly-rule",a->rule_id,a->rule_version,0,"rule-version",a->rule_hash);si_ref(s,from,"placement",a->surface_id,0,0,"position","surface");for(int k=0;k<3;++k){char key[240],detail[100];si_numkey(key,"timber",a->timber[k],0,0);snprintf(detail,sizeof detail,"member:%u",a->member[k]);si_edge(s,key,from,"member",detail,true);}}
+    for(size_t i=0;i<w->wood.assembly.instance_count;++i){const AsmInstance *a=&w->wood.assembly.instances[i];si_numkey(from,"assembly-instance",a->id,0,0);si_reset(s);si_content(s,a->content,"");si_nnode(s,"assembly-instance",a->id,0,0,a->name);si_ref(s,from,"assembly-binding",a->binding_id,0,0,"dimension","binding");si_ref(s,from,"assembly-rule",a->rule_id,a->rule_version,0,"rule-version",a->rule_hash);si_ref(s,from,"placement",a->surface_id,0,0,"position","surface");
+        for(size_t k=0;k<wood_assembly_mapping_count(a);++k){char key[240],detail[100];AsmMapping m=wood_assembly_mapping_at(a,k);si_numkey(key,"timber",m.timber,0,0);
+            if(m.identity.kind==ASM_ID_MEMBER)snprintf(detail,sizeof detail,"member:%u",m.identity.key);
+            else if(m.identity.kind==ASM_ID_PRIMARY)snprintf(detail,sizeof detail,"primary:%u",m.identity.key);
+            else if(m.identity.kind==ASM_ID_SECONDARY)snprintf(detail,sizeof detail,"secondary:%u:%u:%u",m.identity.key,m.identity.left,m.identity.right);
+            else {s->complete=false;continue;}
+            si_edge(s,key,from,"member",detail,true);
+        }
+    }
     si_profile_sources(s,w);
     return s;
 }

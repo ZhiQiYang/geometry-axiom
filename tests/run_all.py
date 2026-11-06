@@ -51,6 +51,7 @@ EXPECTED_FILE = HERE / 'run_all.expected.json'
 # Every tests/test_*.py MUST appear here (value = native binaries it needs; [] is a deliberate "needs none").
 # A test file that is on disk but not listed makes run_all fail and name it.
 PY_NEEDS = {
+    'test_r363_native_merge': ['bridge'],
     'test_geo318_reading_a_oracle': [],
     'test_geo318_reading_a_native': [],
     'test_geo314_stagger_commit': ['bridge'],
@@ -58,6 +59,7 @@ PY_NEEDS = {
     'test_geo314_ordered_facts': [],
     'test_architecture_contract': [],
     'test_product_architecture': [],
+    'test_k1_product_architecture': [],
     'test_assembly_capacity': ['bridge'],
     'test_assembly_candidate_impact': ['bridge'],
     'test_assembly_parameter_refs': ['bridge'],
@@ -72,6 +74,9 @@ PY_NEEDS = {
     'test_section_profile_modeling': ['bridge', 'model-base'],
     'test_section_profile_mutation_check': [],
     'test_assembly_generation': ['bridge'],
+    'test_assembly_bay_repeat': ['bridge'],
+    'test_bay_repeat_mutation_check': [],
+    'test_bay_repeat_integration_runner': [],
     'test_axiom_reader': [],
     'test_binaries': [],
     'test_bridge_integrity': ['bridge'],
@@ -244,6 +249,7 @@ PY_NEEDS = {
     'test_release_gate': [],
     'test_local_launcher': ['core', 'bridge', 'model-base'],
     'test_rule_case_workbench_http': ['bridge'],
+    'test_k1_rule_case_workbench_http': ['bridge'],
     'test_k1_mutation_runners': [],
     'test_rule_case_host': ['bridge'],
     'test_rule_case_catalog': ['bridge'],
@@ -271,6 +277,7 @@ PY_BROWSER_GATES = {
     'test_issue123_create_feedback_browser': 'Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite',
 }
 NODE_TEST_FILES = [
+    'tests/test_assembly_bay_projection.js',
     'tests/test_grid_inspector_stagger.cjs',
     'tests/test_transport_failure_trace.js',
     'tests/test_section_profile_compat.js',
@@ -296,7 +303,6 @@ NODE_TEST_FILES = [
     'tests/test_card_reference_project_store.js',
     'tests/test_project_store.js',
     'tests/test_shared_format17.js',
-    'tests/test_cutting_summary.js',
     'tests/test_subdivision_project_store.js',
     'tests/test_reference_workspace_races.js',
     'tests/test_room_outline.js',
@@ -325,6 +331,9 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:cutting_summary': 'tests/test_cutting_summary.js',
+    'node:r07_candidate_save_warning': 'tests/test_room_candidate_save_warning.js',
+    'node:r06_main_integration': 'tests/test_assembly_main_integration.js',
     'node:pr353_compatibility': 'tests/test_pr353_compatibility.js',
     'node:pr353_pin_regressions': 'tests/test_pr353_pin_regressions.js',
     'node:cutting_layering': 'tests/test_cutting_layering.js',
@@ -380,6 +389,9 @@ NODE_PURE_TEST_FILES = {
     'node:evidence_project_store': 'tests/test_evidence_project_store.js',
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
     'node:model_creation_identity_pin': 'tests/test_model_creation_identity_pin.js',
+    'node:r363_project_store_merge': 'tests/test_r363_project_store_merge.js',
+    'node:r363_workspace_merge': 'tests/test_r363_workspace_merge.js',
+    'node:r363_archive_merge': 'tests/test_r363_archive_merge.js',
 }
 NODE_MODEL_TEST_FILES = {
     'node:model_update_faces_review': 'tests/test_model_update_faces_review.js',
@@ -392,6 +404,7 @@ NODE_NATIVE_TEST_FILES = {
     'node:identity_recovery_contract': 'tests/test_identity_recovery_contract.js',
 }
 NODE_EXCLUDED = {
+    'tests/bay_repeat_node_runner.cjs': 'R06 mutation-runner child adapter; invoked by bay_repeat_mutation_check.py with a selected Node oracle and output destination, not a standalone suite',
     'tests/_model_update_dom.js': 'Finite DOM/event fixture used by registered node:model_update_faces_app; registers no tests',
     'tests/pr353_legacy_reader.js': 'Immutable legacy-reader fixture/materialization helper; registers no tests; exercised by the PR353 compatibility and snapshot suites',
     'tests/cutting_legacy_cases.js': 'Fixed inputs for the independently pinned pre-layering cutting oracle; no tests registered',

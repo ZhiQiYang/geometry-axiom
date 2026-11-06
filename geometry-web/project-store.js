@@ -11,6 +11,9 @@
   const FEATURE_FORMAT = "geometry-canvas/10";
   const CARD_FORMAT = "geometry-canvas/18", CARD_CAPABILITY = "grid-card-reference/1";
   const ROOM_CANDIDATE_FORMAT = "geometry-canvas/19";
+  // Shared /19 envelope; each owner still validates its own data and capability.
+  const BAY_REPEAT_FORMAT = ROOM_CANDIDATE_FORMAT, BAY_REPEAT_CAPABILITY = "assembly-bay-repeat/1";
+  const PANEL_FILL_CAPABILITY = "panel-fill/1";
   const GRID_DRAFTS_FORMAT = "geometry-canvas/17";
   // P-054: /17 is shared; registered owners validate their own attachments.
   const format17Capabilities = [Features.GRID_DRAFTS_SCHEMA, Features.Cutting?.CAPABILITY].filter(Boolean);
@@ -61,7 +64,7 @@
     if (fullOk !== true) return {dirty:true, dirtyReason:"身分帳不完整，須先復原上一步才能保存", saved:false, downloaded:false};
     return {dirty:true, dirtyReason:String(project.dirtyReason || "") || "有未保存的變更", saved:false, downloaded:false};
   }
-  const SCENE_CAPABILITIES = [ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, SECTION_CAPABILITY, CARD_CAPABILITY, IDENTITY_CAPABILITY];
+  const SCENE_CAPABILITIES = [ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, SECTION_CAPABILITY, PANEL_FILL_CAPABILITY, CARD_CAPABILITY, BAY_REPEAT_CAPABILITY, IDENTITY_CAPABILITY];
   const MAX_MANIFEST = 8 * 1024 * 1024, MAX_MODELS = 64;
   const MAX_PACKAGE = 256 * 1024 * 1024, MAX_EXPANDED = 512 * 1024 * 1024;
   const TYPES = new Set(["application/pdf", "image/png", "image/jpeg", "image/webp", "image/gif"]);
@@ -175,17 +178,19 @@
   }
   function sceneCapabilities(scene) {
     const result = new Set(), declared = new Set();
-    let usesSubdivision = false, usesSection = false, usesCard = false;
+    let usesSubdivision = false, usesSection = false, usesCard = false, usesBayRepeat = false, usesPanelFill = false;
     for (const raw of scene.replace(/\r\n/g, "\n").split("\n")) {
       const line = raw.split("#", 1)[0].trim();
       if (/^grid-system\b/.test(line) && /\b(?:card-reference|card)\b/.test(line)) { result.add(CARD_CAPABILITY); result.add(PARAMETER_CAPABILITY); usesCard = true; }
       if (/^section-profile(?:\s|$)/.test(line)) { result.add(SECTION_CAPABILITY); usesSection = true; }
+      if (/^(?:finish-surface|panel-fill|derived-placement)(?:\s|$)/.test(line)) { result.add(PANEL_FILL_CAPABILITY); usesPanelFill = true; }
       if (/^grid-source-rule(?:-highwater)?\b/.test(line) || /(?:^|\s)gridrule:/.test(line) || /\bat-line\s+rule\b/.test(line)) {
         result.add(SUBDIVISION_CAPABILITY); usesSubdivision = true;
       }
       if (/^engineering(?:\s|$)/.test(line) || /(?:^|\s)eng:/.test(line)) result.add(ENGINEERING_CAPABILITY);
       if (/^parameters(?:\s|$)/.test(line) || /(?:^|[^\w])param:\d+:\d+/.test(line)) result.add(PARAMETER_CAPABILITY);
       if (/^owned(?:\s|$)/.test(line)) result.add(GENERATION_CAPABILITY);
+      if (/^owned\s+\d+\s+bay-(?:primary|secondary)\b/.test(line)) { result.add(BAY_REPEAT_CAPABILITY); usesBayRepeat = true; }
       if (/^assembly(?:\s|$)/.test(line)) result.add(ASSEMBLY_CAPABILITY);
       const requires = line.match(/^requires\s+(.+)$/);
       if (requires) {
@@ -196,7 +201,11 @@
       }
     }
     if (usesCard && (!declared.has(CARD_CAPABILITY) || !declared.has(PARAMETER_CAPABILITY))) fail("整卡場景缺少 grid-card-reference/1 或 parameters/1 能力宣告。");
+    if ((usesBayRepeat || declared.has(BAY_REPEAT_CAPABILITY)) && (!declared.has(BAY_REPEAT_CAPABILITY) || !declared.has(GENERATION_CAPABILITY))) fail("重複開間場景缺少 assembly-bay-repeat/1 或 assembly-timber-generation/1 能力宣告。");
     if (usesSection && !declared.has(SECTION_CAPABILITY)) fail("斷面場景缺少 section-profile/1 能力宣告。");
+    if ((usesPanelFill || declared.has(PANEL_FILL_CAPABILITY)) &&
+        (!declared.has(PANEL_FILL_CAPABILITY) || !declared.has(ENGINEERING_CAPABILITY) || !declared.has(PARAMETER_CAPABILITY)))
+      fail("衍生承載面場景缺少 panel-fill/1、engineering-spec/1 或 parameters/1 能力宣告。");
     if (usesSubdivision && !declared.has(SUBDIVISION_CAPABILITY)) fail("來源子規則場景缺少 grid-subdivision-rules/1 能力宣告。");
     return [...result].sort();
   }
@@ -209,7 +218,14 @@
       (typeof pkg?.definitions?.base_scene === "string" && engineeringSceneCapabilities(pkg.definitions.base_scene).length));
   }
   const hasCaseData = m => !!m.featureAttachments?.records?.some(r=>r.kind===Features.CASE_KIND) || !!m.scenarioCatalog?.scenarios.some(s=>hasCaseData(s.snapshot.projectManifest));
+  function hasRepeatDefinitions(manifest,scene){
+    if(manifest.assemblyDrafts){validateAssemblyDrafts(manifest.assemblyDrafts);
+      if(manifest.assemblyDrafts.records.some(r=>r.kind==='instance'&&r.data.layout==='bay-repeat'))return true;}
+    return typeof scene==='string'&&/^owned\s+\d+\s+bay-(?:primary|secondary)\b/m.test(scene);
+  }
   function projectFormat(manifest, scene = "") {
+    if(projectCapabilities(manifest,scene).includes(BAY_REPEAT_CAPABILITY)) return BAY_REPEAT_FORMAT;
+    if(projectCapabilities(manifest,scene).includes(PANEL_FILL_CAPABILITY)) fail("衍生承載面的完整專案須保留重複開間來源或草稿。");
     if(projectCapabilities(manifest,scene).includes(Features.ROOM_CANDIDATE_CAPABILITY)) return ROOM_CANDIDATE_FORMAT;
     if(projectCapabilities(manifest,scene).includes(CARD_CAPABILITY)) return CARD_FORMAT;
     if(projectCapabilities(manifest,scene).some(capability=>format17Capabilities.includes(capability))) return GRID_DRAFTS_FORMAT;
@@ -252,6 +268,32 @@
     }
     return drafts;
   }
+  function validateBayRepeatDraftData(d) {
+    // D56: these are bounded raw inputs, not a second geometry validator.
+    // Empty selections and invalid decimal text survive save/reopen; the native
+    // candidate checks complete inputs, duplicates, live references and geometry.
+    // World reference ID 0 is valid; null alone means an unselected reference.
+    const list=(a,n,check)=>Array.isArray(a)&&a.length<=n&&a.every(check);
+    const reference=v=>v===null||uint(v);
+    const at=(v,primary)=>v===null || object(v) && (
+      v.kind==='guide'&&keys(v,['kind','id'])&&reference(v.id) ||
+      v.kind==='grid-line'&&keys(v,['kind','gridId','axis','index'])&&reference(v.gridId)&&v.axis===(primary?'u':'v')&&str(v.index,256) ||
+      primary&&v.kind==='outline-edge'&&(
+        keys(v,['kind','edge'])&&(v.edge===null||uint(v.edge)) ||
+        keys(v,['kind','edgeKey'])&&(v.edgeKey===null||Array.isArray(v.edgeKey)&&v.edgeKey.length>0&&
+          new TextEncoder().encode(JSON.stringify(v.edgeKey)).length<512&&v.edgeKey.every(term=>
+            Array.isArray(term)&&term.length===3&&str(term[0],100)&&uint(term[1])&&positiveId(term[2])&&term[1]<term[2]))));
+    const endpoint=v=>keys(v,['kind','id'])&&v.kind==='timber'&&reference(v.id);
+    if(!keys(d,['id','name','bindingId','rule','surfaceId','layout','primaries','secondaryLines'],['omit'])||
+      !positiveId(d.id)||!str(d.name,256)||!positiveId(d.bindingId)||!reference(d.surfaceId)||d.layout!=='bay-repeat'||
+      !keys(d.rule,['id','version','fingerprint'])||!positiveId(d.rule.id)||!positiveId(d.rule.version)||!hashRE.test(d.rule.fingerprint)||
+      !list(d.primaries,12,p=>keys(p,['key','at','ends'])&&positiveId(p.key)&&at(p.at,true)&&keys(p.ends,['start','finish'])&&endpoint(p.ends.start)&&endpoint(p.ends.finish))||
+      !list(d.secondaryLines,24,l=>keys(l,['key','at'])&&positiveId(l.key)&&at(l.at,false))||
+      Object.hasOwn(d,'omit')&&!list(d.omit,24,o=>keys(o,['line','left','right'])&&positiveId(o.line)&&positiveId(o.left)&&positiveId(o.right)))
+      fail('重複開間實例草稿結構不合法。');
+    for(const rows of [d.primaries,d.secondaryLines])if(new Set(rows.map(r=>r.key)).size!==rows.length)fail('重複開間草稿的身分鍵重複。');
+    return d;
+  }
   function validateAssemblyDraft(record) {
     jsonData(record);
     if (!keys(record, ["id", "kind", "base_ref", "data", "updated_at"], ["binding_intent"]) || !id(record.id) ||
@@ -283,6 +325,7 @@
         !list(d.slots,8,v=>keys(v,['id','name'])&&positiveId(v.id)&&str(v.name,256))||
         !list(d.members,12,v=>keys(v,['id','slotId'])&&positiveId(v.id)&&positiveId(v.slotId))||!list(d.joints,16,joint))fail('組構規則草稿結構不合法。');
     }else if(record.kind==='instance'){
+      if(Object.hasOwn(d,'layout')){validateBayRepeatDraftData(d);return record;}
       const endpoint=v=>object(v)&&((v.kind==='timber'&&keys(v,['kind','id'])&&uint(v.id))||(v.kind==='member'&&keys(v,['kind','memberId'])&&positiveId(v.memberId)));
       if(!keys(d,['id','name','bindingId','rule','surfaceId','members'])||!positiveId(d.id)||!str(d.name,256)||!positiveId(d.bindingId)||!uint(d.surfaceId)||!keys(d.rule,['id','version','fingerprint'])||!positiveId(d.rule.id)||!positiveId(d.rule.version)||!hashRE.test(d.rule.fingerprint)||!list(d.members,3,v=>keys(v,['memberId','role','guideId','dir','depthSide','ends'])&&positiveId(v.memberId)&&['primary','secondary'].includes(v.role)&&uint(v.guideId)&&['+u','+v'].includes(v.dir)&&v.depthSide==='+n'&&keys(v.ends,['start','finish'])&&endpoint(v.ends.start)&&endpoint(v.ends.finish)))fail('組構實例草稿結構不合法。');
     }else if(!keys(d,['id','name','rule','slots'])||!positiveId(d.id)||!str(d.name,256)||!keys(d.rule,['id','version'])||!positiveId(d.rule.id)||!positiveId(d.rule.version)||
@@ -309,7 +352,7 @@
     // A native service can offer more capabilities than this reader supports.
     // Keep its supported subset; required manifest/scene capabilities still
     // pass their separate finite validation and must be present in the subset.
-    if(!Array.isArray(available)||available.length>42||new Set(available).size!==available.length||
+    if(!Array.isArray(available)||available.length>43||new Set(available).size!==available.length||
        available.some(capability=>!str(capability,100)||!capability.length))fail('服務可用能力清單不合法。');
     const supported=available.filter(capability=>SCENE_CAPABILITIES.includes(capability));
     return validateProjectCapabilities(supported);
@@ -322,7 +365,7 @@
   }
   // Editor capabilities are checked by this reader, never advertised as native
   // scene or model-producer capabilities.
-  const manifestCapabilities = [...new Set([ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_CARD_CAPABILITY, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, Features.ROOM_CANDIDATE_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY, SECTION_CAPABILITY, CARD_CAPABILITY, IDENTITY_CAPABILITY])];
+  const manifestCapabilities = [...new Set([...SCENE_CAPABILITIES, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_CARD_CAPABILITY, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, Features.ROOM_CANDIDATE_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY])];
   function validateManifestCapabilities(capabilities) {
     // /1 and /2 share one active grid-draft kind; capacity follows the finite registry.
     if (!Array.isArray(capabilities) || capabilities.length > manifestCapabilities.length || new Set(capabilities).size !== capabilities.length ||
@@ -331,9 +374,30 @@
       fail("專案需要尚未支援的能力。");
     return capabilities;
   }
-  function readerCapabilities(nativeCapabilities, {cutting=false}={}) {
+  function readerCapabilities(nativeCapabilities,nativeProfiles=[],manifest=null,scene=null,recordProfile=null,options={}) {
+    // K1's explicit options call and R06's finite native-profile call coexist.
+    // An options object must never stand in for a native profile credential.
+    if(arguments.length<=2 && keys(nativeProfiles,[],['cutting'])) {
+      options=nativeProfiles;nativeProfiles=[];
+    }
+    if(!keys(options,[],['cutting']) || Object.hasOwn(options,'cutting')&&typeof options.cutting!=='boolean')
+      fail('專案讀取能力選項不合法。');
+    const cutting=options.cutting===true;
     const shared=format17Capabilities.filter(capability=>capability!==CUTTING_CAPABILITY||cutting);
-    return [...nativeReaderCapabilities(nativeCapabilities), Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_CARD_CAPABILITY, ...shared, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, Features.ROOM_CANDIDATE_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY];
+    const supported=nativeReaderCapabilities(nativeCapabilities);
+    if(!Array.isArray(nativeProfiles)||nativeProfiles.length>43||new Set(nativeProfiles).size!==nativeProfiles.length||nativeProfiles.some(c=>!str(c,100)||!c.length))fail('服務原生子能力清單不合法。');
+    // This H reader owns only R06's /19 host-definition replay scope. The
+    // existing native profile supports finish-surface/panel-fill/derived-placement;
+    // it does not advertise the complete panel-fill UI/actions capability.
+    if(manifest?.format===BAY_REPEAT_FORMAT&&typeof scene==='string'&&
+       hasRepeatDefinitions(manifest,scene)&&
+       nativeProfiles.includes('panel-fill-native/1')&&
+       recordProfile?.ok===true&&recordProfile.schema==='panel-fill-native/1'&&recordProfile.capability===PANEL_FILL_CAPABILITY&&recordProfile.complete===false&&
+       Array.isArray(recordProfile.supportedRecords)&&recordProfile.supportedRecords.length===3&&
+       ['finish-surface','panel-fill','derived-placement'].every(record=>recordProfile.supportedRecords.includes(record))&&
+       [ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY].every(c=>supported.includes(c))&&!supported.includes(PANEL_FILL_CAPABILITY))
+      supported.push(PANEL_FILL_CAPABILITY);
+    return [...supported, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_CARD_CAPABILITY, ...shared, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, Features.ROOM_CANDIDATE_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY];
   }
   function projectCapabilities(manifest, scene) {
     const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);
@@ -341,15 +405,17 @@
     for(const scenario of manifest.scenarioCatalog?.scenarios||[])for(const capability of projectCapabilities(scenario.snapshot.projectManifest,scenario.snapshot.worldScene))if(format17Capabilities.includes(capability))required.add(capability);
     if(manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(Features.GRID_CARD_CAPABILITY)))required.add(Features.GRID_CARD_CAPABILITY);
     if(manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(CARD_CAPABILITY))){required.add(CARD_CAPABILITY);required.add(PARAMETER_CAPABILITY);}
+    if(manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(BAY_REPEAT_CAPABILITY))){required.add(BAY_REPEAT_CAPABILITY);required.add(GENERATION_CAPABILITY);}
     if (manifest.scenarioCatalog?.scenarios.some(s => sceneCapabilities(s.snapshot.worldScene).includes(SECTION_CAPABILITY))) required.add(SECTION_CAPABILITY);
     if (hasCaseData(manifest)) required.add(CASE_CAPABILITY);
     if (Object.hasOwn(manifest, "featureAttachments")) for (const capability of Features.capabilities(manifest.featureAttachments)) required.add(capability);
     if (manifest.assemblyDrafts?.records?.length) required.add(ASSEMBLY_CAPABILITY);
     if (manifest.assemblyDrafts?.records?.some(r=>r.kind==="instance")) required.add(GENERATION_CAPABILITY);
+    if (manifest.assemblyDrafts?.records?.some(r=>r.kind==="instance"&&r.data?.layout==='bay-repeat')) required.add(BAY_REPEAT_CAPABILITY);
     for (const model of manifest.models || []) {
       for (const c of sceneCapabilities(model.input?.base_scene || "")) required.add(c);
       for (const pkg of Object.values(model.result || {})) {
-        for (const c of pkg?.manifest?.capabilities || []) if ([ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, SECTION_CAPABILITY, CARD_CAPABILITY].includes(c)) required.add(c);
+        for (const c of pkg?.manifest?.capabilities || []) if (c !== IDENTITY_CAPABILITY && SCENE_CAPABILITIES.includes(c)) required.add(c);
         for (const c of sceneCapabilities(pkg?.definitions?.base_scene || "")) required.add(c);
       }
     }
@@ -370,9 +436,20 @@
     if(needed.includes(Features.GRID_CARD_CAPABILITY)!==!!manifest.requiredCapabilities?.includes(Features.GRID_CARD_CAPABILITY))fail("整卡原始草稿與 grid-card-draft/1 能力宣告不一致。");
     const card = scene === null ? manifest.requiredCapabilities?.includes(CARD_CAPABILITY) : needed.includes(CARD_CAPABILITY);
     if(card && (![CARD_FORMAT, ROOM_CANDIDATE_FORMAT].includes(manifest.format) || !manifest.requiredCapabilities?.includes(CARD_CAPABILITY)) || manifest.format === CARD_FORMAT && !card) fail("整卡資料須使用第 18 版格式並保留 grid-card-reference/1 能力。");
+    const repeat = needed.includes(BAY_REPEAT_CAPABILITY) || scene===null && manifest.requiredCapabilities?.includes(BAY_REPEAT_CAPABILITY);
+    if((repeat || manifest.requiredCapabilities?.includes(BAY_REPEAT_CAPABILITY)) &&
+      (!repeat || manifest.format!==BAY_REPEAT_FORMAT || !manifest.requiredCapabilities?.includes(BAY_REPEAT_CAPABILITY) || !manifest.requiredCapabilities?.includes(GENERATION_CAPABILITY)))
+      fail("重複開間須使用第 19 版格式並保留 assembly-bay-repeat/1 與 assembly-timber-generation/1 能力。");
     const hasRoomCandidate = !!manifest.featureAttachments?.records?.some(record => record.kind === Features.ROOM_CANDIDATE_KIND);
     const declaresRoomCandidate = !!manifest.requiredCapabilities?.includes(Features.ROOM_CANDIDATE_CAPABILITY);
-    if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate !== (manifest.format === ROOM_CANDIDATE_FORMAT)) fail("房間候選草稿須使用第 19 版格式並保留 room-candidate-drafts/1 能力。");
+    if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate && manifest.format !== ROOM_CANDIDATE_FORMAT)
+      fail("房間候選草稿須使用第 19 版格式並保留 room-candidate-drafts/1 能力。");
+    if(manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate)
+      fail("第 19 版格式缺少重複開間或房間候選草稿的對應資料及能力。");
+    const panelFill=scene===null?manifest.requiredCapabilities?.includes(PANEL_FILL_CAPABILITY):needed.includes(PANEL_FILL_CAPABILITY);
+    if((panelFill||manifest.requiredCapabilities?.includes(PANEL_FILL_CAPABILITY))&&
+       (!panelFill||!repeat||manifest.format!==BAY_REPEAT_FORMAT||scene!==null&&!hasRepeatDefinitions(manifest,scene)||![PANEL_FILL_CAPABILITY,ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY].every(c=>manifest.requiredCapabilities?.includes(c))))
+      fail("衍生承載面須使用第 19 版重複開間格式並保留完整來源能力。");
     if ((needed.includes(Features.GRID_DRAFTS_SCHEMA) || manifest.requiredCapabilities?.includes(Features.GRID_DRAFTS_SCHEMA)) &&
         (!needed.includes(Features.GRID_DRAFTS_SCHEMA) || !manifest.requiredCapabilities?.includes(Features.GRID_DRAFTS_SCHEMA))) fail("草稿集合須使用第 17 版格式並保留集合附件及能力。");
     if((needed.some(capability=>format17Capabilities.includes(capability))||manifest.requiredCapabilities?.some(capability=>format17Capabilities.includes(capability)))&&![GRID_DRAFTS_FORMAT,CARD_FORMAT, ROOM_CANDIDATE_FORMAT].includes(manifest.format))fail("第 17 版附件不可降版。");
@@ -397,7 +474,7 @@
     // Identity is declared by the complete scene, including legacy containers.
     // Manifest engineering capabilities still govern every engineering feature.
     if (needed.some(c => c !== IDENTITY_CAPABILITY && !manifest.requiredCapabilities?.includes(c)) ||
-        (needed.some(capability => [Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_DRAFTS_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY].includes(capability)) && ![FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT, ROOM_CANDIDATE_FORMAT].includes(manifest.format)) ||
+        (needed.some(capability => [Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_DRAFTS_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, Features.ROOM_CANDIDATE_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY].includes(capability)) && ![FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT, ROOM_CANDIDATE_FORMAT].includes(manifest.format)) ||
         (needed.includes(PARAMETER_CAPABILITY) && ![PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT, ROOM_CANDIDATE_FORMAT].includes(manifest.format)) ||
         (needed.includes(ASSEMBLY_CAPABILITY) && ![ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT, ROOM_CANDIDATE_FORMAT].includes(manifest.format)) ||
         (needed.includes(GENERATION_CAPABILITY) && ![GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT, ROOM_CANDIDATE_FORMAT].includes(manifest.format)) ||
@@ -438,6 +515,8 @@
         !Array.isArray(p.definitions.extensions) || p.definitions.extensions.length > 512 || !p.definitions.extensions.every(object)) fail("空間模型定義不合法。");
     if (m.capabilities.includes(SUBDIVISION_CAPABILITY) || sceneCapabilities(p.definitions.base_scene).includes(SUBDIVISION_CAPABILITY))
       fail("模型 adapter 尚未支援來源子規則能力，未變更目前專案。");
+    if (m.capabilities.includes(BAY_REPEAT_CAPABILITY) || sceneCapabilities(p.definitions.base_scene).includes(BAY_REPEAT_CAPABILITY))
+      fail("模型 adapter 尚未支援重複開間所有權，未變更目前專案。");
     if (sceneCapabilities(p.definitions.base_scene).some(c => c !== IDENTITY_CAPABILITY && !m.capabilities.includes(c)))
       fail("空間模型缺少工程來源能力宣告。");
     const req = p.request;
@@ -514,6 +593,7 @@
     const normalizedBase = String(i.base_scene).replace(/\r\n/g, "\n");
     if (modelIdentity().deidentifiedBase(normalizedBase) !== normalizedBase) fail("模型基準必須是去身分場景。");
     if (sceneCapabilities(i.base_scene).includes(SUBDIVISION_CAPABILITY)) fail("模型 adapter 尚未支援來源子規則能力，未變更目前專案。");
+    if (sceneCapabilities(i.base_scene).includes(BAY_REPEAT_CAPABILITY)) fail("模型 adapter 尚未支援重複開間所有權，未變更目前專案。");
     const use = u => keys(u, ["placement_id", "orientation", "purpose"]) && uint(u.placement_id) && [1, -1].includes(u.orientation) && ["boundary", "calculation-cap"].includes(u.purpose);
     if (i.mode === "plan") {
       const settings = i.settings;
@@ -1037,7 +1117,7 @@
         (changedPlacement && pid === +changedPlacement[1] && (placed?.bid !== bid || !placed.horizontal))));
     }
   }
-  return { Features, CUTTING_FORMAT, CUTTING_CAPABILITY, CARD_FORMAT, CARD_CAPABILITY, ROOM_CANDIDATE_FORMAT, GRID_DRAFTS_FORMAT, ScenarioCatalog, SECTION_FORMAT, SECTION_CAPABILITY, CASE_FORMAT, CASE_CAPABILITY, validateCaseHashes, SCENARIO_FORMAT, SCENARIO_CAPABILITY, formatPolicy, GRID_RULE_FORMAT, EVIDENCE_FORMAT, EVIDENCE_CAPABILITY, SUBDIVISION_FORMAT, SUBDIVISION_CAPABILITY, FEATURE_FORMAT, readerCapabilities, validateManifestCapabilities, OUTLINE_FORMAT, reviewBasis, outlineFingerprint, validateReconstructionReviews, GENERATION_FORMAT, GENERATION_CAPABILITY, ASSEMBLY_FORMAT, ASSEMBLY_CAPABILITY, ASSEMBLY_DRAFT_SCHEMA, validateAssemblyDraft, validateAssemblyDrafts, PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
+  return { Features, CUTTING_FORMAT, CUTTING_CAPABILITY, CARD_FORMAT, CARD_CAPABILITY, ROOM_CANDIDATE_FORMAT, BAY_REPEAT_FORMAT, BAY_REPEAT_CAPABILITY, validateBayRepeatDraftData, GRID_DRAFTS_FORMAT, ScenarioCatalog, SECTION_FORMAT, SECTION_CAPABILITY, CASE_FORMAT, CASE_CAPABILITY, validateCaseHashes, SCENARIO_FORMAT, SCENARIO_CAPABILITY, formatPolicy, GRID_RULE_FORMAT, EVIDENCE_FORMAT, EVIDENCE_CAPABILITY, SUBDIVISION_FORMAT, SUBDIVISION_CAPABILITY, FEATURE_FORMAT, readerCapabilities, validateManifestCapabilities, OUTLINE_FORMAT, reviewBasis, outlineFingerprint, validateReconstructionReviews, GENERATION_FORMAT, GENERATION_CAPABILITY, ASSEMBLY_FORMAT, ASSEMBLY_CAPABILITY, ASSEMBLY_DRAFT_SCHEMA, validateAssemblyDraft, validateAssemblyDrafts, PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
     MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateModelPackage, assertManifestCapacity,
     validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, nativeReaderCapabilities, assertProjectCapabilities, sceneCapabilities, stripIdentityLedger, restoreAfterProbe,
     validateFaceProjection, validateFaceProjectionRefs, validateProjectObjectRefs, validateEvidenceTargets, supportedFormats, projectFormat, reference, pack, unpack, readForImport, ContextHistory };

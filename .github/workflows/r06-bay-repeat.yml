@@ -1,0 +1,109 @@
+name: R06 browser mutation evidence
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/r06-bay-repeat.yml'
+      - 'geometry-templates/woodworking/**'
+      - 'geometry-web/assembly*'
+      - 'geometry-web/cdp_bay_repeat_io.js'
+      - 'geometry-web/project-store.js'
+      - 'geometry-web/reference*'
+      - 'tests/*bay_repeat*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: r06-browser-mutations-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  card-archive-mutations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Reprove every existing card archive guard after R06 re-anchoring
+        shell: bash
+        run: |
+          set +e
+          python3 geometry-core/card-reference/run_archive_mutations.py --output "$RUNNER_TEMP/r06-card-archive-evidence"
+          status=$?
+          printf '%s\n' "$status" > "$RUNNER_TEMP/r06-card-archive-evidence/exit-code.txt"
+          exit "$status"
+      - name: Preserve card baseline, six named red assertions and restorations
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r06-card-archive-mutations-${{ github.sha }}
+          path: ${{ runner.temp }}/r06-card-archive-evidence/
+          if-no-files-found: error
+          retention-days: 14
+
+  browser-mutations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Install Chinese fonts for actual browser rendering
+        run: |
+          sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
+          sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
+      - name: Reprove the cancelled-candidate mutation after the approved world-disposal change
+        shell: bash
+        run: |
+          ulimit -s 16384
+          mkdir -p /tmp/r06-native-cancel-evidence
+          git rev-parse HEAD > /tmp/r06-native-cancel-evidence/head-sha.txt
+          set +e
+          python3 -u tests/bay_repeat_mutation_check.py --kind native --case r06_br13_confirm_cancelled_candidate --out /tmp/r06-native-cancel-evidence/mutations > /tmp/r06-native-cancel-evidence/runner.stdout 2> /tmp/r06-native-cancel-evidence/runner.stderr
+          status=$?
+          printf '%s\n' "$status" > /tmp/r06-native-cancel-evidence/runner-exit-code.txt
+          cat /tmp/r06-native-cancel-evidence/runner.stdout
+          cat /tmp/r06-native-cancel-evidence/runner.stderr
+          exit "$status"
+      - name: Run baseline, three named browser mutations and restored baseline
+        shell: bash
+        run: |
+          ulimit -s 16384
+          test -x "$GEOMETRY_CHROME"
+          mkdir -p /tmp/r06-browser-evidence
+          git rev-parse HEAD | tee /tmp/r06-browser-evidence/head-sha.txt
+          node --test tests/test_transport_failure_trace.js > /tmp/r06-browser-evidence/transport-controls.stdout 2> /tmp/r06-browser-evidence/transport-controls.stderr
+          python3 -m unittest tests.test_bay_repeat_mutation_check > /tmp/r06-browser-evidence/judge-controls.stdout 2> /tmp/r06-browser-evidence/judge-controls.stderr
+          set +e
+          python3 -u tests/bay_repeat_mutation_check.py --kind browser --out /tmp/r06-browser-evidence/mutations > /tmp/r06-browser-evidence/runner.stdout 2> /tmp/r06-browser-evidence/runner.stderr
+          status=$?
+          printf '%s\n' "$status" > /tmp/r06-browser-evidence/runner-exit-code.txt
+          cat /tmp/r06-browser-evidence/runner.stdout
+          cat /tmp/r06-browser-evidence/runner.stderr
+          exit "$status"
+      - name: Preserve raw logs, named assertion receipts and restoration evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r06-browser-mutations-${{ github.sha }}
+          path: |
+            /tmp/r06-browser-evidence/
+            !/tmp/r06-browser-evidence/**/chrome-profile/**
+            /tmp/r06-formal-archive-*/
+            /tmp/r06-native-cancel-evidence/
+          if-no-files-found: error
+          retention-days: 14

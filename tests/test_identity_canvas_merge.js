@@ -17,9 +17,10 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
   const golden = JSON.parse(read('cdp_sections.golden.json'));
   const legacy = Object.fromEntries(Object.keys(MAIN_GOLDEN.sections).map(name => [name, golden.sections[name]]));
   assert.deepEqual(legacy, MAIN_GOLDEN.sections, 'R360_MAIN_GOLDEN_UNCHANGED');
-  assert.deepEqual(Object.keys(golden.sections).filter(name => !(name in MAIN_GOLDEN.sections)), ['P360'], 'R360_ONLY_NEW_IDENTITY_SECTION');
+  assert.deepEqual(Object.keys(golden.sections).filter(name => !(name in MAIN_GOLDEN.sections)), ['P360', 'R06'], 'R360_R06_ONLY_NEW_SECTIONS');
   assert.equal(golden.sections.P360, 13, 'R360_ORIGINAL_THIRTEEN_ASSERTIONS');
-  assert.equal(golden.total, MAIN_GOLDEN.total + 13, 'R360_TOTAL_IS_UNCHANGED_MAIN_PLUS_IDENTITY');
+  assert.equal(golden.sections.R06, 50, 'R06_ORIGINAL_FIFTY_ASSERTIONS');
+  assert.equal(golden.total, MAIN_GOLDEN.total + 13 + 50, 'R360_R06_TOTAL_IS_UNCHANGED_MAIN_PLUS_BOTH_SECTIONS');
 });
 
 test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
@@ -30,7 +31,8 @@ test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
   assert.deepEqual(shards.validatePlan(plan, golden), [], 'R360_CANVAS_COMPLETE_PLAN');
   const expected = MAIN_SEQUENCES.map(sections => sections.slice());
   expected[1].splice(expected[1].indexOf('P84') + 1, 0, 'P360');
-  assert.deepEqual(plan.shards.map(row => row.sections), expected, 'R360_IDENTITY_ONLY_SECOND_SHARD_AFTER_P84');
+  expected[1].splice(expected[1].indexOf('P82') + 1, 0, 'R06');
+  assert.deepEqual(plan.shards.map(row => row.sections), expected, 'R360_R06_EXACT_SECOND_SHARD_POSITIONS');
   assert.deepEqual(plan.boundaries, MAIN_BOUNDARIES, 'R360_P88_HANDOFF_UNCHANGED');
   const source = read('cdp_test.js');
   const lines = source.split('\n').filter(line => line.includes("require('./identity_ledger_browser_test.js')"));
