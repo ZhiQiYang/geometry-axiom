@@ -13,11 +13,12 @@ const STANDALONE_SECTIONS = new Set(['P72B']);
 
 /* 由 `=== ` 標頭取段名:只取主編號,子標頭歸到同一段(STANDALONE_SECTIONS 除外)。
    '=== Setup. …' → Setup;'=== 9b. …' → 9;'=== P48-6 …' → P48;'=== P8v2. …' → P8;
-   '=== P57–P61. …' → P57;'=== P73B. …' → P73;'=== P72B. …' → P72B;'=== BF2. …' → BF2。
+   '=== P57–P61. …' → P57;'=== P73B. …' → P73;'=== P72B. …' → P72B;'=== BF2. …' → BF2;
+   '=== R06 …' → R06;'=== R06I …' → R06I(專項合流增量,不併入既有 R06／P77)。
    認不得的標頭回傳 null(呼叫端沿用目前段)。 */
 function sectionOf(header) {
   if (typeof header !== 'string') return null;
-  const m = /^===\s*(?:(Setup|BF\d+|\d+)|(P\d+)([A-Z])?)/.exec(header);
+  const m = /^===\s*(?:(Setup|BF\d+|R06I?(?=\s|\.|$)|\d+)|(P\d+)([A-Z])?)/.exec(header);
   if (!m) return null;
   if (m[1]) return m[1];
   return m[3] && STANDALONE_SECTIONS.has(m[2] + m[3]) ? m[2] + m[3] : m[2];

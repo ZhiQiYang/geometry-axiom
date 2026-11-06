@@ -32,6 +32,9 @@ bool wood_grid_sources_bind(WoodGridSources *,WoodGridContext *);
 bool wood_grid_sources_definitions(WoodGridSources *,char *,size_t);
 /* Read authored application policy without requesting dimensions or geometry. */
 bool wood_grid_sources_definition(WoodGridSources *,uint32_t,WoodGridApplication *);
+/* Read the evaluated value returned by this candidate's graph; configured
+ * application axes in the authored definition may still hold prior caches. */
+bool wood_grid_sources_application_value(WoodGridSources *,uint32_t,WoodGridApplication *);
 bool wood_grid_sources_application(WoodGridSources *,uint32_t,char *,size_t);
 bool wood_grid_sources_dimension(WoodGridSources *,uint32_t,int,int,GeoCoord *,char *,size_t);
 /* anchor=true applies the existing band/stagger anchor policy; false invokes
