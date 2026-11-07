@@ -60,7 +60,8 @@ PRE_R14_AXIOM_VERSIONS = frozenset({
 # #260 adoption retired e744f531 (the GEO-261 release); its D64/I74/R60 text is
 # byte-identical to the current revision's (pinned by the clause hashes in
 # tests/test_engineering_model_compatibility.py), so it stays.
-CARD_REFERENCE_AXIOM_VERSIONS = PRE_DECOUPLING_AXIOM_VERSIONS | PRE_ONE_AXIS_STAGGER_AXIOM_VERSIONS | PRE_READING_A_AXIOM_VERSIONS | PRE_R14_AXIOM_VERSIONS | PRE_R14_AXIOM_VERSIONS
+CARD_REFERENCE_AXIOM_VERSIONS = (PRE_DECOUPLING_AXIOM_VERSIONS | PRE_ONE_AXIS_STAGGER_AXIOM_VERSIONS |
+                                 PRE_READING_A_AXIOM_VERSIONS | PRE_R14_AXIOM_VERSIONS)
 # The P-046 amendment (2026-10-11: I68 flag sentence aligned with R54's in-window undo)
 # replaced the ff18cb6 text before it reached main; that interim digest was never
 # declared by a main executor, so it is deliberately not listed as a compatible version.
