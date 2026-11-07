@@ -46,6 +46,8 @@ PRE_READING_A_AXIOM_VERSIONS = frozenset({
 # change.
 PRE_R14_AXIOM_VERSIONS = frozenset({
     ("0fd8cacf799ed6ddf0fa7588243aa4e4bbb94c18", "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"),
+    # R17 was released on main before R14; its packages keep the old capability gates.
+    ("347bb01d411c9a656cae213d5cec81409445cf14", "13ff6cec70900b55271d9350ca31119f31ad9b20245204d67f49576ca5219712"),
 })
 # R17 adopts the explicit D16a group without implementing boundary-pair/1 in
 # this executor. The exact released main 343a8abe pair retains every previous

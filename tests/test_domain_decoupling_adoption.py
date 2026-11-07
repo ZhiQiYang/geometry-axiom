@@ -554,6 +554,39 @@ def validate_current_document(current_bytes, expected):
             "ADOPTED_LAYOUT", "the adopted document must preserve all 207 clauses")
 
 
+# R14 follows R17 in released main. R17's own full-text approval binds its
+# exact historical bytes, not the later combined document.
+R14_ON_R17_SHA256 = "41bb139fdb4767327e542eb96912437c8060c1ad84f044a7d2a30ecdb13ab4ad"
+R17_ONLY_SHA256 = "13ff6cec70900b55271d9350ca31119f31ad9b20245204d67f49576ca5219712"
+
+
+def restore_pre_r14_source(current_bytes):
+    """Peel only the exact separately approved R14 P from a R14-on-R17 source."""
+    current = normalized(current_bytes)
+    if sha(current.encode("utf-8")) != R14_ON_R17_SHA256:
+        return current  # R17-only or a tamper; the following R17 hash gate judges it.
+    patch_bytes = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
+    require(sha(patch_bytes.replace(b"\r\n", b"\n")) == R14_PATCH_SHA256,
+            "R14_PATCH_SHA256", "R14 overlay requires the exact approved P bytes")
+    patch = normalized(patch_bytes)
+    require(patch.startswith(R14_PATCH_HEADER), "R14_PATCH_HEADER",
+            "R14 overlay must use the pinned SSOT source and destination")
+    hunks = [hunk for hunk in re.split(r"(?=^@@ -)", patch[len(R14_PATCH_HEADER):], flags=re.M) if hunk]
+    require(len(hunks) == len(R14_HUNK_SCOPES)
+            and all(re.match(r"^@@ -\d+,\d+ \+\d+,\d+ @@\n", hunk) for hunk in hunks),
+            "R14_PATCH_LAYOUT", "all seven approved R14 hunks must be present")
+    for scope, hunk in zip(R14_HUNK_SCOPES, hunks):
+        lines = hunk.splitlines(keepends=True)[1:]
+        removed = "".join(line[1:] for line in lines if line.startswith("-"))
+        added = "".join(line[1:] for line in lines if line.startswith("+"))
+        require(bool(added) and current.count(added) == 1,
+                "R14_REVERSE_ANCHOR", f"{scope}: exact approved addition must occur once")
+        current = current.replace(added, removed, 1)
+    require(sha(current.encode("utf-8")) == R17_ONLY_SHA256,
+            "R14_REVERSE_SOURCE", "reversing R14 must recover exact R17-approved bytes")
+    return current
+
+
 def restore_pre_r17_source(current_bytes, queue_bytes, delta_bytes=None):
     """Remove only the separately approved R17 delta, then use the original gate.
 
@@ -572,8 +605,8 @@ def restore_pre_r17_source(current_bytes, queue_bytes, delta_bytes=None):
         section = lines[starts[0] + 1:end]
     require(len(starts) == 1 and lines.count(approval) == 1 and section.count(approval) == 1,
             "R17_APPROVAL", "R17 requires its exact scoped full-text approval; W1-A is only a direction decision")
-    current = normalized(current_bytes).encode("utf-8")
-    require(sha(current) == "13ff6cec70900b55271d9350ca31119f31ad9b20245204d67f49576ca5219712"
+    current = restore_pre_r14_source(current_bytes).encode("utf-8")
+    require(sha(current) == R17_ONLY_SHA256
             and hashlib.sha1(b"blob " + str(len(current)).encode() + bytes([0]) + current).hexdigest()
                 == "9d713b77d63df78cf5371a398c92f9536f5b6d5f",
             "R17_APPROVED_SOURCE", "R17 bytes differ from the user-approved full text; obtain new approval")
@@ -701,7 +734,8 @@ class AdoptionIntegrity(unittest.TestCase):
         patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
         current = apply_r14_extension(self.current, queue, patch)
         actual = (ROOT / "公理層.md").read_bytes()
-        actual = restore_pre_r17_source(actual, (ROOT / "決策佇列.md").read_bytes())
+        actual = restore_pre_r17_source(actual, queue)
+        actual = apply_r14_extension(normalized(actual), queue, patch)
         validate_current_document(actual, current)
         self.assertEqual(CURRENT_HASH, sha(actual))
         self.assertEqual(ADOPTED_HASH, hashlib.sha256(self.expected.encode("utf-8")).hexdigest())
@@ -836,7 +870,8 @@ class AdoptionIntegrity(unittest.TestCase):
         patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
         self.assertEqual(13646, len(patch.replace(b"\r\n", b"\n")))
         r14 = apply_r14_extension(self.current, queue, patch)
-        self.assertEqual(normalized((ROOT / "公理層.md").read_bytes()), r14)
+        historical = restore_pre_r17_source((ROOT / "公理層.md").read_bytes(), queue)
+        self.assertEqual(apply_r14_extension(normalized(historical), queue, patch), r14)
         for case, predecessor in (("second application", r14), ("changed predecessor", self.current + "\n")):
             with self.subTest(r14=case):
                 self.reject("R14_BEFORE", apply_r14_extension, predecessor, queue, patch)
