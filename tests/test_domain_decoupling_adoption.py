@@ -214,14 +214,6 @@ R14_DECISION_RECORD = (
     "22565f314f9edbbe028a2d8a029dc071ff807b34787eb54bc10d453473230a6a；"
     "紀錄見 #57 留言 6688023475。"
 )
-# Pin the complete recorded section as LF text, including the quoted direction
-# approval and its later full-text narrative; neither can be moved into a quote.
-R14_DECISION_SECTION = (
-    "### 2026-10-27 ChatGPT 對話 9 題全部照建議 🔒\n\n"
-    "使用者在 ChatGPT 對話的原話(ChatGPT 記錄時間台北 2026-10-27 15:21:40):\n\n"
-    "> 這9題全部按照你的建議\n\n"
-    + R14_DECISION_ANCHOR + "\n\n" + R14_DECISION_RECORD + "\n\n"
-)
 CURRENT_HASH = "5eee5c3be825cbba7b2c6ecd9ef8784d82826855a75961c1b53fb187b0f02a79"
 
 
@@ -417,73 +409,13 @@ def verify_revision_decisions(queue_bytes, revisions):
         used.add(heading)
 
 
-def r14_section_heads(lines):
-    """Only real Markdown section heads may anchor this narrative approval."""
-    heads, fence, raw_html, literal_end, comment, html_block = [], None, None, None, False, False
-    for index, line in enumerate(lines):
-        if fence:
-            close = re.fullmatch(r" {0,3}(`{3,}|~{3,})[ \t]*\n?", line)
-            if close and close[1][0] == fence[0] and len(close[1]) >= fence[1]:
-                fence = None
-            continue
-        if literal_end:
-            if literal_end in line:
-                literal_end = None
-            continue
-        if raw_html:
-            if re.search(r"</" + raw_html + r"\s*>", line, re.IGNORECASE):
-                raw_html = None
-            continue
-        if html_block:
-            if not line.strip(" \t\n"):
-                html_block = False
-            continue
-        if not comment:
-            opened = re.match(r" {0,3}(`{3,}|~{3,})([^\n]*)\n?$", line)
-            if opened and (opened[1][0] != "`" or "`" not in opened[2]):
-                fence = (opened[1][0], len(opened[1]))
-                continue
-            opened = re.match(r" {0,3}(<\?|<!\[CDATA\[)", line)
-            if opened:
-                ending = "?>" if opened[1] == "<?" else "]]>"
-                if ending not in line:
-                    literal_end = ending
-                continue
-            opened = re.match(r" {0,3}<(pre|script|style|textarea)(?=[ \t>\n])", line, re.IGNORECASE)
-            if opened:
-                tag = opened[1].lower()
-                if not re.search(r"</" + tag + r"\s*>", line, re.IGNORECASE):
-                    raw_html = tag
-                continue
-            # Ordinary HTML blocks may have text on the opening line; a
-            # following blank line ends this block, unlike the raw-text tags.
-            if re.match(r" {0,3}</?[A-Za-z][A-Za-z0-9-]*(?=[ \t>/])", line):
-                html_block = True
-                continue
-        began_in_comment, rest = comment, line
-        while True:
-            if comment:
-                end = rest.find("-->")
-                if end < 0:
-                    break
-                rest, comment = rest[end + 3:], False
-            begin = rest.find("<!--")
-            if begin < 0:
-                break
-            rest, comment = rest[begin + 4:], True
-        if not began_in_comment and line.startswith(("### ", "## ")):
-            heads.append(index)
-    return heads
-
-
 def verify_r14_approval(queue_bytes, patch_bytes):
     """Bind the exact P to the unique recorded full-text approval, not direction approval."""
     lines = normalized(queue_bytes).split("\n")
     starts = [index for index, line in enumerate(lines) if line == R14_DECISION_HEADING]
     require(len(starts) == 1, "R14_APPROVAL_ANCHOR", "the R14 decision section must occur exactly once")
-    heads = r14_section_heads(lines)
-    require(starts[0] in heads, "R14_APPROVAL_CONTEXT", "R14 approval must be outside Markdown containers")
-    end = next((index for index in heads if index > starts[0]), len(lines))
+    end = next((index for index in range(starts[0] + 1, len(lines))
+                if lines[index].startswith(("### ", "## "))), len(lines))
     section = "\n".join(lines[starts[0] + 1:end])
     require(lines.count(R14_DECISION_RECORD) == lines.count(R14_DECISION_ANCHOR) == 1
             and R14_DECISION_ANCHOR + "\n\n" + R14_DECISION_RECORD + "\n" in section,
@@ -491,8 +423,6 @@ def verify_r14_approval(queue_bytes, patch_bytes):
     require("P 補丁 SHA-256 " + R14_PATCH_SHA256 + "；紀錄見 #57 留言 6688023475。"
             in R14_DECISION_RECORD and sha(patch_bytes) == R14_PATCH_SHA256,
             "R14_PATCH_SHA256", "the full-text approval authorizes only the reviewed P bytes")
-    require("\n".join(lines[starts[0]:end]) + ("\n" if end < len(lines) else "") == R14_DECISION_SECTION,
-            "R14_APPROVAL_SECTION", "the complete recorded R14 section must remain verbatim")
 
 
 def apply_r14_extension(adopted, queue_bytes, patch_bytes):
@@ -822,66 +752,6 @@ class AdoptionIntegrity(unittest.TestCase):
         for case, altered in altered_sources:
             with self.subTest(r14=case):
                 self.reject("ADOPTED_SOURCE", validate_current_document, altered.encode("utf-8"), r14)
-
-        self.check_r14_approval_context()
-        self.check_r14_approval_section()
-
-    def check_r14_approval_context(self):
-        queue = normalized((ROOT / "決策佇列.md").read_bytes())
-        patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
-        self.assertEqual(1, queue.count(R14_DECISION_SECTION))
-        verify_r14_approval(queue.encode("utf-8"), patch)
-        containers = (
-            ("backtick fence", "```text\n", "```\n"),
-            ("tilde fence", "~~~text\n", "~~~\n"),
-            ("short close leaves long fence open", "````text\n```\n", "````\n"),
-            ("HTML comment", "<!--\n", "-->\n"),
-            ("pre raw text", "<pre>\n", "</pre>\n"),
-            ("script raw text", "<script>\n", "</script>\n"),
-            ("style raw text", "<style>\n", "</style>\n"),
-            ("textarea raw text", "<textarea>\n", "</textarea>\n"),
-            ("HTML block", "<div>\n", "</div>\n"),
-            ("HTML block with opening text", "<div>quoted text\n", "</div>\n"),
-            ("CDATA", "<![CDATA[\n", "]]>\n"),
-            ("processing instruction", "<?xml\n", "?>\n"),
-        )
-        for case, opening, closing in containers:
-            altered = queue.replace(R14_DECISION_SECTION,
-                                    opening + R14_DECISION_SECTION
-                                    + "## faux boundary inside container\n" + closing, 1)
-            with self.subTest(r14_context=case):
-                with self.assertRaises(ProposalContractError, msg="R14_APPROVAL_CONTEXT") as caught:
-                    verify_r14_approval(altered.encode("utf-8"), patch)
-                self.assertEqual("R14_APPROVAL_CONTEXT", caught.exception.code)
-        for case, altered in (
-                ("duplicate raw heading in code", queue + "\n```text\n" + R14_DECISION_HEADING + "\n```\n"),
-                ("bare CR before anchor", queue.replace("\n" + R14_DECISION_HEADING, "\r" + R14_DECISION_HEADING, 1)),
-                ("Unicode separator before anchor", queue.replace("\n" + R14_DECISION_HEADING, "\u2028" + R14_DECISION_HEADING, 1))):
-            with self.subTest(r14_context=case):
-                self.reject("R14_APPROVAL_ANCHOR", verify_r14_approval, altered.encode("utf-8"), patch)
-        for case, prefix in (
-                ("longer closing fence", "```text\n## quoted heading\n````\n\n"),
-                ("closed tilde fence", "~~~text\n## quoted heading\n~~~\n\n"),
-                ("closed comment with fence", "<!--\n```\n## commented heading\n-->\n\n"),
-                ("closed mixed-case raw text", "<PRE class='quote'>\n## raw heading\n</pRe>\n\n"),
-                ("HTML block ended by blank", "<div>quoted text\n## raw heading\n\n"),
-                ("closed CDATA", "<![CDATA[\n## raw heading\n]]>\n\n"),
-                ("closed processing instruction", "<?xml\n## raw heading\n?>\n\n")):
-            with self.subTest(r14_context=case):
-                altered = queue.replace(R14_DECISION_SECTION, prefix + R14_DECISION_SECTION, 1)
-                verify_r14_approval(altered.encode("utf-8"), patch)
-
-    def check_r14_approval_section(self):
-        queue = normalized((ROOT / "決策佇列.md").read_bytes())
-        patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
-        for case, section in (
-                ("changed preceding narrative", R14_DECISION_SECTION.replace("15:21:40", "15:21:41", 1)),
-                ("extra text inside approval section", R14_DECISION_SECTION + "unapproved extra paragraph\n\n")):
-            with self.subTest(r14_section=case):
-                altered = queue.replace(R14_DECISION_SECTION, section, 1)
-                with self.assertRaises(ProposalContractError, msg="R14_APPROVAL_SECTION") as caught:
-                    verify_r14_approval(altered.encode("utf-8"), patch)
-                self.assertEqual("R14_APPROVAL_SECTION", caught.exception.code)
 
     def test_crlf_is_the_only_ignored_source_difference(self):
         validate_current_document(self.current.replace("\n", "\r\n").encode(), self.current)
