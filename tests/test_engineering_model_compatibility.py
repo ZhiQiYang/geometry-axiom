@@ -28,10 +28,14 @@ PRE_ONE_AXIS_STAGGER_MAIN_VERSION = ("e744f5316fd7c896275bdee4c34ad22ae97d9d8e",
 D64_ADOPTION_MAIN_VERSION = ("b3c79615d0cde89bbdca72c1223d214324bc5f8f", "e5e43ec5da2030669c9ecd7a67f8b250cfb7290cf663365b2b66c51814bb77b9")
 # main's executor pair from the #260 adoption until #318 (reading A) merges.
 PRE_READING_A_MAIN_VERSION = ("a00ba9e95fa9be65339af167d4ab611083d269f5", "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d")
+# The exact executor pair released on main before the R14 wording adoption.
+# Its D64/I74/R60 text remains byte-identical; do not derive this oracle from modeling.
+PRE_R14_MAIN_VERSION = ("0fd8cacf799ed6ddf0fa7588243aa4e4bbb94c18", "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7")
 # Fixed pre-R17 producer main 343a8abe declared this exact pair. The approved
 # R17 adoption does not alter any of D64/I74/R60; independently pinned below.
 PRE_BOUNDARY_PAIR_MAIN_VERSION = ("0fd8cacf799ed6ddf0fa7588243aa4e4bbb94c18", "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7")
 BOUNDARY_PAIR_ADOPTION_VERSION = ("347bb01d411c9a656cae213d5cec81409445cf14", "13ff6cec70900b55271d9350ca31119f31ad9b20245204d67f49576ca5219712")
+R14_ON_R17_ADOPTION_VERSION = ("42ac2f737828e04b301cbbfa97f7f57a18ceb050", "41bb139fdb4767327e542eb96912437c8060c1ad84f044a7d2a30ecdb13ab4ad")
 # The #309 commit's executor pair (#260 A/B text). #309 reaches main only as the second parent
 # of a merge commit, so no first-parent state of main ever declared it (P-181): like the
 # interim digests listed in modeling/__init__.py it is deliberately NOT an accepted version.
@@ -39,12 +43,15 @@ NEVER_DECLARED_309_AB_VERSION = ("0d9015bc5a83fbb0b39e52555ce2da78f1c668ea", "f1
 # Every accepted pair whose axiom text already contains D64/I74/R60 byte for byte as the
 # current revision does. Spelled out here (not read back from modeling) so that dropping a
 # pair from CARD_REFERENCE_AXIOM_VERSIONS cannot also shrink the list that checks it.
-POST_D64_MAIN_VERSIONS = (D64_ADOPTION_MAIN_VERSION, PRE_ONE_AXIS_STAGGER_MAIN_VERSION, PRE_READING_A_MAIN_VERSION, PRE_BOUNDARY_PAIR_MAIN_VERSION)
+POST_D64_MAIN_VERSIONS = (D64_ADOPTION_MAIN_VERSION, PRE_ONE_AXIS_STAGGER_MAIN_VERSION,
+                          PRE_READING_A_MAIN_VERSION, PRE_R14_MAIN_VERSION, PRE_BOUNDARY_PAIR_MAIN_VERSION,
+                          BOUNDARY_PAIR_ADOPTION_VERSION)
 # SHA-256 of the D64 / I74 / R60 blocks of 公理層.md (see card_clause_sha256), recorded per
-# revision from `git show <revision>:公理層.md` (LF). The five pairs that may carry
+# revision from the committed 公理層.md bytes (LF). The pairs that may carry
 # grid-card-reference/1 -- b3c79615 (adoption), e744f531 (GEO-261 release), a00ba9e9 (#260)
-# 0fd8cacf (#318) and the current 347bb01d (R17) -- hold byte-identical clause text,
-# which is what makes the four preceding pairs safe to
+# 0fd8cacf (#318), 1a211e5b (R14) and 347bb01d (R17) -- hold byte-identical clause text,
+# independently verified across source commits (D64: 6 blocks, I74/R60: 1 each).
+# This is what makes the preceding pairs safe to
 # list in CARD_REFERENCE_AXIOM_VERSIONS. If the current text of these clauses ever changes,
 # the pinned current entry goes red and every listed pair has to be re-verified.
 _CARD_CLAUSES = {
@@ -58,6 +65,7 @@ CARD_CLAUSE_SHA256 = {
     'a00ba9e95fa9be65339af167d4ab611083d269f5': _CARD_CLAUSES,
     '0fd8cacf799ed6ddf0fa7588243aa4e4bbb94c18': _CARD_CLAUSES,
     '347bb01d411c9a656cae213d5cec81409445cf14': _CARD_CLAUSES,
+    '42ac2f737828e04b301cbbfa97f7f57a18ceb050': _CARD_CLAUSES,
 }
 
 
@@ -421,6 +429,8 @@ class EngineeringModelCompatibility(unittest.TestCase):
     def test_card_clause_text_is_pinned_for_every_pair_that_may_carry_card_references(self):
         ssot = (ROOT / '公理層.md').read_bytes().replace(b'\r\n', b'\n').decode('utf-8')
         current = modeling.AXIOM_REVISION
+        self.assertIn(current, CARD_CLAUSE_SHA256,
+                      'CARD_CLAUSE_PIN: current revision needs independently verified D64/I74/R60 hashes')
         self.assertEqual(CARD_CLAUSE_SHA256[current], card_clause_sha256(ssot),
                          'CARD_CLAUSE_TEXT: D64/I74/R60 changed in 公理層.md; the pairs in '
                          'CARD_REFERENCE_AXIOM_VERSIONS %s were verified against the old text -- '
@@ -730,8 +740,14 @@ class BoundaryPairAdoptionCompatibility(unittest.TestCase):
 
     def test_r17_adopted_source_pair_and_executor_scope_are_exact(self):
         self.assertEqual((modeling.AXIOM_REVISION, modeling.AXIOM_SHA256),
-                         BOUNDARY_PAIR_ADOPTION_VERSION, "R17_APPROVED_SOURCE_PAIR")
-        self.assertEqual(modeling._axiom_hash(), BOUNDARY_PAIR_ADOPTION_VERSION[1])
+                         R14_ON_R17_ADOPTION_VERSION, "R14_R17_APPROVED_SOURCE_PAIR")
+        self.assertEqual(modeling._axiom_hash(), R14_ON_R17_ADOPTION_VERSION[1])
+        self.assertEqual(modeling.PRE_R14_AXIOM_VERSIONS,
+                         frozenset({PRE_R14_MAIN_VERSION, BOUNDARY_PAIR_ADOPTION_VERSION}),
+                         "R17_RELEASED_PRODUCER_MUST_SURVIVE_R14")
+        self.assertNotIn("1a211e5b2cfabb62de9c68e351459113ff75e719",
+                         {revision for revision, _ in modeling._accepted_axiom_versions(R14_ON_R17_ADOPTION_VERSION)},
+                         "R14_ONLY_CANDIDATE_WAS_NEVER_RELEASED_ON_MAIN")
         self.assertEqual(getattr(modeling, "PRE_BOUNDARY_PAIR_AXIOM_VERSIONS", frozenset()),
                          frozenset({PRE_BOUNDARY_PAIR_MAIN_VERSION}), "R17_RELEASED_PAIR_ONLY")
         self.assertEqual(modeling.CAPABILITIES,
@@ -751,7 +767,7 @@ class BoundaryPairAdoptionCompatibility(unittest.TestCase):
                 except ModelError as error:
                     self.fail("R17_RELEASED_PACKAGE_REOPEN: " + name + ": " + str(error.as_dict()))
                 expected = deepcopy(original)
-                expected["manifest"]["axiom_revision"], expected["manifest"]["axiom_sha256"] = BOUNDARY_PAIR_ADOPTION_VERSION
+                expected["manifest"]["axiom_revision"], expected["manifest"]["axiom_sha256"] = R14_ON_R17_ADOPTION_VERSION
                 self.assertEqual(rebuilt, expected, "R17_ONLY_TWO_VERSION_FIELDS_MAY_CHANGE: " + name)
                 self.assertEqual(package, original, "R17_REOPEN_MUST_NOT_REWRITE_PRODUCER_INPUT: " + name)
 
@@ -759,9 +775,11 @@ class BoundaryPairAdoptionCompatibility(unittest.TestCase):
         class ReachedRebuild(Exception):
             pass
         revision, sha256 = PRE_BOUNDARY_PAIR_MAIN_VERSION
-        current_revision, current_sha = BOUNDARY_PAIR_ADOPTION_VERSION
+        current_revision, current_sha = R14_ON_R17_ADOPTION_VERSION
         versions = (("0" * 40, "0" * 64), ("0" * 40, sha256), (revision, "0" * 64),
                     (revision, current_sha), (current_revision, sha256),
+                    (BOUNDARY_PAIR_ADOPTION_VERSION[0], current_sha),
+                    (current_revision, BOUNDARY_PAIR_ADOPTION_VERSION[1]),
                     (revision, PRE_READING_A_MAIN_VERSION[1]), (PRE_READING_A_MAIN_VERSION[0], sha256))
         with mock.patch.object(modeling, "build_package", side_effect=ReachedRebuild):
             for name, package in self.saved().items():
@@ -801,7 +819,8 @@ class BoundaryPairAdoptionCompatibility(unittest.TestCase):
 
     def test_r17_adoption_does_not_enable_unsupported_capabilities(self):
         original = self.saved()["card"]
-        for version in (PRE_BOUNDARY_PAIR_MAIN_VERSION, BOUNDARY_PAIR_ADOPTION_VERSION):
+        for version in (PRE_BOUNDARY_PAIR_MAIN_VERSION, BOUNDARY_PAIR_ADOPTION_VERSION,
+                        R14_ON_R17_ADOPTION_VERSION):
             for capability in ("boundary-pair/1", "boundary-pair/999", "grid-subdivision-rules/1", "identity-ledger/1"):
                 package = deepcopy(original)
                 package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = version
