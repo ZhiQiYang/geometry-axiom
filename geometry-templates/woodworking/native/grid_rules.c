@@ -151,8 +151,8 @@ bool wood_grid_rule_target(const WoodGridContext *ctx,const char *kind,uint32_t 
         target->has_boundary=true;
         if(!target->has_placement)target->boundary_id=binding->boundary_id;
     }
-    if(!target->source || target->source->axis[0].source!=GEO_GRID_SOURCE_REPEAT ||
-        target->source->axis[1].source!=GEO_GRID_SOURCE_REPEAT || target->source->axis[0].stagger_set ||
+    if(!target->source || !geo_grid_axis_is_infinite(&target->source->axis[0]) ||
+        !geo_grid_axis_is_infinite(&target->source->axis[1]) || target->source->axis[0].stagger_set ||
         target->source->axis[1].stagger_set)return wood_grid_rule_error(err,cap,"SOURCE_KIND",target->source?target->source->id:0,0);
     return true;
 }

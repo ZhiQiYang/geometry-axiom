@@ -866,6 +866,7 @@ typedef GeoGridAxisDef GridAxisDef;
 #define GRID_SYSTEM_NAME_MAX (GEO_GRID_NAME_CAPACITY-1)
 #define GRID_MAX_SUBDIVISION_RULES GEO_GRID_RULE_CAPACITY
 #define GRID_SUBDIVISION_CAPABILITY "grid-subdivision-rules/1"
+#define GRID_SUBDIVISION_PANEL_CAPABILITY "grid-subdivision-rules/2"
 /* D64/I74 (GEO-262): the card reference is part of the K grid-system definition. */
 #define GRID_CARD_CAPABILITY "grid-card-reference/1"
 typedef GeoGridCardReference GridCardReference;
@@ -9728,7 +9729,7 @@ static void world_dump_dsl(const World *world, FILE *out)
 
     boundary_keys_dump(world,out);
     if(grid_card_used(world)) fputs("requires " GRID_CARD_CAPABILITY "\n",out);
-    if(grid_subdivision_used(world)) fputs("requires " GRID_SUBDIVISION_CAPABILITY "\n",out);
+    if(grid_subdivision_used(world)) fprintf(out,"requires %s\n",grid_subdivision_capability(world));
     grid_systems_dump(world,out);
     grid_bindings_dump(world,out);
     engineering_dump_applications(world,out);
@@ -10089,6 +10090,8 @@ static bool parse_scene_file(const char *path, World *out_world)
     identity_explicit_reset();
     memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
     g_rule_scene_required=false;
+    g_rule_scene_panel_required=false;
+    g_rule_scene_panel_encountered=false;
     sp_scene_required=false;
     fs_scene_required=false; fs_scene_engineering=false; fs_scene_parameters=false;
     grid_card_scene_required=false;
@@ -10170,6 +10173,9 @@ static bool parse_scene_file(const char *path, World *out_world)
             scene_error(path,line_no,"I39: parameter block may only contain parameter records"); ok=false; break;
         }
         ok = apply_scene_line(path, line_no, tokens, count, out_world);
+        /* R32: requirements accumulate across replay, including later deletes,
+         * reset or an explicit change back from PANEL to REPEAT. */
+        if(ok && grid_subdivision_panel_used(out_world))g_rule_scene_panel_encountered=true;
     }
 
     fclose(in);
@@ -10192,7 +10198,7 @@ static bool parse_scene_file(const char *path, World *out_world)
     }
 
     if(ok && grid_card_used(out_world) && (!grid_card_scene_required||!fs_scene_parameters)){scene_error(path,line_no,"I74 CAPABILITY: card reference requires grid-card-reference/1 and parameters/1 declarations");ok=false;}
-    if (ok && !grid_rules_scene_integrity(out_world)) { scene_error(path,line_no,"I25a: source rule capability/highwater closure missing"); ok=false; }
+    if(ok){const char *rule_error=grid_rules_scene_integrity_error(out_world);if(rule_error){scene_error(path,line_no,rule_error);ok=false;}}
     if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
     if (ok && !fs_scene_integrity()) { scene_error(path,line_no,"I56: panel-fill/1 also requires engineering-spec/1 and parameters/1 declarations"); ok=false; }
 
