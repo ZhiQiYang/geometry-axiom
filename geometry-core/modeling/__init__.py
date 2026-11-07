@@ -44,7 +44,7 @@ PRE_READING_A_AXIOM_VERSIONS = frozenset({
 # executor. The exact released main 83d4ca22 pair retains every previous
 # source-era permission; formats, geometry, generator and capabilities do not
 # change.
-PRE_R14_AXIOM_VERSIONS | PRE_BOUNDARY_PAIR_AXIOM_VERSIONS = frozenset({
+PRE_R14_AXIOM_VERSIONS = frozenset({
     ("0fd8cacf799ed6ddf0fa7588243aa4e4bbb94c18", "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"),
 })
 # R17 adopts the explicit D16a group without implementing boundary-pair/1 in
@@ -286,7 +286,7 @@ def _accepted_axiom_versions(current_version):
             *PRE_CARD_REFERENCE_AXIOM_VERSIONS,
             *PRE_DECOUPLING_AXIOM_VERSIONS,
             *PRE_ONE_AXIS_STAGGER_AXIOM_VERSIONS,
-            *PRE_READING_A_AXIOM_VERSIONS, *PRE_R14_AXIOM_VERSIONS | PRE_BOUNDARY_PAIR_AXIOM_VERSIONS, *PRE_BOUNDARY_PAIR_AXIOM_VERSIONS})
+            *PRE_READING_A_AXIOM_VERSIONS, *PRE_R14_AXIOM_VERSIONS, *PRE_BOUNDARY_PAIR_AXIOM_VERSIONS})
 
 
 def _pre_card_reference_versions(current_version):
