@@ -540,7 +540,8 @@ def compact(value) -> str:
 
 
 def safe_json(value) -> str:
-    return compact(value).replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
+    # JSON wire escaping only: decoded SSOT/review strings and hashes stay exact.
+    return compact(value).replace("://", r":\/\/").replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
 
 
 def script_text(source: str, identifier: str) -> str:
@@ -1723,8 +1724,21 @@ def stale_counts(template: str, counts: dict) -> list[str]:
     return bad
 
 
+def apply_offline_source_urls(template: str) -> str:
+    # Source URLs are inert text, never links/resources. A wbr keeps textContent
+    # exact and survives browser outerHTML export without restoring a raw URL.
+    old_text = r'''    function safeText(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}'''
+    new_text = old_text.replace(";}", r".replace(/(https?):\/\//gi,'$1:<wbr>//');}")
+    template = force(template, old_text, new_text, "R374 inert source URL text")
+    # HTML export and JSON backup must use the same lossless wire representation.
+    old_json = r'''const safeJSON = v => JSON.stringify(v,null,2).replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');'''
+    new_json = old_json.replace(";", r".replace(/:\/\//g,':\\/\\/');")
+    return force(template, old_json, new_json, "R374 source URL JSON export")
+
+
 def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     PATCHES.reset()
+    template = apply_offline_source_urls(template)
     state = json.loads(script_text(template, "axiom-review-data"))
     old = copy.deepcopy(state)
     if review is not None:
