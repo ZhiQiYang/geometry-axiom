@@ -46,10 +46,22 @@
 - R10「核對後採用值」與「刪除重建後的身分追蹤」；R09a 在 R10 以外的 K3-48 路徑。
 - 所有項目的 Windows 原生檔案對話框、觸控、中文輸入法。
 
-## 操作中發現的問題（都不擋上面判定的可用範圍）
+## 操作中發現的問題（都不擋上面判定的可用範圍；1～4 的修正狀態見文末）
 
 1. **重複開間預覽直接顯示原始 JSON**（R06）。預覽的「來源」欄位把整段 `{"bindingId":1,…}` 給使用者看（`screens/R06-3-bay-preview.jpg`）。
 2. **網格兩軸相位差的拒絕訊息放錯標題**（R18）。拒絕原因出現在「斷面與拉伸的連動影響」標題下，並帶著 `I43-I49 line 45: I24: …；預期："valid atomic transaction"；實際：…` 這種核心原文（`screens/R18-1-both-axes-rejected.jpg`）。
 3. **刪除影響預覽同樣的標題問題**（R11）。刪除有參考線的面時，主交易被拒的原因同樣顯示在「斷面與拉伸的連動影響」下，訊息是 `I8a: impact preview required…`（`screens/R11-5-delete-preview.jpg`）。2 與 3 看起來是同一個根因：主交易本身被拒時，斷面複驗段把主交易的拒絕當成自己的連動結果列出。
 4. **啟用身分帳後，空間建模的下一步一定被判為過期**（R09a）。在「以此面建立空間」裡按「啟用物件身分追蹤」後，接著按「確認用途與觀看方向」會被拒：「來源或專案已變更。請重新『使用目前面』」，使用者得自己再按一次「使用目前面」（`screens/R09a-1a-stale-after-activation.jpg`）。原因：`space-workspace.js:588` 拿「使用目前面」當下的場景快照比對，而 `activateIdentity()`（`space-workspace.js:270-296`）本身就會改場景。這牽涉 K3-44 的快照守門，未在本次改動。
 5. **參數 ID 起點不一致**（觀察，不是錯誤）。UI 新建的第一張參數卡是 #1，R08 匯入到沒有參數的專案時配到 #0（`參數 1 → 0`）。原生測試也用 `card(0, …)`，0 是合法 ID。
+
+## 修正狀態（同日，分支 `claude/eloquent-ramanujan-ye04c4`）
+
+發現 1～4 已在 commit `3b8d14096`（`fix(ui): 修 2026-11-07 雲端核對發現的三處顯示問題與身分帳啟用後來源過期`）修正，尚未合併進 main。
+
+| 發現 | 修法 | 修正後實機重驗（`after-fix/`） |
+|---|---|---|
+| 1 | `assembly-workspace.js` 的 `instanceSourceText()` 把實例來源寫成可讀摘要（名稱、配置、規則版本、配置方式、承載面、各主支／副支線的定位與端點、明示略過），標籤仍是「來源」 | 重複開間預覽：「「角材組合・角材」 · 配置 #1 · 規則 #1 第 1 版 · 重複開間 · 承載面 #1 · 主支 3 支：#1 主格 #1 的 u 線索引 0（端點 角材 #90 → 角材 #91）；…」（`screens/R06-3-bay-preview.jpg`） |
+| 2、3 | `reference-ui.js` 的 `appendSectionProfileImpact()`：在影響確認對話框已列出主違規時，略過不帶任何斷面／構件／拉伸件編號的 `SECTION_PROFILE_INVALID` 後備訊息；帶編號的斷面問題一律保留，其他三個呼叫點行為不變 | R18 與 R11 的拒絕對話框不再出現「斷面與拉伸的連動影響」，真正原因仍在「場景 · I8」（`screens/R18-1-both-axes-rejected.jpg`、`R11-5-delete-preview.jpg`） |
+| 4 | `space-workspace.js` 的 `captureActivationPin()`／`repinAfterActivation()`：啟用前來源快照為最新、原生版本剛好前進 1、歷史剛好多一步、場景文字不變，才重新記錄來源的歷史權杖；其餘情況仍判過期並提示重新「使用目前面」 | 啟用後直接「確認用途與觀看方向」成功，建空間後「採用現行來源」仍顯示「物件延續已證明」（`screens/R09a-1b-projection.jpg`、`R09a-5-model-update-identity.jpg`） |
+
+測試與本地驗證見 commit 訊息。瀏覽器套件 assembly、grid、reference 與 canvas 兩片在此容器會因下載檔名（變成 `download`）與檔案選擇器路徑的環境差異中止，未改動的對照組在同一處同樣中止，所以這幾片的完整結果要看 CI。
