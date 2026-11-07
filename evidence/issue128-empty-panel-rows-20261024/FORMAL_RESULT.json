@@ -1,0 +1,1129 @@
+{
+  "schema": "issue128-p2-original-panel-suite/1",
+  "source": "324034812bb6effca68e0413bc0468595337b317",
+  "root": "/workspace/issue128-empty-panel-rows-work-20261024",
+  "started_utc": "2026-10-24T01:15:00.741509+00:00",
+  "secondary_lock": "/tmp/g261r3/secondary.lock",
+  "R3_lock_taken": false,
+  "stack_before": [
+    8388608,
+    -1
+  ],
+  "stack_after": [
+    16777216,
+    -1
+  ],
+  "logical_original_argv": [
+    [
+      "python3",
+      "-B",
+      "tests/test_geo261_panel_native.py"
+    ]
+  ],
+  "observer_scope": "reviewed passive subprocess.run retainer plus original NativeBuild audit and hashes of actual executed native files; runpy shell exposed",
+  "outer_subject_timeout": null,
+  "original_child_limits_unchanged": true,
+  "wall_clock_performance_run": false,
+  "correctness_operation_count_witness": true,
+  "global_ledger_written": false,
+  "suites": [
+    {
+      "suite": "panel-native",
+      "target": "tests/test_geo261_panel_native.py",
+      "source": "324034812bb6effca68e0413bc0468595337b317",
+      "original_expected_methods": 13,
+      "actual_exit": 0,
+      "methods_reported": true,
+      "zero_skips": true,
+      "compile_commands": 93,
+      "all_build_exits_zero": true,
+      "stdout_bytes": 479,
+      "stderr_bytes": 112,
+      "command": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/issue128-p2-32403481-formal-tools/panel-retain.py",
+          "--root",
+          "/workspace/issue128-empty-panel-rows-work-20261024",
+          "--sha",
+          "324034812bb6effca68e0413bc0468595337b317",
+          "--out",
+          "/workspace/issue128-p2-32403481-formal/panel-native/observed",
+          "--artifacts",
+          "/workspace/issue128-p2-32403481-formal/panel-native/compile-retention"
+        ],
+        "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+        "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+        "source_sha": "324034812bb6effca68e0413bc0468595337b317",
+        "source_variant": null,
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792804500.9677167,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000012",
+        "ended_epoch": 1792804505.6313426,
+        "stdout_sha256": "f98c8c807e6c963be29964a63d43a446e878389d6467ee1e53c655160874d763",
+        "stderr_sha256": "193b10f10dedbbfe27ba04d68a43ea5b92e9816e21ffefc9f5ca0805233c2e54",
+        "stdout_bytes": 479,
+        "stderr_bytes": 112
+      },
+      "binding": {
+        "suite": "panel-native",
+        "bound_sha256": "da19ce1a1dcc4b256f7d658ad77548fa649acc91c82e3cbc76cb9f02d1751c55",
+        "target": "tests/test_geo261_panel_native.py",
+        "path": "/workspace/issue128-p2-32403481-formal-tools/panel-retain.py",
+        "body_exact_reviewed_copy": true
+      },
+      "native_execution_log": "/workspace/issue128-p2-32403481-formal/panel-native/native-executions.jsonl",
+      "observer_complete": true,
+      "control_proofs": [
+        {
+          "control": "clip-hole",
+          "case": "clip",
+          "expected_assertion": "clip-hole-area",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+          "baseline_is_required_before_mutant": false,
+          "command_numbers": [
+            63,
+            96,
+            null
+          ],
+          "actual_exits": [
+            0,
+            1,
+            null
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/clip-hole",
+            "bytes": 99592,
+            "sha256": "6672b77c4f3f174f2f9a1daad4c83321dabb4353830a736446ece16edc3564dd"
+          }
+        },
+        {
+          "control": "clip-cut",
+          "case": "clip",
+          "expected_assertion": "clip-point-touch-components",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+          "baseline_is_required_before_mutant": false,
+          "command_numbers": [
+            63,
+            99,
+            null
+          ],
+          "actual_exits": [
+            0,
+            1,
+            null
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/clip-cut",
+            "bytes": 99592,
+            "sha256": "d295a68464dab0328d4795bd3ce1afd5eb63b1c712bd8b35ec1405e8da600f08"
+          }
+        },
+        {
+          "control": "clip-keep",
+          "case": "capacity",
+          "expected_assertion": "clip-keeps-subdivision",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+          "baseline_is_required_before_mutant": false,
+          "command_numbers": [
+            62,
+            102,
+            null
+          ],
+          "actual_exits": [
+            0,
+            1,
+            null
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/clip-keep",
+            "bytes": 99592,
+            "sha256": "1a8928f0cb0ba41a46321d33b4ebb57aa3657b7af6bee0cb9384ac43c5bbf26b"
+          }
+        },
+        {
+          "control": "clip-budget",
+          "case": "capacity",
+          "expected_assertion": "clip-cumulative-budget",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+          "baseline_is_required_before_mutant": false,
+          "command_numbers": [
+            62,
+            105,
+            null
+          ],
+          "actual_exits": [
+            0,
+            1,
+            null
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/clip-budget",
+            "bytes": 99592,
+            "sha256": "6d8232280006cb64eba8199068a36d90b7c74b23ee276971eaa461653d20f7be"
+          }
+        },
+        {
+          "control": "layout-odd",
+          "case": "layout",
+          "expected_assertion": "layout-negative-odd-shift",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+          "baseline_is_required_before_mutant": false,
+          "command_numbers": [
+            92,
+            108,
+            null
+          ],
+          "actual_exits": [
+            0,
+            1,
+            null
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/layout-odd",
+            "bytes": 99584,
+            "sha256": "fd4ae0101766f6601e19ee270d2c3cdd44aab6a58c74dcd4d6a2ae463ed8e1a6"
+          }
+        },
+        {
+          "control": "layout-frame",
+          "case": "layout",
+          "expected_assertion": "layout-world-range",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+          "baseline_is_required_before_mutant": false,
+          "command_numbers": [
+            92,
+            111,
+            null
+          ],
+          "actual_exits": [
+            0,
+            1,
+            null
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/layout-frame",
+            "bytes": 99584,
+            "sha256": "67fa23254c39a201d45ec8c839425e6267d2c644b119b0b6dcd078894fe1fe07"
+          }
+        },
+        {
+          "control": "support-hole-cuts",
+          "case": "support",
+          "expected_assertion": "support-fragment-vertices",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+          "baseline_is_required_before_mutant": false,
+          "command_numbers": [
+            124,
+            114,
+            null
+          ],
+          "actual_exits": [
+            0,
+            1,
+            null
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/support-hole-cuts",
+            "bytes": 99592,
+            "sha256": "6066455f4d3cb920701df6df501333f6c4681c9984860d4e8dd6f607ea6598f5"
+          }
+        },
+        {
+          "control": "support-union",
+          "case": "support",
+          "expected_assertion": "support-touching-union",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+          "baseline_is_required_before_mutant": false,
+          "command_numbers": [
+            124,
+            117,
+            null
+          ],
+          "actual_exits": [
+            0,
+            1,
+            null
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/support-union",
+            "bytes": 99584,
+            "sha256": "cbe79a86ee9510a1cd4d7edc059f1b799876a2c61c0a10ac6d28c89b228c07c6"
+          }
+        },
+        {
+          "control": "support-round",
+          "case": "support",
+          "expected_assertion": "support-rational-not-rounded",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+          "baseline_is_required_before_mutant": false,
+          "command_numbers": [
+            124,
+            120,
+            null
+          ],
+          "actual_exits": [
+            0,
+            1,
+            null
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/support-round",
+            "bytes": 99584,
+            "sha256": "b5fff06a8cd2376cd48e3f0cc6c9acefe2eef6bc5b66e92541f9ae259ce005e9"
+          }
+        },
+        {
+          "control": "support-merge",
+          "case": "support",
+          "expected_assertion": "support-widths-not-colours",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+          "baseline_is_required_before_mutant": false,
+          "command_numbers": [
+            124,
+            123,
+            null
+          ],
+          "actual_exits": [
+            0,
+            1,
+            null
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/support-merge",
+            "bytes": 99584,
+            "sha256": "1cc4541691364eb261ef9d2926703275f1a499d81c3225819f1a52deb5f50c55"
+          }
+        },
+        {
+          "control": "empty-axis-one-phase",
+          "case": "empty-axis",
+          "expected_assertion": "empty-first-phase-keeps-other-parity",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "new control: actual baseline/withdrawal/restoration 0/1/0",
+          "baseline_is_required_before_mutant": true,
+          "command_numbers": [
+            64,
+            67,
+            68
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-one-phase",
+            "bytes": 99592,
+            "sha256": "d337b2cfb065cdbf99be06039680807045bd8a24282e892bc5d3838cc30deb90"
+          }
+        },
+        {
+          "control": "empty-axis-drop-seams",
+          "case": "empty-axis",
+          "expected_assertion": "empty-axis-zero-pieces-with-raw-seams",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "new control: actual baseline/withdrawal/restoration 0/1/0",
+          "baseline_is_required_before_mutant": true,
+          "command_numbers": [
+            69,
+            72,
+            73
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-drop-seams",
+            "bytes": 99600,
+            "sha256": "65db1d59feadcc8f37bf3f404574620aaa395fdcbf8f7cb47c594367cabd8374"
+          }
+        },
+        {
+          "control": "empty-axis-reject-empty",
+          "case": "empty-axis",
+          "expected_assertion": "empty-axis-legal",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "new control: actual baseline/withdrawal/restoration 0/1/0",
+          "baseline_is_required_before_mutant": true,
+          "command_numbers": [
+            74,
+            77,
+            78
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-reject-empty",
+            "bytes": 99600,
+            "sha256": "d140de11848375fdb5d48d3627b615fcc8ce7d9ed3c19246243f352a6e742ef5"
+          }
+        },
+        {
+          "control": "empty-axis-work-withdrawn",
+          "case": "empty-axis-work",
+          "expected_assertion": "empty-axis-work-independent-of-empty-row-count",
+          "mutant_matches": 1,
+          "passed": true,
+          "claim": "new control: actual baseline/withdrawal/restoration 0/1/0",
+          "baseline_is_required_before_mutant": true,
+          "command_numbers": [
+            82,
+            86,
+            90
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "variant_executable": {
+            "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-work-withdrawn",
+            "bytes": 99600,
+            "sha256": "7f3cfe03f0bbec98423028cdfb27ff1dcc34676b85add73f802f9235207e3f22"
+          }
+        }
+      ],
+      "native_streams_complete": true,
+      "passed": true
+    }
+  ],
+  "accepted": true,
+  "completed_checkout_previous_identity": [
+    "6d9d46e8d16af75351924c6d47a078d3eb647cc0",
+    "90ada5272b4f2ad00d1f9f79bfc2b55fa1f2657c"
+  ],
+  "actual_source_identity": [
+    "324034812bb6effca68e0413bc0468595337b317",
+    "5836417ae7715a8453eaab3cff056beeed30e0c9"
+  ],
+  "source_after_identity": [
+    "324034812bb6effca68e0413bc0468595337b317",
+    "5836417ae7715a8453eaab3cff056beeed30e0c9"
+  ],
+  "source_after_clean": true,
+  "ended_utc": "2026-10-24T01:15:05.686174+00:00",
+  "commands": [
+    {
+      "command": [
+        "df",
+        "-B1",
+        "/tmp",
+        "/workspace"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "6d9d46e8d16af75351924c6d47a078d3eb647cc0",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804500.7418218,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000001",
+      "ended_epoch": 1792804500.743504,
+      "stdout_sha256": "1c452840650b0c7b39b7d602d6d4f0a814697043aad054f22030d6318bffa597",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 189,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "6d9d46e8d16af75351924c6d47a078d3eb647cc0",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804500.743799,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000002",
+      "ended_epoch": 1792804500.7450294,
+      "stdout_sha256": "27de62bdb8635a9dcd7eb3a882f061b08bed16354c75c1fbbfda9356685f854a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 80,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "--version"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "6d9d46e8d16af75351924c6d47a078d3eb647cc0",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804500.7454238,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000003",
+      "ended_epoch": 1792804500.748243,
+      "stdout_sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 15,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "6d9d46e8d16af75351924c6d47a078d3eb647cc0",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804500.748864,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000004",
+      "ended_epoch": 1792804500.7504892,
+      "stdout_sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 231,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD",
+        "HEAD^{tree}"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "6d9d46e8d16af75351924c6d47a078d3eb647cc0",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804500.7508345,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000005",
+      "ended_epoch": 1792804500.753931,
+      "stdout_sha256": "15538af0e41f9509b2260be01da3458f42166adbcb07c3f43740be2315cda3a6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 82,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "6d9d46e8d16af75351924c6d47a078d3eb647cc0",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804500.7543442,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000006",
+      "ended_epoch": 1792804500.793165,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "ls-files",
+        "--stage"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "6d9d46e8d16af75351924c6d47a078d3eb647cc0",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804500.7939105,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000007",
+      "ended_epoch": 1792804500.8168526,
+      "stdout_sha256": "c6d1243c3e3c49b8e315621675a396760efaaff317e84fd04fd5577be3b07b24",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 4523134,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "checkout",
+        "--detach",
+        "324034812bb6effca68e0413bc0468595337b317"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "6d9d46e8d16af75351924c6d47a078d3eb647cc0",
+      "source_variant": "checkout-from-6d9d46e8d16af75351924c6d47a078d3eb647cc0-to-324034812bb6effca68e0413bc0468595337b317",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804500.8207746,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000008",
+      "ended_epoch": 1792804500.9210198,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "50955c22449f84ab5348e3cdec8284fb419f47addeb3db12b136a4d84ae60501",
+      "stdout_bytes": 0,
+      "stderr_bytes": 87
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD",
+        "HEAD^{tree}"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804500.9216661,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000009",
+      "ended_epoch": 1792804500.9248035,
+      "stdout_sha256": "1f33513106977c5f063697ea3278535e037a835a4752d4dfbf8463aab74d6a81",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 82,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804500.9252987,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000010",
+      "ended_epoch": 1792804500.9412394,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "ls-files",
+        "--stage"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804500.9419153,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000011",
+      "ended_epoch": 1792804500.9640882,
+      "stdout_sha256": "570a3a5a18dfe2c76afef4fbc6b725b59cbcf518cd49021c11bc4fb6260e3e2f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 4522079,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/issue128-p2-32403481-formal-tools/panel-retain.py",
+        "--root",
+        "/workspace/issue128-empty-panel-rows-work-20261024",
+        "--sha",
+        "324034812bb6effca68e0413bc0468595337b317",
+        "--out",
+        "/workspace/issue128-p2-32403481-formal/panel-native/observed",
+        "--artifacts",
+        "/workspace/issue128-p2-32403481-formal/panel-native/compile-retention"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804500.9677167,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000012",
+      "ended_epoch": 1792804505.6313426,
+      "stdout_sha256": "f98c8c807e6c963be29964a63d43a446e878389d6467ee1e53c655160874d763",
+      "stderr_sha256": "193b10f10dedbbfe27ba04d68a43ea5b92e9816e21ffefc9f5ca0805233c2e54",
+      "stdout_bytes": 479,
+      "stderr_bytes": 112
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD",
+        "HEAD^{tree}"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804505.6421907,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000013",
+      "ended_epoch": 1792804505.6456487,
+      "stdout_sha256": "1f33513106977c5f063697ea3278535e037a835a4752d4dfbf8463aab74d6a81",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 82,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804505.6464827,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000014",
+      "ended_epoch": 1792804505.660419,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "ls-files",
+        "--stage"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804505.6611497,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000015",
+      "ended_epoch": 1792804505.6794457,
+      "stdout_sha256": "570a3a5a18dfe2c76afef4fbc6b725b59cbcf518cd49021c11bc4fb6260e3e2f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 4522079,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "df",
+        "-B1",
+        "/tmp",
+        "/workspace"
+      ],
+      "cwd": "/workspace/issue128-empty-panel-rows-work-20261024",
+      "acceptance_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_sha": "324034812bb6effca68e0413bc0468595337b317",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/issue128-p2-32403481-formal-tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792804505.6830883,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/issue128-p2-32403481-formal/subcommands/000016",
+      "ended_epoch": 1792804505.6854239,
+      "stdout_sha256": "fe3a0d4367b7bc77006dea1a23ae8c7ead2e47aebd9c765153b4a590cc545158",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 189,
+      "stderr_bytes": 0
+    }
+  ]
+}
