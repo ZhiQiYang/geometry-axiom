@@ -2,9 +2,10 @@
 
 Historical proposal bytes stay immutable. No before text is rebuilt from the
 proposal itself, and an upstream merge cannot silently discard either contract.
-Later SSOT adoptions are listed in POST_APPROVAL_REVISIONS and applied on top
-of the frozen approved result as exact, clause-scoped replacements, each with
-its own human approval record; the current SSOT must equal that, byte for byte.
+Later clause-only adoptions are listed in POST_APPROVAL_REVISIONS and applied
+on top of the frozen result, each with its own human approval record.  R14 is
+a separate, exactly pinned extension of that result, including its approved
+preamble and exclusions changes; current SSOT must equal the full reconstruction.
 """
 from copy import deepcopy
 import hashlib
@@ -186,7 +187,42 @@ POST_APPROVAL_REVISIONS = (
         ),
     },
 )
-CURRENT_HASH = "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"
+# R14 is a separate, one-shot extension of the result above.  Its approved P
+# also changes the preamble and one exclusions bullet; neither is a permission
+# to relax REVISION_LAYOUT or to invent a quoted answer for REVISION_APPROVAL.
+# The fixture is the verbatim LF patch from #57 comment 6677737650, approved by
+# #57 comment 6688023475.  It supplies every before/after byte independently of
+# the current SSOT, including the final exclusions hunk (Delta 6).
+R14_BEFORE_HASH = "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"
+R14_PATCH_SHA256 = "22565f314f9edbbe028a2d8a029dc071ff807b34787eb54bc10d453473230a6a"
+R14_PATCH_HEADER = (
+    "diff --git a/公理層.md b/公理層.md\n"
+    "index bac4c5ef1fa7d64e54d1aa81ecdf8efd1636cdff..c017aae31e925a166c91b2c5d2d13f9e96c38f5a 100644\n"
+    "--- a/公理層.md\n+++ b/公理層.md\n"
+)
+R14_HUNK_SCOPES = ("preamble", "D19a", "D19a", "I25a", "R32", "R32", "exclusions")
+R14_DECISION_HEADING = "### 2026-10-27 ChatGPT 對話 9 題全部照建議 🔒"
+R14_DECISION_ANCHOR = (
+    "各題題意、選項與採用結果，見 #335、#128、#205、#47、#116、#57、#248、#123 各自的【ChatGPT 決策回報】;"
+    "需求帳 R02、R03、R05、R11、R14、R15、R16、R17 各列已引用對應留言。"
+    "涉及公理差異的項目仍沿各自正式條文採納流程。如何推翻：使用者另行指示。"
+)
+# This is the queue's narration, not a new > user quote.  Preserve it verbatim.
+R14_DECISION_RECORD = (
+    "R14 條文全文核可（🔒 2026-11-06）：使用者原話「還有 R14 可以」；"
+    "範圍＝#57 留言 6677736760 全文＝P 補丁 SHA-256 "
+    "22565f314f9edbbe028a2d8a029dc071ff807b34787eb54bc10d453473230a6a；"
+    "紀錄見 #57 留言 6688023475。"
+)
+# Pin the complete recorded section as LF text, including the quoted direction
+# approval and its later full-text narrative; neither can be moved into a quote.
+R14_DECISION_SECTION = (
+    "### 2026-10-27 ChatGPT 對話 9 題全部照建議 🔒\n\n"
+    "使用者在 ChatGPT 對話的原話(ChatGPT 記錄時間台北 2026-10-27 15:21:40):\n\n"
+    "> 這9題全部按照你的建議\n\n"
+    + R14_DECISION_ANCHOR + "\n\n" + R14_DECISION_RECORD + "\n\n"
+)
+CURRENT_HASH = "5eee5c3be825cbba7b2c6ecd9ef8784d82826855a75961c1b53fb187b0f02a79"
 
 
 def sha(raw):
@@ -381,11 +417,176 @@ def verify_revision_decisions(queue_bytes, revisions):
         used.add(heading)
 
 
+def r14_section_heads(lines):
+    """Only real Markdown section heads may anchor this narrative approval."""
+    heads, fence, raw_html, literal_end, comment, html_block = [], None, None, None, False, False
+    for index, line in enumerate(lines):
+        if fence:
+            close = re.fullmatch(r" {0,3}(`{3,}|~{3,})[ \t]*\n?", line)
+            if close and close[1][0] == fence[0] and len(close[1]) >= fence[1]:
+                fence = None
+            continue
+        if literal_end:
+            if literal_end in line:
+                literal_end = None
+            continue
+        if raw_html:
+            if re.search(r"</" + raw_html + r"\s*>", line, re.IGNORECASE):
+                raw_html = None
+            continue
+        if html_block:
+            if not line.strip(" \t\n"):
+                html_block = False
+            continue
+        if not comment:
+            opened = re.match(r" {0,3}(`{3,}|~{3,})([^\n]*)\n?$", line)
+            if opened and (opened[1][0] != "`" or "`" not in opened[2]):
+                fence = (opened[1][0], len(opened[1]))
+                continue
+            opened = re.match(r" {0,3}(<\?|<!\[CDATA\[)", line)
+            if opened:
+                ending = "?>" if opened[1] == "<?" else "]]>"
+                if ending not in line:
+                    literal_end = ending
+                continue
+            opened = re.match(r" {0,3}<(pre|script|style|textarea)(?=[ \t>\n])", line, re.IGNORECASE)
+            if opened:
+                tag = opened[1].lower()
+                if not re.search(r"</" + tag + r"\s*>", line, re.IGNORECASE):
+                    raw_html = tag
+                continue
+            # Ordinary HTML blocks may have text on the opening line; a
+            # following blank line ends this block, unlike the raw-text tags.
+            if re.match(r" {0,3}</?[A-Za-z][A-Za-z0-9-]*(?=[ \t>/])", line):
+                html_block = True
+                continue
+        began_in_comment, rest = comment, line
+        while True:
+            if comment:
+                end = rest.find("-->")
+                if end < 0:
+                    break
+                rest, comment = rest[end + 3:], False
+            begin = rest.find("<!--")
+            if begin < 0:
+                break
+            rest, comment = rest[begin + 4:], True
+        if not began_in_comment and line.startswith(("### ", "## ")):
+            heads.append(index)
+    return heads
+
+
+def verify_r14_approval(queue_bytes, patch_bytes):
+    """Bind the exact P to the unique recorded full-text approval, not direction approval."""
+    lines = normalized(queue_bytes).split("\n")
+    starts = [index for index, line in enumerate(lines) if line == R14_DECISION_HEADING]
+    require(len(starts) == 1, "R14_APPROVAL_ANCHOR", "the R14 decision section must occur exactly once")
+    heads = r14_section_heads(lines)
+    require(starts[0] in heads, "R14_APPROVAL_CONTEXT", "R14 approval must be outside Markdown containers")
+    end = next((index for index in heads if index > starts[0]), len(lines))
+    section = "\n".join(lines[starts[0] + 1:end])
+    require(lines.count(R14_DECISION_RECORD) == lines.count(R14_DECISION_ANCHOR) == 1
+            and R14_DECISION_ANCHOR + "\n\n" + R14_DECISION_RECORD + "\n" in section,
+            "R14_APPROVAL_RECORD", "R14 needs the exact narrative at its fixed decision anchor")
+    require("P 補丁 SHA-256 " + R14_PATCH_SHA256 + "；紀錄見 #57 留言 6688023475。"
+            in R14_DECISION_RECORD and sha(patch_bytes) == R14_PATCH_SHA256,
+            "R14_PATCH_SHA256", "the full-text approval authorizes only the reviewed P bytes")
+    require("\n".join(lines[starts[0]:end]) + ("\n" if end < len(lines) else "") == R14_DECISION_SECTION,
+            "R14_APPROVAL_SECTION", "the complete recorded R14 section must remain verbatim")
+
+
+def apply_r14_extension(adopted, queue_bytes, patch_bytes):
+    """Apply only the seven approved P hunks, once, after the unchanged older gates."""
+    verify_r14_approval(queue_bytes, patch_bytes)
+    require(sha(adopted.encode("utf-8")) == R14_BEFORE_HASH,
+            "R14_BEFORE", "R14 requires the exact pre-R14 adoption and cannot be applied twice")
+    patch = normalized(patch_bytes)
+    require(patch.startswith(R14_PATCH_HEADER), "R14_PATCH_HEADER", "P must target its fixed SSOT blobs")
+    hunks = []
+    for line in patch[len(R14_PATCH_HEADER):].splitlines(keepends=True):
+        if line.startswith("@@ "):
+            match = re.fullmatch(r"@@ -(\d+),(\d+) \+(\d+),(\d+) @@\n", line)
+            require(match is not None, "R14_PATCH_LAYOUT", "P has an invalid hunk header")
+            hunks.append((tuple(map(int, match.groups())), []))
+        else:
+            require(bool(hunks) and line[:1] in (" ", "-", "+"),
+                    "R14_PATCH_LAYOUT", "P has an invalid hunk line")
+            hunks[-1][1].append(line)
+    require(len(hunks) == len(R14_HUNK_SCOPES), "R14_PATCH_LAYOUT", "P must retain all seven reviewed hunks")
+    clauses, _, headings = source_layout(adopted)
+    source_lines = adopted.splitlines(keepends=True)
+    result = adopted
+    for scope, ((old_start, old_count, new_start, new_count), lines) in zip(R14_HUNK_SCOPES, hunks):
+        before_lines = [line[1:] for line in lines if line[0] in " -"]
+        after_lines = [line[1:] for line in lines if line[0] in " +"]
+        before, after = "".join(before_lines), "".join(after_lines)
+        changed = [index for index, line in enumerate(lines) if line[0] in "-+"]
+        require(len(before_lines) == old_count and len(after_lines) == new_count
+                and bool(changed) and all(lines[index][0] in "-+"
+                                         for index in range(changed[0], changed[-1] + 1)),
+                "R14_PATCH_LAYOUT", f"{scope}: P must retain one complete replacement per hunk")
+        require(before != after and result.count(before) == 1
+                and source_lines[old_start - 1:old_start - 1 + old_count] == before_lines
+                and result.splitlines(keepends=True)[new_start - 1:new_start - 1 + old_count] == before_lines,
+                "R14_ANCHOR", f"{scope}: the full before text must match its unique fixed anchor")
+        at = result.index(before)
+        change_at = at + sum(len(line) - 1 for line in lines[:changed[0]])
+        removed = sum(len(line) - 1 for line in lines if line.startswith("-"))
+        rows, sections, _ = source_layout(result)
+        bounds = sections | {row.id: (row.start, row.end) for row in rows}
+        require(scope in bounds and bounds[scope][0] <= change_at
+                and change_at + removed <= bounds[scope][1],
+                "R14_SCOPE", f"{scope}: P may change only its explicitly reviewed section or clause")
+        result = result[:at] + after + result[at + len(before):]
+    new_clauses, _, new_headings = source_layout(result)
+    require([row.id for row in new_clauses] == [row.id for row in clauses]
+            and [title for title, _ in new_headings] == [title for title, _ in headings]
+            and {old.id for old, new in zip(clauses, new_clauses) if old.before != new.before}
+            == {"D19a", "I25a", "R32"},
+            "R14_LAYOUT", "R14 must retain all clause ids, chapter order and every other clause verbatim")
+    return result
+
+
 def validate_current_document(current_bytes, expected):
     require(normalized(current_bytes) == expected, "ADOPTED_SOURCE", "current SSOT differs from the approved, upstream-preserving result")
     clauses, _, _ = source_layout(expected)
     require(len(clauses) == len({row.id for row in clauses}) == 207,
             "ADOPTED_LAYOUT", "the adopted document must preserve all 207 clauses")
+
+
+# R14 follows R17 in released main. R17's own full-text approval binds its
+# exact historical bytes, not the later combined document.
+R14_ON_R17_SHA256 = "41bb139fdb4767327e542eb96912437c8060c1ad84f044a7d2a30ecdb13ab4ad"
+R17_ONLY_SHA256 = "13ff6cec70900b55271d9350ca31119f31ad9b20245204d67f49576ca5219712"
+
+
+def restore_pre_r14_source(current_bytes):
+    """Peel only the exact separately approved R14 P from a R14-on-R17 source."""
+    current = normalized(current_bytes)
+    # normalized() has already performed the one allowed CRLF conversion.
+    # A second conversion would incorrectly accept CRCRLF source tampering.
+    if hashlib.sha256(current.encode("utf-8")).hexdigest() != R14_ON_R17_SHA256:
+        return current  # R17-only or a tamper; the following R17 hash gate judges it.
+    patch_bytes = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
+    require(sha(patch_bytes.replace(b"\r\n", b"\n")) == R14_PATCH_SHA256,
+            "R14_PATCH_SHA256", "R14 overlay requires the exact approved P bytes")
+    patch = normalized(patch_bytes)
+    require(patch.startswith(R14_PATCH_HEADER), "R14_PATCH_HEADER",
+            "R14 overlay must use the pinned SSOT source and destination")
+    hunks = [hunk for hunk in re.split(r"(?=^@@ -)", patch[len(R14_PATCH_HEADER):], flags=re.M) if hunk]
+    require(len(hunks) == len(R14_HUNK_SCOPES)
+            and all(re.match(r"^@@ -\d+,\d+ \+\d+,\d+ @@\n", hunk) for hunk in hunks),
+            "R14_PATCH_LAYOUT", "all seven approved R14 hunks must be present")
+    for scope, hunk in zip(R14_HUNK_SCOPES, hunks):
+        lines = hunk.splitlines(keepends=True)[1:]
+        removed = "".join(line[1:] for line in lines if line.startswith("-"))
+        added = "".join(line[1:] for line in lines if line.startswith("+"))
+        require(bool(added) and current.count(added) == 1,
+                "R14_REVERSE_ANCHOR", f"{scope}: exact approved addition must occur once")
+        current = current.replace(added, removed, 1)
+    require(sha(current.encode("utf-8")) == R17_ONLY_SHA256,
+            "R14_REVERSE_SOURCE", "reversing R14 must recover exact R17-approved bytes")
+    return current
 
 
 def restore_pre_r17_source(current_bytes, queue_bytes, delta_bytes=None):
@@ -406,8 +607,8 @@ def restore_pre_r17_source(current_bytes, queue_bytes, delta_bytes=None):
         section = lines[starts[0] + 1:end]
     require(len(starts) == 1 and lines.count(approval) == 1 and section.count(approval) == 1,
             "R17_APPROVAL", "R17 requires its exact scoped full-text approval; W1-A is only a direction decision")
-    current = normalized(current_bytes).encode("utf-8")
-    require(sha(current) == "13ff6cec70900b55271d9350ca31119f31ad9b20245204d67f49576ca5219712"
+    current = restore_pre_r14_source(current_bytes).encode("utf-8")
+    require(sha(current) == R17_ONLY_SHA256
             and hashlib.sha1(b"blob " + str(len(current)).encode() + bytes([0]) + current).hexdigest()
                 == "9d713b77d63df78cf5371a398c92f9536f5b6d5f",
             "R17_APPROVED_SOURCE", "R17 bytes differ from the user-approved full text; obtain new approval")
@@ -448,6 +649,8 @@ class AdoptionIntegrity(unittest.TestCase):
         cls.merged = merged_proposal(cls.base, cls.upstream, cls.proposal, cls.markdown)
         cls.before, cls.after = expected_addendum_before_and_after(cls.merged, cls.proposal)
         cls.expected = apply_scope_addendum(cls.merged, cls.proposal, cls.before, cls.after)
+        # Keep this legacy stage intact for all its existing negative controls.
+        # The actual-SSOT gate adds R14 only after those independent old gates.
         cls.current = apply_post_approval_revisions(cls.expected, POST_APPROVAL_REVISIONS)
 
     def reject(self, code, function, *args):
@@ -528,11 +731,15 @@ class AdoptionIntegrity(unittest.TestCase):
         verify_addendum_approval(self.approval)
 
     def test_actual_ssot_is_the_full_approved_upstream_preserving_adoption(self):
-        verify_revision_decisions((ROOT / "決策佇列.md").read_bytes(), POST_APPROVAL_REVISIONS)
+        queue = (ROOT / "決策佇列.md").read_bytes()
+        verify_revision_decisions(queue, POST_APPROVAL_REVISIONS)
+        patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
+        current = apply_r14_extension(self.current, queue, patch)
         actual = (ROOT / "公理層.md").read_bytes()
-        actual = restore_pre_r17_source(actual, (ROOT / "決策佇列.md").read_bytes())
-        validate_current_document(actual, self.current)
-        self.assertEqual(CURRENT_HASH, sha(actual))
+        actual = restore_pre_r17_source(actual, queue)
+        actual = apply_r14_extension(normalized(actual), queue, patch)
+        validate_current_document(actual.encode("utf-8"), current)
+        self.assertEqual(CURRENT_HASH, sha(actual.encode("utf-8")))
         self.assertEqual(ADOPTED_HASH, hashlib.sha256(self.expected.encode("utf-8")).hexdigest())
 
     def test_current_source_tamper_deletion_and_layout_drift_are_rejected(self):
@@ -659,9 +866,116 @@ class AdoptionIntegrity(unittest.TestCase):
             with self.subTest(case=case):
                 self.reject("REVISION_APPROVAL", verify_revision_decisions, record, revisions)
 
+        # The approved R14 P is independent of current SSOT and of the old
+        # clause-only approval format.  Keep the original negative controls
+        # above; exercise the separate extension here without changing census.
+        patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
+        self.assertEqual(13646, len(patch.replace(b"\r\n", b"\n")))
+        r14 = apply_r14_extension(self.current, queue, patch)
+        historical = restore_pre_r17_source((ROOT / "公理層.md").read_bytes(), queue)
+        self.assertEqual(apply_r14_extension(normalized(historical), queue, patch), r14)
+        for case, predecessor in (("second application", r14), ("changed predecessor", self.current + "\n")):
+            with self.subTest(r14=case):
+                self.reject("R14_BEFORE", apply_r14_extension, predecessor, queue, patch)
+        for case, code, altered in (
+                ("decision heading", "R14_APPROVAL_ANCHOR", text.replace(R14_DECISION_HEADING, R14_DECISION_HEADING + "x", 1)),
+                ("duplicate decision heading", "R14_APPROVAL_ANCHOR", text + "\n" + R14_DECISION_HEADING + "\n"),
+                ("decision anchor", "R14_APPROVAL_RECORD", text.replace(R14_DECISION_ANCHOR, R14_DECISION_ANCHOR + "x", 1)),
+                ("direction approval only", "R14_APPROVAL_RECORD", text.replace(R14_DECISION_RECORD, "", 1)),
+                ("full-text approval comment", "R14_APPROVAL_RECORD", text.replace("紀錄見 #57 留言 6688023475。", "紀錄見 #57 留言 6688023476。", 1)),
+                ("approved P fingerprint", "R14_APPROVAL_RECORD", text.replace(R14_PATCH_SHA256, "0" * 64, 1)),
+                ("duplicate approval record", "R14_APPROVAL_RECORD", text + "\n" + R14_DECISION_RECORD + "\n"),
+                ("approval moved outside its section", "R14_APPROVAL_RECORD", text.replace(R14_DECISION_RECORD, "", 1) + "\n" + R14_DECISION_RECORD + "\n")):
+            with self.subTest(r14=case):
+                self.reject(code, apply_r14_extension, self.current, altered.encode("utf-8"), patch)
+        with self.subTest(r14="approved P bytes"):
+            self.reject("R14_PATCH_SHA256", apply_r14_extension, self.current, queue, patch + b"\n")
+        preamble_line, = [line for line in r14.splitlines(keepends=True)
+                          if line.startswith("> **REPEAT_PANEL 一層來源子規則擴充（R14）**")]
+        exclusion_line, = [line for line in r14.splitlines(keepends=True)
+                           if line.startswith("- 單一父格、雙軸固定等分的手動子網格")]
+        altered_sources = [("missing preamble addition", r14.replace(preamble_line, "", 1)),
+                           ("missing Delta 6 exclusions", r14.replace(exclusion_line, "", 1))]
+        rows = {row.id: row for row in source_layout(r14)[0]}
+        for key in ("D19a", "I25a", "R32"):
+            row = rows[key]
+            self.assertIn("REPEAT_PANEL", row.before)
+            changed = row.before.replace("REPEAT_PANEL", "REPEAT_PANEX", 1)
+            altered_sources.append(("changed " + key, r14[:row.start] + changed + r14[row.end:]))
+        for case, altered in altered_sources:
+            with self.subTest(r14=case):
+                self.reject("ADOPTED_SOURCE", validate_current_document, altered.encode("utf-8"), r14)
+
+        self.check_r14_approval_context()
+        self.check_r14_approval_section()
+
+    def check_r14_approval_context(self):
+        queue = normalized((ROOT / "決策佇列.md").read_bytes())
+        patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
+        self.assertEqual(1, queue.count(R14_DECISION_SECTION))
+        verify_r14_approval(queue.encode("utf-8"), patch)
+        containers = (
+            ("backtick fence", "```text\n", "```\n"),
+            ("tilde fence", "~~~text\n", "~~~\n"),
+            ("short close leaves long fence open", "````text\n```\n", "````\n"),
+            ("HTML comment", "<!--\n", "-->\n"),
+            ("pre raw text", "<pre>\n", "</pre>\n"),
+            ("script raw text", "<script>\n", "</script>\n"),
+            ("style raw text", "<style>\n", "</style>\n"),
+            ("textarea raw text", "<textarea>\n", "</textarea>\n"),
+            ("HTML block", "<div>\n", "</div>\n"),
+            ("HTML block with opening text", "<div>quoted text\n", "</div>\n"),
+            ("CDATA", "<![CDATA[\n", "]]>\n"),
+            ("processing instruction", "<?xml\n", "?>\n"),
+        )
+        for case, opening, closing in containers:
+            altered = queue.replace(R14_DECISION_SECTION,
+                                    opening + R14_DECISION_SECTION
+                                    + "## faux boundary inside container\n" + closing, 1)
+            with self.subTest(r14_context=case):
+                with self.assertRaises(ProposalContractError, msg="R14_APPROVAL_CONTEXT") as caught:
+                    verify_r14_approval(altered.encode("utf-8"), patch)
+                self.assertEqual("R14_APPROVAL_CONTEXT", caught.exception.code)
+        for case, altered in (
+                ("duplicate raw heading in code", queue + "\n```text\n" + R14_DECISION_HEADING + "\n```\n"),
+                ("bare CR before anchor", queue.replace("\n" + R14_DECISION_HEADING, "\r" + R14_DECISION_HEADING, 1)),
+                ("Unicode separator before anchor", queue.replace("\n" + R14_DECISION_HEADING, "\u2028" + R14_DECISION_HEADING, 1))):
+            with self.subTest(r14_context=case):
+                self.reject("R14_APPROVAL_ANCHOR", verify_r14_approval, altered.encode("utf-8"), patch)
+        for case, prefix in (
+                ("longer closing fence", "```text\n## quoted heading\n````\n\n"),
+                ("closed tilde fence", "~~~text\n## quoted heading\n~~~\n\n"),
+                ("closed comment with fence", "<!--\n```\n## commented heading\n-->\n\n"),
+                ("closed mixed-case raw text", "<PRE class='quote'>\n## raw heading\n</pRe>\n\n"),
+                ("HTML block ended by blank", "<div>quoted text\n## raw heading\n\n"),
+                ("closed CDATA", "<![CDATA[\n## raw heading\n]]>\n\n"),
+                ("closed processing instruction", "<?xml\n## raw heading\n?>\n\n")):
+            with self.subTest(r14_context=case):
+                altered = queue.replace(R14_DECISION_SECTION, prefix + R14_DECISION_SECTION, 1)
+                verify_r14_approval(altered.encode("utf-8"), patch)
+
+    def check_r14_approval_section(self):
+        queue = normalized((ROOT / "決策佇列.md").read_bytes())
+        patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
+        for case, section in (
+                ("changed preceding narrative", R14_DECISION_SECTION.replace("15:21:40", "15:21:41", 1)),
+                ("extra text inside approval section", R14_DECISION_SECTION + "unapproved extra paragraph\n\n")):
+            with self.subTest(r14_section=case):
+                altered = queue.replace(R14_DECISION_SECTION, section, 1)
+                with self.assertRaises(ProposalContractError, msg="R14_APPROVAL_SECTION") as caught:
+                    verify_r14_approval(altered.encode("utf-8"), patch)
+                self.assertEqual("R14_APPROVAL_SECTION", caught.exception.code)
+
     def test_crlf_is_the_only_ignored_source_difference(self):
         validate_current_document(self.current.replace("\n", "\r\n").encode(), self.current)
         self.reject("ADOPTED_SOURCE", validate_current_document, self.current.replace("\n", "\r\r\n").encode(), self.current)
+        queue = (ROOT / "決策佇列.md").read_bytes().replace(b"\r\n", b"\n")
+        patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes().replace(b"\r\n", b"\n")
+        r14 = apply_r14_extension(self.current, queue, patch)
+        self.assertEqual(r14, apply_r14_extension(self.current, queue.replace(b"\n", b"\r\n"),
+                                                 patch.replace(b"\n", b"\r\n")))
+        validate_current_document(r14.replace("\n", "\r\n").encode(), r14)
+        self.reject("ADOPTED_SOURCE", validate_current_document, r14.replace("\n", "\r\r\n").encode(), r14)
 
 
 class BoundaryPairAdoptionIntegrity(unittest.TestCase):
@@ -688,7 +1002,14 @@ class BoundaryPairAdoptionIntegrity(unittest.TestCase):
         actual = (ROOT / "公理層.md").read_bytes()
         restored = self.restore(actual, (ROOT / "決策佇列.md").read_bytes())
         validate_current_document(restored, AdoptionIntegrity.current)
-        self.assertEqual(CURRENT_HASH, sha(restored), "R17_OLD_207_CLAUSE_ORACLE_UNCHANGED")
+        # The frozen 207-clause CURRENT_HASH is the R14-only result, whereas
+        # restore_pre_r17_source returns its exact pre-R14 predecessor.
+        # Reapply the approved P to retain the original oracle unchanged.
+        replay = apply_r14_extension(
+            normalized(restored), (ROOT / "決策佇列.md").read_bytes(),
+            (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes())
+        self.assertEqual(CURRENT_HASH, sha(replay.encode("utf-8")),
+                         "R17_OLD_207_CLAUSE_ORACLE_UNCHANGED")
         self.assertEqual(len(source_layout(AdoptionIntegrity.current)[0]), 207)
         rows = source_layout(normalized(actual))[0]
         self.assertEqual(len(rows), 208)
