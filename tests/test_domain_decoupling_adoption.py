@@ -554,6 +554,51 @@ def validate_current_document(current_bytes, expected):
             "ADOPTED_LAYOUT", "the adopted document must preserve all 207 clauses")
 
 
+def restore_pre_r17_source(current_bytes, queue_bytes, delta_bytes=None):
+    """Remove only the separately approved R17 delta, then use the original gate.
+
+    GEO-261's 207-clause source/layout/decision assertions remain unchanged.
+    R17's exact approved blob, fixed delta and scoped full-text approval are
+    additional obligations; a direction decision cannot stand in for them.
+    """
+    heading = "### 2026-11-02 #335 R17 W1：成組在 World 放置順序中的位置，採 A 🔒"
+    approval = "R17 條文全文核可（🔒 2026-11-06）：使用者原話「可以」；範圍＝#335 留言 6639554297 全文＝公理層.md blob 9d713b77d63df78cf5371a398c92f9536f5b6d5f；紀錄見 #371 留言 6677269286。"
+    lines = normalized(queue_bytes).split("\n")
+    starts = [index for index, line in enumerate(lines) if line == heading]
+    section = []
+    if len(starts) == 1:
+        end = next((index for index in range(starts[0] + 1, len(lines))
+                    if lines[index].startswith(("### ", "## "))), len(lines))
+        section = lines[starts[0] + 1:end]
+    require(len(starts) == 1 and lines.count(approval) == 1 and section.count(approval) == 1,
+            "R17_APPROVAL", "R17 requires its exact scoped full-text approval; W1-A is only a direction decision")
+    current = normalized(current_bytes).encode("utf-8")
+    require(sha(current) == "13ff6cec70900b55271d9350ca31119f31ad9b20245204d67f49576ca5219712"
+            and hashlib.sha1(b"blob " + str(len(current)).encode() + bytes([0]) + current).hexdigest()
+                == "9d713b77d63df78cf5371a398c92f9536f5b6d5f",
+            "R17_APPROVED_SOURCE", "R17 bytes differ from the user-approved full text; obtain new approval")
+    if delta_bytes is None:
+        delta_bytes = (ROOT / "tests/fixtures/r17-approved-delta.json").read_bytes()
+    require(sha(delta_bytes) == "43738777e6d553c20aaf777fd507c802092dcdaaedcc3d9facdbf7fb11c66fb8",
+            "R17_FROZEN_DELTA", "the delta derived from fixed main and the approved blob must not change")
+    delta = json.loads(delta_bytes)
+    require(delta["schema"] == "r17-approved-delta/1"
+            and delta["beforeCommit"] == "343a8abe83029dd883e5e5b1b8e3112411fefe81"
+            and delta["approvedCommit"] == "347bb01d411c9a656cae213d5cec81409445cf14"
+            and delta["changedClauses"] == ["D7", "D9", "D11", "D60", "I8", "I8a", "I9", "I19", "I32", "R4", "R6", "R56"]
+            and delta["addedClauses"] == ["D16a"],
+            "R17_DELTA_SCOPE", "only the reviewed twelve clauses, D16a and scope census are adopted")
+    restored = current.decode("utf-8").splitlines(keepends=True)
+    for change in reversed(delta["changes"]):
+        at, after, before = change["newStart"], change["after"], change["before"]
+        require(restored[at:at + len(after)] == after, "R17_DELTA_ANCHOR", "approved after-text no longer matches")
+        restored[at:at + len(after)] = before
+    previous = "".join(restored).encode("utf-8")
+    require(sha(previous) == "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7",
+            "R17_PREVIOUS_SOURCE", "removing the exact approved delta must restore the unchanged previous main")
+    return previous
+
+
 class AdoptionIntegrity(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -656,6 +701,7 @@ class AdoptionIntegrity(unittest.TestCase):
         patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
         current = apply_r14_extension(self.current, queue, patch)
         actual = (ROOT / "公理層.md").read_bytes()
+        actual = restore_pre_r17_source(actual, (ROOT / "決策佇列.md").read_bytes())
         validate_current_document(actual, current)
         self.assertEqual(CURRENT_HASH, sha(actual))
         self.assertEqual(ADOPTED_HASH, hashlib.sha256(self.expected.encode("utf-8")).hexdigest())
@@ -893,6 +939,103 @@ class AdoptionIntegrity(unittest.TestCase):
                                                  patch.replace(b"\n", b"\r\n")))
         validate_current_document(r14.replace("\n", "\r\n").encode(), r14)
         self.reject("ADOPTED_SOURCE", validate_current_document, r14.replace("\n", "\r\r\n").encode(), r14)
+
+
+class BoundaryPairAdoptionIntegrity(unittest.TestCase):
+    APPROVAL_LINE = "R17 條文全文核可（🔒 2026-11-06）：使用者原話「可以」；範圍＝#335 留言 6639554297 全文＝公理層.md blob 9d713b77d63df78cf5371a398c92f9536f5b6d5f；紀錄見 #371 留言 6677269286。"
+    HEADING = "### 2026-11-02 #335 R17 W1：成組在 World 放置順序中的位置，採 A 🔒"
+
+    def restore(self, actual, queue, delta=None):
+        function = globals().get("restore_pre_r17_source")
+        self.assertTrue(callable(function), "R17_EXACT_ADOPTION_GATE_REQUIRED")
+        return function(actual, queue, delta)
+
+    def approved_queue(self):
+        # Synthetic positive control for the approval guard only; the actual
+        # adoption test below separately reads the real decision queue.
+        return (self.HEADING + "\n\n" + self.APPROVAL_LINE + "\n").encode()
+
+    def reject(self, code, *args):
+        with self.assertRaises(ProposalContractError) as caught:
+            self.restore(*args)
+        self.assertEqual(code, caught.exception.code, str(caught.exception))
+
+    def test_r17_full_text_approval_and_exact_delta_restore_the_frozen_previous_adoption(self):
+        AdoptionIntegrity.setUpClass()
+        actual = (ROOT / "公理層.md").read_bytes()
+        restored = self.restore(actual, (ROOT / "決策佇列.md").read_bytes())
+        validate_current_document(restored, AdoptionIntegrity.current)
+        self.assertEqual(CURRENT_HASH, sha(restored), "R17_OLD_207_CLAUSE_ORACLE_UNCHANGED")
+        self.assertEqual(len(source_layout(AdoptionIntegrity.current)[0]), 207)
+        rows = source_layout(normalized(actual))[0]
+        self.assertEqual(len(rows), 208)
+        ids = [row.id for row in rows]
+        self.assertEqual(ids[ids.index("D16"):ids.index("D17") + 1], ["D16", "D16a", "D17"])
+
+    def test_r17_direction_approval_or_misplaced_full_text_record_cannot_authorize_the_text(self):
+        actual = (ROOT / "公理層.md").read_bytes()
+        approved = self.approved_queue()
+        self.restore(actual, approved)
+        for queue in (
+                (self.HEADING + "\n\n> A 好 沒人做的也派出去\n").encode(),
+                approved + ("\n" + self.APPROVAL_LINE + "\n").encode(),
+                (self.HEADING + "\n\n### 另一個決策\n\n" + self.APPROVAL_LINE + "\n").encode(),
+                approved.replace(b"6639554297", b"6639554298"),
+                approved.replace(b"9d713b77", b"00000000"),
+                approved.replace(b"6677269286", b"6677269287"),
+                approved + approved):
+            with self.subTest(queue=hashlib.sha256(queue).hexdigest()):
+                self.reject("R17_APPROVAL", actual, queue)
+
+    def test_r17_approved_blob_rejects_byte_changes_omission_and_unapproved_new_clauses(self):
+        actual = (ROOT / "公理層.md").read_bytes().replace(b"\r\n", b"\n")
+        approved = self.approved_queue()
+        restored = self.restore(actual, approved)
+        for changed in (actual + b"\n", actual.replace("成組".encode(), "群組".encode(), 1),
+                        actual.replace("不提供解除成組".encode(), "提供解除成組".encode(), 1),
+                        actual.replace(b"\n", b"\r\r\n"), restored,
+                        actual + "\nD99 未經核可的新條文\n".encode()):
+            with self.subTest(sha256=hashlib.sha256(changed).hexdigest()):
+                self.reject("R17_APPROVED_SOURCE", changed, approved)
+        self.assertEqual(restored, self.restore(actual.replace(b"\n", b"\r\n"), approved),
+                         "R17_ONLY_CRLF_NORMALIZATION_IS_ALLOWED")
+
+    def test_r17_delta_cannot_be_rewritten_with_the_current_document(self):
+        actual = (ROOT / "公理層.md").read_bytes()
+        delta = (ROOT / "tests/fixtures/r17-approved-delta.json").read_bytes()
+        self.assertEqual(sha(delta),
+                         "43738777e6d553c20aaf777fd507c802092dcdaaedcc3d9facdbf7fb11c66fb8")
+        changed = json.loads(delta)
+        changed["changes"][0]["before"] = changed["changes"][0]["after"]
+        for mutated in (delta + b"\n", json.dumps(changed, ensure_ascii=False).encode()):
+            self.reject("R17_FROZEN_DELTA", actual, self.approved_queue(), mutated)
+
+    def test_r17_plain_explanation_covers_the_complete_adopted_scope(self):
+        text = normalized((ROOT / "geometry-guide/公理層-白話.md").read_bytes())
+        matches = list(re.finditer(r"^## ([DIR][0-9]+[a-z]?)\n", text, re.M))
+        rows = {match.group(1): text[match.end():matches[index + 1].start() if index + 1 < len(matches) else len(text)]
+                for index, match in enumerate(matches)}
+        requirements = {
+            "D7": ("D16a", "整條", "不保存"),
+            "D9": ("成組關係", "定義", "第三個"),
+            "D11": ("D16a", "START", "END", "相反", "正長度"),
+            "D16a": ("boundary-pair/1", "兩支", "FIXED", "e<i>", "來源閉包", "同向", "反向", "深度側", "無序對",
+                      "序列末端", "保留原組位置", "不提供解除", "下游", "安裝", "拉力"),
+            "D60": ("boundary-pair delete", "定義輸入行", "不是"),
+            "I8": ("D16a", "候選", "確認"),
+            "I8a": ("D16a", "沒有", "來源", "身分帳未啟用"),
+            "I9": ("boundary-pair begin", "兩份", "循環", "下游"),
+            "I19": ("D16a", "相向實體端面", "正長度", "全寬"),
+            "I32": ("boundary-pair/1", "能力", "拒絕", "不會自動啟用"),
+            "R4": ("boundary-pair begin", "boundary-pair end", "confirm", "cancel", "delete", "四份", "token", "尚未保存"),
+            "R6": ("D16a", "J_i=E_i", "完整合法區間", "不回寫", "不同幾何候選", "下游"),
+            "R56": ("D16a", "begin／body／end", "至多一次", "原樣確認", "未啟用"),
+        }
+        for clause, phrases in requirements.items():
+            with self.subTest(clause=clause):
+                self.assertIn(clause, rows, "R17_PLAIN_CLAUSE_REQUIRED")
+                for phrase in phrases:
+                    self.assertIn(phrase, rows[clause], "R17_PLAIN_COMPLETE: " + clause + ": " + phrase)
 
 
 if __name__ == "__main__":
