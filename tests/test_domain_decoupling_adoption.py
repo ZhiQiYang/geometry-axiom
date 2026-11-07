@@ -563,7 +563,9 @@ R17_ONLY_SHA256 = "13ff6cec70900b55271d9350ca31119f31ad9b20245204d67f49576ca5219
 def restore_pre_r14_source(current_bytes):
     """Peel only the exact separately approved R14 P from a R14-on-R17 source."""
     current = normalized(current_bytes)
-    if sha(current.encode("utf-8")) != R14_ON_R17_SHA256:
+    # normalized() has already performed the one allowed CRLF conversion.
+    # A second conversion would incorrectly accept CRCRLF source tampering.
+    if hashlib.sha256(current.encode("utf-8")).hexdigest() != R14_ON_R17_SHA256:
         return current  # R17-only or a tamper; the following R17 hash gate judges it.
     patch_bytes = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
     require(sha(patch_bytes.replace(b"\r\n", b"\n")) == R14_PATCH_SHA256,
@@ -736,8 +738,8 @@ class AdoptionIntegrity(unittest.TestCase):
         actual = (ROOT / "公理層.md").read_bytes()
         actual = restore_pre_r17_source(actual, queue)
         actual = apply_r14_extension(normalized(actual), queue, patch)
-        validate_current_document(actual, current)
-        self.assertEqual(CURRENT_HASH, sha(actual))
+        validate_current_document(actual.encode("utf-8"), current)
+        self.assertEqual(CURRENT_HASH, sha(actual.encode("utf-8")))
         self.assertEqual(ADOPTED_HASH, hashlib.sha256(self.expected.encode("utf-8")).hexdigest())
 
     def test_current_source_tamper_deletion_and_layout_drift_are_rejected(self):
@@ -1000,7 +1002,14 @@ class BoundaryPairAdoptionIntegrity(unittest.TestCase):
         actual = (ROOT / "公理層.md").read_bytes()
         restored = self.restore(actual, (ROOT / "決策佇列.md").read_bytes())
         validate_current_document(restored, AdoptionIntegrity.current)
-        self.assertEqual(CURRENT_HASH, sha(restored), "R17_OLD_207_CLAUSE_ORACLE_UNCHANGED")
+        # The frozen 207-clause CURRENT_HASH is the R14-only result, whereas
+        # restore_pre_r17_source returns its exact pre-R14 predecessor.
+        # Reapply the approved P to retain the original oracle unchanged.
+        replay = apply_r14_extension(
+            normalized(restored), (ROOT / "決策佇列.md").read_bytes(),
+            (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes())
+        self.assertEqual(CURRENT_HASH, sha(replay.encode("utf-8")),
+                         "R17_OLD_207_CLAUSE_ORACLE_UNCHANGED")
         self.assertEqual(len(source_layout(AdoptionIntegrity.current)[0]), 207)
         rows = source_layout(normalized(actual))[0]
         self.assertEqual(len(rows), 208)
