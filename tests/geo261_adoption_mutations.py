@@ -75,6 +75,9 @@ INPUTS = {
     "addendumMap": "geometry-core/domain-decoupling/merge-addendum.json",
     "addendumMarkdown": "geometry-core/domain-decoupling/MERGE-ADDENDUM.md",
     "ssot": "公理層.md",
+    "r17ApprovedDelta": "tests/fixtures/r17-approved-delta.json",
+    "plainExplanation": "geometry-guide/公理層-白話.md",
+    "decisionQueue": "決策佇列.md",
     "expected": "tests/run_all.expected.json",
     "aggregateRunner": "tests/run_all.py",
 }
