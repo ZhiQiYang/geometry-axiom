@@ -83,6 +83,20 @@ def execute_packet(markup, state):
     return json.loads(result.stdout)
 
 
+def execute_safe_json(markup, value):
+    """Run the actual browser backup/HTML-export serializer, not a replica."""
+    script = reader.script_text(markup, "review-script")
+    definition = next(line for line in script.splitlines() if line.startswith("const safeJSON ="))
+    code = ("const value=JSON.parse(require('fs').readFileSync(0,'utf8'));" +
+            definition + "\nprocess.stdout.write(safeJSON(value));")
+    node = os.environ.get("CODEX_PRIMARY_RUNTIME_NODE") or shutil.which("node")
+    if not node:
+        raise RuntimeError("Node is required to execute the real reader serializer")
+    result = subprocess.run([node, "-e", code], input=json.dumps(value, ensure_ascii=False),
+                            text=True, encoding="utf-8", capture_output=True, check=True)
+    return result.stdout
+
+
 class CanonicalReader(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -491,6 +505,83 @@ class CanonicalReader(unittest.TestCase):
         self.assertIn("prefers-color-scheme", js)
         self.assertIn("ref-preview", js)                      # 拍板二:hover 預覽與固定面板並存
         self.assertIn("#ref-preview{position:fixed", self.html)
+        # Add cases within the registered test; retain every existing assertion.
+        self.check_offline_source_serialization()
+        self.check_offline_source_inline()
+        self.check_external_resources_rejected()
+
+    def check_offline_source_serialization(self):
+        value = {"source": 'http://example.invalid/a HTTPS://example.invalid/b?x=1&y=2 '
+                           '</script>\u2028\u2029',
+                 "literalEscapes": r'https:\/\/example.invalid/\u003c',
+                 "nested": [{"出處": "https://example.invalid/#原文"}]}
+        for label, encoded in (("PY_JSON", reader.safe_json(value)),
+                               ("JS_JSON", execute_safe_json(self.html, value))):
+            with self.subTest(serializer=label):
+                self.assertEqual(json.loads(encoded), value, "R374_" + label + "_ROUNDTRIP")
+                self.assertNotRegex(encoded, r"(?i)https?://", "R374_" + label + "_OFFLINE")
+                self.assertNotIn("</script>", encoded)
+                self.assertNotIn("\u2028", encoded)
+                self.assertNotIn("\u2029", encoded)
+
+    def check_offline_source_inline(self):
+        urls = ("https://github.com/ZhiQiYang/geometry-axiom/issues/57#issuecomment-6436163904",
+                "https://github.com/ZhiQiYang/geometry-axiom/issues/57#issuecomment-6436060391")
+        linked = "[#57 決策回報](" + urls[0] + ") 及 [完整設計](" + urls[1] + ")"
+        hostile = '<img src="https://example.invalid/image"><script>bad()</script>'
+        cases = [("markdown", linked, linked),
+                 ("case", "HTTP://example.invalid/a https://example.invalid/b?x=1&y=2",
+                  "HTTP://example.invalid/a https://example.invalid/b?x=1&y=2"),
+                 ("code", "`" + urls[0] + "`", urls[0]),
+                 ("bold", "**" + urls[1] + "**", urls[1]),
+                 ("escaped HTML", hostile, hostile)]
+        rendered = reader.render_inline_with_reader(self.html, [case[1] for case in cases], self.state["clauses"])
+        for (label, _, expected), markup in zip(cases, rendered):
+            with self.subTest(inline=label):
+                self.assertEqual(reader.visible_text(markup), expected, "R374_INLINE_TEXT")
+                self.assertNotRegex(markup, r"(?i)https?://", "R374_INLINE_OFFLINE")
+                # Independently inspect real tags: URLs may only be text.
+                tags = []
+                class Tags(HTMLParser):
+                    def handle_starttag(self, tag, attrs):
+                        tags.append((tag, attrs))
+                Tags().feed(markup)
+                self.assertTrue(all(tag in {"wbr", "code", "strong"} and not attrs
+                                    for tag, attrs in tags), "R374_INLINE_INERT")
+
+    def check_external_resources_rejected(self):
+        resources = {
+            "link": ('<link rel="stylesheet" href="//example.invalid/style.css">', "external reader resource"),
+            "script": ('<script src="//example.invalid/code.js"></script>', "external reader resource"),
+            # The existing CSS guard rejects @import before the resource guard.
+            "import": ('<style>@import "//example.invalid/style.css";</style>', "unsupported CSS block: @import"),
+            "image": ('<img src="https://example.invalid/image" alt="">', "external reader resource"),
+        }
+        for label, (resource, first_rejection) in resources.items():
+            corrupted = self.html.replace("</head>", resource + "</head>", 1)
+            self.assertNotEqual(corrupted, self.html)
+            with self.subTest(resource=label), self.assertRaisesRegex(AssertionError, first_rejection):
+                reader.validate(corrupted, self.axiom, self.plain)
+
+    def check_delta0_sources(self):
+        # Fixed independent provenance oracle: a renderer that drops the URLs
+        # must fail even if its own regenerated DOM and validator agree.
+        urls = ("https://github.com/ZhiQiYang/geometry-axiom/issues/57#issuecomment-6436163904",
+                "https://github.com/ZhiQiYang/geometry-axiom/issues/57#issuecomment-6436060391")
+        regenerated = reader.rebuild(self.html, self.axiom, self.plain)
+        state = json.loads(reader.script_text(regenerated, "axiom-review-data"))
+        preamble = independent_source_slices(self.axiom)["preamble"]
+        visible = "\n".join(text for section, _, text in SourceDOM(regenerated).leaves if section == "preamble")
+        self.assertEqual(state["sourceSections"]["preamble"], {
+            "source": preamble, "sourceHash": hashlib.sha256(preamble.encode("utf-8")).hexdigest()})
+        for url in urls:
+            self.assertIn(url, preamble, "R374_DELTA0_SOURCE")
+            self.assertIn(url, visible, "R374_DELTA0_VISIBLE")
+        self.assertIsNone(re.search(r"(?i)https?://", regenerated), "R374_REBUILD_OFFLINE")
+        self.assertEqual(reader.validate(regenerated, self.axiom, self.plain)["geo120"], "pass")
+        self.assertEqual([c["id"] for c in state["clauses"]], [c["id"] for c in self.state["clauses"]])
+        for key in ("documentId", "baseDocumentHash", "comments", "proposals", "revisions", "draft"):
+            self.assertEqual(state[key], self.state[key], key)
 
     def test_every_patch_actually_lands(self):
         # 這個管線最常見的失效不是「補丁做錯」,而是「補丁被靜默跳過」——
@@ -500,6 +591,26 @@ class CanonicalReader(unittest.TestCase):
         regenerated = reader.rebuild(self.html, self.axiom, self.plain)
         self.assertGreater(len(reader.PATCHES), 50)          # 有真的登記,不是空跑
         self.assertEqual(reader.PATCHES.verify(regenerated), [])
+        self.check_offline_source_template_migration()
+
+    def check_offline_source_template_migration(self):
+        # A repaired committed HTML must not hide removal of the sync migration.
+        legacy_text = r'''    function safeText(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}'''
+        legacy_json = r'''const safeJSON = v => JSON.stringify(v,null,2).replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');'''
+        legacy = self.html
+        for script_id, prefix, old in (("reader-script", "    function safeText(s)", legacy_text),
+                                       ("review-script", "const safeJSON =", legacy_json)):
+            script = reader.script_text(legacy, script_id)
+            current = next(line for line in script.splitlines() if line.startswith(prefix))
+            self.assertEqual(script.count(current), 1)
+            legacy = reader.replace_script(legacy, script_id, script.replace(current, old))
+        regenerated = reader.rebuild(legacy, self.axiom, self.plain)
+        self.assertIsNone(re.search(r"(?i)https?://", regenerated), "R374_TEMPLATE_MIGRATION")
+        self.assertEqual(reader.validate(regenerated, self.axiom, self.plain)["geo120"], "pass")
+        self.assertTrue(regenerated == self.html, "R374_TEMPLATE_IDEMPOTENT")
+        labels = [label for label, _ in reader.PATCHES.present]
+        self.assertIn("R374 inert source URL text", labels)
+        self.assertIn("R374 source URL JSON export", labels)
 
     def test_force_marker_registers_new_applied_and_evolved_paths(self):
         for source in ("OLD", "NEW MARK", "later UI MARK"):
@@ -664,6 +775,7 @@ class CanonicalReader(unittest.TestCase):
         expected = [(name, tag, reader.visible_text(markup)) for (name, tag, _), markup in zip(expected, inline)]
         self.assertEqual(observed.leaves, expected)
         self.assertEqual(len([entry for entry in expected if entry[:2] == ("exclusions", "li")]), 19)
+        self.check_delta0_sources()
 
     def test_source_scope_table_preserves_every_cell_and_row(self):
         section = independent_source_slices(self.axiom)["exclusions"]
