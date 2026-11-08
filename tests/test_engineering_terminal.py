@@ -101,6 +101,18 @@ def project_panel_fill_reader(case, value):
     return projected
 
 
+def project_r14_native_capability(case, value):
+    """Project exactly the approved native-only addition; keep the old oracle."""
+    projected = json.loads(json.dumps(value))
+    capabilities = projected["engineering-read"]["state"]["native_capabilities"]
+    case.assertEqual(1, capabilities.count("grid-subdivision-native/2"),
+                     "K1_R14_NATIVE_CAPABILITY_EXACTLY_ONCE")
+    at = capabilities.index("grid-subdivision-native/2")
+    case.assertEqual(len(capabilities) - 1, at, "K1_R14_NATIVE_CAPABILITY_FIXED_LAST")
+    del capabilities[at]
+    return projected
+
+
 class EngineeringTerminal(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -224,9 +236,9 @@ class EngineeringTerminal(unittest.TestCase):
         expected_json = json.dumps(original, ensure_ascii=False, separators=(",", ":"))
 
         def compare(value):
-            projected = value
-            projected = project_panel_fill_reader(self, projected)
+            projected = project_panel_fill_reader(self, value)
             projected = project_identity_capability(self, without_terminal(projected))
+            projected = project_r14_native_capability(self, projected)
             self.assertEqual(expected_json,
                              json.dumps(projected, ensure_ascii=False, separators=(",", ":")),
                              "K1-a: non-terminal fields/order changed relative to the independently built baseline")
@@ -292,6 +304,22 @@ class EngineeringTerminal(unittest.TestCase):
                 else:
                     state["capabilities"].append("panel-fill/1")
                 with self.assertRaises(AssertionError, msg="K1_PF_READER_NEGATIVE_" + fault):
+                    compare(probe)
+
+        for fault in ("missing", "duplicate", "moved", "unknown"):
+            with self.subTest(r14_native_projection_negative=fault):
+                probe = json.loads(json.dumps(replies))
+                caps = probe["engineering-read"]["state"]["native_capabilities"]
+                at = caps.index("grid-subdivision-native/2")
+                if fault == "missing":
+                    del caps[at]
+                elif fault == "duplicate":
+                    caps.append("grid-subdivision-native/2")
+                elif fault == "moved":
+                    caps[0], caps[at] = caps[at], caps[0]
+                else:
+                    caps.insert(at, "unreviewed-native-capability/1")
+                with self.assertRaises(AssertionError, msg="K1_R14_NATIVE_NEGATIVE_" + fault):
                     compare(probe)
 
 

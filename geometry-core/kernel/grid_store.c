@@ -339,7 +339,7 @@ bool geo_grid_rules_validate(const GeoGridSystem *system, GeoGridStoreError *err
     if (system->rule_count > GEO_GRID_RULE_CAPACITY) return geo_grid_error(error, GEO_GRID_STORE_RULE_CAPACITY);
     if (!system->rule_count) return true;
     for (int axis = 0; axis < 2; ++axis)
-        if (system->axis[axis].source != GEO_GRID_SOURCE_REPEAT || system->axis[axis].stagger_set) {
+        if (!geo_grid_axis_is_infinite(&system->axis[axis]) || system->axis[axis].stagger_set) {
             if (error) error->axis = axis;
             return geo_grid_error(error, GEO_GRID_STORE_RULE_SOURCE);
         }
