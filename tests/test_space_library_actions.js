@@ -95,3 +95,147 @@ test('R362_SPACE_PLAN_ACTION preserves the existing saved-source wall-height ent
   assert.equal(h.$('smEditHeight').value, 2800, 'R362_SPACE_PLAN_SAVED_HEIGHT');
   assert.equal(JSON.stringify(h.records), before, 'R362_SPACE_PLAN_ENTRY_DOES_NOT_COMMIT');
 });
+
+// ---- Identity ledger activation keeps the space source current (2026-11-07 cloud L4 walk, R09a) ----
+{
+/* Space workspace: turning on the identity ledger records one core undo step
+ * but leaves the de-identified scene unchanged. Before this fix the next step
+ * ("確認用途與觀看方向") always failed with 「來源或專案已變更」 because the
+ * source's history token no longer matched (2026-11-07 cloud L4 walk, R09a).
+ * The real space-workspace.js functions run with the real ContextHistory;
+ * transport is a fake. Only an exact one-step activation may re-pin.
+ */
+const P = require('../geometry-web/project-store.js');
+
+function slice(from, to) {
+  const start = source.indexOf(from), end = source.indexOf(to, start);
+  assert.ok(start >= 0 && end > start, 'anchor ' + from);
+  return source.slice(start, end);
+}
+function line(prefix) {
+  const start = source.indexOf(prefix);
+  assert.ok(start >= 0, 'anchor ' + prefix);
+  return source.slice(start, source.indexOf('\n', start));
+}
+
+function fixture({beforeActivate, afterActivate, dumpText, lineReply, priorSteps = 0, preview = false} = {}) {
+  const history = new P.ContextHistory(() => ({id: 'project-a', models: [], sources: new Map()}));
+  history.frame.ids.set(1, 'face-key-1');
+  const base = 'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000\n';
+  const evidence = {nativeRevision: 7, blocked: false};
+  const calls = [], messages = [];
+  const state = {source: null, result: null, revision: 3, previewRevision: -1, phase: 'ready', ledgerKnown: false, ledgerActive: false};
+  const ReferenceWorkspace = {history, getEvidenceState: () => ({...evidence})};
+  const sandbox = {
+    state, ReferenceWorkspace, Number,
+    contextId: () => 'project-a',
+    faceKey: bid => history.frame.ids.get(bid),
+    syncIdentityOffer() {}, updateActions() {},
+    message: (text, kind = '') => messages.push({text, kind}),
+    async api(command) {
+      calls.push(command);
+      if (command === 'identity-read') return {ok: true, active: false};
+      if (command === 'line identity-ledger activate') {
+        beforeActivate?.(history, evidence);
+        const reply = {ok: true, history_changed: true, before_revision: evidence.nativeRevision, revision: evidence.nativeRevision + 1, ...lineReply};
+        history.observe(command, reply);
+        evidence.nativeRevision = reply.revision;
+        afterActivate?.(history, evidence);
+        return reply;
+      }
+      if (command === 'dump-deidentified') return {ok: true, text: dumpText ?? base};
+      throw Error('unexpected command ' + command);
+    },
+  };
+  const code = [line('  function sourceHistoryToken()'), line('  function sameSourceHistory('),
+    // Baseline sources without the helpers still run activateIdentity, so a
+    // missing re-pin fails as an assertion rather than a harness error.
+    source.includes('  /* Activating the ledger appends') ? slice('  /* Activating the ledger appends', '  function creationOwner(')
+      : slice('  async function activateIdentity()', '  function creationOwner(')].join('\n');
+  const fns = new Function(...Object.keys(sandbox), code + '\nreturn {activateIdentity, sourceHistoryToken, sameSourceHistory};')(...Object.values(sandbox));
+  // Earlier edits fill the undo history before the source is read (PR #376 M1).
+  for (let i = 0; i < priorSteps; i++) history.observe('line spec prior ' + i, {ok: true, history_changed: true});
+  if (preview) { state.result = {}; state.previewRevision = state.revision; state.phase = 'preview'; }
+  state.source = {kind: 'scene', context_id: 'project-a', boundary_id: 1, face_key: 'face-key-1', base_scene: base, history_token: fns.sourceHistoryToken()};
+  return {state, history, calls, messages, ...fns};
+}
+const coreStep = h => h.observe('line spec other 1', {ok: true, history_changed: true});
+
+test('activation keeps a current scene source usable for the next step', async () => {
+  const f = fixture();
+  const before = f.state.source.history_token;
+  await f.activateIdentity();
+  assert.equal(f.history.undo.length, 1, 'activation is one undo step');
+  assert.notEqual(f.state.source.history_token, before);
+  assert.equal(f.sameSourceHistory(f.state.source.history_token), true, 'source is current after activation');
+  assert.equal(f.state.ledgerActive, true);
+  assert.deepEqual(f.messages.at(-1), {text: '已啟用物件身分追蹤。重新預覽後建立的模型才會帶來源身分。', kind: 'success'});
+});
+
+test('anything beyond the single activation step leaves the source stale', async () => {
+  for (const [label, options] of [
+    ['edit before activation', {beforeActivate: h => coreStep(h)}],
+    ['edit after activation', {afterActivate: h => coreStep(h)}],
+    ['scene text changed', {dumpText: 'surface 1 changed\n'}],
+    ['native revision jumped', {lineReply: {before_revision: 9, revision: 10}}],
+  ]) {
+    const f = fixture(options);
+    const before = f.state.source.history_token;
+    await f.activateIdentity();
+    assert.equal(f.state.source.history_token, before, label + ': token kept');
+    assert.equal(f.sameSourceHistory(f.state.source.history_token), false, label + ': still stale');
+    assert.equal(f.state.ledgerActive, true, label + ': ledger still activated');
+    assert.deepEqual(f.messages.at(-1), {text: '已啟用物件身分追蹤。來源讀取後另有變更，請重新「使用目前面」再預覽。', kind: 'warning'}, label);
+  }
+});
+
+test('an activation that records no history step keeps the source as it was', async () => {
+  const f = fixture({lineReply: {history_changed: false}});
+  const before = f.state.source.history_token;
+  await f.activateIdentity();
+  assert.equal(f.history.undo.length, 0);
+  assert.equal(f.state.source.history_token, before);
+  assert.equal(f.sameSourceHistory(before), true);
+  assert.equal(f.messages.at(-1).kind, 'success');
+});
+
+test('activation at the undo-history capacity still keeps the source current', async () => {
+  // ContextHistory keeps at most `limit` (32) steps: the activation push drops the
+  // oldest step, so the length stays 32 while exactly one step was appended.
+  for (const priorSteps of [31, 32, 40]) {
+    const f = fixture({priorSteps, preview: true});
+    assert.equal(f.history.undo.length, Math.min(priorSteps, f.history.limit));
+    const before = f.state.source.history_token;
+    await f.activateIdentity();
+    assert.equal(f.history.undo.length, Math.min(priorSteps + 1, f.history.limit), priorSteps + ': one step appended');
+    assert.notEqual(f.state.source.history_token, before, priorSteps + ': token re-pinned');
+    assert.equal(f.sameSourceHistory(f.state.source.history_token), true, priorSteps + ': source current');
+    assert.equal(f.state.previewRevision, -1, priorSteps + ': the preview made before activation still expires');
+    assert.deepEqual(f.messages.at(-1), {text: '已啟用物件身分追蹤。這次預覽已過期，請重新預覽。', kind: 'warning'}, String(priorSteps));
+  }
+});
+
+test('at capacity, a second step around the activation still leaves the source stale', async () => {
+  for (const [label, options] of [
+    ['edit before activation', {beforeActivate: h => coreStep(h)}],
+    ['edit after activation', {afterActivate: h => coreStep(h)}],
+  ]) {
+    const f = fixture({...options, priorSteps: 32});
+    const before = f.state.source.history_token;
+    await f.activateIdentity();
+    assert.equal(f.history.undo.length, f.history.limit, label);
+    assert.equal(f.state.source.history_token, before, label + ': token kept');
+    assert.equal(f.sameSourceHistory(before), false, label + ': still stale');
+  }
+});
+
+test('a source that was already stale is not re-pinned by activation', async () => {
+  const f = fixture();
+  coreStep(f.history);
+  const before = f.state.source.history_token;
+  await f.activateIdentity();
+  assert.equal(f.state.source.history_token, before);
+  assert.equal(f.sameSourceHistory(before), false);
+  assert.equal(f.calls.includes('dump-deidentified'), false, 'no re-pin attempt without a current pin');
+});
+}
