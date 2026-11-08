@@ -1,0 +1,18 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--hostname",
+    "github.com",
+    "-H",
+    "Accept: application/vnd.github.raw+json",
+    "repos/ZhiQiYang/geometry-axiom/git/blobs/136c14a48336b2ff3af08c867b73c0f3d5071e9f"
+  ],
+  "cwd": "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+  "exit_code": 0,
+  "timestamp_utc": "2026-10-26T10:25:38.170071+00:00",
+  "stdout_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 18860,
+  "stderr_bytes": 0
+}

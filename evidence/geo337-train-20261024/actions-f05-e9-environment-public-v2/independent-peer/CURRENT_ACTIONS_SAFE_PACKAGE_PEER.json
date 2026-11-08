@@ -1,0 +1,28 @@
+{
+  "schema": "independent-current-actions-public-safe-package-and-source-binding-peer/1",
+  "checks": 114024,
+  "exit_code": 0,
+  "findings": [],
+  "archive_sha256": "40567a58ce19e563245b109736ee1417a28e8d77308ce0027df19dfc6fd361c8",
+  "members": 365,
+  "public_original_entries": 363,
+  "original_reads": 65,
+  "read_exit_counts": {
+    "0": 63,
+    "1": 2
+  },
+  "redactions": 2,
+  "secret_matches_in_public_member_bytes_and_package_metadata": 0,
+  "credential_values_printed": false,
+  "whole_tree_evidence_only_change_counts": {
+    "338": 260,
+    "339": 20
+  },
+  "limits": [
+    "No new API request or subject execution. Existing original complete read outputs and metadata were checked.",
+    "Two private signed-query values are retained in original cloud streams; public copies explicitly replace only their exact byte ranges. All other bytes are unchanged.",
+    "Collector producer outer streams still need separate check if attached; this report covers archive and adjacent package metadata only.",
+    "Annotations prove scheduler prevented all14 jobs due to payment failure OR spending limit; Forbidden is a separate download access failure, not proof logs do not exist.",
+    "Complete non-evidence tree equality is a source relationship only. Original runtime SHA remains L/F; no gate result, B3 resolution, merged status, or expanded authorization is inferred."
+  ]
+}

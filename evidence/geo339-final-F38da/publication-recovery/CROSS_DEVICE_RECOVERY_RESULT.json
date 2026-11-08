@@ -1,0 +1,14 @@
+{
+  "sourceSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+  "evidenceParent": "e9ee6d088b0cad4e3984aa2842a50acc311c2351",
+  "bodyParent": "e1b5b1716333223436c3ba232aafa27b1e938182",
+  "evidenceHead": null,
+  "bodyHead": null,
+  "errors": [
+    "Traceback (most recent call last):\n  File \"/workspace/geo339-publication-20261024/resume_preserving_raw_review.py\", line 88, in <module>\n    review_path.rename(retained)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1363, in rename\n    os.rename(self, target)\nOSError: [Errno 18] Invalid cross-device link: '/tmp/geo324-faces-work-20261024/evidence/geo339-final-F38da/LATEST_REVIEW_339.md' -> '/workspace/geo339-publication-20261024/retained-LATEST_REVIEW_339.md'\n"
+  ],
+  "exitCode": 1,
+  "resumerSHA256": "fa52619a85e56c6a944fd66ebd838d175373a291907f035abe228475a0b9ec5e",
+  "startedUTC": "2026-10-24T01:21:39.418175+00:00",
+  "endedUTC": "2026-10-24T01:21:40.581386+00:00"
+}

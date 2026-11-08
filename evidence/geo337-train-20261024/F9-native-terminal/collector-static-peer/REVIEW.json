@@ -1,0 +1,123 @@
+{
+  "schema": "geo337-F9-native-terminal-collection-static-peer/1",
+  "utc": "2026-10-25T10:36:14.668539+00:00",
+  "exit": 0,
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "collector_sha256": "17352ac43c5dbd911143c5771e0280d61e58a487293d2b3ad38e8cb272001e54",
+  "guard_sha256": "226015a2722a447ec3fceb5b18eaa5c918f7b0befd730cf2925fdf96aaef1834",
+  "launcher_sha256": "af45b9182947dfa38849d27c696b62ea74cf90f1cb4a7192fb67a44185b001bc",
+  "pins_sha256": "a2dbe125850523e3798874f4543d6f7d0d30c153e5c92c26c4a40bf2e431be1a",
+  "checks": 22,
+  "findings": [],
+  "reviewed": [
+    {
+      "check": "exact pinned v2",
+      "passed": true
+    },
+    {
+      "check": "pin ORIGINAL_TO_F9.diff",
+      "passed": true
+    },
+    {
+      "check": "pin PREPARATION.json",
+      "passed": true
+    },
+    {
+      "check": "pin README.md",
+      "passed": true
+    },
+    {
+      "check": "pin REQUEST.unbound.json",
+      "passed": true
+    },
+    {
+      "check": "pin V1_TO_V2.diff",
+      "passed": true
+    },
+    {
+      "check": "pin collect_terminal_native.py",
+      "passed": true
+    },
+    {
+      "check": "pin launch_collection.py",
+      "passed": true
+    },
+    {
+      "check": "pin terminal_guard.py",
+      "passed": true
+    },
+    {
+      "check": "AST terminal_guard.py",
+      "passed": true
+    },
+    {
+      "check": "AST collect_terminal_native.py",
+      "passed": true
+    },
+    {
+      "check": "AST launch_collection.py",
+      "passed": true
+    },
+    {
+      "check": "historical collector exact",
+      "passed": true
+    },
+    {
+      "check": "guard binding",
+      "passed": true
+    },
+    {
+      "check": "collector binding",
+      "passed": true
+    },
+    {
+      "check": "exact peer tool identities",
+      "passed": true
+    },
+    {
+      "check": "unbound not authorized",
+      "passed": true
+    },
+    {
+      "check": "terminal before content selection",
+      "passed": true
+    },
+    {
+      "check": "budget before archive write",
+      "passed": true
+    },
+    {
+      "check": "normal gzip exact controlled compression",
+      "passed": true
+    },
+    {
+      "check": "guard before and after full packaging",
+      "passed": true
+    },
+    {
+      "check": "no product run in collector subprocess",
+      "passed": true
+    }
+  ],
+  "resolved_v1_findings": [
+    "Launcher now requires exact collector and guard SHA in independent accepted peer, rather than accepting unrelated review0.",
+    "Budget explicitly adds conservative default-deflate compressBound terms with upward rounding and gzip header/name/trailer allowance; it does not assume compression savings.",
+    "Original exec FINAL output source/actual_exit is checked; unparseable/mismatched output remains collectable as binding issue and cannot make formal_candidate true."
+  ],
+  "scope_review": [
+    "All OUTER and JOB files preserved except exact historical preserved-global-geometry-tests payload, with original before/preserved cache manifests retained.",
+    "New cache includes ordinary sidecars and all unknown/nonordinary ELF; ordinary payload omitted only when registered filename plus actual complete hash/size matches sidecar. Invalid sidecar retains full payload instead of dropping failed-run evidence.",
+    "Four pinned integer-terminal records required before cache traversal. Native red exits and terminal metadata disagreements are archived and remain red; collectionExit0 is not product pass.",
+    "Four nonblocking original regular locks plus root source/cache lease preserve scope; no claimed universal process visibility.",
+    "Fresh destination, no overwrites/deletes/reruns. Budget is before large archive; selected raw payload, tar/PAX framing, inventory/JSON, gzip expansion and64MiB reserve all accounted.",
+    "Original tar roundtrip names/bytes/hash/symlink targets and current source bytes checked; terminal four files stable before/after.",
+    "Original230/strict registry/GDI-only skip and35min judge unchanged; actual complete-row acceptance remains a separate independent review."
+  ],
+  "limits": [
+    "Static source/diff/AST/pins only. No original native payload/cache traversed, no collector/product/C/Chrome execution, no locks acquired.",
+    "This peer authorizes only exact reviewed collector bytes for a root-bound terminal request. Actual request hashes, current resource headroom and resulting package need independent actual review.",
+    "Ordinary native ELF payloads remain at original locations and are hash-only in package; old historical cache payload deliberately not traversed or claimed new.",
+    "Original internal capture_output pipes and cleaned NativeBuild scratch cannot be reconstructed or claimed archived.",
+    "Default gzip expansion bound assumes the unchanged Python gzip default-deflate settings used by tarfile w:gz compresslevel6."
+  ]
+}

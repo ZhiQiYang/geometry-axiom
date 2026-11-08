@@ -1,0 +1,191 @@
+{
+  "schema": "native-recovery-focused-independent-actual-peer/1",
+  "reviewed_utc": "2026-10-26T09:48:14.174455+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "checks": 24148,
+  "tool_sha256": "6248a86b6ac174a6c624f64c14186862c841aea5efdd387c8d81b80766b80893",
+  "original_focused_result_sha256": "e1ebff2ed14569abcdc1f5b634cae027e3d69daa5b1db20830990728325a59ec",
+  "original_outer_result_sha256": "be763ce7e04c60f366bbb3f553e77f97820d9ba3ea42328c61693362f5cc3274",
+  "baseline": [
+    {
+      "case": "positive",
+      "harness_exit": 0,
+      "transition_exit": 0,
+      "merge_exit": 0,
+      "reason": "positive accepted"
+    },
+    {
+      "case": "hook",
+      "harness_exit": 0,
+      "transition_exit": 1,
+      "merge_exit": null,
+      "reason": "RuntimeError: executable Git hook refused: post-merge"
+    },
+    {
+      "case": "filter",
+      "harness_exit": 0,
+      "transition_exit": 1,
+      "merge_exit": null,
+      "reason": "RuntimeError: executable or redirected Git configuration refused: filter.synthetic.smudge"
+    },
+    {
+      "case": "worktree",
+      "harness_exit": 0,
+      "transition_exit": 1,
+      "merge_exit": null,
+      "reason": "RuntimeError: executable or redirected Git configuration refused: core.worktree"
+    },
+    {
+      "case": "sparse",
+      "harness_exit": 0,
+      "transition_exit": 1,
+      "merge_exit": null,
+      "reason": "RuntimeError: effective original non-cone sparse configuration: core.sparseCheckoutCone"
+    },
+    {
+      "case": "promisor",
+      "harness_exit": 0,
+      "transition_exit": 1,
+      "merge_exit": null,
+      "reason": "RuntimeError: executable Git configuration refused: remote.origin.promisor"
+    },
+    {
+      "case": "ignored",
+      "harness_exit": 0,
+      "transition_exit": 1,
+      "merge_exit": 0,
+      "reason": "RuntimeError: ignored path set changed"
+    },
+    {
+      "case": "observation",
+      "harness_exit": 0,
+      "transition_exit": 1,
+      "merge_exit": null,
+      "reason": "RuntimeError: explicit approved remote observation argv"
+    }
+  ],
+  "phases": [
+    {
+      "phase": "new-focused-baseline",
+      "exit": 0,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000001",
+      "module_sha256": "6248a86b6ac174a6c624f64c14186862c841aea5efdd387c8d81b80766b80893"
+    },
+    {
+      "phase": "unknown-before",
+      "exit": 0,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000002",
+      "module_sha256": "6248a86b6ac174a6c624f64c14186862c841aea5efdd387c8d81b80766b80893"
+    },
+    {
+      "phase": "unknown-withdrawn",
+      "exit": 1,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000003",
+      "module_sha256": "e878732af7ed38b97c5d1228f057fcc2821dca3de1f026ef86f7956176850583"
+    },
+    {
+      "phase": "unknown-restored",
+      "exit": 0,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000004",
+      "module_sha256": "6248a86b6ac174a6c624f64c14186862c841aea5efdd387c8d81b80766b80893"
+    },
+    {
+      "phase": "hook-before",
+      "exit": 0,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000005",
+      "module_sha256": "6248a86b6ac174a6c624f64c14186862c841aea5efdd387c8d81b80766b80893"
+    },
+    {
+      "phase": "hook-withdrawn",
+      "exit": 1,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000006",
+      "module_sha256": "969ed00b2c90304a420a4e1eaaee74528c837b7bd2297095eb8ad28ae76610ae"
+    },
+    {
+      "phase": "hook-restored",
+      "exit": 0,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000007",
+      "module_sha256": "6248a86b6ac174a6c624f64c14186862c841aea5efdd387c8d81b80766b80893"
+    },
+    {
+      "phase": "ignored-before",
+      "exit": 0,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000008",
+      "module_sha256": "6248a86b6ac174a6c624f64c14186862c841aea5efdd387c8d81b80766b80893"
+    },
+    {
+      "phase": "ignored-withdrawn",
+      "exit": 1,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000009",
+      "module_sha256": "64932a0693bb83b67281d4e0be32ca383462df38f901fb92bef5e742f69ddef9"
+    },
+    {
+      "phase": "ignored-restored",
+      "exit": 0,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000010",
+      "module_sha256": "6248a86b6ac174a6c624f64c14186862c841aea5efdd387c8d81b80766b80893"
+    },
+    {
+      "phase": "observation-before",
+      "exit": 0,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000011",
+      "module_sha256": "6248a86b6ac174a6c624f64c14186862c841aea5efdd387c8d81b80766b80893"
+    },
+    {
+      "phase": "observation-withdrawn",
+      "exit": 1,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000012",
+      "module_sha256": "3882ae016f4c548573ce1c2b15bf09bc11143f8b2397242bf96a41208080e5f2"
+    },
+    {
+      "phase": "observation-restored",
+      "exit": 0,
+      "command_directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-native-final-focused-20261026/original-phase-commands/subcommands/000013",
+      "module_sha256": "6248a86b6ac174a6c624f64c14186862c841aea5efdd387c8d81b80766b80893"
+    }
+  ],
+  "withdraw_restore_exits": {
+    "unknown": [
+      0,
+      1,
+      0
+    ],
+    "hook": [
+      0,
+      1,
+      0
+    ],
+    "ignored": [
+      0,
+      1,
+      0
+    ],
+    "observation": [
+      0,
+      1,
+      0
+    ]
+  },
+  "original_commands_verified": 1129,
+  "original_return_code_counts": {
+    "0": 1104,
+    "1": 25
+  },
+  "original_raw_streams_verified": 3387,
+  "raw_stream_bytes_verified": 89774,
+  "raw_catalog_sha256": "8ec624609763193bffe58eac77eaf394537d2acaafb7a954c0a845902fbdcaea",
+  "synthetic_requests_verified": 20,
+  "synthetic_fixture_snapshots_verified": 40,
+  "formal_source_transition_executed": false,
+  "native_gate_executed": false,
+  "product_test_executed": false,
+  "formal_tool_runtime_proof_accepted": true,
+  "limits": [
+    "This accepts the exact tool synthetic runtime proof, not the native product gate or real source transition.",
+    "Root must still bind actual final SHA, exact current native index/source delta, original five fixture identities, published remote observation, writer leases and actual capacity before production transition.",
+    "Tiny policy zero capacity is restricted to synthetic paths; original production64MiB and native128MiB limits remain unchanged.",
+    "This peer reads completed originals and captured commands only; it does not independently inspect production source/current index or infer absence of foreign writers.",
+    "All four expected red streams remain original red. No raw stream, fixture, index, source, lease or result was edited."
+  ]
+}

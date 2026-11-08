@@ -1,0 +1,15 @@
+Initial preparation exit 1 after four successful immutable Git snapshot reads.
+This is the original tools.exec_command output transcript from chunk fa1ce8,
+not an independently captured OS stdout/stderr receipt:
+
+Traceback (most recent call last):
+  File "/workspace/prepare_geo337_review_followup_f05.py", line 38, in <module>
+    assert pos >= 0 and b'### ' not in raw[pos + len(marker.encode()):]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+The guard incorrectly rejected subsection headings inside the latest review.
+The corrected guard excludes only a subsequent dated comment heading.
+The resumed builder reuses and verifies the same four recorded Git command
+stdout/stderr streams; it does not repeat or replace those original snapshots.
+No branch, product, test, live native source or cache was modified.

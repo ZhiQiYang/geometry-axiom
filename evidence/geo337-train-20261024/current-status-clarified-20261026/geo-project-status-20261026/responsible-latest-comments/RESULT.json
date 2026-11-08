@@ -1,0 +1,19 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--hostname",
+    "github.com",
+    "graphql",
+    "-f",
+    "query=query { repository(owner:\"ZhiQiYang\",name:\"geometry-axiom\") { p338:pullRequest(number:338) { number comments(last:1) { nodes { url createdAt author { login } body } } } p344:pullRequest(number:344) { number comments(last:1) { nodes { url createdAt author { login } body } } } p341:pullRequest(number:341) { number comments(last:1) { nodes { url createdAt author { login } body } } } p346:pullRequest(number:346) { number comments(last:1) { nodes { url createdAt author { login } body } } } p347:pullRequest(number:347) { number comments(last:1) { nodes { url createdAt author { login } body } } } p348:pullRequest(number:348) { number comments(last:1) { nodes { url createdAt author { login } body } } } p323:pullRequest(number:323) { number comments(last:1) { nodes { url createdAt author { login } body } } } p324:pullRequest(number:324) { number comments(last:1) { nodes { url createdAt author { login } body } } } } }"
+  ],
+  "cwd": "/tmp",
+  "started_utc": "2026-10-26T10:56:02.392091+00:00",
+  "ended_utc": "2026-10-26T10:56:03.064708+00:00",
+  "exit_code": 0,
+  "stdout_bytes": 15910,
+  "stdout_sha256": "562b9de961dba5fc7410921ff31290656d067730102750f30180af742f548503",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

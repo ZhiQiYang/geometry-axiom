@@ -1,0 +1,47 @@
+{
+  "schema": "geo337-private-shm-publication-v3-static-independent-peer/1",
+  "exit_code": 0,
+  "checks": 86,
+  "failed_checks": [],
+  "verdict": "ACCEPTED_STATIC_V3_UNRUN",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "old_root_parent": "70d00309d7985db722c339c77331c436d26a7ab1",
+  "pins_sha256": "77ae24721bfb81c457e91840a529297b1dd6e9bdb899b157eb23771109f8465c",
+  "bootstrap_sha256": "84c8588524079a71d01ca1b3bb75b41585cddb7931ef303a45d0552005869642",
+  "publisher_sha256": "3ef65a16e289ece72d2bdc9f9a7f48347af13f2192016b79f33ebc9539bdf4a7",
+  "wrapper_sha256": "e1c7e09cc2ad8aa7f59ad24fc9b9db724be972d0d890e914831f821d7aebde5d",
+  "remote_verifier_sha256": "9ee3847a612eeb5691ed728049464b04d302c4ae59aee4680bc5f6236ff00513",
+  "subject_files": 10,
+  "subject_bytes": 63632,
+  "resolved_findings": [
+    {
+      "id": "B1",
+      "finding": "Bootstrap failure previously retained old_repo_modified:false without a completed successful comparison, including known changed-after errors.",
+      "resolution": "V2 preserves unknown null until after is observed; writes actual comparison before require; v1 retained."
+    },
+    {
+      "id": "B2",
+      "finding": "Private Gitdir/common directory checks originally occurred after read-tree. The write target needed proof before materialization. No actual environment override was observed.",
+      "resolution": "V3 moves the existing Gitdir/common guards immediately after fresh init and adds exact show-toplevel before alternate/config/ref/index/working payload writes; v1/v2 retained."
+    }
+  ],
+  "assessment": [
+    "Full scripts and exactpublisher diff reviewed. Original source/hash/tree/no-archive-overwrite/sparse/ff-only/normalpush guards bytepreserved; changedROOT isolated to ownedSHM.",
+    "Bootstrap creates physical private.git and one-way read-only alternate to originalWS then existingTMP; oldref/index/config/alternates/sparse/reflog/PROGRESS equality is checked and object payload copies must be zero.",
+    "Gitmetadata config is hashed for preservation but not exported as raw. Only resolved nonsecret author name/email explicitly copied; no credential/helper/header extraction, no token printed. Canonical origin authentication still requires an actual successfulprivate ls-remote.",
+    "Remote GET uses explicit github.com/rawmedia and originalc387 raw capture. Commit tree/parent/ref linkage and every selected leaf bytes/SHA256/blobOID checked, dedup only by identicalOID. Normalpush alone leaves deliveredfalse.",
+    "Wrapper finally rechecks oldWS metadata and forces deliveredfalse on drift/failure. Resource thresholds are toolstorage estimates, not altered product gates."
+  ],
+  "execution_conditions": [
+    "Root must use formally approved require_escalated execution. --execute-root-approved only expresses scheduling intent and cannot replace OS/tool approval.",
+    "Root must hold the shared Gitmetadata scheduling window, keep originalWS historical E70 untouched, and satisfy exactfreshpaths/policy/uid/mode/resource guards.",
+    "Run exactv3 bootstrap/wrapper pins. No subject bootstrap,publisher,verifier,API or SHM operation was executed by this peer.",
+    "After realnormalpush and rawremoteverification, another actualpeer must check original results. VolatileSHMobjects/raw remain protected and must not be deleted."
+  ],
+  "limits": [
+    "Static/AST/text/hash review only. No liveSHM path read or write, no credential value read, no Git/network/product execution, no newfixtures or largecopies.",
+    "No actualbootstrap success, remoteauthentication, resourcepeak, negativefixture0/1/0, publication or delivery is claimed.",
+    "Existing configuredglobal/proxy/CA/GH auth is inherited; this review does not claim it will work in a different namespace. Failure must remain explicit and cannot be bypassed."
+  ],
+  "created_utc": "2026-10-25T13:34:17.178392+00:00"
+}

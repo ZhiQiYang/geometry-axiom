@@ -1,0 +1,30 @@
+{
+  "status": "ARCHIVE_PREPARED_NOT_EXECUTED_NO_REMOVAL_IMPLEMENTED",
+  "executor_sha256": "b7e3f6c5c1f5ad18c1ea9db697c035d01a439991819ad160ae502374c15663ab",
+  "plan_sha256": "24b2f5df655362bd2c2c6a9ea4c98e3d4bcabc384e80d8c46684e1ec7b2f872f",
+  "files": {
+    "inventory.py": {
+      "bytes": 5463,
+      "sha256": "5b7b245bfb14de0d0c599cc68d8743377f82f8010b71f3f9ce1181793db21812"
+    },
+    "README.md": {
+      "bytes": 3847,
+      "sha256": "8cdb12fa6466327890cc90e70d492276330874bc657275eecfce62533b8b650f"
+    },
+    "PLAN.json": {
+      "bytes": 46225,
+      "sha256": "24b2f5df655362bd2c2c6a9ea4c98e3d4bcabc384e80d8c46684e1ec7b2f872f"
+    },
+    "archive_indexes.py": {
+      "bytes": 10189,
+      "sha256": "b7e3f6c5c1f5ad18c1ea9db697c035d01a439991819ad160ae502374c15663ab"
+    },
+    "REQUEST.root-lease-false.json": {
+      "bytes": 445,
+      "sha256": "802e0c3cce9c4cf61571955e02d2ad9e1166325605a2019f6e4f67e1fd25758a"
+    }
+  },
+  "root_leases_all_false": true,
+  "actual_freed_bytes": 0,
+  "original_git_capture_count": 16
+}

@@ -1,0 +1,19 @@
+{
+  "exit_code": 0,
+  "archive": "/workspace/pr338-pr339-current-actions-publication-v2-20261024/current-actions-and-complete-source-binding-with-explicit-redactions.tar.gz",
+  "archive_bytes": 4334205,
+  "archive_sha256": "40567a58ce19e563245b109736ee1417a28e8d77308ce0027df19dfc6fd361c8",
+  "member_count": 365,
+  "classification_sha256": "6c5bb4c8dbb0420e61296efdaff1b7dc5acf2335a2959da7d4a92b35ac889121",
+  "source_binding_sha256": "fa86699c1544a7a0c20498e0720e59ae9e5060be5397e9f73f5977b626b39280",
+  "command_count": 65,
+  "command_exit_counts": {
+    "0": 63,
+    "1": 2
+  },
+  "public_redaction_manifest_sha256": "29452ec5766d7383fa90ef04abe30fd2833b1ca81175a6b9c8004e5452d8b6e5",
+  "public_redactions": 2,
+  "full_unredacted_originals_retained_locally": true,
+  "all_other_public_bytes_match_originals": true,
+  "previous_local_package_not_rewritten": "58ec41f13243eabc0bc02fe7594c087fbdd0d2beb1f06ba32e915c29168849ac"
+}

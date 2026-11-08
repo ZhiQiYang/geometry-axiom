@@ -1,0 +1,33 @@
+{
+  "schema": "independent-required-eight-actual-package-peer-v1",
+  "exit_code": 1,
+  "checks": 2767,
+  "findings": [
+    "capture exit/sha /workspace/train337-final-L-required-eight-7af8c5d8/required-eight/subject/control/2026-10-24T011314.5565980000/outer-command/000001",
+    "eight unique current aggregate rows",
+    "exact original typed counts 676/676/0/0"
+  ],
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "archive_sha256": "81937992087ce136bdc34ece9d9da468e05beba5c931add719c9fb2501e661e4",
+  "original_files": 840,
+  "archive_members": 841,
+  "original_bytes": 9977144,
+  "original_cli_exit": 0,
+  "nested_wrapper_exit": 0,
+  "stage_execution_exit": 0,
+  "driver_exit": 0,
+  "outer_exit": 0,
+  "current_selected_suites": 8,
+  "current_typed_registered_units": 676,
+  "current_passed": 676,
+  "current_failed": 0,
+  "current_skipped": 0,
+  "copied_log_files": 619,
+  "capture_records_including_collector": 34,
+  "limitations": [
+    "676 combines Python tests, C checkpoints and core scenarios; it is not 676 unittest methods.",
+    "619 copied suite-log files include older unselected outputs. Only original --only eight argv and its eight current rows count as this execution.",
+    "This original runner reused original source/hash-matched native binaries; full native R2 was separately verified. Current mutable ROOT/global cache were not read.",
+    "Only required-eight stage passed here; performance, comparison, memo, Q38/PF3 and full acceptance are not inferred. No subject rerun or source edit by reviewer."
+  ]
+}

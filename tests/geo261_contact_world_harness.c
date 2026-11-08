@@ -104,6 +104,10 @@ static int indexed_dedup(void)
     WoodContactWorld w={.placement_id=7,.members=f,.member_count=2};WoodStopFace out[8];size_t n;
     n=wood_contact_collect_stops(&w,false,NULL,out,8);
     CHECK("indexed-full-coordinate-plane",n==4&&sides(out,n,51)==2&&sides(out,n,52)==2&&out[2].fixed==INT64_C(4294967296));
+    /* A later face on the first plane must remain in the same full-width
+     * group even with an intervening plane whose low 32 bits are equal. */
+    w.member_count=3;n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-full-coordinate-plane",n==4&&sides(out,n,51)==2&&sides(out,n,52)==2&&sides(out,n,53)==0);
     f[0]=fact(&m[0],1,false,(GeoRect2){0,0,100,5});f[1]=fact(&m[1],1,false,(GeoRect2){0,5,100,10});f[2]=fact(&m[2],2,false,(GeoRect2){0,0,100,10});w.member_count=3;
     n=wood_contact_collect_stops(&w,false,NULL,out,8);
     CHECK("indexed-two-halves-not-one-cover",n==6&&sides(out,n,51)==2&&sides(out,n,52)==2&&sides(out,n,53)==2);

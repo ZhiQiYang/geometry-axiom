@@ -25,6 +25,8 @@ Sources are an existing timber material version, a dimension parameter field, or
 Transaction schema `assembly-transaction/1` with `expectedRevision` and `operations`.
 Errors include `I40` conflicts/dangling refs, `TOKEN`, `STALE`, `SCHEMA`, capacity as capacity rather than geometry.
 
+Cross-project definition import is `definition-import/1` (D54, D55). See `geometry-core/DEFINITION-IMPORT-CONTRACT.md`. It is not an assembly-transaction operation. Parameter-pack import reassigns parameter-card ids only; definition import classifies D54 and previews rewritten references before confirm.
+
 ### Guarded binding writes (2026-10-03)
 
 The formal workspace uses explicit intent:

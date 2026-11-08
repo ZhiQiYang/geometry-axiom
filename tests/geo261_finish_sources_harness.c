@@ -152,6 +152,9 @@ static int lifetime_case(void)
     Fixture *a=fixture(),*b=fixture();CHECK(a&&b,"lifetime-fixtures");b->depth=32;CHECK(attach(a)&&attach(b),"lifetime-bindings");
     CHECK(!wood_finish_sources_bind(a->sources,&b->context)&&!wood_finish_sources_bind_finish(a->sources,&b->context.finish),"bind-rejects-other-candidate");
     WoodFinishContext copied=a->context.finish;copied.parameter_coord=NULL;CHECK(!wood_finish_sources_bind_finish(a->sources,&copied),"bind-rejects-other-callback");
+    CHECK(a->context.finish.engineering.last_terminal!=NULL,"lifetime-terminal-hook-bound");
+    copied=a->context.finish;copied.engineering.last_terminal=NULL;CHECK(!wood_finish_sources_bind_finish(a->sources,&copied),"bind-rejects-other-terminal-hook");
+    WoodDerivedContext wrong=a->context;wrong.finish.engineering.last_terminal=NULL;CHECK(!wood_finish_sources_bind(a->sources,&wrong),"bind-derived-rejects-other-terminal-hook");
     copied=a->context.finish;CHECK(wood_finish_sources_bind_finish(a->sources,&copied),"bind-finish-only-same-candidate");
     GeoSourceValue ar,br;CHECK(get(a,WOOD_FINISH_SOURCE_DERIVED_REGION,10,&ar)&&get(b,WOOD_FINISH_SOURCE_DERIVED_REGION,10,&br),"independent-candidates-evaluate");
     const GeoRegionView *borrowed=ar.as.regions.regions;CHECK(borrowed&&borrowed!=br.as.regions.regions&&borrowed[0].holes[0].v[0].u==20,"borrowed-regions-owned-per-handle");

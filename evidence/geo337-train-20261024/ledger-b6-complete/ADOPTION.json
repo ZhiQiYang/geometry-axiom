@@ -1,0 +1,24 @@
+{
+  "generated_source_sha": "b6e1e45425f055cd825b259f46ef2c454f3ff13a",
+  "source_before_adoption": "cf240408c9243e8ef7b18a13985e6eb560a00430",
+  "original_ledger_sha256": "c0d6818ab664a3e9ee3250e9e914a17d502bb2a292d400f299b3d7b501d89cbe",
+  "record_count": 123,
+  "original_phases": [
+    1,
+    0,
+    0,
+    0
+  ],
+  "new_full_cli_exit": 0,
+  "root_exit": 0,
+  "archive_sha256": "e69d9d78e571fd798944e0c448baf768509b9b4287b80c66fd9ad1fc3355175b",
+  "peer_checks": {
+    "actual": 35756,
+    "package": 4529
+  },
+  "limits": [
+    "Tracked JSON is adopted byte-for-byte; its original b6 execution heads are unchanged.",
+    "This commit fixes L; full CLI and all formal gates on L remain unrun. Fresh L results will only be saved in later evidence.",
+    "Old tracked check1 is preserved; original external new ledger check0 and full CLI0 are distinct."
+  ]
+}

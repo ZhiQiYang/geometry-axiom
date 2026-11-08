@@ -1,0 +1,2241 @@
+{
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "scope": "Producer-only supplemental closed-original checks; not independent peer and no subject rerun; does not read active ROOT",
+  "command_kind_exit_counts": {
+    "('compile-bridge', 0)": 107,
+    "('test', 0)": 54,
+    "('test', 1)": 53,
+    "('compile-model', 0)": 9
+  },
+  "checks": [
+    {
+      "name": "innerstream:M01/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M01/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M01/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M01/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M01/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M01/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M01-cache/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M01-cache/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M01-cache/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M01-cache/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M01-cache/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M01-cache/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M01-index/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M01-index/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M01-index/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M01-index/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M01-index/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M01-index/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-id/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M02-id/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-id/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M02-id/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-id/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-id/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-name/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M02-name/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-name/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M02-name/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-name/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-name/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-order/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M02-order/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-order/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M02-order/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-order/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-order/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-value/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M02-value/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-value/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M02-value/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-value/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M02-value/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M03-complete/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M03-complete/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M03-complete/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M03-complete/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M03-complete/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M03-complete/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M03-distinct/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M03-distinct/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M03-distinct/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M03-distinct/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M03-distinct/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M03-distinct/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M03-same-card/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M03-same-card/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M03-same-card/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M03-same-card/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M03-same-card/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M03-same-card/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M04-source/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M04-source/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M04-source/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M04-source/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M04-source/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M04-source/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M04-token/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M04-token/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M04-token/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M04-token/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M04-token/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M04-token/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-dimension/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M05-dimension/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-dimension/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M05-dimension/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-dimension/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-dimension/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-integer/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M05-integer/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-integer/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M05-integer/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-integer/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-integer/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-positive/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M05-positive/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-positive/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M05-positive/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-positive/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-positive/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-precision/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M05-precision/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-precision/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M05-precision/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-precision/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-precision/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-range/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M05-range/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-range/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M05-range/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-range/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M05-range/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M06-card/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M06-card/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M06-card/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M06-card/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M06-card/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M06-card/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M06-extra-field/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M06-extra-field/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M06-extra-field/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M06-extra-field/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M06-extra-field/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M06-extra-field/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M07/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M07/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M07/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M07/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M07/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M07/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M08/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M08/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M08/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M08/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M08/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M08/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M09/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M09/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M09/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M09/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M09/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M09/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M10/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M10/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M10/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M10/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M10/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M10/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M11-expiry/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M11-expiry/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M11-expiry/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M11-expiry/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M11-expiry/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M11-expiry/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M11-revalidation/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M11-revalidation/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M11-revalidation/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M11-revalidation/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M11-revalidation/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M11-revalidation/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M11-undo/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M11-undo/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M11-undo/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M11-undo/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M11-undo/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M11-undo/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M13-capability/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M13-capability/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M13-capability/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M13-capability/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M13-capability/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M13-capability/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M13-unused/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M13-unused/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M13-unused/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M13-unused/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M13-unused/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M13-unused/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M14-import/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M14-import/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M14-import/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M14-import/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M14-import/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M14-import/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M14-legacy/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M14-legacy/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M14-legacy/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M14-legacy/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M14-legacy/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M14-legacy/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M16/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M16/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M16/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M16/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M16/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M16/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M17/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M17/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M17/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M17/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M17/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M17/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-capability/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-capability/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-capability/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-capability/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-capability/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-capability/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-capability/restored/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-capability/restored/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-capability/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-capability/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-closure/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-closure/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-closure/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-closure/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-closure/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-closure/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-closure/restored/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-closure/restored/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-closure/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-closure/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-numbers/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-numbers/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-numbers/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-numbers/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-numbers/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-numbers/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-numbers/restored/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-numbers/restored/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-numbers/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-numbers/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-refs/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-refs/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-refs/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-refs/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-refs/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-refs/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-refs/restored/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M18-refs/restored/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-refs/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M18-refs/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-axis-missing/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M19-axis-missing/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-axis-missing/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M19-axis-missing/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-axis-missing/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-axis-missing/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-axis-scope/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M19-axis-scope/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-axis-scope/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M19-axis-scope/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-axis-scope/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-axis-scope/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-order/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M19-order/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-order/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M19-order/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-order/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-order/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-partial-owner/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M19-partial-owner/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-partial-owner/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M19-partial-owner/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-partial-owner/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M19-partial-owner/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M20/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M20/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M20/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M20/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M20/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M20/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M21/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M21/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M21/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M21/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M21/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M21/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M22/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M22/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M22/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M22/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M22/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M22/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M24/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M24/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M24/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:M24/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M24/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:M24/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-complete-grid-id/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P146-complete-grid-id/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-complete-grid-id/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P146-complete-grid-id/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-complete-grid-id/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-complete-grid-id/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-error-fields/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P146-error-fields/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-error-fields/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P146-error-fields/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-error-fields/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-error-fields/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-mode-grid-id/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P146-mode-grid-id/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-mode-grid-id/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P146-mode-grid-id/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-mode-grid-id/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-mode-grid-id/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-same-card-grid-id/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P146-same-card-grid-id/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-same-card-grid-id/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P146-same-card-grid-id/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-same-card-grid-id/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-same-card-grid-id/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-use-field-path/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P146-use-field-path/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-use-field-path/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P146-use-field-path/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-use-field-path/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P146-use-field-path/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-format-code/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P154-format-code/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-format-code/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P154-format-code/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-format-code/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-format-code/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-format-id/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P154-format-id/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-format-id/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P154-format-id/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-format-id/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-format-id/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-identity-boundary/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P154-identity-boundary/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-identity-boundary/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P154-identity-boundary/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-identity-boundary/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-identity-boundary/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-identity-one-message/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P154-identity-one-message/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-identity-one-message/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:P154-identity-one-message/restored/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-identity-one-message/restored/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:P154-identity-one-message/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:baseline/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:baseline/compile-bridge.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:baseline/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "compile0:baseline/compile-model.command.json",
+      "passed": true
+    },
+    {
+      "name": "innerstream:baseline/test.command.json",
+      "passed": true
+    },
+    {
+      "name": "baseline-bridge",
+      "passed": true
+    },
+    {
+      "name": "baseline-model",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M01-index",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M01-index",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M01-index",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M01-index",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M01-cache",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M01-cache",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M01-cache",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M01-cache",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M01",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M01",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M01",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M01",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M02-id",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M02-id",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M02-id",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M02-id",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M02-order",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M02-order",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M02-order",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M02-order",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M02-name",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M02-name",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M02-name",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M02-name",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M02-value",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M02-value",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M02-value",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M02-value",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M03-distinct",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M03-distinct",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M03-distinct",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M03-distinct",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M03-complete",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M03-complete",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M03-complete",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M03-complete",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M03-same-card",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M03-same-card",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M03-same-card",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M03-same-card",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M04-source",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M04-source",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M04-source",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M04-source",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M04-token",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M04-token",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M04-token",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M04-token",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M05-dimension",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M05-dimension",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M05-dimension",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M05-dimension",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M05-positive",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M05-positive",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M05-positive",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M05-positive",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M05-integer",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M05-integer",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M05-integer",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M05-integer",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M05-range",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M05-range",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M05-range",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M05-range",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M05-precision",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M05-precision",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M05-precision",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M05-precision",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M06-card",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M06-card",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M06-card",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M06-card",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M06-extra-field",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M06-extra-field",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M06-extra-field",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M06-extra-field",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M07",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M07",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M07",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M07",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M08",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M08",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M08",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M08",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M09",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M09",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M09",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M09",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M10",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M10",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M10",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M10",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M11-expiry",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M11-expiry",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M11-expiry",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M11-expiry",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M11-revalidation",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M11-revalidation",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M11-revalidation",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M11-revalidation",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M11-undo",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M11-undo",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M11-undo",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M11-undo",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M13-unused",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M13-unused",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M13-unused",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M13-unused",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M13-capability",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M13-capability",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M13-capability",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M13-capability",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M14-legacy",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M14-legacy",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M14-legacy",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M14-legacy",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M14-import",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M14-import",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M14-import",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M14-import",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M16",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M16",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M16",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M16",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M17",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M17",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M17",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M17",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M18-numbers",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M18-numbers",
+      "passed": true
+    },
+    {
+      "name": "restored-model:M18-numbers",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M18-numbers",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M18-numbers",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M18-refs",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M18-refs",
+      "passed": true
+    },
+    {
+      "name": "restored-model:M18-refs",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M18-refs",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M18-refs",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M18-closure",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M18-closure",
+      "passed": true
+    },
+    {
+      "name": "restored-model:M18-closure",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M18-closure",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M18-closure",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M18-capability",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M18-capability",
+      "passed": true
+    },
+    {
+      "name": "restored-model:M18-capability",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M18-capability",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M18-capability",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M19-order",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M19-order",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M19-order",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M19-order",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M19-axis-missing",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M19-axis-missing",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M19-axis-missing",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M19-axis-missing",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M19-axis-scope",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M19-axis-scope",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M19-axis-scope",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M19-axis-scope",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M19-partial-owner",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M19-partial-owner",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M19-partial-owner",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M19-partial-owner",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M20",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M20",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M20",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M20",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M21",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M21",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M21",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M21",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M22",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M22",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M22",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M22",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:M24",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:M24",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:M24",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:M24",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:P146-error-fields",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:P146-error-fields",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:P146-error-fields",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:P146-error-fields",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:P146-use-field-path",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:P146-use-field-path",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:P146-use-field-path",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:P146-use-field-path",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:P146-same-card-grid-id",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:P146-same-card-grid-id",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:P146-same-card-grid-id",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:P146-same-card-grid-id",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:P146-complete-grid-id",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:P146-complete-grid-id",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:P146-complete-grid-id",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:P146-complete-grid-id",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:P146-mode-grid-id",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:P146-mode-grid-id",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:P146-mode-grid-id",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:P146-mode-grid-id",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:P154-format-code",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:P154-format-code",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:P154-format-code",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:P154-format-code",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:P154-format-id",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:P154-format-id",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:P154-format-id",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:P154-format-id",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:P154-identity-boundary",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:P154-identity-boundary",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:P154-identity-boundary",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:P154-identity-boundary",
+      "passed": true
+    },
+    {
+      "name": "mutant-bridge:P154-identity-one-message",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge:P154-identity-one-message",
+      "passed": true
+    },
+    {
+      "name": "restored-bridge-baseline:P154-identity-one-message",
+      "passed": true
+    },
+    {
+      "name": "restored-model-baseline:P154-identity-one-message",
+      "passed": true
+    }
+  ],
+  "findings": []
+}

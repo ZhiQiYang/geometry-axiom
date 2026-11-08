@@ -17,6 +17,33 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 INTEGRATION_BASE = "4b665fae21ab63aaffb7d84f6a32d5a469ba1675"
+# The original I24 implementation must remain kernel-neutral. Later train
+# work may adopt separately reviewed generic K changes; pin its complete K
+# tree instead of exempting source.c or accepting arbitrary future edits.
+I24_IMPLEMENTATION_HEAD = "32f42e3d991c7d2d916d21bfe8ac5d3dd0f9b131"
+# 9430bae568feb98805072930c92f9a03a1250d4e: reuse a missing edge's slot.
+# 81b6c388f8b73e9aaf885b1d948e5f306b77bafd: generic provider hint bucket.
+GENERIC_SOURCE_INDEX_KERNEL_HEAD = "81b6c388f8b73e9aaf885b1d948e5f306b77bafd"
+
+
+def _ensure_pinned_commits(*shas):
+    """Make pinned history commits available in shallow CI checkouts.
+
+    actions/checkout defaults to fetch-depth 1, so the fixed base commits are
+    absent.  Fetch only those exact commits (depth 1 is enough for tree diffs)
+    instead of deepening every job's checkout; fail clearly if unreachable.
+    """
+    missing = [sha for sha in shas if subprocess.run(
+        ["git", "cat-file", "-e", sha + "^{commit}"], cwd=ROOT,
+        capture_output=True).returncode != 0]
+    if not missing:
+        return
+    fetched = subprocess.run(
+        ["git", "fetch", "--no-tags", "--no-write-fetch-head", "--depth=1", "origin", *missing],
+        cwd=ROOT, capture_output=True, text=True)
+    if fetched.returncode != 0:
+        raise AssertionError("pinned commits unavailable in this checkout and could not be fetched: "
+                             + " ".join(missing) + "\n" + fetched.stderr)
 
 # Common scene/validation helpers serve both interactive submissions and file
 # replay.  Their classification therefore explicitly retains both contexts;
@@ -25,6 +52,9 @@ PUBLISH_SITES = (
     ("current_geometry.c", "world_revalidate", 1, "submission/replay helper"),
     ("geometry-core/transactions.inc", "apply_scene_line_candidate", 2, "submission/replay lines"),
     ("geometry-web/engineering_bridge.inc", "batch_confirm", 1, "submission"),
+    # R08: confirming a definition-import preview is an interactive submission,
+    # validated against the pre-submission World like batch_confirm.
+    ("geometry-web/definition_import_bridge.inc", "cmd_definition_import_confirm", 1, "submission"),
     ("geometry-web/web_bridge.c", "app_replace_world", 1, "replacement"),
     ("geometry-web/web_bridge.c", "cmd_loadfile", 1, "replacement"),
     ("geometry-web/scene-import-bridge.inc", "cmd_load_confirm", 1, "replacement"),
@@ -48,6 +78,7 @@ REVALIDATE_SITES = (
     ("geometry-core/references.inc", "reference_snap", 1),
     ("geometry-core/subgrid_commands.inc", "apply_subgrid_line", 1),
     ("geometry-web/engineering_bridge.inc", "app_batch_candidate_apply", 1),
+    ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", 1),
     ("geometry-web/web_bridge.c", "app_replace_evaluate", 1),
 )
 STAGED_SITES = (
@@ -62,8 +93,8 @@ STAGED_SITES = (
 BASELINE_ASSIGNMENTS = (
     ("current_geometry.c", "app_world_revalidate_staged", "staged"),
     ("current_geometry.c", "app_world_revalidate_staged", "previous"),
-    ("current_geometry.c", "app_world_candidate_revalidate", "&candidate->before"),
-    ("current_geometry.c", "app_world_candidate_revalidate", "previous"),
+    ("current_geometry.c", "app_world_candidate_revalidate_commit", "&candidate->before"),
+    ("current_geometry.c", "app_world_candidate_revalidate_commit", "previous"),
     ("geometry-core/boundary_vertex_keys.inc", "apply_boundary_keyed_line", "world"),
     ("geometry-core/boundary_vertex_keys.inc", "apply_boundary_keyed_line", "previous_baseline"),
     ("geometry-core/grid_bindings.inc", "apply_grid_binding_application", "w"),
@@ -74,6 +105,8 @@ BASELINE_ASSIGNMENTS = (
     ("geometry-core/transactions.inc", "app_scene_candidate_apply", "previous_baseline"),
     ("geometry-web/engineering_bridge.inc", "app_batch_candidate_apply", "call->before"),
     ("geometry-web/engineering_bridge.inc", "app_batch_candidate_apply", "previous"),
+    ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", "call->before"),
+    ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", "previous"),
     ("geometry-web/web_bridge.c", "app_scene_load_evaluate", "NULL"),
     ("geometry-web/web_bridge.c", "app_scene_load_evaluate", "previous"),
     ("geometry-web/source-inspector-bridge.inc", "cmd_source_inspect_file", "NULL"),
@@ -254,11 +287,20 @@ class Geo314CommitPaths(unittest.TestCase):
                          "I24 rule belongs to W; host context and submission classification remain in H")
 
     def test_kernel_has_no_changes_against_the_fixed_integration_base(self):
-        changed = subprocess.run(["git", "diff", "--name-only", INTEGRATION_BASE, "--", "geometry-core/kernel"],
-                                 cwd=ROOT, capture_output=True, text=True, check=True)
+        _ensure_pinned_commits(INTEGRATION_BASE, I24_IMPLEMENTATION_HEAD, GENERIC_SOURCE_INDEX_KERNEL_HEAD)
+        introduced = subprocess.run(
+            ["git", "diff", "--name-only", "--no-renames", INTEGRATION_BASE,
+             I24_IMPLEMENTATION_HEAD, "--", "geometry-core/kernel"],
+            cwd=ROOT, capture_output=True, text=True, check=True)
+        self.assertEqual("", introduced.stdout, "original I24 implementation must not change K files")
+        changed = subprocess.run(
+            ["git", "diff", "--name-only", "--no-renames", GENERIC_SOURCE_INDEX_KERNEL_HEAD,
+             "--", "geometry-core/kernel"],
+            cwd=ROOT, capture_output=True, text=True, check=True)
         added = subprocess.run(["git", "ls-files", "--others", "--exclude-standard", "--", "geometry-core/kernel"],
                                cwd=ROOT, capture_output=True, text=True, check=True)
-        self.assertEqual("", changed.stdout + added.stdout, "I24 submission policy must not change K files")
+        self.assertEqual("", changed.stdout + added.stdout,
+                         "I24 submission policy must not change K files outside the exact reviewed generic K tree")
 
     def test_ordered_facts_capture_step_values_without_extra_candidate_or_validation_work(self):
         path = "geometry-app/native/stagger_facts.inc"
@@ -306,14 +348,42 @@ class Geo314CommitPaths(unittest.TestCase):
             self.assertIn("candidate->operation_seal", body)
             self.assertIn("g_definition_revision", body)
             self.assertIn("app_world_provider_stamp()", body)
-        confirm = compact(masked(self.body("current_geometry.c", "app_world_candidate_revalidate")))
+        wrapper = compact(masked(self.body("current_geometry.c", "app_world_candidate_revalidate")))
+        self.assertEqual("returnapp_world_candidate_revalidate_retained(candidate,live);", wrapper,
+                         "the public confirmation wrapper must retain its reviewed delegate")
+        retained = compact(masked(self.body("geometry-core/transactions.inc", "app_world_candidate_revalidate_retained")))
+        self.assertEqual(
+            "identity_drop_serials();"
+            "if(candidate!=g_preview.transaction)returnfalse;"
+            "AppIdentityCommitcommit={g_preview.identity_explicit,g_preview.identity_explicit_count,"
+            "g_preview.identity_explicit_overflow,false,false};"
+            "boolok=app_world_candidate_revalidate_commit(candidate,live,app_world_identity_finalize,&commit);"
+            "if(!ok)identity_drop_serials();returnok;", retained,
+            "retained confirmation must use this same preview and its recorded deletion keys exactly once")
+        confirm = compact(masked(self.body("current_geometry.c", "app_world_candidate_revalidate_commit")))
+        self.assertIn(
+            "if(!finalize||!app_world_candidate_current(candidate,live)||"
+            "app_candidate_reopen(candidate->control,live,g_definition_revision,app_world_provider_stamp(),"
+            "app_world_candidate_equal,NULL)!=GEO_CANDIDATE_OK)returnfalse;", confirm)
+        self.assertIn(
+            "AppWorldCommitCallcall={candidate,finalize,opaque};"
+            "boolok=app_world_candidate_evaluate(candidate,app_world_commit_revalidate_evaluate,&call)"
+            "==GEO_CANDIDATE_OK;", confirm)
         self.assertLess(confirm.index("app_world_candidate_current("), confirm.index("app_candidate_reopen("))
         self.assertLess(confirm.index("app_candidate_reopen("), confirm.index("app_world_candidate_evaluate("))
         self.assertLess(confirm.index("app_world_candidate_evaluate("), confirm.index("app_world_candidate_seal("))
+        self.assertEqual(1, confirm.count("app_world_candidate_current("))
+        self.assertEqual(1, confirm.count("app_candidate_reopen("))
         self.assertEqual(1, confirm.count("app_world_candidate_evaluate("))
         self.assertEqual(1, confirm.count("app_world_candidate_seal("))
         self.assertNotIn("app_world_candidate_clear_stagger(", confirm,
                          "confirmation must revalidate with the same sealed facts before releasing them")
+        evaluate = compact(masked(self.body("current_geometry.c", "app_world_commit_revalidate_evaluate")))
+        self.assertEqual(
+            "AppWorldCommitCall*call=opaque;"
+            "if(!app_world_revalidate_evaluate(after,sources,&call->candidate->before))returnfalse;"
+            "returncall->finalize(call->candidate,call->opaque);", evaluate,
+            "full revalidation must succeed before the retained identity finalizer can run")
 
     def test_cancel_failure_stale_success_and_disposal_release_ordered_evidence(self):
         path = "geometry-app/native/world_candidate.inc"

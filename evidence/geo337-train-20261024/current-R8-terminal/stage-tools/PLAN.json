@@ -1,0 +1,55 @@
+{
+  "required_product_ancestor": null,
+  "selected_final_source": null,
+  "source_unbound": true,
+  "materialized": false,
+  "formal_run": false,
+  "C_run": false,
+  "old_final_pins_sha256": "d3b42b86b723a75e44fe6ad6f14d1c365b76c980f7a185fa79d2fcb6ee474759",
+  "tool_changes": [
+    {
+      "name": "prepare_source.py",
+      "before_sha256": "c0422c0f727c13b3af28f541390a7de9eb0739b5cfa220e25a90247121b3ab7c",
+      "after_sha256": "c0422c0f727c13b3af28f541390a7de9eb0739b5cfa220e25a90247121b3ab7c",
+      "bytes": 9812
+    },
+    {
+      "name": "launch_stages.py",
+      "before_sha256": "480e07e9002f9a84f2779d93073a545755e78dba02d645232a41483aec762345",
+      "after_sha256": "480e07e9002f9a84f2779d93073a545755e78dba02d645232a41483aec762345",
+      "bytes": 4290
+    },
+    {
+      "name": "bind_final_request.py",
+      "before_sha256": "fb33efae5e3b4d259cd815309b09b60384cf9b6b392624f8bc743897f420ddc8",
+      "after_sha256": "d52137bf8f5ab5e6887ce5b455a031ef7d0cef00df7a76bd700e1751ebc40d08",
+      "bytes": 2170
+    },
+    {
+      "name": "start_five.py",
+      "before_sha256": "d10ccdfdcbe66e434d6d8860c28a2bcb4f2a04da0ba5e9230debd76397abae96",
+      "after_sha256": "6a2cb8468a4e40c48489fbe8002e0cd6e33df1076ef80aac27b4424606d41bc4",
+      "bytes": 2182
+    }
+  ],
+  "request_value_changes": [
+    "acceptance_out",
+    "inner_lock",
+    "selected_final_source",
+    "source_checkout",
+    "status"
+  ],
+  "new_null_request_field": "required_product_ancestor",
+  "source_ancestor_policy": "Root must supply the actual newly published H source full SHA; no guessed SHA, previous S144, or substitution of F7 for the new H ancestor. The original Git merge-base ancestry check remains mandatory.",
+  "unchanged": [
+    "prepare_source.py all bytes",
+    "launch_stages.py all bytes",
+    "six v5 tool bytes and pinned inventory",
+    "175 scenes / 36 samples / 4 profiles",
+    "original thresholds / timeout600 / clocks / samples / cumulative exit handling",
+    "both nonblocking heavy locks",
+    "all new runtime/preparation/source/OUT in TMP",
+    "resource admission138MiB+native128MiB"
+  ],
+  "static_only": true
+}

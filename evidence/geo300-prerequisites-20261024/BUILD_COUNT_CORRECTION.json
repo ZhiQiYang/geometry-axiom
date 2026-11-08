@@ -1,0 +1,38 @@
+{
+  "schema": "geo300-build-count-prose-correction/1",
+  "actual_source": "c493b7315d0cd3b16014add96af969c49ebf4660",
+  "incorrect_manual_prose_total": 302,
+  "correct_sum_of_original_receipts": 282,
+  "original_receipts_unchanged": true,
+  "reason": "Owner manually added 111+85+86 incorrectly in collaboration messages. Original receipt counts and compile logs were always correct. No subject rerun or raw rewrite.",
+  "suites": [
+    {
+      "suite": "wood-contact",
+      "receipt": "/workspace/geo300-c493-three-suites/wood-contact/receipt.json",
+      "receipt_sha256": "1b7621e57aface60a2550c13f166861deb63d6d242cdb29de160399261982d58",
+      "original_compile_commands": 111,
+      "all_build_exits_zero": true
+    },
+    {
+      "suite": "contact-sources",
+      "receipt": "/workspace/geo300-c493-three-suites/contact-sources/receipt.json",
+      "receipt_sha256": "61742ce974da7a0f7b1b0a3c8200b97429f010541e3e31531ad9da740a5a5042",
+      "original_compile_commands": 85,
+      "all_build_exits_zero": true
+    },
+    {
+      "suite": "reading-a-native",
+      "receipt": "/workspace/geo300-c493-three-suites/reading-a-native/receipt.json",
+      "receipt_sha256": "0e7281f72e27805f20efb9d23a3be2757766667134edc2cb30794c2e5145da54",
+      "original_compile_commands": 86,
+      "all_build_exits_zero": true
+    }
+  ],
+  "peer_finding": {
+    "path": "/tmp/train337-adversarial/GEO300_C493_THREE_SUITES_ACTUAL_PEER.json",
+    "sha256": "5ca735c1a9a7513dfcdb468420e13a45f61c72b9927af27f39320c3ea29d68c0",
+    "checks": 1020,
+    "findings": 1
+  },
+  "corrected_utc": "2026-10-23T20:48:46.615020+00:00"
+}

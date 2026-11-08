@@ -1,0 +1,37 @@
+{
+  "source_sha": "a22df116c7e9f6b7d074451f1c8052d59e7e4f3e",
+  "declared_provider_tokens": {
+    "APP_SOURCE_GUIDE": 1,
+    "APP_SOURCE_MEMBER_POSE": 2,
+    "APP_SOURCE_REFERENCE": 3,
+    "APP_SOURCE_PARAMETER": 4,
+    "MODEL_SOURCE_PROVIDER": 5,
+    "APP_SOURCE_NAMED": 6,
+    "APP_SOURCE_DATUM": 7,
+    "APP_SOURCE_ENGINEERING_DIMENSION": 8,
+    "APP_SOURCE_ENGINEERING_BINDING": 9,
+    "APP_SOURCE_ENGINEERING_DEFINITION": 10,
+    "APP_SOURCE_SECTION_PROFILE": 11,
+    "APP_SOURCE_FINISH": 12,
+    "APP_SOURCE_PLACEMENT": 13,
+    "APP_SOURCE_REGION": 14,
+    "APP_SOURCE_GRID": 15,
+    "APP_SOURCE_CONTACT": 16,
+    "APP_SOURCE_ASSEMBLY": 17,
+    "APP_SOURCE_ENCLOSURE": 18,
+    "APP_SOURCE_WOOD_DEFINITION": 19,
+    "APP_SOURCE_REGION_KEYS": 20,
+    "APP_SOURCE_LINEAR_DEFINITION": 21,
+    "APP_SOURCE_PARAMETER_DEFINITION": 22,
+    "APP_SOURCE_VERSION": 23
+  },
+  "scope": "Actual diagnostic counters use these provider/key-size families. Provider token declarations and registration call sites were re-read in fixed R; corresponding six source leaves are byte-identical to prior static map. No public identity or policy changes.",
+  "source_pins": {
+    "geometry-app/native/reference_sources.inc": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56",
+    "geometry-app/native/model_sources.inc": "c464ae8f9f23599e35d60f7b2a60fcf24ad21fc1be6899610d6e7d0bf51d39c5",
+    "geometry-templates/woodworking/native/definition_sources.h": "1ec14f17dea4fe98f80099d4699e3e154157e152b5ded9ab6ea0da147648495b",
+    "geometry-templates/woodworking/native/definition_sources.c": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16",
+    "geometry-templates/woodworking/native/contact_sources.h": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+    "geometry-templates/woodworking/native/contact_sources.c": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839"
+  }
+}
