@@ -3,13 +3,16 @@
 import copy
 import hashlib
 import importlib.util
+import io
 import json
+from contextlib import redirect_stdout
 from html.parser import HTMLParser
 import os
 from pathlib import Path
 import re
 import shutil
 import subprocess
+import tempfile
 import unittest
 from unittest import mock
 
@@ -464,6 +467,8 @@ class CanonicalReader(unittest.TestCase):
         # GEO-139(4):GEO-120 的連帶約束明列「追溯燈號 / 三向連結 / 樞紐徽章」不得丟失。
         # 判準:綠 = 原始碼且夾具、黃 = 其一、紅 = 皆無;樞紐 = 被引用數 >= 3。
         # 不得另立門檻;出處見 sync_axiom_reader.py 的 TRACE_CSS 註解(GEO-167)。
+        self.check_i25a_relocated_implementation()
+        self.check_source_include_traceability()
         incoming = {c["id"]: [] for c in self.state["clauses"]}
         for c in self.state["clauses"]:
             for ref in sorted({m[1] for m in reader.CLAUSE_REF.finditer(c["body"]) if m[1] != c["id"]}):
@@ -479,6 +484,101 @@ class CanonicalReader(unittest.TestCase):
             self.assertIn('data-clause="%s" data-trace="%s"' % (cid, t["light"]), self.html, cid)
         self.assertEqual(self.html.count('<details class="trace-section">'), len(trace))
         self.assertEqual(self.html.count('class="badge-hub"'), sum(1 for t in trace.values() if t["hub"]))
+
+    def check_i25a_relocated_implementation(self):
+        # PR #375: the guard moved out of current_geometry.c; its trace must follow it.
+        core = ROOT / "current_geometry.c"
+        before = core.read_bytes()
+        trace = reader.clause_trace([{"id": "I25a"}], {})["I25a"]
+        self.assertEqual(trace["light"], "partial")
+        self.assertIn("grid_rules_scene_integrity_error", trace["functions"])
+        path = "geometry-core/grid_subdivision.inc"
+        lines = (ROOT / path).read_text(encoding="utf-8").splitlines()
+        expected = [(path, "grid_rules_scene_integrity_error", i + 1)
+                    for i, line in enumerate(lines)
+                    if '"I25a: source rule capability/highwater closure missing"' in line]
+        self.assertTrue(expected)
+        for site in expected:
+            self.assertIn(site, trace["sites"])
+        self.assertEqual(core.read_bytes(), before)
+
+    def check_source_include_traceability(self):
+        matrix = reader.axiom_matrix
+        # One match per clause per physical line, with the original token boundaries.
+        repeated = 'static void guard(void) { /* I25a I25 I25a I250 xI25 */ }\r\n'
+        self.assertEqual(matrix.code_sites(repeated, ["I25", "I25a", "I2"]),
+                         {"I25": [("guard", 1)], "I25a": [("guard", 1)], "I2": []})
+        self.assertEqual(matrix.code_sites(repeated, []), {})
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "nested").mkdir()
+            entry = root / "current_geometry.c"
+            source = ('/* source bytes must remain CRLF */\n'
+                      '#include \\\n "nested/rules.inc"\n'
+                      '#include "nested/../nested/rules.inc"\n'
+                      '/*\n#include "ignored.inc"\n*/\n'
+                      'const char *example = "#include \\"ignored.inc\\"";\n'
+                      '#include <not-local.inc>\n'
+                      '#include "optional-platform.h"\n'
+                      'static void root_guard(void) { /* D1 */ }\n')
+            entry.write_bytes(source.replace("\n", "\r\n").encode())
+            (root / "nested/rules.inc").write_text(
+                '/* I25a: banner belongs to the following function. */\n'
+                'static void moved_rule(void)\n{\n'
+                '    const char *diagnostic = "I25a: V_MOVED";\n}\n'
+                '#include "../helper.h"\n', encoding="utf-8")
+            (root / "helper.h").write_text(
+                '#include "nested/rules.inc"\n'  # cycle: do not recurse or count twice
+                'static void header_guard(void) { /* I4 */ }\n'
+                '#include "leaf.c"\n', encoding="utf-8")
+            (root / "leaf.c").write_text(
+                'static void leaf_guard(void) { /* I2 */ }\n', encoding="utf-8")
+            (root / "ignored.inc").write_text(
+                'static void detached(void) { /* I9 */ }\n', encoding="utf-8")
+            axiom = root / "axiom.md"
+            axiom.write_text('I25a moved V_MOVED\nI9 detached\n', encoding="utf-8")
+            clauses = [{"id": cid} for cid in ("D1", "I25a", "I2", "I4", "I9")]
+            before = {p: p.read_bytes() for p in root.rglob("*") if p.is_file()}
+            with mock.patch.multiple(matrix, ROOT=str(root), SRC=str(entry),
+                                     AXIOM=str(axiom), MUTATE=str(root / "mutate.py")):
+                trace = reader.clause_trace(clauses, {})
+                self.assertEqual(trace["I25a"]["light"], "partial")
+                self.assertEqual(trace["I25a"]["functions"], ["moved_rule"])
+                self.assertEqual(trace["I25a"]["sites"], [
+                    ("nested/rules.inc", "moved_rule", 1),
+                    ("nested/rules.inc", "moved_rule", 4)])
+                self.assertEqual(trace["I2"]["functions"], ["leaf_guard"])
+                self.assertEqual(trace["I4"]["functions"], ["header_guard"])
+                self.assertEqual(trace["D1"]["functions"], ["root_guard"])
+                self.assertEqual(trace["I9"]["light"], "none")
+                self.assertEqual(trace["I9"]["sites"], [])
+                self.assertEqual({p: p.read_bytes() for p in before}, before)
+                markup = reader.trace_section("I25a", trace["I25a"])
+                self.assertIn("nested/rules.inc:4", markup)
+                with mock.patch.object(matrix.sys, "argv", [matrix.__file__]), redirect_stdout(io.StringIO()) as out:
+                    self.assertEqual(matrix.main(), 0)
+                self.assertIn("moved_rule", out.getvalue())
+                self.assertIn("條文 2 條  |  綠 0  黃 1  紅 1", out.getvalue())
+                self.assertNotIn("V_MOVED 在原始碼裡找不到", out.getvalue())
+
+                scene = root / "fixture.scene"
+                scene.write_text("# I25a\n", encoding="utf-8")
+                self.assertEqual(reader.clause_trace(clauses, {})["I25a"]["light"], "ok")
+                scene.unlink()
+                included = root / "nested/rules.inc"
+                marked = included.read_bytes()
+                included.write_bytes(marked.replace(b"I25a", b"unmarked"))
+                self.assertEqual(reader.clause_trace(clauses, {})["I25a"]["light"], "none")
+                included.write_bytes(marked)
+                entry.write_bytes(b"static void root_guard(void) { /* D1 */ }\r\n")
+                disconnected = reader.clause_trace(clauses, {})["I25a"]
+                self.assertEqual(disconnected["light"], "none")
+                self.assertEqual(disconnected["functions"], [])
+                self.assertEqual(disconnected["sites"], [])
+                for missing in ("missing.inc", "missing.c"):
+                    entry.write_text('#include "' + missing + '"\n', encoding="utf-8")
+                    with self.subTest(missing=missing), self.assertRaisesRegex(FileNotFoundError, missing):
+                        reader.clause_trace(clauses, {})
 
     def test_search_keeps_query_after_navigating(self):
         # GEO-142(審查 R7):跳轉不得清空查詢;Enter 連跳下一筆;狀態列顯示第 n / m 筆。
