@@ -267,6 +267,32 @@ window.SpaceModelWorkspace = (() => {
     }
     syncIdentityOffer();
   }
+  /* Activating the ledger appends one core undo step but leaves the
+     de-identified scene unchanged. Re-pin the scene source only when it was
+     current immediately before and exactly that one step was added; any other
+     edit, undo/redo or concurrent native change keeps the source stale. */
+  function captureActivationPin() {
+    const source = state.source, history = ReferenceWorkspace.history, native = ReferenceWorkspace.getEvidenceState?.();
+    if (source?.kind !== "scene" || !source.history_token || !history || !native || native.blocked || !Number.isSafeInteger(native.nativeRevision)) return null;
+    if (source.context_id !== contextId() || source.face_key !== faceKey(source.boundary_id) || !sameSourceHistory(source.history_token)) return null;
+    return {source, token: sourceHistoryToken(), undoLength: history.undo.length, nativeRevision: native.nativeRevision};
+  }
+  async function repinAfterActivation(pin, line) {
+    const {source, token} = pin, h = ReferenceWorkspace.history, recorded = !sameSourceHistory(source.history_token);
+    if (line.before_revision !== pin.nativeRevision || line.revision !== pin.nativeRevision + 1) return false;
+    // ContextHistory keeps at most `limit` steps and drops the oldest on push, so
+    // one append at capacity leaves the length unchanged (PR #376 review M1).
+    const limit = Number.isSafeInteger(h?.limit) && h.limit > 1 ? h.limit : Infinity;
+    if (recorded && (line.history_changed !== true || !h || h.frame !== token.frame || h.group !== token.group || h.redo.length ||
+      h.undo.length !== Math.min(pin.undoLength + 1, limit) || h.undo.at(-2) !== token.undo)) return false;
+    const next = sourceHistoryToken();
+    let dump;
+    try { dump = await api("dump-deidentified"); } catch (_) { return false; }
+    if (state.source !== source || source.context_id !== contextId() || source.face_key !== faceKey(source.boundary_id) ||
+      !sameSourceHistory(next) || !dump?.ok || dump.text !== source.base_scene) return false;
+    if (recorded) source.history_token = next;
+    return true;
+  }
   async function activateIdentity() {
     if (state.phase === "creating" || state.phase === "previewing") {
       message("請等這次處理結束，再啟用物件身分追蹤。", "warning");
@@ -278,6 +304,7 @@ window.SpaceModelWorkspace = (() => {
     if (!read?.ok) { message(read?.error || "無法讀取身分帳。", "error"); return; }
     if (read.active) { state.ledgerKnown = true; state.ledgerActive = true; syncIdentityOffer(); return; }
     const hadPreview = state.result && state.previewRevision === state.revision;
+    const pin = captureActivationPin();
     let line;
     try { line = await api("line identity-ledger activate"); }
     catch (error) { message(error.message, "error"); return; }
@@ -285,6 +312,13 @@ window.SpaceModelWorkspace = (() => {
     state.ledgerKnown = true;
     state.ledgerActive = true;
     syncIdentityOffer();
+    if (pin && !await repinAfterActivation(pin, line)) {
+      state.previewRevision = -1;
+      state.phase = "ready";
+      message("已啟用物件身分追蹤。來源讀取後另有變更，請重新「使用目前面」再預覽。", "warning");
+      updateActions();
+      return;
+    }
     if (hadPreview) {
       state.previewRevision = -1;
       state.phase = "ready";

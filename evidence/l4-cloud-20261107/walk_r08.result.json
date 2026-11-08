@@ -1,0 +1,37 @@
+{
+ "targetFilters": [
+  "來源2",
+  "配置1",
+  "空間與構件0"
+ ],
+ "dialogVisible": true,
+ "source": "assembly-rules-v1.gcanvas",
+ "rulesBox": "規則\n1@1 雙框與中支\n1@2 雙框與中支（新版名稱）",
+ "bindingsBox": "配置\n1 松木配置\n2 待選材料",
+ "checked": 4,
+ "closure": "閉包\n規則 1@1 → 2@1\n規則 1@2 → 2@2\n配置 1 → 2\n配置 2 → 3\n參數 1 → 0\n材料 pine@1 create",
+ "names": "",
+ "map": "配置 2 槽 1\t27\t33\n配置 2 槽 2\t27\t33\n配置 3 槽 1\t27\t33\n配置 3 槽 2\t未完成\t未完成",
+ "statusAfterPreview": "預覽可以確認。",
+ "confirmEnabled": true,
+ "statusAfterConfirm": [
+  "正在讀取場景連線完成後即可編輯。\n  重新連線",
+  "有未保存的變更",
+  "從空白處拖曳，框選物件",
+  "已匯入 5 項，可復原",
+  "從空白處拖曳，框選角材"
+ ],
+ "afterFilters": [
+  "來源4",
+  "配置3",
+  "空間與構件0"
+ ],
+ "afterUndoFilters": [
+  "來源2",
+  "配置1",
+  "空間與構件0"
+ ],
+ "errs": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}

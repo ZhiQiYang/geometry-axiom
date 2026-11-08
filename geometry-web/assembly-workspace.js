@@ -310,6 +310,28 @@ window.AssemblyWorkspace=(()=>{
     if(identity.secondary){const c=identity.secondary;return `${prefix}副支線 #${c.line}／主支 #${c.left} → #${c.right}`;}
     return '';
   }
+  // Preview row for an instance source: name the references the user picked
+  // instead of echoing the raw source record.
+  function instanceSourceText(src){
+    if(!src)return '無';
+    const ref=r=>r?.id==null?'未指定':`${r.kind==='timber'?'角材':r.kind==='guide'?'參考線':r.kind} #${r.id}`,
+      ends=e=>e&&(e.start?.id!=null||e.finish?.id!=null)?`（端點 ${ref(e.start)} → ${ref(e.finish)}）`:'',
+      at=a=>!a?'未定位':a.kind==='guide'?`參考線 #${a.id}`:a.kind==='grid-line'?`主格 #${a.gridId} 的 ${a.axis} 線索引 ${a.index}`:
+        a.kind==='outline-edge'?`外輪廓邊 ${Array.isArray(a.edgeKey)?a.edgeKey.join('／'):'#'+a.edge}`:String(a.kind),
+      parts=[`「${src.name||'未命名實例'}」`];
+    if(src.bindingId!=null)parts.push(`配置 #${src.bindingId}`);
+    if(src.rule)parts.push(`規則 #${src.rule.id} 第 ${src.rule.version} 版`);
+    if(src.layout==='bay-repeat'){
+      parts.push(`重複開間 · 承載面 #${src.surfaceId??'未指定'}`);
+      parts.push(`主支 ${(src.primaries||[]).length} 支：${(src.primaries||[]).map(p=>`#${p.key} ${at(p.at)}${ends(p.ends)}`).join('；')||'無'}`);
+      parts.push(`副支線 ${(src.secondaryLines||[]).length} 條：${(src.secondaryLines||[]).map(l=>`#${l.key} ${at(l.at)}`).join('；')||'無'}`);
+      parts.push(`明示略過：${(src.omit||[]).map(o=>`副支線 #${o.line}／主支 #${o.left} → #${o.right}`).join('、')||'無'}`);
+    }else{
+      parts.push('單一開間');
+      if(Array.isArray(src.members))parts.push(`構件 ${(src.members||[]).length} 支：${(src.members||[]).map(m=>`#${m.memberId} ${m.role==='primary'?'主支':m.role==='secondary'?'副支':m.role} ${positiveId(m.guideId)?'沿參考線 #'+m.guideId:'未定位'}${ends(m.ends)}`).join('；')||'無'}`);
+    }
+    return parts.join(' · ');
+  }
   function violationWords(v){
     const source=[v.instanceId?`實例 #${v.instanceId}`:'',v.primaryKey?`主支 #${v.primaryKey}`:'',v.lineKey?`副支線 #${v.lineKey}`:''].filter(Boolean).join(' · '),
       detail=value=>value==null?'':typeof value==='string'?value:JSON.stringify(value);
@@ -391,7 +413,7 @@ window.AssemblyWorkspace=(()=>{
     const beforeI=new Map((p.before.instances||[]).map(r=>[r.value.source.id,r])),afterI=new Map((p.after.instances||[]).map(r=>[r.value.source.id,r]));
     const owned=new Map();
     for(const records of [beforeI,afterI])for(const r of records.values())for(const m of r.members||[])owned.set(m.timberId,`${assemblyOwnerLabel({instance:r.value.source.id,identity:m})||'構件 #'+m.memberId} → 角材 #${m.timberId}`);
-    for(const id of new Set([...beforeI.keys(),...afterI.keys()])){const a=beforeI.get(id),b=afterI.get(id);if(identityValue(a)!==identityValue(b)){title=b?`這次會${a?'更新':'生成'}「${b.value.source.name}」`:`這次會刪除「${a.value.source.name}」與所屬角材`;rows.push(['來源',JSON.stringify(b?.value.source||a.value.source)]);}}
+    for(const id of new Set([...beforeI.keys(),...afterI.keys()])){const a=beforeI.get(id),b=afterI.get(id);if(identityValue(a)!==identityValue(b)){title=b?`這次會${a?'更新':'生成'}「${b.value.source.name}」`:`這次會刪除「${a.value.source.name}」與所屬角材`;rows.push(['來源',instanceSourceText(b?.value.source||a.value.source)]);}}
     // The native candidate supplies all geometry, including ordinary external
     // dependents. Membership labels are presentation only, never the impact set.
     const describe=g=>g?`承載面 #${g.surface}，中心線 ${g.centerline} mm，長度 ${g.length} mm，局部位置 ${g.u},${g.v}，世界位置 ${g.origin.join(',')}，擺向 ${g.dir}/${g.side}，A ${g.A} / B ${g.B}，世界軸 ${g.axes.map(a=>a.join(',')).join(' / ')}`:'無';
