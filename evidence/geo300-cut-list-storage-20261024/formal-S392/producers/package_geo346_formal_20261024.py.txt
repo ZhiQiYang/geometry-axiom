@@ -1,0 +1,58 @@
+from pathlib import Path
+import hashlib,json,tarfile,datetime
+OUT=Path('/workspace/geo346-formal-originals-publication-20261024');OUT.mkdir(exist_ok=False)
+sources={
+ 'formal':Path('/workspace/geo300-cut-list-storage-39273bc0-formal'),
+ 'outer':Path('/workspace/geo300-cut-list-storage-39273bc0-formal-launch'),
+ 'runtime-tools':Path('/workspace/geo300-cut-list-storage-39273bc0-formal-tools'),
+ 'prepared-tools':Path('/tmp/geo300-cut-list-storage-20261024/formal-tools'),
+ 'fixture-r1':Path('/workspace/geo300-cut-list-storage-fixture-materialization-20261024'),
+ 'fixture-r2':Path('/workspace/geo300-cut-list-storage-fixture-materialization-20261024-r2')}
+extra={
+ 'fixture-producer-r1.py':Path('/workspace/geo300-cut-list-storage-materialize-fixture-20261024-r1-original.py'),
+ 'fixture-producer-r2.py':Path('/workspace/geo300-cut-list-storage-materialize-fixture-20261024.py'),
+ 'producer-package.py':Path(__file__),
+ 'capture-original.py':Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py'),
+ 'reaper-original.py':Path('/workspace/geo261-environment/reap_children.py')}
+def h(x):return hashlib.sha256(x).hexdigest()
+receipt=json.loads((sources['formal']/'receipt.json').read_bytes());outer=json.loads((sources['outer']/'receipt.json').read_bytes())
+assert receipt['accepted'] and len(receipt['suites'])==1
+suite=receipt['suites'][0]
+assert suite['actual_exit']==0 and suite['original_expected_methods']==11 and suite['passed'] and suite['zero_skips']
+assert len(suite['control_proofs'])==9 and all(c['actual_exits']==[0,1,0] and c['passed'] for c in suite['control_proofs'])
+assert receipt['actual_source_identity'][0]==receipt['source_after_identity'][0]=='39273bc0229fbbb16565134e1f8fad3a0d598c31'
+assert outer['primary_returncode']==outer['reaper_process_exit']==outer['launcher_exit']==0
+items=[]
+for prefix,root in sources.items():
+    for path in sorted(root.rglob('*')):
+        if path.is_file():
+            assert not path.is_symlink()
+            items.append((prefix+'/'+path.relative_to(root).as_posix(),path))
+items.extend(sorted(extra.items()))
+inventory=[]
+for name,path in items:
+    raw=path.read_bytes();inventory.append({'member':name,'source':str(path),'bytes':len(raw),'sha256':h(raw)})
+archive=OUT/'original-report-suite-fixture-and-control-streams.tar.gz'
+with tarfile.open(archive,'w:gz',compresslevel=3) as tar:
+    for name,path in items:tar.add(path,arcname=name,recursive=False)
+with tarfile.open(archive,'r:gz') as tar:
+    assert sorted(tar.getnames())==sorted(row['member'] for row in inventory)
+    for row in inventory:
+        raw=tar.extractfile(row['member']).read();assert len(raw)==row['bytes'] and h(raw)==row['sha256']
+index={'source_sha':receipt['source'],'files':inventory,'member_count':len(inventory),'logical_bytes':sum(r['bytes'] for r in inventory)}
+(OUT/'RAW_INDEX.json').write_text(json.dumps(index,ensure_ascii=False,indent=2)+'\n')
+report={'product_sha':receipt['source'],'actual_execution_head':receipt['actual_source_identity'][0],
+ 'execution_tree':receipt['actual_source_identity'][1],'previous_checkout_head':receipt['completed_checkout_previous_identity'][0],
+ 'source_after_head':receipt['source_after_identity'][0],'source_after_clean':receipt['source_after_clean'],
+ 'outer_exit':0,'reaper_exit':0,'original_suite_exit':0,'methods':11,'skips':0,'controls':suite['control_proofs'],
+ 'compiler_commands':suite['compile_commands'],'all_compiler_exits_zero':suite['all_build_exits_zero'],
+ 'storage_mutant_both_client_and_cut_header_snapshots':suite['header_snapshots_complete'],
+ 'archive':archive.name,'archive_bytes':archive.stat().st_size,'archive_sha256':h(archive.read_bytes()),
+ 'member_count':len(inventory),'roundtrip_all_original_bytes':True,
+ 'fixture_r1':'Environment preparation only; unsupported sparse-checkout add --no-cone, original Git exit129 retained; no fixture/source mutation occurred.',
+ 'fixture_r2':'Original non-cone mode preserved; add /room_a.scene exit0;370 bytes exact committed S; initial Ea5 clean and original patterns preserved.',
+ 'runtime_payloads':'All retained private TMP compile objects/executables remain in place. Archive includes complete formal/outer streams and source/header/compile-retention records; TMP object payloads are outside selected receipt roots, not deleted.',
+ 'unrun':['full native','6 browser jobs','P52','Q38','section7','P189 and GEO323 performance','final ledger and architecture'],
+ 'started_utc':receipt['started_utc'],'ended_utc':receipt['ended_utc'],'created_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+(OUT/'RESULT.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({k:report[k] for k in ['product_sha','methods','skips','compiler_commands','archive_bytes','archive_sha256','member_count']}))
