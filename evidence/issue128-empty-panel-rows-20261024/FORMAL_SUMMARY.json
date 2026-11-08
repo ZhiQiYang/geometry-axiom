@@ -1,0 +1,397 @@
+{
+  "source": "324034812bb6effca68e0413bc0468595337b317",
+  "actual_suite_exit": 0,
+  "methods": 13,
+  "skips": 0,
+  "compile_link_commands": 93,
+  "all_compile_link_exits_zero": true,
+  "controls": [
+    {
+      "control": "clip-hole",
+      "case": "clip",
+      "expected_assertion": "clip-hole-area",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+      "baseline_is_required_before_mutant": false,
+      "command_numbers": [
+        63,
+        96,
+        null
+      ],
+      "actual_exits": [
+        0,
+        1,
+        null
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/clip-hole",
+        "bytes": 99592,
+        "sha256": "6672b77c4f3f174f2f9a1daad4c83321dabb4353830a736446ece16edc3564dd"
+      }
+    },
+    {
+      "control": "clip-cut",
+      "case": "clip",
+      "expected_assertion": "clip-point-touch-components",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+      "baseline_is_required_before_mutant": false,
+      "command_numbers": [
+        63,
+        99,
+        null
+      ],
+      "actual_exits": [
+        0,
+        1,
+        null
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/clip-cut",
+        "bytes": 99592,
+        "sha256": "d295a68464dab0328d4795bd3ce1afd5eb63b1c712bd8b35ec1405e8da600f08"
+      }
+    },
+    {
+      "control": "clip-keep",
+      "case": "capacity",
+      "expected_assertion": "clip-keeps-subdivision",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+      "baseline_is_required_before_mutant": false,
+      "command_numbers": [
+        62,
+        102,
+        null
+      ],
+      "actual_exits": [
+        0,
+        1,
+        null
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/clip-keep",
+        "bytes": 99592,
+        "sha256": "1a8928f0cb0ba41a46321d33b4ebb57aa3657b7af6bee0cb9384ac43c5bbf26b"
+      }
+    },
+    {
+      "control": "clip-budget",
+      "case": "capacity",
+      "expected_assertion": "clip-cumulative-budget",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+      "baseline_is_required_before_mutant": false,
+      "command_numbers": [
+        62,
+        105,
+        null
+      ],
+      "actual_exits": [
+        0,
+        1,
+        null
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/clip-budget",
+        "bytes": 99592,
+        "sha256": "6d8232280006cb64eba8199068a36d90b7c74b23ee276971eaa461653d20f7be"
+      }
+    },
+    {
+      "control": "layout-odd",
+      "case": "layout",
+      "expected_assertion": "layout-negative-odd-shift",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+      "baseline_is_required_before_mutant": false,
+      "command_numbers": [
+        92,
+        108,
+        null
+      ],
+      "actual_exits": [
+        0,
+        1,
+        null
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/layout-odd",
+        "bytes": 99584,
+        "sha256": "fd4ae0101766f6601e19ee270d2c3cdd44aab6a58c74dcd4d6a2ae463ed8e1a6"
+      }
+    },
+    {
+      "control": "layout-frame",
+      "case": "layout",
+      "expected_assertion": "layout-world-range",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+      "baseline_is_required_before_mutant": false,
+      "command_numbers": [
+        92,
+        111,
+        null
+      ],
+      "actual_exits": [
+        0,
+        1,
+        null
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/layout-frame",
+        "bytes": 99584,
+        "sha256": "67fa23254c39a201d45ec8c839425e6267d2c644b119b0b6dcd078894fe1fe07"
+      }
+    },
+    {
+      "control": "support-hole-cuts",
+      "case": "support",
+      "expected_assertion": "support-fragment-vertices",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+      "baseline_is_required_before_mutant": false,
+      "command_numbers": [
+        124,
+        114,
+        null
+      ],
+      "actual_exits": [
+        0,
+        1,
+        null
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/support-hole-cuts",
+        "bytes": 99592,
+        "sha256": "6066455f4d3cb920701df6df501333f6c4681c9984860d4e8dd6f607ea6598f5"
+      }
+    },
+    {
+      "control": "support-union",
+      "case": "support",
+      "expected_assertion": "support-touching-union",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+      "baseline_is_required_before_mutant": false,
+      "command_numbers": [
+        124,
+        117,
+        null
+      ],
+      "actual_exits": [
+        0,
+        1,
+        null
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/support-union",
+        "bytes": 99584,
+        "sha256": "cbe79a86ee9510a1cd4d7edc059f1b799876a2c61c0a10ac6d28c89b228c07c6"
+      }
+    },
+    {
+      "control": "support-round",
+      "case": "support",
+      "expected_assertion": "support-rational-not-rounded",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+      "baseline_is_required_before_mutant": false,
+      "command_numbers": [
+        124,
+        120,
+        null
+      ],
+      "actual_exits": [
+        0,
+        1,
+        null
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/support-round",
+        "bytes": 99584,
+        "sha256": "b5fff06a8cd2376cd48e3f0cc6c9acefe2eef6bc5b66e92541f9ae259ce005e9"
+      }
+    },
+    {
+      "control": "support-merge",
+      "case": "support",
+      "expected_assertion": "support-widths-not-colours",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "original control: separately recorded baseline and normal assertion rejection; no per-control restored execution claimed",
+      "baseline_is_required_before_mutant": false,
+      "command_numbers": [
+        124,
+        123,
+        null
+      ],
+      "actual_exits": [
+        0,
+        1,
+        null
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/support-merge",
+        "bytes": 99584,
+        "sha256": "1cc4541691364eb261ef9d2926703275f1a499d81c3225819f1a52deb5f50c55"
+      }
+    },
+    {
+      "control": "empty-axis-one-phase",
+      "case": "empty-axis",
+      "expected_assertion": "empty-first-phase-keeps-other-parity",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "new control: actual baseline/withdrawal/restoration 0/1/0",
+      "baseline_is_required_before_mutant": true,
+      "command_numbers": [
+        64,
+        67,
+        68
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-one-phase",
+        "bytes": 99592,
+        "sha256": "d337b2cfb065cdbf99be06039680807045bd8a24282e892bc5d3838cc30deb90"
+      }
+    },
+    {
+      "control": "empty-axis-drop-seams",
+      "case": "empty-axis",
+      "expected_assertion": "empty-axis-zero-pieces-with-raw-seams",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "new control: actual baseline/withdrawal/restoration 0/1/0",
+      "baseline_is_required_before_mutant": true,
+      "command_numbers": [
+        69,
+        72,
+        73
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-drop-seams",
+        "bytes": 99600,
+        "sha256": "65db1d59feadcc8f37bf3f404574620aaa395fdcbf8f7cb47c594367cabd8374"
+      }
+    },
+    {
+      "control": "empty-axis-reject-empty",
+      "case": "empty-axis",
+      "expected_assertion": "empty-axis-legal",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "new control: actual baseline/withdrawal/restoration 0/1/0",
+      "baseline_is_required_before_mutant": true,
+      "command_numbers": [
+        74,
+        77,
+        78
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-reject-empty",
+        "bytes": 99600,
+        "sha256": "d140de11848375fdb5d48d3627b615fcc8ce7d9ed3c19246243f352a6e742ef5"
+      }
+    },
+    {
+      "control": "empty-axis-work-withdrawn",
+      "case": "empty-axis-work",
+      "expected_assertion": "empty-axis-work-independent-of-empty-row-count",
+      "mutant_matches": 1,
+      "passed": true,
+      "claim": "new control: actual baseline/withdrawal/restoration 0/1/0",
+      "baseline_is_required_before_mutant": true,
+      "command_numbers": [
+        82,
+        86,
+        90
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ],
+      "variant_executable": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-work-withdrawn",
+        "bytes": 99600,
+        "sha256": "7f3cfe03f0bbec98423028cdfb27ff1dcc34676b85add73f802f9235207e3f22"
+      }
+    }
+  ],
+  "cost_original_streams": [
+    {
+      "command_number": 82,
+      "argv": [
+        "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-work-fixed",
+        "empty-axis-work"
+      ],
+      "exit": 0,
+      "stdout": "empty-axis length=10000 phase-calls=2 status=7 clip-status=0\nempty-axis length=100000000 phase-calls=2 status=7 clip-status=0\n",
+      "stderr": "",
+      "binary": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-work-fixed",
+        "bytes": 99600,
+        "sha256": "94c33e1c2f9026fd418f4340e7d6511efd978fd8e9e94fda044cb73b7d3c326e"
+      }
+    },
+    {
+      "command_number": 86,
+      "argv": [
+        "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-work-withdrawn",
+        "empty-axis-work"
+      ],
+      "exit": 1,
+      "stdout": "empty-axis length=10000 phase-calls=5000 status=7 clip-status=0\nempty-axis length=100000000 phase-calls=50000000 status=7 clip-status=0\n",
+      "stderr": "ASSERT:empty-axis-work-independent-of-empty-row-count\n",
+      "binary": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-work-withdrawn",
+        "bytes": 99600,
+        "sha256": "7f3cfe03f0bbec98423028cdfb27ff1dcc34676b85add73f802f9235207e3f22"
+      }
+    },
+    {
+      "command_number": 90,
+      "argv": [
+        "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-work-restored",
+        "empty-axis-work"
+      ],
+      "exit": 0,
+      "stdout": "empty-axis length=10000 phase-calls=2 status=7 clip-status=0\nempty-axis length=100000000 phase-calls=2 status=7 clip-status=0\n",
+      "stderr": "",
+      "binary": {
+        "path": "/workspace/issue128-p2-32403481-formal-tmp/geometry-tests/geo261-n1a-m3nkv0tc/empty-axis-work-restored",
+        "bytes": 99600,
+        "sha256": "9417f45fdeb38f5acedc406fc598f1bcec312ff6210e647c63b0acfdf411d87d"
+      }
+    }
+  ],
+  "source_after_clean": true,
+  "global_ledger": "UNRUN",
+  "architecture": "UNRUN",
+  "full_project_acceptance": "UNRUN"
+}
