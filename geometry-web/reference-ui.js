@@ -16,7 +16,7 @@ async function confirmReferenceImpact(preview) {
   const code = document.createElement('code'); code.textContent = preview.command;
   dialog.append(code);
   appendGridDefinitionImpact(dialog, preview);
-  appendSectionProfileImpact(dialog, preview);
+  appendSectionProfileImpact(dialog, preview, preview.violations);
   const assemblyChanges=document.createElement('ul');
   for(const binding of preview.assembly?.after?.bindings||[]){const before=preview.assembly.before.bindings.find(b=>b.value.id===binding.value.id);
     for(const slot of binding.effective)for(const axis of ['A','B']){const a=before?.effective.find(v=>v.slotId===slot.slotId)?.[axis]?.value,b=slot[axis]?.value;
@@ -137,8 +137,13 @@ async function confirmReferenceImpact(preview) {
 }
 
 /* The same native candidate is shared by DSL, engineering and parameter edits.
-   Section diagnostics are nested for ordinary reference previews. */
-function appendSectionProfileImpact(container, preview) {
+   Section diagnostics are nested for ordinary reference previews.
+   `shownViolations` are the candidate's own violations that the caller renders
+   next to this block. When the native side has no section finding it emits one
+   id-less SECTION_PROFILE_INVALID fallback that only restates the candidate's
+   rejection (or an internal I8a message); with the real reason already shown,
+   that row is noise under a section heading and is skipped. */
+function appendSectionProfileImpact(container, preview, shownViolations = null) {
   const impact = preview.sectionProfiles;
   if (!impact) return;
   const section = document.createElement('section');
@@ -163,7 +168,10 @@ function appendSectionProfileImpact(container, preview) {
       add(`${label} #${id}：${describe(old)} → ${describe(next)}`, 'profile-' + kind, id);
     }
   }
+  const candidateRejectionShown = Array.isArray(shownViolations) && shownViolations.length > 0;
   for (const issue of impact.violations || []) {
+    if (candidateRejectionShown && issue.code === 'SECTION_PROFILE_INVALID' &&
+      ['profileId', 'memberId', 'otherMemberId', 'runId'].every(key => issue[key] === undefined)) continue;
     const ids = [['profileId', '斷面'], ['memberId', '構件'], ['otherMemberId', '另一構件'], ['runId', '拉伸件']]
       .filter(([key]) => issue[key] !== undefined).map(([key, label]) => `${label} #${issue[key]}`).join(' · ');
     const facts = [['field', '欄位'], ['originalRectangle', '原矩形'], ['rectangle', '候選矩形'], ['otherOriginalRectangle', '另一原矩形'], ['otherRectangle', '另一候選矩形'], ['outsideRegions', '超出區域'], ['intersection', '交集'], ['outsideVertices', '超出座標頂點'], ['expected', '預期'], ['actual', '實際']]

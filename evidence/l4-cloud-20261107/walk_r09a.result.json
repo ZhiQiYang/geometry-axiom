@@ -1,0 +1,38 @@
+{
+ "ledgerBefore": {
+  "ok": true,
+  "active": false
+ },
+ "activateStatus": "已啟用物件身分追蹤。重新預覽後建立的模型才會帶來源身分。",
+ "activateButtonHidden": true,
+ "ledgerAfter": {
+  "ok": true,
+  "active": true
+ },
+ "projectionAfterActivation": "來源或專案已變更。請重新「使用目前面」，核對後再確認用途。",
+ "afterProjection": "已確認用途與觀看方向，現有設定已保留。指定牆底後按「更新預覽」；定義會隨專案保存。",
+ "previewEnabled": true,
+ "afterBottom": "牆底已明確設為 0 mm；圖面維持原來的 z。確認設定後按「更新預覽」。",
+ "confirmFacesVisible": true,
+ "createEnabled": true,
+ "createStatus": "「面 1空間」已加入目前專案，尚未保存成檔案。請按「保存專案 .gcanvas」，之後可完整重開。",
+ "library": "已建立空間 1",
+ "editButtons": [
+  "修改模型"
+ ],
+ "currentSourceButton": true,
+ "muIdentity": "物件延續已證明",
+ "muPlacement": {
+  "value": "1",
+  "text": "放置 #1 · 輪廓 #1 · z 2500 mm",
+  "disabled": false
+ },
+ "muStatus": "已明選現行放置面。請逐邊勾選，核對角材與柱樑後預覽。",
+ "muPlacementOptions": [
+  "=請選擇現行放置面",
+  "1=放置 #1 · 輪廓 #1 · z 2500 mm"
+ ],
+ "errs": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}

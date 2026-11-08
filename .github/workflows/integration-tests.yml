@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 concurrency:
   group: geometry-integration-${{ github.workflow }}-${{ github.ref }}
@@ -123,15 +124,69 @@ jobs:
       GEOMETRY_DOCUMENT_SCREENSHOT_DIR: /tmp/geometry-document-screens
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        if: matrix.suite != 'documents'
         with:
           persist-credentials: false
+      - name: Checkout document job primary sources
+        if: matrix.suite == 'documents'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/evidence/
       - name: Build current native executables
         run: npm run build
+      - name: Restore cached CJK font package
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: ${{ runner.temp }}/cjk-font-debs
+          key: fonts-noto-cjk-noble-1:20230817+repack1-3
       - name: Install Chinese fonts for visual verification
-        # Bound stalled mirror connections; keep CJK installation mandatory.
+        timeout-minutes: 8
+        # Cache hit: install the saved .deb without contacting the mirror.
+        # Cache miss: keep the existing apt download, then store fonts-noto-cjk*.deb.
+        # CJK remains mandatory; do not raise job timeouts.
         run: |
-          sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
-          sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
+          set -euo pipefail
+          cache_dir="${{ runner.temp }}/cjk-font-debs"
+          mkdir -p "$cache_dir"
+          shopt -s nullglob
+          debs=("$cache_dir"/fonts-noto-cjk*.deb)
+          echo "CJK_CACHE_DIR=$cache_dir"
+          echo "CJK_DEB_COUNT=${#debs[@]}"
+          if [ "${#debs[@]}" -gt 0 ]; then
+            ls -la "${debs[@]}"
+            for deb in "${debs[@]}"; do
+              echo "CJK_DEB=$(basename "$deb") bytes=$(wc -c <"$deb")"
+            done
+            echo "CJK_INSTALL_BRANCH=cached-deb"
+            # Install only the local archives; dependency/configuration errors must fail.
+            # Keep the mirror guard, without an apt repair/fallback on a cache hit.
+            log="$(mktemp)"
+            sudo dpkg -i "${debs[@]}" 2>&1 | tee "$log"
+            if grep -E "https?://azure\.archive\.ubuntu\.com|Need to get .* of archives" "$log"; then
+              echo "CJK_CACHE_HIT_STILL_MIRRORED=1" >&2
+              echo "cache-hit path contacted apt mirror; see log above" >&2
+              exit 1
+            fi
+            echo "CJK_CACHE_HIT_STILL_MIRRORED=0"
+          else
+            echo "CJK_INSTALL_BRANCH=apt-miss"
+            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
+            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
+            cp /var/cache/apt/archives/fonts-noto-cjk*.deb "$cache_dir/"
+            ls -la "$cache_dir"/fonts-noto-cjk*.deb || true
+          fi
+          dpkg -s fonts-noto-cjk
+          # Collect stdout before grep -q so a closed pipe cannot mimic missing fonts.
+          cjk_fonts="$(fc-list :lang=zh)"
+          if ! grep -q . <<< "$cjk_fonts"; then
+            echo "fc-list :lang=zh found no fonts" >&2
+            exit 1
+          fi
       - name: Run actual browser regression group
         shell: bash
         run: |
