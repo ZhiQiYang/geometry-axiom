@@ -23,7 +23,9 @@ INTEGRATION_BASE = "4b665fae21ab63aaffb7d84f6a32d5a469ba1675"
 I24_IMPLEMENTATION_HEAD = "32f42e3d991c7d2d916d21bfe8ac5d3dd0f9b131"
 # 9430bae568feb98805072930c92f9a03a1250d4e: reuse a missing edge's slot.
 # 81b6c388f8b73e9aaf885b1d948e5f306b77bafd: generic provider hint bucket.
-GENERIC_SOURCE_INDEX_KERNEL_HEAD = "81b6c388f8b73e9aaf885b1d948e5f306b77bafd"
+# b6d864117ec9ec69aea638fb791ca00de74bc8bd: GEO-300 depend-hint API (#348 merged
+# with main cd1352bf); complete K tree 3f8154cdfdbbf1a3fc8175b957f3692221effec1.
+GENERIC_SOURCE_INDEX_KERNEL_HEAD = "b6d864117ec9ec69aea638fb791ca00de74bc8bd"
 
 
 def _ensure_pinned_commits(*shas):
