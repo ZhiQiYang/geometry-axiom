@@ -280,8 +280,11 @@ window.SpaceModelWorkspace = (() => {
   async function repinAfterActivation(pin, line) {
     const {source, token} = pin, h = ReferenceWorkspace.history, recorded = !sameSourceHistory(source.history_token);
     if (line.before_revision !== pin.nativeRevision || line.revision !== pin.nativeRevision + 1) return false;
+    // ContextHistory keeps at most `limit` steps and drops the oldest on push, so
+    // one append at capacity leaves the length unchanged (PR #376 review M1).
+    const limit = Number.isSafeInteger(h?.limit) && h.limit > 1 ? h.limit : Infinity;
     if (recorded && (line.history_changed !== true || !h || h.frame !== token.frame || h.group !== token.group || h.redo.length ||
-      h.undo.length !== pin.undoLength + 1 || h.undo.at(-2) !== token.undo)) return false;
+      h.undo.length !== Math.min(pin.undoLength + 1, limit) || h.undo.at(-2) !== token.undo)) return false;
     const next = sourceHistoryToken();
     let dump;
     try { dump = await api("dump-deidentified"); } catch (_) { return false; }

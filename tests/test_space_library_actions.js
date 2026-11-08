@@ -118,7 +118,7 @@ function line(prefix) {
   return source.slice(start, source.indexOf('\n', start));
 }
 
-function fixture({beforeActivate, afterActivate, dumpText, lineReply} = {}) {
+function fixture({beforeActivate, afterActivate, dumpText, lineReply, priorSteps = 0, preview = false} = {}) {
   const history = new P.ContextHistory(() => ({id: 'project-a', models: [], sources: new Map()}));
   history.frame.ids.set(1, 'face-key-1');
   const base = 'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000\n';
@@ -153,6 +153,9 @@ function fixture({beforeActivate, afterActivate, dumpText, lineReply} = {}) {
     source.includes('  /* Activating the ledger appends') ? slice('  /* Activating the ledger appends', '  function creationOwner(')
       : slice('  async function activateIdentity()', '  function creationOwner(')].join('\n');
   const fns = new Function(...Object.keys(sandbox), code + '\nreturn {activateIdentity, sourceHistoryToken, sameSourceHistory};')(...Object.values(sandbox));
+  // Earlier edits fill the undo history before the source is read (PR #376 M1).
+  for (let i = 0; i < priorSteps; i++) history.observe('line spec prior ' + i, {ok: true, history_changed: true});
+  if (preview) { state.result = {}; state.previewRevision = state.revision; state.phase = 'preview'; }
   state.source = {kind: 'scene', context_id: 'project-a', boundary_id: 1, face_key: 'face-key-1', base_scene: base, history_token: fns.sourceHistoryToken()};
   return {state, history, calls, messages, ...fns};
 }
@@ -194,6 +197,36 @@ test('an activation that records no history step keeps the source as it was', as
   assert.equal(f.state.source.history_token, before);
   assert.equal(f.sameSourceHistory(before), true);
   assert.equal(f.messages.at(-1).kind, 'success');
+});
+
+test('activation at the undo-history capacity still keeps the source current', async () => {
+  // ContextHistory keeps at most `limit` (32) steps: the activation push drops the
+  // oldest step, so the length stays 32 while exactly one step was appended.
+  for (const priorSteps of [31, 32, 40]) {
+    const f = fixture({priorSteps, preview: true});
+    assert.equal(f.history.undo.length, Math.min(priorSteps, f.history.limit));
+    const before = f.state.source.history_token;
+    await f.activateIdentity();
+    assert.equal(f.history.undo.length, Math.min(priorSteps + 1, f.history.limit), priorSteps + ': one step appended');
+    assert.notEqual(f.state.source.history_token, before, priorSteps + ': token re-pinned');
+    assert.equal(f.sameSourceHistory(f.state.source.history_token), true, priorSteps + ': source current');
+    assert.equal(f.state.previewRevision, -1, priorSteps + ': the preview made before activation still expires');
+    assert.deepEqual(f.messages.at(-1), {text: '已啟用物件身分追蹤。這次預覽已過期，請重新預覽。', kind: 'warning'}, String(priorSteps));
+  }
+});
+
+test('at capacity, a second step around the activation still leaves the source stale', async () => {
+  for (const [label, options] of [
+    ['edit before activation', {beforeActivate: h => coreStep(h)}],
+    ['edit after activation', {afterActivate: h => coreStep(h)}],
+  ]) {
+    const f = fixture({...options, priorSteps: 32});
+    const before = f.state.source.history_token;
+    await f.activateIdentity();
+    assert.equal(f.history.undo.length, f.history.limit, label);
+    assert.equal(f.state.source.history_token, before, label + ': token kept');
+    assert.equal(f.sameSourceHistory(before), false, label + ': still stale');
+  }
 });
 
 test('a source that was already stale is not re-pinned by activation', async () => {

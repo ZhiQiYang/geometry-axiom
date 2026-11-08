@@ -14,10 +14,15 @@
 | 腳本 | `scripts/`（`lib.js` 共用；每項一支 `walk_*.js`）；每項先「檔案 → 新專案」再開始，避免伺服器上前一項的世界殘留 |
 | 結果 | `walk_*.result.json`（腳本當下讀到的畫面文字）、`screens/*.jpg`、保存出來的 `.gcanvas`／CSV |
 
-操作一律走畫面上的按鈕、選單、欄位。只有兩處用 `page.evaluate` 唯讀：
+點按、填寫、選擇、拖曳都由 Playwright 對畫面元件送出真的滑鼠／鍵盤事件。`page.evaluate`／`$eval`／`$$eval` 另有三種用途（2026-11-08 依 #376 審查更正，原文寫成「只有兩處唯讀」並不精確）：
 
-- R07 校準時，用 App 自己的 `feUlImgToMm` 算出「底圖第 30、290 px」在螢幕上的位置，再用滑鼠點下去。
-- R09a、R10 用 `identity-read`（唯讀 API）確認身分帳是否已啟用。
+1. **讀畫面**：各腳本多處讀狀態列、選單項、對話框文字、下拉選項、清單列等 DOM 內容，作為結果記錄。
+2. **唯讀讀取 App 內部值**：
+   - R07 用 App 自己的 `feUlImgToMm` 算出「底圖第 30、290 px」在螢幕上的位置，再用滑鼠點下去；另讀 `mmPerPx` 確認校準結果。
+   - R09a、R10 用 `identity-read`（唯讀 API）確認身分帳是否已啟用。
+3. **以腳本代替介面操作**：
+   - R10 展開「來源紀錄與待補資訊」時，用 `summary.click()`（`scripts/walk_r10.js` 第 14 行），不是滑鼠點按。
+   - `scripts/lib.js` 把 `showSaveFilePicker`／`showOpenFilePicker` 設成 `undefined`（見下段）。
 
 保存與開檔：headless Chromium 沒有原生檔案對話框，腳本把 `showSaveFilePicker`／`showOpenFilePicker` 設成 `undefined`，
 讓 App 走下載與 `<input type=file>` 的後備路徑，與 CI 的瀏覽器測試相同。Windows Chrome 上使用者會看到原生對話框，這部分未核對。
@@ -54,14 +59,18 @@
 4. **啟用身分帳後，空間建模的下一步一定被判為過期**（R09a）。在「以此面建立空間」裡按「啟用物件身分追蹤」後，接著按「確認用途與觀看方向」會被拒：「來源或專案已變更。請重新『使用目前面』」，使用者得自己再按一次「使用目前面」（`screens/R09a-1a-stale-after-activation.jpg`）。原因：`space-workspace.js:588` 拿「使用目前面」當下的場景快照比對，而 `activateIdentity()`（`space-workspace.js:270-296`）本身就會改場景。這牽涉 K3-44 的快照守門，未在本次改動。
 5. **參數 ID 起點不一致**（觀察，不是錯誤）。UI 新建的第一張參數卡是 #1，R08 匯入到沒有參數的專案時配到 #0（`參數 1 → 0`）。原生測試也用 `card(0, …)`，0 是合法 ID。
 
-## 修正狀態（同日）
+## 修正狀態（2026-11-07 修正，11-08 補記）
 
-發現 1～4 在 commit `3b8d14096`（`fix(ui): 修 2026-11-07 雲端核對發現的三處顯示問題與身分帳啟用後來源過期`）修正，經 [PR #376](https://github.com/ZhiQiYang/geometry-axiom/pull/376) 送進 main。
+發現 1～4 的修正都在 [PR #376](https://github.com/ZhiQiYang/geometry-axiom/pull/376) 送審：
+- 主要修正在 commit `3b8d14096`（`fix(ui): 修 2026-11-07 雲端核對發現的三處顯示問題與身分帳啟用後來源過期`）。
+- 發現 4 的歷史容量邊界在 11-08 依審查 M1 補修。撤銷歷史滿 32 步時，啟用這一步會擠掉最舊一筆，長度不變，原判斷會誤判過期。
+
+本段寫成時（2026-11-08）#376 尚未合併；是否已進 main，以 #376 的狀態為準。
 
 | 發現 | 修法 | 修正後實機重驗（`after-fix/`） |
 |---|---|---|
 | 1 | `assembly-workspace.js` 的 `instanceSourceText()` 把實例來源寫成可讀摘要（名稱、配置、規則版本、配置方式、承載面、各主支／副支線的定位與端點、明示略過），標籤仍是「來源」 | 重複開間預覽：「「角材組合・角材」 · 配置 #1 · 規則 #1 第 1 版 · 重複開間 · 承載面 #1 · 主支 3 支：#1 主格 #1 的 u 線索引 0（端點 角材 #90 → 角材 #91）；…」（`screens/R06-3-bay-preview.jpg`） |
 | 2、3 | `reference-ui.js` 的 `appendSectionProfileImpact()`：在影響確認對話框已列出主違規時，略過不帶任何斷面／構件／拉伸件編號的 `SECTION_PROFILE_INVALID` 後備訊息；帶編號的斷面問題一律保留，其他三個呼叫點行為不變 | R18 與 R11 的拒絕對話框不再出現「斷面與拉伸的連動影響」，真正原因仍在「場景 · I8」（`screens/R18-1-both-axes-rejected.jpg`、`R11-5-delete-preview.jpg`） |
-| 4 | `space-workspace.js` 的 `captureActivationPin()`／`repinAfterActivation()`：啟用前來源快照為最新、原生版本剛好前進 1、歷史剛好多一步、場景文字不變，才重新記錄來源的歷史權杖；其餘情況仍判過期並提示重新「使用目前面」 | 啟用後直接「確認用途與觀看方向」成功，建空間後「採用現行來源」仍顯示「物件延續已證明」（`screens/R09a-1b-projection.jpg`、`R09a-5-model-update-identity.jpg`） |
+| 4 | `space-workspace.js` 的 `captureActivationPin()`／`repinAfterActivation()`：啟用前來源快照為最新、原生版本剛好前進 1、歷史剛好多一步（依 `ContextHistory` 上限計算；滿 32 步時長度不變，看倒數第二筆是否仍是啟用前的最上面一筆）、場景文字不變，才重新記錄來源的歷史權杖；其餘情況仍判過期並提示重新「使用目前面」 | 啟用後直接「確認用途與觀看方向」成功，建空間後「採用現行來源」仍顯示「物件延續已證明」（`screens/R09a-1b-projection.jpg`、`R09a-5-model-update-identity.jpg`） |
 
 測試與本地驗證見 commit 訊息。瀏覽器套件 assembly、grid、reference 與 canvas 兩片在此容器會因下載檔名（變成 `download`）與檔案選擇器路徑的環境差異中止，未改動的對照組在同一處同樣中止，所以這幾片的完整結果要看 CI。
