@@ -6,8 +6,12 @@ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const root=process.env.GEOMETRY_TIMBER_UI_ROOT || path.resolve(__dirname,'..');
 const source=fs.readFileSync(path.join(root,'geometry-web/timber-edit.js'),'utf8');
 const fullRevision='18446744073709551615';
-function setup({ids=[0],rev='18',mutate=row=>row,delay=null}={}) {
+function setup({ids=[0],rev='18',mutate=row=>row,delay=null,legacy=null,legacyPriority='7'}={}) {
   const context={id:'project'},frame={context},edit={bid:1},focus={t:'face',id:1},calls=[],listeners={},project={revision:2};
+  const invalid=[],nodes=new Map();
+  if(legacy)for(const [field,value] of Object.entries({A:'27',B:'33',Dir:'+u',Side:'+n',Role:'custom',Pri:'7',Anchor:'at-face e0',Selector:'',...legacy})){
+    nodes.set('tbEdit'+field,{value,getAttribute:()=>field==='Pri'?legacyPriority:value});
+  }
   const row=id=>mutate({id,eligible:true,reason:null,owner:null,groups:[],groupsKnown:true,placed:true,placementOrder:String(id+1),
     definition:{A:{mode:'source',source:{kind:'parameter',parameterId:0,fieldId:2},override:null},
       B:{mode:'source',source:{kind:'parameter',parameterId:0,fieldId:7},override:{kind:'literal',value:33}},
@@ -17,7 +21,8 @@ function setup({ids=[0],rev='18',mutate=row=>row,delay=null}={}) {
   const oc={edit,focus,busy:false},connection={session:'session-1',phase:'ready'};
   const sandbox={structuredClone,console,setTimeout,clearTimeout,AbortSignal,BigInt,ReferenceWorkspace:workspace,fe,oc,connection,
     feSid:()=>0,pageRuntimeVersion:'test-version',checkApiSession:()=>{},toast:()=>{},
-    document:{getElementById:()=>null,activeElement:null,addEventListener:(name,handler)=>{(listeners[name]??=[]).push(handler);}},
+    feMarkInvalid:node=>{assert(node,'legacy error must target a live input');invalid.push([...nodes].find(([,value])=>value===node)[0]);},
+    document:{getElementById:id=>nodes.get(id)||null,activeElement:null,addEventListener:(name,handler)=>{(listeners[name]??=[]).push(handler);}},
     FaceContextMenu:{refreshEligibility:()=>{}},
     apiRequest:async command=>{calls.push(command);assert.equal(command,'engineering-read');return {ok:true,revision:Number(rev),state:{materials:[],specs:[],applications:[]}};},
     fetch:async (url,options)=>{
@@ -29,7 +34,7 @@ function setup({ids=[0],rev='18',mutate=row=>row,delay=null}={}) {
     }};
   sandbox.window={DraftGate:{register:()=>{}},addEventListener:(name,handler)=>{(listeners[name]??=[]).push(handler);}};
   vm.createContext(sandbox);vm.runInContext(source,sandbox,{filename:'timber-edit.js'});
-  return {adapter:sandbox.window.TimberEdit,workspace,project,fe,oc,connection,calls,listeners};
+  return {adapter:sandbox.window.TimberEdit,workspace,project,fe,oc,connection,calls,listeners,invalid,nodes};
 }
 test('R11-UI-U64: catalog numbers never round the exact timber revision',async()=>{
   const s=setup({rev:fullRevision});await assert.doesNotReject(s.adapter.copy());
@@ -51,6 +56,28 @@ test('R11-UI-PRIORITY: full int64 text is authoritative and unsafe legacy projec
   await assert.rejects(unsafe.adapter.copy(),/優先序/);
   const invalid=setup({mutate:row=>({...row,definition:{...row.definition,priorityText:'01'}})});
   await assert.rejects(invalid.adapter.copy(),/優先序/);
+  // A rejected legacy field must be marked before replacing its form or
+  // handing the input lock to a candidate. Keep this in the existing suite.
+  for(const [field,text] of [['Pri','2.5'],['Pri','0'],['Pri',''],['Pri','9223372036854775808'],['A','0'],['A','27.5'],['B','0'],['B','1.5']]){
+    const legacy=setup({legacy:{[field]:text},mutate:row=>({...row,definition:{...row.definition,role:'custom',priority:7,priorityText:'7'}})});
+    legacy.oc.busy=true;let handoffs=0;
+    await legacy.adapter.applyLegacyFields(0,()=>{handoffs++;legacy.oc.busy=false;});
+    assert.deepEqual(legacy.invalid,['tbEdit'+field],'R356_LEGACY_'+field+'_INVALID_MARK');
+    assert.equal(legacy.nodes.get('tbEdit'+field).value,text,'R356_LEGACY_INVALID_INPUT_RETAINED');
+    assert.equal(handoffs,0,'R356_LEGACY_INVALID_NO_CANDIDATE_HANDOFF');
+    assert.deepEqual(legacy.calls.map(item=>item.schema),['timber-edit-read/1'],'R356_LEGACY_INVALID_READ_ONLY');
+    assert.equal(legacy.adapter.beforeWorldMutation(),null,'R356_LEGACY_INVALID_NO_PENDING_OWNER');
+  }
+  // These two positive probes stop at the handoff, before this function-level
+  // fixture's absent batch DOM. Full candidate/wire checks remain in P116.
+  for(const [value,original] of [[maximum,'7'],[String(Number(maximum)),String(Number(maximum))]]){
+    const legacy=setup({legacy:{Pri:value},legacyPriority:original,
+      mutate:row=>({...row,definition:{...row.definition,role:'custom',priority:Number(maximum),priorityText:maximum}})});
+    let handoffs=0;
+    await legacy.adapter.applyLegacyFields(0,()=>{handoffs++;throw Error('R356_VALIDATION_HANDOFF_PROBE');});
+    assert.equal(handoffs,1,'R356_LEGACY_EXACT_PRIORITY_HANDOFF');
+    assert.deepEqual(legacy.invalid,[],'R356_LEGACY_EXACT_PRIORITY_NOT_REJECTED');
+  }
 });
 test('R11-UI-ORDER: a late read cannot authorize a reordered selection',async()=>{
   let release;const wait=new Promise(resolve=>{release=resolve;});

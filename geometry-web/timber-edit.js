@@ -538,13 +538,26 @@
       const old=result.timbers[0],placement=old.definition.placement;
       if(!current(stamp) || Object.entries(input).some(([key,text])=>$('tbEdit'+key)?.value!==text))throw Error('輸入已變更，請重新核對。');
       if(input.Anchor!==placement.anchor || input.Selector.trim()!==placement.selector || input.Side!==placement.side)return false;
+      // Validate while the original fields still exist. A rejected value
+      // must not replace its editor or acquire a candidate owner.
+      const dimensions={A:Number(input.A),B:Number(input.B)};
+      const invalidDimensions=['A','B'].filter(field=>!Number.isSafeInteger(dimensions[field]) || dimensions[field]<=0);
+      if(invalidDimensions.length){
+        for(const field of invalidDimensions)feMarkInvalid($('tbEdit'+field));
+        throw Error('角材截面 A/B 須為正整數 mm');
+      }
+      let changedPriority=null;
+      if(input.Role==='custom' && (input.Role!==old.definition.role || priorityEdited)){
+        try {changedPriority=priorityText({priorityText:input.Pri.trim()});}
+        catch(error){feMarkInvalid($('tbEditPri'));throw error;}
+      }
       releasePreflight();
       const value=start('batch');value.read=result;renderBatch(value);
       const set=(field,id,text)=>{document.querySelector(`[data-timber-patch="${field}"]`).checked=true;$(id).value=text;};
-      for(const field of ['A','B'])if(Number(input[field])!==old.effective[field]){set(field,'timberEdit'+field+'Mode','direct');$('timberEdit'+field+'Value').value=input[field];}
+      for(const field of ['A','B'])if(dimensions[field]!==old.effective[field]){set(field,'timberEdit'+field+'Mode','direct');$('timberEdit'+field+'Value').value=String(dimensions[field]);}
       if(input.Dir!==placement.direction)set('direction','timberEditDirection',input.Dir);
       if(input.Role!==old.definition.role)set('role','timberEditRole',input.Role);
-      if(input.Role==='custom' && (input.Role!==old.definition.role || priorityEdited && priorityText({priorityText:input.Pri.trim()})!==priorityText(old.definition)))set('priority','timberEditPriority',input.Pri);
+      if(changedPriority!==null && (input.Role!==old.definition.role || changedPriority!==priorityText(old.definition)))set('priority','timberEditPriority',changedPriority);
       updateActions(value);await preview(value);return true;
     } catch(error){toast(error.message);return true;}
   }
