@@ -16,7 +16,7 @@ static int grouping(void)
     CHECK(wood_cut_list_collect(values,7,&result),"report-collect");
     CHECK(result.placed==6&&result.total_length==550,"report-placed-only");
     CHECK(result.group_count==5,"report-exact-spec-identity");
-    CHECK(result.groups[0].count==2&&result.groups[0].ids[0]==9&&result.groups[0].ids[1]==2,"report-id-order");
+    CHECK(result.groups[0].count==2&&result.ids[result.groups[0].first+0]==9&&result.ids[result.groups[0].first+1]==2,"report-id-order");
     CHECK(result.groups[1].role==WOOD_MEMBER_ROLE_SECONDARY,"report-role-order");
     CHECK(result.groups[2].size_b==40&&result.groups[3].size_a==30,"report-section-order");
     CHECK(result.groups[4].length==50,"report-length-order");
@@ -29,17 +29,50 @@ static int ordering(void)
         member(5,90,30,20,WOOD_MEMBER_ROLE_BOUNDARY,true)};
     WoodCutList result;CHECK(wood_cut_list_collect(values,5,&result),"report-order-collect");
     CHECK(result.groups[4].length==70,"report-length-order");
-    const uint32_t ids[]={5,4,3,2,1};for(size_t i=0;i<5;++i)CHECK(result.groups[i].ids[0]==ids[i],"report-tie-break-order");return 0;
+    const uint32_t ids[]={5,4,3,2,1};for(size_t i=0;i<5;++i)CHECK(result.ids[result.groups[i].first]==ids[i],"report-tie-break-order");return 0;
 }
 static int limits(void)
 {
     WoodCutList result;memset(&result,0xa5,sizeof result);
     CHECK(wood_cut_list_collect(NULL,0,&result)&&!result.group_count&&!result.placed&&!result.total_length,"report-empty");
     WoodMember values[WOOD_CUT_LIST_MEMBER_CAPACITY];for(size_t i=0;i<WOOD_CUT_LIST_MEMBER_CAPACITY;++i)values[i]=member((uint32_t)i,100,20,30,WOOD_MEMBER_ROLE_PRIMARY,true);
-    CHECK(wood_cut_list_collect(values,WOOD_CUT_LIST_MEMBER_CAPACITY,&result)&&result.group_count==1&&result.placed==64&&result.groups[0].count==64&&result.groups[0].ids[63]==63,"report-capacity");
+    CHECK(wood_cut_list_collect(values,WOOD_CUT_LIST_MEMBER_CAPACITY,&result)&&result.group_count==1&&result.placed==64&&result.groups[0].count==64&&result.ids[result.groups[0].first+63]==63,"report-capacity");
     WoodCutList before;memcpy(&before,&result,sizeof result);
     CHECK(!wood_cut_list_collect(values,WOOD_CUT_LIST_MEMBER_CAPACITY+1,&result)&&!memcmp(&before,&result,sizeof result),"report-over-capacity-atomic");
     CHECK(!wood_cut_list_collect(NULL,1,&result)&&!memcmp(&before,&result,sizeof result),"report-missing-input-atomic");return 0;
+}
+static int pool(void)
+{
+    WoodMember values[]={member(900,30,20,30,WOOD_MEMBER_ROLE_PRIMARY,true),
+        member(3,100,20,30,WOOD_MEMBER_ROLE_PRIMARY,true),
+        member(700,30,20,30,WOOD_MEMBER_ROLE_PRIMARY,true),
+        member(2,100,20,30,WOOD_MEMBER_ROLE_PRIMARY,true),
+        member(41,60,20,30,WOOD_MEMBER_ROLE_SECONDARY,true),
+        member(88,30,20,30,WOOD_MEMBER_ROLE_PRIMARY,false)};
+    WoodCutList result;CHECK(wood_cut_list_collect(values,6,&result),"report-pool-collect");
+    CHECK(result.group_count==3&&result.placed==5&&result.total_length==320,"report-pool-groups");
+    CHECK(result.groups[0].first==0&&result.groups[0].count==2&&
+        result.groups[1].first==2&&result.groups[1].count==1&&
+        result.groups[2].first==3&&result.groups[2].count==2,"report-pool-offsets");
+    const uint32_t expected[]={3,2,41,900,700};
+    for(size_t i=0;i<5;++i)CHECK(result.ids[i]==expected[i],"report-pool-id-order");
+    WoodCutList copy=result;memset(&result,0,sizeof result);memset(values,0,sizeof values);
+    CHECK(copy.groups[2].first==3&&copy.groups[2].count==2&&copy.placed==5,"report-copy-metadata");
+    for(size_t i=0;i<5;++i)CHECK(copy.ids[i]==expected[i],"report-copy-owned-ids");
+    CHECK(sizeof(WoodCutGroup)<=3*sizeof(GeoCoord)+sizeof(WoodMemberRole)+
+        2*sizeof(size_t)+sizeof(GeoCoord)+sizeof(size_t),"report-group-linear-storage");
+    CHECK(sizeof(WoodCutList)<=sizeof(copy.groups)+sizeof(copy.ids)+
+        2*sizeof(size_t)+sizeof(GeoCoord)+sizeof(GeoCoord)+sizeof(size_t),"report-total-linear-storage");
+    WoodMember distinct[WOOD_CUT_LIST_MEMBER_CAPACITY];
+    for(size_t i=0;i<WOOD_CUT_LIST_MEMBER_CAPACITY;++i)
+        distinct[i]=member((uint32_t)(WOOD_CUT_LIST_MEMBER_CAPACITY-i),(GeoCoord)(i+1),20,30,WOOD_MEMBER_ROLE_PRIMARY,true);
+    CHECK(wood_cut_list_collect(distinct,WOOD_CUT_LIST_MEMBER_CAPACITY,&result)&&
+        result.group_count==WOOD_CUT_LIST_MEMBER_CAPACITY&&result.placed==WOOD_CUT_LIST_MEMBER_CAPACITY,"report-pool-all-groups");
+    for(size_t i=0;i<WOOD_CUT_LIST_MEMBER_CAPACITY;++i){
+        CHECK(result.groups[i].first==i&&result.groups[i].count==1,"report-pool-full-offsets");
+        CHECK(result.ids[i]==(uint32_t)(i+1),"report-pool-full-id-order");
+    }
+    return 0;
 }
 static int fixity(void)
 {
@@ -55,5 +88,5 @@ int main(int argc,char **argv)
 {
     if(argc!=2)return 2;
     if(!strcmp(argv[1],"grouping"))return grouping();if(!strcmp(argv[1],"ordering"))return ordering();
-    if(!strcmp(argv[1],"limits"))return limits();if(!strcmp(argv[1],"fixity"))return fixity();return 2;
+    if(!strcmp(argv[1],"limits"))return limits();if(!strcmp(argv[1],"fixity"))return fixity();if(!strcmp(argv[1],"pool"))return pool();return 2;
 }
