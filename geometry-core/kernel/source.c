@@ -179,7 +179,9 @@ static void geo_source_index_append_at(GeoEvalContext *ctx,bool nodes,size_t emp
     }else if(empty_slot!=SIZE_MAX&&empty_slot<*capacity){
         /* 身分查找已走到這個空槽；期間僅有必要的 node/key/array 配置，
          * 沒有 provider 回呼或索引改動。原序號守門先跑，擴表仍重建全表。 */
-        (*table)[empty_slot]=(uint32_t)count;return;
+        if(!(*table)[empty_slot]){
+            (*table)[empty_slot]=(uint32_t)count;return;
+        }
     }
     for(size_t i=first;i<count;++i){
         uint64_t hash=nodes?geo_source_node_hash(ctx->nodes[i]->source):geo_source_edge_hash(ctx->edges[i]);
@@ -339,7 +341,7 @@ static GeoSourceStatus geo_source_edge(GeoEvalContext *ctx,size_t source,GeoDepe
         if(ctx->edge_index_dirty)geo_source_edge_index_complete(ctx);
         else if(empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)
             ctx->edge_index[empty_slot]=(uint32_t)ctx->edge_count;
-        else geo_source_index_append(ctx,false);
+        else geo_source_index_append_at(ctx,false,empty_slot);
     }
     /* 必須晚於必要的 edges 配置／追加；MEMORY 不能留下不存在的邊提示。 */
     if(!node->edge_kinds||ctx->active>node->edge_consumer){

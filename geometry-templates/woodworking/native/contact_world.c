@@ -65,7 +65,6 @@ static int contact_face_plane_compare(GeoCoord a,GeoCoord b)
 typedef struct {
     size_t sorted[WOOD_CONTACT_FACE_CAPACITY],scratch[WOOD_CONTACT_FACE_CAPACITY];
     size_t rank[WOOD_CONTACT_FACE_CAPACITY],maximum[WOOD_CONTACT_FACE_CAPACITY];
-    size_t plane_end[WOOD_CONTACT_FACE_CAPACITY];
 } ContactFaceIndex;
 /* Reuse these buffers before the plane index rebuilds all of them. Only the
  * member suffix moves; stable ties retain both the member and side order. */
@@ -78,18 +77,26 @@ static void contact_member_index_sort(const WoodContactWorld *world,const Contac
     WoodStopFace *out,size_t count,size_t first,ContactFaceIndex *index)
 {
     size_t members=count-first;
-    /* This caller admits unique IDs only. The emitted member suffix is a
-     * subsequence of declaration order, with both sides stable at equal
-     * order. If even the unfiltered facts are nondecreasing, no sort is
-     * needed. A filtered out-of-order fact merely misses this fast path. */
-    bool ordered=first<count&&out[first].kind==WOOD_STOP_MEMBER_SIDE;
-    for(size_t i=1;ordered&&i<world->member_count;++i)
-        if(world->members[i-1].order>world->members[i].order)ordered=false;
-    if(ordered)return;
+    for(size_t i=first;i<count;++i)index->sorted[i]=i;
+    if(members<2)return;
     /* The immutable face suffix needs one full-width order lookup per face,
      * not two hash lookups at every merge comparison. */
     uint64_t order[WOOD_CONTACT_FACE_CAPACITY];
-    for(size_t i=first;i<count;++i){index->sorted[i]=i;order[i]=contact_order(world,orders,out[i].timber_id);}
+    for(size_t i=first;i<count;++i)order[i]=contact_order(world,orders,out[i].timber_id);
+    /* Placement order commonly already matches the admitted sequence.
+     * Equal orders keep their original member and side order. */
+    uint64_t previous=order[first];
+    bool ordered=true;
+    for(size_t i=first+1;i<count;++i){
+        uint64_t current=order[i];
+        if(previous>current){ordered=false;break;}
+        previous=current;
+    }
+    /* A filtered declaration inversion retains the conservative merge path.
+     * The admitted face sequence above is checked independently. */
+    if(ordered)for(size_t i=1;i<world->member_count;++i)
+        if(world->members[i-1].order>world->members[i].order){ordered=false;break;}
+    if(ordered)return;
     for(size_t width=1;width<members;){
         for(size_t start=first;start<count;){
             size_t middle=start+contact_min_size(width,count-start);
@@ -132,27 +139,28 @@ static void contact_face_index_build(ContactFaceIndex *index,const WoodStopFace 
         memcpy(index->sorted,index->scratch,count*sizeof *index->sorted);
         if(width>=count-width)break;width*=2;
     }
-    /* Sorting is finished: scratch now holds the plane start of each rank.
-     * Every query concerns one of these same immutable faces. */
+    for(size_t i=0;i<count;++i)index->rank[index->sorted[i]]=i;
+    /* Sorting no longer needs scratch. Retain every face in each plane range,
+     * including inactive or later-covered faces: only maximum tracks admission.
+     * A group's first rank stores its exclusive end; other ranks store first.
+     * This index and the out array stay fixed throughout indexed deduplication. */
     for(size_t begin=0;begin<count;){
-        size_t end=begin+1;
-        while(end<count&&contact_face_plane_compare(out[index->sorted[begin]].fixed,out[index->sorted[end]].fixed)==0)++end;
-        for(size_t i=begin;i<end;++i){
-            index->rank[index->sorted[i]]=i;index->scratch[i]=begin;index->plane_end[i]=end;
-        }
+        size_t end=begin+1;GeoCoord plane=out[index->sorted[begin]].fixed;
+        while(end<count&&out[index->sorted[end]].fixed==plane)++end;
+        index->scratch[begin]=end;
+        for(size_t rank=begin+1;rank<end;++rank)index->scratch[rank]=begin;
         begin=end;
     }
 }
-static void contact_face_plane_range(const ContactFaceIndex *index,const WoodStopFace *out,
-    size_t count,size_t face,size_t *begin,size_t *end)
+static void contact_face_index_bounds(const ContactFaceIndex *index,size_t face,size_t *begin,size_t *end)
 {
-    (void)out;(void)count;
-    size_t rank=index->rank[face];
-    *begin=index->scratch[rank];*end=index->plane_end[rank];
+    size_t rank=index->rank[face],marker=index->scratch[rank];
+    *begin=marker>rank?rank:marker;
+    *end=index->scratch[*begin];
 }
 static void contact_face_index_insert(ContactFaceIndex *index,const WoodStopFace *out,size_t count,size_t face)
 {
-    size_t begin,end;contact_face_plane_range(index,out,count,face,&begin,&end);
+    (void)count;size_t begin,end;contact_face_index_bounds(index,face,&begin,&end);
     size_t length=end-begin,at=index->rank[face]-begin+1;
     while(at<=length){size_t *value=&index->maximum[begin+at-1];
         if(!*value||out[*value-1].hi<out[face].hi)*value=face+1;
@@ -160,9 +168,10 @@ static void contact_face_index_insert(ContactFaceIndex *index,const WoodStopFace
     }
 }
 static bool contact_face_index_covered(const ContactFaceIndex *index,const WoodStopFace *out,
-    size_t count,const WoodStopFace *face)
+    size_t count,size_t ordinal)
 {
-    size_t begin,end;contact_face_plane_range(index,out,count,(size_t)(face-out),&begin,&end);
+    (void)count;const WoodStopFace *face=&out[ordinal];
+    size_t begin,end;contact_face_index_bounds(index,ordinal,&begin,&end);
     size_t lo=begin,hi=end;
     while(lo<hi){size_t mid=lo+(hi-lo)/2;
         if(contact_prefix_lo(out[index->sorted[mid]].lo,face))lo=mid+1;else hi=mid;
@@ -186,7 +195,7 @@ static void contact_indexed_dedup(const WoodContactWorld *world,const ContactOrd
         while(pending<i&&contact_earlier(world,orders,out[pending].timber_id,order)){
             if(active[pending])contact_face_index_insert(&index,out,count,pending);++pending;
         }
-        if(contact_face_index_covered(&index,out,count,&out[i])){active[i]=false;--*remaining;}
+        if(contact_face_index_covered(&index,out,count,i)){active[i]=false;--*remaining;}
     }
 }
 

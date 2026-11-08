@@ -38,6 +38,30 @@ def instrument_edge_work(source):
     return source.replace("UINT32_MAX", "packed_index_limit")
 
 
+# GEO-300 keeps its full-key 4096-slot hint and candidate-local edge proofs.
+# These controls withdraw the actual merged reuse sites; they do not restore
+# main's older product implementation or change either side's work oracle.
+EDGE_PROBE_REUSE_EDITS = (('        else geo_source_index_append(ctx,false);', '        else if(empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)\n            ctx->edge_index[empty_slot]=(uint32_t)ctx->edge_count;\n        else geo_source_index_append_at(ctx,false,empty_slot);'),)
+PROVIDER_HINT_EDIT = ('    size_t slot=(size_t)source.provider^source.key_size;\n    if(source.key_size){const unsigned char *key=source.key;slot^=(size_t)key[0]^key[source.key_size-1];}\n    slot&=255;', '    size_t slot=(size_t)hash&(sizeof ctx->node_hint/sizeof *ctx->node_hint-1);')
+
+
+def general_edge_probe_source(source):
+    """Exercise the real complete-index branch with the original 21/31 oracle.
+
+    The GEO-300 consumer proof has its own unchanged production tests. Disable
+    only that independent shortcut in a private copy, so this main witness
+    still measures miss-slot reuse, resize and fallback instead of that proof.
+    """
+    before = "if(node->edge_kinds&&ctx->active<node->edge_consumer){"
+    after = "if(true){"
+    if source.count(before) != 1:
+        raise AssertionError("One actual consumer-shortcut site")
+    changed = source.replace(before, after)
+    if changed.count(after) != 1 or changed.replace(after, before) != source:
+        raise AssertionError("Consumer-shortcut projection reverses exactly")
+    return changed
+
+
 class SourceIndex(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -144,9 +168,14 @@ class SourceIndex(unittest.TestCase):
 
     def test_repeated_edge_hash_and_probe_mutant_reports_repeated_work(self):
         # 撤回空槽重用，走原本第二次 hash/probe；圖仍正確，但工作量斷言必須紅。
-        self.kill("edge-miss-slot-reuse-removed", "edge-miss-work", "edge-miss-one-hash",
-                  self.inject("if(empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)",
-                              "if(false&&empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)"))
+        mutated = self.inject("if(empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)",
+                              "if(false&&empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)")
+        # The general append now also accepts the proved miss slot. Withdraw
+        # both actual consumers of that slot, retaining both ordinal guards.
+        anchor = "else geo_source_index_append_at(ctx,false,empty_slot);"
+        self.assertEqual(1, mutated.count(anchor))
+        mutated = mutated.replace(anchor, "else geo_source_index_append_at(ctx,false,SIZE_MAX);")
+        self.kill("edge-miss-slot-reuse-removed", "edge-miss-work", "edge-miss-one-hash", mutated)
 
     def test_consumer_hint_removed_mutant_reports_repeated_lookup(self):
         self.kill("edge-consumer-hint-removed", "edge-consumer-work", "edge-monotonic-no-lookup",
@@ -209,6 +238,136 @@ class SourceIndex(unittest.TestCase):
     def test_edge_probe_accepting_first_occupied_slot_mutant_reports_missing_edge(self):
         self.kill("edge-probe-hit", "edge-collisions", "missing-edge",
                   self.inject(EDGE_PROBE, EDGE_PROBE + "if(1)return true;"))
+
+
+    def test_edge_probe_reuse_keeps_order_across_rebuild_and_fallback(self):
+        self.passes("edge-probe")
+
+    def edge_probe_executable(self, source, label):
+        work = self.build.work / ("edge-probe-control-source-" + label)
+        work.mkdir()
+        (work / "source.c").write_text(general_edge_probe_source(source), encoding="utf-8")
+        client = work / "client.c"
+        shutil.copy2(self.harness, client)
+        return self.build.link("edge-probe-control-" + label,
+                               [self.build.compile(client, "edge-probe-control-" + label)])
+
+    def test_edge_probe_reuse_controls_fail_on_full_ordered_graph(self):
+        source = self.source()
+        fixed = self.edge_probe_executable(source, "baseline")
+        controls = (
+            # The else branch excludes the stale slot after growth. Target
+            # edges only: HEAD also reuses node slots in this shared helper,
+            # so preserve their rebuild (first == 0) to reach the original
+            # complete-edge oracle instead of failing earlier on seed nodes.
+            ("edge-reuse-old-slot-after-resize",
+             "    }else if(empty_slot!=SIZE_MAX&&empty_slot<*capacity){",
+             "    }\n    if((!nodes||first!=0)&&empty_slot!=SIZE_MAX&&empty_slot<*capacity){"),
+            ("edge-reuse-wrong-empty-slot", "        *empty_slot=slot;", "        *empty_slot=(slot+1)&mask;"),
+        )
+        for name, before, after in controls:
+            with self.subTest(control=name):
+                baseline = self.case("edge-probe", fixed)
+                self.assertEqual(0, baseline.returncode, baseline.stdout + baseline.stderr)
+                self.assertEqual("PASS edge-probe\n", baseline.stdout)
+                self.assertEqual("", baseline.stderr)
+                mutated = self.inject(before, after)
+                self.assertEqual(1, mutated.count(after))
+                self.assertEqual(source, mutated.replace(after, before))
+                executable = self.edge_probe_executable(mutated, name)
+                result = self.case("edge-probe", executable)
+                self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+                self.assertRegex(result.stderr, r"^ASSERT:duplicate-edge line=\d+ expr=")
+                self.assertEqual("", result.stdout)
+                print("edge-probe control=" + name + "\n" + result.stderr, end="")
+                restored = self.case("edge-probe", fixed)
+                self.assertEqual(0, restored.returncode, restored.stdout + restored.stderr)
+                self.assertEqual("PASS edge-probe\n", restored.stdout)
+                self.assertEqual("", restored.stderr)
+
+    def test_edge_probe_reuse_whole_withdrawal_preserves_graph_and_changes_work(self):
+        source=general_edge_probe_source(self.source());withdrawn=source
+        for before,after in reversed(EDGE_PROBE_REUSE_EDITS):
+            self.assertEqual(1,withdrawn.count(after))
+            withdrawn=withdrawn.replace(after,before)
+        restored=withdrawn
+        for before,after in EDGE_PROBE_REUSE_EDITS:
+            self.assertEqual(1,restored.count(before))
+            restored=restored.replace(before,after)
+        self.assertEqual(source,restored)
+        anchor="static uint64_t geo_source_edge_hash(GeoSourceEdge edge)\n{"
+        for phase,contents,expected,calls in (("fixed",source,0,21),("withdrawn",withdrawn,1,31),("restored",restored,0,21)):
+            with self.subTest(phase=phase):
+                self.assertEqual(1,contents.count(anchor))
+                work=self.build.work/("edge-probe-source-"+phase);work.mkdir()
+                (work/"source.c").write_text(contents.replace(anchor,anchor+"++edge_probe_hash_calls;"),encoding="utf-8")
+                client=work/"client.c";shutil.copy2(self.harness,client)
+                exe=self.build.link("edge-probe-cost-"+phase,[self.build.compile(client,"edge-probe-cost-"+phase)])
+                semantic=self.case("edge-probe",exe)
+                self.assertEqual(0,semantic.returncode,semantic.stdout+semantic.stderr)
+                self.assertEqual("PASS edge-probe\n",semantic.stdout)
+                self.assertEqual("",semantic.stderr)
+                result=self.case("edge-probe-cost",exe)
+                print("edge-probe phase="+phase+"\n"+result.stdout+result.stderr,end="")
+                self.assertEqual(expected,result.returncode,result.stdout+result.stderr)
+                self.assertEqual(f"PROBE_HASH_CALLS={calls}\n"+("PASS edge-probe-cost\n" if expected==0 else ""),result.stdout)
+                if expected:self.assertRegex(result.stderr,r"^ASSERT:edge-probe-reuses-lookup-hash line=\d+ expr=")
+                else:self.assertEqual("",result.stderr)
+
+
+    def test_provider_hint_identity_and_whole_withdrawal_changes_only_work(self):
+        source = self.source()
+        before, after = PROVIDER_HINT_EDIT
+        self.assertEqual(1, source.count(after))
+        withdrawn = source.replace(after, before)
+        self.assertEqual(1, withdrawn.count(before))
+        self.assertEqual(source, withdrawn.replace(before, after))
+        anchor = "static size_t geo_source_find_node(const GeoEvalContext *ctx,GeoSourceRef source,size_t *empty_slot,uint64_t hash)\n{"
+        phases = (("fixed", source, 0, 0), ("withdrawn", withdrawn, 1, 16), ("restored", source, 0, 0))
+        for phase, contents, expected, calls in phases:
+            with self.subTest(phase=phase):
+                self.assertEqual(1, contents.count(anchor))
+                work = self.build.work / ("provider-hint-source-" + phase)
+                work.mkdir()
+                (work / "source.c").write_text(contents.replace(anchor, anchor + "++provider_hint_find_calls;"), encoding="utf-8")
+                shutil.copy2(self.harness, work / "geo261_source_index_harness.c")
+                client = work / "client.c"
+                shutil.copy2(ROOT / "tests/geo323_provider_hint_harness.c", client)
+                exe_name = "provider-hint-" + phase
+                exe = self.build.link(exe_name, [self.build.compile(client, exe_name)])
+                semantic = self.case("provider-hint-semantics", exe)
+                print("provider-hint semantic phase=" + phase + "\n" + semantic.stdout + semantic.stderr, end="")
+                self.assertEqual(0, semantic.returncode, semantic.stdout + semantic.stderr)
+                self.assertEqual("PASS provider-hint-semantics\n", semantic.stdout)
+                self.assertEqual("", semantic.stderr)
+                result = self.case("provider-hint-work", exe)
+                print("provider-hint work phase=" + phase + "\n" + result.stdout + result.stderr, end="")
+                self.assertEqual(expected, result.returncode, result.stdout + result.stderr)
+                self.assertEqual(f"PROVIDER_HINT_FIND_CALLS={calls}\n" + ("PASS provider-hint-work\n" if expected == 0 else ""), result.stdout)
+                if expected:
+                    self.assertRegex(result.stderr, r"^ASSERT:provider-hint-cross-family-cache line=\d+ expr=")
+                else:
+                    self.assertEqual("", result.stderr)
+        controls = (
+            ("full-provider", "a.provider==b.provider", "(uint8_t)a.provider==(uint8_t)b.provider", "provider-hint-full-width-provider"),
+            ("middle-key", "||!memcmp(a.key,b.key,a.key_size)", "||1", "provider-hint-middle-byte-identity"),
+        )
+        for name, anchor, replacement, marker in controls:
+            with self.subTest(control=name):
+                self.assertEqual(1, source.count(anchor))
+                work = self.build.work / ("provider-hint-control-source-" + name)
+                work.mkdir()
+                (work / "source.c").write_text(source.replace(anchor, replacement), encoding="utf-8")
+                shutil.copy2(self.harness, work / "geo261_source_index_harness.c")
+                client = work / "client.c"
+                shutil.copy2(ROOT / "tests/geo323_provider_hint_harness.c", client)
+                exe_name = "provider-hint-control-" + name
+                exe = self.build.link(exe_name, [self.build.compile(client, exe_name)])
+                result = self.case("provider-hint-semantics", exe)
+                print("provider-hint control=" + name + "\n" + result.stdout + result.stderr, end="")
+                self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+                self.assertEqual("", result.stdout)
+                self.assertRegex(result.stderr, rf"^ASSERT:{marker} line=\d+ expr=")
 
 
 if __name__ == "__main__":
