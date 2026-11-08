@@ -1599,7 +1599,7 @@ def clause_trace(clauses: list[dict], incoming: dict) -> dict:
     不得在此另立門檻。判準與出處見本檔 TRACE_CSS 上方的註解(GEO-167)。
     """
     ids = [c["id"] for c in clauses]
-    code = axiom_matrix.code_sites(axiom_matrix.read_text(axiom_matrix.SRC), ids)
+    code = axiom_matrix.source_code_sites(ids)
     scenes = axiom_matrix.scene_hits(ids)
     mutants = axiom_matrix.mutant_hits(ids)
     trace = {}
@@ -1607,7 +1607,8 @@ def clause_trace(clauses: list[dict], incoming: dict) -> dict:
         has_code, has_scene = bool(code[cid]), bool(scenes[cid])
         trace[cid] = {
             "light": "ok" if (has_code and has_scene) else ("partial" if (has_code or has_scene) else "none"),
-            "functions": sorted({fn for fn, _ in code[cid]}),
+            "functions": sorted({fn for _, fn, _ in code[cid]}),
+            "sites": code[cid],
             "scenes": sorted(scenes[cid]),
             "mutants": sorted(mutants[cid]),
             "incoming": len(incoming.get(cid, [])),
@@ -1620,8 +1621,12 @@ def trace_section(cid: str, t: dict) -> str:
     """卡片底部的三向連結:原始碼 / 夾具 / 變異。內容全部由 axiom_matrix 推導,不手寫。"""
     rows = []
     if t["functions"]:
+        locations = {fn: "; ".join("%s:%d" % (path, line)
+                                  for path, owner, line in t["sites"] if owner == fn)
+                     for fn in t["functions"]}
         rows.append("<div class=\"trace-row\"><b>原始碼</b>" + " ".join(
-            "<code>%s</code>" % html.escape(fn) for fn in t["functions"][:6])
+            '<code title="%s">%s</code>' % (html.escape(locations[fn], quote=True), html.escape(fn))
+            for fn in t["functions"][:6])
             + ("<span class=\"muted\">…共 %d 處</span>" % len(t["functions"]) if len(t["functions"]) > 6 else "")
             + "</div>")
     if t["scenes"]:
