@@ -1,0 +1,72 @@
+{
+  "source": "aa0e3938f17dc996ef5e7410db4844b31856d2a6",
+  "actual_execution_source": "c493b7315d0cd3b16014add96af969c49ebf4660",
+  "all_C_H_inc_and_three_judges_and_native_supporting_paths_same": true,
+  "exact_guard_pathspecs": [
+    ":(glob)**/*.c",
+    ":(glob)**/*.h",
+    ":(glob)**/*.inc",
+    "tests/native_build.py",
+    "tests/test_geo261_native_kernel.py",
+    "tests/test_geo261_wood_contacts.py",
+    "tests/test_geo261_wood_contact_world.py",
+    "tests/test_geo261_contact_sources.py",
+    "tests/test_geo318_reading_a_native.py",
+    "tests/binaries.py",
+    "tests/fixtures",
+    "*.scene"
+  ],
+  "other_source_differences": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json",
+    "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+    "tests/run_all.expected.json",
+    "tests/test_geometry_host_sources.py",
+    "tests/test_rectangular_template.py"
+  ],
+  "new_source_subject_rerun": false,
+  "interpretation": "Original receipts remain c493. The later two merges/expected registration do not rewrite actual SHA or claim a new subject execution.",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "c493b7315d0cd3b16014add96af969c49ebf4660",
+        "aa0e3938f17dc996ef5e7410db4844b31856d2a6",
+        "--",
+        ":!evidence/"
+      ],
+      "cwd": "/tmp/geo300-prerequisites-20261024",
+      "exit": 0,
+      "stdout_sha256": "a985b7727f45e8bf5c944975a031feb0d5dc38563c2b6273bc02b0d317160e95",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "c493b7315d0cd3b16014add96af969c49ebf4660",
+        "aa0e3938f17dc996ef5e7410db4844b31856d2a6",
+        "--",
+        ":(glob)**/*.c",
+        ":(glob)**/*.h",
+        ":(glob)**/*.inc",
+        "tests/native_build.py",
+        "tests/test_geo261_native_kernel.py",
+        "tests/test_geo261_wood_contacts.py",
+        "tests/test_geo261_wood_contact_world.py",
+        "tests/test_geo261_contact_sources.py",
+        "tests/test_geo318_reading_a_native.py",
+        "tests/binaries.py",
+        "tests/fixtures",
+        "*.scene"
+      ],
+      "cwd": "/tmp/geo300-prerequisites-20261024",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

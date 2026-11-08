@@ -16,7 +16,17 @@ WoodPanelStatus wood_panel_layout_build(const WoodPanelLayoutInput *p,WoodPanelL
     d->tiles=calloc(WOOD_PANEL_TILE_MAX,sizeof *d->tiles);if(!d->tiles)return WOOD_PANEL_WORKSPACE;
     int row=p->stagger_axis==0?1:0,along=1-row;GeoCoord pitch[2]={geo_period_pitch(d->size[0],d->gap),geo_period_pitch(d->size[1],d->gap)};
     int64_t first=geo_floor_div(lo[row]-p->origin[row]-d->size[row],pitch[row])+1,last=geo_ceil_div(hi[row]-p->origin[row],pitch[row])-1;size_t enumerated=0;
-    for(int64_t r=first;r<=last;++r){GeoCoord shifted=p->origin[along]+geo_alternating_shift(p->stagger_axis>=0,d->stagger,r);
+    /* The alternating lattice has at most two row phases.  If neither
+     * present phase intersects the along-axis bbox, no row has a body.
+     * Raw seam lines still follow their original independent enumeration. */
+    bool body_axis_intersects=false;
+    if(first<=last)for(int phase=0;phase<2;++phase){
+        int64_t sample=first;if(phase){if(first==last)break;++sample;}
+        GeoCoord shifted=p->origin[along]+geo_alternating_shift(p->stagger_axis>=0,d->stagger,sample);
+        int64_t a=geo_floor_div(lo[along]-shifted-d->size[along],pitch[along])+1,z=geo_ceil_div(hi[along]-shifted,pitch[along])-1;
+        if(a<=z){body_axis_intersects=true;break;}
+    }
+    for(int64_t r=first;body_axis_intersects&&r<=last;++r){GeoCoord shifted=p->origin[along]+geo_alternating_shift(p->stagger_axis>=0,d->stagger,r);
         int64_t a=geo_floor_div(lo[along]-shifted-d->size[along],pitch[along])+1,z=geo_ceil_div(hi[along]-shifted,pitch[along])-1;
         if(z>=a&&(uint64_t)(z-a+1)>WOOD_PANEL_TILE_MAX-enumerated){wood_panel_layout_free(d);return WOOD_PANEL_ENUM_LIMIT;}
         for(int64_t k=a;k<=z;++k){++enumerated;WoodPanelTile *t=&d->tiles[d->count];t->i=row==0?r:k;t->j=row==1?r:k;
