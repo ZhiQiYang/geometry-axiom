@@ -391,12 +391,11 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,expectN
     'UI06 no-op/source identity/one history and definition event per confirmation',
     'UI11 real download/fresh browser storage/exact state/unknown capability/missing source/tampering',
     'UI12 390/720/1280/focus/Escape/CDP composition',
-    'UI13 three named wiring assertions','UI14 capabilities'],unrun:[
+    'UI13 three named wiring assertions','UI14 capabilities','UI15 #343/#346/#347 same-source closure (P128: negative index/parity shift, zero-panel confirm, save and fresh reopen)'],unrun:[
     'UI02 beam and multi-obstacle selection combinations',
     'UI05 arbitrary concurrent project-switch/unknown-receipt fault combinations beyond the executed witnesses',
     'UI11 older no-PF package regression (separate save suite)',
-    'UI12 physical IME/touch/assistive technology',
-    'UI15 final #343→#346→#347 closure']}));
+    'UI12 physical IME/touch/assistive technology']}));
 };
 
 async function saveAndFreshOpen({send,read,ctl,wait,check,official,proposedThreshold}){
