@@ -56,6 +56,8 @@ typedef struct {
 #define ASM_INSTANCE_MAX 16
 #define ASM_GENERATION_CAPABILITY "assembly-timber-generation/1"
 #define ASM_BAY_CAPABILITY "assembly-bay-repeat/1"
+/* R06 has its own 64-member scene limit; GEO-300 expands the host World only. */
+#define ASM_BAY_WORLD_MAX 64
 #define ASM_OWNER_MAX 48
 #define ASM_BAY_PRIMARY_MAX 12
 #define ASM_BAY_LINE_MAX 24

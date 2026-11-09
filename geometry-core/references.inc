@@ -943,13 +943,18 @@ static void reference_dump(const World *w,FILE *out)
 static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exclude,Coord at,Coord radius,char *out)
 {
     GuideLine probe={0}; probe.placement_id=pid; probe.direction=dir;
-    ReferenceEval ctx={0}; ctx.world=w;ctx.use_current_values=true;
-    for (size_t i=0;i<w->wood.timber_count;++i) ctx.wanted[i]=w->wood.timbers[i].placed;
+    ReferenceEval *ctx=calloc(1,sizeof *ctx);
+    if(!ctx)return false;
+    ctx->world=w;ctx->use_current_values=true;
+    for (size_t i=0;i<w->wood.timber_count;++i) ctx->wanted[i]=w->wood.timbers[i].placed;
     Coord best=radius+1; bool found=false;
-    const PlacementSurface *p=world_find_placement(w,pid); if (!p) return false;
+    const PlacementSurface *p=world_find_placement(w,pid); if (!p){free(ctx);return false;}
     const SpaceBoundarySurface *b=world_placement_boundary(w,p); char axis=dir==GUIDE_ALONG_V?'u':'v';
     enum { SNAP_MAX = WORLD_MAX_SPECS + WORLD_MAX_GUIDES + (POLY_MAX_HOLES+1)*POLY_MAX_VERTICES + WORLD_MAX_GRIDS*GRID_MAX_LINES + WORLD_MAX_TIMBERS*2 };
-    char candidates[SNAP_MAX][REF_EXPR_MAX]; size_t n=0;
+    char (*candidates)[REF_EXPR_MAX]=malloc(sizeof *candidates*(size_t)SNAP_MAX);
+    if(!candidates){free(ctx);return false;}
+    World *trial=NULL;
+    size_t n=0;
     for (size_t i=0;i<geo_named_values_count(&w->geo.named_values) && n<SNAP_MAX;++i) snprintf(candidates[n++],REF_EXPR_MAX,"spec:%s",geo_named_values_at(&w->geo.named_values,i)->name);
     for (size_t i=0;i<geo_guides_count(&w->geo.guide_lines) && n<SNAP_MAX;++i) if (geo_guides_values(&w->geo.guide_lines)[i].id!=exclude && geo_guides_values(&w->geo.guide_lines)[i].placement_id==pid && geo_guides_values(&w->geo.guide_lines)[i].direction==dir)
         snprintf(candidates[n++],REF_EXPR_MAX,"guide:%u",geo_guides_values(&w->geo.guide_lines)[i].id);
@@ -988,20 +993,25 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
     for (size_t i=0;i<n;++i) {
         Coord value;
         g_rule_reference_error[0]=0;
-        if (!reference_eval_text(&ctx,&probe,candidates[i],&value) || !guide_offset_in_range(p,b,dir,value)) continue;
+        if (!reference_eval_text(ctx,&probe,candidates[i],&value) || !guide_offset_in_range(p,b,dir,value)) continue;
         Coord distance=value>at?value-at:at-value;
         if (distance<best) {
             /* A reference back through the moving guide/timber is not a legal snap. */
-            World candidate=*w; bool legal=true;
+            bool legal=true;
             if (exclude) {
-                for (size_t j=0;j<geo_guides_count(&candidate.geo.guide_lines);++j) if (geo_guides_values(&candidate.geo.guide_lines)[j].id==exclude) {
-                    if(!app_guide_put(&candidate,&geo_guides_values(&candidate.geo.guide_lines)[j],candidates[i])){legal=false;break;}
+                if(!trial)trial=malloc(sizeof *trial);
+                if(!trial){found=false;break;}
+                memcpy(trial,w,sizeof *trial);
+                for (size_t j=0;j<geo_guides_count(&trial->geo.guide_lines);++j) if (geo_guides_values(&trial->geo.guide_lines)[j].id==exclude) {
+                    if(!app_guide_put(trial,&geo_guides_values(&trial->geo.guide_lines)[j],candidates[i])){legal=false;break;}
                     bool capture=g_reference_capturing; g_reference_capturing=false;
-                    legal=world_revalidate(&candidate); g_reference_capturing=capture; break;
+                    legal=world_revalidate(trial); g_reference_capturing=capture; break;
                 }
             }
             if (legal) { best=distance; snprintf(out,REF_EXPR_MAX,"%s",candidates[i]); found=true; }
         }
     }
-    reference_sources_dispose(&ctx);return found;
+    reference_sources_dispose(ctx);
+    free(trial);free(candidates);free(ctx);
+    return found;
 }
