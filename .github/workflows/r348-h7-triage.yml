@@ -6,7 +6,15 @@ name: R348 H7 timing triage (temporary diagnostic)
 # H7 tests 7/8 slowdown comes from candidate P (2cdf46a8) or from the main
 # merge (4ecd2f15). It changes no product file, assertion, expected count or
 # timeout. Remove this workflow and the sidecar before #348 is merged.
+# A push trigger is added because GitHub creates no pull_request runs while
+# the PR conflicts with main (mergeable=false), which kept 1fd67512 at 0 runs.
 on:
+  push:
+    branches:
+      - codex/geo300-capacity512-20261024
+    paths:
+      - '.github/workflows/r348-h7-triage.yml'
+      - '.github/scripts/r348_h7_trace.py'
   pull_request:
     paths:
       - '.github/workflows/r348-h7-triage.yml'
