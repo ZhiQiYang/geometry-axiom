@@ -135,6 +135,7 @@
     "r06-main:finite-native-closure",
     "r06-main:import-dirty",
     "r06-main:import-history",
+    "r06-main:import-noop-notify",
     "r06-main:import-notify",
     "r06-main:import-pending",
     "r06-main:import-reader",
@@ -148,7 +149,11 @@
     "r06-r41:draft-key-reopen",
     "r06-r41:draft-key-writer",
     "r06-r41:finite-host-reader",
-    "r06-r41:host-capability-writer"
+    "r06-r41:host-capability-writer",
+    "r116-main:commit-dirty",
+    "r116-main:commit-scene-notified",
+    "r116-main:noop-dirty-unchanged",
+    "r116-main:noop-scene-unchanged"
   ],
   "browserTags": [
     "R06_BR12_ARCHIVE",
@@ -1009,8 +1014,8 @@
       "patches": [
         {
           "file": "geometry-web/project-store.js",
-          "before": "if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm )/.test(command)) return;",
-          "after": "if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm )/.test(command)) return;"
+          "before": "if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return;",
+          "after": "if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |timber-edit-confirm )/.test(command)) return;"
         }
       ]
     },
@@ -1026,8 +1031,8 @@
       "patches": [
         {
           "file": "geometry-web/reference-workspace.js",
-          "before": "if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm )/.test(command)) return null;",
-          "after": "if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm )/.test(command)) return null;"
+          "before": "if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return null;",
+          "after": "if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |timber-edit-confirm )/.test(command)) return null;"
         }
       ]
     },
@@ -1043,8 +1048,8 @@
       "patches": [
         {
           "file": "geometry-web/reference-workspace.js",
-          "before": "if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm) /.test(cmd) && result.history_changed !== false) dirty();",
-          "after": "if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm) /.test(cmd) && result.history_changed !== false) dirty();"
+          "before": "if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm) /.test(cmd) && result.history_changed !== false) dirty();",
+          "after": "if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm|timber-edit-confirm) /.test(cmd) && result.history_changed !== false) dirty();"
         }
       ]
     },
@@ -1060,8 +1065,8 @@
       "patches": [
         {
           "file": "geometry-web/reference-workspace.js",
-          "before": "if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && !(cmd.startsWith(\"panel-fill-confirm \") && result.history_changed === false))notifySceneChange();",
-          "after": "if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && !(cmd.startsWith(\"panel-fill-confirm \") && result.history_changed === false))notifySceneChange();"
+          "before": "if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && (!/^timber-edit-confirm /.test(cmd) || result.history_changed !== false) && !(cmd.startsWith(\"panel-fill-confirm \") && result.history_changed === false))notifySceneChange();",
+          "after": "if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |timber-edit-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && (!/^timber-edit-confirm /.test(cmd) || result.history_changed !== false) && !(cmd.startsWith(\"panel-fill-confirm \") && result.history_changed === false))notifySceneChange();"
         }
       ]
     },
@@ -1080,6 +1085,40 @@
         }
       ],
       "test": "formal-cdp-assembly"
+    },
+    {
+      "name": "r116_main_noop_suppresses_legacy_notify",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration retains R08 pending dirty and scene notifications",
+      "assertion": "r06-main:import-noop-notify",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/reference-workspace.js",
+          "before": "&& (!/^timber-edit-confirm /.test(cmd) || result.history_changed !== false) && !(cmd.startsWith(\"panel-fill-confirm \")",
+          "after": "&& result.history_changed !== false && !(cmd.startsWith(\"panel-fill-confirm \")"
+        }
+      ]
+    },
+    {
+      "name": "r116_main_noop_notifies_scene",
+      "kind": "node",
+      "file": "tests/test_assembly_main_integration.js",
+      "test": "R06 integration retains R08 pending dirty and scene notifications",
+      "assertion": "r116-main:noop-scene-unchanged",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/reference-workspace.js",
+          "before": "&& (!/^timber-edit-confirm /.test(cmd) || result.history_changed !== false) && !(cmd.startsWith(\"panel-fill-confirm \")",
+          "after": "&& !(cmd.startsWith(\"panel-fill-confirm \")"
+        }
+      ]
     }
   ]
 }

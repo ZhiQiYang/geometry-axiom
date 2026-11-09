@@ -3,6 +3,9 @@ name: R11 canvas context menu browser mutation evidence
 # PR #352 scope only: the canvas context menu sources, its mutation manifest,
 # runner and regression. Other PRs that touch shared files (app.js holds the M5
 # site, cdp_test.js wires the scope) can run it through workflow_dispatch.
+# workflow_dispatch may also name another geometry-browser-mutations/1 manifest
+# (for example #356's geometry-web/timber_reuse_mutations.json); the runner and
+# the receipt check are manifest-driven, and the default stays the #352 one.
 on:
   pull_request:
     paths:
@@ -22,6 +25,10 @@ on:
           - keep
           - disable
         default: keep
+      manifest:
+        description: 'geometry-browser-mutations/1 manifest to run; default is the #352 canvas context menu manifest'
+        type: string
+        default: geometry-web/canvas_context_menu_mutations.json
 
 permissions:
   contents: read
@@ -61,7 +68,7 @@ jobs:
       GEOMETRY_CHROME_FLAGS: ${{ inputs.chrome_sandbox == 'disable' && '--no-sandbox' || '' }}
       R11_EVIDENCE: /tmp/r11-352-evidence
       R11_NATIVE: /tmp/r11-352-native
-      R11_MANIFEST: geometry-web/canvas_context_menu_mutations.json
+      R11_MANIFEST: ${{ inputs.manifest || 'geometry-web/canvas_context_menu_mutations.json' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -166,6 +173,12 @@ jobs:
             geometry-web/canvas_context_menu_cases_a.js geometry-web/canvas_context_menu_cases_b.js \
             geometry-web/browser_mutation_check.py geometry-web/canvas-context-menu.js \
             geometry-web/context-menu-shell.js geometry-web/app.js > "$E/source-sha256.txt"
+          # Also pin every input the selected manifest itself declares.
+          python3 -c 'import json, sys; print("\n".join(json.load(open(sys.argv[1], encoding="utf-8"))["inputs"]))' \
+            "$R11_MANIFEST" > "$E/manifest-inputs.txt"
+          xargs -a "$E/manifest-inputs.txt" git ls-files -s -- > "$E/manifest-input-git-blobs.txt"
+          xargs -a "$E/manifest-inputs.txt" sha256sum > "$E/manifest-input-sha256.txt"
+          echo "manifest: $R11_MANIFEST" | tee "$E/manifest-path.txt"
           sha256sum "$R11_BRIDGE" "$R11_MODEL_BASE" | tee "$E/binary-sha256.txt"
           mkdir -p "$E/binaries"
           cp "$R11_BRIDGE" "$E/binaries/bridge"

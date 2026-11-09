@@ -234,7 +234,13 @@ test('R06 integration retains R08 pending dirty and scene notifications',()=>{
  assert.equal(events.dirty,1,'KILLER[r06-main:import-dirty]');
  assert.equal(events.scene,1,'KILLER[r06-main:import-notify]');assert.equal(events.history,1);
  scope.observe('definition-import-confirm 22',{ok:true,history_changed:false});assert.equal(events.dirty,1);
- scope.observe('definition-import-confirm 23',{ok:false});assert.equal(events.dirty,1);assert.equal(events.scene,2);
+ scope.observe('definition-import-confirm 23',{ok:false});assert.equal(events.dirty,1);assert.equal(events.scene,2,'KILLER[r06-main:import-noop-notify]');
+ scope.observe('timber-edit-confirm 24',{ok:true,history_changed:false});
+ assert.equal(events.scene,2,'KILLER[r116-main:noop-scene-unchanged]');
+ assert.equal(events.dirty,1,'KILLER[r116-main:noop-dirty-unchanged]');
+ scope.observe('timber-edit-confirm 25',{ok:true,history_changed:true});
+ assert.equal(events.scene,3,'KILLER[r116-main:commit-scene-notified]');
+ assert.equal(events.dirty,2,'KILLER[r116-main:commit-dirty]');
 });
 test('R06 integration keeps cutting highwater across repeat draft undo redo',async()=>{
  const {opened}=await archive(),m=opened.manifest,Cutting=P.Features.Cutting;

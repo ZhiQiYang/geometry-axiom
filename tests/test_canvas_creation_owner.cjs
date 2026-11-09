@@ -23,7 +23,7 @@ function harness({holdNewid=false,holdRender=false,holdFocus=false,holdCommand=n
     window:{confirm:()=>true,dispatchEvent(){},DraftGate:{ask:()=>true}},CustomEvent:class {},connection:{phase:'ready',session:'session-a'},pageRuntimeVersion:'fixture',pendingApiResults:new Map(),acknowledgedApiResults:new Set(),pendingAssemblyConfirmations:new Map(),
     checkApiSession(){},confirmReferenceImpact:async()=>{throw Error('unused preview');},connectionFailed:m=>{throw Error(m);},
     history,context:()=>history.frame.context,revision:()=>0,fresh:()=>({id:'project-'+(++serial),name:'B',dirty:false}),busy:false,busyLabel:'',preparingSceneLoad:false,sceneTransaction:null,pendingLoad:null,contextConflict:false,
-    assemblyConfirmation:null,roomTransaction:null,editorLease:'writable',editorLeaseSession:'session-a',scenarioContext:()=>null,scenarioBootstrap:'ready',scenarioInitializationPermit:null,
+    assemblyConfirmation:null,timberPreview:null,roomTransaction:null,editorLease:'writable',editorLeaseSession:'session-a',scenarioContext:()=>null,scenarioBootstrap:'ready',scenarioInitializationPermit:null,
     nativePending:0,nativeRevision:0,projectRevision:0,nativeSession:'session-a',detachedPDFContexts:new Set(),recoveryDB:null,recoveryKey:null,recoveryReady:false,curScene:null,
     assertRoomDraftIdle(){},schedulePresentation(){},present(){},sync(){},scheduleRecovery(){},notifySceneChange(){},sceneMenuDisplay:s=>s,resetSceneFocus(){oc.focus=null;oc.selection=[];oc.sel=null;oc.navigationSequence++;},refreshActive:async()=>{},
     closeMenus(){},closePanels(){},renderObjects:async()=>{if(holdRender){renderResolve();await renderGate;}return true;},selectObject(){return true;},centerOnNode:(kind,id)=>presentation.push({kind:'center',project:history.frame.context.id,targetKind:kind,id}),setStatus:s=>status.push(s),toast:s=>status.push(s),pendingSlot:null,innerWidth:1400,view3:false,
@@ -51,6 +51,7 @@ function harness({holdNewid=false,holdRender=false,holdFocus=false,holdCommand=n
     observe(command,result){if(result.ok&&/^line (?:boundary|space|canvas-pos|delete) /.test(command))env.projectRevision++;},
     getProjectState:()=>({id:env.context().id,revision:env.projectRevision}),context:env.context,history};
   env.selectObject=(kind,id)=>{if(selectionDenied)return false;presentation.push({kind:'select',project:history.frame.context.id,targetKind:kind,id});oc.selection=[{kind,id}];oc.sel={kind,id};oc.navigationSequence++;return true;};
+  assert.doesNotThrow(()=>env.ReferenceWorkspace.assertEditable(),'R356_CANVAS_OWNER_FIXTURE_LOADS_ALL_LEASE_STATE');
   return {env,commands,world,history,held,release,renderHeld,releaseRender,focusHeld,releaseFocus,commandHeld,releaseCommand,status,presentation};
 }
 
