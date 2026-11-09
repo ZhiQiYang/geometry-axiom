@@ -1,0 +1,75 @@
+name: R348 H7 timing triage (temporary diagnostic)
+
+# Temporary, PR #348 only: runs ChatGPT's read-only sidecar from PR #348
+# comment 6751789744 (.github/scripts/r348_h7_trace.py, 5475 B, SHA-256
+# f90681f7...) on three commits in the same runner image, to tell whether the
+# H7 tests 7/8 slowdown comes from candidate P (2cdf46a8) or from the main
+# merge (4ecd2f15). It changes no product file, assertion, expected count or
+# timeout. Remove this workflow and the sidecar before #348 is merged.
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/r348-h7-triage.yml'
+      - '.github/scripts/r348_h7_trace.py'
+
+permissions:
+  contents: read
+
+jobs:
+  triage:
+    name: H7 tests 7-8 on ${{ matrix.label }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: 43a9a019 before P
+            sha: 43a9a019f53a84f76ab409849ef35b9445fbf770
+          - label: 2cdf46a8 P only
+            sha: 2cdf46a8bc888921c4d8e12068396a0312aa8802
+          - label: 4ecd2f15 P plus main merge
+            sha: 4ecd2f15c704e608f691c710349f9c8a302bf096
+    steps:
+      - name: Check out the PR head for the sidecar script
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          path: head
+      - name: Check out the commit under test
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ matrix.sha }}
+          path: tree
+      - name: Run original tests 7 and 8 with the read-only sidecar
+        shell: bash
+        env:
+          OUT: ${{ runner.temp }}/h7-${{ matrix.sha }}
+        run: |
+          set -uo pipefail
+          ulimit -s 16384
+          mkdir -p "$OUT"
+          cp head/.github/scripts/r348_h7_trace.py "$OUT/r348_h7_trace.py"
+          sha256sum "$OUT/r348_h7_trace.py" | tee "$OUT/script-sha256.txt"
+          { python3 --version; cc --version | head -n 1; uname -a; nproc; } | tee "$OUT/versions.txt"
+          cd tree
+          git rev-parse HEAD | tee "$OUT/head.txt"
+          start=$(date +%s)
+          set +e
+          # Outer cap only so the job always uploads its trace; the sidecar and
+          # the original tests keep their own 600 s stage limits unchanged.
+          timeout 5400 python3 "$OUT/r348_h7_trace.py" > "$OUT/stdout.txt" 2> "$OUT/H7.jsonl"
+          echo $? > "$OUT/exit-code.txt"
+          echo $(( $(date +%s) - start )) > "$OUT/elapsed-seconds.txt"
+          echo "exit $(cat "$OUT/exit-code.txt") after $(cat "$OUT/elapsed-seconds.txt") s"
+          tail -n 30 "$OUT/H7.jsonl"
+          exit 0
+      - name: Preserve the trace
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r348-h7-triage-${{ matrix.sha }}
+          path: ${{ runner.temp }}/h7-${{ matrix.sha }}/
+          if-no-files-found: error
+          retention-days: 30
