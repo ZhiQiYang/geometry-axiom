@@ -11,7 +11,7 @@ const {createTransportFailureTrace,installClientTransportTrace} = require('./tra
 let transportFailureTrace;
 const SCOPE_FLAGS = ['GEOMETRY_TIMBER_REUSE_ONLY','GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_ROOM_CANDIDATE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_DEFINITION_IMPORT_ONLY','GEOMETRY_CDP_FROM_P31','GEOMETRY_IDENTITY_LEDGER_ONLY'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
-SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY');
+SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY','GEOMETRY_PANEL_FILL_ONLY');
 /* main() 以 inSequence(n)/notOtherShard(n) 把完整序列切成這麼多個連續區段;canvas_shards.json 的片數必須相同。 */
 const CANVAS_SHARDS=2;
 function runConfiguration(env = process.env) {
@@ -512,6 +512,7 @@ async function main() {
   } else if(process.env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY){
     await runCanvasContextMenu();
   } else {
+  if (!process.env.GEOMETRY_PANEL_FILL_ONLY) {
   if (!process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY) {
   if (!process.env.GEOMETRY_ROOM_OUTLINE_ONLY && !process.env.GEOMETRY_ROOM_CANDIDATE_ONLY && !process.env.GEOMETRY_IDENTITY_LEDGER_ONLY) {
   if (!process.env.GEOMETRY_PARAMETERS_ONLY && !process.env.GEOMETRY_ASSEMBLY_ONLY && !process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY) {
@@ -7287,6 +7288,9 @@ async function main() {
   if(inSequence(2))await runCanvasContextMenu();
   if(inSequence(2))await runTimberReuse();
   }
+  } // PANEL_FILL_ONLY owns only its complete PF workflow.
+  if(inSequence(2)||process.env.GEOMETRY_PANEL_FILL_ONLY)
+    await require('./panel_fill_workflow_test.js')({send,eval_,sleep,click,dblclick,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if(inSequence(2)||process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY)
     await require('./grid_card_entry_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   /* Last on purpose: its fresh reopen wipes origin storage, which would reset state later sections rely on.

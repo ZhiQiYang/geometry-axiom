@@ -947,7 +947,12 @@
       "count": 18,
       "unit": "test"
     },
-    "py:test_r363_native_merge": {
+    "py:test_r14_repeat_panel": {
+   "mode": "count",
+   "count": 13,
+   "unit": "test"
+  },
+  "py:test_r363_native_merge": {
       "mode": "count",
       "count": 6,
       "unit": "test"
@@ -1104,7 +1109,7 @@
     },
     "node:tests-js": {
       "mode": "count",
-      "count": 761,
+      "count": 772,
       "unit": "node test"
     },
     "node:model_viewer": {
@@ -1469,6 +1474,16 @@
       "mode": "count",
       "count": 19,
       "unit": "test"
+    },
+    "py:test_panel_fill_ui_contract": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "node:panel_fill_ui_contract": {
+      "mode": "count",
+      "count": 21,
+      "unit": "node test"
     }
   }
 }

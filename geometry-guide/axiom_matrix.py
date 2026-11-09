@@ -7,7 +7,7 @@
 都是靠手工逐條比對才撞到的。
 
 判準(刻意用最笨的方式,好讓它不會說謊):
-  實作 = `current_geometry.c` 的某處出現這個條號
+  實作 = `current_geometry.c` 及其本地 include 來源的某處出現這個條號
   夾具 = 某個 `*.scene` 的註解出現這個條號
   變異 = `tests/mutate.py` 的 desc 出現這個條號
 
@@ -74,8 +74,8 @@ def parse_clauses(text):
 # ------------------------------------------------------------------
 # 2. 原始碼:條號出現在哪個函式裡
 # ------------------------------------------------------------------
-def _strip_code(line, in_block):
-    """去掉區塊註解、行註解與字串,只留下會影響大括號深度的字元。"""
+def _strip_code(line, in_block, keep_literals=False):
+    """去掉註解與字串;讀 include 指令時保留字串,不把註解當指令。"""
     out = []
     j = 0
     while j < len(line):
@@ -84,6 +84,7 @@ def _strip_code(line, in_block):
             if k < 0:
                 return "".join(out), True
             in_block = False
+            out.append(" ")
             j = k + 2
             continue
         if line.startswith("/*", j):
@@ -93,6 +94,7 @@ def _strip_code(line, in_block):
         if line.startswith("//", j):
             break
         if line[j] in "\"'":
+            start = j
             q = line[j]
             j += 1
             while j < len(line):
@@ -103,6 +105,8 @@ def _strip_code(line, in_block):
                     j += 1
                     break
                 j += 1
+            if keep_literals:
+                out.append(line[start:j])
             continue
         out.append(line[j])
         j += 1
@@ -149,12 +153,68 @@ def code_sites(src_text, clause_ids):
         return "(檔案層)"
 
     hits = {c: [] for c in clause_ids}
-    pats = {c: re.compile(r"\b" + re.escape(c) + r"\b") for c in clause_ids}
+    if not hits:
+        return hits
+    pattern = re.compile(r"\b(?:" + "|".join(re.escape(c) for c in hits) + r")\b")
 
     for i, ln in enumerate(lines):
-        for c, p in pats.items():
-            if p.search(ln):
-                hits[c].append((owner_of(i), i + 1))
+        seen = set()
+        for match in pattern.finditer(ln):
+            cid = match.group()
+            if cid not in seen:
+                hits[cid].append((owner_of(i), i + 1))
+                seen.add(cid)
+    return hits
+
+
+def source_texts(entry=None):
+    """沿引號 include 收集本地來源,以入口所在目錄為邊界,每檔只讀一次。
+
+    這是文字追溯,不求值 #if 或編譯器 -I。相對路徑可解析的 .h 也可能有
+    inline 實作;未解析的標頭可屬條件分支或外部搜尋路徑,不猜替代檔案。
+    缺少 .inc/.c 實作片段則報錯,不能靜默變成「無追溯」。
+    不展平來源:各檔保留自己的行號與函式作用域,也不改寫 CRLF bytes。
+    """
+    entry = os.path.realpath(entry or SRC)
+    root = os.path.dirname(entry)
+    seen, sources = set(), []
+
+    def visit(path):
+        path = os.path.realpath(path)
+        if path in seen:
+            return
+        seen.add(path)
+        text = read_text(path)
+        name = os.path.relpath(path, root).replace(os.sep, "/")
+        sources.append((name, text))
+        in_block = False
+        # C line splicing precedes comment removal; original text stays intact.
+        for line in re.sub(r"\\\r?\n", "", text).splitlines():
+            directive, in_block = _strip_code(line, in_block, keep_literals=True)
+            match = re.fullmatch(r'\s*#\s*include\s*"([^"\n]+)"\s*', directive)
+            if not match:
+                continue
+            child = os.path.realpath(os.path.join(os.path.dirname(path), match[1]))
+            if os.path.commonpath([root, child]) != root:
+                raise ValueError("include outside source root: %s -> %s" % (name, match[1]))
+            if not os.path.isfile(child):
+                if os.path.splitext(child)[1] in (".inc", ".c"):
+                    raise FileNotFoundError("missing source include: %s -> %s" % (name, match[1]))
+                continue
+            visit(child)
+
+    visit(entry)
+    return sources
+
+
+def source_code_sites(clause_ids, sources=None):
+    """條號 → [(入口相對檔名, 函式名, 該檔 1-based 行號)]。"""
+    if sources is None:
+        sources = source_texts()
+    hits = {cid: [] for cid in clause_ids}
+    for path, text in sources:
+        for cid, sites in code_sites(text, clause_ids).items():
+            hits[cid].extend((path, function, line) for function, line in sites)
     return hits
 
 
@@ -206,12 +266,13 @@ def main():
     strict = "--strict" in sys.argv
 
     axiom_text = read_text(AXIOM)
-    src_text = read_text(SRC)
+    sources = source_texts()
+    src_text = "\n".join(text for _, text in sources)
 
     clauses = parse_clauses(axiom_text)
     ids = [c[0] for c in clauses]
 
-    code = code_sites(src_text, ids)
+    code = source_code_sites(ids, sources)
     scenes = scene_hits(ids)
     mutants = mutant_hits(ids)
 
@@ -236,6 +297,7 @@ def main():
     print("  紅 = 兩邊都沒有,這條完全沒有可追溯的連結")
     print("  註:量的是「條號在哪裡被提到」,不是「哪裡實作了它」。")
     print("     紅燈代表沒有可追溯的連結,不代表沒被測到。")
+    print("     掃描入口與可解析的本地 include (%d 檔);不求值 #if / -I,未解析標頭不計。" % len(sources))
     print()
 
     print("── 紅燈 %d 條 ──" % len(red))
@@ -245,7 +307,7 @@ def main():
 
     print("── 黃燈 %d 條 ──" % len(yellow))
     for cid, line, head, cs, ss, ms in yellow:
-        where = ("原始碼 " + ", ".join(sorted({f for f, _ in cs})[:2])) if cs \
+        where = ("原始碼 " + ", ".join(sorted({f for _, f, _ in cs})[:2])) if cs \
                 else ("夾具 " + ", ".join(ss[:2]))
         print("  %-5s L%-4d %-24s 缺%s  有%s"
               % (cid, line, head[:24], "夾具" if cs else "原始碼", where[:38]))
@@ -253,7 +315,7 @@ def main():
 
     print("── 綠燈 %d 條 ──" % len(green))
     for cid, line, head, cs, ss, ms in green:
-        fn = ", ".join(sorted({f for f, _ in cs})[:2])
+        fn = ", ".join(sorted({f for _, f, _ in cs})[:2])
         print("  %-5s %-24s 原始碼 %-32s 夾具 %d  變異 %s"
               % (cid, head[:24], fn[:32], len(ss), ",".join(ms) if ms else "無"))
     print()

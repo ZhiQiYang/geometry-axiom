@@ -389,6 +389,27 @@ class NativeSubdivisionOracle(unittest.TestCase):
         self.reject(self.rule(selector="cell -9223372036854775809 0"), "CELL_RANGE")
 
     def test_source_rules_require_dual_repeat_while_ordinary_panel_sources_remain_supported(self):
+        """Keep the original /1 rejection at its declared scene boundary.
+
+        R14 /2 now permits PANEL rules in live transactions. The old /1 scene
+        format must still reject the same three source kinds, for SOURCE_KIND,
+        without replacing the live World or consuming a pending transaction.
+        The literal /1 fixtures and all original geometry/refusal checks stay.
+        """
+        def reject_v1_scene(text, reason):
+            self.assertIn("requires grid-subdivision-rules/1", text)
+            self.assertNotIn("requires grid-subdivision-rules/2", text)
+            before = self.snapshot()
+            revision = self.command("engineering-read")["revision"]
+            path = Path(self.directory.name) / "v1-panel-rule.scene"
+            path.write_text(text, encoding="utf-8")
+            result = self.command("loadfile " + str(path))
+            self.assertFalse(result["ok"], result)
+            self.assertEqual(before, self.snapshot(), "v1 refusal changed the complete World")
+            self.assertEqual(revision, self.command("engineering-read")["revision"])
+            self.assertIn(reason.lower(), rejection_reason(result).lower(),
+                          "a syntax error or unrelated refusal is not a passing guard")
+
         cases = [case for case in VECTORS["negative_cases"]
                  if case["id"].startswith("panel-") and case["id"].endswith("source-rule-rejected")]
         self.assertEqual(3, len(cases))
@@ -412,7 +433,12 @@ class NativeSubdivisionOracle(unittest.TestCase):
                 # 917 / 7 is exactly 131: this must be a kind refusal, not an
                 # incidental divisibility refusal on an otherwise legal panel.
                 self.assertTrue(all(917 % n == 0 for n in case["divisions"]))
-                self.reject(self.rule(divisions=case["divisions"]), case["reason"])
+                scene = self.dump().splitlines()
+                source_index = next(i for i, line in enumerate(scene) if line.startswith("grid-system 0 "))
+                # R32 replay: source, rule/highwater, then binding/application.
+                scene[source_index + 1:source_index + 1] = [
+                    self.rule(key=1, divisions=case["divisions"]), "grid-source-rule-highwater 0 next 2"]
+                reject_v1_scene("requires grid-subdivision-rules/1\n" + "\n".join(scene) + "\n", case["reason"])
                 self.assertEqual([], self.owner()["rules"])
                 self.roundtrip()
 
@@ -425,7 +451,10 @@ class NativeSubdivisionOracle(unittest.TestCase):
         self.commit("guide 9 1 v gridrule:10:0:1:0:0:u:0")
         for case in cases:
             with self.subTest(source_edit=case["id"]):
-                self.reject(self.source(u=case["axes"]["u"], v=case["axes"]["v"]), "SOURCE_KIND")
+                original = "u repeat 0 917 v repeat 0 917"
+                replacement = "u " + case["axes"]["u"] + " v " + case["axes"]["v"]
+                self.assertIn(original, self.dump())
+                reject_v1_scene(self.dump().replace(original, replacement), "SOURCE_KIND")
         before = self.snapshot()
         pending = self.preview(self.rule(key=1, divisions=(7, 7), name="pending panel guard"))
         path = Path(self.directory.name) / "panel-source-with-rule.scene"

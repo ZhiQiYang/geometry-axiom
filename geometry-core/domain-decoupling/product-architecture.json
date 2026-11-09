@@ -405,12 +405,6 @@
       "purpose": "Host grid scene parsing, versioned persistence and K validation adapter"
     },
     {
-      "path": "geometry-core/interval-allocation.js",
-      "layer": "K",
-      "language": "javascript",
-      "purpose": "I60 中性一維區間守恆；只接受明示整數可用區間、具型別需求身分、配置、消耗與末餘，以精確加法驗證，不含木工配料或損耗預設"
-    },
-    {
       "path": "geometry-core/kernel/candidate.c",
       "layer": "K",
       "language": "c",
@@ -1041,12 +1035,6 @@
       "purpose": "Rectangular-grid second template using public K APIs"
     },
     {
-      "path": "geometry-templates/woodworking/cutting.js",
-      "layer": "W",
-      "language": "javascript",
-      "purpose": "固定 woodworking/1 的 D46–D50、I58/I59/I61、R47–R49 裁切政策：材料與無序截面配對、設定限制、餘料優先、FFD、切序與耗損分類；I60 共用守恆只委派 K"
-    },
-    {
       "path": "geometry-templates/woodworking/frontend.js",
       "layer": "W",
       "language": "javascript",
@@ -1477,24 +1465,6 @@
       "layer": "H",
       "language": "javascript",
       "purpose": "Application/runtime/protocol or workspace host cursor v2; composes explicit K/W providers where needed"
-    },
-    {
-      "path": "geometry-web/cutting-plan.js",
-      "layer": "H",
-      "language": "javascript",
-      "purpose": "H 原生來源與既有 timber-schedule 料單的唯讀轉接，建立明確需求後委派固定 W 求值；保留公開回傳包裝與 CSV bytes，無配料或 FFD 政策"
-    },
-    {
-      "path": "geometry-web/cutting-settings.js",
-      "layer": "H",
-      "language": "javascript",
-      "purpose": "H 裁切附件精確 schema、key 高水位與單調保存、canonical codec 與指紋；材料/截面、數值與原材在用限制委派固定 W"
-    },
-    {
-      "path": "geometry-web/cutting-workspace.js",
-      "layer": "H",
-      "language": "javascript",
-      "purpose": "裁切工作區 DOM、專案附件設定、需求範圍與匯出新鮮度宿主編排"
     },
     {
       "path": "geometry-web/definition-import.js",
@@ -1983,12 +1953,6 @@
       "purpose": "Application/runtime/protocol or workspace host start local; composes explicit K/W providers where needed"
     },
     {
-      "path": "geometry-web/timber-edit.js",
-      "layer": "H",
-      "language": "javascript",
-      "purpose": "H-116-TIMBER/1 same-face ordinary D7 reuse and explicit field-edit workspace; delegates typed definitions, eligibility, candidate evaluation and publication to the native host"
-    },
-    {
       "path": "geometry-web/timber-schedule.js",
       "layer": "H",
       "language": "javascript",
@@ -1999,18 +1963,6 @@
       "layer": "H",
       "language": "javascript",
       "purpose": "Application/runtime/protocol or workspace host timber supports; composes explicit K/W providers where needed"
-    },
-    {
-      "path": "geometry-web/timber_edit_bridge.inc",
-      "layer": "H",
-      "language": "c",
-      "purpose": "H-116-TIMBER/1 bounded native host for typed D7 recipes and one atomic in-place candidate over existing W definitions and shared application transaction APIs"
-    },
-    {
-      "path": "geometry-web/timber_edit_transport.py",
-      "layer": "H",
-      "language": "python",
-      "purpose": "H-116-TIMBER/1 bounded UTF-8 JSON transport; service-owned temporary input files and native-authoritative read/preview operations"
     },
     {
       "path": "geometry-web/timber_support_projection.inc",
@@ -2137,6 +2089,66 @@
       "layer": "H",
       "language": "python",
       "purpose": "Runtime-imported native binary provenance registry/package; also used by tests, but real rule_cases runtime depends on it"
+    },
+    {
+      "path": "geometry-web/cutting-plan.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "H 原生來源與既有 timber-schedule 料單的唯讀轉接，建立明確需求後委派固定 W 求值；保留公開回傳包裝與 CSV bytes，無配料或 FFD 政策"
+    },
+    {
+      "path": "geometry-web/cutting-settings.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "H 裁切附件精確 schema、key 高水位與單調保存、canonical codec 與指紋；材料/截面、數值與原材在用限制委派固定 W"
+    },
+    {
+      "path": "geometry-web/cutting-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "裁切工作區 DOM、專案附件設定、需求範圍與匯出新鮮度宿主編排"
+    },
+    {
+      "path": "geometry-core/interval-allocation.js",
+      "layer": "K",
+      "language": "javascript",
+      "purpose": "I60 中性一維區間守恆；只接受明示整數可用區間、具型別需求身分、配置、消耗與末餘，以精確加法驗證，不含木工配料或損耗預設"
+    },
+    {
+      "path": "geometry-templates/woodworking/cutting.js",
+      "layer": "W",
+      "language": "javascript",
+      "purpose": "固定 woodworking/1 的 D46–D50、I58/I59/I61、R47–R49 裁切政策：材料與無序截面配對、設定限制、餘料優先、FFD、切序與耗損分類；I60 共用守恆只委派 K"
+    },
+    {
+      "path": "geometry-web/panel-fill-adapter.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "UI-1 native wire and candidate lifecycle host adapter; delegates geometry to the native engine"
+    },
+    {
+      "path": "geometry-web/panel-fill-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "UI-1 existing face inspector definitions form and native result presentation host"
+    },
+    {
+      "path": "geometry-web/timber-edit.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "H-116-TIMBER/1 same-face ordinary D7 reuse and explicit field-edit workspace; delegates typed definitions, eligibility, candidate evaluation and publication to the native host"
+    },
+    {
+      "path": "geometry-web/timber_edit_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "H-116-TIMBER/1 bounded native host for typed D7 recipes and one atomic in-place candidate over existing W definitions and shared application transaction APIs"
+    },
+    {
+      "path": "geometry-web/timber_edit_transport.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "H-116-TIMBER/1 bounded UTF-8 JSON transport; service-owned temporary input files and native-authoritative read/preview operations"
     }
   ],
   "exclusions": [
@@ -2755,7 +2767,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "8d3ce4589f280a06718307ca53e8c1e5b6618a19f50104a52b87075366c42865",
+      "sha256": "58623aa2e40f185dfa15bdbe6d72d49a649a7b2bab55c88ce942f44e18ea4341",
       "hashMode": "lf"
     },
     {
@@ -3475,7 +3487,7 @@
     {
       "path": "geometry-web/room_outline_test.js",
       "reason": "Dedicated acceptance/test driver room_outline_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "a388f9a976b3c8af0fc217274c340b0ffe0d9bf2fccedd1533acf984196aba3a",
+      "sha256": "212b14a5ffaf05a256e090c0d3e9faa2f7d4aaf05d96133b2eae4e88d987a27a",
       "hashMode": "lf"
     },
     {
@@ -3511,7 +3523,7 @@
     {
       "path": "geometry-web/space_model_test.js",
       "reason": "Dedicated acceptance/test driver space_model_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "92d06b1542568b10561b6fb91fee94d21f8a5dffaef98bbafd22fa3a727bf92d",
+      "sha256": "9d837faf1a8b0c2b7b7d6c8f9eef52fee47414b6ef894e79976c5a1ef738b493",
       "hashMode": "lf"
     },
     {
@@ -3848,6 +3860,12 @@
       "path": "geometry-web/canvas_shards.js",
       "reason": "Dedicated CI test driver canvas_shards.js: canvas browser-shard plan, cut-point storage handoff and complete-coverage receipt verifier, loaded only by cdp_test.js shard mode, the CI complete-coverage job and tests/test_canvas_shards.js; not loaded by product runtime or served application entry points.",
       "sha256": "57cf679ead32795891c20b10f3a8aba263724bdcf58d1376010792b3c2d40d71",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/panel_fill_workflow_test.js",
+      "reason": "Dedicated UI-1 CDP acceptance driver; invoked by cdp_test.js, never by a product runtime entry point.",
+      "sha256": "7a3a0f5b32670ac590ce1d89314dbc08562147a7c7f6493d6a78486b9b387375",
       "hashMode": "lf"
     },
     {

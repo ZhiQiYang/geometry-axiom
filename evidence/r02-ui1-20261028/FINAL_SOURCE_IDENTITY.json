@@ -1,0 +1,81 @@
+{
+  "schema": "r02-ui1-final-source-identity/1",
+  "base": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+  "fiveRetractionsExecutionSha": "a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6",
+  "ownerRetractionAndFullCanvasExecutionSha": "74d638686edc9861e9ed9d3409af4adf02350f8e",
+  "evidenceParent": "bf184092957ed3f99855e22df81f7915fa96dc28",
+  "protectedFilesUnchangedFromBase": [
+    "公理層.md",
+    "決策佇列.md",
+    "geometry-guide/公理層-閱讀器.html",
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md"
+  ],
+  "originalGoldenSectionsUnchanged": 85,
+  "originalGoldenAssertionSum": 2267,
+  "newGoldenSection": {
+    "P128": 381
+  },
+  "files": [
+    {
+      "path": "geometry-web/parameters.js",
+      "gitBlob": "f13cadf7b62459203ee49aa78381b123fa3b79ab",
+      "sha256": "18229bde1c00ec940e6599c981bbf071c06b62dcebb238adf439916b5e2a829f",
+      "sameAsF1": false
+    },
+    {
+      "path": "geometry-web/panel-fill-workspace.js",
+      "gitBlob": "9ac76c63599a6e70d01568bdc093d75491cb4d26",
+      "sha256": "d394e0d49767cc3869dc491d0cf6f02b511665ba704f63411a4f70d5d256cb5a",
+      "sameAsF1": true
+    },
+    {
+      "path": "geometry-web/panel-fill-adapter.js",
+      "gitBlob": "005cc98a011af5719d8dcb03737a23cc536a8e8f",
+      "sha256": "ebc8c325685b817854aeefec8fe46a9c86be0376425fb37d0b1b5420e6da7b7d",
+      "sameAsF1": true
+    },
+    {
+      "path": "geometry-web/panel-fill-workspace.css",
+      "gitBlob": "0ad174907c299035d4d120fa5a79b43e9a44a1d7",
+      "sha256": "ed9c2d43742c34423987498c0b1a07bec5b795369a63bdf8142c6dad2fab8897",
+      "sameAsF1": true
+    },
+    {
+      "path": "geometry-web/panel_fill_workflow_test.js",
+      "gitBlob": "35e7d627289936b6f09c99fb614528179ae266b3",
+      "sha256": "b4f94f2f8962b80b517a54d4e8dd0816eeac2e00425122a5d9dff8a60d2da2c1",
+      "sameAsF1": false
+    },
+    {
+      "path": "geometry-web/cdp_test.js",
+      "gitBlob": "ec924e22b7680a71a89ec0a76f69b1d269f745f7",
+      "sha256": "4dc8318421c6c77b0384af03951d6b4ed3dba23c536655e62281e038a30cd5b3",
+      "sameAsF1": true
+    },
+    {
+      "path": "geometry-web/cdp_sections.golden.json",
+      "gitBlob": "8de71f3159f0a354302418e11834c8dd365b1e9b",
+      "sha256": "0026a99ce0e17f65c00fd10d490ecb1adb41d4155d8ef4f6f89d741e586dfe0b",
+      "sameAsF1": false
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture.json",
+      "gitBlob": "ea715ea8827ef889a6df9337821113b3f2d471ac",
+      "sha256": "1f83a2b018fa0d40e8e10e00e9e0eb52ff4729b251b52eaa4717af6c147fd7e0",
+      "sameAsF1": false
+    }
+  ],
+  "evidenceOnlyPathsAfterF": [
+    "evidence/r02-ui1-20261028/D44_OWNER_AUDIT.json",
+    "evidence/r02-ui1-20261028/PROGRESS.md",
+    "evidence/r02-ui1-20261028/architecture/REPORT.md",
+    "evidence/r02-ui1-20261028/receipts-round-10.json",
+    "evidence/r02-ui1-20261028/receipts-round-10.tar.gz",
+    "evidence/r02-ui1-20261028/receipts-round-8.json",
+    "evidence/r02-ui1-20261028/receipts-round-8.tar.gz",
+    "evidence/r02-ui1-20261028/receipts-round-9.json",
+    "evidence/r02-ui1-20261028/receipts-round-9.tar.gz",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json"
+  ],
+  "interpretation": "Source identity is not a cross-SHA product pass. F1 five retractions and older native/grid/space retain their execution SHA; only owner retraction, final architecture/check and the new full canvas execute F2."
+}

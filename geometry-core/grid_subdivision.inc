@@ -2,6 +2,8 @@
 static bool g_rule_scene_highwater[WORLD_MAX_GRID_SYSTEMS];
 static bool g_rule_scene_required;
 static bool g_rule_scene_encountered;
+static bool g_rule_scene_panel_required;
+static bool g_rule_scene_panel_encountered;
 
 static const GridSubdivisionRule *grid_rule_find(const GridSystem *s,uint32_t key)
 { return geo_grid_rule_find(s,key); }
@@ -131,13 +133,29 @@ static bool grid_subdivision_used(const World *w)
     for(size_t i=0;i<w->wood.timber_count;++i)if(w->wood.timbers[i].placed && w->wood.anchors[i].anchor_kind==ANCHOR_AT_RULE)return true;
     return false;
 }
-static bool grid_rules_scene_integrity(const World *w)
+/* R32: an active rule on either PANEL axis needs /2. A PANEL source alone,
+ * including a source with only its rule-key highwater, retains the /1 minimum. */
+static bool grid_subdivision_panel_used(const World *w)
 {
-    if(g_rule_scene_encountered && !g_rule_scene_required)return false;
-    if(!grid_subdivision_used(w))return true;
-    if(!g_rule_scene_required)return false;
-    for(size_t i=0;i<geo_grid_systems_count(&w->geo.grid_store);++i)if(((*geo_grid_systems_at(&w->geo.grid_store,i)).rule_count || (*geo_grid_systems_at(&w->geo.grid_store,i)).next_rule_key!=1) && !g_rule_scene_highwater[i])return false;
-    return true;
+    for(size_t i=0;i<geo_grid_systems_count(&w->geo.grid_store);++i){
+        const GridSystem *s=geo_grid_systems_at(&w->geo.grid_store,i);
+        if(s->rule_count && (s->axis[0].source==GRID_SRC_REPEAT_PANEL || s->axis[1].source==GRID_SRC_REPEAT_PANEL))return true;
+    }
+    return false;
+}
+static const char *grid_subdivision_capability(const World *w)
+{ return grid_subdivision_panel_used(w)?GRID_SUBDIVISION_PANEL_CAPABILITY:GRID_SUBDIVISION_CAPABILITY; }
+static const char *grid_rules_scene_integrity_error(const World *w)
+{
+    if((g_rule_scene_panel_encountered || grid_subdivision_panel_used(w)) && !g_rule_scene_panel_required)
+        return "I25a: SOURCE_KIND requires grid-subdivision-rules/2 capability for REPEAT_PANEL source rules";
+    if(g_rule_scene_encountered && !g_rule_scene_required)return "I25a: source rule capability/highwater closure missing";
+    if(!grid_subdivision_used(w))return NULL;
+    if(!g_rule_scene_required)return "I25a: source rule capability/highwater closure missing";
+    for(size_t i=0;i<geo_grid_systems_count(&w->geo.grid_store);++i)
+        if(((*geo_grid_systems_at(&w->geo.grid_store,i)).rule_count || (*geo_grid_systems_at(&w->geo.grid_store,i)).next_rule_key!=1) && !g_rule_scene_highwater[i])
+            return "I25a: source rule capability/highwater closure missing";
+    return NULL;
 }
 static void grid_rules_dump(const GridSystem *s,FILE *out)
 {

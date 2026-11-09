@@ -10,8 +10,10 @@ import ast
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
+import os
 import re
 import subprocess
+import tempfile
 import unittest
 
 
@@ -24,6 +26,9 @@ I24_IMPLEMENTATION_HEAD = "32f42e3d991c7d2d916d21bfe8ac5d3dd0f9b131"
 # 9430bae568feb98805072930c92f9a03a1250d4e: reuse a missing edge's slot.
 # 81b6c388f8b73e9aaf885b1d948e5f306b77bafd: generic provider hint bucket.
 GENERIC_SOURCE_INDEX_KERNEL_HEAD = "81b6c388f8b73e9aaf885b1d948e5f306b77bafd"
+# R14 on fixed main 83d4ca22 adopts the approved PANEL source-kind gate.
+# Pin the complete resulting K tree, including every file, byte and mode.
+REVIEWED_R14_KERNEL_TREE = "51813f9e522af06cb80e44d736b6b20ac2329349"
 
 
 def _ensure_pinned_commits(*shas):
@@ -343,13 +348,20 @@ class Geo314CommitPaths(unittest.TestCase):
              I24_IMPLEMENTATION_HEAD, "--", "geometry-core/kernel"],
             cwd=ROOT, capture_output=True, text=True, check=True)
         self.assertEqual("", introduced.stdout, "original I24 implementation must not change K files")
-        changed = subprocess.run(
-            ["git", "diff", "--name-only", "--no-renames", GENERIC_SOURCE_INDEX_KERNEL_HEAD,
-             "--", "geometry-core/kernel"],
-            cwd=ROOT, capture_output=True, text=True, check=True)
-        added = subprocess.run(["git", "ls-files", "--others", "--exclude-standard", "--", "geometry-core/kernel"],
-                               cwd=ROOT, capture_output=True, text=True, check=True)
-        self.assertEqual("", changed.stdout + added.stdout,
+        # A temporary index compares the full working K tree with the reviewed
+        # literal, including additions/deletions and mode changes. Seed only K
+        # so a partial clone need not materialize unrelated historical blobs.
+        with tempfile.TemporaryDirectory(prefix="geo314-k-tree-") as work:
+            env = dict(os.environ, GIT_INDEX_FILE=str(Path(work) / "index"))
+            def git(*args):
+                return subprocess.run(["git", *args], cwd=ROOT, env=env,
+                                      capture_output=True, text=True, check=True).stdout.strip()
+            git("read-tree", "--empty")
+            git("read-tree", "--prefix=geometry-core/kernel/",
+                GENERIC_SOURCE_INDEX_KERNEL_HEAD + ":geometry-core/kernel")
+            git("-c", "core.filemode=true", "add", "-A", "--", "geometry-core/kernel")
+            actual = git("write-tree", "--prefix=geometry-core/kernel/")
+        self.assertEqual(REVIEWED_R14_KERNEL_TREE, actual,
                          "I24 submission policy must not change K files outside the exact reviewed generic K tree")
 
     def test_ordered_facts_capture_step_values_without_extra_candidate_or_validation_work(self):

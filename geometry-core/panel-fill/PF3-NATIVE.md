@@ -43,6 +43,9 @@ World 與 scene 仍只保存定義。讀取、候選預覽、確認後、Undo／
 
 沿用原生 API 與 `complete:false`，沒有可見 UI 入口（GEO-219 無新增項），
 不提前實作 PF-6 建議、PF-4 引用網格、PF-5 空間流程或 browser／完整專案交付。
+
+後續可見工作區依 [#128 本契約第 5.0 節](https://github.com/ZhiQiYang/geometry-axiom/issues/128#issuecomment-6435620807)，先交付 PF-1／PF-2／PF-H／PF-3 的可見閉環，再依 PF-6 → PF-4 → PF-5 接續。交付矩陣分列原生、UI、正式保存、真瀏覽器與實機，不以 PF-3 合併代表後片完成。UI-1 的正式啟用須有 #343 → #346 → #347 同源整合驗收；不得借 S324 舊來源的局部結果，亦不等待 PF6/4/5 才交付既有排板與承接。新 UI 必須有來源／結果／完整性及取消語意；只有最終來源的相應驗收通過才記對應範圍完成。原 complete:false 與舊收據不倒填改寫。
+
 `tests/test_panel_fill_host.py` 原 PF-H 獨立 oracle 斷言改為直接比對新 runtime
 結果；保留原足跡及原期望數字，未放寬斷言。
 

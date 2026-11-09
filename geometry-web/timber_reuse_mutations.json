@@ -254,8 +254,8 @@
       "changes": [
         {
           "file": "geometry-web/project-store.js",
-          "before": "      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return;",
-          "after": "      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(command)) return;"
+          "before": "      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return;",
+          "after": "      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm )/.test(command)) return;"
         }
       ]
     },
@@ -273,8 +273,8 @@
       "changes": [
         {
           "file": "geometry-web/app.js",
-          "before": "  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm |timber-edit-confirm |timber-edit-cancel )/.test(cmd) ? crypto.randomUUID() : null;",
-          "after": "  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm |timber-edit-cancel )/.test(cmd) ? crypto.randomUUID() : null;"
+          "before": "  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |timber-edit-cancel )/.test(cmd) ? crypto.randomUUID() : null;",
+          "after": "  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-cancel )/.test(cmd) ? crypto.randomUUID() : null;"
         }
       ]
     },

@@ -5,6 +5,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('fs'), os = require('os'), path = require('path');
 const shards = require('../geometry-web/canvas_shards.js');
+const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const plan = shards.loadPlan(), golden = shards.loadGolden();
@@ -48,7 +49,8 @@ test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍�
   assert.equal(owner.sections.at(-1), 'P359');
   assert.equal(plan.shards[0].sections.includes('P353'), false, 'R369_P353_SHARD: P353 is not in shard 1');
   assert.deepEqual(plan.shards[1].sections.slice(-2), ['P353', 'P359'], 'R369_P353_ORDER: P353 immediately precedes the storage-reset suite');
-  assert.deepEqual(plan.shards[1].sections.slice(-4), ['P352', 'P116', 'P353', 'P359'], 'R356_P116_ORDER: reuse runs once before the card-entry and storage-reset suites');
+  // Merged with #355: cdp_test.js dispatches P352, P116 (timber reuse), P128 (R02 panel fill), P353, P359.
+  assert.deepEqual(plan.shards[1].sections.slice(-5), ['P352', 'P116', 'P128', 'P353', 'P359'], 'R356_P116_ORDER: reuse runs once before the R02 panel-fill, card-entry and storage-reset suites');
   assert.equal(all.filter(name => name === 'P116').length, 1, 'R356_P116_ONE_OWNER');
   assert.equal(plan.shards[0].sections.includes('R06'), false, 'R06_CANVAS_PLAN: R06 belongs to shard 2');
   const repeatAt = plan.shards[1].sections.indexOf('R06');
@@ -65,7 +67,8 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   const verdict = shards.verifyComplete(complete(), context);
   assert.deepEqual(verdict.problems, []);
   assert.equal(verdict.passed, true);
-  assert.equal(verdict.summary.total, golden.total);
+  assert.equal(verdict.summary.total, context.golden.total);
+  const golden=pfExtension.projectGolden(context.golden);
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
   // #360 and R06 add independent sections. Keep the original 4002/91 contract
@@ -86,13 +89,16 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   // one failed final C07 child assertion. The child writes a separate log and
   // never contributes its assertion count to the parent's section. This fixes
   // the executed contract at 374; a red receipt must still fail verification.
+  // After the #355 merge `golden` is the committed golden minus R02's exactly
+  // projected P128, so P116 must be the only remaining addition over main.
   assert.equal(golden.sections.P116, 374, 'R356_P116_EXECUTED_ASSERTION_COUNT');
   assert.ok(Number.isSafeInteger(golden.sections.P116) && golden.sections.P116 > 0,
     'R356_P116_FULL_GOLDEN_REQUIRED: record the observed full-mode section before accepting shard receipts');
   assert.deepEqual(Object.keys(golden.sections).sort(), [...Object.keys(mainSections), 'P116'].sort(), 'R356_ONLY_NEW_SECTION');
   assert.equal(golden.total, sum(mainSections) + golden.sections.P116, 'R356_COMPLETE_COUNT_UNION');
   assert.equal(Object.keys(golden.sections).length, 94);
-  assert.equal(verdict.summary.sectionCount, Object.keys(golden.sections).length);
+  assert.equal(Object.keys(context.golden.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
+  assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });
 

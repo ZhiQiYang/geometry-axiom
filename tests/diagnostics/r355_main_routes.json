@@ -1,0 +1,103 @@
+{
+  "main": "343a8abe83029dd883e5e5b1b8e3112411fefe81",
+  "source_sha256": "aa8b444d5fe18de09eaa8982de6f1c77ea627186ddcf0266b8c399035271f8dd",
+  "note": "Frozen from exact main cdp_test.js; real if hierarchy executes, suite callbacks inert. Not browser evidence.",
+  "partial": {
+    "GEOMETRY_CANVAS_CONTEXT_MENU_ONLY": [
+      "./canvas_context_menu_test.js"
+    ],
+    "GEOMETRY_ROOM_OUTLINE_ONLY": [
+      "./room_outline_test.js"
+    ],
+    "GEOMETRY_ROOM_CANDIDATE_ONLY": [
+      "./room_candidate_browser_test.js",
+      "./room_candidate_cold_test.js"
+    ],
+    "GEOMETRY_TIMBER_SCHEDULE_ONLY": [
+      "./timber_schedule_test.js",
+      "./cutting_plan_test.js",
+      "./timber_supports_browser_test.js",
+      "./source_navigation_test.js"
+    ],
+    "GEOMETRY_ASSEMBLY_ONLY": [
+      "./assembly_workflow_test.js",
+      "./assembly_context_entry_test.js",
+      "./assembly_bay_repeat_test.js"
+    ],
+    "GEOMETRY_PARAMETERS_ONLY": [
+      "./parameter_workflow_test.js"
+    ],
+    "GEOMETRY_SELECTION_CURSOR_ONLY": [
+      "./selection_cursor_test.js"
+    ],
+    "GEOMETRY_UX_REFINEMENT_ONLY": [
+      "./ux_refinement_test.js"
+    ],
+    "GEOMETRY_UIUX_FIX_ONLY": [
+      "./uiux_review_test.js"
+    ],
+    "GEOMETRY_MARQUEE_ONLY": [
+      "./marquee_test.js"
+    ],
+    "GEOMETRY_PROJECT_AUDIT_ONLY": [
+      "./project_audit_test.js"
+    ],
+    "GEOMETRY_ENGINEERING_WORKFLOW_ONLY": [
+      "./engineering_workflow_test.js"
+    ],
+    "GEOMETRY_GRID_SYSTEM_ONLY": [
+      "./grid_system_test.js",
+      "./grid_rule_editor_test.js",
+      "./grid_rule_lines_test.js"
+    ],
+    "GEOMETRY_INFINITE_FACE_ONLY": [
+      "./infinite_grid_face_test.js"
+    ],
+    "GEOMETRY_COMPOSITION_ONLY": [
+      "./composition_canvas_test.js",
+      "./grid_inspector_rename_test.js"
+    ],
+    "GEOMETRY_UI_REVIEW_ONLY": [
+      "./project_import_final_objects_test.js",
+      "./project_audit_test.js",
+      "./engineering_workflow_test.js",
+      "./marquee_test.js"
+    ],
+    "GEOMETRY_REPAIR_ONLY": [
+      "./project_import_final_objects_test.js",
+      "./project_audit_test.js",
+      "./engineering_workflow_test.js",
+      "./marquee_test.js"
+    ],
+    "GEOMETRY_FLOW_REPAIR_ONLY": [
+      "./project_import_final_objects_test.js",
+      "./project_audit_test.js",
+      "./engineering_workflow_test.js",
+      "./marquee_test.js"
+    ],
+    "GEOMETRY_REFERENCE_ONLY": [
+      "./project_import_final_objects_test.js",
+      "./project_audit_test.js",
+      "./engineering_workflow_test.js",
+      "./marquee_test.js"
+    ],
+    "GEOMETRY_DEFINITION_IMPORT_ONLY": [
+      "./project_audit_test.js",
+      "./engineering_workflow_test.js",
+      "./marquee_test.js",
+      "./definition_import_browser_test.js"
+    ],
+    "GEOMETRY_CDP_FROM_P31": [
+      "./project_import_final_objects_test.js",
+      "./project_audit_test.js",
+      "./engineering_workflow_test.js",
+      "./marquee_test.js"
+    ],
+    "GEOMETRY_IDENTITY_LEDGER_ONLY": [
+      "./identity_ledger_browser_test.js"
+    ],
+    "GEOMETRY_GRID_CARD_ENTRY_ONLY": [
+      "./grid_card_entry_test.js"
+    ]
+  }
+}

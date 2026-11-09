@@ -1,0 +1,214 @@
+{
+  "schema": "r02-ui1-receipt-package/1",
+  "archive": "receipts-round-7.tar.gz",
+  "bytes": 80429,
+  "sha256": "613131545689634264a7ee280fc5cd870f1d0f1a74e108e9ac3529fc0aa9d88c",
+  "scope": "D44 three UI baselines including preserved failed legacy-view assertion; final affected Node785, three architecture judges and fresh ledger check. Five UI retractions and new full canvas still running/unrun, excluded.",
+  "files": [
+    {
+      "path": "d44-baseline-1/result.json",
+      "bytes": 875,
+      "sha256": "d2361d91be0b69e04db083bfc3d970e56eb9b7434288bdf44a16300a1221def3"
+    },
+    {
+      "path": "d44-baseline-1/stderr.gz",
+      "bytes": 27,
+      "sha256": "7625e5bd135f96d33960aa3203372b3e21cd96b7fc9d8e65024b26884f5d39cf"
+    },
+    {
+      "path": "d44-baseline-1/stdout.gz",
+      "bytes": 9860,
+      "sha256": "634818f16467984b45409ef57fe97692d5048848ea3173882683324205bfdc47"
+    },
+    {
+      "path": "d44-baseline-support/1793206551-server.log.gz",
+      "bytes": 468,
+      "sha256": "afa914a6f71443757579bfd2b663661e43c2bb6e0cf6246a581ce917c228526e"
+    },
+    {
+      "path": "d44-baseline-support/packages/download-6TdLtv/missing-parameter-source.gcanvas",
+      "bytes": 10357,
+      "sha256": "2d4aa7d573764e29d6a5cd0e5712702b9563d65c569468174755611d440b985b"
+    },
+    {
+      "path": "d44-baseline-support/packages/download-6TdLtv/tampered-scene.gcanvas",
+      "bytes": 11561,
+      "sha256": "9940a517ca9ed19e3b500086725e31cd3474693a3dc5801dff625259a6bb8b62"
+    },
+    {
+      "path": "d44-baseline-support/packages/download-6TdLtv/unknown-capability.gcanvas",
+      "bytes": 11568,
+      "sha256": "2ad4636c0ef54e7cca38be3d5fa9feaaca690d71871fef2b7b1c3794163bf936"
+    },
+    {
+      "path": "d44-baseline-support/packages/download-6TdLtv/未命名專案.gcanvas",
+      "bytes": 11539,
+      "sha256": "eb22fdf9c7e60d72d8e56198258279080197d89442b040e469758a79a569e67d"
+    },
+    {
+      "path": "d44-baseline-2/result.json",
+      "bytes": 876,
+      "sha256": "920fef9a4f5da45cece7b17e9e9be3e85c8db8141a1466d17f24f5be0505139d"
+    },
+    {
+      "path": "d44-baseline-2/stderr.gz",
+      "bytes": 27,
+      "sha256": "63187c6697d2a413a73f75c101eaae94be0e9fee4378add6500e4cf8aa232161"
+    },
+    {
+      "path": "d44-baseline-2/stdout.gz",
+      "bytes": 9444,
+      "sha256": "c4273d0cd855f372d7e5226cd83fae0878e80c787f692c42ac0d9d51de9f1913"
+    },
+    {
+      "path": "d44-baseline-2-support/1793206842-server.log.gz",
+      "bytes": 406,
+      "sha256": "65b14e5684a5aa15cebe0792e0c12864cb4c11594716e1001037223a9f06006d"
+    },
+    {
+      "path": "d44-baseline-2-support/packages/download-ad9zCn/未命名專案.gcanvas",
+      "bytes": 11539,
+      "sha256": "ba54ce8524d70d17e8294a2b8563bc59860f37129b0ec3c5af6d89f94f6402ea"
+    },
+    {
+      "path": "d44-baseline-3/result.json",
+      "bytes": 875,
+      "sha256": "27303b5ac4b10387e6fb9c8d4caa9ed8ac3d44fbf67b011914e02fd594a9e4d4"
+    },
+    {
+      "path": "d44-baseline-3/stderr.gz",
+      "bytes": 27,
+      "sha256": "4cb292e055f46aef8d579d898f98100fe39c75b83c2f78a934c669f9f2d2f14c"
+    },
+    {
+      "path": "d44-baseline-3/stdout.gz",
+      "bytes": 10193,
+      "sha256": "2b7dc7055ac5d7002f5764a4f9ec3f0c5d3e836eabe4a792c11ad5b9f9d6660f"
+    },
+    {
+      "path": "d44-baseline-3-support/1793207171-server.log.gz",
+      "bytes": 474,
+      "sha256": "1f3e74849627fdcbbd806722e540ca7d389157219e2c08877843216fd4fb8b14"
+    },
+    {
+      "path": "d44-baseline-3-support/packages/download-TYJ0S9/missing-parameter-source.gcanvas",
+      "bytes": 10355,
+      "sha256": "8093efb1fdb1b034ce0d088078ec52663466e8583c76411c2a40e1d0d8fb4f1f"
+    },
+    {
+      "path": "d44-baseline-3-support/packages/download-TYJ0S9/tampered-scene.gcanvas",
+      "bytes": 11559,
+      "sha256": "2bc191c862bbd29897b48d71357ee1835d9feb8a05bfc85e20dd9ad2b66fbaab"
+    },
+    {
+      "path": "d44-baseline-3-support/packages/download-TYJ0S9/unknown-capability.gcanvas",
+      "bytes": 11566,
+      "sha256": "4098e22506f905dbd07810d04d57852b62c5e7e2e44189ed6f3e8a311fcecd7c"
+    },
+    {
+      "path": "d44-baseline-3-support/packages/download-TYJ0S9/未命名專案.gcanvas",
+      "bytes": 11537,
+      "sha256": "bec65d08e03fac225467a7d6309d88c9fb034f7d513fa5118f9bc01cb451a1bf"
+    },
+    {
+      "path": "d44-node-final/result.json",
+      "bytes": 1041,
+      "sha256": "c91253cb1d42e3c889d22e009dc06e0f5542eedba68a08ed47d7cb6d728734d0"
+    },
+    {
+      "path": "d44-node-final/stderr.gz",
+      "bytes": 27,
+      "sha256": "fe56b04fbe7cec8c90c782d078f066327f19420e4f5c3be9a309745ea2ff8194"
+    },
+    {
+      "path": "d44-node-final/stdout.gz",
+      "bytes": 2711,
+      "sha256": "b0384b758c10463b21bd6a797f091aa3ccdf8900a90a02f7ddcfc82b952877bb"
+    },
+    {
+      "path": "d44-node-support/MANIFEST.json",
+      "bytes": 665,
+      "sha256": "e10099385e27e6d78907e755d08d75c274c1329c364eb0993444c7b0e9cbb525"
+    },
+    {
+      "path": "d44-node-support/original-logs.tar.gz",
+      "bytes": 28558,
+      "sha256": "30577b712224e7cb4044e649ee6c5b72d9d93cd09f86b0115ad4bf3be0e01ebf"
+    },
+    {
+      "path": "d44-architecture-cli/result.json",
+      "bytes": 954,
+      "sha256": "ddc3c4127ea6f0137c8be8109b7c0ca02bab726465a4c4c69c44dd1a843eabab"
+    },
+    {
+      "path": "d44-architecture-cli/stderr.gz",
+      "bytes": 27,
+      "sha256": "37352d43332c470620fb72bc1e4aa281c52e68137e0d07db256836c100a5a7af"
+    },
+    {
+      "path": "d44-architecture-cli/stdout.gz",
+      "bytes": 8489,
+      "sha256": "31a8eb0faf711d44fdcafd2320733c54b912663fd7027ff47e4a027aa727e645"
+    },
+    {
+      "path": "d44-architecture-generic/result.json",
+      "bytes": 855,
+      "sha256": "2e243c3c1c5bc3c372587915c32368ada1794a5d9e42a15d2aaefb9430823517"
+    },
+    {
+      "path": "d44-architecture-generic/stderr.gz",
+      "bytes": 6470,
+      "sha256": "59faa77d3646e36771e2a87435e6958491f03899927ac7e4583910df6dabf928"
+    },
+    {
+      "path": "d44-architecture-generic/stdout.gz",
+      "bytes": 27,
+      "sha256": "10b3290af4b19691ca75030a91adf5dae5262ed237c4f72c9addbb30fc51d302"
+    },
+    {
+      "path": "d44-architecture-product/result.json",
+      "bytes": 853,
+      "sha256": "666a87ebf82bdb2f655203a4b1f8da6f429977a1534f1d6db0fa51a62612ea64"
+    },
+    {
+      "path": "d44-architecture-product/stderr.gz",
+      "bytes": 197,
+      "sha256": "6602c6731eb02e1c5be0ce908f98a21a82506432cc3961d1fd79419231402f2d"
+    },
+    {
+      "path": "d44-architecture-product/stdout.gz",
+      "bytes": 27,
+      "sha256": "f2742d092a132c0ab1c049097d1680bb0bf526a496b08a2116358fb995af0854"
+    },
+    {
+      "path": "d44-ledger-check/result.json",
+      "bytes": 839,
+      "sha256": "fe08e6dfeb6d88fb7b5ff6e9aefc7afe79f09262bc71092007b65f184c61db7b"
+    },
+    {
+      "path": "d44-ledger-check/stderr.gz",
+      "bytes": 27,
+      "sha256": "0077c2c6ffde0b6286cbc9ff131f4d006210fad2df8ab0c8cedd9e811a0520a1"
+    },
+    {
+      "path": "d44-ledger-check/stdout.gz",
+      "bytes": 485,
+      "sha256": "662bbd02980486d4cd8622fbad08081b02098cc654030c7e77cd4b37a504f0eb"
+    },
+    {
+      "path": "D44_RESULTS.md",
+      "bytes": 2002,
+      "sha256": "8f05fa34c205094e4e6c0a83467dd3511c389ae44a59afb04fc6fd81b5fc1193"
+    },
+    {
+      "path": "tools/d44-ui-mutations.py",
+      "bytes": 1530,
+      "sha256": "119012a5f6af96340ad89e9ba0df39be1bebca0fb639f2d2c3483303fe526ba2"
+    },
+    {
+      "path": "canvas-support/wait-trace-receipt.json",
+      "bytes": 376,
+      "sha256": "4ae4a3b4281146b435f897976453147fe170ed6f56e37694fe831620725b8a38"
+    }
+  ]
+}
