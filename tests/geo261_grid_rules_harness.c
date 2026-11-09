@@ -148,7 +148,9 @@ static int geometry(void)
 static int validation(void)
 {
     GeoGridSystem s=system_value();char error[256]="";CHECK(wood_grid_rules_valid(&s,error,sizeof error));
-    s.axis[0].source=GEO_GRID_SOURCE_REPEAT_BODY_GAP;s.rules[0].divisions[0]=0;
+    /* R14 permits REPEAT_BODY_GAP as an infinite rule source. EXPLICIT still
+       fails SOURCE_KIND before an independently invalid division is examined. */
+    s.axis[0].source=GEO_GRID_SOURCE_EXPLICIT;s.rules[0].divisions[0]=0;
     CHECK(!wood_grid_rules_valid(&s,error,sizeof error));CHECK(!strcmp(error,"I25a: SOURCE_KIND source 5 rule 0"));
     s=system_value();s.rules[0].divisions[0]=7;CHECK(!wood_grid_rules_valid(&s,error,sizeof error));CHECK(!strcmp(error,"I25a: DIVISION_NOT_EXACT source 5 rule 7"));
     s=system_value();s.rule_count=2;s.next_rule_key=9;s.rules[1]=s.rules[0];s.rules[1].key=8;

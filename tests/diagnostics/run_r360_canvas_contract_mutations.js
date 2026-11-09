@@ -54,7 +54,7 @@ const cases=[
   ['R360_SHARD2_IDENTITY_GATE',TEST_NAMES[1],'R360_IDENTITY_GATE_',()=>replace('cdp_test.js',"if(inSequence(2)||process.env.GEOMETRY_IDENTITY_LEDGER_ONLY)await require('./identity_ledger_browser_test.js')","if(scope.mode==='full'||process.env.GEOMETRY_IDENTITY_LEDGER_ONLY)await require('./identity_ledger_browser_test.js')")],
   ['R360_IDENTITY_SECTION_HEADER',TEST_NAMES[2],'R360_STANDALONE_SECTION_BEFORE_ASSERTIONS',()=>replace('identity_ledger_browser_test.js',"  console.log('=== P360. 物件身分帳啟用、保存與重開 ===');\n",'')],
   ['R360_IDENTITY_PLAN_MEMBERSHIP',TEST_NAMES[1],'R360_CANVAS_COMPLETE_PLAN',()=>json('canvas_shards.json',p=>{p.shards[1].sections=p.shards[1].sections.filter(s=>s!=='P360');})],
-  ['R360_IDENTITY_PLAN_LOCATION',TEST_NAMES[1],'R360_IDENTITY_ONLY_SECOND_SHARD_AFTER_P84',()=>json('canvas_shards.json',p=>{p.shards[1].sections=p.shards[1].sections.filter(s=>s!=='P360');p.shards[0].sections.splice(p.shards[0].sections.length-1,0,'P360');})],
+  ['R360_IDENTITY_PLAN_LOCATION',TEST_NAMES[1],'R360_R06_EXACT_SECOND_SHARD_POSITIONS',()=>json('canvas_shards.json',p=>{p.shards[1].sections=p.shards[1].sections.filter(s=>s!=='P360');p.shards[0].sections.splice(p.shards[0].sections.length-1,0,'P360');})],
   ['R360_MAIN_P84_NOT_POLLUTED',TEST_NAMES[0],'R360_MAIN_GOLDEN_UNCHANGED',()=>json('cdp_sections.golden.json',g=>{g.sections.P84+=13;g.total+=13;})],
   ['R360_IDENTITY_SCOPE_FLAG',TEST_NAMES[3],'R360_IDENTITY_ONLY_IS_PARTIAL',()=>replace('cdp_test.js',",'GEOMETRY_IDENTITY_LEDGER_ONLY'",'')],
   ['R360_MAIN_EXISTING_ASSERTION_COUNTS',TEST_NAMES[0],'R360_MAIN_GOLDEN_UNCHANGED',()=>json('cdp_sections.golden.json',g=>{g.sections.P38-=1;g.total-=1;})]

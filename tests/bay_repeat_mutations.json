@@ -100,6 +100,17 @@
     "R06_BAY_SUPPORT_IDENTITY",
     "R06_PF_MARKER_ONLY_REJECT",
     "R06_SINGLE_CSV_BYTES",
+    "r06-353:card-source-identity",
+    "r06-353:finite-reader-plus-card-raw",
+    "r06-353:fresh-reader-preserves-all-owners",
+    "r06-353:golden-union-total",
+    "r06-353:k1-options-retain-raw-reader",
+    "r06-353:keep-p353-golden",
+    "r06-353:keep-r06-golden",
+    "r06-353:mixed-required-capabilities",
+    "r06-353:raw-archive-exact",
+    "r06-353:raw-capability-owner",
+    "r06-353:raw-reader-capability",
     "r06-br10:zero-reference-id",
     "r06-br12:draft-capabilities",
     "r06-br12:draft-format",
@@ -845,8 +856,8 @@
       "patches": [
         {
           "file": "geometry-web/project-store.js",
-          "before": "if(manifest?.format===BAY_REPEAT_FORMAT&&typeof scene==='string'&&",
-          "after": "if(false&&manifest?.format===BAY_REPEAT_FORMAT&&typeof scene==='string'&&"
+          "before": "if(repeatHost&&",
+          "after": "if(false&&repeatHost&&"
         }
       ]
     },
@@ -896,8 +907,8 @@
       "patches": [
         {
           "file": "geometry-web/project-store.js",
-          "before": "supported.push(PANEL_FILL_CAPABILITY);",
-          "after": "supported.push();"
+          "before": "      supported.push(PANEL_FILL_CAPABILITY);\n    return [...supported",
+          "after": "      supported.push();\n    return [...supported"
         }
       ]
     },
@@ -913,8 +924,8 @@
       "patches": [
         {
           "file": "geometry-web/reference-workspace.js",
-          "before": "candidate.final_scene,hostRecordProfile,{cutting:true}));",
-          "after": "candidate.final_scene,hostRecordProfile));"
+          "before": "candidate.final_scene,hostRecordProfile,{cutting:true},candidate.panel_fill_reader));",
+          "after": "candidate.final_scene,hostRecordProfile,{},candidate.panel_fill_reader));"
         }
       ]
     },
@@ -964,8 +975,8 @@
       "patches": [
         {
           "file": "geometry-web/project-store.js",
-          "before": "if(manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate)",
-          "after": "if(false&&manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate)"
+          "before": "if(manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate&&!panelFill)",
+          "after": "if(false&&manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate&&!panelFill)"
         }
       ]
     },
@@ -998,8 +1009,8 @@
       "patches": [
         {
           "file": "geometry-web/project-store.js",
-          "before": "if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(command)) return;",
-          "after": "if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return;"
+          "before": "if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm )/.test(command)) return;",
+          "after": "if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm )/.test(command)) return;"
         }
       ]
     },
@@ -1015,8 +1026,8 @@
       "patches": [
         {
           "file": "geometry-web/reference-workspace.js",
-          "before": "if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(command)) return null;",
-          "after": "if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return null;"
+          "before": "if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm )/.test(command)) return null;",
+          "after": "if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm )/.test(command)) return null;"
         }
       ]
     },
@@ -1032,8 +1043,8 @@
       "patches": [
         {
           "file": "geometry-web/reference-workspace.js",
-          "before": "if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|definition-import-confirm) /.test(cmd) && result.history_changed !== false) dirty();",
-          "after": "if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm) /.test(cmd) && result.history_changed !== false) dirty();"
+          "before": "if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm) /.test(cmd) && result.history_changed !== false) dirty();",
+          "after": "if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm) /.test(cmd) && result.history_changed !== false) dirty();"
         }
       ]
     },
@@ -1049,8 +1060,8 @@
       "patches": [
         {
           "file": "geometry-web/reference-workspace.js",
-          "before": "if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();",
-          "after": "if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();"
+          "before": "if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && !(cmd.startsWith(\"panel-fill-confirm \") && result.history_changed === false))notifySceneChange();",
+          "after": "if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && !(cmd.startsWith(\"panel-fill-confirm \") && result.history_changed === false))notifySceneChange();"
         }
       ]
     },
@@ -1064,8 +1075,8 @@
       "patches": [
         {
           "file": "geometry-web/reference-workspace.js",
-          "before": "candidate.final_scene,hostRecordProfile,{cutting:true}));",
-          "after": "candidate.final_scene,hostRecordProfile));"
+          "before": "candidate.final_scene,hostRecordProfile,{cutting:true},candidate.panel_fill_reader));",
+          "after": "candidate.final_scene,hostRecordProfile,{},candidate.panel_fill_reader));"
         }
       ],
       "test": "formal-cdp-assembly"

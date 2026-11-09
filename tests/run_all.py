@@ -51,6 +51,7 @@ EXPECTED_FILE = HERE / 'run_all.expected.json'
 # Every tests/test_*.py MUST appear here (value = native binaries it needs; [] is a deliberate "needs none").
 # A test file that is on disk but not listed makes run_all fail and name it.
 PY_NEEDS = {
+    'test_r14_repeat_panel': ['bridge'],
     'test_r363_native_merge': ['bridge'],
     'test_geo318_reading_a_oracle': [],
     'test_geo318_reading_a_native': [],
@@ -59,6 +60,7 @@ PY_NEEDS = {
     'test_geo314_ordered_facts': [],
     'test_architecture_contract': [],
     'test_product_architecture': [],
+        'test_panel_fill_ui_contract': ['bridge'],
     'test_k1_product_architecture': [],
     'test_assembly_capacity': ['bridge'],
     'test_assembly_candidate_impact': ['bridge'],
@@ -325,6 +327,7 @@ NODE_TEST_FILES = [
     'tests/test_scenario_review_native.js',
     'tests/test_scenario_snapshots.js',
     'tests/test_scenario_project_store.js',
+    'tests/test_panel_fill_project_store.js',
     'tests/test_scenario_editor_tickets.js',
     'tests/test_scenario_recovery_owner.js',
     'tests/test_scenario_resume_checkpoint.js',
@@ -380,6 +383,7 @@ NODE_PURE_TEST_FILES = {
     'node:cdp_card_position': 'tests/test_cdp_card_position.js',
     'node:canvas_creation_owner': 'tests/test_canvas_creation_owner.cjs',
     'node:canvas_shards': 'tests/test_canvas_shards.js',
+    'node:panel_fill_ui_contract': 'tests/test_panel_fill_ui_contract.js',
     'node:identity_canvas_merge': 'tests/test_identity_canvas_merge.js',
     'node:background_grid_viewport': 'tests/test_background_grid_viewport.js',
     'node:anchor_band_clip': 'tests/test_anchor_band_clip.js',
