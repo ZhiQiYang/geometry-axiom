@@ -19,7 +19,9 @@ static void json_engineering_capabilities(const World *w)
 {
     /* panel-fill/1 is required by scenes holding finish surfaces (I56 adds its two prerequisites), but it is not
      * advertised as supported: PF-1 implements only the finish-surface records, and I32 forbids claiming the
-     * whole capability.  panel-fill-native/1 + panel-fill-read report the supported subset.
+     * whole capability.  panel-fill-native/1 + panel-fill-read report the supported subset, and the separate,
+     * versioned definition reader below admits exactly the implemented source records for atomic project
+     * import, not PF-4/5/6 actions.
      * R14 likewise exposes its native /2 source/query/scene subset separately
      * until the complete project readers and workspace support /2. The actual
      * scene requirement remains grid-subdivision-rules/2 and must not be lowered. */
@@ -30,6 +32,8 @@ static void json_engineering_capabilities(const World *w)
     for(size_t i=0;i<sizeof required/sizeof required[0];++i)if(required[i].used){if(!first)putchar(',');first=false;js_string(required[i].name);}
     putchar(']');
     fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\",\"grid-subdivision-native/2\"]",stdout);
+    fputs(",\"panel_fill_reader\":{\"schema\":\"panel-fill-definition-reader/1\",\"capability\":\"" FS_CAPABILITY "\","
+          "\"supportedRecords\":[\"finish-surface\",\"panel-fill\",\"derived-placement\"],\"complete\":false}",stdout);
 }
 static void json_eng_terminal(const EngTerminal *terminal)
 {

@@ -1,0 +1,31 @@
+{
+  "sourceSha": "74d638686edc9861e9ed9d3409af4adf02350f8e",
+  "runs": [
+    {
+      "case": "baseline",
+      "exit": 0,
+      "pass": 381,
+      "fail": 0,
+      "seconds": 213.38063306799995
+    },
+    {
+      "case": "d44-preparation-owner",
+      "exit": 1,
+      "pass": 6,
+      "fail": 1,
+      "seconds": 4.552897587000189
+    },
+    {
+      "case": "d44-preparation-owner-restored",
+      "exit": 0,
+      "pass": 381,
+      "fail": 0,
+      "seconds": 203.5311209870015
+    }
+  ],
+  "namedAssertion": "UI05_D44_PREPARATION_OWNER",
+  "outerExit": 0,
+  "outerSeconds": 421.56062558800113,
+  "rawHashesVerified": true,
+  "sourceRestoredClean": true
+}

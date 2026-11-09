@@ -2119,6 +2119,18 @@
       "layer": "W",
       "language": "javascript",
       "purpose": "固定 woodworking/1 的 D46–D50、I58/I59/I61、R47–R49 裁切政策：材料與無序截面配對、設定限制、餘料優先、FFD、切序與耗損分類；I60 共用守恆只委派 K"
+    },
+    {
+      "path": "geometry-web/panel-fill-adapter.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "UI-1 native wire and candidate lifecycle host adapter; delegates geometry to the native engine"
+    },
+    {
+      "path": "geometry-web/panel-fill-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "UI-1 existing face inspector definitions form and native result presentation host"
     }
   ],
   "exclusions": [
@@ -2737,7 +2749,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "aa8b444d5fe18de09eaa8982de6f1c77ea627186ddcf0266b8c399035271f8dd",
+      "sha256": "fb2ea0c67e745b0a5a8340d3d8fd199b052301c1bd643bf7d81016d9e501d470",
       "hashMode": "lf"
     },
     {
@@ -3457,7 +3469,7 @@
     {
       "path": "geometry-web/room_outline_test.js",
       "reason": "Dedicated acceptance/test driver room_outline_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "a388f9a976b3c8af0fc217274c340b0ffe0d9bf2fccedd1533acf984196aba3a",
+      "sha256": "212b14a5ffaf05a256e090c0d3e9faa2f7d4aaf05d96133b2eae4e88d987a27a",
       "hashMode": "lf"
     },
     {
@@ -3493,7 +3505,7 @@
     {
       "path": "geometry-web/space_model_test.js",
       "reason": "Dedicated acceptance/test driver space_model_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "92d06b1542568b10561b6fb91fee94d21f8a5dffaef98bbafd22fa3a727bf92d",
+      "sha256": "9d837faf1a8b0c2b7b7d6c8f9eef52fee47414b6ef894e79976c5a1ef738b493",
       "hashMode": "lf"
     },
     {
@@ -3830,6 +3842,12 @@
       "path": "geometry-web/canvas_shards.js",
       "reason": "Dedicated CI test driver canvas_shards.js: canvas browser-shard plan, cut-point storage handoff and complete-coverage receipt verifier, loaded only by cdp_test.js shard mode, the CI complete-coverage job and tests/test_canvas_shards.js; not loaded by product runtime or served application entry points.",
       "sha256": "57cf679ead32795891c20b10f3a8aba263724bdcf58d1376010792b3c2d40d71",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/panel_fill_workflow_test.js",
+      "reason": "Dedicated UI-1 CDP acceptance driver; invoked by cdp_test.js, never by a product runtime entry point.",
+      "sha256": "7a3a0f5b32670ac590ce1d89314dbc08562147a7c7f6493d6a78486b9b387375",
       "hashMode": "lf"
     }
   ],
