@@ -7,6 +7,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path'), os = require('node:os'), vm = require('node:vm');
 const ROOT = process.env.R360_CONTRACT_ROOT ? path.resolve(process.env.R360_CONTRACT_ROOT) : path.resolve(__dirname, '..');
 const WEB = path.join(ROOT, 'geometry-web');
+const timberExtension = require('./diagnostics/r356_canvas_extension.cjs');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const file = name => path.join(WEB, name);
 const read = name => fs.readFileSync(file(name), 'utf8');
@@ -15,10 +16,12 @@ const MAIN_SEQUENCES = [["Setup","1","2","3","4","5","6","7","8","9","P3","P4","
 const MAIN_BOUNDARIES = [{"after":"P88","before":"P72","localStorage":{"geometry-param-grid-lesson":{"kind":"param-grid-lesson-token"},"geometry-tool-lessons-v1":{"kind":"string-set","values":["canvas:pan","canvas:rect","canvas:select","engineering:first","face:grid","face:guide","face:hole","face:pan","face:redraw","face:select","face:timber","grid:infinite-first"]}}}];
 
 test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
-  const current = JSON.parse(read('cdp_sections.golden.json'));
-  const golden = pfExtension.projectGolden(current);
+  const rawGolden = JSON.parse(read('cdp_sections.golden.json'));
+  // Merged #355 and #356: each owner's unchanged exact projection removes only
+  // its own section (R02 P128, R11 P116); together they restore main exactly.
+  const golden = timberExtension.projectGolden(pfExtension.projectGolden(rawGolden));
   for(const value of [undefined,0,380,382]){
-    const probe=JSON.parse(JSON.stringify(current));
+    const probe=JSON.parse(JSON.stringify(rawGolden));
     if(value===undefined)delete probe.sections.P128;else probe.sections.P128=value;
     assert.throws(()=>pfExtension.projectGolden(probe),/R355_CANVAS_P128_FROZEN_COUNT/);
   }
@@ -28,6 +31,12 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
   assert.equal(golden.sections.P360, 13, 'R360_ORIGINAL_THIRTEEN_ASSERTIONS');
   assert.equal(golden.sections.R06, 50, 'R06_ORIGINAL_FIFTY_ASSERTIONS');
   assert.equal(golden.total, MAIN_GOLDEN.total + 13 + 50, 'R360_R06_TOTAL_IS_UNCHANGED_MAIN_PLUS_BOTH_SECTIONS');
+  for (const count of [undefined, 373, 375]) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (count === undefined) delete probe.sections.P116;
+    else probe.sections.P116 = count;
+    assert.throws(() => timberExtension.projectGolden(probe), /R356_P116_EXECUTED_ASSERTION_COUNT/);
+  }
 });
 
 test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
@@ -39,14 +48,45 @@ test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
   const expected = MAIN_SEQUENCES.map(sections => sections.slice());
   expected[1].splice(expected[1].indexOf('P84') + 1, 0, 'P360');
   expected[1].splice(expected[1].indexOf('P82') + 1, 0, 'R06');
-  assert.deepEqual(pfExtension.projectPlan(plan).shards.map(row => row.sections), expected, 'R360_R06_EXACT_SECOND_SHARD_POSITIONS');
+  // Merged #355 and #356 both insert one section between P352 and P353; the
+  // merged full-mode dispatch in cdp_test.js runs P352, P116 (timber reuse),
+  // P128 (R02 panel fill), P353. Each owner's unchanged exact oracle judges the
+  // plan without the other owner's section, both must yield the same main plan,
+  // and the merged adjacency itself is exact.
+  const withoutSection = (value, name) => {
+    const copy = JSON.parse(JSON.stringify(value));
+    for (const row of copy.shards) row.sections = row.sections.filter(section => section !== name);
+    return copy;
+  };
+  const projectPlan = value => {
+    const timberMain = timberExtension.projectPlan(withoutSection(value, 'P128'));
+    const pfMain = pfExtension.projectPlan(withoutSection(value, 'P116'));
+    assert.deepEqual(timberMain, pfMain, 'R355_R356_SAME_MAIN_PLAN');
+    const second = value.shards[1].sections, at = second.indexOf('P116');
+    assert.deepEqual(second.slice(at - 1, at + 3), ['P352', 'P116', 'P128', 'P353'], 'R355_R356_MERGED_ORDER');
+    return timberMain;
+  };
+  assert.deepEqual(projectPlan(plan).shards.map(row => row.sections), expected, 'R360_R06_EXACT_SECOND_SHARD_POSITIONS');
+  for (const fault of ['missing', 'duplicate', 'first-shard', 'moved']) {
+    const probe = JSON.parse(JSON.stringify(plan)), second = probe.shards[1].sections, at = second.indexOf('P116');
+    if (fault === 'duplicate') second.push('P116');
+    else {
+      second.splice(at, 1);
+      if (fault === 'first-shard') probe.shards[0].sections.push('P116');
+      else if (fault === 'moved') second.unshift('P116');
+    }
+    assert.throws(() => projectPlan(probe), /R356_P116_/);
+  }
   for(const fault of ['missing','duplicate','first-shard','moved']){
     const probe=JSON.parse(JSON.stringify(plan)),second=probe.shards[1].sections,at=second.indexOf('P128');
     if(fault==='duplicate')second.push('P128');
     else {second.splice(at,1);if(fault==='first-shard')probe.shards[0].sections.push('P128');
       else if(fault==='moved')second.unshift('P128');}
-    assert.throws(()=>pfExtension.projectPlan(probe),/R355_CANVAS_P128_/);
+    assert.throws(()=>projectPlan(probe),/R355_CANVAS_P128_/);
   }
+  const swapped = JSON.parse(JSON.stringify(plan)), swappedSecond = swapped.shards[1].sections;
+  swappedSecond.splice(swappedSecond.indexOf('P116'), 2, 'P128', 'P116');
+  assert.throws(() => projectPlan(swapped), /R355_R356_MERGED_ORDER/);
   assert.deepEqual(plan.boundaries, MAIN_BOUNDARIES, 'R360_P88_HANDOFF_UNCHANGED');
   const source = read('cdp_test.js');
   const lines = source.split('\n').filter(line => line.includes("require('./identity_ledger_browser_test.js')"));
@@ -67,6 +107,11 @@ test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
   }
   assert.ok(source.indexOf("require('./room_outline_test.js')") < source.indexOf("require('./identity_ledger_browser_test.js')"), 'R360_AFTER_ROOM_OUTLINE');
   assert.ok(source.indexOf("require('./identity_ledger_browser_test.js')") < source.indexOf("require('./room_candidate_browser_test.js')"), 'R360_BEFORE_P90');
+  // The merged P352, P116, P128, P353 plan order is the real full-mode dispatch order.
+  const dispatchAt = text => { assert.equal(source.split(text).length, 2, 'R355_R356_ONE_DISPATCH: ' + text); return source.indexOf(text); };
+  const dispatch = ['if(inSequence(2))await runCanvasContextMenu();', 'if(inSequence(2))await runTimberReuse();',
+    "await require('./panel_fill_workflow_test.js')", "await require('./grid_card_entry_test.js')"].map(dispatchAt);
+  assert.deepEqual([...dispatch].sort((a, b) => a - b), dispatch, 'R355_R356_PLAN_IS_DISPATCH_ORDER');
 });
 
 test('R360_CANVAS_IDENTITY_HEADER_BEFORE_FIRST_ASSERTION', async () => {
