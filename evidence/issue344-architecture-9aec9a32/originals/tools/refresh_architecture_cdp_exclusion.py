@@ -1,0 +1,215 @@
+"""Regenerate the original four architecture artifacts from an exact clean source.
+The sole manifest delta is the approved cdp exclusion digest; two H inputs changed.
+Default is plan-only. Execution requires a root-scheduled clean fixed-source run.
+"""
+from pathlib import Path
+import argparse,collections,copy,datetime,hashlib,importlib.util,json,os,re,resource,sys
+if sys.flags.optimize:raise RuntimeError('Python optimization forbidden')
+p=argparse.ArgumentParser()
+p.add_argument('--root',type=Path);p.add_argument('--sha');p.add_argument('--out',type=Path)
+p.add_argument('--execute',action='store_true');p.add_argument('--root-scheduled-architecture-run',action='store_true')
+p.add_argument('--prior-source',default='e321026fb9bc9bc19c54b8034af6e6eaec2857f9')
+p.add_argument('--guard-baseline-source',default='ca7838e0f4950452b9befcf40899d606db9b81fa')
+a=p.parse_args()
+PLAN={'schema':'geo344-exact-architecture-adapter-plan/1','execution':'UNRUN',
+ 'default':'plan only; no checkout reads, capture import, output mkdir, or judges',
+ 'ancestor':'a5ec136baf3909453867b3eed50f1b93b229ca59',
+ 'source_requirement':'clean resolvable descendant; only one manifest hash patch plus evidence changes from ancestor',
+ 'prior_execution':'e321026fb9bc9bc19c54b8034af6e6eaec2857f9',
+ 'expected_inputs':604,'expected_owned':334,'expected_exclusions':270,'expected_edges':798,
+ 'only_changed_inputs':['geometry-web/app.js','geometry-web/cdp_test.js'],
+ 'other_602_git_blobs':'must equal prior execution source',
+ 'manifest_delta':'only exclusions[path=geometry-web/cdp_test.js].sha256; formatting and all other bytes fixed',
+ 'policy':{'identifiers':937,'strings':55,'new_identifiers':0},
+ 'original_judges':[['python3','-B','tests/architecture_contract.py','--root','.','--manifest','geometry-core/domain-decoupling/product-architecture.json'],['python3','-B','tests/test_architecture_contract.py'],['python3','-B','tests/test_product_architecture.py']],
+ 'unit_expectations':[205,18],'allowed_skips':0,
+ 'digest_proof':'same source fixed/withdrawn/restored, actual 0/1/0; sole named EXCLUSION_DIGEST for cdp_test.js',
+ 'policy_proof':'nine original W guards, exact original historical928 raw preserved; separately derived control changes only same cdp digest',
+ 'outputs':['product-architecture.json','product-architecture-scan.json','PRODUCT-ARCHITECTURE.md','product-architecture-receipt.json'],
+ 'not_run':['Node strict9','browser','native','ledger','C build','performance'],
+ 'resource':'owner must provide complete clean source and fresh outside-source output after resource scheduling; no new acceptance threshold'}
+if not a.execute:
+ print(json.dumps(PLAN,ensure_ascii=False,indent=2));raise SystemExit(0)
+assert not sys.flags.optimize and a.root_scheduled_architecture_run
+assert a.root is not None and a.out is not None and a.sha is not None
+assert a.prior_source=='e321026fb9bc9bc19c54b8034af6e6eaec2857f9'
+assert a.guard_baseline_source=='ca7838e0f4950452b9befcf40899d606db9b81fa'
+R=a.root.resolve();O=a.out.resolve();F=a.sha
+assert re.fullmatch('[0-9a-f]{40}',F) and not O.exists() and not O.is_relative_to(R)
+assert resource.getrlimit(resource.RLIMIT_STACK)[0]==16777216
+ART='geometry-core/domain-decoupling';NAMES=['product-architecture.json','product-architecture-scan.json','PRODUCT-ARCHITECTURE.md','product-architecture-receipt.json'];JUDGES=['tests/architecture_contract.py','tests/test_architecture_contract.py','tests/test_product_architecture.py']
+ADDED={'WOOD_BOUNDARY_END_BARE_RC','WOOD_BOUNDARY_END_ORDINARY','WOOD_BOUNDARY_END_PARTIAL','WoodBoundaryEndAdmission','wood_contact_boundary_end_admission','wood_contact_boundary_end_uses_member_facts','wood_contact_end_support_check','wood_reference_boundary_end','wood_reference_partial_ref_candidates'}
+SUFFIXES={'.c','.cc','.cjs','.cpp','.cxx','.h','.hh','.hpp','.htm','.html','.inc','.js','.jsx','.mjs','.py','.ts','.tsx'}
+def H(b):return hashlib.sha256(b).hexdigest()
+def LF(b):return b.replace(b'\r\n',b'\n')
+HISTORICAL_PIN='80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525'
+PREVIOUS_PIN='81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975'
+CURRENT_PIN='f0c0b4db4ca01d4825883b73d73bf8644af313cd2bcab4c9b23638b9bbd93d32'
+OLD_DIGEST='bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e'
+NEW_DIGEST='1f3e2e36283ed7bbf6c4ad2cf3dc12c685667356d186d9fbd47bc5f0520f07ee'
+DERIVED_HISTORY_PIN='2661beb6a5223d2aeecd64d708194261d97f0a738c1fc3adb22ff431c07bbbb8'
+EXCLUSION_PATH='geometry-web/cdp_test.js'
+EXPECTED_CLOSURE='71caf2df36a51b86da3d0553abd7ccebb7542d9dce2ec3f065e8d90a16ebbe0f'
+ANCESTOR='a5ec136baf3909453867b3eed50f1b93b229ca59'
+PROBE_PIN='350fc09a16660d33144fe7b7a8198032e8251e37a67a61179ec96eba39e1e739'
+EXPECTED_CHANGED_INPUTS=['geometry-web/app.js','geometry-web/cdp_test.js']
+EXPECTED_CHANGED={
+ 'geometry-web/app.js':{'old_oid':'8b557a62cbdc5d315c082a97b6fa0bd7811bdaf8','oid':'e82ff16e7c0a671081cc763ec97a373b9bf9d3eb','lf':'c5f055915a039d90138824248b146552776286beb7544380c279a5586707ab60'},
+ 'geometry-web/cdp_test.js':{'old_oid':'ef229af148f664cc4a45d488abc8773f65aa2775','oid':'3f632a24935f0c47fcd05f3c9d58fe53089a9185','lf':NEW_DIGEST}}
+def refresh_one_exclusion(raw):
+ assert raw.count(OLD_DIGEST.encode())==1
+ before=json.loads(raw);rows=[x for x in before['exclusions'] if x['path']==EXCLUSION_PATH]
+ assert len(rows)==1 and rows[0]['hashMode']=='lf' and rows[0]['sha256']==OLD_DIGEST
+ after=raw.replace(OLD_DIGEST.encode(),NEW_DIGEST.encode())
+ rows[0]['sha256']=NEW_DIGEST;assert json.loads(after)==before
+ return after
+def validate_manifests(current_raw,previous_raw,historical_raw):
+ assert H(previous_raw)==PREVIOUS_PIN and H(current_raw)==CURRENT_PIN
+ assert refresh_one_exclusion(previous_raw)==current_raw
+ assert H(historical_raw)==HISTORICAL_PIN
+ current,previous,historical=map(json.loads,[current_raw,previous_raw,historical_raw])
+ assert current['policy']==previous['policy']
+ assert len(current['policy']['forbiddenIdentifiers'])==937 and len(current['policy']['forbiddenStrings'])==55
+ assert len(historical['policy']['forbiddenIdentifiers'])==928 and len(historical['policy']['forbiddenStrings'])==55
+ assert set(current['policy']['forbiddenIdentifiers'])-set(historical['policy']['forbiddenIdentifiers'])==ADDED
+ assert set(historical['policy']['forbiddenIdentifiers'])<=set(current['policy']['forbiddenIdentifiers'])
+ check=copy.deepcopy(previous);check['policy']['forbiddenIdentifiers']=historical['policy']['forbiddenIdentifiers'];assert check==historical
+ derived=refresh_one_exclusion(historical_raw);assert H(derived)==DERIVED_HISTORY_PIN
+ effective=json.loads(derived)
+ check=copy.deepcopy(current);check['policy']['forbiddenIdentifiers']=effective['policy']['forbiddenIdentifiers'];assert check==effective
+ return effective,derived
+
+def info(p):
+ b=p.read_bytes();return {'bytes':len(b),'rawSha256':H(b),'lfSha256':H(LF(b))}
+CAP=Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py');CAP_PIN='c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762';assert H(CAP.read_bytes())==CAP_PIN
+sp=importlib.util.spec_from_file_location('cap',CAP);cap=importlib.util.module_from_spec(sp);sp.loader.exec_module(cap)
+driver_before=Path(__file__).read_bytes()
+O.mkdir();(O/'execution-source-originals').mkdir();(O/'previous-artifact').mkdir();(O/'new').mkdir();(O/'tmp').mkdir();(O/'tools').mkdir();(O/'tools'/Path(__file__).name).write_bytes(driver_before);(O/'tools'/'capture.py').write_bytes(CAP.read_bytes())
+env=dict(os.environ);cleared=[]
+for k in ('PYTHONOPTIMIZE','PYTHONPATH','PYTHONSTARTUP','NODE_OPTIONS'):
+ if k in env:cleared.append(k);env.pop(k)
+for k in list(env):
+ if k.startswith(('GIT_','MUTATE_')):cleared.append(k);env.pop(k)
+env.update(PYTHONDONTWRITEBYTECODE='1',PYTHONIOENCODING='utf-8',LANG='C.UTF-8',LC_ALL='C.UTF-8',TMPDIR=str(O/'tmp'),GITHUB_SHA=F,GITHUB_WORKSPACE=str(R));rec=cap.Recorder(O,env,F)
+def run(argv,check=True,variant='original architecture gate at fixed clean source'):return rec.run(argv,cwd=R,timeout=None,check=check,source_sha=F,source_variant=variant)
+def git(*args):return run(['git',*args])[1]
+assert git('rev-parse','HEAD').decode().strip()==F and not git('status','--porcelain=v1','--untracked-files=all')
+git('merge-base','--is-ancestor',ANCESTOR,F)
+assert git('diff','--name-only',ANCESTOR,F,'--','.',':(exclude)evidence/**').decode().splitlines()==[ART+'/'+NAMES[0]]
+old_four={n:(R/ART/n).read_bytes() for n in NAMES}
+for n,b in old_four.items():(O/'execution-source-originals'/n).write_bytes(b)
+manifest=json.loads(old_four[NAMES[0]]);prior=json.loads(old_four[NAMES[3]]);assert prior['schema']=='geometry-product-architecture-receipt/1'
+assert prior['sourceBaseHead']==a.prior_source
+old_commit=git('log','-1','--format=%H','--',ART+'/'+NAMES[3]).decode().strip();git('merge-base','--is-ancestor',prior['sourceBaseHead'],F)
+previous_manifest_raw=git('show',old_commit+':'+ART+'/'+NAMES[0]);previous_manifest=json.loads(previous_manifest_raw);assert H(LF(previous_manifest_raw))==prior['manifestSha256']
+(O/'previous-artifact'/NAMES[0]).write_bytes(previous_manifest_raw)
+assert git('rev-parse',a.guard_baseline_source+'^{commit}').decode().strip()==a.guard_baseline_source
+git('merge-base','--is-ancestor',a.guard_baseline_source,F)
+historical_row,historical_raw,_=run(['git','show',a.guard_baseline_source+':'+ART+'/'+NAMES[0]],variant='Read pinned historical 928-identifier manifest; not the previous 937-identifier artifact')
+historical_manifest,effective_historical_raw=validate_manifests(old_four[NAMES[0]],previous_manifest_raw,historical_raw)
+(O/'historical-928-manifest.json').write_bytes(historical_raw)
+(O/'historical-928-with-current-cdp-digest.json').write_bytes(effective_historical_raw)
+historical_binding={'sourceGitSHA':a.guard_baseline_source,'manifestRawSha256':HISTORICAL_PIN,'manifestLfSha256':H(LF(historical_raw)),'identifiers':928,'strings':55,'readCommand':historical_row,'usedAsPreviousManifest':False,'effectiveControlIsDerived':True,'effectiveControlSha256':DERIVED_HISTORY_PIN,'effectiveControlPath':str(O/'historical-928-with-current-cdp-digest.json'),'onlyDerivation':{'path':EXCLUSION_PATH,'hashMode':'lf','old':OLD_DIGEST,'new':NEW_DIGEST}}
+cap.dump(O/'historical-guard-baseline.json',historical_binding)
+assert len(manifest['sources'])==334 and len(manifest['exclusions'])==270
+for n in NAMES[1:]:
+ assert git('show',old_commit+':'+ART+'/'+n)==old_four[n];(O/'previous-artifact'/n).write_bytes(old_four[n])
+declared=sorted(x['path'] for key in ['sources','exclusions'] for x in manifest[key]);assert len(declared)==len(set(declared))==604
+rawtree=git('ls-tree','-r','-z',F,'--',*manifest['sourceRoots'],*manifest['sourceFiles']);tree={}
+for entry in rawtree.split(b'\0'):
+ if not entry:continue
+ meta,name=entry.split(b'\t',1);mode,kind,oid=meta.split();path=name.decode()
+ if Path(path).suffix.lower() in SUFFIXES:assert kind==b'blob' and mode!=b'120000';tree[path]=oid.decode()
+assert sorted(tree)==declared
+prior_tree={}
+for entry in git('ls-tree','-r','-z',a.prior_source,'--',*manifest['sourceRoots'],*manifest['sourceFiles']).split(b'\0'):
+ if not entry:continue
+ meta,name=entry.split(b'\t',1);mode,kind,oid=meta.split();path=name.decode()
+ if Path(path).suffix.lower() in SUFFIXES:
+  assert kind==b'blob' and mode!=b'120000';prior_tree[path]=oid.decode()
+assert sorted(prior_tree)==declared
+assert [n for n in declared if tree[n]!=prior_tree[n]]==EXPECTED_CHANGED_INPUTS
+for n,expected in EXPECTED_CHANGED.items():assert prior_tree[n]==expected['old_oid'] and tree[n]==expected['oid']
+
+def snapshot():
+ paths=set(manifest['sourceFiles'])
+ for root in manifest['sourceRoots']:
+  for parent,dirs,files in os.walk(R/root,followlinks=False):
+   assert all(not (Path(parent)/n).is_symlink() for n in dirs)
+   for n in files:
+    f=Path(parent)/n
+    if f.suffix.lower() in SUFFIXES:assert f.is_file() and not f.is_symlink();paths.add(f.relative_to(R).as_posix())
+ assert sorted(paths)==declared
+ rows=[]
+ for path in declared:
+  b=(R/path).read_bytes();oid=hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest();assert oid==tree[path];rows.append({'path':path,'bytes':len(b),'rawSha256':H(b),'lfSha256':H(LF(b)),'gitBlobOid':oid})
+ return rows
+before=snapshot();inputs=[{'path':x['path'],'sha256':x['lfSha256']} for x in before];old_inputs={x['path']:x['sha256'] for x in prior['inputs']};assert set(old_inputs)==set(declared);changed=[x for x in inputs if old_inputs[x['path']]!=x['sha256']];assert [x['path'] for x in changed]==EXPECTED_CHANGED_INPUTS;assert all(x['sha256']==EXPECTED_CHANGED[x['path']]['lf'] for x in changed);closure=H(json.dumps(inputs,ensure_ascii=False,separators=(',',':')).encode());assert closure==EXPECTED_CLOSURE;cap.dump(O/'source-inputs.json',before)
+protected={n:info(R/n) for n in ['公理層.md','決策佇列.md']};tools={n:info(R/n)['lfSha256'] for n in JUDGES}
+for n in JUDGES:assert H(LF(git('show',F+':'+n)))==tools[n]
+for n in protected:assert H(git('show',F+':'+n))==protected[n]['rawSha256']
+# Full lexical inventory uses the unchanged original lexer, never a handwritten generation list.
+sp=importlib.util.spec_from_file_location('original_arch_scanner',R/JUDGES[0]);sc=importlib.util.module_from_spec(sp);sys.modules[sp.name]=sc;sp.loader.exec_module(sc)
+words=set();origins=collections.defaultdict(list)
+for x in manifest['sources']:
+ if x['layer']=='W' and x['language']=='c':
+  _,_,tokens=sc.lex((R/x['path']).read_text(encoding='utf-8-sig'),x['path'],c=True)
+  for t in tokens:
+   if t.kind=='identifier' and t.value.startswith(('Wood','WOOD_','wood_')):words.add(t.value);origins[t.value].append({'path':x['path'],'line':t.line})
+assert words<=set(manifest['policy']['forbiddenIdentifiers']);assert not words-set(previous_manifest['policy']['forbiddenIdentifiers']);assert words-set(historical_manifest['policy']['forbiddenIdentifiers'])==ADDED
+cap.dump(O/'policy-guard-inventory.json',{'addedIdentifiers':[],'removedIdentifiers':[],'oldCount':937,'newCount':937,'stringCount':55,'allOtherManifestFieldsExceptSingleExclusionHashEqual':True,'exclusionDigestRefresh':{'path':EXCLUSION_PATH,'old':OLD_DIGEST,'new':NEW_DIGEST},'historicalGuardIdentifiers':[{'identifier':n,'origins':origins[n]} for n in sorted(ADDED)],'historicalGuardBaseline':historical_binding})
+results=[]
+for argv in [['python3','-B',JUDGES[0],'--root','.','--manifest',ART+'/'+NAMES[0]],['python3','-B',JUDGES[1]],['python3','-B',JUDGES[2]]]:results.append(run(argv))
+scan=json.loads(results[0][1]);assert scan['ok'] is True and scan['diagnostics']==[] and len(scan['edges'])==798 and len(scan['sources'])==334 and len(scan['trustedSourcesNotParsed'])==6
+validations=[]
+for (row,out,err),expected in zip(results[1:],[205,18]):
+ text=(out+b'\n'+err).decode();counts=re.findall(r'^Ran (\d+) tests? in ([0-9.]+)s$',text,re.M);assert len(counts)==1 and int(counts[0][0])==expected and text.rstrip().endswith('OK')
+ validations.append({**row,'exitCode':0,'tests':expected,'passed':expected,'failed':0,'skipped':0,'unittestSeconds':float(counts[0][1])})
+# The unique hash withdrawal uses the unchanged original CLI at the same source.
+digest_withdrawn=O/'single-cdp-digest-withdrawn.json';digest_withdrawn.write_bytes(previous_manifest_raw)
+digest_proof=[];digest_outputs=[]
+expected_digest_diagnostic={'path':EXCLUSION_PATH,'line':1,'code':'EXCLUSION_DIGEST','message':'immutable lf digest is absent or mismatched','direction':'','chain':[]}
+for phase,path in [('fixed',R/ART/NAMES[0]),('withdrawn',digest_withdrawn),('restored',R/ART/NAMES[0])]:
+ row,out,err=run(['python3','-B',JUDGES[0],'--root','.','--manifest',str(path)],check=False,variant='single cdp exclusion LF digest '+phase+'; all executable sources unchanged')
+ expected=1 if phase=='withdrawn' else 0
+ assert type(row['actual_process_returncode']) is int and row['actual_process_returncode']==expected and row['timeout_expired'] is False and not err
+ parsed=json.loads(out)
+ if phase=='withdrawn':
+  assert parsed=={'ok':False,'sources':[],'trustedSourcesNotParsed':[],'edges':[],'diagnostics':[expected_digest_diagnostic]}
+ else:assert out==results[0][1] and parsed['ok'] is True and parsed['diagnostics']==[]
+ digest_outputs.append(out)
+ digest_proof.append({'phase':phase,'actualExit':expected,'sourceGitSHA':F,'manifestSha256':H(path.read_bytes()),'command':row,'requiredDiagnostic':expected_digest_diagnostic if phase=='withdrawn' else None})
+assert digest_outputs[0]==digest_outputs[2]
+cap.dump(O/'single-exclusion-digest-proof.json',digest_proof)
+# Fresh same-source assertions against explicitly derived historical928 policy control; original raw preserved.
+probe_raw=Path('/workspace/geo337-U-architecture-policy-proof-20261024/probe.py').read_bytes();assert H(probe_raw)==PROBE_PIN;probe=probe_raw.decode();(O/'tools'/'policy_probe.py').write_bytes(probe_raw);withdrawn=O/'withdrawn-manifest.json';withdrawn.write_bytes(effective_historical_raw);proof=[]
+for name in sorted(ADDED):
+ for phase,path in [('fixed',R/ART/NAMES[0]),('withdrawn',withdrawn),('restored',R/ART/NAMES[0])]:
+  row,out,err=run(['python3','-B','-c',probe,str(R),str(path),name,'protected'],check=False,variant='same-source W guard '+phase+'; withdrawn DERIVED historical928 control '+DERIVED_HISTORY_PIN+' from original Git '+a.guard_baseline_source+' raw '+HISTORICAL_PIN);expected=1 if phase=='withdrawn' else 0;assert row['actual_process_returncode']==expected
+  if phase=='withdrawn':assert b'AssertionError: new W identifier must be rejected from K:' in err and json.loads(out)['diagnostics']==[]
+  else:assert not err
+  proof.append({'identifier':name,'phase':phase,'exit':expected,'directory':row['directory'],'executionSourceSHA':F,'manifestSourceGitSHA':None if phase=='withdrawn' else F,'manifestRawSha256':DERIVED_HISTORY_PIN if phase=='withdrawn' else H(old_four[NAMES[0]]),'manifestIsDerived':phase=='withdrawn','historicalOriginalSourceGitSHA':a.guard_baseline_source if phase=='withdrawn' else None,'historicalOriginalRawSha256':HISTORICAL_PIN if phase=='withdrawn' else None})
+for path in [withdrawn,R/ART/NAMES[0]]:run(['python3','-B','-c',probe,str(R),str(path),'geo261_architecture_neutral_probe','neutral'])
+assert snapshot()==before and protected=={n:info(R/n) for n in protected} and tools=={n:info(R/n)['lfSha256'] for n in JUDGES}
+assert all((R/ART/n).read_bytes()==old_four[n] for n in NAMES);assert git('rev-parse','HEAD').decode().strip()==F and not git('status','--porcelain=v1','--untracked-files=all')
+assert [x['path'] for x in changed]==EXPECTED_CHANGED_INPUTS;assert all(x['sha256']==EXPECTED_CHANGED[x['path']]['lf'] for x in changed)
+counts={'executableFiles':604,'ownedSources':334,'exclusions':270,'edges':798,'diagnostics':0,'layers':dict(sorted(collections.Counter(x['layer'] for x in manifest['sources']).items())),'languages':dict(sorted(collections.Counter(x['language'] for x in manifest['sources']).items())),'forbiddenIdentifiers':937,'forbiddenStrings':55}
+report=f'''# Product architecture — integration train fixed-source receipt
+
+產品／裁判實際來源 `{F}`。三條原命令 exit 0／0／0；generic 205、product 18，零 skip。完整604 inputs、334 owned／270 exclusions、798 edges／0 diagnostics。LF closure `{closure}`。來源 HEAD、604個Git blob／raw／LF、三個裁判及兩份 SSOT 前後不變。
+
+本輪 manifest 唯一變更為 `{EXCLUSION_PATH}` 排除項LF雜湊 `{OLD_DIGEST}` → `{NEW_DIGEST}`；其餘原bytes、forbiddenIdentifiers 937、forbiddenStrings 55、分類與全部政策不變。完整604輸入相較前份收據精確只有 `{EXPECTED_CHANGED_INPUTS}` 變更，其餘602 Git blob相同。唯一hash撤回／恢復真0／1／0，撤回只得 `EXCLUSION_DIGEST`。
+
+原完整W lexer盤點仍覆蓋全部W identifiers。九組既有guard在本次來源真0／1／0、兩neutral綠；歷史928 Git `{a.guard_baseline_source}` 的原raw `{HISTORICAL_PIN}` 原樣保留，實際撤回用另存衍生副本 `{DERIVED_HISTORY_PIN}`，只同步同一cdp排除hash，避免遮住W guard。衍生副本不是原歷史bytes，沒有移標歷史判決。
+
+前份收據 source `{prior['sourceBaseHead']}`，產物提交 `{old_commit}`；本次完整輸入差異在 receipt／source-inputs.json，歷史報告保於該Git提交。四檔寫至來源外，receipt不hash自己。原native／browser／mutation ledger／效能需各自原收據，本四檔不代稱它們通過。
+'''
+assert Path(__file__).read_bytes()==driver_before and H(CAP.read_bytes())==CAP_PIN
+new=O/'new';(new/NAMES[0]).write_bytes(old_four[NAMES[0]]);(new/NAMES[1]).write_bytes(results[0][1]);(new/NAMES[2]).write_text(report)
+receipt={k:prior[k] for k in ['schema','hashMode','inputClosureHashSerialization','inputClosureExcludes','inputClosureExclusionReason','notClaimed']}
+receipt.update(headBinding='All commands executed at the same clean source SHA; four derived outputs written outside source and excluded from executable closure.',createdUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),basis='Original Linux schema/judges; sole cdp exclusion LF digest refresh, exactly two changed H inputs, full604 inventory, unique digest0/1/0 and nine W guards against explicitly derived historical928 control.',sourceBaseHead=F,headObservedBefore=F,headObservedAfter=F,manifestSha256=H(LF(old_four[NAMES[0]])),scannerSha256=tools[JUDGES[0]],scanSha256=H(LF(results[0][1])),reportSha256=H(LF((new/NAMES[2]).read_bytes())),inputClosureSha256=closure,counts=counts,scanPassed=True,actualCliScan={**results[0][0],'exitCode':0},validation=validations,inputs=inputs)
+receipt['manifestRefresh']={'manifestByteUnchangedFromExecutionSource':True,'allPolicyFieldsEqualToPrevious':True,'onlyPolicyDelta':{'addedIdentifiers':[],'removedIdentifiers':[]},'onlyManifestDelta':{'path':EXCLUSION_PATH,'field':'sha256','hashMode':'lf','old':OLD_DIGEST,'new':NEW_DIGEST,'allOtherBytesEqual':True},'sourceClassificationsUnchanged':True,'previousSource':prior['sourceBaseHead'],'previousArtifactCommit':old_commit,'previousOutputs':{n:info(O/'previous-artifact'/n) for n in NAMES},'executionSourceOutputs':{n:info(O/'execution-source-originals'/n) for n in NAMES},'changedPriorInputs':changed,'sourceReceiptEvidenceDirectory':str(O),'originalThreeGateExits':[0,0,0],'manifestProof':proof,'exclusionDigestProof':digest_proof,'historicalGuardBaseline':historical_binding,'note':'No inherited proof relabeled. Current/previous manifests differ only in the exact cdp exclusion digest; policy937/55 unchanged. Historical928 original raw remains intact; nine controls use a separately hashed derived copy with the same current cdp digest, outside source.'}
+receipt['completeInventoryVerification']={'sourceRoots':manifest['sourceRoots'],'sourceFiles':manifest['sourceFiles'],'filesBefore':604,'filesAfter':604,'allRawAndLfInputsUnchanged':True,'toolHashesBefore':tools,'toolHashesAfter':tools,'inputClosureSha256Before':closure,'inputClosureSha256After':closure,'unchangedPriorGitBlobCount':602,'changedPriorGitBlobPaths':EXPECTED_CHANGED_INPUTS,'protectedSsotBefore':protected,'protectedSsotAfter':protected}
+receipt['supplementalStaticGuardProbes']={'executedAtCurrentHead':True,'newIdentifiers':0,'guardIdentifiersRetested':9,'historicalBaselineSource':a.guard_baseline_source,'historicalBaselineRawSha256':HISTORICAL_PIN,'effectiveWithdrawnControlSha256':DERIVED_HISTORY_PIN,'controlIsDerived':True,'fixedWithdrawnRestored':[0,1,0],'neutralCases':2,'legacyWindowsSupplementalExecuted':False};receipt['nativeAcceptance']='Separate original receipts required; this architecture receipt does not certify runtime behavior.'
+receipt['refreshDriver']={**info(Path(__file__)),'path':str(Path(__file__)),'argv':sys.argv,'recorderSha256':CAP_PIN,'runDirectory':str(O)};receipt['environment']={'safeVariables':results[0][0]['environment'],'clearedInheritedEnvironmentNames':cleared,'python':sys.version};receipt['uncertainties']=['Full native/browser/ledger and performance results are separate gates.','Generated outputs remain external until separately committed and pushed.']
+cap.dump(new/NAMES[3],receipt);cap.dump(O/'RESULT.json',{'sourceSHA':F,'sourceBeforeAfterClean':True,'originalGateExits':[0,0,0],'newGuardProofExits':[0,1,0],'newGuardCases':0,'existingGuardCasesRetested':9,'historicalGuardBaseline':historical_binding,'manifestDelta':'single-cdp-exclusion-lf-digest','exclusionDigestProofExits':[0,1,0],'effectiveHistoricalControlSha256':DERIVED_HISTORY_PIN,'inputCount':604,'changedPriorReceiptInputs':changed,'inputClosureSHA256':closure,'outputs':{n:info(new/n) for n in NAMES},'sourceCheckoutModified':False,'ledgerRegenerated':False});print(json.dumps({'source':F,'gates':[0,0,0],'proofs':9,'result':str(O/'RESULT.json')}))

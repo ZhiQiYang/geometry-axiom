@@ -345,6 +345,7 @@ NODE_PURE_TEST_FILES = {
     'node:cutting_plan': 'tests/test_cutting_plan.js',
     'node:cutting_project_store': 'tests/test_cutting_project_store.js',
     'node:cutting_session': 'tests/test_cutting_session.js',
+    'node:connection_recovery': 'tests/test_connection_recovery.js',
     'node:draw_annotation': 'tests/test_draw_annotation.js',
     'node:woodworking_frontend': 'tests/test_woodworking_frontend.js',
     'node:grid_inspector_command': 'tests/test_grid_inspector_command.js',
