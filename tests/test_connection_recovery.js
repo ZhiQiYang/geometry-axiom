@@ -69,7 +69,7 @@ test('successful recovery clears the previous failure only after the complete re
 test('initial read still completes the handshake and publishes a known ready state', async () => {
   const box = fixture({ connection: { phase: 'loading', known: false, error: '', session: null } });
   await box.context.recoverConnection();
-  assert.deepEqual(box.calls.filter(row => row[0] === 'api'), [['api', 'dump']]);
+  assert.deepEqual(box.calls.filter(row => row[0] === 'api'), [['api', 'dump-deidentified']]);
   assert.equal(box.connection.phase, 'ready');
   assert.equal(box.connection.known, true);
   assert.equal(box.connection.error, '');
