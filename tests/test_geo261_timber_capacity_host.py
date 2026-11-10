@@ -5,6 +5,7 @@ kills: a compiler error is accepted only with the intended named typedef.
 """
 from pathlib import Path
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -503,6 +504,144 @@ class TimberCapacityHost(unittest.TestCase):
                 # These deliberate compiler failures are never linked or run;
                 # all real bridge objects keep the same 512 header closure.
                 build.compile(harness,"capacity-host-abi-restored-"+name,PRODUCT_DEFINES)
+
+
+CONTACT_HOTPATH_CLIENT = r"""
+#include "contact_world.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+extern void geo348_hotpath_reset(void);
+extern uint64_t geo348_hotpath_plane_comparisons(void);
+extern uint64_t geo348_hotpath_prefix_queries(void);
+extern uint64_t geo348_hotpath_insert_steps(void);
+#define REQUIRE(name,condition) do {if(!(condition)){fprintf(stderr,"ASSERT:%s\n",name);return 1;}} while(0)
+int main(int argc,char **argv)
+{
+    bool paired=argc==2&&!strcmp(argv[1],"paired");
+    bool singleton=argc==2&&!strcmp(argv[1],"singleton");
+    REQUIRE("contact-hotpath-mode",paired||singleton);
+    enum { MEMBERS=WOOD_CONTACT_MEMBER_CAPACITY,FACES=MEMBERS*2 };
+    WoodMember members[MEMBERS]={0};WoodContactMemberFact facts[MEMBERS]={0};
+    WoodStopFace out[WOOD_CONTACT_FACE_CAPACITY];WoodContactWorld world={0};
+    world.placement_id=7;world.members=facts;world.member_count=MEMBERS;
+    for(size_t i=0;i<MEMBERS;++i){
+        members[i].id=(uint32_t)(i+1);members[i].placed=true;
+        facts[i]=(WoodContactMemberFact){&members[i],7,(uint64_t)i,false,true,
+            {(GeoCoord)(2*i),0,(GeoCoord)(2*i+1),100}};
+    }
+    int axes=singleton?1:2;
+    for(int along=0;along<axes;++along){
+        geo348_hotpath_reset();
+        size_t count=wood_contact_collect_stops(&world,along!=0,NULL,out,WOOD_CONTACT_FACE_CAPACITY);
+        uint64_t planes=geo348_hotpath_plane_comparisons();
+        uint64_t prefixes=geo348_hotpath_prefix_queries();
+        uint64_t inserts=geo348_hotpath_insert_steps();
+        printf("mode=%s axis=%d faces=%zu plane_compares=%llu prefix_queries=%llu insert_steps=%llu\n",
+            argv[1],along,count,(unsigned long long)planes,
+            (unsigned long long)prefixes,(unsigned long long)inserts);
+        REQUIRE("contact-hotpath-complete-face-count",count==FACES);
+        for(size_t j=0;j<count;++j){
+            size_t member=j/2,side=j%2;const WoodStopFace *f=&out[j];
+            REQUIRE("contact-hotpath-exact-public-face-sequence",
+                f->kind==WOOD_STOP_MEMBER_SIDE&&f->boundary_id==0&&f->timber_id==member+1&&
+                f->hole_index==-1&&f->edge_index==(int)side&&f->fixity==WOOD_STOP_FIXED&&
+                f->fixed==(along?(GeoCoord)(side*100):(GeoCoord)(member*2+side))&&
+                f->lo==(along?(GeoCoord)(member*2):0)&&f->hi==(along?(GeoCoord)(member*2+1):100));
+        }
+        if(paired)REQUIRE("contact-pair-sort-linear",planes<=2*FACES);
+        else{
+            REQUIRE("contact-singleton-no-prefix-query",prefixes==0);
+            REQUIRE("contact-singleton-no-insert-work",inserts==0);
+        }
+    }
+    return 0;
+}
+"""
+
+
+class ContactHotPathWork(unittest.TestCase):
+    @staticmethod
+    def instrument(source):
+        source += """
+void geo348_hotpath_reset(void){geo348_plane_compares=geo348_prefix_queries=geo348_insert_steps=0;}
+uint64_t geo348_hotpath_plane_comparisons(void){return geo348_plane_compares;}
+uint64_t geo348_hotpath_prefix_queries(void){return geo348_prefix_queries;}
+uint64_t geo348_hotpath_insert_steps(void){return geo348_insert_steps;}
+"""
+        source=source.replace('#include <string.h>',
+            '#include <string.h>\nstatic uint64_t geo348_plane_compares,geo348_prefix_queries,geo348_insert_steps;',1)
+        for name,counter in (("contact_face_plane_compare","geo348_plane_compares"),
+                             ("contact_prefix_lo","geo348_prefix_queries")):
+            match=re.search(r"\b"+name+r"\([^;]*?\)\s*\{",source)
+            if match is None:raise AssertionError("Missing actual hotpath counter site: "+name)
+            at=match.end();source=source[:at]+"\n    ++"+counter+";"+source[at:]
+        before="while(at<=length){size_t *value=&index->maximum[begin+at-1];"
+        after="while(at<=length){++geo348_insert_steps;size_t *value=&index->maximum[begin+at-1];"
+        if source.count(before)!=1:raise AssertionError("Missing one actual insert-work site")
+        return source.replace(before,after)
+
+    @classmethod
+    def setUpClass(cls):
+        build=native();cls.source=(build.woodworking/"contact_world.c").read_text(encoding="utf-8")
+        client=build.woodworking/"contact-hotpath-client.c"
+        client.write_text(CONTACT_HOTPATH_CLIENT,encoding="utf-8")
+        cls.client=build.compile(client,"contact-hotpath-client")
+        cls.baseline=cls.executable(cls.source,"baseline")
+
+    @classmethod
+    def executable(cls,source,label):
+        build=native();path=build.woodworking/("contact-hotpath-"+label+".c")
+        path.write_text(cls.instrument(source),encoding="utf-8")
+        changed=build.compile(path,"contact-hotpath-"+label)
+        return build.link("contact-hotpath-"+label,
+            [cls.client,changed,build.wood_contacts_object,build.wood_supports_object,*build.kernel_objects()])
+
+    def case(self,executable,mode,phase,control,assertion):
+        command=[str(executable),mode]
+        result=subprocess.run(command,capture_output=True,text=True,encoding="utf-8",timeout=30)
+        from tests.test_geo261_wood_contacts import record_native_execution
+        record_native_execution(self.id(),command,result,case=mode,phase=phase,
+            control=control,assertion=assertion)
+        print("contact-hotpath phase="+phase+" control="+control+" "+result.stdout,end="")
+        self.assertIn(result.returncode,(0,1),"Native crash/setup failure: "+result.stderr)
+        if result.returncode:self.assertIn("ASSERT:"+assertion,result.stderr)
+        return result
+
+    def replace_one(self,source,before,after):
+        self.assertEqual(1,source.count(before),"Named withdrawal must change one actual site")
+        return source.replace(before,after)
+
+    def test_512_pair_sort_is_linear_and_whole_fallback_is_red(self):
+        marker="contact-pair-sort-linear";control="pair-sort-fallback"
+        baseline=self.case(self.baseline,"paired","baseline",control,marker)
+        self.assertEqual(0,baseline.returncode,baseline.stderr)
+        source=self.replace_one(self.source,
+            "if(!contact_face_index_pair_merge(index,out,count,first))\n        contact_face_index_merge_sort(index,out,0,count);",
+            "if(true)\n        contact_face_index_merge_sort(index,out,0,count);")
+        mutant=self.executable(source,control)
+        result=self.case(mutant,"paired","mutant",control,marker)
+        self.assertEqual(1,result.returncode,"Whole face-sort fallback survived the 512 work bound")
+        restored=self.case(self.baseline,"paired","restored",control,marker)
+        self.assertEqual(0,restored.returncode,restored.stderr)
+
+    def test_singleton_planes_skip_query_and_insert_work_with_named_withdrawals(self):
+        baseline=self.case(self.baseline,"singleton","baseline","singleton-plane-fast-path",
+            "contact-singleton-no-prefix-query")
+        self.assertEqual(0,baseline.returncode,baseline.stderr)
+        controls=(
+            ("singleton-query","if(end-begin==1)return false;\n    size_t lo=begin,hi=end;",
+             "size_t lo=begin,hi=end;","contact-singleton-no-prefix-query"),
+            ("singleton-insert","size_t length=end-begin;if(length==1)return;\n    size_t at=",
+             "size_t length=end-begin;\n    size_t at=","contact-singleton-no-insert-work"),
+        )
+        for control,before,after,marker in controls:
+            with self.subTest(control=control):
+                mutant=self.executable(self.replace_one(self.source,before,after),control)
+                result=self.case(mutant,"singleton","mutant",control,marker)
+                self.assertEqual(1,result.returncode,"Singleton fast path survived: "+control)
+                restored=self.case(self.baseline,"singleton","restored",control,marker)
+                self.assertEqual(0,restored.returncode,restored.stderr)
 
 
 if __name__=="__main__":unittest.main(verbosity=2)
