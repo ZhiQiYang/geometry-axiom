@@ -940,6 +940,11 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
   `#connectionRetry` 重新讀取場景；不重送失敗操作。載入與錯誤期間主工作區
   使用 `inert`，文件快捷鍵也停用。未讀到場景的計數顯示 `—`，不顯示建立第一物件的空狀態。
   已讀到過則保留最後完整快取，明示可能過期。HTTP 403 不放寬來源驗證。
+- `#canvasOfflineView`：只有已知快取的物件畫布在離線時使用，位於 `#app` 外，
+  暫放原 `#ocv` 提供既有右鍵／系統選單鍵的純檢視動作；`#app` 與 `#objectWorkspace`
+  仍維持 `inert`。一般點擊、拖曳、滾輪及編輯快捷鍵不放行；右鍵保留原生選單事件，
+  不傳入一般畫布手勢處理器。恢復連線後同一 SVG 回原位置，不複製資料或重綁事件。
+  只讀容器依原 viewport 的尺寸與位置更新，浮動右欄保持在畫布上方。
 - `#faceDraftNotice`：重畫外環時在畫布上方占獨立列，不能遮住落點。
   `#faceDraftTitle` 顯示草稿頂點數，`#faceDraftMessage` 說明原輪廓、面積與返回保留。
   `#faceDraftFinish` 走既有閉合驗證；`#faceDraftCancel` 只清草稿，不刪面。
@@ -1113,6 +1118,10 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `#asmFooter` 只在有草稿或待確認預覽時出現。`#asmPreview` 在尚未取得預覽時顯示；預覽回來後改顯示 `#asmConfirm`（`.primary-button`，無效時 disabled）與 `#asmCancel`，兩者固定在對話框底部。沒有待確認變更時這三個鈕都隱藏。`#asmPreviewResult` 貼在底部按鈕上方、不跟表單一起捲動，先寫槽位名稱、截面前後值或規則版本，違反原因仍列在外面；完整 JSON 在「完整資料，給除錯對照」。`#asmStatus` 顯示拒絕原因。異步回應核對 context、編輯代次及序號。示意圖 `#asmDiagram` 的圖說使用槽位名稱與右側／左側／上側／下側，`[data-face]` 的值仍是 `+u`／`-u`／`+v`／`-v`。已發布配置用 `.asm-slot` 顯示槽位名稱與截面。
 - `.assembly-card[data-kind="assembly-rule"|"assembly-binding"][data-id]` 沿用畫布身分、拖曳、搜尋、小地圖和選取。規則檢查器的既有 `#asmInspectorOpen`（GEO-240）一對一改為「建立材料配置」：捕捉卡片原生 id/version/fingerprint，再由 `ContextOperations` 的 `assembly-binding.create` 核對 authoring 能力及固定來源，進入唯一 `#assemblyWorkspace` 的既有配置表單。缺材料／接觸面／擺向可保留合法未完成配置；不表示生成幾何。固定來源或能力不能核對時拒絕，保持舊工作區、草稿與預覽。非同步開啟綁定 project context、selection、owner、編輯代次及關閉序號，重複點擊只開一次。配置檢查器仍開啟既有配置；規則完整編輯沿用卡片雙擊、既有側欄或 `#btnNewAssembly`，Q19建立入口不變。
 - `#asmClose` 返回畫布，草稿留在專案；需使用共用保存寫入檔案。新建／開啟專案會關閉舊工作區。
+- R06 重複開間沿既有「依來源生成角材」入口，`#asmInstanceLayout` 的 `single`／`bay-repeat` 選項只在新實例可切換；已提交實例保留配置種類。重複模式以 `#asmRepeatPrimaries`、`#asmRepeatSecondaryLines` 取代三個固定構件欄組，沒有新增工作區、保存列或獨立說明區塊（GEO-219 減項見 BACKLOG GEO-252）。服務須同時宣告生成與重複能力及有限容量，否則保留草稿並拒絕預覽。
+- `[data-primary-key]`、`[data-line-key]` 是實例內正整數鍵；顯示次序、名稱與位置都不是身分。`#asmAddPrimary`／`#asmAddSecondaryLine` 加入明列來源；`asmPrimaryAtKind{key}`／`asmLineAtKind{key}` 選參考線、主格線，主支另可選外輪廓邊。面、參考線、格線與支撐引用的真實 ID 0 保留為 0，未選值為 `null`，不混作同一值。外輪廓選項只讀原生 `surfaces.outerEdges[{edge,axis}]` 並由 W 篩選平行 v 的邊，涵蓋獨立 boundary 與內嵌矩形承載面；H 不由前端座標推算邊。格線索引使用文字欄位保留 signed 整數，不以浮點數近似。`#asmRangeAdd` 只將有界索引範圍展開為清單，不保存生成指令。
+- 原生 `preview.bayCells` 在 `#asmBayCells [data-bay-cell="line:left:right"][data-instance-id]` 顯示逐線生成、略過與失敗結果；`[data-bay-omit]` 明示略過該格，變更後使舊預覽失效，必須重新預覽。`#asmOmitList [data-remove-omit]` 可取消略過；刪除來源不會悄悄清掉失效略過鍵。開間清單只供預覽，專案保存來源、omit 與原生 mapping。
+- 重複實例與上游共用影響預覽顯示 native `kept`／`moved`／`created`／`deleted` 和完整 owner identity；新增角材的 `before:null` 由同一呈現處理。取消、過期回覆、失敗候選仍沿既有 `#asmCancel`／`#impact-cancel` 與 context／revision 守門，不寫入世界。
 - 空間工作區在寬高皆 ≤720px 時收起 `.sm-source-actions` 的重複範例捷徑；設定區來源選擇、返回畫布與保存列仍保留，確認／建立按鈕須完整可見。
 
 ## 2a 定義圖＋分軸卡片（來源模式）

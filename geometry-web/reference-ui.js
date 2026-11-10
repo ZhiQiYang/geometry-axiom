@@ -1,10 +1,14 @@
 /* Reference editing and the mandatory I8a confirmation flow. */
 async function confirmReferenceImpact(preview) {
+  const repeat=(preview.timbers||[]).some(row=>row.owner?.identity)||
+    ['before','after'].some(side=>preview.assembly?.[side]?.instances?.some(r=>r.value.source.layout==='bay-repeat'));
+  const repeatComplete=!repeat||Array.isArray(preview.bayCells)&&(preview.timbers||[]).every(row=>!row.owner?.identity||['kept','moved','created','deleted'].includes(row.change));
+  const canApply=preview.valid&&repeatComplete;
   const dialog = document.createElement('dialog');
   dialog.className = 'reference-impact';
   dialog.setAttribute('aria-labelledby', 'impact-title');
   const title = document.createElement('h2'); title.id = 'impact-title';
-  title.textContent = preview.valid ? '確認連動變更' : '變更無法套用';
+  title.textContent = canApply ? '確認連動變更' : '變更無法套用';
   dialog.append(title);
   const note = document.createElement('p');
   note.textContent = '目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。';
@@ -12,7 +16,7 @@ async function confirmReferenceImpact(preview) {
   const code = document.createElement('code'); code.textContent = preview.command;
   dialog.append(code);
   appendGridDefinitionImpact(dialog, preview);
-  appendSectionProfileImpact(dialog, preview);
+  appendSectionProfileImpact(dialog, preview, preview.violations);
   const assemblyChanges=document.createElement('ul');
   for(const binding of preview.assembly?.after?.bindings||[]){const before=preview.assembly.before.bindings.find(b=>b.value.id===binding.value.id);
     for(const slot of binding.effective)for(const axis of ['A','B']){const a=before?.effective.find(v=>v.slotId===slot.slotId)?.[axis]?.value,b=slot[axis]?.value;
@@ -27,23 +31,42 @@ async function confirmReferenceImpact(preview) {
   const wrap = document.createElement('div'); wrap.className = 'impact-table-wrap';
   const table = document.createElement('table');
   const heading = document.createElement('tr');
-  for (const text of ['角材／面', '中線：原 → 新', '長度：原 → 新', '世界位置／方向']) {
+  for (const text of ['角材／面／來源', '中線：原 → 新', '長度：原 → 新', '世界位置／方向']) {
     const th = document.createElement('th'); th.textContent = text; heading.append(th);
   }
   table.append(heading);
   for (const row of preview.timbers || []) {
     const tr = document.createElement('tr');
-    const value = (key) => `${row.before?.[key] ?? '—'} → ${row.after?.[key] ?? '無法推導'}`;
+    tr.dataset.impactTimber = row.id;
+    if(row.change)tr.dataset.impactChange = row.change;
+    if(row.owner){tr.dataset.impactOwner = JSON.stringify(row.owner);}
+    const absent = row.change === 'deleted' ? '已刪除' : '無合法結果';
+    const value = (key) => `${row.before?.[key] ?? '尚未存在'} → ${row.after?.[key] ?? absent}`;
     const moved = JSON.stringify(row.before) !== JSON.stringify(row.after);
     if (moved) tr.className = 'impact-changed';
-    const pose = g => g ? `[${g.origin.join(', ')}] · 長/A/B軸 ${g.axes?.map(a => '[' + a.join(', ') + ']').join(' / ') ?? '—'}` : '無法推導';
-    for (const text of [`${row.id}／面 ${row.before.surface}`, value('centerline'), value('length'),
-      row.after ? (moved ? `${pose(row.before)} → ${pose(row.after)}` : '保持原狀') : '已刪除或無合法結果']) {
+    const pose = g => g ? `[${g.origin.join(', ')}] · 長/A/B軸 ${g.axes?.map(a => '[' + a.join(', ') + ']').join(' / ') ?? '—'}` : '不存在';
+    const identity=row.owner?.identity,secondary=identity?.secondary,
+      owner=identity?.primary?`實例 #${row.owner.instance} · 主支 #${identity.primary}`:secondary?`實例 #${row.owner.instance} · 副支線 #${secondary.line}／主支 #${secondary.left} → #${secondary.right}`:row.owner?.memberId?`實例 #${row.owner.instance} · 構件 #${row.owner.memberId}`:'',
+      change={kept:'身分保留',moved:'身分保留，幾何更新',created:'新增身分',deleted:'刪除身分'}[row.change];
+    for (const text of [[`${row.id}／面 ${row.after?.surface??row.before?.surface??'—'}`,owner,change].filter(Boolean).join(' · '), value('centerline'), value('length'),
+      row.after ? (moved ? `${pose(row.before)} → ${pose(row.after)}` : '保持原狀') : `${pose(row.before)} → ${absent}`]) {
       const td = document.createElement('td'); td.textContent = text; tr.append(td);
     }
     table.append(tr);
   }
   if(preview.timbers?.length) {wrap.append(table); dialog.append(wrap);}
+  if(preview.bayCells?.length){
+    const section=document.createElement('section');section.className='impact-bay-cells';
+    const title=document.createElement('h3');title.textContent='逐線開間';section.append(title);
+    const list=document.createElement('ul');
+    for(const cell of preview.bayCells){
+      const item=document.createElement('li');item.dataset.bayCell=`${cell.line}:${cell.left}:${cell.right}`;item.dataset.instanceId=cell.instanceId;item.dataset.bayStatus=cell.status;
+      const status={generated:'生成',omitted:'明示略過',failed:'不能生成'}[cell.status]||'未確認',
+        errors=(cell.violations||[]).map(v=>`${v.code||''} ${v.clause||''} · 預期：${v.expected??'—'} · 實際：${v.actual??'—'}`).join('；');
+      item.textContent=`實例 #${cell.instanceId} · 副支線 #${cell.line} · 主支 #${cell.left} → #${cell.right}：${status}${cell.timberId?' · 角材 #'+cell.timberId:''}${errors?'；'+errors:''}`;list.append(item);
+    }
+    section.append(list);dialog.append(section);
+  }
   const gridChanges=(preview.grids || []).filter(row=>JSON.stringify(row.before)!==JSON.stringify(row.after));
   if(gridChanges.length) {
     const section=document.createElement('section');section.className='impact-grids';
@@ -79,18 +102,21 @@ async function confirmReferenceImpact(preview) {
   }
   for (const issue of preview.violations) {
     const p = document.createElement('p'); p.className = 'impact-violation';
-    p.textContent = `${issue.timber ? '角材 ' + issue.timber : '場景'} · ${issue.clause}\n預期：${issue.expected}\n實際：${issue.actual}`;
+    const source=[issue.timber?'角材 '+issue.timber:'',issue.instanceId?'實例 #'+issue.instanceId:'',issue.primaryKey?'主支 #'+issue.primaryKey:'',issue.lineKey?'副支線 #'+issue.lineKey:''].filter(Boolean).join(' · ')||'場景';
+    p.textContent = `${source} · ${issue.code?issue.code+' · ':''}${issue.clause}\n預期：${issue.expected}\n實際：${issue.actual}`;
     dialog.append(p);
   }
+  if(!repeatComplete){const p=document.createElement('p');p.className='impact-violation';p.textContent='原生服務缺少逐線開間或角材增刪身分結果；請更新服務後重新預覽。';dialog.append(p);}
   const actions = document.createElement('div'); actions.className = 'impact-actions';
   const cancel = document.createElement('button'); cancel.type = 'button'; cancel.className = 'btn';
-  cancel.textContent = preview.valid ? '取消，保留原狀' : '返回修改';
+  cancel.textContent = canApply ? '取消，保留原狀' : '返回修改';
   const apply = document.createElement('button'); apply.type = 'button'; apply.className = 'btn primary';
-  apply.textContent = '確認套用'; apply.disabled = !preview.valid; apply.id = 'impact-confirm';
+  apply.textContent = '確認套用'; apply.disabled = !canApply; apply.id = 'impact-confirm';
   actions.append(cancel, apply); dialog.append(actions); document.body.append(dialog);
   return new Promise(resolve => {
     let settled = false;
     const finish = async approved => {
+      if(approved&&!canApply)return;
       if (settled) return; settled = true;
       apply.disabled = true; cancel.disabled = true;
       try {
@@ -111,8 +137,13 @@ async function confirmReferenceImpact(preview) {
 }
 
 /* The same native candidate is shared by DSL, engineering and parameter edits.
-   Section diagnostics are nested for ordinary reference previews. */
-function appendSectionProfileImpact(container, preview) {
+   Section diagnostics are nested for ordinary reference previews.
+   `shownViolations` are the candidate's own violations that the caller renders
+   next to this block. When the native side has no section finding it emits one
+   id-less SECTION_PROFILE_INVALID fallback that only restates the candidate's
+   rejection (or an internal I8a message); with the real reason already shown,
+   that row is noise under a section heading and is skipped. */
+function appendSectionProfileImpact(container, preview, shownViolations = null) {
   const impact = preview.sectionProfiles;
   if (!impact) return;
   const section = document.createElement('section');
@@ -137,7 +168,10 @@ function appendSectionProfileImpact(container, preview) {
       add(`${label} #${id}：${describe(old)} → ${describe(next)}`, 'profile-' + kind, id);
     }
   }
+  const candidateRejectionShown = Array.isArray(shownViolations) && shownViolations.length > 0;
   for (const issue of impact.violations || []) {
+    if (candidateRejectionShown && issue.code === 'SECTION_PROFILE_INVALID' &&
+      ['profileId', 'memberId', 'otherMemberId', 'runId'].every(key => issue[key] === undefined)) continue;
     const ids = [['profileId', '斷面'], ['memberId', '構件'], ['otherMemberId', '另一構件'], ['runId', '拉伸件']]
       .filter(([key]) => issue[key] !== undefined).map(([key, label]) => `${label} #${issue[key]}`).join(' · ');
     const facts = [['field', '欄位'], ['originalRectangle', '原矩形'], ['rectangle', '候選矩形'], ['otherOriginalRectangle', '另一原矩形'], ['otherRectangle', '另一候選矩形'], ['outsideRegions', '超出區域'], ['intersection', '交集'], ['outsideVertices', '超出座標頂點'], ['expected', '預期'], ['actual', '實際']]
@@ -173,13 +207,20 @@ function appendGridDefinitionImpact(dialog, preview) {
   function axis(d) {
     if(!d || d.source==='none')return '不設此軸';
     const stagger = d.stagger ? `，相鄰格子相位差 ${d.stagger} mm` : '';
-    if(d.source==='repeat')return `無限重複：間距 ${d.step} mm，第 0 線 ${d.phase} mm${stagger}`;
-    if(d.source==='repeat-panel')return `無限面材 ${d.panel}＋縫 ${d.gap} mm，起點 ${d.anchor} mm，間距 ${d.panel+d.gap} mm${stagger}`;
+    // R01: a whole parameter card supplies the length; stored rows expose the effective value.
+    const card = key => d[key+'Source']==='card' ? '（整張參數卡）' : '';
+    if(d.source==='repeat')return `無限重複：間距 ${d.step ?? d.effectiveStep} mm${card('step')}，第 0 線 ${d.phase} mm${stagger}`;
+    if(d.source==='repeat-panel'){const panel=d.panel ?? d.effectivePanel;return `無限面材 ${panel}${card('panel')}＋縫 ${d.gap} mm，起點 ${d.anchor} mm，間距 ${panel+d.gap} mm${stagger}`;}
     if(d.source==='explicit')return `舊版有限座標 [${(d.coordinates||[]).join(', ')}] mm`;
     if(d.source==='series')return `舊版有限等差：起點 ${d.start}、間距 ${d.step} mm，共 ${d.count} 條`;
     return `舊版有限面材 ${d.panel}＋縫 ${d.gap} mm，起點 ${d.anchor} mm`;
   }
-  function source(g) {return g ? `「${g.name}」；${g.mainAlong ? '主支沿 '+g.mainAlong : '主支方向未設定'}；u ${axis(g.uDefinition)}；v ${axis(g.vDefinition)}` : '不存在';}
+  function cardText(r) {
+    if(!r)return '';
+    const card=((typeof oc!=='undefined'&&oc.parameters)||[]).map(o=>o.card).find(c=>c?.id===r.parameterId),name=id=>card?.fields?.find(f=>f.id===id)?.name??`欄位 ${id}`;
+    return `；長度來自整張參數卡「${card?.name??'#'+r.parameterId}」（卡 #${r.parameterId}；u = ${name(r.uFieldId)}（欄 #${r.uFieldId}）、v = ${name(r.vFieldId)}（欄 #${r.vFieldId}））`;
+  }
+  function source(g) {return g ? `「${g.name}」；${g.mainAlong ? '主支沿 '+g.mainAlong : '主支方向未設定'}；u ${axis(g.uDefinition)}；v ${axis(g.vDefinition)}${cardText(g.cardReference)}` : '不存在';}
   section(sources,'網格來源','system',(item,row)=>{
     item.append(textNode('strong','網格系統 '+row.id));
     para(item,'原：'+source(row.before),'before');para(item,'新：'+source(row.after),'after');
@@ -194,7 +235,7 @@ function appendGridDefinitionImpact(dialog, preview) {
         // Display arithmetic only after the native candidate accepted its
         // exact divisions. Never query live World as if it were pending data.
         if (preview.valid && rule.divisions.every(n=>n>0) && [value.uDefinition,value.vDefinition].every(d=>d?.source==='repeat')) {
-          const sizes=[value.uDefinition,value.vDefinition].map((d,index)=>BigInt(d.step)/BigInt(rule.divisions[index]));
+          const sizes=[value.uDefinition,value.vDefinition].map((d,index)=>BigInt(d.step ?? d.effectiveStep)/BigInt(rule.divisions[index]));
           line.textContent+=` 每一主格為 ${rule.divisions[0]*rule.divisions[1]} 個 ${sizes[0]}×${sizes[1]} mm 小格；1 等分不加內線。`;
         }
         details.append(line);

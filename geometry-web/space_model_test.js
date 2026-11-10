@@ -28,12 +28,12 @@ function installSourceDumpGate(scope, context) {
   scope.__sourceDumpHeld = false;
   const gate = new Promise(resolve => { scope.__releaseSourceDump = resolve; });
   const interceptedFetch = async (...args) => {
-    // Recovery also reads dump. Select the source owner before network I/O and
-    // reserve it immediately, so a concurrent background response cannot win.
+    // Recovery also reads scene text. Select the deidentified source owner before
+    // network I/O and reserve it, so a concurrent background response cannot win.
     const caller = new Error().stack || '';
     let command;
     try { command = JSON.parse(args[1]?.body || '{}').cmd; } catch (_) {}
-    const dump = String(args[0]) === '/api' && command === 'dump';
+    const dump = String(args[0]) === '/api' && command === 'dump-deidentified';
     const targeted = evidence.phase === 'armed' && dump &&
       /(?:^|\n)\s*at (?:async )?(?:Object\.)?openCurrentFace\s*\(/.test(caller);
     if (targeted) {
@@ -328,6 +328,7 @@ async function setup(lines) {
 async function facePropEntry(selector) {
   if (await evaluate(`innerWidth<=680 && !document.body.classList.contains('drawer-right-open')`)) await click('#workspaceToggleRight');
   await click('#faceInspectorTabs [data-fi-tab="prop"]');
+  if (selector === '[data-fp-edit]' && await evaluate(`document.querySelector('#faceSettingsChoices')?.hidden`)) await click('#faceInspectorContent [data-face-settings]');
   await click('#faceInspectorContent ' + selector);
 }
 const openFaceModel = () => facePropEntry('[data-fp-build]');
@@ -654,6 +655,7 @@ async function projectionPlacementRegression() {
   await evaluate(`oc.edit?.bid===83 ? undefined : enterFocus('face',83)`);
   if (await evaluate(`!document.body.classList.contains('drawer-right-open')`)) await click('#workspaceToggleRight');
   await click('#faceInspectorTabs [data-fi-tab="prop"]');
+  if (await evaluate(`document.querySelector('#faceSettingsChoices')?.hidden`)) await click('#faceInspectorContent [data-face-settings]');
   const mobileEntries=await evaluate(`(()=>{const q=s=>{const e=document.querySelector('#faceInspectorContent '+s);if(!e)return null;e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),h=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {height:r.height,hit:!!h&&(h===e||e.contains(h))};};return {edit:q('[data-fp-edit]'),build:q('[data-fp-build]')};})()`);
   check('390px drawer exposes touch-sized inspector projection and model entries',!!mobileEntries.edit&&!!mobileEntries.build&&mobileEntries.edit.height>=44&&mobileEntries.build.height>=44&&mobileEntries.edit.hit&&mobileEntries.build.hit,mobileEntries);
   await click('#faceInspectorContent [data-fp-build]');

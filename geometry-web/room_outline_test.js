@@ -157,7 +157,7 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   await require('./cdp_navigation.js').waitForExpectedNavigation({evaluate:read,marker,condition:`typeof api==='function'&&typeof connection==='object'&&connection.phase==='ready'`,label:'P79 saved notch reopen',timeout:20000});
   await read(`(async()=>{await ReferenceWorkspace.importBytes(new Uint8Array(${JSON.stringify(bytes)}));await enterFocus('face',1);fiShowTab('underlay');})()`);
   check('reload and reopen retain exact notch, PDF page and calibrated alignment',normalized(await nativePoints())===normalized(notch)&&await read(`ReferenceWorkspace.active(1).page===3&&Math.abs(ReferenceWorkspace.active(1).mmPerPx-10)<.001&&ReferenceWorkspace.reconstructionState(1)==='confirmed'`));await shot('reopened-notch');
-  await place();await ctl('[data-fi-tab="prop"]');await ctl('[data-fp-edit]');await until(`$('fpDialog').open`);
+  await place();await ctl('[data-fi-tab="prop"]');await ctl('[data-face-settings]');await ctl('[data-fp-edit]');await until(`$('fpDialog').open`);
   await select('#fpPurpose','space-boundary-plan');await select('#fpView','top');await ctl('#fpInterior');await ctl('#fpApply');await until(`!$('fpDialog').open`);
   await ctl('[data-fp-build]');await until(`$('smWorkspace').open&&SpaceModelWorkspace.snapshot().phase==='ready'`);
   await fill('#smBottom',0);await fill('#smHeight',3000);await fill('#smThickness',100);

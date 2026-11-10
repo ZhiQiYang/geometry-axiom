@@ -1,0 +1,1 @@
+Peer helper preparation exited 1 with KeyError: 'source' at original=Path(row['source']). The producer inventory uses the documented key 'local'. No subject or archive changed. Correct helper to read row['local']; this is not a product test failure.

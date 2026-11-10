@@ -17,14 +17,19 @@ typedef enum {
     WOOD_ASSEMBLY_SOURCE_GENERATED_DEFINITION,
     WOOD_ASSEMBLY_SOURCE_GENERATED_A,WOOD_ASSEMBLY_SOURCE_GENERATED_B,
     WOOD_ASSEMBLY_SOURCE_INSTANCE_CHECK,
-    WOOD_ASSEMBLY_SOURCE_GENERATED
+    WOOD_ASSEMBLY_SOURCE_GENERATED,
+    WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_DEFINITION,
+    WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_A,WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_B,
+    WOOD_ASSEMBLY_SOURCE_BAY_GENERATED
 } WoodAssemblySourceKind;
 typedef struct {unsigned char bytes[13];} WoodAssemblySourceKey;
+typedef struct {unsigned char bytes[21];} WoodAssemblyBaySourceKey;
 typedef struct WoodAssemblySources WoodAssemblySources;
 /* RULE uses id/version/sub=0; SLOT uses binding id/version=0/slot id;
  * GENERATED uses instance id/version=0/member id. Other kinds use id/0/0.
  * Integers are canonical big endian; values and C padding never enter keys. */
 GeoSourceRef wood_assembly_source_ref(GeoProviderToken,WoodAssemblySourceKind,uint32_t id,uint32_t version,uint32_t sub,WoodAssemblySourceKey *);
+GeoSourceRef wood_assembly_bay_source_ref(GeoProviderToken,WoodAssemblySourceKind,uint32_t,AsmIdentity,WoodAssemblyBaySourceKey *);
 bool wood_assembly_source_decode(const GeoSourceRef *,WoodAssemblySourceKind *,uint32_t *,uint32_t *,uint32_t *);
 /* Register before first request; engineering must share this graph/candidate.
  * Create/bind performs no source evaluation and reads no host geometry. */

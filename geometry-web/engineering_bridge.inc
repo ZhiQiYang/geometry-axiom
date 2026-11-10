@@ -7,7 +7,8 @@ static bool eng_definition_hash(const World *w,char hash[65])
 {
     World *copy=malloc(sizeof *copy);FILE *file=tmpfile();
     if(!copy||!file){free(copy);if(file)fclose(file);return false;}
-    *copy=*w;copy->app.canvas_pos_count=0;world_dump_dsl(copy,file);free(copy);
+    *copy=*w;copy->app.canvas_pos_count=0;
+    bool saved_marks=g_identity_include_marks;g_identity_include_marks=false;world_dump_dsl(copy,file);g_identity_include_marks=saved_marks;free(copy);
     if(ferror(file)||fflush(file)||fseek(file,0,SEEK_END)){fclose(file);return false;}
     long n=ftell(file);if(n<0||n>ENG_INPUT_MAX||fseek(file,0,SEEK_SET)){fclose(file);return false;}
     char *text=malloc((size_t)n+1);if(!text){fclose(file);return false;}
@@ -18,14 +19,21 @@ static void json_engineering_capabilities(const World *w)
 {
     /* panel-fill/1 is required by scenes holding finish surfaces (I56 adds its two prerequisites), but it is not
      * advertised as supported: PF-1 implements only the finish-surface records, and I32 forbids claiming the
-     * whole capability.  panel-fill-native/1 + panel-fill-read report the supported subset. */
+     * whole capability.  panel-fill-native/1 + panel-fill-read report the supported subset, and the separate,
+     * versioned definition reader below admits exactly the implemented source records for atomic project
+     * import, not PF-4/5/6 actions.
+     * R14 likewise exposes its native /2 source/query/scene subset separately
+     * until the complete project readers and workspace support /2. The actual
+     * scene requirement remains grid-subdivision-rules/2 and must not be lowered. */
     bool fs=fs_used(w),eng=engineering_used(w)||fs,par=geo_parameters_card_count(&w->geo.parameters)||fs,first=true;
     const struct {bool used;const char *name;} required[]={{eng,"engineering-spec/1"},{par,"parameters/1"},{assembly_used(w),ASM_CAPABILITY},
-        {w->wood.assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY},{grid_card_used(w),GRID_CARD_CAPABILITY}};
-    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[",stdout);
+        {w->wood.assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{w->wood.assembly.bay_required,ASM_BAY_CAPABILITY},{grid_subdivision_used(w),grid_subdivision_capability(w)},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY},{grid_card_used(w),GRID_CARD_CAPABILITY},{w->app.identity_active,"identity-ledger/1"}};
+    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"assembly-bay-repeat/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\",\"identity-ledger/1\",\"definition-import/1\"],\"required_capabilities\":[",stdout);
     for(size_t i=0;i<sizeof required/sizeof required[0];++i)if(required[i].used){if(!first)putchar(',');first=false;js_string(required[i].name);}
     putchar(']');
-    fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\"]",stdout);
+    fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\",\"grid-subdivision-native/2\"]",stdout);
+    fputs(",\"panel_fill_reader\":{\"schema\":\"panel-fill-definition-reader/1\",\"capability\":\"" FS_CAPABILITY "\","
+          "\"supportedRecords\":[\"finish-surface\",\"panel-fill\",\"derived-placement\"],\"complete\":false}",stdout);
 }
 static void json_eng_terminal(const EngTerminal *terminal)
 {
@@ -147,6 +155,7 @@ typedef struct {
 static bool app_batch_candidate_apply(void *after,GeoEvalContext *sources,void *opaque)
 {
     (void)sources;AppBatchCandidateCall *call=opaque;World *candidate=after;bool ok=true;
+    identity_explicit_reset();
     /* I38/P-062: candidate-order scratch lives beside this exact candidate. */
     ParameterCandidateScope scope;
     if(!parameters_begin_candidate(candidate,&scope))ok=eng_fail(g_parameter_error);
@@ -177,6 +186,7 @@ static bool app_batch_candidate_apply(void *after,GeoEvalContext *sources,void *
 static void batch_preview(const char *path,const char *schema_name,const char *schema_error,const char *stale_message,const char *memory_message,const char *label,int kind,bool (*operation)(World *,GeoJson *,int),void (*write_preview)(void))
 {
     g_asm_diagnostic=(AsmDiagnostic){0};
+    identity_drop_serials();
     if(g_history.grouping){eng_bridge_error("HISTORY_GROUP","Finish or cancel the current history group first");return;}
     size_t size;char *text=eng_read_file(path,&size);if(!text){eng_bridge_error("INPUT",g_engineering_error);return;}
     GeoJson j;if(!app_json_parse_n(&j,text,size)){eng_bridge_error("JSON",j.error);geo_json_free(&j);free(text);return;}
@@ -203,10 +213,11 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
 }
 static bool batch_token_kind(int kind)
 {
-    return g_preview.engineering_batch && (kind==3?g_preview.finish_batch:kind==2?g_preview.profile_batch:kind==1?g_preview.assembly_batch:!g_preview.assembly_batch&&!g_preview.profile_batch&&!g_preview.finish_batch);
+    return g_preview.engineering_batch && !g_preview.timber_batch && (kind==3?g_preview.finish_batch:kind==2?g_preview.profile_batch:kind==1?g_preview.assembly_batch:!g_preview.assembly_batch&&!g_preview.profile_batch&&!g_preview.finish_batch);
 }
 static void batch_confirm(const char *arg,int kind,const char *token_message,const char *stale_message)
 {
+    identity_drop_serials();
     uint32_t token;bool mine=batch_token_kind(kind);
     if(!arg||!parse_u32(arg,&token)||!g_preview.ready||!mine||g_preview.token!=token||!g_preview.valid){eng_bridge_error("TOKEN",token_message);return;}
     if(g_history.grouping||g_preview.revision!=g_definition_revision||!app_world_candidate_current(g_preview.transaction,&g_world)){g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("STALE",stale_message);return;}
@@ -214,18 +225,21 @@ static void batch_confirm(const char *arg,int kind,const char *token_message,con
     if(!app_world_candidate_revalidate(g_preview.transaction,&g_world)){
         g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("INVALID",g_revalidate_error);return;
     }
-    bool changed=!world_definitions_equal(&g_world,&g_preview.transaction->after);uint64_t before=g_definition_revision;
+    bool issued=g_identity_pending_count!=0;
+    bool changed=!world_definitions_equal(&g_world,&g_preview.transaction->after)||issued;uint64_t before=g_definition_revision;
     if(changed)history_record(&g_world);
     if(!app_world_candidate_publish(g_preview.transaction,&g_world,true)){
-        if(changed)history_unrecord();g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("STALE",stale_message);return;
+        if(changed)history_unrecord();identity_drop_serials();g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("STALE",stale_message);return;
     }
-    if(changed)++g_definition_revision;
+    if(changed){identity_commit_serials();++g_definition_revision;}
+    else identity_drop_serials();
     g_preview.ready=false;app_world_candidate_clear_stagger(g_preview.transaction);char hash[65];bool hashed=eng_definition_hash(&g_world,hash);
     printf("{\"ok\":true,\"history_changed\":%s,\"revision\":%llu,\"before_revision\":%llu,\"transaction_id\":%u",changed?"true":"false",(unsigned long long)g_definition_revision,(unsigned long long)before,token);
     if(hashed)printf(",\"definition_sha256\":\"%s\"",hash);json_deleted_objects(&g_preview.transaction->before,false);fputs("}\n",stdout);
 }
 static void batch_cancel(const char *arg,int kind,const char *token_message)
 {
+    identity_drop_serials();
     uint32_t token;if(!arg||!parse_u32(arg,&token)){eng_bridge_error("TOKEN",token_message);return;}
     bool mine=batch_token_kind(kind);
     bool cancelled=g_preview.ready&&mine&&g_preview.token==token;if(cancelled){g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);}

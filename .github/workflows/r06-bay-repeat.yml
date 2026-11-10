@@ -1,0 +1,154 @@
+name: R06 browser mutation evidence
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/r06-bay-repeat.yml'
+      - 'geometry-templates/woodworking/**'
+      - 'geometry-web/assembly*'
+      - 'geometry-web/cdp_bay_repeat_io.js'
+      - 'geometry-web/project-store.js'
+      - 'geometry-web/reference*'
+      - 'tests/*bay_repeat*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: r06-browser-mutations-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  card-archive-mutations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Reprove every existing card archive guard after R06 re-anchoring
+        shell: bash
+        run: |
+          set +e
+          python3 geometry-core/card-reference/run_archive_mutations.py --output "$RUNNER_TEMP/r06-card-archive-evidence"
+          status=$?
+          printf '%s\n' "$status" > "$RUNNER_TEMP/r06-card-archive-evidence/exit-code.txt"
+          exit "$status"
+      - name: Preserve card baseline, six named red assertions and restorations
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r06-card-archive-mutations-${{ github.sha }}
+          path: ${{ runner.temp }}/r06-card-archive-evidence/
+          if-no-files-found: error
+          retention-days: 14
+
+  browser-mutations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Restore cached CJK font package
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: ${{ runner.temp }}/cjk-font-debs
+          key: fonts-noto-cjk-noble-1:20230817+repack1-3
+      - name: Install Chinese fonts for actual browser rendering
+        timeout-minutes: 8
+        # Cache hit: install the saved .deb without contacting the mirror.
+        # Cache miss: keep the existing apt download, then store fonts-noto-cjk*.deb.
+        # CJK remains mandatory; do not raise job timeouts.
+        run: |
+          set -euo pipefail
+          cache_dir="${{ runner.temp }}/cjk-font-debs"
+          mkdir -p "$cache_dir"
+          shopt -s nullglob
+          debs=("$cache_dir"/fonts-noto-cjk*.deb)
+          echo "CJK_CACHE_DIR=$cache_dir"
+          echo "CJK_DEB_COUNT=${#debs[@]}"
+          if [ "${#debs[@]}" -gt 0 ]; then
+            ls -la "${debs[@]}"
+            for deb in "${debs[@]}"; do
+              echo "CJK_DEB=$(basename "$deb") bytes=$(wc -c <"$deb")"
+            done
+            echo "CJK_INSTALL_BRANCH=cached-deb"
+            # Install only the local archives; dependency/configuration errors must fail.
+            # Keep the mirror guard, without an apt repair/fallback on a cache hit.
+            log="$(mktemp)"
+            sudo dpkg -i "${debs[@]}" 2>&1 | tee "$log"
+            if grep -E "https?://azure\.archive\.ubuntu\.com|Need to get .* of archives" "$log"; then
+              echo "CJK_CACHE_HIT_STILL_MIRRORED=1" >&2
+              echo "cache-hit path contacted apt mirror; see log above" >&2
+              exit 1
+            fi
+            echo "CJK_CACHE_HIT_STILL_MIRRORED=0"
+          else
+            echo "CJK_INSTALL_BRANCH=apt-miss"
+            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
+            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
+            cp /var/cache/apt/archives/fonts-noto-cjk*.deb "$cache_dir/"
+            ls -la "$cache_dir"/fonts-noto-cjk*.deb || true
+          fi
+          dpkg -s fonts-noto-cjk
+          # Collect stdout before grep -q so a closed pipe cannot mimic missing fonts.
+          cjk_fonts="$(fc-list :lang=zh)"
+          if ! grep -q . <<< "$cjk_fonts"; then
+            echo "fc-list :lang=zh found no fonts" >&2
+            exit 1
+          fi
+      - name: Reprove the cancelled-candidate mutation after the approved world-disposal change
+        shell: bash
+        run: |
+          ulimit -s 16384
+          mkdir -p /tmp/r06-native-cancel-evidence
+          git rev-parse HEAD > /tmp/r06-native-cancel-evidence/head-sha.txt
+          set +e
+          python3 -u tests/bay_repeat_mutation_check.py --kind native --case r06_br13_confirm_cancelled_candidate --out /tmp/r06-native-cancel-evidence/mutations > /tmp/r06-native-cancel-evidence/runner.stdout 2> /tmp/r06-native-cancel-evidence/runner.stderr
+          status=$?
+          printf '%s\n' "$status" > /tmp/r06-native-cancel-evidence/runner-exit-code.txt
+          cat /tmp/r06-native-cancel-evidence/runner.stdout
+          cat /tmp/r06-native-cancel-evidence/runner.stderr
+          exit "$status"
+      - name: Run baseline, three named browser mutations and restored baseline
+        shell: bash
+        run: |
+          ulimit -s 16384
+          test -x "$GEOMETRY_CHROME"
+          mkdir -p /tmp/r06-browser-evidence
+          git rev-parse HEAD | tee /tmp/r06-browser-evidence/head-sha.txt
+          node --test tests/test_transport_failure_trace.js > /tmp/r06-browser-evidence/transport-controls.stdout 2> /tmp/r06-browser-evidence/transport-controls.stderr
+          python3 -m unittest tests.test_bay_repeat_mutation_check > /tmp/r06-browser-evidence/judge-controls.stdout 2> /tmp/r06-browser-evidence/judge-controls.stderr
+          set +e
+          python3 -u tests/bay_repeat_mutation_check.py --kind browser --out /tmp/r06-browser-evidence/mutations > /tmp/r06-browser-evidence/runner.stdout 2> /tmp/r06-browser-evidence/runner.stderr
+          status=$?
+          printf '%s\n' "$status" > /tmp/r06-browser-evidence/runner-exit-code.txt
+          cat /tmp/r06-browser-evidence/runner.stdout
+          cat /tmp/r06-browser-evidence/runner.stderr
+          exit "$status"
+      - name: Preserve raw logs, named assertion receipts and restoration evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r06-browser-mutations-${{ github.sha }}
+          path: |
+            /tmp/r06-browser-evidence/
+            !/tmp/r06-browser-evidence/**/chrome-profile/**
+            /tmp/r06-formal-archive-*/
+            /tmp/r06-native-cancel-evidence/
+          if-no-files-found: error
+          retention-days: 14

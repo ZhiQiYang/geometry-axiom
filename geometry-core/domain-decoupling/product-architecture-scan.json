@@ -27,6 +27,7 @@
     "geometry-app/native/history.c",
     "geometry-app/native/history.h",
     "geometry-app/native/history_unity.inc",
+    "geometry-app/native/identity_ledger.inc",
     "geometry-app/native/kernel_storage.h",
     "geometry-app/native/legacy_json.inc",
     "geometry-app/native/model_sources.inc",
@@ -234,14 +235,19 @@
     "geometry-templates/woodworking/native/world_validation.h",
     "geometry-web/app.js",
     "geometry-web/archive_wait_trace.py",
+    "geometry-web/assembly-provenance.js",
     "geometry-web/assembly-workspace.js",
     "geometry-web/assembly_bridge.inc",
+    "geometry-web/canvas-context-menu.js",
     "geometry-web/context-menu-shell.js",
     "geometry-web/context-operations.js",
     "geometry-web/cursor-v2.js",
     "geometry-web/cutting-plan.js",
     "geometry-web/cutting-settings.js",
     "geometry-web/cutting-workspace.js",
+    "geometry-web/definition-import.js",
+    "geometry-web/definition_import_bridge.inc",
+    "geometry-web/definition_import_transport.py",
     "geometry-web/document-cases.js",
     "geometry-web/document-format.js",
     "geometry-web/documents.js",
@@ -266,6 +272,7 @@
     "geometry-web/grid_binding_bridge.inc",
     "geometry-web/grid_subdivision_bridge.inc",
     "geometry-web/grid_system_bridge.inc",
+    "geometry-web/identity-ledger.js",
     "geometry-web/index.html",
     "geometry-web/model-update-app.js",
     "geometry-web/model-update.js",
@@ -273,6 +280,8 @@
     "geometry-web/model_update.py",
     "geometry-web/native-transport.js",
     "geometry-web/native_context.py",
+    "geometry-web/panel-fill-adapter.js",
+    "geometry-web/panel-fill-workspace.js",
     "geometry-web/panel_fill_bridge.inc",
     "geometry-web/panel_layout_bridge.inc",
     "geometry-web/parameter_bridge.inc",
@@ -285,6 +294,7 @@
     "geometry-web/reference-ui.js",
     "geometry-web/reference-workspace.js",
     "geometry-web/reference_bridge.inc",
+    "geometry-web/room-candidate-draft.js",
     "geometry-web/room-collection-workspace.js",
     "geometry-web/room-collection.js",
     "geometry-web/room-outline-worker.js",
@@ -318,8 +328,11 @@
     "geometry-web/space-workspace.js",
     "geometry-web/space_modeling.py",
     "geometry-web/start_local.py",
+    "geometry-web/timber-edit.js",
     "geometry-web/timber-schedule.js",
     "geometry-web/timber-supports.js",
+    "geometry-web/timber_edit_bridge.inc",
+    "geometry-web/timber_edit_transport.py",
     "geometry-web/timber_support_projection.inc",
     "geometry-web/vendor/fflate/umd/index.js",
     "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
@@ -358,27 +371,32 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/domains.inc",
-      "line": 2795
+      "line": 2796
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/enclosure_sources.inc",
-      "line": 7544
+      "line": 7602
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/grid_adapter.inc",
-      "line": 2797
+      "line": 2798
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/grid_context.inc",
-      "line": 6202
+      "line": 6232
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/history_unity.inc",
-      "line": 2952
+      "line": 2954
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/identity_ledger.inc",
+      "line": 7616
     },
     {
       "source": "current_geometry.c",
@@ -388,7 +406,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/stagger_facts.inc",
-      "line": 7542
+      "line": 7600
     },
     {
       "source": "current_geometry.c",
@@ -398,22 +416,22 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/world_candidate.inc",
-      "line": 3024
+      "line": 3026
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/world_validation.inc",
-      "line": 6205
+      "line": 6235
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/assembly.inc",
-      "line": 7551
+      "line": 7609
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/assembly_generation.inc",
-      "line": 7552
+      "line": 7610
     },
     {
       "source": "current_geometry.c",
@@ -423,22 +441,22 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/boundary_vertex_keys.inc",
-      "line": 7546
+      "line": 7604
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/derived_placements.inc",
-      "line": 7556
+      "line": 7614
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/engineering.inc",
-      "line": 7545
+      "line": 7603
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/engineering_commands.inc",
-      "line": 7550
+      "line": 7608
     },
     {
       "source": "current_geometry.c",
@@ -453,37 +471,37 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/finish_surfaces.inc",
-      "line": 7554
+      "line": 7612
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_bindings.inc",
-      "line": 7547
+      "line": 7605
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_lattice.inc",
-      "line": 893
+      "line": 894
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_subdivision.inc",
-      "line": 7548
+      "line": 7606
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_subdivision_query.inc",
-      "line": 7549
+      "line": 7607
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_systems.inc",
-      "line": 7216
+      "line": 7270
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/kernel/internal/document.h",
-      "line": 2787
+      "line": 2788
     },
     {
       "source": "current_geometry.c",
@@ -493,17 +511,17 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/panel_fill_layout.inc",
-      "line": 7555
+      "line": 7613
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/panel_fill_support.inc",
-      "line": 7557
+      "line": 7615
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/panel_layout_math.h",
-      "line": 892
+      "line": 893
     },
     {
       "source": "current_geometry.c",
@@ -513,7 +531,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/parameters.inc",
-      "line": 7541
+      "line": 7599
     },
     {
       "source": "current_geometry.c",
@@ -523,7 +541,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/references.inc",
-      "line": 7543
+      "line": 7601
     },
     {
       "source": "current_geometry.c",
@@ -533,42 +551,42 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/section_profiles.inc",
-      "line": 7553
+      "line": 7611
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/subgrid_commands.inc",
-      "line": 7526
+      "line": 7581
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/subgrid_rebind.inc",
-      "line": 8562
+      "line": 8621
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/subgrid_world.inc",
-      "line": 6203
+      "line": 6233
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/subgrids.inc",
-      "line": 944
+      "line": 945
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/transactions.inc",
-      "line": 9998
+      "line": 10070
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-templates/woodworking/native/contact_world.h",
-      "line": 5758
+      "line": 5789
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-templates/woodworking/native/cut_list.h",
-      "line": 10151
+      "line": 10231
     },
     {
       "source": "current_geometry.c",
@@ -578,12 +596,12 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-templates/woodworking/native/grid_application.h",
-      "line": 889
+      "line": 890
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-templates/woodworking/native/member_declaration.h",
-      "line": 7082
+      "line": 7136
     },
     {
       "source": "geometry-app/application.js",
@@ -2368,32 +2386,32 @@
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-app/geometry_app/__init__.py",
-      "line": 382
+      "line": 400
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-app/geometry_app/__init__.py",
-      "line": 389
+      "line": 407
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-app/geometry_app/__init__.py",
-      "line": 390
+      "line": 408
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-app/geometry_app/bootstrap.py",
-      "line": 389
+      "line": 407
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-app/geometry_app/model_world.py",
-      "line": 382
+      "line": 400
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-app/geometry_app/model_world.py",
-      "line": 390
+      "line": 408
     },
     {
       "source": "geometry-core/modeling/__init__.py",
@@ -2403,17 +2421,17 @@
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-core/modeling/__init__.py",
-      "line": 228
+      "line": 246
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-core/modeling/__init__.py",
-      "line": 388
+      "line": 406
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-core/modeling/base.py",
-      "line": 388
+      "line": 406
     },
     {
       "source": "geometry-core/modeling/__init__.py",
@@ -2423,7 +2441,7 @@
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-core/modeling/engine.py",
-      "line": 228
+      "line": 246
     },
     {
       "source": "geometry-core/modeling/_host.py",
@@ -2693,12 +2711,12 @@
     {
       "source": "geometry-core/references.inc",
       "target": "geometry-app/native/reference_sources.inc",
-      "line": 638
+      "line": 641
     },
     {
       "source": "geometry-core/references.inc",
       "target": "geometry-templates/woodworking/native/member_reference.h",
-      "line": 471
+      "line": 474
     },
     {
       "source": "geometry-core/rule_cases/__init__.py",
@@ -3536,6 +3554,11 @@
       "line": 6
     },
     {
+      "source": "geometry-web/assembly-provenance.js",
+      "target": "geometry-app/application.js",
+      "line": 4
+    },
+    {
       "source": "geometry-web/cutting-plan.js",
       "target": "geometry-app/application.js",
       "line": 4
@@ -3573,12 +3596,17 @@
     {
       "source": "geometry-web/feature-attachments.js",
       "target": "geometry-web/cutting-settings.js",
-      "line": 6
+      "line": 7
     },
     {
       "source": "geometry-web/feature-attachments.js",
       "target": "geometry-web/evidence-links.js",
       "line": 4
+    },
+    {
+      "source": "geometry-web/feature-attachments.js",
+      "target": "geometry-web/room-candidate-draft.js",
+      "line": 6
     },
     {
       "source": "geometry-web/feature-attachments.js",
@@ -3598,322 +3626,362 @@
     {
       "source": "geometry-web/index.html",
       "target": "geometry-app/application.js",
-      "line": 670
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-core/interval-allocation.js",
-      "line": 667
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-templates/woodworking/cutting.js",
-      "line": 669
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-templates/woodworking/frontend.js",
-      "line": 668
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/app.js",
-      "line": 700
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/assembly-workspace.js",
-      "line": 718
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/context-menu-shell.js",
-      "line": 704
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/context-operations.js",
-      "line": 715
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/cursor-v2.js",
-      "line": 699
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/cutting-plan.js",
-      "line": 694
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/cutting-settings.js",
-      "line": 678
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/cutting-workspace.js",
-      "line": 695
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/document-cases.js",
-      "line": 727
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/document-format.js",
-      "line": 726
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/documents.js",
-      "line": 728
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/engineering-adapter.js",
-      "line": 713
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/engineering-workspace.js",
-      "line": 712
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/evidence-links-app.js",
-      "line": 722
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/evidence-links-ui.js",
-      "line": 676
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/evidence-links.js",
-      "line": 675
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/face-context-menu.js",
-      "line": 705
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/face-menu-icons.js",
-      "line": 703
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/feature-attachments.js",
-      "line": 679
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/feedback.js",
       "line": 689
     },
     {
       "source": "geometry-web/index.html",
-      "target": "geometry-web/grid-anchor-positions.js",
-      "line": 707
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/grid-inspector.js",
-      "line": 709
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/grid-rule-lines.js",
-      "line": 691
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/grid-system-workspace.js",
-      "line": 708
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/grid-trial.js",
-      "line": 706
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/index.html",
-      "line": 665
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/model-update-app.js",
-      "line": 724
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/model-update.js",
-      "line": 723
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/model-viewer.js",
-      "line": 710
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/native-transport.js",
-      "line": 671
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/parameters.js",
-      "line": 714
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/polydraft.js",
-      "line": 692
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/project-store.js",
-      "line": 681
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/project-ui.js",
+      "target": "geometry-core/interval-allocation.js",
       "line": 686
     },
     {
       "source": "geometry-web/index.html",
-      "target": "geometry-web/reference-display.js",
-      "line": 673
+      "target": "geometry-templates/woodworking/cutting.js",
+      "line": 688
     },
     {
       "source": "geometry-web/index.html",
-      "target": "geometry-web/reference-ui.js",
-      "line": 690
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/reference-workspace.js",
-      "line": 685
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/room-collection-workspace.js",
-      "line": 702
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/room-collection.js",
-      "line": 701
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/room-outline-workspace.js",
-      "line": 698
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/room-outline.js",
-      "line": 697
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/rule-case-data.js",
-      "line": 677
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/rule-case-host.js",
-      "line": 717
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/rule-case-workbench.js",
-      "line": 716
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/scenario-catalog.js",
-      "line": 680
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/scenario-diff.js",
-      "line": 683
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/scenario-integration.js",
-      "line": 684
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/scenario-snapshots.js",
-      "line": 682
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/scenario-workspace.js",
-      "line": 665
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/scenario-workspace.js",
-      "line": 725
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/section-profile-workspace.js",
-      "line": 719
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/source-inspector-app.js",
-      "line": 721
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/source-inspector.js",
-      "line": 720
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/source-plane.js",
-      "line": 674
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/space-workspace.js",
-      "line": 711
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/timber-schedule.js",
-      "line": 693
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/timber-supports.js",
-      "line": 696
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/vendor/fflate/umd/index.js",
-      "line": 672
-    },
-    {
-      "source": "geometry-web/index.html",
-      "target": "geometry-web/workspace-guidance.js",
+      "target": "geometry-templates/woodworking/frontend.js",
       "line": 687
     },
     {
       "source": "geometry-web/index.html",
+      "target": "geometry-web/app.js",
+      "line": 721
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/assembly-provenance.js",
+      "line": 713
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/assembly-workspace.js",
+      "line": 743
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/canvas-context-menu.js",
+      "line": 727
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/context-menu-shell.js",
+      "line": 725
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/context-operations.js",
+      "line": 740
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/cursor-v2.js",
+      "line": 720
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/cutting-plan.js",
+      "line": 715
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/cutting-settings.js",
+      "line": 698
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/cutting-workspace.js",
+      "line": 716
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/definition-import.js",
+      "line": 744
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/document-cases.js",
+      "line": 754
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/document-format.js",
+      "line": 753
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/documents.js",
+      "line": 755
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/engineering-adapter.js",
+      "line": 735
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/engineering-workspace.js",
+      "line": 734
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/evidence-links-app.js",
+      "line": 748
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/evidence-links-ui.js",
+      "line": 695
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/evidence-links.js",
+      "line": 694
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/face-context-menu.js",
+      "line": 726
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/face-menu-icons.js",
+      "line": 724
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/feature-attachments.js",
+      "line": 699
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/feedback.js",
+      "line": 709
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/grid-anchor-positions.js",
+      "line": 729
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/grid-inspector.js",
+      "line": 731
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/grid-rule-lines.js",
+      "line": 711
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/grid-system-workspace.js",
+      "line": 730
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/grid-trial.js",
+      "line": 728
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/identity-ledger.js",
+      "line": 749
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/index.html",
+      "line": 684
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/model-update-app.js",
+      "line": 751
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/model-update.js",
+      "line": 750
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/model-viewer.js",
+      "line": 732
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/native-transport.js",
+      "line": 690
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/panel-fill-adapter.js",
+      "line": 738
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/panel-fill-workspace.js",
+      "line": 739
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/parameters.js",
+      "line": 736
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/polydraft.js",
+      "line": 712
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/project-store.js",
+      "line": 701
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/project-ui.js",
+      "line": 706
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/reference-display.js",
+      "line": 692
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/reference-ui.js",
+      "line": 710
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/reference-workspace.js",
+      "line": 705
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/room-candidate-draft.js",
+      "line": 697
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/room-collection-workspace.js",
+      "line": 723
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/room-collection.js",
+      "line": 722
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/room-outline-workspace.js",
+      "line": 719
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/room-outline.js",
+      "line": 718
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/rule-case-data.js",
+      "line": 696
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/rule-case-host.js",
+      "line": 742
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/rule-case-workbench.js",
+      "line": 741
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/scenario-catalog.js",
+      "line": 700
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/scenario-diff.js",
+      "line": 703
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/scenario-integration.js",
+      "line": 704
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/scenario-snapshots.js",
+      "line": 702
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/scenario-workspace.js",
+      "line": 684
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/scenario-workspace.js",
+      "line": 752
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/section-profile-workspace.js",
+      "line": 745
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/source-inspector-app.js",
+      "line": 747
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/source-inspector.js",
+      "line": 746
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/source-plane.js",
+      "line": 693
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/space-workspace.js",
+      "line": 733
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/timber-edit.js",
+      "line": 737
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/timber-schedule.js",
+      "line": 714
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/timber-supports.js",
+      "line": 717
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/vendor/fflate/umd/index.js",
+      "line": 691
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/workspace-guidance.js",
+      "line": 707
+    },
+    {
+      "source": "geometry-web/index.html",
       "target": "geometry-web/workspace-shell.js",
-      "line": 688
+      "line": 708
     },
     {
       "source": "geometry-web/model_update.py",
@@ -3958,12 +4026,17 @@
     {
       "source": "geometry-web/panel_fill_bridge.inc",
       "target": "geometry-web/panel_layout_bridge.inc",
-      "line": 48
+      "line": 84
     },
     {
       "source": "geometry-web/project-store.js",
       "target": "geometry-web/feature-attachments.js",
       "line": 3
+    },
+    {
+      "source": "geometry-web/project-store.js",
+      "target": "geometry-web/identity-ledger.js",
+      "line": 614
     },
     {
       "source": "geometry-web/project-store.js",
@@ -3973,12 +4046,12 @@
     {
       "source": "geometry-web/reference-workspace.js",
       "target": "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
-      "line": 780
+      "line": 878
     },
     {
       "source": "geometry-web/reference_bridge.inc",
       "target": "geometry-web/timber_support_projection.inc",
-      "line": 382
+      "line": 428
     },
     {
       "source": "geometry-web/room-collection.js",
@@ -4028,7 +4101,7 @@
     {
       "source": "geometry-web/rule_case_workbench_adapter.py",
       "target": "geometry-core/rule_cases/__init__.py",
-      "line": 301
+      "line": 311
     },
     {
       "source": "geometry-web/rule_case_workbench_adapter.py",
@@ -4048,7 +4121,7 @@
     {
       "source": "geometry-web/rule_case_workbench_adapter.py",
       "target": "geometry-core/rule_cases/executor.py",
-      "line": 301
+      "line": 311
     },
     {
       "source": "geometry-web/rule_case_workbench_adapter.py",
@@ -4163,142 +4236,167 @@
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-core/modeling/__init__.py",
-      "line": 442
+      "line": 517
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-core/modeling/__init__.py",
-      "line": 449
+      "line": 524
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-core/modeling/__init__.py",
-      "line": 559
+      "line": 634
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-core/modeling/__init__.py",
-      "line": 640
+      "line": 716
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-core/modeling/__init__.py",
-      "line": 659
+      "line": 742
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-core/modeling/__init__.py",
-      "line": 687
+      "line": 784
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-core/rule_cases/__init__.py",
-      "line": 543
+      "line": 618
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-core/rule_cases/__init__.py",
-      "line": 544
+      "line": 619
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-core/rule_cases/definition.py",
-      "line": 543
+      "line": 618
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-core/rule_cases/executor.py",
-      "line": 544
+      "line": 619
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/definition_import_transport.py",
+      "line": 752
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/definition_import_transport.py",
+      "line": 759
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/engineering_transport.py",
-      "line": 651
+      "line": 734
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/feedback_store.py",
-      "line": 27
+      "line": 28
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/model_update.py",
-      "line": 692
+      "line": 789
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/native_context.py",
-      "line": 87
+      "line": 92
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/rule_case_host.py",
-      "line": 330
+      "line": 405
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/rule_case_host.py",
-      "line": 541
+      "line": 616
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/rule_case_workbench_adapter.py",
-      "line": 399
+      "line": 474
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/rule_case_workbench_adapter.py",
-      "line": 542
+      "line": 617
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/runtime_version.py",
-      "line": 29
+      "line": 30
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/scenario_verify.py",
-      "line": 558
+      "line": 633
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/scenario_verify.py",
-      "line": 639
+      "line": 715
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/section_profile_transport.py",
-      "line": 658
+      "line": 741
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/source_inspector_transport.py",
-      "line": 669
+      "line": 766
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/space_modeling.py",
-      "line": 441
+      "line": 516
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/space_modeling.py",
-      "line": 700
+      "line": 797
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/space_modeling.py",
-      "line": 703
+      "line": 800
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/timber_edit_transport.py",
+      "line": 727
     },
     {
       "source": "geometry-web/serve.py",
       "target": "geometry-web/wait_trace.py",
-      "line": 28
+      "line": 29
     },
     {
       "source": "geometry-web/source-inspector-bridge.inc",
       "target": "geometry-web/section_profile_source_index.inc",
       "line": 144
+    },
+    {
+      "source": "geometry-web/source-inspector.js",
+      "target": "geometry-web/assembly-provenance.js",
+      "line": 2
+    },
+    {
+      "source": "geometry-web/source-inspector.js",
+      "target": "geometry-web/identity-ledger.js",
+      "line": 125
     },
     {
       "source": "geometry-web/source-plane.js",
@@ -4321,64 +4419,84 @@
       "line": 17
     },
     {
+      "source": "geometry-web/timber-schedule.js",
+      "target": "geometry-web/assembly-provenance.js",
+      "line": 2
+    },
+    {
+      "source": "geometry-web/timber-supports.js",
+      "target": "geometry-web/assembly-provenance.js",
+      "line": 4
+    },
+    {
       "source": "geometry-web/web_bridge.c",
       "target": "current_geometry.c",
-      "line": 27
+      "line": 28
     },
     {
       "source": "geometry-web/web_bridge.c",
       "target": "geometry-web/assembly_bridge.inc",
-      "line": 1009
+      "line": 1112
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/definition_import_bridge.inc",
+      "line": 1108
     },
     {
       "source": "geometry-web/web_bridge.c",
       "target": "geometry-web/engineering_bridge.inc",
-      "line": 1005
+      "line": 1107
     },
     {
       "source": "geometry-web/web_bridge.c",
       "target": "geometry-web/grid_binding_bridge.inc",
-      "line": 293
-    },
-    {
-      "source": "geometry-web/web_bridge.c",
-      "target": "geometry-web/grid_subdivision_bridge.inc",
       "line": 294
     },
     {
       "source": "geometry-web/web_bridge.c",
-      "target": "geometry-web/grid_system_bridge.inc",
-      "line": 292
-    },
-    {
-      "source": "geometry-web/web_bridge.c",
-      "target": "geometry-web/panel_fill_bridge.inc",
-      "line": 1007
-    },
-    {
-      "source": "geometry-web/web_bridge.c",
-      "target": "geometry-web/parameter_bridge.inc",
-      "line": 786
-    },
-    {
-      "source": "geometry-web/web_bridge.c",
-      "target": "geometry-web/reference_bridge.inc",
+      "target": "geometry-web/grid_subdivision_bridge.inc",
       "line": 295
     },
     {
       "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/grid_system_bridge.inc",
+      "line": 293
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/panel_fill_bridge.inc",
+      "line": 1110
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/parameter_bridge.inc",
+      "line": 804
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/reference_bridge.inc",
+      "line": 296
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
       "target": "geometry-web/scene-import-bridge.inc",
-      "line": 1008
+      "line": 1111
     },
     {
       "source": "geometry-web/web_bridge.c",
       "target": "geometry-web/section_profile_bridge.inc",
-      "line": 1006
+      "line": 1109
     },
     {
       "source": "geometry-web/web_bridge.c",
       "target": "geometry-web/source-inspector-bridge.inc",
-      "line": 1010
+      "line": 1113
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/timber_edit_bridge.inc",
+      "line": 1114
     },
     {
       "source": "geometry-web/work-manager/adapter.py",

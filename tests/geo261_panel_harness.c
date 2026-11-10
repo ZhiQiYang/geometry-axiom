@@ -1,4 +1,5 @@
 #include "panel_support.h"
+#include "grid.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -119,5 +120,64 @@ static int equivalence(void)
         wood_panel_layout_free(&a);wood_panel_layout_free(&b);}
     return 0;
 }
+
+/* Only the instrumented layout calls this shim. The product layout
+ * translation unit alone renames its calls with -D; K stays original. */
+static uint64_t empty_axis_phase_calls;
+GeoCoord pf_probe_alternating_shift(bool set,GeoCoord delta,int64_t row)
+{++empty_axis_phase_calls;return geo_alternating_shift(set,delta,row);}
+static int empty_axis_cases(void)
+{
+    for(int transpose=0;transpose<2;++transpose)for(int shift=0;shift>=-9;shift-=9){
+        GeoPoint2 outer[4];
+        if(transpose)box(outer,shift+1,shift,shift+2,shift+10);
+        else box(outer,shift,shift+1,shift+10,shift+2);
+        WoodPanelLayoutInput input={0};input.region=(GeoRegionView){{outer,4},NULL,0};input.frame=identity();
+        input.size[0]=input.size[1]=1;input.gap=1;input.origin[0]=input.origin[1]=shift;input.stagger_axis=-1;
+        WoodPanelLayout actual,old;GeoClipStatus detail;
+        CHECK("empty-axis-legal",wood_panel_layout_build(&input,&actual,&detail)==WOOD_PANEL_OK&&detail==GEO_CLIP_OK);
+        CHECK("empty-axis-zero-pieces-with-raw-seams",actual.count==0&&actual.fragments==0&&actual.whole==0&&actual.seam_count==6);
+        CHECK("empty-axis-frozen-ok",frozen_panel_build(&input,&old));
+        CHECK("empty-axis-exact-frozen-layout",same_layout(&actual,&old));
+        wood_panel_layout_free(&actual);wood_panel_layout_free(&old);
+    }
+    for(int axis=0;axis<2;++axis)for(int negative=0;negative<2;++negative){
+        GeoCoord start=negative?-6:0;GeoPoint2 outer[4];
+        if(axis==0)box(outer,1,start,2,start+9);else box(outer,start,1,start+9,2);
+        WoodPanelLayoutInput input={0};input.region=(GeoRegionView){{outer,4},NULL,0};input.frame=identity();
+        input.size[0]=input.size[1]=1;input.gap=2;input.stagger=1;input.stagger_axis=axis;
+        WoodPanelLayout actual,old;GeoClipStatus detail;
+        CHECK("empty-first-phase-layout-ok",wood_panel_layout_build(&input,&actual,&detail)==WOOD_PANEL_OK&&detail==GEO_CLIP_OK);
+        CHECK("empty-first-phase-keeps-other-parity",actual.count==1&&actual.fragments==1&&actual.whole==1);
+        const WoodPanelTile *tile=&actual.tiles[0];GeoCoord along=negative?-3:3;
+        CHECK("empty-first-phase-exact-body",tile->body[axis]==1&&tile->body[axis+2]==2&&
+            tile->body[1-axis]==along&&tile->body[3-axis]==along+1&&
+            (axis==0?tile->j:tile->i)==(negative?-1:1));
+        CHECK("empty-first-phase-frozen-ok",frozen_panel_build(&input,&old));
+        CHECK("empty-first-phase-exact-frozen-layout",same_layout(&actual,&old));
+        wood_panel_layout_free(&actual);wood_panel_layout_free(&old);
+    }
+    return 0;
+}
+static int empty_axis_work(void)
+{
+    const GeoCoord lengths[2]={10000,100000000};uint64_t calls[2];
+    for(size_t sample=0;sample<2;++sample){
+        GeoPoint2 outer[4];box(outer,0,1,lengths[sample],2);
+        WoodPanelLayoutInput input={0};input.region=(GeoRegionView){{outer,4},NULL,0};input.frame=identity();
+        input.size[0]=input.size[1]=1;input.gap=1;input.stagger_axis=-1;
+        WoodPanelLayout actual;GeoClipStatus detail;empty_axis_phase_calls=0;
+        WoodPanelStatus status=wood_panel_layout_build(&input,&actual,&detail);calls[sample]=empty_axis_phase_calls;
+        printf("empty-axis length=%lld phase-calls=%llu status=%d clip-status=%d\n",
+            (long long)lengths[sample],(unsigned long long)calls[sample],(int)status,(int)detail);
+        CHECK("empty-axis-preserves-seam-capacity",status==WOOD_PANEL_SEAM_LIMIT&&detail==GEO_CLIP_OK);
+        CHECK("empty-axis-capacity-discards-output",!actual.tiles&&!actual.seams&&!actual.count&&!actual.seam_count&&!actual.fragments&&!actual.vertices&&!actual.whole);
+        wood_panel_layout_free(&actual);
+    }
+    CHECK("empty-axis-probe-observed",calls[0]>0&&calls[1]>0);
+    CHECK("empty-axis-work-independent-of-empty-row-count",calls[0]==calls[1]);
+    return 0;
+}
+
 int main(int argc,char **argv)
-{if(argc!=2)return 2;if(!strcmp(argv[1],"clip"))return clipping();if(!strcmp(argv[1],"capacity"))return capacity();if(!strcmp(argv[1],"layout"))return layout();if(!strcmp(argv[1],"support"))return support();if(!strcmp(argv[1],"equivalence"))return equivalence();return 2;}
+{if(argc!=2)return 2;if(!strcmp(argv[1],"empty-axis"))return empty_axis_cases();if(!strcmp(argv[1],"empty-axis-work"))return empty_axis_work();if(!strcmp(argv[1],"clip"))return clipping();if(!strcmp(argv[1],"capacity"))return capacity();if(!strcmp(argv[1],"layout"))return layout();if(!strcmp(argv[1],"support"))return support();if(!strcmp(argv[1],"equivalence"))return equivalence();return 2;}

@@ -1,12 +1,12 @@
 /* F1a presentation/index adapter. Native fingerprints are opaque: no DSL/path guessing. */
-(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.SourceInspector=api;})(globalThis,()=>{
+(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./assembly-provenance.js'):root.AssemblyProvenance);if(typeof module==='object'&&module.exports)module.exports=api;else root.SourceInspector=api;})(globalThis,provenance=>{
   'use strict';
   const LIMIT=48,DEPTH=6,HASH=/^[a-f0-9]{64}$/;
   const labels={dimension:'尺寸來源',position:'定位來源',containment:'所屬斷面','material-spec':'固定面材規格',profile:'斷面輪廓','rule-version':'固定規則版本','material-version':'固定材料版本',member:'成員對應','joint-definition':'接合規則定義（未生成也可存在）','span-candidate':'跨距求值候選（支撐未知）','confirmed-support':'原生已確認支撐'};
   const key=(kind,id,version=0,fieldId=0)=>`${kind}:${id}${version?':v'+version:''}${fieldId||kind==='parameter-field'?':f'+fieldId:''}`;
   const id=n=>Number.isSafeInteger(n)&&n>=0&&n<=4294967295,hash=s=>typeof s==='string'&&HASH.test(s),clone=x=>JSON.parse(JSON.stringify(x));
   const ownerFields=['instanceId','memberId','bindingId','ruleId','ruleVersion','ruleFingerprint','instanceFingerprint','bindingFingerprint'];
-  const ownerValid=o=>o===null||o&&ownerFields.slice(0,5).every(k=>id(o[k])&&o[k]>0)&&ownerFields.slice(5).every(k=>hash(o[k]));
+  const {ownerValid,sameOwner}=provenance;
   const unknown=()=>({status:'unknown',relation:null});
   const pair=a=>Array.isArray(a)&&a.length===2&&a.every(Number.isSafeInteger)&&a[0]<a[1];
   function supports(data,nodes){
@@ -15,14 +15,16 @@
     const edgeKey=(from,to,relation,field)=>JSON.stringify([from,to,relation,field]),edges=new Set(data.edges.filter(e=>e.active).map(e=>edgeKey(e.from,e.to,e.relation,e.field)));
     const hasEdge=(from,to,relation,field)=>edges.has(edgeKey(from,to,relation,field));
     function owner(value,node){
-      const expected=node.nativeOwner;if(!ownerValid(value)||!ownerValid(expected)||(expected===null?value!==null:value===null||ownerFields.some(k=>value[k]!==expected[k])))throw Error('支撐所有權來源無法核對。');
+      const expected=node.nativeOwner;if(!sameOwner(value,expected))throw Error('支撐所有權來源無法核對。');
       if(value===null)return true;
-      const instance=key('assembly-instance',value.instanceId),binding=key('assembly-binding',value.bindingId),rule=key('assembly-rule',value.ruleId,value.ruleVersion),member=key('assembly-member',value.ruleId,value.ruleVersion,value.memberId);
-      if(![instance,binding,rule,member].every(k=>nodes.has(k))){if(data.complete===false)return false;throw Error('支撐所有權的具型別來源缺失。');}
+      const repeated=Object.hasOwn(value,'identity'),identity=provenance.ownerIdentity(value);
+      const instance=key('assembly-instance',value.instanceId),binding=key('assembly-binding',value.bindingId),rule=key('assembly-rule',value.ruleId,value.ruleVersion),member=repeated?null:key('assembly-member',value.ruleId,value.ruleVersion,value.memberId);
+      if(![instance,binding,rule,...(repeated?[]:[member])].every(k=>nodes.has(k))){if(data.complete===false)return false;throw Error('支撐所有權的具型別來源缺失。');}
       // Rule fingerprints are canonical in this native index. Binding/instance
       // node fingerprints use a different scheme; their nativeOwner hashes do not.
-      if(nodes.get(instance).kind!=='assembly-instance'||nodes.get(instance).id!==String(value.instanceId)||nodes.get(binding).kind!=='assembly-binding'||nodes.get(binding).id!==String(value.bindingId)||nodes.get(rule).kind!=='assembly-rule'||nodes.get(rule).id!==String(value.ruleId)||nodes.get(rule).version!==value.ruleVersion||nodes.get(member).kind!=='assembly-member'||nodes.get(member).id!==String(value.ruleId)||nodes.get(member).version!==value.ruleVersion||nodes.get(member).fieldId!==value.memberId||nodes.get(rule).definitionFingerprint!==value.ruleFingerprint||
-        !hasEdge(node.key,instance,'member','member:'+value.memberId)||!hasEdge(instance,binding,'dimension','binding')||!hasEdge(instance,rule,'rule-version',value.ruleFingerprint)||!hasEdge(binding,rule,'rule-version','rule')||!hasEdge(rule,member,'member','members'))throw Error('支撐所有權的成員與固定版本無法核對。');
+      if(nodes.get(instance).kind!=='assembly-instance'||nodes.get(instance).id!==String(value.instanceId)||nodes.get(binding).kind!=='assembly-binding'||nodes.get(binding).id!==String(value.bindingId)||nodes.get(rule).kind!=='assembly-rule'||nodes.get(rule).id!==String(value.ruleId)||nodes.get(rule).version!==value.ruleVersion||nodes.get(rule).definitionFingerprint!==value.ruleFingerprint||
+        !hasEdge(node.key,instance,'member',provenance.identityKey(identity))||!hasEdge(instance,binding,'dimension','binding')||!hasEdge(instance,rule,'rule-version',value.ruleFingerprint)||!hasEdge(binding,rule,'rule-version','rule'))throw Error('支撐所有權的成員與固定版本無法核對。');
+      if(!repeated&&(nodes.get(member).kind!=='assembly-member'||nodes.get(member).id!==String(value.ruleId)||nodes.get(member).version!==value.ruleVersion||nodes.get(member).fieldId!==value.memberId||!hasEdge(rule,member,'member','members')))throw Error('支撐所有權的成員與固定版本無法核對。');
       return true;
     }
     function fact(n){return n?.kind==='timber'&&typeof n.id==='string'&&/^(0|[1-9][0-9]*)$/.test(n.id)&&id(Number(n.id))&&n.key===key('timber',Number(n.id))&&typeof n.placed==='boolean'&&id(n.surface)&&['u','v'].includes(n.lengthAxis);}
@@ -117,6 +119,13 @@
     }
     for(const e of edges)if(['dimension','material-version'].includes(e.relation)&&/^[AB](?: override)?(?: ← |$)/.test(e.field)&&!seen.has(e.field[0]))throw Error('快照尺寸來源資料未完整提供。');
   }
+  function continuityOf(record,graph){
+    if(!record?.sourceIdentity?.roots)return {token:'unknown',text:'物件延續性未知',listed:[]};
+    let ledger=typeof IdentityLedger!=='undefined'&&IdentityLedger?IdentityLedger:null;
+    if(!ledger&&typeof module==='object'&&module.exports)ledger=require('./identity-ledger.js');
+    if(!ledger||typeof ledger.judgeRoots!=='function')return {token:'unknown',text:'物件延續性未知',listed:[]};
+    return ledger.continuitySummary({roots:ledger.judgeRoots(record.sourceIdentity,graph||null)});
+  }
   function deriveModelSchedule(record,result,timberSchedule,project){
     if(typeof project?.validateSpaceModel!=='function'||typeof timberSchedule?.derive!=='function')throw Error('保存快照料單能力尚未核對。');
     project.validateSpaceModel(record);const ids=modelTimberIds(record),baseline=result?.baseline;
@@ -137,19 +146,21 @@
       const schedule=timberSchedule.derive(refs,surface,selected);
       for(const row of schedule.rows){
         const n=baseline.nodes.get(key('timber',row.id)),entry=baseline.supportEntries.get(n.key),owner=row.supportOwner;
-        if(!ownerValid(owner)||(n.nativeOwner===null?owner!==null:owner===null||ownerFields.some(k=>owner[k]!==n.nativeOwner?.[k]))||!entry||JSON.stringify(row.supports)!==JSON.stringify({start:entry.start,finish:entry.finish}))throw Error('快照料單的支撐與固定所有權來源無法核對。');
+        if(!sameOwner(owner,n.nativeOwner)||!entry||JSON.stringify(row.supports)!==JSON.stringify({start:entry.start,finish:entry.finish}))throw Error('快照料單的支撐與固定所有權來源無法核對。');
         checkDimensionSources(row,baseline);rows.push(row);
       }
     }
     if(rows.length!==ids.length||new Set(rows.map(r=>r.id)).size!==ids.length||rows.some(r=>!ids.includes(r.id)))throw Error('快照料單範圍超出保存模型的明選角材。');
+    const continuity=continuityOf(record,result.graph);
     return {schema:'native-timber-schedule/1',scope:'saved-model-snapshot',ids:[...ids],rows,sourceFingerprint:refs.sourceFingerprint,
       supportSourceFingerprint:refs.timberSupports.sourceFingerprint,modelId:record.id,modelName:record.name,contextId:result.context?.id||'',
-      identityContinuity:'unknown',freshness:freshness(baseline,result.graph,modelRoots(record)),liveSourceFingerprint:result.graph.data.sourceFingerprint};
+      identityContinuity:continuity.token,identityContinuityText:continuity.text,identityContinuityListed:continuity.listed,
+      freshness:freshness(baseline,result.graph,modelRoots(record)),liveSourceFingerprint:result.graph.data.sourceFingerprint};
   }
   function modelScheduleCSV(snapshot,timberSchedule,order='id',unit='mm'){
     if(snapshot?.scope!=='saved-model-snapshot'||!['mm','cm'].includes(unit)||!['id','length'].includes(order))throw Error('快照料單範圍或顯示單位無效。');
     const columns=['snapshot_kind','snapshot_model_id','snapshot_model_name','snapshot_context_id','snapshot_source_fingerprint','snapshot_units','snapshot_display_units','snapshot_source_status','snapshot_content_status','snapshot_identity_continuity','checked_live_source_fingerprint'];
-    const cells=['saved-model-snapshot',snapshot.modelId,snapshot.modelName,snapshot.contextId,snapshot.sourceFingerprint,'mm',unit,snapshot.freshness.status,snapshot.freshness.contentStatus,'unknown',snapshot.liveSourceFingerprint].map(timberSchedule.csvCell).join(',');
+    const cells=['saved-model-snapshot',snapshot.modelId,snapshot.modelName,snapshot.contextId,snapshot.sourceFingerprint,'mm',unit,snapshot.freshness.status,snapshot.freshness.contentStatus,snapshot.identityContinuity,snapshot.liveSourceFingerprint].map(timberSchedule.csvCell).join(',');
     const header=timberSchedule.csv({...snapshot,rows:[]},order).slice(0,-2)+','+columns.map(timberSchedule.csvCell).join(',');
     const rows=timberSchedule.sorted(snapshot.rows,order).map(row=>{const csv=timberSchedule.csv({...snapshot,rows:[row]},order);return csv.slice(csv.indexOf('\r\n')+2,-2)+','+cells;});
     return [header,...rows].join('\r\n')+'\r\n';
@@ -167,7 +178,7 @@
       if(deleted.has(at))changes.push({key:at,kind:'identity-unknown'});
       else if(old.definitionFingerprint!==current.definitionFingerprint||old.valueFingerprint!==current.valueFingerprint)changes.push({key:at,kind:old.definitionFingerprint!==current.definitionFingerprint?(old.valueFingerprint===current.valueFingerprint?'source-definition':'source-and-value'):'value'});
       if(old.kind==='timber'&&(before.hasSupportProjection||now.hasSupportProjection)){
-        const a=before.supportEntries.get(at),b=now.supportEntries.get(at),ownerTuple=o=>o===null?null:ownerFields.map(k=>o[k]),endpointTuple=v=>{const r=v.relation;return [v.at,v.crossRange,r.kind,r.source.kind,r.source.id,r.localFace,r.normalWorld,ownerTuple(r.owner),r.surface,r.edgeIndex??null,r.holeIndex??null,r.stop.axis,r.stop.at,r.stop.range,r.stop.fixity];};
+        const a=before.supportEntries.get(at),b=now.supportEntries.get(at),ownerTuple=o=>o===null?null:ownerFields.map(k=>k==='memberId'?provenance.identityKey(provenance.ownerIdentity(o)):o[k]),endpointTuple=v=>{const r=v.relation;return [v.at,v.crossRange,r.kind,r.source.kind,r.source.id,r.localFace,r.normalWorld,ownerTuple(r.owner),r.surface,r.edgeIndex??null,r.holeIndex??null,r.stop.axis,r.stop.at,r.stop.range,r.stop.fixity];};
         let changed=!!a&&!!b&&JSON.stringify(ownerTuple(a.owner))!==JSON.stringify(ownerTuple(b.owner));
         for(const end of ['start','finish']){if(a?.[end]?.status!=='exact'||b?.[end]?.status!=='exact')complete=false;else if(JSON.stringify(endpointTuple(a[end]))!==JSON.stringify(endpointTuple(b[end])))changed=true;}
         if(changed&&!changes.some(c=>c.key===at))changes.push({key:at,kind:'source-definition'});
@@ -208,7 +219,7 @@
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function supportHTML(graph,node){
     if(node.kind!=='timber')return '<p>求值支撐身分：僅依角材原生端點資料確認。檢視不重建模型。</p>';
-    const entry=graph.supportEntries.get(node.key),ownerText=o=>o?` · 組構實例 ${o.instanceId}／member ${o.memberId}／binding ${o.bindingId}／規則 ${o.ruleId} 固定 v${o.ruleVersion} · rule ${o.ruleFingerprint} · instance ${o.instanceFingerprint} · binding ${o.bindingFingerprint}`:'';
+    const entry=graph.supportEntries.get(node.key),ownerText=o=>o?` · 組構實例 ${o.instanceId}／${provenance.identityLabel(provenance.ownerIdentity(o))}／binding ${o.bindingId}／規則 ${o.ruleId} 固定 v${o.ruleVersion} · rule ${o.ruleFingerprint} · instance ${o.instanceFingerprint} · binding ${o.bindingFingerprint}`:'';
     return ['start','finish'].map((end,i)=>{const value=entry?.[end];if(value?.status!=='exact')return `<p data-source-support="${end}">${i?'末端':'起端'}支撐：未知／原生證據未提供或非唯一。</p>`;const r=value.relation,s=r.source,k=key(s.kind,s.id),label=r.kind==='timber-face'?`角材 ${s.id}／${r.localFace}`:`${s.kind==='boundary'?'邊界':'承載面'} ${s.id}／${r.kind==='hole-edge'?'h'+r.holeIndex:''}e${r.edgeIndex}`;return `<p data-source-support="${end}" data-source-support-status="exact">${i?'末端':'起端'}支撐：<button type="button" data-source-path="${esc(k)}">${esc(label)}</button>${esc(ownerText(r.owner))}</p>`;}).join('')+'<p>支撐為原生端點證據；物件延續性仍未知。檢視不重建模型。</p>';
   }
   function mount(host,{selection,context,stamp,read,readSnapshot,navigate,record=null,timberSchedule=null,project=null,getRecord=()=>record,isActive=()=>true,activate=()=>{},exportCSV=null,snapshotOnly=false,onSchedule=()=>{},onSelect=null}){
@@ -225,7 +236,8 @@
     const mounted=()=>active&&detail.open&&detail.isConnected!==false&&body.isConnected&&isActive()&&recordCurrent();
     function scheduleHTML(){
       if(!schedule)return '';const table=timberSchedule.sorted(schedule.rows,order).map(row=>{const content=`<strong>快照角材 ${row.id} · 承載面 ${row.surface}</strong><span>A ${esc(timberSchedule.dimension(row.A,unit))} × B ${esc(timberSchedule.dimension(row.B,unit))} · 完成 L ${esc(timberSchedule.dimension(row.L,unit))} ${unit}</span><span>${esc(timberSchedule.sourceText(row))}</span>`;return `<li data-snapshot-timber="${row.id}" data-snapshot-surface="${row.surface}">${onSelect?`<button type="button" data-snapshot-select="${row.id}" aria-pressed="${selectedTimber===row.id}" aria-label="3D定位快照角材 ${row.id}">${content}</button>`:content}</li>`;}).join('');
-      return `<section data-model-schedule><h4>保存快照料單 · ${esc(schedule.modelName)}</h4><p>單一模型 ${esc(schedule.modelId)} · ${schedule.rows.length} 支明選角材；保存快照尺寸，物件延續性未知。${esc(schedule.freshness.message)}</p><code title="保存快照原生來源指紋">${esc(schedule.sourceFingerprint)}</code><label>排列<select data-snapshot-order><option value="id"${order==='id'?' selected':''}>角材 ID</option><option value="length"${order==='length'?' selected':''}>完成料長</option></select></label><label>顯示單位<select data-snapshot-unit><option value="mm"${unit==='mm'?' selected':''}>mm</option><option value="cm"${unit==='cm'?' selected':''}>cm</option></select></label><ol>${table||'<li>此模型沒有明選角材；未納入來源場景的其他角材。</li>'}</ol><p>CSV 尺寸保持整數 mm；材料與加工未設定。${onSelect?'點料單列定位此保存模型的構件（隱藏材料牆）；點 3D 角材回選同列。':'快照列不定位同 ID 的目前角材。'}</p></section>`;
+      const continuityText=schedule.identityContinuityText||'物件延續性未知',listed=Array.isArray(schedule.identityContinuityListed)&&schedule.identityContinuityListed.length?`（${schedule.identityContinuityListed.map(esc).join('、')}）`:'';
+      return `<section data-model-schedule><h4>保存快照料單 · ${esc(schedule.modelName)}</h4><p>單一模型 ${esc(schedule.modelId)} · ${schedule.rows.length} 支明選角材；保存快照尺寸，${esc(continuityText)}${listed}。${esc(schedule.freshness.message)}</p><code title="保存快照原生來源指紋">${esc(schedule.sourceFingerprint)}</code><label>排列<select data-snapshot-order><option value="id"${order==='id'?' selected':''}>角材 ID</option><option value="length"${order==='length'?' selected':''}>完成料長</option></select></label><label>顯示單位<select data-snapshot-unit><option value="mm"${unit==='mm'?' selected':''}>mm</option><option value="cm"${unit==='cm'?' selected':''}>cm</option></select></label><ol>${table||'<li>此模型沒有明選角材；未納入來源場景的其他角材。</li>'}</ol><p>CSV 尺寸保持整數 mm；材料與加工未設定。${onSelect?'點料單列定位此保存模型的構件（隱藏材料牆）；點 3D 角材回選同列。':'快照列不定位同 ID 的目前角材。'}</p></section>`;
     }
     function render(){
       if(snapshotOnly){body.innerHTML=`${scheduleHTML()}${refresh()}`;return;}

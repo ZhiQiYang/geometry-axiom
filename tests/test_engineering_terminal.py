@@ -19,6 +19,100 @@ def without_terminal(value):
     return value
 
 
+# Keep the independent 405f8c5e fixture byte-for-byte. The exact additive
+# contracts below come from R06 F4 (7a876ed6: assembly_bridge.inc,
+# engineering_bridge.inc and test_assembly_bay_repeat.LIMITS) and R08 #359.
+# Do not derive expected fields, values, or ordering from the bridge under test.
+R06_CAPABILITY = "assembly-bay-repeat/1"
+R06_LIMITS = {
+    "instances": 16, "ownedTimbers": 48, "worldTimbers": 64,
+    "instanceRecordBytes": 8191, "bayPrimaries": 12,
+    "baySecondaryLines": 24, "bayOmit": 24,
+}
+LATER_ENGINEERING_CAPABILITIES = (
+    "definition-import/1",  # R08 #359: definition import across projects
+)
+
+
+def with_later_capabilities(original):
+    expected = json.loads(json.dumps(original))
+    capabilities = expected["engineering-read"]["state"]["capabilities"]
+    capabilities.insert(capabilities.index("assembly-timber-generation/1") + 1,
+                        R06_CAPABILITY)
+    capabilities.extend(LATER_ENGINEERING_CAPABILITIES)
+    for parent, key in ((expected["references"], "assembly"),
+                        (expected["engineering-read"]["state"], "assembly"),
+                        (expected["assembly-read"], "state")):
+        assembly = parent[key]
+        expanded = {}
+        for field, value in assembly.items():
+            expanded[field] = value
+            if field == "capabilities":
+                value.append(R06_CAPABILITY)
+                expanded["limits"] = dict(R06_LIMITS)
+        parent[key] = expanded
+    return expected
+
+
+def project_identity_capability(case, value):
+    """I72 declares one new capability; preserve the external K1 baseline.
+
+    Extract only this reviewed extension at its fixed position. The caller
+    still compares every remaining field, value and JSON key order exactly.
+    """
+    projected = json.loads(json.dumps(value))
+    capabilities = projected["engineering-read"]["state"]["capabilities"]
+    case.assertEqual(1, capabilities.count("identity-ledger/1"),
+                     "K1_R09A_CAPABILITY_EXACTLY_ONCE")
+    at = capabilities.index("identity-ledger/1")
+    case.assertEqual(len(capabilities) - len(LATER_ENGINEERING_CAPABILITIES) - 1, at,
+                     "K1_R09A_CAPABILITY_BEFORE_NAMED_LATER_EXTENSIONS")
+    case.assertEqual(list(LATER_ENGINEERING_CAPABILITIES), capabilities[at + 1:],
+                     "K1_R09A_LATER_EXTENSION_ORDER")
+    del capabilities[at]
+    return projected
+
+
+def project_panel_fill_reader(case, value):
+    """Check the scoped R02 reader before comparing the independent K1 reply.
+
+    UI-1 adds this definition-reader descriptor, not the full panel-fill/1
+    product capability. Its four fields, values and insertion point are fixed
+    by the reviewed UI-1 wire contract; no value is taken from the reply being
+    tested. Every other field and its order still reaches the original check.
+    """
+    projected = json.loads(json.dumps(value))
+    state = projected["engineering-read"]["state"]
+    expected_reader = {
+        "schema": "panel-fill-definition-reader/1",
+        "capability": "panel-fill/1",
+        "supportedRecords": ["finish-surface", "panel-fill", "derived-placement"],
+        "complete": False,
+    }
+    case.assertIn("panel_fill_reader", state, "K1_PF_READER_PRESENT")
+    case.assertEqual(json.dumps(expected_reader, ensure_ascii=False, separators=(",", ":")),
+                     json.dumps(state["panel_fill_reader"], ensure_ascii=False, separators=(",", ":")),
+                     "K1_PF_READER_EXACT_CONTRACT")
+    keys = list(state)
+    at = keys.index("panel_fill_reader")
+    case.assertEqual(["native_capabilities", "panel_fill_reader", "specs"], keys[at - 1:at + 2],
+                     "K1_PF_READER_INSERTION_ORDER")
+    del state["panel_fill_reader"]
+    return projected
+
+
+def project_r14_native_capability(case, value):
+    """Project exactly the approved native-only addition; keep the old oracle."""
+    projected = json.loads(json.dumps(value))
+    capabilities = projected["engineering-read"]["state"]["native_capabilities"]
+    case.assertEqual(1, capabilities.count("grid-subdivision-native/2"),
+                     "K1_R14_NATIVE_CAPABILITY_EXACTLY_ONCE")
+    at = capabilities.index("grid-subdivision-native/2")
+    case.assertEqual(len(capabilities) - 1, at, "K1_R14_NATIVE_CAPABILITY_FIXED_LAST")
+    del capabilities[at]
+    return projected
+
+
 class EngineeringTerminal(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -138,10 +232,95 @@ class EngineeringTerminal(unittest.TestCase):
         self.assertEqual(replies["references"]["engineeringSources"], replies["engineering-read"]["state"]["sources"])
         self.assertEqual(before, (self.command("dump"), self.read()["revision"]))
         baseline = Path(os.environ.get("GEOMETRY_TERMINAL_BASELINE", ROOT / "tests/fixtures/k1_terminal_legacy_replies.json"))
-        original = json.loads(baseline.read_text(encoding="utf-8"))
-        self.assertEqual(json.dumps(original, ensure_ascii=False, separators=(",", ":")),
-                         json.dumps(without_terminal(replies), ensure_ascii=False, separators=(",", ":")),
-                         "K1-a: non-terminal fields/order changed relative to the independently built baseline")
+        original = with_later_capabilities(json.loads(baseline.read_text(encoding="utf-8")))
+        expected_json = json.dumps(original, ensure_ascii=False, separators=(",", ":"))
+
+        def compare(value):
+            projected = project_panel_fill_reader(self, value)
+            projected = project_identity_capability(self, without_terminal(projected))
+            projected = project_r14_native_capability(self, projected)
+            self.assertEqual(expected_json,
+                             json.dumps(projected, ensure_ascii=False, separators=(",", ":")),
+                             "K1-a: non-terminal fields/order changed relative to the independently built baseline")
+
+        unchanged = json.dumps(replies, ensure_ascii=False, separators=(",", ":"))
+        compare(replies)
+        self.assertEqual(unchanged, json.dumps(replies, ensure_ascii=False, separators=(",", ":")),
+                         "K1_R09A_PROJECTION_IS_READONLY")
+        # The extension must not hide a missing, extra, moved capability, an
+        # unrelated field change, or the original baseline's JSON key order.
+        for fault in ("missing", "duplicate", "moved", "unknown", "legacy-order", "material", "reply-order"):
+            with self.subTest(identity_projection_negative=fault):
+                probe = json.loads(json.dumps(replies))
+                state = probe["engineering-read"]["state"]
+                caps = state["capabilities"]
+                at = caps.index("identity-ledger/1")
+                if fault == "missing":
+                    del caps[at]
+                elif fault == "duplicate":
+                    caps.insert(at, "identity-ledger/1")
+                elif fault == "moved":
+                    caps[0], caps[at] = caps[at], caps[0]
+                elif fault == "unknown":
+                    caps.append("unreviewed-capability/1")
+                elif fault == "legacy-order":
+                    caps[0], caps[1] = caps[1], caps[0]
+                elif fault == "material":
+                    state["materials"][0]["name"] += "-changed"
+                else:
+                    first = next(iter(probe["references"]))
+                    probe["references"][first] = probe["references"].pop(first)
+                with self.assertRaises(AssertionError, msg="K1_R09A_NEGATIVE_" + fault):
+                    compare(probe)
+
+        # The additive reader cannot conceal a wrong schema, an unsupported
+        # record, a full-product claim, or an unrelated legacy/order change.
+        for fault in ("missing", "schema", "capability", "records", "complete", "complete-type",
+                      "extra-field", "terminal-extra", "reader-key-order", "moved", "full-capability"):
+            with self.subTest(panel_fill_reader_negative=fault):
+                probe = json.loads(json.dumps(replies))
+                state = probe["engineering-read"]["state"]
+                reader = state["panel_fill_reader"]
+                if fault == "missing":
+                    del state["panel_fill_reader"]
+                elif fault == "schema":
+                    reader["schema"] = "panel-fill-definition-reader/2"
+                elif fault == "capability":
+                    reader["capability"] = "panel-fill/2"
+                elif fault == "records":
+                    reader["supportedRecords"].append("unsupported-record")
+                elif fault == "complete":
+                    reader["complete"] = True
+                elif fault == "complete-type":
+                    reader["complete"] = 0
+                elif fault == "extra-field":
+                    reader["extra"] = True
+                elif fault == "terminal-extra":
+                    reader["terminal"] = {"kind": "literal"}
+                elif fault == "reader-key-order":
+                    reader["schema"] = reader.pop("schema")
+                elif fault == "moved":
+                    state["panel_fill_reader"] = state.pop("panel_fill_reader")
+                else:
+                    state["capabilities"].append("panel-fill/1")
+                with self.assertRaises(AssertionError, msg="K1_PF_READER_NEGATIVE_" + fault):
+                    compare(probe)
+
+        for fault in ("missing", "duplicate", "moved", "unknown"):
+            with self.subTest(r14_native_projection_negative=fault):
+                probe = json.loads(json.dumps(replies))
+                caps = probe["engineering-read"]["state"]["native_capabilities"]
+                at = caps.index("grid-subdivision-native/2")
+                if fault == "missing":
+                    del caps[at]
+                elif fault == "duplicate":
+                    caps.append("grid-subdivision-native/2")
+                elif fault == "moved":
+                    caps[0], caps[at] = caps[at], caps[0]
+                else:
+                    caps.insert(at, "unreviewed-native-capability/1")
+                with self.assertRaises(AssertionError, msg="K1_R14_NATIVE_NEGATIVE_" + fault):
+                    compare(probe)
 
 
 if __name__ == "__main__":

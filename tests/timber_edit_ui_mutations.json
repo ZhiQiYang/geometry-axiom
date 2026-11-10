@@ -1,0 +1,20 @@
+[
+  {
+    "name": "R11-UI-M01-catalog-rounding",
+    "case": "R11-UI-U64",
+    "anchor": "after.revision !== before.revision",
+    "replacement": "String(catalog.revision) !== before.revision"
+  },
+  {
+    "name": "R11-UI-M02-priority-rounding",
+    "case": "R11-UI-PRIORITY",
+    "anchor": "const text = definition?.priorityText ?? (Number.isSafeInteger(definition?.priority) && definition.priority > 0 ? String(definition.priority) : null);",
+    "replacement": "const text = String(definition?.priority);"
+  },
+  {
+    "name": "R11-UI-M03-composition-escape-bubbles",
+    "case": "R11-UI-INPUT-IME",
+    "anchor": "if(event.target.closest?.('#timberEditForm'))event.stopPropagation();",
+    "replacement": "/* withdrawn: composition Escape reaches the global geometry handler */"
+  }
+]
