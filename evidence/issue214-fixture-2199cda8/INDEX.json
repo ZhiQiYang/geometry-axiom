@@ -1,0 +1,935 @@
+{
+  "schema": "issue214-completed-preparation-originals/1",
+  "sourceSHA": "2199cda8896b47c7ad2b6c10479e5e0cbdb67c83",
+  "baseSHA": "3c6633575ec0f9dccf35898380202aad8d0ffddf",
+  "subjectExecutions": 0,
+  "formal19": "UNRUN",
+  "components": "UNRUN",
+  "sourcePeerChecks": 14,
+  "helperPeerChecks": 20,
+  "members": [
+    {
+      "member": "preparation/BASE_AGENTS.md",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/BASE_AGENTS.md",
+      "bytes": 19140,
+      "sha256": "d3fcb30f0e711a4130f032a2ae8edab70c0cd69897c37ae504cd5f3416d3cbca"
+    },
+    {
+      "member": "preparation/BASE_PRODUCT-VISION.md",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/BASE_PRODUCT-VISION.md",
+      "bytes": 7579,
+      "sha256": "e6b6b0e71b3fa4cc4912e0e24147082ae06111392a4063555a0b6b3651c51211"
+    },
+    {
+      "member": "preparation/CANDIDATE.patch",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/CANDIDATE.patch",
+      "bytes": 726,
+      "sha256": "89db8f9feff3dbb6104feb4aba1d5d594d908719f3e206498ceb0f5b719aeeef"
+    },
+    {
+      "member": "preparation/HELPER_PREPARATION.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/HELPER_PREPARATION.json",
+      "bytes": 2878,
+      "sha256": "ec758359d4b8cbc8a189fafa5729f5d00afcf5f3a5b426c981868e06c92aae02"
+    },
+    {
+      "member": "preparation/HELPER_README.md",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/HELPER_README.md",
+      "bytes": 4066,
+      "sha256": "0366986942101d83c854bcb62d4df7fc3d6ea896e32d6cdbfe8a5f9399abc2ea"
+    },
+    {
+      "member": "preparation/MANIFEST.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/MANIFEST.json",
+      "bytes": 1469,
+      "sha256": "a47caa0c809cc798feed40f3af4de2c75af3e334e37f876f3fc1f2768224f995"
+    },
+    {
+      "member": "preparation/PLAN.md",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/PLAN.md",
+      "bytes": 4806,
+      "sha256": "e4425d73fb086a238a9fb739031b8351df28eac6059cdbbc2de5d7e83f4c5a93"
+    },
+    {
+      "member": "preparation/PLAN.md.before-timeout-correction",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/PLAN.md.before-timeout-correction",
+      "bytes": 4805,
+      "sha256": "638d32b82997db888c810fc01ca1702f55ebc93c70804e80806fecbdad9882b2"
+    },
+    {
+      "member": "preparation/REQUEST_TEMPLATE.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/REQUEST_TEMPLATE.json",
+      "bytes": 1263,
+      "sha256": "eabda43fd844b0c90e61a99d89b2655602d23d5ab6d2cdc893a4860fb51431d8"
+    },
+    {
+      "member": "preparation/REQUEST_TEMPLATE.json.before-timeout-correction",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/REQUEST_TEMPLATE.json.before-timeout-correction",
+      "bytes": 1105,
+      "sha256": "939002b9ae39ee141b8563ca62f0ec009d6fd2fa2b06c90f00a84c8a20aca23f"
+    },
+    {
+      "member": "preparation/SOURCE_AUDIT_BINDING_ADDENDUM.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/SOURCE_AUDIT_BINDING_ADDENDUM.json",
+      "bytes": 10169,
+      "sha256": "fc793938b0b97a5a6b59f33148d4f8672eb64a8cb952da55a773b9457a7a9012"
+    },
+    {
+      "member": "preparation/SOURCE_PUBLICATION.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/SOURCE_PUBLICATION.json",
+      "bytes": 673,
+      "sha256": "7282423d6d9a0c90d31f537967ec8f7983bddf1f293369124add56138231015d"
+    },
+    {
+      "member": "preparation/candidate.py.txt",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/candidate.py.txt",
+      "bytes": 24718,
+      "sha256": "82e248c664c2e591cd320037a141bfa4d52924ac2397274ad23af9fb7864b7fc"
+    },
+    {
+      "member": "preparation/create_source_branch.py",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/create_source_branch.py",
+      "bytes": 4427,
+      "sha256": "a269151aae88c620b532c51d3969d65e33e5c7167201787320403b115c343a01"
+    },
+    {
+      "member": "preparation/measure_fixture.py",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/measure_fixture.py",
+      "bytes": 16880,
+      "sha256": "6b45c67f97994a6a5e22c49dc3bcc9e02215b072c500e3732c58cbaebe44e04d"
+    },
+    {
+      "member": "preparation/original.py.txt",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/original.py.txt",
+      "bytes": 24686,
+      "sha256": "a5eae2c6cdadc80354503d858930a0a4d728d53eb63e528f150d42fa60c492bc"
+    },
+    {
+      "member": "preparation/publish_preparation.py",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/publish_preparation.py",
+      "bytes": 9418,
+      "sha256": "1f5063718e16436f67d1aaf40f161ce86343c36445a9fe2bef3ca211a276c228"
+    },
+    {
+      "member": "preparation/source-publication/commands.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/commands.json",
+      "bytes": 47493,
+      "sha256": "a9b39fd6c6abfd31252bfe54bc37debfef0811bd869c2a5afd1ba678afd21433"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000001/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000001/request.json",
+      "bytes": 1532,
+      "sha256": "1e8c0bf781c480d6afdd8b99456b146d3b9ee4e7bd47661cd972717c96f590c5"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000001/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000001/result.json",
+      "bytes": 1784,
+      "sha256": "478dc2c7ae147711c8b8cac3f44f59c21f8a1cb1bbd2b2691926d0aa07c48927"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000001/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000001/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000001/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000001/stdout.bin",
+      "bytes": 189,
+      "sha256": "aac4f10d9aae0a8695b6f5786fb766d82c00d9d019378dd76f60d4606e37f843"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000002/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000002/request.json",
+      "bytes": 1610,
+      "sha256": "59260802834f418f6aa62c1323da0a727f50f42e0987e7174d48724a6681fcf0"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000002/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000002/result.json",
+      "bytes": 1864,
+      "sha256": "d233758ed39e5f6676da58229085aad84e2ec6caf5372071f9b97d011bbc3f81"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000002/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000002/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000002/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000002/stdout.bin",
+      "bytes": 19140,
+      "sha256": "d3fcb30f0e711a4130f032a2ae8edab70c0cd69897c37ae504cd5f3416d3cbca"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000003/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000003/request.json",
+      "bytes": 1634,
+      "sha256": "7a4db7ee4846e2594d862d93dfaa88c91b9582c4ed5e1fc6cc20bf8bdad2bdef"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000003/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000003/result.json",
+      "bytes": 1886,
+      "sha256": "64bb826c2e919fb8d0694c6a8ad65d089f66a7bd4b19a479ca3398e511de97b8"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000003/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000003/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000003/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000003/stdout.bin",
+      "bytes": 7579,
+      "sha256": "e6b6b0e71b3fa4cc4912e0e24147082ae06111392a4063555a0b6b3651c51211"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000004/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000004/request.json",
+      "bytes": 1558,
+      "sha256": "4eb6fc8c0d41d215de78ea0d33b9dab2e8ffe35949402d126a6b4f3b449463d0"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000004/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000004/result.json",
+      "bytes": 1811,
+      "sha256": "28b95bbc9dac79fed5d4fea5e06dd4b11e49eae2cda74ce2064d8d440e92352f"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000004/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000004/stderr.bin",
+      "bytes": 586,
+      "sha256": "3e70934f1909b0f5a846d62237fcc1509d733b9fb0321187024723dfc67176d3"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000004/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000004/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000004/stdout.bin",
+      "bytes": 89,
+      "sha256": "4354ff729006db52db2d7e8d612854d97740db87170f5b76a1763edb6db1ceaa"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000005/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000005/request.json",
+      "bytes": 1544,
+      "sha256": "6bca7996ff849b13467a68a9df20b6464d2b9a933c66039e1346608e76ed22ad"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000005/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000005/result.json",
+      "bytes": 1792,
+      "sha256": "78a67bc90b94ed2b37353462cecf745258e6028ea62a2f57c0e5b1c631a74200"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000005/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000005/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000005/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000006/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000006/request.json",
+      "bytes": 1557,
+      "sha256": "b3b6f0c7132bdc9fc60d947088b76a0003f71b6bd92b2afe8636a8e0e8a887e3"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000006/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000006/result.json",
+      "bytes": 1807,
+      "sha256": "8ab9bd83b850665f8e81925b5a7d0a1ee5005c3c7b187fd6212abda678555f2f"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000006/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000006/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000006/stdin.bin",
+      "bytes": 40,
+      "sha256": "e11ad551d3e3b9d581f8192cee02e5484b4576a780cb9b7a397b3a02aa2376b7"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000006/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000006/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000007/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000007/request.json",
+      "bytes": 1609,
+      "sha256": "fde2386e318571d1b051dcbed7bf718d4707eab47d25ec7935a05a119e8fa13d"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000007/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000007/result.json",
+      "bytes": 1860,
+      "sha256": "86e9e6772903f87066f7e01d334e528b1d3071e722b30d022b5472b1ea4e18c0"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000007/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000007/stderr.bin",
+      "bytes": 64,
+      "sha256": "8103d3eac7ef9fcd1ed5245b30ff49ef36554bd7684973743d3ba8bf7fe39888"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000007/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000007/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000007/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000008/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000008/request.json",
+      "bytes": 1557,
+      "sha256": "0e3d0b9001cb1887a88ff58787b05c6ed08f5dd915a5d6d0cb5912ace393616f"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000008/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000008/result.json",
+      "bytes": 1807,
+      "sha256": "e0953fe1b38f3622ca23eb952bdef0df105696b12204e7a61871e459ead71838"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000008/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000008/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000008/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000009/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000009/request.json",
+      "bytes": 1536,
+      "sha256": "fe05f402ba8ea9f91e277147cac547068ccd86e4dcc8215d69542743db0d2280"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000009/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000009/result.json",
+      "bytes": 1786,
+      "sha256": "b7d2dced08cc899630d77fa74e6ef86d2b73768e8f99ca5dced034539cf642ef"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000009/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000009/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000009/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000010/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000010/request.json",
+      "bytes": 1548,
+      "sha256": "724ad5979400caca7140d0a626d0d55f86a123eca97c8a2099b47eb74ba3db53"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000010/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000010/result.json",
+      "bytes": 1798,
+      "sha256": "6e26326b17c4d61bb48e737b071a3c6d4fbd735b3f900600c9e1b3241d89334a"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000010/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000010/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000010/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000010/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000011/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000011/request.json",
+      "bytes": 1585,
+      "sha256": "ca58c1e55b69a47d833ae066113dfb47dc69e11e7a399d16f7c0bf983fea0e19"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000011/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000011/result.json",
+      "bytes": 1835,
+      "sha256": "05705c58d63a9c56e579d2907827c1934fafb4f25b994b68a22b08c081656f60"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000011/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000011/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000011/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000011/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000012/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000012/request.json",
+      "bytes": 1578,
+      "sha256": "6ade19b421982e4fab03bee0938d6d1537b8258611f1226ecf874ddc55ec3aee"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000012/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000012/result.json",
+      "bytes": 1828,
+      "sha256": "3136238b7aaa1235a9ddd6120a02e04de12d61fcfb13656121a7010373a118cd"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000012/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000012/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000012/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000012/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000013/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000013/request.json",
+      "bytes": 1591,
+      "sha256": "a541b05e6826b7e1d273735f54de17d4ee097f8f7ea5b08c22c68ba8ee766f6b"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000013/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000013/result.json",
+      "bytes": 1840,
+      "sha256": "176923868c3f8e480068441d563337e3e4ecbbb480a1e99a410ef08baec6c1aa"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000013/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000013/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000013/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000013/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000014/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000014/request.json",
+      "bytes": 1575,
+      "sha256": "3ba171be1139d7975ed2a9ea2edd0c845ddd28cc8ffc0ddb53817781940a4a8f"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000014/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000014/result.json",
+      "bytes": 1824,
+      "sha256": "c6d34a36ee6b131fc4e4449030ca95eaf786066781b0ed6c6bfffc877ee95202"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000014/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000014/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000014/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000014/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000015/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000015/request.json",
+      "bytes": 1523,
+      "sha256": "84a8292192abb94832d88f535eb21083d8569a855e12ef6068ba8f3198814404"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000015/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000015/result.json",
+      "bytes": 1774,
+      "sha256": "cce5c69ad4104b94b41b5789c1abbb40456eeb499224f11e92511183eae504c9"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000015/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000015/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000015/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000015/stdout.bin",
+      "bytes": 39,
+      "sha256": "16e5d8cfa77efd9fb9db2a1b5fc17089d09de6cd55f7001c0705eb8c221fedda"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000016/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000016/request.json",
+      "bytes": 1518,
+      "sha256": "49b4dbd6f1a9b029ebfa12e797b5c715e9da1f1c970c9fd2867352b14bdd03d2"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000016/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000016/result.json",
+      "bytes": 1768,
+      "sha256": "3da3018c76974978be6fd0e0afab846f1448f5c840e100c9967ecf7ab4c37017"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000016/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000016/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000016/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000016/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000017/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000017/request.json",
+      "bytes": 1559,
+      "sha256": "ae6fecebbaa707a5419945d10f8240a9703a23f6f508dd21d8e50fd2de4140a4"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000017/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000017/result.json",
+      "bytes": 1808,
+      "sha256": "7a9ddea7c8613543ccd09981f3b88857a72514e4e7c74667efbebef45339e030"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000017/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000017/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000017/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000017/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000018/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000018/request.json",
+      "bytes": 1577,
+      "sha256": "04b1e97330a06bc16535518a6601798b9c03617b0abdc7abd9bd5969058ff032"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000018/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000018/result.json",
+      "bytes": 1827,
+      "sha256": "a8b1a3a0a8c26316cc4131b9fa8851909158f5f82bb15f504b33fc6a6d06c58f"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000018/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000018/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000018/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000018/stdout.bin",
+      "bytes": 149,
+      "sha256": "efae6a9c2b9d6842488e3c4feccf5a9945ed43353d92d5a0d857f5ce39119954"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000019/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000019/request.json",
+      "bytes": 1521,
+      "sha256": "eb2ef79f3e95867dfa928ccd1630353d7c121a3fc2dd18e10cb87e79ef66f05a"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000019/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000019/result.json",
+      "bytes": 1772,
+      "sha256": "bd0031fba26b29e379f8dd1289cd914b2d3f395b7e7160bf7afe55e719df251d"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000019/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000019/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000019/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000019/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000019/stdout.bin",
+      "bytes": 41,
+      "sha256": "8eb9982d37d49f7ed21e7df9a02a3687acbcf7851ec899cf8d5822734072d81c"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000020/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000020/request.json",
+      "bytes": 1521,
+      "sha256": "c87ef4fe222ffd81025f1f33ff9e97d0518bb896e5bdf12dfe8197c7831212df"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000020/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000020/result.json",
+      "bytes": 1772,
+      "sha256": "2667d79f0dc94f691bd3491bfccf24e193df1b77385dfb82ff49aa605731590f"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000020/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000020/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000020/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000020/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000020/stdout.bin",
+      "bytes": 41,
+      "sha256": "5bdd494fcd43566b7384f308592bf2373b7d13129f303457e0282bf7a277a864"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000021/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000021/request.json",
+      "bytes": 1608,
+      "sha256": "8bf5281b0ff21bb1514d387ac9c95870015b36e9da000060fd5c710330a46ddf"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000021/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000021/result.json",
+      "bytes": 1859,
+      "sha256": "3b0125b4e9a849979d3e133ab15c0d008cb31d40ddfd20a23387cfd2f688bb13"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000021/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000021/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000021/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000021/stdout.bin",
+      "bytes": 39,
+      "sha256": "16e5d8cfa77efd9fb9db2a1b5fc17089d09de6cd55f7001c0705eb8c221fedda"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000022/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000022/request.json",
+      "bytes": 1557,
+      "sha256": "7dd4ece962e122befd9cad7f1bf6edb429d988a1075ad7f80f5dc90e70d6bf5a"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000022/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000022/result.json",
+      "bytes": 1807,
+      "sha256": "5cbfcc81859fe768b143c4bcec52a8096d9d9b83fd29a0cb00ceaeb9485aa013"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000022/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000022/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000022/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000022/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000022/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000022/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000023/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000023/request.json",
+      "bytes": 1588,
+      "sha256": "9ee63eeefcf4fd100fb62c8523000570ec40d4ef5b18dc600b23509eb8bdbc5d"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000023/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000023/result.json",
+      "bytes": 1842,
+      "sha256": "750ea19c1900372f32ca8fd01857cddcdf479fd3bc39f01787650d2a6201e070"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000023/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000023/stderr.bin",
+      "bytes": 352,
+      "sha256": "08eae2fecb75f76dcba9291a85f4ebefea2804cda3ed041fc36eed3b96208a48"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000023/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000023/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000023/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000023/stdout.bin",
+      "bytes": 109,
+      "sha256": "e3f966eb1bed5fc757fd8b875bec30cd1b0a3ccf768f16f7d7b1e11d9e535b88"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000024/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000024/request.json",
+      "bytes": 1578,
+      "sha256": "b790f8c3a3bc28642e639c2d242b4ce98e9c21c67c91f74d77a3afff4b0c82ff"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000024/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000024/result.json",
+      "bytes": 1829,
+      "sha256": "c1bd410389508077a3034a7546c3e53cbbd1c5754ede3c4a7c6e96c3090e94d1"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000024/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000024/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000024/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000024/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000024/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000024/stdout.bin",
+      "bytes": 89,
+      "sha256": "542bbc222b0e081d77b5b78e922aa9d3c60bbc3ca0822b35b1c5402c8e43a082"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000025/request.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000025/request.json",
+      "bytes": 1533,
+      "sha256": "7144eb62dbeece1540fb67802f9c1b7b9a3915e89973071824b799ec0e890523"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000025/result.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000025/result.json",
+      "bytes": 1785,
+      "sha256": "d2a3f830d8f1d68460081ac10af13dbb70f34cb0fdf3ed4333ee1ca6cb8e97ea"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000025/stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000025/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000025/stdin.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000025/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "preparation/source-publication/subcommands/000025/stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands/000025/stdout.bin",
+      "bytes": 189,
+      "sha256": "a8863fd0ecda9112f85924bddbd07d4773f623e0e17523c45a2c80ceed246e5f"
+    },
+    {
+      "member": "preparation/source-publication/subcommands.json",
+      "sourcePath": "/tmp/issue214-http-fixture-preparation-20261024/source-publication/subcommands.json",
+      "bytes": 47493,
+      "sha256": "a9b39fd6c6abfd31252bfe54bc37debfef0811bd869c2a5afd1ba678afd21433"
+    },
+    {
+      "member": "source-peer/REVIEW.json",
+      "sourcePath": "/tmp/issue214-http-fixture-peer/REVIEW.json",
+      "bytes": 2514,
+      "sha256": "0d846a5119995e2792dae3cab8b37baad661bc8bee449856e23a7556e9bcc8cb"
+    },
+    {
+      "member": "source-peer/original-server-source.stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-peer/original-server-source.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-peer/original-server-source.stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-peer/original-server-source.stdout.bin",
+      "bytes": 7555,
+      "sha256": "80d8f21dda1a7cbc571710f30e3203fc77e81a35067f9a9ae0ff8b501698cdba"
+    },
+    {
+      "member": "source-peer/review.py",
+      "sourcePath": "/tmp/issue214-http-fixture-peer/review.py",
+      "bytes": 5150,
+      "sha256": "0425b1f6e7ad257e7d140be158c86444209b8ecf092e38150365491e3bfe5002"
+    },
+    {
+      "member": "helper-peer/REVIEW.json",
+      "sourcePath": "/tmp/issue214-http-fixture-helper-peer/REVIEW.json",
+      "bytes": 2487,
+      "sha256": "ab0108d6eb3ea242008e8d65ee47aae22d88c15ffc3a56be683bf6da6e8a3231"
+    },
+    {
+      "member": "helper-peer/immutable-leaf.stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-helper-peer/immutable-leaf.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "helper-peer/immutable-leaf.stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-helper-peer/immutable-leaf.stdout.bin",
+      "bytes": 39,
+      "sha256": "16e5d8cfa77efd9fb9db2a1b5fc17089d09de6cd55f7001c0705eb8c221fedda"
+    },
+    {
+      "member": "helper-peer/immutable-parent.stderr.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-helper-peer/immutable-parent.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "helper-peer/immutable-parent.stdout.bin",
+      "sourcePath": "/tmp/issue214-http-fixture-helper-peer/immutable-parent.stdout.bin",
+      "bytes": 41,
+      "sha256": "5bdd494fcd43566b7384f308592bf2373b7d13129f303457e0282bf7a277a864"
+    }
+  ],
+  "archive": "completed-preparation-originals.tar.gz",
+  "archiveBytes": 79433,
+  "archiveSHA256": "ec2fbf4df34f9460eefebb14a10a5b1a01c370507e9e9c50c22de04a516936c3",
+  "memberCount": 153,
+  "roundtripPassed": true
+}
