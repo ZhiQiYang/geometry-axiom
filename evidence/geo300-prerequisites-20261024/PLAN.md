@@ -1,6 +1,6 @@
 # GEO-300 前置：保留順序的擋面去重
 
-本分支目前已一般 merge 新列車 `a6072dde8eac809e93ccd9373946dea98fa5c362`，候選產品 SHA 為 `c493b7315d0cd3b16014add96af969c49ebf4660`。新基底含 root 的精確 free-end 單行維護；本候選相對它仍只有三個 leaf 差異。首版 a048／F4f 的固定權威與原件留作歷史，不把其結果或舊 #288 綠燈挪作本候選驗收。
+本分支目前產品 SHA 為 `aa0e3938f17dc996ef5e7410db4844b31856d2a6`，已普通 merge #339/#340 聯集 `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599`。原 C 實跑固定在 `c493b7315d0cd3b16014add96af969c49ebf4660`：三套 10/15/7 methods、46 controls、282 原 build 命令均按原裁判完成。新來源的 C/H/inc 與三套原裁判閉包相同，但不改標為新來源實跑。current 結果以 PROGRESS.md／SOURCE_MANIFEST.json 為準。
 
 ## 目前成本與範圍
 
@@ -23,17 +23,17 @@
 
 | 項目 | 原裁判及必要結果 | 狀態 |
 |---|---|---|
-| 舊 W 接觸套件 | 全部舊方法、舊具名 ASSERT、舊 controls 保留 | UNRUN |
-| 重複 ID 互相遮蓋 | 同 ID 四面逐次去重後恰留最後一對；回傳兩面欄位與 tail sentinel 精確 | UNRUN |
-| 超標準 buffer 後備 | 超過既有 face capacity 的公開事實仍回傳同樣兩面，保留 caller tail | UNRUN |
-| 停用面不可再遮蓋 | 撤回 active 檢查：基準 0／原具名 ASSERT 1／恢復 0 | UNRUN |
-| 穩定壓緊只複製 active | 反轉 active 條件：基準 0／既有 earlier-full-cover ASSERT 1／恢復 0 | UNRUN |
-| 回傳存活數量 | 撤回刪除時遞減：基準 0／原重複 ID ASSERT 1／恢復 0 | UNRUN |
-| strict overlap | 撤回兩個非重疊條件：基準 0／零長度面具名 ASSERT 1／恢復 0 | UNRUN |
-| 完整座標 | 撤回為 32 位座標比較：基準 0／相差 2³² 的不同平面具名 ASSERT 1／恢復 0 | UNRUN |
+| 舊 W 接觸套件 | 全部舊方法、舊具名 ASSERT、舊 controls 保留 | Sc493b731 通過（原輸出已封） |
+| 重複 ID 互相遮蓋 | 同 ID 四面逐次去重後恰留最後一對；回傳兩面欄位與 tail sentinel 精確 | Sc493b731 通過（原輸出已封） |
+| 超標準 buffer 後備 | 超過既有 face capacity 的公開事實仍回傳同樣兩面，保留 caller tail | Sc493b731 通過（原輸出已封） |
+| 停用面不可再遮蓋 | 撤回 active 檢查：基準 0／原具名 ASSERT 1／恢復 0 | Sc493b731 通過（原輸出已封） |
+| 穩定壓緊只複製 active | 反轉 active 條件：基準 0／既有 earlier-full-cover ASSERT 1／恢復 0 | Sc493b731 通過（原輸出已封） |
+| 回傳存活數量 | 撤回刪除時遞減：基準 0／原重複 ID ASSERT 1／恢復 0 | Sc493b731 通過（原輸出已封） |
+| strict overlap | 撤回兩個非重疊條件：基準 0／零長度面具名 ASSERT 1／恢復 0 | Sc493b731 通過（原輸出已封） |
+| 完整座標 | 撤回為 32 位座標比較：基準 0／相差 2³² 的不同平面具名 ASSERT 1／恢復 0 | Sc493b731 通過（原輸出已封） |
 | 完整優化撤回 | 應與原算法語意等價，故語意裁判應仍綠；只作操作計數對照，不冒稱語意突變被殺 | UNRUN |
 
-每個新 control 必須唯一命中產品碼，編譯失敗、crash、timeout 不算被偵測。保留既有 partial-shadow 的唯一原錨點，避免既有 control 只測到後備而漏掉新路徑。沒有新增全帳本 ID；`tests/mutate.py`、全帳本與 `run_all.expected.json` 由主代理統籌，正式合流時本套件方法數需由 9 更新為 10。
+每個新 control 必須唯一命中產品碼，編譯失敗、crash、timeout 不算被偵測。保留既有 partial-shadow 的唯一原錨點，避免既有 control 只測到後備而漏掉新路徑。沒有新增全帳本 ID；`tests/mutate.py` 與全帳本仍由主代理統籌。本 owner 已依 root 明示授權只將 expected 的本套方法數 9 更新為 10，原 strict comparator／獨立 peer 都已核對，其餘登記原樣。
 
 ## 保護範圍與後續
 

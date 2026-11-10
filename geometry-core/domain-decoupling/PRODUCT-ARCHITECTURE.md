@@ -1,9 +1,16 @@
-# Product architecture — PR344 local fixed-source receipt
+# Product architecture — GitHub 新來源收據
 
-實際 execution source `eccebabc85acf74e30274b8ea8e24db863d8843b`；普通 main merge 採入 `5775a9e9e46bca801a9a70aaeafcdab9f597bc4d`。這是本機雲端 Linux 的原三命令實跑，沒有 GitHub run id，也不冒稱 Actions 執行。
+來源 `15fb0e4d53c1f37b8fbd2c4a277e4984dcbab3ad`；採入 main `8f82b207e87c086705a1d8b7a00e2f215c07cbcf`；Actions run `42660490217`。
 
-三命令 exit 0／0／0；generic205、product18，零 skip。604 inputs、334 owned／270 exclusions、798 edges／0 diagnostics；LF closure `d7da9f09b7c6acc910ce7760a825bcf8594e57bc708d69e5e2c3144eadf3c991`。原來源與 index、604 個 raw/LF/Git 身分前後一致。
+這份衍生資料來自原 scanner CLI 與原兩支 unittest 的實際執行；三命令均 exit 0、零 skip。它只證明靜態依賴契約，不能替代演算法責任審查、原生／突變／瀏覽器或 SSOT 驗證。
 
-保留 main 的937 identifiers／55 strings與全部政策；只有原 PR 的 CDP exclusion digest 變動，實際 LF bytes 與之相符。這份外置組裝不改 repo 內仍標明歷史來源的報告／receipt。
+本次 639 inputs、352 owned、287 exclusions、833 edges、0 diagnostics；architecture-unit=205、architecture-product=18。完整命令、原始輸出與雜湊在同 artifact。
 
-本收據不認證完整 native、browser、mutation fresh ledger、效能、Windows 或舊控制在此來源的新執行。Node9 三相另有獨立原件，使用明示 DOM／transport 替身，不能解除真 browser S/V/S。
+| Layer | Sources |
+|---|---:|
+| H | 208 |
+| K | 70 |
+| W | 68 |
+| vendor | 6 |
+
+main 的歷史收據保留在 Git `8f82b207e87c086705a1d8b7a00e2f215c07cbcf`，本次沒有改寫其來源或沿用其綠燈。

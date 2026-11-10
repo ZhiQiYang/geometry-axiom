@@ -1,0 +1,29 @@
+{
+  "schema": "issue128-p2-formal-artifact-locator-correction/1",
+  "source": "324034812bb6effca68e0413bc0468595337b317",
+  "original_receipts_unchanged": true,
+  "correction": "The original driver inherited a configured native_execution_log path. This panel suite does not emit that JSONL. The configured string is not a materialized evidence file or an additional execution witness.",
+  "configured_only_unmaterialized": "/workspace/issue128-p2-32403481-formal/panel-native/native-executions.jsonl",
+  "configured_only_environment": ["GEO299316_EXECUTION_LOG", "GEO261_CONTACT_SOURCES_EXECUTION_LOG"],
+  "actual_runtime_originals": {
+    "archive_prefix": "formal/panel-native/observed/commands/",
+    "child_count": 124,
+    "per_child": ["result.json", "stdout.bin", "stderr.bin"],
+    "index": "formal/panel-native/observed/receipt.json",
+    "meaning": "Original subprocess.run positional/keyword arguments, actual return code and captured bytes or original decoded text re-encoded as UTF-8; native executable hashes retained for panel cases. No manufactured JSONL."
+  },
+  "actual_compile_originals": {
+    "archive_prefix": "formal/panel-native/compile-retention/",
+    "index": "formal/panel-native/compile-retention/retention.json",
+    "build_count": 93,
+    "meaning": "Original NativeBuild cleanup audit retained build-log JSON and actual compiled C sources before temporary directory cleanup. The global product cache was not used."
+  },
+  "actual_outer_originals": {
+    "archive_prefixes": ["formal/subcommands/", "formal-launch/subcommands/"],
+    "meaning": "Unmodified c387 recorder command, stdin, stdout, stderr and actual exit; source identity and execution wrapper captured."
+  },
+  "archive": "formal-panel-native-originals.tar.gz",
+  "archive_sha256": "ca40b62ec0462b02ecc1dd8727f4317bf03cf0a8ece286cf302b968725b0adda",
+  "member_index": "FORMAL_RAW_INDEX.json",
+  "no_reexecution_required": "Metadata clarification only; original product, tests, wrappers, streams and verdicts remain unchanged."
+}

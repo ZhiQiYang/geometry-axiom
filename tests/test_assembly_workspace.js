@@ -54,6 +54,22 @@ function instanceFixture(options={}){
   f.setWorld({rules:[r],bindings:[b],instances:[]});f.setIds({assemblyInstance:7});
   return {...f,r,b};
 }
+test('R06 workspace selects and restores exact derived outer edge keys',()=>{
+ const f=instanceFixture(),key=[['e3',0,1]],other=[['e1',0,1]],data={id:7,name:'derived',bindingId:4,
+  rule:{id:1,version:1,fingerprint:'a'.repeat(64)},surfaceId:10,layout:'bay-repeat',
+  primaries:[1,2].map(k=>({key:k,at:{kind:'outline-edge',edgeKey:k===1?key:other},
+   ends:{start:{kind:'timber',id:100},finish:{kind:'timber',id:101}}})),
+  secondaryLines:[{key:1,at:{kind:'guide',id:13}}],omit:[]};
+ f.state.draft={id:'derived-draft',kind:'instance',base_ref:null,data,updated_at:'2026-11-02T00:00:00Z'};
+ f.context().assemblyDrafts=[copy(f.state.draft)];f.state.draftsRef=f.context().assemblyDrafts;
+ f.state.surfaces=[{id:10,outerEdges:[{axis:'v',edgeKey:key},{axis:'v',edgeKey:other}]}];
+ f.state.references={guides:[],grids:[],timbers:[]};f.t.render();
+ assert.ok(f.element('asmEditor').innerHTML.includes('外輪廓來源鍵'));
+ f.element('asmPrimaryEdge1').handlers.change({target:{value:JSON.stringify(other)}});
+ assert.deepEqual(copy(f.state.draft.data.primaries[0].at),{kind:'outline-edge',edgeKey:other},'KILLER[r06-r41:workspace-select]');
+ f.w.flush();assert.deepEqual(f.context().assemblyDrafts[0].data.primaries[0].at,{kind:'outline-edge',edgeKey:other});
+ f.t.render();assert.ok(f.element('asmEditor').innerHTML.includes('&quot;e1&quot;'));
+});
 test('actual instance creation consumes the template before ID allocation and preserves host provenance',async()=>{
   const seen=[],members=[{memberId:9,role:'custom',guideId:0,dir:'-v',depthSide:'-n',ends:{start:{kind:'timber',id:0},finish:{kind:'timber',id:0}}}];
   const f=instanceFixture({application:{woodworking:{assemblyInstanceMembers(r){seen.push(copy(r));assert.ok(!f.calls.includes('newid'));return copy(members);}}}});
@@ -533,6 +549,27 @@ test('surface-only reassignment names both placements in the visible geometry di
   const f=fixture(),before={surface:1,centerline:1000,length:1960,u:520,v:987,dir:'+u',side:'+n',A:27,B:33,origin:[520,987,2500],axes:[[1,0,0],[0,1,0],[0,0,1]]},after={...before,surface:2};
   const html=f.t.previewCopy({valid:true,before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},impact:{schema:'candidate-geometry/1',timbers:[{id:92,before,after}],guides:[]}});
   assert.match(html,/承載面 #1.* → 承載面 #2/);assert.match(html,/角材 #92（組構外）/);assert.doesNotMatch(html,/未變更角材/);
+});
+// 2026-11-07 cloud L4 walk: the preview "來源" row echoed the raw source record.
+test('instance source row names the picked references instead of the raw record',()=>{
+  const f=fixture(),timber=id=>({id,kind:'timber'}),ends={start:timber(90),finish:timber(91)};
+  const repeat={bindingId:1,id:1,layout:'bay-repeat',name:'角材組合・角材',omit:[{line:1,left:1,right:2}],surfaceId:1,
+    rule:{fingerprint:'f'.repeat(64),id:1,version:1},
+    primaries:[{at:{axis:'u',gridId:1,index:'0',kind:'grid-line'},ends,key:1},{at:{kind:'guide',id:3},ends,key:2}],
+    secondaryLines:[{at:{axis:'v',gridId:1,index:'1',kind:'grid-line'},key:1}]};
+  const added=f.t.previewCopy({valid:true,before:{rules:[],bindings:[],instances:[]},after:{rules:[],bindings:[],instances:[{value:{source:repeat},members:[]}]},impact:{schema:'candidate-geometry/1',timbers:[],guides:[]}});
+  assert.match(added,/<span>來源<\/span>/);
+  assert.match(added,/「角材組合・角材」 · 配置 #1 · 規則 #1 第 1 版 · 重複開間 · 承載面 #1/);
+  assert.match(added,/主支 2 支：#1 主格 #1 的 u 線索引 0（端點 角材 #90 → 角材 #91）；#2 參考線 #3（端點 角材 #90 → 角材 #91）/);
+  assert.match(added,/副支線 1 條：#1 主格 #1 的 v 線索引 1/);assert.match(added,/明示略過：副支線 #1／主支 #1 → #2/);
+  assert.doesNotMatch(added,/bindingId|secondaryLines|&quot;|ffffffff/);
+  const single={bindingId:2,id:3,name:'雙主支',rule:{id:1,version:2},members:[
+    {memberId:1,role:'primary',guideId:1,dir:'+v',depthSide:'+n',ends},
+    {memberId:3,role:'secondary',guideId:3,dir:'+u',depthSide:'+n',ends:{start:{id:null,kind:'timber'},finish:{id:null,kind:'timber'}}}]};
+  const removed=f.t.previewCopy({valid:true,before:{rules:[],bindings:[],instances:[{value:{source:single},members:[]}]},after:{rules:[],bindings:[],instances:[]},impact:{schema:'candidate-geometry/1',timbers:[],guides:[]}});
+  assert.match(removed,/這次會刪除「雙主支」與所屬角材/);
+  assert.match(removed,/單一開間 · 構件 2 支：#1 主支 沿參考線 #1（端點 角材 #90 → 角材 #91）；#3 副支 沿參考線 #3<\/span>/);
+  assert.doesNotMatch(removed,/memberId|未指定|&quot;/);
 });
 function diff(f,oldSource,newSource,oldValue=27,newValue=27,axis='A'){
   const binding={id:1,name:'配置',rule:{id:1,version:1},slots:[{slotId:1,A:literal(27),B:literal(33),contactFace:'A',orientation:'B'},{slotId:2,A:null,B:null,contactFace:null,orientation:null}]};

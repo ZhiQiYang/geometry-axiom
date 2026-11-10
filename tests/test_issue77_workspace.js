@@ -30,6 +30,7 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
   const connection = {phase:'ready'};
   const workspace = {
     getProjectState:() => ({contextToken:'fixture-context',revision:owner.revision}),
+    getModelOperationState:() => ({context:'fixture-context',frame:'fixture-frame',contextToken:'fixture-context:fixture-session',revision:owner.revision,blocked:!!owner.lease,group:owner.group}),
     readFeatureAttachment:(kind, token) => {
       assert.equal(kind,'source-rooms'); assert.equal(token,'fixture-context'); return clone(owner.attachment);
     },
@@ -72,7 +73,7 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
     labelTransaction:(lease,label) => {assert.equal(lease,owner.lease);owner.labels.push(label);},
     adoptLegacySource:() => {throw new Error('source adoption is outside this failure fixture');},
   };
-  const apiRequest = async (command, lease) => {
+  const nativeDispatch = async (command, lease) => {
     owner.requests.push(command);owner.protocol.push(command);
     if (lease) assert.equal(lease,owner.lease);
     if (command==='newid') return {ok:true,boundary:1};
@@ -96,6 +97,16 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
     }
     if (command==='line history-end') {owner.group=false;return {ok:true};}
     throw new Error('Unexpected API request: '+command);
+  };
+  const apiRequest = async (command, lease) => {
+    const settle = roomWorkspace?.beginNativeRequest(command);
+    let result;
+    try {
+      result = await nativeDispatch(command, lease);
+      return result;
+    } finally {
+      settle?.(result);
+    }
   };
   const recordUI=stage => {
     if(owner.expectRecovery) {

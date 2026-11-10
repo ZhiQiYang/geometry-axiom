@@ -187,21 +187,69 @@ static SiIndex *si_build(const World *w)
     for(size_t i=0;i<w->wood.engineering.binding_count;++i){const EngBinding *b=&w->wood.engineering.bindings[i];if(b->target.kind!=0)continue;si_numkey(from,"grid",b->target.id,0,0);char field[20];snprintf(field,sizeof field,"%c.%s",b->target.axis?'v':'u',b->target.field?"gap":"panel");si_source(s,from,&b->source,field,!b->has_override);if(b->has_override)si_source(s,from,&b->override_value,field,true);}
     for(size_t i=0;i<w->wood.assembly.rule_count;++i){const AsmRuleVersion *r=&w->wood.assembly.rules[i];si_reset(s);si_text(s,"%s",r->fingerprint);n=si_nnode(s,"assembly-rule",r->id,r->version,0,si_name(r->content,label,"組構規則"));if(n){snprintf(n->definition,65,"%s",r->fingerprint);snprintf(n->value,65,"%s",r->fingerprint);}si_rule_parts(s,r);}
     for(size_t i=0;i<w->wood.assembly.binding_count;++i){const AsmBinding *b=&w->wood.assembly.bindings[i];si_numkey(from,"assembly-binding",b->id,0,0);si_reset(s);si_content(s,b->content,"name");si_nnode(s,"assembly-binding",b->id,0,0,b->name);si_ref(s,from,"assembly-rule",b->rule_id,b->rule_version,0,"rule-version","rule");si_binding_sources(s,from,b->content);}
-    for(size_t i=0;i<w->wood.assembly.instance_count;++i){const AsmInstance *a=&w->wood.assembly.instances[i];si_numkey(from,"assembly-instance",a->id,0,0);si_reset(s);si_content(s,a->content,"");si_nnode(s,"assembly-instance",a->id,0,0,a->name);si_ref(s,from,"assembly-binding",a->binding_id,0,0,"dimension","binding");si_ref(s,from,"assembly-rule",a->rule_id,a->rule_version,0,"rule-version",a->rule_hash);si_ref(s,from,"placement",a->surface_id,0,0,"position","surface");for(int k=0;k<3;++k){char key[240],detail[100];si_numkey(key,"timber",a->timber[k],0,0);snprintf(detail,sizeof detail,"member:%u",a->member[k]);si_edge(s,key,from,"member",detail,true);}}
+    for(size_t i=0;i<w->wood.assembly.instance_count;++i){const AsmInstance *a=&w->wood.assembly.instances[i];si_numkey(from,"assembly-instance",a->id,0,0);si_reset(s);si_content(s,a->content,"");si_nnode(s,"assembly-instance",a->id,0,0,a->name);si_ref(s,from,"assembly-binding",a->binding_id,0,0,"dimension","binding");si_ref(s,from,"assembly-rule",a->rule_id,a->rule_version,0,"rule-version",a->rule_hash);si_ref(s,from,"placement",a->surface_id,0,0,"position","surface");
+        for(size_t k=0;k<wood_assembly_mapping_count(a);++k){char key[240],detail[100];AsmMapping m=wood_assembly_mapping_at(a,k);si_numkey(key,"timber",m.timber,0,0);
+            if(m.identity.kind==ASM_ID_MEMBER)snprintf(detail,sizeof detail,"member:%u",m.identity.key);
+            else if(m.identity.kind==ASM_ID_PRIMARY)snprintf(detail,sizeof detail,"primary:%u",m.identity.key);
+            else if(m.identity.kind==ASM_ID_SECONDARY)snprintf(detail,sizeof detail,"secondary:%u:%u:%u",m.identity.key,m.identity.left,m.identity.right);
+            else {s->complete=false;continue;}
+            si_edge(s,key,from,"member",detail,true);
+        }
+    }
     si_profile_sources(s,w);
     return s;
+}
+static void si_incarnation(const World *w, const SiNode *n)
+{
+    fputs(",\"incarnation\":", stdout);
+    uint8_t kind = 0;
+    if (!strcmp(n->kind, "boundary")) kind = APP_IDENTITY_BOUNDARY;
+    else if (!strcmp(n->kind, "placement")) kind = APP_IDENTITY_PLACEMENT;
+    else if (!strcmp(n->kind, "column")) kind = APP_IDENTITY_COLUMN;
+    else if (!strcmp(n->kind, "beam")) kind = APP_IDENTITY_BEAM;
+    else if (!strcmp(n->kind, "timber")) kind = APP_IDENTITY_TIMBER;
+    else if (!strcmp(n->kind, "parameter")) kind = APP_IDENTITY_PARAMETER;
+    else if (!strcmp(n->kind, "parameter-field")) kind = APP_IDENTITY_FIELD;
+    uint32_t id = 0;
+    char mark[80];
+    if (!kind || !w || !parse_u32(n->id, &id) ||
+        (kind == APP_IDENTITY_TIMBER && assembly_owned(w, id)) ||
+        !identity_lookup_mark(w, kind, id, kind == APP_IDENTITY_FIELD ? n->field : 0, mark, sizeof mark)) {
+        fputs("null", stdout);
+        return;
+    }
+    js_string(mark);
 }
 static void si_json(SiIndex *s,const World *w,bool live)
 {
     char fingerprint[65];if(!eng_definition_hash(w,fingerprint)){eng_bridge_error("SOURCE_UNCHECKED","Cannot fingerprint readonly source World");return;}
-    printf("{\"ok\":true,\"schema\":\"source-inspector/1\",\"revision\":%llu,\"live\":%s,\"complete\":%s,\"limits\":{\"nodes\":%d,\"edges\":%d},\"identityContinuity\":\"unknown\",\"supportStatus\":\"unknown\",\"nodes\":[",(unsigned long long)g_definition_revision,live?"true":"false",s->complete?"true":"false",SI_NODE_MAX,SI_EDGE_MAX);
+    printf("{\"ok\":true,\"schema\":\"source-inspector/1\",\"revision\":%llu,\"live\":%s,\"complete\":%s,\"limits\":{\"nodes\":%d,\"edges\":%d},\"identityLedger\":{\"schema\":\"identity-ledger/1\",\"active\":%s},\"identityContinuity\":\"unknown\",\"supportStatus\":\"unknown\",\"nodes\":[",(unsigned long long)g_definition_revision,live?"true":"false",s->complete?"true":"false",SI_NODE_MAX,SI_EDGE_MAX,w->app.identity_active?"true":"false");
     for(size_t i=0;i<s->nn;++i){SiNode *n=&s->nodes[i];if(i)putchar(',');fputs("{\"key\":",stdout);js_string(n->key);fputs(",\"kind\":",stdout);js_string(n->kind);fputs(",\"id\":",stdout);js_string(n->id);fputs(",\"label\":",stdout);js_string(n->label);printf(",\"version\":%u,\"fieldId\":%u,\"definitionFingerprint\":\"%s\",\"valueFingerprint\":\"%s\"",n->version,n->field,n->definition,n->value);
+        si_incarnation(w,n);
         if(!strcmp(n->kind,"timber")){uint32_t id=0;int at=parse_u32(n->id,&id)?reference_timber_index(w,id):-1;if(at>=0){const Timber *t=&w->wood.timbers[at];const TimberAnchor *a=&w->wood.anchors[at];bool along_v=a->length_direction==SURFACE_DIRECTION_POS_V||a->length_direction==SURFACE_DIRECTION_NEG_V;printf(",\"placed\":%s,\"surface\":%u,\"lengthAxis\":\"%c\",\"nativeOwner\":",t->placed?"true":"false",a->placement_id,along_v?'v':'u');json_schedule_support_owner(w,id);}}putchar('}');}
     fputs("],\"edges\":[",stdout);for(size_t i=0;i<s->ne;++i){SiEdge *e=&s->edges[i];if(i)putchar(',');fputs("{\"from\":",stdout);js_string(e->from);fputs(",\"to\":",stdout);js_string(e->to);fputs(",\"relation\":",stdout);js_string(e->relation);fputs(",\"field\":",stdout);js_string(e->field);printf(",\"active\":%s}",e->active?"true":"false");}printf("],\"sourceFingerprint\":\"%s\",\"timberSupports\":",fingerprint);json_timber_supports(w,fingerprint);
     if(!live){fputs(",\"timberReferences\":",stdout);json_references_world(w,fingerprint);}fputs("}\n",stdout);
 }
 static void cmd_source_inspect(void)
 {SiIndex *s=si_build(&g_world);if(!s){eng_bridge_error("MEMORY","Cannot allocate readonly source index");return;}si_json(s,&g_world,true);free(s);}
+/* Adoption reads the exact retained candidate. No publish, settlement, serial
+ * allocation, history mutation or frontend reconstruction occurs here. */
+static void cmd_engineering_preview_source(const char *arg)
+{
+    uint32_t token;
+    if(!arg||!parse_u32(arg,&token)||!g_preview.ready||!batch_token_kind(0)||
+       g_preview.token!=token||!g_preview.valid||!g_preview.transaction){
+        eng_bridge_error("TOKEN","Engineering candidate is not available for source inspection");return;
+    }
+    if(g_history.grouping||g_preview.revision!=g_definition_revision||
+       !app_world_candidate_current(g_preview.transaction,&g_world)){
+        eng_bridge_error("STALE","Engineering candidate source has changed");return;
+    }
+    const World *candidate=&g_preview.transaction->after;
+    SiIndex *s=si_build(candidate);
+    if(!s){eng_bridge_error("MEMORY","Cannot allocate candidate source index");return;}
+    si_json(s,candidate,false);free(s);
+}
 static void cmd_source_inspect_file(const char *path)
 {
     size_t length=0;char *text=eng_read_file(path,&length);if(!text){eng_bridge_error("INPUT","Cannot read bounded source snapshot");return;}bool encoded=!memchr(text,0,length)&&utf8_is_valid(text);free(text);if(!encoded){eng_bridge_error("ENCODING","Snapshot must be UTF-8 without NUL");return;}

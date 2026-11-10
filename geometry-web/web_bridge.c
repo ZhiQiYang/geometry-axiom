@@ -18,6 +18,7 @@
  * 幾何本體在 current_geometry.c；本檔只做 stdin/JSON 橋。
  */
 #define _CRT_SECURE_NO_WARNINGS
+#define _CRT_RAND_S
 #ifdef _WIN32
 #include <fcntl.h>
 #include <io.h>
@@ -216,7 +217,7 @@ static bool app_replace_world(World *world,bool use_default)
     AppReplacement operation={use_default,g_definition_revision};
     bool ok=app_world_candidate_evaluate(candidate,app_replace_evaluate,&operation)==GEO_CANDIDATE_OK;
     if(ok)ok=app_world_candidate_seal(candidate)&&app_world_candidate_publish(candidate,world,false);
-    if(ok){g_definition_revision=operation.completed_revision+1;history_clear();g_preview.ready=false;}
+    if(ok){g_definition_revision=operation.completed_revision+1;history_clear();g_preview.ready=false;identity_clear_epoch();}
     app_world_candidate_destroy(candidate);return ok;
 }
 /* 內建預設 = room_a.scene 的內容，走同一條解析路。 */
@@ -314,8 +315,9 @@ static void cmd_drag(int guide_idx, int v, Coord x, Coord y)
     }
     snprintf(command,sizeof command,"move %u %s",g->id,expr);
     uint32_t token=g_preview.token;
+    uint64_t before_revision=g_definition_revision;
     bool ok=feed_line("drag",++g_input_line_no,command,&g_world);
-    cmd_reference_result(ok,token);
+    cmd_reference_result(ok,token,before_revision);
 }
 
 /* A batch may delete and recreate a field before its final World is compared.
@@ -379,11 +381,15 @@ static void json_deleted_objects(const World *before,bool all)
 static void cmd_line(const char *text)
 {
     uint32_t token=g_preview.token;
+    uint64_t before_revision=g_definition_revision;
     World *before=malloc(sizeof *before);
     if(!before){fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
     *before=g_world;
     bool ok=feed_line("input",++g_input_line_no,text,&g_world);
     printf("{\"ok\":%s",ok?"true":"false");
+    printf(",\"history_changed\":%s,\"revision\":%llu,\"before_revision\":%llu",
+        ok&&g_definition_revision!=before_revision?"true":"false",
+        (unsigned long long)g_definition_revision,(unsigned long long)before_revision);
     if(!ok){fputs(",\"error\":",stdout);js_string(scene_last_error());}
     if(g_preview.ready && g_preview.token!=token){fputs(",\"preview\":",stdout);json_reference_preview();}
     /* These are observed removals, not inferred identity from a fingerprint.
@@ -453,6 +459,7 @@ static void cmd_loadfile(const char *path)
         if(!app_world_candidate_publish(transaction,&g_world,false)){
             history_unrecord();app_world_candidate_destroy(transaction);
             fputs("{\"ok\":false,\"error\":\"Scene import candidate changed during validation\"}\n",stdout);return;}
+        identity_clear_epoch();
         g_preview.ready=false;
         ++g_definition_revision;
         char hash[65]; bool hashed=eng_definition_hash(&g_world,hash);
@@ -599,7 +606,7 @@ static bool next_surface_ids(uint32_t *out, size_t n)
 /* newid [n]：各類物件一個尚未被占用的 id，外加 n 個 surface 用的 id（預設 1）。 */
 static void cmd_newid(size_t surface_count)
 {
-    uint32_t mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam, mar, mab;
+    uint32_t mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam, mar, mab, mfinish, mfill;
     uint32_t surfaces[NEWID_MAX_SURFACES];
 
     if (surface_count < 1 || surface_count > NEWID_MAX_SURFACES) {
@@ -628,11 +635,13 @@ static void cmd_newid(size_t surface_count)
     WORLD_NEXT_ID(mar,g_world.wood.assembly.rules,g_world.wood.assembly.rule_count,true);
     WORLD_NEXT_ID(mab,g_world.wood.assembly.bindings,g_world.wood.assembly.binding_count,true);
     uint32_t mai=1;WORLD_NEXT_ID(mai,g_world.wood.assembly.instances,g_world.wood.assembly.instance_count,true);
+    WORLD_NEXT_ID(mfinish,g_world.wood.finish_surfaces.items,g_world.wood.finish_surfaces.count,true);
+    WORLD_NEXT_ID(mfill,g_world.wood.finish_surfaces.fills,g_world.wood.finish_surfaces.fill_count,true);
     /* 既有的純量欄位一個都沒動:舊的呼叫端(以及 canvas_test.js)照常可用。 */
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
            "\"grid\":%u,\"gridSystem\":%u,\"gridBinding\":%u,\"timber\":%u,\"space\":%u,"
-           "\"column\":%u,\"beam\":%u,\"datum\":%u,\"parameter\":%u,\"assemblyRule\":%u,\"assemblyBinding\":%u,\"assemblyInstance\":%u,\"surfaces\":[",
-           mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam, mar, mab, mai);
+           "\"column\":%u,\"beam\":%u,\"datum\":%u,\"parameter\":%u,\"assemblyRule\":%u,\"assemblyBinding\":%u,\"assemblyInstance\":%u,\"finishSurface\":%u,\"panelFill\":%u,\"surfaces\":[",
+           mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam, mar, mab, mai, mfinish, mfill);
     for (size_t i = 0; i < surface_count; ++i) {
         if (i) putchar(',');
         printf("%u", surfaces[i]);
@@ -655,7 +664,7 @@ static void cmd_surfaces(void)
         if (i) putchar(',');
         printf("{\"id\":%u,\"boundary\":%u,"
                "\"origin\":[%lld,%lld,%lld],"
-               "\"u\":[%lld,%lld,%lld],\"v\":[%lld,%lld,%lld]}",
+               "\"u\":[%lld,%lld,%lld],\"v\":[%lld,%lld,%lld],\"outerEdges\":[",
                (unsigned)p->id, (unsigned)p->boundary_id,
                (long long)p->frame.origin.x, (long long)p->frame.origin.y,
                (long long)p->frame.origin.z,
@@ -663,6 +672,15 @@ static void cmd_surfaces(void)
                (long long)p->frame.axis_u.z,
                (long long)p->frame.axis_v.x, (long long)p->frame.axis_v.y,
                (long long)p->frame.axis_v.z);
+        if(!p->derived_fill_id){PolygonLoop2 outline;placement_outline(p,world_placement_boundary(&g_world,p),&outline);
+            for(size_t edge=0;edge<outline.count;++edge){SurfaceSegment2 segment;if(!loop_get_edge_segment(&outline,edge,&segment))continue;
+                printf("%s{\"edge\":%zu,\"axis\":\"%s\"}",edge?",":"",edge,segment.start.u==segment.end.u?"v":"u");}}
+        else{WoodDerivedContext context=app_dp_context(&g_world);WoodDerivedValue value;bool comma=false;
+            if(app_dp_read(&g_world,p->id,&value))for(size_t c=0;c<p->component_count;++c){const PolygonLoop2 *loop=&p->components[c].outline;
+                for(size_t edge=0;edge<loop->count;++edge){SurfaceSegment2 segment;char key[512];
+                    if(!loop_get_edge_segment(loop,edge,&segment)||!wood_dp_edge_key(&context,&value,c,-1,edge,key,sizeof key))continue;
+                    printf("%s{\"edgeKey\":%s,\"axis\":\"%s\"}",comma?",":"",key,segment.start.u==segment.end.u?"v":"u");comma=true;}}}
+        fputs("]}",stdout);
     }
     fputs("]}\n", stdout);
 }
@@ -969,15 +987,26 @@ static void cmd_objects(void)
 }
 
 /* dump：World → 可重放 DSL 文本（存檔/匯出）。 */
-static void cmd_dump(void)
+static void emit_dump_text(bool deidentified)
 {
+    char problem[192];
+    bool complete = identity_dump_ok(&g_world, problem, sizeof problem);
+    if (!deidentified && !complete) {
+        fputs("{\"ok\":false,\"error\":", stdout);
+        js_string(problem);
+        fputs("}\n", stdout);
+        return;
+    }
     FILE *tmp = tmpfile();
 
     if (tmp == NULL) {
         fputs("{\"ok\":false,\"error\":\"暫存檔失敗\"}\n", stdout);
         return;
     }
+    bool saved_marks = g_identity_include_marks;
+    if (deidentified) g_identity_include_marks = false;
     world_dump_dsl(&g_world, tmp);
+    g_identity_include_marks = saved_marks;
     fflush(tmp);
     rewind(tmp);
 
@@ -998,16 +1027,91 @@ static void cmd_dump(void)
     fputs("\",",stdout);json_engineering_capabilities(&g_world);
     printf(",\"revision\":%llu",(unsigned long long)g_definition_revision);
     char hash[65];if(eng_definition_hash(&g_world,hash))printf(",\"definition_sha256\":\"%s\"",hash);
+    if (deidentified && !complete) {
+        fputs(",\"diagnostic\":", stdout);
+        js_string("身分帳不完整，此輸出不能還原記號");
+    }
     fputs("}\n", stdout);
     fclose(tmp);
 }
+static void cmd_dump(void) { emit_dump_text(false); }
+static void cmd_dump_deidentified(void) { emit_dump_text(true); }
+static void cmd_identity_epoch(const char *hex)
+{
+    char err[160];
+    if (!identity_set_epoch(&g_world, hex, err, sizeof err)) {
+        fputs("{\"ok\":false,\"error\":", stdout);
+        js_string(err);
+        fputs("}\n", stdout);
+        return;
+    }
+    fputs("{\"ok\":true}\n", stdout);
+}
+static void cmd_identity_read(void)
+{
+    fputs("{\"ok\":true,\"active\":", stdout);
+    fputs(g_world.app.identity_active ? "true" : "false", stdout);
+    fputs(",\"epochSet\":", stdout);
+    fputs(g_identity_epoch_set ? "true" : "false", stdout);
+    printf(",\"nextSerial\":%llu,\"marks\":[", (unsigned long long)g_identity_next_serial);
+    bool first = true;
+    for (uint32_t i = 0; i < g_world.app.identity_mark_count; ++i) {
+        const AppIdentityMark *mark = &g_world.app.identity_marks[i];
+        char text[64];
+        if (!identity_format_mark(mark, text, sizeof text)) continue;
+        if (!first) putchar(',');
+        first = false;
+        fputs("{\"kind\":", stdout);
+        js_string(identity_kind_name(mark->kind) ? identity_kind_name(mark->kind) : "unknown");
+        printf(",\"id\":%u", mark->id);
+        if (mark->kind == APP_IDENTITY_FIELD) printf(",\"fieldId\":%u", mark->field_id);
+        fputs(",\"mark\":", stdout);
+        js_string(text);
+        putchar('}');
+    }
+    fputs("]}\n", stdout);
+}
+
+/* Read-only seam for the desktop host gate. It does not execute the line. */
+static void cmd_host_gate_check(const char *arg)
+{
+    while (*arg == ' ' || *arg == '\t') ++arg;
+    int mode = -1;
+    if (strncmp(arg, "desktop", 7) == 0 && (arg[7] == ' ' || arg[7] == '\t' || arg[7] == '\0')) {
+        mode = 1;
+        arg += 7;
+    } else if (strncmp(arg, "none", 4) == 0 && (arg[4] == ' ' || arg[4] == '\t' || arg[4] == '\0')) {
+        mode = 0;
+        arg += 4;
+    }
+    if (mode < 0) {
+        fputs("{\"ok\":false,\"error\":\"host-gate-check 用法：desktop|none 一行互動指令\"}\n", stdout);
+        return;
+    }
+    while (*arg == ' ' || *arg == '\t') ++arg;
+    char line[SCENE_MAX_LINE];
+    snprintf(line, sizeof line, "%s", arg);
+    char *hash = strchr(line, '#');
+    if (hash != NULL) *hash = '\0';
+    char *tokens[SCENE_MAX_TOKENS];
+    int count = split_tokens(line, tokens, SCENE_MAX_TOKENS);
+    char message[160];
+    bool rejected = host_gate_rejects(mode, &g_world, tokens, count, message, sizeof message);
+    fputs("{\"ok\":true,\"rejected\":", stdout);
+    fputs(rejected ? "true" : "false", stdout);
+    fputs(",\"message\":", stdout);
+    js_string(message);
+    fputs("}\n", stdout);
+}
 
 #include "engineering_bridge.inc"
+#include "definition_import_bridge.inc"
 #include "section_profile_bridge.inc"
 #include "panel_fill_bridge.inc"
 #include "scene-import-bridge.inc"
 #include "assembly_bridge.inc"
 #include "source-inspector-bridge.inc"
+#include "timber_edit_bridge.inc"
 
 /* 視圖點已包含 frame 原點與構件尺寸；不能套用局部定義的單項上限。 */
 static bool view_coord_in_range(Coord value)
@@ -1088,6 +1192,16 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_source_inspect();
         } else if (strcmp(line,"source-inspect-file")==0 && arg) {
             cmd_source_inspect_file(arg);
+        } else if (strcmp(line,"engineering-preview-source")==0 && arg) {
+            cmd_engineering_preview_source(arg);
+        } else if (strcmp(line,"timber-edit-read")==0 && arg) {
+            cmd_timber_edit_read(arg);
+        } else if (strcmp(line,"timber-edit-preview")==0 && arg) {
+            cmd_timber_edit_preview(arg);
+        } else if (strcmp(line,"timber-edit-confirm")==0) {
+            cmd_timber_edit_confirm(arg);
+        } else if (strcmp(line,"timber-edit-cancel")==0) {
+            cmd_timber_edit_cancel(arg);
         } else if (strcmp(line,"engineering-read")==0 && !arg) {
             cmd_engineering_read();
         } else if (strcmp(line,"engineering-preview")==0 && arg) {
@@ -1098,6 +1212,14 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_engineering_cancel(arg);
         } else if (strcmp(line,"engineering-validate")==0 && arg) {
             cmd_engineering_validate(arg);
+        } else if (strcmp(line,"definition-import-read")==0 && arg) {
+            cmd_definition_import_read(arg);
+        } else if (strcmp(line,"definition-import-preview")==0 && arg) {
+            cmd_definition_import_preview(arg);
+        } else if (strcmp(line,"definition-import-confirm")==0) {
+            cmd_definition_import_confirm(arg);
+        } else if (strcmp(line,"definition-import-cancel")==0) {
+            cmd_definition_import_cancel(arg);
         } else if (strcmp(line, "grid-preview") == 0 && arg != NULL) {
             cmd_grid_preview(arg);
         } else if (strcmp(line, "grid-rule-query") == 0) {
@@ -1177,6 +1299,14 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_objects();
         } else if (strcmp(line, "dump") == 0) {
             cmd_dump();
+        } else if (strcmp(line, "dump-deidentified") == 0 && !arg) {
+            cmd_dump_deidentified();
+        } else if (strcmp(line, "identity-epoch") == 0 && arg) {
+            cmd_identity_epoch(arg);
+        } else if (strcmp(line, "identity-read") == 0 && !arg) {
+            cmd_identity_read();
+        } else if (strcmp(line, "host-gate-check") == 0 && arg) {
+            cmd_host_gate_check(arg);
         } else {
             fputs("{\"ok\":false,\"error\":\"不認得的橋接指令\"}\n", stdout);
         }

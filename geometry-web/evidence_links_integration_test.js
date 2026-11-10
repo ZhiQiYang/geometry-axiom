@@ -171,7 +171,7 @@ const check=(name,ok,details)=>{checks.push({name,pass:ok===true,...(details?{de
   await parameter(false,'459',false);await page.waitForSelector('[data-evidence-status="needs-reassociation"]');check(width+' native recreation exposes explicit current-field reassociation',await page.locator('[data-evidence-rebind-target] option[value="0:0"]').count()===1&&await page.locator('[data-evidence-value="model"]').innerText()==='459 mm');
   // Calibrated source is synthetic setup; adoption and evidence use actual UI.
   await ev(()=>{const p=ReferenceWorkspace.active(1);p.calibration={points:[[0,0],[100,0]],distanceMm:2000,inputValue:2000,inputUnit:'mm'};p.mmPerPx=20;ReferenceWorkspace.changed(1);renderFaceInspector();feFit([0,0,6000,4000]);});
-  await page.locator('#roomSourceCreate').click();await page.waitForFunction(()=>RoomCollectionWorkspace.controller.state().rooms.length===1&&!RoomCollectionWorkspace.hasWork);
+  await page.locator('#roomNew').click();await page.waitForFunction(()=>RoomCollectionWorkspace.controller.state().rooms.length===1&&!RoomCollectionWorkspace.hasWork);
   check(width+' shared-room original source exposes the same evidence disclosure',await page.locator('#refRecordDetails [data-evidence-host]').count()===1);
   await face();const sharedBefore=await native(),sharedCount=await ev(()=>ReferenceWorkspace.history.undo.length),previous=(await bundle()).links.length;
   await ev(()=>window.__sharedUndo=[...ReferenceWorkspace.history.undo]);

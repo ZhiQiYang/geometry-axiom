@@ -1,0 +1,54 @@
+{
+  "producerCommit": "343a8abe83029dd883e5e5b1b8e3112411fefe81",
+  "axiomRevision": "0fd8cacf799ed6ddf0fa7588243aa4e4bbb94c18",
+  "axiomSha256LF": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.39",
+  "python": "3.12.14",
+  "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "stackLimitBytes": 16777216,
+  "adapterSha256": "023dd89c26e64f4f0d3724400c3faa7a99b68fba9917c9f156e4de7f09d685b9",
+  "fixtures": {
+    "profile": {
+      "file": "profile.json",
+      "bytes": 35777,
+      "sha256": "fdb8bac718acb0534ec37fa30b4c86ec8a0336d430f9984bb9993ce65a0e84fb",
+      "capabilities": [
+        "extrusion/1",
+        "shell/1",
+        "composite-space/1",
+        "solid-composition/1",
+        "model-export/1",
+        "section-profile/1"
+      ],
+      "sameVersionReplay": "whole package equal"
+    },
+    "stagger": {
+      "file": "stagger.json",
+      "bytes": 3962,
+      "sha256": "aea91c046bee429c4b04fef724c3f27754949059bc1ef58c2f74f73a25fabf66",
+      "capabilities": [
+        "extrusion/1",
+        "shell/1",
+        "composite-space/1",
+        "solid-composition/1",
+        "model-export/1"
+      ],
+      "sameVersionReplay": "whole package equal"
+    },
+    "card": {
+      "file": "card.json",
+      "bytes": 14935,
+      "sha256": "98a0b5b927ff56afe06d722ffd932ca193db9f81b1c24b8dce1d627f4e370952",
+      "capabilities": [
+        "extrusion/1",
+        "shell/1",
+        "composite-space/1",
+        "solid-composition/1",
+        "model-export/1",
+        "parameters/1",
+        "grid-card-reference/1"
+      ],
+      "sameVersionReplay": "whole package equal"
+    }
+  }
+}

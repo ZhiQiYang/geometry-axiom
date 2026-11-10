@@ -126,8 +126,32 @@
     return {kind: 'member', memberId: joint.targetMember};
   }
 
+  function assemblyBayRepeatShape(rule) {
+    const reject=()=>{throw Error('重複開間只支援同槽位的兩支主支與一支端接副支；請保留原規則，另選符合的固定版本。');};
+    if(!rule || rule.members?.length!==3 || rule.joints?.length!==2 ||
+      rule.joints.some(j=>j.kind!=='end-to-side'||j.dir!=='u'))return reject();
+    const start=rule.joints.find(j=>j.end==='start'),finish=rule.joints.find(j=>j.end==='finish');
+    if(!start||!finish||start.side!=='+u'||finish.side!=='-u'||
+      start.terminatedMember!==finish.terminatedMember||start.targetMember===finish.targetMember)return reject();
+    const left=rule.members.find(m=>m.id===start.targetMember),right=rule.members.find(m=>m.id===finish.targetMember),
+      secondary=rule.members.find(m=>m.id===start.terminatedMember);
+    if(!left||!right||!secondary||left===secondary||right===secondary||left.slotId!==right.slotId)return reject();
+    return {primaryMembers:[left.id,right.id],primarySlot:left.slotId,secondaryMember:secondary.id};
+  }
+  function assemblyBayRepeatDraft(rule) {
+    assemblyBayRepeatShape(rule);
+    return {layout:'bay-repeat',primaries:[1,2].map(key=>({key,at:null,
+      ends:{start:{kind:'timber',id:null},finish:{kind:'timber',id:null}}})),
+      secondaryLines:[{key:1,at:null}],omit:[]};
+  }
+  function assemblyBayRepeatEdges(edges) {
+    if(!Array.isArray(edges))return [];
+    return edges.filter(edge=>edge.axis==='v'&&(Array.isArray(edge.edgeKey)&&edge.edgeKey.length>0||Number.isInteger(edge.edge)&&edge.edge>=0&&edge.edge<=0xffffffff)).map(edge=>edge.edgeKey??edge.edge);
+  }
+
   return freeze({id: 'woodworking/1', panel, section, labels, materialDraft, sectionMember,
     assemblyInstanceMembers, canRetargetAssemblyInstance, assemblyInstanceEnd,
+    assemblyBayRepeatShape, assemblyBayRepeatDraft, assemblyBayRepeatEdges,
     engineeringRoles, placementRoles, primaryAxisInfo, roleForClick, subgridRoleWarning, roleOptions,
     materialPresets: [{width: panel.width, length: panel.length}, {width: 910, length: 1820}],
     thicknessPresets: [panel.thickness, 9],

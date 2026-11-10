@@ -866,6 +866,7 @@ typedef GeoGridAxisDef GridAxisDef;
 #define GRID_SYSTEM_NAME_MAX (GEO_GRID_NAME_CAPACITY-1)
 #define GRID_MAX_SUBDIVISION_RULES GEO_GRID_RULE_CAPACITY
 #define GRID_SUBDIVISION_CAPABILITY "grid-subdivision-rules/1"
+#define GRID_SUBDIVISION_PANEL_CAPABILITY "grid-subdivision-rules/2"
 /* D64/I74 (GEO-262): the card reference is part of the K grid-system definition. */
 #define GRID_CARD_CAPABILITY "grid-card-reference/1"
 typedef GeoGridCardReference GridCardReference;
@@ -2898,6 +2899,7 @@ static bool assembly_rebuild(World *,char *,size_t);
 static bool assembly_owned(const World *,uint32_t);
 static void assembly_owned_prefix(const World *,uint32_t,const char *,FILE *);
 static bool assembly_generation_prepare(World *);
+static bool assembly_bay_prepare(World *);
 static bool assembly_generation_check(const World *);
 static bool assembly_generation_integrity(const World *);
 static const AsmRuleVersion *assembly_rule(const World *,uint32_t,uint32_t);
@@ -3042,6 +3044,20 @@ static bool history_redo(World *w)
 static void history_group_rollback(World *world)
 {app_history_group_abort(&g_history,world);}
 
+/* Host mode is process state. Only gdi_show_three_views assigns desktop.
+ * Web, CLI, and core tests leave it unset and never read it. */
+static int g_host_mode;
+
+static bool host_gate_rejects(int mode, const World *world, char *tokens[], int count, char *message, size_t cap)
+{
+    if (message && cap) message[0] = '\0';
+    if (mode != 1 || !world || !world->app.identity_active) return false;
+    if (count == 1 && tokens && tokens[0] &&
+        (!strcmp(tokens[0], "undo") || !strcmp(tokens[0], "redo"))) return false;
+    if (message && cap) snprintf(message, cap, "%s", "桌面版尚不支援身分帳，唯讀開啟");
+    return true;
+}
+
 /* 互動入口共用：undo/redo・歷史群組攔截 + 變更前記快照（失敗自動取消）。
  * 回傳值同 apply_scene_line。 */
 static bool apply_interactive_tokens(
@@ -3111,12 +3127,17 @@ static bool apply_interactive_tokens(
         return ok;
     }
 
-    if (!g_history.grouping) {
+    bool recorded = !g_history.grouping;
+    if (recorded) {
         history_record(world);
     }
     uint32_t preview_before = reference_preview_token();
+    uint64_t revision_before = g_definition_revision;
     if (apply_scene_line(path, line_no, tokens, count, world)) {
-        app_history_group_mark_dirty(&g_history);
+        /* A successful no-op does not create history or discard redo. */
+        if (g_definition_revision == revision_before) {
+            if (recorded) history_unrecord();
+        } else app_history_group_mark_dirty(&g_history);
         return true;
     }
     if (g_history.grouping) {
@@ -3889,6 +3910,12 @@ static void interactive_apply_line(GdiApp *app, HWND window, const char *text)
     int count = split_tokens(line, tokens, SCENE_MAX_TOKENS);
 
     if (count <= 0) {
+        return;
+    }
+
+    char gate_message[160];
+    if (host_gate_rejects(g_host_mode, app->world, tokens, count, gate_message, sizeof gate_message)) {
+        gdi_set_status(app, gate_message);
         return;
     }
 
@@ -4681,7 +4708,10 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                                         path, sizeof path, NULL, NULL) > 1) {
                     FILE *f = fopen(path, "wb");
                     if (f != NULL) {
+                        bool saved_marks = g_identity_include_marks;
+                        g_identity_include_marks = false;
                         world_dump_dsl(app->world, f);
+                        g_identity_include_marks = saved_marks;
                         fclose(f);
                         gdi_set_status(app, "✓ 已匯出 .scene");
                     } else {
@@ -5053,6 +5083,7 @@ static bool gdi_show_three_views(World *world)
 
     MSG msg;
 
+    g_host_mode = 1;
     while (GetMessageW(&msg, NULL, 0, 0) > 0) {
         if (!TranslateAcceleratorW(window, haccel, &msg)) {
             TranslateMessage(&msg);
@@ -6166,23 +6197,22 @@ static bool world_replace_object(
     size_t size
 )
 {
-    /* World 是 POD（固定容量陣列），整份 memcpy 就是快照。 */
-    World backup = *world;
-
-    memcpy(slot, replacement, size);
-
-    if (!world_revalidate(world)) {
-        *world = backup;
-        return false;
-    }
-
-    return true;
+    /* A full definition snapshot must not compound large parser stack frames. */
+    World *backup=malloc(sizeof *backup);
+    if(!backup){set_revalidate_error("CAPACITY: replacement snapshot unavailable");return false;}
+    *backup=*world;
+    memcpy(slot,replacement,size);
+    bool ok=world_revalidate(world);
+    if(!ok)*world=*backup;
+    free(backup);return ok;
 }
 
 static bool app_boundary_replace(World *world,const SpaceBoundarySurface *value)
-{World backup=*world;if(!app_boundary_stage(world,value)||!world_revalidate(world)){*world=backup;return false;}return true;}
+{World *backup=malloc(sizeof *backup);if(!backup){set_revalidate_error("CAPACITY: boundary snapshot unavailable");return false;}*backup=*world;
+ bool ok=app_boundary_stage(world,value)&&world_revalidate(world);if(!ok)*world=*backup;free(backup);return ok;}
 static bool app_placement_replace(World *world,const PlacementSurface *value)
-{World backup=*world;if(!app_placement_stage(world,value)||!world_revalidate(world)){*world=backup;return false;}return true;}
+{World *backup=malloc(sizeof *backup);if(!backup){set_revalidate_error("CAPACITY: placement snapshot unavailable");return false;}*backup=*world;
+ bool ok=app_placement_stage(world,value)&&world_revalidate(world);if(!ok)*world=*backup;free(backup);return ok;}
 
 /*
  * World 全量重驗：
@@ -6269,6 +6299,9 @@ static bool world_revalidate_candidate(World *world,World *candidate)
     char grid_error[256]="";
     if (!boundary_keys_reconcile(candidate,g_subgrid_before,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+    }
+    if (!assembly_bay_prepare(candidate)) {
+        set_revalidate_error(g_engineering_error); reference_capture_trial(candidate); return false;
     }
     if (!reference_parameters_rebuild(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
@@ -6380,18 +6413,39 @@ static bool app_world_revalidate_staged(World *world,World *staged)
     memcpy(world,staged,sizeof *world);return true;
 }
 
-/* I8a confirmation revalidates the same retained candidate. The existing
- * sealed bytes and provider set must pass before its resolver can be reopened. */
-static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live)
+/* Commit finalization runs after full revalidation and before H captures the
+ * evaluated after bytes. Preview construction never calls this commit path. */
+typedef bool (*AppWorldCommitFinalizer)(AppWorldCandidate *,void *);
+typedef struct {
+    AppWorldCandidate *candidate;AppWorldCommitFinalizer finalize;void *opaque;
+} AppWorldCommitCall;
+static bool app_world_commit_revalidate_evaluate(void *after,GeoEvalContext *sources,void *opaque)
 {
-    if(!app_world_candidate_current(candidate,live)||app_candidate_reopen(candidate->control,live,g_definition_revision,app_world_provider_stamp(),
+    AppWorldCommitCall *call=opaque;
+    if(!app_world_revalidate_evaluate(after,sources,&call->candidate->before))return false;
+    return call->finalize(call->candidate,call->opaque);
+}
+/* The old seal, revision, providers, live World and keyed operation must pass
+ * before the same candidate and buffers receive a fresh complete evaluation. */
+static bool app_world_candidate_revalidate_commit(AppWorldCandidate *candidate,const World *live,
+    AppWorldCommitFinalizer finalize,void *opaque)
+{
+    if(!finalize||!app_world_candidate_current(candidate,live)||app_candidate_reopen(candidate->control,live,g_definition_revision,app_world_provider_stamp(),
         app_world_candidate_equal,NULL)!=GEO_CANDIDATE_OK)return false;
     const World *previous=g_subgrid_before;g_subgrid_before=&candidate->before;
     bool previous_keyed=g_boundary_keyed_update;uint32_t previous_keyed_id=g_boundary_keyed_id;
     g_boundary_keyed_update=candidate->operation.boundary_keyed;g_boundary_keyed_id=candidate->operation.boundary_id;
-    bool ok=app_world_candidate_evaluate(candidate,app_world_revalidate_evaluate,&candidate->before)==GEO_CANDIDATE_OK;
+    AppWorldCommitCall call={candidate,finalize,opaque};
+    bool ok=app_world_candidate_evaluate(candidate,app_world_commit_revalidate_evaluate,&call)==GEO_CANDIDATE_OK;
     g_boundary_keyed_update=previous_keyed;g_boundary_keyed_id=previous_keyed_id;g_subgrid_before=previous;
     return ok&&app_world_candidate_seal(candidate);
+}
+static bool app_world_candidate_revalidate_retained(AppWorldCandidate *candidate,const World *live);
+/* I8a confirmation revalidates the same retained candidate. The existing
+ * sealed bytes and provider set must pass before its resolver can be reopened. */
+static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live)
+{
+    return app_world_candidate_revalidate_retained(candidate,live);
 }
 
 /* ---- 共用小解析工具 ---- */
@@ -7487,10 +7541,12 @@ static bool apply_grid_line(
 
     /* I8a: preserve the parsed candidate even when parent count locking rejects it. */
     {
-        World trial=*world;
-        if (existing) trial.wood.grid_applications.items[existing-world->wood.grid_applications.items]=candidate;
-        else if (trial.wood.grid_applications.count<WORLD_MAX_GRIDS) trial.wood.grid_applications.items[trial.wood.grid_applications.count++]=candidate;
-        reference_capture_trial(&trial);
+        World *trial=malloc(sizeof *trial);
+        if(!trial){scene_error(path,line_no,"CAPACITY: grid trial snapshot unavailable");return false;}
+        *trial=*world;
+        if (existing) trial->wood.grid_applications.items[existing-world->wood.grid_applications.items]=candidate;
+        else if (trial->wood.grid_applications.count<WORLD_MAX_GRIDS) trial->wood.grid_applications.items[trial->wood.grid_applications.count++]=candidate;
+        reference_capture_trial(trial);free(trial);
     }
 
     char direct_error[320]="";
@@ -7509,15 +7565,14 @@ static bool apply_grid_line(
             return false;
         }
     } else {
-        World backup = *world;
-
+        World *backup=malloc(sizeof *backup);
+        if(!backup){scene_error(path,line_no,"CAPACITY: grid snapshot unavailable");return false;}
+        *backup=*world;
         world->wood.grid_applications.items[world->wood.grid_applications.count++] = candidate;
-
-        if (!world_revalidate(world)) {
-            *world = backup;
-            scene_error(path, line_no, "新增網格後有物件失效（已回滾）");
-            return false;
-        }
+        bool valid=world_revalidate(world);
+        if(!valid)*world=*backup;
+        free(backup);
+        if(!valid){scene_error(path,line_no,"新增網格後有物件失效（已回滾）");return false;}
     }
 
     return true;
@@ -7538,6 +7593,9 @@ static bool apply_span_auto_line(const char *p, int n, char **t, int c, World *w
 static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 { return apply_reference_move(p, n, t, c, w); }
 
+static void identity_note_key(uint8_t kind, uint32_t id, uint32_t field_id);
+static bool identity_accept_requires(const char *path, int line_no, World *world);
+
 #include "geometry-core/parameters.inc"
 #include "geometry-app/native/stagger_facts.inc"
 #include "geometry-core/references.inc"
@@ -7555,6 +7613,7 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 #include "geometry-core/panel_fill_layout.inc"
 #include "geometry-core/derived_placements.inc"
 #include "geometry-core/panel_fill_support.inc"
+#include "geometry-app/native/identity_ledger.inc"
 
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
@@ -9202,6 +9261,7 @@ static bool apply_delete_line(
             scene_error(path,line_no,"I37: boundary is still referenced by a grid-binding");return false;
         }
         (void)geo_region_keys_remove(&world->geo.region_data,id);
+        identity_note_key(APP_IDENTITY_BOUNDARY, id, 0);
         if(!app_boundary_remove(world,id)){*world=backup;return false;}
         /* 空間成員是參照：剔除後用剩下的成員重建空間。 */
         for(size_t index=0;index<geo_enclosures_count(&world->geo.enclosures);++index){
@@ -9266,6 +9326,7 @@ static bool apply_delete_line(
                 return false;
             }
         }
+        identity_note_key(APP_IDENTITY_PLACEMENT, id, 0);
         if(!app_placement_remove(world,id)){*world=backup;return false;}
         world_drop_canvas_pos(world, CANVAS_POS_PLACEMENT, id);
     } else if (strcmp(kind, "datum") == 0) {
@@ -9314,6 +9375,7 @@ static bool apply_delete_line(
             scene_error(path, line_no, "這支角材不存在");
             return false;
         }
+        identity_note_key(APP_IDENTITY_TIMBER, id, 0);
         memmove(&world->wood.timbers[ti], &world->wood.timbers[ti + 1],
                 (world->wood.timber_count - ti - 1) * sizeof world->wood.timbers[0]);
         memmove(&world->wood.anchors[ti], &world->wood.anchors[ti + 1],
@@ -9347,6 +9409,7 @@ static bool apply_delete_line(
             scene_error(path, line_no, "這根柱不存在");
             return false;
         }
+        identity_note_key(APP_IDENTITY_COLUMN, id, 0);
         memmove(&world->wood.columns[ci], &world->wood.columns[ci + 1],
                 (world->wood.column_count - ci - 1) * sizeof world->wood.columns[0]);
         --world->wood.column_count;
@@ -9361,6 +9424,7 @@ static bool apply_delete_line(
             scene_error(path, line_no, "這根樑不存在");
             return false;
         }
+        identity_note_key(APP_IDENTITY_BEAM, id, 0);
         memmove(&world->wood.beams[bi], &world->wood.beams[bi + 1],
                 (world->wood.beam_count - bi - 1) * sizeof world->wood.beams[0]);
         --world->wood.beam_count;
@@ -9474,7 +9538,10 @@ static bool apply_reset_line(
     (void)tokens;
 
     *world = (World){ 0 };
-    if(g_parsing_scene_file)memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
+    if(g_parsing_scene_file){
+        memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
+        g_identity_requires_seen=false;
+    }
     return true;
 }
 
@@ -9662,12 +9729,14 @@ static void world_dump_dsl(const World *world, FILE *out)
 
     boundary_keys_dump(world,out);
     if(grid_card_used(world)) fputs("requires " GRID_CARD_CAPABILITY "\n",out);
-    if(grid_subdivision_used(world)) fputs("requires " GRID_SUBDIVISION_CAPABILITY "\n",out);
+    if(grid_subdivision_used(world)) fprintf(out,"requires %s\n",grid_subdivision_capability(world));
     grid_systems_dump(world,out);
     grid_bindings_dump(world,out);
     engineering_dump_applications(world,out);
     if(!world->wood.finish_surfaces.host_count) world_dump_grids(world,out);
     if(world->wood.assembly.instance_count)fputs("requires assembly-timber-generation/1\n",out);
+    if(world->wood.assembly.bay_required)fputs("requires assembly-bay-repeat/1\n",out);
+    identity_dump_requires(world,out);
     if(!world->wood.finish_surfaces.host_count) reference_dump(world, out);
 
     for (size_t i = 0; i < geo_enclosures_count(&world->geo.enclosures); ++i) {
@@ -9722,10 +9791,10 @@ static void world_dump_dsl(const World *world, FILE *out)
                 (long long)b->z_hi);
     }
 
-    assembly_dump(world,out);
+    if(!world->wood.finish_surfaces.host_count)assembly_dump(world,out);
     sp_dump(world,out);
     fs_dump(world,out);
-    if(world->wood.finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);}
+    if(world->wood.finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);assembly_dump(world,out);}
     /* 畫布座標最後寫：它引用的物件要先存在。 */
     for (size_t i = 0; i < world->app.canvas_pos_count; ++i) {
         const CanvasPos *p = &world->app.canvas_pos[i];
@@ -9738,6 +9807,7 @@ static void world_dump_dsl(const World *world, FILE *out)
                 p->kind == CANVAS_POS_ASSEMBLY_RULE ? "assembly-rule" : p->kind == CANVAS_POS_ASSEMBLY_BINDING ? "assembly-binding" : p->kind == CANVAS_POS_PARAMETER ? "parameter" : p->kind == CANVAS_POS_GRID_BINDING ? "grid-binding" : p->kind == CANVAS_POS_GRID_SYSTEM ? "grid-system" : "beam",
                 (unsigned)p->id, (long long)p->x, (long long)p->y);
     }
+    identity_dump_lines(world,out);
 }
 
 /*
@@ -9850,7 +9920,7 @@ static const struct {
     { "grid-source-rule", 4, 16, false, "grid-source-rule SID create|key K name-hex HEX selector all-cells|cell I J divide U V", apply_grid_source_rule },
     { "grid-source-rule-highwater", 4, 4, false, "grid-source-rule-highwater SID next K|exhausted (file only)", apply_grid_source_rule_highwater },
     { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line },
-    { "owned", 5, 20, false, "owned timber|place instance member native-arguments", apply_assembly_owned_line },
+    { "owned", 5, 32, false, "owned instance member|bay-primary|bay-secondary native-arguments", apply_assembly_owned_line },
     { "section-profile", 3, 3, false, "section-profile profile|member|run base64-json (atomic scene only)", apply_section_profile_line },
     { "panel-fill", 4, 4, false, "panel-fill id definition-hex HEX (atomic scene only)", apply_panel_fill_line },
     { "derived-placement", 4, 4, false, "derived-placement id definition-hex HEX (atomic scene only)", apply_derived_placement_line },
@@ -9955,6 +10025,8 @@ static const struct {
         "canvas-pos boundary|placement|space|column|beam id x y",
         apply_canvaspos_line
     },
+    { "identity-ledger", 2, 2, false, "identity-ledger activate", apply_identity_ledger_line },
+    { "identity", 4, 5, false, "identity boundary|placement|column|beam|timber|parameter id mark | identity parameter-field id field mark", apply_identity_line },
     { NULL, 0, 0, false, NULL, NULL }
 };
 
@@ -10014,8 +10086,12 @@ static bool parse_scene_file(const char *path, World *out_world)
     }
 
     g_parsing_scene_file = true;
+    g_identity_requires_seen = false;
+    identity_explicit_reset();
     memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
     g_rule_scene_required=false;
+    g_rule_scene_panel_required=false;
+    g_rule_scene_panel_encountered=false;
     sp_scene_required=false;
     fs_scene_required=false; fs_scene_engineering=false; fs_scene_parameters=false;
     grid_card_scene_required=false;
@@ -10097,6 +10173,9 @@ static bool parse_scene_file(const char *path, World *out_world)
             scene_error(path,line_no,"I39: parameter block may only contain parameter records"); ok=false; break;
         }
         ok = apply_scene_line(path, line_no, tokens, count, out_world);
+        /* R32: requirements accumulate across replay, including later deletes,
+         * reset or an explicit change back from PANEL to REPEAT. */
+        if(ok && grid_subdivision_panel_used(out_world))g_rule_scene_panel_encountered=true;
     }
 
     fclose(in);
@@ -10119,7 +10198,7 @@ static bool parse_scene_file(const char *path, World *out_world)
     }
 
     if(ok && grid_card_used(out_world) && (!grid_card_scene_required||!fs_scene_parameters)){scene_error(path,line_no,"I74 CAPABILITY: card reference requires grid-card-reference/1 and parameters/1 declarations");ok=false;}
-    if (ok && !grid_rules_scene_integrity(out_world)) { scene_error(path,line_no,"I25a: source rule capability/highwater closure missing"); ok=false; }
+    if(ok){const char *rule_error=grid_rules_scene_integrity_error(out_world);if(rule_error){scene_error(path,line_no,rule_error);ok=false;}}
     if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
     if (ok && !fs_scene_integrity()) { scene_error(path,line_no,"I56: panel-fill/1 also requires engineering-spec/1 and parameters/1 declarations"); ok=false; }
 
@@ -10131,6 +10210,7 @@ static bool parse_scene_file(const char *path, World *out_world)
                 : "場景收尾重驗失敗");
         ok = false;
     }
+    if (ok && !identity_finish_load(path, line_no, out_world)) ok = false;
 
     g_parsing_scene_file = false;
     g_parameter_scene_loading = false;
@@ -10172,7 +10252,7 @@ static void print_cut_list(const World *world)
         );
 
         for (size_t k = 0; k < groups[g].count; ++k) {
-            printf("%s%" PRIu32, k == 0 ? "" : "、", groups[g].ids[k]);
+            printf("%s%" PRIu32, k == 0 ? "" : "、", report.ids[groups[g].first+k]);
         }
 
         printf("）\n");

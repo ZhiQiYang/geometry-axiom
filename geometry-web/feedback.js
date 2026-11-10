@@ -209,7 +209,7 @@
   async function collect(k, note, autoReason) {
     const tMark = now();
     let world = "";
-    try { const d = await rawApi("dump"); if (d && d.ok) world = d.text || ""; } catch (_) { }
+    try { const d = await rawApi("dump-deidentified"); if (d && d.ok) world = d.text || ""; } catch (_) { }
     let page = "";
     try { page = await snapshotPage(); } catch (e) { push({ k: "console", msg: "回報快照失敗:" + e.message }); }
     return {

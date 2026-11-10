@@ -10,8 +10,16 @@ const root = path.join(__dirname, '..');
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 const plain = value => JSON.parse(JSON.stringify(value));
 
+test('R06 outer edge choices retain exact R41 keys and exclude perpendicular edges',()=>{
+ const key=[['e1',0,2],['b20:u+',0,1]];
+ assert.deepEqual(provider.assemblyBayRepeatEdges([{edge:3,axis:'v'},{edgeKey:key,axis:'v'},
+  {edge:0,axis:'u'},{edgeKey:[['e0',0,1]],axis:'u'}]),[3,key],'KILLER[r06-r41:edge-choices]');
+});
+
 function browserComposition(loadTemplate = true) {
   const context = vm.createContext({});
+  vm.runInContext(read('geometry-core/interval-allocation.js'), context);
+  vm.runInContext(read('geometry-templates/woodworking/cutting.js'), context);
   if (loadTemplate) vm.runInContext(read('geometry-templates/woodworking/frontend.js'), context);
   vm.runInContext(read('geometry-app/application.js'), context);
   return context;

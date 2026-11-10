@@ -1,0 +1,79 @@
+{
+  "archive": "PUBLICATION_ENV_R1_ORIGINALS.tar.gz",
+  "bytes": 2307,
+  "sha256": "b944839e958214fdd562b727c7307180955caa68d7a47b2fcbe2cd2acdaaa7d5",
+  "members": [
+    {
+      "name": "publisher/RESULT.json",
+      "bytes": 1663,
+      "sha256": "a2a77712b1bd266a1ea1d86e72e03c5cc6d6d0aa439a6db56fd2002e26fb394d"
+    },
+    {
+      "name": "publisher/subcommands/000001/request.json",
+      "bytes": 1671,
+      "sha256": "3e43bc5a28c288b6af394d72a42a8638a71c4b8006124af4222aeea346b1a470"
+    },
+    {
+      "name": "publisher/subcommands/000001/result.json",
+      "bytes": 1925,
+      "sha256": "3c63623d87aab7e6dfdaad08d45f103bf4cdb869cc2c453c6cd5cba4a8adc494"
+    },
+    {
+      "name": "publisher/subcommands/000001/stderr.bin",
+      "bytes": 181,
+      "sha256": "957411debe9b623d7541c14c850461934da857e7170f92b1b4596e6d9decca86"
+    },
+    {
+      "name": "publisher/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "publisher/subcommands/000001/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "publisher/subcommands.json",
+      "bytes": 2023,
+      "sha256": "915610f6de54f9f38bedcc7a6333c834ed62e67a22cdb83fefe3b3e1fc827747"
+    },
+    {
+      "name": "outer/RESULT.json",
+      "bytes": 1793,
+      "sha256": "43b2b2a27fb1b471947038dee969c42bafed6dfd3135d6f30e3b60cab5ad0f6e"
+    },
+    {
+      "name": "outer/subcommands/000001/request.json",
+      "bytes": 1540,
+      "sha256": "054157718a472e0bb2e640cbdc29675d80c7764498168dfe9c20be0f736487b5"
+    },
+    {
+      "name": "outer/subcommands/000001/result.json",
+      "bytes": 1793,
+      "sha256": "43b2b2a27fb1b471947038dee969c42bafed6dfd3135d6f30e3b60cab5ad0f6e"
+    },
+    {
+      "name": "outer/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "outer/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "outer/subcommands/000001/stdout.bin",
+      "bytes": 1617,
+      "sha256": "fb9a0c4ea74e0ee1529fdf25cf7af709dca3dccdf5b5c08889de8fece9773d59"
+    },
+    {
+      "name": "outer/subcommands.json",
+      "bytes": 1879,
+      "sha256": "d808cbda2af5e608b4e869cbb404143cd2da5c9f70a5c841e60109b8aab6409a"
+    }
+  ],
+  "roundtripAllBytes": true,
+  "classification": "First read-only origin lookup128; no source/index/stage/commit/push; original stderr blank final line preserved inside archive"
+}

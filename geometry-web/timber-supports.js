@@ -1,28 +1,23 @@
 /* #47 F4a: decorate the existing native schedule with native support facts.
  * Load after timber-schedule.js. No inference from endpoints, names or meshes. */
 (function(root,factory){
-  if(typeof module==='object'&&module.exports)module.exports=factory;
-  else root.TimberSchedule=factory(root.TimberSchedule);
-})(typeof globalThis!=='undefined'?globalThis:this,core=>{
+  if(typeof module==='object'&&module.exports)module.exports=core=>factory(core,require('./assembly-provenance.js'));
+  else root.TimberSchedule=factory(root.TimberSchedule,root.AssemblyProvenance);
+})(typeof globalThis!=='undefined'?globalThis:this,(core,provenance)=>{
   'use strict';
   const id=n=>Number.isSafeInteger(n)&&n>=0&&n<=4294967295;
   const hash=s=>typeof s==='string'&&/^[a-f0-9]{64}$/.test(s);
   const pair=a=>Array.isArray(a)&&a.length===2&&a.every(Number.isSafeInteger)&&a[0]<a[1];
   const clone=x=>JSON.parse(JSON.stringify(x));
   const unknown=()=>({status:'unknown',relation:null});
-  function ownerValid(a){
-    return a===null || a && ['instanceId','memberId','bindingId','ruleId','ruleVersion'].every(k=>id(a[k])&&a[k]>0)&&
-      ['ruleFingerprint','instanceFingerprint','bindingFingerprint'].every(k=>hash(a[k]));
-  }
-  const ownerFields=['instanceId','memberId','bindingId','ruleId','ruleVersion','ruleFingerprint','instanceFingerprint','bindingFingerprint'];
-  const sameOwner=(value,expected)=>expected===null?value===null:ownerValid(value)&&value!==null&&ownerFields.every(key=>value[key]===expected[key]);
+  const {ownerValid,sameOwner}=provenance;
   function nativeFacts(references,snapshot){
     const rows=core.derive(references,snapshot.surface).rows,facts=new Map();
     for(const row of rows){
       let owner=null;
       if(row.assembly){
         const instances=(references.assembly?.instances||[]).filter(instance=>instance.value?.source?.id===row.assembly.instanceId&&
-          instance.members?.some(member=>member.timberId===row.id&&member.memberId===row.assembly.memberId));
+          instance.members?.some(member=>member.timberId===row.id&&provenance.identityKey(provenance.memberIdentity(member))===provenance.identityKey(provenance.ownerIdentity(row.assembly))));
         if(instances.length!==1||!hash(instances[0].fingerprint))throw Error(`角材 ${row.id} 的支撐所有權來源無法核對。`);
         owner={...row.assembly,instanceFingerprint:instances[0].fingerprint};
       }
@@ -74,11 +69,12 @@
   function label(value){
     if(value?.status!=='exact')return '未知／原生支撐身分未提供';
     const r=value.relation,o=r.owner;
-    return r.kind==='timber-face'?`角材 ${r.source.id}／${r.localFace}${o?`（組構實例 ${o.instanceId}／member ${o.memberId}）`:''}`:
+    return r.kind==='timber-face'?`角材 ${r.source.id}／${r.localFace}${o?`（組構實例 ${o.instanceId}／${provenance.identityLabel(provenance.ownerIdentity(o))}）`:''}`:
       `${r.source.kind==='boundary'?'邊界':'承載面'} ${r.source.id}／${r.kind==='hole-edge'?`h${r.holeIndex}`:''}e${r.edgeIndex}`;
   }
   function sourceText(row){return `${core.sourceText(row)}；起端：${label(row.supports?.start)}；末端：${label(row.supports?.finish)}`;}
   function csv(snapshot,order='id'){
+    snapshot={...snapshot,assemblyIdentityColumns:snapshot.rows.some(row=>row.assembly?.identity)};
     const empty=core.csv({...snapshot,rows:[]},order),header=empty.slice(0,-2);
     const columns=['support_source_fingerprint','start_support_provenance','finish_support_provenance'];
     const lines=core.sorted(snapshot.rows,order).map(row=>{

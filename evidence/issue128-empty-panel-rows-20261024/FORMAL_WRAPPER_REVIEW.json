@@ -1,0 +1,34 @@
+{
+  "schema": "issue128-p2-original-wrapper-static-and-parser-peer/1",
+  "checks": 31,
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "324034812bb6effca68e0413bc0468595337b317",
+  "tools": [
+    {
+      "path": "/workspace/issue128-p2-formal-tools-20261024/retain_panel_streams.py",
+      "sha256": "da19ce1a1dcc4b256f7d658ad77548fa649acc91c82e3cbc76cb9f02d1751c55",
+      "original_sha256": "1ac22c23067503b0379fff3e39aa91a5862ac5ee6394eecc36c9731fb47e2532"
+    },
+    {
+      "path": "/workspace/issue128-p2-formal-tools-20261024/run_panel_suite.py",
+      "sha256": "e245be947077c13e558e27953303f8eece4c801481c3808a7576293f902f5754",
+      "original_sha256": "98da9fdf5bb548dddee52db659453ed09abfd2b74accb12276edab541bfee06a"
+    },
+    {
+      "path": "/workspace/issue128-p2-formal-tools-20261024/launch_panel_suite.py",
+      "sha256": "e3a9835665c563bd8deab2528f81361bb4f1b0cd227a6c209b99c0473d0e8924",
+      "original_sha256": "7a15af7d663b307abc128695ffc1205afb42eed6ca31154d394bb4d551498e13"
+    }
+  ],
+  "original_methods": 13,
+  "original_controls": 10,
+  "new_chronological_controls": 4,
+  "pure_parser_negative_checks": 4,
+  "limits": [
+    "No product test, native compiler, original observer main or formal driver was run. Pure parser fixtures test only report acceptance logic.",
+    "Original10 controls have independent baseline and failure receipts; restored remains null. Only new4 controls claim strict chronological0/1/0.",
+    "User/root scheduler authorization and sufficient workspace are still required before launch. Static acceptance is not a formal gate pass.",
+    "Old copied driver docstring mentions report/cut-list; actual fixed suite target and execution scope is panel-native, explicitly checked."
+  ]
+}

@@ -34,6 +34,8 @@ gap 及 stagger.value 分別接受直接整數，或
 塞進只顯示完成面與試排的交易。試排與完成面可在同一 panel-fill 候選一起修改或刪除。
 確認沿用候選重验、令牌過期及整包復原。工程參數預覽也顯示重新推導的試排。
 
+面內工作區沿用上述四個命令及同一原生候選權威。正式 UI 回覆依 panel-fill-workspace/1 明列支援操作、完整請求範圍、範圍完整性、來源 revision、typed 來源、精確數值與逐項錯誤；欄位定義、候選鍵／generation、部分失敗與相容規則依 [#128 補充第 7 節全文](https://github.com/ZhiQiYang/geometry-axiom/issues/128#issuecomment-6435620807)。現有 complete:false 不代表全功能完成，不以單改布林啟用功能。確認納入共用可寫守門、requestId 回執及定義變更通知。新材料／參數仍先由既有來源編輯器明示另行確認；返回後重建 PF 基準、廢棄舊 token，畫面預先說明取消 PF 不撤銷來源準備。沒有實質定義 patch 不送提交、不新增 history／revision／dirty；不同來源同有效值仍是實質差異。取消、失敗、過期不改本次基準正式狀態；成功實質變更只提交一次。
+
 ## 讀取結果
 
 `state.panelFills[]` 含 `definition` 及每次重算的 `derived`：
