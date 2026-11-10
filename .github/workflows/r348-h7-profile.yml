@@ -1,0 +1,84 @@
+name: R348 H7 CPU profile (temporary diagnostic)
+
+# Temporary, PR #348 only: runs ChatGPT's profiler from PR #348 comment
+# 6755849265 (.github/scripts/r348_h7_cpu_profile.py, 13407 B, SHA-256
+# b9f2075f...) on the fixed checkout b245a252, which the script itself pins.
+# Three samples of the same phases compare fast/slow runner CPU models; one
+# job runs the optional line-512 stress. It changes no product file, test,
+# expected count or timeout. Remove this workflow and the script before #348
+# is merged. Push trigger only, so other pushes do not rerun it.
+on:
+  push:
+    branches:
+      - codex/geo300-capacity512-20261024
+    paths:
+      - '.github/workflows/r348-h7-profile.yml'
+      - '.github/scripts/r348_h7_cpu_profile.py'
+
+permissions:
+  contents: read
+
+jobs:
+  profile:
+    name: profile ${{ matrix.phases }} (sample ${{ matrix.sample }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - sample: 1
+            phases: line-128,line-256,line-384,load-512
+          - sample: 2
+            phases: line-128,line-256,line-384,load-512
+          - sample: 3
+            phases: line-128,line-256,line-384,load-512
+          - sample: 4
+            phases: line-512
+    steps:
+      - name: Check out the PR head for the profiler script
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          path: head
+      - name: Check out the pinned commit b245a252
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: b245a252ea562f3c1d30186cbfa589e77e60ecb1
+          path: tree
+      - name: Self-test, then profile
+        shell: bash
+        env:
+          OUT: ${{ runner.temp }}/profile-${{ matrix.sample }}
+          PHASES: ${{ matrix.phases }}
+        run: |
+          set -uo pipefail
+          ulimit -s 16384
+          mkdir -p "$OUT"
+          cp head/.github/scripts/r348_h7_cpu_profile.py /tmp/r348_h7_cpu_profile.py
+          sha256sum /tmp/r348_h7_cpu_profile.py | tee "$OUT/script-sha256.txt"
+          { command -v gprof || echo "gprof: not found"; gprof --version 2>&1 | head -n 1; } | tee "$OUT/gprof.txt"
+          cd tree
+          git rev-parse HEAD | tee "$OUT/head.txt"
+          set +e
+          python3 /tmp/r348_h7_cpu_profile.py --self-test > "$OUT/self-test.txt" 2>&1
+          echo $? > "$OUT/self-test-exit.txt"
+          start=$(date +%s)
+          # Outer cap only so the job always uploads; each case keeps the
+          # script's own 600-s ceiling.
+          timeout 5400 python3 /tmp/r348_h7_cpu_profile.py --out "$OUT/run" --phases "$PHASES" > "$OUT/stdout.txt" 2> "$OUT/stderr.txt"
+          echo $? > "$OUT/exit-code.txt"
+          echo $(( $(date +%s) - start )) > "$OUT/elapsed-seconds.txt"
+          echo "self-test exit $(cat "$OUT/self-test-exit.txt"); profile exit $(cat "$OUT/exit-code.txt") after $(cat "$OUT/elapsed-seconds.txt") s"
+          cat "$OUT/self-test.txt"
+          tail -n 20 "$OUT/stderr.txt"
+          exit 0
+      - name: Preserve the profile
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r348-h7-profile-sample-${{ matrix.sample }}
+          path: ${{ runner.temp }}/profile-${{ matrix.sample }}/
+          if-no-files-found: error
+          retention-days: 30
