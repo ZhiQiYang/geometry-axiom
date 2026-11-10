@@ -255,5 +255,66 @@ class PanelNative(unittest.TestCase):
                 self.assertIn("ASSERT:" + marker, result.stderr)
 
 
+    def test_empty_body_axis_keeps_raw_seams_and_other_parity(self):
+        self.assertEqual(0,self.case("empty-axis").returncode)
+
+    def empty_axis_instrumented(self,source,name):
+        build=native();path=build.woodworking/(name+".c")
+        path.write_text(source,encoding="utf-8")
+        obj=build.compile(path,name,["geo_alternating_shift=pf_probe_alternating_shift"])
+        return build.link(name,self.objects("wood_panel_layout_object",obj))
+
+    def test_empty_axis_work_withdrawal_and_restoration(self):
+        source=(native().woodworking/"panel_layout.c").read_text(encoding="utf-8")
+        begin="    /* The alternating lattice has at most two row phases."
+        end="    for(int64_t r=first;body_axis_intersects&&r<=last;++r)"
+        self.assertEqual(1,source.count(begin));self.assertEqual(1,source.count(end))
+        # Withdraw the whole optimization, not merely a part of its guard.
+        start=source.index(begin);stop=source.index(end,start)
+        original=source[:start]+source[stop:].replace("body_axis_intersects&&","",1)
+        fixed=self.empty_axis_instrumented(source,"empty-axis-work-fixed")
+        self.assertEqual(0,self.case("empty-axis",fixed).returncode)
+        result=self.case("empty-axis-work",fixed)
+        print("empty-axis-work phase=fixed\n"+result.stdout,end="")
+        self.assertEqual(0,result.returncode)
+        withdrawn=self.empty_axis_instrumented(original,"empty-axis-work-withdrawn")
+        self.assertEqual(0,self.case("empty-axis",withdrawn).returncode)
+        result=self.case("empty-axis-work",withdrawn)
+        print("empty-axis-work phase=withdrawn\n"+result.stdout,end="")
+        self.assertEqual(1,result.returncode)
+        self.assertEqual("ASSERT:empty-axis-work-independent-of-empty-row-count\n",result.stderr)
+        # Compile the restored original candidate bytes, independently of the
+        # first executable, and recheck semantic output plus operation counts.
+        restored=self.empty_axis_instrumented(source,"empty-axis-work-restored")
+        self.assertEqual(0,self.case("empty-axis",restored).returncode)
+        result=self.case("empty-axis-work",restored)
+        print("empty-axis-work phase=restored\n"+result.stdout,end="")
+        self.assertEqual(0,result.returncode)
+
+    def test_empty_axis_semantic_controls_are_normal_assertion_failures(self):
+        build=native();source=(build.woodworking/"panel_layout.c").read_text(encoding="utf-8")
+        controls=(
+            ("one-phase","phase<2","phase<1","empty-first-phase-keeps-other-parity"),
+            ("drop-seams","    for(int64_t r=first;body_axis_intersects&&r<=last;++r)",
+             "    if(!body_axis_intersects)return WOOD_PANEL_OK;\n    for(int64_t r=first;body_axis_intersects&&r<=last;++r)",
+             "empty-axis-zero-pieces-with-raw-seams"),
+            ("reject-empty","    for(int64_t r=first;body_axis_intersects&&r<=last;++r)",
+             "    if(!body_axis_intersects){wood_panel_layout_free(d);return WOOD_PANEL_ENUM_LIMIT;}\n    for(int64_t r=first;body_axis_intersects&&r<=last;++r)",
+             "empty-axis-legal"),
+        )
+        for name,before,after,marker in controls:
+            with self.subTest(control=name):
+                self.assertEqual(0,self.case("empty-axis").returncode)
+                self.assertEqual(1,source.count(before))
+                path=build.woodworking/("empty-axis-"+name+".c")
+                path.write_text(source.replace(before,after),encoding="utf-8")
+                obj=build.compile(path,"empty-axis-"+name)
+                exe=build.link("empty-axis-"+name,self.objects("wood_panel_layout_object",obj))
+                result=self.case("empty-axis",exe)
+                self.assertEqual(1,result.returncode)
+                self.assertEqual("ASSERT:"+marker+"\n",result.stderr)
+                self.assertEqual(0,self.case("empty-axis").returncode)
+
+
 if __name__ == "__main__":
     unittest.main()

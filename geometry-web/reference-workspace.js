@@ -12,6 +12,7 @@ const ReferenceWorkspace = (() => {
   let pdfLib, modal = null, busy = false, busyLabel = "", busyShort = "處理中", sequence = 0, pendingLoad = null;
   let importRenderingContext = null;
   let assemblyConfirmation = null, preparingSceneLoad = false, sceneTransaction = null;
+  let timberPreview = null;
   let roomTransaction = null;
   const featureConfirmations=new Map();
   const evidenceConfirmations=new Map();
@@ -35,7 +36,7 @@ const ReferenceWorkspace = (() => {
     if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
   }
   function beginNativeOperation(command) {
-    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(command)) return null;
+    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
     return () => {if (!ended) {ended = true; nativePending--;}};
@@ -61,9 +62,9 @@ const ReferenceWorkspace = (() => {
   };
   function notifySceneChange(){recoveryChannel?.postMessage({peer:recoveryPeer,session:typeof connection!=="undefined"?connection.session:null});}
   function assertConfirmationIdle(){
-    if(assemblyConfirmation)throw new Error((assemblyConfirmation.evidenceCommand?'證據採用':assemblyConfirmation.featureCommand?'網格變更':'組構')+"確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
+    if(assemblyConfirmation)throw new Error((assemblyConfirmation.evidenceCommand?'證據採用':assemblyConfirmation.timberCommand?'角材':assemblyConfirmation.featureCommand?'網格變更':'組構')+"確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
   }
-  function assertAssemblyIdle(){assertConfirmationIdle();if(roomTransaction)throw new Error("房間操作尚未確認，請先確認、取消或恢復結果。");}
+  function assertAssemblyIdle(){assertConfirmationIdle();if(timberPreview)throw new Error("角材候選尚未結束，請先確認或取消。");if(roomTransaction)throw new Error("房間操作尚未確認，請先確認、取消或恢復結果。");}
   function assertEditorLease(){
     if(editorLease==="readonly" || editorLease==="unavailable")throw new Error("另一個分頁正在編輯這份工作，或瀏覽器無法確認編輯權限。本分頁僅供查看；請關閉原編輯分頁，再從專案資訊重新連接。");
     if(editorLeaseSession && connection.session!==editorLeaseSession)throw new Error("服務工作階段已變更，請重新連接後再編輯。");
@@ -83,6 +84,28 @@ const ReferenceWorkspace = (() => {
     assemblyConfirmation={context:context(),frame:history.frame};schedulePresentation();return assemblyConfirmation;
   }
   function assemblyConfirmationCurrent(stamp){return context()===stamp.context && history.frame===stamp.frame;}
+  function beginTimberPreview(){
+    assertEditable();
+    if(busy||oc.busy||history.group)throw new Error('請先完成目前操作，再預覽角材變更。');
+    timberPreview={context:context(),frame:history.frame,session:connection.session,revision:revision(context()),token:null};
+    return timberPreview;
+  }
+  function assertTimberPreview(owner,token=null){
+    assertConfirmationIdle();assertEditorLease();
+    if(!owner||timberPreview!==owner||!assemblyConfirmationCurrent(owner)||owner.session!==connection.session||
+       owner.revision!==revision(context())||roomTransaction||sceneTransaction||preparingSceneLoad||pendingLoad||busy||oc.busy||history.group||
+       token!==null&&owner.token!==featureTokenKey(token))throw new Error('角材候選或工作世代已失效，請重新預覽。');
+  }
+  function bindTimberPreview(owner,token){
+    assertTimberPreview(owner);const key=featureTokenKey(token);if(key===null)throw new Error('角材候選識別不完整。');owner.token=key;
+  }
+  function assertTimberPreviewToken(token){assertTimberPreview(timberPreview,token);}
+  function beginTimberConfirmation(token){
+    assertTimberPreviewToken(token);
+    assemblyConfirmation={...timberPreview,timberCommand:'timber-edit-confirm '+featureTokenKey(token)};
+    timberPreview=null;schedulePresentation();return assemblyConfirmation;
+  }
+  function finishTimberPreview(owner){if(owner&&timberPreview===owner){timberPreview=null;schedulePresentation();}}
   function featureTokenKey(token){
     // Native preview emits a uint32 number; the confirm command carries its
     // decimal text. Both representations must name the same prepared lease.
@@ -224,7 +247,7 @@ const ReferenceWorkspace = (() => {
     if(scenarioContext())return;
     if(recoveryWriting){recoveryAgain=true;return;}
     if(busy || oc.busy || history.group || pendingLoad || preparingSceneLoad || assemblyConfirmation || sceneTransaction){scheduleRecovery();return;}
-    if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || window.WorkspaceShell?.saveState().blocked){
+    if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || window.PanelFillWorkspace?.pending || window.WorkspaceShell?.saveState().blocked){
       recoveryMessage("draft","本次外環、校準或工作區草稿尚未套用；恢復資料只保留上次完成的工作內容。");return;
     }
     recoveryWriting=true;
@@ -402,7 +425,7 @@ const ReferenceWorkspace = (() => {
     const short = busy ? busyShort : contextConflict || editorLease==="readonly" || editorLease==="unavailable" ? "唯讀" : fe.draft?.pts?.length || fe.ulCalib?.pts?.length ? "有草稿" : c.downloaded ? "已下載" : c.dirty || !c.saved ? "未保存" : "已保存";
     document.querySelectorAll("[data-project-name]").forEach(el => { const name = c.name + ".gcanvas"; if (el.textContent !== name) { el.textContent = name; el.title = name; } });
     document.querySelectorAll("[data-project-status]").forEach(el => { if (el.textContent !== state) el.textContent = state; el.dataset.statusShort = short; el.title = state; el.setAttribute("aria-label", state); });
-    document.querySelectorAll('[data-project-action="save"]').forEach(el => { el.disabled = busy || getProjectInfo().editingBlocked || !!window.WorkspaceShell?.saveState().blocked; });
+    document.querySelectorAll('[data-project-action="save"]').forEach(el => { el.disabled = busy || getProjectInfo().editingBlocked || !!window.PanelFillWorkspace?.pending || !!window.WorkspaceShell?.saveState().blocked; });
     const p = oc.edit && active(oc.edit.bid), source = p && c.sources.get(p.sourceId);
     const summary = document.getElementById("faceReferenceSummary");
     if (summary) {
@@ -497,8 +520,11 @@ const ReferenceWorkspace = (() => {
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
     if (result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
       dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
-    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
-    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|definition-import-confirm) /.test(cmd) && result.history_changed !== false) dirty();
+    // Only the R11 timber-edit and R02 panel-fill no-op confirmations suppress
+    // their scene notification; existing import and other native observers
+    // retain their refresh contract.
+    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && (!/^timber-edit-confirm /.test(cmd) || result.history_changed !== false) && !(cmd.startsWith("panel-fill-confirm ") && result.history_changed === false))notifySceneChange();
+    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm) /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
@@ -1419,6 +1445,7 @@ const ReferenceWorkspace = (() => {
     if(window.RoomCollectionWorkspace?.hasWork)throw new Error("房間草稿尚未確認。請確認、取消或恢復結果，再保存專案。");
     if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
     if(window.ParameterUI?.pending)throw new Error("參數草稿尚未套用。請先確認或捨棄草稿，再保存專案。");
+    if(window.PanelFillWorkspace?.pending)throw new Error("完成面與鋪排草稿尚未確認。請先確認或取消，再保存專案。");
     if(window.SectionProfileWorkspace?.hasWork)throw new Error("斷面修改尚未套用。請先確認或取消，再保存專案。");
     assertEditable(transactionOwner);
     if (oc.busy || fe.ulDrag || history.group || pendingLoad) throw new Error("請先完成目前的操作再保存。");
@@ -1859,6 +1886,7 @@ const ReferenceWorkspace = (() => {
   }
   async function openProject(readBytes,name="匯入專案",onOpened=null,options={}) {
     assertWritableLease(); assertRoomDraftIdle();
+    if(window.PanelFillWorkspace?.pending)throw new Error("請先確認或取消完成面與鋪排草稿，再開啟專案。");
     if (busy || oc.busy || history.group || pendingLoad) throw new Error("請先完成目前的操作再開啟專案。");
     const stamp={context:context(),frame:history.frame,revision:revision(context())};
     const assertCurrent=()=>{
@@ -2028,7 +2056,7 @@ const ReferenceWorkspace = (() => {
          preparedNativeRevision!==null&&hostRecordProfile.revision!==preparedNativeRevision||
          nativeRevision!==null&&nativeRevision>hostRecordProfile.revision))
         throw new Error('原生來源在讀取衍生承載面能力期間已變更，請重新開啟專案。');
-      P.assertProjectCapabilities({...manifest,requiredCapabilities},P.readerCapabilities(candidate.capabilities,candidate.native_capabilities,manifest,candidate.final_scene,hostRecordProfile,{cutting:true}));
+      P.assertProjectCapabilities({...manifest,requiredCapabilities},P.readerCapabilities(candidate.capabilities,candidate.native_capabilities,manifest,candidate.final_scene,hostRecordProfile,{cutting:true},candidate.panel_fill_reader));
       P.validateProjectCapabilities(candidate.required_capabilities);
       const policy=P.formatPolicy(manifest.format);
       if (policy.engineeringCandidate) {
@@ -2043,6 +2071,7 @@ const ReferenceWorkspace = (() => {
         }
         if(!sameModelData([...candidate.required_capabilities].sort(),P.sceneCapabilities(finalScene)))
           throw new Error("工程場景能力與保存來源不一致，未變更目前專案。");
+        if(manifest.requiredCapabilities?.includes(P.PANEL_FILL_CAPABILITY))P.assertPanelFillDefinitions(text,finalScene);
       }
       return token;
     } catch(error) {
@@ -2153,6 +2182,7 @@ const ReferenceWorkspace = (() => {
     pendingLoad=null;finishSceneTransaction(load.transaction);await releaseDetachedPDFContext(load.context);sync();return true;
   }
   function mayLeave() {
+    if (window.PanelFillWorkspace?.pending) {toast("請先確認或取消完成面與鋪排草稿，再切換專案。"); return false;}
     if (window.RoomCollectionWorkspace?.hasWork) {toast("請先完成、取消或恢復目前房間草稿，再切換專案。"); return false;}
     if (window.RoomCollectionWorkspace?.hasUnacceptedCandidates && !window.confirm("未接受的房間候選只留在本分頁，離開後無法恢復。要離開嗎？")) return false;
     if (window.SectionProfileWorkspace?.hasWork) {toast("請先確認或取消斷面修改，再切換專案。"); return false;}
@@ -2219,6 +2249,7 @@ const ReferenceWorkspace = (() => {
     readFeatureAttachment,setFeatureAttachment,prepareFeatureAttachment,commitPreparedFeatureAttachment,validateRuleCaseClosure,getRoomIntegration:()=>roomIntegration,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getModelOperationState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
+    beginTimberPreview,assertTimberPreview,bindTimberPreview,assertTimberPreviewToken,beginTimberConfirmation,finishTimberPreview,
     readGridDrafts,setGridDraft,repinGridDraft,
     prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(featureTokenKey(token)),
     prepareEvidenceConfirmation,beginEvidenceConfirmation,cancelEvidenceConfirmation,hasEvidenceConfirmation:token=>evidenceConfirmations.has(featureTokenKey(token)),

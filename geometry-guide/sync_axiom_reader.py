@@ -540,7 +540,8 @@ def compact(value) -> str:
 
 
 def safe_json(value) -> str:
-    return compact(value).replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
+    # JSON wire escaping only: decoded SSOT/review strings and hashes stay exact.
+    return compact(value).replace("://", r":\/\/").replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
 
 
 def script_text(source: str, identifier: str) -> str:
@@ -1598,7 +1599,7 @@ def clause_trace(clauses: list[dict], incoming: dict) -> dict:
     不得在此另立門檻。判準與出處見本檔 TRACE_CSS 上方的註解(GEO-167)。
     """
     ids = [c["id"] for c in clauses]
-    code = axiom_matrix.code_sites(axiom_matrix.read_text(axiom_matrix.SRC), ids)
+    code = axiom_matrix.source_code_sites(ids)
     scenes = axiom_matrix.scene_hits(ids)
     mutants = axiom_matrix.mutant_hits(ids)
     trace = {}
@@ -1606,7 +1607,8 @@ def clause_trace(clauses: list[dict], incoming: dict) -> dict:
         has_code, has_scene = bool(code[cid]), bool(scenes[cid])
         trace[cid] = {
             "light": "ok" if (has_code and has_scene) else ("partial" if (has_code or has_scene) else "none"),
-            "functions": sorted({fn for fn, _ in code[cid]}),
+            "functions": sorted({fn for _, fn, _ in code[cid]}),
+            "sites": code[cid],
             "scenes": sorted(scenes[cid]),
             "mutants": sorted(mutants[cid]),
             "incoming": len(incoming.get(cid, [])),
@@ -1619,8 +1621,12 @@ def trace_section(cid: str, t: dict) -> str:
     """卡片底部的三向連結:原始碼 / 夾具 / 變異。內容全部由 axiom_matrix 推導,不手寫。"""
     rows = []
     if t["functions"]:
+        locations = {fn: "; ".join("%s:%d" % (path, line)
+                                  for path, owner, line in t["sites"] if owner == fn)
+                     for fn in t["functions"]}
         rows.append("<div class=\"trace-row\"><b>原始碼</b>" + " ".join(
-            "<code>%s</code>" % html.escape(fn) for fn in t["functions"][:6])
+            '<code title="%s">%s</code>' % (html.escape(locations[fn], quote=True), html.escape(fn))
+            for fn in t["functions"][:6])
             + ("<span class=\"muted\">…共 %d 處</span>" % len(t["functions"]) if len(t["functions"]) > 6 else "")
             + "</div>")
     if t["scenes"]:
@@ -1723,8 +1729,21 @@ def stale_counts(template: str, counts: dict) -> list[str]:
     return bad
 
 
+def apply_offline_source_urls(template: str) -> str:
+    # Source URLs are inert text, never links/resources. A wbr keeps textContent
+    # exact and survives browser outerHTML export without restoring a raw URL.
+    old_text = r'''    function safeText(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}'''
+    new_text = old_text.replace(";}", r".replace(/(https?):\/\//gi,'$1:<wbr>//');}")
+    template = force(template, old_text, new_text, "R374 inert source URL text")
+    # HTML export and JSON backup must use the same lossless wire representation.
+    old_json = r'''const safeJSON = v => JSON.stringify(v,null,2).replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');'''
+    new_json = old_json.replace(";", r".replace(/:\/\//g,':\\/\\/');")
+    return force(template, old_json, new_json, "R374 source URL JSON export")
+
+
 def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     PATCHES.reset()
+    template = apply_offline_source_urls(template)
     state = json.loads(script_text(template, "axiom-review-data"))
     old = copy.deepcopy(state)
     if review is not None:

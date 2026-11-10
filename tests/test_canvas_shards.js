@@ -5,6 +5,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('fs'), os = require('os'), path = require('path');
 const shards = require('../geometry-web/canvas_shards.js');
+const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const plan = shards.loadPlan(), golden = shards.loadGolden();
@@ -48,6 +49,9 @@ test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍�
   assert.equal(owner.sections.at(-1), 'P359');
   assert.equal(plan.shards[0].sections.includes('P353'), false, 'R369_P353_SHARD: P353 is not in shard 1');
   assert.deepEqual(plan.shards[1].sections.slice(-2), ['P353', 'P359'], 'R369_P353_ORDER: P353 immediately precedes the storage-reset suite');
+  // Merged with #355: cdp_test.js dispatches P352, P116 (timber reuse), P128 (R02 panel fill), P353, P359.
+  assert.deepEqual(plan.shards[1].sections.slice(-5), ['P352', 'P116', 'P128', 'P353', 'P359'], 'R356_P116_ORDER: reuse runs once before the R02 panel-fill, card-entry and storage-reset suites');
+  assert.equal(all.filter(name => name === 'P116').length, 1, 'R356_P116_ONE_OWNER');
   assert.equal(plan.shards[0].sections.includes('R06'), false, 'R06_CANVAS_PLAN: R06 belongs to shard 2');
   const repeatAt = plan.shards[1].sections.indexOf('R06');
   assert.ok(repeatAt > 0, 'R06_CANVAS_PLAN: R06 must appear once after P82');
@@ -63,7 +67,8 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   const verdict = shards.verifyComplete(complete(), context);
   assert.deepEqual(verdict.problems, []);
   assert.equal(verdict.passed, true);
-  assert.equal(verdict.summary.total, golden.total);
+  assert.equal(verdict.summary.total, context.golden.total);
+  const golden=pfExtension.projectGolden(context.golden);
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
   // #360 and R06 add independent sections. Keep the original 4002/91 contract
@@ -73,13 +78,27 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.deepEqual(original, originalSections, 'R369_MAIN_SECTIONS_UNCHANGED');
   assert.equal(sum(original), 4002, 'R369_P353_UNION: 3647 existing assertions plus 355');
   assert.equal(Object.keys(original).length, 91);
-  const additions = Object.fromEntries(Object.entries(golden.sections).filter(([name]) => !(name in originalSections)));
+  const additions = Object.fromEntries(Object.entries(golden.sections).filter(([name]) => !(name in originalSections) && name !== 'P116'));
   assert.deepEqual(additions, {P360:13, R06:50}, 'R363_SEPARATE_ADDITIONS: P360 13 and R06 50');
-  assert.equal(golden.total, sum(original) + sum(additions), 'R360_COMPLETE_COUNT_UNION');
+  const mainSections = {...original, ...additions};
+  assert.equal(sum(mainSections), sum(original) + sum(additions), 'R360_COMPLETE_COUNT_UNION');
   assert.equal(golden.sections.R06, 50, 'R06_CANVAS_GOLDEN: retain the independently measured section');
-  assert.equal(golden.total, 4065, 'R363_CANVAS_UNION: unchanged 4002 plus P360 13 plus R06 50');
-  assert.equal(Object.keys(golden.sections).length, 93);
-  assert.equal(verdict.summary.sectionCount, Object.keys(golden.sections).length);
+  assert.equal(sum(mainSections), 4065, 'R363_CANVAS_UNION: unchanged 4002 plus P360 13 plus R06 50');
+  assert.equal(Object.keys(mainSections).length, 93);
+  // Formal 2/2 run 42170766817 completed all P116 parent cases: 373 pass +
+  // one failed final C07 child assertion. The child writes a separate log and
+  // never contributes its assertion count to the parent's section. This fixes
+  // the executed contract at 374; a red receipt must still fail verification.
+  // After the #355 merge `golden` is the committed golden minus R02's exactly
+  // projected P128, so P116 must be the only remaining addition over main.
+  assert.equal(golden.sections.P116, 374, 'R356_P116_EXECUTED_ASSERTION_COUNT');
+  assert.ok(Number.isSafeInteger(golden.sections.P116) && golden.sections.P116 > 0,
+    'R356_P116_FULL_GOLDEN_REQUIRED: record the observed full-mode section before accepting shard receipts');
+  assert.deepEqual(Object.keys(golden.sections).sort(), [...Object.keys(mainSections), 'P116'].sort(), 'R356_ONLY_NEW_SECTION');
+  assert.equal(golden.total, sum(mainSections) + golden.sections.P116, 'R356_COMPLETE_COUNT_UNION');
+  assert.equal(Object.keys(golden.sections).length, 94);
+  assert.equal(Object.keys(context.golden.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
+  assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });
 
@@ -257,6 +276,41 @@ test('workflow：canvas 兩片並行、每片仍 35 分鐘，彙總核對收據�
   assert.equal(driver.runConfiguration({...env, GEOMETRY_GRID_CARD_ENTRY_ONLY:'1'}).mode, 'partial', 'R369_P353_SCOPE');
   assert.throws(() => driver.runConfiguration({...env, GEOMETRY_GRID_CARD_ENTRY_ONLY:'1', GEOMETRY_CDP_SHARD:'2/2'}), /one contiguous block/, 'R369_P353_NO_FILTERED_SHARD');
   assert.throws(() => driver.runConfiguration({...env, GEOMETRY_GRID_CARD_ENTRY_CASE:'C01'}), /requires GEOMETRY_GRID_CARD_ENTRY_ONLY/, 'R369_P353_NO_PARTIAL_FULL');
+  // Execute the real C07 environment construction. Its child runs one explicit
+  // reopen case in a fresh profile, so it cannot inherit the parent's shard.
+  const timberSource = fs.readFileSync(path.join(ROOT, 'geometry-web/timber_reuse_test.js'), 'utf8');
+  const childStart = timberSource.indexOf('    const env={...process.env};');
+  const childEnd = timberSource.indexOf('    for(const pin of pins)', childStart);
+  assert.equal(timberSource.split('    const env={...process.env};').length - 1, 1,
+    'R356_C07_ONE_CHILD_ENVIRONMENT');
+  assert.ok(childStart >= 0 && childEnd > childStart, 'R356_C07_CHILD_ENVIRONMENT_BOUNDARY');
+  const childEnvironment = new Function('process', 'receiptPath', 'profile', 'port',
+    timberSource.slice(childStart, childEnd) + '\nreturn env;');
+  const parentEnvironment = {...env, GEOMETRY_CDP_SHARD:'2/2',
+    GEOMETRY_CHROME_PROFILE:path.join(os.tmpdir(), 'r356-parent-profile'), GEOMETRY_CDP_PORT:'19356'};
+  const beforeChild = clone(parentEnvironment);
+  const freshProfile = path.join(os.tmpdir(), 'r356-c07-fresh-profile');
+  const savedReceipt = path.join(os.tmpdir(), 'r356-c07-saved-receipt.json');
+  const child = childEnvironment({env:parentEnvironment}, savedReceipt, freshProfile, 29356);
+  assert.equal(Object.hasOwn(child, 'GEOMETRY_CDP_SHARD'), false, 'R356_C07_DROPS_PARENT_SHARD');
+  assert.deepEqual(parentEnvironment, beforeChild, 'R356_C07_PRESERVES_PARENT_ENVIRONMENT');
+  assert.equal(child.GEOMETRY_TIMBER_REUSE_ONLY, '1', 'R356_C07_CHILD_EXPLICIT_SCOPE');
+  assert.equal(child.GEOMETRY_TIMBER_REUSE_CASE, 'C07', 'R356_C07_CHILD_EXACT_CASE');
+  assert.equal(child.GEOMETRY_R116_FRESH_STAGE, 'open', 'R356_C07_CHILD_OPEN_STAGE');
+  assert.equal(child.GEOMETRY_R116_FRESH_RECEIPT, savedReceipt, 'R356_C07_CHILD_SAVED_RECEIPT');
+  assert.equal(child.GEOMETRY_CHROME_PROFILE, freshProfile, 'R356_C07_CHILD_FRESH_PROFILE');
+  assert.notEqual(child.GEOMETRY_CHROME_PROFILE, parentEnvironment.GEOMETRY_CHROME_PROFILE,
+    'R356_C07_CHILD_PROFILE_ISOLATED');
+  assert.equal(child.GEOMETRY_CDP_PORT, '29356', 'R356_C07_CHILD_FRESH_PORT');
+  assert.notEqual(child.GEOMETRY_CDP_PORT, parentEnvironment.GEOMETRY_CDP_PORT,
+    'R356_C07_CHILD_PORT_ISOLATED');
+  assert.equal(child.GEOMETRY_TEST_URL, parentEnvironment.GEOMETRY_TEST_URL, 'R356_C07_SAME_TEST_SERVICE');
+  assert.equal(child.GEOMETRY_FEEDBACK_DIR, parentEnvironment.GEOMETRY_FEEDBACK_DIR,
+    'R356_C07_SAME_ISOLATED_FEEDBACK');
+  const childScope = driver.runConfiguration(child);
+  assert.equal(childScope.mode, 'partial', 'R356_C07_CHILD_CONFIGURATION_ACCEPTED');
+  assert.deepEqual(childScope.filters, ['GEOMETRY_TIMBER_REUSE_ONLY'], 'R356_C07_ONLY_REOPEN_SCOPE');
+  assert.deepEqual(childScope.modifiers, [], 'R356_C07_NO_OTHER_SCOPE_MODIFIERS');
   const rows=driverSource.split('\n'), selected=[];
   for (const moduleName of ['./grid_card_entry_test.js','./definition_import_browser_test.js']) {
     const hits=rows.flatMap((row,index)=>row.includes("await require('"+moduleName+"')")?[index]:[]);

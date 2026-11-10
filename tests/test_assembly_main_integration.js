@@ -97,6 +97,18 @@ test('R06 integration preserves R41 and cutting through fresh archive read',asyn
 });
 test('R06 integration keeps finite PF-H guards with cutting',async()=>{
  const {opened}=await archive();
+ const scoped={schema:'panel-fill-definition-reader/1',capability:'panel-fill/1',complete:false,
+  supportedRecords:['finish-surface','panel-fill','derived-placement']};
+ // #355's definition reader must not bypass the existing R06 host profile.
+ // Exercise both independently valid credentials and each missing half.
+ const joined=(profiles,profile)=>P.readerCapabilities(NATIVE,profiles,opened.manifest,derivedScene,profile,{cutting:true},scoped);
+ assert.doesNotThrow(()=>P.assertProjectCapabilities(opened.manifest,joined(['panel-fill-native/1'],PROFILE())),
+  'R355_R41_SCOPED_AND_NATIVE_PROFILE_ACCEPT');
+ for(const [profiles,profile] of [[[],PROFILE()],[['panel-fill-native/1'],null],
+  [['panel-fill-native/1'],{...PROFILE(),complete:true}]]){
+  assert.throws(()=>P.assertProjectCapabilities(opened.manifest,joined(profiles,profile)),/不支援/,
+   'R355_R41_SCOPED_READER_MUST_NOT_BYPASS_PROFILE');
+ }
  for(const edit of [p=>p.ok=false,p=>p.capability='panel-fill/2',p=>p.complete=true,p=>p.supportedRecords.pop(),p=>p.supportedRecords.push('from-fill-grid'),p=>p.schema='panel-fill-native/2']){
   const profile=PROFILE();edit(profile);assert.throws(()=>P.assertProjectCapabilities(opened.manifest,reader(opened.manifest,derivedScene,profile)),/不支援/);
  }
@@ -162,7 +174,7 @@ function preparation(manifest,options={}){
  const start=source.indexOf('  async function cancelProjectScene('),end=source.indexOf('  function assertLoadContext(',start);
  assert.ok(start>=0&&end>start);
  const state={writable:true,current:true,requests:[],api:[],leaseChecks:0,currentChecks:0};
- const candidate={ok:true,token:21,capabilities:[...NATIVE],native_capabilities:['panel-fill-native/1'],required_capabilities:P.sceneCapabilities(derivedScene),final_scene:derivedScene,final_objects:{boundaries:[1],placements:[{id:10,bid:1,horizontal:true}]}};
+ const candidate={ok:true,token:21,capabilities:[...NATIVE],native_capabilities:['panel-fill-native/1'],required_capabilities:P.sceneCapabilities(derivedScene),final_scene:derivedScene,final_objects:{boundaries:[1],placements:[{id:10,bid:1,horizontal:true}]},...options.candidate};
  const context={P,Number,Error,AbortSignal,nativeRevision:7,
   fetch:async(url,request)=>{state.requests.push({url,body:request.body});if(url==='/upload/prepare')return {ok:true,json:async()=>structuredClone(candidate)};if(url==='/upload/cancel')return {ok:true,json:async()=>({ok:true})};throw Error('Unexpected mutating endpoint '+url);},
   apiRequest:async command=>{state.api.push(command);assert.equal(command,'panel-fill-read');options.duringProfile?.(state,context);return {...PROFILE(),...options.profile};},
@@ -184,6 +196,12 @@ test('R06 integration cancels on lease project or revision changes without confi
   const f=preparation(opened.manifest,options);await assert.rejects(f.run(),/READONLY_LEASE|STALE_PROJECT|原生來源/);
   assert.deepEqual(f.state.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);assert.equal(f.state.requests.at(-1).body,'21');
  }
+ const scoped={schema:'panel-fill-definition-reader/1',capability:'panel-fill/1',complete:false,
+  supportedRecords:['finish-surface','panel-fill','derived-placement']};
+ const f=preparation(opened.manifest,{candidate:{native_capabilities:[],panel_fill_reader:scoped}});
+ await assert.rejects(f.run(),/不支援/,'R355_R41_PREPARE_CANCELS_MISSING_PROFILE');
+ assert.deepEqual(f.state.api,[],'R355_R41_NO_FALSE_PROFILE_READ');
+ assert.deepEqual(f.state.requests.map(r=>r.url),['/upload/prepare','/upload/cancel'],'R355_R41_ZERO_CONFIRM');
 });
 test('R06 integration preserves R08 import history and both draft owners',async()=>{
  const {opened}=await archive({room:true}),m=opened.manifest;
@@ -216,7 +234,13 @@ test('R06 integration retains R08 pending dirty and scene notifications',()=>{
  assert.equal(events.dirty,1,'KILLER[r06-main:import-dirty]');
  assert.equal(events.scene,1,'KILLER[r06-main:import-notify]');assert.equal(events.history,1);
  scope.observe('definition-import-confirm 22',{ok:true,history_changed:false});assert.equal(events.dirty,1);
- scope.observe('definition-import-confirm 23',{ok:false});assert.equal(events.dirty,1);assert.equal(events.scene,2);
+ scope.observe('definition-import-confirm 23',{ok:false});assert.equal(events.dirty,1);assert.equal(events.scene,2,'KILLER[r06-main:import-noop-notify]');
+ scope.observe('timber-edit-confirm 24',{ok:true,history_changed:false});
+ assert.equal(events.scene,2,'KILLER[r116-main:noop-scene-unchanged]');
+ assert.equal(events.dirty,1,'KILLER[r116-main:noop-dirty-unchanged]');
+ scope.observe('timber-edit-confirm 25',{ok:true,history_changed:true});
+ assert.equal(events.scene,3,'KILLER[r116-main:commit-scene-notified]');
+ assert.equal(events.dirty,2,'KILLER[r116-main:commit-dirty]');
 });
 test('R06 integration keeps cutting highwater across repeat draft undo redo',async()=>{
  const {opened}=await archive(),m=opened.manifest,Cutting=P.Features.Cutting;

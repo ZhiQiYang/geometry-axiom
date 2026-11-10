@@ -18,6 +18,7 @@
  * 幾何本體在 current_geometry.c；本檔只做 stdin/JSON 橋。
  */
 #define _CRT_SECURE_NO_WARNINGS
+#define _CRT_RAND_S
 #ifdef _WIN32
 #include <fcntl.h>
 #include <io.h>
@@ -605,7 +606,7 @@ static bool next_surface_ids(uint32_t *out, size_t n)
 /* newid [n]：各類物件一個尚未被占用的 id，外加 n 個 surface 用的 id（預設 1）。 */
 static void cmd_newid(size_t surface_count)
 {
-    uint32_t mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam, mar, mab;
+    uint32_t mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam, mar, mab, mfinish, mfill;
     uint32_t surfaces[NEWID_MAX_SURFACES];
 
     if (surface_count < 1 || surface_count > NEWID_MAX_SURFACES) {
@@ -634,11 +635,13 @@ static void cmd_newid(size_t surface_count)
     WORLD_NEXT_ID(mar,g_world.wood.assembly.rules,g_world.wood.assembly.rule_count,true);
     WORLD_NEXT_ID(mab,g_world.wood.assembly.bindings,g_world.wood.assembly.binding_count,true);
     uint32_t mai=1;WORLD_NEXT_ID(mai,g_world.wood.assembly.instances,g_world.wood.assembly.instance_count,true);
+    WORLD_NEXT_ID(mfinish,g_world.wood.finish_surfaces.items,g_world.wood.finish_surfaces.count,true);
+    WORLD_NEXT_ID(mfill,g_world.wood.finish_surfaces.fills,g_world.wood.finish_surfaces.fill_count,true);
     /* 既有的純量欄位一個都沒動:舊的呼叫端(以及 canvas_test.js)照常可用。 */
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
            "\"grid\":%u,\"gridSystem\":%u,\"gridBinding\":%u,\"timber\":%u,\"space\":%u,"
-           "\"column\":%u,\"beam\":%u,\"datum\":%u,\"parameter\":%u,\"assemblyRule\":%u,\"assemblyBinding\":%u,\"assemblyInstance\":%u,\"surfaces\":[",
-           mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam, mar, mab, mai);
+           "\"column\":%u,\"beam\":%u,\"datum\":%u,\"parameter\":%u,\"assemblyRule\":%u,\"assemblyBinding\":%u,\"assemblyInstance\":%u,\"finishSurface\":%u,\"panelFill\":%u,\"surfaces\":[",
+           mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam, mar, mab, mai, mfinish, mfill);
     for (size_t i = 0; i < surface_count; ++i) {
         if (i) putchar(',');
         printf("%u", surfaces[i]);
@@ -1108,6 +1111,7 @@ static void cmd_host_gate_check(const char *arg)
 #include "scene-import-bridge.inc"
 #include "assembly_bridge.inc"
 #include "source-inspector-bridge.inc"
+#include "timber_edit_bridge.inc"
 
 /* 視圖點已包含 frame 原點與構件尺寸；不能套用局部定義的單項上限。 */
 static bool view_coord_in_range(Coord value)
@@ -1190,6 +1194,14 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_source_inspect_file(arg);
         } else if (strcmp(line,"engineering-preview-source")==0 && arg) {
             cmd_engineering_preview_source(arg);
+        } else if (strcmp(line,"timber-edit-read")==0 && arg) {
+            cmd_timber_edit_read(arg);
+        } else if (strcmp(line,"timber-edit-preview")==0 && arg) {
+            cmd_timber_edit_preview(arg);
+        } else if (strcmp(line,"timber-edit-confirm")==0) {
+            cmd_timber_edit_confirm(arg);
+        } else if (strcmp(line,"timber-edit-cancel")==0) {
+            cmd_timber_edit_cancel(arg);
         } else if (strcmp(line,"engineering-read")==0 && !arg) {
             cmd_engineering_read();
         } else if (strcmp(line,"engineering-preview")==0 && arg) {

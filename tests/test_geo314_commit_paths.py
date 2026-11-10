@@ -10,8 +10,10 @@ import ast
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
+import os
 import re
 import subprocess
+import tempfile
 import unittest
 
 
@@ -24,6 +26,9 @@ I24_IMPLEMENTATION_HEAD = "32f42e3d991c7d2d916d21bfe8ac5d3dd0f9b131"
 # 9430bae568feb98805072930c92f9a03a1250d4e: reuse a missing edge's slot.
 # 81b6c388f8b73e9aaf885b1d948e5f306b77bafd: generic provider hint bucket.
 GENERIC_SOURCE_INDEX_KERNEL_HEAD = "81b6c388f8b73e9aaf885b1d948e5f306b77bafd"
+# R14 on fixed main 83d4ca22 adopts the approved PANEL source-kind gate.
+# Pin the complete resulting K tree, including every file, byte and mode.
+REVIEWED_R14_KERNEL_TREE = "51813f9e522af06cb80e44d736b6b20ac2329349"
 
 
 def _ensure_pinned_commits(*shas):
@@ -55,6 +60,9 @@ PUBLISH_SITES = (
     # R08: confirming a definition-import preview is an interactive submission,
     # validated against the pre-submission World like batch_confirm.
     ("geometry-web/definition_import_bridge.inc", "cmd_definition_import_confirm", 1, "submission"),
+    # R11: both reuse and batch edits confirm into the existing World (R56),
+    # not a D61 replacement. The route contracts below retain its I24 baseline.
+    ("geometry-web/timber_edit_bridge.inc", "cmd_timber_edit_confirm", 1, "submission"),
     ("geometry-web/web_bridge.c", "app_replace_world", 1, "replacement"),
     ("geometry-web/web_bridge.c", "cmd_loadfile", 1, "replacement"),
     ("geometry-web/scene-import-bridge.inc", "cmd_load_confirm", 1, "replacement"),
@@ -79,6 +87,7 @@ REVALIDATE_SITES = (
     ("geometry-core/subgrid_commands.inc", "apply_subgrid_line", 1),
     ("geometry-web/engineering_bridge.inc", "app_batch_candidate_apply", 1),
     ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", 1),
+    ("geometry-web/timber_edit_bridge.inc", "timber_edit_evaluate", 1),
     ("geometry-web/web_bridge.c", "app_replace_evaluate", 1),
 )
 STAGED_SITES = (
@@ -107,6 +116,8 @@ BASELINE_ASSIGNMENTS = (
     ("geometry-web/engineering_bridge.inc", "app_batch_candidate_apply", "previous"),
     ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", "call->before"),
     ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", "previous"),
+    ("geometry-web/timber_edit_bridge.inc", "timber_edit_evaluate", "call->before"),
+    ("geometry-web/timber_edit_bridge.inc", "timber_edit_evaluate", "previous"),
     ("geometry-web/web_bridge.c", "app_scene_load_evaluate", "NULL"),
     ("geometry-web/web_bridge.c", "app_scene_load_evaluate", "previous"),
     ("geometry-web/source-inspector-bridge.inc", "cmd_source_inspect_file", "NULL"),
@@ -228,17 +239,44 @@ class Geo314CommitPaths(unittest.TestCase):
     def body(self, path, function):
         return self.sources[path].function(function)
 
+    def reviewed_inventory(self, rows, label):
+        # Building a dict directly silently accepts duplicate declarations.
+        # A reviewed source location must occur once, with an explicit count.
+        result = Counter()
+        for path, function, count, *_ in rows:
+            self.assertNotIn((path, function), result, label + ": duplicate route declaration")
+            self.assertIs(type(count), int, label + ": route count must be an integer")
+            self.assertGreater(count, 0, label + ": route count must be positive")
+            result[path, function] = count
+        return result
+
     def test_publication_routes_have_reviewed_submission_or_replacement_classification(self):
         self.assertTrue(all(classification in {"submission", "replacement", "isolated replay",
             "submission/replay helper", "submission/replay lines"} for *_, classification in PUBLISH_SITES))
-        expected = Counter({(path, function): count for path, function, count, _ in PUBLISH_SITES})
+        expected = self.reviewed_inventory(PUBLISH_SITES, "I24 publication inventory")
         self.assertEqual(expected, self.inventory("app_world_candidate_publish"),
                          "I24 publication route added/removed: classify its submission/replacement boundary")
+        path = "geometry-web/timber_edit_bridge.inc"
+        self.assertEqual(["submission"], [classification for source, function, _, classification in PUBLISH_SITES
+                         if (source, function) == (path, "cmd_timber_edit_confirm")],
+                         "R356_G314_TIMBER_IS_SUBMISSION")
+        raw = self.body(path, "cmd_timber_edit_confirm")
+        confirm = compact(masked(raw))
+        revalidate = "if(!app_world_candidate_revalidate(g_preview.transaction,&g_world)){"
+        publish = "if(!app_world_candidate_publish(g_preview.transaction,&g_world,true)){"
+        self.assertIn(revalidate, confirm, "R356_G314_CONFIRM_REVALIDATES_RETAINED_CANDIDATE")
+        self.assertIn(publish, confirm, "R356_G314_CONFIRM_PUBLISHES_SUBMISSION")
+        self.assertLess(confirm.index(revalidate), confirm.index(publish),
+                        "R356_G314_REVALIDATION_PRECEDES_PUBLICATION")
+        rejected = compact(masked(block_after(raw, "!app_world_candidate_revalidate(")))
+        self.assertIn("app_world_candidate_discard(g_preview.transaction);", rejected,
+                      "R356_G314_INVALID_CANDIDATE_IS_DISCARDED")
+        self.assertIn("return;", rejected, "R356_G314_INVALID_CANDIDATE_CANNOT_PUBLISH")
 
     def test_revalidation_and_staged_routes_are_an_exact_reviewed_inventory(self):
-        self.assertEqual(Counter({(path, function): count for path, function, count in REVALIDATE_SITES}),
+        self.assertEqual(self.reviewed_inventory(REVALIDATE_SITES, "I24 revalidation inventory"),
                          self.inventory("world_revalidate"), "I24 world validation route changed")
-        self.assertEqual(Counter({(path, function): count for path, function, count in STAGED_SITES}),
+        self.assertEqual(self.reviewed_inventory(STAGED_SITES, "I24 staged inventory"),
                          self.inventory("app_world_revalidate_staged"), "I24 staged validation route changed")
 
     def test_submission_baselines_and_replay_restoration_are_exact(self):
@@ -247,6 +285,23 @@ class Geo314CommitPaths(unittest.TestCase):
             actual.update(source.assignments())
         self.assertEqual(Counter(BASELINE_ASSIGNMENTS), actual,
                          "I24 baseline setup/restore changed; a true submission cannot silently bypass W")
+        path = "geometry-web/timber_edit_bridge.inc"
+        preview = compact(masked(self.body(path, "cmd_timber_edit_preview")))
+        capture = "call.before=&transaction->before;"
+        evaluate = "app_world_candidate_evaluate(transaction,timber_edit_evaluate,&call)"
+        self.assertIn(capture, preview, "R356_G314_PREVIEW_RETAINS_PRE_SUBMISSION_WORLD")
+        self.assertIn(evaluate, preview, "R356_G314_PREVIEW_USES_REVIEWED_EVALUATOR")
+        self.assertLess(preview.index(capture), preview.index(evaluate),
+                        "R356_G314_BASELINE_CAPTURE_PRECEDES_EVALUATION")
+        body = compact(masked(self.body(path, "timber_edit_evaluate")))
+        enter, leave = "g_subgrid_before=call->before;", "g_subgrid_before=previous;"
+        for call in ("apply_reference_place(", "world_revalidate("):
+            self.assertIn(call, body, "R356_G314_CREATE_AND_BATCH_KEEP_COMPLETE_VALIDATION")
+            self.assertLess(body.index(enter), body.index(call), "R356_G314_BASELINE_COVERS_BOTH_PATHS")
+            self.assertLess(body.index(call), body.index(leave), "R356_G314_BASELINE_RESTORED_AFTER_BOTH_PATHS")
+        self.assertNotIn("return", body[body.index(enter):body.index(leave)],
+                         "R356_G314_BASELINE_ALWAYS_RESTORED")
+        self.assertNotRegex(body, r"\bg_parsing_scene_file=", "R356_G314_TIMBER_CANNOT_BORROW_REPLAY_BYPASS")
 
     def test_single_submission_guard_runs_after_axis_validation_before_bindings(self):
         body = masked(self.body("current_geometry.c", "world_revalidate_candidate"))
@@ -293,13 +348,20 @@ class Geo314CommitPaths(unittest.TestCase):
              I24_IMPLEMENTATION_HEAD, "--", "geometry-core/kernel"],
             cwd=ROOT, capture_output=True, text=True, check=True)
         self.assertEqual("", introduced.stdout, "original I24 implementation must not change K files")
-        changed = subprocess.run(
-            ["git", "diff", "--name-only", "--no-renames", GENERIC_SOURCE_INDEX_KERNEL_HEAD,
-             "--", "geometry-core/kernel"],
-            cwd=ROOT, capture_output=True, text=True, check=True)
-        added = subprocess.run(["git", "ls-files", "--others", "--exclude-standard", "--", "geometry-core/kernel"],
-                               cwd=ROOT, capture_output=True, text=True, check=True)
-        self.assertEqual("", changed.stdout + added.stdout,
+        # A temporary index compares the full working K tree with the reviewed
+        # literal, including additions/deletions and mode changes. Seed only K
+        # so a partial clone need not materialize unrelated historical blobs.
+        with tempfile.TemporaryDirectory(prefix="geo314-k-tree-") as work:
+            env = dict(os.environ, GIT_INDEX_FILE=str(Path(work) / "index"))
+            def git(*args):
+                return subprocess.run(["git", *args], cwd=ROOT, env=env,
+                                      capture_output=True, text=True, check=True).stdout.strip()
+            git("read-tree", "--empty")
+            git("read-tree", "--prefix=geometry-core/kernel/",
+                GENERIC_SOURCE_INDEX_KERNEL_HEAD + ":geometry-core/kernel")
+            git("-c", "core.filemode=true", "add", "-A", "--", "geometry-core/kernel")
+            actual = git("write-tree", "--prefix=geometry-core/kernel/")
+        self.assertEqual(REVIEWED_R14_KERNEL_TREE, actual,
                          "I24 submission policy must not change K files outside the exact reviewed generic K tree")
 
     def test_ordered_facts_capture_step_values_without_extra_candidate_or_validation_work(self):

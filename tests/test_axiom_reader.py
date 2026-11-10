@@ -3,13 +3,16 @@
 import copy
 import hashlib
 import importlib.util
+import io
 import json
+from contextlib import redirect_stdout
 from html.parser import HTMLParser
 import os
 from pathlib import Path
 import re
 import shutil
 import subprocess
+import tempfile
 import unittest
 from unittest import mock
 
@@ -81,6 +84,20 @@ def execute_packet(markup, state):
     result = subprocess.run([node, "-e", code], input=json.dumps(state, ensure_ascii=False),
                             text=True, encoding="utf-8", capture_output=True, check=True)
     return json.loads(result.stdout)
+
+
+def execute_safe_json(markup, value):
+    """Run the actual browser backup/HTML-export serializer, not a replica."""
+    script = reader.script_text(markup, "review-script")
+    definition = next(line for line in script.splitlines() if line.startswith("const safeJSON ="))
+    code = ("const value=JSON.parse(require('fs').readFileSync(0,'utf8'));" +
+            definition + "\nprocess.stdout.write(safeJSON(value));")
+    node = os.environ.get("CODEX_PRIMARY_RUNTIME_NODE") or shutil.which("node")
+    if not node:
+        raise RuntimeError("Node is required to execute the real reader serializer")
+    result = subprocess.run([node, "-e", code], input=json.dumps(value, ensure_ascii=False),
+                            text=True, encoding="utf-8", capture_output=True, check=True)
+    return result.stdout
 
 
 class CanonicalReader(unittest.TestCase):
@@ -450,6 +467,8 @@ class CanonicalReader(unittest.TestCase):
         # GEO-139(4):GEO-120 的連帶約束明列「追溯燈號 / 三向連結 / 樞紐徽章」不得丟失。
         # 判準:綠 = 原始碼且夾具、黃 = 其一、紅 = 皆無;樞紐 = 被引用數 >= 3。
         # 不得另立門檻;出處見 sync_axiom_reader.py 的 TRACE_CSS 註解(GEO-167)。
+        self.check_i25a_relocated_implementation()
+        self.check_source_include_traceability()
         incoming = {c["id"]: [] for c in self.state["clauses"]}
         for c in self.state["clauses"]:
             for ref in sorted({m[1] for m in reader.CLAUSE_REF.finditer(c["body"]) if m[1] != c["id"]}):
@@ -465,6 +484,101 @@ class CanonicalReader(unittest.TestCase):
             self.assertIn('data-clause="%s" data-trace="%s"' % (cid, t["light"]), self.html, cid)
         self.assertEqual(self.html.count('<details class="trace-section">'), len(trace))
         self.assertEqual(self.html.count('class="badge-hub"'), sum(1 for t in trace.values() if t["hub"]))
+
+    def check_i25a_relocated_implementation(self):
+        # PR #375: the guard moved out of current_geometry.c; its trace must follow it.
+        core = ROOT / "current_geometry.c"
+        before = core.read_bytes()
+        trace = reader.clause_trace([{"id": "I25a"}], {})["I25a"]
+        self.assertEqual(trace["light"], "partial")
+        self.assertIn("grid_rules_scene_integrity_error", trace["functions"])
+        path = "geometry-core/grid_subdivision.inc"
+        lines = (ROOT / path).read_text(encoding="utf-8").splitlines()
+        expected = [(path, "grid_rules_scene_integrity_error", i + 1)
+                    for i, line in enumerate(lines)
+                    if '"I25a: source rule capability/highwater closure missing"' in line]
+        self.assertTrue(expected)
+        for site in expected:
+            self.assertIn(site, trace["sites"])
+        self.assertEqual(core.read_bytes(), before)
+
+    def check_source_include_traceability(self):
+        matrix = reader.axiom_matrix
+        # One match per clause per physical line, with the original token boundaries.
+        repeated = 'static void guard(void) { /* I25a I25 I25a I250 xI25 */ }\r\n'
+        self.assertEqual(matrix.code_sites(repeated, ["I25", "I25a", "I2"]),
+                         {"I25": [("guard", 1)], "I25a": [("guard", 1)], "I2": []})
+        self.assertEqual(matrix.code_sites(repeated, []), {})
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "nested").mkdir()
+            entry = root / "current_geometry.c"
+            source = ('/* source bytes must remain CRLF */\n'
+                      '#include \\\n "nested/rules.inc"\n'
+                      '#include "nested/../nested/rules.inc"\n'
+                      '/*\n#include "ignored.inc"\n*/\n'
+                      'const char *example = "#include \\"ignored.inc\\"";\n'
+                      '#include <not-local.inc>\n'
+                      '#include "optional-platform.h"\n'
+                      'static void root_guard(void) { /* D1 */ }\n')
+            entry.write_bytes(source.replace("\n", "\r\n").encode())
+            (root / "nested/rules.inc").write_text(
+                '/* I25a: banner belongs to the following function. */\n'
+                'static void moved_rule(void)\n{\n'
+                '    const char *diagnostic = "I25a: V_MOVED";\n}\n'
+                '#include "../helper.h"\n', encoding="utf-8")
+            (root / "helper.h").write_text(
+                '#include "nested/rules.inc"\n'  # cycle: do not recurse or count twice
+                'static void header_guard(void) { /* I4 */ }\n'
+                '#include "leaf.c"\n', encoding="utf-8")
+            (root / "leaf.c").write_text(
+                'static void leaf_guard(void) { /* I2 */ }\n', encoding="utf-8")
+            (root / "ignored.inc").write_text(
+                'static void detached(void) { /* I9 */ }\n', encoding="utf-8")
+            axiom = root / "axiom.md"
+            axiom.write_text('I25a moved V_MOVED\nI9 detached\n', encoding="utf-8")
+            clauses = [{"id": cid} for cid in ("D1", "I25a", "I2", "I4", "I9")]
+            before = {p: p.read_bytes() for p in root.rglob("*") if p.is_file()}
+            with mock.patch.multiple(matrix, ROOT=str(root), SRC=str(entry),
+                                     AXIOM=str(axiom), MUTATE=str(root / "mutate.py")):
+                trace = reader.clause_trace(clauses, {})
+                self.assertEqual(trace["I25a"]["light"], "partial")
+                self.assertEqual(trace["I25a"]["functions"], ["moved_rule"])
+                self.assertEqual(trace["I25a"]["sites"], [
+                    ("nested/rules.inc", "moved_rule", 1),
+                    ("nested/rules.inc", "moved_rule", 4)])
+                self.assertEqual(trace["I2"]["functions"], ["leaf_guard"])
+                self.assertEqual(trace["I4"]["functions"], ["header_guard"])
+                self.assertEqual(trace["D1"]["functions"], ["root_guard"])
+                self.assertEqual(trace["I9"]["light"], "none")
+                self.assertEqual(trace["I9"]["sites"], [])
+                self.assertEqual({p: p.read_bytes() for p in before}, before)
+                markup = reader.trace_section("I25a", trace["I25a"])
+                self.assertIn("nested/rules.inc:4", markup)
+                with mock.patch.object(matrix.sys, "argv", [matrix.__file__]), redirect_stdout(io.StringIO()) as out:
+                    self.assertEqual(matrix.main(), 0)
+                self.assertIn("moved_rule", out.getvalue())
+                self.assertIn("條文 2 條  |  綠 0  黃 1  紅 1", out.getvalue())
+                self.assertNotIn("V_MOVED 在原始碼裡找不到", out.getvalue())
+
+                scene = root / "fixture.scene"
+                scene.write_text("# I25a\n", encoding="utf-8")
+                self.assertEqual(reader.clause_trace(clauses, {})["I25a"]["light"], "ok")
+                scene.unlink()
+                included = root / "nested/rules.inc"
+                marked = included.read_bytes()
+                included.write_bytes(marked.replace(b"I25a", b"unmarked"))
+                self.assertEqual(reader.clause_trace(clauses, {})["I25a"]["light"], "none")
+                included.write_bytes(marked)
+                entry.write_bytes(b"static void root_guard(void) { /* D1 */ }\r\n")
+                disconnected = reader.clause_trace(clauses, {})["I25a"]
+                self.assertEqual(disconnected["light"], "none")
+                self.assertEqual(disconnected["functions"], [])
+                self.assertEqual(disconnected["sites"], [])
+                for missing in ("missing.inc", "missing.c"):
+                    entry.write_text('#include "' + missing + '"\n', encoding="utf-8")
+                    with self.subTest(missing=missing), self.assertRaisesRegex(FileNotFoundError, missing):
+                        reader.clause_trace(clauses, {})
 
     def test_search_keeps_query_after_navigating(self):
         # GEO-142(審查 R7):跳轉不得清空查詢;Enter 連跳下一筆;狀態列顯示第 n / m 筆。
@@ -491,6 +605,83 @@ class CanonicalReader(unittest.TestCase):
         self.assertIn("prefers-color-scheme", js)
         self.assertIn("ref-preview", js)                      # 拍板二:hover 預覽與固定面板並存
         self.assertIn("#ref-preview{position:fixed", self.html)
+        # Add cases within the registered test; retain every existing assertion.
+        self.check_offline_source_serialization()
+        self.check_offline_source_inline()
+        self.check_external_resources_rejected()
+
+    def check_offline_source_serialization(self):
+        value = {"source": 'http://example.invalid/a HTTPS://example.invalid/b?x=1&y=2 '
+                           '</script>\u2028\u2029',
+                 "literalEscapes": r'https:\/\/example.invalid/\u003c',
+                 "nested": [{"出處": "https://example.invalid/#原文"}]}
+        for label, encoded in (("PY_JSON", reader.safe_json(value)),
+                               ("JS_JSON", execute_safe_json(self.html, value))):
+            with self.subTest(serializer=label):
+                self.assertEqual(json.loads(encoded), value, "R374_" + label + "_ROUNDTRIP")
+                self.assertNotRegex(encoded, r"(?i)https?://", "R374_" + label + "_OFFLINE")
+                self.assertNotIn("</script>", encoded)
+                self.assertNotIn("\u2028", encoded)
+                self.assertNotIn("\u2029", encoded)
+
+    def check_offline_source_inline(self):
+        urls = ("https://github.com/ZhiQiYang/geometry-axiom/issues/57#issuecomment-6436163904",
+                "https://github.com/ZhiQiYang/geometry-axiom/issues/57#issuecomment-6436060391")
+        linked = "[#57 決策回報](" + urls[0] + ") 及 [完整設計](" + urls[1] + ")"
+        hostile = '<img src="https://example.invalid/image"><script>bad()</script>'
+        cases = [("markdown", linked, linked),
+                 ("case", "HTTP://example.invalid/a https://example.invalid/b?x=1&y=2",
+                  "HTTP://example.invalid/a https://example.invalid/b?x=1&y=2"),
+                 ("code", "`" + urls[0] + "`", urls[0]),
+                 ("bold", "**" + urls[1] + "**", urls[1]),
+                 ("escaped HTML", hostile, hostile)]
+        rendered = reader.render_inline_with_reader(self.html, [case[1] for case in cases], self.state["clauses"])
+        for (label, _, expected), markup in zip(cases, rendered):
+            with self.subTest(inline=label):
+                self.assertEqual(reader.visible_text(markup), expected, "R374_INLINE_TEXT")
+                self.assertNotRegex(markup, r"(?i)https?://", "R374_INLINE_OFFLINE")
+                # Independently inspect real tags: URLs may only be text.
+                tags = []
+                class Tags(HTMLParser):
+                    def handle_starttag(self, tag, attrs):
+                        tags.append((tag, attrs))
+                Tags().feed(markup)
+                self.assertTrue(all(tag in {"wbr", "code", "strong"} and not attrs
+                                    for tag, attrs in tags), "R374_INLINE_INERT")
+
+    def check_external_resources_rejected(self):
+        resources = {
+            "link": ('<link rel="stylesheet" href="//example.invalid/style.css">', "external reader resource"),
+            "script": ('<script src="//example.invalid/code.js"></script>', "external reader resource"),
+            # The existing CSS guard rejects @import before the resource guard.
+            "import": ('<style>@import "//example.invalid/style.css";</style>', "unsupported CSS block: @import"),
+            "image": ('<img src="https://example.invalid/image" alt="">', "external reader resource"),
+        }
+        for label, (resource, first_rejection) in resources.items():
+            corrupted = self.html.replace("</head>", resource + "</head>", 1)
+            self.assertNotEqual(corrupted, self.html)
+            with self.subTest(resource=label), self.assertRaisesRegex(AssertionError, first_rejection):
+                reader.validate(corrupted, self.axiom, self.plain)
+
+    def check_delta0_sources(self):
+        # Fixed independent provenance oracle: a renderer that drops the URLs
+        # must fail even if its own regenerated DOM and validator agree.
+        urls = ("https://github.com/ZhiQiYang/geometry-axiom/issues/57#issuecomment-6436163904",
+                "https://github.com/ZhiQiYang/geometry-axiom/issues/57#issuecomment-6436060391")
+        regenerated = reader.rebuild(self.html, self.axiom, self.plain)
+        state = json.loads(reader.script_text(regenerated, "axiom-review-data"))
+        preamble = independent_source_slices(self.axiom)["preamble"]
+        visible = "\n".join(text for section, _, text in SourceDOM(regenerated).leaves if section == "preamble")
+        self.assertEqual(state["sourceSections"]["preamble"], {
+            "source": preamble, "sourceHash": hashlib.sha256(preamble.encode("utf-8")).hexdigest()})
+        for url in urls:
+            self.assertIn(url, preamble, "R374_DELTA0_SOURCE")
+            self.assertIn(url, visible, "R374_DELTA0_VISIBLE")
+        self.assertIsNone(re.search(r"(?i)https?://", regenerated), "R374_REBUILD_OFFLINE")
+        self.assertEqual(reader.validate(regenerated, self.axiom, self.plain)["geo120"], "pass")
+        self.assertEqual([c["id"] for c in state["clauses"]], [c["id"] for c in self.state["clauses"]])
+        for key in ("documentId", "baseDocumentHash", "comments", "proposals", "revisions", "draft"):
+            self.assertEqual(state[key], self.state[key], key)
 
     def test_every_patch_actually_lands(self):
         # 這個管線最常見的失效不是「補丁做錯」,而是「補丁被靜默跳過」——
@@ -500,6 +691,26 @@ class CanonicalReader(unittest.TestCase):
         regenerated = reader.rebuild(self.html, self.axiom, self.plain)
         self.assertGreater(len(reader.PATCHES), 50)          # 有真的登記,不是空跑
         self.assertEqual(reader.PATCHES.verify(regenerated), [])
+        self.check_offline_source_template_migration()
+
+    def check_offline_source_template_migration(self):
+        # A repaired committed HTML must not hide removal of the sync migration.
+        legacy_text = r'''    function safeText(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}'''
+        legacy_json = r'''const safeJSON = v => JSON.stringify(v,null,2).replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');'''
+        legacy = self.html
+        for script_id, prefix, old in (("reader-script", "    function safeText(s)", legacy_text),
+                                       ("review-script", "const safeJSON =", legacy_json)):
+            script = reader.script_text(legacy, script_id)
+            current = next(line for line in script.splitlines() if line.startswith(prefix))
+            self.assertEqual(script.count(current), 1)
+            legacy = reader.replace_script(legacy, script_id, script.replace(current, old))
+        regenerated = reader.rebuild(legacy, self.axiom, self.plain)
+        self.assertIsNone(re.search(r"(?i)https?://", regenerated), "R374_TEMPLATE_MIGRATION")
+        self.assertEqual(reader.validate(regenerated, self.axiom, self.plain)["geo120"], "pass")
+        self.assertTrue(regenerated == self.html, "R374_TEMPLATE_IDEMPOTENT")
+        labels = [label for label, _ in reader.PATCHES.present]
+        self.assertIn("R374 inert source URL text", labels)
+        self.assertIn("R374 source URL JSON export", labels)
 
     def test_force_marker_registers_new_applied_and_evolved_paths(self):
         for source in ("OLD", "NEW MARK", "later UI MARK"):
@@ -664,6 +875,7 @@ class CanonicalReader(unittest.TestCase):
         expected = [(name, tag, reader.visible_text(markup)) for (name, tag, _), markup in zip(expected, inline)]
         self.assertEqual(observed.leaves, expected)
         self.assertEqual(len([entry for entry in expected if entry[:2] == ("exclusions", "li")]), 19)
+        self.check_delta0_sources()
 
     def test_source_scope_table_preserves_every_cell_and_row(self):
         section = independent_source_slices(self.axiom)["exclusions"]
