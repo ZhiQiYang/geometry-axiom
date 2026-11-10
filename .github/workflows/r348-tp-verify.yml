@@ -1,0 +1,126 @@
+name: R348 T/P verification (temporary diagnostic)
+
+# Temporary, PR #348 only. Checks ChatGPT's T/P from PR #348 comment
+# 6757051830 on their own commits:
+# - tp: ContactHotPathWork must be red on T (a6926ace) and green on P
+#   (5bca87a0);
+# - h7: the original H7 tests 7 and 8, timed per command by the read-only
+#   sidecar from comment 6751789744 (.github/scripts/r348_h7_trace.py,
+#   SHA-256 f90681f7...), on T and on P, three runners each, with the CPU
+#   model recorded so before/after compare on the same CPU type.
+# No product file, test, expected count or timeout changes. Remove this
+# workflow and the sidecar before #348 is merged. Push trigger only.
+on:
+  push:
+    branches:
+      - codex/geo300-capacity512-20261024
+    paths:
+      - '.github/workflows/r348-tp-verify.yml'
+      - '.github/scripts/r348_h7_trace.py'
+
+permissions:
+  contents: read
+
+jobs:
+  tp:
+    name: ContactHotPathWork on ${{ matrix.label }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: T a6926ace (expect red)
+            sha: a6926ace92d1e839c8b0ef7801582b342bdbc24b
+          - label: P 5bca87a0 (expect green)
+            sha: 5bca87a011824259a2e2ac3a1fe1eadfa67f5af7
+    steps:
+      - name: Check out the commit under test
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ matrix.sha }}
+          path: tree
+      - name: Run ContactHotPathWork
+        shell: bash
+        env:
+          OUT: ${{ runner.temp }}/tp-${{ matrix.sha }}
+        run: |
+          set -uo pipefail
+          ulimit -s 16384
+          mkdir -p "$OUT"
+          grep -m1 'model name' /proc/cpuinfo | tee "$OUT/cpu.txt"
+          cd tree
+          git rev-parse HEAD | tee "$OUT/head.txt"
+          set +e
+          python3 -m unittest -v tests.test_geo261_timber_capacity_host.ContactHotPathWork > "$OUT/unittest.txt" 2>&1
+          echo $? > "$OUT/exit-code.txt"
+          cat "$OUT/unittest.txt"
+          echo "exit $(cat "$OUT/exit-code.txt")"
+          exit 0
+      - name: Preserve the result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r348-tp-${{ matrix.sha }}
+          path: ${{ runner.temp }}/tp-${{ matrix.sha }}/
+          if-no-files-found: error
+          retention-days: 30
+
+  h7:
+    name: H7 tests 7-8 on ${{ matrix.label }} (sample ${{ matrix.sample }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      matrix:
+        label: [T a6926ace, P 5bca87a0]
+        sample: [1, 2, 3]
+        include:
+          - label: T a6926ace
+            sha: a6926ace92d1e839c8b0ef7801582b342bdbc24b
+          - label: P 5bca87a0
+            sha: 5bca87a011824259a2e2ac3a1fe1eadfa67f5af7
+    steps:
+      - name: Check out the PR head for the sidecar script
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          path: head
+      - name: Check out the commit under test
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ matrix.sha }}
+          path: tree
+      - name: Run original tests 7 and 8 with the read-only sidecar
+        shell: bash
+        env:
+          OUT: ${{ runner.temp }}/h7-${{ matrix.sha }}-${{ matrix.sample }}
+        run: |
+          set -uo pipefail
+          ulimit -s 16384
+          mkdir -p "$OUT"
+          cp head/.github/scripts/r348_h7_trace.py "$OUT/r348_h7_trace.py"
+          sha256sum "$OUT/r348_h7_trace.py" | tee "$OUT/script-sha256.txt"
+          { grep -m1 'model name' /proc/cpuinfo; python3 --version; cc --version | head -n 1; uname -a; nproc; } | tee "$OUT/versions.txt"
+          cd tree
+          git rev-parse HEAD | tee "$OUT/head.txt"
+          start=$(date +%s)
+          set +e
+          # Outer cap only so the job always uploads its trace; the original
+          # tests keep their own 600 s stage limits unchanged.
+          timeout 5400 python3 "$OUT/r348_h7_trace.py" > "$OUT/stdout.txt" 2> "$OUT/H7.jsonl"
+          echo $? > "$OUT/exit-code.txt"
+          echo $(( $(date +%s) - start )) > "$OUT/elapsed-seconds.txt"
+          echo "exit $(cat "$OUT/exit-code.txt") after $(cat "$OUT/elapsed-seconds.txt") s"
+          tail -n 12 "$OUT/H7.jsonl"
+          exit 0
+      - name: Preserve the trace
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r348-h7-${{ matrix.sha }}-sample-${{ matrix.sample }}
+          path: ${{ runner.temp }}/h7-${{ matrix.sha }}-${{ matrix.sample }}/
+          if-no-files-found: error
+          retention-days: 30
