@@ -10223,6 +10223,12 @@ static bool parse_scene_file(const char *path, World *out_world)
          * reset or an explicit change back from PANEL to REPEAT. */
         if(ok && grid_subdivision_panel_used(out_world))g_rule_scene_panel_encountered=true;
     }
+    {
+        /* GEO-300: a buffered invalid line still wins over a later lexical error. */
+        char failure[sizeof g_scene_last_error];memcpy(failure,g_scene_last_error,sizeof failure);
+        if (!app_scene_file_flush(path, out_world)) ok = false;
+        else if (!ok) memcpy(g_scene_last_error,failure,sizeof failure);
+    }
 
     fclose(in);
 

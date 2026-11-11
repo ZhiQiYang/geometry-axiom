@@ -754,7 +754,11 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
  * bytes and resolver lifetime. Interactive and standalone parser callers do not. */
 typedef struct {
     AppWorldCandidate *owner;GeoEvalContext *sources;World *before;
+    /* GEO-300 deferred run: World before its first line, the exact lines, and
+     * the last place line whose ordinary handler validates the whole run. */
+    World *checkpoint;char *lines;int *line_numbers;size_t pending;long last_place;
 } AppSceneFileReplay;
+enum { APP_SCENE_DEFER_LINE=512,APP_SCENE_DEFER_LINES=1100 };
 static AppSceneFileReplay *g_scene_file_replay;
 static bool app_scene_file_graph_empty(const AppSceneFileReplay *frame)
 {
@@ -806,9 +810,67 @@ static bool app_scene_file_line(const char *path,int line_no,char **tokens,int c
     return ok;
 }
 
+/* Only declarations and placements are buffered; their tokens contain no
+ * blanks, so one blank between tokens reproduces the same split. */
+static bool app_scene_file_defer_text(char **tokens,int count,char *out)
+{
+    if(strcmp(tokens[0],"place")&&strcmp(tokens[0],"timber"))return false;
+    size_t used=0;
+    for(int i=0;i<count;++i){
+        size_t length=strlen(tokens[i]);
+        if(used+length+2>APP_SCENE_DEFER_LINE)return false;
+        if(i)out[used++]=' ';
+        memcpy(out+used,tokens[i],length);used+=length;
+    }
+    out[used]='\0';return true;
+}
+static bool app_scene_file_replay_line(AppSceneFileReplay *frame,size_t index,const char *path,World *world)
+{
+    char text[APP_SCENE_DEFER_LINE];char *tokens[SCENE_MAX_TOKENS];
+    const char *saved=frame->lines+index*APP_SCENE_DEFER_LINE;memcpy(text,saved,strlen(saved)+1);
+    int count=split_tokens(text,tokens,SCENE_MAX_TOKENS);
+    return count>0&&app_scene_file_line(path,frame->line_numbers[index],tokens,count,world);
+}
+/* The last buffered place runs its ordinary handler again: same anchor, same
+ * order, and the full World validation it always ended with. If that fails,
+ * the run is replayed from its first line exactly as before this change, so
+ * the first invalid line reports its own number and message. */
+static bool app_scene_file_flush(const char *path,World *world)
+{
+    AppSceneFileReplay *frame=g_scene_file_replay;
+    if(!frame||!frame->pending)return true;
+    size_t pending=frame->pending;long last=frame->last_place;
+    frame->pending=0;frame->last_place=-1;
+    if(last<0||app_scene_file_replay_line(frame,(size_t)last,path,world))return true;
+    memcpy(world,frame->checkpoint,sizeof *world);
+    for(size_t i=0;i<pending;++i)if(!app_scene_file_replay_line(frame,i,path,world))return false;
+    return true;
+}
 static bool apply_scene_line(const char *path,int line_no,char *tokens[],int count,World *world)
 {
-    if(app_scene_file_line_eligible(world,tokens,count))return app_scene_file_line(path,line_no,tokens,count,world);
+    if(app_scene_file_line_eligible(world,tokens,count)){
+        AppSceneFileReplay *frame=g_scene_file_replay;char text[APP_SCENE_DEFER_LINE];
+        if(frame->checkpoint&&app_scene_file_defer_text(tokens,count,text)){
+            if(frame->pending==APP_SCENE_DEFER_LINES&&!app_scene_file_flush(path,world))return false;
+            if(!frame->pending)memcpy(frame->checkpoint,world,sizeof *world);
+            g_reference_validation_deferred=true;
+            bool ok=app_scene_file_line(path,line_no,tokens,count,world);
+            g_reference_validation_deferred=false;
+            if(ok){
+                memcpy(frame->lines+frame->pending*APP_SCENE_DEFER_LINE,text,strlen(text)+1);
+                frame->line_numbers[frame->pending]=line_no;
+                if(!strcmp(tokens[0],"place"))frame->last_place=(long)frame->pending;
+                ++frame->pending;return true;
+            }
+            /* An earlier buffered line that is invalid still reports first. */
+            char failure[sizeof g_scene_last_error];memcpy(failure,g_scene_last_error,sizeof failure);
+            if(!app_scene_file_flush(path,world))return false;
+            memcpy(g_scene_last_error,failure,sizeof failure);return false;
+        }
+        if(!app_scene_file_flush(path,world))return false;
+        return app_scene_file_line(path,line_no,tokens,count,world);
+    }
+    if(!app_scene_file_flush(path,world))return false;
     AppWorldCandidate *candidate=app_world_candidate_create(world);
     if(!candidate){scene_error(path,line_no,"I32: candidate World allocation failed");return false;}
     bool retained=false;bool ok=apply_scene_line_candidate(path,line_no,tokens,count,world,candidate,&retained);
@@ -827,9 +889,17 @@ static bool app_scene_replay_file(const char *path,World *world)
         frame.sources=geo_candidate_sources(app_candidate_core(frame.owner->control));
         if(frame.sources&&app_scene_file_graph_empty(&frame))frame.before=malloc(sizeof *frame.before);
     }
+    frame.last_place=-1;
+    if(frame.before){
+        frame.checkpoint=malloc(sizeof *frame.checkpoint);
+        frame.lines=malloc((size_t)APP_SCENE_DEFER_LINES*APP_SCENE_DEFER_LINE);
+        frame.line_numbers=malloc((size_t)APP_SCENE_DEFER_LINES*sizeof *frame.line_numbers);
+        if(!frame.checkpoint||!frame.lines||!frame.line_numbers){free(frame.checkpoint);frame.checkpoint=NULL;}
+    }
     g_scene_file_replay=frame.before?&frame:NULL;
     bool ok=parse_scene_file(path,world);
-    g_scene_file_replay=previous;free(frame.before);return ok;
+    g_scene_file_replay=previous;free(frame.before);
+    free(frame.checkpoint);free(frame.lines);free(frame.line_numbers);return ok;
 }
 
 /* Private closed-program replay for the bridge's built-in default only.

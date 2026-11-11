@@ -739,8 +739,13 @@ static bool reference_rebuild(World *w)
     if(!persistent)reference_sources_dispose(ctx);return ok;
 }
 
+/* GEO-300: only the scene-file replay frame sets this, for one buffered
+ * timber/place line at a time; the run is validated as a whole before any
+ * other line, any reported failure and the end of the file. */
+static bool g_reference_validation_deferred;
 static bool reference_checked(const char *p,int n,World *w)
 {
+    if (g_reference_validation_deferred) return true;
     if (world_revalidate(w)) return true;
     scene_error(p,n,g_revalidate_error[0]?g_revalidate_error:"I8: reference validation failed"); return false;
 }
