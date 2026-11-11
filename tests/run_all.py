@@ -61,6 +61,7 @@ PY_NEEDS = {
     'test_geo314_ordered_facts': [],
     'test_architecture_contract': [],
     'test_product_architecture': [],
+    'test_canvas_evidence': [],
         'test_panel_fill_ui_contract': ['bridge'],
     'test_k1_product_architecture': [],
     'test_assembly_capacity': ['bridge'],
