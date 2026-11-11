@@ -622,9 +622,8 @@ static void app_scene_candidate_commit_validated(AppSceneCandidateCall *call,Wor
     identity_drop_serials();
     bool activate=count==2&&!strcmp(tokens[0],"identity-ledger")&&!strcmp(tokens[1],"activate");
     AppIdentityCommit commit={NULL,0,false,true,activate};
-    const World *previous=g_subgrid_before;g_subgrid_before=&transaction->before;
     call->finalized=app_world_identity_finalize(transaction,&commit);
-    g_subgrid_before=previous;call->identity_failed=!call->finalized;
+    call->identity_failed=!call->finalized;
 }
 static bool app_scene_candidate_apply(void *after,GeoEvalContext *sources,void *opaque)
 {
