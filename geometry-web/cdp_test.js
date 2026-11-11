@@ -4,6 +4,8 @@ const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
 const floor = require('./cdp_floor.js');
 const shards = require('./canvas_shards.js');
+const canvasEvidence = require('../tests/helpers/canvas_shards.js');
+let shardJournal=null;
 const cdp = require('./cdp_helpers.js');
 const {createRetainedEvaluator} = require('./cdp_evaluation.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
@@ -51,8 +53,11 @@ function runConfiguration(env = process.env) {
   /* 分片模式:只跑完整序列中 canvas_shards.json 指定的一個連續區段,本片逐段與 golden 嚴格比對。
      它不是部分模式:不可與任何範圍旗標並用,也不可更新 golden。 */
   if(env.GEOMETRY_CDP_SHARD!==undefined){
-    if(filters.length||modifiers.length)throw Error('GEOMETRY_CDP_SHARD runs one contiguous block of the complete sequence; remove every scope flag and modifier');
+    if([...SCOPE_FLAGS,...ENGINEERING_MODIFIERS].some(name=>env[name]!==undefined))
+      throw Object.assign(Error('GEOMETRY_CDP_SHARD runs one contiguous block of the complete sequence; remove every scope flag and modifier'),{code:'CANVAS_FAKE_SCOPE'});
     if(env.GEOMETRY_CDP_UPDATE_GOLDEN!==undefined)throw Error('GEOMETRY_CDP_SHARD never updates golden; regenerate it from one complete full-mode run');
+    if(url.protocol!=='http:'||url.hostname!=='127.0.0.1'||!url.port||url.pathname!=='/'||url.search||url.hash||url.username||url.password)
+      throw Object.assign(Error('CANVAS_RUNTIME_ENDPOINT: shards must use the isolated loopback runtime probe service'),{code:'CANVAS_RUNTIME_ENDPOINT'});
     const plan=shards.loadPlan(),shard=shards.parseShardSpec(env.GEOMETRY_CDP_SHARD,plan);
     if(shard.count!==CANVAS_SHARDS)throw Error('cdp_test.js gates exactly '+CANVAS_SHARDS+' canvas shards; canvas_shards.json declares '+shard.count);
     return {mode:'shard',shard:{...shard,planSha256:shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)),goldenSha256:shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))},
@@ -155,7 +160,13 @@ let expectedBeforeUnloadUntil=0;
 let expectedNativeDialog=null;
 let expectedException=null, scope, skipped=[];
 const assetRequests=new Map(), assetFailures=[];
-const _log = console.log;
+const originalLog = console.log;
+// Shard receipts must survive the original immediate process.exit path. Keep
+// the original console behavior for full/partial; shard raw/journal is synced.
+const _log = (...args) => {
+  if(scope?.mode==='shard')fs.writeSync(1,require('node:util').format(...args)+'\n');
+  else originalLog(...args);
+};
 function observeAssetNetwork(message) {
   if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin,undefined,{allApi:true});
   transportFailureTrace.observe(message, currentTestStep);
@@ -179,11 +190,14 @@ function recordLog(...args) {
   const s = args.join(" ");
   if(s.startsWith('===')){
     currentTestStep=s;
-    currentSection=floor.sectionOf(s)||currentSection;
+    const section=floor.sectionOf(s);
+    currentSection=section||currentSection;
+    if(section)shardJournal?.section(section,s);
     sectionPass[currentSection]=sectionPass[currentSection]||0;
     touchSection(currentSection);
   }
   for(const passed of assertionVerdicts(args)){
+    shardJournal?.assertion(passed,args[0]);
     touchSection(currentSection);
     if(passed){passN++;sectionPass[currentSection]=(sectionPass[currentSection]||0)+1;}
     else{failN++;sectionFail[currentSection]=(sectionFail[currentSection]||0)+1;}
@@ -7313,6 +7327,10 @@ async function main() {
      It also stays last in the last canvas shard. */
   if(inSequence(2)||process.env.GEOMETRY_DEFINITION_IMPORT_ONLY)await require('./definition_import_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   }
+  if(shardJournal){
+    shardJournal.end(scope.shard.index+'/'+scope.shard.count);
+    shardJournal.finish();
+  }
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
   const goldenCompare=evaluateSections();
@@ -7340,6 +7358,17 @@ async function fatal(e) {
   }
 }
 if(require.main===module){
-  try {scope=runConfiguration();console.log=recordLog;(async()=>{await assertPortAvailable(PORT);chrome=startBrowser();chrome.on('error',fatal);_log('CDP_SCOPE '+JSON.stringify(scope));await main();})().catch(fatal);}
+  try {
+    scope=runConfiguration();
+    if(scope.mode==='shard'){
+      const shardEvidencePlan=canvasEvidence.loadPlan();
+      scope.evidencePlanSha256=shardEvidencePlan.sha256;
+      const id=scope.shard.index+'/'+scope.shard.count;
+      shardJournal=canvasEvidence.createJournal(shardEvidencePlan,id,event=>_log('CANVAS_SHARD_EVENT '+canvasEvidence.stable(event)));
+      shardJournal.begin(id);
+    }
+    console.log=recordLog;
+    (async()=>{await assertPortAvailable(PORT);chrome=startBrowser();chrome.on('error',fatal);_log('CDP_SCOPE '+JSON.stringify(scope));await main();})().catch(fatal);
+  }
   catch(error){_log('CDP preflight failed:',error.message);process.exitCode=1;}
 } else module.exports={runConfiguration,assertionVerdicts,evaluationValue,explicitVerdict,assertPortAvailable,verifyBrowserOwnership};
