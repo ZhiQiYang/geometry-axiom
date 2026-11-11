@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "13c04676aa40d33c9700bee1cb41909f38caaa13",
+  "sourceHead": "b147ff5953fec3ebc3a7216040f6c50ac0754cfb",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "42767200168",
+  "runId": "42912650404",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "ebf9431f6a81e2a09dee5acbc016ea82ee44a0f22a7c6953b990867a5bf457a3",
+      "stderrSha256": "9be6d33af567e13d3dacc591b40805fa7f8ea553fe91b6437eaac1bb9e3f7b08",
       "testsRun": 205
     },
     {
@@ -51,11 +51,11 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "455442cdb1cda81f680da52f1d2831d95b567cbbf0d00ccd8c71f5429c40c534",
+      "stderrSha256": "46a34e7ee59d0964adf20679d2ee5acc0a281cb65e7b69089db0a30003a72797",
       "testsRun": 18
     }
   ],
-  "manifestLfSha256": "c07e43b609801f4ff39dd9206add1793bbf1093deeac25025a95d84341bb3b88",
+  "manifestLfSha256": "95a4f080a9edd0e9973127c7c5e1d881dd8c0b535e09c3da436180b2a7ad1025",
   "scannerLfSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "testScriptsLfSha256": {
     "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
@@ -1577,7 +1577,7 @@
     },
     {
       "path": "geometry-web/cdp_test.js",
-      "lfSha256": "47f5d75fd30b6eca82b04802841873c6d1d7238bfbffcef6e3260bd634bff7e6"
+      "lfSha256": "e72367f82e5d329fcf578b776e0186e032619136758efb0a431a046b87fcb5aa"
     },
     {
       "path": "geometry-web/composition_canvas_test.js",
@@ -2624,5 +2624,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "039303c6a5511655c855211815ae0b15927353b81fbc66d2609e173a487e2e6e"
+  "inputLfClosureSha256": "a29e2288979b3a4f9fd547fa5ba173a6141215c062e3f8d2cfa77e7b0ddb0428"
 }
