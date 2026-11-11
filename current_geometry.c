@@ -6319,7 +6319,7 @@ static bool world_validate_derived(const World *world)
 /* D2/D7/D9：承載面 frame 改變後，角材的世界姿態與 Space 範圍必須
  * 從定義重建。只在候選世界上操作，全量驗證通過才一起提交；
  * 失敗不會留下部分更新。位置與長度重算，引用與格線索引保持原意。 */
-static bool world_revalidate_candidate(World *world,World *candidate)
+static bool world_revalidate_candidate_run(World *world,World *candidate)
 {
     (void)world;
     g_revalidate_error[0] = '\0';
@@ -6395,6 +6395,27 @@ static bool world_revalidate_candidate(World *world,World *candidate)
     return app_reference_sources_valid(candidate);
 }
 
+/* GEO-300: the exact bytes, baseline, keyed state and source graph size of
+ * the last successful full revalidation of the active H candidate. A direct
+ * statement may commit on that same validation only while all of them still
+ * hold byte for byte; otherwise the commit path validates again. */
+static World g_validated_after;
+static const World *g_validated_target,*g_validated_baseline;
+static bool g_validated_keyed;
+static size_t g_validated_nodes,g_validated_edges;
+static bool world_revalidate_candidate(World *world,World *candidate)
+{
+    g_validated_target=NULL;
+    if(!world_revalidate_candidate_run(world,candidate))return false;
+    if(g_active_app_candidate&&candidate==&g_active_app_candidate->after){
+        GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(g_active_app_candidate->control));
+        memcpy(&g_validated_after,candidate,sizeof *candidate);
+        g_validated_baseline=g_subgrid_before;g_validated_keyed=g_boundary_keyed_update;
+        g_validated_nodes=geo_eval_node_count(sources);g_validated_edges=geo_eval_edge_count(sources);
+        g_validated_target=candidate;
+    }
+    return true;
+}
 static bool app_world_revalidate_evaluate(void *after,GeoEvalContext *sources,void *before)
 {
     (void)sources;

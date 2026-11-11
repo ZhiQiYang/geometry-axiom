@@ -592,15 +592,50 @@ static bool app_scene_direct_dimensions_allowed(const char *path,int line_no,cha
 }
 typedef struct {
     const char *path;int line_no;char **tokens;int count;World *before;
+    AppWorldCandidate *transaction;bool explicit_preview,finalized,identity_failed;
 } AppSceneCandidateCall;
+/* GEO-300: a direct statement whose handler already ran the full World
+ * revalidation as its last step finalizes identity on that validation instead
+ * of validating the identical bytes a second time. Every mismatch, preview
+ * requirement or keyed update leaves the original commit path in charge. */
+static void app_scene_candidate_commit_validated(AppSceneCandidateCall *call,World *candidate)
+{
+    AppWorldCandidate *transaction=call->transaction;const World *world=call->before;
+    char **tokens=call->tokens;int count=call->count;
+    if(!transaction||call->explicit_preview||g_parsing_scene_file||!strcmp(tokens[0],"canvas-pos"))return;
+    if(transaction!=g_active_app_candidate||candidate!=&transaction->after)return;
+    if(g_validated_target!=candidate||g_validated_baseline!=world||g_validated_keyed||
+       g_boundary_keyed_update||transaction->operation.boundary_keyed)return;
+    GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(transaction->control));
+    if(geo_eval_node_count(sources)!=g_validated_nodes||geo_eval_edge_count(sources)!=g_validated_edges)return;
+    if(memcmp(candidate,&g_validated_after,sizeof *candidate)||memcmp(world,&transaction->before,sizeof *world))return;
+    uint32_t system_edit_id;
+    if(!strcmp(tokens[0],"engineering")||memcmp(&world->wood.engineering,&candidate->wood.engineering,sizeof world->wood.engineering)||
+       memcmp(&world->wood.assembly,&candidate->wood.assembly,sizeof world->wood.assembly)||
+       memcmp(&world->wood.section_profiles,&candidate->wood.section_profiles,sizeof world->wood.section_profiles)||
+       assembly_dimensions_changed(world,candidate)||
+       (count>1&&!strcmp(tokens[0],"grid-system")&&parse_u32(tokens[1],&system_edit_id)&&world_find_grid_system(world,system_edit_id))||
+       (count>4&&!strcmp(tokens[0],"grid")&&(!strcmp(tokens[4],"from-system")||!strcmp(tokens[4],"from-binding")))||
+       !strcmp(tokens[0],"grid-binding")||!strcmp(tokens[0],"grid-source-rule")||!strcmp(tokens[0],"boundary-keyed")||
+       parameter_reference_edit(world,tokens,count)||
+       (reference_may_affect(world,tokens,count)&&reference_geometry_changed(world,candidate)))return;
+    identity_drop_serials();
+    bool activate=count==2&&!strcmp(tokens[0],"identity-ledger")&&!strcmp(tokens[1],"activate");
+    AppIdentityCommit commit={NULL,0,false,true,activate};
+    const World *previous=g_subgrid_before;g_subgrid_before=&transaction->before;
+    call->finalized=app_world_identity_finalize(transaction,&commit);
+    g_subgrid_before=previous;call->identity_failed=!call->finalized;
+}
 static bool app_scene_candidate_apply(void *after,GeoEvalContext *sources,void *opaque)
 {
     (void)sources;AppSceneCandidateCall *call=opaque;World *candidate=after;
     identity_explicit_reset();
-    g_reference_trial=*candidate;g_reference_capturing=true;
+    g_reference_trial=*candidate;g_reference_capturing=true;g_validated_target=NULL;
     const World *previous_baseline=g_subgrid_before;g_subgrid_before=call->before;
     bool ok=apply_scene_line_unchecked(call->path,call->line_no,call->tokens,call->count,candidate);
-    g_subgrid_before=previous_baseline;g_reference_capturing=false;return ok;
+    g_subgrid_before=previous_baseline;g_reference_capturing=false;
+    if(ok)app_scene_candidate_commit_validated(call,candidate);
+    return ok&&!call->identity_failed;
 }
 static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens[],int count,World *world,AppWorldCandidate *transaction,bool *retained)
 {
@@ -645,11 +680,17 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     }
     if(!app_scene_direct_dimensions_allowed(path,line_no,tokens,count,world))return false;
     g_scene_last_error[0]='\0'; g_engineering_error[0]='\0'; g_reference_issue_count=0;
-    AppSceneCandidateCall call={path,line_no,tokens,count,world};
+    AppSceneCandidateCall call={path,line_no,tokens,count,world,transaction,explicit_preview,false,false};
     bool saved_identity_preview=g_identity_explicit_preview;
     if(explicit_preview)g_identity_explicit_preview=true;
     bool ok=app_world_candidate_evaluate(transaction,app_scene_candidate_apply,&call)==GEO_CANDIDATE_OK;
     g_identity_explicit_preview=saved_identity_preview;
+    if(call.identity_failed){
+        char identity_failure[512];
+        snprintf(identity_failure,sizeof identity_failure,"%s",g_scene_last_error[0]?g_scene_last_error:
+            g_revalidate_error[0]?g_revalidate_error:"I8: candidate seal failed; World unchanged");
+        identity_drop_serials();scene_error(path,line_no,identity_failure);return false;
+    }
     bool affects=reference_may_affect(world,tokens,count);
     const World *impact_candidate=ok?candidate:&g_reference_trial;
     bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->wood.engineering,&candidate->wood.engineering,sizeof world->wood.engineering) || memcmp(&world->wood.assembly,&candidate->wood.assembly,sizeof world->wood.assembly) || memcmp(&world->wood.section_profiles,&impact_candidate->wood.section_profiles,sizeof world->wood.section_profiles));
@@ -661,9 +702,9 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     bool binding_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-binding");
     bool rule_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-source-rule");
     bool keyed_edit=!g_parsing_scene_file && !strcmp(tokens[0],"boundary-keyed");
-    if (explicit_preview ||
+    if (!call.finalized && (explicit_preview ||
         (engineering_edit || assembly_dimensions_changed(world,candidate) || system_edit || application_edit || binding_edit || rule_edit || keyed_edit || parameter_reference_edit(world,tokens,count) ||
-        (affects && (!ok || reference_geometry_changed(world,candidate))))) {
+        (affects && (!ok || reference_geometry_changed(world,candidate)))))) {
         char replay_error[512];snprintf(replay_error,sizeof replay_error,"%s",g_scene_last_error);
         if(ok&&!app_world_candidate_seal(transaction)){ok=false;scene_error(path,line_no,"I8: candidate seal failed; World unchanged");}
         if(!ok)transaction->after=g_reference_trial;
@@ -683,7 +724,7 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     }
     bool skip_identity=g_parsing_scene_file||!strcmp(tokens[0],"canvas-pos");
     char identity_error[512];
-    if(!skip_identity){
+    if(!skip_identity&&!call.finalized){
         identity_drop_serials();
         bool activate=count==2&&!strcmp(tokens[0],"identity-ledger")&&!strcmp(tokens[1],"activate");
         AppIdentityCommit commit={NULL,0,false,true,activate};
@@ -700,7 +741,7 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     }
     bool issued=!skip_identity&&g_identity_pending_count!=0;
     bool changed=!g_parsing_scene_file&&strcmp(tokens[0],"canvas-pos")&&(!world_definitions_equal(world,candidate)||issued);
-    if((skip_identity&&!app_world_candidate_seal(transaction))||!app_world_candidate_publish(transaction,world,false)){
+    if(((skip_identity||call.finalized)&&!app_world_candidate_seal(transaction))||!app_world_candidate_publish(transaction,world,false)){
         identity_drop_serials();
         scene_error(path,line_no,"I8: candidate seal failed; World unchanged");return false;
     }
