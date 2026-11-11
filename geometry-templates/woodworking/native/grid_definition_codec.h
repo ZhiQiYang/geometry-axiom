@@ -10,6 +10,8 @@
 #define WOOD_GRID_CODEC_MAX_BYTES 16384
 #define WOOD_GRID_SYSTEM_VALUE_SCHEMA "wood.grid.system-value/1"
 #define WOOD_GRID_APPLICATION_VALUE_SCHEMA "wood.grid.application-value/1"
+#define WOOD_GRID_FILL_DEFINITION_SCHEMA "wood.grid.from-fill/1"
+#define WOOD_GRID_FILL_VALUE_SCHEMA "wood.grid.from-fill-value/1"
 
 /* Authored schemas and field order match grid_sources.c. Each axis ends with
  * card_length and each system with its D64 card reference (set, parameter id,

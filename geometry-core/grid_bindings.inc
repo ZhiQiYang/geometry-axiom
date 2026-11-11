@@ -95,38 +95,57 @@ static void grid_bindings_dump(const World *w,FILE *out)
     }
 }
 
+static bool apply_grid_fill_application(const char *path,int line_no,char **t,int count,World *w)
+{
+    ReferenceGrid g={0};
+    if((count!=6&&count!=8)||!parse_u32(t[1],&g.id)||strcmp(t[2],"on")||!parse_u32(t[3],&g.placement_id)||
+        strcmp(t[4],"from-fill")||!parse_u32(t[5],&g.fill_id))goto invalid;
+    const ReferenceGrid *old=world_find_grid(w,g.id);g.main_along=old?old->main_along:0;
+    if(count==8){
+        if(strcmp(t[6],"main-along"))goto invalid;
+        if(!strcmp(t[7],"u"))g.main_along=1;else if(!strcmp(t[7],"v"))g.main_along=2;
+        else if(!strcmp(t[7],"none"))g.main_along=0;else goto invalid;
+    }
+    World candidate=*w;WoodGridContext context=app_grid_context(&candidate);char error[256]="";
+    if(!wood_grid_apply_fill(&context,&g,error,sizeof error)){scene_error(path,line_no,error);return false;}
+    const World *baseline=g_subgrid_before;if(!baseline)g_subgrid_before=w;
+    reference_capture_trial(&candidate);bool ok=app_world_revalidate_staged(w,&candidate);g_subgrid_before=baseline;
+    if(!ok){scene_error(path,line_no,g_revalidate_error);return false;}
+    return true;
+invalid:
+    scene_error(path,line_no,"D10: grid G on P from-fill F [main-along u|v|none] requires a live fill source");return false;
+}
+
 /* D10b / R22: one segment per other-axis cell. Unstaggered lines do not enter here. */
 static bool grid_query_stagger_segments(const ReferenceGrid *g,const PlacementSurface *p,
     const SpaceBoundarySurface *boundary,const char *kind,int axis,GridQueryLine *line,
-    const Coord rect[4],bool sample,GridQueryAxis *q,char *err,size_t cap)
+    const Coord rect[4],bool sample,uint64_t *query_stride,char *err,size_t cap)
 {
     int other=1-axis;
-    int64_t step=g->lattice_step[other],base=g->lattice_base[other],origin=g->lattice_index[other];
-    if(step<=0){if(err)snprintf(err,cap,"I24: 相位差需要另一軸");return false;}
-    Coord blo=rect[other],bhi=rect[other+2],orig_lo=rect[axis],orig_hi=rect[axis+2];
-    int64_t first_delta=grid_floor_div(blo-base,step),last_delta=grid_floor_div(bhi-base,step);
-    if(first_delta>last_delta) return true;
+    Coord orig_lo=rect[axis],orig_hi=rect[axis+2];
     int64_t first,last;
-    if(!grid_i64_add(origin,first_delta,&first)||!grid_i64_add(origin,last_delta,&last)){
-        if(err)snprintf(err,cap,"R32: INDEX_RANGE exceeds signed int64");return false;
+    GeoGridStatus status=wood_grid_band_window(g,other,rect[other],rect[other+2],&first,&last);
+    if(status!=GEO_GRID_OK){
+        if(err)snprintf(err,cap,status==GEO_GRID_INDEX_RANGE?"R32: INDEX_RANGE exceeds signed int64":"I24: 相位差需要另一軸");return false;
     }
-    uint64_t bands=(uint64_t)(last_delta-first_delta)+1,stride=1;
+    if(first>last)return true;
+    uint64_t bands=(uint64_t)last-(uint64_t)first+1,stride=1;
     if(bands>(uint64_t)POLY_MAX_VERTICES && !sample){
         if(err)snprintf(err,cap,"R32: QUERY_CAPACITY requires %llu segments; limit %u",(unsigned long long)bands,(unsigned)POLY_MAX_VERTICES);
         return false;
     }
     if(sample && bands>(uint64_t)POLY_MAX_VERTICES) stride=(bands+(uint64_t)POLY_MAX_VERTICES-1)/(uint64_t)POLY_MAX_VERTICES;
-    if(stride>q->stride) q->stride=stride;
+    if(stride>*query_stride) *query_stride=stride;
     for(uint64_t n=0;n<bands;n+=stride){
-        int64_t band,next; Coord band_lo,band_hi,coord;
+        int64_t band; Coord band_lo,band_hi,coord;
         if(!grid_i64_add(first,(int64_t)n,&band)) break;
-        if(!grid_lattice_coord(g,other,band,&band_lo)||!grid_i64_add(band,1,&next)||!grid_lattice_coord(g,other,next,&band_hi)||
+        if(!wood_grid_band_bounds(g,other,band,&band_lo,&band_hi)||
             !grid_lattice_coord_band(g,axis,line->index,band,&coord)){
             if(!sample){if(err)snprintf(err,cap,"D10b/D1: 錯開後的格線座標超出可表達範圍");return false;}
             continue;
         }
         if(coord<orig_lo || coord>orig_hi) continue;
-        Coord alo=band_lo>blo?band_lo:blo,ahi=band_hi<bhi?band_hi:bhi;
+        Coord alo=band_lo>rect[other]?band_lo:rect[other],ahi=band_hi<rect[other+2]?band_hi:rect[other+2];
         if(alo>=ahi) continue;
         if(!strcmp(kind,"system")){
             if(line->segment_count>=POLY_MAX_VERTICES){
@@ -190,17 +209,8 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
     }else goto invalid;
     for(int a=0;a<2;++a){
         GridQueryAxis *q=&axes[a];
-        if(g->from_binding){
-            Coord lo=rect[a],hi=rect[a+2];
-            if(g->axis[a].stagger_set){
-                Coord mag=g->axis[a].stagger>=0?g->axis[a].stagger:(g->axis[a].stagger==INT64_MIN?COORD_LIMIT:-g->axis[a].stagger);
-                int64_t elo,ehi;
-                if(!grid_i64_add(lo,-(int64_t)mag,&elo)) elo=-COORD_LIMIT;
-                if(!grid_i64_add(hi,mag,&ehi)) ehi=COORD_LIMIT;
-                if(elo<-COORD_LIMIT) elo=-COORD_LIMIT; if(ehi>COORD_LIMIT) ehi=COORD_LIMIT;
-                lo=(Coord)elo; hi=(Coord)ehi;
-            }
-            if(!grid_lattice_window(g,a,lo,hi,limit,sample,q,err,cap))return false;
+        if(g->from_binding||g->from_fill){
+            if(!grid_lattice_window(g,a,rect[a],rect[a+2],limit,sample,true,q,err,cap))return false;
         }
         else {
             memset(q,0,sizeof *q);q->stride=1;
@@ -219,8 +229,8 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
         for(size_t i=0;i<q->count;++i){
             GridQueryLine *line=&q->lines[i];SurfaceSegment2 clips[GUIDE_MAX_SEGMENTS];size_t n;
             Coord lo=rect[1-a],hi=rect[3-a];
-            if(g->from_binding && g->axis[a].stagger_set){
-                if(!grid_query_stagger_segments(g,p,boundary,kind,a,line,rect,sample,q,err,cap)) return false;
+            if((g->from_binding||g->from_fill) && g->axis[a].stagger_set){
+                if(!grid_query_stagger_segments(g,p,boundary,kind,a,line,rect,sample,&q->stride,err,cap)) return false;
                 continue;
             }
             if(!strcmp(kind,"system")){

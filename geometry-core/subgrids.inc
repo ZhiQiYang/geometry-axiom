@@ -47,11 +47,11 @@ static bool grid_sample_indices_in(const ReferenceGrid *grids,size_t count,const
     if (!out_count) return false;
     *out_count=0;
     if (!grid || !p || grid->placement_id!=p->id || axis<0 || axis>1 || !indices || !coords) return false;
-    if (grid->from_binding && !grid->is_subgrid) {
+    if ((grid->from_binding || grid->from_fill) && !grid->is_subgrid) {
         SurfaceRegion2 bounds; GridQueryAxis result;
         if (!placement_local_bounds(p,b,&bounds) ||
             !grid_lattice_window(grid,axis,axis?bounds.min_v:bounds.min_u,
-                axis?bounds.max_v:bounds.max_u,GRID_MAX_LINES,true,&result,NULL,0)) return false;
+                axis?bounds.max_v:bounds.max_u,GRID_MAX_LINES,true,grid->from_fill,&result,NULL,0)) return false;
         for (size_t i=0;i<result.count;++i) {
             indices[i]=result.lines[i].index; coords[i]=result.lines[i].coordinate;
         }
@@ -68,10 +68,20 @@ static bool grid_is_valid_in(const ReferenceGrid *grids,size_t count,const Refer
 {WoodGridHost host;app_grid_host_value(p,b,&host);return wood_grid_valid_in(grids,count,grid,p?&host:NULL,err,cap);}
 
 
+static bool grid_query_stagger_segments(const ReferenceGrid *,const PlacementSurface *,
+    const SpaceBoundarySurface *,const char *,int,GridQueryLine *,const Coord[4],bool,uint64_t *,char *,size_t);
 static size_t grid_line_segments(const ReferenceGrid *grids,size_t count,const ReferenceGrid *grid,
     const PlacementSurface *p,const SpaceBoundarySurface *b,int axis,int64_t index,SurfaceSegment2 *out,size_t cap)
 {
     Coord coord; SurfaceRegion2 cell;
+    if(grid&&grid->from_fill&&axis>=0&&axis<2&&grid->axis[axis].stagger_set){
+        SurfaceRegion2 bounds;if(!p||!placement_local_bounds(p,b,&bounds))return 0;
+        Coord rect[]={bounds.min_u,bounds.min_v,bounds.max_u,bounds.max_v};
+        GridQueryLine line={.index=index};uint64_t stride=1;
+        if(!grid_query_stagger_segments(grid,p,b,"grid",axis,&line,rect,true,&stride,NULL,0))return 0;
+        size_t n=line.segment_count<cap?line.segment_count:cap;
+        memcpy(out,line.segments,n*sizeof *out);return n;
+    }
     if (!grid_line_coord_in(grids,count,grid,p,b,axis,index,&coord,NULL,NULL,0)) return 0;
     if (grid->is_subgrid && !grid_cell_bounds(grids,count,grid,p,b,&cell,NULL,0)) return 0;
     GuideLine line={.placement_id=p->id,.direction=axis==0?GUIDE_ALONG_V:GUIDE_ALONG_U,.offset=coord};

@@ -244,16 +244,21 @@ static bool reference_grid_changed(const World *before,const World *after,uint32
     const PlacementSurface *ap=a?world_find_placement(before,a->placement_id):NULL;
     const PlacementSurface *zp=z?world_find_placement(after,z->placement_id):NULL;
     if (!a || !z || !ap || !zp || a->is_subgrid!=z->is_subgrid ||
-        a->parent_id!=z->parent_id || a->placement_id!=z->placement_id || a->main_along!=z->main_along ||
+        a->parent_id!=z->parent_id || a->placement_id!=z->placement_id || (!a->from_fill&&a->main_along!=z->main_along) ||
         a->from_system!=z->from_system || a->system_id!=z->system_id ||
         a->from_binding!=z->from_binding || a->binding_id!=z->binding_id ||
+        a->from_fill!=z->from_fill || a->fill_id!=z->fill_id || a->fill_side!=z->fill_side ||
         a->lattice_cell!=z->lattice_cell || memcmp(a->lattice_cell_index,z->lattice_cell_index,sizeof a->lattice_cell_index) ||
         memcmp(a->cell_ref,z->cell_ref,sizeof a->cell_ref) || memcmp(a->divisions,z->divisions,sizeof a->divisions) ||
         memcmp(a->system_origin,z->system_origin,sizeof a->system_origin) ||
         ap->boundary_id!=zp->boundary_id || memcmp(&ap->rect,&zp->rect,sizeof ap->rect) ||
         memcmp(&ap->frame,&zp->frame,sizeof ap->frame)) return true;
     const SpaceBoundarySurface *ab=world_placement_boundary(before,ap),*zb=world_placement_boundary(after,zp);
-    if (a->from_binding) {
+    if (a->from_binding || a->from_fill) {
+        if(a->from_fill){
+            if(ap->component_count!=zp->component_count)return true;
+            for(size_t c=0;c<ap->component_count;++c)if(reference_boundary_geometry_changed(&ap->components[c],&zp->components[c]))return true;
+        }
         /* A finite/sample window cannot establish equality of an infinite
          * definition. Compare the exact lattice cache and the actual boundary,
          * including holes and fixity that a sample may never intersect. */
@@ -262,7 +267,7 @@ static bool reference_grid_changed(const World *before,const World *after,uint32
             memcmp(a->lattice_step,z->lattice_step,sizeof a->lattice_step) ||
             !reference_axis_definition_equal(&a->axis[0],&z->axis[0]) ||
             !reference_axis_definition_equal(&a->axis[1],&z->axis[1]) ||
-            reference_binding_changed(before,after,a->binding_id) ||
+            (a->from_binding&&reference_binding_changed(before,after,a->binding_id)) ||
             reference_boundary_geometry_changed(ab,zb);
     }
     SurfaceRegion2 ac,zc;
@@ -342,6 +347,7 @@ static void reference_subgrid_text(const World *w,uint32_t id,FILE *out)
         fprintf(out,"grid %u on %u",id,g->placement_id);
         if (g->from_system) fprintf(out," from-system %u origin %lld %lld",g->system_id,
             (long long)g->system_origin[0],(long long)g->system_origin[1]);
+        if (g->from_fill) fprintf(out," from-fill %u index-space lattice",g->fill_id);
         if (g->from_binding) fprintf(out," from-binding %u index-space lattice",g->binding_id);
     }
     SurfaceRegion2 bounds;
@@ -462,7 +468,7 @@ static bool reference_geometry_changed(const World *before,const World *after)
     for (size_t i=0;i<geo_grid_bindings_count(&before->geo.grid_store);++i)
         if (reference_binding_changed(before,after,(*geo_grid_bindings_at(&before->geo.grid_store,i)).id)) return true;
     for (size_t i=0;i<before->wood.grid_applications.count;++i)
-        if ((before->wood.grid_applications.items[i].is_subgrid || before->wood.grid_applications.items[i].from_system || before->wood.grid_applications.items[i].from_binding || eng_object_bound(before,0,before->wood.grid_applications.items[i].id)) && reference_grid_changed(before,after,before->wood.grid_applications.items[i].id)) return true;
+        if ((before->wood.grid_applications.items[i].is_subgrid || before->wood.grid_applications.items[i].from_system || before->wood.grid_applications.items[i].from_binding || before->wood.grid_applications.items[i].from_fill || eng_object_bound(before,0,before->wood.grid_applications.items[i].id)) && reference_grid_changed(before,after,before->wood.grid_applications.items[i].id)) return true;
     bool has_child=false;
     for (size_t i=0;i<before->wood.grid_applications.count;++i) if (before->wood.grid_applications.items[i].is_subgrid) has_child=true;
     if (has_child) for (size_t i=0;i<geo_guides_count(&before->geo.guide_lines);++i)
@@ -481,7 +487,7 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
     bool placed=false;
     for (size_t i=0;i<w->wood.timber_count;++i) if (w->wood.timbers[i].placed) placed=true;
     bool referenced=geo_grid_bindings_count(&w->geo.grid_store)>0;
-    for (size_t i=0;i<w->wood.grid_applications.count;++i) if (w->wood.grid_applications.items[i].is_subgrid || w->wood.grid_applications.items[i].from_system || w->wood.grid_applications.items[i].from_binding) referenced=true;
+    for (size_t i=0;i<w->wood.grid_applications.count;++i) if (w->wood.grid_applications.items[i].is_subgrid || w->wood.grid_applications.items[i].from_system || w->wood.grid_applications.items[i].from_binding || w->wood.grid_applications.items[i].from_fill) referenced=true;
     if ((!placed && !referenced && !w->wood.engineering.binding_count) || !count) return false;
     const char *c=tokens[0];
     if (!strcmp(c,"move") || !strcmp(c,"spec") || !strcmp(c,"datum") || !strcmp(c,"boundary") || !strcmp(c,"surface") ||

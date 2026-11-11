@@ -202,13 +202,13 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
             (ctx->use_current_values?grid_rule_line(w,&ref,g->placement_id,out,NULL,g_rule_reference_error,sizeof g_rule_reference_error):
                 wood_grid_sources_rule_line(ctx->grid_sources,&ref,g->placement_id,out,NULL,g_rule_reference_error,sizeof g_rule_reference_error));
     }
-    char buf[REF_EXPR_MAX], *part[5]; int n=0;
+    char buf[REF_EXPR_MAX], *part[6]; int n=0;
     snprintf(buf,sizeof buf,"%s",text);
     char *cursor=buf;
-    while (n<5) {
+    while (n<6) {
         part[n++]=cursor;
         char *sep=strchr(cursor,':');
-        if (!sep) break;
+        if (!sep || n==6) break;
         *sep='\0'; cursor=sep+1;
     }
     uint32_t id;
@@ -228,7 +228,7 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
         }
         return false;
     }
-    if ((n==3 || n==4) &&
+    if ((n==3 || n==4 || n==6) &&
         (!strcmp(part[0],"grid") || !strcmp(part[0],"panel") || !strcmp(part[0],"gap"))) {
         if (!parse_u32(part[1],&id) || strcmp(part[2],axis==0?"u":"v")) return false;
         const ReferenceGrid *grid=world_find_grid(w,id);WoodGridApplication grid_definition;
@@ -236,11 +236,19 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
         if(!ctx->use_current_values){if(!reference_grid_definition(ctx,id,&grid_definition))return false;grid=&grid_definition;}
         if (grid->placement_id!=g->placement_id) return false;
         if (!strcmp(part[0],"grid")) {
-            int64_t k;
-            if (grid->axis[axis].stagger_set) return false;
-            return n==4 && parse_i64(part[3],&k) &&
-                (ctx->use_current_values?grid_line_coord_in(w->wood.grid_applications.items,w->wood.grid_applications.count,grid,p,b,axis,k,out,NULL,NULL,0):
-                    wood_grid_sources_line(ctx->grid_sources,id,g->placement_id,axis,k,false,false,0,out,NULL,NULL,0));
+            if(!grid->from_fill){
+                int64_t k;
+                if(grid->axis[axis].stagger_set)return false;
+                return n==4&&parse_i64(part[3],&k)&&
+                    (ctx->use_current_values?grid_line_coord_in(w->wood.grid_applications.items,w->wood.grid_applications.count,grid,p,b,axis,k,out,NULL,NULL,0):
+                        wood_grid_sources_line(ctx->grid_sources,id,g->placement_id,axis,k,false,false,0,out,NULL,NULL,0));
+            }
+            int64_t k,band=0;bool has_band=n==6;
+            if((n!=4&&!has_band)||!parse_i64(part[3],&k)||
+                (has_band&&(strcmp(part[4],"band")||!parse_i64(part[5],&band))))return false;
+            return ctx->use_current_values?
+                grid_anchor_line_coord(w->wood.grid_applications.items,w->wood.grid_applications.count,grid,p,b,axis,k,has_band,band,out,NULL,0):
+                wood_grid_sources_line(ctx->grid_sources,id,g->placement_id,axis,k,true,has_band,band,out,NULL,NULL,0);
         }
         if (n!=3 || grid->axis[axis].source != GRID_SRC_PANEL) return false;
         if(ctx->use_current_values){*out=!strcmp(part[0],"panel")?grid->axis[axis].body:grid->axis[axis].gap;return true;}
@@ -816,7 +824,7 @@ static bool apply_reference_place(const char *p,int n,char **tokens,int count,Wo
             if (!parse_u32(tokens[i+1],&a.ref_grid) || !parse_i64(tokens[i+3],&index) ||
                 (strcmp(tokens[i+2],"u") && strcmp(tokens[i+2],"v"))) return false;
             const ReferenceGrid *grid=world_find_grid(w,a.ref_grid);
-            if (!grid || (!grid->from_binding && (index<0 || index>=GRID_MAX_LINES))) {
+            if (!grid || ((!grid->from_binding && !grid->from_fill) && (index<0 || index>=GRID_MAX_LINES))) {
                 scene_error(p,n,"I13: the grid must exist; finite grid indices must be nonnegative and below 64"); return false;
             }
             a.ref_grid_axis=!strcmp(tokens[i+2],"u")?0:1; a.ref_grid_index=index; i+=4;
@@ -962,12 +970,12 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
         const ReferenceGrid *grid=&w->wood.grid_applications.items[i];
         Coord coords[GRID_MAX_LINES]; int64_t indices[GRID_MAX_LINES]; size_t count=0; int a=axis=='u'?0:1;
         if (grid->axis[a].stagger_set) continue;
-        if (grid->from_binding) {
+        if (grid->from_binding || grid->from_fill) {
             /* Snapping uses the actual nearest lattice lines, even when display
              * sampling hides them. It never snaps to a sample-array ordinal. */
-            int64_t first;
+            int64_t first;Coord source_at=grid->from_fill&&a==1?at*grid->fill_side:at;
             if (grid->lattice_step[a]>0 && grid_i64_add(grid->lattice_index[a],
-                grid_floor_div(at-grid->lattice_base[a],grid->lattice_step[a]),&first)) {
+                grid_floor_div(source_at-grid->lattice_base[a],grid->lattice_step[a]),&first)) {
                 for (int side=0;side<2;++side) {
                     int64_t k;
                     if (grid_i64_add(first,side,&k) && grid_lattice_coord(grid,a,k,&coords[count]))

@@ -1,5 +1,12 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 任務 C：R03／R02 C0 from-fill 前置切片（ChatGPT 實作候選）
+
+- 基底 `7a2b16d4f16d6e208461cf8b3dda09cdf89a0386`。接通已採納 D10／D43／R41／R44 的活來源主格、真衍生宿主、候選重算與來源保存；逐支驗收以現有 framing oracle 為準。範圍與重現入口見 `geometry-core/panel-fill/C0-FROM-FILL-NATIVE.md`。
+- UI 減項／合併：既有 inspector 遇到 from-fill 時，把不適用的直接軸編輯、工程綁定、拖移及子格控制合併為一個唯讀來源區塊；不新增建立入口、按鈕或常駐操作說明列。既有直接格線與 from-binding 流程維持原義。
+- 本項只交付實作 diff 與驗收證據，未推送、未合併；不把需求帳 R03 升為 L2／L3／L4。PF-6 builder、PF-4 操作及快照、PF-5 空間流程與衍生宿主面內路由、R03 配方與 App 入口仍待後續切片。
+- 正式 repository mutation ledger、全量 runner 的機械數量表、正式 CI 與可用環境的瀏覽器驗收仍是整合條件；不手填 expected、不改舊 golden、不把過期或環境失敗收據列為通過。
+
 ## 2026-11-03 PR #365 R10 審查補項（ChatGPT 實作候選）
 
 - 接通已採納 K3-48 的具型別證據目標、R57 判讀、尺寸字面值採用；採用仍由既有參數預覽及原生確認決定，附件與原生確認同一復原步。候選來源讀取為唯讀，不以前端計算取代原生內容指紋。

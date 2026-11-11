@@ -174,6 +174,7 @@ static bool same_system(const GeoGridSystem *a,const GeoGridSystem *b)
 static bool same_application(const WoodGridApplication *a,const WoodGridApplication *b)
 {
     if(a->id!=b->id||a->placement_id!=b->placement_id||a->from_system!=b->from_system||a->from_binding!=b->from_binding||
+       a->from_fill!=b->from_fill||a->fill_id!=b->fill_id||a->fill_side!=b->fill_side||
        a->binding_id!=b->binding_id||a->lattice_cell!=b->lattice_cell||a->system_id!=b->system_id||a->main_along!=b->main_along||a->is_subgrid!=b->is_subgrid||a->parent_id!=b->parent_id)return false;
     for(int i=0;i<2;++i)if(a->lattice_base[i]!=b->lattice_base[i]||a->lattice_step[i]!=b->lattice_step[i]||a->lattice_index[i]!=b->lattice_index[i]||
         a->lattice_cell_index[i]!=b->lattice_cell_index[i]||a->system_origin[i]!=b->system_origin[i]||!same_axis(&a->axis[i],&b->axis[i])||
@@ -321,6 +322,7 @@ static void paint_system(GeoGridSystem *out,const GeoGridSystem *in,unsigned cha
 static void paint_application(WoodGridApplication *out,const WoodGridApplication *in,unsigned char byte)
 {
     memset(out,byte,sizeof *out);out->id=in->id;out->placement_id=in->placement_id;out->from_system=in->from_system;out->from_binding=in->from_binding;
+    out->from_fill=in->from_fill;out->fill_id=in->fill_id;out->fill_side=in->fill_side;
     out->binding_id=in->binding_id;out->lattice_cell=in->lattice_cell;out->system_id=in->system_id;out->main_along=in->main_along;out->is_subgrid=in->is_subgrid;out->parent_id=in->parent_id;
     for(int a=0;a<2;++a){out->lattice_base[a]=in->lattice_base[a];out->lattice_step[a]=in->lattice_step[a];out->lattice_index[a]=in->lattice_index[a];
         out->lattice_cell_index[a]=in->lattice_cell_index[a];out->system_origin[a]=in->system_origin[a];out->divisions[a]=in->divisions[a];
