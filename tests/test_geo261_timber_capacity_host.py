@@ -496,6 +496,68 @@ class TimberCapacityHost(unittest.TestCase):
         restored=self.counted_bridge("restored")
         self.assertEqual(count,self.direct_history(restored,statements)[0])
 
+    def scene_load(self,bridge,name,text):
+        path=native().work/name;path.write_bytes(text.encode("utf-8"))
+        result=_bridge.run_once(("loadfile "+str(path)+"\ndump\nreferences\n").encode("utf-8"),text=False,bridge=bridge,timeout=600)
+        self.assertEqual(0,result.returncode,result.stderr)
+        rows=[json.loads(line) for line in result.stdout.splitlines()]
+        self.assertEqual(3,len(rows),name)
+        return result.stderr.count(self.REVALIDATION_MARKER),rows
+
+    def test_scene_file_run_validates_once_and_every_rejection_matches_line_by_line(self):
+        _,small,_=self.placed_fixture(24);_,large,_=self.placed_fixture(48)
+        fixed=self.counted_bridge("load-fixed")
+        count_small,rows_small=self.scene_load(fixed,"load-count-24.scene",small)
+        count_large,rows_large=self.scene_load(fixed,"load-count-48.scene",large)
+        print("scene-file-validation phase=fixed n24=%d n48=%d"%(count_small,count_large))
+        self.assertTrue(rows_small[0]["ok"],rows_small[0]);self.assertTrue(rows_large[0]["ok"],rows_large[0])
+        self.assertGreaterEqual(count_small,1,"a loaded file is still fully validated")
+        self.assertEqual(count_small,count_large,"ASSERT:scene-file-validation-does-not-grow-per-placement")
+        withdrawn=self.counted_bridge("load-withdrawn",("geometry-core/transactions.inc",
+            b"if(frame->checkpoint&&app_scene_file_defer_text(tokens,count,text)){",
+            b"if(false&&frame->checkpoint&&app_scene_file_defer_text(tokens,count,text)){"))
+        red_small,old_small=self.scene_load(withdrawn,"load-count-24.scene",small)
+        red_large,old_large=self.scene_load(withdrawn,"load-count-48.scene",large)
+        print("scene-file-validation phase=withdrawn n24=%d n48=%d"%(red_small,red_large))
+        self.assertGreaterEqual(red_large-red_small,24,"withdrawal must restore one validation per placement")
+        self.assertEqual(old_small,rows_small,"valid 24 file publishes the same World");self.assertEqual(old_large,rows_large)
+        plain_count,plain=self.scene_load(self.bridge,"load-count-24.scene",small)
+        self.assertEqual((0,plain),(plain_count,rows_small),"marker must not change the published World")
+        # Every variant is judged by the per-line path: same ok, same message
+        # (it carries the line number), same World afterwards.
+        lines=small.splitlines(keepends=True)
+        places=[i for i,line in enumerate(lines) if line.startswith("place ")]
+        timbers=[i for i,line in enumerate(lines) if line.startswith("timber ")]
+        self.assertEqual((24,24),(len(places),len(timbers)))
+        def changed(index,new):
+            copy=list(lines);copy[index]=new;return "".join(copy)
+        def moved(src,dst):
+            copy=list(lines);line=copy.pop(src);copy.insert(dst,line);return "".join(copy)
+        variants={}
+        for label,k in (("first",0),("middle",11),("last",23)):
+            p=places[k];other=places[(k+7)%24]
+            words=lines[p].split();donor=lines[other].split()
+            variants["duplicate-anchor-"+label]=changed(p," ".join(words[:2]+donor[2:])+"\n")
+            variants["missing-place-"+label]="".join(line for i,line in enumerate(lines) if i!=p)
+            variants["bad-field-"+label]=changed(p,lines[p].rstrip("\n")+" extra\n")
+            variants["unknown-surface-"+label]=changed(p," ".join(words[:3]+["999"]+words[4:])+"\n")
+            variants["place-before-declaration-"+label]=moved(p,timbers[k])
+            variants["late-placement-"+label]=moved(p,len(lines)-1)
+            variants["early-placement-"+label]=moved(p,places[0])
+        variants["reversed-pairs"]="".join(lines[:timbers[0]]+[line for k in reversed(range(24)) for line in (lines[timbers[k]],lines[places[k]])]+lines[places[23]+1:])
+        variants["trailing-junk"]=small+"place\n"
+        variants["trailing-unknown"]=small+"no-such-command 1\n"
+        accepted=rejected=0
+        for name,scene in sorted(variants.items()):
+            with self.subTest(variant=name):
+                _,new=self.scene_load(fixed,"load-variant-"+name+".scene",scene)
+                _,old=self.scene_load(withdrawn,"load-variant-"+name+".scene",scene)
+                self.assertEqual(old,new,"ASSERT:scene-file-rejection-identical "+name)
+                if new[0]["ok"]:accepted+=1
+                else:rejected+=1
+        print("scene-file-validation variants=%d accepted=%d rejected=%d"%(len(variants),accepted,rejected))
+        self.assertGreaterEqual(rejected,6,"the variants must actually exercise rejections")
+
     def capacity_first_sentinel(self,exe):
         with _bridge.BridgeSession(exe) as bridge:
             # Exactly 512 valid inputs are safe even with the guard withdrawn.
