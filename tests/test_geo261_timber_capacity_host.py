@@ -443,7 +443,7 @@ class TimberCapacityHost(unittest.TestCase):
     def counted_bridge(self,label,withdraw=None):
         """Real bridge from a copied product closure; only a stderr marker is
         added at the one full-World revalidation body. No policy is rebuilt."""
-        build=native();destination=build.work/("direct-line-validation-"+label)
+        build=native();destination=build.work/("direct-line-closure-"+label)
         destination.mkdir()
         entry=copy_product_closure(ROOT/"geometry-web/web_bridge.c",destination)
         host=destination/"current_geometry.c";source=host.read_bytes()

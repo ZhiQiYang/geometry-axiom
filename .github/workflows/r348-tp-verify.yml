@@ -30,21 +30,24 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - label: T 57135dbb (expect red)
-            sha: 57135dbb149a0439f8e347850021f4bda54121f4
-          - label: P 207ee6bf (expect green)
-            sha: 207ee6bfee6f64d81e1c66494a8a6d34c4dc5e38
+          - label: head with P reverted (expect red)
+            sha: head
+            revert: 'yes'
+          - label: head (expect green)
+            sha: head
+            revert: 'no'
     steps:
       - name: Check out the commit under test
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
-          ref: ${{ matrix.sha }}
+          ref: ${{ matrix.sha == 'head' && github.sha || matrix.sha }}
           path: tree
+          fetch-depth: 0
       - name: Run the direct-statement validation test
         shell: bash
         env:
-          OUT: ${{ runner.temp }}/tp-${{ matrix.sha }}
+          OUT: ${{ runner.temp }}/tp-${{ matrix.revert }}
         run: |
           set -uo pipefail
           ulimit -s 16384
@@ -52,6 +55,10 @@ jobs:
           grep -m1 'model name' /proc/cpuinfo | tee "$OUT/cpu.txt"
           cd tree
           git rev-parse HEAD | tee "$OUT/head.txt"
+          if [ "${{ matrix.revert }}" = "yes" ]; then
+            git show 207ee6bfee6f64d81e1c66494a8a6d34c4dc5e38 -- current_geometry.c geometry-core/transactions.inc | git apply -R
+            git status --short | tee "$OUT/reverted.txt"
+          fi
           set +e
           python3 -m unittest -v tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_direct_statement_validates_the_whole_world_once_and_withdrawal_is_red > "$OUT/unittest.txt" 2>&1
           echo $? > "$OUT/exit-code.txt"
@@ -62,8 +69,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: r348-tp-${{ matrix.sha }}
-          path: ${{ runner.temp }}/tp-${{ matrix.sha }}/
+          name: r348-tp-revert-${{ matrix.revert }}
+          path: ${{ runner.temp }}/tp-${{ matrix.revert }}/
           if-no-files-found: error
           retention-days: 30
 
