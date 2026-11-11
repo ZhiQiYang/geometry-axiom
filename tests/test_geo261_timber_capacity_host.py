@@ -439,6 +439,63 @@ class TimberCapacityHost(unittest.TestCase):
         self.assertEqual(rows["deleted"]["text"],rows["redone"]["text"],"placed-history-one-redo")
         self.assertEqual(rows["dump"]["text"],rows["final-dump"]["text"])
 
+    REVALIDATION_MARKER=b"GEO348-FULL-REVALIDATION\n"
+    def counted_bridge(self,label,withdraw=None):
+        """Real bridge from a copied product closure; only a stderr marker is
+        added at the one full-World revalidation body. No policy is rebuilt."""
+        build=native();destination=build.work/("direct-line-validation-"+label)
+        destination.mkdir()
+        entry=copy_product_closure(ROOT/"geometry-web/web_bridge.c",destination)
+        host=destination/"current_geometry.c";source=host.read_bytes()
+        before=b"    (void)world;\r\n    g_revalidate_error[0] = '\\0';"
+        self.assertEqual(1,source.count(before),"one actual full-revalidation body")
+        host.write_bytes(source.replace(before,
+            b"    (void)world;fputs(\"GEO348-FULL-REVALIDATION\\n\",stderr);\r\n    g_revalidate_error[0] = '\\0';"))
+        if withdraw is not None:
+            path,old,new=withdraw;target=destination/path;original=target.read_bytes()
+            self.assertEqual(1,original.count(old),"Named withdrawal must change one actual site")
+            target.write_bytes(original.replace(old,new))
+        obj=build.compile(entry,"direct-line-validation-"+label,
+            ["GEOMETRY_KERNEL_EXTERNAL=1","GEOMETRY_WOODWORKING_EXTERNAL=1",
+             "GEOMETRY_HOST_HISTORY_EXTERNAL=1","GEOMETRY_HOST_CANDIDATE_EXTERNAL=1"])
+        return build.link("direct-line-validation-"+label,[obj,*build.product_objects()])
+
+    def direct_history(self,bridge,statements):
+        base=_bridge.run_once(b"reset\ndump\nreferences\n",text=False,bridge=bridge,timeout=600)
+        self.assertEqual(0,base.returncode,base.stderr)
+        payload="".join(line+"\n" for line in ["reset"]+["line "+s for s in statements]+["dump","references"])
+        result=_bridge.run_once(payload.encode("utf-8"),text=False,bridge=bridge,timeout=600)
+        self.assertEqual(0,result.returncode,result.stderr)
+        rows=[json.loads(line) for line in result.stdout.splitlines()]
+        self.assertEqual(len(statements)+3,len(rows))
+        for row in rows:self.assertTrue(row["ok"],row)
+        marker=self.REVALIDATION_MARKER
+        return result.stderr.count(marker)-base.stderr.count(marker),rows[-2],rows[-1]
+
+    def test_direct_statement_validates_the_whole_world_once_and_withdrawal_is_red(self):
+        # The same generator and statement order as the 512 sequential history;
+        # the bound is per statement, so it is the 512 workload divided by N.
+        _,text,_=self.placed_fixture(24)
+        statements=[line for line in text.splitlines() if line.strip() and not line.lstrip().startswith("#")]
+        places=sum(line.startswith("place ") for line in statements)
+        self.assertEqual(24,places)
+        plain=self.direct_history(self.bridge,statements)
+        self.assertEqual(0,plain[0],"product bridge must not carry the test marker")
+        counted=self.counted_bridge("fixed")
+        count,dump,references=self.direct_history(counted,statements)
+        print("direct-line-validation phase=fixed statements=%d places=%d full_revalidations=%d"%(len(statements),places,count))
+        self.assertEqual((plain[1],plain[2]),(dump,references),"marker must not change the published World")
+        self.assertGreaterEqual(count,places,"every placement is still fully validated")
+        self.assertLessEqual(count,len(statements),"ASSERT:direct-line-single-full-validation")
+        withdrawn=self.counted_bridge("withdrawn",("geometry-core/transactions.inc",
+            b"if(g_validated_target!=candidate||",b"if(true||g_validated_target!=candidate||"))
+        red,red_dump,red_references=self.direct_history(withdrawn,statements)
+        print("direct-line-validation phase=withdrawn full_revalidations=%d"%red)
+        self.assertEqual((dump,references),(red_dump,red_references),"both paths publish the same World")
+        self.assertGreaterEqual(red,count+places,"withdrawal must restore the second validation")
+        restored=self.counted_bridge("restored")
+        self.assertEqual(count,self.direct_history(restored,statements)[0])
+
     def capacity_first_sentinel(self,exe):
         with _bridge.BridgeSession(exe) as bridge:
             # Exactly 512 valid inputs are safe even with the guard withdrawn.
