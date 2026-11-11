@@ -1,0 +1,74 @@
+{
+  "schema": "geo344-exact-architecture-independent-actual-peer/1",
+  "exit_code": 0,
+  "checks": 2683,
+  "failed_checks": [],
+  "source_sha": "9aec9a32630fc65f94c53d49e99969e546574d6e",
+  "original_gate_exits": [
+    0,
+    0,
+    0
+  ],
+  "generic_unit_tests": 205,
+  "product_unit_tests": 18,
+  "skipped": 0,
+  "single_digest_proof_exits": [
+    0,
+    1,
+    0
+  ],
+  "single_digest_failure": "EXCLUSION_DIGEST only",
+  "W_guard_groups": 9,
+  "W_guard_exits": [
+    0,
+    1,
+    0
+  ],
+  "neutral_controls": 2,
+  "formal_original_commands": 57,
+  "outer_original_commands": 11,
+  "original_stream_bytes_checked": 2735475,
+  "input_count": 604,
+  "input_bytes_recorded": 20713378,
+  "changed_inputs": [
+    "geometry-web/app.js",
+    "geometry-web/cdp_test.js"
+  ],
+  "input_closure_sha256": "71caf2df36a51b86da3d0553abd7ccebb7542d9dce2ec3f065e8d90a16ebbe0f",
+  "output_hashes": {
+    "product-architecture.json": {
+      "bytes": 221953,
+      "rawSha256": "f0c0b4db4ca01d4825883b73d73bf8644af313cd2bcab4c9b23638b9bbd93d32",
+      "lfSha256": "f0c0b4db4ca01d4825883b73d73bf8644af313cd2bcab4c9b23638b9bbd93d32"
+    },
+    "product-architecture-scan.json": {
+      "bytes": 132559,
+      "rawSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    "PRODUCT-ARCHITECTURE.md": {
+      "bytes": 1826,
+      "rawSha256": "6fdae7f419a8a744d04aac7d74731d07c0dfd36007495d0f9d554e6017502a30",
+      "lfSha256": "6fdae7f419a8a744d04aac7d74731d07c0dfd36007495d0f9d554e6017502a30"
+    },
+    "product-architecture-receipt.json": {
+      "bytes": 145277,
+      "rawSha256": "b2d828fbbd7f585210cc3a0eb81d6ba148d08b7139c0e0915848354a638f81f6",
+      "lfSha256": "b2d828fbbd7f585210cc3a0eb81d6ba148d08b7139c0e0915848354a638f81f6"
+    }
+  },
+  "outer_exit": 0,
+  "host_exit": 0,
+  "result_sha256": "8dddc6d2ae8d2f715cc9d3f3625ae573a3cbd5e91c3417fa88aeb35dabde99dc",
+  "source_before_after_clean_original": true,
+  "derived_four_files_not_yet_adopted_at_review": true,
+  "tests_rerun": false,
+  "limits": [
+    "Original all raw CLI streams and output hashes read; no formal judge, C/browser, source materialization or Git mutation rerun.",
+    "Did not reread all20,713,378B live product payloads. All604 recorded Git OIDs are independently compared with preserved original current/prior ls-tree bytes; original reviewed adapter performed before/after raw/LF hashes, captured equality is retained.",
+    "Historical928 raw remains80f44…; effective withdrawal is explicit2661… derived control differing onlycdp digest, not falsely labelled historical raw.",
+    "This accepts architecture actual only. Ledger/native/fullcanvas/#344PR acceptance remain separate; no newW lexicon completeness claim.",
+    "Four new artifacts remain external and need exact byte adoption plus normal commit/push; this peer does not claim they are already committed."
+  ],
+  "created_utc": "2026-10-25T12:39:30.368777+00:00"
+}
