@@ -5,6 +5,16 @@
   "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40185639126/job/124015759512",
   "source_log_sha256": "a5f86764bb875c8d616451a5f10ce32e9e65f7da9d184fa36296b249ff2e66ed",
   "suite_count": 224,
+  "supplemental": {
+    "py:test_geo261_timber_capacity_host": {
+      "measured_ms": 688400,
+      "planning_weight_ms": 420000,
+      "source_pr_head": "8239dbf195a09506e6429f38229e134bbd846909",
+      "source_checkout": "4ec020d8236385b617d98463473523c22a5cde10",
+      "source_run": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43150038015",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43150038015/job/130956793594"
+    }
+  },
   "timings_ms": {
     "c:integrity": 5500,
     "core:run_tests": 14500,

@@ -37,7 +37,16 @@ def partition_suites(suites, count, weights=None):
     suites = list(suites)
     if count < 1 or count > len(suites):
         raise ValueError('分片數必須介於1與完整套件數之間')
-    weights = timing_weights() if weights is None else weights
+    if weights is None:
+        weights = timing_weights()
+        # The 405f8c5e profile predates R04 H7. Keep its 224 measured rows
+        # unchanged; supplement scheduling from Geometry 43150038015.
+        for name, evidence in json.loads(TIMINGS.read_text(encoding='utf-8')).get('supplemental', {}).items():
+            scheduled, observed = evidence['planning_weight_ms'], evidence['measured_ms']
+            if (name in weights or type(scheduled) is not int or scheduled <= 0
+                    or type(observed) is not int or observed <= 0):
+                raise ValueError('新增套件的分片權重或量測來源不合法：'+name)
+            weights[name] = scheduled
     costs = {s.name: weights.get(s.name, 1000) for s in suites}
     loads, owners = [0] * count, {}
     for suite in sorted(suites, key=lambda s: (-costs[s.name], s.name)):

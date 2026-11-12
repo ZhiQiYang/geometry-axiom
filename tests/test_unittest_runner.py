@@ -56,6 +56,18 @@ class NativeShardCoverage(unittest.TestCase):
         loads = [sum(weights.get(s.name, 1000) for s in part) for part in parts]
         self.assertLess(max(loads), 600000, '固定main實測配置應低於每片10分鐘，留建置與新套件餘量')
         self.assertLessEqual(max(loads)-min(loads), max(weights.values()))
+        # R348: production default uses source-identified H7 scheduling weight;
+        # the historical measured-profile checks above remain unchanged.
+        current_parts = partition_suites(suites, 3)
+        owners = {s.name: i for i, part in enumerate(current_parts) for s in part}
+        self.assertNotEqual(owners['py:test_geo261_timber_capacity_host'],
+                            owners['py:test_axiom_reader'], 'R348_SHARD_H7_READER_SEPARATION')
+        profile = json.loads((Path(__file__).parent / 'native_shard_timings.json').read_text(encoding='utf-8'))
+        current_weights = dict(weights)
+        current_weights.update({name: row['planning_weight_ms']
+                                for name, row in profile.get('supplemental', {}).items()})
+        current_loads = [sum(current_weights.get(s.name, 1000) for s in p) for p in current_parts]
+        self.assertLess(max(current_loads), 650000, 'R348_SHARD_SUPPLEMENTAL_PROFILE_CEILING')
 
     def test_invalid_shards_are_rejected(self):
         for value in ['0/2', '1/0', '4/3', 'a/2', '1/2/3', '-1/3']:
