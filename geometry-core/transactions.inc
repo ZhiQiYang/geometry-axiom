@@ -598,15 +598,49 @@ static bool app_scene_direct_dimensions_allowed(const char *path,int line_no,cha
 }
 typedef struct {
     const char *path;int line_no;char **tokens;int count;World *before;
+    AppWorldCandidate *transaction;bool explicit_preview,finalized,identity_failed;
 } AppSceneCandidateCall;
+/* GEO-300: a direct statement whose handler already ran the full World
+ * revalidation as its last step finalizes identity on that validation instead
+ * of validating the identical bytes a second time. Every mismatch, preview
+ * requirement or keyed update leaves the original commit path in charge. */
+static void app_scene_candidate_commit_validated(AppSceneCandidateCall *call,World *candidate)
+{
+    AppWorldCandidate *transaction=call->transaction;const World *world=call->before;
+    char **tokens=call->tokens;int count=call->count;
+    if(!transaction||call->explicit_preview||g_parsing_scene_file||!strcmp(tokens[0],"canvas-pos"))return;
+    if(transaction!=g_active_app_candidate||candidate!=&transaction->after)return;
+    if(g_validated_target!=candidate||g_validated_baseline!=world||g_validated_keyed||
+       g_boundary_keyed_update||transaction->operation.boundary_keyed)return;
+    GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(transaction->control));
+    if(geo_eval_node_count(sources)!=g_validated_nodes||geo_eval_edge_count(sources)!=g_validated_edges)return;
+    if(memcmp(candidate,&g_validated_after,sizeof *candidate)||memcmp(world,&transaction->before,sizeof *world))return;
+    uint32_t system_edit_id;
+    if(!strcmp(tokens[0],"engineering")||memcmp(&world->wood.engineering,&candidate->wood.engineering,sizeof world->wood.engineering)||
+       memcmp(&world->wood.assembly,&candidate->wood.assembly,sizeof world->wood.assembly)||
+       memcmp(&world->wood.section_profiles,&candidate->wood.section_profiles,sizeof world->wood.section_profiles)||
+       assembly_dimensions_changed(world,candidate)||
+       (count>1&&!strcmp(tokens[0],"grid-system")&&parse_u32(tokens[1],&system_edit_id)&&world_find_grid_system(world,system_edit_id))||
+       (count>4&&!strcmp(tokens[0],"grid")&&(!strcmp(tokens[4],"from-system")||!strcmp(tokens[4],"from-binding")))||
+       !strcmp(tokens[0],"grid-binding")||!strcmp(tokens[0],"grid-source-rule")||!strcmp(tokens[0],"boundary-keyed")||
+       parameter_reference_edit(world,tokens,count)||
+       (reference_may_affect(world,tokens,count)&&reference_geometry_changed(world,candidate)))return;
+    identity_drop_serials();
+    bool activate=count==2&&!strcmp(tokens[0],"identity-ledger")&&!strcmp(tokens[1],"activate");
+    AppIdentityCommit commit={NULL,0,false,true,activate};
+    call->finalized=app_world_identity_finalize(transaction,&commit);
+    call->identity_failed=!call->finalized;
+}
 static bool app_scene_candidate_apply(void *after,GeoEvalContext *sources,void *opaque)
 {
     (void)sources;AppSceneCandidateCall *call=opaque;World *candidate=after;
     identity_explicit_reset();
-    g_reference_trial=*candidate;g_reference_capturing=true;
+    g_reference_trial=*candidate;g_reference_capturing=true;g_validated_target=NULL;
     const World *previous_baseline=g_subgrid_before;g_subgrid_before=call->before;
     bool ok=apply_scene_line_unchecked(call->path,call->line_no,call->tokens,call->count,candidate);
-    g_subgrid_before=previous_baseline;g_reference_capturing=false;return ok;
+    g_subgrid_before=previous_baseline;g_reference_capturing=false;
+    if(ok)app_scene_candidate_commit_validated(call,candidate);
+    return ok&&!call->identity_failed;
 }
 static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens[],int count,World *world,AppWorldCandidate *transaction,bool *retained)
 {
@@ -651,11 +685,17 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     }
     if(!app_scene_direct_dimensions_allowed(path,line_no,tokens,count,world))return false;
     g_scene_last_error[0]='\0'; g_engineering_error[0]='\0'; g_reference_issue_count=0;
-    AppSceneCandidateCall call={path,line_no,tokens,count,world};
+    AppSceneCandidateCall call={path,line_no,tokens,count,world,transaction,explicit_preview,false,false};
     bool saved_identity_preview=g_identity_explicit_preview;
     if(explicit_preview)g_identity_explicit_preview=true;
     bool ok=app_world_candidate_evaluate(transaction,app_scene_candidate_apply,&call)==GEO_CANDIDATE_OK;
     g_identity_explicit_preview=saved_identity_preview;
+    if(call.identity_failed){
+        char identity_failure[512];
+        snprintf(identity_failure,sizeof identity_failure,"%s",g_scene_last_error[0]?g_scene_last_error:
+            g_revalidate_error[0]?g_revalidate_error:"I8: candidate seal failed; World unchanged");
+        identity_drop_serials();scene_error(path,line_no,identity_failure);return false;
+    }
     bool affects=reference_may_affect(world,tokens,count);
     const World *impact_candidate=ok?candidate:&g_reference_trial;
     bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->wood.engineering,&candidate->wood.engineering,sizeof world->wood.engineering) || memcmp(&world->wood.assembly,&candidate->wood.assembly,sizeof world->wood.assembly) || memcmp(&world->wood.section_profiles,&impact_candidate->wood.section_profiles,sizeof world->wood.section_profiles));
@@ -667,9 +707,9 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     bool binding_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-binding");
     bool rule_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-source-rule");
     bool keyed_edit=!g_parsing_scene_file && !strcmp(tokens[0],"boundary-keyed");
-    if (explicit_preview ||
+    if (!call.finalized && (explicit_preview ||
         (engineering_edit || assembly_dimensions_changed(world,candidate) || system_edit || application_edit || binding_edit || rule_edit || keyed_edit || parameter_reference_edit(world,tokens,count) ||
-        (affects && (!ok || reference_geometry_changed(world,candidate))))) {
+        (affects && (!ok || reference_geometry_changed(world,candidate)))))) {
         char replay_error[512];snprintf(replay_error,sizeof replay_error,"%s",g_scene_last_error);
         if(ok&&!app_world_candidate_seal(transaction)){ok=false;scene_error(path,line_no,"I8: candidate seal failed; World unchanged");}
         if(!ok)transaction->after=g_reference_trial;
@@ -689,7 +729,7 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     }
     bool skip_identity=g_parsing_scene_file||!strcmp(tokens[0],"canvas-pos");
     char identity_error[512];
-    if(!skip_identity){
+    if(!skip_identity&&!call.finalized){
         identity_drop_serials();
         bool activate=count==2&&!strcmp(tokens[0],"identity-ledger")&&!strcmp(tokens[1],"activate");
         AppIdentityCommit commit={NULL,0,false,true,activate};
@@ -706,7 +746,7 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     }
     bool issued=!skip_identity&&g_identity_pending_count!=0;
     bool changed=!g_parsing_scene_file&&strcmp(tokens[0],"canvas-pos")&&(!world_definitions_equal(world,candidate)||issued);
-    if((skip_identity&&!app_world_candidate_seal(transaction))||!app_world_candidate_publish(transaction,world,false)){
+    if(((skip_identity||call.finalized)&&!app_world_candidate_seal(transaction))||!app_world_candidate_publish(transaction,world,false)){
         identity_drop_serials();
         scene_error(path,line_no,"I8: candidate seal failed; World unchanged");return false;
     }
@@ -720,7 +760,11 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
  * bytes and resolver lifetime. Interactive and standalone parser callers do not. */
 typedef struct {
     AppWorldCandidate *owner;GeoEvalContext *sources;World *before;
+    /* GEO-300 deferred run: World before its first line, the exact lines, and
+     * the last place line whose ordinary handler validates the whole run. */
+    World *checkpoint;char *lines;int *line_numbers;size_t pending;long last_place;
 } AppSceneFileReplay;
+enum { APP_SCENE_DEFER_LINE=512,APP_SCENE_DEFER_LINES=1100 };static bool app_scene_file_defer_safe(const World *,char **,int);
 static AppSceneFileReplay *g_scene_file_replay;
 static bool app_scene_file_graph_empty(const AppSceneFileReplay *frame)
 {
@@ -772,9 +816,67 @@ static bool app_scene_file_line(const char *path,int line_no,char **tokens,int c
     return ok;
 }
 
+/* Only declarations and placements are buffered; their tokens contain no
+ * blanks, so one blank between tokens reproduces the same split. */
+static bool app_scene_file_defer_text(char **tokens,int count,char *out)
+{
+    if(strcmp(tokens[0],"place")&&strcmp(tokens[0],"timber"))return false;
+    size_t used=0;
+    for(int i=0;i<count;++i){
+        size_t length=strlen(tokens[i]);
+        if(used+length+2>APP_SCENE_DEFER_LINE)return false;
+        if(i)out[used++]=' ';
+        memcpy(out+used,tokens[i],length);used+=length;
+    }
+    out[used]='\0';return true;
+}
+static bool app_scene_file_replay_line(AppSceneFileReplay *frame,size_t index,const char *path,World *world)
+{
+    char text[APP_SCENE_DEFER_LINE];char *tokens[SCENE_MAX_TOKENS];
+    const char *saved=frame->lines+index*APP_SCENE_DEFER_LINE;memcpy(text,saved,strlen(saved)+1);
+    int count=split_tokens(text,tokens,SCENE_MAX_TOKENS);
+    return count>0&&app_scene_file_line(path,frame->line_numbers[index],tokens,count,world);
+}
+/* The last buffered place runs its ordinary handler again: same anchor, same
+ * order, and the full World validation it always ended with. If that fails,
+ * the run is replayed from its first line exactly as before this change, so
+ * the first invalid line reports its own number and message. */
+static bool app_scene_file_flush(const char *path,World *world)
+{
+    AppSceneFileReplay *frame=g_scene_file_replay;
+    if(!frame||!frame->pending)return true;
+    size_t pending=frame->pending;long last=frame->last_place;
+    frame->pending=0;frame->last_place=-1;
+    if(last<0)return true;g_scene_error_muted=true;bool valid=app_scene_file_replay_line(frame,(size_t)last,path,world);g_scene_error_muted=false;if(valid)return true;
+    memcpy(world,frame->checkpoint,sizeof *world);
+    for(size_t i=0;i<pending;++i)if(!app_scene_file_replay_line(frame,i,path,world))return false;
+    return true;
+}
 static bool apply_scene_line(const char *path,int line_no,char *tokens[],int count,World *world)
 {
-    if(app_scene_file_line_eligible(world,tokens,count))return app_scene_file_line(path,line_no,tokens,count,world);
+    if(app_scene_file_line_eligible(world,tokens,count)){
+        AppSceneFileReplay *frame=g_scene_file_replay;char text[APP_SCENE_DEFER_LINE];
+        if(frame->checkpoint&&app_scene_file_defer_safe(world,tokens,count)&&app_scene_file_defer_text(tokens,count,text)){
+            if(frame->pending==APP_SCENE_DEFER_LINES&&!app_scene_file_flush(path,world))return false;
+            if(!frame->pending)memcpy(frame->checkpoint,world,sizeof *world);
+            g_reference_validation_deferred=true;g_scene_error_muted=true;
+            bool ok=app_scene_file_line(path,line_no,tokens,count,world);
+            g_reference_validation_deferred=false;g_scene_error_muted=false;
+            if(ok){
+                memcpy(frame->lines+frame->pending*APP_SCENE_DEFER_LINE,text,strlen(text)+1);
+                frame->line_numbers[frame->pending]=line_no;
+                if(!strcmp(tokens[0],"place"))frame->last_place=(long)frame->pending;
+                ++frame->pending;return true;
+            }
+            /* An earlier invalid buffered line reports first; else this line fails again, unmuted, on the ordinary path. */
+            if(!app_scene_file_flush(path,world))return false;
+            char *again[SCENE_MAX_TOKENS];int again_count=split_tokens(text,again,SCENE_MAX_TOKENS);
+            return again_count>0&&app_scene_file_line(path,line_no,again,again_count,world);
+        }
+        if(!app_scene_file_flush(path,world))return false;
+        return app_scene_file_line(path,line_no,tokens,count,world);
+    }
+    if(!app_scene_file_flush(path,world))return false;
     AppWorldCandidate *candidate=app_world_candidate_create(world);
     if(!candidate){scene_error(path,line_no,"I32: candidate World allocation failed");return false;}
     bool retained=false;bool ok=apply_scene_line_candidate(path,line_no,tokens,count,world,candidate,&retained);
@@ -793,9 +895,17 @@ static bool app_scene_replay_file(const char *path,World *world)
         frame.sources=geo_candidate_sources(app_candidate_core(frame.owner->control));
         if(frame.sources&&app_scene_file_graph_empty(&frame))frame.before=malloc(sizeof *frame.before);
     }
+    frame.last_place=-1;
+    if(frame.before){
+        frame.checkpoint=malloc(sizeof *frame.checkpoint);
+        frame.lines=malloc((size_t)APP_SCENE_DEFER_LINES*APP_SCENE_DEFER_LINE);
+        frame.line_numbers=malloc((size_t)APP_SCENE_DEFER_LINES*sizeof *frame.line_numbers);
+        if(!frame.checkpoint||!frame.lines||!frame.line_numbers){free(frame.checkpoint);frame.checkpoint=NULL;}
+    }
     g_scene_file_replay=frame.before?&frame:NULL;
     bool ok=parse_scene_file(path,world);
-    g_scene_file_replay=previous;free(frame.before);return ok;
+    g_scene_file_replay=previous;free(frame.before);
+    free(frame.checkpoint);free(frame.lines);free(frame.line_numbers);return ok;
 }
 
 /* Private closed-program replay for the bridge's built-in default only.
@@ -942,4 +1052,49 @@ static bool reference_default_world_owned(World *world)
     g_default_replay=frame.before?&frame:NULL;
     bool ok=reference_default_world(world);
     g_default_replay=previous;free(frame.before);return ok;
+}
+
+/* GEO-300: which scene-file lines may wait for the validation of their run.
+ * A run may only add things; it must never change a value that an earlier
+ * buffered placement was computed from (ChatGPT review 6809384650, B1).
+ * - timber: only a new id. Redeclaring an existing member can change A/B
+ *   read by a guide or by a buffered placement, so it validates at once.
+ * - place: every field after the surface is a known word, an integer, an
+ *   outline or hole edge, or a member that is already placed (earlier
+ *   order). A member that is not placed yet is a forward reference and is
+ *   judged immediately on the ordinary path, as before. */
+static bool app_scene_file_defer_digits(const char *text)
+{
+    if(!*text)return false;
+    for(;*text;++text)if(*text<'0'||*text>'9')return false;
+    return true;
+}
+static bool app_scene_file_defer_safe(const World *world,char **tokens,int count)
+{
+    uint32_t id;
+    if(!strcmp(tokens[0],"timber"))
+        return count>1&&parse_u32(tokens[1],&id)&&reference_timber_index(world,id)<0;
+    if(strcmp(tokens[0],"place")||count<5)return false;
+    static const char *const words[]={"at-line","at-face","guide","grid","rule","u","v","band","through","between"};
+    for(int i=4;i<count;++i){
+        const char *token=tokens[i];bool known=false;
+        for(size_t k=0;k<sizeof words/sizeof *words;++k)if(!strcmp(token,words[k]))known=true;
+        if(known)continue;
+        if((token[0]=='+'||token[0]=='-')&&((token[1]>='a'&&token[1]<='z'&&!token[2])||app_scene_file_defer_digits(token+1)))continue;
+        if(app_scene_file_defer_digits(token))continue;
+        if(token[0]=='e'&&app_scene_file_defer_digits(token+1))continue;
+        if(token[0]=='h'){
+            const char *edge=strchr(token,'e');size_t hole=edge?(size_t)(edge-token-1):0;char digits[16];
+            if(!edge||!hole||hole>=sizeof digits)return false;
+            memcpy(digits,token+1,hole);digits[hole]='\0';
+            if(app_scene_file_defer_digits(digits)&&app_scene_file_defer_digits(edge+1))continue;
+            return false;
+        }
+        if(token[0]=='t'&&app_scene_file_defer_digits(token+1)&&parse_u32(token+1,&id)){
+            int index=reference_timber_index(world,id);
+            if(index>=0&&world->wood.timbers[index].placed)continue;
+        }
+        return false;
+    }
+    return true;
 }

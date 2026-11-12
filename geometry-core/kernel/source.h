@@ -89,6 +89,12 @@ GeoSourceStatus geo_eval_source(GeoEvalContext *,GeoSourceRef,GeoDependencyKind,
 /* Records an identity dependency without evaluating it. The caller retains
  * its domain's policy for inactive values and evaluation-before failures. */
 GeoSourceStatus geo_eval_depend(GeoEvalContext *,GeoSourceRef,GeoDependencyKind);
+/* Optional node ordinal hint, not a cached value or an edge proof. Zero means
+ * unknown; every nonzero hint is range-checked and compared by full source
+ * identity in this context. NULL is exactly geo_eval_depend. Only a successful
+ * dependency updates the hint; all dependency kinds and failure order remain
+ * the original path's responsibility. Stale hints may safely be reused. */
+GeoSourceStatus geo_eval_depend_hint(GeoEvalContext *,GeoSourceRef,GeoDependencyKind,size_t *);
 /* Obtain metadata without evaluating a value or adding an edge. A successful
  * first description leaves the node NEW. Sealed graphs permit metadata reads
  * only for already described nodes. The output is unchanged on failure. */

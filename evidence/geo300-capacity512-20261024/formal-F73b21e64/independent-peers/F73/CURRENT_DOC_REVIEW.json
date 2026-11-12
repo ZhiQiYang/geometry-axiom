@@ -1,0 +1,114 @@
+{
+  "scope": "Current F73 body/progress only, checked against existing referenced peer summaries and previously accepted F73 scope; no tar, C, tests or new Git/network.",
+  "body_sha256": "fbb57b732d9d8977c85ee0762083607987043f2a0c9fdb8296d31bd11bc6bbb2",
+  "progress_sha256": "873be14c409de300d12903245099218f63d8288b31bae37bc54149ad34f5b936",
+  "old_package_peer": {
+    "path": "/workspace/archive-package-peer-specials-20261024/geo348-F0f/REVIEW.json",
+    "sha256": "8e227333f18e1b43e8480372ee534198ea1dd21e17e59a876f4dcc10121ce83c"
+  },
+  "old_terminal_peer": {
+    "path": "/workspace/archive-package-peer-specials-20261024/geo348-F0f/TERMINAL_REVIEW.json",
+    "sha256": "e7a25fce89cc1ad9f6f6406fc6d3837df2e8ced1411f079eb0aaa8f9538c6a34"
+  },
+  "checks": [
+    {
+      "check": "original package25485/0",
+      "passed": true
+    },
+    {
+      "check": "original terminal1809/0",
+      "passed": true
+    },
+    {
+      "check": "F0f bothbindings",
+      "passed": true
+    },
+    {
+      "check": "exact packagepin cited",
+      "passed": true
+    },
+    {
+      "check": "uniqueEplaceholder",
+      "passed": true
+    },
+    {
+      "check": "one current matrix",
+      "passed": true
+    },
+    {
+      "check": "product/testSHA separate",
+      "passed": true
+    },
+    {
+      "check": "two originaltimeouts stillred",
+      "passed": true
+    },
+    {
+      "check": "noREADY",
+      "passed": true
+    },
+    {
+      "check": "R1ENV1 retained",
+      "passed": true
+    },
+    {
+      "check": "resume0 separate",
+      "passed": true
+    },
+    {
+      "check": "oldhelpers1/1/1 notkills",
+      "passed": true
+    },
+    {
+      "check": "oldW/ABIhistorical",
+      "passed": true
+    },
+    {
+      "check": "sixspecial onlymetadata",
+      "passed": true
+    },
+    {
+      "check": "oldscene not before",
+      "passed": true
+    },
+    {
+      "check": "newv2 actual before",
+      "passed": true
+    },
+    {
+      "check": "root338red inprogress",
+      "passed": true
+    },
+    {
+      "check": "sixspecial onlymetadata",
+      "passed": true
+    },
+    {
+      "check": "oldscene not before",
+      "passed": true
+    },
+    {
+      "check": "newv2 actual before",
+      "passed": true
+    },
+    {
+      "check": "root338red inprogress",
+      "passed": true
+    },
+    {
+      "check": "F73peeridentity counts",
+      "passed": true
+    },
+    {
+      "check": "fullnative/browser notgreen",
+      "passed": true
+    },
+    {
+      "check": "no skip exceptions",
+      "passed": true
+    }
+  ],
+  "passed": 24,
+  "failed": 0,
+  "findings": []
+}

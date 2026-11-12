@@ -6,6 +6,8 @@ static bool validation_inside(const GeoRect2 *inner,const GeoRect2 *outer)
 {return inner->min_u>=outer->min_u&&inner->max_u<=outer->max_u&&inner->min_v>=outer->min_v&&inner->max_v<=outer->max_v;}
 bool wood_world_validate_members(const WoodWorldValidationContext *context,char *error,size_t capacity)
 {
+    if(context->member_count>WOOD_CONTACT_MEMBER_CAPACITY)
+        return validation_refuse(error,capacity,"I33 CAPACITY: member count exceeds the contact capacity");
     const WoodGridState *grids=context->grids.state;
     for(size_t i=0;i<grids->count;++i){const WoodGridApplication *grid=&grids->items[i];WoodGridHost host;
         if(!context->host(context->user,grid->placement_id,NULL,&host)||

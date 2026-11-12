@@ -1,0 +1,41 @@
+{
+  "scope": "Narrow current-state wording versus existing exact terminal summary; no C/Git/package rerun",
+  "body": "/workspace/geo348-sentinel-fix-draft-20261024/PR_BODY.current-F73.template.md",
+  "body_sha256": "9e56a2fc19a7df259797cf6ca46ea9448ced4a29990a6413eb72b03501c9d18d",
+  "passed": 26,
+  "failed": 0,
+  "exit": 0,
+  "checks": {
+    "exact_F73": true,
+    "unique_evidence_placeholder": true,
+    "one_current_matrix": true,
+    "H3_actual0": true,
+    "three_helpers": true,
+    "named_sentinel_assertion": true,
+    "historical_W7_distinct": true,
+    "historical_ABI_distinct": true,
+    "512_still_red": true,
+    "full_gates_incomplete": true,
+    "no_skips": true,
+    "not_READY": true,
+    "R1_exit_preserved": true,
+    "R1_ENV_reason": true,
+    "resume_exit_separate": true,
+    "no_passed_rerun": true,
+    "old_triples_not_kills": true,
+    "old_raw_packagepin": true,
+    "timeout_null": true,
+    "old_scene_capture_limit": true,
+    "v2_not_performance": true,
+    "full_512_not_claimed": true,
+    "future_source_validation": true,
+    "summary_R1_true1": true,
+    "summary_resume_true0": true,
+    "summary_both_clean": true
+  },
+  "limits": [
+    "This wording review does not replace pending independent F73 raw semantic audit.",
+    "Product C400 full-tree identity is an existing source-line claim, not newly Git-rechecked here.",
+    "Actual publication still must replace the single evidence placeholder with a resolvable evidence commit."
+  ]
+}

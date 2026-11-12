@@ -68,10 +68,9 @@ typedef struct {
 } ContactFaceIndex;
 /* Reuse these buffers before the plane index rebuilds all of them. Only the
  * member suffix moves; stable ties retain both the member and side order. */
-static bool contact_member_index_before(const WoodContactWorld *world,const ContactOrderIndex *orders,
-    const WoodStopFace *out,size_t a,size_t b)
+static bool contact_member_index_before(const uint64_t *order,size_t a,size_t b)
 {
-    uint64_t left=contact_order(world,orders,out[a].timber_id),right=contact_order(world,orders,out[b].timber_id);
+    uint64_t left=order[a],right=order[b];
     return left<=right;
 }
 static void contact_member_index_sort(const WoodContactWorld *world,const ContactOrderIndex *orders,
@@ -79,22 +78,30 @@ static void contact_member_index_sort(const WoodContactWorld *world,const Contac
 {
     size_t members=count-first;
     for(size_t i=first;i<count;++i)index->sorted[i]=i;
+    if(members<2)return;
+    /* The immutable face suffix needs one full-width order lookup per face,
+     * not two hash lookups at every merge comparison. */
+    uint64_t order[WOOD_CONTACT_FACE_CAPACITY];
+    for(size_t i=first;i<count;++i)order[i]=contact_order(world,orders,out[i].timber_id);
     /* Placement order commonly already matches the admitted sequence.
      * Equal orders keep their original member and side order. */
-    if(members<2)return;
-    uint64_t previous=contact_order(world,orders,out[first].timber_id);
+    uint64_t previous=order[first];
     bool ordered=true;
     for(size_t i=first+1;i<count;++i){
-        uint64_t current=contact_order(world,orders,out[i].timber_id);
+        uint64_t current=order[i];
         if(previous>current){ordered=false;break;}
         previous=current;
     }
+    /* A filtered declaration inversion retains the conservative merge path.
+     * The admitted face sequence above is checked independently. */
+    if(ordered)for(size_t i=1;i<world->member_count;++i)
+        if(world->members[i-1].order>world->members[i].order){ordered=false;break;}
     if(ordered)return;
     for(size_t width=1;width<members;){
         for(size_t start=first;start<count;){
             size_t middle=start+contact_min_size(width,count-start);
             size_t end=middle+contact_min_size(width,count-middle),a=start,b=middle,at=start;
-            while(a<middle&&b<end)index->scratch[at++]=contact_member_index_before(world,orders,out,index->sorted[a],index->sorted[b])?index->sorted[a++]:index->sorted[b++];
+            while(a<middle&&b<end)index->scratch[at++]=contact_member_index_before(order,index->sorted[a],index->sorted[b])?index->sorted[a++]:index->sorted[b++];
             while(a<middle)index->scratch[at++]=index->sorted[a++];
             while(b<end)index->scratch[at++]=index->sorted[b++];
             start=end;

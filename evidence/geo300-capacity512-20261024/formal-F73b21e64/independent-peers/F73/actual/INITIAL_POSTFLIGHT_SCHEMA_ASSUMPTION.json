@@ -1,0 +1,232 @@
+{
+  "exit": 1,
+  "checks": 171,
+  "passed": 145,
+  "findings": [
+    {
+      "check": "exact stable phase source H3-affected",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant H3-affected",
+      "passed": false
+    },
+    {
+      "check": "exact stable phase source count-fixed",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant count-fixed",
+      "passed": false
+    },
+    {
+      "check": "exact stable phase source count-withdrawn",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant count-withdrawn",
+      "passed": false
+    },
+    {
+      "check": "exact stable phase source count-restored",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant count-restored",
+      "passed": false
+    },
+    {
+      "check": "exact stable phase source population-fixed",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant population-fixed",
+      "passed": false
+    },
+    {
+      "check": "exact stable phase source population-withdrawn",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant population-withdrawn",
+      "passed": false
+    },
+    {
+      "check": "exact stable phase source population-restored",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant population-restored",
+      "passed": false
+    },
+    {
+      "check": "exact stable phase source unplaced_replay-fixed",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant unplaced_replay-fixed",
+      "passed": false
+    },
+    {
+      "check": "exact stable phase source unplaced_replay-withdrawn",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant unplaced_replay-withdrawn",
+      "passed": false
+    },
+    {
+      "check": "exact stable phase source unplaced_replay-restored",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant unplaced_replay-restored",
+      "passed": false
+    },
+    {
+      "check": "exact stable phase source sentinel-fix-fixed",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant sentinel-fix-fixed",
+      "passed": false
+    },
+    {
+      "check": "exact stable phase source sentinel-fix-withdrawn",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant sentinel-fix-withdrawn",
+      "passed": false
+    },
+    {
+      "check": "exact stable phase source sentinel-fix-restored",
+      "passed": false
+    },
+    {
+      "check": "source dirt only declared variant sentinel-fix-restored",
+      "passed": false
+    }
+  ],
+  "source": "73b21e64dce72f0d16ca29e18559c51815b9724d",
+  "phases": [
+    {
+      "label": "H3-affected",
+      "actual_exit": 0,
+      "methods": 3,
+      "stdout_bytes": 272,
+      "stderr_bytes": 744,
+      "cause": null,
+      "source_host_sha256": "abe3ab96bfbda4fd4a535558c0b95294c0bcdccabec7ba129ea2b13cdac8b740"
+    },
+    {
+      "label": "count-fixed",
+      "actual_exit": 0,
+      "methods": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 297,
+      "cause": null,
+      "source_host_sha256": "abe3ab96bfbda4fd4a535558c0b95294c0bcdccabec7ba129ea2b13cdac8b740"
+    },
+    {
+      "label": "count-withdrawn",
+      "actual_exit": 1,
+      "methods": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 1816,
+      "cause": "AssertionError: Lists differ:",
+      "source_host_sha256": "d09a9477dbc62b327a8ef79be006504a550c371f47e2b6f884a9329a7ca27fb9"
+    },
+    {
+      "label": "count-restored",
+      "actual_exit": 0,
+      "methods": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 297,
+      "cause": null,
+      "source_host_sha256": "abe3ab96bfbda4fd4a535558c0b95294c0bcdccabec7ba129ea2b13cdac8b740"
+    },
+    {
+      "label": "population-fixed",
+      "actual_exit": 0,
+      "methods": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 315,
+      "cause": null,
+      "source_host_sha256": "abe3ab96bfbda4fd4a535558c0b95294c0bcdccabec7ba129ea2b13cdac8b740"
+    },
+    {
+      "label": "population-withdrawn",
+      "actual_exit": 1,
+      "methods": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 1252,
+      "cause": "角材 1 沒有 place（收尾時仍未放置，I9）",
+      "source_host_sha256": "aaabc2555854198198e3ca7dcdd1ce0cb970c3255d892e39a1d3d3665fd5199d"
+    },
+    {
+      "label": "population-restored",
+      "actual_exit": 0,
+      "methods": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 315,
+      "cause": null,
+      "source_host_sha256": "abe3ab96bfbda4fd4a535558c0b95294c0bcdccabec7ba129ea2b13cdac8b740"
+    },
+    {
+      "label": "unplaced_replay-fixed",
+      "actual_exit": 0,
+      "methods": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 315,
+      "cause": null,
+      "source_host_sha256": "abe3ab96bfbda4fd4a535558c0b95294c0bcdccabec7ba129ea2b13cdac8b740"
+    },
+    {
+      "label": "unplaced_replay-withdrawn",
+      "actual_exit": 1,
+      "methods": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 1006,
+      "cause": "self.assertTrue(restored.command(\"loadfile \"+str(replay))[\"ok\"])",
+      "source_host_sha256": "1ee9aed59cf56073220e063e6fc968db8ce5bf310f1f22475510b5608aa02a7f"
+    },
+    {
+      "label": "unplaced_replay-restored",
+      "actual_exit": 0,
+      "methods": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 315,
+      "cause": null,
+      "source_host_sha256": "abe3ab96bfbda4fd4a535558c0b95294c0bcdccabec7ba129ea2b13cdac8b740"
+    },
+    {
+      "label": "sentinel-fix-fixed",
+      "actual_exit": 0,
+      "methods": 1,
+      "stdout_bytes": 272,
+      "stderr_bytes": 327,
+      "cause": null,
+      "source_host_sha256": "abe3ab96bfbda4fd4a535558c0b95294c0bcdccabec7ba129ea2b13cdac8b740"
+    },
+    {
+      "label": "sentinel-fix-withdrawn",
+      "actual_exit": 1,
+      "methods": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 1497,
+      "cause": "host-capacity-first-incomplete-declaration",
+      "source_host_sha256": "388d6eb483c5c0b5b83dc317d47e50ceca9e4e218abfb04d8db677470f4e3f91"
+    },
+    {
+      "label": "sentinel-fix-restored",
+      "actual_exit": 0,
+      "methods": 1,
+      "stdout_bytes": 272,
+      "stderr_bytes": 327,
+      "cause": null,
+      "source_host_sha256": "abe3ab96bfbda4fd4a535558c0b95294c0bcdccabec7ba129ea2b13cdac8b740"
+    }
+  ],
+  "scope": "Small actual terminal/command streams/source-version hashes and exact assertion causes review. No C rerun, Git writes, complete compiler/pipe/session-payload archive walk or large hashing during exclusive R5. Full underlying capture/compiled inputs package integrity remains separate pending review. Original first outer exit1 remains environment incomplete, resumed last3 outer0. Does not validate either deferred true placed512 method, full H7, native, ledger, architecture or performance."
+}
