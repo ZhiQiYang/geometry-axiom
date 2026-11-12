@@ -758,7 +758,7 @@ typedef struct {
      * the last place line whose ordinary handler validates the whole run. */
     World *checkpoint;char *lines;int *line_numbers;size_t pending;long last_place;
 } AppSceneFileReplay;
-enum { APP_SCENE_DEFER_LINE=512,APP_SCENE_DEFER_LINES=1100 };
+enum { APP_SCENE_DEFER_LINE=512,APP_SCENE_DEFER_LINES=1100 };static bool app_scene_file_defer_safe(const World *,char **,int);
 static AppSceneFileReplay *g_scene_file_replay;
 static bool app_scene_file_graph_empty(const AppSceneFileReplay *frame)
 {
@@ -841,7 +841,7 @@ static bool app_scene_file_flush(const char *path,World *world)
     if(!frame||!frame->pending)return true;
     size_t pending=frame->pending;long last=frame->last_place;
     frame->pending=0;frame->last_place=-1;
-    if(last<0||app_scene_file_replay_line(frame,(size_t)last,path,world))return true;
+    if(last<0)return true;g_scene_error_muted=true;bool valid=app_scene_file_replay_line(frame,(size_t)last,path,world);g_scene_error_muted=false;if(valid)return true;
     memcpy(world,frame->checkpoint,sizeof *world);
     for(size_t i=0;i<pending;++i)if(!app_scene_file_replay_line(frame,i,path,world))return false;
     return true;
@@ -850,22 +850,22 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
 {
     if(app_scene_file_line_eligible(world,tokens,count)){
         AppSceneFileReplay *frame=g_scene_file_replay;char text[APP_SCENE_DEFER_LINE];
-        if(frame->checkpoint&&app_scene_file_defer_text(tokens,count,text)){
+        if(frame->checkpoint&&app_scene_file_defer_safe(world,tokens,count)&&app_scene_file_defer_text(tokens,count,text)){
             if(frame->pending==APP_SCENE_DEFER_LINES&&!app_scene_file_flush(path,world))return false;
             if(!frame->pending)memcpy(frame->checkpoint,world,sizeof *world);
-            g_reference_validation_deferred=true;
+            g_reference_validation_deferred=true;g_scene_error_muted=true;
             bool ok=app_scene_file_line(path,line_no,tokens,count,world);
-            g_reference_validation_deferred=false;
+            g_reference_validation_deferred=false;g_scene_error_muted=false;
             if(ok){
                 memcpy(frame->lines+frame->pending*APP_SCENE_DEFER_LINE,text,strlen(text)+1);
                 frame->line_numbers[frame->pending]=line_no;
                 if(!strcmp(tokens[0],"place"))frame->last_place=(long)frame->pending;
                 ++frame->pending;return true;
             }
-            /* An earlier buffered line that is invalid still reports first. */
-            char failure[sizeof g_scene_last_error];memcpy(failure,g_scene_last_error,sizeof failure);
+            /* An earlier invalid buffered line reports first; else this line fails again, unmuted, on the ordinary path. */
             if(!app_scene_file_flush(path,world))return false;
-            memcpy(g_scene_last_error,failure,sizeof failure);return false;
+            char *again[SCENE_MAX_TOKENS];int again_count=split_tokens(text,again,SCENE_MAX_TOKENS);
+            return again_count>0&&app_scene_file_line(path,line_no,again,again_count,world);
         }
         if(!app_scene_file_flush(path,world))return false;
         return app_scene_file_line(path,line_no,tokens,count,world);
@@ -1046,4 +1046,49 @@ static bool reference_default_world_owned(World *world)
     g_default_replay=frame.before?&frame:NULL;
     bool ok=reference_default_world(world);
     g_default_replay=previous;free(frame.before);return ok;
+}
+
+/* GEO-300: which scene-file lines may wait for the validation of their run.
+ * A run may only add things; it must never change a value that an earlier
+ * buffered placement was computed from (ChatGPT review 6809384650, B1).
+ * - timber: only a new id. Redeclaring an existing member can change A/B
+ *   read by a guide or by a buffered placement, so it validates at once.
+ * - place: every field after the surface is a known word, an integer, an
+ *   outline or hole edge, or a member that is already placed (earlier
+ *   order). A member that is not placed yet is a forward reference and is
+ *   judged immediately on the ordinary path, as before. */
+static bool app_scene_file_defer_digits(const char *text)
+{
+    if(!*text)return false;
+    for(;*text;++text)if(*text<'0'||*text>'9')return false;
+    return true;
+}
+static bool app_scene_file_defer_safe(const World *world,char **tokens,int count)
+{
+    uint32_t id;
+    if(!strcmp(tokens[0],"timber"))
+        return count>1&&parse_u32(tokens[1],&id)&&reference_timber_index(world,id)<0;
+    if(strcmp(tokens[0],"place")||count<5)return false;
+    static const char *const words[]={"at-line","at-face","guide","grid","rule","u","v","band","through","between"};
+    for(int i=4;i<count;++i){
+        const char *token=tokens[i];bool known=false;
+        for(size_t k=0;k<sizeof words/sizeof *words;++k)if(!strcmp(token,words[k]))known=true;
+        if(known)continue;
+        if((token[0]=='+'||token[0]=='-')&&((token[1]>='a'&&token[1]<='z'&&!token[2])||app_scene_file_defer_digits(token+1)))continue;
+        if(app_scene_file_defer_digits(token))continue;
+        if(token[0]=='e'&&app_scene_file_defer_digits(token+1))continue;
+        if(token[0]=='h'){
+            const char *edge=strchr(token,'e');size_t hole=edge?(size_t)(edge-token-1):0;char digits[16];
+            if(!edge||!hole||hole>=sizeof digits)return false;
+            memcpy(digits,token+1,hole);digits[hole]='\0';
+            if(app_scene_file_defer_digits(digits)&&app_scene_file_defer_digits(edge+1))continue;
+            return false;
+        }
+        if(token[0]=='t'&&app_scene_file_defer_digits(token+1)&&parse_u32(token+1,&id)){
+            int index=reference_timber_index(world,id);
+            if(index>=0&&world->wood.timbers[index].placed)continue;
+        }
+        return false;
+    }
+    return true;
 }

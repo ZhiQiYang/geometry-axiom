@@ -502,6 +502,8 @@ class TimberCapacityHost(unittest.TestCase):
         self.assertEqual(0,result.returncode,result.stderr)
         rows=[json.loads(line) for line in result.stdout.splitlines()]
         self.assertEqual(3,len(rows),name)
+        # The remaining stderr is the product's own diagnostics, byte for byte.
+        rows.append(result.stderr.replace(self.REVALIDATION_MARKER,b"").decode("utf-8"))
         return result.stderr.count(self.REVALIDATION_MARKER),rows
 
     def test_scene_file_run_validates_once_and_every_rejection_matches_line_by_line(self):
@@ -514,8 +516,8 @@ class TimberCapacityHost(unittest.TestCase):
         self.assertGreaterEqual(count_small,1,"a loaded file is still fully validated")
         self.assertEqual(count_small,count_large,"ASSERT:scene-file-validation-does-not-grow-per-placement")
         withdrawn=self.counted_bridge("load-withdrawn",("geometry-core/transactions.inc",
-            b"if(frame->checkpoint&&app_scene_file_defer_text(tokens,count,text)){",
-            b"if(false&&frame->checkpoint&&app_scene_file_defer_text(tokens,count,text)){"))
+            b"if(frame->checkpoint&&app_scene_file_defer_safe(world,tokens,count)&&app_scene_file_defer_text(tokens,count,text)){",
+            b"if(false&&frame->checkpoint&&app_scene_file_defer_safe(world,tokens,count)&&app_scene_file_defer_text(tokens,count,text)){"))
         red_small,old_small=self.scene_load(withdrawn,"load-count-24.scene",small)
         red_large,old_large=self.scene_load(withdrawn,"load-count-48.scene",large)
         print("scene-file-validation phase=withdrawn n24=%d n48=%d"%(red_small,red_large))
@@ -546,6 +548,41 @@ class TimberCapacityHost(unittest.TestCase):
             variants["early-placement-"+label]=moved(p,places[0])
         variants["reversed-pairs"]="".join(lines[:timbers[0]]+[line for k in reversed(range(24)) for line in (lines[timbers[k]],lines[places[k]])]+lines[places[23]+1:])
         variants["trailing-junk"]=small+"place\n"
+        # ChatGPT review 6809384650 B1: a later redeclaration of an unplaced
+        # member must not rescue an earlier invalid placement (line 5).
+        rescued=("surface 1 origin 0 0 0 u +x v +y outline 0,0 1000,0 1000,1000 0,1000\n"
+            "timber 99 %s 33 role boundary\n"
+            "guide 1 1 v vertex:v0:u+timber:99:A\n"
+            "timber 1 27 33 role boundary\n"
+            "place 1 on 1 at-line guide 1 +v +n\n"
+            "timber 99 13 33 role boundary\n"
+            "place 99 on 1 at-face e1 +v +n\n")
+        variants["prefix-invalid-boundary"]=rescued%"14"
+        variants["prefix-invalid-span"]=rescued%"1"
+        self.assertEqual((260,259),tuple(len(variants[name].encode("utf-8")) for name in ("prefix-invalid-boundary","prefix-invalid-span")))
+        # ChatGPT review 6811889922: an interior member placed before the two
+        # boundary members that would support its ends (no redeclaration, no
+        # unplaced tN reference). Both paths must judge the first prefix.
+        support_later=("surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000\n"
+            "spec \u4e3b\u652f\u4e2d\u7dda 500\n"
+            "guide 1 1 v spec:\u4e3b\u652f\u4e2d\u7dda\n"
+            "timber 1 27 33 role boundary\n"
+            "timber 2 27 33 role boundary\n"
+            "timber 3 27 33 role primary\n"
+            "%s")
+        interior="place 3 on 1 at-line guide 1 +v +n\n"
+        edges="place 1 on 1 at-face e0 +u +n\nplace 2 on 1 at-face e2 +u +n\n"
+        variants["support-placed-later"]=support_later%(interior+edges)
+        variants["support-placed-first"]=support_later%(edges+interior)
+        self.assertEqual(305,len(variants["support-placed-later"].encode("utf-8")))
+        # A stop face that names a member placed later is a forward reference.
+        between=[i for i in places if " between t" in lines[i]]
+        self.assertGreaterEqual(len(between),8)
+        for label,p in (("first",between[0]),("middle",between[len(between)//2])):
+            words=lines[p].split();at=words.index("between")
+            later=lines[places[23]].split()[1]
+            variants["forward-stop-"+label]=changed(p," ".join(words[:at+1]+["t"+later]+words[at+2:])+"\n")
+            variants["missing-stop-"+label]=changed(p," ".join(words[:at+1]+["t777"]+words[at+2:])+"\n")
         variants["trailing-unknown"]=small+"no-such-command 1\n"
         accepted=rejected=0
         for name,scene in sorted(variants.items()):
@@ -553,6 +590,8 @@ class TimberCapacityHost(unittest.TestCase):
                 _,new=self.scene_load(fixed,"load-variant-"+name+".scene",scene)
                 _,old=self.scene_load(withdrawn,"load-variant-"+name+".scene",scene)
                 self.assertEqual(old,new,"ASSERT:scene-file-rejection-identical "+name)
+                if name.startswith(("prefix-invalid-","forward-stop-","missing-stop-","support-placed-")):
+                    print("scene-file-validation variant=%s ok=%s error=%s"%(name,new[0]["ok"],new[0].get("error")))
                 if new[0]["ok"]:accepted+=1
                 else:rejected+=1
         print("scene-file-validation variants=%d accepted=%d rejected=%d"%(len(variants),accepted,rejected))
