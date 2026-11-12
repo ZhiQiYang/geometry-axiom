@@ -56,8 +56,7 @@ class NativeShardCoverage(unittest.TestCase):
         loads = [sum(weights.get(s.name, 1000) for s in part) for part in parts]
         self.assertLess(max(loads), 600000, '固定main實測配置應低於每片10分鐘，留建置與新套件餘量')
         self.assertLessEqual(max(loads)-min(loads), max(weights.values()))
-        # R348: production default uses source-identified H7 scheduling weight;
-        # the historical measured-profile checks above remain unchanged.
+        # Keep the historical 224-row and supplemental relative-weight checks.
         current_parts = partition_suites(suites, 3)
         owners = {s.name: i for i, part in enumerate(current_parts) for s in part}
         self.assertNotEqual(owners['py:test_geo261_timber_capacity_host'],
@@ -66,8 +65,25 @@ class NativeShardCoverage(unittest.TestCase):
         current_weights = dict(weights)
         current_weights.update({name: row['planning_weight_ms']
                                 for name, row in profile.get('supplemental', {}).items()})
-        current_loads = [sum(current_weights.get(s.name, 1000) for s in p) for p in current_parts]
+        historical_parts = partition_suites(suites, 3, current_weights)
+        current_loads = [sum(current_weights.get(s.name, 1000) for s in p) for p in historical_parts]
         self.assertLess(max(current_loads), 650000, 'R348_SHARD_SUPPLEMENTAL_PROFILE_CEILING')
+        # Replay both complete measurements independently against the production
+        # plan. The raw maximum overhead is 92.195s: reserve 100s plus 30s margin.
+        runs = profile['measured_runs']
+        self.assertEqual([r['source_run'].rsplit('/', 1)[-1] for r in runs],
+                         ['43162989157', '43150038015'])
+        for run in runs:
+            with self.subTest(source_run=run['source_run']):
+                measured = {name: ms for shard in run['shards']
+                            for name, ms in shard['timings_ms'].items()}
+                self.assertEqual(sum(len(s['timings_ms']) for s in run['shards']), len(measured))
+                self.assertEqual(len(measured), run['suite_count'])
+                self.assertEqual(set(measured), {s.name for s in suites},
+                                 'R348_MEASURED_PROFILE_COVERS_REGISTRY')
+                replay = [sum(measured[s.name] for s in part) for part in current_parts]
+                self.assertLess(max(replay) + 100000 + 30000, 1200000,
+                                'R348_MEASURED_RECEIPT_BUDGET')
 
     def test_invalid_shards_are_rejected(self):
         for value in ['0/2', '1/0', '4/3', 'a/2', '1/2/3', '-1/3']:
