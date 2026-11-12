@@ -841,7 +841,7 @@ static bool app_scene_file_flush(const char *path,World *world)
     if(!frame||!frame->pending)return true;
     size_t pending=frame->pending;long last=frame->last_place;
     frame->pending=0;frame->last_place=-1;
-    if(last<0||app_scene_file_replay_line(frame,(size_t)last,path,world))return true;
+    if(last<0)return true;g_scene_error_muted=true;bool valid=app_scene_file_replay_line(frame,(size_t)last,path,world);g_scene_error_muted=false;if(valid)return true;
     memcpy(world,frame->checkpoint,sizeof *world);
     for(size_t i=0;i<pending;++i)if(!app_scene_file_replay_line(frame,i,path,world))return false;
     return true;
@@ -853,19 +853,19 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
         if(frame->checkpoint&&app_scene_file_defer_text(tokens,count,text)){
             if(frame->pending==APP_SCENE_DEFER_LINES&&!app_scene_file_flush(path,world))return false;
             if(!frame->pending)memcpy(frame->checkpoint,world,sizeof *world);
-            g_reference_validation_deferred=true;
+            g_reference_validation_deferred=true;g_scene_error_muted=true;
             bool ok=app_scene_file_line(path,line_no,tokens,count,world);
-            g_reference_validation_deferred=false;
+            g_reference_validation_deferred=false;g_scene_error_muted=false;
             if(ok){
                 memcpy(frame->lines+frame->pending*APP_SCENE_DEFER_LINE,text,strlen(text)+1);
                 frame->line_numbers[frame->pending]=line_no;
                 if(!strcmp(tokens[0],"place"))frame->last_place=(long)frame->pending;
                 ++frame->pending;return true;
             }
-            /* An earlier buffered line that is invalid still reports first. */
-            char failure[sizeof g_scene_last_error];memcpy(failure,g_scene_last_error,sizeof failure);
+            /* An earlier invalid buffered line reports first; else this line fails again, unmuted, on the ordinary path. */
             if(!app_scene_file_flush(path,world))return false;
-            memcpy(g_scene_last_error,failure,sizeof failure);return false;
+            char *again[SCENE_MAX_TOKENS];int again_count=split_tokens(text,again,SCENE_MAX_TOKENS);
+            return again_count>0&&app_scene_file_line(path,line_no,again,again_count,world);
         }
         if(!app_scene_file_flush(path,world))return false;
         return app_scene_file_line(path,line_no,tokens,count,world);

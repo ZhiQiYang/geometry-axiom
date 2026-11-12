@@ -5520,7 +5520,7 @@ static void set_revalidate_error(const char *message)
 
 static void scene_error(const char *path, int line_no, const char *message)
 {
-    fprintf(stderr, "%s:%d: %s\n", path, line_no, message);
+    if (!g_scene_error_muted) fprintf(stderr, "%s:%d: %s\n", path, line_no, message);
     snprintf(g_scene_last_error, sizeof g_scene_last_error,
              "line %d: %s", line_no, message);
     utf8_trim_tail(g_scene_last_error);

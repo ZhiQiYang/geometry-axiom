@@ -17,7 +17,7 @@ typedef struct {
 } AppWorldCandidate;
 static AppWorldCandidate *g_active_app_candidate;
 static uint64_t g_app_candidate_serial;
-static bool g_boundary_keyed_update;
+static bool g_boundary_keyed_update;static bool g_scene_error_muted; /* GEO-300: batched scene-file attempt only */
 static uint32_t g_boundary_keyed_id;
 static const char *app_world_provider_stamp(void)
 {

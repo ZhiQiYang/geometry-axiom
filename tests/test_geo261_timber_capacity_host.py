@@ -502,6 +502,8 @@ class TimberCapacityHost(unittest.TestCase):
         self.assertEqual(0,result.returncode,result.stderr)
         rows=[json.loads(line) for line in result.stdout.splitlines()]
         self.assertEqual(3,len(rows),name)
+        # The remaining stderr is the product's own diagnostics, byte for byte.
+        rows.append(result.stderr.replace(self.REVALIDATION_MARKER,b"").decode("utf-8"))
         return result.stderr.count(self.REVALIDATION_MARKER),rows
 
     def test_scene_file_run_validates_once_and_every_rejection_matches_line_by_line(self):
