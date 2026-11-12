@@ -1,0 +1,1355 @@
+{
+ "perCommand": [
+  {
+   "i": 0,
+   "cmd": "surface 1 origin 0 0 2500 u +x v +y outl",
+   "ok": true,
+   "sec": 0.148
+  },
+  {
+   "i": 1,
+   "cmd": "grid 1 on 1 u 916 1834 2752 3670 4588 55",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 2,
+   "cmd": "timber 1 27 33 role boundary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 3,
+   "cmd": "place 1 on 1 at-face e0 between e3 e1 +u",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 4,
+   "cmd": "timber 2 27 33 role boundary",
+   "ok": true,
+   "sec": 0.148
+  },
+  {
+   "i": 5,
+   "cmd": "place 2 on 1 at-face e2 between e3 e1 -u",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 6,
+   "cmd": "timber 3 27 33 role primary",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 7,
+   "cmd": "place 3 on 1 at-line grid 1 u 0 between ",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 8,
+   "cmd": "timber 4 27 33 role primary",
+   "ok": true,
+   "sec": 0.147
+  },
+  {
+   "i": 9,
+   "cmd": "place 4 on 1 at-line grid 1 u 1 between ",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 10,
+   "cmd": "timber 5 27 33 role primary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 11,
+   "cmd": "place 5 on 1 at-line grid 1 u 2 between ",
+   "ok": true,
+   "sec": 0.15
+  },
+  {
+   "i": 12,
+   "cmd": "timber 6 27 33 role primary",
+   "ok": true,
+   "sec": 0.147
+  },
+  {
+   "i": 13,
+   "cmd": "place 6 on 1 at-line grid 1 u 3 between ",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 14,
+   "cmd": "timber 7 27 33 role primary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 15,
+   "cmd": "place 7 on 1 at-line grid 1 u 4 between ",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 16,
+   "cmd": "timber 8 27 33 role primary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 17,
+   "cmd": "place 8 on 1 at-line grid 1 u 5 between ",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 18,
+   "cmd": "timber 9 27 33 role primary",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 19,
+   "cmd": "place 9 on 1 at-face e3 between t1 t2 -v",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 20,
+   "cmd": "timber 10 27 33 role primary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 21,
+   "cmd": "place 10 on 1 at-face e1 between t1 t2 +",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 22,
+   "cmd": "timber 11 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 23,
+   "cmd": "place 11 on 1 at-line grid 1 v 0 between",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 24,
+   "cmd": "timber 12 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 25,
+   "cmd": "place 12 on 1 at-line grid 1 v 1 between",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 26,
+   "cmd": "timber 13 27 33 role secondary",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 27,
+   "cmd": "place 13 on 1 at-line grid 1 v 2 between",
+   "ok": true,
+   "sec": 0.148
+  },
+  {
+   "i": 28,
+   "cmd": "timber 14 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 29,
+   "cmd": "place 14 on 1 at-line grid 1 v 3 between",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 30,
+   "cmd": "timber 15 27 33 role secondary",
+   "ok": true,
+   "sec": 0.148
+  },
+  {
+   "i": 31,
+   "cmd": "place 15 on 1 at-line grid 1 v 4 between",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 32,
+   "cmd": "timber 16 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 33,
+   "cmd": "place 16 on 1 at-line grid 1 v 5 between",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 34,
+   "cmd": "timber 17 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 35,
+   "cmd": "place 17 on 1 at-line grid 1 v 6 between",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 36,
+   "cmd": "timber 18 27 33 role secondary",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 37,
+   "cmd": "place 18 on 1 at-line grid 1 v 7 between",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 38,
+   "cmd": "timber 19 27 33 role secondary",
+   "ok": true,
+   "sec": 0.152
+  },
+  {
+   "i": 39,
+   "cmd": "place 19 on 1 at-line grid 1 v 8 between",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 40,
+   "cmd": "timber 20 27 33 role secondary",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 41,
+   "cmd": "place 20 on 1 at-line grid 1 v 9 between",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 42,
+   "cmd": "timber 21 27 33 role secondary",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 43,
+   "cmd": "place 21 on 1 at-line grid 1 v 10 betwee",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 44,
+   "cmd": "timber 22 27 33 role secondary",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 45,
+   "cmd": "place 22 on 1 at-line grid 1 v 11 betwee",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 46,
+   "cmd": "timber 23 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 47,
+   "cmd": "place 23 on 1 at-line grid 1 v 12 betwee",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 48,
+   "cmd": "timber 24 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 49,
+   "cmd": "place 24 on 1 at-line grid 1 v 13 betwee",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 50,
+   "cmd": "timber 25 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 51,
+   "cmd": "place 25 on 1 at-line grid 1 v 14 betwee",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 52,
+   "cmd": "timber 26 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 53,
+   "cmd": "place 26 on 1 at-line grid 1 v 0 between",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 54,
+   "cmd": "timber 27 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 55,
+   "cmd": "place 27 on 1 at-line grid 1 v 1 between",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 56,
+   "cmd": "timber 28 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 57,
+   "cmd": "place 28 on 1 at-line grid 1 v 2 between",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 58,
+   "cmd": "timber 29 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 59,
+   "cmd": "place 29 on 1 at-line grid 1 v 3 between",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 60,
+   "cmd": "timber 30 27 33 role secondary",
+   "ok": true,
+   "sec": 0.139
+  },
+  {
+   "i": 61,
+   "cmd": "place 30 on 1 at-line grid 1 v 4 between",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 62,
+   "cmd": "timber 31 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 63,
+   "cmd": "place 31 on 1 at-line grid 1 v 5 between",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 64,
+   "cmd": "timber 32 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 65,
+   "cmd": "place 32 on 1 at-line grid 1 v 6 between",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 66,
+   "cmd": "timber 33 27 33 role secondary",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 67,
+   "cmd": "place 33 on 1 at-line grid 1 v 7 between",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 68,
+   "cmd": "timber 34 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 69,
+   "cmd": "place 34 on 1 at-line grid 1 v 8 between",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 70,
+   "cmd": "timber 35 27 33 role secondary",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 71,
+   "cmd": "place 35 on 1 at-line grid 1 v 9 between",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 72,
+   "cmd": "timber 36 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 73,
+   "cmd": "place 36 on 1 at-line grid 1 v 10 betwee",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 74,
+   "cmd": "timber 37 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 75,
+   "cmd": "place 37 on 1 at-line grid 1 v 11 betwee",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 76,
+   "cmd": "timber 38 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 77,
+   "cmd": "place 38 on 1 at-line grid 1 v 12 betwee",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 78,
+   "cmd": "timber 39 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 79,
+   "cmd": "place 39 on 1 at-line grid 1 v 13 betwee",
+   "ok": true,
+   "sec": 0.148
+  },
+  {
+   "i": 80,
+   "cmd": "timber 40 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 81,
+   "cmd": "place 40 on 1 at-line grid 1 v 14 betwee",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 82,
+   "cmd": "timber 41 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 83,
+   "cmd": "place 41 on 1 at-line grid 1 v 0 between",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 84,
+   "cmd": "timber 42 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 85,
+   "cmd": "place 42 on 1 at-line grid 1 v 1 between",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 86,
+   "cmd": "timber 43 27 33 role secondary",
+   "ok": true,
+   "sec": 0.147
+  },
+  {
+   "i": 87,
+   "cmd": "place 43 on 1 at-line grid 1 v 2 between",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 88,
+   "cmd": "timber 44 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 89,
+   "cmd": "place 44 on 1 at-line grid 1 v 3 between",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 90,
+   "cmd": "timber 45 27 33 role secondary",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 91,
+   "cmd": "place 45 on 1 at-line grid 1 v 4 between",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 92,
+   "cmd": "timber 46 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 93,
+   "cmd": "place 46 on 1 at-line grid 1 v 5 between",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 94,
+   "cmd": "timber 47 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 95,
+   "cmd": "place 47 on 1 at-line grid 1 v 6 between",
+   "ok": true,
+   "sec": 0.147
+  },
+  {
+   "i": 96,
+   "cmd": "timber 48 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 97,
+   "cmd": "place 48 on 1 at-line grid 1 v 7 between",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 98,
+   "cmd": "timber 49 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 99,
+   "cmd": "place 49 on 1 at-line grid 1 v 8 between",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 100,
+   "cmd": "timber 50 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 101,
+   "cmd": "place 50 on 1 at-line grid 1 v 9 between",
+   "ok": true,
+   "sec": 0.149
+  },
+  {
+   "i": 102,
+   "cmd": "timber 51 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 103,
+   "cmd": "place 51 on 1 at-line grid 1 v 10 betwee",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 104,
+   "cmd": "timber 52 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 105,
+   "cmd": "place 52 on 1 at-line grid 1 v 11 betwee",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 106,
+   "cmd": "timber 53 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 107,
+   "cmd": "place 53 on 1 at-line grid 1 v 12 betwee",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 108,
+   "cmd": "timber 54 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 109,
+   "cmd": "place 54 on 1 at-line grid 1 v 13 betwee",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 110,
+   "cmd": "timber 55 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 111,
+   "cmd": "place 55 on 1 at-line grid 1 v 14 betwee",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 112,
+   "cmd": "timber 56 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 113,
+   "cmd": "place 56 on 1 at-line grid 1 v 0 between",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 114,
+   "cmd": "timber 57 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 115,
+   "cmd": "place 57 on 1 at-line grid 1 v 1 between",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 116,
+   "cmd": "timber 58 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 117,
+   "cmd": "place 58 on 1 at-line grid 1 v 2 between",
+   "ok": true,
+   "sec": 0.154
+  },
+  {
+   "i": 118,
+   "cmd": "timber 59 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 119,
+   "cmd": "place 59 on 1 at-line grid 1 v 3 between",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 120,
+   "cmd": "timber 60 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 121,
+   "cmd": "place 60 on 1 at-line grid 1 v 4 between",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 122,
+   "cmd": "timber 61 27 33 role secondary",
+   "ok": true,
+   "sec": 0.147
+  },
+  {
+   "i": 123,
+   "cmd": "place 61 on 1 at-line grid 1 v 5 between",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 124,
+   "cmd": "timber 62 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 125,
+   "cmd": "place 62 on 1 at-line grid 1 v 6 between",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 126,
+   "cmd": "timber 63 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 127,
+   "cmd": "place 63 on 1 at-line grid 1 v 7 between",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 128,
+   "cmd": "timber 64 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 129,
+   "cmd": "place 64 on 1 at-line grid 1 v 8 between",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 130,
+   "cmd": "timber 65 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 131,
+   "cmd": "place 65 on 1 at-line grid 1 v 9 between",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 132,
+   "cmd": "timber 66 27 33 role secondary",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 133,
+   "cmd": "place 66 on 1 at-line grid 1 v 10 betwee",
+   "ok": true,
+   "sec": 0.147
+  },
+  {
+   "i": 134,
+   "cmd": "timber 67 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 135,
+   "cmd": "place 67 on 1 at-line grid 1 v 11 betwee",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 136,
+   "cmd": "timber 68 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 137,
+   "cmd": "place 68 on 1 at-line grid 1 v 12 betwee",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 138,
+   "cmd": "timber 69 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 139,
+   "cmd": "place 69 on 1 at-line grid 1 v 13 betwee",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 140,
+   "cmd": "timber 70 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 141,
+   "cmd": "place 70 on 1 at-line grid 1 v 14 betwee",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 142,
+   "cmd": "timber 71 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 143,
+   "cmd": "place 71 on 1 at-line grid 1 v 0 between",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 144,
+   "cmd": "timber 72 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 145,
+   "cmd": "place 72 on 1 at-line grid 1 v 1 between",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 146,
+   "cmd": "timber 73 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 147,
+   "cmd": "place 73 on 1 at-line grid 1 v 2 between",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 148,
+   "cmd": "timber 74 27 33 role secondary",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 149,
+   "cmd": "place 74 on 1 at-line grid 1 v 3 between",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 150,
+   "cmd": "timber 75 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 151,
+   "cmd": "place 75 on 1 at-line grid 1 v 4 between",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 152,
+   "cmd": "timber 76 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 153,
+   "cmd": "place 76 on 1 at-line grid 1 v 5 between",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 154,
+   "cmd": "timber 77 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 155,
+   "cmd": "place 77 on 1 at-line grid 1 v 6 between",
+   "ok": true,
+   "sec": 0.139
+  },
+  {
+   "i": 156,
+   "cmd": "timber 78 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 157,
+   "cmd": "place 78 on 1 at-line grid 1 v 7 between",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 158,
+   "cmd": "timber 79 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 159,
+   "cmd": "place 79 on 1 at-line grid 1 v 8 between",
+   "ok": true,
+   "sec": 0.193
+  },
+  {
+   "i": 160,
+   "cmd": "timber 80 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 161,
+   "cmd": "place 80 on 1 at-line grid 1 v 9 between",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 162,
+   "cmd": "timber 81 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 163,
+   "cmd": "place 81 on 1 at-line grid 1 v 10 betwee",
+   "ok": true,
+   "sec": 0.15
+  },
+  {
+   "i": 164,
+   "cmd": "timber 82 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 165,
+   "cmd": "place 82 on 1 at-line grid 1 v 11 betwee",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 166,
+   "cmd": "timber 83 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 167,
+   "cmd": "place 83 on 1 at-line grid 1 v 12 betwee",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 168,
+   "cmd": "timber 84 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 169,
+   "cmd": "place 84 on 1 at-line grid 1 v 13 betwee",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 170,
+   "cmd": "timber 85 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 171,
+   "cmd": "place 85 on 1 at-line grid 1 v 14 betwee",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 172,
+   "cmd": "timber 86 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 173,
+   "cmd": "place 86 on 1 at-line grid 1 v 0 between",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 174,
+   "cmd": "timber 87 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 175,
+   "cmd": "place 87 on 1 at-line grid 1 v 1 between",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 176,
+   "cmd": "timber 88 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 177,
+   "cmd": "place 88 on 1 at-line grid 1 v 2 between",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 178,
+   "cmd": "timber 89 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 179,
+   "cmd": "place 89 on 1 at-line grid 1 v 3 between",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 180,
+   "cmd": "timber 90 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 181,
+   "cmd": "place 90 on 1 at-line grid 1 v 4 between",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 182,
+   "cmd": "timber 91 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 183,
+   "cmd": "place 91 on 1 at-line grid 1 v 5 between",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 184,
+   "cmd": "timber 92 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 185,
+   "cmd": "place 92 on 1 at-line grid 1 v 6 between",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 186,
+   "cmd": "timber 93 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 187,
+   "cmd": "place 93 on 1 at-line grid 1 v 7 between",
+   "ok": true,
+   "sec": 0.147
+  },
+  {
+   "i": 188,
+   "cmd": "timber 94 27 33 role secondary",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 189,
+   "cmd": "place 94 on 1 at-line grid 1 v 8 between",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 190,
+   "cmd": "timber 95 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 191,
+   "cmd": "place 95 on 1 at-line grid 1 v 9 between",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 192,
+   "cmd": "timber 96 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 193,
+   "cmd": "place 96 on 1 at-line grid 1 v 10 betwee",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 194,
+   "cmd": "timber 97 27 33 role secondary",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 195,
+   "cmd": "place 97 on 1 at-line grid 1 v 11 betwee",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 196,
+   "cmd": "timber 98 27 33 role secondary",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 197,
+   "cmd": "place 98 on 1 at-line grid 1 v 12 betwee",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 198,
+   "cmd": "timber 99 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 199,
+   "cmd": "place 99 on 1 at-line grid 1 v 13 betwee",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 200,
+   "cmd": "timber 100 27 33 role secondary",
+   "ok": true,
+   "sec": 0.146
+  },
+  {
+   "i": 201,
+   "cmd": "place 100 on 1 at-line grid 1 v 14 betwe",
+   "ok": true,
+   "sec": 0.139
+  },
+  {
+   "i": 202,
+   "cmd": "timber 101 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 203,
+   "cmd": "place 101 on 1 at-line grid 1 v 0 betwee",
+   "ok": true,
+   "sec": 0.194
+  },
+  {
+   "i": 204,
+   "cmd": "timber 102 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 205,
+   "cmd": "place 102 on 1 at-line grid 1 v 1 betwee",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 206,
+   "cmd": "timber 103 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 207,
+   "cmd": "place 103 on 1 at-line grid 1 v 2 betwee",
+   "ok": true,
+   "sec": 0.14
+  },
+  {
+   "i": 208,
+   "cmd": "timber 104 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 209,
+   "cmd": "place 104 on 1 at-line grid 1 v 3 betwee",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 210,
+   "cmd": "timber 105 27 33 role secondary",
+   "ok": true,
+   "sec": 0.142
+  },
+  {
+   "i": 211,
+   "cmd": "place 105 on 1 at-line grid 1 v 4 betwee",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 212,
+   "cmd": "timber 106 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 213,
+   "cmd": "place 106 on 1 at-line grid 1 v 5 betwee",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 214,
+   "cmd": "timber 107 27 33 role secondary",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 215,
+   "cmd": "place 107 on 1 at-line grid 1 v 6 betwee",
+   "ok": true,
+   "sec": 0.144
+  },
+  {
+   "i": 216,
+   "cmd": "timber 108 27 33 role secondary",
+   "ok": true,
+   "sec": 0.141
+  },
+  {
+   "i": 217,
+   "cmd": "place 108 on 1 at-line grid 1 v 7 betwee",
+   "ok": true,
+   "sec": 0.193
+  },
+  {
+   "i": 218,
+   "cmd": "timber 109 27 33 role secondary",
+   "ok": true,
+   "sec": 0.143
+  },
+  {
+   "i": 219,
+   "cmd": "place 109 on 1 at-line grid 1 v 8 betwee",
+   "ok": true,
+   "sec": 0.145
+  },
+  {
+   "i": 220,
+   "cmd": "timber 110 27 33 role secondary",
+   "ok": true,
+   "sec": 0.193
+  },
+  {
+   "i": 221,
+   "cmd": "place 110 on 1 at-line grid 1 v 9 betwee",
+   "ok": true,
+   "sec": 0.141
+  }
+ ],
+ "sixtyFifth": {
+  "line": "place 65 on 1 at-line grid 1 v 9 between t5 t6 +u +n",
+  "ok": true,
+  "error": null
+ },
+ "totalSeconds": 32.044,
+ "placed": 110,
+ "firstReject": null,
+ "timbers": 110,
+ "places": 110,
+ "saved": "download",
+ "cold": {
+  "timbers": 110,
+  "places": 110,
+  "identical": true
+ },
+ "errs": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
