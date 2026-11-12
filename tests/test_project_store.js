@@ -105,7 +105,14 @@ test('rejects damaged scene, source, unknown version, duplicate paths and missin
   assert.deepEqual(P.nativeReaderCapabilities(['grid-subdivision-rules/1']),['grid-subdivision-rules/1']);
   P.assertProjectCapabilities({requiredCapabilities:[P.PARAMETER_CAPABILITY]},P.nativeReaderCapabilities(newer));
   assert.throws(()=>P.assertProjectCapabilities({requiredCapabilities:[P.PARAMETER_CAPABILITY]},P.nativeReaderCapabilities(['grid-subdivision-rules/1'])));
-  for(const unknown of ['grid-subdivision-rules/2','future-native/1']){
+  // D19a/R32 now adopt /2; keep unknown-version rejection at the unadopted /3.
+  const current='grid-subdivision-rules/2';
+  assert.doesNotThrow(()=>P.validateProjectCapabilities([current]),'R379_CURRENT_V2_CAPABILITY_ACCEPTED');
+  assert.deepEqual(P.nativeReaderCapabilities([current]),[current]);
+  assert.deepEqual(P.sceneCapabilities('requires '+current+'\n'),[current]);
+  P.assertProjectCapabilities({requiredCapabilities:[current]},P.nativeReaderCapabilities([current]));
+  assert.throws(()=>P.assertProjectCapabilities({requiredCapabilities:[current]},P.nativeReaderCapabilities(newer)),/目前服務不支援/,'R379_OLD_SERVICE_MUST_REFUSE_V2');
+  for(const unknown of ['grid-subdivision-rules/3','future-native/1']){
     assert.throws(()=>P.validateProjectCapabilities([unknown]));
     assert.throws(()=>P.assertProjectCapabilities({requiredCapabilities:[unknown]},newer));
     assert.throws(()=>P.sceneCapabilities('requires '+unknown+'\n'));

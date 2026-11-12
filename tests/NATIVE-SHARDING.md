@@ -144,3 +144,30 @@ R06 以 `bf178770a0e10e996014ec0b6487e186db561c7f` 的純 CI 差異三向套用�
 三片歷史重播仍包含全部 317 套，原 `+100000+30000 <1200000` 不變。正式四片仍驗全部 registry 恰好一次、三份來源成本及 per-suite 最大包絡的 `+120000+30000 <1200000`。新增具名撤回 `R380_REVERT_SINGLE_PAIR_SWEEP`、`R380_REMOVE_MULTISTART_SCREENING`、`R380_DROP_ADDED_SUITE_EVIDENCE`，連同原具名突變全部要求正常 AssertionError 的 0／1／0；不以 crash、timeout 或 skip 算 kill。正式四份 wall-clock 收據與完整 CI 仍須另外驗收。
 
 官方說明：[required checks與最近七日成功條件](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)、[classic設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)、[rulesets設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/managing-rulesets-for-a-repository)、[多規則聚合](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)。最終合併判斷仍需最新來源全部正式CI、四份`seconds <1200`原收據、完整coverage及mutation freshness通過。
+
+## R379 新套件加入後的有界情境規劃（基底57d55edc）
+
+R14 三個新增 suite 的獨立來源保留在 `native_shard_added_evidence.json`，其規劃上界合計為 11000ms。三份歷史 `measured_runs`、224 筆原權重及 supplemental 權重全部不變。新增套件仍與原 315 套一起參與既有三片回放及正式四片規劃；沒有把它們排除在預算之外。
+
+只用原本「最大成本遞減」的單一起點加一次交換，在 318 套時落到另一個局部結果：前兩輪三片最大值加原 130000ms 預留為 1204609／1205166ms，原嚴格 `<1200000` 正常拒收。一換一保留各片套數，而一換一／二換一也未必能一次移走多個小套件，讓情境互補的大套件進到同片。修正保留原 greedy 起點及完整成本向量，再增加至多八個固定起點：依最大成本／名稱排序，將最大套件分別與接續八套之一預放同片，再執行原 greedy。每個起點只先做兩輪原一換一掃描，以全部片／情境負載的降冪 tuple 選出唯一最佳者；只有勝者再做固定四輪「二換一最佳交換＋原一換一掃描」。二換一只搜尋各片依同一排序的前 16 套，每次只採 tuple 嚴格改善，同分保留第一個選擇。這使套數可在片間改變，仍保留每套恰好一次，名稱及片號固定打破平手，片內維持原 registry 順序。不改權重、不依亂數、即時耗時或機器 cache，不迭代到收斂，亦沒有套件名稱或預算特例。#379 與 #380 使用同一份通用規劃器。候選起點最多九個，但昂貴的二換一只執行一組；本機篩選加改善的三片／四片規劃約 0.81／1.34 秒，完整 13 項 runner 為 13.193 秒。
+
+本機整數毫秒模型回放如下，這不是新 head 的正式 CI 收據：
+
+| 模型 | 片1 | 片2 | 片3 | 片4 | 最大值含原預留 |
+|---|---:|---:|---:|---:|---:|
+| 原兩輪／三片：43162989157 | 894057 | 1054068 | 1054069 | — | 1184069 |
+| 原兩輪／三片：43150038015 | 1054366 | 993471 | 1040487 | — | 1184366 |
+| 三輪／四片：43162989157 | 467713 | 844827 | 844827 | 844827 | 994827 |
+| 三輪／四片：43150038015 | 760657 | 743842 | 767339 | 816486 | 966486 |
+| 三輪／四片：43177620127 | 844830 | 831849 | 748161 | 836366 | 994830 |
+| 四片逐套三輪最大值 | 874865 | 902000 | 899430 | 915898 | 1065898 |
+
+三片為 91／113／114 套，四片為 6／104／105／103 套；兩者皆精確涵蓋全部 318 套一次。套數不同反映各套成本及跨輪情境不同，規劃不追求套數相等。三片保留 100000＋30000ms 預留，四片保留 120000＋30000ms 預留，所有既有測試斷言、workflow 35 分鐘及收據 1200 秒限制不動。`test_unittest_runner.py` 本輪未改；前一片已新增的來源反證 method 實跑共 13 項，因此只精確補 expected 的 12→13。
+
+新增 `R379_REVERT_SINGLE_START_ONE_SWEEP`，只在子行程中恢復原規劃器，不改測量、suite 或裁判，必須以原 `R348_MEASURED_RECEIPT_BUDGET` 正常 AssertionError 產生 0／1／0。原刪一套件、撤回真實量測、移除交換及全部四片具名反證仍執行；正式四份原收據及 ME freshness 仍須採入補丁後另驗。
+
+## #379 × #380 合併：新增套件證據改為每來源一檔（候選，待 ChatGPT 審）
+
+#379 與 #380 各自新增了 `native_shard_added_evidence.json`，而原 schema 只允許單一 `source_run`，兩份無法聯集。候選解法：改為目錄 `tests/native_shard_added_evidence/`，每個來源一檔（`pr379-r14.json`、`pr380-c0-from-fill.json`，兩檔內容與兩邊原檔位元相同）。`added_suite_costs()` 依檔名排序讀取每一檔，逐檔沿用原 `native-shard-added-suite-evidence/1` 全部驗證（來源 run／head／checkout、每列 source job 屬於該檔 run、完整通過、上界高於摘要秒數且 <1200000），另拒收空目錄、缺目錄及跨檔重複套件（`R380_NEW_SUITE_UNIQUE_ACROSS_SOURCES`）。`profile_digest()` 改為雜湊原 profile 加上每檔「檔名＋LF bytes」。之後新增 suite 的 PR 只需新增自己的檔，不再 add/add 衝突。
+
+`R379_REVERT_SINGLE_START_ONE_SWEEP` 移除：它重寫的 `_scenario_owners`（原 greedy＋一輪 pair swap）與 main 上 `R380_REVERT_SINGLE_PAIR_SWEEP`（`_improve_scenarios = _swap_scenarios`）在三片／四片、兩輪／三輪 profile 下產生逐套相同的 owners，是同一個撤回的重複；R380 三個具名突變保留。

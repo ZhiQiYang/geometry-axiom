@@ -8,7 +8,9 @@ from pathlib import Path
 import re
 
 TIMINGS = Path(__file__).with_name('native_shard_timings.json')
-ADDED_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence.json')
+# One immutable evidence file per contributing change; each file carries its own
+# source run/head/checkout, so independent PRs never edit the same file.
+ADDED_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence')
 
 
 def added_suite_costs():
@@ -18,8 +20,28 @@ def added_suite_costs():
     observed timing. The referenced CI job may have failed another suite; the
     named suite itself must have an explicitly passing receipt.
     """
-    data = json.loads(ADDED_EVIDENCE.read_text(encoding='utf-8'))
-    if (set(data) != {'schema', 'source_run', 'source_head', 'source_checkout',
+    files = _added_evidence_files()
+    if not files:
+        raise ValueError('R379_NEW_SUITE_SOURCE_PROVENANCE')
+    bounds = {}
+    for path in files:
+        for name, upper in _added_evidence_bounds(
+                json.loads(path.read_text(encoding='utf-8'))).items():
+            if name in bounds:
+                raise ValueError('R380_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+            bounds[name] = upper
+    return bounds
+
+
+def _added_evidence_files():
+    if not ADDED_EVIDENCE.is_dir():
+        raise ValueError('R379_NEW_SUITE_SOURCE_PROVENANCE')
+    return sorted(ADDED_EVIDENCE.glob('*.json'), key=lambda path: path.name)
+
+
+def _added_evidence_bounds(data):
+    """Validate one source file exactly as the original single-source schema."""
+    if (type(data) is not dict or set(data) != {'schema', 'source_run', 'source_head', 'source_checkout',
                       'note', 'observations'}
             or data['schema'] != 'native-shard-added-suite-evidence/1'
             or not re.fullmatch(r'https://github\.com/ZhiQiYang/geometry-axiom/actions/runs/[0-9]+',
@@ -238,5 +260,7 @@ def partition_suites(suites, count, weights=None):
 
 def profile_digest():
     legacy = TIMINGS.read_bytes().replace(b'\r\n', b'\n')
-    addition = ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')
-    return hashlib.sha256(legacy + b'\0' + addition).hexdigest()
+    addition = b''.join(b'\0' + path.name.encode('utf-8') + b'\0'
+                        + path.read_bytes().replace(b'\r\n', b'\n')
+                        for path in _added_evidence_files())
+    return hashlib.sha256(legacy + addition).hexdigest()
