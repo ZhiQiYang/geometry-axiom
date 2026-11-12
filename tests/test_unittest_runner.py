@@ -40,22 +40,24 @@ class NativeShardCoverage(unittest.TestCase):
         blocks = []
         for job in ('native', 'native-complete'):
             match = re.search(r'^  ' + job + r':\n(.*?)(?=^  \S|\Z)', workflow, re.M | re.S)
-            self.assertIsNotNone(match, 'R348_FOUR_NATIVE_WORKFLOW: missing ' + job)
+            self.assertIsNotNone(match, 'R378_SIX_NATIVE_WORKFLOW: missing ' + job)
             blocks.append(match[1])
         match = re.search(r'^        shard: \[([0-9, ]+)\]$', blocks[0], re.M)
-        self.assertIsNotNone(match, 'R348_FOUR_NATIVE_WORKFLOW: missing native matrix')
+        self.assertIsNotNone(match, 'R378_SIX_NATIVE_WORKFLOW: missing native matrix')
         return blocks[0], blocks[1], [int(value) for value in match[1].split(',')]
 
-    def _assert_four_native_workflow(self):
+    def _assert_six_native_workflow(self):
+        # R378: the current plan is six native shards. The 35-minute job limit
+        # and the strict per-receipt seconds < 1200 are unchanged.
         native, complete, matrix = self._native_workflow()
-        marker = 'R348_FOUR_NATIVE_WORKFLOW'
-        self.assertEqual(matrix, [1, 2, 3, 4], marker)
-        for line in ('    name: native (${{ matrix.shard }}/4)',
-                     '    timeout-minutes: 35', '      fail-fast: false', '      max-parallel: 4'):
+        marker = 'R378_SIX_NATIVE_WORKFLOW'
+        self.assertEqual(matrix, [1, 2, 3, 4, 5, 6], marker)
+        for line in ('    name: native (${{ matrix.shard }}/6)',
+                     '    timeout-minutes: 35', '      fail-fast: false', '      max-parallel: 6'):
             self.assertIn('\n' + line + '\n', '\n' + native, marker)
         command = next((line.strip() for line in native.splitlines()
                         if line.strip().startswith('python3 tests/run_all.py ')), '')
-        self.assertIn("--build --shard '${{ matrix.shard }}/4' --report ", command, marker)
+        self.assertIn("--build --shard '${{ matrix.shard }}/6' --report ", command, marker)
         for flag in ('--only', '--extra-py', '--allow-skip', '--simulate-missing', '--update-expected'):
             self.assertNotIn(flag, command, marker)
         self.assertNotIn('continue-on-error:', native + complete, marker)
@@ -63,7 +65,7 @@ class NativeShardCoverage(unittest.TestCase):
             self.assertIn('\n' + line + '\n', '\n' + complete, marker)
         command = next((line.strip() for line in complete.splitlines()
                         if line.strip().startswith('run: python3 -B tests/native_shard_receipts.py ')), '')
-        self.assertIn("--parts 4 --output ", command, marker)
+        self.assertIn("--parts 6 --output ", command, marker)
 
     def test_partition_covers_actual_suite_registry_once(self):
         suites = run_all.build_suites()
@@ -74,13 +76,20 @@ class NativeShardCoverage(unittest.TestCase):
         self.assertEqual(actual, Counter({name:1 for name in expected['suites']}),
                          '分片必須完整涵蓋原套件清單，且每個suite恰好一次')
         self.assertEqual(sum(map(len, parts)), len(suites))
-        _, _, matrix = self._native_workflow()
-        four = run_all.partition_suites(suites, len(matrix))
+        # Keep the historical four-shard coverage proof; the current plan follows
+        # the real workflow matrix (six shards since R378).
+        four = run_all.partition_suites(suites, 4)
         self.assertEqual(Counter(s.name for part in four for s in part),
                          Counter({name: 1 for name in expected['suites']}),
                          'R348_FOUR_SHARDS_COVER_FULL_REGISTRY')
         self.assertEqual(sum(map(len, four)), len(suites))
-        self._assert_four_native_workflow()
+        _, _, matrix = self._native_workflow()
+        current = run_all.partition_suites(suites, len(matrix))
+        self.assertEqual(Counter(s.name for part in current for s in part),
+                         Counter({name: 1 for name in expected['suites']}),
+                         'R378_SIX_SHARDS_COVER_FULL_REGISTRY')
+        self.assertEqual(sum(map(len, current)), len(suites))
+        self._assert_six_native_workflow()
 
     def test_partition_is_deterministic(self):
         suites = run_all.build_suites()
@@ -93,6 +102,11 @@ class NativeShardCoverage(unittest.TestCase):
         reverse = partition_suites(list(reversed(suites)), 4)
         self.assertEqual([set(s.name for s in p) for p in four], [set(s.name for s in p) for p in reverse])
         for part in four:
+            self.assertEqual(part, [suite for suite in suites if suite in part])
+        six = partition_suites(suites, 6)
+        reverse = partition_suites(list(reversed(suites)), 6)
+        self.assertEqual([set(s.name for s in p) for p in six], [set(s.name for s in p) for p in reverse])
+        for part in six:
             self.assertEqual(part, [suite for suite in suites if suite in part])
 
     def test_profile_balances_measured_work(self):
@@ -131,7 +145,7 @@ class NativeShardCoverage(unittest.TestCase):
         # historical assertion; append the failed d7515daf run without relabeling.
         runs = profile['measured_runs']
         self.assertEqual([r['source_run'].rsplit('/', 1)[-1] for r in runs],
-                         ['43162989157', '43150038015', '43177620127'],
+                         ['43162989157', '43150038015', '43177620127', '43271258668'],
                          'R348_RETAINED_MEASURED_EVIDENCE')
         retained = json.dumps(runs[:2], sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode('utf-8')
         self.assertEqual(hashlib.sha256(retained).hexdigest(),
@@ -140,6 +154,18 @@ class NativeShardCoverage(unittest.TestCase):
         latest = json.dumps(runs[2], sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode('utf-8')
         self.assertEqual(hashlib.sha256(latest).hexdigest(),
                          '7a232306cd33de36c7a7bf4e729e3338261cfca2d07112e8be26d771557c5963',
+                         'R348_RETAINED_MEASURED_EVIDENCE')
+        # R378: the four original native-shard receipts of PR #378 head
+        # 17842571 (checkout 3b9678f4, run 43271258668) are a fourth observed
+        # scenario. They come from a PR checkout, not from main, and are appended
+        # without relabeling or rewriting the three earlier runs.
+        added_run = json.dumps(runs[3], sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode('utf-8')
+        self.assertEqual(hashlib.sha256(added_run).hexdigest(),
+                         '0152b8cb82ddb720670243c7c5f468a64a719cc4b7d6b34807d57eb20f28e5e2',
+                         'R348_RETAINED_MEASURED_EVIDENCE')
+        self.assertEqual((runs[3]['source_pr_head'], runs[3]['source_checkout'], len(runs[3]['shards'])),
+                         ('17842571811d5af74bd8f4caac7c20f28ca2b056',
+                          '3b9678f4dafd80c3c5f680b5cc56fb4cde30eeb9', 4),
                          'R348_RETAINED_MEASURED_EVIDENCE')
         for run in runs:
             with self.subTest(source_run=run['source_run']):
@@ -158,19 +184,32 @@ class NativeShardCoverage(unittest.TestCase):
                     replay = [sum(combined[s.name] for s in part) for part in current_parts]
                     self.assertLess(max(replay) + 100000 + 30000, 1200000,
                                     'R348_MEASURED_RECEIPT_BUDGET')
-        # The production plan follows the real workflow matrix. Reserve 120s
-        # (observed maximum overhead 115.564s, rounded up) and the same 30s margin.
-        _, _, matrix = self._native_workflow()
-        four = partition_suites(suites, len(matrix))
-        for measured in profiles:
-            replay = [sum(measured[s.name] for s in part) for part in four]
+        # Historical R348 four-shard model: the three runs it was accepted on
+        # keep the same 120s + 30s reservation. It is history, not the current plan.
+        with mock.patch.object(native_shards, 'measured_profiles', return_value=profiles[:3]):
+            historical_four = partition_suites(suites, 4)
+        for measured in profiles[:3]:
+            replay = [sum(measured[s.name] for s in part) for part in historical_four]
             self.assertLess(max(replay) + 120000 + 30000, 1200000,
-                            'R348_MEASURED_RECEIPT_BUDGET: four-shard observed run')
+                            'R348_MEASURED_RECEIPT_BUDGET: historical four-shard observed run')
+        envelope = {s.name: max(measured[s.name] for measured in profiles[:3]) for s in suites}
+        replay = [sum(envelope[s.name] for s in part) for part in historical_four]
+        self.assertLess(max(replay) + 120000 + 30000, 1200000,
+                        'R348_MEASURED_RECEIPT_BUDGET: historical four-shard per-suite maximum')
+        # The production plan follows the real workflow matrix and every measured
+        # run, including the R378 scenario. Reserve 120s (observed maximum
+        # overhead 115.564s, rounded up) and the same 30s margin.
+        _, _, matrix = self._native_workflow()
+        current = partition_suites(suites, len(matrix))
+        for measured in profiles:
+            replay = [sum(measured[s.name] for s in part) for part in current]
+            self.assertLess(max(replay) + 120000 + 30000, 1200000,
+                            'R348_MEASURED_RECEIPT_BUDGET: current-matrix observed run')
         envelope = {s.name: max(measured[s.name] for measured in profiles) for s in suites}
-        replay = [sum(envelope[s.name] for s in part) for part in four]
+        replay = [sum(envelope[s.name] for s in part) for part in current]
         self.assertLess(max(replay) + 120000 + 30000, 1200000,
                         'R348_MEASURED_RECEIPT_BUDGET: per-suite maximum across all runs')
-        self._assert_four_native_workflow()
+        self._assert_six_native_workflow()
 
     def test_added_suite_provenance_rejects_named_mutations(self):
         path = native_shards.ADDED_EVIDENCE
@@ -206,9 +245,10 @@ class NativeShardCoverage(unittest.TestCase):
                 parse_shard(value)
         self.assertEqual(parse_shard('2/3'), (2, 3))
         self.assertEqual(parse_shard('4/4'), (4, 4))
+        self.assertEqual(parse_shard('6/6'), (6, 6))
 
     def test_shards_cannot_update_or_filter_expected(self):
-        for shard in ('1/3', '1/4'):
+        for shard in ('1/3', '1/4', '1/6'):
             for extra in [['--only', 'bridge'], ['--extra-py', 'unused.py'],
                           ['--simulate-missing', 'GEOMETRY_MODEL_BASE'], ['--update-expected']]:
                 with self.subTest(shard=shard, extra=extra), mock.patch.object(run_all, 'run') as child, contextlib.redirect_stdout(io.StringIO()):
