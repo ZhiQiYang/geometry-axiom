@@ -66,14 +66,19 @@ bool wood_world_validate_members(const WoodWorldValidationContext *context,char 
         if(!context->boundary_role(context->user,fact.placement_id,&footprint,member,along_v,detail,sizeof detail))
             return validation_refuse(error,capacity,detail[0]?detail:"邊界材固定段未覆蓋定位邊");
     }
+    /* GEO-381: host(id, NULL) is a read-only lookup with one answer per id
+     * in this validation, so each a confirms its host once, at its first
+     * same-host pair, in the original order (host, then both footprints). */
     for(size_t i=0;i<context->member_count;++i){WoodWorldMemberFact a;
         if(!context->member_at(context->user,i,&a))return false;if(!a.member->placed)continue;
+        bool host_confirmed=false;
         for(size_t j=i+1;j<context->member_count;++j){WoodWorldMemberFact b;GeoRect2 left,right;WoodGridHost host;
             if(!context->member_at(context->user,j,&b))return false;
             if(!b.member->placed||a.placement_id!=b.placement_id)continue;
-            if(!context->host(context->user,a.placement_id,NULL,&host)||
+            if((!host_confirmed&&!context->host(context->user,a.placement_id,NULL,&host))||
                 !context->footprint(context->user,i,a.placement_id,&left)||
                 !context->footprint(context->user,j,a.placement_id,&right))return false;
+            host_confirmed=true;
             if(geo_rect_overlap_positive(&left,&right))return false;
         }
     }

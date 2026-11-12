@@ -9,6 +9,7 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path: sys.path.insert(0,str(ROOT))
 from tests import _bridge
+from tests import geo300_scene_generator as scene_generator
 from tests.test_geo261_native_kernel import native
 
 COLUMN_GUARD="if(geo_rect_overlap_positive(&left,&right))return false;\n        }\n    }\n    for(size_t i=0;i<beam_count;"
@@ -166,5 +167,75 @@ class WorldValidationProduct(unittest.TestCase):
         self.selected_component(mutant,"validation-product-selected-component-verdict")
         self.selected_component(self.exe)
 
+
+
+class MemberValidationHostWork(unittest.TestCase):
+    """GEO-381: the final member validation reads each host a bounded number of
+    times per placed member on the real step-by-step generator history.
+
+    The H host callback gets a counter and the one real call site prints the
+    per-validation total; W policy and the published World are untouched."""
+    MARKER=b"GEO381-MEMBER-VALIDATION "
+    HOST=b"static bool app_validation_host(void *user,uint32_t id,const GeoRect2 *footprint,WoodGridHost *out)\n{"
+    CALL=b"    if(!wood_world_validate_members(&context,error,sizeof error)){\r\n"
+    # Named withdrawal: confirm the host again for every same-host pair.
+    ONCE="(!host_confirmed&&!context->host(context->user,a.placement_id,NULL,&host))||"
+    EVERY="(!context->host(context->user,a.placement_id,NULL,&host))||"
+
+    @classmethod
+    def setUpClass(cls):
+        text,_=scene_generator.build(24,"single")
+        cls.statements=[line for line in text.splitlines() if line.strip() and not line.lstrip().startswith("#")]
+        commands=["reset"]+["line "+s for s in cls.statements]+["dump","references","line timber 25 27 33 role primary","dump"]
+        cls.payload="".join(c+"\n" for c in commands).encode("utf-8")
+
+    def counted_bridge(self,label,withdraw=False):
+        build=native();destination=build.work/("geo381-host-closure-"+label);destination.mkdir()
+        entry=copy_product_closure(ROOT/"geometry-web/web_bridge.c",destination)
+        adapter=destination/"geometry-app/native/world_validation.inc";source=adapter.read_bytes()
+        self.assertEqual(1,source.count(self.HOST),"one actual H host callback")
+        adapter.write_bytes(source.replace(self.HOST,b"static size_t geo381_host_reads;\n"+self.HOST+b"++geo381_host_reads;"))
+        host=destination/"current_geometry.c";source=host.read_bytes()
+        self.assertEqual(1,source.count(self.CALL),"one actual final member validation")
+        host.write_bytes(source.replace(self.CALL,
+            b"    size_t geo381_before=geo381_host_reads,geo381_placed=0;\r\n"
+            b"    for(size_t k=0;k<world->wood.timber_count;++k)geo381_placed+=world->wood.timbers[k].placed;\r\n"
+            b"    bool geo381_ok=wood_world_validate_members(&context,error,sizeof error);\r\n"
+            b"    fprintf(stderr,\"GEO381-MEMBER-VALIDATION %zu %zu %zu\\n\",geo381_placed,context.grids.state->count,geo381_host_reads-geo381_before);\r\n"
+            b"    if(!geo381_ok){\r\n"))
+        obj=build.compile(entry,"geo381-host-"+label,PRODUCT_DEFINES)
+        objects=build.product_objects()
+        self.assertEqual(1,objects.count(build.wood_world_validation_object))
+        if withdraw:
+            source=(build.woodworking/"world_validation.c").read_text(encoding="utf-8")
+            self.assertEqual(1,source.count(self.ONCE),"Named withdrawal must change one actual site")
+            path=build.woodworking/"geo381-host-every-pair.c";path.write_text(source.replace(self.ONCE,self.EVERY),encoding="utf-8")
+            changed=build.compile(path,"geo381-host-every-pair")
+            objects=[changed if item==build.wood_world_validation_object else item for item in objects]
+        return build.link("geo381-host-"+label,[obj,*objects])
+
+    def host_work(self,bridge):
+        result=_bridge.run_once(self.payload,text=False,bridge=bridge,timeout=600)
+        self.assertEqual(0,result.returncode,result.stderr)
+        rows=[tuple(map(int,line.split()[1:])) for line in result.stderr.splitlines() if line.startswith(self.MARKER)]
+        other=b"".join(line+b"\n" for line in result.stderr.splitlines() if not line.startswith(self.MARKER))
+        return result.stdout,other,rows
+
+    def test_real_history_reads_each_host_linearly_and_withdrawal_is_red(self):
+        plain=_bridge.run_once(self.payload,text=False,bridge=native().bridge(),timeout=600)
+        self.assertEqual(0,plain.returncode,plain.stderr)
+        self.assertNotIn(self.MARKER,plain.stderr,"product bridge must not carry the test marker")
+        stdout,stderr,rows=self.host_work(self.counted_bridge("fixed"))
+        self.assertEqual((plain.stdout,plain.stderr),(stdout,stderr),"marker must not change replies or stderr")
+        self.assertEqual(24,max(placed for placed,_,_ in rows),"the real history validates all 24 placed members")
+        worst=max(reads-grids-4*placed for placed,grids,reads in rows)
+        print("geo381-host phase=fixed validations=%d max_reads=%d max_excess_over_grids_plus_4n=%d"%(len(rows),max(r for _,_,r in rows),worst))
+        for placed,grids,reads in rows:
+            self.assertLessEqual(reads,grids+4*placed,"ASSERT:geo381-member-validation-host-reads-linear")
+        stdout,stderr,red=self.host_work(self.counted_bridge("withdrawn",withdraw=True))
+        print("geo381-host phase=withdrawn max_reads=%d max_excess_over_grids_plus_4n=%d"%(max(r for _,_,r in red),max(r-g-4*p for p,g,r in red)))
+        self.assertEqual((plain.stdout,plain.stderr),(stdout,stderr),"both loops publish the same World")
+        self.assertTrue(any(reads>grids+4*placed for placed,grids,reads in red),"withdrawal must restore the per-pair reads")
+        self.assertEqual(rows,self.host_work(self.counted_bridge("restored"))[2])
 
 if __name__=="__main__":unittest.main(verbosity=2)
