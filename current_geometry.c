@@ -910,7 +910,7 @@ static bool grid_coord_list_is_valid(const Coord coords[],size_t count)
 static bool app_grid_host_value(const PlacementSurface *p,const SpaceBoundarySurface *b,WoodGridHost *out)
 {
     memset(out,0,sizeof *out);if(!p)return false;
-    out->id=p->id;out->boundary_id=p->boundary_id;
+    out->id=p->id;out->boundary_id=p->boundary_id;out->derived_fill_id=p->derived_fill_id;
     out->bounds_valid=placement_local_bounds(p,b,&out->bounds);
     out->component_count=p->derived_fill_id?p->component_count:1;
     for(size_t i=0;i<out->component_count;++i){
@@ -1961,7 +1961,7 @@ static void scene_draw_view(
                         if (surface_has_area && !labeled) {
                             ViewPoint2 at = { .x = a.x + 40, .y = a.y + 20 };
                             snprintf(label, sizeof label,
-                                     grid->from_binding?"格線%" PRIu32 "（取樣）":"格線%" PRIu32, grid->id);
+                                     (grid->from_binding||grid->from_fill)?"格線%" PRIu32 "（取樣）":"格線%" PRIu32, grid->id);
                             scene_emit_text(target, at,
                                             STYLE_GUIDE_LABEL, label, 0);
                             labeled = true;
@@ -2883,6 +2883,7 @@ static bool boundary_keys_initialize(World *,uint32_t);
 static void boundary_geometry_hash(const SpaceBoundarySurface *,char [65]);
 static bool grid_bindings_rebuild(World *,char *,size_t);
 static bool apply_grid_binding_application(const char *,int,char **,int,World *);
+static bool apply_grid_fill_application(const char *,int,char **,int,World *);
 static bool grid_systems_rebuild(World *,char *,size_t);
 static bool eng_object_bound(const World *,int,uint32_t);
 static uint64_t g_definition_revision;
@@ -7323,6 +7324,8 @@ static bool apply_grid_line(
     World *world
 )
 {
+    if (count>4 && !strcmp(tokens[4],"from-fill"))
+        return apply_grid_fill_application(path,line_no,tokens,count,world);
     if (count>4 && !strcmp(tokens[4],"from-binding"))
         return apply_grid_binding_application(path,line_no,tokens,count,world);
     if (count>4 && !strcmp(tokens[4],"from-system"))
@@ -9672,6 +9675,10 @@ static void world_dump_grids(const World *world,FILE *out)
         const ReferenceGrid *g = &world->wood.grid_applications.items[i];
 
         if (g->is_subgrid) continue;
+        if (g->from_fill) {
+            fprintf(out,"grid %u on %u from-fill %u main-along %s\n",g->id,g->placement_id,g->fill_id,
+                g->main_along==1?"u":g->main_along==2?"v":"none"); continue;
+        }
         if (g->from_binding) {
             fprintf(out,"grid %u on %u from-binding %u\n",g->id,g->placement_id,g->binding_id); continue;
         }
