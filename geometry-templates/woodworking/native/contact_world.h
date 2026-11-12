@@ -4,7 +4,7 @@
 #include "contacts.h"
 #include "domain_values.h"
 #define WOOD_CONTACT_COMPONENT_CAPACITY 8
-#define WOOD_CONTACT_MEMBER_CAPACITY 64
+#define WOOD_CONTACT_MEMBER_CAPACITY WOOD_MEMBER_CAPACITY
 #define WOOD_CONTACT_FACE_CAPACITY (WOOD_CONTACT_COMPONENT_CAPACITY*GEO_LOOP_MAX_VERTICES*(GEO_REGION_MAX_HOLES+1)+WOOD_CONTACT_MEMBER_CAPACITY*2)
 typedef struct {
     const WoodMember *member; /* Identity is the original candidate pointer. */

@@ -664,7 +664,9 @@ static bool wood_assembly_bay_reconcile(WoodAssemblyContext *w,WoodBayPlan *plan
         for(size_t i=0;i<plan->value.mapping_count;++i){const AsmMapping *old=&plan->value.mapping[i];bool found=false;for(size_t j=0;j<plan->count;++j)if(wood_assembly_identity_equal(old->identity,plan->next[j].identity))found=true;
             if(!found){++deleted_count;if(!wood_bay_retire(w,plan->value.id,old->timber))return false;}}
     }
-    if(total>ASM_OWNER_MAX||w->member_count(w->user)-deleted_count+new_count>w->member_capacity)return wood_bay_capacity(w,0,"candidate exceeds global owned or scene timber capacity");
+    size_t scene_members=w->member_count(w->user)-deleted_count+new_count;
+    if(total>ASM_OWNER_MAX||scene_members>ASM_BAY_WORLD_MAX||scene_members>w->member_capacity)
+        return wood_bay_capacity(w,0,"candidate exceeds global owned or scene timber capacity");
     if(w->scene_loading){
         for(size_t p=0;p<count;++p){WoodBayPlan *plan=&plans[p];if(plan->count!=plan->value.mapping_count)return wood_bay_bad(w,plan->value.id,"saved mapping does not equal derived identities");for(size_t i=0;i<plan->count;++i)if(!plan->next[i].timber)return wood_bay_bad(w,plan->value.id,"saved mapping lacks a derived identity");}
     }else{

@@ -16,15 +16,58 @@ NODE_PROBE = "while(ctx->node_index[slot]){"
 EDGE_PROBE = "while(ctx->edge_index[slot]){"
 
 
-EDGE_PROBE_REUSE_EDITS = [('static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge)', 'static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge,size_t *empty_slot)'), ('            slot=(slot+1)&mask;\n        }\n    }else for(size_t i=0;i<ctx->edge_count;++i)', '            slot=(slot+1)&mask;\n        }\n        *empty_slot=slot;\n    }else for(size_t i=0;i<ctx->edge_count;++i)'), ('static void geo_source_index_append(GeoEvalContext *ctx,bool nodes)', 'static void geo_source_index_append(GeoEvalContext *ctx,bool nodes,size_t empty_slot)'), ('free(*table);*table=fresh;*capacity=next;first=0;', 'free(*table);*table=fresh;*capacity=next;first=0;empty_slot=SIZE_MAX;'), ('    for(size_t i=first;i<count;++i){\n        uint64_t hash=nodes?geo_source_node_hash', '    /* A missing edge already probed this unchanged index to an empty slot.\n     * Rebuilding discards that slot; allocation fallback stays linear. */\n    if(empty_slot<*capacity&&!(*table)[empty_slot]){(*table)[empty_slot]=count;return;}\n    for(size_t i=first;i<count;++i){\n        uint64_t hash=nodes?geo_source_node_hash'), ('geo_source_index_append(ctx,true);ctx->node_hint[slot]=*index+1;', 'geo_source_index_append(ctx,true,SIZE_MAX);ctx->node_hint[slot]=*index+1;'), ('    if(geo_source_find_edge(ctx,edge))return GEO_SOURCE_OK;', '    size_t empty_slot=SIZE_MAX;\n    if(geo_source_find_edge(ctx,edge,&empty_slot))return GEO_SOURCE_OK;'), ('geo_source_index_append(ctx,false);return GEO_SOURCE_OK;', 'geo_source_index_append(ctx,false,empty_slot);return GEO_SOURCE_OK;')]
+def instrument_edge_work(source):
+    """只在私有 K 副本計數實際 hash／probe；不在產品加入測試分支或替代實作。"""
+    replacements = (
+        ("static uint64_t geo_source_edge_hash(GeoSourceEdge edge)\n{",
+         "static uint64_t geo_source_edge_hash(GeoSourceEdge edge)\n{\n    ++edge_hash_calls;"),
+        ("static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge,size_t *empty_slot)\n{",
+         "static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge,size_t *empty_slot)\n{\n    ++edge_find_calls;"),
+        (EDGE_PROBE, "while((++edge_probe_steps,ctx->edge_index[slot])){"),
+        ("while((*table)[slot])slot=(slot+1)&mask;",
+         "while((nodes?0:++edge_probe_steps,(*table)[slot]))slot=(slot+1)&mask;"),
+    )
+    for anchor, replacement in replacements:
+        if source.count(anchor) != 1:
+            raise AssertionError("工作量計數錨點必須恰好出現一次：" + anchor)
+        source = source.replace(anchor, replacement)
+    # 私有副本才把兩個 ordinal guard 的常數換成可縮小的界線。
+    # 正常案例仍用 UINT32_MAX；小圖即可驗證跨界時的原線性回退。
+    if source.count("UINT32_MAX") != 2:
+        raise AssertionError("索引序號界線必須有 append 與 miss-fastslot 兩個實際守門")
+    return source.replace("UINT32_MAX", "packed_index_limit")
 
 
-PROVIDER_HINT_EDIT = ('    size_t slot=(size_t)source.provider^source.key_size;', '    /* Mix only the provider bucket; collisions still require exact key equality. */\n    uint32_t provider_hint=(uint32_t)(source.provider*UINT32_C(2654435761));\n    size_t slot=(size_t)(provider_hint>>24)^source.key_size;')
+# GEO-300 keeps its full-key 4096-slot hint and candidate-local edge proofs.
+# These controls withdraw the actual merged reuse sites; they do not restore
+# main's older product implementation or change either side's work oracle.
+EDGE_PROBE_REUSE_EDITS = (('        else geo_source_index_append(ctx,false);', '        else if(empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)\n            ctx->edge_index[empty_slot]=(uint32_t)ctx->edge_count;\n        else geo_source_index_append_at(ctx,false,empty_slot);'),)
+PROVIDER_HINT_EDIT = ('    size_t slot=(size_t)source.provider^source.key_size;\n    if(source.key_size){const unsigned char *key=source.key;slot^=(size_t)key[0]^key[source.key_size-1];}\n    slot&=255;', '    size_t slot=(size_t)hash&(sizeof ctx->node_hint/sizeof *ctx->node_hint-1);')
+
+
+def general_edge_probe_source(source):
+    """Exercise the real complete-index branch with the original 21/31 oracle.
+
+    The GEO-300 consumer proof has its own unchanged production tests. Disable
+    only that independent shortcut in a private copy, so this main witness
+    still measures miss-slot reuse, resize and fallback instead of that proof.
+    """
+    before = "if(node->edge_kinds&&ctx->active<node->edge_consumer){"
+    after = "if(true){"
+    if source.count(before) != 1:
+        raise AssertionError("One actual consumer-shortcut site")
+    changed = source.replace(before, after)
+    if changed.count(after) != 1 or changed.replace(after, before) != source:
+        raise AssertionError("Consumer-shortcut projection reverses exactly")
+    return changed
+
 
 class SourceIndex(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.build = NativeBuild(kernel_only=True)
+        original = (cls.build.kernel / "source.c").read_text(encoding="utf-8")
+        (cls.build.work / "source.c").write_text(instrument_edge_work(original), encoding="utf-8")
         cls.harness = cls.build.work / "source-index-client.c"
         shutil.copy2(ROOT / "tests/geo261_source_index_harness.c", cls.harness)
         cls.exe = cls.build.link("source-index-client", [cls.build.compile(cls.harness, "source-index-client")])
@@ -49,6 +92,18 @@ class SourceIndex(unittest.TestCase):
     def test_forced_edge_collisions_deduplicate_each_field_in_linear_order(self):
         self.passes("edge-collisions")
 
+    def test_edge_miss_reuses_the_first_probe_without_rehashing(self):
+        self.passes("edge-miss-work")
+
+    def test_monotonic_consumers_skip_lookup_without_losing_kinds_or_order(self):
+        self.passes("edge-consumer-work")
+
+    def test_nested_consumer_returns_to_earlier_consumer_without_losing_edges(self):
+        self.passes("edge-nested")
+
+    def test_failed_edge_append_does_not_publish_consumer_hint(self):
+        self.passes("edge-hint-failure")
+
     def test_allocation_failure_falls_back_without_changing_existing_state(self):
         self.passes("allocation")
 
@@ -57,6 +112,18 @@ class SourceIndex(unittest.TestCase):
 
     def test_missing_invalid_failed_cycle_and_output_statuses(self):
         self.passes("statuses")
+
+    def test_packed_indexes_keep_full_size_t_authority_and_use_four_byte_slots(self):
+        self.passes("packed-width")
+
+    def test_node_ordinal_overflow_falls_back_and_reset_restores_index(self):
+        self.passes("packed-node-limit")
+
+    def test_edge_miss_ordinal_overflow_falls_back_without_losing_order(self):
+        self.passes("packed-edge-limit")
+
+    def test_real_uint32_boundary_never_allocates_after_overflow(self):
+        self.passes("packed-real-boundary")
 
     def source(self):
         return (self.build.kernel / "source.c").read_text(encoding="utf-8")
@@ -73,7 +140,7 @@ class SourceIndex(unittest.TestCase):
         self.assertNotEqual(self.source(), mutated, "突變必須真的改到 source.c")
         work = self.build.work / ("mutant-source-" + name)
         work.mkdir()
-        (work / "source.c").write_text(mutated, encoding="utf-8")
+        (work / "source.c").write_text(instrument_edge_work(mutated), encoding="utf-8")
         client = work / "client.c"
         shutil.copy2(self.harness, client)
         exe_name = "source-index-" + name
@@ -98,6 +165,48 @@ class SourceIndex(unittest.TestCase):
 
     def test_never_find_edge_mutant_reports_duplicate(self):
         self.control("edge", "edges", "edge")
+
+    def test_repeated_edge_hash_and_probe_mutant_reports_repeated_work(self):
+        # 撤回空槽重用，走原本第二次 hash/probe；圖仍正確，但工作量斷言必須紅。
+        mutated = self.inject("if(empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)",
+                              "if(false&&empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)")
+        # The general append now also accepts the proved miss slot. Withdraw
+        # both actual consumers of that slot, retaining both ordinal guards.
+        anchor = "else geo_source_index_append_at(ctx,false,empty_slot);"
+        self.assertEqual(1, mutated.count(anchor))
+        mutated = mutated.replace(anchor, "else geo_source_index_append_at(ctx,false,SIZE_MAX);")
+        self.kill("edge-miss-slot-reuse-removed", "edge-miss-work", "edge-miss-one-hash", mutated)
+
+    def test_consumer_hint_removed_mutant_reports_repeated_lookup(self):
+        self.kill("edge-consumer-hint-removed", "edge-consumer-work", "edge-monotonic-no-lookup",
+                  self.inject("if(node->edge_kinds&&ctx->active<node->edge_consumer){", "if(true){"))
+
+    def test_failed_append_publishing_consumer_hint_mutant_reports_missing_edge(self):
+        self.kill("edge-consumer-hint-before-append", "edge-hint-failure", "edge-failed-append-retry-present",
+                  self.inject("if(ctx->edge_count==SIZE_MAX/sizeof *ctx->edges)return GEO_SOURCE_MEMORY;",
+                              "node->edge_consumer=ctx->active;node->edge_kinds=kind_bit;\n"
+                              "    if(ctx->edge_count==SIZE_MAX/sizeof *ctx->edges)return GEO_SOURCE_MEMORY;"))
+
+    def test_wide_optional_slots_mutant_reports_storage_regression(self):
+        # 還原為八位元組槽；ordered authority、guard 與碰撞規則均不改。
+        mutated = self.source()
+        for declaration in ("uint32_t *node_index", "uint32_t *edge_index",
+                            "uint32_t **table", "uint32_t *fresh"):
+            self.assertEqual(1, mutated.count(declaration), declaration)
+            mutated = mutated.replace(declaration, declaration.replace("uint32_t", "uint64_t"))
+        self.kill("packed-slot-width-removed", "packed-width", "packed-index-slot-width", mutated)
+
+    def test_append_ordinal_guard_removed_mutant_reports_incomplete_fallback(self):
+        self.kill("packed-append-limit-removed", "packed-node-limit", "packed-node-overflow-drops-index",
+                  self.inject("if(count>UINT32_MAX)goto fallback;", "if(false&&count>UINT32_MAX)goto fallback;"))
+
+    def test_last_representable_ordinal_mutant_reports_premature_fallback(self):
+        self.kill("packed-last-ordinal-rejected", "packed-node-limit", "packed-last-node-ordinal-representable",
+                  self.inject("if(count>UINT32_MAX)goto fallback;", "if(count>=UINT32_MAX)goto fallback;"))
+
+    def test_miss_slot_ordinal_guard_removed_mutant_reports_incomplete_fallback(self):
+        self.kill("packed-miss-slot-limit-removed", "packed-edge-limit", "packed-edge-overflow-drops-index",
+                  self.inject("&&ctx->edge_count<=UINT32_MAX&&", "&&(true||ctx->edge_count<=UINT32_MAX)&&"))
 
     # 以下六個突變各自代表一種索引查找的壞法。node 由 nodes 案例（32 個刻意同槽的鍵）偵測，
     # edge 由 edge-collisions 案例（寫死的同槽鍵與只差 kind 的鍵對）確定性偵測。
@@ -130,17 +239,54 @@ class SourceIndex(unittest.TestCase):
         self.kill("edge-probe-hit", "edge-collisions", "missing-edge",
                   self.inject(EDGE_PROBE, EDGE_PROBE + "if(1)return true;"))
 
+
     def test_edge_probe_reuse_keeps_order_across_rebuild_and_fallback(self):
         self.passes("edge-probe")
 
+    def edge_probe_executable(self, source, label):
+        work = self.build.work / ("edge-probe-control-source-" + label)
+        work.mkdir()
+        (work / "source.c").write_text(general_edge_probe_source(source), encoding="utf-8")
+        client = work / "client.c"
+        shutil.copy2(self.harness, client)
+        return self.build.link("edge-probe-control-" + label,
+                               [self.build.compile(client, "edge-probe-control-" + label)])
+
     def test_edge_probe_reuse_controls_fail_on_full_ordered_graph(self):
-        self.kill("edge-reuse-old-slot-after-resize","edge-probe","duplicate-edge",
-                  self.inject("first=0;empty_slot=SIZE_MAX;","first=0;"))
-        self.kill("edge-reuse-wrong-empty-slot","edge-probe","duplicate-edge",
-                  self.inject("*empty_slot=slot;","*empty_slot=(slot+1)&mask;"))
+        source = self.source()
+        fixed = self.edge_probe_executable(source, "baseline")
+        controls = (
+            # The else branch excludes the stale slot after growth. Target
+            # edges only: HEAD also reuses node slots in this shared helper,
+            # so preserve their rebuild (first == 0) to reach the original
+            # complete-edge oracle instead of failing earlier on seed nodes.
+            ("edge-reuse-old-slot-after-resize",
+             "    }else if(empty_slot!=SIZE_MAX&&empty_slot<*capacity){",
+             "    }\n    if((!nodes||first!=0)&&empty_slot!=SIZE_MAX&&empty_slot<*capacity){"),
+            ("edge-reuse-wrong-empty-slot", "        *empty_slot=slot;", "        *empty_slot=(slot+1)&mask;"),
+        )
+        for name, before, after in controls:
+            with self.subTest(control=name):
+                baseline = self.case("edge-probe", fixed)
+                self.assertEqual(0, baseline.returncode, baseline.stdout + baseline.stderr)
+                self.assertEqual("PASS edge-probe\n", baseline.stdout)
+                self.assertEqual("", baseline.stderr)
+                mutated = self.inject(before, after)
+                self.assertEqual(1, mutated.count(after))
+                self.assertEqual(source, mutated.replace(after, before))
+                executable = self.edge_probe_executable(mutated, name)
+                result = self.case("edge-probe", executable)
+                self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+                self.assertRegex(result.stderr, r"^ASSERT:duplicate-edge line=\d+ expr=")
+                self.assertEqual("", result.stdout)
+                print("edge-probe control=" + name + "\n" + result.stderr, end="")
+                restored = self.case("edge-probe", fixed)
+                self.assertEqual(0, restored.returncode, restored.stdout + restored.stderr)
+                self.assertEqual("PASS edge-probe\n", restored.stdout)
+                self.assertEqual("", restored.stderr)
 
     def test_edge_probe_reuse_whole_withdrawal_preserves_graph_and_changes_work(self):
-        source=self.source();withdrawn=source
+        source=general_edge_probe_source(self.source());withdrawn=source
         for before,after in reversed(EDGE_PROBE_REUSE_EDITS):
             self.assertEqual(1,withdrawn.count(after))
             withdrawn=withdrawn.replace(after,before)
@@ -176,7 +322,7 @@ class SourceIndex(unittest.TestCase):
         withdrawn = source.replace(after, before)
         self.assertEqual(1, withdrawn.count(before))
         self.assertEqual(source, withdrawn.replace(before, after))
-        anchor = "static size_t geo_source_find_node(const GeoEvalContext *ctx,GeoSourceRef source)\n{"
+        anchor = "static size_t geo_source_find_node(const GeoEvalContext *ctx,GeoSourceRef source,size_t *empty_slot,uint64_t hash)\n{"
         phases = (("fixed", source, 0, 0), ("withdrawn", withdrawn, 1, 16), ("restored", source, 0, 0))
         for phase, contents, expected, calls in phases:
             with self.subTest(phase=phase):
@@ -222,7 +368,6 @@ class SourceIndex(unittest.TestCase):
                 self.assertEqual(1, result.returncode, result.stdout + result.stderr)
                 self.assertEqual("", result.stdout)
                 self.assertRegex(result.stderr, rf"^ASSERT:{marker} line=\d+ expr=")
-
 
 
 if __name__ == "__main__":

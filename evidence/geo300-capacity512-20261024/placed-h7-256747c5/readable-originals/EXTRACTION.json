@@ -1,0 +1,52 @@
+{
+  "source_archive_evidence_commit": "06b81e452c9d80c210cbf10fe2f5da8eebfc31e5",
+  "source_archive_sha256": "2a6798f772c50f88dc1fb4a10b51514ff767ab6144879a013dec7710bc797302",
+  "execution_sha": "256747c5c8f8f8934eeb08ae404dee1f67591508",
+  "product_sha": "7a0e6dd81c54066995981393925fa46a815de2f8",
+  "extracted_utc": "2026-10-29T03:28:37.689380+00:00",
+  "operation": "Exact bytes copied from existing archive members, also equal retained original files; no test rerun or JSON reserialization",
+  "files": [
+    {
+      "archive_member": "h7/REQUEST.json",
+      "readable_path": "h7/REQUEST.json",
+      "bytes": 1052,
+      "sha256": "784408f4c193d2e78bff79aa210a2e16dcb5f103c213ac8c9f220f7c1c6bc250",
+      "matches_retained_original": true
+    },
+    {
+      "archive_member": "h7/RESULT.json",
+      "readable_path": "h7/RESULT.json",
+      "bytes": 35950,
+      "sha256": "1b3259b72305a1d96ad12a69b244869b0c1254a3f4408cf7fd6cb3f9100bb65b",
+      "matches_retained_original": true
+    },
+    {
+      "archive_member": "h7/unittest.log",
+      "readable_path": "h7/unittest.log",
+      "bytes": 1695,
+      "sha256": "cb3143f9aba291bb94320ca9bc250c2d741ad56ae70c2a466aece307ac8e783e",
+      "matches_retained_original": true
+    },
+    {
+      "archive_member": "h7-wrapper/REQUEST.json",
+      "readable_path": "h7-wrapper/REQUEST.json",
+      "bytes": 1283,
+      "sha256": "900be60170698c11a16d174a5f43bf9adb14b19be0723a41044d6ec511de1e5c",
+      "matches_retained_original": true
+    },
+    {
+      "archive_member": "h7-wrapper/RESULT.json",
+      "readable_path": "h7-wrapper/RESULT.json",
+      "bytes": 1412,
+      "sha256": "4a629b806029425a426009f9ffc8779d315aac36e5067427e78f7f623ea5612e",
+      "matches_retained_original": true
+    },
+    {
+      "archive_member": "h7-wrapper/outer.log",
+      "readable_path": "h7-wrapper/outer.log",
+      "bytes": 26734,
+      "sha256": "d4784a274a2641da529d365c5e932c6e7794c577c86476f41e9e241d8402f510",
+      "matches_retained_original": true
+    }
+  ]
+}

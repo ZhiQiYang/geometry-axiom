@@ -1,0 +1,259 @@
+{
+  "schema": "independent-capacity512-public-source-package-peer/1",
+  "product_sha": "400a6d0ca50f3aca104fb569c77c8ef753c93355",
+  "source_parent": "696f7f07846c6224775dab5736bd1dc45541a4bf",
+  "checks_total": 1780,
+  "failed_checks": 0,
+  "findings": [],
+  "archive_sha256": "0b6ea82d93952e40dc199483828c3e595401720f4e36da755022e9e8fe016542",
+  "members": 578,
+  "public_git_reads": [
+    {
+      "argv": [
+        "git",
+        "show",
+        "-s",
+        "--format=%H %P",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 82,
+      "stdout_sha256": "6b10286eb789e6959df6fb36d33ed7d03fc0072d1529af90498dec7df4897e4e",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "diff-tree",
+        "--no-commit-id",
+        "--name-only",
+        "-r",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 614,
+      "stdout_sha256": "3d2b489383f0421fb60927b8725d6624e91a6d10ed90ea8757b58774ab70115d",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:current_geometry.c"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 402554,
+      "stdout_sha256": "15cfa1f0bd4aa58ebc2482f78d7a0c19cb9da27ec6cf27179473c1808ea00bc9",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:geometry-templates/woodworking/native/contact_world.h"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 4203,
+      "stdout_sha256": "d29036b9e128246daa8f5c3995353e0894bd27cdc0be802beca465e4e467a0a9",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:geometry-templates/woodworking/native/cut_list.h"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 787,
+      "stdout_sha256": "e266973f001c3465c4da1401b4c045b9b1088859f33a5e729585e85c12b8ebfd",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:geometry-templates/woodworking/native/document.h"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 1439,
+      "stdout_sha256": "8f0416a16489e6d26941f653bed8d6ecf6980fc73cb8868b53d3c4f42847db56",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:geometry-templates/woodworking/native/member_reference.h"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 6927,
+      "stdout_sha256": "8822025f9e4dc8f37fec92fc01d758aeec6b23936fd5c094e212541b426465c4",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:geometry-templates/woodworking/native/members.h"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 2232,
+      "stdout_sha256": "e6bfa28bb86a10cfbec42f52aad1bad1620ce7bcc3aed27f5c9fb52df2237aeb",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:geometry-templates/woodworking/native/world_validation.c"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 8251,
+      "stdout_sha256": "6b3e5125ceecb6bc563cb842df15ed840878c71698ac264c2a065a08623abea0",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:tests/geo261_contact_world_harness.c"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 26680,
+      "stdout_sha256": "d6ac77d5a92ba9cfca1d6eef58200dd924d3fccf52b828c721b98ca6b22be4be",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:tests/geo261_report_policy_harness.c"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 6519,
+      "stdout_sha256": "5c90207d89f84fb32f67db242c2886a35a6af25bcfe5ab769cd527921bf8282c",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:tests/geo261_timber_capacity_harness.c"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 8561,
+      "stdout_sha256": "93bf4f927359ce1bdc5d98b683828ed2fb21db0b3ffc3fc457a3894b405e2137",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:tests/test_geo261_timber_capacity.py"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 4341,
+      "stdout_sha256": "96567f09ccbd20c9483dc675b8db4a122af00f4af73e179a3578c09d40b88861",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:tests/geo261_timber_capacity_host_harness.c"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 1072,
+      "stdout_sha256": "a9da30635249fd11188b3f9275c8867aa63739ac674d2a876a9a31491a342411",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:tests/test_geo261_timber_capacity_host.py"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 9810,
+      "stdout_sha256": "7d844dcf0c9214fb72d1857a05a8202a86c141e853f7648c1e2b8c495b9373dd",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:tests/run_all.py"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 66006,
+      "stdout_sha256": "e34a85fea0a5fb7670f833cfd4ef29d896f9fdd3e6d9acdd19801a3aef830be3",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:tests/run_all.expected.json"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 25509,
+      "stdout_sha256": "9f9e337914872507dcb238f32de9ef2f8ba678ce0fa1a11d7e5492d85defdc2d",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "--heads",
+        "origin",
+        "refs/heads/codex/geo300-capacity512-20261024"
+      ],
+      "cwd": "/workspace/geo300-capacity512-work-20261024",
+      "exit": 0,
+      "stdout_bytes": 86,
+      "stdout_sha256": "6fb5f0657d161f64b46f40175d5de6c3ae97d9256c6a4be488efaeb97aee7cf0",
+      "stderr": "",
+      "source_locator": "Public Git object 400a6d0ca50f3aca104fb569c77c8ef753c93355 (not re-copied due root disk budget)"
+    }
+  ],
+  "progress_sha256": "87a0b419f35e5867e7246192bed487f8d07f64c5ab35608bee5829b42e4d1e6b",
+  "questions_sha256": "7766ed47f6e7ccea882fe490a0b8cc4104611ef8daf8d1fd0cc5d53660a9faf4",
+  "raw_index_sha256": "20344336e4f8757baec051610773dac3b2d9a7f8547592b91cbcb11f0d3fb121",
+  "scope": "Read-only archive roundtrip/public-source and wording narrow review; no subject or compiler execution. No payload copies under disk constraint.",
+  "compiled": false,
+  "formal": "UNRUN"
+}

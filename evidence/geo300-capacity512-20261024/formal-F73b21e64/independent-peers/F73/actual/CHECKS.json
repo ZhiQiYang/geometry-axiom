@@ -1,0 +1,686 @@
+[
+  {
+    "check": "original first batch exact receipt",
+    "passed": true
+  },
+  {
+    "check": "resume exact receipt",
+    "passed": true
+  },
+  {
+    "check": "original environment-limited outer red retained",
+    "passed": true
+  },
+  {
+    "check": "environment-only last-three resume accepted",
+    "passed": true
+  },
+  {
+    "check": "resume binds first original receipt and no rerun first ten",
+    "passed": true
+  },
+  {
+    "check": "same F and source clean terminal",
+    "passed": true
+  },
+  {
+    "check": "no full H7/native/ledger/performance claims",
+    "passed": true
+  },
+  {
+    "check": "same F and source clean terminal",
+    "passed": true
+  },
+  {
+    "check": "no full H7/native/ledger/performance claims",
+    "passed": true
+  },
+  {
+    "check": "original planned 13/resumed3",
+    "passed": true
+  },
+  {
+    "check": "original environment-unrun preserved sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "original environment-unrun preserved sentinel-fix-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "original environment-unrun preserved sentinel-fix-restored",
+    "passed": true
+  },
+  {
+    "check": "exact completed logical phase count",
+    "passed": true
+  },
+  {
+    "check": "accepted F73 host fixed bytes",
+    "passed": true
+  },
+  {
+    "check": "three old exact withdrawal snippets pinned",
+    "passed": true
+  },
+  {
+    "check": "withdrawal applied only exact original fixed helper count",
+    "passed": true
+  },
+  {
+    "check": "withdrawal applied only exact original fixed helper population",
+    "passed": true
+  },
+  {
+    "check": "withdrawal applied only exact original fixed helper unplaced_replay",
+    "passed": true
+  },
+  {
+    "check": "exact one fixed sentinel constant",
+    "passed": true
+  },
+  {
+    "check": "actual phase return H3-affected",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout H3-affected",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr H3-affected",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command H3-affected",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit H3-affected",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata H3-affected",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source H3-affected",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant H3-affected",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant H3-affected",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip H3-affected",
+    "passed": true
+  },
+  {
+    "check": "normal positive formal result H3-affected",
+    "passed": true
+  },
+  {
+    "check": "actual phase return count-fixed",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout count-fixed",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr count-fixed",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command count-fixed",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit count-fixed",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata count-fixed",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source count-fixed",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant count-fixed",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant count-fixed",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip count-fixed",
+    "passed": true
+  },
+  {
+    "check": "normal positive formal result count-fixed",
+    "passed": true
+  },
+  {
+    "check": "actual phase return count-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout count-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr count-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command count-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit count-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata count-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source count-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant count-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant count-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip count-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "specific normal assertion cause count-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "actual phase return count-restored",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout count-restored",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr count-restored",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command count-restored",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit count-restored",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata count-restored",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source count-restored",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant count-restored",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant count-restored",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip count-restored",
+    "passed": true
+  },
+  {
+    "check": "normal positive formal result count-restored",
+    "passed": true
+  },
+  {
+    "check": "actual phase return population-fixed",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout population-fixed",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr population-fixed",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command population-fixed",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit population-fixed",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata population-fixed",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source population-fixed",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant population-fixed",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant population-fixed",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip population-fixed",
+    "passed": true
+  },
+  {
+    "check": "normal positive formal result population-fixed",
+    "passed": true
+  },
+  {
+    "check": "actual phase return population-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout population-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr population-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command population-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit population-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata population-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source population-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant population-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant population-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip population-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "specific normal assertion cause population-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "actual phase return population-restored",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout population-restored",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr population-restored",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command population-restored",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit population-restored",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata population-restored",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source population-restored",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant population-restored",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant population-restored",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip population-restored",
+    "passed": true
+  },
+  {
+    "check": "normal positive formal result population-restored",
+    "passed": true
+  },
+  {
+    "check": "actual phase return unplaced_replay-fixed",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout unplaced_replay-fixed",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr unplaced_replay-fixed",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command unplaced_replay-fixed",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit unplaced_replay-fixed",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata unplaced_replay-fixed",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source unplaced_replay-fixed",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant unplaced_replay-fixed",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant unplaced_replay-fixed",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip unplaced_replay-fixed",
+    "passed": true
+  },
+  {
+    "check": "normal positive formal result unplaced_replay-fixed",
+    "passed": true
+  },
+  {
+    "check": "actual phase return unplaced_replay-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout unplaced_replay-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr unplaced_replay-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command unplaced_replay-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit unplaced_replay-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata unplaced_replay-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source unplaced_replay-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant unplaced_replay-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant unplaced_replay-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip unplaced_replay-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "specific normal assertion cause unplaced_replay-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "actual phase return unplaced_replay-restored",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout unplaced_replay-restored",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr unplaced_replay-restored",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command unplaced_replay-restored",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit unplaced_replay-restored",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata unplaced_replay-restored",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source unplaced_replay-restored",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant unplaced_replay-restored",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant unplaced_replay-restored",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip unplaced_replay-restored",
+    "passed": true
+  },
+  {
+    "check": "normal positive formal result unplaced_replay-restored",
+    "passed": true
+  },
+  {
+    "check": "actual phase return sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "normal positive formal result sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "actual phase return sentinel-fix-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout sentinel-fix-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr sentinel-fix-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command sentinel-fix-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit sentinel-fix-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata sentinel-fix-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source sentinel-fix-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant sentinel-fix-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant sentinel-fix-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip sentinel-fix-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "specific normal assertion cause sentinel-fix-withdrawn",
+    "passed": true
+  },
+  {
+    "check": "actual phase return sentinel-fix-restored",
+    "passed": true
+  },
+  {
+    "check": "raw original capture exit/source/no timeout sentinel-fix-restored",
+    "passed": true
+  },
+  {
+    "check": "raw exact stdout/stderr sentinel-fix-restored",
+    "passed": true
+  },
+  {
+    "check": "original selected unittest command sentinel-fix-restored",
+    "passed": true
+  },
+  {
+    "check": "normal original unittest SystemExit sentinel-fix-restored",
+    "passed": true
+  },
+  {
+    "check": "complete observer metadata sentinel-fix-restored",
+    "passed": true
+  },
+  {
+    "check": "exact stable phase source sentinel-fix-restored",
+    "passed": true
+  },
+  {
+    "check": "only exact permitted test-helper variant sentinel-fix-restored",
+    "passed": true
+  },
+  {
+    "check": "source dirt only declared variant sentinel-fix-restored",
+    "passed": true
+  },
+  {
+    "check": "original method count/no skip sentinel-fix-restored",
+    "passed": true
+  },
+  {
+    "check": "normal positive formal result sentinel-fix-restored",
+    "passed": true
+  },
+  {
+    "check": "normal adjacent original trio count-fixed",
+    "passed": true
+  },
+  {
+    "check": "normal adjacent original trio population-fixed",
+    "passed": true
+  },
+  {
+    "check": "normal adjacent original trio unplaced_replay-fixed",
+    "passed": true
+  },
+  {
+    "check": "normal adjacent original trio sentinel-fix-fixed",
+    "passed": true
+  },
+  {
+    "check": "real tool process exit geo348-F73b21e64-formal",
+    "passed": true
+  },
+  {
+    "check": "top launcher source geo348-F73b21e64-formal",
+    "passed": true
+  },
+  {
+    "check": "real tool process exit geo348-F73b21e64-sentinel-resume",
+    "passed": true
+  },
+  {
+    "check": "top launcher source geo348-F73b21e64-sentinel-resume",
+    "passed": true
+  }
+]

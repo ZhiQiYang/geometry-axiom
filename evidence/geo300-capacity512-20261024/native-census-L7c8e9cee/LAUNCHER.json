@@ -1,0 +1,295 @@
+{
+  "source_sha": "7c8e9cee4ed5b3706ee919e2831a1dac0aa55ea5",
+  "started_utc": "2026-10-29T16:54:59.337885+00:00",
+  "phase": "finished",
+  "errors": [],
+  "mirror": "incremental raw stdout/stderr bytes, fsync; original SHM files retained",
+  "product_test_claim": false,
+  "source": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "7c8e9cee4ed5b3706ee919e2831a1dac0aa55ea5\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "error: /workspace/geo318-reading-a-prep/meta.git/objects: ignoring alternate object stores, nesting too deep\nerror: object directory /tmp/geo337-published-archive-git-objects-20261024 does not exist; check .git/objects/info/alternates\n"
+    }
+  ],
+  "consumers": [],
+  "space": {
+    "/tmp/pr348-census-L7c8e9cee-text-20261029": {
+      "total": 17871880192,
+      "used": 17593167872,
+      "free": 278712320
+    },
+    "/dev/shm": {
+      "total": 17871880192,
+      "used": 5389352960,
+      "free": 12482527232
+    },
+    "/workspace": {
+      "total": 33770192896,
+      "used": 32036237312,
+      "free": 0
+    }
+  },
+  "budget": {
+    "tmp_original_admission": 134217728,
+    "tmp_publication_reserve": 67108864,
+    "tmp_text_budget": 8388608,
+    "tmp_build_growth_budget": 20971520,
+    "shm_temp_archive_budget": 1073741824,
+    "not_a_product_limit": true
+  },
+  "cache": [
+    {
+      "path": "/tmp/geometry-tests/_canvas_bridge_shim.cjs",
+      "sha256": "2d6e38971b0945e61b87b4dad157815d5dba86a41487dc78a2b4e516efd6400b",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/assembly-blank-390.png",
+      "sha256": "588a864b263f142354c19f4d64389c8c1e141003e2b51db7aaf94a28c96c2df4",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/assembly-desktop.png",
+      "sha256": "5adab1037173336534961da80b364abcbbc4df13bda2fa309af4d0914cb1e780",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/assembly-generation-g07-before.gcanvas",
+      "sha256": "07e2038d519d6af3f0e1c2324dab5b454c5c1bb1412a15766612ff4b8825827d",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/assembly-generation-g07-before.json",
+      "sha256": "66eba8922e8becbf0d1bcba316065d1ca822434496a05a4c9fd6ec895fcbf0e0",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/assembly-generation-mobile.png",
+      "sha256": "e5a70a710eb6cff2a7bf7eba209e266471f41e19b87f8812d2b8bf3df828d40b",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/assembly-mobile.png",
+      "sha256": "b30979a02006993b3c6c336425cfc9433b2e4568d9d8f451914419f5d4c6336d",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/assembly-review-glyphs-390.png",
+      "sha256": "fbc4b67012ee4e9c1f98b76f342ee172967055671f0557f57c2403d4068b1bea",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/assembly-review-glyphs-desktop.png",
+      "sha256": "7c8c0f5f6c3abd328f6cbfa7476d350119072562504c22d6cf94fad7ca3bc953",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/assembly-review-glyphs-max-zoom-390.png",
+      "sha256": "00a03e22f6c26aa179dfcfbb4c3057f84e175282c3b146e6457cf3752b9b81cd",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/assembly-review-sources-390.png",
+      "sha256": "69ae07d52ecd36b93e5a018ccedb91f2f976d966c79a75739c1b86516760594b",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/assembly-review-sources-desktop.png",
+      "sha256": "2ae9c57c47eee29f5329347578429a2260e671229b6647d301a2d80891a2d8b8",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/bridge",
+      "sha256": "c1fc0d8a80667b3d55828818e894008502c9597a9b5b99d9874c730b08b88417",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/bridge.fingerprint.json",
+      "sha256": "c6caeba878325d20bdb8419974cf6393e921a86a4c7a9b4754d6e4126b2944a1",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/build.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/core",
+      "sha256": "11c0b3e66b025dcf45419577bafdb408ab43f46fac580d8670b48c5a34f91ec8",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/core.fingerprint.json",
+      "sha256": "0e1dbf934f1de28912384965b795a30ba87464d5c77e24553a7274d6daffb00d",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/engineering-json-test",
+      "sha256": "12653b6aee84ad0a59c857b2fe7ae2119e43638819e27f145530c9a2d89516a0",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/engineering-json-test.fingerprint.json",
+      "sha256": "02bbb274b58273507db00cf7b269fbad5d654761d82d07925a71aef9d598573e",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/integrity",
+      "sha256": "041045ce69e36954ea53f093927d45c78e1b321ac45aaff80ebcd383c2dfc348",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/integrity.fingerprint.json",
+      "sha256": "3552fb495aa08634a600d2f74708fc8cb22466e8fca39e63fbe9cb25ba5e7387",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/model-base",
+      "sha256": "2068d6b6446f991749735777a56994cbc9ba89751d364e751e1dfe0408798e42",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/model-base.fingerprint.json",
+      "sha256": "62960c3a739f60feca36a4bbb702169c87f45c0a658e167dc6ecd097b05b11a5",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/parameter-desktop.png",
+      "sha256": "32229f4aca93a339033017ff083b428b53681bc1f46ea286b8e53bd73347cef6",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/parameter-mobile.png",
+      "sha256": "836f0adff9627dcd668da423f9548604424ab398b1779a051a3486eb8cb93ed7",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/pf3-algorithm",
+      "sha256": "6126c3a1e912826d13b63be06f95a76efa6d7e339f739ac513597588d7ac20d9",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/pf3-algorithm.fingerprint.json",
+      "sha256": "b73a3b8a875855d1c4c1e35874a0fa708512de69ca484dc93eb4a8c44d545e4c",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all-logs/node_parameter_confirmation_settlement.log",
+      "sha256": "fb478b7503121d8d033d93ddd2d2299f6041d8943da07110daa9ced3d7bf0551",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all-logs/node_panel_fill_ui_contract.log",
+      "sha256": "2f1472b814027c3204f3d6c9a0457b137a6120c1f98c1d9bfdfed2c489b3c854",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all-logs/node_tests-js.log",
+      "sha256": "668bbe336a19e76d3033186c05a2396dc598a233c28baf6a99bbe26fa5ca7ac9",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all-logs/py_test_mutation_anchors.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all-logs/py_test_mutation_anchors.json",
+      "sha256": "202b2c427b1c3cfc27411e29ccf4b2b31d064298f55574d52069c1ab4f1376b0",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all-logs/py_test_mutation_anchors.unittest.log",
+      "sha256": "109b2b2c0b0df77a30f3e9097dc79e93e5c97a83357180f36648fbdca112831b",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all-logs/py_test_assembly_mutation_check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all-logs/py_test_assembly_mutation_check.json",
+      "sha256": "7ff8ad53e67423cb07b22849a074457899a1f33970d4370ee29241c2261a8162",
+      "identity_unchanged": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all-logs/py_test_assembly_mutation_check.unittest.log",
+      "sha256": "c5369261f7f4051bfb3647c88a951fe95da7c63b64f4fbf3704e1355f6d297fb",
+      "identity_unchanged": true
+    }
+  ],
+  "locks": [
+    {
+      "path": "/workspace/geo337-comparison-exclusive.lock",
+      "available": true
+    },
+    {
+      "path": "/tmp/geometry-tests/build.lock",
+      "available": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all.lock",
+      "available": true
+    }
+  ],
+  "command": [
+    "python3",
+    "-B",
+    "/dev/shm/pr348-native-plan/native_recorder.py",
+    "--repo",
+    "/dev/shm/pr348-probe-source-7a0e6dd8",
+    "--sha",
+    "7c8e9cee4ed5b3706ee919e2831a1dac0aa55ea5",
+    "--out",
+    "/dev/shm/pr348-census-L7c8e9cee-20261029",
+    "--heavy-lock",
+    "/workspace/geo337-comparison-exclusive.lock",
+    "--mode",
+    "census"
+  ],
+  "recorder_sha256": "e1c1fd63bc58f8b7af1b6be28913b86e287101fc1cd3a8908f251bb33bb39445",
+  "recorder_pid": 373820,
+  "launched_utc": "2026-10-29T16:54:59.400435+00:00",
+  "recorder_exit": 124,
+  "ended_utc": "2026-10-29T17:30:00.505786+00:00",
+  "mirror_bytes": {
+    "stdout.bin": 8186,
+    "stderr.bin": 0
+  },
+  "raw_mirror_exact": true,
+  "space_after": {
+    "/tmp/pr348-census-L7c8e9cee-text-20261029": {
+      "total": 17871880192,
+      "used": 17600757760,
+      "free": 271122432
+    },
+    "/dev/shm": {
+      "total": 17871880192,
+      "used": 5909450752,
+      "free": 11962429440
+    }
+  }
+}

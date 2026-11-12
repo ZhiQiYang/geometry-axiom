@@ -1,0 +1,104 @@
+{
+  "profile_execution_sha": "8b128aa7bf53b41b493dd3a0bee49f0d53391254",
+  "candidate_sha": "2ac7126205f0079feda8a282663996a75ea12d87",
+  "adopted_into_pr348": false,
+  "decision": "Do not carry hash tags forward: single bounded pair did not demonstrate speedup",
+  "tag_tests": {
+    "exit": 0,
+    "tests_run": 62,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 13.81626517699624
+  },
+  "graph172_exit": 0,
+  "pair": {
+    "rows": [
+      {
+        "variant": "baseline",
+        "source_sha": "8b128aa7bf53b41b493dd3a0bee49f0d53391254",
+        "command": [
+          "/dev/shm/pr348-tag-pair-256/baseline-bridge"
+        ],
+        "binary_sha256": "1f7b698e288b8b9fcb6f8eb0565c9cb00614753a1992341cf95cf1a169e24f10",
+        "exit": 0,
+        "timeout_triggered": false,
+        "seconds": 34.70129515200097,
+        "usage": {
+          "maxrss_kib": 122108,
+          "user_seconds": 34.399613,
+          "system_seconds": 0.287568
+        },
+        "stdout_sha256": "734401e302ef283ca5f34a0f33f01e57b07ba9018c58cefd536ad511a45a0dbc",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "original_placed_geometry_assertions_exit": 0
+      },
+      {
+        "variant": "candidate",
+        "source_sha": "2ac7126205f0079feda8a282663996a75ea12d87",
+        "command": [
+          "/dev/shm/pr348-tag-pair-256/candidate-bridge"
+        ],
+        "binary_sha256": "5caaeeb111a0ab1074bddebb2dc0477ad51b9438e72c3903b7b8aad7a2bdd9d6",
+        "exit": 0,
+        "timeout_triggered": false,
+        "seconds": 34.90248697300558,
+        "usage": {
+          "maxrss_kib": 115032,
+          "user_seconds": 34.602641,
+          "system_seconds": 0.24645999999999998
+        },
+        "stdout_sha256": "734401e302ef283ca5f34a0f33f01e57b07ba9018c58cefd536ad511a45a0dbc",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "original_placed_geometry_assertions_exit": 0
+      }
+    ],
+    "streams_identical": true,
+    "not_formal_512_acceptance": true,
+    "exit": 0
+  },
+  "profile": {
+    "source_sha": "8b128aa7bf53b41b493dd3a0bee49f0d53391254",
+    "command": [
+      "/dev/shm/pr348-profile-512-8b-recovered/bridge-pg"
+    ],
+    "cwd": "/dev/shm/pr348-profile-512-8b-recovered",
+    "timeout_seconds": 600,
+    "count": 512,
+    "build_seconds": 4.465186911998899,
+    "purpose": "O0 separately compiled gprof diagnostic; does not replace original formal tests",
+    "binary_sha256": "4b7f881e5763869308834833f2b6d131e373214f1430e3e48c7c27231fc3c361",
+    "started_utc": "2026-10-29T00:41:46Z",
+    "recovery": "reuse exact already-built ELF after original entire shell group externally SIGKILL; no completed sample discarded",
+    "pid": 278440,
+    "actual_exit": 0,
+    "timeout": false,
+    "seconds": 371.1712765650009,
+    "usage": {
+      "maxrss_kib": 222660,
+      "user_seconds": 365.863294,
+      "system_seconds": 5.220344
+    },
+    "finished_utc": "2026-10-29T00:47:58Z",
+    "gprof_exit": 0,
+    "stdout.bin": {
+      "bytes": 580939,
+      "sha256": "47da66d3264fbe943e01e9085d26e73f4ad7317de7e1b41d48d64fd6f4b6c784"
+    },
+    "stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "gmon.out": {
+      "bytes": 545076,
+      "sha256": "de039d34b034226630d8d5e7a022af19adf9e36afdb4c47ecd61ab34cad7d338"
+    },
+    "gprof.txt": {
+      "bytes": 398981,
+      "sha256": "9b879c910b9edea63296e0402572e342058cebf3a1e2f925920fbe3eea1165eb"
+    }
+  },
+  "archive_bytes": 5016730,
+  "archive_sha256": "fa23bd3283267be40e5972d3fab2e2621d47801fd62f1e6c478f8aecf364986c",
+  "files": 3563
+}

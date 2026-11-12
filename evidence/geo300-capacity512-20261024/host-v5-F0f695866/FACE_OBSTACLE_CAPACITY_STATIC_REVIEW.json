@@ -1,0 +1,100 @@
+{
+  "source_sha": "400a6d0ca50f3aca104fb569c77c8ef753c93355",
+  "comparison_sha": "324034812bb6effca68e0413bc0468595337b317",
+  "checks_total": 15,
+  "failed_checks": 0,
+  "checks": [
+    {
+      "name": "collector-bytes-unchanged-from-P2",
+      "passed": true
+    },
+    {
+      "name": "RC-column-only-loop",
+      "passed": true
+    },
+    {
+      "name": "RC-beam-only-loop",
+      "passed": true
+    },
+    {
+      "name": "no-timber-or-member-iteration",
+      "passed": true
+    },
+    {
+      "name": "existing-no-placement-sentinel",
+      "passed": true
+    },
+    {
+      "name": "original-prefix-truncation-contract",
+      "passed": true
+    },
+    {
+      "name": "host-RC32-retained",
+      "passed": true
+    },
+    {
+      "name": "document-obstacle32-retained",
+      "passed": true
+    },
+    {
+      "name": "real-column-array32",
+      "passed": true
+    },
+    {
+      "name": "real-beam-array32",
+      "passed": true
+    },
+    {
+      "name": "unchanged-append-guard-column",
+      "passed": true
+    },
+    {
+      "name": "unchanged-append-guard-beam",
+      "passed": true
+    },
+    {
+      "name": "apply-proj-caller-cap64",
+      "passed": true
+    },
+    {
+      "name": "bridge-caller-cap64",
+      "passed": true
+    },
+    {
+      "name": "at-most-one-emission-per-RC-iteration",
+      "passed": true
+    }
+  ],
+  "git_reads": [
+    {
+      "argv": [
+        "git",
+        "show",
+        "324034812bb6effca68e0413bc0468595337b317:current_geometry.c"
+      ],
+      "exit": 0,
+      "bytes": 401668
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "400a6d0ca50f3aca104fb569c77c8ef753c93355:geometry-web/web_bridge.c"
+      ],
+      "exit": 0,
+      "bytes": 52474
+    }
+  ],
+  "collector_sha256": "9e527fbbe08abcbf87bb73be9caf8a1dc75fcaa992b237f4e8aff624688309ae",
+  "conclusion": "FaceObstacle[64] is the unchanged RC projection collector: at most one output for each of32 columns plus32 beams. Both production callers use64. Timber capacity512 does not enter this collector or increase its output bound.",
+  "truncation_contract": "The function returns SIZE_MAX if the boundary is unplaced; otherwise it collects columns then beams until cap, returning a prefix count without overflow status. That pre-existing truncation is possible for a smaller caller cap or corrupted input counts; admitted current worlds and the two64-cap callers cover32+32 completely.",
+  "call_sites": [
+    "current_geometry.c:9052-9053 apply-proj",
+    "geometry-web/web_bridge.c:722-723 projection query"
+  ],
+  "limitations": [
+    "Static cardinality/source comparison only; no C execution, placement, geometry, allocation, stack or performance acceptance.",
+    "The larger World backup in apply-proj may affect stack/runtime cost independently; this report does not certify that runtime behavior.",
+    "73 AST methods and512 unplaced witnesses remain UNRUN and do not establish512 placed-world performance."
+  ]
+}

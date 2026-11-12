@@ -2739,7 +2739,7 @@ static bool path_beside_source(char *buffer, size_t size, const char *name)
 #define WORLD_MAX_PLACEMENTS  16
 #define WORLD_MAX_GUIDES      16
 #define WORLD_MAX_GRIDS       16
-#define WORLD_MAX_TIMBERS     64
+#define WORLD_MAX_TIMBERS     WOOD_MEMBER_CAPACITY
 #define WORLD_MAX_SPACES      GEO_ENCLOSURE_CAPACITY
 #define WORLD_MAX_RC          32
 #define WORLD_MAX_CANVAS_POS  (WORLD_MAX_BOUNDARIES + WORLD_MAX_PLACEMENTS + WORLD_MAX_SPACES + WORLD_MAX_RC * 2 + WORLD_MAX_GRID_SYSTEMS + WORLD_MAX_GRID_BINDINGS + PARAM_CARD_MAX)
@@ -5520,7 +5520,7 @@ static void set_revalidate_error(const char *message)
 
 static void scene_error(const char *path, int line_no, const char *message)
 {
-    fprintf(stderr, "%s:%d: %s\n", path, line_no, message);
+    if (!g_scene_error_muted) fprintf(stderr, "%s:%d: %s\n", path, line_no, message);
     snprintf(g_scene_last_error, sizeof g_scene_last_error,
              "line %d: %s", line_no, message);
     utf8_trim_tail(g_scene_last_error);
@@ -5804,10 +5804,23 @@ typedef struct {
     /* 0：不待補；1：補矩形及有效性；2：只補矩形，保留後續的 false。 */
     unsigned char pending;
 } AppContactRawSnapshot;
+/* Before the source resolver runs, W reads only this domain for its span
+ * extension guard. The resolver supplies the actual member facts at the
+ * original callback point; do not compute raw footprints that it replaces. */
+static void app_contact_domain_only(const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,AppContactFacts *facts)
+{
+    memset(&facts->world,0,sizeof facts->world);facts->world.placement_id=placement->id;
+    const SpaceBoundarySurface *effective=placement_effective_boundary(placement,boundary,&facts->effective);
+    facts->world.role_boundary=effective;
+    facts->world.region_count=placement->derived_fill_id?placement->component_count:1;
+    for(size_t c=0;c<facts->world.region_count;++c)facts->world.regions[c]=placement->derived_fill_id?&placement->components[c]:effective;
+}
 static void app_contact_facts_prepare(const World *world,const PlacementSurface *placement,
     const SpaceBoundarySurface *boundary,AppContactFacts *facts,AppContactRawSnapshot *raw)
 {
-    memset(facts,0,sizeof *facts);facts->world.placement_id=placement->id;
+    memset(&facts->world,0,sizeof facts->world);
+    memset(facts->members,0,world->wood.timber_count*sizeof *facts->members);facts->world.placement_id=placement->id;
     const SpaceBoundarySurface *effective=placement_effective_boundary(placement,boundary,&facts->effective);
     facts->world.role_boundary=effective;
     facts->world.region_count=placement->derived_fill_id?placement->component_count:1;
@@ -5909,8 +5922,13 @@ static size_t stop_ref_candidates(
 static size_t collect_stop_faces(const World *world,const PlacementSurface *placement,
     const SpaceBoundarySurface *boundary,bool along_v,const Timber *exclude,StopFace out[],size_t out_cap)
 {
+    size_t count=0;bool handled=false;
+    bool source_ok=app_contact_sources_collect(world,placement->id,along_v,exclude,out,out_cap,&handled,&count);
+    if(handled)return source_ok?count:0;
+    /* An unhandled lookup only reads the context. Keep the original raw
+     * fallback and resolver; a handled failure must never enter this path. */
     AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);
-    AppContactResolve context={world,&facts.world};size_t count=0;
+    AppContactResolve context={world,&facts.world};
     return app_contact_resolve_stops(&context,along_v,exclude,out,out_cap,&count)?count:0;
 }
 
@@ -6069,6 +6087,15 @@ typedef GeoInterval SpanInterval;
  * C11 _Static_assert: the Windows MSVC builds compile in its default C mode. */
 typedef char app_span_status_abi_check[(int)SPAN_BETWEEN_AMBIGUOUS==(int)WOOD_SPAN_BETWEEN_AMBIGUOUS?1:-1];
 typedef char app_span_scratch_bound_check[SPAN_CUT_MAX==WOOD_MEMBER_SPAN_CUT_CAPACITY?1:-1];
+
+/* Bind the host admission bound to real W storage and scratch. */
+typedef char app_timber_capacity_world_check[WORLD_MAX_TIMBERS==WOOD_MEMBER_CAPACITY?1:-1];
+typedef char app_timber_capacity_timbers_check[sizeof(((World *)0)->wood.timbers)/sizeof(((World *)0)->wood.timbers[0])==WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_anchors_check[sizeof(((World *)0)->wood.anchors)/sizeof(((World *)0)->wood.anchors[0])==WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_contact_check[WOOD_CONTACT_MEMBER_CAPACITY>=WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_cut_list_check[WOOD_CUT_LIST_MEMBER_CAPACITY>=WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_span_check[WOOD_MEMBER_SPAN_MEMBER_CAPACITY>=WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_stop_face_check[STOP_FACE_MAX==WOOD_CONTACT_FACE_CAPACITY?1:-1];
 
 /*
  * 解析 auto 跨距。
@@ -6368,6 +6395,22 @@ static bool world_revalidate_candidate(World *world,World *candidate)
     return app_reference_sources_valid(candidate);
 }
 
+/* GEO-300: the exact bytes, baseline, keyed state and source graph size of
+ * the last successful full revalidation of the active H candidate. A direct
+ * statement may commit on that same validation only while all of them still
+ * hold byte for byte; otherwise the commit path validates again. */
+static World g_validated_after;
+static const World *g_validated_target,*g_validated_baseline;
+static bool g_validated_keyed;
+static size_t g_validated_nodes,g_validated_edges;
+static void world_revalidate_record(const World *candidate,const World *baseline)
+{
+    GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(g_active_app_candidate->control));
+    memcpy(&g_validated_after,candidate,sizeof *candidate);
+    g_validated_baseline=baseline;g_validated_keyed=g_boundary_keyed_update;
+    g_validated_nodes=geo_eval_node_count(sources);g_validated_edges=geo_eval_edge_count(sources);
+    g_validated_target=candidate;
+}
 static bool app_world_revalidate_evaluate(void *after,GeoEvalContext *sources,void *before)
 {
     (void)sources;
@@ -6377,8 +6420,11 @@ static bool world_revalidate(World *world)
 {
     /* An existing H transaction owns this exact after snapshot. Failure stays
      * isolated there; the caller retains its old primary diagnostic policy. */
-    if(g_active_app_candidate&&world==&g_active_app_candidate->after)
-        return world_revalidate_candidate(world,world);
+    if(g_active_app_candidate&&world==&g_active_app_candidate->after){
+        g_validated_target=NULL;
+        if(!world_revalidate_candidate(world,world))return false;
+        world_revalidate_record(world,g_subgrid_before);return true;
+    }
     AppWorldCandidate *candidate=app_world_candidate_create(world);
     if(!candidate){set_revalidate_error("I32: candidate World allocation failed");return false;}
     bool ok=app_world_candidate_evaluate(candidate,app_world_revalidate_evaluate,&candidate->before)==GEO_CANDIDATE_OK;
@@ -10176,6 +10222,12 @@ static bool parse_scene_file(const char *path, World *out_world)
         /* R32: requirements accumulate across replay, including later deletes,
          * reset or an explicit change back from PANEL to REPEAT. */
         if(ok && grid_subdivision_panel_used(out_world))g_rule_scene_panel_encountered=true;
+    }
+    {
+        /* GEO-300: a buffered invalid line still wins over a later lexical error. */
+        char failure[sizeof g_scene_last_error];memcpy(failure,g_scene_last_error,sizeof failure);
+        if (!app_scene_file_flush(path, out_world)) ok = false;
+        else if (!ok) memcpy(g_scene_last_error,failure,sizeof failure);
     }
 
     fclose(in);
