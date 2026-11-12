@@ -39,11 +39,10 @@ bool wood_world_validate_members(const WoodWorldValidationContext *context,char 
         if(fact.anchor_kind==WOOD_ANCHOR_AT_GRID){const WoodGridApplication *grid=wood_grid_find(grids,fact.grid_id);GeoRect2 cell;
             if(grid&&grid->is_subgrid&&(!wood_grid_cell_bounds(grids->items,grids->count,grid,&host,&cell,NULL,0)||!validation_inside(&footprint,&cell)))
                 return validation_refuse(error,capacity,"I13：角材的完整足跡超出子格範圍");
-            if(grid&&grid->from_binding&&fact.grid_has_band&&grid->axis[fact.grid_axis].stagger_set){
-                int axis=fact.grid_axis,other=1-axis;int64_t next;GeoCoord lo,hi;
+            if(grid&&(grid->from_binding||grid->from_fill)&&fact.grid_has_band&&grid->axis[fact.grid_axis].stagger_set){
+                int axis=fact.grid_axis,other=1-axis;GeoCoord lo,hi;
                 GeoCoord flo=axis==0?footprint.min_v:footprint.min_u,fhi=axis==0?footprint.max_v:footprint.max_u;
-                if(!geo_i64_add(fact.grid_band,1,&next)||!wood_grid_lattice_coord(grid,other,fact.grid_band,&lo)||
-                    !wood_grid_lattice_coord(grid,other,next,&hi)||flo<lo||fhi>hi)
+                if(!wood_grid_band_bounds(grid,other,fact.grid_band,&lo,&hi)||flo<lo||fhi>hi)
                     return validation_refuse(error,capacity,"I24：角材沿線範圍超出該格子");
             }
         }

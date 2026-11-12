@@ -126,6 +126,23 @@ R06 以 `bf178770a0e10e996014ec0b6487e186db561c7f` 的純 CI 差異三向套用�
 4. 如果實際使用[Rulesets](https://github.com/ZhiQiYang/geometry-axiom/settings/rules)，到Settings的Rules／Rulesets，編輯適用main的啟用規則，在required status checks清單做相同替換並Save changes；若兩種保護同時存在，所有適用規則都要核對。
 5. 回PR最新head／GitHub test merge commit檢查13項結果與四份原收據，確認沒有舊`/3`名稱繼續等待。不刪coverage或停用保護以繞過等待。
 
+## R380 新套件的獨立登錄與有界規劃（2026-11-12）
+
+本次新增兩套測試，原三份 `measured_runs` 各自仍是 315 套，原檔及 canonical SHA-256 不變。`native_shard_added_evidence.json` 獨立保存新增套件的來源與規劃上界；讀取時才合併成目前的 317 套 registry，不把新增成本寫成歷史實測。`profile_digest()` 同時涵蓋原 profile 與此追加證據的 LF bytes。
+
+來源是 [run 43231596387](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43231596387) 的 [native 2/4 job 131228034964](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43231596387/job/131228034964)，source head `a4ea8327bd4a7c0b4089a89ea6d0f270a8f01659`、實際 checkout `2b9d0eea17155c2d857447466aa4a9abce649036`。該 job 整體因 expected 登錄缺漏而失敗；下列兩個 suite 自身全部通過。秒數來自原日誌的一位小數摘要，不能冒充更精確的量測。先前 run `43212366533`／job `131162945568` 的 35.5 秒原日誌保留在補丁證據包，規劃改採最新 61.9 秒來源，沒有降低任何已知實測。
+
+| suite | 原收據 passed / discovered | 原摘要秒數 | 本次規劃上界 ms |
+| --- | ---: | ---: | ---: |
+| `py:test_panel_fill_grid_source` | 13 / 13 | 61.9 | 65000 |
+| `node:panel_fill_grid_read_compat` | 11 / 11 | 0.1 | 2000 |
+
+追加證據必須提供 source run／head／checkout、每套 source job、完整通過計數及高於日誌摘要秒數的整數規劃上界；缺來源、重複名稱、失敗測試、低估成本或與原實測 registry 重疊均拒收。這兩套的 expected 計數按完整實跑精確補入；`py:test_geo314_commit_paths`、`py:test_unittest_runner`、`node:room_candidate_cold_contract` 分別以新增的實際 method／case 更新為 12、13、9。
+
+原單輪兩套交換在完整 317 套的三片重播超過預算；最新 65000／2000 ms 上界也使單一起點的兩輪 pair swap 加四輪 two-for-one 改善不足。本次保留原 greedy 起點，另外最多八個固定起點，將成本最高的套件依序與接下來八套同片，再填入其他套件。每個起點先執行兩輪原 pair swap，以原完整跨情境字典序評分選唯一最佳，再執行四輪「一次最佳 two-for-one exchange，加一輪原 pair swap」。每個 shard 只選成本最高的 16 套作 two-for-one 候選，同成本以名稱穩定排序；四片每輪最多 `4 * 3 * C(16,2) * 16 = 23040` 個候選。起點數、候選數、搜尋輪數皆有固定上限，只有嚴格改善才交換，不依套件名稱、PR 或預算門檻特判。
+
+三片歷史重播仍包含全部 317 套，原 `+100000+30000 <1200000` 不變。正式四片仍驗全部 registry 恰好一次、三份來源成本及 per-suite 最大包絡的 `+120000+30000 <1200000`。新增具名撤回 `R380_REVERT_SINGLE_PAIR_SWEEP`、`R380_REMOVE_MULTISTART_SCREENING`、`R380_DROP_ADDED_SUITE_EVIDENCE`，連同原具名突變全部要求正常 AssertionError 的 0／1／0；不以 crash、timeout 或 skip 算 kill。正式四份 wall-clock 收據與完整 CI 仍須另外驗收。
+
 官方說明：[required checks與最近七日成功條件](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)、[classic設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)、[rulesets設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/managing-rulesets-for-a-repository)、[多規則聚合](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)。最終合併判斷仍需最新來源全部正式CI、四份`seconds <1200`原收據、完整coverage及mutation freshness通過。
 
 ## R379 新套件加入後的有界情境規劃（基底57d55edc）
@@ -148,3 +165,9 @@ R14 三個新增 suite 的獨立來源保留在 `native_shard_added_evidence.jso
 三片為 91／113／114 套，四片為 6／104／105／103 套；兩者皆精確涵蓋全部 318 套一次。套數不同反映各套成本及跨輪情境不同，規劃不追求套數相等。三片保留 100000＋30000ms 預留，四片保留 120000＋30000ms 預留，所有既有測試斷言、workflow 35 分鐘及收據 1200 秒限制不動。`test_unittest_runner.py` 本輪未改；前一片已新增的來源反證 method 實跑共 13 項，因此只精確補 expected 的 12→13。
 
 新增 `R379_REVERT_SINGLE_START_ONE_SWEEP`，只在子行程中恢復原規劃器，不改測量、suite 或裁判，必須以原 `R348_MEASURED_RECEIPT_BUDGET` 正常 AssertionError 產生 0／1／0。原刪一套件、撤回真實量測、移除交換及全部四片具名反證仍執行；正式四份原收據及 ME freshness 仍須採入補丁後另驗。
+
+## #379 × #380 合併：新增套件證據改為每來源一檔（候選，待 ChatGPT 審）
+
+#379 與 #380 各自新增了 `native_shard_added_evidence.json`，而原 schema 只允許單一 `source_run`，兩份無法聯集。候選解法：改為目錄 `tests/native_shard_added_evidence/`，每個來源一檔（`pr379-r14.json`、`pr380-c0-from-fill.json`，兩檔內容與兩邊原檔位元相同）。`added_suite_costs()` 依檔名排序讀取每一檔，逐檔沿用原 `native-shard-added-suite-evidence/1` 全部驗證（來源 run／head／checkout、每列 source job 屬於該檔 run、完整通過、上界高於摘要秒數且 <1200000），另拒收空目錄、缺目錄及跨檔重複套件（`R380_NEW_SUITE_UNIQUE_ACROSS_SOURCES`）。`profile_digest()` 改為雜湊原 profile 加上每檔「檔名＋LF bytes」。之後新增 suite 的 PR 只需新增自己的檔，不再 add/add 衝突。
+
+`R379_REVERT_SINGLE_START_ONE_SWEEP` 移除：它重寫的 `_scenario_owners`（原 greedy＋一輪 pair swap）與 main 上 `R380_REVERT_SINGLE_PAIR_SWEEP`（`_improve_scenarios = _swap_scenarios`）在三片／四片、兩輪／三輪 profile 下產生逐套相同的 owners，是同一個撤回的重複；R380 三個具名突變保留。

@@ -33,6 +33,10 @@ class RunnerClassification(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
+R379_ADDED_SUITES = frozenset({'node:r14_app', 'node:r14_host', 'py:test_r14_browser_receipt'})
+R380_ADDED_SUITES = frozenset({'py:test_panel_fill_grid_source', 'node:panel_fill_grid_read_compat'})
+
+
 class NativeShardCoverage(unittest.TestCase):
     def _native_workflow(self):
         workflow = (Path(__file__).parent.parent / '.github/workflows/integration-tests.yml').read_text(
@@ -107,8 +111,11 @@ class NativeShardCoverage(unittest.TestCase):
         # mutation proofs. It is historical coverage, not the current CI plan.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual({'node:r14_app', 'node:r14_host',
-                          'py:test_r14_browser_receipt'}, set(added),
+        self.assertLessEqual(R379_ADDED_SUITES, set(added),
+                             'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        self.assertLessEqual(R380_ADDED_SUITES, set(added),
+                             'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        self.assertEqual(R379_ADDED_SUITES | R380_ADDED_SUITES, set(added),
                          'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual({s.name for s in suites}, historical_names | set(added),
@@ -149,6 +156,10 @@ class NativeShardCoverage(unittest.TestCase):
                 self.assertEqual(len(measured), run['suite_count'])
                 self.assertEqual(set(measured), historical_names,
                                  'R348_HISTORICAL_MEASURED_REGISTRY_EXACT')
+                self.assertFalse(set(measured) & R379_ADDED_SUITES,
+                                 'R379_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
+                self.assertFalse(set(measured) & R380_ADDED_SUITES,
+                                 'R380_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
                 self.assertFalse(set(measured) & set(added),
                                  'R379_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
                 self.assertEqual(set(measured) | set(added), {s.name for s in suites},
@@ -173,32 +184,67 @@ class NativeShardCoverage(unittest.TestCase):
         self._assert_four_native_workflow()
 
     def test_added_suite_provenance_rejects_named_mutations(self):
-        path = native_shards.ADDED_EVIDENCE
-        original = json.loads(path.read_text(encoding='utf-8'))
-        for mutation in ('duplicate', 'missing-job', 'understated-upper',
-                         'unverified-source', 'failed-suite'):
-            with self.subTest(mutation=mutation):
-                mutant = json.loads(json.dumps(original))
-                if mutation == 'duplicate':
-                    mutant['observations'].append(dict(mutant['observations'][0]))
-                elif mutation == 'missing-job':
-                    mutant['observations'][0]['source_job'] = ''
-                elif mutation == 'understated-upper':
-                    mutant['observations'][1]['planning_upper_ms'] = 4900
-                elif mutation == 'unverified-source':
-                    mutant['source_run'] = 'unverified'
-                else:
-                    mutant['observations'][2]['passed'] = 9
-                with tempfile.TemporaryDirectory(prefix='native-added-mutation-') as directory:
-                    test_path = Path(directory) / 'added.json'
-                    test_path.write_text(json.dumps(mutant), encoding='utf-8')
-                    with mock.patch.object(native_shards, 'ADDED_EVIDENCE', test_path):
-                        with self.assertRaises(ValueError, msg='R379_ADDED_SUITE_MUTATION_' + mutation):
-                            native_shards.added_suite_costs()
+        directory = native_shards.ADDED_EVIDENCE
+        originals = {path.name: json.loads(path.read_text(encoding='utf-8'))
+                     for path in sorted(directory.glob('*.json'))}
+        self.assertLessEqual({'pr379-r14.json', 'pr380-c0-from-fill.json'}, set(originals),
+                         'R379_R380_ADDED_EVIDENCE_ONE_FILE_PER_SOURCE')
+        # Each PR's original named mutations, applied to that PR's own file only.
+        cases = {
+            'pr379-r14.json': ('R379', {'understated-upper': (1, 'planning_upper_ms', 4900),
+                                        'failed-suite': (2, 'passed', 9)}),
+            'pr380-c0-from-fill.json': ('R380', {'understated-upper': (0, 'planning_upper_ms', 61900),
+                                                 'failed-suite': (0, 'passed', 12)}),
+        }
+        for target, (label, edits) in cases.items():
+            for mutation in ('duplicate', 'missing-job', 'understated-upper',
+                             'unverified-source', 'failed-suite'):
+                with self.subTest(source=target, mutation=mutation):
+                    mutant = json.loads(json.dumps(originals[target]))
+                    if mutation == 'duplicate':
+                        mutant['observations'].append(dict(mutant['observations'][0]))
+                    elif mutation == 'missing-job':
+                        mutant['observations'][0]['source_job'] = ''
+                    elif mutation == 'unverified-source':
+                        mutant['source_run'] = 'unverified'
+                    else:
+                        index, key, value = edits[mutation]
+                        mutant['observations'][index][key] = value
+                    with tempfile.TemporaryDirectory(prefix='native-added-mutation-') as temp:
+                        for name, data in originals.items():
+                            (Path(temp) / name).write_text(
+                                json.dumps(mutant if name == target else data), encoding='utf-8')
+                        with mock.patch.object(native_shards, 'ADDED_EVIDENCE', Path(temp)):
+                            with self.assertRaises(ValueError, msg=label + '_ADDED_SUITE_MUTATION_' + mutation):
+                                native_shards.added_suite_costs()
+        # Splitting evidence per source must not let one suite be claimed twice.
+        for mutation in ('cross-source-duplicate', 'missing-directory', 'empty-directory'):
+            with self.subTest(mutation=mutation), \
+                    tempfile.TemporaryDirectory(prefix='native-added-mutation-') as temp:
+                root = Path(temp) / 'evidence'
+                root.mkdir()
+                if mutation != 'empty-directory':
+                    for name, data in originals.items():
+                        (root / name).write_text(json.dumps(data), encoding='utf-8')
+                if mutation == 'cross-source-duplicate':
+                    (root / 'zz-copy.json').write_text(
+                        json.dumps(originals['pr379-r14.json']), encoding='utf-8')
+                elif mutation == 'missing-directory':
+                    root = Path(temp) / 'absent'
+                with mock.patch.object(native_shards, 'ADDED_EVIDENCE', root):
+                    with self.assertRaises(ValueError, msg='R380_ADDED_SUITE_MUTATION_' + mutation):
+                        native_shards.added_suite_costs()
+        bounds = native_shards.added_suite_costs()
         self.assertEqual({'node:r14_app': 2000, 'node:r14_host': 7000,
                           'py:test_r14_browser_receipt': 2000},
-                         native_shards.added_suite_costs(),
+                         {name: bounds.get(name) for name in R379_ADDED_SUITES},
                          'R379_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
+        self.assertEqual({'py:test_panel_fill_grid_source': 65000,
+                          'node:panel_fill_grid_read_compat': 2000},
+                         {name: bounds.get(name) for name in R380_ADDED_SUITES},
+                         'R380_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
+        self.assertEqual(R379_ADDED_SUITES | R380_ADDED_SUITES, set(bounds),
+                         'R380_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
 
     def test_invalid_shards_are_rejected(self):
         for value in ['0/2', '1/0', '4/3', '5/4', 'a/2', '1/2/3', '-1/3']:

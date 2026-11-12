@@ -729,7 +729,7 @@
     },
     "py:test_geo314_commit_paths": {
       "mode": "count",
-      "count": 11,
+      "count": 12,
       "unit": "test"
     },
     "py:test_geo314_ordered_facts": {
@@ -1427,7 +1427,7 @@
     },
     "node:room_candidate_cold_contract": {
       "mode": "count",
-      "count": 8,
+      "count": 9,
       "unit": "node test"
     },
     "node:room_candidate_transaction_review": {
@@ -1558,6 +1558,16 @@
     "node:panel_fill_ui_contract": {
       "mode": "count",
       "count": 21,
+      "unit": "node test"
+    },
+    "py:test_panel_fill_grid_source": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "node:panel_fill_grid_read_compat": {
+      "mode": "count",
+      "count": 11,
       "unit": "node test"
     },
     "node:r14_app": {
