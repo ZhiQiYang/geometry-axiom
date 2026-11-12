@@ -106,6 +106,15 @@ class NativeShardCoverage(unittest.TestCase):
         # Freeze the original two-run/three-shard regression and its two
         # mutation proofs. It is historical coverage, not the current CI plan.
         profiles = native_shards.measured_profiles()
+        added = native_shards.added_suite_costs()
+        self.assertEqual({'node:r14_app', 'node:r14_host',
+                          'py:test_r14_browser_receipt'}, set(added),
+                         'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        historical_names = set(profiles[0]) - set(added)
+        self.assertEqual({s.name for s in suites}, historical_names | set(added),
+                         'R348_MEASURED_PROFILE_COVERS_REGISTRY')
+        self.assertEqual(315, len(historical_names),
+                         'R348_HISTORICAL_315_UNCHANGED')
         with mock.patch.object(native_shards, 'measured_profiles', return_value=profiles[:2]):
             current_parts = partition_suites(suites, 3)
         owners = {s.name: i for i, part in enumerate(current_parts) for s in part}
@@ -138,10 +147,15 @@ class NativeShardCoverage(unittest.TestCase):
                             for name, ms in shard['timings_ms'].items()}
                 self.assertEqual(sum(len(s['timings_ms']) for s in run['shards']), len(measured))
                 self.assertEqual(len(measured), run['suite_count'])
-                self.assertEqual(set(measured), {s.name for s in suites},
+                self.assertEqual(set(measured), historical_names,
+                                 'R348_HISTORICAL_MEASURED_REGISTRY_EXACT')
+                self.assertFalse(set(measured) & set(added),
+                                 'R379_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
+                self.assertEqual(set(measured) | set(added), {s.name for s in suites},
                                  'R348_MEASURED_PROFILE_COVERS_REGISTRY')
                 if run in runs[:2]:
-                    replay = [sum(measured[s.name] for s in part) for part in current_parts]
+                    combined = {**measured, **added}
+                    replay = [sum(combined[s.name] for s in part) for part in current_parts]
                     self.assertLess(max(replay) + 100000 + 30000, 1200000,
                                     'R348_MEASURED_RECEIPT_BUDGET')
         # The production plan follows the real workflow matrix. Reserve 120s
@@ -157,6 +171,34 @@ class NativeShardCoverage(unittest.TestCase):
         self.assertLess(max(replay) + 120000 + 30000, 1200000,
                         'R348_MEASURED_RECEIPT_BUDGET: per-suite maximum across all runs')
         self._assert_four_native_workflow()
+
+    def test_added_suite_provenance_rejects_named_mutations(self):
+        path = native_shards.ADDED_EVIDENCE
+        original = json.loads(path.read_text(encoding='utf-8'))
+        for mutation in ('duplicate', 'missing-job', 'understated-upper',
+                         'unverified-source', 'failed-suite'):
+            with self.subTest(mutation=mutation):
+                mutant = json.loads(json.dumps(original))
+                if mutation == 'duplicate':
+                    mutant['observations'].append(dict(mutant['observations'][0]))
+                elif mutation == 'missing-job':
+                    mutant['observations'][0]['source_job'] = ''
+                elif mutation == 'understated-upper':
+                    mutant['observations'][1]['planning_upper_ms'] = 4900
+                elif mutation == 'unverified-source':
+                    mutant['source_run'] = 'unverified'
+                else:
+                    mutant['observations'][2]['passed'] = 9
+                with tempfile.TemporaryDirectory(prefix='native-added-mutation-') as directory:
+                    test_path = Path(directory) / 'added.json'
+                    test_path.write_text(json.dumps(mutant), encoding='utf-8')
+                    with mock.patch.object(native_shards, 'ADDED_EVIDENCE', test_path):
+                        with self.assertRaises(ValueError, msg='R379_ADDED_SUITE_MUTATION_' + mutation):
+                            native_shards.added_suite_costs()
+        self.assertEqual({'node:r14_app': 2000, 'node:r14_host': 7000,
+                          'py:test_r14_browser_receipt': 2000},
+                         native_shards.added_suite_costs(),
+                         'R379_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
 
     def test_invalid_shards_are_rejected(self):
         for value in ['0/2', '1/0', '4/3', '5/4', 'a/2', '1/2/3', '-1/3']:
