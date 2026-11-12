@@ -82,6 +82,36 @@ function installSaveProbe() {
   } catch(error) {cleanup();throw error;}
 }
 
+// Regression-only switches (see tests/canvas_flake_r116_p90_regression.py).
+// They require GEOMETRY_ROOM_CANDIDATE_ONLY=1; the canvas sequence never sets
+// them, so P90 counts and golden are unchanged.
+const P90_REVERTS = Object.freeze(['P90_REVERT_SAVE_READY']);
+function validateRegressionSwitches(env) {
+  const late = env.GEOMETRY_P90_LATE_CANVAS_POS, revert = env.GEOMETRY_P90_REVERT;
+  if (late === undefined && revert === undefined) return;
+  if (late !== undefined && late !== '1') throw Error('GEOMETRY_P90_LATE_CANVAS_POS accepts only 1');
+  if (revert !== undefined && !P90_REVERTS.includes(revert)) throw Error('GEOMETRY_P90_REVERT must be one of ' + P90_REVERTS.join(','));
+  if (env.GEOMETRY_ROOM_CANDIDATE_ONLY !== '1') throw Error('P90 regression switches require GEOMETRY_ROOM_CANDIDATE_ONLY=1');
+}
+
+// Regression-only: deliver the actual reply of the first native
+// `line canvas-pos` (renderObjects placing the accepted room's new card)
+// late. The command itself has already completed natively.
+function installLateCanvasPos(delayMs) {
+  const original = window.fetch, state = window.__p90LateCanvasPos = {delayMs, phase: 'armed'};
+  window.fetch = async (...args) => {
+    let command = '';
+    try {command = JSON.parse(args[1]?.body || '{}').cmd || '';} catch (_) {}
+    const response = await original.apply(window, args);
+    if (state.phase !== 'armed' || !/^line canvas-pos boundary /.test(command)) return response;
+    state.phase = 'held'; state.command = command;
+    await new Promise(resolve => setTimeout(resolve, delayMs));
+    state.phase = 'delivered';
+    return response;
+  };
+  state.restore = () => {window.fetch = original;};
+}
+
 async function collectSaveTrace(read, log = console.log) {
   try {
     const trace = await read(`window.__roomSaveProbe.dispose()`);
@@ -97,6 +127,9 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
   const read = H.makeRead(eval_);
   const key = H.makeKey({send, sleep});
   const initialExceptions = exceptionCount();
+  validateRegressionSwitches(process.env);
+  const lateCanvasPosMs = process.env.GEOMETRY_P90_LATE_CANVAS_POS === '1' ? 1500 : 0;
+  const revertSaveReady = process.env.GEOMETRY_P90_REVERT === 'P90_REVERT_SAVE_READY';
   async function inputClick(x, y) { await click(x, y); await sleep(40); }
   const ctl = H.makeCtl({eval_, sleep, click: inputClick}, {attempts: 8, pollMs: 30, settleMs: 60, hitElement: true});
   async function fill(selector, value) {
@@ -141,6 +174,11 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
     await until(`!!$('roomNew') && !!$('roomNewMethod')`);
   }
   async function saveProject() {
+    // Save refuses while a native write is pending (reference-workspace.js
+    // save guard: 「原生操作結果尚未取得…」) and never retries. Click it only
+    // when the app itself reports no pending native operation.
+    // P90_REVERT_SAVE_READY is the named withdrawal for the regression proof.
+    if (!revertSaveReady) await until(`!ReferenceWorkspace.busy && !oc.busy && ReferenceWorkspace.getEvidenceState().blocked===false`);
     await read(`(${installSaveProbe.toString()})();0`);
     try {
       await ctl('#projectBar [data-project-action="save"]');
@@ -202,11 +240,17 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
   await drawManual();
   await expectNativeDialog(async () => { await ctl('#faceDraftFinish'); }, {type: 'prompt', message: '新房間名稱', accept: true, promptText: '第一間'});
   await until(`!!$('roomConfirm')`);
+  if (lateCanvasPosMs) await read(`(${installLateCanvasPos.toString()})(${lateCanvasPosMs});0`);
   await ctl('#roomConfirm');
-  await until(`!RoomCollectionWorkspace.hasWork && (ReferenceWorkspace.readFeatureAttachment('source-rooms')?.rooms.length||0)===1`);
+  // hasWork clears when the native room transaction returns; commitRoomDraft
+  // then still renders (renderObjects may write `line canvas-pos` for the new
+  // card) and refocuses. Its last step is this status line.
+  await until(`!RoomCollectionWorkspace.hasWork && (ReferenceWorkspace.readFeatureAttachment('source-rooms')?.rooms.length||0)===1` +
+    (revertSaveReady ? '' : ` && document.getElementById('status').textContent.includes('已保存為獨立邊界')`));
   const accepted = await read(`(()=>{const rooms=ReferenceWorkspace.readFeatureAttachment('source-rooms').rooms;const room=rooms[0];return {boundary:room.boundaryRef.id,host:rooms.some(r=>r.boundaryRef.id===1)};})()`);
   check('確認後新邊界進入房間，目前描繪用面不進房間', accepted.boundary !== 1 && accepted.host === false && (await sceneText()).includes('boundary ' + accepted.boundary));
   const saved = await saveProject();
+  if (lateCanvasPosMs) console.log('P90_LATE_CANVAS_POS ' + JSON.stringify(await read(`(()=>{const s=window.__p90LateCanvasPos;s.restore();delete window.__p90LateCanvasPos;return {delayMs:s.delayMs,phase:s.phase,command:s.command};})()`)));
   await freshReopen(saved);
   const reopened = await read(`(()=>{const rooms=ReferenceWorkspace.readFeatureAttachment('source-rooms')?.rooms||[];const rows=ReferenceWorkspace.readFeatureAttachment('room-candidates')?.rows||[];return {boundary:rooms[0]?.boundaryRef.id||0,host:rooms.some(r=>r.boundaryRef.id===1),pending:rows.some(r=>r.status==='pending')};})()`);
   check('再重開後已接受房間仍在場景側附件，未接受候選仍未進場景', reopened.boundary === accepted.boundary && reopened.host === false && reopened.pending === true && (await sceneText()).includes('boundary ' + accepted.boundary));
@@ -215,4 +259,5 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
   fs.rmSync(saved, {force: true});
 };
 module.exports.installSaveProbe = installSaveProbe;
+module.exports.validateRegressionSwitches = validateRegressionSwitches;
 module.exports.collectSaveTrace = collectSaveTrace;
