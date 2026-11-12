@@ -1,6 +1,8 @@
 # 突變收據與可下載二進位證據
 
-> main `8f82b207e87c086705a1d8b7a00e2f215c07cbcf` 已納入 #338，完整表擴為 **123 筆／120 active／3 retired**；core 70、bridge 53，七片依現行表動態分成 18／18／17／17 與 18／18／17。這個新來源必須重新執行，不沿用下面舊來源的綠燈。`de9aea24113a522c6cd80d30b9281e1034b57c6c` 的 [run 41333327153](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41333327153) 及 78／75 收據保持原來源的歷史證據。
+> **現行表（2026-11-12 依 `f3ee80cf` 實數更正）：138 筆／135 active／3 retired**；core 70（67 active＋3 retired）、bridge 68，七片依現行表動態分成 core 18／18／17／17 與 bridge 23／23／22（`.github/scripts/mutation_evidence.py::shards()`）。已採入的 `tests/mutants_results.json` 為 138 筆：killed 129、equivalent 5、crashed 1、retired 3（來源見最近一次採入 commit `77b04899`）。
+>
+> 歷史：main `8f82b207e87c086705a1d8b7a00e2f215c07cbcf` 納入 #338 時完整表為 123 筆／120 active／3 retired（core 70、bridge 53，分片 18／18／17／17 與 18／18／17）。`de9aea24113a522c6cd80d30b9281e1034b57c6c` 的 [run 41333327153](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41333327153) 及 78／75 收據保持原來源的歷史證據。
 
 `tests/mutate.py --check` 不編譯、不執行突變。它嚴格核對來源、include 閉包、突變、裁判及執行收據。若同平台的暫存二進位存在，也會核對它的指紋與 SHA-256；不同二進位應判 `stale`。沒有暫存檔時通過，只能證明收據與目前來源／裁判一致，不能宣稱已核對原執行檔位元組或已重跑突變。
 
@@ -11,7 +13,7 @@
 `Mutation evidence` 工作流程不改 `mutate.py`、`mutation_bridge.py` 或已提交歷史帳本：
 
 1. 先在 GitHub 執行原 scanner CLI 與原兩支架構 unittest，保存新來源的 scan／receipt／說明與原始輸出；沒有在本機執行模組。歷史帳本的原 `--check` 守門仍保留在正式測試入口；來源改變時，歷史 stale 不能拿來阻止「生成新收據」，也不能被寫成已通過。
-2. 從現行突變表自動分成 4 片 core 與 3 片 bridge，每筆恰好一片。新來源的 120 active 均需實際執行（含 equivalent 的完整 oracle），3 筆 retired 仍核對退役條件。main 的 bridge 還原裁判為 43 個方法，裁判閉包也包含 `tests/*.c` 與 `tests/fixtures/**/*.scene`，不能把舊 75 筆冒成 fresh。各片結果檔從空檔開始，不繼承歷史 killed。
+2. 從現行突變表自動分成 4 片 core 與 3 片 bridge，每筆恰好一片。新來源的全部 active（現行 135 筆）均需實際執行（含 equivalent 的完整 oracle），3 筆 retired 仍核對退役條件。bridge 還原裁判為 `tests/mutation_bridge.py::RESTORED` 的方法（現行 55 個），裁判閉包也包含 `tests/*.c` 與 `tests/fixtures/**/*.scene`，不能把舊 75 筆冒成 fresh。各片結果檔從空檔開始，不繼承歷史 killed。
 3. 各片使用原 runner 執行基準與突變，保存新帳本、實際二進位／sidecar、執行輸出及雜湊 manifest。core 保存結構化 oracle 執行收據與 runner 輸出；bridge 另保存逐次建置及 oracle 的原始 stdout／stderr。省略 scratch checkout 與 OS core dump。
 4. 每片要求全部指派 ID 存在、實際收據屬於當前 head，並用原工具 strict 檢查。刻意改壞一個該片二進位，必須被原二進位守門拒絕、strict exit 1；還原 bytes 後重驗通過。`blocked`、`stale`、未知／缺漏 ID、skip 或基礎設施失敗都不算 killed。
 5. 聚合 job 必須等所有片成功；重新下載 artifact，逐筆要求二進位存在且 SHA-256 相符，再以原工具核對每片。最後要求完整表無重複／缺漏／額外 ID，對新完整帳本再跑原 strict 檢查。
