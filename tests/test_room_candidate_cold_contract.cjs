@@ -79,3 +79,43 @@ test('P358 undo oracle compares saved state while excluding execution-time histo
  assert.deepEqual(C.savedState(copy),C.savedState(after));copy.draft.rows[1].status='accepted';
  assert.notDeepEqual(C.savedState(copy),C.savedState(after));
 });
+
+test('P90 save trace keeps distinct guards, real input target and the complete picker lifecycle',async()=>{
+ const harness=require(path.join(root,'geometry-web/room_candidate_browser_test.js')),install=harness.installSaveProbe;
+ assert.equal(typeof install,'function','P90_SAVE_TRACE_REQUIRED');
+ const vm=require('node:vm'),window=new EventTarget(),original=async()=>null;
+ const listening=new Set(),add=window.addEventListener.bind(window),remove=window.removeEventListener.bind(window);
+ window.addEventListener=(type,fn,options)=>{listening.add(type);add(type,fn,options);};
+ window.removeEventListener=(type,fn,options)=>{listening.delete(type);remove(type,fn,options);};
+ Object.defineProperty(window,'showSaveFilePicker',{configurable:true,writable:true,value:original});
+ const button={disabled:false,getBoundingClientRect:()=>({x:10,y:20,width:30,height:40})};
+ let disconnected=false;
+ let takeFailure=false,cleanupFailure=false;
+ class Observer{constructor(callback){this.callback=callback;}observe(){}takeRecords(){if(takeFailure)throw Error('take-records fault');return [];}disconnect(){disconnected=true;if(cleanupFailure)throw Error('cleanup fault');}}
+ const reference={busy:true,history:{group:null},getModelOperationState:()=>({blocked:true}),getEvidenceState:()=>({blocked:true}),getProjectInfo:()=>({editingBlocked:false})};
+ const context={window,ReferenceWorkspace:reference,RoomCollectionWorkspace:{hasWork:false,busy:false,transactionLease:null},
+  oc:{busy:false,focus:{t:'face',id:2},edit:{bid:2}},fe:{draft:{pts:[]},ulCalib:null},performance:{now:()=>7},
+  document:{querySelector:()=>button,getElementById:id=>id==='status'?{textContent:'accepted'}:id==='toastRegion'?{}:null},
+  MutationObserver:Observer,Blob,Uint8Array,btoa};
+ vm.runInNewContext('('+install.toString()+')()',context);
+ const event=new Event('click');Object.defineProperty(event,'target',{value:{id:'faceEditorViewport',tagName:'DIV',dataset:{}}});window.dispatchEvent(event);
+ const handle=await window.showSaveFilePicker(),writer=await handle.createWritable();
+ await writer.write(new Uint8Array([65,66]));await writer.close();
+ assert.equal(typeof writer.abort,'function','P90_SAVE_ADAPTER_RETAINS_ABORT');await writer.abort();
+ reference.getModelOperationState=()=>{throw Error('getter fault');};takeFailure=cleanupFailure=true;
+ const trace=window.__roomSaveProbe.dispose();
+ assert.equal(window.__roomSave,'QUI=');assert.equal(window.showSaveFilePicker,original);
+ assert.equal(window.__roomSaveProbe,undefined);assert.equal(disconnected,true);
+ const armed=trace.events[0];assert.equal(armed.encodedType,'object');assert.equal(armed.referenceBusy,true);assert.equal(armed.objectBusy,false);
+ assert.ok(trace.events.some(row=>row.phase==='click'&&row.target==='DIV#faceEditorViewport'),'P90_SAVE_TRACE_INPUT_TARGET');
+ for(const phase of ['picker','create-writable','write-begin','write-complete','close','abort','final'])
+  assert.ok(trace.events.some(row=>row.phase===phase),'P90_SAVE_TRACE_PHASE_'+phase);
+ const count=trace.events.length;window.dispatchEvent(event);assert.equal(trace.events.length,count,'P90_SAVE_TRACE_LISTENER_RELEASE');
+ assert.equal(listening.size,0);assert.ok(trace.events.some(row=>row.traceError==='getter fault'));
+ assert.ok(trace.events.some(row=>row.phase==='trace-cleanup-error'&&row.operation==='observer'));
+ class BrokenObserver extends Observer{observe(){throw Error('install fault');}}
+ assert.throws(()=>vm.runInNewContext('('+install.toString()+')()',{...context,MutationObserver:BrokenObserver}),/install fault/);
+ assert.equal(listening.size,0,'P90_SAVE_TRACE_INSTALL_FAILURE_CLEANUP');assert.equal(window.showSaveFilePicker,original);
+ const messages=[];await harness.collectSaveTrace(async()=>{throw Error('CDP read fault');},line=>messages.push(line));
+ assert.deepEqual(messages,['P90_SAVE_TRACE_ERROR CDP read fault'],'P90_SAVE_TRACE_PRESERVES_PRIMARY_ERROR');
+});

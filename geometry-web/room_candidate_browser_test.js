@@ -10,6 +10,87 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
+// Observation only: preserve the same click, save adapter and 20s predicate.
+// This self-contained function is evaluated in the test page, not the product.
+function installSaveProbe() {
+  const previous = Object.getOwnPropertyDescriptor(window, 'showSaveFilePicker');
+  const events = [];
+  let droppedEvents = 0;
+  window.__roomSave = null;
+  function record(phase, extra = {}) {
+    try {
+    const button = document.querySelector('#projectBar [data-project-action="save"]');
+    const rect = button?.getBoundingClientRect();
+    events.push({phase, monotonicMs: performance.now(), encodedType: typeof window.__roomSave,
+      referenceBusy: ReferenceWorkspace.busy, objectBusy: !!oc.busy,
+      historyGroup: !!ReferenceWorkspace.history.group, roomHasWork: RoomCollectionWorkspace.hasWork,
+      roomBusy: RoomCollectionWorkspace.busy, roomLease: !!RoomCollectionWorkspace.transactionLease,
+      modelBlocked: ReferenceWorkspace.getModelOperationState().blocked,
+      evidenceBlocked: ReferenceWorkspace.getEvidenceState().blocked,
+      editingBlocked: ReferenceWorkspace.getProjectInfo().editingBlocked,
+      draftPoints: fe.draft?.pts?.length || 0, calibrationPoints: fe.ulCalib?.pts?.length || 0,
+      focus: oc.focus ? {...oc.focus} : null, editBoundary: oc.edit?.bid ?? null,
+      saveDisabled: button?.disabled ?? null,
+      saveRect: rect ? {x:rect.x,y:rect.y,width:rect.width,height:rect.height} : null,
+      status: document.getElementById('status')?.textContent || '', ...extra});
+    } catch(error) {
+      events.push({phase,traceError:String(error?.message || error),...extra});
+    }
+    if (events.length > 96) {events.shift();droppedEvents++;}
+  }
+  const input = event => record(event.type, {target:(event.target?.tagName || '')+'#'+(event.target?.id || ''),
+    projectAction:event.target?.dataset?.projectAction || null, x:event.clientX ?? null,y:event.clientY ?? null,
+    trusted:event.isTrusted,defaultPrevented:event.defaultPrevented});
+  const types = ['pointerdown','pointerup','click'];
+  const capture = {capture:true};
+  let observer;
+  function cleanup() {
+    const attempt = (operation, action) => {try {action();} catch(error) {record('trace-cleanup-error',{operation,error:String(error?.message || error)});}};
+    attempt('observer',()=>observer?.disconnect());
+    for (const type of types) attempt(type,()=>window.removeEventListener(type,input,capture));
+    attempt('picker',()=>{if(previous)Object.defineProperty(window,'showSaveFilePicker',previous);else delete window.showSaveFilePicker;});
+    attempt('probe',()=>{delete window.__roomSaveProbe;});
+  }
+  const observeToasts = records => {
+    const messages = records.flatMap(row=>Array.from(row.addedNodes || [],node=>node.textContent || '')).filter(Boolean);
+    if (messages.length) record('toast',{messages});
+  };
+  try {
+  for (const type of types) window.addEventListener(type,input,capture);
+  observer = new MutationObserver(observeToasts);
+  const region = document.getElementById('toastRegion');
+  if (region) observer.observe(region,{childList:true});
+  Object.defineProperty(window,'showSaveFilePicker',{configurable:true,value:async()=>{
+    record('picker');
+    return {createWritable:async()=>{
+      record('create-writable');
+      return {write:async data=>{
+        record('write-begin');
+        const bytes=data instanceof Blob?new Uint8Array(await data.arrayBuffer()):new Uint8Array(data);
+        let text='';for(let i=0;i<bytes.length;i++)text+=String.fromCharCode(bytes[i]);
+        window.__roomSave=btoa(text);record('write-complete',{bytes:bytes.length});
+      },close:async()=>{record('close');},abort:async()=>{record('abort');}};
+    }};
+  }});
+  window.__roomSaveProbe = {dispose(){
+    try {observeToasts(observer.takeRecords());}
+    catch(error) {record('trace-error',{operation:'take-records',error:String(error?.message || error)});}
+    finally {record('final');cleanup();}
+    return {schema:'p90-save-trace/1',droppedEvents,events};
+  }};
+  record('armed');
+  } catch(error) {cleanup();throw error;}
+}
+
+async function collectSaveTrace(read, log = console.log) {
+  try {
+    const trace = await read(`window.__roomSaveProbe.dispose()`);
+    log('P90_SAVE_TRACE ' + JSON.stringify(trace));
+  } catch(error) {
+    log('P90_SAVE_TRACE_ERROR ' + String(error?.message || error));
+  }
+}
+
 module.exports = async function roomCandidateBrowser({send, eval_, sleep, click, waitForUI, expectNativeDialog, exceptionCount}) {
   const H = require('./cdp_helpers.js');
   const check = H.makeCheck({prefix: 'P90 ', throwOnFail: true});
@@ -60,7 +141,7 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
     await until(`!!$('roomNew') && !!$('roomNewMethod')`);
   }
   async function saveProject() {
-    await read(`window.__roomSave=null;window.__roomSavePicker=Object.getOwnPropertyDescriptor(window,'showSaveFilePicker')||null;Object.defineProperty(window,'showSaveFilePicker',{configurable:true,value:async()=>({createWritable:async()=>({write:async data=>{const bytes=data instanceof Blob?new Uint8Array(await data.arrayBuffer()):new Uint8Array(data);let text='';for(let i=0;i<bytes.length;i++)text+=String.fromCharCode(bytes[i]);window.__roomSave=btoa(text);},close:async()=>{},abort:async()=>{}})})});0`);
+    await read(`(${installSaveProbe.toString()})();0`);
     try {
       await ctl('#projectBar [data-project-action="save"]');
       await until(`typeof window.__roomSave==='string' && !ReferenceWorkspace.busy`);
@@ -69,7 +150,7 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
       fs.writeFileSync(file, Buffer.from(encoded, 'base64'));
       return file;
     } finally {
-      await read(`if(window.__roomSavePicker)Object.defineProperty(window,'showSaveFilePicker',window.__roomSavePicker);else delete window.showSaveFilePicker;delete window.__roomSavePicker;0`);
+      await collectSaveTrace(read);
     }
   }
   async function freshReopen(file) {
@@ -133,3 +214,5 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
   fs.rmSync(parked, {force: true});
   fs.rmSync(saved, {force: true});
 };
+module.exports.installSaveProbe = installSaveProbe;
+module.exports.collectSaveTrace = collectSaveTrace;
