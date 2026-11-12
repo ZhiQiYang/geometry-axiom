@@ -1,0 +1,33 @@
+{
+  "utc": "2026-10-29T20:07:04.208228+00:00",
+  "prior_evidence_head": "75464e8cda864ebea6717f95853f724fb9278583",
+  "native_execution_sha": "7c8e9cee4ed5b3706ee919e2831a1dac0aa55ea5",
+  "standalone_h7_execution_sha": "256747c5c8f8f8934eeb08ae404dee1f67591508",
+  "product_sha": "7a0e6dd81c54066995981393925fa46a815de2f8",
+  "new_product_execution": false,
+  "new_profile_execution": false,
+  "files": [
+    {
+      "name": "README.md",
+      "bytes": 7831,
+      "sha256": "23e6bec1a975f5944a0780b7587a61801873d81e6334ca93b15a0ea78a2489e7"
+    },
+    {
+      "name": "SUITE_TIMES.tsv",
+      "bytes": 6679,
+      "sha256": "1674b59a13f09a426a70ccecdb47da268f605fb9712d64bdb09973a7e3fa29c7"
+    },
+    {
+      "name": "TIMING_AUDIT.json",
+      "bytes": 72090,
+      "sha256": "c0283345230fcbf88dca52a1e7d89f9fe7e2b1fec3d4a7b1b24f526895be8f1e"
+    },
+    {
+      "name": "analyze.py",
+      "bytes": 7798,
+      "sha256": "85fdd1d6ddb18a1b8b5d54384b7c8a53cdb69fc08a8d59bdc32729b6f8654f6b"
+    }
+  ],
+  "peer_sha256": "d0324f05f7c4e34e9f81b6e36ef6a2742063d26837be420f060aef350f756ff2",
+  "note": "Copied original analysis bytes. README describes its initial SHM location; this adoption adds the reviewed text to Git without changing raw evidence or verdicts."
+}

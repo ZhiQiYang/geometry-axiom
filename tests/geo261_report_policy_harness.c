@@ -35,10 +35,11 @@ static int limits(void)
 {
     WoodCutList result;memset(&result,0xa5,sizeof result);
     CHECK(wood_cut_list_collect(NULL,0,&result)&&!result.group_count&&!result.placed&&!result.total_length,"report-empty");
-    WoodMember values[WOOD_CUT_LIST_MEMBER_CAPACITY];for(size_t i=0;i<WOOD_CUT_LIST_MEMBER_CAPACITY;++i)values[i]=member((uint32_t)i,100,20,30,WOOD_MEMBER_ROLE_PRIMARY,true);
-    CHECK(wood_cut_list_collect(values,WOOD_CUT_LIST_MEMBER_CAPACITY,&result)&&result.group_count==1&&result.placed==64&&result.groups[0].count==64&&result.ids[result.groups[0].first+63]==63,"report-capacity");
+    WoodMember values[513];for(size_t i=0;i<513;++i)values[i]=member((uint32_t)i,100,20,30,WOOD_MEMBER_ROLE_PRIMARY,true);
+    CHECK(wood_cut_list_collect(values,64,&result)&&result.group_count==1&&result.placed==64&&result.groups[0].count==64&&result.ids[result.groups[0].first+63]==63,"report-capacity-legacy-64");
+    CHECK(WOOD_CUT_LIST_MEMBER_CAPACITY==512&&wood_cut_list_collect(values,512,&result)&&result.group_count==1&&result.placed==512&&result.groups[0].count==512&&result.ids[result.groups[0].first+511]==511,"report-capacity");
     WoodCutList before;memcpy(&before,&result,sizeof result);
-    CHECK(!wood_cut_list_collect(values,WOOD_CUT_LIST_MEMBER_CAPACITY+1,&result)&&!memcmp(&before,&result,sizeof result),"report-over-capacity-atomic");
+    CHECK(!wood_cut_list_collect(values,513,&result)&&!memcmp(&before,&result,sizeof result),"report-over-capacity-atomic");
     CHECK(!wood_cut_list_collect(NULL,1,&result)&&!memcmp(&before,&result,sizeof result),"report-missing-input-atomic");return 0;
 }
 static int pool(void)

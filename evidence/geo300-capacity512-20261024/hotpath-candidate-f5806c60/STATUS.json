@@ -1,0 +1,76 @@
+{
+  "candidate_sha": "f5806c60c6067a64776f979f77981e4aba087df3",
+  "candidate_branch": "codex/geo300-hotpath-candidate-20261028",
+  "adopted_into_pr348": false,
+  "full_h7_1200_passed": false,
+  "archive_bytes": 3769944,
+  "archive_sha256": "d9dcb7ffd944f4c952d3a47e819aae9f3ca95cf71088e55fe2fafababf4ccb80",
+  "files": 4094,
+  "feasibility": {
+    "source_sha": "f5806c60c6067a64776f979f77981e4aba087df3",
+    "rows": [
+      {
+        "variant": "baseline",
+        "command": [
+          "/dev/shm/pr348-combined-diagnostic/baseline-bridge"
+        ],
+        "execution_source_sha": "75481194f3b85a6b07e11896403633d7d0fa0d6f",
+        "binary_sha256": "6398a8cf4da523616f032ed408c81cf197f60e8be6ba0eb58d3b51ec8bc6cb7e",
+        "exit": 0,
+        "timeout_triggered": false,
+        "seconds": 6.691757845997927,
+        "usage": {
+          "maxrss_kib": 83132,
+          "user_seconds": 6.6035070000000005,
+          "system_seconds": 0.065041
+        },
+        "stdout_sha256": "a14ede9bef3dc03c850145a45a51f7b079fea958a5f0df6e4c7928fe3ae25b6a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "variant": "candidate",
+        "command": [
+          "/dev/shm/pr348-combined-diagnostic/candidate-bridge"
+        ],
+        "execution_source_sha": "f5806c60c6067a64776f979f77981e4aba087df3",
+        "binary_sha256": "3b3d50305894761226467e92aba9f19feda6698c8ffc3203897a21c03579f20b",
+        "exit": 0,
+        "timeout_triggered": false,
+        "seconds": 6.037951393002004,
+        "usage": {
+          "maxrss_kib": 83244,
+          "user_seconds": 5.963916,
+          "system_seconds": 0.054889999999999994
+        },
+        "stdout_sha256": "a14ede9bef3dc03c850145a45a51f7b079fea958a5f0df6e4c7928fe3ae25b6a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "variant": "diagnostic",
+        "command": [
+          "/dev/shm/pr348-combined-diagnostic/diagnostic-bridge"
+        ],
+        "execution_source_sha": "f5806c60c6067a64776f979f77981e4aba087df3",
+        "binary_sha256": "0dd6b175a759569eb2f67cebeafe75fda60e1a29142c29f057b84db061a6387e",
+        "exit": 0,
+        "timeout_triggered": false,
+        "seconds": 6.388219149994256,
+        "usage": {
+          "maxrss_kib": 84164,
+          "user_seconds": 6.31749,
+          "system_seconds": 0.059852999999999996
+        },
+        "stdout_sha256": "a14ede9bef3dc03c850145a45a51f7b079fea958a5f0df6e4c7928fe3ae25b6a",
+        "stderr_sha256": "912905ddb9935b1bb39be85a6fa0ff18afc629b978d3c4e7e608572ba8095b4f"
+      }
+    ],
+    "stdout_equal": true,
+    "unmodified_stderr_equal": true,
+    "diagnostic_product_stderr_equal": true,
+    "diagnostic_lines": [
+      "GEO348_MEMO_AGGREGATE {\"schema\":1,\"atexit_status\":0,\"calls\":50382,\"hits\":16796,\"request_examined\":50247,\"memcmp_examined\":16796,\"snapshots_examined\":16796,\"first_failure\":[135,0,0,764,32687,0,0,0],\"request_mismatch\":[0,764,33451,0]}\n",
+      "GEO348_EDGE_AGGREGATE {\"schema\":1,\"atexit_status\":0,\"clear_calls\":407,\"provider_overflows\":0,\"node_size_bytes\":256,\"providers\":[{\"provider\":19,\"requests\":5709033,\"backward\":392031,\"backward_hits\":383634,\"backward_misses\":8397,\"forward_new\":5110372,\"backward_new\":8397,\"same_consumer_new\":0,\"recent0_hits\":17596,\"recent1_hits\":363404,\"recent_miss_found\":2634,\"cache_contradictions\":0,\"gap_max\":259,\"sources_with_edges\":33723,\"sources_ever_backward\":16794,\"edges_on_backward_sources\":5060530,\"finalized_sources\":33723,\"final_length_max\":919,\"gap_bins\":[0,391620,42,72,288,9,0],\"final_length_bins\":[16796,10,132,1918,7364,7503,0]},{\"provider\":13,\"requests\":211585,\"backward\":26807,\"backward_hits\":26799,\"backward_misses\":8,\"forward_new\":184506,\"backward_new\":8,\"same_consumer_new\":0,\"recent0_hits\":1608,\"recent1_hits\":17289,\"recent_miss_found\":7902,\"cache_contradictions\":0,\"gap_max\":259,\"sources_with_edges\":406,\"sources_ever_backward\":405,\"edges_on_backward_sources\":184512,\"finalized_sources\":406,\"final_length_max\":921,\"gap_bins\":[0,25580,120,216,864,27,0],\"final_length_bins\":[0,1,18,24,75,288,0]},{\"provider\":14,\"requests\":272,\"backward\":0,\"backward_hits\":0,\"backward_misses\":0,\"forward_new\":272,\"backward_new\":0,\"same_consumer_new\":0,\"recent0_hits\":0,\"recent1_hits\":0,\"recent_miss_found\":0,\"cache_contradictions\":0,\"gap_max\":0,\"sources_with_edges\":136,\"sources_ever_backward\":0,\"edges_on_backward_sources\":0,\"finalized_sources\":136,\"final_length_max\":2,\"gap_bins\":[0,0,0,0,0,0,0],\"final_length_bins\":[0,136,0,0,0,0,0]},{\"provider\":16,\"requests\":1437362,\"backward\":0,\"backward_hits\":0,\"backward_misses\":0,\"forward_new\":1437362,\"backward_new\":0,\"same_consumer_new\":0,\"recent0_hits\":0,\"recent1_hits\":0,\"recent_miss_found\":0,\"cache_contradictions\":0,\"gap_max\":0,\"sources_with_edges\":287822,\"sources_ever_backward\":0,\"edges_on_backward_sources\":0,\"finalized_sources\":287822,\"final_length_max\":240,\"gap_bins\":[0,0,0,0,0,0,0],\"final_length_bins\":[237440,752,31736,15046,2848,0,0]},{\"provider\":2,\"requests\":4308212,\"backward\":357907,\"backward_hits\":16520,\"backward_misses\":341387,\"forward_new\":3934051,\"backward_new\":341387,\"same_consumer_new\":16254,\"recent0_hits\":266,\"recent1_hits\":16254,\"recent_miss_found\":0,\"cache_contradictions\":0,\"gap_max\":7,\"sources_with_edges\":8395,\"sources_ever_backward\":8262,\"edges_on_backward_sources\":4258644,\"finalized_sources\":8395,\"final_length_max\":1016,\"gap_bins\":[0,357903,4,0,0,0,0],\"final_length_bins\":[0,4,16,72,1008,7295,0]},{\"provider\":21,\"requests\":3,\"backward\":0,\"backward_hits\":0,\"backward_misses\":0,\"forward_new\":3,\"backward_new\":0,\"same_consumer_new\":0,\"recent0_hits\":0,\"recent1_hits\":0,\"recent_miss_found\":0,\"cache_contradictions\":0,\"gap_max\":0,\"sources_with_edges\":3,\"sources_ever_backward\":0,\"edges_on_backward_sources\":0,\"finalized_sources\":3,\"final_length_max\":1,\"gap_bins\":[0,0,0,0,0,0,0],\"final_length_bins\":[3,0,0,0,0,0,0]},{\"provider\":3,\"requests\":3,\"backward\":0,\"backward_hits\":0,\"backward_misses\":0,\"forward_new\":3,\"backward_new\":0,\"same_consumer_new\":0,\"recent0_hits\":0,\"recent1_hits\":0,\"recent_miss_found\":0,\"cache_contradictions\":0,\"gap_max\":0,\"sources_with_edges\":3,\"sources_ever_backward\":0,\"edges_on_backward_sources\":0,\"finalized_sources\":3,\"final_length_max\":1,\"gap_bins\":[0,0,0,0,0,0,0],\"final_length_bins\":[3,0,0,0,0,0,0]},{\"provider\":6,\"requests\":3,\"backward\":0,\"backward_hits\":0,\"backward_misses\":0,\"forward_new\":3,\"backward_new\":0,\"same_consumer_new\":0,\"recent0_hits\":0,\"recent1_hits\":0,\"recent_miss_found\":0,\"cache_contradictions\":0,\"gap_max\":0,\"sources_with_edges\":3,\"sources_ever_backward\":0,\"edges_on_backward_sources\":0,\"finalized_sources\":3,\"final_length_max\":1,\"gap_bins\":[0,0,0,0,0,0,0],\"final_length_bins\":[3,0,0,0,0,0,0]},{\"provider\":1,\"requests\":2,\"backward\":0,\"backward_hits\":0,\"backward_misses\":0,\"forward_new\":2,\"backward_new\":0,\"same_consumer_new\":0,\"recent0_hits\":0,\"recent1_hits\":0,\"recent_miss_found\":0,\"cache_contradictions\":0,\"gap_max\":0,\"sources_with_edges\":2,\"sources_ever_backward\":0,\"edges_on_backward_sources\":0,\"finalized_sources\":2,\"final_length_max\":1,\"gap_bins\":[0,0,0,0,0,0,0],\"final_length_bins\":[2,0,0,0,0,0,0]},{\"provider\":15,\"requests\":18536,\"backward\":0,\"backward_hits\":0,\"backward_misses\":0,\"forward_new\":18536,\"backward_new\":0,\"same_consumer_new\":0,\"recent0_hits\":0,\"recent1_hits\":0,\"recent_miss_found\":0,\"cache_contradictions\":0,\"gap_max\":0,\"sources_with_edges\":2891,\"sources_ever_backward\":0,\"edges_on_backward_sources\":0,\"finalized_sources\":2891,\"final_length_max\":125,\"gap_bins\":[0,0,0,0,0,0,0],\"final_length_bins\":[1040,873,759,157,62,0,0]}],\"overflow\":{\"provider\":0,\"requests\":0,\"backward\":0,\"backward_hits\":0,\"backward_misses\":0,\"forward_new\":0,\"backward_new\":0,\"same_consumer_new\":0,\"recent0_hits\":0,\"recent1_hits\":0,\"recent_miss_found\":0,\"cache_contradictions\":0,\"gap_max\":0,\"sources_with_edges\":0,\"sources_ever_backward\":0,\"edges_on_backward_sources\":0,\"finalized_sources\":0,\"final_length_max\":0,\"gap_bins\":[0,0,0,0,0,0,0],\"final_length_bins\":[0,0,0,0,0,0,0]}}\n"
+    ],
+    "not_formal_acceptance": true
+  }
+}

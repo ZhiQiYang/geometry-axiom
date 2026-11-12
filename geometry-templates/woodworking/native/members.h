@@ -3,6 +3,8 @@
  * consumer. Geometry is supplied exclusively through the public K interface. */
 #ifndef GEOMETRY_WOODWORKING_MEMBERS_H
 #define GEOMETRY_WOODWORKING_MEMBERS_H
+/* Sole fixed member capacity; storage and W/H scratch share it. */
+#define WOOD_MEMBER_CAPACITY 512
 #ifndef GEOMETRY_KERNEL_GEOMETRY_H
 #include "geometry.h"
 #endif

@@ -128,6 +128,8 @@ typedef struct {
         uint32_t id,pose_id,placement;
         /* Contact keeps only its successful three-field decode; its key is independent of the full anchor. */
         bool contact_valid;uint32_t contact_id;
+        /* Optional graph ordinals, revalidated against complete source keys. */
+        size_t placement_node_hint,footprint_node_hint,definition_node_hint;
         WoodMemberPlacementContact contact;
         WoodMemberPlacement anchor;
         WoodMemberDefinition definition;
@@ -644,12 +646,13 @@ static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
 static bool reference_check_all(const World *w)
 {
     AppFootprintMemo footprints={0};app_footprint_memo_begin(&footprints,w);
+    AppAnchorMemo anchors;app_anchor_memo_begin(&anchors,w);
     bool ok=true;
     for (size_t i=0;i<w->wood.timber_count;++i) {
         const Timber *t=&w->wood.timbers[i];TimberAnchor actual_anchor;const TimberAnchor *a=&actual_anchor;
         if (!t->placed) continue;
         PlacementSurface placement;SpaceBoundarySurface boundary;const SpaceBoundarySurface *host_boundary;SurfaceRegion2 f;
-        if(!app_reference_member_anchor(w,i,&actual_anchor)||!app_reference_host_read(w,a->placement_id,&placement,&boundary,&host_boundary)||
+        if(!app_anchor_memo_read(&anchors,i,&actual_anchor)||!app_reference_host_read(w,a->placement_id,&placement,&boundary,&host_boundary)||
            !app_footprint_memo_read(&footprints,i,a->placement_id,&f)) { ok=reference_issue(t->id,"I5","valid footprint on existing surface","missing footprint"); continue; }
         const PlacementSurface *p=&placement;
         const SpaceBoundarySurface *b=placement_boundary_for_rect(p,host_boundary,&f);
@@ -675,7 +678,7 @@ static bool reference_check_all(const World *w)
         for (size_t j=i+1;j<w->wood.timber_count;++j) {
             SurfaceRegion2 other;TimberAnchor other_anchor;
             if(!w->wood.timbers[j].placed)continue;
-            if(!app_reference_member_anchor(w,j,&other_anchor)){ok=false;continue;}
+            if(!app_anchor_memo_read(&anchors,j,&other_anchor)){ok=false;continue;}
             if(other_anchor.placement_id!=a->placement_id)continue;
             if(!app_footprint_memo_read(&footprints,j,a->placement_id,&other)){ok=false;continue;}
             if (uv_rects_overlap(f.min_u,f.min_v,f.max_u,f.max_v,other.min_u,other.min_v,other.max_u,other.max_v)) {
@@ -736,8 +739,13 @@ static bool reference_rebuild(World *w)
     if(!persistent)reference_sources_dispose(ctx);return ok;
 }
 
+/* GEO-300: only the scene-file replay frame sets this, for one buffered
+ * timber/place line at a time; the run is validated as a whole before any
+ * other line, any reported failure and the end of the file. */
+static bool g_reference_validation_deferred;
 static bool reference_checked(const char *p,int n,World *w)
 {
+    if (g_reference_validation_deferred) return true;
     if (world_revalidate(w)) return true;
     scene_error(p,n,g_revalidate_error[0]?g_revalidate_error:"I8: reference validation failed"); return false;
 }
@@ -940,13 +948,18 @@ static void reference_dump(const World *w,FILE *out)
 static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exclude,Coord at,Coord radius,char *out)
 {
     GuideLine probe={0}; probe.placement_id=pid; probe.direction=dir;
-    ReferenceEval ctx={0}; ctx.world=w;ctx.use_current_values=true;
-    for (size_t i=0;i<w->wood.timber_count;++i) ctx.wanted[i]=w->wood.timbers[i].placed;
+    ReferenceEval *ctx=calloc(1,sizeof *ctx);
+    if(!ctx)return false;
+    ctx->world=w;ctx->use_current_values=true;
+    for (size_t i=0;i<w->wood.timber_count;++i) ctx->wanted[i]=w->wood.timbers[i].placed;
     Coord best=radius+1; bool found=false;
-    const PlacementSurface *p=world_find_placement(w,pid); if (!p) return false;
+    const PlacementSurface *p=world_find_placement(w,pid); if (!p){free(ctx);return false;}
     const SpaceBoundarySurface *b=world_placement_boundary(w,p); char axis=dir==GUIDE_ALONG_V?'u':'v';
     enum { SNAP_MAX = WORLD_MAX_SPECS + WORLD_MAX_GUIDES + (POLY_MAX_HOLES+1)*POLY_MAX_VERTICES + WORLD_MAX_GRIDS*GRID_MAX_LINES + WORLD_MAX_TIMBERS*2 };
-    char candidates[SNAP_MAX][REF_EXPR_MAX]; size_t n=0;
+    char (*candidates)[REF_EXPR_MAX]=malloc(sizeof *candidates*(size_t)SNAP_MAX);
+    if(!candidates){free(ctx);return false;}
+    World *trial=NULL;
+    size_t n=0;
     for (size_t i=0;i<geo_named_values_count(&w->geo.named_values) && n<SNAP_MAX;++i) snprintf(candidates[n++],REF_EXPR_MAX,"spec:%s",geo_named_values_at(&w->geo.named_values,i)->name);
     for (size_t i=0;i<geo_guides_count(&w->geo.guide_lines) && n<SNAP_MAX;++i) if (geo_guides_values(&w->geo.guide_lines)[i].id!=exclude && geo_guides_values(&w->geo.guide_lines)[i].placement_id==pid && geo_guides_values(&w->geo.guide_lines)[i].direction==dir)
         snprintf(candidates[n++],REF_EXPR_MAX,"guide:%u",geo_guides_values(&w->geo.guide_lines)[i].id);
@@ -985,20 +998,25 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
     for (size_t i=0;i<n;++i) {
         Coord value;
         g_rule_reference_error[0]=0;
-        if (!reference_eval_text(&ctx,&probe,candidates[i],&value) || !guide_offset_in_range(p,b,dir,value)) continue;
+        if (!reference_eval_text(ctx,&probe,candidates[i],&value) || !guide_offset_in_range(p,b,dir,value)) continue;
         Coord distance=value>at?value-at:at-value;
         if (distance<best) {
             /* A reference back through the moving guide/timber is not a legal snap. */
-            World candidate=*w; bool legal=true;
+            bool legal=true;
             if (exclude) {
-                for (size_t j=0;j<geo_guides_count(&candidate.geo.guide_lines);++j) if (geo_guides_values(&candidate.geo.guide_lines)[j].id==exclude) {
-                    if(!app_guide_put(&candidate,&geo_guides_values(&candidate.geo.guide_lines)[j],candidates[i])){legal=false;break;}
+                if(!trial)trial=malloc(sizeof *trial);
+                if(!trial){found=false;break;}
+                memcpy(trial,w,sizeof *trial);
+                for (size_t j=0;j<geo_guides_count(&trial->geo.guide_lines);++j) if (geo_guides_values(&trial->geo.guide_lines)[j].id==exclude) {
+                    if(!app_guide_put(trial,&geo_guides_values(&trial->geo.guide_lines)[j],candidates[i])){legal=false;break;}
                     bool capture=g_reference_capturing; g_reference_capturing=false;
-                    legal=world_revalidate(&candidate); g_reference_capturing=capture; break;
+                    legal=world_revalidate(trial); g_reference_capturing=capture; break;
                 }
             }
             if (legal) { best=distance; snprintf(out,REF_EXPR_MAX,"%s",candidates[i]); found=true; }
         }
     }
-    reference_sources_dispose(&ctx);return found;
+    reference_sources_dispose(ctx);
+    free(trial);free(candidates);free(ctx);
+    return found;
 }

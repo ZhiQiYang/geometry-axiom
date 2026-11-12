@@ -1,0 +1,26 @@
+{
+  "source_sha": "3949deb9e565a9e5aeca5bc475ec646e77cc6546",
+  "command": [
+    "/dev/shm/pr348-scope-512-load.py"
+  ],
+  "started_utc": "2026-10-28T23:55:05Z",
+  "timeout_seconds": 600,
+  "stack_bytes": 16777216,
+  "scope": "One actual H7 fixture load, not complete canonical/history/H7 acceptance",
+  "exit": 0,
+  "timed_out": false,
+  "seconds": 261.84056347500155,
+  "usage": {
+    "maxrss_kib": 222088,
+    "user_seconds": 256.807886,
+    "system_seconds": 4.963827
+  },
+  "finished_utc": "2026-10-28T23:59:33Z",
+  "stdout_sha256": "47da66d3264fbe943e01e9085d26e73f4ad7317de7e1b41d48d64fd6f4b6c784",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "original_placed_geometry_assertions_exit": 0,
+  "full_h7_passed": false,
+  "archive_bytes": 1066380,
+  "archive_sha256": "e6908d2924052c8ce397d8cae07f61bb3445d00e7c5591613008df66cbff9a23",
+  "files": 310
+}

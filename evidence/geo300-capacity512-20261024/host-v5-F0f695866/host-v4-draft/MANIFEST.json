@@ -1,0 +1,42 @@
+{
+  "source_sha": "400a6d0ca50f3aca104fb569c77c8ef753c93355",
+  "scope": "external static draft only; no generator/test/C execution",
+  "methods_before": [
+    "test_actual_host_independent_admission_storage_and_scratch_values",
+    "test_each_real_declaration_retains_legacy_64_and_admits_up_to_512",
+    "test_full_capacity_redeclaration_replay_and_rejected_edit_preserve_history",
+    "test_real_bridge_guard_withdrawal_uses_safe_missing_id_then_restores",
+    "test_real_host_compile_contract_rejects_each_drifted_capacity"
+  ],
+  "methods_after": [
+    "test_actual_host_independent_admission_storage_and_scratch_values",
+    "test_each_real_declaration_retains_legacy_64_and_admits_up_to_512",
+    "test_full_capacity_redeclaration_replay_and_rejected_edit_preserve_history",
+    "test_real_placed_64_and_512_load_dump_and_canonical_replay",
+    "test_real_placed_512_sequential_replay_and_safe_513_history",
+    "test_real_bridge_guard_withdrawal_uses_safe_missing_id_then_restores",
+    "test_real_host_compile_contract_rejects_each_drifted_capacity"
+  ],
+  "expected_changed_paths": [
+    "/suites/py:test_geo261_timber_capacity_host/count"
+  ],
+  "files": {
+    "tests/test_geo261_timber_capacity_host.py": {
+      "before_sha256": "7d844dcf0c9214fb72d1857a05a8202a86c141e853f7648c1e2b8c495b9373dd",
+      "after_sha256": "4461a3c5ab2b91de670dc79d6aa2a938dd620e62d4e16495ccc3cbef932e7b09",
+      "bytes": 23232
+    },
+    "tests/geo300_scene_generator.py": {
+      "before_sha256": null,
+      "after_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+      "bytes": 18860
+    },
+    "tests/run_all.expected.json": {
+      "before_sha256": "9f9e337914872507dcb238f32de9ef2f8ba678ce0fa1a11d7e5492d85defdc2d",
+      "after_sha256": "e88f97a2c13e4ab561c071855ebf68f58bef5cec5d05ba20f453d58a23cf4209",
+      "bytes": 25509
+    }
+  },
+  "patch_sha256": "c758e22cbe64fef880f307e4afa508a98edc74856c3ad0bce1a9e67b17b50c4b",
+  "original_generator_path": "/tmp/train337-final-p52-p189-prep/p189/gen_scene.py"
+}

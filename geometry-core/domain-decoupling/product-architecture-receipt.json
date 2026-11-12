@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "b147ff5953fec3ebc3a7216040f6c50ac0754cfb",
+  "sourceHead": "34c5560e8612a893d523248400bb648e5080a6ff",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "42912650404",
+  "runId": "43194159207",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -21,7 +21,7 @@
       "exitCode": 0,
       "stdout": "architecture-cli.stdout",
       "stderr": "architecture-cli.stderr",
-      "stdoutSha256": "d0f56888ff0f76bacdc674c3eb531e8bfcaa59d560c4f959da62bb37f244e3e5",
+      "stdoutSha256": "cd4faa9ae74407a87cc4034519d7e4f88b561f5355fba06054ac69a984875d65",
       "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "9be6d33af567e13d3dacc591b40805fa7f8ea553fe91b6437eaac1bb9e3f7b08",
+      "stderrSha256": "ebc60bb47322579598cc0576ce90add53046e3a8270628b9f13bcd5bb43c4971",
       "testsRun": 205
     },
     {
@@ -51,7 +51,7 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "46a34e7ee59d0964adf20679d2ee5acc0a281cb65e7b69089db0a30003a72797",
+      "stderrSha256": "2c25cb186ab18d38cea6faef85ce8af7f15a5f3c33fd6ccfbbec6a271ba50942",
       "testsRun": 18
     }
   ],
@@ -61,7 +61,7 @@
     "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
     "tests/test_product_architecture.py": "ba001185b4fd58a5cec8045cff72c1cf9c899733c94f94f28f161db05564a9a0"
   },
-  "scanSha256": "d0f56888ff0f76bacdc674c3eb531e8bfcaa59d560c4f959da62bb37f244e3e5",
+  "scanSha256": "cd4faa9ae74407a87cc4034519d7e4f88b561f5355fba06054ac69a984875d65",
   "ownedCount": 352,
   "exclusionCount": 287,
   "edgeCount": 833,
@@ -69,7 +69,7 @@
   "inputs": [
     {
       "path": "current_geometry.c",
-      "lfSha256": "bb275beef00bb4b14f011e9064d71ea9146b25c914b847d9743395ad8efd69be"
+      "lfSha256": "f984119bd72ff67e4bdb28ae583c5cd1345b5c0d1cec5c3fa1e23ca291d83133"
     },
     {
       "path": "geometry-app/application.js",
@@ -189,7 +189,7 @@
     },
     {
       "path": "geometry-app/native/reference_sources.inc",
-      "lfSha256": "534f1a273cb53471b05dc81ac286d5e123fa7e53ba8a806b275b8c2e754d9700"
+      "lfSha256": "8996bca3c03a397061b8f8ac367ca9ebfbde6a3c0960011f55dca50a88963bcf"
     },
     {
       "path": "geometry-app/native/stagger_facts.inc",
@@ -205,11 +205,11 @@
     },
     {
       "path": "geometry-app/native/world_candidate.inc",
-      "lfSha256": "4088c43059205a1d04c44d37c7960b88b99afac9e9ec3e26ea1dc570b06f0a59"
+      "lfSha256": "850581b75c9d51cd30b194205ad4524b140d27560fcc997c742dcf4cab467cf0"
     },
     {
       "path": "geometry-app/native/world_validation.inc",
-      "lfSha256": "4a6f085dd1d983a4a3d43787054dbd96aeb2a6bbe6e48e336faabe10430c9d8b"
+      "lfSha256": "25fbbb47e30aaf182b94c1ef74cf366fc0971da1fd795cbf68327aeaae8d46b2"
     },
     {
       "path": "geometry-core/assembly.inc",
@@ -997,11 +997,11 @@
     },
     {
       "path": "geometry-core/kernel/source.c",
-      "lfSha256": "64c7a6223be0e824232bc0ec0139a3728606fb9666a991a951b5aa9357cf3e09"
+      "lfSha256": "a1d6b154a135d989cbd4c3cd427605ba49fff28553d27450774cc61f1b76e418"
     },
     {
       "path": "geometry-core/kernel/source.h",
-      "lfSha256": "aa00bd5078495bc3c4165c81a58129a4216c6b40c87da91700f7b0c3bf9820a1"
+      "lfSha256": "001ed24b9b161e7a605d3f6d5a7e43ea7ed6c75a6e5e43edcf628ee2bc1dc010"
     },
     {
       "path": "geometry-core/kernel/types.h",
@@ -1089,7 +1089,7 @@
     },
     {
       "path": "geometry-core/references.inc",
-      "lfSha256": "bf1b396dd2654a9db43ecb6bd4285557406c515ddd986d7265e8d088417b0026"
+      "lfSha256": "ccaa0fd4203f731a085094d1e0c301c58b78c4b6090af19c9d31130037536f72"
     },
     {
       "path": "geometry-core/rule_cases/__init__.py",
@@ -1149,7 +1149,7 @@
     },
     {
       "path": "geometry-core/transactions.inc",
-      "lfSha256": "aa6ab5e55f9ed8eebfcbdbcc163f2648aa01f773c84d85a5f5861453fc84d2dd"
+      "lfSha256": "84413e6de51adc51d708bcbce9c5a755e41286c264441ff04ea31453b3301cd5"
     },
     {
       "path": "geometry-guide/axiom_examples.py",
@@ -1185,7 +1185,7 @@
     },
     {
       "path": "geometry-guide/公理層-閱讀器.html",
-      "lfSha256": "6a422093a7e72500f82bdc55cf9af48f37bbfabe292e52b03d2a8abd94b8d577"
+      "lfSha256": "5c0154e73959cc250a99334156d15472bc47b62447580b7aa568adbb1a6093cc"
     },
     {
       "path": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
@@ -1229,11 +1229,11 @@
     },
     {
       "path": "geometry-templates/woodworking/native/assembly.c",
-      "lfSha256": "759995a8d7fd88d2e3b301dbd0dd812483d6d3483b277e449b884984fc468891"
+      "lfSha256": "77173ef7f1163c38fd53f120bae4c668d87472059268e3f5daae66b080e0a952"
     },
     {
       "path": "geometry-templates/woodworking/native/assembly.h",
-      "lfSha256": "0855f264cb41400689dd44973d91e96fdb67079f4367208ab73b2e639beb0cb1"
+      "lfSha256": "73559a878c21dc693b2688c18ff6287b2a5a37ecc3f41f235eebd734e854561f"
     },
     {
       "path": "geometry-templates/woodworking/native/assembly_sources.c",
@@ -1253,7 +1253,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/contact_sources.c",
-      "lfSha256": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839"
+      "lfSha256": "76b43ffb52ac4663d1f303dbe34950de32ba8bbf8f4bd85652eb29fe0bf55058"
     },
     {
       "path": "geometry-templates/woodworking/native/contact_sources.h",
@@ -1261,11 +1261,11 @@
     },
     {
       "path": "geometry-templates/woodworking/native/contact_world.c",
-      "lfSha256": "83fd46c25acead96ebc724f673f405176fdc5463296fd8b3b77b72fd66f7798b"
+      "lfSha256": "43f345966eb5b9421f0c7e209ed147ebe516177545cf0fca86f99cba8ffcb593"
     },
     {
       "path": "geometry-templates/woodworking/native/contact_world.h",
-      "lfSha256": "03bf7a5f0cdd844d74c220e51c4b6ad34336fe338d47e80192898c9fab4a026d"
+      "lfSha256": "d29036b9e128246daa8f5c3995353e0894bd27cdc0be802beca465e4e467a0a9"
     },
     {
       "path": "geometry-templates/woodworking/native/contacts.c",
@@ -1281,7 +1281,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/cut_list.h",
-      "lfSha256": "1c5d28d45e208daf0127e6554c0cd60877b1ccf976e03e7f85c27615c3727123"
+      "lfSha256": "e266973f001c3465c4da1401b4c045b9b1088859f33a5e729585e85c12b8ebfd"
     },
     {
       "path": "geometry-templates/woodworking/native/definition_sources.c",
@@ -1301,7 +1301,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/document.h",
-      "lfSha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d"
+      "lfSha256": "8f0416a16489e6d26941f653bed8d6ecf6980fc73cb8868b53d3c4f42847db56"
     },
     {
       "path": "geometry-templates/woodworking/native/domain_values.h",
@@ -1397,7 +1397,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/member_reference.h",
-      "lfSha256": "ad7d61d9cb72bb0c4ce9c44493b2cb7caca1fa91cf8b6d0b93bf72b1bf3934a8"
+      "lfSha256": "8822025f9e4dc8f37fec92fc01d758aeec6b23936fd5c094e212541b426465c4"
     },
     {
       "path": "geometry-templates/woodworking/native/members.c",
@@ -1405,7 +1405,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/members.h",
-      "lfSha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7"
+      "lfSha256": "e6bfa28bb86a10cfbec42f52aad1bad1620ce7bcc3aed27f5c9fb52df2237aeb"
     },
     {
       "path": "geometry-templates/woodworking/native/obstacles.h",
@@ -1453,7 +1453,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/world_validation.c",
-      "lfSha256": "ea62a9fcc8f6ef5ccf9faa1f419617118b8904f25a4f743440c2f6132ccf4096"
+      "lfSha256": "6b3e5125ceecb6bc563cb842df15ed840878c71698ac264c2a065a08623abea0"
     },
     {
       "path": "geometry-templates/woodworking/native/world_validation.h",
@@ -1485,7 +1485,7 @@
     },
     {
       "path": "geometry-web/assembly_bridge.inc",
-      "lfSha256": "c704267b0ea2802079104d85fc35123172eb7e7c8a7455347b817f5e42ad7fb0"
+      "lfSha256": "1a9eabb0a54847e6d9d75e122a01b1c410e2be0f25af36a0ebaf01b97fa39786"
     },
     {
       "path": "geometry-web/assembly_candidate_impact_test.js",
@@ -2624,5 +2624,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "a29e2288979b3a4f9fd547fa5ba173a6141215c062e3f8d2cfa77e7b0ddb0428"
+  "inputLfClosureSha256": "c1c3be6a09b2fe8deca45105adaec0631bb0f2edf9506147fdce1bf6a458c7db"
 }

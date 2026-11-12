@@ -1,0 +1,648 @@
+{
+  "golden": "oracle-golden.json",
+  "buildable_count": 64,
+  "scene_count": 64,
+  "skipped": [],
+  "scenes": [
+    {
+      "file": "f1-00.scene",
+      "room": "F1客廳",
+      "layout": 0,
+      "name": "左上起鋪,板長沿Y",
+      "timbers": 95,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": true
+    },
+    {
+      "file": "f1-01.scene",
+      "room": "F1客廳",
+      "layout": 1,
+      "name": "左下起鋪,板長沿Y",
+      "timbers": 97,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": true
+    },
+    {
+      "file": "f1-02.scene",
+      "room": "F1客廳",
+      "layout": 2,
+      "name": "右上起鋪,板長沿Y",
+      "timbers": 96,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": true
+    },
+    {
+      "file": "f1-03.scene",
+      "room": "F1客廳",
+      "layout": 3,
+      "name": "右下起鋪,板長沿Y",
+      "timbers": 98,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": true
+    },
+    {
+      "file": "f1-04.scene",
+      "room": "F1客廳",
+      "layout": 4,
+      "name": "左上起鋪,板長沿X",
+      "timbers": 108,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": true
+    },
+    {
+      "file": "f1-05.scene",
+      "room": "F1客廳",
+      "layout": 5,
+      "name": "右上起鋪,板長沿X",
+      "timbers": 110,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": true
+    },
+    {
+      "file": "f1-06.scene",
+      "room": "F1客廳",
+      "layout": 6,
+      "name": "左下起鋪,板長沿X",
+      "timbers": 109,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": true
+    },
+    {
+      "file": "f1-07.scene",
+      "room": "F1客廳",
+      "layout": 7,
+      "name": "右下起鋪,板長沿X",
+      "timbers": 111,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": true
+    },
+    {
+      "file": "f2-00.scene",
+      "room": "F2主臥",
+      "layout": 0,
+      "name": "左上起鋪,板長沿Y",
+      "timbers": 57,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f2-01.scene",
+      "room": "F2主臥",
+      "layout": 1,
+      "name": "左下起鋪,板長沿Y",
+      "timbers": 57,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f2-02.scene",
+      "room": "F2主臥",
+      "layout": 2,
+      "name": "右上起鋪,板長沿Y",
+      "timbers": 57,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f2-03.scene",
+      "room": "F2主臥",
+      "layout": 3,
+      "name": "右下起鋪,板長沿Y",
+      "timbers": 57,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f2-04.scene",
+      "room": "F2主臥",
+      "layout": 4,
+      "name": "左上起鋪,板長沿X",
+      "timbers": 51,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f2-05.scene",
+      "room": "F2主臥",
+      "layout": 5,
+      "name": "右上起鋪,板長沿X",
+      "timbers": 51,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f2-06.scene",
+      "room": "F2主臥",
+      "layout": 6,
+      "name": "左下起鋪,板長沿X",
+      "timbers": 51,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f2-07.scene",
+      "room": "F2主臥",
+      "layout": 7,
+      "name": "右下起鋪,板長沿X",
+      "timbers": 51,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f3-00.scene",
+      "room": "F3次臥",
+      "layout": 0,
+      "name": "左上起鋪,板長沿Y",
+      "timbers": 48,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f3-01.scene",
+      "room": "F3次臥",
+      "layout": 1,
+      "name": "左下起鋪,板長沿Y",
+      "timbers": 48,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f3-02.scene",
+      "room": "F3次臥",
+      "layout": 2,
+      "name": "右上起鋪,板長沿Y",
+      "timbers": 48,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f3-03.scene",
+      "room": "F3次臥",
+      "layout": 3,
+      "name": "右下起鋪,板長沿Y",
+      "timbers": 48,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f3-04.scene",
+      "room": "F3次臥",
+      "layout": 4,
+      "name": "左上起鋪,板長沿X",
+      "timbers": 47,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f3-05.scene",
+      "room": "F3次臥",
+      "layout": 5,
+      "name": "右上起鋪,板長沿X",
+      "timbers": 47,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f3-06.scene",
+      "room": "F3次臥",
+      "layout": 6,
+      "name": "左下起鋪,板長沿X",
+      "timbers": 47,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f3-07.scene",
+      "room": "F3次臥",
+      "layout": 7,
+      "name": "右下起鋪,板長沿X",
+      "timbers": 47,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f4-00.scene",
+      "room": "F4走道",
+      "layout": 0,
+      "name": "左上起鋪,板長沿Y",
+      "timbers": 25,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f4-01.scene",
+      "room": "F4走道",
+      "layout": 1,
+      "name": "左下起鋪,板長沿Y",
+      "timbers": 25,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f4-02.scene",
+      "room": "F4走道",
+      "layout": 2,
+      "name": "右上起鋪,板長沿Y",
+      "timbers": 25,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f4-03.scene",
+      "room": "F4走道",
+      "layout": 3,
+      "name": "右下起鋪,板長沿Y",
+      "timbers": 25,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f4-04.scene",
+      "room": "F4走道",
+      "layout": 4,
+      "name": "左上起鋪,板長沿X",
+      "timbers": 28,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f4-05.scene",
+      "room": "F4走道",
+      "layout": 5,
+      "name": "右上起鋪,板長沿X",
+      "timbers": 28,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f4-06.scene",
+      "room": "F4走道",
+      "layout": 6,
+      "name": "左下起鋪,板長沿X",
+      "timbers": 28,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f4-07.scene",
+      "room": "F4走道",
+      "layout": 7,
+      "name": "右下起鋪,板長沿X",
+      "timbers": 28,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f5-00.scene",
+      "room": "F5廚房",
+      "layout": 0,
+      "name": "左上起鋪,板長沿Y",
+      "timbers": 40,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f5-01.scene",
+      "room": "F5廚房",
+      "layout": 1,
+      "name": "左下起鋪,板長沿Y",
+      "timbers": 40,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f5-02.scene",
+      "room": "F5廚房",
+      "layout": 2,
+      "name": "右上起鋪,板長沿Y",
+      "timbers": 35,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f5-03.scene",
+      "room": "F5廚房",
+      "layout": 3,
+      "name": "右下起鋪,板長沿Y",
+      "timbers": 35,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f5-04.scene",
+      "room": "F5廚房",
+      "layout": 4,
+      "name": "左上起鋪,板長沿X",
+      "timbers": 42,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f5-05.scene",
+      "room": "F5廚房",
+      "layout": 5,
+      "name": "右上起鋪,板長沿X",
+      "timbers": 43,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f5-06.scene",
+      "room": "F5廚房",
+      "layout": 6,
+      "name": "左下起鋪,板長沿X",
+      "timbers": 42,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "f5-07.scene",
+      "room": "F5廚房",
+      "layout": 7,
+      "name": "右下起鋪,板長沿X",
+      "timbers": 43,
+      "pending": 2,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-00.scene",
+      "room": "例:3700×2000 矩形(最後一條縫挪動)",
+      "layout": 0,
+      "name": "左上起鋪,板長沿Y",
+      "timbers": 28,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-01.scene",
+      "room": "例:3700×2000 矩形(最後一條縫挪動)",
+      "layout": 1,
+      "name": "左下起鋪,板長沿Y",
+      "timbers": 28,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-02.scene",
+      "room": "例:3700×2000 矩形(最後一條縫挪動)",
+      "layout": 2,
+      "name": "右上起鋪,板長沿Y",
+      "timbers": 28,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-03.scene",
+      "room": "例:3700×2000 矩形(最後一條縫挪動)",
+      "layout": 3,
+      "name": "右下起鋪,板長沿Y",
+      "timbers": 28,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-04.scene",
+      "room": "例:3700×2000 矩形(最後一條縫挪動)",
+      "layout": 4,
+      "name": "左上起鋪,板長沿X",
+      "timbers": 36,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-05.scene",
+      "room": "例:3700×2000 矩形(最後一條縫挪動)",
+      "layout": 5,
+      "name": "右上起鋪,板長沿X",
+      "timbers": 36,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-06.scene",
+      "room": "例:3700×2000 矩形(最後一條縫挪動)",
+      "layout": 6,
+      "name": "左下起鋪,板長沿X",
+      "timbers": 36,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-07.scene",
+      "room": "例:3700×2000 矩形(最後一條縫挪動)",
+      "layout": 7,
+      "name": "右下起鋪,板長沿X",
+      "timbers": 36,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex940-00.scene",
+      "room": "例:940×2000 矩形(第一條縫就要挪)",
+      "layout": 0,
+      "name": "左上起鋪,板長沿Y",
+      "timbers": 10,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex940-01.scene",
+      "room": "例:940×2000 矩形(第一條縫就要挪)",
+      "layout": 1,
+      "name": "左下起鋪,板長沿Y",
+      "timbers": 10,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex940-02.scene",
+      "room": "例:940×2000 矩形(第一條縫就要挪)",
+      "layout": 2,
+      "name": "右上起鋪,板長沿Y",
+      "timbers": 10,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex940-03.scene",
+      "room": "例:940×2000 矩形(第一條縫就要挪)",
+      "layout": 3,
+      "name": "右下起鋪,板長沿Y",
+      "timbers": 10,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex940-04.scene",
+      "room": "例:940×2000 矩形(第一條縫就要挪)",
+      "layout": 4,
+      "name": "左上起鋪,板長沿X",
+      "timbers": 12,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex940-05.scene",
+      "room": "例:940×2000 矩形(第一條縫就要挪)",
+      "layout": 5,
+      "name": "右上起鋪,板長沿X",
+      "timbers": 12,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex940-06.scene",
+      "room": "例:940×2000 矩形(第一條縫就要挪)",
+      "layout": 6,
+      "name": "左下起鋪,板長沿X",
+      "timbers": 12,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex940-07.scene",
+      "room": "例:940×2000 矩形(第一條縫就要挪)",
+      "layout": 7,
+      "name": "右下起鋪,板長沿X",
+      "timbers": 12,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-gap3-00.scene",
+      "room": "例:縫寬 3 的 3700×4000 矩形(反向起鋪首縫取上界)",
+      "layout": 0,
+      "name": "左上起鋪,板長沿Y",
+      "timbers": 48,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-gap3-01.scene",
+      "room": "例:縫寬 3 的 3700×4000 矩形(反向起鋪首縫取上界)",
+      "layout": 1,
+      "name": "左下起鋪,板長沿Y",
+      "timbers": 48,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-gap3-02.scene",
+      "room": "例:縫寬 3 的 3700×4000 矩形(反向起鋪首縫取上界)",
+      "layout": 2,
+      "name": "右上起鋪,板長沿Y",
+      "timbers": 48,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-gap3-03.scene",
+      "room": "例:縫寬 3 的 3700×4000 矩形(反向起鋪首縫取上界)",
+      "layout": 3,
+      "name": "右下起鋪,板長沿Y",
+      "timbers": 48,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-gap3-04.scene",
+      "room": "例:縫寬 3 的 3700×4000 矩形(反向起鋪首縫取上界)",
+      "layout": 4,
+      "name": "左上起鋪,板長沿X",
+      "timbers": 58,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-gap3-05.scene",
+      "room": "例:縫寬 3 的 3700×4000 矩形(反向起鋪首縫取上界)",
+      "layout": 5,
+      "name": "右上起鋪,板長沿X",
+      "timbers": 58,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-gap3-06.scene",
+      "room": "例:縫寬 3 的 3700×4000 矩形(反向起鋪首縫取上界)",
+      "layout": 6,
+      "name": "左下起鋪,板長沿X",
+      "timbers": 58,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    },
+    {
+      "file": "ex3700-gap3-07.scene",
+      "room": "例:縫寬 3 的 3700×4000 矩形(反向起鋪首縫取上界)",
+      "layout": 7,
+      "name": "右下起鋪,板長沿X",
+      "timbers": 58,
+      "pending": 0,
+      "cycles": 0,
+      "over_core_cap": false
+    }
+  ]
+}

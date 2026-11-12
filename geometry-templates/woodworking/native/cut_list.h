@@ -3,7 +3,7 @@
 #ifndef GEOMETRY_WOODWORKING_CUT_LIST_H
 #define GEOMETRY_WOODWORKING_CUT_LIST_H
 #include "members.h"
-#define WOOD_CUT_LIST_MEMBER_CAPACITY 64
+#define WOOD_CUT_LIST_MEMBER_CAPACITY WOOD_MEMBER_CAPACITY
 typedef struct {
     GeoCoord length,size_a,size_b;
     WoodMemberRole role;

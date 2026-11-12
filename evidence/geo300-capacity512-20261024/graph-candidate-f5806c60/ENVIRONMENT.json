@@ -1,0 +1,70 @@
+{
+  "observed_utc": "2026-10-28T23:33:02Z",
+  "historical_environment_receipt": "0cd9739e7701293a42e244dcf2b2f51e71ea7216:evidence/geo300-capacity512-20261024/history-complete-75481194/ENVIRONMENT.json",
+  "scope": "Same cloud session; no environment installations or compiler changes between receipts. This collection is post-run observation; per-run locale, build arguments and binary hashes are retained in raw.",
+  "uname": {
+    "command": [
+      "uname",
+      "-a"
+    ],
+    "exit": 0,
+    "stdout": "Linux 0a503cde95cd 6.18.55 #1 SMP Wed Oct 14 19:45:18 UTC 2026 x86_64 GNU/Linux\n",
+    "stderr": ""
+  },
+  "cc": {
+    "command": [
+      "cc",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "cc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "stderr": ""
+  },
+  "python": {
+    "command": [
+      "python3",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "Python 3.12.14\n",
+    "stderr": ""
+  },
+  "git": {
+    "command": [
+      "git",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "git version 2.52.0\n",
+    "stderr": ""
+  },
+  "node": {
+    "command": [
+      "node",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "v24.19.0\n",
+    "stderr": ""
+  },
+  "chrome": {
+    "command": [
+      "google-chrome",
+      "--version"
+    ],
+    "exit": null,
+    "error": "FileNotFoundError(2, 'No such file or directory')"
+  },
+  "mount_free": {
+    "command": [
+      "df",
+      "-B1",
+      "/workspace",
+      "/tmp",
+      "/dev/shm"
+    ],
+    "exit": 0,
+    "stdout": "Filesystem       1B-blocks        Used   Available Use% Mounted on\noverlay        33770192896 32035196928      233472 100% /\nnone           17871880192 17565110272   306769920  99% /tmp\nshm            17871880192  2794160128 15077720064  16% /dev/shm\n",
+    "stderr": ""
+  }
+}
