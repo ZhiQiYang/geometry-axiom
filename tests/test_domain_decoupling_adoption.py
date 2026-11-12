@@ -443,6 +443,12 @@ def r14_section_heads(lines):
             if opened and (opened[1][0] != "`" or "`" not in opened[2]):
                 fence = (opened[1][0], len(opened[1]))
                 continue
+            # CommonMark HTML declarations are literal through the first '>'.
+            # A multiline <!DOCTYPE must not expose approval-looking headings.
+            if re.match(r" {0,3}<![A-Z]", line):
+                if ">" not in line:
+                    literal_end = ">"
+                continue
             opened = re.match(r" {0,3}(<\?|<!\[CDATA\[)", line)
             if opened:
                 ending = "?>" if opened[1] == "<?" else "]]>"
@@ -634,6 +640,91 @@ def restore_pre_r17_source(current_bytes, queue_bytes, delta_bytes=None):
     return previous
 
 
+# R03 is a separately approved overlay. Its exact bytes and decision record
+# are removed before replaying the unchanged R14/R17 historical oracles.
+R03_APPROVED_SHA256 = "323de5e3ffdecef5019be784e8dd263f135f244ba0761ddfd89a59f1a3b823b3"
+R03_APPROVED_BLOB = "8666ea7765415eba4dd9927fd36a3575f9cf1cdc"
+R03_DELTA_SHA256 = 'fdc9e6c4bf6b70530ec0f76e8ac2af48f91d8d6b65d97b84e6f6b89cfabce496'
+R03_DECISION_HEADING = '### 2026-11-12 R03 §十條文全文核可 🔒'
+R03_APPROVAL_RECORD = 'R03 §十條文全文核可（🔒 2026-11-12 台北 08:10）：使用者原話「我核可」；範圍＝#205 留言 6435623938 §十「公理層逐條原文→新文」17 處替換新文＋D⟨FT1⟩／I⟨FT1⟩／R⟨FT1⟩ 3 條新增（#205 留言 6793924055 選項 A），不含其他未列條文；FT-S1=A 與「不另加固定累積退距上限」為先前已決，未重新決定；紀錄見 [#205 留言 6810376024](https://github.com/ZhiQiYang/geometry-axiom/issues/205#issuecomment-6810376024)。'
+
+
+def verify_r03_approval(queue_bytes):
+    """Verify the complete authorized section, then recover the old queue."""
+    queue = normalized(queue_bytes)
+    # Admit exactly the original inline record or the subsequent standalone
+    # heading at the same location. Normalize only this exact layout locally;
+    # keep all existing approval/Markdown guards and one CRLF normalization.
+    if R03_DECISION_HEADING in queue:
+        separate = (R14_DECISION_SECTION + R03_DECISION_HEADING + "\n\n"
+                    + R03_APPROVAL_RECORD + "\n\n")
+        require(queue.count(R03_DECISION_HEADING) == 1 and queue.count(separate) == 1,
+                "R03_APPROVAL", "R03 standalone heading must have its exact unique adjacent scope")
+        original_lines = queue.split("\n")
+        require(original_lines.index(R03_DECISION_HEADING) in r14_section_heads(original_lines),
+                "R03_APPROVAL", "R03 standalone heading must be outside Markdown containers")
+        queue = queue.replace(separate, R14_DECISION_SECTION + R03_APPROVAL_RECORD + "\n\n", 1)
+    lines = queue.split("\n")
+    starts = [i for i, line in enumerate(lines) if line == R14_DECISION_HEADING]
+    records = [i for i, line in enumerate(lines) if line == R03_APPROVAL_RECORD]
+    require(len(starts) == len(records) == 1, "R03_APPROVAL", "R03 needs one exact scoped full-text record")
+    probe = lines.copy()
+    probe[records[0]] = "### R03 approval context probe"
+    heads = r14_section_heads(lines)
+    require(starts[0] in heads and records[0] in r14_section_heads(probe),
+            "R03_APPROVAL", "R03 approval must be outside Markdown containers")
+    end = next((i for i in heads if i > starts[0]), len(lines))
+    section = "\n".join(lines[starts[0]:end]) + ("\n" if end < len(lines) else "")
+    require(section == R14_DECISION_SECTION + R03_APPROVAL_RECORD + "\n\n",
+            "R03_APPROVAL", "R03 approval is bound to the exact existing decision section")
+    return queue.replace(R03_APPROVAL_RECORD + "\n\n", "", 1).encode("utf-8")
+
+
+def restore_pre_r03_source(current_bytes, queue_bytes, delta_bytes=None):
+    """Reverse only the 17 replacements and three approved recipe clauses."""
+    verify_r03_approval(queue_bytes)
+    current = normalized(current_bytes).encode("utf-8")
+    require(hashlib.sha256(current).hexdigest() == R03_APPROVED_SHA256
+            and hashlib.sha1(b"blob " + str(len(current)).encode() + bytes([0]) + current).hexdigest() == R03_APPROVED_BLOB,
+            "R03_APPROVED_SOURCE", "R03 requires the exact user-approved twenty writes")
+    if delta_bytes is None:
+        delta_bytes = (ROOT / "tests/fixtures/r03-approved-delta.json").read_bytes()
+    delta_bytes = delta_bytes.replace(b"\r\n", b"\n")
+    require(hashlib.sha256(delta_bytes).hexdigest() == R03_DELTA_SHA256,
+            "R03_FROZEN_DELTA", "R03 uses the independently verified original proposal blocks")
+    delta = json.loads(delta_bytes)
+    require(delta["schema"] == "r03-approved-delta/1"
+            and delta["beforeCommit"] == "f3ee80cf07a548089bfe705e50c93fc7632d8720"
+            and delta["approvedCommit"] == "73f31618a84d4feb6fdb526a9f419c24270a0d90"
+            and delta["sourceCommentBodySha256"] == "719b7831d4f485fad73b5bb1d84214363a385eb97f67b37c410ebfd1baae562c"
+            and [block["item"] for block in delta["blocks"]] == list(range(1, 21))
+            and all(block["old"] is not None for block in delta["blocks"][:17])
+            and all(block["old"] is None for block in delta["blocks"][17:]),
+            "R03_DELTA_SCOPE", "R03 scope is exactly the authorized 17 replacements and three additions")
+    text = current.decode("utf-8")
+    before_anchor = delta["insertionAfter"] + "\n\n"
+    after_anchor = before_anchor + delta["additionBlock"] + "\n" + delta["insertionBefore"]
+    require(text.count(after_anchor) == 1, "R03_ADDITION_ANCHOR", "Recipe clauses must remain between D51 and D52")
+    text = text.replace(after_anchor, before_anchor + delta["insertionBefore"], 1)
+    for block in reversed(delta["blocks"][:17]):
+        require(text.count(block["new"]) == 1, "R03_REVERSE_ANCHOR", block["label"])
+        text = text.replace(block["new"], block["old"], 1)
+    previous = text.encode("utf-8")
+    require(hashlib.sha256(previous).hexdigest() == R14_ON_R17_SHA256
+            and hashlib.sha1(b"blob " + str(len(previous)).encode() + bytes([0]) + previous).hexdigest() == "b3472f2d2b481f7c889945a092fb9b3e911dc027",
+            "R03_PREVIOUS_SOURCE", "R03 reversal must restore the unchanged released R14/R17 bytes")
+    return previous
+
+
+def previous_r03_queue():
+    return verify_r03_approval((ROOT / "決策佇列.md").read_bytes())
+
+
+def previous_r03_source():
+    return restore_pre_r03_source((ROOT / "公理層.md").read_bytes(),
+                                  (ROOT / "決策佇列.md").read_bytes())
+
+
 class AdoptionIntegrity(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -730,12 +821,65 @@ class AdoptionIntegrity(unittest.TestCase):
     def test_actual_addendum_approval_matches_human_answer_and_frozen_review(self):
         verify_addendum_approval(self.approval)
 
+    def check_r03_exact_adoption(self):
+        """Additional R03 obligations; no old clause, hash or expected count changes."""
+        actual = (ROOT / "公理層.md").read_bytes().replace(b"\r\n", b"\n")
+        queue = (ROOT / "決策佇列.md").read_bytes().replace(b"\r\n", b"\n")
+        delta_bytes = (ROOT / "tests/fixtures/r03-approved-delta.json").read_bytes()
+        delta = json.loads(delta_bytes)
+        previous = restore_pre_r03_source(actual, queue)
+        inline_section = (R14_DECISION_SECTION + R03_APPROVAL_RECORD + "\n\n").encode()
+        separate_section = (R14_DECISION_SECTION + R03_DECISION_HEADING + "\n\n"
+                            + R03_APPROVAL_RECORD + "\n\n").encode()
+        inline_queue = queue.replace(separate_section, inline_section, 1)
+        self.assertEqual(inline_queue.count(inline_section), 1, "R03_LAYOUT_ANCHOR")
+        separate_queue = inline_queue.replace(inline_section, separate_section, 1)
+        for approved_queue in (inline_queue, separate_queue):
+            self.assertEqual(restore_pre_r03_source(actual, approved_queue), previous)
+            self.assertEqual(verify_r03_approval(approved_queue), verify_r03_approval(inline_queue))
+        heading = (R03_DECISION_HEADING + "\n\n").encode()
+        detached = (R03_DECISION_HEADING + "\n\n" + R03_APPROVAL_RECORD + "\n\n").encode()
+        for altered in (
+                separate_queue.replace(heading, heading.replace(b"R03", b"R04"), 1),
+                separate_queue.replace(heading, b"#" + heading, 1),
+                separate_queue.replace(heading, b" " + heading, 1),
+                separate_queue.replace(heading, heading + b"### extra heading\n\n", 1),
+                separate_queue.replace(heading, heading + b"extra wording\n\n", 1),
+                separate_queue + heading,
+                separate_queue.replace(detached, b"", 1) + b"### elsewhere\n\n" + detached,
+                separate_queue.replace(heading, b"", 1) + heading):
+            self.reject("R03_APPROVAL", restore_pre_r03_source, actual, altered)
+        self.assertEqual(hashlib.sha256(previous).hexdigest(), R14_ON_R17_SHA256, "R03_OLD_SOURCE_UNCHANGED")
+        self.assertEqual(restore_pre_r03_source(actual.replace(b"\n", b"\r\n"), queue.replace(b"\n", b"\r\n")), previous)
+        self.assertEqual(len(source_layout(normalized(previous))[0]), 208)
+        for changed in (actual + b"\n", actual.replace(b"\n", b"\r\r\n"), previous,
+                        *(actual.replace(block["new"].encode(), b"tampered\n", 1) for block in delta["blocks"])):
+            with self.subTest(r03_source=hashlib.sha256(changed).hexdigest()):
+                self.reject("R03_APPROVED_SOURCE", restore_pre_r03_source, changed, queue)
+        for changed in (delta_bytes + b"\n", delta_bytes.replace(b'"item": 1,', b'"item": 0,', 1)):
+            self.reject("R03_FROZEN_DELTA", restore_pre_r03_source, actual, queue, changed)
+        record = (R03_APPROVAL_RECORD + "\n\n").encode()
+        missing = queue.replace(record, b"", 1)
+        self.reject("R03_APPROVAL", restore_pre_r03_source, actual, missing)
+        self.reject("R03_APPROVAL", restore_pre_r03_source, actual, queue + record)
+        self.reject("R03_APPROVAL", restore_pre_r03_source, actual,
+                    missing + "\n### 其他決策\n\n".encode() + record)
+        for opening, closing in ((b"```text\n", b"```\n"), (b"~~~\n", b"~~~\n"),
+                                 (b"<!--\n", b"-->\n"), (b"<pre>\n", b"</pre>\n")):
+            self.reject("R03_APPROVAL", restore_pre_r03_source, actual,
+                        queue.replace(record, opening + record + closing, 1))
+        section = separate_section if separate_section in queue else inline_section
+        self.reject("R03_APPROVAL", restore_pre_r03_source, actual,
+                    queue.replace(section, b"<!DOCTYPE\n" + section + b"## faux boundary\n>\n", 1))
+        self.assertEqual(restore_pre_r03_source(actual, b"<!DOCTYPE html>\n\n" + queue), previous)
+
     def test_actual_ssot_is_the_full_approved_upstream_preserving_adoption(self):
-        queue = (ROOT / "決策佇列.md").read_bytes()
+        self.check_r03_exact_adoption()
+        queue = previous_r03_queue()
         verify_revision_decisions(queue, POST_APPROVAL_REVISIONS)
         patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
         current = apply_r14_extension(self.current, queue, patch)
-        actual = (ROOT / "公理層.md").read_bytes()
+        actual = previous_r03_source()
         actual = restore_pre_r17_source(actual, queue)
         actual = apply_r14_extension(normalized(actual), queue, patch)
         validate_current_document(actual.encode("utf-8"), current)
@@ -781,7 +925,7 @@ class AdoptionIntegrity(unittest.TestCase):
                 self.reject(code, apply_post_approval_revisions, self.expected,
                             earlier + (last | {"edits": edits},))
         # the approval must be the user's own recorded answer about the edited clauses
-        queue = (ROOT / "決策佇列.md").read_bytes()
+        queue = previous_r03_queue()
         verify_revision_decisions(queue, POST_APPROVAL_REVISIONS)
         # the attacks below need the final-confirmation section, whose "> 同意" sits under several
         # bullets; later revisions (#318) are appended after it, so name it instead of taking the last
@@ -872,7 +1016,7 @@ class AdoptionIntegrity(unittest.TestCase):
         patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
         self.assertEqual(13646, len(patch.replace(b"\r\n", b"\n")))
         r14 = apply_r14_extension(self.current, queue, patch)
-        historical = restore_pre_r17_source((ROOT / "公理層.md").read_bytes(), queue)
+        historical = restore_pre_r17_source(previous_r03_source(), queue)
         self.assertEqual(apply_r14_extension(normalized(historical), queue, patch), r14)
         for case, predecessor in (("second application", r14), ("changed predecessor", self.current + "\n")):
             with self.subTest(r14=case):
@@ -910,7 +1054,7 @@ class AdoptionIntegrity(unittest.TestCase):
         self.check_r14_approval_section()
 
     def check_r14_approval_context(self):
-        queue = normalized((ROOT / "決策佇列.md").read_bytes())
+        queue = normalized(previous_r03_queue())
         patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
         self.assertEqual(1, queue.count(R14_DECISION_SECTION))
         verify_r14_approval(queue.encode("utf-8"), patch)
@@ -955,7 +1099,7 @@ class AdoptionIntegrity(unittest.TestCase):
                 verify_r14_approval(altered.encode("utf-8"), patch)
 
     def check_r14_approval_section(self):
-        queue = normalized((ROOT / "決策佇列.md").read_bytes())
+        queue = normalized(previous_r03_queue())
         patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes()
         for case, section in (
                 ("changed preceding narrative", R14_DECISION_SECTION.replace("15:21:40", "15:21:41", 1)),
@@ -969,7 +1113,7 @@ class AdoptionIntegrity(unittest.TestCase):
     def test_crlf_is_the_only_ignored_source_difference(self):
         validate_current_document(self.current.replace("\n", "\r\n").encode(), self.current)
         self.reject("ADOPTED_SOURCE", validate_current_document, self.current.replace("\n", "\r\r\n").encode(), self.current)
-        queue = (ROOT / "決策佇列.md").read_bytes().replace(b"\r\n", b"\n")
+        queue = previous_r03_queue().replace(b"\r\n", b"\n")
         patch = (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes().replace(b"\r\n", b"\n")
         r14 = apply_r14_extension(self.current, queue, patch)
         self.assertEqual(r14, apply_r14_extension(self.current, queue.replace(b"\n", b"\r\n"),
@@ -999,14 +1143,14 @@ class BoundaryPairAdoptionIntegrity(unittest.TestCase):
 
     def test_r17_full_text_approval_and_exact_delta_restore_the_frozen_previous_adoption(self):
         AdoptionIntegrity.setUpClass()
-        actual = (ROOT / "公理層.md").read_bytes()
-        restored = self.restore(actual, (ROOT / "決策佇列.md").read_bytes())
+        actual = previous_r03_source()
+        restored = self.restore(actual, previous_r03_queue())
         validate_current_document(restored, AdoptionIntegrity.current)
         # The frozen 207-clause CURRENT_HASH is the R14-only result, whereas
         # restore_pre_r17_source returns its exact pre-R14 predecessor.
         # Reapply the approved P to retain the original oracle unchanged.
         replay = apply_r14_extension(
-            normalized(restored), (ROOT / "決策佇列.md").read_bytes(),
+            normalized(restored), previous_r03_queue(),
             (ROOT / "tests/fixtures/r14-approved-axiom.patch").read_bytes())
         self.assertEqual(CURRENT_HASH, sha(replay.encode("utf-8")),
                          "R17_OLD_207_CLAUSE_ORACLE_UNCHANGED")
@@ -1017,7 +1161,7 @@ class BoundaryPairAdoptionIntegrity(unittest.TestCase):
         self.assertEqual(ids[ids.index("D16"):ids.index("D17") + 1], ["D16", "D16a", "D17"])
 
     def test_r17_direction_approval_or_misplaced_full_text_record_cannot_authorize_the_text(self):
-        actual = (ROOT / "公理層.md").read_bytes()
+        actual = previous_r03_source()
         approved = self.approved_queue()
         self.restore(actual, approved)
         for queue in (
@@ -1032,7 +1176,7 @@ class BoundaryPairAdoptionIntegrity(unittest.TestCase):
                 self.reject("R17_APPROVAL", actual, queue)
 
     def test_r17_approved_blob_rejects_byte_changes_omission_and_unapproved_new_clauses(self):
-        actual = (ROOT / "公理層.md").read_bytes().replace(b"\r\n", b"\n")
+        actual = previous_r03_source().replace(b"\r\n", b"\n")
         approved = self.approved_queue()
         restored = self.restore(actual, approved)
         for changed in (actual + b"\n", actual.replace("成組".encode(), "群組".encode(), 1),
@@ -1045,7 +1189,7 @@ class BoundaryPairAdoptionIntegrity(unittest.TestCase):
                          "R17_ONLY_CRLF_NORMALIZATION_IS_ALLOWED")
 
     def test_r17_delta_cannot_be_rewritten_with_the_current_document(self):
-        actual = (ROOT / "公理層.md").read_bytes()
+        actual = previous_r03_source()
         delta = (ROOT / "tests/fixtures/r17-approved-delta.json").read_bytes()
         self.assertEqual(sha(delta),
                          "43738777e6d553c20aaf777fd507c802092dcdaaedcc3d9facdbf7fb11c66fb8")
