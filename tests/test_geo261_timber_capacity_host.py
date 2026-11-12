@@ -516,8 +516,8 @@ class TimberCapacityHost(unittest.TestCase):
         self.assertGreaterEqual(count_small,1,"a loaded file is still fully validated")
         self.assertEqual(count_small,count_large,"ASSERT:scene-file-validation-does-not-grow-per-placement")
         withdrawn=self.counted_bridge("load-withdrawn",("geometry-core/transactions.inc",
-            b"if(frame->checkpoint&&app_scene_file_defer_text(tokens,count,text)){",
-            b"if(false&&frame->checkpoint&&app_scene_file_defer_text(tokens,count,text)){"))
+            b"if(frame->checkpoint&&app_scene_file_defer_safe(world,tokens,count)&&app_scene_file_defer_text(tokens,count,text)){",
+            b"if(false&&frame->checkpoint&&app_scene_file_defer_safe(world,tokens,count)&&app_scene_file_defer_text(tokens,count,text)){"))
         red_small,old_small=self.scene_load(withdrawn,"load-count-24.scene",small)
         red_large,old_large=self.scene_load(withdrawn,"load-count-48.scene",large)
         print("scene-file-validation phase=withdrawn n24=%d n48=%d"%(red_small,red_large))
