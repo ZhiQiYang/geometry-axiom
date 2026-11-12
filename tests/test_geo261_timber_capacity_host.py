@@ -560,6 +560,21 @@ class TimberCapacityHost(unittest.TestCase):
         variants["prefix-invalid-boundary"]=rescued%"14"
         variants["prefix-invalid-span"]=rescued%"1"
         self.assertEqual((260,259),tuple(len(variants[name].encode("utf-8")) for name in ("prefix-invalid-boundary","prefix-invalid-span")))
+        # ChatGPT review 6811889922: an interior member placed before the two
+        # boundary members that would support its ends (no redeclaration, no
+        # unplaced tN reference). Both paths must judge the first prefix.
+        support_later=("surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000\n"
+            "spec \u4e3b\u652f\u4e2d\u7dda 500\n"
+            "guide 1 1 v spec:\u4e3b\u652f\u4e2d\u7dda\n"
+            "timber 1 27 33 role boundary\n"
+            "timber 2 27 33 role boundary\n"
+            "timber 3 27 33 role primary\n"
+            "%s")
+        interior="place 3 on 1 at-line guide 1 +v +n\n"
+        edges="place 1 on 1 at-face e0 +u +n\nplace 2 on 1 at-face e2 +u +n\n"
+        variants["support-placed-later"]=support_later%(interior+edges)
+        variants["support-placed-first"]=support_later%(edges+interior)
+        self.assertEqual(305,len(variants["support-placed-later"].encode("utf-8")))
         # A stop face that names a member placed later is a forward reference.
         between=[i for i in places if " between t" in lines[i]]
         self.assertGreaterEqual(len(between),8)
@@ -575,7 +590,7 @@ class TimberCapacityHost(unittest.TestCase):
                 _,new=self.scene_load(fixed,"load-variant-"+name+".scene",scene)
                 _,old=self.scene_load(withdrawn,"load-variant-"+name+".scene",scene)
                 self.assertEqual(old,new,"ASSERT:scene-file-rejection-identical "+name)
-                if name.startswith(("prefix-invalid-","forward-stop-","missing-stop-")):
+                if name.startswith(("prefix-invalid-","forward-stop-","missing-stop-","support-placed-")):
                     print("scene-file-validation variant=%s ok=%s error=%s"%(name,new[0]["ok"],new[0].get("error")))
                 if new[0]["ok"]:accepted+=1
                 else:rejected+=1
