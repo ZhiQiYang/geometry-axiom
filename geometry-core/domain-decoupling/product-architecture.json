@@ -2149,6 +2149,42 @@
       "layer": "H",
       "language": "python",
       "purpose": "H-116-TIMBER/1 bounded UTF-8 JSON transport; service-owned temporary input files and native-authoritative read/preview operations"
+    },
+    {
+      "path": "geometry-web/space-context-menu.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "R11 空間平面圖的共用選單 adapter；只轉交既有 RC 命令與確認流程"
+    },
+    {
+      "path": "geometry-web/view-context-menu.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "R11 專案與空間三視圖的共用選單 adapter；原生 typed pick、唯讀檢視與既有導覽"
+    },
+    {
+      "path": "geometry-web/workspace-properties.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "R11 原生 typed target 的唯讀屬性；重用既有 inspector 並明示轉入原編輯入口"
+    },
+    {
+      "path": "geometry-web/workspace-view.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "H-116-VIEW/1 唯讀原生投影、typed root、工作階段 mask 與回覆時效守門"
+    },
+    {
+      "path": "geometry-web/workspace_view_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "H-116-VIEW/1 原生唯讀 DrawTarget owner、投影、可見集合與精確拾取"
+    },
+    {
+      "path": "geometry-web/workspace_view_transport.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "H-116-VIEW/1 封閉 JSON 與容量驗證；只由服務建立原生讀取暫存檔"
     }
   ],
   "exclusions": [
@@ -2767,7 +2803,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "e72367f82e5d329fcf578b776e0186e032619136758efb0a431a046b87fcb5aa",
+      "sha256": "034debe271171165af7d6fc022e50744bfa38631bd857b044d21e157318a7611",
       "hashMode": "lf"
     },
     {
@@ -3872,6 +3908,42 @@
       "path": "geometry-web/timber_reuse_test.js",
       "reason": "Dedicated R11 second-slice browser acceptance driver; loaded only by cdp_test.js, never by product runtime or served application entry points.",
       "sha256": "14851462d9ddcff40f90b90c68a9a5a21b1570230242f1f563947b9427271ce0",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/workspace_context_menu_test.js",
+      "reason": "Dedicated R11 acceptance, state or mutation driver; invoked only by the test harness, never by product runtime.",
+      "sha256": "84aee3c329f5d6a4c3f7cab28f454fc7d2fc59132f24828f026559802056c82a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/workspace_context_menu_cases_space.js",
+      "reason": "Dedicated R11 acceptance, state or mutation driver; invoked only by the test harness, never by product runtime.",
+      "sha256": "139eef4fe9dc2e849b124a4f1b5cafb9714ceac41cd28fbdc1a254b3cc590c49",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/workspace_context_menu_cases_view.js",
+      "reason": "Dedicated R11 acceptance, state or mutation driver; invoked only by the test harness, never by product runtime.",
+      "sha256": "801faf94870e523198adeb02a325d568be892b46d302c1074ca8fc64adae32cc",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/workspace_context_menu_state_test.js",
+      "reason": "Dedicated R11 acceptance, state or mutation driver; invoked only by the test harness, never by product runtime.",
+      "sha256": "0313163388ebaee7e6a7b727ba8d9fb7a10ec192abe9d8820f288d56a4e816fb",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/workspace_view_state_test.js",
+      "reason": "Dedicated R11 acceptance, state or mutation driver; invoked only by the test harness, never by product runtime.",
+      "sha256": "af69cff7054cd425a00b4200ab3ce6664dd90399a98add85a985791495d3ff36",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/workspace_view_state_mutations.js",
+      "reason": "Dedicated R11 acceptance, state or mutation driver; invoked only by the test harness, never by product runtime.",
+      "sha256": "aa0f693475268aca3ff2372f52fc67d1c7753f4d4a35c6f50cdb29b67bb86277",
       "hashMode": "lf"
     }
   ],
@@ -5127,7 +5199,7 @@
       "driver": "geometry-web/scenario-workspace.js",
       "driverSha256": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
       "router": "geometry-web/serve.py",
-      "routerSha256": "321b747cf5acd2eca13f1a2221c0816f38fa4ebd3045eb115572de123df2ea5f",
+      "routerSha256": "f43a166cc0761f82e225e4e64168288c9672abab6d21c81c9a2398f3f638821f",
       "receiver": "owner.frame",
       "queryValue": "context",
       "srcPrefix": "/?scenario=",

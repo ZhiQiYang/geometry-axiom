@@ -1505,6 +1505,9 @@ typedef struct {
     void (*annotated_text)(void *ctx, ViewPoint2 at, DrawStyle style,
                            const char *utf8, int rotate_degrees,
                            const DrawTextAnnotation *annotation);
+    /* Optional typed presentation owner; never inferred from labels/styles. */
+    void (*owner)(void *ctx, const char *kind, uint32_t id,
+                  const PlacementSurface *host, const char *member_face);
 } DrawTarget;
 
 /* 點（視為從房間原點出發的位置向量）在某個軸上的分量。 */
@@ -1806,6 +1809,10 @@ static void scene_draw_view(
         const SpaceBoundarySurface *boundary =
             scene_placement_boundary(scene, surface);
 
+        if (target && target->owner)
+            target->owner(target->ctx, surface->boundary_id && !surface->derived_fill_id ? "boundary" : "placement",
+                          surface->boundary_id && !surface->derived_fill_id ? surface->boundary_id : surface->id, surface, NULL);
+
         /* R41: a surface is a component set. Draw every real loop; guides and
          * grids below are clipped once against the whole set. */
         bool surface_has_area = false;
@@ -1903,6 +1910,7 @@ static void scene_draw_view(
                 continue;
             }
 
+            if (target && target->owner) target->owner(target->ctx, "guide", guide->id, surface, NULL);
             seg_count = guide_line_get_local_segments(
                 surface, boundary, guide, segs, GUIDE_MAX_SEGMENTS);
 
@@ -1924,6 +1932,10 @@ static void scene_draw_view(
             }
         }
 
+        /* Sampled grid marks belong to their host presentation, not a fake guide id. */
+        if (target && target->owner)
+            target->owner(target->ctx, surface->boundary_id && !surface->derived_fill_id ? "boundary" : "placement",
+                          surface->boundary_id && !surface->derived_fill_id ? surface->boundary_id : surface->id, surface, NULL);
         /* 5. 這片面的參考網格：每個座標一條線，跟參考線同款虛線。
          *    u 座標線沿 V 走（GUIDE_ALONG_V），v 座標線沿 U 走。 */
         for (size_t g = 0; g < scene->grid_count; ++g) {
@@ -1981,6 +1993,8 @@ static void scene_draw_view(
 
         for (size_t i = 0; i < face_count; ++i) {
             bool nearest = i + 1 == face_count;
+            if (target && target->owner)
+                target->owner(target->ctx, "timber", timber->id, NULL, timber_face_short_name(faces[i].id));
 
             scene_emit_polygon(target, bounds, faces[i].q, 4,
                                nearest ? STYLE_TIMBER_FACE_NEAR : STYLE_TIMBER_FACE);
@@ -2019,6 +2033,7 @@ static void scene_draw_view(
                              col->z_lo, col->z_hi, q)) {
             continue;
         }
+        if (target && target->owner) target->owner(target->ctx, "column", col->id, NULL, NULL);
         scene_emit_polygon(target, bounds, q, 4, STYLE_RC_COLUMN);
         if (target != NULL) {
             ViewPoint2 at = {
@@ -2037,6 +2052,7 @@ static void scene_draw_view(
                              bm->z_lo, bm->z_hi, q)) {
             continue;
         }
+        if (target && target->owner) target->owner(target->ctx, "beam", bm->id, NULL, NULL);
         scene_emit_polygon(target, bounds, q, 4, STYLE_RC_BEAM);
         if (target != NULL) {
             ViewPoint2 at = {
