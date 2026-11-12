@@ -622,6 +622,8 @@ function showConnectionState() {
   for (const id of ["app", "objectWorkspace"]) $(id).inert = blocked;
   syncConnectionCanvasView(focused);
   window.CanvasContextMenu?.connectionChanged();
+  window.SpaceContextMenu?.connectionChanged();
+  window.WorkspaceView?.connectionChanged();
   window.TimberEdit?.connectionChanged();
   document.body.classList.toggle("connection-blocked", blocked);
   $("connectionTitle").textContent = connection.phase === "error" ? "無法連線，編輯已暫停" : "正在讀取場景";
@@ -816,8 +818,11 @@ async function apiRequest(cmd, roomLease = null) {
   } finally { settleRoomNative?.(roomNativeResult); releaseNativeOperation?.(); }
 }
 async function api(cmd) {
+  const options = arguments[1] || {};
   const result = await apiRequest(cmd);
-  if (result.preview) return confirmReferenceImpact(result.preview);
+  if (result.preview) return confirmReferenceImpact(result.preview, options.operation ? {
+    current:options.operation.transactionCurrent, ownsPreview:options.operation.ownsNativeTransaction
+  } : undefined);
   return result;
 }
 function setStatus(t) {
@@ -855,7 +860,8 @@ function objectCanvasHelp() {
 /* ---- 視圖變換（對應 gdi_frame_transform + gdi_view_transform） ---- */
 function fit() {
   const r = cv.getBoundingClientRect(), M = 16;
-  if (!layout) return { s: 1, ox: 0, oy: 0 };
+  if (!layout || !(layout.w > 0) || !(layout.h > 0) || r.width <= 2*M || r.height <= 2*M)
+    return { s: 1, ox: 0, oy: 0 };
   const s = Math.min((r.width - 2*M) / layout.w, (r.height - 2*M) / layout.h);
   return { s, ox: (r.width - layout.w*s)/2, oy: (r.height - layout.h*s)/2 };
 }
@@ -867,6 +873,10 @@ function applyTransform() {
   const t = transform();
   world.setAttribute("transform", `translate(${t.ox},${t.oy}) scale(${t.s})`);
   overlay.setAttribute("transform", `translate(${t.ox},${t.oy}) scale(${t.s})`);
+  if (view3 && window.WorkspaceView) {
+    const m = world.getScreenCTM();
+    WorkspaceView.screenChanged({kind:'project'},m && [m.a,m.b,m.c,m.d,m.e,m.f].join(','));
+  }
   const zl = $("v3ZoomLevel");
   if (zl) zl.textContent = Math.round(zoom * 100) + "%";
   v3FixText(t.s);
@@ -905,7 +915,7 @@ function v3LayoutLabels() {
     $("v3Panel")?.appendChild(details);
   }
   details.querySelector("summary").textContent = `全部標註 · ${labels.length} 項${suppressed ? `（圖上收合 ${suppressed} 項）` : ""}`;
-  const rows = labels.map(tx => `${["正面", "側面", "仰視"][Number(tx.parentElement.dataset.viewIndex)] || "視圖"}：${tx.dataset.labelFull || tx.textContent}`);
+  const rows = labels.map(tx => `${({front:'正面',side:'側面',top:'俯視',bottom:'仰視'})[tx.parentElement.dataset.viewId] || ["正面", "側面", "仰視"][Number(tx.parentElement.dataset.viewIndex)] || "視圖"}：${tx.dataset.labelFull || tx.textContent}`);
   const key = JSON.stringify(rows);
   if (details.dataset.labels !== key) {
     details.dataset.labels = key;
@@ -934,6 +944,8 @@ function v3LayersOn() {
   };
 }
 function v3FilterOps(ops) {
+  if (window.WorkspaceView && ops.some(o => o.op === 'begin' && o.viewId))
+    return WorkspaceView.filterOps(ops,{kind:'project'});
   const views = v3ViewsOn(), allow = v3LayersOn();
   const out = [];
   let vi = -1, keep = true;
@@ -948,9 +960,11 @@ function v3FilterOps(ops) {
 /* 螢幕 px → 視圖編號 + 視圖內 mm（對應 gdi_screen_to_view） */
 function screenToView(px, py) {
   if (!layout) return null;
+  if (view3 && window.WorkspaceView?.state({kind:'project'}).snapshot?.layout === layout)
+    return WorkspaceView.locate(cv,px,py,{kind:'project'});
   const r = cv.getBoundingClientRect(), t = transform();
   const x = px - r.left, y = py - r.top;
-  for (let v = 0; v < 3; v++) {
+  for (let v = 0; v < layout.views.length; v++) {
     const b = layout.views[v].bounds, L = layout.views[v];
     const x0 = t.ox + (b[0]+L.tx)*t.s, x1 = t.ox + (b[2]+L.tx)*t.s;
     const y0 = t.oy + (b[1]+L.ty)*t.s, y1 = t.oy + (b[3]+L.ty)*t.s;
@@ -971,29 +985,44 @@ function el(name, attrs, parent) {
 }
 function replay(ops, root) {
   let g = root, viewIndex = -1;
+  const focusableRoots = new Set();
+  let currentViewId = '';
+  const ownerAttrs = o => {
+    if (!o.owner || !window.WorkspaceView?.rootOK(o.owner)) return {};
+    const attrs = {'data-owner-kind':o.owner.kind,'data-owner-id':o.owner.id};
+    const key = currentViewId + ':' + WorkspaceView.rootKey(o.owner);
+    if (o.op !== 'text' && !focusableRoots.has(key) && root !== overlay) {
+      focusableRoots.add(key); attrs.tabindex = 0; attrs['aria-label'] =
+        `${({boundary:'面',placement:'自帶矩形面',guide:'參考線',timber:'角材',column:'柱',beam:'樑'})[o.owner.kind]} ${o.owner.id}`;
+    }
+    return attrs;
+  };
   const annotationLayers = [], rootLabels = el("g", {class:"v3-annotation-layer"});
   let labels = rootLabels;
   for (const o of ops) {
     const st = STYLE[o.s];
     if (o.op === "begin") {
-      g = el("g", { transform: `translate(${o.tx},${o.ty})`, "data-view-index":o.viewIndex ?? ++viewIndex }, root);
+      currentViewId = o.viewId || '';
+      g = el("g", { transform: `translate(${o.tx},${o.ty})`, "data-view-index":o.viewIndex ?? ++viewIndex,
+        ...(o.viewId ? {'data-view-id':o.viewId} : {}) }, root);
       labels = el("g", {transform:g.getAttribute("transform"), "data-view-index":g.dataset.viewIndex,
+        ...(o.viewId ? {'data-view-id':o.viewId} : {}),
         class:"v3-annotation-layer"});
       annotationLayers.push(labels);
     } else if (o.op === "end") {
       g = root; labels = rootLabels;
     } else if (o.op === "rect") {
-      el("rect", { x:o.x0, y:o.y0, width:o.x1-o.x0, height:o.y1-o.y0,
+      el("rect", { ...ownerAttrs(o), x:o.x0, y:o.y0, width:o.x1-o.x0, height:o.y1-o.y0,
         fill: st.fill || "none", "fill-opacity": st.fop ?? 1,
         stroke: st.line, "stroke-width": st.w,
         "vector-effect": "non-scaling-stroke" }, g);
     } else if (o.op === "poly") {
-      el("polygon", { points: o.p.join(" "), "stroke-linejoin": "round",
+      el("polygon", { ...ownerAttrs(o), points: o.p.join(" "), "stroke-linejoin": "round",
         fill: st.fill || "none", "fill-opacity": st.fop ?? 1,
         stroke: st.line, "stroke-width": st.w,
         "vector-effect": "non-scaling-stroke" }, g);
     } else if (o.op === "line") {
-      el("line", { x1:o.x0, y1:o.y0, x2:o.x1, y2:o.y1,
+      el("line", { ...ownerAttrs(o), x1:o.x0, y1:o.y0, x2:o.x1, y2:o.y1,
         stroke: st.line, "stroke-width": st.w,
         "stroke-dasharray": st.dash || "none",
         "vector-effect": "non-scaling-stroke" }, g);
@@ -1003,7 +1032,7 @@ function replay(ops, root) {
         Number.isInteger(annotation.entityId) && annotation.entityId > 0 && annotation.entityId <= 0xffffffff &&
         ["A0", "A1", "B0", "B1", "START", "END"].includes(annotation.faceId) &&
         typeof annotation.shortLabel === "string";
-      const t = el("text", { x:o.x, y:o.y, fill: st.line,
+      const t = el("text", { ...ownerAttrs(o), x:o.x, y:o.y, fill: st.line,
         "font-size": st.text, "font-weight": st.bold ? "bold" : "normal",
         "text-anchor": st.anchor || "start", "data-label-full":fullLabel,
         "paint-order":"stroke", stroke:"#fff", "stroke-width":3,
@@ -1030,7 +1059,9 @@ function replay(ops, root) {
 async function render(current = presentationCurrent()) {
   if (!current()) return;
   hoverPickScheduler.cancel();
-  const r = await api("render");
+  let r;
+  try { r = view3 && window.WorkspaceView ? await WorkspaceView.read({kind:'project'},current) : await api("render"); }
+  catch (error) {if (!current()) return; r = {ok:false,error:error.message};}
   if (!current()) return;
   if (!r.ok) { layout = null; world.textContent = ""; setStatus("✗ " + (r.error || "場景沒有可畫的表面")); toast(r.error || "場景沒有可畫的表面"); return; }
   layout = r.layout;
@@ -1039,10 +1070,32 @@ async function render(current = presentationCurrent()) {
   affineCache = {};               /* 世界變了，舊的 uv↔view 映射作廢 */
   replay(v3FilterOps(r.ops), world);
   applyTransform();
+  window.WorkspaceView?.syncControls();
+  if (r.schema === 'workspace-view-result/1' && !r.ops.some(o => o.owner)) setStatus('無可見內容');
 }
 
 /* ---- 拾取（hover / 點選共用） ---- */
 async function pickAt(sv) {
+  const hostCurrent = arguments[1] || (() => true);
+  if (sv?.scope && sv.nativePoint && window.WorkspaceView) {
+    const pin = WorkspaceView.pin(sv.scope);
+    const r = await WorkspaceView.pick(sv.scope,sv.nativePoint,hostCurrent);
+    if (!r.ok) return {ok:false,none:true,hover:[]};
+    const target = r.target;
+    const typed = {ok:true,none:r.status === 'NONE',target,guide:-1,timber:-1,
+      desc:target ? `${({boundary:'面',placement:'自帶矩形面',guide:'參考線',timber:'角材',column:'柱',beam:'樑'})[target.root.kind]} ${target.root.id}` : '',hover:r.hoverOps};
+    /* Existing guide drag commands address scene indices. Keep that legacy
+       operation only after matching its id to the separately returned native
+       typed root. An index is never promoted to object identity. */
+    if (target?.root.kind === 'guide') {
+      const old = await api(`pick ${sv.v} ${sv.x} ${sv.y} ${sv.r}`);
+      const refs = await api('references');
+      if (!hostCurrent() || !WorkspaceView.current(pin,true)) return {ok:false,none:true,hover:[]};
+      if (old.ok && Number.isInteger(old.guide) && old.guide >= 0 && refs.ok && refs.guides?.[old.guide]?.id === target.root.id)
+        typed.guide = old.guide;
+    }
+    return typed;
+  }
   const r = await api(`pick ${sv.v} ${sv.x} ${sv.y} ${sv.r}`);
   return r;
 }
@@ -1072,7 +1125,7 @@ function createHoverPickScheduler(request, scheduleFrame = requestAnimationFrame
     inFlight = true;
     void (async () => {
       let result;
-      try { result = await request(item.point); }
+      try { result = await request(item.point, () => current(item)); }
       catch (error) { result = { ok: false, error: error.message || "拾取失敗" }; }
       try {
         if (current(item)) item.apply(result, item.point);
@@ -1364,8 +1417,10 @@ function previewClear() {
 }
 /* 回傳某視圖的預覽群組（可同時存在多個視圖的手柄）。 */
 function previewIn(v) {
-  const L = layout.views[v];
-  const g = el("g", { transform: `translate(${L.tx},${L.ty})` }, world);
+  const L = layout.views.find(L => L.viewId && ({front:0,side:1,top:2,bottom:2})[L.viewId] === v) ||
+    (!layout.views.some(L => L.viewId) ? layout.views[v] : null);
+  const g = el("g", { transform: L ? `translate(${L.tx},${L.ty})${L.viewId === 'top' ? ' scale(1,-1)' : ''}` : '',
+    ...(L ? {} : {display:'none'}) }, world);
   previewGs.push(g);
   return g;
 }
@@ -1723,7 +1778,10 @@ $("v3ZoomLevel").addEventListener("click", () => { zoom = 1; panX = panY = 0; ap
 $("v3ZoomFit").addEventListener("click", () => { zoom = 1; panX = panY = 0; applyTransform(); });
 /* D1:視圖/圖層勾選 → 重放過濾後的 ops */
 for (const c of document.querySelectorAll("[data-v3-view],[data-v3-layer]"))
-  c.addEventListener("change", () => { if (view3) render(); });
+  c.addEventListener("change", () => {
+    if (window.WorkspaceView) WorkspaceView.controlsChanged().catch(error => toast(error.message));
+    else if (view3) render();
+  });
 $("workSurf").addEventListener("change", async () => {
   retireCanvasGesture(null, true);
   syncV3PlaneControls();
@@ -3539,7 +3597,8 @@ function syncSpaceStageTools() {
       !hasBoundary ? "先加入已放置的邊界面，才能在空間中放柱或樑" :
       id === "spacePlaceColumn" ? "點一下平面圖放柱" : "拖一段平面圖放樑";
   }
-  $("spaceSizeTools").hidden = !!projection || !hasBoundary || !$("spaceWorkspaceTools").querySelector(".workspace-tool.active");
+  $("spaceSizeTools").hidden = !!projection || !hasBoundary || $("rcDialog").hidden ||
+    !rcContext?.floating || rcContext.mode === 'size';
   const active = $("spaceWorkspaceTools").querySelector(".workspace-tool.active")?.id;
   $("workspaceToolStatus").textContent = projection ? "三視圖僅供檢視；切回平面示意可放柱或樑"
     : !hasBoundary ? "空間尚無邊界；先加入已放置的成員面"
@@ -3625,6 +3684,7 @@ function renderSpaceRc(sp) {
 function renderSpacePlan(sp) {
   const svg = $("spacePlanSvg");
   if (!svg) return;
+  svg.cancelSpaceGesture?.();
   svg.textContent = "";
   svg.onpointerdown = svg.onpointermove = svg.onpointerup = null;
   let empty = $("spacePlanEmpty");
@@ -3682,20 +3742,24 @@ function renderSpacePlan(sp) {
 
   for (const c of oc.columns.filter(c => c.space === sp.id)) {
     const b = c.box;
+    const root = el("g", {"data-sp-kind":"column", "data-sp-id":c.id, "data-sp-space":sp.id,
+      tabindex:"0", role:"button", "aria-label":`柱 ${c.id}`}, svg);
     el("rect", { x: b[0], y: b[1], width: b[3] - b[0], height: b[4] - b[1],
-      class: "space-plan-col" }, svg);
+      class: "space-plan-col" }, root);
     el("text", { x: (b[0] + b[3]) / 2, y: (b[1] + b[4]) / 2,
       "text-anchor": "middle", "dominant-baseline": "middle",
-      class: "space-plan-label" }, svg).textContent =
+      class: "space-plan-label" }, root).textContent =
       `柱${c.id} ${b[3] - b[0]}×${b[4] - b[1]}`;
   }
   for (const bm of oc.beams.filter(b => b.space === sp.id)) {
     const b = bm.box;
+    const root = el("g", {"data-sp-kind":"beam", "data-sp-id":bm.id, "data-sp-space":sp.id,
+      tabindex:"0", role:"button", "aria-label":`樑 ${bm.id}`}, svg);
     el("rect", { x: b[0], y: b[1], width: b[3] - b[0], height: b[4] - b[1],
-      class: "space-plan-beam" }, svg);
+      class: "space-plan-beam" }, root);
     el("text", { x: (b[0] + b[3]) / 2, y: (b[1] + b[4]) / 2,
       "text-anchor": "middle", "dominant-baseline": "middle",
-      class: "space-plan-label" }, svg).textContent =
+      class: "space-plan-label" }, root).textContent =
       `樑${bm.id} ${b[3] - b[0]}×${b[4] - b[1]}`;
   }
   syncSpacePlanAnnotations();
@@ -3704,20 +3768,25 @@ function renderSpacePlan(sp) {
 
   /* 螢幕→房間 mm:走 CTM(preserveAspectRatio letterbox 也算進去),
      手動 viewBox 攤滿換算在寬高比不同時會偏數百 mm。 */
-  const toRoom = ev => {
-    const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
-    const p = pt.matrixTransform(svg.getScreenCTM().inverse());
-    return [p.x, p.y];
-  };
+  const toRoom = spacePlanToRoom;
 
   let drag = null;
+  svg.cancelSpaceGesture = () => {
+    if (drag?.pointerId != null && svg.hasPointerCapture(drag.pointerId)) svg.releasePointerCapture(drag.pointerId);
+    drag = null; svg.dataset.spMoved = ""; preview.setAttribute("visibility", "hidden");
+  };
   svg.onpointerdown = ev => {
+    if (window.SpaceContextMenu?.pointerDown(ev)) return;
     if (ev.button !== 0 || $("spacePlaceColumn").disabled) return;
+    const target = ev.target.closest?.('[data-sp-kind]');
+    if (target) { target.focus({preventScroll:true}); return; }
+    if (ev.pointerType === 'touch' && !ev.isPrimary) { svg.cancelSpaceGesture(); return; }
     svg.setPointerCapture(ev.pointerId);
-    drag = { p0: toRoom(ev), p1: toRoom(ev), moved: false };
+    drag = { p0: toRoom(ev), p1: toRoom(ev), moved: false, pointerId:ev.pointerId, current:presentationCurrent() };
     svg.dataset.spMoved = "";            /* 自訂游標讀取:按下未拖=點放柱 */
   };
   svg.onpointermove = ev => {
+    if (window.SpaceContextMenu?.pointerMove(ev)) return;
     const point=toRoom(ev),metrics=$('spacePlanMetrics');
     if(metrics)metrics.textContent=`x ${Math.round(point[0])} · y ${Math.round(point[1])} mm · 格距 ${svg.dataset.planGridStep} mm`;
     if (!drag) return;
@@ -3747,11 +3816,15 @@ function renderSpacePlan(sp) {
     }
   };
   svg.onpointerup = async ev => {
+    if (window.SpaceContextMenu?.pointerUp(ev)) return;
+    if (ev.button !== 0) { svg.cancelSpaceGesture(); return; }
     if (!drag) return;
+    if (ev.pointerId !== drag.pointerId || !drag.current()) { svg.cancelSpaceGesture(); return; }
     const d = drag; drag = null;
     svg.dataset.spMoved = "";
     preview.setAttribute("visibility", "hidden");
     const ids = await api("newid");
+    if (!ids.ok || !d.current() || $("spacePlaceColumn").disabled) return;
     let line;
     if (!d.moved) {
       const s = planColSide();
@@ -3775,7 +3848,15 @@ function renderSpacePlan(sp) {
     }
     if (await emitLine(line)) await renderSpaceWorkspace();
   };
-  svg.onpointercancel = () => { drag = null; preview.setAttribute("visibility", "hidden"); };
+  svg.onpointercancel = () => { svg.cancelSpaceGesture(); window.SpaceContextMenu?.cancelPlacement(); };
+}
+function spacePlanToRoom(event) {
+  const svg = $("spacePlanSvg"), matrix = svg?.getScreenCTM();
+  if (!matrix) throw new Error("目前沒有可定位的空間平面圖");
+  const point = svg.createSVGPoint(); point.x = event.clientX; point.y = event.clientY;
+  const room = point.matrixTransform(matrix.inverse());
+  if (!Number.isFinite(room.x) || !Number.isFinite(room.y)) throw new Error("無法換算目前的平面圖位置");
+  return [room.x, room.y];
 }
 function syncSpacePlanAnnotations(){
   const svg=$('spacePlanSvg');
@@ -3885,10 +3966,14 @@ function renderSpaceInspector(sp) {
 async function renderSpaceProjection() {
   const focus = oc.focus, context = ReferenceWorkspace.context(), navigation = oc.navigationSequence;
   const isCurrent = () => oc.focus === focus && ReferenceWorkspace.context() === context && oc.navigationSequence === navigation;
+  if (focus?.t !== 'space') return;
+  const scope = {kind:'space',id:focus.id};
   hoverPickScheduler.cancel();
   const svg = $("spaceProjSvg");
   svg.textContent = "";
-  const r = await api("render");
+  let r;
+  try {r = window.WorkspaceView ? await WorkspaceView.read(scope,isCurrent) : await api('render');}
+  catch (error) {if (isCurrent()) toast(error.message); return;}
   if (!isCurrent() || !r.ok || !r.layout) return;
   let x0 = 1e18, y0 = 1e18, x1 = -1e18, y1 = -1e18;
   for (const L of r.layout.views) {
@@ -3896,13 +3981,17 @@ async function renderSpaceProjection() {
     x0 = Math.min(x0, b[0] + L.tx); y0 = Math.min(y0, b[1] + L.ty);
     x1 = Math.max(x1, b[2] + L.tx); y1 = Math.max(y1, b[3] + L.ty);
   }
-  svg.setAttribute("viewBox", `${x0} ${y0} ${x1 - x0} ${y1 - y0}`);
-  replay(r.ops, svg);
+  svg.setAttribute("viewBox", `${x0} ${y0} ${Math.max(1,x1 - x0)} ${Math.max(1,y1 - y0)}`);
+  replay(window.WorkspaceView ? WorkspaceView.filterOps(r.ops,scope) : r.ops, svg);
+  const screen = svg.getScreenCTM();
+  window.WorkspaceView?.screenChanged(scope,screen && [screen.a,screen.b,screen.c,screen.d,screen.e,screen.f].join(','));
+  window.WorkspaceView?.syncControls();
   /* §5.6：沿用三視圖互動——hover/pick + 參考線拖曳 */
   const overlay = el("g", {}, svg);
   const views = r.layout.views;
   /* 螢幕→SVG 局部（含 tx/ty 的版面座標）→ 找所在視圖 → 視圖局部 mm */
   const locate = e => {
+    if (window.WorkspaceView) return WorkspaceView.locate(svg,e.clientX,e.clientY,scope);
     const lp = projLocalPoint(svg, e);
     for (let v = 0; v < views.length; ++v) {
       const L = views[v], b = L.bounds;
@@ -3915,6 +4004,7 @@ async function renderSpaceProjection() {
   };
   const repaint = async () => {
     if (!isCurrent()) return;
+    if (window.WorkspaceView) {await renderSpaceProjection(); return;}
     const rr = await api("render");
     if (!isCurrent() || !rr.ok) return;
     const kids = [...svg.childNodes];
@@ -3937,7 +4027,7 @@ function closeDialogs() {
   $("box6Dialog").hidden = true;
   $("memberDialog").hidden = true;
   $("shapeDialog").hidden = true;
-  $("rcDialog").hidden = true;
+  closeRcForm();
 }
 $("modalBackdrop").addEventListener("click", closeDialogs);
 $("box6Close").addEventListener("click", closeDialogs);
@@ -4761,6 +4851,15 @@ function referenceAnchorEntries(bid, surf) {
 }
 function guidePositionLabel(g) {
   return `沿 ${g.axis} · ${g.axis === "u" ? "v" : "u"}=${g.off} mm`;
+}
+/* One native guide summary is used by its editor list and read-only properties. */
+function guideInspectorSummaryHTML(g, {compact = false} = {}) {
+  const esc = ReferenceWorkspace.escape, title = `參考線 ${g.id} · ${guidePositionLabel(g)}`;
+  if (compact) return esc(title);
+  return `<div class="inspector-block"><div class="ib-title">${esc(title)}</div>` +
+    `<div class="kv"><span>承載面編號</span><b>${esc(g.surface)}</b></div>` +
+    `<details class="inspector-technical"><summary>來源與定位</summary>` +
+    `<p class="inspector-code">${esc(g.expression || '未提供來源定義')}</p></details></div>`;
 }
 function gridLineLabel(grid, axis, index) {
   return `${axis} ${grid.indexSpace === "lattice" ? "索引" : "第"} ${index}${grid.indexSpace === "lattice" ? "" : " 條（從 0 起）"}`;
@@ -7092,18 +7191,29 @@ function engineeringSourceSummary(sources) {
     return `<li>${esc((target.axis ? target.axis+' ' : '')+field)}：${esc(binding.effective)} mm${binding.override?'（物件覆寫）':''}<details><summary>來源與生效路徑</summary><p>來源：${esc(describe(binding.source))}</p>${binding.override?`<p>覆寫：${esc(describe(binding.override))}</p>`:''}<p>${esc(typeof binding.path==='string'?binding.path:JSON.stringify(binding.path ?? ''))}</p></details></li>`;
   }).join('')+'</ul>';
 }
-function feTbSelectedHTML(bid) {
+function timberInspectorHeadingHTML(timber, anchorLabel = null) {
+  const esc = ReferenceWorkspace.escape;
+  return `<div class="ib-title">${timberRoleName(timber.role)} · 角材 ${timber.id}</div>` +
+    `<p>截面 ${esc(timber.A ?? "—")} × ${esc(timber.B ?? "—")} mm · 長度 ${esc(timber.L ?? "—")} mm</p>` +
+    (anchorLabel == null ? '' : `<p>定位：${esc(anchorLabel)}</p>`);
+}
+function feTbSelectedHTML(bid, presentation = null) {
   const esc=ReferenceWorkspace.escape;
-  if (!fe.sel || fe.sel.kind !== "timber") return "";
-  const t2 = (fe.timbers || []).find(x => x.id === fe.sel.id);
+  if (!presentation && (!fe.sel || fe.sel.kind !== "timber")) return "";
+  const t2 = presentation?.timber || (fe.timbers || []).find(x => x.id === fe.sel.id);
   if (!t2) return "";
-  const surf = feSurf(bid);
+  const surf = presentation ? presentation.surface : feSurf(bid);
   const roleOpts = TB_ROLE_OPTS;
-  const technical = `<div class="kv"><span>角材編號</span><b>${t2.id}</b></div><div class="kv"><span>角色代碼</span><b>${esc(t2.role || "—")}</b></div><p class="inspector-code">定位：${esc(t2.definition?.anchor || "尚未提供")} ${esc(t2.definition?.selector || "")}</p><div data-object-evidence-host data-evidence-kind="timber" data-evidence-id="${t2.id}"></div>`;
-  if(t2.engineeringSources?.length)return `<div class="inspector-block" id="tbSelected"><div class="ib-title">${timberRoleName(t2.role)} · 角材 ${t2.id}</div><p>截面 ${esc(t2.A ?? "—")} × ${esc(t2.B ?? "—")} mm · 長度 ${esc(t2.L ?? "—")} mm</p><p>尺寸引用工程規格；修改來源或本物件覆寫時會一起檢查相關物件。</p><details id="tbTechnicalDetails" class="inspector-technical"><summary>詳細資料 · 工程來源與定位</summary>${technical}${engineeringSourceSummary(t2.engineeringSources)}</details><button type="button" class="btn primary-button" data-engineering-open data-placement-id="${surf.id}">編輯工程來源與覆寫</button> <button class="btn danger" id="tbSelDelete" type="button">刪除角材</button></div>`;
+  const technical = `<div class="kv"><span>角材編號</span><b>${t2.id}</b></div><div class="kv"><span>角色代碼</span><b>${esc(t2.role || "—")}</b></div><p class="inspector-code">定位：${esc(t2.definition?.anchor || "尚未提供")} ${esc(t2.definition?.selector || "")}</p>` +
+    (presentation?.readonly ? '' : `<div data-object-evidence-host data-evidence-kind="timber" data-evidence-id="${t2.id}"></div>`);
+  if (presentation?.readonly) return `<div class="inspector-block" id="tbSelected">${timberInspectorHeadingHTML(t2)}` +
+    `<div class="kv"><span>承載面編號</span><b>${esc(surf?.id ?? '—')}</b></div>` +
+    `<div class="kv"><span>延伸方向</span><b>${esc(timberDirectionName(t2.dir))}</b></div>` +
+    `<details id="tbTechnicalDetails" class="inspector-technical"><summary>詳細資料 · 來源與定位</summary>${technical}` +
+    (t2.engineeringSources?.length ? engineeringSourceSummary(t2.engineeringSources) : '') + `</details></div>`;
+  if(t2.engineeringSources?.length)return `<div class="inspector-block" id="tbSelected">${timberInspectorHeadingHTML(t2)}<p>尺寸引用工程規格；修改來源或本物件覆寫時會一起檢查相關物件。</p><details id="tbTechnicalDetails" class="inspector-technical"><summary>詳細資料 · 工程來源與定位</summary>${technical}${engineeringSourceSummary(t2.engineeringSources)}</details><button type="button" class="btn primary-button" data-engineering-open data-placement-id="${surf.id}">編輯工程來源與覆寫</button> <button class="btn danger" id="tbSelDelete" type="button">刪除角材</button></div>`;
   return `<div class="inspector-block" id="tbSelected">` +
-    `<div class="ib-title">${timberRoleName(t2.role)} · 角材 ${t2.id}</div>` +
-    `<p>長度 ${esc(t2.L ?? "—")} mm · ${esc(feTimberAnchorLabel(bid, surf, t2.definition?.anchor))}</p>` +
+    timberInspectorHeadingHTML(t2, feTimberAnchorLabel(bid, surf, t2.definition?.anchor)) +
     `<form id="tbEditForm" class="place-form">` +
     `<label>寬 A（沿面）<input id="tbEditA" type="number" value="${t2.A ?? ""}"></label>` +
     `<label>厚 B（出面）<input id="tbEditB" type="number" value="${t2.B ?? ""}"></label>` +
@@ -8702,7 +8812,7 @@ function renderFaceInspector() {
   const guideHTML = surf ? `<div class="inspector-block"><div class="ib-title">參考線與具名規格</div>` +
     `<div class="face-help">選擇已知邊、格線或具名規格作為位置來源；來源改動時，參考線跟著重算。要輸入設計尺寸，請先為它命名並儲存。</div>` +
     (fe.grids.some(g=>g.kind === "subgrid") ? `<p class="face-help">使用子格線座標建立的參考線會延伸至本面，不帶入父格範圍。要沿局部子線放材，請在角材的「沿著」選擇子網格線。</p>` : "") +
-    `<div class="guide-summary">${fe.guides.map(g => `<button type="button" class="btn" data-guide-edit="${g.id}">參考線 ${g.id} · ${guidePositionLabel(g)} · 查看來源</button>`).join("") || "尚無參考線"}</div>` +
+    `<div class="guide-summary">${fe.guides.map(g => `<button type="button" class="btn" data-guide-edit="${g.id}">${guideInspectorSummaryHTML(g, {compact:true})} · 查看來源</button>`).join("") || "尚無參考線"}</div>` +
     `<button class="btn" id="refParameterOpen">建立／編輯參數</button>` +
     `<div class="place-form"><label>線的走向<select id="refGuideAxis"><option value="u">沿 u（固定 v 位置）</option><option value="v">沿 v（固定 u 位置）</option></select></label>` +
     `<label>設定方式<select id="refGuideMode"><option value="source">選擇位置來源</option><option value="advanced">進階：完整引用式</option></select></label></div>` +
@@ -9255,7 +9365,7 @@ function bindProjectedGuideDrag(svg, locate, overlay, repaint, localOverlay) {
     oc.busy = true;
     document.body.classList.add("oc-busy");
     d.queue = (async () => {
-      const p = await api(`pick ${loc.v} ${loc.x} ${loc.y} 12`);
+      const p = await pickAt({...loc,r:12});
       if (!p.ok || !(p.guide >= 0)) return;
       d.guide = p.guide;
       const r = await api("line history-begin");
@@ -9744,29 +9854,33 @@ function syncParameterEditingLayout() {
   document.body.classList.toggle("parameter-editing", editing);
   window.ParamGridLesson?.place();
 }
-function renderInspectorBody() {
-  syncCompositionLayout();
-  const pane = $("inspectorContent"); if (!pane) return;
-  disarmEdgeInputs(pane);
-  const dirtyInputs = captureDirtyInputs(pane);
-  const empty = $("inspectorEmpty");
-  if(oc.parameterCreating){pane.dataset.redrawOwner="";if(empty)empty.hidden=true;pane.hidden=false;window.ParameterUI?.render(pane);return;}
-  if (oc.gridSystemCreating && !oc.selection.length) {
+function renderInspectorBody(presentation = null) {
+  const readonly = presentation?.readonly === true;
+  if (!readonly) syncCompositionLayout();
+  const pane = presentation?.pane || $("inspectorContent"); if (!pane) return;
+  if (!readonly) disarmEdgeInputs(pane);
+  const dirtyInputs = readonly ? [] : captureDirtyInputs(pane);
+  const empty = readonly ? null : $("inspectorEmpty");
+  if(!readonly && oc.parameterCreating){pane.dataset.redrawOwner="";if(empty)empty.hidden=true;pane.hidden=false;window.ParameterUI?.render(pane);return;}
+  if (!readonly && oc.gridSystemCreating && !oc.selection.length) {
     pane.dataset.redrawOwner="";
     if (empty) empty.hidden = true;
     pane.hidden = false; GridSystemEditor.render(pane, null); return;
   }
-  if (oc.selection.length > 1) {
+  if (!readonly && oc.selection.length > 1) {
     pane.dataset.redrawOwner="";
     if (empty) empty.hidden = true;
     pane.hidden = false; pane.innerHTML = selectionMultiHTML(oc.selection);
     return;
   }
-  const sel = oc.sel && ocFind(oc.sel.kind, oc.sel.id) ? oc.sel : null;
+  const sel = readonly ? presentation.selection : oc.sel && ocFind(oc.sel.kind, oc.sel.id) ? oc.sel : null;
   if (empty) empty.hidden = !!sel;
   pane.hidden = !sel;
   if (!sel) { pane.dataset.redrawOwner=""; pane.innerHTML = ""; return; }
-  const o = ocFind(sel.kind, sel.id);
+  const o = readonly ? presentation.object : ocFind(sel.kind, sel.id);
+  if (!o) { pane.textContent = "物件已不存在"; return; }
+  if (readonly && !['boundary','placement','space','column','beam'].includes(sel.kind))
+    throw new Error('這類物件沒有可共用的只讀摘要');
   if (sel.kind === "grid-binding" || sel.kind === "grid-system" && o.mode === "infinite") {pane.dataset.redrawOwner="";renderGridObjectInspector(pane,o);return;}
   if (sel.kind === "grid-system") { pane.dataset.redrawOwner=""; GridSystemEditor.render(pane, o); return; }
   if (sel.kind.startsWith("assembly-")) { pane.dataset.redrawOwner=""; window.AssemblyWorkspace?.inspector(pane,o);return; }
@@ -9775,7 +9889,7 @@ function renderInspectorBody() {
   /* RC 構件檢視器(B-3):欄位表單 → DSL 重宣告(交易式);雙擊也只到這裡(Q10)。 */
   if (sel.kind === "column" || sel.kind === "beam") {
     pane.dataset.redrawOwner="";
-    renderRcInspector(pane, sel.kind, o);
+    renderRcInspector(pane, sel.kind, o, {readonly});
     return;
   }
   pane.dataset.redrawOwner = sel.kind === "boundary" ? "boundary:" + sel.id : "";
@@ -9785,15 +9899,15 @@ function renderInspectorBody() {
     ? (o.closed ? "封閉" : `開放 · ${o.members.length} 面`)
     : (o.placed ? "已放置" : "未放置");
   const ownedBy = sel.kind !== "space"
-    ? oc.spaces.find(s => s.members.includes(o.id)) : null;
-  const bLoops = sel.kind === "boundary" ? (oc.bmap[o.id] || []) : null;
-  const placedSurf = sel.kind === "boundary" ? feSurf(sel.id) : null;
+    ? (presentation?.spaces || oc.spaces).find(s => s.members.includes(o.id)) : null;
+  const bLoops = sel.kind === "boundary" ? (readonly ? presentation.loops || [] : oc.bmap[o.id] || []) : null;
+  const placedSurf = readonly ? presentation.surface : sel.kind === "boundary" ? feSurf(sel.id) : null;
   const bArea = (bLoops || []).reduce((total, loop, i) => total + (i ? -1 : 1) * Math.abs(loop.verts.reduce((sum, p, j) => {
     const q = loop.verts[(j + 1) % loop.verts.length]; return sum + p[0] * q[1] - q[0] * p[1];
   }, 0)) / 2, 0);
   pane.innerHTML =
     /* F1:建面→放置→收成員 流程條(boundary 才有) */
-    (sel.kind === "boundary" ? placeFlowHTML(sel.id) : "") +
+    (sel.kind === "boundary" && !readonly ? placeFlowHTML(sel.id) : "") +
     `<div class="inspector-block"><div class="ib-title">${name}` +
     `<span class="tag">${KIND_ZH[sel.kind]}</span></div>` +
     (sel.kind === "boundary" ? `<div class="kv"><span>用途</span><b>${placedSurf ? FaceProjection.summary(sel.id, placedSurf.id, true) : "用途未指定"}</b></div>` : "") +
@@ -9808,8 +9922,12 @@ function renderInspectorBody() {
     (bLoops && bLoops.length
       ? `<div class="kv"><span>外環</span><b>${bLoops[0].verts.length} 頂點</b></div>` +
         `<div class="kv"><span>孔</span><b>${bLoops.length - 1}</b></div>` : "") +
-    (sel.kind === "boundary" ? `<div data-object-evidence-host data-evidence-kind="boundary" data-evidence-id="${sel.id}"></div>` : "") +
-    `</details></div>` +
+    (sel.kind === "boundary" && !readonly ? `<div data-object-evidence-host data-evidence-kind="boundary" data-evidence-id="${sel.id}"></div>` : "") +
+    `</details></div>`;
+  /* Three-view properties share this summary without creating inputs, listeners,
+     selection changes or implicit navigation. Editing needs its explicit door. */
+  if (readonly) { hydrateIcons(pane); return; }
+  pane.innerHTML +=
     (sel.kind === "boundary" ? (o.placed
       ? `<div class="inspector-block"><details class="ib-row"><summary>位置與朝向 · ${placedSurf ? surfNormalLabel(placedSurf) : "已放置"} · 修改…</summary>${placeFormHTML(sel.id)}</details></div>`
       : placeFormHTML(sel.id)) : "") +
@@ -9876,9 +9994,36 @@ function renderInspectorBody() {
   if (sel.kind === "boundary") restoreDirtyInputs(pane, dirtyInputs);
 }
 
+/* #116: one definition/declaration adapter for the inspector and the short RC form.
+   These are native RC definition fields, not a projection or guessed screen axis. */
+function rcDefinition(kind, object, {allowOwned = false} = {}) {
+  const b = object.box;
+  if (!Array.isArray(b) || b.length !== 6 || !b.every(Number.isSafeInteger))
+    throw new Error('RC 定義不可讀取');
+  const hasSource = object.owner != null || object.source != null || object.group != null ||
+    (Array.isArray(object.sources) ? object.sources.length > 0 : object.sources != null);
+  if (!allowOwned && hasSource)
+    throw new Error('請從此構件的來源入口編輯，不可另存求值尺寸');
+  if (kind === 'column') return {kind, id:object.id, space:object.space,
+    x:b[0], y:b[1], w:b[3]-b[0], d:b[4]-b[1], z0:b[2], z1:b[5]};
+  if (kind !== 'beam' || !['x','y'].includes(object.axis)) throw new Error('樑定義缺少明選走向軸');
+  const axis = object.axis, cross = axis === 'x' ? 1 : 0, along = axis === 'x' ? 0 : 1;
+  const w = b[cross+3]-b[cross];
+  return {kind, id:object.id, space:object.space, axis, a:b[along], b:b[along+3],
+    c:b[cross]+Math.floor(w/2), w, d:b[5]-b[2], top:b[5]};
+}
+function rcDeclaration(definition, id = definition.id) {
+  const d = definition, inside = d.space ? ` in ${d.space}` : '';
+  if (d.kind === 'column') return `column ${id}${inside} at ${d.x} ${d.y} size ${d.w} ${d.d}` +
+    (d.z0 == null && d.z1 == null ? '' : ` z ${d.z0} ${d.z1}`);
+  if (d.kind === 'beam' && ['x','y'].includes(d.axis)) return `beam ${id}${inside} along ${d.axis} ` +
+    `from ${d.a} to ${d.b} at ${d.c} width ${d.w} depth ${d.d}` + (d.top == null ? '' : ` top ${d.top}`);
+  throw new Error('未知的 RC 宣告類別');
+}
+
 /* RC 柱/樑檢視器:box=[xlo,ylo,zlo,xhi,yhi,zhi] → 欄位表單;
    套用 = 同 id 重宣告(apply_column/beam 交易式重綁,I8)。 */
-function renderRcInspector(pane, kind, o) {
+function renderRcInspector(pane, kind, o, {readonly = false} = {}) {
   const isCol = kind === "column";
   const spaceOpts = `<option value="0"${o.space ? "" : " selected"}>（游離）</option>` +
     oc.spaces.map(s => `<option value="${s.id}"${o.space === s.id ? " selected" : ""}>空間 ${s.id}</option>`).join("");
@@ -9897,7 +10042,17 @@ function renderRcInspector(pane, kind, o) {
     `<div class="kv"><span>id</span><b>${o.id}</b></div>` +
     `<div class="kv"><span>狀態</span><b>${o.space ? `空間 ${o.space} 的障礙物` : "游離"}</b></div>` +
     `<div class="kv"><span>box</span><b>${o.box.join(", ")}</b></div>` +
-    `</div>` +
+    `</div>`;
+  if (readonly) {
+    const d = rcDefinition(kind, o, {allowOwned:true});
+    pane.innerHTML += `<div class="inspector-block"><div class="ib-title">尺寸與歸屬</div>` +
+      `<div class="kv"><span>所屬空間</span><b>${o.space ? `空間 ${o.space}` : "游離"}</b></div>` +
+      `<div class="kv"><span>寬 × 深</span><b>${d.w} × ${d.d} mm</b></div>` +
+      (isCol ? `<div class="kv"><span>足跡 x / y</span><b>${d.x} / ${d.y} mm</b></div><div class="kv"><span>z0 / z1</span><b>${d.z0} / ${d.z1} mm</b></div>` :
+        `<div class="kv"><span>走向軸</span><b>${d.axis}</b></div><div class="kv"><span>from / to</span><b>${d.a} / ${d.b} mm</b></div><div class="kv"><span>中線 c / top</span><b>${d.c} / ${d.top} mm</b></div>`) + `</div>`;
+    return;
+  }
+  pane.innerHTML +=
     `<div class="inspector-block"><div class="ib-title">尺寸與歸屬</div>` +
     `<div class="kv"><span>所屬空間</span><b><select id="rcfSpace">${spaceOpts}</select></b></div>` +
     fields +
@@ -9912,19 +10067,18 @@ function renderRcInspector(pane, kind, o) {
   const num = id => { const el = pane.querySelector("#" + id); return el && el.value !== "" ? +el.value : null; };
   pane.querySelector("#rcfApply").addEventListener("click", async () => {
     const sid = +pane.querySelector("#rcfSpace").value;
-    const inPart = sid ? ` in ${sid}` : "";
     let line;
     if (isCol) {
       const x = num("rcfX"), y = num("rcfY"), w = num("rcfW"), d = num("rcfD"),
             z0 = num("rcfZ0"), z1 = num("rcfZ1");
       if ([x, y, w, d, z0, z1].some(v => v === null)) { setStatus("欄位不能留空"); return; }
-      line = `column ${o.id}${inPart} at ${x} ${y} size ${w} ${d} z ${z0} ${z1}`;
+      line = rcDeclaration({kind, id:o.id, space:sid, x, y, w, d, z0, z1});
     } else {
       const ax = pane.querySelector("#rcfAxis").value;
       const a = num("rcfA"), b = num("rcfB"), c = num("rcfC"),
             w = num("rcfW"), d = num("rcfD"), top = num("rcfTop");
       if ([a, b, c, w, d, top].some(v => v === null)) { setStatus("欄位不能留空"); return; }
-      line = `beam ${o.id}${inPart} along ${ax} from ${a} to ${b} at ${c} width ${w} depth ${d} top ${top}`;
+      line = rcDeclaration({kind, id:o.id, space:sid, axis:ax, a, b, c, w, d, top});
     }
     if (await mutate([line])) await renderObjects();
   });
@@ -10359,7 +10513,7 @@ async function mutate(lines, opts) {
       if(opts.operation.ownsNativeTransaction())await api('line history-abort');return false;
     }
     for (let k = 0; k < lines.length; ++k) {
-      const r = await api("line " + lines[k]);
+      const r = await api("line " + lines[k], {operation:opts?.operation});
       if (!r.ok) {
         if(!opts?.operation||opts.operation.ownsNativeTransaction()){
           const ab = await api("line history-abort");
@@ -10401,16 +10555,37 @@ $("box6Submit").addEventListener("click", submitBox6);
 const RC_COL_PRESETS = [500, 600, 700, 800];
 const RC_BEAM_PRESETS = [[300, 500], [350, 600], [400, 700]];
 let rcKind = "column";
-function openRcDialog(kind) {
+let rcContext = null, rcFormGeneration = 0, rcSubmitting = false, rcPressedGeneration = null;
+function closeRcForm() {
+  const previous = rcContext;
+  rcContext = null; ++rcFormGeneration;
+  $("rcDialog").hidden = true;
+  $("rcDialog").classList.remove('sp-rc-panel');
+  $("rcDialog").style.cssText = '';
+  $("rcDialog").setAttribute('aria-modal', 'true');
+  $("spaceSizeTools").hidden = true;
+  previous?.onClose?.();
+}
+function openRcDialog(kind, options = {}) {
+  if (!['column','beam'].includes(kind)) throw new Error('未知的 RC 類別');
+  closeRcForm();
   rcKind = kind;
+  rcContext = options;
+  const sizeOnly = options.mode === 'size';
   const isCol = kind === "column";
-  $("rcTitle").textContent = isCol ? "建立 RC 柱" : "建立 RC 樑";
-  $("rcColFields").hidden = !isCol;
-  $("rcBeamFields").hidden = isCol;
-  $("rcHint").textContent = isCol
+  $("rcTitle").textContent = options.title || (isCol ? "建立 RC 柱" : "建立 RC 樑");
+  $("rcColFields").hidden = sizeOnly || !isCol;
+  $("rcBeamFields").hidden = sizeOnly || isCol;
+  $("rcSpace").closest('label').hidden = sizeOnly;
+  $("rcSpace").disabled = !!options.floating;
+  $("rcSubmit").textContent = sizeOnly ? '套用' : '建立';
+  $("rcSubmit").disabled = false;
+  $("rcErr").hidden = true;
+  $("rcHint").textContent = options.hint || (isCol
     ? "at x y = 足跡左下角;屬空間時 z 留空由 ±Z 槽推導,游離則必填。"
-    : "at c = 垂直於走向的中線座標;top 留空由空間 +Z 槽推導,游離必填。";
+    : "at c = 垂直於走向的中線座標;top 留空由空間 +Z 槽推導,游離必填。");
   const pr = $("rcPresets"); pr.textContent = "";
+  pr.hidden = sizeOnly || !!options.floating;
   for (const p of isCol ? RC_COL_PRESETS : RC_BEAM_PRESETS) {
     const lab = document.createElement("label");
     lab.className = "member-check-row";
@@ -10424,7 +10599,20 @@ function openRcDialog(kind) {
   const sp = $("rcSpace");
   sp.innerHTML = `<option value="0">（游離）</option>` +
     oc.spaces.map(s => `<option value="${s.id}">空間 ${s.id}</option>`).join("");
-  openEditorDialog("rcDialog");
+  const values = options.definition;
+  if (values) {
+    const fields = {w:'rcW', d:'rcD', space:'rcSpace', x:'rcX', y:'rcY', z0:'rcZ0', z1:'rcZ1',
+      axis:'rcAxis', a:'rcA', b:'rcB', c:'rcC', top:'rcTop'};
+    for (const [key, id] of Object.entries(fields)) $(id).value = values[key] ?? (key === 'axis' ? 'x' : '');
+  }
+  if (options.floating) {
+    closePanels(); $("rcDialog").hidden = false;
+    $("rcDialog").classList.add('sp-rc-panel');
+    $("rcDialog").setAttribute('aria-modal', 'false');
+    $("spaceSizeTools").hidden = sizeOnly;
+    for (const chip of $("spaceSizeTools").querySelectorAll('.plan-chip'))
+      chip.classList.toggle('active', chip.dataset.sizeFor === kind);
+  } else openEditorDialog("rcDialog");
 }
 $("btnNewColumn").addEventListener("click", () => openRcDialog("column"));
 $("btnNewBeam").addEventListener("click", () => openRcDialog("beam"));
@@ -10443,14 +10631,32 @@ function planBeamDims() {
   return sel ? sel.value.split("x").map(Number) : [350, 600];
 }
 if ($("planColSize"))
-  $("planColSize").addEventListener("change", () =>
-    $("planColCustom").hidden = $("planColSize").value !== "custom");
+  $("planColSize").addEventListener("change", () => {
+    $("planColCustom").hidden = $("planColSize").value !== "custom";
+    if (rcContext?.floating && rcKind === 'column' && rcContext.mode !== 'size')
+      $("rcW").value = $("rcD").value = planColSide();
+  });
 if ($("planBeamSize"))
   $("planBeamSize").addEventListener("change", () => {
     const custom = $("planBeamSize").value === "custom";
     $("planBeamW").hidden = $("planBeamD").hidden = !custom;
+    if (rcContext?.floating && rcKind === 'beam' && rcContext.mode !== 'size')
+      [$("rcW").value, $("rcD").value] = planBeamDims();
   });
+for (const id of ['planColCustom','planBeamW','planBeamD']) $(id).addEventListener('input', () => {
+  if (!rcContext?.floating || rcContext.mode === 'size') return;
+  if (rcKind === 'column') $("rcW").value = $("rcD").value = planColSide();
+  else [$("rcW").value, $("rcD").value] = planBeamDims();
+});
+$("rcSubmit").addEventListener('pointerdown', () => { rcPressedGeneration = rcFormGeneration; });
 $("rcSubmit").addEventListener("click", async () => {
+  const pressed = rcPressedGeneration; rcPressedGeneration = null;
+  if (pressed != null && pressed !== rcFormGeneration) return;
+  if (rcSubmitting || oc.busy || $("rcDialog").hidden) return;
+  const owner = rcContext, generation = rcFormGeneration;
+  const current = () => generation === rcFormGeneration && owner === rcContext &&
+    !$("rcDialog").hidden && (!owner?.current || owner.current());
+  if (!current()) { closeRcForm(); toast('建立或編輯的情境已改變，請重新開啟'); return; }
   const isCol = rcKind === "column";
   const err = (m, el) => {
     $("rcErr").textContent = m; $("rcErr").hidden = false;
@@ -10460,21 +10666,24 @@ $("rcSubmit").addEventListener("click", async () => {
   /* 必填整數:空字串/非整數 → null(空值不得靜默變 0) */
   const intVal = id => {
     const s = $(id).value.trim();
-    return s !== "" && /^-?\d+$/.test(s) ? +s : null;
+    return s !== "" && /^-?\d+$/.test(s) && Number.isSafeInteger(+s) && Math.abs(+s) <= 100000000 ? +s : null;
   };
   /* 可空整數:undefined=未填,false=壞值 */
   const optInt = id => {
     const s = $(id).value.trim();
-    return s === "" ? undefined : (/^-?\d+$/.test(s) ? +s : false);
+    return s === "" ? undefined : (/^-?\d+$/.test(s) && Number.isSafeInteger(+s) && Math.abs(+s) <= 100000000 ? +s : false);
   };
   /* 先驗證再送:不通過連 newid 都不送 */
   const w = intVal("rcW"), d = intVal("rcD");
   if (!(w > 0)) { err("寬 w 要是正整數", $("rcW")); return; }
   if (!(d > 0)) { err("深 d 要是正整數", $("rcD")); return; }
   const sid = +$("rcSpace").value;
-  const inPart = sid ? ` in ${sid}` : "";
   let make;
-  if (isCol) {
+  if (owner?.mode === 'size') {
+    const original = owner.definition;
+    if (w === original.w && d === original.d) { closeRcForm(); return; }
+    make = id => rcDeclaration({...original, w, d}, id);
+  } else if (isCol) {
     const x = intVal("rcX"), y = intVal("rcY");
     if (x === null) { err("足跡 x 要填整數", $("rcX")); return; }
     if (y === null) { err("足跡 y 要填整數", $("rcY")); return; }
@@ -10486,8 +10695,7 @@ $("rcSubmit").addEventListener("click", async () => {
       err("z0 / z1 要一起留空或一起填", $(z0 === undefined ? "rcZ0" : "rcZ1"));
       return;
     }
-    const zPart = z0 !== undefined ? ` z ${z0} ${z1}` : "";
-    make = id => `column ${id}${inPart} at ${x} ${y} size ${w} ${d}${zPart}`;
+    make = id => rcDeclaration({kind:'column', space:sid, x, y, w, d, z0, z1}, id);
   } else {
     const a = intVal("rcA"), b = intVal("rcB"), c = intVal("rcC");
     if (a === null) { err("from 要填整數", $("rcA")); return; }
@@ -10495,16 +10703,40 @@ $("rcSubmit").addEventListener("click", async () => {
     if (c === null) { err("at 中線 c 要填整數", $("rcC")); return; }
     const top = optInt("rcTop");
     if (top === false) { err("top 要留空或填整數", $("rcTop")); return; }
-    const topPart = top !== undefined ? ` top ${top}` : "";
-    make = id => `beam ${id}${inPart} along ${$("rcAxis").value} ` +
-      `from ${a} to ${b} at ${c} width ${w} depth ${d}${topPart}`;
+    if (a >= b) { err('from 要小於 to；請指定兩個不同端點', $("rcB")); return; }
+    const axis = $("rcAxis").value;
+    if (!['x','y'].includes(axis)) { err('請明選樑走向軸', $("rcAxis")); return; }
+    make = id => rcDeclaration({kind:'beam', space:sid, axis, a, b, c, w, d, top}, id);
   }
-  const ids = await api("newid");
-  const id = isCol ? ids.column : ids.beam;
-  if (await mutate([make(id)])) {
-    $("rcDialog").hidden = true;
-    $("modalBackdrop").hidden = true;
-    await renderObjects();
+  const raw = () => JSON.stringify(['rcSpace','rcW','rcD','rcX','rcY','rcZ0','rcZ1','rcAxis','rcA','rcB','rcC','rcTop']
+    .map(id => $(id).value));
+  const submitted = raw();
+  const sameForm = () => generation === rcFormGeneration && owner === rcContext && !$("rcDialog").hidden && raw() === submitted;
+  const operation = owner?.operation?.(sameForm);
+  const ownsPresentation = operation?.ownsPresentation || presentationCurrent();
+  rcSubmitting = true; $("rcSubmit").disabled = true;
+  try {
+    let id = owner?.mode === 'size' ? owner.definition.id : null;
+    if (id == null) {
+      const ids = await api("newid");
+      if (!current()) return;
+      if (!ids.ok) { err(ids.error || '無法取得新編號'); return; }
+      id = isCol ? ids.column : ids.beam;
+    }
+    if (!current()) return;
+    owner?.beforeSubmit?.();
+    if (await mutate([make(id)], {operation})) {
+      if (!ownsPresentation()) return;
+      if (generation === rcFormGeneration) { closeRcForm(); $("modalBackdrop").hidden = true; }
+      await renderObjects({current:ownsPresentation});
+      if (ownsPresentation()) await owner?.afterCommit?.();
+    }
+  } catch (error) {
+    if (current()) err(error.message);
+  } finally {
+    rcSubmitting = false;
+    if (generation === rcFormGeneration) $("rcSubmit").disabled = false;
+    window.SpaceContextMenu?.sync();
   }
 });
 /* ---- 面內工作區事件 ---- */
@@ -10798,6 +11030,8 @@ function feHandleDblClick(pt, ev, onOverlay) {
 }
 
 async function setView3(on, { persistPositions = true } = {}) {
+  window.ViewContextMenu?.hide();
+  window.WorkspaceProperties?.hide?.();
   ++oc.navigationSequence;
   clearCanvasSelections();
   if (on === view3) return;
@@ -10836,6 +11070,7 @@ async function setView3(on, { persistPositions = true } = {}) {
     setStatus(objectCanvasHelp());
     await renderObjects({persistPositions});
   }
+  window.WorkspaceView?.syncControls();
 }
 $("btnObj").addEventListener("click", () => setView3(true));
 $("btnObj").addEventListener("pointerdown", e => {
@@ -10919,9 +11154,11 @@ for (const [id, label] of [["spacePlaceColumn", "在平面圖點一下放柱"], 
       c.classList.toggle("active", c.dataset.sizeFor === (id === "spacePlaceColumn" ? "column" : "beam"));
     syncSpaceStageTools();
     $("workspaceToolStatus").textContent = label; toast(label, "ok");
+    window.SpaceContextMenu?.startTool(id === 'spacePlaceColumn' ? 'column' : 'beam');
   });
-/* Current size appears next to the selected placement mode. */
+/* #116: keep the original preset nodes in the one on-demand RC form. */
 $("spaceSizeTools").appendChild(document.querySelector(".space-plan-tools"));
+$("rcDialog").querySelector('.dialog-body').prepend($("spaceSizeTools"));
 document.querySelector(".space-plan-head").remove();
 document.querySelector('.space-plan-strip').prepend($('spaceWorkspaceTools'));
 const planMetrics=document.createElement('p');planMetrics.id='spacePlanMetrics';planMetrics.className='space-plan-metrics';

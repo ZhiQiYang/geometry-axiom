@@ -13,7 +13,7 @@ const {createTransportFailureTrace,installClientTransportTrace} = require('./tra
 let transportFailureTrace;
 const SCOPE_FLAGS = ['GEOMETRY_TIMBER_REUSE_ONLY','GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_ROOM_CANDIDATE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_DEFINITION_IMPORT_ONLY','GEOMETRY_CDP_FROM_P31','GEOMETRY_IDENTITY_LEDGER_ONLY'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
-SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY','GEOMETRY_PANEL_FILL_ONLY');
+SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY','GEOMETRY_PANEL_FILL_ONLY','GEOMETRY_WORKSPACE_CONTEXT_MENU_ONLY');
 /* main() 以 inSequence(n)/notOtherShard(n) 把完整序列切成這麼多個連續區段;canvas_shards.json 的片數必須相同。 */
 const CANVAS_SHARDS=2;
 function runConfiguration(env = process.env) {
@@ -35,6 +35,10 @@ function runConfiguration(env = process.env) {
     require('./timber_reuse_test.js').selectCases(env.GEOMETRY_TIMBER_REUSE_CASE);
   }
   if(env.GEOMETRY_R116_FRESH_STAGE!==undefined && (env.GEOMETRY_R116_FRESH_STAGE!=='open' || env.GEOMETRY_TIMBER_REUSE_ONLY!=='1' || env.GEOMETRY_TIMBER_REUSE_CASE!=='C07' || !env.GEOMETRY_R116_FRESH_RECEIPT))throw Error('Fresh-profile stage requires ONLY C07 and its saved receipt');
+  if(env.GEOMETRY_WORKSPACE_CONTEXT_MENU_CASES!==undefined){
+    if(env.GEOMETRY_WORKSPACE_CONTEXT_MENU_ONLY!=='1')throw Error('GEOMETRY_WORKSPACE_CONTEXT_MENU_CASES requires ONLY=1');
+    require('./workspace_context_menu_test.js').selectCases(env.GEOMETRY_WORKSPACE_CONTEXT_MENU_CASES);
+  }
   if(Object.hasOwn(env,'GEOMETRY_GRID_CARD_ENTRY_CASE')){
     if(env.GEOMETRY_GRID_CARD_ENTRY_ONLY!=='1')throw Error('GEOMETRY_GRID_CARD_ENTRY_CASE requires GEOMETRY_GRID_CARD_ENTRY_ONLY=1; full mode must run all card-entry cases');
     require('./grid_card_entry_test.js').selectCases(env.GEOMETRY_GRID_CARD_ENTRY_CASE);
@@ -521,10 +525,13 @@ async function main() {
   if(scope.mode==='shard'&&scope.shard.index>1)await applyShardHandoff(scope.shard.index-1);
   const runTimberReuse=()=>require('./timber_reuse_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
   const runCanvasContextMenu=()=>require('./canvas_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
+  const runWorkspaceContextMenu=()=>require('./workspace_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
   if(process.env.GEOMETRY_TIMBER_REUSE_ONLY){
     await runTimberReuse();
   } else if(process.env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY){
     await runCanvasContextMenu();
+  } else if(process.env.GEOMETRY_WORKSPACE_CONTEXT_MENU_ONLY){
+    await runWorkspaceContextMenu();
   } else {
   if (!process.env.GEOMETRY_PANEL_FILL_ONLY) {
   if (!process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY) {
@@ -7222,7 +7229,9 @@ async function main() {
     await eval_(`enterFocus('space',1)`);
     check('P64 S2 收成員在標題旁',await eval_(`$('spaceAddMembers').closest('.inner-section-title')?.contains($('spaceMemberCount'))`));
     await clickSelector('#spacePlaceColumn');
-    check('P64 S1 平面放柱時尺寸在工具旁',await eval_(`!$('spaceSizeTools').hidden && $('spaceWorkspaceTools').contains($('spaceSizeTools'))`));
+    // #116 section 3.3.1 moves these same controls into the on-demand form.
+    check('P64 S1 平面放柱時同一尺寸表單可用',await eval_(`!$('rcDialog').hidden && !$('spaceSizeTools').hidden && $('rcDialog').contains($('spaceSizeTools')) && !$('spaceWorkspaceTools').contains($('spaceSizeTools')) && ['planColSize','planColCustom','planBeamSize','planBeamW','planBeamD'].every(id=>document.querySelectorAll('#'+id).length===1)`));
+    await clickSelector('#rcCancel');
     await clickSelector('[data-ss-tab="proj"]');
     check('P64 S1 三視圖停用放置並說明',await eval_(`$('spacePlaceColumn').disabled && $('spacePlaceBeam').disabled && $('spaceSizeTools').hidden && $('workspaceToolStatus').textContent.includes('僅供檢視')`));
     await eval_(`leaveFocus()`);await clickSelector('#btnObj');await eval_(`v3SetTool('rect')`);
@@ -7323,6 +7332,7 @@ async function main() {
     await require('./panel_fill_workflow_test.js')({send,eval_,sleep,click,dblclick,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if(inSequence(2)||process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY)
     await require('./grid_card_entry_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  if(inSequence(2))await runWorkspaceContextMenu();
   /* Last on purpose: its fresh reopen wipes origin storage, which would reset state later sections rely on.
      It also stays last in the last canvas shard. */
   if(inSequence(2)||process.env.GEOMETRY_DEFINITION_IMPORT_ONLY)await require('./definition_import_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
