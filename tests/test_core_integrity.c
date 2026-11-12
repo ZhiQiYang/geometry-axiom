@@ -524,8 +524,89 @@ static void test_projection_three_residual_components(void)
     }
 }
 
+/* Comb ring: bottom edge (0,0)-(1000,0), `teeth` 50-wide teeth on top;
+ * `step` adds one 2-vertex step at the left end.  4 + 4*teeth + 2*step vertices. */
+static PolygonLoop2 cut_capacity_comb(int teeth, bool step)
+{
+    PolygonLoop2 loop={0};
+    SurfacePoint2 *v=loop.v; size_t n=0; Coord x=1000;
+    v[n++]=(SurfacePoint2){0,0}; v[n++]=(SurfacePoint2){1000,0}; v[n++]=(SurfacePoint2){1000,100};
+    for (int t=0; t<teeth; ++t, x-=100) {
+        v[n++]=(SurfacePoint2){x-50,100}; v[n++]=(SurfacePoint2){x-50,150};
+        v[n++]=(SurfacePoint2){x-100,150}; v[n++]=(SurfacePoint2){x-100,100};
+    }
+    if (step) { v[n++]=(SurfacePoint2){100,100}; v[n++]=(SurfacePoint2){100,120}; v[n++]=(SurfacePoint2){0,120}; }
+    else v[n++]=(SurfacePoint2){0,100};
+    loop.count=n;
+    for (size_t i=0;i<n;++i) loop.fixity[i]=EDGE_FIXED;
+    return loop;
+}
+
+static bool cut_capacity_overflow_is_refused(const PolygonLoop2 *original,
+    Coord u0, Coord v0, Coord u1, Coord v1)
+{
+    enum { SPARE=8 };
+    SurfacePoint2 nv[POLY_MAX_VERTICES+SPARE]; EdgeFixity nf[POLY_MAX_VERTICES+SPARE];
+    const SurfacePoint2 sentinel={-777777,-777777};
+    for (size_t i=0;i<POLY_MAX_VERTICES+SPARE;++i) { nv[i]=sentinel; nf[i]=EDGE_FREE; }
+    PolygonLoop2 loop=*original; bool flush[4];
+    for (int s=0;s<4;++s) flush[s]=side_flush_outline(&loop,s,u0,v0,u1,v1);
+    bool cut=proj_cut_run_into(&loop,flush,u0,v0,u1,v1,nv,nf,POLY_MAX_VERTICES);
+    bool sentinels_intact=true;
+    for (size_t i=POLY_MAX_VERTICES;i<POLY_MAX_VERTICES+SPARE;++i)
+        if (nv[i].u!=sentinel.u||nv[i].v!=sentinel.v||nf[i]!=EDGE_FREE) sentinels_intact=false;
+    bool no_write_past_ring_capacity=sentinels_intact;
+    CHECK(no_write_past_ring_capacity);
+    CHECK(!cut);
+    bool loop_unchanged=memcmp(&loop,original,sizeof loop)==0;
+    CHECK(loop_unchanged);
+    return !cut&&sentinels_intact&&loop_unchanged;
+}
+
+static void test_projection_cut_run_capacity(void)
+{
+    /* Legal boundary: 28 vertices + one mid-edge notch = exactly 32. */
+    PolygonLoop2 n28=cut_capacity_comb(6,false), n30=cut_capacity_comb(6,true), n32=cut_capacity_comb(7,false);
+    CHECK(n28.count==28 && n30.count==30 && n32.count==32);
+    CHECK(poly_loop_is_valid(&n28) && poly_loop_is_valid(&n30) && poly_loop_is_valid(&n32));
+    PolygonLoop2 loop=n28; bool flush[4];
+    for (int s=0;s<4;++s) flush[s]=side_flush_outline(&loop,s,450,0,550,50);
+    CHECK(proj_cut_run(&loop,flush,450,0,550,50));
+    CHECK(loop.count==POLY_MAX_VERTICES);
+    CHECK(proj_loop_area2(&loop)==proj_loop_area2(&n28)-2*100*50);
+    CHECK(loop.v[loop.count-4].u==450 && loop.v[loop.count-4].v==0);
+    CHECK(loop.v[loop.count-1].u==550 && loop.v[loop.count-1].v==0);
+
+    /* Mid-edge notch adds 4 (30 -> 34); corner cut over a vertex adds 2 (32 -> 34). */
+    CHECK(cut_capacity_overflow_is_refused(&n30,250,0,350,50));
+    CHECK(cut_capacity_overflow_is_refused(&n32,450,0,550,50));
+    CHECK(cut_capacity_overflow_is_refused(&n32,0,0,50,50));
+    loop=n30;
+    for (int s=0;s<4;++s) flush[s]=side_flush_outline(&loop,s,250,0,350,50);
+    CHECK(!proj_cut_run(&loop,flush,250,0,350,50));
+
+    /* Same input end to end: apply-proj is refused and the world is unchanged. */
+    char line[1024]; int at=snprintf(line,sizeof line,"surface 1 origin 0 0 0 u +x v +y outline");
+    for (size_t i=0;i<n30.count;++i)
+        at+=snprintf(line+at,sizeof line-(size_t)at," %lld,%lld",(long long)n30.v[i].u,(long long)n30.v[i].v);
+    test_world=(World){0}; history_clear();
+    CHECK(command(line));
+    CHECK(command("column 1 at 250 0 size 100 50 z 0 100"));
+    saved_world=test_world;
+    CHECK(!command("apply-proj 1 c1"));
+    CHECK(memcmp(&saved_world,&test_world,sizeof test_world)==0);
+
+    /* proj_clip_half keeps at most n vertices on a valid orthogonal ring:
+     * each strict crossing needs an out-run of >= 2 vertices.  32 stays 32. */
+    loop=n32;
+    CHECK(proj_clip_half(&loop,1,125,-1));
+    CHECK(loop.count==POLY_MAX_VERTICES);
+    CHECK(proj_loop_area2(&loop)==proj_loop_area2(&n32)-2*7*50*25);
+}
+
 int main(void)
 {
+    test_projection_cut_run_capacity();
     test_projection_corner_contact_is_local();
     test_projection_three_residual_components();
     test_rect_outline_counterexamples();

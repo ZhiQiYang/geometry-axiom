@@ -8370,12 +8370,26 @@ static SurfacePoint2 proj_pt_on_edge(SurfacePoint2 a, SurfacePoint2 e, Coord t)
     return (SurfacePoint2){ t, a.v };
 }
 
+static bool proj_run_push(
+    SurfacePoint2 *nv, EdgeFixity *nf, size_t *m, size_t cap,
+    SurfacePoint2 p, EdgeFixity f
+)
+{
+    /* 輸出最多是輸入頂點數 +4(凹口落在單邊中段),輸入 >=29 點時會超過
+     * 環容量;寫入前擋下,走既有的退化失敗路徑(整筆回滾)。 */
+    if (*m >= cap) return false;
+    nv[*m] = p; nf[*m] = f; ++*m;
+    return true;
+}
+
 /* 單一覆蓋弧切法：貼一線→內線兩點凹口;貼兩鄰線→遠角一點切角。
- * 覆蓋弧若出現兩段以上 = 退化,回 false(整筆回滾)。 */
-static bool proj_cut_run(
+ * 覆蓋弧若出現兩段以上 = 退化,回 false(整筆回滾)。
+ * nv/nf 由呼叫端提供、容量 cap;產品只經 proj_cut_run 以環容量呼叫。 */
+static bool proj_cut_run_into(
     PolygonLoop2 *loop,
     const bool flush[4],
-    Coord u0, Coord v0, Coord u1, Coord v1
+    Coord u0, Coord v0, Coord u1, Coord v1,
+    SurfacePoint2 *nv, EdgeFixity *nf, size_t cap
 )
 {
     int nflush = (flush[0] ? 1 : 0) + (flush[1] ? 1 : 0) +
@@ -8384,8 +8398,6 @@ static bool proj_cut_run(
     /* 對邊貼合是 split,不在此處理。 */
     if ((flush[0] && flush[1]) || (flush[2] && flush[3])) return false;
 
-    SurfacePoint2 nv[POLY_MAX_VERTICES];
-    EdgeFixity nf[POLY_MAX_VERTICES];
     size_t m = 0, n = loop->count;
     bool in_run = false, emitted = false;
     Coord run_s0 = 0;
@@ -8419,21 +8431,21 @@ static bool proj_cut_run(
                         else if (flush[1]) { i0=(SurfacePoint2){u0,run_s0}; i1=(SurfacePoint2){u0,a.v}; }
                         else if (flush[2]) { i0=(SurfacePoint2){run_s0,v1}; i1=(SurfacePoint2){a.u,v1}; }
                         else               { i0=(SurfacePoint2){run_s0,v0}; i1=(SurfacePoint2){a.u,v0}; }
-                        nv[m]=i0; nf[m]=EDGE_FIXED; ++m;
-                        nv[m]=i1; nf[m]=EDGE_FIXED; ++m;
+                        if (!proj_run_push(nv, nf, &m, cap, i0, EDGE_FIXED)) return false;
+                        if (!proj_run_push(nv, nf, &m, cap, i1, EDGE_FIXED)) return false;
                     } else {
                         SurfacePoint2 far_point;
                         if (flush[0] && flush[2])      far_point=(SurfacePoint2){u1,v1};
                         else if (flush[0] && flush[3]) far_point=(SurfacePoint2){u1,v0};
                         else if (flush[1] && flush[2]) far_point=(SurfacePoint2){u0,v1};
                         else                           far_point=(SurfacePoint2){u0,v0};
-                        nv[m]=far_point; nf[m]=EDGE_FIXED; ++m;
+                        if (!proj_run_push(nv, nf, &m, cap, far_point, EDGE_FIXED)) return false;
                     }
                     emitted = true;
                 }
                 in_run = false;
             }
-            nv[m] = a; nf[m] = loop->fixity[i]; ++m;
+            if (!proj_run_push(nv, nf, &m, cap, a, loop->fixity[i])) return false;
             continue;
         }
 
@@ -8444,9 +8456,9 @@ static bool proj_cut_run(
             if (emitted) return false;   /* 第二段覆蓋弧:退化 */
             in_run = true;
             run_s0 = s0;
-            nv[m] = a; nf[m] = loop->fixity[i]; ++m;
+            if (!proj_run_push(nv, nf, &m, cap, a, loop->fixity[i])) return false;
             if (ent.u != a.u || ent.v != a.v) {
-                nv[m] = ent; nf[m] = EDGE_FIXED; ++m;
+                if (!proj_run_push(nv, nf, &m, cap, ent, EDGE_FIXED)) return false;
             }
         }
         if (ext.u != e.u || ext.v != e.v) {
@@ -8458,19 +8470,19 @@ static bool proj_cut_run(
                     else if (flush[1]) { i0=(SurfacePoint2){u0,run_s0}; i1=(SurfacePoint2){u0,s1}; }
                     else if (flush[2]) { i0=(SurfacePoint2){run_s0,v1}; i1=(SurfacePoint2){s1,v1}; }
                     else               { i0=(SurfacePoint2){run_s0,v0}; i1=(SurfacePoint2){s1,v0}; }
-                    nv[m]=i0; nf[m]=EDGE_FIXED; ++m;
-                    nv[m]=i1; nf[m]=EDGE_FIXED; ++m;
+                    if (!proj_run_push(nv, nf, &m, cap, i0, EDGE_FIXED)) return false;
+                    if (!proj_run_push(nv, nf, &m, cap, i1, EDGE_FIXED)) return false;
                 } else {
                     SurfacePoint2 far_point;
                     if (flush[0] && flush[2])      far_point=(SurfacePoint2){u1,v1};
                     else if (flush[0] && flush[3]) far_point=(SurfacePoint2){u1,v0};
                     else if (flush[1] && flush[2]) far_point=(SurfacePoint2){u0,v1};
                     else                           far_point=(SurfacePoint2){u0,v0};
-                    nv[m]=far_point; nf[m]=EDGE_FIXED; ++m;
+                    if (!proj_run_push(nv, nf, &m, cap, far_point, EDGE_FIXED)) return false;
                 }
                 emitted = true;
             }
-            nv[m] = ext; nf[m] = EDGE_FIXED; ++m;
+            if (!proj_run_push(nv, nf, &m, cap, ext, EDGE_FIXED)) return false;
             in_run = false;
         }
         /* ext==e → 弧延續到下一邊,e 落弧內自然丟棄 */
@@ -8481,6 +8493,18 @@ static bool proj_cut_run(
     memcpy(loop->fixity, nf, m * sizeof(nf[0]));
     loop->count = m;
     return poly_loop_is_valid(loop);
+}
+
+static bool proj_cut_run(
+    PolygonLoop2 *loop,
+    const bool flush[4],
+    Coord u0, Coord v0, Coord u1, Coord v1
+)
+{
+    SurfacePoint2 nv[POLY_MAX_VERTICES];
+    EdgeFixity nf[POLY_MAX_VERTICES];
+    return proj_cut_run_into(loop, flush, u0, v0, u1, v1,
+        nv, nf, POLY_MAX_VERTICES);
 }
 
 /* 對邊貼合拆分:覆蓋弧把環切成兩段,各段 + R 側邊封口成新環。 */
