@@ -38,7 +38,8 @@ workflow_replacements = {
 }
 evidence_modes = ('R348_DROP_LATEST_MEASURED_RUN', 'R348_REWRITE_RETAINED_MEASUREMENT',
                   'R348_LOWER_LATEST_MEASUREMENT')
-if (mode in ('measured-baseline', 'R348_REVERT_MEASURED_PROFILE', 'R348_REMOVE_SCENARIO_SWAP')
+if (mode in ('measured-baseline', 'R348_REVERT_MEASURED_PROFILE', 'R348_REMOVE_SCENARIO_SWAP',
+             'R379_REVERT_SINGLE_START_ONE_SWEEP')
         or mode in workflow_replacements or mode in evidence_modes):
     target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
 if mode == 'R348_REVERT_MEASURED_PROFILE':
@@ -53,6 +54,19 @@ if mode == 'R348_REVERT_MEASURED_PROFILE':
     native_shards.partition_suites = legacy
 elif mode == 'R348_REMOVE_SCENARIO_SWAP':
     native_shards._improve_scenarios = lambda parts, loads, costs: None
+elif mode == 'R379_REVERT_SINGLE_START_ONE_SWEEP':
+    def original_owners(suites, count, profiles):
+        costs = {s.name: [p.get(s.name, 1000) for p in profiles] for s in suites}
+        parts = [set() for _ in range(count)]
+        loads = [[0] * len(profiles) for _ in range(count)]
+        for name in sorted(costs, key=lambda n: (-max(costs[n]), n)):
+            candidates = [[a + b for a, b in zip(load, costs[name])] for load in loads]
+            index = min(range(count), key=lambda i: (max(candidates[i]), sum(candidates[i]), i))
+            parts[index].add(name)
+            loads[index] = candidates[index]
+        native_shards._swap_scenarios(parts, loads, costs)
+        return {name: i for i, part in enumerate(parts) for name in part}
+    native_shards._scenario_owners = original_owners
 if mode in workflow_replacements or mode in evidence_modes:
     # Mutate only this child's in-memory file read; never rewrite the checkout.
     original_read = pathlib.Path.read_text
@@ -114,6 +128,7 @@ def main():
     mutations = {
         'R348_REVERT_MEASURED_PROFILE': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
         'R348_REMOVE_SCENARIO_SWAP': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
+        'R379_REVERT_SINGLE_START_ONE_SWEEP': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
         'R348_REVERT_TO_THREE_NATIVE_SHARDS': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
         'R348_REVERT_NATIVE_JOB_NAME': ('measured-baseline', 'R348_FOUR_NATIVE_WORKFLOW'),
         'R348_REVERT_NATIVE_RUNNER_DENOMINATOR': ('measured-baseline', 'R348_FOUR_NATIVE_WORKFLOW'),

@@ -127,3 +127,24 @@ R06 以 `bf178770a0e10e996014ec0b6487e186db561c7f` 的純 CI 差異三向套用�
 5. 回PR最新head／GitHub test merge commit檢查13項結果與四份原收據，確認沒有舊`/3`名稱繼續等待。不刪coverage或停用保護以繞過等待。
 
 官方說明：[required checks與最近七日成功條件](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)、[classic設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)、[rulesets設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/managing-rulesets-for-a-repository)、[多規則聚合](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)。最終合併判斷仍需最新來源全部正式CI、四份`seconds <1200`原收據、完整coverage及mutation freshness通過。
+
+## R379 新套件加入後的有界情境規劃（基底57d55edc）
+
+R14 三個新增 suite 的獨立來源保留在 `native_shard_added_evidence.json`，其規劃上界合計為 11000ms。三份歷史 `measured_runs`、224 筆原權重及 supplemental 權重全部不變。新增套件仍與原 315 套一起參與既有三片回放及正式四片規劃；沒有把它們排除在預算之外。
+
+只用原本「最大成本遞減」的單一起點加一次交換，在 318 套時落到另一個局部結果：前兩輪三片最大值加原 130000ms 預留為 1204609／1205166ms，原嚴格 `<1200000` 正常拒收。一換一保留各片套數，因此繼續做同類交換仍可能卡在局部結果。修正保留原 greedy 起點及完整成本向量，先做兩輪原一換一掃描，再固定做四輪「二換一最佳交換＋原一換一掃描」。二換一只搜尋各片按最大成本／名稱排序的前 16 套，只有全部片／情境累計的降冪 tuple 嚴格降低才採入；同分保留第一個選擇。這使套數可在片間改變，仍保留每套恰好一次，名稱及片號固定打破平手，片內維持原 registry 順序。不改權重、不依亂數、即時耗時或機器 cache，不迭代到收斂。#379 與 #380 使用同一份通用規劃器。
+
+本機整數毫秒模型回放如下，這不是新 head 的正式 CI 收據：
+
+| 模型 | 片1 | 片2 | 片3 | 片4 | 最大值含原預留 |
+|---|---:|---:|---:|---:|---:|
+| 原兩輪／三片：43162989157 | 876108 | 1063043 | 1063043 | — | 1193043 |
+| 原兩輪／三片：43150038015 | 1062073 | 989171 | 1037080 | — | 1192073 |
+| 三輪／四片：43162989157 | 466306 | 845283 | 845302 | 845303 | 995303 |
+| 三輪／四片：43150038015 | 790882 | 751195 | 807280 | 738967 | 957280 |
+| 三輪／四片：43177620127 | 845244 | 815596 | 815697 | 784669 | 995244 |
+| 四片逐套三輪最大值 | 874641 | 911256 | 896271 | 910025 | 1061256 |
+
+三片為 95／112／111 套，四片為 48／92／91／87 套；兩者皆精確涵蓋全部 318 套一次。三片保留 100000＋30000ms 預留，四片保留 120000＋30000ms 預留，所有既有測試斷言、workflow 35 分鐘及收據 1200 秒限制不動。`test_unittest_runner.py` 本輪未改；前一片已新增的來源反證 method 實跑共 13 項，因此只精確補 expected 的 12→13。
+
+新增 `R379_REVERT_SINGLE_START_ONE_SWEEP`，只在子行程中恢復原規劃器，不改測量、suite 或裁判，必須以原 `R348_MEASURED_RECEIPT_BUDGET` 正常 AssertionError 產生 0／1／0。原刪一套件、撤回真實量測、移除交換及全部四片具名反證仍執行；正式四份原收據及 ME freshness 仍須採入補丁後另驗。
