@@ -548,6 +548,26 @@ class TimberCapacityHost(unittest.TestCase):
             variants["early-placement-"+label]=moved(p,places[0])
         variants["reversed-pairs"]="".join(lines[:timbers[0]]+[line for k in reversed(range(24)) for line in (lines[timbers[k]],lines[places[k]])]+lines[places[23]+1:])
         variants["trailing-junk"]=small+"place\n"
+        # ChatGPT review 6809384650 B1: a later redeclaration of an unplaced
+        # member must not rescue an earlier invalid placement (line 5).
+        rescued=("surface 1 origin 0 0 0 u +x v +y outline 0,0 1000,0 1000,1000 0,1000\n"
+            "timber 99 %s 33 role boundary\n"
+            "guide 1 1 v vertex:v0:u+timber:99:A\n"
+            "timber 1 27 33 role boundary\n"
+            "place 1 on 1 at-line guide 1 +v +n\n"
+            "timber 99 13 33 role boundary\n"
+            "place 99 on 1 at-face e1 +v +n\n")
+        variants["prefix-invalid-boundary"]=rescued%"14"
+        variants["prefix-invalid-span"]=rescued%"1"
+        self.assertEqual((260,259),tuple(len(variants[name].encode("utf-8")) for name in ("prefix-invalid-boundary","prefix-invalid-span")))
+        # A stop face that names a member placed later is a forward reference.
+        between=[i for i in places if " between t" in lines[i]]
+        self.assertGreaterEqual(len(between),8)
+        for label,p in (("first",between[0]),("middle",between[len(between)//2])):
+            words=lines[p].split();at=words.index("between")
+            later=lines[places[23]].split()[1]
+            variants["forward-stop-"+label]=changed(p," ".join(words[:at+1]+["t"+later]+words[at+2:])+"\n")
+            variants["missing-stop-"+label]=changed(p," ".join(words[:at+1]+["t777"]+words[at+2:])+"\n")
         variants["trailing-unknown"]=small+"no-such-command 1\n"
         accepted=rejected=0
         for name,scene in sorted(variants.items()):
@@ -555,6 +575,8 @@ class TimberCapacityHost(unittest.TestCase):
                 _,new=self.scene_load(fixed,"load-variant-"+name+".scene",scene)
                 _,old=self.scene_load(withdrawn,"load-variant-"+name+".scene",scene)
                 self.assertEqual(old,new,"ASSERT:scene-file-rejection-identical "+name)
+                if name.startswith(("prefix-invalid-","forward-stop-","missing-stop-")):
+                    print("scene-file-validation variant=%s ok=%s error=%s"%(name,new[0]["ok"],new[0].get("error")))
                 if new[0]["ok"]:accepted+=1
                 else:rejected+=1
         print("scene-file-validation variants=%d accepted=%d rejected=%d"%(len(variants),accepted,rejected))
