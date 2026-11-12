@@ -17,7 +17,9 @@
 #define WOOD_GRID_CELL_MAX (-2)
 typedef struct {
     uint32_t id, placement_id;
-    bool from_system, from_binding;
+    bool from_system, from_binding, from_fill;
+    uint32_t fill_id;             /* D10 authored source, never expanded axes. */
+    int fill_side;                /* Evaluated R41 v mapping: v_host = s*v_fill. */
     uint32_t binding_id;
     GeoCoord lattice_base[2], lattice_step[2];
     int64_t lattice_index[2];
@@ -40,12 +42,18 @@ typedef struct {
     size_t role_count;
 } WoodGridState;
 typedef struct {
-    uint32_t id, boundary_id;
+    uint32_t id, boundary_id, derived_fill_id;
     GeoRect2 bounds;
     bool bounds_valid;
     WoodBoundaryRegion components[GEO_PLACEMENT_COMPONENT_CAPACITY];
     size_t component_count;
 } WoodGridHost;
+/* Same-candidate D42 facts supplied by the finish provider. W derives D43
+ * centers in fill coordinates and maps only the resulting v coordinate. */
+typedef struct {
+    int side, stagger_axis;
+    GeoCoord size[2], gap, origin[2], stagger;
+} WoodGridFill;
 typedef enum { WOOD_GRID_REFERENCE_GUIDE, WOOD_GRID_REFERENCE_TIMBER } WoodGridReferenceKind;
 typedef struct {
     WoodGridReferenceKind kind;
@@ -75,6 +83,8 @@ struct WoodGridContext {
     WoodEngineeringContext engineering;
     void *user;
     bool (*host)(void *,uint32_t,WoodGridHost *);
+    bool (*fill)(void *,uint32_t,WoodGridFill *);
+    bool (*fill_definition)(void *,uint32_t);
     GeoGridCoordinateResolver coordinate;
     GeoGridVertexResolver vertex;
     bool (*reference)(void *,size_t,WoodGridReference *);
@@ -95,6 +105,7 @@ bool wood_grid_direct_declared(const WoodGridContext *,const WoodGridApplication
 bool wood_grid_direct_check(const WoodGridContext *,const WoodGridApplication *,char *,size_t);
 bool wood_grid_apply_system(WoodGridContext *,const WoodGridApplication *,char *,size_t);
 bool wood_grid_apply_binding(WoodGridContext *,const WoodGridApplication *,char *,size_t);
+bool wood_grid_apply_fill(WoodGridContext *,const WoodGridApplication *,char *,size_t);
 bool wood_grid_prepare_child(const WoodGridContext *,WoodGridApplication *,bool,unsigned,unsigned,char *,size_t);
 bool wood_grid_child_check(const WoodGridContext *,const WoodGridApplication *,char *,size_t);
 bool wood_grid_systems_rebuild(WoodGridContext *,char *,size_t);
@@ -166,6 +177,10 @@ bool wood_grid_world_valid_direct(const WoodGridContext *,char *,size_t);
 bool wood_grid_family_fits(const WoodGridContext *,const WoodGridApplication *,const WoodGridHost *);
 bool wood_grid_lattice_coord(const WoodGridApplication *,int,int64_t,GeoCoord *);
 bool wood_grid_lattice_coord_band(const WoodGridApplication *,int,int64_t,int64_t,GeoCoord *);
+bool wood_grid_band_bounds(const WoodGridApplication *,int,int64_t,GeoCoord *,GeoCoord *);
+GeoGridStatus wood_grid_lattice_window(const WoodGridApplication *,int,GeoCoord,GeoCoord,size_t,bool,GeoLatticeWindow *);
+GeoGridStatus wood_grid_query_window(const WoodGridApplication *,int,GeoCoord,GeoCoord,size_t,bool,GeoLatticeWindow *);
+GeoGridStatus wood_grid_band_window(const WoodGridApplication *,int,GeoCoord,GeoCoord,int64_t *,int64_t *);
 bool wood_grid_bind_engineering(WoodGridContext *,GeoJson *,int,uint32_t,const EngApplication *,const EngMethodVersion *);
 bool wood_grid_restore_engineering(WoodGridContext *,GeoJson *,int);
 bool wood_grid_dimension_read(WoodEngineeringContext *,GeoJson *,int,const EngTarget *,GeoCoord *);

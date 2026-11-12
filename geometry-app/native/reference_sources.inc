@@ -228,6 +228,21 @@ static bool reference_grid_host(void *opaque,uint32_t id,WoodGridHost *out)
 }
 static bool reference_grid_coordinate(void *opaque,GeoParameterRef ref,GeoCoord *out)
 {return app_grid_coordinate(((ReferenceEval *)opaque)->world,ref,out);}
+static bool reference_grid_fill(void *opaque,uint32_t id,WoodGridFill *out)
+{
+    ReferenceEval *ctx=opaque;WoodFinishContext context=app_fs_context(ctx->world);
+    if(!ctx->use_current_values){
+        context.evaluation=NULL;reference_finish_context(ctx,&context);
+        if(!wood_finish_sources_bind_finish(ctx->finish_sources,&context))return false;
+    }
+    return app_grid_fill_value(&context,id,out);
+}
+static bool reference_grid_fill_definition(void *opaque,uint32_t id)
+{
+    ReferenceEval *ctx=opaque;PanelFill definition;
+    if(ctx->use_current_values)return app_grid_fill_definition(ctx->world,id);
+    return wood_finish_sources_fill_definition(ctx->finish_sources,id,&definition);
+}
 static bool reference_grid_vertex(void *opaque,uint32_t id,uint32_t key,GeoPoint2 *out)
 {
     ReferenceEval *ctx=opaque;GeoPoint2 legacy_point;
@@ -239,7 +254,8 @@ static bool reference_grid_reference(void *opaque,size_t index,WoodGridReference
 {return app_grid_reference(((ReferenceEval *)opaque)->world,index,out);}
 static void reference_grid_context(ReferenceEval *ctx,WoodGridContext *grid)
 {
-    grid->user=ctx;grid->host=reference_grid_host;grid->coordinate=reference_grid_coordinate;
+    grid->user=ctx;grid->host=reference_grid_host;grid->fill=reference_grid_fill;grid->coordinate=reference_grid_coordinate;
+    grid->fill_definition=reference_grid_fill_definition;
     grid->vertex=reference_grid_vertex;grid->reference=reference_grid_reference;
     wood_engineering_sources_bind(ctx->engineering_sources,&grid->engineering);
 }
@@ -311,8 +327,8 @@ static bool reference_asm_position(void *opaque,uint32_t surface,const AsmLocati
         return true;}
     if(at->kind==ASM_AT_GRID){const ReferenceGrid *stored=world_find_grid(world,at->id);WoodGridApplication g;if(!stored)return false;
         if(ctx->use_current_values)g=*stored;else if(!reference_grid_definition(ctx,at->id,&g))return false;
-        out->surface_id=g.placement_id;out->axis=at->axis;out->subgrid=g.is_subgrid;
-        if(out->subgrid)return true;
+        out->surface_id=g.placement_id;out->axis=at->axis;out->subgrid=g.is_subgrid;out->from_fill=g.from_fill;
+        if(out->subgrid||out->from_fill)return true;
         PlacementSurface p;SpaceBoundarySurface b;const SpaceBoundarySurface *view;
         if(ctx->use_current_values){if(!app_placement_read(world,surface,&p))return false;view=app_placement_boundary(world,&p,&b);}
         else if(!reference_host_read(ctx,surface,&p,&b,&view))return false;
@@ -429,7 +445,7 @@ static bool reference_eng_target(void *opaque,const EngTarget *target,WoodEngine
     ReferenceEval *ctx=opaque;
     if(!app_eng_target(ctx->world,target,out))return false;if(ctx->use_current_values)return true;
     if(!target->kind){WoodGridApplication grid;if(!reference_grid_definition(ctx,target->id,&grid))return false;
-        out->placement_id=grid.placement_id;out->from_system=grid.from_system||grid.from_binding;
+        out->placement_id=grid.placement_id;out->from_system=grid.from_system||grid.from_binding||grid.from_fill;
         out->is_subgrid=grid.is_subgrid;out->panel_axis=grid.axis[target->axis].source==GRID_SRC_PANEL;
     }else{WoodMemberDefinition member;WoodMemberPlacement placement;
         if(!wood_definition_sources_member(ctx->definition_sources,target->id,&member)||

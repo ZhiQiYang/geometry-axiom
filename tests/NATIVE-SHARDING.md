@@ -126,4 +126,21 @@ R06 以 `bf178770a0e10e996014ec0b6487e186db561c7f` 的純 CI 差異三向套用�
 4. 如果實際使用[Rulesets](https://github.com/ZhiQiYang/geometry-axiom/settings/rules)，到Settings的Rules／Rulesets，編輯適用main的啟用規則，在required status checks清單做相同替換並Save changes；若兩種保護同時存在，所有適用規則都要核對。
 5. 回PR最新head／GitHub test merge commit檢查13項結果與四份原收據，確認沒有舊`/3`名稱繼續等待。不刪coverage或停用保護以繞過等待。
 
+## R380 新套件的獨立登錄與有界規劃（2026-11-12）
+
+本次新增兩套測試，原三份 `measured_runs` 各自仍是 315 套，原檔及 canonical SHA-256 不變。`native_shard_added_evidence.json` 獨立保存新增套件的來源與規劃上界；讀取時才合併成目前的 317 套 registry，不把新增成本寫成歷史實測。`profile_digest()` 同時涵蓋原 profile 與此追加證據的 LF bytes。
+
+來源是 [run 43231596387](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43231596387) 的 [native 2/4 job 131228034964](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43231596387/job/131228034964)，source head `a4ea8327bd4a7c0b4089a89ea6d0f270a8f01659`、實際 checkout `2b9d0eea17155c2d857447466aa4a9abce649036`。該 job 整體因 expected 登錄缺漏而失敗；下列兩個 suite 自身全部通過。秒數來自原日誌的一位小數摘要，不能冒充更精確的量測。先前 run `43212366533`／job `131162945568` 的 35.5 秒原日誌保留在補丁證據包，規劃改採最新 61.9 秒來源，沒有降低任何已知實測。
+
+| suite | 原收據 passed / discovered | 原摘要秒數 | 本次規劃上界 ms |
+| --- | ---: | ---: | ---: |
+| `py:test_panel_fill_grid_source` | 13 / 13 | 61.9 | 65000 |
+| `node:panel_fill_grid_read_compat` | 11 / 11 | 0.1 | 2000 |
+
+追加證據必須提供 source run／head／checkout、每套 source job、完整通過計數及高於日誌摘要秒數的整數規劃上界；缺來源、重複名稱、失敗測試、低估成本或與原實測 registry 重疊均拒收。這兩套的 expected 計數按完整實跑精確補入；`py:test_geo314_commit_paths`、`py:test_unittest_runner`、`node:room_candidate_cold_contract` 分別以新增的實際 method／case 更新為 12、13、9。
+
+原單輪兩套交換在完整 317 套的三片重播超過預算；最新 65000／2000 ms 上界也使單一起點的兩輪 pair swap 加四輪 two-for-one 改善不足。本次保留原 greedy 起點，另外最多八個固定起點，將成本最高的套件依序與接下來八套同片，再填入其他套件。每個起點先執行兩輪原 pair swap，以原完整跨情境字典序評分選唯一最佳，再執行四輪「一次最佳 two-for-one exchange，加一輪原 pair swap」。每個 shard 只選成本最高的 16 套作 two-for-one 候選，同成本以名稱穩定排序；四片每輪最多 `4 * 3 * C(16,2) * 16 = 23040` 個候選。起點數、候選數、搜尋輪數皆有固定上限，只有嚴格改善才交換，不依套件名稱、PR 或預算門檻特判。
+
+三片歷史重播仍包含全部 317 套，原 `+100000+30000 <1200000` 不變。正式四片仍驗全部 registry 恰好一次、三份來源成本及 per-suite 最大包絡的 `+120000+30000 <1200000`。新增具名撤回 `R380_REVERT_SINGLE_PAIR_SWEEP`、`R380_REMOVE_MULTISTART_SCREENING`、`R380_DROP_ADDED_SUITE_EVIDENCE`，連同原具名突變全部要求正常 AssertionError 的 0／1／0；不以 crash、timeout 或 skip 算 kill。正式四份 wall-clock 收據與完整 CI 仍須另外驗收。
+
 官方說明：[required checks與最近七日成功條件](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)、[classic設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)、[rulesets設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/managing-rulesets-for-a-repository)、[多規則聚合](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)。最終合併判斷仍需最新來源全部正式CI、四份`seconds <1200`原收據、完整coverage及mutation freshness通過。

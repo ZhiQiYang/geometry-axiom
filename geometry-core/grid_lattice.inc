@@ -15,20 +15,16 @@ static Coord grid_axis_phase(const GridAxisDef *a)
 { return geo_grid_axis_phase(a); }
 
 static bool grid_lattice_coord(const ReferenceGrid *g,int axis,int64_t k,Coord *out)
-{
-    if(!g||!g->from_binding||axis<0||axis>1)return false;
-    GeoLattice lattice={g->lattice_base[axis],g->lattice_step[axis],g->lattice_index[axis]};
-    return geo_lattice_coord(&lattice,k,out);
-}
+{ return wood_grid_lattice_coord(g,axis,k,out); }
 
 static bool grid_lattice_window(const ReferenceGrid *g,int axis,Coord lo,Coord hi,
-    size_t limit,bool sample,GridQueryAxis *out,char *err,size_t cap)
+    size_t limit,bool sample,bool stagger_window,GridQueryAxis *out,char *err,size_t cap)
 {
     memset(out,0,sizeof *out);out->stride=1;
     if(!g||axis<0||axis>1||limit>GRID_MAX_LINES)goto invalid;
-    GeoLattice lattice={g->lattice_base[axis],g->lattice_step[axis],g->lattice_index[axis]};
     GeoLatticeLine lines[GRID_MAX_LINES];GeoLatticeWindow result={.lines=lines,.capacity=GRID_MAX_LINES};
-    GeoGridStatus status=geo_lattice_window(&lattice,lo,hi,limit,sample,&result);
+    GeoGridStatus status=stagger_window?wood_grid_query_window(g,axis,lo,hi,limit,sample,&result):
+        wood_grid_lattice_window(g,axis,lo,hi,limit,sample,&result);
     out->defined=result.defined;out->first=result.first;out->last=result.last;
     out->total=result.total;out->stride=result.stride;out->count=result.count;
     for(size_t i=0;i<result.count;++i){out->lines[i].index=lines[i].index;out->lines[i].coordinate=lines[i].coordinate;}
@@ -44,11 +40,4 @@ static Coord grid_axis_stagger_shift(const GridAxisDef *a,int64_t band)
 { return a?panel_layout_shift(a->stagger_set,a->stagger,band):0; }
 
 static bool grid_lattice_coord_band(const ReferenceGrid *g,int axis,int64_t k,int64_t band,Coord *out)
-{
-    Coord base,shift; int64_t value;
-    if(!grid_lattice_coord(g,axis,k,&base)) return false;
-    shift=grid_axis_stagger_shift(&g->axis[axis],band);
-    if(!shift){ if(out) *out=base; return true; }
-    if(!grid_i64_add(base,shift,&value) || !coord_in_range(value)) return false;
-    if(out) *out=value; return true;
-}
+{ return wood_grid_lattice_coord_band(g,axis,k,band,out); }

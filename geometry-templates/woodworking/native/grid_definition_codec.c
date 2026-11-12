@@ -201,6 +201,21 @@ bool wood_grid_decode_application(const GeoDefinitionValue *value,uint32_t expec
 {
     WoodGridReader reader;WoodGridApplication application={0};
     if(prior)application=*prior;
+    if(value&&value->schema&&!strcmp(value->schema,WOOD_GRID_FILL_DEFINITION_SCHEMA)){
+        WoodGridApplication fill={0};
+        if(!out||!wood_grid_codec_begin(value,WOOD_GRID_FILL_DEFINITION_SCHEMA,&reader)||
+           !wood_grid_codec_u32(&reader,&fill.id)||fill.id!=expected_id||
+           !wood_grid_codec_u32(&reader,&fill.placement_id)||!wood_grid_codec_u32(&reader,&fill.fill_id)||
+           !wood_grid_codec_int(&reader,&fill.main_along)||reader.offset!=reader.size)return false;
+        fill.from_fill=true;
+        if(prior&&prior->from_fill){fill.fill_side=prior->fill_side;
+            memcpy(fill.axis,prior->axis,sizeof fill.axis);
+            memcpy(fill.lattice_base,prior->lattice_base,sizeof fill.lattice_base);
+            memcpy(fill.lattice_step,prior->lattice_step,sizeof fill.lattice_step);
+            memcpy(fill.lattice_index,prior->lattice_index,sizeof fill.lattice_index);}
+        *out=fill;return true;
+    }
+    application.from_fill=false;application.fill_id=0;application.fill_side=0;
     if(!out||!wood_grid_codec_begin(value,"wood.grid.application/1",&reader)||
        !wood_grid_codec_application_prefix(&reader,expected_id,&application))return false;
     if(!application.from_system&&!application.from_binding&&!application.is_subgrid){
@@ -216,9 +231,15 @@ bool wood_grid_decode_application_value(const GeoDefinitionValue *value,uint32_t
     WoodGridApplication *out)
 {
     WoodGridReader reader;WoodGridApplication application={0};
-    if(!out||!wood_grid_codec_begin(value,WOOD_GRID_APPLICATION_VALUE_SCHEMA,&reader)||
-       !wood_grid_codec_application_prefix(&reader,expected_id,&application)||
-       !wood_grid_codec_int(&reader,&application.main_along))return false;
+    if(value&&value->schema&&!strcmp(value->schema,WOOD_GRID_FILL_VALUE_SCHEMA)){
+        if(!out||!wood_grid_codec_begin(value,WOOD_GRID_FILL_VALUE_SCHEMA,&reader)||
+           !wood_grid_codec_u32(&reader,&application.id)||application.id!=expected_id||
+           !wood_grid_codec_u32(&reader,&application.placement_id)||!wood_grid_codec_u32(&reader,&application.fill_id)||
+           !wood_grid_codec_int(&reader,&application.main_along)||!wood_grid_codec_int(&reader,&application.fill_side))return false;
+        application.from_fill=true;
+    }else if(!out||!wood_grid_codec_begin(value,WOOD_GRID_APPLICATION_VALUE_SCHEMA,&reader)||
+        !wood_grid_codec_application_prefix(&reader,expected_id,&application)||
+        !wood_grid_codec_int(&reader,&application.main_along))return false;
     for(int axis=0;axis<2;++axis)
         if(!wood_grid_codec_axis(&reader,NULL,&application.axis[axis],false,true))return false;
     for(int axis=0;axis<2;++axis)
@@ -302,6 +323,11 @@ bool wood_grid_encode_application_value(const WoodGridApplication *application,
     WoodGridWriter writer={.ok=true};if(!application)return false;
     wood_grid_codec_write_number(&writer,application->id);
     wood_grid_codec_write_number(&writer,application->placement_id);
+    if(application->from_fill){
+        wood_grid_codec_write_number(&writer,application->fill_id);
+        wood_grid_codec_write_number(&writer,(uint64_t)application->main_along);
+        wood_grid_codec_write_number(&writer,(uint64_t)application->fill_side);
+    }else{
     wood_grid_codec_write_number(&writer,application->from_system);
     wood_grid_codec_write_number(&writer,application->from_binding);
     wood_grid_codec_write_number(&writer,application->is_subgrid);
@@ -316,6 +342,7 @@ bool wood_grid_encode_application_value(const WoodGridApplication *application,
         for(int j=0;j<2;++j)wood_grid_codec_write_number(&writer,(uint64_t)application->cell_ref[axis][j]);
     }
     wood_grid_codec_write_number(&writer,(uint64_t)application->main_along);
+    }
     for(int axis=0;axis<2;++axis)wood_grid_codec_write_axis(&writer,&application->axis[axis]);
     for(int axis=0;axis<2;++axis){
         wood_grid_codec_write_number(&writer,(uint64_t)application->lattice_base[axis]);

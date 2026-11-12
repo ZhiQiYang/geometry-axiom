@@ -3014,19 +3014,37 @@ function gridSegmentEnds(segment) {
   if(Array.isArray(segment) && segment.length>=4) return [segment[0],segment[1],segment[2],segment[3]];
   return null;
 }
+function gridIsFromFill(grid) {
+  return grid?.fillId!=null || grid?.uDefinition?.mode==="from-fill" || grid?.vDefinition?.mode==="from-fill";
+}
+function gridFillEvaluation(grid) {
+  const e=grid?.evaluatedFill;
+  return e && [1,-1].includes(e.side) && [null,"u","v"].includes(e.staggerAxis) &&
+    Number.isSafeInteger(e.staggerDelta) && e.bandIndexSpace==="panel-row" ? e : null;
+}
+function gridBandLabel(grid, band) {
+  return `${gridIsFromFill(grid) ? "板列" : "格"} ${band}`;
+}
 function gridHasStagger(grid, axis) {
+  if(gridIsFromFill(grid))return gridFillEvaluation(grid)?.staggerAxis===axis;
   return !!grid?.[axis+"Definition"]?.stagger;
 }
 function gridAnchorCoordinate(grid, axis, index, band) {
+  const fill=gridIsFromFill(grid), evaluated=fill ? gridFillEvaluation(grid) : null;
+  if(fill && !evaluated)return null;
   const entry=gridLineEntry(grid, axis, index);
   if(!entry || gridHasStagger(grid, axis)!==(band!=null)) return null;
   if(band!=null) {
+    if(!/^-?\d+$/.test(String(band)))return null;
+    const row=BigInt(band);if(row<-(1n<<63n) || row>(1n<<63n)-1n)return null;
     const seg=(entry.line?.segments||[]).find(s=>gridSegmentBand(s)===String(band));
     const ends=seg&&gridSegmentEnds(seg);
     if(ends) return axis==="u" ? ends[0] : ends[1];
-    const def=grid[axis+"Definition"];
-    if(!def?.stagger || !/^-?\d+$/.test(String(band))) return null;
-    const value=BigInt(entry.coordinate)+((BigInt(band)&1n)?BigInt(def.stagger):0n);
+    // Both lattice coordinates and the fill's shift are already in the
+    // board-back frame. Preserve the signed row; do not reflect it again.
+    const shift=fill ? evaluated.staggerDelta : grid[axis+"Definition"]?.stagger;
+    if(!Number.isSafeInteger(shift))return null;
+    const value=BigInt(entry.coordinate)+((row&1n)?BigInt(shift):0n);
     if(value<BigInt(Number.MIN_SAFE_INTEGER) || value>BigInt(Number.MAX_SAFE_INTEGER)) return null;
     return Number(value);
   }
@@ -4673,7 +4691,14 @@ function feAnchorLineInfo(bid, anchorValue) {
     const g = fe.grids.find(x => x.id === +gridAnchor.id);
     const value = g && gridAnchorCoordinate(g, gridAnchor.axis, gridAnchor.index, gridAnchor.band);
     if (value == null) return null;
-    return { constAxis: gridAnchor.axis, value, bounds:g.kind === "subgrid" ? [g.bounds.u[0],g.bounds.v[0],g.bounds.u[1],g.bounds.v[1]] : null };
+    const info={ constAxis: gridAnchor.axis, value, bounds:g.kind === "subgrid" ? [g.bounds.u[0],g.bounds.v[0],g.bounds.u[1],g.bounds.v[1]] : null };
+    if(gridIsFromFill(g) && gridAnchor.band!=null) {
+      // A board-row reference highlights only its native clipped pieces.
+      // An unsampled row has no preview geometry to extend across the face.
+      info.segments=(gridLineEntry(g,gridAnchor.axis,gridAnchor.index)?.line?.segments || [])
+        .filter(s=>gridSegmentBand(s)===gridAnchor.band).map(gridSegmentEnds).filter(Boolean);
+    }
+    return info;
   }
   return null;   /* at-face t<id>(角材側面)不判占用/不畫預示 */
 }
@@ -4713,8 +4738,9 @@ function referenceAnchorEntries(bid, surf) {
   for (const g of fe.guides) options.push([`at-line guide ${g.id}`, `參考線 ${g.id} · ${guidePositionLabel(g)}`]);
   for (const g of fe.grids) for (const axis of ["u", "v"])
     gridLineEntries(g,axis).forEach(({coordinate:value,index,line}) => {
+      if(gridIsFromFill(g) && !gridFillEvaluation(g))return;
       const role = line?.priority ? ` · ${line.role === "primary" ? "主支" : "副支"} ${line.priority}` : " · 優先級未設定";
-      const labelOf = (coord, band) => `${g.kind === "subgrid" ? "子網格" : "主網格"} ${g.id} · ${gridLineLabel(g,axis,index)}${band!=null?` · 格 ${band}`:""} · ${axis}=${coord} mm${role}`;
+      const labelOf = (coord, band) => `${g.kind === "subgrid" ? "子網格" : "主網格"} ${g.id} · ${gridLineLabel(g,axis,index)}${band!=null?` · ${gridBandLabel(g,band)}`:""} · ${axis}=${coord} mm${role}`;
       if (gridHasStagger(g, axis)) {
         const seen = new Set();
         for (const segment of line?.segments || []) {
@@ -4752,8 +4778,20 @@ function referenceGuideSources(bid, along) {
   }));
   for (const guide of fe.guides.filter(g => g.axis === along))
     options.push([`guide:${guide.id}`, `參考線 ${guide.id} · ${guidePositionLabel(guide)}`]);
-  for (const grid of fe.grids) for (const line of gridLineEntries(grid,coordinate))
-    options.push([`grid:${grid.id}:${coordinate}:${line.index}`, `${grid.kind === "subgrid" ? "子網格" : "主網格"} ${grid.id} · ${gridLineLabel(grid,coordinate,line.index)} · ${line.coordinate} mm`]);
+  for (const grid of fe.grids) for (const entry of gridLineEntries(grid,coordinate)) {
+    if(gridIsFromFill(grid) && !gridFillEvaluation(grid))continue;
+    const source=`grid:${grid.id}:${coordinate}:${entry.index}`;
+    const label=`${grid.kind === "subgrid" ? "子網格" : "主網格"} ${grid.id} · ${gridLineLabel(grid,coordinate,entry.index)}`;
+    if(gridIsFromFill(grid) && gridHasStagger(grid,coordinate)) {
+      const seen=new Set();
+      for(const segment of entry.line?.segments || []) {
+        const band=gridSegmentBand(segment),ends=gridSegmentEnds(segment);
+        if(band==null || !ends || seen.has(band))continue;
+        seen.add(band);
+        options.push([`${source}:band:${band}`,`${label} · ${gridBandLabel(grid,band)} · ${ends[ci]} mm`]);
+      }
+    } else options.push([source,`${label} · ${entry.coordinate} mm`]);
+  }
   for(const l of GridRuleLines.entries())if(l.axis===coordinate&&l.segments.length)options.push([GridRuleLines.expression(l.ref),GridRuleLines.label(l.ref,l.name)+` · ${l.coordinate} mm`]);
   return options;
 }
@@ -5493,7 +5531,7 @@ function drawFaceEditor() {
       class: "face-timber" + (selT ? " sel" : "") + (hoverT ? " hover" : "") }, root);
   }
   /* GEO-195:定位引用預示——角材工具啟用中,或 #tbAnchor 焦點/hover/改值中(fe.anchorPreview)
-     才畫;畫一條貫穿全圖的虛線標出定位引用本身,再依目前深度(+n/-n)/A 畫半透明帶示意角材
+     才畫;一般引用用貫穿全圖的虛線標出,鋪排板列則只畫原生裁切片段,再依目前深度(+n/-n)/A 畫半透明帶示意角材
      會落在哪一側(帶只是「示意」,真正長度由引擎依支撐推導——見帶上文字標註;帶永遠沿定位
      引用的固定座標軸展開,不看 #tbDir——不管使用者選哪個方向,角材的截面深度一定是往定位
      引用的垂直方向偏,#tbDir 只決定角材沿哪個軸「跑」,不影響這條帶要畫在哪)。
@@ -5515,21 +5553,27 @@ function drawFaceEditor() {
       const seg = info.constAxis === "u"
         ? [info.value, localBounds[1], info.value, localBounds[3]]
         : [localBounds[0], info.value, localBounds[2], info.value];
-      el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3], class: "fe-anchor-hi" }, refRoot);
+      for(const piece of info.segments || [seg])
+        el("line", { x1: piece[0], y1: piece[1], x2: piece[2], y2: piece[3], class: "fe-anchor-hi" }, refRoot);
       const A2 = Number($("tbA")?.value) || 0;
       const cr = feAnchorCrossRange(e.bid, anchorVal, A2);
       if (cr) {
-        const br = cr.constAxis === "u" ? [Math.max(cr.lo,localBounds[0]), localBounds[1], Math.min(cr.hi,localBounds[2]), localBounds[3]]
-                                        : [localBounds[0], Math.max(cr.lo,localBounds[1]), localBounds[2], Math.min(cr.hi,localBounds[3])];
-        // A disjoint or merely touching intersection has no material area.
-        // Keep the reference highlight, but do not emit an invalid/empty band.
-        if (br[2] > br[0] && br[3] > br[1]) {
-          const bandG = el("g", { "clip-path": "url(#face-material-clip)" }, root);
-          el("rect", { x: br[0], y: br[1], width: br[2] - br[0], height: br[3] - br[1],
-            class: "fe-anchor-band" }, bandG);
-          el("text", { x: (br[0] + br[2]) / 2, y: (br[1] + br[3]) / 2,
-            "font-size": 10.5 / z, "text-anchor": "middle", "dominant-baseline": "middle",
-            class: "fe-dim fe-anchor-band-label" }, el("g", {"clip-path":"url(#face-material-clip)"}, annotations)).textContent = "橫向定位示意";
+        const ranges=info.segments ? info.segments.map(piece=>info.constAxis==="u"
+          ? [localBounds[0],Math.max(localBounds[1],Math.min(piece[1],piece[3])),localBounds[2],Math.min(localBounds[3],Math.max(piece[1],piece[3]))]
+          : [Math.max(localBounds[0],Math.min(piece[0],piece[2])),localBounds[1],Math.min(localBounds[2],Math.max(piece[0],piece[2])),localBounds[3]]) : [localBounds];
+        for(const bounds of ranges) {
+          const br = cr.constAxis === "u" ? [Math.max(cr.lo,bounds[0]), bounds[1], Math.min(cr.hi,bounds[2]), bounds[3]]
+                                          : [bounds[0], Math.max(cr.lo,bounds[1]), bounds[2], Math.min(cr.hi,bounds[3])];
+          // A disjoint or merely touching intersection has no material area.
+          // Keep the reference highlight, but do not emit an invalid/empty band.
+          if (br[2] > br[0] && br[3] > br[1]) {
+            const bandG = el("g", { "clip-path": "url(#face-material-clip)" }, root);
+            el("rect", { x: br[0], y: br[1], width: br[2] - br[0], height: br[3] - br[1],
+              class: "fe-anchor-band" }, bandG);
+            el("text", { x: (br[0] + br[2]) / 2, y: (br[1] + br[3]) / 2,
+              "font-size": 10.5 / z, "text-anchor": "middle", "dominant-baseline": "middle",
+              class: "fe-dim fe-anchor-band-label" }, el("g", {"clip-path":"url(#face-material-clip)"}, annotations)).textContent = "橫向定位示意";
+          }
         }
       }
     }
@@ -7655,7 +7699,7 @@ const SubgridEditor = (() => {
     return {cell,key,bounds:b,occupied,label:`cell (${cell.i}, ${cell.j}) · u ${b[0]}–${b[2]} · v ${b[1]}–${b[3]} mm`};
   }
   function cells(parent,bid,ownId) {
-    if(!parent)return [];
+    if(!parent || gridIsFromFill(parent))return [];
     const loops=oc.bmap[bid] || [],bb=loopsBBox(loops);
     if(parent.indexSpace==="lattice") {
       const floorDiv=(n,d)=>{const q=n/d;return n<0n && n%d ? q-1n : q;};
@@ -7710,6 +7754,7 @@ const SubgridEditor = (() => {
   }
   function clear() {if(active)clearTimeout(active.timer);active=null;}
   function begin(parentId) {
+    if(gridIsFromFill(fe.grids.find(g=>g.id===parentId)))return false;
     fe.subgridDraftParent=parentId;fe.gridEditingId=null;renderFaceInspector();feSetTool("grid");fiShowTab("grid");
     active.picking=true;drawFaceEditor();
     if(innerWidth<=680)openPanel("right",$("workspaceToggleRight"));
@@ -7865,6 +7910,10 @@ const GridEditor = (() => {
       `<div id="${p}Hint" class="grid-coordinate-hint"></div><div id="${p}Error" class="grid-field-error" hidden></div><div class="grid-line-chips" aria-label="${a} 逐線座標"></div></fieldset>`;
   }
   function html(g, surf) {
+    if(gridIsFromFill(g)) {
+      const fillId=g.fillId ?? g.uDefinition?.fillId ?? g.vDefinition?.fillId, evaluated=gridFillEvaluation(g);
+      return `<section data-component-section="grid" data-from-fill-grid="${esc(g.id)}"><h2 class="component-heading">網格 ${esc(g.id)}</h2><div class="inspector-block"><h3>來自鋪排 #${esc(fillId)} · 唯讀</h3><p>格線隨鋪排重新計算，保留正負線號。此處可查看與選線引用；修改來源請回完成面與鋪排。</p><p>${g.mainAlong ? `主支沿 ${esc(g.mainAlong)}。` : "角色預設未設定。"}${evaluated ? evaluated.staggerAxis ? ` ${esc(evaluated.staggerAxis)} 軸錯縫的引用須包含板列編號。` : " 直鋪接縫。" : " 格線求值資訊不完整，暫停選線引用。"}</p><p>鋪排來源網格不提供直接拖線或建立子網格。</p></div></section>`;
+    }
     if(g?.kind === "subgrid" || fe.subgridDraftParent != null)return SubgridEditor.html(g,surf);
     if(g?.bindingId != null)return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block"><h3>無限網格配置 ${g.bindingId}</h3><p>格線由來源與邊界的對齊關係決定。畫面只顯示邊界內的部分，正負索引保持不變。</p><button type="button" class="btn" id="gridBindingOpen">編輯網格與邊界對齊</button>${GridRuleLines.html(g)}<div class="grid-subgrid-note"><h4>局部等分</h4>${(g.uDefinition?.stagger || g.vDefinition?.stagger) ? `<p>有相位差的主格不能建立子網格。</p><button type="button" id="subgridNew" class="btn" disabled>建立子網格</button>` : `<p>選取原網格的一個完整 cell；邊界只裁切顯示範圍。</p><button type="button" id="subgridNew" class="btn">建立子網格</button>`}</div></div></section>`;
     if(g?.sourceSystem != null)return GridSystemEditor.appliedHTML(g)+GridRuleLines.html(g);
@@ -8066,6 +8115,7 @@ const GridEditor = (() => {
   function bind(pane,bid,grid,surf) {
     if(dragCancel) dragCancel();if(active) {clearTimeout(active.timer);active=null;}
     SubgridEditor.clear();
+    if(gridIsFromFill(grid)) {fe.subgridDraftParent=null;fe.gridPreview=null;focusSection();return;}
     if(grid)GridRuleLines.bind(pane,grid);
     if(grid?.kind === "subgrid" || fe.subgridDraftParent != null){SubgridEditor.bind(pane,bid,grid,surf);return;}
     pane.querySelector('#subgridNew')?.addEventListener('click',()=>{if(grid && !grid.uDefinition?.stagger && !grid.vDefinition?.stagger)SubgridEditor.begin(grid.id);});
@@ -8153,7 +8203,7 @@ const GridEditor = (() => {
     const sid=feSid(oc.edit?.bid),grids=fe.grids.filter(g=>g.surface===sid);
     const grid=grids.find(g=>g.id===fe.gridEditingId) || grids[0];
     return !!(grid && grid.kind !== "subgrid" &&
-      (grid.bindingId != null || grid.sourceSystem != null || grid.engineeringSources?.length));
+      (gridIsFromFill(grid) || grid.bindingId != null || grid.sourceSystem != null || grid.engineeringSources?.length));
   }
   function fit(b) {
     const r=$("faceEditorViewport").getBoundingClientRect();
@@ -8262,7 +8312,7 @@ const GridEditor = (() => {
     if(!suggestion){box.remove();return;}
     const selectedRole=manual ? $("tbRole").value : suggestion.role;
     const warning=suggestion.subgrid ? feSubgridRoleWarning(oc.edit.bid,suggestion.dir,selectedRole) : "";
-    box.innerHTML=`<strong>${suggestion.subgrid ? "子網格" : "網格"} ${g.id} · ${gridLineLabel(g,a,i)} · ${a}=${gridLineEntry(g,a,i)?.coordinate ?? "—"} mm</strong><label>角材角色<select aria-label="格線角材角色">${feTimberRoleOptionsHTML(oc.edit.bid,suggestion.dir,selectedRole)}</select></label><p>${suggestion.role ? `格線預設${roleName(suggestion.role)}；可明確改選。` : "格線未設定角色預設，請先明確選擇角色。"}</p>${suggestion.subgrid ? `<p class="subgrid-role-warning">${esc(warning || "角材須完整留在父格內，兩端仍須有實際支撐。")}</p>` : ""}<p>截面 ${esc($("tbA").value)} × ${esc($("tbB").value)} mm · ${esc($("tbSide").selectedOptions[0]?.textContent)}</p><button type="button" class="primary-button" data-grid-place-timber>沿此線放置角材</button><button type="button" class="btn" data-grid-timber-close>關閉</button>`;
+    box.innerHTML=`<strong>${suggestion.subgrid ? "子網格" : "網格"} ${g.id} · ${gridLineLabel(g,a,i)}${match.band!=null ? ` · ${gridBandLabel(g,match.band)}` : ""} · ${a}=${gridAnchorCoordinate(g,a,i,match.band) ?? "—"} mm</strong><label>角材角色<select aria-label="格線角材角色">${feTimberRoleOptionsHTML(oc.edit.bid,suggestion.dir,selectedRole)}</select></label><p>${suggestion.role ? `格線預設${roleName(suggestion.role)}；可明確改選。` : "格線未設定角色預設，請先明確選擇角色。"}</p>${suggestion.subgrid ? `<p class="subgrid-role-warning">${esc(warning || "角材須完整留在父格內，兩端仍須有實際支撐。")}</p>` : ""}<p>截面 ${esc($("tbA").value)} × ${esc($("tbB").value)} mm · ${esc($("tbSide").selectedOptions[0]?.textContent)}</p><button type="button" class="primary-button" data-grid-place-timber>沿此線放置角材</button><button type="button" class="btn" data-grid-timber-close>關閉</button>`;
     box.addEventListener("pointerdown",e=>e.stopPropagation());box.addEventListener("pointermove",e=>e.stopPropagation());
     const select=box.querySelector("select"), place=box.querySelector("[data-grid-place-timber]");
     place.disabled=oc.busy || !!warning || (!suggestion.role && !manual);
