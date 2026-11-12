@@ -9,12 +9,16 @@
  * snapshot_size and capacity are positive; each stack has capacity complete
  * snapshots, and each backup has one. Initialization is a trusted host step.
  * No allocation, geometry, template policy, revision or presentation rules
- * live here. The product keeps its existing 32-entry static World buffers. */
+ * live here. The product keeps its existing 32-entry static World buffers.
+ * Each stack is a ring: its k-th oldest entry is slot (head + k) % capacity,
+ * so dropping the oldest entry advances head instead of moving every
+ * snapshot (GEO-381). Zero heads are the initial state. */
 typedef struct {
     size_t snapshot_size, capacity;
     unsigned char *undo, *redo, *evicted, *group_base;
     size_t undo_count, redo_count, record_redo_count;
     bool record_evicted, grouping, group_dirty;
+    size_t undo_head, redo_head;
 } AppHistory;
 
 /* The caller's restore hook cannot fail. It implements any presentation merge;
