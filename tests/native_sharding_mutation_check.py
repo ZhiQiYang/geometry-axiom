@@ -1,5 +1,6 @@
 """在CI用真覆蓋／預算測試反證：各具名撤回必須正常AssertionError紅，恢復綠。"""
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 from pathlib import Path
@@ -14,30 +15,48 @@ import native_shards
 mode, output = sys.argv[1:]
 removed = []
 target = 'test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once'
-if mode in ('drop-one-suite', 'R348_FOUR_SHARD_DROP_ONE_SUITE'):
+if mode in ('drop-one-suite', 'R348_FOUR_SHARD_DROP_ONE_SUITE', 'R378_SIX_SHARD_DROP_ONE_SUITE'):
     original = run_all.partition_suites
+    only = {'R348_FOUR_SHARD_DROP_ONE_SUITE': 4, 'R378_SIX_SHARD_DROP_ONE_SUITE': 6}.get(mode)
     def mutated(suites, count, weights=None):
         parts = original(suites, count, weights)
-        if mode == 'drop-one-suite' or count == 4:
+        if mode == 'drop-one-suite' or count == only:
             removed.append(parts[0].pop(0).name)
         return parts
     run_all.partition_suites = mutated
+# R378: anchors follow the current six-shard workflow. The R348 names keep
+# their original meaning (revert to three shards, drop the fourth entry, ...);
+# R378 adds the revert-to-four and fifth/sixth-entry withdrawals.
 workflow_replacements = {
     'R348_REVERT_TO_THREE_NATIVE_SHARDS': [
-        ('matrix.shard }}/4', 'matrix.shard }}/3'),
-        ('max-parallel: 4', 'max-parallel: 3'),
-        ('shard: [1, 2, 3, 4]', 'shard: [1, 2, 3]'),
-        ('--parts 4', '--parts 3')],
-    'R348_REVERT_NATIVE_JOB_NAME': [('name: native (${{ matrix.shard }}/4)',
+        ('matrix.shard }}/6', 'matrix.shard }}/3'),
+        ('max-parallel: 6', 'max-parallel: 3'),
+        ('shard: [1, 2, 3, 4, 5, 6]', 'shard: [1, 2, 3]'),
+        ('--parts 6', '--parts 3')],
+    'R348_REVERT_NATIVE_JOB_NAME': [('name: native (${{ matrix.shard }}/6)',
                                     'name: native (${{ matrix.shard }}/3)')],
-    'R348_REVERT_NATIVE_RUNNER_DENOMINATOR': [("--shard '${{ matrix.shard }}/4'",
+    'R348_REVERT_NATIVE_RUNNER_DENOMINATOR': [("--shard '${{ matrix.shard }}/6'",
                                              "--shard '${{ matrix.shard }}/3'")],
-    'R348_DROP_FOURTH_MATRIX_ENTRY': [('shard: [1, 2, 3, 4]', 'shard: [1, 2, 3]')],
-    'R348_REVERT_COVERAGE_PARTS': [('--parts 4', '--parts 3')],
+    'R348_DROP_FOURTH_MATRIX_ENTRY': [('shard: [1, 2, 3, 4, 5, 6]', 'shard: [1, 2, 3, 5, 6]')],
+    'R348_REVERT_COVERAGE_PARTS': [('--parts 6', '--parts 3')],
     'R348_RELAX_NATIVE_JOB_TIMEOUT': [('timeout-minutes: 35', 'timeout-minutes: 36')],
+    'R378_REVERT_TO_FOUR_NATIVE_SHARDS': [
+        ('matrix.shard }}/6', 'matrix.shard }}/4'),
+        ('max-parallel: 6', 'max-parallel: 4'),
+        ('shard: [1, 2, 3, 4, 5, 6]', 'shard: [1, 2, 3, 4]'),
+        ('--parts 6', '--parts 4')],
+    'R378_REVERT_NATIVE_JOB_NAME_TO_FOUR': [('name: native (${{ matrix.shard }}/6)',
+                                            'name: native (${{ matrix.shard }}/4)')],
+    'R378_REVERT_RUNNER_DENOMINATOR_TO_FOUR': [("--shard '${{ matrix.shard }}/6'",
+                                              "--shard '${{ matrix.shard }}/4'")],
+    'R378_REVERT_MAX_PARALLEL_TO_FOUR': [('max-parallel: 6', 'max-parallel: 4')],
+    'R378_DROP_FIFTH_MATRIX_ENTRY': [('shard: [1, 2, 3, 4, 5, 6]', 'shard: [1, 2, 3, 4, 6]')],
+    'R378_DROP_SIXTH_MATRIX_ENTRY': [('shard: [1, 2, 3, 4, 5, 6]', 'shard: [1, 2, 3, 4, 5]')],
+    'R378_REVERT_COVERAGE_PARTS_TO_FOUR': [('--parts 6', '--parts 4')],
 }
 evidence_modes = ('R348_DROP_LATEST_MEASURED_RUN', 'R348_REWRITE_RETAINED_MEASUREMENT',
-                  'R348_LOWER_LATEST_MEASUREMENT')
+                  'R348_LOWER_LATEST_MEASUREMENT', 'R378_DROP_ADDED_SCENARIO',
+                  'R378_LOWER_ADDED_SCENARIO', 'R378_RELABEL_ADDED_SCENARIO_AS_MAIN')
 if (mode in ('measured-baseline', 'R348_REVERT_MEASURED_PROFILE', 'R348_REMOVE_SCENARIO_SWAP',
              'R380_REVERT_SINGLE_PAIR_SWEEP', 'R380_DROP_ADDED_SUITE_EVIDENCE',
              'R380_REMOVE_MULTISTART_SCREENING')
@@ -82,7 +101,14 @@ if mode in workflow_replacements or mode in evidence_modes:
         elif mode in evidence_modes and path.resolve() == timings_path:
             profile = json.loads(value)
             if mode == 'R348_DROP_LATEST_MEASURED_RUN':
-                profile['measured_runs'].pop()
+                # Original meaning: drop the d7515daf run (index 2).
+                profile['measured_runs'].pop(2)
+            elif mode == 'R378_DROP_ADDED_SCENARIO':
+                profile['measured_runs'].pop(3)
+            elif mode == 'R378_LOWER_ADDED_SCENARIO':
+                profile['measured_runs'][3]['shards'][1]['timings_ms']['py:test_model_update'] = 1
+            elif mode == 'R378_RELABEL_ADDED_SCENARIO_AS_MAIN':
+                profile['measured_runs'][3]['source_checkout'] = 'f3ee80cf07a548089bfe705e50c93fc7632d8720'
             elif mode == 'R348_LOWER_LATEST_MEASUREMENT':
                 profile['measured_runs'][2]['shards'][0]['timings_ms']['py:test_geo261_timber_capacity_host'] = 1
             else:
@@ -92,8 +118,9 @@ if mode in workflow_replacements or mode in evidence_modes:
     pathlib.Path.read_text = mutated_read
 suite = unittest.defaultTestLoader.loadTestsFromName(target)
 result = unittest.TextTestRunner(verbosity=2).run(suite)
-markers = ('R348_MEASURED_RECEIPT_BUDGET', 'R348_FOUR_NATIVE_WORKFLOW',
+markers = ('R348_MEASURED_RECEIPT_BUDGET', 'R378_SIX_NATIVE_WORKFLOW',
            'R348_RETAINED_MEASURED_EVIDENCE', 'R348_FOUR_SHARDS_COVER_FULL_REGISTRY',
+           'R378_SIX_SHARDS_COVER_FULL_REGISTRY',
            'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
 row = dict(tests=result.testsRun, failures=len(result.failures), errors=len(result.errors),
            skips=len(result.skipped), failure_ids=[case.id() for case,_ in result.failures],
@@ -133,17 +160,29 @@ def main():
         'R380_REMOVE_MULTISTART_SCREENING': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
         'R380_DROP_ADDED_SUITE_EVIDENCE': ('measured-baseline', 'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
         'R348_REVERT_TO_THREE_NATIVE_SHARDS': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
-        'R348_REVERT_NATIVE_JOB_NAME': ('measured-baseline', 'R348_FOUR_NATIVE_WORKFLOW'),
-        'R348_REVERT_NATIVE_RUNNER_DENOMINATOR': ('measured-baseline', 'R348_FOUR_NATIVE_WORKFLOW'),
-        'R348_DROP_FOURTH_MATRIX_ENTRY': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
-        'R348_REVERT_COVERAGE_PARTS': ('measured-baseline', 'R348_FOUR_NATIVE_WORKFLOW'),
-        'R348_RELAX_NATIVE_JOB_TIMEOUT': ('measured-baseline', 'R348_FOUR_NATIVE_WORKFLOW'),
+        'R348_REVERT_NATIVE_JOB_NAME': ('measured-baseline', 'R378_SIX_NATIVE_WORKFLOW'),
+        'R348_REVERT_NATIVE_RUNNER_DENOMINATOR': ('measured-baseline', 'R378_SIX_NATIVE_WORKFLOW'),
+        'R348_DROP_FOURTH_MATRIX_ENTRY': ('measured-baseline', 'R378_SIX_NATIVE_WORKFLOW'),
+        'R348_REVERT_COVERAGE_PARTS': ('measured-baseline', 'R378_SIX_NATIVE_WORKFLOW'),
+        'R348_RELAX_NATIVE_JOB_TIMEOUT': ('measured-baseline', 'R378_SIX_NATIVE_WORKFLOW'),
         'R348_DROP_LATEST_MEASURED_RUN': ('measured-baseline', 'R348_RETAINED_MEASURED_EVIDENCE'),
         'R348_REWRITE_RETAINED_MEASUREMENT': ('measured-baseline', 'R348_RETAINED_MEASURED_EVIDENCE'),
         'R348_LOWER_LATEST_MEASUREMENT': ('measured-baseline', 'R348_RETAINED_MEASURED_EVIDENCE'),
         'R348_FOUR_SHARD_DROP_ONE_SUITE': ('baseline', 'R348_FOUR_SHARDS_COVER_FULL_REGISTRY'),
+        'R378_REVERT_TO_FOUR_NATIVE_SHARDS': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
+        'R378_REVERT_NATIVE_JOB_NAME_TO_FOUR': ('measured-baseline', 'R378_SIX_NATIVE_WORKFLOW'),
+        'R378_REVERT_RUNNER_DENOMINATOR_TO_FOUR': ('measured-baseline', 'R378_SIX_NATIVE_WORKFLOW'),
+        'R378_REVERT_MAX_PARALLEL_TO_FOUR': ('measured-baseline', 'R378_SIX_NATIVE_WORKFLOW'),
+        'R378_DROP_FIFTH_MATRIX_ENTRY': ('measured-baseline', 'R378_SIX_NATIVE_WORKFLOW'),
+        'R378_DROP_SIXTH_MATRIX_ENTRY': ('measured-baseline', 'R378_SIX_NATIVE_WORKFLOW'),
+        'R378_REVERT_COVERAGE_PARTS_TO_FOUR': ('measured-baseline', 'R378_SIX_NATIVE_WORKFLOW'),
+        'R378_DROP_ADDED_SCENARIO': ('measured-baseline', 'R348_RETAINED_MEASURED_EVIDENCE'),
+        'R378_LOWER_ADDED_SCENARIO': ('measured-baseline', 'R348_RETAINED_MEASURED_EVIDENCE'),
+        'R378_RELABEL_ADDED_SCENARIO_AS_MAIN': ('measured-baseline', 'R348_RETAINED_MEASURED_EVIDENCE'),
+        'R378_SIX_SHARD_DROP_ONE_SUITE': ('baseline', 'R378_SIX_SHARDS_COVER_FULL_REGISTRY'),
     }
-    for mutation, (baseline, marker) in mutations.items():
+    def prove(mutation, baseline, marker):
+        # Each named proof stays strictly sequential: baseline, withdrawn, restored.
         proof = []
         for label, mode, expected in [('baseline', baseline, 0),
                                       ('withdrawn', mutation, 1), ('restored', baseline, 0)]:
@@ -162,7 +201,16 @@ def main():
                 assert all(name.startswith('test_unittest_runner.NativeShardCoverage.' + method)
                            for name in row['failure_ids']), row
             proof.append(dict(label=label, exit=result.returncode, **row))
-        timing_proofs[mutation] = dict(baseline_mutant_restored_exit=[r['exit'] for r in proof], rows=proof)
+        return dict(baseline_mutant_restored_exit=[r['exit'] for r in proof], rows=proof)
+
+    # R378: independent named proofs run on up to four worker processes so the
+    # unchanged 5-minute coverage job still fits; every child keeps its own
+    # 60 s limit, its own log/report, and the receipt keeps the declared order.
+    with ThreadPoolExecutor(max_workers=max(1, min(4, os.cpu_count() or 1))) as pool:
+        futures = {mutation: pool.submit(prove, mutation, baseline, marker)
+                   for mutation, (baseline, marker) in mutations.items()}
+        for mutation in mutations:
+            timing_proofs[mutation] = futures[mutation].result()
     receipt = dict(passed=True, baseline_mutant_restored_exit=[r['exit'] for r in rows], rows=rows,
                    timing_proofs=timing_proofs)
     (args.output/'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')

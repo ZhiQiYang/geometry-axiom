@@ -1,6 +1,6 @@
 # 非瀏覽器CI確定性分片（2026-11-02）
 
-目前正式安排為四個native矩陣job，每個`timeout-minutes: 35`保持，各片收據仍須嚴格小於1200秒。2026-11-02依P-186授權建立的三片為歷史安排；R348在2026-11-12的慢runner收據超時後，改為下方的完整三輪／四片規劃。原始main `405f8c5e1a637a16cbe47470faf5ae1fa02b8676` 的[GitHub native job](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40185639126/job/124015759512)量測繼續保留；不延長期限、不豁免失敗。
+目前正式安排為六個native矩陣job（R378，2026-11-13；見文末「R378現行：六片」一節），每個`timeout-minutes: 35`保持，各片收據仍須嚴格小於1200秒。下方R348四片一節保留為歷史證據。2026-11-02依P-186授權建立的三片為歷史安排；R348在2026-11-12的慢runner收據超時後，改為下方的完整三輪／四片規劃。原始main `405f8c5e1a637a16cbe47470faf5ae1fa02b8676` 的[GitHub native job](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40185639126/job/124015759512)量測繼續保留；不延長期限、不豁免失敗。
 
 `native_shard_timings.json`保留完整來源SHA／run／job／原log SHA256及原main的224個suite實測毫秒；這224筆是上述main來源的量測，不改造為其他分支的套件數。初版按耗時遞減、名稱破同分，指派至目前累計最小的片（再以片號破同分）；此規則仍供明確傳入`weights`的呼叫使用。正式預設沿用R348情境分配器，輸入完整三輪量測。片內保留原完整runner的順序；未量測新suite仍用1000ms且必分到某片，但當前預算測試要求量測集合完整覆蓋registry，新增套件須同步補齊量測。配置不依本機cache、即時耗時、亂數或Python hash seed。
 
@@ -77,7 +77,7 @@ R06 以 `bf178770a0e10e996014ec0b6487e186db561c7f` 的純 CI 差異三向套用�
 
 上述三片當時仍須由exact head原收據各`seconds < 1200`裁決，後來的d7515daf正式收據未通過；不能以模型或ME採入解除超時。
 
-## R348現行：保留完整來源，四片驗收（基底f10c4791）
+## R348歷史：保留完整來源，四片驗收（基底f10c4791；已由R378六片取代）
 
 固定基底`f10c4791ee5adfa5d645caea784410b1afa3b060`。原兩輪`measured_runs`的全部630筆、來源與失敗狀態原樣保留，另追加[43177620127](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43177620127)完整315筆；不是退回20套樣本。最新PR head為`d7515dafd8933ca2d0d071184d1884031038333f`，真checkout為`ec80875d0723768b90166691d3119ed7b25984de`，三個source jobs依序為131045589092／131045588729／131045589006。原ZIP／JSON SHA-256、artifact／job URL、receipt seconds／exit均寫入同一profile，毫秒仍為`round(row.seconds * 1000)`。完整profile由既有`profile_digest()`綁定。
 
@@ -144,3 +144,52 @@ R06 以 `bf178770a0e10e996014ec0b6487e186db561c7f` 的純 CI 差異三向套用�
 三片歷史重播仍包含全部 317 套，原 `+100000+30000 <1200000` 不變。正式四片仍驗全部 registry 恰好一次、三份來源成本及 per-suite 最大包絡的 `+120000+30000 <1200000`。新增具名撤回 `R380_REVERT_SINGLE_PAIR_SWEEP`、`R380_REMOVE_MULTISTART_SCREENING`、`R380_DROP_ADDED_SUITE_EVIDENCE`，連同原具名突變全部要求正常 AssertionError 的 0／1／0；不以 crash、timeout 或 skip 算 kill。正式四份 wall-clock 收據與完整 CI 仍須另外驗收。
 
 官方說明：[required checks與最近七日成功條件](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)、[classic設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)、[rulesets設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/managing-rulesets-for-a-repository)、[多規則聚合](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)。最終合併判斷仍需最新來源全部正式CI、四份`seconds <1200`原收據、完整coverage及mutation freshness通過。
+
+## R378現行：第四量測情境與六片（基底f3ee80cf，2026-11-13）
+
+固定基底 main `f3ee80cf07a548089bfe705e50c93fc7632d8720`。原三份 `measured_runs`（43162989157／43150038015／43177620127）的位元組、順序與 canonical SHA-256 不變；JSON 末尾只追加第四筆，僅前一筆結尾多一個逗號。第四筆是 PR #378 head `17842571811d5af74bd8f4caac7c20f28ca2b056` 的 [Geometry 43271258668](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43271258668) 四片原始收據，實際 checkout `3b9678f4dafd80c3c5f680b5cc56fb4cde30eeb9`。它來自 PR checkout，**不是 main 的 run**，欄位照實記錄，不重標為 main。毫秒仍為 `round(row.seconds * 1000)`，315 套與歷史 315 套集合完全相同；R380 的兩套追加證據照舊由 `native_shard_added_evidence.json` 另行合併，總 registry 317 套。
+
+| 片 | source job | artifact | ZIP SHA-256 | receipt seconds | exit |
+|---|---|---|---|---:|---:|
+| 1/4 | 131368074344 | 13968469446 | `370d8d8c…42f9` | 874.314958 | 0 |
+| 2/4 | 131368074007 | 13969622666 | `2878f2de…01ba` | 1226.295112 | 0 |
+| 3/4 | 131368074243 | 13968288670 | `181e20dc…4545` | 624.795111 | 0 |
+| 4/4 | 131368073555 | 13969218634 | `0d76271f…9e91` | 1040.761294 | 0 |
+
+片2原收據 1226.295 秒超過既有 `seconds < 1200`，該輪 coverage 拒收正確；這份超時收據照錄為量測情境，不因本 PR 變綠。四輪套件總和依序 3058.194／3144.324／3317.206／3562.106 秒（含 R380 兩套上界）。
+
+### 四片在新情境下不通過
+
+以四輪逐套最大值回放四片：49／89／92／87 套，加 120 秒開銷＋30 秒餘裕為 1095.127／1145.373／**1218.460**／1128.850 秒，第三片不通過。這就是「先只採 T（量測＋測試）、保留四片 workflow」時的正常 AssertionError 紅：`R348_MEASURED_RECEIPT_BUDGET: per-suite maximum across all runs` 1218460 ≥ 1200000，及 `R378_SIX_NATIVE_WORKFLOW` 的 matrix 不等於 1..6。
+
+### 六片（現行）
+
+`native_shards.py` 不需修改：既有情境規劃器（greedy＋八個固定起點篩選＋pair swap＋有界 two-for-one）接受任意有效片數與四輪資料。六片為 1／59／71／62／61／63 套，聯集 317、零重疊、片內維持原 registry 順序。片1只有 `py:test_geo261_timber_capacity_host`，是規劃器在成本上的自然結果；runner 沒有依套件名稱特判，也沒有略過任何套件。以下為逐套整數毫秒模型回放，**不是**六片正式收據：
+
+| 量測 run | 片1 | 片2 | 片3 | 片4 | 片5 | 片6 |
+|---|---:|---:|---:|---:|---:|---:|
+| 43162989157 | 348.065 | 470.818 | 571.970 | 563.993 | 533.077 | 570.271 |
+| 43150038015 | 688.444 | 385.559 | 553.401 | 565.140 | 470.592 | 481.188 |
+| 43177620127 | 755.187 | 461.389 | 531.007 | 543.244 | 521.208 | 505.171 |
+| 43271258668（#378 checkout） | 701.108 | 572.200 | 572.200 | 572.199 | 572.200 | 572.199 |
+| 每套四輪最大值 | 755.187 | 616.862 | 669.773 | 635.983 | 664.625 | 645.380 |
+| 最大值＋120＋30 | 905.187 | 766.862 | 819.773 | 785.983 | 814.625 | 795.380 |
+
+最差片距 1200 秒約 294.8 秒。限制：H7 單套歷史最大 755.187 秒，再增加片數也無法縮短它；若慢 CPU 上 H7 單項逼近預算，須另案降低實際計算成本。總限制仍是每份收據嚴格 `seconds < 1200`、每個 job `timeout-minutes: 35`，expected／golden 未改，`mutation:check` 照舊在某一片執行。
+
+### 守門與具名反證
+
+`py:test_unittest_runner` 仍 13 項，expected 不變；新 assertion 併入原 method。現行守門：workflow 精確為 `native (${{ matrix.shard }}/6)`、`max-parallel: 6`、matrix `[1, 2, 3, 4, 5, 6]`、runner `--shard '${{ matrix.shard }}/6'`、coverage `--parts 6`；六片完整涵蓋 registry 恰一次；四輪每輪與逐套最大值包絡都須 `+120000+30000 < 1200000`；第四筆 canonical SHA-256 `0152b8cb…e5e2` 與 PR head／checkout 固定。歷史守門保留：三片兩輪 `+100000+30000`、原 `<600000`／`<650000`、H7 與 reader 分離、R348 四片以原三輪回放（每輪與包絡 `+120000+30000`）、四片完整涵蓋 registry。
+
+`native_sharding_mutation_check.py` 保留全部原具名突變（R348 的 workflow 撤回錨點改指向六片文字，意義不變：退回三片、漏第四項、job 名、runner 分母、coverage parts、35 分鐘放寬；`R348_DROP_LATEST_MEASURED_RUN` 仍刪 d7515daf 那一輪），並新增：
+
+- `R378_REVERT_TO_FOUR_NATIVE_SHARDS`：整體退回四片，以預算紅（1218.460 秒）。
+- `R378_REVERT_NATIVE_JOB_NAME_TO_FOUR`、`R378_REVERT_RUNNER_DENOMINATOR_TO_FOUR`、`R378_REVERT_MAX_PARALLEL_TO_FOUR`、`R378_DROP_FIFTH_MATRIX_ENTRY`、`R378_DROP_SIXTH_MATRIX_ENTRY`、`R378_REVERT_COVERAGE_PARTS_TO_FOUR`：以 `R378_SIX_NATIVE_WORKFLOW` 紅。
+- `R378_DROP_ADDED_SCENARIO`、`R378_LOWER_ADDED_SCENARIO`、`R378_RELABEL_ADDED_SCENARIO_AS_MAIN`：以 `R348_RETAINED_MEASURED_EVIDENCE` 紅。
+- `R378_SIX_SHARD_DROP_ONE_SUITE`：只在六片漏一套，以 `R378_SIX_SHARDS_COVER_FULL_REGISTRY` 紅。
+
+每組都要求 0／1／0、指定 assertion、0 error／0 skip。具名證明數由 15 增為 26，各子程序成本也增加；為了讓既有 5 分鐘 `native complete coverage` job 不需延長，各具名證明改由最多四個 worker 並行。每組內 baseline→withdrawn→restored 仍嚴格依序，每個子程序仍有自己的 60 秒上限、log 與 report，receipt 依宣告順序輸出。
+
+### Repo端required checks
+
+job 名稱由 `native (1/4)`…`native (4/4)` 改為 `native (1/6)`…`native (6/6)`，一般 CI 由 13 個 job 變 15 個。若 main 的 branch protection／ruleset 把 `native (i/4)` 列為 required，須由有管理權限的人在正式 CI 產生新名稱後，於同一次編輯移除四個 `/4`、加入六個 `/6`，其餘 required（`native complete coverage`、browser 各項、canvas complete coverage）保留。本 PR 不修改 repo 設定。
