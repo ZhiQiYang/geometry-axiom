@@ -160,24 +160,48 @@ def _exchange_scenarios(parts, loads, costs):
 
 
 def _improve_scenarios(parts, loads, costs):
-    # Two pair sweeps, then four bounded two-for-one exchanges.
-    # No convergence loop, random seed, suite-name or budget special case.
-    for _ in range(2):
-        _swap_scenarios(parts, loads, costs)
+    # A large suite may need to share a part with a complementary scenario
+    # vector. Pair/two-for-one swaps cannot always replace many small suites.
+    # Screen the original start and eight fixed co-location starts cheaply;
+    # only the best screened start receives the more expensive exchanges.
+    order = sorted(costs, key=lambda name: (-max(costs[name]), name))
+    candidates = [(parts, loads)]
+    candidates.extend(_greedy_scenarios(costs, len(parts), (order[0], partner))
+                      for partner in order[1:9])
+    best_score, best_parts, best_loads = None, None, None
+    for candidate_parts, candidate_loads in candidates:
+        for _ in range(2):
+            _swap_scenarios(candidate_parts, candidate_loads, costs)
+        score = tuple(sorted((ms for load in candidate_loads for ms in load), reverse=True))
+        if best_score is None or score < best_score:
+            best_score, best_parts, best_loads = score, candidate_parts, candidate_loads
+    parts[:], loads[:] = best_parts, best_loads
+    # Fixed work: four exchanges among 16 candidates per part, never convergence.
+    # No random seed, suite-name or budget special case.
     for _ in range(4):
         _exchange_scenarios(parts, loads, costs)
         _swap_scenarios(parts, loads, costs)
 
 
-def _scenario_owners(suites, count, profiles):
-    costs = {s.name: [p.get(s.name, 1000) for p in profiles] for s in suites}
+def _greedy_scenarios(costs, count, colocated=()):
     parts = [set() for _ in range(count)]
-    loads = [[0] * len(profiles) for _ in range(count)]
+    loads = [[0] * len(next(iter(costs.values()))) for _ in range(count)]
+    for name in colocated:
+        parts[0].add(name)
+        loads[0] = [a + b for a, b in zip(loads[0], costs[name])]
     for name in sorted(costs, key=lambda n: (-max(costs[n]), n)):
+        if name in parts[0]:
+            continue
         candidates = [[a + b for a, b in zip(load, costs[name])] for load in loads]
         index = min(range(count), key=lambda i: (max(candidates[i]), sum(candidates[i]), i))
         parts[index].add(name)
         loads[index] = candidates[index]
+    return parts, loads
+
+
+def _scenario_owners(suites, count, profiles):
+    costs = {s.name: [p.get(s.name, 1000) for p in profiles] for s in suites}
+    parts, loads = _greedy_scenarios(costs, count)
     _improve_scenarios(parts, loads, costs)
     return {name: i for i, part in enumerate(parts) for name in part}
 
