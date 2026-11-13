@@ -18,8 +18,8 @@ from tests.test_assembly_rules import binding, rule, killer, REACHED
 
 
 CAPABILITY = "assembly-bay-repeat/1"
-LIMITS = {"instances": 16, "ownedTimbers": 48, "worldTimbers": 64,
-          "instanceRecordBytes": 8191, "bayPrimaries": 12,
+LIMITS = {"instances": 16, "ownedTimbers": 512, "worldTimbers": 512,
+          "instanceRecordBytes": 65535, "bayPrimaries": 12,
           "baySecondaryLines": 24, "bayOmit": 24}
 
 
@@ -756,15 +756,90 @@ class BayRepeat(unittest.TestCase):
         self.assertEqual(source["secondaryLines"], self.instance()["value"]["source"]["secondaryLines"])
         self.assertEqual({("primary", k) for k in (10, 20, 30)}, set(mapping(self.instance())))
 
-    def test_br11_owned_capacity_rejects_56_without_partial_creation(self):
+    def test_br11_former_owned_overflow_56_is_fully_accepted(self):
         self.fixture(height=4000)
         self.replace_fixture_grid("grid 1 on 1 u 300 900 1500 2100 2700 3300 v 300 600 900 1200 1500 1800 2100 2400 2700 3000")
         source = self.source()
         source["primaries"] = [primary(i + 1, grid_at(i)) for i in range(6)]
         source["secondaryLines"] = [line_source(i + 1, grid_at(i, "v")) for i in range(10)]
-        observation, preview, _ = self.rejection([self.create(source)], "CAPACITY", "CAPACITY")
-        self.assertEqual({"valid": False, "matched": True, "unchanged": True}, observation,
-                         killer("br11:owned-capacity", preview))
+        before = self.stable()
+        preview = self.request([self.create(source)])
+        self.assertTrue(preview["valid"], killer("br11:legacy56-accepted", preview))
+        self.assertEqual(before, self.stable())
+        expected = {("primary", key): 3960 for key in range(1, 7)}
+        expected.update({("secondary", line, left, left + 1): 573
+                         for line in range(1, 11) for left in range(1, 6)})
+        self.assertEqual(56, len(expected))
+        self.assertEqual(expected, {key: value["length"] for key, value in
+                                   self.geometry(preview["after"]["instances"][0]).items()})
+        self.assertTrue(self.command("assembly-confirm " + str(preview["token"]))["ok"])
+        self.assertEqual(56, len(mapping(self.instance())))
+        self.assertEqual(58, len(self.command("references")["timbers"]))
+
+    def test_br11_generates_116_members_with_cancel_history_and_fresh_replay(self):
+        self.fixture(height=4000)
+        self.replace_fixture_grid("grid 1 on 1 u 300 900 1500 2100 2700 3300 v " +
+                                  " ".join(str(150 + 150 * i) for i in range(22)))
+        source = self.source()
+        source["primaries"] = [primary(i + 1, grid_at(i)) for i in range(6)]
+        source["secondaryLines"] = [line_source(i + 1, grid_at(i, "v")) for i in range(22)]
+        # Independent integer oracle: six 3960 mm primaries and five 573 mm
+        # clear spans on each of 22 lines; the two boundary supports are extra.
+        expected = {("primary", key): 3960 for key in range(1, 7)}
+        expected.update({("secondary", line, left, left + 1): 573
+                         for line in range(1, 23) for left in range(1, 6)})
+        self.assertEqual(116, len(expected))
+        before = self.stable()
+        preview = self.request([self.create(source)])
+        self.assertTrue(preview["valid"], killer("br11:capacity116-valid", preview))
+        self.assertEqual(before, self.stable(), "a 116-member preview cannot write the World")
+        instances = preview["after"]["instances"]
+        self.assertEqual(1, len(instances))
+        geometry = self.geometry(instances[0])
+        self.assertEqual(expected, {key: value["length"] for key, value in geometry.items()},
+                         killer("br11:capacity116-geometry", geometry))
+        self.assertEqual(116, len(mapping(instances[0])))
+        self.assertEqual(116, len(set(mapping(instances[0]).values())))
+        cells = self.cell_rows(preview)
+        self.assertEqual(110, len(cells))
+        self.assertEqual({(line, left, left + 1) for line in range(1, 23) for left in range(1, 6)},
+                         {(cell["line"], cell["left"], cell["right"]) for cell in cells
+                          if cell["status"] == "generated"})
+        self.assertTrue(self.command("assembly-cancel " + str(preview["token"]))["ok"])
+        self.assertFalse(self.command("assembly-confirm " + str(preview["token"]))["ok"])
+        self.assertEqual(before, self.stable(), "cancelled 116-member token must stay inert")
+
+        current = self.request([self.create(source)])
+        self.assertTrue(current["valid"], current)
+        self.assertNotEqual(preview["token"], current["token"])
+        self.assertTrue(self.command("assembly-confirm " + str(current["token"]))["ok"])
+        instance = self.instance()
+        self.assertEqual(source, instance["value"]["source"])
+        self.assertEqual(mapping(instances[0]), mapping(instance))
+        self.assertEqual(expected, {key: value["length"] for key, value in self.geometry(instance).items()})
+        self.assertEqual(118, len(self.command("references")["timbers"]))
+        for key, value in self.geometry(instance).items():
+            self.assertEqual((27, 33, "+n"), (value["A"], value["B"], value["side"]))
+            self.assertEqual("+v" if key[0] == "primary" else "+u", value["dir"])
+        self.assert_native_provenance(self.command, instance)
+        created = self.stable()
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(before["dump"], self.dump())
+        self.assertEqual(before["assembly"]["state"], self.read()["state"])
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual(created["dump"], self.dump())
+        self.assertEqual(created["assembly"]["state"], self.read()["state"])
+
+        path = self.directory / "repeat-116.scene"
+        path.write_text(created["dump"], encoding="utf-8")
+        with BridgeSession(self.binary, cwd=self.directory) as fresh:
+            loaded = fresh.command("loadfile " + str(path))
+            self.assertTrue(loaded.get("ok"), killer("br11:capacity116-replay", loaded))
+            self.assertEqual(created["dump"], fresh.command("dump")["text"])
+            state = fresh.command("assembly-read")["state"]
+            self.assertEqual(created["assembly"]["state"], state)
+            self.assertEqual(118, len(fresh.command("references")["timbers"]))
+            self.assert_native_provenance(fresh.command, state["instances"][0])
 
     def test_br11_instance_count_accepts_16_and_rejects_17_atomically(self):
         self.replace_fixture_grid("grid 1 on 1 u " + " ".join(str(i * 100) for i in range(1, 35)) + " v 1000 2000")
@@ -844,12 +919,70 @@ class BayRepeat(unittest.TestCase):
             source["secondaryLines"] = [line_source(i + 1, grid_at(i, "v", identifier)) for i in range(7)]
             source["omit"] = [{"line": 7, "left": 3, "right": 4}]
             sources.append(source)
+        empty_fixture = self.dump()
         self.apply([self.create(source) for source in sources])
         self.assertEqual([24, 24], [len(mapping(self.instance(i))) for i in (1, 2)])
+        original = self.stable()
         source = deepcopy(sources[0]); source["omit"] = []
+        accepted = self.request([self.edit(source)])
+        self.assertTrue(accepted["valid"], killer("br11:global49-accepted", accepted))
+        self.assertEqual(original, self.stable())
+        self.assertTrue(self.command("assembly-confirm " + str(accepted["token"]))["ok"])
+        self.assertEqual([25, 24], [len(mapping(self.instance(i))) for i in (1, 2)])
+        self.assertEqual(53, len(self.command("objects")["timbers"]))
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(original["dump"], self.dump())
+
+        # Complete the ordinary source graph before creating either instance.
+        # Four original supports plus 460 ordinary placed members leave exactly
+        # 48 free slots; the two repeat instances must fill all 512 together.
+        heads, declarations, placements = [], [], []
+        next_id = 1000
+        for room in range(14):
+            surface = room + 3
+            count = 31 if room < 12 else 30
+            bottom, top = next_id, next_id + 1
+            heads.extend([
+                f"surface {surface} origin {10000 + 40000 * room} 0 2500 u +x v +y outline 0,0 32000,0 32000,3000 0,3000",
+                f"grid {surface} on {surface} u " + " ".join(str(500 + 1000 * i) for i in range(count)),
+            ])
+            declarations.extend([f"timber {bottom} 20 20 role boundary", f"timber {top} 20 20 role boundary"])
+            placements.extend([f"place {bottom} on {surface} at-face e0 +u +n",
+                               f"place {top} on {surface} at-face e2 +u +n"])
+            for index in range(count):
+                tid = bottom + 2 + index
+                declarations.append(f"timber {tid} 27 33 role primary")
+                placements.append(f"place {tid} on {surface} at-line grid {surface} u {index} between t{bottom} t{top} +v +n")
+            next_id += count + 2
+        self.assertEqual(1460, next_id)
+        path = self.directory / "repeat-mixed-ordinary-464.scene"
+        path.write_text("\n".join(heads + declarations + placements) + "\n" + empty_fixture, encoding="utf-8")
+        self.assertTrue(self.command("loadfile " + str(path))["ok"])
+        self.assertEqual([], self.read()["state"]["instances"])
+        self.assertEqual(464, len(self.command("objects")["timbers"]))
+        admitted = self.request([self.create(value) for value in sources])
+        self.assertTrue(admitted["valid"], killer("br11:world512-accepted", admitted))
+        self.assertTrue(self.command("assembly-confirm " + str(admitted["token"]))["ok"])
+        declared = []
+        for text in self.dump().splitlines():
+            words = text.split()
+            if words and (words[0] == "timber" or (words[0] == "owned" and "timber" in words)):
+                declared.append(int(words[words.index("timber") + 1]))
+        expected_ids = {90, 91, 190, 191} | set(range(1000, 1460))
+        expected_ids.update(mapping(self.instance(1)).values())
+        expected_ids.update(mapping(self.instance(2)).values())
+        self.assertEqual(512, len(declared))
+        self.assertEqual(512, len(set(declared)))
+        self.assertEqual(expected_ids, set(declared))
+        self.assertEqual(512, len(self.command("objects")["timbers"]))
+        self.assertEqual([24, 24], [len(mapping(self.instance(i))) for i in (1, 2)])
+        full = self.stable()
         observation, preview, _ = self.rejection([self.edit(source)], "CAPACITY", "CAPACITY")
         self.assertEqual({"valid": False, "matched": True, "unchanged": True}, observation,
                          killer("br11:global-owned-capacity", preview))
+        self.assertFalse(self.command("assembly-confirm " + str(preview["token"]))["ok"])
+        self.assertEqual(full, self.stable())
+        self.assertEqual(512, len(self.command("objects")["timbers"]))
 
     def test_br11_instance_record_exact_byte_boundary(self):
         source = self.source()
@@ -857,22 +990,51 @@ class BayRepeat(unittest.TestCase):
         self.assertTrue(preview["valid"], preview)
         value = preview["after"]["instances"][0]["value"]
         size = len(json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
-        self.assertLess(size, 8191)
+        limit = LIMITS["instanceRecordBytes"]
+        self.assertLess(size, limit)
+        # A field larger than 8192 but a complete record smaller than 32768
+        # distinguishes the source field buffer from the whole-index buffer.
+        field_source = deepcopy(source)
+        field_source["primaries"][0]["at"]["index"] = "0" * (9000 - size) + "0"
+        field_preview = self.request([self.create(field_source)])
+        self.assertTrue(field_preview["valid"], field_preview)
+        field_value = field_preview["after"]["instances"][0]["value"]
+        self.assertEqual(9000, len(json.dumps(field_value, ensure_ascii=False, separators=(",", ":")).encode("utf-8")))
+        self.assertGreater(len(json.dumps(field_value["source"], ensure_ascii=False,
+                                          separators=(",", ":")).encode("utf-8")), 8192)
+        self.assertTrue(self.command("assembly-confirm " + str(field_preview["token"]))["ok"])
+        field_graph = self.command("source-inspect")
+        self.assertTrue(field_graph.get("ok") and field_graph.get("complete"),
+                        killer("br11:record-field-complete", field_graph))
+        self.assertEqual(field_value, self.instance()["value"])
         # Decimal leading zeroes do not change the signed index or its source
         # identity. They remain source text, allowing an exact byte boundary
         # without an unknown field, invalid geometry or another capacity limit.
-        source["primaries"][0]["at"]["index"] = "0" * (8191 - size) + "0"
-        accepted = self.request([self.create(source)])
+        source["primaries"][0]["at"]["index"] = "0" * (limit - size) + "0"
+        accepted = self.request([self.edit(source)])
         self.assertTrue(accepted["valid"], killer("br11:record-boundary-accepted", accepted))
         saved = accepted["after"]["instances"][0]["value"]
-        self.assertEqual(8191, len(json.dumps(saved, ensure_ascii=False, separators=(",", ":")).encode("utf-8")))
+        self.assertEqual(limit, len(json.dumps(saved, ensure_ascii=False, separators=(",", ":")).encode("utf-8")))
         self.assertTrue(self.command("assembly-confirm " + str(accepted["token"]))["ok"])
+        instance = self.instance()
+        self.assertEqual(saved, instance["value"])
+        self.assertEqual(7, len(mapping(instance)))
+        graph = self.command("source-inspect")
+        self.assertTrue(graph.get("ok") and graph.get("complete"),
+                        killer("br11:record-source-complete", graph))
+        nodes = {node["key"]: node for node in graph["nodes"]}
+        content = "".join(key + "=" + json.dumps(saved[key], ensure_ascii=False, sort_keys=True,
+                                              separators=(",", ":")) + ";" for key in ("mapping", "source"))
+        expected_definition = hashlib.sha256(content.encode("utf-8")).hexdigest()
+        self.assertEqual(expected_definition, nodes["assembly-instance:1"]["definitionFingerprint"])
+        self.assertEqual(expected_definition, nodes["assembly-instance:1"]["valueFingerprint"])
+        self.assert_native_provenance(self.command, instance)
         source["primaries"][0]["at"]["index"] += "0"
         observation, rejected, _ = self.rejection([self.edit(source)], "CAPACITY", "CAPACITY")
         self.assertEqual({"valid": False, "matched": True, "unchanged": True}, observation,
                          killer("br11:record-byte-capacity", rejected))
 
-    def test_br11_world_capacity_includes_non_owned_timbers(self):
+    def test_br11_former_world_boundary_64_and_65_are_fully_accepted(self):
         self.line("surface 2 origin 5000 0 2500 u +x v +y outline 0,0 60000,0 60000,3000 0,3000")
         self.line("grid 2 on 2 u " + " ".join(str(500 + 1000 * i) for i in range(54)))
         for tid, edge in ((190, 0), (191, 2)):
@@ -887,9 +1049,98 @@ class BayRepeat(unittest.TestCase):
         self.command("assembly-cancel " + str(preview["token"]))
         self.line("timber 1053 27 33 role primary")
         self.line("place 1053 on 2 at-line grid 2 u 53 between t190 t191 +v +n")
-        observation, rejected, _ = self.rejection([self.create()], "CAPACITY", "CAPACITY")
-        self.assertEqual({"valid": False, "matched": True, "unchanged": True}, observation,
-                         killer("br11:world-capacity", rejected))
+        before = self.stable()
+        preview = self.request([self.create()])
+        self.assertTrue(preview["valid"], killer("br11:legacy65-accepted", preview))
+        self.assertEqual(before, self.stable())
+        self.assertEqual(self.rectangle_expected(), {key: value["length"] for key, value in
+                                                   self.geometry(preview["after"]["instances"][0]).items()})
+        self.assertTrue(self.command("assembly-confirm " + str(preview["token"]))["ok"])
+        self.assertEqual(65, len(self.command("references")["timbers"]))
+        self.assertEqual(7, len(mapping(self.instance())))
+
+    def test_br11_mixed_repeat_and_legacy_owners_above_48_fresh_replay(self):
+        self.line("surface 2 origin 5000 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000")
+        self.line("grid 2 on 2 u 500 1500 2500 3500 v " +
+                  " ".join(str(100 + 150 * i) for i in range(15)))
+        for tid, edge in ((190, 0), (191, 2)):
+            self.line(f"timber {tid} 20 20 role boundary")
+            self.line(f"place {tid} on 2 at-face e{edge} +u +n")
+        repeat = self.source(surface=2)
+        repeat["primaries"] = [primary(i + 1, grid_at(i, grid=2), (190, 191)) for i in range(4)]
+        repeat["secondaryLines"] = [line_source(i + 1, grid_at(i, "v", 2)) for i in range(15)]
+        repeat["omit"] = [{"line": 15, "left": 3, "right": 4}]
+        self.apply([self.create(repeat)])
+        self.assertEqual(48, len(mapping(self.instance())))
+        for gid, axis, coordinate in ((1, "v", 500), (2, "v", 2500), (3, "u", 1500)):
+            self.guide(gid, axis, coordinate)
+        legacy = self.source(identifier=2)
+        for field in ("layout", "primaries", "secondaryLines", "omit"):
+            del legacy[field]
+        legacy["members"] = [{"memberId": i, "role": "primary" if i < 3 else "secondary", "guideId": i,
+                              "dir": "+v" if i < 3 else "+u", "depthSide": "+n",
+                              "ends": primary(1, {})["ends"] if i < 3 else
+                              {"start": {"kind": "member", "memberId": 1}, "finish": {"kind": "member", "memberId": 2}}}
+                             for i in (1, 2, 3)]
+        preview = self.request([self.create(legacy)])
+        self.assertTrue(preview["valid"], killer("br11:mixed51-valid", preview))
+        self.assertTrue(self.command("assembly-confirm " + str(preview["token"]))["ok"])
+        self.assertEqual(55, len(self.command("objects")["timbers"]))
+        self.assertEqual([2960, 2960, 1973], [member["geometry"]["length"]
+                                           for member in self.instance(2)["members"]])
+        created = self.stable()
+        path = self.directory / "repeat48-legacy3.scene"
+        path.write_text(created["dump"], encoding="utf-8")
+        with BridgeSession(self.binary, cwd=self.directory) as fresh:
+            loaded = fresh.command("loadfile " + str(path))
+            self.assertTrue(loaded.get("ok"), killer("br11:mixed51-replay", loaded))
+            self.assertEqual(created["dump"], fresh.command("dump")["text"])
+            self.assertEqual(created["assembly"]["state"], fresh.command("assembly-read")["state"])
+            self.assertEqual(55, len(fresh.command("objects")["timbers"]))
+
+        def padded_legacy_record(size):
+            rows = created["dump"].splitlines(keepends=True)
+            for start, row in enumerate(rows):
+                if not row.startswith("assembly record "):
+                    continue
+                meta = json.loads(base64.b64decode(row.split()[2]))
+                if meta.get("kind") != "instance":
+                    continue
+                end, chunks = start + 1, []
+                while rows[end].startswith("assembly data "):
+                    chunks.append(base64.b64decode(rows[end].split()[2])); end += 1
+                self.assertEqual("assembly commit\n", rows[end])
+                original = b"".join(chunks)
+                value = json.loads(original)
+                if value["source"]["id"] != 2:
+                    continue
+                self.assertNotIn("layout", value["source"])
+                self.assertLess(len(original), size)
+                padded = b" " * (size - len(original)) + original
+                self.assertEqual(value, json.loads(padded))
+                meta.update(bytes=len(padded), sha256=hashlib.sha256(padded).hexdigest())
+                replacement = ["assembly record " + base64.b64encode(
+                    json.dumps(meta, separators=(",", ":")).encode()).decode() + "\n"]
+                replacement += ["assembly data " + base64.b64encode(padded[i:i + 768]).decode() + "\n"
+                                for i in range(0, len(padded), 768)]
+                rows[start:end] = replacement
+                return "".join(rows)
+            self.fail("fixture must contain the separate legacy instance record")
+
+        # Both transports contain the same valid legacy JSON and correct hash.
+        # The larger bay-record allowance must not widen the legacy raw limit.
+        path = self.directory / "legacy-record-8191.scene"
+        path.write_text(padded_legacy_record(8191), encoding="utf-8")
+        self.assertTrue(self.command("loadfile " + str(path))["ok"])
+        self.assertEqual(created["dump"], self.dump())
+        self.assertEqual(created["assembly"]["state"], self.read()["state"])
+        before = self.stable()
+        path = self.directory / "legacy-record-8192.scene"
+        path.write_text(padded_legacy_record(8192), encoding="utf-8")
+        rejected = self.command("loadfile " + str(path))
+        self.assertEqual((False, before), (rejected.get("ok"), self.stable()),
+                         killer("br11:legacy-record-raw-capacity", rejected))
+        self.assertIn("CAPACITY", json.dumps(rejected, ensure_ascii=False))
 
     def test_br12_fresh_native_replay_preserves_definitions_and_mapping(self):
         source = self.source()

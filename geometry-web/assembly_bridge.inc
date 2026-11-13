@@ -1,7 +1,7 @@
 /* The same native candidate/history machinery as engineering transactions. */
 static void json_assembly_state(const World *w,bool geometry)
 {
-    (void)geometry;printf("{\"capabilities\":[\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"assembly-bay-repeat/1\"],\"limits\":{\"instances\":%d,\"ownedTimbers\":%d,\"worldTimbers\":%d,\"instanceRecordBytes\":%d,\"bayPrimaries\":%d,\"baySecondaryLines\":%d,\"bayOmit\":%d},\"rules\":[",ASM_INSTANCE_MAX,ASM_OWNER_MAX,ASM_BAY_WORLD_MAX,ASM_RECORD_MAX-1,ASM_BAY_PRIMARY_MAX,ASM_BAY_LINE_MAX,ASM_BAY_OMIT_MAX);
+    (void)geometry;printf("{\"capabilities\":[\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"assembly-bay-repeat/1\"],\"limits\":{\"instances\":%d,\"ownedTimbers\":%d,\"worldTimbers\":%d,\"instanceRecordBytes\":%d,\"bayPrimaries\":%d,\"baySecondaryLines\":%d,\"bayOmit\":%d},\"rules\":[",ASM_INSTANCE_MAX,ASM_OWNER_MAX,ASM_BAY_WORLD_MAX,ASM_INSTANCE_RECORD_MAX-1,ASM_BAY_PRIMARY_MAX,ASM_BAY_LINE_MAX,ASM_BAY_OMIT_MAX);
     for(size_t i=0;i<w->wood.assembly.rule_count;++i){const AsmRuleVersion *r=&w->wood.assembly.rules[i];
         printf("%s{\"value\":%s,\"fingerprint\":\"%s\"}",i?",":"",r->content,r->fingerprint);}
     fputs("],\"bindings\":[",stdout);
