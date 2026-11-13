@@ -3983,9 +3983,11 @@ async function renderSpaceProjection() {
   }
   svg.setAttribute("viewBox", `${x0} ${y0} ${Math.max(1,x1 - x0)} ${Math.max(1,y1 - y0)}`);
   replay(window.WorkspaceView ? WorkspaceView.filterOps(r.ops,scope) : r.ops, svg);
-  const screen = svg.getScreenCTM();
-  window.WorkspaceView?.screenChanged(scope,screen && [screen.a,screen.b,screen.c,screen.d,screen.e,screen.f].join(','));
-  window.WorkspaceView?.syncControls();
+  if (window.WorkspaceView) {
+    const screen = svg.getScreenCTM();
+    window.WorkspaceView.screenChanged(scope,screen && [screen.a,screen.b,screen.c,screen.d,screen.e,screen.f].join(','));
+    window.WorkspaceView.syncControls();
+  }
   /* §5.6：沿用三視圖互動——hover/pick + 參考線拖曳 */
   const overlay = el("g", {}, svg);
   const views = r.layout.views;
