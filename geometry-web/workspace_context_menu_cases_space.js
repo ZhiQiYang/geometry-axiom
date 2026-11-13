@@ -76,7 +76,10 @@ module.exports=s=>{
       await ctl('#rcCancel');await unchanged(before);
       await rightPlan(3500,800);await ctl(sp('beam'));await unchanged(before);
       await key('Escape','Escape',27);await unchanged(before);
+      const actionMark=await read('__r11menu.events.length');
       const anchor=await planPoint(1800,1000);await s.right(anchor,'spaceCtxMenu');
+      const actionEvent=await read(`__r11menu.events.slice(${actionMark}).filter(e=>e.type==='contextmenu'&&e.trusted===true&&e.button===2).at(-1)||null`);
+      pre('CREATE_TRUSTED_CONTEXTMENU_CLIENT_POINT',!!actionEvent&&Number.isFinite(actionEvent.x)&&Number.isFinite(actionEvent.y),{anchor,actionEvent});
       // A real viewport resize changes the letterboxed SVG CTM after opening.
       // The retained client point, not a cached room point, is authoritative.
       await viewport(1100,900);
