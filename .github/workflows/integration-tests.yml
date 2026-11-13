@@ -85,10 +85,46 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+  # 決策佇列.md「9. … 文件／測試類 PR 只跑相關 job 🔒」(2026-10-13)：PR 只改文件
+  # 或與瀏覽器 job 無關的測試檔時略過 browser 系列；native 一律照跑。分類規則與
+  # 例外（公理層.md、白話、正典閱讀器、App 直接提供的文件、瀏覽器 job 參照的
+  # tests/ 檔）見 .github/scripts/ci_path_scope.py。push 到 main 與任何判不準一律全跑。
+  path-scope:
+    name: path scope (文件／測試類 PR 只跑 native)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      browser: ${{ steps.scope.outputs.browser }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /package.json
+            /geometry-web/**/*.js
+            /geometry-web/**/*.cjs
+            /geometry-web/**/*.mjs
+            /geometry-web/**/*.py
+            /tests/
+            !/tests/evidence/
+      - name: Prove the path classifier on fixed cases
+        run: python3 -B .github/scripts/ci_path_scope.py --selftest
+      - name: Classify this change
+        id: scope
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: python3 -B .github/scripts/ci_path_scope.py --event "$EVENT_NAME" --pr-head "$PR_HEAD" --github-output "$GITHUB_OUTPUT"
 
   browser:
     name: browser (${{ matrix.suite }}${{ matrix.shard && format(' {0}/2', matrix.shard) || '' }})
     runs-on: ubuntu-latest
+    needs: path-scope
+    if: needs.path-scope.outputs.browser != 'false'
     timeout-minutes: ${{ matrix.timeout }}
     strategy:
       fail-fast: false
@@ -140,54 +176,10 @@ jobs:
             !/evidence/
       - name: Build current native executables
         run: npm run build
-      - name: Restore cached CJK font package
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
-        with:
-          path: ${{ runner.temp }}/cjk-font-debs
-          key: fonts-noto-cjk-noble-1:20230817+repack1-3
       - name: Install Chinese fonts for visual verification
+        # 原 8 分鐘時限保留在這一步（涵蓋快取還原＋安裝），不放寬。
         timeout-minutes: 8
-        # Cache hit: install the saved .deb without contacting the mirror.
-        # Cache miss: keep the existing apt download, then store fonts-noto-cjk*.deb.
-        # CJK remains mandatory; do not raise job timeouts.
-        run: |
-          set -euo pipefail
-          cache_dir="${{ runner.temp }}/cjk-font-debs"
-          mkdir -p "$cache_dir"
-          shopt -s nullglob
-          debs=("$cache_dir"/fonts-noto-cjk*.deb)
-          echo "CJK_CACHE_DIR=$cache_dir"
-          echo "CJK_DEB_COUNT=${#debs[@]}"
-          if [ "${#debs[@]}" -gt 0 ]; then
-            ls -la "${debs[@]}"
-            for deb in "${debs[@]}"; do
-              echo "CJK_DEB=$(basename "$deb") bytes=$(wc -c <"$deb")"
-            done
-            echo "CJK_INSTALL_BRANCH=cached-deb"
-            # Install only the local archives; dependency/configuration errors must fail.
-            # Keep the mirror guard, without an apt repair/fallback on a cache hit.
-            log="$(mktemp)"
-            sudo dpkg -i "${debs[@]}" 2>&1 | tee "$log"
-            if grep -E "https?://azure\.archive\.ubuntu\.com|Need to get .* of archives" "$log"; then
-              echo "CJK_CACHE_HIT_STILL_MIRRORED=1" >&2
-              echo "cache-hit path contacted apt mirror; see log above" >&2
-              exit 1
-            fi
-            echo "CJK_CACHE_HIT_STILL_MIRRORED=0"
-          else
-            echo "CJK_INSTALL_BRANCH=apt-miss"
-            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
-            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
-            cp /var/cache/apt/archives/fonts-noto-cjk*.deb "$cache_dir/"
-            ls -la "$cache_dir"/fonts-noto-cjk*.deb || true
-          fi
-          dpkg -s fonts-noto-cjk
-          # Collect stdout before grep -q so a closed pipe cannot mimic missing fonts.
-          cjk_fonts="$(fc-list :lang=zh)"
-          if ! grep -q . <<< "$cjk_fonts"; then
-            echo "fc-list :lang=zh found no fonts" >&2
-            exit 1
-          fi
+        uses: ./.github/actions/install-cjk-fonts
       - name: Run actual browser regression group
         shell: bash
         run: |
@@ -314,23 +306,38 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+          fetch-depth: 2
+      - name: Recompute path scope with the same classifier as the browser gate
+        id: scope
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: python3 -B .github/scripts/ci_path_scope.py --event "$EVENT_NAME" --pr-head "$PR_HEAD" --github-output "$GITHUB_OUTPUT"
       - name: Prove the verifier rejects missing, extra, duplicated, incomplete and drifted shards
         run: node --test --test-reporter=spec tests/test_canvas_shards.js
+      - name: Browser groups were skipped only because of the documented path scope
+        if: steps.scope.outputs.browser == 'false'
+        env:
+          BROWSER_RESULT: ${{ needs.browser.result }}
+        run: test "$BROWSER_RESULT" = skipped
       - name: Require every original browser group and canvas shard to succeed
+        if: steps.scope.outputs.browser != 'false'
         env:
           BROWSER_RESULT: ${{ needs.browser.result }}
         run: test "$BROWSER_RESULT" = success
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        if: steps.scope.outputs.browser != 'false'
         with:
           pattern: canvas-shard-*
           path: ${{ runner.temp }}/canvas-shards
       - name: Verify source-bound raw journals and complete disjoint canvas sections against golden
+        if: steps.scope.outputs.browser != 'false'
         env:
           EXPECTED_EXECUTION_SHA: ${{ github.sha }}
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: python3 -B .github/scripts/canvas_evidence.py verify --artifacts "$RUNNER_TEMP/canvas-shards" --out "$RUNNER_TEMP/canvas-complete"
       - name: Preserve canvas coverage summary
-        if: always()
+        if: always() && steps.scope.outputs.browser != 'false'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: canvas-complete-coverage
