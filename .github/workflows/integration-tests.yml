@@ -62,6 +62,11 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/evidence/
       - name: Prove real coverage test kills a removed suite
         run: python3 -B tests/native_sharding_mutation_check.py --output '${{ runner.temp }}/native-sharding-proof'
       - name: Prove archive capability guards with the original mutation judge

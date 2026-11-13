@@ -231,3 +231,11 @@ source head `eeb8616665d0e0944fc1a7cf4a4786e15872cbe6`、checkout
 
 本片不改 workflow、35 分鐘 native timeout、5 分鐘 coverage timeout、60 秒撤回子程序
 限制或既有 golden；本機模型與撤回證據不能代替採入後六份正式 CI 原收據及 ME freshness。
+
+## R379：coverage 的固定工作量與來源簽出（2026-11-14 台北）
+
+反證 runner 的35組名稱、每組獨立 baseline／withdrawn／restored 子程序、並行上限2及60秒子程序時限全部保留。規劃器仍按原次序枚舉每個候選、只接受嚴格改善、保留原多起點與固定交換輪數。效能修正只減少候選評分：兩個分片以外的負載在比較兩側完全相同；從降序多集合的字典序比較中消去共同部分，結果不變。pair swap 直接比較變動的兩片；two-for-one exchange 只以兩片排除不可能改善的候選，通過者仍與完整全域最佳向量比較。因此不改規劃目標、成本來源、同分處理、suite歸屬或片內順序。
+
+`tests/native_score_reference.py` 凍結修正前兩個 sweep；既有 `test_partition_is_deterministic` 以60組不同分片／情境／成本（每組兩個 sweep）比對完整歸屬與負載。另以平衡且所有候選皆應拒絕的夾具計算排序的純量輸入數，限制每個候選只處理兩個受影響分片；這是工作量斷言，不以機器快慢判斷。具名撤回 `R379_RESTORE_GLOBAL_SWAP_SCORING`／`R379_RESTORE_GLOBAL_EXCHANGE_SCORING` 分別還原舊 sweep，必須命中 `R379_NATIVE_SWAP_LOCAL_SCORE`／`R379_NATIVE_EXCHANGE_LOCAL_SCORE` 的正常 AssertionError，恢復後再綠。原 NativeShardCoverage 的13個方法（整檔另含 RunnerClassification 一個方法，共14個）、所有舊斷言、expected與量測原件不變。
+
+`native-complete` 的 checkout 使用 `filter: blob:none` 及 non-cone `/*`、`!/evidence/`；僅省略根目錄歷史證據封包，保留完整 `tests/`（含 `tests/evidence/`）、核心、網頁、原workflow及Git HEAD。沿用文件job已有的簽出方式，5分鐘時限與所有後續命令不變。`R379_RESTORE_FULL_COVERAGE_CHECKOUT` 只撤回本job的該設定，應使原coverage測試以 `R379_NATIVE_COVERAGE_SPARSE_CHECKOUT` 正常紅；不能順手改其他job。稀疏簽出須實際執行原35組反證、archive反證與六片原收據核對，不能僅以設定字串或舊job成功宣稱完成；新head仍需正式CI。

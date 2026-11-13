@@ -118,17 +118,21 @@ def _swap_scenarios(parts, loads, costs):
     def score(values):
         return tuple(sorted((ms for load in values for ms in load), reverse=True))
 
-    current = score(loads)
     for i in range(len(parts)):
         for j in range(i + 1, len(parts)):
+            # Unchanged shard loads are a common multiset on both sides.
+            # Removing it preserves the descending lexicographic comparison.
+            current = score((loads[i], loads[j]))
             for left in sorted(parts[i]):
                 for right in sorted(parts[j]):
-                    candidate = [load[:] for load in loads]
+                    a_load, b_load = loads[i][:], loads[j][:]
                     for r, (a, b) in enumerate(zip(costs[left], costs[right])):
-                        candidate[i][r] += b - a
-                        candidate[j][r] -= b - a
-                    improved = score(candidate)
+                        a_load[r] += b - a
+                        b_load[r] -= b - a
+                    improved = score((a_load, b_load))
                     if improved < current:
+                        candidate = [load[:] for load in loads]
+                        candidate[i], candidate[j] = a_load, b_load
                         parts[i].remove(left)
                         parts[i].add(right)
                         parts[j].remove(right)
@@ -156,13 +160,20 @@ def _exchange_scenarios(parts, loads, costs):
         for j in range(len(parts)):
             if i == j:
                 continue
+            pair_score = score((loads[i], loads[j]))
             for left, middle in combinations(candidates[i], 2):
                 combined = [a + b for a, b in zip(costs[left], costs[middle])]
                 for right in candidates[j]:
-                    candidate = [load[:] for load in loads]
+                    a_load, b_load = loads[i][:], loads[j][:]
                     for r, (a, b) in enumerate(zip(combined, costs[right])):
-                        candidate[i][r] += b - a
-                        candidate[j][r] += a - b
+                        a_load[r] += b - a
+                        b_load[r] += a - b
+                    if score((a_load, b_load)) >= pair_score:
+                        continue
+                    # Promising trials still compare the complete vector with
+                    # the best trial, which may involve different shard pairs.
+                    candidate = [load[:] for load in loads]
+                    candidate[i], candidate[j] = a_load, b_load
                     improved = score(candidate)
                     if improved < current:
                         current = improved

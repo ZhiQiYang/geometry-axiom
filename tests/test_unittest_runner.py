@@ -12,12 +12,14 @@ import io
 import json
 import hashlib
 import re
+import random
 from types import SimpleNamespace
 from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).parent))
 import run_all
 import native_shards
+import native_score_reference
 from native_shards import parse_shard, partition_suites, timing_weights, validate_partition
 import native_shard_receipts
 from native_shard_receipts import validate_rows
@@ -168,6 +170,16 @@ class NativeShardCoverage(unittest.TestCase):
         command = next((line.strip() for line in complete.splitlines()
                         if line.strip().startswith('run: python3 -B tests/native_shard_receipts.py ')), '')
         self.assertIn("--parts 6 --output ", command, marker)
+        # This verification job needs the current source tree, not archived
+        # root evidence bundles. Keep its original five-minute contract.
+        self.assertIn('\n    timeout-minutes: 5\n', '\n' + complete,
+                      'R379_NATIVE_COVERAGE_SPARSE_CHECKOUT')
+        self.assertIn('          filter: blob:none\n'
+                      '          sparse-checkout-cone-mode: false\n'
+                      '          sparse-checkout: |\n'
+                      '            /*\n'
+                      '            !/evidence/\n', complete,
+                      'R379_NATIVE_COVERAGE_SPARSE_CHECKOUT')
 
     def test_partition_covers_actual_suite_registry_once(self):
         suites = run_all.build_suites()
@@ -215,6 +227,68 @@ class NativeShardCoverage(unittest.TestCase):
         self.assertEqual([set(s.name for s in p) for p in six], [set(s.name for s in p) for p in reverse])
         for part in six:
             self.assertEqual(part, [suite for suite in suites if suite in part])
+
+        self._assert_score_sweeps_match_full_reference()
+
+    def _assert_score_sweeps_match_full_reference(self):
+        # Compare the complete resulting partitions and load vectors with the
+        # pre-optimization implementation, including ties and varied scenarios.
+        randomizer = random.Random(379)
+        sweeps = (('_swap_scenarios', 'R379_NATIVE_SWAP_LOCAL_SCORE'),
+                  ('_exchange_scenarios', 'R379_NATIVE_EXCHANGE_LOCAL_SCORE'))
+        for count in (2, 3, 4, 6, 12):
+            for scenarios in (1, 2, 4):
+                for case in range(4):
+                    parts, costs = [], {}
+                    for part in range(count):
+                        names = {'s-%02d-%02d' % (part, n)
+                                 for n in range(1 + randomizer.randrange(4))}
+                        parts.append(names)
+                        for name in sorted(names):
+                            costs[name] = [randomizer.randrange(1, 10)
+                                           for _ in range(scenarios)]
+                    loads = [[sum(costs[name][r] for name in part)
+                              for r in range(scenarios)] for part in parts]
+                    for method, marker in sweeps:
+                        with self.subTest(method=method, parts=count,
+                                          scenarios=scenarios, case=case):
+                            wanted_parts, wanted_loads = [set(p) for p in parts], [p[:] for p in loads]
+                            actual_parts, actual_loads = [set(p) for p in parts], [p[:] for p in loads]
+                            getattr(native_score_reference, method)(wanted_parts, wanted_loads, costs)
+                            getattr(native_shards, method)(actual_parts, actual_loads, costs)
+                            self.assertEqual(actual_parts, wanted_parts, marker + ': owners/tie order')
+                            self.assertEqual(actual_loads, wanted_loads, marker + ': load vectors')
+        # On an already balanced fixture every trial is rejected. Sorting
+        # unchanged shards once per trial adds a needless factor of shard count.
+        # Count scalar score inputs, not wall time, so a slow runner cannot mask
+        # or invent this complexity regression. Suite-name sorting is excluded.
+        count, members, scenarios = 12, 4, 4
+        parts = [{'s-%02d-%02d' % (part, n) for n in range(members)}
+                 for part in range(count)]
+        costs = {name: [1] * scenarios for part in parts for name in part}
+        loads = [[members] * scenarios for _ in parts]
+        for method, marker in sweeps:
+            with self.subTest(method=method, complexity='balanced-rejected-trials'):
+                scalar_inputs = 0
+                def counted_sorted(values, *args, **kwargs):
+                    nonlocal scalar_inputs
+                    values = list(values)
+                    if values and all(type(value) is int for value in values):
+                        scalar_inputs += len(values)
+                    return sorted(values, *args, **kwargs)
+                actual_parts, actual_loads = [set(p) for p in parts], [p[:] for p in loads]
+                with mock.patch.object(native_shards, 'sorted', counted_sorted, create=True):
+                    getattr(native_shards, method)(actual_parts, actual_loads, costs)
+                self.assertEqual(actual_parts, parts, marker + ': no change on ties')
+                self.assertEqual(actual_loads, loads, marker + ': no change on ties')
+                if method == '_swap_scenarios':
+                    pairs = count * (count - 1) // 2
+                    trials = pairs * members * members
+                else:
+                    pairs = count * (count - 1)
+                    trials = pairs * (members * (members - 1) // 2) * members
+                bound = count * scenarios + 2 * scenarios * (pairs + trials)
+                self.assertLessEqual(scalar_inputs, bound, marker + ': unaffected score work')
 
     def test_profile_balances_measured_work(self):
         suites = run_all.build_suites()
