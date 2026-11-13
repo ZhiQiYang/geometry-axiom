@@ -35,7 +35,19 @@ workflow_replacements = {
     'R348_DROP_FOURTH_MATRIX_ENTRY': [('shard: [1, 2, 3, 4]', 'shard: [1, 2, 3]')],
     'R348_REVERT_COVERAGE_PARTS': [('--parts 4', '--parts 3')],
     'R348_RELAX_NATIVE_JOB_TIMEOUT': [('timeout-minutes: 35', 'timeout-minutes: 36')],
+    # #391 F2: the browser path-scope gate and canvas-complete skipped branch.
+    'R391_BROWSER_GATE_TRUE_ONLY': [("if: needs.path-scope.outputs.browser != 'false'",
+                                     "if: needs.path-scope.outputs.browser == 'true'")],
+    'R391_DROP_BROWSER_NEEDS_PATH_SCOPE': [('    needs: path-scope\n', '')],
+    'R391_DROP_CANVAS_SKIPPED_BRANCH': [(
+        "      - name: Browser groups were skipped only because of the documented path scope\n"
+        "        if: steps.scope.outputs.browser == 'false'\n"
+        "        env:\n"
+        "          BROWSER_RESULT: ${{ needs.browser.result }}\n"
+        "        run: test \"$BROWSER_RESULT\" = skipped\n", '')],
 }
+path_scope_target = ('test_unittest_runner.BrowserPathScopeWiring.'
+                     'test_browser_jobs_skip_only_on_explicit_path_scope_false')
 evidence_modes = ('R348_DROP_LATEST_MEASURED_RUN', 'R348_REWRITE_RETAINED_MEASUREMENT',
                   'R348_LOWER_LATEST_MEASUREMENT')
 if (mode in ('measured-baseline', 'R348_REVERT_MEASURED_PROFILE', 'R348_REMOVE_SCENARIO_SWAP',
@@ -43,6 +55,8 @@ if (mode in ('measured-baseline', 'R348_REVERT_MEASURED_PROFILE', 'R348_REMOVE_S
              'R380_REMOVE_MULTISTART_SCREENING')
         or mode in workflow_replacements or mode in evidence_modes):
     target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
+if mode == 'path-scope-baseline' or mode.startswith('R391_'):
+    target = path_scope_target
 if mode == 'R348_REVERT_MEASURED_PROFILE':
     original = native_shards.partition_suites
     def legacy(suites, count, weights=None):
@@ -94,7 +108,7 @@ suite = unittest.defaultTestLoader.loadTestsFromName(target)
 result = unittest.TextTestRunner(verbosity=2).run(suite)
 markers = ('R348_MEASURED_RECEIPT_BUDGET', 'R348_FOUR_NATIVE_WORKFLOW',
            'R348_RETAINED_MEASURED_EVIDENCE', 'R348_FOUR_SHARDS_COVER_FULL_REGISTRY',
-           'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+           'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'R391_BROWSER_PATH_SCOPE_WIRING')
 row = dict(tests=result.testsRun, failures=len(result.failures), errors=len(result.errors),
            skips=len(result.skipped), failure_ids=[case.id() for case,_ in result.failures],
            assertion_failure=all('AssertionError' in text for _,text in result.failures), removed=removed,
@@ -142,7 +156,14 @@ def main():
         'R348_REWRITE_RETAINED_MEASUREMENT': ('measured-baseline', 'R348_RETAINED_MEASURED_EVIDENCE'),
         'R348_LOWER_LATEST_MEASUREMENT': ('measured-baseline', 'R348_RETAINED_MEASURED_EVIDENCE'),
         'R348_FOUR_SHARD_DROP_ONE_SUITE': ('baseline', 'R348_FOUR_SHARDS_COVER_FULL_REGISTRY'),
+        'R391_BROWSER_GATE_TRUE_ONLY': ('path-scope-baseline', 'R391_BROWSER_PATH_SCOPE_WIRING'),
+        'R391_DROP_BROWSER_NEEDS_PATH_SCOPE': ('path-scope-baseline', 'R391_BROWSER_PATH_SCOPE_WIRING'),
+        'R391_DROP_CANVAS_SKIPPED_BRANCH': ('path-scope-baseline', 'R391_BROWSER_PATH_SCOPE_WIRING'),
     }
+    judged = {'baseline': 'NativeShardCoverage.test_partition_covers_actual_suite_registry_once',
+              'measured-baseline': 'NativeShardCoverage.test_profile_balances_measured_work',
+              'path-scope-baseline': ('BrowserPathScopeWiring.'
+                                      'test_browser_jobs_skip_only_on_explicit_path_scope_false')}
     for mutation, (baseline, marker) in mutations.items():
         proof = []
         for label, mode, expected in [('baseline', baseline, 0),
@@ -157,9 +178,7 @@ def main():
             assert bool(row['failures']) == bool(expected), row
             if expected:
                 assert row['assertion_failure'] and marker in row['failure_markers'], row
-                method = ('test_partition_covers_actual_suite_registry_once' if baseline == 'baseline'
-                          else 'test_profile_balances_measured_work')
-                assert all(name.startswith('test_unittest_runner.NativeShardCoverage.' + method)
+                assert all(name.startswith('test_unittest_runner.' + judged[baseline])
                            for name in row['failure_ids']), row
             proof.append(dict(label=label, exit=result.returncode, **row))
         timing_proofs[mutation] = dict(baseline_mutant_restored_exit=[r['exit'] for r in proof], rows=proof)
