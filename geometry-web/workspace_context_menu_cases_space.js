@@ -83,7 +83,9 @@ module.exports=s=>{
       // A real viewport resize changes the letterboxed SVG CTM after opening.
       // The retained client point, not a cached room point, is authoritative.
       await viewport(1100,900);
-      const expected=await read(`(()=>{const p=new DOMPoint(${anchor.x},${anchor.y}).matrixTransform($('spacePlanSvg').getScreenCTM().inverse());return {x:Math.round(p.x),y:Math.round(p.y)};})()`);
+      // The actual trusted DOM contextmenu coordinates are the product's retained anchor.
+      // CDP's requested float screen point can differ from the delivered clientX/clientY.
+      const expected=await read(`(()=>{const p=new DOMPoint(${actionEvent.x},${actionEvent.y}).matrixTransform($('spacePlanSvg').getScreenCTM().inverse());return {x:Math.round(p.x),y:Math.round(p.y)};})()`);
       await ctl(sp('column'));
       const ctmProbe=await read(`(()=>{const m=$('spacePlanSvg').getScreenCTM(),
         event=__r11menu.events.slice().reverse().find(e=>e.type==='contextmenu'&&e.trusted),
