@@ -17,12 +17,13 @@
 分類（第一個符合的規則決定）：
   axiom      公理層.md、geometry-guide/公理層-白話.md、geometry-guide/公理層-閱讀器.html → 全跑
   served-doc geometry-web/runtime_version.py::static_catalog 會由 App 直接提供的文件 → 全跑
-  doc        其餘 *.md → 只跑 native
   browser-test-support
              tests/helpers/、tests/fixtures/、檔名含 browser 的 tests/ 檔，以及瀏覽器 job
              會執行的程式（geometry-web/、canvas_evidence.py、package.json、
              tests/test_canvas_shards.js）直接或間接參照到的 tests/ 路徑 → 全跑
-  test       其餘 tests/ 底下的檔案 → 只跑 native
+             （副檔名不論，含 .md；所以 tests/ 規則排在 doc 之前）
+  test       其餘 tests/ 底下的檔案（含 .md）→ 只跑 native
+  doc        其餘 *.md → 只跑 native
   other      其他一切（含 workflow 與本檔）→ 全跑
 
 用法（在 actions/checkout 取出的 PR 合併提交上，fetch-depth 至少 2）：
@@ -118,14 +119,15 @@ def classify_path(path, served, closure):
         return 'axiom'
     if path in served:
         return 'served-doc'
-    if path.lower().endswith('.md'):
-        return 'doc'
+    # tests/ 先於 *.md：tests/helpers/、tests/fixtures/ 與瀏覽器閉包內的 .md 也要全跑（#391 審查 F1）。
     if path.startswith('tests/'):
         name = path.rsplit('/', 1)[-1]
         if (path in closure or any(d.endswith('/') and path.startswith(d) for d in closure)
                 or path.startswith(('tests/helpers/', 'tests/fixtures/')) or 'browser' in name):
             return 'browser-test-support'
         return 'test'
+    if path.lower().endswith('.md'):
+        return 'doc'
     return 'other'
 
 
@@ -168,6 +170,8 @@ def selftest():
         (['tests/mutate.py', 'tests/run_all.py'], False),
         (['tests/binaries.py'], True), (['tests/helpers/canvas_shards.js'], True),
         (['tests/reference_pdf_fixture.js'], True), (['tests/fixtures/new.scene'], True),
+        (['tests/fixtures/x.md'], True), (['tests/helpers/README.md'], True),
+        (['BACKLOG.md', 'tests/fixtures/x.md'], True),
         (['tests/test_canvas_shards.js'], True), (['tests/room_outline_pan_browser.js'], True),
         (['geometry-web/cdp_test.js'], True), (['geometry-web/space_model_test.js'], True),
         (['current_geometry.c'], True), (['.github/workflows/integration-tests.yml'], True),
