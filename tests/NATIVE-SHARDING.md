@@ -1,20 +1,22 @@
 # 非瀏覽器CI確定性分片（2026-11-02）
 
-目前正式安排為四個native矩陣job，每個`timeout-minutes: 35`保持，各片收據仍須嚴格小於1200秒。2026-11-02依P-186授權建立的三片為歷史安排；R348在2026-11-12的慢runner收據超時後，改為下方的完整三輪／四片規劃。原始main `405f8c5e1a637a16cbe47470faf5ae1fa02b8676` 的[GitHub native job](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40185639126/job/124015759512)量測繼續保留；不延長期限、不豁免失敗。
+目前配置為六個native矩陣job，每個`timeout-minutes: 35`保持，各片收據仍須嚴格小於1200秒。2026-11-02依P-186授權建立的三片為歷史安排；R348在2026-11-12的慢runner收據超時後，先改為下方的完整三輪／四片規劃；本次另保留#378完整第四輪、#380追加套件證據，改為六片配置，正式CI驗收另核對。原始main `405f8c5e1a637a16cbe47470faf5ae1fa02b8676` 的[GitHub native job](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40185639126/job/124015759512)量測繼續保留；不延長期限、不豁免失敗。
 
-`native_shard_timings.json`保留完整來源SHA／run／job／原log SHA256及原main的224個suite實測毫秒；這224筆是上述main來源的量測，不改造為其他分支的套件數。初版按耗時遞減、名稱破同分，指派至目前累計最小的片（再以片號破同分）；此規則仍供明確傳入`weights`的呼叫使用。正式預設沿用R348情境分配器，輸入完整三輪量測。片內保留原完整runner的順序；未量測新suite仍用1000ms且必分到某片，但當前預算測試要求量測集合完整覆蓋registry，新增套件須同步補齊量測。配置不依本機cache、即時耗時、亂數或Python hash seed。
+`native_shard_timings.json`保留完整來源SHA／run／job／原log SHA256及原main的224個suite實測毫秒；這224筆是上述main來源的量測，不改造為其他分支的套件數。初版按耗時遞減、名稱破同分，指派至目前累計最小的片（再以片號破同分）；此規則仍供明確傳入`weights`的呼叫使用。正式預設沿用R348情境分配器，輸入完整四輪量測與#380兩套獨立觀測上界。片內保留原完整runner的順序；未量測新suite仍用1000ms且必分到某片，但當前預算測試要求量測集合完整覆蓋registry，新增套件須同步補齊量測。配置不依本機cache、即時耗時、亂數或Python hash seed。
 
 ```sh
-python3 tests/run_all.py --build --shard 1/4 --report /tmp/native/shard-1.json
-python3 tests/run_all.py --build --shard 2/4 --report /tmp/native/shard-2.json
-python3 tests/run_all.py --build --shard 3/4 --report /tmp/native/shard-3.json
-python3 tests/run_all.py --build --shard 4/4 --report /tmp/native/shard-4.json
-python3 tests/native_shard_receipts.py --input /tmp/native --parts 4 --output /tmp/native-complete.json
+python3 tests/run_all.py --build --shard 1/6 --report /tmp/native/shard-1.json
+python3 tests/run_all.py --build --shard 2/6 --report /tmp/native/shard-2.json
+python3 tests/run_all.py --build --shard 3/6 --report /tmp/native/shard-3.json
+python3 tests/run_all.py --build --shard 4/6 --report /tmp/native/shard-4.json
+python3 tests/run_all.py --build --shard 5/6 --report /tmp/native/shard-5.json
+python3 tests/run_all.py --build --shard 6/6 --report /tmp/native/shard-6.json
+python3 tests/native_shard_receipts.py --input /tmp/native --parts 6 --output /tmp/native-complete.json
 ```
 
-上述四個runner命令由不同GitHub job執行。單一片只代表該片，不能獨自宣稱完整驗收。`native complete coverage`下載四份原始收據，核對同一完整checkout SHA、耗時表／expected雜湊、計畫與實跑套件清單；每列必實跑、無fail／crash／環境問題、數量等於原expected、計數守恆。各片suite聯集必須等於原完整registry，且彼此不重疊。四份收據缺一、重複、漏列、來源不同、片內耗時達20分鐘均拒絕。GitHub各job由setup至complete的時間另外直接由Actions API核對，不把suite時間冒稱全部job時間。
+上述六個runner命令由不同GitHub job執行。單一片只代表該片，不能獨自宣稱完整驗收。`native complete coverage`下載六份原始收據，核對同一完整checkout SHA、耗時表／expected雜湊、計畫與實跑套件清單；每列必實跑、無fail／crash／環境問題、數量等於原expected、計數守恆。各片suite聯集必須等於原完整registry，且彼此不重疊。六份收據缺一、重複、漏列、來源不同、片內耗時達20分鐘均拒絕。GitHub各job由setup至complete的時間另外直接由Actions API核對，不把suite時間冒稱全部job時間。
 
-分片本身保留各checkout拆分前的完整suite清單，不增減suite。224個suite及「只有runner案例1改12」是原main基底的實測範例；其他PR以各自完整registry／expected及全部分片實跑聯集為準，不能固定宣稱224個。11個分片守門測試併入原`py:test_unittest_runner`；各分支另有自身功能與驗證案例的expected變動，仍須逐項通過原嚴格數量核對。`check_registry`仍在每片執行；selected suite逐列嚴格比數量，另以完整universe檢查expected中已不存在的suite。`mutation:check`保留原套件、原指令、原退出碼及嚴格度，恰在某一片執行；不因分片跳過它。
+分片本身保留各checkout拆分前的完整suite清單，不增減suite。224個suite及「只有runner案例1改12」是原main基底的實測範例；其他PR以各自完整registry／expected及全部分片實跑聯集為準，不能固定宣稱224個。#380已將`py:test_unittest_runner`增為13項；本次只在既有method內增加斷言，仍13項；各分支另有自身功能與驗證案例的expected變動，仍須逐項通過原嚴格數量核對。`check_registry`仍在每片執行；selected suite逐列嚴格比數量，另以完整universe檢查expected中已不存在的suite。`mutation:check`保留原套件、原指令、原退出碼及嚴格度，恰在某一片執行；不因分片跳過它。
 
 每列另保留真實子程序`process_exit_code`，彙總必須收到整數0；缺失、布林、非0、未啟動或逾時的空值均拒絕。帳本inventory沿用原本的零斷言計數，不能偽造為一個通過斷言；其餘僅退出碼腳本保留原通過計數1。負控制同時驗證原runner記錄真實退出碼與彙總拒收偽綠列。這項修正來自首輪真CI彙總誤拒inventory的實際紅燈；不是放寬原mutation檢查。
 
@@ -26,7 +28,45 @@ python3 tests/native_sharding_mutation_check.py --output /tmp/native-sharding-pr
 
 `--shard`拒絕與`--only`／`--extra-py`／`--simulate-missing`混用，也不能更新expected。原`--allow-skip`的人工用途及具名允許清單不變；CI不設它，彙總只接受原允許skip。
 
-本機只編輯與靜態檢視，所有執行、反證及效能量測以GitHub Actions原收據為準。bridge突變裁判另涵蓋`tests/*.py`、`tests/*.c`、`tests/fixtures/**/*.scene`與根目錄場景；這些來源改變會使舊收據過期，必須由GitHub真重產完整帳本並保留原strict check，不手改hash或當成環境豁免。
+本機單元測試與具名反證可驗接線、來源、聯集與裁判嚴格度；合成收據只用於validator測試，不能冒稱實跑。正式容量與全量驗收仍以GitHub Actions原收據為準。bridge突變裁判另涵蓋`tests/*.py`、`tests/*.c`、`tests/fixtures/**/*.scene`與根目錄場景；這些來源改變會使舊收據過期，必須由GitHub真重產完整帳本並保留原strict check，不手改hash或當成環境豁免。
+
+## R378容量後續：四輪來源與317套六片配置（基底f3ee80cf）
+
+本片獨立於#378產品修正，before固定`f3ee80cf07a548089bfe705e50c93fc7632d8720`。原三輪`measured_runs`的945筆、來源、失敗狀態與原224筆權重全部保留；`native_shard_added_evidence.json`完全不變。新增第四輪來自[#378 run 43271258668](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43271258668)，PR head `17842571811d5af74bd8f4caac7c20f28ca2b056`、實際checkout `3b9678f4dafd80c3c5f680b5cc56fb4cde30eeb9`，是跨PR觀測，不能標成main的實跑。四份原ZIP重新下載並逐一核對SHA-256，profile逐套毫秒由`round(row.seconds * 1000)`生成；完整job/artifact URL與ZIP/JSON雜湊寫入同一profile。
+
+| 來源片 | source job | artifact | 原receipt seconds | 原套數 |
+| --- | --- | --- | ---: | ---: |
+| 1/4 | 131368074344 | 13968469446 | 874.314958249 | 51 |
+| 2/4 | 131368074007 | 13969622666 | 1226.295112309 | 87 |
+| 3/4 | 131368074243 | 13968288670 | 624.795111106 | 89 |
+| 4/4 | 131368073555 | 13969218634 | 1040.761293962 | 88 |
+
+第四輪仍是315套。#380的`py:test_panel_fill_grid_source`與`node:panel_fill_grid_read_compat`繼續使用其獨立來源的65000/2000ms規劃上界，只在讀取時合併為現行317套，不補進任何歷史實跑。`native_shards.py`的現行多起點、有界交換演算法完全不改，也不特判H7名稱或拆suite。相同registry、profile與片數會得到相同規劃，片內仍保留完整runner原順序。
+
+六片套數為**1／59／71／62／61／63**，精確聯集317且零重疊；第一片只有H7是成本規劃的結果，不是略過其他suite。以下是整數毫秒回放模型，已加上#380兩套獨立規劃上界，**不是六片正式執行收據**：
+
+| 觀測情境 + #380上界 | 片1秒 | 片2秒 | 片3秒 | 片4秒 | 片5秒 | 片6秒 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 43162989157 | 348.065 | 470.818 | 571.970 | 563.993 | 533.077 | 570.271 |
+| 43150038015 | 688.444 | 385.559 | 553.401 | 565.140 | 470.592 | 481.188 |
+| 43177620127 | 755.187 | 461.389 | 531.007 | 543.244 | 521.208 | 505.171 |
+| 43271258668 | 701.108 | 572.200 | 572.200 | 572.199 | 572.200 | 572.199 |
+| 每套四輪最大值 | 755.187 | 616.862 | 669.773 | 635.983 | 664.625 | 645.380 |
+| 上列 +120秒開銷 +30秒餘裕 | 905.187 | 766.862 | 819.773 | 785.983 | 814.625 | 795.380 |
+
+原35分鐘native job期限、coverage job五分鐘期限、每片真收據`0 <= seconds < 1200`、原120秒開銷及30秒規劃餘裕都不變。相同四輪/317套若仍用四片，最差逐套包絡加150秒為1218.460秒，正常AssertionError拒收；六片最差為905.187秒，規劃餘裕294.813秒。這仍不保證任意更慢CPU；H7單項時間不能靠增加分片縮短。
+
+### 紅綠與具名反證的範圍
+
+先只套新增來源與測試，保留四片workflow：原13項出現兩個正常AssertionError，分別是缺第五/第六片接線，以及上述1218.460秒預算。再改六片matrix/job名/runner分母/coverage parts後，13/13通過，expected與golden完全不改。
+
+歷史三片的原`+100000+30000 <1200000`與四片的原`+120000+30000 <1200000`全部保留。四片workflow測試fixture逐字取自本before的native及native-complete兩區塊；原R348/R380共15組具名反證繼續驗各自歷史斷言，不把歷史kill稱為六片效能證據。另增15組R378具名反證：回退四片、錯job名/runner分母/coverage parts/max-parallel、漏第五/第六matrix項、放寬job時限、allow-skip、六片少一suite、刪第四輪/改來源/壓低時間、收據上限放寬與把`<1200`改為`<=1200`。每組都獨立產出真實baseline/mutant/restored的0/1/0、原stderr與指定正常AssertionError，error/skip/timeout不能算kill。
+
+新增的合成六片收據測試實際呼叫原`native_shard_receipts.main()`，驗第五/第六片缺失必拒、1200秒及非有限/負值必拒、1199.999秒通過；這是validator邊界測試，不是容量實測。反證只修改各子程序的記憶體，不改checkout；最多兩個獨立proof子程序並行，每組三次執行仍循序，保留原每個子程序60秒與coverage job五分鐘期限。
+
+### 合入前仍需的正式證據
+
+本補丁不推程式碼、不觸發或冒稱正式六片CI。套用並採入由ME真產生的新帳本後，仍須檢查同一最新head及test merge checkout的六份native原收據、native complete coverage、全部browser/canvas job與其coverage；`mutation:check`仍保留原執行與嚴格度。若repo保護已要求舊四片名稱，需由有管理權限的人把四個`native (i/4)`換成六個`native (i/6)`，其他required contexts全保留；現行管理設定未確認，本補丁不改它。一般workflow job數由13變為15，不代表自動改了required checks。
 
 ## R06 分支的同一基礎設施
 
@@ -77,7 +117,7 @@ R06 以 `bf178770a0e10e996014ec0b6487e186db561c7f` 的純 CI 差異三向套用�
 
 上述三片當時仍須由exact head原收據各`seconds < 1200`裁決，後來的d7515daf正式收據未通過；不能以模型或ME採入解除超時。
 
-## R348現行：保留完整來源，四片驗收（基底f10c4791）
+## R348歷史：保留完整來源，四片驗收（基底f10c4791）
 
 固定基底`f10c4791ee5adfa5d645caea784410b1afa3b060`。原兩輪`measured_runs`的全部630筆、來源與失敗狀態原樣保留，另追加[43177620127](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43177620127)完整315筆；不是退回20套樣本。最新PR head為`d7515dafd8933ca2d0d071184d1884031038333f`，真checkout為`ec80875d0723768b90166691d3119ed7b25984de`，三個source jobs依序為131045589092／131045588729／131045589006。原ZIP／JSON SHA-256、artifact／job URL、receipt seconds／exit均寫入同一profile，毫秒仍為`round(row.seconds * 1000)`。完整profile由既有`profile_digest()`綁定。
 
@@ -143,4 +183,4 @@ R06 以 `bf178770a0e10e996014ec0b6487e186db561c7f` 的純 CI 差異三向套用�
 
 三片歷史重播仍包含全部 317 套，原 `+100000+30000 <1200000` 不變。正式四片仍驗全部 registry 恰好一次、三份來源成本及 per-suite 最大包絡的 `+120000+30000 <1200000`。新增具名撤回 `R380_REVERT_SINGLE_PAIR_SWEEP`、`R380_REMOVE_MULTISTART_SCREENING`、`R380_DROP_ADDED_SUITE_EVIDENCE`，連同原具名突變全部要求正常 AssertionError 的 0／1／0；不以 crash、timeout 或 skip 算 kill。正式四份 wall-clock 收據與完整 CI 仍須另外驗收。
 
-官方說明：[required checks與最近七日成功條件](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)、[classic設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)、[rulesets設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/managing-rulesets-for-a-repository)、[多規則聚合](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)。最終合併判斷仍需最新來源全部正式CI、四份`seconds <1200`原收據、完整coverage及mutation freshness通過。
+官方說明：[required checks與最近七日成功條件](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)、[classic設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)、[rulesets設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/managing-rulesets-for-a-repository)、[多規則聚合](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)。最終合併判斷仍需最新來源全部正式CI、六份`seconds <1200`原收據、完整coverage及mutation freshness通過。

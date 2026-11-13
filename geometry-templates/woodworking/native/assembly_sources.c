@@ -74,7 +74,7 @@ static bool wood_assembly_read_json(WoodAssemblySources *s,const GeoSourceValue 
        !value->as.definition.content||value->as.definition.content_size>=capacity||memchr(value->as.definition.content,0,value->as.definition.content_size))
         return wood_eng_fail(&s->context.engineering,"I40: invalid assembly source definition");
     memcpy(text,value->as.definition.content,value->as.definition.content_size);text[value->as.definition.content_size]=0;
-    char canonical[ASM_RECORD_MAX+256];
+    char canonical[ASM_INSTANCE_RECORD_MAX+256];
     if(!s->context.json_parse(s->context.user,j,text)||!geo_json_canonical(j,0,canonical,sizeof canonical)||strlen(canonical)!=value->as.definition.content_size||memcmp(canonical,text,value->as.definition.content_size))return wood_eng_fail(&s->context.engineering,"I40: invalid assembly source definition");
     return true;
 }
@@ -133,7 +133,7 @@ static bool wood_assembly_load_instance(WoodAssemblySources *s,uint32_t id,AsmIn
 {
     GeoSourceValue definition,mapping;if(!wood_assembly_get(s,WOOD_ASSEMBLY_SOURCE_INSTANCE_DEFINITION,id,0,0,GEO_DEPENDENCY_DEFINITION_REQUIRED,&definition)||
        !wood_assembly_get(s,WOOD_ASSEMBLY_SOURCE_MAPPING_DEFINITION,id,0,0,GEO_DEPENDENCY_DEFINITION_REQUIRED,&mapping))return false;
-    char text[ASM_RECORD_MAX],map_text[ASM_RECORD_MAX],source[ASM_RECORD_MAX],combined[ASM_RECORD_MAX];GeoJson j,map;memset(&map,0,sizeof map);
+    char text[ASM_INSTANCE_RECORD_MAX],map_text[ASM_INSTANCE_RECORD_MAX],source[ASM_INSTANCE_RECORD_MAX],combined[ASM_INSTANCE_RECORD_MAX];GeoJson j,map;memset(&map,0,sizeof map);
     bool ok=wood_assembly_read_json(s,&definition,"wood.assembly.instance/1",text,sizeof text,&j)&&geo_json_keys(&j,0,"source,mapping","")&&geo_json_canonical(&j,geo_json_member(&j,0,"source"),source,sizeof source)&&
         wood_assembly_read_json(s,&mapping,"wood.assembly.mapping/1",map_text,sizeof map_text,&map)&&geo_json_is_array(&map,0);geo_json_free(&j);geo_json_free(&map);if(!ok)return false;
     int n=snprintf(combined,sizeof combined,"{\"source\":%s,\"mapping\":%s}",source,map_text);if(n<0||(size_t)n>=sizeof combined)return false;
@@ -142,7 +142,7 @@ static bool wood_assembly_load_instance(WoodAssemblySources *s,uint32_t id,AsmIn
 }
 static bool wood_assembly_load_generated(WoodAssemblySources *s,uint32_t id,uint32_t member,WoodAssemblySourceResult *r,const GeoSourceValue *value,int *index)
 {
-    char text[ASM_RECORD_MAX+96];GeoJson j;uint32_t actual;AsmInstance decoded;
+    char text[ASM_INSTANCE_RECORD_MAX+96];GeoJson j;uint32_t actual;AsmInstance decoded;
     bool ok=wood_assembly_read_json(s,value,"wood.assembly.generated/1",text,sizeof text,&j)&&geo_json_keys(&j,0,"instance,memberId","")&&
         wood_eng_u32(&j,geo_json_member(&j,0,"memberId"),&actual,true)&&actual==member&&wood_assembly_decode_instance(s,&j,geo_json_member(&j,0,"instance"),id,&decoded);geo_json_free(&j);
     if(!ok)return false;int m=wood_assembly_source_member(&decoded,member);if(m<0)return false;r->instance=decoded;*index=m;return true;
@@ -175,18 +175,18 @@ static bool wood_assembly_definition(WoodAssemblySources *s,WoodAssemblySourceKi
         wood_assembly_definition_value(out,"wood.assembly.instance/1",a->content);return true;
     }
     if(!wood_assembly_get(s,WOOD_ASSEMBLY_SOURCE_INSTANCE_DEFINITION,id,0,0,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;
-    if(kind==WOOD_ASSEMBLY_SOURCE_MAPPING_DEFINITION){char authored[ASM_RECORD_MAX];GeoJson j;if(!wood_assembly_read_json(s,&value,"wood.assembly.instance/1",authored,sizeof authored,&j)){geo_json_free(&j);return false;}
-        char text[ASM_RECORD_MAX];int mapping=geo_json_member(&j,0,"mapping");bool ok=geo_json_is_array(&j,mapping)&&geo_json_canonical(&j,mapping,text,sizeof text);geo_json_free(&j);
+    if(kind==WOOD_ASSEMBLY_SOURCE_MAPPING_DEFINITION){char authored[ASM_INSTANCE_RECORD_MAX];GeoJson j;if(!wood_assembly_read_json(s,&value,"wood.assembly.instance/1",authored,sizeof authored,&j)){geo_json_free(&j);return false;}
+        char text[ASM_INSTANCE_RECORD_MAX];int mapping=geo_json_member(&j,0,"mapping");bool ok=geo_json_is_array(&j,mapping)&&geo_json_canonical(&j,mapping,text,sizeof text);geo_json_free(&j);
         if(!ok||!wood_assembly_text(r,text,strlen(text)))return false;wood_assembly_definition_value(out,"wood.assembly.mapping/1",r->text);return true;
     }
     if(kind==WOOD_ASSEMBLY_SOURCE_GENERATED_DEFINITION){
-        char authored[ASM_RECORD_MAX],source[ASM_RECORD_MAX],mapping[ASM_RECORD_MAX];GeoJson j;
+        char authored[ASM_INSTANCE_RECORD_MAX],source[ASM_INSTANCE_RECORD_MAX],mapping[ASM_INSTANCE_RECORD_MAX];GeoJson j;
         bool ok=wood_assembly_read_json(s,&value,"wood.assembly.instance/1",authored,sizeof authored,&j)&&geo_json_keys(&j,0,"source,mapping","")&&geo_json_canonical(&j,geo_json_member(&j,0,"source"),source,sizeof source);
         int members=geo_json_member(&j,geo_json_member(&j,0,"source"),"members");bool found=false;
         for(int m=0;m<geo_json_size(&j,members)&&ok;++m){uint32_t member;if(wood_eng_u32(&j,geo_json_member(&j,geo_json_at(&j,members,m),"memberId"),&member,true)&&member==sub)found=true;}ok=ok&&found;geo_json_free(&j);
         if(!ok||!wood_assembly_get(s,WOOD_ASSEMBLY_SOURCE_MAPPING_DEFINITION,id,0,0,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;
         ok=wood_assembly_read_json(s,&value,"wood.assembly.mapping/1",mapping,sizeof mapping,&j)&&geo_json_is_array(&j,0);geo_json_free(&j);if(!ok)return false;
-        char text[ASM_RECORD_MAX+96];int n=snprintf(text,sizeof text,"{\"instance\":{\"mapping\":%s,\"source\":%s},\"memberId\":%u}",mapping,source,sub);
+        char text[ASM_INSTANCE_RECORD_MAX+96];int n=snprintf(text,sizeof text,"{\"instance\":{\"mapping\":%s,\"source\":%s},\"memberId\":%u}",mapping,source,sub);
         if(n<0||(size_t)n>=sizeof text||!wood_assembly_text(r,text,(size_t)n))return false;wood_assembly_definition_value(out,"wood.assembly.generated/1",r->text);return true;
     }
     return false;
@@ -329,7 +329,7 @@ bool wood_assembly_sources_definitions(WoodAssemblySources *s)
     }
     for(size_t i=0;i<s->base.state->instance_count;++i){const AsmInstance *a=&s->base.state->instances[i];if(!wood_assembly_get(s,WOOD_ASSEMBLY_SOURCE_INSTANCE_DEFINITION,a->id,0,0,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;
         if(a->bay_repeat){AsmInstance *actual;if(!wood_assembly_load_instance(s,a->id,&actual))return false;for(size_t m=0;m<actual->mapping_count;++m)if(!wood_assembly_bay_get(s,WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_DEFINITION,a->id,actual->mapping[m].identity,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;continue;}
-        char text[ASM_RECORD_MAX];GeoJson j;if(!wood_assembly_read_json(s,&value,"wood.assembly.instance/1",text,sizeof text,&j)){geo_json_free(&j);return false;}
+        char text[ASM_INSTANCE_RECORD_MAX];GeoJson j;if(!wood_assembly_read_json(s,&value,"wood.assembly.instance/1",text,sizeof text,&j)){geo_json_free(&j);return false;}
         uint32_t members[3];int list=geo_json_member(&j,geo_json_member(&j,0,"source"),"members");bool ok=geo_json_is_array(&j,list)&&geo_json_size(&j,list)==3;
         for(int m=0;m<3&&ok;++m)ok=wood_eng_u32(&j,geo_json_member(&j,geo_json_at(&j,list,m),"memberId"),&members[m],true);geo_json_free(&j);if(!ok||!wood_assembly_get(s,WOOD_ASSEMBLY_SOURCE_MAPPING_DEFINITION,a->id,0,0,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;
         for(int m=0;m<3;++m)if(!wood_assembly_get(s,WOOD_ASSEMBLY_SOURCE_GENERATED_DEFINITION,a->id,0,members[m],GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;
@@ -349,7 +349,7 @@ static bool wood_assembly_bay_identity_read(GeoJson *j,int t,AsmIdentity *out)
 }
 static bool wood_assembly_bay_load_generated(WoodAssemblySources *s,uint32_t id,AsmIdentity identity,WoodAssemblySourceResult *r,const GeoSourceValue *value,int *index)
 {
-    char text[ASM_RECORD_MAX+256];GeoJson j;AsmIdentity actual;AsmInstance decoded;
+    char text[ASM_INSTANCE_RECORD_MAX+256];GeoJson j;AsmIdentity actual;AsmInstance decoded;
     bool ok=wood_assembly_read_json(s,value,"wood.assembly.bay-generated/1",text,sizeof text,&j)&&geo_json_keys(&j,0,"identity,instance","")&&
         wood_assembly_bay_identity_read(&j,geo_json_member(&j,0,"identity"),&actual)&&wood_assembly_identity_equal(actual,identity)&&wood_assembly_decode_instance(s,&j,geo_json_member(&j,0,"instance"),id,&decoded);geo_json_free(&j);
     if(!ok||!decoded.bay_repeat)return false;int selected=wood_assembly_mapping_index(&decoded,identity);if(selected<0)return false;r->instance=decoded;*index=selected;return true;
@@ -388,7 +388,7 @@ static bool wood_assembly_bay_evaluate(WoodAssemblySources *s,const GeoSourceRef
 {
     WoodAssemblySourceKind kind;uint32_t id;AsmIdentity identity;if(!wood_assembly_bay_source_decode(ref,&kind,&id,&identity))return false;WoodAssemblySourceResult *r=wood_assembly_result(s,ref);if(!r)return false;
     if(kind==WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_DEFINITION){AsmInstance *a;if(!wood_assembly_load_instance(s,id,&a)||!a->bay_repeat||wood_assembly_mapping_index(a,identity)<0)return false;
-        char key[128],text[ASM_RECORD_MAX+256];if(!wood_assembly_bay_identity_json(identity,key,sizeof key))return false;
+        char key[128],text[ASM_INSTANCE_RECORD_MAX+256];if(!wood_assembly_bay_identity_json(identity,key,sizeof key))return false;
         int n=snprintf(text,sizeof text,"{\"identity\":%s,\"instance\":%s}",key,a->content);if(n<0||(size_t)n>=sizeof text||!wood_assembly_text(r,text,(size_t)n))return false;wood_assembly_definition_value(out,"wood.assembly.bay-generated/1",r->text);return true;}
     GeoSourceValue definition;if(!wood_assembly_bay_get(s,WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_DEFINITION,id,identity,GEO_DEPENDENCY_DEFINITION_REQUIRED,&definition))return false;int selected;
     if(!wood_assembly_bay_load_generated(s,id,identity,r,&definition,&selected))return false;
