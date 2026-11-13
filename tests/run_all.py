@@ -5,7 +5,7 @@
     python tests/run_all.py --build         # build stale/missing binaries first (tests/binaries.py), then run
     python tests/run_all.py --only bridge   # only suites whose name contains "bridge"  (repeatable)   [PARTIAL run]
     python tests/run_all.py --list          # show the suites and what each needs
-    python tests/run_all.py --shard 1/4     # deterministic measured-cost partition (CI native runs 4 shards); aggregate every shard for full coverage
+    python tests/run_all.py --shard 1/6     # deterministic measured-cost partition (CI native runs 6 shards); aggregate every shard for full coverage
     python tests/run_all.py --allow-skip    # skips no longer affect the exit code
     python tests/run_all.py --simulate-missing GEOMETRY_MODEL_BASE   # run as if that variable were unset [DEMO run, never exit 0]
     python tests/run_all.py --update-expected   # full run only: rewrite tests/run_all.expected.json from what was discovered

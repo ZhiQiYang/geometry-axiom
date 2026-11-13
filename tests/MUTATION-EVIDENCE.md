@@ -1,6 +1,6 @@
 # 突變收據與可下載二進位證據
 
-> **現行表（2026-11-12 依 `f3ee80cf` 實數更正）：138 筆／135 active／3 retired**；core 70（67 active＋3 retired）、bridge 68，七片依現行表動態分成 core 18／18／17／17 與 bridge 23／23／22（`.github/scripts/mutation_evidence.py::shards()`）。已採入的 `tests/mutants_results.json` 為 138 筆：killed 129、equivalent 5、crashed 1、retired 3（來源見最近一次採入 commit `77b04899`）。
+> **現行表（2026-11-12 依 `f3ee80cf` 實數更正）：138 筆／135 active／3 retired**；core 70（67 active＋3 retired）、bridge 68，七片依現行表動態分成 core 18／18／17／17 與 bridge 23／23／22（`.github/scripts/mutation_evidence.py::shards()`）。已採入的 `tests/mutants_results.json` 為 138 筆：killed 129、equivalent 5、crashed 1、retired 3（main 上最近一次採入為 `eca59df8`，Mutation evidence 43361431042）。
 >
 > 歷史：main `8f82b207e87c086705a1d8b7a00e2f215c07cbcf` 納入 #338 時完整表為 123 筆／120 active／3 retired（core 70、bridge 53，分片 18／18／17／17 與 18／18／17）。`de9aea24113a522c6cd80d30b9281e1034b57c6c` 的 [run 41333327153](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41333327153) 及 78／75 收據保持原來源的歷史證據。
 
