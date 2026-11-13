@@ -8709,25 +8709,34 @@ static bool proj_rebind_aux(
             }
         } else if (!k && !n) return false;
     }
-    World source=*world;
-    for (size_t i=0;i<geo_guides_count(&source.geo.guide_lines);++i) {
-        if (geo_guides_values(&source.geo.guide_lines)[i].placement_id!=old_pl->id) continue;
+    /* R13 needs one stable source after grid-family assignment. The caller
+     * already holds a World rollback snapshot; keep this second full snapshot
+     * off the native stack as member/assembly capacity grows. */
+    World *source=malloc(sizeof *source);
+    if (!source) return false;
+    *source=*world;
+    bool ok=false;
+    for (size_t i=0;i<geo_guides_count(&source->geo.guide_lines);++i) {
+        if (geo_guides_values(&source->geo.guide_lines)[i].placement_id!=old_pl->id) continue;
         GuideLine keep,other;
-        int k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,false,i,&keep,NULL,NULL);
-        int n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,false,i,&other,NULL,NULL);
-        if (k<0 || n<0 || (!k && !n)) return false;
-        if(!geo_guides_put(&world->geo.guide_lines,k?&keep:&other))return false;
+        int k=reference_fragment_candidate(source,old_pl->id,old_pl->id,false,i,&keep,NULL,NULL);
+        int n=reference_fragment_candidate(source,old_pl->id,new_pl_id,false,i,&other,NULL,NULL);
+        if (k<0 || n<0 || (!k && !n)) goto done;
+        if(!geo_guides_put(&world->geo.guide_lines,k?&keep:&other))goto done;
     }
-    for (size_t i=0;i<source.wood.timber_count;++i) {
-        if (!source.wood.timbers[i].placed || source.wood.anchors[i].placement_id!=old_pl->id) continue;
+    for (size_t i=0;i<source->wood.timber_count;++i) {
+        if (!source->wood.timbers[i].placed || source->wood.anchors[i].placement_id!=old_pl->id) continue;
         Timber keep,other; TimberAnchor ka,na;
-        int k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,true,i,NULL,&keep,&ka);
-        int n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,true,i,NULL,&other,&na);
-        if (k<0 || n<0 || (!k && !n)) return false;
+        int k=reference_fragment_candidate(source,old_pl->id,old_pl->id,true,i,NULL,&keep,&ka);
+        int n=reference_fragment_candidate(source,old_pl->id,new_pl_id,true,i,NULL,&other,&na);
+        if (k<0 || n<0 || (!k && !n)) goto done;
         world->wood.timbers[i]=k?keep:other;
         world->wood.anchors[i]=k?ka:na;
     }
-    return engineering_follow_fragment(world,old_pl->id);
+    ok=engineering_follow_fragment(world,old_pl->id);
+done:
+    free(source);
+    return ok;
 }
 
 /* 生成面:房間座標矩形 → 自備框(法向朝外)建 boundary+placement。
