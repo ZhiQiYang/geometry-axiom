@@ -55,7 +55,19 @@ current_workflow_replacements = {
     'R378_RELAX_NATIVE_JOB_TIMEOUT': [('timeout-minutes: 35', 'timeout-minutes: 36')],
     'R378_NATIVE_ALLOW_SKIP': [('python3 tests/run_all.py --build --shard',
                                'python3 tests/run_all.py --allow-skip --build --shard')],
+    # #391 F2: the browser path-scope gate and canvas-complete skipped branch.
+    'R391_BROWSER_GATE_TRUE_ONLY': [("if: needs.path-scope.outputs.browser != 'false'",
+                                     "if: needs.path-scope.outputs.browser == 'true'")],
+    'R391_DROP_BROWSER_NEEDS_PATH_SCOPE': [('    needs: path-scope\n', '')],
+    'R391_DROP_CANVAS_SKIPPED_BRANCH': [(
+        "      - name: Browser groups were skipped only because of the documented path scope\n"
+        "        if: steps.scope.outputs.browser == 'false'\n"
+        "        env:\n"
+        "          BROWSER_RESULT: ${{ needs.browser.result }}\n"
+        "        run: test \"$BROWSER_RESULT\" = skipped\n", '')],
 }
+path_scope_target = ('test_unittest_runner.BrowserPathScopeWiring.'
+                     'test_browser_jobs_skip_only_on_explicit_path_scope_false')
 evidence_modes = ('R348_DROP_LATEST_MEASURED_RUN', 'R348_REWRITE_RETAINED_MEASUREMENT',
                   'R348_LOWER_LATEST_MEASUREMENT', 'R378_DROP_FOURTH_MEASURED_RUN',
                   'R378_REWRITE_FOURTH_SOURCE', 'R378_LOWER_FOURTH_MEASUREMENT')
@@ -69,6 +81,8 @@ if (mode in ('measured-baseline', 'R348_REVERT_MEASURED_PROFILE', 'R348_REMOVE_S
              'R380_REMOVE_MULTISTART_SCREENING', 'R396_DROP_WORKSPACE_COSTS')
         or mode in historical_workflow_replacements or mode in evidence_modes):
     target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
+if mode == 'path-scope-baseline' or mode.startswith('R391_'):
+    target = path_scope_target
 if mode == 'R348_REVERT_MEASURED_PROFILE':
     original = native_shards.partition_suites
     def legacy(suites, count, weights=None):
@@ -206,7 +220,8 @@ markers = ('R348_MEASURED_RECEIPT_BUDGET', 'R348_FOUR_NATIVE_WORKFLOW',
            'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'R396_COMPLETE_EXPECTED_REGISTRY',
            'R396_ADDED_RECEIPT_failed-child', 'R396_ADDED_RECEIPT_bool-exit',
            'R396_ADDED_RECEIPT_fake-exit-only-count', 'R396_ADDED_RECEIPT_duplicate-legacy',
-           'R396_PROFILE_DIGEST_BINDS_ADDED_RECEIPTS', 'R396_NAMED_WITHDRAWALS_RETAINED')
+           'R396_PROFILE_DIGEST_BINDS_ADDED_RECEIPTS', 'R396_NAMED_WITHDRAWALS_RETAINED',
+           'R391_BROWSER_PATH_SCOPE_WIRING')
 row = dict(tests=result.testsRun, failures=len(result.failures), errors=len(result.errors),
            skips=len(result.skipped), failure_ids=[case.id() for case,_ in result.failures],
            assertion_failure=all('AssertionError' in text for _,text in result.failures), removed=removed,
@@ -276,6 +291,9 @@ def main():
         'R378_LOWER_FOURTH_MEASUREMENT': ('measured-baseline', 'R378_RETAINED_MEASURED_EVIDENCE'),
         'R378_RELAX_RECEIPT_LIMIT': ('receipt-baseline', 'R378_SIX_NATIVE_RECEIPT_LIMIT'),
         'R378_ACCEPT_RECEIPT_AT_LIMIT': ('receipt-baseline', 'R378_SIX_NATIVE_RECEIPT_LIMIT'),
+        'R391_BROWSER_GATE_TRUE_ONLY': ('path-scope-baseline', 'R391_BROWSER_PATH_SCOPE_WIRING'),
+        'R391_DROP_BROWSER_NEEDS_PATH_SCOPE': ('path-scope-baseline', 'R391_BROWSER_PATH_SCOPE_WIRING'),
+        'R391_DROP_CANVAS_SKIPPED_BRANCH': ('path-scope-baseline', 'R391_BROWSER_PATH_SCOPE_WIRING'),
     }
     def prove(item):
         mutation, (baseline, marker) = item
@@ -292,11 +310,13 @@ def main():
             assert bool(row['failures']) == bool(expected), row
             if expected:
                 assert row['assertion_failure'] and marker in row['failure_markers'], row
-                methods = {'baseline': 'test_partition_covers_actual_suite_registry_once',
-                           'measured-baseline': 'test_profile_balances_measured_work',
-                           'provenance-baseline': 'test_added_suite_provenance_rejects_named_mutations',
-                           'receipt-baseline': 'test_cross_shard_report_requires_all_rows'}
-                assert all(name.startswith('test_unittest_runner.NativeShardCoverage.' + methods[baseline])
+                methods = {'baseline': 'NativeShardCoverage.test_partition_covers_actual_suite_registry_once',
+                           'measured-baseline': 'NativeShardCoverage.test_profile_balances_measured_work',
+                           'provenance-baseline': 'NativeShardCoverage.test_added_suite_provenance_rejects_named_mutations',
+                           'receipt-baseline': 'NativeShardCoverage.test_cross_shard_report_requires_all_rows',
+                           'path-scope-baseline': ('BrowserPathScopeWiring.'
+                                                   'test_browser_jobs_skip_only_on_explicit_path_scope_false')}
+                assert all(name.startswith('test_unittest_runner.' + methods[baseline])
                            for name in row['failure_ids']), row
             proof.append(dict(label=label, exit=result.returncode, **row))
         return mutation, dict(baseline_mutant_restored_exit=[r['exit'] for r in proof], rows=proof)

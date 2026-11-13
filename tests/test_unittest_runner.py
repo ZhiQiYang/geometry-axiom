@@ -113,6 +113,73 @@ class RunnerClassification(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
+class BrowserPathScopeWiring(unittest.TestCase):
+    """#391 審查 F2：釘住「文件／測試類 PR 只跑 native」的 workflow 接線。
+
+    browser 只能在 path-scope 明確輸出 false 時略過（任何其他值、包含空字串都全跑）；
+    browser-canvas-complete 用同一支分類器重算，略過時只接受 skipped，否則照舊要求 success
+    並核對收據。具名撤回見 tests/native_sharding_mutation_check.py 的 R391_*。"""
+
+    MARKER = 'R391_BROWSER_PATH_SCOPE_WIRING'
+
+    @staticmethod
+    def _job(workflow, job):
+        match = re.search(r'^  ' + re.escape(job) + r':\n(.*?)(?=^  \S|\Z)', workflow, re.M | re.S)
+        return match[1] if match else None
+
+    @staticmethod
+    def _steps(block):
+        return ['      - ' + step for step in re.split(r'^      - ', block, flags=re.M)[1:]]
+
+    def _assert_lines(self, block, lines):
+        for line in lines:
+            self.assertIn('\n' + line + '\n', '\n' + block, self.MARKER + ': missing ' + line.strip())
+
+    def test_browser_jobs_skip_only_on_explicit_path_scope_false(self):
+        marker = self.MARKER
+        workflow = (Path(__file__).parent.parent / '.github/workflows/integration-tests.yml').read_text(
+            encoding='utf-8')
+        scope, browser, complete = (self._job(workflow, job)
+                                    for job in ('path-scope', 'browser', 'browser-canvas-complete'))
+        for name, block in (('path-scope', scope), ('browser', browser), ('browser-canvas-complete', complete)):
+            self.assertIsNotNone(block, marker + ': missing job ' + name)
+
+        self._assert_lines(scope, ('    outputs:', '      browser: ${{ steps.scope.outputs.browser }}',
+                                   '        run: python3 -B .github/scripts/ci_path_scope.py --selftest'))
+        classify = ('python3 -B .github/scripts/ci_path_scope.py --event "$EVENT_NAME" '
+                    '--pr-head "$PR_HEAD" --github-output "$GITHUB_OUTPUT"')
+        self.assertIn(classify, scope, marker)
+
+        # browser：需要 path-scope，且只有輸出恰為 'false' 才略過。
+        self._assert_lines(browser, ('    needs: path-scope',
+                                     "    if: needs.path-scope.outputs.browser != 'false'"))
+        self.assertNotIn("browser == 'true'", browser, marker)
+
+        # canvas-complete：仍然 needs browser + always()，並以同一分類器重算範圍。
+        self._assert_lines(complete, ('    needs: browser', '    if: always()'))
+        steps = self._steps(complete)
+        index = {}
+        for position, step in enumerate(steps):
+            if '        id: scope\n' in step:
+                self.assertIn(classify, step, marker)
+                index['scope'] = position
+            if 'run: test "$BROWSER_RESULT" = skipped' in step:
+                self._assert_lines(step, ("        if: steps.scope.outputs.browser == 'false'",
+                                          '          BROWSER_RESULT: ${{ needs.browser.result }}'))
+                index['skipped'] = position
+            if 'run: test "$BROWSER_RESULT" = success' in step:
+                self._assert_lines(step, ("        if: steps.scope.outputs.browser != 'false'",
+                                          '          BROWSER_RESULT: ${{ needs.browser.result }}'))
+                index['success'] = position
+            if 'canvas_evidence.py verify' in step or 'pattern: canvas-shard-*' in step:
+                self.assertIn("        if: steps.scope.outputs.browser != 'false'\n", step, marker)
+                index.setdefault('evidence', position)
+        for key in ('scope', 'skipped', 'success', 'evidence'):
+            self.assertIn(key, index, marker + ': missing canvas-complete step ' + key)
+        self.assertLess(index['scope'], min(index['skipped'], index['success'], index['evidence']), marker)
+        self.assertNotIn("browser == 'true'", complete, marker)
+
+
 class NativeShardCoverage(unittest.TestCase):
     def _native_workflow(self, workflow=None, marker='R378_SIX_NATIVE_WORKFLOW'):
         if workflow is None:
