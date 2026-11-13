@@ -4929,3 +4929,4 @@ UI 減項（GEO-219）：規則線資訊併入既有 GridEditor 的來源／局�
 - 以原始 ReferenceWorkspace stamp / frame / native revision / runtime 接短命 immutable binding；每 native context 獨立有限高水位与 late cancel tombstone，不能改 A/B editor allocator。關閉案例只撤銷其 adapter；不關 live native 或 AssemblyWorkspace 候選。保存沿共同 detached prepare 與同步 guarded metadata commit，完整 root/A/B manifest 容量與房間 lifecycle 預留均先驗；no-op 零 history，取消／晚到零寫入。
 - **拿掉／合併（GEO-219）**：移除預設組構內容重複的「新增規則後，依序建立槽位、構件與局部接合」常駐說明，沿用既有工作區首課；案例輸入、作者預期、實際結果與歷史明細合併同一按需面板，沒有新增頂層工作區。
 - 這是實作 checkpoint，完整 current-head aggregate／桌面及390px terminal 尚待完成；不宣稱 #49 完成，不借用 #137／#143 的舊 full receipts。產品／測試 source 可獨立審查，原始公開證據拒絕包維持 hold。
+
