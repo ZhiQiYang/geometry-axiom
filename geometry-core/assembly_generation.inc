@@ -48,15 +48,15 @@ static bool app_asm_anchor_matches(void *user,uint32_t id,const WoodAssemblyDefi
 {World *w=(World *)user;int i=reference_timber_index(w,id);TimberAnchor actual=w->wood.anchors[i],expected=app_asm_anchor(d);actual.uv=(SurfacePoint2){0};actual.order=0;return !memcmp(&actual,&expected,sizeof actual);}
 static bool app_asm_instance_content(void *user,AsmInstance *a,GeoJson *j,int source)
 {
-    (void)user;char value[ASM_RECORD_MAX],text[ASM_RECORD_MAX];if(!geo_json_canonical(j,source,value,sizeof value))return false;
+    (void)user;char value[ASM_INSTANCE_RECORD_MAX],text[ASM_INSTANCE_RECORD_MAX];if(!geo_json_canonical(j,source,value,sizeof value))return false;
     if(a->bay_repeat){int n=snprintf(text,sizeof text,"{\"source\":%s,\"mapping\":[",value);if(n<0||(size_t)n>=sizeof text)return false;size_t used=(size_t)n;
         for(size_t i=0;i<a->mapping_count;++i){const AsmMapping *m=&a->mapping[i];
             if(m->identity.kind==ASM_ID_PRIMARY)n=snprintf(text+used,sizeof text-used,"%s{\"primary\":%u,\"timberId\":%u}",i?",":"",m->identity.key,m->timber);
             else n=snprintf(text+used,sizeof text-used,"%s{\"secondary\":{\"line\":%u,\"left\":%u,\"right\":%u},\"timberId\":%u}",i?",":"",m->identity.key,m->identity.left,m->identity.right,m->timber);
             if(n<0||(size_t)n>=sizeof text-used)return false;used+=(size_t)n;}
         if(used+3>sizeof text)return false;memcpy(text+used,"]}",3);GeoJson q;bool ok=app_json_parse(&q,text)&&geo_json_canonical(&q,0,a->content,sizeof a->content);geo_json_free(&q);return ok;}
-    int n=snprintf(text,sizeof text,"{\"source\":%s,\"mapping\":[{\"memberId\":%u,\"timberId\":%u},{\"memberId\":%u,\"timberId\":%u},{\"memberId\":%u,\"timberId\":%u}]}",value,a->member[0],a->timber[0],a->member[1],a->timber[1],a->member[2],a->timber[2]);
-    if(n<0||(size_t)n>=sizeof text)return asm_error("CAPACITY: instance exceeds 8191 bytes");GeoJson q;bool ok=app_json_parse(&q,text)&&geo_json_canonical(&q,0,a->content,sizeof a->content);geo_json_free(&q);return ok;
+    int n=snprintf(text,ASM_RECORD_MAX,"{\"source\":%s,\"mapping\":[{\"memberId\":%u,\"timberId\":%u},{\"memberId\":%u,\"timberId\":%u},{\"memberId\":%u,\"timberId\":%u}]}",value,a->member[0],a->timber[0],a->member[1],a->timber[1],a->member[2],a->timber[2]);
+    if(n<0||(size_t)n>=ASM_RECORD_MAX)return asm_error("CAPACITY: instance exceeds 8191 bytes");GeoJson q;bool ok=app_json_parse(&q,text)&&geo_json_canonical(&q,0,a->content,ASM_RECORD_MAX);geo_json_free(&q);return ok;
 }
 static AsmInstance *assembly_instance(World *w,uint32_t id)
 {WoodAssemblyContext c=app_asm_context(w);return wood_assembly_instance(&c,id);}
@@ -91,7 +91,7 @@ static bool apply_assembly_owned_line(const char *path,int line_no,char **t,int 
     }
     uint32_t inst,member,id;if(!g_parsing_scene_file||!w->wood.assembly.generation_required||count<6||!parse_u32(t[1],&inst)||!inst||!parse_u32(t[2],&member)||!member||!parse_u32(t[4],&id)||!id){scene_error(path,line_no,"I42: owned records require atomic generation scene and positive identities");return false;}
     bool timber=!strcmp(t[3],"timber"),place=!strcmp(t[3],"place");if(!timber&&!place)return false;
-    if(timber){if(w->wood.assembly.owner_count==ASM_INSTANCE_MAX*3||reference_timber_index(w,id)>=0)return false;w->wood.assembly.owners[w->wood.assembly.owner_count++]=(AsmOwner){id,inst,member};}
+    if(timber){if(w->wood.assembly.owner_count>=ASM_OWNER_MAX||reference_timber_index(w,id)>=0)return false;w->wood.assembly.owners[w->wood.assembly.owner_count++]=(AsmOwner){id,inst,member};}
     else {bool found=false;for(size_t i=0;i<w->wood.assembly.owner_count;++i){AsmOwner *o=&w->wood.assembly.owners[i];if(o->timber==id&&o->instance==inst&&o->member==member)found=true;}if(!found)return false;}
     g_assembly_replay=true;bool ok=timber?apply_timber_line(path,line_no,t+3,count-3,w):apply_reference_place(path,line_no,t+3,count-3,w);g_assembly_replay=false;if(!ok)scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I42: invalid owned record");return ok;
 }
