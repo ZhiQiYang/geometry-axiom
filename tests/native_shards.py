@@ -4,14 +4,16 @@ from collections import Counter
 from itertools import combinations
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 
 TIMINGS = Path(__file__).with_name('native_shard_timings.json')
 ADDED_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence.json')
+ADDED_RECEIPTS = Path(__file__).with_name('native_shard_added_receipts.json')
 
 
-def added_suite_costs():
+def _legacy_added_suite_costs():
     """Keep later observed suites separate from the three immutable 315-suite runs.
 
     Each upper bound is a conservative planning weight, NOT a historical
@@ -48,6 +50,90 @@ def added_suite_costs():
             raise ValueError('R379_NEW_SUITE_PROVEN_OBSERVATION_AND_MARGIN')
         bounds[name] = upper
     return bounds
+
+
+def added_receipt_costs():
+    """Use source-bound, passing child rows without relabeling a failed CI job.
+
+    Keep exit-only rows as exit-only. Their passed=1 is the runner's success
+    sentinel, not an independently discovered test. Bounds are planning costs.
+    """
+    def matches(pattern, value):
+        return type(value) is str and re.fullmatch(pattern, value) is not None
+
+    data = json.loads(ADDED_RECEIPTS.read_text(encoding='utf-8'))
+    if (type(data) is not dict or set(data) != {'schema', 'runs'}
+            or data['schema'] != 'native-shard-added-receipts/1'
+            or type(data['runs']) is not list or not data['runs']):
+        raise ValueError('R396_ADDED_RECEIPT_SCHEMA')
+    bounds, seen_runs = {}, set()
+    for source in data['runs']:
+        if (type(source) is not dict or set(source) != {
+                'source_run', 'source_head', 'source_checkout', 'note', 'shards'}
+                or not matches(r'https://github\.com/ZhiQiYang/geometry-axiom/actions/runs/[0-9]+',
+                               source['source_run'])
+                or source['source_run'] in seen_runs
+                or not matches(r'[a-f0-9]{40}', source['source_head'])
+                or not matches(r'[a-f0-9]{40}', source['source_checkout'])
+                or type(source['note']) is not str or not source['note']
+                or type(source['shards']) is not list or not source['shards']):
+            raise ValueError('R396_ADDED_RECEIPT_SOURCE')
+        seen_runs.add(source['source_run'])
+        seen_shards = set()
+        for shard in source['shards']:
+            if (type(shard) is not dict or set(shard) != {
+                    'source_job', 'shard', 'artifact_id', 'artifact_sha256',
+                    'receipt_file', 'receipt_sha256', 'observations'}
+                    or not matches(re.escape(source['source_run']) + r'/job/[0-9]+',
+                                   shard['source_job'])
+                    or type(shard['shard']) is not list or len(shard['shard']) != 2
+                    or any(type(n) is not int for n in shard['shard'])
+                    or not 1 <= shard['shard'][0] <= shard['shard'][1]
+                    or tuple(shard['shard']) in seen_shards
+                    or type(shard['artifact_id']) is not int or shard['artifact_id'] <= 0
+                    or not matches(r'[a-f0-9]{64}', shard['artifact_sha256'])
+                    or not matches(r'[a-f0-9]{64}', shard['receipt_sha256'])
+                    or shard['receipt_file'] != 'shard-%s.json' % shard['shard'][0]
+                    or type(shard['observations']) is not list or not shard['observations']):
+                raise ValueError('R396_ADDED_RECEIPT_SHARD')
+            seen_shards.add(tuple(shard['shard']))
+            for entry in shard['observations']:
+                if type(entry) is not dict or set(entry) != {'row', 'planning_upper_ms'}:
+                    raise ValueError('R396_ADDED_RECEIPT_ENTRY')
+                row, upper = entry['row'], entry['planning_upper_ms']
+                if (type(row) is not dict or set(row) != {
+                        'name', 'counted', 'total', 'passed', 'failed', 'skipped',
+                        'seconds', 'ran', 'process_exit_code', 'allowed_skips',
+                        'env_problem', 'crashed', 'expected_problem'}
+                        or type(row['name']) is not str or not row['name']
+                        or row['name'] in bounds
+                        or any(type(row[key]) is not int or row[key] < 0 for key in
+                               ('total', 'passed', 'failed', 'skipped', 'allowed_skips'))
+                        or any(type(row[key]) is not bool for key in
+                               ('counted', 'ran', 'env_problem', 'crashed'))
+                        or type(row['process_exit_code']) is not int or row['process_exit_code'] != 0
+                        or not row['ran'] or row['failed'] or row['skipped'] or row['allowed_skips']
+                        or row['env_problem'] or row['crashed']
+                        or type(row['expected_problem']) is not str
+                        or type(row['seconds']) not in (int, float)
+                        or not math.isfinite(row['seconds']) or not 0 < row['seconds'] < 1200
+                        or type(upper) is not int or not row['seconds'] * 1000 < upper < 1200000):
+                    raise ValueError('R396_ADDED_RECEIPT_PASS_AND_MARGIN')
+                if row['counted']:
+                    valid = row['total'] > 0 and row['passed'] == row['total']
+                else:
+                    valid = row['total'] == 0 and row['passed'] == 1
+                if not valid:
+                    raise ValueError('R396_ADDED_RECEIPT_COUNT_MODE')
+                bounds[row['name']] = upper
+    return bounds
+
+
+def added_suite_costs():
+    legacy, receipts = _legacy_added_suite_costs(), added_receipt_costs()
+    if legacy.keys() & receipts.keys():
+        raise ValueError('R396_ADDED_RECEIPT_DUPLICATE_LEGACY_SUITE')
+    return {**legacy, **receipts}
 
 
 
@@ -239,4 +325,5 @@ def partition_suites(suites, count, weights=None):
 def profile_digest():
     legacy = TIMINGS.read_bytes().replace(b'\r\n', b'\n')
     addition = ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')
-    return hashlib.sha256(legacy + b'\0' + addition).hexdigest()
+    receipts = ADDED_RECEIPTS.read_bytes().replace(b'\r\n', b'\n')
+    return hashlib.sha256(legacy + b'\0' + addition + b'\0' + receipts).hexdigest()

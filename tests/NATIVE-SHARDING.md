@@ -144,3 +144,34 @@ R06 以 `bf178770a0e10e996014ec0b6487e186db561c7f` 的純 CI 差異三向套用�
 三片歷史重播仍包含全部 317 套，原 `+100000+30000 <1200000` 不變。正式四片仍驗全部 registry 恰好一次、三份來源成本及 per-suite 最大包絡的 `+120000+30000 <1200000`。新增具名撤回 `R380_REVERT_SINGLE_PAIR_SWEEP`、`R380_REMOVE_MULTISTART_SCREENING`、`R380_DROP_ADDED_SUITE_EVIDENCE`，連同原具名突變全部要求正常 AssertionError 的 0／1／0；不以 crash、timeout 或 skip 算 kill。正式四份 wall-clock 收據與完整 CI 仍須另外驗收。
 
 官方說明：[required checks與最近七日成功條件](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)、[classic設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)、[rulesets設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/managing-rulesets-for-a-repository)、[多規則聚合](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)。最終合併判斷仍需最新來源全部正式CI、四份`seconds <1200`原收據、完整coverage及mutation freshness通過。
+
+## R396：四個工作區 suite 的獨立來源（2026-11-13）
+
+基底 `1d304b10ee4451f0557c9b96b28cf31d3f5bde80`，正式 [Geometry 43336972629](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43336972629) 的 checkout 為 `500eecece499773d085a92952729ea8fcc7cebfc`。兩者 tree 均為 `0d81cbf4051a877b3907fd9f7eb42c0c673d8d24`。下列 child 自身通過，原 shard 整體因漏登 expected 或其他 runner 測試失敗而紅；不將整片或整輪改記成成功。
+
+| Suite | 原始片／job | 原始結果 | 原始秒數 | 規劃上界 ms |
+|---|---|---|---:|---:|
+| `py:test_workspace_view` | 2/4／131596120108 | counted，10/10，exit 0 | 2.3255774974823 | 3000 |
+| `node:workspace_context_menu_state` | 2/4／131596120108 | exit-only，total 0、passed 1，exit 0 | 0.05653810501098633 | 1000 |
+| `py:test_workspace_view_server` | 3/4／131596120030 | counted，2/2，exit 0 | 0.765249490737915 | 2000 |
+| `node:workspace_view_state` | 4/4／131596119719 | counted，15/15，exit 0 | 0.18236732482910156 | 1000 |
+
+`run_all.expected.json` 只追加這四列，原317列不改。exit-only 的 passed=1 是既有 runner 的成功旗標，不是一項計數測試；沒有新增 discovered=1。`native_shard_added_receipts.json` 保存原始 row（含當時缺登記的 expected_problem）、run／head／checkout／job、artifact id，以及原 ZIP／JSON SHA-256。每項規劃上界嚴格大於其原始浮點秒數乘1000，不冒稱歷史實測。來源驗證要求真整數 exit 0、完整計數或合法 exit-only、確實執行、零失敗／跳過／crash／環境問題，並拒絕跨新舊證據的同名覆寫。
+
+原 `native_shard_timings.json` 三輪315套及 `native_shard_added_evidence.json` 兩套證據逐 byte 保留。正式規劃讀取時才合併三輪315套與全部六項 added 上界；`profile_digest()` 以三份 LF bytes、兩個 NUL 分隔符綁定全部來源。新收據的完整 SHA-256 另由測試固定。
+
+歷史三片反證固定使用315個歷史名稱加原有兩項 added 證據的317套，而不是把日後新 suite 加寫成歷史對象。原 `+100000+30000 <1200000`、H7／reader 分離及全部 R348／R380 具名撤回保留。這個歷史配置仍為91／115／111套，兩輪最大預算1199.061秒。正式四片完整涵蓋當前321套，配置為33／97／96／95套，零重疊，片內維持 registry 次序。
+
+以下為整數毫秒成本模型除以1000後的秒數，不是候選新 head 的正式收據；每個舊輪另加全部六項 added 規劃上界。
+
+| 成本情境 | 片1 | 片2 | 片3 | 片4 |
+|---|---:|---:|---:|---:|
+| 43162989157 | 485.363 | 859.944 | 859.943 | 859.944 |
+| 43150038015 | 776.793 | 766.030 | 794.460 | 814.041 |
+| 43177620127 | 859.944 | 822.409 | 819.777 | 822.076 |
+| 逐 suite 三輪最大包絡 | 892.699 | 915.848 | 927.510 | 919.136 |
+| 包絡加120秒開銷與30秒餘裕 | 1042.699 | 1065.848 | 1077.510 | 1069.136 |
+
+同一分配若用本次43336972629原始 row.seconds 回放，四片套件合計為605.169101／667.918988／852.492909／883.381514秒；原失敗 runner 的實測時間仍原樣納入，這不能證明修補後的完整執行已綠。
+
+新增回歸仍併入原 method，`py:test_unittest_runner` 保持13項。新增具名撤回為 `R396_DROP_WORKSPACE_COSTS`、`R396_DROP_WORKSPACE_EXPECTED_ENTRIES`、`R396_IGNORE_EXIT_ONLY_PROCESS_FAILURE`、`R396_ACCEPT_BOOLEAN_EXIT_CODE`、`R396_ACCEPT_EXIT_ONLY_FAKE_COUNT`、`R396_ALLOW_DUPLICATE_LEGACY_COST`、`R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST`。每組均須原裁判正常 AssertionError 的0／1／0、零 error／skip；原15組與 drop-one-suite 反證保持。35分鐘 job 上限及原始收據嚴格小於1200秒的驗收不變，仍以後續正式CI與完整coverage裁決。
