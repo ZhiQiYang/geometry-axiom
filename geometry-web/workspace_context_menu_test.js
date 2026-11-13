@@ -128,6 +128,7 @@ module.exports=async function workspaceContextMenu(deps){
           focus:oc.focus,view3};})()`);
       console.log('R11_FIXTURE_PLAN_BEFORE_VISIBLE '+JSON.stringify({id:active?.id,width,mode,tabs}));
     }
+    if(mode==='space'&&!await visible('#spacePlanSvg'))await ctl('[data-ss-tab="plan"]');
     pre('FIXTURE_VISIBLE',await visible(mode==='space'?'#spacePlanSvg':'#cv'));
     await read('__r11menu.requests.length=0;__r11menu.events.length=0;void 0');
   }
