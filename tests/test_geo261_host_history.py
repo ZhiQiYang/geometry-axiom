@@ -102,6 +102,39 @@ class HostHistory(unittest.TestCase):
     def test_one_slot_history_keeps_zero_length_moves_valid(self):
         self.assertEqual(0, self.case("single").returncode)
 
+    def test_wrapped_ring_branch_group_clear_and_failed_record_keep_stack_order(self):
+        # GEO-381 (#394 review F2): every operation with the ring head != 0.
+        for case in ("wrap-branch", "wrap-group", "wrap-clear", "wrap-unrecord"):
+            with self.subTest(case=case):
+                self.assertEqual(0, self.case(case).returncode, self.case(case).stderr)
+
+    def test_wrapped_ring_cases_fail_named_ring_withdrawals(self):
+        # Each named withdrawal turns its wrap case red with a normal ASSERT.
+        # The first two are ring-only bugs the 32-slot eviction case misses.
+        controls = (
+            ("wrap-branch-push-ignores-head", "app_history_record",
+             "history->undo_head, history->undo_count++)",
+             "history->record_evicted ? history->undo_head : 0, history->undo_count++)",
+             "wrap-branch", "wrap-branch-undo-to-bottom"),
+            ("wrap-group-redo-push-ignores-head", "app_history_redo",
+             "app_history_slot(history, history->undo, history->undo_head, history->undo_count++)",
+             "app_history_slot(history, history->undo, 0, history->undo_count++)",
+             "wrap-group", "wrap-group-older-steps"),
+            ("wrap-clear-keeps-undo", "app_history_clear",
+             "history->undo_count = 0;", "/* stale undo */", "wrap-clear", "wrap-clear-counts"),
+            ("wrap-unrecord-keeps-head", "app_history_unrecord",
+             "history->undo_head = (history->undo_head + history->capacity - 1) % history->capacity;",
+             "/* no ring rewind */", "wrap-unrecord", "wrap-unrecord-undo-order"),
+        )
+        for name, function, before, after, case, assertion in controls:
+            with self.subTest(guard=name):
+                self.assertEqual(0, self.case(case).returncode)
+                executable, _ = self.mutant(name, function, before, after)
+                result = self.case(case, executable)
+                self.assertEqual(1, result.returncode, "Ring guard survived: " + name)
+                self.assertIn("ASSERT:" + assertion, result.stderr)
+                self.assertEqual(0, self.case(case).returncode)
+
     def mutant(self, name, function, before, after):
         build = native()
         source = (self.directory / "history.c").read_text(encoding="utf-8")
@@ -195,13 +228,59 @@ class HostHistory(unittest.TestCase):
             self.product_workflow(mutant)
         self.product_workflow(build.bridge())
 
+    def wrapped_rejection_workflow(self, executable):
+        """#394 review: a real current_geometry.c rejection after the 32-entry
+        ring has wrapped (record, restore from peek_undo, unrecord), then the
+        complete World undo/redo sequence."""
+        build = native()
+        path = build.work / "history-wrap-product.scene"
+        path.write_text(SCENE, encoding="utf-8")
+        with _bridge.BridgeSession(executable) as session:
+            loaded = session.command("loadfile " + str(path))
+            self.assertTrue(loaded["ok"], loaded)
+            dumps = [session.command("dump")["text"]]
+            for i in range(1, 41):
+                self.assertTrue(session.line("spec x %d" % (600 + 5 * i))["ok"], i)
+                dumps.append(session.command("dump")["text"])
+            self.assertEqual(41, len(set(dumps)), "each edit must be a distinct World")
+            self.assertFalse(session.line("spec x BAD")["ok"])
+            self.assertEqual(dumps[40], session.command("dump")["text"], "product-wrap-rejection-keeps-world")
+            self.assertFalse(session.line("redo")["ok"], "product-wrap-rejection-no-redo")
+            for i in range(39, 7, -1):
+                self.assertTrue(session.line("undo")["ok"], "product-wrap-rejection-undo-present %d" % i)
+                self.assertEqual(dumps[i], session.command("dump")["text"], "product-wrap-rejection-undo-order %d" % i)
+            self.assertFalse(session.line("undo")["ok"], "product-wrap-rejection-oldest-bound")
+            self.assertEqual(dumps[8], session.command("dump")["text"])
+            for i in range(9, 41):
+                self.assertTrue(session.line("redo")["ok"], "product-wrap-rejection-redo-present %d" % i)
+                self.assertEqual(dumps[i], session.command("dump")["text"], "product-wrap-rejection-redo-order %d" % i)
+
+    def test_real_bridge_rejection_after_ring_wrap_keeps_world_history(self):
+        build = native()
+        self.wrapped_rejection_workflow(build.bridge())
+        _, changed = self.mutant("product-wrap-unrecord-keeps-head", "app_history_unrecord",
+            "history->undo_head = (history->undo_head + history->capacity - 1) % history->capacity;",
+            "/* no ring rewind */")
+        objects = build.product_objects()
+        self.assertEqual(1, objects.count(build.host_history_object), "Real product must link one H history object")
+        mutant = build.link("history-product-wrap-mutant", [build.bridge_object,
+            *(changed if obj == build.host_history_object else obj for obj in objects)])
+        with self.assertRaisesRegex(AssertionError, "product-wrap-rejection-undo-order"):
+            self.wrapped_rejection_workflow(mutant)
+        self.wrapped_rejection_workflow(build.bridge())
+
 
 class HistoryRecordWork(unittest.TestCase):
     """GEO-381: the real step-by-step generator history copies a bounded number
     of snapshots per record once the 32-entry stack is full.
 
-    Only a byte counter around history.c's own memcpy/memmove is added to a
-    copied product closure; the bound is a work count, not wall-clock time."""
+    A byte counter is added to a copied product closure as memcpy/memmove macros
+    injected into the copied history.c. That file is #included into the bridge's
+    unity translation unit, so the macros also stay in effect for the code that
+    follows it in that unit. The printed number is still only app_history_record's
+    own copies: the counter is zeroed at the start of app_history_record and
+    printed at its end, and app_history_record calls no other copying function.
+    The bound is a work count, not wall-clock time."""
     MARKER = b"GEO381-HISTORY-RECORD "
     # Ring eviction: one backup of the oldest snapshot and one new snapshot.
     RING_EVICTION = (b"        memcpy(history->evicted, app_history_slot(history, history->undo, history->undo_head, 0), history->snapshot_size);\n"

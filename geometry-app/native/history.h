@@ -12,7 +12,13 @@
  * live here. The product keeps its existing 32-entry static World buffers.
  * Each stack is a ring: its k-th oldest entry is slot (head + k) % capacity,
  * so dropping the oldest entry advances head instead of moving every
- * snapshot (GEO-381). Zero heads are the initial state. */
+ * snapshot (GEO-381). Zero heads are the initial state.
+ * Invariant: every public operation keeps undo_count + redo_count <= capacity
+ * (record empties redo; undo and redo move one entry between the stacks;
+ * unrecord restores the counts from before the matching record; clear empties
+ * both). So the full-stack branches in undo (redo full) and redo (undo full)
+ * cannot run through this API; they are kept only as a defensive bound, and
+ * redo_head stays 0 in every reachable state. */
 typedef struct {
     size_t snapshot_size, capacity;
     unsigned char *undo, *redo, *evicted, *group_base;
