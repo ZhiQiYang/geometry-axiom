@@ -63,7 +63,7 @@ static bool assembly_dimensions_changed(const World *before,const World *after)
 static bool assembly_operation(World *w,GeoJson *j,int t)
 {WoodAssemblyContext c=app_asm_context(w);return wood_assembly_operation(&c,j,t);}
 /* Atomic replay uses 768-byte chunks, each safely below SCENE_MAX_LINE. */
-static struct {char text[ASM_RECORD_MAX],kind[16],hash[65];size_t used,expected;bool active;} g_assembly_record;
+static struct {char text[ASM_INSTANCE_RECORD_MAX],kind[16],hash[65];size_t used,expected;bool active;} g_assembly_record;
 static void asm_dump_record(FILE *out,const char *kind,const char *text)
 {
     char hash[65],meta[160],encoded[1100];size_t n;geo_sha256(text,strlen(text),hash);
@@ -92,7 +92,10 @@ static bool apply_assembly_line(const char *path,int line_no,char **t,int count,
         if(strcmp(hash,g_assembly_record.hash))goto fail;GeoJson j;
         if(app_json_parse_n(&j,g_assembly_record.text,g_assembly_record.used)){
             if(!strcmp(g_assembly_record.kind,"rule")){uint32_t id,version;ok=eng_u32(&j,geo_json_member(&j,0,"id"),&id,true)&&eng_u32(&j,geo_json_member(&j,0,"version"),&version,true)&&!assembly_rule(w,id,version)&&asm_publish(w,&j,0,g_assembly_record.hash);}
-            else if(!strcmp(g_assembly_record.kind,"instance"))ok=asm_instance_load(w,&j,0);
+            else if(!strcmp(g_assembly_record.kind,"instance")){
+                if(g_assembly_record.used>=ASM_RECORD_MAX&&geo_json_member(&j,geo_json_member(&j,0,"source"),"layout")<0)ok=asm_error("CAPACITY: legacy instance record exceeds 8191 bytes");
+                else ok=asm_instance_load(w,&j,0);
+            }
             else {uint32_t id;ok=eng_u32(&j,geo_json_member(&j,0,"id"),&id,true)&&!assembly_binding(w,id)&&asm_put_binding(w,&j,0);}
         }
         geo_json_free(&j);g_assembly_record.active=false;if(ok)return true;goto fail;
@@ -103,7 +106,7 @@ static bool apply_assembly_line(const char *path,int line_no,char **t,int count,
         if(g_assembly_record.active)goto fail;memset(&g_assembly_record,0,sizeof g_assembly_record);GeoJson j;int64_t length;
         ok=app_json_parse_n(&j,(char*)decoded,n)&&geo_json_keys(&j,0,"kind,bytes,sha256","")&&
            geo_json_string(&j,geo_json_member(&j,0,"kind"),g_assembly_record.kind,sizeof g_assembly_record.kind)&&
-           (!strcmp(g_assembly_record.kind,"rule")||!strcmp(g_assembly_record.kind,"binding")||!strcmp(g_assembly_record.kind,"instance"))&&geo_json_integer(&j,geo_json_member(&j,0,"bytes"),&length)&&length>0&&length<ASM_RECORD_MAX&&
+           (!strcmp(g_assembly_record.kind,"rule")||!strcmp(g_assembly_record.kind,"binding")||!strcmp(g_assembly_record.kind,"instance"))&&geo_json_integer(&j,geo_json_member(&j,0,"bytes"),&length)&&length>0&&length<(!strcmp(g_assembly_record.kind,"instance")?ASM_INSTANCE_RECORD_MAX:ASM_RECORD_MAX)&&
            geo_json_string(&j,geo_json_member(&j,0,"sha256"),g_assembly_record.hash,sizeof g_assembly_record.hash)&&strlen(g_assembly_record.hash)==64;
         geo_json_free(&j);if(ok){g_assembly_record.active=true;g_assembly_record.expected=(size_t)length;return true;}
     }else if(!strcmp(t[1],"data")){

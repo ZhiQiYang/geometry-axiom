@@ -25,8 +25,8 @@ def without_terminal(value):
 # Do not derive expected fields, values, or ordering from the bridge under test.
 R06_CAPABILITY = "assembly-bay-repeat/1"
 R06_LIMITS = {
-    "instances": 16, "ownedTimbers": 48, "worldTimbers": 64,
-    "instanceRecordBytes": 8191, "bayPrimaries": 12,
+    "instances": 16, "ownedTimbers": 512, "worldTimbers": 512,
+    "instanceRecordBytes": 65535, "bayPrimaries": 12,
     "baySecondaryLines": 24, "bayOmit": 24,
 }
 LATER_ENGINEERING_CAPABILITIES = (
