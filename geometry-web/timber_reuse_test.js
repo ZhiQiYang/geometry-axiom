@@ -459,6 +459,9 @@ module.exports=async function timberReuseTests({send,eval_,sleep,click,waitForUI
       for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,...point,button:'left',clickCount:1});
       await page(()=>window.__r116.gate.release());await settled();await page(()=>{window.__r116.gate=null;window.__r116OldConfirm.click();delete window.__r116OldConfirm;});await settled();
       check('C09_DOUBLE_AND_DETACHED_CONFIRM_ONCE',(await rows(beforeDouble.from)).filter(r=>r.command.startsWith('timber-edit-confirm ')).length===1);
+      // Native confirm can be settled before the App has appended the history entry.
+      // Wait for the new entry identity; the original strict history.single oracle stays intact.
+      await wait('C09_CONFIRMED_HISTORY_VISIBLE',`(()=>{const h=ReferenceWorkspace.history,b=window.__cdpHistoryPins?.get(${JSON.stringify(beforeDouble.pin.pin)});return !!b&&h.undo.length===Math.min(b.undo.length+1,b.limit)&&!b.undo.includes(h.undo.at(-1));})()`);
       check('C09_DOUBLE_CONFIRM_ONE_HISTORY',await history.single(beforeDouble.pin));
     },
     C10:async()=>{
