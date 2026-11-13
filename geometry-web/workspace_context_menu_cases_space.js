@@ -100,13 +100,25 @@ module.exports=s=>{
       check('COLUMN_CREATE_EXACT_GEOMETRY',added.length===1&&same(added[0].box,[expected.x,expected.y,0,expected.x+200,expected.y+250,2600])&&added[0].space===9,added);
       check('COLUMN_CREATE_SINGLE_HISTORY_STEP',await history.single(create.pin));
       await ctl('#faceUndoButton');check('COLUMN_CREATE_UNDO',await dump()===before.scene);
-      await viewport();await rightPlan(250,1200);await ctl(sp('beam'));const waiting=await checkpoint();
+      await viewport();const beamStartMark=await read('__r11menu.events.length');
+      await rightPlan(250,1200);
+      const beamStart=await read(`__r11menu.events.slice(${beamStartMark}).filter(e=>e.type==='contextmenu'&&e.trusted&&e.button===2).at(-1)||null`);
+      pre('BEAM_TRUSTED_CONTEXTMENU_POINT',!!beamStart&&Number.isFinite(beamStart.x)&&Number.isFinite(beamStart.y),beamStart);
+      await ctl(sp('beam'));const waiting=await checkpoint();
       check('RIGHT_POINTERUP_IS_NOT_BEAM_ENDPOINT',await read(`$('rcA').value===''&&$('rcB').value===''`));
-      await unchanged(waiting);await planClick(250,2300);
-      check('BEAM_EXPLICIT_ENDPOINTS',await read(`$('rcAxis').value==='y'&&$('rcA').value==='1200'&&$('rcB').value==='2300'&&$('rcC').value==='250'`));
+      await unchanged(waiting);const beamEndMark=await read('__r11menu.events.length');await planClick(250,2300);
+      const beamEnd=await read(`__r11menu.events.slice(${beamEndMark}).filter(e=>e.type==='pointerdown'&&e.trusted&&e.button===0&&e.target==='polygon').at(-1)||null`);
+      pre('BEAM_TRUSTED_ENDPOINT_POINT',!!beamEnd&&Number.isFinite(beamEnd.x)&&Number.isFinite(beamEnd.y),beamEnd);
+      // Independently derive the geometry from the two actual trusted DOM points.
+      const beamExpected=await read(`(()=>{const m=$('spacePlanSvg').getScreenCTM().inverse(),
+        a=new DOMPoint(${beamStart.x},${beamStart.y}).matrixTransform(m),
+        b=new DOMPoint(${beamEnd.x},${beamEnd.y}).matrixTransform(m);
+        return {a:Math.round(Math.min(a.y,b.y)),b:Math.round(Math.max(a.y,b.y)),
+          c:Math.round((a.x+b.x)/2)};})()`);
+      check('BEAM_EXPLICIT_ENDPOINTS',await read(`$('rcAxis').value==='y'&&$('rcA').value===${JSON.stringify(String(beamExpected.a))}&&$('rcB').value===${JSON.stringify(String(beamExpected.b))}&&$('rcC').value===${JSON.stringify(String(beamExpected.c))}`),beamExpected);
       await fill('#rcW','150');await fill('#rcD','250');const beam=await checkpoint();await ctl('#rcSubmit');await settle();
       const beams=(await query('objects')).beams.filter(o=>o.id!==91);
-      check('BEAM_CREATE_EXACT_GEOMETRY',beams.length===1&&beams[0].axis==='y'&&beams[0].space===9&&same(beams[0].box,[175,1200,2350,325,2300,2600]),beams);
+      check('BEAM_CREATE_EXACT_GEOMETRY',beams.length===1&&beams[0].axis==='y'&&beams[0].space===9&&same(beams[0].box,[beamExpected.c-75,beamExpected.a,2350,beamExpected.c+75,beamExpected.b,2600]),beams);
       check('BEAM_CREATE_SINGLE_HISTORY_STEP',await history.single(beam.pin));
     }},
     {id:'W06',run:async()=>{
