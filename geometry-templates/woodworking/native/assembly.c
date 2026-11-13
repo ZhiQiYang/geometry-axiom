@@ -284,7 +284,7 @@ bool wood_assembly_instance_definition_parse(WoodAssemblyContext *w,GeoJson *j,i
     if(!geo_json_keys(j,t,"source,mapping","")||!wood_asm_instance_parse(w,j,source,&a))return false;
     if(a.bay_repeat){
         if(!wood_asm_bay_mapping(w,j,mapping,&a))return false;
-        if(!geo_json_canonical(j,t,a.content,sizeof a.content))return wood_assembly_bay_failure(w,"CAPACITY","CAPACITY","I69",a.id,0,0,"source and mapping <= 8191 UTF-8 bytes","oversized instance record");
+        if(!geo_json_canonical(j,t,a.content,sizeof a.content))return wood_assembly_bay_failure(w,"CAPACITY","CAPACITY","I69",a.id,0,0,"source and mapping within declared instance byte limit","oversized instance record");
         *out=a;return true;
     }
     if(
@@ -295,7 +295,7 @@ bool wood_assembly_instance_definition_parse(WoodAssemblyContext *w,GeoJson *j,i
         int index=-1;for(int m=0;m<3;++m)if(a.member[m]==member)index=m;
         if(index<0||a.timber[index])return wood_asm_error(w,"I42: duplicate/missing mapped member");a.timber[index]=timber;
     }
-    if(!geo_json_canonical(j,t,a.content,sizeof a.content))return wood_asm_error(w,"CAPACITY: instance exceeds 8191 UTF-8 bytes");
+    if(!geo_json_canonical(j,t,a.content,ASM_RECORD_MAX))return wood_asm_error(w,"CAPACITY: instance exceeds 8191 UTF-8 bytes");
     *out=a;return true;
 }
 
@@ -453,10 +453,13 @@ static bool wood_bay_bad(const WoodAssemblyContext *w,uint32_t id,const char *te
 static bool wood_bay_unsupported(const WoodAssemblyContext *w,uint32_t id,const char *text)
 {return wood_assembly_bay_failure(w,"UNSUPPORTED","UNSUPPORTED","D58/I69",id,0,0,"supported single-bay topology and position references",text);}
 static bool wood_bay_capacity(const WoodAssemblyContext *w,uint32_t id,const char *text)
-{return wood_assembly_bay_failure(w,"CAPACITY","CAPACITY","I33/I69",id,0,0,"12 primaries, 24 lines, 24 omissions, 48 total owned, 8191 record bytes",text);}
+{
+    char expected[160];snprintf(expected,sizeof expected,"%d primaries, %d lines, %d omissions, %d total owned, %d scene timbers, %d record bytes",ASM_BAY_PRIMARY_MAX,ASM_BAY_LINE_MAX,ASM_BAY_OMIT_MAX,ASM_OWNER_MAX,ASM_BAY_WORLD_MAX,ASM_INSTANCE_RECORD_MAX-1);
+    return wood_assembly_bay_failure(w,"CAPACITY","CAPACITY","I33/I69",id,0,0,expected,text);
+}
 static bool wood_bay_index(GeoJson *j,int t,int64_t *out)
 {
-    char s[ASM_RECORD_MAX];if(!geo_json_string(j,t,s,sizeof s)||!s[0])return false;const unsigned char *p=(const unsigned char *)s;bool neg=*p=='-';if(neg)++p;if(!*p)return false;
+    char s[ASM_INSTANCE_RECORD_MAX];if(!geo_json_string(j,t,s,sizeof s)||!s[0])return false;const unsigned char *p=(const unsigned char *)s;bool neg=*p=='-';if(neg)++p;if(!*p)return false;
     uint64_t n=0,limit=neg?(uint64_t)INT64_MAX+1:(uint64_t)INT64_MAX;
     for(;*p;++p){if(*p<'0'||*p>'9'||n>(limit-(*p-'0'))/10)return false;n=n*10+(*p-'0');}
     *out=neg?(n==(uint64_t)INT64_MAX+1?INT64_MIN:-(int64_t)n):(int64_t)n;return true;
@@ -501,7 +504,7 @@ static bool wood_bay_topology(WoodAssemblyContext *w,AsmInstance *a)
 bool wood_assembly_bay_parse(WoodAssemblyContext *w,GeoJson *j,int t,AsmInstance *a)
 {
     memset(a,0,sizeof *a);a->bay_repeat=true;char layout[24];int rule=geo_json_member(j,t,"rule");
-    char bounded_source[ASM_RECORD_MAX];if(!geo_json_canonical(j,t,bounded_source,sizeof bounded_source))return wood_bay_capacity(w,0,"repeat source exceeds the instance record byte limit");
+    char bounded_source[ASM_INSTANCE_RECORD_MAX];if(!geo_json_canonical(j,t,bounded_source,sizeof bounded_source))return wood_bay_capacity(w,0,"repeat source exceeds the instance record byte limit");
     if(!geo_json_string(j,geo_json_member(j,t,"layout"),layout,sizeof layout)||strcmp(layout,"bay-repeat"))return wood_bay_unsupported(w,0,"unknown instance layout");
     if(!geo_json_keys(j,t,"id,name,bindingId,rule,surfaceId,layout,primaries,secondaryLines","omit")||
        !wood_eng_u32(j,geo_json_member(j,t,"id"),&a->id,true)||!wood_asm_name(j,geo_json_member(j,t,"name"),a->name)||
@@ -538,7 +541,7 @@ bool wood_assembly_bay_parse(WoodAssemblyContext *w,GeoJson *j,int t,AsmInstance
 static bool wood_asm_bay_mapping(WoodAssemblyContext *w,GeoJson *j,int list,AsmInstance *a)
 {
     if(!geo_json_is_array(j,list))return wood_bay_bad(w,a->id,"mapping must be an array");int count=geo_json_size(j,list);
-    if(count>ASM_OWNER_MAX)return wood_bay_capacity(w,a->id,"owned mapping exceeds 48");a->mapping_count=(size_t)count;
+    if(count>ASM_OWNER_MAX)return wood_bay_capacity(w,a->id,"owned mapping exceeds declared owned capacity");a->mapping_count=(size_t)count;
     for(int i=0;i<count;++i){int item=geo_json_at(j,list,i),secondary=geo_json_member(j,item,"secondary");AsmMapping *m=&a->mapping[i];
         if(!wood_eng_u32(j,geo_json_member(j,item,"timberId"),&m->timber,true))return wood_bay_bad(w,a->id,"invalid mapped timber identity");
         if(secondary>=0){m->identity.kind=ASM_ID_SECONDARY;if(!geo_json_keys(j,item,"secondary,timberId","")||!geo_json_keys(j,secondary,"line,left,right","")||
@@ -678,7 +681,7 @@ static bool wood_assembly_bay_reconcile(WoodAssemblyContext *w,WoodBayPlan *plan
             uint32_t id=1;while(w->member(w->user,id,NULL)||wood_bay_retired(w,id)){if(id==UINT32_MAX)return wood_bay_capacity(w,plans[p].value.id,"no free timber identity");++id;}m->timber=id;w->allocate_member(w->user,id);}
         for(size_t p=0;p<count;++p){WoodBayPlan *plan=&plans[p];plan->value.mapping_count=plan->count;memset(plan->value.mapping,0,sizeof plan->value.mapping);memcpy(plan->value.mapping,plan->next,plan->count*sizeof(AsmMapping));
             for(size_t i=0;i<plan->count;++i){const AsmMapping *m=&plan->next[i];w->state->owners[w->state->owner_count++]=(AsmOwner){m->timber,plan->value.id,m->identity.key,m->identity.kind,m->identity.left,m->identity.right};}
-            if(!wood_bay_store(w,&plan->value))return wood_bay_capacity(w,plan->value.id,"canonical source plus mapping exceeds 8191 UTF-8 bytes");*plan->target=plan->value;}
+            if(!wood_bay_store(w,&plan->value))return wood_bay_capacity(w,plan->value.id,"canonical source plus mapping exceeds declared instance byte limit");*plan->target=plan->value;}
     }
     if(w->bay_report)for(size_t p=0;p<count;++p)for(size_t i=plans[p].cell_start;i<plans[p].cell_end;++i){AsmBayCellReport *cell=&w->bay_report->cells[i];if(cell->omitted)continue;AsmIdentity id={ASM_ID_SECONDARY,cell->line,cell->left,cell->right};for(size_t k=0;k<plans[p].count;++k)if(wood_assembly_identity_equal(id,plans[p].next[k].identity))cell->timber=plans[p].next[k].timber;}
     return true;
@@ -718,5 +721,5 @@ static bool wood_asm_bay_operation(WoodAssemblyContext *w,GeoJson *j,int t,const
     geo_sha256(binding->content,strlen(binding->content),actual);if(strcmp(expected,actual))return wood_asm_error(w,"STALE: instance binding source changed");
     if(create){if(w->state->instance_count==ASM_INSTANCE_MAX)return wood_bay_capacity(w,a.id,"instance capacity exceeded");old=&w->state->instances[w->state->instance_count++];}
     else{a.mapping_count=old->mapping_count;memcpy(a.mapping,old->mapping,sizeof a.mapping);}
-    if(!w->instance_content(w->user,&a,j,source))return wood_bay_capacity(w,a.id,"canonical source plus mapping exceeds 8191 UTF-8 bytes");*old=a;w->state->generation_required=true;w->state->bay_required=true;return true;
+    if(!w->instance_content(w->user,&a,j,source))return wood_bay_capacity(w,a.id,"canonical source plus mapping exceeds declared instance byte limit");*old=a;w->state->generation_required=true;w->state->bay_required=true;return true;
 }

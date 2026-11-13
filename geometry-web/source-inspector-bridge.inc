@@ -2,7 +2,7 @@
 #include <stdarg.h>
 #define SI_NODE_MAX 2048
 #define SI_EDGE_MAX 8192
-#define SI_TEXT_MAX 32768
+#define SI_TEXT_MAX (ASM_INSTANCE_RECORD_MAX+256)
 typedef struct { char key[240],kind[32],id[100],label[200],definition[65],value[65]; uint32_t version,field; } SiNode;
 typedef struct { char from[240],to[240],relation[32],field[100]; bool active; } SiEdge;
 typedef struct { SiNode nodes[SI_NODE_MAX]; SiEdge edges[SI_EDGE_MAX]; size_t nn,ne; bool complete; char text[SI_TEXT_MAX]; size_t used; } SiIndex;
@@ -109,7 +109,7 @@ static void si_content(SiIndex *s,const char *content,const char *exclude)
 {
     GeoJson j;if(!app_json_parse(&j,content)){s->complete=false;geo_json_free(&j);return;}
     GeoJsonKey *keys=geo_json_sorted_keys(&j,0);if(j.tokens[0].size&&!keys)s->complete=false;
-    if(keys)for(int k=0;k<j.tokens[0].size;++k){if(geo_json_csv_has(exclude,keys[k].key))continue;char value[ASM_RECORD_MAX];if(!geo_json_canonical(&j,keys[k].token+1,value,sizeof value)){s->complete=false;break;}si_text(s,"%s=%s;",keys[k].key,value);}free(keys);geo_json_free(&j);
+    if(keys)for(int k=0;k<j.tokens[0].size;++k){if(geo_json_csv_has(exclude,keys[k].key))continue;char value[ASM_INSTANCE_RECORD_MAX];if(!geo_json_canonical(&j,keys[k].token+1,value,sizeof value)){s->complete=false;break;}si_text(s,"%s=%s;",keys[k].key,value);}free(keys);geo_json_free(&j);
 }
 static void si_binding_sources(SiIndex *s,const char *from,const char *content)
 {
