@@ -20,18 +20,6 @@
 !/geometry-templates/woodworking/
 !/geometry-templates/woodworking/FIELD-RULES.md
 !/geometry-templates/woodworking/cutting.js
-# 模板原始碼型別一律放行，新增檔不必 git add -f（.c .h .inc .md .json .js .py）。
-# 其餘副檔名仍由上面的 /geometry-templates/** 擋住；*.exe／*.obj／*.svg／*.bak／
-# __pycache__/ 等建置產物由下方全域規則再擋；證據不進模板目錄。
-!/geometry-templates/**/
-!/geometry-templates/**/*.c
-!/geometry-templates/**/*.h
-!/geometry-templates/**/*.inc
-!/geometry-templates/**/*.md
-!/geometry-templates/**/*.json
-!/geometry-templates/**/*.js
-!/geometry-templates/**/*.py
-/geometry-templates/**/evidence/
 !/公理層.md
 !/geometry-model-v2.md
 !/BACKLOG.md
