@@ -176,11 +176,63 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
     await danglingReference();await unsupportedTopology();
     await upstreamPointer();await upstreamGrid();await derivedOutlineArchive();
     check('R06_NO_BROWSER_EXCEPTION 正式操作沒有新增未處理例外',exceptionCount()===errors);
-    if(process.env.GEOMETRY_R06_MAIN_INTEGRATION==='1')await integratedArchive();
+    if(process.env.GEOMETRY_R06_MAIN_INTEGRATION==='1'){
+      await integratedArchive();await fixture();
+      console.log('=== R06I 重複開間116支容量與保存 ===');await capacity116();
+    }
   }finally{
     if(io)await io.close();
     await read(`(()=>{if(window.__r06FetchOriginal){window.fetch=window.__r06FetchOriginal;delete window.__r06FetchOriginal;}delete window.__r06PreviewLog;})()`);
     await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
+  }
+
+  async function capacity116(){
+    // Six primaries and 22 explicit secondary lines make 6 + 22 * 5 = 116
+    // generated members. The two pre-existing supports also consume World slots.
+    await nativeFixture(['boundary 1 outline 0,0 4000,0 4000,4000 0,4000','delete grid 1',
+      'grid 1 on 1 u 300 900 1500 2100 2700 3300 v '+Array.from({length:22},(_,i)=>150+150*i).join(' ')]);
+    await newRepeat();await clearRows();await range('primary','0','5');await range('secondary','0','21');
+    const before=await dump(),prior=await state(),history=cdp.makeHistoryOracle(read,'r06-capacity116'),pin=await history.capture();
+    try{
+      const p=await preview(),candidate=p.after?.instances?.at(-1),instanceId=candidate?.value?.source?.id;
+      const expected=Object.fromEntries([
+        ...Array.from({length:6},(_,i)=>['p:'+(i+1),3960]),
+        ...Array.from({length:22},(_,i)=>Array.from({length:5},(_,j)=>['s:'+(i+1)+':'+(j+1)+':'+(j+2),573])).flat()]);
+      const actual=Object.fromEntries((candidate?.members||[]).map(m=>[identity(m),m.geometry?.length]));
+      const expectedCells=Array.from({length:22},(_,i)=>Array.from({length:5},(_,j)=>({instanceId,line:i+1,left:j+1,right:j+2,status:'generated'}))).flat();
+      const recordBytes=candidate?Buffer.byteLength(JSON.stringify(candidate.value),'utf8'):0;
+      check('R06_BR11_CAPACITY116_VALID 範圍表單完整產生116支與110格且每支料長正確',
+        p.valid===true&&candidate?.members.length===116&&candidate.value.mapping.length===116&&
+        new Set(candidate.value.mapping.map(m=>m.timberId)).size===116&&same(actual,expected)&&
+        same(byIdentity(candidate),Object.fromEntries(candidate.members.map(m=>[identity(m),m.timberId])))&&
+        same(matrixWithoutIds(p),expectedCells)&&same(await domCells('#asmBayCells [data-bay-cell]'),expectedCells)&&
+        prior.limits.ownedTimbers===512&&prior.limits.worldTimbers===512&&recordBytes>8191&&recordBytes<=prior.limits.instanceRecordBytes,
+        {valid:p.valid,violations:p.violations,members:candidate?.members.length,cells:p.bayCells?.length,recordBytes,limits:prior.limits,actual});
+      await screenshot('r06-capacity116-preview');await ctl('#asmCancel');
+      check('R06_BR11_CAPACITY116_CANCEL 116支預覽取消保留World與歷史',
+        (await dump())===before&&same(await state(),prior)&&await history.unchanged(pin));
+      await preview();await confirm();
+      const committed=await dump(),instances=(await state()).instances,drafts=await readDrafts();
+      check('R06_BR11_CAPACITY116_COMMIT 確認整筆保留116支mapping並只新增一個歷史步驟',
+        instances.length===1&&same(instances[0],candidate)&&await history.single(pin),instances[0]?.members.length);
+      await ctl('#asmClose');await ctl('#btnUndo');await settle();
+      const undone=(await dump())===before&&(await state()).instances.length===0;
+      await ctl('#btnRedo');await settle();
+      check('R06_BR11_CAPACITY116_HISTORY 一次復原及重做還原完整116支與來源',
+        undone&&(await dump())===committed&&same((await state()).instances,instances)&&same(await readDrafts(),drafts));
+      const saved=await io.save();
+      check('R06_BR11_CAPACITY116_SAVE 116支完整專案由正式保存產生下載檔',
+        saved.completed===true&&saved.size>0&&fs.existsSync(saved.file),saved);
+      const cold=await io.cold();
+      try{
+        await observeOpen(cold);await openAndWait(cold,saved.file);
+        const reopened=await cold.read(`Promise.all([apiRequest('assembly-read'),apiRequest('dump')]).then(([a,d])=>({instances:a.state.instances,scene:d.text,status:$('status')?.textContent}))`);
+        check('R06_BR11_CAPACITY116_COLD 新服務與新profile冷開逐支還原116支及完整記錄',
+          cold.info.service.session!==cold.info.sourceRuntime.session&&same(reopened.instances,instances)&&
+          reopened.scene===committed&&reopened.status?.includes('已開啟')===true&&cold.errors.length===0,
+          {members:reopened.instances?.[0]?.members?.length,status:reopened.status,errors:cold.errors});
+      }finally{await cold.close();}
+    }finally{await history.release(pin);}
   }
 
   async function integratedArchive(){
