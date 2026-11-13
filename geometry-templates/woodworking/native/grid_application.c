@@ -58,7 +58,7 @@ bool wood_grid_apply_system(WoodGridContext *c,const WoodGridApplication *defini
     if(wood_eng_object_bound(&c->engineering,0,g.id))return wood_grid_error(error,cap,"D29/I37: detach engineering bindings before choosing a grid-system source");
     g.from_system=true;size_t slot=c->state->count;
     for(size_t k=0;k<c->state->count;++k){const WoodGridApplication *old=&c->state->items[k];
-        if(old->id==g.id){if(old->is_subgrid||old->from_binding||old->placement_id!=g.placement_id)return wood_grid_error(error,cap,"I37: cannot change a subgrid or move an existing grid identity to another surface");slot=k;}
+        if(old->id==g.id){if(old->is_subgrid||old->from_binding||old->from_fill||old->placement_id!=g.placement_id)return wood_grid_error(error,cap,"I37: cannot change a subgrid or move an existing grid identity to another surface");slot=k;}
         else if(!old->is_subgrid&&old->placement_id==g.placement_id)return wood_grid_error(error,cap,"I10: this surface already has a main grid");
     }
     if(slot==c->state->count&&slot==WOOD_GRID_MAX)return wood_grid_error(error,cap,"I10: grid capacity exceeded");
@@ -66,6 +66,7 @@ bool wood_grid_apply_system(WoodGridContext *c,const WoodGridApplication *defini
 }
 bool wood_grid_direct_declared(const WoodGridContext *c,const WoodGridApplication *g,int filled,bool has_main,char *error,size_t cap)
 {
+    if(g->from_fill&&filled)return wood_grid_error(error,cap,"D10: from-fill axes are derived from the fill; only main-along may be edited");
     if(!filled&&!(wood_grid_find(c->state,g->id)&&has_main))return wood_grid_error(error,cap,"新網格至少要一個格線來源");
     if((g->main_along==1&&g->axis[1].source==GEO_GRID_SOURCE_NONE)||(g->main_along==2&&g->axis[0].source==GEO_GRID_SOURCE_NONE))return wood_grid_error(error,cap,"grid 主支方向沒有對應的格線來源");
     return true;
@@ -73,6 +74,7 @@ bool wood_grid_direct_declared(const WoodGridContext *c,const WoodGridApplicatio
 bool wood_grid_direct_check(const WoodGridContext *c,const WoodGridApplication *g,char *error,size_t cap)
 {
     WoodGridHost host;if(!c->host(c->user,g->placement_id,&host))return false;
+    if(g->from_fill)return wood_grid_valid(g,&host);
     for(int axis=0;axis<2;++axis){GeoCoord probe[WOOD_GRID_MAX_LINES];size_t count;char detail[200]="";
         if(g->axis[axis].source==GEO_GRID_SOURCE_NONE)continue;
         if(!wood_grid_axis_lines(g,&host,axis,probe,&count,detail,sizeof detail))return wood_grid_error(error,cap,"grid 座標不合法（%c 軸）：%s",axis?'v':'u',detail[0]?detail:"要嚴格遞增、且落在承載面外接範圍內");
@@ -93,9 +95,23 @@ bool wood_grid_apply_binding(WoodGridContext *c,const WoodGridApplication *defin
     c->state->items[slot]=g;if(slot==c->state->count)++c->state->count;return true;
 invalid:return wood_grid_error(error,cap,"D30/I37: from-binding requires an available lattice grid identity and the binding's boundary placement");
 }
+bool wood_grid_apply_fill(WoodGridContext *c,const WoodGridApplication *definition,char *error,size_t cap)
+{
+    WoodGridApplication g=*definition;
+    if(!g.fill_id||g.from_binding||g.from_system||g.is_subgrid||wood_eng_object_bound(&c->engineering,0,g.id))goto invalid;
+    g.from_fill=true;size_t slot=c->state->count;
+    for(size_t i=0;i<c->state->count;++i){const WoodGridApplication *old=&c->state->items[i];
+        if(old->id==g.id){if(!old->from_fill||old->is_subgrid||old->placement_id!=g.placement_id||old->fill_id!=g.fill_id)goto invalid;slot=i;}
+        else if(!old->is_subgrid&&old->placement_id==g.placement_id)goto invalid;
+    }
+    if(slot==WOOD_GRID_MAX)goto invalid;
+    c->state->items[slot]=g;if(slot==c->state->count)++c->state->count;return true;
+invalid:return wood_grid_error(error,cap,"D10: from-fill requires an available main grid identity on its fill's derived host");
+}
 bool wood_grid_prepare_child(const WoodGridContext *c,WoodGridApplication *g,bool lattice,unsigned du,unsigned dv,char *error,size_t cap)
 {
     const WoodGridApplication *old=wood_grid_find(c->state,g->id),*parent=wood_grid_find(c->state,g->parent_id);
+    if(parent&&parent->from_fill)return wood_grid_error(error,cap,"D10: from-fill grids cannot have D19 children or D19a rules");
     if(!parent||parent->is_subgrid||g->id==g->parent_id||(old&&(!old->is_subgrid||old->parent_id!=g->parent_id||old->lattice_cell!=lattice)))return wood_grid_error(error,cap,"D19/I25：父格必須是主網格；既有網格的類型與父格編號不能更換");
     if(parent->axis[0].stagger_set||parent->axis[1].stagger_set)return wood_grid_error(error,cap,"I24：有相位差的主格不能建立子網格");
     if(parent->from_binding!=lattice)return wood_grid_error(error,cap,"D19/I25：子格 %u 的父格 %u 必須使用 %s 參照形式",g->id,parent->id,parent->from_binding?"lattice-cell":"cell");
@@ -331,6 +347,26 @@ bool wood_grid_application_dimension_direct(const WoodGridContext *c,const WoodG
 }
 bool wood_grid_application_evaluate_direct(WoodGridContext *c,WoodGridApplication *g,char *error,size_t cap)
 {
+    if(g->from_fill){
+        WoodGridHost host;WoodGridFill fill;
+        if(g->from_system||g->from_binding||g->is_subgrid||!g->fill_id||g->main_along<0||g->main_along>2||
+            wood_eng_object_bound(&c->engineering,0,g->id)||!c->host(c->user,g->placement_id,&host)||
+            host.derived_fill_id!=g->fill_id||!c->fill||!c->fill(c->user,g->fill_id,&fill)||
+            (fill.side!=1&&fill.side!=-1)||fill.stagger_axis<-1||fill.stagger_axis>1)
+            return wood_grid_error(error,cap,"D10/R44: from-fill needs its fill's live derived placement host and valid D42 source");
+        g->fill_side=fill.side;
+        for(int axis=0;axis<2;++axis){
+            if(fill.size[axis]<=0||fill.gap<0||!geo_coord_in_range(fill.origin[axis]))return false;
+            GeoGridAxisDef *a=&g->axis[axis];memset(a,0,sizeof *a);
+            a->source=GEO_GRID_SOURCE_REPEAT_BODY_GAP;a->body=fill.size[axis];a->gap=fill.gap;
+            a->anchor=fill.origin[axis];a->anchor_explicit=true;
+            a->stagger_set=fill.stagger_axis==axis;a->stagger=a->stagger_set?fill.stagger:0;
+            g->lattice_base[axis]=geo_period_center(a->anchor,a->body,a->gap,0);
+            g->lattice_step[axis]=geo_period_pitch(a->body,a->gap);g->lattice_index[axis]=0;
+            if(g->lattice_step[axis]<=0)return false;
+        }
+        return true;
+    }
     if(g->from_system){
         const GeoGridSystem *s=geo_grid_systems_find(c->sources,g->system_id);
         if(!s||geo_grid_system_is_infinite(s)||g->from_binding||g->is_subgrid||!geo_coord_in_range(g->system_origin[0])||!geo_coord_in_range(g->system_origin[1]))
@@ -363,6 +399,7 @@ bool wood_grid_application_evaluate_direct(WoodGridContext *c,WoodGridApplicatio
 bool wood_grid_bind_engineering(WoodGridContext *c,GeoJson *j,int t,uint32_t id,const EngApplication *a,const EngMethodVersion *method)
 {
         WoodGridApplication *g=wood_grid_find_mut(c->state,id); int create=0;
+        if (g && g->from_fill) return wood_eng_fail(&c->engineering,"D10: from-fill applications cannot have engineering bindings");
         if (g && (g->from_system || g->from_binding)) return wood_eng_fail(&c->engineering,"D29: grid-system applications cannot have engineering bindings");
         int create_t=geo_json_member(j,t,"create"); if (create_t>=0 && !geo_json_boolean(j,create_t,&create)) return wood_eng_fail(&c->engineering,"D28: create must be boolean");
         if (g && (g->is_subgrid || g->placement_id!=a->placement_id)) return wood_eng_fail(&c->engineering,"D28: selected main grid belongs to another face or is a subgrid");

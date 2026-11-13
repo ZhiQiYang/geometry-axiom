@@ -149,6 +149,11 @@ static bool wood_grid_definition(WoodGridSources *s,WoodGridSourceKind kind,uint
             if(geo_eval_depend(s->graph,geo_region_key_source_ref(s->tokens.region_keys,GEO_REGION_KEY_SOURCE_LEDGER,b->boundary_id,0,0,&key),GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;}
     }else{
         const WoodGridApplication *g=wood_grid_find(s->base.state,id);if(!g)return false;schema="wood.grid.application/1";
+        if(g->from_fill){
+            schema=WOOD_GRID_FILL_DEFINITION_SCHEMA;
+            wood_grid_def_number(&d,g->placement_id);wood_grid_def_number(&d,g->fill_id);wood_grid_def_number(&d,(uint64_t)g->main_along);
+            if(!s->base.fill_definition||!s->base.fill_definition(s->base.user,g->fill_id))return false;
+        }else{
         wood_grid_def_number(&d,g->placement_id);wood_grid_def_number(&d,g->from_system);wood_grid_def_number(&d,g->from_binding);wood_grid_def_number(&d,g->is_subgrid);
         wood_grid_def_number(&d,g->binding_id);wood_grid_def_number(&d,g->system_id);wood_grid_def_number(&d,g->parent_id);wood_grid_def_number(&d,g->lattice_cell);
         for(int a=0;a<2;++a){wood_grid_def_number(&d,(uint64_t)g->system_origin[a]);wood_grid_def_number(&d,(uint64_t)g->lattice_cell_index[a]);wood_grid_def_number(&d,g->divisions[a]);for(int j=0;j<2;++j)wood_grid_def_number(&d,(uint64_t)g->cell_ref[a][j]);}
@@ -158,6 +163,7 @@ static bool wood_grid_definition(WoodGridSources *s,WoodGridSourceKind kind,uint
         if(g->is_subgrid&&!wood_grid_definition_depend(s,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,g->parent_id))return false;
         if(g->from_system&&!wood_grid_definition_depend(s,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,g->system_id))return false;
         if(g->from_binding&&!wood_grid_definition_depend(s,WOOD_GRID_SOURCE_BINDING_DEFINITION,g->binding_id))return false;
+        }
     }
     if(!d.ok)return false;unsigned char *content=realloc(r->definition,d.size);if(!content)return false;r->definition=content;r->definition_size=d.size;memcpy(content,d.bytes,d.size);
     out->kind=GEO_SOURCE_DEFINITION;out->as.definition=(GeoDefinitionValue){schema,content,d.size};return true;
@@ -183,6 +189,8 @@ static bool wood_grid_coordinate_source(void *user,GeoParameterRef ref,GeoCoord 
 }
 static bool wood_grid_host_source(void *user,uint32_t id,WoodGridHost *out)
 {WoodGridSources *s=user;return s->base.host&&s->base.host(s->base.user,id,out);}
+static bool wood_grid_fill_source(void *user,uint32_t id,WoodGridFill *out)
+{WoodGridSources *s=user;return s->base.fill&&s->base.fill(s->base.user,id,out);}
 static bool wood_grid_vertex_source(void *user,uint32_t id,uint32_t key,GeoPoint2 *out)
 {WoodGridSources *s=user;return s->base.vertex&&s->base.vertex(s->base.user,id,key,out);}
 static bool wood_grid_reference_source(void *user,size_t i,WoodGridReference *out)
@@ -220,7 +228,7 @@ static bool wood_grid_system_value(WoodGridSources *s,uint32_t id,WoodGridSource
 static bool wood_grid_application_value(const WoodGridApplication *g,WoodGridSourceResult *r,GeoSourceValue *out)
 {
     unsigned char bytes[WOOD_GRID_CODEC_MAX_BYTES];size_t size;
-    return wood_grid_encode_application_value(g,bytes,sizeof bytes,&size)&&wood_grid_value_bytes(r,bytes,size,WOOD_GRID_APPLICATION_VALUE_SCHEMA,out);
+    return wood_grid_encode_application_value(g,bytes,sizeof bytes,&size)&&wood_grid_value_bytes(r,bytes,size,g->from_fill?WOOD_GRID_FILL_VALUE_SCHEMA:WOOD_GRID_APPLICATION_VALUE_SCHEMA,out);
 }
 static bool wood_grid_install_system(WoodGridSources *s,uint32_t id,const GeoSourceValue *value,bool evaluated)
 {
@@ -271,7 +279,7 @@ static void wood_grid_publish_system_cache(WoodGridSources *s,uint32_t id)
 static void wood_grid_publish_application_cache(WoodGridSources *s,const WoodGridApplication *computed)
 {
     WoodGridApplication *raw=wood_grid_find_mut(s->base.state,computed->id);if(!raw)return;
-    if(raw->from_binding||raw->from_system){raw->main_along=computed->main_along;
+    if(raw->from_binding||raw->from_system||raw->from_fill){raw->main_along=computed->main_along;raw->fill_side=computed->fill_side;
         for(int a=0;a<2;++a){raw->axis[a]=computed->axis[a];raw->lattice_base[a]=computed->lattice_base[a];raw->lattice_step[a]=computed->lattice_step[a];raw->lattice_index[a]=computed->lattice_index[a];}}
     else if(!raw->is_subgrid)for(int a=0;a<2;++a)if(raw->axis[a].source==GEO_GRID_SOURCE_BODY_GAP){
         EngTarget body={0,raw->id,a,0},gap={0,raw->id,a,1};
@@ -321,7 +329,7 @@ static bool wood_grid_source_evaluate(void *user,GeoEvalContext *graph,const Geo
         WoodGridApplication application;
         if(!g||axis<0||axis>1||!wood_grid_root_get(s,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&definition,r->error,sizeof r->error)||
            definition.kind!=GEO_SOURCE_DEFINITION||!wood_grid_decode_application(&definition.as.definition,id,g,&application))return false;
-        if(application.from_system||application.from_binding){
+        if(application.from_system||application.from_binding||application.from_fill){
             if(!wood_grid_prepare_application(s,id,r->error,sizeof r->error))return false;
             application=*wood_grid_find(s->context.state,id);
         }
@@ -454,13 +462,14 @@ WoodGridSources *wood_grid_sources_create(GeoEvalContext *graph,WoodGridSourceTo
     s->context.state=&s->evaluated;s->context.sources=s->evaluated_sources;
     s->hooks=(WoodGridEvaluation){s,wood_grid_system_hook,wood_grid_binding_hook,wood_grid_application_hook,wood_grid_dimension_hook,wood_grid_rule_hook,wood_grid_rule_cell_hook,wood_grid_rule_definition_hook,wood_grid_world_valid_hook,wood_grid_rules_valid_hook};
     s->context.user=s;s->context.host=wood_grid_host_source;s->context.coordinate=wood_grid_coordinate_source;s->context.vertex=wood_grid_vertex_source;s->context.reference=wood_grid_reference_source;s->context.evaluation=&s->hooks;
+    s->context.fill=wood_grid_fill_source;
     GeoSourceProvider provider={tokens.grid,"wood.grid","wood-grid-sources/1",s,wood_grid_source_describe,wood_grid_source_evaluate};
     if(!geo_eval_register(graph,&provider)){geo_grid_store_destroy(s->evaluated_sources);free(s);return NULL;}return s;
 }
 bool wood_grid_sources_bind(WoodGridSources *s,WoodGridContext *c)
 {
     if(!s||!c)return false;const WoodGridContext *b=&s->base;const WoodEngineeringContext *e=&c->engineering,*a=&b->engineering;
-    if((c->evaluation&&c->evaluation!=&s->hooks)||c->state!=b->state||c->sources!=b->sources||c->user!=b->user||c->host!=b->host||c->coordinate!=b->coordinate||c->vertex!=b->vertex||c->reference!=b->reference||c->parameter_error!=b->parameter_error||c->before!=b->before||
+    if((c->evaluation&&c->evaluation!=&s->hooks)||c->state!=b->state||c->sources!=b->sources||c->user!=b->user||c->host!=b->host||c->fill!=b->fill||c->fill_definition!=b->fill_definition||c->coordinate!=b->coordinate||c->vertex!=b->vertex||c->reference!=b->reference||c->parameter_error!=b->parameter_error||c->before!=b->before||
        e->state!=a->state||e->versions!=a->versions||e->user!=a->user||e->error!=a->error||e->error_capacity!=a->error_capacity||e->sources!=a->sources||e->placement!=a->placement||e->target!=a->target||e->named_value!=a->named_value||e->parameter!=a->parameter||e->member_owned!=a->member_owned||e->write_dimension!=a->write_dimension||e->serializable!=a->serializable||e->resolve_source!=a->resolve_source||e->resolve_binding!=a->resolve_binding||e->last_terminal!=a->last_terminal||e->source_named!=a->source_named||e->source_parameter!=a->source_parameter||e->depend_definition!=a->depend_definition||e->validate_application!=a->validate_application||e->source_version_field!=a->source_version_field||e->source_version_definition!=a->source_version_definition||e->source_application!=a->source_application)return false;
     c->evaluation=&s->hooks;return true;
 }

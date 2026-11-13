@@ -163,11 +163,11 @@ static SiIndex *si_build(const World *w)
     for(size_t i=0;i<geo_grid_systems_count(&w->geo.grid_store);++i){const GridSystem *g=geo_grid_systems_at(&w->geo.grid_store,i);si_numkey(from,"grid-system",g->id,0,0);si_reset(s);si_text(s,"%d;",app_grid_system_main_along(w,g->id));si_grid_card(s,from,g);si_axis(s,from,&g->axis[0],"u",NULL);si_axis(s,from,&g->axis[1],"v",NULL);si_subdivision(s,g);n=si_nnode(s,"grid-system",g->id,0,0,g->name);si_reset(s);si_axis_value(s,&g->axis[0]);si_axis_value(s,&g->axis[1]);si_subdivision(s,g);si_value(s,n);}
     for(size_t i=0;i<geo_grid_bindings_count(&w->geo.grid_store);++i){const GridBinding *b=geo_grid_bindings_at(&w->geo.grid_store,i);si_numkey(from,"grid-binding",b->id,0,0);si_reset(s);si_text(s,"%u:%u:%u:%lld:%lld:%u/%u:%u/%u",b->boundary_id,b->system_id,b->vertex_key,(long long)b->cell[0],(long long)b->cell[1],b->anchor_num[0],b->anchor_den[0],b->anchor_num[1],b->anchor_den[1]);si_nnode(s,"grid-binding",b->id,0,0,"網格配置");si_ref(s,from,"boundary",b->boundary_id,0,0,"position","vertex");si_ref(s,from,"grid-system",b->system_id,0,0,"position","system");}
     for(size_t i=0;i<w->wood.grid_applications.count;++i){const ReferenceGrid *g=&w->wood.grid_applications.items[i];bool bound[2][6]={{false}};for(size_t k=0;k<w->wood.engineering.binding_count;++k){const EngBinding *b=&w->wood.engineering.bindings[k];if(b->target.kind==0&&b->target.id==g->id)bound[b->target.axis][2+b->target.field]=true;}
-        si_numkey(from,"grid",g->id,0,0);si_reset(s);si_text(s,"%u:%d:%d:%d;",g->placement_id,g->main_along,g->is_subgrid,g->from_binding);si_axis(s,from,&g->axis[0],"u",bound[0]);si_axis(s,from,&g->axis[1],"v",bound[1]);
+        si_numkey(from,"grid",g->id,0,0);si_reset(s);si_text(s,"%u:%d:%d:%d;",g->placement_id,g->main_along,g->is_subgrid,g->from_binding);if(g->from_fill){si_text(s,"fill%u",g->fill_id);si_ref(s,from,"panel-fill",g->fill_id,0,0,"position","fill");}else{si_axis(s,from,&g->axis[0],"u",bound[0]);si_axis(s,from,&g->axis[1],"v",bound[1]);}
         if(g->is_subgrid){si_text(s,"%u:%d:%lld:%lld:%d:%d:%d:%d:%u:%u",g->parent_id,g->lattice_cell,(long long)g->lattice_cell_index[0],(long long)g->lattice_cell_index[1],g->cell_ref[0][0],g->cell_ref[0][1],g->cell_ref[1][0],g->cell_ref[1][1],g->divisions[0],g->divisions[1]);si_ref(s,from,"grid",g->parent_id,0,0,"position","parent");}
         if(g->from_binding){si_text(s,"binding%u",g->binding_id);si_ref(s,from,"grid-binding",g->binding_id,0,0,"position","binding");}else if(g->from_system){si_text(s,"system%u:%lld:%lld",g->system_id,(long long)g->system_origin[0],(long long)g->system_origin[1]);si_ref(s,from,"grid-system",g->system_id,0,0,"position","system");}
         for(size_t k=0;k<w->wood.engineering.binding_count;++k){const EngBinding *b=&w->wood.engineering.bindings[k];if(b->target.kind!=0||b->target.id!=g->id)continue;char src[640],over[640];eng_source_json(&b->source,src,sizeof src);if(b->has_override)eng_source_json(&b->override_value,over,sizeof over);else snprintf(over,sizeof over,"null");si_text(s,"binding:%d:%d:%s:%s;",b->target.axis,b->target.field,src,over);}
-        n=si_nnode(s,"grid",g->id,0,0,"面內網格");si_reset(s);si_axis_value(s,&g->axis[0]);si_axis_value(s,&g->axis[1]);si_value(s,n);si_ref(s,from,"placement",g->placement_id,0,0,"position","surface");}
+        n=si_nnode(s,"grid",g->id,0,0,"面內網格");si_reset(s);si_axis_value(s,&g->axis[0]);si_axis_value(s,&g->axis[1]);if(g->from_fill)si_text(s,"side%d",g->fill_side);si_value(s,n);si_ref(s,from,"placement",g->placement_id,0,0,"position","surface");}
     for(size_t i=0;i<w->wood.engineering.material_count;++i){const EngMaterialVersion *m=eng_material_at(w,i);if(!m){s->complete=false;continue;}si_reset(s);si_text(s,"%s",m->fingerprint);n=si_node(s,"material",m->ref.id,m->ref.version,0,si_name(m->content,label,m->ref.id));if(n)snprintf(n->definition,65,"%s",m->fingerprint);si_reset(s);si_text(s,"%d:%lld:%lld:%lld:%lld",m->kind,(long long)m->width,(long long)m->length,(long long)m->a,(long long)m->b);si_value(s,n);}
     for(size_t i=0;i<w->wood.engineering.method_count;++i){const EngMethodVersion *m=eng_method_at(w,i);if(!m){s->complete=false;continue;}si_key(from,"method",m->ref.id,m->ref.version,0);si_reset(s);si_text(s,"%s",m->fingerprint);n=si_node(s,"method",m->ref.id,m->ref.version,0,si_name(m->content,label,m->ref.id));if(n){snprintf(n->definition,65,"%s",m->fingerprint);snprintf(n->value,65,"%s",m->fingerprint);}EngVersionRef refs[4]={m->panel,m->roles[0],m->roles[1],m->roles[2]};for(int k=0;k<4;++k)if(refs[k].id[0]){char key[240];si_key(key,"material",refs[k].id,refs[k].version,0);si_edge(s,from,key,"material-version",k==0?"panel":k==1?"boundary":k==2?"primary":"secondary",true);}}
     for(size_t i=0;i<w->wood.engineering.application_count;++i){const EngApplication *a=&w->wood.engineering.applications[i];si_key(from,"application",a->id,0,0);si_reset(s);si_content(s,a->content,"anchorOptions");si_node(s,"application",a->id,0,0,a->id);char key[240];si_key(key,"method",a->method.id,a->method.version,0);si_edge(s,from,key,"rule-version","method",true);si_ref(s,from,"placement",a->placement_id,0,0,"position","surface");si_application_fields(s,w,a);}
@@ -195,6 +195,24 @@ static SiIndex *si_build(const World *w)
             else {s->complete=false;continue;}
             si_edge(s,key,from,"member",detail,true);
         }
+    }
+    /* D41/D42 authored sources close a from-fill grid's readonly graph.
+     * This index reads stored definitions and never rebuilds finish geometry. */
+    for(uint64_t i=0;i<w->wood.finish_surfaces.count;++i){const FinishSurface *f=&w->wood.finish_surfaces.items[i];
+        si_numkey(from,"finish-surface",f->id,0,0);si_reset(s);si_text(s,"boundary%u;side%d;",f->boundary_id,f->side);
+        si_point(s,f->frame.origin);si_vector(s,f->frame.axis_u);si_vector(s,f->frame.axis_v);si_vector(s,f->frame.normal);
+        for(uint32_t k=0;k<f->obstacle_count;++k){const FinishObstacleRef *obstacle=&f->obstacles[k];
+            si_text(s,"obstacle%u:%u;",obstacle->kind,obstacle->id);
+            si_ref(s,from,obstacle->kind==FS_OBSTACLE_COLUMN?"column":"beam",obstacle->id,0,0,"position","obstacle");}
+        si_nnode(s,"finish-surface",f->id,0,0,f->name);
+        si_ref(s,from,"boundary",f->boundary_id,0,0,"position","boundary");
+    }
+    for(uint64_t i=0;i<w->wood.finish_surfaces.fill_count;++i){const PanelFill *fill=&w->wood.finish_surfaces.fills[i];
+        si_numkey(from,"panel-fill",fill->id,0,0);si_reset(s);si_text(s,"%s",fill->definition);
+        si_nnode(s,"panel-fill",fill->id,0,0,"鋪排來源");si_ref(s,from,"finish-surface",fill->finish_id,0,0,"position","finish");
+        char key[240];si_key(key,"material",fill->panel.id,fill->panel.version,0);si_edge(s,from,key,"material-version","panel",true);
+        const ParameterRef refs[]={fill->gap_ref,fill->stagger_ref,fill->threshold};const char *fields[]={"gap","stagger","threshold"};
+        for(int k=0;k<3;++k)if(refs[k].set)si_ref(s,from,"parameter-field",refs[k].parameter_id,0,refs[k].field_id,"dimension",fields[k]);
     }
     si_profile_sources(s,w);
     return s;

@@ -1,32 +1,24 @@
 {
   "schema": "native-shard-added-suite-evidence/1",
-  "source_run": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43212357528",
-  "source_head": "eeb8616665d0e0944fc1a7cf4a4786e15872cbe6",
-  "source_checkout": "657b9a40fbeba818a7a8ed698b94e0f680c75f86",
-  "note": "CI job failed overall; each listed individual suite passed. Times are the one-decimal-second values printed in its original 2026-11-12 runner summary; planning upper bounds are conservative, not historical observations.",
+  "source_run": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43231596387",
+  "source_head": "a4ea8327bd4a7c0b4089a89ea6d0f270a8f01659",
+  "source_checkout": "2b9d0eea17155c2d857447466aa4a9abce649036",
+  "note": "Both listed suites passed. The exact-head CI job failed overall because their expected entries were missing. Times are the original one-decimal-second runner summary; planning upper bounds are conservative, not historical observations. The earlier run 43212366533/job/131162945568 reported 35.5s and 0.1s; its full source log remains in the evidence bundle, but this later 61.9s receipt supersedes it for planning. None of the three original 315-suite measured_runs is changed.",
   "observations": [
     {
-      "name": "node:r14_app",
-      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43212357528/job/131162916639",
-      "discovered": 7,
-      "passed": 7,
+      "name": "py:test_panel_fill_grid_source",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43231596387/job/131228034964",
+      "discovered": 13,
+      "passed": 13,
+      "seconds_rounded": 61.9,
+      "planning_upper_ms": 65000
+    },
+    {
+      "name": "node:panel_fill_grid_read_compat",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43231596387/job/131228034964",
+      "discovered": 11,
+      "passed": 11,
       "seconds_rounded": 0.1,
-      "planning_upper_ms": 2000
-    },
-    {
-      "name": "node:r14_host",
-      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43212357528/job/131162916639",
-      "discovered": 15,
-      "passed": 15,
-      "seconds_rounded": 4.9,
-      "planning_upper_ms": 7000
-    },
-    {
-      "name": "py:test_r14_browser_receipt",
-      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43212357528/job/131162916621",
-      "discovered": 10,
-      "passed": 10,
-      "seconds_rounded": 0.4,
       "planning_upper_ms": 2000
     }
   ]

@@ -10,7 +10,7 @@ static bool app_eng_placement(void *user,uint32_t id,bool *derived)
 static bool app_eng_target(void *user,const EngTarget *t,WoodEngineeringTargetInfo *out)
 {
     World *w=(World *)user;memset(out,0,sizeof *out);
-    if(!t->kind){const ReferenceGrid *g=world_find_grid(w,t->id);if(!g)return false;out->placement_id=g->placement_id;out->from_system=g->from_system||g->from_binding;out->is_subgrid=g->is_subgrid;out->panel_axis=g->axis[t->axis].source==GRID_SRC_PANEL;}
+    if(!t->kind){const ReferenceGrid *g=world_find_grid(w,t->id);if(!g)return false;out->placement_id=g->placement_id;out->from_system=g->from_system||g->from_binding||g->from_fill;out->is_subgrid=g->is_subgrid;out->panel_axis=g->axis[t->axis].source==GRID_SRC_PANEL;}
     else{int i=reference_timber_index(w,t->id);if(i<0)return false;out->placement_id=w->wood.anchors[i].placement_id;out->role=w->wood.timbers[i].role;out->placed=w->wood.timbers[i].placed;}
     return true;
 }

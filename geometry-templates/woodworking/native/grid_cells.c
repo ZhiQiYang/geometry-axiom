@@ -8,26 +8,78 @@ static bool wood_grid_cells_bounds(const WoodGridHost *host,GeoRect2 *out)
 {if(!host||!host->bounds_valid)return false;*out=host->bounds;return true;}
 bool wood_grid_lattice_coord(const WoodGridApplication *g,int axis,int64_t k,GeoCoord *out)
 {
-    if(!g||!g->from_binding||axis<0||axis>1)return false;
+    if(!g||(!g->from_binding&&!g->from_fill)||axis<0||axis>1)return false;
     GeoLattice lattice={g->lattice_base[axis],g->lattice_step[axis],g->lattice_index[axis]};
-    return geo_lattice_coord(&lattice,k,out);
+    GeoCoord value;if(!geo_lattice_coord(&lattice,k,&value))return false;
+    if(g->from_fill&&axis==1)value*=g->fill_side;
+    if(out)*out=value;return true;
 }
 bool wood_grid_lattice_coord_band(const WoodGridApplication *g,int axis,int64_t k,int64_t band,GeoCoord *out)
 {
     GeoCoord base,shift;int64_t value;
     if(!wood_grid_lattice_coord(g,axis,k,&base))return false;
     shift=geo_alternating_shift(g->axis[axis].stagger_set,g->axis[axis].stagger,band);
+    if(g->from_fill&&axis==1)shift*=g->fill_side;
     if(!shift){if(out)*out=base;return true;}
     if(!geo_i64_add(base,shift,&value)||!geo_coord_in_range(value))return false;
     if(out)*out=value;return true;
+}
+/* D43's band p is the panel row bounded by seams p-1 and p. D29's band
+ * is a lattice cell bounded by p and p+1. Preserve that source identity
+ * while sorting only the mapped geometric interval for a negative side. */
+bool wood_grid_band_bounds(const WoodGridApplication *g,int axis,int64_t band,GeoCoord *lo,GeoCoord *hi)
+{
+    if(!g||axis<0||axis>1)return false;
+    int64_t first=band,last=band;GeoCoord a,b;
+    if(g->from_fill){if(!geo_i64_add(band,-1,&first))return false;}
+    else if(!geo_i64_add(band,1,&last))return false;
+    if(!wood_grid_lattice_coord(g,axis,first,&a)||!wood_grid_lattice_coord(g,axis,last,&b))return false;
+    if(lo)*lo=a<b?a:b;if(hi)*hi=a>b?a:b;return true;
+}
+GeoGridStatus wood_grid_lattice_window(const WoodGridApplication *g,int axis,GeoCoord lo,GeoCoord hi,
+    size_t limit,bool sample,GeoLatticeWindow *out)
+{
+    if(!g||axis<0||axis>1)return GEO_GRID_INVALID;
+    GeoLattice lattice={g->lattice_base[axis],g->lattice_step[axis],g->lattice_index[axis]};
+    int side=g->from_fill&&axis==1?g->fill_side:1;
+    if(side<0){GeoCoord old_lo=lo;lo=-hi;hi=-old_lo;}
+    GeoGridStatus status=geo_lattice_window(&lattice,lo,hi,limit,sample,out);
+    if(status==GEO_GRID_OK&&side<0)for(size_t i=0;i<out->count;++i)out->lines[i].coordinate=-out->lines[i].coordinate;
+    return status;
+}
+GeoGridStatus wood_grid_band_window(const WoodGridApplication *g,int axis,GeoCoord lo,GeoCoord hi,
+    int64_t *first,int64_t *last)
+{
+    if(!g||axis<0||axis>1||lo>hi||!geo_coord_in_range(lo)||!geo_coord_in_range(hi)||g->lattice_step[axis]<=0)return GEO_GRID_INVALID;
+    if(g->from_fill&&axis==1&&g->fill_side<0){GeoCoord old_lo=lo;lo=-hi;hi=-old_lo;}
+    int64_t a,b;GeoCoord base=g->lattice_base[axis],step=g->lattice_step[axis];
+    if(!geo_i64_add(g->lattice_index[axis],geo_floor_div(lo-base,step),&a)||
+       !geo_i64_add(g->lattice_index[axis],geo_floor_div(hi-base,step),&b))return GEO_GRID_INDEX_RANGE;
+    if(g->from_fill&&(!geo_i64_add(a,1,&a)||!geo_i64_add(b,1,&b)))return GEO_GRID_INDEX_RANGE;
+    *first=a;*last=b;return GEO_GRID_OK;
+}
+/* A staggered line whose unshifted center is outside the viewport can still
+ * have a visible band. Expand the query only, never the stored source. */
+GeoGridStatus wood_grid_query_window(const WoodGridApplication *g,int axis,GeoCoord lo,GeoCoord hi,
+    size_t limit,bool sample,GeoLatticeWindow *out)
+{
+    if(!g||axis<0||axis>1)return GEO_GRID_INVALID;
+    if(g->axis[axis].stagger_set){
+        GeoCoord shift=g->axis[axis].stagger;
+        GeoCoord magnitude=shift>=0?shift:shift==INT64_MIN?GEO_COORD_LIMIT:-shift;
+        int64_t lower,upper;
+        if(!geo_i64_add(lo,-magnitude,&lower)||lower<-GEO_COORD_LIMIT)lower=-GEO_COORD_LIMIT;
+        if(!geo_i64_add(hi,magnitude,&upper)||upper>GEO_COORD_LIMIT)upper=GEO_COORD_LIMIT;
+        lo=lower;hi=upper;
+    }
+    return wood_grid_lattice_window(g,axis,lo,hi,limit,sample,out);
 }
 /* Main application validation requests exact finite output, never samples. */
 static bool wood_grid_lattice_lines(const WoodGridApplication *g,int axis,GeoCoord lo,GeoCoord hi,
     GeoCoord out[WOOD_GRID_MAX_LINES],size_t *count,char *err,size_t cap)
 {
-    GeoLattice lattice={g->lattice_base[axis],g->lattice_step[axis],g->lattice_index[axis]};
     GeoLatticeLine lines[WOOD_GRID_MAX_LINES];GeoLatticeWindow result={.lines=lines,.capacity=WOOD_GRID_MAX_LINES};
-    GeoGridStatus status=geo_lattice_window(&lattice,lo,hi,WOOD_GRID_MAX_LINES,false,&result);
+    GeoGridStatus status=wood_grid_lattice_window(g,axis,lo,hi,WOOD_GRID_MAX_LINES,false,&result);
     if(status==GEO_GRID_OK){*count=result.count;for(size_t i=0;i<result.count;++i)out[i]=lines[i].coordinate;return true;}
     if(status==GEO_GRID_INDEX_RANGE){if(err)snprintf(err,cap,"R32: INDEX_RANGE exceeds signed int64");return false;}
     if(status==GEO_GRID_CAPACITY){if(err)snprintf(err,cap,"R32: QUERY_CAPACITY requires %llu lines; limit %u",(unsigned long long)result.total,(unsigned)WOOD_GRID_MAX_LINES);return false;}
@@ -60,7 +112,7 @@ bool wood_grid_axis_lines(
         return false;
     }
 
-    if (grid->from_binding) {
+    if (grid->from_binding || grid->from_fill) {
         GeoRect2 bounds;
         if (!wood_grid_cells_bounds(placement,&bounds) ||
             !wood_grid_lattice_lines(grid,axis,axis?bounds.min_v:bounds.min_u,
@@ -116,6 +168,10 @@ bool wood_grid_valid(
         return false;
     }
 
+    if (grid->from_fill) return !grid->from_system && !grid->from_binding && !grid->is_subgrid &&
+        grid->fill_id && placement->derived_fill_id==grid->fill_id &&
+        (grid->fill_side==1 || grid->fill_side==-1) && grid->main_along>=0 && grid->main_along<=2 &&
+        grid->lattice_step[0]>0 && grid->lattice_step[1]>0;
     if (grid->from_binding) return !grid->from_system && !grid->is_subgrid &&
         grid->lattice_step[0]>0 && grid->lattice_step[1]>0;
     /* I10: 主支方向須有對應格線來源；u 座標線沿 v，反之亦然。 */
@@ -154,7 +210,7 @@ bool wood_grid_cell_bounds(const WoodGridApplication *grids,size_t count,const W
     const WoodGridApplication *parent=NULL;
     if (!grid || !grid->is_subgrid || !p || grid->placement_id!=p->id) goto invalid;
     for (size_t i=0;i<count;++i) if (grids[i].id==grid->parent_id) parent=&grids[i];
-    if (!parent || parent->is_subgrid || parent->placement_id!=p->id) goto invalid;
+    if (!parent || parent->is_subgrid || parent->from_fill || parent->placement_id!=p->id) goto invalid;
     if (grid->lattice_cell!=parent->from_binding) {
         if (err) snprintf(err,cap,"D19/I37: subgrid cell index space must match its parent grid");
         return false;
@@ -232,7 +288,7 @@ bool wood_grid_line_coord_in_resolved(const WoodGridApplication *grids,size_t co
 {
     GeoCoord coords[WOOD_GRID_MAX_LINES]; size_t n=0;
     if (total) *total=0;
-    if (grid && grid->from_binding && !grid->is_subgrid) {
+    if (grid && (grid->from_binding || grid->from_fill) && !grid->is_subgrid) {
         if (!p || p->id!=grid->placement_id || !wood_grid_lattice_coord(grid,axis,index,out)) {
             if (err) snprintf(err,cap,"D10/I37: lattice grid %u index %lld cannot be evaluated in D1",grid->id,(long long)index);
             return false;
@@ -260,7 +316,7 @@ bool wood_grid_anchor_line_coord_resolved(const WoodGridApplication *grids,size_
 {
     bool staggered;
     if(!grid || axis<0 || axis>1) return false;
-    if(grid->is_subgrid || !grid->from_binding){
+    if(grid->is_subgrid || (!grid->from_binding && !grid->from_fill)){
         if(has_band){ if(err) snprintf(err,cap,"I24: 沒有相位差的格線不能寫 band"); return false; }
         return wood_grid_line_coord_in_resolved(grids,count,grid,p,axis,index,out,NULL,err,cap,resolve,user);
     }

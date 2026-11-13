@@ -97,6 +97,7 @@ STAGED_SITES = (
     ("geometry-core/boundary_vertex_keys.inc", "apply_boundary_keyed_line", 1),
     ("geometry-core/grid_bindings.inc", "apply_grid_binding_line", 1),
     ("geometry-core/grid_bindings.inc", "apply_grid_binding_application", 1),
+    ("geometry-core/grid_bindings.inc", "apply_grid_fill_application", 1),
     ("geometry-core/grid_subdivision.inc", "apply_grid_source_rule", 1),
     ("geometry-core/grid_systems.inc", "apply_grid_system_line", 1),
     ("geometry-core/grid_systems.inc", "apply_grid_system_application", 1),
@@ -110,6 +111,8 @@ BASELINE_ASSIGNMENTS = (
     ("geometry-core/boundary_vertex_keys.inc", "apply_boundary_keyed_line", "previous_baseline"),
     ("geometry-core/grid_bindings.inc", "apply_grid_binding_application", "w"),
     ("geometry-core/grid_bindings.inc", "apply_grid_binding_application", "baseline"),
+    ("geometry-core/grid_bindings.inc", "apply_grid_fill_application", "w"),
+    ("geometry-core/grid_bindings.inc", "apply_grid_fill_application", "baseline"),
     ("geometry-core/grid_systems.inc", "apply_grid_system_application", "w"),
     ("geometry-core/grid_systems.inc", "apply_grid_system_application", "previous_baseline"),
     ("geometry-core/transactions.inc", "app_scene_candidate_apply", "call->before"),
@@ -280,6 +283,21 @@ class Geo314CommitPaths(unittest.TestCase):
                          self.inventory("world_revalidate"), "I24 world validation route changed")
         self.assertEqual(self.reviewed_inventory(STAGED_SITES, "I24 staged inventory"),
                          self.inventory("app_world_revalidate_staged"), "I24 staged validation route changed")
+
+    def test_r03_from_fill_restores_reviewed_staged_baseline(self):
+        source = compact(masked(self.body("geometry-core/grid_bindings.inc",
+                                          "apply_grid_fill_application")))
+        enter = "if(!baseline)g_subgrid_before=w;"
+        validate = "app_world_revalidate_staged(w,&candidate)"
+        restore = "g_subgrid_before=baseline;"
+        for token in (enter, validate, restore):
+            self.assertIn(token, source, "R03_C0_I24_BASELINE_REQUIRED")
+        self.assertLess(source.index(enter), source.index(validate),
+                        "R03_C0_I24_BASELINE_BEFORE_VALIDATION")
+        self.assertLess(source.index(validate), source.index(restore),
+                        "R03_C0_I24_BASELINE_RESTORED_AFTER_VALIDATION")
+        self.assertNotIn("return", source[source.index(enter):source.index(restore)],
+                         "R03_C0_I24_NO_EARLY_EXIT_BEFORE_RESTORE")
 
     def test_submission_baselines_and_replay_restoration_are_exact(self):
         actual = Counter()
