@@ -1,0 +1,227 @@
+{
+  "archive": "round-start.raw.tar.gz",
+  "bytes": 120618,
+  "sha256": "aa33f0ec51849b182d5f57a604544e20d868dba730cdd3d86cc568c65df3d976",
+  "members": [
+    {
+      "path": "config.json",
+      "bytes": 235,
+      "sha256": "b92f5b78f2e8ce8e7b7dbc18f4977c0d0d7b89259416016dff9941632cda5404"
+    },
+    {
+      "path": "workflow-driver.py.txt",
+      "bytes": 20021,
+      "sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310"
+    },
+    {
+      "path": "workflow-adaptation.json",
+      "bytes": 465,
+      "sha256": "31233e554db970619bf8af7dc338a85c883dc2fb31de88b2644052536d8a8e1b"
+    },
+    {
+      "path": "special-driver.py.txt",
+      "bytes": 5256,
+      "sha256": "17eefbb8b5088e6d38392bf44e274a452fc7250868ff65a580ac41362d5a64a7"
+    },
+    {
+      "path": "special-adaptation.json",
+      "bytes": 490,
+      "sha256": "01710486847379b48a03b595614e3620e1b90d788636a4ef415cefce75ba7f8e"
+    },
+    {
+      "path": "round-driver.py.txt",
+      "bytes": 3300,
+      "sha256": "023cc60da432e9f1df8cc8969f495566df9edba446f19fa88571d78488179936"
+    },
+    {
+      "path": "reaper.py.txt",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "tools/ADAPTATION.json",
+      "bytes": 12304,
+      "sha256": "6509b5ee253c70bdd5cc944877f306e676c459ea6efd32b0594934f2a47870cd"
+    },
+    {
+      "path": "tools/COMMANDS.json",
+      "bytes": 5173,
+      "sha256": "94fae716b9a65b2a78deee3ae3759894879097a74818b834158f61d345b77d95"
+    },
+    {
+      "path": "tools/SPECIAL_COMMANDS.md",
+      "bytes": 3536,
+      "sha256": "199812baf717bb7ad441832a97abccedab261a65a925840d122b4b0dcc1fefdb"
+    },
+    {
+      "path": "tools/cancel_supervisor.py",
+      "bytes": 4342,
+      "sha256": "03edabfd7d6f6652528db9cdc1c1187720dfa742fb7cc8c7701383bba8559845"
+    },
+    {
+      "path": "tools/card_ref_mutations.sh",
+      "bytes": 1996,
+      "sha256": "129bdb907b761115b948e2e87b0c9cd15a57471e6ff2906973e4ea08392d9be8"
+    },
+    {
+      "path": "tools/ci_job.py",
+      "bytes": 30248,
+      "sha256": "214238c15404b634fb4f121b322444cdfe59c0264abaa00e370a1f3a92e08d78"
+    },
+    {
+      "path": "tools/ci_run.py",
+      "bytes": 32480,
+      "sha256": "bc1d47c0b50e3210516f68320e2963454da5d25d1239b4d320ab15fe03d3f5a7"
+    },
+    {
+      "path": "tools/gen_scene.py",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91"
+    },
+    {
+      "path": "tools/original-source/cancel_supervisor.py.txt",
+      "bytes": 4342,
+      "sha256": "03edabfd7d6f6652528db9cdc1c1187720dfa742fb7cc8c7701383bba8559845"
+    },
+    {
+      "path": "tools/original-source/card_ref_mutations.sh.txt",
+      "bytes": 2055,
+      "sha256": "a89d7ef5d36903f22cdcab98d0790374c073c728362c3d083a41c1e55415244b"
+    },
+    {
+      "path": "tools/original-source/ci_job.py.txt",
+      "bytes": 30164,
+      "sha256": "03a3dfef3b14ad35c2893d8c18f4fa429da11edae63a21105d957282cd7e96d1"
+    },
+    {
+      "path": "tools/original-source/ci_run.py.txt",
+      "bytes": 32393,
+      "sha256": "d9c87034faf4ea442884448a1f1f145bf71f1121ba81f0fb32a3f0c03d8c09ee"
+    },
+    {
+      "path": "tools/original-source/gen_scene.py.txt",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91"
+    },
+    {
+      "path": "tools/original-source/p189_verify.py.txt",
+      "bytes": 7160,
+      "sha256": "b40d0381a136a0edc69e8ff835c4e61dabb628ad25668a19bc83237274db6b39"
+    },
+    {
+      "path": "tools/original-source/p52_cases.cjs.txt",
+      "bytes": 6448,
+      "sha256": "6ca75996223e94be0a503e646d58ed928b046854eb0102af309482dc4ac60f66"
+    },
+    {
+      "path": "tools/original-source/p52_measure.py.txt",
+      "bytes": 6011,
+      "sha256": "0e2a83b95373ead09218fa63378442a735382ee4f86c89bf21438bf2faba504e"
+    },
+    {
+      "path": "tools/original-source/p52_probe.cjs.txt",
+      "bytes": 5565,
+      "sha256": "8c3b4b14ad35082679e4faf229bd66d65a500bd53669c13d8f41e0603e066970"
+    },
+    {
+      "path": "tools/original-source/postfix_validate.py.txt",
+      "bytes": 6246,
+      "sha256": "cc8be69ec6c199fec7934f12b61455e4284ade3465c907a399100b0f3cd28e02"
+    },
+    {
+      "path": "tools/original-source/q38_controls.py.txt",
+      "bytes": 3446,
+      "sha256": "64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2"
+    },
+    {
+      "path": "tools/original-source/q38_gate.sh.txt",
+      "bytes": 2725,
+      "sha256": "90e5e4787c4a4badcfd06f36812030a6018cf0855cb3a375192e8c23764cf328"
+    },
+    {
+      "path": "tools/original-source/scale_compare2.py.txt",
+      "bytes": 3536,
+      "sha256": "a52ba9a3ae35eaf97de64ec66a0814525ecbf4e297fe3925f4de105e1e8ad113"
+    },
+    {
+      "path": "tools/original-source/verify_postfix_receipt.py.txt",
+      "bytes": 1627,
+      "sha256": "5a109def7794ebc1e34048afe500fd97758f98781ff90597fedec0dc214f1e04"
+    },
+    {
+      "path": "tools/p189_verify.py",
+      "bytes": 7072,
+      "sha256": "fbe76887c77c60b6f9a91559e6bf642a24402f789e28a1c5df53cce160b8aca5"
+    },
+    {
+      "path": "tools/p52_cases.cjs",
+      "bytes": 6448,
+      "sha256": "6ca75996223e94be0a503e646d58ed928b046854eb0102af309482dc4ac60f66"
+    },
+    {
+      "path": "tools/p52_measure.py",
+      "bytes": 5981,
+      "sha256": "a74f00790896a12735e5d420b37dd0a41454162fc238e374c4ec49e3bc579231"
+    },
+    {
+      "path": "tools/p52_probe.cjs",
+      "bytes": 5565,
+      "sha256": "8c3b4b14ad35082679e4faf229bd66d65a500bd53669c13d8f41e0603e066970"
+    },
+    {
+      "path": "tools/postfix_validate.py",
+      "bytes": 6216,
+      "sha256": "12205f0a07cccca4cd27087f7cbf34b6ba88a8b634fbcd5118c9168b940bf1bc"
+    },
+    {
+      "path": "tools/q38_controls.py",
+      "bytes": 3446,
+      "sha256": "64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2"
+    },
+    {
+      "path": "tools/q38_gate.sh",
+      "bytes": 2665,
+      "sha256": "110693478e6c4e57358454174f076a03cec5a28049a9d34853f53489dccfb850"
+    },
+    {
+      "path": "tools/reference/environment-adaptations.json",
+      "bytes": 2471,
+      "sha256": "d0d2eee8cb84c602631638ba2b116e532c9e0493006f3353229bd61045ebbd3a"
+    },
+    {
+      "path": "tools/reference/geo261-cloud-attachments.json.txt",
+      "bytes": 11350,
+      "sha256": "7508bafe0b7c1e483134199e072c9d9105f723a94c0dc2184bfc42fe5056105f"
+    },
+    {
+      "path": "tools/reference/geo261-cloud-handoff-20261022.md",
+      "bytes": 16113,
+      "sha256": "da8bdc54a0225239d79cd6b4863cc3ff159066a37fc8c5848591436e0e016d68"
+    },
+    {
+      "path": "tools/reference/long-ADAPTATION.json",
+      "bytes": 9442,
+      "sha256": "1d4878862213c7b842209aac54ec19b7438cd4f92f735fccc7e3c1774183c6b1"
+    },
+    {
+      "path": "tools/reference/preparation.json",
+      "bytes": 4261,
+      "sha256": "7937598358f22353ad232a3cb7d9aa1d7c75419c7507952d56728b1060f3dac8"
+    },
+    {
+      "path": "tools/scale_compare2.py",
+      "bytes": 3505,
+      "sha256": "716cb6b4eab037158765b998cb1e756d3c77bbe465f8bafb822a6ab9d6b0a389"
+    },
+    {
+      "path": "tools/verify_postfix_receipt.py",
+      "bytes": 1627,
+      "sha256": "5a109def7794ebc1e34048afe500fd97758f98781ff90597fedec0dc214f1e04"
+    },
+    {
+      "path": "chrome-installation.json",
+      "bytes": 630,
+      "sha256": "4e93c3b7baa927668569ed5c79003b5db97f24a747d5fd89c794aceb083527d8"
+    }
+  ]
+}

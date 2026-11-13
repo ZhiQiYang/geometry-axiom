@@ -1,0 +1,389 @@
+{
+  "schema": "geo344-exact-architecture-adapter-static-peer/1",
+  "exit_code": 0,
+  "checks": 76,
+  "failed_checks": [],
+  "review_utc": "2026-10-25T12:13:19.742373+00:00",
+  "subject_pins_sha256": "200c249e2107d87eb69fd7b773ac94fe1e2e3731c6b033e1dccf68c2acb202c2",
+  "adapter_sha256": "71cb2e314a3d3e7c3419bbe436f2c308a702d6b3be5f9668594fe729248de2de",
+  "source_ancestor": "a5ec136baf3909453867b3eed50f1b93b229ca59",
+  "source_S344": "UNBOUND",
+  "formal_executed": false,
+  "digest_proof_executed": false,
+  "policy_guards_executed": false,
+  "accepted_scope": "STATIC_ADAPTER_PREPARATION_ONLY",
+  "recorded_metadata_entry_exits": [
+    0,
+    1,
+    0
+  ],
+  "launch_conditions": [
+    "root先固定同a5後裔且僅單manifest hash+evidence變更的可解析S344；本審不表示分支已建立/推送。",
+    "提供全部604inputs／三原judge／SSOT的乾淨同源checkout與fresh外部out，root另做磁碟/CPU排程及原c387外層完整收件。",
+    "原stack16MiB、原三judge205/18零skip、單hash精確0/1/0與九W/neutral均真跑後才收四檔成功；任一紅不能放寬期待。",
+    "本稿不能直接用於先合新列車而多產品差的來源；若來源closure不同需另審新精確適配。"
+  ],
+  "limits": [
+    "原metadata default/-O/default0/1/0只驗入口，不是產品撤回自證。",
+    "未執adapter、C、Chrome、architecture judge、Node strict9或新fixture；唯讀原Git歷史blob及既有tinyfixture metadata。",
+    "第98行有Git pathspec排除；既有rename fixture實讀證明此例仍列原刪除葉，不能套用無pathspec版舊漏洞，未要求無效修補。",
+    "原歷史928raw與cdp同步衍生本分開，未將衍生控制冒成歷史Git blob。"
+  ],
+  "historical_git_read": {
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "ca7838e0f4950452b9befcf40899d606db9b81fa:geometry-core/domain-decoupling/product-architecture.json"
+    ],
+    "exit_code": 0,
+    "stdout_bytes": 221591,
+    "stdout_sha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525",
+    "stderr": "",
+    "payload_storage": "immutable Git object retained; no duplicate payload written"
+  },
+  "readonly_existing_fixture_checks": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geo337-F9-no-rename-metadata-proof-20261025/fixture",
+        "diff",
+        "--name-only",
+        "029bbf73068a16a494bbd4bf556ab0c59dba8d11",
+        "1895bc1ccec04e91b28ce1927554dbf6c5008eb4",
+        "--",
+        ".",
+        ":(exclude)evidence/**"
+      ],
+      "exit_code": 0,
+      "stdout": "geometry-core/kernel/source.c\ntests/mutants_results.json\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geo337-F9-no-rename-metadata-proof-20261025/fixture",
+        "diff",
+        "--no-renames",
+        "--name-only",
+        "029bbf73068a16a494bbd4bf556ab0c59dba8d11",
+        "1895bc1ccec04e91b28ce1927554dbf6c5008eb4",
+        "--",
+        ".",
+        ":(exclude)evidence/**"
+      ],
+      "exit_code": 0,
+      "stdout": "geometry-core/kernel/source.c\ntests/mutants_results.json\n",
+      "stderr": ""
+    }
+  ],
+  "checks_detail": [
+    {
+      "name": "pinnedsubject",
+      "ok": true
+    },
+    {
+      "name": "pin:DRY_PLAN.json",
+      "ok": true
+    },
+    {
+      "name": "pin:DRY_PLAN_RESULT.json",
+      "ok": true
+    },
+    {
+      "name": "pin:HISTORICAL_DERIVATION_PREPARATION.json",
+      "ok": true
+    },
+    {
+      "name": "pin:ORIGINAL_TO_ADAPTER.diff",
+      "ok": true
+    },
+    {
+      "name": "pin:PREPARATION.json",
+      "ok": true
+    },
+    {
+      "name": "pin:README.md",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000001/request.json",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000001/result.json",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000001/stderr.bin",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000001/stdin.bin",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000001/stdout.bin",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000002/request.json",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000002/result.json",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000002/stderr.bin",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000002/stdin.bin",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000002/stdout.bin",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000003/request.json",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000003/result.json",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000003/stderr.bin",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000003/stdin.bin",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands/000003/stdout.bin",
+      "ok": true
+    },
+    {
+      "name": "pin:dry-plan-original-capture/subcommands.json",
+      "ok": true
+    },
+    {
+      "name": "pin:original_driver.py.txt",
+      "ok": true
+    },
+    {
+      "name": "pin:prepare_adapter.py",
+      "ok": true
+    },
+    {
+      "name": "pin:refresh_architecture_cdp_exclusion.py",
+      "ok": true
+    },
+    {
+      "name": "old_driver_original",
+      "ok": true
+    },
+    {
+      "name": "unrun_boundary",
+      "ok": true
+    },
+    {
+      "name": "dry_original_three_exits",
+      "ok": true
+    },
+    {
+      "name": "dry0:terminal",
+      "ok": true
+    },
+    {
+      "name": "dry0:stdout",
+      "ok": true
+    },
+    {
+      "name": "dry0:stderr",
+      "ok": true
+    },
+    {
+      "name": "dry0:stdin",
+      "ok": true
+    },
+    {
+      "name": "dry0:result",
+      "ok": true
+    },
+    {
+      "name": "dry1:terminal",
+      "ok": true
+    },
+    {
+      "name": "dry1:stdout",
+      "ok": true
+    },
+    {
+      "name": "dry1:stderr",
+      "ok": true
+    },
+    {
+      "name": "dry1:stdin",
+      "ok": true
+    },
+    {
+      "name": "dry1:result",
+      "ok": true
+    },
+    {
+      "name": "dry2:terminal",
+      "ok": true
+    },
+    {
+      "name": "dry2:stdout",
+      "ok": true
+    },
+    {
+      "name": "dry2:stderr",
+      "ok": true
+    },
+    {
+      "name": "dry2:stdin",
+      "ok": true
+    },
+    {
+      "name": "dry2:result",
+      "ok": true
+    },
+    {
+      "name": "dry_true_plan_not_formal",
+      "ok": true
+    },
+    {
+      "name": "single_hash_fixed_exact",
+      "ok": true
+    },
+    {
+      "name": "historical_original_exact",
+      "ok": true
+    },
+    {
+      "name": "derived_control_exact",
+      "ok": true
+    },
+    {
+      "name": "policies_937_928_55",
+      "ok": true
+    },
+    {
+      "name": "nine_exact_guard_identifiers",
+      "ok": true
+    },
+    {
+      "name": "derived_only_nine_policy_difference",
+      "ok": true
+    },
+    {
+      "name": "guard:if not a.execute:",
+      "ok": true
+    },
+    {
+      "name": "guard:raise SystemExit(0)",
+      "ok": true
+    },
+    {
+      "name": "guard:assert not sys.flags.optimize and a.root_scheduled_architecture_run",
+      "ok": true
+    },
+    {
+      "name": "guard:assert resource.getrlimit(resource.RLIMIT_STACK)[0]==16777216",
+      "ok": true
+    },
+    {
+      "name": "guard:git('merge-base','--is-ancestor',ANCESTOR,F)",
+      "ok": true
+    },
+    {
+      "name": "guard:git('diff','--name-only',ANCESTOR,F,'--','.',':(exclude)evidence/**')",
+      "ok": true
+    },
+    {
+      "name": "guard:assert sorted(tree)==declared",
+      "ok": true
+    },
+    {
+      "name": "guard:assert sorted(prior_tree)==declared",
+      "ok": true
+    },
+    {
+      "name": "guard:assert [n for n in declared if tree[n]!=prior_tree[n]]==EXPECTED_CHANGED_INPUTS",
+      "ok": true
+    },
+    {
+      "name": "guard:assert closure==EXPECTED_CLOSURE",
+      "ok": true
+    },
+    {
+      "name": "guard:assert snapshot()==before",
+      "ok": true
+    },
+    {
+      "name": "guard:assert all((R/ART/n).read_bytes()==old_four[n] for n in NAMES)",
+      "ok": true
+    },
+    {
+      "name": "guard:assert Path(__file__).read_bytes()==driver_before and H(CAP.read_bytes())==CAP_PIN",
+      "ok": true
+    },
+    {
+      "name": "guard:manifestSourceGitSHA':None if phase=='withdrawn' else F",
+      "ok": true
+    },
+    {
+      "name": "guard:'controlIsDerived':True",
+      "ok": true
+    },
+    {
+      "name": "guard:assert digest_outputs[0]==digest_outputs[2]",
+      "ok": true
+    },
+    {
+      "name": "dry_exit_before_capture_and_mkdir",
+      "ok": true
+    },
+    {
+      "name": "formal_three_argv_original",
+      "ok": true
+    },
+    {
+      "name": "formal_counts_no_skip_relaxation",
+      "ok": true
+    },
+    {
+      "name": "single_digest_exact0_1_0",
+      "ok": true
+    },
+    {
+      "name": "W_and_neutral_not_dropped",
+      "ok": true
+    },
+    {
+      "name": "outputs_after_all_proofs_and_unchanged",
+      "ok": true
+    },
+    {
+      "name": "pathspec_git1",
+      "ok": true
+    },
+    {
+      "name": "pathspec_git2",
+      "ok": true
+    },
+    {
+      "name": "pathspec_does_not_hide_known_rename",
+      "ok": true
+    }
+  ]
+}

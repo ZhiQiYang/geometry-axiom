@@ -1,0 +1,23 @@
+{
+  "observed_utc": "2026-10-29T17:15:35.209015+00:00",
+  "source_sha": "7c8e9cee4ed5b3706ee919e2831a1dac0aa55ea5",
+  "census_h7_started_utc_proc": "2026-10-29T17:13:22.550000+00:00",
+  "parent_report": {
+    "source": "root coordination message, not independently re-executed by this agent",
+    "r07_partial_browser_started_utc": "2026-10-29T17:14:04.935Z",
+    "r07_partial_browser_ended_utc": "2026-10-29T17:14:15.134Z",
+    "reported_phase_exits": [
+      0,
+      0,
+      0
+    ],
+    "overlap_seconds": 10.199,
+    "further_heavy_tests_suspended_until_census_terminal": true
+  },
+  "limits": [
+    "This census is not an exclusive performance sample.",
+    "Previously published standalone H7 receipts keep their original execution identity.",
+    "No restart, deadline extension, filtering, or resampling.",
+    "A potential whole-census timeout cannot be attributed wholly to this 10.199-second overlap without evidence."
+  ]
+}

@@ -1,0 +1,18 @@
+diff --git a/geometry-app/native/reference_sources.inc b/geometry-app/native/reference_sources.inc
+index e05bf6aa..81b33803 100644
+--- a/geometry-app/native/reference_sources.inc
++++ b/geometry-app/native/reference_sources.inc
+@@ -778,13 +778,6 @@ static bool reference_guide_position(ReferenceEval *ctx,size_t i,GeoAxisPosition
+     if(geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_GUIDE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK||value.kind!=GEO_SOURCE_AXIS_POSITION||
+         !value.as.position.context.has_placement||value.as.position.context.axis<0||value.as.position.context.axis>1)return false;
+     ctx->guide_values[i]=value.as.position;ctx->guide_values_valid[i]=true;
+-    /* reference_rebuild clears resolved, but a guide already memoized in this
+-     * candidate graph (assembly generation reads member guides first) never
+-     * re-runs the provider that sets it. Restore only that flag, and only when
+-     * the stored offset is this returned value; any other cache stays as is. */
+-    if(!ctx->use_current_values){const GeoGuide *stored=geo_guides_at(&ctx->world->geo.guide_lines,i);
+-        if(stored&&!stored->resolved&&stored->offset==value.as.position.coordinate){GeoGuide actual=*stored;actual.resolved=true;
+-            if(!geo_guides_put(&ctx->world->geo.guide_lines,&actual))return false;}}
+     if(out)*out=value.as.position;return true;
+ }
+ static bool reference_eval_guide(ReferenceEval *ctx,size_t i)

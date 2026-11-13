@@ -1,0 +1,2839 @@
+{
+  "sourceSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "files": [
+    {
+      "archivePath": "fixed-source/geometry-app/geometry_app/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-app/geometry_app/__init__.py",
+      "bytes": 75,
+      "sha256": "3caf01c2ed6ded5c442c4bc611b362ffd884ad6a71c77ded2952e0ff0fd59169"
+    },
+    {
+      "archivePath": "fixed-source/geometry-app/geometry_app/bootstrap.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-app/geometry_app/bootstrap.py",
+      "bytes": 759,
+      "sha256": "ccaa3fafcd29676aaffe9d46ae77f32bd5145896babba244f6a59c1779f3472d"
+    },
+    {
+      "archivePath": "fixed-source/geometry-app/geometry_app/kernel_errors.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-app/geometry_app/kernel_errors.py",
+      "bytes": 1300,
+      "sha256": "6ee91933c12f80c81f26169572ea360607152398d40f130c82ec383dc04675a0"
+    },
+    {
+      "archivePath": "fixed-source/geometry-app/geometry_app/model_codec.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-app/geometry_app/model_codec.py",
+      "bytes": 9284,
+      "sha256": "78d7f149dfd0fa815dce812cd3f4906759b3916ea343b564986ff860acd24e16"
+    },
+    {
+      "archivePath": "fixed-source/geometry-app/geometry_app/model_common.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-app/geometry_app/model_common.py",
+      "bytes": 3568,
+      "sha256": "26be15286eca83350df893f93f6299a09e79c0b02c93a166bd298a638fe93c2d"
+    },
+    {
+      "archivePath": "fixed-source/geometry-app/geometry_app/model_geometry.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-app/geometry_app/model_geometry.py",
+      "bytes": 5488,
+      "sha256": "e4ab0ac2c0da7f433c3da39e574386675f9c77bb52be8a66b281c4e62afb6c40"
+    },
+    {
+      "archivePath": "fixed-source/geometry-app/geometry_app/model_native.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-app/geometry_app/model_native.py",
+      "bytes": 14187,
+      "sha256": "0c1c94006fa33719c64820a477f219a5ac05f3fd4c372fe473e2b5deda63a0c6"
+    },
+    {
+      "archivePath": "fixed-source/geometry-app/geometry_app/model_profile_compat.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-app/geometry_app/model_profile_compat.py",
+      "bytes": 2207,
+      "sha256": "7dac524a6d8cbe492b2836b48f906f5b69db22fcda518acdb7bd6ad472ad5280"
+    },
+    {
+      "archivePath": "fixed-source/geometry-app/geometry_app/model_runtime.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-app/geometry_app/model_runtime.py",
+      "bytes": 20698,
+      "sha256": "e073428e78422bbc6b26ab70bd456b9456c45fc4560480d213784637df7f0685"
+    },
+    {
+      "archivePath": "fixed-source/geometry-app/geometry_app/model_sources.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-app/geometry_app/model_sources.py",
+      "bytes": 26570,
+      "sha256": "e5577ac9b11fb410b18da8a40a722e30e3195b745754b3927360f8fa972237ea"
+    },
+    {
+      "archivePath": "fixed-source/geometry-app/geometry_app/model_world.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-app/geometry_app/model_world.py",
+      "bytes": 4638,
+      "sha256": "0d4e03c08248e663e2c0286329aacdac9d3b170f3caac4df4d9082a129ef9570"
+    },
+    {
+      "archivePath": "fixed-source/geometry-app/geometry_app/source_closure.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-app/geometry_app/source_closure.py",
+      "bytes": 10260,
+      "sha256": "104ba157e0ed5842d664941d44e6803e5017e2316d53148311638cb9bce33c38"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/geometry_kernel/README.md",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/geometry_kernel/README.md",
+      "bytes": 5875,
+      "sha256": "5799f81cbf4781e084b8bc39a781a6d2a1401edb05fef666d5fa6ab3b9a42be3"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/geometry_kernel/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/geometry_kernel/__init__.py",
+      "bytes": 2080,
+      "sha256": "4eabe07ca16981a79182b45d36d45d340da057c886fe225e50139e169bdcc61a"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/geometry_kernel/canonical.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/geometry_kernel/canonical.py",
+      "bytes": 2022,
+      "sha256": "7cfa3256b1564bcbbb660a9fc91d26bb4be02ee04150fdbb795dfeacae334306"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/geometry_kernel/errors.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/geometry_kernel/errors.py",
+      "bytes": 1671,
+      "sha256": "08c45f54ebb127acd2420fd208e5b25e373a00441479c305340712fd38af091c"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/geometry_kernel/evaluate.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/geometry_kernel/evaluate.py",
+      "bytes": 14970,
+      "sha256": "72424c367cd2b29ed64390c42b9d459af8b65e80010a86d374d7825fe069c7ac"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/geometry_kernel/geometry.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/geometry_kernel/geometry.py",
+      "bytes": 24534,
+      "sha256": "7a0fcb0dea449ff1d767b9a47a358ba75f83f572ec3c3200b21768625f422daa"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/geometry_kernel/graph.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/geometry_kernel/graph.py",
+      "bytes": 24627,
+      "sha256": "36fcbf625fb63cce251636fddd56df52fcb3048785e5b5e3430541a285451df4"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/geometry_kernel/session.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/geometry_kernel/session.py",
+      "bytes": 2551,
+      "sha256": "c15666dbea8d9ad15d838aeccd2e62ba0e824ec1f281232a1ddf9d0c3b93d16f"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/geometry_kernel/transactions.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/geometry_kernel/transactions.py",
+      "bytes": 7362,
+      "sha256": "08dc70beacbeddaa52ffcf5e893f99374e7c12d55273301e98ad95093fd39db9"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/geometry_kernel/types.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/geometry_kernel/types.py",
+      "bytes": 13140,
+      "sha256": "5abc88d452ec656496e0ff5bed4cf98375b8262c7358e151048ac09ee53a804d"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/modeling/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/modeling/__init__.py",
+      "bytes": 29048,
+      "sha256": "92e2b2205518e96b590cd3625b0645f88d906f87da0199353423cdc0855d43fb"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/modeling/_host.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/modeling/_host.py",
+      "bytes": 444,
+      "sha256": "4532d8011c8c984277c3341cfc84046ff41dbe2cba5f630505dfabe064ffb800"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/modeling/base.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/modeling/base.py",
+      "bytes": 837,
+      "sha256": "f8599b7dfbd239fb20385ed7c48995bcdd2e76c46bdfc92fb38c2df98f8952dd"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/modeling/common.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/modeling/common.py",
+      "bytes": 193,
+      "sha256": "585612b886dce3fd694fdcf14b0af67ad5fce7d60e03c778e4c330d86c1bc0dd"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/modeling/engine.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/modeling/engine.py",
+      "bytes": 832,
+      "sha256": "b371e4045dbbb4e8a1d2fa4e1294ac42d0d2177b461dd169928a05c255eb69e0"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/modeling/geometry.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/modeling/geometry.py",
+      "bytes": 235,
+      "sha256": "ba2b9f31708863dc340a286206c3793625ffb7701267172a541adba58f447d94"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/modeling/kernel_errors.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/modeling/kernel_errors.py",
+      "bytes": 139,
+      "sha256": "73e1ad71d2a5f7ce85a77eaaa7b6ce406dc522043788d329bb5cbf807695f091"
+    },
+    {
+      "archivePath": "fixed-source/geometry-core/modeling/section_profile.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-core/modeling/section_profile.py",
+      "bytes": 154,
+      "sha256": "b45c8b497d1e2bf662628700b59fc4f01900f1218378507e9b76cb5e1267aeee"
+    },
+    {
+      "archivePath": "fixed-source/geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "bytes": 74,
+      "sha256": "8043f03b5c238def60d5faf58838e1d2d1cb55acc8042907145f6141b38af986"
+    },
+    {
+      "archivePath": "fixed-source/geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "bytes": 2969,
+      "sha256": "d9aeabdeaad0d435038e513583d199358d9dc765ee77d1208ba652c8a24a6b64"
+    },
+    {
+      "archivePath": "fixed-source/geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "bytes": 7757,
+      "sha256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73"
+    },
+    {
+      "archivePath": "fixed-source/geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "bytes": 3452,
+      "sha256": "ef8d34cc9388dcff274d2ef89f76fd9eff3bfa93943dd2995e7308a7ca50e7d9"
+    },
+    {
+      "archivePath": "fixed-source/tests/test_geometry_host_sources.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_host_sources.py",
+      "bytes": 61609,
+      "sha256": "9ffa891ccc50bd4a5cc30bca840de56340a74c57c40f46cfcd2e4f557208aba1"
+    },
+    {
+      "archivePath": "fixed-source/tests/test_geometry_kernel_runtime.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_kernel_runtime.py",
+      "bytes": 28334,
+      "sha256": "761825c11166cf21a75eb082d3be82d4086419fe0c535a66ab05ddb73159e41b"
+    },
+    {
+      "archivePath": "fixed-source/tests/test_geometry_source_runtime.py",
+      "originalPath": "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_source_runtime.py",
+      "bytes": 21030,
+      "sha256": "314dba2b70374ba7554db8364b0f1cbbc18cdc1d080795a528ce2f1317115e33"
+    },
+    {
+      "archivePath": "launch/REQUEST.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/REQUEST.json",
+      "bytes": 1345,
+      "sha256": "32113fad356ad097447409782be244288d1511ff1afb7fbd8cd8a66553124ad2"
+    },
+    {
+      "archivePath": "launch/RESULT.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/RESULT.json",
+      "bytes": 2409,
+      "sha256": "d65db45012c56d59e42c494bc3ca04345e4369ab03b6afe5b7be458951f23b1f"
+    },
+    {
+      "archivePath": "launch/subcommands.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands.json",
+      "bytes": 19369,
+      "sha256": "641dd5f470368272643527cc2fcfca64d55c07cfd37be79e9b0971e6100c425d"
+    },
+    {
+      "archivePath": "launch/subcommands/000001/request.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000001/request.json",
+      "bytes": 1484,
+      "sha256": "4e7adc40ac1995f18f7d25ba569efcb81fbbc26bcc0755e2ade77e805247e061"
+    },
+    {
+      "archivePath": "launch/subcommands/000001/result.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000001/result.json",
+      "bytes": 1735,
+      "sha256": "4c1ba56b0324b0af12fcfc344597c5216bf1671571c07cfdb3ce27fba6fa338f"
+    },
+    {
+      "archivePath": "launch/subcommands/000001/stderr.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000001/stdin.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000001/stdout.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000001/stdout.bin",
+      "bytes": 189,
+      "sha256": "ff3edc69cdd3d239c42aceb507aa5891c24f749e8f34916da47ca3ff0762acb6"
+    },
+    {
+      "archivePath": "launch/subcommands/000002/request.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000002/request.json",
+      "bytes": 1573,
+      "sha256": "9c68c891941d83a565dbf98029f3ef1d713fb258811ca4981dd417b00e6b4322"
+    },
+    {
+      "archivePath": "launch/subcommands/000002/result.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000002/result.json",
+      "bytes": 1823,
+      "sha256": "9193ea5f5e58a8a5cb00f7d4d60beb1368a0cb2d4d567ef756017553be298a46"
+    },
+    {
+      "archivePath": "launch/subcommands/000002/stderr.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000002/stderr.bin",
+      "bytes": 62,
+      "sha256": "cf149f79070102cd6806da8755c0809cc3212698c05304014cf55b42a92633d0"
+    },
+    {
+      "archivePath": "launch/subcommands/000002/stdin.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000002/stdout.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000003/request.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000003/request.json",
+      "bytes": 1849,
+      "sha256": "e317643d592e2bcf5d01f1ab1d6c8835cc354ff979a801ccec384320ff650a38"
+    },
+    {
+      "archivePath": "launch/subcommands/000003/result.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000003/result.json",
+      "bytes": 2098,
+      "sha256": "339e126255a84a3a75ea4284bbc9e6c202340bfab04b850b5167a2235e99f42c"
+    },
+    {
+      "archivePath": "launch/subcommands/000003/stderr.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000003/stdin.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000003/stdout.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000004/request.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000004/request.json",
+      "bytes": 1595,
+      "sha256": "dd39352858a35dcaddf45710ba147afe5af966bffd5139b2bc73732f9dc7becb"
+    },
+    {
+      "archivePath": "launch/subcommands/000004/result.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000004/result.json",
+      "bytes": 1845,
+      "sha256": "9e256b58b771cc63b811dcc954f12e31ab213cf4397366798371929eb05626dd"
+    },
+    {
+      "archivePath": "launch/subcommands/000004/stderr.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000004/stderr.bin",
+      "bytes": 74,
+      "sha256": "481fffa41832213a0f694d04887ad7c654df1a95d3aa0dbb7cc229f3be7d9e66"
+    },
+    {
+      "archivePath": "launch/subcommands/000004/stdin.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000004/stdout.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000004/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000005/request.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000005/request.json",
+      "bytes": 1565,
+      "sha256": "f9c12c0081f36dbe6e1f49e6d4a15591154fa74ec73cc201609d6d8e388fe45d"
+    },
+    {
+      "archivePath": "launch/subcommands/000005/result.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000005/result.json",
+      "bytes": 1815,
+      "sha256": "6045d341f7eef2b8a91ca6ff21634e75d5b525e3052158be556d83f7d364e121"
+    },
+    {
+      "archivePath": "launch/subcommands/000005/stderr.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000005/stdin.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000005/stdout.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000005/stdout.bin",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "archivePath": "launch/subcommands/000006/request.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000006/request.json",
+      "bytes": 1507,
+      "sha256": "b30d4fd61c0f57142e628bdbeef8f288c7997ca20291b53a9932e37a78088b38"
+    },
+    {
+      "archivePath": "launch/subcommands/000006/result.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000006/result.json",
+      "bytes": 1758,
+      "sha256": "646063883d6ca0f334eb494548ef09102ed660abb0fa1f2dfd3e3704bd699ce4"
+    },
+    {
+      "archivePath": "launch/subcommands/000006/stderr.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000006/stdin.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000006/stdout.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000006/stdout.bin",
+      "bytes": 41,
+      "sha256": "b5aa10399de82cd96d482ea3501f58cd7663356a1e0a4fba8e1ab4f2ee208605"
+    },
+    {
+      "archivePath": "launch/subcommands/000007/request.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000007/request.json",
+      "bytes": 1543,
+      "sha256": "7c89e64ae2f23e7691d3aef1198b549677c3cba98726416c4a96379e30e739a5"
+    },
+    {
+      "archivePath": "launch/subcommands/000007/result.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000007/result.json",
+      "bytes": 1792,
+      "sha256": "582858155c4f67a76b6917448534132ef6179b3ae81183beff8ec7e30df7f43d"
+    },
+    {
+      "archivePath": "launch/subcommands/000007/stderr.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000007/stdin.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000007/stdout.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000007/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000008/request.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000008/request.json",
+      "bytes": 1823,
+      "sha256": "fe36d1552db85e047561a5e961d62fbcb0db027cc6d0f65220a972d33dd333b8"
+    },
+    {
+      "archivePath": "launch/subcommands/000008/result.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000008/result.json",
+      "bytes": 2075,
+      "sha256": "4d7bb6413c2ed4050e8e539c413ff0e10f2725732efef9e0d6c02fa0393f9deb"
+    },
+    {
+      "archivePath": "launch/subcommands/000008/stderr.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000008/stdin.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000008/stdout.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000008/stdout.bin",
+      "bytes": 110,
+      "sha256": "c9b669815c2769a7eb53ab222f2c4c7c214096517965eb78a3eae388eeee710a"
+    },
+    {
+      "archivePath": "launch/subcommands/000009/request.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000009/request.json",
+      "bytes": 1507,
+      "sha256": "d41244d1b94052eb7758027df0393d98e9ba17af35b079c57eedc01c02f9f361"
+    },
+    {
+      "archivePath": "launch/subcommands/000009/result.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000009/result.json",
+      "bytes": 1756,
+      "sha256": "274dff8cabcfda3f43276691841aec70616459979260b5cb706d24b1a505380c"
+    },
+    {
+      "archivePath": "launch/subcommands/000009/stderr.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000009/stdin.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000009/stdout.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000009/stdout.bin",
+      "bytes": 41,
+      "sha256": "b5aa10399de82cd96d482ea3501f58cd7663356a1e0a4fba8e1ab4f2ee208605"
+    },
+    {
+      "archivePath": "launch/subcommands/000010/request.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000010/request.json",
+      "bytes": 1543,
+      "sha256": "e18864b9bd8f755729ab77ade56eb76c5f0696f780f2b77eb4427f0fbf15b125"
+    },
+    {
+      "archivePath": "launch/subcommands/000010/result.json",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000010/result.json",
+      "bytes": 1793,
+      "sha256": "e012deb8996e66c9bea6a2e9f8f27836eb2ac3b5c7586526e7a8f1784f11dfe0"
+    },
+    {
+      "archivePath": "launch/subcommands/000010/stderr.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000010/stdin.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "launch/subcommands/000010/stdout.bin",
+      "originalPath": "/tmp/geo324-owner-20261024/predicate-actual-launch-57b68014/subcommands/000010/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/input-git-tree.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/input-git-tree.bin",
+      "bytes": 3550,
+      "sha256": "ba800775f1b5a1792bde364fd5d8375a2ed819f9c837a42b193602e37c534bb8"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-app/geometry_app/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-app/geometry_app/__init__.py",
+      "bytes": 75,
+      "sha256": "3caf01c2ed6ded5c442c4bc611b362ffd884ad6a71c77ded2952e0ff0fd59169"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-app/geometry_app/bootstrap.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-app/geometry_app/bootstrap.py",
+      "bytes": 759,
+      "sha256": "ccaa3fafcd29676aaffe9d46ae77f32bd5145896babba244f6a59c1779f3472d"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-app/geometry_app/kernel_errors.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-app/geometry_app/kernel_errors.py",
+      "bytes": 1300,
+      "sha256": "6ee91933c12f80c81f26169572ea360607152398d40f130c82ec383dc04675a0"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-app/geometry_app/model_codec.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-app/geometry_app/model_codec.py",
+      "bytes": 9284,
+      "sha256": "78d7f149dfd0fa815dce812cd3f4906759b3916ea343b564986ff860acd24e16"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-app/geometry_app/model_common.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-app/geometry_app/model_common.py",
+      "bytes": 3568,
+      "sha256": "26be15286eca83350df893f93f6299a09e79c0b02c93a166bd298a638fe93c2d"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-app/geometry_app/model_geometry.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-app/geometry_app/model_geometry.py",
+      "bytes": 5488,
+      "sha256": "e4ab0ac2c0da7f433c3da39e574386675f9c77bb52be8a66b281c4e62afb6c40"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-app/geometry_app/model_native.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-app/geometry_app/model_native.py",
+      "bytes": 14187,
+      "sha256": "0c1c94006fa33719c64820a477f219a5ac05f3fd4c372fe473e2b5deda63a0c6"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-app/geometry_app/model_profile_compat.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-app/geometry_app/model_profile_compat.py",
+      "bytes": 2207,
+      "sha256": "7dac524a6d8cbe492b2836b48f906f5b69db22fcda518acdb7bd6ad472ad5280"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-app/geometry_app/model_runtime.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-app/geometry_app/model_runtime.py",
+      "bytes": 20698,
+      "sha256": "e073428e78422bbc6b26ab70bd456b9456c45fc4560480d213784637df7f0685"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-app/geometry_app/model_sources.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-app/geometry_app/model_sources.py",
+      "bytes": 26570,
+      "sha256": "e5577ac9b11fb410b18da8a40a722e30e3195b745754b3927360f8fa972237ea"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-app/geometry_app/model_world.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-app/geometry_app/model_world.py",
+      "bytes": 4638,
+      "sha256": "0d4e03c08248e663e2c0286329aacdac9d3b170f3caac4df4d9082a129ef9570"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-app/geometry_app/source_closure.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-app/geometry_app/source_closure.py",
+      "bytes": 10260,
+      "sha256": "104ba157e0ed5842d664941d44e6803e5017e2316d53148311638cb9bce33c38"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/geometry_kernel/README.md",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/geometry_kernel/README.md",
+      "bytes": 5875,
+      "sha256": "5799f81cbf4781e084b8bc39a781a6d2a1401edb05fef666d5fa6ab3b9a42be3"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/geometry_kernel/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/geometry_kernel/__init__.py",
+      "bytes": 2080,
+      "sha256": "4eabe07ca16981a79182b45d36d45d340da057c886fe225e50139e169bdcc61a"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/geometry_kernel/canonical.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/geometry_kernel/canonical.py",
+      "bytes": 2022,
+      "sha256": "7cfa3256b1564bcbbb660a9fc91d26bb4be02ee04150fdbb795dfeacae334306"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/geometry_kernel/errors.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/geometry_kernel/errors.py",
+      "bytes": 1671,
+      "sha256": "08c45f54ebb127acd2420fd208e5b25e373a00441479c305340712fd38af091c"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/geometry_kernel/evaluate.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/geometry_kernel/evaluate.py",
+      "bytes": 14970,
+      "sha256": "72424c367cd2b29ed64390c42b9d459af8b65e80010a86d374d7825fe069c7ac"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/geometry_kernel/geometry.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/geometry_kernel/geometry.py",
+      "bytes": 24534,
+      "sha256": "7a0fcb0dea449ff1d767b9a47a358ba75f83f572ec3c3200b21768625f422daa"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/geometry_kernel/graph.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/geometry_kernel/graph.py",
+      "bytes": 24627,
+      "sha256": "36fcbf625fb63cce251636fddd56df52fcb3048785e5b5e3430541a285451df4"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/geometry_kernel/session.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/geometry_kernel/session.py",
+      "bytes": 2551,
+      "sha256": "c15666dbea8d9ad15d838aeccd2e62ba0e824ec1f281232a1ddf9d0c3b93d16f"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/geometry_kernel/transactions.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/geometry_kernel/transactions.py",
+      "bytes": 7362,
+      "sha256": "08dc70beacbeddaa52ffcf5e893f99374e7c12d55273301e98ad95093fd39db9"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/geometry_kernel/types.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/geometry_kernel/types.py",
+      "bytes": 13140,
+      "sha256": "5abc88d452ec656496e0ff5bed4cf98375b8262c7358e151048ac09ee53a804d"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/modeling/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/modeling/__init__.py",
+      "bytes": 29048,
+      "sha256": "92e2b2205518e96b590cd3625b0645f88d906f87da0199353423cdc0855d43fb"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/modeling/_host.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/modeling/_host.py",
+      "bytes": 444,
+      "sha256": "4532d8011c8c984277c3341cfc84046ff41dbe2cba5f630505dfabe064ffb800"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/modeling/base.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/modeling/base.py",
+      "bytes": 837,
+      "sha256": "f8599b7dfbd239fb20385ed7c48995bcdd2e76c46bdfc92fb38c2df98f8952dd"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/modeling/common.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/modeling/common.py",
+      "bytes": 193,
+      "sha256": "585612b886dce3fd694fdcf14b0af67ad5fce7d60e03c778e4c330d86c1bc0dd"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/modeling/engine.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/modeling/engine.py",
+      "bytes": 832,
+      "sha256": "b371e4045dbbb4e8a1d2fa4e1294ac42d0d2177b461dd169928a05c255eb69e0"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/modeling/geometry.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/modeling/geometry.py",
+      "bytes": 235,
+      "sha256": "ba2b9f31708863dc340a286206c3793625ffb7701267172a541adba58f447d94"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/modeling/kernel_errors.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/modeling/kernel_errors.py",
+      "bytes": 139,
+      "sha256": "73e1ad71d2a5f7ce85a77eaaa7b6ce406dc522043788d329bb5cbf807695f091"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-core/modeling/section_profile.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-core/modeling/section_profile.py",
+      "bytes": 154,
+      "sha256": "b45c8b497d1e2bf662628700b59fc4f01900f1218378507e9b76cb5e1267aeee"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "bytes": 74,
+      "sha256": "8043f03b5c238def60d5faf58838e1d2d1cb55acc8042907145f6141b38af986"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "bytes": 2969,
+      "sha256": "d9aeabdeaad0d435038e513583d199358d9dc765ee77d1208ba652c8a24a6b64"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "bytes": 7757,
+      "sha256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73"
+    },
+    {
+      "archivePath": "proof/isolated-dict/geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "bytes": 3452,
+      "sha256": "ef8d34cc9388dcff274d2ef89f76fd9eff3bfa93943dd2995e7308a7ca50e7d9"
+    },
+    {
+      "archivePath": "proof/isolated-dict/tests/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/tests/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/isolated-dict/tests/test_geometry_host_sources.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/tests/test_geometry_host_sources.py",
+      "bytes": 61609,
+      "sha256": "9ffa891ccc50bd4a5cc30bca840de56340a74c57c40f46cfcd2e4f557208aba1"
+    },
+    {
+      "archivePath": "proof/isolated-dict/tests/test_geometry_kernel_runtime.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/tests/test_geometry_kernel_runtime.py",
+      "bytes": 28334,
+      "sha256": "761825c11166cf21a75eb082d3be82d4086419fe0c535a66ab05ddb73159e41b"
+    },
+    {
+      "archivePath": "proof/isolated-dict/tests/test_geometry_source_runtime.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-dict/tests/test_geometry_source_runtime.py",
+      "bytes": 21030,
+      "sha256": "314dba2b70374ba7554db8364b0f1cbbc18cdc1d080795a528ce2f1317115e33"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-app/geometry_app/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-app/geometry_app/__init__.py",
+      "bytes": 75,
+      "sha256": "3caf01c2ed6ded5c442c4bc611b362ffd884ad6a71c77ded2952e0ff0fd59169"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-app/geometry_app/bootstrap.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-app/geometry_app/bootstrap.py",
+      "bytes": 759,
+      "sha256": "ccaa3fafcd29676aaffe9d46ae77f32bd5145896babba244f6a59c1779f3472d"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-app/geometry_app/kernel_errors.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-app/geometry_app/kernel_errors.py",
+      "bytes": 1300,
+      "sha256": "6ee91933c12f80c81f26169572ea360607152398d40f130c82ec383dc04675a0"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-app/geometry_app/model_codec.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-app/geometry_app/model_codec.py",
+      "bytes": 9284,
+      "sha256": "78d7f149dfd0fa815dce812cd3f4906759b3916ea343b564986ff860acd24e16"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-app/geometry_app/model_common.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-app/geometry_app/model_common.py",
+      "bytes": 3568,
+      "sha256": "26be15286eca83350df893f93f6299a09e79c0b02c93a166bd298a638fe93c2d"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-app/geometry_app/model_geometry.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-app/geometry_app/model_geometry.py",
+      "bytes": 5488,
+      "sha256": "e4ab0ac2c0da7f433c3da39e574386675f9c77bb52be8a66b281c4e62afb6c40"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-app/geometry_app/model_native.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-app/geometry_app/model_native.py",
+      "bytes": 14187,
+      "sha256": "0c1c94006fa33719c64820a477f219a5ac05f3fd4c372fe473e2b5deda63a0c6"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-app/geometry_app/model_profile_compat.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-app/geometry_app/model_profile_compat.py",
+      "bytes": 2207,
+      "sha256": "7dac524a6d8cbe492b2836b48f906f5b69db22fcda518acdb7bd6ad472ad5280"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-app/geometry_app/model_runtime.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-app/geometry_app/model_runtime.py",
+      "bytes": 20698,
+      "sha256": "e073428e78422bbc6b26ab70bd456b9456c45fc4560480d213784637df7f0685"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-app/geometry_app/model_sources.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-app/geometry_app/model_sources.py",
+      "bytes": 26570,
+      "sha256": "e5577ac9b11fb410b18da8a40a722e30e3195b745754b3927360f8fa972237ea"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-app/geometry_app/model_world.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-app/geometry_app/model_world.py",
+      "bytes": 4638,
+      "sha256": "0d4e03c08248e663e2c0286329aacdac9d3b170f3caac4df4d9082a129ef9570"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-app/geometry_app/source_closure.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-app/geometry_app/source_closure.py",
+      "bytes": 10260,
+      "sha256": "104ba157e0ed5842d664941d44e6803e5017e2316d53148311638cb9bce33c38"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/geometry_kernel/README.md",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/geometry_kernel/README.md",
+      "bytes": 5875,
+      "sha256": "5799f81cbf4781e084b8bc39a781a6d2a1401edb05fef666d5fa6ab3b9a42be3"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/geometry_kernel/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/geometry_kernel/__init__.py",
+      "bytes": 2080,
+      "sha256": "4eabe07ca16981a79182b45d36d45d340da057c886fe225e50139e169bdcc61a"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/geometry_kernel/canonical.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/geometry_kernel/canonical.py",
+      "bytes": 2022,
+      "sha256": "7cfa3256b1564bcbbb660a9fc91d26bb4be02ee04150fdbb795dfeacae334306"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/geometry_kernel/errors.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/geometry_kernel/errors.py",
+      "bytes": 1671,
+      "sha256": "08c45f54ebb127acd2420fd208e5b25e373a00441479c305340712fd38af091c"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/geometry_kernel/evaluate.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/geometry_kernel/evaluate.py",
+      "bytes": 14970,
+      "sha256": "72424c367cd2b29ed64390c42b9d459af8b65e80010a86d374d7825fe069c7ac"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/geometry_kernel/geometry.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/geometry_kernel/geometry.py",
+      "bytes": 24534,
+      "sha256": "7a0fcb0dea449ff1d767b9a47a358ba75f83f572ec3c3200b21768625f422daa"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/geometry_kernel/graph.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/geometry_kernel/graph.py",
+      "bytes": 24627,
+      "sha256": "36fcbf625fb63cce251636fddd56df52fcb3048785e5b5e3430541a285451df4"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/geometry_kernel/session.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/geometry_kernel/session.py",
+      "bytes": 2551,
+      "sha256": "c15666dbea8d9ad15d838aeccd2e62ba0e824ec1f281232a1ddf9d0c3b93d16f"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/geometry_kernel/transactions.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/geometry_kernel/transactions.py",
+      "bytes": 7362,
+      "sha256": "08dc70beacbeddaa52ffcf5e893f99374e7c12d55273301e98ad95093fd39db9"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/geometry_kernel/types.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/geometry_kernel/types.py",
+      "bytes": 13140,
+      "sha256": "5abc88d452ec656496e0ff5bed4cf98375b8262c7358e151048ac09ee53a804d"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/modeling/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/modeling/__init__.py",
+      "bytes": 29048,
+      "sha256": "92e2b2205518e96b590cd3625b0645f88d906f87da0199353423cdc0855d43fb"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/modeling/_host.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/modeling/_host.py",
+      "bytes": 444,
+      "sha256": "4532d8011c8c984277c3341cfc84046ff41dbe2cba5f630505dfabe064ffb800"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/modeling/base.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/modeling/base.py",
+      "bytes": 837,
+      "sha256": "f8599b7dfbd239fb20385ed7c48995bcdd2e76c46bdfc92fb38c2df98f8952dd"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/modeling/common.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/modeling/common.py",
+      "bytes": 193,
+      "sha256": "585612b886dce3fd694fdcf14b0af67ad5fce7d60e03c778e4c330d86c1bc0dd"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/modeling/engine.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/modeling/engine.py",
+      "bytes": 832,
+      "sha256": "b371e4045dbbb4e8a1d2fa4e1294ac42d0d2177b461dd169928a05c255eb69e0"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/modeling/geometry.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/modeling/geometry.py",
+      "bytes": 235,
+      "sha256": "ba2b9f31708863dc340a286206c3793625ffb7701267172a541adba58f447d94"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/modeling/kernel_errors.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/modeling/kernel_errors.py",
+      "bytes": 139,
+      "sha256": "73e1ad71d2a5f7ce85a77eaaa7b6ce406dc522043788d329bb5cbf807695f091"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-core/modeling/section_profile.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-core/modeling/section_profile.py",
+      "bytes": 154,
+      "sha256": "b45c8b497d1e2bf662628700b59fc4f01900f1218378507e9b76cb5e1267aeee"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "bytes": 74,
+      "sha256": "8043f03b5c238def60d5faf58838e1d2d1cb55acc8042907145f6141b38af986"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "bytes": 2969,
+      "sha256": "d9aeabdeaad0d435038e513583d199358d9dc765ee77d1208ba652c8a24a6b64"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "bytes": 7757,
+      "sha256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73"
+    },
+    {
+      "archivePath": "proof/isolated-feature/geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "bytes": 3452,
+      "sha256": "ef8d34cc9388dcff274d2ef89f76fd9eff3bfa93943dd2995e7308a7ca50e7d9"
+    },
+    {
+      "archivePath": "proof/isolated-feature/tests/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/tests/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/isolated-feature/tests/test_geometry_host_sources.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/tests/test_geometry_host_sources.py",
+      "bytes": 61609,
+      "sha256": "9ffa891ccc50bd4a5cc30bca840de56340a74c57c40f46cfcd2e4f557208aba1"
+    },
+    {
+      "archivePath": "proof/isolated-feature/tests/test_geometry_kernel_runtime.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/tests/test_geometry_kernel_runtime.py",
+      "bytes": 28334,
+      "sha256": "761825c11166cf21a75eb082d3be82d4086419fe0c535a66ab05ddb73159e41b"
+    },
+    {
+      "archivePath": "proof/isolated-feature/tests/test_geometry_source_runtime.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-feature/tests/test_geometry_source_runtime.py",
+      "bytes": 21030,
+      "sha256": "314dba2b70374ba7554db8364b0f1cbbc18cdc1d080795a528ce2f1317115e33"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-app/geometry_app/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-app/geometry_app/__init__.py",
+      "bytes": 75,
+      "sha256": "3caf01c2ed6ded5c442c4bc611b362ffd884ad6a71c77ded2952e0ff0fd59169"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-app/geometry_app/bootstrap.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-app/geometry_app/bootstrap.py",
+      "bytes": 759,
+      "sha256": "ccaa3fafcd29676aaffe9d46ae77f32bd5145896babba244f6a59c1779f3472d"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-app/geometry_app/kernel_errors.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-app/geometry_app/kernel_errors.py",
+      "bytes": 1300,
+      "sha256": "6ee91933c12f80c81f26169572ea360607152398d40f130c82ec383dc04675a0"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-app/geometry_app/model_codec.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-app/geometry_app/model_codec.py",
+      "bytes": 9284,
+      "sha256": "78d7f149dfd0fa815dce812cd3f4906759b3916ea343b564986ff860acd24e16"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-app/geometry_app/model_common.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-app/geometry_app/model_common.py",
+      "bytes": 3568,
+      "sha256": "26be15286eca83350df893f93f6299a09e79c0b02c93a166bd298a638fe93c2d"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-app/geometry_app/model_geometry.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-app/geometry_app/model_geometry.py",
+      "bytes": 5488,
+      "sha256": "e4ab0ac2c0da7f433c3da39e574386675f9c77bb52be8a66b281c4e62afb6c40"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-app/geometry_app/model_native.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-app/geometry_app/model_native.py",
+      "bytes": 14187,
+      "sha256": "0c1c94006fa33719c64820a477f219a5ac05f3fd4c372fe473e2b5deda63a0c6"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-app/geometry_app/model_profile_compat.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-app/geometry_app/model_profile_compat.py",
+      "bytes": 2207,
+      "sha256": "7dac524a6d8cbe492b2836b48f906f5b69db22fcda518acdb7bd6ad472ad5280"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-app/geometry_app/model_runtime.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-app/geometry_app/model_runtime.py",
+      "bytes": 20698,
+      "sha256": "e073428e78422bbc6b26ab70bd456b9456c45fc4560480d213784637df7f0685"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-app/geometry_app/model_sources.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-app/geometry_app/model_sources.py",
+      "bytes": 26570,
+      "sha256": "e5577ac9b11fb410b18da8a40a722e30e3195b745754b3927360f8fa972237ea"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-app/geometry_app/model_world.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-app/geometry_app/model_world.py",
+      "bytes": 4638,
+      "sha256": "0d4e03c08248e663e2c0286329aacdac9d3b170f3caac4df4d9082a129ef9570"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-app/geometry_app/source_closure.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-app/geometry_app/source_closure.py",
+      "bytes": 10260,
+      "sha256": "104ba157e0ed5842d664941d44e6803e5017e2316d53148311638cb9bce33c38"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/geometry_kernel/README.md",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/geometry_kernel/README.md",
+      "bytes": 5875,
+      "sha256": "5799f81cbf4781e084b8bc39a781a6d2a1401edb05fef666d5fa6ab3b9a42be3"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/geometry_kernel/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/geometry_kernel/__init__.py",
+      "bytes": 2080,
+      "sha256": "4eabe07ca16981a79182b45d36d45d340da057c886fe225e50139e169bdcc61a"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/geometry_kernel/canonical.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/geometry_kernel/canonical.py",
+      "bytes": 2022,
+      "sha256": "7cfa3256b1564bcbbb660a9fc91d26bb4be02ee04150fdbb795dfeacae334306"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/geometry_kernel/errors.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/geometry_kernel/errors.py",
+      "bytes": 1671,
+      "sha256": "08c45f54ebb127acd2420fd208e5b25e373a00441479c305340712fd38af091c"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/geometry_kernel/evaluate.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/geometry_kernel/evaluate.py",
+      "bytes": 14970,
+      "sha256": "72424c367cd2b29ed64390c42b9d459af8b65e80010a86d374d7825fe069c7ac"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/geometry_kernel/geometry.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/geometry_kernel/geometry.py",
+      "bytes": 24534,
+      "sha256": "7a0fcb0dea449ff1d767b9a47a358ba75f83f572ec3c3200b21768625f422daa"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/geometry_kernel/graph.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/geometry_kernel/graph.py",
+      "bytes": 24627,
+      "sha256": "36fcbf625fb63cce251636fddd56df52fcb3048785e5b5e3430541a285451df4"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/geometry_kernel/session.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/geometry_kernel/session.py",
+      "bytes": 2551,
+      "sha256": "c15666dbea8d9ad15d838aeccd2e62ba0e824ec1f281232a1ddf9d0c3b93d16f"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/geometry_kernel/transactions.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/geometry_kernel/transactions.py",
+      "bytes": 7362,
+      "sha256": "08dc70beacbeddaa52ffcf5e893f99374e7c12d55273301e98ad95093fd39db9"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/geometry_kernel/types.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/geometry_kernel/types.py",
+      "bytes": 13140,
+      "sha256": "5abc88d452ec656496e0ff5bed4cf98375b8262c7358e151048ac09ee53a804d"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/modeling/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/modeling/__init__.py",
+      "bytes": 29048,
+      "sha256": "92e2b2205518e96b590cd3625b0645f88d906f87da0199353423cdc0855d43fb"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/modeling/_host.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/modeling/_host.py",
+      "bytes": 444,
+      "sha256": "4532d8011c8c984277c3341cfc84046ff41dbe2cba5f630505dfabe064ffb800"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/modeling/base.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/modeling/base.py",
+      "bytes": 837,
+      "sha256": "f8599b7dfbd239fb20385ed7c48995bcdd2e76c46bdfc92fb38c2df98f8952dd"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/modeling/common.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/modeling/common.py",
+      "bytes": 193,
+      "sha256": "585612b886dce3fd694fdcf14b0af67ad5fce7d60e03c778e4c330d86c1bc0dd"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/modeling/engine.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/modeling/engine.py",
+      "bytes": 832,
+      "sha256": "b371e4045dbbb4e8a1d2fa4e1294ac42d0d2177b461dd169928a05c255eb69e0"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/modeling/geometry.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/modeling/geometry.py",
+      "bytes": 235,
+      "sha256": "ba2b9f31708863dc340a286206c3793625ffb7701267172a541adba58f447d94"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/modeling/kernel_errors.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/modeling/kernel_errors.py",
+      "bytes": 139,
+      "sha256": "73e1ad71d2a5f7ce85a77eaaa7b6ce406dc522043788d329bb5cbf807695f091"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-core/modeling/section_profile.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-core/modeling/section_profile.py",
+      "bytes": 154,
+      "sha256": "b45c8b497d1e2bf662628700b59fc4f01900f1218378507e9b76cb5e1267aeee"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "bytes": 74,
+      "sha256": "8043f03b5c238def60d5faf58838e1d2d1cb55acc8042907145f6141b38af986"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "bytes": 2969,
+      "sha256": "d9aeabdeaad0d435038e513583d199358d9dc765ee77d1208ba652c8a24a6b64"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "bytes": 7757,
+      "sha256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73"
+    },
+    {
+      "archivePath": "proof/isolated-list/geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "bytes": 3452,
+      "sha256": "ef8d34cc9388dcff274d2ef89f76fd9eff3bfa93943dd2995e7308a7ca50e7d9"
+    },
+    {
+      "archivePath": "proof/isolated-list/tests/__init__.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/tests/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/isolated-list/tests/test_geometry_host_sources.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/tests/test_geometry_host_sources.py",
+      "bytes": 61609,
+      "sha256": "9ffa891ccc50bd4a5cc30bca840de56340a74c57c40f46cfcd2e4f557208aba1"
+    },
+    {
+      "archivePath": "proof/isolated-list/tests/test_geometry_kernel_runtime.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/tests/test_geometry_kernel_runtime.py",
+      "bytes": 28334,
+      "sha256": "761825c11166cf21a75eb082d3be82d4086419fe0c535a66ab05ddb73159e41b"
+    },
+    {
+      "archivePath": "proof/isolated-list/tests/test_geometry_source_runtime.py",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/isolated-list/tests/test_geometry_source_runtime.py",
+      "bytes": 21030,
+      "sha256": "314dba2b70374ba7554db8364b0f1cbbc18cdc1d080795a528ce2f1317115e33"
+    },
+    {
+      "archivePath": "proof/receipt.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/receipt.json",
+      "bytes": 28708,
+      "sha256": "58bf107cbe1207cf695c81b11001881e233075c4782dd6673ed08e4d878b85fb"
+    },
+    {
+      "archivePath": "proof/subcommands.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands.json",
+      "bytes": 99868,
+      "sha256": "420059970143ed5678102acaad8c2d2fde9a597ffa194959da739d96e941866c"
+    },
+    {
+      "archivePath": "proof/subcommands/000001/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000001/request.json",
+      "bytes": 1461,
+      "sha256": "5e610484b1438eb9d358bf424535567b112fe6b00f97345f8346523e092333ca"
+    },
+    {
+      "archivePath": "proof/subcommands/000001/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000001/result.json",
+      "bytes": 1712,
+      "sha256": "e9160129a254673491978b1cc461c8d1eba6de9d4e6adf1b16c560c27b8a8b5d"
+    },
+    {
+      "archivePath": "proof/subcommands/000001/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000001/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000001/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "b5aa10399de82cd96d482ea3501f58cd7663356a1e0a4fba8e1ab4f2ee208605"
+    },
+    {
+      "archivePath": "proof/subcommands/000002/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000002/request.json",
+      "bytes": 1496,
+      "sha256": "d2034d7ad91b7a7962419f18b220e309fd8e5c45ff31c19e3fdd32c096632675"
+    },
+    {
+      "archivePath": "proof/subcommands/000002/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000002/result.json",
+      "bytes": 1746,
+      "sha256": "367272214046847263ab47aa399dec5bab63f1504e49f8f59f871da6f082b199"
+    },
+    {
+      "archivePath": "proof/subcommands/000002/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000002/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000002/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000003/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000003/request.json",
+      "bytes": 1561,
+      "sha256": "e06e2711772194988c00f34a3d8758cbda00c39a84271ee601027e120a889e89"
+    },
+    {
+      "archivePath": "proof/subcommands/000003/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000003/result.json",
+      "bytes": 1814,
+      "sha256": "7f5c6a8dd6b0c21d8ea5663246570c7fd1316ce88cbea01c2e2fe1417540aad3"
+    },
+    {
+      "archivePath": "proof/subcommands/000003/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000003/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000003/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000003/stdout.bin",
+      "bytes": 7757,
+      "sha256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73"
+    },
+    {
+      "archivePath": "proof/subcommands/000004/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000004/request.json",
+      "bytes": 1817,
+      "sha256": "a078de1cc30d7e393c317e9c8db1425eaaf2d44346d9ee078c745da9b204e47a"
+    },
+    {
+      "archivePath": "proof/subcommands/000004/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000004/result.json",
+      "bytes": 2070,
+      "sha256": "deaa9f819d62cc104e902a73e5915d5ed5e5c0055b93ed7962e35787c11ad165"
+    },
+    {
+      "archivePath": "proof/subcommands/000004/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000004/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000004/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000004/stdout.bin",
+      "bytes": 3550,
+      "sha256": "ba800775f1b5a1792bde364fd5d8375a2ed819f9c837a42b193602e37c534bb8"
+    },
+    {
+      "archivePath": "proof/subcommands/000005/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000005/request.json",
+      "bytes": 1530,
+      "sha256": "80e8f99d3b2bc20ad36075fcbc7144df52a4336dba5f05335346a18c78dec9fc"
+    },
+    {
+      "archivePath": "proof/subcommands/000005/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000005/result.json",
+      "bytes": 1781,
+      "sha256": "d1158c2346aeff1131e4be7642a7921f8439ed014f3c2d1eb25d900faf7d65c3"
+    },
+    {
+      "archivePath": "proof/subcommands/000005/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000005/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000005/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000005/stdout.bin",
+      "bytes": 75,
+      "sha256": "3caf01c2ed6ded5c442c4bc611b362ffd884ad6a71c77ded2952e0ff0fd59169"
+    },
+    {
+      "archivePath": "proof/subcommands/000006/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000006/request.json",
+      "bytes": 1531,
+      "sha256": "89b8eb838eb504deb0eb3ee9048a2e7761bc98efab5a6ad5689f6acd76c6eda0"
+    },
+    {
+      "archivePath": "proof/subcommands/000006/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000006/result.json",
+      "bytes": 1783,
+      "sha256": "248c6100196d529a38ce968806da656e4d54e599ee344f57b2d75ef60d702ed4"
+    },
+    {
+      "archivePath": "proof/subcommands/000006/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000006/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000006/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000006/stdout.bin",
+      "bytes": 759,
+      "sha256": "ccaa3fafcd29676aaffe9d46ae77f32bd5145896babba244f6a59c1779f3472d"
+    },
+    {
+      "archivePath": "proof/subcommands/000007/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000007/request.json",
+      "bytes": 1535,
+      "sha256": "03e8d1d75ad76ac30edaa4391a8165594ba3867adad99ecc83132ddef6c13954"
+    },
+    {
+      "archivePath": "proof/subcommands/000007/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000007/result.json",
+      "bytes": 1787,
+      "sha256": "3d07df4642895af3b6a5acfa65ca8443b17d1289985492e5f3400a6d3a9f78e9"
+    },
+    {
+      "archivePath": "proof/subcommands/000007/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000007/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000007/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000007/stdout.bin",
+      "bytes": 1300,
+      "sha256": "6ee91933c12f80c81f26169572ea360607152398d40f130c82ec383dc04675a0"
+    },
+    {
+      "archivePath": "proof/subcommands/000008/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000008/request.json",
+      "bytes": 1533,
+      "sha256": "50d7047a524e0a6aafba6ce907decb30d5308f718f15b310a9f2126a76d87424"
+    },
+    {
+      "archivePath": "proof/subcommands/000008/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000008/result.json",
+      "bytes": 1786,
+      "sha256": "fd6441aeb0fe00382604207827e8d4eee92f262ebdbbd9e8fcd43a39694be81f"
+    },
+    {
+      "archivePath": "proof/subcommands/000008/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000008/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000008/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000008/stdout.bin",
+      "bytes": 9284,
+      "sha256": "78d7f149dfd0fa815dce812cd3f4906759b3916ea343b564986ff860acd24e16"
+    },
+    {
+      "archivePath": "proof/subcommands/000009/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000009/request.json",
+      "bytes": 1534,
+      "sha256": "4dfa775f2a24fcb21ab693940c1625fe7a29030be446b285937ae5e09f5e073c"
+    },
+    {
+      "archivePath": "proof/subcommands/000009/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000009/result.json",
+      "bytes": 1787,
+      "sha256": "f223729dc34c70fd9597a31185750ec2e976668f37b5635d8a2008de1aca25a1"
+    },
+    {
+      "archivePath": "proof/subcommands/000009/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000009/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000009/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000009/stdout.bin",
+      "bytes": 3568,
+      "sha256": "26be15286eca83350df893f93f6299a09e79c0b02c93a166bd298a638fe93c2d"
+    },
+    {
+      "archivePath": "proof/subcommands/000010/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000010/request.json",
+      "bytes": 1535,
+      "sha256": "ff8345e52d4a85c14debaa4a0611048f014ecf8b9f197e8466637c047f79a0bc"
+    },
+    {
+      "archivePath": "proof/subcommands/000010/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000010/result.json",
+      "bytes": 1788,
+      "sha256": "1474546ed51d672d1feaae955eb6420e9752bd28272bd7ccc603150e751ceedb"
+    },
+    {
+      "archivePath": "proof/subcommands/000010/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000010/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000010/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000010/stdout.bin",
+      "bytes": 5488,
+      "sha256": "e4ab0ac2c0da7f433c3da39e574386675f9c77bb52be8a66b281c4e62afb6c40"
+    },
+    {
+      "archivePath": "proof/subcommands/000011/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000011/request.json",
+      "bytes": 1534,
+      "sha256": "e2240322a616e07f9dd47c30fe7a3b7918f12cf0cda86b839c3ba73fcf5e2dd1"
+    },
+    {
+      "archivePath": "proof/subcommands/000011/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000011/result.json",
+      "bytes": 1788,
+      "sha256": "407bd60555b61f1d6bdbd02bf7128448d4d1b53f7b43da44c04593b5584f1755"
+    },
+    {
+      "archivePath": "proof/subcommands/000011/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000011/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000011/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000011/stdout.bin",
+      "bytes": 14187,
+      "sha256": "0c1c94006fa33719c64820a477f219a5ac05f3fd4c372fe473e2b5deda63a0c6"
+    },
+    {
+      "archivePath": "proof/subcommands/000012/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000012/request.json",
+      "bytes": 1542,
+      "sha256": "eca29785e9eb2ddcd26af258d809e7090c63a13929c673dc45b74b4a5f5de7af"
+    },
+    {
+      "archivePath": "proof/subcommands/000012/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000012/result.json",
+      "bytes": 1794,
+      "sha256": "62cce93c68bfa4e69903d26ee08ed4ab45fa1b00a8ad49163a8db34c021be550"
+    },
+    {
+      "archivePath": "proof/subcommands/000012/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000012/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000012/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000012/stdout.bin",
+      "bytes": 2207,
+      "sha256": "7dac524a6d8cbe492b2836b48f906f5b69db22fcda518acdb7bd6ad472ad5280"
+    },
+    {
+      "archivePath": "proof/subcommands/000013/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000013/request.json",
+      "bytes": 1535,
+      "sha256": "fa4cdbe03fa804fed9cedc831947e58904e7b089ade08b7d918e7e8df057ab82"
+    },
+    {
+      "archivePath": "proof/subcommands/000013/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000013/result.json",
+      "bytes": 1789,
+      "sha256": "f654a6de45dd5d88a5ae49bfcb9d9f28fbfcad7d14cc38d7b37680a61fb73778"
+    },
+    {
+      "archivePath": "proof/subcommands/000013/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000013/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000013/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000013/stdout.bin",
+      "bytes": 20698,
+      "sha256": "e073428e78422bbc6b26ab70bd456b9456c45fc4560480d213784637df7f0685"
+    },
+    {
+      "archivePath": "proof/subcommands/000014/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000014/request.json",
+      "bytes": 1535,
+      "sha256": "1d3d587a077027b8bbd20d28f268a2826572571fbc7034deef7aa532e9d63263"
+    },
+    {
+      "archivePath": "proof/subcommands/000014/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000014/result.json",
+      "bytes": 1788,
+      "sha256": "a37e9dde7a7bae16abe172d37d331a5d5957cfb5329117e3f82020a956d225f0"
+    },
+    {
+      "archivePath": "proof/subcommands/000014/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000014/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000014/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000014/stdout.bin",
+      "bytes": 26570,
+      "sha256": "e5577ac9b11fb410b18da8a40a722e30e3195b745754b3927360f8fa972237ea"
+    },
+    {
+      "archivePath": "proof/subcommands/000015/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000015/request.json",
+      "bytes": 1533,
+      "sha256": "27940fb177b677d891f06c9e7e03dfecc0002b783a429e5b9d82cc04fa61f9b4"
+    },
+    {
+      "archivePath": "proof/subcommands/000015/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000015/result.json",
+      "bytes": 1785,
+      "sha256": "e9555c6c28b640abc795a67620504e8ade305314829a5df80f7b9ca34f1038db"
+    },
+    {
+      "archivePath": "proof/subcommands/000015/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000015/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000015/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000015/stdout.bin",
+      "bytes": 4638,
+      "sha256": "0d4e03c08248e663e2c0286329aacdac9d3b170f3caac4df4d9082a129ef9570"
+    },
+    {
+      "archivePath": "proof/subcommands/000016/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000016/request.json",
+      "bytes": 1536,
+      "sha256": "125f33308efda30a0fd7c1ae60065c12c30ed726c329f992643c1dc1f6e45fa7"
+    },
+    {
+      "archivePath": "proof/subcommands/000016/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000016/result.json",
+      "bytes": 1790,
+      "sha256": "7a8e4700866b752e82ff68a2aeb0173f9b13192bd295f7be58a80b8b8b257108"
+    },
+    {
+      "archivePath": "proof/subcommands/000016/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000016/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000016/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000016/stdout.bin",
+      "bytes": 10260,
+      "sha256": "104ba157e0ed5842d664941d44e6803e5017e2316d53148311638cb9bce33c38"
+    },
+    {
+      "archivePath": "proof/subcommands/000017/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000017/request.json",
+      "bytes": 1532,
+      "sha256": "50bda66c7a5b0fd4a661d5640fa73ad2db2dc97a96768f62e21233a606d369fc"
+    },
+    {
+      "archivePath": "proof/subcommands/000017/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000017/result.json",
+      "bytes": 1785,
+      "sha256": "b44a07b4ef0b9f521e1a5527e66822d0249a8de0a0ee0a5f02fc36423ab9ae19"
+    },
+    {
+      "archivePath": "proof/subcommands/000017/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000017/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000017/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000017/stdout.bin",
+      "bytes": 5875,
+      "sha256": "5799f81cbf4781e084b8bc39a781a6d2a1401edb05fef666d5fa6ab3b9a42be3"
+    },
+    {
+      "archivePath": "proof/subcommands/000018/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000018/request.json",
+      "bytes": 1533,
+      "sha256": "b0215b7dad275a57f6ac5385c39298364aaa0829117f6431a4d13bff657dd8ba"
+    },
+    {
+      "archivePath": "proof/subcommands/000018/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000018/result.json",
+      "bytes": 1786,
+      "sha256": "c2f51430bc238dfe5dd45a80b815bea214c107bdd56f2e83b9ab68b8ad0319b1"
+    },
+    {
+      "archivePath": "proof/subcommands/000018/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000018/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000018/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000018/stdout.bin",
+      "bytes": 2080,
+      "sha256": "4eabe07ca16981a79182b45d36d45d340da057c886fe225e50139e169bdcc61a"
+    },
+    {
+      "archivePath": "proof/subcommands/000019/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000019/request.json",
+      "bytes": 1535,
+      "sha256": "aa3f2f8b087639df5b1629e8f7ed2039d3fb5fdff2439cbe1606bf2462abcdbe"
+    },
+    {
+      "archivePath": "proof/subcommands/000019/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000019/result.json",
+      "bytes": 1787,
+      "sha256": "ddfe4206c923745c436b793022c7420b545f8de171ed4e9f40f876342829ff08"
+    },
+    {
+      "archivePath": "proof/subcommands/000019/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000019/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000019/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000019/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000019/stdout.bin",
+      "bytes": 2022,
+      "sha256": "7cfa3256b1564bcbbb660a9fc91d26bb4be02ee04150fdbb795dfeacae334306"
+    },
+    {
+      "archivePath": "proof/subcommands/000020/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000020/request.json",
+      "bytes": 1532,
+      "sha256": "d91311116425c302d424de17547b1562fea4879cb0ec1104c2dfbea820411367"
+    },
+    {
+      "archivePath": "proof/subcommands/000020/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000020/result.json",
+      "bytes": 1785,
+      "sha256": "f26ed023c05e54f6f39458647c80ad72d67740f1cdd92aeadf31883d807cd5a5"
+    },
+    {
+      "archivePath": "proof/subcommands/000020/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000020/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000020/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000020/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000020/stdout.bin",
+      "bytes": 1671,
+      "sha256": "08c45f54ebb127acd2420fd208e5b25e373a00441479c305340712fd38af091c"
+    },
+    {
+      "archivePath": "proof/subcommands/000021/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000021/request.json",
+      "bytes": 1534,
+      "sha256": "f52a9a3ab07855379c311a2200f125d5ab1bff2f53493b76714f7df96be4d68a"
+    },
+    {
+      "archivePath": "proof/subcommands/000021/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000021/result.json",
+      "bytes": 1788,
+      "sha256": "36c1b91c98bdcfc7341b29104045fa8dc6759b6718f67deabe858087633987d2"
+    },
+    {
+      "archivePath": "proof/subcommands/000021/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000021/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000021/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000021/stdout.bin",
+      "bytes": 14970,
+      "sha256": "72424c367cd2b29ed64390c42b9d459af8b65e80010a86d374d7825fe069c7ac"
+    },
+    {
+      "archivePath": "proof/subcommands/000022/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000022/request.json",
+      "bytes": 1533,
+      "sha256": "69ff4d0417f1d27ea9a878eec0bdeca6632eeedfb93cd5d9368c6deb91b86ac7"
+    },
+    {
+      "archivePath": "proof/subcommands/000022/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000022/result.json",
+      "bytes": 1787,
+      "sha256": "af86c1ab40e1be3d84ed28af4f7c5422e2291a6d416a55db623d23f669e981ae"
+    },
+    {
+      "archivePath": "proof/subcommands/000022/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000022/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000022/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000022/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000022/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000022/stdout.bin",
+      "bytes": 24534,
+      "sha256": "7a0fcb0dea449ff1d767b9a47a358ba75f83f572ec3c3200b21768625f422daa"
+    },
+    {
+      "archivePath": "proof/subcommands/000023/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000023/request.json",
+      "bytes": 1531,
+      "sha256": "6fcc499e1a18b842a888e6379420fa751cdd95b824a820749b6ef7645982fb0d"
+    },
+    {
+      "archivePath": "proof/subcommands/000023/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000023/result.json",
+      "bytes": 1784,
+      "sha256": "0c9d051b42575a3dfe5189eadccb5eec5dedfd3272f1220a575c54d2b2a3c9d4"
+    },
+    {
+      "archivePath": "proof/subcommands/000023/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000023/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000023/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000023/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000023/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000023/stdout.bin",
+      "bytes": 24627,
+      "sha256": "36fcbf625fb63cce251636fddd56df52fcb3048785e5b5e3430541a285451df4"
+    },
+    {
+      "archivePath": "proof/subcommands/000024/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000024/request.json",
+      "bytes": 1533,
+      "sha256": "fc15c964e9ef9fe23a48095ed7c322368dbb0f9acb1be7f73042f991c3219dd6"
+    },
+    {
+      "archivePath": "proof/subcommands/000024/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000024/result.json",
+      "bytes": 1786,
+      "sha256": "2e27e5a1cb23032d5d14b6ff56fb405ae1c798d74bfcaec70322f1e769a04097"
+    },
+    {
+      "archivePath": "proof/subcommands/000024/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000024/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000024/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000024/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000024/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000024/stdout.bin",
+      "bytes": 2551,
+      "sha256": "c15666dbea8d9ad15d838aeccd2e62ba0e824ec1f281232a1ddf9d0c3b93d16f"
+    },
+    {
+      "archivePath": "proof/subcommands/000025/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000025/request.json",
+      "bytes": 1538,
+      "sha256": "0b05990b92d104ca8818094f0bae9faff50210311359cd46e7c4c8b4cfe35474"
+    },
+    {
+      "archivePath": "proof/subcommands/000025/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000025/result.json",
+      "bytes": 1791,
+      "sha256": "b191401dc7078843000ab041afca54cb1648e085b243446cf95c4ca91ffc7a16"
+    },
+    {
+      "archivePath": "proof/subcommands/000025/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000025/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000025/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000025/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000025/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000025/stdout.bin",
+      "bytes": 7362,
+      "sha256": "08dc70beacbeddaa52ffcf5e893f99374e7c12d55273301e98ad95093fd39db9"
+    },
+    {
+      "archivePath": "proof/subcommands/000026/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000026/request.json",
+      "bytes": 1531,
+      "sha256": "e46a95f3f7d5fdc6d6f9018bb57f2888c80312db9b7f317d4261e7a7c31047f6"
+    },
+    {
+      "archivePath": "proof/subcommands/000026/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000026/result.json",
+      "bytes": 1785,
+      "sha256": "e1707f22ece8cd4f330c622a353c80822b29bf311584d44bd87c4a17078e9f2c"
+    },
+    {
+      "archivePath": "proof/subcommands/000026/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000026/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000026/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000026/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000026/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000026/stdout.bin",
+      "bytes": 13140,
+      "sha256": "5abc88d452ec656496e0ff5bed4cf98375b8262c7358e151048ac09ee53a804d"
+    },
+    {
+      "archivePath": "proof/subcommands/000027/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000027/request.json",
+      "bytes": 1526,
+      "sha256": "b5e6d0ba59442e87c8b1866ac620cdad6c60c001088681c5bbbb729771aa8f3b"
+    },
+    {
+      "archivePath": "proof/subcommands/000027/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000027/result.json",
+      "bytes": 1779,
+      "sha256": "2baae9223197fff0bc4ef569b544a8f8d4d8f84dcc8519b029fae065322b205c"
+    },
+    {
+      "archivePath": "proof/subcommands/000027/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000027/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000027/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000027/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000027/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000027/stdout.bin",
+      "bytes": 29048,
+      "sha256": "92e2b2205518e96b590cd3625b0645f88d906f87da0199353423cdc0855d43fb"
+    },
+    {
+      "archivePath": "proof/subcommands/000028/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000028/request.json",
+      "bytes": 1524,
+      "sha256": "8bddfc2fc6e419d1ed1efd38f2fe3203df2775c3754ae4a50c5d2065cb5d538c"
+    },
+    {
+      "archivePath": "proof/subcommands/000028/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000028/result.json",
+      "bytes": 1776,
+      "sha256": "d51ca8b266212cdd74e3b20d58c5b8dd01979122ae6d15c8b23dd64e1c24ff78"
+    },
+    {
+      "archivePath": "proof/subcommands/000028/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000028/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000028/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000028/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000028/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000028/stdout.bin",
+      "bytes": 444,
+      "sha256": "4532d8011c8c984277c3341cfc84046ff41dbe2cba5f630505dfabe064ffb800"
+    },
+    {
+      "archivePath": "proof/subcommands/000029/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000029/request.json",
+      "bytes": 1523,
+      "sha256": "7cc620ba229a5c75f469fd5b7986f29bf31d57c7e8e52838a5cb39b7e2b0c9ee"
+    },
+    {
+      "archivePath": "proof/subcommands/000029/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000029/result.json",
+      "bytes": 1775,
+      "sha256": "9fd139b33dfea9c9d56f30f4175926ea607955afeead34b8789f0af11a4d9e3d"
+    },
+    {
+      "archivePath": "proof/subcommands/000029/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000029/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000029/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000029/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000029/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000029/stdout.bin",
+      "bytes": 837,
+      "sha256": "f8599b7dfbd239fb20385ed7c48995bcdd2e76c46bdfc92fb38c2df98f8952dd"
+    },
+    {
+      "archivePath": "proof/subcommands/000030/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000030/request.json",
+      "bytes": 1525,
+      "sha256": "1a1024336bb1484569dd80113be5ec9f66f77b4120d4498e2d8f859fda3379bf"
+    },
+    {
+      "archivePath": "proof/subcommands/000030/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000030/result.json",
+      "bytes": 1776,
+      "sha256": "71b2be3b7665d1f7b690adf7f6ba355f0acb239fce4b395c6579354b9d7fbdfa"
+    },
+    {
+      "archivePath": "proof/subcommands/000030/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000030/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000030/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000030/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000030/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000030/stdout.bin",
+      "bytes": 193,
+      "sha256": "585612b886dce3fd694fdcf14b0af67ad5fce7d60e03c778e4c330d86c1bc0dd"
+    },
+    {
+      "archivePath": "proof/subcommands/000031/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000031/request.json",
+      "bytes": 1524,
+      "sha256": "488129643603f940f4230eb7cde7cc7ce9fe4b10898a2c6a1fd6c45ed82db85d"
+    },
+    {
+      "archivePath": "proof/subcommands/000031/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000031/result.json",
+      "bytes": 1776,
+      "sha256": "980fec90d7c5b972799c5efaaf82e3d146813d269314ddcf217e1f8cb1bc5f8b"
+    },
+    {
+      "archivePath": "proof/subcommands/000031/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000031/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000031/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000031/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000031/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000031/stdout.bin",
+      "bytes": 832,
+      "sha256": "b371e4045dbbb4e8a1d2fa4e1294ac42d0d2177b461dd169928a05c255eb69e0"
+    },
+    {
+      "archivePath": "proof/subcommands/000032/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000032/request.json",
+      "bytes": 1527,
+      "sha256": "84c606755632a259eef0d5d901218c4eac9dafeb71fa35094223019ba92b478d"
+    },
+    {
+      "archivePath": "proof/subcommands/000032/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000032/result.json",
+      "bytes": 1778,
+      "sha256": "e10f772614daeda5881aad5e9715ff4dd4fca03ebb00d672113569bdf161d6fa"
+    },
+    {
+      "archivePath": "proof/subcommands/000032/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000032/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000032/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000032/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000032/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000032/stdout.bin",
+      "bytes": 235,
+      "sha256": "ba2b9f31708863dc340a286206c3793625ffb7701267172a541adba58f447d94"
+    },
+    {
+      "archivePath": "proof/subcommands/000033/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000033/request.json",
+      "bytes": 1531,
+      "sha256": "f55bbeddc28048929d74103983cbb6d3562049acb2953b4f71cfa6294dc467f2"
+    },
+    {
+      "archivePath": "proof/subcommands/000033/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000033/result.json",
+      "bytes": 1781,
+      "sha256": "eddb34e4d1754aaa58977cfe2a538ef5be85715e5e97721c9cc4da4fa1d02180"
+    },
+    {
+      "archivePath": "proof/subcommands/000033/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000033/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000033/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000033/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000033/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000033/stdout.bin",
+      "bytes": 139,
+      "sha256": "73e1ad71d2a5f7ce85a77eaaa7b6ce406dc522043788d329bb5cbf807695f091"
+    },
+    {
+      "archivePath": "proof/subcommands/000034/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000034/request.json",
+      "bytes": 1533,
+      "sha256": "e56041b043c6d96de4bf97422dc4a4c7a7c73d86026ef6ab9daa7ca66791be14"
+    },
+    {
+      "archivePath": "proof/subcommands/000034/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000034/result.json",
+      "bytes": 1784,
+      "sha256": "3a1aaddbe8c340a39858a93d3eea113eeb8b50ac48da400e38f0ba4465443e3a"
+    },
+    {
+      "archivePath": "proof/subcommands/000034/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000034/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000034/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000034/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000034/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000034/stdout.bin",
+      "bytes": 154,
+      "sha256": "b45c8b497d1e2bf662628700b59fc4f01900f1218378507e9b76cb5e1267aeee"
+    },
+    {
+      "archivePath": "proof/subcommands/000035/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000035/request.json",
+      "bytes": 1555,
+      "sha256": "ff9b62b77dae3bdc6d4e236644cfccac5871ce311ad5aec212545a9a14715393"
+    },
+    {
+      "archivePath": "proof/subcommands/000035/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000035/result.json",
+      "bytes": 1806,
+      "sha256": "1d9d92facc494dcb284fa989a561e5a297bc0c773792f108efb2457d2bf8d3e3"
+    },
+    {
+      "archivePath": "proof/subcommands/000035/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000035/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000035/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000035/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000035/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000035/stdout.bin",
+      "bytes": 74,
+      "sha256": "8043f03b5c238def60d5faf58838e1d2d1cb55acc8042907145f6141b38af986"
+    },
+    {
+      "archivePath": "proof/subcommands/000036/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000036/request.json",
+      "bytes": 1560,
+      "sha256": "69606e8ee2b6bf15fef0951ff124146072862e06b08212b7ed73862111b25801"
+    },
+    {
+      "archivePath": "proof/subcommands/000036/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000036/result.json",
+      "bytes": 1813,
+      "sha256": "4d7483c8adc1ffdcb91764f5df2f2faae76996d00242f1a19ea2f918ccc91762"
+    },
+    {
+      "archivePath": "proof/subcommands/000036/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000036/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000036/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000036/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000036/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000036/stdout.bin",
+      "bytes": 2969,
+      "sha256": "d9aeabdeaad0d435038e513583d199358d9dc765ee77d1208ba652c8a24a6b64"
+    },
+    {
+      "archivePath": "proof/subcommands/000037/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000037/request.json",
+      "bytes": 1560,
+      "sha256": "4f49c6a9275c56fbdd1dd421c23f94b91db63090cb22f8a5449cb3e123f024c1"
+    },
+    {
+      "archivePath": "proof/subcommands/000037/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000037/result.json",
+      "bytes": 1813,
+      "sha256": "8a018d03eed3d27832e9e5fd49d327428ede08770d7e2c298597e103863cd397"
+    },
+    {
+      "archivePath": "proof/subcommands/000037/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000037/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000037/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000037/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000037/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000037/stdout.bin",
+      "bytes": 7757,
+      "sha256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73"
+    },
+    {
+      "archivePath": "proof/subcommands/000038/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000038/request.json",
+      "bytes": 1563,
+      "sha256": "c2ce8bad8c12661db02e1b89102bac5e0bf41288e1985f387b39d8f000b76171"
+    },
+    {
+      "archivePath": "proof/subcommands/000038/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000038/result.json",
+      "bytes": 1816,
+      "sha256": "f6a1fd500cd8666575cb84b64bb602a1b6abde69609f7710d6f9f1a2e6771353"
+    },
+    {
+      "archivePath": "proof/subcommands/000038/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000038/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000038/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000038/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000038/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000038/stdout.bin",
+      "bytes": 3452,
+      "sha256": "ef8d34cc9388dcff274d2ef89f76fd9eff3bfa93943dd2995e7308a7ca50e7d9"
+    },
+    {
+      "archivePath": "proof/subcommands/000039/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000039/request.json",
+      "bytes": 1528,
+      "sha256": "06f281bbbeafd7f7515710c258d6d58d5f560cc9b4421492c97d66e6449bafde"
+    },
+    {
+      "archivePath": "proof/subcommands/000039/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000039/result.json",
+      "bytes": 1781,
+      "sha256": "df7a9d1fbc5f72af020605e34d5b29158df472d503dcb5a2895399fda2b724f0"
+    },
+    {
+      "archivePath": "proof/subcommands/000039/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000039/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000039/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000039/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000039/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000039/stdout.bin",
+      "bytes": 61609,
+      "sha256": "9ffa891ccc50bd4a5cc30bca840de56340a74c57c40f46cfcd2e4f557208aba1"
+    },
+    {
+      "archivePath": "proof/subcommands/000040/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000040/request.json",
+      "bytes": 1530,
+      "sha256": "374486dd525feddab39386ce5f08aafc2cc2046120d9e9c29b9074940da318d0"
+    },
+    {
+      "archivePath": "proof/subcommands/000040/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000040/result.json",
+      "bytes": 1784,
+      "sha256": "26ce5b40efe09631e52bda078ea1daeabbb6709bc82bf807c6be1832af4befec"
+    },
+    {
+      "archivePath": "proof/subcommands/000040/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000040/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000040/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000040/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000040/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000040/stdout.bin",
+      "bytes": 28334,
+      "sha256": "761825c11166cf21a75eb082d3be82d4086419fe0c535a66ab05ddb73159e41b"
+    },
+    {
+      "archivePath": "proof/subcommands/000041/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000041/request.json",
+      "bytes": 1530,
+      "sha256": "32d2157b20bfd2f39b7ab03f04d84f6323b9d01c3fe3fa5b09a5a3cc00cfb420"
+    },
+    {
+      "archivePath": "proof/subcommands/000041/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000041/result.json",
+      "bytes": 1784,
+      "sha256": "7f0a45bbb2468f79cfc8a1bc2ec93176872bb01b7aa0a9cbef78e0d6d06594e7"
+    },
+    {
+      "archivePath": "proof/subcommands/000041/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000041/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000041/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000041/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000041/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000041/stdout.bin",
+      "bytes": 21030,
+      "sha256": "314dba2b70374ba7554db8364b0f1cbbc18cdc1d080795a528ce2f1317115e33"
+    },
+    {
+      "archivePath": "proof/subcommands/000042/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000042/request.json",
+      "bytes": 1801,
+      "sha256": "be7097990ffacd2cb0a565df4828fd68f868054a8413e7d8290f739252586f97"
+    },
+    {
+      "archivePath": "proof/subcommands/000042/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000042/result.json",
+      "bytes": 2051,
+      "sha256": "46264ccc0898a2238fd4649bd42973a288e461637bc4ba4119420650456a5284"
+    },
+    {
+      "archivePath": "proof/subcommands/000042/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000042/stderr.bin",
+      "bytes": 98,
+      "sha256": "439b00f50e409b8ea6ff578f1c945904d9aa00f5e4759fcb4e71d9f1615c4084"
+    },
+    {
+      "archivePath": "proof/subcommands/000042/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000042/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000042/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000042/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000043/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000043/request.json",
+      "bytes": 1800,
+      "sha256": "d7c81d1c693299caf5f556d52a2081e165b5e773693f98bfc6ac3a9c4ebab002"
+    },
+    {
+      "archivePath": "proof/subcommands/000043/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000043/result.json",
+      "bytes": 2053,
+      "sha256": "cfda2c97014045611fd9b7a024563dac1a419c2be4a6e30047a331dc2544bbc3"
+    },
+    {
+      "archivePath": "proof/subcommands/000043/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000043/stderr.bin",
+      "bytes": 5308,
+      "sha256": "ff9cee1d46993b6a79d83c1bc3a3d3c5f7eb97fd0a71b15bb38b4816f270bdcc"
+    },
+    {
+      "archivePath": "proof/subcommands/000043/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000043/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000043/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000043/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000044/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000044/request.json",
+      "bytes": 1800,
+      "sha256": "55154dc21382b2e07b4d669cd86f7eb7083ef0984144393c2bd96f286a52e594"
+    },
+    {
+      "archivePath": "proof/subcommands/000044/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000044/result.json",
+      "bytes": 2050,
+      "sha256": "a647d9951469d31680e14409d7572079bcdaec2f4c4a216290f6a37ea5e1825e"
+    },
+    {
+      "archivePath": "proof/subcommands/000044/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000044/stderr.bin",
+      "bytes": 98,
+      "sha256": "a146ffbdf9b07bb226ef66ce59c2a411149b39de43ba5ad86bc5ec9e95a7fb61"
+    },
+    {
+      "archivePath": "proof/subcommands/000044/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000044/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000044/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000044/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000045/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000045/request.json",
+      "bytes": 1801,
+      "sha256": "7af777b1675a4d32d9d10f7bfa5006acdbf8859c4612475991533f053b935778"
+    },
+    {
+      "archivePath": "proof/subcommands/000045/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000045/result.json",
+      "bytes": 2051,
+      "sha256": "e150a21f28d1544417037ac3b95e5de416cb5e4cb1fb25d6e6455efb642ffc7d"
+    },
+    {
+      "archivePath": "proof/subcommands/000045/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000045/stderr.bin",
+      "bytes": 98,
+      "sha256": "76e4dd0da49684bfecf1d0b1e43bef5ffc0afd07b37a4a33fcb60d2406e7b8d3"
+    },
+    {
+      "archivePath": "proof/subcommands/000045/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000045/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000045/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000045/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000046/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000046/request.json",
+      "bytes": 1801,
+      "sha256": "a5cae03a2bfdbfa02585a1d5872afd11b20ca988b53059b03729b958d9c7192b"
+    },
+    {
+      "archivePath": "proof/subcommands/000046/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000046/result.json",
+      "bytes": 2054,
+      "sha256": "bacdb9417a5fea6a8fd5f07a663efbc5eb84e50e07b844a2a7f66e627d69827d"
+    },
+    {
+      "archivePath": "proof/subcommands/000046/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000046/stderr.bin",
+      "bytes": 5888,
+      "sha256": "9b546a5f8ecbed5b192308faed0697cd85961be74af28042a180aa7b01a0a50f"
+    },
+    {
+      "archivePath": "proof/subcommands/000046/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000046/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000046/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000046/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000047/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000047/request.json",
+      "bytes": 1801,
+      "sha256": "0fd48b23922932772f056c02e3b2eabd6b0489f49c6cef3f915be9e1d4950bf7"
+    },
+    {
+      "archivePath": "proof/subcommands/000047/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000047/result.json",
+      "bytes": 2051,
+      "sha256": "f1eb81cea47407eb17f9a526950cca0e99a930666e1899d75e74c5444bf3615d"
+    },
+    {
+      "archivePath": "proof/subcommands/000047/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000047/stderr.bin",
+      "bytes": 98,
+      "sha256": "26a2157691aecf52871e13521306b611618cafe5bfc90d41154d52b360a51897"
+    },
+    {
+      "archivePath": "proof/subcommands/000047/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000047/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000047/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000047/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000048/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000048/request.json",
+      "bytes": 1819,
+      "sha256": "6e5017adc24df726bb86b49eae720c5c5e5dd96a195767773c2cdffc8b5066d8"
+    },
+    {
+      "archivePath": "proof/subcommands/000048/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000048/result.json",
+      "bytes": 2070,
+      "sha256": "cb35e99265ced282790b1520a4ff8984c136f611d564c409688041962c3871fc"
+    },
+    {
+      "archivePath": "proof/subcommands/000048/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000048/stderr.bin",
+      "bytes": 98,
+      "sha256": "961e6a8ef800622b54a68897f159af84129fed1463c28234e0790b1e1b67e4f5"
+    },
+    {
+      "archivePath": "proof/subcommands/000048/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000048/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000048/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000048/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000049/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000049/request.json",
+      "bytes": 1820,
+      "sha256": "f7fb000b541fa2eb44749ded0164d0b89aaedf0c11cd1a1f6fac2dcc56cdcb2a"
+    },
+    {
+      "archivePath": "proof/subcommands/000049/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000049/result.json",
+      "bytes": 2070,
+      "sha256": "421b533117ed4c558460265304bc9be7f4775035f8b9b9e1305540b02e6e5699"
+    },
+    {
+      "archivePath": "proof/subcommands/000049/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000049/stderr.bin",
+      "bytes": 5446,
+      "sha256": "9c48352e6d3d1c8a1002214c065fe9b3b9a526162f1bccee8095d2e14c3c2635"
+    },
+    {
+      "archivePath": "proof/subcommands/000049/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000049/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000049/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000049/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000050/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000050/request.json",
+      "bytes": 1820,
+      "sha256": "9e2868afa797e19a5f82f485f9a57339f55137f7c60bc018fd582a080bf1d222"
+    },
+    {
+      "archivePath": "proof/subcommands/000050/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000050/result.json",
+      "bytes": 2071,
+      "sha256": "31a00a22f79ddd275830434576c976430d811eb9f410fca5e533970c6c39effa"
+    },
+    {
+      "archivePath": "proof/subcommands/000050/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000050/stderr.bin",
+      "bytes": 98,
+      "sha256": "6fb836ff09dd03dfee8cf2e46eaaa899995d6f2bae645563568232c2ec053015"
+    },
+    {
+      "archivePath": "proof/subcommands/000050/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000050/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000050/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000050/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000051/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000051/request.json",
+      "bytes": 1461,
+      "sha256": "b502236e06f07e7fab67df44f5c72492a646f016e9e39165a32b839d2ce4878e"
+    },
+    {
+      "archivePath": "proof/subcommands/000051/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000051/result.json",
+      "bytes": 1712,
+      "sha256": "c907cae666a2f3282ba1cc1b251109cc2b4cc9f6275f34fc8f6bd480ec4a402f"
+    },
+    {
+      "archivePath": "proof/subcommands/000051/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000051/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000051/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000051/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000051/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000051/stdout.bin",
+      "bytes": 41,
+      "sha256": "b5aa10399de82cd96d482ea3501f58cd7663356a1e0a4fba8e1ab4f2ee208605"
+    },
+    {
+      "archivePath": "proof/subcommands/000052/request.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000052/request.json",
+      "bytes": 1496,
+      "sha256": "0f4c0514a79e688692d77d14b4cee7727da4ecaed4e3a5072db5a60cfba11518"
+    },
+    {
+      "archivePath": "proof/subcommands/000052/result.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000052/result.json",
+      "bytes": 1746,
+      "sha256": "3afa16dc2f11ce7e16afafce6241efb53039f8c79da61f3930531650b10b9821"
+    },
+    {
+      "archivePath": "proof/subcommands/000052/stderr.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000052/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000052/stdin.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000052/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/subcommands/000052/stdout.bin",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/subcommands/000052/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archivePath": "proof/tool-identity.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/tool-identity.json",
+      "bytes": 371,
+      "sha256": "9d030b36351cdf5bd23e6066bb331ea6a567ebc3cd07fad121fe619007b77b6d"
+    },
+    {
+      "archivePath": "proof/tracked-inputs.json",
+      "originalPath": "/tmp/geo324-predicate-proof-57b68014/tracked-inputs.json",
+      "bytes": 9177,
+      "sha256": "84f79455e6bc61fc838a0df5d68a5da92e8f8da013f968c685d0d78706d837af"
+    },
+    {
+      "archivePath": "tools/capture.py",
+      "originalPath": "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    {
+      "archivePath": "tools/launch_predicate_actual.py",
+      "originalPath": "/tmp/geo324-owner-20261024/launch_predicate_actual.py",
+      "bytes": 4725,
+      "sha256": "d977006d3c0ba732a53826345227dcb6ac73ee2303834b17947570c9ac458c30"
+    },
+    {
+      "archivePath": "tools/run_face_predicate_proofs_v2.py",
+      "originalPath": "/tmp/geo324-owner-20261024/preparation/run_face_predicate_proofs_v2.py",
+      "bytes": 11145,
+      "sha256": "4b5c05f1a2d7a5cf24c1e2b4d21641c560a7fe7a25db1109a6127d315ddd406d"
+    }
+  ],
+  "excludedFiles": [],
+  "producerRoundtripVerified": true
+}

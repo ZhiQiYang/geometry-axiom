@@ -1,0 +1,88 @@
+{
+  "schema": "geo337-F9-axiom-publication-manifest-static-peer/1",
+  "verdict": "manifest-integrity-no-open-finding",
+  "blocking_findings": [],
+  "inputs": [
+    {
+      "path": "/workspace/geo337-F9-axiom-publication-manifest-20261025.json",
+      "bytes": 10362,
+      "sha256": "24638e3b6c47e32547703fcd4490013e9022c61d558ff51aba74976dcd232566"
+    },
+    {
+      "path": "/workspace/geo337-F9-axiom-package-actual-peer-20261025/REVIEW.json",
+      "bytes": 1664,
+      "sha256": "a5bcb7cd54d5637cc52678596705a068ebec53a4ea2ba3177b4da3ff1177c546"
+    },
+    {
+      "path": "/workspace/geo337-F9-axiom-package-source-peer-20261025/FACTS.json",
+      "bytes": 10377,
+      "sha256": "fd6819db1f0c7e8fc7e3ba14e4331084b497f7bfe6af5d4a67841613bc535910"
+    }
+  ],
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "checks": {
+    "leaves": 28,
+    "declared_bytes": 2679224,
+    "unique_source_paths": 28,
+    "unique_safe_destination_paths": 28,
+    "file_directory_collisions": 0,
+    "workspace_files_hash_checked": 9,
+    "SHM_source_files_not_opened": 19,
+    "all_source_paths_lexically_within_declared_workspace_or_axiom_SHM_roots": true,
+    "all_destinations_under": "evidence/geo337-train-20261024/F9-axiom-original-complete/",
+    "peer_reference_sha_checks": [
+      "package RESULT",
+      "outer root-cli RESULT",
+      "collection host EXEC_FINAL",
+      "ORIGINAL_INVENTORY",
+      "declared archive SHA/bytes/path"
+    ],
+    "bound_request_equals_root_request": true,
+    "actual_peer_pin_and_1475_count_match": true
+  },
+  "coverage": {
+    "archive": {
+      "count": 1,
+      "original_raw_files": 189,
+      "original_raw_bytes": 12499444,
+      "original_preparation_and_tool_files": 13,
+      "original_host_files": 1,
+      "original_actual_peer_files": 3,
+      "total_members": 206,
+      "logical_bytes": 12652356,
+      "basis": "existing source FACTS + existing actual-package peer; this peer did not inspect archive bytes"
+    },
+    "publication_groups": {
+      "package": 10,
+      "root-cli": 9,
+      "root-host": 1,
+      "preparation": 4,
+      "source-selection-peer": 2,
+      "actual-collection-peer": 2
+    },
+    "tools": "original13工具在archive範圍；package COLLECTOR/INVENTORY_PREPARER、root-cli ROOT_LAUNCHER及collection peer script另列leaf。六個原V5工具仍僅hash-checked，不冒稱axiom執行。",
+    "host_and_peer_distinction": "原產品gate host/3個原actualpeer在206 archive內；collection host/CLI與2個collection actualpeer為外層leaves。"
+  },
+  "publication_precondition": {
+    "expected_parent": "ROOT_MUST_BIND_AT_PUBLISH",
+    "interpretation": "manifest預先保留的發布階段綁定；尚非可直接驗父commit的最終發布請求",
+    "published": false,
+    "remote_hash_verified": false,
+    "delivered": false
+  },
+  "scope": {
+    "SHM_read": false,
+    "archive_hash_recomputed": false,
+    "archive_extracted_or_roundtrip_repeated": false,
+    "originals_or_product_rerun": false,
+    "Git_used": false,
+    "source_files_modified": false,
+    "independent_product_or_package_gate_verdict": null,
+    "limit": "只核manifest完整性。archive byte/CRC/member證據沿用a5bcb7cd既有獨審，不把本次靜態核對充作再驗。"
+  },
+  "markdown": {
+    "path": "/workspace/geo337-F9-axiom-publication-manifest-peer-20261025/REVIEW.md",
+    "bytes": 682,
+    "sha256": "e5d273f8ef1993e09fa399fa23def503ecdec9dfdfae909cc4fcccfec0f2e49e"
+  }
+}

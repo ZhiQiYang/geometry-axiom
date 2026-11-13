@@ -39,6 +39,8 @@ PDF 預覽解析度、取景及縮放不改頁面座標。`mmPerPx` 沿用既有
 來源調整不修改已建立幾何，會標需核對；已校準面的輪廓改動也要求重新核對。
 
 `project-store.js` 負責格式、雜湊、封裝與中繼資料歷史；`reference-workspace.js` 負責來源選頁、界面及場景接合。
+
+K1 裁切設定另以 `cutting-settings/1` 功能附件保存，使用 `geometry-canvas/17` 與唯一新增能力 `cutting-plan/1`；保留其他附件、模型、情境與來源閉包。舊格式含裁切附件、缺能力標記、未知附件版本或缺讀取能力均拒絕；方案／需求範圍不保存。P-047 要求只有設定編輯及其 Undo/Redo 改宣告餘料，無關操作復原保留清單；key 高水位跨 Undo/Redo 單調保留，保存／重開後也不得重用。詳細欄位與容量見 [CUTTING-PLAN.md](CUTTING-PLAN.md)。
 來源／關聯資料保存在瀏覽器專案上下文，原有幾何由核心的 dump、objects、boundary 提供；複合空間幾何由既有建模執行器推導並验证。
 原始來源檔不送服務端；`world.scene` 使用既有 `/upload`，模型的幾何定義與套件經 `/model/space-preview` 及 `/model/verify` 驗證。
 服務端新增兩個 JS 靜態路由與 vendor 精確檔案白名單，不開放任意路徑讀取。

@@ -712,9 +712,15 @@ class SyntheticNativeFailureBoundaries(unittest.TestCase):
         self.assertEqual([], errors)
         status = Path("/proc") / str(descendant) / "stat"
         deadline = time.monotonic() + .5
-        while status.exists():
-            state = status.read_text().rsplit(") ", 1)[1].split()[0]
-            if state == "Z":
+        while True:
+            # The killed descendant was reparented when its leader exited, so its new parent (init or
+            # a subreaper) reaps it asynchronously: /proc/<pid> can disappear between any two calls,
+            # including between an exists() check and the read. Gone means not running.
+            try:
+                stat = status.read_text()
+            except (FileNotFoundError, ProcessLookupError):
+                break
+            if stat.rsplit(") ", 1)[1].split()[0] == "Z":
                 break
             self.assertLess(time.monotonic(), deadline, "A pipe-owning descendant is still running")
             time.sleep(.01)

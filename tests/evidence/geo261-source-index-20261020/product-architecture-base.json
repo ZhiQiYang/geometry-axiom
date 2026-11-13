@@ -1,0 +1,26 @@
+{
+ "file": "tests/test_product_architecture.py",
+ "total": 18,
+ "run": 0,
+ "passed": 0,
+ "failed": 18,
+ "skipped": 0,
+ "explicit_skipped": 0,
+ "unrun_skipped": 0,
+ "blocked_by_error": 18,
+ "expected_failed": 0,
+ "expected_failures": [],
+ "failures": [
+  {
+   "test": "setUpClass (test_product_architecture.ProductArchitecture)",
+   "kind": "error",
+   "message": "architecture_contract.ContractError: geometry-core/framing-template/core-probe/gen_scenes.py:1: SOURCE_UNREGISTERED: executable source omitted from the complete manifest",
+   "blocked_tests": 18
+  }
+ ],
+ "skip_reasons": {},
+ "skip_items": [],
+ "import_error": null,
+ "extra_errors": 0,
+ "seconds": 0.88
+}

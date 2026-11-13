@@ -1,0 +1,126 @@
+{
+  "source_sha": "7a0e6dd81c54066995981393925fa46a815de2f8",
+  "started_utc": "2026-10-29T03:46:09.495139+00:00",
+  "cleared_environment_names": [
+    "GIT_PAGER"
+  ],
+  "steps": [
+    {
+      "label": "original-registry-core-build",
+      "result": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "-c",
+          "import pathlib,sys;sys.path.insert(0,\"tests\");import binaries;binaries.OUT_DIR=pathlib.Path(sys.argv[1]);raise SystemExit(binaries.main([\"build\",\"core\"]))",
+          "/dev/shm/pr348-probe297-7a0e6dd8/build"
+        ],
+        "cwd": "/dev/shm/pr348-probe-source-7a0e6dd8",
+        "acceptance_sha": "7a0e6dd81c54066995981393925fa46a815de2f8",
+        "source_sha": "7a0e6dd81c54066995981393925fa46a815de2f8",
+        "source_variant": null,
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/dev/shm/pr348-probe297-7a0e6dd8/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1793245569.903148,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/dev/shm/pr348-probe297-7a0e6dd8/subcommands/000004",
+        "ended_epoch": 1793245585.0483363,
+        "stdout_sha256": "cc53c5f059dea86a5e650dc46822abb0215e3c27007fb9fd89f103cbdee1293b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 186,
+        "stderr_bytes": 0
+      }
+    },
+    {
+      "label": "original-probe",
+      "result": {
+        "command": [
+          "bash",
+          "geometry-core/framing-template/core-probe/run_probe.sh",
+          "/dev/shm/pr348-probe297-7a0e6dd8/run"
+        ],
+        "cwd": "/dev/shm/pr348-probe-source-7a0e6dd8",
+        "acceptance_sha": "7a0e6dd81c54066995981393925fa46a815de2f8",
+        "source_sha": "7a0e6dd81c54066995981393925fa46a815de2f8",
+        "source_variant": null,
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/dev/shm/pr348-probe297-7a0e6dd8/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1793245585.050071,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/dev/shm/pr348-probe297-7a0e6dd8/subcommands/000005",
+        "ended_epoch": 1793245647.600172,
+        "stdout_sha256": "853c9fb677c654e7864628e88570683bbfa806c87f578914a87b3bbea1c170bd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 29,
+        "stderr_bytes": 0
+      }
+    }
+  ],
+  "errors": [],
+  "stack_bytes": 16777216,
+  "per_core_timeout_seconds": 120,
+  "scheduler": "Second of at most two heavy jobs; original ledger remains first; no performance/canvas sampling overlaps",
+  "primary_ledger_pid": 305890,
+  "cpu_max": "400000 100000",
+  "capacities": {
+    "/tmp": {
+      "total": 17871880192,
+      "used": 17565761536,
+      "free": 306118656
+    },
+    "/dev/shm": {
+      "total": 17871880192,
+      "used": 4380262400,
+      "free": 13491617792
+    }
+  },
+  "binary": {
+    "path": "/dev/shm/pr348-probe297-7a0e6dd8/build/core",
+    "bytes": 908280,
+    "mode": 33216,
+    "sha256": "99f07323088a2eef6fd54021f0291837606236aebf6b5a2e1eacc57cad4714eb",
+    "sidecar_sha256": "451e6c1b9fb89cc7e84ecf99211d4bb5a26cbf0deb6c3c24c4701549d4f63c89"
+  },
+  "exit_code": 0,
+  "ended_utc": "2026-10-29T03:47:27.635255+00:00"
+}

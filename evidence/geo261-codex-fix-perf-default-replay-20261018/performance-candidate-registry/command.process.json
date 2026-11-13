@@ -1,0 +1,44 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-u",
+    "tests/run_all.py",
+    "--build",
+    "--only",
+    "py:test_bridge_integrity"
+  ],
+  "shell": false,
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T14:51:04.421014+00:00",
+  "started_ns": 1792335064421025240,
+  "timeout_seconds": 900.0,
+  "timed_out": false,
+  "interrupted": false,
+  "returncode": 0,
+  "launch_error": null,
+  "pid": 186213,
+  "ended_utc": "2026-10-18T14:52:57.031837+00:00",
+  "ended_ns": 1792335177031870927,
+  "seconds": 112.61084421299893,
+  "streams": {
+    "stdout": {
+      "device": 27,
+      "inode": 1574572,
+      "bytes": 6870,
+      "mtime_ns": 1792335176974314613,
+      "ctime_ns": 1792335176974314613,
+      "sha256": "d6f9d59808720c445005a79c5ea4be44b2c46b3f29bf4980bab892fa1c7c46de",
+      "exists": true
+    },
+    "stderr": {
+      "device": 27,
+      "inode": 1574573,
+      "bytes": 0,
+      "mtime_ns": 1792335064420511386,
+      "ctime_ns": 1792335064420511386,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    }
+  }
+}

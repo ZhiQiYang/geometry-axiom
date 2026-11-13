@@ -1,0 +1,620 @@
+{
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+  "stack": 16777216,
+  "builds": {
+    "base": {
+      "root": "/tmp/geo261-source-base",
+      "head": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "command": [
+        "gcc",
+        "-std=c11",
+        "-O2",
+        "geometry-web/web_bridge.c",
+        "-o",
+        "/tmp/geo261-source-measure/bridge-base",
+        "-lm"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "b2e65a85776fed150c192c1e374b1d35baa82c4e68f14d529f6d4b30a9ae6ae0"
+    },
+    "fix": {
+      "root": "/workspace/geometry-axiom",
+      "head": "0636a0867556cf5ade397e995b5a93f53fba7a4b",
+      "command": [
+        "gcc",
+        "-std=c11",
+        "-O2",
+        "geometry-web/web_bridge.c",
+        "-o",
+        "/tmp/geo261-source-measure/bridge-fix",
+        "-lm"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "ab8d09bbf4d211f8019d52c8b12eb8d0e4ffde6df45e788cd6ce883225ec0acb"
+    },
+    "main": {
+      "root": "/tmp/geo261-source-main",
+      "head": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "command": [
+        "gcc",
+        "-std=c11",
+        "-O2",
+        "geometry-web/web_bridge.c",
+        "-o",
+        "/tmp/geo261-source-measure/bridge-main",
+        "-lm"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": null
+    }
+  },
+  "equivalence": [
+    {
+      "n": 16,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s16.scene\ndump\n",
+      "exit": 0,
+      "stdout_bytes": 3352,
+      "stdout_sha256": "9700c998cffafad61604347e45d54e7fcc81e026e60a43a84cb799652ecdd41e",
+      "stderr": ""
+    },
+    {
+      "n": 16,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s16.scene\ndump\n",
+      "exit": 0,
+      "stdout_bytes": 3352,
+      "stdout_sha256": "9700c998cffafad61604347e45d54e7fcc81e026e60a43a84cb799652ecdd41e",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s32.scene\ndump\n",
+      "exit": 0,
+      "stdout_bytes": 5827,
+      "stdout_sha256": "fa8c6cd72bdeb4b8e86d3f035a860653035764e21681ba9b6834a5b5b5e9f761",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s32.scene\ndump\n",
+      "exit": 0,
+      "stdout_bytes": 5827,
+      "stdout_sha256": "fa8c6cd72bdeb4b8e86d3f035a860653035764e21681ba9b6834a5b5b5e9f761",
+      "stderr": ""
+    },
+    {
+      "n": 48,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s48.scene\ndump\n",
+      "exit": 0,
+      "stdout_bytes": 8314,
+      "stdout_sha256": "8b7a82faedf42c28d0b025e7fdfa12dde126086cb9304b7f6ac45b0a6d40563b",
+      "stderr": ""
+    },
+    {
+      "n": 48,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s48.scene\ndump\n",
+      "exit": 0,
+      "stdout_bytes": 8314,
+      "stdout_sha256": "8b7a82faedf42c28d0b025e7fdfa12dde126086cb9304b7f6ac45b0a6d40563b",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s64.scene\ndump\n",
+      "exit": 0,
+      "stdout_bytes": 10791,
+      "stdout_sha256": "999065d3fc69913fbc292ddaa6d90439678d303cb2c8e73d36d0d8de014ba2e5",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s64.scene\ndump\n",
+      "exit": 0,
+      "stdout_bytes": 10791,
+      "stdout_sha256": "999065d3fc69913fbc292ddaa6d90439678d303cb2c8e73d36d0d8de014ba2e5",
+      "stderr": ""
+    }
+  ],
+  "samples": [
+    {
+      "n": 16,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s16.scene\n",
+      "exit": 0,
+      "seconds": 0.24377391100006207,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"1ed3728d402b75303f04dfa7647cab78e402bc42e84aa4fecce8bb565b94522a\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 16,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s16.scene\n",
+      "exit": 0,
+      "seconds": 0.24590992399998868,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"1ed3728d402b75303f04dfa7647cab78e402bc42e84aa4fecce8bb565b94522a\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 16,
+      "version": "main",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-main"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s16.scene\n",
+      "exit": 0,
+      "seconds": 0.16770023800006584,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"1ed3728d402b75303f04dfa7647cab78e402bc42e84aa4fecce8bb565b94522a\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 16,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s16.scene\n",
+      "exit": 0,
+      "seconds": 0.19874339300008614,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"1ed3728d402b75303f04dfa7647cab78e402bc42e84aa4fecce8bb565b94522a\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 16,
+      "version": "main",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-main"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s16.scene\n",
+      "exit": 0,
+      "seconds": 0.16241468099997292,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"1ed3728d402b75303f04dfa7647cab78e402bc42e84aa4fecce8bb565b94522a\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 16,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s16.scene\n",
+      "exit": 0,
+      "seconds": 0.23202569700004005,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"1ed3728d402b75303f04dfa7647cab78e402bc42e84aa4fecce8bb565b94522a\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 16,
+      "version": "main",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-main"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s16.scene\n",
+      "exit": 0,
+      "seconds": 0.17304574400009187,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"1ed3728d402b75303f04dfa7647cab78e402bc42e84aa4fecce8bb565b94522a\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 16,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s16.scene\n",
+      "exit": 0,
+      "seconds": 0.23260203500001353,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"1ed3728d402b75303f04dfa7647cab78e402bc42e84aa4fecce8bb565b94522a\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 16,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s16.scene\n",
+      "exit": 0,
+      "seconds": 0.19725050900001406,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"1ed3728d402b75303f04dfa7647cab78e402bc42e84aa4fecce8bb565b94522a\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s32.scene\n",
+      "exit": 0,
+      "seconds": 1.2641653190000852,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"41528593e4dc8a6c137ae831c6c1fa466cb051738d7cc73c38d7c0737f42ea48\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s32.scene\n",
+      "exit": 0,
+      "seconds": 0.46086039399995116,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"41528593e4dc8a6c137ae831c6c1fa466cb051738d7cc73c38d7c0737f42ea48\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "version": "main",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-main"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s32.scene\n",
+      "exit": 0,
+      "seconds": 0.2824030839999523,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"41528593e4dc8a6c137ae831c6c1fa466cb051738d7cc73c38d7c0737f42ea48\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s32.scene\n",
+      "exit": 0,
+      "seconds": 0.46178949099999045,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"41528593e4dc8a6c137ae831c6c1fa466cb051738d7cc73c38d7c0737f42ea48\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "version": "main",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-main"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s32.scene\n",
+      "exit": 0,
+      "seconds": 0.3037664249999352,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"41528593e4dc8a6c137ae831c6c1fa466cb051738d7cc73c38d7c0737f42ea48\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s32.scene\n",
+      "exit": 0,
+      "seconds": 1.2990846300000385,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"41528593e4dc8a6c137ae831c6c1fa466cb051738d7cc73c38d7c0737f42ea48\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "version": "main",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-main"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s32.scene\n",
+      "exit": 0,
+      "seconds": 0.2684078460000592,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"41528593e4dc8a6c137ae831c6c1fa466cb051738d7cc73c38d7c0737f42ea48\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s32.scene\n",
+      "exit": 0,
+      "seconds": 1.3073740080000107,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"41528593e4dc8a6c137ae831c6c1fa466cb051738d7cc73c38d7c0737f42ea48\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s32.scene\n",
+      "exit": 0,
+      "seconds": 0.45445728800007146,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"41528593e4dc8a6c137ae831c6c1fa466cb051738d7cc73c38d7c0737f42ea48\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 48,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s48.scene\n",
+      "exit": 0,
+      "seconds": 6.694002508999915,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"b46d98d7586535e8d698879a9ed208bd172be2b99c27d20518357d7a4f4350c6\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 48,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s48.scene\n",
+      "exit": 0,
+      "seconds": 0.9748158589999321,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"b46d98d7586535e8d698879a9ed208bd172be2b99c27d20518357d7a4f4350c6\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 48,
+      "version": "main",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-main"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s48.scene\n",
+      "exit": 0,
+      "seconds": 0.42599254700007805,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"b46d98d7586535e8d698879a9ed208bd172be2b99c27d20518357d7a4f4350c6\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 48,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s48.scene\n",
+      "exit": 0,
+      "seconds": 0.9796863579999808,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"b46d98d7586535e8d698879a9ed208bd172be2b99c27d20518357d7a4f4350c6\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 48,
+      "version": "main",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-main"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s48.scene\n",
+      "exit": 0,
+      "seconds": 0.441199580999978,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"b46d98d7586535e8d698879a9ed208bd172be2b99c27d20518357d7a4f4350c6\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 48,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s48.scene\n",
+      "exit": 0,
+      "seconds": 5.631128351000029,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"b46d98d7586535e8d698879a9ed208bd172be2b99c27d20518357d7a4f4350c6\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 48,
+      "version": "main",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-main"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s48.scene\n",
+      "exit": 0,
+      "seconds": 0.6457706770000868,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"b46d98d7586535e8d698879a9ed208bd172be2b99c27d20518357d7a4f4350c6\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 48,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s48.scene\n",
+      "exit": 0,
+      "seconds": 5.609039086999928,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"b46d98d7586535e8d698879a9ed208bd172be2b99c27d20518357d7a4f4350c6\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 48,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s48.scene\n",
+      "exit": 0,
+      "seconds": 1.0122325899999396,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"b46d98d7586535e8d698879a9ed208bd172be2b99c27d20518357d7a4f4350c6\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s64.scene\n",
+      "exit": 0,
+      "seconds": 19.485555086999966,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"df98056afd3972484362bbe30a402711625f4a12a5f487f162b871026fa6fbea\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s64.scene\n",
+      "exit": 0,
+      "seconds": 1.9230795649999664,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"df98056afd3972484362bbe30a402711625f4a12a5f487f162b871026fa6fbea\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "version": "main",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-main"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s64.scene\n",
+      "exit": 0,
+      "seconds": 0.6924843649999275,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"df98056afd3972484362bbe30a402711625f4a12a5f487f162b871026fa6fbea\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s64.scene\n",
+      "exit": 0,
+      "seconds": 1.9317960459999313,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"df98056afd3972484362bbe30a402711625f4a12a5f487f162b871026fa6fbea\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "version": "main",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-main"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s64.scene\n",
+      "exit": 0,
+      "seconds": 0.6971933539999782,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"df98056afd3972484362bbe30a402711625f4a12a5f487f162b871026fa6fbea\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s64.scene\n",
+      "exit": 0,
+      "seconds": 20.19266256200001,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"df98056afd3972484362bbe30a402711625f4a12a5f487f162b871026fa6fbea\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "version": "main",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-main"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s64.scene\n",
+      "exit": 0,
+      "seconds": 1.1354308659999788,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"df98056afd3972484362bbe30a402711625f4a12a5f487f162b871026fa6fbea\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "version": "base",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-base"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s64.scene\n",
+      "exit": 0,
+      "seconds": 18.959951907999994,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"df98056afd3972484362bbe30a402711625f4a12a5f487f162b871026fa6fbea\"}\n",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "version": "fix",
+      "command": [
+        "/tmp/geo261-source-measure/bridge-fix"
+      ],
+      "stdin": "loadfile /tmp/geo261-source-measure/s64.scene\n",
+      "exit": 0,
+      "seconds": 1.904693363999968,
+      "stdout": "{\"ok\":true,\"revision\":11,\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\",\"panel-fill-native/1\"],\"definition_sha256\":\"df98056afd3972484362bbe30a402711625f4a12a5f487f162b871026fa6fbea\"}\n",
+      "stderr": ""
+    }
+  ],
+  "medians": {
+    "16": {
+      "base": 0.23260203500001353,
+      "fix": 0.19874339300008614,
+      "main": 0.16770023800006584,
+      "fix/main": 1.1851109776004498,
+      "base/fix": 1.1703636105272326
+    },
+    "32": {
+      "base": 1.2990846300000385,
+      "fix": 0.46086039399995116,
+      "main": 0.2824030839999523,
+      "fix/main": 1.631924083378739,
+      "base/fix": 2.8188246308711356
+    },
+    "48": {
+      "base": 5.631128351000029,
+      "fix": 0.9796863579999808,
+      "main": 0.441199580999978,
+      "fix/main": 2.2205060933637415,
+      "base/fix": 5.747888908544074
+    },
+    "64": {
+      "base": 19.485555086999966,
+      "fix": 1.9230795649999664,
+      "main": 0.6971933539999782,
+      "fix/main": 2.758315973562804,
+      "base/fix": 10.132474725246382
+    }
+  }
+}

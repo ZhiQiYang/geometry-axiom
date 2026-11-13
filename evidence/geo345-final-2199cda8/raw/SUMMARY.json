@@ -1,0 +1,26 @@
+{
+  "archive": "ORIGINAL_SIX_PHASES_AND_ANALYSIS.tar.gz",
+  "archive_sha256": "9c9c37dd0bd4f5c12e42e5a52985008f46f71ad0cd552f7cdcc3487c8a0533e4",
+  "archive_bytes": 288038,
+  "source_original": "3c6633575ec0f9dccf35898380202aad8d0ffddf",
+  "source_fixed": "2199cda8896b47c7ad2b6c10479e5e0cbdb67c83",
+  "actual_six_exits": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "roundtrip_all_bytes_equal": true,
+  "member_count": 1002,
+  "original_bytes": 2330074,
+  "created_utc": "2026-10-24T04:13:19.270536+00:00",
+  "limits": [
+    "All six original correctness exits0; polling withdrawal is equivalent behavior, not killed correctness mutation.",
+    "Formal and component measurements separate; component wall/process-CPU spans inclusive, no nested sum.",
+    "Original inner run_process exposes decoded combined text only; all exposed original text retained, no fabricated separate inner pipes.",
+    "Native cache executable payload remains original in /tmp/geometry-tests; before/after hash and exact sidecar bytes retained, not a copy of the ELF.",
+    "Only these two formal selected19 and four observed19 requests; no full native/browser/final ledger/architecture credit."
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "stage": "after",
+  "head": "ca3badecceace47587aefcfdc2361f5ffdb7daa3",
+  "checkout": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T13:03:29.903241+00:00",
+  "os": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "invocation": [
+    "/workspace/geo261-validation-20261018/proposed-fixes/record_06_engineering_unplaced_oracle.py",
+    "--checkout",
+    "/workspace/geometry-axiom",
+    "--expected-head",
+    "ca3badecceace47587aefcfdc2361f5ffdb7daa3",
+    "--stage",
+    "after",
+    "--out",
+    "/workspace/geo261-validation-20261018/fixes/engineering-unplaced-oracle/protocol-after"
+  ],
+  "runner_sha256": "a253effde48385bbc1baa84d815b60fa27ec4ec4124aea6e5e28f6404fc3894c",
+  "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "files": {
+    "tests/test_geo261_wood_engineering_operations.py": "8df09bb7b0757439add2eebe1e5c8d37d62b7c4856aeff47550b4aa44733fe00",
+    "tests/geo261_engineering_operations_harness.c": "bdf8b5b1bd15fd20bc3eeeb49b8150fb284dac5f2256ee08874291346aacf3c6",
+    "geometry-templates/woodworking/native/engineering_operations.c": "4154e53ba181f2f60a3fb626851e937810ddd9b5ab4766e48ebffc2734fad7b9",
+    "geometry-web/engineering_bridge.inc": "d83d8b209c1e82cc5d553d504c52a0ebc7ed05a088295774311582e51d7d6b65"
+  },
+  "status": "完成",
+  "exit_code": 0,
+  "tests": 15,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "ended_utc": "2026-10-18T13:04:01.279300+00:00",
+  "seconds": 31.375974549999228
+}

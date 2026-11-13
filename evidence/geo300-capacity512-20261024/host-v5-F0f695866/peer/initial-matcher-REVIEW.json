@@ -1,0 +1,21 @@
+{
+  "scope": "Small read-only static review only; no subject import, generator execution, C, browser or Git writes",
+  "source_sha": "400a6d0ca50f3aca104fb569c77c8ef753c93355",
+  "patch_sha256": "d4a745e6f2d101bcd65166617eacc75a3d095d8dc4bee9aa320532438ab25ca1",
+  "checks": 72,
+  "passed": 71,
+  "failed": 1,
+  "findings": [
+    {
+      "name": "expected only count bytes",
+      "ok": false,
+      "detail": null
+    }
+  ],
+  "limitations": [
+    "All C, formal 7 methods, three correction withdrawal/restoration executions and placed 512 acceptance remain UNRUN.",
+    "Original 600-second P189 ceiling reused only for new batch cases; original old method limits and seven ABI controls preserved.",
+    "Initial v3 left-handed width-axis gap and v4 R18 leaf deletion expected-text error were reported and corrected in v5; no earlier static approval supersedes this candidate.",
+    "Stack highwater exploration plan is not runtime evidence."
+  ]
+}

@@ -1,0 +1,5324 @@
+[
+  {
+    "path": "recovery/ADOPTION.json",
+    "bytes": 395,
+    "mode": 33152,
+    "sha256": "d16be835cc0950e599b17eb8c9e596ddc15f8972d3dbe39a202b03539cf84ca1"
+  },
+  {
+    "path": "recovery/BRIDGE_STREAM_HASHES.json",
+    "bytes": 88005,
+    "mode": 33152,
+    "sha256": "4c2e4a8de418d9f8c1eef3dc6041a94f6518c3d8628923fade0b6dba339da462"
+  },
+  {
+    "path": "recovery/EXECUTION_LINKS.json",
+    "bytes": 193069,
+    "mode": 33152,
+    "sha256": "f0a3d33f7add6159e61af83918a5a5c0f8c9b801094cfebdb0f6bf9676dc9317"
+  },
+  {
+    "path": "recovery/ORIGINAL_ELF_MANIFEST.json",
+    "bytes": 95634,
+    "mode": 33152,
+    "sha256": "e511e614acf6d625e0082e44e2d49d2986e975e2a5861718b9f5dd29be5b1e2f"
+  },
+  {
+    "path": "recovery/ORIGINAL_MANIFEST.json",
+    "bytes": 234172,
+    "mode": 33152,
+    "sha256": "831b332c30134f5ce7bf5c9815504d03309bbbacb746bd45ab642da1ac432dd2"
+  },
+  {
+    "path": "recovery/PEER.md",
+    "bytes": 2960,
+    "mode": 33152,
+    "sha256": "163a8e6895c58b827754b5e2ebc4f4957661e94c42280d4d053c3d65ab871153"
+  },
+  {
+    "path": "recovery/README.md",
+    "bytes": 3072,
+    "mode": 33152,
+    "sha256": "4a7c7fe4b00bc38ae0c6996296d35a3409303a8bf19f155993207660d843f2dc"
+  },
+  {
+    "path": "recovery/RECOVERY_FAILURE_1.txt",
+    "bytes": 632,
+    "mode": 33152,
+    "sha256": "c8cf154a861ddce8fa6c8ff13dc1abf7a411802dca230ae14f7389a459be0dda"
+  },
+  {
+    "path": "recovery/RESULT.json",
+    "bytes": 7714,
+    "mode": 33152,
+    "sha256": "7a73834fec24ab4e77921c6e99f333619e65c0086989bd51a184b1c6cedacb2c"
+  },
+  {
+    "path": "recovery/adopt_publish.py",
+    "bytes": 5849,
+    "mode": 33152,
+    "sha256": "4fb55fd37819d12aa1187bb44a1864791d2ee12766e3da25dbb579ecade7d5a0"
+  },
+  {
+    "path": "recovery/adopted-check.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/adopted-check.stdout",
+    "bytes": 531,
+    "mode": 33152,
+    "sha256": "cd3b83275134e6487a7c3737c90cc053b4dce723084ff562e178f0e740a85ec9"
+  },
+  {
+    "path": "recovery/originals/cache-text/M01/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "5e4715617219dcc2a573b454280e325e4039587c076b81a816403d7d71d05021"
+  },
+  {
+    "path": "recovery/originals/cache-text/M02/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "5f99558149fbf6bcbd23ca438cc6634c51bec0073ee964df1121b1525d3e9d0c"
+  },
+  {
+    "path": "recovery/originals/cache-text/M03/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "622c014ac340658b347414d9a02bba3c9d114509958cb794f49c3c709000aaee"
+  },
+  {
+    "path": "recovery/originals/cache-text/M04/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "1ff44f1d7dc3b6519c649fcd387a294f53b4f25ecb283c1a5b3adffe226a3746"
+  },
+  {
+    "path": "recovery/originals/cache-text/M05/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "1f6380b97cab2b05456b3cc02c349e94e44c61c15a039d5092b18ddf6acb097d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M06/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "d2503360612060834341b634592780d916f86c3790c4262e06405a2b6c1de98d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M07/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "0e684f5b31cb2cc3796a1ba11f476bbf1d7670ddc9a98917b9c29bedda49bb47"
+  },
+  {
+    "path": "recovery/originals/cache-text/M08/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "653f3690a8aebc1f3b76b21c5facf7f44a915d9d25fb6a136b712c24ae304843"
+  },
+  {
+    "path": "recovery/originals/cache-text/M09/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "bf0059da7dd8606d3ff48b473bdcab582964a0925befb6501243fa7b230a9968"
+  },
+  {
+    "path": "recovery/originals/cache-text/M10/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "095bdd41f99943014b9acae5d4d8f7828e8a05c4a3288529b744634865e0ead7"
+  },
+  {
+    "path": "recovery/originals/cache-text/M100/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "213c85530614597491ba64f4f009e1c66549403cfb0be619f4b80c2eb167efb9"
+  },
+  {
+    "path": "recovery/originals/cache-text/M100/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "46024325c04e3e74c62c338ffba6bfe875fd805421494f794d82c4aaa15a8c3e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M100/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M100/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "b470d7fdf8c5af78e45bc96931cd12f17f1c7a569b1d4af1fd06ee3efb9418f6"
+  },
+  {
+    "path": "recovery/originals/cache-text/M100/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M100/mutant.stdout",
+    "bytes": 12088,
+    "mode": 33152,
+    "sha256": "3d442a4d1e6e5473ae1fcc9beece07fb256545093c091d473dcd4248a2f5d692"
+  },
+  {
+    "path": "recovery/originals/cache-text/M100/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M100/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "af61e7cec6bc2fb3db3561afa97722688b294bbf2ef7d43e86a868eacfcf3b54"
+  },
+  {
+    "path": "recovery/originals/cache-text/M100/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M100/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "46dc87c52ad07f522d98d805d72b4b9ec6ad96a82dac3c4109a32ba16d2200f0"
+  },
+  {
+    "path": "recovery/originals/cache-text/M101/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "858e25634bb9120ef8a5532c13ab977624c676883c47e0b2ded214ab6e71685f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M101/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "850ae30c8d2a8c587f0394983354ba891e3a39ad590d925f03293d356ea7306a"
+  },
+  {
+    "path": "recovery/originals/cache-text/M101/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M101/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "f90b6246e0d83b875ff0adf9f7a31fb8d90a773e19cf14567da6b4c96e8430e9"
+  },
+  {
+    "path": "recovery/originals/cache-text/M101/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M101/mutant.stdout",
+    "bytes": 2692,
+    "mode": 33152,
+    "sha256": "5585c0c03ee7ecebd0fe2acf6740a5e18c969ad45411ba6502d61d2f3ab55788"
+  },
+  {
+    "path": "recovery/originals/cache-text/M101/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M101/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "644734de26c3223760f75e12b6fcdf94af99273ab0785b94903349deca240066"
+  },
+  {
+    "path": "recovery/originals/cache-text/M101/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M101/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "c7d11c6677e69de91a60656d35a3f7bbb132afcab2b680f77962c89307b7b7b9"
+  },
+  {
+    "path": "recovery/originals/cache-text/M102/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "bb1b5f598c2a5247fa860ae846bd029cdc876ebd694441f8057706cc77b3d6e1"
+  },
+  {
+    "path": "recovery/originals/cache-text/M102/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "f1255b94fcbb4e658796e599a9e6b57197e5db75df5cd6a1b538c00d35ac97e2"
+  },
+  {
+    "path": "recovery/originals/cache-text/M102/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M102/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "a9ab7d1dc2e55aeabd03c70a454ddcf2d1303dc83165d506b9c5360ce5a49827"
+  },
+  {
+    "path": "recovery/originals/cache-text/M102/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M102/mutant.stdout",
+    "bytes": 2700,
+    "mode": 33152,
+    "sha256": "e86704159c361597c3b24c4d240610dda4e776831d1926e436aaa05ad730343f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M102/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M102/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "f0fa6bfdbd272f3003f07d271c246a567c2fc18391e7c7c5228d6ca42a2ce412"
+  },
+  {
+    "path": "recovery/originals/cache-text/M102/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M102/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "f6e1dfd9f5da1cf31a090a66ef1df4026c238d655e2f191535f8ebed4c930757"
+  },
+  {
+    "path": "recovery/originals/cache-text/M103/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "ed49ba1956200329ecc4d28643d56e348494367a9ef202c04265fcbc09078e6d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M103/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "9c1f004325acc4b89fd780c7e2cea8fbeb7307b323ad9a81d7573b0fcda1111f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M103/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M103/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "1b0f0cb881372e78dd6037c44f8a1522d96c58a230adad2a3a76854742d4e49f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M103/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M103/mutant.stdout",
+    "bytes": 2724,
+    "mode": 33152,
+    "sha256": "01d3525391e43065f48bff7fa6cbfab27a358394bcf18fac46ab2407b144c58f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M103/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M103/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "be28e524129327aec2c68761fce84c2fee13d0b6c20423129d9def77e65dbd9a"
+  },
+  {
+    "path": "recovery/originals/cache-text/M103/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M103/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "f16eb3cdb0ea7e8f92710020e249c78c35310b806529c30aa6628a88655d3759"
+  },
+  {
+    "path": "recovery/originals/cache-text/M104/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "8092003e2c01166ab2af1eadb7b3e233d321b37356b004709cd0b435fa8a5564"
+  },
+  {
+    "path": "recovery/originals/cache-text/M104/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "e5f4d28eba6dd855bd8c48a2df3f2634f6ccc7705a320eedb87824aaaf96bcf6"
+  },
+  {
+    "path": "recovery/originals/cache-text/M104/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M104/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "c1b93f9c63fb7ae8d32e27ad386b4223381fc27554e86332298783c06e81a335"
+  },
+  {
+    "path": "recovery/originals/cache-text/M104/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M104/mutant.stdout",
+    "bytes": 2690,
+    "mode": 33152,
+    "sha256": "bfd38946790be8ab33d6ed3962eb941dbd76d0947595edfe9cb576593c2dc6b5"
+  },
+  {
+    "path": "recovery/originals/cache-text/M104/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M104/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "bd1ccfb74159477753fadc40d13366f5ea95d152eeb9d1de522072e3ffa83153"
+  },
+  {
+    "path": "recovery/originals/cache-text/M104/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M104/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "f72d5c9f3b87ddb83e2d89fba27a2a160d98a11a282ecbcf6fe5a053e680f990"
+  },
+  {
+    "path": "recovery/originals/cache-text/M105/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "27b04e4c12826eaf1ec541a3d82f89acf0d2a28b5128d87ebd50375083530cba"
+  },
+  {
+    "path": "recovery/originals/cache-text/M105/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "3942c4d88a9c1d00acbf210ed6acba5a8b02d1f2fa605d78ac0a634b23a88600"
+  },
+  {
+    "path": "recovery/originals/cache-text/M105/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M105/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "83764dacd3bce7dcfe332095a27cd4aa589c42fa325fca9f313c7fe496e2deb0"
+  },
+  {
+    "path": "recovery/originals/cache-text/M105/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M105/mutant.stdout",
+    "bytes": 2700,
+    "mode": 33152,
+    "sha256": "d9cf7b4b59faf9e9651247366764604381cf3afc465974eef4d1e487a0e88139"
+  },
+  {
+    "path": "recovery/originals/cache-text/M105/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M105/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "5fb061692afa1409af42e0fd89a7153247499f19b2f19d0e55de246ce61f202e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M105/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M105/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "7730fd21fa0be78e75beccbfe37438da74ad7892fe1e79d9184ebe1caca1849f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M106/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "24e8e47a2c119ad85dcc9336a41932590d384e95bcb573cee6c7d2b9bee44545"
+  },
+  {
+    "path": "recovery/originals/cache-text/M106/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "b408d15f23506df329523ddaa03cc8a5d6f1fabaa4d398009a80df3ca761295c"
+  },
+  {
+    "path": "recovery/originals/cache-text/M106/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M106/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "6c17133c84c29ef9260b861ab1bff67d081e115018fa165f320c4924b9938527"
+  },
+  {
+    "path": "recovery/originals/cache-text/M106/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M106/mutant.stdout",
+    "bytes": 2700,
+    "mode": 33152,
+    "sha256": "4973f85e40c12dab5942c170432aa224c48103fe44a4effce52e4f2632ecb6c8"
+  },
+  {
+    "path": "recovery/originals/cache-text/M106/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M106/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "6c64d25e983885aec92300d02b82d395436272f11a0e9c66d0cddef2438ce36f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M106/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M106/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "f84cf7ccf3572ba77ff244f1d75246d04b2b7ec873b50dfcb2d51b984722c9f7"
+  },
+  {
+    "path": "recovery/originals/cache-text/M107/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "cec5a1b62554a634ec337d5ae10f2125bb503bc704cad964c8273f5316d94f36"
+  },
+  {
+    "path": "recovery/originals/cache-text/M107/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "26cab914ff208805d2f6519e0c052cca2c7301e00f3ddf10954d491e69c9c993"
+  },
+  {
+    "path": "recovery/originals/cache-text/M107/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M107/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "0ef5f354f314dd1bcfc324e9677e251e3b42fe6f948970009788acaac1b8072b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M107/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M107/mutant.stdout",
+    "bytes": 2720,
+    "mode": 33152,
+    "sha256": "8a036a2cb925222e2ff4d565fecc0b6532407bae8f14b2c8ab8843426b802d99"
+  },
+  {
+    "path": "recovery/originals/cache-text/M107/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M107/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "c368c7273dcc7d9cd7dcc0767b254d213ff2f8a452e3cf8e9aede9e5d21569df"
+  },
+  {
+    "path": "recovery/originals/cache-text/M107/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M107/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "079d80cd243f15a2dceccf703593130cf58f5955808d82cfa7dfebdd584190c0"
+  },
+  {
+    "path": "recovery/originals/cache-text/M108/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "48d3ef49092c6a45bed48ca1f9dc880b0e5c018d504cecda0a6bfcf620856eab"
+  },
+  {
+    "path": "recovery/originals/cache-text/M108/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "3919235a44ba1d7a944f3bfe0a245151c925b950f060d827dbed60a01db33ad5"
+  },
+  {
+    "path": "recovery/originals/cache-text/M108/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M108/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "5e0381c82ac4491e1f4d03688aea5b9f6deb8eb23e75d1d3e8db6bff4ebdc52c"
+  },
+  {
+    "path": "recovery/originals/cache-text/M108/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M108/mutant.stdout",
+    "bytes": 5219,
+    "mode": 33152,
+    "sha256": "e50b37b88238f4c8dd3763e518d6dff4e7c3d1def37f13a4e4798d8cc424f91e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M108/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M108/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "9b597e141c24e9c7dde14cc1c657493e85b20d92e6149f49bbd0faa0e5845368"
+  },
+  {
+    "path": "recovery/originals/cache-text/M108/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M108/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "067d1d09ea303b61003e0a52644b5c9b6a835b6f5cc79d3b3dd16fae2912a878"
+  },
+  {
+    "path": "recovery/originals/cache-text/M109/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "8ea9b02baab2426ea1961be0051542742b0063968fb6515b0f83ff97a32c4351"
+  },
+  {
+    "path": "recovery/originals/cache-text/M109/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "deb43761cba2cfe596da1e8d8f31e8407b190f7faca882b7f2af8d28b09c2d5f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M109/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M109/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "202d524f0526ba3f13cd1ab85e2301bc7b3696cb27dd4df544216ab3f2d48279"
+  },
+  {
+    "path": "recovery/originals/cache-text/M109/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M109/mutant.stdout",
+    "bytes": 6502,
+    "mode": 33152,
+    "sha256": "22a3819f0dba59982b74ebff3378794f64342f124bd72088b859e797ee053bb1"
+  },
+  {
+    "path": "recovery/originals/cache-text/M109/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M109/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "09a8ab2aa44649564785af3110d6d25144a482d6834bce54067f2e081ee63077"
+  },
+  {
+    "path": "recovery/originals/cache-text/M109/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M109/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "9367e86be19b889ca4ff99b98673f53ca9ee9026c4beaa14c4fa2e37dc94b9c6"
+  },
+  {
+    "path": "recovery/originals/cache-text/M11/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "d6fad5f535365d2c08aa2bbaa4cdd0a788f35e91686436d3490a3d9425a89eab"
+  },
+  {
+    "path": "recovery/originals/cache-text/M110/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "5dd452d20ad367f1995974fd74ab9bb67859dc6ae8a270d6a1a153edea637be3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M110/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "d29e9a722235e77a778387beafeeaac1bd7d5b0dea0c2d339fc3bbde65a64462"
+  },
+  {
+    "path": "recovery/originals/cache-text/M110/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M110/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "230bdd763238b04f7a9ff31dbc12ba0ce137a62ce65931b91c80c085f459eff4"
+  },
+  {
+    "path": "recovery/originals/cache-text/M110/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M110/mutant.stdout",
+    "bytes": 688,
+    "mode": 33152,
+    "sha256": "e0569092f894737272e17bf988abc1665c1731330e358e62f8e5bc30f99b6f21"
+  },
+  {
+    "path": "recovery/originals/cache-text/M110/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M110/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "d14066495a897f1bdd866ea0cb209439b6adfed67035e11f067c4136dcdcc4cc"
+  },
+  {
+    "path": "recovery/originals/cache-text/M110/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M110/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "75a3e9061c4d71eb80d4e3b87407237633358d16fdf9c64ef3fc0cc18ea9326e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M111/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "e61bff3ba101ae5a85769fc7c434fe726c23865a297fa054c4414a02136d4a38"
+  },
+  {
+    "path": "recovery/originals/cache-text/M111/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "ba3c2cfd1132af38df89d196c49d5574106adf8bf4ea83967fba59037b6d5170"
+  },
+  {
+    "path": "recovery/originals/cache-text/M111/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M111/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "ef1a2df663a0bb32d8b52cbc35aa43d58fa9c28a84c1e96159566729909ed44c"
+  },
+  {
+    "path": "recovery/originals/cache-text/M111/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M111/mutant.stdout",
+    "bytes": 4148,
+    "mode": 33152,
+    "sha256": "08a9f37f238c8dd55125811e7a678cbc607ba50f420263e81e6688f40c3c7eac"
+  },
+  {
+    "path": "recovery/originals/cache-text/M111/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M111/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "d773601e794e2368541f5f683f05ac861532e21bf73833365ffaf505bd94046e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M111/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M111/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "93fd275a2b8b3bfa6acd10b17bb4d0dd6ed4a6792c84cfd56439a7792d725166"
+  },
+  {
+    "path": "recovery/originals/cache-text/M112/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "9496582e6bf386dae76e182fe76b6128d241d3e9327933cb51d05b64889a5ef3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M112/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "048c893702b4d009c56bf96b40a63bf48394fe734b4e785aa87fe1968b6e6f86"
+  },
+  {
+    "path": "recovery/originals/cache-text/M112/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M112/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "eb0d40abf1fa173bb24211e3bd9f3ef1ccc62e2d9ffcd00568dcd2b20c8d9be2"
+  },
+  {
+    "path": "recovery/originals/cache-text/M112/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M112/mutant.stdout",
+    "bytes": 2752,
+    "mode": 33152,
+    "sha256": "1c27bed281fa936b866beb38b38befdbf12b08799d47a441ecc10f00e01ef290"
+  },
+  {
+    "path": "recovery/originals/cache-text/M112/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M112/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "b25ae7a501214fc2d613930db81b809c9cf6b2cb36088ba3080831966025043b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M112/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M112/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "a5e79d525d9b8de75fd368bba279b184d48a015ac507ea7ac8226d0ca381fd4e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M113/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "b019855cbd21a73b5708c0e5785e6f6579c42a2b26551877ac0115609eaa75d7"
+  },
+  {
+    "path": "recovery/originals/cache-text/M113/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "22fd0094969701dfc9b7c8fadb80f2827422d1f369e5cee5a65a3d17f220c8b0"
+  },
+  {
+    "path": "recovery/originals/cache-text/M113/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M113/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "994dc1c22022b2e6f00dfa057f7a0646ae703776f2376925fcbc44b2e6481356"
+  },
+  {
+    "path": "recovery/originals/cache-text/M113/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M113/mutant.stdout",
+    "bytes": 2722,
+    "mode": 33152,
+    "sha256": "051e430b5f0664f3cadb43defd36be69991967fa4997d63ae4bc2d350a9ff2b5"
+  },
+  {
+    "path": "recovery/originals/cache-text/M113/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M113/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "a06cf253c1e07cd995dc25c7ae211e39c96d21d260843c9ffdcb6983a5051a75"
+  },
+  {
+    "path": "recovery/originals/cache-text/M113/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M113/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "7dad86aeefa907833fdc9a83f18470a7873e27f113c87a14e374e2c9129517b4"
+  },
+  {
+    "path": "recovery/originals/cache-text/M114/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "8150dbf8354865caead4e2f77b3560cd6c6ec33d3b5ecbeaf7acd1a5b3b9c419"
+  },
+  {
+    "path": "recovery/originals/cache-text/M114/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "cec6df198d7f2d30846678d7115e040e9a0bff0f9faeb6825e697c8feb6a4be6"
+  },
+  {
+    "path": "recovery/originals/cache-text/M114/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M114/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "ccdf1907757e0417654d4ec0a4513289045fcc8b3f72fc0ebd52ed78d7a1b935"
+  },
+  {
+    "path": "recovery/originals/cache-text/M114/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M114/mutant.stdout",
+    "bytes": 2728,
+    "mode": 33152,
+    "sha256": "e1e3e76e4ceddb4d7b9892be0b69902000d5e8650a12764888671bf3ffa39468"
+  },
+  {
+    "path": "recovery/originals/cache-text/M114/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M114/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "88b3c3479cb788af2b7e3e4a91bf2cc4b44926088c48bd5d3209b3fa4a9eecbd"
+  },
+  {
+    "path": "recovery/originals/cache-text/M114/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M114/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "7939f40578068eee4cf1a9d12f9c6f7d804b779fa0151e34964af18df36e9583"
+  },
+  {
+    "path": "recovery/originals/cache-text/M115/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "2922c0ba24e6c8d588a86ce5f5ea42d7d6bf2a54d3e78f6a46dd4436dd9d8ad3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M115/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "b0b25eee61273c50f6b500280f172e227cd892436f2f497941ebf0be4d0a33a3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M115/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M115/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "78f636bf6abe46010f7b0298f00c645a061b633b349ed39f14cd34e2ce9ddbb7"
+  },
+  {
+    "path": "recovery/originals/cache-text/M115/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M115/mutant.stdout",
+    "bytes": 2726,
+    "mode": 33152,
+    "sha256": "a011d842a04f1f382cef552d066fb7d4be082a12fe0c9c7f5d932164a6686c41"
+  },
+  {
+    "path": "recovery/originals/cache-text/M115/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M115/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "0a70702769660720243ece6d9655609639c9eb14ed677aa0e024101338772e8a"
+  },
+  {
+    "path": "recovery/originals/cache-text/M115/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M115/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "39f1551d00e21546252259eca400f318a43a79c1d7edac47660f7f68abeacf31"
+  },
+  {
+    "path": "recovery/originals/cache-text/M116/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "afdc14fb0c2cd592df43de68158031b1700215752a22a491bb94e74c6994c1b3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M116/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "a676b6f1bfb6fe09121505cffcac5a77169e50d01fbd1df2f1cc349142702565"
+  },
+  {
+    "path": "recovery/originals/cache-text/M116/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M116/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "b68c5df0e86eba66c855aa831f23dcb182345e9e6b90155826261e68ace02e8f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M116/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M116/mutant.stdout",
+    "bytes": 8830,
+    "mode": 33152,
+    "sha256": "0ac16cb70d1280f5b7ea70da6ebc2795fe24532cb26cab01a6a4d4df02635325"
+  },
+  {
+    "path": "recovery/originals/cache-text/M116/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M116/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "f3e9faab7ec88c3df1e792b68dcc3ddfc382cbaf14d03d7a18a70db447a9697d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M116/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M116/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "14000b01db06952a2068fab9a9465dafbc681fc6898c0b0d6e8f81becf225c37"
+  },
+  {
+    "path": "recovery/originals/cache-text/M117/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "8827cd7d4c87754683df95e9473c111b319d0990e81b19394d12dc0f8931b222"
+  },
+  {
+    "path": "recovery/originals/cache-text/M117/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "4d176b9b632f3a36856e3c6e95f9fbbfacd48691c5a19325cf8b3706cf6c0444"
+  },
+  {
+    "path": "recovery/originals/cache-text/M117/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M117/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "b6e4711d565bfbfe9931cb10b254ae149e212efee3e7503e0892c1095b66c2aa"
+  },
+  {
+    "path": "recovery/originals/cache-text/M117/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M117/mutant.stdout",
+    "bytes": 2247,
+    "mode": 33152,
+    "sha256": "29ee287a271bd4c28ee5890bd5be56d987931fc13a23024482d545e280c818ad"
+  },
+  {
+    "path": "recovery/originals/cache-text/M117/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M117/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "0bf85752f1264e9ef580ae1059372b3e342c3469ee0849e552a2611cd7daa0b4"
+  },
+  {
+    "path": "recovery/originals/cache-text/M117/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M117/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "41cbd5ea1176b08fb51dbeac1d3e365de97c48fdd3e1fff36cff17fbd0a6ed16"
+  },
+  {
+    "path": "recovery/originals/cache-text/M118/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "eb8e9cfb961b3d5c0827ed7e014d2e3b0fa2d8b94b53e7fedb7a5ae2cf95518e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M118/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "92ef0b9f82d144fe4d9d191eee52c0fc54ff193d297d5c0d2fb7bc4f324264d2"
+  },
+  {
+    "path": "recovery/originals/cache-text/M118/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M118/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "fec9c0a572f1ae3ac1e1029e416feaae9161b7bae3804dc68f6d717588899259"
+  },
+  {
+    "path": "recovery/originals/cache-text/M118/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M118/mutant.stdout",
+    "bytes": 8830,
+    "mode": 33152,
+    "sha256": "cb3c940d6ede13468401ae01f4091e905999e7f85aa4d11e77f4bd69109db69f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M118/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M118/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "7c35fb6f985f66667036cca1671306c957c7f4ed7b27a6bc821f8d246efc88fc"
+  },
+  {
+    "path": "recovery/originals/cache-text/M118/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M118/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "4fb0f397f61afab8946f4fef2ad17f181408b2e3878651d5cbbc8c962570d22c"
+  },
+  {
+    "path": "recovery/originals/cache-text/M119/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "3682edc7e545c1e6bfe01481fa9b94bceba47e4aeaaf647f79afa57c54905e85"
+  },
+  {
+    "path": "recovery/originals/cache-text/M119/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "b31d075f6f67a0d7ec62ef102cdceb3eb3cecd3f004863234568afe31430f4d3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M119/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M119/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "82b1d123566eab9bb5d4d352e563525d56b035629f22a27c5bf79b5a01285924"
+  },
+  {
+    "path": "recovery/originals/cache-text/M119/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M119/mutant.stdout",
+    "bytes": 8597,
+    "mode": 33152,
+    "sha256": "c33691591d0226b9a90b56d6da9b4b5f0984fed5dcd258e8b1847287aff8c616"
+  },
+  {
+    "path": "recovery/originals/cache-text/M119/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M119/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "0c645786b33a2020fca3264e924d4a60faf089989de66aa0b85e51772e454f3a"
+  },
+  {
+    "path": "recovery/originals/cache-text/M119/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M119/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "c56f371c04e4a0231b081a215fbf85893d2f55a58177cd222e9e4d7adf1c9774"
+  },
+  {
+    "path": "recovery/originals/cache-text/M12/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "4746ceb1caeef9fa10ba980ea7effbcda83e43337d3f531131de8a232c39f6c3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M120/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "ac4486b95b512ffa26716cc624372aa4734c7bbfa925f1a7edd94fae51b31344"
+  },
+  {
+    "path": "recovery/originals/cache-text/M120/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "4b3331c114caa3a104cb2da8b5284ab33fb685e8a383e2d28bbaf6baf029aea6"
+  },
+  {
+    "path": "recovery/originals/cache-text/M120/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M120/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "7b6d3708ecf653f11c8a797bf38e4a96eeac9439661a526a197c7605c6a6ad7c"
+  },
+  {
+    "path": "recovery/originals/cache-text/M120/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M120/mutant.stdout",
+    "bytes": 9385,
+    "mode": 33152,
+    "sha256": "a693220f56142f379bbab036f1f893013db7b2e7d7ec4cb4461cb6d80fc6f663"
+  },
+  {
+    "path": "recovery/originals/cache-text/M120/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M120/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "64752ed91ba5cee1db5a2f84e2b462d1246b0952085ac054801aa4880e92f948"
+  },
+  {
+    "path": "recovery/originals/cache-text/M120/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M120/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "3bcdace2e37c79ce7e8a601890e0c55082a3aedc8882948c68db7d3e0c33f9f1"
+  },
+  {
+    "path": "recovery/originals/cache-text/M121/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "6bf61a7cf9ac746777fe1402b88d1ecc05935b4b36579c2b13d8d4c7bf9fdfa1"
+  },
+  {
+    "path": "recovery/originals/cache-text/M121/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "035559e6fe798c0059191eb45afbef297cc5fc2e839ddbc988d03c08796dbede"
+  },
+  {
+    "path": "recovery/originals/cache-text/M121/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M121/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "f6adac9b9f4c9bb76a62a34ab844b19e996495e32fa3e0e4888727fbaa8a0d88"
+  },
+  {
+    "path": "recovery/originals/cache-text/M121/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M121/mutant.stdout",
+    "bytes": 8779,
+    "mode": 33152,
+    "sha256": "2f1f11716c09e01308838ca71d1d40e92ac01a269c219e1b589461f21931249f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M121/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M121/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "066117acbd53d62e453527e6e4d3806305da03eda193fceef40f9063aa6128f2"
+  },
+  {
+    "path": "recovery/originals/cache-text/M121/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M121/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "bf1af59f68fa93753dbe5944f69ba6e430fbc497639366d40a22b3f2df7b6f82"
+  },
+  {
+    "path": "recovery/originals/cache-text/M13/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "cf87b458ef5fe42927ede462be9dd7d48357399319a45ae8b2dd5077f00806d6"
+  },
+  {
+    "path": "recovery/originals/cache-text/M14/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "1025b23dcb5f1410b4f7c1b408d3573a388d99aa17ecb8fac2aa273802b8b083"
+  },
+  {
+    "path": "recovery/originals/cache-text/M140/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "06d0b3e31e3ba5b1f214338e93eb2e5ae36acc53b8817a6393c8903ca847dfaa"
+  },
+  {
+    "path": "recovery/originals/cache-text/M140/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "1393f23dc915bbfd091ba0fc55fca6b8e869be4da81949fb0c17369e7532f33e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M140/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M140/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "e85f46890cb96889b2a956f43c9343c6299efd6f5fb004bd9022e13ecac314b6"
+  },
+  {
+    "path": "recovery/originals/cache-text/M140/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M140/mutant.stdout",
+    "bytes": 2003,
+    "mode": 33152,
+    "sha256": "2fe99783464080acf04dcd1e85f97070865c61ad9f4ec9830395a18ac018cc51"
+  },
+  {
+    "path": "recovery/originals/cache-text/M140/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M140/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "4a436b6a7531c8adb0e51e9fc96d542d3b725e57602839dc51f3722a87fd90ec"
+  },
+  {
+    "path": "recovery/originals/cache-text/M140/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M140/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "4c5e63a4bcadc58e78ca8b73653bfb61da4c616779442520cb6b9bc149024a4d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M141/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "14bde9ee6a1d949dc53a307c83328854813a4ce53185b0d2aa4d653b79539093"
+  },
+  {
+    "path": "recovery/originals/cache-text/M141/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "736a4a4c868cf32546f39c71339c69c861ca53521b7d17e64089c504a38112e8"
+  },
+  {
+    "path": "recovery/originals/cache-text/M141/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M141/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "fce200814e0e3aad24fe89c91bd8a4c1ab179db89f8b5aaac34445b3183d1fd6"
+  },
+  {
+    "path": "recovery/originals/cache-text/M141/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M141/mutant.stdout",
+    "bytes": 1997,
+    "mode": 33152,
+    "sha256": "d10933eff98520aeff11d358199818bd3496b442ce0dfd4efac1ef3f91c5aa09"
+  },
+  {
+    "path": "recovery/originals/cache-text/M141/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M141/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "ba7db456603d89b241b36b101e2c4cddfae504636747d2dcf4e60dd9317e3f3b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M141/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M141/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "3caa938e05effcc035329b5505b064ebf38fc5824bbebf519af10eebf0a133ef"
+  },
+  {
+    "path": "recovery/originals/cache-text/M142/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "b25c2c24c20b3594daf3bedccd7e0b3e63047b1a8a2b666f78686a46aff55b61"
+  },
+  {
+    "path": "recovery/originals/cache-text/M142/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "008d398cc1d6ae284176df14d604f42a97c7c71e595266d19b1b7d9130aba7f0"
+  },
+  {
+    "path": "recovery/originals/cache-text/M142/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M142/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "a284632b6743aa0fbba74db4a0206d82d149bc49d0366564d5ec9d11c532a16a"
+  },
+  {
+    "path": "recovery/originals/cache-text/M142/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M142/mutant.stdout",
+    "bytes": 1997,
+    "mode": 33152,
+    "sha256": "ef1a9694fe26ad796deeb28ab9fe00daed126fe56786cb3e93411c50998db43d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M142/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M142/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "b8210af1a5b550c61e8e0ada19115e5ad6e1a11f9d6c9f44ce5074734f908559"
+  },
+  {
+    "path": "recovery/originals/cache-text/M142/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M142/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "cb2b00e1595a6f830c2f03fa773608474e0ab685d961b63f172948ca1e1a8667"
+  },
+  {
+    "path": "recovery/originals/cache-text/M143/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "af03c9d07d0372cc18378e8eb5874431a8b917f6d782cfcecb7d731167616326"
+  },
+  {
+    "path": "recovery/originals/cache-text/M143/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "e22682945e64b527f5afbe5fa5f9ed4264f9140918603fe8d789b18a86f01f16"
+  },
+  {
+    "path": "recovery/originals/cache-text/M143/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M143/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "5151dcd8c46a8d0aa3f083d8319126ab768c35e7460bd73507ed3b8c4a3e3400"
+  },
+  {
+    "path": "recovery/originals/cache-text/M143/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M143/mutant.stdout",
+    "bytes": 1997,
+    "mode": 33152,
+    "sha256": "338aa954a7ea441ed5c44babab4ec12b30dd1d837ff34bd03e13c68566bdbfdc"
+  },
+  {
+    "path": "recovery/originals/cache-text/M143/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M143/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "18c2d5660a12d33769f3e4e47522f3627fc22d672949d00e6ada98520ab0f70d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M143/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M143/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "2ef218b5dbeb02b5c0dae0f32a92820a2b4a0b5de9fa469d312cd01e58c220ee"
+  },
+  {
+    "path": "recovery/originals/cache-text/M144/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "5a40c0c9cd769012d23fbc7bf67eadac305684283053c5fbbd3ffd5cf68b02a1"
+  },
+  {
+    "path": "recovery/originals/cache-text/M144/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "9d6389e424aaa6ec8db15326412afbc288946407349b836ec5ed210dc7ab449f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M144/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M144/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "98f578cce271e2d482481343820e5cd0aff1b31ae2fb5b143dcc2bc24b02c81d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M144/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M144/mutant.stdout",
+    "bytes": 1964,
+    "mode": 33152,
+    "sha256": "befd8ce830bd8009ad47e832464ec666b01629fc4baed935fc98d2bccf9db9ce"
+  },
+  {
+    "path": "recovery/originals/cache-text/M144/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M144/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "c23c07650ddf0255043c45fb83526eb64abaa224b013b6fb907a5ff908a33f93"
+  },
+  {
+    "path": "recovery/originals/cache-text/M144/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M144/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "d5f58ae49df24e71d1829493ee535aa75a1efbadfe48568f3e7b419430288a0d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M145/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "4fbb501223cb6d0214d98acb4e6c3c10004016b913ed33a6762c19ec380f6bf3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M145/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "51e5249bca697db5a06dba0f1d9e7487e1c5c9bb3f0f64dc3e48aa7fa1f6de84"
+  },
+  {
+    "path": "recovery/originals/cache-text/M145/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M145/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "6b13de6fecd587c63e0c11c5a4e4a25b3140516ce4b4b945e1de95ca5f25671d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M145/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M145/mutant.stdout",
+    "bytes": 1964,
+    "mode": 33152,
+    "sha256": "a4b04aeb70f7076d56fa3fcb9770a9fbe73bffb150bb3990e4955d528e1db6d5"
+  },
+  {
+    "path": "recovery/originals/cache-text/M145/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M145/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "41528904350df14c346dff2c379544fb444e01520885fa3a53709c7feb746237"
+  },
+  {
+    "path": "recovery/originals/cache-text/M145/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M145/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "78f7989cf1db94c6544c248645ea7b9a80014bd9bc95025428b0050f745cb8b0"
+  },
+  {
+    "path": "recovery/originals/cache-text/M146/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "029d0573df72e469a4d4393947a09d0ff889e5117e502b60f0009efc59c057ef"
+  },
+  {
+    "path": "recovery/originals/cache-text/M146/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "6c6b334e88fbf734cb96fc97e60bf493bf8470c660cfd76f69010f72dc2b7ea9"
+  },
+  {
+    "path": "recovery/originals/cache-text/M146/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M146/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "24aac0be8ed9dd975e5e705e3cf3a99ab2c74b930955a0bb4d397a141c65d2cb"
+  },
+  {
+    "path": "recovery/originals/cache-text/M146/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M146/mutant.stdout",
+    "bytes": 1964,
+    "mode": 33152,
+    "sha256": "38185643bcbd3c8760bcbc5500ad2c6606082d941cd167a3a4162eeedd48e950"
+  },
+  {
+    "path": "recovery/originals/cache-text/M146/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M146/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "6c99ac6ca263615f7cc2681dca6797ed3ce2ca2f9db1d80fda58a8cc9e5e18a4"
+  },
+  {
+    "path": "recovery/originals/cache-text/M146/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M146/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "b17ae9c31e815c69f6197d70e2e39bc681dbc54ec7f8681a8a3adbb1c1c6c26f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M147/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "ecb42a0f8cbad8664510c92d446e385df0ca8f246ae6e0cf7b30a17be7d76b37"
+  },
+  {
+    "path": "recovery/originals/cache-text/M147/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "7c46eaf1323127b4546a473e3604800518171e8ba8f6a2a93d526e410a0d64b2"
+  },
+  {
+    "path": "recovery/originals/cache-text/M147/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M147/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "5032ebc01a408a51ae65a426f79d1e8f32a2d2055eca16cbfbb50cbb054d0707"
+  },
+  {
+    "path": "recovery/originals/cache-text/M147/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M147/mutant.stdout",
+    "bytes": 1942,
+    "mode": 33152,
+    "sha256": "a5a2902989076af4bfcf9ef65773c46ef57bb4dfed4d082398a62d5579ec5326"
+  },
+  {
+    "path": "recovery/originals/cache-text/M147/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M147/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "54ee05fe571ae19ee540ddb00a431a4bf50cdea7a2b175dd1a3834b19c5bbc5b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M147/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M147/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "d422a2e11294e473eeec6425348d213a355ea3f954b290c3f87f21bf246b5e47"
+  },
+  {
+    "path": "recovery/originals/cache-text/M148/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "9f5f7126b960bfad7121bb5c5d7e448f5469b98d3659a1f9eb10a8f7cde13aaf"
+  },
+  {
+    "path": "recovery/originals/cache-text/M148/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "1ee15d85508f1d5a0b1b3dab5fae1f682c431c34f65c5b55435a58a67bbcf23b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M148/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M148/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "77ec86ee653f4232df8d43d38fd88022074c1d03f79ba1eb1b80a65449253faf"
+  },
+  {
+    "path": "recovery/originals/cache-text/M148/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M148/mutant.stdout",
+    "bytes": 1942,
+    "mode": 33152,
+    "sha256": "d4a87b955a56ccf773e1bb53e72bae4b6bacb21f2e48644fda70ffe9bf232d32"
+  },
+  {
+    "path": "recovery/originals/cache-text/M148/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M148/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "2b7bd6a7b9f6491510371272f7da8537983c086f2f702e174a865877c984d763"
+  },
+  {
+    "path": "recovery/originals/cache-text/M148/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M148/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "f9c57d89547c6207feee1672218cf187fbd136d2dee23edec302f983756531cb"
+  },
+  {
+    "path": "recovery/originals/cache-text/M149/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "af7a405799f6f93a7855afa647686039196b31b590a5e3908770046d50390ccd"
+  },
+  {
+    "path": "recovery/originals/cache-text/M149/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "9e5e81889ad859e963c13cfe5be40bcd5a051b9ffda59302e1c812804ae80e6c"
+  },
+  {
+    "path": "recovery/originals/cache-text/M149/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M149/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "27ee81b58875d774fe598dd805875d9a1ddb4f010671140b61889ce65783c646"
+  },
+  {
+    "path": "recovery/originals/cache-text/M149/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M149/mutant.stdout",
+    "bytes": 5166,
+    "mode": 33152,
+    "sha256": "4ee2435156a21f0fbca78503fa51acc93434310cfe64f5cba4345fa57ed62d97"
+  },
+  {
+    "path": "recovery/originals/cache-text/M149/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M149/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "6164ea312b21e2c5ac7267c2a1517c339fbea2bd32ae40c915cc8f46deae7c5d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M149/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M149/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "e07ba0d3f944e442f931fc16e9c7e6737bbe6c20793b3e4b6b78f354f1f52743"
+  },
+  {
+    "path": "recovery/originals/cache-text/M15/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "0cee7ea145ed534a951a4b3192799792622ac557f91a5726029d0676ad30ef6b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M150/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "08e7e583cb05deacb0941287250c486d13db2e502c902add9036548a7cb2c0fb"
+  },
+  {
+    "path": "recovery/originals/cache-text/M150/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "a595c587793ec08ab508efe8ee14cae038caf4cd2c2fc1a3791d83aa2f4f8b72"
+  },
+  {
+    "path": "recovery/originals/cache-text/M150/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M150/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "813c2ca5cd9b718b4315fd62d2d7930c6fc512afa6fcb8ce77f61dec77b8a83b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M150/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M150/mutant.stdout",
+    "bytes": 1964,
+    "mode": 33152,
+    "sha256": "59e7f6d2b320a3d4ecf647cd59f296a68e2742497397f022ae157742b0b076f0"
+  },
+  {
+    "path": "recovery/originals/cache-text/M150/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M150/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "c2401658ecdf59de1fd945ad0d6ec305b5f7bdb66a7c40c31e3248473002e3c2"
+  },
+  {
+    "path": "recovery/originals/cache-text/M150/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M150/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "2863777f6123a6487467411162bccdf8b07a5f355096873b8791fdad4a1aeb57"
+  },
+  {
+    "path": "recovery/originals/cache-text/M151/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "43a23a3208b841114476588a5388458f952529947502ead4d1c993c8c6cc0662"
+  },
+  {
+    "path": "recovery/originals/cache-text/M151/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "d372e1bc6716bc5e4a229944adc53de0c623b723af17c50f3737b690ce4786ae"
+  },
+  {
+    "path": "recovery/originals/cache-text/M151/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M151/mutant-build.stdout",
+    "bytes": 268,
+    "mode": 33152,
+    "sha256": "4b98060e8f970d327a6f3b6140a90329e1f47358a18b9d47227a11a03d9ac3de"
+  },
+  {
+    "path": "recovery/originals/cache-text/M151/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M151/mutant.stdout",
+    "bytes": 1997,
+    "mode": 33152,
+    "sha256": "627c85972f35af50b424b30985f4e19c3cf828812a2a9bfeda1d32160a507089"
+  },
+  {
+    "path": "recovery/originals/cache-text/M151/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M151/restored-build.stdout",
+    "bytes": 272,
+    "mode": 33152,
+    "sha256": "fbee640e2d24a2aaf523ae4baaa20c37fc0163080c9959c891293cb12f775944"
+  },
+  {
+    "path": "recovery/originals/cache-text/M151/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M151/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "b6b072c37793e9c6c3e30136622c15941209d32b9a9b39ff8dd210fdf1d00c03"
+  },
+  {
+    "path": "recovery/originals/cache-text/M16/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "c369efd544b5c1632800920cafe239ad5932de9d64eaa102b0eb3a26e323d408"
+  },
+  {
+    "path": "recovery/originals/cache-text/M17/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "eecec91f37c3074e939cbda61f3ad6af6b9d42b5a5302db7177222945f466336"
+  },
+  {
+    "path": "recovery/originals/cache-text/M18/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "e37dbe6104231d7890f1e482a1637537e0361fc37cc8f859fab73ce54a211b76"
+  },
+  {
+    "path": "recovery/originals/cache-text/M19/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "3c110c3d66dd0d887def0ea39430d93a43ecc71323a99847e4574e390915c93b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M20/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "84c3a806706345051281714868b75a38552a06eafbe13df8ad1a59daf6929108"
+  },
+  {
+    "path": "recovery/originals/cache-text/M21/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "6fd9698e0d636c19cd4d1d39d41adc6a8a1158064f4a117718175db24162e257"
+  },
+  {
+    "path": "recovery/originals/cache-text/M22/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "0282ebc6664ea4d8795bd25905ffc1af3f8090a1635777d00e2f33b4b7aeb117"
+  },
+  {
+    "path": "recovery/originals/cache-text/M23/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "3f293a38f98a77833fdd43d29d7910f81dd46e856364c242aac78f6ab5f8898f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M24/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "2cc880edb276c1bea17f96e715a7232eb5dc73522787ce1630857102c76043e1"
+  },
+  {
+    "path": "recovery/originals/cache-text/M25/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "bd88c6af03632b7e5aad77f33a3f43cea27bd2c0a8215aafe7a7dd47b198ca5c"
+  },
+  {
+    "path": "recovery/originals/cache-text/M26/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "8b0c82f17f08a9667720b1bea875e7afe64061d330e5fdd71aba61c066791151"
+  },
+  {
+    "path": "recovery/originals/cache-text/M27/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "3fa016561753e6e32f7ef603cd914b5e7fedd0db26f95973a5969d08da0ad31f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M28/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "d6d1921cb5cedf1a21333c23f6ef5c071ea06aa6dbf1a97f05f233bd4b279eee"
+  },
+  {
+    "path": "recovery/originals/cache-text/M29/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "9760a6f25226e1f2b3e77f2e1a644d6fef2c5240fb7e9d06938662950d35f447"
+  },
+  {
+    "path": "recovery/originals/cache-text/M30/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "2df3431e2a970123e3d9021a671f1814b0084ee1cde9fa47320187fc34af9cbd"
+  },
+  {
+    "path": "recovery/originals/cache-text/M31/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "3bb9d47f8f9f2cb39ca9526005c97f8d94178ea6af2610994eeae7f5ed05e7d1"
+  },
+  {
+    "path": "recovery/originals/cache-text/M32/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "bd9889093a5bd8de152fad1dc7f263f5e755443b7f6c2ede70c8b190de5ee88d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M33/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "e0c8a08c9be9956e7237739b8e2bf8feffc515bc1a516a307e4e71a64618f8f6"
+  },
+  {
+    "path": "recovery/originals/cache-text/M34/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "56c75a53df493d5ff300a2850f8bea1f5d31ef4825d76881861d6ee204111e1e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M36/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "0f84720b17b5d4391a05d1401e9d57993198a657837d704ca9d18f33a63f4107"
+  },
+  {
+    "path": "recovery/originals/cache-text/M37/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "eaa81802a0295c0abd9d0ddf7216c49ebf13be4130dd9635ce1b175b5bf072b4"
+  },
+  {
+    "path": "recovery/originals/cache-text/M38/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "023d4eb91f4ccfb2fdc60bd1c592916eabc5662f713bc4c928d6fdab11d9c3b0"
+  },
+  {
+    "path": "recovery/originals/cache-text/M39/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "843c7b60b33cfb7c887ea90e9f8a6d2224378067b6464f85bb6589c2bf8fb973"
+  },
+  {
+    "path": "recovery/originals/cache-text/M40/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "41f71ac6fb749d636899b05cd40df694bd4917173593c9b85e0fb7f4d331118d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M52/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "f1aa1927e7f53b68c369007b07259ed32194505201334661c2e43e63ea2b7b06"
+  },
+  {
+    "path": "recovery/originals/cache-text/M53/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "ff2b6e66fd4a2e770831f812f96c95b7073ddeaf8b6ff430caa01f7a607630bb"
+  },
+  {
+    "path": "recovery/originals/cache-text/M54/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "6879c95dd20b4887409ac1694a07afa7c969a85982ec18cddc7c26fd26c1a6dc"
+  },
+  {
+    "path": "recovery/originals/cache-text/M56/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "740fd7064da203ef616c3ea7c1975e78573e6379cd6f3a0919477d648f256161"
+  },
+  {
+    "path": "recovery/originals/cache-text/M57/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "49825aa6b5162224c3e6fe9ce143674a69fe4e78e9b8a7d6cb8a695df0e08d7b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M58/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "e244a8aa971b28b280899dad5c5f8e883d88d8e00daaf10d70a12d69b4383eaf"
+  },
+  {
+    "path": "recovery/originals/cache-text/M59/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "baba258752a71457581a9388181d57ec30a76adb6b89ae9e7354a97c6785629d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M60/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "c41b010299aa51402c99f68e158f4e77e5ca3c2f944c9c9feb7a05007a7f6d9a"
+  },
+  {
+    "path": "recovery/originals/cache-text/M61/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "79e025ff2465f81149fcb096c930ab4c7fe17999ded253b3de6deed73cba9699"
+  },
+  {
+    "path": "recovery/originals/cache-text/M61/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "d56e59907b72ede63ccdf2a8ad2bfb13a4222d9f64e9a64a8d20f81c69441da3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M61/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M61/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "68fd2a8c2d62a6ead2914aba0beb1bd70d68cf9e2ba15d5ffe511c282a9d3aa4"
+  },
+  {
+    "path": "recovery/originals/cache-text/M61/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M61/mutant.stdout",
+    "bytes": 7514,
+    "mode": 33152,
+    "sha256": "adb964ecf9fea8b83a4ed25963c5a4e2c17f371dedd37d536461f6bce02bed23"
+  },
+  {
+    "path": "recovery/originals/cache-text/M61/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M61/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "08c9288e83f70bf018b4d9024b087519e04e71048dfd85e8e53bd5047b8862bd"
+  },
+  {
+    "path": "recovery/originals/cache-text/M61/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M61/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "230a43cb555301fcb4d71f6b6b2fc2531c7af463fc800466dade05c32e805d01"
+  },
+  {
+    "path": "recovery/originals/cache-text/M62/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "979862552f5c0a66ddbd47a867a5b57c1ed28d9508249d17fe98d419edc94509"
+  },
+  {
+    "path": "recovery/originals/cache-text/M62/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "1ca6e12c32040d31e2991470c1088ac1f3e27c7567772c07d3001f52094cef95"
+  },
+  {
+    "path": "recovery/originals/cache-text/M62/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M62/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "ebaad49ce36bc448781d42e51d6fcf8b0f0508d918286e3bd941ebffae57cbef"
+  },
+  {
+    "path": "recovery/originals/cache-text/M62/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M62/mutant.stdout",
+    "bytes": 15264,
+    "mode": 33152,
+    "sha256": "225b6b989a1eb7aef1a4d54badcdc72064c18daf8104eb4253c646cdb42b7392"
+  },
+  {
+    "path": "recovery/originals/cache-text/M62/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M62/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "07e940fcf357a181d85de05e73616f211d24f44be6f3be84b70df5266e8c2cbb"
+  },
+  {
+    "path": "recovery/originals/cache-text/M62/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M62/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "dec12ba161e23a30c37fd388fc7920423b7da742b91b4344d452efc8e462244d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M63/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "7ac6312e04e439ff25dbd539ace02f5656e725a4d48df921b897b6ca52116b1a"
+  },
+  {
+    "path": "recovery/originals/cache-text/M63/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "a408ef5d8c7e2fa35a705d8f8756b5c349df904bf459782cc7544c5929a3791f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M63/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M63/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "ca2e61165c965e6106b62a4cdf5530e1931d050bd878f1d1a648cd028f897110"
+  },
+  {
+    "path": "recovery/originals/cache-text/M63/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M63/mutant.stdout",
+    "bytes": 8096,
+    "mode": 33152,
+    "sha256": "07c1f2448f4c9e8834fbe2b639d8365ff0eaab3fe09fa3d8c4b95745ef4766c8"
+  },
+  {
+    "path": "recovery/originals/cache-text/M63/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M63/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "01454fd9dfa5ce380ac87de24dccc24180177068bc7b0d0d5e39794e528c0935"
+  },
+  {
+    "path": "recovery/originals/cache-text/M63/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M63/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "145bb6d32287ed9be6f60b33f0d33ee5e44e69f1b0278c055f49171c9f1086ad"
+  },
+  {
+    "path": "recovery/originals/cache-text/M64/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "9b148bf9fc2f2bdd33472d973f4f0afc74e516b47cbae9d4d21682b3f19c494d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M64/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "2ee45f792fed4c81063204a2262dd13838784ccad932153e28f04e7046447cdb"
+  },
+  {
+    "path": "recovery/originals/cache-text/M64/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M64/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "3818b6239572afc4201fd4339a74d247f0a2e6ef3b6a9e2998b0a65b6df198c9"
+  },
+  {
+    "path": "recovery/originals/cache-text/M64/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M64/mutant.stdout",
+    "bytes": 7461,
+    "mode": 33152,
+    "sha256": "99b6d0374505c6ad2d29ac919420b87f8d9598152a57151c947f7fbea6d5466f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M64/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M64/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "1e201b47aac0b7979044c584379d6a127308c971916b0fc94c3651de94081652"
+  },
+  {
+    "path": "recovery/originals/cache-text/M64/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M64/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "62233e38c5d90373e465d0ef4141c9b89929c85d4d80b48b03a7306c4ece2c26"
+  },
+  {
+    "path": "recovery/originals/cache-text/M65/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "f0a5ce3127f4cdf704f621281be1e5e4f567c18a29e58d949fdaa89cad76ce29"
+  },
+  {
+    "path": "recovery/originals/cache-text/M65/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "017224ab1102ef38b335e95c4df09f5a39c4e4e2b5f15706d24c0ef0a5557095"
+  },
+  {
+    "path": "recovery/originals/cache-text/M65/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M65/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "732b9fd4e80a651cc84dca53e490da98dc6fa23062e6e7663cecd1add3b88575"
+  },
+  {
+    "path": "recovery/originals/cache-text/M65/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M65/mutant.stdout",
+    "bytes": 24693,
+    "mode": 33152,
+    "sha256": "d7d8ead925e15b19d42db37669267a6821acc75a71e82df9d8da32e08e794d04"
+  },
+  {
+    "path": "recovery/originals/cache-text/M65/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M65/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "f067a758ce903ec6e9571e4de82ac69f487f2e8a6558346125f5b352fe5f1536"
+  },
+  {
+    "path": "recovery/originals/cache-text/M65/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M65/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "665ee66571e21c9fd7bf058888e435a0488338a79c9ac9c24b7b4a2eadab2b44"
+  },
+  {
+    "path": "recovery/originals/cache-text/M66/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "6c7d95847c2ea232b2ad1f49f2fd64d5925e65e2ba5cf893ce39256e88b603e0"
+  },
+  {
+    "path": "recovery/originals/cache-text/M66/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "ee682f51e1acdbd64f6c5d28b137fd803edcc9cc6629a0301656f5333c3dccfe"
+  },
+  {
+    "path": "recovery/originals/cache-text/M66/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M66/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "6fc9561685edd032a1dd763669bec7a066fd52035ab94f7ff4efbb3d9fc15b27"
+  },
+  {
+    "path": "recovery/originals/cache-text/M66/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M66/mutant.stdout",
+    "bytes": 2369,
+    "mode": 33152,
+    "sha256": "58cf8f6b6fb781146972b8e2b9832091abf0dfdfdbf157bad5fcc398c04d4a06"
+  },
+  {
+    "path": "recovery/originals/cache-text/M66/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M66/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "3d861d35d9a9bbe4217d61c8c401eb96ffe66d4cc6021dbbd23bb6d766d343b1"
+  },
+  {
+    "path": "recovery/originals/cache-text/M66/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M66/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "386e55c0c0dcf4fb26db689785e6e5dace67efa4707aaeb7f1d72a756d1036a7"
+  },
+  {
+    "path": "recovery/originals/cache-text/M67/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "41a4c6fd7788bb1a471224c3d318c873d454eb7cbeb368f5fffbc72b880f1644"
+  },
+  {
+    "path": "recovery/originals/cache-text/M67/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "c3252ea037e78c58837ea1d68cda64a40887a31c9d6de7ec926a25393b00cbce"
+  },
+  {
+    "path": "recovery/originals/cache-text/M67/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M67/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "70d3276239de4aa012e94bd5e56987ac193284ee60d59a153a2a5ac91eb6940c"
+  },
+  {
+    "path": "recovery/originals/cache-text/M67/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M67/mutant.stdout",
+    "bytes": 3157,
+    "mode": 33152,
+    "sha256": "e7818676d4305728d7c075a2015a66e2cc168ef5b2ab2ef8bc73f84e8c79de97"
+  },
+  {
+    "path": "recovery/originals/cache-text/M67/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M67/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "e2993b644c9d41659030c5fdde8dde92159955b92251629244b117791e1fc082"
+  },
+  {
+    "path": "recovery/originals/cache-text/M67/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M67/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "bd14228379891a3168b2ee4bf086d2380d618bc7d0fa04e040babebc9461ba92"
+  },
+  {
+    "path": "recovery/originals/cache-text/M68/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "e260aa95092668b95644e18f0066c5de26b0072d0222048741b76f841fbca07c"
+  },
+  {
+    "path": "recovery/originals/cache-text/M68/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "242e0eb35695cceb0bb575cb05b2734883f6ae6fe4f11ebf82d74a1450a2594b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M68/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M68/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "fee600b092a35ab8d531c0bd4a7b546cec167ca4a3a958c26774b8e08142215b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M68/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M68/mutant.stdout",
+    "bytes": 127757,
+    "mode": 33152,
+    "sha256": "5a609ac7f6e0a8ca039696f71587b73c019c7039ebe48d7c6d3d5836ca99e33b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M68/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M68/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "0366cbf6525ce536bde2841e2b18d24f45b1a8d24878e42a8fe0befc4a3be138"
+  },
+  {
+    "path": "recovery/originals/cache-text/M68/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M68/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "b3d75ceefe067d57b54b959a905e15ff6c87cf933ca60c463388ea89ed2f54fe"
+  },
+  {
+    "path": "recovery/originals/cache-text/M69/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "fc75f5243985e2a18f349aff0cfef64a871148e5d03596138a2bd3692115f4f6"
+  },
+  {
+    "path": "recovery/originals/cache-text/M69/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "5bc0d386e0e77cb7c8e145c443a2e69f14265fd75d560da761708cfc392668c2"
+  },
+  {
+    "path": "recovery/originals/cache-text/M69/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M69/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "dd97cdf03031c79de1f77cdb294294ffb9edf959837c68c3dc74498b46760dbf"
+  },
+  {
+    "path": "recovery/originals/cache-text/M69/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M69/mutant.stdout",
+    "bytes": 8001,
+    "mode": 33152,
+    "sha256": "5074f2c2c33a84eb63b13414176f36f74bc2a89e38549c522b28ab1eb5f345b6"
+  },
+  {
+    "path": "recovery/originals/cache-text/M69/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M69/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "33f7cc0c6475b22144fe2705225321bee4353ad376bd60017230f5ea6386c4d5"
+  },
+  {
+    "path": "recovery/originals/cache-text/M69/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M69/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "d9a003767bcf37c60ad28a5f3a44d7518fcc83e9f508c0d7b0983553625bd181"
+  },
+  {
+    "path": "recovery/originals/cache-text/M70/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "e6e494dc396350d48ec6dae34e57f861e6cee0f3c1443019822cb755e4fecb04"
+  },
+  {
+    "path": "recovery/originals/cache-text/M70/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "371eb091c55d08a698fd7b4cd1ca55a2766b78d2fad9ad79a5e0ec9ea1ba0cb3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M70/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M70/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "2670635282c9a40d442c534f4b41a7832e53eb0965b87b5c09e1b61b0b2fc6f4"
+  },
+  {
+    "path": "recovery/originals/cache-text/M70/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M70/mutant.stdout",
+    "bytes": 8583,
+    "mode": 33152,
+    "sha256": "fe1b1638e6944b5f543f5132e05d5d2c4ba12584e93a6b3d3fc1cb5fd5afabcd"
+  },
+  {
+    "path": "recovery/originals/cache-text/M70/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M70/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "3e878a417f4bbe8f0cdb514a8aa7139402d3d5fa18d5a9490b0b0c528d23e2dc"
+  },
+  {
+    "path": "recovery/originals/cache-text/M70/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M70/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "3d5eadbf2dca2bca2bb728a368269ec11ca85d244f38eef32f17c1cc13a501c1"
+  },
+  {
+    "path": "recovery/originals/cache-text/M71/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "d6630499236781b0e0b06680a367375296c3ab042bc5d0f6cfd416c290baf2cc"
+  },
+  {
+    "path": "recovery/originals/cache-text/M72/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "6201c8ece8f9cd300c3c60c310555c86572889b94c182a3395c8e8a686e42e2a"
+  },
+  {
+    "path": "recovery/originals/cache-text/M73/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "b0f957d33e8e80f7b38a8aaa3a458b5e3b2e950ff3e569cdfa1c1e34dd628239"
+  },
+  {
+    "path": "recovery/originals/cache-text/M74/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "5bc96fa24ca8cf2ba92d10cc11044e19e19f4413e50d156c4628889b2d64c92e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M75/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "bb3dcd796a9d08d06573d1bb0ce38d1f73ba656957d19b82fba8da78c67f4f90"
+  },
+  {
+    "path": "recovery/originals/cache-text/M76/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "77714d3864d0cf521b23ff897f3a4d934c3676ce10673449a3e877641a2f8e50"
+  },
+  {
+    "path": "recovery/originals/cache-text/M77/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "f0d4a720bff6e16c07df7c4b04d75d8a8b70d594d79c4e6e0f54a3dd6a7845f9"
+  },
+  {
+    "path": "recovery/originals/cache-text/M78/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "f47410b864ee6d7d0c614c0274c333c1f0eb9c19f72be8cb02346272b1bccc01"
+  },
+  {
+    "path": "recovery/originals/cache-text/M78/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "9ddbad94f1702c74ff24580af2824b23bc3b0a043b5b3a738ec5e099a66035c7"
+  },
+  {
+    "path": "recovery/originals/cache-text/M78/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M78/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "1159ed59a7e874bc06f90f51bb063ce2d1a21888275a091a3b31271b51d69c48"
+  },
+  {
+    "path": "recovery/originals/cache-text/M78/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M78/mutant.stdout",
+    "bytes": 10614,
+    "mode": 33152,
+    "sha256": "1723bb2cb1a2fa94c34e2f3354ff95aa7b42ddc562c634d3624b360d8f55a9b7"
+  },
+  {
+    "path": "recovery/originals/cache-text/M78/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M78/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "69ba24cbcfb6109d91f0f85888f2074d1ec3489ed4ba9963d91581ffa9b1e0fa"
+  },
+  {
+    "path": "recovery/originals/cache-text/M78/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M78/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "bc5cb76d2da4eefd7382f690f21d9db7f13e1e7cca9e4c937890f7ac2a66c99b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M79/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "8dd89818134e74611a1772c29ad7b03baa746f2f59a4531c61def2a8a697db22"
+  },
+  {
+    "path": "recovery/originals/cache-text/M79/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "1a61ea62ca0de555ce551452abae05a33093ecec0e312d1553b4ac3efeb504bf"
+  },
+  {
+    "path": "recovery/originals/cache-text/M79/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M79/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "dfa8cc2375eee9c9f263314bed22dab99615fad73dc93c85dd8ae428b17a889a"
+  },
+  {
+    "path": "recovery/originals/cache-text/M79/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M79/mutant.stdout",
+    "bytes": 3712,
+    "mode": 33152,
+    "sha256": "aaef4a50aeb1016a69ca5602189d7ed1bd33894b13681c1ad34623e66247e062"
+  },
+  {
+    "path": "recovery/originals/cache-text/M79/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M79/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "4d1d440e4da7e25726db4a91eb452fb12dbaaea9e03b67f86a3b8de1d384cff2"
+  },
+  {
+    "path": "recovery/originals/cache-text/M79/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M79/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "5b0ae825c3e4d9205a1fd60f7420fe9b6988526f64a8183500a84af460936b59"
+  },
+  {
+    "path": "recovery/originals/cache-text/M80/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "48af0e78006945f2b5dbbc185d73e354d1db349a6afabcb0bd9e255ee7266156"
+  },
+  {
+    "path": "recovery/originals/cache-text/M80/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "813e8be799e0d3b700d57eb716e0f5ed4d05f2302709447d5e1b7c96ae7c965b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M80/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M80/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "26dbb21c54c7780660a6c13785a50bd0701a0b6af588d4a5ddb9564c2c252417"
+  },
+  {
+    "path": "recovery/originals/cache-text/M80/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M80/mutant.stdout",
+    "bytes": 11384,
+    "mode": 33152,
+    "sha256": "bc15b813b84213174fe36db9b50d437e08a4721620501e3f402c69de731ca206"
+  },
+  {
+    "path": "recovery/originals/cache-text/M80/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M80/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "6e45baa2d0c05dafae9f7876d09c4112953251f44a7684560d8299fb9372068e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M80/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M80/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "097735fdd59f974bd639eeb792f2ba97f088d79779a9bf2d0a1fb9f0851b2940"
+  },
+  {
+    "path": "recovery/originals/cache-text/M81/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "c3630dcfd0efd2942fedf2cec886f84d6c04cdf33d1c3286bfbe194e2f74eca5"
+  },
+  {
+    "path": "recovery/originals/cache-text/M81/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "f85b77395a763685a26b465aba41360b13f834475d9eca0d5cef674c74e2401d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M81/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M81/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "b8aa26e479c8d3b28ec42817808718fbdf41dbd7ae5b89cd46cd0a313e66fba0"
+  },
+  {
+    "path": "recovery/originals/cache-text/M81/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M81/mutant.stdout",
+    "bytes": 9863,
+    "mode": 33152,
+    "sha256": "1a9b5b21c981d5c55bdc2290f4f7e3e2a2605f5a9dcc342158dec20020f58b21"
+  },
+  {
+    "path": "recovery/originals/cache-text/M81/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M81/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "e7583c49c76ae2331179d6e40f38664d07807e68f0e3d09f853917f84d695ed3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M81/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M81/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "4dbbed8dacf7b9702075106cc11446dab8d30e78b65a93881e1c3aeca0c31d8d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M82/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "01cfbf6fdc9be3a1f9244b44971836cb60646222c9d292d323411028b7eae485"
+  },
+  {
+    "path": "recovery/originals/cache-text/M82/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "5f6cabaf9c332162a895690f56866f01e9eab0475336b933a8e0eaf2d73f5c9a"
+  },
+  {
+    "path": "recovery/originals/cache-text/M82/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M82/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "7735fe0335bd9b3c9b76b664b27c5f605ea28721fea129e7b4da1d2d71e55a55"
+  },
+  {
+    "path": "recovery/originals/cache-text/M82/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M82/mutant.stdout",
+    "bytes": 4265,
+    "mode": 33152,
+    "sha256": "e9506f48b3f3fa379b53b40bc30d0513c2a264ad5f974ec1b3824cf7a5812df1"
+  },
+  {
+    "path": "recovery/originals/cache-text/M82/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M82/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "eb340ea17e73d6ec478e60da126d3a44826f14cdfac6e7a7804fcf61c0f224a1"
+  },
+  {
+    "path": "recovery/originals/cache-text/M82/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M82/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "f647ec9b1122bfc9bf8b34c0d05487e18b83a36108ab594846e712485810e1f8"
+  },
+  {
+    "path": "recovery/originals/cache-text/M83/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "6e613b6f7368390f52bee370f2424c12229481b2cf747a59f75bb49f43ebb9a4"
+  },
+  {
+    "path": "recovery/originals/cache-text/M83/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "943804ac1dec423c92feb59056935cb1c30bab197d5f8bf6fb1219f50f0e656f"
+  },
+  {
+    "path": "recovery/originals/cache-text/M83/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M83/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "0d8abbb8d91eb8a834de3c75bb9988d24a857a2d945c6ae97fa4db0962089f23"
+  },
+  {
+    "path": "recovery/originals/cache-text/M83/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M83/mutant.stdout",
+    "bytes": 10287,
+    "mode": 33152,
+    "sha256": "7b13e1292ddc1164723616783238bc092c82cd45a8f285c727dbc7421c50c0c1"
+  },
+  {
+    "path": "recovery/originals/cache-text/M83/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M83/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "68ba2b38a6d9639764f9f2968f10727bcafc10102e7230ecd2e970bfea8acded"
+  },
+  {
+    "path": "recovery/originals/cache-text/M83/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M83/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "ac1a6b8d174e287bd0a93b712257cd17c3781389e6ccd0ebc48afe7b215e848b"
+  },
+  {
+    "path": "recovery/originals/cache-text/M84/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "a635f9653426ed8eba5b5d688fe94c7807286fa19ed6d27740bf16bf50ed5bb5"
+  },
+  {
+    "path": "recovery/originals/cache-text/M84/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "3a41ef26e35cc3f43377cfc3c07cc9717c4fba609f3ae83d05ad4b70a9d0ed79"
+  },
+  {
+    "path": "recovery/originals/cache-text/M84/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M84/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "e234bf9f3d4fc7c4d51154006710a5d6491dff7d551ced302acb73d4be3dc758"
+  },
+  {
+    "path": "recovery/originals/cache-text/M84/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M84/mutant.stdout",
+    "bytes": 2672,
+    "mode": 33152,
+    "sha256": "d4ccfce2436051c83c0e84a04577053ccd8c9b13ffb4c488f1eee20fe038d2de"
+  },
+  {
+    "path": "recovery/originals/cache-text/M84/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M84/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "8e9341a09e75e63ef2c515a34f13dcbfbf7dd463dd1e466e536c710ec13e4275"
+  },
+  {
+    "path": "recovery/originals/cache-text/M84/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M84/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "6244b101331d49b7a5ccfd20c8babf6194952c30ec363bffcfda405cd03e7e8d"
+  },
+  {
+    "path": "recovery/originals/cache-text/M85/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "5045914d7e3a06dc0b3721a858948bd1d70eae35824ebd2b2f89182b81a4402e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M85/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "5796abedaf9721c9402b6e290e64c59fca259ac3d6489ffc00f1e882ac7dd294"
+  },
+  {
+    "path": "recovery/originals/cache-text/M85/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M85/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "6fb038b93062fa2ea9337ce7ab1aec2f9b285c0f0689114c55b0077ac614d805"
+  },
+  {
+    "path": "recovery/originals/cache-text/M85/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M85/mutant.stdout",
+    "bytes": 2777,
+    "mode": 33152,
+    "sha256": "c3e286607813cc5b3be6709f9f58b022cf95361b7d87e28bf820edd88c1bbc24"
+  },
+  {
+    "path": "recovery/originals/cache-text/M85/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M85/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "5fc2acc6b8ff6811c16e458bb3dc6fb4e5900f71d3ab82bbc0f2e48b0e4417fa"
+  },
+  {
+    "path": "recovery/originals/cache-text/M85/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M85/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "dac3fc770f3e9a846e3ce8b57b14564fe3543b5f82f9d1252e07e3c8cfb138d2"
+  },
+  {
+    "path": "recovery/originals/cache-text/M86/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "34bb89e3506532dedce070f47c8da789b793bbc99eda1e5df3936dcc67660900"
+  },
+  {
+    "path": "recovery/originals/cache-text/M87/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "9f020639c12c5bf383af8d9dc918cc3c9fe941ddddded66edd0fea30d456f6e2"
+  },
+  {
+    "path": "recovery/originals/cache-text/M88/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "7f0cc5843aad47d7e80f863f4ec9ce2e88e7806a6278794bd292ca5f27bf6a8e"
+  },
+  {
+    "path": "recovery/originals/cache-text/M89/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "807f3c8a53a742b1d4d3eddfdda1c8094f896e20609f1fa40fc5da218d681fea"
+  },
+  {
+    "path": "recovery/originals/cache-text/M90/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "5e3c037ec67efb204e1282769341cadf33210ae68095f3e9a67634cd9aa30982"
+  },
+  {
+    "path": "recovery/originals/cache-text/M91/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "53bf0135989decb821c23cc13aef1026a9d51ac4e44f2a64e1906b5410aae8bf"
+  },
+  {
+    "path": "recovery/originals/cache-text/M92/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "2a17796bfe81f8a7691009f167fde395bb56065416e0f8d9631c0fa02f9bdac9"
+  },
+  {
+    "path": "recovery/originals/cache-text/M93/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "4f0ac818c27d0fc1da028881b27854a68f33d3e41efec6aa87934b29201883c3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M94/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "3a8329f009613cb8b44f70578970673de3de535e8205685c4b9b0bdb72b5c202"
+  },
+  {
+    "path": "recovery/originals/cache-text/M95/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "8239437b972c20287c2a639a5e742ab5f4b313a9fc5c300ea602af99bc3c9d44"
+  },
+  {
+    "path": "recovery/originals/cache-text/M96/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "7b5b243b4350f2d1d5377b9d305c331291e2b7803bb7e222e7ca26295ec96024"
+  },
+  {
+    "path": "recovery/originals/cache-text/M97/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "34ddefd63dadf292516f4184145d297f7e18da992c2cd148ad34e4c5c06d7f80"
+  },
+  {
+    "path": "recovery/originals/cache-text/M98/_mut.exe.fingerprint.json",
+    "bytes": 519,
+    "mode": 33152,
+    "sha256": "54ad251a5768d7be7f416c43ab67057574b3b329808d4cddcfba63b3565c8f38"
+  },
+  {
+    "path": "recovery/originals/cache-text/M99/bridge-mutant/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "b634fc3aa48bd095496207ca906b2542c0eb126d3605fc980999fa3cca78a8b5"
+  },
+  {
+    "path": "recovery/originals/cache-text/M99/bridge-restored/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "65dda91636cc0808df32071d7a2b9112746ca27f7fa8fd807c03417e11f9eee0"
+  },
+  {
+    "path": "recovery/originals/cache-text/M99/mutant-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M99/mutant-build.stdout",
+    "bytes": 266,
+    "mode": 33152,
+    "sha256": "c8006da40f4b23d2f5bc67d13b752c70f9401b8b087772a5eac2383831a001d0"
+  },
+  {
+    "path": "recovery/originals/cache-text/M99/mutant.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M99/mutant.stdout",
+    "bytes": 2566,
+    "mode": 33152,
+    "sha256": "9b9c341ee6f14f3f12d69c89982badad72e59bdf73fcfd99c8efe001e3a62de3"
+  },
+  {
+    "path": "recovery/originals/cache-text/M99/restored-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M99/restored-build.stdout",
+    "bytes": 270,
+    "mode": 33152,
+    "sha256": "5e844cd413be276db0a6012fbf83afa4a7d8840a9c7b049c6b7ea174a37cdfae"
+  },
+  {
+    "path": "recovery/originals/cache-text/M99/restored.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/M99/restored.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "d486b137288aa897e48c5986d3ffe57ecd6d9bf10fe51ddd01349de6bf2a726b"
+  },
+  {
+    "path": "recovery/originals/cache-text/_baseline/baseline.exe.fingerprint.json",
+    "bytes": 357,
+    "mode": 33152,
+    "sha256": "e5ef9b91935e7336a68db278530bdad5619e77e0fc99ebab252020acd5e20f01"
+  },
+  {
+    "path": "recovery/originals/cache-text/_bridge-baseline/7a0e6dd81c54066995981393925fa46a815de2f8/baseline-build.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/_bridge-baseline/7a0e6dd81c54066995981393925fa46a815de2f8/baseline-build.stdout",
+    "bytes": 346,
+    "mode": 33152,
+    "sha256": "31b3731f4e21b377c6810cae20395b783d6b0b68a0ef320a85196266ee3beb74"
+  },
+  {
+    "path": "recovery/originals/cache-text/_bridge-baseline/7a0e6dd81c54066995981393925fa46a815de2f8/baseline.stderr",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/cache-text/_bridge-baseline/7a0e6dd81c54066995981393925fa46a815de2f8/baseline.stdout",
+    "bytes": 21356,
+    "mode": 33152,
+    "sha256": "e6e45dcf2237eda87bb81ccf6297513eb5ff00a4757229040f1ed0800a8891ba"
+  },
+  {
+    "path": "recovery/originals/cache-text/_bridge-baseline/7a0e6dd81c54066995981393925fa46a815de2f8/bridge.fingerprint.json",
+    "bytes": 22986,
+    "mode": 33152,
+    "sha256": "4d1805366a0940f3dbadcd99ba860e9aeed39baaaf1d6de98b9955a5438749fb"
+  },
+  {
+    "path": "recovery/originals/launcher/REQUEST.json",
+    "bytes": 1311,
+    "mode": 33152,
+    "sha256": "d213e9c6287689ce65eff64a80bf0f363a88e51537bac1e65751987d47ba5d07"
+  },
+  {
+    "path": "recovery/originals/launcher/reaper.jsonl",
+    "bytes": 637,
+    "mode": 33152,
+    "sha256": "de78dcc8bfad73a61277c05206250316280505630e95af5b069b80901e50a497"
+  },
+  {
+    "path": "recovery/originals/launcher/stderr.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/launcher/stdout.bin",
+    "bytes": 104,
+    "mode": 33152,
+    "sha256": "9226e85af13b55195c4109208bbcdc75a236c40d64513e00262e6dc30d49caaa"
+  },
+  {
+    "path": "recovery/originals/ledger-run/ledger.json",
+    "bytes": 10045564,
+    "mode": 33152,
+    "sha256": "812956bf480e74eda9e838e29f40f83a9cdd1f317e16e0432aaf539f33fcc569"
+  },
+  {
+    "path": "recovery/originals/ledger-run/receipt.json",
+    "bytes": 49992,
+    "mode": 33152,
+    "sha256": "f27613611fd80555a2c7c320f4f96ec23dad07a07befa6fea13df73b7cc02b84"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000001/request.json",
+    "bytes": 1465,
+    "mode": 33152,
+    "sha256": "5614f591e5ac0dbab1a5b70ba8113553e117a298955c0dbbc6d9567596aa6ff7"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000001/result.json",
+    "bytes": 1716,
+    "mode": 33152,
+    "sha256": "f9430eacd2f564f384c0f48b87a8dc35df0c12c97dce4f88920c8385e6e256b3"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000001/stderr.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000001/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000001/stdout.bin",
+    "bytes": 41,
+    "mode": 33152,
+    "sha256": "71b2975fec501b40b25130f56e6baa678ce063e21b631b5b41b2555c9dcd20ed"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000002/request.json",
+    "bytes": 1501,
+    "mode": 33152,
+    "sha256": "9c6106b6c0f68863eabd538d3b5cd84a630201386557fdd0dc15480da12581e9"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000002/result.json",
+    "bytes": 1751,
+    "mode": 33152,
+    "sha256": "8a4e6f7716b9939c3ba0537bf53eaa18686f00787638052fb11b7e4cc183e64e"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000002/stderr.bin",
+    "bytes": 98,
+    "mode": 33152,
+    "sha256": "dc2c864f65a3edcebf1d2ba316f5556a921e6a794bc119f07da15dd4f4781c52"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000002/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000002/stdout.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000003/request.json",
+    "bytes": 1523,
+    "mode": 33152,
+    "sha256": "e83aea17e3aa9eb258fadb80d1e370ab2097e5ae4b64b17500ef51844813aa54"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000003/result.json",
+    "bytes": 1774,
+    "mode": 33152,
+    "sha256": "e86d6174120be524af99da241a203d56b14c2781f4bb09648a55f28a76a8fb0b"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000003/stderr.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000003/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000003/stdout.bin",
+    "bytes": 15,
+    "mode": 33152,
+    "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000004/request.json",
+    "bytes": 1453,
+    "mode": 33152,
+    "sha256": "e02c770734ce49738944628ff0b4d140efe17899e6476d831c89fa7a387e7c7f"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000004/result.json",
+    "bytes": 1705,
+    "mode": 33152,
+    "sha256": "4d1649a56804a66eb53a29a98728d7e717fe1a0feb558ac3920d35195b94e2ee"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000004/stderr.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000004/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000004/stdout.bin",
+    "bytes": 232,
+    "mode": 33152,
+    "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000005/request.json",
+    "bytes": 1453,
+    "mode": 33152,
+    "sha256": "92b58a8b934d50f45d548ad040ee0472273b76b479c20b9dd0626fa50e52f679"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000005/result.json",
+    "bytes": 1704,
+    "mode": 33152,
+    "sha256": "4103534c5d62d6ae4a3e5103128dc5220c916da7bc44bd6c44f159849102c8ae"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000005/stderr.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000005/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000005/stdout.bin",
+    "bytes": 19,
+    "mode": 33152,
+    "sha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000006/request.json",
+    "bytes": 1494,
+    "mode": 33152,
+    "sha256": "c12bef27d8a8643a00766d9c3a94e90f7756a2d9b4b43ff13c897c71244fa5fb"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000006/result.json",
+    "bytes": 1747,
+    "mode": 33152,
+    "sha256": "8ce730a7990334e06b51beb010ac80de2d6a9aa386196789288be27394d5e821"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000006/stderr.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000006/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000006/stdout.bin",
+    "bytes": 18131,
+    "mode": 33152,
+    "sha256": "f9915cdc0a1b0538799b2fb3232075b6e2f7f50a20c6192f1661a1e3de21ff61"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000007/request.json",
+    "bytes": 1670,
+    "mode": 33152,
+    "sha256": "5871208fba9bf5deae727f7e8abfc36445099ee12e7ab86710634aa833f21596"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000007/result.json",
+    "bytes": 1920,
+    "mode": 33152,
+    "sha256": "60e443236fc1f8368dda4ee1824ac3ca7d4478c640eb677db010ac6e21df5457"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000007/stderr.bin",
+    "bytes": 474,
+    "mode": 33152,
+    "sha256": "6eac731cb7c18d77f39d35ef66ee24181ef6562bbb02c3c01428ba8e218dc4a6"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000007/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000007/stdout.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000008/request.json",
+    "bytes": 1671,
+    "mode": 33152,
+    "sha256": "f0dd51491de3ec3620ecdf94c4c1f95cefc15b82561116e250173a5849dff729"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000008/result.json",
+    "bytes": 1921,
+    "mode": 33152,
+    "sha256": "9f78f28874f5f553da62e8ee7241bbce260c5fd923484d3c8fab6b67a3dd244a"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000008/stderr.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000008/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000008/stdout.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000009/request.json",
+    "bytes": 1650,
+    "mode": 33152,
+    "sha256": "056e9a0d7dbf83bc3114c899afbddd67689d9e560c3f2fb36fba9d72ea29e48c"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000009/result.json",
+    "bytes": 1902,
+    "mode": 33152,
+    "sha256": "b53f31bf1aa66bed06abdfd718384d0c2a2a0c25f2d64a087322b1623f11e3c9"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000009/stderr.bin",
+    "bytes": 330,
+    "mode": 33152,
+    "sha256": "f360b3e079f554b65cb91b0410aa29294332f1286e2698caf1cc30b2c121f3cb"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000009/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000009/stdout.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000010/request.json",
+    "bytes": 1545,
+    "mode": 33152,
+    "sha256": "cd12020778447315967c70ae8a77816f407e649601d73b3d316a86cd6bfcaeff"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000010/result.json",
+    "bytes": 1796,
+    "mode": 33152,
+    "sha256": "ad5c763735bc529f96145b92f39b29a24294bded38ececd83088fb8e7c7ad748"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000010/stderr.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000010/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000010/stdout.bin",
+    "bytes": 41,
+    "mode": 33152,
+    "sha256": "71b2975fec501b40b25130f56e6baa678ce063e21b631b5b41b2555c9dcd20ed"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000011/request.json",
+    "bytes": 1559,
+    "mode": 33152,
+    "sha256": "a207d020f66468bf7ef95e97ad51fea72bd50b96778c9f9a031707f89dd0bb13"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000011/result.json",
+    "bytes": 1810,
+    "mode": 33152,
+    "sha256": "32fb43807bb5a4aa1463701307b8f9667d70a8a6c89dad73b22297f85084cb4f"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000011/stderr.bin",
+    "bytes": 235,
+    "mode": 33152,
+    "sha256": "b123589fab2c16f3b0251627f2142c4aa8447255152a6cbce108048ec2c9d5dc"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000011/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000011/stdout.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000012/request.json",
+    "bytes": 1581,
+    "mode": 33152,
+    "sha256": "ab770c49cd6e773d4e4db51027ac00d69a6fbcec8bcda4dde330cb93b2d4199b"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000012/result.json",
+    "bytes": 1833,
+    "mode": 33152,
+    "sha256": "be2125e16a9028f41e9345d1bd6fd0465edf3e15250ffb0ac5bf007451e18a27"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000012/stderr.bin",
+    "bytes": 235,
+    "mode": 33152,
+    "sha256": "b123589fab2c16f3b0251627f2142c4aa8447255152a6cbce108048ec2c9d5dc"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000012/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000012/stdout.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000013/request.json",
+    "bytes": 2578,
+    "mode": 33152,
+    "sha256": "d4653baf6adb2ef82f9f2e51a8e5ddb7a5246c622f0a4e5e583ec7d2b38c2b20"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000013/result.json",
+    "bytes": 2830,
+    "mode": 33152,
+    "sha256": "c02fcd7b996196fb68aec11c29f1534fe40d8893d176c30368319e19ffbc9194"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000013/stderr.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000013/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000013/stdout.bin",
+    "bytes": 294,
+    "mode": 33152,
+    "sha256": "638eb804f5ded0be94266119296de8c802ef848f0ebac73f09106fced634e405"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000014/request.json",
+    "bytes": 1479,
+    "mode": 33152,
+    "sha256": "8dc6991839ab904815c8f3ac810ac8d3dfcdc3cb3d06906e9bf3abe657c24495"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000014/result.json",
+    "bytes": 1735,
+    "mode": 33152,
+    "sha256": "37eb7c638f4187e3a13b27a7a2c93cf6ff067c0d96b41bcea7ac26578c3361f6"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000014/stderr.bin",
+    "bytes": 333,
+    "mode": 33152,
+    "sha256": "903f8c8db64883fd925e81f03f5f86bff8461817339492afb39512d49c01f049"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000014/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000014/stdout.bin",
+    "bytes": 28082,
+    "mode": 33152,
+    "sha256": "59ddb1d5a93ec9cceb13b85996583a38cc51c42b3b284373ac9ba3360b6099f3"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000015/request.json",
+    "bytes": 1493,
+    "mode": 33152,
+    "sha256": "c47aef815f4dec5428a43fe6a8875baad3689581f82994fa4519ae9d23ab72cc"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000015/result.json",
+    "bytes": 1744,
+    "mode": 33152,
+    "sha256": "9aa69c02e58e20e15a7b932f36a62e102bb27368e960477df613a35292688a69"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000015/stderr.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000015/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000015/stdout.bin",
+    "bytes": 525,
+    "mode": 33152,
+    "sha256": "75acfa6a38db64d46950d1eaf672a372975cebb8c37119dba2e74a4bb60ed0fe"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000016/request.json",
+    "bytes": 1464,
+    "mode": 33152,
+    "sha256": "c9b1135ca2315281fa2b602f25be72e4126449a5bf6e2fc8f290e1a10c980ca1"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000016/result.json",
+    "bytes": 1713,
+    "mode": 33152,
+    "sha256": "ac9ba2155dbfe29fd2d3610d33fb2ba0e0da1bfc4283c76cb1465b71bac52bc4"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000016/stderr.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000016/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000016/stdout.bin",
+    "bytes": 41,
+    "mode": 33152,
+    "sha256": "71b2975fec501b40b25130f56e6baa678ce063e21b631b5b41b2555c9dcd20ed"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000017/request.json",
+    "bytes": 1500,
+    "mode": 33152,
+    "sha256": "8cedf7899339ca3de1134815796d9519f4ef84428198b082fe47d2486653467c"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000017/result.json",
+    "bytes": 1751,
+    "mode": 33152,
+    "sha256": "078a1da70c388896aadcc78015cdbec8263e662348c3d3351438810cbf5ff959"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000017/stderr.bin",
+    "bytes": 98,
+    "mode": 33152,
+    "sha256": "dc2c864f65a3edcebf1d2ba316f5556a921e6a794bc119f07da15dd4f4781c52"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000017/stdin.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands/000017/stdout.bin",
+    "bytes": 0,
+    "mode": 33152,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "recovery/originals/ledger-run/subcommands.json",
+    "bytes": 32798,
+    "mode": 33152,
+    "sha256": "99a764f1040cceb893a40d5a7f06855e81b0397b7f4a002410ce54c7d25a58c2"
+  },
+  {
+    "path": "recovery/originals/ledger-run/tools/capture.py",
+    "bytes": 2819,
+    "mode": 33152,
+    "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+  },
+  {
+    "path": "recovery/originals/ledger-run/tools/run_followup_core_acceptance_sparse.py",
+    "bytes": 9280,
+    "mode": 33152,
+    "sha256": "bba26db807ff1bd358f6582561ba524dd89734c3c5195ca6b5b6b955e05b0111"
+  },
+  {
+    "path": "recovery/recover.py",
+    "bytes": 7208,
+    "mode": 33152,
+    "sha256": "c566b4228fcbb305a8b69587ecfaed338a370cb16ee1cc956f8815192e193f80"
+  },
+  {
+    "path": "recovery/rules-review.md",
+    "bytes": 5842,
+    "mode": 33152,
+    "sha256": "56f8f77bf169fd06bcfc10c11b707d98da8dff829be73b3cccfc1c4a1f208606"
+  },
+  {
+    "path": "recovery/verify_execution_links.py",
+    "bytes": 3500,
+    "mode": 33152,
+    "sha256": "683c1eb564562deba4ddffe81725099ca6e803b521945fbc16ac4e4c9491acb1"
+  },
+  {
+    "path": "cache/M01/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "5fed8b30ebb58ecb66bf2d75f5d0a454887b95b537abf1fdd7a4d6fbe5fdf4e6"
+  },
+  {
+    "path": "cache/M02/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "0b0058144671609a0a77863a5cc512f0d99583bacdebd0d13699681cb6f019fc"
+  },
+  {
+    "path": "cache/M03/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "0582e38c2e86a13bd8194af2b122d3c1873a5dd780cbd86756c5e7f06a8c6a7b"
+  },
+  {
+    "path": "cache/M04/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "ab363d1b9343521c375c74e677ef7a58e76e335543399a52f6c3cab7bae9deb7"
+  },
+  {
+    "path": "cache/M05/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "d38a2c67b2462a5f74bffa9f45589255db71a0113ebe7597cb9acd6c0e858275"
+  },
+  {
+    "path": "cache/M06/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "158b3972ed8ccc9fd184a6d1079bb83db155530b3a4b7e22a62d8954b3ce9f72"
+  },
+  {
+    "path": "cache/M07/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "3a37f8d5fc0cccbf8769a4cdec36f2dd1b5fe964d3527ac395b0feaad81970c2"
+  },
+  {
+    "path": "cache/M08/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "aece8057c5edd569a9b5ce182ffbd2cea78f0e0371f997ab5bc91beb1390b888"
+  },
+  {
+    "path": "cache/M09/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "7c5ce5f68a87c591eefda56d0a97dee421662f00b6282c374466530d23ef18e7"
+  },
+  {
+    "path": "cache/M10/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "c2856fd2b17c686ec86b05c0654b8594d4974625b8b431c5f9b7fa2ce6c8d024"
+  },
+  {
+    "path": "cache/M100/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "0bc0e6781505abd00d58d7518a7be0d5fc8d2062ef3c6813e6d560e6c4e7bb7c"
+  },
+  {
+    "path": "cache/M100/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M101/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "d729be1e1831045a7c89e375e25f58da77c90fd8cd78b83a869b8c7bad326d67"
+  },
+  {
+    "path": "cache/M101/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M102/bridge-mutant/bridge",
+    "bytes": 1126552,
+    "mode": 33216,
+    "sha256": "00f7a8fc2477b6ed9cfaf8ad67e3333d640af9a6c78be75b467dbcb633a1cc91"
+  },
+  {
+    "path": "cache/M102/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M103/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "2a63fd59b05be80946aeb2a8659bee832713a8d248e267c6667da4931867c1e9"
+  },
+  {
+    "path": "cache/M103/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M104/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "385bea15c1e92508426b28a427529e6c399adba932c9e91d0592ff5cf3566df0"
+  },
+  {
+    "path": "cache/M104/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M105/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "617c9071b5fbeb56c00746b5245f4d0bd8a3e85bd033a3abe602c2f3f0761885"
+  },
+  {
+    "path": "cache/M105/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M106/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "d86d44219147bcee8418555a8593c0b8b20506b42fc3e59d680945b73f1536c5"
+  },
+  {
+    "path": "cache/M106/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M107/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "61f3e09cea765a2131e29fa55bc44427536a2ee1b7411c83ae70d07b3edbc2eb"
+  },
+  {
+    "path": "cache/M107/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M108/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "b60832ad0bab2e32e90a49152c85fea3d2071bf9ecaa9a2993b6ed47146870fe"
+  },
+  {
+    "path": "cache/M108/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M109/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "73b6e948fed44773068439692d50f63298e23cc8637ccd19777e91a6dcdf60a1"
+  },
+  {
+    "path": "cache/M109/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M11/_mut.exe",
+    "bytes": 908216,
+    "mode": 33216,
+    "sha256": "028fc37d0e51b8456d825af7d35dbbe2cabe8828855a1799984f5c1c1ba023d5"
+  },
+  {
+    "path": "cache/M110/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "fe8c184d6c4d6acab99882e2471a0b9dfe48d2184dc40433ab5ffae1ae5fa203"
+  },
+  {
+    "path": "cache/M110/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M111/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "eab8e355e97073c272b876d1527b28f2dc5f235df74f73c4d62b8cbe86ef49b7"
+  },
+  {
+    "path": "cache/M111/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M112/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "6498ecdb2bd0db709835cbc724661b296850a514d12ee41a7cc9d79fceed7644"
+  },
+  {
+    "path": "cache/M112/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M113/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "cb59d4b3a20dc06ff9bbfc8b2814fd85da1edff25dbdc06e6b8b74c983203437"
+  },
+  {
+    "path": "cache/M113/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M114/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "f102e19d111d844f21ac6d62beb4c91f898e25f6382c780a8b74dc1ad3d037b5"
+  },
+  {
+    "path": "cache/M114/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M115/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "bab1b8c59d713b4df0f8e0864230e4010bcaa5822ea6a753a107305ce666dfd6"
+  },
+  {
+    "path": "cache/M115/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M116/bridge-mutant/bridge",
+    "bytes": 1126464,
+    "mode": 33216,
+    "sha256": "79cb7178dfb0e4d30ebe4f6337887a0d66dac2f7594f930a4a64aebb8f4421db"
+  },
+  {
+    "path": "cache/M116/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M117/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "8d2ad3d6c0045adc412e4368eada103e9dc91b105e20e176e6f542b68d6039dc"
+  },
+  {
+    "path": "cache/M117/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M118/bridge-mutant/bridge",
+    "bytes": 1130592,
+    "mode": 33216,
+    "sha256": "4e99dd107b1fafbd1dd84200fa132d8fc265016566c01bf39b7ff491b8dda7fb"
+  },
+  {
+    "path": "cache/M118/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M119/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "9fe0a6f77b47c3d1fbf2fa4519dc0a6caaa333fd5ee39b1b262e89d75f041b15"
+  },
+  {
+    "path": "cache/M119/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M12/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "4fff47b151721263e5ae8ddf507ba6fc5d658fb31114856be933915c3fa9314b"
+  },
+  {
+    "path": "cache/M120/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "8a1fd149ddee7c47f30359676dfa60887240c4c9c29baeda22201eb06e01d0e3"
+  },
+  {
+    "path": "cache/M120/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M121/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "5708d941c93b4671912c4a1fc378361d9269220cc8aae51358c17a727fb566ee"
+  },
+  {
+    "path": "cache/M121/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M13/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "a3a9e4d7f5c351740fcdb094fb8e46f9d8a345dd85e9a1eebddd0e43369a986b"
+  },
+  {
+    "path": "cache/M14/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "e506c0aee1ab17c472bbd25647eaff1f84da678185a9a0263eb7f55a4c40e82e"
+  },
+  {
+    "path": "cache/M140/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "66b7ef3f002e9c7561883e72c8b3a598857fd035469f2ebf26fe74fff5f5e9e8"
+  },
+  {
+    "path": "cache/M140/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M141/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "bd814e701a4215363fbf0f1856c9ee8201d7bab3cc484018453fd1afed99969e"
+  },
+  {
+    "path": "cache/M141/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M142/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "9838160e82121c6b8b6a635e63cc2012f65d768242d78db5ffd434481ab4289e"
+  },
+  {
+    "path": "cache/M142/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M143/bridge-mutant/bridge",
+    "bytes": 1130656,
+    "mode": 33216,
+    "sha256": "e0dddaa57a8539af78ee7406ecfc15581cbc9ff3ca257928e6e6f6588b47f283"
+  },
+  {
+    "path": "cache/M143/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M144/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "6a87bc36430eada855b7472f9c4c484f052f1881002f9932e7618bec4319d916"
+  },
+  {
+    "path": "cache/M144/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M145/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "605d95256f3fb742eccb878d66ea0d270256d0a53a20a255e3b67bfc3daa5394"
+  },
+  {
+    "path": "cache/M145/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M146/bridge-mutant/bridge",
+    "bytes": 1130656,
+    "mode": 33216,
+    "sha256": "4ae3f879e7a6413335fdc0a53e0846a5fe09cb5ceb9d31ce84037be14845ad39"
+  },
+  {
+    "path": "cache/M146/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M147/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "65d8d6c00451e6463e264be0af3594a7e71011a430b3360162116db9760bc169"
+  },
+  {
+    "path": "cache/M147/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M148/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "006fb1783aa308f111d5a64f549a2b0b1a6ab58bfaed370d40e61d7f3ee1eae7"
+  },
+  {
+    "path": "cache/M148/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M149/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "c946eaa05f4d1af44668d0c34f16e0a23d2f2edd9a27060385f5656659c423b6"
+  },
+  {
+    "path": "cache/M149/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M15/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "89953f6b4e066d448531d140adf0cc37755ca5f59263fda6b9699d730eb0b6ff"
+  },
+  {
+    "path": "cache/M150/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "6049f01f285760e9b3e36f5f3f181a70ef79c4e5fed626376961299e8b25285d"
+  },
+  {
+    "path": "cache/M150/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M151/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "82360f753c46dd401a7cbc88cd499bf951714f3e0e3070d474aabd9494ce5b02"
+  },
+  {
+    "path": "cache/M151/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M16/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "c221ea390312d4c45b718deed3290b749cbd055483b862ed351fd84b5f4a017b"
+  },
+  {
+    "path": "cache/M17/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "be21ace4839940bff45fd4a2079ded521fc5713bdf5e0ba98c0c903fce17943d"
+  },
+  {
+    "path": "cache/M18/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "8db0a3816c947a27ae9001fe2ab5d03ddf10e105c0fd330d275f216d28861741"
+  },
+  {
+    "path": "cache/M19/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "19a5131a1f4a96898d2e0cd99982d331a0b8091c38ad3ab018e6ae0c64e64f66"
+  },
+  {
+    "path": "cache/M20/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "412c5526fe5f9a47c44548563d6d1ca0f62d87d6ea9f8003bfde7fc22cdb0fe8"
+  },
+  {
+    "path": "cache/M21/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "0dc0a4f5bc80c64b0d76ed76931130a8eda9aa90368aeda3d9474b5cd1d1914f"
+  },
+  {
+    "path": "cache/M22/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "6597cbe4cf7238934035ada8fcd3316051def4c6faf5bea8aa3d10078d436d92"
+  },
+  {
+    "path": "cache/M23/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "a0c35ecb5411a23cfa9ee33a9fbb95d5fa00bc7c6baacefe098243b67c0962a8"
+  },
+  {
+    "path": "cache/M24/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "655fca234ec97f8e825b5d419a91b7b50c2107677f0191bd98833bf346937f5e"
+  },
+  {
+    "path": "cache/M25/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "9ea79f176e23cefb336844a49e24a5274c6a4b14e48956eaf630b64f33913032"
+  },
+  {
+    "path": "cache/M26/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "37b39e6f36d10b69459dc3ffaad0cac2b953ad5225e7b9987a7ff4d35bf6f364"
+  },
+  {
+    "path": "cache/M27/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "2b489c85798c0c6932fdc895447b76bbe0ced45b4e37c1e3b99a7364395ec281"
+  },
+  {
+    "path": "cache/M28/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "81e6474936ab68dc57794f292666b476431a4e831ead7635527e31275f1939ee"
+  },
+  {
+    "path": "cache/M29/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "a8b88c9a00e1d1a4d824db6eb8a91a3ea51cd376bb8b09a8ce69f56f55b87286"
+  },
+  {
+    "path": "cache/M30/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "da1e06f0f2779e52f223e1e66029b6275c09748424230a272435fa20eae9f7ce"
+  },
+  {
+    "path": "cache/M31/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "2cfaaba046bc514fac094bfa9822ee7d2e9bc873d5a25779c27d0a14a3d64ab9"
+  },
+  {
+    "path": "cache/M32/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "43be6374abafe7fc6d9d44000b9c8617dbad726a20c14d5d3a0403f3986bd132"
+  },
+  {
+    "path": "cache/M33/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "e9dc2528e2b83f5c645caeaaf8eb7afe2745b27f97bac281fecc6091bf08c1df"
+  },
+  {
+    "path": "cache/M34/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "8279f65571f215579059bdd718e4998016ca678b212c8535585cf809213c0f9b"
+  },
+  {
+    "path": "cache/M36/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "fae756abfc9efad627ae73f644c819aeebb78f6dbac8751e2cec5471d3bf9ccb"
+  },
+  {
+    "path": "cache/M37/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "634b7ee6bf2a6323f226b4eadd22c7d8806d0ce0fecce443a5b265cafb50e67e"
+  },
+  {
+    "path": "cache/M38/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "f10f658ea20cd253036cbc5a811e29dc352f769eea29424f5f3a98ad2130723f"
+  },
+  {
+    "path": "cache/M39/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "45fa7992e57be540dd999e67972d4cb5e2f39ccaeb44da218fac9c86ce21bf4e"
+  },
+  {
+    "path": "cache/M40/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "9906ae0adcb94aa0cfbebf6d0d995033ce5d5dbbf4dcb210072c8863bf1c993e"
+  },
+  {
+    "path": "cache/M52/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "f363079a01d187f301d3149caefba156c73b84575186dded413906dca3fa8353"
+  },
+  {
+    "path": "cache/M53/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "6ff1a6c135d35786b155264564808565e324ff9e561b833a77a2580648473b8d"
+  },
+  {
+    "path": "cache/M54/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "441927540af474440d2332d2accd594c85b08b9580f6f263fe7ef16373a44bf2"
+  },
+  {
+    "path": "cache/M56/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "be9ecd8daaa67068dde8bd9592ff25386d4247a0a98c570c8d5e4b2b11d967f3"
+  },
+  {
+    "path": "cache/M57/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "1a3918cc489ef9b978c0c101cec6c3fc50de2255e5953e154209c0307e4df061"
+  },
+  {
+    "path": "cache/M58/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "6908f085495bd0fb8e7c6637f52d68cdddc9ee75aa00ec2b3b0a71421a83e285"
+  },
+  {
+    "path": "cache/M59/_mut.exe",
+    "bytes": 908216,
+    "mode": 33216,
+    "sha256": "3a7e662c2334211c07670cf4129eb271d9f520ed5615091959dd7d1091ea90cf"
+  },
+  {
+    "path": "cache/M60/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "573246ad88cc4bd2299f8d67415d89bd0876d229e21e0d574f25895b7753a6ca"
+  },
+  {
+    "path": "cache/M61/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "88c3afa90ce5b0e756ba08840b5782cb2b7e70a0220667af79014b261e04c68d"
+  },
+  {
+    "path": "cache/M61/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M62/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "b2a6666b9d743c414ed8d3fc04235aa1c78561bf0697303c4a30262993c12e0a"
+  },
+  {
+    "path": "cache/M62/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M63/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "0cb7802c611956977bedd488c88f50f6c08cf868f1bbe3e87b3784b799886a23"
+  },
+  {
+    "path": "cache/M63/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M64/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "6deb568b27dc3eefb129aacd25ad20c44e1374de1a53701522e69485fdfe1ef2"
+  },
+  {
+    "path": "cache/M64/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M65/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "8fe3f45cec4d164b29cf84ded4ceb8ebeb6a3488748745526ae382edff5915a3"
+  },
+  {
+    "path": "cache/M65/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M66/bridge-mutant/bridge",
+    "bytes": 1126496,
+    "mode": 33216,
+    "sha256": "c49dcc882b700d0650702b9def3a3cb6339d6bf9dc4be3b33cf4082e064c1e64"
+  },
+  {
+    "path": "cache/M66/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M67/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "084e413ac79b2982517018cdb824c59fa258b962cbb128c3594e68949a78ac39"
+  },
+  {
+    "path": "cache/M67/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M68/bridge-mutant/bridge",
+    "bytes": 1130616,
+    "mode": 33216,
+    "sha256": "950ebb306111a60705c0f257bdd4cff5e323365dd643503fd8c94d86ba63e9e9"
+  },
+  {
+    "path": "cache/M68/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M69/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "8ca7bcd068244671f0567f448493fbce9bb72c2fdee4a4247bac8e4a32f7db78"
+  },
+  {
+    "path": "cache/M69/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M70/bridge-mutant/bridge",
+    "bytes": 1130656,
+    "mode": 33216,
+    "sha256": "b037de4bf1c410db015a198b3dd573ae242320693c52b1b4c2d2b61336430908"
+  },
+  {
+    "path": "cache/M70/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M71/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "e0f9cf38370a8b42c17c973c46f54fc934b8f2015ef8d32977b32b6fa8409d1c"
+  },
+  {
+    "path": "cache/M72/_mut.exe",
+    "bytes": 912368,
+    "mode": 33216,
+    "sha256": "fd6aa7c6bc89b30e9730fd6d94ef14f68108eeffce5c8fbff3343b2fed92a328"
+  },
+  {
+    "path": "cache/M73/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "f6bc2875beb204b602e6188aa36db844d25a8f74202c329c4ec784acd0ca43ea"
+  },
+  {
+    "path": "cache/M74/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "ad94297fed0a3e737c468029ea8bb6250cff921529c6a46b3efc64f464e2f981"
+  },
+  {
+    "path": "cache/M75/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "38f0038e99efe9ca19a05cf4d3119948092e66209ebb26b9f5bb61cb9b69d803"
+  },
+  {
+    "path": "cache/M76/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "404d21a0aa29b4e40ed8b05c7cd731dc0c21133827744b70f7a0432a26a50bab"
+  },
+  {
+    "path": "cache/M77/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "08e9009516f7163d61f4d7ae1f44709b3a2b8c99d0bcfd5809fae9a88ab78083"
+  },
+  {
+    "path": "cache/M78/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "e001dacf092352db8d9475493938c7ee94d513c3fa409fafda2e5b5ac03e4630"
+  },
+  {
+    "path": "cache/M78/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M79/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "deb3aef3039e33d7d33526d0b17978ed425f7a741ecc8cbcf3a609b2f63735a7"
+  },
+  {
+    "path": "cache/M79/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M80/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "2800d083d557eb84a7c2989a139f41c537deb0e787b922f54a96673ed6ca3a72"
+  },
+  {
+    "path": "cache/M80/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M81/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "fa6ddad2d1c886f06737aa52679adf66c608999278f9620410ba0cc85b345721"
+  },
+  {
+    "path": "cache/M81/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M82/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "698188dce615c75246d5a4288c69867f7ecc7ef07cdf437542b9fbed6e0b5956"
+  },
+  {
+    "path": "cache/M82/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M83/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "c5252e614ba34b1b56e449cc69f1bb2b7c747210a2fab7c867e2965ef964f611"
+  },
+  {
+    "path": "cache/M83/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M84/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "36b0f1b6528f1fa1751a3371513c272894691062bca720768ed312b851ea6b59"
+  },
+  {
+    "path": "cache/M84/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M85/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "9c905edfbf2e029a21f9e6175114934b7eb2993eef16dfb1f6a9245671c52e72"
+  },
+  {
+    "path": "cache/M85/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/M86/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "5dd3c85c87ba60ae08bec85e914373b7f080809b8e3409976561e1ba5f6ffe05"
+  },
+  {
+    "path": "cache/M87/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "91150991f48ef2c486fbc3a92157a583a799faf57042629990a9414e3d8f03e2"
+  },
+  {
+    "path": "cache/M88/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "3aed40c652cce60d4abd029bdff39650d6998088831ba27ca2d1c9f1e1dbf67c"
+  },
+  {
+    "path": "cache/M89/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "a3ad142d00c981c3054178884810f1c256676515c1c892df9105d4285b29807b"
+  },
+  {
+    "path": "cache/M90/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "ab0146dad792dba0e4f77c693a34e9585439604b29c726a5dfc5f9da9eadb672"
+  },
+  {
+    "path": "cache/M91/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "4ae5b5f0144f1b85ab7ecc356664782b80edde6cc1bab30a74c7357178019532"
+  },
+  {
+    "path": "cache/M92/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "78ebd6070b6a8403f087314a88aea719e09a0edad47b457c27a60fac1310d016"
+  },
+  {
+    "path": "cache/M93/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "168b66c1f61a1de18139601dbfde797526f7917097898d3f42d51dce149d4f07"
+  },
+  {
+    "path": "cache/M94/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "7aed1333d61ea84c07202c7a82c5552557a403e4d07d1577c03e4d934e08ce67"
+  },
+  {
+    "path": "cache/M95/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "2c620b9baf27cd6423f35382a4640002638e84e4331c7320a3f084ee1a644bc5"
+  },
+  {
+    "path": "cache/M96/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "f4c845edbb23422c433cec6795559e22c206a9b691a53f5b68040a74b4a64056"
+  },
+  {
+    "path": "cache/M97/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "6fa2619be391cd71a9db66dfb91634bcdfbac8802b671b052fd74bb6e920fa74"
+  },
+  {
+    "path": "cache/M98/_mut.exe",
+    "bytes": 908272,
+    "mode": 33216,
+    "sha256": "a900f33e182c74962c36de196a223c45e416bdd48bc55aa3ceece322d854a9e1"
+  },
+  {
+    "path": "cache/M99/bridge-mutant/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "c1f4e0be339348c235e645f867aa5bc7f1df7660a6b99445b1e05d8221c95f43"
+  },
+  {
+    "path": "cache/M99/bridge-restored/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  },
+  {
+    "path": "cache/_baseline/baseline.exe",
+    "bytes": 908280,
+    "mode": 33216,
+    "sha256": "304159b933f4a6fced2975d563d7c26cef3b94d06d2e443b7510284e13ed7626"
+  },
+  {
+    "path": "cache/_bridge-baseline/7a0e6dd81c54066995981393925fa46a815de2f8/bridge",
+    "bytes": 1130648,
+    "mode": 33216,
+    "sha256": "33bd15767a53f8671b50b449ac202c3b638225e2c9adeb39c76f7d78fcb6521b"
+  }
+]

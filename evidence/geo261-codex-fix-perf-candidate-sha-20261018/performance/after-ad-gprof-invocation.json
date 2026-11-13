@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "python3",
+    "-u",
+    "/workspace/geo261-validation-20261018/performance/measure_geo261.py",
+    "profile",
+    "--integration-sha",
+    "57d916fb1d2c980769c3438172849bb3a3f03c00",
+    "--output",
+    "/workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T12:34:45.835265+00:00",
+  "script_sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b",
+  "loadavg_before": [
+    0.89990234375,
+    0.8115234375,
+    0.6533203125
+  ],
+  "all_builds_and_tests_finished": true,
+  "exit_code": 0,
+  "elapsed_seconds": 21.21023076399979,
+  "ended_utc": "2026-10-18T12:35:07.045862+00:00"
+}

@@ -1,0 +1,173 @@
+diff --git a/tests/geo261_placement_sources_harness.c b/tests/geo261_placement_sources_harness.c
+index 1ec33402..57b2fad7 100644
+--- a/tests/geo261_placement_sources_harness.c
++++ b/tests/geo261_placement_sources_harness.c
+@@ -15,6 +15,7 @@ typedef struct {
+     GeoRegionView region;
+     unsigned char keys[2];
+     unsigned frame_calls,region_calls,binding_calls;
++    unsigned frame_binding_calls,region_binding_calls,definition_binding_calls;
+     GeoSourceValueKind frame_kind,region_kind;
+     bool enabled,fail,lie;
+ } Upstream;
+@@ -85,6 +86,9 @@ static bool upstream_evaluate(void *opaque,GeoEvalContext *graph,const GeoSource
+ static bool binding(void *opaque,uint32_t id,GeoPlacementSourceKind kind,GeoSourceRef *out)
+ {
+     Upstream *s=opaque;++s->binding_calls;
++    if(kind==GEO_PLACEMENT_SOURCE_FRAME)++s->frame_binding_calls;
++    else if(kind==GEO_PLACEMENT_SOURCE_REGIONS)++s->region_binding_calls;
++    else if(kind==GEO_PLACEMENT_SOURCE_DEFINITION)++s->definition_binding_calls;
+     if(!s->enabled)return false;
+     if(id==10&&kind==GEO_PLACEMENT_SOURCE_FRAME){*out=(GeoSourceRef){UPSTREAM_TOKEN,s->keys,1};return true;}
+     if(id==11&&kind==GEO_PLACEMENT_SOURCE_REGIONS){*out=(GeoSourceRef){UPSTREAM_TOKEN,s->keys+1,1};return true;}
+@@ -134,13 +138,37 @@ static size_t node_index(GeoEvalContext *graph,GeoSourceRef source)
+            !memcmp(n.source.key,source.key,source.key_size))return i;}
+     return SIZE_MAX;
+ }
+-static bool edge(GeoEvalContext *graph,GeoSourceRef from,GeoSourceRef to)
++static bool typed_edge(GeoEvalContext *graph,GeoSourceRef from,GeoSourceRef to,GeoDependencyKind kind)
+ {
+     size_t a=node_index(graph,from),b=node_index(graph,to);
+     for(size_t i=0;i<geo_eval_edge_count(graph);++i){GeoSourceEdge e;
+-        if(geo_eval_edge_at(graph,i,&e)&&e.consumer==a&&e.source==b&&e.kind==GEO_DEPENDENCY_VALUE_REQUIRED)return true;}
++        if(geo_eval_edge_at(graph,i,&e)&&e.consumer==a&&e.source==b&&e.kind==kind)return true;}
+     return false;
+ }
++static bool edge(GeoEvalContext *graph,GeoSourceRef from,GeoSourceRef to)
++{return typed_edge(graph,from,to,GEO_DEPENDENCY_VALUE_REQUIRED);}
++static bool definition_edge(GeoEvalContext *graph,uint32_t id,GeoPlacementSourceKind kind)
++{
++    GeoPlacementSourceKey value_key,definition_key;
++    return typed_edge(graph,geo_placement_source_ref(PLACEMENT_TOKEN,kind,id,&value_key),
++        geo_placement_source_ref(PLACEMENT_TOKEN,GEO_PLACEMENT_SOURCE_DEFINITION,id,&definition_key),GEO_DEPENDENCY_DEFINITION_REQUIRED);
++}
++static bool definition_node(GeoEvalContext *graph,uint32_t id)
++{
++    GeoPlacementSourceKey key;GeoSourceNodeView node;
++    size_t index=node_index(graph,geo_placement_source_ref(PLACEMENT_TOKEN,GEO_PLACEMENT_SOURCE_DEFINITION,id,&key));
++    return geo_eval_node_at(graph,index,&node)&&node.descriptor.kind==GEO_SOURCE_DEFINITION&&node.descriptor.unit==GEO_UNIT_SCALAR&&
++        node.descriptor.context.has_placement&&node.descriptor.context.placement==id&&node.descriptor.context.axis==-1&&
++        node.state==GEO_NODE_VALID&&node.value&&node.value->kind==GEO_SOURCE_DEFINITION&&
++        node.value->as.definition.schema&&!strcmp(node.value->as.definition.schema,GEO_PLACEMENT_DEFINITION_SCHEMA);
++}
++static bool stable_inline_view(GeoRegionSetView value,const GeoRegionView *regions,const GeoPoint2 *first,
++    const GeoPoint2 *second,const GeoLoop2View *holes,const GeoPoint2 *hole_vertices)
++{
++    return value.count==2&&value.regions==regions&&value.regions[0].outline.v==first&&value.regions[1].outline.v==second&&
++        value.regions[0].holes==holes&&value.regions[0].holes[0].v==hole_vertices&&
++        is_region((GeoRegionSetView){value.regions,1},200,true)&&is_region((GeoRegionSetView){value.regions+1,1},300,false);
++}
+ static int key_contract(void)
+ {
+     GeoPlacementSourceKey key;GeoRegionSourceKey rkey;
+@@ -151,10 +179,16 @@ static int key_contract(void)
+     CHECK("placement-key-decodes-full-id",geo_placement_source_decode(&ref,&kind,&id)&&kind==GEO_PLACEMENT_SOURCE_REGIONS&&id==UINT32_C(0x010002ff));
+     ref=geo_region_source_ref(REGION_TOKEN,UINT32_MAX,&rkey);
+     CHECK("region-key-decodes-full-id",ref.key_size==4&&geo_region_source_decode(&ref,&id)&&id==UINT32_MAX);
++    ref=geo_placement_source_ref(PLACEMENT_TOKEN,GEO_PLACEMENT_SOURCE_DEFINITION,UINT32_C(0x010002ff),&key);
++    const unsigned char definition_expected[]={3,1,0,2,255};
++    CHECK("definition-key-canonical-bytes",ref.provider==PLACEMENT_TOKEN&&ref.key_size==5&&!memcmp(key.bytes,definition_expected,5));
++    CHECK("definition-key-decodes-full-id",geo_placement_source_decode(&ref,&kind,&id)&&kind==GEO_PLACEMENT_SOURCE_DEFINITION&&id==UINT32_C(0x010002ff));
+     kind=GEO_PLACEMENT_SOURCE_FRAME;id=123;key.bytes[0]=0;ref=(GeoSourceRef){PLACEMENT_TOKEN,key.bytes,5};
+     CHECK("invalid-key-keeps-decode-outputs",!geo_placement_source_decode(&ref,&kind,&id)&&kind==GEO_PLACEMENT_SOURCE_FRAME&&id==123);
+-    key.bytes[0]=3;CHECK("unknown-key-kind-rejected",!geo_placement_source_decode(&ref,&kind,&id)&&id==123);
+-    key.bytes[0]=1;ref.key_size=4;CHECK("short-placement-key-rejected",!geo_placement_source_decode(&ref,&kind,&id)&&id==123);
++    key.bytes[0]=0xff;CHECK("unknown-key-kind-rejected",!geo_placement_source_decode(&ref,&kind,&id)&&kind==GEO_PLACEMENT_SOURCE_FRAME&&id==123);
++    for(unsigned tag=4;tag<0xff;++tag){key.bytes[0]=(unsigned char)tag;
++        CHECK("all-other-unknown-key-kinds-rejected",!geo_placement_source_decode(&ref,&kind,&id)&&kind==GEO_PLACEMENT_SOURCE_FRAME&&id==123);}
++    key.bytes[0]=1;ref.key_size=4;CHECK("short-placement-key-rejected",!geo_placement_source_decode(&ref,&kind,&id)&&kind==GEO_PLACEMENT_SOURCE_FRAME&&id==123);
+     ref.key=NULL;CHECK("null-region-key-rejected",!geo_region_source_decode(&ref,&id)&&id==123);
+     CHECK("null-decode-arguments-rejected",!geo_region_source_decode(NULL,&id)&&!geo_placement_source_decode(NULL,&kind,&id));return 0;
+ }
+@@ -174,7 +208,9 @@ static int explicit_leaves(void)
+     CHECK("actual-region-leaf",region_value(&f,29,&value)==GEO_SOURCE_OK&&value.kind==GEO_SOURCE_REGION_SET&&is_region(value.as.regions,0,true));
+     const GeoRegionDefinition *owned=geo_regions_find(f.regions,29);
+     CHECK("region-leaf-borrows-owned-vertices",value.as.regions.regions[0].outline.v==owned->outline.v&&value.as.regions.regions[0].holes[0].v==owned->holes[0].v);
+-    CHECK("explicit-leaves-have-no-upstream-edges",geo_eval_node_count(f.graph)==3&&geo_eval_edge_count(f.graph)==0);
++    CHECK("explicit-geometry-has-one-shared-definition",geo_eval_node_count(f.graph)==4&&geo_eval_edge_count(f.graph)==2&&definition_node(f.graph,10));
++    CHECK("explicit-frame-requires-its-definition",definition_edge(f.graph,10,GEO_PLACEMENT_SOURCE_FRAME));
++    CHECK("explicit-regions-require-the-same-definition",definition_edge(f.graph,10,GEO_PLACEMENT_SOURCE_REGIONS));
+     dispose(&f,true);return 0;
+ }
+ static int region_reference(void)
+@@ -183,9 +219,11 @@ static int region_reference(void)
+     CHECK("region-reference-returns-actual-geometry",placement_value(&f,11,GEO_PLACEMENT_SOURCE_REGIONS,&value)==GEO_SOURCE_OK&&is_region(value.as.regions,0,true));
+     GeoPlacementSourceKey key;GeoRegionSourceKey rkey;
+     CHECK("placement-region-reference-edge",edge(f.graph,geo_placement_source_ref(PLACEMENT_TOKEN,GEO_PLACEMENT_SOURCE_REGIONS,11,&key),geo_region_source_ref(REGION_TOKEN,29,&rkey)));
+-    CHECK("region-reference-has-two-nodes-one-value-edge",geo_eval_node_count(f.graph)==2&&geo_eval_edge_count(f.graph)==1);
++    CHECK("region-reference-has-definition-and-value-edges",geo_eval_node_count(f.graph)==3&&geo_eval_edge_count(f.graph)==2&&
++        definition_node(f.graph,11)&&definition_edge(f.graph,11,GEO_PLACEMENT_SOURCE_REGIONS));
+     CHECK("region-reference-reuses-core-region-value",region_value(&f,29,&leaf)==GEO_SOURCE_OK&&leaf.as.regions.regions==value.as.regions.regions);
+-    GeoSourceNodeView n;CHECK("region-node-does-not-claim-placement-context",geo_eval_node_at(f.graph,1,&n)&&n.descriptor.kind==GEO_SOURCE_REGION_SET&&!n.descriptor.context.has_placement);
++    size_t region_index=node_index(f.graph,geo_region_source_ref(REGION_TOKEN,29,&rkey));
++    GeoSourceNodeView n;CHECK("region-node-does-not-claim-placement-context",geo_eval_node_at(f.graph,region_index,&n)&&n.descriptor.kind==GEO_SOURCE_REGION_SET&&!n.descriptor.context.has_placement);
+     CHECK("region-reference-seals",geo_eval_seal(f.graph));GeoSourceValue again;
+     CHECK("region-reference-sealed-borrow-stable",placement_value(&f,11,GEO_PLACEMENT_SOURCE_REGIONS,&again)==GEO_SOURCE_OK&&
+         again.as.regions.regions==value.as.regions.regions&&is_region(value.as.regions,0,true));
+@@ -197,20 +235,29 @@ static int borrowed_views(void)
+     CHECK("first-hole-view",region_value(&f,29,&region_a)==GEO_SOURCE_OK);
+     CHECK("second-hole-view",region_value(&f,30,&region_b)==GEO_SOURCE_OK);
+     CHECK("inline-component-views",placement_value(&f,12,GEO_PLACEMENT_SOURCE_REGIONS,&set)==GEO_SOURCE_OK);
++    CHECK("inline-set-preserves-order-and-holes",set.kind==GEO_SOURCE_REGION_SET&&set.as.regions.count==2&&set.as.regions.regions&&
++        loop_is_box(set.as.regions.regions[0].outline,200,0,220,20)&&set.as.regions.regions[0].hole_count==1&&set.as.regions.regions[0].holes&&
++        loop_is_box(set.as.regions.regions[0].holes[0],205,5,210,10)&&loop_is_box(set.as.regions.regions[1].outline,300,0,320,20)&&set.as.regions.regions[1].hole_count==0);
++    const GeoRegionView *inline_regions=set.as.regions.regions;
++    const GeoPoint2 *first_vertices=inline_regions[0].outline.v,*second_vertices=inline_regions[1].outline.v;
++    const GeoLoop2View *inline_holes=inline_regions[0].holes;const GeoPoint2 *hole_vertices=inline_holes[0].v;
+     CHECK("rectangle-scratch-view",placement_value(&f,10,GEO_PLACEMENT_SOURCE_REGIONS,&rect)==GEO_SOURCE_OK);
+     CHECK("empty-region-set-is-a-valid-value",placement_value(&f,13,GEO_PLACEMENT_SOURCE_REGIONS,&empty)==GEO_SOURCE_OK&&empty.kind==GEO_SOURCE_REGION_SET&&empty.as.regions.count==0);
+     CHECK("separate-region-hole-scratch-survives-other-reads",is_region(region_a.as.regions,0,true)&&is_region(region_b.as.regions,100,true)&&
+         region_a.as.regions.regions!=region_b.as.regions.regions&&region_a.as.regions.regions[0].holes!=region_b.as.regions.regions[0].holes);
+-    const GeoPlacementDefinition *owned=geo_placements_find(f.placements,12);
+-    CHECK("inline-set-preserves-order-and-holes",set.as.regions.count==2&&
+-        loop_is_box(set.as.regions.regions[0].outline,200,0,220,20)&&set.as.regions.regions[0].hole_count==1&&
+-        loop_is_box(set.as.regions.regions[0].holes[0],205,5,210,10)&&loop_is_box(set.as.regions.regions[1].outline,300,0,320,20));
+-    CHECK("inline-set-borrows-its-own-store",set.as.regions.regions[0].outline.v==owned->components[0].outline.v&&
+-        set.as.regions.regions[0].holes[0].v==owned->components[0].holes[0].v);
++    CHECK("inline-set-survives-other-placement-reads",stable_inline_view(set.as.regions,inline_regions,first_vertices,second_vertices,inline_holes,hole_vertices));
++    GeoSourceValue same_placement_frame,cached_set;
++    CHECK("inline-set-frame-read-after-other-placements",placement_value(&f,12,GEO_PLACEMENT_SOURCE_FRAME,&same_placement_frame)==GEO_SOURCE_OK&&
++        same_placement_frame.kind==GEO_SOURCE_FRAME&&same_frame(same_placement_frame.as.frame,frame(12)));
++    CHECK("inline-set-borrows-stable-candidate-definition",placement_value(&f,12,GEO_PLACEMENT_SOURCE_REGIONS,&cached_set)==GEO_SOURCE_OK&&
++        cached_set.kind==GEO_SOURCE_REGION_SET&&stable_inline_view(cached_set.as.regions,inline_regions,first_vertices,second_vertices,inline_holes,hole_vertices)&&
++        stable_inline_view(set.as.regions,inline_regions,first_vertices,second_vertices,inline_holes,hole_vertices));
+     CHECK("rectangle-scratch-is-not-overwritten",loop_is_box(rect.as.regions.regions[0].outline,-10,-5,30,20));
+     CHECK("borrowed-views-seal",geo_eval_seal(f.graph));
+     for(unsigned i=0;i<10;++i){GeoSourceValue cached;
+-        CHECK("cached-holes-remain-alive",region_value(&f,29,&cached)==GEO_SOURCE_OK&&cached.as.regions.regions==region_a.as.regions.regions&&is_region(cached.as.regions,0,true));}
++        CHECK("cached-holes-remain-alive",region_value(&f,29,&cached)==GEO_SOURCE_OK&&cached.as.regions.regions==region_a.as.regions.regions&&is_region(cached.as.regions,0,true));
++        CHECK("sealed-inline-borrow-keeps-pointers-and-literal-geometry",placement_value(&f,12,GEO_PLACEMENT_SOURCE_REGIONS,&cached)==GEO_SOURCE_OK&&
++            cached.kind==GEO_SOURCE_REGION_SET&&stable_inline_view(cached.as.regions,inline_regions,first_vertices,second_vertices,inline_holes,hole_vertices));}
+     dispose(&f,true);return 0;
+ }
+ static int binding_values(void)
+@@ -241,7 +288,11 @@ static int binding_declines(void)
+     CHECK("declined-binding-keeps-explicit-region-edge",placement_value(&f,11,GEO_PLACEMENT_SOURCE_REGIONS,&value)==GEO_SOURCE_OK&&is_region(value.as.regions,0,true));
+     GeoPlacementSourceKey key;GeoRegionSourceKey rkey;
+     CHECK("declined-binding-records-core-region-edge",edge(f.graph,geo_placement_source_ref(PLACEMENT_TOKEN,GEO_PLACEMENT_SOURCE_REGIONS,11,&key),geo_region_source_ref(REGION_TOKEN,29,&rkey)));
+-    CHECK("declined-binding-never-reads-upstream",f.upstream.frame_calls==0&&f.upstream.region_calls==0&&f.upstream.binding_calls==2);
++    CHECK("declined-binding-never-reads-upstream",f.upstream.frame_calls==0&&f.upstream.region_calls==0&&f.upstream.binding_calls==4);
++    CHECK("declined-binding-probes-each-requested-source-kind",f.upstream.frame_binding_calls==1&&f.upstream.region_binding_calls==1&&f.upstream.definition_binding_calls==2);
++    CHECK("declined-binding-keeps-exact-definition-closure",geo_eval_node_count(f.graph)==5&&geo_eval_edge_count(f.graph)==3&&
++        definition_node(f.graph,10)&&definition_node(f.graph,11)&&
++        definition_edge(f.graph,10,GEO_PLACEMENT_SOURCE_FRAME)&&definition_edge(f.graph,11,GEO_PLACEMENT_SOURCE_REGIONS));
+     dispose(&f,true);return 0;
+ }
+ static int typed_failures(void)
+diff --git a/tests/test_geo261_placement_sources.py b/tests/test_geo261_placement_sources.py
+index 22dbb1ec..897ffd40 100644
+--- a/tests/test_geo261_placement_sources.py
++++ b/tests/test_geo261_placement_sources.py
+@@ -24,10 +24,10 @@ CONTROLS = (
+     (
+         "binding-value", "placement_sources", "binding-values", "placement-binding-consumes-upstream-frame",
+         "if(s->binding&&s->binding(s->user,id,kind,&upstream))\n"
+-        "        return geo_eval_source(graph,upstream,GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;",
++        "        return geo_eval_source(graph,upstream,kind==GEO_PLACEMENT_SOURCE_DEFINITION?GEO_DEPENDENCY_DEFINITION_REQUIRED:GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;",
+         "if(s->binding&&s->binding(s->user,id,kind,&upstream)){\n"
+         "        GeoSourceValue ignored;\n"
+-        "        if(geo_eval_source(graph,upstream,GEO_DEPENDENCY_VALUE_REQUIRED,&ignored)!=GEO_SOURCE_OK)return false;\n"
++        "        if(geo_eval_source(graph,upstream,kind==GEO_PLACEMENT_SOURCE_DEFINITION?GEO_DEPENDENCY_DEFINITION_REQUIRED:GEO_DEPENDENCY_VALUE_REQUIRED,&ignored)!=GEO_SOURCE_OK)return false;\n"
+         "    }",
+     ),
+     (

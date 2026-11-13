@@ -1,0 +1,11 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -326,7 +326,7 @@
+                 interpolated = True
+                 pieces.append(Token("template_expression_start", "${", line_at(index)))
+                 index, expression = code(index + 2, depth + 1, line_at(index))
+-                pieces.extend(expression)
++                pass  # TEMP removed TEMPLATE_EXPRESSION_TOKENS
+                 pieces.append(Token("template_expression_end", "}", line_at(index - 1)))
+                 chunk_start = index
+                 continue

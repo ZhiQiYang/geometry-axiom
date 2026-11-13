@@ -1,0 +1,259 @@
+{
+  "schema": "geo261-recorded-command/1",
+  "sha": "2bfbfa58f5522ded03996ec073e23f0ccd129b68",
+  "label": "targeted-native-rawsnapshot-fixed",
+  "command": [
+    "bash",
+    "-c",
+    "ulimit -S -s 16384; exec python3 -B -m unittest -v tests.test_geo261_source_index tests.test_geo261_definition_sources tests.test_geo261_host_facts_authority tests.test_geo261_contact_sources tests.test_geo261_wood_contact_world tests.test_geo261_wood_world_validation tests.test_mutation_anchors"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "started": "2026-10-22T14:16:53.966749+00:00",
+  "checkout_before": {
+    "head": "2bfbfa58f5522ded03996ec073e23f0ccd129b68",
+    "root": "/workspace/geometry-axiom",
+    "status": " M current_geometry.c\n M geometry-app/native/reference_sources.inc\n M geometry-core/kernel/source.c\n M geometry-templates/woodworking/native/contact_sources.c\n M tests/geo261_definition_sources_harness.c\n M tests/geo261_host_facts_authority_harness.c\n M tests/test_geo261_definition_sources.py\n M tests/test_geo261_host_facts_authority.py\n M tests/test_geo261_wood_contact_world.py\n",
+    "source_hashes": {
+      "geometry-web/app.js": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1",
+      "geometry-web/uiux_review_test.js": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47",
+      "geometry-web/cdp_test.js": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "tests/mutate.py": "8fc573fba9596ca8c6570a99c7de284584643a3560cee6cf5f0ac27416d26451",
+      "tests/mutants_results.json": "bd9c88f598b8bd1a82cd2f561b1953ba034837cc44e66d49556dd246c8bc4c73",
+      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e"
+    }
+  },
+  "environment": {
+    "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "XDG_DATA_HOME": "/workspace/geo261-environment/xdg-data",
+    "XDG_CACHE_HOME": "/workspace/geo261-environment/xdg-cache",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "GITHUB_SHA": "2bfbfa58f5522ded03996ec073e23f0ccd129b68",
+    "TMPDIR": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/tmp"
+  },
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "wrapper_sha256": "83b62e59def29b938ca01e4882fd7267110ab2a94a2eb38931283f31fc536701",
+  "exit_code": 0,
+  "versions": [
+    {
+      "command": [
+        "google-chrome",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T14:16:53.993265+00:00",
+      "stdout": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/versions/0.stdout",
+      "stderr": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/versions/0.stderr",
+      "combined": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/versions/0.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T14:16:54.025402+00:00",
+      "seconds": 0.032136288999026874,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T14:16:54.025685+00:00",
+      "stdout": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/versions/1.stdout",
+      "stderr": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/versions/1.stderr",
+      "combined": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/versions/1.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T14:16:54.030520+00:00",
+      "seconds": 0.0048393800025223754,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T14:16:54.030669+00:00",
+      "stdout": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/versions/2.stdout",
+      "stderr": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/versions/2.stderr",
+      "combined": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/versions/2.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T14:16:54.032165+00:00",
+      "seconds": 0.0014979360021243338,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T14:16:54.032277+00:00",
+      "stdout": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/versions/3.stdout",
+      "stderr": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/versions/3.stderr",
+      "combined": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/versions/3.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T14:16:54.033573+00:00",
+      "seconds": 0.0012987170011911076,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    }
+  ],
+  "result": {
+    "command": [
+      "bash",
+      "-c",
+      "ulimit -S -s 16384; exec python3 -B -m unittest -v tests.test_geo261_source_index tests.test_geo261_definition_sources tests.test_geo261_host_facts_authority tests.test_geo261_contact_sources tests.test_geo261_wood_contact_world tests.test_geo261_wood_world_validation tests.test_mutation_anchors"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started": "2026-10-22T14:16:54.034123+00:00",
+    "stdout": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/command.stdout",
+    "stderr": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/command.stderr",
+    "combined": "/tmp/g261r1/recorded/targeted-native-rawsnapshot-fixed/command.combined.log",
+    "timeout_seconds": 1800,
+    "ended": "2026-10-22T14:17:38.292513+00:00",
+    "seconds": 44.25840662900009,
+    "actual_process_returncode": 0,
+    "exit_code": 0,
+    "watchdog_expired": false,
+    "owned_process_group_cleanup": false
+  },
+  "seconds": 44.25881160000063,
+  "ended": "2026-10-22T14:17:38.292910+00:00",
+  "checkout_after": {
+    "head": "2bfbfa58f5522ded03996ec073e23f0ccd129b68",
+    "root": "/workspace/geometry-axiom",
+    "status": " M current_geometry.c\n M geometry-app/native/reference_sources.inc\n M geometry-core/kernel/source.c\n M geometry-templates/woodworking/native/contact_sources.c\n M tests/geo261_definition_sources_harness.c\n M tests/geo261_host_facts_authority_harness.c\n M tests/test_geo261_definition_sources.py\n M tests/test_geo261_host_facts_authority.py\n M tests/test_geo261_wood_contact_world.py\n",
+    "source_hashes": {
+      "geometry-web/app.js": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1",
+      "geometry-web/uiux_review_test.js": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47",
+      "geometry-web/cdp_test.js": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "tests/mutate.py": "8fc573fba9596ca8c6570a99c7de284584643a3560cee6cf5f0ac27416d26451",
+      "tests/mutants_results.json": "bd9c88f598b8bd1a82cd2f561b1953ba034837cc44e66d49556dd246c8bc4c73",
+      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e"
+    }
+  },
+  "files": {
+    "before.diff": {
+      "bytes": 59278,
+      "sha256": "df7c95ffd4e20237457fa50cfa57d956f26fb08d8744cb208476daacbaa185ad",
+      "mtime_ns": 1792678613993183755
+    },
+    "command.combined.log": {
+      "bytes": 37181,
+      "sha256": "1970e016727720ed44bab865620786281ca8bd9156e7275078e3f5d0f3ffaf5f",
+      "mtime_ns": 1792678658269143735
+    },
+    "command.command.json": {
+      "bytes": 925,
+      "sha256": "6371c78e88f8972f0c2f05e5c85d4fddd97a41774d6f1ac3029a89dc0d0be7aa",
+      "mtime_ns": 1792678658292871669
+    },
+    "command.stderr": {
+      "bytes": 15910,
+      "sha256": "650e942fe44ba00dfba782f6b9acc4f87fb581a91c60d8171baa451f9fec2ea5",
+      "mtime_ns": 1792678658269143735
+    },
+    "command.stdout": {
+      "bytes": 21271,
+      "sha256": "a37166380014041777a4b63965b32fd09c2b9373aaf8b60551928321e32a7984",
+      "mtime_ns": 1792678648444917044
+    },
+    "versions/0.combined.log": {
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "mtime_ns": 1792678614020110449
+    },
+    "versions/0.command.json": {
+      "bytes": 647,
+      "sha256": "046cf9fa36accfd860a3dc2cbf1d3b48d02663302411afe5bc00f3ab18b53923",
+      "mtime_ns": 1792678614025601378
+    },
+    "versions/0.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792678613993183755
+    },
+    "versions/0.stdout": {
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "mtime_ns": 1792678614020110449
+    },
+    "versions/1.combined.log": {
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "mtime_ns": 1792678614029984500
+    },
+    "versions/1.command.json": {
+      "bytes": 639,
+      "sha256": "e8e1d5018d960b0e933248d2993fcdfaef515f1f60d6a698024e948fde6ffc5e",
+      "mtime_ns": 1792678614030619347
+    },
+    "versions/1.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792678614025696712
+    },
+    "versions/1.stdout": {
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "mtime_ns": 1792678614025696712
+    },
+    "versions/2.combined.log": {
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "mtime_ns": 1792678614032108760
+    },
+    "versions/2.command.json": {
+      "bytes": 642,
+      "sha256": "1b728b14427e0c54c0290d346a57a3d375abc6017126891591a8a6daeeda25c9",
+      "mtime_ns": 1792678614032232787
+    },
+    "versions/2.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792678614030678726
+    },
+    "versions/2.stdout": {
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "mtime_ns": 1792678614030678726
+    },
+    "versions/3.combined.log": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "mtime_ns": 1792678614033495970
+    },
+    "versions/3.command.json": {
+      "bytes": 637,
+      "sha256": "3029a6e3f9fbdac3ea4450844bfa18968e498f8f8fe9f1e590a988528b41ff98",
+      "mtime_ns": 1792678614033644213
+    },
+    "versions/3.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792678614032287209
+    },
+    "versions/3.stdout": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "mtime_ns": 1792678614032287209
+    },
+    "wrapper.py.txt": {
+      "bytes": 3902,
+      "sha256": "83b62e59def29b938ca01e4882fd7267110ab2a94a2eb38931283f31fc536701",
+      "mtime_ns": 1792678613968431680
+    }
+  }
+}

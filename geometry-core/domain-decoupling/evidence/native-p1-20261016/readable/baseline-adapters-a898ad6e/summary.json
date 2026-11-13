@@ -1,0 +1,103 @@
+{
+  "kind": "baseline-native-adapter-preparation-only",
+  "source": "a898ad6e12707104568679591fe1b21804bfc3df",
+  "checkout": "/var/tmp/geo261-baseline-a898ad6e",
+  "started_utc": "2026-10-16T00:31:25.802093+00:00",
+  "finished_utc": "2026-10-16T00:32:21.834180+00:00",
+  "shared_lock": "/run/lock/ga-wsl-v3.lock",
+  "lock_holder_at_run": "pid=10100 start=2026-10-16T00:30:31Z label= args=run WSL_CI_JOB_TAG=geo261-p1-baseline-adapters bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/prepare-baseline.sh\n",
+  "isolation": "private mount and network namespaces inside shared lock; private persistent /tmp bound from checkout .git/geo261-environment/tmp",
+  "tools": {
+    "python": "Python 3.12.3",
+    "python3": "Python 3.12.3",
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "git": "git version 2.43.0",
+    "node": "v24.21.0",
+    "chrome": "Google Chrome 153.0.8010.47",
+    "stack_kib": "16384"
+  },
+  "path": "/tmp/geo261-bin:/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+  "build_command": [
+    "python3",
+    "-u",
+    "tests/binaries.py",
+    "build",
+    "model-base",
+    "bridge"
+  ],
+  "status_command": [
+    "python3",
+    "tests/binaries.py",
+    "status",
+    "model-base",
+    "bridge"
+  ],
+  "build_exit": 0,
+  "binary_status_exit": 0,
+  "producer_command": [
+    "python3",
+    "-u",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/producer/produce_fixtures_v3.py",
+    "--root",
+    "/var/tmp/geo261-baseline-a898ad6e",
+    "--base",
+    "/tmp/geometry-tests/model-base",
+    "--out",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/compatibility-baseline-v1"
+  ],
+  "producer_exit": 1,
+  "producer_script_sha256": "592d5456aebffa3f0c4d7a0835482a5cf0e04e76ac0259cc4ada3519cccd4ee7",
+  "producer_outputs": {
+    "finite-grid.input.json": "fe412d6358637f3ebb9d7299e2a78e98cfe9dd6e4ff57c742ae994e1e63ab8ca",
+    "finite-grid.json": "d0b08fa5e15ac82a226a7159d3a4b0855cf890abbfbbc8ca93e5fe37ed6177be",
+    "infinite-grid.input.json": "7e6f67bb1e2b1b00adec33932d22e2fe3f0147c53a6130c62e5b4ddb8cc0c52c",
+    "infinite-grid.json": "241e9a955432a51ad6dc277ee320c9c0e8320acb8b5c3aca4c84dae0a3fc43ef",
+    "parameter.input.json": "12c578b2b004d09dabb3d2d0cce5761bfd1be5a16ca91fe88f908617bef25549",
+    "parameter.json": "b60d9959edcf872b0e5f5142986b0069a865d2a8222bcdf7b6f2aa06958a95bf",
+    "profile.input.json": "9388878dbfbeea14409e0fd75ade59b6c7a98c162299c86e8b167eb6700df653",
+    "profile.json": "51e5062a04c5f7adb1660071e0c2ac653e7ba5701ebffb50a86ab5de4f9f9a18",
+    "stagger.input.json": "9cc48e02fff5a33b87b7d15c53520ec3617161e2468211fbee0f7edc3281b119",
+    "stagger.json": "d5dec925392492ea4a2722916f300246366973c94157ef3ffbcd1dadd654ea4f",
+    "subdivision-rejected.json": "048809b482c15bcdc34529099cf27daa7dcc72a40000644acc1802d93b09882b"
+  },
+  "source_files": 15784,
+  "source_unchanged": true,
+  "head_after": "a898ad6e12707104568679591fe1b21804bfc3df",
+  "head_unchanged": true,
+  "runner_scripts_sha256": {
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/prepare-baseline.sh": "31ea0ca807edd07efa272f4440251f735a3858cbff63bf432e6212b3b216cb7e",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/baseline-namespace.sh": "de3977a6c077d597a299513bf1f8d852a19ba985bd6ffb507d906f4801b10e09",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/build-baseline.py": "2c3633747b87eee06badcf9e6fa98a92e8b8dec3ca9f47bcda996fc5b36ea281",
+    "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/wsl_locked3.sh": "155f1627c6e6e02f9c70e8324d73754d0648aa0437c187908237cc2aa4f1a454"
+  },
+  "runner_scripts_unchanged": true,
+  "source_before_sha256": "cdc20cc15d7885ac9b11c7c68963ab56a0b45f221fd9483e19a89c380ec99fb3",
+  "source_after_sha256": "cdc20cc15d7885ac9b11c7c68963ab56a0b45f221fd9483e19a89c380ec99fb3",
+  "axiom_lf_sha256": "e5e43ec5da2030669c9ecd7a67f8b250cfb7290cf663365b2b66c51814bb77b9",
+  "binaries": {
+    "model-base": {
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-16T08:31:56+08:00）",
+      "path": "/tmp/geometry-tests/model-base",
+      "persistent_host_path": "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-environment/tmp/geometry-tests/model-base",
+      "sha256": "b0daf7d6136365f04f6b6ff5074e7ba91679c4fb3e8748d3ebaedde082cdb7a1",
+      "sidecar_sha256": "4bfcd451a9a4f3b33c3f5e507cc9f60e3e24199bc4d01c085417f2800a21bb9a"
+    },
+    "bridge": {
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-16T08:32:15+08:00）",
+      "path": "/tmp/geometry-tests/bridge",
+      "persistent_host_path": "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-environment/tmp/geometry-tests/bridge",
+      "sha256": "8e4088762c377ce6cbd023b0aee7d2484bd1c3c1267bb9008461ae50cbbc3d3f",
+      "sidecar_sha256": "621ea192df8d3b75cd89aef1522ab3104250bc06337e463466b7c6713fe231f5"
+    }
+  },
+  "full_test_suite_executed": false,
+  "producer_fixtures_executed": true,
+  "logs_sha256": {
+    "binary-status.log": "b4c2fe3c7045e8e292394c89a5059678e332a81878b7f8ea827adfa3065bd7b0",
+    "build.log": "f1dcfcee59aa148343fd9364112e5a2f3dc4bdf63752902c2dd4ef8fa8f52499",
+    "producer.log": "ffe042de01d514f1ee62488516db56525751a4ae53b376ba81b41893857be151"
+  },
+  "exit": 1
+}

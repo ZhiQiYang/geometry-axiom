@@ -1,0 +1,8 @@
+tree f41cba7abe68fe627202be89666df30f61f53809
+parent ab90a56df488b0cd38d5e6f9df1ed5597a8e126e
+author Yang <b10102230@gmail.com> 1792110936 +0800
+committer Yang <b10102230@gmail.com> 1792110936 +0800
+
+refactor(core): share orthogonal regions frames boxes and strip intervals
+
+N1b moves actual production geometry into neutral K views without fixation or role metadata. Existing policy code selects obstacles and applies contact, scope, between and support rules after shared interval evaluation. Adds 7 isolated geometry witnesses and a real bridge containment negative control; N1a 13-test suite now links the geometry object too. Static checks pass, runtime validation queued under the shared WSL lock. Document/source/candidate decoupling remains future slices.

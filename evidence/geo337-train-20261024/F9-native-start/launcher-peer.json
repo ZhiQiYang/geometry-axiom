@@ -1,0 +1,33 @@
+{
+  "schema": "geo337-F9-native-launch-static-peer/1",
+  "utc": "2026-10-25T09:31:00.443026+00:00",
+  "reviewer": "cost_tool_adversarial",
+  "review_verdict": 0,
+  "product_native_execution": "NOT_EXECUTED_BY_REVIEWER",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "subject": "/tmp/launch_geo337_F9_native_20261025.py",
+  "subject_sha256": "face7315bc0a6dc65ab67928f0b195571559d04aede94cdef263c3f579401c82",
+  "pins_read_and_matched": {
+    "/tmp/native-final-executable-preparation/run_full_native_workflow_v2.py": "763a6e8064be212a020522a43a80bdb6cd353d329997c83479f469c2359f4d21",
+    "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
+    "/workspace/geo261-environment/run_workflow_round.py": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310",
+    "/workspace/geo261-environment/reap_children.py": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+  },
+  "findings": [],
+  "reviewed": [
+    "Fresh OUT and JOB before launch and 134217728 free-byte startup guard.",
+    "Fixed full F9 and unmodified driver additionally requires clean source/index before and after.",
+    "Outer secondary nonblocking flock held for whole driver; original driver takes heavy nonblocking flock. Lock files are regular non-symlinks with distinct inodes. No same-lock recursive acquisition.",
+    "All MUTATE_/GIT_ environment removed; original driver clears remaining PYTHONPYCACHEPREFIX. Parent launches nonoptimized Python.",
+    "Original workflow exact full native lines and 35 minute gate are checked by unchanged driver. watchdog_factor3 is separate cleanup/run allowance, not a relaxed 35 minute gate.",
+    "Capture saves original command/exit/stdout/stderr; driver handles source and workflow receipt binding and cache preservation by rename without deleting cache."
+  ],
+  "limitations": [
+    "Static review only. Resource transfer/actual free space at launch and root quiescence are scheduler preconditions; reviewer did not run native or acquire resource locks.",
+    "128MiB is startup headroom, not a proof that native cannot exhaust storage. Actual failures must be preserved.",
+    "Outer pre-Recorder assertions may fail before creating RESULT; retain outer exec final and raw exception. No green status may be inferred from absent RESULT.",
+    "Launch with non-O Python -B; current PYTHONOPTIMIZE was absent. Outer integrity guards use assert.",
+    "Original cache consumer scan reports unreadable /proc fields; root cache-quiescence authorization remains independent, not universal visibility.",
+    "No mirror tests, mutation of subject, new execution tool, product change, or added acceptance threshold."
+  ]
+}

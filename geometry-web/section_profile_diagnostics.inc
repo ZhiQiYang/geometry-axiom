@@ -9,7 +9,7 @@ static void sp_json_member_issue(const World *before,const ProfileMember *m,cons
 }
 static size_t sp_json_violations(const World *before,const World *after,bool fallback)
 {
-    const SectionProfileState *s=&after->section_profiles;bool first=true;size_t count=0;putchar('[');
+    const SectionProfileState *s=&after->wood.section_profiles;bool first=true;size_t count=0;putchar('[');
     for(size_t i=0;i<s->member_count;++i){const ProfileMember *m=&s->members[i];
         if(m->missing_profile){sp_json_member_issue(before,m,"PROFILE_MISSING","I49","Referenced profile must exist",&first);fputs(",\"expected\":\"existing profile\",\"actual\":\"missing\"}",stdout);++count;}
         for(int f=0;f<2;++f)if(m->source_error[f][0]){sp_json_member_issue(before,m,"MEMBER_DIMENSION_INVALID","I46",m->source_error[f],&first);printf(",\"field\":\"%c\",\"expected\":\"positive integer dimension\",\"actual\":",f?'B':'A');js_string(m->source_error[f]);putchar('}');++count;}

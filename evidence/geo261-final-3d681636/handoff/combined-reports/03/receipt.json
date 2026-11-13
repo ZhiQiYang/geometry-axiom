@@ -1,0 +1,95 @@
+{
+  "schema": "geo299316-rules-authority-read/1",
+  "started_utc": "2026-10-23T14:46:10.528864+00:00",
+  "repo": "/workspace/geo288-p73-owner-20261023/publication",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo288-p73-owner-20261023/publication",
+        "fetch",
+        "--no-write-fetch-head",
+        "origin",
+        "main:refs/remotes/origin/main",
+        "pull/333/head:refs/remotes/origin/pr-333",
+        "handoff/codex-takeover-20261021:refs/remotes/origin/handoff/codex-takeover-20261021"
+      ],
+      "exit_code": 0,
+      "stdout_file": "/workspace/geo288-p73-owner-20261023/rule-authority-read/fetch.stdout",
+      "stderr_file": "/workspace/geo288-p73-owner-20261023/rule-authority-read/fetch.stderr",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "77a2ded6416e011f324cb747de77d9e364e6ff746aba4a30c4820f444ebb0d07"
+    },
+    {
+      "ref": "refs/remotes/origin/main",
+      "path": "決策佇列.md",
+      "label": "main-decision-queue",
+      "identity": {
+        "argv": [
+          "git",
+          "-C",
+          "/workspace/geo288-p73-owner-20261023/publication",
+          "rev-parse",
+          "refs/remotes/origin/main",
+          "refs/remotes/origin/main:決策佇列.md"
+        ],
+        "exit_code": 0,
+        "stdout": "feb502d7b3bade2334733a4349c87ff91b88621e\nb5d96d2f8465e553d120c2034485740aabb3ca3e\n",
+        "stderr": ""
+      },
+      "read": {
+        "argv": [
+          "git",
+          "-C",
+          "/workspace/geo288-p73-owner-20261023/publication",
+          "show",
+          "refs/remotes/origin/main:決策佇列.md"
+        ],
+        "exit_code": 0,
+        "stdout_file": "/workspace/geo288-p73-owner-20261023/rule-authority-read/main-decision-queue.md",
+        "stderr_file": "/workspace/geo288-p73-owner-20261023/rule-authority-read/main-decision-queue.stderr",
+        "bytes": 234334,
+        "sha256": "a9f14cdd3cf2846c65d0a7cc32f02bf3a12ba60e817cd9223c59e4da6f4734e5",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ref": "refs/remotes/origin/pr-333",
+      "path": "geometry-templates/woodworking/FIELD-RULES.md",
+      "label": "pr333-field-rules",
+      "identity": {
+        "argv": [
+          "git",
+          "-C",
+          "/workspace/geo288-p73-owner-20261023/publication",
+          "rev-parse",
+          "refs/remotes/origin/pr-333",
+          "refs/remotes/origin/pr-333:geometry-templates/woodworking/FIELD-RULES.md"
+        ],
+        "exit_code": 0,
+        "stdout": "3d9bd9476b5eda05e1cb92338ee741b90019dff2\n5a5e7e4c712d1628a56d30528bb75553d4c41a94\n",
+        "stderr": ""
+      },
+      "read": {
+        "argv": [
+          "git",
+          "-C",
+          "/workspace/geo288-p73-owner-20261023/publication",
+          "show",
+          "refs/remotes/origin/pr-333:geometry-templates/woodworking/FIELD-RULES.md"
+        ],
+        "exit_code": 0,
+        "stdout_file": "/workspace/geo288-p73-owner-20261023/rule-authority-read/pr333-field-rules.md",
+        "stderr_file": "/workspace/geo288-p73-owner-20261023/rule-authority-read/pr333-field-rules.stderr",
+        "bytes": 11811,
+        "sha256": "3305d8000af9814b91c2646cfcbbc841e1ead813fe3390e482f8bfc2a71c0ab2",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "subject_executed": false,
+  "queue_changed": false,
+  "ended_utc": "2026-10-23T14:46:11.058427+00:00",
+  "exit_code": 0
+}

@@ -1,0 +1,619 @@
+{
+  "base": "45fc3092b55cd296424eb49c0d3ea69990484a46",
+  "fixed_sha256": {
+    "geometry-web/app.js": "24ab952522ff3665cfbf0ae068fb066e72e172148c248c29affed1f388e3bddc",
+    "geometry-web/grid_rule_lines_test.js": "b10586b014473c1be8845d7e2ea87a7680387ae0cdaac9a6d1b1daa0a1f98642"
+  },
+  "quick": {
+    "label": "scroll-dense16-after-raf",
+    "sha": "45fc3092b55cd296424eb49c0d3ea69990484a46",
+    "mode": "scroll",
+    "exit": 0,
+    "result": {
+      "passed": 2,
+      "failed": 0,
+      "exceptions": 0,
+      "guides": 16,
+      "rows": [
+        {
+          "width": 1280,
+          "before": {
+            "x": 1142.515625,
+            "y": 664.3125,
+            "w": 153,
+            "h": 24.84375,
+            "own": 0,
+            "parent": 247,
+            "mode": "advanced",
+            "hit": "refGuideExpr",
+            "active": "refGuideMode"
+          },
+          "after": {
+            "x": 1142.515625,
+            "y": 664.3125,
+            "w": 153,
+            "h": 24.84375,
+            "own": 0,
+            "parent": 247,
+            "mode": "advanced",
+            "hit": "refGuideExpr",
+            "active": "refGuideMode"
+          },
+          "hitAtOld": "refGuideExpr",
+          "active": "refGuideExpr",
+          "sameWorld": true,
+          "stages": [
+            {
+              "label": "before",
+              "scroll": 247,
+              "max": 247,
+              "y": 651.890625,
+              "mode": "advanced",
+              "hidden": false
+            },
+            {
+              "label": "saved",
+              "state": {
+                "focus": "refGuideMode",
+                "scroll": 247,
+                "ownScroll": 0,
+                "placement": "[1,[0,0,2500],[1,0,0],[0,1,0]]",
+                "timberRoleManual": "false",
+                "timberDirManual": "false",
+                "timberSectionManual": "false",
+                "referencePage": "",
+                "calibrationPoints": "null",
+                "gridIdentity": "new",
+                "drafts": [
+                  [
+                    "placeOX",
+                    "0",
+                    null
+                  ],
+                  [
+                    "placeOY",
+                    "0",
+                    null
+                  ],
+                  [
+                    "placeOZ",
+                    "2500",
+                    null
+                  ],
+                  [
+                    "placeU",
+                    "+x",
+                    "+x"
+                  ],
+                  [
+                    "placeV",
+                    "+y",
+                    "+y"
+                  ],
+                  [
+                    "refGuideAxis",
+                    "u",
+                    "沿 u（固定 v 位置）"
+                  ],
+                  [
+                    "refGuideMode",
+                    "advanced",
+                    "進階：完整引用式"
+                  ],
+                  [
+                    "refGuideSource",
+                    "spec:middle",
+                    "規格「middle」 · 2000 mm"
+                  ],
+                  [
+                    "refGuideRatio",
+                    "1",
+                    "原值"
+                  ],
+                  [
+                    "refGuideExpr",
+                    "spec:middle",
+                    null
+                  ],
+                  [
+                    "tbAnchor",
+                    "at-face e0",
+                    "外輪廓邊 0"
+                  ],
+                  [
+                    "tbSelector",
+                    "",
+                    null
+                  ],
+                  [
+                    "tbA",
+                    "27",
+                    null
+                  ],
+                  [
+                    "tbB",
+                    "33",
+                    null
+                  ],
+                  [
+                    "tbSide",
+                    "+n",
+                    "朝上（+Z，+n）"
+                  ],
+                  [
+                    "tbDir",
+                    "+u",
+                    "沿輪廓圖向右"
+                  ],
+                  [
+                    "tbRole",
+                    "boundary",
+                    "邊框材"
+                  ],
+                  [
+                    "tbPri",
+                    "3",
+                    null
+                  ],
+                  [
+                    "gridMainAlong",
+                    "none",
+                    "請選擇主支方向"
+                  ],
+                  [
+                    "gridUSource",
+                    "explicit",
+                    "明寫"
+                  ],
+                  [
+                    "gridU",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridUStart",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridUStep",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridUCount",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridUPanel",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridUGap",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridUFrom",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVSource",
+                    "explicit",
+                    "明寫"
+                  ],
+                  [
+                    "gridV",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVStart",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVStep",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVCount",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVPanel",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVGap",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVFrom",
+                    "",
+                    null
+                  ]
+                ],
+                "details": [
+                  [
+                    "faceTechnicalDetails",
+                    false
+                  ],
+                  [
+                    "placeDetails",
+                    false
+                  ],
+                  [
+                    "projectionDetails",
+                    false
+                  ],
+                  [
+                    "tbNewSegmentDetails",
+                    false
+                  ],
+                  [
+                    "refSourceDetails",
+                    true
+                  ]
+                ]
+              }
+            },
+            {
+              "label": "restore",
+              "scroll": 247,
+              "max": 2560,
+              "y": 0,
+              "mode": "advanced",
+              "hidden": true
+            },
+            {
+              "label": "dirty",
+              "scroll": 190,
+              "max": 190,
+              "y": 708.890625,
+              "mode": "advanced",
+              "hidden": false
+            },
+            {
+              "label": "immediate",
+              "scroll": 190,
+              "max": 190,
+              "y": 708.890625,
+              "mode": "advanced",
+              "hidden": false
+            },
+            {
+              "label": "frame1",
+              "scroll": 247,
+              "max": 247,
+              "y": 651.890625,
+              "mode": "advanced",
+              "hidden": false
+            },
+            {
+              "label": "frame2",
+              "scroll": 247,
+              "max": 247,
+              "y": 651.890625,
+              "mode": "advanced",
+              "hidden": false
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "before": {
+            "x": 252.515625,
+            "y": 635.109375,
+            "w": 153,
+            "h": 44,
+            "own": 0,
+            "parent": 635,
+            "mode": "advanced",
+            "hit": "refGuideExpr",
+            "active": "refGuideMode"
+          },
+          "after": {
+            "x": 252.515625,
+            "y": 635.109375,
+            "w": 153,
+            "h": 44,
+            "own": 0,
+            "parent": 635,
+            "mode": "advanced",
+            "hit": "refGuideExpr",
+            "active": "refGuideMode"
+          },
+          "hitAtOld": "refGuideExpr",
+          "active": "refGuideExpr",
+          "sameWorld": true,
+          "stages": [
+            {
+              "label": "before",
+              "scroll": 635,
+              "max": 635,
+              "y": 613.109375,
+              "mode": "advanced",
+              "hidden": false
+            },
+            {
+              "label": "saved",
+              "state": {
+                "focus": "refGuideMode",
+                "scroll": 635,
+                "ownScroll": 0,
+                "placement": "[1,[0,0,2500],[1,0,0],[0,1,0]]",
+                "timberRoleManual": "false",
+                "timberDirManual": "false",
+                "timberSectionManual": "false",
+                "referencePage": "",
+                "calibrationPoints": "null",
+                "gridIdentity": "new",
+                "drafts": [
+                  [
+                    "placeOX",
+                    "0",
+                    null
+                  ],
+                  [
+                    "placeOY",
+                    "0",
+                    null
+                  ],
+                  [
+                    "placeOZ",
+                    "2500",
+                    null
+                  ],
+                  [
+                    "placeU",
+                    "+x",
+                    "+x"
+                  ],
+                  [
+                    "placeV",
+                    "+y",
+                    "+y"
+                  ],
+                  [
+                    "refGuideAxis",
+                    "u",
+                    "沿 u（固定 v 位置）"
+                  ],
+                  [
+                    "refGuideMode",
+                    "advanced",
+                    "進階：完整引用式"
+                  ],
+                  [
+                    "refGuideSource",
+                    "spec:middle",
+                    "規格「middle」 · 2000 mm"
+                  ],
+                  [
+                    "refGuideRatio",
+                    "1",
+                    "原值"
+                  ],
+                  [
+                    "refGuideExpr",
+                    "spec:middle",
+                    null
+                  ],
+                  [
+                    "tbAnchor",
+                    "at-face e0",
+                    "外輪廓邊 0"
+                  ],
+                  [
+                    "tbSelector",
+                    "",
+                    null
+                  ],
+                  [
+                    "tbA",
+                    "27",
+                    null
+                  ],
+                  [
+                    "tbB",
+                    "33",
+                    null
+                  ],
+                  [
+                    "tbSide",
+                    "+n",
+                    "朝上（+Z，+n）"
+                  ],
+                  [
+                    "tbDir",
+                    "+u",
+                    "沿輪廓圖向右"
+                  ],
+                  [
+                    "tbRole",
+                    "boundary",
+                    "邊框材"
+                  ],
+                  [
+                    "tbPri",
+                    "3",
+                    null
+                  ],
+                  [
+                    "gridMainAlong",
+                    "none",
+                    "請選擇主支方向"
+                  ],
+                  [
+                    "gridUSource",
+                    "explicit",
+                    "明寫"
+                  ],
+                  [
+                    "gridU",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridUStart",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridUStep",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridUCount",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridUPanel",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridUGap",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridUFrom",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVSource",
+                    "explicit",
+                    "明寫"
+                  ],
+                  [
+                    "gridV",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVStart",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVStep",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVCount",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVPanel",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVGap",
+                    "",
+                    null
+                  ],
+                  [
+                    "gridVFrom",
+                    "",
+                    null
+                  ]
+                ],
+                "details": [
+                  [
+                    "faceTechnicalDetails",
+                    false
+                  ],
+                  [
+                    "placeDetails",
+                    false
+                  ],
+                  [
+                    "projectionDetails",
+                    false
+                  ],
+                  [
+                    "tbNewSegmentDetails",
+                    false
+                  ],
+                  [
+                    "refSourceDetails",
+                    true
+                  ]
+                ]
+              }
+            },
+            {
+              "label": "restore",
+              "scroll": 635,
+              "max": 3132,
+              "y": 0,
+              "mode": "advanced",
+              "hidden": true
+            },
+            {
+              "label": "dirty",
+              "scroll": 570,
+              "max": 570,
+              "y": 678.109375,
+              "mode": "advanced",
+              "hidden": false
+            },
+            {
+              "label": "immediate",
+              "scroll": 570,
+              "max": 570,
+              "y": 678.109375,
+              "mode": "advanced",
+              "hidden": false
+            },
+            {
+              "label": "frame1",
+              "scroll": 635,
+              "max": 635,
+              "y": 613.109375,
+              "mode": "advanced",
+              "hidden": false
+            },
+            {
+              "label": "frame2",
+              "scroll": 635,
+              "max": 635,
+              "y": 613.109375,
+              "mode": "advanced",
+              "hidden": false
+            }
+          ]
+        }
+      ]
+    },
+    "log": "/mnt/d/geometry-axiom-work/codex-closeout-20261021/postfix-45fc3092/scroll-dense16-after-raf/probe.log"
+  },
+  "fixed": {
+    "label": "fixed",
+    "exit": 0,
+    "log": "/mnt/d/geometry-axiom-work/codex-closeout-20261021/p88-fix-validation-r2/fixed/probe.log"
+  },
+  "reverted": {
+    "label": "reverted",
+    "exit": 1,
+    "log": "/mnt/d/geometry-axiom-work/codex-closeout-20261021/p88-fix-validation-r2/reverted/probe.log"
+  },
+  "proved": true,
+  "restored_byte_exactly": true,
+  "restored_git_clean": true
+}

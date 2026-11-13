@@ -1,0 +1,20 @@
+{
+  "schema": "geo323-root-stage-handoff-body-peer/1",
+  "command": [
+    "git",
+    "show",
+    "aed9c627053132fcd501dc187b8c950e117fcb95:PR_BODY.md"
+  ],
+  "exit_code": 0,
+  "final_body_sha": "aed9c627053132fcd501dc187b8c950e117fcb95",
+  "final_body_sha256": "bef4809a590936662444d7290d64906eec2888d971e59817758ab0b77021ef3a",
+  "findings_resolved": [
+    "latest review provenance corrected to b7e23a25/14:37:59/headb2445b5"
+  ],
+  "findings_remaining": [],
+  "exact_diff": [
+    "- 最後已讀#323審查：handoff `acd1289228d490c68a139cf17e02fdc1f3cb247c` 的`handoff/pr-reviews/323.md`，2026-10-23 08:37:05 UTC／head307a18e。仍保≤1.3本PR gate，不移交#300縮限；後續需root安排318→314→combined後的forward merge／final closure。木工推理前讀最新main決策佇列與pr333 FIELD-RULES；本輪讀取的原Git bytes/hash已封。",
+    "+ 最後已讀#323審查：handoff `b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6` 的`handoff/pr-reviews/323.md`，2026-10-23 14:37:59 UTC／headb2445b5。仍保≤1.3本PR gate，不移交#300縮限；後續需root安排318→314→combined後的forward merge／final closure。木工推理前讀最新main決策佇列與pr333 FIELD-RULES；本輪讀取的原Git bytes/hash已封。"
+  ],
+  "scope": "Read-only body provenance delta, original matrix unchanged. No independent full packet roundtrip; no new test execution."
+}

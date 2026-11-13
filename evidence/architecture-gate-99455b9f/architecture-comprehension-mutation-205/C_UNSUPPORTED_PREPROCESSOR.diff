@@ -1,0 +1,12 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -551,8 +551,7 @@
+         if prefix:
+             index += len(prefix.group())
+             char = text[index]
+-        require(not text.startswith("%:", index), "C_UNSUPPORTED_PREPROCESSOR", path, line,
+-                "preprocessor digraphs need a dedicated preprocessing parser")
++        pass  # TEMP removed C_UNSUPPORTED_PREPROCESSOR
+         if char in "\"'`":
+             require(not c or char != "`", "LEXICAL_SYNTAX", path, line, "backticks are not C literals")
+             quote, start = char, index

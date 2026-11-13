@@ -1,0 +1,44 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-validation-20261018/proposed-fixes/build_native_test_bridge.py",
+    "--checkout",
+    "/workspace/geometry-axiom",
+    "--out",
+    "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/binaries-withdrawn"
+  ],
+  "shell": false,
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T13:57:52.806332+00:00",
+  "started_ns": 1792331872806347975,
+  "timeout_seconds": 900.0,
+  "timed_out": false,
+  "interrupted": false,
+  "returncode": 0,
+  "launch_error": null,
+  "pid": 153229,
+  "ended_utc": "2026-10-18T13:57:58.462986+00:00",
+  "ended_ns": 1792331878463020951,
+  "seconds": 5.656685156998719,
+  "streams": {
+    "stdout": {
+      "device": 27,
+      "inode": 1458728,
+      "bytes": 399,
+      "mtime_ns": 1792331878430623411,
+      "ctime_ns": 1792331878430623411,
+      "sha256": "e99562995173b7455b2b36988cdafc574d669890de9d1db46b8155666e72cff8",
+      "exists": true
+    },
+    "stderr": {
+      "device": 27,
+      "inode": 1458729,
+      "bytes": 0,
+      "mtime_ns": 1792331872806296077,
+      "ctime_ns": 1792331872806296077,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    }
+  }
+}

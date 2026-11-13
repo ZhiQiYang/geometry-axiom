@@ -1,0 +1,638 @@
+test_agent_packet_executes_with_exact_scope_and_preserves_review_contract (__main__.CanonicalReader.test_agent_packet_executes_with_exact_scope_and_preserves_review_contract) ... ok
+test_agent_packet_rejects_missing_or_tampered_source_sections (__main__.CanonicalReader.test_agent_packet_rejects_missing_or_tampered_source_sections) ... ok
+test_block_tools_are_not_always_on (__main__.CanonicalReader.test_block_tools_are_not_always_on) ... ok
+test_clause_and_witness_fixture_add_remove_updates_visible_counts (__main__.CanonicalReader.test_clause_and_witness_fixture_add_remove_updates_visible_counts) ... /home/user/geometry-axiom/geometry-guide/sync_axiom_reader.py:572: DeprecationWarning: 'maxsplit' is passed as positional argument
+  title = re.split(r"[：:]", label, 1)[0]
+/home/user/geometry-axiom/geometry-guide/sync_axiom_reader.py:573: DeprecationWarning: 'maxsplit' is passed as positional argument
+  title = re.split(r"[（(]", title, 1)[0].strip()
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_d12_i14_canvas.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i12_auto_with_at.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i12_explicit_with_atgrid.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i14_canvas_missing.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i16_beam_outside.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i17_delete_space.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i18_nopriority.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i18_norole.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i18_priority_misuse.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i1_frame_degenerate.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i4_duplicate_boundary.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i4_empty_space.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i4_missing_boundary.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i4_no_carrier.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i5_collinear_vertex_rect_corner.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i5_hole_vertex_touches_rect_edge.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i5_notch_cell_corners_on_ring.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i5_notch_edge_cuts_interior.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i5_notch_floor_flush_inside.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i5_notch_wall_flush_inside.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i7_guide_out_of_range.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i9_forward_ref.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_i9_orphan_timber.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r08_snapshot.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r09_unplaced.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r10_hole_follows_piece.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r10_hole_straddles_cut.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r12_prefix_beam.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r12_prefix_col.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r12_uncut_complex_strip.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r13_anchor_follows.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r13_anchor_lost.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r14_straddles_cut.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r14_uncut_strip_multiple_pieces.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r15_missing_item.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r15_uncut_strip_missing_item.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r16_not_full_span.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r16_top_drop.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r17_wall_column_face.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r20_delete_cascade.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r7_notch_disconnected.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r7_point_tangent.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r7_rectangle_plus_line.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r7_rectangle_plus_point.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r7_remote_flush_corner.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r7_remote_flush_strip.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r7_ridge_crossing.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r7_ridge_strip.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r7_strip_plus_line.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r8_three_residual_components.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_ax_r8_three_residual_strip.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_demo_ceiling.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_axis_violation.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_between_badref.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_between_blocked.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_between_conflict.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_between_free.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_concave.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_dir_violation.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_face_touch_only.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_free.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_freeze.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_at_border.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_locked.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_locked_other_axis.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_locked_shrink.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_overflow.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_panel_empty.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_panel_empty_place.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_panel_from.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_panel_index8.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_panel_odd_gap.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_panel_overflow.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_panel_shrink.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_series_count0.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_series_out.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_series_step0.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_grid_twoline.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_gridref_midline.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_gridref_no_support.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_gridref_wrong_axis.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_gridref_wrong_face.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_hole_anchor.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_hole_bottom.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_i19_place_order.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_i8a_confirm.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_place_through_short.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_rect_only.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_rect_stops.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_stop_ambiguous.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_straddle.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_straddle_hi.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_two_holes.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_edge_upper_seg.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_i11_two_surfaces_same_uv_accept.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_beam_diag.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_col_noz.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_col_outside.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_col_overlap.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_edge_touch_only.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_free_hole_end.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_grid_dup.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_grid_panel_edge.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_neg_hole_ref.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_notch_straddle.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_reval_free_hole.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_through_boundary.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_mut_zero_len.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_p2_source_navigation.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_rc_beam_cross.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_rc_beam_edge.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_rc_col_corner.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_rc_col_free.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_rc_col_wall.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_axis_boundary_first.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_axis_fallback.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_axis_second_primary.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_between_priority.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_cover_short.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_ext_stop_primary.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_priority_convex.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_priority_ext_custom.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_priority_ext_primary.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_priority_mutant.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_priority_primary_rc.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_priority_primary_secondary.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_priority_secondary_rc.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_rc_boundary_ok.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_role_rc_custom_reject.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_s1_p3_alcove_side_boundary_extension_accept.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_s1_p4_alcove_wall_primary_cut_priority.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_s1_p8_l_room_primary_through_reflex_extension.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_s1_p9_l_room_custom_inner_wall_accept.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_s7a_flush_inside_accept.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_s7b_poke_out_1mm_i5_reject.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_s7c_non_boundary_end_on_outline_cut_priority.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_ambiguous.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_between.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_collide.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_fixed.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_free.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_grid.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_grid_panel.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_grid_redeclare.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_grid_redeclare_series.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_grid_series.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_hole.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_hole_auto.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_lshape.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_tx.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_test_tx2.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_d19_subgrid_cell.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_d28_engineering_sources.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_d29_grid_system.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_d2_wall_frame.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_d30_infinite_grid_binding.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_d31_parameters.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_d6_guide_segments.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_d6c_datum_shared.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_i13_odd_width.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_i35_engineering_zero_panel.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_i37_grid_system_missing.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_i38_fractional_geometry.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_r19_edge_primary_2560.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/_wit_r6_span_cells.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/ceiling-a.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/demo-two-timbers.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/room_a.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/room_box.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/room_full.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/subgrid-local.scene' mode='r' encoding='utf-8'>
+  body = io.open(path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/geometry-axiom/geometry-guide/axiom_matrix.py:182: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/geometry-axiom/tests/mutate.py' mode='r' encoding='utf-8'>
+  body = io.open(MUTATE, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_color_contract_allows_unrelated_properties_and_untracked_selectors (__main__.CanonicalReader.test_color_contract_allows_unrelated_properties_and_untracked_selectors) ... FAIL
+test_color_contract_rejects_important_overrides_before_normal_values (__main__.CanonicalReader.test_color_contract_rejects_important_overrides_before_normal_values) ... ok
+test_color_contract_rejects_print_only_and_scoped_declarations (__main__.CanonicalReader.test_color_contract_rejects_print_only_and_scoped_declarations) ... ok
+test_color_contract_rejects_reviewer_background_and_border_overrides (__main__.CanonicalReader.test_color_contract_rejects_reviewer_background_and_border_overrides) ... ok
+test_color_contract_rejects_tracked_property_family_overlaps_and_all (__main__.CanonicalReader.test_color_contract_rejects_tracked_property_family_overlaps_and_all) ... ok
+test_colors_are_tokenised (__main__.CanonicalReader.test_colors_are_tokenised) ... ok
+test_counts_have_a_single_source (__main__.CanonicalReader.test_counts_have_a_single_source) ... ok
+test_current_layout_change_does_not_relock_historical_migration_tests (__main__.CanonicalReader.test_current_layout_change_does_not_relock_historical_migration_tests) ... FAIL
+test_every_patch_actually_lands (__main__.CanonicalReader.test_every_patch_actually_lands) ... ok
+test_facet_chips_are_data_driven (__main__.CanonicalReader.test_facet_chips_are_data_driven) ... ok
+test_five_asserts_and_ssot (__main__.CanonicalReader.test_five_asserts_and_ssot) ... ok
+test_force_marker_registers_new_applied_and_evolved_paths (__main__.CanonicalReader.test_force_marker_registers_new_applied_and_evolved_paths) ... ok
+test_force_marker_rejects_ambiguity_and_drift_before_registering (__main__.CanonicalReader.test_force_marker_rejects_ambiguity_and_drift_before_registering) ... ok
+test_force_unmarked_success_paths_keep_registry_and_uniqueness (__main__.CanonicalReader.test_force_unmarked_success_paths_keep_registry_and_uniqueness) ... ok
+test_geo120_decisions_are_not_regressed (__main__.CanonicalReader.test_geo120_decisions_are_not_regressed) ... ok
+test_independent_line_scanner_matches_full_source_once (__main__.CanonicalReader.test_independent_line_scanner_matches_full_source_once) ... ok
+test_legacy_image_handler_retires_without_changing_live_svg_handler (__main__.CanonicalReader.test_legacy_image_handler_retires_without_changing_live_svg_handler) ... FAIL
+test_mid_width_uses_half_sheet_and_mobile_bar_has_four_keys (__main__.CanonicalReader.test_mid_width_uses_half_sheet_and_mobile_bar_has_four_keys) ... ok
+test_original_text_precedes_plain (__main__.CanonicalReader.test_original_text_precedes_plain) ... ok
+test_paragraph_insertion_retains_unchanged_block_ids (__main__.CanonicalReader.test_paragraph_insertion_retains_unchanged_block_ids) ... ok
+test_plain_leading_definition_reference_stays_in_body (__main__.CanonicalReader.test_plain_leading_definition_reference_stays_in_body) ... ok
+test_rebuild_is_byte_idempotent_and_keeps_reviews (__main__.CanonicalReader.test_rebuild_is_byte_idempotent_and_keeps_reviews) ... FAIL
+test_retired_color_contracts_reject_each_lost_or_wrong_declaration (__main__.CanonicalReader.test_retired_color_contracts_reject_each_lost_or_wrong_declaration) ... ok
+test_retired_color_migrations_allow_format_and_unrelated_layout_changes (__main__.CanonicalReader.test_retired_color_migrations_allow_format_and_unrelated_layout_changes) ... FAIL
+test_retired_color_migrations_keep_each_historical_input_compatible (__main__.CanonicalReader.test_retired_color_migrations_keep_each_historical_input_compatible) ... ok
+test_review_merge_preserves_snapshots_and_rejects_conflicts (__main__.CanonicalReader.test_review_merge_preserves_snapshots_and_rejects_conflicts) ... ok
+test_review_merge_rejects_conflicts_inside_one_backup (__main__.CanonicalReader.test_review_merge_rejects_conflicts_inside_one_backup)
+GEO-155:衝突不只發生在「備份 vs 現況」,也發生在備份自己內部。 ... ok
+test_review_merge_takes_an_exact_repeat_only_once (__main__.CanonicalReader.test_review_merge_takes_an_exact_repeat_only_once)
+一字不差的重複只是冗餘,不是衝突——但也只能收一次。 ... ok
+test_search_keeps_query_after_navigating (__main__.CanonicalReader.test_search_keeps_query_after_navigating) ... ok
+test_self_consistent_wrong_source_is_rejected (__main__.CanonicalReader.test_self_consistent_wrong_source_is_rejected) ... ok
+test_source_scope_table_preserves_every_cell_and_row (__main__.CanonicalReader.test_source_scope_table_preserves_every_cell_and_row) ... ok
+test_source_section_only_change_refreshes_without_changing_block_identity (__main__.CanonicalReader.test_source_section_only_change_refreshes_without_changing_block_identity) ... ok
+test_source_section_patch_markers_and_legacy_slots_migrate_once (__main__.CanonicalReader.test_source_section_patch_markers_and_legacy_slots_migrate_once) ... FAIL
+test_source_sections_keep_exact_independent_slices_and_all_visible_blocks (__main__.CanonicalReader.test_source_sections_keep_exact_independent_slices_and_all_visible_blocks) ... ok
+test_source_sections_reject_data_only_update_and_stale_visible_source (__main__.CanonicalReader.test_source_sections_reject_data_only_update_and_stale_visible_source) ... ok
+test_source_sections_reject_hidden_rows_and_fake_tables (__main__.CanonicalReader.test_source_sections_reject_hidden_rows_and_fake_tables) ... ok
+test_source_sections_reject_missing_duplicate_and_hidden_containers (__main__.CanonicalReader.test_source_sections_reject_missing_duplicate_and_hidden_containers) ... ok
+test_source_sections_reject_visible_word_cell_and_item_loss (__main__.CanonicalReader.test_source_sections_reject_visible_word_cell_and_item_loss) ... ok
+test_stale_comments_can_be_reanchored_in_place (__main__.CanonicalReader.test_stale_comments_can_be_reanchored_in_place) ... ok
+test_subclauses_are_disjoint_and_suffix_links_supported (__main__.CanonicalReader.test_subclauses_are_disjoint_and_suffix_links_supported) ... ok
+test_traceability_lights_and_hub_badges_exist (__main__.CanonicalReader.test_traceability_lights_and_hub_badges_exist) ... ok
+test_visible_witness_counts_reject_independent_tampering (__main__.CanonicalReader.test_visible_witness_counts_reject_independent_tampering) ... ok
+test_witness_figures_are_inline_and_themed (__main__.CanonicalReader.test_witness_figures_are_inline_and_themed) ... ok
+test_witness_figures_match_manifest_and_files (__main__.CanonicalReader.test_witness_figures_match_manifest_and_files) ... ok
+test_workspace_has_one_witness_function_and_event_handler (__main__.CanonicalReader.test_workspace_has_one_witness_function_and_event_handler) ... ok
+test_workspace_shows_witness_and_keeps_draft (__main__.CanonicalReader.test_workspace_shows_witness_and_keeps_draft) ... ok
+test_wrong_visible_text_is_rejected (__main__.CanonicalReader.test_wrong_visible_text_is_rejected) ... ok
+
+======================================================================
+FAIL: test_color_contract_allows_unrelated_properties_and_untracked_selectors (__main__.CanonicalReader.test_color_contract_allows_unrelated_properties_and_untracked_selectors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/geometry-axiom/tests/test_axiom_reader.py", line 424, in test_color_contract_allows_unrelated_properties_and_untracked_selectors
+    self.assertEqual(reader.rebuild(changed, self.axiom, self.plain), changed)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '<!do[2003694 chars]、M150、M151</span></div></details><section clas[3280243 chars]tml>' != '<!do[2003694 chars]、M150</span></div></details><section class="re[3280233 chars]tml>'
+
+======================================================================
+FAIL: test_current_layout_change_does_not_relock_historical_migration_tests (__main__.CanonicalReader.test_current_layout_change_does_not_relock_historical_migration_tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/geometry-axiom/tests/test_axiom_reader.py", line 337, in test_current_layout_change_does_not_relock_historical_migration_tests
+    self.test_retired_color_migrations_allow_format_and_unrelated_layout_changes()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/user/geometry-axiom/tests/test_axiom_reader.py", line 327, in test_retired_color_migrations_allow_format_and_unrelated_layout_changes
+    self.assertEqual(formatted, rebuilt)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: '<!do[2004428 chars]、M150</span></div></details><section class="re[3279909 chars]tml>' != '<!do[2004428 chars]、M150、M151</span></div></details><section clas[3279919 chars]tml>'
+
+======================================================================
+FAIL: test_legacy_image_handler_retires_without_changing_live_svg_handler (__main__.CanonicalReader.test_legacy_image_handler_retires_without_changing_live_svg_handler)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/geometry-axiom/tests/test_axiom_reader.py", line 590, in test_legacy_image_handler_retires_without_changing_live_svg_handler
+    self.assertEqual(updated, self.html)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: '<!do[2003694 chars]、M150、M151</span></div></details><section clas[3279919 chars]tml>' != '<!do[2003694 chars]、M150</span></div></details><section class="re[3279909 chars]tml>'
+
+======================================================================
+FAIL: test_rebuild_is_byte_idempotent_and_keeps_reviews (__main__.CanonicalReader.test_rebuild_is_byte_idempotent_and_keeps_reviews)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/geometry-axiom/tests/test_axiom_reader.py", line 127, in test_rebuild_is_byte_idempotent_and_keeps_reviews
+    self.assertEqual(self.html, regenerated)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '<!do[2003694 chars]、M150</span></div></details><section class="re[3279909 chars]tml>' != '<!do[2003694 chars]、M150、M151</span></div></details><section clas[3279919 chars]tml>'
+
+======================================================================
+FAIL: test_retired_color_migrations_allow_format_and_unrelated_layout_changes (__main__.CanonicalReader.test_retired_color_migrations_allow_format_and_unrelated_layout_changes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/geometry-axiom/tests/test_axiom_reader.py", line 327, in test_retired_color_migrations_allow_format_and_unrelated_layout_changes
+    self.assertEqual(formatted, rebuilt)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: '<!do[2004428 chars]、M150</span></div></details><section class="re[3279909 chars]tml>' != '<!do[2004428 chars]、M150、M151</span></div></details><section clas[3279919 chars]tml>'
+
+======================================================================
+FAIL: test_source_section_patch_markers_and_legacy_slots_migrate_once (__main__.CanonicalReader.test_source_section_patch_markers_and_legacy_slots_migrate_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/geometry-axiom/tests/test_axiom_reader.py", line 805, in test_source_section_patch_markers_and_legacy_slots_migrate_once
+    self.assertEqual(reader.rebuild(legacy, self.axiom, self.plain), self.html)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '<!do[2003694 chars]、M150、M151</span></div></details><section clas[3279919 chars]tml>' != '<!do[2003694 chars]、M150</span></div></details><section class="re[3279909 chars]tml>'
+
+----------------------------------------------------------------------
+Ran 51 tests in 391.069s
+
+FAILED (failures=6)

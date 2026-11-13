@@ -26,7 +26,10 @@ window.FaceProjection = (() => {
       `<p>${s ? `圖面 z＝${escape(s.origin[2])} mm${valid ? "" : " · 目前為立面"}` : "尚未放置"}。牆底標高與牆高另設。</p>` +
       (!valid ? `<p class="fp-warning">${s ? "平面投影需要水平放置，請先修改放置。" : "請先放置這片面，再指定平面投影。"}</p>` : "") +
       (all.length > 1 ? `<p>此面有 ${all.length} 個放置；目前顯示放置 #${s.id}。可在設定中切換，各自保存定義。</p>` : "") +
-      `<button type="button" class="btn wide" data-fp-edit="${bid}" ${attrs}>${def ? "修改投影定義" : "設定平面投影"}</button>` +
+      (faceWorkspace ? `<button type="button" class="btn wide" data-face-settings="${bid}" aria-expanded="false" aria-controls="faceSettingsChoices">面設定…</button>` +
+        `<div id="faceSettingsChoices" hidden><button type="button" class="btn wide" data-fp-edit="${bid}" ${attrs}>${def ? "修改投影定義" : "設定平面投影"}</button>` +
+        `<button type="button" class="btn wide" data-panel-fill-open="${bid}">完成面與鋪排…</button></div>` :
+        `<button type="button" class="btn wide" data-fp-edit="${bid}" ${attrs}>${def ? "修改投影定義" : "設定平面投影"}</button>`) +
       (def && valid ? `<button type="button" class="primary-button" data-fp-build="${bid}" ${attrs}>依此平面建立空間</button>` :
         /* GEO-219: the face toolbar entries moved into this inspector. Every
            placed face keeps a build door here — undefined plans confirm the
@@ -174,11 +177,30 @@ window.FaceProjection = (() => {
     input?.scrollIntoView({block:"center"}); input?.focus();
   }
   document.addEventListener("click", event => {
+    const settings=event.target.closest("[data-face-settings]"), fill=event.target.closest("[data-panel-fill-open]");
+    if (settings) {
+      const choices=settings.parentElement.querySelector("#faceSettingsChoices");
+      if (!choices) return;
+      choices.hidden=!choices.hidden;settings.setAttribute("aria-expanded",String(!choices.hidden));
+      if (!choices.hidden) choices.querySelector("button")?.focus();
+      return;
+    }
+    if (fill) {
+      window.PanelFillWorkspace?.open(Number(fill.dataset.panelFillOpen),fill);
+      return;
+    }
     const edit=event.target.closest("[data-fp-edit]"), build=event.target.closest("[data-fp-build]");
     if (edit) open(Number(edit.dataset.fpEdit),edit.dataset.fpPlacement === "" ? undefined : Number(edit.dataset.fpPlacement));
     else if (build) window.SpaceModelWorkspace?.openCurrentFace(Number(build.dataset.fpPlacement));
   });
   document.addEventListener("keydown", event => {
+    const choices=event.target.closest("#faceSettingsChoices");
+    if (choices && event.key === "Escape" && !event.isComposing && event.keyCode !== 229) {
+      choices.hidden=true;
+      const entry=choices.parentElement.querySelector("[data-face-settings]");
+      entry?.setAttribute("aria-expanded","false");entry?.focus();
+      event.preventDefault();event.stopImmediatePropagation();return;
+    }
     if (dialog?.open && (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
       event.preventDefault();event.stopImmediatePropagation();
       message("請先按「套用定義」，再保存專案。這個視窗內尚未套用的修改不會存入專案。",true);
@@ -529,6 +551,15 @@ async function recoverApiResults() {
     }
     pendingApiResults.delete(requestId); acknowledgedApiResults.add(requestId);
     if (stamp) { ReferenceWorkspace.finishAssemblyConfirmation(stamp); pendingAssemblyConfirmations.delete(requestId); }
+    if (current && cmd.startsWith('timber-edit-confirm ')) {
+      if (result.ok && result.history_changed !== false) window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
+      await window.TimberEdit?.settleRecovered(cmd,result);
+    }
+    if (current && cmd.startsWith("panel-fill-confirm ")) {
+      window.PanelFillWorkspace?.reconcileReceipt(result,cmd);
+      if (result.ok && result.history_changed !== false)
+        window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
+    }
     if (current && result.ok && cmd.startsWith("loadfile ")) {
       resetSceneFocus();curScene={path:cmd.slice(9),name:cmd.slice(9).split(/[\\/]/).pop()};
       $("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);markSceneItem();
@@ -544,10 +575,54 @@ async function recoverApiResults() {
   }
   if (recoveringRoom) await window.RoomCollectionWorkspace.settleRecoveredTransaction();
 }
+// 離線只保留物件畫布右鍵的檢視入口；主工作區始終維持原 inert 保護。
+// 暫移原 SVG（不複製快取或事件）到工作區外；恢復時放回原佔位點。
+let connectionCanvasMount = null;
+function connectionCanvasView() {
+  return connection.phase !== "ready" && connection.known && oc.on && !oc.focus && !view3;
+}
+function syncConnectionCanvasView(focused = document.activeElement) {
+  const host = $("canvasOfflineView"), viewport = $("canvasViewport"), canvas = $("ocv");
+  const mounted = connectionCanvasView();
+  document.body.classList.toggle("connection-canvas-mounted", mounted);
+  if (mounted) {
+    const r = viewport.getBoundingClientRect();
+    Object.assign(host.style, {left:r.left+"px", top:r.top+"px", width:r.width+"px", height:r.height+"px"});
+    host.hidden = false;
+    if (!connectionCanvasMount) {
+      const marker = document.createComment("object canvas home");
+      canvas.before(marker);
+      connectionCanvasMount = {marker, canvas};
+      host.append(canvas);
+      if (focused === viewport) host.focus({preventScroll:true});
+      else if (canvas.contains(focused)) focused.focus({preventScroll:true});
+    }
+  } else {
+    if (connectionCanvasMount) {
+      const {marker, canvas} = connectionCanvasMount;
+      marker.replaceWith(canvas);
+      connectionCanvasMount = null;
+      if (focused === host) viewport.focus({preventScroll:true});
+      else if (canvas.contains(focused)) focused.focus({preventScroll:true});
+    }
+    host.hidden = true;
+  }
+}
+const connectionCanvasResize = typeof ResizeObserver === "function" ? new ResizeObserver(() => {
+  if (connectionCanvasMount) syncConnectionCanvasView();
+}) : null;
+connectionCanvasResize?.observe($("canvasViewport"));
+for (const type of ["resize", "scroll"]) window.addEventListener(type, () => {
+  if (connectionCanvasMount) syncConnectionCanvasView();
+}, {capture:true, passive:true});
 function showConnectionState() {
   const blocked = connection.phase !== "ready";
   $("connectionNotice").hidden = !blocked;
+  const focused = document.activeElement;
   for (const id of ["app", "objectWorkspace"]) $(id).inert = blocked;
+  syncConnectionCanvasView(focused);
+  window.CanvasContextMenu?.connectionChanged();
+  window.TimberEdit?.connectionChanged();
   document.body.classList.toggle("connection-blocked", blocked);
   $("connectionTitle").textContent = connection.phase === "error" ? "無法連線，編輯已暫停" : "正在讀取場景";
   $("connectionMessage").textContent = connection.phase === "error"
@@ -563,6 +638,7 @@ function showConnectionState() {
 }
 function connectionFailed(message) {
   connection.phase = "error"; connection.error = message;
+  window.PanelFillWorkspace?.invalidate("連線已中斷；舊預覽失效。若正在確認，保留原回執，禁止重送。");
   showConnectionState();
 }
 async function recoverConnection() {
@@ -573,7 +649,7 @@ async function recoverConnection() {
     await recoverApiResults();
     if (!(await ReferenceWorkspace.recoverLoad())) { connectionFailed("仍無法確認場景載入結果，請重試。"); return; }
     if (!connection.session) {
-      const handshake = await api('dump');
+      const handshake = await api('dump-deidentified');
       if (!handshake.ok) { connectionFailed(handshake.error || '無法確認目前服務工作階段。'); return; }
     }
     await ReferenceWorkspace.restoreSession();
@@ -590,7 +666,7 @@ async function recoverConnection() {
     }
     if (!oc.on) await render();
     if (connection.phase === "error") return;
-    connection.phase = "ready"; connection.known = true;
+    connection.phase = "ready"; connection.known = true; connection.error = "";
     ReferenceWorkspace.sync();
     showConnectionState(); drawObjects();
   } catch (e) {
@@ -602,9 +678,29 @@ async function recoverConnection() {
   }
 }
 $("connectionRetry").addEventListener("click", recoverConnection);
-/* inert 擋滑鼠與焦點；文件層的快捷鍵也必須停止，保留重試按鈕的鍵盤操作。 */
+/* 只開放右鍵選單自己的檢視互動；一般畫布點擊／拖曳仍不能借離線豁免寫入。 */
+for (const type of ["pointerdown", "pointermove", "pointerup", "mousedown", "mouseup", "click", "dblclick", "auxclick", "wheel"]) {
+  document.addEventListener(type, e => {
+    if (!connectionCanvasView() || !e.target.closest?.("#canvasViewport,#canvasOfflineView")) return;
+    if (["pointerdown", "pointerup", "mousedown", "mouseup"].includes(type) && e.button === 2) {
+      // Preserve the browser's native contextmenu default action, but do not
+      // let a right release finish a canvas drag/draw that lost its connection.
+      e.stopImmediatePropagation(); return;
+    }
+    if (type === "pointerdown" && window.CanvasContextMenu?.open) {
+      CanvasContextMenu.hide(); $("canvasOfflineView").focus();
+    }
+    e.preventDefault(); e.stopImmediatePropagation();
+  }, {capture:true, passive:false});
+}
+/* 文件層快捷鍵仍停止；選單鍵、選單內鍵盤操作與重試按鈕有精確豁免。 */
 document.addEventListener("keydown", e => {
   if (connection.phase !== "ready") {
+    if (connectionCanvasView()) {
+      const menuKey = e.key === "ContextMenu" || (e.key === "F10" && e.shiftKey);
+      if ((window.CanvasContextMenu?.open && e.target.closest?.("#canvasCtxMenu")) ||
+          (e.target.closest?.("#canvasViewport,#canvasOfflineView") && (menuKey || e.key === "Tab"))) return;
+    }
     e.stopImmediatePropagation();
     if (e.key === "Escape" && window.AssemblyWorkspace?.canCloseForRecovery) {
       e.preventDefault();AssemblyWorkspace.close();$("connectionRetry").focus();return;
@@ -614,21 +710,35 @@ document.addEventListener("keydown", e => {
 }, true);
 async function apiRequest(cmd, roomLease = null) {
   const rollback = cmd === "line history-abort";
-  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd)) {
-    try { if (roomLease) RoomCollectionWorkspace.assertTransaction(roomLease); else { ReferenceWorkspace.assertAssemblyIdle(); if (!rollback) ReferenceWorkspace.assertEditable?.(); } }
+  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm )/.test(cmd)) {
+    try {
+      // Idle UI preflight must not move synchronous confirmation ownership to
+      // a later microtask. A real cancellation keeps its lease until this
+      // continuation immediately hands ownership to the original command.
+      const pending = window.TimberEdit?.beforeWorldMutation();
+      if (pending) { const release = await pending; release(); }
+    }
+    catch (error) { return {ok:false,error:error.message}; }
+  }
+  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(cmd)) {
+    try { if (cmd.startsWith('timber-edit-confirm ')) ReferenceWorkspace.assertTimberPreviewToken(cmd.slice(20));
+      else if (roomLease) RoomCollectionWorkspace.assertTransaction(roomLease); else { ReferenceWorkspace.assertAssemblyIdle(); if (!rollback) ReferenceWorkspace.assertEditable?.(); } }
     catch (error) { return {ok:false,error:error.message}; }
   }
   if (rollback && pendingApiResults.size) return { ok: false, transport: true, error: "操作結果尚未確認，重新連線後再回復。" };
   const recoveredRoomCancel = roomLease && cmd === "line cancel-preview" && connection.phase === "loading" && pendingApiResults.size === 0;
   if (!rollback && !recoveredRoomCancel && (connection.phase === "error" || (connection.phase === "loading" &&
-      !/^(objects|surfaces|boundary|references|obstacles|render|pick|bhit|dump)(\s|$)/.test(cmd))))
+      !/^(objects|surfaces|boundary|references|obstacles|render|pick|bhit|dump-deidentified|identity-read|dump)(\s|$)/.test(cmd))))
     return { ok: false, transport: true, error: connection.error || "場景尚未讀取完成" };
   const localHistory = ReferenceWorkspace.tryLocalHistory?.(cmd);
   if (localHistory) return localHistory;
   const releaseNativeOperation = ReferenceWorkspace.beginNativeOperation?.(cmd);
+  const settleRoomNative = window.RoomCollectionWorkspace?.beginNativeRequest?.(cmd);
+  let roomNativeResult;
   try {
+  return roomNativeResult = await (async () => {
   const t0 = performance.now();
-  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) ? crypto.randomUUID() : null;
+  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |timber-edit-cancel )/.test(cmd) ? crypto.randomUUID() : null;
   const ack = [...acknowledgedApiResults];
   let confirmation = null;
   const featureToken=cmd.match(/^line confirm (\S+)$/)?.[1];
@@ -637,9 +747,15 @@ async function apiRequest(cmd, roomLease = null) {
     try{confirmation=ReferenceWorkspace.beginFeatureConfirmation(featureToken);}catch(error){return {ok:false,error:error.message};}
     if(confirmation)pendingAssemblyConfirmations.set(requestId,confirmation);
   }
-  if (/^(assembly-confirm|section-profile-confirm) /.test(cmd)) {
+  const evidenceToken=cmd.match(/^engineering-confirm (\S+)$/)?.[1];
+  if(evidenceToken&&ReferenceWorkspace.hasEvidenceConfirmation(evidenceToken)){
+    if(!requestId)return {ok:false,error:"請先確認服務連線，再確認證據採用。"};
+    try{confirmation=ReferenceWorkspace.beginEvidenceConfirmation(evidenceToken);}catch(error){return {ok:false,error:error.message};}
+    if(confirmation)pendingAssemblyConfirmations.set(requestId,confirmation);
+  }
+  if (/^(assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm) /.test(cmd)) {
     if (!requestId) return {ok:false,error:"請先確認服務連線，再確認組構變更。"};
-    try { confirmation = ReferenceWorkspace.beginAssemblyConfirmation(); }
+    try { confirmation = cmd.startsWith('timber-edit-confirm ') ? ReferenceWorkspace.beginTimberConfirmation(cmd.slice(20)) : ReferenceWorkspace.beginAssemblyConfirmation(); }
     catch (error) { return {ok:false,error:error.message}; }
     // Keep this lease through an unknown response, including workspace closure.
     // Only the exact request receipt may resolve it; never resend the mutation.
@@ -690,13 +806,14 @@ async function apiRequest(cmd, roomLease = null) {
   if (current) ReferenceWorkspace.observe(cmd, res);
   if (confirmation) { ReferenceWorkspace.finishAssemblyConfirmation(confirmation); pendingAssemblyConfirmations.delete(requestId); }
   if (current && res.ok && !res.preview && res.history_changed !== false &&
-      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) &&
+      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(cmd) &&
       !/^line\s+(?:$|#|preview\b|cancel-preview\b|history-(?:begin|end)\b|canvas\b)/.test(cmd))
     window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
   window.fbRecord?.("api", { cmd: String(cmd).slice(0, 500), ok: res.ok !== false, error: res.error,
     preview: res.preview ? true : undefined, ms: Math.round(performance.now() - t0) });
   return res;
-  } finally { releaseNativeOperation?.(); }
+  })();
+  } finally { settleRoomNative?.(roomNativeResult); releaseNativeOperation?.(); }
 }
 async function api(cmd) {
   const result = await apiRequest(cmd);
@@ -881,7 +998,11 @@ function replay(ops, root) {
         "stroke-dasharray": st.dash || "none",
         "vector-effect": "non-scaling-stroke" }, g);
     } else if (o.op === "text") {
-      const fullLabel = String(o.t), timberLabel = fullLabel.match(/^(角材\s*(\d+))\s+(A[01]|B[01]|START|END)$/);
+      const fullLabel = String(o.t), annotation = o.annotation;
+      const memberFace = annotation?.kind === "member-face" &&
+        Number.isInteger(annotation.entityId) && annotation.entityId > 0 && annotation.entityId <= 0xffffffff &&
+        ["A0", "A1", "B0", "B1", "START", "END"].includes(annotation.faceId) &&
+        typeof annotation.shortLabel === "string";
       const t = el("text", { x:o.x, y:o.y, fill: st.line,
         "font-size": st.text, "font-weight": st.bold ? "bold" : "normal",
         "text-anchor": st.anchor || "start", "data-label-full":fullLabel,
@@ -891,9 +1012,9 @@ function replay(ops, root) {
       t.setAttribute("data-fs0", o.s === 1 ? 15 : 11);
       if (st.mid) t.setAttribute("dominant-baseline", "middle");
       if (o.rot) t.setAttribute("transform", `rotate(${o.rot} ${o.x} ${o.y})`);
-      t.textContent = timberLabel ? timberLabel[1] : fullLabel;
-      if (timberLabel) {
-        t.dataset.timberId = timberLabel[2]; t.dataset.timberFace = timberLabel[3];
+      t.textContent = memberFace ? annotation.shortLabel : fullLabel;
+      if (memberFace) {
+        t.dataset.timberId = String(annotation.entityId); t.dataset.timberFace = annotation.faceId;
         t.setAttribute("aria-label", fullLabel);
         el("title", {}, t).textContent = fullLabel;
       }
@@ -1613,7 +1734,7 @@ $("v3ToolbarSurf").addEventListener("change", () => {
   $("workSurf").dispatchEvent(new Event("change"));
 });
 $("btnExport").onclick = async () => {
-  const r = await api("dump");
+  const r = await api("dump-deidentified");
   if (!r.ok) { setStatus("✗ " + (r.error || "")); return; }
   const blob = new Blob([r.text], { type: "text/plain;charset=utf-8" });
   const a = document.createElement("a");
@@ -1840,6 +1961,8 @@ function markSceneItem() {
 }
 /* 換場景前清工作區焦點與面面內快取——舊場景的 guide/timber 殘影會誤刪新場景同號物件 */
 function resetSceneFocus() {
+  window.TimberEdit?.invalidate();
+  window.PanelFillWorkspace?.retireContext();
   ++oc.navigationSequence;
   hoverPickScheduler.cancel();
   clearCanvasSelections();
@@ -2712,6 +2835,7 @@ function drawCrumb() {
 async function enterFocus(t, id, options = {}) {
   if (window.RoomCollectionWorkspace?.hasWork && oc.focus && (oc.focus.t !== t || oc.focus.id !== id)) throw new Error("請先完成或取消目前房間草稿。");
   if (!window.DraftGate.ask()) return;
+  if (window.PanelFillWorkspace?.close() === false) return;
   const navigation = ++oc.navigationSequence;
   const matchesTarget = oc.sel?.kind === (t === "space" ? "space" : "boundary") && oc.sel.id === id;
   clearCanvasSelections({keepSingleObject:matchesTarget});
@@ -2755,6 +2879,7 @@ async function enterFocus(t, id, options = {}) {
 }
 
 async function leaveFocus() {
+  if (window.PanelFillWorkspace?.close() === false) return null;
   if (window.RoomCollectionWorkspace?.hasWork && (RoomCollectionWorkspace.busy || RoomCollectionWorkspace.dialogOpen)) {
     toast("請先確認、取消或恢復目前房間交易，再返回。"); return null;
   }
@@ -2785,6 +2910,7 @@ async function leaveFocus() {
 /* Shared normal navigation lifecycle: presentation exits preserve boundary
  * loops and authored face features. Only a project replacement resets them. */
 function finishFocusExit(next) {
+  window.PanelFillWorkspace?.close();
   window.RoomOutlineWorkspace?.reset();
   clearCanvasSelections({keepSingleObject:true});
   GridEditor.clear();
@@ -2888,19 +3014,37 @@ function gridSegmentEnds(segment) {
   if(Array.isArray(segment) && segment.length>=4) return [segment[0],segment[1],segment[2],segment[3]];
   return null;
 }
+function gridIsFromFill(grid) {
+  return grid?.fillId!=null || grid?.uDefinition?.mode==="from-fill" || grid?.vDefinition?.mode==="from-fill";
+}
+function gridFillEvaluation(grid) {
+  const e=grid?.evaluatedFill;
+  return e && [1,-1].includes(e.side) && [null,"u","v"].includes(e.staggerAxis) &&
+    Number.isSafeInteger(e.staggerDelta) && e.bandIndexSpace==="panel-row" ? e : null;
+}
+function gridBandLabel(grid, band) {
+  return `${gridIsFromFill(grid) ? "板列" : "格"} ${band}`;
+}
 function gridHasStagger(grid, axis) {
+  if(gridIsFromFill(grid))return gridFillEvaluation(grid)?.staggerAxis===axis;
   return !!grid?.[axis+"Definition"]?.stagger;
 }
 function gridAnchorCoordinate(grid, axis, index, band) {
+  const fill=gridIsFromFill(grid), evaluated=fill ? gridFillEvaluation(grid) : null;
+  if(fill && !evaluated)return null;
   const entry=gridLineEntry(grid, axis, index);
   if(!entry || gridHasStagger(grid, axis)!==(band!=null)) return null;
   if(band!=null) {
+    if(!/^-?\d+$/.test(String(band)))return null;
+    const row=BigInt(band);if(row<-(1n<<63n) || row>(1n<<63n)-1n)return null;
     const seg=(entry.line?.segments||[]).find(s=>gridSegmentBand(s)===String(band));
     const ends=seg&&gridSegmentEnds(seg);
     if(ends) return axis==="u" ? ends[0] : ends[1];
-    const def=grid[axis+"Definition"];
-    if(!def?.stagger || !/^-?\d+$/.test(String(band))) return null;
-    const value=BigInt(entry.coordinate)+((BigInt(band)&1n)?BigInt(def.stagger):0n);
+    // Both lattice coordinates and the fill's shift are already in the
+    // board-back frame. Preserve the signed row; do not reflect it again.
+    const shift=fill ? evaluated.staggerDelta : grid[axis+"Definition"]?.stagger;
+    if(!Number.isSafeInteger(shift))return null;
+    const value=BigInt(entry.coordinate)+((row&1n)?BigInt(shift):0n);
     if(value<BigInt(Number.MIN_SAFE_INTEGER) || value>BigInt(Number.MAX_SAFE_INTEGER)) return null;
     return Number(value);
   }
@@ -3040,11 +3184,14 @@ const ReferenceVisibility = (() => {
 
 /* B2:檢視器分頁切換(#faceInspectorTabs ↔ [data-fi-pane]) */
 function fiShowTab(name) {
+  if (name !== "prop" && window.PanelFillWorkspace?.close() === false) return;
+  const timberFormClosed=window.TimberEdit?.tabChanged(name);
   const leavingUnderlay = fe.fiTab === "underlay" && name !== "underlay";
   // Grid rulers and cell picking belong to the grid section. Leaving it must
   // restore ordinary canvas selection without clearing the inspector draft.
   if (fe.tool === "grid" && name !== "grid") feSetTool("select");
   fe.fiTab = name;
+  if(timberFormClosed)renderFaceInspector();
   const section = ["guide", "timber", "grid"].includes(name) ? "components" : name;
   for (const t of document.querySelectorAll("#faceInspectorTabs [data-fi-tab]"))
     t.classList.toggle("active", t.dataset.fiTab === section);
@@ -3631,7 +3778,10 @@ function renderSpacePlan(sp) {
   svg.onpointercancel = () => { drag = null; preview.setAttribute("visibility", "hidden"); };
 }
 function syncSpacePlanAnnotations(){
-  const svg=$('spacePlanSvg'),matrix=svg?.getScreenCTM();if(!svg||svg.hidden||!matrix)return;
+  const svg=$('spacePlanSvg');
+  // SVG 沒有 HTML 元素的 hidden 反射屬性；與 renderSpacePlan 共用 attribute 狀態。
+  if(!svg||svg.hasAttribute('hidden'))return;
+  const matrix=svg.getScreenCTM();if(!matrix)return;
   const scale=Math.hypot(matrix.a,matrix.b);if(!Number.isFinite(scale)||scale<=0)return;
   for(const label of svg.querySelectorAll('.space-plan-label'))label.style.fontSize=(12/scale)+'px';
   const step=10**Math.floor(Math.log10(80/scale)),box=svg.viewBox.baseVal;
@@ -4541,7 +4691,14 @@ function feAnchorLineInfo(bid, anchorValue) {
     const g = fe.grids.find(x => x.id === +gridAnchor.id);
     const value = g && gridAnchorCoordinate(g, gridAnchor.axis, gridAnchor.index, gridAnchor.band);
     if (value == null) return null;
-    return { constAxis: gridAnchor.axis, value, bounds:g.kind === "subgrid" ? [g.bounds.u[0],g.bounds.v[0],g.bounds.u[1],g.bounds.v[1]] : null };
+    const info={ constAxis: gridAnchor.axis, value, bounds:g.kind === "subgrid" ? [g.bounds.u[0],g.bounds.v[0],g.bounds.u[1],g.bounds.v[1]] : null };
+    if(gridIsFromFill(g) && gridAnchor.band!=null) {
+      // A board-row reference highlights only its native clipped pieces.
+      // An unsampled row has no preview geometry to extend across the face.
+      info.segments=(gridLineEntry(g,gridAnchor.axis,gridAnchor.index)?.line?.segments || [])
+        .filter(s=>gridSegmentBand(s)===gridAnchor.band).map(gridSegmentEnds).filter(Boolean);
+    }
+    return info;
   }
   return null;   /* at-face t<id>(角材側面)不判占用/不畫預示 */
 }
@@ -4581,8 +4738,9 @@ function referenceAnchorEntries(bid, surf) {
   for (const g of fe.guides) options.push([`at-line guide ${g.id}`, `參考線 ${g.id} · ${guidePositionLabel(g)}`]);
   for (const g of fe.grids) for (const axis of ["u", "v"])
     gridLineEntries(g,axis).forEach(({coordinate:value,index,line}) => {
+      if(gridIsFromFill(g) && !gridFillEvaluation(g))return;
       const role = line?.priority ? ` · ${line.role === "primary" ? "主支" : "副支"} ${line.priority}` : " · 優先級未設定";
-      const labelOf = (coord, band) => `${g.kind === "subgrid" ? "子網格" : "主網格"} ${g.id} · ${gridLineLabel(g,axis,index)}${band!=null?` · 格 ${band}`:""} · ${axis}=${coord} mm${role}`;
+      const labelOf = (coord, band) => `${g.kind === "subgrid" ? "子網格" : "主網格"} ${g.id} · ${gridLineLabel(g,axis,index)}${band!=null?` · ${gridBandLabel(g,band)}`:""} · ${axis}=${coord} mm${role}`;
       if (gridHasStagger(g, axis)) {
         const seen = new Set();
         for (const segment of line?.segments || []) {
@@ -4620,8 +4778,20 @@ function referenceGuideSources(bid, along) {
   }));
   for (const guide of fe.guides.filter(g => g.axis === along))
     options.push([`guide:${guide.id}`, `參考線 ${guide.id} · ${guidePositionLabel(guide)}`]);
-  for (const grid of fe.grids) for (const line of gridLineEntries(grid,coordinate))
-    options.push([`grid:${grid.id}:${coordinate}:${line.index}`, `${grid.kind === "subgrid" ? "子網格" : "主網格"} ${grid.id} · ${gridLineLabel(grid,coordinate,line.index)} · ${line.coordinate} mm`]);
+  for (const grid of fe.grids) for (const entry of gridLineEntries(grid,coordinate)) {
+    if(gridIsFromFill(grid) && !gridFillEvaluation(grid))continue;
+    const source=`grid:${grid.id}:${coordinate}:${entry.index}`;
+    const label=`${grid.kind === "subgrid" ? "子網格" : "主網格"} ${grid.id} · ${gridLineLabel(grid,coordinate,entry.index)}`;
+    if(gridIsFromFill(grid) && gridHasStagger(grid,coordinate)) {
+      const seen=new Set();
+      for(const segment of entry.line?.segments || []) {
+        const band=gridSegmentBand(segment),ends=gridSegmentEnds(segment);
+        if(band==null || !ends || seen.has(band))continue;
+        seen.add(band);
+        options.push([`${source}:band:${band}`,`${label} · ${gridBandLabel(grid,band)} · ${ends[ci]} mm`]);
+      }
+    } else options.push([source,`${label} · ${entry.coordinate} mm`]);
+  }
   for(const l of GridRuleLines.entries())if(l.axis===coordinate&&l.segments.length)options.push([GridRuleLines.expression(l.ref),GridRuleLines.label(l.ref,l.name)+` · ${l.coordinate} mm`]);
   return options;
 }
@@ -4639,30 +4809,7 @@ function feTimberAnchorLabel(bid, surf, anchorValue) {
    注意:bid 參數目前只用於未來擴充;角材清單一律取 fe.timbers(目前工作區那面),
    不從其他面推導。 */
 function fePrimaryAxisInfo(bid) {
-  const timbers = fe.timbers || [];
-  const primaries = timbers.filter(t => t.role === "primary");
-  const boundaries = timbers.filter(t => t.role === "boundary");
-  const axisOf = t => t.dir && t.dir.slice(-1);
-  let axis = null, conflict = false, src = "none";
-  if (primaries.length) {
-    const axes = new Set(primaries.map(axisOf));
-    if (axes.size > 1) { conflict = true; }
-    else axis = [...axes][0];
-    src = "primary";
-  }
-  if (boundaries.length) {
-    /* boundary 的長度軸 ⊥ 主支軸 → 主支軸 = boundary 軸的垂直向。
-       所有 boundary 同方向(D17 保證);不一致 = 矛盾。 */
-    const bAxes = new Set(boundaries.map(axisOf));
-    const bAxis = bAxes.size === 1 ? [...bAxes][0] : null;
-    if (bAxis == null) { conflict = true; }
-    else {
-      const derived = bAxis === "u" ? "v" : "u";
-      if (axis == null) { axis = derived; src = "boundary"; }
-      else if (axis !== derived) conflict = true;
-    }
-  }
-  return { axis, conflict, src };
+  return GeometryApplication.woodworking.primaryAxisInfo(fe.timbers || []);
 }
 function feTimberPrimaryAxis(bid) {
   return fePrimaryAxisInfo(bid).axis;
@@ -4740,12 +4887,7 @@ function feAnchorCrossRange(bid, anchorValue, A) {
    未定義(無 primary 也無 boundary)→ 外輪廓邊給 boundary、參考線給 primary;
    矛盾(conflict)→ 回 null,呼叫端不自動改角色,只留診斷提示。 */
 function feTimberRoleForClick(bid, kind, dirAxis) {
-  const info = fePrimaryAxisInfo(bid);
-  if (info.conflict) return null;
-  const axis = info.axis;
-  if (!axis) return kind === "edge" ? "boundary" : "primary";
-  if (dirAxis === axis) return "primary";
-  return kind === "edge" ? "boundary" : "secondary";
+  return GeometryApplication.woodworking.roleForClick(fePrimaryAxisInfo(bid), kind, dirAxis);
 }
 /* 表單與直接點線使用同一個建議；孔邊不冒充外輪廓邊。 */
 function feTimberSuggestion(bid, anchor) {
@@ -4793,15 +4935,9 @@ function feTimberShowSuggestion() {
   if ($("tbUseSuggestion")) $("tbUseSuggestion").disabled = !suggestion?.role || !feSid(oc.edit?.bid);
 }
 function feSubgridRoleWarning(bid, direction, role) {
-  if (role !== "secondary") return "";
-  const info=fePrimaryAxisInfo(bid);
-  if (info.conflict) return "面上主支方向有衝突，請先檢查既有角材。";
-  if (!info.axis) return "尚未建立實際主支方向；請先放主支或邊界材，或明確改選其他合法角色。";
-  if (direction?.slice(-1) === info.axis) return `此線平行於實際主支 ${info.axis} 方向，不能用副支 3；請明確改選合法角色。`;
-  return "";
+  return GeometryApplication.woodworking.subgridRoleWarning(fePrimaryAxisInfo(bid), direction, role);
 }
-const TB_ROLE_OPTS = [["primary", "主支"], ["boundary", "邊框材"],
-  ["secondary", "副支"], ["custom", "自訂角色"]];
+const TB_ROLE_OPTS = GeometryApplication.woodworking.placementRoles;
 const timberRoleName = role => TB_ROLE_OPTS.find(([value]) => value === role)?.[1] || "角色未指定";
 const timberDirectionName = dir => ({ "+u": "沿輪廓圖向右", "-u": "沿輪廓圖向左", "+v": "沿輪廓圖向下", "-v": "沿輪廓圖向上" }[dir] || dir);
 /* #tbRole 選項依主支軸排除(G196-R04):
@@ -4812,17 +4948,8 @@ const timberDirectionName = dir => ({ "+u": "沿輪廓圖向右", "-u": "沿輪�
    外輪廓邊／參考線的自動角色(feTimberRoleForClick)與這裡共用 fePrimaryAxisInfo；
    網格線的預設則取橋接器逐線資料，非法組合仍由核心守門。 */
 function feTimberRoleOptionsHTML(bid, dirValue, currentRole) {
-  const info = fePrimaryAxisInfo(bid);
-  const axis = info.conflict ? null : info.axis;
-  const dirAxis = (dirValue || "+u").slice(-1);
-  const parallel = axis && dirAxis === axis;
-  const perpendicular = axis && dirAxis !== axis;
-  return TB_ROLE_OPTS.map(([v, t]) => {
-    let disabled = false, suffix = "";
-    if (parallel && (v === "boundary" || v === "secondary")) { disabled = true; suffix = "（需垂直於主支軸）"; }
-    else if (perpendicular && v === "primary") { disabled = true; suffix = "（沿主支軸才能是主支）"; }
-    return `<option value="${v}"${disabled ? " disabled" : ""}${v === currentRole ? " selected" : ""}>${t}${suffix}</option>`;
-  }).join("");
+  return GeometryApplication.woodworking.roleOptions(fePrimaryAxisInfo(bid), dirValue).map(option =>
+    `<option value="${option.value}"${option.disabled ? " disabled" : ""}${option.value === currentRole ? " selected" : ""}>${option.label}</option>`).join("");
 }
 /* 方向改變時重算 #tbRole 的可選項;原本選的角色若變成 disabled,跳到第一個可選項並提示。 */
 function feTimberSyncRoleOptions(pane) {
@@ -4858,7 +4985,7 @@ function feTimberHintRefresh() {
   const surf = feSurf(bid);
   if (!surf) return;
   const label = feTimberAnchorLabel(bid, surf, $("tbAnchor")?.value);
-  const A = $("tbA")?.value || 27, B = $("tbB")?.value || 33;
+  const A = $("tbA")?.value || GeometryApplication.woodworking.section.A, B = $("tbB")?.value || GeometryApplication.woodworking.section.B;
   /* GEO-196:提示改講新路徑——點一條邊或參考線＝直接以那條線為定位引用放置;
      G196-R02:點擊的左右位置不再決定厚度方向(+n/-n 由右欄「深度」欄位決定),
      不再承諾「點在哪一側就放哪一側」;點面內空白才是舊路徑(依右欄目前設定)。 */
@@ -4924,6 +5051,7 @@ function faceReferenceOperation(bid,inputIds) {
     async verify(){if(!current())return false;const graph=await apiRequest('source-inspect');return current()&&graph.ok&&graph.revision===nativeRevision&&graph.sourceFingerprint===fingerprint;}};
 }
 async function fePlaceTimberFromForm(bid) {
+  if (globalThis.TimberEdit?.usingCreate(bid)) return TimberEdit.previewCreate();
   if (oc.busy) return false;
   const sid = feSid(bid);
   if (!sid) { toast("請先放置這片面，再放角材"); return false; }
@@ -4972,7 +5100,7 @@ async function fePlaceTimberFromForm(bid) {
         if (committed) { if (operation.ownsPresentation()) await feLoadGuides(); }
         else await operation.reloadAfterRejection();
       } }))) return false;
-  if (operation.sameOwner()) { drawFaceEditor(); renderFaceLayers(); renderFaceInspector(); }
+  if (operation.sameOwner()) { drawFaceEditor(); renderFaceLayers(); renderFaceInspector(); await globalThis.TimberEdit?.recordCreated(ids.timber,bid); }
   return true;
 }
 
@@ -5403,7 +5531,7 @@ function drawFaceEditor() {
       class: "face-timber" + (selT ? " sel" : "") + (hoverT ? " hover" : "") }, root);
   }
   /* GEO-195:定位引用預示——角材工具啟用中,或 #tbAnchor 焦點/hover/改值中(fe.anchorPreview)
-     才畫;畫一條貫穿全圖的虛線標出定位引用本身,再依目前深度(+n/-n)/A 畫半透明帶示意角材
+     才畫;一般引用用貫穿全圖的虛線標出,鋪排板列則只畫原生裁切片段,再依目前深度(+n/-n)/A 畫半透明帶示意角材
      會落在哪一側(帶只是「示意」,真正長度由引擎依支撐推導——見帶上文字標註;帶永遠沿定位
      引用的固定座標軸展開,不看 #tbDir——不管使用者選哪個方向,角材的截面深度一定是往定位
      引用的垂直方向偏,#tbDir 只決定角材沿哪個軸「跑」,不影響這條帶要畫在哪)。
@@ -5425,21 +5553,27 @@ function drawFaceEditor() {
       const seg = info.constAxis === "u"
         ? [info.value, localBounds[1], info.value, localBounds[3]]
         : [localBounds[0], info.value, localBounds[2], info.value];
-      el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3], class: "fe-anchor-hi" }, refRoot);
+      for(const piece of info.segments || [seg])
+        el("line", { x1: piece[0], y1: piece[1], x2: piece[2], y2: piece[3], class: "fe-anchor-hi" }, refRoot);
       const A2 = Number($("tbA")?.value) || 0;
       const cr = feAnchorCrossRange(e.bid, anchorVal, A2);
       if (cr) {
-        const br = cr.constAxis === "u" ? [Math.max(cr.lo,localBounds[0]), localBounds[1], Math.min(cr.hi,localBounds[2]), localBounds[3]]
-                                        : [localBounds[0], Math.max(cr.lo,localBounds[1]), localBounds[2], Math.min(cr.hi,localBounds[3])];
-        // A disjoint or merely touching intersection has no material area.
-        // Keep the reference highlight, but do not emit an invalid/empty band.
-        if (br[2] > br[0] && br[3] > br[1]) {
-          const bandG = el("g", { "clip-path": "url(#face-material-clip)" }, root);
-          el("rect", { x: br[0], y: br[1], width: br[2] - br[0], height: br[3] - br[1],
-            class: "fe-anchor-band" }, bandG);
-          el("text", { x: (br[0] + br[2]) / 2, y: (br[1] + br[3]) / 2,
-            "font-size": 10.5 / z, "text-anchor": "middle", "dominant-baseline": "middle",
-            class: "fe-dim fe-anchor-band-label" }, el("g", {"clip-path":"url(#face-material-clip)"}, annotations)).textContent = "橫向定位示意";
+        const ranges=info.segments ? info.segments.map(piece=>info.constAxis==="u"
+          ? [localBounds[0],Math.max(localBounds[1],Math.min(piece[1],piece[3])),localBounds[2],Math.min(localBounds[3],Math.max(piece[1],piece[3]))]
+          : [Math.max(localBounds[0],Math.min(piece[0],piece[2])),localBounds[1],Math.min(localBounds[2],Math.max(piece[0],piece[2])),localBounds[3]]) : [localBounds];
+        for(const bounds of ranges) {
+          const br = cr.constAxis === "u" ? [Math.max(cr.lo,bounds[0]), bounds[1], Math.min(cr.hi,bounds[2]), bounds[3]]
+                                          : [bounds[0], Math.max(cr.lo,bounds[1]), bounds[2], Math.min(cr.hi,bounds[3])];
+          // A disjoint or merely touching intersection has no material area.
+          // Keep the reference highlight, but do not emit an invalid/empty band.
+          if (br[2] > br[0] && br[3] > br[1]) {
+            const bandG = el("g", { "clip-path": "url(#face-material-clip)" }, root);
+            el("rect", { x: br[0], y: br[1], width: br[2] - br[0], height: br[3] - br[1],
+              class: "fe-anchor-band" }, bandG);
+            el("text", { x: (br[0] + br[2]) / 2, y: (br[1] + br[3]) / 2,
+              "font-size": 10.5 / z, "text-anchor": "middle", "dominant-baseline": "middle",
+              class: "fe-dim fe-anchor-band-label" }, el("g", {"clip-path":"url(#face-material-clip)"}, annotations)).textContent = "橫向定位示意";
+          }
         }
       }
     }
@@ -6716,14 +6850,14 @@ function feActionsFor(sel) {
     return [{ act: "op:hole", label: FE_OPS.hole.name, iconName: FE_OPS.hole.icon,
       title: FE_OPS.hole.desc, on: fe.op && fe.op.type === "hole" }];
   if (sel.kind === "timber")
-    return [{ act: "edit", label: "編輯…", iconName: "edit", title: "在右欄編輯角材", on: false },
+    return [{ act: "edit", label: "編輯…", iconName: "edit", title: "在右欄編輯角材與定位", on: false },
       { act: "delete", label: "刪除", iconName: "trash", title: "刪除角材", on: false }];
   if (sel.kind !== "corner") return [];
   return [{ act: "op:corner", label: FE_OPS.corner.name, iconName: FE_OPS.corner.icon,
     title: FE_OPS.corner.desc, on: fe.op && fe.op.type === "corner" }];
 }
 /* GEO-192 C:浮動列/右鍵選單共用的動作處理器。 */
-async function feRunAction(act) {
+async function feRunAction(act, { timberFields = false } = {}) {
   if (!feActionsFor(fe.sel).some(a => a.act === act) || oc.busy) return;
   if (act === "timber" && fe.sel?.kind === "edge" && fe.sel.loop === 0) {
     const bid = oc.edit?.bid;
@@ -6739,6 +6873,12 @@ async function feRunAction(act) {
     return;
   }
   if (act === "edit" && fe.sel?.kind === "timber") {
+    // Keep the existing single-timber placement editor. The context menu asks
+    // for typed field edits; source-bound timbers have no legacy field form.
+    const selected = fe.timbers.find(t => t.id === fe.sel.id);
+    if (window.TimberEdit && (timberFields || fe.timberSelection.size > 1 || selected?.engineeringSources?.length)) {
+      await TimberEdit.openBatch(); return;
+    }
     fiShowTab("timber");
     if (innerWidth <= 680) openPanel("right", $("workspaceToggleRight"));
     $("tbEditAnchor")?.focus();
@@ -6959,7 +7099,7 @@ function feTbSelectedHTML(bid) {
   if (!t2) return "";
   const surf = feSurf(bid);
   const roleOpts = TB_ROLE_OPTS;
-  const technical = `<div class="kv"><span>角材編號</span><b>${t2.id}</b></div><div class="kv"><span>角色代碼</span><b>${esc(t2.role || "—")}</b></div><p class="inspector-code">定位：${esc(t2.definition?.anchor || "尚未提供")} ${esc(t2.definition?.selector || "")}</p>`;
+  const technical = `<div class="kv"><span>角材編號</span><b>${t2.id}</b></div><div class="kv"><span>角色代碼</span><b>${esc(t2.role || "—")}</b></div><p class="inspector-code">定位：${esc(t2.definition?.anchor || "尚未提供")} ${esc(t2.definition?.selector || "")}</p><div data-object-evidence-host data-evidence-kind="timber" data-evidence-id="${t2.id}"></div>`;
   if(t2.engineeringSources?.length)return `<div class="inspector-block" id="tbSelected"><div class="ib-title">${timberRoleName(t2.role)} · 角材 ${t2.id}</div><p>截面 ${esc(t2.A ?? "—")} × ${esc(t2.B ?? "—")} mm · 長度 ${esc(t2.L ?? "—")} mm</p><p>尺寸引用工程規格；修改來源或本物件覆寫時會一起檢查相關物件。</p><details id="tbTechnicalDetails" class="inspector-technical"><summary>詳細資料 · 工程來源與定位</summary>${technical}${engineeringSourceSummary(t2.engineeringSources)}</details><button type="button" class="btn primary-button" data-engineering-open data-placement-id="${surf.id}">編輯工程來源與覆寫</button> <button class="btn danger" id="tbSelDelete" type="button">刪除角材</button></div>`;
   return `<div class="inspector-block" id="tbSelected">` +
     `<div class="ib-title">${timberRoleName(t2.role)} · 角材 ${t2.id}</div>` +
@@ -7009,6 +7149,24 @@ async function feDeleteTimber(id) {
 async function feTimberEditApply(id) {
   if (oc.busy) return false;
   if (fe.timberSelection.size > 1) { toast("請先單選一支角材，再編輯或刪除"); return false; }
+  if (globalThis.TimberEdit) {
+    // The adapter must read native eligibility before deciding whether the
+    // legacy placement path owns this edit. Keep the existing input lock
+    // until that decision, then hand off synchronously to its next owner.
+    oc.busy = true;
+    document.body.classList.add("oc-busy");
+    let reading = true;
+    const releasePreflight = () => {
+      if (!reading) return;
+      reading = false;
+      oc.busy = false;
+      document.body.classList.remove("oc-busy");
+    };
+    let handled;
+    try { handled = await TimberEdit.applyLegacyFields(id, releasePreflight); }
+    finally { releasePreflight(); }
+    if (handled) return true;
+  }
   const pane = $("faceInspectorContent");
   const sid = feSid(oc.edit && oc.edit.bid);
   if (!sid) return false;
@@ -7329,7 +7487,7 @@ function renderFaceLayers(projectionDraft = feProjectionDraft()) {
     catch(error) { const note=document.createElement("p");note.id="timberScheduleStatus";note.textContent=error.message;schedulePane?.append(note); }
     const view=fe.scheduleView;
     const controls=document.createElement("div");controls.className="timber-schedule-controls";
-    controls.innerHTML='<label>範圍<select id="timberScheduleScope"><option value="surface">此承載面的全部角材</option><option value="selection">所選角材集合</option></select></label><label>顯示單位<select id="timberScheduleUnit"><option>mm</option><option>cm</option></select></label><label>排序<select id="timberScheduleOrder"><option value="id">構件身分</option><option value="length">完成長度</option></select></label><button type="button" id="timberScheduleCSV" class="btn">匯出精確 mm CSV</button>';
+    controls.innerHTML='<label>範圍<select id="timberScheduleScope"><option value="surface">此承載面的全部角材</option><option value="selection">所選角材集合</option></select></label><label>顯示單位<select id="timberScheduleUnit"><option>mm</option><option>cm</option></select></label><label>料單檢視<select id="timberScheduleOrder"><option value="id">構件身分</option><option value="length">完成長度</option><option value="cutting">裁切與採購…</option></select></label><button type="button" id="timberScheduleCSV" class="btn">匯出精確 mm CSV</button>';
     schedulePane?.append(controls);
     controls.querySelector('#timberScheduleScope').value=view.ids===null?'surface':'selection';
     controls.querySelector('#timberScheduleScope').onchange=ev=>{
@@ -7339,7 +7497,10 @@ function renderFaceLayers(projectionDraft = feProjectionDraft()) {
     controls.querySelector('#timberScheduleUnit').value=view.unit;
     controls.querySelector('#timberScheduleUnit').onchange=ev=>{view.unit=ev.target.value;renderFaceLayers();};
     controls.querySelector('#timberScheduleOrder').value=view.order;
-    controls.querySelector('#timberScheduleOrder').onchange=ev=>{view.order=ev.target.value;renderFaceLayers();};
+    controls.querySelector('#timberScheduleOrder').onchange=ev=>{
+      if(ev.target.value==='cutting'){ev.target.value=view.order;CuttingWorkspace.open({workspace:ReferenceWorkspace,references:()=>apiRequest('references'),scope:{surface:view.surface,ids:view.ids===null?null:[...view.ids]}});return;}
+      view.order=ev.target.value;renderFaceLayers();
+    };
     controls.querySelector('#timberScheduleCSV').disabled=!schedule?.rows.length;
     controls.querySelector('#timberScheduleCSV').onclick=feExportTimberSchedule;
     if(schedule){const status=document.createElement('p');status.id='timberScheduleStatus';status.className='fi-note';status.textContent=`承載面 ${schedule.surface} · ${schedule.rows.length} 支正式角材 · 材料／加工未設定者保持未知`;schedulePane?.append(status);}
@@ -7538,7 +7699,7 @@ const SubgridEditor = (() => {
     return {cell,key,bounds:b,occupied,label:`cell (${cell.i}, ${cell.j}) · u ${b[0]}–${b[2]} · v ${b[1]}–${b[3]} mm`};
   }
   function cells(parent,bid,ownId) {
-    if(!parent)return [];
+    if(!parent || gridIsFromFill(parent))return [];
     const loops=oc.bmap[bid] || [],bb=loopsBBox(loops);
     if(parent.indexSpace==="lattice") {
       const floorDiv=(n,d)=>{const q=n/d;return n<0n && n%d ? q-1n : q;};
@@ -7593,6 +7754,7 @@ const SubgridEditor = (() => {
   }
   function clear() {if(active)clearTimeout(active.timer);active=null;}
   function begin(parentId) {
+    if(gridIsFromFill(fe.grids.find(g=>g.id===parentId)))return false;
     fe.subgridDraftParent=parentId;fe.gridEditingId=null;renderFaceInspector();feSetTool("grid");fiShowTab("grid");
     active.picking=true;drawFaceEditor();
     if(innerWidth<=680)openPanel("right",$("workspaceToggleRight"));
@@ -7748,6 +7910,10 @@ const GridEditor = (() => {
       `<div id="${p}Hint" class="grid-coordinate-hint"></div><div id="${p}Error" class="grid-field-error" hidden></div><div class="grid-line-chips" aria-label="${a} 逐線座標"></div></fieldset>`;
   }
   function html(g, surf) {
+    if(gridIsFromFill(g)) {
+      const fillId=g.fillId ?? g.uDefinition?.fillId ?? g.vDefinition?.fillId, evaluated=gridFillEvaluation(g);
+      return `<section data-component-section="grid" data-from-fill-grid="${esc(g.id)}"><h2 class="component-heading">網格 ${esc(g.id)}</h2><div class="inspector-block"><h3>來自鋪排 #${esc(fillId)} · 唯讀</h3><p>格線隨鋪排重新計算，保留正負線號。此處可查看與選線引用；修改來源請回完成面與鋪排。</p><p>${g.mainAlong ? `主支沿 ${esc(g.mainAlong)}。` : "角色預設未設定。"}${evaluated ? evaluated.staggerAxis ? ` ${esc(evaluated.staggerAxis)} 軸錯縫的引用須包含板列編號。` : " 直鋪接縫。" : " 格線求值資訊不完整，暫停選線引用。"}</p><p>鋪排來源網格不提供直接拖線或建立子網格。</p></div></section>`;
+    }
     if(g?.kind === "subgrid" || fe.subgridDraftParent != null)return SubgridEditor.html(g,surf);
     if(g?.bindingId != null)return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block"><h3>無限網格配置 ${g.bindingId}</h3><p>格線由來源與邊界的對齊關係決定。畫面只顯示邊界內的部分，正負索引保持不變。</p><button type="button" class="btn" id="gridBindingOpen">編輯網格與邊界對齊</button>${GridRuleLines.html(g)}<div class="grid-subgrid-note"><h4>局部等分</h4>${(g.uDefinition?.stagger || g.vDefinition?.stagger) ? `<p>有相位差的主格不能建立子網格。</p><button type="button" id="subgridNew" class="btn" disabled>建立子網格</button>` : `<p>選取原網格的一個完整 cell；邊界只裁切顯示範圍。</p><button type="button" id="subgridNew" class="btn">建立子網格</button>`}</div></div></section>`;
     if(g?.sourceSystem != null)return GridSystemEditor.appliedHTML(g)+GridRuleLines.html(g);
@@ -7949,6 +8115,7 @@ const GridEditor = (() => {
   function bind(pane,bid,grid,surf) {
     if(dragCancel) dragCancel();if(active) {clearTimeout(active.timer);active=null;}
     SubgridEditor.clear();
+    if(gridIsFromFill(grid)) {fe.subgridDraftParent=null;fe.gridPreview=null;focusSection();return;}
     if(grid)GridRuleLines.bind(pane,grid);
     if(grid?.kind === "subgrid" || fe.subgridDraftParent != null){SubgridEditor.bind(pane,bid,grid,surf);return;}
     pane.querySelector('#subgridNew')?.addEventListener('click',()=>{if(grid && !grid.uDefinition?.stagger && !grid.vDefinition?.stagger)SubgridEditor.begin(grid.id);});
@@ -8036,7 +8203,7 @@ const GridEditor = (() => {
     const sid=feSid(oc.edit?.bid),grids=fe.grids.filter(g=>g.surface===sid);
     const grid=grids.find(g=>g.id===fe.gridEditingId) || grids[0];
     return !!(grid && grid.kind !== "subgrid" &&
-      (grid.bindingId != null || grid.sourceSystem != null || grid.engineeringSources?.length));
+      (gridIsFromFill(grid) || grid.bindingId != null || grid.sourceSystem != null || grid.engineeringSources?.length));
   }
   function fit(b) {
     const r=$("faceEditorViewport").getBoundingClientRect();
@@ -8145,7 +8312,7 @@ const GridEditor = (() => {
     if(!suggestion){box.remove();return;}
     const selectedRole=manual ? $("tbRole").value : suggestion.role;
     const warning=suggestion.subgrid ? feSubgridRoleWarning(oc.edit.bid,suggestion.dir,selectedRole) : "";
-    box.innerHTML=`<strong>${suggestion.subgrid ? "子網格" : "網格"} ${g.id} · ${gridLineLabel(g,a,i)} · ${a}=${gridLineEntry(g,a,i)?.coordinate ?? "—"} mm</strong><label>角材角色<select aria-label="格線角材角色">${feTimberRoleOptionsHTML(oc.edit.bid,suggestion.dir,selectedRole)}</select></label><p>${suggestion.role ? `格線預設${roleName(suggestion.role)}；可明確改選。` : "格線未設定角色預設，請先明確選擇角色。"}</p>${suggestion.subgrid ? `<p class="subgrid-role-warning">${esc(warning || "角材須完整留在父格內，兩端仍須有實際支撐。")}</p>` : ""}<p>截面 ${esc($("tbA").value)} × ${esc($("tbB").value)} mm · ${esc($("tbSide").selectedOptions[0]?.textContent)}</p><button type="button" class="primary-button" data-grid-place-timber>沿此線放置角材</button><button type="button" class="btn" data-grid-timber-close>關閉</button>`;
+    box.innerHTML=`<strong>${suggestion.subgrid ? "子網格" : "網格"} ${g.id} · ${gridLineLabel(g,a,i)}${match.band!=null ? ` · ${gridBandLabel(g,match.band)}` : ""} · ${a}=${gridAnchorCoordinate(g,a,i,match.band) ?? "—"} mm</strong><label>角材角色<select aria-label="格線角材角色">${feTimberRoleOptionsHTML(oc.edit.bid,suggestion.dir,selectedRole)}</select></label><p>${suggestion.role ? `格線預設${roleName(suggestion.role)}；可明確改選。` : "格線未設定角色預設，請先明確選擇角色。"}</p>${suggestion.subgrid ? `<p class="subgrid-role-warning">${esc(warning || "角材須完整留在父格內，兩端仍須有實際支撐。")}</p>` : ""}<p>截面 ${esc($("tbA").value)} × ${esc($("tbB").value)} mm · ${esc($("tbSide").selectedOptions[0]?.textContent)}</p><button type="button" class="primary-button" data-grid-place-timber>沿此線放置角材</button><button type="button" class="btn" data-grid-timber-close>關閉</button>`;
     box.addEventListener("pointerdown",e=>e.stopPropagation());box.addEventListener("pointermove",e=>e.stopPropagation());
     const select=box.querySelector("select"), place=box.querySelector("[data-grid-place-timber]");
     place.disabled=oc.busy || !!warning || (!suggestion.role && !manual);
@@ -8162,6 +8329,9 @@ const GridEditor = (() => {
    All creates, updates and applications use a validated candidate + token. */
 const GridSystemEditor = (() => {
   const axes = ["u", "v"], esc = ReferenceWorkspace.escape;
+  // Display only this native row's evaluated length; keep its source definition intact.
+  const axisLength = (d,key) => d?.[key+'Source']==='card' ? d?.[key==='step'?'effectiveStep':'effectivePanel'] : d?.[key];
+  const lengthSource = (d,key) => d?.[key+'Source']==='card' ? '（整張參數卡）' : d?.parameterRefs?.[key] ? '（參數引用）' : '';
   const modes = [["none","不設"],["explicit","明寫座標"],["series","等差"],["panel","面材＋縫"]];
   const prefix = a => "gs" + a.toUpperCase();
   let active = null;
@@ -8174,17 +8344,17 @@ const GridSystemEditor = (() => {
   const get = (s,id) => s.root.querySelector("#"+id);
   function summary(d) {
     if (!d || d.source === "none") return "未設定";
-    if (d.source === "repeat") return `無限重複 · 間距 ${d.step} mm，基準 ${d.phase} mm`;
-    if (d.source === "repeat-panel") return `無限面材 ${d.panel}＋縫 ${d.gap} mm，從 ${d.anchor} mm 起算`;
+    if (d.source === "repeat") return `無限重複 · 間距 ${axisLength(d,'step')} mm${lengthSource(d,'step')}，基準 ${d.phase} mm`;
+    if (d.source === "repeat-panel") return `無限面材 ${axisLength(d,'panel')}＋縫 ${d.gap} mm${lengthSource(d,'panel')}，從 ${d.anchor} mm 起算`;
     if (d.source === "explicit") return `座標 ${(d.coordinates || []).join("、")} mm`;
-    if (d.source === "series") return `從 ${d.start} mm，每 ${d.step} mm，共 ${d.count} 條`;
-    return `面材 ${d.panel}＋縫 ${d.gap} mm，從 ${d.anchor} mm 起算`;
+    if (d.source === "series") return `從 ${d.start} mm，每 ${axisLength(d,'step')} mm，共 ${d.count} 條`;
+    return `面材 ${axisLength(d,'panel')}＋縫 ${d.gap} mm，從 ${d.anchor} mm 起算`;
   }
   function sketch(parent, o, x, y, w, h) {
     el("rect",{x,y,width:w,height:h,rx:6,fill:"#f3f7fb",stroke:"#dce5ef"},parent);
     if (o.mode === "infinite") {
-      const definition = d => d.source === "repeat" ? {phase:d.phase,pitch:d.step} : d.source === "repeat-panel" ?
-        {phase:d.anchor+d.panel+Math.floor(d.gap/2),pitch:d.panel+d.gap} : null;
+      const definition = d => d?.source === "repeat" ? {phase:d.phase,pitch:axisLength(d,'step')} : d?.source === "repeat-panel" ?
+        {phase:d.anchor+axisLength(d,'panel')+Math.floor(d.gap/2),pitch:axisLength(d,'panel')+d.gap} : null;
       const defs=axes.map(a=>definition(o[a+"Definition"]));
       const scale=Math.min(...defs.map((d,i)=>d ? (i===0?w:h)/(d.pitch*4) : Infinity));
       const center=[x+w/2,y+h/2];
@@ -8225,10 +8395,11 @@ const GridSystemEditor = (() => {
     el("circle",{cx:17,cy:22,r:5,fill:"#467fb0"},g);
     const name=Array.from(o.name);el("text",{x:31,y:25,"font-size":15,"font-weight":700,fill:"#1d2634"},g).textContent=name.length>17 ? name.slice(0,16).join("")+"…" : o.name;
     el("text",{x:31,y:42,"font-size":12,fill:"#6d8197"},g).textContent=o.mode === "infinite" ? "網格來源 · 無限延伸" : `舊版有限網格 ${o.id} · ${o.applications.length} 個套用`;
-    el("title",{},g).textContent=`${o.name}\nu：${summary(o.uDefinition)}\nv：${summary(o.vDefinition)}\n卡片僅示意排法，沒有幾何範圍。`;
+    const cardSource=o.cardReference ? `\n整張參數卡 #${o.cardReference.parameterId}：u ← 欄位 #${o.cardReference.uFieldId}，v ← 欄位 #${o.cardReference.vFieldId}` : '';
+    el("title",{},g).textContent=`${o.name}${cardSource}\nu：${summary(o.uDefinition)}\nv：${summary(o.vDefinition)}\n卡片僅示意排法，沒有幾何範圍。`;
     el("line",{x1:0,y1:50,x2:OC_W,y2:50,stroke:"#e2eaf1"},g);
     const body=el("g",{class:"ocard-body"},g);sketch(body,o,14,58,OC_W-28,OC_H-109);
-    const pitch=d=>d.source === "repeat" ? `${d.step}` : d.source === "repeat-panel" ? `${d.panel+d.gap}` : "—";
+    const pitch=d=>d?.source === "repeat" ? `${axisLength(d,'step')}` : d?.source === "repeat-panel" ? `${axisLength(d,'panel')+d.gap}` : "—";
     el("text",{x:14,y:OC_H-30,"font-size":12.5,fill:"#6d8197"},body).textContent=o.mode === "infinite" ? `X 間距 ${pitch(o.uDefinition)} · Y 間距 ${pitch(o.vDefinition)} mm` : "舊版有限排法 · 保留原義";
     el("text",{x:14,y:OC_H-11,"font-size":12,fill:"#687487"},body).textContent=o.mode === "infinite" ? "格線向兩端無限延伸" : o.mainAlong ? `主支沿 ${o.mainAlong} · 可重複套用` : "角色未設定 · 可重複套用";
     return g;
@@ -8457,10 +8628,17 @@ function renderFaceInspector() {
   const e = oc.edit;
   const pane = $("faceInspectorContent");
   if (!e || !pane) return;
-  disarmEdgeInputs(pane);
   if (e.contextId !== ReferenceWorkspace.context().id) { resetSceneFocus(); return; }
+  if (window.PanelFillWorkspace?.activeFor(e.bid)) {
+    GridEditor.clear();
+    pane.querySelector('.face-placement-flow')?.setAttribute('hidden','');
+    window.PanelFillWorkspace.render(pane,e.bid);
+    return;
+  }
+  disarmEdgeInputs(pane);
+  if (window.TimberEdit?.renderInspector(pane)) return;
   const projectionDraft = feProjectionDraft();
-  if (fe.timberSelection.size > 1) {
+  if (fe.timberSelection.size > 1 && !window.TimberEdit) {
     GridEditor.clear();
     pane.dataset.redrawOwner = "";
     pane.innerHTML = selectionMultiHTML([...fe.timberSelection].map(id => ({id})), true);
@@ -8499,8 +8677,7 @@ function renderFaceInspector() {
   let html = `<div class="face-placement-flow" data-complete="${spaces.length > 0}"${fe.fiTab === "prop" && !spaces.length ? "" : " hidden"}>${placeFlowHTML(bid)}</div>` +
     `<div data-fi-pane="prop"${fe.fiTab === "prop" || !fe.fiTab ? "" : " hidden"}>` +
     `<div class="inspector-block face-property-common"><div class="ib-title">面 ${bid}` +
-    `<span class="tag">${surf ? "已放置" : "未放置"}</span></div>` +
-    `<div class="kv"><span>用途</span><b>${surf ? FaceProjection.summary(bid, surf.id, true) : "用途未指定"}</b></div>`;
+    `<span class="tag">${surf ? "已放置" : "未放置"}</span></div>`;
   if (bb) html +=
     `<div class="kv"><span>外框尺寸</span><b>${bb[2] - bb[0]} × ${bb[3] - bb[1]} mm</b></div>`;
   html += `<div class="draft-metrics-note">以下尺寸與面積為原面；草稿完成後更新。</div>` +
@@ -8574,8 +8751,8 @@ function renderFaceInspector() {
     `<label>沿著<select id="tbAnchor"${surf ? "" : " disabled"}>${referenceAnchorOptions(bid, surf)}</select><small class="field-note">也可直接點畫布上的邊、參考線或網格線</small></label>` +
     `</div><details id="tbNewSegmentDetails" class="inspector-technical"><summary>進階：限定其中一段</summary><label>選段引用式（可留空）<input id="tbSelector" placeholder="例如 through 600"${surf ? "" : " disabled"}></label><small>完整定位代碼可在選取角材後的「詳細資料」查看。</small></details></div>` +
     `<div class="timber-form-group"><strong>2 截面</strong><div class="place-form">` +
-    `<label>寬 A（沿面）<input id="tbA" type="number" value="27"${surf ? "" : " disabled"}></label>` +
-    `<label>厚 B（出面）<input id="tbB" type="number" value="33"${surf ? "" : " disabled"}></label></div></div>` +
+    `<label>寬 A（沿面）<input id="tbA" type="number" value="${GeometryApplication.woodworking.section.A}"${surf ? "" : " disabled"}></label>` +
+    `<label>厚 B（出面）<input id="tbB" type="number" value="${GeometryApplication.woodworking.section.B}"${surf ? "" : " disabled"}></label></div></div>` +
     `<div class="timber-form-group"><strong>3 朝向與角色</strong><div class="place-form">` +
     `<label>厚度朝<select id="tbSide"${surf ? "" : " disabled"}>${timberSideOptions(surf).map(([value, label]) => `<option value="${value}">${label}</option>`).join("")}</select></label>` +
     `<label>延伸方向 <span class="auto-badge" id="tbDirAuto">自動</span><select id="tbDir"${surf ? "" : " disabled"}>` +
@@ -8786,6 +8963,18 @@ function renderFaceInspector() {
   const pri = pane.querySelector("#tbPriLabel"); if (pri) pri.hidden = pane.querySelector("#tbRole").value !== "custom";
   reapplyInspectorFocus(pane, saved);
   restoreDirtyInputs(pane, dirtyInputs);
+  window.TimberEdit?.afterInspectorRender(pane);
+  /* details 的 toggle 處理到下一影格前才完成；同步恢復會被中途較短的
+     表單截短。僅恢復同次重繪，而且不蓋過使用者後續的捲動。 */
+  if (saved) {
+    const parent = pane.parentElement, seq = fe.gridPreviewSeq;
+    const scroll = parent.scrollTop, ownScroll = pane.scrollTop;
+    requestAnimationFrame(() => {
+      if (fe.gridPreviewSeq !== seq || pane.dataset.bid !== String(bid) ||
+          parent.scrollTop !== scroll || pane.scrollTop !== ownScroll) return;
+      parent.scrollTop = saved.scroll; pane.scrollTop = saved.ownScroll;
+    });
+  }
 }
 
 /* 放置表單（主畫布右欄與面內檢視器共用，§5.5.3a） */
@@ -9114,26 +9303,35 @@ function renderCanvasModeHint() {
    卡片,還被放在很遠的 bbox 左上角(GEO-187 的「找不到卡片」根因)。
    P 改成一次性動作:建一張預設外環的面卡 → 自動進入該面的工作區、啟用「重畫外環」
    (面內視野由 feFit 對齊面的大小,1 單位=1mm 的繪圖在面內進行)→ 畫完 Esc 返回畫布。 */
-async function objNewPolyFace({beforeCreate} = {}) {
+function ocCreationOwner() {
+  const context = ReferenceWorkspace.context(), frame = ReferenceWorkspace.history.frame,
+    session = connection.session, navigation = oc.navigationSequence;
+  return () => ReferenceWorkspace.context() === context && ReferenceWorkspace.history.frame === frame &&
+    connection.session === session && connection.phase === "ready" && oc.navigationSequence === navigation;
+}
+async function objNewPolyFace({beforeCreate, canvasPosition} = {}) {
+  const current = ocCreationOwner(), revision = ReferenceWorkspace.getProjectState().revision;
   const ids = await api("newid");
+  if (!current() || ReferenceWorkspace.getProjectState().revision !== revision) return;
   if (!ids.ok) { setStatus("✗ " + (ids.error || "取不到新編號")); toast(ids.error || "取不到新編號"); return; }
   const bid = ids.boundary;
   if (beforeCreate) await beforeCreate(bid);
+  if (!current() || ReferenceWorkspace.getProjectState().revision !== revision) return;
   /* 預設外環只是佔位,進面內後被 redraw 整份取代;取常見房間大小讓 feFit 給出合適視野 */
-  const r = await api(`line boundary ${bid} outline 0,0 4000,0 4000,3000 0,3000`);
-  if (!r.ok) { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); return; }
-  /* 卡片落在目前視野中心(canvas-pos 是展示中繼資料,不進歷史;搶在 renderObjects()
-     的 homeless 自動排格之前送出) */
+  /* 邊界與畫布位置同一交易；原生回覆及畫布刷新期間保留既有輸入鎖。
+     選單帶入動作當下的位置，其他入口維持視野中心。 */
   const vr = ocv.getBoundingClientRect();
-  const cx = Math.round((vr.width / 2 - oc.panX) / oc.zoom - OC_W / 2);
-  const cy = Math.round((vr.height / 2 - oc.panY) / oc.zoom - OC_H / 2);
-  await api(`line canvas-pos boundary ${bid} ${cx} ${cy}`);
+  const cx = canvasPosition?.cx ?? Math.round((vr.width / 2 - oc.panX) / oc.zoom - OC_W / 2);
+  const cy = canvasPosition?.cy ?? Math.round((vr.height / 2 - oc.panY) / oc.zoom - OC_H / 2);
+  const made = await mutate([`boundary ${bid} outline 0,0 4000,0 4000,3000 0,3000`,
+    `canvas-pos boundary ${bid} ${cx} ${cy}`],
+    {afterSettlement:committed => committed ? renderObjects() : undefined});
+  if (!made || !current() || selectObject("boundary", bid) === false) return;
   setStatus(`✓ 面 ${bid} 已建立 · Ctrl+Z 復原`);
-  await renderObjects();
-  selectObject("boundary", bid);
   if (pendingSlot && pendingSlot.bid == null) pendingSlot.bid = bid;
-  await enterFocus("face", bid);
-  if (!oc.focus || oc.focus.t !== "face" || oc.focus.id !== bid) return;
+  const opening = enterFocus("face", bid), focus = oc.focus, openingCurrent = ocCreationOwner();
+  await opening;
+  if (!openingCurrent() || oc.focus !== focus || !focus || focus.t !== "face" || focus.id !== bid) return;
   fe.newOutline = { bid, outline: JSON.stringify(oc.bmap[bid]) };
   fiShowTab("prop");
   feSetTool("redraw");
@@ -9225,7 +9423,7 @@ function renderSelectionSummary() {
     box.dataset.count = String(n);
     box.querySelector("strong").textContent = n ? `已選 ${n} ${face ? "支角材" : "個物件"}` : `從空白處拖曳，框選${face ? "角材" : "物件"}`;
     const lesson = "向右拖曳完整框住 · 向左拖曳相交即選";
-    box.querySelector("small").textContent = n ? (n > 1 ? "編輯或刪除時，請先點選單一物件。" : "可在屬性欄查看或編輯。") : lesson;
+    box.querySelector("small").textContent = n ? (n > 1 ? (face ? "在右欄明選欄位，共同預覽後一次批改。" : "編輯或刪除時，請先點選單一物件。") : "可在屬性欄查看或編輯。") : lesson;
     box.querySelector("[data-selection-clear]").hidden = !n;
     window.WorkspaceGuidance?.apply(box, { key: `${face ? "face" : "canvas"}:select`, eligible, dynamic: n > 0 || dragging,
       lesson: n > 0 ? lesson : "", parent: $(face ? "faceWorkspaceTools" : "canvasDrawToolbar") });
@@ -9338,7 +9536,7 @@ window.addEventListener("keydown", event => {
     return;
   }
   if ((event.key === "Delete" || event.key === "Backspace") && (face ? fe.timberSelection.size > 1 : oc.selection.length > 1)) {
-    event.preventDefault(); event.stopImmediatePropagation(); toast("多選僅供選取；請先單選一個物件，再編輯或刪除");
+    event.preventDefault(); event.stopImmediatePropagation(); toast(face ? "本版不提供批次刪除；請單選要刪除的角材。" : "多選僅供選取；請先單選一個物件，再編輯或刪除");
   }
 }, true);
 document.addEventListener("click", event => {
@@ -9610,6 +9808,7 @@ function renderInspectorBody() {
     (bLoops && bLoops.length
       ? `<div class="kv"><span>外環</span><b>${bLoops[0].verts.length} 頂點</b></div>` +
         `<div class="kv"><span>孔</span><b>${bLoops.length - 1}</b></div>` : "") +
+    (sel.kind === "boundary" ? `<div data-object-evidence-host data-evidence-kind="boundary" data-evidence-id="${sel.id}"></div>` : "") +
     `</details></div>` +
     (sel.kind === "boundary" ? (o.placed
       ? `<div class="inspector-block"><details class="ib-row"><summary>位置與朝向 · ${placedSurf ? surfNormalLabel(placedSurf) : "已放置"} · 修改…</summary>${placeFormHTML(sel.id)}</details></div>`
@@ -10063,21 +10262,22 @@ function ocZoomAt(f, px, py) {
 }
 $("zoomInButton").addEventListener("click", () => ocZoomAt(1.25));
 $("zoomOutButton").addEventListener("click", () => ocZoomAt(0.8));
-$("homeButton").addEventListener("click", () => {
-  oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply();
-});
+/* #116 K4 PR-c:回到原點是純檢視動作，由物件畫布選單呼叫。 */
+function ocHome() { oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply(); }
 /* GEO-187:回到 100% 以畫面中心為準;舊版直接改 zoom 不調 pan,從 2% 回 100% 時畫面中心的卡片會飛出畫面 */
 $("zoomLevelButton").addEventListener("click", () => ocZoomAt(1 / oc.zoom));
 /* 吸附 / 格線(aria-pressed 按鈕,A3) */
+function ocToggleCanvasView(id) {
+  if (!["snapToggle", "gridToggle"].includes(id)) return false;
+  const b = $(id), on = !b.classList.contains("on");
+  b.classList.toggle("on", on);
+  b.setAttribute("aria-pressed", on ? "true" : "false");
+  if (id === "gridToggle") $("canvasViewport").classList.toggle("show-grid", on);
+  ocGridApply();
+  return true;
+}
 for (const id of ["snapToggle", "gridToggle"]) {
-  $(id).addEventListener("click", () => {
-    const b = $(id), on = !b.classList.contains("on");
-    b.classList.toggle("on", on);
-    b.setAttribute("aria-pressed", on ? "true" : "false");
-    if (id === "gridToggle")
-      $("canvasViewport").classList.toggle("show-grid", on);
-    ocGridApply();
-  });
+  $(id).addEventListener("click", () => ocToggleCanvasView(id));
 }
 /* 篩選 chips(A3:aria-pressed + 計數徽章) */
 function applyFilterChips() {
@@ -10645,6 +10845,28 @@ $("btnObj").addEventListener("pointerdown", e => {
 $("btnCanvasView").addEventListener("click", () => setView3(false));
 $("btnModelLibraryMenu").addEventListener("click", () => { closeMenus(); $("btnSpaceModels").click(); });
 $("btnBack").addEventListener("click", leaveFocus);
+/* Context-menu display coordinates are not a World point. Convert only a real
+   pointer anchor, synchronously at action time, before a panel/layout or await. */
+function ocMenuCanvasPosition(anchor, kind = "boundary") {
+  if (anchor?.invocation !== "pointer" || !Number.isFinite(anchor.clientX) || !Number.isFinite(anchor.clientY))
+    throw new Error("請先在畫布指定建立位置");
+  const point = ocToCanvas(anchor);
+  const width = kind === "space" ? SP_W : OC_W, height = kind === "space" ? SP_H : OC_H;
+  return {cx:Math.round(point.x - width / 2), cy:Math.round(point.y - height / 2)};
+}
+async function ocCreateFromMenu(id, anchor) {
+  const canvasPosition = ocMenuCanvasPosition(anchor, id === "btnNewSpace" ? "space" : "boundary");
+  closeMenus(); closePanels();
+  if (id === "btnCreatePoly") return objNewPolyFace({canvasPosition});
+  if (id === "btnNewSpace") return objNewSpace({canvasPosition});
+  if (id === "btnCreateRect") return setOcTool("rect");
+  if (id === "btnNewParameter") return window.ParameterUI.create({canvasPosition});
+  // These entries start the existing candidate/editor/dialog. They do not
+  // turn canvas coordinates into geometry or submit an unconfirmed definition.
+  if (["btnQuickGrid","btnNewAssembly","btnNewSectionProfile","btnNewColumn","btnNewBeam","btnBox6"].includes(id))
+    return $(id).click();
+  throw new Error("未知的建立入口：" + id);
+}
 $("btnNewRect").addEventListener("click", () => setOcTool("rect"));
 $("btnNewPoly").addEventListener("click", () => objNewPolyFace());
 $("btnNewGridSystem").addEventListener("click", async () => {
@@ -10664,14 +10886,24 @@ $("btnCollapseLibrary")?.addEventListener("click", () => {
   $("btnCollapseLibrary").setAttribute("aria-label",collapsed ? "展開物件庫" : "收合物件庫");
   closeMenus(); ocApply();
 });
-$("btnNewSpace").addEventListener("click", async () => {
+async function objNewSpace({canvasPosition} = {}) {
+  const current = ocCreationOwner(), revision = ReferenceWorkspace.getProjectState().revision;
   closePanels();
   const ids = await api("newid");
-  if (await emitLine(`space ${ids.space}`)) {
-    selectObject("space", ids.space); centerOnNode("space", ids.space);
+  if (!current() || ReferenceWorkspace.getProjectState().revision !== revision) return false;
+  if (!ids.ok) { toast(ids.error || "取不到新編號"); return false; }
+  const made = canvasPosition
+    ? await mutate([`space ${ids.space}`, `canvas-pos space ${ids.space} ${canvasPosition.cx} ${canvasPosition.cy}`],
+        {afterSettlement:committed => committed ? renderObjects() : undefined})
+    : await emitLine(`space ${ids.space}`);
+  if (made && current()) {
+    if (selectObject("space", ids.space) === false) return made;
+    centerOnNode("space", ids.space);
     setStatus(`✓ 空間 ${ids.space}（空容器）已建立，點進去管理成員`);
   }
-});
+  return made;
+}
+$("btnNewSpace").addEventListener("click", () => objNewSpace());
 
 for (const [id, side] of [["toggleLeft","left"],["toggleRight","right"],["workspaceToggleLeft","left"],["workspaceToggleRight","right"]])
   $(id).addEventListener("click", e => togglePanel(side, e.currentTarget));

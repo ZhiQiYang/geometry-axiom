@@ -1,0 +1,32 @@
+{
+  "sha": "ac39346e74ca2ab6fc5bb0053024bd26f8af06b2",
+  "label": "codex-final-r4-20261022",
+  "job": "native",
+  "exit_code": 1,
+  "seconds": 4771.2,
+  "totals": {
+    "total": 5177,
+    "passed": 5175,
+    "failed": 1,
+    "skipped": 1,
+    "seconds": 4491.4
+  },
+  "failed_suites": [
+    "py:test_geo261_wood_contact_world"
+  ],
+  "failed_control": "equal-order-dedup",
+  "failure_reason": "原錨點已搬移，source.count(before)=0，原生控制尚未進入執行",
+  "expected_count": 12,
+  "discovered_count": 13,
+  "actual_contact_sources_passed": 13,
+  "rerun_exits": [
+    1,
+    1
+  ],
+  "excused": false,
+  "over_ci_timeout": true,
+  "result_sha256": "c85c3e7ab2e3cfc3443cb54c1e7d59f9045b747844b5710b7339cb54e09cc5c3",
+  "log_sha256": "f61941a6f4fdbd3f6a5771323751b75dc334964448a22280f4ff4612f39b8f17",
+  "new_patch_native_verification_complete": false,
+  "observed_local": "2026-10-22T13:38:41.935975+08:00"
+}

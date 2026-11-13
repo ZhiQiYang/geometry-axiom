@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "gc.auto=0",
+    "-c",
+    "maintenance.auto=false",
+    "merge-base",
+    "--is-ancestor",
+    "1ee76768b1a8123d04083eac4710603f43aaeb84",
+    "b74f9a2ae7ade1555b9be45283adecc097fb76e3"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "exit": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

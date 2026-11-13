@@ -18,7 +18,7 @@ static void json_grid_axis_definition(const GridAxisDef *d,bool subgrid,unsigned
         if (d->stagger_set) printf(",\"stagger\":%lld",(long long)d->stagger);
     } else if (d->source==GRID_SRC_PANEL || d->source==GRID_SRC_REPEAT_PANEL) {
         printf(",\"%s\":%lld,\"gap\":%lld,\"anchor\":%lld,\"anchorExplicit\":%s",
-            d->card_length?"effectivePanel":"panel",(long long)d->panel,(long long)d->gap,(long long)d->anchor,
+            d->card_length?"effectivePanel":"panel",(long long)d->body,(long long)d->gap,(long long)d->anchor,
             d->anchor_explicit?"true":"false");
         if (d->stagger_set) printf(",\"stagger\":%lld",(long long)d->stagger);
     }
@@ -35,8 +35,8 @@ static void json_grid_system(const World *w,const GridSystem *system)
     printf(",\"mode\":\"%s\"",grid_system_is_infinite(system)?"infinite":"legacy-finite");
     if(system->card_reference.set)printf(",\"cardReference\":{\"parameterId\":%u,\"uFieldId\":%u,\"vFieldId\":%u}",system->card_reference.parameter_id,system->card_reference.fields[0],system->card_reference.fields[1]);
     fputs(",\"mainAlong\":",stdout);
-    if (system->main_along==1) fputs("\"u\"",stdout);
-    else if (system->main_along==2) fputs("\"v\"",stdout);
+    if (app_grid_system_main_along(w,system->id)==1) fputs("\"u\"",stdout);
+    else if (app_grid_system_main_along(w,system->id)==2) fputs("\"v\"",stdout);
     else fputs("null",stdout);
     for (int axis=0;axis<2;++axis) {
         printf(",\"%cDefinition\":",axis?'v':'u');
@@ -50,8 +50,8 @@ static void json_grid_system(const World *w,const GridSystem *system)
         printf("},\"divisions\":[%u,%u]}",r->divisions[0],r->divisions[1]);
     }
     fputs("],\"applications\":[",stdout); bool first=true;
-    for (size_t i=0;i<w->grid_count;++i) {
-        const ReferenceGrid *grid=&w->grids[i];
+    for (size_t i=0;i<w->wood.grid_applications.count;++i) {
+        const ReferenceGrid *grid=&w->wood.grid_applications.items[i];
         const GridBinding *binding=grid->from_binding?world_find_grid_binding(w,grid->binding_id):NULL;
         if (grid->from_binding ? (!binding || binding->system_id!=system->id) :
             (!grid->from_system || grid->system_id!=system->id)) continue;
@@ -59,15 +59,15 @@ static void json_grid_system(const World *w,const GridSystem *system)
         first=false;
     }
     fputs("],\"bindings\":[",stdout); first=true;
-    for (size_t i=0;i<w->grid_binding_count;++i) {
-        if (w->grid_bindings[i].system_id!=system->id) continue;
-        printf("%s%u",first?"":",",w->grid_bindings[i].id); first=false;
+    for (size_t i=0;i<geo_grid_bindings_count(&w->geo.grid_store);++i) {
+        if ((*geo_grid_bindings_at(&w->geo.grid_store,i)).system_id!=system->id) continue;
+        printf("%s%u",first?"":",",(*geo_grid_bindings_at(&w->geo.grid_store,i)).id); first=false;
     }
     fputs("],",stdout);
     const CanvasPos *pos=NULL;
-    for (size_t i=0;i<w->canvas_pos_count;++i) {
-        if (w->canvas_pos[i].kind==CANVAS_POS_GRID_SYSTEM && w->canvas_pos[i].id==system->id) {
-            pos=&w->canvas_pos[i]; break;
+    for (size_t i=0;i<w->app.canvas_pos_count;++i) {
+        if (w->app.canvas_pos[i].kind==CANVAS_POS_GRID_SYSTEM && w->app.canvas_pos[i].id==system->id) {
+            pos=&w->app.canvas_pos[i]; break;
         }
     }
     printf("\"cx\":%lld,\"cy\":%lld,\"hasPos\":%s}",
@@ -77,20 +77,20 @@ static void json_grid_system(const World *w,const GridSystem *system)
 static void json_grid_system_preview(void)
 {
     fputs(",\"gridSystems\":[",stdout); bool first=true;
-    for (size_t i=0;i<g_preview.before.grid_system_count;++i) {
-        const GridSystem *before=&g_preview.before.grid_systems[i];
-        const GridSystem *after=world_find_grid_system(&g_preview.after,before->id);
+    for (size_t i=0;i<geo_grid_systems_count(&g_preview.transaction->before.geo.grid_store);++i) {
+        const GridSystem *before=geo_grid_systems_at(&g_preview.transaction->before.geo.grid_store,i);
+        const GridSystem *after=world_find_grid_system(&g_preview.transaction->after,before->id);
         printf("%s{\"id\":%u,\"before\":",first?"":",",before->id); first=false;
-        json_grid_system(&g_preview.before,before);
+        json_grid_system(&g_preview.transaction->before,before);
         fputs(",\"after\":",stdout);
-        if (after) json_grid_system(&g_preview.after,after); else fputs("null",stdout);
+        if (after) json_grid_system(&g_preview.transaction->after,after); else fputs("null",stdout);
         putchar('}');
     }
-    for (size_t i=0;i<g_preview.after.grid_system_count;++i) {
-        const GridSystem *after=&g_preview.after.grid_systems[i];
-        if (world_find_grid_system(&g_preview.before,after->id)) continue;
+    for (size_t i=0;i<geo_grid_systems_count(&g_preview.transaction->after.geo.grid_store);++i) {
+        const GridSystem *after=geo_grid_systems_at(&g_preview.transaction->after.geo.grid_store,i);
+        if (world_find_grid_system(&g_preview.transaction->before,after->id)) continue;
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",after->id); first=false;
-        json_grid_system(&g_preview.after,after); putchar('}');
+        json_grid_system(&g_preview.transaction->after,after); putchar('}');
     }
     putchar(']');
 }

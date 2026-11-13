@@ -1,0 +1,60 @@
+{
+  "kind": "fixed-source-registry-parameter-regression",
+  "source": "4aabd21cf82d495f5ab4902bedc9330ca5ed4e3b",
+  "source_root": "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-parameters-4aabd21c",
+  "started_utc": "2026-10-16T02:12:32.353106+00:00",
+  "finished_utc": "2026-10-16T02:12:47.426788+00:00",
+  "commands": {
+    "build": [
+      "python3",
+      "-u",
+      "tests/binaries.py",
+      "build",
+      "model-base",
+      "bridge"
+    ],
+    "status": [
+      "python3",
+      "-u",
+      "tests/binaries.py",
+      "status",
+      "model-base",
+      "bridge"
+    ],
+    "test": [
+      "python3",
+      "-u",
+      "-m",
+      "unittest",
+      "-v",
+      "tests.test_parameters_core"
+    ]
+  },
+  "exit_codes": {
+    "build": 1,
+    "status": 1,
+    "test": null,
+    "status_after": 1
+  },
+  "exact_20_tests_without_skip": false,
+  "source_unchanged": true,
+  "source_files": 15867,
+  "source_before_sha256": "fc9e5e57fe887392f2949ca7e427d8348c03fb2248f0ec91d5819a8120d8f422",
+  "source_after_sha256": "fc9e5e57fe887392f2949ca7e427d8348c03fb2248f0ec91d5819a8120d8f422",
+  "adapter_artifacts": {},
+  "adapter_build_kind": "unchanged tests/binaries.py registry at same SHA",
+  "shared_lock_holder": "pid=16082 start=2026-10-16T01:45:11Z label= args=run WSL_CI_JOB_TAG=geo261-targeted-continuation-v2 bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/continue-targeted-namespace.sh\n",
+  "runner_sha256": {
+    "run-parameters-legacy.py": "07b03bdfd1ab7bc744bf6721f9836ecd677f3d7066dedb5078dff089cb6150d8",
+    "parameters-legacy-namespace.sh": "dae1521ec77fce240d2c601c072afbc06caa51867f6910f519078ca2f1d81a2b",
+    "exercise-parameters-legacy.py": "9e61d12593e98c3c075d534d44b99498605a41cef546d2d398932b7e67b1ffdc"
+  },
+  "log_sha256": {
+    "build.log": "692af29f32bfaa7eb0b8c2405f1490aaad814edf22fcf7cb07d90ac8af74b5f1",
+    "status.log": "677bf3f4787c47d89299fe3b3188bfb59ef36ea76444290936b7f914ce38dd10",
+    "status-after.log": "677bf3f4787c47d89299fe3b3188bfb59ef36ea76444290936b7f914ce38dd10"
+  },
+  "full_suite_executed": false,
+  "browser_executed": false,
+  "exit": 1
+}

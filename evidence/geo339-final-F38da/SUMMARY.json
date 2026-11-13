@@ -1,0 +1,2438 @@
+{
+  "schema": "geo339-original-F38da-affected-terminal-collection/1",
+  "sourceSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+  "scope": "Specified importer nine modules and three predicate proofs only; not aggregate native, six browsers, ledger, or architecture.",
+  "outer_exit": 0,
+  "original_group_exits": {
+    "pure65": 0,
+    "pure18": 0,
+    "domain16": 0,
+    "native43": 0
+  },
+  "predicate_exit": 0,
+  "predicate_proof_accepted": true,
+  "original_predicate_rows": [
+    {
+      "predicate": "list",
+      "test": "tests.test_geometry_host_sources.NativeCandidateTransportTests.test_public_default_rejects_non_list_snapshot_faces",
+      "anchorCount": 1,
+      "mutantSHA256": "ab08151591a7f5fd05d5dadc4ac352d226dc805a5a27498f6ee00cfa5fa59d15",
+      "phases": [
+        {
+          "phase": "baseline",
+          "commandResult": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-I",
+              "-B",
+              "-c",
+              "import sys,unittest;sys.path.insert(0,sys.argv.pop(1));unittest.main(module=None)",
+              "/tmp/geo339-three-predicates-F38da31bc/isolated-list",
+              "tests.test_geometry_host_sources.NativeCandidateTransportTests.test_public_default_rejects_non_list_snapshot_faces"
+            ],
+            "cwd": "/tmp/geo339-three-predicates-F38da31bc/isolated-list",
+            "acceptance_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_variant": "list:baseline",
+            "environment": {
+              "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+              "LANG": "C.UTF-8",
+              "LC_ALL": "C.UTF-8",
+              "PYTHONIOENCODING": null,
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "PYTHONOPTIMIZE": null,
+              "TMPDIR": null,
+              "CC": null,
+              "CFLAGS": null,
+              "CPPFLAGS": null,
+              "LDFLAGS": null,
+              "C_INCLUDE_PATH": null,
+              "CPATH": null,
+              "LIBRARY_PATH": null,
+              "LD_LIBRARY_PATH": null,
+              "GCC_EXEC_PREFIX": null,
+              "COMPILER_PATH": null
+            },
+            "started_epoch": 1792803581.9947197,
+            "stdin_provided": false,
+            "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "actual_process_returncode": 0,
+            "timeout_expired": false,
+            "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000042",
+            "ended_epoch": 1792803582.2101312,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "a146ffbdf9b07bb226ef66ce59c2a411149b39de43ba5ad86bc5ec9e95a7fb61",
+            "stdout_bytes": 0,
+            "stderr_bytes": 98
+          },
+          "sourceSHA256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73",
+          "ranOneExistingMethod": true,
+          "originalDiagnosticObserved": false,
+          "normalUnittestFailure": false
+        },
+        {
+          "phase": "withdraw",
+          "commandResult": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-I",
+              "-B",
+              "-c",
+              "import sys,unittest;sys.path.insert(0,sys.argv.pop(1));unittest.main(module=None)",
+              "/tmp/geo339-three-predicates-F38da31bc/isolated-list",
+              "tests.test_geometry_host_sources.NativeCandidateTransportTests.test_public_default_rejects_non_list_snapshot_faces"
+            ],
+            "cwd": "/tmp/geo339-three-predicates-F38da31bc/isolated-list",
+            "acceptance_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_variant": "list:withdraw",
+            "environment": {
+              "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+              "LANG": "C.UTF-8",
+              "LC_ALL": "C.UTF-8",
+              "PYTHONIOENCODING": null,
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "PYTHONOPTIMIZE": null,
+              "TMPDIR": null,
+              "CC": null,
+              "CFLAGS": null,
+              "CPPFLAGS": null,
+              "LDFLAGS": null,
+              "C_INCLUDE_PATH": null,
+              "CPATH": null,
+              "LIBRARY_PATH": null,
+              "LD_LIBRARY_PATH": null,
+              "GCC_EXEC_PREFIX": null,
+              "COMPILER_PATH": null
+            },
+            "started_epoch": 1792803582.211461,
+            "stdin_provided": false,
+            "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "actual_process_returncode": 1,
+            "timeout_expired": false,
+            "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000043",
+            "ended_epoch": 1792803582.4219658,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "00a35158e586bdffbd761a8ad8556f7be3c734dc9e6e25735f6c283a3bbea00b",
+            "stdout_bytes": 0,
+            "stderr_bytes": 5340
+          },
+          "sourceSHA256": "ab08151591a7f5fd05d5dadc4ac352d226dc805a5a27498f6ee00cfa5fa59d15",
+          "ranOneExistingMethod": true,
+          "originalDiagnosticObserved": true,
+          "normalUnittestFailure": true
+        },
+        {
+          "phase": "restored",
+          "commandResult": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-I",
+              "-B",
+              "-c",
+              "import sys,unittest;sys.path.insert(0,sys.argv.pop(1));unittest.main(module=None)",
+              "/tmp/geo339-three-predicates-F38da31bc/isolated-list",
+              "tests.test_geometry_host_sources.NativeCandidateTransportTests.test_public_default_rejects_non_list_snapshot_faces"
+            ],
+            "cwd": "/tmp/geo339-three-predicates-F38da31bc/isolated-list",
+            "acceptance_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_variant": "list:restored",
+            "environment": {
+              "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+              "LANG": "C.UTF-8",
+              "LC_ALL": "C.UTF-8",
+              "PYTHONIOENCODING": null,
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "PYTHONOPTIMIZE": null,
+              "TMPDIR": null,
+              "CC": null,
+              "CFLAGS": null,
+              "CPPFLAGS": null,
+              "LDFLAGS": null,
+              "C_INCLUDE_PATH": null,
+              "CPATH": null,
+              "LIBRARY_PATH": null,
+              "LD_LIBRARY_PATH": null,
+              "GCC_EXEC_PREFIX": null,
+              "COMPILER_PATH": null
+            },
+            "started_epoch": 1792803582.4231894,
+            "stdin_provided": false,
+            "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "actual_process_returncode": 0,
+            "timeout_expired": false,
+            "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000044",
+            "ended_epoch": 1792803582.6098647,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "1f595a73b2ed09c1daaeb8becdd5972805c2e54d319d1d1379fd724d863b04e4",
+            "stdout_bytes": 0,
+            "stderr_bytes": 98
+          },
+          "sourceSHA256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73",
+          "ranOneExistingMethod": true,
+          "originalDiagnosticObserved": false,
+          "normalUnittestFailure": false
+        }
+      ],
+      "expectedOriginalDiagnostic": "snapshot faces null raised unclassified TypeError:",
+      "proofAccepted": true,
+      "byteRestored": true,
+      "originalExitCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "predicate": "dict",
+      "test": "tests.test_geometry_host_sources.NativeCandidateTransportTests.test_public_default_rejects_non_dict_snapshot_faces",
+      "anchorCount": 1,
+      "mutantSHA256": "eb4b29f7964d415d2097c809109f4ec833fe8704a167427570e5590875c94d7b",
+      "phases": [
+        {
+          "phase": "baseline",
+          "commandResult": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-I",
+              "-B",
+              "-c",
+              "import sys,unittest;sys.path.insert(0,sys.argv.pop(1));unittest.main(module=None)",
+              "/tmp/geo339-three-predicates-F38da31bc/isolated-dict",
+              "tests.test_geometry_host_sources.NativeCandidateTransportTests.test_public_default_rejects_non_dict_snapshot_faces"
+            ],
+            "cwd": "/tmp/geo339-three-predicates-F38da31bc/isolated-dict",
+            "acceptance_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_variant": "dict:baseline",
+            "environment": {
+              "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+              "LANG": "C.UTF-8",
+              "LC_ALL": "C.UTF-8",
+              "PYTHONIOENCODING": null,
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "PYTHONOPTIMIZE": null,
+              "TMPDIR": null,
+              "CC": null,
+              "CFLAGS": null,
+              "CPPFLAGS": null,
+              "LDFLAGS": null,
+              "C_INCLUDE_PATH": null,
+              "CPATH": null,
+              "LIBRARY_PATH": null,
+              "LD_LIBRARY_PATH": null,
+              "GCC_EXEC_PREFIX": null,
+              "COMPILER_PATH": null
+            },
+            "started_epoch": 1792803582.6122859,
+            "stdin_provided": false,
+            "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "actual_process_returncode": 0,
+            "timeout_expired": false,
+            "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000045",
+            "ended_epoch": 1792803582.7931123,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "0c1444824fd71eec878a61b61872df1e891b1aacd98843caec2dfe110aef03c8",
+            "stdout_bytes": 0,
+            "stderr_bytes": 98
+          },
+          "sourceSHA256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73",
+          "ranOneExistingMethod": true,
+          "originalDiagnosticObserved": false,
+          "normalUnittestFailure": false
+        },
+        {
+          "phase": "withdraw",
+          "commandResult": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-I",
+              "-B",
+              "-c",
+              "import sys,unittest;sys.path.insert(0,sys.argv.pop(1));unittest.main(module=None)",
+              "/tmp/geo339-three-predicates-F38da31bc/isolated-dict",
+              "tests.test_geometry_host_sources.NativeCandidateTransportTests.test_public_default_rejects_non_dict_snapshot_faces"
+            ],
+            "cwd": "/tmp/geo339-three-predicates-F38da31bc/isolated-dict",
+            "acceptance_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_variant": "dict:withdraw",
+            "environment": {
+              "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+              "LANG": "C.UTF-8",
+              "LC_ALL": "C.UTF-8",
+              "PYTHONIOENCODING": null,
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "PYTHONOPTIMIZE": null,
+              "TMPDIR": null,
+              "CC": null,
+              "CFLAGS": null,
+              "CPPFLAGS": null,
+              "LDFLAGS": null,
+              "C_INCLUDE_PATH": null,
+              "CPATH": null,
+              "LIBRARY_PATH": null,
+              "LD_LIBRARY_PATH": null,
+              "GCC_EXEC_PREFIX": null,
+              "COMPILER_PATH": null
+            },
+            "started_epoch": 1792803582.7943242,
+            "stdin_provided": false,
+            "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "actual_process_returncode": 1,
+            "timeout_expired": false,
+            "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000046",
+            "ended_epoch": 1792803582.9734848,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "bfd099197234c2b3c40d9bed7686bccb7b1a894b7a71482b38b292c3125978e9",
+            "stdout_bytes": 0,
+            "stderr_bytes": 5924
+          },
+          "sourceSHA256": "eb4b29f7964d415d2097c809109f4ec833fe8704a167427570e5590875c94d7b",
+          "ranOneExistingMethod": true,
+          "originalDiagnosticObserved": true,
+          "normalUnittestFailure": true
+        },
+        {
+          "phase": "restored",
+          "commandResult": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-I",
+              "-B",
+              "-c",
+              "import sys,unittest;sys.path.insert(0,sys.argv.pop(1));unittest.main(module=None)",
+              "/tmp/geo339-three-predicates-F38da31bc/isolated-dict",
+              "tests.test_geometry_host_sources.NativeCandidateTransportTests.test_public_default_rejects_non_dict_snapshot_faces"
+            ],
+            "cwd": "/tmp/geo339-three-predicates-F38da31bc/isolated-dict",
+            "acceptance_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_variant": "dict:restored",
+            "environment": {
+              "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+              "LANG": "C.UTF-8",
+              "LC_ALL": "C.UTF-8",
+              "PYTHONIOENCODING": null,
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "PYTHONOPTIMIZE": null,
+              "TMPDIR": null,
+              "CC": null,
+              "CFLAGS": null,
+              "CPPFLAGS": null,
+              "LDFLAGS": null,
+              "C_INCLUDE_PATH": null,
+              "CPATH": null,
+              "LIBRARY_PATH": null,
+              "LD_LIBRARY_PATH": null,
+              "GCC_EXEC_PREFIX": null,
+              "COMPILER_PATH": null
+            },
+            "started_epoch": 1792803582.9749315,
+            "stdin_provided": false,
+            "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "actual_process_returncode": 0,
+            "timeout_expired": false,
+            "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000047",
+            "ended_epoch": 1792803583.1729825,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "353239c6a391a5fe2e900b988e30c68aa3a27170e16d3a962ba3592c634b44fa",
+            "stdout_bytes": 0,
+            "stderr_bytes": 98
+          },
+          "sourceSHA256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73",
+          "ranOneExistingMethod": true,
+          "originalDiagnosticObserved": false,
+          "normalUnittestFailure": false
+        }
+      ],
+      "expectedOriginalDiagnostic": "snapshot faces nested-list raised unclassified AttributeError:",
+      "proofAccepted": true,
+      "byteRestored": true,
+      "originalExitCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "predicate": "feature",
+      "test": "tests.test_geometry_host_sources.NativeCandidateTransportTests.test_public_default_rejects_non_string_feature_snapshot_faces",
+      "anchorCount": 1,
+      "mutantSHA256": "df109c884c7decfa0b23423b67243e6878c8f73d646b70c3969a86c428953483",
+      "phases": [
+        {
+          "phase": "baseline",
+          "commandResult": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-I",
+              "-B",
+              "-c",
+              "import sys,unittest;sys.path.insert(0,sys.argv.pop(1));unittest.main(module=None)",
+              "/tmp/geo339-three-predicates-F38da31bc/isolated-feature",
+              "tests.test_geometry_host_sources.NativeCandidateTransportTests.test_public_default_rejects_non_string_feature_snapshot_faces"
+            ],
+            "cwd": "/tmp/geo339-three-predicates-F38da31bc/isolated-feature",
+            "acceptance_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_variant": "feature:baseline",
+            "environment": {
+              "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+              "LANG": "C.UTF-8",
+              "LC_ALL": "C.UTF-8",
+              "PYTHONIOENCODING": null,
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "PYTHONOPTIMIZE": null,
+              "TMPDIR": null,
+              "CC": null,
+              "CFLAGS": null,
+              "CPPFLAGS": null,
+              "LDFLAGS": null,
+              "C_INCLUDE_PATH": null,
+              "CPATH": null,
+              "LIBRARY_PATH": null,
+              "LD_LIBRARY_PATH": null,
+              "GCC_EXEC_PREFIX": null,
+              "COMPILER_PATH": null
+            },
+            "started_epoch": 1792803583.1752708,
+            "stdin_provided": false,
+            "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "actual_process_returncode": 0,
+            "timeout_expired": false,
+            "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000048",
+            "ended_epoch": 1792803583.3555186,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "6fb836ff09dd03dfee8cf2e46eaaa899995d6f2bae645563568232c2ec053015",
+            "stdout_bytes": 0,
+            "stderr_bytes": 98
+          },
+          "sourceSHA256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73",
+          "ranOneExistingMethod": true,
+          "originalDiagnosticObserved": false,
+          "normalUnittestFailure": false
+        },
+        {
+          "phase": "withdraw",
+          "commandResult": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-I",
+              "-B",
+              "-c",
+              "import sys,unittest;sys.path.insert(0,sys.argv.pop(1));unittest.main(module=None)",
+              "/tmp/geo339-three-predicates-F38da31bc/isolated-feature",
+              "tests.test_geometry_host_sources.NativeCandidateTransportTests.test_public_default_rejects_non_string_feature_snapshot_faces"
+            ],
+            "cwd": "/tmp/geo339-three-predicates-F38da31bc/isolated-feature",
+            "acceptance_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_variant": "feature:withdraw",
+            "environment": {
+              "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+              "LANG": "C.UTF-8",
+              "LC_ALL": "C.UTF-8",
+              "PYTHONIOENCODING": null,
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "PYTHONOPTIMIZE": null,
+              "TMPDIR": null,
+              "CC": null,
+              "CFLAGS": null,
+              "CPPFLAGS": null,
+              "LDFLAGS": null,
+              "C_INCLUDE_PATH": null,
+              "CPATH": null,
+              "LIBRARY_PATH": null,
+              "LD_LIBRARY_PATH": null,
+              "GCC_EXEC_PREFIX": null,
+              "COMPILER_PATH": null
+            },
+            "started_epoch": 1792803583.3568041,
+            "stdin_provided": false,
+            "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "actual_process_returncode": 1,
+            "timeout_expired": false,
+            "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000049",
+            "ended_epoch": 1792803583.5351207,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "cd19b00737f5a4c44336808d48c8adbb2b9aab15ec133b9e862472a5fc9295c0",
+            "stdout_bytes": 0,
+            "stderr_bytes": 5478
+          },
+          "sourceSHA256": "df109c884c7decfa0b23423b67243e6878c8f73d646b70c3969a86c428953483",
+          "ranOneExistingMethod": true,
+          "originalDiagnosticObserved": true,
+          "normalUnittestFailure": true
+        },
+        {
+          "phase": "restored",
+          "commandResult": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-I",
+              "-B",
+              "-c",
+              "import sys,unittest;sys.path.insert(0,sys.argv.pop(1));unittest.main(module=None)",
+              "/tmp/geo339-three-predicates-F38da31bc/isolated-feature",
+              "tests.test_geometry_host_sources.NativeCandidateTransportTests.test_public_default_rejects_non_string_feature_snapshot_faces"
+            ],
+            "cwd": "/tmp/geo339-three-predicates-F38da31bc/isolated-feature",
+            "acceptance_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_sha": "38da31bcac91db631e6325e40b228f8604810e82",
+            "source_variant": "feature:restored",
+            "environment": {
+              "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+              "LANG": "C.UTF-8",
+              "LC_ALL": "C.UTF-8",
+              "PYTHONIOENCODING": null,
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "PYTHONOPTIMIZE": null,
+              "TMPDIR": null,
+              "CC": null,
+              "CFLAGS": null,
+              "CPPFLAGS": null,
+              "LDFLAGS": null,
+              "C_INCLUDE_PATH": null,
+              "CPATH": null,
+              "LIBRARY_PATH": null,
+              "LD_LIBRARY_PATH": null,
+              "GCC_EXEC_PREFIX": null,
+              "COMPILER_PATH": null
+            },
+            "started_epoch": 1792803583.5364904,
+            "stdin_provided": false,
+            "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "actual_process_returncode": 0,
+            "timeout_expired": false,
+            "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000050",
+            "ended_epoch": 1792803583.7134001,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "1f595a73b2ed09c1daaeb8becdd5972805c2e54d319d1d1379fd724d863b04e4",
+            "stdout_bytes": 0,
+            "stderr_bytes": 98
+          },
+          "sourceSHA256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73",
+          "ranOneExistingMethod": true,
+          "originalDiagnosticObserved": false,
+          "normalUnittestFailure": false
+        }
+      ],
+      "expectedOriginalDiagnostic": "snapshot faces feature-list raised unclassified TypeError:",
+      "proofAccepted": true,
+      "byteRestored": true,
+      "originalExitCodes": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "original_importer_rows": [
+    {
+      "suite": "test_geometry_host_sources",
+      "executionSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_host_sources.py",
+        "--json-out",
+        "/tmp/geo339-pure65-F38da31bc/test_geometry_host_sources/result.json",
+        "--log",
+        "/tmp/geo339-pure65-F38da31bc/test_geometry_host_sources/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geometry_host_sources.py",
+        "total": 45,
+        "run": 45,
+        "passed": 45,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 3.67
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 45,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "suite": "test_geometry_source_runtime",
+      "executionSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_source_runtime.py",
+        "--json-out",
+        "/tmp/geo339-pure65-F38da31bc/test_geometry_source_runtime/result.json",
+        "--log",
+        "/tmp/geo339-pure65-F38da31bc/test_geometry_source_runtime/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geometry_source_runtime.py",
+        "total": 10,
+        "run": 10,
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 2.67
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 10,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "suite": "test_geometry_kernel_runtime",
+      "executionSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_kernel_runtime.py",
+        "--json-out",
+        "/tmp/geo339-pure65-F38da31bc/test_geometry_kernel_runtime/result.json",
+        "--log",
+        "/tmp/geo339-pure65-F38da31bc/test_geometry_kernel_runtime/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geometry_kernel_runtime.py",
+        "total": 10,
+        "run": 10,
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 1.73
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 10,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "suite": "test_rectangular_python",
+      "executionSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_rectangular_python.py",
+        "--json-out",
+        "/tmp/geo339-pure18-F38da31bc/test_rectangular_python/result.json",
+        "--log",
+        "/tmp/geo339-pure18-F38da31bc/test_rectangular_python/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_rectangular_python.py",
+        "total": 9,
+        "run": 9,
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 2.14
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 9,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "suite": "test_geometry_host_world",
+      "executionSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_host_world.py",
+        "--json-out",
+        "/tmp/geo339-pure18-F38da31bc/test_geometry_host_world/result.json",
+        "--log",
+        "/tmp/geo339-pure18-F38da31bc/test_geometry_host_world/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geometry_host_world.py",
+        "total": 8,
+        "run": 8,
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 0.1
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 8,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "suite": "test_geometry_kernel_compatibility",
+      "executionSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_kernel_compatibility.py",
+        "--json-out",
+        "/tmp/geo339-pure18-F38da31bc/test_geometry_kernel_compatibility/result.json",
+        "--log",
+        "/tmp/geo339-pure18-F38da31bc/test_geometry_kernel_compatibility/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geometry_kernel_compatibility.py",
+        "total": 1,
+        "run": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 0.13
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 1,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "suite": "test_domain_source_pins",
+      "executionSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_domain_source_pins.py",
+        "--json-out",
+        "/tmp/geo339-domain16-F38da31bc/test_domain_source_pins/result.json",
+        "--log",
+        "/tmp/geo339-domain16-F38da31bc/test_domain_source_pins/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_domain_source_pins.py",
+        "total": 16,
+        "run": 16,
+        "passed": 16,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 0.51
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 16,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "suite": "test_geometry_host_native",
+      "executionSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geometry_host_native.py",
+        "total": 30,
+        "run": 30,
+        "passed": 30,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 18.76
+      },
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_host_native.py",
+        "--json-out",
+        "/tmp/geo339-native43-F38da31bc/test_geometry_host_native/result.json",
+        "--log",
+        "/tmp/geo339-native43-F38da31bc/test_geometry_host_native/unittest.log"
+      ],
+      "expectedContract": {
+        "mode": "count",
+        "count": 30,
+        "unit": "test"
+      }
+    },
+    {
+      "suite": "test_geo261_default_native",
+      "executionSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geo261_default_native.py",
+        "total": 13,
+        "run": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 5.99
+      },
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geo261_default_native.py",
+        "--json-out",
+        "/tmp/geo339-native43-F38da31bc/test_geo261_default_native/result.json",
+        "--log",
+        "/tmp/geo339-native43-F38da31bc/test_geo261_default_native/unittest.log"
+      ],
+      "expectedContract": {
+        "mode": "count",
+        "count": 13,
+        "unit": "test"
+      }
+    }
+  ],
+  "observed_original_module_count": 9,
+  "observed_original_method_total": 142,
+  "observed_original_method_run": 142,
+  "observed_original_method_passed": 142,
+  "observed_original_method_failed": 0,
+  "observed_original_method_skipped": 0,
+  "source_guards": {
+    "pure65": {
+      "head": "38da31bcac91db631e6325e40b228f8604810e82",
+      "porcelain": ""
+    },
+    "pure18": {
+      "head": "38da31bcac91db631e6325e40b228f8604810e82",
+      "porcelain": ""
+    },
+    "domain16": {
+      "head": "38da31bcac91db631e6325e40b228f8604810e82",
+      "porcelain": ""
+    },
+    "native43": {
+      "head": "38da31bcac91db631e6325e40b228f8604810e82",
+      "porcelain": "",
+      "inputsEqualBefore": true,
+      "indexEqualBefore": true
+    }
+  },
+  "original_native_build_exit": 0,
+  "original_native_build_timeout": false,
+  "original_capture_rows": [
+    {
+      "directory": "/workspace/geo339-F38da-source-materialization-20261024/subcommands/000001",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-source-materialization-20261024/subcommands/000002",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-source-materialization-20261024/subcommands/000003",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-source-materialization-20261024/subcommands/000004",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-source-materialization-20261024/subcommands/000005",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-source-materialization-20261024/subcommands/000006",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-source-materialization-20261024/subcommands/000007",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-source-materialization-20261024/subcommands/000008",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-source-materialization-20261024/subcommands/000009",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-source-materialization-20261024/subcommands/000010",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-affected-formal-capture-20261024/subcommands/000001",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-affected-formal-capture-20261024/subcommands/000002",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-affected-formal-capture-20261024/subcommands/000003",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-affected-formal-capture-20261024/subcommands/000004",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/workspace/geo339-F38da-affected-formal-capture-20261024/subcommands/000005",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000001",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000002",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000003",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000004",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000005",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000006",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000007",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000008",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000009",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000010",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000011",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000012",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000013",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000014",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000015",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000016",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000017",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000018",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000019",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000020",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000021",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000022",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000023",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000024",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000025",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000026",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000027",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000028",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000029",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000030",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000031",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000032",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000033",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000034",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000035",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000036",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000037",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000038",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000039",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000040",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000041",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000042",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000043",
+      "actual_exit": 1,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000044",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000045",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000046",
+      "actual_exit": 1,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000047",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000048",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000049",
+      "actual_exit": 1,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000050",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000051",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-three-predicates-F38da31bc/subcommands/000052",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000001",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000002",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000003",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000004",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000005",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000006",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000007",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000008",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000009",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000010",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000011",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000012",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000013",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000014",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000015",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000016",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000017",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000018",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000019",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000020",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000021",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000022",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000023",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000024",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000025",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000026",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000027",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000028",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000029",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000030",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000031",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000032",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000033",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000034",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000035",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000036",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000037",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000038",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000039",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000040",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000041",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000042",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000043",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000044",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000045",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000046",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000047",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000048",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000049",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure65-F38da31bc/subcommands/000050",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000001",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000002",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000003",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000004",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000005",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000006",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000007",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000008",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000009",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000010",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000011",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000012",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000013",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000014",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000015",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000016",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000017",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000018",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000019",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000020",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000021",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000022",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000023",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000024",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000025",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000026",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000027",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000028",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000029",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000030",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000031",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000032",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000033",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000034",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000035",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000036",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000037",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000038",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000039",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000040",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000041",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000042",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000043",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000044",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000045",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000046",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000047",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000048",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000049",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000050",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000051",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000052",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000053",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000054",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000055",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-pure18-F38da31bc/subcommands/000056",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000001",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000002",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000003",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000004",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000005",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000006",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000007",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000008",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000009",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000010",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000011",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000012",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000013",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000014",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000015",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000016",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000017",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000018",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000019",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000020",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000021",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000022",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000023",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000024",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000025",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000026",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000027",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000028",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000029",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000030",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000031",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000032",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000033",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000034",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000035",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000036",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000037",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000038",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000039",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000040",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000041",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000042",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000043",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000044",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000045",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000046",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000047",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000048",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000049",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000050",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000051",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000052",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000053",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000054",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000055",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000056",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000057",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000058",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000059",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000060",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000061",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000062",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000063",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000064",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000065",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-domain16-F38da31bc/subcommands/000066",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-native43-F38da31bc/subcommands/000001",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-native43-F38da31bc/subcommands/000002",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-native43-F38da31bc/subcommands/000003",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-native43-F38da31bc/subcommands/000004",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-native43-F38da31bc/subcommands/000005",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-native43-F38da31bc/subcommands/000006",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-native43-F38da31bc/subcommands/000007",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-native43-F38da31bc/subcommands/000008",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-native43-F38da31bc/subcommands/000009",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-native43-F38da31bc/subcommands/000010",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-native43-F38da31bc/subcommands/000011",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    },
+    {
+      "directory": "/tmp/geo339-native43-launch-F38da31bc/subcommands/000001",
+      "actual_exit": 0,
+      "timeout": false,
+      "source_sha": "38da31bcac91db631e6325e40b228f8604810e82"
+    }
+  ],
+  "elf_payload_excluded_count": 2,
+  "elf_payload_excluded_bytes": 2091120,
+  "no_subject_executed_by_collector": true,
+  "no_existing_file_deleted": true,
+  "limitations": [
+    "Original exposed pipes only; internally unexposed subprocess pipes are not invented.",
+    "Existing ELF payloads remain unchanged at original paths and are represented here by hashes.",
+    "Original same-F terminal guards are used; live checkout/global native cache is not read.",
+    "Source-preparation first four commands correctly record priorM as source_sha; tested five phases use F."
+  ]
+}

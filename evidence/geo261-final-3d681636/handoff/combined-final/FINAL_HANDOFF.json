@@ -1,0 +1,173 @@
+{
+  "schema": "geo299316-p73-phase-stop-final-handoff/1",
+  "recorded_utc": "2026-10-23T15:13:35.584525+00:00",
+  "stop_instruction": "本階段收尾後停止並交他人，不再開新監看、測試或工作線。",
+  "stopped_new_work": true,
+  "issue325": {
+    "read_started": false,
+    "fetch_started": false,
+    "implementation_started": false
+  },
+  "unpublished_git_commits": false,
+  "all_four_worktrees_clean_and_heads_equal_remote": true,
+  "source_remote_check": {
+    "path": "/workspace/geo299316-refresh-20261023/phase-delivery-stop-20261023/SOURCE_REMOTE_CHECK.json",
+    "sha256": "be768a00029c8f55d5a1002443ee65383cc925d39e1e0d5cb981f6d948b1801b"
+  },
+  "combined": {
+    "branch": "codex/geo299-316-combined-20261022",
+    "source_sha": "6cad1a3cb76d7bd910125a1d70ecfffdc9183813",
+    "evidence_head": "ebbd6d19ddf64ac64fd3c902eec6e40f4484582d",
+    "prbody_branch": "codex/geo299-316-combined-20261022-prbody",
+    "prbody_head": "92b3cdb38d73bc75faab3c14ac90b90edf2a52f0",
+    "source_repo": "/tmp/g261-next299316",
+    "prbody_repo": "/workspace/geo299316-prbody",
+    "dynamic_scope": "Current S6cad forward union has no new formal acceptance by this owner. Historical F5bf evidence stays historical. No whole mutation ledger regenerated.",
+    "required_mutations": [
+      "M89",
+      "M90",
+      "M91",
+      "M92",
+      "M93",
+      "M94",
+      "M95",
+      "M96",
+      "M97",
+      "M98"
+    ],
+    "next_preparation_path": "/workspace/geo299316-refresh-20261023/current-s6cad-validation-preparation/PREPARATION.json"
+  },
+  "p73": {
+    "branch": "codex/geo288-p73-final-20261023",
+    "tested_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+    "evidence_head": "77d1e3438d7e952230ce501bf3dddbd9a4e18580",
+    "prbody_branch": "codex/geo288-p73-final-20261023-prbody",
+    "prbody_head": "1addc7930576e45444cb6399b05fef2ca0b3c532",
+    "controlled_actual": "original fixed/withdrawn/restored0/1/0,731 runtime inputs;not full natural workflow",
+    "chromium154_actual": "fixed69 partial0,no withdraw/restore,no full canvas",
+    "independent_peer": "318 actual/public Git roundtrip and final E77/body accepted",
+    "source_checkout_state": "Both source-3d681636 and probe-source-3d681636 now AGENTS-only sparse materialization;HEAD/tree/index stages/refs/object storage unchanged. Restore required tracked source before any reuse;do not delete alternates/upstream shared Git object stores.",
+    "source_restore_prepared_not_executed": {
+      "argv": [
+        "git",
+        "-C",
+        "<exact-own-source-or-probe-path>",
+        "sparse-checkout",
+        "set",
+        "--no-cone",
+        "--stdin"
+      ],
+      "stdin": "/*\n!/evidence/\n!/tests/evidence/\n"
+    },
+    "maintenance_actual": "outer0,source0,probe0,8raw/head/tree/stage/refs unchanged;P88 actual139checks0findings;slot2handed318"
+  },
+  "authority": {
+    "main_commit": "feb502d7b3bade2334733a4349c87ff91b88621e",
+    "queue_sha256": "a9f14cdd3cf2846c65d0a7cc32f02bf3a12ba60e817cd9223c59e4da6f4734e5",
+    "field_original_pr333_head": "3d9bd9476b5eda05e1cb92338ee741b90019dff2",
+    "field_sha256": "3305d8000af9814b91c2646cfcbbc841e1ead813fe3390e482f8bfc2a71c0ab2",
+    "field_quote_matches_current_main": 38,
+    "rule": "FIELD is quoted field reference,not SSOT or new implementation authorization;keep quotations and coordinator inferences distinct."
+  },
+  "finished_peer_scopes": {
+    "geo333_source02cb": "176checks0findings;originalignore0/1/0;no native/browser claim",
+    "geo333_body": "c31b4787e2ec1c8c850131360b159836bbbb0f20f7a05fd5f520f7df14a11b52 accepted;root owns actual publication",
+    "geo314_v2_launcher": "Static preparation accepted only;no dynamic proof by this reviewer",
+    "p88_latest_live_handoff": "45checks0findings plus network/stop11 and final childbody9 accepted;main e008/77fad live update still unverified"
+  },
+  "retained_failures": [
+    "Original P73 retirement R3 busy75 retained byte-identically;no candidate mutation.",
+    "Chrome cache cleanup original outer1 retained;four exact profile deletions0,separate safety postcheck0;legacy feedback-before existence unobserved.",
+    "Independent final P88 body review first metadata attempt TypeError1 retained;fixed text-count collector0;not subject failure."
+  ],
+  "unpublished_external_reports": [
+    {
+      "path": "/workspace/geo288-p73-owner-20261023/FINAL_DELIVERY_INDEX.json",
+      "bytes": 3950,
+      "sha256": "6a40575d83b4553e5189a449022916002af9e424a41f46d74b6a2798ecf7e8e9"
+    },
+    {
+      "path": "/workspace/geo288-p73-owner-20261023/ENVIRONMENT_MAINTENANCE_DELIVERY_INDEX.json",
+      "bytes": 4805,
+      "sha256": "2e73f4867eb6b389e208cf7eeec96531661a6fc93ee270666a26a6e5ce814d5b"
+    },
+    {
+      "path": "/workspace/geo288-p73-owner-20261023/rule-authority-read/receipt.json",
+      "bytes": 3584,
+      "sha256": "0e0ab307bc560201a925204948b0a3489b79bf6dec8d19107a7f1d0e0110b715"
+    },
+    {
+      "path": "/workspace/geo288-p73-owner-20261023/rule-authority-read/READING_NOTES.json",
+      "bytes": 8228,
+      "sha256": "8f26c252c8b2a86922ae0fc086e0e6df0e63c2a676c926e96488900a8e328a90"
+    },
+    {
+      "path": "/workspace/geo299316-refresh-20261023/geo314-fixed-source-prep-review/FINAL_V2_REVIEW.md",
+      "bytes": 1161,
+      "sha256": "106bee6edb10251aac6d723882de5927f7aa37499b5ea137e04037f55d6e2ec6"
+    },
+    {
+      "path": "/workspace/geo299316-refresh-20261023/geo314-fixed-source-prep-review/FINAL_V2_CHECKS.json",
+      "bytes": 2335,
+      "sha256": "37e29b59848822a113ef8a9291d3c903845ce566f14acca1de6de663e9ee0ea1"
+    },
+    {
+      "path": "/workspace/geo299316-refresh-20261023/geo333-field-rules-peer/REVIEW.md",
+      "bytes": 1221,
+      "sha256": "96239d877b88f4f91ce2441615502bca922839fe6d97e48509ecc63a65a9e9ef"
+    },
+    {
+      "path": "/workspace/geo299316-refresh-20261023/geo333-field-rules-peer/CHECKS.json",
+      "bytes": 19863,
+      "sha256": "dcb4639cf929a1ef04a9db434e59e7cf4c6b90ebbab77756f8c1f100e81be631"
+    },
+    {
+      "path": "/workspace/geo299316-refresh-20261023/geo333-prbody-peer/REVIEW.json",
+      "bytes": 2690,
+      "sha256": "bafa1f0c387f3cbe57494a41c98750577c442ef6308b0e41fd415347428d97e4"
+    },
+    {
+      "path": "/workspace/geo299316-refresh-20261023/p88-review-monitor-peer/REVIEW.md",
+      "bytes": 840,
+      "sha256": "753c6a30ce6b3c93f3d1e3f5979e229bc66710b2fb04004a8b61697c18c3745a"
+    },
+    {
+      "path": "/workspace/geo299316-refresh-20261023/p88-review-monitor-peer/CHECKS.json",
+      "bytes": 5253,
+      "sha256": "45ebd7fc13b1bfd92d82efd5c4e44be9bb8e5f2683ed1b3a94a88a408bcbc2a6"
+    },
+    {
+      "path": "/workspace/geo299316-refresh-20261023/p88-live-handoff-peer/REVIEW.md",
+      "bytes": 981,
+      "sha256": "12bf9d43c813b94cf0830bf11597caa0a457c425e324203ea02d452a4118de52"
+    },
+    {
+      "path": "/workspace/geo299316-refresh-20261023/p88-live-handoff-peer/CHECKS.json",
+      "bytes": 4193,
+      "sha256": "aa92b3f00f5cc318e73c642431710cda89054f4bd49900007d19352f26db32c9"
+    },
+    {
+      "path": "/workspace/geo299316-refresh-20261023/p88-live-handoff-peer/STOP_NETWORK_DRAFT_ADDENDUM_PEER.json",
+      "bytes": 1069,
+      "sha256": "9996948b4f891004bfc861a29e5ba8ef5d72825591dc8cb9e4397f3523f0876f"
+    },
+    {
+      "path": "/workspace/geo299316-refresh-20261023/p88-live-handoff-peer/FINAL_CHILD_PRBODY_PEER.json",
+      "bytes": 1872,
+      "sha256": "f7b626c3f165040d62b80c4ab064cc8b641d3e4d86c1732014963c3f49350e83"
+    },
+    {
+      "path": "/workspace/geo299316-refresh-20261023/p88-live-handoff-peer/FINAL_CHILD_PRBODY_PEER_ATTEMPT1.json",
+      "bytes": 485,
+      "sha256": "ebdb0cd8825579a0c0bd03238191ac656799a39f24e77b36fe9dcb8b53ac7855"
+    }
+  ],
+  "publication_note": "These final reviewer/maintenance records are external preparation artifacts handed to root for unified evidence packaging;they are not unpublished Git commits and this stop task does not write another owner branch.",
+  "next_owner_actions": [
+    "Fulfill latest #288 live-body-only condition using exact main e008/77fad and verify readback;network draft saved is not API recovery. No PR merge performed here.",
+    "Respect latest root task priority318→314→combined→323→noWood→324;root must assign shared-file baton separately before edits. Do not infer permission to reverse-merge downstream.",
+    "For combined,receive authoritative forward source baton,merge normally,run affected original formal gates and normal0/1/0 for M89-M98 with full raw streams. Current S6cad dynamic gates stay UNRUN.",
+    "Whole mutation ledger regeneration remains root-only once at final combined stack;architecture/reader freshness must be updated on actual affected final source.",
+    "Issue325 was not started;future owner fresh-fetch review and actual PRhead then inspect small three-dot name-status before any implementation."
+  ]
+}

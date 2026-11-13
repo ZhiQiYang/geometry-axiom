@@ -45,6 +45,29 @@ module.exports = async function projectAudit({send,eval_,sleep,click,waitForUI,e
   };
   const impact=()=>wait(`!!document.querySelector('.reference-impact[open]')`,'impact preview');
   const confirm=async()=>{await ctl('#impact-confirm');await wait(`!document.querySelector('.reference-impact[open]') && !oc.busy`);await sleep(180);};
+  // Field-only edits use the native timber candidate. Placement edits still
+  // use the reference-impact dialog. Idle by itself proves neither committed.
+  const timberImpactState=`(()=>{
+    if(document.querySelector('.reference-impact[open]'))return 'reference';
+    const form=$('timberEditForm'),confirm=$('timberEditConfirm');
+    if(form && confirm && !confirm.hidden && !confirm.disabled)return 'timber';
+    if(form && $('timberEditStatus')?.classList.contains('fi-error'))return 'rejected';
+    if(!oc.busy && !form)return 'missing';
+    return '';
+  })()`;
+  const timberImpact=async()=>{
+    await wait(`!!(${timberImpactState})`,'timber edit preview');
+    const state=await read(timberImpactState);
+    if(state==='reference')return {confirm:'#impact-confirm',cancel:'.reference-impact .impact-actions button:first-child'};
+    if(state==='timber')return {confirm:'#timberEditConfirm',cancel:'#timberEditCancel'};
+    throw Error('Audit timber preview '+state+': '+await read(`$('timberEditStatus')?.textContent || $('status')?.textContent`));
+  };
+  const settleTimberImpact=async()=>{
+    await wait(`!oc.busy && !document.querySelector('.reference-impact[open]') && !$('timberEditForm')`,'timber edit closed');
+    // close() removes the form before native cancellation acknowledges it.
+    await wait(`(()=>{try{ReferenceWorkspace.assertEditable();return true;}catch(_){return false;}})()`,'timber candidate lease released');
+    await settled();
+  };
   const base='surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000';
   const supports=['timber 90 20 33 role boundary','place 90 on 1 at-face e0 +u +n','timber 91 20 33 role boundary','place 91 on 1 at-face e2 +u +n'];
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
@@ -111,16 +134,14 @@ module.exports = async function projectAudit({send,eval_,sleep,click,waitForUI,e
     check(c.name+'：原定位／選段／優先序全部回填',fields.anchor===c.anchor&&fields.selector===c.selector&&fields.priority===String(c.priority)&&fields.note.includes('已帶入原定位'),fields);
     if(c.priority===7){const before=await dump();await fill('#tbEditPri','2.5');await ctl('#tbEditApply');await sleep(200);check('小數custom priority拒絕，沒有偷偷取整',(await dump())===before&&await read(`$('tbEditPri').classList.contains('invalid')`));await fill('#tbEditPri',7);}
     await fill('#tbEditA',29);await fill('#tbEditB',44);await ctl('#tbEditApply');
-    await wait(`!oc.busy || !!document.querySelector('.reference-impact[open]')`);
-    if(await read(`!!document.querySelector('.reference-impact[open]')`)){
-      check(c.name+'：忙碌期間連動確認仍接受滑鼠',await read(`getComputedStyle($('impact-confirm')).pointerEvents!=='none' && getComputedStyle(document.querySelector('.reference-impact .impact-actions button:first-child')).pointerEvents!=='none'`));
-      if(c.priority===1){
-        await ctl('.reference-impact .impact-actions button:first-child');await wait(`!oc.busy`);await sleep(180);
-        check('角材尺寸修改取消保留完整原場景',(await dump())===originalScene);
-        await fill('#tbEditA',29);await fill('#tbEditB',44);await ctl('#tbEditApply');await impact();
-      }
-      await confirm();
+    let editor=await timberImpact();
+    check(c.name+'：忙碌期間連動確認仍接受滑鼠',await read(`(()=>{const confirm=document.querySelector(${JSON.stringify(editor.confirm)}),cancel=document.querySelector(${JSON.stringify(editor.cancel)});return !confirm.disabled && !cancel.disabled && getComputedStyle(confirm).pointerEvents!=='none' && getComputedStyle(cancel).pointerEvents!=='none';})()`));
+    if(c.priority===1){
+      await ctl(editor.cancel);await settleTimberImpact();await sleep(180);
+      check('角材尺寸修改取消保留完整原場景',(await dump())===originalScene);
+      await fill('#tbEditA',29);await fill('#tbEditB',44);await ctl('#tbEditApply');editor=await timberImpact();
     }
+    await ctl(editor.confirm);await settleTimberImpact();
     await wait(`!oc.busy`);await sleep(200);
     const updated=(await refs()).timbers.find(t=>t.id===0);
     check(c.name+'：只改A/B保留同ID及完整定位定義',updated?.geometry.A===29&&updated.geometry.B===44&&JSON.stringify(updated.definition)===JSON.stringify(original.definition),updated);

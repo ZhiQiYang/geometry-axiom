@@ -1,0 +1,440 @@
+			Call graph
+
+
+granularity: each sample hit covers 2 byte(s) for 100.00% of 0.01 seconds
+
+index % time    self  children    called     name
+                0.01    0.00      63/63          reference_default_world [2]
+[1]    100.0    0.01    0.00      63         apply_scene_line_candidate [1]
+                0.00    0.00      63/63          parameter_reference_edit [31]
+                0.00    0.00      49/147         parse_u32 [18]
+                0.00    0.00      21/21          apply_reference_place [50]
+                0.00    0.00      21/21          apply_place_line [49]
+                0.00    0.00      21/21          apply_timber_line [51]
+                0.00    0.00       7/7           apply_reference_guide [69]
+                0.00    0.00       7/7           apply_guide_line [68]
+                0.00    0.00       7/7           apply_spec_line [70]
+                0.00    0.00       7/7           apply_surface_combined_line [71]
+-----------------------------------------------
+                0.00    0.01       7/7           main [3]
+[2]    100.0    0.00    0.01       7         reference_default_world [2]
+                0.01    0.00      63/63          apply_scene_line_candidate [1]
+                0.00    0.00      63/203         json_schedule_support_owner [17]
+-----------------------------------------------
+                                                 <spontaneous>
+[3]    100.0    0.00    0.01                 main [3]
+                0.00    0.01       7/7           reference_default_world [2]
+                0.00    0.00      91/91          js_string_body [25]
+                0.00    0.00       7/14          world_dump_dsl [66]
+                0.00    0.00       7/7           json_engineering_capabilities [74]
+                0.00    0.00       7/7           eng_definition_hash [72]
+-----------------------------------------------
+                0.00    0.00     140/2800        boundary_contains_point [19]
+                0.00    0.00    2660/2800        boundary_contains_rect [9]
+[4]      0.0    0.00    0.00    2800         poly_contains_point [4]
+                0.00    0.00    2800/2800        poly_point_on_edge [5]
+-----------------------------------------------
+                0.00    0.00    2800/2800        poly_contains_point [4]
+[5]      0.0    0.00    0.00    2800         poly_point_on_edge [5]
+-----------------------------------------------
+                0.00    0.00      70/1085        reference_place_geometry [27]
+                0.00    0.00     140/1085        timber_place_a0_on_surface.constprop.0 [21]
+                0.00    0.00     875/1085        timber_a0_footprint_uv [8]
+[6]      0.0    0.00    0.00    1085         surface_direction_vector [6]
+-----------------------------------------------
+                0.00    0.00      14/966         reference_quantity [64]
+                0.00    0.00      42/966         reference_dump [59]
+                0.00    0.00      70/966         reference_place_geometry [27]
+                0.00    0.00     210/966         timber_end_face_check.constprop.0 [16]
+                0.00    0.00     210/966         timber_boundary_role_check.constprop.0 [15]
+                0.00    0.00     420/966         json_reference_geometry [11]
+[7]      0.0    0.00    0.00     966         placement_effective_boundary [7]
+-----------------------------------------------
+                0.00    0.00      42/875         timber_end_face_check.constprop.0 [16]
+                0.00    0.00      42/875         reference_dump [59]
+                0.00    0.00     105/875         resolve_auto_span.constprop.0 [28]
+                0.00    0.00     112/875         reference_check_all [41]
+                0.00    0.00     154/875         world_validate_derived [46]
+                0.00    0.00     420/875         json_reference_geometry [11]
+[8]      0.0    0.00    0.00     875         timber_a0_footprint_uv [8]
+                0.00    0.00     875/1085        surface_direction_vector [6]
+-----------------------------------------------
+                0.00    0.00      84/665         resolve_auto_span.constprop.0 [28]
+                0.00    0.00     140/665         timber_place_a0_on_surface.constprop.0 [21]
+                0.00    0.00     189/665         timber_boundary_role_check.constprop.0 [15]
+                0.00    0.00     252/665         boundary_edge_interval [14]
+[9]      0.0    0.00    0.00     665         boundary_contains_rect [9]
+                0.00    0.00    2660/2800        poly_contains_point [4]
+-----------------------------------------------
+                0.00    0.00      42/483         reference_dump [59]
+                0.00    0.00     189/483         timber_boundary_role_check.constprop.0 [15]
+                0.00    0.00     252/483         boundary_edge_interval [14]
+[10]     0.0    0.00    0.00     483         grid_system_valid [10]
+-----------------------------------------------
+                0.00    0.00      70/420         resolve_auto_span.constprop.0 [28]
+                0.00    0.00      70/420         reference_check_all [41]
+                0.00    0.00      70/420         world_validate_derived [46]
+                0.00    0.00     210/420         timber_end_face_check.constprop.0 [16]
+[11]     0.0    0.00    0.00     420         json_reference_geometry [11]
+                0.00    0.00     420/966         placement_effective_boundary [7]
+                0.00    0.00     420/875         timber_a0_footprint_uv [8]
+-----------------------------------------------
+                0.00    0.00      84/413         resolve_auto_span.constprop.0 [28]
+                0.00    0.00     140/413         timber_place_a0_on_surface.constprop.0 [21]
+                0.00    0.00     189/413         timber_boundary_role_check.constprop.0 [15]
+[12]     0.0    0.00    0.00     413         surface_contains_rect [12]
+-----------------------------------------------
+                0.00    0.00     140/280         reference_check_all [41]
+                0.00    0.00     140/280         world_validate_derived [46]
+[13]     0.0    0.00    0.00     280         count_legal_stops [13]
+-----------------------------------------------
+                0.00    0.00     252/252         timber_end_face_check.constprop.0 [16]
+[14]     0.0    0.00    0.00     252         boundary_edge_interval [14]
+                0.00    0.00     252/665         boundary_contains_rect [9]
+                0.00    0.00     252/483         grid_system_valid [10]
+-----------------------------------------------
+                0.00    0.00      70/210         reference_check_all [41]
+                0.00    0.00      70/210         reference_place_geometry [27]
+                0.00    0.00      70/210         world_validate_derived [46]
+[15]     0.0    0.00    0.00     210         timber_boundary_role_check.constprop.0 [15]
+                0.00    0.00     210/966         placement_effective_boundary [7]
+                0.00    0.00     189/665         boundary_contains_rect [9]
+                0.00    0.00     189/413         surface_contains_rect [12]
+                0.00    0.00     189/483         grid_system_valid [10]
+-----------------------------------------------
+                0.00    0.00      70/210         reference_check_all [41]
+                0.00    0.00      70/210         reference_place_geometry [27]
+                0.00    0.00      70/210         world_validate_derived [46]
+[16]     0.0    0.00    0.00     210         timber_end_face_check.constprop.0 [16]
+                0.00    0.00     252/252         boundary_edge_interval [14]
+                0.00    0.00     210/966         placement_effective_boundary [7]
+                0.00    0.00     210/420         json_reference_geometry [11]
+                0.00    0.00      42/875         timber_a0_footprint_uv [8]
+-----------------------------------------------
+                0.00    0.00      63/203         reference_default_world [2]
+                0.00    0.00     140/203         timber_place_a0_on_surface.constprop.0 [21]
+[17]     0.0    0.00    0.00     203         json_schedule_support_owner [17]
+-----------------------------------------------
+                0.00    0.00       7/147         parameter_reference_edit [31]
+                0.00    0.00       7/147         apply_surface_combined_line [71]
+                0.00    0.00      14/147         apply_reference_guide [69]
+                0.00    0.00      21/147         apply_timber_line [51]
+                0.00    0.00      49/147         apply_scene_line_candidate [1]
+                0.00    0.00      49/147         apply_reference_place [50]
+[18]     0.0    0.00    0.00     147         parse_u32 [18]
+-----------------------------------------------
+                0.00    0.00     140/140         timber_place_a0_on_surface.constprop.0 [21]
+[19]     0.0    0.00    0.00     140         boundary_contains_point [19]
+                0.00    0.00     140/2800        poly_contains_point [4]
+-----------------------------------------------
+                0.00    0.00     140/140         resolve_auto_span.constprop.0 [28]
+[20]     0.0    0.00    0.00     140         pick_stop [20]
+-----------------------------------------------
+                0.00    0.00      70/140         reference_place_geometry [27]
+                0.00    0.00      70/140         world_validate_derived [46]
+[21]     0.0    0.00    0.00     140         timber_place_a0_on_surface.constprop.0 [21]
+                0.00    0.00     140/140         boundary_contains_point [19]
+                0.00    0.00     140/1085        surface_direction_vector [6]
+                0.00    0.00     140/665         boundary_contains_rect [9]
+                0.00    0.00     140/413         surface_contains_rect [12]
+                0.00    0.00     140/203         json_schedule_support_owner [17]
+-----------------------------------------------
+                0.00    0.00       7/126         apply_spec_line [70]
+                0.00    0.00      21/126         parse_placement_body [76]
+                0.00    0.00      42/126         apply_timber_line [51]
+                0.00    0.00      56/126         parse_uv [47]
+[22]     0.0    0.00    0.00     126         parse_coord [22]
+-----------------------------------------------
+                0.00    0.00      42/112         world_validate_derived [46]
+                0.00    0.00      70/112         reference_place_geometry [27]
+[23]     0.0    0.00    0.00     112         surface_primary_axis_check [23]
+-----------------------------------------------
+                0.00    0.00      98/98          js_string_body [25]
+[24]     0.0    0.00    0.00      98         utf8_seq_len [24]
+-----------------------------------------------
+                0.00    0.00      91/91          main [3]
+[25]     0.0    0.00    0.00      91         js_string_body [25]
+                0.00    0.00      98/98          utf8_seq_len [24]
+-----------------------------------------------
+                                  42             reference_eval_timber [26]
+                0.00    0.00      70/70          world_revalidate_candidate [45]
+[26]     0.0    0.00    0.00      70+42      reference_eval_timber [26]
+                0.00    0.00      70/70          reference_place_geometry [27]
+                0.00    0.00       7/21          reference_eval_guide [54]
+                                  42             reference_eval_timber [26]
+-----------------------------------------------
+                0.00    0.00      70/70          reference_eval_timber [26]
+[27]     0.0    0.00    0.00      70         reference_place_geometry [27]
+                0.00    0.00      70/966         placement_effective_boundary [7]
+                0.00    0.00      70/70          resolve_auto_span.constprop.0 [28]
+                0.00    0.00      70/1085        surface_direction_vector [6]
+                0.00    0.00      70/112         surface_primary_axis_check [23]
+                0.00    0.00      70/210         timber_end_face_check.constprop.0 [16]
+                0.00    0.00      70/210         timber_boundary_role_check.constprop.0 [15]
+                0.00    0.00      70/140         timber_place_a0_on_surface.constprop.0 [21]
+                0.00    0.00      63/63          loop_edge_outward_normal [30]
+-----------------------------------------------
+                0.00    0.00      70/70          reference_place_geometry [27]
+[28]     0.0    0.00    0.00      70         resolve_auto_span.constprop.0 [28]
+                0.00    0.00     140/140         pick_stop [20]
+                0.00    0.00     105/875         timber_a0_footprint_uv [8]
+                0.00    0.00      84/665         boundary_contains_rect [9]
+                0.00    0.00      84/413         surface_contains_rect [12]
+                0.00    0.00      70/420         json_reference_geometry [11]
+-----------------------------------------------
+                0.00    0.00      63/63          eng_sha256 [73]
+[29]     0.0    0.00    0.00      63         eng_sha_block [29]
+-----------------------------------------------
+                0.00    0.00      63/63          reference_place_geometry [27]
+[30]     0.0    0.00    0.00      63         loop_edge_outward_normal [30]
+-----------------------------------------------
+                0.00    0.00      63/63          apply_scene_line_candidate [1]
+[31]     0.0    0.00    0.00      63         parameter_reference_edit [31]
+                0.00    0.00       7/147         parse_u32 [18]
+-----------------------------------------------
+                0.00    0.00       7/49          parse_boundary_body [75]
+                0.00    0.00      42/49          world_validate_derived [46]
+[32]     0.0    0.00    0.00      49         boundary_is_valid [32]
+                0.00    0.00      49/49          poly_loop_is_valid [33]
+-----------------------------------------------
+                0.00    0.00      49/49          boundary_is_valid [32]
+[33]     0.0    0.00    0.00      49         poly_loop_is_valid [33]
+-----------------------------------------------
+                0.00    0.00       7/49          parse_placement_body [76]
+                0.00    0.00      42/49          world_validate_derived [46]
+[34]     0.0    0.00    0.00      49         view_unproject_on_surface_near [34]
+-----------------------------------------------
+                0.00    0.00      42/42          world_revalidate_candidate [45]
+[35]     0.0    0.00    0.00      42         assembly_generation_integrity [35]
+-----------------------------------------------
+                0.00    0.00      42/42          world_revalidate_candidate [45]
+[36]     0.0    0.00    0.00      42         assembly_rebuild.constprop.0 [36]
+-----------------------------------------------
+                0.00    0.00      42/42          world_revalidate_candidate [45]
+[37]     0.0    0.00    0.00      42         dp_rebuild [37]
+-----------------------------------------------
+                0.00    0.00      42/42          feed_line.constprop.0 [39]
+[38]     0.0    0.00    0.00      42         engineering_serializable [38]
+-----------------------------------------------
+                0.00    0.00      42/42          world_revalidate_candidate [45]
+[39]     0.0    0.00    0.00      42         feed_line.constprop.0 [39]
+                0.00    0.00      42/42          engineering_serializable [38]
+-----------------------------------------------
+                0.00    0.00      42/42          world_revalidate_candidate [45]
+[40]     0.0    0.00    0.00      42         parameters_rebuild [40]
+-----------------------------------------------
+                0.00    0.00      42/42          world_revalidate_candidate [45]
+[41]     0.0    0.00    0.00      42         reference_check_all [41]
+                0.00    0.00     140/280         count_legal_stops [13]
+                0.00    0.00     112/875         timber_a0_footprint_uv [8]
+                0.00    0.00      70/420         json_reference_geometry [11]
+                0.00    0.00      70/210         timber_end_face_check.constprop.0 [16]
+                0.00    0.00      70/210         timber_boundary_role_check.constprop.0 [15]
+-----------------------------------------------
+                                  42             sp_capture_diagnostics.constprop.0 [42]
+                0.00    0.00      42/42          world_revalidate_candidate [45]
+[42]     0.0    0.00    0.00      42+42      sp_capture_diagnostics.constprop.0 [42]
+                                  42             sp_capture_diagnostics.constprop.0 [42]
+-----------------------------------------------
+                0.00    0.00      42/42          world_revalidate_candidate [45]
+[43]     0.0    0.00    0.00      42         sp_rebuild.constprop.0 [43]
+-----------------------------------------------
+                0.00    0.00       7/42          apply_surface_combined_line [71]
+                0.00    0.00       7/42          apply_spec_line [70]
+                0.00    0.00       7/42          apply_reference_guide [69]
+                0.00    0.00      21/42          reference_checked [53]
+[44]     0.0    0.00    0.00      42         world_revalidate [44]
+                0.00    0.00      42/42          world_revalidate_candidate [45]
+-----------------------------------------------
+                0.00    0.00      42/42          world_revalidate [44]
+[45]     0.0    0.00    0.00      42         world_revalidate_candidate [45]
+                0.00    0.00      70/70          reference_eval_timber [26]
+                0.00    0.00      42/42          parameters_rebuild [40]
+                0.00    0.00      42/42          feed_line.constprop.0 [39]
+                0.00    0.00      42/42          assembly_rebuild.constprop.0 [36]
+                0.00    0.00      42/42          sp_rebuild.constprop.0 [43]
+                0.00    0.00      42/42          dp_rebuild [37]
+                0.00    0.00      42/42          assembly_generation_integrity [35]
+                0.00    0.00      42/42          sp_capture_diagnostics.constprop.0 [42]
+                0.00    0.00      42/42          reference_check_all [41]
+                0.00    0.00      42/42          world_validate_derived [46]
+                0.00    0.00      14/21          reference_eval_guide [54]
+-----------------------------------------------
+                0.00    0.00      42/42          world_revalidate_candidate [45]
+[46]     0.0    0.00    0.00      42         world_validate_derived [46]
+                0.00    0.00     154/875         timber_a0_footprint_uv [8]
+                0.00    0.00     140/280         count_legal_stops [13]
+                0.00    0.00      70/140         timber_place_a0_on_surface.constprop.0 [21]
+                0.00    0.00      70/420         json_reference_geometry [11]
+                0.00    0.00      70/210         timber_end_face_check.constprop.0 [16]
+                0.00    0.00      70/210         timber_boundary_role_check.constprop.0 [15]
+                0.00    0.00      42/49          boundary_is_valid [32]
+                0.00    0.00      42/49          view_unproject_on_surface_near [34]
+                0.00    0.00      42/112         surface_primary_axis_check [23]
+-----------------------------------------------
+                0.00    0.00      28/28          parse_boundary_body [75]
+[47]     0.0    0.00    0.00      28         parse_uv [47]
+                0.00    0.00      56/126         parse_coord [22]
+-----------------------------------------------
+                0.00    0.00      28/28          reference_dump [59]
+[48]     0.0    0.00    0.00      28         reference_face_format [48]
+-----------------------------------------------
+                0.00    0.00      21/21          apply_scene_line_candidate [1]
+[49]     0.0    0.00    0.00      21         apply_place_line [49]
+-----------------------------------------------
+                0.00    0.00      21/21          apply_scene_line_candidate [1]
+[50]     0.0    0.00    0.00      21         apply_reference_place [50]
+                0.00    0.00      49/147         parse_u32 [18]
+                0.00    0.00      21/21          reference_checked [53]
+                0.00    0.00      14/14          parse_edge_ref [58]
+                0.00    0.00      14/14          reference_face_parse [62]
+-----------------------------------------------
+                0.00    0.00      21/21          apply_scene_line_candidate [1]
+[51]     0.0    0.00    0.00      21         apply_timber_line [51]
+                0.00    0.00      42/126         parse_coord [22]
+                0.00    0.00      21/147         parse_u32 [18]
+-----------------------------------------------
+                0.00    0.00       7/21          json_engineering_capabilities [74]
+                0.00    0.00      14/21          world_dump_dsl [66]
+[52]     0.0    0.00    0.00      21         grid_subdivision_used [52]
+-----------------------------------------------
+                0.00    0.00      21/21          apply_reference_place [50]
+[53]     0.0    0.00    0.00      21         reference_checked [53]
+                0.00    0.00      21/42          world_revalidate [44]
+-----------------------------------------------
+                0.00    0.00       7/21          reference_eval_timber [26]
+                0.00    0.00      14/21          world_revalidate_candidate [45]
+[54]     0.0    0.00    0.00      21         reference_eval_guide [54]
+                0.00    0.00      14/14          reference_eval_text [61]
+-----------------------------------------------
+                0.00    0.00      14/14          world_dump_dsl [66]
+[55]     0.0    0.00    0.00      14         dump_loop [55]
+-----------------------------------------------
+                0.00    0.00      14/14          world_dump_dsl [66]
+[56]     0.0    0.00    0.00      14         engineering_dump_versions [56]
+-----------------------------------------------
+                0.00    0.00      14/14          world_dump_dsl [66]
+[57]     0.0    0.00    0.00      14         parameters_dump [57]
+-----------------------------------------------
+                0.00    0.00      14/14          apply_reference_place [50]
+[58]     0.0    0.00    0.00      14         parse_edge_ref [58]
+-----------------------------------------------
+                0.00    0.00      14/14          world_dump_dsl [66]
+[59]     0.0    0.00    0.00      14         reference_dump [59]
+                0.00    0.00      42/875         timber_a0_footprint_uv [8]
+                0.00    0.00      42/966         placement_effective_boundary [7]
+                0.00    0.00      42/483         grid_system_valid [10]
+                0.00    0.00      28/28          reference_face_format [48]
+                0.00    0.00      14/14          reference_guide_ready [63]
+                0.00    0.00      14/14          reference_dump_guide [60]
+-----------------------------------------------
+                0.00    0.00      14/14          reference_dump [59]
+[60]     0.0    0.00    0.00      14         reference_dump_guide [60]
+-----------------------------------------------
+                0.00    0.00      14/14          reference_eval_guide [54]
+[61]     0.0    0.00    0.00      14         reference_eval_text [61]
+                0.00    0.00      14/14          reference_quantity [64]
+-----------------------------------------------
+                0.00    0.00      14/14          apply_reference_place [50]
+[62]     0.0    0.00    0.00      14         reference_face_parse [62]
+-----------------------------------------------
+                0.00    0.00      14/14          reference_dump [59]
+[63]     0.0    0.00    0.00      14         reference_guide_ready [63]
+-----------------------------------------------
+                0.00    0.00      14/14          reference_eval_text [61]
+[64]     0.0    0.00    0.00      14         reference_quantity [64]
+                0.00    0.00      14/966         placement_effective_boundary [7]
+-----------------------------------------------
+                0.00    0.00      14/14          world_dump_dsl [66]
+[65]     0.0    0.00    0.00      14         sp_dump [65]
+-----------------------------------------------
+                0.00    0.00       7/14          main [3]
+                0.00    0.00       7/14          eng_definition_hash [72]
+[66]     0.0    0.00    0.00      14         world_dump_dsl [66]
+                0.00    0.00      14/14          parameters_dump [57]
+                0.00    0.00      14/14          engineering_dump_versions [56]
+                0.00    0.00      14/14          dump_loop [55]
+                0.00    0.00      14/21          grid_subdivision_used [52]
+                0.00    0.00      14/14          sp_dump [65]
+                0.00    0.00      14/14          world_dump_grids [67]
+                0.00    0.00      14/14          reference_dump [59]
+-----------------------------------------------
+                0.00    0.00      14/14          world_dump_dsl [66]
+[67]     0.0    0.00    0.00      14         world_dump_grids [67]
+-----------------------------------------------
+                0.00    0.00       7/7           apply_scene_line_candidate [1]
+[68]     0.0    0.00    0.00       7         apply_guide_line [68]
+-----------------------------------------------
+                0.00    0.00       7/7           apply_scene_line_candidate [1]
+[69]     0.0    0.00    0.00       7         apply_reference_guide [69]
+                0.00    0.00      14/147         parse_u32 [18]
+                0.00    0.00       7/42          world_revalidate [44]
+-----------------------------------------------
+                0.00    0.00       7/7           apply_scene_line_candidate [1]
+[70]     0.0    0.00    0.00       7         apply_spec_line [70]
+                0.00    0.00       7/7           reference_name [77]
+                0.00    0.00       7/126         parse_coord [22]
+                0.00    0.00       7/42          world_revalidate [44]
+-----------------------------------------------
+                0.00    0.00       7/7           apply_scene_line_candidate [1]
+[71]     0.0    0.00    0.00       7         apply_surface_combined_line [71]
+                0.00    0.00       7/147         parse_u32 [18]
+                0.00    0.00       7/7           parse_boundary_body [75]
+                0.00    0.00       7/7           parse_placement_body [76]
+                0.00    0.00       7/42          world_revalidate [44]
+-----------------------------------------------
+                0.00    0.00       7/7           main [3]
+[72]     0.0    0.00    0.00       7         eng_definition_hash [72]
+                0.00    0.00       7/14          world_dump_dsl [66]
+                0.00    0.00       7/7           eng_sha256 [73]
+-----------------------------------------------
+                0.00    0.00       7/7           eng_definition_hash [72]
+[73]     0.0    0.00    0.00       7         eng_sha256 [73]
+                0.00    0.00      63/63          eng_sha_block [29]
+-----------------------------------------------
+                0.00    0.00       7/7           main [3]
+[74]     0.0    0.00    0.00       7         json_engineering_capabilities [74]
+                0.00    0.00       7/21          grid_subdivision_used [52]
+-----------------------------------------------
+                0.00    0.00       7/7           apply_surface_combined_line [71]
+[75]     0.0    0.00    0.00       7         parse_boundary_body [75]
+                0.00    0.00      28/28          parse_uv [47]
+                0.00    0.00       7/49          boundary_is_valid [32]
+-----------------------------------------------
+                0.00    0.00       7/7           apply_surface_combined_line [71]
+[76]     0.0    0.00    0.00       7         parse_placement_body [76]
+                0.00    0.00      21/126         parse_coord [22]
+                0.00    0.00       7/49          view_unproject_on_surface_near [34]
+-----------------------------------------------
+                0.00    0.00       7/7           apply_spec_line [70]
+[77]     0.0    0.00    0.00       7         reference_name [77]
+-----------------------------------------------
+
+Index by function name
+
+  [68] apply_guide_line (current_geometry.c) [74] json_engineering_capabilities (engineering_bridge.inc) [48] reference_face_format (references.inc)
+  [49] apply_place_line (current_geometry.c) [11] json_reference_geometry (reference_bridge.inc) [62] reference_face_parse (references.inc)
+  [69] apply_reference_guide (references.inc) [17] json_schedule_support_owner (timber_support_projection.inc) [63] reference_guide_ready (references.inc)
+  [50] apply_reference_place (references.inc) [30] loop_edge_outward_normal (current_geometry.c) [77] reference_name (references.inc)
+   [1] apply_scene_line_candidate (transactions.inc) [31] parameter_reference_edit (transactions.inc) [27] reference_place_geometry (references.inc)
+  [70] apply_spec_line (references.inc) [57] parameters_dump (parameters.inc) [64] reference_quantity (references.inc)
+  [71] apply_surface_combined_line (current_geometry.c) [40] parameters_rebuild (parameters.inc) [28] resolve_auto_span.constprop.0 (current_geometry.c)
+  [51] apply_timber_line (current_geometry.c) [75] parse_boundary_body (current_geometry.c) [42] sp_capture_diagnostics.constprop.0 (section_profile_validation.inc)
+  [35] assembly_generation_integrity (assembly_generation.inc) [22] parse_coord (current_geometry.c) [65] sp_dump (section_profiles.inc)
+  [36] assembly_rebuild.constprop.0 (assembly.inc) [58] parse_edge_ref (current_geometry.c) [43] sp_rebuild.constprop.0 (section_profile_validation.inc)
+  [19] boundary_contains_point (current_geometry.c) [76] parse_placement_body (current_geometry.c) [12] surface_contains_rect (current_geometry.c)
+   [9] boundary_contains_rect (current_geometry.c) [18] parse_u32 (current_geometry.c) [6] surface_direction_vector (current_geometry.c)
+  [14] boundary_edge_interval (current_geometry.c) [47] parse_uv (current_geometry.c) [23] surface_primary_axis_check (current_geometry.c)
+  [32] boundary_is_valid (current_geometry.c) [20] pick_stop (current_geometry.c) [8] timber_a0_footprint_uv (current_geometry.c)
+  [13] count_legal_stops (current_geometry.c) [7] placement_effective_boundary (current_geometry.c) [15] timber_boundary_role_check.constprop.0 (current_geometry.c)
+  [37] dp_rebuild (derived_placements.inc) [4] poly_contains_point (current_geometry.c) [16] timber_end_face_check.constprop.0 (current_geometry.c)
+  [55] dump_loop (current_geometry.c) [33] poly_loop_is_valid (current_geometry.c) [21] timber_place_a0_on_surface.constprop.0 (current_geometry.c)
+  [72] eng_definition_hash (engineering_bridge.inc) [5] poly_point_on_edge (current_geometry.c) [24] utf8_seq_len (current_geometry.c)
+  [73] eng_sha256 (engineering_json.inc) [41] reference_check_all (references.inc) [34] view_unproject_on_surface_near (current_geometry.c)
+  [29] eng_sha_block (engineering_json.inc) [53] reference_checked (references.inc) [66] world_dump_dsl (current_geometry.c)
+  [56] engineering_dump_versions (engineering.inc) [2] reference_default_world (transactions.inc) [67] world_dump_grids (current_geometry.c)
+  [38] engineering_serializable (engineering.inc) [59] reference_dump (references.inc) [44] world_revalidate (current_geometry.c)
+  [39] feed_line.constprop.0 (web_bridge.c) [60] reference_dump_guide (references.inc) [45] world_revalidate_candidate (current_geometry.c)
+  [52] grid_subdivision_used (grid_subdivision.inc) [54] reference_eval_guide (references.inc) [46] world_validate_derived (current_geometry.c)
+  [10] grid_system_valid (grid_systems.inc) [61] reference_eval_text (references.inc)
+  [25] js_string_body (web_bridge.c) [26] reference_eval_timber (references.inc)

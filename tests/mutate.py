@@ -2,9 +2,9 @@
 """變異測試:對 C 原始碼做單點替換 -> 編譯 -> 跑真實裁判。
 
 變異定義 = (id, 說明, old, new[, file]);old 必須在目標檔中恰好出現一次。
-  file   預設 current_geometry.c;邏輯搬到 geometry-core/*.inc 時指名該檔。
-         暫存複本把對應的 #include 行原地換成變異後的內容(只支援 current_geometry.c
-         直接 #include 的檔),所以 #include 的相對路徑解析與 AGENTS.md 所述一致。
+  file   預設 current_geometry.c;邏輯搬到 K/W/H 實作時指名實際檔案。
+         暫存複本只展開主檔到目標的唯一 include 路徑(例如 main→unity→target)，
+         其餘 include 保留並改為 repo 根相對路徑；重複、缺失或越界路徑拒絕。
   equivalent  等價變異(理由文字),每輪仍編譯並跑完整 oracle;錨點須存在。
   retired     邏輯已從產品整個移除(寫明依據),不編譯;舊錨點若又出現會被判 invalid。
   binary="bridge" 使用獨立的已提交稀疏 checkout、官方 binaries.py 編譯及 tests 指定的
@@ -35,7 +35,8 @@
     內容;全部 CRLF->LF)。它取代舊的 runner_sha256:裁判 = 判定邏輯 + 夾具,
     兩者任一改了,killed / survived 就不再是「這個裁判」下的判決。
     (equivalent 不是靠跑裁判得來的,不受 oracle 約束;retired 不帶來源類雜湊。)
-    bridge 裁判另外涵蓋指定方法、共用還原方法、tests/*.py 與根目錄場景；任何共用
+    bridge 裁判另外涵蓋指定方法、共用還原方法、tests/*.py、tests/*.c、
+    tests/fixtures/**/*.scene 與根目錄場景；任何共用
     harness 變更都使其過期，不能借核心場景裁判替預覽序列化背書。
   - 載入與彙總時,source_sha256、closure_sha256、mutant_sha256 任一與現況不符,
     killed / survived 的 oracle_sha256 與現行裁判不符,或根本沒帶雜湊 -> stale;
@@ -47,8 +48,9 @@
 
 exe 指紋快取(治本:Smart App Control 會擋「新出現」的未簽章 exe,沒改就不重編):
   %TEMP%\\geometry-tests\\mutants\\<id>\\_mut.exe 旁邊放 _mut.exe.fingerprint.json:
-  mutant_sha256 + closure_sha256 + compile_sha256(Windows 的 _cl.bat 內容或 Linux 的 cc 參數)+ exe 自身雜湊。
-  四者都相符 -> 沿用、不呼叫 cl;任一不符(含 exe 被動過)-> 重編。
+  mutant_sha256 + closure_sha256 + generated_source_sha256(實際注入後的原始碼)
+  + compile_sha256(Windows 的 _cl.bat 內容或 Linux 的 cc 參數)+ exe 自身雜湊。
+  全部相符 -> 沿用、不呼叫 cl;任一不符(含 exe 被動過)-> 重編。
   沒有 sidecar 的 exe 一律重編：結果檔的來源雜湊不能證明磁碟上這支 exe 的內容或編譯指令。
   baseline(未變異原始碼)的 exe 同樣以 closure + 編譯指令快取在 mutants\\_baseline\\。
 
@@ -99,132 +101,176 @@ VERDICTS = ("killed", "crashed", "survived", "equivalent", "invalid", "stale", "
 MUTANTS = [
     # ---- poly_point_on_edge:邊上判定 ----
     dict(id="M01", desc="I5：邊上判定:含端點改嚴格(端點不在邊上)",
-         old="p.v >= coord_min(a.v, b.v) && p.v <= coord_max(a.v, b.v)",
-         new="p.v > coord_min(a.v, b.v) && p.v < coord_max(a.v, b.v)"),
+         file='geometry-core/kernel/geometry.c',
+         old='p.v >= geo_coord_min(a.v, b.v) && p.v <= geo_coord_max(a.v, b.v)',
+         new='p.v > geo_coord_min(a.v, b.v) && p.v < geo_coord_max(a.v, b.v)'),
     # ---- poly_contains_point:射線法 ----
     dict(id="M02", desc="I5：射線半開區間 [v_min,v_max) 改 (v_min,v_max)",
+         file='geometry-core/kernel/geometry.c',
          old="p.v >= v_min && p.v < v_max && p.u < a.u",
          new="p.v > v_min && p.v < v_max && p.u < a.u"),
     dict(id="M03", desc="I5：射線只數直立邊 -> 改數水平邊",
+         file='geometry-core/kernel/geometry.c',
          old="        if (a.u != b.u) {\n            continue;   /* 水平邊不與水平射線交叉 */",
          new="        if (a.u == b.u) {\n            continue;   /* 水平邊不與水平射線交叉 */"),
     dict(id="M04", desc="I5：奇偶判定反轉(內外互換)",
+         file='geometry-core/kernel/geometry.c',
          old="return crossings % 2 == 1;",
          new="return crossings % 2 == 0;"),
     # ---- segment2_crosses_rect_interior:邊穿矩形內部 ----
     dict(id="M05", desc="I5：直立邊在矩形邊界上也算穿入(<= 改 <)",
+         file='geometry-core/kernel/geometry.c',
          old="if (a.u <= min_u || a.u >= max_u) {\n            return false;",
          new="if (a.u < min_u || a.u > max_u) {\n            return false;"),
     dict(id="M06", desc="I5：水平邊在矩形邊界上也算穿入(<= 改 <)",
+         file='geometry-core/kernel/geometry.c',
          old="if (a.v <= min_v || a.v >= max_v) {\n        return false;",
          new="if (a.v < min_v || a.v > max_v) {\n        return false;"),
     dict(id="M07", desc="I5：直立邊 v 區間零長度接觸也算穿入(< 改 <=)",
-         old="        Coord lo = coord_max(coord_min(a.v, b.v), min_v);\n        Coord hi = coord_min(coord_max(a.v, b.v), max_v);\n        return lo < hi;",
-         new="        Coord lo = coord_max(coord_min(a.v, b.v), min_v);\n        Coord hi = coord_min(coord_max(a.v, b.v), max_v);\n        return lo <= hi;"),
+         file='geometry-core/kernel/geometry.c',
+         old='        GeoCoord lo = geo_coord_max(geo_coord_min(a.v, b.v), min_v);\n        GeoCoord hi = geo_coord_min(geo_coord_max(a.v, b.v), max_v);\n        return lo < hi;',
+         new='        GeoCoord lo = geo_coord_max(geo_coord_min(a.v, b.v), min_v);\n        GeoCoord hi = geo_coord_min(geo_coord_max(a.v, b.v), max_v);\n        return lo <= hi;'),
     # ---- poly_contains_rect:矩形 ⊆ 環 ----
     dict(id="M08", desc="I5：拿掉「環邊不得穿矩形內部」檢查",
-         old="        if (segment2_crosses_rect_interior(\n                loop->v[i], loop->v[(i + 1) % loop->count],\n                min_u, min_v, max_u, max_v)) {\n            return false;\n        }\n    }\n\n    return true;\n}",
-         new="        if (0 && segment2_crosses_rect_interior(\n                loop->v[i], loop->v[(i + 1) % loop->count],\n                min_u, min_v, max_u, max_v)) {\n            return false;\n        }\n    }\n\n    return true;\n}"),
+         file='geometry-core/kernel/geometry.c',
+         old='        if (geo_segment_crosses_rect_interior(\n                loop->v[i], loop->v[(i + 1) % loop->count],\n                min_u, min_v, max_u, max_v)) {\n            return false;\n        }\n    }\n\n    return true;\n}',
+         new='        if (0 && geo_segment_crosses_rect_interior(\n                loop->v[i], loop->v[(i + 1) % loop->count],\n                min_u, min_v, max_u, max_v)) {\n            return false;\n        }\n    }\n\n    return true;\n}'),
     # ---- poly_contains_rect:矩形中心必須在環內(GEO-257)----
     dict(id="M59", desc="I5：拿掉「矩形中心必須在環內」檢查(凹槽內四角貼壁的矩形放行)",
-         old="    if (!poly_rect_center_inside(loop, min_u, min_v, max_u, max_v)) {\n        return false;\n    }",
-         new="    if (0 && !poly_rect_center_inside(loop, min_u, min_v, max_u, max_v)) {\n        return false;\n    }"),
+         file='geometry-core/kernel/geometry.c',
+         old='    if (!geo_loop_rect_center_inside(loop, min_u, min_v, max_u, max_v)) {\n        return false;\n    }',
+         new='    if (0 && !geo_loop_rect_center_inside(loop, min_u, min_v, max_u, max_v)) {\n        return false;\n    }'),
     dict(id="M60", desc="I5：矩形中心的奇偶判定反轉(環內外互換)",
+         file='geometry-core/kernel/geometry.c',
          old="    return (crossings & 1) != 0;",
          new="    return (crossings & 1) == 0;"),
     # ---- boundary_contains_rect:孔干涉 ----
     dict(id="M09", desc="I5：孔 bbox 邊界相接也當相交(<= 改 <)",
          equivalent="等價變異(GEO-172 實證):bbox 恰好相切時孔的所有點都在 u<=min_u(或對稱軸)一側,後續三道細查(頂點嚴格在內/邊穿過內部/孔罩住矩形)都不可能成立,快退與細查得到同一答案。",
+         file='geometry-core/kernel/geometry.c',
          old="if (h_max_u <= min_u || h_min_u >= max_u ||\n            h_max_v <= min_v || h_min_v >= max_v) {",
          new="if (h_max_u < min_u || h_min_u > max_u ||\n            h_max_v < min_v || h_min_v > max_v) {"),
     dict(id="M10", desc="I5：孔頂點嚴格在矩形內 -> 含邊界(> 改 >=)",
+         file='geometry-core/kernel/geometry.c',
          old="if (p.u > min_u && p.u < max_u &&\n                p.v > min_v && p.v < max_v) {",
          new="if (p.u >= min_u && p.u <= max_u &&\n                p.v >= min_v && p.v <= max_v) {"),
-    dict(id="M11", desc="I5：孔罩住矩形判定:inside==4 改 inside==0(罩住反而放行)",
-         old="            if (inside == 4) {\n                return false;",
-         new="            if (inside == 0) {\n                return false;"),
-    # ---- uv_rects_overlap / world_footprint_collides:碰撞 ----
+    dict(id="M11", desc="I5：停用孔完全罩住矩形的精確中心檢查（孔內矩形錯誤放行）",
+         file='geometry-core/kernel/geometry.c',
+         old="        if (geo_loop_rect_center_inside(hole, min_u, min_v, max_u, max_v)) {\n            return false; /* GEO261_HOLE_RECT_CENTER */",
+         new="        if (0 && geo_loop_rect_center_inside(hole, min_u, min_v, max_u, max_v)) {\n            return false; /* GEO261_HOLE_RECT_CENTER */"),
+    # ---- geo_rect_overlap_positive / resolve_auto_span 的碰撞障礙:碰撞 ----
     dict(id="M12", desc="I11：正面積重疊:端點相接也算重疊(> 改 >=)",
-         old="return coord_min(a_max_u, b_max_u) > coord_max(a_min_u, b_min_u) &&\n           coord_min(a_max_v, b_max_v) > coord_max(a_min_v, b_min_v);",
-         new="return coord_min(a_max_u, b_max_u) >= coord_max(a_min_u, b_min_u) &&\n           coord_min(a_max_v, b_max_v) >= coord_max(a_min_v, b_min_v);"),
-    dict(id="M13", desc="I11：碰撞只看同承載面 -> 看不同承載面(!= 改 ==)",
-         old="SurfaceRegion2 other;\n\n        if (!t->placed || t == exclude ||\n            a->placement_id != placement->id) {",
-         new="SurfaceRegion2 other;\n\n        if (!t->placed || t == exclude ||\n            a->placement_id == placement->id) {"),
+         file='geometry-core/kernel/geometry.c',
+         old='return geo_coord_min(a->max_u,b->max_u)>geo_coord_max(a->min_u,b->min_u)&&\n        geo_coord_min(a->max_v,b->max_v)>geo_coord_max(a->min_v,b->min_v);',
+         new='return geo_coord_min(a->max_u,b->max_u)>=geo_coord_max(a->min_u,b->min_u)&&\n        geo_coord_min(a->max_v,b->max_v)>=geo_coord_max(a->min_v,b->min_v);'),
+    # M13 打在 resolve_auto_span 收障礙物的同承載面過濾(放置當下)。GEO-261 51e9045b 把逐 cell 檢查移到
+    # K geo_strip_intervals 之後,原本的 world_footprint_collides(→ W wood_contact_footprint_collides)
+    # 沒有呼叫點,已於 #316 移除。I11 另外兩個「只比同承載面」的過濾是 M97(references.inc 的 reference_check_all)
+    # 與 M98(W world_validation.c 的最終世界重驗):單一承載面的場景全都無感,由
+    # _i11_two_surfaces_same_uv_accept.scene 殺。
+    dict(id="M13", desc="I11：auto 跨距的碰撞障礙只收同承載面已放角材 -> 改收不同承載面(!= 改 ==)",
+         old='        if(!t->placed||a->placement_id!=placement->id)continue;\n        if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;',
+         new='        if(!t->placed||a->placement_id==placement->id)continue;\n        if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;'),
+    dict(id="M97", desc="I11：reference_check_all 的兩兩檢查拿掉「只比同承載面」過濾(references.inc)；兩片承載面各有一支角材的 _i11_two_surfaces_same_uv_accept 必轉紅",
+         file="geometry-core/references.inc",
+         old='if(other_anchor.placement_id!=a->placement_id)continue;',
+         new='if(0&&other_anchor.placement_id!=a->placement_id)continue;'),
+    dict(id="M98", desc="I11：W 最終世界重驗的兩兩檢查拿掉「只比同承載面」過濾(world_validation.c)；同上場景必轉紅",
+         file="geometry-templates/woodworking/native/world_validation.c",
+         old='if(!b.member->placed||a.placement_id!=b.placement_id)continue;',
+         new='if(!b.member->placed)continue;'),
     # ---- collect_stop_faces:擋面枚舉 ----
     dict(id="M14", desc="D11：只收垂直邊 -> 只收平行邊(along_v 分支)",
-         old="if (along_v && a.v != b.v) {",
-         new="if (along_v && a.v == b.v) {"),
+         file='geometry-templates/woodworking/native/contact_world.c',
+         old='if(along_v&&a.v!=b.v)continue;',
+         new='if(along_v&&a.v==b.v)continue;'),
     dict(id="M15", desc="D11：角材側面涵蓋範圍用錯軸(u 範圍改成 v 範圍)",
-         old="f.min_v, f.min_u, f.max_u\n            };\n            out[count++] = (StopFace){\n                STOP_TIMBER_SIDE, 0, t->id, -1, 1, EDGE_FIXED,\n                f.max_v, f.min_u, f.max_u",
-         new="f.min_v, f.min_v, f.max_v\n            };\n            out[count++] = (StopFace){\n                STOP_TIMBER_SIDE, 0, t->id, -1, 1, EDGE_FIXED,\n                f.max_v, f.min_v, f.max_v"),
+         file='geometry-templates/woodworking/native/contact_world.c',
+         old='            out[count++]=(WoodStopFace){WOOD_STOP_MEMBER_SIDE,0,member->id,-1,0,WOOD_STOP_FIXED,f->min_v,f->min_u,f->max_u};\n            out[count++]=(WoodStopFace){WOOD_STOP_MEMBER_SIDE,0,member->id,-1,1,WOOD_STOP_FIXED,f->max_v,f->min_u,f->max_u};',
+         new='            out[count++]=(WoodStopFace){WOOD_STOP_MEMBER_SIDE,0,member->id,-1,0,WOOD_STOP_FIXED,f->min_v,f->min_v,f->max_v};\n            out[count++]=(WoodStopFace){WOOD_STOP_MEMBER_SIDE,0,member->id,-1,1,WOOD_STOP_FIXED,f->max_v,f->min_v,f->max_v};'),
     # ---- pick_stop:唯一全寬擋面 ----
     dict(id="M16", desc="D11：擋面涵蓋檢查:丟掉 hi 側檢查(半寬也算涵蓋)",
-         old="if (f->fixed != at || f->lo > lo || f->hi < hi || stop_face_shadowed(faces,i,lo,hi)) {",
-         new="if (f->fixed != at || f->lo > lo || stop_face_shadowed(faces,i,lo,hi)) {"),
+         file='geometry-templates/woodworking/native/supports.c',
+         old='if (f->fixed != at || f->lo > lo || f->hi < hi || wood_stop_shadowed(faces, i, lo, hi)) {',
+         new='if (f->fixed != at || f->lo > lo || wood_stop_shadowed(faces, i, lo, hi)) {'),
     dict(id="M17", desc="D11：擋面涵蓋檢查:邊界相等不算涵蓋(> 改 >=)",
-         old="if (f->fixed != at || f->lo > lo || f->hi < hi || stop_face_shadowed(faces,i,lo,hi)) {",
-         new="if (f->fixed != at || f->lo >= lo || f->hi <= hi || stop_face_shadowed(faces,i,lo,hi)) {"),
+         file='geometry-templates/woodworking/native/supports.c',
+         old='if (f->fixed != at || f->lo > lo || f->hi < hi || wood_stop_shadowed(faces, i, lo, hi)) {',
+         new='if (f->fixed != at || f->lo >= lo || f->hi <= hi || wood_stop_shadowed(faces, i, lo, hi)) {'),
     # ---- count_legal_stops:重驗用 ----
     dict(id="M18", desc="D11：重驗擋面:FREE 邊也算合法(!= 改 ==)",
-         old="f->fixity != EDGE_FREE && !stop_face_shadowed(faces,i,lo,hi)) {",
-         new="f->fixity == EDGE_FREE && !stop_face_shadowed(faces,i,lo,hi)) {"),
+         file='geometry-templates/woodworking/native/supports.c',
+         old='f->fixity != WOOD_STOP_FREE && !wood_stop_shadowed(faces, i, lo, hi)) {',
+         new='f->fixity == WOOD_STOP_FREE && !wood_stop_shadowed(faces, i, lo, hi)) {'),
     # ---- resolve_auto_span ----
     dict(id="M19", desc="R6(c)：through 選段:邊界座標不算在區間內(<= 改 <)",
+         file='geometry-templates/woodworking/native/member_reference.c',
          old="if (through >= intervals[i].start &&\n                through <= intervals[i].end) {",
          new="if (through > intervals[i].start &&\n                through < intervals[i].end) {"),
     dict(id="M20", desc="R6(d)：拿掉「起點必須有擋面」檢查(懸空端放行)",
+         file='geometry-templates/woodworking/native/member_reference.c',
          old="    if (hits == 0) {\n        snprintf(err, err_cap, \"跨距起點沒有擋面（端面懸空）\");",
          new="    if (0) {\n        snprintf(err, err_cap, \"跨距起點沒有擋面（端面懸空）\");"),
     dict(id="M21", desc="R6(d)：拿掉「終點必須有擋面」檢查",
+         file='geometry-templates/woodworking/native/member_reference.c',
          old="    if (hits == 0) {\n        snprintf(err, err_cap, \"跨距終點沒有擋面（端面懸空）\");",
          new="    if (0) {\n        snprintf(err, err_cap, \"跨距終點沒有擋面（端面懸空）\");"),
     dict(id="M22", desc="R6(d)：拿掉 FREE 擋面拒絕",
-         old="    if (stop->fixity == EDGE_FREE) {\n        snprintf(err, err_cap, \"跨距終點頂到自由邊\");",
+         file='geometry-templates/woodworking/native/member_reference.c',
+         old='    if (stop->fixity == WOOD_STOP_FREE) {\n        snprintf(err, err_cap, "跨距終點頂到自由邊");',
          new="    if (0) {\n        snprintf(err, err_cap, \"跨距終點頂到自由邊\");"),
     dict(id="M23", desc="R6(d)：擋面歧義放行(hits>1 不拒絕)",
          equivalent="等價變異(GEO-172 實證):hits>1 需要兩個邊類擋面在同一座標且都涵蓋角材全寬。輪廓邊+孔邊 → 孔要貼輪廓,核心拒絕;兩孔共邊/共角 → 核心拒絕(兩孔分開才接受);任一為角材側面 → stop_face_shadowed 只留一個;同一簡單多邊形不可能兩邊同座標又涵蓋同段。該分支在合法輸入下不可達,改掉不改變行為。",
+         file='geometry-templates/woodworking/native/member_reference.c',
          old="    if (hits > 1) {\n        snprintf(err, err_cap, \"跨距起點擋面歧義\");",
          new="    if (0) {\n        snprintf(err, err_cap, \"跨距起點擋面歧義\");"),
     dict(id="M24", desc="R6(c)：at-edge 接觸範圍:端點相接也算重疊(< 改 <=)",
+         file='geometry-templates/woodworking/native/member_reference.c',
          old="if (intervals[i].start < contact_hi &&\n                intervals[i].end > contact_lo) {",
          new="if (intervals[i].start <= contact_hi &&\n                intervals[i].end >= contact_lo) {"),
     dict(id="M25", desc="R6(c)：跨距歧義放行:多區間自動選第一段",
+         file='geometry-templates/woodworking/native/member_reference.c',
          old="    } else if (interval_count > 1) {",
          new="    } else if (0 && interval_count > 1) {"),
     # ---- anchor_corner_from_rect:矩形 -> 錨角 ----
     dict(id="M26", desc="I13：錨角選錯邊(min/max 對調)",
-         old="        du > 0 ? rect->min_u : rect->max_u,\n        dv > 0 ? rect->min_v : rect->max_v",
-         new="        du > 0 ? rect->max_u : rect->min_u,\n        dv > 0 ? rect->max_v : rect->min_v"),
+         file='geometry-templates/woodworking/native/member_reference.c',
+         old='return (GeoPoint2){du>0?rect->min_u:rect->max_u,dv>0?rect->min_v:rect->max_v};',
+         new='return (GeoPoint2){du>0?rect->max_u:rect->min_u,dv>0?rect->max_v:rect->min_v};'),
     # ---- a0_rect_uv:深度側 ----
     dict(id="M27", desc="深度側反轉:角材往面下長",
-         old="    Vector3 axis_b =\n        depth_side == SURFACE_DEPTH_POSITIVE_NORMAL\n            ? surface->frame.normal\n            : vector_negate(surface->frame.normal);\n\n    Vector3 axis_a = vector_cross(axis_b, axis_length);\n\n    SurfacePoint2 far_pt = {",
-         new="    Vector3 axis_b =\n        depth_side == SURFACE_DEPTH_POSITIVE_NORMAL\n            ? vector_negate(surface->frame.normal)\n            : surface->frame.normal;\n\n    Vector3 axis_a = vector_cross(axis_b, axis_length);\n\n    SurfacePoint2 far_pt = {"),
+         old='    Vector3 axis_b =\n        depth_side == SURFACE_DEPTH_POSITIVE_NORMAL\n            ? surface->frame.normal\n            : vector_negate(surface->frame.normal);\n\n    Vector3 axis_a = vector_cross(axis_b, axis_length);',
+         new='    Vector3 axis_b =\n        depth_side == SURFACE_DEPTH_POSITIVE_NORMAL\n            ? vector_negate(surface->frame.normal)\n            : surface->frame.normal;\n\n    Vector3 axis_a = vector_cross(axis_b, axis_length);'),
     # ---- at-grid 中線:奇數寬拆分 ----
     dict(id="M28", desc="I13：奇數寬多的 1mm 改放 -cross 側",
-         file="geometry-core/references.inc",
+         file='geometry-templates/woodworking/native/member_reference.c',
          old="widths[0][0]=center-t->size_a/2;",
          new="widths[0][0]=center-(t->size_a+1)/2;"),
     # ---- at-edge 材料側 ----
     dict(id="M29", desc="I13：外輪廓材料側反轉(footprint 長到面外)",
-         file="geometry-core/references.inc",
-         old="Coord inward=(along?normal.u:normal.v)*(hole<0?-1:1);",
-         new="Coord inward=(along?normal.u:normal.v)*(hole<0?(along?1:-1):1);"),
+         file='geometry-templates/woodworking/native/member_reference.c',
+         old='GeoCoord inward=(along?e.outward.u:e.outward.v)*(e.hole<0?-1:1);',
+         new='GeoCoord inward=(along?e.outward.u:e.outward.v)*(e.hole<0?(along?1:-1):1);'),
     dict(id="M30", desc="I13：孔邊材料側反轉(footprint 長進孔裡)",
-         file="geometry-core/references.inc",
-         old="Coord inward=(along?normal.u:normal.v)*(hole<0?-1:1);",
-         new="Coord inward=(along?normal.u:normal.v)*(hole<0?-1:(along?1:-1));"),
+         file='geometry-templates/woodworking/native/member_reference.c',
+         old='GeoCoord inward=(along?e.outward.u:e.outward.v)*(e.hole<0?-1:1);',
+         new='GeoCoord inward=(along?e.outward.u:e.outward.v)*(e.hole<0?-1:(along?1:-1));'),
     # ---- grid ----
     dict(id="M31", desc="I10：格線座標遞增改非嚴格(<= 改 <)",
+         file='geometry-core/kernel/grid.c',
          old="        if (i > 0 && coords[i] <= coords[i - 1]) {",
          new="        if (i > 0 && coords[i] < coords[i - 1]) {"),
     dict(id="M32", desc="I10：格線座標上下界改成嚴格(壓邊界的格線拒絕)",
+         file='geometry-core/kernel/grid.c',
          old="        if (out[k] < lo || out[k] > hi) {",
          new="        if (out[k] <= lo || out[k] >= hi) {"),
     # ---- GEO-101:between 明寫兩端（R21）----
     dict(id="M57", desc="R21：between 的 FREE 邊檢查反轉(明寫就放行自由邊)",
-         old="        if (f->fixity == EDGE_FREE) {",
-         new="        if (f->fixity == EDGE_FIXED) {"),
+         file='geometry-templates/woodworking/native/supports.c',
+         old='        if (f->fixity == WOOD_STOP_FREE) {',
+         new='        if (f->fixity == WOOD_STOP_FIXED) {'),
     dict(id="M58", desc="R21：between 不再要求跨距落在合法區間內(可穿過實體)",
+         file='geometry-templates/woodworking/native/member_reference.c',
          old="                bool inside = false;",
          new="                bool inside = true;"),
     # ---- GEO-099:網格引用鎖（I23）----
@@ -238,14 +284,16 @@ MUTANTS = [
     # ---- GEO-100:I23(b) 重驗時的索引存在性 ----
     dict(id="M56", desc="I23：I23(b) 不再檢查被錨定的索引是否仍推導得出",
          equivalent="等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild → reference_place_geometry 對每個 AT_GRID 角材已先跑同一個 grid_anchor_line_coord(同 grids/count/grid/placement/axis/index/has_band/band;boundary 若為自帶 rect 的合成輪廓,其 bounds/area 與 NULL boundary 的 rect 路徑相同),索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。",
-         old="                !grid_anchor_line_coord(world->grids, world->grid_count, ag, ap,",
-         new="                (false) && grid_anchor_line_coord(world->grids, world->grid_count, ag, ap,"),
+         file='geometry-templates/woodworking/native/world_validation.c',
+         old='                !wood_grid_anchor_line_coord(grids->items,grids->count,grid,&anchor_host,fact.grid_axis,fact.grid_index,',
+         new='                (false) && wood_grid_anchor_line_coord(grids->items,grids->count,grid,&anchor_host,fact.grid_axis,fact.grid_index,'),
     # ---- GEO-100:面材推導（D10a）----
     dict(id="M53", desc="D10a：縫中心線改成縫起點(少加 gap/2)",
-         file="geometry-core/panel_layout_math.h",
-         old="{ return panel_layout_body(anchor,panel,gap,k)+panel+gap/2; }",
-         new="{ return panel_layout_body(anchor,panel,gap,k)+panel; }"),
+         file='geometry-core/kernel/grid.c',
+         old='{ return geo_period_body(anchor,body,gap,k)+body+gap/2; }',
+         new='{ return geo_period_body(anchor,body,gap,k)+body; }'),
     dict(id="M54", desc="D10a：產生條件由嚴格小於放寬成小於等於(多出尾端一條)",
+         file='geometry-core/kernel/grid.c',
          old="            if (gap_hi >= hi) {",
          new="            if (gap_hi > hi) {"),
     dict(id="M55", desc="D10a：縫寬奇數不再拒絕(改成只擋負數)",
@@ -253,14 +301,14 @@ MUTANTS = [
          old="            if (p_gap % 2 != 0) {",
          new="            if (p_gap < 0) {"),
     dict(id="M33", desc="I13：at-grid 軸向守門員反轉",
-         file="geometry-core/references.inc",
-         old="g->placement_id!=p->id || (a->ref_grid_axis==0)!=along)",
-         new="g->placement_id!=p->id || (a->ref_grid_axis==0)==along)"),
+         file='geometry-templates/woodworking/native/member_reference.c',
+         old='g.placement_id!=p.id||(a->ref_grid_axis==0)!=along)',
+         new='g.placement_id!=p.id||(a->ref_grid_axis==0)==along)'),
     # ---- at-edge 方向守門員 ----
     dict(id="M34", desc="I13：at-edge 平行守門員反轉",
-         file="geometry-core/references.inc",
-         old="if ((e.start.u==e.end.u)!=along)",
-         new="if ((e.start.u==e.end.u)==along)"),
+         file='geometry-templates/woodworking/native/member_reference.c',
+         old='if((e.segment.start.u==e.segment.end.u)!=along)',
+         new='if((e.segment.start.u==e.segment.end.u)==along)'),
     # ---- timber_construct ----
     dict(id="M35", desc="明寫長度允許 L=0(<= 改 <)",
          retired="GEO-125(commit bc87d02,2026-09-18)廢除明寫長度:timber_construct 現在以 `!auto_length ||` 一律拒絕明寫長度(current_geometry.c timber_construct),`(!auto_length && length <= 0)` 這條判定隨整個分支消失;apply_timber_line 的訊息亦改為「明寫長度已廢除」,公理層 D7/I18/R4 同。沒有可對應的現行判定,不另編變異湊數。",
@@ -268,24 +316,28 @@ MUTANTS = [
          new="        (!auto_length && length < 0) ||"),
     # ---- world_revalidate ----
     dict(id="M36", desc="R6(e)：重驗跳過端點擋面檢查",
-         equivalent="等價變異(冗餘檢查,2026-10-01 實證):被變異的是 world_validate_derived 內的 R6(d)/R21 端面唯一擋面檢查,它唯一的呼叫者是 world_revalidate,而 world_revalidate 在它之前(同一個 candidate、reference_rebuild 之後)先跑 reference_check_all(references.inc:485-491),對每支已放角材算同一個 collect_stop_faces / count_legal_stops / 同一個 hits==0||(!has_between&&hits!=1) 條件,不過就 return false、根本到不了 world_validate_derived;兩處輸入(candidate 的 timbers/anchors/placements/boundaries)逐項相同,中間只改 candidate.spaces,不影響擋面。差分測試:基準 exe 與 M36 變異 exe 對 7143 個輸入(根目錄 143 個 .scene + tests/fuzz_scene.py 語料 3000 案 seed 1 + 4000 個 surface/grid 重宣告擾動,其中基準接受 362、重驗拒絕 612)比 exit code / stdout / stderr,零分歧;基準輸出從未出現 world_validate_derived 的專屬訊息「R6(d): 端面需要恰好一個涵蓋全寬的合法擋面」。另:同時拿掉兩處檢查 136/136 仍全過(前一輪探針)。此塊是 reference_check_all 的重複防線,不是獨立判定。",
-         old="            /* R6(d)/R21: the full world must still have unique support,\n             * unless between explicitly selects valid stop faces. */\n            {\n                StopFace faces[STOP_FACE_MAX];",
-         new="            /* R6(d)/R21: the full world must still have unique support,\n             * unless between explicitly selects valid stop faces. */\n            if (0) {\n                StopFace faces[STOP_FACE_MAX];"),
+         equivalent='等價變異(冗餘檢查,2026-10-01 實證):被變異的是 world_validate_derived 內的 R6(d)/R21 端面唯一擋面檢查,它唯一的呼叫者是 world_revalidate,而 world_revalidate 在它之前(同一個 candidate、reference_rebuild 之後)先跑 reference_check_all(references.inc:485-491),對每支已放角材算同一個 collect_stop_faces / count_legal_stops / 同一個 hits==0||(!has_between&&hits!=1) 條件,不過就 return false、根本到不了 world_validate_derived;兩處輸入(candidate 的 timbers/anchors/placements/boundaries)逐項相同,中間只改 candidate.spaces,不影響擋面。差分測試:基準 exe 與 M36 變異 exe 對 7143 個輸入(根目錄 143 個 .scene + tests/fuzz_scene.py 語料 3000 案 seed 1 + 4000 個 surface/grid 重宣告擾動,其中基準接受 362、重驗拒絕 612)比 exit code / stdout / stderr,零分歧;基準輸出從未出現 world_validate_derived 的專屬訊息「R6(d): 端面需要恰好一個涵蓋全寬的合法擋面」。另:同時拿掉兩處檢查 136/136 仍全過(前一輪探針)。此塊是 reference_check_all 的重複防線,不是獨立判定。',
+         file='geometry-templates/woodworking/native/world_validation.c',
+         old='        WoodStopFace faces[WOOD_CONTACT_FACE_CAPACITY];\n        size_t count=context->stops(context->user,fact.placement_id,&footprint,along_v,member,faces,WOOD_CONTACT_FACE_CAPACITY);\n        GeoCoord ends[2]={along_v?footprint.min_v:footprint.min_u,along_v?footprint.max_v:footprint.max_u};\n        GeoCoord lo=along_v?footprint.min_u:footprint.min_v,hi=along_v?footprint.max_u:footprint.max_v;\n        for(size_t end=0;end<2;++end){size_t hits=wood_stop_count_legal(faces,count,ends[end],lo,hi);\n            WoodBoundaryEndAdmission admission=WOOD_BOUNDARY_END_ORDINARY;\n            if(member->role==WOOD_MEMBER_ROLE_BOUNDARY&&context->boundary_end){\n                if(!context->boundary_end(context->user,fact.placement_id,&footprint,member,along_v,(int)end,faces,count,&admission))return false;\n                if(admission==WOOD_BOUNDARY_END_PARTIAL)continue;\n                if(admission==WOOD_BOUNDARY_END_BARE_RC)return validation_refuse(error,capacity,"V_CUT_PRIORITY：固定段端點有裸露的可放料 RC 面，必須先貼角材");\n            }\n            if(!hits||(!fact.has_between&&hits!=1))\n                return validation_refuse(error,capacity,"R6(d): 端面需要恰好一個涵蓋全寬的合法擋面");\n        }',
+         new='        if(0){\n        WoodStopFace faces[WOOD_CONTACT_FACE_CAPACITY];\n        size_t count=context->stops(context->user,fact.placement_id,&footprint,along_v,member,faces,WOOD_CONTACT_FACE_CAPACITY);\n        GeoCoord ends[2]={along_v?footprint.min_v:footprint.min_u,along_v?footprint.max_v:footprint.max_u};\n        GeoCoord lo=along_v?footprint.min_u:footprint.min_v,hi=along_v?footprint.max_u:footprint.max_v;\n        for(size_t end=0;end<2;++end){size_t hits=wood_stop_count_legal(faces,count,ends[end],lo,hi);\n            WoodBoundaryEndAdmission admission=WOOD_BOUNDARY_END_ORDINARY;\n            if(member->role==WOOD_MEMBER_ROLE_BOUNDARY&&context->boundary_end){\n                if(!context->boundary_end(context->user,fact.placement_id,&footprint,member,along_v,(int)end,faces,count,&admission))return false;\n                if(admission==WOOD_BOUNDARY_END_PARTIAL)continue;\n                if(admission==WOOD_BOUNDARY_END_BARE_RC)return validation_refuse(error,capacity,"V_CUT_PRIORITY：固定段端點有裸露的可放料 RC 面，必須先貼角材");\n            }\n            if(!hits||(!fact.has_between&&hits!=1))\n                return validation_refuse(error,capacity,"R6(d): 端面需要恰好一個涵蓋全寬的合法擋面");\n        }\n        }'),
     dict(id="M37", desc="I11：碰撞兩兩檢查變成自己也算(j=i+1 改 j=i)",
-         old="        for (size_t j = i + 1; j < world->timber_count; ++j) {",
-         new="        for (size_t j = i; j < world->timber_count; ++j) {"),
+         file='geometry-templates/woodworking/native/world_validation.c',
+         old='for(size_t j=i+1;j<context->member_count;++j)',
+         new='for(size_t j=i;j<context->member_count;++j)'),
     # ---- parse_edge_ref ----
     dict(id="M38", desc="I13：at-edge 邊參照:孔索引 <0 也放行(hole<0 檢查拿掉)",
          old="        if (!parse_i64(buf, &hole) || hole < 0) {",
          new="        if (!parse_i64(buf, &hole) || hole < -99) {"),
     # ---- span cell:零長 cell 處理 ----
     dict(id="M39", desc="R6(a)：切點去重用 < 不去重(零長 cell 出現)",
-         old="        if (unique == 0 || cuts[i] != cuts[unique - 1]) {",
-         new="        if (unique == 0 || cuts[i] < cuts[unique - 1]) {"),
+         file='geometry-core/kernel/geometry.c',
+         old='for(size_t i=0;i<count;++i)if(!unique||cuts[i]!=cuts[unique-1])cuts[unique++]=cuts[i];',
+         new='for(size_t i=0;i<count;++i)if(!unique||cuts[i]<cuts[unique-1])cuts[unique++]=cuts[i];'),
     # ---- span:選段後端點檢查順序 ----
     dict(id="M40", desc="R6(b)：有效 cell 判定拿掉碰撞(只查包含)",
-         old="        bool ok =\n            surface_contains_rect(\n                placement, boundary,\n                cell.min_u, cell.min_v, cell.max_u, cell.max_v) &&\n            !world_footprint_collides(world, placement, &cell, NULL);",
-         new="        bool ok =\n            surface_contains_rect(\n                placement, boundary,\n                cell.min_u, cell.min_v, cell.max_u, cell.max_v);"),
+         file='geometry-core/kernel/geometry.c',
+         old='        ok=geo_region_set_contains_rect(domain,&cell);\n        for(size_t k=0;ok&&k<obstacle_count;++k)if(geo_rect_overlap_positive(&cell,&obstacles[k]))ok=false;',
+         new='        ok=geo_region_set_contains_rect(domain,&cell);'),
     dict(id="M71", desc="R7/#198 A：以 bbox 冒充單 slab 的多段交集",
          old="            if (++intervals > 1) return -1;\n            left = l; right = r;",
          new="            if (++intervals == 1) { left = l; right = r; }\n            else { left = coord_min(left,l); right = coord_max(right,r); }"),
@@ -308,23 +360,62 @@ MUTANTS = [
          old="        if (!local_flush && poly_point_on_edge(loop, corners[i])) return -1;",
          new="        if (!f[(i==0||i==3)?0:1] && !f[i<2?2:3] && poly_point_on_edge(loop, corners[i])) return -1;"),
     # ---- #240 P-143(看板任務 29):S7 / S1 核心場景的牙齒 ----
+    # GEO-261: the predicate is K geo_segment_crosses_rect_interior (same text, Geo* names).
     dict(id="M86", desc="I5/S7：開內部判定拿掉——邊落在矩形邊上、或與矩形只零長度接觸，也算穿入內部(兩軸的嚴格不等號與 lo<hi 全改含邊界)；貼齊的場景 _s7a 必轉紅(被 M05/M06 涵蓋，只作回歸)",
-         old="        if (a.u <= min_u || a.u >= max_u) {\n            return false;\n        }\n        Coord lo = coord_max(coord_min(a.v, b.v), min_v);\n        Coord hi = coord_min(coord_max(a.v, b.v), max_v);\n        return lo < hi;\n    }\n\n    if (a.v <= min_v || a.v >= max_v) {\n        return false;\n    }\n    Coord lo = coord_max(coord_min(a.u, b.u), min_u);\n    Coord hi = coord_min(coord_max(a.u, b.u), max_u);\n    return lo < hi;",
-         new="        if (a.u < min_u || a.u > max_u) {\n            return false;\n        }\n        Coord lo = coord_max(coord_min(a.v, b.v), min_v);\n        Coord hi = coord_min(coord_max(a.v, b.v), max_v);\n        return lo <= hi;\n    }\n\n    if (a.v < min_v || a.v > max_v) {\n        return false;\n    }\n    Coord lo = coord_max(coord_min(a.u, b.u), min_u);\n    Coord hi = coord_min(coord_max(a.u, b.u), max_u);\n    return lo <= hi;"),
+         file="geometry-core/kernel/geometry.c",
+         old="        if (a.u <= min_u || a.u >= max_u) {\n            return false;\n        }\n        GeoCoord lo = geo_coord_max(geo_coord_min(a.v, b.v), min_v);\n        GeoCoord hi = geo_coord_min(geo_coord_max(a.v, b.v), max_v);\n        return lo < hi;\n    }\n\n    if (a.v <= min_v || a.v >= max_v) {\n        return false;\n    }\n    GeoCoord lo = geo_coord_max(geo_coord_min(a.u, b.u), min_u);\n    GeoCoord hi = geo_coord_min(geo_coord_max(a.u, b.u), max_u);\n    return lo < hi;",
+         new="        if (a.u < min_u || a.u > max_u) {\n            return false;\n        }\n        GeoCoord lo = geo_coord_max(geo_coord_min(a.v, b.v), min_v);\n        GeoCoord hi = geo_coord_min(geo_coord_max(a.v, b.v), max_v);\n        return lo <= hi;\n    }\n\n    if (a.v < min_v || a.v > max_v) {\n        return false;\n    }\n    GeoCoord lo = geo_coord_max(geo_coord_min(a.u, b.u), min_u);\n    GeoCoord hi = geo_coord_min(geo_coord_max(a.u, b.u), max_u);\n    return lo <= hi;"),
+    # GEO-261: the V_EXTENSION span check is W wood_member_span_extension_check.
     dict(id="M87", desc="I22/S1：拿掉「非 boundary 角材的 footprint 不得超出定位邊」的拒絕(V_EXTENSION)；primary 整支穿過凹角的 _s1_p8 必轉紅",
-         old="    if (has_edge && self->role != TIMBER_ROLE_BOUNDARY &&\n        (span_lo < edge_lo || span_hi > edge_hi)) {",
-         new="    if (0 && has_edge && self->role != TIMBER_ROLE_BOUNDARY &&\n        (span_lo < edge_lo || span_hi > edge_hi)) {"),
+         file="geometry-templates/woodworking/native/contacts.c",
+         old="    if (has_edge && self->role != WOOD_MEMBER_ROLE_BOUNDARY &&\n        (span_lo < edge_lo || span_hi > edge_hi)) {",
+         new="    if (0 && has_edge && self->role != WOOD_MEMBER_ROLE_BOUNDARY &&\n        (span_lo < edge_lo || span_hi > edge_hi)) {"),
     dict(id="M88", desc="I22/S1(#295 審查須改 2):V_EXTENSION 只驗「超出起點」,拿掉「超出終點」那一半;凹角在定位邊高端的 _s1_p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
          old="        (span_lo < edge_lo || span_hi > edge_hi)) {",
          new="        (span_lo < edge_lo)) {"),
+    # I22/#299：V_EXTENSION 訊息逐欄位的牙齒。contacts.c 的 snprintf 與兩段 clause 各拿掉一個欄位，
+    # contact_world.c 的定位邊編號回報一個；判定在 run_tests.py 的 p8、p8b(error 清單 + error_not)。
+    dict(id="M89", desc="I22/#299：V_EXTENSION 訊息的料件欄位拿掉(角材編號固定印成 0)；p8、p8b、_role_priority_mutant 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='(unsigned)self->id, edge_index,',
+         new='0u, edge_index,'),
+    dict(id="M90", desc="I22/#299：V_EXTENSION 訊息拿掉定位邊編號 e<i>；p8、p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='"——定位邊 e%d [%lld,%lld] mm%s%s",\n                     (unsigned)self->id, edge_index,',
+         new='"——定位邊 [%lld,%lld] mm%s%s",\n                     (unsigned)self->id,'),
+    dict(id="M91", desc="I22/#299：V_EXTENSION 訊息拿掉定位邊區間 [edge_lo,edge_hi] mm；p8、p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='"——定位邊 e%d [%lld,%lld] mm%s%s",\n                     (unsigned)self->id, edge_index,\n                     (long long)edge_lo, (long long)edge_hi, low_note, high_note);',
+         new='"——定位邊 e%d%s%s",\n                     (unsigned)self->id, edge_index,\n                     low_note, high_note);'),
+    dict(id="M92", desc="I22/#299：V_EXTENSION 訊息拿掉「低端超出」區間；凹角在定位邊低端的 _s1_p8 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='if (edge_lo > span_lo) {',
+         new='if (0) {'),
+    dict(id="M93", desc="I22/#299：V_EXTENSION 訊息拿掉「高端超出」區間；凹角在定位邊高端的 _s1_p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='if (edge_hi < span_hi) {',
+         new='if (0) {'),
+    dict(id="M94", desc="I22/#299：V_EXTENSION 訊息的「低端超出」不論有沒有超出都印(多印一段假區間)；_s1_p8b 的 error_not 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='if (edge_lo > span_lo) {',
+         new='if (1) {'),
+    dict(id="M95", desc="I22/#299：V_EXTENSION 訊息的「高端超出」不論有沒有超出都印(多印一段假區間)；_s1_p8 的 error_not 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='if (edge_hi < span_hi) {',
+         new='if (1) {'),
+    dict(id="M96", desc="I22/#299：W 的 wood_contact_boundary_edge 不回報定位邊編號(訊息印成 e-1)；p8、p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contact_world.c",
+         old='if(out_edge)*out_edge=edge;',
+         new='(void)edge;'),
 ]
 
 
 # P-135/P-141: the preview-only guards require the actual bridge, not core.exe.
 MUTANTS += [
     dict(id="M61", desc="D60/K2a：恢復已刪卡片鍵保留，令無引用同鍵重建轉紅", binary="bridge",
-         file="geometry-core/parameters.inc", old="    ParameterSet card={0};card.id=id;",
-         new='    for(size_t r=0;r<w->parameters.field_retirement_count;++r)if(w->parameters.field_retirements[r].parameter_id==id)return parameter_fail("I38 DUPLICATE: a deleted identity cannot be declared again");\n    ParameterSet card={0};card.id=id;',
+         file="geometry-core/parameters.inc", old="    ParameterSet card;geo_parameters_begin_definition(&w->geo.parameters,id,&card);",
+         new='    {const ParameterCandidateLedger *ledger=parameter_ledger(w);for(size_t r=0;ledger&&r<ledger->field_retirement_count;++r)if(ledger->field_retirements[r].parameter_id==id)return parameter_fail("I38 DUPLICATE: a deleted identity cannot be declared again");}\n    ParameterSet card;geo_parameters_begin_definition(&w->geo.parameters,id,&card);',
          tests=["tests.test_grid_system_contract.GridSystemContract.test_k2a_parameter_confirmation_receipt_includes_intermediate_deletion"]),
     dict(id="M62", desc="I38：同鍵卡片已重建就跳過未處理引用", binary="bridge",
          file="geometry-core/parameters.inc",
@@ -357,8 +448,8 @@ MUTANTS += [
          tests=["tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations"]),
     dict(id="M68", desc="I38/D44/P141：漏列面材試排gap/stagger/threshold參數引用", binary="bridge",
          file="geometry-core/parameters.inc",
-         old="for(size_t i=0;i<w->finish_surfaces.fill_count;++i)",
-         new="for(size_t i=0;false&&i<w->finish_surfaces.fill_count;++i)",
+         old="for(size_t i=0;i<w->wood.finish_surfaces.fill_count;++i)",
+         new="for(size_t i=0;false&&i<w->wood.finish_surfaces.fill_count;++i)",
          tests=["tests.test_parameters_core.ParametersCore.test_panel_fill_gap_rebuild_requires_prior_reference_change",
                 "tests.test_parameters_core.ParametersCore.test_panel_fill_stagger_rebuild_requires_prior_reference_change",
                 "tests.test_parameters_core.ParametersCore.test_panel_fill_threshold_rebuild_requires_prior_reference_change"]),
@@ -411,10 +502,18 @@ MUTANTS += [
          old="return parameter_declare(w,PARAM_OWNER_GRID_CARD,s.id,0)&&parameter_declare(w,PARAM_OWNER_GRID_SYSTEM,s.id,0);",
          new="return parameter_declare(w,PARAM_OWNER_GRID_CARD,s.id,0);",
          tests=[S1_TEST]),
-    dict(id="M85", desc="I38/D29/P142-S1：網格系統 ParameterRef 指向已刪卡片時沿用快取長度，不拒絕", binary="bridge",
+    # GEO-261: main 4b975a3d skipped parameter_coord only when the referenced card
+    # no longer exists (grid_systems.inc rebuild loop). The same single cause now sits
+    # in the H coordinate resolver every K grid evaluation calls: a deleted card
+    # reports success and leaves the cached length untouched; missing field, unit and
+    # D1 failures still reject. The candidate's source graph re-reads the parameter
+    # source (W wood_grid_coordinate_source) and still rejects, but without the
+    # I38 MISSING diagnostic and its grid/card/field identity, which is what the
+    # named test asserts (Windows/MSVC: "grid-system 4 u: " instead of I38 MISSING).
+    dict(id="M85", desc="I38/D29/P142-S1：網格系統引用的參數卡片已刪除時，H 座標解析器回報成功並保留快取長度（病因只限卡片不存在；缺欄位、單位、座標範圍超限仍拒絕）。來源圖對參數來源的二次檢查仍會拒絕，但診斷失去 I38 MISSING 與 grid／card／field 身分", binary="bridge",
          file="geometry-core/grid_systems.inc",
-         old="if(!grid_axis_is_infinite(a)||!parameter_coord(w,a->parameters[field],values[field])){",
-         new="if(!grid_axis_is_infinite(a)||(parameter_find(w,a->parameters[field].parameter_id)&&!parameter_coord(w,a->parameters[field],values[field]))){",
+         old="{ return parameter_coord((const World *)state,ref,out); }",
+         new="{ if(!parameter_find((const World *)state,ref.parameter_id))return true; return parameter_coord((const World *)state,ref,out); }",
          tests=["tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS"]),
 ]
 
@@ -432,6 +531,242 @@ MUTANTS += [
          old="                char error[512];",
          new='                char error[512];for(int a=0;a<2;++a)if(parameter_field_generation(w,s->card_reference.parameter_id,s->card_reference.fields[a]))return grid_card_fail("R60 capture grid-system %u parameter %u: deleted earlier in this candidate",id,s->card_reference.parameter_id);',
          tests=[S2_TEST]),
+]
+
+
+# #314: M89-M98 remain reserved for the #299/#316 combined patch. These
+# submission guards run real bridge/native judges; M110 is preview-masked and
+# is deliberately equivalent alone (the paired MP1+MP3 witness is separate).
+STAGGER_TEST = "tests.test_geo314_stagger_commit.StaggerCommit."
+STAGGER_TABLE = "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+MUTANTS += [
+    dict(id="M99", desc="I24/#314 MS1：移除整份提交比較，互動新雙軸應由具名拒絕斷言抓住", binary="bridge",
+         file="current_geometry.c", old="if (!grid_stagger_submission_valid(candidate,grid_error,sizeof grid_error)) {",
+         new="if (false && !grid_stagger_submission_valid(candidate,grid_error,sizeof grid_error)) {",
+         tests=[STAGGER_TEST + "test_C1_new_direct_and_repeat_panel_dual_axes_reject_M1"]),
+    dict(id="M100", desc="I24/#314 MS2：移除隔離重放豁免，舊雙軸場景必須仍能讀回", binary="bridge",
+         file="geometry-core/subgrid_world.inc", old="if(g_parsing_scene_file||!g_subgrid_before)return true;",
+         new="if(!g_subgrid_before)return true;",
+         tests=[STAGGER_TEST + "test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically"]),
+    dict(id="M101", desc="I24/#314 MS3：移除新建／新增第二軸M1拒絕", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(!old||!(old->axis[0].stagger_set&&old->axis[1].stagger_set))", new="if(0)", tests=[STAGGER_TABLE]),
+    dict(id="M102", desc="I24/#314 MS4：移除舊雙軸改值M2拒絕", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis],now->id,(unsigned)axis,facts,count))", new="if(0)", tests=[STAGGER_TABLE]),
+    dict(id="M103", desc="I24/#314 MS5：移除同ParameterRef改卡例外", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(prior->set&&current->set&&prior->parameter_id==current->parameter_id&&prior->field_id==current->field_id)return false;",
+         new="if(0)return false;", tests=[STAGGER_TABLE]),
+    dict(id="M104", desc="I24/#314 MS6：把一軸誤判為雙軸，合法換方向必轉紅", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(!(now->axis[0].stagger_set&&now->axis[1].stagger_set))continue;",
+         new="if(!(now->axis[0].stagger_set||now->axis[1].stagger_set))continue;", tests=[STAGGER_TABLE]),
+    dict(id="M105", desc="I24/#314 MS7：只比較u而漏驗v改值", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="for(int axis=0;axis<2;++axis)if(wood_grid_stagger_value_changed",
+         new="for(int axis=0;axis<1;++axis)if(wood_grid_stagger_value_changed", tests=[STAGGER_TABLE]),
+    dict(id="M106", desc="I24/#314 MS8：來源變更不再比較有效值", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="return old->stagger!=now->stagger;", new="return 0;", tests=[STAGGER_TABLE]),
+    dict(id="M107", desc="I24/#314 MS9：移除缺store的fail-closed拒絕；正常ASSERT而非NULL crash", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(!after||!before||(!facts&&count))return wood_grid_error", new="if(0)return wood_grid_error", tests=[STAGGER_TABLE]),
+    dict(id="M108", desc="I24/#314 MP1：漏接互動archive提交前基線，預覽必須先擋新雙軸", binary="bridge",
+         file="geometry-core/transactions.inc", old="const World *previous_baseline=g_subgrid_before;g_subgrid_before=call->before;",
+         new="const World *previous_baseline=g_subgrid_before;g_subgrid_before=NULL;",
+         tests=[STAGGER_TEST + "test_C3_archive_new_and_existing_second_axes_reject_M1"]),
+    dict(id="M109", desc="I24/#314 MP2：漏接batch提交前基線，整批新增第二軸必拒絕", binary="bridge",
+         file="geometry-web/engineering_bridge.inc", old="g_subgrid_before=call->before;ok=world_revalidate(candidate);",
+         new="g_subgrid_before=NULL;ok=world_revalidate(candidate);",
+         tests=[STAGGER_TEST + "test_C4_batch_new_and_added_second_axes_reject_M1"]),
+    dict(id="M110", desc="I24/#314 MP3：漏接confirm基線，單獨被preview遮蔽", binary="bridge",
+         file="current_geometry.c", old="const World *previous=g_subgrid_before;g_subgrid_before=&candidate->before;",
+         new="const World *previous=g_subgrid_before;g_subgrid_before=NULL;",
+         equivalent="單獨移除confirm基線不能越過原preview的新雙軸拒絕；MP1+MP3配對見證另以真候選證明confirm縱深，不冒稱此單突變killed。",
+         tests=[STAGGER_TEST + "test_C3_archive_new_and_existing_second_axes_reject_M1"]),
+    dict(id="M111", desc="I24/#314 MP4：固定default程式加入雙軸定義，原靜態變更警報必轉紅", binary="bridge",
+         file="geometry-core/transactions.inc", old="static const char *const app_default_replay_lines[]={",
+         new='static const char *const app_default_replay_lines[]={\n    "grid-system 314 name-hex 47 main-along none u repeat 0 100 stagger 40 v repeat 0 100 stagger 30",',
+         tests=["tests.test_geo314_commit_paths.Geo314CommitPaths.test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route"]),
+    dict(id="M112", desc="I24/#314 ordered：換來源整批豁免會錯放450反例", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(!card_edit&&prior->value!=f->after.value)return false;", new="if(0)return false;", tests=[STAGGER_TABLE]),
+    dict(id="M113", desc="I24/#314 ordered：丟掉相鄰事實的來源和值連續性", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(f->order<=order||!wood_grid_stagger_same_point(&state,&f->before))return false;",
+         new="if(f->order<=order)return false;", tests=[STAGGER_TABLE]),
+    dict(id="M114", desc="I24/#314 ordered：丟掉操作順序不能從final store猜例外", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(f->order<=order||!wood_grid_stagger_same_point(&state,&f->before))return false;",
+         new="if(!wood_grid_stagger_same_point(&state,&f->before))return false;", tests=[STAGGER_TABLE]),
+    dict(id="M115", desc="I24/#314 ordered：有序事實必須綁定最終來源和值", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="return found&&wood_grid_stagger_same_point(&state,&final);", new="return found;", tests=[STAGGER_TABLE]),
+    dict(id="M116", desc="I24/#314 ordered：只留最終store丟失原操作事實，500正例應轉紅", binary="bridge",
+         file="geometry-web/engineering_bridge.inc",
+         old="if(ok&&!app_stagger_record_step(candidate,&stagger_before))ok=eng_fail(\"UNSUPPORTED/CAPACITY: ordered stagger evidence memory\");",
+         new="if(false)ok=eng_fail(\"UNSUPPORTED/CAPACITY: ordered stagger evidence memory\");",
+         tests=[STAGGER_TEST + "test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"]),
+    dict(id="M117", desc="I24/#314 ordered：confirm重驗丟掉retainedfacts，500正例應轉紅", binary="bridge",
+         file="current_geometry.c",
+         old="g_boundary_keyed_update=candidate->operation.boundary_keyed;g_boundary_keyed_id=candidate->operation.boundary_id;",
+         new="g_boundary_keyed_update=candidate->operation.boundary_keyed;g_boundary_keyed_id=candidate->operation.boundary_id;app_world_candidate_clear_stagger(candidate);",
+         tests=[STAGGER_TEST + "test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"]),
+    dict(id="M118", desc="I24/#314 ordered：當下來源值誤讀axis快取，先改卡再保值解除的正例應轉紅", binary="bridge",
+         file="geometry-app/native/stagger_facts.inc",
+         old="geo_parameter_evaluation_field(evaluation,point->source,&value)",
+         new="(value=(GeoQuantity){definition->stagger,1,1},true)",
+         tests=[STAGGER_TEST + "test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"]),
+    dict(id="M119", desc="I24/#314 ordered：移除facts內容封存檢查，正常tamper ASSERT必轉紅", binary="bridge",
+         file="geometry-app/native/world_candidate.inc",
+         old="return !strcmp(hash,candidate->operation.stagger_seal);", new="return true;",
+         tests=["tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_fact_bytes_order_count_revision_and_provider_tampering_are_rejected"]),
+    dict(id="M120", desc="I24/#314 ordered：失敗preview未清除候選有序證據，正常ownership ASSERT必轉紅", binary="bridge",
+         file="geometry-web/engineering_bridge.inc",
+         old="if(!ok)app_world_candidate_clear_stagger(transaction);", new="if(0)app_world_candidate_clear_stagger(transaction);",
+         tests=["tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_failed_preview_clears_evidence_and_keeps_definition_and_revision"]),
+    dict(id="M121", desc="I24/#314 ordered：final同參數引用不能遮掉非保值換來源", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(facts[i].system_id==system_id&&facts[i].axis==axis)return true;",
+         new="if(0)return true;",
+         tests=[STAGGER_TEST + "test_Q3_same_final_reference_preserves_card_then_unbind_and_rebind_order",
+                STAGGER_TEST + "test_Q3_same_final_reference_cannot_exempt_value_changing_rebind"]),
+]
+
+
+# #318 Reading A: M122-M139 remain untouched. Native source controls use
+# independent numeric W/caller judges; formal 0/1/0 is still pending until run.
+MUTANTS += [
+    dict(id="M140", desc="I19/R6/#318 閱讀A：partial-admission；撤回須抓到 positive-contact-without-new-minimum", binary="bridge",
+         file='geometry-templates/woodworking/native/contact_world.c',
+         old='    return WOOD_BOUNDARY_END_PARTIAL;', new='    return WOOD_BOUNDARY_END_ORDINARY;',
+         tests=['tests.test_geo318_reading_a_native.ReadingANative.test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles']),
+    dict(id="M141", desc="I19/R6/#318 閱讀A：real-rc-width；撤回須抓到 exact-width-rc-feature-refused", binary="bridge",
+         file='geometry-templates/woodworking/native/contact_world.c',
+         old='if(hi-lo>=width&&visible_lo<visible_hi&&', new='if(hi-lo>width&&visible_lo<visible_hi&&',
+         tests=['tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces']),
+    dict(id="M142", desc="I19/R6/#318 閱讀A：real-rc-plane；撤回須抓到 collinear-rc-subdivision-joined", binary="bridge",
+         file='geometry-templates/woodworking/native/contact_world.c',
+         old='if(!contact_same_rc_plane(face,other)||', new='if(true||',
+         tests=['tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces']),
+    dict(id="M143", desc="I19/R6/#318 閱讀A：contact-side；撤回須抓到 wrong-side-feature-not-contact", binary="bridge",
+         file='geometry-templates/woodworking/native/contact_world.c',
+         old='face->edge_index!=(end==0?1:0)', new='false',
+         tests=['tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces']),
+    dict(id="M144", desc="I19/R6/#318 閱讀A：collector-partial；撤回須抓到 collector-partial-without-fullwidth", binary="bridge",
+         file='geometry-templates/woodworking/native/contact_world.c',
+         old='if(admission==WOOD_BOUNDARY_END_PARTIAL)return true;', new='if(false)return true;',
+         tests=['tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure']),
+    dict(id="M145", desc="I19/R6/#318 閱讀A：span-partial；撤回須抓到 span-accepts-partial-end", binary="bridge",
+         file='geometry-templates/woodworking/native/member_reference.c',
+         old='if(admission==WOOD_BOUNDARY_END_PARTIAL)goto supported_end;', new='if(false)goto supported_end;',
+         tests=['tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure']),
+    dict(id="M146", desc="I19/R6/#318 閱讀A：between-required-source；撤回須抓到 between-required-face-must-itself-contact", binary="bridge",
+         file='geometry-templates/woodworking/native/member_reference.c',
+         old='s,e,face->fixed==s?0:1,face,&admission)', new='s,e,face->fixed==s?0:1,NULL,&admission)',
+         tests=['tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure']),
+    dict(id="M147", desc="I19/R6/#318 閱讀A：revalidate-partial；撤回須抓到 r6e-accepts-partial-without-fullwidth-recheck", binary="bridge",
+         file='geometry-templates/woodworking/native/world_validation.c',
+         old='if(admission==WOOD_BOUNDARY_END_PARTIAL)continue;', new='if(false)continue;',
+         tests=['tests.test_geo318_reading_a_native.ReadingANative.test_r6e_partial_single_full_rc_source_failure_and_collision']),
+    dict(id="M148", desc="I19/R6/#318 閱讀A：revalidate-still-collides；撤回須抓到 partial-does-not-skip-world-collision", binary="bridge",
+         file='geometry-templates/woodworking/native/world_validation.c',
+         old='if(admission==WOOD_BOUNDARY_END_PARTIAL)continue;', new='if(admission==WOOD_BOUNDARY_END_PARTIAL)return true;',
+         tests=['tests.test_geo318_reading_a_native.ReadingANative.test_r6e_partial_single_full_rc_source_failure_and_collision']),
+]
+
+# H collector wiring is distinct from the W typed-fact controls above. This
+# witness evaluates an explicit already-placed World, not CLI reachability.
+MUTANTS += [
+    dict(id="M149", desc="R6(e)/#318：真H collector重套舊全寬規則，部分接觸見證須正常拒絕斷言轉紅", binary="bridge",
+         file="geometry-core/references.inc",
+         old="if(!wood_contact_end_support_check(admission,hits,a->has_between,detail,sizeof detail))",
+         new="if(!hits || (!a->has_between && hits!=1))",
+         tests=["tests.test_geo318_reading_a_native.ReadingANative.test_actual_host_collector_partial_and_i11_wiring_on_explicit_world"]),
+]
+
+MUTANTS += [
+    dict(id="M150", desc="I19/#318：裸RC拒絕不用既有V_CUT_PRIORITY碼會誤歸I20，具名I19診斷斷言須轉紅", binary="bridge",
+         file="geometry-templates/woodworking/native/member_reference.c",
+         old='"V_CUT_PRIORITY：固定段終點有裸露',
+         new='"V_BOUNDARY_END_RC：固定段終點有裸露',
+         tests=["tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure"]),
+]
+
+# RC run rule (decision 2026-10-23 #318): a face already lined by placed members
+# is measured only along the unlined run behind the end.
+MUTANTS += [
+    dict(id="M151", desc="I19/R6/#318 閱讀A：rc-lining；撤回須抓到 lined-rc-short-run-permitted", binary="bridge",
+         file='geometry-templates/woodworking/native/contact_world.c',
+         old='if(near!=at)continue;', new='continue;',
+         tests=['tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces']),
+]
+
+
+# #360 R09a: these are native product mutations, judged by actual g_world
+# transactions. The old JS settleKey probe is not evidence for these rows.
+R09A_REVIEW = "tests.test_identity_ledger_review.IdentityLedgerReview."
+R09A_REBUILD = [R09A_REVIEW + "test_L21_" + route + "_same_key_rebuild"
+               for route in ("engineering", "assembly", "generation", "section")]
+MUTANTS += [
+    dict(id="R09A_N01_ZERO_ID_REOPEN", desc="I70(e)/B1：重加全類型零號拒絕，真新行程保存重開須紅", binary="bridge",
+         file="geometry-app/native/identity_ledger.inc",
+         old="(!id && kind == APP_IDENTITY_BOUNDARY)", new="!id",
+         tests=[R09A_REVIEW + "test_B1_zero_ids_save_and_reopen_in_a_new_process"]),
+    dict(id="R09A_N02_EXPLICIT_DELETE", desc="D60/L21：結算忽略明示刪除，四批次同鍵重建不得沿用", binary="bridge",
+         file="geometry-app/native/identity_ledger.inc",
+         old="bool explicit_delete = identity_explicit_has(explicit_keys, explicit_count, &after_keys[i]);",
+         new="bool explicit_delete = false;", tests=R09A_REBUILD),
+    dict(id="R09A_N03_COUNT_REBIRTH", desc="D61/L21：漏計重建鍵需用的序號，正式高水位斷言須紅", binary="bridge",
+         file="geometry-app/native/identity_ledger.inc",
+         old="bool fresh = !before_on || identity_explicit_has(explicit_keys, explicit_count, &after_keys[i]) || !identity_find_mark(before, &after_keys[i]);",
+         new="bool fresh = !before_on || !identity_find_mark(before, &after_keys[i]);", tests=R09A_REBUILD),
+    dict(id="R09A_N04_PREVIEW_DELETIONS", desc="R56/L21：候選遺失明示刪除集合，四批次確認須紅", binary="bridge",
+         file="geometry-core/transactions.inc",
+         old="AppIdentityCommit commit={g_preview.identity_explicit,g_preview.identity_explicit_count,g_preview.identity_explicit_overflow,false,false};",
+         new="AppIdentityCommit commit={NULL,0,false,false,false};", tests=R09A_REBUILD),
+    dict(id="R09A_N05_PARAMETER_DELETE", desc="D60/L21：parameter_remove漏記卡片明示刪除", binary="bridge",
+         file="geometry-core/parameters.inc", old="identity_note_key(APP_IDENTITY_PARAMETER,id,0);", new="/* mutation: omitted parameter deletion */",
+         tests=R09A_REBUILD),
+    dict(id="R09A_N06_FIELD_DELETE", desc="D60/L21：parameter_retire_field漏記欄位明示刪除", binary="bridge",
+         file="geometry-core/parameters.inc", old="identity_note_key(APP_IDENTITY_FIELD,id,field);", new="/* mutation: omitted field deletion */",
+         tests=R09A_REBUILD),
+    dict(id="R09A_N07_BATCH_SETTLEMENT", desc="I70/L18c：略過批次結算，已確認新卡的記號必缺", binary="bridge",
+         file="geometry-core/transactions.inc", old="const AppIdentityCommit *commit=opaque;",
+         new="const AppIdentityCommit *commit=opaque; if(!commit->scratch)return true;", tests=R09A_REBUILD),
+    dict(id="R09A_N08_LINE_NOOP_RECEIPT", desc="B3：成功同值line謊報新增歷史", binary="bridge",
+         file="geometry-web/web_bridge.c", old='ok&&g_definition_revision!=before_revision?"true":"false"',
+         new='ok?"true":"false"', tests=[R09A_REVIEW + "test_B3_line_noop_receipt_matches_native_undo_active_and_inactive"]),
+    dict(id="R09A_N09_DRAG_NOOP_RECEIPT", desc="B3：零位移drag謊報新增歷史", binary="bridge",
+         file="geometry-web/reference_bridge.inc", old='ok&&g_definition_revision!=before_revision?"true":"false"',
+         new='ok?"true":"false"', tests=[R09A_REVIEW + "test_B3_drag_noop_receipt_does_not_consume_history"]),
+    dict(id="R09A_N10_REPLACEMENT_EPOCH", desc="D61：撤掉成功整體取代清區段，reset/default/load/confirm須紅", binary="bridge",
+         file="geometry-app/native/identity_ledger.inc", old="g_identity_epoch_set = false;", new="/* mutation: stale epoch retained */",
+         tests=[R09A_REVIEW + "test_S1_whole_replacement_clears_epoch_only_on_success"]),
+    dict(id="R09A_N11_DERIVED_COVERAGE", desc="D59：再次排除衍生placement，啟用與保存重開須紅", binary="bridge",
+         file="geometry-app/native/identity_ledger.inc", old="const PlacementSurface *p = world_placement_at(w, i);",
+         new="const PlacementSurface *p = world_placement_at(w, i); if(p->derived_fill_id)continue;",
+         tests=[R09A_REVIEW + "test_S2_derived_placement_covered_and_cold_reopened"]),
+    dict(id="R09A_N12_DERIVED_DELETE", desc="D60：撤掉衍生placement明示刪除，同候選重建須換記號", binary="bridge",
+         file="geometry-core/derived_placements.inc", old="identity_note_key(APP_IDENTITY_PLACEMENT,id,0);",
+         new="/* mutation: omitted derived placement deletion */",
+         tests=[R09A_REVIEW + "test_S2_derived_explicit_delete_rebuild_is_new_incarnation"]),
+    dict(id="R09A_N13_CHANGED_INCLUDES_MARKS", desc="R56/L18i：changed只看去身分定義，重建記號歷史收據須紅", binary="bridge",
+         file="geometry-web/engineering_bridge.inc",
+         old="bool changed=!world_definitions_equal(&g_world,&g_preview.transaction->after)||issued;uint64_t before=g_definition_revision;",
+         new="char old_hash[65],new_hash[65];eng_definition_hash(&g_world,old_hash);eng_definition_hash(&g_preview.transaction->after,new_hash);bool changed=strcmp(old_hash,new_hash)!=0;uint64_t before=g_definition_revision;",
+         tests=R09A_REBUILD),
+    dict(id="R09A_N14_CONTINUED_MARKS", desc="R56/L18j：延續鍵重新取號，內容不變批次與既有記號須紅", binary="bridge",
+         file="geometry-app/native/identity_ledger.inc", old="if (before_on && !explicit_delete && old) {", new="if (false) {",
+         tests=R09A_REBUILD),
+    dict(id="R09A_N17_DEFINITION_IMPORT_SERIAL_COMMIT", desc="R09a／R01 合流：定義匯入須提交身分序號，後續新增與 Undo 分支不得重用記號", binary="bridge",
+         file="geometry-web/definition_import_bridge.inc",
+         old="if (changed) { identity_commit_serials(); ++g_definition_revision; }",
+         new="if (changed) { ++g_definition_revision; }",
+         tests=["tests.test_identity_definition_import_merge.IdentityDefinitionImportMerge." + name for name in [
+             "test_successful_import_commits_serials_before_the_next_covered_key",
+             "test_undo_of_import_does_not_reuse_its_serials_on_a_new_branch"]]),
 ]
 
 
@@ -665,8 +1000,9 @@ def sidecar_path(exe):
 
 
 def mutant_fingerprint(m, src, compile_sha=None):
-    """這個變異 exe 的來歷:變異定義 + 整個 include 閉包 + 編譯指令。三者決定 exe 的內容。"""
+    """原始來源/變異/編譯指紋之外，實際注入內容也必須相同才能沿用。"""
     return {"mutant_sha256": mutant_key(m), "closure_sha256": src.closure,
+            "generated_source_sha256": _sha(build_mutant_source(m, src).encode("utf-8")),
             "compile_sha256": compile_sha or compile_hash()}
 
 
@@ -717,7 +1053,10 @@ def prepare_mutant_exe(m, src, mut_dir, compile_fn, rec=None, compile_sha=None):
     """
     mut_dir = pathlib.Path(mut_dir)
     exe = mut_dir / "_mut.exe"
-    fp = mutant_fingerprint(m, src, compile_sha)
+    try:
+        fp = mutant_fingerprint(m, src, compile_sha)
+    except ValueError as exc:
+        return "invalid", exe, str(exc)
     state = cache_state(exe, fp)
     if state == "hit":
         return "cached", exe, ""
@@ -822,25 +1161,87 @@ def definition_kind(m, src):
     return "run", ""
 
 
-def build_mutant_source(m, src):
-    """回傳要編譯的 .c 全文。
+def _include_relative(src, containing, name):
+    """Resolve a quoted include without reading beyond the captured source map."""
+    name = name.replace("\\", "/")
+    if posixpath.isabs(name) or pathlib.PureWindowsPath(name).drive:
+        raise ValueError(f"include escapes repository: {containing} -> {name}")
+    path = (src.root / posixpath.dirname(containing) / name).resolve()
+    try:
+        return path.relative_to(src.root).as_posix()
+    except ValueError as exc:
+        raise ValueError(f"include escapes repository: {containing} -> {name}") from exc
 
-    目標是 current_geometry.c:直接單點替換。
-    目標是它 #include 的檔:把那行 #include 原地換成變異後的檔內容(檔內的相對
-    #include 改寫成相對於 repo 根的路徑),暫存複本仍只有一個 _mutant_<id>.c。
+
+def build_mutant_source(m, src):
+    """Expand only the unique main-to-target include chain; mutate exactly once.
+
+    Quoted includes in emitted files are rebased to the repository root. Other
+    files stay includes, with their original internal include resolution intact.
+    Source text/hash maps remain the original, unmodified closure snapshot.
     """
-    f = mutant_file(m)
-    mutated = src.texts[f].replace(m["old"], m["new"], 1)
-    if f == MAIN_REL:
-        return mutated
-    main = src.texts[MAIN_REL]
-    line = f'#include "{f}"'
-    if main.count(line) != 1:
-        raise ValueError(f"{MAIN_REL} 中 `{line}` 出現 {main.count(line)} 次(需要 1);巢狀 include 的目標不支援")
-    base = posixpath.dirname(f)
-    body = INCLUDE_RE.sub(
-        lambda mo: '#include "%s"' % posixpath.normpath(posixpath.join(base, mo.group(1))), mutated)
-    return main.replace(line, body, 1)
+    kind, why = definition_kind(m, src)
+    if kind not in ("run", "equivalent"):
+        raise ValueError(why or "mutation target is not active")
+    target = mutant_file(m)
+    edges = {}
+    parents = {}
+    for rel, text in src.texts.items():
+        edges[rel] = []
+        for name in INCLUDE_RE.findall(text):
+            child = _include_relative(src, rel, name)
+            # External-build header aliases may not resolve beside an unexpanded
+            # file. They are not include edges in this captured unity closure.
+            if child in src.texts:
+                edges[rel].append(child)
+                parents.setdefault(child, set()).add(rel)
+    ancestors = {target}
+    pending = [target]
+    while pending:
+        for parent in parents.get(pending.pop(), ()):
+            if parent not in ancestors:
+                ancestors.add(parent)
+                pending.append(parent)
+    paths = []
+
+    def find_path(rel, trail):
+        if rel in trail:
+            raise ValueError("include cycle on mutation path: " + " -> ".join((*trail, rel)))
+        trail = (*trail, rel)
+        if rel == target:
+            paths.append(trail)
+            if len(paths) > 1:
+                raise ValueError(f"mutation target {target} included more than once")
+        for child in edges.get(rel, ()):
+            if child in ancestors:
+                find_path(child, trail)
+
+    find_path(MAIN_REL, ())
+    if len(paths) != 1:
+        raise ValueError(f"mutation target {target} is not reachable from {MAIN_REL}")
+    path = paths[0]
+
+    def emit(index):
+        rel = path[index]
+        text = src.texts[rel]
+        if rel == target:
+            text = text.replace(m["old"], m["new"], 1)
+
+        def include(match):
+            child = _include_relative(src, rel, match.group(1))
+            if child not in src.texts:
+                raise ValueError(f"include missing from source closure: {rel} -> {child}")
+            if index + 1 < len(path) and child == path[index + 1]:
+                body = emit(index + 1)
+                return body if body.endswith("\n") else body + "\n"
+            # Preserve indentation, spelling and trailing comments; replace only
+            # the path bytes, and never rebase text already emitted by a child.
+            start, end = match.start(1) - match.start(), match.end(1) - match.start()
+            return match.group(0)[:start] + child + match.group(0)[end:]
+
+        return INCLUDE_RE.sub(include, text)
+
+    return emit(0)
 
 
 def record_hash(rec):

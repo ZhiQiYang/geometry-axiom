@@ -1,0 +1,90 @@
+{
+  "source_E": "a004e29a34b5fb880690e544057e90386e47e75a",
+  "prbody_D": "f9ee52d12cb94055c330b37b3d77eb2768d12a96",
+  "scope": "readonly metadata and AST; no tests/compiler/browser/bench/tar validation",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "5bfadf187e615ba0fb8466753b63ce3044ef7d1c",
+        "a004e29a34b5fb880690e544057e90386e47e75a",
+        "--",
+        "current_geometry.c",
+        "geometry-app",
+        "geometry-core",
+        "geometry-templates",
+        "geometry-web",
+        "tests",
+        "公理層.md",
+        "決策佇列.md"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "-r",
+        "--name-only",
+        "ea2748248d47563f8559638ccb70ec0ed21910d9",
+        "handoff/pr-reviews"
+      ],
+      "rc": 0,
+      "stdout": "handoff/pr-reviews/194.md\nhandoff/pr-reviews/213.md\nhandoff/pr-reviews/288.md\nhandoff/pr-reviews/314.md\nhandoff/pr-reviews/318.md\nhandoff/pr-reviews/323.md\nhandoff/pr-reviews/324.md\nhandoff/pr-reviews/325.md\nhandoff/pr-reviews/331.md\nhandoff/pr-reviews/333.md\n",
+      "stderr": ""
+    }
+  ],
+  "all_AST_numeric_ids_unique": true,
+  "maximum_AST_numeric_id": 98,
+  "combined_anchors": [
+    {
+      "id": "M97",
+      "count": 1
+    },
+    {
+      "id": "M98",
+      "count": 1
+    },
+    {
+      "id": "M89",
+      "count": 1
+    },
+    {
+      "id": "M90",
+      "count": 1
+    },
+    {
+      "id": "M91",
+      "count": 1
+    },
+    {
+      "id": "M92",
+      "count": 1
+    },
+    {
+      "id": "M93",
+      "count": 1
+    },
+    {
+      "id": "M94",
+      "count": 1
+    },
+    {
+      "id": "M95",
+      "count": 1
+    },
+    {
+      "id": "M96",
+      "count": 1
+    }
+  ],
+  "checker_attempt_1": {
+    "exit": 1,
+    "error": "ValueError: invalid literal for int() with base 10: 'A'",
+    "classification": "review-only selector encountered synthetic MA honesty-test id; added digits filter; not a product test or mutation verdict"
+  }
+}

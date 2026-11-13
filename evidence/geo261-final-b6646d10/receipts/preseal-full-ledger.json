@@ -1,0 +1,529 @@
+{
+  "schema": "geo261-preseal-artifact-stage-draft/1",
+  "purpose": "產物準備，不能冒充正式最終 SHA 整合驗收",
+  "stage": "ledger",
+  "source_sha": "b6646d10751a0d85a2f03f5d24fbe1073cb78980",
+  "cwd": "/tmp/g261seal/p-source",
+  "started_utc": "2026-10-22T14:44:20.760441+00:00",
+  "environment": {
+    "PATH": "/workspace/geo261-environment/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONUNBUFFERED": "1",
+    "XDG_DATA_HOME": "/workspace/geo261-environment/xdg-data",
+    "XDG_CACHE_HOME": "/workspace/geo261-environment/xdg-cache",
+    "TMPDIR": "/tmp/g261seal/ledger/tmp",
+    "MUTATE_CACHE": "/tmp/g261seal/new-mutation-cache",
+    "MUTATE_RESULTS": "/tmp/g261seal/p-source/tests/mutants_results.json",
+    "CC": null,
+    "CFLAGS": null,
+    "CXX": null,
+    "CXXFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "PYTHONOPTIMIZE": null,
+    "PYTHONPATH": null,
+    "PYTHONSTARTUP": null,
+    "NODE_OPTIONS": null,
+    "GITHUB_SHA": "b6646d10751a0d85a2f03f5d24fbe1073cb78980",
+    "GITHUB_WORKSPACE": "/tmp/g261seal/p-source"
+  },
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "stack_before": [
+    8388608,
+    -1
+  ],
+  "stack_during": [
+    16777216,
+    -1
+  ],
+  "wrapper_sha256": "6df11d7877c95a8898c169170bf914dce70ddadd3cc40bb221022ed806b745ac",
+  "commands": [
+    {
+      "label": "before-head",
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:20.762465+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/000-before-head/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/000-before-head/stderr",
+      "ended_utc": "2026-10-22T14:44:20.766008+00:00",
+      "seconds": 0.0035295480010972824,
+      "stdout_bytes": 41,
+      "stdout_sha256": "c404f92ec7c42a834c9fa9ad9b4c5c31f2447ded8c3850f45d4b73431f83db57",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "before-status",
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:20.766292+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/001-before-status/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/001-before-status/stderr",
+      "ended_utc": "2026-10-22T14:44:21.784773+00:00",
+      "seconds": 1.0184866310009966,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "before-dirty-paths",
+      "command": [
+        "git",
+        "diff",
+        "--name-only",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:21.786016+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/002-before-dirty-paths/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/002-before-dirty-paths/stderr",
+      "ended_utc": "2026-10-22T14:44:21.819232+00:00",
+      "seconds": 0.033222111997019965,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "before-staged",
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:21.820143+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/003-before-staged/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/003-before-staged/stderr",
+      "ended_utc": "2026-10-22T14:44:21.828119+00:00",
+      "seconds": 0.007922996999695897,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "before-diff",
+      "command": [
+        "git",
+        "diff",
+        "--binary",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:21.828627+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/004-before-diff/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/004-before-diff/stderr",
+      "ended_utc": "2026-10-22T14:44:21.861319+00:00",
+      "seconds": 0.03269921399987652,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "fetch-published-source",
+      "command": [
+        "git",
+        "fetch",
+        "--no-tags",
+        "https://github.com/ZhiQiYang/geometry-axiom.git",
+        "refs/heads/architecture/geo261-integration-20261016"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:21.865316+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/005-fetch-published-source/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/005-fetch-published-source/stderr",
+      "ended_utc": "2026-10-22T14:44:22.381088+00:00",
+      "seconds": 0.5157700179988751,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 127,
+      "stderr_sha256": "70f653215cfe897b3b2fcaeb0a2e744a10c2ca28025dde2f265a0bef520ab7f0"
+    },
+    {
+      "label": "published-ref-head",
+      "command": [
+        "git",
+        "rev-parse",
+        "FETCH_HEAD"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:22.381751+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/006-published-ref-head/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/006-published-ref-head/stderr",
+      "ended_utc": "2026-10-22T14:44:22.385607+00:00",
+      "seconds": 0.003847076000965899,
+      "stdout_bytes": 41,
+      "stdout_sha256": "c404f92ec7c42a834c9fa9ad9b4c5c31f2447ded8c3850f45d4b73431f83db57",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "source-is-published-ancestor",
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "b6646d10751a0d85a2f03f5d24fbe1073cb78980",
+        "b6646d10751a0d85a2f03f5d24fbe1073cb78980"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:22.386026+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/007-source-is-published-ancestor/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/007-source-is-published-ancestor/stderr",
+      "ended_utc": "2026-10-22T14:44:22.389653+00:00",
+      "seconds": 0.0035783509993052576,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "version-python",
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:22.389996+00:00",
+      "timeout_seconds": 30,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/008-version-python/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/008-version-python/stderr",
+      "ended_utc": "2026-10-22T14:44:22.393560+00:00",
+      "seconds": 0.0035545649989217054,
+      "stdout_bytes": 15,
+      "stdout_sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "version-node",
+      "command": [
+        "node",
+        "--version"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:22.393886+00:00",
+      "timeout_seconds": 30,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/009-version-node/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/009-version-node/stderr",
+      "ended_utc": "2026-10-22T14:44:22.401656+00:00",
+      "seconds": 0.007764257999951951,
+      "stdout_bytes": 9,
+      "stdout_sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "version-chrome",
+      "command": [
+        "google-chrome",
+        "--version"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:22.402183+00:00",
+      "timeout_seconds": 30,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/010-version-chrome/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/010-version-chrome/stderr",
+      "ended_utc": "2026-10-22T14:44:22.434125+00:00",
+      "seconds": 0.03194339500259957,
+      "stdout_bytes": 29,
+      "stdout_sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "version-cc",
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:22.434698+00:00",
+      "timeout_seconds": 30,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/011-version-cc/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/011-version-cc/stderr",
+      "ended_utc": "2026-10-22T14:44:22.436294+00:00",
+      "seconds": 0.001585669000633061,
+      "stdout_bytes": 231,
+      "stdout_sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "version-system-python",
+      "command": [
+        "/usr/bin/python3",
+        "--version"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:22.436768+00:00",
+      "timeout_seconds": 30,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/012-version-system-python/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/012-version-system-python/stderr",
+      "ended_utc": "2026-10-22T14:44:22.438195+00:00",
+      "seconds": 0.0014163240011839662,
+      "stdout_bytes": 14,
+      "stdout_sha256": "01870de7caca112afeefd77b3c3b4c5e263cf5539a33af3f3411100727fad7d3",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "mutation-check-before",
+      "command": [
+        "python3",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:22.438621+00:00",
+      "timeout_seconds": 14400,
+      "actual_process_returncode": 1,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/013-mutation-check-before/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/013-mutation-check-before/stderr",
+      "ended_utc": "2026-10-22T14:44:23.154469+00:00",
+      "seconds": 0.7158587179983442,
+      "stdout_bytes": 7467,
+      "stdout_sha256": "d8d91fb83b1085987fa4a5b609842d5e0dd1ab538590a8597924c7c2c092cf32",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "mutation-full",
+      "command": [
+        "python3",
+        "tests/mutate.py"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T14:44:23.155731+00:00",
+      "timeout_seconds": 14400,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/014-mutation-full/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/014-mutation-full/stderr",
+      "ended_utc": "2026-10-22T15:29:52.240752+00:00",
+      "seconds": 2729.085059770001,
+      "stdout_bytes": 19363,
+      "stdout_sha256": "55e9eac045fe71eb581cb20b72aadb2a762ea5d39b186c5b8c4eed4fb09c6cb2",
+      "stderr_bytes": 207,
+      "stderr_sha256": "ee9562706dd08970e562900a07fbab06c29f2d44b85fdfd85ae6b9cbaf178586"
+    },
+    {
+      "label": "mutation-check-after",
+      "command": [
+        "python3",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T15:29:52.243514+00:00",
+      "timeout_seconds": 14400,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/015-mutation-check-after/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/015-mutation-check-after/stderr",
+      "ended_utc": "2026-10-22T15:29:56.820984+00:00",
+      "seconds": 4.577471140000853,
+      "stdout_bytes": 529,
+      "stdout_sha256": "291b92ec93f456f09deb98cd8dbc11b86f922e340090e4c8b6fb19bbec5345f9",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "after-head",
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T15:29:57.224502+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/016-after-head/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/016-after-head/stderr",
+      "ended_utc": "2026-10-22T15:29:57.228189+00:00",
+      "seconds": 0.0036623480009438936,
+      "stdout_bytes": 41,
+      "stdout_sha256": "c404f92ec7c42a834c9fa9ad9b4c5c31f2447ded8c3850f45d4b73431f83db57",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "after-status",
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T15:29:57.228686+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/017-after-status/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/017-after-status/stderr",
+      "ended_utc": "2026-10-22T15:29:57.295723+00:00",
+      "seconds": 0.06704500300111249,
+      "stdout_bytes": 30,
+      "stdout_sha256": "dd9ef7a70dea40bebf147bb7e4feeb07d16e954b85b11cd64be2f8bd2481702b",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "after-dirty-paths",
+      "command": [
+        "git",
+        "diff",
+        "--name-only",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T15:29:57.296448+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/018-after-dirty-paths/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/018-after-dirty-paths/stderr",
+      "ended_utc": "2026-10-22T15:29:57.328532+00:00",
+      "seconds": 0.032089126001665136,
+      "stdout_bytes": 27,
+      "stdout_sha256": "ae08bdf21ee4b3bde1233c3a1a2321e27e54cb3efce3818feb045e46f641d959",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "after-staged",
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T15:29:57.329264+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/019-after-staged/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/019-after-staged/stderr",
+      "ended_utc": "2026-10-22T15:29:57.337280+00:00",
+      "seconds": 0.008007715001440374,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "after-diff",
+      "command": [
+        "git",
+        "diff",
+        "--binary",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261seal/p-source",
+      "started_utc": "2026-10-22T15:29:57.337845+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/ledger/commands/020-after-diff/stdout",
+      "stderr": "/tmp/g261seal/ledger/commands/020-after-diff/stderr",
+      "ended_utc": "2026-10-22T15:29:57.458775+00:00",
+      "seconds": 0.12093986200125073,
+      "stdout_bytes": 2418847,
+      "stdout_sha256": "610955f628b31f37217af24c6c9562314d93a2bd3fce918188971836cf04c797",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "errors": [],
+  "no_commit_or_push": true,
+  "stage_execution_passed": true,
+  "published_source_proof": {
+    "url": "https://github.com/ZhiQiYang/geometry-axiom.git",
+    "ref": "refs/heads/architecture/geo261-integration-20261016",
+    "fetched_head": "b6646d10751a0d85a2f03f5d24fbe1073cb78980",
+    "source_is_ancestor": true
+  },
+  "precheck_actual_exit": 1,
+  "precheck_reported_stale_counts": [
+    75
+  ],
+  "precheck_stale_observed": true,
+  "cache_artifacts_note": "保存 cache 的原始 stdout/stderr/log/json；不封存 bridge-work repository 複本或 runtime binary，exe hash 在原帳本／sidecar。",
+  "checkout_before": {
+    "head": "b6646d10751a0d85a2f03f5d24fbe1073cb78980",
+    "status": "",
+    "dirty_paths": [],
+    "staged_paths": []
+  },
+  "checkout_after": {
+    "head": "b6646d10751a0d85a2f03f5d24fbe1073cb78980",
+    "status": " M tests/mutants_results.json\n",
+    "dirty_paths": [
+      "tests/mutants_results.json"
+    ],
+    "staged_paths": []
+  },
+  "allowed_output_dirty_paths": [
+    "tests/mutants_results.json"
+  ],
+  "source_sha_is_unchanged_but_checkout_has_output_changes": true,
+  "ledger_execution_heads": [
+    "b6646d10751a0d85a2f03f5d24fbe1073cb78980"
+  ],
+  "finished_utc": "2026-10-22T15:29:57.511922+00:00"
+}

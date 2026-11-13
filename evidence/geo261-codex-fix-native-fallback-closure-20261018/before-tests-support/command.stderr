@@ -1,0 +1,31 @@
+test_guarded_standalone_header_uses_its_actual_kernel_owner (tests.test_geometry_host_native.NativeUnityClosureTests.test_guarded_standalone_header_uses_its_actual_kernel_owner) ... FAIL
+
+======================================================================
+FAIL: test_guarded_standalone_header_uses_its_actual_kernel_owner (tests.test_geometry_host_native.NativeUnityClosureTests.test_guarded_standalone_header_uses_its_actual_kernel_owner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geometry_host_native.py", line 166, in test_guarded_standalone_header_uses_its_actual_kernel_owner
+    actual = native._project_source_closure(self.source)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geometry-axiom/geometry-app/geometry_app/model_native.py", line 58, in _project_source_closure
+    data = path.read_bytes().replace(b"\r\n", b"\n")
+           ^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1019, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/geo261-native-cache-p0tnm7uj/geometry.h'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geometry_host_native.py", line 168, in test_guarded_standalone_header_uses_its_actual_kernel_owner
+    self.fail("UNITY_CLOSURE_MUST_RESOLVE_OWNED_K_HEADER: " + str(exc))
+AssertionError: UNITY_CLOSURE_MUST_RESOLVE_OWNED_K_HEADER: [Errno 2] No such file or directory: '/tmp/geo261-native-cache-p0tnm7uj/geometry.h'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

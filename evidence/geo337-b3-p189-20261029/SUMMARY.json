@@ -1,0 +1,61 @@
+{
+  "schema": "pr338-b3-delivery/1",
+  "execution_sha": "0ae1728c2309e1d670369289a6b8da059fa63a50",
+  "exact_exit": 0,
+  "timing_exit": 0,
+  "controls_exit": 0,
+  "build_environment_exit": 0,
+  "strict_original_policy_exit": 1,
+  "scene_count": 175,
+  "native_executions": 525,
+  "samples": 36,
+  "ratios": [
+    {
+      "n": 16,
+      "medians": {
+        "main": 0.1278,
+        "base": 0.171,
+        "fix": 0.1141
+      },
+      "fix_main": 0.8928012519561815,
+      "pass": true
+    },
+    {
+      "n": 32,
+      "medians": {
+        "main": 0.1961,
+        "base": 1.1929,
+        "fix": 0.2194
+      },
+      "fix_main": 1.118816930137685,
+      "pass": true
+    },
+    {
+      "n": 48,
+      "medians": {
+        "main": 0.3448,
+        "base": 5.0182,
+        "fix": 0.3693
+      },
+      "fix_main": 1.0710556844547565,
+      "pass": true
+    },
+    {
+      "n": 64,
+      "medians": {
+        "main": 0.5341,
+        "base": 17.1972,
+        "fix": 0.7632
+      },
+      "fix_main": 1.4289458902827186,
+      "pass": true
+    }
+  ],
+  "archive": {
+    "path": "B3_ORIGINAL_STREAMS.tar.gz",
+    "bytes": 1545250,
+    "sha256": "319eaf847921990e159648cae96ee673ae044f2471005ad1cbec6a9a4461dbd5",
+    "raw_file_count": 3725,
+    "all_members_verified": true
+  }
+}

@@ -1,0 +1,44 @@
+test_javascript_line_separator_ends_comment_before_dependency (__main__.ArchitectureContract.test_javascript_line_separator_ends_comment_before_dependency) ... FAIL
+test_javascript_paragraph_separator_ends_comment_before_dependency (__main__.ArchitectureContract.test_javascript_paragraph_separator_ends_comment_before_dependency) ... FAIL
+test_javascript_template_line_separator_ends_comment (__main__.ArchitectureContract.test_javascript_template_line_separator_ends_comment) ... FAIL
+
+======================================================================
+FAIL: test_javascript_line_separator_ends_comment_before_dependency (__main__.ArchitectureContract.test_javascript_line_separator_ends_comment_before_dependency)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 946, in test_javascript_line_separator_ends_comment_before_dependency
+    self.rejects("LAYER_DIRECTION", path="src/core.js", line=2)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_javascript_paragraph_separator_ends_comment_before_dependency (__main__.ArchitectureContract.test_javascript_paragraph_separator_ends_comment_before_dependency)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 951, in test_javascript_paragraph_separator_ends_comment_before_dependency
+    self.rejects("LAYER_DIRECTION", path="src/core.js", line=2)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_javascript_template_line_separator_ends_comment (__main__.ArchitectureContract.test_javascript_template_line_separator_ends_comment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 956, in test_javascript_template_line_separator_ends_comment
+    self.rejects("LAYER_DIRECTION", path="src/core.js", line=2)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 66, in rejects
+    self.assertTrue(matches, result.to_dict())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : {'ok': False, 'sources': ['src/core.js', 'src/w.js'], 'trustedSourcesNotParsed': [], 'edges': [], 'diagnostics': [{'path': 'src/core.js', 'line': 1, 'code': 'LEXICAL_SYNTAX', 'message': 'unclosed template interpolation', 'direction': '', 'chain': ()}]}
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.045s
+
+FAILED (failures=3)

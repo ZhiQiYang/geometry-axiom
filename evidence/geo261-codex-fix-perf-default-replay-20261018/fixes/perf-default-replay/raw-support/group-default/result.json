@@ -1,0 +1,237 @@
+{
+  "name": "group-default",
+  "ok": true,
+  "exception": null,
+  "exit_code": 0,
+  "steps": [
+    {
+      "label": "cold",
+      "command": "dump",
+      "expected_ok": true,
+      "response": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec 主支中線 500\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\nguide 1 1 v spec:主支中線\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\nplace 2 on 1 at-face e2 +u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2\nplace 3 on 1 at-line guide 1 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=-1\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1",
+          "panel-fill-native/1"
+        ],
+        "revision": 10,
+        "definition_sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385"
+      }
+    },
+    {
+      "label": "load",
+      "command": "loadfile /workspace/geo261-validation-20261018/proposed-fixes/default-owned-replay/raw-fixtures/candidate-default.scene",
+      "expected_ok": true,
+      "response": {
+        "ok": true,
+        "revision": 11,
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1",
+          "panel-fill-native/1"
+        ],
+        "definition_sha256": "41af6f2a9c4439510cf4c2ebd9bdd376a89e30439e0ee1d7882d3924a748bd46"
+      }
+    },
+    {
+      "label": "loaded",
+      "command": "dump",
+      "expected_ok": true,
+      "response": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 1000,0 1000,1000 0,1000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nspec x 500\ntimber 1 40 50 role boundary\nguide 1 1 v spec:x\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1",
+          "panel-fill-native/1"
+        ],
+        "revision": 11,
+        "definition_sha256": "41af6f2a9c4439510cf4c2ebd9bdd376a89e30439e0ee1d7882d3924a748bd46"
+      }
+    },
+    {
+      "label": "begin",
+      "command": "line history-begin",
+      "expected_ok": true,
+      "response": {
+        "ok": true,
+        "deletedObjects": []
+      }
+    },
+    {
+      "label": "edit",
+      "command": "line spec default_unused 7",
+      "expected_ok": true,
+      "response": {
+        "ok": true,
+        "deletedObjects": []
+      }
+    },
+    {
+      "label": "before",
+      "command": "dump",
+      "expected_ok": true,
+      "response": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 1000,0 1000,1000 0,1000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nspec x 500\nspec default_unused 7\ntimber 1 40 50 role boundary\nguide 1 1 v spec:x\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1",
+          "panel-fill-native/1"
+        ],
+        "revision": 12,
+        "definition_sha256": "f755bac8482e2896ea02fe931ec6a87ed44110ed93c99dae6a5a152b55c389ec"
+      }
+    },
+    {
+      "label": "replace",
+      "command": "default",
+      "expected_ok": true,
+      "response": {
+        "ok": true,
+        "deletedObjects": [
+          {
+            "kind": "boundary",
+            "id": 1
+          }
+        ]
+      }
+    },
+    {
+      "label": "after",
+      "command": "dump",
+      "expected_ok": true,
+      "response": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec 主支中線 500\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\nguide 1 1 v spec:主支中線\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\nplace 2 on 1 at-face e2 +u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2\nplace 3 on 1 at-line guide 1 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=-1\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1",
+          "panel-fill-native/1"
+        ],
+        "revision": 22,
+        "definition_sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385"
+      }
+    },
+    {
+      "label": "old-end",
+      "command": "line history-end",
+      "expected_ok": false,
+      "response": {
+        "ok": false,
+        "error": "line 3: 沒有進行中的歷史群組",
+        "deletedObjects": []
+      }
+    },
+    {
+      "label": "abort",
+      "command": "line history-abort",
+      "expected_ok": true,
+      "response": {
+        "ok": true,
+        "deletedObjects": []
+      }
+    },
+    {
+      "label": "empty-undo",
+      "command": "line undo",
+      "expected_ok": false,
+      "response": {
+        "ok": false,
+        "error": "line 5: 沒有可復原的操作",
+        "deletedObjects": []
+      }
+    },
+    {
+      "label": "empty-redo",
+      "command": "line redo",
+      "expected_ok": false,
+      "response": {
+        "ok": false,
+        "error": "line 6: 沒有可重做的操作",
+        "deletedObjects": []
+      }
+    },
+    {
+      "label": "final",
+      "command": "dump",
+      "expected_ok": true,
+      "response": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec 主支中線 500\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\nguide 1 1 v spec:主支中線\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\nplace 2 on 1 at-face e2 +u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2\nplace 3 on 1 at-line guide 1 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=-1\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1",
+          "panel-fill-native/1"
+        ],
+        "revision": 22,
+        "definition_sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385"
+      }
+    }
+  ],
+  "seconds": 0.3630537649987673,
+  "streams": {
+    "stdin.raw": {
+      "bytes": 255,
+      "sha256": "38979dd126c37d40b301de3842668a1f303425b51dbe3fea736ac82bb9f68e80"
+    },
+    "stdout.raw": {
+      "bytes": 4814,
+      "sha256": "b25dfca02d532bcbfca971e61706694f595dcc04e9363e0fc7b846b10f6b2e12"
+    },
+    "stderr.raw": {
+      "bytes": 108,
+      "sha256": "aa727276d1f1e393f14377cb22afb4b716e10f9bceea955666d7c9f073f56560"
+    }
+  }
+}

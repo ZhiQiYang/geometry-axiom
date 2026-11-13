@@ -1,0 +1,13 @@
+diff --git a/geometry-templates/woodworking/native/grid_rules.c b/geometry-templates/woodworking/native/grid_rules.c
+index 1ea223b5..bb6008b9 100644
+--- a/geometry-templates/woodworking/native/grid_rules.c
++++ b/geometry-templates/woodworking/native/grid_rules.c
+@@ -53,7 +53,7 @@ static bool wood_grid_rule_ref_text(const char *text,GeoGridRuleLineRef *r)
+     if(strlen(text)>=WOOD_GRID_RULE_EXPRESSION_CAPACITY)return false;
+     char buf[WOOD_GRID_RULE_EXPRESSION_CAPACITY],*parts[8];size_t n=0;
+     snprintf(buf,sizeof buf,"%s",text);char *p=buf;
+-    while(n<8){parts[n++]=p;char *colon=strchr(p,':');if(!colon || n==8)break;*colon=0;p=colon+1;}
++    while(n<8){parts[n++]=p;char *colon=strchr(p,':');if(!colon)break;*colon=0;p=colon+1;}
+     if(n!=8 || strchr(parts[7],':') || strcmp(parts[0],"gridrule") ||
+         !wood_grid_rule_u32(parts[1],&r->grid_id) || !wood_grid_rule_u32(parts[2],&r->system_id) ||
+         !wood_grid_rule_u32(parts[3],&r->rule_key) || !r->rule_key ||

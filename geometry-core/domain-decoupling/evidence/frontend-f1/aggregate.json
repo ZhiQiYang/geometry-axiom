@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python",
+    "tests/run_all.py",
+    "--only",
+    "woodworking_frontend",
+    "--only",
+    "grid_definition_diagram",
+    "--only",
+    "runtime_version"
+  ],
+  "exit": 3,
+  "logSha256": "90ab7df27f5006618081f3099eb276372c6fcc70fac2d8c59a5d48f95d3919bd",
+  "scope": "partial",
+  "browserExecuted": false
+}

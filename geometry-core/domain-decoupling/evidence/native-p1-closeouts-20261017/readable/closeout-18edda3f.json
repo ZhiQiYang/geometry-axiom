@@ -1,0 +1,61 @@
+{
+  "kind": "five-stage-build-and-authorized-focused61-pass",
+  "source": "18edda3f2f4c08b5d7b192077637d16ce04940e6",
+  "tree": "4aebae6edb42d8c1319a234bdc445931c3070f60",
+  "gate": {
+    "status": "PASS",
+    "stages": 5,
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\build-gate-18edda3f-v1\\result\\summary.json",
+    "sha256": "e82b3fff535b484b3325048a4f785bbbc219327614dc86d30191fe5ebd406290"
+  },
+  "focused": {
+    "status": "PASS",
+    "planned_methods": 61,
+    "actual_methods": 61,
+    "pass": 61,
+    "fail": 0,
+    "unrun": 0,
+    "groups": {
+      "grid-definitions-product": {
+        "passed": 4
+      },
+      "engineering-sources": {
+        "passed": 18
+      },
+      "derived-policy-sources": {
+        "passed": 14
+      },
+      "derived-policy-graph-product": {
+        "passed": 4
+      },
+      "contact-sources": {
+        "passed": 12
+      },
+      "native-sources": {
+        "passed": 9
+      }
+    },
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\focused-18edda3f-v3\\result\\summary.json",
+    "sha256": "bacc1e7a1d695862c548328d3631b50e9a90d56c8dfbcef5cf6a208e6797881c",
+    "started": "2026-10-16T17:45:57.839486+00:00",
+    "finished": "2026-10-16T17:49:22.567683+00:00",
+    "compiler_commands": 134,
+    "build_artifact_count": 287,
+    "artifact_preservation": {
+      "status": "complete",
+      "error": null
+    }
+  },
+  "grid_definitions_negative_control": "Full method PASS includes unchanged baseline, changed K coordinate exact marker grid-key-returned-quantities-drive-actual-cache, and unchanged baseline again, all at original30-second timeout.",
+  "original259_cross_sha_index": {
+    "path": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\original-259-cross-sha-coverage-18edda3f.json",
+    "sha256": "840b9abec38b17e4de74047b578d81168b9ab72709652f0c0840b65fc5834a95",
+    "unique_PASS_method_ids": 259,
+    "sources": 8,
+    "same_SHA_claim": false
+  },
+  "source_runner_gate_unchanged": true,
+  "prior_grid_sources11_not_rerun": "focused-12422c69-v3/result/summary.json",
+  "new75_deferred": true,
+  "limits": "No extra C diagnostics, full suite, PF3, native6, compatibility or browser execution. Earlier FAIL receipts preserved."
+}

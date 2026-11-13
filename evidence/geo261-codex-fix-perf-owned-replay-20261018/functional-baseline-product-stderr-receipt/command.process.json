@@ -1,0 +1,42 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-validation-20261018/performance/proposals/AD-followup-review/capture_product_stderr.py",
+    "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+    "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/baseline-product-stderr"
+  ],
+  "shell": false,
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T13:50:28.358555+00:00",
+  "started_ns": 1792331428358640988,
+  "timeout_seconds": 300.0,
+  "timed_out": false,
+  "interrupted": false,
+  "returncode": 0,
+  "launch_error": null,
+  "pid": 147019,
+  "ended_utc": "2026-10-18T13:50:36.826489+00:00",
+  "ended_ns": 1792331436826511185,
+  "seconds": 8.467861212000571,
+  "streams": {
+    "stdout": {
+      "device": 27,
+      "inode": 1457927,
+      "bytes": 0,
+      "mtime_ns": 1792331428358365546,
+      "ctime_ns": 1792331428358365546,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "stderr": {
+      "device": 27,
+      "inode": 1457928,
+      "bytes": 0,
+      "mtime_ns": 1792331428358365546,
+      "ctime_ns": 1792331428358365546,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    }
+  }
+}

@@ -4,12 +4,24 @@ const RoomCollectionWorkspace = (() => {
   const S = GeometrySourcePlane, R = GeometryRoomCollection;
   const pages = new Map(),renders=new Map();
   let overviewCollectionId = null, overviewContextToken = null;
-  let candidateSession = null, candidateGeneration = 0, candidateMode = 'manual';
+  let candidateSession = null, candidateGeneration = 0, candidateMode = 'manual', zeroMode = 'adopt';
+  let writingCandidates = false;
   let instance = null, activeBid = null, lease = null, ownedPreviewToken = null, ownedPreviewCommand = null, currentDialog = null, retireDialog = null, integration = null, cleaningUI = false;
+  // R51 needs each referenced D3's *current native* fingerprint. Native boundary
+  // reports are remembered per owner token and D3 incarnation; any native change
+  // that may overlap a report forgets it, so a remembered value is never older
+  // than the last observed change.
+  const nativePins = new Map(), previewBoundaries = new Map(), nativeRefresh = new Map();
+  let nativeEpoch = 0, nativeSettled = 0, nativeReadOrder = 0, nativeGroup = null, nativeReadFailure = null, nativeObjects = null;
+  const nativeChanging = new Set();
   const W = () => ReferenceWorkspace;
   const token = () => W().getProjectState().contextToken;
   const state = () => W().readFeatureAttachment("source-rooms", token()) || S.empty();
   const escape = value => W().escape(value);
+  const isHash = value => typeof value === "string" && /^[a-f0-9]{64}$/.test(value);
+  const NATIVE_CHANGE = /^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/;
+  // Commands that never change a committed boundary definition when they succeed.
+  const NATIVE_STEADY = /^line (?:$|preview\b|cancel-preview\b|history-(?:begin|end)\b|canvas-pos\b)/;
   function ensureReady() {
     if (!W().readFeatureAttachment || !W().setFeatureAttachment || !integration) throw new Error("房間來源接線尚未啟用。");
   }
@@ -17,6 +29,87 @@ const RoomCollectionWorkspace = (() => {
     for (const name of ["readSource", "readIncarnation", "beginTransaction", "assertTransaction", "endTransaction", "preflightAttachment", "groupOpen", "labelTransaction", "adoptLegacySource"])
       if (typeof adapter?.[name] !== "function") throw new Error("房間來源缺少 owner 接口：" + name);
     integration = adapter;
+  }
+  function nativeCommand(command) {
+    if (typeof command !== "string") return "";
+    return command.startsWith("line ") ? "line " + command.slice(5).split("#", 1)[0].trim() : command.trim();
+  }
+  function pinScope() {
+    try { return integration && W()?.getModelOperationState ? W().getModelOperationState().contextToken : null; } catch (_) { return null; }
+  }
+  function forgetNativePins(ids = null) {
+    if (ids === null) {nativeObjects = null; nativePins.clear(); previewBoundaries.clear();}
+    else for (const id of ids) {nativePins.delete(id); nativeObjects?.unknown.add(id);}
+  }
+  // Applies one settled result of a changing command to the remembered fingerprints.
+  function noteNativeChange(command, result) {
+    if (result?.ok !== true) {
+      if (result?.stale === true) return; // Version rejection did not reach native.
+      // Unknown delivery: anything may have changed.
+      if (!result || result.transport) {forgetNativePins(); nativeGroup = null; return;}
+      // A known rejection changes nothing, except that the core rolls back an open group
+      // (a rejected preview keeps it): values learnt inside that group no longer hold.
+      if (nativeGroup && !/^line preview\b/.test(command)) {forgetNativePins(nativeGroup); nativeGroup = null;}
+      return;
+    }
+    if (/^line preview\b/.test(command)) {
+      const preview = result.preview;
+      if (preview?.valid === true && Number.isInteger(preview.token) && Array.isArray(preview.boundaries) && preview.boundaries.every(row => Number.isInteger(row?.id))) {
+        previewBoundaries.set(String(preview.token), {scope: pinScope(), ids: preview.boundaries.map(row => row.id)});
+        if (previewBoundaries.size > 32) previewBoundaries.delete(previewBoundaries.keys().next().value);
+      }
+      return;
+    }
+    if (/^line history-begin\b/.test(command)) {nativeGroup = new Set(); return;}
+    if (/^line history-end\b/.test(command)) {nativeGroup = null; return;}
+    if (/^line history-abort\b/.test(command)) {forgetNativePins(nativeGroup); nativeGroup = null; return;}
+    if (NATIVE_STEADY.test(command)) return;
+    const confirmed = command.match(/^line confirm (\d+)$/), recorded = confirmed && previewBoundaries.get(confirmed[1]);
+    if (confirmed) previewBoundaries.delete(confirmed[1]);
+    // A confirmed preview changes exactly its listed boundaries; anything else may change any of them.
+    if (recorded && recorded.scope === pinScope()) forgetNativePins(recorded.ids); else forgetNativePins();
+  }
+  function rememberBoundaryRead(command, result, scope, order, ownerRevision) {
+    const match = command.match(/^boundary (\d+)$/);
+    if (!match) return;
+    const id = Number(match[1]);
+    let incarnation = null;
+    if (scope === null || scope !== pinScope()) return;
+    if ((nativePins.get(id)?.order ?? 0) > order) return;
+    try { incarnation = integration.readIncarnation(id, token()) ?? null; } catch (_) { return; }
+    if (!result?.ok || result.id !== id || !isHash(result.geometryFingerprint)) {
+      nativePins.delete(id); return;
+    }
+    nativePins.set(id, {scope, incarnation, pin: result.geometryFingerprint, order, ownerRevision});
+    nativeGroup?.add(id);
+  }
+  function rememberObjects(result, scope, order, ownerRevision) {
+    if (scope === null || scope !== pinScope()) return;
+    if ((nativeObjects?.order ?? 0) > order) return;
+    if (!result?.ok || !Array.isArray(result.faces) || result.faces.some(face =>
+        !Number.isSafeInteger(face?.id) || face.id <= 0 || typeof face.kind !== "string")) {nativeObjects = null; return;}
+    nativeObjects = {scope, ids: new Set(result.faces.filter(face => face.kind === "boundary").map(face => face.id)), unknown: new Set(), order, ownerRevision};
+  }
+  // apiRequest calls this once, immediately before delivery, and settles it once.
+  // Diagnostic wrappers never own this observation and cannot make it run twice.
+  function beginNativeRequest(text) {
+    const command = nativeCommand(text), change = NATIVE_CHANGE.test(command), steady = change && NATIVE_STEADY.test(command), scope = pinScope();
+    const order = ++nativeReadOrder, ownerRevision = W().getModelOperationState().revision;
+    const ticket = {};
+    if (change && !steady) {nativeEpoch++; nativeChanging.add(ticket);}
+    const epoch = nativeEpoch;
+    let settled = false;
+    return result => {
+      if (settled) return; settled = true; nativeChanging.delete(ticket);
+      try {
+        nativeSettled++;
+        if (change) {if (!steady || result?.ok !== true) nativeEpoch++; noteNativeChange(command, result);}
+        else if (epoch === nativeEpoch && !nativeChanging.size) {
+          if (command === "objects") rememberObjects(result, scope, order, ownerRevision);
+          else rememberBoundaryRead(command, result, scope, order, ownerRevision);
+        }
+      } catch (_) { /* Observation must not change the request's result. */ }
+    };
   }
   function request(command) { return apiRequest(command, lease); }
   function assertTransaction(ownerLease) {ensureReady(); return integration.assertTransaction(ownerLease);}
@@ -66,7 +159,13 @@ const RoomCollectionWorkspace = (() => {
         await cancelOwnedCandidate(); integration.endTransaction(lease); lease = null;
       },
       changeMetadata: (next, {label, stamp}) => W().setFeatureAttachment("source-rooms", next, stamp.contextToken, {recordHistory: true, reason: label}),
-      commitWithMetadata: async ({token: previewToken, boundaryId, label, assertCurrent, makeAttachment,proposeAttachment}) => {
+      assertHost(host) {
+        const page = W().active(host.boundaryId), D = GeometryRoomCandidateDraft;
+        if (!page?.calibration || page.id !== host.pageId || D.pagePin(page) !== D.pagePin(host.page)) throw new Error("宿主圖頁已變更，請取消草稿後重新操作。");
+        if (state().planes.some(item => item.sourceId === page.sourceId && item.page === page.page)) throw new Error("此來源頁已有共享來源，請從該集合新增房間。");
+      },
+      afterGroupedRooms(payload) { acceptCandidateRow(payload); },
+      commitWithMetadata: async ({token: previewToken, boundaryId, label, assertCurrent, makeAttachment, proposeAttachment, afterGroupedRooms}) => {
         assertCurrent(); integration.assertTransaction(lease);
         if (ownedPreviewToken !== previewToken) throw new Error("房間預覽識別已變更。");
         let begun = false, unknown = false;
@@ -77,6 +176,7 @@ const RoomCollectionWorkspace = (() => {
           const native = await checked("boundary " + boundaryId);
           const attachment = await makeAttachment(native); integration.assertTransaction(lease);
           W().setFeatureAttachment("source-rooms", attachment, lease.contextToken, {recordHistory: false, roomLease: lease, reason: label});
+          if (afterGroupedRooms) await afterGroupedRooms({boundaryId, attachment, lease});
           await checked("line history-end"); begun = false;
           integration.labelTransaction(lease, label);
           return {ok: true};
@@ -148,40 +248,271 @@ const RoomCollectionWorkspace = (() => {
     return room ? data.collections.find(c => c.roomIds.includes(room.id)) : null;
   }
   const same = (a,b) => JSON.stringify(a) === JSON.stringify(b);
+  const Drafts = () => GeometryRoomCandidateDraft;
+  // R51: [roomId, boundaryId, current native fingerprint of the referenced D3 (null when it
+  // does not exist), acceptedBasisRevision, reviewState]. undefined = not known yet.
+  function currentNativePin(room, known = {}) {
+    if (Object.hasOwn(known, room.id)) return known[room.id];
+    if (nativeChanging.size) return undefined;
+    const id = room.boundaryRef.id, scope = pinScope(), incarnation = integration.readIncarnation(id, token()) ?? null;
+    const report = nativePins.get(id);
+    if (report && report.scope === scope && report.incarnation === incarnation) return report.pin;
+    // A missing runtime incarnation can mean objects has not synchronized yet.
+    // Only the current native object list proves absence; metadata is a receipt.
+    if (nativeObjects?.scope === scope && !nativeObjects.unknown.has(id) && !nativeObjects.ids.has(id)) return null;
+    return undefined;
+  }
+  function collectionRoomsPin(data, collection, unknown = [], known = {}) {
+    const rooms = collection.roomIds.map(id => {
+      const room = data.rooms.find(item => item.id === id), pin = currentNativePin(room, known);
+      if (pin === undefined) unknown.push(room.boundaryRef.id);
+      return {id: room.id, boundaryRef: {id: room.boundaryRef.id, geometryFingerprint: pin ?? null},
+        acceptedBasisRevision: room.acceptedBasisRevision, reviewState: room.reviewState};
+    });
+    return unknown.length ? null : Drafts().roomsPin(rooms);
+  }
+  async function readNativePins(bid) {
+    // Reads the referenced D3 definitions whose current native fingerprint is not known yet.
+    // A report that overlapped a native change is discarded and read again (bounded).
+    const scope = pinScope(), owner = W().getModelOperationState(), firstRead = nativeReadOrder;
+    const assertOwner = () => {
+      if (pinScope() !== scope || !same(W().getModelOperationState(), owner)) {
+        // Retire only reports learnt by obsolete work. A newer independent read
+        // must survive this late rejection (including a save during refresh).
+        for (const [id, report] of nativePins) if (report.scope === scope && report.order > firstRead && report.ownerRevision === owner.revision) nativePins.delete(id);
+        if (nativeObjects?.scope === scope && nativeObjects.order > firstRead && nativeObjects.ownerRevision === owner.revision) nativeObjects = null;
+        throw new Error("房間原生幾何讀取期間專案或版本已變更，請重新操作。");
+      }
+    };
+    for (let attempt = 0; attempt < 3; attempt++) {
+      assertOwner();
+      const stamp = candidateStamp(bid);
+      if (stamp.kind !== "collection" || !stamp.unknownNative.length) return stamp;
+      if (nativeObjects?.scope !== scope || stamp.unknownNative.some(id => nativeObjects.unknown.has(id))) {
+        const objects = await request("objects"); assertOwner();
+        if (!objects.ok) throw new Error("房間原生物件清單讀取失敗：" + (objects.error || "未知錯誤"));
+      }
+      for (const id of candidateStamp(bid).unknownNative) {
+        const result = await request("boundary " + id); assertOwner();
+        if (!result.ok) throw Object.assign(new Error("房間 D3 " + id + " 的原生幾何讀取失敗：" + (result.error || "未知錯誤")), {transport: result.transport});
+      }
+    }
+    const after = candidateStamp(bid);
+    if (after.kind === "collection" && after.roomsPin === null) throw new Error("房間原生幾何在讀取期間持續變更，請稍候重新操作。");
+    return after;
+  }
   function candidateStamp(bid) {
-    const data=state(),collection=collectionFor(bid),page=W().active(bid);
-    if(!collection||!page?.calibration)throw Error('同頁候選需要已校準的共享來源。');
-    const {blocked,group,...owner}=W().getModelOperationState();
-    return {owner,collectionId:collection.id,plane:structuredClone(data.planes.find(p=>p.id===collection.planeId)),
-      crop:[...page.crop],rooms:structuredClone(data.rooms),collections:structuredClone(data.collections),
-      geometry:structuredClone(data.rooms.map(r=>[r.boundaryRef.id,integration.readIncarnation(r.boundaryRef.id,token()),oc.bmap[r.boundaryRef.id]]))};
+    const data = state(), page = W().active(bid), D = Drafts();
+    if (!page?.calibration) throw Error("同頁候選需要已校準的圖頁。");
+    const {blocked, group, ...owner} = W().getModelOperationState();
+    const base = {owner, crop: [...page.crop], rooms: structuredClone(data.rooms), collections: structuredClone(data.collections), planes: structuredClone(data.planes)};
+    const direct = collectionFor(bid);
+    const covering = direct || data.collections.find(item => {
+      const plane = data.planes.find(entry => entry.id === item.planeId);
+      return plane && plane.sourceId === page.sourceId && plane.page === page.page;
+    });
+    if (covering) {
+      const plane = data.planes.find(entry => entry.id === covering.planeId), unknownNative = [];
+      return {...base, kind: "collection", collectionId: covering.id, plane: structuredClone(plane), planePin: D.planePin(plane),
+        roomsPin: collectionRoomsPin(data, covering, unknownNative), unknownNative,
+        geometry: structuredClone(data.rooms.map(room => [room.boundaryRef.id, integration.readIncarnation(room.boundaryRef.id, token()), oc.bmap[room.boundaryRef.id]]))};
+    }
+    return {...base, kind: "page", bid, pageId: page.id, pagePin: D.pagePin(page), hostBoundaryId: bid,
+      geometry: structuredClone([[bid, integration.readIncarnation(bid, token()), oc.bmap[bid]]])};
+  }
+  // The persistent D53 anchor is fixed when the analysis is received (or read back) and
+  // changes only inside the acceptance transaction (R52). The observed stamp never repins it.
+  function anchorFromStamp(stamp) {
+    if (stamp.kind === "page") return {kind: "page", boundaryId: stamp.hostBoundaryId, pageId: stamp.pageId, pagePin: stamp.pagePin};
+    if (!isHash(stamp.roomsPin)) throw new Error("房間原生幾何指紋尚未讀取，無法固定候選錨點；請稍候重新分析。");
+    return {kind: "collection", collectionId: stamp.collectionId, planeId: stamp.plane.id, planePin: stamp.planePin, roomsPin: stamp.roomsPin};
+  }
+  function draftFromSession(s, anchor = s.anchor) {
+    return {schema: Drafts().SCHEMA, draftId: s.draftId, anchor: structuredClone(anchor), analysis: s.analysis, rows: Drafts().rowsFromLive(s.candidates)};
+  }
+  // A session belongs to the owner frame (project and history frame) that produced it.
+  // Project switches and undo/redo create a new frame; an older session never writes again.
+  function ownsSession(s) { return !!s && s.ownerToken === token(); }
+  function retireForeignSession() {
+    const s = candidateSession;
+    if (!s || ownsSession(s) || s.active !== null || s.committing) return false;
+    candidateSession = null; candidateGeneration++; return true;
+  }
+  function foreignSessionError() { return new Error("房間候選工作屬於先前的專案或復原前的狀態；未變更目前專案的草稿。"); }
+  function writeSavedCandidates(s, options, value = Drafts().persistValue(draftFromSession(s))) {
+    if (!ownsSession(s) || (options.contextToken || s.ownerToken) !== s.ownerToken) throw foreignSessionError();
+    writingCandidates = true;
+    try {
+      W().setFeatureAttachment(Drafts().KIND, value, s.ownerToken, options);
+      // A grouped acceptance write is confirmed only by the R52 continuation proof.
+      if (options.recordHistory !== false && s === candidateSession && !s.stale) {
+        try { s.stamp = candidateStamp(s.bid); } catch (error) { s.stale = true; s.reason = error.message; }
+      }
+    } finally { writingCandidates = false; }
+    return value;
+  }
+  function revertAcceptance(s, pending) {
+    const row = s.candidates[pending.index];
+    if (!row) return;
+    row.status = pending.previousStatus;
+    if (pending.previousRoom === undefined) delete row.roomId; else row.roomId = pending.previousRoom;
+  }
+  function acceptCandidateRow(payload) {
+    const s = candidateSession;
+    if (!s || s.active === null) return;
+    if (!ownsSession(s) || payload.lease?.contextToken !== s.ownerToken) throw foreignSessionError();
+    const index = s.active, row = s.candidates[index], previousStatus = row.status, previousRoom = row.roomId;
+    // I65/R52: the grouped draft update already anchors the remaining rows to the committed
+    // collection, so a same-transaction save and a cold reopen agree with the continued work.
+    const data = payload.attachment, collection = data.collections.find(item => item.id === payload.collectionId);
+    const plane = collection && data.planes.find(item => item.id === collection.planeId);
+    const accepted = data.rooms.find(item => item.id === payload.roomId);
+    if (!plane || !accepted || !collection.roomIds.includes(accepted.id)) throw new Error("新增房間的共享來源無法確認，未寫入候選草稿。");
+    // The new room's fingerprint was read from native inside this transaction (makeAttachment).
+    const roomsPin = collectionRoomsPin(data, collection, [], {[accepted.id]: accepted.boundaryRef.associationPin});
+    if (!isHash(roomsPin)) throw new Error("房間原生幾何指紋無法確認，未寫入候選草稿。");
+    const anchor = {kind: "collection", collectionId: collection.id, planeId: plane.id, planePin: Drafts().planePin(plane), roomsPin};
+    row.status = "accepted"; row.roomId = payload.roomId; row.reviewed = false;
+    try {
+      const value = writeSavedCandidates(s, {recordHistory: false, roomLease: payload.lease, contextToken: payload.lease.contextToken},
+        Drafts().persistValue(draftFromSession(s, anchor)));
+      s.pendingAcceptance = {index, previousStatus, previousRoom, anchor, roomsValue: structuredClone(data), value: value === null ? null : structuredClone(value)};
+    } catch (error) {
+      revertAcceptance(s, {index, previousStatus, previousRoom});
+      throw error;
+    }
+  }
+  // Reads missing D3 fingerprints for a restored draft, then re-renders so the draft is
+  // judged again from its stored value. One read per owner token and pane; a failure is
+  // not retried until another native result has settled (at most three times).
+  function refreshRestoredPins(key, bid) {
+    if (nativeRefresh.has(key)) return;
+    const scope = pinScope();
+    nativeRefresh.set(key, readNativePins(bid).then(() => {nativeReadFailure = null;}, error => {
+      const attempts = nativeReadFailure?.key === key ? nativeReadFailure.attempts + 1 : 1;
+      nativeReadFailure = {key, settled: nativeSettled, attempts, message: "房間原生幾何指紋讀取失敗：" + error.message};
+    }).finally(() => {nativeRefresh.delete(key); if (scope === pinScope()) {invalidateCandidates(); renderFaceInspector();}}));
+  }
+  const canonical = value => JSON.stringify(value, (_, item) => item && typeof item === "object" && !Array.isArray(item)
+    ? Object.fromEntries(Object.keys(item).sort().map(key => [key, item[key]])) : item);
+  // A stale restored session that still equals the stored draft holds no work of its own;
+  // it is judged again from storage (R51 fingerprints only) instead of keeping a runtime verdict.
+  function mirrorsStoredDraft(s, bid) {
+    if (!s.parked || (!s.stale && !s.nativePending) || s.expired || s.active !== null || s.committing || s.bid !== bid || !ownsSession(s)) return false;
+    try { return canonical(Drafts().persistValue(draftFromSession(s))) === canonical(W().readFeatureAttachment(Drafts().KIND, token())); }
+    catch (_) { return false; }
+  }
+  function restoreSavedCandidates(bid) {
+    if (!W().readFeatureAttachment || !integration) return;
+    retireForeignSession();
+    if (candidateSession) {
+      if (!mirrorsStoredDraft(candidateSession, bid)) return;
+      candidateSession = null; candidateGeneration++;
+    }
+    let saved;
+    try { saved = W().readFeatureAttachment(Drafts().KIND, token()); } catch { return; }
+    if (!saved?.rows) return;
+    const page = W().active(bid);
+    if (!page) return;
+    const anchor = saved.anchor;
+    if (anchor?.kind === "page" && (anchor.boundaryId !== bid || anchor.pageId !== page.id)) return;
+    if (anchor?.kind === "collection") {
+      const data = state(), collection = data.collections.find(item => item.id === anchor.collectionId);
+      const plane = collection && data.planes.find(item => item.id === collection.planeId);
+      const here = collectionFor(bid);
+      if (!here && !(plane && plane.sourceId === page.sourceId && plane.page === page.page)) return;
+    }
+    const candidates = saved.rows.map(row => ({id: row.rowKey, sourcePoints: row.sourcePoints, points: row.pointsMm, deviation: row.deviation, method: row.method,
+      warnings: row.warnings, dimensions: row.dimensions, rawInputs: row.rawInputs, reviewed: false, revision: row.draftRevision,
+      status: row.status === "existing" ? "accepted" : row.status, existing: row.status === "existing", ...(row.roomId ? {roomId: row.roomId} : {})}));
+    let stamp, stale = false, reason = "", nativePending = false;
+    try { stamp = candidateStamp(bid); }
+    catch (error) { stale = true; reason = error.message; stamp = {kind: anchor.kind, owner: {}, crop: saved.analysis?.crop || [], rooms: [], collections: [], planes: []}; }
+    // R51 freshness compares the persisted anchor with the current domain fingerprints only.
+    if (!stale && anchor.kind === "page" && (stamp.kind !== "page" || stamp.pagePin !== anchor.pagePin || stamp.pageId !== anchor.pageId)) { stale = true; reason = "圖頁已變更"; }
+    if (!stale && anchor.kind === "collection" && stamp.kind === "collection" && stamp.collectionId === anchor.collectionId &&
+        stamp.planePin === anchor.planePin && stamp.roomsPin === null) {
+      const key = pinScope() + "\n" + bid, failed = nativeReadFailure?.key === key ? nativeReadFailure : null;
+      nativePending = true;
+      if (failed && failed.settled === nativeSettled) reason = failed.message;
+      else {reason = "正在讀取房間原生幾何指紋"; refreshRestoredPins(key, bid);}
+    }
+    else if (!stale && anchor.kind === "collection" && (stamp.collectionId !== anchor.collectionId || stamp.planePin !== anchor.planePin || stamp.roomsPin !== anchor.roomsPin)) { stale = true; reason = "共享來源或房間清單已變更"; }
+    candidateSession = {bid, stamp, anchor: structuredClone(anchor), ownerToken: token(), expired: false, nativePending,
+      request: saved.analysis?.options || {}, runId: saved.draftId, draftId: saved.draftId, generation: ++candidateGeneration,
+      candidates, total: saved.analysis?.total || candidates.length, complete: saved.analysis?.complete !== false, ignoredNested: saved.analysis?.ignoredNested || 0,
+      analysis: saved.analysis, active: null, parked: true, stale, committing: false, reason};
+  }
+  function flushCandidates() {
+    const s = candidateSession;
+    if (!s) return;
+    // R358-02: work from an earlier project or a pre-undo frame never writes into this one.
+    if (!ownsSession(s)) {retireForeignSession(); return;}
+    // Expired candidate work (R52) is no longer the source of the draft; the stored value stays.
+    if (s.expired) return;
+    if (s.active !== null) snapshotActive(s);
+    writeSavedCandidates(s, {recordHistory: true});
   }
   function assertCandidates(s=candidateSession) {
-    if(!s||s!==candidateSession||s.stale||!same(s.stamp,candidateStamp(s.bid)))throw Error('來源、房間或專案已變更，舊候選不可接受；請重新取得。');
+    if(!s||s!==candidateSession||s.stale||s.nativePending||s.expired||!ownsSession(s)||!same(s.stamp,candidateStamp(s.bid)))throw Error('來源、房間或專案已變更，或原生指紋尚未確認；候選目前不可接受。');
+    if(s.stamp.kind==='collection'&&!isHash(s.stamp.roomsPin))throw Error('房間原生幾何指紋尚未讀取，舊候選不可接受；請稍候重新操作。');
     W().assertEditable();return s;
   }
   function invalidateCandidates() {
     const s=candidateSession;if(!s||s.committing||s.stale)return;
-    try{assertCandidates(s);}catch(error){
-      s.stale=true;s.reason=error.message;
+    try{
+      const next=candidateStamp(s.bid),before=s.stamp.owner,after=next.owner;
+      if(!s.nativePending&&same(s.stamp,next)){assertCandidates(s);return;}
+      // No active editor or transaction is rebased. Idle rows may wait for a
+      // native report without confusing an empty cache with a changed domain.
+      if(!s.expired&&s.active===null&&!lease&&!instance?.intent&&!instance?.busy&&!s.pendingAcceptance&&ownsSession(s)&&
+        before.context===after.context&&before.frame===after.frame&&before.contextToken===after.contextToken&&
+        s.anchor.kind==='collection'&&next.kind==='collection'&&next.collectionId===s.anchor.collectionId&&next.planePin===s.anchor.planePin){
+        if(next.roomsPin===null){
+          s.nativePending=true;
+          const key=pinScope()+'\n'+s.bid,failed=nativeReadFailure?.key===key?nativeReadFailure:null;
+          s.reason=failed&&failed.settled===nativeSettled?failed.message:'正在讀取房間原生幾何指紋';
+          if(!failed||failed.settled!==nativeSettled)refreshRestoredPins(key,s.bid);
+          return;
+        }
+        if(next.roomsPin===s.anchor.roomsPin){s.stamp=next;s.nativePending=false;s.reason='';return;}
+      }
+      assertCandidates(s);
+    }catch(error){
+      s.stale=true;s.nativePending=false;s.reason=error.message;
       // Never retire an unknown native owner. Its normal receipt recovery owns it.
       if(s.active!==null&&!lease&&!instance?.busy){instance?.cancel().catch(()=>{});activeBid=null;RoomOutlineWorkspace.reset();s.active=null;}
     }
   }
-  window.addEventListener('project-info-changed',invalidateCandidates);
-  window.addEventListener('beforeunload',event=>{if(candidateSession?.candidates.some(c=>c.status!=='accepted')){event.preventDefault();event.returnValue='';}});
+  window.addEventListener('project-info-changed',()=>{ if(!writingCandidates) invalidateCandidates(); });
+  window.addEventListener('beforeunload',event=>{if(hasUnacceptedCandidates()){event.preventDefault();event.returnValue='';}});
+  function hasUnacceptedCandidates() {
+    const s=candidateSession;
+    try{return !!s&&ownsSession(s)&&!s.expired&&s.candidates.some(c=>c.status!=='accepted');}catch(_){return false;}
+  }
   function receiveCandidates(bid,result,request,expected) {
     const stamp=candidateStamp(bid),runId=crypto.randomUUID(),page=W().active(bid);
     if(!same(expected,stamp))throw Error('分析期間專案、房間或來源已變更，未採用晚到候選。');
+    retireForeignSession();
+    // I65: a new analysis never silently replaces a stored draft (any anchor); unsaved
+    // in-memory work was already confirmed away when this analysis started.
+    if(W().readFeatureAttachment(Drafts().KIND,token())!==null)throw Error('已有房間候選草稿；請先明選捨棄，再採用新的分析結果。');
+    const anchor=anchorFromStamp(stamp);
+    const members=stamp.kind==='page'?[]:state().collections.find(c=>c.id===stamp.collectionId).roomIds;
     const candidates=result.candidates.map(c=>{
       const estimated=c.points.map(p=>feUlImgToMm(page,...p)),integer=RoomOutline.integerProposal(estimated);
-      const members=state().collections.find(c=>c.id===stamp.collectionId).roomIds;
-      const duplicate=state().rooms.some(r=>members.includes(r.id)&&r.acceptedBasisRevision===stamp.plane.basisRevision&&oc.bmap[r.boundaryRef.id]?.length===1&&RoomOutline.canonicalLoop(oc.bmap[r.boundaryRef.id][0].verts)===RoomOutline.canonicalLoop(integer.points));
-      return {id:runId+':'+c.key,sourcePoints:c.points,points:integer.points,deviation:integer.deviation,method:c.method,warnings:c.warnings,
+      const duplicate=stamp.kind!=='page'&&state().rooms.some(r=>members.includes(r.id)&&r.acceptedBasisRevision===stamp.plane.basisRevision&&oc.bmap[r.boundaryRef.id]?.length===1&&RoomOutline.canonicalLoop(oc.bmap[r.boundaryRef.id][0].verts)===RoomOutline.canonicalLoop(integer.points));
+      const sameHost=stamp.kind==='page'&&oc.bmap[bid]?.length===1&&RoomOutline.canonicalLoop(oc.bmap[bid][0].verts)===RoomOutline.canonicalLoop(integer.points);
+      return {id:runId+':'+c.key,sourcePoints:c.points,points:integer.points,deviation:integer.deviation,method:c.method,
+        warnings:sameHost?[...c.warnings,'與目前描繪用面外環相同']:c.warnings,
         dimensions:[],rawInputs:{refRoomVertices:integer.points.map(p=>p.join(',')).join('\n'),refRoomLength:'',refRoomEdge:'0'},reviewed:false,revision:0,status:duplicate?'accepted':'pending',existing:duplicate};
     });
-    candidateSession={bid,stamp,request:structuredClone(request),runId,generation:++candidateGeneration,candidates,total:result.total,
-      complete:result.complete,ignoredNested:result.ignoredNested,active:null,parked:false,stale:false,committing:false};
+    const plane=stamp.plane||{coordinateSpace:page.sourceId&&integration.readSource(page.sourceId,token())?.meta.type==='application/pdf'?'pdf-page-viewport/1':'image-pixel/1',pageSize:[page.imgW,page.imgH]};
+    candidateSession={bid,stamp,anchor,ownerToken:token(),expired:false,request:structuredClone(request),runId,draftId:crypto.randomUUID(),generation:++candidateGeneration,candidates,total:result.total,
+      complete:result.complete,ignoredNested:result.ignoredNested,active:null,parked:false,stale:false,committing:false,
+      analysis:{sourceId:page.sourceId,page:page.page,coordinateSpace:plane.coordinateSpace,pageSize:[...plane.pageSize],crop:[...page.crop],
+        options:{mode:request.mode,minWidth:request.minWidth,minLength:request.minLength},barriers:request.barriers||[],
+        analyzerRevision:Drafts().ANALYZER_REVISION,total:result.total,complete:!!result.complete,ignoredNested:result.ignoredNested||0}};
   }
   function snapshotActive(s=candidateSession) {
     if(!s||s.active===null)return;
@@ -204,37 +535,95 @@ const RoomCollectionWorkspace = (() => {
     s.generation=++candidateGeneration;
   }
   async function selectCandidate(index) {
-    const s=assertCandidates(),row=s.candidates[index];
+    const s=assertCandidates(),row=s.candidates[index],actionStamp=s.stamp;
     if(!row||row.status==='accepted')throw Error('請選擇尚未接受的候選。');
-    await releaseCandidateEditor(s);assertCandidates(s);
+    await releaseCandidateEditor(s);
+    if(s.stamp!==actionStamp)throw Error('候選操作期間專案版本已變更，請重新選取。');
+    assertCandidates(s);
     if(RoomOutlineWorkspace.hasWork||fe.draft.pts.length)throw Error('請先完成其他輪廓草稿。');
-    const bid=oc.edit?.bid,collection=collectionFor(bid);
-    if(collection?.id!==s.stamp.collectionId)throw Error('請回到原共享來源再選候選。');
-    controller().beginNew(collection.id);activeBid=bid;s.active=index;s.parked=false;row.status='pending';
+    const bid=oc.edit?.bid;
+    Drafts().assertSelectable(draftFromSession(s), {fresh:!s.stale, reason:s.reason||'', note:''});
+    if(s.stamp.kind==='page'){
+      if(bid!==s.bid)throw Error('請回到原圖頁再選候選。');
+      const page=W().active(bid),source=integration.readSource(page.sourceId,token());
+      if(!source)throw Error('共享來源檔案已遺失。');
+      const plane=S.fromPage(page,source.meta.type,crypto.randomUUID());
+      controller().beginNewStaged({plane,collectionId:crypto.randomUUID(),display:{crop:[...page.crop],opacity:page.opacity,locked:!!page.locked},
+        host:{boundaryId:bid,pageId:page.id,page:Drafts().pageFields(page)}});
+    }else{
+      const collection=collectionFor(bid);
+      if(collection?.id!==s.stamp.collectionId)throw Error('請回到原共享來源再選候選。');
+      controller().beginNew(collection.id);
+    }
+    activeBid=bid;s.active=index;s.parked=false;row.status='pending';
     feSetTool('redraw');RoomOutlineWorkspace.loadCandidate(bid,row);fiShowTab('underlay');
     if(innerWidth<=680)openPanel('right',document.getElementById('workspaceToggleRight'));
     document.getElementById('refRoomVertices')?.focus();
   }
   async function parkCandidates() {
-    const s=assertCandidates();await releaseCandidateEditor(s);assertCandidates(s);
-    s.parked=true;renderFaceInspector();drawFaceEditor();setStatus('候選已暫停；可保存已接受房間。未接受修正只留本分頁。');
+    const s=assertCandidates(),actionStamp=s.stamp;
+    if(s.active!==null)snapshotActive(s);
+    Drafts().persistValue(draftFromSession(s));
+    await releaseCandidateEditor(s);
+    if(s.stamp!==actionStamp)throw Error('候選操作期間專案版本已變更，請重新暫停。');
+    assertCandidates(s);
+    writeSavedCandidates(s,{recordHistory:true});
+    s.parked=true;renderFaceInspector();drawFaceEditor();setStatus('候選已暫停。未接受的房間候選已寫入專案，重新開啟後仍在；接受後才進入場景。');
+  }
+  // I65 discard: one metadata history step that removes the stored draft, then the work.
+  async function discardDraft(s,removeStored=true) {
+    if(s&&!ownsSession(s)){retireForeignSession();throw foreignSessionError();}
+    if(s&&s.active!==null)await releaseCandidateEditor(s);
+    if(lease||instance?.busy)throw Error('請先恢復房間交易。');
+    if(removeStored){
+      writingCandidates=true;
+      try{W().setFeatureAttachment(Drafts().KIND,null,token(),{recordHistory:true});}
+      finally{writingCandidates=false;}
+    }
+    if(!s||candidateSession===s){RoomOutlineWorkspace.reset();candidateSession=null;candidateGeneration++;}
   }
   async function discardCandidates() {
     const s=candidateSession;if(!s)return;
-    if(s.active!==null)await releaseCandidateEditor(s);
-    if(lease||instance?.busy)throw Error('請先恢復房間交易。');
-    RoomOutlineWorkspace.reset();candidateSession=null;candidateGeneration++;renderFaceInspector();drawFaceEditor();
+    try{await discardDraft(s);}
+    finally{if(candidateSession!==s){renderFaceInspector();drawFaceEditor();}}
+  }
+  async function startCandidateAnalysis(bid,pane) {
+    if(instance?.intent||lease||instance?.busy)throw Error('請先完成或取消房間草稿。');
+    retireForeignSession();
+    const analysisInput=()=>{
+      const {owner,roomsPin,unknownNative,...input}=candidateStamp(bid);
+      return {...input,owner:{context:owner.context,frame:owner.frame,contextToken:owner.contextToken}};
+    };
+    const ownerToken=token(),navigationBid=oc.edit?.bid,expectedInput=analysisInput();
+    const assertAnalysisCurrent=(requirePane=false)=>{
+      if(token()!==ownerToken||oc.edit?.bid!==navigationBid||!same(analysisInput(),expectedInput)||
+        (requirePane&&(!pane.isConnected||pane!==document.getElementById('faceInspectorContent'))))
+        throw Error('房間候選分析的專案、圖頁或工作區已變更；請從目前圖頁重新開始。');
+    };
+    // Read the referenced D3 fingerprints first: a failed read must leave any draft untouched.
+    await readNativePins(bid);assertAnalysisCurrent(true);
+    if(instance?.intent||lease||instance?.busy)throw Error('請先完成或取消房間草稿。');
+    const s=ownsSession(candidateSession)?candidateSession:null,stored=W().readFeatureAttachment(Drafts().KIND,token());
+    if(stored!==null){
+      // I65: a stored draft (any anchor) is explicitly discarded first, as its own undoable step.
+      if(!confirm('已有房間候選草稿。重新分析前須先捨棄它（捨棄可復原）；已接受的房間保留。要捨棄並重新分析嗎？'))return;
+      await discardDraft(s,true);
+    }else if(s&&!confirm('重新分析會放棄本分頁尚未接受的候選與修正；已接受房間保留。繼續嗎？'))return;
+    // Discard can redraw this pane; retain its chosen options but recheck ownership and source.
+    assertAnalysisCurrent();
+    await RoomOutlineWorkspace.collect(bid,pane);
   }
   function candidatesHTML(bid) {
     const s=candidateSession;if(!s)return '';
     invalidateCandidates();
-    const disabled=s.stale||s.committing||!!lease||!!instance?.busy||!!currentDialog;
-    return `<section id="roomCandidates"><p role="status">${s.stale?'舊候選已失效：'+escape(s.reason):s.parked?'已暫停，未接受修正只留本分頁':`找到 ${s.total} 個可核對區域${s.complete?'':`，僅顯示前 12 個（未完整呈現）`}`}；來源取景 ${escape(s.stamp.crop.join(', '))}${s.ignoredNested?`；排除 ${s.ignoredNested} 個巢狀障礙內框`:''}</p>`+
+    const disabled=s.stale||s.nativePending||s.committing||!!lease||!!instance?.busy||!!currentDialog;
+    return `<section id="roomCandidates"><p role="status">${s.nativePending?escape(s.reason):s.stale?'舊候選已失效，只能查看或放棄：'+escape(s.reason):s.parked?'已暫停。未接受的房間候選已寫入專案，重新開啟後仍在':`找到 ${s.total} 個可核對區域${s.complete?'':`，僅顯示前 12 個（未完整呈現）`}`}；來源取景 ${escape(s.stamp.crop.join(', '))}${s.ignoredNested?`；排除 ${s.ignoredNested} 個巢狀障礙內框`:''}</p>`+
       s.candidates.map((c,i)=>`<div class="ref-record" data-candidate-row="${i}"><span>候選 ${i+1} · ${c.existing?'與既有房間外環相同':c.status==='accepted'?'已建立':c.status==='excluded'?'已排除':s.active===i?'核對中':'待核對'}</span><button type="button" class="btn" style="min-height:44px" data-room-candidate="${i}"${disabled||c.status==='accepted'?' disabled':''}>${c.status==='excluded'?'恢復並核對':s.parked?'恢復核對':'選取核對'}</button>${c.status==='accepted'?'':`<button type="button" class="btn" style="min-height:44px" data-room-exclude="${i}"${disabled?' disabled':''}>排除</button>`}</div>`).join('')+
       `<div class="ref-actions"><button id="roomCandidatesPark" type="button" class="btn"${disabled?' disabled':''}>暫停候選，以便保存成果</button><button id="roomCandidatesDiscard" type="button" class="btn"${s.committing||lease?' disabled':''}>放棄剩餘候選</button></div></section>`;
   }
   function drawCandidates(root) {
-    const s=candidateSession;if(!s||s.stale||s.parked||collectionFor(oc.edit?.bid)?.id!==s.stamp.collectionId)return;
+    const s=candidateSession;if(!s||s.stale||s.nativePending||s.parked)return;
+    if(s.stamp.kind==='page'?oc.edit?.bid!==s.bid:collectionFor(oc.edit?.bid)?.id!==s.stamp.collectionId)return;
     s.candidates.forEach((c,i)=>{
       if(c.status!=='pending'||s.active===i)return;
       el('polygon',{points:c.points.map(p=>p.join(',')).join(' '),fill:'rgba(22,150,130,.035)',stroke:'#169682','stroke-opacity':.4,'stroke-width':1/fe.zoom,'pointer-events':'none'},root);
@@ -243,8 +632,16 @@ const RoomCollectionWorkspace = (() => {
   }
   function paneHTML(bid) {
     if (!W().readFeatureAttachment || !integration) return "";
+    restoreSavedCandidates(bid);
     const collection = collectionFor(bid), data = state();
-    if (!collection) return W().active(bid)?.calibration ? '<p><button type="button" id="roomSourceCreate" class="btn">以此底圖連續新增房間</button></p>' : "";
+    if (!collection) {
+      const page = W().active(bid);
+      if (!page?.calibration) return "";
+      if (data.planes.some(item => item.sourceId === page.sourceId && item.page === page.page)) return `<p role="status">此圖頁已有共享來源。請從新房間進入同來源列表。</p>`;
+      const busy = instance?.intent || RoomOutlineWorkspace.hasWork;
+      return `<label>新增方式<select id="roomNewMethod"${busy ? " disabled" : ""}><option value="adopt"${zeroMode === "adopt" ? " selected" : ""}>把目前面設為第一個房間</option><option value="manual"${zeroMode === "manual" ? " selected" : ""}>人工描繪第一個房間</option><option value="candidates"${zeroMode === "candidates" ? " selected" : ""}>取得同頁候選</option></select></label><button type="button" id="roomNew" class="btn"${busy ? " disabled" : ""}>開始</button>` +
+        candidatesHTML(bid) + (zeroMode === "candidates" || candidateSession && candidateSession.active !== null ? RoomOutlineWorkspace.paneHTML(bid, true) : "");
+    }
     const current = roomForBoundary(bid), intent = instance?.intent;
     return `<details class="ref-section" open><summary>同來源房間（${collection.roomIds.length}）</summary>` +
       `<p role="status">${intent ? intent.roomId ? "正在編輯所選房間" : "正在新增房間 · 原房間保留" : "明選新增或編輯房間"}</p>` +
@@ -342,7 +739,11 @@ const RoomCollectionWorkspace = (() => {
       if(!pane.isConnected||pane!==document.getElementById('faceInspectorContent')||session!==candidateSession||sessionGeneration!==candidateSession?.generation)return;
       await fn();
     });
-    pane.querySelector('#roomNewMethod')?.addEventListener('change',candidateAction(()=>{candidateMode=pane.querySelector('#roomNewMethod').value;renderFaceInspector();}));
+    pane.querySelector('#roomNewMethod')?.addEventListener('change',candidateAction(()=>{
+      const value=pane.querySelector('#roomNewMethod').value;
+      if(!collectionFor(bid))zeroMode=value;else candidateMode=value;
+      renderFaceInspector();
+    }));
     for(const button of pane.querySelectorAll('[data-room-candidate]'))button.addEventListener('click',candidateAction(()=>selectCandidate(Number(button.dataset.roomCandidate))));
     for(const button of pane.querySelectorAll('[data-room-exclude]'))button.addEventListener('click',candidateAction(async()=>{
       const s=assertCandidates(),index=Number(button.dataset.roomExclude);
@@ -351,25 +752,14 @@ const RoomCollectionWorkspace = (() => {
     }));
     pane.querySelector('#roomCandidatesPark')?.addEventListener('click',candidateAction(parkCandidates));
     pane.querySelector('#roomCandidatesDiscard')?.addEventListener('click',candidateAction(discardCandidates));
-    pane.querySelector("#roomSourceCreate")?.addEventListener("click", safe(async () => {
-      const page = W().active(bid), stamp = W().getProjectState(), source = integration.readSource(page.sourceId, stamp.contextToken);
-      const plane = S.fromPage(page, source.meta.type, crypto.randomUUID()), collectionId = crypto.randomUUID();
-      // The existing face is deliberately associated only after the user explicitly chooses this action.
-      const name = prompt("目前房間名稱", "房間 1");
-      if (name === null) return;
-      if (!name.trim() || name.trim().length > 200) throw new Error("請填寫房間名稱（最多 200 字）。");
-      const native = await checked("boundary " + bid), pin = await R.boundaryPin(native);
-      if (JSON.stringify(stamp) !== JSON.stringify(W().getProjectState()) || W().active(bid) !== page) throw new Error("來源關聯結果晚到，請重新操作。");
-      // The shared owner atomically adopts this explicit selection, preserves
-      // source records, and removes the old independent basis from serialization.
-      await integration.adoptLegacySource({plane, collectionId, boundaryId: bid, page, roomId: crypto.randomUUID(), name: name.trim(), associationPin: pin, contextToken: stamp.contextToken});
-      await prepareSharedPages(); renderFaceInspector();
-    }));
     pane.querySelector("#roomNew")?.addEventListener("click", candidateAction(async()=>{
+      if(!collectionFor(bid)){
+        if(zeroMode==='adopt')return adoptCurrent(bid);
+        if(zeroMode==='manual')return beginFirst(bid);
+        return startCandidateAnalysis(bid,pane);
+      }
       if(candidateMode==='manual')return beginNew(bid);
-      if(candidateSession&&!confirm('重新分析會放棄本分頁尚未接受的候選與修正；已接受房間保留。繼續嗎？'))return;
-      if(instance?.intent||lease||instance?.busy)throw Error('請先完成或取消房間草稿。');
-      await RoomOutlineWorkspace.collect(bid,pane);
+      return startCandidateAnalysis(bid,pane);
     }));
     for (const button of pane.querySelectorAll("[data-room-open]")) button.addEventListener("click", safe(() => openRoom(button.dataset.roomOpen)));
     for (const button of pane.querySelectorAll("[data-room-edit]")) button.addEventListener("click", safe(() => beginEdit(button.dataset.roomEdit)));
@@ -386,6 +776,30 @@ const RoomCollectionWorkspace = (() => {
     }));
   }
   function cleanDraft() {fe.draft = PolyDraft.createState(); fe.draftPreview = null; feSyncDraftMirror(); feLenShow(); drawFaceEditor();}
+  async function adoptCurrent(bid) {
+    const page = W().active(bid), stamp = W().getProjectState(), source = integration.readSource(page.sourceId, stamp.contextToken);
+    const plane = S.fromPage(page, source.meta.type, crypto.randomUUID()), collectionId = crypto.randomUUID();
+    const name = prompt("目前房間名稱", "房間 1");
+    if (name === null) return;
+    if (!name.trim() || name.trim().length > 200) throw new Error("請填寫房間名稱（最多 200 字）。");
+    const native = await checked("boundary " + bid), pin = await R.boundaryPin(native);
+    if (JSON.stringify(stamp) !== JSON.stringify(W().getProjectState()) || W().active(bid) !== page) throw new Error("來源關聯結果晚到，請重新操作。");
+    await integration.adoptLegacySource({plane, collectionId, boundaryId: bid, page, roomId: crypto.randomUUID(), name: name.trim(), associationPin: pin, contextToken: stamp.contextToken});
+    await prepareSharedPages(); renderFaceInspector();
+  }
+  async function beginFirst(bid) {
+    if (RoomOutlineWorkspace.hasWork || fe.draft.pts.length) throw new Error("請先完成或取消目前外環草稿。");
+    const page = W().active(bid);
+    if (!page?.calibration) throw new Error("請先校準圖頁。");
+    const source = integration.readSource(page.sourceId, token());
+    if (!source) throw new Error("共享來源檔案已遺失。");
+    const plane = S.fromPage(page, source.meta.type, crypto.randomUUID());
+    controller().beginNewStaged({plane, collectionId: crypto.randomUUID(), display: {crop: [...page.crop], opacity: page.opacity, locked: !!page.locked},
+      host: {boundaryId: bid, pageId: page.id, page: Drafts().pageFields(page)}});
+    activeBid = bid; feSetTool("redraw"); fiShowTab("underlay");
+    cleanDraft(); renderFaceInspector();
+    setStatus("人工描繪第一個房間：確認後建立新邊界與共享來源；目前描繪用面保留、不關聯。");
+  }
   async function beginNew(bid) {
     if (RoomOutlineWorkspace.hasWork || fe.draft.pts.length) throw new Error("請先完成或取消目前外環草稿。");
     const collection = collectionFor(bid); if (!collection) throw new Error("請先建立共享房間來源。");
@@ -415,11 +829,16 @@ const RoomCollectionWorkspace = (() => {
     const candidate=RoomOutlineWorkspace.beforeCommit();
     if(!candidate?.collectionCandidate||candidate.candidateId!==selected.id||instance?.intent?.roomId)throw Error('候選的新建意圖無法確認。');
     if(s.committing)throw Error('候選確認中，請等待原操作結果。');
-    s.committing=true;
+    s.committing=true;s.pendingAcceptance=null;
+    const index=s.active;
     try {
-      const old=s.stamp,ok=await commitRoomDraft(pts);
+      const others=otherAttachments(),old=s.stamp,ok=await commitRoomDraft(pts);
       if(!ok){
         if(s!==candidateSession)return false;
+        if(s.pendingAcceptance){
+          // The grouped acceptance was written, but this caller cannot prove its outcome.
+          s.pendingAcceptance=null;s.stale=true;s.expired=true;s.reason='房間交易結果未能由本操作確認；剩餘候選已失效。';
+        }
         if(!lease){
           // Dismissing the name prompt returns before prepare/cancel. Retire
           // that real intent as well; clearing its UI alone leaves a blocker.
@@ -431,23 +850,60 @@ const RoomCollectionWorkspace = (() => {
       if(s!==candidateSession)return true;
       const next=candidateStamp(s.bid),oldIds=new Set(old.rooms.map(r=>r.id)),added=next.rooms.filter(r=>!oldIds.has(r.id));
       // Only a uniquely proven native + metadata success may renew the batch.
+      if(old.kind==='page'){
+        const oldPlaneIds=new Set((old.planes||[]).map(p=>p.id)),oldCollectionIds=new Set((old.collections||[]).map(c=>c.id));
+        const addedPlanes=(next.planes||[]).filter(p=>!oldPlaneIds.has(p.id)),addedCollections=(next.collections||[]).filter(c=>!oldCollectionIds.has(c.id));
+        if(added.length!==1||addedPlanes.length!==1||addedCollections.length!==1||addedCollections[0].planeId!==addedPlanes[0].id||!same(addedCollections[0].roomIds,[added[0].id])||
+          added[0].boundaryRef.id===old.hostBoundaryId||next.rooms.some(r=>r.boundaryRef.id===old.hostBoundaryId)||
+          Drafts().pagePin(W().active(old.hostBoundaryId))!==old.pagePin||old.owner.context!==next.owner.context||old.owner.frame!==next.owner.frame||old.owner.contextToken!==next.owner.contextToken||
+          !old.rooms.every(r=>same(r,next.rooms.find(x=>x.id===r.id)))||!(old.planes||[]).every(p=>same(p,next.planes.find(x=>x.id===p.id))))
+          throw Error('新增回執不能證明首房交易完整；剩餘候選已失效。');
+      }else{
       const collection=next.collections.find(c=>c.id===old.collectionId),oldCollection=old.collections.find(c=>c.id===old.collectionId);
       if(added.length!==1||old.owner.context!==next.owner.context||old.owner.frame!==next.owner.frame||old.owner.contextToken!==next.owner.contextToken||!same(old.plane,next.plane)||!same(old.crop,next.crop)||
         !old.rooms.every(r=>same(r,next.rooms.find(x=>x.id===r.id)))||
         !old.geometry.every(g=>same(g,next.geometry.find(x=>x[0]===g[0])))||
         !old.collections.filter(c=>c.id!==old.collectionId).every(c=>same(c,next.collections.find(x=>x.id===c.id)))||
         !same(collection?.roomIds,[...oldCollection.roomIds,added[0].id]))throw Error('新增回執不能證明既有房間完整保留；剩餘候選已失效。');
+      }
       const native=await checked('boundary '+added[0].boundaryRef.id);
       if(await R.boundaryPin(native)!==added[0].boundaryRef.associationPin)throw Error('新增房間原生身份不符；剩餘候選已失效。');
       if(s!==candidateSession||!same(next,candidateStamp(s.bid)))throw Error('新增回執核對晚到，未續用過期候選。');
-      selected.status='accepted';selected.roomId=added[0].id;s.active=null;s.stamp=next;s.generation=++candidateGeneration;
+      const grouped=s.pendingAcceptance;
+      // R52: continue only if the stored draft equals the value written in the same group
+      // (still no draft when the group removed it) and every other attachment is unchanged.
+      if(!grouped||grouped.index!==index||!same(W().readFeatureAttachment(Drafts().KIND,s.ownerToken),grouped.value))
+        throw Error('房間候選草稿不是同一交易剛寫入的值；剩餘候選已失效。');
+      if(!same(state(),grouped.roomsValue))throw Error('房間來源附件不是同一交易剛寫入的值；剩餘候選已失效。');
+      if(!same(otherAttachments(),others))throw Error('房間交易期間其他專案附件已變更；剩餘候選已失效。');
+      if(next.kind!=='collection'||next.collectionId!==grouped.anchor.collectionId||next.plane.id!==grouped.anchor.planeId||
+        next.planePin!==grouped.anchor.planePin||next.roomsPin!==grouped.anchor.roomsPin)throw Error('新增後的集合錨點無法由回執證明；剩餘候選已失效。');
+      selected.status='accepted';selected.roomId=added[0].id;s.anchor=structuredClone(grouped.anchor);s.pendingAcceptance=null;
+      s.active=null;s.stamp=next;s.generation=++candidateGeneration;
       for(const row of s.candidates)row.reviewed=false;
       RoomOutlineWorkspace.reset(false);renderFaceInspector();return true;
     } catch(error) {
-      if(!lease&&!instance?.intent){s.stale=true;s.reason=error.message;s.active=null;RoomOutlineWorkspace.reset();}
-      else if(!lease)RoomOutlineWorkspace.afterCommit(candidate,false);
+      const pending=s.pendingAcceptance;s.pendingAcceptance=null;
+      if(lease){
+        // Unknown native outcome: receipt recovery settles it; the live rows cannot be trusted.
+        if(pending){s.stale=true;s.expired=true;s.reason='房間交易結果未確認；剩餘候選已失效。';}
+      }else if(instance?.intent){
+        // Known rollback: World and the draft are restored, so the live row is not accepted either.
+        if(pending)revertAcceptance(s,pending);
+        RoomOutlineWorkspace.afterCommit(candidate,false);
+      }else{
+        s.stale=true;s.reason=error.message;s.active=null;RoomOutlineWorkspace.reset();
+        // The room exists, but R52 could not prove continuation: the stored draft stays as written.
+        if(pending)s.expired=true;
+      }
       throw error;
     } finally {s.committing=false;if(s===candidateSession&&oc.edit)renderFaceInspector();}
+  }
+  function otherAttachments() {
+    // R52: every project attachment except source rooms and the room-candidate draft.
+    const F=typeof GeometryFeatureAttachments!=='undefined'?GeometryFeatureAttachments:null;
+    const kinds=F?[F.GRID_KIND,F.Evidence?.KIND,F.CASE_KIND,F.Cutting?.KIND]:['grid-draft','evidence-links','rule-cases','cutting-settings'];
+    return kinds.filter(Boolean).map(kind=>[kind,W().readFeatureAttachment(kind,token())]);
   }
   async function commitRoomDraft(pts) {
     const operation = controller(), intent = operation.intent;
@@ -458,11 +914,11 @@ const RoomCollectionWorkspace = (() => {
     if (instance !== operation) return false;
     const dialog = document.createElement("dialog"); dialog.className = "reference-impact"; currentDialog = dialog;
     const title = document.createElement("h2"); title.textContent = intent.room ? "確認編輯「" + name + "」" : "確認新增「" + name + "」";
-    const note = document.createElement("p"); note.textContent = intent.room ? "明確替換所選房間外環；既有孔與其他房間保持原狀。" : "建立新的獨立房間邊界；既有房間保持原狀。";
+    const note = document.createElement("p"); note.textContent = intent.staged ? "建立共享來源（目前基準）與第一個房間；目前描繪用面保留、不關聯。" : intent.room ? "明確替換所選房間外環；既有孔與其他房間保持原狀。" : "建立新的獨立房間邊界；既有房間保持原狀。";
     dialog.append(title, note); appendGridDefinitionImpact(dialog, preview.review);
     const commands = document.createElement("code"); commands.textContent = preview.command; dialog.append(commands);
     const cancel = document.createElement("button"), apply = document.createElement("button");
-    cancel.textContent = "取消，保留原狀"; apply.textContent = "確認套用"; apply.id = "roomConfirm";
+    cancel.textContent = "取消，保留原狀"; cancel.id = "roomCancel"; apply.textContent = "確認套用"; apply.id = "roomConfirm";
     dialog.append(cancel, apply); document.body.append(dialog);
     const accepted = await new Promise(resolve => {
       let settled = false;
@@ -532,7 +988,10 @@ const RoomCollectionWorkspace = (() => {
     // editor state while the owner lease still blocks unrelated mutations;
     // otherwise Finish could reinterpret a New-room outline as an old-room edit.
     const settledLease = lease, recoveringCandidate = !!candidateSession && candidateSession.active !== null;
-    if(candidateSession){candidateSession.stale=true;candidateSession.reason='房間交易經回執恢復；請重新分析候選。已恢復的正式房間依專案現況保留。';candidateSession.active=null;candidateSession.generation=++candidateGeneration;}
+    // R52: candidate work whose grouped acceptance write is unresolved is expired; the stored
+    // draft (as settled by recovery) stays authoritative and is never overwritten by it.
+    if(candidateSession?.pendingAcceptance)candidateSession.expired=true;
+    if(candidateSession){candidateSession.stale=true;candidateSession.pendingAcceptance=null;candidateSession.reason='房間交易經回執恢復；請重新分析候選。已恢復的正式房間依專案現況保留。';candidateSession.active=null;candidateSession.generation=++candidateGeneration;}
     cleaningUI = true;
     try {
       retireDialog?.();
@@ -545,9 +1004,9 @@ const RoomCollectionWorkspace = (() => {
     if (settledLease) integration.endTransaction(settledLease);
     lease = null;
   }
-  return {configure, assertTransaction, paneHTML, bindPane, overviewHTML, bindOverview, sourcePage, prepareSharedPages, roomForBoundary, beginNew, beginEdit, commitDraft, cancel, changeView, changeBasis, observeNativeResult, settleRecoveredTransaction, recoveredTransaction,
-    receiveCandidates,captureCandidateStamp:candidateStamp,parkCandidates,selectCandidate,drawCandidates,
-    get hasUnacceptedCandidates(){return !!candidateSession?.candidates.some(c=>c.status!=='accepted');},
+  return {configure, beginNativeRequest, assertTransaction, paneHTML, bindPane, overviewHTML, bindOverview, sourcePage, prepareSharedPages, roomForBoundary, beginNew, beginEdit, commitDraft, cancel, changeView, changeBasis, observeNativeResult, settleRecoveredTransaction, recoveredTransaction,
+    receiveCandidates,captureCandidateStamp:candidateStamp,parkCandidates,selectCandidate,drawCandidates,flushCandidates,
+    get hasUnacceptedCandidates(){return hasUnacceptedCandidates();},
     candidateSnapshot:()=>candidateSession?structuredClone(candidateSession):null,
     get cleaningUI() {return cleaningUI;}, get dialogOpen() {return !!currentDialog?.open;},
     get hasWork() {return !!instance?.intent || !!lease;}, get busy() {return !!instance?.busy || !!lease;}, get transactionLease() {return lease;}, get controller() {return controller();}};

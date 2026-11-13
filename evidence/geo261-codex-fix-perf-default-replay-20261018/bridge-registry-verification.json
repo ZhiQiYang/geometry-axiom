@@ -1,0 +1,126 @@
+{
+  "kind": "唯讀真收據核對",
+  "captured_utc": "2026-10-18T14:56:06.104396+00:00",
+  "entries": [
+    {
+      "label": "main",
+      "source": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "tests/run_all.py",
+        "--build",
+        "--only",
+        "py:test_bridge_integrity"
+      ],
+      "test_methods": 24,
+      "pass": 24,
+      "fail": 0,
+      "skip": 0,
+      "unittest_seconds": 38.161,
+      "suite_wrapper_seconds": 38.23,
+      "run_all_process_seconds_including_build": 53.30463867900107,
+      "source_stable": true,
+      "raw_evidence": [
+        {
+          "path": "performance/bridge-integrity-adbd-main-registry/receipt.json",
+          "bytes": 14258,
+          "sha256": "19a038d95295dfcd313f3a076ccce8d82124959f22fe874972404fe36cd5e25e"
+        },
+        {
+          "path": "performance/bridge-integrity-adbd-main-registry/command.process.json",
+          "bytes": 1095,
+          "sha256": "f70f8eb938c3e8d201ad1c61f426302399ce6be0635a7d13d9250d6d0e22f840"
+        },
+        {
+          "path": "performance/bridge-integrity-adbd-main-registry/command.stdout",
+          "bytes": 6870,
+          "sha256": "107436af2dbd8f33ab5246c273645c33838dfd7039cde9696ca553f1e02145af"
+        },
+        {
+          "path": "performance/bridge-integrity-adbd-main-registry/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "performance/bridge-integrity-adbd-main-registry/suite-logs/py_test_bridge_integrity.json",
+          "bytes": 352,
+          "sha256": "13e8b48ab56dfef723c8a2aaa109adebf61c81726675d908ae325302608dede0"
+        },
+        {
+          "path": "performance/bridge-integrity-adbd-main-registry/suite-logs/py_test_bridge_integrity.unittest.log",
+          "bytes": 124,
+          "sha256": "7fc5c9d18e507d30cca3a9291c819e8f99a1f45d02ef15395619046e1390dd1b"
+        }
+      ]
+    },
+    {
+      "label": "integration",
+      "source": "68eed6fb0e488003ca0a4d8614a9460a637d979e",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "tests/run_all.py",
+        "--build",
+        "--only",
+        "py:test_bridge_integrity"
+      ],
+      "test_methods": 24,
+      "pass": 24,
+      "fail": 0,
+      "skip": 0,
+      "unittest_seconds": 81.171,
+      "suite_wrapper_seconds": 81.31,
+      "run_all_process_seconds_including_build": 112.61084421299893,
+      "source_stable": true,
+      "raw_evidence": [
+        {
+          "path": "performance/bridge-integrity-adbd-candidate-registry/receipt.json",
+          "bytes": 14274,
+          "sha256": "da5153f9bb951b9550e56bea886e8a54b3a45a19cad4f58633c4161495e09a9e"
+        },
+        {
+          "path": "performance/bridge-integrity-adbd-candidate-registry/command.process.json",
+          "bytes": 1096,
+          "sha256": "f7db3b653d4c2e36edfadb3edbf440e7739fd2f946c36a6d198bf6946ff58d82"
+        },
+        {
+          "path": "performance/bridge-integrity-adbd-candidate-registry/command.stdout",
+          "bytes": 6870,
+          "sha256": "d6f9d59808720c445005a79c5ea4be44b2c46b3f29bf4980bab892fa1c7c46de"
+        },
+        {
+          "path": "performance/bridge-integrity-adbd-candidate-registry/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "performance/bridge-integrity-adbd-candidate-registry/suite-logs/py_test_bridge_integrity.json",
+          "bytes": 352,
+          "sha256": "a4d7a66b1e2af35d73f8ec812817fb515e071f8f7ab53b5f6c8288fa4876b7b2"
+        },
+        {
+          "path": "performance/bridge-integrity-adbd-candidate-registry/suite-logs/py_test_bridge_integrity.unittest.log",
+          "bytes": 124,
+          "sha256": "c7633733ab1de89a15aa7eae99ec6c9a125c35d161c408d54be4e3caf443ab7b"
+        }
+      ]
+    }
+  ],
+  "same_test_input_git_blobs": {
+    "tests/test_bridge_integrity.py": "5b5cfe0924b8e2d8cce117135a531f32c501ffd4",
+    "tests/_bridge.py": "eade19c98b42a09f6383be61cd9b3e70ba7b1d66",
+    "tests/run_tests.py": "5734c0e64ab5709ce370a2744d2b01a664ed9ea3"
+  },
+  "ratio_scope": "只以 unittest footer elapsed 81.171 / 38.161；不混 build 或 JSON wrapper",
+  "ratio": 2.127066900762559,
+  "threshold": 2,
+  "threshold_passed": false,
+  "limitations": [
+    "單輪各24方法；不從此結論泛化全部非瀏覽器suite。",
+    "未存每case／freshness掃描／子bridge各段時間，不能分攤剩餘成本。",
+    "binaries.py 與產品版本依法各自使用；三個測試定義／helper／fixture表同Gitblob，不宣稱整repo同tree。"
+  ]
+}

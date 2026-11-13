@@ -1,0 +1,90 @@
+{
+  "kind": "five-stage-build-pass-focused-grid-coordinate-fail",
+  "source": "4004a1cf29a8acaf93dbc1a99f0c6054c8ae464c",
+  "tree": "686a443030dae819d2296bc27288d734214819a9",
+  "gate": {
+    "status": "PASS",
+    "stages": 5,
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\build-gate-4004a1cf-v1\\result\\summary.json",
+    "sha256": "7a16a26056dfa390c55015fe69c7405fbbce2e92aff8323c48d30386360f6567"
+  },
+  "focused": {
+    "status": "FAIL",
+    "planned_methods": 92,
+    "actual_methods": 31,
+    "pass": 30,
+    "fail": 1,
+    "unrun": 61,
+    "groups": {
+      "enclosure-product": {
+        "passed": 5
+      },
+      "region-key-sources": {
+        "passed": 15
+      },
+      "grid-sources": {
+        "failed": 1,
+        "passed": 10
+      },
+      "grid-definitions-product": {
+        "UNRUN": 4
+      },
+      "engineering-sources": {
+        "UNRUN": 18
+      },
+      "derived-policy-sources": {
+        "UNRUN": 14
+      },
+      "derived-policy-graph-product": {
+        "UNRUN": 4
+      },
+      "contact-sources": {
+        "UNRUN": 12
+      },
+      "native-sources": {
+        "UNRUN": 9
+      }
+    },
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\focused-4004a1cf-v3\\result\\summary.json",
+    "sha256": "6735bc8a1691b6c1985992784c767ad173a58f9f353ef04d000755b0a9756625",
+    "started": "2026-10-16T17:30:40.795701+00:00",
+    "finished": "2026-10-16T17:31:15.603577+00:00",
+    "failure_details": [
+      {
+        "test": "tests.test_geo261_grid_sources.GridSources.test_engineering_panel_quantities_drive_actual_grid_coordinates",
+        "subtest": null,
+        "classification": "test-assertion-failure",
+        "exceptionType": "AssertionError",
+        "message": "0 != 1 : ASSERT:engineering-panel-drives-grid-line:117\n",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-4004a1cf-v3/source/tests/test_geo261_grid_sources.py\", line 91, in test_engineering_panel_quantities_drive_actual_grid_coordinates\n    self.assertEqual(0, result.returncode, result.stderr)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : ASSERT:engineering-panel-drives-grid-line:117\n\n"
+      }
+    ],
+    "compiler_commands": 142,
+    "build_artifact_count": 352,
+    "artifact_preservation": {
+      "status": "complete",
+      "error": null
+    }
+  },
+  "readonly_observation": {
+    "kind": "exact-source-control-flow-and-captured-assertion-output",
+    "failing_case": "engineering",
+    "returncode": 1,
+    "actual_stderr": "ASSERT:engineering-panel-drives-grid-line:117\n",
+    "oracle": "wood_grid_sources_line(... id=5, placement=9, axis=0, index=1, anchor=false ...) && value==95",
+    "earlier_assertions_passed": [
+      "application body==50",
+      "typed panel quantity==50",
+      "actual panel/binding dependency edges",
+      "transitive parameter AST edge"
+    ],
+    "measurement_limit": "The retained assertion output does not distinguish a false line query from a successful query with a coordinate other than 95. No actual coordinate or internal error string was emitted, and no extra diagnostic C run was performed.",
+    "enclosure_negative_control": "The complete test method passed: baseline run, changed-result exact ASSERT:space-result-applied marker with existing preview line, then unchanged baseline run. Both paths use the original 30-second run_client timeout.",
+    "excerpts": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\readonly-chain-4004a1cf.txt",
+    "sha256": "ac7a8ea860dedf842729b381394c49921c848c3c6b211959b3ab078dbb0913e7"
+  },
+  "source_runner_gate_unchanged": true,
+  "prior_definition5_enclosure13_not_rerun": "focused-5fe3bfd5-v3/result/summary.json",
+  "new75_deferred": true,
+  "limits": "No extra C diagnostics, product modifications, full suite, PF3, native6, compatibility or browser execution."
+}

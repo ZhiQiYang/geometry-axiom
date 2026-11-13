@@ -1,0 +1,131 @@
+tests/test_geo261_enclosure_product.py:76:     def run_client(self,executable,path,marker=None):
+tests/test_geo261_enclosure_product.py:77:         result=subprocess.run([str(executable),str(path)],capture_output=True,text=True,encoding='utf-8',timeout=30)
+tests/test_geo261_enclosure_product.py:78:         self.assertEqual(1 if marker else 0,result.returncode,result.stdout+'\n'+result.stderr)
+tests/test_geo261_enclosure_product.py:79:         expected='I8a preview 1: valid; confirm token to apply\n'
+tests/test_geo261_enclosure_product.py:80:         if marker:expected+='ASSERT:'+marker+'\n'
+tests/test_geo261_enclosure_product.py:81:         self.assertEqual(expected,result.stderr)
+tests/test_geo261_enclosure_product.py:82: 
+tests/test_geo261_enclosure_product.py:83:     def test_real_preview_rebuild_confirm_and_undo_retain_enclosure_graph(self):
+tests/test_geo261_enclosure_product.py:84:         build,client,path=self.build_client()
+tests/test_geo261_enclosure_product.py:85:         executable=build.link('enclosure-product',[client,*build.product_objects()])
+tests/test_geo261_enclosure_product.py:86:         self.run_client(executable,path)
+tests/test_geo261_enclosure_product.py:87: 
+tests/test_geo261_enclosure_product.py:88:     def test_changed_kernel_result_is_observed_by_actual_space_cache(self):
+tests/test_geo261_enclosure_product.py:89:         build,client,path=self.build_client()
+tests/test_geo261_enclosure_product.py:90:         executable=build.link('enclosure-product-control-baseline',[client,*build.product_objects()])
+tests/test_geo261_enclosure_product.py:91:         self.run_client(executable,path)
+tests/test_geo261_enclosure_product.py:92:         source=(build.kernel/'enclosure_sources.c').read_text(encoding='utf-8')
+tests/test_geo261_enclosure_product.py:93:         before='memcpy(out,&s->values[at],sizeof *out);return true;'
+tests/test_geo261_enclosure_product.py:94:         self.assertEqual(1,source.count(before),'Control must target the actual K result accessor')
+tests/test_geo261_enclosure_product.py:95:         changed=build.kernel/'enclosure-result-product-control.c'
+tests/test_geo261_enclosure_product.py:96:         changed.write_text(source.replace(before,
+tests/test_geo261_enclosure_product.py:97:             'memcpy(out,&s->values[at],sizeof *out);if(out->id==5&&out->max[2]==340)++out->max[2];return true;'),encoding='utf-8')
+tests/test_geo261_enclosure_product.py:98:         obj=build.compile(changed,'enclosure-result-product-control')
+tests/test_geo261_enclosure_product.py:99:         self.assertEqual(1,build.product_objects().count(build.enclosure_sources_object))
+tests/test_geo261_enclosure_product.py:100:         mutant=build.link('enclosure-result-product-control',[client,
+tests/test_geo261_enclosure_product.py:101:             *[obj if x==build.enclosure_sources_object else x for x in build.product_objects()]])
+tests/test_geo261_enclosure_product.py:102:         self.run_client(mutant,path,'space-result-applied')
+tests/test_geo261_enclosure_product.py:103:         self.run_client(executable,path)
+tests/test_geo261_enclosure_product.py:104: 
+tests/test_geo261_grid_sources.py:60: class GridSources(unittest.TestCase):
+tests/test_geo261_grid_sources.py:61:     @classmethod
+tests/test_geo261_grid_sources.py:62:     def setUpClass(cls):
+tests/test_geo261_grid_sources.py:63:         build = native()
+tests/test_geo261_grid_sources.py:64:         for name in ("grid_sources.h", "grid_sources.c"):
+tests/test_geo261_grid_sources.py:65:             shutil.copy2(MODULE / name, build.woodworking / name)
+tests/test_geo261_grid_sources.py:66:         client = build.woodworking / "grid-sources-client.c"
+tests/test_geo261_grid_sources.py:67:         shutil.copy2(ROOT / "tests/geo261_grid_sources_harness.c", client)
+tests/test_geo261_grid_sources.py:68:         cls.client = build.compile(client, "grid-sources-client")
+tests/test_geo261_grid_sources.py:69:         cls.provider = build.compile(build.woodworking / "grid_sources.c", "grid-sources-provider-client")
+tests/test_geo261_grid_sources.py:70:         cls.exe = build.link("grid-sources-client", cls.objects(build))
+tests/test_geo261_grid_sources.py:71: 
+tests/test_geo261_grid_sources.py:72:     @classmethod
+tests/test_geo261_grid_sources.py:73:     def objects(cls, build, module=None, changed=None):
+tests/test_geo261_grid_sources.py:74:         return [cls.client, changed if module == "grid_sources" else cls.provider,
+tests/test_geo261_grid_sources.py:75:                 build.wood_grid_application_object, build.wood_grid_cells_object,
+tests/test_geo261_grid_sources.py:76:                 changed if module == "grid_rules" else build.wood_grid_rules_object,
+tests/test_geo261_grid_sources.py:77:                 build.wood_engineering_object, build.wood_engineering_sources_object,
+tests/test_geo261_grid_sources.py:78:                 *build.kernel_objects()]
+tests/test_geo261_grid_sources.py:79: 
+tests/test_geo261_grid_sources.py:80:     def case(self, name, executable=None):
+tests/test_geo261_grid_sources.py:81:         result = subprocess.run([str(executable or self.exe), name], capture_output=True, text=True, timeout=30)
+tests/test_geo261_grid_sources.py:82:         self.assertIn(result.returncode, (0, 1), "Native crash/setup failure is not a source verdict: " + result.stderr)
+tests/test_geo261_grid_sources.py:83:         return result
+tests/test_geo261_grid_sources.py:84: 
+tests/test_geo261_grid_sources.py:85:     def test_real_parameter_binding_line_child_cell_and_rule_cell_edges(self):
+tests/test_geo261_grid_sources.py:86:         result = self.case("graph")
+tests/test_geo261_grid_sources.py:87:         self.assertEqual(0, result.returncode, result.stderr)
+tests/test_geo261_grid_sources.py:88: 
+tests/test_geo261_grid_sources.py:89:     def test_engineering_panel_quantities_drive_actual_grid_coordinates(self):
+tests/test_geo261_grid_sources.py:90:         result = self.case("engineering")
+tests/test_geo261_grid_sources.py:91:         self.assertEqual(0, result.returncode, result.stderr)
+tests/geo261_grid_sources_harness.c:58: static Fixture *fixture(GeoCoord pitch)
+tests/geo261_grid_sources_harness.c:59: {
+tests/geo261_grid_sources_harness.c:60:     Fixture *f=calloc(1,sizeof *f);if(!f)return NULL;f->store=geo_grid_store_create();f->parameters=geo_parameters_create();f->vertex_ok=f->coordinate_ok=true;
+tests/geo261_grid_sources_harness.c:61:     if(!f->store||!f->parameters||geo_versions_create(&f->versions)!=GEO_VERSION_OK||!make_parameters(f,pitch))return NULL;
+tests/geo261_grid_sources_harness.c:62:     f->points[0]=(GeoPoint2){10,20};f->points[1]=(GeoPoint2){500,20};f->points[2]=(GeoPoint2){500,500};f->points[3]=(GeoPoint2){10,500};f->region=(GeoRegionView){.outline={f->points,4}};
+tests/geo261_grid_sources_harness.c:63:     f->context=(WoodGridContext){.state=&f->state,.sources=f->store,.engineering={.state=&f->engineering,.versions=f->versions,.user=f,.error=f->error,.error_capacity=sizeof f->error,.target=target,.parameter=engineering_parameter},.user=f,.host=host,.coordinate=coordinate,.vertex=vertex,.parameter_error=f->parameter_error};
+tests/geo261_grid_sources_harness.c:64:     GeoGridSystem system={.id=1,.rule_count=1,.next_rule_key=8};strcpy(system.name,"lattice");
+tests/geo261_grid_sources_harness.c:65:     for(int a=0;a<2;++a){system.axis[a].source=GEO_GRID_SOURCE_REPEAT;system.axis[a].step=777;system.axis[a].parameters[1]=(GeoParameterRef){true,90,1};}
+tests/geo261_grid_sources_harness.c:66:     system.rules[0]=(GeoGridRule){.key=7,.all_cells=true,.divisions={4,5}};strcpy(system.rules[0].name,"quarters");
+tests/geo261_grid_sources_harness.c:67:     GeoGridBinding binding={.id=2,.boundary_id=8,.system_id=1,.vertex_key=1,.anchor_den={1,1}};
+tests/geo261_grid_sources_harness.c:68:     if(!wood_grid_source_put(&f->context,&system,1)||!geo_grid_bindings_put(f->store,&binding))return NULL;
+tests/geo261_grid_sources_harness.c:69:     f->state.items[0]=(WoodGridApplication){.id=3,.placement_id=9,.from_binding=true,.binding_id=2};
+tests/geo261_grid_sources_harness.c:70:     f->state.items[1]=(WoodGridApplication){.id=4,.placement_id=9,.is_subgrid=true,.parent_id=3,.lattice_cell=true,.divisions={2,2}};
+tests/geo261_grid_sources_harness.c:71:     f->state.items[2]=(WoodGridApplication){.id=5,.placement_id=9};f->state.items[2].axis[0]=(GeoGridAxisDef){.source=GEO_GRID_SOURCE_BODY_GAP,.body=999,.gap=10,.anchor=10,.anchor_explicit=true};f->state.count=3;
+tests/geo261_grid_sources_harness.c:72:     EngBinding *e=&f->engineering.bindings[0];e->target=(EngTarget){0,5,0,0};e->source=(EngDimensionSource){.kind=ENG_PARAMETER,.parameter={true,90,2}};f->engineering.binding_count=1;return f;
+tests/geo261_grid_sources_harness.c:73: }
+tests/geo261_grid_sources_harness.c:74: static bool attach(Fixture *f)
+tests/geo261_grid_sources_harness.c:75: {
+tests/geo261_grid_sources_harness.c:76:     f->graph=geo_eval_create(261,80);if(!f->graph)return false;GeoSourceProvider region={GS_REGION,"core.region","grid-test-region/1",f,region_describe,region_evaluate};if(!geo_eval_register(f->graph,&region))return false;
+tests/geo261_grid_sources_harness.c:77:     f->parameter_sources=geo_parameter_sources_register(f->graph,f->parameters,GS_PARAMETER,"core.parameter.field","grid-test-parameter/1");
+tests/geo261_grid_sources_harness.c:78:     f->engineering_sources=wood_engineering_sources_register(f->graph,&f->context.engineering,(WoodEngineeringSourceTokens){GS_DIMENSION,GS_BINDING,GS_DEFINITION,GS_NAMED,GS_PARAMETER});if(!f->parameter_sources||!f->engineering_sources)return false;wood_engineering_sources_bind(f->engineering_sources,&f->context.engineering);
+tests/geo261_grid_sources_harness.c:79:     f->sources=wood_grid_sources_create(f->graph,(WoodGridSourceTokens){GS_GRID,GS_PARAMETER,GS_BINDING,0},&f->context);return f->sources&&wood_grid_sources_bind(f->sources,&f->context);
+tests/geo261_grid_sources_harness.c:106: static int engineering_case(void)
+tests/geo261_grid_sources_harness.c:107: {
+tests/geo261_grid_sources_harness.c:108:     Fixture *f=fixture(100);CHECK(f&&attach(f),"engineering-fixture");char error[1024]="";GeoCoord value;
+tests/geo261_grid_sources_harness.c:109:     CHECK(wood_grid_sources_application(f->sources,5,error,sizeof error)&&f->state.items[2].axis[0].body==50,"application-consumes-effective-engineering-binding");
+tests/geo261_grid_sources_harness.c:110:     CHECK(wood_grid_sources_dimension(f->sources,5,0,0,&value,error,sizeof error)&&value==50,"typed-panel-quantity");
+tests/geo261_grid_sources_harness.c:111:     WoodGridSourceKey key;size_t panel=node_index(f->graph,wood_grid_dimension_source_ref(GS_GRID,5,0,0,&key)),binding=SIZE_MAX;
+tests/geo261_grid_sources_harness.c:112:     for(size_t i=0;i<geo_eval_node_count(f->graph);++i){GeoSourceNodeView n;WoodEngineeringBindingSourceKind kind;EngTarget target;
+tests/geo261_grid_sources_harness.c:113:         if(geo_eval_node_at(f->graph,i,&n)&&n.source.provider==GS_BINDING&&wood_engineering_binding_source_decode(&n.source,&kind,&target,NULL)&&
+tests/geo261_grid_sources_harness.c:114:             kind==WOOD_BINDING_SOURCE_EFFECTIVE&&target.id==5&&target.axis==0&&target.field==0)binding=i;}
+tests/geo261_grid_sources_harness.c:115:     CHECK(edge_at(f,grid_index(f,WOOD_GRID_SOURCE_APPLICATION,5),panel,GEO_DEPENDENCY_VALUE_REQUIRED)&&edge_at(f,panel,binding,GEO_DEPENDENCY_VALUE_REQUIRED),"panel-binding-actual-value-edges");
+tests/geo261_grid_sources_harness.c:116:     uint32_t a[]={90,2},b[]={90,1};CHECK(edge_at(f,node_index(f->graph,(GeoSourceRef){GS_PARAMETER,a,sizeof a}),node_index(f->graph,(GeoSourceRef){GS_PARAMETER,b,sizeof b}),GEO_DEPENDENCY_VALUE_REQUIRED),"transitive-parameter-ast-edge");
+tests/geo261_grid_sources_harness.c:117:     CHECK(wood_grid_sources_line(f->sources,5,9,0,1,false,false,0,&value,NULL,error,sizeof error)&&value==95,"engineering-panel-drives-grid-line");dispose(f,false);return 0;
+geometry-templates/woodworking/native/grid_sources.c:232:     if(!g||!wood_grid_prepare_application(s,id,r->error,sizeof r->error))return false;
+geometry-templates/woodworking/native/grid_sources.c:233:     WoodGridHost host;uint32_t pid=kind==WOOD_GRID_SOURCE_LINE?wood_grid_key_read32(key+5):g->placement_id;
+geometry-templates/woodworking/native/grid_sources.c:234:     if(!s->context.host(s->context.user,pid,&host))return false;
+geometry-templates/woodworking/native/grid_sources.c:235:     if(kind==WOOD_GRID_SOURCE_CELL){
+geometry-templates/woodworking/native/grid_sources.c:236:         if(!wood_grid_cell_bounds(s->context.state->items,s->context.state->count,g,&host,&r->scope,r->error,sizeof r->error))return false;wood_grid_scope_value(r,out);return true;
+geometry-templates/woodworking/native/grid_sources.c:237:     }
+geometry-templates/woodworking/native/grid_sources.c:238:     if(kind==WOOD_GRID_SOURCE_LINE){
+geometry-templates/woodworking/native/grid_sources.c:239:         bool anchor=(key[21]&2)!=0,has_band=(key[21]&1)!=0;int64_t index=wood_grid_key_signed64(key+22),band=wood_grid_key_signed64(key+30);r->total=0;r->coordinate=r->seed_coordinate;++r->query_attempts;
+geometry-templates/woodworking/native/grid_sources.c:240:         bool ok=anchor?wood_grid_anchor_line_coord_resolved(s->context.state->items,s->context.state->count,g,&host,axis,index,has_band,band,&r->coordinate,r->error,sizeof r->error,wood_grid_cell_resolve,s):wood_grid_line_coord_in_resolved(s->context.state->items,s->context.state->count,g,&host,axis,index,&r->coordinate,&r->total,r->error,sizeof r->error,wood_grid_cell_resolve,s);
+geometry-templates/woodworking/native/grid_sources.c:241:         if(!ok)return false;out->kind=GEO_SOURCE_AXIS_POSITION;out->as.position=(GeoAxisPosition){r->coordinate,{true,pid,axis}};return true;
+geometry-templates/woodworking/native/grid_sources.c:265: bool wood_grid_sources_line(WoodGridSources *s,uint32_t id,uint32_t pid,int axis,int64_t index,bool anchor,bool has_band,int64_t band,GeoCoord *out,size_t *total,char *error,size_t cap)
+geometry-templates/woodworking/native/grid_sources.c:266: {
+geometry-templates/woodworking/native/grid_sources.c:267:     if(!s)return false;WoodGridSourceKey key;GeoSourceRef ref=wood_grid_line_source_ref(s->tokens.grid,id,pid,axis,index,anchor,has_band,band,&key);GeoSourceValue value;
+geometry-templates/woodworking/native/grid_sources.c:268:     WoodGridSourceResult *r=wood_grid_result(s,&ref);if(!r)return false;r->seed_coordinate=out?*out:0;size_t attempts=r->query_attempts;
+geometry-templates/woodworking/native/grid_sources.c:269:     bool ok=wood_grid_source_get(s,ref,GEO_DEPENDENCY_VALUE_REQUIRED,&value,error,cap);
+geometry-templates/woodworking/native/grid_sources.c:270:     if(ok||r->query_attempts!=attempts){if(out)*out=ok?value.as.position.coordinate:r->coordinate;if(total&&!anchor)*total=r->total;}return ok;
+geometry-templates/woodworking/native/grid_cells.c:230: bool wood_grid_line_coord_in_resolved(const WoodGridApplication *grids,size_t count,const WoodGridApplication *grid,
+geometry-templates/woodworking/native/grid_cells.c:231:     const WoodGridHost *p,int axis,int64_t index,GeoCoord *out,size_t *total,char *err,size_t cap,WoodGridCellResolver resolve,void *user)
+geometry-templates/woodworking/native/grid_cells.c:232: {
+geometry-templates/woodworking/native/grid_cells.c:233:     GeoCoord coords[WOOD_GRID_MAX_LINES]; size_t n=0;
+geometry-templates/woodworking/native/grid_cells.c:234:     if (total) *total=0;
+geometry-templates/woodworking/native/grid_cells.c:235:     if (grid && grid->from_binding && !grid->is_subgrid) {
+geometry-templates/woodworking/native/grid_cells.c:236:         if (!p || p->id!=grid->placement_id || !wood_grid_lattice_coord(grid,axis,index,out)) {
+geometry-templates/woodworking/native/grid_cells.c:237:             if (err) snprintf(err,cap,"D10/I37: lattice grid %u index %lld cannot be evaluated in D1",grid->id,(long long)index);
+geometry-templates/woodworking/native/grid_cells.c:238:             return false;
+geometry-templates/woodworking/native/grid_cells.c:239:         }
+geometry-templates/woodworking/native/grid_cells.c:240:         return true;
+geometry-templates/woodworking/native/grid_cells.c:241:     }
+geometry-templates/woodworking/native/grid_cells.c:242:     if (!wood_grid_axis_lines_in_resolved(grids,count,grid,p,axis,coords,&n,err,cap,resolve,user)) return false;
+geometry-templates/woodworking/native/grid_cells.c:243:     if (total) *total=n;
+geometry-templates/woodworking/native/grid_cells.c:244:     if (index<0 || (uint64_t)index>=n) {
+geometry-templates/woodworking/native/grid_cells.c:245:         if (err) snprintf(err,cap,"I23: 網格 %u %c 軸索引 %lld 超出範圍（本軸共 %u 條）",grid->id,axis?'v':'u',(long long)index,(unsigned)n);
+geometry-templates/woodworking/native/grid_cells.c:246:         return false;
+geometry-templates/woodworking/native/grid_cells.c:247:     }
+geometry-templates/woodworking/native/grid_cells.c:248:     if (out) *out=coords[index];
+geometry-templates/woodworking/native/grid_cells.c:249:     return true;

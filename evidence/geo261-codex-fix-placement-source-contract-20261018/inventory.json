@@ -1,0 +1,750 @@
+{
+  "schema": "geo261-topic-evidence-inventory/1",
+  "repository_prefix": "evidence/geo261-codex-fix-placement-source-contract-20261018",
+  "status": "精確候選公開集合；尚未複製／commit／push，人工判讀見 results",
+  "public_count": 109,
+  "public_bytes": 879453,
+  "inventory_itself": "本檔另行加入，不自指 hash",
+  "public_files": [
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/publication/README.md",
+      "destination_relative": "README.md",
+      "bytes": 9928,
+      "sha256": "7dc69132d3bb3d7bd86cb02fc408359f10c121d476efce815fd97c96881594bf"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/after.binaries.json",
+      "destination_relative": "after/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "7a098208aa6624117325ed6bc35423cc069e4873c6cec74a43c6d76b64e658b2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/after.binary-00.sidecar.json",
+      "destination_relative": "after/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/after.binary-01.sidecar.json",
+      "destination_relative": "after/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/after.binary-02.sidecar.json",
+      "destination_relative": "after/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/before.binaries.json",
+      "destination_relative": "after/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "a801b592290b6391aa01be8828e74f2bb796a44cc8004a065b91043b77edd1f5"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/before.binary-00.sidecar.json",
+      "destination_relative": "after/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/before.binary-01.sidecar.json",
+      "destination_relative": "after/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/before.binary-02.sidecar.json",
+      "destination_relative": "after/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/command.process.json",
+      "destination_relative": "after/command.process.json",
+      "bytes": 1208,
+      "sha256": "62c2fe939e10a3eabdf6e9f2735408c23c7d9f402c484eccde49d49157b1bdaa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/command.stderr",
+      "destination_relative": "after/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/command.stdout",
+      "destination_relative": "after/command.stdout",
+      "bytes": 6785,
+      "sha256": "17df453cfafe1946d41c47a9801241c1d8b6647cc1688699929470b8d59a7f2a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/receipt.json",
+      "destination_relative": "after/receipt.json",
+      "bytes": 16469,
+      "sha256": "6fb84fb015a2327c06a150b719a4c0f7bd2267d7b09ca6004e3926069795fd5e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/suite-logs.manifest.json",
+      "destination_relative": "after/suite-logs.manifest.json",
+      "bytes": 8078,
+      "sha256": "9c9749821988e9f0d646b3225e6e8338915cce78bb537bb667543a22e95b77cd"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/suite-logs/py_test_geo261_host_placement_definition.json",
+      "destination_relative": "after/suite-logs/py_test_geo261_host_placement_definition.json",
+      "bytes": 363,
+      "sha256": "eb9208d093b5a357e2e7e33947a490cb81cb6077590b9dea7b39afe0185fdcf1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/suite-logs/py_test_geo261_host_placement_definition.log",
+      "destination_relative": "after/suite-logs/py_test_geo261_host_placement_definition.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+      "destination_relative": "after/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+      "bytes": 105,
+      "sha256": "29b86b174b5d11212292ec2be696fdfa66e3ad088f2bde66802963e0808f0031"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/suite-logs/py_test_geo261_placement_definition.json",
+      "destination_relative": "after/suite-logs/py_test_geo261_placement_definition.json",
+      "bytes": 362,
+      "sha256": "d059c2cf92bfc76aa171347fb34c797f86cf35b486cd0ceb6f21a1a4c72f827a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/suite-logs/py_test_geo261_placement_definition.log",
+      "destination_relative": "after/suite-logs/py_test_geo261_placement_definition.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/suite-logs/py_test_geo261_placement_definition.unittest.log",
+      "destination_relative": "after/suite-logs/py_test_geo261_placement_definition.unittest.log",
+      "bytes": 114,
+      "sha256": "d26fa11da767232fd0155af2c126a5b28d5afc09f21a0474fe7f8785f8b2f097"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/suite-logs/py_test_geo261_placement_sources.json",
+      "destination_relative": "after/suite-logs/py_test_geo261_placement_sources.json",
+      "bytes": 358,
+      "sha256": "8a3508959c018ce0221c177f209bea2df02a09e4d2af6b40da910add4eb63923"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/suite-logs/py_test_geo261_placement_sources.log",
+      "destination_relative": "after/suite-logs/py_test_geo261_placement_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/suite-logs/py_test_geo261_placement_sources.unittest.log",
+      "destination_relative": "after/suite-logs/py_test_geo261_placement_sources.unittest.log",
+      "bytes": 120,
+      "sha256": "3945223908f06e43826dee2b6f888c90c96c816e12b210e50a12ca2f57073110"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/tool-chrome.stdout",
+      "destination_relative": "after/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/tool-chromium.stdout",
+      "destination_relative": "after/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/tool-gcc.stdout",
+      "destination_relative": "after/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/tool-node.stdout",
+      "destination_relative": "after/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/after/tool-python.stdout",
+      "destination_relative": "after/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/after.binaries.json",
+      "destination_relative": "before/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "7b710f33dd0016de4b1b7351be0de3dd725288756bc5cea97fd5e733e105f195"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/after.binary-00.sidecar.json",
+      "destination_relative": "before/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/after.binary-01.sidecar.json",
+      "destination_relative": "before/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/after.binary-02.sidecar.json",
+      "destination_relative": "before/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/before.binaries.json",
+      "destination_relative": "before/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "90157773430769d7e49765df114fcfc94bce656b319b009a0667bcc7243e51c9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/before.binary-00.sidecar.json",
+      "destination_relative": "before/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/before.binary-01.sidecar.json",
+      "destination_relative": "before/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/before.binary-02.sidecar.json",
+      "destination_relative": "before/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/command.process.json",
+      "destination_relative": "before/command.process.json",
+      "bytes": 1208,
+      "sha256": "7dc5ce7666629d4f8cd2093a7599c7e804d156543c9fded0199176f8a73e54cf"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/command.stderr",
+      "destination_relative": "before/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/command.stdout",
+      "destination_relative": "before/command.stdout",
+      "bytes": 8553,
+      "sha256": "ab71d47fe4c4dda3f04a1889e66bd8dde112536c6704ae086143872325f8fc1c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/receipt.json",
+      "destination_relative": "before/receipt.json",
+      "bytes": 16474,
+      "sha256": "2fb729af9084f1a9b4a4f8997cec8a92c61e78cd342f02db8c1edff33ac61b3d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/suite-logs.manifest.json",
+      "destination_relative": "before/suite-logs.manifest.json",
+      "bytes": 8077,
+      "sha256": "0b3e1c6c5f06436e7532931fa1b7a7489ffdffe093b239ca184a935abc9802a2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/suite-logs/py_test_geo261_host_placement_definition.json",
+      "destination_relative": "before/suite-logs/py_test_geo261_host_placement_definition.json",
+      "bytes": 365,
+      "sha256": "715f79247b1ba2f7d134e714891494ba8d3cb390addc4ab4c308b33133647ec6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/suite-logs/py_test_geo261_host_placement_definition.log",
+      "destination_relative": "before/suite-logs/py_test_geo261_host_placement_definition.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+      "destination_relative": "before/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+      "bytes": 106,
+      "sha256": "3dc30a6e4a135b8593fbed84df14554b755737c48a6f3106fb4c119e36ef813b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/suite-logs/py_test_geo261_placement_definition.json",
+      "destination_relative": "before/suite-logs/py_test_geo261_placement_definition.json",
+      "bytes": 361,
+      "sha256": "dbf15b3a965d31e86ee95969d363901d748c8515964eece84e7e772de050b9a9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/suite-logs/py_test_geo261_placement_definition.log",
+      "destination_relative": "before/suite-logs/py_test_geo261_placement_definition.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/suite-logs/py_test_geo261_placement_definition.unittest.log",
+      "destination_relative": "before/suite-logs/py_test_geo261_placement_definition.unittest.log",
+      "bytes": 114,
+      "sha256": "95d4bff86738cae51d7e7fe5d51ab145e7c5e1e31b2d914718ce99fef35a8568"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/suite-logs/py_test_geo261_placement_sources.json",
+      "destination_relative": "before/suite-logs/py_test_geo261_placement_sources.json",
+      "bytes": 2378,
+      "sha256": "aa27652514c4df8c3b85efc69f13e14d8d011dfcd8e931c6f77b43fc7eb3cecd"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/suite-logs/py_test_geo261_placement_sources.log",
+      "destination_relative": "before/suite-logs/py_test_geo261_placement_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/suite-logs/py_test_geo261_placement_sources.unittest.log",
+      "destination_relative": "before/suite-logs/py_test_geo261_placement_sources.unittest.log",
+      "bytes": 6649,
+      "sha256": "adee34efcea369a0ca98aed3b69f9955751ebe5fae1a1147d1c7f96f6b3c45c6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/tool-chrome.stdout",
+      "destination_relative": "before/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/tool-chromium.stdout",
+      "destination_relative": "before/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/tool-gcc.stdout",
+      "destination_relative": "before/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/tool-node.stdout",
+      "destination_relative": "before/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/before/tool-python.stdout",
+      "destination_relative": "before/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/protocol-restored/protocol.jsonl",
+      "destination_relative": "protocol-restored/protocol.jsonl",
+      "bytes": 17291,
+      "sha256": "3e7511afd4c796284eed076ced420781ae4a8bc58ee92497d0b8a00faa1d29d0"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/protocol-restored/result.json",
+      "destination_relative": "protocol-restored/result.json",
+      "bytes": 3576,
+      "sha256": "566fc097266b02acc21d9ca2fa92c106c4286d70bd16201954ff3c15bba12457"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/protocol-restored/unittest.stderr",
+      "destination_relative": "protocol-restored/unittest.stderr",
+      "bytes": 9045,
+      "sha256": "8852800118c2bca74ce4528091536dbd0806f31194ae61470ae27c726fad40e6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/protocol-restored/unittest.stdout",
+      "destination_relative": "protocol-restored/unittest.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/protocol-restored/working-tree.patch",
+      "destination_relative": "protocol-restored/working-tree.patch",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/publication/protocol-review.json",
+      "destination_relative": "protocol-review.json",
+      "bytes": 33311,
+      "sha256": "2ce76cf9de9c677bcec0c78134fe677fcc6d62668a612bb2d53aec58eb5482f1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/after.binaries.json",
+      "destination_relative": "restored/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "98f2392eff04c29cb6f7c42b4260c896fe495a32bd5e853fe802df664f63125b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/after.binary-00.sidecar.json",
+      "destination_relative": "restored/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/after.binary-01.sidecar.json",
+      "destination_relative": "restored/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/after.binary-02.sidecar.json",
+      "destination_relative": "restored/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/before.binaries.json",
+      "destination_relative": "restored/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "9ed92b545a53b0fdf590f90bf7efd392928446184f9f7c723518fece9619eca1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/before.binary-00.sidecar.json",
+      "destination_relative": "restored/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/before.binary-01.sidecar.json",
+      "destination_relative": "restored/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/before.binary-02.sidecar.json",
+      "destination_relative": "restored/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/command.process.json",
+      "destination_relative": "restored/command.process.json",
+      "bytes": 1357,
+      "sha256": "edea9c46569ab1d55f1df1cc54c64ec982812294a4eefbb9e997dd9323605403"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/command.stderr",
+      "destination_relative": "restored/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/command.stdout",
+      "destination_relative": "restored/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/receipt.json",
+      "destination_relative": "restored/receipt.json",
+      "bytes": 13919,
+      "sha256": "fc5005d1ac83a52364d3aae1928f54e4e7208d45394dfbd4696e4d2b93c06eee"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/suite-logs.manifest.json",
+      "destination_relative": "restored/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/tool-chrome.stdout",
+      "destination_relative": "restored/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/tool-chromium.stdout",
+      "destination_relative": "restored/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/tool-gcc.stdout",
+      "destination_relative": "restored/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/tool-node.stdout",
+      "destination_relative": "restored/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/restored/tool-python.stdout",
+      "destination_relative": "restored/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/publication/results.json",
+      "destination_relative": "results.json",
+      "bytes": 60949,
+      "sha256": "d53794c116941b0dbbf926f86651832113befba5f7b500dca54acac33512eeeb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/publication/source-fix.patch",
+      "destination_relative": "source-fix.patch",
+      "bytes": 15306,
+      "sha256": "6f66c0d5edb9ba471a33ce0bac41a2c54c391f20587f376c865305700892d716"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn-commit.patch",
+      "destination_relative": "withdrawn-commit.patch",
+      "bytes": 15600,
+      "sha256": "f0278c7512a4444b4747052e50918240a6ec28b70d62a685f5a53bf88b18ab75"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/after.binaries.json",
+      "destination_relative": "withdrawn/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "441048b7141c194a16de4a73b4a949776db8ad1ae9541a1528e6fed43af59475"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/after.binary-00.sidecar.json",
+      "destination_relative": "withdrawn/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/after.binary-01.sidecar.json",
+      "destination_relative": "withdrawn/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/after.binary-02.sidecar.json",
+      "destination_relative": "withdrawn/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/before.binaries.json",
+      "destination_relative": "withdrawn/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "de68e5b838fd3fa26c39a9e2f6ad5d559a6d35aeb9eab19b3e3cf8af6c08d988"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/before.binary-00.sidecar.json",
+      "destination_relative": "withdrawn/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/before.binary-01.sidecar.json",
+      "destination_relative": "withdrawn/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/before.binary-02.sidecar.json",
+      "destination_relative": "withdrawn/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/command.process.json",
+      "destination_relative": "withdrawn/command.process.json",
+      "bytes": 1208,
+      "sha256": "64d2df7164f58dfabced0c34b6cb811ced00b875243cee329e0029df05e0dd8a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/command.stderr",
+      "destination_relative": "withdrawn/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/command.stdout",
+      "destination_relative": "withdrawn/command.stdout",
+      "bytes": 8553,
+      "sha256": "e7bc0d3553ad4aea63e07dc7e073d2cc78ed0bb49c83dc63de05926db0a9be00"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/receipt.json",
+      "destination_relative": "withdrawn/receipt.json",
+      "bytes": 16483,
+      "sha256": "7cb3b2c7bd988b7d6bbfb8d986395ee010ac433ff5692b789ae56d525684bf0b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/suite-logs.manifest.json",
+      "destination_relative": "withdrawn/suite-logs.manifest.json",
+      "bytes": 8078,
+      "sha256": "91dd1bdd9c0a93ed4f7a9020fb8c8d40f223796c4d0c8fd32e03a01dd772c403"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/suite-logs/py_test_geo261_host_placement_definition.json",
+      "destination_relative": "withdrawn/suite-logs/py_test_geo261_host_placement_definition.json",
+      "bytes": 363,
+      "sha256": "c7fde68759bd5d37cbbda6feb2de98afe3e596417048d3d559c1ae36e2524e87"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/suite-logs/py_test_geo261_host_placement_definition.log",
+      "destination_relative": "withdrawn/suite-logs/py_test_geo261_host_placement_definition.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+      "destination_relative": "withdrawn/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+      "bytes": 105,
+      "sha256": "b01cb0d2c95f9ad7b0a91cf10234a000cb97797c4823436032ea8e346984daac"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/suite-logs/py_test_geo261_placement_definition.json",
+      "destination_relative": "withdrawn/suite-logs/py_test_geo261_placement_definition.json",
+      "bytes": 362,
+      "sha256": "e570be2cc5090f28a569da13caf62c59495e10abd79d3008a80a9795a8c788e9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/suite-logs/py_test_geo261_placement_definition.log",
+      "destination_relative": "withdrawn/suite-logs/py_test_geo261_placement_definition.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/suite-logs/py_test_geo261_placement_definition.unittest.log",
+      "destination_relative": "withdrawn/suite-logs/py_test_geo261_placement_definition.unittest.log",
+      "bytes": 114,
+      "sha256": "1a31aebae0cb6ebd455552ee1e8ab945b6ba662ab8a69cdf031734f6a9a65803"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/suite-logs/py_test_geo261_placement_sources.json",
+      "destination_relative": "withdrawn/suite-logs/py_test_geo261_placement_sources.json",
+      "bytes": 2378,
+      "sha256": "a5153376cf79f4a3c769ac4c4efaf6e4a8b5bf2d4b5ba805338290cb6429a727"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/suite-logs/py_test_geo261_placement_sources.log",
+      "destination_relative": "withdrawn/suite-logs/py_test_geo261_placement_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/suite-logs/py_test_geo261_placement_sources.unittest.log",
+      "destination_relative": "withdrawn/suite-logs/py_test_geo261_placement_sources.unittest.log",
+      "bytes": 6649,
+      "sha256": "9fba88f438cab3354f636fc2e118e2d77a3fab78fa138b9cf842cf67e687ed41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/tool-chrome.stdout",
+      "destination_relative": "withdrawn/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/tool-chromium.stdout",
+      "destination_relative": "withdrawn/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/tool-gcc.stdout",
+      "destination_relative": "withdrawn/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/tool-node.stdout",
+      "destination_relative": "withdrawn/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/placement-source-contract/withdrawn/tool-python.stdout",
+      "destination_relative": "withdrawn/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    }
+  ],
+  "omitted_recorded_identities": [
+    {
+      "relative_path": "before/before.source.json",
+      "bytes": 1534940,
+      "sha256": "e81dc9ad78fa2660ba87559ba6dbadb91d42c66c5801de782fed93611149be1a",
+      "identity_source": "before/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "before/after.source.json",
+      "bytes": 1534940,
+      "sha256": "e52b3c63f3064e709b1c4aa05bb6761c3ef1dffade8dfbaeaa4880855851cf58",
+      "identity_source": "before/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "before/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "before/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after/before.source.json",
+      "bytes": 1534940,
+      "sha256": "f3f356456136523ebec4800a7cbf7d2674b2862c917d5fe0133044a3baa9fa08",
+      "identity_source": "after/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after/after.source.json",
+      "bytes": 1534940,
+      "sha256": "1f7867118ca9fc28ef5716c59133b0314efb566e3020b3eb66b2660a54b2fdb6",
+      "identity_source": "after/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "after/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "withdrawn/before.source.json",
+      "bytes": 1534889,
+      "sha256": "da3211e7ed48114d2e7a7abbb845f5672240b6743abe999dbdb5d2ea9caa3689",
+      "identity_source": "withdrawn/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "withdrawn/after.source.json",
+      "bytes": 1534889,
+      "sha256": "1975239425f7742affd29fb7c0e45034f473575af02a1cdc0a693c73ece9d21a",
+      "identity_source": "withdrawn/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "withdrawn/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "withdrawn/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored/before.source.json",
+      "bytes": 1534940,
+      "sha256": "4e8b126f738c3c5806774adb98ca0783bceb56495e24c8957656ee519a07ce22",
+      "identity_source": "restored/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored/after.source.json",
+      "bytes": 1534940,
+      "sha256": "5dea2d3bc1f587a7b820e9456dbb3c07abd45032dd62e236ebb2ca11efd4d158",
+      "identity_source": "restored/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "restored/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    }
+  ]
+}

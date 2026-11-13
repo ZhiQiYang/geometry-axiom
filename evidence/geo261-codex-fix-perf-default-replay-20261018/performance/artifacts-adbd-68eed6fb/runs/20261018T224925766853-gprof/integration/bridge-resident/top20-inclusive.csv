@@ -1,0 +1,21 @@
+function,self_seconds,children_seconds,inclusive_seconds,calls,direct_calls,recursive_calls
+main,0.0,0.03,0.03,0,0,0
+app_scene_candidate_apply,0.0,0.02,0.02,204,204,0
+apply_scene_line <cycle 2>,0.0,0.02,0.02,212,212,0
+world_validate_derived,0.0,0.02,0.02,344,172,172
+app_replace_world.constprop.0,0.0,0.01,0.01,16,16,0
+app_world_candidate_create,0.01,0.0,0.01,138,138,0
+apply_reference_place,0.0,0.01,0.01,48,48,0
+apply_spec_line,0.0,0.01,0.01,61,61,0
+cmd_replace_world,0.0,0.01,0.01,15,15,0
+geo_candidate_evaluate <cycle 2>,0.0,0.01,0.01,123,123,0
+reference_asm_guide,0.01,0.0,0.01,0,0,0
+reference_checked,0.0,0.01,0.01,48,48,0
+wood_grid_world_valid_direct,0.01,0.0,0.01,172,172,0
+wood_grid_world_valid_hook,0.0,0.01,0.01,172,172,0
+wood_world_validate_members,0.01,0.0,0.01,172,172,0
+app_asm_context,0.0,0.0,0.0,1091,1091,0
+app_assembly_saved_dimensions,0.0,0.0,0.0,343,343,0
+app_boundary_compose,0.0,0.0,0.0,1030,1030,0
+app_boundary_policy,0.0,0.0,0.0,16,16,0
+app_boundary_region_definition,0.0,0.0,0.0,16,16,0

@@ -1,0 +1,35 @@
+{
+  "driver_sha256": "7bf1164903f0ad518003155aa5a2e0a65eb1d084ad43dfcc6bbd214de5f27599",
+  "state": "pristine",
+  "source_sha_operator_supplied": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+  "bridge": "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/binaries-baseline/bridge",
+  "bridge_sha256": "b87edf623f89f85a683b1728d6e62c25a388f11c60229332d4477ab66034e1d0",
+  "scene_path": "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/raw-fixtures/candidate-file-replay.scene",
+  "cases": [
+    {
+      "name": "valid-preview",
+      "ok": true
+    },
+    {
+      "name": "prepared-bytes",
+      "ok": true
+    },
+    {
+      "name": "preview-owner",
+      "ok": true
+    },
+    {
+      "name": "i8a-valid",
+      "ok": true
+    },
+    {
+      "name": "i8a-invalid",
+      "ok": true
+    },
+    {
+      "name": "partial-datum",
+      "ok": true
+    }
+  ],
+  "ok": true
+}

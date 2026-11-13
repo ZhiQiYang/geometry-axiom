@@ -20,7 +20,7 @@ static void sp_json_bounds(const ProfileRun *r,const ProfileMember *m)
 }
 static void json_section_profile_state(const World *w)
 {
-    const SectionProfileState *s=&w->section_profiles;
+    const SectionProfileState *s=&w->wood.section_profiles;
     fputs("{\"profiles\":[",stdout);
     for(size_t i=0;i<s->profile_count;++i)printf("%s{\"value\":%s}",i?",":"",s->profiles[i].content);
     fputs("],\"members\":[",stdout);
@@ -72,13 +72,13 @@ static void json_section_profile_impact(const World *before,const World *after)
 {
     fputs(",\"sectionProfiles\":{\"before\":",stdout);json_section_profile_state(before);fputs(",\"after\":",stdout);json_section_profile_state(after);
     fputs(",\"warnings\":[",stdout);bool first=true;
-    for(size_t i=0;i<before->section_profiles.member_count;++i){const ProfileMember *a=&before->section_profiles.members[i],*z=sp_member((World*)after,a->id);
+    for(size_t i=0;i<before->wood.section_profiles.member_count;++i){const ProfileMember *a=&before->wood.section_profiles.members[i],*z=sp_member((World*)after,a->id);
         if(!z||a->profile_id!=z->profile_id)continue;
         SectionProfile *old=sp_profile((World*)before,a->profile_id),*now=sp_profile((World*)after,z->profile_id);
         if(old&&now&&memcmp(&old->outline,&now->outline,sizeof old->outline)&&sp_contact_lost(old,a,now,z)){
             printf("%s{\"code\":\"PROFILE_CONTACT_LOST\",\"clause\":\"I49\",\"memberId\":%u,\"profileId\":%u}",first?"":",",z->id,z->profile_id);first=false;}
     }
-    for(size_t i=0;i<before->section_profiles.run_count;++i){const ProfileRun *a=&before->section_profiles.runs[i],*z=sp_run((World*)after,a->id);
+    for(size_t i=0;i<before->wood.section_profiles.run_count;++i){const ProfileRun *a=&before->wood.section_profiles.runs[i],*z=sp_run((World*)after,a->id);
         if(a->simple&&z&&!z->simple&&z->placed){printf("%s{\"code\":\"RUN_HOST_DETACHED\",\"clause\":\"I48\",\"runId\":%u,\"message\":\"進階定位保存目前座標，解除宿主聯動\"}",first?"":",",a->id);first=false;}}
     fputs("],\"diagnosticsComplete\":true,\"violations\":",stdout);sp_json_violations(before,after,!g_preview.valid);putchar('}');
 }
@@ -87,12 +87,12 @@ static void json_section_profile_preview(void)
     /* Source operations disclose both existing geometry and Q38 dependencies. */
     char error[sizeof g_engineering_error];snprintf(error,sizeof error,"%s",g_engineering_error[0]?g_engineering_error:scene_last_error());
     printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"diagnosticsComplete\":true,\"validationStrategy\":\"all-section-profile-violations\"",g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
-    fputs(",\"before\":",stdout);json_engineering_state(&g_preview.before,true);
-    fputs(",\"after\":",stdout);json_engineering_state(&g_preview.after,true);
+    fputs(",\"before\":",stdout);json_engineering_state(&g_preview.transaction->before,true);
+    fputs(",\"after\":",stdout);json_engineering_state(&g_preview.transaction->after,true);
     json_parameter_rebindings();
     snprintf(g_engineering_error,sizeof g_engineering_error,"%s",error);
-    json_section_profile_impact(&g_preview.before,&g_preview.after);fputs(",\"violations\":",stdout);
-    sp_json_violations(&g_preview.before,&g_preview.after,!g_preview.valid);putchar('}');
+    json_section_profile_impact(&g_preview.transaction->before,&g_preview.transaction->after);fputs(",\"violations\":",stdout);
+    sp_json_violations(&g_preview.transaction->before,&g_preview.transaction->after,!g_preview.valid);putchar('}');
 }
 static void cmd_section_profile_read(void)
 {

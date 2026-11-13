@@ -1,0 +1,72 @@
+{
+  "kind": "frozen-old-expected-red",
+  "product_source": "51e9045b43078a77383afdaf5db379117ffc8871",
+  "judge_source": "be9ed3e7886f951918a8e02e678e0284f0d34079",
+  "source_root": "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/region-edges-old-51e9045b-v1",
+  "archive_sha256": "995f8bae9efedf2ebd817406e00aa8ed0542418966fd8355484c99236b61fa28",
+  "original_product_preserved": true,
+  "judge_only_added_files": {
+    "tests/test_geo261_region_edges.py": "46f0cc9cd174510d65ad3a969402d711f503e7f354b38c9ef09c77086c7e0912",
+    "tests/geo261_region_edges_harness.c": "4ba5485e603ae2ce83b02d3d1c5a81681abd88be2811971fd72421c1ecc321fa",
+    "tests/fixtures/geo261_region_crossing.scene": "532e413d533306e2957328fe3ea03cb6d33a64585afe41d335c868abfcbd310a",
+    "tests/fixtures/geo261_region_unit_hole.scene": "f69cf23dd7e070e73100602fc1d841572151126f51f547e11540ccc3092e050f"
+  },
+  "started_utc": "2026-10-16T01:54:44.015865+00:00",
+  "finished_utc": "2026-10-16T01:59:29.250624+00:00",
+  "command": [
+    "python3",
+    "-u",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/exercise-region-edges.py",
+    "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/region-edges-old-51e9045b-v1",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/region-edges-old-51e9045b-v1",
+    "old"
+  ],
+  "raw_test_exit": 1,
+  "test_result": {
+    "selected_tests": [
+      "test_crossing_holes_have_positive_overlap_without_contained_vertices",
+      "test_hole_contacts_stay_invalid_and_rectangle_contacts_stay_valid",
+      "test_product_crossing_holes_rejected_without_mutation",
+      "test_product_unit_hole_placement_rejected_without_mutation",
+      "test_unit_rectangles_exclude_hole_interiors_at_coordinate_limits",
+      "test_unit_strips_keep_two_maximal_intervals_and_capacity_failure"
+    ],
+    "tests_run": 6,
+    "failures": 4,
+    "failed_tests": [
+      "tests.test_geo261_region_edges.RegionEdges.test_crossing_holes_have_positive_overlap_without_contained_vertices",
+      "tests.test_geo261_region_edges.RegionEdges.test_product_crossing_holes_rejected_without_mutation",
+      "tests.test_geo261_region_edges.RegionEdges.test_unit_rectangles_exclude_hole_interiors_at_coordinate_limits",
+      "tests.test_geo261_region_edges.RegionEdges.test_unit_strips_keep_two_maximal_intervals_and_capacity_failure"
+    ],
+    "errors": 0,
+    "errored_tests": [],
+    "skipped": [],
+    "expected_failures": 0,
+    "unexpected_successes": 0,
+    "successful": false,
+    "compiler_commands": 11,
+    "build_artifact_count": 22
+  },
+  "expected_outcome_observed": false,
+  "expected_red_test_names": [
+    "test_crossing_holes_have_positive_overlap_without_contained_vertices",
+    "test_product_crossing_holes_rejected_without_mutation",
+    "test_product_unit_hole_placement_rejected_without_mutation",
+    "test_unit_rectangles_exclude_hole_interiors_at_coordinate_limits",
+    "test_unit_strips_keep_two_maximal_intervals_and_capacity_failure"
+  ],
+  "source_unchanged_after_tests": true,
+  "source_files": 15861,
+  "source_before_sha256": "fb5eaf253ffa99fb44f7ad30fa6ba88983d62eb5f1fbdc95d6151dd4caa52c57",
+  "source_after_sha256": "fb5eaf253ffa99fb44f7ad30fa6ba88983d62eb5f1fbdc95d6151dd4caa52c57",
+  "log_sha256": "170383d9d88aaad42af908badc79dd955dfa1765f81aef5d3376969ace7d8467",
+  "shared_lock_holder": "pid=16082 start=2026-10-16T01:45:11Z label= args=run WSL_CI_JOB_TAG=geo261-targeted-continuation-v2 bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/continue-targeted-namespace.sh\n",
+  "runner_sha256": {
+    "run-region-edges.py": "d73ef20d0706b09ccdd60978364850b9a57b86278dfecfe23f80e0423bb61491",
+    "exercise-region-edges.py": "c1de6d07d00668f03ce7079e9e6610f516d860fcb1e6bbcb15eb9363c9773f8d"
+  },
+  "full_suite_executed": false,
+  "browser_executed": false,
+  "exit": 1
+}

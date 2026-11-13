@@ -1,0 +1,116 @@
+[
+  {
+    "name": "tests-support",
+    "parent": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+    "head": "21b11b302518f49cda344b834c218b097077b11b",
+    "paths": [
+      "tests/test_geo261_default_native.py",
+      "tests/test_geo261_model_sources.py",
+      "tests/test_geometry_host_sources.py",
+      "tests/test_geometry_source_runtime.py"
+    ],
+    "patch": {
+      "path": "readonly-review/tests-support.patch",
+      "bytes": 20562,
+      "sha256": "6a6de2d81e93a7ac4d6ecaae2a70bfcb84476372253016457140f79ef1409712"
+    },
+    "commit_record": {
+      "path": "readonly-review/tests-support-commit.txt",
+      "bytes": 296,
+      "sha256": "b4ed0020bbdbe24ec7a4ebb56f9ce92073617c2e78d9e6987859e74d0bd59551"
+    }
+  },
+  {
+    "name": "product-fix",
+    "parent": "21b11b302518f49cda344b834c218b097077b11b",
+    "head": "11b6cb5246eefff4af7f82caf0efd0824998e0ad",
+    "paths": [
+      "geometry-app/geometry_app/model_native.py",
+      "geometry-app/geometry_app/model_sources.py",
+      "geometry-app/native/MODEL-SOURCES.md",
+      "geometry-core/model_base.c"
+    ],
+    "patch": {
+      "path": "readonly-review/product-fix.patch",
+      "bytes": 9026,
+      "sha256": "10a619a6ff8108603112802d2253fc2a96a2cd061563005c89a0eb58e2029708"
+    },
+    "commit_record": {
+      "path": "readonly-review/product-fix-commit.txt",
+      "bytes": 299,
+      "sha256": "776ed20f8ffd74ebcef232394ee22a991746ea7430fedade63218c8fdc344048"
+    }
+  },
+  {
+    "name": "control-01-exact-set",
+    "parent": "11b6cb5246eefff4af7f82caf0efd0824998e0ad",
+    "head": "16bdbb00571c015b31d36b1b4add7c4ab5d50971",
+    "paths": [
+      "geometry-app/geometry_app/model_sources.py"
+    ],
+    "patch": {
+      "path": "readonly-review/control-01-exact-set.patch",
+      "bytes": 891,
+      "sha256": "54c3929a6aa6143bc5e1b3c451824a7a6a35185fae5728f04c94d86b2484c068"
+    },
+    "commit_record": {
+      "path": "readonly-review/control-01-exact-set-commit.txt",
+      "bytes": 293,
+      "sha256": "36c7a28e75a76bad82f855e026899fedd560bffb9f7c47e787b32e3f0b838346"
+    }
+  },
+  {
+    "name": "control-02-native-binding",
+    "parent": "11b6cb5246eefff4af7f82caf0efd0824998e0ad",
+    "head": "c456b648d23df77b3eafb7a86b4398e087299872",
+    "paths": [
+      "geometry-app/geometry_app/model_sources.py"
+    ],
+    "patch": {
+      "path": "readonly-review/control-02-native-binding.patch",
+      "bytes": 972,
+      "sha256": "6c360c61df619cf5dbde8e51692d20663ba08988423efcb79001546f1c9192ed"
+    },
+    "commit_record": {
+      "path": "readonly-review/control-02-native-binding-commit.txt",
+      "bytes": 293,
+      "sha256": "f681a78895c29a783dfd75c2e5ec8a4ba4472f7889d684bca13672c14466a1ab"
+    }
+  },
+  {
+    "name": "control-03-native-caller",
+    "parent": "11b6cb5246eefff4af7f82caf0efd0824998e0ad",
+    "head": "3af5f08bc524c8fad0d312639d220d08a0cbb38f",
+    "paths": [
+      "geometry-app/geometry_app/model_native.py"
+    ],
+    "patch": {
+      "path": "readonly-review/control-03-native-caller.patch",
+      "bytes": 1012,
+      "sha256": "c17e56b9654eac004e14cadbd50ee23260e063beb68a80bac283051cb1d0b1a9"
+    },
+    "commit_record": {
+      "path": "readonly-review/control-03-native-caller-commit.txt",
+      "bytes": 290,
+      "sha256": "fbc3e54d976d972d7d399b51a8fbcdc7ddd4627329a25f18fbcdd0fc93f3eb59"
+    }
+  },
+  {
+    "name": "control-04-native-catalog",
+    "parent": "11b6cb5246eefff4af7f82caf0efd0824998e0ad",
+    "head": "0e0d131ee7e0ac0e7235d6ea323e2ac04dae3729",
+    "paths": [
+      "geometry-core/model_base.c"
+    ],
+    "patch": {
+      "path": "readonly-review/control-04-native-catalog.patch",
+      "bytes": 662,
+      "sha256": "e7100721d642c28e813cdd34daa3562dc3fc9c9a9d2a30021d9de132862df9e9"
+    },
+    "commit_record": {
+      "path": "readonly-review/control-04-native-catalog-commit.txt",
+      "bytes": 296,
+      "sha256": "fe51500989f1a9d59bd2456793225ddcb794256d94eff8ca575cfc592ceeba3b"
+    }
+  }
+]

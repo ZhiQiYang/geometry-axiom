@@ -1,0 +1,44 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_scenario_verify.ScenarioNativeAcceptance.test_model_base_stdout_and_stderr_are_bounded_inside_worker",
+    "tests.test_scenario_verify.ScenarioNativeAcceptance.test_model_timeout_stops_its_base_child_before_it_can_finish_late"
+  ],
+  "shell": false,
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T12:38:01.709038+00:00",
+  "started_ns": 1792327081709053918,
+  "timeout_seconds": 600.0,
+  "timed_out": false,
+  "interrupted": false,
+  "returncode": 1,
+  "launch_error": null,
+  "pid": 120451,
+  "ended_utc": "2026-10-18T12:38:22.359314+00:00",
+  "ended_ns": 1792327102359341281,
+  "seconds": 20.650284981000368,
+  "streams": {
+    "stdout": {
+      "device": 27,
+      "inode": 1451564,
+      "bytes": 0,
+      "mtime_ns": 1792327081708939939,
+      "ctime_ns": 1792327081708939939,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "stderr": {
+      "device": 27,
+      "inode": 1451565,
+      "bytes": 3658,
+      "mtime_ns": 1792327102285673865,
+      "ctime_ns": 1792327102285673865,
+      "sha256": "29dccfa35bd0ef54d1c85f044f464771199f3cb7a72ef5495ef12b94c635965c",
+      "exists": true
+    }
+  }
+}

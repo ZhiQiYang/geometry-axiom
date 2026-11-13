@@ -1,0 +1,92 @@
+"""Versioned controls for the nine adversarially demonstrated false greens.
+
+Builds on immutable v5, whose digest is recorded alongside this runner's digest.
+Only TEMP copies are mutated; product/manifest sources are never rewritten.
+"""
+import ast
+import hashlib
+import importlib.machinery
+import importlib.util
+import json
+from pathlib import Path
+import sys
+
+BASE = Path(__file__).with_name('mutate_architecture_exclusion_lf_v5.py.txt')
+loader = importlib.machinery.SourceFileLoader('architecture_mutation_v5', str(BASE))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+runner = importlib.util.module_from_spec(spec)
+loader.exec_module(runner)
+previous_mutate = runner.mutate
+
+NEW = {
+    'C_DIRECTIVE_WHITESPACE': ['test_c_formfeed_cannot_hide_template_include',
+                              'test_c_directive_horizontal_whitespace_cannot_hide_include'],
+    'C_UNSUPPORTED_PREPROCESSOR': ['test_c_preprocessor_digraph_fails_closed',
+                                   'test_c_digraph_token_paste_fails_closed'],
+    'PY_TYPED_ALIAS_PROPAGATION': ['test_python_annotated_sys_alias_cannot_read_loaded_template',
+                                  'test_python_named_expression_sys_alias_is_tracked'],
+    'PY_IMPLICIT_INITIALIZER_EDGE': ['test_python_core_owns_implicit_host_initializer_dependency',
+                                     'test_python_nested_core_requires_outer_initializer_without_importer',
+                                     'test_python_neutral_implicit_initializers_are_graph_edges'],
+    'HTML_BASE_URL_UNSUPPORTED': ['test_html_base_href_cannot_redirect_a_core_script',
+                                  'test_html_late_base_href_fails_closed_even_with_route'],
+    'HTML_URL_PREPROCESSING': ['test_html_javascript_tab_cannot_hide_dynamic_import',
+                               'test_html_javascript_url_preprocessing_preserves_dependency'],
+    'JS_UNSUPPORTED_IDENTIFIER': ['test_javascript_unicode_identifier_cannot_hide_division_loader',
+                                  'test_javascript_unicode_identifier_in_template_fails_closed'],
+    'JS_LINE_COMMENT_TERMINATORS': ['test_javascript_line_separator_ends_comment_before_dependency',
+                                    'test_javascript_paragraph_separator_ends_comment_before_dependency',
+                                    'test_javascript_template_line_separator_ends_comment'],
+    'JS_REFLECTIVE_LOADER': ['test_javascript_arrow_constructor_cannot_create_loader',
+                            'test_javascript_computed_constructor_fails_closed_in_template_layer'],
+}
+runner.CONTROLS.update(NEW)
+runner.COUNTS.update({name: 1 for name in NEW})
+
+def mutate(source, control):
+    if control not in {'C_DIRECTIVE_WHITESPACE', 'PY_TYPED_ALIAS_PROPAGATION',
+                       'PY_IMPLICIT_INITIALIZER_EDGE', 'HTML_URL_PREPROCESSING',
+                       'JS_LINE_COMMENT_TERMINATORS'}:
+        return previous_mutate(source, control)
+    if control == 'C_DIRECTIVE_WHITESPACE':
+        needle = r'^[ \t\v\f]*#[ \t\v\f]*'
+        runner.check(source.count(needle) == 1, 'wrong C whitespace guard count')
+        result = source.replace(needle, r'^[ \t]*#[ \t]*')
+        ast.parse(result)
+        return result
+    tree = ast.parse(source)
+    selected = []
+    for node in ast.walk(tree):
+        spelling = ast.unparse(node)
+        if control == 'PY_TYPED_ALIAS_PROPAGATION':
+            match = isinstance(node, ast.Expr) and spelling.startswith('assignments.extend(')
+        elif control == 'PY_IMPLICIT_INITIALIZER_EDGE':
+            match = isinstance(node, ast.Expr) and spelling == 'self.python_package_initializers(path)'
+        elif control == 'HTML_URL_PREPROCESSING':
+            match = isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == 'url_value' for t in node.targets)
+        else:
+            match = isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == 'JS_LINE_END' for t in node.targets)
+        if match:
+            selected.append(node)
+    runner.check(len(selected) == 1, control + ': wrong AST guard count')
+    node = selected[0]
+    replacement = {'HTML_URL_PREPROCESSING': 'url_value = value.lstrip()',
+                   'JS_LINE_COMMENT_TERMINATORS': 'JS_LINE_END = re.compile(r"[\\n]")'}.get(control, 'pass')
+    lines = source.splitlines(keepends=True)
+    lines[node.lineno - 1:node.end_lineno] = [' ' * node.col_offset + replacement + '  # TEMP removed ' + control + '\n']
+    result = ''.join(lines)
+    ast.parse(result)
+    return result
+
+runner.mutate = mutate
+runner.__file__ = __file__
+if __name__ == '__main__':
+    status = runner.main()
+    out = Path(sys.argv[sys.argv.index('--out') + 1])
+    path = out / 'mutation-results.json'
+    report = json.loads(path.read_text(encoding='utf-8'))
+    report['baseRunnerPath'] = str(BASE)
+    report['baseRunnerSha256'] = hashlib.sha256(BASE.read_bytes()).hexdigest()
+    report['adversarialGuardControls'] = list(NEW)
+    path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    raise SystemExit(status)

@@ -3,9 +3,10 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.EvidenceLinksUI=api;})(globalThis,()=>{
   'use strict';
   const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-  const statusText={unchecked:'尚未核對','confirmed-content':'已核對內容','needs-reassociation':'物件身分需重新指定','source-missing':'原 PDF 缺失','source-changed':'原 PDF 已換版，需重新核對','target-missing':'參數欄位缺失'};
+  const statusText={unchecked:'尚未核對','confirmed-content':'已核對內容','needs-reassociation':'物件身分需重新指定','source-missing':'原 PDF 缺失','source-changed':'原 PDF 已換版，需重新核對','target-missing':'目標已不存在','target-replaced':'目標已刪除重建','target-changed':'目標內容已變'};
   const valueText=v=>v?`${v.num}${v.den==='1'?'':'/'+v.den}${v.unit==='mm'?' mm':''}`:'無現行正式值';
-  const typed=t=>`${t.parameterId}:${t.fieldId}`;
+  const typed=t=>t.kind==='boundary'||t.kind==='timber'?`${t.kind}:${t.id}`:`${t.parameterId}:${t.fieldId}`;
+  const targetTitle=t=>t.kind==='boundary'?`邊界 #${t.id}`:t.kind==='timber'?`角材 #${t.id}`:`參數 #${t.parameterId} · 欄位 #${t.fieldId}`;
   function mount(host,{controller,readSelection,getStamp,canvas,filter=()=>true,locateTarget=null,initialInput=null}){
     if(!host||!controller||typeof readSelection!=='function'||typeof getStamp!=='function')throw Error('證據介面接線不完整。');
     const doc=host.ownerDocument,section=doc.createElement('section');section.dataset.evidenceLinks='';
@@ -25,7 +26,7 @@
     function removeOverlay(){overlay?.remove();overlay=null;}
     function release(){if(drag&&canvas?.svg.hasPointerCapture?.(drag.pointerId))canvas.svg.releasePointerCapture(drag.pointerId);drag=null;}
     function resetRegion(){release();selecting=false;region=null;removeOverlay();if(save)save.disabled=true;}
-    function cancel(){++sequence;controller.cancel();busy=false;resetRegion();tell('已取消，證據與正式模型保持原狀。');section.querySelectorAll('input,select,[data-evidence-locate],[data-evidence-rebind]').forEach(n=>n.disabled=false);section.querySelectorAll('[data-evidence-reviewed]').forEach(n=>{n.disabled=n.dataset.canConfirm!=='true';n.checked=view?.links.find(l=>l.evidenceId===n.dataset.evidenceReviewed)?.status==='confirmed-content';});if(cancelButton)cancelButton.disabled=false;if(start)start.disabled=!selection||!canvas;}
+    function cancel(){++sequence;controller.cancel();busy=false;resetRegion();tell('已取消，證據與正式模型保持原狀。');section.querySelectorAll('input,select,[data-evidence-locate],[data-evidence-rebind]').forEach(n=>n.disabled=false);section.querySelectorAll('[data-evidence-reviewed]').forEach(n=>{n.disabled=n.dataset.canConfirm!=='true';n.checked=view?.links.find(l=>l.evidenceId===n.dataset.evidenceReviewed)?.status==='confirmed-content';});if(cancelButton)cancelButton.disabled=false;if(start)start.disabled=!selection||!canvas;if(view)renderLinks();}
     function draw(rect){
       removeOverlay();if(!canvas?.svg||!rect)return;
       const layer=canvas.layer();if(!layer)return;
@@ -50,20 +51,20 @@
       return !rawText&&!rawValue&&!note?null:{rawText,rawValue:rawValue||null,unit:input('unit')||null,note};
     }
     function observationText(o){return o?[o.rawText,o.rawValue===null?'':o.rawValue+(o.unit?' '+o.unit:''),o.note].filter(Boolean).join(' · ')||'已保留空文字':'未記錄';}
-    function targetOptions(select){select.append(element('option','請指定參數欄位',{value:''}));for(const t of selection?.targets||[])select.append(element('option',t.label,{value:typed(t.target)}));}
+    function targetOptions(select){select.append(element('option','請指定物件或參數欄位',{value:''}));for(const t of selection?.targets||[])select.append(element('option',t.label,{value:typed(t.target)}));}
     async function act(operation,onFailure=null,refreshOnFailure=false){
       if(busy||!connected())return;const request=++sequence,initial=stamp();busy=true;
       section.querySelectorAll('button,input,select').forEach(n=>{if(n!==cancelButton)n.disabled=true;});
-      try{await operation();if(request!==sequence||!connected()||stamp().contextToken!==initial.contextToken||stamp().nativeRevision!==initial.nativeRevision)return;await refresh();}
+      try{await operation();if(request!==sequence||!connected()||stamp().contextToken!==initial.contextToken||stamp().projectScope!==initial.projectScope||stamp().session!==initial.session)return;await refresh();}
       catch(error){if(request===sequence&&connected()){onFailure?.();const reason=error.message||'證據操作失敗。';if(refreshOnFailure){const updated=await refresh();if(updated||live(initial))tell(reason);}else if(live(initial)&&same(selectionIdentity,pageIdentity()))tell(reason);else{cancel();tell(reason);}}}
-      finally{if(request===sequence){busy=false;section.querySelectorAll('input,select').forEach(n=>n.disabled=false);if(start)start.disabled=!selection;if(save)save.disabled=!region;section.querySelectorAll('[data-evidence-locate],[data-evidence-rebind]').forEach(n=>n.disabled=false);section.querySelectorAll('[data-evidence-reviewed]').forEach(n=>n.disabled=n.dataset.canConfirm!=='true');}}
+      finally{if(request===sequence){busy=false;section.querySelectorAll('input,select').forEach(n=>n.disabled=false);if(start)start.disabled=!selection;if(save)save.disabled=!region;renderLinks();}}
     }
     function renderLinks(){
       list.replaceChildren();
       for(const link of view.links.filter(filter)){
         const article=element('article',null,{'data-evidence-id':link.evidenceId});article.style.cssText='min-width:0;border-top:1px solid #ccc;padding:10px 0';
         const current=selection.targets.find(t=>t.target.projectScope===link.target.projectScope&&typed(t.target)===typed(link.target));
-        article.append(element('strong',current?.label||`參數 #${link.target.parameterId} · 欄位 #${link.target.fieldId}`));
+        article.append(element('strong',current?.label||targetTitle(link.target)));
         article.append(element('p',statusText[link.status]||'需重新核對',{'data-evidence-status':link.status}));
         const values=element('dl',null);values.style.cssText='margin:8px 0;min-width:0';
         for(const [title,text,key]of [['圖面標值',observationText(link.observations.drawing),'drawing'],['現場量測',observationText(link.observations.measurement),'measurement'],['正式模型值',valueText(link.modelValue),'model']]){
@@ -71,30 +72,41 @@
         }article.append(values);
         const locate=element('button','定位原頁範圍',{type:'button','data-evidence-locate':link.evidenceId});locate.className='btn';
         locate.addEventListener('click',()=>act(async()=>{await controller.locate(link.evidenceId);}));article.append(locate);
-        if(locateTarget){const target=element('button','定位參數欄位',{type:'button','data-evidence-locate-target':link.evidenceId});target.className='btn';target.disabled=['target-missing','needs-reassociation'].includes(link.status);target.addEventListener('click',()=>act(()=>locateTarget(link.evidenceId)));article.append(target);}
+        if(locateTarget){const target=element('button','定位目標',{type:'button','data-evidence-locate-target':link.evidenceId});target.className='btn';target.disabled=['target-missing','target-replaced','needs-reassociation'].includes(link.status);target.addEventListener('click',()=>act(()=>locateTarget(link.evidenceId)));article.append(target);}
         const reviewedLabel=element('label',null);reviewedLabel.style.cssText='display:block;margin:10px 0';
         const reviewed=element('input',null,{type:'checkbox','data-evidence-reviewed':link.evidenceId});reviewed.checked=link.status==='confirmed-content';reviewed.disabled=!link.canConfirm;reviewed.dataset.canConfirm=String(link.canConfirm);
         reviewed.addEventListener('change',()=>act(()=>controller.setReviewed(link.evidenceId,reviewed.checked),()=>{reviewed.checked=link.status==='confirmed-content';reviewed.disabled=true;},true));reviewedLabel.append(reviewed,doc.createTextNode(' 已核對圖面與欄位'));article.append(reviewedLabel);
+        if(link.identityBasis==='ledger'&&link.target.kind==='parameter-field'&&link.canConfirm){
+          const observations=Object.entries(link.observations).filter(([,o])=>o?.rawValue&&['mm','cm'].includes(o.unit));
+          const choose=element('select',null,{'aria-label':'採用哪一項觀察值','data-evidence-adopt-observation':link.evidenceId});
+          for(const [kind]of observations)choose.append(element('option',kind==='drawing'?'圖面標值':'現場量測',{value:kind}));
+          choose.hidden=observations.length<2;
+          const adopt=element('button','採用',{type:'button','data-evidence-adopt':link.evidenceId});adopt.className='btn';adopt.disabled=!observations.length;
+          adopt.addEventListener('click',()=>act(async()=>{
+            if(typeof globalThis.EvidenceLinksApp?.prefillAdoption!=='function')throw Error('請到既有參數卡試算後確認。採用不會直接改幾何。');
+            await globalThis.EvidenceLinksApp.prefillAdoption(link,choose.value);
+          }));article.append(choose,adopt);
+        }
         if(!link.canConfirm){
-          const select=element('select',null,{'aria-label':'重新指定參數欄位','data-evidence-rebind-target':link.evidenceId});select.style.cssText='display:block;max-width:100%;width:100%;margin:8px 0';targetOptions(select);article.append(select);
-          const rebind=element('button','明選欄位重新關聯',{type:'button','data-evidence-rebind':link.evidenceId});rebind.className='btn';
-          rebind.addEventListener('click',()=>{if(!live(selection.stamp)||!same(selectionIdentity,pageIdentity())){cancel();tell('來源或欄位已變更，請重新讀取後明選。');return;}const selected=readTarget(select);if(!selected){tell('請明確指定參數欄位。');return;}act(()=>controller.rebind(link.evidenceId,selected.target),null,true);});article.append(rebind);
+          const select=element('select',null,{'aria-label':'重新指定物件或參數欄位','data-evidence-rebind-target':link.evidenceId});select.style.cssText='display:block;max-width:100%;width:100%;margin:8px 0';targetOptions(select);article.append(select);
+          const rebind=element('button','明選目標重新關聯',{type:'button','data-evidence-rebind':link.evidenceId});rebind.className='btn';
+          rebind.addEventListener('click',()=>{if(!live(selection.stamp)||!same(selectionIdentity,pageIdentity())){cancel();tell('來源或目標已變更，請重新讀取後明選。');return;}const selected=readTarget(select);if(!selected){tell('請明確指定物件或參數欄位。');return;}act(()=>controller.rebind(link.evidenceId,selected.target),null,true);});article.append(rebind);
         }list.append(article);
       }
-      if(!view.links.some(filter))list.append(element('p','此頁尚無參數證據連結。'));
+      if(!view.links.some(filter))list.append(element('p','此頁尚無證據連結。'));
     }
     function render(){
-      resetRegion();section.replaceChildren();section.append(element('h4','參數證據連結'));
+      resetRegion();section.replaceChildren();section.append(element('h4','證據連結'));
       message=element('p','框選原 PDF 區域，手動記錄圖面與現場值；核對只更新此紀錄。',{'data-evidence-message':'',role:'status'});section.append(message);
       form=element('div',null,{'data-evidence-form':''});section.append(form);
-      const label=element('label','指定參數欄位');targetSelect=element('select',null,{'aria-label':'指定參數欄位','data-evidence-target':''});targetSelect.style.cssText='display:block;width:100%;min-width:0;max-width:100%';targetOptions(targetSelect);label.append(targetSelect);form.append(label);
+      const label=element('label','指定物件或參數欄位');targetSelect=element('select',null,{'aria-label':'指定物件或參數欄位','data-evidence-target':''});targetSelect.style.cssText='display:block;width:100%;min-width:0;max-width:100%';targetOptions(targetSelect);label.append(targetSelect);form.append(label);
       const modelLabel=element('p','正式模型值：');model=element('output','無現行正式值',{'data-evidence-current-model':''});modelLabel.append(model);form.append(modelLabel);targetSelect.addEventListener('change',updateModel);
       observationFields('drawing','圖面標值');observationFields('measurement','現場量測');
       const actions=element('div',null);actions.style.cssText='display:flex;flex-wrap:wrap;gap:8px';
       start=element('button','在原頁框選區域',{type:'button','data-evidence-select':''});start.className='btn';start.disabled=!canvas||!selection.document;
       start.addEventListener('click',()=>{if(!live(selection.stamp)||!same(selectionIdentity,pageIdentity())){cancel();tell('來源已變更，請重新讀取來源紀錄。');return;}resetRegion();canvas?.beginSelection?.();selecting=true;drag=null;tell('在現有底圖按住拖曳框選；取消可保留原狀。');});
       save=element('button','保存證據連結',{type:'button','data-evidence-save':''});save.className='btn';save.disabled=true;
-      save.addEventListener('click',()=>{const target=readTarget();if(!target){tell('請指定參數欄位。');return;}if(!live(selection.stamp)||!same(selectionIdentity,pageIdentity())){cancel();tell('來源已變更，請重新框選。');return;}
+      save.addEventListener('click',()=>{const target=readTarget();if(!target){tell('請指定物件或參數欄位。');return;}if(!live(selection.stamp)||!same(selectionIdentity,pageIdentity())){cancel();tell('來源已變更，請重新框選。');return;}
         const observations={drawing:observation('drawing'),measurement:observation('measurement')};if(!observations.drawing&&!observations.measurement){tell('請手動記錄至少一項圖面或現場觀察。');return;}
         act(()=>controller.add({document:selection.document,region,target:target.target,observations}));});
       cancelButton=element('button','取消',{type:'button','data-evidence-cancel':''});cancelButton.className='btn';cancelButton.addEventListener('click',cancel);actions.append(start,save,cancelButton);form.append(actions);

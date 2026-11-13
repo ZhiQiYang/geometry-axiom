@@ -1,0 +1,37 @@
+{
+  "archive": "cloud-space-maintenance.raw.tar.gz",
+  "bytes": 10379990,
+  "sha256": "97ca432e388af09fb0f212da0bcb44ccccdc2c0f3f0ef7991157d557964b4bab",
+  "members": [
+    {
+      "path": "failed-move.json",
+      "bytes": 581,
+      "sha256": "cc9e3f5678845dadcefc068ca2a5ec1aa45b48932032d05279493832e31a3c53"
+    },
+    {
+      "path": "verified-move.json",
+      "bytes": 1733,
+      "sha256": "fe95cde6740d84ac39eaa950c95891dc3713cb0785670bc32a6f489bb4ee775e"
+    },
+    {
+      "path": "source-manifest.json",
+      "bytes": 48952543,
+      "sha256": "6f64d42a945e004d277f5c8aab3f193abfc6820b286cef98eabbe08d0bed94cf"
+    },
+    {
+      "path": "destination-manifest.json",
+      "bytes": 48952561,
+      "sha256": "500145f4f062fa3d403517d3e64e8d650a6240d022ab0cc42783b7cab131dd6a"
+    },
+    {
+      "path": "original-driver.py",
+      "bytes": 10290,
+      "sha256": "3ac03e6c79d878f1e56d4119134afef23e8ab5b950fd50a0b651fdf82af83a08"
+    },
+    {
+      "path": "internal-link-driver.py",
+      "bytes": 10944,
+      "sha256": "3a2d7bf0e69c2c41c104755a9e06895c78c1822b0fe4aa051c01a3ed389f8a8c"
+    }
+  ]
+}

@@ -1,0 +1,4117 @@
+{
+  "archive": "linux-architecture-refresh.raw.tar.gz",
+  "bytes": 10253088,
+  "sha256": "cc6d79e9491372c44955b588116d22d727ab6c7407a5291b4035a6a616af572d",
+  "members": [
+    {
+      "path": "architecture/RESULT.json",
+      "bytes": 23744,
+      "sha256": "c68c2a549f9b263c0cf694fc92433758be80c920ce20cd2fe50a07d57b89bf71"
+    },
+    {
+      "path": "architecture/commands/000-head-before/run.json",
+      "bytes": 1896,
+      "sha256": "496d06182b5e301d0274240fb9e54af5bdd51558ab9cffebb78184d5dc82d84a"
+    },
+    {
+      "path": "architecture/commands/000-head-before/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/000-head-before/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/001-status-before/run.json",
+      "bytes": 1916,
+      "sha256": "934df507e0ec9169bf61d041257ff660ba338f76cf9624669e790acb9ac246e9"
+    },
+    {
+      "path": "architecture/commands/001-status-before/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/001-status-before/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/002-tracked-inputs/run.json",
+      "bytes": 2158,
+      "sha256": "43262d03e2983178d8a1ac7f3e5e5abedc98e3e8cb4254b8c97ac653a17c2a02"
+    },
+    {
+      "path": "architecture/commands/002-tracked-inputs/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/002-tracked-inputs/stdout",
+      "bytes": 220195,
+      "sha256": "5224a1dfeb871494bc12829f575b1769fa20060cb8a42c0ba7e9fe331cc00184"
+    },
+    {
+      "path": "architecture/commands/003-frozen-input-blobs/run.json",
+      "bytes": 1914,
+      "sha256": "bf7e6f49656d700112ce456d8fb0d019ff3d714dde8dc996094ff50b2f40f41b"
+    },
+    {
+      "path": "architecture/commands/003-frozen-input-blobs/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/003-frozen-input-blobs/stdin",
+      "bytes": 56679,
+      "sha256": "0f8433b0f7139a2db949c2adb83df3a609787ca182eed9a5bac6582de2da4fdc"
+    },
+    {
+      "path": "architecture/commands/003-frozen-input-blobs/stdout",
+      "bytes": 20575216,
+      "sha256": "acd8ba4fdd28233b618e71939c1d9948b460b32fd19b32d913970a4005f56be1"
+    },
+    {
+      "path": "architecture/commands/004-previous-receipt-commit/run.json",
+      "bytes": 2025,
+      "sha256": "2dffa6016a2bde75938235a3f10fec80dec405b8fa3469778a7a8c3834524465"
+    },
+    {
+      "path": "architecture/commands/004-previous-receipt-commit/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/004-previous-receipt-commit/stdout",
+      "bytes": 41,
+      "sha256": "1639e84abfd88df6026c89503f223ef94811e8f247cc72a54a7897839e475f2e"
+    },
+    {
+      "path": "architecture/commands/005-previous-source-ancestor/run.json",
+      "bytes": 2041,
+      "sha256": "e63d1c2f1df6763b5bf8e5b47fd07ea9079a6986e1a31af9d3aac0552f255e11"
+    },
+    {
+      "path": "architecture/commands/005-previous-source-ancestor/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/005-previous-source-ancestor/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/006-previous-receipt-ancestor/run.json",
+      "bytes": 2046,
+      "sha256": "e1eda540494e0ce817057fa74fba178ad52f35dbd45b5bcf6653e2b9b3c717bf"
+    },
+    {
+      "path": "architecture/commands/006-previous-receipt-ancestor/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/006-previous-receipt-ancestor/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/007-previous-output-product-architecture-json/run.json",
+      "bytes": 2114,
+      "sha256": "bd7a5996a4520c4ec8636cced4610c82021fb4f5318f111994e986b369067c1b"
+    },
+    {
+      "path": "architecture/commands/007-previous-output-product-architecture-json/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/007-previous-output-product-architecture-json/stdout",
+      "bytes": 219913,
+      "sha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452"
+    },
+    {
+      "path": "architecture/commands/008-previous-output-product-architecture-scan-json/run.json",
+      "bytes": 2144,
+      "sha256": "bd60891a02ba3fe076172fb79a66d114bfa2d411a9d249afed5e8d34e36ae156"
+    },
+    {
+      "path": "architecture/commands/008-previous-output-product-architecture-scan-json/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/008-previous-output-product-architecture-scan-json/stdout",
+      "bytes": 132208,
+      "sha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
+    },
+    {
+      "path": "architecture/commands/009-previous-output-PRODUCT-ARCHITECTURE-md/run.json",
+      "bytes": 2100,
+      "sha256": "50185a4bc6d42c266ee143c84f952feaabb5429798c3b557299b3443ac022e70"
+    },
+    {
+      "path": "architecture/commands/009-previous-output-PRODUCT-ARCHITECTURE-md/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/009-previous-output-PRODUCT-ARCHITECTURE-md/stdout",
+      "bytes": 30660,
+      "sha256": "a8befb43e2f2ad0af8b37c09bc0a04e3a2a1266ca87f11e856a5e2acd7c74fcc"
+    },
+    {
+      "path": "architecture/commands/010-previous-output-product-architecture-receipt-json/run.json",
+      "bytes": 2162,
+      "sha256": "3e067fb4949aa62f7efb165d1f2fd50afbce1e5daf81538a2e65687869d154ec"
+    },
+    {
+      "path": "architecture/commands/010-previous-output-product-architecture-receipt-json/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/010-previous-output-product-architecture-receipt-json/stdout",
+      "bytes": 121934,
+      "sha256": "23de901dab26e88635e771bef05ad89b7532f62417f0b9e4325235654c4e24f4"
+    },
+    {
+      "path": "architecture/commands/011-version-python/run.json",
+      "bytes": 1944,
+      "sha256": "d27e5b7b78361c1311390e6ce138afb183a7cbc9fd18865e329ab8eb9412496e"
+    },
+    {
+      "path": "architecture/commands/011-version-python/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/011-version-python/stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "architecture/commands/012-version-git/run.json",
+      "bytes": 1859,
+      "sha256": "f7c84d317cd4cb6dbe366bf8e0963ef8c2d633866a9ab91d6dd168f8f31f02b5"
+    },
+    {
+      "path": "architecture/commands/012-version-git/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/012-version-git/stdout",
+      "bytes": 19,
+      "sha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c"
+    },
+    {
+      "path": "architecture/commands/013-original-scan/run.json",
+      "bytes": 2080,
+      "sha256": "f94c395afb0a90aab071aeffde05780da855b5547a24e346ff3f60e6d968f10a"
+    },
+    {
+      "path": "architecture/commands/013-original-scan/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/013-original-scan/stdout",
+      "bytes": 132209,
+      "sha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
+    },
+    {
+      "path": "architecture/commands/014-head-check-original-scan/run.json",
+      "bytes": 1936,
+      "sha256": "6abb5727b7a5a2995972603d80acb73fdc426a458ea87e08b041d8d9f3b27b45"
+    },
+    {
+      "path": "architecture/commands/014-head-check-original-scan/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/014-head-check-original-scan/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/015-status-check-original-scan/run.json",
+      "bytes": 1981,
+      "sha256": "e2c64faa5e569d03cca6e2534d68db18e16542309af20af6b5e14daf2f2043a5"
+    },
+    {
+      "path": "architecture/commands/015-status-check-original-scan/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/015-status-check-original-scan/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/016-original-generic-tests/run.json",
+      "bytes": 2022,
+      "sha256": "51cc018a261b20905d419a6f5bf5b1d474c6fd6ec5db5cc272fece1c6c809144"
+    },
+    {
+      "path": "architecture/commands/016-original-generic-tests/stderr",
+      "bytes": 29577,
+      "sha256": "1cce94fd5a0ba3171a2ec11511f72828ca326cd2d1ee92fcef8b5a23a712e094"
+    },
+    {
+      "path": "architecture/commands/016-original-generic-tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/017-head-check-original-generic-tests/run.json",
+      "bytes": 1981,
+      "sha256": "57664e278f2696e6dd2a91b5dd3786fd22c31c2bd812de41eab9cd36cbb5813c"
+    },
+    {
+      "path": "architecture/commands/017-head-check-original-generic-tests/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/017-head-check-original-generic-tests/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/018-status-check-original-generic-tests/run.json",
+      "bytes": 2026,
+      "sha256": "65976161d2fef1883e0f04f6580977616478a071902711fb7ed0336c7ab6d6db"
+    },
+    {
+      "path": "architecture/commands/018-status-check-original-generic-tests/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/018-status-check-original-generic-tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/019-original-product-tests/run.json",
+      "bytes": 2021,
+      "sha256": "5db9a40e469d206888532def2ce74be4fabb5126e1bd30f257380fb28d6365b8"
+    },
+    {
+      "path": "architecture/commands/019-original-product-tests/stderr",
+      "bytes": 118,
+      "sha256": "7b0a58958bc1104da4e649ed60638956261ec02a65d66d21319bfbac1b5a12c3"
+    },
+    {
+      "path": "architecture/commands/019-original-product-tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/020-head-check-original-product-tests/run.json",
+      "bytes": 1981,
+      "sha256": "2692a5e767ddcfa3012078f3eda6a185a7566522c34ac1cf66cba3fe43cb58ed"
+    },
+    {
+      "path": "architecture/commands/020-head-check-original-product-tests/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/020-head-check-original-product-tests/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/021-status-check-original-product-tests/run.json",
+      "bytes": 2026,
+      "sha256": "2b8bcff6cd8ae0644a0fb9a5362f770420d62e09b6f0706b35bd2031780ad002"
+    },
+    {
+      "path": "architecture/commands/021-status-check-original-product-tests/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/021-status-check-original-product-tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/022-head-check-validation-tree-created/run.json",
+      "bytes": 1986,
+      "sha256": "673bdf78c612c5478675e8be3ae6fe623118d20ddcf37709cb49d36fa6773301"
+    },
+    {
+      "path": "architecture/commands/022-head-check-validation-tree-created/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/022-head-check-validation-tree-created/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/023-status-check-validation-tree-created/run.json",
+      "bytes": 2031,
+      "sha256": "28259d9404e32c3e6564eb88595225cbaf39ba4c1036e9fd5c8e890bdff1aca7"
+    },
+    {
+      "path": "architecture/commands/023-status-check-validation-tree-created/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/023-status-check-validation-tree-created/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/024-guard-old-WoodMemberPlacementContact/run.json",
+      "bytes": 3146,
+      "sha256": "198c2b9ba2d7407287be989c5624d7353c0497f4f0974ea39c416b23d8f9bc19"
+    },
+    {
+      "path": "architecture/commands/024-guard-old-WoodMemberPlacementContact/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/024-guard-old-WoodMemberPlacementContact/stdout",
+      "bytes": 162,
+      "sha256": "046b2c0b87db6e5ed36d6921c6584c4f908927e6c46a26db19637f9d4511f6b2"
+    },
+    {
+      "path": "architecture/commands/025-head-check-guard-old-WoodMemberPlacementContact/run.json",
+      "bytes": 2051,
+      "sha256": "26e79cf32119413f2923d0aecda34ff6cd30c2dc2319d92fd4a22accede3fe78"
+    },
+    {
+      "path": "architecture/commands/025-head-check-guard-old-WoodMemberPlacementContact/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/025-head-check-guard-old-WoodMemberPlacementContact/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/026-status-check-guard-old-WoodMemberPlacementContact/run.json",
+      "bytes": 2096,
+      "sha256": "235fc7e3cbd9882e6e15d753f4b618d6f007a46c0654b6eead1f4b152ed04a74"
+    },
+    {
+      "path": "architecture/commands/026-status-check-guard-old-WoodMemberPlacementContact/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/026-status-check-guard-old-WoodMemberPlacementContact/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/027-guard-new-WoodMemberPlacementContact/run.json",
+      "bytes": 3141,
+      "sha256": "2d4c4f2f57fcdeecebfb3f35ca63c3950cc4784c2cb08d85b3ae25be3007ed8c"
+    },
+    {
+      "path": "architecture/commands/027-guard-new-WoodMemberPlacementContact/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/027-guard-new-WoodMemberPlacementContact/stdout",
+      "bytes": 400,
+      "sha256": "bb40ddd066574e7b4014827776b03eb06006427ea7c5e65cea88848454c7e37d"
+    },
+    {
+      "path": "architecture/commands/028-head-check-guard-new-WoodMemberPlacementContact/run.json",
+      "bytes": 2051,
+      "sha256": "fd5897b5b455d73247ec27955a8ae05f6c94d3adbea021efb809f8ddd0c91857"
+    },
+    {
+      "path": "architecture/commands/028-head-check-guard-new-WoodMemberPlacementContact/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/028-head-check-guard-new-WoodMemberPlacementContact/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/029-status-check-guard-new-WoodMemberPlacementContact/run.json",
+      "bytes": 2096,
+      "sha256": "93b5c0b7aaf479797dccfea94bf190ec39327d5a3fac3bdfedc0326dad894473"
+    },
+    {
+      "path": "architecture/commands/029-status-check-guard-new-WoodMemberPlacementContact/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/029-status-check-guard-new-WoodMemberPlacementContact/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/030-guard-old-wood_definition_sources_placement_contact/run.json",
+      "bytes": 3236,
+      "sha256": "ab6d6b37f265ec94eb9729f48c4735d9810bb621c8ae10a14b456c575cdfb4c0"
+    },
+    {
+      "path": "architecture/commands/030-guard-old-wood_definition_sources_placement_contact/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/030-guard-old-wood_definition_sources_placement_contact/stdout",
+      "bytes": 177,
+      "sha256": "ff39214f9cc657e41680f347e61b63cb4d10c8442fd0e36ea171aa6586bc2d8f"
+    },
+    {
+      "path": "architecture/commands/031-head-check-guard-old-wood_definition_sources_placement_contact/run.json",
+      "bytes": 2126,
+      "sha256": "5d5a0038cc2d9d1f13db0f322450837f0f8b0019b192533ca5d1fc27dbd29e79"
+    },
+    {
+      "path": "architecture/commands/031-head-check-guard-old-wood_definition_sources_placement_contact/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/031-head-check-guard-old-wood_definition_sources_placement_contact/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/032-status-check-guard-old-wood_definition_sources_placement_contact/run.json",
+      "bytes": 2171,
+      "sha256": "9e5ea0a06ef2b96c12c736512fb4e7066fb84636fa462e3ba3f0f5a2bee17edd"
+    },
+    {
+      "path": "architecture/commands/032-status-check-guard-old-wood_definition_sources_placement_contact/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/032-status-check-guard-old-wood_definition_sources_placement_contact/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/033-guard-new-wood_definition_sources_placement_contact/run.json",
+      "bytes": 3230,
+      "sha256": "5bd42c9b6a851373f77aa4817ee1d2afec856407ea6381479814e8cfd007c1eb"
+    },
+    {
+      "path": "architecture/commands/033-guard-new-wood_definition_sources_placement_contact/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/033-guard-new-wood_definition_sources_placement_contact/stdout",
+      "bytes": 430,
+      "sha256": "c269a5eaa1fa535fb3a61420fed0296e78d51a54d3d453d2157d41a0f8f1b96c"
+    },
+    {
+      "path": "architecture/commands/034-head-check-guard-new-wood_definition_sources_placement_contact/run.json",
+      "bytes": 2126,
+      "sha256": "b4dc730d7f07dd4ada509bdb67cb0f6ad484d316bb4e393040d13cf05e608fd3"
+    },
+    {
+      "path": "architecture/commands/034-head-check-guard-new-wood_definition_sources_placement_contact/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/034-head-check-guard-new-wood_definition_sources_placement_contact/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/035-status-check-guard-new-wood_definition_sources_placement_contact/run.json",
+      "bytes": 2171,
+      "sha256": "c94871ddf4bb4ea6215d6cf55168205c5850e6813282a6de18cb10085933fed6"
+    },
+    {
+      "path": "architecture/commands/035-status-check-guard-new-wood_definition_sources_placement_contact/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/035-status-check-guard-new-wood_definition_sources_placement_contact/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/036-guard-old-geo261_architecture_neutral_probe/run.json",
+      "bytes": 3187,
+      "sha256": "2974f476e6c3f179178bb3919ceb259964f7d22a727ddc1bcb5676a9138fcfa0"
+    },
+    {
+      "path": "architecture/commands/036-guard-old-geo261_architecture_neutral_probe/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/036-guard-old-geo261_architecture_neutral_probe/stdout",
+      "bytes": 169,
+      "sha256": "e0160905adcd7d6525173cdf2eb102ce6b9bdb492061174a10f58b5022fc95cf"
+    },
+    {
+      "path": "architecture/commands/037-head-check-guard-old-geo261_architecture_neutral_probe/run.json",
+      "bytes": 2086,
+      "sha256": "b34eeb9ddf8613429d031b4782ca6d59bea6eec22a88659d61145c881e55de41"
+    },
+    {
+      "path": "architecture/commands/037-head-check-guard-old-geo261_architecture_neutral_probe/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/037-head-check-guard-old-geo261_architecture_neutral_probe/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/038-status-check-guard-old-geo261_architecture_neutral_probe/run.json",
+      "bytes": 2131,
+      "sha256": "83684eb788da3f63aa8dbb54f7dbf74c69c571b5847539d97ab3ca23e8509799"
+    },
+    {
+      "path": "architecture/commands/038-status-check-guard-old-geo261_architecture_neutral_probe/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/038-status-check-guard-old-geo261_architecture_neutral_probe/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/039-guard-new-geo261_architecture_neutral_probe/run.json",
+      "bytes": 3183,
+      "sha256": "33c21f4f3d896b5c19ef483f0ca1564202f467b983ba4a4605ab9fba22d7eed5"
+    },
+    {
+      "path": "architecture/commands/039-guard-new-geo261_architecture_neutral_probe/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/039-guard-new-geo261_architecture_neutral_probe/stdout",
+      "bytes": 169,
+      "sha256": "e0160905adcd7d6525173cdf2eb102ce6b9bdb492061174a10f58b5022fc95cf"
+    },
+    {
+      "path": "architecture/commands/040-head-check-guard-new-geo261_architecture_neutral_probe/run.json",
+      "bytes": 2086,
+      "sha256": "69982d70636612805b441cffec423991686d3b4573f462628c22a60c8eb51736"
+    },
+    {
+      "path": "architecture/commands/040-head-check-guard-new-geo261_architecture_neutral_probe/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/040-head-check-guard-new-geo261_architecture_neutral_probe/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/041-status-check-guard-new-geo261_architecture_neutral_probe/run.json",
+      "bytes": 2131,
+      "sha256": "1caf7434ddaf56b009deb14ec28c9a625cb2bfeff45a7aca9656303b463b0b51"
+    },
+    {
+      "path": "architecture/commands/041-status-check-guard-new-geo261_architecture_neutral_probe/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/041-status-check-guard-new-geo261_architecture_neutral_probe/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/042-final-scan/run.json",
+      "bytes": 2093,
+      "sha256": "2da917acc59e6235dff03be6b71e5d07144b6a95b66296fff271054f9260f5ad"
+    },
+    {
+      "path": "architecture/commands/042-final-scan/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/042-final-scan/stdout",
+      "bytes": 132209,
+      "sha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
+    },
+    {
+      "path": "architecture/commands/043-head-check-scan/run.json",
+      "bytes": 1891,
+      "sha256": "f5ec37776cbd4042d0aa6ddf3b24b4eb5ffb34a0918e6c43db6f0c35bab0ae15"
+    },
+    {
+      "path": "architecture/commands/043-head-check-scan/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/043-head-check-scan/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/044-status-check-scan/run.json",
+      "bytes": 1936,
+      "sha256": "51c221c32efcd73b91244a50ff5e1188b23249b50701118586c54b990845e620"
+    },
+    {
+      "path": "architecture/commands/044-status-check-scan/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/044-status-check-scan/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/045-generic-tests/run.json",
+      "bytes": 2006,
+      "sha256": "c0ff9214d9d3684d204dc6b63aeeddd5cd92fc3c8f4a760d1f4ce35046d322a0"
+    },
+    {
+      "path": "architecture/commands/045-generic-tests/stderr",
+      "bytes": 29577,
+      "sha256": "ee459fa7311a1f0d410f1263d2acb3762f80a85669d300807d0eec1b085c59a0"
+    },
+    {
+      "path": "architecture/commands/045-generic-tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/046-head-check-generic-tests/run.json",
+      "bytes": 1936,
+      "sha256": "ef0ff295620901426753d2a480df34a8b7bd480c5535de91f481353910d9d079"
+    },
+    {
+      "path": "architecture/commands/046-head-check-generic-tests/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/046-head-check-generic-tests/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/047-status-check-generic-tests/run.json",
+      "bytes": 1981,
+      "sha256": "8ecc4c82d7453947e6e2ffeddec8dd4d034800f4cf39b4f9a9282792268cc0b1"
+    },
+    {
+      "path": "architecture/commands/047-status-check-generic-tests/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/047-status-check-generic-tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/048-product-tests/run.json",
+      "bytes": 2004,
+      "sha256": "40a14b51c64dbd3098427bc2b6665b2f89aacb5e79ed4080cda43518169d9059"
+    },
+    {
+      "path": "architecture/commands/048-product-tests/stderr",
+      "bytes": 118,
+      "sha256": "dd0b07e590dbfae1983962ca5ee908184ca94b00492d7b2b1bd4d1820be8194a"
+    },
+    {
+      "path": "architecture/commands/048-product-tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/049-head-check-product-tests/run.json",
+      "bytes": 1936,
+      "sha256": "af749438809776503ad6b6fd9497983bc7f66c3fe135db296c01dea3f6f42aba"
+    },
+    {
+      "path": "architecture/commands/049-head-check-product-tests/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/049-head-check-product-tests/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/050-status-check-product-tests/run.json",
+      "bytes": 1981,
+      "sha256": "bf7905711a4cc4080f556ee91f025f1c4fcb8c07c68fcbdfb52a81b347a7e5f6"
+    },
+    {
+      "path": "architecture/commands/050-status-check-product-tests/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/050-status-check-product-tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/051-head-check-before-seal/run.json",
+      "bytes": 1926,
+      "sha256": "1b67b3ec00e7b6c1756dd6ce7e7cd324c752fc0bbcacbf9b7581e84a74f01d55"
+    },
+    {
+      "path": "architecture/commands/051-head-check-before-seal/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/051-head-check-before-seal/stdout",
+      "bytes": 41,
+      "sha256": "7a385fbcf04c5918e537f5e354b2f18cdb3ed90339b161bafdb9a7f19fc07df6"
+    },
+    {
+      "path": "architecture/commands/052-status-check-before-seal/run.json",
+      "bytes": 1971,
+      "sha256": "897464c91b7dbee1f7fec134eeea6b1c49bf16c248dde160468410c614fd9460"
+    },
+    {
+      "path": "architecture/commands/052-status-check-before-seal/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands/052-status-check-before-seal/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "architecture/commands.json",
+      "bytes": 119040,
+      "sha256": "a09fa3eb6963529d862e5449e4ebbda9e1a5eb3caa164c85d6504d95f0ce57f0"
+    },
+    {
+      "path": "architecture/new/PRODUCT-ARCHITECTURE.md",
+      "bytes": 32829,
+      "sha256": "60ac926e4c4aa5133b6624ea636e78df9cb47451bbf5f25a1120ff66e86364cc"
+    },
+    {
+      "path": "architecture/new/product-architecture-receipt.json",
+      "bytes": 178131,
+      "sha256": "f1c8a0bbbeb3d2d1e967628d33738643d6a6c69075a40a607ba5dee42c3328b9"
+    },
+    {
+      "path": "architecture/new/product-architecture-scan.json",
+      "bytes": 132209,
+      "sha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
+    },
+    {
+      "path": "architecture/new/product-architecture.json",
+      "bytes": 220000,
+      "sha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6"
+    },
+    {
+      "path": "architecture/policy-inventory-proposal.json",
+      "bytes": 17280,
+      "sha256": "7b763aba5e628193dcb998659c9d4dbb0f4cc2bba1fadf545cea4c082463655f"
+    },
+    {
+      "path": "architecture/previous/PRODUCT-ARCHITECTURE.md",
+      "bytes": 30660,
+      "sha256": "a8befb43e2f2ad0af8b37c09bc0a04e3a2a1266ca87f11e856a5e2acd7c74fcc"
+    },
+    {
+      "path": "architecture/previous/product-architecture-receipt.json",
+      "bytes": 121934,
+      "sha256": "23de901dab26e88635e771bef05ad89b7532f62417f0b9e4325235654c4e24f4"
+    },
+    {
+      "path": "architecture/previous/product-architecture-scan.json",
+      "bytes": 132208,
+      "sha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
+    },
+    {
+      "path": "architecture/previous/product-architecture.json",
+      "bytes": 219913,
+      "sha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452"
+    },
+    {
+      "path": "architecture/previous-from-git/PRODUCT-ARCHITECTURE.md",
+      "bytes": 30660,
+      "sha256": "a8befb43e2f2ad0af8b37c09bc0a04e3a2a1266ca87f11e856a5e2acd7c74fcc"
+    },
+    {
+      "path": "architecture/previous-from-git/product-architecture-receipt.json",
+      "bytes": 121934,
+      "sha256": "23de901dab26e88635e771bef05ad89b7532f62417f0b9e4325235654c4e24f4"
+    },
+    {
+      "path": "architecture/previous-from-git/product-architecture-scan.json",
+      "bytes": 132208,
+      "sha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
+    },
+    {
+      "path": "architecture/previous-from-git/product-architecture.json",
+      "bytes": 219913,
+      "sha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452"
+    },
+    {
+      "path": "architecture/source-inputs.json",
+      "bytes": 195082,
+      "sha256": "7f80589d6d35ecbdb1f79a64dc58c0c9c3786a7a28c7b587fc27c21660ba4366"
+    },
+    {
+      "path": "architecture/supplemental-guard-probes.json",
+      "bytes": 23033,
+      "sha256": "1621211a154e6e1120702c529790e99522f4db7ef5e8c94f58fd7f9fc93a9722"
+    },
+    {
+      "path": "architecture/validation-tree/current_geometry.c",
+      "bytes": 401973,
+      "sha256": "f91cfa7d3160558a0bed1d0d41381d7af1cc5dd0bcda2e016b2fd7275d49c996"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/application.js",
+      "bytes": 703,
+      "sha256": "4f18b28ebd28dbea0632926095c03d75df04176d09d9d4e239299f7f490627a0"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/geometry_app/__init__.py",
+      "bytes": 75,
+      "sha256": "3caf01c2ed6ded5c442c4bc611b362ffd884ad6a71c77ded2952e0ff0fd59169"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/geometry_app/bootstrap.py",
+      "bytes": 759,
+      "sha256": "ccaa3fafcd29676aaffe9d46ae77f32bd5145896babba244f6a59c1779f3472d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/geometry_app/kernel_errors.py",
+      "bytes": 1300,
+      "sha256": "6ee91933c12f80c81f26169572ea360607152398d40f130c82ec383dc04675a0"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/geometry_app/model_codec.py",
+      "bytes": 9284,
+      "sha256": "78d7f149dfd0fa815dce812cd3f4906759b3916ea343b564986ff860acd24e16"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/geometry_app/model_common.py",
+      "bytes": 3568,
+      "sha256": "26be15286eca83350df893f93f6299a09e79c0b02c93a166bd298a638fe93c2d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/geometry_app/model_geometry.py",
+      "bytes": 5488,
+      "sha256": "e4ab0ac2c0da7f433c3da39e574386675f9c77bb52be8a66b281c4e62afb6c40"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/geometry_app/model_native.py",
+      "bytes": 14187,
+      "sha256": "0c1c94006fa33719c64820a477f219a5ac05f3fd4c372fe473e2b5deda63a0c6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/geometry_app/model_profile_compat.py",
+      "bytes": 2207,
+      "sha256": "7dac524a6d8cbe492b2836b48f906f5b69db22fcda518acdb7bd6ad472ad5280"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/geometry_app/model_runtime.py",
+      "bytes": 20698,
+      "sha256": "e073428e78422bbc6b26ab70bd456b9456c45fc4560480d213784637df7f0685"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/geometry_app/model_sources.py",
+      "bytes": 26570,
+      "sha256": "e5577ac9b11fb410b18da8a40a722e30e3195b745754b3927360f8fa972237ea"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/geometry_app/model_world.py",
+      "bytes": 4638,
+      "sha256": "0d4e03c08248e663e2c0286329aacdac9d3b170f3caac4df4d9082a129ef9570"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/geometry_app/source_closure.py",
+      "bytes": 10260,
+      "sha256": "104ba157e0ed5842d664941d44e6803e5017e2316d53148311638cb9bce33c38"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/app_candidate.c",
+      "bytes": 8674,
+      "sha256": "dd28eaa879d09599e629f0814dbe82d693847d2a66f06c2ce03b098af3824eb9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/app_candidate.h",
+      "bytes": 3141,
+      "sha256": "5f32ec9dadb4c9836ada7cbb89358edd3b5aee28c04bd98fa8bc54bb3d0ab0ce"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/candidate_unity.inc",
+      "bytes": 273,
+      "sha256": "62856930c43f9c9dca2a34379e791b7e7556c8c4e12d1a7f05dcb874e3390cab"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/definition_texts.h",
+      "bytes": 567,
+      "sha256": "97f6a813f68828eab628ff630be0b25078727eeb987fd7acb4cc6afba3f9a49b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/document.h",
+      "bytes": 1526,
+      "sha256": "142d4cd049a78a71f0c8e8757b97d50349ea087d065c15cca33f0434c7239d62"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/domains.inc",
+      "bytes": 8008,
+      "sha256": "34f9ac6e18bbb11f9e1d33df0773eae7b8733888ca062b35fa2f3e4fa7d7019d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/enclosure_sources.inc",
+      "bytes": 2790,
+      "sha256": "5166462c06b4d5375a5eba8888e8f98dc6ecdfe351a9b4e2437ed2497ad6fce6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/grid_adapter.inc",
+      "bytes": 1567,
+      "sha256": "dc2f189dd525513f03133a9d608a4196ca150bce220e740f73e4bd6051a2cd46"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/grid_context.inc",
+      "bytes": 1949,
+      "sha256": "f8eb9c5cc077cc3f556940f609f37529e831740be182fb02b33c85f8d09bd30d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/history.c",
+      "bytes": 3945,
+      "sha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/history.h",
+      "bytes": 1840,
+      "sha256": "b9a0b9b61a592bd857041ee4e984550ab9d7e8456d8c434a3f5002a59689e0e0"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/history_unity.inc",
+      "bytes": 156,
+      "sha256": "a6afa2138ffc48d2c62e4debb94b55bc3567c841c132b642451613bc7f459a87"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/kernel_storage.h",
+      "bytes": 239,
+      "sha256": "c975407e4d7a8a22b11b637f31bde2afa0a57dbe269c7e7a3e7cf3145dc7916b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/legacy_json.inc",
+      "bytes": 664,
+      "sha256": "e11a2ab49c8bbe2fbb227b153b242da9d4e261cc85da1bfe0c7e82069756f397"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/model_sources.inc",
+      "bytes": 30960,
+      "sha256": "c464ae8f9f23599e35d60f7b2a60fcf24ad21fc1be6899610d6e7d0bf51d39c5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/reference_sources.inc",
+      "bytes": 57513,
+      "sha256": "54b4896573a1f6e6c77878a86a18b84843b3bef5c289c6c12d5c7ddbba406f41"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/versions_adapter.inc",
+      "bytes": 274,
+      "sha256": "2bd905cc2f0541ea9b1571b1c434e59a46c46895a87febcd64d3c7b010d01194"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/woodworking_unity.inc",
+      "bytes": 4344,
+      "sha256": "38afa41ad749ae0f617bd2e1b73f0ed641d33ae85b5c74c8f00ab9f17d3992ed"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/world_candidate.inc",
+      "bytes": 5640,
+      "sha256": "4efe4989f13a61eb08ffdcaa5907bbf76f647755ab405f5b2f4f558f6370efa5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-app/native/world_validation.inc",
+      "bytes": 6012,
+      "sha256": "673bbab71f1dc6c59960dd3764c7c367223fc57ad2ef2dae0e842637d993eddc"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/assembly.inc",
+      "bytes": 8966,
+      "sha256": "9f411b3f0018ef5c61fcda002db7b8e0f8ebf6fce3d0fca6c1427c4d639e4bf9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/assembly_generation.inc",
+      "bytes": 7246,
+      "sha256": "7a1b4585b2742135c2dcea2ecc7d268c4d7d2c4b0d6bb818f5a7bfc1a16257e4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/assembly_types.h",
+      "bytes": 205,
+      "sha256": "d419b266150a3415d86de00fe5de7473a40a575a56c5ac5e7d8ae81c55c75b5b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/boundary_vertex_keys.inc",
+      "bytes": 15832,
+      "sha256": "7681319c6b9a010d4d9437156e2f7a9d769bba083ec832185a033ce67393d56a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/card-reference/archive_roundtrip.cjs",
+      "bytes": 1178,
+      "sha256": "44238492f9698f05a0f89c4ccbcc3856471d15280aa1e4c0dd8d1367bacd5c69"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/card-reference/confirmation_probe.c",
+      "bytes": 2328,
+      "sha256": "79d3732f79936f31f872fb3188902b1c001b26ef269f1c3c19f69dc525a30c47"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/card-reference/measure_capture_memory.py",
+      "bytes": 3308,
+      "sha256": "05a8a2bb3b8b52cd11c26f238d6c8b6aaad6c9f27f7eb8d7f8a69caee85b13b6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/card-reference/mutations.py",
+      "bytes": 18122,
+      "sha256": "790d69c3a67ea1ad762f1ef943193433d08215c0a9f426138a9540d3d1a99b41"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/card-reference/probe_cr29_precondition.py",
+      "bytes": 5594,
+      "sha256": "85a568add9d699a5f49c0c4d3c9e2c996312c2e0e2bf0ceb1a5cf465fa9474fd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/card-reference/probe_model_admission.cjs",
+      "bytes": 5892,
+      "sha256": "007680b0231857dccb6d413873fb4e8447b2fb5e0194c2c90861acf2481e7f1c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/card-reference/run_archive_mutations.py",
+      "bytes": 3929,
+      "sha256": "5bc6d308bec20fa3c484f8ed5e769f23bb9ebcbfe61075d170ed1b950de88251"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/card-reference/run_axiom_mutations.py",
+      "bytes": 6069,
+      "sha256": "dae27a144c241a30d55ffdc65264fb86b224759508e600d3c149ad9a7ebb87c3"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/card-reference/run_mutations.py",
+      "bytes": 8819,
+      "sha256": "d3282011a7648ef0eb8704517cd49c51a76ae75155f1870e0273f023e189165e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/card_reference.inc",
+      "bytes": 7907,
+      "sha256": "6e6016c6479ccf85276f6c9ada1f253a976a33ad035f43198a0fe3b5844183c0"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/derived_placements.inc",
+      "bytes": 4310,
+      "sha256": "4340b7b30fa4bf4dff027484691d1bee8147e5a2a3e8d71f7a4555a982dd2a53"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+      "bytes": 30660,
+      "sha256": "a8befb43e2f2ad0af8b37c09bc0a04e3a2a1266ca87f11e856a5e2acd7c74fcc"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/extract_evidence.py",
+      "bytes": 2124,
+      "sha256": "651b3dc10abe07951283a57d1fc4c9da7077749424f79ad40e2dced0c8813a19"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/finalize_publication.py",
+      "bytes": 1229,
+      "sha256": "d48b7f2aa6ea3362b562b8a0ba945a7592ffb7a7281cd7c4e1ecdde36db046f5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/prepare_publication.py",
+      "bytes": 11040,
+      "sha256": "c46c804e4d6745ef3eee817ec352033ce046680106f73ebf4d0849a9abd1d492"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/build-baseline.py",
+      "bytes": 6922,
+      "sha256": "2c3633747b87eee06badcf9e6fa98a92e8b8dec3ca9f47bcda996fc5b36ea281"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/datum-baseline-witness/prepare-input.py",
+      "bytes": 1225,
+      "sha256": "978d7fa606f1b3095ed80159b402a338f0d98f55e210449327350c9ac89ab507"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/datum-baseline-witness/run.py",
+      "bytes": 4444,
+      "sha256": "2caa8e2febb0cb59c16c1bc78f4590929cc2e7250d4ca1a6a962d3ac00a2da51"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-annotation.py",
+      "bytes": 1938,
+      "sha256": "c31e4172c0437f2b370eec4b1827982173609b02a7101b3cd3fab5216b226b50"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-datums-c28.py",
+      "bytes": 1971,
+      "sha256": "03380b73100755332f77e95924cfbaa3314541f809f458f685ec09fc5e1b5867"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-datums.py",
+      "bytes": 1971,
+      "sha256": "03380b73100755332f77e95924cfbaa3314541f809f458f685ec09fc5e1b5867"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-geometry.py",
+      "bytes": 2023,
+      "sha256": "0ed7bd6fc5f27a34e8135422bbd6d1d776d444d4de7314cd362b2737d839e5c4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-grid.py",
+      "bytes": 1933,
+      "sha256": "e2560d7f5f7e6f96d8298b07daca2f85b7fae6ca70b699074b60d158771da8a3"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-grid49.py",
+      "bytes": 1933,
+      "sha256": "12927aa726d8e13f3f6c85b1360822537d20a4a8ebdb633171d6f3c15ebe7241"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-kernel.py",
+      "bytes": 1930,
+      "sha256": "e4faad274ea7bcb0bc21da89f3acac9f4147e89940ea9ebed4fc188df3b96225"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-linear.py",
+      "bytes": 1961,
+      "sha256": "f9cbf9681600ba9a5e75165a0d91863f5da12763690193af5f8589447b11b3b2"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-parameters.py",
+      "bytes": 1947,
+      "sha256": "0658732628a9dd0f06ffd7953bf608fbb01a5fd0fc4c91ce05c72049a418e536"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-parameters-legacy.py",
+      "bytes": 4061,
+      "sha256": "9e61d12593e98c3c075d534d44b99498605a41cef546d2d398932b7e67b1ffdc"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-region-edges.py",
+      "bytes": 2200,
+      "sha256": "c1de6d07d00668f03ce7079e9e6610f516d860fcb1e6bbcb15eb9363c9773f8d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/fixture-reopen/run_native_pair.py",
+      "bytes": 17464,
+      "sha256": "68b1c8dde46169dd0b1dc6e0070cb4f1c2ac5047d6f3686c5013912d3f0930bd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-99eeabe1/exercise-native-receipt.py",
+      "bytes": 7242,
+      "sha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-99eeabe1/prepare.py",
+      "bytes": 2499,
+      "sha256": "f3a68c46c9df08feb8e0137dcc829152735d544053dd6e1357e2497b4b3c249d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-99eeabe1/run-native-receipt.py",
+      "bytes": 4526,
+      "sha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-a3aeef41/exercise-native-receipt.py",
+      "bytes": 7242,
+      "sha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-a3aeef41/prepare.py",
+      "bytes": 2911,
+      "sha256": "69c7464c8b5af74eb87a491559de7a221bc9d50700bcef4b3d08b981c089379f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-a3aeef41/run-native-receipt.py",
+      "bytes": 4526,
+      "sha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-b21334a2/exercise-native-receipt.py",
+      "bytes": 7242,
+      "sha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-b21334a2/prepare.py",
+      "bytes": 1842,
+      "sha256": "23cf91ccbd1e8cb3e553da379d6904acb91fe11b8f0902d22be8b43d947a46d9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-b21334a2/run-native-receipt.py",
+      "bytes": 4526,
+      "sha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/exercise-legacy-receipt.py",
+      "bytes": 4521,
+      "sha256": "4b20eccfcfa471b7bc5d99b5725a190e008cd97fe8b646e24475a9d9b43d5ac5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/exercise-native-receipt.py",
+      "bytes": 3696,
+      "sha256": "f5e12d43e85a2f7b19089f016f86f33164ae0d53d9cc53c1a844a5cd7eff25b3"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/exercise-region-edges.py",
+      "bytes": 2200,
+      "sha256": "c1de6d07d00668f03ce7079e9e6610f516d860fcb1e6bbcb15eb9363c9773f8d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/prepare-corrected-db65132a.py",
+      "bytes": 3522,
+      "sha256": "25dd36d35010db18255c17d4b952cd3636a84226ac5e0405119bf3db32b86cad"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/prepare-legacy-receipt.py",
+      "bytes": 1657,
+      "sha256": "f8d3f06843c37d9a00ef109878447018406e9fd4d99cb8f8d0e752df23b1d395"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/prepare-region-v2.py",
+      "bytes": 1262,
+      "sha256": "7011b6ddcf4334705381f837f312fded6b3e930a1e3923d1072ffe63ea80e7cf"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/prepare-rename-v3.py",
+      "bytes": 1006,
+      "sha256": "3db26d823283570abc1bb059509093bee87e53572c449a357916b27384c9294b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-legacy-receipt.py",
+      "bytes": 743,
+      "sha256": "067b6ff978323b5796e27eedacdbc9e4623f8c2b6b2816b1b280bcee24912aae"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-native-receipt.py",
+      "bytes": 4526,
+      "sha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-next-stages.py",
+      "bytes": 2588,
+      "sha256": "09f734bc21a9d337130078c5330e3e8cf1ae087d5f306e9bc554361acde6da0e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-region-edges-v2.py",
+      "bytes": 6019,
+      "sha256": "b094438be109f5af82232784aba15eac74cd1686fa46511da550bf23a3df96fc"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-rename-native-v3.py",
+      "bytes": 5723,
+      "sha256": "a0a9a09ea4c84dbff93c3b189a4eeb4227ff58897eb0dae021ed4396939d8208"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/pf3-a3aeef41/prepare.py",
+      "bytes": 3190,
+      "sha256": "de868005cf4034a5f9e3607e98faa190495faaad733391d14575695dbb5260a7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/pf3-a3aeef41/run.py",
+      "bytes": 6859,
+      "sha256": "e6e235315ca73fdd32d8b2c3a0cb02e2ad131aef7553087421665d3d17b0d537"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-annotation-runner.py",
+      "bytes": 1227,
+      "sha256": "6626f0647d42b46c304649568da9fb042c0fb73bb6fc26993a57e2029150b24c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-datums-c28-runner.py",
+      "bytes": 800,
+      "sha256": "c659145b62ef6c8851d82e0beb6e7a6de466c7dc4d8df66877d3b69300e5a128"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-datums-runner.py",
+      "bytes": 1112,
+      "sha256": "1b018a893c3532df0d10b70c4ee5a435ea222bb8bf08b6a6e6a6fda96903b49d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-grid49-runner.py",
+      "bytes": 926,
+      "sha256": "43734b6745e50a959a50235c01dbeffb092a1f300eb274f3df0868928943c762"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-linear-runner.py",
+      "bytes": 1084,
+      "sha256": "a2ca602dcb404eaf3970e3a0697d42a881d6f36a1b3ed189b256ebdae87133b2"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-parameters-runner.py",
+      "bytes": 1040,
+      "sha256": "cdd94d7b1f5e8b1c6975724c9d9a78d04e09aa27c638f414d88b8509837a1a2b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/producer/produce_fixtures.py",
+      "bytes": 6573,
+      "sha256": "18e5e1d54f2879dc07fe5dec57a316341e97ff3b65726ef8a8e64e5976023a95"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/producer/produce_fixtures_v2.py",
+      "bytes": 6573,
+      "sha256": "18e5e1d54f2879dc07fe5dec57a316341e97ff3b65726ef8a8e64e5976023a95"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/producer/produce_fixtures_v3.py",
+      "bytes": 6573,
+      "sha256": "592d5456aebffa3f0c4d7a0835482a5cf0e04e76ac0259cc4ada3519cccd4ee7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/producer/produce_fixtures_v4.py",
+      "bytes": 6598,
+      "sha256": "c25f6f2cee855800a0d7fccffcd8e3ef11923fcf6cd68235570373fc1a21a7f3"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/retry-producer.py",
+      "bytes": 3966,
+      "sha256": "d8e0ce7d8946729d4dd8ba57576a5c5850598e68c3ad7006e914df630e258a23"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-continuation-stages.py",
+      "bytes": 2530,
+      "sha256": "2ea9e3f76f80a26724b39c6d44150d9014992f59be66a9609b89bfdabba44719"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-annotation.py",
+      "bytes": 3448,
+      "sha256": "8428173a8eadf7df994da961e93462bb5eccd5337e24de40af5b76b2e20dd76a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-datums-c28.py",
+      "bytes": 3430,
+      "sha256": "715dde9a09d11237872f916c8c21fb77b64cb03cf5bca3cc6ef5b23e27d459cd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-datums.py",
+      "bytes": 3418,
+      "sha256": "a77a1f63b74f7e639f69d0600350e6ef6afaf973ba56ddc5024265ad276d0d9f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-geometry.py",
+      "bytes": 3515,
+      "sha256": "44f8e924ccc77c27fa6557aa58a3b6899a3759dbe58a35b571199104170b77e5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-grid.py",
+      "bytes": 3389,
+      "sha256": "927a039b7b14c93abbb0f0675333c42542f814e479a3e574081461bd7bd3f90f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-grid49.py",
+      "bytes": 3395,
+      "sha256": "72c00f480f2c70216d78ee000aa6a2f686e1c3b158e917ed5004c9351217795b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-kernel.py",
+      "bytes": 3701,
+      "sha256": "27c7ce77c8382d225a46c4a2b6fcfcd747acf535a646c338a41f8f724939e6c4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-linear.py",
+      "bytes": 3404,
+      "sha256": "5eaa2e0ce06f06837d41ae02b0922c7699d6968823b9a1fe81955225b047f6fb"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-parameters.py",
+      "bytes": 3437,
+      "sha256": "a4841cdb2d935044e8b53b2b9c80030e8be6b5ee626b9678dd18a5cfb5c0e4c1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-parameters-legacy.py",
+      "bytes": 300,
+      "sha256": "07b03bdfd1ab7bc744bf6721f9836ecd677f3d7066dedb5078dff089cb6150d8"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-rectangular-template.py",
+      "bytes": 4503,
+      "sha256": "5f6e9907553b3fbcdbb8f6bdeec88b8e708bfac7e0147c34241f89b032aaa379"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-region-edges.py",
+      "bytes": 5976,
+      "sha256": "d73ef20d0706b09ccdd60978364850b9a57b86278dfecfe23f80e0423bb61491"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-rename-native-v2.py",
+      "bytes": 5723,
+      "sha256": "445c7dc634f15a4b33c9504d4748b55aed23ecb346127ee1a1a6f5a1519536c4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-rename-native.py",
+      "bytes": 4464,
+      "sha256": "e5a34423c12ad50afc9ff2d2bf14af7edd87cbb0f51fd57ab3f822fb9ee735cd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-stages.py",
+      "bytes": 1577,
+      "sha256": "8f9165b40286011c72cee7f875d928325d278fca86f675aeab69a2350b207b14"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-20261016/verify_publication.py",
+      "bytes": 22069,
+      "sha256": "69d474355ba572e3262280e188d14f7c871e434d8c0929d92bcfcf504087ec7a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/extract_evidence.py",
+      "bytes": 2655,
+      "sha256": "ac626b84cc3cc6d029ecb95cceb2d3098b3a8cf084e8f8b69a3e98bd9d7e90f7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/finalize_publication.py",
+      "bytes": 1321,
+      "sha256": "ee4ae0bda9ee75791eedd88eacf6b8183a65cf88e9dfda22fc87b308e5199e29"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/prepare_publication.py",
+      "bytes": 12342,
+      "sha256": "a48b55afe3ae0b4bd0a3bc44dba3161f97165ce1a745e4dafb5dbb3f02c8db8a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/verify_publication.py",
+      "bytes": 16941,
+      "sha256": "e2e7bd1465803e01b299f242a7cf5afbca8b509bb824473a9a72d04b9cbc47c7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/extract_evidence.py",
+      "bytes": 2655,
+      "sha256": "ac626b84cc3cc6d029ecb95cceb2d3098b3a8cf084e8f8b69a3e98bd9d7e90f7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/finalize_publication.py",
+      "bytes": 1321,
+      "sha256": "13fe9eb20dd2827859866cf61a83d2badd6236f53eb322b8b79a37dafa865e87"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/prepare_publication.py",
+      "bytes": 16936,
+      "sha256": "37cb07dbc7af6f453c056b7ccec2e777fe3dd991fda531def42112d16aa2a695"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/readable/watchdog-envelope-v1/recovered-selftest-source-868c0864cbf91da304ca37e7ebee140cfe68542fccc3d6f764f0d27a7f8dd9ac.py",
+      "bytes": 11312,
+      "sha256": "868c0864cbf91da304ca37e7ebee140cfe68542fccc3d6f764f0d27a7f8dd9ac"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/verify_publication.py",
+      "bytes": 27489,
+      "sha256": "79ff75e1ab60dba1e9c0008fc806b517159f952f677864da461b1dc9eec3406c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/extract_evidence.py",
+      "bytes": 2124,
+      "sha256": "651b3dc10abe07951283a57d1fc4c9da7077749424f79ad40e2dced0c8813a19"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/finalize_publication.py",
+      "bytes": 1229,
+      "sha256": "d48b7f2aa6ea3362b562b8a0ba945a7592ffb7a7281cd7c4e1ecdde36db046f5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/prepare_publication.py",
+      "bytes": 10525,
+      "sha256": "eff59e047b99774c98fcc49ab442c46f62f3760b7846f8021e08e4d5395f7cbe"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/extract-14ab-readonly.py",
+      "bytes": 1703,
+      "sha256": "2171e8e3a2261fd26fe01b2f601371531087243bae187898ec20b9adc586ac39"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-14ab395d/exercise-native-receipt.py",
+      "bytes": 7242,
+      "sha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-14ab395d/prepare.py",
+      "bytes": 2963,
+      "sha256": "650c59c12519afc86ab564fd86fed74db376dc7de2c11dee394441f9dcd6eced"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-14ab395d/run-native-receipt.py",
+      "bytes": 4526,
+      "sha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-6f1fd92f/exercise-native-receipt.py",
+      "bytes": 7242,
+      "sha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-6f1fd92f/prepare.py",
+      "bytes": 2963,
+      "sha256": "f792076ad1fa56c3b07e4fb6b5565584c8faf5f239810e7336721fac6e15b887"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-6f1fd92f/run-native-receipt.py",
+      "bytes": 4526,
+      "sha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/section-runs-diagnostic-6f1fd92f/run.py",
+      "bytes": 4283,
+      "sha256": "c4d715120d1a3d3ba3e3e3944301f469d1dfc04e83d1f3312b31f7ca3dbc1264"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d/run.py",
+      "bytes": 8973,
+      "sha256": "d52ed6235248a29f3d63369f368464ed2b7d2c54955bd2cd4c2d9c61f02a64d2"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/codec-client.c",
+      "bytes": 2857,
+      "sha256": "e4a093c03179d1fbc370375e2e45bf3a9d2d09f40cbb6b44fe53c2190abd7a13"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/exact-client.c",
+      "bytes": 919,
+      "sha256": "7581efd5b45b3c16fc2a6eb380cdfb2438b3822d95123cca1e337a5c301270cc"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/verify_followup.py",
+      "bytes": 15975,
+      "sha256": "cde0201e39d9f8bda18b299d4778370be5e60bbda59d91318d71c1e8904d90e9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/verify_publication.py",
+      "bytes": 22765,
+      "sha256": "2d5761978917bccb25324b8cbb50327bd2afcffc32373f03d7698a647847fefd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/evidence/native-stage-20261016/executed-portable-runner.py",
+      "bytes": 1659,
+      "sha256": "55f95132a4db41f2f35f93ba43b1f60c73a8286143979dc690bb027823701618"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/product-architecture-receipt.json",
+      "bytes": 121934,
+      "sha256": "23de901dab26e88635e771bef05ad89b7532f62417f0b9e4325235654c4e24f4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/product-architecture-scan.json",
+      "bytes": 132208,
+      "sha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/domain-decoupling/product-architecture.json",
+      "bytes": 220000,
+      "sha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/engineering.inc",
+      "bytes": 13998,
+      "sha256": "0e1970fee561dc520c37255b9fdbbd2273594c4c8a59ea8e4969c9658c2aa497"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/engineering_commands.inc",
+      "bytes": 8621,
+      "sha256": "3e996cef86dc3498138aa4ba7cdfa798a67042a7daa4239d936aa2487ff0b039"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/engineering_json.inc",
+      "bytes": 1587,
+      "sha256": "454f401f2ad13437a63183ea0cff917232beeac3405bd0fdd70b32ba979a780f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/engineering_types.h",
+      "bytes": 121,
+      "sha256": "6a1bbea128e8678426ae8098e7d0ebcfae2b8ed941fccfde0e2edba1534c85d7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/finish_surface_types.h",
+      "bytes": 134,
+      "sha256": "03c81fe2c4558a3772f7138021834d1b0a7ed76c7628d991a7223164f833232d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/finish_surfaces.inc",
+      "bytes": 10059,
+      "sha256": "427f7bcaffaf1f11389ea36a59cbb959ff5f7e4b8983bc6681794c70f9e8be1c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/framing-template/core-probe/gen_scenes.py",
+      "bytes": 37066,
+      "sha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/framing-template/core-probe/mutation_check.py",
+      "bytes": 10039,
+      "sha256": "2c4d05e713b63677b2b8333ee388c0c61f9130d4dc8836c1a571b656f052f421"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/framing-template/core-probe/parse_results.py",
+      "bytes": 21689,
+      "sha256": "a6b8801a2c98fd32973ebc1acf327f49aae7d76cd28d34c905f2e41ce401de66"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/framing-template/core-probe/scene_reader.py",
+      "bytes": 13887,
+      "sha256": "f43c8d7e9bb5c1b6afdb6e35a05e1536764f9e09a774c718454e6929e024b022"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/framing-template/core-probe/test_gen_scenes.py",
+      "bytes": 64329,
+      "sha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/framing-template/oracle/framing_oracle.py",
+      "bytes": 109039,
+      "sha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/framing-template/oracle/make_golden.py",
+      "bytes": 2671,
+      "sha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/framing-template/oracle/quote_check.py",
+      "bytes": 25787,
+      "sha256": "b122d9fcebc8b31b9af1c701baf6e086b3f590dfe496a2744a049e98b09e8cb5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/framing-template/oracle/render.py",
+      "bytes": 8401,
+      "sha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/framing-template/oracle/selftest.py",
+      "bytes": 85121,
+      "sha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/geometry_kernel/__init__.py",
+      "bytes": 2080,
+      "sha256": "4eabe07ca16981a79182b45d36d45d340da057c886fe225e50139e169bdcc61a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/geometry_kernel/canonical.py",
+      "bytes": 2022,
+      "sha256": "7cfa3256b1564bcbbb660a9fc91d26bb4be02ee04150fdbb795dfeacae334306"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/geometry_kernel/errors.py",
+      "bytes": 1671,
+      "sha256": "08c45f54ebb127acd2420fd208e5b25e373a00441479c305340712fd38af091c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/geometry_kernel/evaluate.py",
+      "bytes": 14970,
+      "sha256": "72424c367cd2b29ed64390c42b9d459af8b65e80010a86d374d7825fe069c7ac"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/geometry_kernel/geometry.py",
+      "bytes": 24534,
+      "sha256": "7a0fcb0dea449ff1d767b9a47a358ba75f83f572ec3c3200b21768625f422daa"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/geometry_kernel/graph.py",
+      "bytes": 24627,
+      "sha256": "36fcbf625fb63cce251636fddd56df52fcb3048785e5b5e3430541a285451df4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/geometry_kernel/session.py",
+      "bytes": 2551,
+      "sha256": "c15666dbea8d9ad15d838aeccd2e62ba0e824ec1f281232a1ddf9d0c3b93d16f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/geometry_kernel/transactions.py",
+      "bytes": 7362,
+      "sha256": "08dc70beacbeddaa52ffcf5e893f99374e7c12d55273301e98ad95093fd39db9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/geometry_kernel/types.py",
+      "bytes": 13140,
+      "sha256": "5abc88d452ec656496e0ff5bed4cf98375b8262c7358e151048ac09ee53a804d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/grid_bindings.inc",
+      "bytes": 14291,
+      "sha256": "660b998a30e0ea4d0ad709c0cd39207f92b5d9a84649dac55d2da7fb0c8c3887"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/grid_lattice.inc",
+      "bytes": 2925,
+      "sha256": "5c3a780e6633cd06f00fb73aa278a331707c1b470c6632581d7d5263305897a4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/grid_subdivision.inc",
+      "bytes": 9728,
+      "sha256": "82810a7c8b0d0382e77bb043096ca7bce06928f804bac7f1e300e12ba358c0bb"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/grid_subdivision_query.inc",
+      "bytes": 13965,
+      "sha256": "8674989d81beda4f0e13fa927339917db5fbe51f4f4c9316b030fae2bf87e57a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/grid_systems.inc",
+      "bytes": 18267,
+      "sha256": "8e58c73c52351dd35ee79603885b1215ff86f0f6af00d2d05824fee25770d61a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/candidate.c",
+      "bytes": 12611,
+      "sha256": "f8dd422f016d5cd12cda5bbfcddc0c09864676cc211134697b245b30b470cc77"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/candidate.h",
+      "bytes": 4366,
+      "sha256": "5d3c6a1db015e7371ae4b163024c3eae505374bd52da6729df85e897289daf7f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/clip.c",
+      "bytes": 7551,
+      "sha256": "c40ca01c4cbde0d88647c28a588aaa80ac922689fc8e152bac162a39db5c12ea"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/clip.h",
+      "bytes": 1597,
+      "sha256": "31e2e53370e437073c098296a6f669ef5dd7959f1811c57c77604a34dc71c99c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/codec.c",
+      "bytes": 23308,
+      "sha256": "bde1ca8c6e9c1973f6a4e30afe77b4922c1803581bd2ec9ef39ee6bd340e448a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/codec.h",
+      "bytes": 2393,
+      "sha256": "81de17c90f814c798a271cad6a0b2f6fbcdc5e6c4e46af14a002be818f9feb14"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/datums.c",
+      "bytes": 4222,
+      "sha256": "f5d385df8d01b9d4399371ecd0dc02dfbe2ae0c62c988262ef5cd990676e065d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/datums.h",
+      "bytes": 1829,
+      "sha256": "9b23a1c746c2a0f46d55e2bb19309167d76c7be34bed7ecc35a11df633d49607"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/document.c",
+      "bytes": 2636,
+      "sha256": "eadfa918e209ac8949909911cc7648250b5c1f27e4310008f06f46b62315c0c1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/document.h",
+      "bytes": 2016,
+      "sha256": "603e684ca9c5ab2b8d23205cc3382a9e305c1e57441c0854367a57c441461e56"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/enclosure.c",
+      "bytes": 7871,
+      "sha256": "78f0409c342f0af3dcd9703055b63deaf5ae9606ab88d949191fb67df655ff77"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/enclosure.h",
+      "bytes": 3604,
+      "sha256": "8e6162fee153af7ff6a1d8e13d8b3e01db90c51d9d41b846025876dfb3c5c7f5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/enclosure_sources.c",
+      "bytes": 17213,
+      "sha256": "dbe7a9f01d77215895baec6e3d463953b4cab1d4c0a3cd591c2aa55f757abf68"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/enclosure_sources.h",
+      "bytes": 3799,
+      "sha256": "c512b34721bcf1e428ffb19f665970c788292b542c1b8c8bf9b1257ab3c5f4b4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/exact.c",
+      "bytes": 3243,
+      "sha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/exact.h",
+      "bytes": 1104,
+      "sha256": "bca06ef8df48636d6a79b50dae0f9337b37d886ca4ff097fc03ce865e5cffb2d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/geometry.c",
+      "bytes": 29994,
+      "sha256": "67025ac086dd48a5f9564d0122198de34589db4701109388d378586fd337dc00"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/geometry.h",
+      "bytes": 5583,
+      "sha256": "72a6268999b3ee636a668e4d5fa6f74203dbb35de52b6b86f24dda48799ad3b1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/grid.c",
+      "bytes": 8062,
+      "sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/grid.h",
+      "bytes": 2696,
+      "sha256": "2180b532a060a54572f3e352178326c425ad216e67bb6ee567ae6f62666b4454"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/grid_store.c",
+      "bytes": 24010,
+      "sha256": "89da92935c8e4765b54a83b06fb3157bdfcde74410a7edd8cf74ed87652dea5d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/grid_store.h",
+      "bytes": 8400,
+      "sha256": "26fdab200c00eaad4bb3357d86f8c1a7334305976c147ec4190a10f39b11acf4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/guides.c",
+      "bytes": 6022,
+      "sha256": "1548a5f72bf3e9904a64c871d2658409aab300786af598e7ca69a4fb82e4897e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/guides.h",
+      "bytes": 3115,
+      "sha256": "14e7f9444057120309666923378240a28ea7f1607a0c780ac5279c60a1099be1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/internal/datums.h",
+      "bytes": 178,
+      "sha256": "244419b5c43ccadf48f8b9b2ac985496cc28453443acd3984dc2ee1e0683a55b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/internal/document.h",
+      "bytes": 897,
+      "sha256": "db38e7ee5a0dde09e69f8290c5ba3ac042eeb979c8d742916da449211a88b489"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/internal/enclosures.h",
+      "bytes": 273,
+      "sha256": "d568b1b7ab0df12e65618a2b5a2ce909cddfbae7f0b88eccbfd1bbd693a0c0aa"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/internal/grid_store.h",
+      "bytes": 301,
+      "sha256": "499f879f4f9cf6c58cab360dc9273c90095b058880336cf147888072b1602ccd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/internal/guides.h",
+      "bytes": 181,
+      "sha256": "aab50ff4e4ce23a258dbc1207bd44e80e8ce2008e9d9c547454041b4cf0fb114"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/internal/named_values.h",
+      "bytes": 219,
+      "sha256": "e1c0d76fed48cb8c6015735aa143b0c4edc90ccfcd3dd85548c6f130b90bd783"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/internal/parameter_store.h",
+      "bytes": 453,
+      "sha256": "5d3e31ce6cdee43056ae2ede68e902cb7368fb40108928c9ce9aff63dd4cb88d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/internal/placements.h",
+      "bytes": 301,
+      "sha256": "ff2b4ea612c80b4ab76da4024d768493842b879133ef6598dc4b4f63503201da"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/internal/regions.h",
+      "bytes": 410,
+      "sha256": "6dc80e855f3248208fa4cc945141339631673e9d9d2414b11f649f9d48c5df36"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/internal/versions.h",
+      "bytes": 704,
+      "sha256": "19d2a7d32dd3c8b4adb0e4dab228f7b0f9aaaeec46bcc15453ca51664bded0ac"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/kernel_unity.inc",
+      "bytes": 1440,
+      "sha256": "7c86958b0166f4a69301cc78ab4999ba2ffc1e8694daaf2d70a05baa7cf8cdfc"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/linear.c",
+      "bytes": 4333,
+      "sha256": "cecc726b5a69fe060abcee4e708cb804c696dbab69994c2967dd1fc02023e86c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/linear.h",
+      "bytes": 1619,
+      "sha256": "7701f7e77f9ae34ee74004606a5c88bbc9158c0bb463ec55fa116d7d2ad245be"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/linear_definition_sources.c",
+      "bytes": 11033,
+      "sha256": "acc6312b9d438f0ef1e705e1b977e2ce8ad6ca2853248636eb241f40aab62266"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/linear_definition_sources.h",
+      "bytes": 2013,
+      "sha256": "c533ad62f5ddda634591ca42b5680c7e381fb0352c2f9c932eb900f3eb2f579f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/named_values.c",
+      "bytes": 2105,
+      "sha256": "651a932efedc94e2729e402ba3ee0cf50a731b1d741a546c5dec87815fd357d1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/named_values.h",
+      "bytes": 891,
+      "sha256": "9965267c054be1b5ca758189c91ffb79e52c6ef98e678acef824ec27fd0ca690"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/parameter_sources.c",
+      "bytes": 21934,
+      "sha256": "60908674f3b6a6a820ef60279964a9862ea99e64db4c75478cbb0b63def8edd9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/parameter_sources.h",
+      "bytes": 3907,
+      "sha256": "7da1bd225d939fe1e628a971b68102eb5e45ecebae4b5f00bf184e5975d88fac"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/parameters.c",
+      "bytes": 18594,
+      "sha256": "d4e0f6402ef38e82e4192250cbe7617668ec7c0d210fc531d0410e2cb93eda94"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/parameters.h",
+      "bytes": 6267,
+      "sha256": "1385716e7231c1f1adc461cc29fd8b9e7d2663317f196f5236e6c857cebf0d4e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/placement_sources.c",
+      "bytes": 16248,
+      "sha256": "45e754f4260e15679797b8f44c8c6a25132b199d47a7239da1e2045a8a814c31"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/placement_sources.h",
+      "bytes": 3775,
+      "sha256": "9c11cb94b20231dabf746c6f23480b5c3d324fc9d268b0140a3e01fab4781aa8"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/placements.c",
+      "bytes": 10229,
+      "sha256": "20524e1526e9d0bf82c75f07c74cd75d579e9625c868043b0028b1b1d83bc0b2"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/placements.h",
+      "bytes": 3593,
+      "sha256": "07977950e771da87b908414c8c591b65af5a6166672b7001724b21ef397921f6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/region_key_sources.c",
+      "bytes": 9853,
+      "sha256": "9a911b8d440e38298c1795c44677a3df0904f76dbc672aa112ced754fb47d77b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/region_key_sources.h",
+      "bytes": 2876,
+      "sha256": "e147a513df0aae2e7ddcedac9d4df17695c6147fcd73305f18a503322c2d9146"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/regions.c",
+      "bytes": 11576,
+      "sha256": "e2301dfd2f046da75c15764e045375b022713b3aadbbd37b8e8d0373ea6b8d59"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/regions.h",
+      "bytes": 3901,
+      "sha256": "795119199673378f7451411165000800b7a869283dbe87bbccfa0bf372819610"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/source.c",
+      "bytes": 16890,
+      "sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/source.h",
+      "bytes": 5373,
+      "sha256": "aa00bd5078495bc3c4165c81a58129a4216c6b40c87da91700f7b0c3bf9820a1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/types.h",
+      "bytes": 394,
+      "sha256": "8e2db361ebbd20b9cb58a57a10ac80897a622b244f421e86a95039428544458f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/version_sources.c",
+      "bytes": 11550,
+      "sha256": "0fc25f0def85da7d29f7e2a8547e769de3917f01f7c16280048c1ec869c41236"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/version_sources.h",
+      "bytes": 2496,
+      "sha256": "7c2b12a089b4525ec9e1bfd1742fa31fd40baf686f1461ada82deb3ad2dca671"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/versions.c",
+      "bytes": 14772,
+      "sha256": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/kernel/versions.h",
+      "bytes": 5439,
+      "sha256": "09f692bd6d3edd5e9edfff20129dd1adffad8c7e6589ebd8c0af354efba8d3e2"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/model_base.c",
+      "bytes": 28393,
+      "sha256": "ffa570dae26fbfe8bab2d24a9e0663d4b6943983567097fb96553ebab5e42be6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/modeling/__init__.py",
+      "bytes": 28258,
+      "sha256": "e31eb760dcd1723d98f1a53d47678b496098c3f75d649c2d230507d42d08d8c5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/modeling/_host.py",
+      "bytes": 444,
+      "sha256": "4532d8011c8c984277c3341cfc84046ff41dbe2cba5f630505dfabe064ffb800"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/modeling/base.py",
+      "bytes": 837,
+      "sha256": "f8599b7dfbd239fb20385ed7c48995bcdd2e76c46bdfc92fb38c2df98f8952dd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/modeling/common.py",
+      "bytes": 193,
+      "sha256": "585612b886dce3fd694fdcf14b0af67ad5fce7d60e03c778e4c330d86c1bc0dd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/modeling/engine.py",
+      "bytes": 832,
+      "sha256": "b371e4045dbbb4e8a1d2fa4e1294ac42d0d2177b461dd169928a05c255eb69e0"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/modeling/geometry.py",
+      "bytes": 235,
+      "sha256": "ba2b9f31708863dc340a286206c3793625ffb7701267172a541adba58f447d94"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/modeling/kernel_errors.py",
+      "bytes": 139,
+      "sha256": "73e1ad71d2a5f7ce85a77eaaa7b6ce406dc522043788d329bb5cbf807695f091"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/modeling/section_profile.py",
+      "bytes": 154,
+      "sha256": "b45c8b497d1e2bf662628700b59fc4f01900f1218378507e9b76cb5e1267aeee"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/modeling_cli.py",
+      "bytes": 6328,
+      "sha256": "650b73615f2bba641364e477824c89e53df02dd2476d5b5751802916dc9f4045"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/panel_fill_layout.inc",
+      "bytes": 3027,
+      "sha256": "b085b167e2281432c116d238029d07e9640728d9a99063ead7821a8c3bdd8a1b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/panel_fill_support.inc",
+      "bytes": 5085,
+      "sha256": "18a3a5474b764f704310be284dc661fa8e4a3f1a5172282b9e442c2f60ec3ec7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/panel_layout_math.h",
+      "bytes": 652,
+      "sha256": "d50dc0bc4ae6b6cac4981c2e1d311a5af46269b4a69869fab593689e855b07cb"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/parameter_types.h",
+      "bytes": 629,
+      "sha256": "825e6df03858be5e7fd48b7e4b624b4841823f3790d1c2ec6c2bf2793b12f00d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/parameters.inc",
+      "bytes": 64486,
+      "sha256": "0cbb505d787983898b55b63c92eaae3a4d25644587f3960b5b081564a726ad5d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/reference_types.h",
+      "bytes": 674,
+      "sha256": "9b19103df50d2493d2d6500982e4ca06ec8203ee746f55594ddc790a5db651c3"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/references.inc",
+      "bytes": 62953,
+      "sha256": "3f8fe931e88f3a69df3a1720d9ddc5103c246c3312b560a059e87c7c218b12ac"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/rule_cases/__init__.py",
+      "bytes": 465,
+      "sha256": "e49d8ca5f55afd0ed64c5685de8975bf1b1397c3979827434b24bd827433a7fa"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/rule_cases/__main__.py",
+      "bytes": 1297,
+      "sha256": "14cb28f2c356f8de041eec785033cfe24e61df4cd328ef30fda090acfe011fcc"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/rule_cases/catalog.py",
+      "bytes": 9586,
+      "sha256": "463194990f834a81daab856eaae08415354c9e126fb01c349e57e908dd6d5088"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/rule_cases/definition.py",
+      "bytes": 27503,
+      "sha256": "151cb13cb17add99d714d8d5b4480a7e6bc77dd54eb3122decea7c39040e8edd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/rule_cases/executor.py",
+      "bytes": 29149,
+      "sha256": "247dc7d01ebf6e351e1d233dcf18629820aed984ff78a14a1b17a0acd4da8d0e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/rule_cases/request.py",
+      "bytes": 1142,
+      "sha256": "5950a24d5404e384e4f0d8c1897a029399df74a55d1ff5ea713f124f33d6f267"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/rule_cases/runtime.py",
+      "bytes": 3261,
+      "sha256": "4849628173266e0f32ddf7ef6e3cc712d7a10eac256fbffa60167c0343f11cbd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/section_profile_conversion.inc",
+      "bytes": 2077,
+      "sha256": "451a83451f28e477c7dba44adb914ad6e046b23f8ac1c7fb019506e52de323c2"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/section_profile_types.h",
+      "bytes": 137,
+      "sha256": "f6f9d67967412e8115edc5955b8775fa51a8fb70dd94f391ab416cfc14eef531"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/section_profiles.inc",
+      "bytes": 9287,
+      "sha256": "cede158705a130e1889c92ae5a520ad844c038e24520422d3399df163a5efd23"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/subgrid_commands.inc",
+      "bytes": 4590,
+      "sha256": "d7e668b79012fd988076616a7462f422505e96951831683819ee5b537e945677"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/subgrid_rebind.inc",
+      "bytes": 2352,
+      "sha256": "c7135f559abb149b0996108703f4a2e7b6b6362824048a618f46c8d14f63a98a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/subgrid_world.inc",
+      "bytes": 1210,
+      "sha256": "7c8866481c40ce9d20e7edf2bf9b18bd243ce5abe2b729316dd0ebc8b33e2540"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/subgrids.inc",
+      "bytes": 4857,
+      "sha256": "974c2ebfe8f16bc3b73de34eb9508f650933074d29fd775854be667f11c91fa8"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-core/transactions.inc",
+      "bytes": 53461,
+      "sha256": "bd57f8427b5004cb25ceae38f8ad2e37664efabc92a5ea13aec56719f087a2d9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-guide/axiom_examples.py",
+      "bytes": 12541,
+      "sha256": "b755f8d7c3ec750dce057b3c48b93925fc1ff1a299dcb22254edc62b1b188404"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-guide/axiom_matrix.py",
+      "bytes": 9710,
+      "sha256": "f33d079305c099d664aadd4a8490b630a953fd0fb63cf1e7fa8dbd8b1384ad75"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-guide/axiom_transcripts.py",
+      "bytes": 7618,
+      "sha256": "0ad5cfa0d160695f28206cd0cfba57fc6187f620df7c8723a2d0521dbcb76f60"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-guide/check_panels.py",
+      "bytes": 3489,
+      "sha256": "8b2879d8354ce401f40505b4aaf149223afb6eb3739ee16a46e971d104917e1b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-guide/current_geometry-導讀.html",
+      "bytes": 483511,
+      "sha256": "f62d6715fae2e2df518f15d6b95eaf46b0e1a307908e3da2ac518813ab959030"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-guide/make_guide.py",
+      "bytes": 76788,
+      "sha256": "fbbff1d67e9a117df2540328d17e4cee01a71d4d5a97f0c184f6bcbb1d2ffc55"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-guide/sync_axiom_reader.py",
+      "bytes": 121853,
+      "sha256": "a9f8bb8869219b3abbfdc06ef5acf3dbc84b1ffceec926f67a9d28e2656136f6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-guide/witness.py",
+      "bytes": 37822,
+      "sha256": "8e0494f1d0ce9f41a69a8cfb5704f38787190d94e76305fb44872432d80aaa59"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-guide/公理層-閱讀器.html",
+      "bytes": 7006717,
+      "sha256": "3979f9858fa581df1d9c8f2ba0c21b471ebc0553464b1c1f7f2aa8c87952062a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
+      "bytes": 1909,
+      "sha256": "d17ba83c34dcaa7ffe5c86e7608e69e459f65053549fe30395a025966e1b371c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/rectangular-grid/geometry_rectangular/protocol.py",
+      "bytes": 7677,
+      "sha256": "efd3e3eb15f88f8d8010aed6fc4fb248ec3b43681ca07d447a8363656f7b7b4e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/rectangular-grid/rectangular_grid.c",
+      "bytes": 5164,
+      "sha256": "dad3642468eea30bf5370320bb7e4b05dc765469a4df537ffa3f5a8221684864"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/rectangular-grid/rectangular_grid.h",
+      "bytes": 2444,
+      "sha256": "50cd5762d0b69d415af8747aca5844948f24316861a069f4cee040c328aaf870"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/frontend.js",
+      "bytes": 6895,
+      "sha256": "fe6c93eeafae0496d16bf74620681251347227997bcc33fbbb8ce774a54033f3"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "bytes": 74,
+      "sha256": "8043f03b5c238def60d5faf58838e1d2d1cb55acc8042907145f6141b38af986"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "bytes": 2969,
+      "sha256": "d9aeabdeaad0d435038e513583d199358d9dc765ee77d1208ba652c8a24a6b64"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "bytes": 7193,
+      "sha256": "e04d5a3029aabf0e4eb1e00928137461989b0bba67e40ec10043de2a3cabc8ed"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "bytes": 3452,
+      "sha256": "ef8d34cc9388dcff274d2ef89f76fd9eff3bfa93943dd2995e7308a7ca50e7d9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/assembly.c",
+      "bytes": 42150,
+      "sha256": "7bfe7537c5c865762d4f7597d92579db381cd4f6d3a91080aa6da9a90197e57f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/assembly.h",
+      "bytes": 7625,
+      "sha256": "acf8d1115699db097b11a74dea882acf90af5f303bfc7c14c9774e9b3477c0ab"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/assembly_sources.c",
+      "bytes": 35784,
+      "sha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/assembly_sources.h",
+      "bytes": 3302,
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/boundary_policy.c",
+      "bytes": 162,
+      "sha256": "444b78261b8e52b0476bb065d04aaade5664379a55140c88054b4570701e73b6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/boundary_policy.h",
+      "bytes": 926,
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/contact_sources.c",
+      "bytes": 11561,
+      "sha256": "0405a88453278501482381d452b564f74e0f91833c711002007b0ffcdb2498bd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/contact_sources.h",
+      "bytes": 2853,
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/contact_world.c",
+      "bytes": 10886,
+      "sha256": "908cb6f58914a979e67525dad14a1027f5bdd56eae0772392639d42c5588985e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/contact_world.h",
+      "bytes": 2096,
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/contacts.c",
+      "bytes": 2256,
+      "sha256": "4dc8dfdc591604c579c4c374306059aca315e5a8a37539f45043c8dafa0dd766"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/contacts.h",
+      "bytes": 1303,
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/cut_list.c",
+      "bytes": 1562,
+      "sha256": "d17d5ef413f662374b0bc621ed0f451bd61b29c54c6502317f6b0ee62ae06d4f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/cut_list.h",
+      "bytes": 682,
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/definition_sources.c",
+      "bytes": 17633,
+      "sha256": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/definition_sources.h",
+      "bytes": 2767,
+      "sha256": "1ec14f17dea4fe98f80099d4699e3e154157e152b5ded9ab6ea0da147648495b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/derived_placement.c",
+      "bytes": 18770,
+      "sha256": "f593f27b6fd4910175990f8742c37ebc331c27c5dc8ea21dd280ed538eb0055c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/derived_placement.h",
+      "bytes": 3282,
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/document.h",
+      "bytes": 1413,
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/domain_values.h",
+      "bytes": 691,
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/engineering.c",
+      "bytes": 44177,
+      "sha256": "12ef9dbc7ebea84e4167a0792424842a86cccba37fc53e482ce3519b775d2c31"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/engineering.h",
+      "bytes": 9689,
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/engineering_operations.c",
+      "bytes": 7119,
+      "sha256": "4154e53ba181f2f60a3fb626851e937810ddd9b5ab4766e48ebffc2734fad7b9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/engineering_operations.h",
+      "bytes": 1359,
+      "sha256": "566d1aa3ab48702febf14a352826a2d276db84b20299b26b0ad063d37aeefe4b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/engineering_sources.c",
+      "bytes": 34395,
+      "sha256": "92a2a809fdbd4b4e6c39794b03fbf7355eeb5fe55cc28a7b26101fac532a1300"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/engineering_sources.h",
+      "bytes": 3668,
+      "sha256": "8516604f968f0a242ebf99a1efa147c14e5c8c0a7bb69b3a609e78b49f712a8a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/finish.c",
+      "bytes": 28866,
+      "sha256": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/finish.h",
+      "bytes": 6537,
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/finish_sources.c",
+      "bytes": 41066,
+      "sha256": "a69debfd1540fc7743f323b22d7eaecf017f8c59c3ca9368b2e4a89b8874568d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/finish_sources.h",
+      "bytes": 3568,
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/grid_application.c",
+      "bytes": 29542,
+      "sha256": "87e2e82ce1906bbf4998dd530fdcdfd6b49a8f53caf2a6ae42318f6e99e48798"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/grid_application.h",
+      "bytes": 9596,
+      "sha256": "9affcdb3642a15b51f790bff80aaa97af04be3a9663b48637d5be021e864852e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/grid_cells.c",
+      "bytes": 19552,
+      "sha256": "578c8a1b64de7fbc9460e626811c0ecd11d8739efc87f2fadd923c956aaba434"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/grid_definition_codec.c",
+      "bytes": 17281,
+      "sha256": "f6a27601450f1452977a9b42628f409c694bcf0397db6bcf80e3fad0d7c38387"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/grid_definition_codec.h",
+      "bytes": 3055,
+      "sha256": "43e9014de28b1efb7418755cbbc42a0523110b8a8d22f9689849b54737e14349"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/grid_rules.c",
+      "bytes": 13805,
+      "sha256": "c42441ad543775cc34886f629834e428120df7564654cf98fcbfa9da3a50b298"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/grid_sources.c",
+      "bytes": 44570,
+      "sha256": "414f39a8629a4fc5ea005bc7c606d460caf8fb89dc82afd5199f79b6bc7083b9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/grid_sources.h",
+      "bytes": 3227,
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/member_declaration.c",
+      "bytes": 2335,
+      "sha256": "3c29df14421c350cdb1cf8c4ec08b3c15c60010aa2baab48b354d5854ba8175b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/member_declaration.h",
+      "bytes": 894,
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/member_placement.h",
+      "bytes": 1549,
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/member_reference.c",
+      "bytes": 30123,
+      "sha256": "90f3316777c181f3491ff01b4a06b6f3139f120452e74bbf02d78a323c6c024f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/member_reference.h",
+      "bytes": 6430,
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/members.c",
+      "bytes": 3533,
+      "sha256": "a2542898865479475f74552ce2832e88b1f72f752728ee07b61cb762b2ceab3d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/members.h",
+      "bytes": 2131,
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/obstacles.h",
+      "bytes": 682,
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/panel_layout.c",
+      "bytes": 5350,
+      "sha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/panel_layout.h",
+      "bytes": 1566,
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/panel_support.c",
+      "bytes": 7069,
+      "sha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/panel_support.h",
+      "bytes": 1440,
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/section_profile.c",
+      "bytes": 24441,
+      "sha256": "a0fa9004ea689b0f4964dbe90f1ff80d0c968dde7e166993d675659ecfeec55d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/section_profile.h",
+      "bytes": 6289,
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/section_profile_sources.c",
+      "bytes": 29307,
+      "sha256": "9c2b35639e1686c812285b248343717a431023cd02e4eeb3f2e0763d7425a12a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/section_profile_sources.h",
+      "bytes": 2772,
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/supports.c",
+      "bytes": 4658,
+      "sha256": "1f3c8bfb51c86024b67b0af90f8c381fa38c8babb1cd1956b1cc4a7f022d0775"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/supports.h",
+      "bytes": 2727,
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/world_validation.c",
+      "bytes": 7503,
+      "sha256": "3a5d05ffdf45a142326f17b2173bda7c7cd157d9c32d8ea6e71a93b275a3c2fc"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-templates/woodworking/native/world_validation.h",
+      "bytes": 1935,
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/app.js",
+      "bytes": 627532,
+      "sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/archive_wait_trace.py",
+      "bytes": 3402,
+      "sha256": "7a77178ba0891290e692ea2d43b89ce2fabbad1e298cd25b38e4ca98470e0799"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/assembly-workspace.js",
+      "bytes": 54171,
+      "sha256": "ee8cf52fe760fd36e2f8bda26ed7e774bc485a124fd54f92b50151e2aa14f422"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/assembly_binding_source_browser_check.js",
+      "bytes": 11276,
+      "sha256": "90dc577aeb06e05c61cf1608b7912bcaf6de2734e514ea7b2d4f76b0667164ea"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/assembly_bridge.inc",
+      "bytes": 5532,
+      "sha256": "e9927fb3da3878c71df2386bb3e86152df9e0853d2a770e46642011fd623081b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/assembly_candidate_impact_test.js",
+      "bytes": 3631,
+      "sha256": "7110fd3c71d901465d2697c09723ece7fa4f3e38133edadf995fc3e2cf975c37"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/assembly_context_entry_test.js",
+      "bytes": 15562,
+      "sha256": "a02e10d6b53dd2f63efba797333057bf18a029c680a1dfb905c42a6899fe7bc7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/assembly_generation_test.js",
+      "bytes": 11239,
+      "sha256": "6017884b8b6085e76dd5ab6ef2635c7693a98b4d7aa3826e0f46817173eaddc9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/assembly_id_test.js",
+      "bytes": 9292,
+      "sha256": "6d7c8ebb721b0f697016a8eb12e1ba5b16e6298745a8f85acb259e8261b931ad"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/assembly_review_test.js",
+      "bytes": 21295,
+      "sha256": "52f153475b7a85c197f8850b4026a576ade9c5ef81d3579382753d54078df950"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/assembly_workflow_test.js",
+      "bytes": 16461,
+      "sha256": "be1eaf009660cf8e7d05a6a643040a62abc4af11fdd01ae665d96e48bab048a7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/async_reply_ui_test.js",
+      "bytes": 14619,
+      "sha256": "152c23ab908bc4c205a22d1fb2064536e3af121d4bcd2dbc7e1edad60f3553aa"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/canvas_test.js",
+      "bytes": 43114,
+      "sha256": "6d097c3031fe2e49ad5f324b08ef631aed6faa2e2333304b089c88cc19b4f569"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/cdp_confirmation_gate.js",
+      "bytes": 1811,
+      "sha256": "59a839da0785adc43b05c0c4234b714bbf6581306954d083b3007beafb85c851"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/cdp_evaluation.js",
+      "bytes": 1407,
+      "sha256": "ed20878b55f5c0b1c0209a9bd7731cc5dff99c6c9d1317b5bbfdce6dea9d3e7e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/cdp_floor.js",
+      "bytes": 4505,
+      "sha256": "37f297942735fba950d81668c18485a434afb0dc38b0e34835cdf633a7edc32e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/cdp_helpers.js",
+      "bytes": 17770,
+      "sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/cdp_navigation.js",
+      "bytes": 3037,
+      "sha256": "64be1d676aec784f275a27f621b17a5e5440fdb4f56a0c786036b2e3708692ae"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/cdp_test.js",
+      "bytes": 513583,
+      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/composition_canvas_test.js",
+      "bytes": 27531,
+      "sha256": "ef6e9c4a94e32e39099e939ba93f8b3e62abd869c695891f37003415f4969dea"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/context-menu-shell.js",
+      "bytes": 12742,
+      "sha256": "0bc1e6dd446d06001ab9c741c615679d990b4978fa1c5cf6a17ac427453e17ed"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/context-operations.js",
+      "bytes": 5410,
+      "sha256": "36820d5dc246138c848198297a84e7927c64df349af17c04fd3508df594fd928"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/cursor-v2.js",
+      "bytes": 15042,
+      "sha256": "01ff058614dad70645499e0407f6782d8b5f6f3c2abd0c1234da8a0ef72f44be"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/env/common.py",
+      "bytes": 2046,
+      "sha256": "76dc8fbd000a810f784171e814173f7db0ce7e83a0e229793c35834e9a7aa31f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/env/p1_browser.py",
+      "bytes": 1288,
+      "sha256": "ba00fc6d5c20c3e66a64426c10941e9eb8e26774fcd2555bd229aef7b57ee1b2"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/main-negative-height/scan.py",
+      "bytes": 3717,
+      "sha256": "3666245f98ddf5176ec6ef14649aaf27f80f71e973e1ac3ec995bb0c1ea59fef"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_lib.py",
+      "bytes": 6871,
+      "sha256": "cbdfab79e45afa52faae04f4a8fd37b23114178f776f74939bd5779893ca7a55"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_run1.py",
+      "bytes": 1926,
+      "sha256": "b298d3b84912f99782fe28e8bb7e1362845961753e16b99c7e4b65a21e1f64e7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_run2.py",
+      "bytes": 9241,
+      "sha256": "df6999bd25143486507a97efaa2cc9e3210f3cd59af2d084c818fc1e339a3687"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_run3.py",
+      "bytes": 5074,
+      "sha256": "6266937ca28e81e59ddde45c47fad097834daec4bf500b8a8191ffe40436804f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_run4.py",
+      "bytes": 6759,
+      "sha256": "259b9350607d7609e6ac1edd26253ea05e1415600b9199b7c928443e3c44be4b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/pr152/w13_probe.py",
+      "bytes": 700,
+      "sha256": "6a9fd153c51cd7f9e88e013c11dcc6ab8947c83ee5e1623d299b86b6ed517a52"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/pr152/w_test.py",
+      "bytes": 12151,
+      "sha256": "28a1ec0bb114713dcf4d74d9d1bb85b4168b0ff803ea0d2271b3886bb7a504cf"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/pr152/w_test2.py",
+      "bytes": 4416,
+      "sha256": "f7b1b1d3c9dc8842855c20ebe9018c5208fbb6ec00cdeea3a41ed324d1837372"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/pr156/g8_run.py",
+      "bytes": 4238,
+      "sha256": "846f5faae141b01161fa92eda0fe03a4cd009aea1f27717a9142fbc9047b28e5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/browser-acceptance-20261006/pr156/g_run.py",
+      "bytes": 5888,
+      "sha256": "1de2af37a8a245f4cf5edc882e5985f2c94e9bd567fbd1b61c9af32d25f82572"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/geo263-20261016/compile_probe.py",
+      "bytes": 1045,
+      "sha256": "c0457dc597412c2195d828f57a85eb451e605a555ad5c25684d8a9033581461a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/geo263-20261016/verify.py",
+      "bytes": 2706,
+      "sha256": "8745ba01a144afa83f5f94f9d670edc0278d96aa8f4dc13bd5c95852f24a49fd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/geo263-p153-20261016/verify.py",
+      "bytes": 3323,
+      "sha256": "e08e7033d808ebd2b486eef75a25e92738b4a23a2ffa9bf9091541c45be1fb85"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/issue61-3bd31dd-20261005/supplement/model-collections.cjs",
+      "bytes": 5112,
+      "sha256": "d851a72e9a2a6eb65d2ba47d5e7c529616b915b2fcc9aa0303ce8baaf894fa90"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/fixtures/gen_synthetic_pdfs.py",
+      "bytes": 10019,
+      "sha256": "9cea55de6d1556f7ad4c48e98fac9448d170a8305e196b72b923ee3d4a477ee1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/tools/build_qa.py",
+      "bytes": 10811,
+      "sha256": "433d1e9f9cf9a4c9af46ebe30d4e887c96de47f55c0814473824d39577b9c432"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/tools/qa_cdp.js",
+      "bytes": 23007,
+      "sha256": "243df590b3dfb14cf0bb5784e589cf1b09d1d14c565b0e8900c0187e6aab4812"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/tools/qa_server.py",
+      "bytes": 5489,
+      "sha256": "b34b31fdd12ffe184f7d774e4dfa74a2705429925f9e03f154f06f92d3cb1301"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/wp60-a-20261004/browser-base.cjs",
+      "bytes": 7197,
+      "sha256": "0eeaf95b4852015e25badd583ff072e64bddd22880bbd0c778117a08b7cda14a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-legacy-browser-green.cjs",
+      "bytes": 4329,
+      "sha256": "028118ca9318541d3bfeefbc225c2d4320e1966d8af9295151c6915dbfd268c8"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c",
+      "bytes": 816,
+      "sha256": "e796808d125a6d683d9d5ebb6c0d3c74c929fed9e7ed2a7cf4eb3f683688ee51"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.py",
+      "bytes": 825,
+      "sha256": "909ee9ef642470af754770dd53cfca385faa7f02e42ee26784d20a876506d6c0"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/grid-2a-validation/cloud-qa/p3-acceptance/p3-css-acceptance.py",
+      "bytes": 9614,
+      "sha256": "c955455ba23a2e2e2dab717910e3a4d877cd42187badd927b9f37b25ca73f5d8"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/grid-2a-validation/cloud-qa/p3-acceptance/p3-first-click-repro.py",
+      "bytes": 2820,
+      "sha256": "7eeef65a34e62a78a7176793e12829daf5fa6ada78d59cf93f01819383e072bb"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/grid-2a-validation/combined-pr125/chromium-environment.cjs",
+      "bytes": 644,
+      "sha256": "d8bcb586cda598e09073b8305baca09d4a05f5c41c8adb6bd20c2f813caedd9a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/grid-2a-validation/combined-pr125/mixed-attempt1-flow.py",
+      "bytes": 16515,
+      "sha256": "849c33420b81ac622ea6d7fac807a59da739ee04175f87676d6dcd55d035c995"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/grid-2a-validation/combined-pr125/mixed-flow.py",
+      "bytes": 16525,
+      "sha256": "1f85784529913bd68b2678ecce4daf4f3f28c19c685aa35c9500862aaed72710"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/grid-2a-validation/combined-pr125/run-gates.py",
+      "bytes": 2852,
+      "sha256": "6601d2ee90a4444b741b3fba3a6cb102ace1f93f902162c3907650dbed7affcb"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/grid-2a-validation/combined-pr125/setup.py",
+      "bytes": 4148,
+      "sha256": "81df40c51cfcb5b01f7cd77369dc1226e1c5d98db33cc8af7403cf49b794636e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-c-pending-tests/repro/build_t3_json.py",
+      "bytes": 1664,
+      "sha256": "8b63b931be05b576ce94d27687aa4001826064f8f7376e74615f8a907090579e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-c-pending-tests/repro/common.py",
+      "bytes": 2869,
+      "sha256": "8fe9f7577ee4016fd602a188d0f2594209c5616123e653e44f732636f874eb5d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-c-pending-tests/repro/t1_focus.py",
+      "bytes": 3314,
+      "sha256": "8451a32c38d42a10b15bc75038ca1fcac8829844e856b061e0695aabedb630f9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-c-pending-tests/repro/t1b_toolbar.py",
+      "bytes": 2746,
+      "sha256": "1e703f47a13f76ddd7ba7df45e89303a12c27919816cd80a469aef74e54eb24a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-c-pending-tests/repro/t2_b6.py",
+      "bytes": 5504,
+      "sha256": "056d3226a5d1949ba39991830b4b61804b59f4f21847b60b8e70edbf96f8c005"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-c-pending-tests/repro/t5_g3_delete.py",
+      "bytes": 8418,
+      "sha256": "7c23f7dc8c4ebe191668dce7b42aaea75e183cb07bfae1451ad0bfb233237925"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-evidence/repro/common.py",
+      "bytes": 2134,
+      "sha256": "0dd298d72d4aae90d79b6424bd6f0b5d7d23e0756a9ebbc8216f51c8a523296f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-evidence/repro/css-evidence.mjs",
+      "bytes": 2214,
+      "sha256": "edafa5e85d753cc01087ef0177474c1492a8992602fc6a6029f94ccc82119d67"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-evidence/repro/cssq.mjs",
+      "bytes": 949,
+      "sha256": "2f369b2e5fd080e1ea048320e5bba128a494da214d6103c827949537c52a4df9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-evidence/repro/explore1.py",
+      "bytes": 1295,
+      "sha256": "cee24fef0e25d5337e55ce83b07dc48c7f7e7c5a4eaf607442195434cbcc402c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-evidence/repro/stage_f.py",
+      "bytes": 6262,
+      "sha256": "5e5f29afaf0f2ad4f3c4a5388057f43f0b37efeff3df08f4a0d50401ea88a467"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-evidence/repro/stage_f2_explore2.py",
+      "bytes": 2808,
+      "sha256": "c589868c606bae12713cdcea2a661859d9f93b2e01164eda6ee89fe9c40bf2b6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-evidence/repro/stage_g.py",
+      "bytes": 8865,
+      "sha256": "03fe6263c9b14dfda54206ffbd5d36f543062160747ca57b7d62aa08e68d55cf"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-evidence/repro/stage_h.py",
+      "bytes": 2776,
+      "sha256": "6385b1881076f40252fa8cbd34717d894136a127f6e25c1704e665bf185ce889"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-evidence/repro/stage_x1.py",
+      "bytes": 6728,
+      "sha256": "e37fba6be12e3f6933a203e693e68d589b9a696ab19f38d4e75d7106ec8f1a20"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/issue123-feedback-overlay/run-gates.py",
+      "bytes": 3471,
+      "sha256": "04c06013a26a546b079afbe5ce6a433c5c8dfa60b21d70737457ff9c3d4f6e46"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/prototype-構形Canvas-v2.html",
+      "bytes": 215162,
+      "sha256": "b145c70b98e5985eb6002766fc535452acf8051c76c91499bfafc853afa5c60f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/UI-UX 審查報告.dc.html",
+      "bytes": 11179,
+      "sha256": "50157e71e5d197e49b3724a8a1ad00503f4cbd23721b14c30ef655c09b9bbf37"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/review-data.js",
+      "bytes": 15442,
+      "sha256": "0f6a9736397d0478d6d561881e3a9cd01eec3bc30eb34d332b74b7c2fa9e8acb"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/shapeops.js",
+      "bytes": 5879,
+      "sha256": "905daf243374808e12ddc57b608ce3320c14d3ff696545211e10b37ae9aabfd1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/support.js",
+      "bytes": 69150,
+      "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/建議-主畫布 v2.dc.html",
+      "bytes": 39566,
+      "sha256": "6167129ff4219903e8a20a620bd85d8c7b8d02d09d21b21b93a3edfa29b27c66"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/建議-建立參數 4a.dc.html",
+      "bytes": 29326,
+      "sha256": "e5899ecf57d36a45c0b794f86dbc09b07542dcf90c617e49f999624d42d0c6c8"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/建議-面內工作區 v2.dc.html",
+      "bytes": 26292,
+      "sha256": "1695ff19f692d8d68496114d1528ec72a43716d773ba93977400af19027b08c2"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/形狀編輯 步驟板.dc.html",
+      "bytes": 4852,
+      "sha256": "0b87f312fff42e7216a05b92f948a953faa4a419ca836550d527400cdfcc6fb4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/形狀編輯提案.dc.html",
+      "bytes": 103764,
+      "sha256": "f7ad84bee1dcabe6a93b263a2206bd556b6daddf29680ad4a17332f0be014a6d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/現況-三視圖總覽.dc.html",
+      "bytes": 11498,
+      "sha256": "d4ffa30114c0caa7faa820b14f9a81f4689c5ebc1bd284e063816f5a9532e9a3"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/現況-主畫布.dc.html",
+      "bytes": 38346,
+      "sha256": "fea7fdcf20e5c7e16b0f69a3f50190e10ed55cf03b6f0047075fa141b2776070"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/現況-空間工作區.dc.html",
+      "bytes": 14747,
+      "sha256": "9feed4dd538236392da7f160a80b9296fe2188ff19fe6b77309ea7540b62a39b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/現況-面內工作區.dc.html",
+      "bytes": 20358,
+      "sha256": "31d96ec2ed054b347bb8813f05c50b538595abde82f63471a6a68adb555b5c93"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/docs/uiux-review/組構規則-原版與修正.html",
+      "bytes": 24441,
+      "sha256": "c2803e022c53ca5e7efab4b05a8dfa56a93d34a438b31082eec6064f5c5bb67f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/document-cases.js",
+      "bytes": 41713,
+      "sha256": "3a33c20ef40b333541040647ef10e74cba5875a054da7a9bbda8460309b074b9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/document-format.js",
+      "bytes": 5902,
+      "sha256": "54e773f190772566a590c5a9eac75cde854be73e98231a021fd807ec92ee8ab4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/documents.js",
+      "bytes": 25551,
+      "sha256": "3dbe76e47d02389b44009f1d1ee5b6ca5d3a175d4de128776bf6668422a0e868"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/documents_browser_test.js",
+      "bytes": 23966,
+      "sha256": "0ab5cec0dd5f497e9501c68dce6970658f1d39c1f8a2c62183744b47b5826886"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/edge_draft_redraw_test.js",
+      "bytes": 21105,
+      "sha256": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/engineering-adapter.js",
+      "bytes": 14937,
+      "sha256": "5c88b486f2ff26a72ef31bc6b2aba475af3d7620fbccbd756765ddc25319c6be"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/engineering-workspace.js",
+      "bytes": 102814,
+      "sha256": "e8049cee54e7a797789e4f7537942972efa0d69ab0b64c2551ee36310cec2e1d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/engineering_bridge.inc",
+      "bytes": 21704,
+      "sha256": "930134f89de7c89b17e000623d1c675b51c5b2465fc6b8109936711f0e9519f3"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/engineering_transport.py",
+      "bytes": 2730,
+      "sha256": "1614c9dde48adc04e664c5b6b8557ab6f20a4426b2198d581ad477f07b47e691"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/engineering_workflow_test.js",
+      "bytes": 50068,
+      "sha256": "2ff9c6257b2a1c5ad8bffd5a6791c454c6d6e7ba717489697f6807bac9e834c6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/evidence-links-app.js",
+      "bytes": 9716,
+      "sha256": "363fed50c6cc24ac7f5e7e6b6c84fbafc2d104f902cdcd98e842c1793c7db610"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/evidence-links-ui.js",
+      "bytes": 17963,
+      "sha256": "72060fa1b345cad9e8b073f27edf5e31cc793256a2b50a12248f23e29bf0ee73"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/evidence-links.js",
+      "bytes": 17328,
+      "sha256": "70345645f0b0b7ecc967a8b82270e29f16678c34cb4e012b331186ec15e43232"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/evidence_links_browser_check.js",
+      "bytes": 36614,
+      "sha256": "8cc311ec281c3d564739804ef1b4ea3bee5c628eed1b5ea972192fbf1803795d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/evidence_links_integration_test.js",
+      "bytes": 30276,
+      "sha256": "244d6b583d77fb481d250cfc1ca5ded9e88d9819f0833743667ab64f9e9a2d00"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/face-context-menu.js",
+      "bytes": 13355,
+      "sha256": "cda6da726d5bbf1b92f2313892ec8a9f24a931726db4a55ba2e9b398447c6394"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/face-menu-icons.js",
+      "bytes": 972,
+      "sha256": "6a8354e604b49c48f5468317f54dbb4c79691199f6381df81272646a924bba5b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/feature-attachments.js",
+      "bytes": 26229,
+      "sha256": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/feedback.js",
+      "bytes": 20561,
+      "sha256": "697d5491a66018e095de6941d2b3c0e0b53941734469f93bba1c1c4d8d5a86bc"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/feedback_cli.py",
+      "bytes": 5161,
+      "sha256": "bb5a671dfdbfab238ddf2449df8ef2dd59741ea8e63141a0b464f5e74dc50348"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/feedback_resize_observer_test.js",
+      "bytes": 29901,
+      "sha256": "3f183e95fa968e9c81520e292e8d604727a49e2e77626103c0935f14484d434d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/feedback_store.py",
+      "bytes": 10814,
+      "sha256": "cb6370c17a0d9aab4979bdb79dd7a5ddd252a328c9305b746e687dc8601f520f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid-anchor-positions.js",
+      "bytes": 596,
+      "sha256": "2b3edbe49e67c7b50feeb718c59df5a50049955a3ba99b0798d61887abecd47c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid-inspector.js",
+      "bytes": 21426,
+      "sha256": "69dcc32ba0cc89284c3839c75733f25a276e019bcd3d4f53cd166fe7605ae0f4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid-rule-lines.js",
+      "bytes": 17264,
+      "sha256": "0f554fc0f764e5092cb2681048bd74cb50d1c6870d706c4d68867a9b06d6bfda"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid-system-workspace.js",
+      "bytes": 127655,
+      "sha256": "2dbcf344209ae76388892c6ce8a350f86788004727ff8d6a01129c21daa5c7d1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid-trial.js",
+      "bytes": 11540,
+      "sha256": "ae089d50cf078776ecd123a3a2ac7b00822c23b51cb5accee13d4e9adf46c4b9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_binding_bridge.inc",
+      "bytes": 13466,
+      "sha256": "1104fdc87405b6deb5f0c212cad156dfd06524409746b3c469de1001b336a4fb"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_definition_interaction_browser_test.py",
+      "bytes": 15639,
+      "sha256": "305deaa356c3e85f9ec4f5495273d4419a53009f04d0856702dfd1857e70fa76"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_inspector_rename_test.js",
+      "bytes": 14519,
+      "sha256": "1f4fd5f4b85cfbc64da880bc1f4ca80155ef51ea3007c932093801068d48d4fd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_material_entry_test.js",
+      "bytes": 26175,
+      "sha256": "9b0c7ed79a8107601fbd894f3a9839901248ec25157fb7ddc00893ae7314a229"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_portable_browser_test.py",
+      "bytes": 21329,
+      "sha256": "036da891b5c0c7cdb4b8653eb36efc22fa25ff9ada868ef35fb57e78308079dc"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_raw_provenance_browser_test.py",
+      "bytes": 16256,
+      "sha256": "66ddf61b3770c42cd7f9323bf55c9a25f14a383f50063a718eb7218862190ef3"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_rule_editor_test.js",
+      "bytes": 31954,
+      "sha256": "ba2ee897e05d862a44ec275c098626627a90bd83dedf6ca2c7f377a58729cc53"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_rule_lines_test.js",
+      "bytes": 47991,
+      "sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_subdivision_bridge.inc",
+      "bytes": 5220,
+      "sha256": "1cfe0f48668a51f20f4d71f547923caae6f10dbc5d3c9f146b6a01dcaa6c1d2b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_system_bridge.inc",
+      "bytes": 5925,
+      "sha256": "cd4cd823faf85050a80a2146dab2e4cea6064bf809a8dca29810c5ae72af7533"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_system_test.js",
+      "bytes": 56504,
+      "sha256": "f6802f13bc59fbc2058eef4138074bb88af51f07666c635d429da8f43789670f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_trial_test.js",
+      "bytes": 10480,
+      "sha256": "2493c5aeb2ca31168277a882538991b50707ac39aab9a91f70586c9901607139"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/grid_workspace_draft_test.js",
+      "bytes": 8110,
+      "sha256": "7d7f831cbf1a9a3c6353cdf1028b7701c56628681b24eebe5f0ad1e36b733822"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/index.html",
+      "bytes": 52256,
+      "sha256": "7edc961b36652f0368bf043c42c8be35b41534c62a67b0e548cc13ccb4f913e9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/infinite_grid_face_test.js",
+      "bytes": 8475,
+      "sha256": "b41ab1cbb739ab8c827201c84ee6d881af61894dd8078200a2244e3829cd15bf"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/marquee_test.js",
+      "bytes": 47683,
+      "sha256": "9a5099424fb2945e29adba60684c68994523f0058bf4d7549324d1e36e484736"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/model-update-app.js",
+      "bytes": 29728,
+      "sha256": "9838ccf25ebddd622cbc1a28122deb8108e4e1d615122a3c754a3d8b0468d660"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/model-update.js",
+      "bytes": 12432,
+      "sha256": "613df0d67fa17c846515fb064b5a494a104085c465e261828cf69d663f3a3f80"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/model-viewer.js",
+      "bytes": 27767,
+      "sha256": "443d0a8d82f91b02ea2dd38ee9f32b39f0ff2287369aea5481768a29fe513d5a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/model_snapshot_navigation_test.js",
+      "bytes": 11615,
+      "sha256": "891d0d6626130b1a0d26bbafa5233e3e80819df8542cfc0d8ab59f1b6d12989d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/model_snapshot_schedule_test.js",
+      "bytes": 18861,
+      "sha256": "e071e23ce689eb2c23ce8cd829e0c5dbd982ce619464e78ea3569839d204a4a6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/model_update.py",
+      "bytes": 26479,
+      "sha256": "09e307b4f812b17b074619be6f8513caf2f43ed46e15cc02f08ccec54880cf50"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/model_update_browser_check.js",
+      "bytes": 22673,
+      "sha256": "2faca3017706b60b686e7a9beb9d1190ed161d162e8dd24eb16f6a2d18c20962"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/native-transport.js",
+      "bytes": 794,
+      "sha256": "2ab37afad14e1af62607984a8b14eb1145d26c624d9a047fdc716b3b338e4640"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/native_context.py",
+      "bytes": 2237,
+      "sha256": "6486ce4e9c1fe0115298cdebbbe14f93e720ea51d6caf73ff999e364c3a323c0"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/native_reader_browser_test.py",
+      "bytes": 7083,
+      "sha256": "1fd5a3d836a0c433a6f7f60b76684e95169f3cad873410cc2cea3cb859705711"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/panel_fill_bridge.inc",
+      "bytes": 10612,
+      "sha256": "93485d330445a2913b04a506cd03e2e8c34078e533ca685525b393e1cdbcc460"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/panel_layout_bridge.inc",
+      "bytes": 4737,
+      "sha256": "cd9dbf330690a056c9d5111409c03d8405597bf6699964107edd0c3a835bb52c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/parameter_bridge.inc",
+      "bytes": 4949,
+      "sha256": "bd4c88178a39e169ff386af329213519a48f0708e0efa7732f96688b34ba8822"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/parameter_confirmation_test.js",
+      "bytes": 5604,
+      "sha256": "50a814d5abf0cb79506b6be33a64e53a07723bbc7fd911c3529f5d41db54910b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/parameter_preview_ownership_test.js",
+      "bytes": 9085,
+      "sha256": "d0e3f70b51907d4f27126e362abbe1dcf0a73f913ebf75da71d9d890373baf63"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/parameter_workflow_test.js",
+      "bytes": 52461,
+      "sha256": "7c017128b7dbfb917305c8b56e3e9ca6ab0f8fd2afbd2b97b92cb71ce4edbdd8"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/parameters.js",
+      "bytes": 71565,
+      "sha256": "dfbb5352ffaf3f163960cd1ff8bd4358119cfbf1cad513e1ea2ec198c514f553"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/pdf_tracing_snap_test.js",
+      "bytes": 10402,
+      "sha256": "1aed4e91049e839612323f76fd76bbceebd6dda051b8c9e6fdb0f184020817d4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/polydraft.js",
+      "bytes": 26858,
+      "sha256": "733265e26e9aee4bc1923733425c39fd382b28ca6ab3d210007cbb0b47077358"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/polydraft_test.js",
+      "bytes": 93888,
+      "sha256": "8e644cc40dc122959d4afbbbe992418cc55da5c0ce783126de6ee892946b4274"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prepare_wait_trace.py",
+      "bytes": 591,
+      "sha256": "d3762a1783325895768e09ccf0a819757de906ef4aac9f9f7c517d6810e436cf"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/project-store.js",
+      "bytes": 82418,
+      "sha256": "388346e5cbb5c3e9a8395e781d42fc86c5db2d0a78dfb1619a69ef29ae484e37"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/project-ui.js",
+      "bytes": 4873,
+      "sha256": "ffdabf0aa037d3ae870f8e3dbaa8fa5f2a63ea252381ded53281534e8a34cdd9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/project_audit_test.js",
+      "bytes": 16952,
+      "sha256": "23bcafd0cb111785abb6608cbe19ed31dce8ac4cf7933cd73078e3303fbbae67"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/project_import_final_objects_test.js",
+      "bytes": 8832,
+      "sha256": "7012ef97b6805cff348bf1c6e44945fcc72662bff1ef0c2cd800a42864595be1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/projection_close_probe.js",
+      "bytes": 10888,
+      "sha256": "168a321b1521e5837d260d62e3961278ec240394b685deab576c2838658406a9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/design/compare.py",
+      "bytes": 947,
+      "sha256": "aadeda790a316abcfe58244812b667ed915783ada0492549b98019181bfa8c4e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/index.html",
+      "bytes": 349,
+      "sha256": "f86f82922407f735495588a39afc4d31968f2fdd86e48f6e8c3ca1c37348cf7c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/scripts/prepare-sites-build.mjs",
+      "bytes": 910,
+      "sha256": "b6a6adaa4fab3234676116dd1c9cb6611275ab9d92dd26f5bf402393e3744bf6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/App.jsx",
+      "bytes": 35568,
+      "sha256": "b1ad17ecaac6ebb20ea7b19de34465a32d124f801f39864bec4f372f2bdcc6a5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/GeometryCanvas.jsx",
+      "bytes": 15151,
+      "sha256": "b56cbcb4b64bc1130af73f741cfbe76a81d6c80e9d1a5d1b7ff15f7a71fa8d1c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/InlinePanelEditor.jsx",
+      "bytes": 7583,
+      "sha256": "2ccb0430de1e8bc31c332bb0c9801cfb5e93bc133f62ee4b37f79587b5041a42"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/SpecificationLibrary.jsx",
+      "bytes": 34112,
+      "sha256": "1c8f41dedc973e1f220449be3df6717d759852c0ca6be4ae5e1cdc7da4f3ad3f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/canvasGestures.js",
+      "bytes": 2183,
+      "sha256": "c234507b00bc5d07fbf3c8f14e3442b6b7538dbe110e8c9c422eb9fa2a7a8e0d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/catalog.js",
+      "bytes": 11903,
+      "sha256": "ea36e96f314bf10a742668fac4fe9e8ced79e58e75704bdc39587b5f273ba54a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/catalogPresets.js",
+      "bytes": 1089,
+      "sha256": "8d31cc5099efb27dac08852738a71c15b032c5f102a3be62ec782d1e1c9ad526"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/geometry.js",
+      "bytes": 5146,
+      "sha256": "705cbfeb445924f2071dcd4cb6c5a4b3f557a7aa69b7c493eea1cbf27cceebe1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/inlinePanelDraft.js",
+      "bytes": 5218,
+      "sha256": "06b1c7815333feb66c1d030b3dbeb6c0e7b6763a8499032f6061f40479d4e4bd"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/libraryDraft.js",
+      "bytes": 9092,
+      "sha256": "45ce9630376e0418367dc1a0f6b70b00c649990cc4710f967860e85b8efbb633"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/main.jsx",
+      "bytes": 242,
+      "sha256": "832f752c6b6a454a26dbc4f2654f5bd633f2b103516c8c0abac648308c133a7e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/persistence.js",
+      "bytes": 2863,
+      "sha256": "962ffea83bf4aba4d0a64a0f9f959149d1e2bd1bf863cc34d440d495eb8f5c3b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/src/previewChanges.js",
+      "bytes": 2310,
+      "sha256": "b04ae4985cd140132c892c0d007b007e758efb5165415eb83cf935c468ec7c9a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/tests/canvas-gestures.test.mjs",
+      "bytes": 3808,
+      "sha256": "d6642f2be10ff9a763deb540f79236c62021edf38a1112c9389750f4ccb51151"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/tests/catalog.test.mjs",
+      "bytes": 12859,
+      "sha256": "08e478c8ff6f17bd2a80fc8ae7c2bf3ad51d1f1b39df6d612deecb6f8e055340"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/tests/inline-panel-draft.test.mjs",
+      "bytes": 13033,
+      "sha256": "f30b31fbd9174faf1968bc2126a4d18f446c12f5ba406f933123fce659539409"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/tests/library-draft.test.mjs",
+      "bytes": 11826,
+      "sha256": "6f2850c9014d6660402c2fb070a3672a5c64e5a1ea613cec4ae83af7b6435476"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/tests/persistence.test.mjs",
+      "bytes": 7971,
+      "sha256": "39c4b1cf88b271d1003a59746edd826fb8b436713b5692d8e9f7b0d724ffa517"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/tests/preview-changes.test.mjs",
+      "bytes": 3047,
+      "sha256": "3bc9db8ab1643382c4e1016fd0e1b91d33759c53bc4a4eab294a5f448a4ab0de"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/tests/sites-worker.test.mjs",
+      "bytes": 2219,
+      "sha256": "96af7b48906c6460c793356d7b6952f7d5026dbf5a502bec0d9297ff04201c26"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/vite.config.mjs",
+      "bytes": 382,
+      "sha256": "5f20ad6ef5aa89956c8791d8caefa224bc80718ca38df213b5e0c9c883d4bfee"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/prototypes/engineering-spec/worker/index.js",
+      "bytes": 483,
+      "sha256": "2dd0615a445143933d88d4271f54f5d63ee951421fcd08c5a7617bb09c564389"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/reference-display.js",
+      "bytes": 1122,
+      "sha256": "6e584dcb09c9dddf1469a6fd50723b008c79c296cdd1ebeea69736d9133a2341"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/reference-ui.js",
+      "bytes": 35191,
+      "sha256": "fb6c97ede5111d611c25b7bfd36a084e807aa641b26b6c23cbb1392effc9c9a7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/reference-workspace.js",
+      "bytes": 164205,
+      "sha256": "60a84da109f6c55dd321b1af76d1c54da085efb2b1fe07137bb631afcc55591f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/reference_bridge.inc",
+      "bytes": 26300,
+      "sha256": "8d46bda5a8340d44363fb8df5f74cc007eb47664cd043be1a2a5acb02ee58cb8"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/room-collection-workspace.js",
+      "bytes": 43691,
+      "sha256": "db59521d040e48a6abeb7c8327f74e6e98e5732af4672a2f0e6106b2ad112ca2"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/room-collection.js",
+      "bytes": 16483,
+      "sha256": "652ec9ac5dce7a80b527b38eabd4bac5a6c542e951c62dd86a177c7255ab8251"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/room-outline-worker.js",
+      "bytes": 1058,
+      "sha256": "82767675eafa6a806849db8f9bd59d4cad0d5952b3d5eb19db19d9dfba5ad5c9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/room-outline-workspace.js",
+      "bytes": 26921,
+      "sha256": "38b84914ba56308534ac69cb4b2b5fbe88d4668d437a30207381fb2cc0c9895d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/room-outline.js",
+      "bytes": 21592,
+      "sha256": "7333c1031ba54a2f61a079fcdb009a2751fe1cc484a01944a32ffdd56490e403"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/room_outline_test.js",
+      "bytes": 38129,
+      "sha256": "a388f9a976b3c8af0fc217274c340b0ffe0d9bf2fccedd1533acf984196aba3a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/rule-case-data.js",
+      "bytes": 19105,
+      "sha256": "ee0e81832fd10bcd3dc240c1c456ed0f9d31839ccbbef35ee50ad9663c9c8c3e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/rule-case-host.js",
+      "bytes": 6239,
+      "sha256": "22e1b5895e8cd45f142c5cf8e8b825d98ce1878372afaed88d1cd08f72774673"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/rule-case-workbench.js",
+      "bytes": 24044,
+      "sha256": "991eb401ad19ffbd40d5956d7f4ff55854d4854c804c31292ff60b41bc4f52d7"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/rule_case_host.py",
+      "bytes": 7564,
+      "sha256": "a4ebe3589ceb71cb999001141338c32f6efc7056bea6219a14ce64a4454e7d82"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/rule_case_workbench_adapter.py",
+      "bytes": 22029,
+      "sha256": "52d77dd25b2cf87a0b4777c677430fdd9666902085a6cc57cb0bbb72046992be"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/rule_case_workbench_standalone.py",
+      "bytes": 7555,
+      "sha256": "80d8f21dda1a7cbc571710f30e3203fc77e81a35067f9a9ae0ff8b501698cdba"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/runtime_version.py",
+      "bytes": 9588,
+      "sha256": "5b7261519e70e51f952264c56d0a7cf18e7d4fdeeb8bb033fc391f08339468ea"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/save_reopen_synthetic_test.js",
+      "bytes": 20215,
+      "sha256": "2eda7db51ca8f44d15eddb94251dd57b904a27e924f455c39bd76400bf46b4c0"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/scenario-catalog.js",
+      "bytes": 7752,
+      "sha256": "013940df8c3e841a8803455ee1f7b894ac29f873a151cf4cf880b6dbec26dcf1"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/scenario-diff.js",
+      "bytes": 13219,
+      "sha256": "57f15d08e3ee003a15a2915fa919c78ccd75a3ed5d8c039648bdfa9b1903bcd9"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/scenario-integration.js",
+      "bytes": 4116,
+      "sha256": "7b35bcaa7599ad92ba46c5992136f0aec0ff96c94c7bf019b22fcc74898fe2fe"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/scenario-snapshots.js",
+      "bytes": 34485,
+      "sha256": "a4f4f1be350aa5d093ad1948b17c2f8e4bab01b8f280c9b853c81c99aa0bd598"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/scenario-workspace.js",
+      "bytes": 25011,
+      "sha256": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/scenario_verify.py",
+      "bytes": 36026,
+      "sha256": "63c929b9e8ff9de7bc7bba0b7a7da5aaf8c6d3e90e93c73379b42b9e7ddc3bee"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/scene-import-bridge.inc",
+      "bytes": 5136,
+      "sha256": "6899d78e621cefca980830421264f63655a79f330ed889d3e911201c6b890e0d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/section-profile-workspace.js",
+      "bytes": 34398,
+      "sha256": "27680e439d7a5f515bf88a198a000231fa3b00c7e5344574535fd5b085b2726f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/section_profile_bridge.inc",
+      "bytes": 8605,
+      "sha256": "575bcb6e8d007edc9eae9b880e97bc6b9431b911fae177586c09c264a9bd500a"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/section_profile_diagnostics.inc",
+      "bytes": 4625,
+      "sha256": "c8646434f863bfa0489335624fca5f577eb0ccb4169343e9722c5cb4f2aa4b93"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/section_profile_source_index.inc",
+      "bytes": 3211,
+      "sha256": "0d896a03705c8a1956c19ced2b415be327f11d5679bed27acaa1178df820c5a6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/section_profile_transport.py",
+      "bytes": 1973,
+      "sha256": "e4fb890e0973be9c918df8ddfd776ca9d613e836c99dfee29b7c73fdb617e474"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/selection_cursor_test.js",
+      "bytes": 12707,
+      "sha256": "28db3b2594c8be1f32ea36a989caba2f2c3978cfc0e987ef83e98a768f228556"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/serve.py",
+      "bytes": 39416,
+      "sha256": "0cc26da01c7dd6fcc5dff84f8fd2b615b5a04b434df085d01644b984d4c6f828"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/source-inspector-app.js",
+      "bytes": 7640,
+      "sha256": "a140233f56f7a00402d9f229de0dc769444b87c11807f932db6f34a2e6c66e7d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/source-inspector-bridge.inc",
+      "bytes": 32352,
+      "sha256": "e9e386edb4450f38ceec5fee47a71477c5ecbd41f3edd16fe5b4de2599250af3"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/source-inspector.js",
+      "bytes": 36644,
+      "sha256": "c5f4c783648a177b2a2de1801030cc00b3ecfe26faa5f5951629993f70d7ba81"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/source-plane.js",
+      "bytes": 18205,
+      "sha256": "caed8443df9fb3d7ab1caafc1952208bc839a2072c7126b529041eced19ca30b"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/source_inspector_browser_check.js",
+      "bytes": 17964,
+      "sha256": "154e9486ddfdedc6702c427924e2cd8762f044b8981dd51599c41eee823f131d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/source_inspector_transport.py",
+      "bytes": 983,
+      "sha256": "aaacece9eb47813e8a03a09ada9292c92ea42a69733929fe7e74f120d6d52779"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/source_navigation_test.js",
+      "bytes": 14110,
+      "sha256": "92b4b250a07d96878d665b6e710ff84410f69b3b11d3ce06b7408ba9a6e582a6"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/space-short-height-acceptance.cjs",
+      "bytes": 15181,
+      "sha256": "738f18ad380641f3e5cccb91c359a782f10594c4a4a14bc76685b8f974d44034"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/space-workspace.js",
+      "bytes": 96627,
+      "sha256": "88709be1ffab50a4c11dbca42466097bfaee2e435c41a14cda9be7cd05e0ad3e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/space_model_test.js",
+      "bytes": 152226,
+      "sha256": "f1a0129baddedfe8aa56f0e5e1d8d960e5d6ee77c117acfd8740390cd832cfad"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/space_modeling.py",
+      "bytes": 30671,
+      "sha256": "fb0a4c000dd4e2460e260e8e7a778f5f52e596bcc0c0556a06bbafb224eccdc5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/space_test_floor.js",
+      "bytes": 2511,
+      "sha256": "9fb7c364efe9037a1264b01ca7c4a38c40c9cad173238e05259e80ee4d8a35a2"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/start_local.py",
+      "bytes": 7031,
+      "sha256": "31137d9635da7c62d34a72d1f4cadcf60e2240f33aff418ddba28bea55c5ce29"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/timber-schedule.js",
+      "bytes": 5815,
+      "sha256": "764ec9fe3fa2b78b280d83dfbbf22ee95a79fbeb8d062e59e21cc16d5a54c0c5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/timber-supports.js",
+      "bytes": 6584,
+      "sha256": "be4f4c0277e5827d6707ceb2bcf9af200d5a0ab13d338b67589a000e839debf2"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/timber_schedule_test.js",
+      "bytes": 13542,
+      "sha256": "6371b7abf2e1f75f259805f33ab3ea258cb71fe852540774aac6daddb128134c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/timber_support_projection.inc",
+      "bytes": 9188,
+      "sha256": "c47b43bd886ca735e3a4ae52a6a30544a9fa02786faf1868243f52d3cc5c206c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/timber_supports_browser_test.js",
+      "bytes": 7759,
+      "sha256": "b18a593c4c073768d77e2b4130fdeae451ce42ab7a1b0dc6c4759de28d99604e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/transport_failure_trace.js",
+      "bytes": 2764,
+      "sha256": "23ddb860213285cb6ab900c10a7009ce4e225bad24898d88836657e7d381e8f4"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/uiux_review_test.js",
+      "bytes": 31370,
+      "sha256": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/ux_refinement_test.js",
+      "bytes": 36766,
+      "sha256": "cd3f8fa12d9d23b18291421be02e5c6e51b6274f9f0e232f16b033fcd093c6db"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/vendor/fflate/umd/index.js",
+      "bytes": 33044,
+      "sha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
+      "bytes": 860384,
+      "sha256": "495588717f62303a839e91a5343deebf1b41f52e2f9f6361e73dee6ea6a4355e"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/vendor/pdfjs-dist/build/pdf.worker.mjs",
+      "bytes": 2228489,
+      "sha256": "f2870db902eaff8397442c912b69459980ac91f6f4b5ed827167b12cf7057930"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/vendor/pdfjs-dist/wasm/jbig2_nowasm_fallback.js",
+      "bytes": 145703,
+      "sha256": "04c795a6657a4553a64b781ea3e85256203d913c3b71b72b85fa3ce00622f458"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/vendor/pdfjs-dist/wasm/openjpeg_nowasm_fallback.js",
+      "bytes": 451590,
+      "sha256": "0f998419819da4491d8302222aa9e2ff2494685641aa2a6c21c3760c29f3e319"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/vendor/pdfjs-dist/wasm/quickjs-eval.js",
+      "bytes": 6232,
+      "sha256": "fe7930418e869791ce892567dbd0bc4698152b7e550b5cefa553992c56ddc325"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/wait_trace.py",
+      "bytes": 7923,
+      "sha256": "7437bb119d41088a3481c91a1f0b2a6df1a8aced4cf72cd85156c9f2a20eb712"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/web_bridge.c",
+      "bytes": 52474,
+      "sha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/adapter.py",
+      "bytes": 17300,
+      "sha256": "83d6bdc7cd285ce6732220a426abd3cf01051579c67d0558a41426162b4c60cc"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/cli.py",
+      "bytes": 4081,
+      "sha256": "3c96ec26d10a97f18b55f6bea1006cff7a7b76df5594446d0435e8ead8c1459f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/screenshot.py",
+      "bytes": 3133,
+      "sha256": "048d7bf255f792fd770b6d7cf304d565cc0d9a5ae303d88e03855c08c302e439"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/server.py",
+      "bytes": 5382,
+      "sha256": "6294a7adabc3ae2d06e6da6722946772600fac33edccf73c67a58c055f2cd022"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/static/app.js",
+      "bytes": 61393,
+      "sha256": "4cb5d554f60ecd2d2b2d183b0cb3addcef567bb68ee08eb8b066e85eaf049588"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/static/index.html",
+      "bytes": 9287,
+      "sha256": "0d54fb486765663dbeb746bd70e4f678fad3bc16e8f416c5c04dcef98bcc9af0"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/store.py",
+      "bytes": 92706,
+      "sha256": "59c90666c0306602c7b340fb34e802fc4033c45e6b1e54e1dda8891134992ef8"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/test_acceptance.py",
+      "bytes": 27107,
+      "sha256": "67cafdf818bb769ef7cc624eecc02abd0ed22edae66d3bc75ae5923f64f26f61"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/test_adapter.py",
+      "bytes": 9435,
+      "sha256": "bec2bad85c879a892bb5ebdf32d405a31d63d00b9ac04d5e02c2a14768373b54"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/test_adapter_independent.py",
+      "bytes": 19459,
+      "sha256": "ab0852b53c905fe5d31e146b086f08ae55ce0940ffcd42566ce9e6426f234bf5"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/test_coverage.py",
+      "bytes": 12010,
+      "sha256": "3c4dda598ed64260e4087c85d6d06f2c0b39f22420b4f48891f2b210270f2135"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/test_legacy_upgrade.py",
+      "bytes": 10599,
+      "sha256": "1775854320c71a40d17fdea47f1c5df6ce2291e645ad83c97bf3af3e6956aa39"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/test_review_regressions.py",
+      "bytes": 22609,
+      "sha256": "a37fc4e4c249a8cf05be35bc5872026b19f7b3ba8b51215c8bd3313f4e1e2c3f"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/work-manager/test_store.py",
+      "bytes": 29093,
+      "sha256": "ac04abdf23254d41bbe2ae42a087b39726dd4f13fb33087c3d2b6646addc2fde"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/workspace-guidance.js",
+      "bytes": 3091,
+      "sha256": "00412889311ba4f7625fd59ed7da07ccfb88bb06650e67a464e11b71aa67a51d"
+    },
+    {
+      "path": "architecture/validation-tree/geometry-web/workspace-shell.js",
+      "bytes": 9556,
+      "sha256": "780a26eb4e061069f8161bedd44665d2ed4ece9f695cefeffef7a7d855ec3b4c"
+    },
+    {
+      "path": "architecture/validation-tree/tests/__init__.py",
+      "bytes": 344,
+      "sha256": "02319f9494b104f0476594148d609710685ee440786c2e991bf114dfbc20d596"
+    },
+    {
+      "path": "architecture/validation-tree/tests/architecture_contract.py",
+      "bytes": 86895,
+      "sha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e"
+    },
+    {
+      "path": "architecture/validation-tree/tests/binaries.py",
+      "bytes": 33058,
+      "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
+    },
+    {
+      "path": "architecture/validation-tree/tests/test_architecture_contract.py",
+      "bytes": 66632,
+      "sha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3"
+    },
+    {
+      "path": "architecture/validation-tree/tests/test_product_architecture.py",
+      "bytes": 11793,
+      "sha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
+    },
+    {
+      "path": "architecture/validation-tree-binding.json",
+      "bytes": 18650,
+      "sha256": "30dd9a8cf4f09721eec5317e1f4c6603accff1e9471cf67dc150d855b6aa5fd5"
+    },
+    {
+      "path": "outer-command/command.combined.log",
+      "bytes": 20320,
+      "sha256": "317a42a68543f33954c449d7203c2418f8070187bf2db997575bd563d3aa713b"
+    },
+    {
+      "path": "outer-command/command.command.json",
+      "bytes": 1393,
+      "sha256": "7dd6db2387dfc14f90771cd1dd2d2982440f9d364fabf1caf5fa85e916e157be"
+    },
+    {
+      "path": "outer-command/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer-command/command.stdout",
+      "bytes": 20320,
+      "sha256": "317a42a68543f33954c449d7203c2418f8070187bf2db997575bd563d3aa713b"
+    },
+    {
+      "path": "outer-command/receipt.json",
+      "bytes": 13379,
+      "sha256": "a25228058636ddf2d6f67ccf369e755fac495223bfcaac4e629ff84819c114db"
+    },
+    {
+      "path": "outer-command/versions/0.combined.log",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "outer-command/versions/0.command.json",
+      "bytes": 607,
+      "sha256": "a5b036c68227c1ca6b51b3937b852c12c9c5e89d7d14f3d10b3ad6a42b08fc41"
+    },
+    {
+      "path": "outer-command/versions/0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer-command/versions/0.stdout",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "outer-command/versions/1.combined.log",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "outer-command/versions/1.command.json",
+      "bytes": 599,
+      "sha256": "06795bfb669360580eff304d68cd5a8f33d0b43e1c7829c24b362a9c50074a7f"
+    },
+    {
+      "path": "outer-command/versions/1.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer-command/versions/1.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "outer-command/versions/2.combined.log",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "outer-command/versions/2.command.json",
+      "bytes": 601,
+      "sha256": "4abaac9a804c0e678980dadedad216499b3a9aaf78dced6f9fc2ee229d15abcc"
+    },
+    {
+      "path": "outer-command/versions/2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer-command/versions/2.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "outer-command/versions/3.combined.log",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "outer-command/versions/3.command.json",
+      "bytes": 598,
+      "sha256": "9a1161d89405fe135ff1ecafe5ffb3aa73b6eee6d797571eb1efc9ec2300f0e2"
+    },
+    {
+      "path": "outer-command/versions/3.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer-command/versions/3.stdout",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "outer-command/versions/4.combined.log",
+      "bytes": 14,
+      "sha256": "01870de7caca112afeefd77b3c3b4c5e263cf5539a33af3f3411100727fad7d3"
+    },
+    {
+      "path": "outer-command/versions/4.command.json",
+      "bytes": 611,
+      "sha256": "3ef9976d6570e301a655eb970da4fbb1cbd085de5ab6de028877a83958f89857"
+    },
+    {
+      "path": "outer-command/versions/4.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer-command/versions/4.stdout",
+      "bytes": 14,
+      "sha256": "01870de7caca112afeefd77b3c3b4c5e263cf5539a33af3f3411100727fad7d3"
+    },
+    {
+      "path": "outer-command/versions/5.combined.log",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "path": "outer-command/versions/5.command.json",
+      "bytes": 608,
+      "sha256": "1cd36f627e1c46fb1d82d541df71ce88eb1bbcd7041f16b76c419d4b74e658ea"
+    },
+    {
+      "path": "outer-command/versions/5.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer-command/versions/5.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "path": "outer-command/wrapper.py.txt",
+      "bytes": 5422,
+      "sha256": "b3d5de8eaab1029518c59d792c2f56e8b41ff3d60e610f7411c5ac441b7d33d4"
+    },
+    {
+      "path": "launch-stdout",
+      "bytes": 71,
+      "sha256": "8e7b51341a553e37ea520d7a3dd6a101015549e0b80f28f000f6980d277c101a"
+    },
+    {
+      "path": "launch-stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reaper",
+      "bytes": 1489,
+      "sha256": "d84179978ff4209946d7909f5ae243c9c0a0306cf5415dc1f7bedafb07582edc"
+    },
+    {
+      "path": "actual-input-proposal/proposal.json",
+      "bytes": 4551,
+      "sha256": "db5c058f92237321bb4f63e9e77ace9a5e05ea500a648e94f393120bd443e3f4"
+    },
+    {
+      "path": "linux-wrapper",
+      "bytes": 37891,
+      "sha256": "97235e8c0ac0396ad10c1763e82b2b68a63146f226d566e0e40dfd1b83ccfbb0"
+    },
+    {
+      "path": "proposal-tool",
+      "bytes": 4305,
+      "sha256": "ab928ec7ecb33da3f6af82cfb2a04f5d9c38ebb26a3fdf2b851cea6d3c04ce92"
+    }
+  ]
+}

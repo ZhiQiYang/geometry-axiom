@@ -1,0 +1,13 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -397,8 +397,8 @@
+                 continue
+             token_kind = "punct"
+             if char in "([{":
+-                if char == "[" and regex_goal is not True:
+-                    token_kind = "member_open"
++                if char == '[':
++                    token_kind = 'member_open'  # TEMP removed JS_ARRAY_LITERAL_CLASSIFICATION
+                 brackets.append((char, previous_control if char == "(" else False, line))
+                 regex_goal = True
+             elif char in ")]}":

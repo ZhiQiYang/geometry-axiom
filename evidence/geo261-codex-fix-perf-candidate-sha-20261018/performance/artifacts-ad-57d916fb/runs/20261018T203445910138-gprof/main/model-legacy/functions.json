@@ -1,0 +1,704 @@
+[
+  {
+    "function": "<cycle 1 as a whole>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 273,
+    "direct_calls": 70,
+    "recursive_calls": 203
+  },
+  {
+    "function": "poly_contains_point",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3738,
+    "direct_calls": 3738,
+    "recursive_calls": 0
+  },
+  {
+    "function": "poly_point_on_edge",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3738,
+    "direct_calls": 3738,
+    "recursive_calls": 0
+  },
+  {
+    "function": "surface_direction_vector",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1547,
+    "direct_calls": 1547,
+    "recursive_calls": 0
+  },
+  {
+    "function": "placement_effective_boundary",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1225,
+    "direct_calls": 1225,
+    "recursive_calls": 0
+  },
+  {
+    "function": "timber_a0_footprint_uv",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1820,
+    "direct_calls": 1190,
+    "recursive_calls": 630
+  },
+  {
+    "function": "boundary_contains_rect",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 889,
+    "direct_calls": 889,
+    "recursive_calls": 0
+  },
+  {
+    "function": "grid_system_valid",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 609,
+    "direct_calls": 609,
+    "recursive_calls": 0
+  },
+  {
+    "function": "surface_contains_rect",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 532,
+    "direct_calls": 532,
+    "recursive_calls": 0
+  },
+  {
+    "function": "count_legal_stops",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 364,
+    "direct_calls": 364,
+    "recursive_calls": 0
+  },
+  {
+    "function": "boundary_edge_interval",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 357,
+    "direct_calls": 357,
+    "recursive_calls": 0
+  },
+  {
+    "function": "timber_boundary_role_check.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 273,
+    "direct_calls": 273,
+    "recursive_calls": 0
+  },
+  {
+    "function": "timber_end_face_check.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 273,
+    "direct_calls": 273,
+    "recursive_calls": 0
+  },
+  {
+    "function": "boundary_contains_point",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 182,
+    "direct_calls": 182,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_coord",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 182,
+    "direct_calls": 182,
+    "recursive_calls": 0
+  },
+  {
+    "function": "pick_stop",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 182,
+    "direct_calls": 182,
+    "recursive_calls": 0
+  },
+  {
+    "function": "surface_point_to_room.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 182,
+    "direct_calls": 182,
+    "recursive_calls": 0
+  },
+  {
+    "function": "timber_place_a0_on_surface.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 182,
+    "direct_calls": 182,
+    "recursive_calls": 0
+  },
+  {
+    "function": "model_string",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 168,
+    "direct_calls": 168,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_u32",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 147,
+    "direct_calls": 147,
+    "recursive_calls": 0
+  },
+  {
+    "function": "split_tokens.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 147,
+    "direct_calls": 147,
+    "recursive_calls": 0
+  },
+  {
+    "function": "surface_primary_axis_check",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 140,
+    "direct_calls": 140,
+    "recursive_calls": 0
+  },
+  {
+    "function": "model_face",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 126,
+    "direct_calls": 126,
+    "recursive_calls": 0
+  },
+  {
+    "function": "timber_get_face_room",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 126,
+    "direct_calls": 126,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_scene_line_candidate <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 112,
+    "direct_calls": 112,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_eval_timber",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 154,
+    "direct_calls": 91,
+    "recursive_calls": 63
+  },
+  {
+    "function": "reference_place_geometry",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 91,
+    "direct_calls": 91,
+    "recursive_calls": 0
+  },
+  {
+    "function": "resolve_auto_span.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 91,
+    "direct_calls": 91,
+    "recursive_calls": 0
+  },
+  {
+    "function": "loop_edge_outward_normal",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 77,
+    "direct_calls": 77,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parameter_reference_edit",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 63,
+    "direct_calls": 63,
+    "recursive_calls": 0
+  },
+  {
+    "function": "boundary_is_valid",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 56,
+    "direct_calls": 56,
+    "recursive_calls": 0
+  },
+  {
+    "function": "model_box",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 56,
+    "direct_calls": 56,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_uv",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 56,
+    "direct_calls": 56,
+    "recursive_calls": 0
+  },
+  {
+    "function": "poly_loop_is_valid",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 56,
+    "direct_calls": 56,
+    "recursive_calls": 0
+  },
+  {
+    "function": "assembly_rebuild.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 49,
+    "direct_calls": 49,
+    "recursive_calls": 0
+  },
+  {
+    "function": "dp_rebuild",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 49,
+    "direct_calls": 49,
+    "recursive_calls": 0
+  },
+  {
+    "function": "engineering_serializable",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 49,
+    "direct_calls": 49,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parameters_rebuild",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 49,
+    "direct_calls": 49,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_check_all",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 49,
+    "direct_calls": 49,
+    "recursive_calls": 0
+  },
+  {
+    "function": "sp_rebuild.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 49,
+    "direct_calls": 49,
+    "recursive_calls": 0
+  },
+  {
+    "function": "world_revalidate <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 49,
+    "direct_calls": 49,
+    "recursive_calls": 0
+  },
+  {
+    "function": "world_revalidate_candidate <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 49,
+    "direct_calls": 49,
+    "recursive_calls": 0
+  },
+  {
+    "function": "world_validate_derived",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 49,
+    "direct_calls": 49,
+    "recursive_calls": 0
+  },
+  {
+    "function": "sp_capture_diagnostics.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 84,
+    "direct_calls": 42,
+    "recursive_calls": 42
+  },
+  {
+    "function": "reference_eval_guide",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 35,
+    "direct_calls": 35,
+    "recursive_calls": 0
+  },
+  {
+    "function": "model_dependency_record.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 28,
+    "direct_calls": 28,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_place_line",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 21,
+    "direct_calls": 21,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_reference_place <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 21,
+    "direct_calls": 21,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_timber_line",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 21,
+    "direct_calls": 21,
+    "recursive_calls": 0
+  },
+  {
+    "function": "grid_subdivision_used",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 21,
+    "direct_calls": 21,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_checked <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 21,
+    "direct_calls": 21,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_eval_text",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 21,
+    "direct_calls": 21,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_quantity",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 21,
+    "direct_calls": 21,
+    "recursive_calls": 0
+  },
+  {
+    "function": "world_placement_boundary",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 21,
+    "direct_calls": 21,
+    "recursive_calls": 0
+  },
+  {
+    "function": "engineering_used.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14,
+    "direct_calls": 14,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_edge_ref",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14,
+    "direct_calls": 14,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_face_format",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14,
+    "direct_calls": 14,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_face_parse",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14,
+    "direct_calls": 14,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_name",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14,
+    "direct_calls": 14,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_guide_line",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_reference_guide <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_spec_line <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_surface_combined_line <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "assembly_generation_integrity",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "dump_loop",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "engineering_dump_versions.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "model_dep_guide.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "model_loop",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parameters_dump.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_boundary_body",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_placement_body",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_scene_file",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "placement_outline",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_dump.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_dump_guide.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_guide_ready.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "sp_dump.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  },
+  {
+    "function": "world_dump_grids.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7,
+    "direct_calls": 7,
+    "recursive_calls": 0
+  }
+]

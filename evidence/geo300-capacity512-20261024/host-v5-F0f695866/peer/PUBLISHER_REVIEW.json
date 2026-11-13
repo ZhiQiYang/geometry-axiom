@@ -1,0 +1,37 @@
+{
+  "scope": "Small static publisher review only; publisher not executed; no Git writes or C",
+  "publisher": "/workspace/geo300-capacity512-publication-20261024/publish_host_v5_source.py",
+  "publisher_sha256": "23c5f23b33f6a93295196e8064250a4d25bbe3b4bfca7d691c8e1e5642f32f3f",
+  "checks": 21,
+  "passed": 21,
+  "failed": 0,
+  "details": {
+    "only_three_fixed_test_paths": true,
+    "same_reviewed_patch_pin": true,
+    "independent_peer_exact_pin": true,
+    "fresh_output_refusal": true,
+    "original_free_guard": true,
+    "same_owned_branch": true,
+    "same_expected_evidence_head": true,
+    "candidate_bytes_before_staging": true,
+    "candidate_pin_before_staging": true,
+    "head_and_branch_checked": true,
+    "original_index_empty": true,
+    "tracked_diff_exact_two_old_files": true,
+    "remote_must_still_equal_parent": true,
+    "explicit_index_allowlist": true,
+    "index_contents_hash_pinned": true,
+    "english_normal_commit": true,
+    "ordinary_push": true,
+    "single_parent_checked": true,
+    "result_flags_only_after_commands": true,
+    "reports_failures_without_claiming_success": true,
+    "no_c_or_generator_entrypoint": true
+  },
+  "notes": [
+    "Entry requires owner to have already installed exact candidate leaves; it intentionally does not apply the patch.",
+    "Guard failure occurs before output creation and before Git writes; keep actual failed launch output separate.",
+    "Source publication is not formal runtime, ledger, architecture or evidence/body publication.",
+    "Initial literal matcher expected add without --sparse while publisher already contained the needed --sparse; original report retained, only matcher corrected. --sparse applies only the same three explicit paths and does not expand checkout."
+  ]
+}

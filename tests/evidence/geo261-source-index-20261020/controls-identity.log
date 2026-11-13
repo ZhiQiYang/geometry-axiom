@@ -1,0 +1,57 @@
+# 受驗 commit 與整合分支 head 的受驗檔同一性（在 D:/geometry-axiom-work/srcidx-controls-20261020 執行）
+# 9f21280d0481c751f246b0c2105d50eea75b7ba9 = codex/geo261-source-index-20261020 head（WSL 驗收的 commit）
+# 96ade86bdb5fbcdad581b36afdd180a96fca7999 = architecture/geo261-integration-20261016 head（含上者）
+
+$ git rev-parse 9f21280d 96ade86b
+9f21280d0481c751f246b0c2105d50eea75b7ba9
+96ade86bdb5fbcdad581b36afdd180a96fca7999
+exit=0
+
+$ git merge-base --is-ancestor 9f21280d 96ade86b
+exit=0 (0 = 9f21280d 是 96ade86b 的祖先)
+
+$ git diff --stat 9f21280d 96ade86b -- geometry-core/kernel/source.c tests/geo261_source_index_harness.c tests/test_geo261_source_index.py
+exit=0 (上方輸出為空 = 三個檔案零差異)
+
+$ git diff --quiet 9f21280d 96ade86b -- geometry-core/kernel/source.c tests/geo261_source_index_harness.c tests/test_geo261_source_index.py
+exit=0
+
+$ git rev-parse 9f21280d:geometry-core/kernel/source.c 96ade86b:geometry-core/kernel/source.c
+634b9cf92b9164316c6ea878a01dfaa8b628e15c
+634b9cf92b9164316c6ea878a01dfaa8b628e15c
+$ git rev-parse 9f21280d:tests/geo261_source_index_harness.c 96ade86b:tests/geo261_source_index_harness.c
+d2e69a9775d597ae512c1a9d7ef3e94e6d648771
+d2e69a9775d597ae512c1a9d7ef3e94e6d648771
+$ git rev-parse 9f21280d:tests/test_geo261_source_index.py 96ade86b:tests/test_geo261_source_index.py
+e2ab7e1b2ac56a5016c547c81d2637e3caa07ca1
+e2ab7e1b2ac56a5016c547c81d2637e3caa07ca1
+$ git rev-parse 9f21280d:tests/run_all.expected.json 96ade86b:tests/run_all.expected.json
+99e337f516b78bb9eb497f978bb6b35f380a44e0
+28e3bd85d078a643afb3e1b0ba463c8ac284ca60
+
+# WSL 驗收用的乾淨 clone（/var/tmp/srcidx-ctl-20261020-final）與開發 clone（/var/tmp/srcidx-ctl-20261020-dev）內檔案的 git blob 雜湊
+$ git hash-object <final-clone>/tests/geo261_source_index_harness.c
+d2e69a9775d597ae512c1a9d7ef3e94e6d648771
+$ git hash-object <final-clone>/tests/test_geo261_source_index.py
+e2ab7e1b2ac56a5016c547c81d2637e3caa07ca1
+$ git hash-object <final-clone>/geometry-core/kernel/source.c
+634b9cf92b9164316c6ea878a01dfaa8b628e15c
+$ git hash-object <dev-clone>/tests/geo261_source_index_harness.c
+d2e69a9775d597ae512c1a9d7ef3e94e6d648771
+$ git hash-object <dev-clone>/tests/test_geo261_source_index.py
+e2ab7e1b2ac56a5016c547c81d2637e3caa07ca1
+$ git hash-object <dev-clone>/geometry-core/kernel/source.c
+634b9cf92b9164316c6ea878a01dfaa8b628e15c
+# 開發 clone 的三個檔案雜湊都與 9f21280d 相同；controls-edge-fixture-crosscheck.log 與 controls-detection-matrix.log 在該 clone 上執行。
+
+# run_all.expected.json 因整合分支另有其他 suite 的計數更新而雜湊不同（預期）；source index 這一項在兩個 commit 都是 14：
+$ git show 9f21280d:tests/run_all.expected.json | grep -A3 py:test_geo261_source_index
+    "py:test_geo261_source_index": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+$ git show 96ade86b:tests/run_all.expected.json | grep -A3 py:test_geo261_source_index
+    "py:test_geo261_source_index": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"

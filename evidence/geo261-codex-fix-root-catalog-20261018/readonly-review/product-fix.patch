@@ -1,0 +1,154 @@
+diff --git a/geometry-app/geometry_app/model_native.py b/geometry-app/geometry_app/model_native.py
+index 6ec46cce..db7ad0b0 100644
+--- a/geometry-app/geometry_app/model_native.py
++++ b/geometry-app/geometry_app/model_native.py
+@@ -219,8 +219,8 @@ def _load_base_or_candidate(scene_text: str, executable=None, *, builder=None,
+         raise ModelError(status, snapshot.get("code", "BASE_INVALID"), snapshot.get("clause", "I9"), snapshot.get("message", "Scene rejected."))
+     candidate = None
+     if neutral_sources and not result.returncode:
+-        from .model_sources import decode_candidate
+-        candidate = decode_candidate(result.stdout, source_bytes=encoded,
++        from .model_sources import _decode_native_candidate
++        candidate = _decode_native_candidate(result.stdout, source_bytes=encoded,
+                                      execution_identity=current)
+         snapshot = candidate.legacy_snapshot
+     if result.returncode or snapshot.get("schema") != "geometry-base-snapshot/1":
+diff --git a/geometry-app/geometry_app/model_sources.py b/geometry-app/geometry_app/model_sources.py
+index 674608e2..21d6d9ce 100644
+--- a/geometry-app/geometry_app/model_sources.py
++++ b/geometry-app/geometry_app/model_sources.py
+@@ -339,6 +339,51 @@ class _Decoder:
+         return tuple(result)
+ 
+ 
++def _snapshot_root_associations(snapshot):
++    """Read identities from independent snapshot catalogs, never graph roots."""
++    expected = set()
++
++    def record(value, fields):
++        if type(value) is not dict or not set(fields) <= set(value):
++            _fail("Native snapshot root catalog has an invalid record.")
++        return value
++
++    def add(kind, identity, slot, member=None, name=None):
++        association = (kind, identity, slot, member, name)
++        if association in expected:
++            _fail("Native snapshot root catalog contains duplicate identities.")
++        expected.add(association)
++
++    for item in _array(snapshot["placements"]):
++        identity = _uint(record(item, ("id",))["id"])
++        for slot in ("placement.frame", "placement.region"):
++            add("placement", identity, slot)
++    for item in _array(snapshot["solids"]):
++        record(item, ("kind", "id"))
++        add(_text(item["kind"]), _uint(item["id"]), "solid.box")
++    for item in _array(snapshot["specs"]):
++        add("spec", 0, "spec.value", name=_text(record(item, ("name",))["name"]))
++    capabilities = _array(snapshot.get("required_capabilities", []))
++    fields = snapshot.get("parameter_fields", None if "parameters/1" in capabilities else [])
++    field_ids = set()
++    for item in _array(fields):
++        _shape(item, ("parameterId", "fieldId", "name"))
++        identity, member = _uint(item["parameterId"]), _uint(item["fieldId"])
++        if (identity, member) in field_ids:
++            _fail("Native snapshot parameter field identities must be unique.")
++        field_ids.add((identity, member))
++        add("parameter", identity, "parameter.value", member, _text(item["name"]))
++    runs = snapshot.get("profile_runs", None if "section-profile/1" in capabilities else [])
++    for run in _array(runs):
++        record(run, ("id", "members"))
++        identity = _uint(run["id"])
++        members = [None] + [_uint(record(member, ("id",))["id"]) for member in _array(run["members"])]
++        for member in members:
++            for slot in ("profile.frame", "profile.region", "profile.length"):
++                add("profile-run", identity, slot, member)
++    return frozenset(expected)
++
++
+ def decode_candidate(payload, *, source_bytes, execution_identity):
+     """Decode a complete same-candidate envelope without executing a process."""
+     try:
+@@ -375,6 +420,8 @@ def decode_candidate(payload, *, source_bytes, execution_identity):
+         decoder = _Decoder(graph["providers"])
+         descriptors = decoder.descriptors(graph["nodes"], graph["edges"])
+         roots = decoder.roots(graph["roots"], descriptors)
++        if frozenset(root.association for root in roots) != _snapshot_root_associations(snapshot):
++            _fail("Native roots do not exactly match the snapshot identity catalogs.", code="BASE_SOURCE_BINDING")
+         descriptors = decoder.face_values(descriptors, roots)
+         result = NativeCandidate(canonical_bytes(snapshot), identity, revision, original,
+             tuple(sorted(decoder.providers.items())), descriptors, roots, execution_identity)
+@@ -382,3 +429,26 @@ def decode_candidate(payload, *, source_bytes, execution_identity):
+         return result
+     except EvaluationError as error:
+         raise ModelError("UNSUPPORTED", "BASE_SOURCE_PROTOCOL", "I32", "Invalid typed native source graph: " + error.code) from error
++
++
++def _decode_native_candidate(payload, *, source_bytes, execution_identity):
++    """Enforce this H adapter's provider binding at the actual process boundary.
++
++    Generic decoding retains opaque keys and typed INCOMPLETE values. A native
++    success envelope additionally promises the known adapter root identities
++    and complete exported roots; this private entry has no bypass option.
++    """
++    candidate = decode_candidate(payload, source_bytes=source_bytes,
++                                 execution_identity=execution_identity)
++    sources = {source.key: source for source in candidate.sources}
++    for root in candidate.roots:
++        if root.kind == "spec":
++            key = "spec:" + root.name
++        else:
++            member = "envelope:0" if root.member is None else "member:" + str(root.member)
++            key = f"{root.kind}:{root.identity}:{root.slot}:{member}"
++        expected = SourceKey("app.model-snapshot", ("geo261-model-snapshot/1", key.encode("utf-8").hex()))
++        if (root.kind not in ("placement", "column", "beam", "timber", "spec", "parameter", "profile-run")
++                or root.source.key != expected or sources[root.source.key].status != SourceStatus.COMPLETE):
++            _fail("Native root identity disagrees with its complete adapter source.", code="BASE_SOURCE_BINDING")
++    return candidate
+diff --git a/geometry-app/native/MODEL-SOURCES.md b/geometry-app/native/MODEL-SOURCES.md
+index 9d916acd..787666df 100644
+--- a/geometry-app/native/MODEL-SOURCES.md
++++ b/geometry-app/native/MODEL-SOURCES.md
+@@ -79,3 +79,23 @@ The producer builds and resolves all roots before emitting a successful envelope
+ The old snapshot and typed roots share the candidate. Complete native transport
+ coverage does not replace the caller's executable pinning or the end-to-end
+ native-to-Python adoption evidence; this declaration alone is not N4 completion.
++
++
++The H consumer independently derives the exact root association set from the
++snapshot catalogs: placements have two roots, solids one, named specs one,
++parameter fields one, and each profile run envelope/member three. The snapshot
++includes `parameter_fields: [{parameterId, fieldId, name}]`, read directly from
++the canonical parameter store in both invocation modes. This additive identity
++catalog contains no evaluated quantity or duplicate parameter parser. Duplicate
++catalog identities, missing roots, extra roots and wrong associations are errors;
++coverage booleans cannot substitute for this comparison.
++
++Generic typed decoding preserves opaque provider keys and INCOMPLETE values for
++independent program consumers. The actual native process boundary additionally
++requires every root to be COMPLETE and to use `app.model-snapshot` with provider
++fingerprint `geo261-model-snapshot/1`. This H adapter encodes named specs as UTF-8
++`spec:<name>` and other root keys as
++`<kind>:<id>:<slot>:envelope:0` or `<kind>:<id>:<slot>:member:<memberId>`.
++The private native decoder verifies the association-to-key binding before the
++candidate reaches the product runtime. K and W continue to treat keys as opaque;
++there is no configurable bypass or snapshot fallback.
+diff --git a/geometry-core/model_base.c b/geometry-core/model_base.c
+index f70e9338..d62bc08a 100644
+--- a/geometry-core/model_base.c
++++ b/geometry-core/model_base.c
+@@ -366,6 +366,14 @@ static void model_legacy_snapshot(World *world,const char *canonical)
+         fputs("{\"name\":", stdout); model_string(stdout, geo_named_values_at(&world->geo.named_values,i)->name);
+         printf(",\"value\":%" PRId64 "}", geo_named_values_at(&world->geo.named_values,i)->value);
+     }
++    fputs("],\"parameter_fields\":[", stdout);
++    for (size_t i = 0; i < geo_parameters_field_count(&world->geo.parameters); ++i) {
++        const GeoParameterField *field = &geo_parameters_fields(&world->geo.parameters)[i];
++        if (i) putchar(',');
++        printf("{\"parameterId\":%" PRIu32 ",\"fieldId\":%" PRIu32 ",\"name\":", field->parameter_id, field->id);
++        model_string(stdout, field->name);
++        putchar('}');
++    }
+     fputs("],\"placements\":[", stdout);
+     for (size_t i = 0; i < world_placement_count(world); ++i) {
+         const PlacementSurface *p = world_placement_at(world,i);

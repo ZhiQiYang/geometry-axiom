@@ -1,0 +1,82 @@
+{
+  "schema": "geo337-F9-assembly-two-attempt-full-package/1",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "collection_exit": 0,
+  "started_epoch": 1792936361.3707354,
+  "collector_sha256": "ff1aae84cd00a73190f3d8e7c3623087d9965804ae6821d872487a2b42b01049",
+  "attempts": [
+    {
+      "name": "assembly",
+      "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "original_formal_exit": 1,
+      "original_wrapper_exit": 1,
+      "original_15minute_gate_exit": 0,
+      "original_elapsed_seconds": 85.37298910296522,
+      "original_receipt_sha256": "d05ca44e7d9164fec921b6fe1517bf5aa301ee68b5c4c79dc13ddd47ddcd7e44",
+      "host_final_sha256": "809b37f038ab2d2d2150f43e049d7e68fb4fdb71097f0ae3323832298e44d358",
+      "passed": false,
+      "historical_environment_failure": true
+    },
+    {
+      "name": "assembly-r2",
+      "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "original_formal_exit": 0,
+      "original_wrapper_exit": 0,
+      "original_15minute_gate_exit": 0,
+      "original_elapsed_seconds": 188.843304699054,
+      "original_receipt_sha256": "ffdac41e63bbf8dc0378fa35589c3921ddf95b6f8dba9aeb68fcbd85842be43a",
+      "host_final_sha256": "d9aec0ff1f260fbefe07142e82b7187c3a4c08cc2a09c9b9e4d43d75ade1384f",
+      "passed": true,
+      "historical_environment_failure": false
+    }
+  ],
+  "parts": [
+    {
+      "part": 1,
+      "archive_path": "/dev/shm/geometry-axiom-geo337-20261025/assembly-terminal-package-20261025/ORIGINAL_ASSEMBLY_PART1.tar.gz",
+      "archive_sha256": "816f48c9edd395b1a193f3d02ec4e06708248a5630b5d9340be8519122bd07db",
+      "archive_bytes": 5068936,
+      "members": 570,
+      "logical_regular_bytes": 16776798,
+      "roundtrip_complete": true,
+      "fresh_free_after": 17558769664
+    },
+    {
+      "part": 2,
+      "archive_path": "/dev/shm/geometry-axiom-geo337-20261025/assembly-terminal-package-20261025/ORIGINAL_ASSEMBLY_PART2.tar.gz",
+      "archive_sha256": "7f950048fd8e2dbb5fb6777e6293b622d530ead92e0ff848e40430afc302495b",
+      "archive_bytes": 2637583,
+      "members": 142,
+      "logical_regular_bytes": 14883676,
+      "roundtrip_complete": true,
+      "fresh_free_after": 17556127744
+    },
+    {
+      "part": 3,
+      "archive_path": "/dev/shm/geometry-axiom-geo337-20261025/assembly-terminal-package-20261025/ORIGINAL_ASSEMBLY_PART3.tar.gz",
+      "archive_sha256": "98619162eb7beec74c02fcab54932fe042b725d38c907a658a8bb724db92bbf9",
+      "archive_bytes": 414953,
+      "members": 121,
+      "logical_regular_bytes": 3705620,
+      "roundtrip_complete": true,
+      "fresh_free_after": 17555701760
+    }
+  ],
+  "errors": [],
+  "subject_rerun": false,
+  "delivered": false,
+  "storage": "protected volatile SHM; normal push and remote full bytes/hash verification required",
+  "product_acceptance_rejudged": false,
+  "inventory_sha256": "b9ef283cec84a7ecf19c3b0997040e1e20b63b1e74487ee7043bf70b1563b245",
+  "parts_sha256": "c37b207359afcd323c27df57b2e44259e30e4c78d0807d92b255f3f225c14ff4",
+  "regular_files": 828,
+  "symlinks": 5,
+  "regular_bytes": 35366094,
+  "excluded_sourceplan_metadata_files": 5,
+  "nonregular_metadata_nodes": 1,
+  "all_selected_sources_unchanged": true,
+  "all_members_exact_once": true,
+  "all_roundtrip_complete": true,
+  "final_free": 17555701760,
+  "ended_epoch": 1792936362.2114818
+}

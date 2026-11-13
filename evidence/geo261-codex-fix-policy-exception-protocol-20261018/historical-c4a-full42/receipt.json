@@ -1,0 +1,1519 @@
+{
+  "stage": "after-full42",
+  "checkout": "/workspace/geometry-axiom",
+  "recorder_started_utc": "2026-10-18T15:58:42.182673+00:00",
+  "expected_head": "c4a04e0792a795603e6e227651c369732885633c",
+  "invocation": [
+    "/workspace/geo261-validation-20261018/proposed-fixes/record_evidence_command.py",
+    "--checkout",
+    "/workspace/geometry-axiom",
+    "--expected-head",
+    "c4a04e0792a795603e6e227651c369732885633c",
+    "--stage",
+    "after-full42",
+    "--out",
+    "/workspace/geo261-validation-20261018/fixes/modelerror-mutation-closure/after-full42",
+    "--timeout",
+    "7200",
+    "--stack-kib",
+    "16384",
+    "--source",
+    "tests/fixtures/q38-legacy-space-model.gcanvas",
+    "--source",
+    "tests/run_all.expected.json",
+    "--source",
+    "tests/mutants_results.json",
+    "--registry-binary",
+    "bridge",
+    "--registry-binary",
+    "model-base",
+    "--artifact",
+    "/workspace/geo261-validation-20261018/fixes/modelerror-mutation-closure/after-full42/gate-receipt.json",
+    "--",
+    "python3",
+    "-B",
+    "tests/section_profile_mutation_check.py",
+    "--jobs",
+    "1",
+    "--receipt",
+    "/workspace/geo261-validation-20261018/fixes/modelerror-mutation-closure/after-full42/gate-receipt.json",
+    "--logs",
+    "/workspace/geo261-validation-20261018/fixes/modelerror-mutation-closure/after-full42/mutation-logs"
+  ],
+  "helper_sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+  "status": "擷取完成；不代表測試通過或突變有效",
+  "test_verdict": "未判定；必須依原始 suite／具名 assertion 人工核對",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-tests/bridge",
+    "GEOMETRY_ENGINEERING_BRIDGE": "/tmp/geometry-tests/bridge",
+    "GEOMETRY_MODEL_BASE": "/tmp/geometry-tests/model-base"
+  },
+  "environment_scope": "只存固定非機密白名單；child 繼承原環境，未注入 hook 或改寫 PYTHONPATH",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "limitations": [
+    "未擷取已清除 transient native mutant binary；持久 binary hash 不冒充其身分",
+    "外部流程必須串行；mtime+本命令 stdout 宣告排除舊檔，但不是完整跨行程 provenance 系統",
+    "timeout／compile error／import error／crash／setup error 都不能當有效 mutation kill"
+  ],
+  "command_executable": {
+    "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+    "identity": {
+      "device": 27,
+      "inode": 9223372036854861905,
+      "bytes": 30894944,
+      "mtime_ns": 1791399883000000000,
+      "ctime_ns": 1791399883000000000,
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "exists": true
+    }
+  },
+  "tools": {
+    "gcc": {
+      "command": [
+        "gcc",
+        "--version"
+      ],
+      "returncode": 0,
+      "executable": "/usr/bin/x86_64-linux-gnu-gcc-14"
+    },
+    "python": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "--version"
+      ],
+      "returncode": 0,
+      "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12"
+    },
+    "node": {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "returncode": 0,
+      "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node"
+    },
+    "chrome": {
+      "command": [
+        "/workspace/geo261-tools/google-chrome-155.0.8059.84/opt/google/chrome/google-chrome",
+        "--version"
+      ],
+      "returncode": 0,
+      "executable": "/workspace/geo261-tools/google-chrome-155.0.8059.84/opt/google/chrome/google-chrome"
+    },
+    "chromium": {
+      "command": [
+        "chromium",
+        "--version"
+      ],
+      "returncode": 0,
+      "executable": "/usr/bin/chromium"
+    }
+  },
+  "stack_before_bytes": {
+    "soft": 8388608,
+    "hard": -1
+  },
+  "stack_child_bytes": 16777216,
+  "process": {
+    "argv": [
+      "python3",
+      "-B",
+      "tests/section_profile_mutation_check.py",
+      "--jobs",
+      "1",
+      "--receipt",
+      "/workspace/geo261-validation-20261018/fixes/modelerror-mutation-closure/after-full42/gate-receipt.json",
+      "--logs",
+      "/workspace/geo261-validation-20261018/fixes/modelerror-mutation-closure/after-full42/mutation-logs"
+    ],
+    "shell": false,
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-18T15:58:43.791960+00:00",
+    "started_ns": 1792339123791992772,
+    "timeout_seconds": 7200.0,
+    "timed_out": false,
+    "interrupted": false,
+    "returncode": 1,
+    "launch_error": null,
+    "pid": 214217,
+    "ended_utc": "2026-10-18T16:15:24.357624+00:00",
+    "ended_ns": 1792340124357889563,
+    "seconds": 1000.5659723690005,
+    "streams": {
+      "stdout": {
+        "device": 27,
+        "inode": 1581525,
+        "bytes": 148671,
+        "mtime_ns": 1792340124273200312,
+        "ctime_ns": 1792340124273200312,
+        "sha256": "72b6b603138d09ee78ce50e58bc929bef7a233bfe7d5c4e3478e07ce735597d2",
+        "exists": true
+      },
+      "stderr": {
+        "device": 27,
+        "inode": 1581526,
+        "bytes": 0,
+        "mtime_ns": 1792339123791578022,
+        "ctime_ns": 1792339123791578022,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exists": true
+      }
+    }
+  },
+  "run_all_logs_complete": null,
+  "artifacts": [
+    {
+      "path": "/workspace/geo261-validation-20261018/fixes/modelerror-mutation-closure/after-full42/gate-receipt.json",
+      "before": {
+        "exists": false
+      },
+      "after": {
+        "device": 27,
+        "inode": 1581646,
+        "bytes": 180431,
+        "mtime_ns": 1792340124265200677,
+        "ctime_ns": 1792340124265200677,
+        "sha256": "55aadeb7e5ee66be80341f53a06bfc92b2c043b9514313d5c5330a9a1cc44e52",
+        "exists": true
+      },
+      "copied": true,
+      "copy": "artifact-00-gate-receipt.json",
+      "captured": {
+        "device": 27,
+        "inode": 1581646,
+        "bytes": 180431,
+        "mtime_ns": 1792340124265200677,
+        "ctime_ns": 1792340124265200677,
+        "sha256": "55aadeb7e5ee66be80341f53a06bfc92b2c043b9514313d5c5330a9a1cc44e52"
+      },
+      "changed": true,
+      "note": "原始外部 artifact；是否 fresh receipt 必須由其正式 checker 判定"
+    }
+  ],
+  "source_stable": true,
+  "head_stable": true,
+  "status_and_diff_stable": true,
+  "recorder_ended_utc": "2026-10-18T16:15:25.926565+00:00",
+  "recorder_exit_code": 1,
+  "evidence_files": {
+    "after.binaries.json": {
+      "device": 27,
+      "inode": 1581652,
+      "bytes": 2311,
+      "mtime_ns": 1792340124473705305,
+      "ctime_ns": 1792340124473705305,
+      "sha256": "f893fe5c8b2c8e03eb8273f09c4fdba7a9558f588c4611dec5d704f67749ca53",
+      "exists": true
+    },
+    "after.binary-00.sidecar.json": {
+      "device": 27,
+      "inode": 1581650,
+      "bytes": 22646,
+      "mtime_ns": 1792340124472604225,
+      "ctime_ns": 1792340124472604225,
+      "sha256": "7b9f664d15bfd3b81575139a642066c3a764a58efadfe43930f78c284ae34fb3",
+      "exists": true
+    },
+    "after.binary-01.sidecar.json": {
+      "device": 27,
+      "inode": 1581651,
+      "bytes": 22658,
+      "mtime_ns": 1792340124473527466,
+      "ctime_ns": 1792340124473527466,
+      "sha256": "56752a648694ef50c4cf07899bc4bcc0a2a29e55c9efc39ab858c97db49d6ed7",
+      "exists": true
+    },
+    "after.diff.patch": {
+      "device": 27,
+      "inode": 1581654,
+      "bytes": 0,
+      "mtime_ns": 1792340124673182063,
+      "ctime_ns": 1792340124673182063,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "after.source.json": {
+      "device": 27,
+      "inode": 1581655,
+      "bytes": 2097043,
+      "mtime_ns": 1792340125921125110,
+      "ctime_ns": 1792340125921125110,
+      "sha256": "f670f20e02d35f2df7433bb2832d479cbca33ff92af33c70c165f66d70ee8517",
+      "exists": true
+    },
+    "after.status.raw": {
+      "device": 27,
+      "inode": 1581653,
+      "bytes": 0,
+      "mtime_ns": 1792340124673182063,
+      "ctime_ns": 1792340124673182063,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "artifact-00-gate-receipt.json": {
+      "device": 27,
+      "inode": 1581649,
+      "bytes": 180431,
+      "mtime_ns": 1792340124366528255,
+      "ctime_ns": 1792340124366528255,
+      "sha256": "55aadeb7e5ee66be80341f53a06bfc92b2c043b9514313d5c5330a9a1cc44e52",
+      "exists": true
+    },
+    "before.binaries.json": {
+      "device": 27,
+      "inode": 1581524,
+      "bytes": 2313,
+      "mtime_ns": 1792339123791578022,
+      "ctime_ns": 1792339123791578022,
+      "sha256": "9e454d23908a5b3ba2763d205b2b87c22c90ce6ca10ccfe726ffd99fde809b94",
+      "exists": true
+    },
+    "before.binary-00.sidecar.json": {
+      "device": 27,
+      "inode": 1581522,
+      "bytes": 22646,
+      "mtime_ns": 1792339123790060323,
+      "ctime_ns": 1792339123790060323,
+      "sha256": "7b9f664d15bfd3b81575139a642066c3a764a58efadfe43930f78c284ae34fb3",
+      "exists": true
+    },
+    "before.binary-01.sidecar.json": {
+      "device": 27,
+      "inode": 1581523,
+      "bytes": 22658,
+      "mtime_ns": 1792339123791300931,
+      "ctime_ns": 1792339123791300931,
+      "sha256": "56752a648694ef50c4cf07899bc4bcc0a2a29e55c9efc39ab858c97db49d6ed7",
+      "exists": true
+    },
+    "before.diff.patch": {
+      "device": 27,
+      "inode": 1581510,
+      "bytes": 0,
+      "mtime_ns": 1792339122395026608,
+      "ctime_ns": 1792339122395026608,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "before.source.json": {
+      "device": 27,
+      "inode": 1581511,
+      "bytes": 2097043,
+      "mtime_ns": 1792339123498976151,
+      "ctime_ns": 1792339123498976151,
+      "sha256": "f14a63e215a3feb582405858964f8fa5bf8e00d83bde047ef75f38673905b226",
+      "exists": true
+    },
+    "before.status.raw": {
+      "device": 27,
+      "inode": 1581509,
+      "bytes": 0,
+      "mtime_ns": 1792339122395026608,
+      "ctime_ns": 1792339122395026608,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "command.process.json": {
+      "device": 27,
+      "inode": 1581647,
+      "bytes": 1321,
+      "mtime_ns": 1792340124361196297,
+      "ctime_ns": 1792340124361196297,
+      "sha256": "ff061b773c28920d472343227ba470b5b06d419f619902554fe975efee479fa9",
+      "exists": true
+    },
+    "command.stderr": {
+      "device": 27,
+      "inode": 1581526,
+      "bytes": 0,
+      "mtime_ns": 1792339123791578022,
+      "ctime_ns": 1792339123791578022,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "command.stdout": {
+      "device": 27,
+      "inode": 1581525,
+      "bytes": 148671,
+      "mtime_ns": 1792340124273200312,
+      "ctime_ns": 1792340124273200312,
+      "sha256": "72b6b603138d09ee78ce50e58bc929bef7a233bfe7d5c4e3478e07ce735597d2",
+      "exists": true
+    },
+    "gate-receipt.json": {
+      "device": 27,
+      "inode": 1581646,
+      "bytes": 180431,
+      "mtime_ns": 1792340124265200677,
+      "ctime_ns": 1792340124265200677,
+      "sha256": "55aadeb7e5ee66be80341f53a06bfc92b2c043b9514313d5c5330a9a1cc44e52",
+      "exists": true
+    },
+    "mutation-logs/SPM01.exceptions.json": {
+      "device": 27,
+      "inode": 1581567,
+      "bytes": 6753,
+      "mtime_ns": 1792340068339150150,
+      "ctime_ns": 1792340068339150150,
+      "sha256": "52b6c9e1410bc4c36f0d9e39e53f13ef1835c2506cf05bc77cdbe6e836dbdfce",
+      "exists": true
+    },
+    "mutation-logs/SPM01.log": {
+      "device": 27,
+      "inode": 1581566,
+      "bytes": 7557,
+      "mtime_ns": 1792340068338565677,
+      "ctime_ns": 1792340068338565677,
+      "sha256": "a682fcfcc4299dd07d4ebc2a21c4dfcee3e85f1238d276e84fe735815a359a3c",
+      "exists": true
+    },
+    "mutation-logs/SPM02.exceptions.json": {
+      "device": 27,
+      "inode": 1581569,
+      "bytes": 944,
+      "mtime_ns": 1792340069018160563,
+      "ctime_ns": 1792340069018160563,
+      "sha256": "8644dd8e1efafa92e49cba8ffa8a08ef9e84a5cd09442f0b16466d9d235dab3e",
+      "exists": true
+    },
+    "mutation-logs/SPM02.log": {
+      "device": 27,
+      "inode": 1581568,
+      "bytes": 446,
+      "mtime_ns": 1792340069018005526,
+      "ctime_ns": 1792340069018005526,
+      "sha256": "29b01f296f3d7ea50bf29129fa217ffada978000a0ca341b99f2fa3452de202c",
+      "exists": true
+    },
+    "mutation-logs/SPM03.exceptions.json": {
+      "device": 27,
+      "inode": 1581571,
+      "bytes": 569,
+      "mtime_ns": 1792340069410202320,
+      "ctime_ns": 1792340069410202320,
+      "sha256": "14ca7a8c0ccf9432a2b7c045863d158814c35f7c8cb996743d5a2e360e43589d",
+      "exists": true
+    },
+    "mutation-logs/SPM03.log": {
+      "device": 27,
+      "inode": 1581570,
+      "bytes": 255,
+      "mtime_ns": 1792340069410004831,
+      "ctime_ns": 1792340069410004831,
+      "sha256": "27c19c71bd6bdd02923ce9e3cd5a938d0f77a6dd295d5b13f547c587e2a33237",
+      "exists": true
+    },
+    "mutation-logs/SPM04.exceptions.json": {
+      "device": 27,
+      "inode": 1581573,
+      "bytes": 569,
+      "mtime_ns": 1792340069787488947,
+      "ctime_ns": 1792340069787488947,
+      "sha256": "14ca7a8c0ccf9432a2b7c045863d158814c35f7c8cb996743d5a2e360e43589d",
+      "exists": true
+    },
+    "mutation-logs/SPM04.log": {
+      "device": 27,
+      "inode": 1581572,
+      "bytes": 255,
+      "mtime_ns": 1792340069787076724,
+      "ctime_ns": 1792340069787076724,
+      "sha256": "4bf5d9dd6d9efd0f7c4972eaf10d5712e03a50fed3fa9bc7fae87deabbc04971",
+      "exists": true
+    },
+    "mutation-logs/SPM05.exceptions.json": {
+      "device": 27,
+      "inode": 1581575,
+      "bytes": 4645,
+      "mtime_ns": 1792340070132444382,
+      "ctime_ns": 1792340070132444382,
+      "sha256": "e286ea0fe8bd59a409b8162779cc0f545431db50984e3326d79d92a6e4fb5d1a",
+      "exists": true
+    },
+    "mutation-logs/SPM05.log": {
+      "device": 27,
+      "inode": 1581574,
+      "bytes": 4975,
+      "mtime_ns": 1792340070132031397,
+      "ctime_ns": 1792340070132031397,
+      "sha256": "dd3c1c15a662e8d950d293fd71aadca189e8d6b8a14d333a426e810d69174a42",
+      "exists": true
+    },
+    "mutation-logs/SPM06.exceptions.json": {
+      "device": 27,
+      "inode": 1581577,
+      "bytes": 4629,
+      "mtime_ns": 1792340070519128247,
+      "ctime_ns": 1792340070519128247,
+      "sha256": "7591d58c1ca56b1dc6446bf08f608ffd26e29b91d2e081e9940c8bbc05ec3aaa",
+      "exists": true
+    },
+    "mutation-logs/SPM06.log": {
+      "device": 27,
+      "inode": 1581576,
+      "bytes": 4959,
+      "mtime_ns": 1792340070518908398,
+      "ctime_ns": 1792340070518908398,
+      "sha256": "05dc57869fa516dc135712485c16a02d4230005aa9a97eca4a323d320663df6e",
+      "exists": true
+    },
+    "mutation-logs/SPM07.exceptions.json": {
+      "device": 27,
+      "inode": 1581579,
+      "bytes": 3418,
+      "mtime_ns": 1792340070983586226,
+      "ctime_ns": 1792340070983586226,
+      "sha256": "37fd561879c035d2cbbe40915d19c4a1e9eb33d813c8814ff505e74ad873342f",
+      "exists": true
+    },
+    "mutation-logs/SPM07.log": {
+      "device": 27,
+      "inode": 1581578,
+      "bytes": 3794,
+      "mtime_ns": 1792340070982767267,
+      "ctime_ns": 1792340070982767267,
+      "sha256": "2ba6ef8db4f18fb0f3e909bd737c52d6900cf63c98dbd755d7292320c8b72a1d",
+      "exists": true
+    },
+    "mutation-logs/SPM08.exceptions.json": {
+      "device": 27,
+      "inode": 1581581,
+      "bytes": 948,
+      "mtime_ns": 1792340071409258841,
+      "ctime_ns": 1792340071409258841,
+      "sha256": "e7eedf0c01d9d0499273b73a1418a48a35438be58e8eaa055e19a7e0ea7c5554",
+      "exists": true
+    },
+    "mutation-logs/SPM08.log": {
+      "device": 27,
+      "inode": 1581580,
+      "bytes": 1100,
+      "mtime_ns": 1792340071409122469,
+      "ctime_ns": 1792340071409122469,
+      "sha256": "5947f1ea94b8b5cff4d9315e7c9c5e470426d138b40822d8cc9d4b632e8915f2",
+      "exists": true
+    },
+    "mutation-logs/SPM09.exceptions.json": {
+      "device": 27,
+      "inode": 1581583,
+      "bytes": 3147,
+      "mtime_ns": 1792340071907445168,
+      "ctime_ns": 1792340071907445168,
+      "sha256": "44ca715a8b096bdaae5bfd7e0152b9b585d1e5f72194a39aa3e799dc90350ebb",
+      "exists": true
+    },
+    "mutation-logs/SPM09.log": {
+      "device": 27,
+      "inode": 1581582,
+      "bytes": 3468,
+      "mtime_ns": 1792340071907294010,
+      "ctime_ns": 1792340071907294010,
+      "sha256": "9c03b09255955300f06ba0c444401408dc8a2f1edd8741b4b93c7ba8a0f63df9",
+      "exists": true
+    },
+    "mutation-logs/SPM10.exceptions.json": {
+      "device": 27,
+      "inode": 1581585,
+      "bytes": 2949,
+      "mtime_ns": 1792340072237351147,
+      "ctime_ns": 1792340072237351147,
+      "sha256": "2676a359500f26ce1f00041601e9650b8626764bdfeb22f1f6180f3d4bfb55f1",
+      "exists": true
+    },
+    "mutation-logs/SPM10.log": {
+      "device": 27,
+      "inode": 1581584,
+      "bytes": 3271,
+      "mtime_ns": 1792340072237174178,
+      "ctime_ns": 1792340072237174178,
+      "sha256": "1aaa4bf7593bbf93f2a314fde710db8f45eec45dc173497c33c565e51e79782f",
+      "exists": true
+    },
+    "mutation-logs/SPM11.exceptions.json": {
+      "device": 27,
+      "inode": 1581587,
+      "bytes": 6511,
+      "mtime_ns": 1792340072631074113,
+      "ctime_ns": 1792340072631074113,
+      "sha256": "42fb36ebb33eb42a2c9c9c0da3719a93df085da4a0dbfcec816b6e3344ca3253",
+      "exists": true
+    },
+    "mutation-logs/SPM11.log": {
+      "device": 27,
+      "inode": 1581586,
+      "bytes": 6906,
+      "mtime_ns": 1792340072630850406,
+      "ctime_ns": 1792340072630850406,
+      "sha256": "9c4afe7bfdfa8d2f3e4c81f96268e26c259470915353334be7456494e5aa3e98",
+      "exists": true
+    },
+    "mutation-logs/SPM12.exceptions.json": {
+      "device": 27,
+      "inode": 1581589,
+      "bytes": 7887,
+      "mtime_ns": 1792340073022243620,
+      "ctime_ns": 1792340073022243620,
+      "sha256": "b77fd5baca169660839513d88e80ebbb4ef975a96c52eab2a0224285b64f384e",
+      "exists": true
+    },
+    "mutation-logs/SPM12.log": {
+      "device": 27,
+      "inode": 1581588,
+      "bytes": 7439,
+      "mtime_ns": 1792340073021878987,
+      "ctime_ns": 1792340073021878987,
+      "sha256": "f782d8d31fb993154d5f6a7e78f3cd1c76ebaeb274c8a079b816a4227a37d2c5",
+      "exists": true
+    },
+    "mutation-logs/SPM13.exceptions.json": {
+      "device": 27,
+      "inode": 1581591,
+      "bytes": 854,
+      "mtime_ns": 1792340073393438079,
+      "ctime_ns": 1792340073393438079,
+      "sha256": "a2d708c645d3216459d57537d8d2aef9552e54ca62ad2cd885f8454d2276b055",
+      "exists": true
+    },
+    "mutation-logs/SPM13.log": {
+      "device": 27,
+      "inode": 1581590,
+      "bytes": 1039,
+      "mtime_ns": 1792340073393275740,
+      "ctime_ns": 1792340073393275740,
+      "sha256": "b3ae199dd8a0b834c91699027d95589b564433cf0336eca3e7af9512814453eb",
+      "exists": true
+    },
+    "mutation-logs/SPM14.exceptions.json": {
+      "device": 27,
+      "inode": 1581593,
+      "bytes": 3474,
+      "mtime_ns": 1792340073787533264,
+      "ctime_ns": 1792340073787533264,
+      "sha256": "ae8ab676cc66077afbc977e362969ad6635c3b9af4c586e0add45a02f4c9f387",
+      "exists": true
+    },
+    "mutation-logs/SPM14.log": {
+      "device": 27,
+      "inode": 1581592,
+      "bytes": 3830,
+      "mtime_ns": 1792340073787348918,
+      "ctime_ns": 1792340073787348918,
+      "sha256": "f65b9f4023c805db41394a5cc6b77bdd63b204ec58753065d75d8fabd226e264",
+      "exists": true
+    },
+    "mutation-logs/SPM15.exceptions.json": {
+      "device": 27,
+      "inode": 1581595,
+      "bytes": 3445,
+      "mtime_ns": 1792340074181447434,
+      "ctime_ns": 1792340074181447434,
+      "sha256": "8c1dc4cea4170ce8f0b2ec0235421d509d9731aca14042961ffb9f5fd4b15013",
+      "exists": true
+    },
+    "mutation-logs/SPM15.log": {
+      "device": 27,
+      "inode": 1581594,
+      "bytes": 3839,
+      "mtime_ns": 1792340074181230387,
+      "ctime_ns": 1792340074181230387,
+      "sha256": "680dc9293f5e17492e28bfeb746585ba6375113e998b7010973fe144de86ed3b",
+      "exists": true
+    },
+    "mutation-logs/SPM16.exceptions.json": {
+      "device": 27,
+      "inode": 1581597,
+      "bytes": 924,
+      "mtime_ns": 1792340074517814112,
+      "ctime_ns": 1792340074517814112,
+      "sha256": "bf5218940141e17b6aaf904a0a8f4cf2402900f12419b28abe528927cb214202",
+      "exists": true
+    },
+    "mutation-logs/SPM16.log": {
+      "device": 27,
+      "inode": 1581596,
+      "bytes": 1074,
+      "mtime_ns": 1792340074517643839,
+      "ctime_ns": 1792340074517643839,
+      "sha256": "90022f7fa09efdf06f80d596fbc7816233603f9f400151f507c6c91feb5d7f55",
+      "exists": true
+    },
+    "mutation-logs/SPM17.exceptions.json": {
+      "device": 27,
+      "inode": 1581599,
+      "bytes": 937,
+      "mtime_ns": 1792340074956818469,
+      "ctime_ns": 1792340074956818469,
+      "sha256": "22d5ff8aa96410e46a1e2b08ef9c6dba02a6c8d83f1a491dba3fe90020fbaeac",
+      "exists": true
+    },
+    "mutation-logs/SPM17.log": {
+      "device": 27,
+      "inode": 1581598,
+      "bytes": 1099,
+      "mtime_ns": 1792340074955464357,
+      "ctime_ns": 1792340074955464357,
+      "sha256": "4a2fe6e57e91155be514a7f14d6ebffcb35045986c091cee7dba96cae096c24c",
+      "exists": true
+    },
+    "mutation-logs/SPM18.exceptions.json": {
+      "device": 27,
+      "inode": 1581601,
+      "bytes": 926,
+      "mtime_ns": 1792340075324852904,
+      "ctime_ns": 1792340075324852904,
+      "sha256": "d62e9f5ffed03da224bab9988d2394f6dca4b6b76b0ce1ef5e1e16861285aeb9",
+      "exists": true
+    },
+    "mutation-logs/SPM18.log": {
+      "device": 27,
+      "inode": 1581600,
+      "bytes": 1090,
+      "mtime_ns": 1792340075324732527,
+      "ctime_ns": 1792340075324732527,
+      "sha256": "df423517c1eea14aed965fb3b246c13ebcabb25a57d64b6e3388ce77dfb6e72b",
+      "exists": true
+    },
+    "mutation-logs/SPM19.exceptions.json": {
+      "device": 27,
+      "inode": 1581603,
+      "bytes": 4323,
+      "mtime_ns": 1792340075691548391,
+      "ctime_ns": 1792340075691548391,
+      "sha256": "9a17accb5a2254688f179d77df5bfc314eb3f68ca0fd2bb65d97605efb14cf44",
+      "exists": true
+    },
+    "mutation-logs/SPM19.log": {
+      "device": 27,
+      "inode": 1581602,
+      "bytes": 4709,
+      "mtime_ns": 1792340075691411634,
+      "ctime_ns": 1792340075691411634,
+      "sha256": "285c3f135396db81ff4ca4b3e22d039436f80365715f69632376fa28ff2cf3c0",
+      "exists": true
+    },
+    "mutation-logs/SPM20.exceptions.json": {
+      "device": 27,
+      "inode": 1581605,
+      "bytes": 6404,
+      "mtime_ns": 1792340076138288665,
+      "ctime_ns": 1792340076138288665,
+      "sha256": "635d8df21b2be375553d4439571ec3b71d1255c7f92085664187901aed83b957",
+      "exists": true
+    },
+    "mutation-logs/SPM20.log": {
+      "device": 27,
+      "inode": 1581604,
+      "bytes": 6174,
+      "mtime_ns": 1792340076138144129,
+      "ctime_ns": 1792340076138144129,
+      "sha256": "2d2b89f58b3ec0e023a46ddac1394763192706d7681251c03fb83a9038f8c660",
+      "exists": true
+    },
+    "mutation-logs/SPM21.exceptions.json": {
+      "device": 27,
+      "inode": 1581607,
+      "bytes": 7130,
+      "mtime_ns": 1792340076599963136,
+      "ctime_ns": 1792340076599963136,
+      "sha256": "99de151504a8ac2d9b3aa45a32dfd41e14f7617c7ce2316ed344f23a6c238a1b",
+      "exists": true
+    },
+    "mutation-logs/SPM21.log": {
+      "device": 27,
+      "inode": 1581606,
+      "bytes": 6888,
+      "mtime_ns": 1792340076599762802,
+      "ctime_ns": 1792340076599762802,
+      "sha256": "2481eab6ab2cc1c35ec03b53aee9d5f5bd73364e7db2b92b9e9fb23071c8449e",
+      "exists": true
+    },
+    "mutation-logs/SPM22.exceptions.json": {
+      "device": 27,
+      "inode": 1581609,
+      "bytes": 963,
+      "mtime_ns": 1792340077021272147,
+      "ctime_ns": 1792340077021272147,
+      "sha256": "bab4c46be180cb94b4df5a521cd45bc4aee57288e18e4cb243add5da13d6bcad",
+      "exists": true
+    },
+    "mutation-logs/SPM22.log": {
+      "device": 27,
+      "inode": 1581608,
+      "bytes": 1110,
+      "mtime_ns": 1792340077021127146,
+      "ctime_ns": 1792340077021127146,
+      "sha256": "e7f3e8d9c15d2f2d9f10d91ee5543dbc3a9bf8558bc2bb6c82a221150331926f",
+      "exists": true
+    },
+    "mutation-logs/SPM23.exceptions.json": {
+      "device": 27,
+      "inode": 1581611,
+      "bytes": 5259,
+      "mtime_ns": 1792340077385857532,
+      "ctime_ns": 1792340077385857532,
+      "sha256": "33d9dd37a3815d72a64e6cd651d1b09524259e281f86c1f2a7c2c8ffb93304c4",
+      "exists": true
+    },
+    "mutation-logs/SPM23.log": {
+      "device": 27,
+      "inode": 1581610,
+      "bytes": 5303,
+      "mtime_ns": 1792340077385467540,
+      "ctime_ns": 1792340077385467540,
+      "sha256": "046e152602761d1114295ce14ca287b282aec9ac8139030b1dec1d83416da381",
+      "exists": true
+    },
+    "mutation-logs/SPM24.exceptions.json": {
+      "device": 27,
+      "inode": 1581613,
+      "bytes": 995,
+      "mtime_ns": 1792340089163985652,
+      "ctime_ns": 1792340089163985652,
+      "sha256": "fa3af4111b5bcedc677f959da43a6ef0ac5fb4fa77519d00fbf2d930645af82f",
+      "exists": true
+    },
+    "mutation-logs/SPM24.log": {
+      "device": 27,
+      "inode": 1581612,
+      "bytes": 481,
+      "mtime_ns": 1792340089163829058,
+      "ctime_ns": 1792340089163829058,
+      "sha256": "549909af22d6e6906d7e1558a8d2ffa085363338199f04fc144d3bbdca56f4c1",
+      "exists": true
+    },
+    "mutation-logs/SPM25.exceptions.json": {
+      "device": 27,
+      "inode": 1581615,
+      "bytes": 1059,
+      "mtime_ns": 1792340089572397373,
+      "ctime_ns": 1792340089572397373,
+      "sha256": "2931ad873d0e44f9205cbc944e8474d7cb1c43cf1ac0498d984ee7afb0c40186",
+      "exists": true
+    },
+    "mutation-logs/SPM25.log": {
+      "device": 27,
+      "inode": 1581614,
+      "bytes": 1246,
+      "mtime_ns": 1792340089572201336,
+      "ctime_ns": 1792340089572201336,
+      "sha256": "b427a156aaf7b93728feb7a953cc7e3d86a037ac1afc1014e4a2f0434bb138b7",
+      "exists": true
+    },
+    "mutation-logs/SPM26.exceptions.json": {
+      "device": 27,
+      "inode": 1581617,
+      "bytes": 822,
+      "mtime_ns": 1792340089947749175,
+      "ctime_ns": 1792340089947749175,
+      "sha256": "753e834f83ef44ce9ec06a68a16137da194de699f5bc18400e8af1e6c064dee5",
+      "exists": true
+    },
+    "mutation-logs/SPM26.log": {
+      "device": 27,
+      "inode": 1581616,
+      "bytes": 970,
+      "mtime_ns": 1792340089947152510,
+      "ctime_ns": 1792340089947152510,
+      "sha256": "27492d9ef8be325560686a4ad7bdf9da52bfbbac23d5fd9fa9036e08b5825963",
+      "exists": true
+    },
+    "mutation-logs/SPM27.exceptions.json": {
+      "device": 27,
+      "inode": 1581619,
+      "bytes": 3531,
+      "mtime_ns": 1792340090267563800,
+      "ctime_ns": 1792340090267563800,
+      "sha256": "1011dfa16da46a8d8ee28cacad0dc065ff2eee52fa1752dcaa1c12b2fc2d1ef6",
+      "exists": true
+    },
+    "mutation-logs/SPM27.log": {
+      "device": 27,
+      "inode": 1581618,
+      "bytes": 3998,
+      "mtime_ns": 1792340090267395893,
+      "ctime_ns": 1792340090267395893,
+      "sha256": "1fff8e25cc31573a772a6c2fee4e203272ee15714856fdbf9e3368c2d0c1a0cf",
+      "exists": true
+    },
+    "mutation-logs/SPM30.exceptions.json": {
+      "device": 27,
+      "inode": 1581621,
+      "bytes": 7795,
+      "mtime_ns": 1792340090632108145,
+      "ctime_ns": 1792340090632108145,
+      "sha256": "4ca6ace36b31d1b88df212396012d640426d5e293c05e6c18242a41fcaab81f2",
+      "exists": true
+    },
+    "mutation-logs/SPM30.log": {
+      "device": 27,
+      "inode": 1581620,
+      "bytes": 8139,
+      "mtime_ns": 1792340090631802384,
+      "ctime_ns": 1792340090631802384,
+      "sha256": "471b15cb0e4024348ae5be5998e2c0d51ee08b406e70926b9a3d00f76196f773",
+      "exists": true
+    },
+    "mutation-logs/SPM31.exceptions.json": {
+      "device": 27,
+      "inode": 1581623,
+      "bytes": 11802,
+      "mtime_ns": 1792340091083486420,
+      "ctime_ns": 1792340091083486420,
+      "sha256": "f5c412358a1c919e38786bb079927010b51e69082d41cdd7b6344498bd64734a",
+      "exists": true
+    },
+    "mutation-logs/SPM31.log": {
+      "device": 27,
+      "inode": 1581622,
+      "bytes": 12817,
+      "mtime_ns": 1792340091082735064,
+      "ctime_ns": 1792340091082735064,
+      "sha256": "15e2d26e24f3469b74bceb529022c4a6ab9838fac176beecec17727efaaf192e",
+      "exists": true
+    },
+    "mutation-logs/SPM32.exceptions.json": {
+      "device": 27,
+      "inode": 1581625,
+      "bytes": 4165,
+      "mtime_ns": 1792340091447624063,
+      "ctime_ns": 1792340091447624063,
+      "sha256": "f74c540e8972a8e641260c8e9bca062bc7345233f7ff71e7efe72f084e7552f4",
+      "exists": true
+    },
+    "mutation-logs/SPM32.log": {
+      "device": 27,
+      "inode": 1581624,
+      "bytes": 4486,
+      "mtime_ns": 1792340091447368898,
+      "ctime_ns": 1792340091447368898,
+      "sha256": "b905732ea2985dec5207e3fc1cb1801bb4fc1b0071ecb7f0f02b4b030ee5d2fd",
+      "exists": true
+    },
+    "mutation-logs/SPM34.exceptions.json": {
+      "device": 27,
+      "inode": 1581627,
+      "bytes": 840,
+      "mtime_ns": 1792340091817619204,
+      "ctime_ns": 1792340091817619204,
+      "sha256": "d9e74ac431bb2ac34bfeec49ee549991b543613c7e004a5625fcca7fd02ffe66",
+      "exists": true
+    },
+    "mutation-logs/SPM34.log": {
+      "device": 27,
+      "inode": 1581626,
+      "bytes": 1025,
+      "mtime_ns": 1792340091817466547,
+      "ctime_ns": 1792340091817466547,
+      "sha256": "672b08eaab87b9897d88ec2b127098bf9e2437b22889d67a011314e63bf51957",
+      "exists": true
+    },
+    "mutation-logs/SPM35.exceptions.json": {
+      "device": 27,
+      "inode": 1581629,
+      "bytes": 3237,
+      "mtime_ns": 1792340092342031724,
+      "ctime_ns": 1792340092342031724,
+      "sha256": "84f9132ce5c565c35ff30f0a4efe56cc8614a54a0b168e80e0bcc0ec148e6d70",
+      "exists": true
+    },
+    "mutation-logs/SPM35.log": {
+      "device": 27,
+      "inode": 1581628,
+      "bytes": 3449,
+      "mtime_ns": 1792340092341860057,
+      "ctime_ns": 1792340092341860057,
+      "sha256": "51222b88b98bde9d5bb7c32b57d63f749cbd12bbdaa182376c39e2571448e320",
+      "exists": true
+    },
+    "mutation-logs/SPM36.exceptions.json": {
+      "device": 27,
+      "inode": 1581637,
+      "bytes": 880,
+      "mtime_ns": 1792340121862150653,
+      "ctime_ns": 1792340121862150653,
+      "sha256": "0585417e6e88976cf3236ba259521e32dd103b907e116e4de8f89c080c1d5fb0",
+      "exists": true
+    },
+    "mutation-logs/SPM36.log": {
+      "device": 27,
+      "inode": 1581636,
+      "bytes": 1284,
+      "mtime_ns": 1792340121862012000,
+      "ctime_ns": 1792340121862012000,
+      "sha256": "23986b57c6727d516b475303dbc6c797c395ce325bdd87c810cd271c4057465a",
+      "exists": true
+    },
+    "mutation-logs/SPM37.exceptions.json": {
+      "device": 27,
+      "inode": 1581639,
+      "bytes": 1127,
+      "mtime_ns": 1792340122434969521,
+      "ctime_ns": 1792340122434969521,
+      "sha256": "d5f198465b6fdf2a4b103d38416095c84a84772d812a75ee98e628bb12302969",
+      "exists": true
+    },
+    "mutation-logs/SPM37.log": {
+      "device": 27,
+      "inode": 1581638,
+      "bytes": 1317,
+      "mtime_ns": 1792340122434796705,
+      "ctime_ns": 1792340122434796705,
+      "sha256": "779ae57cfa5cad5bdcc79f26ff683ee053f0ee3085372466749342e39f9f8e17",
+      "exists": true
+    },
+    "mutation-logs/SPM38.exceptions.json": {
+      "device": 27,
+      "inode": 1581641,
+      "bytes": 145,
+      "mtime_ns": 1792340122946952830,
+      "ctime_ns": 1792340122946952830,
+      "sha256": "a795258337053a01c6c385b8b68ca3bc43f0394c922e6bd564b342a19dce637e",
+      "exists": true
+    },
+    "mutation-logs/SPM38.log": {
+      "device": 27,
+      "inode": 1581640,
+      "bytes": 6946,
+      "mtime_ns": 1792340122946511488,
+      "ctime_ns": 1792340122946511488,
+      "sha256": "0861924963233dfe08b0d7cc789b4b387d2656f46add8ccaf350675d3b4b0279",
+      "exists": true
+    },
+    "mutation-logs/SPM39.exceptions.json": {
+      "device": 27,
+      "inode": 1581643,
+      "bytes": 1123,
+      "mtime_ns": 1792340123537769089,
+      "ctime_ns": 1792340123537769089,
+      "sha256": "a534d6bd4a6dfd657142a7f71bda109738e9cb76c9efcada56eab3845dfd6c51",
+      "exists": true
+    },
+    "mutation-logs/SPM39.log": {
+      "device": 27,
+      "inode": 1581642,
+      "bytes": 1495,
+      "mtime_ns": 1792340123537643215,
+      "ctime_ns": 1792340123537643215,
+      "sha256": "6313d64c17219e1ff1fc908e5dace6dfd20f7f55a4dc31bbd78c1e0758c6e7f0",
+      "exists": true
+    },
+    "mutation-logs/SPM40.exceptions.json": {
+      "device": 27,
+      "inode": 1581645,
+      "bytes": 833,
+      "mtime_ns": 1792340124170395881,
+      "ctime_ns": 1792340124170395881,
+      "sha256": "373f00bf9ed876cba1a5951bda1c44bfe3ef645b96a28a0c8a6a4c72fd302fa0",
+      "exists": true
+    },
+    "mutation-logs/SPM40.log": {
+      "device": 27,
+      "inode": 1581644,
+      "bytes": 2231,
+      "mtime_ns": 1792340124170264947,
+      "ctime_ns": 1792340124170264947,
+      "sha256": "4e15e17b5e7588fe060e1bb4a65e1c16db647618dab8075548fac38ade7fed72",
+      "exists": true
+    },
+    "mutation-logs/SPM41.exceptions.json": {
+      "device": 27,
+      "inode": 1581631,
+      "bytes": 3531,
+      "mtime_ns": 1792340092655580683,
+      "ctime_ns": 1792340092655580683,
+      "sha256": "3b0161dc8476dc034b189ad2fc2c959d693e188403e5c52205a04369019c003e",
+      "exists": true
+    },
+    "mutation-logs/SPM41.log": {
+      "device": 27,
+      "inode": 1581630,
+      "bytes": 3878,
+      "mtime_ns": 1792340092655430856,
+      "ctime_ns": 1792340092655430856,
+      "sha256": "d9120cefaac110fa79df6a8a68b0b0cd7449e0c941ad2f317d791cc6b6d791ab",
+      "exists": true
+    },
+    "mutation-logs/SPM42.exceptions.json": {
+      "device": 27,
+      "inode": 1581633,
+      "bytes": 7914,
+      "mtime_ns": 1792340093069054612,
+      "ctime_ns": 1792340093069054612,
+      "sha256": "ebe61292a2c5bca52500477d6d56848db191ebd865a0d3d6d44669c3a1ea08ce",
+      "exists": true
+    },
+    "mutation-logs/SPM42.log": {
+      "device": 27,
+      "inode": 1581632,
+      "bytes": 8241,
+      "mtime_ns": 1792340093068838999,
+      "ctime_ns": 1792340093068838999,
+      "sha256": "b2e0fb2a3cabe10412aaf9dbeeacd592f4c2273b7fe3384892188dac8227ff2d",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM01.compile.json": {
+      "device": 27,
+      "inode": 1581531,
+      "bytes": 439,
+      "mtime_ns": 1792339200038638306,
+      "ctime_ns": 1792339200038638306,
+      "sha256": "c891e2e9a8d8b0be00bc112787a96c75b50e737455e2d9f4f3fef60be780e04c",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM02.compile.json": {
+      "device": 27,
+      "inode": 1581532,
+      "bytes": 439,
+      "mtime_ns": 1792339230145090704,
+      "ctime_ns": 1792339230145090704,
+      "sha256": "69fd61f9f5b9ca8c9155884f4ace2d36001c4e5de9c17e7b99d390bba7956f41",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM03.compile.json": {
+      "device": 27,
+      "inode": 1581533,
+      "bytes": 439,
+      "mtime_ns": 1792339255391867264,
+      "ctime_ns": 1792339255391867264,
+      "sha256": "533037f9c6847680ca5b40ca7731f2a317e2883d21240226c5335ad6cead4e2b",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM04.compile.json": {
+      "device": 27,
+      "inode": 1581534,
+      "bytes": 439,
+      "mtime_ns": 1792339280545378808,
+      "ctime_ns": 1792339280545378808,
+      "sha256": "063db49c566e3a74f14195ab470dbb922dea6cc9a39475d5cb31c54e21630f50",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM05.compile.json": {
+      "device": 27,
+      "inode": 1581536,
+      "bytes": 439,
+      "mtime_ns": 1792339311134801503,
+      "ctime_ns": 1792339311134801503,
+      "sha256": "106374c2e2f2497363cfa68cbf97646f5c101dffb19c62b9c93af5811ce9fbd0",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM06.compile.json": {
+      "device": 27,
+      "inode": 1581537,
+      "bytes": 439,
+      "mtime_ns": 1792339339721440560,
+      "ctime_ns": 1792339339721440560,
+      "sha256": "a5139b004f4e9330cd9b75a929342b1a8cb072a1971f7f7fa5c6dc9974c2b09e",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM07.compile.json": {
+      "device": 27,
+      "inode": 1581538,
+      "bytes": 439,
+      "mtime_ns": 1792339370358715995,
+      "ctime_ns": 1792339370358715995,
+      "sha256": "bdec38d7ddc029792dd12b467b630cc7d65287cbcc3dbdb6702f50457ace3caa",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM08.compile.json": {
+      "device": 27,
+      "inode": 1581539,
+      "bytes": 439,
+      "mtime_ns": 1792339394118598539,
+      "ctime_ns": 1792339394118598539,
+      "sha256": "2c0d4320326ce58b9297a62100da983483b64ce65227fdfd959c0fe0b0b9fa82",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM09.compile.json": {
+      "device": 27,
+      "inode": 1581540,
+      "bytes": 439,
+      "mtime_ns": 1792339418860983473,
+      "ctime_ns": 1792339418860983473,
+      "sha256": "ce2aa42a573529fbba31a811bd4e949a606101edf5e08b7779b54642d74ed0ae",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM10.compile.json": {
+      "device": 27,
+      "inode": 1581541,
+      "bytes": 439,
+      "mtime_ns": 1792339443315243508,
+      "ctime_ns": 1792339443315243508,
+      "sha256": "9ab3fc4fa5b2d0415266f2e9a38e41524e816adc5461aaf3b764cdb8ab5d7ec4",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM11.compile.json": {
+      "device": 27,
+      "inode": 1581542,
+      "bytes": 439,
+      "mtime_ns": 1792339466079484848,
+      "ctime_ns": 1792339466079484848,
+      "sha256": "ca45843db84b4a31d5ceeac6678f0dc657743c9d5f4a1d34de250d15d0c0f8e8",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM12.compile.json": {
+      "device": 27,
+      "inode": 1581543,
+      "bytes": 439,
+      "mtime_ns": 1792339489347480994,
+      "ctime_ns": 1792339489347480994,
+      "sha256": "8a718ff4274fd0dbd2df3c2251fa3f3dcbcb411ef37ed47d650b5d5a6e793f8f",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM13.compile.json": {
+      "device": 27,
+      "inode": 1581544,
+      "bytes": 439,
+      "mtime_ns": 1792339514961360366,
+      "ctime_ns": 1792339514961360366,
+      "sha256": "230a848a23335aaa408478ab765a82807e413e7092410d52d4ef738a25b17b40",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM14.compile.json": {
+      "device": 27,
+      "inode": 1581545,
+      "bytes": 439,
+      "mtime_ns": 1792339542637460054,
+      "ctime_ns": 1792339542637460054,
+      "sha256": "50ca737630f63fac9508d5ffbdba27b1166f31fa4a99218a3f631d15b4b7a361",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM15.compile.json": {
+      "device": 27,
+      "inode": 1581546,
+      "bytes": 439,
+      "mtime_ns": 1792339568227585933,
+      "ctime_ns": 1792339568227585933,
+      "sha256": "01f4d07aebe0d455af06ace32c9507096c1841e53f0b7afb2b883ad51c3f5e2e",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM16.compile.json": {
+      "device": 27,
+      "inode": 1581547,
+      "bytes": 439,
+      "mtime_ns": 1792339593259537217,
+      "ctime_ns": 1792339593259537217,
+      "sha256": "22308b235dc061004716ddd2465ed7280b81ee3a89d78860b78d5b48fa69c8cc",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM17.compile.json": {
+      "device": 27,
+      "inode": 1581548,
+      "bytes": 439,
+      "mtime_ns": 1792339617854941841,
+      "ctime_ns": 1792339617854941841,
+      "sha256": "9825218a8cccb251849397056bd8d6f85e3f85b3fb89ee9c19cb008d45852ffc",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM18.compile.json": {
+      "device": 27,
+      "inode": 1581549,
+      "bytes": 439,
+      "mtime_ns": 1792339644902313589,
+      "ctime_ns": 1792339644902313589,
+      "sha256": "b718bfca617e335a56ef8d09b3b2a28fef2869b02b94201c9c7f883998d9d3e1",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM19.compile.json": {
+      "device": 27,
+      "inode": 1581550,
+      "bytes": 439,
+      "mtime_ns": 1792339670792030460,
+      "ctime_ns": 1792339670792030460,
+      "sha256": "2c2505cf356e3ffd8d91d9815d489d1003a0b51cfa128824c0ec97cb2f18b9d4",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM20.compile.json": {
+      "device": 27,
+      "inode": 1581551,
+      "bytes": 439,
+      "mtime_ns": 1792339698864266460,
+      "ctime_ns": 1792339698864266460,
+      "sha256": "8c6178c44c881635a7f8452c211bbbfa46021a1fa22cd19f766d2051ab07bde5",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM21.compile.json": {
+      "device": 27,
+      "inode": 1581552,
+      "bytes": 439,
+      "mtime_ns": 1792339724263940080,
+      "ctime_ns": 1792339724263940080,
+      "sha256": "2a6a8afa6006b904ac56f28028323346cdad2eb93f74fb5b2bf6e2a134e22d28",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM22.compile.json": {
+      "device": 27,
+      "inode": 1581553,
+      "bytes": 439,
+      "mtime_ns": 1792339749259386707,
+      "ctime_ns": 1792339749259386707,
+      "sha256": "0c6e248aadf29712c68d4727537bed76072dc57241105f775169309941e3d2b1",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM23.compile.json": {
+      "device": 27,
+      "inode": 1581554,
+      "bytes": 439,
+      "mtime_ns": 1792339774280624458,
+      "ctime_ns": 1792339774280624458,
+      "sha256": "c11c71e54629e442eeff1bb0e875eda7cff651d085fdb08415c88046f493135c",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM24.compile.json": {
+      "device": 27,
+      "inode": 1581555,
+      "bytes": 439,
+      "mtime_ns": 1792339797721353062,
+      "ctime_ns": 1792339797721353062,
+      "sha256": "be7ed5749cb3bba606ee30af062a5e74e984e3e2197d43bb9ac122398f00afab",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM25.compile.json": {
+      "device": 27,
+      "inode": 1581556,
+      "bytes": 439,
+      "mtime_ns": 1792339821564810432,
+      "ctime_ns": 1792339821564810432,
+      "sha256": "fe149d0b16ab49476d892b523a7a357644fd075c89bfd9698af0fed485dd4459",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM26.compile.json": {
+      "device": 27,
+      "inode": 1581557,
+      "bytes": 439,
+      "mtime_ns": 1792339845371746884,
+      "ctime_ns": 1792339845371746884,
+      "sha256": "e6beafe9226ce1b182bf895797670b8895eb219e5edbb5bd65d2bfa9b1fdf771",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM27.compile.json": {
+      "device": 27,
+      "inode": 1581558,
+      "bytes": 439,
+      "mtime_ns": 1792339868644546787,
+      "ctime_ns": 1792339868644546787,
+      "sha256": "99395cd98973b6131a66ea863e614708ffc4adac6009d9b9d2107766f51fabe4",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM30.compile.json": {
+      "device": 27,
+      "inode": 1581559,
+      "bytes": 439,
+      "mtime_ns": 1792339898309161728,
+      "ctime_ns": 1792339898309161728,
+      "sha256": "5d5d68b9e362b66ae36995d421d2c9f24cd915b8472f60f010a67f9ea33a6a62",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM31.compile.json": {
+      "device": 27,
+      "inode": 1581560,
+      "bytes": 439,
+      "mtime_ns": 1792339924450365165,
+      "ctime_ns": 1792339924450365165,
+      "sha256": "584642b30b298b7e5cf27783c49ddecc44a92effcf8b09d53d09a2477f67bfe6",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM32.compile.json": {
+      "device": 27,
+      "inode": 1581561,
+      "bytes": 439,
+      "mtime_ns": 1792339956456074467,
+      "ctime_ns": 1792339956456074467,
+      "sha256": "cc6450018618fd6c95e9a03f087cf13b8af85248f90e0c46d7e2136fdb5957cd",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM34.compile.json": {
+      "device": 27,
+      "inode": 1581562,
+      "bytes": 439,
+      "mtime_ns": 1792339982566029523,
+      "ctime_ns": 1792339982566029523,
+      "sha256": "b5234fcd25d004ec899f2c39a461c77c3f0311fe8fae1ba3ef61ccca0a88f5dd",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM35.compile.json": {
+      "device": 27,
+      "inode": 1581563,
+      "bytes": 439,
+      "mtime_ns": 1792340007063493845,
+      "ctime_ns": 1792340007063493845,
+      "sha256": "06c54286b750e460b48ee882b2d8a147da4d0f20fac4b787480bfc08bfc55a89",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM41.compile.json": {
+      "device": 27,
+      "inode": 1581564,
+      "bytes": 439,
+      "mtime_ns": 1792340032347234704,
+      "ctime_ns": 1792340032347234704,
+      "sha256": "7d03cf0c7319fa2460868c8f863168908d5952794aaadfe571eb1543463b6b08",
+      "exists": true
+    },
+    "mutation-logs/bridge-SPM42.compile.json": {
+      "device": 27,
+      "inode": 1581565,
+      "bytes": 439,
+      "mtime_ns": 1792340066961516934,
+      "ctime_ns": 1792340066961516934,
+      "sha256": "c8beeed0ecbcbfe531c0ccd2712fee86bf91b10a5d1aa399d9213cc442e13255",
+      "exists": true
+    },
+    "mutation-logs/bridge-baseline.compile.json": {
+      "device": 27,
+      "inode": 1581528,
+      "bytes": 448,
+      "mtime_ns": 1792339148789219236,
+      "ctime_ns": 1792339148789219236,
+      "sha256": "b6238e8bde50ab7ab5b393ba0f8e0ab75aa70285a7dcb2638be3059c710b8fdc",
+      "exists": true
+    },
+    "mutation-logs/model-baseline.exceptions.json": {
+      "device": 27,
+      "inode": 1581635,
+      "bytes": 8049,
+      "mtime_ns": 1792340121355868776,
+      "ctime_ns": 1792340121355868776,
+      "sha256": "bb879a7a6c2f4b65dd39f97baf442dc24f93261fa412fd266febd01090f5cef3",
+      "exists": true
+    },
+    "mutation-logs/model-baseline.log": {
+      "device": 27,
+      "inode": 1581634,
+      "bytes": 4024,
+      "mtime_ns": 1792340121355577560,
+      "ctime_ns": 1792340121355577560,
+      "sha256": "7b17e3b96046eb10a78785b3cd05742f818f8ea724b82de6bef2d81bfb319b15",
+      "exists": true
+    },
+    "mutation-logs/native-baseline.exceptions.json": {
+      "device": 27,
+      "inode": 1581530,
+      "bytes": 10020,
+      "mtime_ns": 1792339174416186489,
+      "ctime_ns": 1792339174416186489,
+      "sha256": "a27a3fe90ef9e9b2250631894611f13ebeba474a25e5066b8f7bee37ec27d6ee",
+      "exists": true
+    },
+    "mutation-logs/native-baseline.log": {
+      "device": 27,
+      "inode": 1581529,
+      "bytes": 4998,
+      "mtime_ns": 1792339174415987433,
+      "ctime_ns": 1792339174415987433,
+      "sha256": "f2414a35630c9cefa7e777e81987e802eb274a8a995c56241e4b69dd81783de0",
+      "exists": true
+    },
+    "recorder.py": {
+      "device": 27,
+      "inode": 1581508,
+      "bytes": 19730,
+      "mtime_ns": 1792339122185885874,
+      "ctime_ns": 1792339122185885874,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "exists": true
+    },
+    "suite-logs.manifest.json": {
+      "device": 27,
+      "inode": 1581648,
+      "bytes": 3,
+      "mtime_ns": 1792340124365589452,
+      "ctime_ns": 1792340124365589452,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "exists": true
+    },
+    "tool-chrome.stderr": {
+      "device": 27,
+      "inode": 1581519,
+      "bytes": 199,
+      "mtime_ns": 1792339123616760423,
+      "ctime_ns": 1792339123616760423,
+      "sha256": "9cce10ed9e00d2731066cdec2befa7aadcbac0e4cd55dc744510fbca49744d51",
+      "exists": true
+    },
+    "tool-chrome.stdout": {
+      "device": 27,
+      "inode": 1581518,
+      "bytes": 29,
+      "mtime_ns": 1792339123616689026,
+      "ctime_ns": 1792339123616689026,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769",
+      "exists": true
+    },
+    "tool-chromium.stderr": {
+      "device": 27,
+      "inode": 1581521,
+      "bytes": 0,
+      "mtime_ns": 1792339123680958751,
+      "ctime_ns": 1792339123680958751,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "tool-chromium.stdout": {
+      "device": 27,
+      "inode": 1581520,
+      "bytes": 61,
+      "mtime_ns": 1792339123680958751,
+      "ctime_ns": 1792339123680958751,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9",
+      "exists": true
+    },
+    "tool-gcc.stderr": {
+      "device": 27,
+      "inode": 1581513,
+      "bytes": 0,
+      "mtime_ns": 1792339123564035229,
+      "ctime_ns": 1792339123564035229,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "tool-gcc.stdout": {
+      "device": 27,
+      "inode": 1581512,
+      "bytes": 232,
+      "mtime_ns": 1792339123564035229,
+      "ctime_ns": 1792339123564035229,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81",
+      "exists": true
+    },
+    "tool-node.stderr": {
+      "device": 27,
+      "inode": 1581517,
+      "bytes": 0,
+      "mtime_ns": 1792339123573349654,
+      "ctime_ns": 1792339123573349654,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "tool-node.stdout": {
+      "device": 27,
+      "inode": 1581516,
+      "bytes": 9,
+      "mtime_ns": 1792339123573349654,
+      "ctime_ns": 1792339123573349654,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "exists": true
+    },
+    "tool-python.stderr": {
+      "device": 27,
+      "inode": 1581515,
+      "bytes": 0,
+      "mtime_ns": 1792339123567009302,
+      "ctime_ns": 1792339123567009302,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "tool-python.stdout": {
+      "device": 27,
+      "inode": 1581514,
+      "bytes": 15,
+      "mtime_ns": 1792339123567009302,
+      "ctime_ns": 1792339123567009302,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "exists": true
+    }
+  }
+}

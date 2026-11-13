@@ -1,0 +1,44 @@
+{
+  "product_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+  "base_sha": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+  "source_tests": {
+    "run": 29,
+    "failure": 0,
+    "error": 0,
+    "skip": 0,
+    "exit": 0
+  },
+  "profile128": {
+    "seconds": 10.398193599001388,
+    "exit": 0,
+    "stdout_equal_base": true,
+    "memory_limit": "RUSAGE_CHILDREN cumulative max includes compiler; not runtime RSS"
+  },
+  "graph": {
+    "cases": 172,
+    "exit": 0,
+    "stdout_stderr_ordered_graph_five_guards_seal_counts": "all byte equal; no whitelist"
+  },
+  "F1_partial": {
+    "execution_sha": "ac1d8017038ee9563f0cbd8596ea61c8b2577b19",
+    "load512_seconds": 546.118480765,
+    "canonical_first_seconds": 590.55489676,
+    "both_exit": 0,
+    "canonical_second": "capture ENOSPC; incomplete terminal",
+    "sequential_history": "not started: publication reserve check failed",
+    "outer_exit": 1
+  },
+  "observer_smoke": {
+    "run": 1,
+    "exit": 0,
+    "not_formal_h7": true
+  },
+  "formal512_F2": "not yet executed",
+  "ledger_architecture_full_integration": "pending",
+  "upstream_chain": "blocked",
+  "archive": {
+    "files": 6076,
+    "bytes": 6346587,
+    "sha256": "33a3b5ad029f7d084f38fca9f0453514d1608f556d1c078c02d17e22e27a025d"
+  }
+}

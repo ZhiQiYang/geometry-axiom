@@ -1,0 +1,226 @@
+tests/test_geo261_definition_graph_product.py:30:     def test_member_pose_uses_authored_anchor_role_and_typed_literal_dimensions(self):
+tests/test_geo261_definition_graph_product.py:31:         envelope = self.execute(SCENE + 'timber 71 27 33 role primary\n')
+tests/test_geo261_definition_graph_product.py:32:         nodes, edges = self.nodes(envelope), self.edges(envelope)
+tests/test_geo261_definition_graph_product.py:33:         pose = 'woodworking.member.pose', struct.pack('=I', 1)
+tests/test_geo261_definition_graph_product.py:34:         for kind in (1, 2):
+tests/test_geo261_definition_graph_product.py:35:             self.assertIn((pose, self.source(kind, 1), 'definition-required'), edges)
+tests/test_geo261_definition_graph_product.py:36:         for kind, value in ((3, '40'), (4, '50')):
+tests/test_geo261_definition_graph_product.py:37:             self.assertIn((pose, self.source(kind, 1), 'value-required'), edges)
+tests/test_geo261_definition_graph_product.py:38:             self.assertIn((self.source(kind, 1), self.source(1, 1), 'definition-required'), edges)
+tests/test_geo261_definition_graph_product.py:39:             self.assertEqual(value, nodes[self.source(kind, 1)]['value']['num'])
+tests/test_geo261_definition_graph_product.py:40:         declaration = base64.b64decode(nodes[self.source(1, 1)]['value']['contentBase64'], validate=True)
+tests/test_geo261_definition_graph_product.py:41:         self.assertEqual(struct.pack('>IBIqBqBq', 1, 1, 0, 1, 1, 40, 1, 50), declaration)
+tests/test_geo261_definition_graph_product.py:42:         self.assertIn(self.source(1, 71), nodes)
+tests/test_geo261_definition_graph_product.py:43:         self.assertIn(self.source(2, 71), nodes)
+tests/test_geo261_definition_graph_product.py:44:         self.assertNotIn(self.source(3, 71), nodes)
+tests/test_geo261_definition_graph_product.py:45:         self.assertNotIn(self.source(4, 71), nodes)
+tests/test_geo261_definition_graph_product.py:46:         self.assertTrue(all(root['kind'] != 'wood.definition' for root in envelope['neutralSources']['roots']))
+tests/test_geo261_wood_product.py:12: SCENE='surface 1 origin 0 0 0 u +x v +y outline 0,0 1000,0 1000,1000 0,1000\nspec x 500\nguide 1 1 v spec:x\ntimber 1 40 50 role boundary\nplace 1 on 1 at-face e0 +u +n\n'
+tests/test_geo261_model_sources.py:34: class ModelSources(unittest.TestCase):
+tests/test_geo261_model_sources.py:35:     def execute(self,text,neutral=True,exe=None):
+tests/test_geo261_model_sources.py:36:         build=native();path=build.work/'model-neutral.scene';path.write_text(text,encoding='utf-8')
+tests/test_geo261_model_sources.py:37:         command=[str(exe or build.model_base())]+(['--neutral-sources'] if neutral else [])+[str(path)]
+tests/test_geo261_model_sources.py:38:         run=subprocess.run(command,capture_output=True,text=True,encoding='utf-8',timeout=30)
+tests/test_geo261_model_sources.py:39:         self.assertEqual(0,run.returncode,run.stderr+'\n'+run.stdout)
+tests/test_geo261_model_sources.py:40:         data=json.loads(run.stdout);self.assertTrue(data['ok'],data);return data
+current_geometry.c:7056: static bool apply_timber_line(const char *path,int line_no,char *tokens[],int count,World *world)
+current_geometry.c:7057: {
+current_geometry.c:7058:     WoodMemberDeclarationContext context={world->wood.timbers,&world->wood.timber_count,WORLD_MAX_TIMBERS,
+current_geometry.c:7059:         world,app_member_declaration_owned,app_member_declaration_replace};
+current_geometry.c:7060:     const char *error=NULL;
+current_geometry.c:7061:     if(!wood_member_declaration_capacity(&context,count>=2,
+current_geometry.c:7062:             count>=2?(uint32_t)strtoul(tokens[1],NULL,10):0,&error)){
+current_geometry.c:7063:         scene_error(path,line_no,error);return false;
+current_geometry.c:7064:     }
+current_geometry.c:7065:     /* H decodes the legacy grammar; W decides role and admission policy. */
+current_geometry.c:7066:     if(count<5||strcmp(tokens[4],"role")){
+current_geometry.c:7067:         scene_error(path,line_no,
+current_geometry.c:7068:             "D7/I18: timber id A尺寸 B尺寸 role 必填；明寫長度已廢除 "
+current_geometry.c:7069:             "role boundary|primary|secondary|custom [priority N]");return false;
+current_geometry.c:7070:     }
+current_geometry.c:7071:     if(count<6){scene_error(path,line_no,"role 後面要接角色名");return false;}
+current_geometry.c:7072:     WoodMemberRole role;
+current_geometry.c:7073:     if(!wood_member_declaration_role(tokens[5],&role,&error)){scene_error(path,line_no,error);return false;}
+current_geometry.c:7074:     Coord priority=0;
+current_geometry.c:7075:     bool supplied=count>6&&!strcmp(tokens[6],"priority");
+current_geometry.c:7076:     bool valid=role==WOOD_MEMBER_ROLE_CUSTOM&&supplied&&count>=8&&parse_i64(tokens[7],&priority);
+current_geometry.c:7077:     if(!wood_member_declaration_priority(role,supplied,valid,priority,&error)){scene_error(path,line_no,error);return false;}
+current_geometry.c:7078:     int tail=role==WOOD_MEMBER_ROLE_CUSTOM?8:6;
+current_geometry.c:7079:     if(count!=tail){scene_error(path,line_no,"timber 行有多餘欄位");return false;}
+current_geometry.c:7080:     uint32_t id;Coord size_a,size_b;
+current_geometry.c:7081:     if(!parse_u32(tokens[1],&id)||!parse_coord(tokens[2],&size_a)||!parse_coord(tokens[3],&size_b)){
+current_geometry.c:7082:         scene_error(path,line_no,"timber auto 需要：id A尺寸 B尺寸（都是整數）");return false;
+current_geometry.c:7083:     }
+current_geometry.c:7084:     if(!wood_member_declare(&context,id,size_a,size_b,role,priority,&error)){
+current_geometry.c:7085:         if(error)scene_error(path,line_no,error);return false;
+current_geometry.c:7086:     }
+current_geometry.c:7087:     return true;
+geometry-templates/woodworking/native/member_declaration.c:30: bool wood_member_declare(WoodMemberDeclarationContext *context,uint32_t id,GeoCoord size_a,GeoCoord size_b,
+geometry-templates/woodworking/native/member_declaration.c:31:     WoodMemberRole role,GeoCoord priority,const char **error)
+geometry-templates/woodworking/native/member_declaration.c:32: {
+geometry-templates/woodworking/native/member_declaration.c:33:     if(context->owned&&context->owned(context->user,id))return declaration_refuse(error,"I42: edit the owning assembly instance");
+geometry-templates/woodworking/native/member_declaration.c:34:     for(size_t i=0;i<*context->count;++i)if(context->members[i].id==id){
+geometry-templates/woodworking/native/member_declaration.c:35:         WoodMember updated;
+geometry-templates/woodworking/native/member_declaration.c:36:         if(!wood_member_construct(id,0,size_a,size_b,true,role,priority,&updated))return false;
+geometry-templates/woodworking/native/member_declaration.c:37:         updated.placed=context->members[i].placed;
+geometry-templates/woodworking/native/member_declaration.c:38:         return context->replace(context->user,&context->members[i],&updated);
+geometry-templates/woodworking/native/member_declaration.c:39:     }
+geometry-templates/woodworking/native/member_declaration.c:40:     if(!wood_member_construct(id,0,size_a,size_b,true,role,priority,&context->members[*context->count]))
+geometry-templates/woodworking/native/member_declaration.c:41:         return declaration_refuse(error,"角材的長度與 A/B 尺寸都要大於 0");
+geometry-templates/woodworking/native/member_declaration.c:42:     ++*context->count;return true;
+geometry-templates/woodworking/native/members.c:86:     *out_timber = (WoodMember){
+geometry-templates/woodworking/native/members.c:87:         .id = id,
+geometry-templates/woodworking/native/members.c:88:         .length = length,
+geometry-templates/woodworking/native/members.c:89:         .size_a = size_a,
+geometry-templates/woodworking/native/members.c:90:         .size_b = size_b,
+geometry-templates/woodworking/native/members.c:91:         .auto_length = auto_length,
+geometry-templates/woodworking/native/members.c:92:         .placed = false,
+geometry-templates/woodworking/native/members.c:93:         .role = role,
+geometry-templates/woodworking/native/members.c:94:         .cut_priority = role == WOOD_MEMBER_ROLE_CUSTOM
+geometry-templates/woodworking/native/members.c:95:             ? custom_priority
+geometry-templates/woodworking/native/members.c:96:             : (GeoCoord)role + 1,
+geometry-templates/woodworking/native/members.c:97: 
+geometry-templates/woodworking/native/members.c:98:         /* 尚未放置前，先使用標準局部框架。 */
+geometry-templates/woodworking/native/members.c:99:         .origin = { 0, 0, 0 },
+geometry-templates/woodworking/native/members.c:100:         .axis_length = { 1, 0, 0 },
+current_geometry.c:9977:     /*
+current_geometry.c:9978:      * 沒放置的角材沒有位置，既印不出也畫不出，一定是場景檔漏了 place。
+current_geometry.c:9979:      * 擋在這裡，後面就能確定 World 裡的角材都已放置。
+current_geometry.c:9980:      */
+current_geometry.c:9981:     for (size_t i = 0; ok && i < out_world->wood.timber_count; ++i) {
+current_geometry.c:9982:         if (!out_world->wood.timbers[i].placed) {
+current_geometry.c:9983:             fprintf(stderr, "%s: 角材 %" PRIu32 " 沒有 place。\n",
+current_geometry.c:9984:                     path, out_world->wood.timbers[i].id);
+current_geometry.c:9985:             /* 也要記進緩衝:bridge 的 loadfile 只拿得到緩衝,
+current_geometry.c:9986:              * 不然它回 error:""——拒絕沒有理由(GEO-174,fuzz 找到)。 */
+current_geometry.c:9987:             snprintf(g_scene_last_error, sizeof g_scene_last_error,
+current_geometry.c:9988:                      "角材 %" PRIu32 " 沒有 place（收尾時仍未放置，I9）",
+current_geometry.c:9989:                      out_world->wood.timbers[i].id);
+current_geometry.c:9990:             ok = false;
+current_geometry.c:9991:         }
+current_geometry.c:9992:     }
+current_geometry.c:9993: 
+current_geometry.c:9994:     if (ok && !grid_rules_scene_integrity(out_world)) { scene_error(path,line_no,"I25a: source rule capability/highwater closure missing"); ok=false; }
+current_geometry.c:9995:     if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
+current_geometry.c:9996:     if (ok && !fs_scene_integrity()) { scene_error(path,line_no,"I56: panel-fill/1 also requires engineering-spec/1 and parameters/1 declarations"); ok=false; }
+current_geometry.c:9997: 
+current_geometry.c:9998:     /* 全部擋面就位後才重驗（grid-ref / I19 / I23 都走這裡），失敗整份拒絕。 */
+current_geometry.c:9999:     if (ok && !world_revalidate(out_world)) {
+current_geometry.c:10000:         scene_error(path, line_no,
+current_geometry.c:10001:             g_revalidate_error[0] != '\0'
+current_geometry.c:10002:                 ? g_revalidate_error
+current_geometry.c:10003:                 : "場景收尾重驗失敗");
+current_geometry.c:10004:         ok = false;
+current_geometry.c:10005:     }
+current_geometry.c:10006: 
+current_geometry.c:10007:     g_parsing_scene_file = false;
+current_geometry.c:10008:     g_parameter_scene_loading = false;
+current_geometry.c:10009:     return ok;
+geometry-core/model_base.c:430:     bool neutral=argc==3&&!strcmp(argv[1],"--neutral-sources");
+geometry-core/model_base.c:431:     if (argc != 2 && !neutral) return model_error("INVALID", "BASE_ARGUMENT", "D25", "Expected one scene file path.");
+geometry-core/model_base.c:432:     const char *path=argv[neutral?2:1];char before[65];
+geometry-core/model_base.c:433:     if(neutral&&!model_source_fingerprint(path,before))return model_error("INVALID","BASE_SOURCE","I9","Cannot fingerprint source scene.");
+geometry-core/model_base.c:434:     char error[512] = ""; bool capacity = false, unsupported = false;
+geometry-core/model_base.c:435:     if (!model_source_check(path, neutral, &capacity, &unsupported, error, sizeof error))
+geometry-core/model_base.c:436:         return model_error(capacity||unsupported ? "UNSUPPORTED" : "INVALID", capacity ? "BASE_CAPACITY" : unsupported ? "CAPABILITY" : "BASE_SOURCE", capacity ? "I33" : unsupported ? "I32" : "I9", error);
+geometry-core/model_base.c:437:     /* One process-owned World; nested transactions retain the 16 MiB stack budget. */
+geometry-core/model_base.c:438:     static World world;
+geometry-core/model_base.c:439:     memset(&world,0,sizeof world);
+geometry-core/model_base.c:440:     if (!parse_scene_file(path, &world)) {
+geometry-core/model_base.c:441:         const char *why = scene_last_error();
+geometry-core/model_base.c:442:         capacity = strstr(why, "超過上限") || strstr(why, "capacity exceeded") || strstr(why, "CAPACITY");
+geometry-core/model_base.c:443:         if (!why[0]) why = "Scene failed legacy validation, including required placement of every timber.";
+geometry-core/model_base.c:444:         return model_error(capacity ? "UNSUPPORTED" : "INVALID", capacity ? "BASE_CAPACITY" : "BASE_INVALID", capacity ? "I33" : "I9", why);
+geometry-core/model_base.c:469:     ModelSources sources={0};
+geometry-core/model_base.c:470:     char candidate[65],after[65];
+geometry-core/model_base.c:471:     if(neutral){
+geometry-core/model_base.c:472:         geo_sha256(canonical,used,candidate);
+geometry-core/model_base.c:473:         if(!model_sources_build(&sources,&world)){
+geometry-core/model_base.c:474:             model_sources_free(&sources);free(canonical);
+geometry-core/model_base.c:475:             return model_error("INVALID","BASE_SOURCES","I9","Could not resolve the same-candidate neutral sources.");
+geometry-core/model_base.c:476:         }
+geometry-app/native/model_sources.inc:168:     if(!wood_assembly_generation_prepare(&assembly_context))return false;
+geometry-app/native/model_sources.inc:169:     geo_guides_reset_resolved(&world->geo.guide_lines);
+geometry-app/native/model_sources.inc:170:     for(size_t i=0;i<world->wood.timber_count;++i){state->reference.wanted[i]=world->wood.timbers[i].placed;world->wood.timbers[i].placed=false;}
+geometry-app/native/model_sources.inc:171:     /* Re-evaluate through the actual source engine, preserving dependency order.
+geometry-app/native/model_sources.inc:172:      * This process owns the candidate and exposes nothing until all roots pass. */
+geometry-app/native/model_sources.inc:173:     if(!reference_eval_datums(&state->reference))return false;
+geometry-app/native/model_sources.inc:174:     for(size_t i=0;i<world->wood.timber_count;++i)if(!reference_eval_timber(&state->reference,i))return false;
+geometry-app/native/model_sources.inc:175:     for(size_t i=0;i<geo_guides_count(&world->geo.guide_lines);++i)if(!reference_eval_guide(&state->reference,i))return false;
+geometry-app/native/model_sources.inc:176:     if(!wood_assembly_generation_check(&assembly_context)||!wood_assembly_sources_definitions(state->reference.assembly_sources))return false;
+geometry-app/native/model_sources.inc:177:     if(!wood_engineering_sources_definitions(state->reference.engineering_sources)||
+geometry-app/native/model_sources.inc:178:         !wood_engineering_sources_metadata(state->reference.engineering_sources)||
+geometry-app/native/model_sources.inc:179:         !geo_version_sources_definitions(state->reference.version_sources)||
+geometry-app/native/model_sources.inc:180:         !wood_sp_sources_complete(state->reference.section_profile_sources)||
+geometry-app/native/model_sources.inc:181:         !geo_parameter_sources_definitions(state->reference.parameter_sources,&parameter_error)||
+geometry-app/native/model_sources.inc:182:         !geo_linear_definition_sources_complete(state->reference.linear_definition_sources)||
+geometry-app/native/model_sources.inc:183:         !app_enclosure_sources_complete(&state->reference)||!wood_definition_sources_complete(state->reference.definition_sources)||
+geometry-app/native/model_sources.inc:184:         !wood_finish_sources_definitions(state->reference.finish_sources)||
+geometry-app/native/model_sources.inc:185:         !geo_region_key_sources_definitions(state->reference.region_key_sources)||
+geometry-app/native/model_sources.inc:186:         !wood_grid_sources_definitions(state->reference.grid_sources,engineering_error,sizeof engineering_error))return false;
+geometry-app/native/model_sources.inc:207:     for(size_t i=0;i<world->wood.timber_count;++i){
+geometry-app/native/model_sources.inc:208:         ModelSourceItem *item=model_sources_add(state,"timber",world->wood.timbers[i].id,"solid.box",0,false,GEO_SOURCE_BOX);if(!item)return false;
+geometry-app/native/model_sources.inc:209:         item->descriptor.context=(GeoSourceContext){true,world->wood.anchors[i].placement_id,-1};
+geometry-app/native/model_sources.inc:210:     }
+geometry-app/native/model_sources.inc:48: static bool model_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSourceRef *ref,GeoSourceValue *out)
+geometry-app/native/model_sources.inc:49: {
+geometry-app/native/model_sources.inc:50:     ModelSources *state=opaque;ModelSourceItem *item=model_source_item(state,ref);
+geometry-app/native/model_sources.inc:51:     if(!item||ctx!=state->reference.sources)return false;
+geometry-app/native/model_sources.inc:52:     if(!strcmp(item->kind,"timber")){
+geometry-app/native/model_sources.inc:53:         uint32_t id=item->id;
+geometry-app/native/model_sources.inc:54:         return geo_eval_source(ctx,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;
+geometry-app/native/model_sources.inc:55:     }
+geometry-core/references.inc:568: }
+geometry-core/references.inc:569: static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
+geometry-core/references.inc:570: {
+geometry-core/references.inc:571:     if(!ctx->use_current_values&&!app_assembly_replaying()&&ctx->wanted[i]){
+geometry-core/references.inc:572:         Timber *member=&ctx->world->wood.timbers[i];
+geometry-core/references.inc:573:         if(assembly_owned(ctx->world,member->id)){
+geometry-core/references.inc:574:             GeoCoord width,depth;
+geometry-core/references.inc:575:             if(!wood_assembly_sources_owned_dimensions(ctx->assembly_sources,member->id,&width,&depth))return false;
+geometry-core/references.inc:576:             member->size_a=width;member->size_b=depth;
+geometry-core/references.inc:577:         }else{
+geometry-core/references.inc:578:             WoodEngineeringContext engineering=app_eng_context(ctx->world);
+geometry-core/references.inc:579:             wood_engineering_sources_bind(ctx->engineering_sources,&engineering);
+geometry-core/references.inc:580:             for(int field=0;field<2;++field){EngTarget target={1,member->id,0,field};
+geometry-core/references.inc:581:                 const EngBinding *binding=wood_eng_binding(&engineering,&target);GeoCoord dimension;
+geometry-core/references.inc:582:                 if(binding){if(!wood_eng_effective(&engineering,binding,&dimension,NULL,0))return false;}
+geometry-core/references.inc:583:                 else if(!wood_definition_sources_dimension(ctx->definition_sources,member->id,field!=0,&dimension))return false;
+geometry-core/references.inc:584:                 if(field)member->size_b=dimension;else member->size_a=dimension;
+geometry-core/references.inc:585:             }
+geometry-core/references.inc:586:         }
+geometry-core/references.inc:587:     }
+geometry-core/references.inc:588:     AppMemberReferenceContext c={0};c.evaluation=ctx;c.world=ctx->world;WoodMemberReferenceContext context=app_member_reference_context(&c);bool place=false;if(!wood_member_reference_compute(&context,i,&place))return false;return !place||reference_place_geometry(ctx,ctx->world,i);
+geometry-core/references.inc:446: static bool app_member_reference_at(void *user,size_t i,WoodMemberReferenceFact *out)
+geometry-core/references.inc:447: {
+geometry-core/references.inc:448:     AppMemberReferenceContext *c=user;World *w=c->world;if(i>=w->wood.timber_count)return false;
+geometry-core/references.inc:449:     const TimberAnchor *a=&w->wood.anchors[i];TimberAnchor authored;out->member=w->wood.timbers[i];out->wanted=c->evaluation&&c->evaluation->wanted[i];
+geometry-core/references.inc:450:     if(c->evaluation&&!c->evaluation->use_current_values){WoodMemberDefinition definition;
+geometry-core/references.inc:451:         if(!wood_definition_sources_member(c->evaluation->definition_sources,out->member.id,&definition)||
+geometry-core/references.inc:452:            !wood_definition_sources_placement(c->evaluation->definition_sources,out->member.id,&authored))return false;
+geometry-core/references.inc:453:         out->member.role=definition.role;out->member.cut_priority=definition.priority;out->member.auto_length=definition.auto_length;a=&authored;
+geometry-core/references.inc:454:     }
+geometry-core/references.inc:657: static bool reference_rebuild(World *w)
+geometry-core/references.inc:658: {
+geometry-core/references.inc:659:     ReferenceEval local={0},*ctx=&local;bool persistent=false;
+geometry-core/references.inc:660:     if(g_active_app_candidate&&w==&g_active_app_candidate->after){
+geometry-core/references.inc:661:         ctx=app_candidate_evaluation_state(g_active_app_candidate->control);
+geometry-core/references.inc:662:         if(!ctx||ctx->world!=w)ctx=reference_sources_begin_candidate(w);
+geometry-core/references.inc:663:         if(!ctx)return false;persistent=true;
+geometry-core/references.inc:664:     }
+geometry-core/references.inc:665:     ctx->world=w;bool ok=true;
+geometry-core/references.inc:666:     geo_guides_reset_resolved(&w->geo.guide_lines);
+geometry-core/references.inc:667:     for (size_t i=0;i<w->wood.timber_count;++i) { ctx->wanted[i]=w->wood.timbers[i].placed; w->wood.timbers[i].placed=false; }
+geometry-core/references.inc:668:     if (!reference_eval_datums(ctx)) { if (g_reference_capturing) g_reference_trial=*w; if(!persistent)reference_sources_dispose(ctx); return false; }
+geometry-core/references.inc:669:     /* Timbers drive guide evaluation as needed; remaining guides are then evaluated. */
+geometry-core/references.inc:670:     for (size_t i=0;i<w->wood.timber_count;++i) if (ctx->wanted[i] && !reference_eval_timber(ctx,i)) ok=false;
+geometry-core/references.inc:671:     for (size_t i=0;i<geo_guides_count(&w->geo.guide_lines);++i) if (!reference_eval_guide(ctx,i)) ok=false;
+geometry-core/references.inc:672:     if (g_reference_capturing) g_reference_trial=*w;
+geometry-core/references.inc:673:     if(!persistent)reference_sources_dispose(ctx);return ok;
+geometry-templates/woodworking/native/member_reference.c:150: bool wood_member_reference_compute(const WoodMemberReferenceContext *w,size_t i,bool *needs_placement)
+geometry-templates/woodworking/native/member_reference.c:151: {
+geometry-templates/woodworking/native/member_reference.c:152:     *needs_placement=false;
+geometry-templates/woodworking/native/member_reference.c:153:     WoodMemberReferenceFact value;if(!w->member_at(w->user,i,&value))return false;
+geometry-templates/woodworking/native/member_reference.c:154:     WoodMember *t=&value.member;WoodMemberReference *a=&value.anchor;
+geometry-templates/woodworking/native/member_reference.c:155:     if(w->use_current_values&&t->placed)return true;
+geometry-templates/woodworking/native/member_reference.c:156:     if(!value.wanted)return false;

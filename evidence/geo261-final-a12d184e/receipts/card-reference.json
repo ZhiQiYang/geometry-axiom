@@ -1,0 +1,321 @@
+{
+  "schema": "geo261-cloud-special-command/1",
+  "sha": "a12d184ec1865ad078700cea2387ac69e82ab62a",
+  "label": "card-reference",
+  "checkout_before": {
+    "head": "a12d184ec1865ad078700cea2387ac69e82ab62a",
+    "root": "/tmp/g261a1/source-final",
+    "status": ""
+  },
+  "command": [
+    "bash",
+    "/tmp/g261a1/tools/card_ref_mutations.sh",
+    "a12d184ec1865ad078700cea2387ac69e82ab62a",
+    "cloud-resume"
+  ],
+  "cwd": "/tmp/g261a1/source-final",
+  "started": "2026-10-22T17:09:55.416104+00:00",
+  "environment": {
+    "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "XDG_DATA_HOME": "/workspace/geo261-environment/xdg-data",
+    "XDG_CACHE_HOME": "/workspace/geo261-environment/xdg-cache",
+    "TMPDIR": "/tmp/g261a1/tmp/special/card-reference",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "stack_limit": [
+    16777216,
+    -1
+  ],
+  "wrapper_sha256": "b3d5de8eaab1029518c59d792c2f56e8b41ff3d60e610f7411c5ac441b7d33d4",
+  "capture_driver_sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310",
+  "status": "完成",
+  "exit_code": 0,
+  "versions": [
+    {
+      "command": [
+        "google-chrome",
+        "--version"
+      ],
+      "cwd": "/tmp/g261a1/source-final",
+      "started": "2026-10-22T17:09:55.417737+00:00",
+      "stdout": "/tmp/g261a1/special/card-reference/versions/0.stdout",
+      "stderr": "/tmp/g261a1/special/card-reference/versions/0.stderr",
+      "combined": "/tmp/g261a1/special/card-reference/versions/0.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T17:09:55.450526+00:00",
+      "seconds": 0.032800314998894464,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "cwd": "/tmp/g261a1/source-final",
+      "started": "2026-10-22T17:09:55.451397+00:00",
+      "stdout": "/tmp/g261a1/special/card-reference/versions/1.stdout",
+      "stderr": "/tmp/g261a1/special/card-reference/versions/1.stderr",
+      "combined": "/tmp/g261a1/special/card-reference/versions/1.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T17:09:55.457606+00:00",
+      "seconds": 0.006213002001459245,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "cwd": "/tmp/g261a1/source-final",
+      "started": "2026-10-22T17:09:55.457860+00:00",
+      "stdout": "/tmp/g261a1/special/card-reference/versions/2.stdout",
+      "stderr": "/tmp/g261a1/special/card-reference/versions/2.stderr",
+      "combined": "/tmp/g261a1/special/card-reference/versions/2.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T17:09:55.459743+00:00",
+      "seconds": 0.0018835579976439476,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "cwd": "/tmp/g261a1/source-final",
+      "started": "2026-10-22T17:09:55.459861+00:00",
+      "stdout": "/tmp/g261a1/special/card-reference/versions/3.stdout",
+      "stderr": "/tmp/g261a1/special/card-reference/versions/3.stderr",
+      "combined": "/tmp/g261a1/special/card-reference/versions/3.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T17:09:55.461466+00:00",
+      "seconds": 0.0016077529980975669,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "--version"
+      ],
+      "cwd": "/tmp/g261a1/source-final",
+      "started": "2026-10-22T17:09:55.461690+00:00",
+      "stdout": "/tmp/g261a1/special/card-reference/versions/4.stdout",
+      "stderr": "/tmp/g261a1/special/card-reference/versions/4.stderr",
+      "combined": "/tmp/g261a1/special/card-reference/versions/4.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T17:09:55.462862+00:00",
+      "seconds": 0.0011724369978765026,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "/usr/bin/gcc",
+        "--version"
+      ],
+      "cwd": "/tmp/g261a1/source-final",
+      "started": "2026-10-22T17:09:55.462967+00:00",
+      "stdout": "/tmp/g261a1/special/card-reference/versions/5.stdout",
+      "stderr": "/tmp/g261a1/special/card-reference/versions/5.stderr",
+      "combined": "/tmp/g261a1/special/card-reference/versions/5.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T17:09:55.464162+00:00",
+      "seconds": 0.0011970939995080698,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    }
+  ],
+  "result": {
+    "command": [
+      "bash",
+      "/tmp/g261a1/tools/card_ref_mutations.sh",
+      "a12d184ec1865ad078700cea2387ac69e82ab62a",
+      "cloud-resume"
+    ],
+    "cwd": "/tmp/g261a1/source-final",
+    "started": "2026-10-22T17:09:55.464280+00:00",
+    "stdout": "/tmp/g261a1/special/card-reference/command.stdout",
+    "stderr": "/tmp/g261a1/special/card-reference/command.stderr",
+    "combined": "/tmp/g261a1/special/card-reference/command.combined.log",
+    "timeout_seconds": 14400,
+    "ended": "2026-10-22T17:21:29.983434+00:00",
+    "seconds": 694.5191981809985,
+    "actual_process_returncode": 0,
+    "exit_code": 0,
+    "watchdog_expired": false,
+    "owned_process_group_cleanup": false
+  },
+  "checkout_after": {
+    "head": "a12d184ec1865ad078700cea2387ac69e82ab62a",
+    "root": "/tmp/g261a1/source-final",
+    "status": ""
+  },
+  "ended": "2026-10-22T17:21:30.063722+00:00",
+  "seconds": 694.6460259349988,
+  "files": {
+    "command.combined.log": {
+      "bytes": 429,
+      "sha256": "043360d1f54fc63bd8ffab689f284547a80e773747dc366a9073d43301ed6fe4",
+      "mtime_ns": 1792689689976417967
+    },
+    "command.command.json": {
+      "bytes": 666,
+      "sha256": "272ebcfc184e4ee9243f77f3b8358154f110aab9aa1d909d3c5cee500c775759",
+      "mtime_ns": 1792689689983644052
+    },
+    "command.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792688995464224546
+    },
+    "command.stdout": {
+      "bytes": 429,
+      "sha256": "043360d1f54fc63bd8ffab689f284547a80e773747dc366a9073d43301ed6fe4",
+      "mtime_ns": 1792689689976417967
+    },
+    "versions/0.combined.log": {
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "mtime_ns": 1792688995446588523
+    },
+    "versions/0.command.json": {
+      "bytes": 586,
+      "sha256": "9b2af014f01163ac8ec827208a9f22c22752aee2efc3020bda3d36a4289daef9",
+      "mtime_ns": 1792688995451271668
+    },
+    "versions/0.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792688995417686870
+    },
+    "versions/0.stdout": {
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "mtime_ns": 1792688995446588523
+    },
+    "versions/1.combined.log": {
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "mtime_ns": 1792688995454588713
+    },
+    "versions/1.command.json": {
+      "bytes": 577,
+      "sha256": "65d7601e1c4195d535ea4947c9a4fab9c927368c67a687026afe3bbd76c037f6",
+      "mtime_ns": 1792688995457723310
+    },
+    "versions/1.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792688995451419871
+    },
+    "versions/1.stdout": {
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "mtime_ns": 1792688995454588713
+    },
+    "versions/2.combined.log": {
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "mtime_ns": 1792688995458588807
+    },
+    "versions/2.command.json": {
+      "bytes": 581,
+      "sha256": "a5c9317af3ec7d8a9c18aae5b816363732a57edd7db4623e1072114719a51307",
+      "mtime_ns": 1792688995459813329
+    },
+    "versions/2.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792688995457874458
+    },
+    "versions/2.stdout": {
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "mtime_ns": 1792688995458588807
+    },
+    "versions/3.combined.log": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "mtime_ns": 1792688995461206468
+    },
+    "versions/3.command.json": {
+      "bytes": 576,
+      "sha256": "2ee0c94c82ef20b5d6850fc9935068a3c5d0cc542da42ce6d77bc7962a5df6d2",
+      "mtime_ns": 1792688995461643767
+    },
+    "versions/3.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792688995459870615
+    },
+    "versions/3.stdout": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "mtime_ns": 1792688995459870615
+    },
+    "versions/4.combined.log": {
+      "bytes": 14,
+      "sha256": "01870de7caca112afeefd77b3c3b4c5e263cf5539a33af3f3411100727fad7d3",
+      "mtime_ns": 1792688995462826860
+    },
+    "versions/4.command.json": {
+      "bytes": 590,
+      "sha256": "a4e2658b58cdb1b440d7fca91d814518691425acd7ca6c28157a80e7711002d0",
+      "mtime_ns": 1792688995462927462
+    },
+    "versions/4.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792688995461701364
+    },
+    "versions/4.stdout": {
+      "bytes": 14,
+      "sha256": "01870de7caca112afeefd77b3c3b4c5e263cf5539a33af3f3411100727fad7d3",
+      "mtime_ns": 1792688995461701364
+    },
+    "versions/5.combined.log": {
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81",
+      "mtime_ns": 1792688995464117906
+    },
+    "versions/5.command.json": {
+      "bytes": 586,
+      "sha256": "5b4283dbe8f0a15997a3abe368689920299b43ff5932a227e6719d0cf71664f3",
+      "mtime_ns": 1792688995464224546
+    },
+    "versions/5.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792688995462975354
+    },
+    "versions/5.stdout": {
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81",
+      "mtime_ns": 1792688995462975354
+    },
+    "wrapper.py.txt": {
+      "bytes": 5422,
+      "sha256": "b3d5de8eaab1029518c59d792c2f56e8b41ff3d60e610f7411c5ac441b7d33d4",
+      "mtime_ns": 1792688995417480099
+    }
+  }
+}

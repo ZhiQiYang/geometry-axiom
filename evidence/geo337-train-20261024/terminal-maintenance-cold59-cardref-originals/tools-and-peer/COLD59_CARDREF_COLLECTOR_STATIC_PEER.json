@@ -1,0 +1,14 @@
+{
+  "schema": "independent-cold59-cardref-collector-static-peer-v1",
+  "checks": 19,
+  "exit_code": 0,
+  "findings": [],
+  "collector_sha256": "e4b0056a2dc08a5b1900f26abbeb7644726464a5a75d77b8a0fb226051a0c1b5",
+  "original_collector_sha256": "526219f78a90c4cd95193e596fed52ce12be928150e0c5c9045b4e3fad0a8c3f",
+  "scope": "Static exact collection-only adaptation; no collection or subject executed by reviewer. Actual package requires separate byte roundtrip peer.",
+  "limits": [
+    "Original output must be terminal and original actual peers0; missing prerequisite files must fail.",
+    "Scope contains59 exact cold operations plus closed cardref preparation/execution metadata, not the cold receipt bodies or116 ELF payloads.",
+    "Original tar lookup implementation is retained; no product assertion, threshold or source modified."
+  ]
+}

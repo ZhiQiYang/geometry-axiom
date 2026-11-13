@@ -1,0 +1,4 @@
+PASS case helpers: schema, safe metadata paths/URLs, previews, nested manifests
+PASS case controller: PDF callbacks, page selection, safe text/links, note roundtrip/rejection/navigation/remount
+PASS notes budget: 34 full CJK notes roundtrip; 35th edit/merge rejected without data loss
+Document case synthetic regressions: passed

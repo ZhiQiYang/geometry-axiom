@@ -1,0 +1,45 @@
+test_policy_has_no_world_parser_or_global_baseline_dependency (tests.test_geo261_native_grid_rules.GridRulesBoundary.test_policy_has_no_world_parser_or_global_baseline_dependency) ... ok
+test_exact_source_binding_and_grid_lines_with_zero_placement_id (tests.test_geo261_native_grid_rules.NativeGridRules.test_exact_source_binding_and_grid_lines_with_zero_placement_id) ... ok
+test_explicit_before_context_precedes_manual_cell_conflict (tests.test_geo261_native_grid_rules.NativeGridRules.test_explicit_before_context_precedes_manual_cell_conflict) ... ok
+test_referenced_edit_guards_rename_and_nonreused_highwater (tests.test_geo261_native_grid_rules.NativeGridRules.test_referenced_edit_guards_rename_and_nonreused_highwater) ... ok
+test_removing_before_context_guard_fails_first_error_assertion (tests.test_geo261_native_grid_rules.NativeGridRules.test_removing_before_context_guard_fails_first_error_assertion) ... ok
+test_removing_manual_conflict_guard_fails_rejection_assertion (tests.test_geo261_native_grid_rules.NativeGridRules.test_removing_manual_conflict_guard_fails_rejection_assertion) ... ok
+test_removing_referenced_edit_guard_fails_independent_rejection_assertion (tests.test_geo261_native_grid_rules.NativeGridRules.test_removing_referenced_edit_guard_fails_independent_rejection_assertion) ... ok
+test_rule_definition_diagnostics_keep_first_error_order (tests.test_geo261_native_grid_rules.NativeGridRules.test_rule_definition_diagnostics_keep_first_error_order) ... ok
+test_signed_cell_expression_references_and_active_timber_facts (tests.test_geo261_native_grid_rules.NativeGridRules.test_signed_cell_expression_references_and_active_timber_facts) ... FAIL
+test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load (tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load) ... 
+  test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load (tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load) (fixture='extra-reference-field') ... FAIL
+  test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load (tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load) (fixture='empty-extra-reference-field') ... FAIL
+
+======================================================================
+FAIL: test_signed_cell_expression_references_and_active_timber_facts (tests.test_geo261_native_grid_rules.NativeGridRules.test_signed_cell_expression_references_and_active_timber_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_native_grid_rules.py", line 42, in test_signed_cell_expression_references_and_active_timber_facts
+    self.assertEqual(0, self.case("references"))
+                        ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geometry-axiom/tests/test_geo261_native_grid_rules.py", line 36, in case
+    self.assertEqual(1 if marker else 0, result.returncode, name + ": " + result.stderr)
+AssertionError: 0 != 1 : references: ASSERT:references:63
+
+
+======================================================================
+FAIL: test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load (tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load) (fixture='extra-reference-field')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py", line 994, in test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load
+    self.assertFalse(result["ok"], result)
+AssertionError: True is not false : {'ok': True, 'revision': 25, 'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1'], 'required_capabilities': ['grid-subdivision-rules/1'], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'definition_sha256': '360cc07361ad6734ab215c0954ff4702562beaf19b25f59210bafa1e90e2cdd5'}
+
+======================================================================
+FAIL: test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load (tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load) (fixture='empty-extra-reference-field')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py", line 994, in test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load
+    self.assertFalse(result["ok"], result)
+AssertionError: True is not false : {'ok': True, 'revision': 26, 'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1'], 'required_capabilities': ['grid-subdivision-rules/1'], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'definition_sha256': '2c36868ede8765b7e3a30e9be2c5e82a2e068b27e722ffeeaed48aa44f0cb751'}
+
+----------------------------------------------------------------------
+Ran 10 tests in 37.695s
+
+FAILED (failures=3)

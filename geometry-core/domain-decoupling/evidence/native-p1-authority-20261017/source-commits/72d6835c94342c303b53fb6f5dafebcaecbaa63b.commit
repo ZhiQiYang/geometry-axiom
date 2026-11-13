@@ -1,0 +1,8 @@
+tree ef854a007441e574eb06e750ec9368b9e6ffd04b
+parent a84ebaa7d2125459f18a16b4ac9fde16107e4274
+author Yang <b10102230@gmail.com> 1792167487 +0800
+committer Yang <b10102230@gmail.com> 1792167487 +0800
+
+Expose region key ledgers and derived boundary policies through the candidate graph
+
+Preserve typed vertex output on rejection, validate returned policy UTF-8, and inventory unused grid and engineering definitions without evaluating unused geometry. Correct the existing Host negative-control anchor to the four-argument snapshot hash call. Tests: four new suites (14 derived policy source, 4 derived product, 4 grid definition product, 15 region key source); existing engineering sources 15->18, grid sources 8->11. Six affected suites discover 66 methods. Eleven portable checks passed, followed by the two changed UTF-8 boundary checks; native methods and controls remain UNRUN on this source. The earlier 72c focused red result is unchanged.

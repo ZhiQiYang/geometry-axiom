@@ -1,0 +1,81 @@
+{
+  "schema": "geo261-performance-stage-recorder/1",
+  "started_utc": "2026-10-18T14:49:19.162581+00:00",
+  "repo": "/workspace/geometry-axiom",
+  "output": "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb",
+  "pins": {
+    "main": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+    "integration": "68eed6fb0e488003ca0a4d8614a9460a637d979e"
+  },
+  "recorder": {
+    "bytes": 7680,
+    "sha256": "e0e9dc4042f2f848ca8dd2622acf15ac7377efe522c945a949d555e75863e544"
+  },
+  "helper": {
+    "bytes": 29056,
+    "sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b"
+  },
+  "helper_path": "/workspace/geo261-validation-20261018/performance/measure_geo261.py",
+  "plans": [
+    {
+      "stage": "measure",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+        "-B",
+        "/workspace/geo261-validation-20261018/performance/measure_geo261.py",
+        "measure",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--output",
+        "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb",
+        "--main-sha",
+        "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+        "--integration-sha",
+        "68eed6fb0e488003ca0a4d8614a9460a637d979e",
+        "--cc",
+        "gcc",
+        "--cold-repeats",
+        "7",
+        "--rounds",
+        "15",
+        "--model-repeats",
+        "7",
+        "--timeout",
+        "120"
+      ]
+    },
+    {
+      "stage": "profile",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+        "-B",
+        "/workspace/geo261-validation-20261018/performance/measure_geo261.py",
+        "profile",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--output",
+        "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb",
+        "--main-sha",
+        "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+        "--integration-sha",
+        "68eed6fb0e488003ca0a4d8614a9460a637d979e",
+        "--cc",
+        "gcc",
+        "--cold-repeats",
+        "7",
+        "--rounds",
+        "15",
+        "--model-repeats",
+        "7",
+        "--timeout",
+        "120"
+      ]
+    }
+  ],
+  "stages": [],
+  "attempted_stages": [],
+  "performance_verdict": null,
+  "all_requested_processes_ok": false,
+  "source_policy": "prepare 以明確 SHA git archive；不要求 checkout HEAD 等於任一來源。",
+  "scheduling_policy": "本入口階段串行；操作者須確保 measure/profile 無其他 CPU 測試並行。"
+}

@@ -1,0 +1,23 @@
+{
+  "selected_tests": [
+    "test_crossing_holes_have_positive_overlap_without_contained_vertices",
+    "test_hole_contacts_stay_invalid_and_rectangle_contacts_stay_valid",
+    "test_product_crossing_holes_rejected_without_mutation",
+    "test_product_unit_hole_placement_rejected_without_mutation",
+    "test_removing_hole_center_guard_breaks_kernel_strips_and_product",
+    "test_removing_hole_crossing_guard_breaks_kernel_and_product",
+    "test_unit_rectangles_exclude_hole_interiors_at_coordinate_limits",
+    "test_unit_strips_keep_two_maximal_intervals_and_capacity_failure"
+  ],
+  "tests_run": 8,
+  "failures": 0,
+  "failed_tests": [],
+  "errors": 0,
+  "errored_tests": [],
+  "skipped": [],
+  "expected_failures": 0,
+  "unexpected_successes": 0,
+  "successful": true,
+  "compiler_commands": 17,
+  "build_artifact_count": 26
+}

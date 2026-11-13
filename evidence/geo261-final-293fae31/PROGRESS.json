@@ -1,0 +1,13 @@
+{
+  "schema": "geo261-live-progress/1",
+  "tested_sha": "293fae31806eb33f456bac9f87217ffb38b6a689",
+  "entries": [
+    {
+      "utc": "2026-10-22T14:08:15.856298+00:00",
+      "label": "rawsnapshot-proof-and-pc-profile",
+      "result": "293fae31 加明確 dirty source 的診斷：raw 快照 O0 與 ASan+UBSan 各20差分案例、3組具名突變控制全部符合；PC取樣兩輪原始資料齊，v2顯示274樣本中copy92、zero61、memcmp14，3筆未知保留。不是最終SHA驗收，P189仍待修",
+      "next": "以即時窄讀取消除未使用的大型副本，量測原36筆候選對照；補永久回歸後再整份重產帳本與架構並固定新SHA完整重跑",
+      "archive": "raw/rawsnapshot-proof-and-pc-profile.raw.tar.gz"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+#!/usr/bin/env python3
+"""Metadata-only original axiom inventory. Never archives or runs products."""
+from pathlib import Path, PurePosixPath
+import argparse, hashlib, json, os, shutil, stat, sys, tarfile, time
+
+HERE=Path(__file__).resolve().parent
+RAW=Path('/tmp/geo337-F9-axiom-original-20261025')
+ACTUAL=Path('/workspace/geo337-F9-axiom-actual-peer-20261025')
+TOOLS=Path('/tmp/geo337-F9-nonperf-original-tools-v2-20261025')
+F='4f8a794f4167c3562eb182045102e86e9e37cca9'
+RESERVE=64*1024*1024;META=2*1024*1024
+FIELDS=['root','relative','type','bytes','sha256','state','target']
+
+def digest(path):
+    h=hashlib.sha256()
+    with Path(path).open('rb') as f:
+        for b in iter(lambda:f.read(1024*1024),b''):h.update(b)
+    return h.hexdigest()
+
+def state(p):
+    s=p.lstat();return [s.st_dev,s.st_ino,s.st_mode,s.st_size,s.st_mtime_ns,s.st_nlink]
+
+def load(p):return json.loads(Path(p).read_bytes())
+def write(p,x):p.write_text(json.dumps(x,ensure_ascii=False,separators=(',',':'))+'\n')
+def need(x,msg):
+    if not x:raise RuntimeError(msg)
+def overhead(n):return (n+4095)//4096+(n+16383)//16384+(n+33554431)//33554432+1024
+
+def main():
+    need(not sys.flags.optimize,'Optimized Python forbidden')
+    need(not (HERE/'INVENTORY.json').exists(),'Never overwrite inventory')
+    need(digest(RAW/'receipt.json')=='ec1c9d638095d04c20388c2eb7682df2af13a7e21456009aebf4ffcb8467341f','Original axiom receipt changed')
+    receipt=load(RAW/'receipt.json')
+    need(receipt['source_sha']==F and receipt['launcher_exit_code']==0 and receipt['passed'] is True and receipt['errors']==[], 'Original terminal/source is not successful F9')
+    need(len(receipt['gates'])==1 and receipt['gates'][0]['gate']=='axiom' and receipt['gates'][0]['passed'] is True, 'Exact original axiom only required')
+    peer=load(ACTUAL/'REVIEW.json')
+    need(digest(ACTUAL/'REVIEW.json')=='437a46c2a0b521ae09feb9031a1acebed413190e2cbf5b5ce5df8259946daecc' and peer['exit_code']==0 and peer['blocking_findings']==[] and peer['formal_gate_exit']==0 and peer['source_sha']==F,'Original independent actual peer changed/failed')
+    host=Path('/workspace/geo337-F9-axiom-original-EXEC_FINAL-20261025.json')
+    need(digest(host)=='35a903d74a7dd57dcf3d36ac645f7a014c31c85d27b63a9e61a7099844b33d2d' and load(host)['exit_code']==0,'Original host terminal changed')
+    need(digest(TOOLS/'PREPARATION.json')==receipt['preparation_sha256']=='593ab353216e0cd50d49c92dd48d1b532bc43154ba46e494daf65cf11d8be72c','Executed preparation changed')
+    originalprep=load(TOOLS/'PREPARATION.json')
+    for item in originalprep['files']:
+        need((TOOLS/item['path']).stat().st_size==item['bytes'] and digest(TOOLS/item['path'])==item['sha256'],'Original launcher local dependency changed')
+    for item in originalprep['external_tools']:
+        need(Path(item['path']).stat().st_size==item['bytes'] and digest(item['path'])==item['sha256'],'Original launcher external binding changed')
+    roots=[];records=[];members=set()
+    def add(prefix,root,selected=None):
+        root=Path(root).resolve();root_id=len(roots)
+        roots.append({'prefix':prefix,'source_root':str(root),'selection':'whole-tree' if selected is None else 'exact-files','exact_files':selected})
+        paths=[]
+        if selected is None:
+            for parent,dirs,files in os.walk(root,followlinks=False):
+                for n in sorted(dirs+files):
+                    p=Path(parent)/n
+                    if not stat.S_ISDIR(p.lstat().st_mode):paths.append(p)
+        else:paths=[root/n for n in selected]
+        for p in sorted(paths):
+            rel=p.relative_to(root).as_posix();member=prefix+'/'+rel;s=state(p)
+            need(member not in members and not PurePosixPath(member).is_absolute() and '..' not in PurePosixPath(member).parts,'Unsafe/duplicate member')
+            members.add(member)
+            if stat.S_ISREG(s[2]):kind='regular';size=s[3];target=None;h=digest(p)
+            elif stat.S_ISLNK(s[2]):
+                kind='symlink';target=os.readlink(p);body=os.fsencode(target);size=len(body);h=hashlib.sha256(body).hexdigest()
+            else:raise RuntimeError('Unexpected nonregular original node; no silent omission: '+str(p))
+            need(state(p)==s,'Original source changed during inventory')
+            info=tarfile.TarInfo(member);info.mode=s[2]&0o777;info.mtime=s[4]//1000000000
+            if kind=='symlink':info.type=tarfile.SYMTYPE;info.linkname=target;info.size=0
+            else:info.size=size
+            need(len(info.tobuf(tarfile.PAX_FORMAT))+511<=4096,'Actual member exceeds fixed header/padding bound')
+            records.append([root_id,rel,kind,size,h,s,target])
+    add('axiom-original',RAW)
+    need(len(records)==189 and all(r[2]=='regular' for r in records) and sum(r[3] for r in records)==12499444,'Original raw189/bytes/zero-link scope changed')
+    add('actual-independent-peer',ACTUAL,['CHECKS.json','REVIEW.json','review_actual.py'])
+    add('root-host',host.parent,[host.name])
+    add('executed-launcher',TOOLS,['PREPARATION.json']+[item['path'] for item in originalprep['files']])
+    add('executed-capture','/workspace/geo261-environment/final-f-contact-checker-proof-tools',['capture.py'])
+    add('executed-reaper','/workspace/geo261-environment',['reap_children.py'])
+    add('hash-checked-not-executed-v5','/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5',[Path(item['path']).name for item in originalprep['external_tools'] if '/tools-v5/' in item['path']])
+    inv={'schema':'geo337-complete-axiom-compact-inventory/1','source_sha':F,'roots':roots,'record_fields':FIELDS,
+         'state_fields':['device','inode','mode','bytes','mtime_ns','nlink'],'records':records,'original_raw_regular_files':189,'original_raw_symlinks':0,
+         'original_raw_regular_bytes':12499444,'original_axiom_gate_exit':0,'original_host_exit':0,'actual_peer_exit':0,
+         'selection':'All189 original axiom files, real launcher/preparation/imports/capture/reaper, exact independent peer and host. V5 six files only hash-checked by original preparation and NOT executed for this axiom gate. No source checkout, ELF, git objects or rerun.',
+         'actual_peer':{'path':str(ACTUAL/'REVIEW.json'),'sha256':digest(ACTUAL/'REVIEW.json')},'archive_created':False,'subject_rerun':False}
+    names=[roots[r[0]]['prefix']+'/'+r[1] for r in records]
+    logical=sum(r[3] for r in records if r[2]=='regular');n=logical+4096*len(records)+11264;gz=n+overhead(n)
+    parts=[{'part':1,'members':len(records),'logical_regular_bytes':logical,'header_padding_bound':4096*len(records),
+            'tar_end_alignment_bound':11264,'tar_upper_bytes':n,'gzip_worst_case_overhead':overhead(n),'gzip_upper_bytes':gz,
+            'metadata_bytes':META,'reserve_bytes':RESERVE,'required_fresh_bytes':gz+META+RESERVE,'members_exact':names}]
+    write(HERE/'INVENTORY.json',inv);write(HERE/'PARTS.json',parts)
+    metabytes=(HERE/'INVENTORY.json').stat().st_size+(HERE/'PARTS.json').stat().st_size
+    need(metabytes+128*1024<META,'Inventory metadata exceeds fixed2MiB bound')
+    result={'schema':'geo337-axiom-inventory-preparation/1','inventory_exit':0,'source_sha':F,
+            'inventory_sha256':digest(HERE/'INVENTORY.json'),'parts_sha256':digest(HERE/'PARTS.json'),
+            'inventory_regular_files':len(records),'inventory_symlinks':0,'inventory_regular_bytes':logical,'part_count':1,
+            'metadata_input_bytes':metabytes,'maximum_required_fresh_bytes':parts[0]['required_fresh_bytes'],
+            'actual_SHM_capacity_not_read':True,'current_execution_admitted':False,'compression_ratio_assumed':False,
+            'archive_created':False,'subject_rerun':False,'prepare_sha256':digest(__file__),'epoch':time.time()}
+    write(HERE/'RESULT.json',result);print(json.dumps(result,ensure_ascii=False))
+
+if __name__=='__main__':main()

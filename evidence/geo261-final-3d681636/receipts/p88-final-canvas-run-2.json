@@ -1,0 +1,598 @@
+{
+  "schema": "geo261-cloud-workflow/1",
+  "sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "job": "canvas",
+  "workflow_job_key": "browser",
+  "matrix": {
+    "suite": "canvas",
+    "timeout": 35
+  },
+  "started": "2026-10-23T11:40:17.716444+00:00",
+  "checkout_before": {
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "root": "/tmp/g288p88final-3d681636",
+    "status": ""
+  },
+  "status": "完成",
+  "exit_code": 0,
+  "workflow_sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+  "driver_sha256": "8a4e69c915ae770afc59829f3658639af0febbd2b16c20495f7ecee7f62685fb",
+  "workflow_environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18839/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-integration-feedback",
+    "GEOMETRY_CHROME": "/usr/bin/google-chrome",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_BROWSER_SUITE": "canvas",
+    "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/tmp/geometry-grid-screens",
+    "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/tmp/geometry-document-screens"
+  },
+  "environment": {
+    "CI": "true",
+    "GEOMETRY_BROWSER_SUITE": "canvas",
+    "GEOMETRY_CDP_PORT": "9692",
+    "GEOMETRY_CHROME": "/workspace/geo261-environment/bin/google-chrome",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CHROME_PROFILE": "/tmp/g288p88f2/tmp/workflow/canvas/chrome-profile",
+    "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/tmp/g288p88f2/tmp/workflow/canvas/geometry-document-screens",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/g288p88f2/tmp/workflow/canvas/geometry-integration-feedback",
+    "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/tmp/g288p88f2/tmp/workflow/canvas/geometry-grid-screens",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19892/",
+    "GITHUB_ACTIONS": "true",
+    "GITHUB_SHA": "3d681636902371ecc528b20f51eea33e272581c9",
+    "GITHUB_WORKSPACE": "/tmp/g288p88final-3d681636",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "RUNNER_OS": "Linux",
+    "TERM": "dumb",
+    "TMPDIR": "/tmp/g288p88f2/tmp/workflow/canvas",
+    "XDG_CACHE_HOME": "/workspace/geo261-environment/xdg-cache",
+    "XDG_DATA_HOME": "/workspace/geo261-environment/xdg-data"
+  },
+  "cleared_inherited_geometry_names": [
+    "GEOMETRY_CHROME"
+  ],
+  "platform": {
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "machine": "x86_64",
+    "python_driver": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "python_driver_executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "logical_cpus": 5,
+    "pyyaml": "6.0.3"
+  },
+  "temporary_directory": "/tmp/g288p88f2/tmp/workflow/canvas",
+  "server_port": 19892,
+  "ci_timeout_minutes": 35,
+  "watchdog_factor": 3,
+  "versions": [
+    {
+      "command": [
+        "google-chrome",
+        "--version"
+      ],
+      "cwd": "/tmp/g288p88final-3d681636",
+      "started": "2026-10-23T11:40:17.757219+00:00",
+      "stdout": "/tmp/g288p88f2/workflow/canvas/versions/0.stdout",
+      "stderr": "/tmp/g288p88f2/workflow/canvas/versions/0.stderr",
+      "combined": "/tmp/g288p88f2/workflow/canvas/versions/0.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-23T11:40:17.792428+00:00",
+      "seconds": 0.035211402995628305,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "cwd": "/tmp/g288p88final-3d681636",
+      "started": "2026-10-23T11:40:17.792721+00:00",
+      "stdout": "/tmp/g288p88f2/workflow/canvas/versions/1.stdout",
+      "stderr": "/tmp/g288p88f2/workflow/canvas/versions/1.stderr",
+      "combined": "/tmp/g288p88f2/workflow/canvas/versions/1.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-23T11:40:17.798104+00:00",
+      "seconds": 0.005387218989199027,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "cwd": "/tmp/g288p88final-3d681636",
+      "started": "2026-10-23T11:40:17.798326+00:00",
+      "stdout": "/tmp/g288p88f2/workflow/canvas/versions/2.stdout",
+      "stderr": "/tmp/g288p88f2/workflow/canvas/versions/2.stderr",
+      "combined": "/tmp/g288p88f2/workflow/canvas/versions/2.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-23T11:40:17.800130+00:00",
+      "seconds": 0.00180643200292252,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "cwd": "/tmp/g288p88final-3d681636",
+      "started": "2026-10-23T11:40:17.800260+00:00",
+      "stdout": "/tmp/g288p88f2/workflow/canvas/versions/3.stdout",
+      "stderr": "/tmp/g288p88f2/workflow/canvas/versions/3.stderr",
+      "combined": "/tmp/g288p88f2/workflow/canvas/versions/3.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-23T11:40:17.801639+00:00",
+      "seconds": 0.0013810009986627847,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "dpkg-query",
+        "-W",
+        "-f=${Status} ${Version}\n",
+        "fonts-noto-cjk"
+      ],
+      "cwd": "/tmp/g288p88final-3d681636",
+      "started": "2026-10-23T11:40:17.801744+00:00",
+      "stdout": "/tmp/g288p88f2/workflow/canvas/versions/4.stdout",
+      "stderr": "/tmp/g288p88f2/workflow/canvas/versions/4.stderr",
+      "combined": "/tmp/g288p88f2/workflow/canvas/versions/4.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-23T11:40:17.813338+00:00",
+      "seconds": 0.01160718098981306,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    }
+  ],
+  "steps": [
+    {
+      "index": 0,
+      "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+      "original_step": {
+        "uses": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+        "with": {
+          "persist-credentials": false
+        }
+      },
+      "outcome": "以現有乾淨固定 SHA checkout 取代，未執行 GitHub action"
+    },
+    {
+      "index": 1,
+      "name": "Build current native executables",
+      "original_step": {
+        "name": "Build current native executables",
+        "run": "npm run build"
+      },
+      "original_run": "npm run build",
+      "executed_run": "npm run build",
+      "script_sha256": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef",
+      "result": {
+        "command": [
+          "bash",
+          "-e",
+          "/tmp/g288p88f2/workflow/canvas/steps/01.executed.sh"
+        ],
+        "cwd": "/tmp/g288p88final-3d681636",
+        "started": "2026-10-23T11:40:17.814192+00:00",
+        "stdout": "/tmp/g288p88f2/workflow/canvas/steps/01.stdout",
+        "stderr": "/tmp/g288p88f2/workflow/canvas/steps/01.stderr",
+        "combined": "/tmp/g288p88f2/workflow/canvas/steps/01.combined.log",
+        "timeout_seconds": 6299.902298697998,
+        "ended": "2026-10-23T11:41:10.670716+00:00",
+        "seconds": 52.85653863499465,
+        "actual_process_returncode": 0,
+        "exit_code": 0,
+        "watchdog_expired": false,
+        "owned_process_group_cleanup": false
+      },
+      "outcome": "成功"
+    },
+    {
+      "index": 2,
+      "name": "Install Chinese fonts for visual verification",
+      "original_step": {
+        "name": "Install Chinese fonts for visual verification",
+        "run": "sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update\nsudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk\n"
+      },
+      "original_run": "sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update\nsudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk\n",
+      "executed_run": "sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update\nsudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk\n",
+      "script_sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855",
+      "outcome": "必要套件已安裝；未重複執行原 apt 指令",
+      "packages": [
+        "fonts-noto-cjk"
+      ],
+      "checks": [
+        {
+          "command": [
+            "dpkg-query",
+            "-W",
+            "-f=${Status} ${Version}\n",
+            "fonts-noto-cjk"
+          ],
+          "cwd": "/tmp/g288p88final-3d681636",
+          "started": "2026-10-23T11:41:10.671675+00:00",
+          "stdout": "/tmp/g288p88f2/workflow/canvas/steps/02-package-0.stdout",
+          "stderr": "/tmp/g288p88f2/workflow/canvas/steps/02-package-0.stderr",
+          "combined": "/tmp/g288p88f2/workflow/canvas/steps/02-package-0.combined.log",
+          "timeout_seconds": 30,
+          "ended": "2026-10-23T11:41:10.682832+00:00",
+          "seconds": 0.011161250004079193,
+          "actual_process_returncode": 0,
+          "exit_code": 0,
+          "watchdog_expired": false,
+          "owned_process_group_cleanup": false
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "name": "Run actual browser regression group",
+      "original_step": {
+        "name": "Run actual browser regression group",
+        "shell": "bash",
+        "run": "ulimit -s 16384\ntest -x \"$GEOMETRY_CHROME\"\n# WSL canvas wait trace\n# Clear inherited flags for all other jobs.\nunset GEOMETRY_WAIT_TRACE\nunset GEOMETRY_WAIT_TRACE_RUN_ID\ncase \"$GEOMETRY_BROWSER_SUITE:$(uname -r)\" in\n  canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;\nesac\nif [ \"${GEOMETRY_WAIT_TRACE-}\" = 1 ]; then\n  export GEOMETRY_WAIT_TRACE_RUN_ID=\"$(python3 geometry-web/prepare_wait_trace.py)\"\nfi\nif [ -n \"${GITHUB_ENV-}\" ]; then\n  printf 'GEOMETRY_WAIT_TRACE=%s\\n' \"${GEOMETRY_WAIT_TRACE-}\" >> \"$GITHUB_ENV\"\nfi\npython3 -u geometry-web/start_local.py --port 18839 > /tmp/geometry-integration-server.log 2>&1 &\nserver=$!\ncleanup() {\n  original_status=$?\n  set +e\n  kill \"$server\" 2>/dev/null || true\n  wait \"$server\" 2>/dev/null || true\n  if [ \"$GEOMETRY_BROWSER_SUITE\" = canvas ]; then\n    python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact\n    archive_status=$?\n    if [ \"$original_status\" -eq 0 ] && [ \"$archive_status\" -ne 0 ]; then original_status=$archive_status; fi\n  fi\n  exit \"$original_status\"\n}\ntrap cleanup EXIT\nfor attempt in $(seq 1 30); do\n  if ! kill -0 \"$server\" 2>/dev/null; then\n    cat /tmp/geometry-integration-server.log\n    exit 1\n  fi\n  if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi\n  sleep 1\ndone\npython3 geometry-web/runtime_version.py --probe 18839\n# Independent matrix jobs expose each result promptly. They use\n# separate runners/servers and do not cancel siblings on failure.\n# The full canvas run retains its strict golden comparison.\nset +e\ncase \"$GEOMETRY_BROWSER_SUITE\" in\n  assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;\n  grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;\n  canvas) node geometry-web/cdp_test.js ;;\n  space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;\n  timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;\n  documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;\n  *) echo \"Unknown browser suite\"; exit 2 ;;\nesac\nstatus=$?\ncat /tmp/geometry-integration-server.log\nexit \"$status\"\n"
+      },
+      "original_run": "ulimit -s 16384\ntest -x \"$GEOMETRY_CHROME\"\n# WSL canvas wait trace\n# Clear inherited flags for all other jobs.\nunset GEOMETRY_WAIT_TRACE\nunset GEOMETRY_WAIT_TRACE_RUN_ID\ncase \"$GEOMETRY_BROWSER_SUITE:$(uname -r)\" in\n  canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;\nesac\nif [ \"${GEOMETRY_WAIT_TRACE-}\" = 1 ]; then\n  export GEOMETRY_WAIT_TRACE_RUN_ID=\"$(python3 geometry-web/prepare_wait_trace.py)\"\nfi\nif [ -n \"${GITHUB_ENV-}\" ]; then\n  printf 'GEOMETRY_WAIT_TRACE=%s\\n' \"${GEOMETRY_WAIT_TRACE-}\" >> \"$GITHUB_ENV\"\nfi\npython3 -u geometry-web/start_local.py --port 18839 > /tmp/geometry-integration-server.log 2>&1 &\nserver=$!\ncleanup() {\n  original_status=$?\n  set +e\n  kill \"$server\" 2>/dev/null || true\n  wait \"$server\" 2>/dev/null || true\n  if [ \"$GEOMETRY_BROWSER_SUITE\" = canvas ]; then\n    python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact\n    archive_status=$?\n    if [ \"$original_status\" -eq 0 ] && [ \"$archive_status\" -ne 0 ]; then original_status=$archive_status; fi\n  fi\n  exit \"$original_status\"\n}\ntrap cleanup EXIT\nfor attempt in $(seq 1 30); do\n  if ! kill -0 \"$server\" 2>/dev/null; then\n    cat /tmp/geometry-integration-server.log\n    exit 1\n  fi\n  if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi\n  sleep 1\ndone\npython3 geometry-web/runtime_version.py --probe 18839\n# Independent matrix jobs expose each result promptly. They use\n# separate runners/servers and do not cancel siblings on failure.\n# The full canvas run retains its strict golden comparison.\nset +e\ncase \"$GEOMETRY_BROWSER_SUITE\" in\n  assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;\n  grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;\n  canvas) node geometry-web/cdp_test.js ;;\n  space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;\n  timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;\n  documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;\n  *) echo \"Unknown browser suite\"; exit 2 ;;\nesac\nstatus=$?\ncat /tmp/geometry-integration-server.log\nexit \"$status\"\n",
+      "executed_run": "ulimit -s 16384\ntest -x \"$GEOMETRY_CHROME\"\n# WSL canvas wait trace\n# Clear inherited flags for all other jobs.\nunset GEOMETRY_WAIT_TRACE\nunset GEOMETRY_WAIT_TRACE_RUN_ID\ncase \"$GEOMETRY_BROWSER_SUITE:$(uname -r)\" in\n  canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;\nesac\nif [ \"${GEOMETRY_WAIT_TRACE-}\" = 1 ]; then\n  export GEOMETRY_WAIT_TRACE_RUN_ID=\"$(python3 geometry-web/prepare_wait_trace.py)\"\nfi\nif [ -n \"${GITHUB_ENV-}\" ]; then\n  printf 'GEOMETRY_WAIT_TRACE=%s\\n' \"${GEOMETRY_WAIT_TRACE-}\" >> \"$GITHUB_ENV\"\nfi\npython3 -u geometry-web/start_local.py --port 19892 > /tmp/g288p88f2/tmp/workflow/canvas/geometry-integration-server.log 2>&1 &\nserver=$!\ncleanup() {\n  original_status=$?\n  set +e\n  kill \"$server\" 2>/dev/null || true\n  wait \"$server\" 2>/dev/null || true\n  if [ \"$GEOMETRY_BROWSER_SUITE\" = canvas ]; then\n    python3 geometry-web/archive_wait_trace.py /tmp/g288p88f2/tmp/workflow/canvas/geometry-wait-trace-artifact\n    archive_status=$?\n    if [ \"$original_status\" -eq 0 ] && [ \"$archive_status\" -ne 0 ]; then original_status=$archive_status; fi\n  fi\n  exit \"$original_status\"\n}\ntrap cleanup EXIT\nfor attempt in $(seq 1 30); do\n  if ! kill -0 \"$server\" 2>/dev/null; then\n    cat /tmp/g288p88f2/tmp/workflow/canvas/geometry-integration-server.log\n    exit 1\n  fi\n  if python3 geometry-web/runtime_version.py --probe 19892 > /dev/null 2>&1; then break; fi\n  sleep 1\ndone\npython3 geometry-web/runtime_version.py --probe 19892\n# Independent matrix jobs expose each result promptly. They use\n# separate runners/servers and do not cancel siblings on failure.\n# The full canvas run retains its strict golden comparison.\nset +e\ncase \"$GEOMETRY_BROWSER_SUITE\" in\n  assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;\n  grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;\n  canvas) node geometry-web/cdp_test.js ;;\n  space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;\n  timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;\n  documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;\n  *) echo \"Unknown browser suite\"; exit 2 ;;\nesac\nstatus=$?\ncat /tmp/g288p88f2/tmp/workflow/canvas/geometry-integration-server.log\nexit \"$status\"\n",
+      "script_sha256": "a6534c4fc707ddf8889f26d9b75a247836e26129d12666e9a2f7ef843c59bba4",
+      "result": {
+        "command": [
+          "bash",
+          "--noprofile",
+          "--norc",
+          "-eo",
+          "pipefail",
+          "/tmp/g288p88f2/workflow/canvas/steps/03.executed.sh"
+        ],
+        "cwd": "/tmp/g288p88final-3d681636",
+        "started": "2026-10-23T11:41:10.683704+00:00",
+        "stdout": "/tmp/g288p88f2/workflow/canvas/steps/03.stdout",
+        "stderr": "/tmp/g288p88f2/workflow/canvas/steps/03.stderr",
+        "combined": "/tmp/g288p88f2/workflow/canvas/steps/03.combined.log",
+        "timeout_seconds": 6247.032773080995,
+        "ended": "2026-10-23T12:09:26.206748+00:00",
+        "seconds": 1695.5230561890057,
+        "actual_process_returncode": 0,
+        "exit_code": 0,
+        "watchdog_expired": false,
+        "owned_process_group_cleanup": false
+      },
+      "outcome": "成功"
+    },
+    {
+      "index": 4,
+      "name": "Preserve canvas wait trace",
+      "original_step": {
+        "name": "Preserve canvas wait trace",
+        "if": "always() && matrix.suite == 'canvas'",
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "with": {
+          "name": "canvas-wait-trace",
+          "path": "/tmp/geometry-wait-trace-artifact/",
+          "if-no-files-found": "error",
+          "retention-days": 7
+        }
+      },
+      "outcome": "未上傳至 GitHub；改為本機保存原產物",
+      "condition_applies": true,
+      "saved_artifacts": [
+        "artifacts/04/geometry-wait-trace-artifact"
+      ]
+    },
+    {
+      "index": 5,
+      "name": "Preserve assembly authoring screenshots",
+      "original_step": {
+        "name": "Preserve assembly authoring screenshots",
+        "if": "always() && matrix.suite == 'assembly'",
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "with": {
+          "name": "assembly-review-screens",
+          "path": "/tmp/geometry-tests/assembly-*.png",
+          "if-no-files-found": "ignore",
+          "retention-days": 7
+        }
+      },
+      "outcome": "未上傳至 GitHub；改為本機保存原產物",
+      "condition_applies": false,
+      "saved_artifacts": []
+    },
+    {
+      "index": 6,
+      "name": "Preserve grid trial screenshots",
+      "original_step": {
+        "name": "Preserve grid trial screenshots",
+        "if": "always() && (matrix.suite == 'grid' || matrix.suite == 'canvas')",
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "with": {
+          "name": "grid-trial-screens-${{ matrix.suite }}",
+          "path": "/tmp/geometry-grid-screens/grid-trial-*.png",
+          "if-no-files-found": "ignore",
+          "retention-days": 7
+        }
+      },
+      "outcome": "未上傳至 GitHub；改為本機保存原產物",
+      "condition_applies": true,
+      "saved_artifacts": [
+        "artifacts/06/grid-trial-desktop.png",
+        "artifacts/06/grid-trial-mobile-alignment.png",
+        "artifacts/06/grid-trial-mobile-canvas.png",
+        "artifacts/06/grid-trial-mobile-controls.png"
+      ]
+    },
+    {
+      "index": 7,
+      "name": "Preserve document reader screenshots",
+      "original_step": {
+        "name": "Preserve document reader screenshots",
+        "if": "always() && matrix.suite == 'documents'",
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "with": {
+          "name": "document-reader-screens",
+          "path": "/tmp/geometry-document-screens/*.png",
+          "if-no-files-found": "ignore",
+          "retention-days": 7
+        }
+      },
+      "outcome": "未上傳至 GitHub；改為本機保存原產物",
+      "condition_applies": false,
+      "saved_artifacts": []
+    }
+  ],
+  "notes": [
+    "逐項串行，任何失敗都不自動重跑；沒有 flaky 豁免。",
+    "原 run 僅替換矩陣、/tmp 路徑及服務埠；Chrome 路徑另明列環境覆寫。",
+    "stdout/stderr 分別保留原始 bytes；combined 檔只作閱讀。"
+  ],
+  "checkout_after": {
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "root": "/tmp/g288p88final-3d681636",
+    "status": ""
+  },
+  "ended": "2026-10-23T12:09:26.236688+00:00",
+  "seconds": 1748.520241596998,
+  "over_ci_timeout": false,
+  "files": {
+    "artifacts/04/geometry-wait-trace-artifact/receipt.json": {
+      "bytes": 407,
+      "sha256": "b30384e3bf9a27af6b4103e9524c6a5839f2ecc73193a424b4bb4abf1439720b",
+      "mtime_ns": 1792757366200700306
+    },
+    "artifacts/06/grid-trial-desktop.png": {
+      "bytes": 100476,
+      "sha256": "518236d18ec4b86e36968bf8ef23c51831c2d7b6f096072262779f5be217e11b",
+      "mtime_ns": 1792756470568748231
+    },
+    "artifacts/06/grid-trial-mobile-alignment.png": {
+      "bytes": 57241,
+      "sha256": "0615c4d12203ad9eb07e96d318e2170c78b9f4605b6144c2d9f111d4f39bc6da",
+      "mtime_ns": 1792756469344720450
+    },
+    "artifacts/06/grid-trial-mobile-canvas.png": {
+      "bytes": 52399,
+      "sha256": "b066222c0fa31254bd92f93da75de6a9ef62dcf1ebb1095b404b438e69b181e8",
+      "mtime_ns": 1792756469600726259
+    },
+    "artifacts/06/grid-trial-mobile-controls.png": {
+      "bytes": 47196,
+      "sha256": "b0cf66d5e29191b07e48aa237d53408c9feb4fc9964a7dada4453b940c2d0543",
+      "mtime_ns": 1792756469060714003
+    },
+    "driver.py.txt": {
+      "bytes": 20294,
+      "sha256": "8a4e69c915ae770afc59829f3658639af0febbd2b16c20495f7ecee7f62685fb",
+      "mtime_ns": 1792755617745984834
+    },
+    "steps/01.combined.log": {
+      "bytes": 1244,
+      "sha256": "38657039d1f9cd28d5de2b1c218a0c670e65745ea6038d7f03776403c26dcc04",
+      "mtime_ns": 1792755670654936356
+    },
+    "steps/01.command.json": {
+      "bytes": 625,
+      "sha256": "4811cc982213ddf2654d27aa47c5cbcbd0d35fdc43da9e146d8a978d25c2d1e1",
+      "mtime_ns": 1792755670670905097
+    },
+    "steps/01.executed.sh": {
+      "bytes": 14,
+      "sha256": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef",
+      "mtime_ns": 1792755617813959409
+    },
+    "steps/01.original.sh.txt": {
+      "bytes": 13,
+      "sha256": "16c0e4305ac213dff39fc82b69b6e08aeeb8758e33cd72d7c409752a70e9f054",
+      "mtime_ns": 1792755617813942323
+    },
+    "steps/01.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792755617813959409
+    },
+    "steps/01.stdout": {
+      "bytes": 1244,
+      "sha256": "38657039d1f9cd28d5de2b1c218a0c670e65745ea6038d7f03776403c26dcc04",
+      "mtime_ns": 1792755670654936356
+    },
+    "steps/02-package-0.combined.log": {
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+      "mtime_ns": 1792755670678936927
+    },
+    "steps/02-package-0.command.json": {
+      "bytes": 645,
+      "sha256": "ae24bc8daa4154d28655d586b20d82427c3d02501b63612c787c1f7422976528",
+      "mtime_ns": 1792755670682951040
+    },
+    "steps/02-package-0.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792755670671448596
+    },
+    "steps/02-package-0.stdout": {
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+      "mtime_ns": 1792755670678936927
+    },
+    "steps/02.executed.sh": {
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855",
+      "mtime_ns": 1792755670671448596
+    },
+    "steps/02.original.sh.txt": {
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855",
+      "mtime_ns": 1792755670671426683
+    },
+    "steps/03.combined.log": {
+      "bytes": 603366,
+      "sha256": "f2857cebca97c15fbfbc77340ad2a977ab7db14ae757bb1d36bba3b873bb116b",
+      "mtime_ns": 1792757366200700306
+    },
+    "steps/03.command.json": {
+      "bytes": 676,
+      "sha256": "89d00c2e1ee4450fa09a6bbc4d5e599cbeb34813f4bed164276c47291ac8ec87",
+      "mtime_ns": 1792757366206955479
+    },
+    "steps/03.executed.sh": {
+      "bytes": 2304,
+      "sha256": "a6534c4fc707ddf8889f26d9b75a247836e26129d12666e9a2f7ef843c59bba4",
+      "mtime_ns": 1792755670683592667
+    },
+    "steps/03.original.sh.txt": {
+      "bytes": 2184,
+      "sha256": "d8e6bc8c0ebf7492b7546c6c56865733b2171fcad06c14597572ecf09e40d44f",
+      "mtime_ns": 1792755670683572557
+    },
+    "steps/03.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792755670683592667
+    },
+    "steps/03.stdout": {
+      "bytes": 603366,
+      "sha256": "f2857cebca97c15fbfbc77340ad2a977ab7db14ae757bb1d36bba3b873bb116b",
+      "mtime_ns": 1792757366200700306
+    },
+    "versions/0.combined.log": {
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "mtime_ns": 1792755617785676800
+    },
+    "versions/0.command.json": {
+      "bytes": 576,
+      "sha256": "e9b18c22a6dcc48496caba14ff24cf8fa4d08c60301db3f6ecdcba642d005aba",
+      "mtime_ns": 1792755617792617838
+    },
+    "versions/0.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792755617757163680
+    },
+    "versions/0.stdout": {
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "mtime_ns": 1792755617785676800
+    },
+    "versions/1.combined.log": {
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "mtime_ns": 1792755617793676991
+    },
+    "versions/1.command.json": {
+      "bytes": 567,
+      "sha256": "405f22f978d6dcd53000f76aafaf6f241a6610ae7476fe1c4cd75681d4ef1218",
+      "mtime_ns": 1792755617798260402
+    },
+    "versions/1.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792755617792734304
+    },
+    "versions/1.stdout": {
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "mtime_ns": 1792755617793676991
+    },
+    "versions/2.combined.log": {
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "mtime_ns": 1792755617800020464
+    },
+    "versions/2.command.json": {
+      "bytes": 569,
+      "sha256": "1ede320cc5f29c0fedc5da9c2e6eb4d896594248986b7c030e2c7163777034fa",
+      "mtime_ns": 1792755617800205883
+    },
+    "versions/2.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792755617798337398
+    },
+    "versions/2.stdout": {
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "mtime_ns": 1792755617798337398
+    },
+    "versions/3.combined.log": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "mtime_ns": 1792755617801582798
+    },
+    "versions/3.command.json": {
+      "bytes": 566,
+      "sha256": "0884070761de1ee276441ca00927fff61217aeecb2843b8b764198eb06cb6295",
+      "mtime_ns": 1792755617801702639
+    },
+    "versions/3.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792755617800270441
+    },
+    "versions/3.stdout": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "mtime_ns": 1792755617800270441
+    },
+    "versions/4.combined.log": {
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+      "mtime_ns": 1792755617809677372
+    },
+    "versions/4.command.json": {
+      "bytes": 620,
+      "sha256": "d6748489e5bbf0904048b6ef64935cde4f2b2493cf59821d45879cef2499a42f",
+      "mtime_ns": 1792755617813526076
+    },
+    "versions/4.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792755617801753445
+    },
+    "versions/4.stdout": {
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+      "mtime_ns": 1792755617809677372
+    },
+    "workflow.yml.txt": {
+      "bytes": 6854,
+      "sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+      "mtime_ns": 1792755617745793566
+    }
+  }
+}

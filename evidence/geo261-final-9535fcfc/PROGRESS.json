@@ -1,0 +1,13 @@
+{
+  "schema": "geo261-live-progress/1",
+  "tested_sha": "9535fcfcec9d1fc8ddd4b149f499bd4e2312f255",
+  "entries": [
+    {
+      "utc": "2026-10-22T14:43:13.089602+00:00",
+      "label": "preseal-native-and-header-proof",
+      "result": "9535fcfc＋完整dirty patch的凍結前驗證：129個相關native全綠；W12／H raw8／K header12組具名控制均正常0/1/0。原full parser與新header在O2、ASan+UBSan各199810比較零差異，原oracle14函式bytes不變；尚非最終SHA完整驗收",
+      "next": "提交並一般推送產品來源P，整份重產mutation帳本、Linux架構四檔與完整census後，固定新最終F跑七項與全部專項／同F撤回恢復自證",
+      "archive": "raw/preseal-native-and-header-proof.raw.tar.gz"
+    }
+  ]
+}

@@ -277,14 +277,14 @@ async function previewRecovery(){
 async function main(){
  run.browser='Browser plugin not available';run.runtimeBefore=await runtime();
  await check('fresh isolated exact checkout',run.runtimeBefore.fresh===true&&path.resolve(run.runtimeBefore.root)===ROOT);
- browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox','--no-proxy-server']});
+ browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROME||'/usr/bin/chromium',headless:true,args:['--no-sandbox','--no-proxy-server']});
  context=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true});
  await context.addInitScript(()=>Object.defineProperty(window,'showSaveFilePicker',{value:undefined,configurable:true}));
  await attachPage();await check('page title',/構形 Canvas/.test(await page.title()));
  current='setup';fs.writeFileSync(path.join(OUT,'multi.pdf'),multiPDF());
  await newProject();await importSource(path.join(OUT,'multi.pdf'));await calibrate(4000);
  await propose();await confirm();const aNative=await read(`api('boundary ${bid}')`);
- await ctl('#roomSourceCreate');await wait(`!!RoomCollectionWorkspace.roomForBoundary(${bid})`);
+ await ctl('#roomNew');await wait(`!!RoomCollectionWorkspace.roomForBoundary(${bid})`);
  await select('#roomNewMethod','candidates');await ctl('#roomNew');
  await wait(`RoomCollectionWorkspace.candidateSnapshot()?.total===3`);
  let s=await session();await check('three independent candidate regions, A exact duplicate suppressed',s.total===3&&s.candidates[0].existing&&s.candidates[1].status==='pending'&&s.candidates[2].status==='pending',s);

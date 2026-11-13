@@ -1,0 +1,106 @@
+{
+  "kind": "diagnostic-only-single-existing-bridge-reset-load-dump",
+  "source": "f8c3e0f2535d6e20a21d48bfeb73aeacb7aad5e4",
+  "tree": "68d84cc92dde502c5e6baf61494d11d11bc791ac",
+  "started_utc": "2026-10-16T16:53:09.509519+00:00",
+  "finished_utc": "2026-10-16T16:53:14.522759+00:00",
+  "commands": [
+    "reset",
+    "load /var/tmp/geo261-focused-f8c3e0f2-v3/build-artifacts/build-0/model-neutral.scene",
+    "dump"
+  ],
+  "process_command": [
+    "/var/tmp/geo261-focused-f8c3e0f2-v3/build-artifacts/build-0/product-bridge"
+  ],
+  "timeout_seconds": 30,
+  "process_runs": 1,
+  "compiler_executed": false,
+  "focused_test_methods_run": 0,
+  "prior_focused_verdict": "FAIL",
+  "prior_focused_receipt": "/mnt/d/geometry-axiom-work/geo261-evidence/p1/focused-f8c3e0f2-v3/result/summary.json",
+  "returncode": 0,
+  "failure": null,
+  "protocol_ok": true,
+  "responses": [
+    {
+      "ok": true,
+      "deletedObjects": [
+        {
+          "kind": "boundary",
+          "id": 1
+        }
+      ]
+    },
+    {
+      "ok": false,
+      "error": "不認得的橋接指令"
+    },
+    {
+      "ok": true,
+      "text": "",
+      "capabilities": [
+        "engineering-spec/1",
+        "parameters/1",
+        "assembly-rule-authoring/1",
+        "assembly-timber-generation/1",
+        "grid-subdivision-rules/1",
+        "section-profile/1"
+      ],
+      "required_capabilities": [],
+      "native_capabilities": [
+        "section-profile-native/1",
+        "panel-fill-native/1"
+      ],
+      "revision": 11,
+      "definition_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "product_reload_ok": false,
+  "reload_outcome": "refused-or-unavailable",
+  "bridge_sha256_before": "ff4b5c127d0503eac5395cee78a93974eb3c9f6eefe8d080ad51b596b9178d7a",
+  "bridge_sha256_after": "ff4b5c127d0503eac5395cee78a93974eb3c9f6eefe8d080ad51b596b9178d7a",
+  "input_scene_sha256_before": "4566638d1939a2405fff998f8f58289252f0fb5823a9c7c9eed68ddda68b8c9e",
+  "input_scene_sha256_after": "4566638d1939a2405fff998f8f58289252f0fb5823a9c7c9eed68ddda68b8c9e",
+  "source_unchanged": true,
+  "prior_receipt_sha256_before": {
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/focused-f8c3e0f2-v3/result/summary.json": "0d545beb867033420abd232be2c08d005c10423b67ab8bc74a6fd7c0374641bd",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/focused-f8c3e0f2-v3/result/native-build-artifacts.json": "a8db76a99286425a04b6e3d69dc7692f4f65046df69ccf83de8414039d1e8515"
+  },
+  "prior_receipt_sha256_after": {
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/focused-f8c3e0f2-v3/result/summary.json": "0d545beb867033420abd232be2c08d005c10423b67ab8bc74a6fd7c0374641bd",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/focused-f8c3e0f2-v3/result/native-build-artifacts.json": "a8db76a99286425a04b6e3d69dc7692f4f65046df69ccf83de8414039d1e8515"
+  },
+  "runner_sha256_before": {
+    "run.py": "c4ac84854192d1f8ab021e1e40c1f65baf14d619801960cf8780cd3af5828a49",
+    "namespace.sh": "525fff9dfa5dfeaccc34a3d20af8a518894a7021a76df43bb358bff34ae45dab",
+    "launch.ps1": "c34039ac8431d76aaa5e999652285f017a058d9ba5cca8e0ca6c4d42514e8e5a"
+  },
+  "runner_sha256_after": {
+    "run.py": "c4ac84854192d1f8ab021e1e40c1f65baf14d619801960cf8780cd3af5828a49",
+    "namespace.sh": "525fff9dfa5dfeaccc34a3d20af8a518894a7021a76df43bb358bff34ae45dab",
+    "launch.ps1": "c34039ac8431d76aaa5e999652285f017a058d9ba5cca8e0ca6c4d42514e8e5a"
+  },
+  "raw_files": {
+    "stdin.raw": {
+      "sha256": "b66eb0a2bcd325e471334f7482ff95f12d15b0eef00165f4921dd03bd5520d7f",
+      "bytes": 96
+    },
+    "stdout.raw": {
+      "sha256": "e9cfdfa6973776fe0b2b4ed91b456faf03067fc6bd70bd9b14798ada5e47ccf8",
+      "bytes": 488
+    },
+    "stderr.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "input.scene": {
+      "sha256": "4566638d1939a2405fff998f8f58289252f0fb5823a9c7c9eed68ddda68b8c9e",
+      "bytes": 5538
+    }
+  },
+  "readback_scene_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "readback_equals_input": false,
+  "shared_lock_holder": "pid=270 start=2026-10-16T16:52:51Z label=geo261-diagnostic-f8c3e0f2-bridge-reload-v1 args=run bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/diagnostic-f8c3e0f2-bridge-reload-v1/namespace.sh\n",
+  "integrity_ok": true,
+  "exit": 0
+}

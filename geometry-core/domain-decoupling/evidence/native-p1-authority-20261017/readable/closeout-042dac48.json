@@ -1,0 +1,97 @@
+{
+  "source": "042dac484e7f082abdf51cb99572ad7610a50e22",
+  "tree": "457b88398397f390d653ee2f367ff4dc9d5226e0",
+  "status": "STOP-first-failed-group-completed",
+  "gate": {
+    "status": "PASS",
+    "stages": 5,
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\build-gate-042dac48-v1\\result\\summary.json",
+    "sha256": "a98722c18fb6ed125d8f98c2dd7aff70430bfc56f88cc004c3ba8f175d394d3d"
+  },
+  "focused_receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\focused-042dac48-v3\\result\\summary.json",
+  "focused_receipt_sha256": "978c1f348a0e7fe2450c2a3404681a8175924ff6eebc41ed9204e014a6f832c7",
+  "source_unchanged": true,
+  "runners_unchanged": true,
+  "gate_receipt_unchanged": true,
+  "planned_methods": 129,
+  "methods_run": 12,
+  "method_outcomes": {
+    "passed": 9,
+    "failed": 3,
+    "UNRUN": 117
+  },
+  "failure_events": 3,
+  "errors": 0,
+  "skips": 0,
+  "assembly_sources8": "PASS including all six exact named controls",
+  "assembly_graph_product4": {
+    "passed": 1,
+    "failed": 3
+  },
+  "remaining_methods": "117 UNRUN",
+  "failure_details": [
+    {
+      "test": "tests.test_geo261_assembly_graph_product.AssemblyGraphProduct.test_owned_boxes_consume_typed_dimensions_and_i42_depends_on_actual_poses",
+      "subtest": null,
+      "classification": "test-assertion-failure",
+      "exceptionType": "AssertionError",
+      "message": "0 != 1 : \n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_SOURCE\",\"clause\":\"I9\",\"message\":\"Line 15: only scene definitions and canvas-pos are accepted.\"}\n",
+      "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-042dac48-v3/source/tests/test_geo261_assembly_graph_product.py\", line 82, in test_owned_boxes_consume_typed_dimensions_and_i42_depends_on_actual_poses\n    envelope = self.execute(scene)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-042dac48-v3/source/tests/test_geo261_model_sources.py\", line 39, in execute\n    self.assertEqual(0,run.returncode,run.stderr+'\\n'+run.stdout)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : \n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_SOURCE\",\"clause\":\"I9\",\"message\":\"Line 15: only scene definitions and canvas-pos are accepted.\"}\n\n"
+    },
+    {
+      "test": "tests.test_geo261_assembly_graph_product.AssemblyGraphProduct.test_parameter_change_recomputes_owned_box_and_keeps_mapping_in_fresh_graph",
+      "subtest": null,
+      "classification": "test-assertion-failure",
+      "exceptionType": "AssertionError",
+      "message": "0 != 1 : \n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_SOURCE\",\"clause\":\"I9\",\"message\":\"Line 15: only scene definitions and canvas-pos are accepted.\"}\n",
+      "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-042dac48-v3/source/tests/test_geo261_assembly_graph_product.py\", line 119, in test_parameter_change_recomputes_owned_box_and_keeps_mapping_in_fresh_graph\n    old, changed = self.execute(before), self.execute(after)\n                   ^^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-042dac48-v3/source/tests/test_geo261_model_sources.py\", line 39, in execute\n    self.assertEqual(0,run.returncode,run.stderr+'\\n'+run.stdout)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : \n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_SOURCE\",\"clause\":\"I9\",\"message\":\"Line 15: only scene definitions and canvas-pos are accepted.\"}\n\n"
+    },
+    {
+      "test": "tests.test_geo261_assembly_graph_product.AssemblyGraphProduct.test_unused_nullable_authored_definitions_are_preserved_without_new_geometry_roots",
+      "subtest": null,
+      "classification": "test-assertion-failure",
+      "exceptionType": "AssertionError",
+      "message": "0 != 1 : \n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_SOURCE\",\"clause\":\"I9\",\"message\":\"Line 15: only scene definitions and canvas-pos are accepted.\"}\n",
+      "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-042dac48-v3/source/tests/test_geo261_assembly_graph_product.py\", line 104, in test_unused_nullable_authored_definitions_are_preserved_without_new_geometry_roots\n    envelope = self.execute(scene)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-042dac48-v3/source/tests/test_geo261_model_sources.py\", line 39, in execute\n    self.assertEqual(0,run.returncode,run.stderr+'\\n'+run.stdout)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : \n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_SOURCE\",\"clause\":\"I9\",\"message\":\"Line 15: only scene definitions and canvas-pos are accepted.\"}\n\n"
+    }
+  ],
+  "readonly_diagnosis": {
+    "adapter": "geometry-core/model_base.c",
+    "adapter_sha256": "c3342bc58ad94b7e678bc6465c0761d7a99af873ef641281228187827b4ce634",
+    "allowed_array_lines": [
+      47,
+      50
+    ],
+    "neutral_extra_line": 91,
+    "rejection_line": 93,
+    "missing_source_tokens": [
+      "owned",
+      "assembly"
+    ],
+    "preserved_scene": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\diagnostic-042dac48\\model-neutral.scene",
+    "scene_sha256": "4566638d1939a2405fff998f8f58289252f0fb5823a9c7c9eed68ddda68b8c9e",
+    "scene_line15": "owned 2 11 timber 1 27 33 role primary",
+    "scene_note": "Exact last model-neutral.scene retained by the original shared helper; earlier method scenes were overwritten by that helper, not reconstructed here.",
+    "reason": "Original bridge dump uses owned timber/place and assembly transport records, but the model adapter source allowlist rejects these before replay."
+  },
+  "compiler_commands": 76,
+  "build_artifact_count": 204,
+  "artifact_preservation": {
+    "status": "complete",
+    "error": null
+  },
+  "preserved_build_roots": [
+    "/var/tmp/geo261-focused-042dac48-v3/build-artifacts/build-0"
+  ],
+  "prior_101_evidence": "focused-a8831ca0-v3/result/summary.json",
+  "prior_29_evidence": "focused-808b8e69-v3/result/summary.json",
+  "same_source_259_pass_claim": false,
+  "source_modified": false,
+  "oracle_modified": false,
+  "original_timeouts_modified": false,
+  "pf3_executed": false,
+  "section_mutation_executed": false,
+  "full_suite_executed": false,
+  "compatibility_executed": false,
+  "browser_executed": false
+}

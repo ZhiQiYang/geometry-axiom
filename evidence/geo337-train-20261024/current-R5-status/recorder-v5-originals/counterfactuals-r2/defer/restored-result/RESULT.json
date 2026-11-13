@@ -1,0 +1,34 @@
+{
+  "scope": "Synthetic external recorder contracts; no C/product/performance samples",
+  "only": "defer",
+  "checks": 6,
+  "passed": true,
+  "details": [
+    {
+      "name": "driver original three binary precondition",
+      "passed": true
+    },
+    {
+      "name": "driver forwards original perf arguments",
+      "passed": true
+    },
+    {
+      "name": "original CompletedProcess identity in perf",
+      "passed": true
+    },
+    {
+      "name": "no recorder disk serialization inside original perf",
+      "passed": true
+    },
+    {
+      "name": "same original perf assertion preserved",
+      "passed": true
+    },
+    {
+      "name": "finally flush retains original result after perf failure",
+      "passed": true
+    }
+  ],
+  "product_tests_executed": false,
+  "C_executed": false
+}

@@ -1,0 +1,267 @@
+{
+  "schema": "geo261-recorded-command/1",
+  "sha": "94365170da6cbdc036edda956de6483f930d11e8",
+  "label": "architecture-before-contract",
+  "command": [
+    "python",
+    "-B",
+    "tests/architecture_contract.py",
+    "--root",
+    ".",
+    "--manifest",
+    "geometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "started": "2026-10-22T10:05:35.410660+00:00",
+  "checkout_before": {
+    "head": "94365170da6cbdc036edda956de6483f930d11e8",
+    "root": "/workspace/geometry-axiom",
+    "status": "",
+    "source_hashes": {
+      "geometry-web/app.js": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1",
+      "geometry-web/uiux_review_test.js": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47",
+      "geometry-web/cdp_test.js": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "tests/mutate.py": "8fc573fba9596ca8c6570a99c7de284584643a3560cee6cf5f0ac27416d26451",
+      "tests/mutants_results.json": "bd9c88f598b8bd1a82cd2f561b1953ba034837cc44e66d49556dd246c8bc4c73",
+      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e"
+    }
+  },
+  "environment": {
+    "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "XDG_DATA_HOME": "/workspace/geo261-environment/xdg-data",
+    "XDG_CACHE_HOME": "/workspace/geo261-environment/xdg-cache",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "GITHUB_SHA": "94365170da6cbdc036edda956de6483f930d11e8",
+    "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/tmp"
+  },
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "wrapper_sha256": "83b62e59def29b938ca01e4882fd7267110ab2a94a2eb38931283f31fc536701",
+  "exit_code": 0,
+  "versions": [
+    {
+      "command": [
+        "google-chrome",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T10:05:35.433390+00:00",
+      "stdout": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/versions/0.stdout",
+      "stderr": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/versions/0.stderr",
+      "combined": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/versions/0.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T10:05:35.471202+00:00",
+      "seconds": 0.037815395000507124,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T10:05:35.471651+00:00",
+      "stdout": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/versions/1.stdout",
+      "stderr": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/versions/1.stderr",
+      "combined": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/versions/1.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T10:05:35.475985+00:00",
+      "seconds": 0.004337694999776431,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T10:05:35.476382+00:00",
+      "stdout": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/versions/2.stdout",
+      "stderr": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/versions/2.stderr",
+      "combined": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/versions/2.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T10:05:35.478562+00:00",
+      "seconds": 0.0022527539995280677,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T10:05:35.478887+00:00",
+      "stdout": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/versions/3.stdout",
+      "stderr": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/versions/3.stderr",
+      "combined": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/versions/3.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T10:05:35.480517+00:00",
+      "seconds": 0.0016326700006175088,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    }
+  ],
+  "result": {
+    "command": [
+      "python",
+      "-B",
+      "tests/architecture_contract.py",
+      "--root",
+      ".",
+      "--manifest",
+      "geometry-core/domain-decoupling/product-architecture.json"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started": "2026-10-22T10:05:35.480920+00:00",
+    "stdout": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/command.stdout",
+    "stderr": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/command.stderr",
+    "combined": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/recorded/architecture-before-contract/command.combined.log",
+    "timeout_seconds": 1200,
+    "ended": "2026-10-22T10:05:41.069568+00:00",
+    "seconds": 5.588661970999965,
+    "actual_process_returncode": 0,
+    "exit_code": 0,
+    "watchdog_expired": false,
+    "owned_process_group_cleanup": false
+  },
+  "seconds": 5.589137197000127,
+  "ended": "2026-10-22T10:05:41.070029+00:00",
+  "checkout_after": {
+    "head": "94365170da6cbdc036edda956de6483f930d11e8",
+    "root": "/workspace/geometry-axiom",
+    "status": "",
+    "source_hashes": {
+      "geometry-web/app.js": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1",
+      "geometry-web/uiux_review_test.js": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47",
+      "geometry-web/cdp_test.js": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "tests/mutate.py": "8fc573fba9596ca8c6570a99c7de284584643a3560cee6cf5f0ac27416d26451",
+      "tests/mutants_results.json": "bd9c88f598b8bd1a82cd2f561b1953ba034837cc44e66d49556dd246c8bc4c73",
+      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e"
+    }
+  },
+  "files": {
+    "before.diff": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792663535429039912
+    },
+    "command.combined.log": {
+      "bytes": 132208,
+      "sha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "mtime_ns": 1792663541053172364
+    },
+    "command.command.json": {
+      "bytes": 839,
+      "sha256": "56b980b912d3c87dc57190e9288b341dcab9fb33c3e5c0de807c4a7954d71d57",
+      "mtime_ns": 1792663541069990660
+    },
+    "command.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792663535480932934
+    },
+    "command.stdout": {
+      "bytes": 132208,
+      "sha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "mtime_ns": 1792663541053172364
+    },
+    "versions/0.combined.log": {
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "mtime_ns": 1792663535465040754
+    },
+    "versions/0.command.json": {
+      "bytes": 719,
+      "sha256": "0b5ab699677a771fd5e40927d6090a492044c8c0753756617ba3bbcb4629ec06",
+      "mtime_ns": 1792663535471562706
+    },
+    "versions/0.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792663535429039912
+    },
+    "versions/0.stdout": {
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "mtime_ns": 1792663535465040754
+    },
+    "versions/1.combined.log": {
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "mtime_ns": 1792663535473040941
+    },
+    "versions/1.command.json": {
+      "bytes": 710,
+      "sha256": "c29a09ef0a19658bccd34392a0d28d98d0b096ae67c89cb750239e9fbb875b57",
+      "mtime_ns": 1792663535476310570
+    },
+    "versions/1.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792663535471665071
+    },
+    "versions/1.stdout": {
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "mtime_ns": 1792663535473040941
+    },
+    "versions/2.combined.log": {
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "mtime_ns": 1792663535478432947
+    },
+    "versions/2.command.json": {
+      "bytes": 714,
+      "sha256": "7c571eb66302111511219a062e42932f89f960c1b03dd4bee7ded1422ec50ec4",
+      "mtime_ns": 1792663535478805549
+    },
+    "versions/2.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792663535476411622
+    },
+    "versions/2.stdout": {
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "mtime_ns": 1792663535476411622
+    },
+    "versions/3.combined.log": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "mtime_ns": 1792663535480391939
+    },
+    "versions/3.command.json": {
+      "bytes": 709,
+      "sha256": "93c679b65802b7352539441ab16c7fce3db6f4946c3cd971b347f3a3d437860b",
+      "mtime_ns": 1792663535480619982
+    },
+    "versions/3.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792663535478900291
+    },
+    "versions/3.stdout": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "mtime_ns": 1792663535478900291
+    },
+    "wrapper.py.txt": {
+      "bytes": 3902,
+      "sha256": "83b62e59def29b938ca01e4882fd7267110ab2a94a2eb38931283f31fc536701",
+      "mtime_ns": 1792663535413313707
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "format": "geometry-canvas/8",
+  "drafts": [
+    {
+      "id": "16993b65-3a2b-4ef5-a7cf-3ef2e41e7b9b",
+      "kind": "instance",
+      "base_ref": {
+        "id": 1,
+        "fingerprint": "471aaca941bdbe1ebad5138cddd01851dd25f0aff9e9a3bef8da890dde248567"
+      },
+      "data": {
+        "bindingId": 1,
+        "id": 1,
+        "members": [
+          {
+            "depthSide": "+n",
+            "dir": "+v",
+            "ends": {
+              "finish": {
+                "id": 91,
+                "kind": "timber"
+              },
+              "start": {
+                "id": 90,
+                "kind": "timber"
+              }
+            },
+            "guideId": 0,
+            "memberId": 1,
+            "role": "primary"
+          },
+          {
+            "depthSide": "+n",
+            "dir": "+v",
+            "ends": {
+              "finish": {
+                "id": 91,
+                "kind": "timber"
+              },
+              "start": {
+                "id": 90,
+                "kind": "timber"
+              }
+            },
+            "guideId": 2,
+            "memberId": 2,
+            "role": "primary"
+          },
+          {
+            "depthSide": "+n",
+            "dir": "+u",
+            "ends": {
+              "finish": {
+                "kind": "member",
+                "memberId": 2
+              },
+              "start": {
+                "kind": "member",
+                "memberId": 1
+              }
+            },
+            "guideId": 3,
+            "memberId": 3,
+            "role": "secondary"
+          }
+        ],
+        "name": "保留未完成來源",
+        "rule": {
+          "fingerprint": "6b89cc2214bbb6f8ec0deaf8960bacdd8b0d07910d02646e264fcab6c15eea42",
+          "id": 1,
+          "version": 1
+        },
+        "surfaceId": 1
+      },
+      "updated_at": "2026-10-18T14:39:34.635Z"
+    }
+  ]
+}

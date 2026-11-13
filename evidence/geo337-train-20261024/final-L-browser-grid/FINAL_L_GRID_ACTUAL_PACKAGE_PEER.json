@@ -1,0 +1,27 @@
+{
+  "schema": "independent-final-L-grid-actual-package-peer/1",
+  "checks": 3438,
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "original_exit": 0,
+  "wrapper_exit": 0,
+  "passed_assertions": 356,
+  "failed_assertions": 0,
+  "screenshots": 4,
+  "elapsed_seconds": 482.2789733009995,
+  "ci_timeout_minutes": 15,
+  "archive_sha256": "c2eaa7d34defcd09faa4a0ec4bd6259a82bb3248905425e7d461db3adab401f2",
+  "member_count": 675,
+  "raw_original_bytes": 44095359,
+  "limits": [
+    "Original exposed command stdout/stderr only; no hidden compiler/test pipe interception or files already removed by original cleanup are reconstructed.",
+    "No ROOT/SEED/pool/Git/source payload copied; pool immutable plan/tree/raw preparation and original completed guard command streams are included.",
+    "GUARD_LATEST.json is shared mutable state and may already have been replaced by later jobs; it is not relabeled as the documents original. Original per-guard closed Git logs and actual guard argv/exit/fullstreams are retained.",
+    "Terminal profile non-cache files/symlinks retained; Chrome cache payloads excluded with inventory, no removal. ELF payloads excluded with actual hashes; original fingerprint sidecars retained.",
+    "GitHub artifact upload actions are preserved as original local artifact saves, not claimed uploaded to GitHub.",
+    "No independently predecoded host API launcher pipe is invented."
+  ],
+  "scope_caveat": "Original workflow grid-only partial scope: P70=121/P71=9/P78=23/P87=60/P88=143; golden not compared per original, no transport/network failure. Original post-CDP server output retained. Not full canvas. Checker follows original newline/LF rules already established for documents.",
+  "scope": "All archived members compared with immutable original bytes/symlinks; exact L workflow, original job/launcher/reaper raw, prior pool guards, source fingerprint inputs and declared exclusions verified. No browser/test rerun. No claim other browser jobs or native passed."
+}

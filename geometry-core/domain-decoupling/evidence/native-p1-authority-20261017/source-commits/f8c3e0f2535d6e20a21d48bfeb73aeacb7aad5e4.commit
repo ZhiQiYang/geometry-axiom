@@ -1,0 +1,8 @@
+tree 68d84cc92dde502c5e6baf61494d11d11bc791ac
+parent 042dac484e7f082abdf51cb99572ad7610a50e22
+author Yang <b10102230@gmail.com> 1792169074 +0800
+committer Yang <b10102230@gmail.com> 1792169074 +0800
+
+fix(geo261): accept canonical assembly source records
+
+The neutral-source entry now admits owned and assembly records emitted by the existing bridge dump. The scene parser and candidate validation still validate their full grammar, while the legacy snapshot entry keeps its original admission list. Existing three assembly graph product cases reproduce this rejection and must pass without removing their source/edge checks. Test counts unchanged; native verification pending.

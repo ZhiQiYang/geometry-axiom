@@ -1,4 +1,620 @@
 {
+ "core_limit_witness": {
+  "layouts": [
+   {
+    "buildable": true,
+    "conflict_codes": [],
+    "core_limits": [
+     [
+      "CORE_LIMIT_EXTENSION_END_FREE",
+      1,
+      1000,
+      [
+       1000,
+       3645,
+       4100,
+       3672
+      ]
+     ]
+    ],
+    "layout": {
+     "A": "x",
+     "a_start": "min",
+     "b_start": "min"
+    },
+    "name": "左上起鋪,板長沿Y",
+    "seams_a": [
+     916,
+     1833,
+     2750,
+     3667
+    ],
+    "seams_b": [
+     1831,
+     3631
+    ],
+    "timbers": [
+     [
+      "boundary",
+      [
+       0,
+       0,
+       4100,
+       27
+      ]
+     ],
+     [
+      "boundary",
+      [
+       0,
+       3648,
+       1000,
+       3675
+      ]
+     ],
+     [
+      "boundary",
+      [
+       1000,
+       3645,
+       4100,
+       3672
+      ]
+     ],
+     [
+      "boundary",
+      [
+       1000,
+       3693,
+       1450,
+       3720
+      ]
+     ],
+     [
+      "main",
+      [
+       903,
+       27,
+       930,
+       3648
+      ]
+     ],
+     [
+      "main",
+      [
+       1820,
+       27,
+       1847,
+       3645
+      ]
+     ],
+     [
+      "main",
+      [
+       2737,
+       27,
+       2764,
+       3645
+      ]
+     ],
+     [
+      "main",
+      [
+       3654,
+       27,
+       3681,
+       3645
+      ]
+     ],
+     [
+      "rc_parallel",
+      [
+       0,
+       27,
+       27,
+       3648
+      ]
+     ],
+     [
+      "rc_parallel",
+      [
+       4073,
+       27,
+       4100,
+       3645
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       27,
+       350,
+       903,
+       377
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       27,
+       717,
+       903,
+       744
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       27,
+       1084,
+       903,
+       1111
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       27,
+       1451,
+       903,
+       1478
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       27,
+       2185,
+       903,
+       2212
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       27,
+       2552,
+       903,
+       2579
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       27,
+       2919,
+       903,
+       2946
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       27,
+       3286,
+       903,
+       3313
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       930,
+       350,
+       1820,
+       377
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       930,
+       717,
+       1820,
+       744
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       930,
+       1084,
+       1820,
+       1111
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       930,
+       1451,
+       1820,
+       1478
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       930,
+       2185,
+       1820,
+       2212
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       930,
+       2552,
+       1820,
+       2579
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       930,
+       2919,
+       1820,
+       2946
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       930,
+       3286,
+       1820,
+       3313
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       1847,
+       350,
+       2737,
+       377
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       1847,
+       717,
+       2737,
+       744
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       1847,
+       1084,
+       2737,
+       1111
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       1847,
+       1451,
+       2737,
+       1478
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       1847,
+       2185,
+       2737,
+       2212
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       1847,
+       2552,
+       2737,
+       2579
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       1847,
+       2919,
+       2737,
+       2946
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       1847,
+       3286,
+       2737,
+       3313
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       2764,
+       350,
+       3654,
+       377
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       2764,
+       717,
+       3654,
+       744
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       2764,
+       1084,
+       3654,
+       1111
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       2764,
+       1451,
+       3654,
+       1478
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       2764,
+       2185,
+       3654,
+       2212
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       2764,
+       2552,
+       3654,
+       2579
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       2764,
+       2919,
+       3654,
+       2946
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       2764,
+       3286,
+       3654,
+       3313
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       3681,
+       350,
+       4073,
+       377
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       3681,
+       717,
+       4073,
+       744
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       3681,
+       1084,
+       4073,
+       1111
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       3681,
+       1451,
+       4073,
+       1478
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       3681,
+       2185,
+       4073,
+       2212
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       3681,
+       2552,
+       4073,
+       2579
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       3681,
+       2919,
+       4073,
+       2946
+      ]
+     ],
+     [
+      "secondary:mark",
+      [
+       3681,
+       3286,
+       4073,
+       3313
+      ]
+     ],
+     [
+      "secondary:seam",
+      [
+       27,
+       1818,
+       903,
+       1845
+      ]
+     ],
+     [
+      "secondary:seam",
+      [
+       27,
+       3618,
+       903,
+       3645
+      ]
+     ],
+     [
+      "secondary:seam",
+      [
+       930,
+       1818,
+       1820,
+       1845
+      ]
+     ],
+     [
+      "secondary:seam",
+      [
+       930,
+       3618,
+       1820,
+       3645
+      ]
+     ],
+     [
+      "secondary:seam",
+      [
+       1847,
+       1818,
+       2737,
+       1845
+      ]
+     ],
+     [
+      "secondary:seam",
+      [
+       1847,
+       3618,
+       2737,
+       3645
+      ]
+     ],
+     [
+      "secondary:seam",
+      [
+       2764,
+       1818,
+       3654,
+       1845
+      ]
+     ],
+     [
+      "secondary:seam",
+      [
+       2764,
+       3618,
+       3654,
+       3645
+      ]
+     ],
+     [
+      "secondary:seam",
+      [
+       3681,
+       1818,
+       4073,
+       1845
+      ]
+     ],
+     [
+      "secondary:seam",
+      [
+       3681,
+       3618,
+       4073,
+       3645
+      ]
+     ]
+    ]
+   }
+  ],
+  "room": {
+   "outer": [
+    [
+     0,
+     0
+    ],
+    [
+     4100,
+     0
+    ],
+    [
+     4100,
+     3672
+    ],
+    [
+     1450,
+     3672
+    ],
+    [
+     1450,
+     3720
+    ],
+    [
+     1000,
+     3720
+    ],
+    [
+     1000,
+     3675
+    ],
+    [
+     0,
+     3675
+    ]
+   ]
+  },
+  "room_name": "例:FZ120(I22 延伸段非空見證)"
+ },
  "params": {
   "L": 1830,
   "M": 367,
@@ -14,6 +630,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -892,6 +1509,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -1788,6 +2406,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -2675,6 +3294,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -3580,6 +4200,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -4575,6 +5196,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -5588,6 +6210,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -6592,6 +7215,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -7666,6 +8290,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -8200,6 +8825,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -8734,6 +9360,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -9268,6 +9895,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -9802,6 +10430,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -10282,6 +10911,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -10762,6 +11392,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -11242,6 +11873,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -11762,6 +12394,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -12215,6 +12848,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -12668,6 +13302,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -13121,6 +13756,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -13574,6 +14210,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -14018,6 +14655,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -14462,6 +15100,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -14906,6 +15545,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -15374,6 +16014,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -15618,6 +16259,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -15862,6 +16504,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -16106,6 +16749,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -16350,6 +16994,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -16621,6 +17266,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -16892,6 +17538,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -17163,6 +17810,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -17458,6 +18106,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -17838,6 +18487,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -18218,6 +18868,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -18553,6 +19204,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -18888,6 +19540,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -19285,6 +19938,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -19691,6 +20345,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -20088,6 +20743,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -20538,6 +21194,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -20811,6 +21468,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -21084,6 +21742,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -21357,6 +22016,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -21630,6 +22290,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -21974,6 +22635,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -22318,6 +22980,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -22662,6 +23325,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -23030,6 +23694,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -23138,6 +23803,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -23246,6 +23912,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -23354,6 +24021,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -23462,6 +24130,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -23587,6 +24256,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -23712,6 +24382,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -23837,6 +24508,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -23986,6 +24658,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -24440,6 +25113,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "min",
@@ -24894,6 +25568,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -25348,6 +26023,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "x",
       "a_start": "max",
@@ -25802,6 +26478,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -26346,6 +27023,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "min",
@@ -26890,6 +27568,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",
@@ -27434,6 +28113,7 @@
     {
      "buildable": true,
      "conflict_codes": [],
+     "core_limits": [],
      "layout": {
       "A": "y",
       "a_start": "max",

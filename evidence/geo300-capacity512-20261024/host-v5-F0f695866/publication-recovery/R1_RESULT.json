@@ -1,0 +1,800 @@
+{
+  "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+  "product_code_sha": "400a6d0ca50f3aca104fb569c77c8ef753c93355",
+  "old_body_sha": "fd206036052bfb4f8c7ea0025c31b1b2a21cc4b8",
+  "payload_bytes": 717639,
+  "index_peak_limit": 6291456,
+  "runtime": "UNRUN",
+  "evidence_pushed": false,
+  "body_pushed": false,
+  "exit_code": 1,
+  "files": {
+    "evidence/geo300-capacity512-20261024/PROGRESS.md": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/PROGRESS.host-v5.md",
+      "bytes": 1686,
+      "sha256": "ce5f7e2e7bcbfc74741063e22aa30b1bb04dbec488140c9b99880986fa81a720"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v2-draft/MANIFEST.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v2-draft/MANIFEST.json",
+      "bytes": 2037,
+      "sha256": "04eef63be6f2ab8a34bf785f7d34ec79b7034906cc767e7a1bcfd1c821d68b03"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v2-draft/HOST_V2.patch": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v2-draft/HOST_V2.patch",
+      "bytes": 35244,
+      "sha256": "2ec4e86e5d26f1f54c41b23678630d64600922879e805994920e38938633154a"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v2-draft/EXACT_WITHDRAWALS.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v2-draft/EXACT_WITHDRAWALS.json",
+      "bytes": 3216,
+      "sha256": "48bf7a7cacc8f3de143a1903210b14ad43aa17d8bf69edcda71e6e94419613cc"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v2-draft/candidate/tests/geo300_scene_generator.py": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v2-draft/candidate/tests/geo300_scene_generator.py",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v2-draft/candidate/tests/test_geo261_timber_capacity_host.py": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v2-draft/candidate/tests/test_geo261_timber_capacity_host.py",
+      "bytes": 22646,
+      "sha256": "6f96f45027599ebe3ef7721ae9ad36973ee225aa12b25d87ab322e4926f6a1a0"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v2-draft/candidate/tests/run_all.expected.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v2-draft/candidate/tests/run_all.expected.json",
+      "bytes": 25509,
+      "sha256": "e88f97a2c13e4ab561c071855ebf68f58bef5cec5d05ba20f453d58a23cf4209"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v3-draft/DESIGN.md": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v3-draft/DESIGN.md",
+      "bytes": 3313,
+      "sha256": "a5828d8a09a9335367170b8601b65404cecf1daa18d3e8bf7cbaa735ee70ac40"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v3-draft/MANIFEST.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v3-draft/MANIFEST.json",
+      "bytes": 2037,
+      "sha256": "469e2926c575a738a05fcdc25af0cb8651013cc7d0c8db798ae563803bf67986"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v3-draft/HOST_V2.patch": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v3-draft/HOST_V2.patch",
+      "bytes": 35718,
+      "sha256": "9b4ff0c483dd97e9af2ba2233c5384a294cc02275b370b58a362b1261f7e7c81"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v3-draft/EXACT_WITHDRAWALS.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v3-draft/EXACT_WITHDRAWALS.json",
+      "bytes": 3216,
+      "sha256": "48bf7a7cacc8f3de143a1903210b14ad43aa17d8bf69edcda71e6e94419613cc"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v3-draft/candidate/tests/geo300_scene_generator.py": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v3-draft/candidate/tests/geo300_scene_generator.py",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v3-draft/candidate/tests/test_geo261_timber_capacity_host.py": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v3-draft/candidate/tests/test_geo261_timber_capacity_host.py",
+      "bytes": 23115,
+      "sha256": "2260db0011c0736ad2ebaa9de648aee7743847bd909d4cd29be012f20793e31d"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v3-draft/candidate/tests/run_all.expected.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v3-draft/candidate/tests/run_all.expected.json",
+      "bytes": 25509,
+      "sha256": "e88f97a2c13e4ab561c071855ebf68f58bef5cec5d05ba20f453d58a23cf4209"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v4-draft/MANIFEST.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v4-draft/MANIFEST.json",
+      "bytes": 2037,
+      "sha256": "f67e3f647c141e09eb6217090301716cbe8d99860a7f37a82e221d97bc923ab5"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v4-draft/HOST_V2.patch": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v4-draft/HOST_V2.patch",
+      "bytes": 35836,
+      "sha256": "c758e22cbe64fef880f307e4afa508a98edc74856c3ad0bce1a9e67b17b50c4b"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v4-draft/EXACT_WITHDRAWALS.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v4-draft/EXACT_WITHDRAWALS.json",
+      "bytes": 3216,
+      "sha256": "48bf7a7cacc8f3de143a1903210b14ad43aa17d8bf69edcda71e6e94419613cc"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v4-draft/candidate/tests/geo300_scene_generator.py": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v4-draft/candidate/tests/geo300_scene_generator.py",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v4-draft/candidate/tests/test_geo261_timber_capacity_host.py": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v4-draft/candidate/tests/test_geo261_timber_capacity_host.py",
+      "bytes": 23232,
+      "sha256": "4461a3c5ab2b91de670dc79d6aa2a938dd620e62d4e16495ccc3cbef932e7b09"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v4-draft/candidate/tests/run_all.expected.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v4-draft/candidate/tests/run_all.expected.json",
+      "bytes": 25509,
+      "sha256": "e88f97a2c13e4ab561c071855ebf68f58bef5cec5d05ba20f453d58a23cf4209"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-draft/MANIFEST.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-draft/MANIFEST.json",
+      "bytes": 2037,
+      "sha256": "bada7b66c897973d77027122c09d67ae36fcdfe2947755753a01d0923fc90fa0"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-draft/README.md": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-draft/README.md",
+      "bytes": 1318,
+      "sha256": "9965b0aea6a903631bf9408e8bb545039206ad23731a2a16348436469ce4144b"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-draft/HOST_V2.patch": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-draft/HOST_V2.patch",
+      "bytes": 36061,
+      "sha256": "d4a745e6f2d101bcd65166617eacc75a3d095d8dc4bee9aa320532438ab25ca1"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-draft/EXACT_WITHDRAWALS.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-draft/EXACT_WITHDRAWALS.json",
+      "bytes": 3216,
+      "sha256": "48bf7a7cacc8f3de143a1903210b14ad43aa17d8bf69edcda71e6e94419613cc"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-draft/candidate/tests/geo300_scene_generator.py": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-draft/candidate/tests/geo300_scene_generator.py",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-draft/candidate/tests/test_geo261_timber_capacity_host.py": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-draft/candidate/tests/test_geo261_timber_capacity_host.py",
+      "bytes": 23454,
+      "sha256": "be15d7430e580a8bf82ece815105d48d288825a833eae863a3cc880301e42405"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-draft/candidate/tests/run_all.expected.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-draft/candidate/tests/run_all.expected.json",
+      "bytes": 25509,
+      "sha256": "e88f97a2c13e4ab561c071855ebf68f58bef5cec5d05ba20f453d58a23cf4209"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/RESULT.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/RESULT.json",
+      "bytes": 1387,
+      "sha256": "37b3a8faa84b3d3115bf0f822e8dfdac78f3e68218539860f006a8da18107927"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands.json",
+      "bytes": 39033,
+      "sha256": "2945f3e37c08fe68ec459972ea2ccf45ee9e32d871b042ec4d612815a00719fa"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000014/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000014/result.json",
+      "bytes": 1800,
+      "sha256": "1e85b375ac001c8baa674b96acd20b5b08b59e643677dc8760c1f00f78eec602"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000014/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000014/request.json",
+      "bytes": 1548,
+      "sha256": "6dfe74d779eb5b2d04ea0d537cfd02a026d1eab6c095a95e90eb9256fe2f48de"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000014/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000014/stdout.bin",
+      "bytes": 212,
+      "sha256": "6b53ea98541cdc9cdc4c98743736576001a3e64191c12345847a6dcb273ed871"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000014/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000014/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000021/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000021/result.json",
+      "bytes": 1769,
+      "sha256": "9a0d20fb79eff31e5371a514c85aeb87163f5675cc7908b5f5c6436cf2ad3dd0"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000021/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000021/request.json",
+      "bytes": 1519,
+      "sha256": "b14d52a7ca7c14aa98a997ae7c9f88f93f7e4c2769a8a873fac65750de8b131c"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000021/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000021/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000021/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000021/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000010/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000010/result.json",
+      "bytes": 1748,
+      "sha256": "e909b86aaec5f63f5c5b9555708eb8726c89714d7ce3fffec7729b2ba1ad25a7"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000010/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000010/request.json",
+      "bytes": 1498,
+      "sha256": "ae670e60dfb9eeb9a7572a99c2781ebec7792b8fd10ebe12dd2adf0d173722a9"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000010/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000010/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000010/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000010/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000007/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000007/result.json",
+      "bytes": 1802,
+      "sha256": "e6eb19cb453230e617f7503e745ebe8869ce5c0793f85acdcc62d13b95307128"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000007/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000007/request.json",
+      "bytes": 1551,
+      "sha256": "9a67b4c4fb52d48bbaf52188f10847c5fe4b19551da2c2748acfb006cb5c57bf"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000007/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000007/stdout.bin",
+      "bytes": 86,
+      "sha256": "d02f91197bb559e062fb12bf77ffb4a661f9285cca96fc0ecf9d05dd96a947f0"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000007/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000007/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000018/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000018/result.json",
+      "bytes": 1770,
+      "sha256": "ccc82ac0cc9bc7b56d5981e20f222d091ea6ecc50b5ff6b76a72d10c89ef30f7"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000018/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000018/request.json",
+      "bytes": 1520,
+      "sha256": "c0d40cff9a3e59bc37a6f3a198d724e6e66f405f7a3e6358406c69344e05522c"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000018/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000018/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000018/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000018/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000002/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000002/result.json",
+      "bytes": 1735,
+      "sha256": "5dcefd41c588ad7c01b1a60037e5edc1310962d077a2618b20bcc620b935c122"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000002/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000002/request.json",
+      "bytes": 1484,
+      "sha256": "49f63a6fd4f6087cc9833837dd4bec0fdea0d9046fdc24a47260e53d82374913"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000002/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000002/stdout.bin",
+      "bytes": 41,
+      "sha256": "56b977c5309ee8847b8fe08408e75022ee24deae297bd998e4dc1ab2c6fa24f3"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000002/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000002/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000005/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000005/result.json",
+      "bytes": 1752,
+      "sha256": "4082381cafb7bfecb2bb1643be8c13e71de79f124580552d0c86d6867c438ee4"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000005/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000005/request.json",
+      "bytes": 1502,
+      "sha256": "c9d0966cfa2a95f2ed9a71106fca0cbee6d53000ffe38224e3b6a9896d13d74b"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000005/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000005/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000005/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000009/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000009/result.json",
+      "bytes": 1754,
+      "sha256": "fc77e6962b7ad26a70f0bbd5ec5e2d722b714fb235ff4c044c0adc268cf3417a"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000009/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000009/request.json",
+      "bytes": 1502,
+      "sha256": "a5e0c4208abf52ea4d95238cb1f999275b4fabbf137601ec528b1fcd49f5fc9e"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000009/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000009/stdout.bin",
+      "bytes": 102,
+      "sha256": "7e110de5b5117e6653e1a4bf13b9ecc16ffe61ba9741c1518da7e40290e1824c"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000009/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000009/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000012/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000012/result.json",
+      "bytes": 1757,
+      "sha256": "8447334480703ceb9bd1b0d96073cebb0ac01d668f2c989b4bd6fc9ee3545749"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000012/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000012/request.json",
+      "bytes": 1503,
+      "sha256": "2283dda192e98a692a1122e0aee536b62027be270250893bee401e3e17655712"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000012/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000012/stdout.bin",
+      "bytes": 25509,
+      "sha256": "e88f97a2c13e4ab561c071855ebf68f58bef5cec5d05ba20f453d58a23cf4209"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000012/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000012/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000016/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000016/result.json",
+      "bytes": 1758,
+      "sha256": "4209e82df3cf99ae66b3f561e4bfd54cdb60faec908ae0f92711aef10209633e"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000016/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000016/request.json",
+      "bytes": 1508,
+      "sha256": "08001c9a4690e98a870f8bdcc8cd93da151604f3cbac7b885c721c73b38ab531"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000016/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000016/stdout.bin",
+      "bytes": 41,
+      "sha256": "56b977c5309ee8847b8fe08408e75022ee24deae297bd998e4dc1ab2c6fa24f3"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000016/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000016/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000015/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000015/result.json",
+      "bytes": 1735,
+      "sha256": "36a22eebfdecbd3ebf622d0c2217f75b33c1ede3b3a7066d0d338b94e476d0fe"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000015/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000015/request.json",
+      "bytes": 1484,
+      "sha256": "94850eb23990f6861bf8b3ebcce08bdc424404fadb1b6e8b43a7944675542dbf"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000015/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000015/stdout.bin",
+      "bytes": 41,
+      "sha256": "a439a01a6fc70174f68a769404b6f1d0a177939fda21bf60cd2685f6745e62e5"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000015/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000015/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000020/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000020/result.json",
+      "bytes": 1801,
+      "sha256": "a7c666715aac4aa0a356f39b013338190c64ab4cc49da4a093f3a2683daa183c"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000020/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000020/request.json",
+      "bytes": 1551,
+      "sha256": "179aad1dab93bc68e2a51c0fba1aedfc44dc7fe0eecb8649867b62b55f436756"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000020/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000020/stdout.bin",
+      "bytes": 86,
+      "sha256": "e406a5fbffcf3d58e354151f47389564464ad8cc5bfd2a3fd237ea3dc474d4f0"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000020/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000020/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000020/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000006/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000006/result.json",
+      "bytes": 1736,
+      "sha256": "42cc61565218650c56d36e557c3499e306edb0a5425304f3b06c96ef42a205fd"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000006/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000006/request.json",
+      "bytes": 1485,
+      "sha256": "8749930fc4f8854ecb634a7fac6638608bd668959d13783b357862c6d0165204"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000006/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000006/stdout.bin",
+      "bytes": 70,
+      "sha256": "3e8f59c3d838fde9c03379d5d9e552b1c4c985e59ffe560fbbe48ae51030c915"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000006/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000006/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000011/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000011/result.json",
+      "bytes": 1758,
+      "sha256": "5004adf9184e8f95408bf07b30333c48a3c2d93dea794b2518837f816a98a3c2"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000011/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000011/request.json",
+      "bytes": 1506,
+      "sha256": "0498fe388e3d471a01e23dfb98712340b130431f22955c5674163bf68f617840"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000011/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000011/stdout.bin",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000011/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000011/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000013/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000013/result.json",
+      "bytes": 1769,
+      "sha256": "4c2d707fb2d1c6f3491c2cab5eca76a3717414d2b3e7602aef7e093a2045eae7"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000013/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000013/request.json",
+      "bytes": 1516,
+      "sha256": "152c925868b407656026105f8bedc749a3648d992e5ce365974cc16b69070b0d"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000013/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000013/stdout.bin",
+      "bytes": 23454,
+      "sha256": "be15d7430e580a8bf82ece815105d48d288825a833eae863a3cc880301e42405"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000013/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000013/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000004/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000004/result.json",
+      "bytes": 1772,
+      "sha256": "b5a0f58bb72e394f1dd3f33c73acfc458f06be3bc7d5651aeea1fded0e2650fa"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000004/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000004/request.json",
+      "bytes": 1520,
+      "sha256": "69b508589455f80becf9a791c96ea879447fefcf3a3457c75a588de5eb4d0a6c"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000004/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000004/stdout.bin",
+      "bytes": 111,
+      "sha256": "ff287379772cb910ad8d16ea7259a971930e42e3fbde9a0e203e3dd2b0dc7a0f"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000004/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000004/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000003/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000003/result.json",
+      "bytes": 1753,
+      "sha256": "71916270a4c01505b6b360a854e1b063fa69906e740e7868ef5591b54b52b5aa"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000003/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000003/request.json",
+      "bytes": 1502,
+      "sha256": "0b695e236fd56ecafd7e3ac56d3f984b3e873ca92779b97d4cd01c5528b37461"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000003/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000003/stdout.bin",
+      "bytes": 34,
+      "sha256": "4d8373b75a54700d59dc7b601b854881150b45b134478ca9afb7245c4f5b66a6"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000003/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000003/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000019/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000019/result.json",
+      "bytes": 1827,
+      "sha256": "d46af068d77fa29a5477505838d90a4c88c51fc6fa8d1293b5b8b3a2c9199cf6"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000019/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000019/request.json",
+      "bytes": 1576,
+      "sha256": "c41d1cfbb24dfe59afc2d1eb74d1722fa5349dd7e111b96b94f552f783c34a69"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000019/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000019/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000019/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000019/stderr.bin",
+      "bytes": 147,
+      "sha256": "baa7163593fd7aa280a37544359c22556a14fe644168787276b351ba9c04f36e"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000019/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000008/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000008/result.json",
+      "bytes": 1874,
+      "sha256": "c362f4fefcdd6db0227d8b759127fde6efabfd11821171b060798b604263ff10"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000008/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000008/request.json",
+      "bytes": 1625,
+      "sha256": "48532b3db52d17be4e61deb1948b6b649000559e9735f5be1268daa8921f8c77"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000008/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000008/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000008/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000017/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000017/result.json",
+      "bytes": 1823,
+      "sha256": "f6297c59641606fb3432c6a58d00784a659299427534bfb074f12895293baa05"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000017/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000017/request.json",
+      "bytes": 1571,
+      "sha256": "625726aa6067d9037c9bb806d2ab86c1fb8a75b29f6dd76f16b7803270a25877"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000017/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000017/stdout.bin",
+      "bytes": 102,
+      "sha256": "7e110de5b5117e6653e1a4bf13b9ecc16ffe61ba9741c1518da7e40290e1824c"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000017/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000017/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000001/result.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000001/result.json",
+      "bytes": 1746,
+      "sha256": "bc0e0f359f6c0d1fcadfddf5e310391e1107d8f938514503791d35fa385da8f7"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000001/request.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000001/request.json",
+      "bytes": 1494,
+      "sha256": "c0cee8fd60b05afea171385b659de1996399c7e36fced08fad2592c6640ff292"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000001/stdout.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000001/stdout.bin",
+      "bytes": 189,
+      "sha256": "d4744f0a2aefc23a33aefaa9f3a5b955a5c7fa1cde0ba60a2e45645eaf8cbdb4"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000001/stderr.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/host-v5-source-publication/subcommands/000001/stdin.bin": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/host-v5-source-publication/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/peer/review.py": {
+      "local": "/workspace/geo300-capacity512-host-v5-peer-20261024/review.py",
+      "bytes": 10042,
+      "sha256": "ddbf8526d7b035184db0be40d3eaf51a9ef9380c9595f04c6c540a18aab2af56"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/peer/PUBLICATION_REVIEW.json": {
+      "local": "/workspace/geo300-capacity512-host-v5-peer-20261024/PUBLICATION_REVIEW.json",
+      "bytes": 670,
+      "sha256": "586dd431994f055d83cb6525d65b55575d2412c50f51e9b6349fa4a7c8b9273a"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/peer/REVIEW.json": {
+      "local": "/workspace/geo300-capacity512-host-v5-peer-20261024/REVIEW.json",
+      "bytes": 853,
+      "sha256": "7554687f38d886489bc8176049f3560d4dfbb9c3f823248620d234220af135c9"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/peer/PUBLICATION_CHECKS.json": {
+      "local": "/workspace/geo300-capacity512-host-v5-peer-20261024/PUBLICATION_CHECKS.json",
+      "bytes": 7678,
+      "sha256": "c5e43e09944b2e7d8cd5fcfa3138f0efffb71704385ab29c3b2d9011ccf5639e"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/peer/PUBLISHER_REVIEW.json": {
+      "local": "/workspace/geo300-capacity512-host-v5-peer-20261024/PUBLISHER_REVIEW.json",
+      "bytes": 1772,
+      "sha256": "8f45127f1376b39931b470089ebc0abb88fffcca24c4f8e8bc9291c7f54b8874"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/peer/initial-matcher-review.py": {
+      "local": "/workspace/geo300-capacity512-host-v5-peer-20261024/initial-matcher-review.py",
+      "bytes": 9994,
+      "sha256": "f3ed82b903d12922b5bdaba75b7aeb1a338135a18ad6f5df62a1db463579600f"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/peer/initial-matcher-REVIEW.json": {
+      "local": "/workspace/geo300-capacity512-host-v5-peer-20261024/initial-matcher-REVIEW.json",
+      "bytes": 951,
+      "sha256": "88cadac0c436477da4e3af2b607cc1395559ce19da0365da56d3131c52f27dd6"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/peer/review_publication.py": {
+      "local": "/workspace/geo300-capacity512-host-v5-peer-20261024/review_publication.py",
+      "bytes": 4220,
+      "sha256": "e10f4bdb4bcc585c9a9acaffa4592fea1a24f6528c383594d6f6efdfd547f58d"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/peer/PUBLISHER_INITIAL_SPARSE_MATCHER_REVIEW.json": {
+      "local": "/workspace/geo300-capacity512-host-v5-peer-20261024/PUBLISHER_INITIAL_SPARSE_MATCHER_REVIEW.json",
+      "bytes": 1525,
+      "sha256": "fa59de05a61801661cc23493890cd87b9286c45f198e139d2c6b888a04d725c1"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/peer/initial-matcher-CHECKS.json": {
+      "local": "/workspace/geo300-capacity512-host-v5-peer-20261024/initial-matcher-CHECKS.json",
+      "bytes": 6920,
+      "sha256": "134a8508c4891011fc274c2bbf201cc85639f1eb88f271cc6588134faa8da470"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/peer/CHECKS.json": {
+      "local": "/workspace/geo300-capacity512-host-v5-peer-20261024/CHECKS.json",
+      "bytes": 6919,
+      "sha256": "166acf22d92b21cf154c02945e5b8263222713c8c5c95f86c9a15ffe53c9947a"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/DECLARATION_COUNT_FIX.patch": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/DECLARATION_COUNT_FIX.patch",
+      "bytes": 1178,
+      "sha256": "c7ae3cf95cb77a73aa44eeca1b802e022e4d22296d9b2a71d7f7aa180ac56446"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/DECLARATION_COUNT_FIX_DESIGN.md": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/DECLARATION_COUNT_FIX_DESIGN.md",
+      "bytes": 2566,
+      "sha256": "fb4ba62a4cd064b7ee9f153ad891458532cf28a87d29c891183ea185e8690b80"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/FACE_OBSTACLE_CAPACITY_STATIC_REVIEW.json": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/FACE_OBSTACLE_CAPACITY_STATIC_REVIEW.json",
+      "bytes": 2955,
+      "sha256": "2d6ab9626b41b2cfd723c6e9da3cc52df9b00df6853aae5932da9d5be8adba82"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/FACE_OBSTACLE_CAPACITY_CLARIFICATION.md": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/FACE_OBSTACLE_CAPACITY_CLARIFICATION.md",
+      "bytes": 879,
+      "sha256": "5085e4766bcd35dd16e0a368a81b7d84e132ce222d28bae96f1e81a7e6ce72e6"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/FORMAL_H7_W7_F0f695866_PLAN.md": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/FORMAL_H7_W7_F0f695866_PLAN.md",
+      "bytes": 7722,
+      "sha256": "3e591e093bb9147acc40e82d35da68ee1fc18e634257c33390263edd812d9389"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/H_PIPE_CAPTURE_PLAN.md": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/H_PIPE_CAPTURE_PLAN.md",
+      "bytes": 2500,
+      "sha256": "afd962aa82b4fa643719a5653f2ab9065814d1ae89a5411103cde84dd4df5f3b"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/PLACED_512_REPLAY_STACK_PLAN.md": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/PLACED_512_REPLAY_STACK_PLAN.md",
+      "bytes": 10467,
+      "sha256": "6fb6ef3254f47b9788f5e20e98cd9e2a9226a132a0ddc0e4c02fcca09540a39c"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/PR_BODY.host-v5.template.md": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/PR_BODY.host-v5.template.md",
+      "bytes": 4613,
+      "sha256": "16bbdd75af5218121ce5c1add6c230ae94c1454350c89366b61d7829d6df7cf2"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/PROGRESS.host-v5.md": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/PROGRESS.host-v5.md",
+      "bytes": 1686,
+      "sha256": "ce5f7e2e7bcbfc74741063e22aa30b1bb04dbec488140c9b99880986fa81a720"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/publish_host_v5_source.py": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/publish_host_v5_source.py",
+      "bytes": 4280,
+      "sha256": "23c5f23b33f6a93295196e8064250a4d25bbe3b4bfca7d691c8e1e5642f32f3f"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/publish_host_v5_evidence.py": {
+      "local": "/workspace/geo300-capacity512-publication-20261024/publish_host_v5_evidence.py",
+      "bytes": 7180,
+      "sha256": "03f1008f63cc27f195581c3cb4e3a33db56d66d48989b2a843d3707c9bd836c9"
+    },
+    "evidence/geo300-capacity512-20261024/host-v5-F0f695866/peer/GEO348_HOST_V5_BODY_STATIC_PEER.json": {
+      "local": "/workspace/train337-canvas-peer-resume/GEO348_HOST_V5_BODY_STATIC_PEER.json",
+      "bytes": 1249,
+      "sha256": "e5e565ea0f20121ad7b1f2bf31a8f775dcf266cc27d792a0f9472971b63c0ff7"
+    }
+  },
+  "error": "Traceback (most recent call last):\n  File \"/workspace/geo300-capacity512-publication-20261024/publish_host_v5_evidence.py\", line 49, in <module>\n    run(['diff','--cached','--check'])\n  File \"/workspace/geo300-capacity512-publication-20261024/publish_host_v5_evidence.py\", line 33, in run\n    def run(args,data=None):return rec.run(['git','-c','gc.auto=0','-c','maintenance.auto=false',*args],cwd=R,data=data,timeout=180,source_sha=S,source_variant='evidence only; all runtime UNRUN')[1]\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py\", line 39, in run\n    if check and row['actual_process_returncode']!=0:raise RuntimeError('子命令非零；完整原輸出已保存：'+str(target))\n                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: 子命令非零；完整原輸出已保存：/workspace/geo300-capacity512-publication-20261024/host-v5-evidence-publication/subcommands/000167\n",
+  "command_count": 167
+}

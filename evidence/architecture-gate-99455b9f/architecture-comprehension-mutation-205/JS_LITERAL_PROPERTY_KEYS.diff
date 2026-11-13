@@ -1,0 +1,11 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -512,7 +512,7 @@
+         after = tokens[offset + 1].value if offset + 1 < len(tokens) else None
+         field_boundary = bool(stack) and stack[-1][0] == "{" and before in {"{", ","}
+         if token.kind == "string" and field_boundary and after in {":", "("}:
+-            literal_keys.add(offset)
++            pass  # TEMP removed JS_LITERAL_PROPERTY_KEYS
+         if token.kind in {"punct", "member_open"} and token.value in {"(", "[", "{"}:
+             stack.append((token.value, offset, token.value == "[" and field_boundary))
+         elif token.kind == "punct" and token.value in {")", "]", "}"} and stack:

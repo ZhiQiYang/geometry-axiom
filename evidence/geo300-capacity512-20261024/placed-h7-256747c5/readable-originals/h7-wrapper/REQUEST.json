@@ -1,0 +1,45 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "/dev/shm/pr348-run-formal-local-v7.py",
+    "--root",
+    "/dev/shm/pr348-diagnostic-c754",
+    "--out",
+    "/dev/shm/pr348-h7-256747c5",
+    "--durable",
+    "/tmp/pr348-local-h7-256747c5-checkpoints",
+    "tests.test_geo261_timber_capacity_host"
+  ],
+  "source_sha": "256747c5c8f8f8934eeb08ae404dee1f67591508",
+  "started_utc": "2026-10-29T02:38:14Z",
+  "pid": 303856,
+  "suite_timeout_seconds": 1200,
+  "per_batch_timeout_seconds": 600,
+  "stack_bytes": 16777216,
+  "guards": "Original run_all.run_process and kill_tree; all test/build/local collection remains inside1200, no paused or extended deadline. Network publication follows terminal result.",
+  "capacity_before": {
+    "/workspace": {
+      "total": 33770192896,
+      "used": 32035201024,
+      "free": 229376
+    },
+    "/tmp": {
+      "total": 17871880192,
+      "used": 17565184000,
+      "free": 306696192
+    },
+    "/dev/shm": {
+      "total": 17871880192,
+      "used": 3232014336,
+      "free": 14639865856
+    }
+  },
+  "memory_before": {
+    "current": 24607985664,
+    "max": 34359738368
+  },
+  "persistent_budget_bytes": 33554432,
+  "unchanged_reserve_bytes": 67108864,
+  "observer_sha256": "417eca03461d3189ac0b786fd8fe0e3839dc2a777256cea501bc0820b240499d"
+}

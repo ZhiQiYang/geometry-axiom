@@ -1,0 +1,66 @@
+"""Experiment (not part of the repo): run every candidate mutant against every harness case.
+Usage (cwd = a clone):  python3 srcidx_matrix.py
+Prints  mutant x case -> exit code / first assertion label, so we know which case really kills which mutant."""
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path.cwd()
+sys.path.insert(0, str(ROOT))
+from tests.test_geo261_native_kernel import NativeBuild
+from tests.test_geo261_source_index import NODE_PROBE, EDGE_PROBE
+
+CASES = ["nodes", "edges", "edge-collisions", "allocation", "growth", "statuses"]
+
+
+def never(source, target):
+    marker = "geo_source_find_" + target + "("
+    start = source.index("{", source.index(marker))
+    return source[:start + 1] + ("\nreturn SIZE_MAX;" if target == "node" else "\nreturn false;") + source[start + 1:]
+
+
+def inject(source, anchor, replacement):
+    assert source.count(anchor) == 1, anchor
+    return source.replace(anchor, replacement)
+
+
+MUTANTS = {
+    "never-node": lambda s: never(s, "node"),
+    "never-edge": lambda s: never(s, "edge"),
+    "node-key-bytes-ignored": lambda s: inject(s, "||!memcmp(a.key,b.key,a.key_size)", "||1"),
+    "node-probe-miss": lambda s: inject(s, NODE_PROBE, NODE_PROBE + "if(!geo_source_ref_equal(ctx->nodes[ctx->node_index[slot]-1]->source,source))return SIZE_MAX;"),
+    "node-probe-hit": lambda s: inject(s, NODE_PROBE, NODE_PROBE + "if(1)return ctx->node_index[slot]-1;"),
+    "edge-kind-ignored": lambda s: inject(s, "&&a.kind==b.kind", ""),
+    "edge-probe-miss": lambda s: inject(s, EDGE_PROBE, EDGE_PROBE + "if(!geo_source_edge_equal(ctx->edges[ctx->edge_index[slot]-1],edge))return false;"),
+    "edge-probe-hit": lambda s: inject(s, EDGE_PROBE, EDGE_PROBE + "if(1)return true;"),
+}
+
+
+def run(exe, case):
+    try:
+        r = subprocess.run([str(exe), case], capture_output=True, text=True, timeout=60)
+    except subprocess.TimeoutExpired:
+        return "TIMEOUT"
+    first = r.stderr.strip().splitlines()[0] if r.stderr.strip() else ""
+    label = first.split(" ")[0] if first else ""
+    return f"rc={r.returncode} {label}".strip()
+
+
+build = NativeBuild(kernel_only=True)
+harness = build.work / "matrix-client.c"
+shutil.copy2(ROOT / "tests/geo261_source_index_harness.c", harness)
+base = build.link("matrix-base", [build.compile(harness, "matrix-base")])
+print("%-24s" % "baseline", *["%s=%s" % (c, run(base, c)) for c in CASES], sep=" | ")
+original = (build.kernel / "source.c").read_text(encoding="utf-8")
+for name, edit in MUTANTS.items():
+    work = build.work / ("m-" + name)
+    work.mkdir()
+    mutated = edit(original)
+    assert mutated != original
+    (work / "source.c").write_text(mutated, encoding="utf-8")
+    client = work / "client.c"
+    shutil.copy2(harness, client)
+    exe = build.link("mx-" + name, [build.compile(client, "mx-" + name)])
+    print("%-24s" % name, *["%s=%s" % (c, run(exe, c)) for c in CASES], sep=" | ")
+sys.stdout.flush()

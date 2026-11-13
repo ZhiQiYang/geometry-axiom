@@ -1,0 +1,88 @@
+test_public_native_loader_rejects_equal_value_quantity_ref_swaps (tests.test_geometry_host_sources.NativeRootCatalogTests.test_public_native_loader_rejects_equal_value_quantity_ref_swaps) ... FAIL
+test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) ... 
+  test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) (slot='profile.frame', mode='ref') ... FAIL
+  test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) (slot='profile.frame', mode='id') ... FAIL
+  test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) (slot='profile.region', mode='ref') ... FAIL
+  test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) (slot='profile.region', mode='id') ... FAIL
+  test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) (slot='profile.length', mode='ref') ... FAIL
+  test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) (slot='profile.length', mode='id') ... FAIL
+
+======================================================================
+FAIL: test_public_native_loader_rejects_equal_value_quantity_ref_swaps (tests.test_geometry_host_sources.NativeRootCatalogTests.test_public_native_loader_rejects_equal_value_quantity_ref_swaps)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geometry_host_sources.py", line 533, in test_public_native_loader_rejects_equal_value_quantity_ref_swaps
+    with self.assertRaises(ModelError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ModelError not raised
+
+======================================================================
+FAIL: test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) (slot='profile.frame', mode='ref')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_default_native.py", line 437, in test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots
+    self.reject_native_wire(changed, scene)
+  File "/workspace/geometry-axiom/tests/test_geo261_default_native.py", line 387, in reject_native_wire
+    with self.assertRaises(ModelError) as caught:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ModelError not raised
+
+======================================================================
+FAIL: test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) (slot='profile.frame', mode='id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_default_native.py", line 437, in test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots
+    self.reject_native_wire(changed, scene)
+  File "/workspace/geometry-axiom/tests/test_geo261_default_native.py", line 387, in reject_native_wire
+    with self.assertRaises(ModelError) as caught:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ModelError not raised
+
+======================================================================
+FAIL: test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) (slot='profile.region', mode='ref')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_default_native.py", line 437, in test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots
+    self.reject_native_wire(changed, scene)
+  File "/workspace/geometry-axiom/tests/test_geo261_default_native.py", line 387, in reject_native_wire
+    with self.assertRaises(ModelError) as caught:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ModelError not raised
+
+======================================================================
+FAIL: test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) (slot='profile.region', mode='id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_default_native.py", line 437, in test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots
+    self.reject_native_wire(changed, scene)
+  File "/workspace/geometry-axiom/tests/test_geo261_default_native.py", line 387, in reject_native_wire
+    with self.assertRaises(ModelError) as caught:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ModelError not raised
+
+======================================================================
+FAIL: test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) (slot='profile.length', mode='ref')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_default_native.py", line 437, in test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots
+    self.reject_native_wire(changed, scene)
+  File "/workspace/geometry-axiom/tests/test_geo261_default_native.py", line 387, in reject_native_wire
+    with self.assertRaises(ModelError) as caught:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ModelError not raised
+
+======================================================================
+FAIL: test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots (tests.test_geo261_default_native.DefaultNativeIntegration.test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots) (slot='profile.length', mode='id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_default_native.py", line 437, in test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots
+    self.reject_native_wire(changed, scene)
+  File "/workspace/geometry-axiom/tests/test_geo261_default_native.py", line 387, in reject_native_wire
+    with self.assertRaises(ModelError) as caught:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ModelError not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.304s
+
+FAILED (failures=7)

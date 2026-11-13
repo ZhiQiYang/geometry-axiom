@@ -1,0 +1,31 @@
+test_html_srcdoc_document_is_explicitly_unsupported (__main__.ArchitectureContract.test_html_srcdoc_document_is_explicitly_unsupported) ... FAIL
+test_html_empty_or_host_srcdoc_still_requires_document_parser (__main__.ArchitectureContract.test_html_empty_or_host_srcdoc_still_requires_document_parser) ... FAIL
+
+======================================================================
+FAIL: test_html_srcdoc_document_is_explicitly_unsupported (__main__.ArchitectureContract.test_html_srcdoc_document_is_explicitly_unsupported)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1122, in test_html_srcdoc_document_is_explicitly_unsupported
+    self.rejects("HTML_SRCDOC_UNSUPPORTED")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 66, in rejects
+    self.assertTrue(matches, result.to_dict())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : {'ok': False, 'sources': ['src/core.html', 'src/w.js'], 'trustedSourcesNotParsed': [], 'edges': [], 'diagnostics': [{'path': 'src/core.html', 'line': 1, 'code': 'HTML_EMBED_UNSUPPORTED', 'message': 'embedded document/plugin elements require a separate source and execution context parser', 'direction': '', 'chain': ()}]}
+
+======================================================================
+FAIL: test_html_empty_or_host_srcdoc_still_requires_document_parser (__main__.ArchitectureContract.test_html_empty_or_host_srcdoc_still_requires_document_parser)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1126, in test_html_empty_or_host_srcdoc_still_requires_document_parser
+    self.rejects("HTML_SRCDOC_UNSUPPORTED")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 66, in rejects
+    self.assertTrue(matches, result.to_dict())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : {'ok': False, 'sources': ['src/host.html'], 'trustedSourcesNotParsed': [], 'edges': [], 'diagnostics': [{'path': 'src/host.html', 'line': 1, 'code': 'HTML_EMBED_UNSUPPORTED', 'message': 'embedded document/plugin elements require a separate source and execution context parser', 'direction': '', 'chain': ()}]}
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.036s
+
+FAILED (failures=2)

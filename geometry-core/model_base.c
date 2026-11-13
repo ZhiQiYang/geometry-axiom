@@ -42,7 +42,7 @@ static int model_error(const char *status, const char *code,
  * This also guards the legacy fgets/strlen reader against embedded NULs.
  * The core still validates every allowed command and every dependency.
  */
-static bool model_source_check(const char *path, bool *capacity, bool *unsupported, char *error, size_t cap)
+static bool model_source_check(const char *path, bool neutral, bool *capacity, bool *unsupported, char *error, size_t cap)
 {
     static const char *allowed[] = {
         "spec", "boundary", "placement", "surface", "space", "datum", "guide",
@@ -88,6 +88,7 @@ static bool model_source_check(const char *path, bool *capacity, bool *unsupport
         if (count) {
             bool found = false;
             for (size_t i = 0; allowed[i]; ++i) if (!strcmp(tokens[0], allowed[i])) found = true;
+            if(neutral&&(!strcmp(tokens[0],"finish-surface")||!strcmp(tokens[0],"panel-fill")||!strcmp(tokens[0],"derived-placement")||!strcmp(tokens[0],"owned")||!strcmp(tokens[0],"assembly")))found=true;
             if (!found) {
                 snprintf(error, cap, "Line %d: only scene definitions and canvas-pos are accepted.", line_no); ok = false; break;
             }
@@ -165,18 +166,12 @@ static void model_box(const char *kind, uint32_t id, Coord xl, Coord xh,
                       Coord yl, Coord yh, Coord zl, Coord zh)
 {
     static const char *names[6] = {"-X", "+X", "-Y", "+Y", "-Z", "+Z"};
-    Coord lo[3] = {xl, yl, zl}, hi[3] = {xh, yh, zh};
+    GeoBox3 box={{{xl,yl,zl},{1,0,0},{0,1,0},{0,0,1}},{xh-xl,yh-yl,zh-zl}};
     fputs("{\"kind\":", stdout); model_string(stdout, kind);
     printf(",\"id\":%" PRIu32 ",\"placement_id\":null,\"boundary_id\":null,\"faces\":[", id);
     for (int k = 0; k < 3; ++k) for (int side = 0; side < 2; ++side) {
         Quad3 face;
-        for (int j = 0; j < 4; ++j) {
-            Coord p[3]; int u = (k + 1) % 3, v = (k + 2) % 3;
-            p[k] = side ? hi[k] : lo[k];
-            p[u] = TIMBER_FACE_WALK[side][j][0] ? hi[u] : lo[u];
-            p[v] = TIMBER_FACE_WALK[side][j][1] ? hi[v] : lo[v];
-            face.vertices[j] = (Point3){p[0], p[1], p[2]};
-        }
+        (void)geo_box_face(&box,(unsigned)k,(unsigned)side,&face);
         if (k || side) putchar(',');
         model_face(names[k * 2 + side], &face);
     }
@@ -196,25 +191,25 @@ typedef struct {
 
 static void model_dep_placement(const World *world, ModelDependencies *deps, uint32_t id)
 {
-    for (size_t i = 0; i < world->placement_count; ++i)
-        if (world->placements[i].id == id) deps->placements[i] = true;
+    for (size_t i = 0; i < world_placement_count(world); ++i)
+        if (world_placement_at(world,i)->id == id) deps->placements[i] = true;
 }
 
 static void model_dep_timber(const World *world, ModelDependencies *deps, uint32_t id)
 {
-    for (size_t i = 0; i < world->timber_count; ++i)
-        if (world->timbers[i].id == id) deps->timbers[i] = true;
+    for (size_t i = 0; i < world->wood.timber_count; ++i)
+        if (world->wood.timbers[i].id == id) deps->timbers[i] = true;
 }
 
 static void model_dep_guide(const World *world, ModelDependencies *deps, uint32_t id)
 {
-    for (size_t i = 0; i < world->guide_count; ++i) {
-        const GuideLine *g = &world->guides[i];
+    for (size_t i = 0; i < geo_guides_count(&world->geo.guide_lines); ++i) {
+        const GuideLine *g = &geo_guides_values(&world->geo.guide_lines)[i];
         if (g->id != id || deps->guides[i]) continue;
         deps->guides[i] = true;
         model_dep_placement(world, deps, g->placement_id);
         if (g->source == GUIDE_DATUM) continue; /* Datum expressions contain specs only. */
-        const char *p = g->expression;
+        const char *p = app_guide_expression(world,g->id);
         while (*p) {
             if (*p == '+' || *p == '-') ++p;
             const char *end = p; while (*end && *end != '+' && *end != '-') ++end;
@@ -245,9 +240,9 @@ static void model_dep_space(const World *world, ModelDependencies *deps, uint32_
     if (!id) return;
     const Space *space = world_find_space(world, id);
     if (!space) return; /* Successful I9 validation guarantees existence. */
-    for (size_t b = 0; b < space->boundary_count; ++b)
-        for (size_t p = 0; p < world->placement_count; ++p)
-            if (world->placements[p].boundary_id == space->boundaries[b]) deps->placements[p] = true;
+    for (size_t b = 0; b < space->member_count; ++b)
+        for (size_t p = 0; p < world_placement_count(world); ++p)
+            if (world_placement_at(world,p)->boundary_id == space->member_ids[b]) deps->placements[p] = true;
 }
 
 static void model_dependency_record(const World *world, const char *kind,
@@ -256,13 +251,13 @@ static void model_dependency_record(const World *world, const char *kind,
     fputs("{\"kind\":", stdout); model_string(stdout, kind);
     printf(",\"id\":%" PRIu32 ",\"refs\":[", id);
     size_t count = 0;
-    for (size_t i = 0; i < world->placement_count; ++i) if (deps->placements[i]) {
+    for (size_t i = 0; i < world_placement_count(world); ++i) if (deps->placements[i]) {
         if (count++) putchar(',');
-        printf("{\"kind\":\"placement\",\"id\":%" PRIu32 "}", world->placements[i].id);
+        printf("{\"kind\":\"placement\",\"id\":%" PRIu32 "}", world_placement_at(world,i)->id);
     }
-    for (size_t i = 0; i < world->timber_count; ++i) if (deps->timbers[i]) {
+    for (size_t i = 0; i < world->wood.timber_count; ++i) if (deps->timbers[i]) {
         if (count++) putchar(',');
-        printf("{\"kind\":\"timber\",\"id\":%" PRIu32 "}", world->timbers[i].id);
+        printf("{\"kind\":\"timber\",\"id\":%" PRIu32 "}", world->wood.timbers[i].id);
     }
     fputs("]}", stdout);
 }
@@ -270,51 +265,51 @@ static void model_dependency_record(const World *world, const char *kind,
 static void model_dependencies(const World *world)
 {
     size_t count = 0;
-    for (size_t i = 0; i < world->placement_count; ++i) {
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
         ModelDependencies deps = {0}; if (count++) putchar(',');
-        model_dependency_record(world, "placement", world->placements[i].id, &deps);
+        model_dependency_record(world, "placement", world_placement_at(world,i)->id, &deps);
     }
-    for (size_t i = 0; i < world->column_count; ++i) {
+    for (size_t i = 0; i < world->wood.column_count; ++i) {
         ModelDependencies deps = {0}; if (count++) putchar(',');
         /* D13/I15 membership validation depends on the actual Space members.
          * Frozen z values (R8) are never re-inferred from those members. */
-        model_dep_space(world, &deps, world->columns[i].space_id);
-        model_dependency_record(world, "column", world->columns[i].id, &deps);
+        model_dep_space(world, &deps, world->wood.columns[i].space_id);
+        model_dependency_record(world, "column", world->wood.columns[i].id, &deps);
     }
-    for (size_t i = 0; i < world->beam_count; ++i) {
+    for (size_t i = 0; i < world->wood.beam_count; ++i) {
         ModelDependencies deps = {0}; if (count++) putchar(',');
-        model_dep_space(world, &deps, world->beams[i].space_id);
-        model_dependency_record(world, "beam", world->beams[i].id, &deps);
+        model_dep_space(world, &deps, world->wood.beams[i].space_id);
+        model_dependency_record(world, "beam", world->wood.beams[i].id, &deps);
     }
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        const TimberAnchor *anchor = &world->anchors[i]; ModelDependencies deps = {0};
+    for (size_t i = 0; i < world->wood.timber_count; ++i) {
+        const TimberAnchor *anchor = &world->wood.anchors[i]; ModelDependencies deps = {0};
         model_dep_placement(world, &deps, anchor->placement_id);
-        for (size_t j = 0; j < world->timber_count; ++j)
-            if (world->timbers[j].placed && world->anchors[j].order < anchor->order &&
-                world->anchors[j].placement_id == anchor->placement_id) deps.timbers[j] = true;
+        for (size_t j = 0; j < world->wood.timber_count; ++j)
+            if (world->wood.timbers[j].placed && world->wood.anchors[j].order < anchor->order &&
+                world->wood.anchors[j].placement_id == anchor->placement_id) deps.timbers[j] = true;
         if (anchor->anchor_kind == ANCHOR_AT_LINE) model_dep_guide(world, &deps, anchor->ref_guide);
         if (anchor->ref_is_timber) model_dep_timber(world, &deps, anchor->ref_timber);
         if (anchor->has_between) for (int j = 0; j < 2; ++j)
             if (anchor->between[j].kind) model_dep_timber(world, &deps, anchor->between[j].timber);
         if (count++) putchar(',');
-        model_dependency_record(world, "timber", world->timbers[i].id, &deps);
+        model_dependency_record(world, "timber", world->wood.timbers[i].id, &deps);
     }
-    for (size_t i = 0; i < world->section_profiles.run_count; ++i) {
-        const ProfileRun *run = &world->section_profiles.runs[i];
+    for (size_t i = 0; i < world->wood.section_profiles.run_count; ++i) {
+        const ProfileRun *run = &world->wood.section_profiles.runs[i];
         ModelDependencies deps = {0};
         /* Source metadata only: the authoritative native core has already
          * resolved placement. A live simple host contributes its real faces
          * to R29; a sampled wall contributes no live Space dependency. */
-        EngJson j = {0};
-        if (eng_json_parse(&j, run->content)) {
-            int placement = eng_json_member(&j, 0, "placement");
-            int host = eng_json_member(&j, placement, "host");
+        GeoJson j = {0};
+        if (app_json_parse(&j, run->content)) {
+            int placement = geo_json_member(&j, 0, "placement");
+            int host = geo_json_member(&j, placement, "host");
             char kind[32]; uint32_t id;
-            if (eng_json_string(&j, eng_json_member(&j, host, "kind"), kind, sizeof kind) &&
-                !strcmp(kind, "placement") && eng_u32(&j, eng_json_member(&j, host, "placementId"), &id, false))
+            if (geo_json_string(&j, geo_json_member(&j, host, "kind"), kind, sizeof kind) &&
+                !strcmp(kind, "placement") && eng_u32(&j, geo_json_member(&j, host, "placementId"), &id, false))
                 model_dep_placement(world, &deps, id);
         }
-        eng_json_free(&j);
+        geo_json_free(&j);
         if (count++) putchar(',');
         model_dependency_record(world, "profile-run", run->id, &deps);
     }
@@ -325,7 +320,7 @@ static void model_dependencies(const World *world)
  * triangulates these solids, never reinterprets dimensions or placement. */
 static void model_profile_runs(const World *world)
 {
-    const SectionProfileState *state = &world->section_profiles;
+    const SectionProfileState *state = &world->wood.section_profiles;
     for (size_t i = 0; i < state->run_count; ++i) {
         const ProfileRun *run = &state->runs[i];
         const SectionProfile *profile = sp_profile((World *)world, run->profile_id);
@@ -355,16 +350,144 @@ static void model_profile_runs(const World *world)
     }
 }
 
+static void model_legacy_snapshot(World *world,const char *canonical)
+{
+    fputs("{\"ok\":true,\"schema\":\"geometry-base-snapshot/1\",\"base_scene\":", stdout);
+    model_string(stdout, canonical);
+    fputs(",\"required_capabilities\":[",stdout);
+    if(engineering_used(world))model_string(stdout,"engineering-spec/1");
+    if(geo_parameters_card_count(&world->geo.parameters)){if(engineering_used(world))fputc(',',stdout);model_string(stdout,"parameters/1");}
+    if(grid_card_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->geo.parameters))fputc(',',stdout);model_string(stdout,GRID_CARD_CAPABILITY);}
+    if(grid_subdivision_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->geo.parameters))fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
+    if(sp_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->geo.parameters)||grid_subdivision_used(world))fputc(',',stdout);model_string(stdout,SP_CAPABILITY);}
+    if(fs_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->geo.parameters)||grid_subdivision_used(world)||sp_used(world))fputc(',',stdout);model_string(stdout,FS_CAPABILITY);}
+    fputs("],\"specs\":[", stdout);
+    for (size_t i = 0; i < geo_named_values_count(&world->geo.named_values); ++i) {
+        if (i) putchar(',');
+        fputs("{\"name\":", stdout); model_string(stdout, geo_named_values_at(&world->geo.named_values,i)->name);
+        printf(",\"value\":%" PRId64 "}", geo_named_values_at(&world->geo.named_values,i)->value);
+    }
+    fputs("],\"parameter_fields\":[", stdout);
+    for (size_t i = 0; i < geo_parameters_field_count(&world->geo.parameters); ++i) {
+        const GeoParameterField *field = &geo_parameters_fields(&world->geo.parameters)[i];
+        if (i) putchar(',');
+        printf("{\"parameterId\":%" PRIu32 ",\"fieldId\":%" PRIu32 ",\"name\":", field->parameter_id, field->id);
+        model_string(stdout, field->name);
+        putchar('}');
+    }
+    fputs("],\"placements\":[", stdout);
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
+        const PlacementSurface *p = world_placement_at(world,i);
+        const SpaceBoundarySurface *b = world_find_boundary(world, p->boundary_id);
+        PolygonLoop2 outline; placement_outline(p, b, &outline);
+        if (i) putchar(',');
+        printf("{\"id\":%" PRIu32 ",\"boundary_id\":", p->id);
+        if (p->boundary_id) printf("%" PRIu32, p->boundary_id); else fputs("null", stdout);
+        fputs(",\"origin\":", stdout); model_point(p->frame.origin);
+        fputs(",\"u\":", stdout); model_vector(p->frame.axis_u);
+        fputs(",\"v\":", stdout); model_vector(p->frame.axis_v);
+        fputs(",\"n\":", stdout); model_vector(p->frame.normal);
+        fputs(",\"outline\":", stdout); model_loop(&outline);
+        fputs(",\"holes\":[", stdout);
+        if (b) for (size_t h = 0; h < b->hole_count; ++h) { if (h) putchar(','); model_loop(&b->holes[h]); }
+        fputs("]}", stdout);
+    }
+    fputs("],\"solids\":[", stdout);
+    size_t emitted = 0;
+    for (size_t i = 0; i < world->wood.column_count; ++i) {
+        const RcColumn *c = &world->wood.columns[i]; if (emitted++) putchar(',');
+        model_box("column", c->id, c->x_lo, c->x_hi, c->y_lo, c->y_hi, c->z_lo, c->z_hi);
+    }
+    for (size_t i = 0; i < world->wood.beam_count; ++i) {
+        const RcBeam *b = &world->wood.beams[i]; if (emitted++) putchar(',');
+        model_box("beam", b->id, b->x_lo, b->x_hi, b->y_lo, b->y_hi, b->z_lo, b->z_hi);
+    }
+    for (size_t i = 0; i < world->wood.timber_count; ++i) {
+        const Timber *t = &world->wood.timbers[i]; const TimberAnchor *a = &world->wood.anchors[i];
+        const PlacementSurface *p = world_find_placement(world, a->placement_id);
+        if (emitted++) putchar(',');
+        printf("{\"kind\":\"timber\",\"id\":%" PRIu32 ",\"placement_id\":%" PRIu32 ",\"boundary_id\":", t->id, a->placement_id);
+        if (p && p->boundary_id) printf("%" PRIu32, p->boundary_id); else fputs("null", stdout);
+        fputs(",\"faces\":[", stdout);
+        for (int f = 0; f < TIMBER_FACE_COUNT; ++f) {
+            Quad3 quad; timber_get_face_room(t, (TimberFaceId)f, &quad);
+            if (f) putchar(','); model_face(timber_face_short_name((TimberFaceId)f), &quad);
+        }
+        fputs("]}", stdout);
+    }
+    fputs("],\"profile_runs\":[", stdout);
+    model_profile_runs(world);
+    fputs("],\"unplaced_timbers\":[],\"dependencies\":[", stdout);
+    model_dependencies(world);
+    fputs("]}\n", stdout);
+}
+
+#include "../geometry-app/native/model_sources.inc"
+
+static bool model_source_fingerprint(const char *path,char hash[65])
+{
+    /* Both fingerprints share one buffer kept for the process (GEO-261 cost):
+     * freeing this 1 MiB block retuned glibc's large-block thresholds, and every
+     * later candidate snapshot then faulted in fresh pages. */
+    static unsigned char *bytes;
+    FILE *in=fopen(path,"rb");if(!in)return false;
+    size_t limit=1024u*1024u;if(!bytes)bytes=malloc(limit+1);
+    if(!bytes){fclose(in);return false;}
+    size_t size=fread(bytes,1,limit+1,in);bool ok=!ferror(in)&&size<=limit;
+    if(ok)geo_sha256(bytes,size,hash);
+    fclose(in);return ok;
+}
+
+/* GEO-261 cost: read the scene through one owned H candidate, the same file
+ * replay frame the bridge's scene import uses (app_scene_replay_file, B).
+ * Lines the frame admits replay in the owner's after with one World backup;
+ * every other line keeps its own inner candidate, preview and diagnostics.
+ * The closing validation, seal and publication of the owner are unchanged.
+ * Owner allocation failure keeps the original per-line parse. */
+static bool model_load_evaluate(void *after,GeoEvalContext *sources,void *opaque)
+{
+    (void)sources;const char *path=opaque;
+    ReferencePreview *saved=malloc(sizeof *saved);
+    if(!saved){scene_error(path,0,"I32: candidate World allocation failed");return false;}
+    memset(after,0,sizeof(World));
+    *saved=g_preview;memset(&g_preview,0,sizeof g_preview);
+    uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
+    const World *previous=g_subgrid_before;g_subgrid_before=NULL;
+    bool ok=app_scene_replay_file(path,after);
+    app_world_candidate_destroy(g_preview.transaction);g_preview=*saved;
+    g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
+    return ok;
+}
+/* A failed line keeps its own diagnostic. A failure of the owner itself gets
+ * the per-line path's I32/I8 wording instead of the generic adapter text. */
+static bool model_parse_scene(const char *path,World *world)
+{
+    AppWorldCandidate *owner=app_world_candidate_create(world);
+    if(!owner)return parse_scene_file(path,world);
+    GeoCandidateStatus status=app_world_candidate_evaluate(owner,model_load_evaluate,(void*)path);
+    bool ok=status==GEO_CANDIDATE_OK;
+    if(!ok&&status!=GEO_CANDIDATE_EVALUATION_FAILED)
+        scene_error(path,0,status==GEO_CANDIDATE_MEMORY?"I32: candidate World allocation failed":"I8: candidate seal failed; World unchanged");
+    if(ok&&!(app_world_candidate_seal(owner)&&app_world_candidate_publish(owner,world,false))){
+        ok=false;scene_error(path,0,"I8: candidate seal failed; World unchanged");
+    }
+    app_world_candidate_destroy(owner);return ok;
+}
+
 int main(int argc, char **argv)
 {
-    if (argc != 2) return model_error("INVALID", "BASE_ARGUMENT", "D25", "Expected one scene file path.");
+    bool neutral=argc==3&&!strcmp(argv[1],"--neutral-sources");
+    if (argc != 2 && !neutral) return model_error("INVALID", "BASE_ARGUMENT", "D25", "Expected one scene file path.");
+    const char *path=argv[neutral?2:1];char before[65];
+    if(neutral&&!model_source_fingerprint(path,before))return model_error("INVALID","BASE_SOURCE","I9","Cannot fingerprint source scene.");
     char error[512] = ""; bool capacity = false, unsupported = false;
-    if (!model_source_check(argv[1], &capacity, &unsupported, error, sizeof error))
+    if (!model_source_check(path, neutral, &capacity, &unsupported, error, sizeof error))
         return model_error(capacity||unsupported ? "UNSUPPORTED" : "INVALID", capacity ? "BASE_CAPACITY" : unsupported ? "CAPABILITY" : "BASE_SOURCE", capacity ? "I33" : unsupported ? "I32" : "I9", error);
     /* One process-owned World; nested transactions retain the 16 MiB stack budget. */
     static World world;
     memset(&world,0,sizeof world);
-    if (!parse_scene_file(argv[1], &world)) {
+    g_app_world_candidate_pool_enabled=true;
+    if (!model_parse_scene(path, &world)) {
         const char *why = scene_last_error();
         capacity = strstr(why, "超過上限") || strstr(why, "capacity exceeded") || strstr(why, "CAPACITY");
         if (!why[0]) why = "Scene failed legacy validation, including required placement of every timber.";
@@ -372,7 +495,7 @@ int main(int argc, char **argv)
     }
     FILE *dump = tmpfile();
     if (!dump) return model_error("UNSUPPORTED", "BASE_IO", "I32", "Cannot allocate canonical dump stream.");
-    world.canvas_pos_count = 0;  /* D12: presentation never enters source identity. */
+    world.app.canvas_pos_count = 0;  /* D12: presentation never enters source identity. */
     world_dump_dsl(&world, dump);
     if (ferror(dump) || fflush(dump) || fseek(dump, 0, SEEK_END)) {
         fclose(dump); return model_error("UNSUPPORTED", "BASE_IO", "I32", "Could not write canonical scene.");
@@ -393,64 +516,24 @@ int main(int argc, char **argv)
     fclose(dump);
     while (used && (canonical[used - 1] == '\n' || canonical[used - 1] == '\r')) --used;
     canonical[used++] = '\n'; canonical[used] = '\0';
-    fputs("{\"ok\":true,\"schema\":\"geometry-base-snapshot/1\",\"base_scene\":", stdout);
-    model_string(stdout, canonical); free(canonical);
-    fputs(",\"required_capabilities\":[",stdout);
-    if(engineering_used(&world))model_string(stdout,"engineering-spec/1");
-    if(world.parameters.card_count){if(engineering_used(&world))fputc(',',stdout);model_string(stdout,"parameters/1");}
-    if(grid_card_used(&world)){if(engineering_used(&world)||world.parameters.card_count)fputc(',',stdout);model_string(stdout,GRID_CARD_CAPABILITY);}
-    if(grid_subdivision_used(&world)){if(engineering_used(&world)||world.parameters.card_count)fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
-    if(sp_used(&world)){if(engineering_used(&world)||world.parameters.card_count||grid_subdivision_used(&world))fputc(',',stdout);model_string(stdout,SP_CAPABILITY);}
-    fputs("],\"specs\":[", stdout);
-    for (size_t i = 0; i < world.spec_count; ++i) {
-        if (i) putchar(',');
-        fputs("{\"name\":", stdout); model_string(stdout, world.specs[i].name);
-        printf(",\"value\":%" PRId64 "}", world.specs[i].value);
-    }
-    fputs("],\"placements\":[", stdout);
-    for (size_t i = 0; i < world.placement_count; ++i) {
-        const PlacementSurface *p = &world.placements[i];
-        const SpaceBoundarySurface *b = world_find_boundary(&world, p->boundary_id);
-        PolygonLoop2 outline; placement_outline(p, b, &outline);
-        if (i) putchar(',');
-        printf("{\"id\":%" PRIu32 ",\"boundary_id\":", p->id);
-        if (p->boundary_id) printf("%" PRIu32, p->boundary_id); else fputs("null", stdout);
-        fputs(",\"origin\":", stdout); model_point(p->frame.origin);
-        fputs(",\"u\":", stdout); model_vector(p->frame.axis_u);
-        fputs(",\"v\":", stdout); model_vector(p->frame.axis_v);
-        fputs(",\"n\":", stdout); model_vector(p->frame.normal);
-        fputs(",\"outline\":", stdout); model_loop(&outline);
-        fputs(",\"holes\":[", stdout);
-        if (b) for (size_t h = 0; h < b->hole_count; ++h) { if (h) putchar(','); model_loop(&b->holes[h]); }
-        fputs("]}", stdout);
-    }
-    fputs("],\"solids\":[", stdout);
-    size_t emitted = 0;
-    for (size_t i = 0; i < world.column_count; ++i) {
-        const RcColumn *c = &world.columns[i]; if (emitted++) putchar(',');
-        model_box("column", c->id, c->x_lo, c->x_hi, c->y_lo, c->y_hi, c->z_lo, c->z_hi);
-    }
-    for (size_t i = 0; i < world.beam_count; ++i) {
-        const RcBeam *b = &world.beams[i]; if (emitted++) putchar(',');
-        model_box("beam", b->id, b->x_lo, b->x_hi, b->y_lo, b->y_hi, b->z_lo, b->z_hi);
-    }
-    for (size_t i = 0; i < world.timber_count; ++i) {
-        const Timber *t = &world.timbers[i]; const TimberAnchor *a = &world.anchors[i];
-        const PlacementSurface *p = world_find_placement(&world, a->placement_id);
-        if (emitted++) putchar(',');
-        printf("{\"kind\":\"timber\",\"id\":%" PRIu32 ",\"placement_id\":%" PRIu32 ",\"boundary_id\":", t->id, a->placement_id);
-        if (p && p->boundary_id) printf("%" PRIu32, p->boundary_id); else fputs("null", stdout);
-        fputs(",\"faces\":[", stdout);
-        for (int f = 0; f < TIMBER_FACE_COUNT; ++f) {
-            Quad3 quad; timber_get_face_room(t, (TimberFaceId)f, &quad);
-            if (f) putchar(','); model_face(timber_face_short_name((TimberFaceId)f), &quad);
+    ModelSources sources={0};
+    char candidate[65],after[65];
+    if(neutral){
+        geo_sha256(canonical,used,candidate);
+        if(!model_sources_build(&sources,&world)){
+            model_sources_free(&sources);free(canonical);
+            return model_error("INVALID","BASE_SOURCES","I9","Could not resolve the same-candidate neutral sources.");
         }
-        fputs("]}", stdout);
+        if(!model_source_fingerprint(path,after)||strcmp(before,after)){
+            model_sources_free(&sources);free(canonical);
+            return model_error("INVALID","BASE_SOURCE_CHANGED","I9","Source changed while the candidate was loaded.");
+        }
+        fputs("{\"ok\":true,\"schema\":\"geometry-neutral-source-envelope/1\",\"candidate\":{\"id\":",stdout);model_string(stdout,candidate);
+        fputs(",\"baseRevision\":0},\"source\":{\"sha256Before\":",stdout);model_string(stdout,before);
+        fputs(",\"sha256After\":",stdout);model_string(stdout,after);fputs("},\"legacySnapshot\":",stdout);
     }
-    fputs("],\"profile_runs\":[", stdout);
-    model_profile_runs(&world);
-    fputs("],\"unplaced_timbers\":[],\"dependencies\":[", stdout);
-    model_dependencies(&world);
-    fputs("]}\n", stdout);
-    return ferror(stdout) ? 1 : 0;
+    model_legacy_snapshot(&world,canonical);
+    if(neutral){fputs(",\"neutralSources\":",stdout);model_sources_write(&sources,candidate);fputs("}\n",stdout);}
+    model_sources_free(&sources);free(canonical);
+    return ferror(stdout) || !model_source_write_ok ? 1 : 0;
 }

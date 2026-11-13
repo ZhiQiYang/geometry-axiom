@@ -3,7 +3,7 @@ window.ParameterUI = (() => {
   'use strict';
   const esc = ReferenceWorkspace.escape, clone = x => structuredClone(x);
   const $ = id => document.getElementById(id);
-  let state = null, serial = 0, timer = null;
+  let state = null, serial = 0, timer = null, sourcePreparation = null, createRequest = 0;
   const cards = () => (oc.parameters || []).map(o => o.card);
   const current = s => state === s && s.context === ReferenceWorkspace.context();
   const types = [['dimension','尺寸 mm'],['count','數量'],['ratio','比例']];
@@ -398,16 +398,33 @@ window.ParameterUI = (() => {
     s.preview = null;
     s.previewRequest = null;
     if (current(s)) $('paramConfirm')?.setAttribute('disabled', '');
-    if (previous) EngineeringAdapter.cancel({token: previous.token}).catch(() => {});
+    if (previous) {
+      ReferenceWorkspace.cancelEvidenceConfirmation?.(previous.token);
+      EngineeringAdapter.cancel({token: previous.token}).catch(() => {});
+    }
   }
-  function invalidate(s) {
+  function invalidate(s, evidenceAdoption = null) {
     if (!current(s) || s.busy) return;
+    s.evidenceAdoption = evidenceAdoption;
     s.changed = true;
     s.generation++;
     retirePreview(s);
     clearTimeout(timer);
     timer = setTimeout(() => preview(s, true), 450);
     markPending(s);
+  }
+  function prefillEvidenceAdoption(intent) {
+    const s=state,plan=intent?.plan,field=s?.card.fields.find(f=>f.id===plan?.fieldId);
+    if(!s||!current(s)||s.busy||s.changed||s.fresh||s.previewRequest!=null||s.card.id!==plan?.parameterId||
+       !field||field.type!=='dimension'||/^[=＝]/.test(String(field.input).trim())||field.expression?.op!=='literal'||
+       intent.field?.type!==field.type||JSON.stringify(intent.field?.expression)!==JSON.stringify(field.expression))
+      throw new Error('請先完成或捨棄參數草稿；只能採用目前仍為尺寸字面值的同一欄位。');
+    const input=document.querySelector(`[data-param-field="${field.id}"] [data-input]`);
+    if(!input)throw new Error('參數欄位尚未開啟，未預填採用值。');
+    // This creates ordinary editor raw only. Existing native preview/confirm
+    // owns the candidate; any later manual edit retires this adoption intent.
+    const frozen=clone(intent);field.input=plan.literal;input.value=plan.literal;
+    invalidate(s,frozen);input.scrollIntoView({block:'nearest'});return clone(plan);
   }
   function capture(s) {
     const root = $('parameterEditor');
@@ -578,6 +595,11 @@ window.ParameterUI = (() => {
     status('正在套用…');
     try {
       const id = s.card.id;
+      if(s.evidenceAdoption){
+        if(typeof window.EvidenceLinksApp?.prepareAdoption!=='function')throw new Error('證據採用尚未完成原生候選核對。');
+        await window.EvidenceLinksApp.prepareAdoption(clone(s.evidenceAdoption),p);
+        if(!ownsPresentation()||s.preview!==p)throw new Error('採用期間參數或畫面已變更，未送出確認。');
+      }
       await EngineeringAdapter.confirm({token: p.token});
       committed = true;
       // The native token has been consumed. A later presentation failure must
@@ -592,6 +614,11 @@ window.ParameterUI = (() => {
       const refreshed = await renderObjects();
       if (!ownsPresentation()) return;
       if (refreshed !== true) throw new Error('未能重新讀取畫布。');
+      const preparation = sourcePreparation;
+      if (preparation?.parameterId === id && preparation.isCurrent()) {
+        const card = cards().find(c => c.id === id);
+        if (card) preparation.onConfirmed(clone(card));
+      }
       state = null;
       oc.parameterCreating = false;
       clearTimeout(timer);
@@ -601,6 +628,7 @@ window.ParameterUI = (() => {
       } else renderInspector();
       toast('參數與引用物件已整筆更新，可復原。', 'success');
     } catch (e) {
+      ReferenceWorkspace.cancelEvidenceConfirmation?.(p.token);
       if (e.engineeringConfirmation?.ok === true) committed = true;
       if (current(s)) {
         s.preview = null;
@@ -665,6 +693,7 @@ window.ParameterUI = (() => {
         </details>
       </div>
       <footer class="param-footer">
+        ${sourcePreparation?.parameterId===c.id?'<p class="param-note">這是鋪排門檻的獨立來源操作；確認後可復原。取消鋪排不會撤銷此參數卡。</p><button type="button" class="btn" id="paramReturnToPanelFill">返回原面鋪排（重新讀取）</button>':''}
         <p id="paramStatus" role="status" data-tone="wait"><span class="param-dot" aria-hidden="true"></span><span data-status-text></span></p>
         <div class="param-actions">
           <button type="button" class="btn" id="paramDiscard">${s.fresh ? '捨棄草稿' : '還原未套用修改'}</button>
@@ -814,7 +843,21 @@ window.ParameterUI = (() => {
     $('paramAdd').onclick = () => addField(s);
     $('paramPreview').onclick = () => preview(s);
     $('paramConfirm').onclick = () => confirm(s);
-    $('paramDiscard').onclick = () => discard(s);
+    const preparation = sourcePreparation?.parameterId===c.id ? sourcePreparation : null;
+    const returnToSource = async (discardDraft = false) => {
+      if (!current(s) || s.busy || !preparation) return;
+      if (!preparation.isCurrent()) { status('原專案或來源面已變更，請重新從面設定開啟。', true); return; }
+      if (discardDraft) s.changed = false; // Explicit discard, after owner checks.
+      if (!mayLeave()) return;
+      sourcePreparation = null;
+      try { await preparation.onReturn(); } catch (e) { toast(e.message, 'error'); }
+    };
+    $('paramReturnToPanelFill')?.addEventListener('click', () => returnToSource());
+    $('paramDiscard').onclick = () => {
+      if (!preparation) return discard(s);
+      if (!current(s) || s.busy) return;
+      returnToSource(true);
+    };
     $('paramParse')?.addEventListener('click', () => applyQuick(s));
     $('paramExport')?.addEventListener('click', () => exportPackage([c.id]));
     $('paramDelete')?.addEventListener('click', () => {
@@ -866,13 +909,22 @@ window.ParameterUI = (() => {
     discard();
     return true;
   }
-  async function create() {
-    if(!mayLeave())return;const context=ReferenceWorkspace.context(),support=await apiRequest('engineering-read');
-    if(context!==ReferenceWorkspace.context())return;
+  async function create(options = {}) {
+    const {canvasPosition}=options;
+    if(!mayLeave())return;
+    const context=ReferenceWorkspace.context(),request=++createRequest;
+    let navigation=oc.navigationSequence,focus=oc.focus;
+    const preparation=options.proposal==='panel-fill-threshold'?options:null;
+    const owns=()=>request===createRequest&&oc.navigationSequence===navigation&&oc.focus===focus&&context===ReferenceWorkspace.context()&&(!preparation||preparation.isCurrent());
+    const support=await apiRequest('engineering-read');
+    if(!owns())return;
     if(!support.ok||!support.state?.capabilities?.includes('parameters/1')){toast('目前服務尚未支援參數卡，請重新啟動更新後的服務。','error');return;}
-    const ids=await apiRequest('newid');if(!ids.ok||context!==ReferenceWorkspace.context())return;
-    if(oc.focus){oc.stack=[];await leaveFocus();}if(view3)await setView3(false);
-    closePanels();ocSetSelection([]);oc.parameterCreating=true;state={context,card:{id:ids.parameter,name:'參數',nextFieldId:2,fields:[{id:1,name:'尺寸',type:'dimension',input:'0'}]},fresh:true,changed:true,generation:0,busy:false,preview:null,results:new Map(),failure:null,template:'single',activeId:null,previewKind:'put',draftPos:null};
+    const ids=await apiRequest('newid');if(!ids.ok||!owns())return;
+    if(oc.focus){oc.stack=[];const left=await leaveFocus();navigation++;focus=null;if(left!==navigation||!owns())return;}
+    if(view3){const changing=setView3(false);navigation++;await changing;if(!owns())return;}
+    if(!owns())return;
+    sourcePreparation=preparation?{...preparation,parameterId:ids.parameter}:null;
+    closePanels();ocSetSelection([]);oc.parameterCreating=true;state={context,card:{id:ids.parameter,name:preparation?'鋪排承接門檻':'參數',nextFieldId:2,fields:[{id:1,name:preparation?'X':'尺寸',type:'dimension',input:preparation?'8':'0'}]},fresh:true,changed:true,generation:0,busy:false,preview:null,results:new Map(),failure:null,template:'single',activeId:null,previewKind:'put',draftPos:canvasPosition ? {...canvasPosition} : null};
     drawObjects();if(innerWidth<=900)openPanel('right',$('toggleRight'));$('paramName')?.focus();
   }
   async function jump(kind,id) {
@@ -921,7 +973,7 @@ window.ParameterUI = (() => {
   window.addEventListener('beforeunload',e=>{if(state?.changed){e.preventDefault();e.returnValue='';}});
   window.addEventListener('geometry-definition-changed',()=>{if(state&&!state.busy){retirePreview(state);state.generation++;++serial;clearTimeout(timer);if(!state.changed)state=null;else{markPending(state);status('來源或物件已變更，請重新試算。');}if($('paramConfirm'))$('paramConfirm').disabled=true;}});
   document.addEventListener('click',e=>{if(e.target.closest('#parameterSelectionExport'))exportPackage(oc.selection.filter(s=>s.kind==='parameter').map(s=>s.id));});
-  window.addEventListener('project-info-changed',()=>{if(state&&!current(state)){clearTimeout(timer);state=null;paintDraft(null);oc.parameterCreating=false;++serial;}});
+  window.addEventListener('project-info-changed',()=>{if(sourcePreparation&&!sourcePreparation.isCurrent())sourcePreparation=null;if(state&&!current(state)){clearTimeout(timer);state=null;paintDraft(null);oc.parameterCreating=false;++serial;}});
   $('btnNewParameter').onclick=()=>{ $('createObjectPop').hidden=true;create(); };
   window.DraftGate?.register(intent => {
     if (!state) return true;
@@ -930,7 +982,7 @@ window.ParameterUI = (() => {
     if (only?.length === 1 && only[0].kind === "parameter" && only[0].id === state.card?.id) return true;
     return mayLeave();
   });
-  return {value,formatDefinition:expression,errorText,errorCodes:ERROR_TEXT,explainFailure,failureMarkup,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,panelTemplate,quickSample,get previewing(){return state?.previewRequest != null;},get pending(){return !!state&&(state.changed||state.busy||state.previewRequest != null);},get editingId(){return state?.card.id;}};
+  return {value,formatDefinition:expression,errorText,errorCodes:ERROR_TEXT,explainFailure,failureMarkup,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,panelTemplate,quickSample,prefillEvidenceAdoption,get previewing(){return state?.previewRequest != null;},get pending(){return !!state&&(state.changed||state.busy||state.previewRequest != null);},get editingId(){return state?.card.id;}};
 })();
 
 /* GEO-227：每張圖向 FeatureLessons 登記。檢查比對圖與功能當時的事實，失敗時帶教學 id。 */

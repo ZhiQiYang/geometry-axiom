@@ -1,0 +1,522 @@
+{
+  "kind": "exact-selected-source-focused-original-test-modules",
+  "source": "12422c69e4ca1a0e1aed575fcf8e5a67816b5cfb",
+  "tree": "f4e316eabd4695329e08292ed9e7a31d9a36b6f2",
+  "selection": {
+    "source": "12422c69e4ca1a0e1aed575fcf8e5a67816b5cfb",
+    "tree": "f4e316eabd4695329e08292ed9e7a31d9a36b6f2",
+    "kind": "exact-selected-path-executable-source-export-not-full-source-archive",
+    "selected_files": 224,
+    "selected_bytes": 2399740,
+    "omitted_files": 15918,
+    "omitted_bytes": 870253158,
+    "archive_bytes": 2580480,
+    "archive_sha256": "0ea0903416013654dd508bf019bae007e5a21a0cfbe7c029584760af6526be1b",
+    "compiler_executed": false,
+    "product_tests_executed": false,
+    "fixtures_note": "Only individually referenced literal harnesses and fixtures from authorized test/import closure. Historical evidence archives excluded; an individually referenced grid-rule-timber.scene is permitted only if required.",
+    "scope_note": "Authorized 7 modules / 72 unique methods: corrected GridSources11 plus previously UNRUN61. Product bytes unchanged; prior EnclosureProduct5 and RegionKeySources15 are not rerun and remain 4004 evidence. New75 deferred; no same-source259/full-suite/PF3/native6/compatibility/browser claim."
+  },
+  "recipe": {
+    "source": "12422c69e4ca1a0e1aed575fcf8e5a67816b5cfb",
+    "label": "focused-12422c69-v3",
+    "modules": [
+      "tests.test_geo261_grid_sources",
+      "tests.test_geo261_grid_definitions_product",
+      "tests.test_geo261_engineering_sources",
+      "tests.test_geo261_derived_policy_sources",
+      "tests.test_geo261_derived_policy_graph_product",
+      "tests.test_geo261_contact_sources",
+      "tests.test_geo261_native_sources"
+    ],
+    "module_counts": {
+      "tests.test_geo261_grid_sources": 11,
+      "tests.test_geo261_grid_definitions_product": 4,
+      "tests.test_geo261_engineering_sources": 18,
+      "tests.test_geo261_derived_policy_sources": 14,
+      "tests.test_geo261_derived_policy_graph_product": 4,
+      "tests.test_geo261_contact_sources": 12,
+      "tests.test_geo261_native_sources": 9
+    },
+    "groups": {
+      "grid-sources": [
+        "tests.test_geo261_grid_sources"
+      ],
+      "grid-definitions-product": [
+        "tests.test_geo261_grid_definitions_product"
+      ],
+      "engineering-sources": [
+        "tests.test_geo261_engineering_sources"
+      ],
+      "derived-policy-sources": [
+        "tests.test_geo261_derived_policy_sources"
+      ],
+      "derived-policy-graph-product": [
+        "tests.test_geo261_derived_policy_graph_product"
+      ],
+      "contact-sources": [
+        "tests.test_geo261_contact_sources"
+      ],
+      "native-sources": [
+        "tests.test_geo261_native_sources"
+      ]
+    },
+    "group_counts": {
+      "grid-sources": 11,
+      "grid-definitions-product": 4,
+      "engineering-sources": 18,
+      "derived-policy-sources": 14,
+      "derived-policy-graph-product": 4,
+      "contact-sources": 12,
+      "native-sources": 9
+    },
+    "expected_tests": 72,
+    "scope": "Authorized 7 modules / 72 unique methods: corrected GridSources11 plus previously UNRUN61. Product bytes unchanged; prior EnclosureProduct5 and RegionKeySources15 are not rerun and remain 4004 evidence. New75 deferred; no same-source259/full-suite/PF3/native6/compatibility/browser claim.",
+    "prior_101_evidence": "focused-a8831ca0-v3/result/summary.json",
+    "prior_29_evidence": "focused-808b8e69-v3/result/summary.json",
+    "prior_assembly8_evidence": "focused-042dac48-v3/result/summary.json",
+    "prior_pass_is_same_source": false,
+    "prior_assembly4_definition7_evidence": "focused-4cb65713-v3/result/summary.json",
+    "prior_definition5_enclosure13_evidence": "focused-5fe3bfd5-v3/result/summary.json",
+    "prior_enclosure5_regionkey15_evidence": "focused-4004a1cf-v3/result/summary.json",
+    "scope_delta_evidence": "delta-12422c69.json"
+  },
+  "source_root": "/var/tmp/geo261-focused-12422c69-v3/source",
+  "gate_receipt": "/mnt/d/geometry-axiom-work/geo261-evidence/p1/build-gate-12422c69-v1/result/summary.json",
+  "gate_receipt_sha256_before": "48831a0e4d5e9c976ea9d1d86d5a75b0a3d49be2868b8fe2fca7f546fee05dd1",
+  "gate_receipt_sha256_after": "48831a0e4d5e9c976ea9d1d86d5a75b0a3d49be2868b8fe2fca7f546fee05dd1",
+  "started_utc": "2026-10-16T17:37:01.810855+00:00",
+  "finished_utc": "2026-10-16T17:37:24.442934+00:00",
+  "source_unchanged": true,
+  "runner_sha256_before": {
+    "run.py": "da570f910b23cedd837f86fc843ef96263a01ddacaaf8ae49c8652baffc53aa9",
+    "exercise.py": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c",
+    "namespace.sh": "ca1a3bc132ddf263d9bdd63d39e103ef04ff4499ba7c9bbb2ca378b2ac568191",
+    "recipe.json": "2495ce9d75603eb0c6eb9a78d8e3e1b458c0b316a6f4265f1f4287164956fa46",
+    "static-discovery.json": "f0f7da6cedd935425388a02f60ca475b27831017ceee897e228b9dfa6c054018",
+    "selection-summary.json": "a9cff3a4bd0b3b7842ef558ef6dee0f11ed67f29eb204f90cec7848e1774fffb",
+    "selected-paths.json": "87e2d734ecfc8b49ebaa82fa24c285c5fc49af777847ccd073800d48499318fd"
+  },
+  "runner_sha256_after": {
+    "run.py": "da570f910b23cedd837f86fc843ef96263a01ddacaaf8ae49c8652baffc53aa9",
+    "exercise.py": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c",
+    "namespace.sh": "ca1a3bc132ddf263d9bdd63d39e103ef04ff4499ba7c9bbb2ca378b2ac568191",
+    "recipe.json": "2495ce9d75603eb0c6eb9a78d8e3e1b458c0b316a6f4265f1f4287164956fa46",
+    "static-discovery.json": "f0f7da6cedd935425388a02f60ca475b27831017ceee897e228b9dfa6c054018",
+    "selection-summary.json": "a9cff3a4bd0b3b7842ef558ef6dee0f11ed67f29eb204f90cec7848e1774fffb",
+    "selected-paths.json": "87e2d734ecfc8b49ebaa82fa24c285c5fc49af777847ccd073800d48499318fd"
+  },
+  "runners_unchanged": true,
+  "command": [
+    "python3",
+    "-u",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/focused-12422c69-v3/exercise.py",
+    "/var/tmp/geo261-focused-12422c69-v3/source",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/focused-12422c69-v3/result",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/focused-12422c69-v3/recipe.json"
+  ],
+  "shared_lock_holder": "pid=858 start=2026-10-16T17:37:01Z label=geo261-focused-12422c69-v3 args=run bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/focused-12422c69-v3/namespace.sh\n",
+  "cleared_override_names": [],
+  "launcher_failure": null,
+  "test_exit": 1,
+  "test_result": {
+    "planned_tests": 72,
+    "tests_run": 15,
+    "failures": 4,
+    "errors": 0,
+    "unrun_methods": [
+      "tests.test_geo261_engineering_sources.EngineeringBindingBoundary.test_fixed_literal_vector_is_independently_encoded_without_c_padding",
+      "tests.test_geo261_engineering_sources.EngineeringBindingBoundary.test_stored_and_request_keys_are_explicit_public_contracts",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_actual_bridge_pose_consumes_candidate_binding_through_confirm_and_undo",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_all_published_definitions_include_unused_material_method_application_and_binding",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_application_method_retains_selected_and_unused_material_identities",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_binding_identity_controls_fail_exact_named_oracles",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_canonical_binding_codec_fixed_vectors_and_failure_preserves_output",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_definition_completion_preserves_first_values_order_and_memoized_quantities",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_definition_first_cached_binding_rejects_same_graph_store_mutation",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_definition_inventory_controls_fail_exact_named_oracles",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_face_and_object_overrides_select_active_values_without_losing_base_identity",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_material_definition_source_binding_and_actual_memoized_value",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_original_identity_errors_precede_invalid_override_values",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_rebuild_keeps_original_error_order_and_no_hook_write_parity",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_same_w_resolve_hook_bypass_fails_exact_edges_in_standalone_and_bridge",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_specs_and_parameter_ast_use_shared_kernel_providers",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_stored_binding_target_identity_survives_changed_definition",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_temporary_requests_keep_independent_values_and_sealed_memoization",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicyBoundary.test_policy_api_is_W_owned_and_reconstruction_uses_direct_key_validation",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicyBoundary.test_return_controls_and_definition_edge_control_have_unique_live_anchors",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_actual_returned_region_fixity_key_and_boundary_controls_fail_named_assertions",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_all_edges_key_buffer_contents_and_diagnostics_match_direct_policy",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_candidate_isolation_borrowed_lifetime_sealed_reads_and_both_teardown_orders",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_canonical_policy_bytes_and_exact_real_consumer_dependencies",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_cloned_returned_policy_ambiguity_and_later_failure_keep_partial_outputs",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_malformed_returned_boundary_policy_propagates_without_uninitialized_traversal",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_malformed_returned_policy_schema_counts_lengths_and_content_are_rejected",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_policy_definition_required_edge_control_fails_named_graph_assertion",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_policy_describe_and_definition_only_queries_do_not_read_candidate_facts",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_policy_first_and_region_first_have_identical_results_without_cycle",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_returned_policy_utf8_scalar_validation_and_bypass_control",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_unique_zero_match_component_addresses_and_public_W_resolve_hook",
+      "tests.test_geo261_derived_policy_graph_product.DerivedPolicyGraphProduct.test_current_snapshot_uses_its_geometry_even_with_an_ambient_candidate",
+      "tests.test_geo261_derived_policy_graph_product.DerivedPolicyGraphProduct.test_guide_key_and_derived_region_share_the_actual_policy_dependencies",
+      "tests.test_geo261_derived_policy_graph_product.DerivedPolicyGraphProduct.test_h_reads_typed_geometry_despite_a_deliberately_stale_world_cache",
+      "tests.test_geo261_derived_policy_graph_product.DerivedPolicyGraphProduct.test_three_value_substitution_controls_reach_real_h_fixity_and_key_consumers",
+      "tests.test_geo261_contact_sources.ContactSourcesBoundary.test_source_provider_has_no_host_or_private_store_dependencies",
+      "tests.test_geo261_contact_sources.ContactSourcesBoundary.test_test_hook_preserves_production_body_and_controls_hit_once",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_actual_h_contact_consumer_uses_box_origin_axes_and_original_member_identity",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_actual_ordered_policy_preserves_placement_order_ties_and_cover_dedup",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_components_hole_indices_and_free_or_other_fixity_metadata_are_preserved",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_empty_and_evolving_queries_keep_dependencies_without_forcing_unplaced_members",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_failures_cycles_and_invalid_inputs_preserve_caller_outputs",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_real_k_frame_region_box_values_feed_w_policy_and_typed_dependency_edges",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_returned_feature_segments_control_both_local_uv_axis_outputs",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_six_negative_controls_fail_only_the_named_semantic_assertion",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_upstream_geometry_changes_candidate_isolation_and_borrowed_value_lifetime",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_zero_capacity_pair_admission_and_truncation_before_dedup_match_old_policy",
+      "tests.test_geo261_native_sources.NativeSources.test_cached_value_negative_control_changes_kernel_and_real_product",
+      "tests.test_geo261_native_sources.NativeSources.test_cycle_rejection_and_failed_value_memoization",
+      "tests.test_geo261_native_sources.NativeSources.test_exact_keys_provider_metadata_and_candidate_isolation",
+      "tests.test_geo261_native_sources.NativeSources.test_failure_retry_preserves_diagnostics_without_bypassing_descriptor_validation",
+      "tests.test_geo261_native_sources.NativeSources.test_product_member_cycle_retains_all_ordered_diagnostics_and_soft_edges",
+      "tests.test_geo261_native_sources.NativeSources.test_real_host_keeps_unplaced_dimensions_and_ordered_cycle_diagnostics",
+      "tests.test_geo261_native_sources.NativeSources.test_recursive_node_growth_keeps_provider_and_node_lifetimes",
+      "tests.test_geo261_native_sources.NativeSources.test_soft_ordering_and_definition_edges_do_not_add_hard_requirements",
+      "tests.test_geo261_native_sources.NativeSources.test_units_and_global_or_placed_axes_are_checked"
+    ],
+    "unrun_count": 57,
+    "setup_errors": [],
+    "setup_skips": [],
+    "stopped_reason": "first-failed-group-completed",
+    "failed_tests": [
+      "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_actual_binding_uses_both_vertex_quantities_and_full_key_ledger",
+      "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_changed_kernel_coordinate_is_observed_by_the_real_grid_cache",
+      "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_preview_confirm_and_undo_keep_the_actual_shared_key_graph",
+      "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_unused_direct_and_manual_child_definitions_are_in_the_actual_model_graph"
+    ],
+    "error_tests": [],
+    "skipped": [],
+    "expected_failures": 0,
+    "unexpected_successes": 0,
+    "successful": false,
+    "discovered_modules": {
+      "tests.test_geo261_grid_sources": 11,
+      "tests.test_geo261_grid_definitions_product": 4,
+      "tests.test_geo261_engineering_sources": 18,
+      "tests.test_geo261_derived_policy_sources": 14,
+      "tests.test_geo261_derived_policy_graph_product": 4,
+      "tests.test_geo261_contact_sources": 12,
+      "tests.test_geo261_native_sources": 9
+    },
+    "groups": {
+      "grid-sources": {
+        "expected": 11,
+        "discovered": 11,
+        "outcomes": {
+          "tests.test_geo261_grid_sources.GridSourceBoundary.test_hooks_use_direct_policy_and_returned_typed_regions": "passed",
+          "tests.test_geo261_grid_sources.GridSourceBoundary.test_public_ownership_candidate_binding_and_safe_lifetime": "passed",
+          "tests.test_geo261_grid_sources.GridSources.test_candidate_isolation_canonical_keys_borrowed_views_and_teardown": "passed",
+          "tests.test_geo261_grid_sources.GridSources.test_definition_enumeration_controls_fail_exact_named_assertions": "passed",
+          "tests.test_geo261_grid_sources.GridSources.test_engineering_panel_quantities_drive_actual_grid_coordinates": "passed",
+          "tests.test_geo261_grid_sources.GridSources.test_failure_diagnostic_order_partial_binding_caches_and_retry": "passed",
+          "tests.test_geo261_grid_sources.GridSources.test_failure_outputs_preserve_original_total_and_coordinate": "passed",
+          "tests.test_geo261_grid_sources.GridSources.test_real_parameter_binding_line_child_cell_and_rule_cell_edges": "passed",
+          "tests.test_geo261_grid_sources.GridSources.test_rule_definition_has_independent_fixed_key_and_content_vectors": "passed",
+          "tests.test_geo261_grid_sources.GridSources.test_seven_controls_fail_named_independent_assertions": "passed",
+          "tests.test_geo261_grid_sources.GridSources.test_unused_direct_child_rule_and_binding_definitions_keep_only_identity_dependencies": "passed"
+        },
+        "counts": {
+          "passed": 11
+        },
+        "failureDetails": []
+      },
+      "grid-definitions-product": {
+        "expected": 4,
+        "discovered": 4,
+        "outcomes": {
+          "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_actual_binding_uses_both_vertex_quantities_and_full_key_ledger": "failed",
+          "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_changed_kernel_coordinate_is_observed_by_the_real_grid_cache": "failed",
+          "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_preview_confirm_and_undo_keep_the_actual_shared_key_graph": "failed",
+          "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_unused_direct_and_manual_child_definitions_are_in_the_actual_model_graph": "failed"
+        },
+        "counts": {
+          "failed": 4
+        },
+        "failureDetails": [
+          {
+            "test": "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_actual_binding_uses_both_vertex_quantities_and_full_key_ledger",
+            "subtest": null,
+            "classification": "test-assertion-failure",
+            "exceptionType": "AssertionError",
+            "message": "0 != 1 : /tmp/geometry-tests/geo261-n1a-rt0kctdk/model-neutral.scene:3: D30/I37: a grid binding references a missing boundary vertex key\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 3: D30/I37: a grid binding references a missing boundary vertex key\"}\n",
+            "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 42, in test_actual_binding_uses_both_vertex_quantities_and_full_key_ledger\n    envelope=self.execute(SCENE);nodes=self.nodes(envelope)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_model_sources.py\", line 39, in execute\n    self.assertEqual(0,run.returncode,run.stderr+'\\n'+run.stdout)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : /tmp/geometry-tests/geo261-n1a-rt0kctdk/model-neutral.scene:3: D30/I37: a grid binding references a missing boundary vertex key\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 3: D30/I37: a grid binding references a missing boundary vertex key\"}\n\n"
+          },
+          {
+            "test": "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_changed_kernel_coordinate_is_observed_by_the_real_grid_cache",
+            "subtest": null,
+            "classification": "test-assertion-failure",
+            "exceptionType": "AssertionError",
+            "message": "0 != 1 : \n/tmp/geometry-tests/geo261-n1a-rt0kctdk/grid-key-product.scene:3: D30/I37: a grid binding references a missing boundary vertex key\nASSERT:grid-key-original-scene\n",
+            "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 74, in test_changed_kernel_coordinate_is_observed_by_the_real_grid_cache\n    baseline=build.link('grid-key-product-baseline',[client,*build.product_objects()]);self.run_client(baseline,scene)\n                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 64, in run_client\n    self.assertEqual(1 if marker else 0,result.returncode,result.stdout+'\\n'+result.stderr)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : \n/tmp/geometry-tests/geo261-n1a-rt0kctdk/grid-key-product.scene:3: D30/I37: a grid binding references a missing boundary vertex key\nASSERT:grid-key-original-scene\n\n"
+          },
+          {
+            "test": "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_preview_confirm_and_undo_keep_the_actual_shared_key_graph",
+            "subtest": null,
+            "classification": "test-assertion-failure",
+            "exceptionType": "AssertionError",
+            "message": "0 != 1 : \n/tmp/geometry-tests/geo261-n1a-rt0kctdk/grid-key-product.scene:3: D30/I37: a grid binding references a missing boundary vertex key\nASSERT:grid-key-original-scene\n",
+            "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 70, in test_preview_confirm_and_undo_keep_the_actual_shared_key_graph\n    self.run_client(build.link('grid-key-product',[client,*build.product_objects()]),scene)\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 64, in run_client\n    self.assertEqual(1 if marker else 0,result.returncode,result.stdout+'\\n'+result.stderr)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : \n/tmp/geometry-tests/geo261-n1a-rt0kctdk/grid-key-product.scene:3: D30/I37: a grid binding references a missing boundary vertex key\nASSERT:grid-key-original-scene\n\n"
+          },
+          {
+            "test": "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_unused_direct_and_manual_child_definitions_are_in_the_actual_model_graph",
+            "subtest": null,
+            "classification": "test-assertion-failure",
+            "exceptionType": "AssertionError",
+            "message": "0 != 1 : /tmp/geometry-tests/geo261-n1a-rt0kctdk/model-neutral.scene:3: D30/I37: a grid binding references a missing boundary vertex key\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 3: D30/I37: a grid binding references a missing boundary vertex key\"}\n",
+            "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 30, in test_unused_direct_and_manual_child_definitions_are_in_the_actual_model_graph\n    envelope=self.execute(SCENE);nodes=self.nodes(envelope)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_model_sources.py\", line 39, in execute\n    self.assertEqual(0,run.returncode,run.stderr+'\\n'+run.stdout)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : /tmp/geometry-tests/geo261-n1a-rt0kctdk/model-neutral.scene:3: D30/I37: a grid binding references a missing boundary vertex key\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 3: D30/I37: a grid binding references a missing boundary vertex key\"}\n\n"
+          }
+        ]
+      },
+      "engineering-sources": {
+        "expected": 18,
+        "discovered": 18,
+        "outcomes": {
+          "tests.test_geo261_engineering_sources.EngineeringBindingBoundary.test_fixed_literal_vector_is_independently_encoded_without_c_padding": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringBindingBoundary.test_stored_and_request_keys_are_explicit_public_contracts": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_actual_bridge_pose_consumes_candidate_binding_through_confirm_and_undo": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_all_published_definitions_include_unused_material_method_application_and_binding": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_application_method_retains_selected_and_unused_material_identities": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_binding_identity_controls_fail_exact_named_oracles": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_canonical_binding_codec_fixed_vectors_and_failure_preserves_output": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_definition_completion_preserves_first_values_order_and_memoized_quantities": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_definition_first_cached_binding_rejects_same_graph_store_mutation": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_definition_inventory_controls_fail_exact_named_oracles": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_face_and_object_overrides_select_active_values_without_losing_base_identity": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_material_definition_source_binding_and_actual_memoized_value": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_original_identity_errors_precede_invalid_override_values": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_rebuild_keeps_original_error_order_and_no_hook_write_parity": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_same_w_resolve_hook_bypass_fails_exact_edges_in_standalone_and_bridge": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_specs_and_parameter_ast_use_shared_kernel_providers": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_stored_binding_target_identity_survives_changed_definition": "UNRUN",
+          "tests.test_geo261_engineering_sources.EngineeringSources.test_temporary_requests_keep_independent_values_and_sealed_memoization": "UNRUN"
+        },
+        "counts": {
+          "UNRUN": 18
+        },
+        "failureDetails": []
+      },
+      "derived-policy-sources": {
+        "expected": 14,
+        "discovered": 14,
+        "outcomes": {
+          "tests.test_geo261_derived_policy_sources.DerivedPolicyBoundary.test_policy_api_is_W_owned_and_reconstruction_uses_direct_key_validation": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicyBoundary.test_return_controls_and_definition_edge_control_have_unique_live_anchors": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_actual_returned_region_fixity_key_and_boundary_controls_fail_named_assertions": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_all_edges_key_buffer_contents_and_diagnostics_match_direct_policy": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_candidate_isolation_borrowed_lifetime_sealed_reads_and_both_teardown_orders": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_canonical_policy_bytes_and_exact_real_consumer_dependencies": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_cloned_returned_policy_ambiguity_and_later_failure_keep_partial_outputs": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_malformed_returned_boundary_policy_propagates_without_uninitialized_traversal": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_malformed_returned_policy_schema_counts_lengths_and_content_are_rejected": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_policy_definition_required_edge_control_fails_named_graph_assertion": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_policy_describe_and_definition_only_queries_do_not_read_candidate_facts": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_policy_first_and_region_first_have_identical_results_without_cycle": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_returned_policy_utf8_scalar_validation_and_bypass_control": "UNRUN",
+          "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_unique_zero_match_component_addresses_and_public_W_resolve_hook": "UNRUN"
+        },
+        "counts": {
+          "UNRUN": 14
+        },
+        "failureDetails": []
+      },
+      "derived-policy-graph-product": {
+        "expected": 4,
+        "discovered": 4,
+        "outcomes": {
+          "tests.test_geo261_derived_policy_graph_product.DerivedPolicyGraphProduct.test_current_snapshot_uses_its_geometry_even_with_an_ambient_candidate": "UNRUN",
+          "tests.test_geo261_derived_policy_graph_product.DerivedPolicyGraphProduct.test_guide_key_and_derived_region_share_the_actual_policy_dependencies": "UNRUN",
+          "tests.test_geo261_derived_policy_graph_product.DerivedPolicyGraphProduct.test_h_reads_typed_geometry_despite_a_deliberately_stale_world_cache": "UNRUN",
+          "tests.test_geo261_derived_policy_graph_product.DerivedPolicyGraphProduct.test_three_value_substitution_controls_reach_real_h_fixity_and_key_consumers": "UNRUN"
+        },
+        "counts": {
+          "UNRUN": 4
+        },
+        "failureDetails": []
+      },
+      "contact-sources": {
+        "expected": 12,
+        "discovered": 12,
+        "outcomes": {
+          "tests.test_geo261_contact_sources.ContactSourcesBoundary.test_source_provider_has_no_host_or_private_store_dependencies": "UNRUN",
+          "tests.test_geo261_contact_sources.ContactSourcesBoundary.test_test_hook_preserves_production_body_and_controls_hit_once": "UNRUN",
+          "tests.test_geo261_contact_sources.NativeContactSources.test_actual_h_contact_consumer_uses_box_origin_axes_and_original_member_identity": "UNRUN",
+          "tests.test_geo261_contact_sources.NativeContactSources.test_actual_ordered_policy_preserves_placement_order_ties_and_cover_dedup": "UNRUN",
+          "tests.test_geo261_contact_sources.NativeContactSources.test_components_hole_indices_and_free_or_other_fixity_metadata_are_preserved": "UNRUN",
+          "tests.test_geo261_contact_sources.NativeContactSources.test_empty_and_evolving_queries_keep_dependencies_without_forcing_unplaced_members": "UNRUN",
+          "tests.test_geo261_contact_sources.NativeContactSources.test_failures_cycles_and_invalid_inputs_preserve_caller_outputs": "UNRUN",
+          "tests.test_geo261_contact_sources.NativeContactSources.test_real_k_frame_region_box_values_feed_w_policy_and_typed_dependency_edges": "UNRUN",
+          "tests.test_geo261_contact_sources.NativeContactSources.test_returned_feature_segments_control_both_local_uv_axis_outputs": "UNRUN",
+          "tests.test_geo261_contact_sources.NativeContactSources.test_six_negative_controls_fail_only_the_named_semantic_assertion": "UNRUN",
+          "tests.test_geo261_contact_sources.NativeContactSources.test_upstream_geometry_changes_candidate_isolation_and_borrowed_value_lifetime": "UNRUN",
+          "tests.test_geo261_contact_sources.NativeContactSources.test_zero_capacity_pair_admission_and_truncation_before_dedup_match_old_policy": "UNRUN"
+        },
+        "counts": {
+          "UNRUN": 12
+        },
+        "failureDetails": []
+      },
+      "native-sources": {
+        "expected": 9,
+        "discovered": 9,
+        "outcomes": {
+          "tests.test_geo261_native_sources.NativeSources.test_cached_value_negative_control_changes_kernel_and_real_product": "UNRUN",
+          "tests.test_geo261_native_sources.NativeSources.test_cycle_rejection_and_failed_value_memoization": "UNRUN",
+          "tests.test_geo261_native_sources.NativeSources.test_exact_keys_provider_metadata_and_candidate_isolation": "UNRUN",
+          "tests.test_geo261_native_sources.NativeSources.test_failure_retry_preserves_diagnostics_without_bypassing_descriptor_validation": "UNRUN",
+          "tests.test_geo261_native_sources.NativeSources.test_product_member_cycle_retains_all_ordered_diagnostics_and_soft_edges": "UNRUN",
+          "tests.test_geo261_native_sources.NativeSources.test_real_host_keeps_unplaced_dimensions_and_ordered_cycle_diagnostics": "UNRUN",
+          "tests.test_geo261_native_sources.NativeSources.test_recursive_node_growth_keeps_provider_and_node_lifetimes": "UNRUN",
+          "tests.test_geo261_native_sources.NativeSources.test_soft_ordering_and_definition_edges_do_not_add_hard_requirements": "UNRUN",
+          "tests.test_geo261_native_sources.NativeSources.test_units_and_global_or_placed_axes_are_checked": "UNRUN"
+        },
+        "counts": {
+          "UNRUN": 9
+        },
+        "failureDetails": []
+      }
+    },
+    "outcomes": {
+      "tests.test_geo261_grid_sources.GridSourceBoundary.test_hooks_use_direct_policy_and_returned_typed_regions": "passed",
+      "tests.test_geo261_grid_sources.GridSourceBoundary.test_public_ownership_candidate_binding_and_safe_lifetime": "passed",
+      "tests.test_geo261_grid_sources.GridSources.test_candidate_isolation_canonical_keys_borrowed_views_and_teardown": "passed",
+      "tests.test_geo261_grid_sources.GridSources.test_definition_enumeration_controls_fail_exact_named_assertions": "passed",
+      "tests.test_geo261_grid_sources.GridSources.test_engineering_panel_quantities_drive_actual_grid_coordinates": "passed",
+      "tests.test_geo261_grid_sources.GridSources.test_failure_diagnostic_order_partial_binding_caches_and_retry": "passed",
+      "tests.test_geo261_grid_sources.GridSources.test_failure_outputs_preserve_original_total_and_coordinate": "passed",
+      "tests.test_geo261_grid_sources.GridSources.test_real_parameter_binding_line_child_cell_and_rule_cell_edges": "passed",
+      "tests.test_geo261_grid_sources.GridSources.test_rule_definition_has_independent_fixed_key_and_content_vectors": "passed",
+      "tests.test_geo261_grid_sources.GridSources.test_seven_controls_fail_named_independent_assertions": "passed",
+      "tests.test_geo261_grid_sources.GridSources.test_unused_direct_child_rule_and_binding_definitions_keep_only_identity_dependencies": "passed",
+      "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_actual_binding_uses_both_vertex_quantities_and_full_key_ledger": "failed",
+      "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_changed_kernel_coordinate_is_observed_by_the_real_grid_cache": "failed",
+      "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_preview_confirm_and_undo_keep_the_actual_shared_key_graph": "failed",
+      "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_unused_direct_and_manual_child_definitions_are_in_the_actual_model_graph": "failed",
+      "tests.test_geo261_engineering_sources.EngineeringBindingBoundary.test_fixed_literal_vector_is_independently_encoded_without_c_padding": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringBindingBoundary.test_stored_and_request_keys_are_explicit_public_contracts": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_actual_bridge_pose_consumes_candidate_binding_through_confirm_and_undo": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_all_published_definitions_include_unused_material_method_application_and_binding": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_application_method_retains_selected_and_unused_material_identities": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_binding_identity_controls_fail_exact_named_oracles": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_canonical_binding_codec_fixed_vectors_and_failure_preserves_output": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_definition_completion_preserves_first_values_order_and_memoized_quantities": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_definition_first_cached_binding_rejects_same_graph_store_mutation": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_definition_inventory_controls_fail_exact_named_oracles": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_face_and_object_overrides_select_active_values_without_losing_base_identity": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_material_definition_source_binding_and_actual_memoized_value": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_original_identity_errors_precede_invalid_override_values": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_rebuild_keeps_original_error_order_and_no_hook_write_parity": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_same_w_resolve_hook_bypass_fails_exact_edges_in_standalone_and_bridge": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_specs_and_parameter_ast_use_shared_kernel_providers": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_stored_binding_target_identity_survives_changed_definition": "UNRUN",
+      "tests.test_geo261_engineering_sources.EngineeringSources.test_temporary_requests_keep_independent_values_and_sealed_memoization": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicyBoundary.test_policy_api_is_W_owned_and_reconstruction_uses_direct_key_validation": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicyBoundary.test_return_controls_and_definition_edge_control_have_unique_live_anchors": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_actual_returned_region_fixity_key_and_boundary_controls_fail_named_assertions": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_all_edges_key_buffer_contents_and_diagnostics_match_direct_policy": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_candidate_isolation_borrowed_lifetime_sealed_reads_and_both_teardown_orders": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_canonical_policy_bytes_and_exact_real_consumer_dependencies": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_cloned_returned_policy_ambiguity_and_later_failure_keep_partial_outputs": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_malformed_returned_boundary_policy_propagates_without_uninitialized_traversal": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_malformed_returned_policy_schema_counts_lengths_and_content_are_rejected": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_policy_definition_required_edge_control_fails_named_graph_assertion": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_policy_describe_and_definition_only_queries_do_not_read_candidate_facts": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_policy_first_and_region_first_have_identical_results_without_cycle": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_returned_policy_utf8_scalar_validation_and_bypass_control": "UNRUN",
+      "tests.test_geo261_derived_policy_sources.DerivedPolicySources.test_unique_zero_match_component_addresses_and_public_W_resolve_hook": "UNRUN",
+      "tests.test_geo261_derived_policy_graph_product.DerivedPolicyGraphProduct.test_current_snapshot_uses_its_geometry_even_with_an_ambient_candidate": "UNRUN",
+      "tests.test_geo261_derived_policy_graph_product.DerivedPolicyGraphProduct.test_guide_key_and_derived_region_share_the_actual_policy_dependencies": "UNRUN",
+      "tests.test_geo261_derived_policy_graph_product.DerivedPolicyGraphProduct.test_h_reads_typed_geometry_despite_a_deliberately_stale_world_cache": "UNRUN",
+      "tests.test_geo261_derived_policy_graph_product.DerivedPolicyGraphProduct.test_three_value_substitution_controls_reach_real_h_fixity_and_key_consumers": "UNRUN",
+      "tests.test_geo261_contact_sources.ContactSourcesBoundary.test_source_provider_has_no_host_or_private_store_dependencies": "UNRUN",
+      "tests.test_geo261_contact_sources.ContactSourcesBoundary.test_test_hook_preserves_production_body_and_controls_hit_once": "UNRUN",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_actual_h_contact_consumer_uses_box_origin_axes_and_original_member_identity": "UNRUN",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_actual_ordered_policy_preserves_placement_order_ties_and_cover_dedup": "UNRUN",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_components_hole_indices_and_free_or_other_fixity_metadata_are_preserved": "UNRUN",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_empty_and_evolving_queries_keep_dependencies_without_forcing_unplaced_members": "UNRUN",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_failures_cycles_and_invalid_inputs_preserve_caller_outputs": "UNRUN",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_real_k_frame_region_box_values_feed_w_policy_and_typed_dependency_edges": "UNRUN",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_returned_feature_segments_control_both_local_uv_axis_outputs": "UNRUN",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_six_negative_controls_fail_only_the_named_semantic_assertion": "UNRUN",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_upstream_geometry_changes_candidate_isolation_and_borrowed_value_lifetime": "UNRUN",
+      "tests.test_geo261_contact_sources.NativeContactSources.test_zero_capacity_pair_admission_and_truncation_before_dedup_match_old_policy": "UNRUN",
+      "tests.test_geo261_native_sources.NativeSources.test_cached_value_negative_control_changes_kernel_and_real_product": "UNRUN",
+      "tests.test_geo261_native_sources.NativeSources.test_cycle_rejection_and_failed_value_memoization": "UNRUN",
+      "tests.test_geo261_native_sources.NativeSources.test_exact_keys_provider_metadata_and_candidate_isolation": "UNRUN",
+      "tests.test_geo261_native_sources.NativeSources.test_failure_retry_preserves_diagnostics_without_bypassing_descriptor_validation": "UNRUN",
+      "tests.test_geo261_native_sources.NativeSources.test_product_member_cycle_retains_all_ordered_diagnostics_and_soft_edges": "UNRUN",
+      "tests.test_geo261_native_sources.NativeSources.test_real_host_keeps_unplaced_dimensions_and_ordered_cycle_diagnostics": "UNRUN",
+      "tests.test_geo261_native_sources.NativeSources.test_recursive_node_growth_keeps_provider_and_node_lifetimes": "UNRUN",
+      "tests.test_geo261_native_sources.NativeSources.test_soft_ordering_and_definition_edges_do_not_add_hard_requirements": "UNRUN",
+      "tests.test_geo261_native_sources.NativeSources.test_units_and_global_or_placed_axes_are_checked": "UNRUN"
+    },
+    "failure_details": [
+      {
+        "test": "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_actual_binding_uses_both_vertex_quantities_and_full_key_ledger",
+        "subtest": null,
+        "classification": "test-assertion-failure",
+        "exceptionType": "AssertionError",
+        "message": "0 != 1 : /tmp/geometry-tests/geo261-n1a-rt0kctdk/model-neutral.scene:3: D30/I37: a grid binding references a missing boundary vertex key\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 3: D30/I37: a grid binding references a missing boundary vertex key\"}\n",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 42, in test_actual_binding_uses_both_vertex_quantities_and_full_key_ledger\n    envelope=self.execute(SCENE);nodes=self.nodes(envelope)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_model_sources.py\", line 39, in execute\n    self.assertEqual(0,run.returncode,run.stderr+'\\n'+run.stdout)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : /tmp/geometry-tests/geo261-n1a-rt0kctdk/model-neutral.scene:3: D30/I37: a grid binding references a missing boundary vertex key\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 3: D30/I37: a grid binding references a missing boundary vertex key\"}\n\n"
+      },
+      {
+        "test": "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_changed_kernel_coordinate_is_observed_by_the_real_grid_cache",
+        "subtest": null,
+        "classification": "test-assertion-failure",
+        "exceptionType": "AssertionError",
+        "message": "0 != 1 : \n/tmp/geometry-tests/geo261-n1a-rt0kctdk/grid-key-product.scene:3: D30/I37: a grid binding references a missing boundary vertex key\nASSERT:grid-key-original-scene\n",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 74, in test_changed_kernel_coordinate_is_observed_by_the_real_grid_cache\n    baseline=build.link('grid-key-product-baseline',[client,*build.product_objects()]);self.run_client(baseline,scene)\n                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 64, in run_client\n    self.assertEqual(1 if marker else 0,result.returncode,result.stdout+'\\n'+result.stderr)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : \n/tmp/geometry-tests/geo261-n1a-rt0kctdk/grid-key-product.scene:3: D30/I37: a grid binding references a missing boundary vertex key\nASSERT:grid-key-original-scene\n\n"
+      },
+      {
+        "test": "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_preview_confirm_and_undo_keep_the_actual_shared_key_graph",
+        "subtest": null,
+        "classification": "test-assertion-failure",
+        "exceptionType": "AssertionError",
+        "message": "0 != 1 : \n/tmp/geometry-tests/geo261-n1a-rt0kctdk/grid-key-product.scene:3: D30/I37: a grid binding references a missing boundary vertex key\nASSERT:grid-key-original-scene\n",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 70, in test_preview_confirm_and_undo_keep_the_actual_shared_key_graph\n    self.run_client(build.link('grid-key-product',[client,*build.product_objects()]),scene)\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 64, in run_client\n    self.assertEqual(1 if marker else 0,result.returncode,result.stdout+'\\n'+result.stderr)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : \n/tmp/geometry-tests/geo261-n1a-rt0kctdk/grid-key-product.scene:3: D30/I37: a grid binding references a missing boundary vertex key\nASSERT:grid-key-original-scene\n\n"
+      },
+      {
+        "test": "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_unused_direct_and_manual_child_definitions_are_in_the_actual_model_graph",
+        "subtest": null,
+        "classification": "test-assertion-failure",
+        "exceptionType": "AssertionError",
+        "message": "0 != 1 : /tmp/geometry-tests/geo261-n1a-rt0kctdk/model-neutral.scene:3: D30/I37: a grid binding references a missing boundary vertex key\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 3: D30/I37: a grid binding references a missing boundary vertex key\"}\n",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 30, in test_unused_direct_and_manual_child_definitions_are_in_the_actual_model_graph\n    envelope=self.execute(SCENE);nodes=self.nodes(envelope)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_model_sources.py\", line 39, in execute\n    self.assertEqual(0,run.returncode,run.stderr+'\\n'+run.stdout)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : /tmp/geometry-tests/geo261-n1a-rt0kctdk/model-neutral.scene:3: D30/I37: a grid binding references a missing boundary vertex key\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 3: D30/I37: a grid binding references a missing boundary vertex key\"}\n\n"
+      }
+    ],
+    "subtests_by_test": {
+      "tests.test_geo261_grid_sources.GridSources.test_definition_enumeration_controls_fail_exact_named_assertions": {
+        "passed": 3,
+        "failed": 0
+      },
+      "tests.test_geo261_grid_sources.GridSources.test_seven_controls_fail_named_independent_assertions": {
+        "passed": 7,
+        "failed": 0
+      }
+    },
+    "compiler_commands": 86,
+    "build_artifact_count": 220,
+    "preserved_build_roots": [
+      "/var/tmp/geo261-focused-12422c69-v3/build-artifacts/build-0"
+    ],
+    "artifact_preservation": {
+      "status": "complete",
+      "error": null
+    }
+  },
+  "full_repository_materialized": false,
+  "full_test_suite_executed": false,
+  "pf3_executed": false,
+  "section_mutation_executed": false,
+  "compatibility_executed": false,
+  "browser_executed": false,
+  "exit": 1
+}

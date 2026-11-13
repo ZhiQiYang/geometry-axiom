@@ -1,0 +1,17 @@
+diff --git a/geometry-core/transactions.inc b/geometry-core/transactions.inc
+index f50aef2a..bed46570 100644
+--- a/geometry-core/transactions.inc
++++ b/geometry-core/transactions.inc
+@@ -683,11 +683,7 @@ static bool app_scene_file_line(const char *path,int line_no,char **tokens,int c
+         ok=false;scene_error(path,line_no,"I8: candidate seal failed; World unchanged");
+     }
+     memcpy(&frame->owner->operation,operation,sizeof operation);
+-    app_candidate_set_evaluation_state(frame->owner->control,NULL,NULL);
+-    if(!geo_eval_reset(frame->sources)){
+-        if(ok)scene_error(path,line_no,"I8: candidate seal failed; World unchanged");
+-        ok=false;
+-    }
++    /* negative control: retain line graph/context */
+     if(!ok){
+         memcpy(world,frame->before,sizeof *world);
+         if(!g_scene_last_error[0])scene_error(path,line_no,"I8: invalid definition/reference; World unchanged");

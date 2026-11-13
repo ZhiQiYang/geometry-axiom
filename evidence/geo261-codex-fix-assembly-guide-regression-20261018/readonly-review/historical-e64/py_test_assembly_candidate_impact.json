@@ -1,0 +1,35 @@
+{
+ "file": "tests/test_assembly_candidate_impact.py",
+ "total": 4,
+ "run": 4,
+ "passed": 1,
+ "failed": 3,
+ "skipped": 0,
+ "explicit_skipped": 0,
+ "unrun_skipped": 0,
+ "blocked_by_error": 0,
+ "expected_failed": 0,
+ "expected_failures": [],
+ "failures": [
+  {
+   "test": "test_assembly_candidate_impact.CandidateImpact.test_first_hop_external_and_unchanged_geometry_are_shown_before_confirm",
+   "kind": "error",
+   "message": "TypeError: 'NoneType' object is not subscriptable"
+  },
+  {
+   "test": "test_assembly_candidate_impact.CandidateImpact.test_generation_creation_and_removal_have_explicit_null_geometry",
+   "kind": "error",
+   "message": "TypeError: 'NoneType' object is not subscriptable"
+  },
+  {
+   "test": "test_assembly_candidate_impact.CandidateImpact.test_multi_hop_external_timber_guide_timber_closure_matches_candidate",
+   "kind": "error",
+   "message": "TypeError: 'NoneType' object is not subscriptable"
+  }
+ ],
+ "skip_reasons": {},
+ "skip_items": [],
+ "import_error": null,
+ "extra_errors": 0,
+ "seconds": 21.37
+}

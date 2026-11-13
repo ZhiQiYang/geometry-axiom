@@ -1,0 +1,892 @@
+{
+  "archive": "p88-final-canvas-run-1-01.tar.gz",
+  "bytes": 3729879,
+  "sha256": "30d686ababd9d33032fcbe81e1af11538577b8110347391f9b4c9382af98f1f8",
+  "members": [
+    {
+      "path": "snapshot/BINDING.json",
+      "bytes": 361,
+      "sha256": "1e30be76fd9100b058ff394bbdeac4b5c121a44f9bbce1ccbc2e9f5879c9a932"
+    },
+    {
+      "path": "snapshot/before-head.command.json",
+      "bytes": 188,
+      "sha256": "c982b5019e76e649cb1f0c9562eeff8259deac419cf2a3e963cc941fe8717d8a"
+    },
+    {
+      "path": "snapshot/before-head.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "snapshot/before-head.stdout",
+      "bytes": 41,
+      "sha256": "264694734ec89046885e1190d10cf573924e04f02cb0f1d21dfb61541d3adfdf"
+    },
+    {
+      "path": "snapshot/before-index.command.json",
+      "bytes": 200,
+      "sha256": "9d83fef6fbdcb64954041fdb209e3a70a3c4e8cd1f4e06b8438bc4fdbcfca46a"
+    },
+    {
+      "path": "snapshot/before-index.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "snapshot/before-index.stdout",
+      "bytes": 3890741,
+      "sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d"
+    },
+    {
+      "path": "snapshot/before-status.command.json",
+      "bytes": 224,
+      "sha256": "8795d03faf6d83edbbb0452837134a74d9842555aa5dbf78e2177fad00dfffe5"
+    },
+    {
+      "path": "snapshot/before-status.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "snapshot/before-status.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "snapshot/driver-binding.diff",
+      "bytes": 1915,
+      "sha256": "b59c65b082ec20ee62e4cd5be699274e075228bfcfd0327dba020076d6c55b1f"
+    },
+    {
+      "path": "snapshot/original_run_workflow_round.py.txt",
+      "bytes": 20021,
+      "sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310"
+    },
+    {
+      "path": "snapshot/publisher.py.txt",
+      "bytes": 5601,
+      "sha256": "af30087a6661e097a9adbd83ed22e58140011c5281a158165edddd7ca4efdf81"
+    },
+    {
+      "path": "snapshot/run-1.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "snapshot/run-1.stdout",
+      "bytes": 146,
+      "sha256": "5360740fde32e4f3ffa5468c5de75392eeca07a84d8cfe58e28f6b85a2083480"
+    },
+    {
+      "path": "snapshot/run_canvas_workflow.py",
+      "bytes": 20294,
+      "sha256": "8a4e69c915ae770afc59829f3658639af0febbd2b16c20495f7ecee7f62685fb"
+    },
+    {
+      "path": "snapshot/sequence-at-completion.json",
+      "bytes": 11698,
+      "sha256": "647d79ebf6ffe7adfb47044bdf563764d9bd2fc7f982d27674bf984da4b73a92"
+    },
+    {
+      "path": "snapshot/sequence-driver.py",
+      "bytes": 11800,
+      "sha256": "98025b205e42280ba00bff6ae5299ff8c169ac77a9a68ab404c3a6808d37a05e"
+    },
+    {
+      "path": "snapshot/sequence-launch.request.json",
+      "bytes": 1377,
+      "sha256": "fa12ca33556e6dba428e266cf8bfb2929b59341505b59d37ae3b9648e7c1d8cd"
+    },
+    {
+      "path": "snapshot/terminal-row.json",
+      "bytes": 6308,
+      "sha256": "a338105fc32f47a8510c9373fa4d34216622523e28e4c625f922be8daf943940"
+    },
+    {
+      "path": "run/heavy.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/engineering-run-v7iYWh/grid-entry-n2cloE/未命名專案.gcanvas",
+      "bytes": 4637,
+      "sha256": "39ffb779efe4346be9da89f67c0ff2a12a1ffb0ae6d9f80cf902dd0038020c70"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/engineering-run-v7iYWh/grid-entry-roundtrip.json",
+      "bytes": 67662,
+      "sha256": "f9f38f5f4783462c7f220489acc1f3df29aea5d84d334019f99a1352addd7810"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/engineering-run-v7iYWh/roundtrip-after.json",
+      "bytes": 43475,
+      "sha256": "e53cfebb0e9ff48cc81bfc79ec4916b260dc11997564004acca22dbd6bccfb56"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/engineering-run-v7iYWh/roundtrip-before.json",
+      "bytes": 43475,
+      "sha256": "1f958bcaaefee3e258890d7bad1c348e4333605517d79b04baa6462b176835e9"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/engineering-run-v7iYWh/roundtrip-comparison.json",
+      "bytes": 11599,
+      "sha256": "95b6f6d79ef0b7fd56be3248e54877f2fa8bce804fe3afcd4fc4bdddfafc4c28"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/engineering-run-v7iYWh/工程規格-做法包.json",
+      "bytes": 2740,
+      "sha256": "9df081519eec4376c9396defbe7b171838d79bd13b2f04908e0ffd65d1101a2c"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/engineering-run-v7iYWh/未命名專案.gcanvas",
+      "bytes": 9074,
+      "sha256": "e84997c24d38ab0b6c589c6caa21f26ce518e745622c19b77a49d8148ff3ed74"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-composition-save-c6GtjD/未命名專案.gcanvas",
+      "bytes": 971,
+      "sha256": "e0e5a57ab5763e3205ba7752ffbb0a09c7f5eb7b2f82ab57d93a2dcd1f250cb6"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-grid-rename-VSVwfG/未命名專案.gcanvas",
+      "bytes": 4856,
+      "sha256": "97dad23ae6c12c26a5d69f084b681df1988ee2ddbb2590d5995438f5c3a6a13c"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-grid-screens/grid-trial-desktop.png",
+      "bytes": 100476,
+      "sha256": "518236d18ec4b86e36968bf8ef23c51831c2d7b6f096072262779f5be217e11b"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-grid-screens/grid-trial-mobile-alignment.png",
+      "bytes": 57242,
+      "sha256": "41fc179b5937a3253643acaa45d360a32261b7e0450054d410062309468ae343"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-grid-screens/grid-trial-mobile-canvas.png",
+      "bytes": 52399,
+      "sha256": "b066222c0fa31254bd92f93da75de6a9ef62dcf1ebb1095b404b438e69b181e8"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-grid-screens/grid-trial-mobile-controls.png",
+      "bytes": 47196,
+      "sha256": "b0cf66d5e29191b07e48aa237d53408c9feb4fc9964a7dada4453b940c2d0543"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-grid-screens/infinite-binding-hole.png",
+      "bytes": 98584,
+      "sha256": "ec21c5a8ac67e163d1259e5dce35120d5d9a202cdfd64e5e46082514af4aeb57"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-grid-screens/infinite-grid-mobile.png",
+      "bytes": 41108,
+      "sha256": "b6ef612ba87baf2ecb3696d7c383a43b9c117508099d2763642d7ac218281a05"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-grid-screens/infinite-source-desktop.png",
+      "bytes": 88423,
+      "sha256": "6d05b094970f5ad3746a5a6ddea84ec3a82c9774203274c0f290c38ed113f022"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-infinite-grid-download-qbqtRN/infinite-grid-roundtrip.json",
+      "bytes": 72053,
+      "sha256": "e38d134efe14fea64408d6c8fbc384eab4725591e6c1d2e7c7bf6dc747187dbc"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-infinite-grid-download-qbqtRN/未命名專案.gcanvas",
+      "bytes": 2739,
+      "sha256": "5ee666cd43b95ffa3e240c7305c4c9a12a197dbade8991b614185cdd823d7ac9"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-001/events.jsonl",
+      "bytes": 89506,
+      "sha256": "ac92ba70d5822a4f5778cbc0b189cb41e4753a11b9621f7dacd4c19ad140ac17"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-001/meta.json",
+      "bytes": 1267,
+      "sha256": "1f2c114a71531f6e60f325f7a0df7d5724ed6fce0cd9f3a4433b8c7ab31b5d8c"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-001/page.html",
+      "bytes": 371817,
+      "sha256": "765924382937864efc954880e7500a6154c66bbf97d40f6c338c9085135ccf30"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-001/report.md",
+      "bytes": 2918,
+      "sha256": "479d6ea3730245367f3af5054f8548ca68ad1e13a8d628a4a1c52a2f1b700ca1"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-001/world.scene",
+      "bytes": 552,
+      "sha256": "4414ddc1858259f09fedebd7644beff3031b85b89c297be1bfb384cda0aefcb1"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-002/events.jsonl",
+      "bytes": 89751,
+      "sha256": "5ab59b9a89605aa8cf662dc943f1dc5cca4f23fe6228532e6c7a87419988941b"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-002/meta.json",
+      "bytes": 1128,
+      "sha256": "ffa4af6c14ecbf59c94c1ce05f316654eaf5c9c8ce266b5cd5a6687e39fdc860"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-002/page.html",
+      "bytes": 371420,
+      "sha256": "b55fa47bfdd89829003dcef5a252898aab70a8b3f791e33337d63db325a7ec95"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-002/report.md",
+      "bytes": 3149,
+      "sha256": "bd10d58f9e7dc396cb3ade0516cd8112696008ff337ad35566aa4f9843ed4458"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-002/world.scene",
+      "bytes": 552,
+      "sha256": "4414ddc1858259f09fedebd7644beff3031b85b89c297be1bfb384cda0aefcb1"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-003/events.jsonl",
+      "bytes": 1838,
+      "sha256": "4cfd14a589cd2ee01625f9a699840ec86fee2b31366a4fb0ce559c06619c9323"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-003/meta.json",
+      "bytes": 1133,
+      "sha256": "ca8414a10c1c5a130f52f1e82e0e9620adc2f53d2360cc9634a65c11198401eb"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-003/page.html",
+      "bytes": 311074,
+      "sha256": "6c596a4ab87826d895655247ab9379fafc583da7d9bce345be8454e311e05749"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/F-20261023-003/report.md",
+      "bytes": 1848,
+      "sha256": "cfe5486ae81943693730cd989b386314a3480de706ff25e5702f21fe36cf09df"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-feedback/INBOX.md",
+      "bytes": 707,
+      "sha256": "0965cf31ee954a64d4ca75c3896c9da00054692d41cf8bd72d803298f9dfee7f"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-integration-server.log",
+      "bytes": 246035,
+      "sha256": "94ecc577630f33ba8038e4f66979c0e3509dd2de74feb2d3012d3b9ff62b436e"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-p83-download-EEcnng/export-311oVX/model-snapshot-dda14723-e59d-4c0b-86c9-c40a0a5454ac.csv",
+      "bytes": 3372,
+      "sha256": "1b8d114bed2f3a3be3b9b16636b909713e31499a9a29493eb3e649c5d57f6b3a"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-p83-download-EEcnng/export-EtEhlr/model-snapshot-dda14723-e59d-4c0b-86c9-c40a0a5454ac.csv",
+      "bytes": 3372,
+      "sha256": "1b8d114bed2f3a3be3b9b16636b909713e31499a9a29493eb3e649c5d57f6b3a"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-p83-download-EEcnng/export-LfaLJR/model-snapshot-dda14723-e59d-4c0b-86c9-c40a0a5454ac.csv",
+      "bytes": 3366,
+      "sha256": "e37c0b0f57a9dfbf2abd3e21dd1a3ce27bff53284e19efedb8c40d26e9e63382"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-p83-download-EEcnng/export-VRKU1P/model-snapshot-dda14723-e59d-4c0b-86c9-c40a0a5454ac.csv",
+      "bytes": 3372,
+      "sha256": "1b8d114bed2f3a3be3b9b16636b909713e31499a9a29493eb3e649c5d57f6b3a"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-p83-download-EEcnng/export-bqSQDK/model-snapshot-dda14723-e59d-4c0b-86c9-c40a0a5454ac.csv",
+      "bytes": 3366,
+      "sha256": "5c0349c3587ab0bee2d5f1d34f08462bdfef95ccbd0fa16989d6c3041aa0a60a"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-p83-download-EEcnng/export-lKna3B/model-snapshot-dda14723-e59d-4c0b-86c9-c40a0a5454ac.csv",
+      "bytes": 3372,
+      "sha256": "997f886d1f3e234d5a2786cf230909629e9e539171a95f1e8f4319b26846e63e"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-p86-download-1Nsg5n/model-snapshot-dda14723-e59d-4c0b-86c9-c40a0a5454ac.csv",
+      "bytes": 3372,
+      "sha256": "1b8d114bed2f3a3be3b9b16636b909713e31499a9a29493eb3e649c5d57f6b3a"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-rule-editor-6L6ZHL/未命名專案.gcanvas",
+      "bytes": 1714,
+      "sha256": "b6c3429169b7f9d8c9d565c2a989dba2f85be52871daa29b5104ba5987ae3823"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-rule-editor-KLPEhu/rule-editor-roundtrip.json",
+      "bytes": 4283,
+      "sha256": "956b8c743f470db89b767c4338a9e169ef7168a1960dd970899bafdb58f8352c"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-rule-editor-KLPEhu/未命名專案.gcanvas",
+      "bytes": 2082,
+      "sha256": "9999774b019348c77029a234261321e96ff331529a8d755c6e245ba6b0c27e8f"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-rule-editor-UkKV9M/未命名專案.gcanvas",
+      "bytes": 1716,
+      "sha256": "b566b04fbb43c847b4a97ef77218d4e6a3c96d5ead82027518c5af09bbffa610"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-rule-editor-iLMRbv/rule-editor-roundtrip.json",
+      "bytes": 4109,
+      "sha256": "bb842f54bbaf441a39c4a3a5db80bf1d2fc0c5750d36c900f2628c7a3a165f5e"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-rule-editor-iLMRbv/未命名專案.gcanvas",
+      "bytes": 1923,
+      "sha256": "ac6a04b33d91470aa7f2c37c14081e8f6e58f297d4c81d408815e2e178ab2981"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-rule-lines-aHuxfZ/rule-lines-receipt.json",
+      "bytes": 4208,
+      "sha256": "4f6fb7365126dd8879a74c858dde766e9f7b99948d597721609219ea06b0af89"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-rule-lines-aHuxfZ/未命名專案.gcanvas",
+      "bytes": 3367,
+      "sha256": "9cb3ec06271f9d74a6323b5ab9fb90828c703b63c40981b5d1215cbfacbe395b"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-rule-lines-o7uVL7/rule-lines-receipt.json",
+      "bytes": 4183,
+      "sha256": "f52e939b8e8f5bc8ad25391be4226f275807fa4cff749c7a10f772296be6b1ee"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-rule-lines-o7uVL7/未命名專案.gcanvas",
+      "bytes": 3343,
+      "sha256": "feb2637673233ef3ad87832b86dcbf0c5dec78c392cb404915df9612d5334f97"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-source-navigation-1150512/canvas.png",
+      "bytes": 149375,
+      "sha256": "38a1c2373f99d1fafb955f74a721e249782aa2d1086bb7a0ee2b89658ff45ed7"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-source-navigation-1150512/mobile.png",
+      "bytes": 89751,
+      "sha256": "e03c95bb7af7909299720c04870728d0dfdeecea5365a44aadfa893be75671f7"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-source-navigation-1150512/open10.png",
+      "bytes": 158157,
+      "sha256": "3f1599077996e70b9a7f418b4f77412f7c6b9827d90e191533aff61d04b8a57d"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-source-navigation-1150512/zero.png",
+      "bytes": 169059,
+      "sha256": "b1b1cd4567134a85053405fb664f3fd47ed2116ada7c8f04daea213b7b04433a"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-support-screens-1150512/support-desktop.png",
+      "bytes": 180403,
+      "sha256": "b77e1ca21cbbf21d3a9a8d3026abd4fca787e94ec18c660f066b520eff91a0e2"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-support-screens-1150512/support-mobile.png",
+      "bytes": 77619,
+      "sha256": "62ff77b0b1658fdff007f1001703c28141cf9b77ed6bd7f600f6b158e669eb8d"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/assembly-blank-390.png",
+      "bytes": 51123,
+      "sha256": "588a864b263f142354c19f4d64389c8c1e141003e2b51db7aaf94a28c96c2df4"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/assembly-desktop.png",
+      "bytes": 92421,
+      "sha256": "5adab1037173336534961da80b364abcbbc4df13bda2fa309af4d0914cb1e780"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/assembly-generation-g07-before.gcanvas",
+      "bytes": 5203,
+      "sha256": "8e84862a953bde97392ce22e9eaa85d28d76640c7bbb0ad589e4fa7c2aee6dc7"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/assembly-generation-g07-before.json",
+      "bytes": 1874,
+      "sha256": "6717a7d43fa9cb11993e55b38c304f0d12db2b2047b5b7c4f25553689330dc8a"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/assembly-generation-mobile.png",
+      "bytes": 41061,
+      "sha256": "e5a70a710eb6cff2a7bf7eba209e266471f41e19b87f8812d2b8bf3df828d40b"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/assembly-mobile.png",
+      "bytes": 39267,
+      "sha256": "b30979a02006993b3c6c336425cfc9433b2e4568d9d8f451914419f5d4c6336d"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/assembly-review-glyphs-390.png",
+      "bytes": 32646,
+      "sha256": "fbc4b67012ee4e9c1f98b76f342ee172967055671f0557f57c2403d4068b1bea"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/assembly-review-glyphs-desktop.png",
+      "bytes": 88393,
+      "sha256": "7c8c0f5f6c3abd328f6cbfa7476d350119072562504c22d6cf94fad7ca3bc953"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/assembly-review-glyphs-max-zoom-390.png",
+      "bytes": 48064,
+      "sha256": "00a03e22f6c26aa179dfcfbb4c3057f84e175282c3b146e6457cf3752b9b81cd"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/assembly-review-sources-390.png",
+      "bytes": 51734,
+      "sha256": "69ae07d52ecd36b93e5a018ccedb91f2f976d966c79a75739c1b86516760594b"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/assembly-review-sources-desktop.png",
+      "bytes": 90191,
+      "sha256": "2ae9c57c47eee29f5329347578429a2260e671229b6647d301a2d80891a2d8b8"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/cdp-1150512/phase1-shell.png",
+      "bytes": 93161,
+      "sha256": "257a68d86b6ac4a4eaa0aa1190bc213a1a6f0f345e63596d70f8467b7b801b5a"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/parameter-desktop.png",
+      "bytes": 168104,
+      "sha256": "32229f4aca93a339033017ff083b428b53681bc1f46ea286b8e53bd73347cef6"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-tests/parameter-mobile.png",
+      "bytes": 55815,
+      "sha256": "836f0adff9627dcd668da423f9548604424ab398b1779a051a3486eb8cb93ed7"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-ux-refinement-download-feW88I/工程規格試用・平面與7支角材.gcanvas",
+      "bytes": 119271,
+      "sha256": "2cf6be5e131956100167088689fff7765495dce3bebe91e8b988a1d2bdf703ac"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/geometry-wait-trace-artifact/receipt.json",
+      "bytes": 407,
+      "sha256": "7317fc36c2d9fc98ff7b0f43fae3db7dd2dd9d9b481d9111d120dee72d4bb40c"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/p74-clear-undo-comparison.json",
+      "bytes": 1043112,
+      "sha256": "adfc7329f10298be39cbe166127b0ae24680c088e627723700e7ee9f21ec948e"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/p74-new-undo-comparison.json",
+      "bytes": 1043113,
+      "sha256": "a10bde173110788a767d4562bfa5c7e340ce08d13726478e793332148e0c9f23"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/parameter-export-WR0HNx/timbers-surface-1.csv",
+      "bytes": 7745,
+      "sha256": "b8c1aedf5759ff77d39cbfc13d1a3118fa9fdcf22184fe0eb4dbf913e25a9e95"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/parameter-export-WR0HNx/參數包.json",
+      "bytes": 1181,
+      "sha256": "324562396e8dbf645d240aeb1e77f24d473a25b20944dd62c9004aadfebb7ac3"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/tmp5x7o92ou.scene",
+      "bytes": 560,
+      "sha256": "9be8e893a42a534ac7800c4766bf6ba172192dea6932c1a873efbc176d7457b5"
+    },
+    {
+      "path": "run/tmp/workflow/canvas/verify-upload-bf.scene",
+      "bytes": 43,
+      "sha256": "2c79d14dd4e657f3c6dc53db6395aa5a49a91554ac198da32f9f5f35c4a13f8a"
+    },
+    {
+      "path": "run/workflow/canvas/artifacts/04/geometry-wait-trace-artifact/receipt.json",
+      "bytes": 407,
+      "sha256": "7317fc36c2d9fc98ff7b0f43fae3db7dd2dd9d9b481d9111d120dee72d4bb40c"
+    },
+    {
+      "path": "run/workflow/canvas/artifacts/06/grid-trial-desktop.png",
+      "bytes": 100476,
+      "sha256": "518236d18ec4b86e36968bf8ef23c51831c2d7b6f096072262779f5be217e11b"
+    },
+    {
+      "path": "run/workflow/canvas/artifacts/06/grid-trial-mobile-alignment.png",
+      "bytes": 57242,
+      "sha256": "41fc179b5937a3253643acaa45d360a32261b7e0450054d410062309468ae343"
+    },
+    {
+      "path": "run/workflow/canvas/artifacts/06/grid-trial-mobile-canvas.png",
+      "bytes": 52399,
+      "sha256": "b066222c0fa31254bd92f93da75de6a9ef62dcf1ebb1095b404b438e69b181e8"
+    },
+    {
+      "path": "run/workflow/canvas/artifacts/06/grid-trial-mobile-controls.png",
+      "bytes": 47196,
+      "sha256": "b0cf66d5e29191b07e48aa237d53408c9feb4fc9964a7dada4453b940c2d0543"
+    },
+    {
+      "path": "run/workflow/canvas/driver.py.txt",
+      "bytes": 20294,
+      "sha256": "8a4e69c915ae770afc59829f3658639af0febbd2b16c20495f7ecee7f62685fb"
+    },
+    {
+      "path": "run/workflow/canvas/receipt.json",
+      "bytes": 29840,
+      "sha256": "594f637f2386d09702c9021d6828bc2ee4e032097713429cea5c5bbfa32b548f"
+    },
+    {
+      "path": "run/workflow/canvas/receipt.sha256",
+      "bytes": 79,
+      "sha256": "7d463ff00ad979d599631f79cfb2c1aa3defe0aeeedc99b913c3cacaffea4abe"
+    },
+    {
+      "path": "run/workflow/canvas/steps/01.combined.log",
+      "bytes": 1244,
+      "sha256": "db5f510afe34f850da5b8b8b56c89bb1a5329c71e8113a8c523c758999202982"
+    },
+    {
+      "path": "run/workflow/canvas/steps/01.command.json",
+      "bytes": 625,
+      "sha256": "b8817df689aa9375587c2e259bb89e0bca6ac9b4551b730ca0431867b9bff6f4"
+    },
+    {
+      "path": "run/workflow/canvas/steps/01.executed.sh",
+      "bytes": 14,
+      "sha256": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef"
+    },
+    {
+      "path": "run/workflow/canvas/steps/01.original.sh.txt",
+      "bytes": 13,
+      "sha256": "16c0e4305ac213dff39fc82b69b6e08aeeb8758e33cd72d7c409752a70e9f054"
+    },
+    {
+      "path": "run/workflow/canvas/steps/01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run/workflow/canvas/steps/01.stdout",
+      "bytes": 1244,
+      "sha256": "db5f510afe34f850da5b8b8b56c89bb1a5329c71e8113a8c523c758999202982"
+    },
+    {
+      "path": "run/workflow/canvas/steps/02-package-0.combined.log",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "run/workflow/canvas/steps/02-package-0.command.json",
+      "bytes": 645,
+      "sha256": "2296796b29f1c949d5bdbfe04f5f78d8507380b782f61f42557a5867b5ac0a5e"
+    },
+    {
+      "path": "run/workflow/canvas/steps/02-package-0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run/workflow/canvas/steps/02-package-0.stdout",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "run/workflow/canvas/steps/02.executed.sh",
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "path": "run/workflow/canvas/steps/02.original.sh.txt",
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "path": "run/workflow/canvas/steps/03.combined.log",
+      "bytes": 606992,
+      "sha256": "d39de139bbcfeeda858409804965529548ec35487a8611f3ec4f641f85ed5aad"
+    },
+    {
+      "path": "run/workflow/canvas/steps/03.command.json",
+      "bytes": 675,
+      "sha256": "5175909d90209b047bc63ba63307a5538f6e4ce2fed7db0116c0ae1b26537fd3"
+    },
+    {
+      "path": "run/workflow/canvas/steps/03.executed.sh",
+      "bytes": 2304,
+      "sha256": "01a571a54bbb86caa827676fff628314b88ca959adc7584b75a4164ad966d8b4"
+    },
+    {
+      "path": "run/workflow/canvas/steps/03.original.sh.txt",
+      "bytes": 2184,
+      "sha256": "d8e6bc8c0ebf7492b7546c6c56865733b2171fcad06c14597572ecf09e40d44f"
+    },
+    {
+      "path": "run/workflow/canvas/steps/03.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run/workflow/canvas/steps/03.stdout",
+      "bytes": 606992,
+      "sha256": "d39de139bbcfeeda858409804965529548ec35487a8611f3ec4f641f85ed5aad"
+    },
+    {
+      "path": "run/workflow/canvas/versions/0.combined.log",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "run/workflow/canvas/versions/0.command.json",
+      "bytes": 575,
+      "sha256": "4ddeececca5048bfed570d358a67193b52eb1c921aa743bebe4b2f663b54c01d"
+    },
+    {
+      "path": "run/workflow/canvas/versions/0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run/workflow/canvas/versions/0.stdout",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "run/workflow/canvas/versions/1.combined.log",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "run/workflow/canvas/versions/1.command.json",
+      "bytes": 568,
+      "sha256": "a1f136f97f604260703019d172dc6ada71492cb66d028f5e7b09d913c24d86c0"
+    },
+    {
+      "path": "run/workflow/canvas/versions/1.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run/workflow/canvas/versions/1.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "run/workflow/canvas/versions/2.combined.log",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "run/workflow/canvas/versions/2.command.json",
+      "bytes": 571,
+      "sha256": "52e47ccbd9329b834330fcc68df77d5d7c67d724f147cfd1e95d8cca6c46b8f2"
+    },
+    {
+      "path": "run/workflow/canvas/versions/2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run/workflow/canvas/versions/2.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "run/workflow/canvas/versions/3.combined.log",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "run/workflow/canvas/versions/3.command.json",
+      "bytes": 565,
+      "sha256": "d96e2b66cc92b66e4f3d846d55e3e2621bd9b1542c0263dd15894c2ffcd00a59"
+    },
+    {
+      "path": "run/workflow/canvas/versions/3.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run/workflow/canvas/versions/3.stdout",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "run/workflow/canvas/versions/4.combined.log",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "run/workflow/canvas/versions/4.command.json",
+      "bytes": 620,
+      "sha256": "4346d70a33326a40df76b6e893399252601f2068d29ee3bd43e4d2cd7fbedddc"
+    },
+    {
+      "path": "run/workflow/canvas/versions/4.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run/workflow/canvas/versions/4.stdout",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "run/workflow/canvas/workflow.yml.txt",
+      "bytes": 6854,
+      "sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d"
+    },
+    {
+      "path": "outer/launcher.py.txt",
+      "bytes": 3566,
+      "sha256": "68256d90e597fe52807637e3603b7392dd09e9a5342909adc54d21fa4cba2928"
+    },
+    {
+      "path": "outer/reaper.jsonl",
+      "bytes": 2313,
+      "sha256": "5c9aa5fda6c96e119b0529fb2dbd21f34f83f8c17af926083c71c042671db4ec"
+    },
+    {
+      "path": "outer/receipt.json",
+      "bytes": 15148,
+      "sha256": "a0a7a25504c6fbdb69263964987729f49653d2d5af61d310e919b7f5136db169"
+    },
+    {
+      "path": "outer/request.json",
+      "bytes": 2479,
+      "sha256": "c12d76ca6a2a7ac1e88849d6e40e35d25847003faff5c8d7cf7efe859ac6d30a"
+    },
+    {
+      "path": "outer/subcommands/000001/request.json",
+      "bytes": 1493,
+      "sha256": "1c51f1f8e6b5ecb523892adbd05c9806621eae76d82152e9f4ab30cf66d264de"
+    },
+    {
+      "path": "outer/subcommands/000001/result.json",
+      "bytes": 1744,
+      "sha256": "be20b753a23ffe25eea42767efebf2c5c523c7c0940cdda95db84393b832e02d"
+    },
+    {
+      "path": "outer/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "264694734ec89046885e1190d10cf573924e04f02cb0f1d21dfb61541d3adfdf"
+    },
+    {
+      "path": "outer/subcommands/000002/request.json",
+      "bytes": 1529,
+      "sha256": "dc83acbcd4807283b2a3ada15640deb76319553d0c3f8d5c3b41b44f431e4382"
+    },
+    {
+      "path": "outer/subcommands/000002/result.json",
+      "bytes": 1779,
+      "sha256": "bce688f3758f1847a1e5e92bd0cfcb6c6b6cfed98cf80bcf779d3978508d8521"
+    },
+    {
+      "path": "outer/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer/subcommands/000003/request.json",
+      "bytes": 2029,
+      "sha256": "51cd33ba84b4ebd35d1ef5312b07a6246faa71d14c40c39835c5878bc2fa8e2f"
+    },
+    {
+      "path": "outer/subcommands/000003/result.json",
+      "bytes": 2280,
+      "sha256": "fd013f13b48f1db467f9e4f932791cf0c6a5c0743ff91ee9ba9bc03cf97bb504"
+    },
+    {
+      "path": "outer/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer/subcommands/000003/stdout.bin",
+      "bytes": 398,
+      "sha256": "9c6813001e834bf98393756f5fbef36a4554e431526d24db2de8096a98b4c866"
+    },
+    {
+      "path": "outer/subcommands/000004/request.json",
+      "bytes": 1492,
+      "sha256": "6f2903f9c0f6d11dc0f21c2b6130f94b3c16884066d016259d673fe76bb8ff91"
+    },
+    {
+      "path": "outer/subcommands/000004/result.json",
+      "bytes": 1743,
+      "sha256": "7e2427a7a46a08dedc300e3002ecf8ead440b6e93c935134a86c80f4f3498e9d"
+    },
+    {
+      "path": "outer/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer/subcommands/000004/stdout.bin",
+      "bytes": 41,
+      "sha256": "264694734ec89046885e1190d10cf573924e04f02cb0f1d21dfb61541d3adfdf"
+    },
+    {
+      "path": "outer/subcommands/000005/request.json",
+      "bytes": 1529,
+      "sha256": "9b189db00ebe75a310ff501fafd1a7be115d090cd87d774107bdb6583bc7bbd3"
+    },
+    {
+      "path": "outer/subcommands/000005/result.json",
+      "bytes": 1779,
+      "sha256": "7149ff5b9f121b768760cf629bc04a22a40a737ece8d4702fbaf3cea435f5f7a"
+    },
+    {
+      "path": "outer/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "outer/subcommands.json",
+      "bytes": 9783,
+      "sha256": "0087200f961e796201bd89830cbbb1edfc7bdc189fcb2f7ffe4cd9ba26e32ec8"
+    }
+  ]
+}

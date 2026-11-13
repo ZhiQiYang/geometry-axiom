@@ -1,0 +1,43 @@
+{
+  "kind": "fixed-commit-rename-regression-and-controls",
+  "source": "73aca666e779527bd096e7f09a9bc12cdc38d051",
+  "source_root": "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/grid-rename-73aca666",
+  "started_utc": "2026-10-16T02:45:45.278097+00:00",
+  "finished_utc": "2026-10-16T02:49:04.308967+00:00",
+  "command": [
+    "python3",
+    "-u",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_grid_inspector_contract",
+    "tests.test_infinite_grid_contract"
+  ],
+  "test_exit": 0,
+  "exact_28_tests_without_skip": true,
+  "mutation_command": [
+    "python3",
+    "-u",
+    "tests/diagnostics/grid_inspector_mutation_probe.py",
+    "--native",
+    "--out",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/grid-rename-native-v3/mutations"
+  ],
+  "mutation_exit": 0,
+  "source_unchanged": true,
+  "checkout_clean_after": true,
+  "source_files": 15789,
+  "worker_product_crlf_sha256": "d116ef4fbc575f95d371cd280cd5783c9a4e45a2e435d8cfba92602d6e441db9",
+  "git_product_lf_sha256": "79bb990ae980c8f0a68b4a7b85e91f7dcb9080fa85e62c7fd6dbd181c7d07624",
+  "source_before_sha256": "fc337e12400d2cc1cd06d2c1f793057a55a0c1895aab20c25d8c29560f795ef2",
+  "source_after_sha256": "fc337e12400d2cc1cd06d2c1f793057a55a0c1895aab20c25d8c29560f795ef2",
+  "bridge_sha256": "8e4088762c377ce6cbd023b0aee7d2484bd1c3c1267bb9008461ae50cbbc3d3f",
+  "bridge_fresh_before": "fresh",
+  "bridge_fresh_after": "fresh",
+  "shared_lock_holder": "pid=58249 start=2026-10-16T02:39:56Z label= args=run WSL_CI_JOB_TAG=geo261-corrected-db65132a bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/next-targeted-namespace.sh\n",
+  "log_sha256": "7bc9e1beb43744dd335d43d07afc046c322168774ba9ffc2fe15f17ce3b4860e",
+  "runner_sha256": "a0a9a09ea4c84dbff93c3b189a4eeb4227ff58897eb0dae021ed4396939d8208",
+  "full_suite_executed": false,
+  "browser_executed": false,
+  "exit": 0
+}

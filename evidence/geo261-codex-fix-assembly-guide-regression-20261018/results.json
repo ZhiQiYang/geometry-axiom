@@ -1,0 +1,1014 @@
+{
+  "schema": "geo261-topic-evidence-results/1",
+  "status": "僅整理原件身份與人工判讀；不代表測試通過、突變成立或已發布",
+  "input_metadata": {
+    "schema": "geo261-topic-evidence-input/1",
+    "topic": "03-assembly-guide-regression",
+    "evidence_root": "/workspace/geo261-validation-20261018/fixes/assembly-guide-regression",
+    "repository_prefix": "evidence/geo261-codex-fix-assembly-guide-regression-20261018",
+    "metadata": {
+      "branch": "codex/geo261-fix-assembly-guide-regression-20261018",
+      "base": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+      "test_strengthening": "97bc7c0cf612b7bbbb4362e27441579a97aa3a00",
+      "upstream_product_fix": "1987af507c6f387d7986325da6c29b2ec6246944",
+      "classification": "產品缺陷已由上游1987修正；本分支僅加強回歸守門",
+      "before_is_already_green": true,
+      "withdraw_method_bodies_executed": 0
+    },
+    "stages": [
+      {
+        "id": "before",
+        "directory": "before",
+        "expected_sha": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+        "claim_review": "reviewed",
+        "claim": {
+          "methods_run": 4,
+          "passed_methods": 4,
+          "failed_methods": 0,
+          "unittest_failure_records": 0,
+          "unittest_error_records": 0,
+          "skipped_methods": 0,
+          "method_bodies_executed": 4,
+          "unittest_seconds": 3.593,
+          "suite_json_seconds": 3.7,
+          "outer_seconds": 29.873039218000486,
+          "returncode": 0,
+          "valid_expected_failure": false,
+          "infrastructure_error_observed": false,
+          "functional_not_performance": true,
+          "meaning": "上游產品已修後的原測試綠；不是本題修前紅"
+        }
+      },
+      {
+        "id": "after",
+        "directory": "after",
+        "expected_sha": "97bc7c0cf612b7bbbb4362e27441579a97aa3a00",
+        "claim_review": "reviewed",
+        "claim": {
+          "methods_run": 4,
+          "passed_methods": 4,
+          "failed_methods": 0,
+          "unittest_failure_records": 0,
+          "unittest_error_records": 0,
+          "skipped_methods": 0,
+          "method_bodies_executed": 4,
+          "unittest_seconds": 3.987,
+          "suite_json_seconds": 4.11,
+          "outer_seconds": 4.654592034003144,
+          "returncode": 0,
+          "valid_expected_failure": false,
+          "infrastructure_error_observed": false,
+          "functional_not_performance": true,
+          "meaning": "只強化測試後四方法完整通過"
+        }
+      },
+      {
+        "id": "withdrawn",
+        "directory": "withdrawn",
+        "expected_sha": "6360f8e5f0b81bd99e3b149281219b4a7aba58b4",
+        "claim_review": "reviewed",
+        "claim": {
+          "methods_run": 4,
+          "passed_methods": 0,
+          "failed_methods": 4,
+          "unittest_failure_records": 4,
+          "unittest_error_records": 0,
+          "skipped_methods": 0,
+          "method_bodies_executed": 0,
+          "unittest_seconds": 3.234,
+          "suite_json_seconds": 3.35,
+          "outer_seconds": 32.68329301999984,
+          "returncode": 1,
+          "valid_expected_failure": true,
+          "infrastructure_error_observed": false,
+          "functional_not_performance": true,
+          "meaning": "只撤上游七行，四TestCase在各自setUp近因assertFAIL，方法body未執行"
+        }
+      },
+      {
+        "id": "restored",
+        "directory": "restored",
+        "expected_sha": "97bc7c0cf612b7bbbb4362e27441579a97aa3a00",
+        "claim_review": "reviewed",
+        "claim": {
+          "methods_run": 4,
+          "passed_methods": 4,
+          "failed_methods": 0,
+          "unittest_failure_records": 0,
+          "unittest_error_records": 0,
+          "skipped_methods": 0,
+          "method_bodies_executed": 4,
+          "unittest_seconds": 3.607,
+          "suite_json_seconds": 3.72,
+          "outer_seconds": 32.08866536400092,
+          "returncode": 0,
+          "valid_expected_failure": false,
+          "infrastructure_error_observed": false,
+          "functional_not_performance": true,
+          "meaning": "恢復精確97bc測試與上游產品、重建fresh bridge，四方法完整通過"
+        }
+      }
+    ],
+    "extra_files": [
+      {
+        "path": "publication-v1/README.md",
+        "destination": "README.md",
+        "bytes": 6661,
+        "sha256": "0603ebbd943ae96abda8cf1249156e87249e10f1244a2d71784f443b63a3f032"
+      },
+      {
+        "path": "readonly-review/source-review.json",
+        "destination": "readonly-review/source-review.json",
+        "bytes": 4921,
+        "sha256": "9fdae9ae5823c8bc44076770921996e3943f220c80f8d05f70cfe90a320e7df3"
+      },
+      {
+        "path": "readonly-review/manual-ledger.json",
+        "destination": "readonly-review/manual-ledger.json",
+        "bytes": 12553,
+        "sha256": "a5a7dbd7f8e5c0033adbf71b9aa2434f001fab4896e4adac8ad97401a3120bba"
+      },
+      {
+        "path": "readonly-review/test-strengthening.patch",
+        "destination": "readonly-review/test-strengthening.patch",
+        "bytes": 2303,
+        "sha256": "2a4bd372f2715fb780a25c5543342e78e7fc4e06aaa80a55a2a88f38258df2cf"
+      },
+      {
+        "path": "readonly-review/upstream-1987-seven-lines.patch",
+        "destination": "readonly-review/upstream-1987-seven-lines.patch",
+        "bytes": 1471,
+        "sha256": "390ee1687e03f083a1d0b34337d6c99410aa0f38231a0e2fd56c017d3ef36a6e"
+      },
+      {
+        "path": "readonly-review/withdraw-upstream-seven-lines.patch",
+        "destination": "readonly-review/withdraw-upstream-seven-lines.patch",
+        "bytes": 1471,
+        "sha256": "3f21c72a6fc7ee6d5c94ea5bfeaa30f8c3b5d57117579dd276817839146a26a4"
+      },
+      {
+        "path": "readonly-review/test-strengthening-commit.txt",
+        "destination": "readonly-review/test-strengthening-commit.txt",
+        "bytes": 304,
+        "sha256": "05ff3674ba91a99a8bc2f13574ab643c068428e110d4193edc7acb9749d98886"
+      },
+      {
+        "path": "readonly-review/withdraw-upstream-seven-lines-commit.txt",
+        "destination": "readonly-review/withdraw-upstream-seven-lines-commit.txt",
+        "bytes": 300,
+        "sha256": "9e06b18ccde6851313a0b5d2f1cc7b8c5486586c2901f1651b852d7b447dec87"
+      },
+      {
+        "path": "readonly-review/historical-e64/py_test_assembly_candidate_impact.json",
+        "destination": "readonly-review/historical-e64/py_test_assembly_candidate_impact.json",
+        "bytes": 1034,
+        "sha256": "3f9d4ca15098595e60410a591f891b3a31187da111914a21ff65e11e36d7b9e9"
+      },
+      {
+        "path": "readonly-review/historical-e64/py_test_assembly_candidate_impact.log",
+        "destination": "readonly-review/historical-e64/py_test_assembly_candidate_impact.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "readonly-review/historical-e64/py_test_assembly_candidate_impact.unittest.log",
+        "destination": "readonly-review/historical-e64/py_test_assembly_candidate_impact.unittest.log",
+        "bytes": 2598,
+        "sha256": "e18726868549eaed85ee9f03298647387e9fc934fd6a851497727b9daae5e332"
+      }
+    ]
+  },
+  "input_metadata_identity": {
+    "bytes": 6717,
+    "sha256": "421353c3583ea4147373221502b28d15915fb375ce8d829dd0d035c66409f499"
+  },
+  "stages": [
+    {
+      "id": "before",
+      "source_sha": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "-u",
+          "tests/run_all.py",
+          "--build",
+          "--only",
+          "py:test_assembly_candidate_impact"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T15:42:04.166813+00:00",
+        "started_ns": 1792338124166827851,
+        "timeout_seconds": 1500.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 0,
+        "launch_error": null,
+        "pid": 209210,
+        "ended_utc": "2026-10-18T15:42:34.039831+00:00",
+        "ended_ns": 1792338154039868860,
+        "seconds": 29.873039218000486,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1579219,
+            "bytes": 6814,
+            "mtime_ns": 1792338154022759631,
+            "ctime_ns": 1792338154022759631,
+            "sha256": "c1275cab00ef461c1498161e40bd55fc50d04c5790f159c012cb18da230f7421",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1579220,
+            "bytes": 0,
+            "mtime_ns": 1792338124166153398,
+            "ctime_ns": 1792338124166153398,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": true,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [
+        {
+          "suite": "py:test_assembly_candidate_impact",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_assembly_candidate_impact.log"
+        },
+        {
+          "suite": "py:test_assembly_candidate_impact",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_assembly_candidate_impact.unittest.log"
+        },
+        {
+          "suite": "py:test_assembly_candidate_impact",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_assembly_candidate_impact.json"
+        }
+      ],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "methods_run": 4,
+          "passed_methods": 4,
+          "failed_methods": 0,
+          "unittest_failure_records": 0,
+          "unittest_error_records": 0,
+          "skipped_methods": 0,
+          "method_bodies_executed": 4,
+          "unittest_seconds": 3.593,
+          "suite_json_seconds": 3.7,
+          "outer_seconds": 29.873039218000486,
+          "returncode": 0,
+          "valid_expected_failure": false,
+          "infrastructure_error_observed": false,
+          "functional_not_performance": true,
+          "meaning": "上游產品已修後的原測試綠；不是本題修前紅"
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "before/command.process.json",
+          "bytes": 1106,
+          "sha256": "b807dba9316f30bf4843e7da666e0dd22867a3de34250a1e1442f16f4b9b134c"
+        },
+        {
+          "relative_path": "before/command.stdout",
+          "bytes": 6814,
+          "sha256": "c1275cab00ef461c1498161e40bd55fc50d04c5790f159c012cb18da230f7421"
+        },
+        {
+          "relative_path": "before/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "before/receipt.json",
+          "bytes": 14447,
+          "sha256": "b53afad96fe6f3596999e3ac66da67a40c0dec2494b086db5956bc5658be0c71"
+        },
+        {
+          "relative_path": "before/before.binaries.json",
+          "bytes": 3731,
+          "sha256": "d05b14ec091df5615fd2aeb3b3c5bb4f6857238f0818e2a812d2cfb93e2aa172"
+        },
+        {
+          "relative_path": "before/after.binaries.json",
+          "bytes": 3651,
+          "sha256": "94235c1507c879ddee66ef420ed2ba4b29569d60aa6cefa273de0a03680f5f52"
+        },
+        {
+          "relative_path": "before/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "before/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "before/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "before/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "before/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "before/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "before/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "239cfa2e5e5e4d9f66311ec5cd04707a6c23d881a043cc55fe81f5299acd692e"
+        },
+        {
+          "relative_path": "before/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+        },
+        {
+          "relative_path": "before/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "before/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+        },
+        {
+          "relative_path": "before/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+        },
+        {
+          "relative_path": "before/suite-logs.manifest.json",
+          "bytes": 2664,
+          "sha256": "314550d012a02432d5694b6968475b1c97e91936b187c1eda27f1182519c6829"
+        },
+        {
+          "relative_path": "before/suite-logs/py_test_assembly_candidate_impact.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "before/suite-logs/py_test_assembly_candidate_impact.unittest.log",
+          "bytes": 102,
+          "sha256": "d5bcb7d95f9fe86b85be95a7480b24daa0108aa40910ed5e7f165c7cff39676c"
+        },
+        {
+          "relative_path": "before/suite-logs/py_test_assembly_candidate_impact.json",
+          "bytes": 356,
+          "sha256": "44bf948a20fda5a60cfe1fe9caa8d0eafb457f1e6d34da13d122602d24f2f178"
+        }
+      ]
+    },
+    {
+      "id": "after",
+      "source_sha": "97bc7c0cf612b7bbbb4362e27441579a97aa3a00",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "-u",
+          "tests/run_all.py",
+          "--build",
+          "--only",
+          "py:test_assembly_candidate_impact"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T15:43:39.718051+00:00",
+        "started_ns": 1792338219718063054,
+        "timeout_seconds": 1500.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 0,
+        "launch_error": null,
+        "pid": 209735,
+        "ended_utc": "2026-10-18T15:43:44.372635+00:00",
+        "ended_ns": 1792338224372656507,
+        "seconds": 4.654592034003144,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1579254,
+            "bytes": 6689,
+            "mtime_ns": 1792338224339558964,
+            "ctime_ns": 1792338224339558964,
+            "sha256": "4243b73847a5d90990cb1e54ea0e6f094c173cd39074b5402047f1495cf9c092",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1579255,
+            "bytes": 0,
+            "mtime_ns": 1792338219717544097,
+            "ctime_ns": 1792338219717544097,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": true,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [
+        {
+          "suite": "py:test_assembly_candidate_impact",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_assembly_candidate_impact.log"
+        },
+        {
+          "suite": "py:test_assembly_candidate_impact",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_assembly_candidate_impact.unittest.log"
+        },
+        {
+          "suite": "py:test_assembly_candidate_impact",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_assembly_candidate_impact.json"
+        }
+      ],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "methods_run": 4,
+          "passed_methods": 4,
+          "failed_methods": 0,
+          "unittest_failure_records": 0,
+          "unittest_error_records": 0,
+          "skipped_methods": 0,
+          "method_bodies_executed": 4,
+          "unittest_seconds": 3.987,
+          "suite_json_seconds": 4.11,
+          "outer_seconds": 4.654592034003144,
+          "returncode": 0,
+          "valid_expected_failure": false,
+          "infrastructure_error_observed": false,
+          "functional_not_performance": true,
+          "meaning": "只強化測試後四方法完整通過"
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "after/command.process.json",
+          "bytes": 1105,
+          "sha256": "3b884b499e7ed0c91e64edcb2dd28555875d3a815d0e80cd17f52b0e3dc86e74"
+        },
+        {
+          "relative_path": "after/command.stdout",
+          "bytes": 6689,
+          "sha256": "4243b73847a5d90990cb1e54ea0e6f094c173cd39074b5402047f1495cf9c092"
+        },
+        {
+          "relative_path": "after/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "after/receipt.json",
+          "bytes": 14443,
+          "sha256": "ee179ec3167541a8b1cb9b4be7afe68c499dadfbee736c810cd512723637a5a2"
+        },
+        {
+          "relative_path": "after/before.binaries.json",
+          "bytes": 3654,
+          "sha256": "c7323b3838db8e35561808c55e963bf0747e892d5df1f7c71169ab5485c6a20c"
+        },
+        {
+          "relative_path": "after/after.binaries.json",
+          "bytes": 3651,
+          "sha256": "3929b74905a13015c6a050d892fc20aa0e947e425c39d0737498fbfeea99e2e6"
+        },
+        {
+          "relative_path": "after/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "after/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "after/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "after/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "after/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "after/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "after/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "239cfa2e5e5e4d9f66311ec5cd04707a6c23d881a043cc55fe81f5299acd692e"
+        },
+        {
+          "relative_path": "after/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+        },
+        {
+          "relative_path": "after/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "after/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "239cfa2e5e5e4d9f66311ec5cd04707a6c23d881a043cc55fe81f5299acd692e"
+        },
+        {
+          "relative_path": "after/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+        },
+        {
+          "relative_path": "after/suite-logs.manifest.json",
+          "bytes": 2664,
+          "sha256": "6ffd632f501080bfef1498811c46a6bced8cc42ff1126540901ebedc3f6c0e15"
+        },
+        {
+          "relative_path": "after/suite-logs/py_test_assembly_candidate_impact.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "after/suite-logs/py_test_assembly_candidate_impact.unittest.log",
+          "bytes": 102,
+          "sha256": "9851a8b145ad7a3c549c19022a81014e433060be16535e98c89d2f9b245dfde6"
+        },
+        {
+          "relative_path": "after/suite-logs/py_test_assembly_candidate_impact.json",
+          "bytes": 357,
+          "sha256": "ca24f007dcdebc59a904d06628054eef6d3bcac093780f692e8947c54133b5e9"
+        }
+      ]
+    },
+    {
+      "id": "withdrawn",
+      "source_sha": "6360f8e5f0b81bd99e3b149281219b4a7aba58b4",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "-u",
+          "tests/run_all.py",
+          "--build",
+          "--only",
+          "py:test_assembly_candidate_impact"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T15:44:49.983838+00:00",
+        "started_ns": 1792338289983854319,
+        "timeout_seconds": 1500.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 1,
+        "launch_error": null,
+        "pid": 210106,
+        "ended_utc": "2026-10-18T15:45:22.667126+00:00",
+        "ended_ns": 1792338322667148417,
+        "seconds": 32.68329301999984,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1579292,
+            "bytes": 8098,
+            "mtime_ns": 1792338322619101625,
+            "ctime_ns": 1792338322619101625,
+            "sha256": "2d6321cc17c0be6b2ea00547b7ee357fb113dce0ff48f82fa3e199050e2298d3",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1579293,
+            "bytes": 0,
+            "mtime_ns": 1792338289982993673,
+            "ctime_ns": 1792338289982993673,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": true,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [
+        {
+          "suite": "py:test_assembly_candidate_impact",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_assembly_candidate_impact.log"
+        },
+        {
+          "suite": "py:test_assembly_candidate_impact",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_assembly_candidate_impact.unittest.log"
+        },
+        {
+          "suite": "py:test_assembly_candidate_impact",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_assembly_candidate_impact.json"
+        }
+      ],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "methods_run": 4,
+          "passed_methods": 0,
+          "failed_methods": 4,
+          "unittest_failure_records": 4,
+          "unittest_error_records": 0,
+          "skipped_methods": 0,
+          "method_bodies_executed": 0,
+          "unittest_seconds": 3.234,
+          "suite_json_seconds": 3.35,
+          "outer_seconds": 32.68329301999984,
+          "returncode": 1,
+          "valid_expected_failure": true,
+          "infrastructure_error_observed": false,
+          "functional_not_performance": true,
+          "meaning": "只撤上游七行，四TestCase在各自setUp近因assertFAIL，方法body未執行"
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "withdrawn/command.process.json",
+          "bytes": 1105,
+          "sha256": "6dd8574413a8173b148e84235ed08ddd3c0d59dd5915ab0747fcec5aab8f6751"
+        },
+        {
+          "relative_path": "withdrawn/command.stdout",
+          "bytes": 8098,
+          "sha256": "2d6321cc17c0be6b2ea00547b7ee357fb113dce0ff48f82fa3e199050e2298d3"
+        },
+        {
+          "relative_path": "withdrawn/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "withdrawn/receipt.json",
+          "bytes": 14457,
+          "sha256": "f6b4751e8ef9c8304db33157f688e2601e95dc82d2a65871b4a52c403892d48f"
+        },
+        {
+          "relative_path": "withdrawn/before.binaries.json",
+          "bytes": 3780,
+          "sha256": "71d779f3efabc50e2d42a62250af6c56a7289ab2dd3ac470fcff638be0c2ee58"
+        },
+        {
+          "relative_path": "withdrawn/after.binaries.json",
+          "bytes": 3685,
+          "sha256": "5ff6782bdbc301a678c82661815dda1e328a67c591ceb3cb1046fa1b0c3225e6"
+        },
+        {
+          "relative_path": "withdrawn/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "withdrawn/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "withdrawn/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "withdrawn/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "withdrawn/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "withdrawn/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "withdrawn/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "a827b6912ee35c2ff6dbcee54254db9f72ba4cc926d447967e1472df94e4ccb6"
+        },
+        {
+          "relative_path": "withdrawn/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+        },
+        {
+          "relative_path": "withdrawn/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "withdrawn/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "239cfa2e5e5e4d9f66311ec5cd04707a6c23d881a043cc55fe81f5299acd692e"
+        },
+        {
+          "relative_path": "withdrawn/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs.manifest.json",
+          "bytes": 2666,
+          "sha256": "9cfce27573b6a61439594b0862ef43e5311e2f7b3c7661afa1d1df9fffaaccab"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs/py_test_assembly_candidate_impact.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs/py_test_assembly_candidate_impact.unittest.log",
+          "bytes": 3873,
+          "sha256": "37122f22ea4f4bcc1cee169c1b178eb66b962743fe85e60f4470e88ddec16890"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs/py_test_assembly_candidate_impact.json",
+          "bytes": 2255,
+          "sha256": "de62e640b7ca939489948005a952a7e4194634fa9b0e656b8555de9877c06420"
+        }
+      ]
+    },
+    {
+      "id": "restored",
+      "source_sha": "97bc7c0cf612b7bbbb4362e27441579a97aa3a00",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "-u",
+          "tests/run_all.py",
+          "--build",
+          "--only",
+          "py:test_assembly_candidate_impact"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T15:45:47.192996+00:00",
+        "started_ns": 1792338347193009562,
+        "timeout_seconds": 1500.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 0,
+        "launch_error": null,
+        "pid": 210470,
+        "ended_utc": "2026-10-18T15:46:19.281655+00:00",
+        "ended_ns": 1792338379281676398,
+        "seconds": 32.08866536400092,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1579328,
+            "bytes": 6829,
+            "mtime_ns": 1792338379244535496,
+            "ctime_ns": 1792338379244535496,
+            "sha256": "6d4b4ee4b197de36a0213c3cd71561e93db2ca0ddc5ca7b055c66ac50cec45e9",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1579329,
+            "bytes": 0,
+            "mtime_ns": 1792338347192476776,
+            "ctime_ns": 1792338347192476776,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": true,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [
+        {
+          "suite": "py:test_assembly_candidate_impact",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_assembly_candidate_impact.log"
+        },
+        {
+          "suite": "py:test_assembly_candidate_impact",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_assembly_candidate_impact.unittest.log"
+        },
+        {
+          "suite": "py:test_assembly_candidate_impact",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_assembly_candidate_impact.json"
+        }
+      ],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "methods_run": 4,
+          "passed_methods": 4,
+          "failed_methods": 0,
+          "unittest_failure_records": 0,
+          "unittest_error_records": 0,
+          "skipped_methods": 0,
+          "method_bodies_executed": 4,
+          "unittest_seconds": 3.607,
+          "suite_json_seconds": 3.72,
+          "outer_seconds": 32.08866536400092,
+          "returncode": 0,
+          "valid_expected_failure": false,
+          "infrastructure_error_observed": false,
+          "functional_not_performance": true,
+          "meaning": "恢復精確97bc測試與上游產品、重建fresh bridge，四方法完整通過"
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "restored/command.process.json",
+          "bytes": 1105,
+          "sha256": "286fd1483ed9bd01c8ab3b0cc2cb7ab9906787f8d5ecad06e7aa53b907077051"
+        },
+        {
+          "relative_path": "restored/command.stdout",
+          "bytes": 6829,
+          "sha256": "6d4b4ee4b197de36a0213c3cd71561e93db2ca0ddc5ca7b055c66ac50cec45e9"
+        },
+        {
+          "relative_path": "restored/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "restored/receipt.json",
+          "bytes": 14452,
+          "sha256": "c743a7b7ff65e1632d90f15a23d5a0a6959628dd5039ccf549b277813da2997b"
+        },
+        {
+          "relative_path": "restored/before.binaries.json",
+          "bytes": 3746,
+          "sha256": "9fd2b5c8a2ffddfbc12e553078423295480fc7cc7af257b793be5b2ba75769ed"
+        },
+        {
+          "relative_path": "restored/after.binaries.json",
+          "bytes": 3651,
+          "sha256": "8fa3ae03ef74f712eda554c0d1e6f0729a8e5ac049843d1c542e8a7dbc25bc43"
+        },
+        {
+          "relative_path": "restored/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "restored/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "restored/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "restored/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "restored/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "restored/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "restored/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "ff69ae82f96b480bf96d3d0affb9861e6ced1550bc6b49f6cbe1c05555fad812"
+        },
+        {
+          "relative_path": "restored/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+        },
+        {
+          "relative_path": "restored/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "restored/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "a827b6912ee35c2ff6dbcee54254db9f72ba4cc926d447967e1472df94e4ccb6"
+        },
+        {
+          "relative_path": "restored/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+        },
+        {
+          "relative_path": "restored/suite-logs.manifest.json",
+          "bytes": 2666,
+          "sha256": "87f88810a13cffae615d51e1bbf8e24b7fd36ab403aa7b721ee36be494f73434"
+        },
+        {
+          "relative_path": "restored/suite-logs/py_test_assembly_candidate_impact.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "restored/suite-logs/py_test_assembly_candidate_impact.unittest.log",
+          "bytes": 102,
+          "sha256": "2bae3b6533c0f13c544823dc1e890e55f503bed60cd825e9ad0f158ae185103c"
+        },
+        {
+          "relative_path": "restored/suite-logs/py_test_assembly_candidate_impact.json",
+          "bytes": 357,
+          "sha256": "1d1a2651229693ea03ef6605f6013a7a99b085a2c09604e5615bda610b044343"
+        }
+      ]
+    }
+  ],
+  "automatic_test_verdict": null,
+  "limitations": [
+    "不解析 assertion、測試數或 pass/kill；claim 需人工核對原 log",
+    "source_stable 等欄位是原 receipt 觀測，不是工具自行重驗來源",
+    "未複製大型 source.json／recorder.py，僅轉錄原 receipt 身份",
+    "suite copied=false 或 run_all_logs_complete=false 原樣保留，不能當完整執行"
+  ]
+}

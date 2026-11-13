@@ -727,7 +727,7 @@ class WslBaseAdapterTests(unittest.TestCase):
         from modeling.base import load_base, startup_base_transport
         snapshot = {"ok": True, "schema": "geometry-base-snapshot/1", "base_scene": "", "specs": [], "placements": [], "solids": [], "unplaced_timbers": [], "dependencies": []}
         result = mock.Mock(returncode=0, stdout=json.dumps(snapshot).encode())
-        with mock.patch("modeling.base.sys.platform", "win32"), mock.patch.dict("os.environ", {"GEOMETRY_MODEL_UPDATE_BRIDGE": "native update bridge.exe"}, clear=True), mock.patch("modeling.base._build_adapter", return_value="compiled native adapter.exe") as build, mock.patch("modeling.base.subprocess.run", return_value=result) as run:
+        with mock.patch("modeling.base.sys.platform", "win32"), mock.patch.dict("os.environ", {"GEOMETRY_MODEL_UPDATE_BRIDGE": "native update bridge.exe"}, clear=True), mock.patch("modeling.base._build_adapter", return_value="compiled native adapter.exe") as build, mock.patch("modeling.base.subprocess.run", return_value=result) as run, mock.patch("geometry_app.source_closure.binary_identity", return_value=("transport-fixture",)):
             self.assertEqual(startup_base_transport(), "native")
             self.assertEqual(load_base(""), snapshot)
         build.assert_called_once_with()
@@ -757,7 +757,7 @@ class WslBaseAdapterTests(unittest.TestCase):
         from modeling.base import load_base
         snapshot = {"ok": True, "schema": "geometry-base-snapshot/1", "base_scene": "", "specs": [], "placements": [], "solids": [], "unplaced_timbers": [], "dependencies": []}
         result = mock.Mock(returncode=0, stdout=json.dumps(snapshot).encode())
-        with mock.patch("modeling.base.sys.platform", "win32"), mock.patch.dict("os.environ", {"GEOMETRY_MODEL_BASE_WSL_DISTRO": "Ubuntu-24.04"}), mock.patch("modeling.base.subprocess.run", return_value=result) as run:
+        with mock.patch("modeling.base.sys.platform", "win32"), mock.patch.dict("os.environ", {"GEOMETRY_MODEL_BASE_WSL_DISTRO": "Ubuntu-24.04"}), mock.patch("modeling.base.subprocess.run", return_value=result) as run, mock.patch("geometry_app.source_closure.binary_identity", return_value=("transport-fixture",)):
             self.assertEqual(load_base("", executable="native adapter.exe"), snapshot)
         run.assert_called_once()
         self.assertEqual(run.call_args.args[0][0], "native adapter.exe")
@@ -767,7 +767,7 @@ class WslBaseAdapterTests(unittest.TestCase):
         snapshot = {"ok": True, "schema": "geometry-base-snapshot/1", "base_scene": "", "specs": [], "placements": [], "solids": [], "unplaced_timbers": [], "dependencies": []}
         converted = mock.Mock(returncode=0, stdout=b"/mnt/c/temp/input.scene\n")
         result = mock.Mock(returncode=0, stdout=json.dumps(snapshot).encode())
-        with mock.patch("modeling.base.sys.platform", "win32"), mock.patch.dict("os.environ", {"GEOMETRY_MODEL_BASE": "/opt/geometry/model-base", "GEOMETRY_MODEL_BASE_WSL_DISTRO": "Ubuntu-24.04"}), mock.patch("modeling.base.subprocess.run", side_effect=[converted, result]) as run:
+        with mock.patch("modeling.base.sys.platform", "win32"), mock.patch.dict("os.environ", {"GEOMETRY_MODEL_BASE": "/opt/geometry/model-base", "GEOMETRY_MODEL_BASE_WSL_DISTRO": "Ubuntu-24.04"}), mock.patch("modeling.base.subprocess.run", side_effect=[converted, result]) as run, mock.patch("geometry_app.source_closure.binary_identity", return_value=("transport-fixture",)):
             self.assertEqual(load_base(""), snapshot)
         self.assertEqual(run.call_count, 2)
         self.assertEqual(run.call_args.args[0][-2:], ["/opt/geometry/model-base", "/mnt/c/temp/input.scene"])

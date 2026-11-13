@@ -1,0 +1,32 @@
+from pathlib import Path
+import hashlib,json
+B=Path('/workspace/geo348-F0f695866-formal');L=Path('/workspace/geo348-F0f695866-formal-launch');O=Path('/workspace/archive-package-peer-specials-20261024/geo348-F0f');S='0f695866c0ba12d2c70dfd7d40628d0fda0f905f'
+def j(p):return json.loads(p.read_bytes())
+def sha(b):return hashlib.sha256(b).hexdigest()
+checks=[]
+def ck(v,l):checks.append({'check':l,'passed':bool(v)})
+r=j(B/'RESULT.json');outer=j(L/'receipt.json');ck(r['source_sha']==outer['source']==S,'source original F0f');ck(r['exit_code']==outer['launcher_exit']==outer['primary_returncode']==outer['reaper_process_exit']==1,'all true original exits1');ck(outer['metadata_problems']==[] and outer['reaper_complete_events']==1,'true outer complete');ck(r['accepted']is False and r['source_clean_after']is True and r['errors']==[],'honest failed verdict with restoration');ck(len(r['phases'])==11,'all11 original phases')
+rawcount=0
+for root in [B,L]:
+ for p in sorted(root.glob('subcommands/*/result.json')):
+  x=j(p);rawcount+=1
+  for n in ['stdout','stderr']:
+   b=(p.parent/(n+'.bin')).read_bytes();ck(len(b)==x[n+'_bytes'] and sha(b)==x[n+'_sha256'],'c387 '+str(p.parent)+' '+n)
+  ck(type(x['actual_process_returncode'])is int and not x['timeout_expired'],'c387 actual terminal '+str(p.parent))
+phase=[];timeouts=[];observed_commands=0
+for n,p in enumerate(r['phases']):
+ d=B/p['label'];m=j(d/'manifest.json');e=j(d/'observed/ORIGINAL_ENTRY.json');ob=j(d/'observed/OBSERVATION.json');c=j(Path(p['command_directory'])/'result.json');ck(p['state']=='COMPLETED' and p['actual_exit']==c['actual_process_returncode']==e['original_exit'],'phase actual exit '+p['label']);ck(p['actual_exit']==(0 if n==0 else 1),'original red pattern '+p['label']);ck(e['source_sha']==ob['source_sha']==m['source_sha']==S and e['source_variant']==m['source_variant']==p['variant'],'phase source '+p['label']);ck(e['original_completed']is True and e['observer_complete']is True and ob['observer_complete']is True and p['observation_complete']is True,'dual observation '+p['label']);ck(e['source_files_before']==e['source_files_after']==m['files'],'exact phase source manifest '+p['label']);ck(p['source_exact_after']is True,'phase source restored/exact '+p['label']);ck(ob['incomplete_sessions']==[] and ob['observation_errors']==[],'no observation errors '+p['label'])
+ rows=list((d/'observed').glob('command-*/receipt.json'));ck(len(rows)==ob['commands'],'observed count '+p['label'])
+ for f in rows:
+  q=j(f);observed_commands+=1
+  for name in ['stdout','stderr']:
+   v=q[name]
+   if v.get('captured'):
+    b=(f.parent/(name+'.bin')).read_bytes();ck(len(b)==v['bytes'] and sha(b)==v['sha256'],'observed stream '+str(f.parent)+' '+name)
+  if q['exception'] is not None and 'TimeoutExpired' in str(q['exception']):
+   timeouts.append({'phase':p['label'],'path':str(f),'returncode':q['returncode'],'exception':q['exception'],'kwargs':q['kwargs']});ck(q['returncode']is None and q['completed_process_returned']is False and q['kwargs']['timeout']==600,'genuine600 timeout no invented OS exit')
+ phase.append({k:p[k]for k in ['label','variant','actual_exit','passed','observation_complete']})
+w=r['phases'][0]['runner'];h=r['phases'][1]['runner'];ck(w['total']==w['run']==w['passed']==7 and w['failed']==w['skipped']==0,'W7 7pass0skip');ck(h['total']==h['run']==7 and h['passed']==2 and h['failed']==5 and h['skipped']==0,'H7 2pass5red0skip');fail=h['failures'];ck(sum(x['kind']=='failure' and '角材的數量超過上限' in x['message'] and '欄位數不對' in x['message']for x in fail)==3,'three exact dispatcher/capacity assertion reds');ck(sum(x['kind']=='error' and 'TimeoutExpired' in x['message'] and '600 seconds' in x['message']for x in fail)==2 and len(timeouts)==2,'two real placed512600 timeout reds')
+for name in ['count','population','unplaced_replay']:
+ a=[p for p in r['phases']if p['label'].startswith(name+'-')];ck(len(a)==3 and [x['actual_exit']for x in a]==[1,1,1] and not all(x['passed']for x in a),'not valid passing helper triple '+name)
+report={'scope':'Independent existing F0f terminal/raw verdict audit; no original command rerun','source_sha':S,'passed':sum(x['passed']for x in checks),'failed':sum(not x['passed']for x in checks),'exit':0 if all(x['passed']for x in checks)else1,'c387_commands':rawcount,'observed_commands':observed_commands,'phases':phase,'timeouts':timeouts,'checks':checks,'limits':['W7 green only; H7 and all three helper triples remain failed at F0f.','TimeoutExpired has no CompletedProcess or OS exit; no compiler/crash event is called a semantic kill.','Old actual scene supplement was captured while H7 was active, not before send; missing older per-helper fixtures are not reconstructed.','Initial exploratory schema read treated OBSERVATION.commands integer as a list and raised TypeError; only the reviewer query was corrected; original receipt untouched.']};(O/'TERMINAL_REVIEW.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({k:report[k]for k in ['passed','failed','exit','c387_commands','observed_commands']}));print(sha((O/'TERMINAL_REVIEW.json').read_bytes()));raise SystemExit(report['exit'])

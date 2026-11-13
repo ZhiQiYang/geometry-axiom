@@ -1,0 +1,260 @@
+{
+  "base_sha": "82e0db0bc9690daf186dc3e1dd21e3f31b6e5ea3",
+  "candidate_files": {
+    "geometry-templates/woodworking/native/contact_world.c": "b9d8fa9e4dba732b1f7173aa0f39019295120b89ea4c25ef8975bd5acd9c4152",
+    "tests/geo261_contact_sources_harness.c": "4786e00f4ef4ab2a5a64015f72227fe3e23c9945b283a43ff5e08213d59f78c9",
+    "tests/test_geo261_contact_sources.py": "30d42846f1d6e7d13e015fd3cd26a7bc1a59b5a24d93df3ec2910d243e60ec75"
+  },
+  "steps": [
+    {
+      "command": [
+        "git",
+        "-c",
+        "safe.directory=*",
+        "-C",
+        "/mnt/d/geometry-axiom",
+        "archive",
+        "82e0db0bc9690daf186dc3e1dd21e3f31b6e5ea3",
+        "tests"
+      ],
+      "exit": 0,
+      "seconds": 36.834450344000004,
+      "log": "archive-tests"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_geo261_contact_sources"
+      ],
+      "exit": 0,
+      "seconds": 31.366624278000018,
+      "log": "contact-tests"
+    },
+    {
+      "command": [
+        "gcc",
+        "-std=c11",
+        "-O2",
+        "geometry-web/web_bridge.c",
+        "-o",
+        "bridge",
+        "-lm"
+      ],
+      "exit": 0,
+      "seconds": 32.445107123000014,
+      "log": "build-new"
+    },
+    {
+      "command": [
+        "python3",
+        "/mnt/d/geometry-axiom-work/drafts/issue300/bench/gen_scene.py",
+        "16",
+        "--family",
+        "single"
+      ],
+      "exit": 0,
+      "seconds": 0.18661693000001378,
+      "log": "generate-16"
+    },
+    {
+      "command": [
+        "/var/tmp/codex-geo261-p189-82e0db0b/fix/bridge"
+      ],
+      "exit": 0,
+      "seconds": 0.3593239520000111,
+      "log": "dump-16-old"
+    },
+    {
+      "command": [
+        "/var/tmp/codex-contact-order-82e0db0b-r2/new/bridge"
+      ],
+      "exit": 0,
+      "seconds": 0.33902321599998686,
+      "log": "dump-16-new"
+    },
+    {
+      "command": [
+        "python3",
+        "/mnt/d/geometry-axiom-work/drafts/issue300/bench/gen_scene.py",
+        "32",
+        "--family",
+        "single"
+      ],
+      "exit": 0,
+      "seconds": 0.162609840000016,
+      "log": "generate-32"
+    },
+    {
+      "command": [
+        "/var/tmp/codex-geo261-p189-82e0db0b/fix/bridge"
+      ],
+      "exit": 0,
+      "seconds": 0.8058264279999889,
+      "log": "dump-32-old"
+    },
+    {
+      "command": [
+        "/var/tmp/codex-contact-order-82e0db0b-r2/new/bridge"
+      ],
+      "exit": 0,
+      "seconds": 0.7671913549999658,
+      "log": "dump-32-new"
+    },
+    {
+      "command": [
+        "python3",
+        "/mnt/d/geometry-axiom-work/drafts/issue300/bench/gen_scene.py",
+        "48",
+        "--family",
+        "single"
+      ],
+      "exit": 0,
+      "seconds": 0.22496107699998902,
+      "log": "generate-48"
+    },
+    {
+      "command": [
+        "/var/tmp/codex-geo261-p189-82e0db0b/fix/bridge"
+      ],
+      "exit": 0,
+      "seconds": 1.5146767180000325,
+      "log": "dump-48-old"
+    },
+    {
+      "command": [
+        "/var/tmp/codex-contact-order-82e0db0b-r2/new/bridge"
+      ],
+      "exit": 0,
+      "seconds": 1.41597928799996,
+      "log": "dump-48-new"
+    },
+    {
+      "command": [
+        "python3",
+        "/mnt/d/geometry-axiom-work/drafts/issue300/bench/gen_scene.py",
+        "64",
+        "--family",
+        "single"
+      ],
+      "exit": 0,
+      "seconds": 0.15788204200003975,
+      "log": "generate-64"
+    },
+    {
+      "command": [
+        "/var/tmp/codex-geo261-p189-82e0db0b/fix/bridge"
+      ],
+      "exit": 0,
+      "seconds": 2.9479434910000464,
+      "log": "dump-64-old"
+    },
+    {
+      "command": [
+        "/var/tmp/codex-contact-order-82e0db0b-r2/new/bridge"
+      ],
+      "exit": 0,
+      "seconds": 2.6199403869999855,
+      "log": "dump-64-new"
+    },
+    {
+      "command": [
+        "python3",
+        "/mnt/d/geometry-axiom-work/wsl-ci-tools/scale_compare2.py",
+        "/var/tmp/codex-contact-order-82e0db0b-r2",
+        "/mnt/d/geometry-axiom-work/codex-closeout-20261021/order-index-82e0db0b-r2/timing",
+        "main=/var/tmp/codex-geo261-p189-82e0db0b/main",
+        "old=/var/tmp/codex-geo261-p189-82e0db0b/fix",
+        "new=/var/tmp/codex-contact-order-82e0db0b-r2/new",
+        "--ns",
+        "16,32,48,64",
+        "--reps",
+        "5",
+        "--gen",
+        "/mnt/d/geometry-axiom-work/drafts/issue300/bench/gen_scene.py"
+      ],
+      "exit": 0,
+      "seconds": 72.52193575199999,
+      "log": "timing"
+    }
+  ],
+  "method": "N16/32/48/64；5輪；main/old/new 與反序交錯；全數保留，不據診斷取代最終原P189",
+  "baseline_binaries_sha256": {
+    "main": "7b438fde8bc18eb6362b0d67e27ff9410edb99fc74117d53686f5198fdcfc5ea",
+    "fix": "0432a213e75a62d88788e509915cdf8d064242c14ce0577134aff10ae42e481e"
+  },
+  "candidate_binary_sha256": "37668de2b0f57c9d34dc259b69324ac3aa3e3574851d0b2d8564a67c6b2a2ffb",
+  "dump_equivalence": [
+    {
+      "n": 16,
+      "scene_sha256": "7aa685aaec7842852b7ca6ef31d1d145e34c67c1ca863833cc012fc062681298",
+      "stdout_sha256": "9700c998cffafad61604347e45d54e7fcc81e026e60a43a84cb799652ecdd41e",
+      "identical": true
+    },
+    {
+      "n": 32,
+      "scene_sha256": "f452bcda419f519d84071932de776694a1d7a967077a2662f16186d8cb6827b1",
+      "stdout_sha256": "fa8c6cd72bdeb4b8e86d3f035a860653035764e21681ba9b6834a5b5b5e9f761",
+      "identical": true
+    },
+    {
+      "n": 48,
+      "scene_sha256": "3e3de79e0c1efdcbf05f620f0afab148adfd87716262fbf6ea3217acd9a655ce",
+      "stdout_sha256": "8b7a82faedf42c28d0b025e7fdfa12dde126086cb9304b7f6ac45b0a6d40563b",
+      "identical": true
+    },
+    {
+      "n": 64,
+      "scene_sha256": "ae61c7eb565efc3997402b124592c1201d9e3c6027f4945a735387ef4327416d",
+      "stdout_sha256": "999065d3fc69913fbc292ddaa6d90439678d303cb2c8e73d36d0d8de014ba2e5",
+      "identical": true
+    }
+  ],
+  "ratios": [
+    {
+      "n": 16,
+      "medians": {
+        "main": 0.3829,
+        "old": 0.3421,
+        "new": 0.3395
+      },
+      "new_main": 0.8866544789762341,
+      "new_old": 0.9923998830751243
+    },
+    {
+      "n": 32,
+      "medians": {
+        "main": 0.6282,
+        "old": 0.7165,
+        "new": 0.6802
+      },
+      "new_main": 1.0827761859280485,
+      "new_old": 0.9493370551290998
+    },
+    {
+      "n": 48,
+      "medians": {
+        "main": 0.9747,
+        "old": 1.5408,
+        "new": 1.4192
+      },
+      "new_main": 1.4560377552067303,
+      "new_old": 0.9210799584631361
+    },
+    {
+      "n": 64,
+      "medians": {
+        "main": 1.4935,
+        "old": 3.1348,
+        "new": 2.6261
+      },
+      "new_main": 1.7583528624037497,
+      "new_old": 0.8377248947301265
+    }
+  ],
+  "seconds": 232.47910952568054,
+  "completed": true
+}

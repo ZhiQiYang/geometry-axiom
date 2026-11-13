@@ -1,0 +1,92 @@
+"""由 round21/run9.py 產生 round22/run10.py:第 21 輪的 122 處原樣保留(字串因程式改動而變的,在這裡逐一改寫並註明),
+加上第 22 輪(#318、#319、#251 審查 3d858c3 阻擋 1、2)的新突變。
+另加 --dry:只檢查每一處 (old, new) 在受測檔案裡恰好出現一次,不跑 selftest。"""
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+src = (HERE.parent / "round21" / "run9.py").read_text(encoding="utf-8")
+NL = "\n"
+
+
+def sub(old, new):
+    global src
+    assert src.count(old) == 1, (src.count(old), old[:90])
+    src = src.replace(old, new)
+
+
+# ---- 第 21 輪字串改寫:_p182_rebuild 的回傳改成連同核心限制碼一起比對(行為的其他部分不變)
+sub('''MUTS["T15_rebuild_conflicts_only"] = ('    return (not r["conflicts"] and not f), sorted', '    return (not r["conflicts"]), sorted')''',
+    '''MUTS["T15_rebuild_conflicts_only"] = ('    return (not r["conflicts"] and not f) and not cl, sorted', '    return (not r["conflicts"]) and not cl, sorted')''')
+
+NEW = r'''
+# ---- 第 22 輪(#318、#319;草稿 TESTS.md §3 的 F2、F3。F1a–F1d 對的是草稿路線 A 的 boundary_end_conflicts,那個函式已拿掉,改由下面 G 系列取代)
+MUTS["F2a_inside_no_wallline_branch"] = ("        if x not in self.coords[0]:", "        if True:")
+MUTS["F2b_inside_wallline_inverted"] = ("        return iv_find(self.section(1, y), x) is not None", "        return iv_find(self.section(1, y), x) is None")
+MUTS["F3a_c3_left_clipped"] = ("((x0 - 1, y0, x0, y1), lambda s: x_band(qs, s, 1, X), 1),",
+                               "((x0 - 1, y0, x0, y1), lambda s: [(x0, s[1], min(x0 + X, x1), s[3])], 1),")
+MUTS["F3b_c3_right_clipped"] = ("((x1, y0, x1 + 1, y1), lambda s: x_band(qs, s, -1, X), 1),",
+                                "((x1, y0, x1 + 1, y1), lambda s: [(max(x1 - X, x0), s[1], x1, s[3])], 1),")
+MUTS["F3c_c3_both_clipped"] = [MUTS["F3a_c3_left_clipped"], MUTS["F3b_c3_right_clipped"]]
+MUTS["F3d_xband_no_piece_clip"] = ("        ys = iv_intersect(ys, iv_norm([(r_[1], r_[3]) for r_ in qs if r_[0] < xm < r_[2]]))", "        pass")
+MUTS["F3e_xband_no_connect"] = ("        ys = iv_intersect(ys, iv_norm([(r_[1], r_[3]) for r_ in qs if r_[0] < xm < r_[2]]))",
+                                "        ys = iv_norm([(r_[1], r_[3]) for r_ in qs if r_[0] < xm < r_[2]])")
+MUTS["F3f_xband_no_merge"] = ("        if merged and merged[-1][1] == r_[1] and merged[-1][3] == r_[3] and merged[-1][2] == r_[0]:", "        if False:")
+MUTS["F3g_xband_no_cross"] = ("{v for r_ in qs for v in (r_[0], r_[2]) if lo < v < hi}", "set()")
+# #318 缺陷 1 的物理排法(牆線看凹角、柱面料切段後再延伸、柱面一段放不下料)
+MUTS["G1_no_reflex_by_wall_line"] = ('            if "no_reflex_by_wall_line" not in mut:', "            if False:")
+MUTS["G2_reflex_wall_line_wrong_side"] = ("                into = 0.5 if plus else -0.5", "                into = -0.5 if plus else 0.5")
+MUTS["G3_no_col_trim_by_wall"] = ('        return (not s["outer"] and "no_col_trim_by_wall" not in mut', "        return (False")
+MUTS["G4_col_trim_one_side"] = ("                and (sa[0] < ar[0] < sa[1] < ar[1] or ar[0] < sa[0] < ar[1] < sa[1]))",
+                                "                and (sa[0] < ar[0] < sa[1] < ar[1]))")
+MUTS["G6_reflex_wall_line_no_extendable_check"] = ('                    if any(s["outer"] and s["rc_line"] == v and e in s["edge"] and iv_find(', "                    if True or any(s[\"outer\"] and s[\"rc_line\"] == v and e in s[\"edge\"] and iv_find(")
+MUTS["H10_stepped_no_side_check"] = ("                return None  # 跨側那支料的端面停在跨端,端面外是空的", "                pass")
+MUTS["H11_no_ext_end_flag"] = ('    if "no_ext_end_flag" not in mut:', "    if False:")
+MUTS["K1_c5_no_bridged"] = ("        gap = [g_ for g_ in gap if not bridged(mk(a, (c, c + 1), g_), T, minp, b)]", "        pass")
+MUTS["G5_no_face_part_conflict"] = ('    if "no_face_part_conflict" not in mut:', "    if False:")
+# 阻擋 1:核心限制與物理衝突分開
+MUTS["H1_no_stepped_end"] = ('            far = edge if not miss else None if "no_stepped_end" in mut else stepped_end(miss, edge, want, (timbers[tid], timbers[uid]))',
+                             "            far = edge if not miss else None")
+MUTS["H2_core_main_ext_undeclared"] = ('                    core_limits.append(dict(code="CORE_LIMIT_MAIN_ON_EXTENSION"',
+                                       '                    (lambda *a_: None)(dict(code="CORE_LIMIT_MAIN_ON_EXTENSION"')
+MUTS["H3_verdict_no_core_match"] = ('    probs = [f for f in fails if f["check"] not in CORE_CHECKS] + core_limit_problems(res, fails)',
+                                    '    probs = [f for f in fails if f["check"] not in CORE_CHECKS]')
+MUTS["H4_core_match_no_undeclared"] = ("           for f in core if (f.get(\"id\"), f.get(\"end\")) not in decl]",
+                                       "           for f in core if False]")
+MUTS["H5_core_match_no_unconfirmed"] = ("            for c in res.get(\"core_limits\", []) if (c[\"id\"], c[\"end\"]) not in hit]",
+                                        "            for c in res.get(\"core_limits\", []) if False]")
+MUTS["H6_verdict_core_as_buildable"] = ('    return ("core_limited" if res.get("core_limits") else "buildable"), []', '    return "buildable", []')
+MUTS["H7_trace_no_core_codes"] = ('                codes_ = sorted(set(codes_) | {c_["code"] for c_ in r_["core_limits"]})  # trace 的〈衝突碼〉連同核心限制碼一起寫',
+                                  "                pass")
+MUTS["H8_rebuild_no_core_codes"] = ('    cl = {c["code"] for c in r["core_limits"]}', "    cl = set()")
+MUTS["H9_core_limit_back_to_conflict"] = ('                    core_limits.append(dict(code="CORE_LIMIT_BOUNDARY_END_FREE"', '                    conflicts.append(dict(code="CORE_LIMIT_BOUNDARY_END_FREE"')
+# 阻擋 2:一部分是 RC 的跨(窄條不報 SPAN_PARTLY_RC)
+# ---- 第 22 輪字串改寫(P-182 候選的〈只有核心限制〉退路改動了這三處的寫法;突變的意思不變)
+MUTS["T12_check_chosen_not_rebuilt"] = ("        elif chosen is not None and not core_only and d_ == dc and not ok_r:", "        elif False:")
+MUTS["T13_check_none_not_full"] = ('沒報 P182_NO_FEASIBLE_CANDIDATE"]))' + NL + "        preferred = list(cset)",
+                                   '沒報 P182_NO_FEASIBLE_CANDIDATE"]))' + NL + "        preferred = [d_ for d_ in cset if d_ > dc]")
+MUTS["T15_rebuild_conflicts_only"] = ('    ok = (not r["conflicts"] and not f) and not cl', '    ok = (not r["conflicts"]) and not cl')
+MUTS["H12_p182_no_core_fallback"] = ('            if chosen is None and "p182_no_core_fallback" not in mut:', "            if False:")
+MUTS["T22_check_no_core_only_branch"] = ('    core_only = chosen is not None and chosen in ents and not ents[chosen]["ok"]', "    core_only = False")
+MUTS["T23_check_no_core_phys_skip"] = ("        elif (chosen is None or core_only) and phys_r and (chosen is None or d_ > dc):", "        elif False:")
+MUTS["T24_check_no_phys_mismatch"] = ('        if bool(claim.get("phys")) != phys_r:', "        if False:")
+MUTS["T25_check_core_chosen_not_phys"] = ("        elif core_only and d_ == dc and not phys_r:", "        elif False:")
+MUTS["T26_rebuild_phys_never"] = ("    return ok, sorted({c[\"code\"] for c in r[\"conflicts\"]} | cl), sorted({x[\"check\"] for x in f}), not ok and candidate_phys_ok(r, f)",
+                                  "    return ok, sorted({c[\"code\"] for c in r[\"conflicts\"]} | cl), sorted({x[\"check\"] for x in f}), False")
+MUTS["J1_partly_rc_strict"] = ('                if "span_partly_rc_strict" in mut:  # 突變:回到舊行為,一部分是 RC 的跨一律報衝突', "                if True:")
+MUTS["J2_partly_rc_any_run"] = ("                    if fr is not None and fr[1] - fr[0] >= minp and (tid_, uid_) not in bad_partial:",
+                                "                    if fr is not None and (tid_, uid_) not in bad_partial:")
+# selftest 掃描端:只有核心限制的排法另列一份(sweep_family)
+MUTS["C3_sweep_core_ignored"] = [("selftest.py", '                if v_ == "core_limited":' + NL + '                    cs_ = tuple(sorted({c["code"] for c in r_["core_limits"]}))',
+                                  '                if False:' + NL + '                    cs_ = tuple(sorted({c["code"] for c in r_["core_limits"]}))')]
+MUTS["C4_sweep_inconsistent_ignored"] = [("selftest.py", '                elif v_ != "buildable":' + NL + '                    bad_.append((vroom_["outer"], fo.layout_name(l_), sorted({f["check"] for f in pb_})))',
+                                          '                elif False:' + NL + '                    bad_.append((vroom_["outer"], fo.layout_name(l_), sorted({f["check"] for f in pb_})))')]
+'''
+sub("import subprocess as _sp" + NL, NEW + "import subprocess as _sp" + NL)
+# --dry
+sub("log = open(OUT / f\"source-mutants.{_TAG}.txt\", \"w\", encoding=\"utf-8\", newline=\"\\n\")",
+    "DRY = os.environ.get(\"DRY\") == \"1\"" + NL + "log = open(OUT / f\"source-mutants.{_TAG}.txt\", \"w\", encoding=\"utf-8\", newline=\"\\n\")")
+sub("    for f, old, new in trip:" + NL + "        texts[f] = texts[f].replace(old, new)",
+    "    if DRY:" + NL + "        print(f\"== {name}: dry ok\", file=log)" + NL + "        shutil.rmtree(top)" + NL + "        continue" + NL +
+    "    for f, old, new in trip:" + NL + "        texts[f] = texts[f].replace(old, new)")
+(HERE / "run10.py").write_text(src, encoding="utf-8", newline="\n")
+print("run10.py written", src.count("MUTS["), "MUTS[ occurrences")

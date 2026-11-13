@@ -1,0 +1,64 @@
+{
+  "head": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
+  "counts": {
+    "executableFiles": 601,
+    "ownedSources": 333,
+    "exclusions": 268,
+    "edges": 796,
+    "diagnostics": 0,
+    "layers": {
+      "H": 191,
+      "K": 69,
+      "W": 67,
+      "vendor": 6
+    },
+    "languages": {
+      "c": 190,
+      "html": 4,
+      "javascript": 64,
+      "python": 75
+    },
+    "forbiddenIdentifiers": 918,
+    "forbiddenStrings": 55
+  },
+  "inputClosureSha256": "64f6f66b7d80a3a36c6ad4f2e2dc15b6921d209a44f216fb37910474c0df29ad",
+  "rawInputClosureSha256": "93882a2e39d0128b780ee286c3834c86ed3ef3de928600287befb3d26b609d4d",
+  "outputHashes": {
+    "product-architecture.json": {
+      "rawSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
+      "lfSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
+      "bytes": 219913
+    },
+    "product-architecture-scan.json": {
+      "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "bytes": 132208
+    },
+    "product-architecture-receipt.json": {
+      "rawSha256": "61f7bf95555624059690eb50a7f3907a797d406ee1cad71c0e6493d7035ff259",
+      "lfSha256": "61f7bf95555624059690eb50a7f3907a797d406ee1cad71c0e6493d7035ff259",
+      "bytes": 128305
+    },
+    "PRODUCT-ARCHITECTURE.md": {
+      "rawSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba",
+      "lfSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba",
+      "bytes": 29373
+    }
+  },
+  "actualProductTests": {
+    "tests": 18,
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0
+  },
+  "genericTests": {
+    "tests": 205,
+    "passed": 204,
+    "failed": 0,
+    "skipped": 1,
+    "exitCode": 0
+  },
+  "allRawAndLfInputsUnchanged": true,
+  "newDirectory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit\\new"
+}

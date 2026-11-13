@@ -1,0 +1,43 @@
+{
+  "argv": [
+    "env",
+    "GEOMETRY_TEST_BRIDGE=/workspace/geo261-validation-20261018/performance/artifacts-adb-8ab0bdb4/build/main/normal/bridge",
+    "python3",
+    "-B",
+    "tests/test_bridge_integrity.py",
+    "-v"
+  ],
+  "shell": false,
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T14:06:02.512653+00:00",
+  "started_ns": 1792332362512828082,
+  "timeout_seconds": 900.0,
+  "timed_out": false,
+  "interrupted": false,
+  "returncode": 0,
+  "launch_error": null,
+  "pid": 157499,
+  "ended_utc": "2026-10-18T14:06:11.087359+00:00",
+  "ended_ns": 1792332371087385368,
+  "seconds": 8.574550599001668,
+  "streams": {
+    "stdout": {
+      "device": 27,
+      "inode": 1459208,
+      "bytes": 0,
+      "mtime_ns": 1792332362510326415,
+      "ctime_ns": 1792332362510326415,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "stderr": {
+      "device": 27,
+      "inode": 1459209,
+      "bytes": 83994,
+      "mtime_ns": 1792332371017938998,
+      "ctime_ns": 1792332371017938998,
+      "sha256": "4a5f085447df40d8b51e5ba746b10f2bc003db303a0e054e2956cd5c6d0c486e",
+      "exists": true
+    }
+  }
+}

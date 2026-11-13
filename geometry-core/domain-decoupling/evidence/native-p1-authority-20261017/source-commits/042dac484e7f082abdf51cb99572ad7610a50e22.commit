@@ -1,0 +1,8 @@
+tree 457b88398397f390d653ee2f367ff4dc9d5226e0
+parent 808b8e69b7758ba8acbc2a7a29180d5fc6f5b926
+author Yang <b10102230@gmail.com> 1792168714 +0800
+committer Yang <b10102230@gmail.com> 1792168714 +0800
+
+test(geo261): isolate nullable-slot rebuild control
+
+Keep admission of the incomplete binding intact, then remove the null short circuit only during resolve. The exact incomplete-binding-remains-legal assertion remains required; the previous control failed at fixture setup. Test counts unchanged: assembly sources stays 8 methods. Native rerun pending.

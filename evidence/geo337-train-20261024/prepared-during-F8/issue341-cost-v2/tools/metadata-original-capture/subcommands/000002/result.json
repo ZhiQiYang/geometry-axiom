@@ -1,0 +1,42 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/tmp/geo341-cost-preparation-20261025/test_metadata_guards.py",
+    "--withdraw-source-guard"
+  ],
+  "cwd": "/tmp/geo341-cost-preparation-20261025",
+  "acceptance_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "source_variant": "pure metadata guard self-proof; no C/performance/product execution",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": null,
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONOPTIMIZE": null,
+    "TMPDIR": null,
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "C_INCLUDE_PATH": null,
+    "CPATH": null,
+    "LIBRARY_PATH": null,
+    "LD_LIBRARY_PATH": null,
+    "GCC_EXEC_PREFIX": null,
+    "COMPILER_PATH": null
+  },
+  "started_epoch": 1792915202.223474,
+  "stdin_provided": false,
+  "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_process_returncode": 1,
+  "timeout_expired": false,
+  "directory": "/tmp/geo341-cost-preparation-20261025/metadata-original-capture/subcommands/000002",
+  "ended_epoch": 1792915202.2716954,
+  "stdout_sha256": "c45bb671273f46d6613e16332f1c202eaf6720bb5f59ab95b7b292a1c7bb0afb",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 848,
+  "stderr_bytes": 0
+}

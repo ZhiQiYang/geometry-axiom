@@ -1,0 +1,195 @@
+{
+  "schema": "geo261-performance-stage-recorder/1",
+  "started_utc": "2026-10-18T13:52:58.687458+00:00",
+  "repo": "/workspace/geometry-axiom",
+  "output": "/workspace/geo261-validation-20261018/performance/artifacts-adb-8ab0bdb4",
+  "pins": {
+    "main": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+    "integration": "8ab0bdb467ba6e6d22f7c5652f221cffab4934b6"
+  },
+  "recorder": {
+    "bytes": 7680,
+    "sha256": "e0e9dc4042f2f848ca8dd2622acf15ac7377efe522c945a949d555e75863e544"
+  },
+  "helper": {
+    "bytes": 29056,
+    "sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b"
+  },
+  "helper_path": "/workspace/geo261-validation-20261018/performance/measure_geo261.py",
+  "plans": [
+    {
+      "stage": "prepare",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+        "-B",
+        "/workspace/geo261-validation-20261018/performance/measure_geo261.py",
+        "prepare",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--output",
+        "/workspace/geo261-validation-20261018/performance/artifacts-adb-8ab0bdb4",
+        "--main-sha",
+        "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+        "--integration-sha",
+        "8ab0bdb467ba6e6d22f7c5652f221cffab4934b6",
+        "--cc",
+        "gcc",
+        "--cold-repeats",
+        "7",
+        "--rounds",
+        "15",
+        "--model-repeats",
+        "7",
+        "--timeout",
+        "120"
+      ]
+    },
+    {
+      "stage": "build",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+        "-B",
+        "/workspace/geo261-validation-20261018/performance/measure_geo261.py",
+        "build",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--output",
+        "/workspace/geo261-validation-20261018/performance/artifacts-adb-8ab0bdb4",
+        "--main-sha",
+        "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+        "--integration-sha",
+        "8ab0bdb467ba6e6d22f7c5652f221cffab4934b6",
+        "--cc",
+        "gcc",
+        "--cold-repeats",
+        "7",
+        "--rounds",
+        "15",
+        "--model-repeats",
+        "7",
+        "--timeout",
+        "120"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "stage": "prepare",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+        "-B",
+        "/workspace/geo261-validation-20261018/performance/measure_geo261.py",
+        "prepare",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--output",
+        "/workspace/geo261-validation-20261018/performance/artifacts-adb-8ab0bdb4",
+        "--main-sha",
+        "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+        "--integration-sha",
+        "8ab0bdb467ba6e6d22f7c5652f221cffab4934b6",
+        "--cc",
+        "gcc",
+        "--cold-repeats",
+        "7",
+        "--rounds",
+        "15",
+        "--model-repeats",
+        "7",
+        "--timeout",
+        "120"
+      ],
+      "cwd": "/workspace/geo261-validation-20261018/performance/artifacts-adb-8ab0bdb4/stage-records/20261018T135258686849Z/01-prepare",
+      "started_utc": "2026-10-18T13:52:58.687977+00:00",
+      "returncode": 0,
+      "exception": null,
+      "helper_before": {
+        "bytes": 29056,
+        "sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b"
+      },
+      "helper_after": {
+        "bytes": 29056,
+        "sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b"
+      },
+      "process_completed": true,
+      "performance_verdict": null,
+      "ended_utc": "2026-10-18T13:53:00.184741+00:00",
+      "elapsed_seconds": 1.4965241060017433,
+      "streams": {
+        "command.stdout": {
+          "bytes": 148,
+          "sha256": "52596008f4d8b142a4f5107a89d1b51ad79b352b0afd9e9ed5f75d2b75ba8590"
+        },
+        "command.stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "stage_process_ok": true
+    },
+    {
+      "stage": "build",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+        "-B",
+        "/workspace/geo261-validation-20261018/performance/measure_geo261.py",
+        "build",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--output",
+        "/workspace/geo261-validation-20261018/performance/artifacts-adb-8ab0bdb4",
+        "--main-sha",
+        "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+        "--integration-sha",
+        "8ab0bdb467ba6e6d22f7c5652f221cffab4934b6",
+        "--cc",
+        "gcc",
+        "--cold-repeats",
+        "7",
+        "--rounds",
+        "15",
+        "--model-repeats",
+        "7",
+        "--timeout",
+        "120"
+      ],
+      "cwd": "/workspace/geo261-validation-20261018/performance/artifacts-adb-8ab0bdb4/stage-records/20261018T135258686849Z/02-build",
+      "started_utc": "2026-10-18T13:53:00.185699+00:00",
+      "returncode": 0,
+      "exception": null,
+      "helper_before": {
+        "bytes": 29056,
+        "sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b"
+      },
+      "helper_after": {
+        "bytes": 29056,
+        "sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b"
+      },
+      "process_completed": true,
+      "performance_verdict": null,
+      "ended_utc": "2026-10-18T13:57:16.969677+00:00",
+      "elapsed_seconds": 256.78395486500085,
+      "streams": {
+        "command.stdout": {
+          "bytes": 4092,
+          "sha256": "e359b8f91430ccca53353d6d0181b097cf5afdf4aa395908b342a6e846f105d3"
+        },
+        "command.stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "stage_process_ok": true
+    }
+  ],
+  "attempted_stages": [
+    "prepare",
+    "build"
+  ],
+  "performance_verdict": null,
+  "all_requested_processes_ok": true,
+  "source_policy": "prepare 以明確 SHA git archive；不要求 checkout HEAD 等於任一來源。",
+  "scheduling_policy": "本入口階段串行；操作者須確保 measure/profile 無其他 CPU 測試並行。",
+  "ended_utc": "2026-10-18T13:57:16.970648+00:00",
+  "not_attempted_stages": []
+}

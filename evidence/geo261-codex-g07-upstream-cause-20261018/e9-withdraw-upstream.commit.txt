@@ -1,0 +1,10 @@
+commit 2585fa9aef20366086dc3334012d70e204e2a669
+Author:     Chih-Chi Yang <b10102230@gmail.com>
+AuthorDate: Sun Oct 18 15:00:01 2026 +0000
+Commit:     Chih-Chi Yang <b10102230@gmail.com>
+CommitDate: Sun Oct 18 15:00:01 2026 +0000
+
+    負控制：只撤回上游導引線回填以重現組件 G07
+
+ geometry-app/native/reference_sources.inc | 7 -------
+ 1 file changed, 7 deletions(-)

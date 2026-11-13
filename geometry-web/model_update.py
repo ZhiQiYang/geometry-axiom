@@ -16,6 +16,7 @@ import subprocess
 import tempfile
 
 import space_modeling
+from geometry_app import source_closure
 from modeling import ModelError, canonical_bytes
 from modeling.base import _build_adapter, load_base
 from modeling.common import digest, scene_required_capabilities, strict_json_loads
@@ -83,6 +84,19 @@ def _references(value, kinds, path, *, nonempty=False):
 
 
 def _selection(value):
+    if type(value) is dict and value.get('mode') == 'faces':
+        _keys(value, ('mode', 'uses', 'obstacles'), path=('selection',))
+        if type(value['uses']) is not list or not 1 <= len(value['uses']) <= 512:
+            _fail('UPDATE_FACES', '請依原順序明選全部承載面。', path=('selection', 'uses'))
+        seen = set()
+        for index, use in enumerate(value['uses']):
+            _keys(use, ('placement_id',), path=('selection', 'uses', index))
+            _uid(use['placement_id'], ('selection', 'uses', index, 'placement_id'))
+            if use['placement_id'] in seen:
+                _fail('UPDATE_FACES', '同一承載面不可重複。', path=('selection', 'uses', index))
+            seen.add(use['placement_id'])
+        _references(value['obstacles'], ('column', 'beam'), ('selection', 'obstacles'))
+        return
     _keys(value, ("placement_id", "boundary_id", "edges", "obstacles", "timbers", "projection"), path=("selection",))
     for name in ("placement_id", "boundary_id"):
         _uid(value[name], ("selection", name))
@@ -102,8 +116,46 @@ def _selection(value):
             _fail("UPDATE_PROJECTION", "平面投影必須明選具正編號的既有邊界。", path=("selection", "boundary_id"))
 
 
+def _source_identity(record):
+    if 'sourceIdentity' not in record:
+        return
+    identity, inputs = record['sourceIdentity'], record['input']
+    _keys(identity, ('schema', 'roots'), path=('record', 'sourceIdentity'))
+    if identity['schema'] != 'model-source-identity/1' or type(identity['roots']) is not list:
+        _fail('UPDATE_IDENTITY', '模型來源身分版本或根集合不合法。')
+    expected = []
+    if inputs['mode'] == 'plan':
+        expected.append(('placement', 'placement', inputs['placement_id']))
+        if record['source']['boundary_id']:
+            expected.append(('boundary', 'boundary', record['source']['boundary_id']))
+        expected.extend(('timber', 'timber', value['id']) for value in inputs.get('timbers', []))
+    else:
+        expected.extend(('use', 'placement', use['placement_id']) for use in inputs['uses'])
+    expected.extend(('obstacle', value['kind'], value['id']) for value in inputs['obstacles'])
+    found = []
+    for root in identity['roots']:
+        _keys(root, ('role', 'kind', 'id', 'incarnation'), ('definitionPin', 'uncovered', 'fieldId'), path=('record', 'sourceIdentity', 'roots'))
+        if type(root['role']) is not str or type(root['kind']) is not str:
+            _fail('UPDATE_IDENTITY', '模型來源身分的根種類不合法。')
+        _uid(root['id'], ('record', 'sourceIdentity', 'roots', 'id'))
+        if 'fieldId' in root and (type(root['fieldId']) is not int or root['fieldId'] != 0):
+            _fail('UPDATE_IDENTITY', '模型來源根不是參數欄位。')
+        if 'definitionPin' in root and (type(root['definitionPin']) is not str or not HASH.fullmatch(root['definitionPin'])):
+            _fail('UPDATE_IDENTITY', '模型來源內容指紋不合法。')
+        mark = root['incarnation']
+        if 'uncovered' in root:
+            valid = root['uncovered'] == 'assembly-owned' and root['kind'] == 'timber' and mark is None
+        else:
+            valid = type(mark) is str and len(mark) <= 53 and re.fullmatch(r'[a-f0-9]{32}:[1-9][0-9]*', mark) and int(mark[33:]) <= 0xFFFFFFFFFFFFFFFF
+        if not valid:
+            _fail('UPDATE_IDENTITY', '模型來源記號或未涵蓋標記不合法。')
+        found.append((root['role'], root['kind'], root['id']))
+    if sorted(found) != sorted(expected):
+        _fail('UPDATE_IDENTITY', '模型來源身分與保存模型的根集合不一致。')
+
+
 def _record(record):
-    _keys(record, ("id", "name", "created_at", "source", "input", "result"), path=("record",))
+    _keys(record, ("id", "name", "created_at", "source", "input", "result"), ('sourceIdentity',), path=("record",))
     if type(record["id"]) is not str or not IDENTIFIER.fullmatch(record["id"]):
         _fail("UPDATE_RECORD", "模型身分欄位不合法。", path=("record", "id"))
     if type(record["name"]) is not str or not record["name"].strip() or len(record["name"]) > 200:
@@ -119,8 +171,27 @@ def _record(record):
     _keys(source, ("kind", "placement_id", "boundary_id", "scene_hash"), ("projection",), path=("record", "source"))
     if source["kind"] not in ("scene", "example") or type(source["scene_hash"]) is not str or not HASH.fullmatch(source["scene_hash"]):
         _fail("UPDATE_RECORD", "模型来源中繼資料不合法。", path=("record", "source"))
-    if type(inputs) is not dict or inputs.get("mode") != "plan":
+    if type(inputs) is not dict or inputs.get("mode") not in ('plan', 'faces'):
         _fail("UPDATE_SCOPE", "第一版來源更新只支援普通單一平面模型。", status="UNSUPPORTED", clause="I32", path=("record", "input"))
+    if inputs['mode'] == 'faces':
+        if any(name in inputs for name in ('timbers', 'settings', 'placement_id')) or 'projection' in source:
+            _fail('UPDATE_SCOPE', '多承載面更新不支援角材或平面設定。', status='UNSUPPORTED', clause='I32')
+        _keys(inputs, ('mode', 'base_scene', 'uses', 'obstacles'), path=('record', 'input'))
+        for name in ('placement_id', 'boundary_id'):
+            if source[name] is not None: _uid(source[name], ('record', 'source', name))
+        if type(inputs['uses']) is not list or not 1 <= len(inputs['uses']) <= 512:
+            _fail('UPDATE_FACES', '保存模型的承載面清單不合法。')
+        for use in inputs['uses']:
+            _keys(use, ('placement_id', 'orientation', 'purpose'), path=('record', 'input', 'uses'))
+            _uid(use['placement_id'], ('record', 'input', 'uses', 'placement_id'))
+            if type(use['orientation']) is not int or use['orientation'] not in (-1, 1) or use['purpose'] not in ('boundary', 'calculation-cap'):
+                _fail('UPDATE_FACES', '保存模型的朝向或用途不合法。')
+        if len({use['placement_id'] for use in inputs['uses']}) != len(inputs['uses']):
+            _fail('UPDATE_FACES', '保存模型的承載面重複。')
+        _scene(inputs['base_scene'], ('record', 'input', 'base_scene'))
+        _references(inputs['obstacles'], ('column', 'beam'), ('record', 'input', 'obstacles'))
+        _source_identity(record)
+        return
     _keys(inputs, ("mode", "base_scene", "obstacles", "placement_id", "settings"), ("timbers",), path=("record", "input"))
     _uid(source["placement_id"], ("record", "source", "placement_id"))
     if source["boundary_id"] is not None:
@@ -138,6 +209,7 @@ def _record(record):
         if not source["boundary_id"]:
             _fail("UPDATE_TIMBER_BOUNDARY", "舊角材模型缺少正式邊界輪廓，不符合現行保存契約；請重新建立有輪廓來源的模型。",
                   status="UNSUPPORTED", clause="I32", path=("record", "source", "boundary_id"))
+    _source_identity(record)
 
 
 def _program(value, *, base=False):
@@ -157,7 +229,7 @@ def _program(value, *, base=False):
 def _producer_hash():
     """Pin this producer and every local Python/native helper in its closure."""
     paths = {Path(__file__).resolve(), ROOT / "geometry-web" / "space_modeling.py", ROOT / "current_geometry.c"}
-    paths.update((ROOT / "geometry-core" / "modeling").glob("*.py"))
+    paths.update(path for _, path in source_closure.source_paths(ROOT))
     for directory in (ROOT / "geometry-core", ROOT / "geometry-web"):
         paths.update(path for path in directory.rglob("*") if path.suffix in (".c", ".h", ".inc") and "vendor" not in path.parts)
     paths.update(ROOT.glob("*.h"))
@@ -171,6 +243,8 @@ def _producer_hash():
 
 def _runtime(base, bridge):
     try:
+        if not source_closure.current_identity()["fresh"]:
+            _fail("UPDATE_RUNTIME", "來源更新模組已改變，請重新啟動 Python 程序。", status="UNSUPPORTED", clause="I32")
         axiom = hashlib.sha256((ROOT / "公理層.md").read_bytes().replace(b"\r\n", b"\n")).hexdigest()
     except OSError:
         _fail("UPDATE_RUNTIME", "來源更新公理版本無法核對。", status="UNSUPPORTED", clause="I32")
@@ -272,7 +346,11 @@ def _graph(scene, program):
 
 def _protected(graph, inputs):
     nodes, edges, support_known = graph
-    roots = ["placement:" + str(inputs["placement_id"])]
+    face_mode = inputs['mode'] == 'faces'
+    roots = (['placement:' + str(use['placement_id']) for use in inputs['uses']] if face_mode
+             else ["placement:" + str(inputs["placement_id"])])
+    placement_labels = {root: 'selected-use:' + str(index) if face_mode else 'selected-placement'
+                        for index, root in enumerate(roots)}
     roots.extend(reference["kind"] + ":" + str(reference["id"]) for reference in [*inputs["obstacles"], *inputs.get("timbers", [])])
     protected, associations = set(), {}
     for root in roots:
@@ -305,14 +383,14 @@ def _protected(graph, inputs):
         def label(key):
             if key == root:
                 return "selected-root"
-            if key == roots[0]:
-                return "selected-placement"
+            if key in placement_labels:
+                return placement_labels[key]
             return key
         signatures = {(label(edge["from"]), label(edge["to"]), edge["relation"], edge["field"], edge["active"])
                       for key in relevant for edge in edges.get(key, []) if edge["to"] in relevant}
         # The sole placement has an explicit old/new correspondence. Other
         # roots can only be compared when the user explicitly selected that key.
-        associations["selected-placement" if root == roots[0] else root] = signatures
+        associations[placement_labels.get(root, root)] = signatures
     return protected, associations
 
 
@@ -359,7 +437,7 @@ def _diff(before, after):
         package = record["result"].get(kind)
         return digest(package["manifest"]) if package is not None else None
     return {"source": pair(before["source"], after["source"]), "input": pair(before["input"], after["input"]),
-            "settings": pair(before["input"]["settings"], after["input"]["settings"]),
+            "settings": pair(before["input"].get("settings"), after["input"].get("settings")),
             "summary": pair(before["result"]["summary"], after["result"]["summary"]),
             "packages": [{"kind": kind, "before": manifest(before, kind), "after": manifest(after, kind)} for kind in PACKAGES]}
 
@@ -379,9 +457,15 @@ def prepare_update(data, *, base_executable=None, bridge_executable=None, max_ce
     bridge, _ = _program(bridge_executable)
     runtime = _runtime(base, bridge)
     record, selection = data["record"], data["selection"]
+    face_mode = record['input']['mode'] == 'faces'
+    if face_mode != (selection.get('mode') == 'faces'):
+        _fail('UPDATE_SCOPE', '更新不可改換模型模式。', status='UNSUPPORTED', clause='I32')
+    if face_mode and len(selection['uses']) != len(record['input']['uses']):
+        _fail('UPDATE_FACES', '多承載面更新必須保留原數量及順序。')
     old_base = load_base(record["input"]["base_scene"], executable=base)
-    _placement(old_base, record["source"]["placement_id"], record["source"]["boundary_id"],
-               record["source"].get("projection"), ("record", "source"))
+    if not face_mode:
+        _placement(old_base, record["source"]["placement_id"], record["source"]["boundary_id"],
+                   record["source"].get("projection"), ("record", "source"))
     try:
         replay = space_modeling.replay_stored(record["input"], record["result"],
                                              base_executable=base, max_cells=max_cells)
@@ -392,12 +476,17 @@ def prepare_update(data, *, base_executable=None, bridge_executable=None, max_ce
     if canonical_bytes(replay) != canonical_bytes(record["result"]) or record["source"]["scene_hash"] != replay["source_sha256"]:
         _fail("UPDATE_OLD_REPLAY", "完整舊模型紀錄與原生重播不一致。", path=("record", "result"))
     new_base = load_base(data["current_scene"], executable=base)
-    _placement(new_base, selection["placement_id"], selection["boundary_id"], selection["projection"], ("selection",))
-    inputs = {"mode": "plan", "base_scene": new_base["base_scene"], "placement_id": selection["placement_id"],
-              "settings": deepcopy(record["input"]["settings"]), "obstacles": deepcopy(selection["obstacles"])}
-    inputs["settings"]["edges"] = deepcopy(selection["edges"])
-    if selection["timbers"]:
-        inputs["timbers"] = deepcopy(selection["timbers"])
+    if face_mode:
+        inputs = {'mode':'faces', 'base_scene':new_base['base_scene'], 'obstacles':deepcopy(selection['obstacles']),
+                  'uses':[{**deepcopy(old), 'placement_id':selected['placement_id']}
+                          for old,selected in zip(record['input']['uses'],selection['uses'])]}
+    else:
+        _placement(new_base, selection["placement_id"], selection["boundary_id"], selection["projection"], ("selection",))
+        inputs = {"mode": "plan", "base_scene": new_base["base_scene"], "placement_id": selection["placement_id"],
+                  "settings": deepcopy(record["input"]["settings"]), "obstacles": deepcopy(selection["obstacles"])}
+        inputs["settings"]["edges"] = deepcopy(selection["edges"])
+        if selection["timbers"]:
+            inputs["timbers"] = deepcopy(selection["timbers"])
     old_graph = _graph(record["input"]["base_scene"], bridge)
     new_graph = _graph(data["current_scene"], bridge)
     old_fixed, old_associations = _protected(old_graph, record["input"])
@@ -405,9 +494,9 @@ def prepare_update(data, *, base_executable=None, bridge_executable=None, max_ce
     _fixed_versions(old_fixed, new_fixed)
     _fixed_associations(old_associations, new_associations)
     result = space_modeling.preview(inputs, base_executable=base, max_cells=max_cells)
-    source = {"kind": "scene", "placement_id": selection["placement_id"], "boundary_id": selection["boundary_id"],
+    source = {"kind": "scene", "placement_id": None if face_mode else selection["placement_id"], "boundary_id": None if face_mode else selection["boundary_id"],
               "scene_hash": result["source_sha256"]}
-    if selection["projection"] is not None:
+    if not face_mode and selection["projection"] is not None:
         source["projection"] = deepcopy(selection["projection"])
     replacement = {"id": record["id"], "name": record["name"], "created_at": record["created_at"],
                    "source": source, "input": inputs, "result": result}

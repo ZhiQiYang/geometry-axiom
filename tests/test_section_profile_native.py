@@ -286,6 +286,30 @@ class SectionProfileNative(unittest.TestCase):
         self.reject([put("member", panel(u=20, width=30))], "V_PROFILE_OVERLAP")
         self.apply([put("profile", profile(2)), put("member", member(4, profileId=2))])
 
+    def test_ac23_panel_width_346_touches_timbers_u(self):
+        # AC23: the panel fills the 346 mm gap between M1 and M2.  I45/R36
+        # permit the two shared edges; source-inspect/registry receipts are unrelated.
+        self.apply([put("profile", profile()), put("member", member()),
+                    put("member", member(2, 373))])
+        self.apply([put("member", panel())])
+        members = {m["value"]["id"]: m for m in self.read()["state"]["members"]}
+        self.assertEqual([0, 0, 27, 33], members[1]["rect"])
+        self.assertEqual([373, 0, 400, 33], members[2]["rect"])
+        self.assertEqual([27, 0, 373, 6], members[4]["rect"])
+
+    def test_ac23_panel_width_346_touches_timbers_v(self):
+        # The same AC23 rectangles with u/v exchanged exercise the other strict
+        # inequality, with exactly the same material dimensions and gap.
+        outline = [[0, 0], [250, 0], [250, 60], [60, 60], [60, 400], [0, 400]]
+        self.apply([put("profile", profile(outline=outline)),
+                    put("member", member(orientation="A-v")),
+                    put("member", member(2, 0, 373, orientation="A-v"))])
+        self.apply([put("member", panel(u=0, v=27, orientation="thickness-u"))])
+        members = {m["value"]["id"]: m for m in self.read()["state"]["members"]}
+        self.assertEqual([0, 0, 33, 27], members[1]["rect"])
+        self.assertEqual([0, 373, 33, 400], members[2]["rect"])
+        self.assertEqual([0, 27, 6, 373], members[4]["rect"])
+
     def test_profile_geometry_and_coordinate_rejections(self):
         self.apply([put("profile", profile())])
         for outline in ([[0, 0], [1, 0], [1, 1]], [[0, 0], [10, 0], [10, 0], [0, 10]],

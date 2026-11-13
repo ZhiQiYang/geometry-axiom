@@ -1,0 +1,27 @@
+{
+  "selected_tests": [
+    "test_crossing_holes_have_positive_overlap_without_contained_vertices",
+    "test_hole_contacts_stay_invalid_and_rectangle_contacts_stay_valid",
+    "test_product_crossing_holes_rejected_without_mutation",
+    "test_product_unit_hole_placement_rejected_without_mutation",
+    "test_unit_rectangles_exclude_hole_interiors_at_coordinate_limits",
+    "test_unit_strips_keep_two_maximal_intervals_and_capacity_failure"
+  ],
+  "tests_run": 6,
+  "failures": 5,
+  "failed_tests": [
+    "tests.test_geo261_region_edges.RegionEdges.test_crossing_holes_have_positive_overlap_without_contained_vertices",
+    "tests.test_geo261_region_edges.RegionEdges.test_product_crossing_holes_rejected_without_mutation",
+    "tests.test_geo261_region_edges.RegionEdges.test_product_unit_hole_placement_rejected_without_mutation",
+    "tests.test_geo261_region_edges.RegionEdges.test_unit_rectangles_exclude_hole_interiors_at_coordinate_limits",
+    "tests.test_geo261_region_edges.RegionEdges.test_unit_strips_keep_two_maximal_intervals_and_capacity_failure"
+  ],
+  "errors": 0,
+  "errored_tests": [],
+  "skipped": [],
+  "expected_failures": 0,
+  "unexpected_successes": 0,
+  "successful": false,
+  "compiler_commands": 11,
+  "build_artifact_count": 22
+}

@@ -5,6 +5,25 @@
 不代表尚未接上產品的模組或下列正式整合驗證已完成。
 既有 floors、具名平台 skip 清單與實際測試斷言維持。
 
+## GEO-261 §6.1 精簡網格更名來源保全
+
+`node --test tests/test_grid_inspector_command.js` 只驗產品序列化函式的完整來源輸出；
+`python -m unittest tests.test_grid_inspector_contract` 另串真 bridge，驗來源 tuple、
+正負 band 多段幾何、取消／確認／Undo／Redo、參數 400→401 及新原生程序載回。
+兩者均不能代替正式瀏覽器保存鏈。
+
+`geometry-web/grid_inspector_rename_test.js` 是 `cdp_test.js` 載入的 P72B 外掛，
+full 與 `GEOMETRY_COMPOSITION_ONLY=1` 都執行。它用實際 `giName`、預覽／確認、
+Undo／Redo、參數卡、完整工作區清空相位差及 `.gcanvas` 下載／新 context／開檔，
+比較除名稱之外的完整 World、參數來源邊及每個原 band 段。
+要驗完整包在另一原生程序重開，另啟動第二個相同候選來源的專屬空服務，
+設定 `GEOMETRY_GRID_RENAME_FRESH_URL`；服務的 runtime／PID／fingerprint 由呼叫端逐一驗證。
+沒有此變數時只驗新 JS context，不能宣稱完整專案已在新原生程序重開。
+
+`python tests/diagnostics/grid_inspector_mutation_probe.py --out <TEMP目錄>`
+要求原版綠、移除相位差輸出紅、固化參數來源紅、恢復綠；可用 `--native` 再跑真 bridge。
+變異只寫 TEMP 副本，不動產品檔；所有 log 與收據留在指明目錄。
+
 ## 可重複的交付命令收據
 
 `tests/release_gate.py` 在既有隔離服務上執行一個正式 gate；服務由呼叫端管理。

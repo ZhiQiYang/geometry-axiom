@@ -1,0 +1,14 @@
+{
+  "final": {
+    "sha": "0da1f08c75a411442a2e4a431e72459563b8b9a2",
+    "function_sha256": "58b7b21639ab53104e709d1aad949498ba0800db672b7932bb013fad7dd06256",
+    "predicate": "check('空空間不畫假邊界，提供加入成員入口',await read(`$('spaceMemberCount').textContent==='0' && !$('spacePlanSvg').querySelector('polygon,rect,path') && !!$('spacePlanEmpty') && /加入|成員/.test($('spacePlanEmpty').textContent)`));"
+  },
+  "main": {
+    "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "function_sha256": "58b7b21639ab53104e709d1aad949498ba0800db672b7932bb013fad7dd06256",
+    "predicate": "check('空空間不畫假邊界，提供加入成員入口',await read(`$('spaceMemberCount').textContent==='0' && !$('spacePlanSvg').querySelector('polygon,rect,path') && !!$('spacePlanEmpty') && /加入|成員/.test($('spacePlanEmpty').textContent)`));"
+  },
+  "same_function": true,
+  "same_predicate": true
+}

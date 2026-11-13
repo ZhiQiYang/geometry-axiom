@@ -1,0 +1,603 @@
+[
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/exact.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/exact.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/codec.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/codec.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/geometry.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/geometry.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/clip.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/clip.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/grid.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/grid.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/parameters.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/parameters.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/linear.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/linear.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/named_values.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/named-values.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/datums.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/datums.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/source.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/source.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/candidate.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/candidate.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/placements.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/placements.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/regions.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/regions.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/grid_store.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/grid-store.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel/guides.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/guides.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-host/history.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/host-history.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-host/app_candidate.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/host-candidate.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-woodworking/members.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-members.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-woodworking/supports.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-supports.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-woodworking/contacts.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-contacts.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-woodworking/engineering.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-engineering.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-woodworking/panel_layout.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-panel-layout.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-woodworking/panel_support.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-panel-support.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-woodworking/section_profile.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-section-profile.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-woodworking/assembly.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-assembly.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/exact-client.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/exact-client.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/codec-client.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/codec-client.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/exact-client.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/exact.o",
+      "-lm",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/exact-client"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/codec-client.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/codec.o",
+      "-lm",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/codec-client"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-DGEOMETRY_KERNEL_EXTERNAL=1",
+      "-DGEOMETRY_WOODWORKING_EXTERNAL=1",
+      "-DGEOMETRY_HOST_HISTORY_EXTERNAL=1",
+      "-DGEOMETRY_HOST_CANDIDATE_EXTERNAL=1",
+      "-c",
+      "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/geo261_domain_product_harness.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/domain-host-product.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "In file included from /var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../current_geometry.c:9034,\n                 from /var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/geo261_domain_product_harness.c:6:\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/parameters.inc: In function \u2018parameter_wrap_error\u2019:\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/parameters.inc:181:45: warning: \u2018%s\u2019 directive output may be truncated writing up to 511 bytes into a region of size between 249 and 505 [-Wformat-truncation=]\n  181 |     snprintf(out,sizeof out,\"%s... -> %.*s%s%s\",head,inner_len,inner,inner_len?\" -> \":\"\",root);\n      |                                             ^~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/parameters.inc:181:5: note: \u2018snprintf\u2019 output 8 or more bytes (assuming 775) into a destination of size 512\n  181 |     snprintf(out,sizeof out,\"%s... -> %.*s%s%s\",head,inner_len,inner,inner_len?\" -> \":\"\",root);\n      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/parameters.inc:182:73: warning: \u2018%s\u2019 directive output may be truncated writing up to 511 bytes into a region of size between 250 and 505 [-Wformat-truncation=]\n  182 |     if(strlen(out)>PARAM_ERROR_BUDGET)snprintf(out,sizeof out,\"%s... -> %s\",head,root);\n      |                                                                         ^~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/parameters.inc:182:39: note: \u2018snprintf\u2019 output between 8 and 774 bytes into a destination of size 512\n  182 |     if(strlen(out)>PARAM_ERROR_BUDGET)snprintf(out,sizeof out,\"%s... -> %s\",head,root);\n      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/parameters.inc:177:110: warning: \u2018%s\u2019 directive output may be truncated writing up to 511 bytes into a region of size between 257 and 512 [-Wformat-truncation=]\n  177 |     if(strlen(head)+strlen(tail)<=PARAM_ERROR_BUDGET){snprintf(g_parameter_error,sizeof g_parameter_error,\"%s%s\",head,tail);return;}\n      |                                                                                                              ^~       ~~~~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/parameters.inc:177:55: note: \u2018snprintf\u2019 output between 1 and 767 bytes into a destination of size 512\n  177 |     if(strlen(head)+strlen(tail)<=PARAM_ERROR_BUDGET){snprintf(g_parameter_error,sizeof g_parameter_error,\"%s%s\",head,tail);return;}\n      |                                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nIn file included from /var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../current_geometry.c:9035:\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/references.inc: In function \u2018reference_eval_datums\u2019:\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/references.inc:280:86: warning: \u2018%s\u2019 directive output may be truncated writing up to 511 bytes into a region of size between 238 and 247 [-Wformat-truncation=]\n  280 |             char msg[256];if(g_parameter_error[0])snprintf(msg,sizeof msg,\"datum %u: %s\",d->id,g_parameter_error);else snprintf(msg,sizeof msg,\"datum %u: missing spec, bare mm, unsupported reference or rational overflow\",d->id);\n      |                                                                                      ^~        ~~~~~~~~~~~~~~~~~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/references.inc:280:51: note: \u2018snprintf\u2019 output between 10 and 530 bytes into a destination of size 256\n  280 |             char msg[256];if(g_parameter_error[0])snprintf(msg,sizeof msg,\"datum %u: %s\",d->id,g_parameter_error);else snprintf(msg,sizeof msg,\"datum %u: missing spec, bare mm, unsupported reference or rational overflow\",d->id);\n      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/references.inc: In function \u2018reference_compute_guide\u2019:\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/references.inc:314:209: warning: \u2018%s\u2019 directive output may be truncated writing up to 511 bytes into a region of size between 238 and 247 [-Wformat-truncation=]\n  314 |         char message[256];if(g_rule_reference_error[0])snprintf(message,sizeof message,\"guide %u: %.210s\",g->id,g_rule_reference_error);else if(g_parameter_error[0])snprintf(message,sizeof message,\"guide %u: %s\",g->id,g_parameter_error);else snprintf(message,sizeof message,\"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s\",g->id,expression);\n      |                                                                                                                                                                                                                 ^~        ~~~~~~~~~~~~~~~~~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-core/references.inc:314:166: note: \u2018snprintf\u2019 output between 10 and 530 bytes into a destination of size 256\n  314 |         char message[256];if(g_rule_reference_error[0])snprintf(message,sizeof message,\"guide %u: %.210s\",g->id,g_rule_reference_error);else if(g_parameter_error[0])snprintf(message,sizeof message,\"guide %u: %s\",g->id,g_parameter_error);else snprintf(message,sizeof message,\"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s\",g->id,expression);\n      |                                                                                                                                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/domain-host-product.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/exact.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/codec.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/geometry.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/clip.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/grid.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/parameters.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/linear.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/named-values.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/datums.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/source.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/candidate.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/placements.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/regions.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/grid-store.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/guides.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-members.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-supports.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-contacts.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-engineering.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-panel-layout.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-panel-support.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-section-profile.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-assembly.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/host-history.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/host-candidate.o",
+      "-lm",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/domain-host-product"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/isolated-kernel",
+      "-DGEOMETRY_KERNEL_EXTERNAL=1",
+      "-DGEOMETRY_WOODWORKING_EXTERNAL=1",
+      "-DGEOMETRY_HOST_HISTORY_EXTERNAL=1",
+      "-DGEOMETRY_HOST_CANDIDATE_EXTERNAL=1",
+      "-c",
+      "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/geo261_candidate_product_harness.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/candidate-product-client.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "In file included from /var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../current_geometry.c:9034,\n                 from /var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/web_bridge.c:27,\n                 from /var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/geo261_candidate_product_harness.c:6:\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/parameters.inc: In function \u2018parameter_wrap_error\u2019:\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/parameters.inc:181:45: warning: \u2018%s\u2019 directive output may be truncated writing up to 511 bytes into a region of size between 249 and 505 [-Wformat-truncation=]\n  181 |     snprintf(out,sizeof out,\"%s... -> %.*s%s%s\",head,inner_len,inner,inner_len?\" -> \":\"\",root);\n      |                                             ^~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/parameters.inc:181:5: note: \u2018snprintf\u2019 output 8 or more bytes (assuming 775) into a destination of size 512\n  181 |     snprintf(out,sizeof out,\"%s... -> %.*s%s%s\",head,inner_len,inner,inner_len?\" -> \":\"\",root);\n      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/parameters.inc:182:73: warning: \u2018%s\u2019 directive output may be truncated writing up to 511 bytes into a region of size between 250 and 505 [-Wformat-truncation=]\n  182 |     if(strlen(out)>PARAM_ERROR_BUDGET)snprintf(out,sizeof out,\"%s... -> %s\",head,root);\n      |                                                                         ^~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/parameters.inc:182:39: note: \u2018snprintf\u2019 output between 8 and 774 bytes into a destination of size 512\n  182 |     if(strlen(out)>PARAM_ERROR_BUDGET)snprintf(out,sizeof out,\"%s... -> %s\",head,root);\n      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/parameters.inc:177:110: warning: \u2018%s\u2019 directive output may be truncated writing up to 511 bytes into a region of size between 257 and 512 [-Wformat-truncation=]\n  177 |     if(strlen(head)+strlen(tail)<=PARAM_ERROR_BUDGET){snprintf(g_parameter_error,sizeof g_parameter_error,\"%s%s\",head,tail);return;}\n      |                                                                                                              ^~       ~~~~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/parameters.inc:177:55: note: \u2018snprintf\u2019 output between 1 and 767 bytes into a destination of size 512\n  177 |     if(strlen(head)+strlen(tail)<=PARAM_ERROR_BUDGET){snprintf(g_parameter_error,sizeof g_parameter_error,\"%s%s\",head,tail);return;}\n      |                                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nIn file included from /var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../current_geometry.c:9035:\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/references.inc: In function \u2018reference_eval_datums\u2019:\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/references.inc:280:86: warning: \u2018%s\u2019 directive output may be truncated writing up to 511 bytes into a region of size between 238 and 247 [-Wformat-truncation=]\n  280 |             char msg[256];if(g_parameter_error[0])snprintf(msg,sizeof msg,\"datum %u: %s\",d->id,g_parameter_error);else snprintf(msg,sizeof msg,\"datum %u: missing spec, bare mm, unsupported reference or rational overflow\",d->id);\n      |                                                                                      ^~        ~~~~~~~~~~~~~~~~~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/references.inc:280:51: note: \u2018snprintf\u2019 output between 10 and 530 bytes into a destination of size 256\n  280 |             char msg[256];if(g_parameter_error[0])snprintf(msg,sizeof msg,\"datum %u: %s\",d->id,g_parameter_error);else snprintf(msg,sizeof msg,\"datum %u: missing spec, bare mm, unsupported reference or rational overflow\",d->id);\n      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/references.inc: In function \u2018reference_compute_guide\u2019:\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/references.inc:314:209: warning: \u2018%s\u2019 directive output may be truncated writing up to 511 bytes into a region of size between 238 and 247 [-Wformat-truncation=]\n  314 |         char message[256];if(g_rule_reference_error[0])snprintf(message,sizeof message,\"guide %u: %.210s\",g->id,g_rule_reference_error);else if(g_parameter_error[0])snprintf(message,sizeof message,\"guide %u: %s\",g->id,g_parameter_error);else snprintf(message,sizeof message,\"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s\",g->id,expression);\n      |                                                                                                                                                                                                                 ^~        ~~~~~~~~~~~~~~~~~\n/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1/tests/../geometry-web/../geometry-core/references.inc:314:166: note: \u2018snprintf\u2019 output between 10 and 530 bytes into a destination of size 256\n  314 |         char message[256];if(g_rule_reference_error[0])snprintf(message,sizeof message,\"guide %u: %.210s\",g->id,g_rule_reference_error);else if(g_parameter_error[0])snprintf(message,sizeof message,\"guide %u: %s\",g->id,g_parameter_error);else snprintf(message,sizeof message,\"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s\",g->id,expression);\n      |                                                                                                                                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/candidate-product-client.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/exact.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/codec.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/geometry.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/clip.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/grid.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/parameters.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/linear.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/named-values.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/datums.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/source.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/candidate.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/placements.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/regions.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/grid-store.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/guides.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-members.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-supports.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-contacts.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-engineering.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-panel-layout.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-panel-support.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-section-profile.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/wood-assembly.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/host-history.o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/host-candidate.o",
+      "-lm",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-62m5lw63/candidate-product-client"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

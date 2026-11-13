@@ -1,0 +1,48 @@
+[
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "/workspace/geo337-remaining-browser-terminal-preparation-20261025/collect_four_browser_terminal_v3.py",
+      "--request",
+      "/dev/shm/geometry-axiom-geo337-20261025/remaining-browser-terminal-collection-original-20261025/ROOT_REQUEST.json",
+      "--request-sha256",
+      "bfaffaa31bc9708ff128be036e856b8340f701d1c5c3bd41bac488562bbd916d",
+      "--execute-root-approved"
+    ],
+    "cwd": "/workspace",
+    "acceptance_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+    "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+    "source_variant": "collect four named closed F9 browser jobs without product rerun",
+    "environment": {
+      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "PYTHONIOENCODING": null,
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONOPTIMIZE": null,
+      "TMPDIR": null,
+      "CC": null,
+      "CFLAGS": null,
+      "CPPFLAGS": null,
+      "LDFLAGS": null,
+      "C_INCLUDE_PATH": null,
+      "CPATH": null,
+      "LIBRARY_PATH": null,
+      "LD_LIBRARY_PATH": null,
+      "GCC_EXEC_PREFIX": null,
+      "COMPILER_PATH": null
+    },
+    "started_epoch": 1792938092.0718398,
+    "stdin_provided": false,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "actual_process_returncode": 0,
+    "timeout_expired": false,
+    "directory": "/dev/shm/geometry-axiom-geo337-20261025/remaining-browser-terminal-collection-original-20261025/subcommands/000001",
+    "ended_epoch": 1792938095.2480223,
+    "stdout_sha256": "45dcbd4e40e197985df448daf7b20eb68ff9666e5bda571bfa46cd25091ddbff",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 10389,
+    "stderr_bytes": 0
+  }
+]

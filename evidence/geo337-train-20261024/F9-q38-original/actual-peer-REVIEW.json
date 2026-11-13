@@ -1,0 +1,700 @@
+{
+  "schema": "geo337-F9-Q38-original-actual-peer/1",
+  "exit_code": 0,
+  "checks": 2051,
+  "blocking_findings": [],
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "formal_gate_exit": 0,
+  "host_session": 66508,
+  "original_case_count": 44,
+  "native_case_count": 39,
+  "model_case_count": 5,
+  "killed": 43,
+  "equivalent": [
+    "SPM24"
+  ],
+  "baseline_tests": {
+    "native": 29,
+    "model": 20
+  },
+  "allowed_model_errors": [
+    "SPM38",
+    "SPM40"
+  ],
+  "outer_c387_commands": 31,
+  "source_restored_exact": true,
+  "source_before_after_sha256": "1ed798672d589f8659290af2fbc0252ce56a623de567440ed1ac4dbc6011eac6",
+  "bindings": [
+    {
+      "path": "/dev/shm/geo337-F9-browsers-20261025/nonperf-q38-20261025/receipt.json",
+      "bytes": 78806,
+      "sha256": "16fb6f149b515e31a4130edb24e6c16ad4de1fdc9bc729d1b5c2e294c11be500"
+    },
+    {
+      "path": "/dev/shm/geo337-F9-browsers-20261025/nonperf-q38-20261025/q38/q38/receipt.json",
+      "bytes": 236720,
+      "sha256": "29c870d89fb4c3bb783c1cce4829a26e3a1cf18dd529a9400543a93a4f52ab0a"
+    },
+    {
+      "path": "/workspace/geo337-F9-q38-original-EXEC_FINAL-20261025.json",
+      "bytes": 400,
+      "sha256": "656c6484831a528acc149c308e9dd9e0d3289e9ad5c04852ac49a90bda9a2b6b"
+    },
+    {
+      "path": "/workspace/geo337-F9-nonperf-SHM-placement-preparation-20261025/run_original_specials.py",
+      "bytes": 13518,
+      "sha256": "45c78d779e5db243c10a10990929eb24280380dbc57c94dc9ba94c67d242479d"
+    },
+    {
+      "path": "/workspace/geo337-F9-nonperf-SHM-placement-preparation-20261025/PREPARATION.json",
+      "bytes": 5771,
+      "sha256": "3f317ca29a9f475502f1971d020ed1f202a176d44f037801b89171ac9a850c5a"
+    }
+  ],
+  "outcomes": [
+    {
+      "id": "SPM01",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding",
+        "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections"
+      ],
+      "failures": 2,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "52acd898a7d611215fa2e8cc96646e95a611ae29e08b45d77c4f405291920f7a",
+      "exception_sidecar_sha256": "ba49f21824c7de4992225d897d86490dc9de992a2bdfeb2a1cf8e70d32f162c5"
+    },
+    {
+      "id": "SPM02",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap",
+        "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "failures": 2,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "2513fcf277737adf655c5d2cb65b1448c60b7f509acbb404318aadaf9cf42e2e",
+      "exception_sidecar_sha256": "56107075add8b3798ecaff541f7cd203e2deba0a4c33d18fbeb962f4c7bc9c11"
+    },
+    {
+      "id": "SPM03",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "d26410a7600fe0866490eb5291e1a90eec2af182055f7ec04dfc66b89c0f3dd4",
+      "exception_sidecar_sha256": "c365e715fcaf95a938eb249e40269f7070496e2d5a029bcb7eaf630209ef0081"
+    },
+    {
+      "id": "SPM04",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "47ed0a195dfec9ae4a13269455a42deb9050358d2175593a4d8d99c9cf20c077",
+      "exception_sidecar_sha256": "3188465ecf7e3956717b2ab640f15e7202f811aec276499ca7f9ed572690831d"
+    },
+    {
+      "id": "SPM05",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "4fc490e2fa3faf4cd4931a61e68060b776f437397ba275e4266d3a25a3408a3e",
+      "exception_sidecar_sha256": "a29f09405e38dbc5b4fe2ae7d2cd6c18133fc70992025f9b2893da202153b7be"
+    },
+    {
+      "id": "SPM06",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "4c751378474757f1535a8312f724cfc909c7b3e3fecdb1121963b6228da7ce91",
+      "exception_sidecar_sha256": "67461a8425a451e32ee7c3fac8ee6a6e50757befe0ffab0729052ae372146dd7"
+    },
+    {
+      "id": "SPM07",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "e41edc3d3180b9ad9bb44c0f4df18978650f262530201be6aca0980e5c49364f",
+      "exception_sidecar_sha256": "7e5f763ae8a9608c0184798f398aca2cfcb09a31393faea2617db6fcd988d330"
+    },
+    {
+      "id": "SPM08",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "925b3618ffcafb475f58056bb60839082d6832dc36dbe79b7ba997a05ba6526a",
+      "exception_sidecar_sha256": "e7eedf0c01d9d0499273b73a1418a48a35438be58e8eaa055e19a7e0ea7c5554"
+    },
+    {
+      "id": "SPM09",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "71bd47f697f67896e901042ba14379c65b9e69b92e15d485071db3dabe7a1c72",
+      "exception_sidecar_sha256": "d8fbf316c9ae25b069552a8c69747162408db263071a6194f9616c702145abcb"
+    },
+    {
+      "id": "SPM10",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "33316842c1640792840625de30aef486149d8f53e0f8a0a41afb2dc35b326e30",
+      "exception_sidecar_sha256": "674c2daed332836c78030490ca99e83c51105428a4faf48504f5d589ff52e88e"
+    },
+    {
+      "id": "SPM11",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_parameter_zero_ids_types_and_fixed_material_sources_roundtrip"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "7eb5f8389681964c4c8d65d93ba93c88d5563c042fc0f7dc1d4289d3c73b1b2e",
+      "exception_sidecar_sha256": "172b50fd8d7b591c923636cf9fc55c2d3c939b7ab9db5c48d29175aaf028919f"
+    },
+    {
+      "id": "SPM12",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_parameter_zero_ids_types_and_fixed_material_sources_roundtrip"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "6b58c6aaaff40eca94fb7969ed6bde19cee36f17759192abf77500d315641971",
+      "exception_sidecar_sha256": "9dd8fbceebff57e1b138e3762d27b76693d62e6d34ff8c16b465619039952e0f"
+    },
+    {
+      "id": "SPM13",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "b0297e45be20b621a16a6041c9082bc9acea3ca5ea95f66375b811b45c1b72b9",
+      "exception_sidecar_sha256": "a2d708c645d3216459d57537d8d2aef9552e54ca62ad2cd885f8454d2276b055"
+    },
+    {
+      "id": "SPM14",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "b083b08ef6dae365d5dea83638892dd6c6483dfb0b7ad18892b3c57f131eb0ac",
+      "exception_sidecar_sha256": "a143645d5c508b0800cb58db2eb01a6c2532b6cbb3a00b70bafda0aa532fad6e"
+    },
+    {
+      "id": "SPM15",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "2691c9806218f54366bf6a09e6bc8e7bb124edf43eaa213aa00d0521d5af789f",
+      "exception_sidecar_sha256": "1dd258509b016f9964bf6bf39d0dcd2195bb2aae4e677a8dd40ac611951dc916"
+    },
+    {
+      "id": "SPM16",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "28b5be76f76d7ea0f190683965ba2ef244dfd5181c0498933e701d4e1b565a58",
+      "exception_sidecar_sha256": "bf5218940141e17b6aaf904a0a8f4cf2402900f12419b28abe528927cb214202"
+    },
+    {
+      "id": "SPM17",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "01f1e3cd289bf4c9c1be67842856b146eb4658cae25719a6ee3bc7f9f2cee242",
+      "exception_sidecar_sha256": "22d5ff8aa96410e46a1e2b08ef9c6dba02a6c8d83f1a491dba3fe90020fbaeac"
+    },
+    {
+      "id": "SPM18",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "2afedd2a98e1c89272d105adc6173189f9cb34ff1d33db2dc531ed9b24380034",
+      "exception_sidecar_sha256": "d62e9f5ffed03da224bab9988d2394f6dca4b6b76b0ce1ef5e1e16861285aeb9"
+    },
+    {
+      "id": "SPM19",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_simple_holes_closed_boundary_vertical_direction_and_invalid_up"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "9e4cf62c61640561ddd4963ad4a5bd55b4b7bf450426536e6c136e6be9ddace0",
+      "exception_sidecar_sha256": "48a4b67307ba9f4559cfc76f64c793ea581c1b78ffff7507233fb92ed06c8b48"
+    },
+    {
+      "id": "SPM20",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_simple_holes_closed_boundary_vertical_direction_and_invalid_up"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "b6decd97ceac6e2b8ae5cdc59b2b49898ae91deb1af458580a38d22ebf0fade2",
+      "exception_sidecar_sha256": "b39a3b2ac6aab0ad5c2cccad9433b7907e83463ddfb79e88d0da664a02c481c3"
+    },
+    {
+      "id": "SPM21",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_simple_holes_closed_boundary_vertical_direction_and_invalid_up"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "562e681168e8eef98e245bbafafaea09d69a314ba711bf6ff0e60d53efd3035e",
+      "exception_sidecar_sha256": "95c4e92156c55f11efb8f0775166760d1efe28c4b2180ab6e225dc7c8a6e96b1"
+    },
+    {
+      "id": "SPM22",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_live_host_follow_detach_conversion_and_atomic_delete"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "1cb4b84056bc661dbb393a111755209b08a7f0402a5df02183518699a5a45801",
+      "exception_sidecar_sha256": "bab4c46be180cb94b4df5a521cd45bc4aee57288e18e4cb243add5da13d6bcad"
+    },
+    {
+      "id": "SPM23",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_conversion_reports_all_unsatisfied_conditions_and_zero_writes"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "7a70087575538d13a7f4db8e20cf9fa8d3b399641727d385515c2f0fb926f294",
+      "exception_sidecar_sha256": "2f3533e2f49287797d45cec8f8de2b3bf0c43188813dd99129e9ccf888670e36"
+    },
+    {
+      "id": "SPM24",
+      "group": "native",
+      "exit": 0,
+      "verdict": "equivalent",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_conversion_reports_all_unsatisfied_conditions_and_zero_writes",
+        "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "failures": 0,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "f0b757393f23d383d44302ff9406460b62e7687561fc1220d493b0a18ac29c35",
+      "exception_sidecar_sha256": "fa3af4111b5bcedc677f959da43a6ef0ac5fb4fa77519d00fbf2d930645af82f"
+    },
+    {
+      "id": "SPM25",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "90068f86dd2af5b013c2f2a70ea495a22301dec003a0b5ed0a561cb50957c0f1",
+      "exception_sidecar_sha256": "2931ad873d0e44f9205cbc944e8474d7cb1c43cf1ac0498d984ee7afb0c40186"
+    },
+    {
+      "id": "SPM26",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_shrink_reject_and_expand_loses_right_contact"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "e57497313f791a8dca941b89199c88c6a70942acef53129d4a49c69bba62f00d",
+      "exception_sidecar_sha256": "753e834f83ef44ce9ec06a68a16137da194de699f5bc18400e8af1e6c064dee5"
+    },
+    {
+      "id": "SPM27",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "bcedf4599e4e09ae8e3fc7bf9d283a0b8b69d2746b20cf5b4b32f00f4173919c",
+      "exception_sidecar_sha256": "cea25bdbaecc6a819e433d9e31057968b469428b85a7fa15ab238f2319aed592"
+    },
+    {
+      "id": "SPM28",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "0e816ab37b6f649f6aebc959ffa95faa89c7669a31cd9ab300c212e7bd1885b8",
+      "exception_sidecar_sha256": "ea067b1011ad771e410ed12b6e66834c7fc799c8d13cd080f87e4ebf45b6b740"
+    },
+    {
+      "id": "SPM29",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "5c38f5b67899d2e3096e17bf47cb4f9f4ccb72d862a926e82bd49a3db7a908d7",
+      "exception_sidecar_sha256": "4272ab10ec5f427643728ea7817739885bb47426b2e98c9b80fe89d66b63b0ed"
+    },
+    {
+      "id": "SPM30",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_ac09_advanced_axes_and_vertex_range"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "448c2e57eca1cdc72b9de7912bc834fbcb8b097ddcf21a4365f50fe34154f976",
+      "exception_sidecar_sha256": "a33679acd4be1d1b3309fd356b487c5cc8bdf3a8fdd1e89b57975ff2f9f0eb6d"
+    },
+    {
+      "id": "SPM31",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_ac01_03_08_independent_rectangles_volumes_and_scope",
+        "tests.test_section_profile_native.SectionProfileNative.test_ac09_advanced_axes_and_vertex_range"
+      ],
+      "failures": 2,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "2b6d4d6aac7d6bdb45c665fd1995a9f5e187b3f3d23c5ee45dd6afdf2dbe1110",
+      "exception_sidecar_sha256": "84ea24c0a5e2ceb8e51d16b91e4445f70e4893483e4badf1d5533a8052ea5e0e"
+    },
+    {
+      "id": "SPM32",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "7eefea25d1a362c4f1d85fe54a2833682af08cc0bff07a567844c44733f457a9",
+      "exception_sidecar_sha256": "20a7e36d1def92211941b13021303be1281f2e67bbc2c0c77a9e6ed17e08dc04"
+    },
+    {
+      "id": "SPM33",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "0c24676db02e3785ae483468870652382e2037677e627edabb2ecc10098e9d4c",
+      "exception_sidecar_sha256": "7efdf9fc140b29cbd133ea54dba673a1444dd62c15dc58a456f2d5b859f79a45"
+    },
+    {
+      "id": "SPM34",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "a66ebd8f0755dd659f2a0103128d1541e48699afa5a55b1cc97b8c7ef8d425f9",
+      "exception_sidecar_sha256": "d9e74ac431bb2ac34bfeec49ee549991b543613c7e004a5625fcca7fd02ffe66"
+    },
+    {
+      "id": "SPM35",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "ea526c173bf6d025004475b8b47958b86ac91ac416ba7ee14f23d0eb740c4b21",
+      "exception_sidecar_sha256": "84f9132ce5c565c35ff30f0a4efe56cc8614a54a0b168e80e0bcc0ec148e6d70"
+    },
+    {
+      "id": "SPM41",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "99b429a0972baff6f569291696be848e1ef2f3bb1e77faf3b12dcb3c1328456f",
+      "exception_sidecar_sha256": "d32f7da80b576c6f22357706c98f8aedb70d7b735ebc7eec4780404ccc8794d0"
+    },
+    {
+      "id": "SPM42",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_ac09_advanced_axes_and_vertex_range"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "25c1dac2f32b70e6db6c3cab5123e28c17c09d569d5958ea60522f8f1c323abb",
+      "exception_sidecar_sha256": "6a2149cc35904cb9e35d5ba1a9c442a7978afbc21606d45d51f1d0476ae166fd"
+    },
+    {
+      "id": "SPM43",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_ac23_panel_width_346_touches_timbers_u"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "b44846b3417c7e83839f91d746a61fa9c183352e6726f2254863e630fe7a4989",
+      "exception_sidecar_sha256": "d142e0bd7adebe636a53b84dd19775892963b0e951e82bc5ffdbf94969eee600"
+    },
+    {
+      "id": "SPM44",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_native.SectionProfileNative.test_ac23_panel_width_346_touches_timbers_v"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "8d6bcbe3e81f9690bad24ced81ce24af0456d061d3aa1e542c89985b483e4c27",
+      "exception_sidecar_sha256": "b98ad9c20f6e45a85fbec738926a037b63efaa59d22ac2f9e59825fbbf605653"
+    },
+    {
+      "id": "SPM36",
+      "group": "model",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_three_timber_members_and_actual_concave_reference_envelope"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "7d61a5f8abca9e3f0c769525cc8f3a2df08da1e44e37476b25565a95297c5728",
+      "exception_sidecar_sha256": "0585417e6e88976cf3236ba259521e32dd103b907e116e4de8f89c080c1d5fb0"
+    },
+    {
+      "id": "SPM37",
+      "group": "model",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_three_timber_members_and_actual_concave_reference_envelope"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "8569ab71e0ca1af66c014ecf8a98df80cdb8f5fcc31a91acb5a5d1841a53c37f",
+      "exception_sidecar_sha256": "d5f198465b6fdf2a4b103d38416095c84a84772d812a75ee98e628bb12302969"
+    },
+    {
+      "id": "SPM38",
+      "group": "model",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_long_panel_is_one_exact_solid_in_both_orientations"
+      ],
+      "failures": 0,
+      "errors": 1,
+      "error_types": [
+        "geometry_app.model_common.ModelError"
+      ],
+      "log_sha256": "24ed9bdadc6f67f2561189c47795f566be47870df90d241edff6141ceb371fe3",
+      "exception_sidecar_sha256": "d84be55045c72ea4367dba0154fc916ca334cf4c86d2395fac6ea36562899884"
+    },
+    {
+      "id": "SPM39",
+      "group": "model",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_advanced_native_frame_controls_world_axes_and_bounds"
+      ],
+      "failures": 1,
+      "errors": 0,
+      "error_types": [],
+      "log_sha256": "800f690946bde6610a7ea6dc2e8f6bf7df5e13ffcba863f39fc4bc9e6c9f6679",
+      "exception_sidecar_sha256": "a534d6bd4a6dfd657142a7f71bda109738e9cb76c9efcada56eab3845dfd6c51"
+    },
+    {
+      "id": "SPM40",
+      "group": "model",
+      "exit": 1,
+      "verdict": "killed",
+      "requested": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_local_runs_do_not_cut_other_local_or_world_mesh_grids"
+      ],
+      "failures": 0,
+      "errors": 1,
+      "error_types": [
+        "geometry_app.model_common.ModelError"
+      ],
+      "log_sha256": "1ea788e9c0b2936af08c5d9c377701f7e89d88f979708297b5b2e4a166bf065d",
+      "exception_sidecar_sha256": "a7928da0a6513c7adf214dd8730d9b100554e306ecf2a1d4389f597998f5b439"
+    }
+  ],
+  "original_regular_files": 300,
+  "original_regular_bytes": 14309477,
+  "original_allocated_bytes": 14876672,
+  "limits": [
+    "No product rerun or read of active checkout; original terminal bytes only.",
+    "Q38 uses disposable copies; source restoration is shared-copy stability plus exact outer before/after, not per-mutant restored-control reruns.",
+    "Inner logs are original complete text stdout+stderr concatenations, not separated raw byte streams. Outer31 c387 commands retain separate full raw streams.",
+    "Original inner child exception-receipt tempfile argv is not retained; only original runner source plus named method receipt defines it. No reconstructed argv presented as original raw.",
+    "Temporary native/mutant adapter ELF and copied source trees were removed by original TemporaryDirectory/finally. Only original compile hash records survive for these; retained baseline model-base rehashed.",
+    "SPM24 is declared equivalent, not a skip. SPM38/SPM40 retain original named ModelError ERROR, not relabeled AssertionError."
+  ],
+  "subject_rerun": false,
+  "published": false,
+  "reviewed_epoch": 1792941018.450515,
+  "checker_sha256": "c6f63699256d64f6baa171505f28606cb6eaee9a9730f0241b4def0a403d21a8",
+  "prior_reader_attempt": {
+    "path": "/workspace/geo337-F9-q38-actual-original-read-20261025/RESULT.json",
+    "exit_code": 1,
+    "cause": "v1 tried evaluating unused patch expression constants and missed PAIR_CORNERS; v2 reads only AST case policy literals, no module execution. Original failure kept; no product rerun."
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "product_execution_sha": "cff51164fe0293c8046aa66d86016cd0be333a08",
+  "new_tests_execution_sha": "b05288e2be691dd5229937ab6c9a1f555b3f64e2",
+  "adopted_into_pr348": false,
+  "original53_exit": 0,
+  "new8_exit": 0,
+  "graph172_exit": 0,
+  "timing_diagnostic": {
+    "candidate": {
+      "source_sha": "b05288e2be691dd5229937ab6c9a1f555b3f64e2",
+      "command": [
+        "/dev/shm/pr348-face-run-feasibility/candidate-bridge"
+      ],
+      "binary_sha256": "743a32db8553dcd47cf680913f495815f14d2487fa1357e148772c5e75ce82a9",
+      "exit": 0,
+      "timeout_triggered": false,
+      "seconds": 34.29947313500452,
+      "usage": {
+        "maxrss_kib": 122092,
+        "user_seconds": 34.041575,
+        "system_seconds": 0.247604
+      },
+      "stdout_sha256": "734401e302ef283ca5f34a0f33f01e57b07ba9018c58cefd536ad511a45a0dbc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_placed_geometry_assertions_exit": 0
+    },
+    "baseline_reused": {
+      "variant": "baseline",
+      "source_sha": "8b128aa7bf53b41b493dd3a0bee49f0d53391254",
+      "command": [
+        "/dev/shm/pr348-tag-pair-256/baseline-bridge"
+      ],
+      "binary_sha256": "1f7b698e288b8b9fcb6f8eb0565c9cb00614753a1992341cf95cf1a169e24f10",
+      "exit": 0,
+      "timeout_triggered": false,
+      "seconds": 34.70129515200097,
+      "usage": {
+        "maxrss_kib": 122108,
+        "user_seconds": 34.399613,
+        "system_seconds": 0.287568
+      },
+      "stdout_sha256": "734401e302ef283ca5f34a0f33f01e57b07ba9018c58cefd536ad511a45a0dbc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_placed_geometry_assertions_exit": 0
+    },
+    "streams_identical": true,
+    "not_formal_512_acceptance": true,
+    "exit": 0
+  },
+  "formal_h7_completed_on_this_source": false,
+  "archive_bytes": 3923748,
+  "archive_sha256": "ede89295729965303cc4b1db185a60db41f1e7af227cd42d8a98c6eea99cd915",
+  "files": 4172
+}

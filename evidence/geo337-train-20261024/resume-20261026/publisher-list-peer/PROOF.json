@@ -1,0 +1,41 @@
+[
+  {
+    "case": "fixed",
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-c",
+      "import json,sys\nchecked={'a'*40:{'bytes':17,'sha256':'b'*64},'c'*40:{'bytes':29,'sha256':'d'*64}}\nremote=checked if sys.argv[1]=='withdrawn' else [dict(blob_oid=blob,**identity) for blob,identity in checked.items()]\nfor blob,identity in checked.items():\n size,pin=identity['bytes'],identity['sha256']\n found=[r for r in remote if r['bytes']==size and r['sha256']==pin]\n assert len(found)==1 and found[0]['blob_oid']==blob\nprint(json.dumps({'case':sys.argv[1],'matched':len(checked),'same_verified_identities':True}))\n",
+      "fixed"
+    ],
+    "actual_process_returncode": 0,
+    "stdout": "{\"case\": \"fixed\", \"matched\": 2, \"same_verified_identities\": true}\n",
+    "stderr": ""
+  },
+  {
+    "case": "withdrawn",
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-c",
+      "import json,sys\nchecked={'a'*40:{'bytes':17,'sha256':'b'*64},'c'*40:{'bytes':29,'sha256':'d'*64}}\nremote=checked if sys.argv[1]=='withdrawn' else [dict(blob_oid=blob,**identity) for blob,identity in checked.items()]\nfor blob,identity in checked.items():\n size,pin=identity['bytes'],identity['sha256']\n found=[r for r in remote if r['bytes']==size and r['sha256']==pin]\n assert len(found)==1 and found[0]['blob_oid']==blob\nprint(json.dumps({'case':sys.argv[1],'matched':len(checked),'same_verified_identities':True}))\n",
+      "withdrawn"
+    ],
+    "actual_process_returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 6, in <module>\nTypeError: string indices must be integers, not 'str'\n"
+  },
+  {
+    "case": "restored",
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-c",
+      "import json,sys\nchecked={'a'*40:{'bytes':17,'sha256':'b'*64},'c'*40:{'bytes':29,'sha256':'d'*64}}\nremote=checked if sys.argv[1]=='withdrawn' else [dict(blob_oid=blob,**identity) for blob,identity in checked.items()]\nfor blob,identity in checked.items():\n size,pin=identity['bytes'],identity['sha256']\n found=[r for r in remote if r['bytes']==size and r['sha256']==pin]\n assert len(found)==1 and found[0]['blob_oid']==blob\nprint(json.dumps({'case':sys.argv[1],'matched':len(checked),'same_verified_identities':True}))\n",
+      "restored"
+    ],
+    "actual_process_returncode": 0,
+    "stdout": "{\"case\": \"restored\", \"matched\": 2, \"same_verified_identities\": true}\n",
+    "stderr": ""
+  }
+]

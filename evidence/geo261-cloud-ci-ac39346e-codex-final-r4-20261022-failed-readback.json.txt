@@ -1,0 +1,2180 @@
+{
+  "sha": "ac39346e74ca2ab6fc5bb0053024bd26f8af06b2",
+  "ci_label": "codex-final-r4-20261022",
+  "all_seven_completed": true,
+  "passed": false,
+  "verdict": "red: native",
+  "jobs": {
+    "assembly": {
+      "exit_code": 0,
+      "seconds": 377.3,
+      "over_ci_timeout": false,
+      "parsed": {
+        "kind": "cdp",
+        "passed": 150,
+        "failed": 0,
+        "completed": true,
+        "skipped_groups": [],
+        "scope": "partial",
+        "golden": "not compared (partial mode)",
+        "uncaught_browser_exceptions": 0,
+        "fatal": null,
+        "sections_failed": null,
+        "failed_assertion_lines": []
+      },
+      "result_sha256": "c17184edee8f31728ef522f9b79262d8168a6f85db956a43b76c2f18a1f2a9cd",
+      "log_sha256": "640523ba4c4ee2110a75caf184891ecedf559e092b1b56ebdf684274bb362d91"
+    },
+    "canvas": {
+      "exit_code": 0,
+      "seconds": 2777.5,
+      "over_ci_timeout": true,
+      "parsed": {
+        "kind": "cdp",
+        "passed": 2267,
+        "failed": 0,
+        "completed": true,
+        "skipped_groups": [],
+        "scope": "full",
+        "golden": "matched",
+        "uncaught_browser_exceptions": 1,
+        "fatal": null,
+        "sections_failed": null,
+        "failed_assertion_lines": []
+      },
+      "result_sha256": "bbf4534b2e4aae5667bd364c25444754d9693e28c06066f47accd697d6871150",
+      "log_sha256": "3f208d0aa34006d15e45685bd8a46390ec97a046272f9970f4c7ea8644dcde5d"
+    },
+    "documents": {
+      "exit_code": 0,
+      "seconds": 182.9,
+      "over_ci_timeout": false,
+      "parsed": {
+        "kind": "documents",
+        "passed": 47,
+        "failed": 0,
+        "completed": true,
+        "failed_assertion_lines": []
+      },
+      "result_sha256": "2789bea2a2883248431b060a30b85dbff4f2568822a3ef360d5cc9de09ad06e2",
+      "log_sha256": "206071c26984a5583e197db682f102025ed801a6c98c3d51e50f0fbacbb49743"
+    },
+    "grid": {
+      "exit_code": 0,
+      "seconds": 758.8,
+      "over_ci_timeout": false,
+      "parsed": {
+        "kind": "cdp",
+        "passed": 356,
+        "failed": 0,
+        "completed": true,
+        "skipped_groups": [],
+        "scope": "partial",
+        "golden": "not compared (partial mode)",
+        "uncaught_browser_exceptions": 0,
+        "fatal": null,
+        "sections_failed": null,
+        "failed_assertion_lines": []
+      },
+      "result_sha256": "bd7cf82da700aeb1a996623a0684a29b610190ba1a80d4a9476e8c6d944ec1d9",
+      "log_sha256": "1ce390e02aea3fb17d862036af6ab9b6d755f7f86c3f27ed58c2f202a6f94ec1"
+    },
+    "native": {
+      "exit_code": 1,
+      "seconds": 4771.2,
+      "over_ci_timeout": true,
+      "parsed": {
+        "totals": {
+          "total": 5177,
+          "passed": 5175,
+          "failed": 1,
+          "skipped": 1,
+          "seconds": 4491.4
+        },
+        "rows": [
+          {
+            "suite": "c:integrity",
+            "total": "432",
+            "passed": "432",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "12.3",
+            "note": "C 檢查點數（非 test 級）"
+          },
+          {
+            "suite": "core:run_tests",
+            "total": "165",
+            "passed": "165",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "43.9",
+            "note": ""
+          },
+          {
+            "suite": "mutation:check",
+            "total": "-",
+            "passed": "-",
+            "failed": "-",
+            "skipped": "-",
+            "seconds": "5.5",
+            "note": "mutation inventory freshness (not test assertions); exit 0"
+          },
+          {
+            "suite": "oracle:framing-selftest",
+            "total": "-",
+            "passed": "ok",
+            "failed": "-",
+            "skipped": "-",
+            "seconds": "215.5",
+            "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+          },
+          {
+            "suite": "py:test_architecture_contract",
+            "total": "205",
+            "passed": "205",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "3.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_assembly_candidate_impact",
+            "total": "4",
+            "passed": "4",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "4.8",
+            "note": ""
+          },
+          {
+            "suite": "py:test_assembly_capacity",
+            "total": "5",
+            "passed": "5",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "13.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_assembly_generation",
+            "total": "22",
+            "passed": "22",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "32.8",
+            "note": ""
+          },
+          {
+            "suite": "py:test_assembly_mutation_check",
+            "total": "12",
+            "passed": "12",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "5.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_assembly_native_diagnostics",
+            "total": "8",
+            "passed": "8",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "4.8",
+            "note": ""
+          },
+          {
+            "suite": "py:test_assembly_parameter_refs",
+            "total": "3",
+            "passed": "3",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "5.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_assembly_rules",
+            "total": "36",
+            "passed": "36",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "23.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_axiom_reader",
+            "total": "51",
+            "passed": "51",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "452.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_binaries",
+            "total": "36",
+            "passed": "36",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "2.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_bridge_integrity",
+            "total": "24",
+            "passed": "24",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "126.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_cli_args",
+            "total": "6",
+            "passed": "6",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "3.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_datum_contract",
+            "total": "9",
+            "passed": "9",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "36.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_domain_decoupling_adoption",
+            "total": "15",
+            "passed": "15",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "1.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_domain_decoupling_compatibility",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_domain_decoupling_proposal",
+            "total": "29",
+            "passed": "29",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "1.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_domain_source_pins",
+            "total": "16",
+            "passed": "16",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "3.8",
+            "note": ""
+          },
+          {
+            "suite": "py:test_engineering_core",
+            "total": "18",
+            "passed": "18",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "17.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_engineering_json",
+            "total": "7",
+            "passed": "7",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "1.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_engineering_model_compatibility",
+            "total": "44",
+            "passed": "44",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "38.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_engineering_model_sources",
+            "total": "4",
+            "passed": "4",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "9.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_engineering_transport",
+            "total": "7",
+            "passed": "7",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_evidence_link_native",
+            "total": "6",
+            "passed": "6",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "4.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_feedback_store",
+            "total": "11",
+            "passed": "11",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "1.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_gdi_contract",
+            "total": "1",
+            "passed": "0",
+            "failed": "0",
+            "skipped": "1",
+            "seconds": "0.8",
+            "note": "skip：requires compiled Windows GDI contract harness ×1（其中 1 個在具名允許清單，平台固有，不計入 exit 3）；日誌 /tmp/geometry-tests/run_all-logs/py_test_gdi_contract.log"
+          },
+          {
+            "suite": "py:test_geo261_application_closure",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "32.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_assembly_definition_authority",
+            "total": "15",
+            "passed": "15",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "17.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_assembly_graph_product",
+            "total": "4",
+            "passed": "4",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "19.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_assembly_sources",
+            "total": "8",
+            "passed": "8",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "8.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_candidate_cache",
+            "total": "18",
+            "passed": "18",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_candidate_deferred_sha",
+            "total": "11",
+            "passed": "11",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "5.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_candidate_product",
+            "total": "26",
+            "passed": "26",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "25.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_contact_sources",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "9.8",
+            "note": "預期數不符：預期 12、實得 13（test；新增／減少 test 後須明確 --update-expected）"
+          },
+          {
+            "suite": "py:test_geo261_default_native",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "18.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_deferred_candidate",
+            "total": "53",
+            "passed": "53",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "10.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_deferred_product",
+            "total": "10",
+            "passed": "10",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "40.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_definition_graph_product",
+            "total": "5",
+            "passed": "5",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "15.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_definition_sources",
+            "total": "7",
+            "passed": "7",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_derived_policy_graph_product",
+            "total": "4",
+            "passed": "4",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "27.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_derived_policy_sources",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "8.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_domain_product",
+            "total": "9",
+            "passed": "9",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "15.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_draw_annotation",
+            "total": "4",
+            "passed": "4",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "12.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_enclosure_definition_authority",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_enclosure_product",
+            "total": "5",
+            "passed": "5",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "16.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_enclosure_sources",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "8.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_engineering_parameter_authority",
+            "total": "17",
+            "passed": "17",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "15.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_engineering_sources",
+            "total": "18",
+            "passed": "18",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "13.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_finish_definition_authority",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "19.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_finish_sources",
+            "total": "8",
+            "passed": "8",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "12.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_graph_product",
+            "total": "5",
+            "passed": "5",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "15.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_grid_definition_authority",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_grid_definition_codec",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "9.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_grid_definitions_product",
+            "total": "5",
+            "passed": "5",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "18.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_grid_sources",
+            "total": "12",
+            "passed": "12",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "10.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_guides_product",
+            "total": "2",
+            "passed": "2",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_host_authority",
+            "total": "18",
+            "passed": "18",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "31.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_host_candidate",
+            "total": "17",
+            "passed": "17",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_host_facts_authority",
+            "total": "17",
+            "passed": "17",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "46.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_host_history",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "18.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_host_placement_definition",
+            "total": "7",
+            "passed": "7",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "15.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_linear_definition_graph_product",
+            "total": "8",
+            "passed": "8",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "23.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_linear_definition_sources",
+            "total": "15",
+            "passed": "15",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "19.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_member_reference",
+            "total": "11",
+            "passed": "11",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "23.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_model_base_replay",
+            "total": "6",
+            "passed": "6",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "41.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_model_semantics_authority",
+            "total": "12",
+            "passed": "12",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "40.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_model_sources",
+            "total": "12",
+            "passed": "12",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "17.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_model_vertex_ledger",
+            "total": "7",
+            "passed": "7",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "35.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_mutation_migration",
+            "total": "15",
+            "passed": "15",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "10.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_candidate",
+            "total": "17",
+            "passed": "17",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "8.8",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_datums",
+            "total": "7",
+            "passed": "7",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "12.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_document",
+            "total": "10",
+            "passed": "10",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "6.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_enclosures",
+            "total": "19",
+            "passed": "19",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "9.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_entrypoints",
+            "total": "3",
+            "passed": "3",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "18.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_geometry",
+            "total": "7",
+            "passed": "7",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "12.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_grid",
+            "total": "8",
+            "passed": "8",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "12.8",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_grid_product",
+            "total": "5",
+            "passed": "5",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "16.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_grid_rules",
+            "total": "9",
+            "passed": "9",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "8.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_grid_store",
+            "total": "18",
+            "passed": "18",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "21.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_guides",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_kernel",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "26.8",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_linear",
+            "total": "6",
+            "passed": "6",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_parameters",
+            "total": "9",
+            "passed": "9",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_placements",
+            "total": "12",
+            "passed": "12",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_regions",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "6.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_sources",
+            "total": "9",
+            "passed": "9",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_native_versions",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "6.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_panel_native",
+            "total": "10",
+            "passed": "10",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_parameter_definition_sources",
+            "total": "20",
+            "passed": "20",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "5.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_parameter_sources",
+            "total": "12",
+            "passed": "12",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "12.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_placement_definition",
+            "total": "15",
+            "passed": "15",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "5.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_placement_sources",
+            "total": "21",
+            "passed": "21",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "6.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_region_edges",
+            "total": "8",
+            "passed": "8",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_region_key_sources",
+            "total": "15",
+            "passed": "15",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "4.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_regions_product",
+            "total": "2",
+            "passed": "2",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "13.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_section_profile_authority",
+            "total": "15",
+            "passed": "15",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_section_profile_sources",
+            "total": "9",
+            "passed": "9",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "9.8",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_source_context",
+            "total": "8",
+            "passed": "8",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "6.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_source_describe",
+            "total": "7",
+            "passed": "7",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "5.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_source_index",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "5.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_staged_candidate_graph",
+            "total": "7",
+            "passed": "7",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_version_activation",
+            "total": "10",
+            "passed": "10",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "15.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_version_field_sources",
+            "total": "19",
+            "passed": "19",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "17.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_assembly",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "13.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_contact_world",
+            "total": "10",
+            "passed": "9",
+            "failed": "1",
+            "skipped": "0",
+            "seconds": "14.3",
+            "note": "日誌 /tmp/geometry-tests/run_all-logs/py_test_geo261_wood_contact_world.log"
+          },
+          {
+            "suite": "py:test_geo261_wood_contacts",
+            "total": "10",
+            "passed": "10",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_contacts_product",
+            "total": "1",
+            "passed": "1",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_derived_placement",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "12.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_engineering",
+            "total": "12",
+            "passed": "12",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "13.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_engineering_operations",
+            "total": "15",
+            "passed": "15",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_finish",
+            "total": "12",
+            "passed": "12",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "13.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_grid_application",
+            "total": "11",
+            "passed": "11",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_grid_cells",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "12.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_grid_engineering",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_member_declaration",
+            "total": "9",
+            "passed": "9",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_members",
+            "total": "10",
+            "passed": "10",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "6.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_product",
+            "total": "2",
+            "passed": "2",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_report_policy",
+            "total": "8",
+            "passed": "8",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "15.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_section_profile",
+            "total": "12",
+            "passed": "12",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "16.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_supports",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_supports_product",
+            "total": "2",
+            "passed": "2",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "11.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geo261_wood_world_validation",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "17.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geometry_host_native",
+            "total": "30",
+            "passed": "30",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "31.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geometry_host_sources",
+            "total": "39",
+            "passed": "39",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "4.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geometry_host_world",
+            "total": "8",
+            "passed": "8",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.8",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geometry_kernel_compatibility",
+            "total": "1",
+            "passed": "1",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.8",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geometry_kernel_geometry",
+            "total": "20",
+            "passed": "20",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geometry_kernel_graph",
+            "total": "30",
+            "passed": "30",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geometry_kernel_isolation",
+            "total": "2",
+            "passed": "2",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "4.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geometry_kernel_runtime",
+            "total": "10",
+            "passed": "10",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "4.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geometry_kernel_session",
+            "total": "5",
+            "passed": "5",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.8",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geometry_kernel_transactions",
+            "total": "31",
+            "passed": "31",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_geometry_source_runtime",
+            "total": "10",
+            "passed": "10",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "6.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_grid_card_reference",
+            "total": "43",
+            "passed": "43",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "31.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_grid_inspector_contract",
+            "total": "3",
+            "passed": "3",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "8.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_grid_subdivision_oracle",
+            "total": "41",
+            "passed": "41",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "30.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_grid_system_contract",
+            "total": "15",
+            "passed": "15",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "10.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_grid_trial_contract",
+            "total": "5",
+            "passed": "5",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "2.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_guide_panels",
+            "total": "1",
+            "passed": "1",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_infinite_grid_contract",
+            "total": "25",
+            "passed": "25",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "20.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_local_launcher",
+            "total": "17",
+            "passed": "17",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "6.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_model_update",
+            "total": "26",
+            "passed": "26",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "370.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_modeling_degenerate",
+            "total": "24",
+            "passed": "24",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "4.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_modeling_runtime",
+            "total": "46",
+            "passed": "46",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "10.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_modeling_transport",
+            "total": "3",
+            "passed": "3",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_mutation_anchors",
+            "total": "3",
+            "passed": "3",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "1.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_mutation_freshness",
+            "total": "73",
+            "passed": "73",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_panel_fill_finish_surface",
+            "total": "22",
+            "passed": "22",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "16.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_panel_fill_host",
+            "total": "32",
+            "passed": "32",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "29.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_panel_fill_layout",
+            "total": "18",
+            "passed": "18",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "15.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_panel_fill_support",
+            "total": "20",
+            "passed": "20",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "27.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_parameter_netzero",
+            "total": "4",
+            "passed": "4",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "2.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_parameter_retirement_scope",
+            "total": "6",
+            "passed": "6",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "3.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_parameters_candidate_value_history",
+            "total": "12",
+            "passed": "12",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "7.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_parameters_core",
+            "total": "40",
+            "passed": "40",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "27.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_parameters_deleted_unbind",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "9.8",
+            "note": ""
+          },
+          {
+            "suite": "py:test_parameters_final_candidate",
+            "total": "4",
+            "passed": "4",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "3.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_parameters_unbind_scope",
+            "total": "8",
+            "passed": "8",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "5.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_parameters_upstream_unbind",
+            "total": "12",
+            "passed": "12",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "8.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_product_architecture",
+            "total": "18",
+            "passed": "18",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "40.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_recorded_api_receipts",
+            "total": "17",
+            "passed": "17",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "1.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_rectangular_bridge",
+            "total": "2",
+            "passed": "2",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "3.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_rectangular_python",
+            "total": "9",
+            "passed": "9",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "6.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_rectangular_template",
+            "total": "11",
+            "passed": "11",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "1.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_reference_contract",
+            "total": "51",
+            "passed": "51",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "68.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_release_gate",
+            "total": "21",
+            "passed": "21",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "1.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_rule_case_catalog",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "6.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_rule_case_definition",
+            "total": "27",
+            "passed": "27",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "1.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_rule_case_executor",
+            "total": "40",
+            "passed": "40",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "15.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_rule_case_host",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "4.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_rule_case_request",
+            "total": "5",
+            "passed": "5",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "5.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_rule_case_workbench_http",
+            "total": "19",
+            "passed": "19",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "106.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_runtime_version",
+            "total": "31",
+            "passed": "31",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "3.2",
+            "note": ""
+          },
+          {
+            "suite": "py:test_scenario_verify",
+            "total": "37",
+            "passed": "37",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "115.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_scene_import",
+            "total": "10",
+            "passed": "10",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "9.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_section_profile_modeling",
+            "total": "20",
+            "passed": "20",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "17.3",
+            "note": ""
+          },
+          {
+            "suite": "py:test_section_profile_mutation_check",
+            "total": "30",
+            "passed": "30",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "3.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_section_profile_native",
+            "total": "28",
+            "passed": "28",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "35.0",
+            "note": ""
+          },
+          {
+            "suite": "py:test_serve",
+            "total": "51",
+            "passed": "51",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "120.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_source_closure_memo",
+            "total": "16",
+            "passed": "16",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "3.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_source_inspector",
+            "total": "18",
+            "passed": "18",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "14.7",
+            "note": ""
+          },
+          {
+            "suite": "py:test_source_inspector_transport",
+            "total": "2",
+            "passed": "2",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.6",
+            "note": ""
+          },
+          {
+            "suite": "py:test_space_modeling",
+            "total": "40",
+            "passed": "40",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "166.1",
+            "note": ""
+          },
+          {
+            "suite": "py:test_subgrid_contract",
+            "total": "31",
+            "passed": "31",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "25.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_timber_support_projection",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "47.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_unittest_runner",
+            "total": "1",
+            "passed": "1",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "4.5",
+            "note": ""
+          },
+          {
+            "suite": "py:test_wait_trace",
+            "total": "20",
+            "passed": "20",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "9.9",
+            "note": ""
+          },
+          {
+            "suite": "py:test_witness_diagnostics",
+            "total": "2",
+            "passed": "2",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "1.4",
+            "note": ""
+          },
+          {
+            "suite": "py:test_witness_marks",
+            "total": "6",
+            "passed": "6",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.8",
+            "note": ""
+          },
+          {
+            "suite": "node:tests-js",
+            "total": "737",
+            "passed": "737",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "345.7",
+            "note": ""
+          },
+          {
+            "suite": "node:model_viewer",
+            "total": "-",
+            "passed": "ok",
+            "failed": "-",
+            "skipped": "-",
+            "seconds": "6.2",
+            "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+          },
+          {
+            "suite": "node:polydraft",
+            "total": "75",
+            "passed": "75",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "94.3",
+            "note": ""
+          },
+          {
+            "suite": "node:canvas_direct",
+            "total": "408",
+            "passed": "408",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "15.4",
+            "note": "斷言數；preload 已把 web_bridge.exe 的 spawn 轉向 /tmp/geometry-tests/bridge（標記檔 1 筆為證）"
+          },
+          {
+            "suite": "node:document_format",
+            "total": "-",
+            "passed": "ok",
+            "failed": "-",
+            "skipped": "-",
+            "seconds": "0.6",
+            "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+          },
+          {
+            "suite": "node:document_cases",
+            "total": "-",
+            "passed": "ok",
+            "failed": "-",
+            "skipped": "-",
+            "seconds": "1.3",
+            "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+          },
+          {
+            "suite": "node:cdp_navigation",
+            "total": "-",
+            "passed": "ok",
+            "failed": "-",
+            "skipped": "-",
+            "seconds": "0.2",
+            "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+          },
+          {
+            "suite": "node:cdp_confirmation_gate",
+            "total": "-",
+            "passed": "ok",
+            "failed": "-",
+            "skipped": "-",
+            "seconds": "0.1",
+            "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+          },
+          {
+            "suite": "node:draw_annotation",
+            "total": "7",
+            "passed": "7",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.5",
+            "note": ""
+          },
+          {
+            "suite": "node:woodworking_frontend",
+            "total": "17",
+            "passed": "17",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.4",
+            "note": ""
+          },
+          {
+            "suite": "node:grid_inspector_command",
+            "total": "9",
+            "passed": "9",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.3",
+            "note": ""
+          },
+          {
+            "suite": "node:grid_lesson_control_ownership",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.3",
+            "note": ""
+          },
+          {
+            "suite": "node:parameter_confirmation_settlement",
+            "total": "16",
+            "passed": "16",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.4",
+            "note": ""
+          },
+          {
+            "suite": "node:face_reference_settlement",
+            "total": "18",
+            "passed": "18",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.3",
+            "note": ""
+          },
+          {
+            "suite": "node:face_projection_lifecycle",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.3",
+            "note": ""
+          },
+          {
+            "suite": "node:workspace_shell_history",
+            "total": "28",
+            "passed": "28",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.4",
+            "note": ""
+          },
+          {
+            "suite": "node:feedback_events",
+            "total": "41",
+            "passed": "41",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.4",
+            "note": ""
+          },
+          {
+            "suite": "node:space_test_floor",
+            "total": "10",
+            "passed": "10",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.3",
+            "note": ""
+          },
+          {
+            "suite": "node:history_operation",
+            "total": "4",
+            "passed": "4",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.4",
+            "note": ""
+          },
+          {
+            "suite": "node:context_operations",
+            "total": "12",
+            "passed": "12",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.4",
+            "note": ""
+          },
+          {
+            "suite": "node:cdp_evaluation",
+            "total": "9",
+            "passed": "9",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.4",
+            "note": ""
+          },
+          {
+            "suite": "node:cdp_settle",
+            "total": "10",
+            "passed": "10",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.3",
+            "note": ""
+          },
+          {
+            "suite": "node:cdp_card_position",
+            "total": "21",
+            "passed": "21",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.6",
+            "note": ""
+          },
+          {
+            "suite": "node:background_grid_viewport",
+            "total": "9",
+            "passed": "9",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.5",
+            "note": ""
+          },
+          {
+            "suite": "node:anchor_band_clip",
+            "total": "14",
+            "passed": "14",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.5",
+            "note": ""
+          },
+          {
+            "suite": "node:hover_pick_scheduler",
+            "total": "19",
+            "passed": "19",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.5",
+            "note": ""
+          },
+          {
+            "suite": "node:face_paint_scheduler",
+            "total": "7",
+            "passed": "7",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.3",
+            "note": ""
+          },
+          {
+            "suite": "node:room_outline_worker",
+            "total": "6",
+            "passed": "6",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.3",
+            "note": ""
+          },
+          {
+            "suite": "node:room_outline_closeout",
+            "total": "24",
+            "passed": "24",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.7",
+            "note": ""
+          },
+          {
+            "suite": "node:evidence_links",
+            "total": "29",
+            "passed": "29",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.4",
+            "note": ""
+          },
+          {
+            "suite": "node:evidence_project_store",
+            "total": "7",
+            "passed": "7",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.6",
+            "note": ""
+          },
+          {
+            "suite": "node:grid_definition_diagram",
+            "total": "13",
+            "passed": "13",
+            "failed": "0",
+            "skipped": "0",
+            "seconds": "0.4",
+            "note": ""
+          }
+        ],
+        "run_all_exit": 1,
+        "run_all_meaning": "有 fail／逾時／預期數不符／未登記檔",
+        "suites_ran": 223,
+        "failure_details": [
+          "  py:test_geo261_wood_contact_world",
+          "    - test_geo261_wood_contact_world.WoodContactWorld.test_twenty_actual_guard_controls_fail_the_named_numeric_assertions (control='equal-order-dedup') [failure] AssertionError: 1 != 0 : Control must change one actual site: equal-order-dedup"
+        ],
+        "failed_suites": [
+          "py:test_geo261_wood_contact_world"
+        ],
+        "unittest_fail_lines": []
+      },
+      "result_sha256": "c85c3e7ab2e3cfc3443cb54c1e7d59f9045b747844b5710b7339cb54e09cc5c3",
+      "log_sha256": "f61941a6f4fdbd3f6a5771323751b75dc334964448a22280f4ff4612f39b8f17"
+    },
+    "space": {
+      "exit_code": 0,
+      "seconds": 472.5,
+      "over_ci_timeout": false,
+      "parsed": {
+        "kind": "space",
+        "passed": 242,
+        "failed": 0,
+        "completed": true,
+        "scope": "full-space-suite",
+        "skipped_groups": [
+          "timber-material",
+          "timber-source-guards"
+        ],
+        "exceptions": [],
+        "console_errors": [],
+        "failed_assertion_lines": []
+      },
+      "result_sha256": "b04f2debd865e80f37b981e701b7e739a60c24cead987d984a13e57f0c6a6817",
+      "log_sha256": "3832b2e3a81cfb4850f4790880fe815f418e5afae3611b9bd68f7a8165954b61"
+    },
+    "timber": {
+      "exit_code": 0,
+      "seconds": 277.9,
+      "over_ci_timeout": false,
+      "parsed": {
+        "kind": "space",
+        "passed": 79,
+        "failed": 0,
+        "completed": true,
+        "scope": "partial",
+        "skipped_groups": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "space-flow",
+          "projection-close"
+        ],
+        "exceptions": [],
+        "console_errors": [],
+        "failed_assertion_lines": []
+      },
+      "result_sha256": "ba05ebfaacf50e037b0ebf9d1b68a30b5a164176c69a88a7ffc82a4e711586d6",
+      "log_sha256": "a4a67de5b921d29f01893a3162824716fadb975a688ead075114afaa52877954"
+    }
+  },
+  "host_exit": 1,
+  "supervisor_exit": 1,
+  "remaining": [],
+  "max_parallel": 1,
+  "exclusive_during_run": true,
+  "receipt_sha256": "f57e1ccd687058c1929dc7e7c176cf0b51b5e7bbda4421987fc81ebdefd8dd33",
+  "verifier_sha256": "bce0c3c3fb3b870c8c72735edff15c30e62e453c9d0b67d0be875e819fd0c82d"
+}

@@ -1,0 +1,110 @@
+{
+  "kind": "five-stage-build-and-grid-sources-pass-focused-grid-definitions-scene-rejection",
+  "source": "12422c69e4ca1a0e1aed575fcf8e5a67816b5cfb",
+  "tree": "f4e316eabd4695329e08292ed9e7a31d9a36b6f2",
+  "gate": {
+    "status": "PASS",
+    "stages": 5,
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\build-gate-12422c69-v1\\result\\summary.json",
+    "sha256": "48831a0e4d5e9c976ea9d1d86d5a75b0a3d49be2868b8fe2fca7f546fee05dd1"
+  },
+  "focused": {
+    "status": "FAIL",
+    "planned_methods": 72,
+    "actual_methods": 15,
+    "pass": 11,
+    "fail": 4,
+    "unrun": 57,
+    "groups": {
+      "grid-sources": {
+        "passed": 11
+      },
+      "grid-definitions-product": {
+        "failed": 4
+      },
+      "engineering-sources": {
+        "UNRUN": 18
+      },
+      "derived-policy-sources": {
+        "UNRUN": 14
+      },
+      "derived-policy-graph-product": {
+        "UNRUN": 4
+      },
+      "contact-sources": {
+        "UNRUN": 12
+      },
+      "native-sources": {
+        "UNRUN": 9
+      }
+    },
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\focused-12422c69-v3\\result\\summary.json",
+    "sha256": "db6c14836ffc671ec07315860a746e25d1c623f06f20f102ed8b79d09f937a49",
+    "started": "2026-10-16T17:37:01.810855+00:00",
+    "finished": "2026-10-16T17:37:24.442934+00:00",
+    "failure_details": [
+      {
+        "test": "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_actual_binding_uses_both_vertex_quantities_and_full_key_ledger",
+        "subtest": null,
+        "classification": "test-assertion-failure",
+        "exceptionType": "AssertionError",
+        "message": "0 != 1 : /tmp/geometry-tests/geo261-n1a-rt0kctdk/model-neutral.scene:3: D30/I37: a grid binding references a missing boundary vertex key\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 3: D30/I37: a grid binding references a missing boundary vertex key\"}\n",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 42, in test_actual_binding_uses_both_vertex_quantities_and_full_key_ledger\n    envelope=self.execute(SCENE);nodes=self.nodes(envelope)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_model_sources.py\", line 39, in execute\n    self.assertEqual(0,run.returncode,run.stderr+'\\n'+run.stdout)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : /tmp/geometry-tests/geo261-n1a-rt0kctdk/model-neutral.scene:3: D30/I37: a grid binding references a missing boundary vertex key\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 3: D30/I37: a grid binding references a missing boundary vertex key\"}\n\n"
+      },
+      {
+        "test": "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_changed_kernel_coordinate_is_observed_by_the_real_grid_cache",
+        "subtest": null,
+        "classification": "test-assertion-failure",
+        "exceptionType": "AssertionError",
+        "message": "0 != 1 : \n/tmp/geometry-tests/geo261-n1a-rt0kctdk/grid-key-product.scene:3: D30/I37: a grid binding references a missing boundary vertex key\nASSERT:grid-key-original-scene\n",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 74, in test_changed_kernel_coordinate_is_observed_by_the_real_grid_cache\n    baseline=build.link('grid-key-product-baseline',[client,*build.product_objects()]);self.run_client(baseline,scene)\n                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 64, in run_client\n    self.assertEqual(1 if marker else 0,result.returncode,result.stdout+'\\n'+result.stderr)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : \n/tmp/geometry-tests/geo261-n1a-rt0kctdk/grid-key-product.scene:3: D30/I37: a grid binding references a missing boundary vertex key\nASSERT:grid-key-original-scene\n\n"
+      },
+      {
+        "test": "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_preview_confirm_and_undo_keep_the_actual_shared_key_graph",
+        "subtest": null,
+        "classification": "test-assertion-failure",
+        "exceptionType": "AssertionError",
+        "message": "0 != 1 : \n/tmp/geometry-tests/geo261-n1a-rt0kctdk/grid-key-product.scene:3: D30/I37: a grid binding references a missing boundary vertex key\nASSERT:grid-key-original-scene\n",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 70, in test_preview_confirm_and_undo_keep_the_actual_shared_key_graph\n    self.run_client(build.link('grid-key-product',[client,*build.product_objects()]),scene)\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 64, in run_client\n    self.assertEqual(1 if marker else 0,result.returncode,result.stdout+'\\n'+result.stderr)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : \n/tmp/geometry-tests/geo261-n1a-rt0kctdk/grid-key-product.scene:3: D30/I37: a grid binding references a missing boundary vertex key\nASSERT:grid-key-original-scene\n\n"
+      },
+      {
+        "test": "tests.test_geo261_grid_definitions_product.GridDefinitionsProduct.test_unused_direct_and_manual_child_definitions_are_in_the_actual_model_graph",
+        "subtest": null,
+        "classification": "test-assertion-failure",
+        "exceptionType": "AssertionError",
+        "message": "0 != 1 : /tmp/geometry-tests/geo261-n1a-rt0kctdk/model-neutral.scene:3: D30/I37: a grid binding references a missing boundary vertex key\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 3: D30/I37: a grid binding references a missing boundary vertex key\"}\n",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_grid_definitions_product.py\", line 30, in test_unused_direct_and_manual_child_definitions_are_in_the_actual_model_graph\n    envelope=self.execute(SCENE);nodes=self.nodes(envelope)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-12422c69-v3/source/tests/test_geo261_model_sources.py\", line 39, in execute\n    self.assertEqual(0,run.returncode,run.stderr+'\\n'+run.stdout)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : /tmp/geometry-tests/geo261-n1a-rt0kctdk/model-neutral.scene:3: D30/I37: a grid binding references a missing boundary vertex key\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 3: D30/I37: a grid binding references a missing boundary vertex key\"}\n\n"
+      }
+    ],
+    "compiler_commands": 86,
+    "build_artifact_count": 220,
+    "artifact_preservation": {
+      "status": "complete",
+      "error": null
+    }
+  },
+  "readonly_observation": {
+    "kind": "exact-source-control-flow-and-captured-assertion-output",
+    "corrected_grid_query": {
+      "status": "PASS",
+      "query_succeeded": true,
+      "coordinate": 125,
+      "basis": "The complete engineering case passed its wood_grid_sources_line(...) && value==125 CHECK at harness118."
+    },
+    "grid_definitions_failure": "All four methods reject the fixture at scene line3 before graph assertions or preview.",
+    "origin": "Explicit vertex-key branch grid_bindings.inc:21-22 parses the supplied key but does not initialize a ledger; the geometry-hash vertex branch initializes at37. Staged revalidation at52 calls boundary_keys_reconcile through current_geometry.c:6247; boundary_vertex_keys.inc:128-129 rejects the missing referenced key.",
+    "negative_control_not_executed": "The changed-coordinate method fails at its initial baseline call on Python74, before mutation and compile at75-83. No grid-key control kill claim.",
+    "fixture": {
+      "kind": "AST literal reconstruction from exact archived Python source; not a claimed retained runtime file",
+      "path": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\readonly-reconstructed-12422c69-grid.scene",
+      "sha256": "850716aae4b3892d65d2068479c3da00a2271c0b8b3dd4abd671bcb682d3f981",
+      "boundary_vertex_keys_declaration_present": false
+    },
+    "excerpts": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\readonly-chain-12422c69.txt",
+    "sha256": "183dbc5bf47c53c0d09c6f3c3fa14d8c5fe34ce74f67ea5efb49f2fbffc2733b"
+  },
+  "source_runner_gate_unchanged": true,
+  "prior_enclosure5_regionkey15_not_rerun": "focused-4004a1cf-v3/result/summary.json",
+  "new75_deferred": true,
+  "limits": "No extra C diagnostics, product modifications, full suite, PF3, native6, compatibility or browser execution."
+}

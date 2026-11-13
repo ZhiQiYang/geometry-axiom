@@ -1,0 +1,396 @@
+{
+  "schema": "geo341-F8-fallback-cost-independent-actual-peer/1",
+  "utc": "2026-10-25T09:23:20.302288+00:00",
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "checks": 4416,
+  "exit": 0,
+  "findings": [],
+  "original_commands": 546,
+  "original_positive_runs": 24,
+  "original_samples": 378,
+  "original_elfs": 9,
+  "source_files": 95,
+  "original_driver_exit": 0,
+  "semantic_passed": true,
+  "performance_acceptance_decided": false,
+  "historical_whole341_B1_discharged": false,
+  "bindings": {
+    "/tmp/geo341-F8-fallback-cost-run-20261025/RESULT.json": "46a03dee63fd7c278f21d4fc660fddc15bd0feabe09e432a8e6177879fdf82fc",
+    "/tmp/geo341-cost-preparation-v2-20261025/PINS.json": "008b50d645074777e38c2d2b61074d510a28e7069319b9afc79d20e2966cbeab"
+  },
+  "scope": "Actual raw/commands/semantic sequences/work/timers only. No C/performance rerun. F8 fallback-only with #343 indexed controls preserved.",
+  "limitations": [
+    "No existing quantitative microbenchmark pass line was supplied or invented. Original passed means semantic/collection complete, not all performance improved.",
+    "Fixed/restored identical source still shows microsecond-scale sample variability; all samples and both ratios are retained.",
+    "Sc493 whole withdrawal remains separate and unexecuted; unique-ID controls are not fallback benefit samples.",
+    "No R8 rerun, no source/ledger/train changes, and no overall READY claim.",
+    "O2 diagnostic WORK is separately instrumented; CPU/wall uses uninstrumented binaries. Counters are not hardware memory-traffic measurements."
+  ],
+  "full_review_sha256": "b985a5ea1d2409d93bce5b258fc05bfb8596d50267da5467d94084cbe81320cf",
+  "medians": [
+    {
+      "case": "none",
+      "n": 8,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 1813,
+          "wall_ns": 2574
+        },
+        "withdrawn": {
+          "cpu_ns": 1763,
+          "wall_ns": 2554
+        },
+        "restored": {
+          "cpu_ns": 2053,
+          "wall_ns": 2634
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 1.0283607487237663,
+        "wall_ns": 1.0078308535630385
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 1.1644923425978446,
+        "wall_ns": 1.0313234142521535
+      }
+    },
+    {
+      "case": "none",
+      "n": 32,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 7581,
+          "wall_ns": 8223
+        },
+        "withdrawn": {
+          "cpu_ns": 7020,
+          "wall_ns": 7722
+        },
+        "restored": {
+          "cpu_ns": 7311,
+          "wall_ns": 7972
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 1.0799145299145299,
+        "wall_ns": 1.0648795648795648
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 1.0414529914529915,
+        "wall_ns": 1.0323750323750325
+      }
+    },
+    {
+      "case": "none",
+      "n": 64,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 23184,
+          "wall_ns": 23846
+        },
+        "withdrawn": {
+          "cpu_ns": 21612,
+          "wall_ns": 22334
+        },
+        "restored": {
+          "cpu_ns": 23114,
+          "wall_ns": 23866
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 1.0727373681288173,
+        "wall_ns": 1.0676994716575625
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 1.069498426799926,
+        "wall_ns": 1.0685949673144086
+      }
+    },
+    {
+      "case": "few",
+      "n": 8,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 2374,
+          "wall_ns": 3035
+        },
+        "withdrawn": {
+          "cpu_ns": 4467,
+          "wall_ns": 5187
+        },
+        "restored": {
+          "cpu_ns": 2423,
+          "wall_ns": 3305
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 0.5314528766509962,
+        "wall_ns": 0.5851166377482167
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 0.5424222072979629,
+        "wall_ns": 0.6371698476961635
+      }
+    },
+    {
+      "case": "few",
+      "n": 32,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 7932,
+          "wall_ns": 8603
+        },
+        "withdrawn": {
+          "cpu_ns": 9213,
+          "wall_ns": 9975
+        },
+        "restored": {
+          "cpu_ns": 7592,
+          "wall_ns": 8463
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 0.8609573428850538,
+        "wall_ns": 0.8624561403508771
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 0.8240529686312819,
+        "wall_ns": 0.848421052631579
+      }
+    },
+    {
+      "case": "few",
+      "n": 64,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 23274,
+          "wall_ns": 24197
+        },
+        "withdrawn": {
+          "cpu_ns": 24747,
+          "wall_ns": 25428
+        },
+        "restored": {
+          "cpu_ns": 23154,
+          "wall_ns": 23785
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 0.940477633652564,
+        "wall_ns": 0.9515887997483089
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 0.9356285610377015,
+        "wall_ns": 0.9353861884536732
+      }
+    },
+    {
+      "case": "dense",
+      "n": 8,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 2063,
+          "wall_ns": 2714
+        },
+        "withdrawn": {
+          "cpu_ns": 4877,
+          "wall_ns": 5578
+        },
+        "restored": {
+          "cpu_ns": 2333,
+          "wall_ns": 2995
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 0.42300594627844984,
+        "wall_ns": 0.4865543205449982
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 0.4783678490875538,
+        "wall_ns": 0.5369307995697382
+      }
+    },
+    {
+      "case": "dense",
+      "n": 32,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 3896,
+          "wall_ns": 4607
+        },
+        "withdrawn": {
+          "cpu_ns": 5898,
+          "wall_ns": 6570
+        },
+        "restored": {
+          "cpu_ns": 3646,
+          "wall_ns": 4426
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 0.6605629026788742,
+        "wall_ns": 0.7012176560121766
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 0.6181756527636487,
+        "wall_ns": 0.6736681887366819
+      }
+    },
+    {
+      "case": "dense",
+      "n": 64,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 6820,
+          "wall_ns": 7601
+        },
+        "withdrawn": {
+          "cpu_ns": 10145,
+          "wall_ns": 10816
+        },
+        "restored": {
+          "cpu_ns": 7471,
+          "wall_ns": 8292
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 0.6722523410547068,
+        "wall_ns": 0.7027551775147929
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 0.7364218827008379,
+        "wall_ns": 0.7666420118343196
+      }
+    },
+    {
+      "case": "fallback-none",
+      "n": 1217,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 17115527,
+          "wall_ns": 17122465
+        },
+        "withdrawn": {
+          "cpu_ns": 16956472,
+          "wall_ns": 16965788
+        },
+        "restored": {
+          "cpu_ns": 16913718,
+          "wall_ns": 16915273
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 1.009380194181903,
+        "wall_ns": 1.0092348790401011
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 0.997478602860312,
+        "wall_ns": 0.9970225373557656
+      }
+    },
+    {
+      "case": "fallback-dense",
+      "n": 1217,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 11667490,
+          "wall_ns": 11742146
+        },
+        "withdrawn": {
+          "cpu_ns": 12085189,
+          "wall_ns": 12093196
+        },
+        "restored": {
+          "cpu_ns": 12060923,
+          "wall_ns": 12070331
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 0.9654371148022592,
+        "wall_ns": 0.970971280048715
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 0.997992087670288,
+        "wall_ns": 0.9981092673930034
+      }
+    },
+    {
+      "case": "unique-none",
+      "n": 64,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 12849,
+          "wall_ns": 13540
+        },
+        "withdrawn": {
+          "cpu_ns": 13550,
+          "wall_ns": 14472
+        },
+        "restored": {
+          "cpu_ns": 14342,
+          "wall_ns": 15033
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 0.9482656826568265,
+        "wall_ns": 0.935599778883361
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 1.058450184501845,
+        "wall_ns": 1.038764510779436
+      }
+    },
+    {
+      "case": "unique-few",
+      "n": 64,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 14301,
+          "wall_ns": 15313
+        },
+        "withdrawn": {
+          "cpu_ns": 14802,
+          "wall_ns": 15533
+        },
+        "restored": {
+          "cpu_ns": 13741,
+          "wall_ns": 14461
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 0.9661532225374949,
+        "wall_ns": 0.9858366059357497
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 0.928320497230104,
+        "wall_ns": 0.930985643468744
+      }
+    },
+    {
+      "case": "unique-dense",
+      "n": 64,
+      "median_ns": {
+        "fixed": {
+          "cpu_ns": 15923,
+          "wall_ns": 16756
+        },
+        "withdrawn": {
+          "cpu_ns": 14962,
+          "wall_ns": 15734
+        },
+        "restored": {
+          "cpu_ns": 15573,
+          "wall_ns": 16294
+        }
+      },
+      "fixed_to_withdrawn": {
+        "cpu_ns": 1.0642293810987835,
+        "wall_ns": 1.064954874793441
+      },
+      "restored_to_withdrawn": {
+        "cpu_ns": 1.0408367865258654,
+        "wall_ns": 1.035591712215584
+      }
+    }
+  ]
+}

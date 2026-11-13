@@ -10,6 +10,7 @@ window.AssemblyWorkspace=(()=>{
   const command=async c=>checked(await apiRequest(c));
   const MAX_ID=0xffffffff;
   const positiveId=v=>Number.isInteger(v)&&v>0&&v<=MAX_ID;
+  const referenceId=v=>Number.isInteger(v)&&v>=0&&v<=MAX_ID;
   const validRuleRef=r=>!!r&&positiveId(r.id)&&positiveId(r.version)&&typeof r.fingerprint==='string'&&/^[a-f0-9]{64}$/.test(r.fingerprint);
   function ruleReference(record){const ref={id:record?.value?.id,version:record?.value?.version,fingerprint:record?.fingerprint};if(!validRuleRef(ref))throw Error('固定規則來源不合法；請更新服務或重新開啟規則。');return ref;}
   // A failed fresh read must not repin the still-displayed record, even when
@@ -45,7 +46,7 @@ window.AssemblyWorkspace=(()=>{
   function invalidate(){if(s?.preview)command('assembly-cancel '+s.preview.token).catch(()=>{});if(s){s.preview=null;s.generation++;}if($('asmConfirm'))$('asmConfirm').disabled=true;if($('asmPreviewResult'))$('asmPreviewResult').textContent='';syncFooter();}
   function flush(){if(!s?.draft||!current(s))return;const old=ReferenceWorkspace.getAssemblyDrafts().find(d=>d.id===s.draft.id);if(old&&JSON.stringify(old.data)===JSON.stringify(s.draft.data)&&identityValue(old.base_ref)===identityValue(s.draft.base_ref))return;s.draft.updated_at=new Date().toISOString();ownDraft=true;try{ReferenceWorkspace.setAssemblyDraft(s.draft,s.context);}finally{ownDraft=false;}s.draftsRef=ReferenceWorkspace.context().assemblyDrafts;}
   function changed(redraw=false){invalidate();flush();if(redraw)render();else diagram();report('草稿已保留；保存專案可寫入檔案。');}
-  async function readState(x,isCurrent=()=>current(x)){const a=await command('assembly-read'),e=await command('engineering-read'),r=await command('references'),b=await command('assembly-read');if(!isCurrent())throw Error('專案或工作區已切換。');if(a.revision!==b.revision||e.revision!==b.revision)throw Error('來源已變更，請重新開啟。');x.read=b;x.references=r;x.engineering={...e.state,specs:r.specs||[]};}
+  async function readState(x,isCurrent=()=>current(x)){const a=await command('assembly-read'),e=await command('engineering-read'),r=await command('references'),surfaces=await command('surfaces'),b=await command('assembly-read');if(!isCurrent())throw Error('專案或工作區已切換。');if(a.revision!==b.revision||e.revision!==b.revision)throw Error('來源已變更，請重新開啟。');x.read=b;x.references=r;x.surfaces=Array.isArray(surfaces.surfaces)?surfaces.surfaces:null;x.engineering={...e.state,specs:r.specs||[]};}
   async function open(kind=null,id=null){if(confirming()){report(pendingMessage);return;}flush();ReferenceWorkspace.assertEditable();if(window.DraftGate&&!window.DraftGate.ask())return;invalidate();const x={context:token(),generation:0,kind,id,rotation:0,zoom:1,draftsRef:ReferenceWorkspace.context().assemblyDrafts};s=x;await readState(x);if(!current(x))return;if(kind==='assembly-rule')x.record=x.read.state.rules.filter(r=>r.value.id===id).sort((a,b)=>b.value.version-a.value.version)[0];if(kind==='assembly-binding')x.record=x.read.state.bindings.find(r=>r.value.id===id);render();if(!dialog.open)dialog.showModal();WorkspaceShell.attach(dialog);}
   function close(){window.RuleCaseHost?.close();if(confirming()&&!s.confirming.uncertain){report(pendingMessage);return;}flush();invalidate();s=null;++serial;dialog.close();WorkspaceShell.detach(dialog);}
   async function newDraft(kind,source=null,revision=false){
@@ -170,20 +171,202 @@ window.AssemblyWorkspace=(()=>{
   function faceWords(slot){const contact=slot?.contactFace==='A'?'接觸面是 A 面':slot?.contactFace==='B'?'接觸面是 B 面':'接觸面尚未選擇',orient=slot?.orientation==='A'?'A 沿局部 u':slot?.orientation==='B'?'B 沿局部 u':'擺向尚未選擇';return `${contact}，${orient}`;}
   function bindingCards(record){const d=record.value,rule=s.read.state.rules.find(r=>r.value.id===d.rule.id&&r.value.version===d.rule.version)?.value;return d.slots.map(slot=>{const eff=record.effective.find(v=>v.slotId===slot.slotId),name=rule?.slots.find(v=>v.id===slot.slotId)?.name?.trim()||'未命名槽位',a=eff?.A?.value,b=eff?.B?.value,section=a==null||b==null?`A ${a??'未設定'} / B ${b??'未設定'} mm`:`截面 ${a} × ${b} mm`;return `<article class="asm-slot"><strong>${esc(name)}</strong><p>${esc(section)}</p><p class="asm-note">${esc(faceWords(slot))}</p></article>`;}).join('');}
   function published(){const r=s.record,d=r.value,isRule=s.kind==='assembly-rule',rule=isRule?null:s.read.state.rules.find(x=>x.value.id===d.rule.id&&x.value.version===d.rule.version)?.value;if(!isRule)captureBindingRule(r);$('asmEditor').innerHTML=`<h3>${esc(d.name)}</h3><p>${isRule?`第 ${d.version} 版已發布，內容固定。要改就做成下一版。`:`用「${esc(rule?.name||'規則')}」第 ${d.rule.version} 版。${r.complete?'':'還有尺寸或方向沒選。'}`}</p><div class="asm-actions">${isRule?btn('asmEdit','編輯為下一版',false,'primary-button')+btn('asmCopy','複製成新規則')+btn('asmBind',window.ContextOperations.getOperation('assembly-binding.create').label):btn('asmEdit','編輯材料配置',false,'primary-button')}${btn('asmDeletePublished','刪除'+(isRule?'此版本':'配置'))}</div>${isRule?'<h4>只表示誰抵住誰，尺寸見材料配置</h4><p class="asm-note">右側、左側、上側、下側對應資料裡的 +u、-u、+v、-v。</p><div id="asmDiagram"></div>':bindingCards(r)}${isRule?'':generationActions(d.id,r.complete)}`;if(!isRule)bindGenerationActions(d.id);bind('asmEdit','click',()=>newDraft(isRule?'rule':'binding',r,isRule));bind('asmCopy','click',()=>newDraft('rule',r));bind('asmBind','click',()=>newDraft('binding',r));bind('asmDeletePublished','click',async()=>{s.operations=[isRule?{op:'delete-rule',id:d.id,version:d.version}:{op:'delete-binding',id:d.id}];await preview();});diagram();}
-  function generationActions(bindingId,complete){return `<section><h4>角材實例</h4>${btn('asmGenerate','依來源生成角材',!complete)}${(s.read.state.instances||[]).filter(r=>r.value.source.bindingId===bindingId).map(r=>`<article class="asm-slot"><strong>${esc(r.value.source.name)}</strong><p>${r.members.map(m=>`角材 #${m.timberId} · ${m.geometry?.length??'?'} mm`).join('；')}</p>${btn('asmInstanceEdit'+r.value.source.id,'編輯來源')}${btn('asmInstanceDelete'+r.value.source.id,'刪除實例')}</article>`).join('')}</section>`;}
+  function generationActions(bindingId,complete){return `<section><h4>角材實例</h4>${btn('asmGenerate','依來源生成角材',!complete)}${(s.read.state.instances||[]).filter(r=>r.value.source.bindingId===bindingId).map(r=>`<article class="asm-slot"><strong>${esc(r.value.source.name)}</strong><p>${r.members.map(m=>`${esc(assemblyOwnerLabel(m))}${assemblyOwnerLabel(m)?' → ':''}角材 #${m.timberId} · ${m.geometry?.length??'?'} mm`).join('；')}</p>${btn('asmInstanceEdit'+r.value.source.id,'編輯來源')}${btn('asmInstanceDelete'+r.value.source.id,'刪除實例')}</article>`).join('')}</section>`;}
   function bindGenerationActions(bindingId){bind('asmGenerate','click',()=>newInstance(bindingId));for(const r of s.read.state.instances||[])if(r.value.source.bindingId===bindingId){bind('asmInstanceEdit'+r.value.source.id,'click',()=>newInstance(bindingId,r));bind('asmInstanceDelete'+r.value.source.id,'click',async()=>{s.operations=[{op:'delete-instance',id:r.value.source.id,expectedFingerprint:r.fingerprint}];await preview();});}}
   async function newInstance(bindingId,record=null){
     if(confirming())return;flush();const x=s,g=x.generation;await readState(x);if(!current(x)||g!==x.generation)return;const binding=x.read.state.bindings.find(r=>r.value.id===bindingId),rule=x.read.state.rules.find(r=>r.value.id===binding?.value.rule.id&&r.value.version===binding?.value.rule.version);
     if(!binding?.complete||!rule)throw Error('請先選齊材料配置。');let data,base=null;
     if(record){const fresh=x.read.state.instances?.find(r=>r.value.source.id===record.value.source.id);if(!fresh||fresh.fingerprint!==record.fingerprint)throw Error('實例來源已變更，請重新開啟。');data=clone(fresh.value.source);base={id:data.id,fingerprint:fresh.fingerprint};}
-    else{const r=rule.value;if(r.members.length!==3||r.joints.length!==2||r.joints.some(j=>j.kind!=='end-to-side')||r.joints[0].terminatedMember!==r.joints[1].terminatedMember)throw Error('首版只支援兩支主支與一支端接副支。');const sec=r.joints[0].terminatedMember,start=r.joints.find(j=>j.end==='start'),finish=r.joints.find(j=>j.end==='finish');if(!start||!finish)throw Error('副支必須有起端與末端接合。');const ids=await command('newid');if(!current(x)||g!==x.generation)return;const used=new Set([...(x.read.state.instances||[]).map(r=>r.value.source.id),...ReferenceWorkspace.getAssemblyDrafts().filter(d=>d.kind==='instance').map(d=>d.data.id)]);
-      data={id:freeId(ids.assemblyInstance,used),name:binding.value.name+'・角材',bindingId,rule:{...binding.value.rule,fingerprint:rule.fingerprint},surfaceId:0,members:r.members.map(m=>({memberId:m.id,role:m.id===sec?'secondary':'primary',guideId:0,dir:m.id===sec?'+u':'+v',depthSide:'+n',ends:m.id===sec?{start:{kind:'member',memberId:start.targetMember},finish:{kind:'member',memberId:finish.targetMember}}:{start:{kind:'timber',id:0},finish:{kind:'timber',id:0}}}))};
+    else{const members=GeometryApplication.woodworking.assemblyInstanceMembers(rule.value),ids=await command('newid');if(!current(x)||g!==x.generation)return;const used=new Set([...(x.read.state.instances||[]).map(r=>r.value.source.id),...ReferenceWorkspace.getAssemblyDrafts().filter(d=>d.kind==='instance').map(d=>d.data.id)]);
+      data={id:freeId(ids.assemblyInstance,used),name:binding.value.name+'・角材',bindingId,rule:{...binding.value.rule,fingerprint:rule.fingerprint},surfaceId:0,members};
     }
     invalidate();x.draft={id:crypto.randomUUID(),kind:'instance',base_ref:base,data,updated_at:new Date().toISOString()};x.operations=null;x.record=null;flush();render();
   }
-  function instanceForm(){const d=s.draft.data,refs=s.references||{},guides=(refs.guides||[]).filter(Boolean),timbers=refs.timbers||[],surfaces=[...new Set(guides.map(g=>g.surface))],rule=s.read.state.rules.find(r=>r.value.id===d.rule.id&&r.value.version===d.rule.version)?.value;
-    $('asmEditor').innerHTML=`<h3>${s.draft.base_ref?'編輯':'生成'}角材實例</h3>${field('名稱',input('asmInstanceName',d.name))}${field('材料配置',select('asmInstanceBinding',s.read.state.bindings.filter(r=>r.complete).map(r=>[r.value.id,r.value.name+' · 規則第 '+r.value.rule.version+' 版']),d.bindingId))}${field('承載面',select('asmInstanceSurface',[[0,'請選擇'],...surfaces.map(id=>[id,'承載面 #'+id])],d.surfaceId))}${d.members.map(m=>`<fieldset><legend>${esc(rule?spoken(rule,m.memberId):'構件 #'+m.memberId)} · ${m.role==='primary'?'主支沿面 v':'副支沿面 u'}</legend>${field('定位線',select('asmInstanceGuide'+m.memberId,[[0,'請選擇'],...guides.filter(g=>g.surface===d.surfaceId&&g.axis===(m.role==='primary'?'v':'u')).map(g=>[g.id,`定位線 #${g.id} · ${g.expression}`])],m.guideId))}${m.role==='primary'?['start','finish'].map(k=>field(k==='start'?'支撐邊界材一（無序）':'支撐邊界材二（無序）',select('asmInstanceEnd'+m.memberId+k,[[0,'請選擇'],...timbers.filter(t=>t.role==='boundary'&&t.geometry?.surface===d.surfaceId).map(t=>[t.id,'邊界角材 #'+t.id])],m.ends[k].id))).join(''):`<p>起端抵主支 #${m.ends.start.memberId}，末端抵主支 #${m.ends.finish.memberId} 的相向側面。</p>`}</fieldset>`).join('')}${btn('asmDeleteDraft','刪除草稿')}`;
-    bind('asmInstanceName','input',e=>{d.name=e.target.value;changed();});bind('asmInstanceBinding','change',e=>{const b=s.read.state.bindings.find(r=>r.value.id===Number(e.target.value)),r=s.read.state.rules.find(r=>r.value.id===b.value.rule.id&&r.value.version===b.value.rule.version),sec=d.members.find(m=>m.role==='secondary');if(r.value.members.length!==3||r.value.members.some(m=>!d.members.some(old=>old.memberId===m.id))||r.value.joints.length!==2||r.value.joints.some(j=>j.kind!=='end-to-side'||j.terminatedMember!==sec.memberId)){render();throw Error('換版必須保留三個構件身分與主副支角色。');}d.bindingId=b.value.id;d.rule={...b.value.rule,fingerprint:r.fingerprint};for(const k of ['start','finish']){const joint=r.value.joints.find(j=>j.end===k);if(!joint)throw Error('新版缺少副支端接來源。');sec.ends[k]={kind:'member',memberId:joint.targetMember};}changed(true);});bind('asmInstanceSurface','change',e=>{d.surfaceId=Number(e.target.value);for(const m of d.members){m.guideId=0;if(m.role==='primary')for(const k of ['start','finish'])m.ends[k].id=0;}changed(true);});for(const m of d.members){bind('asmInstanceGuide'+m.memberId,'change',e=>{m.guideId=Number(e.target.value);changed();});if(m.role==='primary')for(const k of ['start','finish'])bind('asmInstanceEnd'+m.memberId+k,'change',e=>{m.ends[k].id=Number(e.target.value);changed();});}bindDeleteDraft();
+  const repeatCapability='assembly-bay-repeat/1';
+  const repeatCeilings={bayPrimaries:12,baySecondaryLines:24,bayOmit:24};
+  function repeatLimits(state=s?.read?.state){
+    return Object.fromEntries(Object.entries(repeatCeilings).map(([key,max])=>[key,
+      Number.isSafeInteger(state?.limits?.[key])&&state.limits[key]>0?Math.min(max,state.limits[key]):max]));
+  }
+  function assertRepeatService(state){
+    if(![repeatCapability,'assembly-timber-generation/1'].every(c=>state?.capabilities?.includes(c))||
+      !['instances','ownedTimbers','worldTimbers','instanceRecordBytes',...Object.keys(repeatCeilings)].every(k=>Number.isSafeInteger(state?.limits?.[k])&&state.limits[k]>0))
+      throw Error('目前服務未支援完整重複開間能力與容量宣告；草稿仍保留，請更新服務再預覽。');
+  }
+  function repeatKey(rows,primary){
+    const d=s.draft.data,original=s.read.state.instances?.find(r=>r.value.source.id===d.id)?.value.source,
+      old=original?.[primary?'primaries':'secondaryLines']||[],
+      used=new Set([...rows.map(r=>r.key),...old.map(r=>r.key),...(d.omit||[]).flatMap(o=>primary?[o.left,o.right]:[o.line])]);
+    // A removed row must not donate its key to a new row while the original
+    // World or an explicit omit still names it.
+    return freeId(1,used);
+  }
+  const emptyPrimary=key=>({key,at:null,ends:{start:{kind:'timber',id:null},finish:{kind:'timber',id:null}}});
+  const cellKey=c=>`${c.line}:${c.left}:${c.right}`;
+  const repeatIndexInput=(id,value)=>`<input id="${id}" type="text" maxlength="256" value="${esc(String(value??''))}">`;
+  function choices(id,items,value){
+    const actual=value==null?'':value;
+    if(!items.some(([v])=>String(v)===String(actual)))items=[...items,[actual,`目前引用 ${actual}（來源未在可選清單）`]];
+    return select(id,items,actual);
+  }
+  function instanceForm(){
+    const d=s.draft.data,refs=s.references||{},guides=(refs.guides||[]).filter(Boolean),timbers=refs.timbers||[],
+      surfaces=[...new Set([...(s.surfaces||(typeof oc!=='undefined'?oc.surfs||[]:[])).map(p=>p.id),...guides.map(g=>g.surface),...(refs.grids||[]).map(g=>g.surface),...timbers.map(t=>t.geometry?.surface)].filter(d.layout==='bay-repeat'?referenceId:positiveId))],
+      rule=s.read.state.rules.find(r=>r.value.id===d.rule.id&&r.value.version===d.rule.version)?.value,repeat=d.layout==='bay-repeat';
+    let unavailable='';try{assertRepeatService(s.read.state);GeometryApplication.woodworking.assemblyBayRepeatShape(rule);}catch(error){unavailable=error.message;}
+    const mode=`<select id="asmInstanceLayout"${s.draft.base_ref?' disabled title="已提交實例保留原配置種類"':''}><option value="single"${repeat?'':' selected'}>單一開間</option><option value="bay-repeat"${repeat?' selected':''}${unavailable&&!repeat?' disabled':''}>重複開間${unavailable&&!repeat?'（來源或服務不支援）':''}</option></select>`;
+    $('asmEditor').innerHTML=`<h3>${s.draft.base_ref?'編輯':'生成'}角材實例</h3><div class="asm-grid">${field('名稱',input('asmInstanceName',d.name))}${field('配置方式',mode)}${field('材料配置',choices('asmInstanceBinding',s.read.state.bindings.filter(r=>r.complete).map(r=>[r.value.id,r.value.name+' · 規則第 '+r.value.rule.version+' 版']),d.bindingId))}${field('承載面',choices('asmInstanceSurface',[[repeat?'':0,'請選擇'],...surfaces.map(id=>[id,'承載面 #'+id])],d.surfaceId))}</div>${repeat?renderRepeatInstanceForm(d):d.members.map(m=>`<fieldset><legend>${esc(rule?spoken(rule,m.memberId):'構件 #'+m.memberId)} · ${m.role==='primary'?'主支沿面 v':'副支沿面 u'}</legend>${field('定位線',select('asmInstanceGuide'+m.memberId,[[0,'請選擇'],...guides.filter(g=>g.surface===d.surfaceId&&g.axis===(m.role==='primary'?'v':'u')).map(g=>[g.id,`定位線 #${g.id} · ${g.expression}`])],m.guideId))}${m.role==='primary'?['start','finish'].map(k=>field(k==='start'?'支撐邊界材一（無序）':'支撐邊界材二（無序）',select('asmInstanceEnd'+m.memberId+k,[[0,'請選擇'],...timbers.filter(t=>t.role==='boundary'&&t.geometry?.surface===d.surfaceId).map(t=>[t.id,'邊界角材 #'+t.id])],m.ends[k].id))).join(''):`<p>起端抵主支 #${m.ends.start.memberId}，末端抵主支 #${m.ends.finish.memberId} 的相向側面。</p>`}</fieldset>`).join('')}${btn('asmDeleteDraft','刪除草稿')}`;
+    bind('asmInstanceName','input',e=>{d.name=e.target.value;changed();});
+    bind('asmInstanceLayout','change',e=>{
+      if(s.draft.base_ref){render();return;}
+      const next=e.target.value==='bay-repeat';if(next===repeat)return;
+      const replacement=next?(assertRepeatService(s.read.state),GeometryApplication.woodworking.assemblyBayRepeatDraft(rule)):{members:GeometryApplication.woodworking.assemblyInstanceMembers(rule)};
+      const entered=repeat?d.primaries.some(p=>p.at||p.ends.start.id!==null||p.ends.finish.id!==null)||d.secondaryLines.some(l=>l.at)||(d.omit||[]).length:d.members.some(m=>m.guideId||m.role==='primary'&&(m.ends.start.id||m.ends.finish.id));
+      if(entered&&!window.confirm('切換配置方式會重新建立定位與支撐欄位；目前這些輸入不會套用到另一種配置。確定切換？')){e.target.value=repeat?'bay-repeat':'single';return;}
+      if(next&&d.surfaceId===0)d.surfaceId=null;else if(!next&&d.surfaceId===null)d.surfaceId=0;
+      for(const key of ['layout','members','primaries','secondaryLines','omit'])delete d[key];Object.assign(d,replacement);changed(true);
+    });
+    bind('asmInstanceBinding','change',e=>{
+      const b=s.read.state.bindings.find(r=>r.value.id===Number(e.target.value)),r=s.read.state.rules.find(r=>r.value.id===b?.value.rule.id&&r.value.version===b?.value.rule.version);
+      if(!b?.complete||!r)throw Error('材料配置或固定規則來源不存在。');
+      if(repeat)GeometryApplication.woodworking.assemblyBayRepeatShape(r.value);
+      else if(!GeometryApplication.woodworking.canRetargetAssemblyInstance(d.members,r.value)){render();throw Error('換版必須保留三個構件身分與主副支角色。');}
+      d.bindingId=b.value.id;d.rule={...b.value.rule,fingerprint:r.fingerprint};
+      if(!repeat){const sec=d.members.find(m=>m.role==='secondary');for(const k of ['start','finish'])sec.ends[k]=GeometryApplication.woodworking.assemblyInstanceEnd(r.value,k);}
+      changed(true);
+    });
+    bind('asmInstanceSurface','change',e=>{
+      d.surfaceId=repeat&&e.target.value===''?null:Number(e.target.value);
+      // Repeat sources keep their explicit references until the user replaces
+      // them. A stale omit is an error, never silently cleared by a UI edit.
+      if(!repeat)for(const m of d.members){m.guideId=0;if(m.role==='primary')for(const k of ['start','finish'])m.ends[k].id=0;}
+      changed(true);
+    });
+    if(repeat){bindRepeatInstanceForm(d);if(unavailable){$('asmPreview').disabled=true;report(unavailable,true);}}
+    else for(const m of d.members){bind('asmInstanceGuide'+m.memberId,'change',e=>{m.guideId=Number(e.target.value);changed();});if(m.role==='primary')for(const k of ['start','finish'])bind('asmInstanceEnd'+m.memberId+k,'change',e=>{m.ends[k].id=Number(e.target.value);changed();});}
+    bindDeleteDraft();
+  }
+  function repeatSourceOptions(d){
+    const refs=s.references||{},owned=new Set((s.read.state.instances||[]).find(r=>r.value.source.id===d.id)?.members?.map(m=>m.timberId)||[]),
+      surface=(s.surfaces||(typeof oc!=='undefined'?oc.surfs||[]:[])).find(p=>p.id===d.surfaceId);
+    return {guides:refs.guides||[],grids:(refs.grids||[]).filter(g=>g.surface===d.surfaceId&&g.kind==='main'),
+      supports:[['','請選擇'],...(refs.timbers||[]).filter(t=>t.geometry?.surface===d.surfaceId&&!owned.has(t.id)).map(t=>[t.id,`角材 #${t.id} · ${GeometryApplication.woodworking.labels?.roles?.[t.role]||t.role}`])],
+      edges:GeometryApplication.woodworking.assemblyBayRepeatEdges(surface?.outerEdges).map(edge=>Array.isArray(edge)?[JSON.stringify(edge),`外輪廓來源鍵 ${JSON.stringify(edge)}（沿 v）`]:[edge,`外輪廓邊 e${edge}（沿 v）`])};
+  }
+  function repeatAtFields(row,primary,options,d){
+    const prefix=primary?'asmPrimary':'asmLine',key=row.key,a=row.at,kind=a?.kind||'',
+      kinds=[['','請選擇'],['guide','參考線'],['grid-line','主格線'],...(primary?[['outline-edge','外輪廓邊']]:[])];
+    let html=field('定位來源',select(prefix+'AtKind'+key,kinds,kind));
+    if(kind==='guide')html+=field('參考線',choices(prefix+'Guide'+key,[['','請選擇'],...options.guides.filter(g=>g.surface===d.surfaceId&&g.axis===(primary?'v':'u')).map(g=>[g.id,`參考線 #${g.id} · ${g.expression}`])],a.id));
+    if(kind==='grid-line')html+=field('承載面主格',choices(prefix+'Grid'+key,[['','請選擇'],...options.grids.map(g=>[g.id,`主格 #${g.id} · ${g.indexSpace==='lattice'?'帶符號索引':'從 0 起算'}`])],a.gridId))+field((primary?'u':'v')+' 座標格線索引',repeatIndexInput(prefix+'Index'+key,a.index));
+    if(kind==='outline-edge')html+=field('與主支平行的外輪廓邊',choices(prefix+'Edge'+key,[['','請選擇'],...options.edges],a.edgeKey?JSON.stringify(a.edgeKey):a.edge));
+    return html;
+  }
+  function renderRepeatInstanceForm(d){
+    const options=repeatSourceOptions(d),limits=repeatLimits();
+    const rows=(primary)=>{const prefix=primary?'asmPrimary':'asmLine',list=primary?d.primaries:d.secondaryLines;return list.map(row=>`<fieldset ${primary?'data-primary-key':'data-line-key'}="${row.key}"><legend>${primary?'主支':'副支線'} #${row.key}</legend><div class="asm-grid">${repeatAtFields(row,primary,options,d)}${primary?['start','finish'].map(k=>field(k==='start'?'支撐角材一（無序）':'支撐角材二（無序）',choices(prefix+'End'+row.key+k,options.supports,row.ends[k].id))).join(''):''}</div>${btn(prefix+'Remove'+row.key,'移除此'+(primary?'主支':'副支線'))}</fieldset>`).join('');};
+    return `<section id="asmRepeatPrimaries"><h4>主支 · ${d.primaries.length} / ${limits.bayPrimaries}</h4>${rows(true)}${btn('asmAddPrimary','加入主支',d.primaries.length>=limits.bayPrimaries)}</section><section id="asmRepeatSecondaryLines"><h4>副支線 · ${d.secondaryLines.length} / ${limits.baySecondaryLines}</h4>${rows(false)}${btn('asmAddSecondaryLine','加入副支線',d.secondaryLines.length>=limits.baySecondaryLines)}</section><details class="asm-range"><summary>加入主格線索引範圍</summary><div class="asm-grid">${field('加入清單',select('asmRangeTarget',[['primary','主支（u 座標格線）'],['secondary','副支線（v 座標格線）']],'primary'))}${field('承載面主格',select('asmRangeGrid',[['','請選擇'],...options.grids.map(g=>[g.id,`主格 #${g.id} · ${g.indexSpace==='lattice'?'帶符號索引':'從 0 起算'}`])],''))}${field('開始索引（含）',repeatIndexInput('asmRangeStart',''))}${field('結束索引（含）',repeatIndexInput('asmRangeFinish',''))}</div><div id="asmRangeSupports" class="asm-grid">${['start','finish'].map(k=>field(k==='start'?'新增主支的支撐角材一':'新增主支的支撐角材二',select('asmRangeEnd'+k,options.supports,''))).join('')}</div>${btn('asmRangeAdd','加入此索引範圍')}</details><div id="asmOmitList">${(d.omit||[]).length?'<h4>明示略過</h4>'+d.omit.map(o=>`<p>副支線 #${o.line} · 主支 #${o.left} → #${o.right} <button type="button" data-remove-omit="${cellKey(o)}">取消此略過</button></p>`).join(''):''}</div>`;
+  }
+  function bindRepeatInstanceForm(d){
+    for(const primary of [true,false]){
+      const list=primary?d.primaries:d.secondaryLines,prefix=primary?'asmPrimary':'asmLine';
+      for(const row of list){
+        bind(prefix+'AtKind'+row.key,'change',e=>{const kind=e.target.value;row.at=kind==='guide'?{kind,id:null}:kind==='grid-line'?{kind,gridId:null,axis:primary?'u':'v',index:''}:kind==='outline-edge'?{kind,edge:null}:null;changed(true);});
+        bind(prefix+'Guide'+row.key,'change',e=>{row.at.id=e.target.value===''?null:Number(e.target.value);changed();});
+        bind(prefix+'Grid'+row.key,'change',e=>{row.at.gridId=e.target.value===''?null:Number(e.target.value);changed();});
+        bind(prefix+'Index'+row.key,'input',e=>{row.at.index=e.target.value;changed();});
+        bind(prefix+'Edge'+row.key,'change',e=>{const value=e.target.value;row.at=value.startsWith('[')?{kind:'outline-edge',edgeKey:JSON.parse(value)}:{kind:'outline-edge',edge:value===''?null:Number(value)};changed();});
+        if(primary)for(const k of ['start','finish'])bind(prefix+'End'+row.key+k,'change',e=>{row.ends[k].id=e.target.value===''?null:Number(e.target.value);changed();});
+        bind(prefix+'Remove'+row.key,'click',()=>{const key=primary?'primaries':'secondaryLines';d[key]=d[key].filter(r=>r.key!==row.key);changed(true);});
+      }
+    }
+    bind('asmAddPrimary','click',()=>{if(d.primaries.length>=repeatLimits().bayPrimaries)throw Error('已達主支數量上限。');d.primaries.push(emptyPrimary(repeatKey(d.primaries,true)));changed(true);});
+    bind('asmAddSecondaryLine','click',()=>{if(d.secondaryLines.length>=repeatLimits().baySecondaryLines)throw Error('已達副支線數量上限。');d.secondaryLines.push({key:repeatKey(d.secondaryLines,false),at:null});changed(true);});
+    bind('asmRangeTarget','change',e=>{$('asmRangeSupports').hidden=e.target.value!=='primary';});
+    bind('asmRangeAdd','click',()=>appendRepeatGridRange(d));
+    for(const button of dialog.querySelectorAll('[data-remove-omit]'))button.onclick=safe(()=>{d.omit=(d.omit||[]).filter(o=>cellKey(o)!==button.dataset.removeOmit);changed(true);});
+  }
+  function appendRepeatGridRange(d){
+    const primary=$('asmRangeTarget').value==='primary',list=primary?d.primaries:d.secondaryLines,gridId=$('asmRangeGrid').value===''?null:Number($('asmRangeGrid').value),
+      grid=repeatSourceOptions(d).grids.find(g=>g.id===gridId),a=$('asmRangeStart').value.trim(),b=$('asmRangeFinish').value.trim();
+    if(!grid)throw Error('請選擇這個承載面的主格。');
+    if(a.length>256||b.length>256||!/^[+-]?\d+$/.test(a)||!/^[+-]?\d+$/.test(b))throw Error('索引範圍須為至多 256 字元的完整十進位整數。');
+    const start=BigInt(a),finish=BigInt(b),count=(finish>=start?finish-start:start-finish)+1n,
+      limit=repeatLimits()[primary?'bayPrimaries':'baySecondaryLines'];
+    if(grid.indexSpace!=='lattice'&&(start<0n||finish<0n))throw Error('有限主格的索引從 0 起算。');
+    if(count>BigInt(limit-list.length))throw Error(`此範圍超過${primary?'主支':'副支線'} ${limit} 筆上限；未加入任何一筆。`);
+    const axis=primary?'u':'v',values=[],step=finish>=start?1n:-1n;
+    for(let n=start;values.length<Number(count);n+=step)values.push(n.toString());
+    const existing=new Set(list.filter(r=>r.at?.kind==='grid-line'&&r.at.gridId===gridId&&r.at.axis===axis&&/^[+-]?\d+$/.test(r.at.index.trim())).map(r=>BigInt(r.at.index.trim()).toString()));
+    if(values.some(v=>existing.has(v)))throw Error('此範圍含清單已有的同一主格線；未加入任何一筆。');
+    const next=list.map(row=>clone(row));
+    for(const index of values){const row=primary?emptyPrimary(repeatKey(next,true)):{key:repeatKey(next,false)};row.at={kind:'grid-line',gridId,axis,index};if(primary)for(const k of ['start','finish'])row.ends[k].id=$('asmRangeEnd'+k).value===''?null:Number($('asmRangeEnd'+k).value);next.push(row);}
+    d[primary?'primaries':'secondaryLines']=next;changed(true);report(`已明確加入 ${values.length} ${primary?'支主支':'條副支線'}；請預覽檢查逐線開間。`);
+  }
+  function assemblyOwnerLabel(owner){
+    if(!owner)return '';
+    const identity=owner.identity||owner,prefix=owner.instance==null?'':`實例 #${owner.instance} · `;
+    if(positiveId(identity.primary))return `${prefix}主支 #${identity.primary}`;
+    if(identity.secondary){const c=identity.secondary;return `${prefix}副支線 #${c.line}／主支 #${c.left} → #${c.right}`;}
+    return '';
+  }
+  // Preview row for an instance source: name the references the user picked
+  // instead of echoing the raw source record.
+  function instanceSourceText(src){
+    if(!src)return '無';
+    const ref=r=>r?.id==null?'未指定':`${r.kind==='timber'?'角材':r.kind==='guide'?'參考線':r.kind} #${r.id}`,
+      ends=e=>e&&(e.start?.id!=null||e.finish?.id!=null)?`（端點 ${ref(e.start)} → ${ref(e.finish)}）`:'',
+      at=a=>!a?'未定位':a.kind==='guide'?`參考線 #${a.id}`:a.kind==='grid-line'?`主格 #${a.gridId} 的 ${a.axis} 線索引 ${a.index}`:
+        a.kind==='outline-edge'?`外輪廓邊 ${Array.isArray(a.edgeKey)?a.edgeKey.join('／'):'#'+a.edge}`:String(a.kind),
+      parts=[`「${src.name||'未命名實例'}」`];
+    if(src.bindingId!=null)parts.push(`配置 #${src.bindingId}`);
+    if(src.rule)parts.push(`規則 #${src.rule.id} 第 ${src.rule.version} 版`);
+    if(src.layout==='bay-repeat'){
+      parts.push(`重複開間 · 承載面 #${src.surfaceId??'未指定'}`);
+      parts.push(`主支 ${(src.primaries||[]).length} 支：${(src.primaries||[]).map(p=>`#${p.key} ${at(p.at)}${ends(p.ends)}`).join('；')||'無'}`);
+      parts.push(`副支線 ${(src.secondaryLines||[]).length} 條：${(src.secondaryLines||[]).map(l=>`#${l.key} ${at(l.at)}`).join('；')||'無'}`);
+      parts.push(`明示略過：${(src.omit||[]).map(o=>`副支線 #${o.line}／主支 #${o.left} → #${o.right}`).join('、')||'無'}`);
+    }else{
+      parts.push('單一開間');
+      if(Array.isArray(src.members))parts.push(`構件 ${(src.members||[]).length} 支：${(src.members||[]).map(m=>`#${m.memberId} ${m.role==='primary'?'主支':m.role==='secondary'?'副支':m.role} ${positiveId(m.guideId)?'沿參考線 #'+m.guideId:'未定位'}${ends(m.ends)}`).join('；')||'無'}`);
+    }
+    return parts.join(' · ');
+  }
+  function violationWords(v){
+    const source=[v.instanceId?`實例 #${v.instanceId}`:'',v.primaryKey?`主支 #${v.primaryKey}`:'',v.lineKey?`副支線 #${v.lineKey}`:''].filter(Boolean).join(' · '),
+      detail=value=>value==null?'':typeof value==='string'?value:JSON.stringify(value);
+    return [source,v.code,v.clause,v.message,v.expected==null?'':'預期：'+detail(v.expected),v.actual==null?'':'實際：'+detail(v.actual)].filter(Boolean).join(' · ')||'驗證拒絕';
+  }
+  function assertRepeatPreview(p){
+    const cells=p.bayCells;
+    if(!Array.isArray(cells)||cells.some(c=>!c||!positiveId(c.instanceId)||!positiveId(c.line)||!positiveId(c.left)||!positiveId(c.right)||c.left===c.right||
+      !['generated','omitted','failed'].includes(c.status)||(c.timberId!==null&&!positiveId(c.timberId))||!Array.isArray(c.violations))||
+      new Set(cells.map(c=>c.instanceId+':'+cellKey(c))).size!==cells.length)
+      throw Error('原生服務缺少完整逐線開間結果，請更新服務再預覽；草稿仍保留。');
+    for(const row of p.impact.timbers){
+      if(row.owner&&!['kept','moved','created','deleted'].includes(row.change))throw Error('原生服務缺少角材增刪身分結果，請更新服務再預覽；草稿仍保留。');
+      if(row.owner?.identity){const v=row.owner.identity;if(!positiveId(row.owner.instance)||!(positiveId(v.primary)&&!v.secondary||!v.primary&&positiveId(v.secondary?.line)&&positiveId(v.secondary?.left)&&positiveId(v.secondary?.right)))
+        throw Error('原生服務的所屬角材身分不完整；草稿仍保留。');}
+    }
+  }
+  function renderRepeatCells(p){
+    if(!Array.isArray(p.bayCells)||!p.bayCells.length)return '';
+    const d=s.draft?.kind==='instance'&&s.draft.data.layout==='bay-repeat'?s.draft.data:null;
+    return `<section id="asmBayCells"><h4>逐線開間與明示略過</h4><div class="asm-bay-table"><table><thead><tr><th>實例／副支線／左右主支</th><th>原生結果</th><th>略過此格</th></tr></thead><tbody>${p.bayCells.map(c=>{
+      const editable=d?.id===c.instanceId,omitted=editable?(d.omit||[]).some(o=>cellKey(o)===cellKey(c)):c.status==='omitted',
+        status={generated:'生成',omitted:'明示略過',failed:'不能生成'}[c.status]||'未確認',errors=(c.violations||[]).map(violationWords).join('；');
+      return `<tr data-bay-cell="${cellKey(c)}" data-instance-id="${c.instanceId}" data-bay-status="${esc(c.status)}"><td>實例 #${c.instanceId} · 線 #${c.line} · #${c.left} → #${c.right}</td><td>${esc(status)}${c.timberId?` · 角材 #${c.timberId}`:''}${errors?`<p>${esc(errors)}</p>`:''}</td><td><label class="asm-omit-control"><input type="checkbox" data-bay-omit="${cellKey(c)}"${omitted?' checked':''}${editable?'':' disabled'} aria-label="略過副支線 ${c.line}、主支 ${c.left} 到 ${c.right}"><span>略過</span></label></td></tr>`;
+    }).join('')}</tbody></table></div></section>`;
+  }
+  function bindRepeatCells(p){
+    const x=s,d=x.draft?.data;if(d?.layout!=='bay-repeat')return;
+    for(const box of $('asmPreviewResult').querySelectorAll('[data-bay-omit]'))box.addEventListener('change',safe(()=>{
+      if(!current(x)||x.preview!==p)return;
+      const c=p.bayCells.find(c=>c.instanceId===d.id&&cellKey(c)===box.dataset.bayOmit);if(!c)return;
+      const next=(d.omit||[]).filter(o=>cellKey(o)!==cellKey(c));
+      if(box.checked){if(next.length>=repeatLimits().bayOmit){box.checked=false;throw Error('明示略過項已達上限。');}next.push({line:c.line,left:c.left,right:c.right});}
+      d.omit=next;changed(true);report('已修改明示略過；請重新預覽，確認全部格子的結果。');$('asmPreview').focus?.({preventScroll:true});
+    }));
   }
   function previewCopy(p){
     const rows=[],beforeR=new Map(p.before.rules.map(r=>[`${r.value.id}:${r.value.version}`,r])),afterR=new Map(p.after.rules.map(r=>[`${r.value.id}:${r.value.version}`,r]));
@@ -229,19 +412,20 @@ window.AssemblyWorkspace=(()=>{
     else if(added===1&&changed.length===0&&removed===0){const only=[...afterR].find(([k])=>!beforeR.has(k));if(only) title=`這次會發布${ruleTitle(only[1])}`;}
     const beforeI=new Map((p.before.instances||[]).map(r=>[r.value.source.id,r])),afterI=new Map((p.after.instances||[]).map(r=>[r.value.source.id,r]));
     const owned=new Map();
-    for(const records of [beforeI,afterI])for(const r of records.values())for(const m of r.members||[])owned.set(m.timberId,`構件 #${m.memberId} → 角材 #${m.timberId}`);
-    for(const id of new Set([...beforeI.keys(),...afterI.keys()])){const a=beforeI.get(id),b=afterI.get(id);if(identityValue(a)!==identityValue(b)){title=b?`這次會${a?'更新':'生成'}「${b.value.source.name}」`:`這次會刪除「${a.value.source.name}」與所屬角材`;rows.push(['來源',JSON.stringify(b?.value.source||a.value.source)]);}}
+    for(const records of [beforeI,afterI])for(const r of records.values())for(const m of r.members||[])owned.set(m.timberId,`${assemblyOwnerLabel({instance:r.value.source.id,identity:m})||'構件 #'+m.memberId} → 角材 #${m.timberId}`);
+    for(const id of new Set([...beforeI.keys(),...afterI.keys()])){const a=beforeI.get(id),b=afterI.get(id);if(identityValue(a)!==identityValue(b)){title=b?`這次會${a?'更新':'生成'}「${b.value.source.name}」`:`這次會刪除「${a.value.source.name}」與所屬角材`;rows.push(['來源',instanceSourceText(b?.value.source||a.value.source)]);}}
     // The native candidate supplies all geometry, including ordinary external
     // dependents. Membership labels are presentation only, never the impact set.
     const describe=g=>g?`承載面 #${g.surface}，中心線 ${g.centerline} mm，長度 ${g.length} mm，局部位置 ${g.u},${g.v}，世界位置 ${g.origin.join(',')}，擺向 ${g.dir}/${g.side}，A ${g.A} / B ${g.B}，世界軸 ${g.axes.map(a=>a.join(',')).join(' / ')}`:'無';
     const unchanged=[];
     for(const t of p.impact?.timbers||[]){
-      const label=owned.get(t.id)||`角材 #${t.id}（組構外）`;
+      const source=assemblyOwnerLabel(t.owner),label=source?`${source} → 角材 #${t.id}`:owned.get(t.id)||`角材 #${t.id}（組構外）`,
+        change={kept:'身分保留',moved:'身分保留，幾何更新',created:'新增身分',deleted:'刪除身分'}[t.change];
       if(identityValue(t.before)===identityValue(t.after)){
         unchanged.push(`#${t.id}`);
-        if(owned.has(t.id))rows.push([label,`沒有幾何變更；${describe(t.after)}`]);
+        if(owned.has(t.id))rows.push([label,`${change?change+'；':''}沒有幾何變更；${describe(t.after)}`]);
       }
-      else rows.push([label,`${describe(t.before)} → ${describe(t.after)}`]);
+      else rows.push([label,`${change?change+'；':''}${describe(t.before)} → ${describe(t.after)}`]);
     }
     if(unchanged.length)rows.push(['未變更角材',unchanged.join('、')]);
     for(const g of p.impact?.guides||[])if(identityValue(g.before)!==identityValue(g.after))rows.push([`定位線 #${g.id}`,`${JSON.stringify(g.before)} → ${JSON.stringify(g.after)}`]);
@@ -250,6 +434,8 @@ window.AssemblyWorkspace=(()=>{
   }
   async function preview(){
     if(confirming())return;flush();ReferenceWorkspace.assertEditable();invalidate();const x=s,g=x.generation,seq=++serial,operations=x.operations||[{op:x.draft.kind==='rule'?'publish-rule':'create-binding',value:clone(x.draft.data)}],read=await command('assembly-read');if(!current(x)||g!==x.generation)return;
+    const repeat=x.draft?.kind==='instance'&&x.draft.data.layout==='bay-repeat'||read.state.instances?.some(r=>r.value.source.layout==='bay-repeat');
+    if(repeat)assertRepeatService(read.state);
     if(!x.operations){
       const d=x.draft;
       if(d.kind==='binding'){
@@ -263,6 +449,7 @@ window.AssemblyWorkspace=(()=>{
       }else if(d.kind==='instance'){
         const binding=read.state.bindings.find(r=>r.value.id===d.data.bindingId),original=read.state.instances?.find(r=>r.value.source.id===d.data.id);
         if(!binding?.fingerprint)throw Error('材料來源不存在或服務未支援生成。');
+        if(d.data.layout==='bay-repeat')GeometryApplication.woodworking.assemblyBayRepeatShape(read.state.rules.find(r=>r.value.id===d.data.rule.id&&r.value.version===d.data.rule.version)?.value);
         if(d.base_ref&&(!original||original.fingerprint!==d.base_ref.fingerprint))throw Error('原始實例已變更；草稿仍保留，請重新開啟。');
         operations[0]=d.base_ref?{op:'edit-instance',id:d.data.id,expectedFingerprint:d.base_ref.fingerprint,expectedBindingFingerprint:binding.fingerprint,value:clone(d.data)}:{op:'create-instance',expectedBindingFingerprint:binding.fingerprint,value:clone(d.data)};
       }else if(d.base_ref){
@@ -274,8 +461,9 @@ window.AssemblyWorkspace=(()=>{
     const response=await fetch(generation?'/assembly/generate-preview':'/assembly/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema:generation?'assembly-generation-transaction/1':'assembly-transaction/1',expectedRevision:read.revision,operations}),signal:AbortSignal.timeout(30000)});checkApiSession(response);if(!response.ok)throw Error('預覽服務失敗（'+response.status+'）。');const p=checked(await response.json()).preview;
     if(!current(x)||g!==x.generation||seq!==serial){command('assembly-cancel '+p.token).catch(()=>{});return;}
     if(p.impact?.schema!=='candidate-geometry/1'||!Array.isArray(p.impact.timbers)||!Array.isArray(p.impact.guides)){await command('assembly-cancel '+p.token);throw Error('原生服務缺少完整幾何預覽，請更新服務再預覽；草稿仍保留。');}
+    if(repeat){try{assertRepeatPreview(p);}catch(error){await command('assembly-cancel '+p.token);throw error;}}
     x.preview=p;$('asmConfirm').disabled=!p.valid;
-    $('asmPreviewResult').innerHTML=`${previewCopy(p)}<ul>${(p.violations||[]).map(v=>`<li>${esc(v.message||v.actual||'驗證拒絕')}</li>`).join('')}</ul><details><summary>完整資料，給除錯對照</summary><h5>變更前</h5><pre>${esc(JSON.stringify(p.before,null,2))}</pre><h5>變更後</h5><pre>${esc(JSON.stringify(p.after,null,2))}</pre><h5>完整幾何對照</h5><pre>${esc(JSON.stringify(p.impact,null,2))}</pre></details>`;syncFooter();report(p.valid?'驗證通過，確認後才會套用。':'尚不能套用，請依上列原因修正。',!p.valid);
+    $('asmPreviewResult').innerHTML=`${previewCopy(p)}${renderRepeatCells(p)}<ul>${(p.violations||[]).map(v=>`<li>${esc(violationWords(v))}</li>`).join('')}</ul><details><summary>完整資料，給除錯對照</summary><h5>變更前</h5><pre>${esc(JSON.stringify(p.before,null,2))}</pre><h5>變更後</h5><pre>${esc(JSON.stringify(p.after,null,2))}</pre><h5>完整幾何對照</h5><pre>${esc(JSON.stringify(p.impact,null,2))}</pre></details>`;bindRepeatCells(p);syncFooter();report(p.valid?'驗證通過，確認後才會套用。':'尚不能套用，請依上列原因修正。',!p.valid);
   }
   async function confirm(){
     const x=s;if(!current(x)||!x.preview?.valid||x.confirming)return;ReferenceWorkspace.assertEditable();flush();

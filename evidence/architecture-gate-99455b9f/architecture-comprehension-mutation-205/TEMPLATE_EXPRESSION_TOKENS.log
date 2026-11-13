@@ -1,0 +1,70 @@
+test_javascript_nested_template_tracks_dependency (__main__.ArchitectureContract.test_javascript_nested_template_tracks_dependency) ... FAIL
+test_javascript_template_keeps_transitive_closure (__main__.ArchitectureContract.test_javascript_template_keeps_transitive_closure) ... FAIL
+test_javascript_template_forbidden_identifier_is_executable (__main__.ArchitectureContract.test_javascript_template_forbidden_identifier_is_executable) ... FAIL
+test_javascript_template_forbidden_string_is_executable (__main__.ArchitectureContract.test_javascript_template_forbidden_string_is_executable) ... FAIL
+test_javascript_template_regex_comment_cannot_swallow_dependency (__main__.ArchitectureContract.test_javascript_template_regex_comment_cannot_swallow_dependency) ... FAIL
+
+======================================================================
+FAIL: test_javascript_nested_template_tracks_dependency (__main__.ArchitectureContract.test_javascript_nested_template_tracks_dependency)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 468, in test_javascript_nested_template_tracks_dependency
+    self.rejects("LAYER_DIRECTION", chain=["src/core.js", "src/w.js"])
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_javascript_template_keeps_transitive_closure (__main__.ArchitectureContract.test_javascript_template_keeps_transitive_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 474, in test_javascript_template_keeps_transitive_closure
+    self.rejects("LAYER_DIRECTION", chain=["src/core.js", "src/helper.js", "src/w.js"])
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_javascript_template_forbidden_identifier_is_executable (__main__.ArchitectureContract.test_javascript_template_forbidden_identifier_is_executable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 493, in test_javascript_template_forbidden_identifier_is_executable
+    self.rejects("FORBIDDEN_IDENTIFIER")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_javascript_template_forbidden_string_is_executable (__main__.ArchitectureContract.test_javascript_template_forbidden_string_is_executable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 497, in test_javascript_template_forbidden_string_is_executable
+    self.rejects("FORBIDDEN_STRING")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_javascript_template_regex_comment_cannot_swallow_dependency (__main__.ArchitectureContract.test_javascript_template_regex_comment_cannot_swallow_dependency)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 542, in test_javascript_template_regex_comment_cannot_swallow_dependency
+    self.rejects("LAYER_DIRECTION")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.066s
+
+FAILED (failures=5)

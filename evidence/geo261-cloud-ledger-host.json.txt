@@ -1,0 +1,21 @@
+{
+  "sha": "52b951940f570011b257cd207741ba0a7f6d7ce9",
+  "host_pid": 4412,
+  "status": "completed",
+  "started_utc": "2026-10-22T06:18:13.819346+00:00",
+  "runner_sha256": "d1ee6dd419b3366e2f30306568577d58b0f44d6718b9b39d61511d762f183cd3",
+  "command": [
+    "C:\\Users\\Yang\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+    "-NoProfile",
+    "-NonInteractive",
+    "-File",
+    "D:\\geometry-axiom-work\\codex-closeout-20261021\\run_order_ledger.ps1",
+    "-Sha",
+    "52b951940f570011b257cd207741ba0a7f6d7ce9"
+  ],
+  "script_sha256": "1934a22ab9449bc206221554db666f0000c2cbf0d062543d70200f6f9425f422",
+  "unit_receipt_sha256": "f834a4deabcc6de9d9d070643efeffb24570acd00e22359ecc26a7e005e07ea9",
+  "child_pid": 2532,
+  "exit_code": 0,
+  "finished_utc": "2026-10-22T08:09:14.120897+00:00"
+}

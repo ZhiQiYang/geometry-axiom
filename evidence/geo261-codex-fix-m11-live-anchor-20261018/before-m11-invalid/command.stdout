@@ -1,0 +1,7 @@
+Mutation scope: partial M11
+M11  INVALID    I5：孔罩住矩形判定:inside==4 改 inside==0(罩住反而放行)  <- 錨點在 geometry-core/kernel/geometry.c 出現 0 次(需要 1)
+
+本次 1:殺死 killed 0 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 1 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0
+歷次紀錄(不是本次覆蓋)1:殺死 killed 0 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 1 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0 / 未跑 unrun 56
+  (過期明細用 --check 列出)
+本次 1:殺死 killed 0 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 1 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0

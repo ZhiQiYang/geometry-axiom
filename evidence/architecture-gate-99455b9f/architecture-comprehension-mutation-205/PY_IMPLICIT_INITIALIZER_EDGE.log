@@ -1,0 +1,43 @@
+test_python_core_owns_implicit_host_initializer_dependency (__main__.ArchitectureContract.test_python_core_owns_implicit_host_initializer_dependency) ... FAIL
+test_python_nested_core_requires_outer_initializer_without_importer (__main__.ArchitectureContract.test_python_nested_core_requires_outer_initializer_without_importer) ... FAIL
+test_python_neutral_implicit_initializers_are_graph_edges (__main__.ArchitectureContract.test_python_neutral_implicit_initializers_are_graph_edges) ... FAIL
+
+======================================================================
+FAIL: test_python_core_owns_implicit_host_initializer_dependency (__main__.ArchitectureContract.test_python_core_owns_implicit_host_initializer_dependency)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 885, in test_python_core_owns_implicit_host_initializer_dependency
+    self.rejects("LAYER_DIRECTION", path="src/pkg/core.py", line=1,
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                 chain=["src/pkg/core.py", "src/pkg/__init__.py"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_python_nested_core_requires_outer_initializer_without_importer (__main__.ArchitectureContract.test_python_nested_core_requires_outer_initializer_without_importer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 892, in test_python_nested_core_requires_outer_initializer_without_importer
+    self.rejects("LAYER_DIRECTION", chain=["src/pkg/sub/core.py", "src/pkg/__init__.py"])
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_python_neutral_implicit_initializers_are_graph_edges (__main__.ArchitectureContract.test_python_neutral_implicit_initializers_are_graph_edges)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 899, in test_python_neutral_implicit_initializers_are_graph_edges
+    self.assertIn(("src/pkg/sub/core.py", "src/pkg/__init__.py"), edges)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('src/pkg/sub/core.py', 'src/pkg/__init__.py') not found in set()
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.076s
+
+FAILED (failures=3)

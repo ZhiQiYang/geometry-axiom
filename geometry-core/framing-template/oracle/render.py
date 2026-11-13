@@ -5,10 +5,11 @@ import sys
 
 import framing_oracle as fo
 
-COLORS = {"boundary": "#2e7d32", "rc_parallel": "#00796b", "main": "#1565c0", "seam": "#e65100", "mark": "#f9a825", "ext": "#8bc34a"}
+COLORS = {"boundary": "#2e7d32", "rc_parallel": "#00796b", "main": "#1565c0", "seam": "#e65100", "mark": "#f9a825", "fill": "#ad1457", "ext": "#8bc34a"}
 NAMES = {"boundary": "RC 邊界角材(貼牆、柱面)", "rc_parallel": "平行主支的 RC 面角材(柱面延伸到兩端牆;外牆在凹角處停在牆端)",
          "ext": "邊界角材越過凹角的延伸段(停在最近的主支側面)",
-         "main": "主支(板縫下,整支連續)", "seam": "副支(板端縫下)", "mark": "副支(記號位置)"}
+         "main": "主支(板縫下,整支連續)", "seam": "副支(板端縫下)", "mark": "副支(記號位置)",
+         "fill": "補位副支(撞掉的記號旁,貼著擋料)"}
 CONFLICT_TEXT = {
     "MAIN_LINE_CROSSES_RC": "主支線穿過 RC 後又回到室內,主支會被切斷",
     "MAIN_HITS_RC_TIMBER": "主支撞到牆或柱邊的角材",
@@ -102,17 +103,21 @@ def main():
         shown_ok = shown_bad = 0
         figs = []
         for l, res, fails in sol:
-            ok = not res["conflicts"] and not fails
+            v, probs = fo.verdict(res, p, fails)  # 物理衝突與核心限制分開(#251 審查 3d858c3 阻擋 1)
+            ok = v in ("buildable", "core_limited")
             why = "; ".join(sorted({CONFLICT_TEXT.get(c["code"], c["code"]) for c in res["conflicts"]}))
-            if fails:
-                why += " 檢查失敗:" + ", ".join(sorted({f["check"] for f in fails}))
+            if v == "core_limited":
+                why = "物理上可施工;核心表示不了:" + ", ".join(sorted({c["code"] for c in res["core_limits"]}))
+            if probs:
+                why += " 檢查失敗:" + ", ".join(sorted({f["check"] for f in probs}))
             moved = []
             for ax, mv in (("縫", res["moved_a"]), ("板端縫", res["moved_b"])):
                 if mv:
                     moved.append(f"最後一條{ax}距起鋪側 {mv[0]} → {mv[1]}")
-            rows.append(f"<tr><td>{fo.layout_name(l)}</td><td class={'ok' if ok else 'bad'}>{'可施工' if ok else '衝突'}</td>"
+            label = {"buildable": "可施工", "core_limited": "可施工(核心限制)", "unbuildable": "衝突"}.get(v, "檢查失敗")
+            rows.append(f"<tr><td>{fo.layout_name(l)}</td><td class={'ok' if ok else 'bad'}>{label}</td>"
                         f"<td>{html.escape(why or summary(res))}{('<br>' + '；'.join(moved)) if moved else ''}</td></tr>")
-            if (ok and shown_ok < 1) or (not ok and shown_bad < 1 and not fails):
+            if (ok and shown_ok < 1) or (not ok and shown_bad < 1 and not probs):
                 figs.append(f"<figure><figcaption>{fo.layout_name(l)} · {'可施工' if ok else '衝突:' + html.escape(why)}</figcaption>{svg(room, res)}</figure>")
                 shown_ok += ok
                 shown_bad += not ok

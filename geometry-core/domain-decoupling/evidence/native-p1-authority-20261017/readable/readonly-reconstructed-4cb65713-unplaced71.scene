@@ -1,0 +1,6 @@
+surface 1 origin 0 0 0 u +x v +y outline 0,0 1000,0 1000,1000 0,1000
+spec x 500
+guide 1 1 v spec:x
+timber 1 40 50 role boundary
+place 1 on 1 at-face e0 +u +n
+timber 71 27 33 role primary

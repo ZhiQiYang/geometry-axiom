@@ -1,0 +1,16 @@
+diff --git a/geometry-web/assembly_generation_test.js b/geometry-web/assembly_generation_test.js
+--- a/geometry-web/assembly_generation_test.js
++++ b/geometry-web/assembly_generation_test.js
+@@ -32,7 +32,11 @@ module.exports=async({send,read,sleep,ctl,fill,choose,publish,wait,check})=>{
+  const changed=(await state()).instances[0];check('G03 配置與定位來源改變由原生重算',same(changed.value.mapping,mapping)&&changed.members.map(m=>m.geometry.length).join(',')==='2960,2960,2260'&&changed.members.every(m=>m.geometry.A===40&&m.geometry.B===50));
+  await ctl('[data-asm-binding="1"]');await ctl('#asmInstanceEdit1');await fill('#asmInstanceName','保留未完成來源');await choose('#asmInstanceGuide1',0);await ctl('#asmClose');
+  const saved=await read(`(async()=>{window.__generationBytes=await ReferenceWorkspace.exportBytes();const p=await GeometryProject.unpack(window.__generationBytes,fflate);return {format:p.manifest.format,drafts:p.manifest.assemblyDrafts.records};})()`);
+- check('G07 未完成實例草稿保存第8版',saved.format==='geometry-canvas/8'&&saved.drafts.some(d=>d.kind==='instance'&&d.data.members[0].guideId===0));
++ const g07Directory=path.join(os.tmpdir(),'geometry-tests');fs.mkdirSync(g07Directory,{recursive:true});
++ const g07Bytes=Buffer.from(await read(`Array.from(window.__generationBytes)`));
++ fs.writeFileSync(path.join(g07Directory,'assembly-generation-g07-before.gcanvas'),g07Bytes);
++ fs.writeFileSync(path.join(g07Directory,'assembly-generation-g07-before.json'),JSON.stringify(saved,null,2)+'\n');
++ check('G07 未完成實例草稿保存第8版',saved.format==='geometry-canvas/8'&&saved.drafts.some(d=>d.kind==='instance'&&d.data.members[0].guideId===0),saved);
+  await read(`(async()=>{await ReferenceWorkspace.importBytes(window.__generationBytes,'生成重開.gcanvas');await renderObjects();})()`);check('G07 保存重開原生來源映射幾何精確一致',same((await state()).instances[0],changed));
+  await ctl('#btnNewAssembly');await ctl('[data-asm-draft]');await ctl('#asmPreview');await wait(`$('asmConfirm').disabled&&$('asmPreviewResult').textContent.includes('I42')`);check('G06 未選定位線不能套用',same((await state()).instances[0],changed));await ctl('#asmDeleteDraft');
+  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await ctl('[data-asm-binding="1"]');await ctl('#asmInstanceEdit1');await fill('#asmInstanceName','390px 角材來源');await ctl('#asmPreview');await wait(`!$('asmConfirm').disabled`);

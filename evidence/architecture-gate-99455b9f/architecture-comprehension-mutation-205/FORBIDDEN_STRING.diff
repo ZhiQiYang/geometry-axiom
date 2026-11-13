@@ -1,0 +1,12 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -860,8 +860,7 @@
+             require(name not in self.policy["forbiddenIdentifiers"], "FORBIDDEN_IDENTIFIER", path, line,
+                     f"concrete template identifier {name!r} in core", "K -> W", (path,))
+         for value, line in literals:
+-            require(value not in self.policy["forbiddenStrings"], "FORBIDDEN_STRING", path, line,
+-                    f"concrete template string {value!r} in core", "K -> W", (path,))
++            pass  # TEMP removed FORBIDDEN_STRING
+ 
+     def module_policy(self, path, name, language, line):
+         if self.entries[path]["layer"] not in {"K", "vendor"}:

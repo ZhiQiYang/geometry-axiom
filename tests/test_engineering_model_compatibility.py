@@ -26,6 +26,16 @@ K3_MAIN_VERSION = ('d1db88ae99ca9b6858b0ada34d082e902f00c9f9', '9d4f90aacbc86394
 PRE_CARD_REFERENCE_MAIN_VERSION = ("651c661b2c4c224c58bb4a2ed0a42ed929a16aa6", "ab31dc36d5416762ac44932940a94f6142b72e831ceb62c0bc67375512109004")
 PRE_ONE_AXIS_STAGGER_MAIN_VERSION = ("e744f5316fd7c896275bdee4c34ad22ae97d9d8e", "18a9a75bcf4a5d5fed28c6c5f5cb9702d173198d7d0cd198ffad9936a4b94fa5")
 D64_ADOPTION_MAIN_VERSION = ("b3c79615d0cde89bbdca72c1223d214324bc5f8f", "e5e43ec5da2030669c9ecd7a67f8b250cfb7290cf663365b2b66c51814bb77b9")
+# main's executor pair from the #260 adoption until #318 (reading A) merges.
+PRE_READING_A_MAIN_VERSION = ("a00ba9e95fa9be65339af167d4ab611083d269f5", "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d")
+# The exact executor pair released on main before the R14 wording adoption.
+# Its D64/I74/R60 text remains byte-identical; do not derive this oracle from modeling.
+PRE_R14_MAIN_VERSION = ("0fd8cacf799ed6ddf0fa7588243aa4e4bbb94c18", "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7")
+# Fixed pre-R17 producer main 343a8abe declared this exact pair. The approved
+# R17 adoption does not alter any of D64/I74/R60; independently pinned below.
+PRE_BOUNDARY_PAIR_MAIN_VERSION = ("0fd8cacf799ed6ddf0fa7588243aa4e4bbb94c18", "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7")
+BOUNDARY_PAIR_ADOPTION_VERSION = ("347bb01d411c9a656cae213d5cec81409445cf14", "13ff6cec70900b55271d9350ca31119f31ad9b20245204d67f49576ca5219712")
+R14_ON_R17_ADOPTION_VERSION = ("42ac2f737828e04b301cbbfa97f7f57a18ceb050", "41bb139fdb4767327e542eb96912437c8060c1ad84f044a7d2a30ecdb13ab4ad")
 # The #309 commit's executor pair (#260 A/B text). #309 reaches main only as the second parent
 # of a merge commit, so no first-parent state of main ever declared it (P-181): like the
 # interim digests listed in modeling/__init__.py it is deliberately NOT an accepted version.
@@ -33,11 +43,15 @@ NEVER_DECLARED_309_AB_VERSION = ("0d9015bc5a83fbb0b39e52555ce2da78f1c668ea", "f1
 # Every accepted pair whose axiom text already contains D64/I74/R60 byte for byte as the
 # current revision does. Spelled out here (not read back from modeling) so that dropping a
 # pair from CARD_REFERENCE_AXIOM_VERSIONS cannot also shrink the list that checks it.
-POST_D64_MAIN_VERSIONS = (D64_ADOPTION_MAIN_VERSION, PRE_ONE_AXIS_STAGGER_MAIN_VERSION)
+POST_D64_MAIN_VERSIONS = (D64_ADOPTION_MAIN_VERSION, PRE_ONE_AXIS_STAGGER_MAIN_VERSION,
+                          PRE_READING_A_MAIN_VERSION, PRE_R14_MAIN_VERSION, PRE_BOUNDARY_PAIR_MAIN_VERSION,
+                          BOUNDARY_PAIR_ADOPTION_VERSION)
 # SHA-256 of the D64 / I74 / R60 blocks of 公理層.md (see card_clause_sha256), recorded per
-# revision from `git show <revision>:公理層.md` (LF). The three pairs that may carry
-# grid-card-reference/1 -- b3c79615 (adoption), e744f531 (GEO-261 release) and the current
-# a00ba9e9 -- hold byte-identical clause text, which is what makes the first two safe to
+# revision from the committed 公理層.md bytes (LF). The pairs that may carry
+# grid-card-reference/1 -- b3c79615 (adoption), e744f531 (GEO-261 release), a00ba9e9 (#260)
+# 0fd8cacf (#318), 1a211e5b (R14) and 347bb01d (R17) -- hold byte-identical clause text,
+# independently verified across source commits (D64: 6 blocks, I74/R60: 1 each).
+# This is what makes the preceding pairs safe to
 # list in CARD_REFERENCE_AXIOM_VERSIONS. If the current text of these clauses ever changes,
 # the pinned current entry goes red and every listed pair has to be re-verified.
 _CARD_CLAUSES = {
@@ -49,6 +63,9 @@ CARD_CLAUSE_SHA256 = {
     D64_ADOPTION_MAIN_VERSION[0]: _CARD_CLAUSES,
     PRE_ONE_AXIS_STAGGER_MAIN_VERSION[0]: _CARD_CLAUSES,
     'a00ba9e95fa9be65339af167d4ab611083d269f5': _CARD_CLAUSES,
+    '0fd8cacf799ed6ddf0fa7588243aa4e4bbb94c18': _CARD_CLAUSES,
+    '347bb01d411c9a656cae213d5cec81409445cf14': _CARD_CLAUSES,
+    '42ac2f737828e04b301cbbfa97f7f57a18ceb050': _CARD_CLAUSES,
 }
 
 
@@ -95,7 +112,10 @@ class EngineeringAdapterProtocol(unittest.TestCase):
 
     def adapter(self, source, snapshot):
         output = SimpleNamespace(stdout=canonical_bytes(snapshot), returncode=0)
-        with mock.patch("modeling.base.subprocess.run", return_value=output):
+        # This is a protocol fixture; the native process and its binary identity
+        # are both supplied at the same mocked boundary.
+        with mock.patch("modeling.base.subprocess.run", return_value=output), \
+                mock.patch("geometry_app.source_closure.binary_identity", return_value=("test-only-adapter",)):
             return load_base(source, executable="test-only-adapter")
 
     def test_old_snapshot_protocol_is_accepted_for_legacy_sources_only(self):
@@ -409,6 +429,8 @@ class EngineeringModelCompatibility(unittest.TestCase):
     def test_card_clause_text_is_pinned_for_every_pair_that_may_carry_card_references(self):
         ssot = (ROOT / '公理層.md').read_bytes().replace(b'\r\n', b'\n').decode('utf-8')
         current = modeling.AXIOM_REVISION
+        self.assertIn(current, CARD_CLAUSE_SHA256,
+                      'CARD_CLAUSE_PIN: current revision needs independently verified D64/I74/R60 hashes')
         self.assertEqual(CARD_CLAUSE_SHA256[current], card_clause_sha256(ssot),
                          'CARD_CLAUSE_TEXT: D64/I74/R60 changed in 公理層.md; the pairs in '
                          'CARD_REFERENCE_AXIOM_VERSIONS %s were verified against the old text -- '
@@ -675,6 +697,7 @@ class EngineeringModelCompatibility(unittest.TestCase):
                 self.assertEqual(caught.exception.code, "AXIOM_VERSION")
 
     def test_base_required_capability_reaches_manifest_and_cannot_be_removed(self):
+        from tests.test_geometry_source_runtime import decode, envelope
         base = load_base(CASE["definitions"]["base_scene"])
         base["base_scene"] = "requires engineering-spec/1\n" + base["base_scene"]
         base["required_capabilities"] = ["engineering-spec/1"]
@@ -682,13 +705,154 @@ class EngineeringModelCompatibility(unittest.TestCase):
         definitions["base_scene"] = base["base_scene"]
         # Only adapter transport is substituted here; actual engineering source
         # evaluation is covered by native core fixtures, not this boundary test.
-        with mock.patch("modeling.base.load_base", return_value=base):
+        with mock.patch("modeling.base.load_candidate", return_value=decode(envelope(base))):
             package = build_package(definitions, CASE["request"])
             self.assertIn("engineering-spec/1", package["manifest"]["capabilities"])
             self.assertEqual(package["definitions"]["base_scene"], base["base_scene"])
             with self.assertRaises(ModelError) as caught:
                 build_package(definitions, CASE["request"], capabilities=[c for c in modeling.CAPABILITIES if c != "engineering-spec/1"])
             self.assertEqual(caught.exception.code, "CAPABILITY")
+
+
+class BoundaryPairAdoptionCompatibility(unittest.TestCase):
+    """Real previous-main artifacts; no fabricated provenance or optional skips."""
+    FIXTURES = {
+        "profile": (35777, "fdb8bac718acb0534ec37fa30b4c86ec8a0336d430f9984bb9993ce65a0e84fb"),
+        "stagger": (3962, "aea91c046bee429c4b04fef724c3f27754949059bc1ef58c2f74f73a25fabf66"),
+        "card": (14935, "98a0b5b927ff56afe06d722ffd932ca193db9f81b1c24b8dce1d627f4e370952"),
+    }
+
+    def saved(self):
+        packages = {}
+        for name, (size, pinned) in self.FIXTURES.items():
+            raw = (ROOT / "tests/fixtures/r17-main-343a8abe" / (name + ".json")).read_bytes()
+            self.assertEqual((len(raw), hashlib.sha256(raw).hexdigest()), (size, pinned),
+                             "R17_REAL_PRODUCER_BYTES: " + name)
+            package = json.loads(raw)
+            self.assertEqual((package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"]),
+                             PRE_BOUNDARY_PAIR_MAIN_VERSION, "R17_REAL_PRODUCER_PAIR: " + name)
+            packages[name] = package
+        self.assertIn("section-profile/1", packages["profile"]["manifest"]["capabilities"])
+        self.assertIn(" stagger 400", packages["stagger"]["definitions"]["base_scene"])
+        self.assertIn("card-reference 10 3 8", packages["card"]["definitions"]["base_scene"])
+        self.assertIn("parameters/1", packages["card"]["manifest"]["capabilities"])
+        return packages
+
+    def test_r17_adopted_source_pair_and_executor_scope_are_exact(self):
+        self.assertEqual((modeling.AXIOM_REVISION, modeling.AXIOM_SHA256),
+                         R14_ON_R17_ADOPTION_VERSION, "R14_R17_APPROVED_SOURCE_PAIR")
+        self.assertEqual(modeling._axiom_hash(), R14_ON_R17_ADOPTION_VERSION[1])
+        self.assertEqual(modeling.PRE_R14_AXIOM_VERSIONS,
+                         frozenset({PRE_R14_MAIN_VERSION, BOUNDARY_PAIR_ADOPTION_VERSION}),
+                         "R17_RELEASED_PRODUCER_MUST_SURVIVE_R14")
+        self.assertNotIn("1a211e5b2cfabb62de9c68e351459113ff75e719",
+                         {revision for revision, _ in modeling._accepted_axiom_versions(R14_ON_R17_ADOPTION_VERSION)},
+                         "R14_ONLY_CANDIDATE_WAS_NEVER_RELEASED_ON_MAIN")
+        self.assertEqual(getattr(modeling, "PRE_BOUNDARY_PAIR_AXIOM_VERSIONS", frozenset()),
+                         frozenset({PRE_BOUNDARY_PAIR_MAIN_VERSION}), "R17_RELEASED_PAIR_ONLY")
+        self.assertEqual(modeling.CAPABILITIES,
+                         ("extrusion/1", "shell/1", "composite-space/1", "solid-composition/1", "model-export/1",
+                          "engineering-spec/1", "parameters/1", "section-profile/1", "grid-card-reference/1"),
+                         "R17_L1_MUST_NOT_ADVERTISE_NEW_PRODUCT_CAPABILITIES")
+        self.assertEqual((modeling.SCHEMA, modeling.PROFILE, modeling.GENERATOR),
+                         ("geometry-model-package/1", "orthogonal-model/1",
+                          {"name": "geometry-axiom-reference", "version": "1.4.0"}))
+
+    def test_r17_previous_main_packages_reopen_without_losing_any_source_or_geometry(self):
+        for name, package in self.saved().items():
+            with self.subTest(fixture=name):
+                original = deepcopy(package)
+                try:
+                    rebuilt = verify_package(package)
+                except ModelError as error:
+                    self.fail("R17_RELEASED_PACKAGE_REOPEN: " + name + ": " + str(error.as_dict()))
+                expected = deepcopy(original)
+                expected["manifest"]["axiom_revision"], expected["manifest"]["axiom_sha256"] = R14_ON_R17_ADOPTION_VERSION
+                self.assertEqual(rebuilt, expected, "R17_ONLY_TWO_VERSION_FIELDS_MAY_CHANGE: " + name)
+                self.assertEqual(package, original, "R17_REOPEN_MUST_NOT_REWRITE_PRODUCER_INPUT: " + name)
+
+    def test_r17_unknown_and_cross_paired_versions_are_rejected_before_rebuild(self):
+        class ReachedRebuild(Exception):
+            pass
+        revision, sha256 = PRE_BOUNDARY_PAIR_MAIN_VERSION
+        current_revision, current_sha = R14_ON_R17_ADOPTION_VERSION
+        versions = (("0" * 40, "0" * 64), ("0" * 40, sha256), (revision, "0" * 64),
+                    (revision, current_sha), (current_revision, sha256),
+                    (BOUNDARY_PAIR_ADOPTION_VERSION[0], current_sha),
+                    (current_revision, BOUNDARY_PAIR_ADOPTION_VERSION[1]),
+                    (revision, PRE_READING_A_MAIN_VERSION[1]), (PRE_READING_A_MAIN_VERSION[0], sha256))
+        with mock.patch.object(modeling, "build_package", side_effect=ReachedRebuild):
+            for name, package in self.saved().items():
+                for version in versions:
+                    altered = deepcopy(package)
+                    altered["manifest"]["axiom_revision"], altered["manifest"]["axiom_sha256"] = version
+                    original = deepcopy(altered)
+                    with self.subTest(fixture=name, version=version):
+                        with self.assertRaises(ModelError, msg="R17_CROSS_PAIR_REJECT") as caught:
+                            verify_package(altered)
+                        self.assertEqual((caught.exception.status, caught.exception.code, caught.exception.clause),
+                                         ("UNSUPPORTED", "AXIOM_VERSION", "I32"), "R17_CROSS_PAIR_REJECT")
+                        self.assertIn("does not implement the supplied axiom revision", caught.exception.message)
+                        self.assertEqual(altered, original)
+
+    def test_r17_previous_main_retains_each_existing_source_era_permission(self):
+        class ReachedRebuild(Exception):
+            pass
+        packages = self.saved()
+        # The real packages cover Q38, card references, parameters, stagger,
+        # infinite and finite grid gates. Subdivision remains unsupported by the
+        # model adapter: only its already-adopted source era is retained here.
+        subdivision = deepcopy(packages["stagger"])
+        subdivision["definitions"]["base_scene"] += "requires grid-subdivision-rules/1\n"
+        subdivision["manifest"]["source_sha256"] = digest(subdivision["definitions"])
+        packages["subdivision-era-only"] = subdivision
+        with mock.patch.object(modeling, "build_package", side_effect=ReachedRebuild):
+            for name, package in packages.items():
+                with self.subTest(fixture=name):
+                    try:
+                        verify_package(package)
+                    except ReachedRebuild:
+                        continue
+                    except ModelError as error:
+                        self.fail("R17_SOURCE_ERA: " + name + ": " + str(error.as_dict()))
+                    self.fail("R17_SOURCE_ERA: rebuild was not reached: " + name)
+
+    def test_r17_adoption_does_not_enable_unsupported_capabilities(self):
+        original = self.saved()["card"]
+        for version in (PRE_BOUNDARY_PAIR_MAIN_VERSION, BOUNDARY_PAIR_ADOPTION_VERSION,
+                        R14_ON_R17_ADOPTION_VERSION):
+            for capability in ("boundary-pair/1", "boundary-pair/999", "grid-subdivision-rules/1", "identity-ledger/1"):
+                package = deepcopy(original)
+                package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = version
+                package["definitions"]["base_scene"] += "requires " + capability + "\n"
+                package["manifest"]["source_sha256"] = digest(package["definitions"])
+                before = deepcopy(package)
+                with self.subTest(version=version, capability=capability):
+                    with self.assertRaises(ModelError, msg="R17_CAPABILITY_STILL_UNSUPPORTED") as caught:
+                        verify_package(package)
+                    self.assertEqual((caught.exception.status, caught.exception.code, caught.exception.clause),
+                                     ("UNSUPPORTED", "CAPABILITY", "I32"), "R17_CAPABILITY_STILL_UNSUPPORTED")
+                    self.assertEqual(package, before)
+
+    def test_r17_unsupported_group_syntax_without_declaration_is_not_ignored(self):
+        package = self.saved()["stagger"]
+        package["definitions"]["base_scene"] += "boundary-pair begin 501 502\nboundary-pair end\n"
+        package["manifest"]["source_sha256"] = digest(package["definitions"])
+        before = deepcopy(package)
+        with self.assertRaises(ModelError, msg="R17_GROUP_SYNTAX_MUST_REJECT") as caught:
+            verify_package(package)
+        self.assertEqual((caught.exception.status, caught.exception.code, caught.exception.clause),
+                         ("INVALID", "BASE_SOURCE", "I9"), "R17_GROUP_SYNTAX_MUST_REJECT")
+        self.assertEqual(package, before)
+
+    def test_r17_previous_main_rehashed_false_geometry_is_still_rejected(self):
+        package = self.saved()["stagger"]
+        package["derived"]["objects"][0]["vertices_mm"][0][0] += 1
+        package["manifest"]["geometry_sha256"] = digest(package["derived"])
+        with self.assertRaises(ModelError, msg="R17_REHASH_MUST_NOT_HIDE_FALSE_GEOMETRY") as caught:
+            verify_package(package)
+        self.assertEqual((caught.exception.status, caught.exception.code),
+                         ("INVALID", "SNAPSHOT_MISMATCH"), "R17_REHASH_MUST_NOT_HIDE_FALSE_GEOMETRY")
 
 
 class StaggerModelCompatibility(unittest.TestCase):

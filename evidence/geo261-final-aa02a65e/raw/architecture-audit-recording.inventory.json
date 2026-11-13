@@ -1,0 +1,32 @@
+{
+  "archive": "architecture-audit-recording.raw.tar.gz",
+  "bytes": 11386,
+  "sha256": "6fc1c2becd862ba2a0292abbda733734bc3813ed132e391d5bf0e1edbf02c928",
+  "members": [
+    {
+      "path": "audit-execution",
+      "bytes": 2165,
+      "sha256": "4ba7744331dee737ded21dec989296f56140c80e4eaf6abcc83943e0ba503212"
+    },
+    {
+      "path": "audit-stdout",
+      "bytes": 263,
+      "sha256": "bc373f605e8eded26a58f60c673e9161009e700805035f31ba4c9f2b6114505d"
+    },
+    {
+      "path": "audit-stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "audit-tool",
+      "bytes": 26929,
+      "sha256": "0a4de968832385b9948e6e92a9297cf819792c800a0cb18505a2e5cc3c909f5b"
+    },
+    {
+      "path": "final-audit-sums",
+      "bytes": 3320,
+      "sha256": "d2420b5c748657d8e806fa988c84ee56272cc7092c459b2b97dbc62081dde003"
+    }
+  ]
+}

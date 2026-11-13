@@ -1,0 +1,178 @@
+{
+  "schema": "geo261-member-dimensions-manual-ledger/1",
+  "classification": "預期過時：舊薄函式形狀未承接後加H來源組裝；以實作責任分離保留原assert",
+  "base_sha": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+  "source_sha": "48fdbeaaa5c43b96a50f9406ae6429dfcb58c9fb",
+  "withdraw_sha": "bf0dbbe1ffff3c09e0bdbcd06a0e59b6452e58d0",
+  "stages": [
+    {
+      "stage": "before",
+      "receipt": {
+        "bytes": 13618,
+        "sha256": "b75972db33a30cf5f519e71e9283b6bc3905902f67493d73277199760db2d076"
+      },
+      "receipt_evidence_files_rehashed": 29,
+      "source_identity": {
+        "bytes": 62691,
+        "sha256": "9e03de08c9638a4668cca521dc525f6e63e3e6d862476b6f41ccf60e6fed80b9"
+      },
+      "source_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_geo261_member_reference",
+        "tests.test_geo261_host_authority",
+        "tests.test_geo261_definition_sources",
+        "tests.test_geo261_assembly_graph_product"
+      ],
+      "scope": "四模組11+18+7+4，完整40項",
+      "counts": {
+        "run": 40,
+        "pass": 39,
+        "failure": 1,
+        "error": 0,
+        "skip": 0
+      },
+      "unittest_seconds": 32.519,
+      "outer_seconds": 32.76282663099846,
+      "manual_verdict": "原具名禁迴圈斷言轉紅；非setup/compile/timeout/crash",
+      "native_subprocess_raw_separately_collected": false
+    },
+    {
+      "stage": "after",
+      "receipt": {
+        "bytes": 13616,
+        "sha256": "7615530db5a7eb68d8042310034f3afc520178ea8d22a9c120636a52944cedfb"
+      },
+      "receipt_evidence_files_rehashed": 29,
+      "source_identity": {
+        "bytes": 62953,
+        "sha256": "3f8fe931e88f3a69df3a1720d9ddc5103c246c3312b560a059e87c7c218b12ac"
+      },
+      "source_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_geo261_member_reference",
+        "tests.test_geo261_host_authority",
+        "tests.test_geo261_definition_sources",
+        "tests.test_geo261_assembly_graph_product"
+      ],
+      "scope": "四模組11+18+7+4，完整40項",
+      "counts": {
+        "run": 40,
+        "pass": 40,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "unittest_seconds": 29.2,
+      "outer_seconds": 29.453708444001677,
+      "manual_verdict": "方法原輸出皆ok；不外推未公開逐子程序raw",
+      "native_subprocess_raw_separately_collected": false
+    },
+    {
+      "stage": "withdrawn",
+      "receipt": {
+        "bytes": 13407,
+        "sha256": "9bc11320ae8b05a10adb901d8eb12c0e43c339ffd0d577abb7babbf265d66276"
+      },
+      "receipt_evidence_files_rehashed": 29,
+      "source_identity": {
+        "bytes": 62691,
+        "sha256": "9e03de08c9638a4668cca521dc525f6e63e3e6d862476b6f41ccf60e6fed80b9"
+      },
+      "source_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_geo261_member_reference.MemberReferenceBoundary"
+      ],
+      "scope": "boundary原形狀守門兩項；未跑完整40",
+      "counts": {
+        "run": 2,
+        "pass": 1,
+        "failure": 1,
+        "error": 0,
+        "skip": 0
+      },
+      "unittest_seconds": 0.007,
+      "outer_seconds": 0.16433554200193612,
+      "manual_verdict": "原具名禁迴圈斷言轉紅；非setup/compile/timeout/crash",
+      "native_subprocess_raw_separately_collected": false
+    },
+    {
+      "stage": "restored",
+      "receipt": {
+        "bytes": 13624,
+        "sha256": "c988fa49dad41027fc5f67eef57400629f5ac23e8b86e14ddf10afd3323a44fe"
+      },
+      "receipt_evidence_files_rehashed": 29,
+      "source_identity": {
+        "bytes": 62953,
+        "sha256": "3f8fe931e88f3a69df3a1720d9ddc5103c246c3312b560a059e87c7c218b12ac"
+      },
+      "source_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_geo261_member_reference",
+        "tests.test_geo261_host_authority",
+        "tests.test_geo261_definition_sources",
+        "tests.test_geo261_assembly_graph_product"
+      ],
+      "scope": "四模組11+18+7+4，完整40項",
+      "counts": {
+        "run": 40,
+        "pass": 40,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "unittest_seconds": 30.896,
+      "outer_seconds": 31.08475034300136,
+      "manual_verdict": "方法原輸出皆ok；不外推未公開逐子程序raw",
+      "native_subprocess_raw_separately_collected": false
+    }
+  ],
+  "receipt_files_rehashed": 116,
+  "before_withdraw_assertion_raw_line_exact_equal": true,
+  "failure_line_identity": {
+    "bytes": 1572,
+    "sha256": "528303e2385dbcb7dc972572083978e6870b08bcf796ad8a2aeb47773f9e52da"
+  },
+  "only_changed_source_paths": [
+    "geometry-core/references.inc"
+  ],
+  "test_files_unchanged": true,
+  "source_final_patch": {
+    "bytes": 1456,
+    "sha256": "2ea58bf9d5cfa5f3427b5b862c555c5be024801e0d7f336b4b98270e0acd2ae6"
+  },
+  "limits": [
+    "before/after/restored完整40，withdrawn僅boundary2；兩次40不是80個不同方法。",
+    "原native guard controls只按原unittest方法成功記錄，沒有額外逐子程序raw或暫存binary。",
+    "靜態重建與原guard轉紅不等同新增幾何行為證明，不替代最終全量/瀏覽器/mutation/架構。"
+  ],
+  "automatic_verdict": null
+}

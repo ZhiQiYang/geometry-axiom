@@ -1,0 +1,18 @@
+test_exclusion_rejects_unknown_hash_mode (__main__.ArchitectureContract.test_exclusion_rejects_unknown_hash_mode) ... FAIL
+
+======================================================================
+FAIL: test_exclusion_rejects_unknown_hash_mode (__main__.ArchitectureContract.test_exclusion_rejects_unknown_hash_mode)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 323, in test_exclusion_rejects_unknown_hash_mode
+    self.rejects("EXCLUSION_HASH_MODE")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+----------------------------------------------------------------------
+Ran 1 test in 0.016s
+
+FAILED (failures=1)

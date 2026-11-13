@@ -1,0 +1,21 @@
+function,self_seconds,children_seconds,inclusive_seconds,calls,direct_calls,recursive_calls
+main,0.0,0.05,0.05,0,0,0
+app_scene_candidate_apply,0.0,0.02,0.02,204,204,0
+app_world_candidate_create,0.01,0.01,0.02,250,250,0
+geo_candidate_evaluate <cycle 2>,0.0,0.02,0.02,235,235,0
+world_validate_derived,0.0,0.02,0.02,344,172,172
+app_candidate_create_with_deferred_sha,0.01,0.0,0.01,250,250,0
+app_candidate_evaluate <cycle 2>,0.01,0.0,0.01,235,235,0
+app_candidate_hash_matches,0.01,0.0,0.01,1145,1145,0
+app_reference_member_anchor,0.01,0.0,0.01,1930,1930,0
+app_replace_world.constprop.0,0.0,0.01,0.01,16,16,0
+app_validation_member,0.0,0.01,0.01,1308,1308,0
+apply_reference_place,0.0,0.01,0.01,48,48,0
+apply_scene_line <cycle 2>,0.0,0.01,0.01,219,219,0
+apply_spec_line,0.0,0.01,0.01,61,61,0
+cmd_replace_world,0.0,0.01,0.01,15,15,0
+reference_check_all,0.0,0.01,0.01,172,172,0
+reference_checked,0.0,0.01,0.01,48,48,0
+wood_contact_source_evaluate <cycle 1>,0.01,0.0,0.01,8330,8330,0
+wood_world_validate_members,0.0,0.01,0.01,172,172,0
+app_asm_context,0.0,0.0,0.0,1301,1301,0

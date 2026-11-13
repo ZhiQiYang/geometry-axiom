@@ -1,0 +1,35 @@
+{
+  "binary": "/workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/build/integration/gprof/bridge",
+  "binary_sha256": "8963ff3fb8de38bf11604d28ee84b6314bfb87afdff403db884cbb9e6863c9bf",
+  "gmon_files": [
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/runs/20261018T203445910138-gprof/integration/bridge-cold/sample-000/gmon.out",
+      "sha256": "549372635fc42ecd366e47a834243444c135ee5fb24f3d25105216325801b384"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/runs/20261018T203445910138-gprof/integration/bridge-cold/sample-001/gmon.out",
+      "sha256": "549372635fc42ecd366e47a834243444c135ee5fb24f3d25105216325801b384"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/runs/20261018T203445910138-gprof/integration/bridge-cold/sample-002/gmon.out",
+      "sha256": "549372635fc42ecd366e47a834243444c135ee5fb24f3d25105216325801b384"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/runs/20261018T203445910138-gprof/integration/bridge-cold/sample-003/gmon.out",
+      "sha256": "549372635fc42ecd366e47a834243444c135ee5fb24f3d25105216325801b384"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/runs/20261018T203445910138-gprof/integration/bridge-cold/sample-004/gmon.out",
+      "sha256": "549372635fc42ecd366e47a834243444c135ee5fb24f3d25105216325801b384"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/runs/20261018T203445910138-gprof/integration/bridge-cold/sample-005/gmon.out",
+      "sha256": "549372635fc42ecd366e47a834243444c135ee5fb24f3d25105216325801b384"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/runs/20261018T203445910138-gprof/integration/bridge-cold/sample-006/gmon.out",
+      "sha256": "549372635fc42ecd366e47a834243444c135ee5fb24f3d25105216325801b384"
+    }
+  ],
+  "note": "累積欄為 self + children；不是 flat profile 從上往下相加的 cumulative seconds。"
+}

@@ -1,0 +1,11 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -912,7 +912,7 @@
+         require(embedded_bom == -1, "C_UNSUPPORTED_BOM", path,
+                 text.count("\n", 0, embedded_bom) + 1 if embedded_bom != -1 else 1,
+                 "only one initial UTF-8 BOM is supported; embedded BOM characters need explicit preprocessing support")
+-        text = text.removeprefix("\ufeff")
++        pass  # TEMP removed C_BOM_NORMALIZATION
+         trigraph = re.search(r"\?\?[=/'()!<>-]", text)
+         require(trigraph is None, "C_UNSUPPORTED_TRIGRAPH", path,
+                 text.count("\n", 0, trigraph.start()) + 1 if trigraph else 1,

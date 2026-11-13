@@ -1,0 +1,58 @@
+{
+  "kind": "fixed-new-regression-and-removal-controls",
+  "product_source": "a88d3c57917d22aa28e3357b2c22e08c586a9f71",
+  "judge_source": "a88d3c57917d22aa28e3357b2c22e08c586a9f71",
+  "source_root": "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/region-edges-new-a88d3c57-v2",
+  "archive_sha256": "5a52b0d1a707620bc021626ee582c3f6d0bc4565980061ceb2482e67bca6a6c5",
+  "original_product_preserved": true,
+  "judge_only_added_files": {},
+  "started_utc": "2026-10-16T02:53:42.486230+00:00",
+  "finished_utc": "2026-10-16T02:58:03.564896+00:00",
+  "command": [
+    "python3",
+    "-u",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/exercise-region-edges.py",
+    "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/region-edges-new-a88d3c57-v2",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/region-edges-new-a88d3c57-v2",
+    "new"
+  ],
+  "raw_test_exit": 0,
+  "test_result": {
+    "selected_tests": [
+      "test_crossing_holes_have_positive_overlap_without_contained_vertices",
+      "test_hole_contacts_stay_invalid_and_rectangle_contacts_stay_valid",
+      "test_product_crossing_holes_rejected_without_mutation",
+      "test_product_unit_hole_placement_rejected_without_mutation",
+      "test_removing_hole_center_guard_breaks_kernel_strips_and_product",
+      "test_removing_hole_crossing_guard_breaks_kernel_and_product",
+      "test_unit_rectangles_exclude_hole_interiors_at_coordinate_limits",
+      "test_unit_strips_keep_two_maximal_intervals_and_capacity_failure"
+    ],
+    "tests_run": 8,
+    "failures": 0,
+    "failed_tests": [],
+    "errors": 0,
+    "errored_tests": [],
+    "skipped": [],
+    "expected_failures": 0,
+    "unexpected_successes": 0,
+    "successful": true,
+    "compiler_commands": 17,
+    "build_artifact_count": 26
+  },
+  "expected_outcome_observed": true,
+  "expected_red_test_names": [],
+  "source_unchanged_after_tests": true,
+  "source_files": 15862,
+  "source_before_sha256": "f65a2ae93159a14eadd11197b312abde7c0c805c4cf6417ea56ac079c37dcf37",
+  "source_after_sha256": "f65a2ae93159a14eadd11197b312abde7c0c805c4cf6417ea56ac079c37dcf37",
+  "log_sha256": "47af8f376b66ebef4d7ff82148815fc6756755a10764bced88cb27bd8c72858b",
+  "shared_lock_holder": "pid=58249 start=2026-10-16T02:39:56Z label= args=run WSL_CI_JOB_TAG=geo261-corrected-db65132a bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/next-targeted-namespace.sh\n",
+  "runner_sha256": {
+    "run-region-edges-v2.py": "b094438be109f5af82232784aba15eac74cd1686fa46511da550bf23a3df96fc",
+    "exercise-region-edges.py": "c1de6d07d00668f03ce7079e9e6610f516d860fcb1e6bbcb15eb9363c9773f8d"
+  },
+  "full_suite_executed": false,
+  "browser_executed": false,
+  "exit": 0
+}

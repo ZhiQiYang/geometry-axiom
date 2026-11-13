@@ -1,0 +1,1119 @@
+{
+  "product_source": "2bbe54f19b2d19e8a816530f0c4edca950629a34",
+  "previous_evidence_head": "12f36515d61011ea6072d52a425370aa5fdcd932",
+  "full_R6_raw_archive_published": false,
+  "full_R6_source_preparation_raw_published": false,
+  "limits": "This is a complete terminal projection with original outer command streams, current CI and ledger freshness. Inner compare/perf/profile raw streams remain at their original paths pending the separately reviewed full archive.",
+  "files": [
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/SUMMARY.json",
+      "original_path": "/workspace/geo323-r6-terminal-summary-20261024/SUMMARY.json",
+      "bytes": 30747,
+      "sha256": "349c75785e5b08cf6623a1eba532ae5a39cdcd386c2e0a64431aa13c9bf2d9a1"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/original-terminal/receipt.json",
+      "original_path": "/workspace/g337323R6/receipt.json",
+      "bytes": 10431,
+      "sha256": "ce6eb1c5741a5b173563fb6d0a22fae27c3976c5c40a31c37ed60df29e9471a1"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/original-terminal/performance.json",
+      "original_path": "/workspace/g337323R6/evidence/performance.json",
+      "bytes": 11378,
+      "sha256": "c0ac33a57801ca2ee7e0f2b5a688b48e3f02942423a025935f6e3d0d69c53e3a"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/original-terminal/equivalence.json",
+      "original_path": "/workspace/g337323R6/evidence/equivalence.json",
+      "bytes": 283305,
+      "sha256": "d4a3ef6fbc8012a62bfa455ff142ec39ea5fd2c6f6290c8274bb92002cb78694"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/original-terminal/profile_counts.json",
+      "original_path": "/workspace/g337323R6/evidence/profile-counts.json",
+      "bytes": 3594,
+      "sha256": "a7d6fa3f01cca374a9ce3665c9a0fdc5cf7052ea7a8df1226636350e416c73f9"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/original-terminal/launcher.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/RESULT.json",
+      "bytes": 11618,
+      "sha256": "19f5bfc4da2538c8dd51235110ad455c4bd61fc073daf13189f37b57d50ba0e7"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/original-terminal/outer.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/outer-five/RESULT.json",
+      "bytes": 3463,
+      "sha256": "4810ff91e38295b857d3c925406eabc74a3d0eff99dfc0c9d4cd0cef26619008"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/RESULT.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/RESULT.json",
+      "bytes": 11618,
+      "sha256": "19f5bfc4da2538c8dd51235110ad455c4bd61fc073daf13189f37b57d50ba0e7"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/build/result.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/build/result.json",
+      "bytes": 1429,
+      "sha256": "abd5287723aecf6b5fc2bfe750ce5d5a55de22a2bcf805003e0d2ba8d8cf4baa"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/build/stderr",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/build/stdout",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/build/stdout",
+      "bytes": 110,
+      "sha256": "3e19db10ccd9c7fc15b09c19621634e43e13628f74cb026736e4cc718dc62503"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/compare/result.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/compare/result.json",
+      "bytes": 2137,
+      "sha256": "6d1acb4cf33cdcdda91b96c23cd1ce0454dac316d8db63c986edfaa92f0f82db"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/compare/stderr",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/compare/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/compare/stdout",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/compare/stdout",
+      "bytes": 110,
+      "sha256": "d6b37322989ae5ea602cc602bb6b0e58ca3054fd3444e0d6e5dfed77e89c1c41"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/perf/result.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/perf/result.json",
+      "bytes": 2072,
+      "sha256": "06aa2b1e66e3ea2264d2a99507ce461653c6330ded17803b288cbc4b60894e5c"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/perf/stderr",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/perf/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/perf/stdout",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/perf/stdout",
+      "bytes": 110,
+      "sha256": "d6301226ec438e16a5ac384a755de170f87aa7bf21521b17f4e1cdce15ac0e1e"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/prepare/result.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/prepare/result.json",
+      "bytes": 1433,
+      "sha256": "bab126ab605443bcb10d49431e1876ce79ec5b1c42a0bb50855c4e04d20fdfa6"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/prepare/stderr",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/prepare/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/prepare/stdout",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/prepare/stdout",
+      "bytes": 110,
+      "sha256": "b9facf5454a2541503a960ae2d5eb69579a3f8dadf58ec8857f5ae269fc40f4b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/profile/result.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/profile/result.json",
+      "bytes": 2364,
+      "sha256": "9092f222c13d742060abb592c52b9ba7374b6d2888e96f6b4ed8775edec917bf"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/profile/stderr",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/profile/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/launch-five/profile/stdout",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch-five/profile/stdout",
+      "bytes": 110,
+      "sha256": "259af1278ac9a7763bcc98cfe7fc0c30ed7ae5585956175bf6e9bc797bd77d25"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/outer-five/RESULT.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/outer-five/RESULT.json",
+      "bytes": 3463,
+      "sha256": "4810ff91e38295b857d3c925406eabc74a3d0eff99dfc0c9d4cd0cef26619008"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/outer-five/commands/001/result.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/outer-five/commands/001/result.json",
+      "bytes": 1081,
+      "sha256": "8a48c845de9a10c28fa65bd5953d18042466c594a8e1371fa3a948849026e070"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/outer-five/commands/001/stderr",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/outer-five/commands/001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/outer-five/commands/001/stdout",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/outer-five/commands/001/stdout",
+      "bytes": 189,
+      "sha256": "fcc475e56a34a2fd7ec1ba66c07e6a62922423183f0043b2b3a84b0c9747356a"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/outer-five/commands/002/result.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/outer-five/commands/002/result.json",
+      "bytes": 1281,
+      "sha256": "97d0a39ef4543efddf157a81ba12309517bb70018f32e60d97bf0904b86739fd"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/outer-five/commands/002/stderr",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/outer-five/commands/002/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/outer-five/commands/002/stdout",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/outer-five/commands/002/stdout",
+      "bytes": 300,
+      "sha256": "0190765bcb5fba62552f4aad75b506b9df09140e5037779cb8dbaed3da342c9b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/EXEC_COMPLETION.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/EXEC_COMPLETION.json",
+      "bytes": 194,
+      "sha256": "6923a0a0a223d8bfba43158f3212dfb2094f45d7c713cd3610a100c29e8bc6b9"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/RESULT.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/RESULT.json",
+      "bytes": 482,
+      "sha256": "4384a7f8589cbb53f0fb937c2306b863fc7d2574528390e4c05b3ea8a0a76c97"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/check_tool.py",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/check_tool.py",
+      "bytes": 2113,
+      "sha256": "f5059caf622d82b3f360a27dfc54ba1f3eb26272999e47ab6808d43009b97624"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000001/request.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000001/request.json",
+      "bytes": 1602,
+      "sha256": "6cbfb8557c7a83c37292a537664f1a8d1bff0ca8c0f6bd1e20ded0cce6f9c728"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000001/result.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000001/result.json",
+      "bytes": 1853,
+      "sha256": "f2db1ab916b290d38f65a891a47484cf890884b28450ae7c89bc99384db85880"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000001/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000001/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000001/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "7cf086d91abab015663222d1d8439ab8f9270e34144eb400f777e4df83c6cc73"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000002/request.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000002/request.json",
+      "bytes": 1609,
+      "sha256": "3756a5b7c3a8e1004f4f98656b199ca5e9323d96c868093e9692425c5f3e6c6c"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000002/result.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000002/result.json",
+      "bytes": 1859,
+      "sha256": "ff3c72d3417bce5f6baef504a45f91fc4166ed7fda26731ef8f6083d99a21c70"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000002/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000002/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000002/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000003/request.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000003/request.json",
+      "bytes": 1745,
+      "sha256": "2f4168440de703015e3f93f0ee8b4e48783a9830712db842fa345682ec2f2bf0"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000003/result.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000003/result.json",
+      "bytes": 1993,
+      "sha256": "a2e7fdec94780c19f16c80f0e91fbebeaf4ba2c979e9dee120a50376f35141af"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000003/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000003/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000003/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000004/request.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000004/request.json",
+      "bytes": 1615,
+      "sha256": "9523bc69b034514151693cbe1196a1484826d18d04e1a36626bfae76fdd88c9e"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000004/result.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000004/result.json",
+      "bytes": 1869,
+      "sha256": "7542b6fa32a8612b014c9ad54b3a1ceb572baab392c451fd4d37e7b394d25ba8"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000004/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000004/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000004/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000004/stdout.bin",
+      "bytes": 15019,
+      "sha256": "11ab0785b01bc60079ed7adb9a9d12d237a616606089b4577bc5928af622badc"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000005/request.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000005/request.json",
+      "bytes": 1602,
+      "sha256": "b2bcbab8528b03d47cc485f343d6e092b17e423773cef745a46369b22978b0ae"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000005/result.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000005/result.json",
+      "bytes": 1853,
+      "sha256": "6133360cf5bf51fdb77f9abc9bdf2ae827d2249596a100c7f0963207e75de53a"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000005/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000005/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000005/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000005/stdout.bin",
+      "bytes": 41,
+      "sha256": "7cf086d91abab015663222d1d8439ab8f9270e34144eb400f777e4df83c6cc73"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000006/request.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000006/request.json",
+      "bytes": 1607,
+      "sha256": "21a90fbb8a6b14147ca1f6baa7844c1f3aa8dd947b96611a616f0106fb10578b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000006/result.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000006/result.json",
+      "bytes": 1857,
+      "sha256": "a0392762c779508d9ff5d24d04bce10cfa04774fc6fb0d67f71753f88d23f631"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000006/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000006/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands/000006/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands/000006/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/ledger-freshness/subcommands.json",
+      "original_path": "/workspace/geo337-2bbe54f1-ledger-freshness-20261024/subcommands.json",
+      "bytes": 11795,
+      "sha256": "b476a2b4458540c78b1264563317d5a96ae03798fd7ba2e4f65afd44c13e1bf0"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/CLASSIFICATION.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/CLASSIFICATION.json",
+      "bytes": 11483,
+      "sha256": "90f40a8b340658a549bd77571c5d764f4f74efc7e4322e09f38cb097823051fe"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/SUMMARY.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/SUMMARY.json",
+      "bytes": 11335,
+      "sha256": "1b0dca16012a0326c3a24eb1c73f795279c17c438afcc68bc1f260c41eabcf3c"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000001/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000001/request.json",
+      "bytes": 1581,
+      "sha256": "77299df17ca4f9255e2fc0fedf470cc6b9f1393ec4e1ae9eec61f9f379ebb390"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000001/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000001/result.json",
+      "bytes": 1835,
+      "sha256": "0b7d9cfa96c638db160c0c7358eb281bbbc4dc20e5f9ca206b904b6b0b27d45b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000001/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000001/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000001/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000001/stdout.bin",
+      "bytes": 13323,
+      "sha256": "495367067cee219f1109a2d317ac11dabab20218a84172bb0f02c81f4f3054dc"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000002/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000002/request.json",
+      "bytes": 1547,
+      "sha256": "0bb72ee8033196e4d6caa7a26e4f4f6fb4681f7ddf7bfb5a42c25d4873fce52b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000002/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000002/result.json",
+      "bytes": 1800,
+      "sha256": "b04cbf564360ae9b58f57321d670c8fb514467609665fde60b733d5695b9a2e2"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000002/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000002/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000002/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000002/stdout.bin",
+      "bytes": 6346,
+      "sha256": "8dad46795c9453d8fc662e94854f85be48527cbbcb5099278b8fbfe1f15da3c5"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000003/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000003/request.json",
+      "bytes": 1554,
+      "sha256": "6ef3ca8dbd3c7a4cb185943598ee4c04a31bd6b26cecc8b213d1d4c6937508a2"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000003/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000003/result.json",
+      "bytes": 1805,
+      "sha256": "bcb0989ef9df3b300f1c598530dc465ef04b97f7aa7e1cbb2203e7eb0f0f5f30"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000003/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000003/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000003/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000003/stdout.bin",
+      "bytes": 868,
+      "sha256": "828f954a5455c26aafa8712a49bf2497fad8bdfd02d52cfb35fe11c523d4374b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000004/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000004/request.json",
+      "bytes": 1554,
+      "sha256": "d6fbdbed33e23aa8bf42528d618cc79bdfcd62ca4ef8775af512978ac67daff8"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000004/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000004/result.json",
+      "bytes": 1805,
+      "sha256": "7e0b2bdb6d1bd1174cfb66c0c87d8b7363ddf5167aae5f1d63e6fbb7497a1c92"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000004/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000004/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000004/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000004/stdout.bin",
+      "bytes": 868,
+      "sha256": "828f954a5455c26aafa8712a49bf2497fad8bdfd02d52cfb35fe11c523d4374b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000005/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000005/request.json",
+      "bytes": 1554,
+      "sha256": "3ebb55bc27192bda4778b1ece83e215d112a1e1197491c79bb386caf2641e289"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000005/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000005/result.json",
+      "bytes": 1806,
+      "sha256": "3c1efed209898bab5625cbf6e6a563891e0771c1a5e923dd010c303af564f902"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000005/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000005/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000005/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000005/stdout.bin",
+      "bytes": 868,
+      "sha256": "828f954a5455c26aafa8712a49bf2497fad8bdfd02d52cfb35fe11c523d4374b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000006/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000006/request.json",
+      "bytes": 1554,
+      "sha256": "83de10db97efd5028b84415d769664a55c65baeb465b4e0e198d71b53e471cc8"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000006/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000006/result.json",
+      "bytes": 1806,
+      "sha256": "11c675bd16220722bd8e06eec7a3743584c8b02ffd771597706c9f1b8f2d9e1e"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000006/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000006/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000006/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000006/stdout.bin",
+      "bytes": 868,
+      "sha256": "828f954a5455c26aafa8712a49bf2497fad8bdfd02d52cfb35fe11c523d4374b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000007/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000007/request.json",
+      "bytes": 1554,
+      "sha256": "3dc709d72f00af88d05025f59e23d2e673ab371e30ccd158bf0a7c6758126331"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000007/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000007/result.json",
+      "bytes": 1805,
+      "sha256": "fe13a19b93ebdacffd9c2c14934f246510681422f78a8b46b5ba12532e0c8e56"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000007/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000007/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000007/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000007/stdout.bin",
+      "bytes": 868,
+      "sha256": "828f954a5455c26aafa8712a49bf2497fad8bdfd02d52cfb35fe11c523d4374b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000008/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000008/request.json",
+      "bytes": 1554,
+      "sha256": "0d5d229151e056c9a87a3dcbb385ad5dea437c0b41fc25568c94c5c194be7b61"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000008/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000008/result.json",
+      "bytes": 1805,
+      "sha256": "1953a60b7a5778875b0ab2b46d867357344f24f1b6da1509d0c29d5c0f34d9f1"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000008/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000008/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000008/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000008/stdout.bin",
+      "bytes": 868,
+      "sha256": "828f954a5455c26aafa8712a49bf2497fad8bdfd02d52cfb35fe11c523d4374b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000009/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000009/request.json",
+      "bytes": 1554,
+      "sha256": "9d4e722c1526e09d7e5d7882815dcded1584f668f491862e6df92b37afe5d917"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000009/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000009/result.json",
+      "bytes": 1806,
+      "sha256": "f30addcbe84692eb47a80642bd610799857796b8e14269cecba5dbe88b77bfde"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000009/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000009/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000009/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000009/stdout.bin",
+      "bytes": 868,
+      "sha256": "828f954a5455c26aafa8712a49bf2497fad8bdfd02d52cfb35fe11c523d4374b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000010/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000010/request.json",
+      "bytes": 1581,
+      "sha256": "fa2d9e8aaa6458edd079b02451b0898d692682eaf7f675623c17e2ad6119aa2d"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000010/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000010/result.json",
+      "bytes": 1835,
+      "sha256": "973ad3a1edcece502e079979d790ec72b53bb80713b74547e34375d6d6afb438"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000010/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000010/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000010/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000010/stdout.bin",
+      "bytes": 13337,
+      "sha256": "7425f5760405cc4f77826fe0064e833dd6289398acbb3e513a4dff94e302ad59"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000011/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000011/request.json",
+      "bytes": 1548,
+      "sha256": "5e9bb7e0c83c6cdaf9924716124d1cc1cc43d539feb0e58b26e0ac628b2bb27a"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000011/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000011/result.json",
+      "bytes": 1801,
+      "sha256": "e73e962aff2f97fbeb2572d73404498ab960b08f263835b4b78565ded7dbacb3"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000011/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000011/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000011/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000011/stdout.bin",
+      "bytes": 6346,
+      "sha256": "a5852d62edb411e57a4b9e1cd6d6a4f14cb174d9b6b4a5d9b58dc46f47bda5cf"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000012/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000012/request.json",
+      "bytes": 1554,
+      "sha256": "6c89a89bbd49a47fab7cc0e3515731036070684beb2c08946d04d590e4224ed3"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000012/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000012/result.json",
+      "bytes": 1805,
+      "sha256": "34d439009c91efbecdd6d1321f6673d6c4e639f79e1ae6b07df6bde215d4cb90"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000012/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000012/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000012/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000012/stdout.bin",
+      "bytes": 868,
+      "sha256": "9ca2bf55385ac19b6905cf0faaec60d1de1daf38d1774d38dd405a85d1f8b69f"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000013/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000013/request.json",
+      "bytes": 1554,
+      "sha256": "03f76fe6e1bc5fa087a19acfe4ef1fae0f4b4c1afea52d2dc53d2c4c25415a84"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000013/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000013/result.json",
+      "bytes": 1806,
+      "sha256": "710ec98847b9b7de052c15f8783f2add2efe0a645a6c455dc4646dc7036d9d6f"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000013/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000013/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000013/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000013/stdout.bin",
+      "bytes": 868,
+      "sha256": "9ca2bf55385ac19b6905cf0faaec60d1de1daf38d1774d38dd405a85d1f8b69f"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000014/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000014/request.json",
+      "bytes": 1553,
+      "sha256": "89c6cc728dbb2683c6e050344f2671246a06788bb02c36d1525726b48e63e539"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000014/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000014/result.json",
+      "bytes": 1805,
+      "sha256": "49adcff69206140acbaf1dd732c20cd0bb7e870033e1044c6456733fbf18daa8"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000014/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000014/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000014/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000014/stdout.bin",
+      "bytes": 868,
+      "sha256": "9ca2bf55385ac19b6905cf0faaec60d1de1daf38d1774d38dd405a85d1f8b69f"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000015/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000015/request.json",
+      "bytes": 1554,
+      "sha256": "cd5518bea2be451c1533577bad92f15b6b9ccace14962d759ea7dea20956476c"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000015/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000015/result.json",
+      "bytes": 1806,
+      "sha256": "5321f80d0aa09977a29b733e1e9ae5b4da9d9f0ade5a8f1a0c93d7a042c6b03a"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000015/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000015/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000015/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000015/stdout.bin",
+      "bytes": 868,
+      "sha256": "9ca2bf55385ac19b6905cf0faaec60d1de1daf38d1774d38dd405a85d1f8b69f"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000016/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000016/request.json",
+      "bytes": 1554,
+      "sha256": "c6533b76a5808e2f31ebb34f9c3f91400b7730649c4ea3cc01cd006fcdfd9208"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000016/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000016/result.json",
+      "bytes": 1806,
+      "sha256": "56f358bbcb3c607fc59e4740e428d76e2a147e86384e0dc4c511c81e66949cc4"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000016/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000016/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000016/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000016/stdout.bin",
+      "bytes": 868,
+      "sha256": "9ca2bf55385ac19b6905cf0faaec60d1de1daf38d1774d38dd405a85d1f8b69f"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000017/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000017/request.json",
+      "bytes": 1552,
+      "sha256": "5b903eea2291ff103f83acab1408973f528af5dca9a9002deb6e624d11f87f11"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000017/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000017/result.json",
+      "bytes": 1804,
+      "sha256": "2b329063ddcace65e5ac90f8419468ee29ea8c54720c48cb91a633481aed0d49"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000017/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000017/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000017/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000017/stdout.bin",
+      "bytes": 868,
+      "sha256": "9ca2bf55385ac19b6905cf0faaec60d1de1daf38d1774d38dd405a85d1f8b69f"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000018/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000018/request.json",
+      "bytes": 1554,
+      "sha256": "bfea5a3034f6962e6a23b60b98c6a9752eeb018b6ec2790a7318728beb9bc078"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000018/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000018/result.json",
+      "bytes": 1806,
+      "sha256": "051877c6171f405dc9db480eced01eb076b268333eb1f3f9b2c57857baa877cd"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000018/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000018/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands/000018/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands/000018/stdout.bin",
+      "bytes": 868,
+      "sha256": "9ca2bf55385ac19b6905cf0faaec60d1de1daf38d1774d38dd405a85d1f8b69f"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci/subcommands.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-20261024/subcommands.json",
+      "bytes": 34044,
+      "sha256": "a4e37879bc35c5f3044e4ed16c2ce08544fc6efdfd7bf9c176aa78989f7feb29"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci-outer/EXEC_COMPLETION.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-launch-20261024/EXEC_COMPLETION.json",
+      "bytes": 205,
+      "sha256": "53d82ce232e9d2f81e3dd09259b66361c9744ba47d6d3edeee7756801b398ad6"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci-outer/RESULT.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-launch-20261024/RESULT.json",
+      "bytes": 2320,
+      "sha256": "e1974eac8900235c46e85393cbcd383e2e590624d2b03ba018920e251937b7ef"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci-outer/subcommands/000001/request.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-launch-20261024/subcommands/000001/request.json",
+      "bytes": 1651,
+      "sha256": "0766ca1b1f5c798c2341bbc0242b12e74f31e16969688c81fdd2fb82ff54238d"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci-outer/subcommands/000001/result.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-launch-20261024/subcommands/000001/result.json",
+      "bytes": 1903,
+      "sha256": "4641a8a8f34d0ee4d897759ec8ed74b4f5e17efbf7aa2f1943f43be50e3775a2"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci-outer/subcommands/000001/stderr.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-launch-20261024/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci-outer/subcommands/000001/stdin.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-launch-20261024/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci-outer/subcommands/000001/stdout.bin",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-launch-20261024/subcommands/000001/stdout.bin",
+      "bytes": 918,
+      "sha256": "61797c59bbcfe8edc6eb33528ab5d1f1cef1f76a0f802c3bee9ef40a09f1a1f9"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/required-ci-outer/subcommands.json",
+      "original_path": "/workspace/geo337-2bbe-12f-current-required-ci-launch-20261024/subcommands.json",
+      "bytes": 1989,
+      "sha256": "b10a70ab9b95a47fb84b84a35181862722bd845f763cf133810bcbefb837be53"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/FINAL_PINS.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/FINAL_PINS.json",
+      "bytes": 1393,
+      "sha256": "7234344b39724aa2970723ff402b040678ac00ffa8fed24859a6262cdd46a18c"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/PLAN.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/PLAN.json",
+      "bytes": 1756,
+      "sha256": "78b26791663ed581aa670534eb142c125ee338c3cd5964b915e33507a95c7dae"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/README.md",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/README.md",
+      "bytes": 2003,
+      "sha256": "0e931a73e51e35d24c0283141f482c6a6bf840381ca5bbadd4695f2e8dd8a663"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/REQUEST.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/REQUEST.json",
+      "bytes": 2316,
+      "sha256": "44ba0889e854d38279b96a1f58d81390a15bf01c84d0e024772afc8bcd9c1b60"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/REQUEST.template.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/REQUEST.template.json",
+      "bytes": 2294,
+      "sha256": "af9f5751f0b4acbdec3a4330eaaca57736e6e6dc357dc9a7214073f4b41d0ce7"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/REQUEST.unbound.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/REQUEST.unbound.json",
+      "bytes": 2296,
+      "sha256": "9a80b04a806dfffe203ddb14a0efd2bffa6dfbab774dff7f9aded411b8725f9f"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/STATIC_SELF_CHECK.json",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/STATIC_SELF_CHECK.json",
+      "bytes": 1653,
+      "sha256": "8411c56417be475786bf454a3ed0d009b8e203e3067f946f8c0ecca06fab4d43"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/bind_final_request.py",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/bind_final_request.py",
+      "bytes": 1944,
+      "sha256": "0170a02d57d3afe4b980ccbd6ba512a36ff2b89caae8c25508df37d507c8121b"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/bind_final_request.py.diff",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/bind_final_request.py.diff",
+      "bytes": 1027,
+      "sha256": "517ac605de7d8b38b54a01932e45b8e247a6f78cdb4d11bc3ad71505d7148a68"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/launch_stages.py",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/launch_stages.py",
+      "bytes": 4290,
+      "sha256": "480e07e9002f9a84f2779d93073a545755e78dba02d645232a41483aec762345"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/prepare_plan.py",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/prepare_plan.py",
+      "bytes": 3285,
+      "sha256": "761148864ea977d004899729b3134a152035270ee5a56a06ee1315a46f53886e"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/prepare_source.py",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/prepare_source.py",
+      "bytes": 9762,
+      "sha256": "a598fed13faae894a3a003a32afd58b42e8289f6455315b0aae03fed9bcd6b82"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/start_five.py",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/start_five.py",
+      "bytes": 1287,
+      "sha256": "4e763fa50a530aec4d41698bd37734fea19767aea05e6dd55847352e6d59432c"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/stage-tool-preparation/start_five.py.diff",
+      "original_path": "/workspace/geo323-final-r6-stage-tools-20261024/start_five.py.diff",
+      "bytes": 934,
+      "sha256": "2c5d912c078af1b5f84e503f34600fe0c1b7eda26ce1ef6fd854fa52e717b021"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/peer/R6_TERMINAL_CI_LEDGER_ACTUAL_PEER.json",
+      "original_path": "/workspace/train337-canvas-peer-resume/R6_TERMINAL_CI_LEDGER_ACTUAL_PEER.json",
+      "bytes": 3477,
+      "sha256": "81761ddcbc87af507c86a047efaa6d98ad5b407359cca6aa89b53dadc7abd875"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/peer/R6_SOURCE_PREPARATION_ACTUAL_PEER.json",
+      "original_path": "/workspace/train337-canvas-peer-resume/R6_SOURCE_PREPARATION_ACTUAL_PEER.json",
+      "bytes": 1277,
+      "sha256": "3d6bb08868c9cd82778de2717ca22145311f317a3e91fc68cb2a0eef5520f58d"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/peer/F2BBE_ARCHITECTURE_ADOPTION_AND_LEDGER_ACTUAL_PEER.json",
+      "original_path": "/workspace/train337-canvas-peer-resume/F2BBE_ARCHITECTURE_ADOPTION_AND_LEDGER_ACTUAL_PEER.json",
+      "bytes": 1151,
+      "sha256": "86204ee19cc11308d6671fcd4d36b1ec95488ecaeaf220353d51a6aab3bfb48f"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/peer/R6_STAGE_PARAMETER_TOOLS_STATIC_PEER.json",
+      "original_path": "/workspace/train337-canvas-peer-resume/R6_STAGE_PARAMETER_TOOLS_STATIC_PEER.json",
+      "bytes": 948,
+      "sha256": "753dac214ac8607b4b0d47053be2a80d953cd323193127275b3621317ec575a3"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/peer/CI_INDEPENDENT_REVIEW.json",
+      "original_path": "/workspace/geo337-2bbe-12f-ci-peer-backlog-20261024/REVIEW.json",
+      "bytes": 766,
+      "sha256": "4a5fe66daf1f121c055c85989f63b27593b83e1a9fdec8d8913ceea1cb2f265d"
+    },
+    {
+      "path": "evidence/geo337-train-20261024/current-R6-terminal/publish_geo337_R6_terminal_20261024.py",
+      "original_path": "/workspace/publish_geo337_R6_terminal_20261024.py",
+      "bytes": 9127,
+      "sha256": "310e3d0002c4feb86acdb4aa2e864545b922d79e1124bb0e57947fa6e6ab0e3c"
+    }
+  ]
+}

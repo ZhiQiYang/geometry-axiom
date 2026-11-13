@@ -1,0 +1,374 @@
+commit ae868138bcc78d1718d9a58b0cab3944f0c4203e
+Author:     Chih-Chi Yang <b10102230@gmail.com>
+AuthorDate: Sun Oct 18 14:42:53 2026 +0000
+Commit:     Chih-Chi Yang <b10102230@gmail.com>
+CommitDate: Sun Oct 18 14:42:53 2026 +0000
+
+    加入預設場景逐行隔離與成本見證並保留原入口前控
+
+diff --git a/geometry-core/transactions.inc b/geometry-core/transactions.inc
+index f50aef2a..67fa3063 100644
+--- a/geometry-core/transactions.inc
++++ b/geometry-core/transactions.inc
+@@ -721,6 +721,112 @@ static bool app_scene_replay_file(const char *path,World *world)
+     g_scene_file_replay=previous;free(frame.before);return ok;
+ }
+ 
++/* Private closed-program replay for the bridge's built-in default only.
++ * Keep the file-replay policy separate: scene_loading remains false here. */
++typedef struct {
++    AppWorldCandidate *owner;GeoEvalContext *sources;World *before;
++    size_t next_line;bool fixed_lines;
++} AppDefaultReplay;
++static AppDefaultReplay *g_default_replay;
++static const char *const app_default_replay_lines[]={
++    "surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
++    "timber 1 27 33 role boundary", "place 1 on 1 at-face e0 +u +n",
++    "timber 2 27 33 role boundary", "place 2 on 1 at-face e2 +u +n",
++    "spec 主支中線 500", "guide 1 1 v spec:主支中線",
++    "timber 3 27 33 role primary", "place 3 on 1 at-line guide 1 +v +n"
++};
++static bool app_default_replay_lines_match(const char *const *lines,size_t count)
++{
++    if(count!=sizeof app_default_replay_lines/sizeof app_default_replay_lines[0])return false;
++    for(size_t i=0;i<count;++i)if(strcmp(lines[i],app_default_replay_lines[i]))return false;
++    return true;
++}
++static bool app_default_replay_line_eligible(World *world,size_t index,char **tokens,int count)
++{
++    AppDefaultReplay *frame=g_default_replay;
++    if(!frame||!frame->fixed_lines)return false;
++    if(!frame->before||!frame->owner||!frame->sources||frame->owner!=g_active_app_candidate||world!=&frame->owner->after||
++       frame->sources!=geo_candidate_sources(app_candidate_core(frame->owner->control))||
++       geo_candidate_state(app_candidate_core(frame->owner->control))!=GEO_CANDIDATE_EVALUATING||
++       g_parsing_scene_file||g_scene_file_replay||index!=frame->next_line||
++       index>=sizeof app_default_replay_lines/sizeof app_default_replay_lines[0]||
++       app_candidate_evaluation_state(frame->owner->control)||geo_eval_provider_count(frame->sources)||
++       geo_eval_node_count(frame->sources)||geo_eval_edge_count(frame->sources)||
++       memcmp(frame->before,world,sizeof *world)){
++        frame->fixed_lines=false;return false;
++    }
++    char text[SCENE_MAX_LINE],*expected[SCENE_MAX_TOKENS];
++    snprintf(text,sizeof text,"%s",app_default_replay_lines[index]);
++    int wanted=split_tokens(text,expected,SCENE_MAX_TOKENS);
++    if(count!=wanted||count<=0){frame->fixed_lines=false;return false;}
++    for(int i=0;i<count;++i)if(strcmp(tokens[i],expected[i])){frame->fixed_lines=false;return false;}
++    const EngineeringState *engineering=&world->wood.engineering;
++    const AssemblyState *assembly=&world->wood.assembly;
++    const SectionProfileState *profiles=&world->wood.section_profiles;
++    if(engineering->material_count||engineering->method_count||engineering->application_count||engineering->binding_count||
++       assembly->rule_count||assembly->binding_count||assembly->instance_count||assembly->owner_count||
++       assembly->generation_required||assembly->loading||profiles->profile_count||profiles->member_count||profiles->run_count){
++        frame->fixed_lines=false;return false;
++    }
++    /* The two reference-sensitive additions always use the original inner. */
++    if(index==5||index==6)return false;
++    if(reference_may_affect(world,tokens,count)||parameter_reference_edit(world,tokens,count)){
++        frame->fixed_lines=false;return false;
++    }
++    return true;
++}
++static bool app_default_replay_line(const char *path,int line_no,char **tokens,int count,World *world,size_t index)
++{
++    AppDefaultReplay *frame=g_default_replay;
++    if(!frame)return apply_scene_line(path,line_no,tokens,count,world);
++    if(strcmp(path,"default")||line_no!=(int)index+1)frame->fixed_lines=false;
++    if(!app_default_replay_line_eligible(world,index,tokens,count)){
++        bool ok=apply_scene_line(path,line_no,tokens,count,world);
++        if(ok){memcpy(frame->before,world,sizeof *world);++frame->next_line;}
++        return ok;
++    }
++    if(!app_scene_direct_dimensions_allowed(path,line_no,tokens,count,world))return false;
++    unsigned char operation[sizeof frame->owner->operation];
++    memcpy(operation,&frame->owner->operation,sizeof operation);
++    g_scene_last_error[0]='\0';g_engineering_error[0]='\0';g_reference_issue_count=0;
++    AppSceneCandidateCall call={path,line_no,tokens,count,frame->before};
++    bool ok=app_scene_candidate_apply(world,frame->sources,&call);
++    const World *impact=ok?world:&g_reference_trial;
++    /* The closed seven-line program cannot edit these three empty domains.
++     * Keep the original post-evaluation checks explicit, including failure's
++     * trial snapshot. A broken premise rejects; it never retries evaluation or
++     * claims to reproduce a general retained-preview transaction. All other
++     * stage command classes are excluded by the exact literal/token guard. */
++    bool stage=memcmp(&frame->before->wood.engineering,&world->wood.engineering,sizeof world->wood.engineering)||
++        memcmp(&frame->before->wood.assembly,&world->wood.assembly,sizeof world->wood.assembly)||
++        memcmp(&frame->before->wood.section_profiles,&impact->wood.section_profiles,sizeof world->wood.section_profiles)||
++        assembly_dimensions_changed(frame->before,world)||parameter_reference_edit(frame->before,tokens,count)||
++        (reference_may_affect(frame->before,tokens,count)&&(!ok||reference_geometry_changed(frame->before,world)));
++    if(stage){
++        frame->fixed_lines=false;ok=false;
++        if(!g_scene_last_error[0])scene_error(path,line_no,"I8a: default replay invariant changed; World unchanged");
++    }
++    if(ok&&!app_scene_file_sources_ready(frame->owner)){
++        ok=false;scene_error(path,line_no,"I8: candidate seal failed; World unchanged");
++    }
++    bool changed=ok&&!g_parsing_scene_file&&strcmp(tokens[0],"canvas-pos")&&!world_definitions_equal(frame->before,world);
++    memcpy(&frame->owner->operation,operation,sizeof operation);
++    app_candidate_set_evaluation_state(frame->owner->control,NULL,NULL);
++    if(!geo_eval_reset(frame->sources)){
++        if(ok)scene_error(path,line_no,"I8: candidate seal failed; World unchanged");
++        ok=false;
++    }
++    if(!ok){
++        memcpy(world,frame->before,sizeof *world);
++        if(!g_scene_last_error[0])scene_error(path,line_no,"I8: invalid definition/reference; World unchanged");
++        return false;
++    }
++    if(changed)++g_definition_revision;
++    memcpy(frame->before,world,sizeof *world);++frame->next_line;
++    return true;
++}
++
++
+ static bool reference_default_world(World *world)
+ {
+     const char *lines[]={
+@@ -730,11 +836,33 @@ static bool reference_default_world(World *world)
+         "spec 主支中線 500", "guide 1 1 v spec:主支中線",
+         "timber 3 27 33 role primary", "place 3 on 1 at-line guide 1 +v +n"
+     };
++    AppDefaultReplay *frame=g_default_replay;
++    if(frame){frame->fixed_lines=app_default_replay_lines_match(lines,sizeof lines/sizeof lines[0]);frame->next_line=0;}
+     memset(world,0,sizeof *world);
++    if(frame)memcpy(frame->before,world,sizeof *world);
+     for (size_t i=0;i<sizeof lines/sizeof lines[0];++i) {
+         char buf[SCENE_MAX_LINE],*tokens[SCENE_MAX_TOKENS];
+         snprintf(buf,sizeof buf,"%s",lines[i]); int n=split_tokens(buf,tokens,SCENE_MAX_TOKENS);
+-        if (!apply_scene_line("default",(int)i+1,tokens,n,world)) return false;
++        bool ok=frame?app_default_replay_line("default",(int)i+1,tokens,n,world,i):apply_scene_line("default",(int)i+1,tokens,n,world);
++        if(!ok)return false;
+     }
+     return true;
+ }
++
++/* Optional scratch OOM preserves all nine original inner transactions. The
++ * caller restores its entry revision before the final world_revalidate; that
++ * final graph is intentionally outside this line frame and remains retained. */
++static bool reference_default_world_owned(World *world)
++{
++    AppDefaultReplay frame={0},*previous=g_default_replay;
++    frame.owner=g_active_app_candidate;
++    if(!g_parsing_scene_file&&!g_scene_file_replay&&frame.owner&&world==&frame.owner->after&&
++       geo_candidate_state(app_candidate_core(frame.owner->control))==GEO_CANDIDATE_EVALUATING){
++        frame.sources=geo_candidate_sources(app_candidate_core(frame.owner->control));
++        if(frame.sources&&!app_candidate_evaluation_state(frame.owner->control)&&!geo_eval_provider_count(frame.sources)&&
++           !geo_eval_node_count(frame.sources)&&!geo_eval_edge_count(frame.sources))frame.before=malloc(sizeof *frame.before);
++    }
++    g_default_replay=frame.before?&frame:NULL;
++    bool ok=reference_default_world(world);
++    g_default_replay=previous;free(frame.before);return ok;
++}
+diff --git a/tests/geo261_candidate_product_harness.c b/tests/geo261_candidate_product_harness.c
+index 7281741e..6803238d 100644
+--- a/tests/geo261_candidate_product_harness.c
++++ b/tests/geo261_candidate_product_harness.c
+@@ -4,11 +4,14 @@
+ #endif
+ #include <stdlib.h>
+ static void *replay_malloc(size_t size);
++static void *default_replay_calloc(size_t count,size_t size);
++#define calloc default_replay_calloc
+ #define malloc replay_malloc
+ #define GEOMETRY_BRIDGE_ENTRYPOINT geometry_bridge_main
+ #include "../geometry-web/web_bridge.c"
+ #undef GEOMETRY_BRIDGE_ENTRYPOINT
+ #undef malloc
++#undef calloc
+ #define CHECK(value,label) do{if(!(value)){fprintf(stderr,"ASSERT:%s\n",label);return 1;}}while(0)
+ static bool line(const char *value){return feed_line("candidate-witness",1,value,&g_world);}
+ static bool prepare(const char *path)
+@@ -242,9 +245,158 @@ static int replay_standalone(const char *path)
+     CHECK(!g_scene_file_replay&&geo_named_values_find(&g_world.geo.named_values,"x")->value==500,"standalone-original-parser-value");
+     return 0;
+ }
++
++/* Default replay witnesses keep the actual bridge and all original CHECKs. */
++static bool default_observe_candidates,default_fail_candidate;
++static uint64_t default_fail_revision,default_candidate_revisions[16];
++static size_t default_candidate_count;
++static unsigned default_candidate_failures;
++static void *default_replay_calloc(size_t count,size_t size)
++{
++    if(count==1&&size==sizeof(AppWorldCandidate)){
++        if(default_observe_candidates){
++            if(default_candidate_count<16)default_candidate_revisions[default_candidate_count]=g_definition_revision;
++            ++default_candidate_count;
++        }
++        if(default_fail_candidate&&g_definition_revision==default_fail_revision){
++            default_fail_candidate=false;++default_candidate_failures;return NULL;
++        }
++    }
++    return calloc(count,size);
++}
++static bool default_literals(const World *world)
++{
++    const GeoNamedValue *value=geo_named_values_find(&world->geo.named_values,"主支中線");
++    return world->wood.timber_count==3&&world->wood.timbers[0].placed&&
++        world->wood.timbers[1].placed&&world->wood.timbers[2].placed&&value&&value->value==500;
++}
++static int default_owned_candidate(const char *path,bool scratch_oom)
++{
++    CHECK(prepare(path),"default-fixture");g_definition_revision=41;
++    World *before=malloc(sizeof *before);CHECK(before,"default-before-memory");memcpy(before,&g_world,sizeof *before);
++    AppWorldCandidate *owner=app_world_candidate_create(&g_world);CHECK(owner,"default-owner");
++    memset(&owner->operation,0xa5,sizeof owner->operation);owner->operation.boundary_keyed=false;owner->operation.boundary_id=91;
++    unsigned char operation_bytes[sizeof owner->operation];memcpy(operation_bytes,&owner->operation,sizeof operation_bytes);
++    AppReplacement operation={true,g_definition_revision};uint64_t revision=g_definition_revision,serial=g_app_candidate_serial;
++    default_candidate_count=0;default_observe_candidates=true;
++    if(scratch_oom){replay_fail_size=sizeof(World);replay_fail_remaining=1;replay_allocation_failures=0;}
++    GeoCandidateStatus status=app_world_candidate_evaluate(owner,app_replace_evaluate,&operation);
++    default_observe_candidates=false;
++    CHECK(status==GEO_CANDIDATE_OK,"default-evaluation-succeeded");
++    CHECK(g_app_candidate_serial-serial==(scratch_oom?9:2),"default-owned-inner-candidate-cost");
++    CHECK(default_candidate_count==(scratch_oom?9:2),"default-real-candidate-allocation-count");
++    if(scratch_oom){
++        CHECK(replay_fail_remaining==0&&replay_allocation_failures==1,"default-optional-scratch-oom-fallback");
++        for(size_t i=0;i<9;++i)CHECK(default_candidate_revisions[i]==revision+i,"default-fallback-per-line-revisions");
++    }else{
++        CHECK(default_candidate_revisions[0]==revision+5&&default_candidate_revisions[1]==revision+6,
++              "default-spec-guide-keep-original-revisions");
++    }
++    CHECK(g_definition_revision==revision&&operation.completed_revision==revision+9,"default-callback-revision-restored");
++    CHECK(!memcmp(before,&g_world,sizeof *before),"default-callback-live-unpublished");
++    CHECK(!memcmp(operation_bytes,&owner->operation,sizeof operation_bytes),"default-operation-all-bytes-preserved");
++    CHECK(!g_default_replay&&!g_scene_file_replay&&!g_parsing_scene_file,"default-scope-restored-before-final-graph");
++    GeoCandidate *core=app_candidate_core(owner->control);GeoEvalContext *sources=geo_candidate_sources(core);
++    CHECK(geo_candidate_state(core)==GEO_CANDIDATE_EVALUATED&&geo_candidate_evaluation_generation(core)==1,
++          "default-one-outer-evaluation");
++    CHECK(geo_eval_candidate_id(sources)==geo_candidate_id(core)&&geo_eval_base_revision(sources)==revision,
++          "default-final-graph-has-original-outer-identity");
++    CHECK(app_candidate_evaluation_state(owner->control)&&geo_eval_provider_count(sources)>=4&&geo_eval_node_count(sources)>=3,
++          "default-final-graph-retained");
++    CHECK(default_literals(&owner->after)&&replay_has_guide_value(sources,500),"default-literal-final-geometry");
++    CHECK(app_world_candidate_seal(owner)&&geo_eval_is_sealed(sources),"default-final-seal");
++    CHECK(app_world_candidate_publish(owner,&g_world,false),"default-single-publication");
++    CHECK(geo_candidate_state(core)==GEO_CANDIDATE_PUBLISHED&&geo_candidate_sources(core)==sources&&default_literals(&g_world),
++          "default-publishes-same-owner-and-complete-root");
++    CHECK(!app_world_candidate_publish(owner,&g_world,false),"default-no-second-publication");
++    printf("DEFAULT_FACTS inner=%llu completed=%llu restored=%llu generation=%llu\n",
++        (unsigned long long)(g_app_candidate_serial-serial),(unsigned long long)operation.completed_revision,
++        (unsigned long long)g_definition_revision,(unsigned long long)geo_candidate_evaluation_generation(core));
++    app_world_candidate_destroy(owner);free(before);return 0;
++}
++static int default_standalone(const char *path)
++{
++    CHECK(prepare(path),"default-standalone-fixture");g_definition_revision=41;
++    uint64_t serial=g_app_candidate_serial;
++    CHECK(!g_active_app_candidate&&reference_default_world_owned(&g_world),"default-standalone-original-path");
++    CHECK(g_app_candidate_serial==serial+9&&g_definition_revision==50,"default-standalone-nine-revisions-and-candidates");
++    CHECK(default_literals(&g_world)&&!g_default_replay&&!g_scene_file_replay&&!g_parsing_scene_file,"default-standalone-no-frame-leak");
++    return 0;
++}
++static int default_publication_policy(const char *path)
++{
++    CHECK(prepare(path),"default-policy-fixture");g_definition_revision=41;
++    CHECK(line("spec default_unused 7")&&g_history.undo_count>0,"default-policy-existing-history");
++    CHECK(line("canvas-pos placement 1 17 29")&&preview(),"default-policy-existing-presentation-and-preview");
++    CHECK(line("history-begin")&&g_history.grouping,"default-policy-existing-history-group");
++    uint64_t revision=g_definition_revision;uint32_t token=g_preview.token,preview_serial=g_preview_serial;
++    AppWorldCandidate *preview_owner=g_preview.transaction;
++    CHECK(world_default(&g_world),"default-policy-real-replacement");
++    CHECK(g_definition_revision==revision+10,"default-policy-exact-nine-plus-publication");
++    CHECK(default_literals(&g_world)&&g_world.app.canvas_pos_count==0,"default-policy-complete-root-replaced");
++    CHECK(!g_history.undo_count&&!g_history.redo_count&&!g_history.grouping&&!g_history.group_dirty,
++          "default-policy-clears-history-only-on-success");
++    CHECK(!g_preview.ready&&g_preview.token==token&&g_preview_serial==preview_serial&&g_preview.transaction==preview_owner,
++          "default-policy-preserves-original-preview-disposal-policy");
++    CHECK(!confirm(),"default-policy-old-preview-cannot-confirm");
++    revision=g_definition_revision;uint64_t serial=g_app_candidate_serial;
++    CHECK(app_replace_world(&g_world,false),"default-policy-reset-success");
++    CHECK(g_definition_revision==revision+1&&g_app_candidate_serial==serial+1,"default-policy-reset-single-revision-and-owner");
++    CHECK(!g_world.wood.timber_count&&!world_boundary_count(&g_world)&&!geo_guides_count(&g_world.geo.guide_lines),
++          "default-policy-reset-empty-definitions");
++    CHECK(!g_history.undo_count&&!g_history.redo_count&&!g_history.grouping&&!g_preview.ready,
++          "default-policy-reset-retains-history-preview-policy");
++    return 0;
++}
++static int default_required_failure(const char *path,bool inner)
++{
++    CHECK(prepare(path),"default-failure-fixture");g_definition_revision=41;
++    CHECK(line("spec default_unused 7")&&preview()&&line("history-begin"),"default-failure-existing-user-state");
++    World *before=malloc(sizeof *before);CHECK(before,"default-failure-memory");memcpy(before,&g_world,sizeof *before);
++    AppHistory history;ReferencePreview pending;
++    memcpy(&history,&g_history,sizeof history);memcpy(&pending,&g_preview,sizeof pending);
++    uint64_t revision=g_definition_revision;uint32_t preview_serial=g_preview_serial;
++    snprintf(g_scene_last_error,sizeof g_scene_last_error,"prior-default-diagnostic");
++    default_candidate_failures=0;default_fail_revision=revision+(inner?5:0);default_fail_candidate=true;
++    bool accepted=world_default(&g_world);
++    CHECK(!accepted&&!default_fail_candidate&&default_candidate_failures==1,"default-required-allocation-fails-real-owner");
++    CHECK(!memcmp(before,&g_world,sizeof *before)&&g_definition_revision==revision,"default-failure-atomic-live-and-revision");
++    CHECK(!memcmp(&history,&g_history,sizeof history)&&!memcmp(&pending,&g_preview,sizeof pending)&&g_preview_serial==preview_serial,
++          "default-failure-keeps-history-and-pending-preview");
++    CHECK(!g_default_replay&&!g_scene_file_replay&&!g_parsing_scene_file,"default-failure-restores-scope");
++    CHECK(!strcmp(scene_last_error(),inner?"line 6: I32: candidate World allocation failed":"prior-default-diagnostic"),
++          "default-failure-preserves-original-first-diagnostic");
++    CHECK(line("history-abort")&&confirm(),"default-failure-original-preview-still-usable");
++    revision=g_definition_revision;
++    CHECK(world_default(&g_world)&&g_definition_revision==revision+10&&default_literals(&g_world),"default-failure-recovery-original-revision-policy");
++    free(before);return 0;
++}
++static int default_program_guard(void)
++{
++    const char *lines[]={
++        "surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
++        "timber 1 27 33 role boundary", "place 1 on 1 at-face e0 +u +n",
++        "timber 2 27 33 role boundary", "place 2 on 1 at-face e2 +u +n",
++        "spec 主支中線 500", "guide 1 1 v spec:主支中線",
++        "timber 3 27 33 role primary", "place 3 on 1 at-line guide 1 +v +n"
++    };
++    CHECK(app_default_replay_lines_match(lines,9),"default-original-program-recognized");
++    CHECK(!app_default_replay_lines_match(lines,8),"default-truncated-program-rejected");
++    lines[5]="spec 主支中線 600";
++    CHECK(!app_default_replay_lines_match(lines,9),"default-changed-program-rejected");
++    return 0;
++}
++
+ int main(int argc,char **argv)
+ {
+     if(argc!=3)return 2;
++    if(!strcmp(argv[1],"default-cost"))return default_owned_candidate(argv[2],false);
++    if(!strcmp(argv[1],"default-scratch-oom"))return default_owned_candidate(argv[2],true);
++    if(!strcmp(argv[1],"default-standalone"))return default_standalone(argv[2]);
++    if(!strcmp(argv[1],"default-policy"))return default_publication_policy(argv[2]);
++    if(!strcmp(argv[1],"default-inner-oom"))return default_required_failure(argv[2],true);
++    if(!strcmp(argv[1],"default-outer-oom"))return default_required_failure(argv[2],false);
++    if(!strcmp(argv[1],"default-program-guard"))return default_program_guard();
+     if(!strcmp(argv[1],"replay-cost"))return replay_load(argv[2],0);
+     if(!strcmp(argv[1],"replay-unscoped"))return replay_load(argv[2],1);
+     if(!strcmp(argv[1],"replay-scratch-oom"))return replay_load(argv[2],2);
+diff --git a/tests/test_geo261_candidate_product.py b/tests/test_geo261_candidate_product.py
+index 5987be8e..e7492fa0 100644
+--- a/tests/test_geo261_candidate_product.py
++++ b/tests/test_geo261_candidate_product.py
+@@ -135,4 +135,31 @@ class CandidateProduct(unittest.TestCase):
+     def test_line_readiness_uses_real_describe_failure_and_active_source_verdict(self):
+         self.replay_result('replay-source-guards')
+ 
++    def default_result(self,name):
++        result=self.case(name)
++        print('DEFAULT_REPLAY_JSON:'+json.dumps({'case':name,'argv':result.args,'exit_code':result.returncode,
++              'stdout':result.stdout,'stderr':result.stderr},ensure_ascii=False))
++        self.assertEqual(0,result.returncode,result.stderr)
++        return result
++
++    def test_owned_default_replay_keeps_only_spec_guide_inner_candidates_and_final_graph(self):
++        self.default_result('default-cost')
++
++    def test_default_optional_scratch_oom_keeps_original_nine_line_revisions(self):
++        self.default_result('default-scratch-oom')
++
++    def test_default_standalone_call_preserves_original_nine_candidates(self):
++        self.default_result('default-standalone')
++
++    def test_default_and_reset_preserve_revision_history_and_preview_policies(self):
++        self.default_result('default-policy')
++
++    def test_default_required_owner_failures_preserve_user_state_and_recover(self):
++        for name in ('default-inner-oom','default-outer-oom'):
++            with self.subTest(case=name):
++                self.default_result(name)
++
++    def test_default_replay_rejects_changed_or_truncated_builtin_program(self):
++        self.default_result('default-program-guard')
++
+ if __name__=='__main__':unittest.main(verbosity=2)

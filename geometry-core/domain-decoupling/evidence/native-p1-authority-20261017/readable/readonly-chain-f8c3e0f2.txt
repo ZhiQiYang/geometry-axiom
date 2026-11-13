@@ -1,0 +1,369 @@
+geometry-core/model_base.c:430:     bool neutral=argc==3&&!strcmp(argv[1],"--neutral-sources");
+geometry-core/model_base.c:431:     if (argc != 2 && !neutral) return model_error("INVALID", "BASE_ARGUMENT", "D25", "Expected one scene file path.");
+geometry-core/model_base.c:432:     const char *path=argv[neutral?2:1];char before[65];
+geometry-core/model_base.c:433:     if(neutral&&!model_source_fingerprint(path,before))return model_error("INVALID","BASE_SOURCE","I9","Cannot fingerprint source scene.");
+geometry-core/model_base.c:434:     char error[512] = ""; bool capacity = false, unsupported = false;
+geometry-core/model_base.c:435:     if (!model_source_check(path, neutral, &capacity, &unsupported, error, sizeof error))
+geometry-core/model_base.c:436:         return model_error(capacity||unsupported ? "UNSUPPORTED" : "INVALID", capacity ? "BASE_CAPACITY" : unsupported ? "CAPABILITY" : "BASE_SOURCE", capacity ? "I33" : unsupported ? "I32" : "I9", error);
+geometry-core/model_base.c:437:     /* One process-owned World; nested transactions retain the 16 MiB stack budget. */
+geometry-core/model_base.c:438:     static World world;
+geometry-core/model_base.c:439:     memset(&world,0,sizeof world);
+geometry-core/model_base.c:440:     if (!parse_scene_file(path, &world)) {
+geometry-core/model_base.c:441:         const char *why = scene_last_error();
+geometry-core/model_base.c:442:         capacity = strstr(why, "超過上限") || strstr(why, "capacity exceeded") || strstr(why, "CAPACITY");
+geometry-core/model_base.c:443:         if (!why[0]) why = "Scene failed legacy validation, including required placement of every timber.";
+geometry-core/model_base.c:444:         return model_error(capacity ? "UNSUPPORTED" : "INVALID", capacity ? "BASE_CAPACITY" : "BASE_INVALID", capacity ? "I33" : "I9", why);
+geometry-web/web_bridge.c:409: static bool app_scene_load_evaluate(void *after,GeoEvalContext *sources,void *opaque)
+geometry-web/web_bridge.c:410: {
+geometry-web/web_bridge.c:411:     (void)sources;const char *path=opaque;
+geometry-web/web_bridge.c:412:     ReferencePreview *saved=malloc(sizeof *saved);
+geometry-web/web_bridge.c:413:     if(!saved){scene_error(path,0,"Cannot allocate scene import candidate");return false;}
+geometry-web/web_bridge.c:414:     memset(after,0,sizeof(World));
+geometry-web/web_bridge.c:415:     *saved=g_preview;memset(&g_preview,0,sizeof g_preview);
+geometry-web/web_bridge.c:416:     uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
+geometry-web/web_bridge.c:417:     const World *previous=g_subgrid_before;g_subgrid_before=NULL;
+geometry-web/web_bridge.c:418:     bool ok=parse_scene_file(path,after);
+geometry-web/web_bridge.c:419:     app_world_candidate_destroy(g_preview.transaction);g_preview=*saved;
+geometry-web/web_bridge.c:420:     g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
+geometry-web/web_bridge.c:421:     return ok;
+current_geometry.c:9880: static bool parse_scene_file(const char *path, World *out_world)
+current_geometry.c:9881: {
+current_geometry.c:9882:     /* 二進位模式：換行自己處理，Windows 的文字模式不介入。 */
+current_geometry.c:9883:     FILE *in = fopen(path, "rb");
+current_geometry.c:9884: 
+current_geometry.c:9885:     if (in == NULL) {
+current_geometry.c:9886:         scene_error(path, 0, "無法開啟場景檔");
+current_geometry.c:9887:         return false;
+current_geometry.c:9888:     }
+current_geometry.c:9889: 
+current_geometry.c:9890:     g_parsing_scene_file = true;
+current_geometry.c:9891:     memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
+current_geometry.c:9892:     g_rule_scene_required=false;
+current_geometry.c:9893:     sp_scene_required=false;
+current_geometry.c:9894:     fs_scene_required=false; fs_scene_engineering=false; fs_scene_parameters=false;
+current_geometry.c:9895:     g_rule_scene_encountered=false;
+current_geometry.c:9896:     g_parameter_scene_loading = true;
+current_geometry.c:9897: 
+current_geometry.c:9898:     char line[SCENE_MAX_LINE];
+current_geometry.c:9899:     int line_no = 0;
+current_geometry.c:9900:     bool ok = true;
+current_geometry.c:9901: 
+current_geometry.c:9902:     while (ok && fgets(line, sizeof line, in) != NULL) {
+current_geometry.c:9903:         ++line_no;
+current_geometry.c:9904: 
+current_geometry.c:9966:         if (out_world->wood.assembly.loading && strcmp(tokens[0],"assembly")) {
+current_geometry.c:9967:             scene_error(path,line_no,"I41: assembly blocks may only contain assembly records"); ok=false; break;
+current_geometry.c:9968:         }
+current_geometry.c:9969:         if (out_world->app.parameter_loading && strcmp(tokens[0],"parameters")) {
+current_geometry.c:9970:             scene_error(path,line_no,"I39: parameter block may only contain parameter records"); ok=false; break;
+current_geometry.c:9971:         }
+current_geometry.c:9972:         ok = apply_scene_line(path, line_no, tokens, count, out_world);
+current_geometry.c:9973:     }
+current_geometry.c:9994:     if (ok && !grid_rules_scene_integrity(out_world)) { scene_error(path,line_no,"I25a: source rule capability/highwater closure missing"); ok=false; }
+current_geometry.c:9995:     if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
+current_geometry.c:9996:     if (ok && !fs_scene_integrity()) { scene_error(path,line_no,"I56: panel-fill/1 also requires engineering-spec/1 and parameters/1 declarations"); ok=false; }
+current_geometry.c:9997: 
+current_geometry.c:9998:     /* 全部擋面就位後才重驗（grid-ref / I19 / I23 都走這裡），失敗整份拒絕。 */
+current_geometry.c:9999:     if (ok && !world_revalidate(out_world)) {
+current_geometry.c:10000:         scene_error(path, line_no,
+current_geometry.c:10001:             g_revalidate_error[0] != '\0'
+current_geometry.c:10002:                 ? g_revalidate_error
+current_geometry.c:10003:                 : "場景收尾重驗失敗");
+current_geometry.c:10004:         ok = false;
+current_geometry.c:10005:     }
+current_geometry.c:10006: 
+current_geometry.c:10007:     g_parsing_scene_file = false;
+current_geometry.c:10008:     g_parameter_scene_loading = false;
+current_geometry.c:10009:     return ok;
+geometry-core/assembly_generation.inc:40: static AsmInstance *assembly_instance(World *w,uint32_t id)
+geometry-core/assembly_generation.inc:41: {WoodAssemblyContext c=app_asm_context(w);return wood_assembly_instance(&c,id);}
+geometry-core/assembly_generation.inc:42: static bool assembly_owned(const World *w,uint32_t id)
+geometry-core/assembly_generation.inc:43: {if(g_assembly_replay)return false;WoodAssemblyContext c=app_asm_context(w);return wood_assembly_owned(&c,id);}
+geometry-core/assembly_generation.inc:44: static bool assembly_generation_integrity(const World *w)
+geometry-core/assembly_generation.inc:45: {WoodAssemblyContext c=app_asm_context(w);return wood_assembly_generation_integrity(&c);}
+geometry-core/assembly_generation.inc:46: static bool assembly_generation_prepare(World *w)
+geometry-core/assembly_generation.inc:47: {WoodAssemblyContext c=app_asm_context(w);return wood_assembly_generation_prepare(&c);}
+geometry-core/assembly_generation.inc:48: static bool assembly_generation_check(const World *w)
+geometry-core/assembly_generation.inc:49: {WoodAssemblyContext c=app_asm_context(w);return wood_assembly_generation_check(&c);}
+geometry-core/assembly_generation.inc:50: static bool asm_generation_operation(World *w,GeoJson *j,int t)
+geometry-core/assembly_generation.inc:51: {WoodAssemblyContext c=app_asm_context(w);return wood_assembly_generation_operation(&c,j,t);}
+geometry-core/assembly_generation.inc:52: static bool asm_instance_load(World *w,GeoJson *j,int t)
+geometry-core/assembly_generation.inc:53: {WoodAssemblyContext c=app_asm_context(w);return wood_assembly_instance_load(&c,j,t);}
+geometry-core/assembly_generation.inc:54: static void assembly_owned_prefix(const World *w,uint32_t id,const char *kind,FILE *out)
+geometry-core/assembly_generation.inc:55: {
+geometry-core/assembly_generation.inc:56:     (void)kind;for(size_t i=0;i<w->wood.assembly.owner_count;++i)if(w->wood.assembly.owners[i].timber==id){const AsmOwner *o=&w->wood.assembly.owners[i];fprintf(out,"owned %u %u ",o->instance,o->member);return;}
+geometry-core/assembly_generation.inc:57: }
+geometry-core/assembly_generation.inc:58: static bool apply_assembly_owned_line(const char *path,int line_no,char **t,int count,World *w)
+geometry-core/assembly_generation.inc:59: {
+geometry-core/assembly_generation.inc:60:     uint32_t inst,member,id;if(!g_parsing_scene_file||!w->wood.assembly.generation_required||count<6||!parse_u32(t[1],&inst)||!inst||!parse_u32(t[2],&member)||!member||!parse_u32(t[4],&id)||!id){scene_error(path,line_no,"I42: owned records require atomic generation scene and positive identities");return false;}
+geometry-core/assembly_generation.inc:61:     bool timber=!strcmp(t[3],"timber"),place=!strcmp(t[3],"place");if(!timber&&!place)return false;
+geometry-core/assembly_generation.inc:62:     if(timber){if(w->wood.assembly.owner_count==ASM_INSTANCE_MAX*3||reference_timber_index(w,id)>=0)return false;w->wood.assembly.owners[w->wood.assembly.owner_count++]=(AsmOwner){id,inst,member};}
+geometry-core/assembly_generation.inc:63:     else {bool found=false;for(size_t i=0;i<w->wood.assembly.owner_count;++i){AsmOwner *o=&w->wood.assembly.owners[i];if(o->timber==id&&o->instance==inst&&o->member==member)found=true;}if(!found)return false;}
+geometry-core/assembly_generation.inc:64:     g_assembly_replay=true;bool ok=timber?apply_timber_line(path,line_no,t+3,count-3,w):apply_reference_place(path,line_no,t+3,count-3,w);g_assembly_replay=false;if(!ok)scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I42: invalid owned record");return ok;
+geometry-core/references.inc:714: static bool apply_reference_place(const char *p,int n,char **tokens,int count,World *w)
+geometry-core/references.inc:715: {
+geometry-core/references.inc:716:     uint32_t id,pid; int i=5;
+geometry-core/references.inc:717:     if (count<8 || !parse_u32(tokens[1],&id) || strcmp(tokens[2],"on") || !parse_u32(tokens[3],&pid)) return false;
+geometry-core/references.inc:718:     if (assembly_owned(w,id)) { scene_error(p,n,"I42: edit the owning assembly instance"); return false; }
+geometry-core/references.inc:719:     int ti=reference_timber_index(w,id);
+geometry-core/references.inc:720:     if (ti<0) { scene_error(p,n,"I9: place 指的角材不存在"); return false; }
+geometry-core/references.inc:765:     if (i+2!=count || !lookup_keyword(tokens[i],LENGTH_DIRECTION_WORDS,&a.length_direction) ||
+geometry-core/references.inc:766:         !lookup_keyword(tokens[i+1],DEPTH_SIDE_WORDS,&a.depth_side)) {
+geometry-core/references.inc:767:         scene_error(p,n,"place 缺少長度方向與深度側，或有多餘欄位"); return false;
+geometry-core/references.inc:768:     }
+geometry-core/references.inc:769:     a.order=w->wood.timbers[ti].placed?w->wood.anchors[ti].order:++w->app.next_order;
+geometry-core/references.inc:770:     w->wood.anchors[ti]=a; w->wood.timbers[ti].placed=true;
+geometry-core/references.inc:771:     return reference_checked(p,n,w);
+geometry-core/references.inc:657: static bool reference_checked(const char *p,int n,World *w)
+geometry-core/references.inc:658: {
+geometry-core/references.inc:659:     if (world_revalidate(w)) return true;
+geometry-core/references.inc:660:     scene_error(p,n,g_revalidate_error[0]?g_revalidate_error:"I8: reference validation failed"); return false;
+current_geometry.c:6242: static bool world_revalidate_candidate(World *world,World *candidate)
+current_geometry.c:6243: {
+current_geometry.c:6244:     (void)world;
+current_geometry.c:6245:     g_revalidate_error[0] = '\0';
+current_geometry.c:6246:     char grid_error[256]="";
+current_geometry.c:6247:     if (!boundary_keys_reconcile(candidate,g_subgrid_before,grid_error,sizeof grid_error)) {
+current_geometry.c:6248:         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+current_geometry.c:6249:     }
+current_geometry.c:6250:     if (!reference_parameters_rebuild(candidate,grid_error,sizeof grid_error)) {
+current_geometry.c:6251:         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+current_geometry.c:6252:     }
+current_geometry.c:6253:     if (!engineering_rebuild(candidate,grid_error,sizeof grid_error)) {
+current_geometry.c:6254:         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+current_geometry.c:6255:     }
+current_geometry.c:6256:     if (!assembly_rebuild(candidate,grid_error,sizeof grid_error)) {
+current_geometry.c:6257:         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+current_geometry.c:6258:     }
+current_geometry.c:6259:     if (!sp_rebuild(candidate,grid_error,sizeof grid_error)) {
+current_geometry.c:6260:         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+current_geometry.c:6261:     }
+current_geometry.c:6262:     if (!fs_rebuild(candidate,grid_error,sizeof grid_error)) {
+current_geometry.c:6263:         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+current_geometry.c:6264:     }
+current_geometry.c:6265:     if (!grid_systems_rebuild(candidate,grid_error,sizeof grid_error)) {
+current_geometry.c:6266:         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+current_geometry.c:6267:     }
+current_geometry.c:6268:     if (!grid_bindings_rebuild(candidate,grid_error,sizeof grid_error)) {
+current_geometry.c:6269:         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+current_geometry.c:6270:     }
+current_geometry.c:6271:     if (!assembly_generation_prepare(candidate)) {
+current_geometry.c:6272:         set_revalidate_error(g_engineering_error); return false;
+current_geometry.c:6273:     }
+current_geometry.c:6274:     if (!grid_rules_world_valid(candidate,grid_error,sizeof grid_error)) {
+current_geometry.c:6275:         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+current_geometry.c:6276:     }
+current_geometry.c:6277:     reference_capture_trial(candidate);
+current_geometry.c:6278:     if (!subgrid_world_valid(candidate,grid_error,sizeof grid_error)) {
+current_geometry.c:6279:         set_revalidate_error(grid_error[0]?grid_error:"I25: grid dependency invalid");
+current_geometry.c:6280:         return false;
+current_geometry.c:6281:     }
+current_geometry.c:6282: 
+current_geometry.c:6283:     bool rebuilt=reference_rebuild(candidate);
+current_geometry.c:6284:     char rebuild_error[256]; snprintf(rebuild_error,sizeof rebuild_error,"%s",g_revalidate_error);
+current_geometry.c:6285:     bool all_checks=reference_check_all(candidate);
+current_geometry.c:6286:     if (!rebuilt || !all_checks) {
+current_geometry.c:6287:         if (!rebuilt && rebuild_error[0]) set_revalidate_error(rebuild_error);
+current_geometry.c:6288:         return false;
+current_geometry.c:6317: static bool world_revalidate(World *world)
+current_geometry.c:6318: {
+current_geometry.c:6319:     /* An existing H transaction owns this exact after snapshot. Failure stays
+current_geometry.c:6320:      * isolated there; the caller retains its old primary diagnostic policy. */
+current_geometry.c:6321:     if(g_active_app_candidate&&world==&g_active_app_candidate->after)
+current_geometry.c:6322:         return world_revalidate_candidate(world,world);
+current_geometry.c:6323:     AppWorldCandidate *candidate=app_world_candidate_create(world);
+current_geometry.c:6324:     if(!candidate){set_revalidate_error("I32: candidate World allocation failed");return false;}
+current_geometry.c:6325:     bool ok=app_world_candidate_evaluate(candidate,app_world_revalidate_evaluate,&candidate->before)==GEO_CANDIDATE_OK;
+current_geometry.c:6326:     if(ok)ok=app_world_candidate_seal(candidate)&&app_world_candidate_publish(candidate,world,false);
+current_geometry.c:6327:     app_world_candidate_destroy(candidate);return ok;
+geometry-core/references.inc:612: static ReferenceEval *reference_sources_begin_candidate(World *w)
+geometry-core/references.inc:613: {
+geometry-core/references.inc:614:     if(!g_active_app_candidate||w!=&g_active_app_candidate->after)return NULL;
+geometry-core/references.inc:615:     AppCandidate *owner=g_active_app_candidate->control;
+geometry-core/references.inc:616:     GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(owner));
+geometry-core/references.inc:617:     app_candidate_set_evaluation_state(owner,NULL,NULL);
+geometry-core/references.inc:618:     if(!sources||!geo_eval_reset(sources))return NULL;
+geometry-core/references.inc:619:     ReferenceEval *ctx=calloc(1,sizeof *ctx);if(!ctx)return NULL;
+geometry-core/references.inc:620:     ctx->world=w;ctx->sources=sources;ctx->sources_borrowed=true;
+geometry-core/references.inc:621:     app_candidate_set_evaluation_state(owner,ctx,reference_sources_owned_free);
+geometry-core/references.inc:622:     return reference_sources_ensure(ctx)?ctx:NULL;
+geometry-core/references.inc:623: }
+geometry-core/references.inc:624: /* Start the shared graph at the first evaluable definition phase. The later
+geometry-core/references.inc:625:  * guide/member pass retains this context and all parameter AST edges. */
+geometry-core/references.inc:626: static bool reference_parameters_rebuild(World *w,char *error,size_t cap)
+geometry-core/references.inc:627: {
+geometry-core/references.inc:628:     if(!g_active_app_candidate||w!=&g_active_app_candidate->after)return parameters_rebuild(w,error,cap);
+geometry-core/references.inc:629:     g_parameter_error[0]=0;GeoParameterError issue;bool ok;
+geometry-core/references.inc:630:     if(w->app.parameter_loading)ok=parameter_fail("I39: unterminated parameter block");
+geometry-core/references.inc:631:     else{
+geometry-core/references.inc:632:         ReferenceEval *ctx=reference_sources_begin_candidate(w);
+geometry-core/references.inc:633:         if(!ctx)ok=parameter_fail("UNSUPPORTED/CAPACITY: parameter evaluation memory");
+geometry-core/references.inc:634:         else{ok=geo_parameter_sources_rebuild(ctx->parameter_sources,&issue);if(!ok)parameter_kernel_error(w,&issue);}
+geometry-core/references.inc:635:     }
+geometry-core/references.inc:636:     if(!ok)snprintf(error,cap,"%s",g_parameter_error);return ok;
+geometry-core/references.inc:637: }
+geometry-core/references.inc:638: static bool reference_rebuild(World *w)
+geometry-core/references.inc:639: {
+geometry-core/references.inc:640:     ReferenceEval local={0},*ctx=&local;bool persistent=false;
+geometry-core/references.inc:641:     if(g_active_app_candidate&&w==&g_active_app_candidate->after){
+geometry-core/references.inc:642:         ctx=app_candidate_evaluation_state(g_active_app_candidate->control);
+geometry-core/references.inc:643:         if(!ctx||ctx->world!=w)ctx=reference_sources_begin_candidate(w);
+geometry-core/references.inc:644:         if(!ctx)return false;persistent=true;
+geometry-core/references.inc:645:     }
+geometry-core/references.inc:646:     ctx->world=w;bool ok=true;
+geometry-core/references.inc:647:     geo_guides_reset_resolved(&w->geo.guide_lines);
+geometry-core/references.inc:648:     for (size_t i=0;i<w->wood.timber_count;++i) { ctx->wanted[i]=w->wood.timbers[i].placed; w->wood.timbers[i].placed=false; }
+geometry-core/references.inc:649:     if (!reference_eval_datums(ctx)) { if (g_reference_capturing) g_reference_trial=*w; if(!persistent)reference_sources_dispose(ctx); return false; }
+geometry-core/references.inc:650:     /* Timbers drive guide evaluation as needed; remaining guides are then evaluated. */
+geometry-core/references.inc:651:     for (size_t i=0;i<w->wood.timber_count;++i) if (ctx->wanted[i] && !reference_eval_timber(ctx,i)) ok=false;
+geometry-core/references.inc:652:     for (size_t i=0;i<geo_guides_count(&w->geo.guide_lines);++i) if (!reference_eval_guide(ctx,i)) ok=false;
+geometry-core/references.inc:653:     if (g_reference_capturing) g_reference_trial=*w;
+geometry-core/references.inc:654:     if(!persistent)reference_sources_dispose(ctx);return ok;
+geometry-app/native/reference_sources.inc:303: static bool reference_sources_ensure(ReferenceEval *ctx)
+geometry-app/native/reference_sources.inc:304: {
+geometry-app/native/reference_sources.inc:305:     if(ctx->sources_registered)return true;
+geometry-app/native/reference_sources.inc:306:     /* The lifetime itself is a unique in-process candidate evaluation identity.
+geometry-app/native/reference_sources.inc:307:      * The host's persistent revision is attached by its publish coordinator. */
+geometry-app/native/reference_sources.inc:308:     if(!ctx->sources)ctx->sources=geo_eval_create((uint64_t)(uintptr_t)ctx,0);if(!ctx->sources)return false;
+geometry-app/native/reference_sources.inc:309:     static const char *const names[]={"app.guide","woodworking.member.pose","app.legacy-reference"};
+geometry-app/native/reference_sources.inc:310:     for(uint32_t token=APP_SOURCE_GUIDE;token<APP_SOURCE_PARAMETER;++token){
+geometry-app/native/reference_sources.inc:311:         GeoSourceProvider provider={token,names[token-1],"geo261-native-source/1",ctx,reference_source_describe,reference_source_evaluate};
+geometry-app/native/reference_sources.inc:312:         if(!geo_eval_register(ctx->sources,&provider)){reference_sources_dispose(ctx);return false;}
+geometry-app/native/reference_sources.inc:313:     }
+geometry-app/native/reference_sources.inc:314:     GeoParameterStore *parameters=&ctx->world->geo.parameters;
+geometry-app/native/reference_sources.inc:315:     if(ctx->use_current_values){
+geometry-app/native/reference_sources.inc:316:         ctx->parameter_snapshot=geo_parameters_clone(parameters);parameters=ctx->parameter_snapshot;
+geometry-app/native/reference_sources.inc:317:         if(!parameters){reference_sources_dispose(ctx);return false;}
+geometry-app/native/reference_sources.inc:318:     }
+geometry-app/native/reference_sources.inc:319:     ctx->parameter_sources=geo_parameter_sources_register(ctx->sources,parameters,APP_SOURCE_PARAMETER,
+geometry-app/native/reference_sources.inc:320:         "core.parameter.field","geo261-parameter-ast-source/1");
+geometry-app/native/reference_sources.inc:321:     if(!ctx->parameter_sources){reference_sources_dispose(ctx);return false;}
+geometry-app/native/reference_sources.inc:322:     for(uint32_t token=APP_SOURCE_NAMED;token<=APP_SOURCE_DATUM;++token){
+geometry-app/native/reference_sources.inc:323:         GeoSourceProvider provider={token,token==APP_SOURCE_NAMED?"core.named-value":"core.datum.position",
+geometry-app/native/reference_sources.inc:324:             "geo261-linear-definition-source/1",ctx,reference_source_describe,reference_source_evaluate};
+geometry-app/native/reference_sources.inc:325:         if(!geo_eval_register(ctx->sources,&provider)){reference_sources_dispose(ctx);return false;}
+geometry-app/native/reference_sources.inc:326:     }
+geometry-app/native/reference_sources.inc:327:     WoodEngineeringContext engineering=app_eng_context(ctx->world);
+geometry-app/native/reference_sources.inc:328:     ctx->engineering_sources=wood_engineering_sources_register(ctx->sources,&engineering,
+geometry-app/native/reference_sources.inc:329:         (WoodEngineeringSourceTokens){APP_SOURCE_ENGINEERING_DIMENSION,APP_SOURCE_ENGINEERING_BINDING,
+geometry-app/native/reference_sources.inc:330:             APP_SOURCE_ENGINEERING_DEFINITION,APP_SOURCE_NAMED,APP_SOURCE_PARAMETER});
+geometry-app/native/reference_sources.inc:331:     if(!ctx->engineering_sources){reference_sources_dispose(ctx);return false;}
+geometry-app/native/reference_sources.inc:332:     WoodAssemblyContext assembly=app_asm_context(ctx->world);reference_assembly_context(ctx,&assembly);
+geometry-app/native/reference_sources.inc:333:     ctx->assembly_sources=wood_assembly_sources_create(ctx->sources,APP_SOURCE_ASSEMBLY,&assembly);
+geometry-app/native/reference_sources.inc:334:     if(!ctx->assembly_sources){reference_sources_dispose(ctx);return false;}
+geometry-app/native/reference_sources.inc:534: static bool reference_eval_timber_relation(ReferenceEval *ctx,size_t i,GeoDependencyKind relation)
+geometry-app/native/reference_sources.inc:535: {
+geometry-app/native/reference_sources.inc:536:     if(i>=ctx->world->wood.timber_count||!reference_sources_ensure(ctx))return false;
+geometry-app/native/reference_sources.inc:537:     Timber *t=&ctx->world->wood.timbers[i];uint32_t id=t->id;GeoSourceValue value;
+geometry-app/native/reference_sources.inc:538:     GeoSourceStatus status=geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},relation,&value);
+geometry-app/native/reference_sources.inc:539:     if(status!=GEO_SOURCE_OK){
+geometry-app/native/reference_sources.inc:540:         if(!ctx->wanted[i]||status==GEO_SOURCE_CYCLE)
+geometry-app/native/reference_sources.inc:541:             return reference_issue(t->id,"I9/I7","acyclic placed dependencies","missing placement or cyclic reference");
+geometry-app/native/reference_sources.inc:542:         return false;
+geometry-app/native/reference_sources.inc:543:     }
+geometry-app/native/reference_sources.inc:544:     t->origin=value.as.box.frame.origin;t->axis_length=value.as.box.frame.axis_u;
+geometry-app/native/reference_sources.inc:545:     t->axis_a=value.as.box.frame.axis_v;t->axis_b=value.as.box.frame.normal;
+geometry-app/native/reference_sources.inc:546:     t->length=value.as.box.extent[0];t->size_a=value.as.box.extent[1];t->size_b=value.as.box.extent[2];
+geometry-app/native/reference_sources.inc:547:     t->placed=true;return true;
+geometry-app/native/reference_sources.inc:548: }
+geometry-app/native/reference_sources.inc:549: static bool reference_eval_timber(ReferenceEval *ctx,size_t i)
+geometry-app/native/reference_sources.inc:550: {return reference_eval_timber_relation(ctx,i,GEO_DEPENDENCY_VALUE_REQUIRED);}
+geometry-app/native/reference_sources.inc:105:     if(source->provider==APP_SOURCE_MEMBER_POSE){
+geometry-app/native/reference_sources.inc:106:         if(!reference_source_id(source,&id))return false;
+geometry-app/native/reference_sources.inc:107:         int i=reference_timber_index(world,id);
+geometry-app/native/reference_sources.inc:108:         if(i<0||!reference_compute_timber(ctx,(size_t)i))return false;
+geometry-app/native/reference_sources.inc:109:         const Timber *t=&world->wood.timbers[i];value->kind=GEO_SOURCE_BOX;
+geometry-app/native/reference_sources.inc:110:         value->as.box=(GeoBox3){{t->origin,t->axis_length,t->axis_a,t->axis_b},{t->length,t->size_a,t->size_b}};return true;
+geometry-core/references.inc:550: static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
+geometry-core/references.inc:551: {
+geometry-core/references.inc:552:     if(!ctx->use_current_values&&ctx->wanted[i]){
+geometry-core/references.inc:553:         Timber *member=&ctx->world->wood.timbers[i];WoodAssemblyContext assembly=app_asm_context(ctx->world);
+geometry-core/references.inc:554:         if(wood_assembly_owned(&assembly,member->id)){
+geometry-core/references.inc:555:             GeoCoord width,depth;
+geometry-core/references.inc:556:             if(!wood_assembly_sources_owned_dimensions(ctx->assembly_sources,member->id,&width,&depth))return false;
+geometry-core/references.inc:557:             member->size_a=width;member->size_b=depth;
+geometry-core/references.inc:558:         }else{
+geometry-core/references.inc:559:             WoodEngineeringContext engineering=app_eng_context(ctx->world);
+geometry-core/references.inc:560:             wood_engineering_sources_bind(ctx->engineering_sources,&engineering);
+geometry-core/references.inc:561:             for(int field=0;field<2;++field){EngTarget target={1,member->id,0,field};
+geometry-core/references.inc:562:                 const EngBinding *binding=wood_eng_binding(&engineering,&target);GeoCoord dimension;
+geometry-core/references.inc:563:                 if(binding){if(!wood_eng_effective(&engineering,binding,&dimension,NULL,0))return false;}
+geometry-core/references.inc:564:                 else if(!wood_definition_sources_dimension(ctx->definition_sources,member->id,field!=0,&dimension))return false;
+geometry-core/references.inc:565:                 if(field)member->size_b=dimension;else member->size_a=dimension;
+geometry-core/references.inc:566:             }
+geometry-core/references.inc:567:         }
+geometry-core/references.inc:568:     }
+geometry-core/references.inc:569:     AppMemberReferenceContext c={0};c.evaluation=ctx;c.world=ctx->world;WoodMemberReferenceContext context=app_member_reference_context(&c);bool place=false;if(!wood_member_reference_compute(&context,i,&place))return false;return !place||reference_place_geometry(ctx,ctx->world,i);
+geometry-app/native/reference_sources.inc:503: static bool reference_member_dimension(ReferenceEval *ctx,uint32_t id,bool b,Coord *out)
+geometry-app/native/reference_sources.inc:504: {
+geometry-app/native/reference_sources.inc:505:     int index=reference_timber_index(ctx->world,id);if(index<0)return false;
+geometry-app/native/reference_sources.inc:506:     const Timber *member=&ctx->world->wood.timbers[index];
+geometry-app/native/reference_sources.inc:507:     if(!ctx->use_current_values){
+geometry-app/native/reference_sources.inc:508:         WoodAssemblyContext assembly=app_asm_context(ctx->world);
+geometry-app/native/reference_sources.inc:509:         if(wood_assembly_owned(&assembly,id)){
+geometry-app/native/reference_sources.inc:510:             GeoCoord width,depth;if(!wood_assembly_sources_owned_dimensions(ctx->assembly_sources,id,&width,&depth))return false;
+geometry-app/native/reference_sources.inc:511:             *out=b?depth:width;return true;
+geometry-app/native/reference_sources.inc:512:         }
+geometry-app/native/reference_sources.inc:513:         WoodEngineeringContext engineering=app_eng_context(ctx->world);
+geometry-app/native/reference_sources.inc:514:         wood_engineering_sources_bind(ctx->engineering_sources,&engineering);
+geometry-app/native/reference_sources.inc:515:         EngTarget target={1,id,0,b?1:0};const EngBinding *binding=wood_eng_binding(&engineering,&target);
+geometry-app/native/reference_sources.inc:516:         if(binding)return wood_eng_effective(&engineering,binding,out,NULL,0);
+geometry-app/native/reference_sources.inc:517:         return wood_definition_sources_dimension(ctx->definition_sources,id,b,out);
+geometry-app/native/reference_sources.inc:518:     }
+geometry-app/native/reference_sources.inc:519:     *out=b?member->size_b:member->size_a;return true;
+geometry-templates/woodworking/native/assembly.c:225: AsmInstance *wood_assembly_instance(WoodAssemblyContext *w,uint32_t id)
+geometry-templates/woodworking/native/assembly.c:226: {for(size_t i=0;i<w->state->instance_count;++i)if(w->state->instances[i].id==id)return &w->state->instances[i];return NULL;}
+geometry-templates/woodworking/native/assembly.c:227: bool wood_assembly_owned(const WoodAssemblyContext *w,uint32_t id)
+geometry-templates/woodworking/native/assembly.c:228: {for(size_t i=0;i<w->state->owner_count;++i)if(w->state->owners[i].timber==id)return true;return false;}
+geometry-templates/woodworking/native/assembly_sources.c:45: static int wood_assembly_source_member(const AsmInstance *a,uint32_t member)
+geometry-templates/woodworking/native/assembly_sources.c:46: {if(a)for(int m=0;m<3;++m)if(a->member[m]==member)return m;return -1;}
+geometry-templates/woodworking/native/assembly_sources.c:151: bool wood_assembly_sources_member_dimensions(WoodAssemblySources *s,uint32_t id,uint32_t member,GeoCoord *a,GeoCoord *b)
+geometry-templates/woodworking/native/assembly_sources.c:152: {if(!s||!a||!b)return false;return wood_assembly_quantity(s,WOOD_ASSEMBLY_SOURCE_GENERATED_A,id,member,a,NULL,0)&&wood_assembly_quantity(s,WOOD_ASSEMBLY_SOURCE_GENERATED_B,id,member,b,NULL,0);}
+geometry-templates/woodworking/native/assembly_sources.c:153: bool wood_assembly_sources_owned_dimensions(WoodAssemblySources *s,uint32_t timber,GeoCoord *a,GeoCoord *b)
+geometry-templates/woodworking/native/assembly_sources.c:154: {
+geometry-templates/woodworking/native/assembly_sources.c:155:     if(!s)return false;for(size_t i=0;i<s->context.state->owner_count;++i){const AsmOwner *owner=&s->context.state->owners[i];if(owner->timber!=timber)continue;
+geometry-templates/woodworking/native/assembly_sources.c:156:         const AsmInstance *instance=wood_assembly_instance(&s->context,owner->instance);int m=wood_assembly_source_member(instance,owner->member);if(m<0||instance->timber[m]!=timber)return false;
+geometry-templates/woodworking/native/assembly_sources.c:157:         return wood_assembly_sources_member_dimensions(s,owner->instance,owner->member,a,b);}return false;
+geometry-templates/woodworking/native/assembly.c:146: bool wood_assembly_rebuild(WoodAssemblyContext *w,char *error,size_t cap)
+geometry-templates/woodworking/native/assembly.c:147: {
+geometry-templates/woodworking/native/assembly.c:148:     if(w->state->loading){snprintf(error,cap,"I41: truncated assembly block");return false;}
+geometry-templates/woodworking/native/assembly.c:149:     if(w->evaluation&&w->evaluation->rule_definition)for(size_t i=0;i<w->state->rule_count;++i){const AsmRuleVersion *r=&w->state->rules[i];if(!w->evaluation->rule_definition(w->evaluation->user,r->id,r->version)){snprintf(error,cap,"%s",w->engineering.error);return false;}}
+geometry-templates/woodworking/native/assembly.c:150:     for(size_t i=0;i<w->state->binding_count;++i){AsmBinding b;const AsmBinding *stored=&w->state->bindings[i];bool ok=w->evaluation&&w->evaluation->binding?w->evaluation->binding(w->evaluation->user,stored,&b):wood_assembly_binding_rebuild_direct(w,stored,&b);
+geometry-templates/woodworking/native/assembly.c:151:         if(!ok){snprintf(error,cap,"%s",w->engineering.error);return false;}w->state->bindings[i]=b;}
+geometry-templates/woodworking/native/assembly.c:152:     return true;
+geometry-templates/woodworking/native/assembly.c:308: bool wood_assembly_generation_prepare(WoodAssemblyContext *w)
+geometry-templates/woodworking/native/assembly.c:309: {
+geometry-templates/woodworking/native/assembly.c:310:     if(!w->scene_loading&&!wood_assembly_generation_integrity(w))return false;
+geometry-templates/woodworking/native/assembly.c:311:     for(size_t i=0;i<w->state->instance_count;++i){AsmInstance *a=&w->state->instances[i];
+geometry-templates/woodworking/native/assembly.c:312:         for(int phase=0;phase<2;++phase)for(int m=0;m<3;++m)if(a->secondary[m]==(phase!=0)){
+geometry-templates/woodworking/native/assembly.c:313:             WoodAssemblyDefinition definition;if(!wood_asm_member_definition(w,a,m,&definition))return false;if(!w->member(w->user,a->timber[m],NULL))return wood_asm_error(w,"I42: missing owned timber");
+geometry-templates/woodworking/native/assembly.c:314:             WoodMember value;if(!wood_member_construct(a->timber[m],0,definition.width,definition.depth,true,definition.role,0,&value))return wood_asm_error(w,"D1: invalid generated section");
+geometry-templates/woodworking/native/assembly.c:315:             value.placed=true;w->write_member(w->user,&value,&definition);
+geometry-templates/woodworking/native/assembly.c:316:         }
+geometry-templates/woodworking/native/assembly.c:317:     }return true;
+geometry-templates/woodworking/native/assembly.c:318: }
+geometry-templates/woodworking/native/assembly.c:319: bool wood_assembly_generation_check(const WoodAssemblyContext *w)
+geometry-templates/woodworking/native/assembly.c:320: {
+geometry-templates/woodworking/native/assembly.c:321:     for(size_t i=0;i<w->state->instance_count;++i){const AsmInstance *a=&w->state->instances[i];if(w->evaluation&&w->evaluation->instance_check){if(!w->evaluation->instance_check(w->evaluation->user,a))return false;}else if(!wood_assembly_instance_check_direct(w,a))return false;}return true;
+geometry-core/assembly.inc:66: static void assembly_dump(const World *w,FILE *out)
+geometry-core/assembly.inc:67: {
+geometry-core/assembly.inc:68:     if(!assembly_used(w))return;fputs("requires assembly-rule-authoring/1\nassembly begin\n",out);
+geometry-core/assembly.inc:69:     for(size_t i=0;i<w->wood.assembly.rule_count;++i)asm_dump_record(out,"rule",w->wood.assembly.rules[i].content);
+geometry-core/assembly.inc:70:     for(size_t i=0;i<w->wood.assembly.binding_count;++i)asm_dump_record(out,"binding",w->wood.assembly.bindings[i].content);
+geometry-core/assembly.inc:71:     for(size_t i=0;i<w->wood.assembly.instance_count;++i)asm_dump_record(out,"instance",w->wood.assembly.instances[i].content);
+geometry-core/assembly.inc:72:     fputs("assembly end\n",out);
+geometry-core/assembly.inc:73: }
+geometry-core/assembly.inc:74: static bool apply_assembly_line(const char *path,int line_no,char **t,int count,World *w)
+geometry-core/assembly.inc:75: {
+geometry-core/assembly.inc:76:     bool ok=false;
+geometry-core/assembly.inc:77:     if(!g_parsing_scene_file){scene_error(path,line_no,"I41: assembly records require atomic scene loading; edit through preview/confirm");return false;}
+geometry-core/assembly.inc:78:     if(count==2&&!strcmp(t[1],"begin")){if(w->wood.assembly.loading)goto fail;w->wood.assembly.loading=true;memset(&g_assembly_record,0,sizeof g_assembly_record);return true;}
+geometry-core/assembly.inc:79:     if(!w->wood.assembly.loading)goto fail;
+geometry-core/assembly.inc:80:     if(count==2&&!strcmp(t[1],"end")){if(g_assembly_record.active)goto fail;w->wood.assembly.loading=false;char e[256];if(!assembly_rebuild(w,e,sizeof e)){scene_error(path,line_no,e);return false;}return true;}
+geometry-core/assembly.inc:81:     if(count==2&&!strcmp(t[1],"commit")){
+geometry-core/assembly.inc:82:         if(!g_assembly_record.active||g_assembly_record.used!=g_assembly_record.expected)goto fail;char hash[65];geo_sha256(g_assembly_record.text,g_assembly_record.used,hash);
+geometry-core/assembly.inc:83:         if(strcmp(hash,g_assembly_record.hash))goto fail;GeoJson j;
+geometry-core/assembly.inc:84:         if(app_json_parse_n(&j,g_assembly_record.text,g_assembly_record.used)){
+geometry-core/assembly.inc:85:             if(!strcmp(g_assembly_record.kind,"rule")){uint32_t id,version;ok=eng_u32(&j,geo_json_member(&j,0,"id"),&id,true)&&eng_u32(&j,geo_json_member(&j,0,"version"),&version,true)&&!assembly_rule(w,id,version)&&asm_publish(w,&j,0,g_assembly_record.hash);}
+geometry-core/assembly.inc:86:             else if(!strcmp(g_assembly_record.kind,"instance"))ok=asm_instance_load(w,&j,0);
+geometry-core/assembly.inc:87:             else {uint32_t id;ok=eng_u32(&j,geo_json_member(&j,0,"id"),&id,true)&&!assembly_binding(w,id)&&asm_put_binding(w,&j,0);}

@@ -1,0 +1,113 @@
+#!/usr/bin/env python3
+"""僅可經 wsl_locked3.sh run 啟動；兩棵固定 SHA 的 main/final/final/main 隔離量測。"""
+import hashlib
+import json
+import os
+from pathlib import Path
+import signal
+import subprocess
+import time
+
+HERE = Path(__file__).resolve().parent
+OUT = HERE / 'p52-measurements'
+WORK = Path('/var/tmp/codex-geo261-p52-20261021')
+SHAS = {'main': 'adbaebf9c73ea6801d7b4d5214e4b846b132923b',
+        'final': '7dae5f21c7ca401e660450d437e60ba566218da8'}
+ENV = dict(os.environ, PATH='/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+           LANG='C.UTF-8', LC_ALL='C.UTF-8', PYTHONIOENCODING='utf-8', PYTHONDONTWRITEBYTECODE='1')
+
+
+def command(argv, log, *, cwd=None, env=ENV, timeout=1200):
+    with open(log, 'wb') as f:
+        p = subprocess.Popen(argv, cwd=cwd, env=env, stdout=f, stderr=subprocess.STDOUT, start_new_session=True)
+        try:
+            deadline = time.monotonic() + timeout
+            while p.poll() is None:
+                if (HERE / 'STOP-WSL').exists():
+                    raise InterruptedError('使用者要求停止 WSL 工作')
+                if time.monotonic() >= deadline:
+                    raise subprocess.TimeoutExpired(argv, timeout)
+                time.sleep(0.25)
+            rc = p.returncode
+        except (subprocess.TimeoutExpired, InterruptedError) as error:
+            os.killpg(p.pid, signal.SIGTERM)
+            try:
+                p.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                os.killpg(p.pid, signal.SIGKILL)
+                p.wait()
+            rc = 130 if isinstance(error, InterruptedError) else 124
+    print(json.dumps({'command': argv, 'rc': rc, 'log': str(log)}, ensure_ascii=False), flush=True)
+    if rc:
+        raise RuntimeError(f'指令失敗 {rc}：{log}')
+
+
+def main():
+    if (HERE / 'STOP-WSL').exists():
+        raise InterruptedError('停止標記存在，不啟動 WSL 工作')
+    if OUT.exists():
+        raise RuntimeError('輸出已存在，不覆蓋舊收據；請明確另建日期／標籤')
+    OUT.mkdir(parents=True)
+    WORK.mkdir(parents=True, exist_ok=True)
+    (WORK / 'tmp').mkdir(exist_ok=True)
+    ENV['TMPDIR'] = str(WORK / 'tmp')
+    repos = {}
+    for label, sha in SHAS.items():
+        repo = WORK / label
+        if repo.exists():
+            raise RuntimeError(f'拒絕覆蓋既有 checkout：{repo}')
+        command(['git', '-c', 'safe.directory=*', 'clone', '-q', '--no-checkout', '/mnt/d/geometry-axiom', str(repo)], OUT / f'{label}-clone.log')
+        command(['git', '-c', 'core.autocrlf=false', '-c', 'advice.detachedHead=false', 'checkout', '-q', sha], OUT / f'{label}-checkout.log', cwd=repo)
+        actual = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=repo, env=ENV, text=True).strip()
+        assert actual == sha, (actual, sha)
+        command(['npm', 'run', 'build'], OUT / f'{label}-build.log', cwd=repo, timeout=1200)
+        repos[label] = repo
+    records = []
+    for block, label in enumerate(['main', 'final', 'final', 'main']):
+        repo = repos[label]
+        port = 18950 + block
+        runout = OUT / f'{block}-{label}'
+        runout.mkdir()
+        env = dict(ENV, GEOMETRY_FEEDBACK_DIR=str(WORK / 'tmp' / f'feedback-{block}'),
+                   GEOMETRY_TEST_URL=f'http://127.0.0.1:{port}/', GEOMETRY_CHROME='/usr/bin/google-chrome',
+                   GEOMETRY_CHROME_FLAGS='--no-sandbox', GEOMETRY_CDP_PORT=str(9370 + block),
+                   GEOMETRY_CDP_FROM_P31='1', P52_SHA=SHAS[label], P52_OUT=str(runout), P52_REPS='4',
+                   GEOMETRY_CHROME_PROFILE=str(WORK / 'tmp' / f'chrome-{block}'))
+        with (runout / 'server.log').open('wb') as log:
+            server = subprocess.Popen(['python3', '-u', 'geometry-web/start_local.py', '--port', str(port)], cwd=repo, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            try:
+                deadline = time.monotonic() + 90
+                while time.monotonic() < deadline:
+                    if (HERE / 'STOP-WSL').exists():
+                        raise InterruptedError('使用者要求停止 WSL 工作')
+                    if server.poll() is not None:
+                        raise RuntimeError(f'隔離服務提前結束：{runout}')
+                    probe = subprocess.run(['python3', 'geometry-web/runtime_version.py', '--probe', str(port)], cwd=repo, env=env, capture_output=True)
+                    if probe.returncode == 0:
+                        (runout / 'runtime.json').write_bytes(probe.stdout)
+                        break
+                    time.sleep(1)
+                else:
+                    raise RuntimeError('隔離服務 freshness 探測逾時')
+                command(['node', str(HERE / 'p52_probe.cjs'), str(repo)], runout / 'probe.log', cwd=repo, env=env, timeout=900)
+                records.append(json.loads((runout / 'samples.json').read_text()))
+            finally:
+                # 只清理由此 driver 啟動的服務程序群。
+                try:
+                    os.killpg(server.pid, signal.SIGTERM)
+                except ProcessLookupError:
+                    pass
+                try:
+                    server.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    os.killpg(server.pid, signal.SIGKILL)
+                    server.wait()
+    receipt = {'schema': 'geo261-p52-measurements/1', 'shas': SHAS, 'order': ['main', 'final', 'final', 'main'],
+               'driver_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+               'probe_sha256': hashlib.sha256((HERE / 'p52_probe.cjs').read_bytes()).hexdigest(), 'records': records}
+    (OUT / 'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
+    print('P52 交錯量測完成', flush=True)
+
+
+if __name__ == '__main__':
+    main()

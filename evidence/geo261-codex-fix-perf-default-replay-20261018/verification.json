@@ -1,0 +1,581 @@
+{
+  "kind": "唯讀重算與原始資料核對；未執行產品／gprof／build",
+  "captured_utc": "2026-10-18T14:51:40.524454+00:00",
+  "checks": [
+    {
+      "mode": "normal",
+      "run": "20261018T224919274335-normal",
+      "samples": 305,
+      "groups": 23,
+      "bridge_ok_responses": 288,
+      "model_ok_outputs": 21,
+      "model_schema_counts": {
+        "geometry-base-snapshot/1": 14,
+        "geometry-neutral-source-envelope/1": 7
+      },
+      "summary_statistics_recomputed": true,
+      "raw_bridge_records_exact": true,
+      "gmon_count": 0,
+      "gmon_files": [],
+      "receipt_files": [
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224919274335-normal/environment.json",
+          "bytes": 1398,
+          "sha256": "ee9df0ff600b2e661a28bf6b8c314acab130a2cf7c3303e8d49eaa56f15b4ac9"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224919274335-normal/samples.json",
+          "bytes": 44392,
+          "sha256": "0fdf5a9a16a57799aff0fba8d43405906e1d8d14a3b9a10b7e6b5554a4c00c6c"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224919274335-normal/summary.json",
+          "bytes": 7944,
+          "sha256": "151824bdd6ee0f0c1473f0d8ecda8e7f3951802d7d3bc4999ab52af8da86d5a3"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224919274335-normal/summary.csv",
+          "bytes": 2702,
+          "sha256": "baee93eb70e354d19825e1866913331e6194e8f92bb80a7c8c1ceacc3de3a03f"
+        }
+      ],
+      "environment": {
+        "timestamp": "2026-10-18T22:49:19+08:00",
+        "pins": {
+          "main": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+          "integration": "68eed6fb0e488003ca0a4d8614a9460a637d979e"
+        },
+        "platform": {
+          "sysname": "Linux",
+          "nodename": "9c8d35df5ae7",
+          "release": "6.18.55",
+          "version": "#1 SMP Wed Oct 14 19:45:18 UTC 2026",
+          "machine": "x86_64"
+        },
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+        "cpu_count": 5,
+        "loadavg": [
+          0.638671875,
+          0.8125,
+          0.6171875
+        ],
+        "stack_limit": [
+          16777216,
+          -1
+        ],
+        "profile": false,
+        "cold_repeats": 7,
+        "rounds": 15,
+        "model_repeats": 7,
+        "commands": [
+          [
+            "reset",
+            "reset"
+          ],
+          [
+            "load_scene",
+            "loadfile /workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/inputs/room_a.scene"
+          ],
+          [
+            "read_dump",
+            "dump"
+          ],
+          [
+            "canvas_position",
+            "line canvas-pos boundary 1 60 60"
+          ],
+          [
+            "unused_spec_create",
+            "line spec PERF_VALUE 100"
+          ],
+          [
+            "unused_spec_replace",
+            "line spec PERF_VALUE 200"
+          ],
+          [
+            "preview_spec",
+            "line preview spec 主支1中線 900"
+          ],
+          [
+            "cancel_preview",
+            "line cancel-preview"
+          ],
+          [
+            "read_final_dump",
+            "dump"
+          ]
+        ],
+        "script_sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b"
+      }
+    },
+    {
+      "mode": "gprof",
+      "run": "20261018T224925766853-gprof",
+      "samples": 305,
+      "groups": 23,
+      "bridge_ok_responses": 288,
+      "model_ok_outputs": 21,
+      "model_schema_counts": {
+        "geometry-base-snapshot/1": 14,
+        "geometry-neutral-source-envelope/1": 7
+      },
+      "summary_statistics_recomputed": true,
+      "raw_bridge_records_exact": true,
+      "gmon_count": 37,
+      "gmon_files": [
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/bridge-cold/sample-000/gmon.out",
+          "bytes": 433785,
+          "sha256": "32653ecc11afe76f4e39585ced05f3e1c32d3065e019997bdeb8a328b2c3b735"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/bridge-cold/sample-001/gmon.out",
+          "bytes": 433785,
+          "sha256": "8d33ba78af732e22187ba29c06648dbd489dec8b21979b3e514e654b17a64fd3"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/bridge-cold/sample-002/gmon.out",
+          "bytes": 433785,
+          "sha256": "32653ecc11afe76f4e39585ced05f3e1c32d3065e019997bdeb8a328b2c3b735"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/bridge-cold/sample-003/gmon.out",
+          "bytes": 433785,
+          "sha256": "32653ecc11afe76f4e39585ced05f3e1c32d3065e019997bdeb8a328b2c3b735"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/bridge-cold/sample-004/gmon.out",
+          "bytes": 433785,
+          "sha256": "32653ecc11afe76f4e39585ced05f3e1c32d3065e019997bdeb8a328b2c3b735"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/bridge-cold/sample-005/gmon.out",
+          "bytes": 433785,
+          "sha256": "32653ecc11afe76f4e39585ced05f3e1c32d3065e019997bdeb8a328b2c3b735"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/bridge-cold/sample-006/gmon.out",
+          "bytes": 433785,
+          "sha256": "32653ecc11afe76f4e39585ced05f3e1c32d3065e019997bdeb8a328b2c3b735"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/bridge-resident/session/gmon.out",
+          "bytes": 436095,
+          "sha256": "8c3a713d287d53db6870115f3f8078fcc4f326f19d645c04a8ac56cb0474ef4d"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-legacy/sample-000/gmon.out",
+          "bytes": 370971,
+          "sha256": "7f0a705c413d3a204723399b89764958e38b1f6bd913d9e0aa3aecce9a8c2b30"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-legacy/sample-001/gmon.out",
+          "bytes": 370971,
+          "sha256": "7f0a705c413d3a204723399b89764958e38b1f6bd913d9e0aa3aecce9a8c2b30"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-legacy/sample-002/gmon.out",
+          "bytes": 370971,
+          "sha256": "7f0a705c413d3a204723399b89764958e38b1f6bd913d9e0aa3aecce9a8c2b30"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-legacy/sample-003/gmon.out",
+          "bytes": 370971,
+          "sha256": "7f0a705c413d3a204723399b89764958e38b1f6bd913d9e0aa3aecce9a8c2b30"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-legacy/sample-004/gmon.out",
+          "bytes": 370971,
+          "sha256": "7f0a705c413d3a204723399b89764958e38b1f6bd913d9e0aa3aecce9a8c2b30"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-legacy/sample-005/gmon.out",
+          "bytes": 370971,
+          "sha256": "35c21c8f093894a7d765fd050f7888cebc253c55a2730b78a7c6b554c8832325"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-legacy/sample-006/gmon.out",
+          "bytes": 370971,
+          "sha256": "7f0a705c413d3a204723399b89764958e38b1f6bd913d9e0aa3aecce9a8c2b30"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-neutral/sample-000/gmon.out",
+          "bytes": 373302,
+          "sha256": "9d83b0e2187cff6a27f8764568ff4aa3747d1652bd043cecd0bf1934c1a7b050"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-neutral/sample-001/gmon.out",
+          "bytes": 373302,
+          "sha256": "9d83b0e2187cff6a27f8764568ff4aa3747d1652bd043cecd0bf1934c1a7b050"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-neutral/sample-002/gmon.out",
+          "bytes": 373302,
+          "sha256": "9d83b0e2187cff6a27f8764568ff4aa3747d1652bd043cecd0bf1934c1a7b050"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-neutral/sample-003/gmon.out",
+          "bytes": 373302,
+          "sha256": "9d83b0e2187cff6a27f8764568ff4aa3747d1652bd043cecd0bf1934c1a7b050"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-neutral/sample-004/gmon.out",
+          "bytes": 373302,
+          "sha256": "9d83b0e2187cff6a27f8764568ff4aa3747d1652bd043cecd0bf1934c1a7b050"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-neutral/sample-005/gmon.out",
+          "bytes": 373302,
+          "sha256": "9d83b0e2187cff6a27f8764568ff4aa3747d1652bd043cecd0bf1934c1a7b050"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/integration/model-neutral/sample-006/gmon.out",
+          "bytes": 373302,
+          "sha256": "9d83b0e2187cff6a27f8764568ff4aa3747d1652bd043cecd0bf1934c1a7b050"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/bridge-cold/sample-000/gmon.out",
+          "bytes": 263969,
+          "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/bridge-cold/sample-001/gmon.out",
+          "bytes": 263969,
+          "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/bridge-cold/sample-002/gmon.out",
+          "bytes": 263969,
+          "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/bridge-cold/sample-003/gmon.out",
+          "bytes": 263969,
+          "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/bridge-cold/sample-004/gmon.out",
+          "bytes": 263969,
+          "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/bridge-cold/sample-005/gmon.out",
+          "bytes": 263969,
+          "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/bridge-cold/sample-006/gmon.out",
+          "bytes": 263969,
+          "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/bridge-resident/session/gmon.out",
+          "bytes": 265229,
+          "sha256": "8f8ee7a49e9c0cc2024290530d746db42e5654f788131ee9528ab0c3343a8824"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/model-legacy/sample-000/gmon.out",
+          "bytes": 190624,
+          "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/model-legacy/sample-001/gmon.out",
+          "bytes": 190624,
+          "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/model-legacy/sample-002/gmon.out",
+          "bytes": 190624,
+          "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/model-legacy/sample-003/gmon.out",
+          "bytes": 190624,
+          "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/model-legacy/sample-004/gmon.out",
+          "bytes": 190624,
+          "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/model-legacy/sample-005/gmon.out",
+          "bytes": 190624,
+          "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/main/model-legacy/sample-006/gmon.out",
+          "bytes": 190624,
+          "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+        }
+      ],
+      "receipt_files": [
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/environment.json",
+          "bytes": 1408,
+          "sha256": "62cb53a4decc2c33360a5840c0b09bd51f647cd843bbf5606c6b4fb0e63f55b7"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/samples.json",
+          "bytes": 44381,
+          "sha256": "54a711205352446ef63518f3c3fcf35fbb0a09b347bb0023a3cc8c80fdadbbcd"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/summary.json",
+          "bytes": 7787,
+          "sha256": "76e71c4fe8c4d023b359bb36fed9033d14e1d579d0f668a7f5a64f87673111da"
+        },
+        {
+          "path": "performance/artifacts-adbd-68eed6fb/runs/20261018T224925766853-gprof/summary.csv",
+          "bytes": 2457,
+          "sha256": "9cd495ece356193f56cc98516f79112c8d8539c2f99928f344c34734faa66fd7"
+        }
+      ],
+      "environment": {
+        "timestamp": "2026-10-18T22:49:25+08:00",
+        "pins": {
+          "main": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+          "integration": "68eed6fb0e488003ca0a4d8614a9460a637d979e"
+        },
+        "platform": {
+          "sysname": "Linux",
+          "nodename": "9c8d35df5ae7",
+          "release": "6.18.55",
+          "version": "#1 SMP Wed Oct 14 19:45:18 UTC 2026",
+          "machine": "x86_64"
+        },
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+        "cpu_count": 5,
+        "loadavg": [
+          0.69482421875,
+          0.8193359375,
+          0.6220703125
+        ],
+        "stack_limit": [
+          16777216,
+          -1
+        ],
+        "profile": true,
+        "cold_repeats": 7,
+        "rounds": 15,
+        "model_repeats": 7,
+        "commands": [
+          [
+            "reset",
+            "reset"
+          ],
+          [
+            "load_scene",
+            "loadfile /workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/inputs/room_a.scene"
+          ],
+          [
+            "read_dump",
+            "dump"
+          ],
+          [
+            "canvas_position",
+            "line canvas-pos boundary 1 60 60"
+          ],
+          [
+            "unused_spec_create",
+            "line spec PERF_VALUE 100"
+          ],
+          [
+            "unused_spec_replace",
+            "line spec PERF_VALUE 200"
+          ],
+          [
+            "preview_spec",
+            "line preview spec 主支1中線 900"
+          ],
+          [
+            "cancel_preview",
+            "line cancel-preview"
+          ],
+          [
+            "read_final_dump",
+            "dump"
+          ]
+        ],
+        "script_sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b"
+      }
+    }
+  ],
+  "build_manifests": [
+    {
+      "manifest": {
+        "path": "performance/artifacts-adbd-68eed6fb/build/integration/gprof/bridge.manifest.json",
+        "bytes": 11174,
+        "sha256": "321be20a36b939b645a19dca1c96348c78701258bf3a3dd4230fb86b9b17ecca"
+      },
+      "label": "integration",
+      "mode": "gprof",
+      "program": "bridge",
+      "binary_sha256": "2622632a442454bb15f54b2a22f64ccad60685bb6d5753a52873fc21197f987c",
+      "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+      "native_c_dependencies": 56,
+      "pg_c_dependencies": 56,
+      "O2": true
+    },
+    {
+      "manifest": {
+        "path": "performance/artifacts-adbd-68eed6fb/build/integration/gprof/model-base.manifest.json",
+        "bytes": 11192,
+        "sha256": "ac24434eab0209d6fa7fcbd88bbec2ee58693b9d4097b743e6752fbe52d69554"
+      },
+      "label": "integration",
+      "mode": "gprof",
+      "program": "model-base",
+      "binary_sha256": "bed05cb11bc7be3d8100ee1cd8cb28f503e3a9249855cb395a8821267ac00f82",
+      "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+      "native_c_dependencies": 56,
+      "pg_c_dependencies": 56,
+      "O2": true
+    },
+    {
+      "manifest": {
+        "path": "performance/artifacts-adbd-68eed6fb/build/integration/normal/bridge.manifest.json",
+        "bytes": 11182,
+        "sha256": "dc550e091114b6a4fb3874c17179ab471a02b56a2c3594235a1ea88386666b2f"
+      },
+      "label": "integration",
+      "mode": "normal",
+      "program": "bridge",
+      "binary_sha256": "de6e20611509d486c673a4b629eeb127606d3f84fe3e149afbd96825a260149b",
+      "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+      "native_c_dependencies": 56,
+      "pg_c_dependencies": 0,
+      "O2": true
+    },
+    {
+      "manifest": {
+        "path": "performance/artifacts-adbd-68eed6fb/build/integration/normal/model-base.manifest.json",
+        "bytes": 11201,
+        "sha256": "1c0938a7ad04efbd86559706c2a6b704a96b6f9589e4c1d442f6d9076cb060a3"
+      },
+      "label": "integration",
+      "mode": "normal",
+      "program": "model-base",
+      "binary_sha256": "b8379c77cf408327e3d3510fff925ba5d94c277be35cf54a57ce6536daa4dd69",
+      "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+      "native_c_dependencies": 56,
+      "pg_c_dependencies": 0,
+      "O2": true
+    },
+    {
+      "manifest": {
+        "path": "performance/artifacts-adbd-68eed6fb/build/main/gprof/bridge.manifest.json",
+        "bytes": 1646,
+        "sha256": "49a38ad75c63e13400f67295d69eef7efcfe9debc8cbdcf34bf95526f5de9a7d"
+      },
+      "label": "main",
+      "mode": "gprof",
+      "program": "bridge",
+      "binary_sha256": "257950a2c955f36da330214bba79facc81160b30ef46020a60dc8f364f68b488",
+      "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+      "native_c_dependencies": 2,
+      "pg_c_dependencies": 2,
+      "O2": true
+    },
+    {
+      "manifest": {
+        "path": "performance/artifacts-adbd-68eed6fb/build/main/gprof/model-base.manifest.json",
+        "bytes": 1665,
+        "sha256": "52ec50599f6300152c3ad16cf3674b45afcd4378d765c979996562aab88c87e8"
+      },
+      "label": "main",
+      "mode": "gprof",
+      "program": "model-base",
+      "binary_sha256": "606a8a530dfe5c78b1926f61ef5f3b10ed3f883de0224a13c589f266351fb95a",
+      "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+      "native_c_dependencies": 2,
+      "pg_c_dependencies": 2,
+      "O2": true
+    },
+    {
+      "manifest": {
+        "path": "performance/artifacts-adbd-68eed6fb/build/main/normal/bridge.manifest.json",
+        "bytes": 1600,
+        "sha256": "efa63e7ef4036633c5952d55ceeeb7b711aadeecb6b5eb8bcc3d166aa7f78fea"
+      },
+      "label": "main",
+      "mode": "normal",
+      "program": "bridge",
+      "binary_sha256": "b53cb1a3a16c48ce18d0c5a49ee250dcbbfa47a2473c71f5b38a5d17f985abc0",
+      "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+      "native_c_dependencies": 2,
+      "pg_c_dependencies": 0,
+      "O2": true
+    },
+    {
+      "manifest": {
+        "path": "performance/artifacts-adbd-68eed6fb/build/main/normal/model-base.manifest.json",
+        "bytes": 1619,
+        "sha256": "4ea0d6de563a0bc45682ca54a2b3845681b334cfea3ce5ab13833ca5dd9c2c96"
+      },
+      "label": "main",
+      "mode": "normal",
+      "program": "model-base",
+      "binary_sha256": "8d36776937a4045cfa52f99b54f8cc1b69cc3f46958ae0ba70138bc658b786f8",
+      "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+      "native_c_dependencies": 2,
+      "pg_c_dependencies": 0,
+      "O2": true
+    }
+  ],
+  "stages": [
+    {
+      "receipt": {
+        "path": "performance/artifacts-adbd-68eed6fb/stage-records/20261018T144430375235Z/01-prepare/result.json",
+        "bytes": 1593,
+        "sha256": "4887bfc350ac82cb1d9acb66262eda2249c948d0d7930cca7a58acf73938a8d9"
+      },
+      "stage": "prepare",
+      "elapsed_seconds": 0.6882045519996609,
+      "returncode": 0
+    },
+    {
+      "receipt": {
+        "path": "performance/artifacts-adbd-68eed6fb/stage-records/20261018T144430375235Z/02-build/result.json",
+        "bytes": 1588,
+        "sha256": "877176d378d7c8b6b59b4f20154564035b759fb12767f76a585a7f28c0dce16d"
+      },
+      "stage": "build",
+      "elapsed_seconds": 190.69073731900062,
+      "returncode": 0
+    },
+    {
+      "receipt": {
+        "path": "performance/artifacts-adbd-68eed6fb/stage-records/20261018T144919162375Z/01-measure/result.json",
+        "bytes": 1592,
+        "sha256": "7025a64951bac75933d5505f2f04e1c9aa21383b2945f25225003ace5e02cb29"
+      },
+      "stage": "measure",
+      "elapsed_seconds": 6.528377804999764,
+      "returncode": 0
+    },
+    {
+      "receipt": {
+        "path": "performance/artifacts-adbd-68eed6fb/stage-records/20261018T144919162375Z/02-profile/result.json",
+        "bytes": 1592,
+        "sha256": "3e52f44ca19f7c32b2bf6292d710359e009cf82ae80b2f9b8d1c0a676109ed79"
+      },
+      "stage": "profile",
+      "elapsed_seconds": 8.791244734999054,
+      "returncode": 0
+    }
+  ],
+  "newer_main_difference": {
+    "measured": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+    "newer_main": "a63e1999b5ebdc29ee30f25db6b319d6469bdac3",
+    "changed_paths": [
+      "決策佇列.md"
+    ],
+    "note": "唯一差異是決策佇列.md 增 36 行；實測是 e980，未聲稱跑 a63。"
+  },
+  "limitations": [
+    "只核 manifests 已記錄的 binary SHA；本輪分析不重讀大 binary、不中斷獨占 registry測試。原 helper 每次執行前校驗 binary bytes SHA。",
+    "profile時間不作退化倍率；libc未插樁、O2 inline符號歸屬不能當真 source-level calls。",
+    "neutral與legacy為不同獨立程序樣本，中位數差不是純來源圖成本。"
+  ]
+}

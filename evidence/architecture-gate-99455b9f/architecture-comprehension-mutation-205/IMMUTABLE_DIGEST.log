@@ -1,0 +1,44 @@
+test_lf_exclusion_changed_character_is_rejected (__main__.ArchitectureContract.test_lf_exclusion_changed_character_is_rejected) ... FAIL
+test_raw_exclusion_remains_byte_exact_by_default (__main__.ArchitectureContract.test_raw_exclusion_remains_byte_exact_by_default) ... FAIL
+test_lf_exclusion_preserves_bare_carriage_return (__main__.ArchitectureContract.test_lf_exclusion_preserves_bare_carriage_return) ... FAIL
+
+======================================================================
+FAIL: test_lf_exclusion_changed_character_is_rejected (__main__.ArchitectureContract.test_lf_exclusion_changed_character_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 313, in test_lf_exclusion_changed_character_is_rejected
+    self.rejects("EXCLUSION_DIGEST")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_raw_exclusion_remains_byte_exact_by_default (__main__.ArchitectureContract.test_raw_exclusion_remains_byte_exact_by_default)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 319, in test_raw_exclusion_remains_byte_exact_by_default
+    self.rejects("EXCLUSION_DIGEST")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_lf_exclusion_preserves_bare_carriage_return (__main__.ArchitectureContract.test_lf_exclusion_preserves_bare_carriage_return)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 334, in test_lf_exclusion_preserves_bare_carriage_return
+    self.rejects("EXCLUSION_DIGEST")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.046s
+
+FAILED (failures=3)

@@ -11,7 +11,7 @@ const results=[],errors=[],terminalRequests=[],deferred=()=>{let resolve;const p
 const feedbackFiles=()=>fs.existsSync(feedback)?fs.readdirSync(feedback).sort().map(f=>[f,fs.statSync(path.join(feedback,f)).size]):[];
 (async()=>{
  const runtime=await fetch(new URL('/runtime',url)).then(r=>r.json());assert.ok(runtime.fresh&&path.resolve(runtime.root)===root);
- const initialFeedback=feedbackFiles(),browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ const initialFeedback=feedbackFiles(),browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROME||'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
  try{for(const width of [1280,390]){
   const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
   const check=(name,value)=>{assert.ok(value,name);results.push({width,name,passed:true});console.log('PASS '+width+' '+name);};

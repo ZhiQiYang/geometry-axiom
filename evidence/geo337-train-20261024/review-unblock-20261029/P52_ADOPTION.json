@@ -1,0 +1,111 @@
+{
+  "schema": "pr338-p52-status-adoption/1",
+  "observedUtc": "2026-10-28T19:00:21.086206+00:00",
+  "executionSha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "adoptedIntoProductHead": "0ae1728c2309e1d670369289a6b8da059fa63a50",
+  "externalEvidenceCommit": "a08a036db335e88608ead761539d3e60b75e8e5d",
+  "action": "Read and adopt existing formal terminal; no performance rerun and no execution relabel.",
+  "formalVerifierOuterExits": [
+    0,
+    0,
+    0
+  ],
+  "elapsedSeconds": 369.46167065100053,
+  "timing": {
+    "shas": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "fix": "cbf0fb621888596aa14ad5f2349b503e23b1b72d"
+    },
+    "medians_ms": {
+      "main": 216.28146700000002,
+      "fix": 183.6549265
+    },
+    "ratio": 0.8491477751073325,
+    "ranges_ms": {
+      "main": [
+        198.762061,
+        258.427664
+      ],
+      "fix": [
+        171.163211,
+        224.686898
+      ]
+    },
+    "count": {
+      "main": 16,
+      "fix": 16
+    },
+    "no_regression": true
+  },
+  "controls": [
+    {
+      "mode": "normal",
+      "actual_exit": 0,
+      "expected_behavior_proved": true
+    },
+    {
+      "mode": "delay",
+      "actual_exit": 0,
+      "expected_behavior_proved": true
+    },
+    {
+      "mode": "revert-delay",
+      "actual_exit": 1,
+      "expected_behavior_proved": true
+    },
+    {
+      "mode": "wrong",
+      "actual_exit": 1,
+      "expected_behavior_proved": true
+    },
+    {
+      "mode": "missing",
+      "actual_exit": 1,
+      "expected_behavior_proved": true
+    }
+  ],
+  "guards": {
+    "fix": {
+      "head": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "status": "",
+      "runtime_inputs": 734,
+      "source_version": "c9980316a65a58e28992cc1dd1252fa1890bd4b415f5aef2727474c4174dd0cc",
+      "full_inputs_unchanged": true
+    },
+    "main": {
+      "head": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "status": "",
+      "runtime_inputs": 466,
+      "source_version": "6487bf2445a1ea63a74b949df3f9cbe7d55678db1ec988c51c52457a5dced21c",
+      "full_inputs_unchanged": true
+    }
+  },
+  "originalVerifierNineAssertionsUnchanged": true,
+  "scope": "RESULT/VERIFICATION/README read from fixed Git objects; producer full archive is linked, not independently unpacked again.",
+  "sources": [
+    {
+      "sha": "a08a036db335e88608ead761539d3e60b75e8e5d",
+      "path": "evidence/geo337-p52-20261027/capture/RESULT.json",
+      "gitBlob": "0d4262aa270d4508cdd0c308992abf164158d9d4",
+      "bytes": 6363,
+      "sha256": "8fa65f83d2e764cee21ba1deee813ae24fe0195686c75a29dfbd2c03cec98b92",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/a08a036db335e88608ead761539d3e60b75e8e5d/evidence/geo337-p52-20261027/capture/RESULT.json"
+    },
+    {
+      "sha": "a08a036db335e88608ead761539d3e60b75e8e5d",
+      "path": "evidence/geo337-p52-20261027/capture/VERIFICATION.json",
+      "gitBlob": "082c70ca9110c2e4928d552a5ebb42a07d14e31c",
+      "bytes": 1825,
+      "sha256": "8b83892738f53fa1f014ef5c30669f3607a0f481e3208fef68f768e411c982fb",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/a08a036db335e88608ead761539d3e60b75e8e5d/evidence/geo337-p52-20261027/capture/VERIFICATION.json"
+    },
+    {
+      "sha": "a08a036db335e88608ead761539d3e60b75e8e5d",
+      "path": "evidence/geo337-p52-20261027/README.md",
+      "gitBlob": "7f34cf8e1d7b1d90abf8747a3d849b5ab7a719c1",
+      "bytes": 3484,
+      "sha256": "0473a04e39e809f30e5d63c46f50861d70d9d48b2197e9f9d22bcad875b0a42f",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/a08a036db335e88608ead761539d3e60b75e8e5d/evidence/geo337-p52-20261027/README.md"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+commit bf0dbbe1ffff3c09e0bdbcd06a0e59b6452e58d0
+Author:     Chih-Chi Yang <b10102230@gmail.com>
+AuthorDate: Sun Oct 18 14:32:51 2026 +0000
+Commit:     Chih-Chi Yang <b10102230@gmail.com>
+CommitDate: Sun Oct 18 14:32:51 2026 +0000
+
+    驗證負控制：撤回宿主尺寸來源的責任分離
+
+diff --git a/geometry-core/references.inc b/geometry-core/references.inc
+index a2906274..4631c2dc 100644
+--- a/geometry-core/references.inc
++++ b/geometry-core/references.inc
+@@ -590,8 +590,7 @@ static bool reference_place_geometry(ReferenceEval *evaluation,World *w,size_t t
+     g_reference_active=evaluation;bool ok=wood_member_reference_place(&context,ti);g_reference_active=previous;
+     return ok&&(!evaluation||!evaluation->source_failure);
+ }
+-/* H 轉接：僅以權威來源更新尺寸快取；放置策略仍委由 W。 */
+-static bool app_member_reference_materialize_dimensions(ReferenceEval *ctx,size_t i)
++static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
+ {
+     if(!ctx->use_current_values&&!app_assembly_saved_dimensions(ctx->world,ctx->world->wood.timbers[i].id)&&ctx->wanted[i]){
+         Timber *member=&ctx->world->wood.timbers[i];bool owned;
+@@ -611,11 +610,6 @@ static bool app_member_reference_materialize_dimensions(ReferenceEval *ctx,size_
+             }
+         }
+     }
+-    return true;
+-}
+-static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
+-{
+-    if(!app_member_reference_materialize_dimensions(ctx,i))return false;
+     AppMemberReferenceContext c={0};c.evaluation=ctx;c.world=ctx->world;WoodMemberReferenceContext context=app_member_reference_context(&c);bool place=false;if(!wood_member_reference_compute(&context,i,&place))return false;return !place||reference_place_geometry(ctx,ctx->world,i);
+ }
+ 

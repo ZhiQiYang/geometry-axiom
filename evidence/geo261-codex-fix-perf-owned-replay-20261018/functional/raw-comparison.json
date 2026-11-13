@@ -1,0 +1,498 @@
+{
+  "ok": true,
+  "captures": [
+    "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/raw-baseline",
+    "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/raw-support",
+    "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/raw-enabled",
+    "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/raw-withdrawn"
+  ],
+  "comparison": "exact bytes; no path/token/line/whitespace normalization",
+  "results": [
+    {
+      "state": "support",
+      "case": "valid-preview",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "a61609056839d928caac820ce70a6ea9ee3726eff810ed2a53310ba773e1b3a0",
+      "actual_sha256": "a61609056839d928caac820ce70a6ea9ee3726eff810ed2a53310ba773e1b3a0",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "valid-preview",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "9b35cd4dca4e7d43c70c3d37bcbbfdd105b74bad62ea4a168faeb88966128b3c",
+      "actual_sha256": "9b35cd4dca4e7d43c70c3d37bcbbfdd105b74bad62ea4a168faeb88966128b3c",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "valid-preview",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "actual_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "prepared-bytes",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "9302484f609d171bfce5ea01dd047a083b9bce564d04ba3b019075e0b32da155",
+      "actual_sha256": "9302484f609d171bfce5ea01dd047a083b9bce564d04ba3b019075e0b32da155",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "prepared-bytes",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "7c7122fa688f6337c700916e245f0b9283f55f969bd593911e7aa3d235bad955",
+      "actual_sha256": "7c7122fa688f6337c700916e245f0b9283f55f969bd593911e7aa3d235bad955",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "prepared-bytes",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "preview-owner",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "82930edafc8e3c51cd195b897a4ae41c0f9ad952ee4c30709e3716050f9afa94",
+      "actual_sha256": "82930edafc8e3c51cd195b897a4ae41c0f9ad952ee4c30709e3716050f9afa94",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "preview-owner",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "e3548d2c6ceb6937bdcfcd78fd40c5fcc10e9a53c3342896c35ee44cfa5b605b",
+      "actual_sha256": "e3548d2c6ceb6937bdcfcd78fd40c5fcc10e9a53c3342896c35ee44cfa5b605b",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "preview-owner",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "actual_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "i8a-valid",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "actual_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "i8a-valid",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "ef6e4bd085d8e46f4f1cad548b0976ef3ed3727cacc120e3c21dc76105f3a37f",
+      "actual_sha256": "ef6e4bd085d8e46f4f1cad548b0976ef3ed3727cacc120e3c21dc76105f3a37f",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "i8a-valid",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "26e552b04af368ccce99697619fbdc2f28dc9efc859266c52a2cacfd2d24e4f2",
+      "actual_sha256": "26e552b04af368ccce99697619fbdc2f28dc9efc859266c52a2cacfd2d24e4f2",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "i8a-invalid",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "actual_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "i8a-invalid",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "dba4a6ef5b47afcc49591642bb2717002833f86b62e52b831278c406bdce92d7",
+      "actual_sha256": "dba4a6ef5b47afcc49591642bb2717002833f86b62e52b831278c406bdce92d7",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "i8a-invalid",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "c71ce57679f3375345c1e7c04e371ad0d498e6c6674babb1290922611071014f",
+      "actual_sha256": "c71ce57679f3375345c1e7c04e371ad0d498e6c6674babb1290922611071014f",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "partial-datum",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "actual_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "partial-datum",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "c3238028bdb5b83e5d806c2f766cc920feda44b84d36178825c52150d92f9050",
+      "actual_sha256": "c3238028bdb5b83e5d806c2f766cc920feda44b84d36178825c52150d92f9050",
+      "first_difference": null
+    },
+    {
+      "state": "support",
+      "case": "partial-datum",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "faf9e60a4a2fc16f225bf700a6db175594abdffe44713b837af3b628685a3845",
+      "actual_sha256": "faf9e60a4a2fc16f225bf700a6db175594abdffe44713b837af3b628685a3845",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "valid-preview",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "a61609056839d928caac820ce70a6ea9ee3726eff810ed2a53310ba773e1b3a0",
+      "actual_sha256": "a61609056839d928caac820ce70a6ea9ee3726eff810ed2a53310ba773e1b3a0",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "valid-preview",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "9b35cd4dca4e7d43c70c3d37bcbbfdd105b74bad62ea4a168faeb88966128b3c",
+      "actual_sha256": "9b35cd4dca4e7d43c70c3d37bcbbfdd105b74bad62ea4a168faeb88966128b3c",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "valid-preview",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "actual_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "prepared-bytes",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "9302484f609d171bfce5ea01dd047a083b9bce564d04ba3b019075e0b32da155",
+      "actual_sha256": "9302484f609d171bfce5ea01dd047a083b9bce564d04ba3b019075e0b32da155",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "prepared-bytes",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "7c7122fa688f6337c700916e245f0b9283f55f969bd593911e7aa3d235bad955",
+      "actual_sha256": "7c7122fa688f6337c700916e245f0b9283f55f969bd593911e7aa3d235bad955",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "prepared-bytes",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "preview-owner",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "82930edafc8e3c51cd195b897a4ae41c0f9ad952ee4c30709e3716050f9afa94",
+      "actual_sha256": "82930edafc8e3c51cd195b897a4ae41c0f9ad952ee4c30709e3716050f9afa94",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "preview-owner",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "e3548d2c6ceb6937bdcfcd78fd40c5fcc10e9a53c3342896c35ee44cfa5b605b",
+      "actual_sha256": "e3548d2c6ceb6937bdcfcd78fd40c5fcc10e9a53c3342896c35ee44cfa5b605b",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "preview-owner",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "actual_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "i8a-valid",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "actual_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "i8a-valid",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "ef6e4bd085d8e46f4f1cad548b0976ef3ed3727cacc120e3c21dc76105f3a37f",
+      "actual_sha256": "ef6e4bd085d8e46f4f1cad548b0976ef3ed3727cacc120e3c21dc76105f3a37f",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "i8a-valid",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "26e552b04af368ccce99697619fbdc2f28dc9efc859266c52a2cacfd2d24e4f2",
+      "actual_sha256": "26e552b04af368ccce99697619fbdc2f28dc9efc859266c52a2cacfd2d24e4f2",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "i8a-invalid",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "actual_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "i8a-invalid",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "dba4a6ef5b47afcc49591642bb2717002833f86b62e52b831278c406bdce92d7",
+      "actual_sha256": "dba4a6ef5b47afcc49591642bb2717002833f86b62e52b831278c406bdce92d7",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "i8a-invalid",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "c71ce57679f3375345c1e7c04e371ad0d498e6c6674babb1290922611071014f",
+      "actual_sha256": "c71ce57679f3375345c1e7c04e371ad0d498e6c6674babb1290922611071014f",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "partial-datum",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "actual_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "partial-datum",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "c3238028bdb5b83e5d806c2f766cc920feda44b84d36178825c52150d92f9050",
+      "actual_sha256": "c3238028bdb5b83e5d806c2f766cc920feda44b84d36178825c52150d92f9050",
+      "first_difference": null
+    },
+    {
+      "state": "enabled",
+      "case": "partial-datum",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "faf9e60a4a2fc16f225bf700a6db175594abdffe44713b837af3b628685a3845",
+      "actual_sha256": "faf9e60a4a2fc16f225bf700a6db175594abdffe44713b837af3b628685a3845",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "valid-preview",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "a61609056839d928caac820ce70a6ea9ee3726eff810ed2a53310ba773e1b3a0",
+      "actual_sha256": "a61609056839d928caac820ce70a6ea9ee3726eff810ed2a53310ba773e1b3a0",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "valid-preview",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "9b35cd4dca4e7d43c70c3d37bcbbfdd105b74bad62ea4a168faeb88966128b3c",
+      "actual_sha256": "9b35cd4dca4e7d43c70c3d37bcbbfdd105b74bad62ea4a168faeb88966128b3c",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "valid-preview",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "actual_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "prepared-bytes",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "9302484f609d171bfce5ea01dd047a083b9bce564d04ba3b019075e0b32da155",
+      "actual_sha256": "9302484f609d171bfce5ea01dd047a083b9bce564d04ba3b019075e0b32da155",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "prepared-bytes",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "7c7122fa688f6337c700916e245f0b9283f55f969bd593911e7aa3d235bad955",
+      "actual_sha256": "7c7122fa688f6337c700916e245f0b9283f55f969bd593911e7aa3d235bad955",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "prepared-bytes",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "preview-owner",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "82930edafc8e3c51cd195b897a4ae41c0f9ad952ee4c30709e3716050f9afa94",
+      "actual_sha256": "82930edafc8e3c51cd195b897a4ae41c0f9ad952ee4c30709e3716050f9afa94",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "preview-owner",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "e3548d2c6ceb6937bdcfcd78fd40c5fcc10e9a53c3342896c35ee44cfa5b605b",
+      "actual_sha256": "e3548d2c6ceb6937bdcfcd78fd40c5fcc10e9a53c3342896c35ee44cfa5b605b",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "preview-owner",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "actual_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "i8a-valid",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "actual_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "i8a-valid",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "ef6e4bd085d8e46f4f1cad548b0976ef3ed3727cacc120e3c21dc76105f3a37f",
+      "actual_sha256": "ef6e4bd085d8e46f4f1cad548b0976ef3ed3727cacc120e3c21dc76105f3a37f",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "i8a-valid",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "26e552b04af368ccce99697619fbdc2f28dc9efc859266c52a2cacfd2d24e4f2",
+      "actual_sha256": "26e552b04af368ccce99697619fbdc2f28dc9efc859266c52a2cacfd2d24e4f2",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "i8a-invalid",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "actual_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "i8a-invalid",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "dba4a6ef5b47afcc49591642bb2717002833f86b62e52b831278c406bdce92d7",
+      "actual_sha256": "dba4a6ef5b47afcc49591642bb2717002833f86b62e52b831278c406bdce92d7",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "i8a-invalid",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "c71ce57679f3375345c1e7c04e371ad0d498e6c6674babb1290922611071014f",
+      "actual_sha256": "c71ce57679f3375345c1e7c04e371ad0d498e6c6674babb1290922611071014f",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "partial-datum",
+      "stream": "stdin.raw",
+      "equal": true,
+      "pristine_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "actual_sha256": "61057b614b6e2d440a35d7e29a614e848e109bd76124d19915d0e937bb3650b9",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "partial-datum",
+      "stream": "stdout.raw",
+      "equal": true,
+      "pristine_sha256": "c3238028bdb5b83e5d806c2f766cc920feda44b84d36178825c52150d92f9050",
+      "actual_sha256": "c3238028bdb5b83e5d806c2f766cc920feda44b84d36178825c52150d92f9050",
+      "first_difference": null
+    },
+    {
+      "state": "withdrawn",
+      "case": "partial-datum",
+      "stream": "stderr.raw",
+      "equal": true,
+      "pristine_sha256": "faf9e60a4a2fc16f225bf700a6db175594abdffe44713b837af3b628685a3845",
+      "actual_sha256": "faf9e60a4a2fc16f225bf700a6db175594abdffe44713b837af3b628685a3845",
+      "first_difference": null
+    }
+  ]
+}

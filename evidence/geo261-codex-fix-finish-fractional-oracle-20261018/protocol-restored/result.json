@@ -1,0 +1,48 @@
+{
+  "schema": "geo261-finish-fractional-protocol/1",
+  "stage": "restored",
+  "head": "cca0654f4d74920c7661827f6e197f3fd05f2311",
+  "checkout": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T14:20:41.866029+00:00",
+  "os": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "invocation": [
+    "/workspace/geo261-validation-20261018/proposed-fixes/record_07_finish_fractional_oracle.py",
+    "--checkout",
+    "/workspace/geometry-axiom",
+    "--expected-head",
+    "cca0654f4d74920c7661827f6e197f3fd05f2311",
+    "--stage",
+    "restored",
+    "--out",
+    "/workspace/geo261-validation-20261018/fixes/finish-fractional-oracle/protocol-restored"
+  ],
+  "runner_sha256": "335af16e7d012350e2e48cee9314e65ede3c8b75798d1ab857bb5755d0945620",
+  "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "files": {
+    "tests/test_geo261_wood_finish.py": "9722d6e94bc08763a7c511aeb52b8cfaf4e7da012f46edd984f11b05b8624b4c",
+    "tests/geo261_finish_harness.c": "2558fcda655f52c3d94ff9a2e0e6dc82f87571f4d976c01e810bc3d4f2405342",
+    "geometry-core/kernel/versions.c": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632",
+    "geometry-core/kernel/version_sources.c": "0fc25f0def85da7d29f7e2a8547e769de3917f01f7c16280048c1ec869c41236",
+    "geometry-templates/woodworking/native/finish.c": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c",
+    "geometry-templates/woodworking/native/finish_sources.c": "a69debfd1540fc7743f323b22d7eaecf017f8c59c3ca9368b2e4a89b8874568d",
+    "geometry-templates/woodworking/native/engineering_sources.c": "92a2a809fdbd4b4e6c39794b03fbf7355eeb5fe55cc28a7b26101fac532a1300"
+  },
+  "status": "完成",
+  "expected_methods": 12,
+  "limits": [
+    "case/command 只呼叫原方法一次，回傳原物件；不改斷言、逾時或夾具。",
+    "stdout/stderr 是原 case 的 text=True 解碼結果；並非未解碼 binary streams。",
+    "旁錄新增 I/O 耗時，不能把本輪耗時當 plain unittest 效能對照。",
+    "不封存 transient native binaries；只在仍存在時記錄其 SHA-256。"
+  ],
+  "loaded_methods": 12,
+  "exit_code": 0,
+  "tests": 12,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "ended_utc": "2026-10-18T14:20:51.344713+00:00",
+  "seconds": 9.478703958997357,
+  "protocol_events": 174
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "geo261-live-progress/1",
+  "tested_sha": "88cf3f054ee62cb451a2c215021eba597b78b3ad",
+  "entries": [
+    {
+      "utc": "2026-10-22T10:30:41.661468+00:00",
+      "label": "p73-svg-diagnosis",
+      "result": "Chrome156原函式隱藏SVG仍插入網格，修正後不插入；三輪P73裁判bytes一致且修正產品bytes與最終f2c8837a相同。Chromium154額外CLI探針逾時未驗，不宣稱新版才改IDL",
+      "next": "固定f2c8837a的完整native與全部後項持續執行，不以隔離probe取代正式job",
+      "archive": "raw/p73-svg-diagnosis.raw.tar.gz"
+    }
+  ]
+}

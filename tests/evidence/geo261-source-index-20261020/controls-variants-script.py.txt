@@ -1,0 +1,70 @@
+"""Experiment (not part of the repo): which part of the hard-coded edge fixture gives which mutant its death?
+Builds variants of the harness whose edge_collisions() uses only the group / only the pairs / neither,
+and runs the three edge mutants against each variant's `edge-collisions` case.
+Usage (cwd = a clone at the pushed commit):  python3 -I srcidx_variants.py"""
+import re
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path.cwd()
+sys.path.insert(0, str(ROOT))
+from tests.test_geo261_native_kernel import NativeBuild
+from tests.test_geo261_source_index import EDGE_PROBE
+
+text = (ROOT / "tests/geo261_source_index_harness.c").read_text(encoding="utf-8")
+start = text.index("static int edge_collisions(void)")
+end = text.index("/* 重現上面兩張表")
+body = text[start:end]
+assert body.count("EDGE_GROUP") >= 5 and body.count("EDGE_PAIRS") >= 5
+
+
+def variant(ngroup, npairs):
+    b = body.replace("EDGE_GROUP", "NGROUP").replace("EDGE_PAIRS", "NPAIRS")
+    # keep the precondition loops over the full tables (they are fixture sanity, not the subject here)
+    return text[:start] + "#define NGROUP %d\n#define NPAIRS %d\n" % (ngroup, npairs) + b + text[end:]
+
+
+def inject(source, anchor, replacement):
+    assert source.count(anchor) == 1, anchor
+    return source.replace(anchor, replacement)
+
+
+MUTANTS = {
+    "edge-kind-ignored": lambda s: inject(s, "&&a.kind==b.kind", ""),
+    "edge-probe-miss": lambda s: inject(s, EDGE_PROBE, EDGE_PROBE + "if(!geo_source_edge_equal(ctx->edges[ctx->edge_index[slot]-1],edge))return false;"),
+    "edge-probe-hit": lambda s: inject(s, EDGE_PROBE, EDGE_PROBE + "if(1)return true;"),
+}
+
+
+def run(exe):
+    try:
+        r = subprocess.run([str(exe), "edge-collisions"], capture_output=True, text=True, timeout=60)
+    except subprocess.TimeoutExpired:
+        return "TIMEOUT"
+    first = r.stderr.strip().splitlines()[0].split(" ")[0] if r.stderr.strip() else ""
+    return ("rc=%d %s" % (r.returncode, first)).strip()
+
+
+build = NativeBuild(kernel_only=True)
+original = (build.kernel / "source.c").read_text(encoding="utf-8")
+for label, (ng, np_) in {"group+pairs (as committed)": (32, 8), "group only": (32, 0), "pairs only": (0, 8), "neither": (0, 0)}.items():
+    tag = "v%d_%d" % (ng, np_)
+    harness = build.work / (tag + "-client.c")
+    harness.write_text(variant(ng, np_), encoding="utf-8")
+    base_dir = build.work / (tag + "-base")
+    base_dir.mkdir()
+    (base_dir / "source.c").write_text(original, encoding="utf-8")
+    shutil.copy2(harness, base_dir / "client.c")
+    base = build.link(tag + "-b", [build.compile(base_dir / "client.c", tag + "-b")])
+    row = ["baseline " + run(base)]
+    for name, edit in MUTANTS.items():
+        d = build.work / (tag + "-" + name)
+        d.mkdir()
+        (d / "source.c").write_text(edit(original), encoding="utf-8")
+        shutil.copy2(harness, d / "client.c")
+        exe = build.link(tag + "-" + name + "-x", [build.compile(d / "client.c", tag + "-" + name + "-x")])
+        row.append(name + " " + run(exe))
+    print("%-28s" % label, *row, sep=" | ")
+    sys.stdout.flush()

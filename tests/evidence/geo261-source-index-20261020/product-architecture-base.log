@@ -1,0 +1,19 @@
+E
+======================================================================
+ERROR: setUpClass (test_product_architecture.ProductArchitecture)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geo261-source-base/tests/test_product_architecture.py", line 40, in setUpClass
+    snapshot_product_sources(ROOT, cls.root, cls.manifest)
+  File "/tmp/geo261-source-base/tests/test_product_architecture.py", line 25, in snapshot_product_sources
+    Scanner(source_root, manifest).validate_manifest()
+  File "/tmp/geo261-source-base/tests/architecture_contract.py", line 743, in validate_manifest
+    require(relative in self.entries or relative in self.exclusions,
+  File "/tmp/geo261-source-base/tests/architecture_contract.py", line 144, in require
+    raise ContractError(Diagnostic(path, max(1, line), code, message, direction, tuple(chain)))
+architecture_contract.ContractError: geometry-core/framing-template/core-probe/gen_scenes.py:1: SOURCE_UNREGISTERED: executable source omitted from the complete manifest
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.837s
+
+FAILED (errors=1)

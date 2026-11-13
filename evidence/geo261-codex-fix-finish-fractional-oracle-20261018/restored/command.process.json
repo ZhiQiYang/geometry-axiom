@@ -1,0 +1,48 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-validation-20261018/proposed-fixes/record_07_finish_fractional_oracle.py",
+    "--checkout",
+    "/workspace/geometry-axiom",
+    "--expected-head",
+    "cca0654f4d74920c7661827f6e197f3fd05f2311",
+    "--stage",
+    "restored",
+    "--out",
+    "/workspace/geo261-validation-20261018/fixes/finish-fractional-oracle/protocol-restored"
+  ],
+  "shell": false,
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T14:20:41.728596+00:00",
+  "started_ns": 1792333241728612221,
+  "timeout_seconds": 600.0,
+  "timed_out": false,
+  "interrupted": false,
+  "returncode": 0,
+  "launch_error": null,
+  "pid": 163825,
+  "ended_utc": "2026-10-18T14:20:51.398767+00:00",
+  "ended_ns": 1792333251398795645,
+  "seconds": 9.670181125999079,
+  "streams": {
+    "stdout": {
+      "device": 27,
+      "inode": 1460103,
+      "bytes": 0,
+      "mtime_ns": 1792333241728559690,
+      "ctime_ns": 1792333241728559690,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "stderr": {
+      "device": 27,
+      "inode": 1460104,
+      "bytes": 0,
+      "mtime_ns": 1792333241728559690,
+      "ctime_ns": 1792333241728559690,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    }
+  }
+}

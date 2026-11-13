@@ -67,7 +67,7 @@ def build(directory, projection=None):
     probe = r'''
         if (strcmp(line,"__support_missing")==0) {
             World *copy=malloc(sizeof *copy); if(!copy) return 2; *copy=g_world;
-            for(size_t i=0;i<copy->timber_count;++i) if(copy->timbers[i].id!=7) copy->timbers[i].placed=false;
+            for(size_t i=0;i<copy->wood.timber_count;++i) if(copy->wood.timbers[i].id!=7) copy->wood.timbers[i].placed=false;
             char hash[65]; eng_definition_hash(&g_world,hash);
             json_timber_supports(copy,hash); putchar('\n'); free(copy);
         } else if (strcmp(line,"__support_ambiguous")==0 || strcmp(line,"__support_free")==0) {

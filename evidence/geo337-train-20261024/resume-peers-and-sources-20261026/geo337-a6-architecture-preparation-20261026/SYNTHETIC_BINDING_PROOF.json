@@ -1,0 +1,55 @@
+{
+  "synthetic_only": true,
+  "formal_tests_executed": false,
+  "subject_sha256": "97da235f9a9d69b4cdfbc67dc3f49e5b447b574176e39e3300ffd887993fab62",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-a6-architecture-preparation-20261026/check_binding.py",
+        "fixed"
+      ],
+      "actual_process_returncode": 0,
+      "stdout": "{\"case\": \"fixed\", \"synthetic_only\": true, \"formal_judges_executed\": false, \"source_binding\": \"a6f4013364e21bcb7239b5dcc25caac0f6d61f77\"}\n",
+      "stderr": "",
+      "subject_sha256": "97da235f9a9d69b4cdfbc67dc3f49e5b447b574176e39e3300ffd887993fab62"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-a6-architecture-preparation-20261026/check_binding.py",
+        "withdrawn-old-source"
+      ],
+      "actual_process_returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/geo337-a6-architecture-preparation-20261026/check_binding.py\", line 11, in <module>\n    m.validate_gate(row,stdout,stderr,1)\n  File \"/tmp/geo337-a6-architecture-preparation-20261026/assemble_a6.py\", line 47, in validate_gate\n    need(row['source_sha']==row['acceptance_sha']==SOURCE and row['cwd']==str(ROOT),'original gate execution source and cwd')\n  File \"/tmp/geo337-a6-architecture-preparation-20261026/assemble_a6.py\", line 37, in need\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: original gate execution source and cwd\n",
+      "subject_sha256": "97da235f9a9d69b4cdfbc67dc3f49e5b447b574176e39e3300ffd887993fab62"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-a6-architecture-preparation-20261026/check_binding.py",
+        "restored"
+      ],
+      "actual_process_returncode": 0,
+      "stdout": "{\"case\": \"restored\", \"synthetic_only\": true, \"formal_judges_executed\": false, \"source_binding\": \"a6f4013364e21bcb7239b5dcc25caac0f6d61f77\"}\n",
+      "stderr": "",
+      "subject_sha256": "97da235f9a9d69b4cdfbc67dc3f49e5b447b574176e39e3300ffd887993fab62"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-a6-architecture-preparation-20261026/check_binding.py",
+        "withdrawn-count"
+      ],
+      "actual_process_returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/geo337-a6-architecture-preparation-20261026/check_binding.py\", line 11, in <module>\n    m.validate_gate(row,stdout,stderr,1)\n  File \"/tmp/geo337-a6-architecture-preparation-20261026/assemble_a6.py\", line 56, in validate_gate\n    need(len(counts)==1 and int(counts[0][0])==expected_count and text.rstrip().endswith('OK'),'original complete unittest count and zero skip')\n  File \"/tmp/geo337-a6-architecture-preparation-20261026/assemble_a6.py\", line 37, in need\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: original complete unittest count and zero skip\n",
+      "subject_sha256": "97da235f9a9d69b4cdfbc67dc3f49e5b447b574176e39e3300ffd887993fab62"
+    }
+  ]
+}

@@ -1,0 +1,551 @@
+{
+  "schema": "geo288-original-p52-independent-verifier-binding/1",
+  "sha": "13d02c1db7022145a52ee063286a558e595eb212",
+  "formal_out": "/tmp/g288pf",
+  "out": "/workspace/geo288-main-merge-20261023/p52-verifier-final",
+  "started_utc": "2026-10-23T06:35:07.892293+00:00",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/workspace/geo288-main-merge-20261023/p52-verifier-final/tmp",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONOPTIMIZE": null,
+    "GITHUB_SHA": "13d02c1db7022145a52ee063286a558e595eb212",
+    "GITHUB_WORKSPACE": "/tmp/g288f-13d02c1d",
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null
+  },
+  "cleared_environment_names": [
+    "GEOMETRY_CHROME"
+  ],
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "python_executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "original_verifier_sha256": "5a109def7794ebc1e34048afe500fd97758f98781ff90597fedec0dc214f1e04",
+  "original_verifier_ast_sha256": "af6a262bc9b906b65d2d8d5483d2ba508d7681655ac2db4b1aae82e2b34b5e1a",
+  "original_assertions_unchanged": true,
+  "projection_truthfulness": "DERIVED：逐一由真 c387 result 與完整原 streams 投影成 command/rc/log；不是原 launch stdout。",
+  "source_files": [
+    {
+      "path": "/workspace/geo288-main-merge-20261023/verifier-tools/run.py",
+      "bytes": 15639,
+      "sha256": "75df4aa0a69167a98bacbe9342ea08bb6fa2097d5990b0f5e863c4abe34a9665"
+    },
+    {
+      "path": "/workspace/geo288-main-merge-20261023/verifier-tools/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    {
+      "path": "/workspace/geo288-main-merge-20261023/verifier-tools/original/verify_postfix_receipt.py",
+      "bytes": 1627,
+      "sha256": "5a109def7794ebc1e34048afe500fd97758f98781ff90597fedec0dc214f1e04"
+    },
+    {
+      "path": "/tmp/g288pf/execution-receipt.json",
+      "bytes": 248960,
+      "sha256": "a690b35fc78f539727a313cec57c33da16e09bda79fdab624f8475c36ff0ceac"
+    },
+    {
+      "path": "/tmp/g288pf/tools/p52-formal.py",
+      "bytes": 21223,
+      "sha256": "af5cfe9f895f0fdf41f8a13f96494f9be37c20de30c8cd06b459b5967cd46d13"
+    },
+    {
+      "path": "/tmp/g288pf/receipt.json",
+      "bytes": 202266,
+      "sha256": "b62ff6c89c0214e91e0b20b39bc0223a73bfa7385aa9f0924768403595f923a6"
+    },
+    {
+      "path": "/tmp/g288pf/tools/protocol/postfix_validate.py",
+      "bytes": 6216,
+      "sha256": "b9fbcca0eb12e2e25fb5d84eda01038bf8406d1c3a533fa5dfd842e330cf8c5f"
+    },
+    {
+      "path": "/tmp/g288pf/tools/protocol/p52_measure.py",
+      "bytes": 5981,
+      "sha256": "738a36b0417e7f5cfa1dcf57fc0d14664650b8285484f866b8ceb0d3a2c8f1a4"
+    },
+    {
+      "path": "/tmp/g288pf/tools/protocol/p52_probe.cjs",
+      "bytes": 5565,
+      "sha256": "8c3b4b14ad35082679e4faf229bd66d65a500bd53669c13d8f41e0603e066970"
+    },
+    {
+      "path": "/tmp/g288pf/tools/protocol/p52_cases.cjs",
+      "bytes": 6448,
+      "sha256": "6ca75996223e94be0a503e646d58ed928b046854eb0102af309482dc4ac60f66"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000026/result.json",
+      "bytes": 1504,
+      "sha256": "e4f18c9e4c4e1f70e2ad1e0f6db4cd563de7d761b5fdf287a7be8b1d7aff25bf"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000026/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000026/stdout.bin",
+      "bytes": 38038,
+      "sha256": "f20928d97540e586e0e7a99ca459aec3ce135c0eedb487531a954dab9de19708"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000026/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/0-main/probe.log",
+      "bytes": 38038,
+      "sha256": "f20928d97540e586e0e7a99ca459aec3ce135c0eedb487531a954dab9de19708"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000029/result.json",
+      "bytes": 1444,
+      "sha256": "180943f46489e4605982c148ad6da643aec5890d935dd54ddb30126d419c73aa"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000029/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000029/stdout.bin",
+      "bytes": 51585,
+      "sha256": "7b25c5c8ef960efe420da35293afbccc71509c629cc7e29599867c268468d57c"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000029/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/1-fix/probe.log",
+      "bytes": 51585,
+      "sha256": "7b25c5c8ef960efe420da35293afbccc71509c629cc7e29599867c268468d57c"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000032/result.json",
+      "bytes": 1444,
+      "sha256": "070078b789fa478b617c070a0b483db12d145936f6dd50cfdafe667f6b50685c"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000032/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000032/stdout.bin",
+      "bytes": 49791,
+      "sha256": "27f4b31d119fb714e2db66620c99d1421786bb84428e064c3628a1d385c3b2ab"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000032/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/2-fix/probe.log",
+      "bytes": 49791,
+      "sha256": "27f4b31d119fb714e2db66620c99d1421786bb84428e064c3628a1d385c3b2ab"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000035/result.json",
+      "bytes": 1506,
+      "sha256": "2af0bca06f8999e7adf71140d6dfff29324c20225d0f78726a1d5929cf435b12"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000035/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000035/stdout.bin",
+      "bytes": 37583,
+      "sha256": "60b9497577e4dac652f8288230b6bc4a1454d81bb854f951ab060fb9f13dec2b"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000035/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/3-main/probe.log",
+      "bytes": 37583,
+      "sha256": "60b9497577e4dac652f8288230b6bc4a1454d81bb854f951ab060fb9f13dec2b"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000038/result.json",
+      "bytes": 1444,
+      "sha256": "9d6b98dfcdce8dfa678d7ebe0c4e72a019fb06a9c8920bab2de7090cd24d4e77"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000038/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000038/stdout.bin",
+      "bytes": 21004,
+      "sha256": "b53419990dd791ff2a3799d6e44bf2b11b11ac1fd49bb991475772a52baa1c6d"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000038/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/control-normal/probe.log",
+      "bytes": 21004,
+      "sha256": "b53419990dd791ff2a3799d6e44bf2b11b11ac1fd49bb991475772a52baa1c6d"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000041/result.json",
+      "bytes": 1443,
+      "sha256": "cd39b21911b70a070ab240d5fe20beec57a1f7f678bfb499dbfbaf17b6f6ef39"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000041/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000041/stdout.bin",
+      "bytes": 23039,
+      "sha256": "ceca209ab1a5804190ec09f1a0554d836848a2816866da4768482aa6e1116ac9"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000041/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/control-delay/probe.log",
+      "bytes": 23039,
+      "sha256": "ceca209ab1a5804190ec09f1a0554d836848a2816866da4768482aa6e1116ac9"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000044/result.json",
+      "bytes": 1444,
+      "sha256": "88f1139089e3ade5e848158ac9dc786743041361e0565fca5fb3a9f8a84fc5f5"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000044/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000044/stdout.bin",
+      "bytes": 20191,
+      "sha256": "d6b093953c674edc5d349aecd023aa566912bb86af27d644e92334f10b760abb"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000044/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/control-revert-delay/probe.log",
+      "bytes": 20191,
+      "sha256": "d6b093953c674edc5d349aecd023aa566912bb86af27d644e92334f10b760abb"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000047/result.json",
+      "bytes": 1443,
+      "sha256": "0a6e4a9f5a07a57a7720435992bdc4c1f0e91ae3c30afc30e94510b5fe549f15"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000047/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000047/stdout.bin",
+      "bytes": 21799,
+      "sha256": "1bdbbe3f59c84e30d2ef5b06722c824f628e6e7aff2e8c606ac53a19ffd71b48"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000047/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/control-wrong/probe.log",
+      "bytes": 21799,
+      "sha256": "1bdbbe3f59c84e30d2ef5b06722c824f628e6e7aff2e8c606ac53a19ffd71b48"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000050/result.json",
+      "bytes": 1442,
+      "sha256": "4750d4621803f5fe0cf5bc915de80b1c0b11a1d10a7a4a8aec2663ea046b19a4"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000050/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000050/stdout.bin",
+      "bytes": 21643,
+      "sha256": "ece7dbfc80f46fe5cf5e459cdc563dbc4d39a10b737b85797c37801b7261f66d"
+    },
+    {
+      "path": "/tmp/g288pf/subcommands/000050/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/g288pf/control-missing/probe.log",
+      "bytes": 21643,
+      "sha256": "ece7dbfc80f46fe5cf5e459cdc563dbc4d39a10b737b85797c37801b7261f66d"
+    }
+  ],
+  "projections": [
+    {
+      "node_index": 0,
+      "original_receipt_label": "0-main",
+      "source_result_path": "/tmp/g288pf/subcommands/000026/result.json",
+      "source_result_sha256": "e4f18c9e4c4e1f70e2ad1e0f6db4cd563de7d761b5fdf287a7be8b1d7aff25bf",
+      "source_probe_log_path": "/tmp/g288pf/0-main/probe.log",
+      "source_probe_log_sha256": "f20928d97540e586e0e7a99ca459aec3ce135c0eedb487531a954dab9de19708",
+      "source_stdout_sha256": "f20928d97540e586e0e7a99ca459aec3ce135c0eedb487531a954dab9de19708",
+      "source_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "derived_launch_row": {
+        "command": [
+          "node",
+          "/tmp/g288pf/tools/protocol/p52_probe.cjs",
+          "/workspace/geo288-main-merge-20261023/reference/main"
+        ],
+        "rc": 0,
+        "log": "/tmp/g288pf/0-main/probe.log"
+      }
+    },
+    {
+      "node_index": 1,
+      "original_receipt_label": "1-fix",
+      "source_result_path": "/tmp/g288pf/subcommands/000029/result.json",
+      "source_result_sha256": "180943f46489e4605982c148ad6da643aec5890d935dd54ddb30126d419c73aa",
+      "source_probe_log_path": "/tmp/g288pf/1-fix/probe.log",
+      "source_probe_log_sha256": "7b25c5c8ef960efe420da35293afbccc71509c629cc7e29599867c268468d57c",
+      "source_stdout_sha256": "7b25c5c8ef960efe420da35293afbccc71509c629cc7e29599867c268468d57c",
+      "source_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "derived_launch_row": {
+        "command": [
+          "node",
+          "/tmp/g288pf/tools/protocol/p52_cases.cjs",
+          "/tmp/g288f-13d02c1d"
+        ],
+        "rc": 0,
+        "log": "/tmp/g288pf/1-fix/probe.log"
+      }
+    },
+    {
+      "node_index": 2,
+      "original_receipt_label": "2-fix",
+      "source_result_path": "/tmp/g288pf/subcommands/000032/result.json",
+      "source_result_sha256": "070078b789fa478b617c070a0b483db12d145936f6dd50cfdafe667f6b50685c",
+      "source_probe_log_path": "/tmp/g288pf/2-fix/probe.log",
+      "source_probe_log_sha256": "27f4b31d119fb714e2db66620c99d1421786bb84428e064c3628a1d385c3b2ab",
+      "source_stdout_sha256": "27f4b31d119fb714e2db66620c99d1421786bb84428e064c3628a1d385c3b2ab",
+      "source_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "derived_launch_row": {
+        "command": [
+          "node",
+          "/tmp/g288pf/tools/protocol/p52_cases.cjs",
+          "/tmp/g288f-13d02c1d"
+        ],
+        "rc": 0,
+        "log": "/tmp/g288pf/2-fix/probe.log"
+      }
+    },
+    {
+      "node_index": 3,
+      "original_receipt_label": "3-main",
+      "source_result_path": "/tmp/g288pf/subcommands/000035/result.json",
+      "source_result_sha256": "2af0bca06f8999e7adf71140d6dfff29324c20225d0f78726a1d5929cf435b12",
+      "source_probe_log_path": "/tmp/g288pf/3-main/probe.log",
+      "source_probe_log_sha256": "60b9497577e4dac652f8288230b6bc4a1454d81bb854f951ab060fb9f13dec2b",
+      "source_stdout_sha256": "60b9497577e4dac652f8288230b6bc4a1454d81bb854f951ab060fb9f13dec2b",
+      "source_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "derived_launch_row": {
+        "command": [
+          "node",
+          "/tmp/g288pf/tools/protocol/p52_probe.cjs",
+          "/workspace/geo288-main-merge-20261023/reference/main"
+        ],
+        "rc": 0,
+        "log": "/tmp/g288pf/3-main/probe.log"
+      }
+    },
+    {
+      "node_index": 4,
+      "original_receipt_label": "control-normal",
+      "source_result_path": "/tmp/g288pf/subcommands/000038/result.json",
+      "source_result_sha256": "9d6b98dfcdce8dfa678d7ebe0c4e72a019fb06a9c8920bab2de7090cd24d4e77",
+      "source_probe_log_path": "/tmp/g288pf/control-normal/probe.log",
+      "source_probe_log_sha256": "b53419990dd791ff2a3799d6e44bf2b11b11ac1fd49bb991475772a52baa1c6d",
+      "source_stdout_sha256": "b53419990dd791ff2a3799d6e44bf2b11b11ac1fd49bb991475772a52baa1c6d",
+      "source_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "derived_launch_row": {
+        "command": [
+          "node",
+          "/tmp/g288pf/tools/protocol/p52_cases.cjs",
+          "/tmp/g288f-13d02c1d"
+        ],
+        "rc": 0,
+        "log": "/tmp/g288pf/control-normal/probe.log"
+      }
+    },
+    {
+      "node_index": 5,
+      "original_receipt_label": "control-delay",
+      "source_result_path": "/tmp/g288pf/subcommands/000041/result.json",
+      "source_result_sha256": "cd39b21911b70a070ab240d5fe20beec57a1f7f678bfb499dbfbaf17b6f6ef39",
+      "source_probe_log_path": "/tmp/g288pf/control-delay/probe.log",
+      "source_probe_log_sha256": "ceca209ab1a5804190ec09f1a0554d836848a2816866da4768482aa6e1116ac9",
+      "source_stdout_sha256": "ceca209ab1a5804190ec09f1a0554d836848a2816866da4768482aa6e1116ac9",
+      "source_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "derived_launch_row": {
+        "command": [
+          "node",
+          "/tmp/g288pf/tools/protocol/p52_cases.cjs",
+          "/tmp/g288f-13d02c1d"
+        ],
+        "rc": 0,
+        "log": "/tmp/g288pf/control-delay/probe.log"
+      }
+    },
+    {
+      "node_index": 6,
+      "original_receipt_label": "control-revert-delay",
+      "source_result_path": "/tmp/g288pf/subcommands/000044/result.json",
+      "source_result_sha256": "88f1139089e3ade5e848158ac9dc786743041361e0565fca5fb3a9f8a84fc5f5",
+      "source_probe_log_path": "/tmp/g288pf/control-revert-delay/probe.log",
+      "source_probe_log_sha256": "d6b093953c674edc5d349aecd023aa566912bb86af27d644e92334f10b760abb",
+      "source_stdout_sha256": "d6b093953c674edc5d349aecd023aa566912bb86af27d644e92334f10b760abb",
+      "source_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "derived_launch_row": {
+        "command": [
+          "node",
+          "/tmp/g288pf/tools/protocol/p52_cases.cjs",
+          "/tmp/g288f-13d02c1d"
+        ],
+        "rc": 1,
+        "log": "/tmp/g288pf/control-revert-delay/probe.log"
+      }
+    },
+    {
+      "node_index": 7,
+      "original_receipt_label": "control-wrong",
+      "source_result_path": "/tmp/g288pf/subcommands/000047/result.json",
+      "source_result_sha256": "0a6e4a9f5a07a57a7720435992bdc4c1f0e91ae3c30afc30e94510b5fe549f15",
+      "source_probe_log_path": "/tmp/g288pf/control-wrong/probe.log",
+      "source_probe_log_sha256": "1bdbbe3f59c84e30d2ef5b06722c824f628e6e7aff2e8c606ac53a19ffd71b48",
+      "source_stdout_sha256": "1bdbbe3f59c84e30d2ef5b06722c824f628e6e7aff2e8c606ac53a19ffd71b48",
+      "source_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "derived_launch_row": {
+        "command": [
+          "node",
+          "/tmp/g288pf/tools/protocol/p52_cases.cjs",
+          "/tmp/g288f-13d02c1d"
+        ],
+        "rc": 1,
+        "log": "/tmp/g288pf/control-wrong/probe.log"
+      }
+    },
+    {
+      "node_index": 8,
+      "original_receipt_label": "control-missing",
+      "source_result_path": "/tmp/g288pf/subcommands/000050/result.json",
+      "source_result_sha256": "4750d4621803f5fe0cf5bc915de80b1c0b11a1d10a7a4a8aec2663ea046b19a4",
+      "source_probe_log_path": "/tmp/g288pf/control-missing/probe.log",
+      "source_probe_log_sha256": "ece7dbfc80f46fe5cf5e459cdc563dbc4d39a10b737b85797c37801b7261f66d",
+      "source_stdout_sha256": "ece7dbfc80f46fe5cf5e459cdc563dbc4d39a10b737b85797c37801b7261f66d",
+      "source_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "derived_launch_row": {
+        "command": [
+          "node",
+          "/tmp/g288pf/tools/protocol/p52_cases.cjs",
+          "/tmp/g288f-13d02c1d"
+        ],
+        "rc": 1,
+        "log": "/tmp/g288pf/control-missing/probe.log"
+      }
+    }
+  ],
+  "errors": [],
+  "commands": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo288-main-merge-20261023/p52-verifier-final/layout/verify_postfix_receipt.py",
+        "13d02c1db7022145a52ee063286a558e595eb212"
+      ],
+      "cwd": "/workspace/geo288-main-merge-20261023/p52-verifier-final/layout",
+      "acceptance_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+      "source_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+      "source_variant": "unmodified-original-independent-verifier-with-derived-launch-schema",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/workspace/geo288-main-merge-20261023/p52-verifier-final/tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792737307.9080343,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/geo288-main-merge-20261023/p52-verifier-final/subcommands/000001",
+      "ended_epoch": 1792737307.9364357,
+      "stdout_sha256": "423b9580ceacf42067036745640a5d2e629d2f7102664f1e0662b7579d0d1a4e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 172,
+      "stderr_bytes": 0
+    }
+  ],
+  "original_verifier_process_exit": 0,
+  "original_verified_result": {
+    "sha": "13d02c1db7022145a52ee063286a558e595eb212",
+    "command_exit_codes_match": true,
+    "no_timeout_or_crash_counted": true,
+    "drivers_match": true,
+    "nodes": 9,
+    "pass": true
+  },
+  "passed": true,
+  "derived_launch_log": {
+    "path": "/workspace/geo288-main-merge-20261023/p52-verifier-final/layout/postfix-13d02c1d-launch.log",
+    "sha256": "f07d3be33e5e4ad566640fd567d7be6b0f8f03e95ea1d707f05a76c11f7314ea",
+    "is_original_stdout": false,
+    "rows": 9,
+    "schema": "原 command/rc/log；僅投影九個真 Node，原非 Node 命令仍在原 execution 收據。"
+  },
+  "input_receipt_original_bytes_sha256": "b62ff6c89c0214e91e0b20b39bc0223a73bfa7385aa9f0924768403595f923a6",
+  "original_verified_file": {
+    "path": "/workspace/geo288-main-merge-20261023/p52-verifier-final/layout/postfix-13d02c1d/verified.json",
+    "sha256": "3618a52db3360bac5d34db4e9b5b497d97f18adfe7add7bcb7d50ceb6cb9d1b9"
+  },
+  "ended_utc": "2026-10-23T06:35:07.938204+00:00",
+  "actual_driver_exit_code": 0
+}

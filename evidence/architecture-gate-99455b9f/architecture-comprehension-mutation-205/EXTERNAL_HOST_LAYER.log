@@ -1,0 +1,44 @@
+test_explicit_host_platform_header_does_not_allow_core (__main__.ArchitectureContract.test_explicit_host_platform_header_does_not_allow_core) ... FAIL
+test_host_platform_header_cannot_launder_through_core_helper (__main__.ArchitectureContract.test_host_platform_header_cannot_launder_through_core_helper) ... FAIL
+test_explicit_host_external_allowance_does_not_allow_core (__main__.ArchitectureContract.test_explicit_host_external_allowance_does_not_allow_core) ... FAIL
+
+======================================================================
+FAIL: test_explicit_host_platform_header_does_not_allow_core (__main__.ArchitectureContract.test_explicit_host_platform_header_does_not_allow_core)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 215, in test_explicit_host_platform_header_does_not_allow_core
+    self.rejects("DEPENDENCY_UNRESOLVED")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_host_platform_header_cannot_launder_through_core_helper (__main__.ArchitectureContract.test_host_platform_header_cannot_launder_through_core_helper)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 222, in test_host_platform_header_cannot_launder_through_core_helper
+    self.rejects("DEPENDENCY_UNRESOLVED", path='src/helper.h')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_explicit_host_external_allowance_does_not_allow_core (__main__.ArchitectureContract.test_explicit_host_external_allowance_does_not_allow_core)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 419, in test_explicit_host_external_allowance_does_not_allow_core
+    self.rejects("DEPENDENCY_UNRESOLVED")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.060s
+
+FAILED (failures=3)

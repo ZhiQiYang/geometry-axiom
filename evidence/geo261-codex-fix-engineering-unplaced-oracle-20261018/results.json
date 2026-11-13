@@ -1,0 +1,1164 @@
+{
+  "schema": "geo261-topic-evidence-results/1",
+  "status": "僅整理原件身份與人工判讀；不代表測試通過、突變成立或已發布",
+  "input_metadata": {
+    "schema": "geo261-topic-evidence-input/1",
+    "evidence_root": "/workspace/geo261-validation-20261018/fixes/engineering-unplaced-oracle",
+    "repository_prefix": "evidence/geo261-codex-fix-engineering-unplaced-oracle-20261018",
+    "topic": "06 工程未放材負控制；測試寫錯",
+    "branch": "codex/geo261-fix-engineering-unplaced-oracle-20261018",
+    "base_sha": "ea9d235a35536753f041ad3213206da1ae242ae5",
+    "source_sha": "285c37445e951d68420ec321d4ea661e780d14cc",
+    "stages": [
+      {
+        "id": "before",
+        "directory": "before",
+        "expected_sha": "1987af507c6f387d7986325da6c29b2ec6246944",
+        "claim_review": "reviewed",
+        "claim": {
+          "review_kind": "人工原始輸出與完整 protocol 二審；整理器不自行判定 pass/kill",
+          "tests_run": 15,
+          "passed": 14,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0,
+          "unittest_seconds": 14.415,
+          "protocol_seconds": 14.438418048997846,
+          "outer_child_seconds": 14.667660516999604,
+          "classification": "測試寫錯；撤回錯誤預期與真正 W 單點 mutation kill 分開報告",
+          "native_guard_marker": "ASSERT:engineering-operations-unplaced-source",
+          "publication_scope": "本題完整 15 方法，非 PR 全量驗收"
+        }
+      },
+      {
+        "id": "after",
+        "directory": "after",
+        "expected_sha": "ca3badecceace47587aefcfdc2361f5ffdb7daa3",
+        "claim_review": "reviewed",
+        "claim": {
+          "review_kind": "人工原始輸出與完整 protocol 二審；整理器不自行判定 pass/kill",
+          "tests_run": 15,
+          "passed": 15,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "unittest_seconds": 31.346,
+          "protocol_seconds": 31.375974549999228,
+          "outer_child_seconds": 31.586731032999523,
+          "classification": "測試寫錯；撤回錯誤預期與真正 W 單點 mutation kill 分開報告",
+          "native_guard_marker": "ASSERT:engineering-operations-unplaced-source",
+          "publication_scope": "本題完整 15 方法，非 PR 全量驗收"
+        }
+      },
+      {
+        "id": "withdraw",
+        "directory": "withdraw",
+        "expected_sha": "5f83239dcfe4bbcbba0766c70025e125bf64cf3b",
+        "claim_review": "reviewed",
+        "claim": {
+          "review_kind": "人工原始輸出與完整 protocol 二審；整理器不自行判定 pass/kill",
+          "tests_run": 15,
+          "passed": 14,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0,
+          "unittest_seconds": 14.017,
+          "protocol_seconds": 14.0450807169982,
+          "outer_child_seconds": 14.26444050000282,
+          "classification": "測試寫錯；撤回錯誤預期與真正 W 單點 mutation kill 分開報告",
+          "native_guard_marker": "ASSERT:engineering-operations-unplaced-source",
+          "publication_scope": "本題完整 15 方法，非 PR 全量驗收"
+        }
+      },
+      {
+        "id": "restored",
+        "directory": "restored",
+        "expected_sha": "ca3badecceace47587aefcfdc2361f5ffdb7daa3",
+        "claim_review": "reviewed",
+        "claim": {
+          "review_kind": "人工原始輸出與完整 protocol 二審；整理器不自行判定 pass/kill",
+          "tests_run": 15,
+          "passed": 15,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "unittest_seconds": 27.17,
+          "protocol_seconds": 27.198797035998723,
+          "outer_child_seconds": 27.361350567000045,
+          "classification": "測試寫錯；撤回錯誤預期與真正 W 單點 mutation kill 分開報告",
+          "native_guard_marker": "ASSERT:engineering-operations-unplaced-source",
+          "publication_scope": "本題完整 15 方法，非 PR 全量驗收"
+        }
+      },
+      {
+        "id": "latest-base",
+        "directory": "latest-base",
+        "expected_sha": "285c37445e951d68420ec321d4ea661e780d14cc",
+        "claim_review": "reviewed",
+        "claim": {
+          "review_kind": "人工原始輸出與完整 protocol 二審；整理器不自行判定 pass/kill",
+          "tests_run": 15,
+          "passed": 15,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "unittest_seconds": 42.091,
+          "protocol_seconds": 42.14442844199948,
+          "outer_child_seconds": 42.34209213199938,
+          "classification": "測試寫錯；撤回錯誤預期與真正 W 單點 mutation kill 分開報告",
+          "native_guard_marker": "ASSERT:engineering-operations-unplaced-source",
+          "publication_scope": "本題完整 15 方法，非 PR 全量驗收"
+        }
+      }
+    ],
+    "extra_files": [
+      {
+        "path": "protocol-before/result.json",
+        "destination": "protocol-before/result.json",
+        "bytes": 1542,
+        "sha256": "82d1d5db86a9a526b013a07052bee203c3071a29defec245af657aa359ae0d1d"
+      },
+      {
+        "path": "protocol-before/protocol.jsonl",
+        "destination": "protocol-before/protocol.jsonl",
+        "bytes": 16425,
+        "sha256": "3356064a35c32008dc519220615a4f5ec04cec20adef218d12d28864d49b1a94"
+      },
+      {
+        "path": "protocol-before/unittest.stdout",
+        "destination": "protocol-before/unittest.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "protocol-before/unittest.stderr",
+        "destination": "protocol-before/unittest.stderr",
+        "bytes": 6235,
+        "sha256": "2f07d1a57289d1dd6bcbd0bbd45ef61a65fd5268e3c83b77aefcabb39ca9b6d0"
+      },
+      {
+        "path": "protocol-before/working-tree.patch",
+        "destination": "protocol-before/working-tree.patch",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "protocol-after/result.json",
+        "destination": "protocol-after/result.json",
+        "bytes": 1539,
+        "sha256": "3c71a918a27dbd0ccf263511794eb95aa063b0c13913ebcfc5902fc33c7bc0f6"
+      },
+      {
+        "path": "protocol-after/protocol.jsonl",
+        "destination": "protocol-after/protocol.jsonl",
+        "bytes": 46614,
+        "sha256": "6a37e497946e201d008e654018babeddd153178e8174af695d83cd7d789c87f3"
+      },
+      {
+        "path": "protocol-after/unittest.stdout",
+        "destination": "protocol-after/unittest.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "protocol-after/unittest.stderr",
+        "destination": "protocol-after/unittest.stderr",
+        "bytes": 3233,
+        "sha256": "1a1cdc0a1b7f2f4d8e67fbade37a09616516d0a82f71f851c8f5c34c91c93f6f"
+      },
+      {
+        "path": "protocol-after/working-tree.patch",
+        "destination": "protocol-after/working-tree.patch",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "protocol-withdraw/result.json",
+        "destination": "protocol-withdraw/result.json",
+        "bytes": 1546,
+        "sha256": "8b666e5111ac67913bb8f37d2a907d9dbb9c1a7e69116a0d0c4c75269dac40ad"
+      },
+      {
+        "path": "protocol-withdraw/protocol.jsonl",
+        "destination": "protocol-withdraw/protocol.jsonl",
+        "bytes": 16425,
+        "sha256": "ef384a134438b0dec75e97f1abab684ca2c2bde58903cb5820be1e4a9ee0b794"
+      },
+      {
+        "path": "protocol-withdraw/unittest.stdout",
+        "destination": "protocol-withdraw/unittest.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "protocol-withdraw/unittest.stderr",
+        "destination": "protocol-withdraw/unittest.stderr",
+        "bytes": 6235,
+        "sha256": "5d57d6b89d12cd60b145799ad2eda720825d2052b2d066b8f178ff3cc1cebf60"
+      },
+      {
+        "path": "protocol-withdraw/working-tree.patch",
+        "destination": "protocol-withdraw/working-tree.patch",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "protocol-restored/result.json",
+        "destination": "protocol-restored/result.json",
+        "bytes": 1548,
+        "sha256": "57255b840dd137bd607a589e9e981414e1fd0a40bf0620b0def5db5988b504a6"
+      },
+      {
+        "path": "protocol-restored/protocol.jsonl",
+        "destination": "protocol-restored/protocol.jsonl",
+        "bytes": 46614,
+        "sha256": "e2ebe8562a4bbf7e7961164141317591144d43897bba67561e97caacca8b4d55"
+      },
+      {
+        "path": "protocol-restored/unittest.stdout",
+        "destination": "protocol-restored/unittest.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "protocol-restored/unittest.stderr",
+        "destination": "protocol-restored/unittest.stderr",
+        "bytes": 3233,
+        "sha256": "522fc33d9952aa41b3c6eb82858424ef1bae1071ac7127a281ef3c186447c4d5"
+      },
+      {
+        "path": "protocol-restored/working-tree.patch",
+        "destination": "protocol-restored/working-tree.patch",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "protocol-latest-base/result.json",
+        "destination": "protocol-latest-base/result.json",
+        "bytes": 1544,
+        "sha256": "b3137fa8745ec44b67904a82a65c3288a46036a66e828769009edc80b0b42832"
+      },
+      {
+        "path": "protocol-latest-base/protocol.jsonl",
+        "destination": "protocol-latest-base/protocol.jsonl",
+        "bytes": 46614,
+        "sha256": "e19f145dbfdb21b8c6fb274f17185a279a2039441e979b5a11f0ea6b4dadcdde"
+      },
+      {
+        "path": "protocol-latest-base/unittest.stdout",
+        "destination": "protocol-latest-base/unittest.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "protocol-latest-base/unittest.stderr",
+        "destination": "protocol-latest-base/unittest.stderr",
+        "bytes": 3233,
+        "sha256": "ab451ec99a5ce05ee3824d2351e7d115a37137b09aaa7b7a1232f0d4b4baee83"
+      },
+      {
+        "path": "protocol-latest-base/working-tree.patch",
+        "destination": "protocol-latest-base/working-tree.patch",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "publication/1987-to-ea9-closure.json",
+        "destination": "source-boundary/1987-to-ea9-closure.json",
+        "bytes": 101370,
+        "sha256": "8d719de5169602ebe44657e296ee2c81391869cc8248beeed869f1dd47cc6747"
+      },
+      {
+        "path": "publication-v2/README.md",
+        "destination": "README.md",
+        "bytes": 8099,
+        "sha256": "b5493752a4803f29067d7aef5fe6b818f5344e60e04376cd9459b58e4934b1b0"
+      },
+      {
+        "path": "withdraw.patch",
+        "destination": "withdraw.patch",
+        "bytes": 7521,
+        "sha256": "13c4ff03d19f18d8cfc85767e8e881a5a32582947f97cfcedb0809d3f43a86de"
+      },
+      {
+        "path": "withdraw-commit.txt",
+        "destination": "withdraw-commit.txt",
+        "bytes": 264,
+        "sha256": "a0920f0be65eb6410b818092ffd5051b5942276a54944afdea1edf55c23deec6"
+      }
+    ]
+  },
+  "input_metadata_identity": {
+    "bytes": 10967,
+    "sha256": "6800e6768de82175b6368a8c38c3b5dc9d7705602f7538415e5efbc189dcb78a"
+  },
+  "stages": [
+    {
+      "id": "before",
+      "source_sha": "1987af507c6f387d7986325da6c29b2ec6246944",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "/workspace/geo261-validation-20261018/proposed-fixes/record_06_engineering_unplaced_oracle.py",
+          "--checkout",
+          "/workspace/geometry-axiom",
+          "--expected-head",
+          "1987af507c6f387d7986325da6c29b2ec6246944",
+          "--stage",
+          "before",
+          "--out",
+          "/workspace/geo261-validation-20261018/fixes/engineering-unplaced-oracle/protocol-before"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T13:02:51.645038+00:00",
+        "started_ns": 1792328571645052034,
+        "timeout_seconds": 300.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 1,
+        "launch_error": null,
+        "pid": 127558,
+        "ended_utc": "2026-10-18T13:03:06.312683+00:00",
+        "ended_ns": 1792328586312714774,
+        "seconds": 14.667660516999604,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1456127,
+            "bytes": 0,
+            "mtime_ns": 1792328571644999727,
+            "ctime_ns": 1792328571644999727,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1456128,
+            "bytes": 0,
+            "mtime_ns": 1792328571644999727,
+            "ctime_ns": 1792328571644999727,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": null,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "review_kind": "人工原始輸出與完整 protocol 二審；整理器不自行判定 pass/kill",
+          "tests_run": 15,
+          "passed": 14,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0,
+          "unittest_seconds": 14.415,
+          "protocol_seconds": 14.438418048997846,
+          "outer_child_seconds": 14.667660516999604,
+          "classification": "測試寫錯；撤回錯誤預期與真正 W 單點 mutation kill 分開報告",
+          "native_guard_marker": "ASSERT:engineering-operations-unplaced-source",
+          "publication_scope": "本題完整 15 方法，非 PR 全量驗收"
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "before/command.process.json",
+          "bytes": 1358,
+          "sha256": "2cb8d17c50bc84a970079b3bb177d8e92365c2ad4838eb9a122798c288ed76f4"
+        },
+        {
+          "relative_path": "before/command.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "before/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "before/receipt.json",
+          "bytes": 13883,
+          "sha256": "240ae2331cc6b1f4332343d60c05b3ce15fd9d2932ddb86089c6b8e2f2a3a190"
+        },
+        {
+          "relative_path": "before/before.binaries.json",
+          "bytes": 3586,
+          "sha256": "ec330a5aacc21fabe96c7f38cedd19f2a57ec7c8173a114130613367c8de26b9"
+        },
+        {
+          "relative_path": "before/after.binaries.json",
+          "bytes": 3583,
+          "sha256": "cdb102d6ac5e818c3eab2844cc0239d0ee5a0cdfa4bd5d41f636e105564d51ea"
+        },
+        {
+          "relative_path": "before/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "before/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "before/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "before/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "before/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "before/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "before/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "f8d6ca5d8e6d9b4d1978b6b5afe4013b510e92c6fbf0a84dd28663d7f9611445"
+        },
+        {
+          "relative_path": "before/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "before/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "before/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "f8d6ca5d8e6d9b4d1978b6b5afe4013b510e92c6fbf0a84dd28663d7f9611445"
+        },
+        {
+          "relative_path": "before/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "before/suite-logs.manifest.json",
+          "bytes": 3,
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        }
+      ]
+    },
+    {
+      "id": "after",
+      "source_sha": "ca3badecceace47587aefcfdc2361f5ffdb7daa3",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "/workspace/geo261-validation-20261018/proposed-fixes/record_06_engineering_unplaced_oracle.py",
+          "--checkout",
+          "/workspace/geometry-axiom",
+          "--expected-head",
+          "ca3badecceace47587aefcfdc2361f5ffdb7daa3",
+          "--stage",
+          "after",
+          "--out",
+          "/workspace/geo261-validation-20261018/fixes/engineering-unplaced-oracle/protocol-after"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T13:03:29.770843+00:00",
+        "started_ns": 1792328609770857855,
+        "timeout_seconds": 300.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 0,
+        "launch_error": null,
+        "pid": 128190,
+        "ended_utc": "2026-10-18T13:04:01.357486+00:00",
+        "ended_ns": 1792328641357590772,
+        "seconds": 31.586731032999523,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1454849,
+            "bytes": 0,
+            "mtime_ns": 1792328609770805958,
+            "ctime_ns": 1792328609770805958,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1454865,
+            "bytes": 0,
+            "mtime_ns": 1792328609770805958,
+            "ctime_ns": 1792328609770805958,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": null,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "review_kind": "人工原始輸出與完整 protocol 二審；整理器不自行判定 pass/kill",
+          "tests_run": 15,
+          "passed": 15,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "unittest_seconds": 31.346,
+          "protocol_seconds": 31.375974549999228,
+          "outer_child_seconds": 31.586731032999523,
+          "classification": "測試寫錯；撤回錯誤預期與真正 W 單點 mutation kill 分開報告",
+          "native_guard_marker": "ASSERT:engineering-operations-unplaced-source",
+          "publication_scope": "本題完整 15 方法，非 PR 全量驗收"
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "after/command.process.json",
+          "bytes": 1356,
+          "sha256": "a745b4811d13fb16eadd385a15600a291e7560574c098ac2d0a769b76b652ad7"
+        },
+        {
+          "relative_path": "after/command.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "after/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "after/receipt.json",
+          "bytes": 13876,
+          "sha256": "8c8a9c4ffc2559bb4d074aba974c23a8a1b787590f269a946e7fc0b3303eb159"
+        },
+        {
+          "relative_path": "after/before.binaries.json",
+          "bytes": 3586,
+          "sha256": "cc864e051ad16d5bd90dc683f92f2c6b272ead0583b8b6b888cd0b99d51764fe"
+        },
+        {
+          "relative_path": "after/after.binaries.json",
+          "bytes": 3583,
+          "sha256": "ba446866065e6e3cc8fd847b2d4a39cd3f8bc89b9c1ca52f6b70a5af1d52cf25"
+        },
+        {
+          "relative_path": "after/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "after/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "after/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "after/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "after/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "after/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "after/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "f8d6ca5d8e6d9b4d1978b6b5afe4013b510e92c6fbf0a84dd28663d7f9611445"
+        },
+        {
+          "relative_path": "after/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "after/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "after/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "f8d6ca5d8e6d9b4d1978b6b5afe4013b510e92c6fbf0a84dd28663d7f9611445"
+        },
+        {
+          "relative_path": "after/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "after/suite-logs.manifest.json",
+          "bytes": 3,
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        }
+      ]
+    },
+    {
+      "id": "withdraw",
+      "source_sha": "5f83239dcfe4bbcbba0766c70025e125bf64cf3b",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "/workspace/geo261-validation-20261018/proposed-fixes/record_06_engineering_unplaced_oracle.py",
+          "--checkout",
+          "/workspace/geometry-axiom",
+          "--expected-head",
+          "5f83239dcfe4bbcbba0766c70025e125bf64cf3b",
+          "--stage",
+          "reverted",
+          "--out",
+          "/workspace/geo261-validation-20261018/fixes/engineering-unplaced-oracle/protocol-withdraw"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T13:04:26.021191+00:00",
+        "started_ns": 1792328666021205799,
+        "timeout_seconds": 300.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 1,
+        "launch_error": null,
+        "pid": 128888,
+        "ended_utc": "2026-10-18T13:04:40.285615+00:00",
+        "ended_ns": 1792328680285648085,
+        "seconds": 14.26444050000282,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1456146,
+            "bytes": 0,
+            "mtime_ns": 1792328666021156657,
+            "ctime_ns": 1792328666021156657,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1456147,
+            "bytes": 0,
+            "mtime_ns": 1792328666021156657,
+            "ctime_ns": 1792328666021156657,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": null,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "review_kind": "人工原始輸出與完整 protocol 二審；整理器不自行判定 pass/kill",
+          "tests_run": 15,
+          "passed": 14,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0,
+          "unittest_seconds": 14.017,
+          "protocol_seconds": 14.0450807169982,
+          "outer_child_seconds": 14.26444050000282,
+          "classification": "測試寫錯；撤回錯誤預期與真正 W 單點 mutation kill 分開報告",
+          "native_guard_marker": "ASSERT:engineering-operations-unplaced-source",
+          "publication_scope": "本題完整 15 方法，非 PR 全量驗收"
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "withdraw/command.process.json",
+          "bytes": 1361,
+          "sha256": "e39d751ba1560419c4dac03d23322411c7e0220febc8a80065b67fcc17d44adb"
+        },
+        {
+          "relative_path": "withdraw/command.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "withdraw/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "withdraw/receipt.json",
+          "bytes": 13896,
+          "sha256": "9ee5870437ff76c86b85f5174b0d6597e9736dbbc666f640f3bd0617021a0c1b"
+        },
+        {
+          "relative_path": "withdraw/before.binaries.json",
+          "bytes": 3586,
+          "sha256": "7a93a6239ff89ebbc24bcb50bc57c4642c518263a61774b56b4212bd230ec979"
+        },
+        {
+          "relative_path": "withdraw/after.binaries.json",
+          "bytes": 3583,
+          "sha256": "9a28e6d40a9b98f7759f112a7f28377b9337adcd7999c3b923187f19c614455d"
+        },
+        {
+          "relative_path": "withdraw/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "withdraw/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "withdraw/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "withdraw/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "withdraw/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "withdraw/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "withdraw/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "f8d6ca5d8e6d9b4d1978b6b5afe4013b510e92c6fbf0a84dd28663d7f9611445"
+        },
+        {
+          "relative_path": "withdraw/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "withdraw/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "withdraw/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "f8d6ca5d8e6d9b4d1978b6b5afe4013b510e92c6fbf0a84dd28663d7f9611445"
+        },
+        {
+          "relative_path": "withdraw/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "withdraw/suite-logs.manifest.json",
+          "bytes": 3,
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        }
+      ]
+    },
+    {
+      "id": "restored",
+      "source_sha": "ca3badecceace47587aefcfdc2361f5ffdb7daa3",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "/workspace/geo261-validation-20261018/proposed-fixes/record_06_engineering_unplaced_oracle.py",
+          "--checkout",
+          "/workspace/geometry-axiom",
+          "--expected-head",
+          "ca3badecceace47587aefcfdc2361f5ffdb7daa3",
+          "--stage",
+          "restored",
+          "--out",
+          "/workspace/geo261-validation-20261018/fixes/engineering-unplaced-oracle/protocol-restored"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T13:04:59.469721+00:00",
+        "started_ns": 1792328699469737966,
+        "timeout_seconds": 300.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 0,
+        "launch_error": null,
+        "pid": 129551,
+        "ended_utc": "2026-10-18T13:05:26.831022+00:00",
+        "ended_ns": 1792328726831079367,
+        "seconds": 27.361350567000045,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1456209,
+            "bytes": 0,
+            "mtime_ns": 1792328699469679390,
+            "ctime_ns": 1792328699469679390,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1456210,
+            "bytes": 0,
+            "mtime_ns": 1792328699469679390,
+            "ctime_ns": 1792328699469679390,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": null,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "review_kind": "人工原始輸出與完整 protocol 二審；整理器不自行判定 pass/kill",
+          "tests_run": 15,
+          "passed": 15,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "unittest_seconds": 27.17,
+          "protocol_seconds": 27.198797035998723,
+          "outer_child_seconds": 27.361350567000045,
+          "classification": "測試寫錯；撤回錯誤預期與真正 W 單點 mutation kill 分開報告",
+          "native_guard_marker": "ASSERT:engineering-operations-unplaced-source",
+          "publication_scope": "本題完整 15 方法，非 PR 全量驗收"
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "restored/command.process.json",
+          "bytes": 1362,
+          "sha256": "28906695cb1d60a3e495a5d44648574bcd4bc2ec70670885ea8a2486e5532e64"
+        },
+        {
+          "relative_path": "restored/command.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "restored/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "restored/receipt.json",
+          "bytes": 13897,
+          "sha256": "e8e24189aef92662a150bf14819fa18d8a33156a5ded6013a0f390a2b480d700"
+        },
+        {
+          "relative_path": "restored/before.binaries.json",
+          "bytes": 3586,
+          "sha256": "5cdc7bc408bea66a2221a5e26166988890c45490ae3d88834154dfce9149f1b9"
+        },
+        {
+          "relative_path": "restored/after.binaries.json",
+          "bytes": 3583,
+          "sha256": "1ab9c58746551cd754d5c390f5918f98c8e278a016183b98234405bb9c7afbf9"
+        },
+        {
+          "relative_path": "restored/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "restored/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "restored/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "restored/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "restored/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "restored/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "restored/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "f8d6ca5d8e6d9b4d1978b6b5afe4013b510e92c6fbf0a84dd28663d7f9611445"
+        },
+        {
+          "relative_path": "restored/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "restored/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "restored/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "f8d6ca5d8e6d9b4d1978b6b5afe4013b510e92c6fbf0a84dd28663d7f9611445"
+        },
+        {
+          "relative_path": "restored/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "restored/suite-logs.manifest.json",
+          "bytes": 3,
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        }
+      ]
+    },
+    {
+      "id": "latest-base",
+      "source_sha": "285c37445e951d68420ec321d4ea661e780d14cc",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "/workspace/geo261-validation-20261018/proposed-fixes/record_06_engineering_unplaced_oracle.py",
+          "--checkout",
+          "/workspace/geometry-axiom",
+          "--expected-head",
+          "285c37445e951d68420ec321d4ea661e780d14cc",
+          "--stage",
+          "after",
+          "--out",
+          "/workspace/geo261-validation-20261018/fixes/engineering-unplaced-oracle/protocol-latest-base"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T13:06:33.411442+00:00",
+        "started_ns": 1792328793411462548,
+        "timeout_seconds": 300.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 0,
+        "launch_error": null,
+        "pid": 130315,
+        "ended_utc": "2026-10-18T13:07:15.753540+00:00",
+        "ended_ns": 1792328835753557751,
+        "seconds": 42.34209213199938,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1456305,
+            "bytes": 0,
+            "mtime_ns": 1792328793411386031,
+            "ctime_ns": 1792328793411386031,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1456306,
+            "bytes": 0,
+            "mtime_ns": 1792328793411386031,
+            "ctime_ns": 1792328793411386031,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": null,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "review_kind": "人工原始輸出與完整 protocol 二審；整理器不自行判定 pass/kill",
+          "tests_run": 15,
+          "passed": 15,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "unittest_seconds": 42.091,
+          "protocol_seconds": 42.14442844199948,
+          "outer_child_seconds": 42.34209213199938,
+          "classification": "測試寫錯；撤回錯誤預期與真正 W 單點 mutation kill 分開報告",
+          "native_guard_marker": "ASSERT:engineering-operations-unplaced-source",
+          "publication_scope": "本題完整 15 方法，非 PR 全量驗收"
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "latest-base/command.process.json",
+          "bytes": 1361,
+          "sha256": "f9cdfffe59fccf21353367b256912c881df68e2dceac6ffbcd8db6f324f77f99"
+        },
+        {
+          "relative_path": "latest-base/command.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "latest-base/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "latest-base/receipt.json",
+          "bytes": 13905,
+          "sha256": "6289f0677b2edddbfd5b094c922fbfef092ceeb9c7fa740b869fd44a875db945"
+        },
+        {
+          "relative_path": "latest-base/before.binaries.json",
+          "bytes": 3586,
+          "sha256": "001307b857fc65f532209eec8583a87c1272c523615d6147ca7645e5560f2d59"
+        },
+        {
+          "relative_path": "latest-base/after.binaries.json",
+          "bytes": 3583,
+          "sha256": "84121ffb1fa63da2fadf23f9917bb108bafdcb534e076dbe6b352e1c2541c52b"
+        },
+        {
+          "relative_path": "latest-base/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "latest-base/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "latest-base/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "latest-base/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "latest-base/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "latest-base/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "latest-base/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "f8d6ca5d8e6d9b4d1978b6b5afe4013b510e92c6fbf0a84dd28663d7f9611445"
+        },
+        {
+          "relative_path": "latest-base/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "latest-base/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "latest-base/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "f8d6ca5d8e6d9b4d1978b6b5afe4013b510e92c6fbf0a84dd28663d7f9611445"
+        },
+        {
+          "relative_path": "latest-base/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "latest-base/suite-logs.manifest.json",
+          "bytes": 3,
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        }
+      ]
+    }
+  ],
+  "automatic_test_verdict": null,
+  "limitations": [
+    "不解析 assertion、測試數或 pass/kill；claim 需人工核對原 log",
+    "source_stable 等欄位是原 receipt 觀測，不是工具自行重驗來源",
+    "未複製大型 source.json／recorder.py，僅轉錄原 receipt 身份",
+    "suite copied=false 或 run_all_logs_complete=false 原樣保留，不能當完整執行"
+  ]
+}

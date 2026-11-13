@@ -1,0 +1,48 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-validation-20261018/proposed-fixes/record_06_engineering_unplaced_oracle.py",
+    "--checkout",
+    "/workspace/geometry-axiom",
+    "--expected-head",
+    "ca3badecceace47587aefcfdc2361f5ffdb7daa3",
+    "--stage",
+    "restored",
+    "--out",
+    "/workspace/geo261-validation-20261018/fixes/engineering-unplaced-oracle/protocol-restored"
+  ],
+  "shell": false,
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T13:04:59.469721+00:00",
+  "started_ns": 1792328699469737966,
+  "timeout_seconds": 300.0,
+  "timed_out": false,
+  "interrupted": false,
+  "returncode": 0,
+  "launch_error": null,
+  "pid": 129551,
+  "ended_utc": "2026-10-18T13:05:26.831022+00:00",
+  "ended_ns": 1792328726831079367,
+  "seconds": 27.361350567000045,
+  "streams": {
+    "stdout": {
+      "device": 27,
+      "inode": 1456209,
+      "bytes": 0,
+      "mtime_ns": 1792328699469679390,
+      "ctime_ns": 1792328699469679390,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "stderr": {
+      "device": 27,
+      "inode": 1456210,
+      "bytes": 0,
+      "mtime_ns": 1792328699469679390,
+      "ctime_ns": 1792328699469679390,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    }
+  }
+}

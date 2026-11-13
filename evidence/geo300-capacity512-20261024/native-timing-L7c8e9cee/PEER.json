@@ -1,0 +1,82 @@
+{
+  "observed_utc": "2026-10-29T20:05:34.813957+00:00",
+  "scope": "read-only bounded adversarial audit, no test/compiler/profile execution or archive reread",
+  "reviewed_files": [
+    {
+      "path": "/dev/shm/pr348-native-L-readonly-20261029/README.md",
+      "bytes": 7831,
+      "sha256": "23e6bec1a975f5944a0780b7587a61801873d81e6334ca93b15a0ea78a2489e7"
+    },
+    {
+      "path": "/dev/shm/pr348-native-L-readonly-20261029/SUITE_TIMES.tsv",
+      "bytes": 6679,
+      "sha256": "1674b59a13f09a426a70ccecdb47da268f605fb9712d64bdb09973a7e3fa29c7"
+    },
+    {
+      "path": "/dev/shm/pr348-native-L-readonly-20261029/TIMING_AUDIT.json",
+      "bytes": 72090,
+      "sha256": "c0283345230fcbf88dca52a1e7d89f9fe7e2b1fec3d4a7b1b24f526895be8f1e"
+    },
+    {
+      "path": "/dev/shm/pr348-native-L-readonly-20261029/analyze.py",
+      "bytes": 7798,
+      "sha256": "85fdd1d6ddb18a1b8b5d54384b7c8a53cdb69fc08a8d59bdc32729b6f8654f6b"
+    }
+  ],
+  "result": "No material blocker found within reviewed scope",
+  "raw_public_checks": [
+    {
+      "path": "/tmp/pr348-census-L7c8e9cee-text-20261029/COMPLETED_PYTHON_RESULTS.json",
+      "bytes": 62137,
+      "sha256": "885866809091ebc03b5e87db44e875c50e7ca8fa2e4d30aee95eb670eee025aa",
+      "fixed_public_blob_equal": true
+    },
+    {
+      "path": "/tmp/pr348-census-L7c8e9cee-text-20261029/stdout.bin",
+      "bytes": 8186,
+      "sha256": "88529535ca19409ef7057b12af7058e7c10e649e34fea4cb0785053333a06f34",
+      "fixed_public_blob_equal": true
+    },
+    {
+      "path": "/tmp/pr348-census-L7c8e9cee-text-20261029/PROCESS.json",
+      "bytes": 840,
+      "sha256": "8cb30f35b89c81951ad4a084262c2ccb041a8dfc634c1c9a176792cce4dba67f",
+      "fixed_public_blob_equal": true
+    },
+    {
+      "path": "/tmp/pr348-census-L7c8e9cee-text-20261029/SCHEDULING-NOTE.json",
+      "bytes": 938,
+      "sha256": "520837a091b2381050208327b697a317e69e7a06f5556242f9085ff0bc6336ba",
+      "fixed_public_blob_equal": true
+    }
+  ],
+  "json_rows": 102,
+  "python_seconds_sum": "855.05",
+  "unittest_seconds_sum": "838.141",
+  "tests_passed": 1523,
+  "tests_failed": 0,
+  "tests_skipped": 1,
+  "suite_order_rows": 107,
+  "unknown_before_h7_seconds": "248.008453",
+  "unrun_suites": 136,
+  "independent_H7": {
+    "execution": "256747c5c8f8f8934eeb08ae404dee1f67591508",
+    "tests": 8,
+    "batches": 9,
+    "cancel_fixture_members": 7,
+    "outer_seconds": 1142.2716743946075
+  },
+  "N128_profile": {
+    "execution": "7a0e6dd81c54066995981393925fa46a815de2f8",
+    "count": 128,
+    "optimization": "O0 gprof",
+    "wall_seconds": 5.982724714005599,
+    "not_512_or_formal_O2": true
+  },
+  "limitations": [
+    "Did not reread large original tar; archive member matches remain analyzer evidence, while 102 metadata rows were checked against already published COMPLETED_PYTHON_RESULTS.",
+    "No new performance measurement, no extrapolation, no merge-readiness conclusion.",
+    "L prefix plus T standalone duration is conditional planning arithmetic, not one observed execution.",
+    "This review does not authorize publication or any product modification."
+  ]
+}

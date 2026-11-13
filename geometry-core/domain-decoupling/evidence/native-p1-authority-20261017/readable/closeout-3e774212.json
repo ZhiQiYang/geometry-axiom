@@ -1,0 +1,59 @@
+{
+  "kind": "five-stage-build-pass-focused-first-group-fail",
+  "source": "3e77421287e086a06f4a25a9d982a70cd6727fc2",
+  "tree": "d348a3fd1415cfb1ee577f668e03e348d7b6596c",
+  "gate": {
+    "status": "PASS",
+    "stages": 5,
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\build-gate-3e774212-v1\\result\\summary.json",
+    "sha256": "e40db10ba6ee48ab359bcd3f41a28d695ab19b1ea94bba01615c8f0d2047d5a1"
+  },
+  "focused": {
+    "status": "FAIL",
+    "planned_methods": 121,
+    "actual_methods": 4,
+    "pass": 1,
+    "fail": 3,
+    "unrun": 117,
+    "errors": 0,
+    "started": "2026-10-16T17:05:39.303562+00:00",
+    "finished": "2026-10-16T17:06:53.004616+00:00",
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\focused-3e774212-v3\\result\\summary.json",
+    "sha256": "777e3b7daf57c8285f048c5bf316abc9a3213fef6369de640eb8f3e3446eaca4",
+    "actual_outcomes": {
+      "tests.test_geo261_assembly_graph_product.AssemblyGraphProduct.test_actual_h_footprint_uses_box_pose_and_i42_preserves_first_refusal": "passed",
+      "tests.test_geo261_assembly_graph_product.AssemblyGraphProduct.test_owned_boxes_consume_typed_dimensions_and_i42_depends_on_actual_poses": "failed",
+      "tests.test_geo261_assembly_graph_product.AssemblyGraphProduct.test_parameter_change_recomputes_owned_box_and_keeps_mapping_in_fresh_graph": "failed",
+      "tests.test_geo261_assembly_graph_product.AssemblyGraphProduct.test_unused_nullable_authored_definitions_are_preserved_without_new_geometry_roots": "failed"
+    },
+    "first_error": "0 != 1 : /tmp/geometry-tests/geo261-n1a-mc2204dz/model-neutral.scene:25: I8: reference validation failed\n/tmp/geometry-tests/geo261-n1a-mc2204dz/model-neutral.scene:25: I42: invalid owned record\n\n{\"ok\":false,\"status\":\"INVALID\",\"code\":\"BASE_INVALID\",\"clause\":\"I9\",\"message\":\"line 25: I42: invalid owned record\"}\n",
+    "artifact_preservation": {
+      "status": "complete",
+      "error": null
+    },
+    "preserved_build_roots": [
+      "/var/tmp/geo261-focused-3e774212-v3/build-artifacts/build-0"
+    ]
+  },
+  "static_diagnosis": {
+    "status": "EXACT_SOURCE_CONTROL_FLOW_INFERENCE_NOT_INSTRUMENTED_TRACE",
+    "chain": [
+      "owned replay sets g_assembly_replay; assembly_owned now returns false as intended",
+      "reference_compute_timber therefore follows its else branch to wood_definition_sources_dimension",
+      "definition source wd_member_literal directly scans owner_count and marks the owned member nonliteral",
+      "definition MEMBER_A/B evaluation rejects !m.literal[axis], returning false without a specific diagnostic",
+      "reference_checked and owned wrapper retain the same generic I8 and I42 refusal"
+    ],
+    "same_path": "reference_member_dimension:512 -> 520 also falls back to the nonliteral definition quantity.",
+    "existing_invariant": "tests/geo261_definition_sources_harness.c:92 requires owned-is-not-literal; the W literal provider refusal is an explicit test expectation.",
+    "excerpts": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\readonly-chain-3e774212.txt",
+    "excerpts_sha256": "2f5dd21edec0334f888ffd192471c3846e15b41f7bc89e9366ae564a7f7bc2b1"
+  },
+  "integrity": {
+    "source_unchanged": true,
+    "runners_unchanged": true,
+    "gate_receipt_unchanged": true
+  },
+  "deferred_new_methods": 75,
+  "limits": "No additional C diagnostics, product mutations, full suite, PF3, native6, new75, compatibility or browser execution. Old successes remain attached to old SHAs."
+}

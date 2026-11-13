@@ -37,7 +37,7 @@ class WorkbenchHTTP(unittest.TestCase):
                         "contextToken": "original-http-context"}
         self.adapter = RuleCaseWorkbenchAdapter(capture_context=lambda: self.context, binary=self.binary)
         self.server = WorkbenchServer(("127.0.0.1", 0), self.adapter, self.context)
-        self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
+        self.thread = threading.Thread(target=self.server.serve_forever, kwargs={"poll_interval": 0.05}, daemon=True)
         self.thread.start()
         self.base = f"http://127.0.0.1:{self.server.server_port}"
         self.session = self.post("open")[1]["sessionId"]
@@ -143,6 +143,15 @@ class WorkbenchHTTP(unittest.TestCase):
         _, native = self.run_case()
         baseline = {"schema": DATA_SCHEMA, "definitions": cases(),
                     "receipts": [{"definition": case("legal-rule"), "receipt": native["receipt"]}]}
+        status, retained = self.post("import", sessionId=self.session, data=baseline)
+        self.assertEqual(status, 200, retained)
+        self.assertEqual(retained["data"], baseline, "R06 capacity facts must roundtrip without being dropped")
+        legacy = deepcopy(baseline)
+        for key in ("before", "after"):
+            legacy["receipts"][0]["receipt"]["observations"][key].pop("limits", None)
+        status, retained = self.post("import", sessionId=self.session, data=legacy)
+        self.assertEqual(status, 200, retained)
+        self.assertEqual(retained["data"], legacy, "Historical authoring receipts must remain exact")
         paths = [("script",), ("contextToken",), ("path",), ("metadata",),
                  ("context", "contextToken"), ("executor", "path"), ("conditions", "arbitrary"),
                  ("observations", "metadata"), ("observations", "after", "metadata"),
@@ -172,6 +181,11 @@ class WorkbenchHTTP(unittest.TestCase):
         self.assertEqual(self.post("import", sessionId=self.session, data=bundle)[1]["code"], "OWNERSHIP")
         for alter in [lambda r: r["conditions"].update({"isolated": 1}),
                       lambda r: r["conditions"].update({"maxOutputBytes": True}),
+                      lambda r: r["observations"]["after"]["limits"].update({"instances": 0}),
+                      lambda r: r["observations"]["after"]["limits"].update({"ownedTimbers": True}),
+                      lambda r: r["observations"]["after"]["limits"].update({"worldTimbers": 4294967296}),
+                      lambda r: r["observations"]["after"]["limits"].update({"unknown": 1}),
+                      lambda r: r["observations"]["after"]["limits"].pop("bayOmit"),
                       lambda r: r.update({"assertionResults": [{"kind": "record_exists", "passed": 1, "predicate": {}}]}),
                       lambda r: r.update({"reason": "x" * (4 * 1024 * 1024 + 1)}),
                       lambda r: r.update({"actualOutcome": []})]:
@@ -231,6 +245,8 @@ class WorkbenchHTTP(unittest.TestCase):
             status, result = self.post("import", sessionId=self.session, data=bundle)
             self.assertEqual(status, 400)
             self.assertFalse(result["ok"])
+
+
 
     def test_runtime_source_and_project_drift_keep_original_receipt_and_are_noncurrent(self):
         _, native = self.run_case("one-local-joint-new-version")

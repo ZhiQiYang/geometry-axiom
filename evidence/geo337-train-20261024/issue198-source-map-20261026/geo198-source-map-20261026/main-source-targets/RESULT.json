@@ -1,0 +1,29 @@
+{
+  "command": [
+    "git",
+    "-C",
+    "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+    "grep",
+    "-n",
+    "-e",
+    "classify_rect_outline",
+    "-e",
+    "counterexample_A",
+    "-e",
+    "counterexample_B",
+    "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+    "--",
+    "current_geometry.c",
+    "tests/test_core_integrity.c",
+    "tests/test_reference.py",
+    "run_tests.py"
+  ],
+  "cwd": "/tmp",
+  "started_utc": "2026-10-26T11:38:13.200915+00:00",
+  "ended_utc": "2026-10-26T11:38:13.215940+00:00",
+  "exit_code": 0,
+  "stdout_bytes": 2937,
+  "stdout_sha256": "81a2d687c86a769a8fdec8b8b93bcbd77e4b4212d806c03e409b8f65ef4cd0c5",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,320 @@
+{
+  "scope": "Exact additional alias registry projection and current lstat only",
+  "checks": 77,
+  "exit_code": 0,
+  "findings": [],
+  "registry_sha256": "c942313062fb0888367030e1f730f89281e56a12399fc4a7d209ed3113474b4a",
+  "aliases": 28,
+  "groups": 4,
+  "archive_bodies_read": false,
+  "check_details": [
+    {
+      "check": "exact new registry pin",
+      "passed": true
+    },
+    {
+      "check": "exact reference source_plan",
+      "passed": true
+    },
+    {
+      "check": "exact reference actual_report",
+      "passed": true
+    },
+    {
+      "check": "exact reference independent_actual_peer",
+      "passed": true
+    },
+    {
+      "check": "only original seven owners",
+      "passed": true
+    },
+    {
+      "check": "four additional groups only",
+      "passed": true
+    },
+    {
+      "check": "original group label/hash 1",
+      "passed": true
+    },
+    {
+      "check": "exact seven aliases 1",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r2/work/q38/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r2/work/q38/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261a1/work/q38/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261a1/work/q38/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r1/work/q38/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r1/work/q38/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r1/source-final/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r1/source-final/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "original group label/hash 2",
+      "passed": true
+    },
+    {
+      "check": "exact seven aliases 2",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r1/source-final/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r1/source-final/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "original group label/hash 3",
+      "passed": true
+    },
+    {
+      "check": "exact seven aliases 3",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r1/source-final/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r1/source-final/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "original group label/hash 4",
+      "passed": true
+    },
+    {
+      "check": "exact seven aliases 4",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "exact projected alias identity /workspace/geo261-cold/g261r1/source-final/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "fresh retained alias metadata /workspace/geo261-cold/g261r1/source-final/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "no duplicate or missing named alias",
+      "passed": true
+    },
+    {
+      "check": "all aliases require delinking before rewrite/reuse",
+      "passed": true
+    },
+    {
+      "check": "retired seven owners not writable checkout candidates",
+      "passed": true
+    },
+    {
+      "check": "read-only allowed and ordinary source retirement separate",
+      "passed": true
+    },
+    {
+      "check": "105 cleanup not falsely executed",
+      "passed": true
+    },
+    {
+      "check": "previous 423/2/1/3 leases retained",
+      "passed": true
+    },
+    {
+      "check": "metadata only; no acceptance relabel",
+      "passed": true
+    }
+  ]
+}

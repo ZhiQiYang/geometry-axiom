@@ -1,0 +1,65 @@
+{
+  "schema": "geo261-final-F2-closing-evidence-summary/1",
+  "sha": "8f76f2b7d6f669670e5834310bfc26495b4a4aa6",
+  "assembled_utc": "2026-10-22T22:15:50.943182+00:00",
+  "activity": "Only combines previously completed original evidence; no product/test/compile/performance execution.",
+  "formal_snapshot": {
+    "path": "/workspace/geo261-environment/F2-actual-metrics/METRICS.json",
+    "bytes": 159991,
+    "sha256": "28688104a8da9a7ba4595816748b7af17081633ceb7985eaf5fd65d2328381aa"
+  },
+  "extra_snapshot": {
+    "path": "/workspace/geo261-environment/F2-extra-metrics/METRICS.json",
+    "bytes": 560908,
+    "sha256": "ef04d730e73968ae54d10bc67cac78b3cc416752e1b3dd8db43eae560814cd05"
+  },
+  "formal_17_passed": true,
+  "extra_9_scoped_expectations_matched": true,
+  "all_acceptance_requirements_passed": true,
+  "original_frozen_snapshots_modified": false,
+  "source_roles": {
+    "ledger_execution_product_P": "b6646d10751a0d85a2f03f5d24fbe1073cb78980",
+    "ledger_artifact_L": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+    "canonical_reader_product_P2": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
+    "latest_product_and_architecture_execution_P3": "55b9fb6479485361d9e2283a95e4355f5fca76db",
+    "architecture_artifact_A3": "8f76f2b7d6f669670e5834310bfc26495b4a4aa6",
+    "final_acceptance_source_F2": "8f76f2b7d6f669670e5834310bfc26495b4a4aa6",
+    "last_individual_evidence_E": "84c511fc404c2f5156ddd4ee6ea3f650a6331a2f"
+  },
+  "environment": {
+    "execution": "Cloud Linux only; no user computer execution.",
+    "formal_browser": "Google Chrome 156.0.8078.47",
+    "node": "v24.19.0",
+    "legacy_supplement": "Chromium 154.0.8037.57 (Debian GNU/Linux 13)",
+    "fonts": "fonts-noto-cjk installed; original version/package commands retained per job.",
+    "original_version_command_results": "Each original command/output/exit is in its per-job receipt and raw archive."
+  },
+  "environment_attempt_preserved": {
+    "item": "Cperf",
+    "attempt1_outer_original_exit": 1,
+    "classification": "ENOSPC during clone/checkout/recording; no performance result.",
+    "attempt1_evidence": "be90acece0352d5fc971fb9802ebedfb5e5388c8",
+    "truncated_json_repaired": false,
+    "retry_outer_original_exit": 0,
+    "retry_evidence": "84c511fc404c2f5156ddd4ee6ea3f650a6331a2f",
+    "only_failed_environment_item_rerun": true
+  },
+  "not_executed_in_cloud": [
+    "The pre-existing allowed Windows GDI case: native records 5184 passed, 0 failed, 1 skipped on Linux.",
+    "GitHub Actions itself remains billing-blocked; the locked cloud-equivalent seven-job ruling is used."
+  ],
+  "material_uncertainties": [
+    "Extra N64 Cperf restored/main=1.9707983193277312 is close to the existing <=2 threshold; three original samples per side are retained without resampling. Formal N64 is separately 1.8232505215247488.",
+    "P52 timings depend on machine load. Formal ratio=.7346222648904547 and runtime-only withdrawn/restored ratios=1.0567294486663636/.854784305780079 are original distinct runs.",
+    "P73 mutation proof explicitly invokes the real callback once using the original predicate; historical natural-subset withdrawal did not kill and remains recorded. Chromium154 fixed-only 69/0 does not prove the unmodified old product was green."
+  ],
+  "review_authority": {
+    "branch": "handoff/codex-takeover-20261021",
+    "sha": "804afbb4c5fa38b6023087d6dcb150f40c5978e6",
+    "path": "handoff/pr288-latest-review-20261022.md",
+    "sha256": "ef18e0a9fbcffece2bf31dd0a667ebb70d87a48e75212ce363928fb01123e0bd",
+    "live_PR_comments_claimed_read": false
+  },
+  "merge_or_force_push_performed": false,
+  "evidence_integrity": "Verified separately against the fixed published snapshot after this summary is published."
+}

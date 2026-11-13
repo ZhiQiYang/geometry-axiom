@@ -44,7 +44,7 @@ function cardNavigationHarness({allow=true,current=true,focus=null,replacePane=f
     assert.ok(found,'shipped '+name);vm.runInNewContext(found[0],sandbox);
   }
   const list=app.slice(app.indexOf('function renderObjectList()'));
-  const closure=list.match(/row\.addEventListener\("click", (ev => \{[^]*?)\);\n    row\.addEventListener\("dblclick"/);
+  const closure=list.match(/row\.addEventListener\("click", (ev => \{[^]*?)\);\r?\n    row\.addEventListener\("dblclick"/);
   assert.ok(closure,'shipped object-list click');
   vm.runInNewContext('window.listClick='+closure[1],sandbox);
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/source-inspector-app.js'),'utf8'),sandbox);
@@ -500,3 +500,66 @@ test('a canonical source change cannot pass a stable native revision or late con
   const gate=deferred(),delayed=S.createSession({context:()=>ctx,stamp:()=>stamp,read:()=>gate.promise,readSnapshot:async()=>old});
   const pending=delayed.inspect();ctx={};stamp++;gate.resolve(old);assert.equal(await pending,null);
 });
+
+// ---- Impact dialog section fallback (2026-11-07 cloud L4 walk) ----
+{
+/* Impact dialog: the native section recheck emits one id-less
+ * SECTION_PROFILE_INVALID fallback when it has no section finding of its own.
+ * It only restates the candidate's rejection (or an internal I8a message), so
+ * the reference confirmation dialog skips it when the candidate's own
+ * violations are rendered beside it. Found in the 2026-11-07 cloud L4 walk
+ * (R18 grid stagger on both axes, R11 delete of a face that still has guides).
+ * Runs the actual reference-ui.js function in a VM with a minimal fake DOM.
+ */
+
+const load = () => {
+  const createElement = tag => ({tag, children: [], attrs: {}, className: '', textContent: '',
+    append(...nodes) { this.children.push(...nodes); }, setAttribute(key, value) { this.attrs[key] = String(value); }});
+  const context = vm.createContext({document: {createElement}});
+  const text = fs.readFileSync(process.env.GEOMETRY_REFERENCE_UI_JS || require.resolve('../geometry-web/reference-ui.js'), 'utf8');
+  const start = text.indexOf('function appendSectionProfileImpact('), end = text.indexOf('\nfunction ', start + 1);
+  assert(start >= 0 && end > start, 'appendSectionProfileImpact must exist');
+  vm.runInContext(text.slice(start, end), context);
+  return {append: context.appendSectionProfileImpact, container: () => createElement('dialog')};
+}
+const rows = container => container.children.flatMap(section => section.children.filter(n => n.tag === 'ul').flatMap(list => list.children));
+const fallback = message => ({code: 'SECTION_PROFILE_INVALID', clause: 'I43-I49', message,
+  expected: 'valid atomic transaction', actual: 'rejected input or upstream dependency'});
+const sceneViolation = actual => ({clause: 'I8', expected: 'all world invariants pass', actual});
+const preview = violations => ({valid: false, violations: [], sectionProfiles: {before: {}, after: {}, violations}});
+
+test('id-less section fallback is not repeated when the candidate rejection is shown', () => {
+  const {append, container} = load();
+  for (const [message, actual] of [
+    ['line 13: I24: 網格系統 1 的 u、v 兩軸都設了相位差。', 'line 13: I24: 網格系統 1 的 u、v 兩軸都設了相位差。'],
+    ['line 2: I8a: impact preview required; inspect preview, then confirm token (World unchanged)', 'line 3: 這個承載面還有參考線，先刪參考線（guide）'],
+  ]) {
+    const dialog = container(), p = preview([fallback(message)]);
+    append(dialog, p, [sceneViolation(actual)]);
+    assert.equal(dialog.children.length, 0, 'no section heading without a section finding');
+  }
+});
+
+test('id-less section fallback stays when no candidate violation is shown', () => {
+  const {append, container} = load();
+  for (const shown of [undefined, null, []]) {
+    const dialog = container();
+    append(dialog, preview([fallback('upstream reason')]), shown);
+    const list = rows(dialog);
+    assert.equal(list.length, 1);
+    assert.match(list[0].textContent, /I43-I49 upstream reason/);
+    assert.equal(list[0].attrs['data-impact-profile-violation'], 'SECTION_PROFILE_INVALID');
+  }
+});
+
+test('section findings that name a profile, member or run are always kept', () => {
+  const {append, container} = load();
+  const dialog = container();
+  const overlap = {code: 'V_PROFILE_OVERLAP', clause: 'I45', message: 'Member interiors must not intersect', memberId: 2, otherMemberId: 3, profileId: 1};
+  const run = {code: 'RUN_LENGTH_INVALID', clause: 'I47', message: 'bad length', runId: 4, profileId: 1};
+  append(dialog, preview([overlap, run, fallback('ignored restatement')]), [sceneViolation('line 9: other')]);
+  const codes = rows(dialog).map(row => row.attrs['data-impact-profile-violation']);
+  assert.deepEqual(codes, ['V_PROFILE_OVERLAP', 'RUN_LENGTH_INVALID']);
+  assert.equal(dialog.children[0].children[0].textContent, '斷面與拉伸的連動影響');
+});
+}

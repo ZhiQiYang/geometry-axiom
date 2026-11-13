@@ -1,0 +1,88 @@
+[
+  {
+    "path": "/tmp/geometry-tests/run_all-logs/py_test_assembly_candidate_impact.log",
+    "suite": "py:test_assembly_candidate_impact",
+    "before": {
+      "device": 34,
+      "inode": 2838,
+      "bytes": 0,
+      "mtime_ns": 1792338322619101625,
+      "ctime_ns": 1792338322619101625,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "copied": true,
+    "after": {
+      "device": 34,
+      "inode": 2838,
+      "bytes": 0,
+      "mtime_ns": 1792338379244535496,
+      "ctime_ns": 1792338379244535496,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "own_stdout_announced_suite": true,
+    "copy": "suite-logs/py_test_assembly_candidate_impact.log"
+  },
+  {
+    "path": "/tmp/geometry-tests/run_all-logs/py_test_assembly_candidate_impact.unittest.log",
+    "suite": "py:test_assembly_candidate_impact",
+    "before": {
+      "device": 34,
+      "inode": 2772,
+      "bytes": 3873,
+      "mtime_ns": 1792338322607102169,
+      "ctime_ns": 1792338322607102169,
+      "sha256": "37122f22ea4f4bcc1cee169c1b178eb66b962743fe85e60f4470e88ddec16890",
+      "exists": true
+    },
+    "copied": true,
+    "after": {
+      "device": 34,
+      "inode": 2772,
+      "bytes": 102,
+      "mtime_ns": 1792338379234145134,
+      "ctime_ns": 1792338379234145134,
+      "sha256": "2bae3b6533c0f13c544823dc1e890e55f503bed60cd825e9ad0f158ae185103c",
+      "exists": true
+    },
+    "own_stdout_announced_suite": true,
+    "copy": "suite-logs/py_test_assembly_candidate_impact.unittest.log"
+  },
+  {
+    "path": "/tmp/geometry-tests/run_all-logs/py_test_assembly_candidate_impact.json",
+    "suite": "py:test_assembly_candidate_impact",
+    "before": {
+      "device": 34,
+      "inode": 203861,
+      "bytes": 2255,
+      "mtime_ns": 1792338322609567731,
+      "ctime_ns": 1792338322609567731,
+      "sha256": "de62e640b7ca939489948005a952a7e4194634fa9b0e656b8555de9877c06420",
+      "exists": true
+    },
+    "copied": true,
+    "after": {
+      "device": 34,
+      "inode": 204337,
+      "bytes": 357,
+      "mtime_ns": 1792338379238244065,
+      "ctime_ns": 1792338379238244065,
+      "sha256": "1d1a2651229693ea03ef6605f6013a7a99b085a2c09604e5615bda610b044343",
+      "exists": true
+    },
+    "own_stdout_announced_suite": true,
+    "copy": "suite-logs/py_test_assembly_candidate_impact.json",
+    "reported_fields_only": {
+      "total": 4,
+      "run": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "blocked_by_error": 0,
+      "import_error": null,
+      "extra_errors": 0,
+      "expected_failed": 0
+    }
+  }
+]

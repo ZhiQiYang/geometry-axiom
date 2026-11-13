@@ -1,0 +1,26 @@
+{
+  "registry_command": [
+    "/usr/bin/gcc",
+    "-std=c11",
+    "-O2",
+    "/workspace/geo261-validation-20261018/performance/artifacts-a-dfb130e8/sources/integration-dfb130e8/geometry-web/web_bridge.c",
+    "-o",
+    "/workspace/geo261-validation-20261018/performance/artifacts-a-dfb130e8/build/integration/normal/bridge",
+    "-lm"
+  ],
+  "actual_command": [
+    "/usr/bin/gcc",
+    "-MMD",
+    "-MF",
+    "/workspace/geo261-validation-20261018/performance/artifacts-a-dfb130e8/build/integration/normal/bridge.d",
+    "-Wl,-Map=/workspace/geo261-validation-20261018/performance/artifacts-a-dfb130e8/build/integration/normal/bridge.link-map",
+    "-std=c11",
+    "-O2",
+    "/workspace/geo261-validation-20261018/performance/artifacts-a-dfb130e8/sources/integration-dfb130e8/geometry-web/web_bridge.c",
+    "-o",
+    "/workspace/geo261-validation-20261018/performance/artifacts-a-dfb130e8/build/integration/normal/bridge",
+    "-lm"
+  ],
+  "cwd": "/workspace/geo261-validation-20261018/performance/artifacts-a-dfb130e8/sources/integration-dfb130e8",
+  "mode": "normal"
+}

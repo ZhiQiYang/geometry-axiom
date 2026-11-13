@@ -1,0 +1,12 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -876,7 +876,8 @@
+         if name in self.policy[key]:
+             return True
+         return any(entry["language"] == language and entry["name"] == name
+-                   and self.entries[path]["layer"] in entry["layers"] for entry in self.policy["externalModules"])
++                   and True  # TEMP removed H-only external allowance predicate
++                   for entry in self.policy["externalModules"])
+ 
+     def owned(self, target, source, line):
+         require(within(target.resolve(), self.root), "ROOT_ESCAPE", source, line,

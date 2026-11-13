@@ -1,0 +1,121 @@
+{
+  "status": "完成",
+  "source": "/workspace/geo261-validation-20261018/performance/artifacts/sources/integration-e64aa635",
+  "source_sha": "e64aa6359d600f43313ec9d7ba1112c465b6a40c",
+  "source_manifest_sha256": "eb802fb4751e207621055fc7c9e3930a070651f577b56fd72a953e4efcf70dd4",
+  "harness_sha256": "be83a813236c2189f6c8d19fdd5fa0c9a5221f886ee3bccd2c0acfc417fa0649",
+  "wrapper_sha256": "be3f75a5b5cb8e5bd04e9c28ae0b1a65aac33e10ec55e7b41c2c1c0cf8a7148e",
+  "compiler": "/usr/bin/x86_64-linux-gnu-gcc-14",
+  "compiler_sha256": "a23ecab8ff08f09ad8c80602c2c5df7f49e09c25905cb8975902e101bf72635f",
+  "uname": [
+    "Linux",
+    "9c8d35df5ae7",
+    "6.18.55",
+    "#1 SMP Wed Oct 14 19:45:18 UTC 2026",
+    "x86_64",
+    ""
+  ],
+  "python": "3.12.14",
+  "warmup": 2,
+  "sha_repeats": 11,
+  "candidate_repeats": 9,
+  "clock_scope": "各 API 分段包含計時讀值開銷；完整 lifecycle 另含 harness 核對，不含輸出",
+  "commands": [
+    {
+      "label": "compiler-version",
+      "argv": [
+        "/usr/bin/x86_64-linux-gnu-gcc-14",
+        "--version"
+      ],
+      "timeout_s": 900,
+      "exit": 0,
+      "command_wall_s": 0.02066074899994419
+    },
+    {
+      "label": "build",
+      "argv": [
+        "/usr/bin/x86_64-linux-gnu-gcc-14",
+        "-std=c11",
+        "-O2",
+        "-MMD",
+        "-MF",
+        "/workspace/geo261-validation-20261018/performance/sha-candidate-bench/results-e64-r1/bench.d",
+        "-I",
+        "/workspace/geo261-validation-20261018/performance/artifacts/sources/integration-e64aa635",
+        "/workspace/geo261-validation-20261018/performance/sha-candidate-bench/results-e64-r1/bench.c",
+        "-o",
+        "/workspace/geo261-validation-20261018/performance/sha-candidate-bench/results-e64-r1/bench",
+        "-lm"
+      ],
+      "timeout_s": 900,
+      "exit": 0,
+      "command_wall_s": 23.891252433000773
+    },
+    {
+      "label": "sizes",
+      "argv": [
+        "/workspace/geo261-validation-20261018/performance/sha-candidate-bench/results-e64-r1/bench",
+        "sizes"
+      ],
+      "timeout_s": 900,
+      "exit": 0,
+      "command_wall_s": 0.021476022999195266
+    },
+    {
+      "label": "sha-world",
+      "argv": [
+        "/workspace/geo261-validation-20261018/performance/sha-candidate-bench/results-e64-r1/bench",
+        "sha",
+        "world",
+        "6397330daf0817bc7f11319d3f8872699032992883979533d66be093628c3815",
+        "2",
+        "11"
+      ],
+      "timeout_s": 900,
+      "exit": 0,
+      "command_wall_s": 0.3023047229999065
+    },
+    {
+      "label": "sha-version_store",
+      "argv": [
+        "/workspace/geo261-validation-20261018/performance/sha-candidate-bench/results-e64-r1/bench",
+        "sha",
+        "version_store",
+        "0e67b90984466ef642d5fdbf342606cd56d155dc85900615c930bc893c48b776",
+        "2",
+        "11"
+      ],
+      "timeout_s": 900,
+      "exit": 0,
+      "command_wall_s": 0.040833568999005365
+    },
+    {
+      "label": "candidate",
+      "argv": [
+        "/workspace/geo261-validation-20261018/performance/sha-candidate-bench/results-e64-r1/bench",
+        "candidate",
+        "/workspace/geo261-validation-20261018/performance/artifacts/sources/integration-e64aa635/room_a.scene",
+        "2",
+        "9"
+      ],
+      "timeout_s": 900,
+      "exit": 0,
+      "command_wall_s": 1.7714699900006963
+    }
+  ],
+  "cpu_model": [
+    "INTEL(R) XEON(R) PLATINUM 8573C"
+  ],
+  "cpu_affinity": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "os_release": "PRETTY_NAME=\"Debian GNU/Linux 13 (trixie)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"13\"\nVERSION=\"13 (trixie)\"\nVERSION_CODENAME=trixie\nDEBIAN_VERSION_FULL=13.6\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"\n",
+  "scene_sha256": "c3c0ba589285ef5ecd835b89a38174ebe050c85c4b8814510e139f72550f1f7c",
+  "compiler_version": "x86_64-linux-gnu-gcc-14 (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "binary_sha256": "07ec2f7e0aed48f98a9619e221473dd90000023cad6545147b08a02cdfba7efa",
+  "source_after": "固定封存 bytes 相同"
+}

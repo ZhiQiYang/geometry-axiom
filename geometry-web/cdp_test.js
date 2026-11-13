@@ -3,13 +3,19 @@ const { spawn } = require("child_process");
 const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
 const floor = require('./cdp_floor.js');
+const shards = require('./canvas_shards.js');
+const canvasEvidence = require('../tests/helpers/canvas_shards.js');
+let shardJournal=null;
 const cdp = require('./cdp_helpers.js');
 const {createRetainedEvaluator} = require('./cdp_evaluation.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
 const {createTransportFailureTrace,installClientTransportTrace} = require('./transport_failure_trace.js');
 let transportFailureTrace;
-const SCOPE_FLAGS = ['GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
+const SCOPE_FLAGS = ['GEOMETRY_TIMBER_REUSE_ONLY','GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_ROOM_CANDIDATE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_DEFINITION_IMPORT_ONLY','GEOMETRY_CDP_FROM_P31','GEOMETRY_IDENTITY_LEDGER_ONLY'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
+SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY','GEOMETRY_PANEL_FILL_ONLY');
+/* main() 以 inSequence(n)/notOtherShard(n) 把完整序列切成這麼多個連續區段;canvas_shards.json 的片數必須相同。 */
+const CANVAS_SHARDS=2;
 function runConfiguration(env = process.env) {
   if (!env.GEOMETRY_TEST_URL) throw Error('GEOMETRY_TEST_URL is required: use an explicitly isolated test service. No browser or reset was started.');
   const url = new URL(env.GEOMETRY_TEST_URL);
@@ -24,6 +30,39 @@ function runConfiguration(env = process.env) {
   if(filters.length>1)throw Error('Choose only one CDP scope flag; combined filters can silently omit every suite');
   if(modifiers.length>1)throw Error('Choose only one engineering workflow modifier');
   if(modifiers.length && env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY!=='1')throw Error('Engineering modifiers require GEOMETRY_ENGINEERING_WORKFLOW_ONLY=1');
+  if(env.GEOMETRY_TIMBER_REUSE_CASE!==undefined){
+    if(env.GEOMETRY_TIMBER_REUSE_ONLY!=='1')throw Error('GEOMETRY_TIMBER_REUSE_CASE requires ONLY=1');
+    require('./timber_reuse_test.js').selectCases(env.GEOMETRY_TIMBER_REUSE_CASE);
+  }
+  if(env.GEOMETRY_R116_FRESH_STAGE!==undefined && (env.GEOMETRY_R116_FRESH_STAGE!=='open' || env.GEOMETRY_TIMBER_REUSE_ONLY!=='1' || env.GEOMETRY_TIMBER_REUSE_CASE!=='C07' || !env.GEOMETRY_R116_FRESH_RECEIPT))throw Error('Fresh-profile stage requires ONLY C07 and its saved receipt');
+  if(Object.hasOwn(env,'GEOMETRY_GRID_CARD_ENTRY_CASE')){
+    if(env.GEOMETRY_GRID_CARD_ENTRY_ONLY!=='1')throw Error('GEOMETRY_GRID_CARD_ENTRY_CASE requires GEOMETRY_GRID_CARD_ENTRY_ONLY=1; full mode must run all card-entry cases');
+    require('./grid_card_entry_test.js').selectCases(env.GEOMETRY_GRID_CARD_ENTRY_CASE);
+  }
+  if(env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES!==undefined){
+    const cases=env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES.split(',');
+    if(env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY!=='1'||!cases.length||new Set(cases).size!==cases.length||cases.some(id=>!/^C(?:0[1-9]|1[0-6])$/.test(id)))
+      throw Error('GEOMETRY_CANVAS_CONTEXT_MENU_CASES requires ONLY=1 and unique comma-separated C01..C16 IDs');
+  }
+  if(env.GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY!==undefined&&
+      (env.GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES!=='C11'))
+    throw Error('GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY=1 requires ONLY=1 and CASES=C11 exactly');
+  if(env.GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY!==undefined&&
+      (env.GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES!=='C05'))
+    throw Error('GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY=1 requires ONLY=1 and CASES=C05 exactly');
+  /* 分片模式:只跑完整序列中 canvas_shards.json 指定的一個連續區段,本片逐段與 golden 嚴格比對。
+     它不是部分模式:不可與任何範圍旗標並用,也不可更新 golden。 */
+  if(env.GEOMETRY_CDP_SHARD!==undefined){
+    if([...SCOPE_FLAGS,...ENGINEERING_MODIFIERS].some(name=>env[name]!==undefined))
+      throw Object.assign(Error('GEOMETRY_CDP_SHARD runs one contiguous block of the complete sequence; remove every scope flag and modifier'),{code:'CANVAS_FAKE_SCOPE'});
+    if(env.GEOMETRY_CDP_UPDATE_GOLDEN!==undefined)throw Error('GEOMETRY_CDP_SHARD never updates golden; regenerate it from one complete full-mode run');
+    if(url.protocol!=='http:'||url.hostname!=='127.0.0.1'||!url.port||url.pathname!=='/'||url.search||url.hash||url.username||url.password)
+      throw Object.assign(Error('CANVAS_RUNTIME_ENDPOINT: shards must use the isolated loopback runtime probe service'),{code:'CANVAS_RUNTIME_ENDPOINT'});
+    const plan=shards.loadPlan(),shard=shards.parseShardSpec(env.GEOMETRY_CDP_SHARD,plan);
+    if(shard.count!==CANVAS_SHARDS)throw Error('cdp_test.js gates exactly '+CANVAS_SHARDS+' canvas shards; canvas_shards.json declares '+shard.count);
+    return {mode:'shard',shard:{...shard,planSha256:shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)),goldenSha256:shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))},
+      filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
+  }
   return {mode:filters.length?'partial':'full',filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
 }
 // Legacy checks log a verdict as a separate argument. Never scan arbitrary
@@ -106,17 +145,30 @@ let ws, mid = 0, pending = {};
 /* ✓/✗ 計數：所有印出的判定一律計入，exit code 依此決定。 */
 let passN = 0, failN = 0;
 let excN = 0;            /* Runtime.exceptionThrown 計數(BF2 驗收用) */
+let unexpectedExcN = 0;  /* 其中未預期者(每次也已 failN++);分片收據要求為 0 */
 let currentTestStep='connecting to isolated test browser';
 /* 每段斷言數(cdp_floor.js 的 sectionOf 由 `=== ` 標頭取主編號);CDP_RESULT.sections 與 golden 比對都用它。 */
 let currentSection=floor.NO_SECTION;
 const sectionPass={}, sectionFail={};
+/* 各段第一次出現的實際順序(物件鍵會把 "1"…"10" 排到最前,不能拿來證明連續區段)。 */
+const sectionOrder=[];
+const touchSection=name=>{if(!sectionOrder.includes(name))sectionOrder.push(name);};
+/* 分片切點的瀏覽器儲存交接:outgoing 是本片結束時核對的,incoming 是本片開頭套用的。 */
+const shardHandoff={};
+const startedAt=Date.now();
 let expectedBeforeUnloadUntil=0;
 let expectedNativeDialog=null;
 let expectedException=null, scope, skipped=[];
 const assetRequests=new Map(), assetFailures=[];
-const _log = console.log;
+const originalLog = console.log;
+// Shard receipts must survive the original immediate process.exit path. Keep
+// the original console behavior for full/partial; shard raw/journal is synced.
+const _log = (...args) => {
+  if(scope?.mode==='shard')fs.writeSync(1,require('node:util').format(...args)+'\n');
+  else originalLog(...args);
+};
 function observeAssetNetwork(message) {
-  if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin);
+  if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin,undefined,{allApi:true});
   transportFailureTrace.observe(message, currentTestStep);
   const p=message.params,key=(message.sessionId||'main')+':'+p.requestId;
   if(message.method==='Network.requestWillBeSent'){
@@ -138,10 +190,15 @@ function recordLog(...args) {
   const s = args.join(" ");
   if(s.startsWith('===')){
     currentTestStep=s;
-    currentSection=floor.sectionOf(s)||currentSection;
+    const section=floor.sectionOf(s);
+    currentSection=section||currentSection;
+    if(section)shardJournal?.section(section,s);
     sectionPass[currentSection]=sectionPass[currentSection]||0;
+    touchSection(currentSection);
   }
   for(const passed of assertionVerdicts(args)){
+    shardJournal?.assertion(passed,args[0]);
+    touchSection(currentSection);
     if(passed){passN++;sectionPass[currentSection]=(sectionPass[currentSection]||0)+1;}
     else{failN++;sectionFail[currentSection]=(sectionFail[currentSection]||0)+1;}
   }
@@ -167,10 +224,10 @@ async function connect() {
           else if (['Network.requestWillBeSent','Network.responseReceived','Network.loadingFailed','Network.loadingFinished'].includes(m.method))observeAssetNetwork(m);
           else if (m.method === 'Runtime.bindingCalled' && m.params.name === '__geometryCdpTransportFailure') {
             try {
-              if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin);
+              if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin,undefined,{allApi:true});
               transportFailureTrace.observeApiFailure({...JSON.parse(m.params.payload),sessionId:m.sessionId||null,step:currentTestStep});
-              _log('[API TRANSPORT FAILURE]',JSON.stringify(transportFailureTrace.apiFirst()));
-            } catch(error) {_log('[TRANSPORT DIAGNOSTIC ERROR]',error.message);}
+              _log('[API TRANSPORT FAILURE]',JSON.stringify(transportFailureTrace.apiFailures().at(-1)));
+            } catch(error) {transportFailureTrace?.invalidateApiTrace();_log('[TRANSPORT DIAGNOSTIC ERROR]',error.message);}
           }
           else if (m.method === "Runtime.consoleAPICalled")
             console.log("[console]", m.params.args.map(a => a.value ?? a.description).join(" "));
@@ -179,12 +236,14 @@ async function connect() {
             const description=m.params.exceptionDetails.exception?.description || m.params.exceptionDetails.text || '';
             const expected=expectedException && Date.now()<expectedException.until && description.split('\n')[0]===expectedException.message;
             if(expected){expectedException=null;_log('[EXPECTED EXCEPTION]',description);}
-            else {failN++;_log('[UNEXPECTED EXCEPTION]',currentTestStep,description);}
+            else {failN++;unexpectedExcN++;_log('[UNEXPECTED EXCEPTION]',currentTestStep,description);}
           }
           else if (m.method === 'Page.javascriptDialogOpening' && expectedNativeDialog && m.params.type===expectedNativeDialog.type && m.params.message===expectedNativeDialog.message) {
             const expectation=expectedNativeDialog;expectedNativeDialog=null;expectation.seen=true;
             _log('[EXPECTED NATIVE DIALOG]',m.params.message,'accept='+expectation.accept);
-            send('Page.handleJavaScriptDialog',{accept:expectation.accept},m.sessionId);
+            const dialog={accept:expectation.accept};
+            if(expectation.promptText!==undefined)dialog.promptText=expectation.promptText;
+            send('Page.handleJavaScriptDialog',dialog,m.sessionId);
           }
           else if (m.method === 'Page.javascriptDialogOpening' && m.params.type==='confirm' &&
               /目前專案有尚未保存的變更|只能在本次工作階段修改數字的形狀特徵/.test(m.params.message)) {
@@ -229,9 +288,9 @@ async function waitForUI(expr, timeout=5000) {
   while(Date.now()<end){if(await eval_(expr)===true)return;await sleep(50);}
   throw Error('UI condition timed out at '+currentTestStep+': '+expr);
 }
-async function expectNativeDialog(action,{message,accept,type='confirm'}) {
+async function expectNativeDialog(action,{message,accept,type='confirm',promptText}) {
   if(expectedNativeDialog)throw Error('A native dialog expectation is already pending');
-  const expected={message,accept,type,seen:false};expectedNativeDialog=expected;
+  const expected={message,accept,type,promptText,seen:false};expectedNativeDialog=expected;
   try {await action();if(!expected.seen)throw Error('Expected native dialog did not appear: '+message);}
   finally {if(expectedNativeDialog===expected)expectedNativeDialog=null;}
 }
@@ -330,15 +389,34 @@ async function rightClick(x, y) {
     await send("Input.dispatchMouseEvent", { type, x, y, button: "right", clickCount: 1 });
 }
 
-/* 每段斷言數地板:完整模式與 golden 嚴格比對(差異 → failN 增加);部分模式只印不比。
+/* 每段斷言數地板:完整模式與 golden 嚴格比對(差異 → failN 增加);分片模式只與 golden 中
+   本片的段落嚴格比對,且實跑順序必須等於 canvas_shards.json;部分模式只印不比。
    GEOMETRY_CDP_UPDATE_GOLDEN=1 才會重寫 golden(僅完整模式、且本次零失敗)。 */
 const GOLDEN_PATH=path.join(__dirname,'cdp_sections.golden.json');
+function evaluateShardSections(actual,wantUpdate) {
+  const label=scope.shard.index+'/'+scope.shard.count;
+  if(wantUpdate){failN++;_log('[CDP FLOOR] 分片模式不可更新 golden(golden 只記完整模式)');return 'update-refused (shard mode)';}
+  let golden,plan;
+  try {golden=JSON.parse(fs.readFileSync(GOLDEN_PATH,'utf8'));plan=shards.loadPlan();}
+  catch(error){failN++;_log('[CDP FLOOR] 讀不到 golden 或分片計畫:'+error.message);return 'golden or shard plan unreadable';}
+  const problems=[...floor.validateGolden(golden),...shards.validatePlan(plan,golden)];
+  if(problems.length){failN++;for(const problem of problems)_log('[CDP FLOOR] golden／分片計畫格式錯誤:'+problem);return 'golden or shard plan invalid';}
+  const planned=plan.shards[scope.shard.index-1].sections;
+  const diffs=floor.compare({sections:shards.expectedSections(golden,plan,scope.shard.index)},actual);
+  for(const diff of diffs){failN++;_log('[CDP FLOOR] 第 '+label+' 片',diff.message);}
+  const ordered=JSON.stringify(sectionOrder)===JSON.stringify(planned);
+  if(!ordered){failN++;_log('[CDP FLOOR] 第 '+label+' 片實跑段落順序與 canvas_shards.json 不同:'+JSON.stringify(sectionOrder));}
+  if(diffs.length||!ordered)return 'mismatch ('+(diffs.length+(ordered?0:1))+')';
+  _log('[CDP FLOOR] 第 '+label+' 片與 golden 中本片的 '+planned.length+' 段逐段相符,順序同計畫');
+  return 'matched (shard '+label+')';
+}
 function evaluateSections() {
   const actual={sections:{...sectionPass}};
   const total=Object.values(actual.sections).reduce((a,b)=>a+b,0);
   const wantUpdate=process.env.GEOMETRY_CDP_UPDATE_GOLDEN;
   _log('CDP_SECTIONS '+Object.keys(actual.sections).length+' 段,合計 '+total+' 通過斷言');
   if(wantUpdate!==undefined && wantUpdate!=='1'){failN++;_log('[CDP FLOOR] GEOMETRY_CDP_UPDATE_GOLDEN 只接受 1');}
+  if(scope.mode==='shard')return evaluateShardSections(actual,wantUpdate);
   if(scope.mode!=='full'){
     if(wantUpdate){failN++;_log('[CDP FLOOR] 部分模式不可更新 golden(golden 只記完整模式)');return 'update-refused (partial mode)';}
     _log('[CDP FLOOR] 部分模式,未比對 golden。各段通過數:'+JSON.stringify(actual.sections));
@@ -362,15 +440,57 @@ function evaluateSections() {
   return 'matched';
 }
 
+/* 分片切點的瀏覽器儲存交接(canvas_shards.json 的 boundaries)。後一片從全新的 profile 與服務開始;
+   完整模式在切點時 localStorage 裡留著前面各段的「工具教學已看過」「參數圖解已收合」等偏好,
+   會改變後面各段看到的教學卡。完整模式與前一片在同一切點逐項核對(不符即 failN++ 並印出實際值),
+   後一片開頭照它寫入後整頁重載。兩者都不印判定、不計入任何段。 */
+async function verifyShardHandoff(boundary) {
+  const rules=shards.loadPlan().boundaries[boundary-1].localStorage;
+  const actual=shards.normalizeStorage(await eval_(shards.SNAPSHOT_EXPRESSION));
+  const diffs=shards.compareStorage(rules,actual);
+  shardHandoff.outgoing={boundary,localStorage:actual,matched:diffs.length===0};
+  if(!diffs.length){_log('[CDP SHARD] 第 '+boundary+' 個切點的瀏覽器儲存與 canvas_shards.json 相符:'+JSON.stringify(actual));return;}
+  failN++;
+  _log('[CDP SHARD] 第 '+boundary+' 個切點的瀏覽器儲存與 canvas_shards.json 不符,後一片會從不同的狀態開始:'+JSON.stringify(diffs));
+  _log('[CDP SHARD] 本次切點實際值(確認來源後整段替換 boundaries['+(boundary-1)+'].localStorage):'+JSON.stringify(actual));
+}
+async function applyShardHandoff(boundary) {
+  const rules=shards.loadPlan().boundaries[boundary-1].localStorage;
+  const storage=shards.materializeStorage(rules,(await eval_(shards.SNAPSHOT_EXPRESSION)).paramGridLessonToken);
+  const marker=require('crypto').randomUUID();
+  const injected=await send('Page.addScriptToEvaluateOnNewDocument',{source:'window.__cdpExpectedNavigationMarker='+JSON.stringify(marker)+';'});
+  try {
+    await eval_(shards.applyExpression(storage));
+    await send('Page.reload',{});
+    await waitForExpectedNavigation({evaluate:eval_,marker,label:'canvas shard handoff reload',timeout:30000,pollInterval:100,
+      condition:`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`});
+  } finally {await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:injected.result.identifier});}
+  const applied=shards.normalizeStorage(await eval_(shards.SNAPSHOT_EXPRESSION));
+  const diffs=shards.compareStorage(rules,applied);
+  if(diffs.length)throw Error('Canvas shard handoff did not survive the reload: '+JSON.stringify(diffs));
+  shardHandoff.incoming={boundary,localStorage:applied};
+  _log('[CDP SHARD] 已套用第 '+boundary+' 個切點的瀏覽器儲存並重載:'+JSON.stringify(applied));
+}
+
 async function main() {
   await connect();
   await send("Runtime.enable");
   await send("Page.enable");
   await send("Network.enable");
+  if(process.env.GEOMETRY_R116_FRESH_STAGE==='open'){
+    // Observe the empty profile before app scripts initialize their own stores.
+    await send('Page.addScriptToEvaluateOnNewDocument',{source:"window.__r116FreshStart={local:Object.keys(localStorage),session:Object.keys(sessionStorage)};"});
+    setTimeout(()=>fatal(Error('R116 fresh-profile child timed out')),120000).unref();
+  }
   await send('Runtime.addBinding',{name:'__geometryCdpTransportFailure'});
   await send('Page.addScriptToEvaluateOnNewDocument',{source:`(()=>{
     const install=${installClientTransportTrace.toString()};
-    const start=()=>install(window,record=>window.__geometryCdpTransportFailure(JSON.stringify(record)));
+    const start=()=>install(window,record=>window.__geometryCdpTransportFailure(JSON.stringify(record)),undefined,{all:true,expectedFault:record=>{
+      const receipts=window.__geometryExpectedTransportFaults;
+      if(!Array.isArray(receipts))return null;
+      const index=receipts.findIndex(receipt=>receipt.command===record.command&&receipt.error===record.error);
+      return index<0?null:receipts.splice(index,1)[0];
+    }});
     if(typeof window.apiRequest==='function')start();
     else document.addEventListener('DOMContentLoaded',start,{once:true});
   })()`});
@@ -395,9 +515,22 @@ async function main() {
   await waitForUI(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`,30000);
   if (!await eval_(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`))
     throw Error('Application did not finish loading: '+JSON.stringify(await eval_(`({state:document.readyState,url:location.href,api:typeof api,message:document.querySelector('#connectionMessage')?.textContent})`)));
-  if (!process.env.GEOMETRY_ROOM_OUTLINE_ONLY) {
+  // 完整序列的區塊歸屬:完整模式全部執行,分片模式只執行本片的連續區段;部分模式維持原本的旗標條件。
+  const inSequence=n=>scope.mode==='full'||(scope.mode==='shard'&&scope.shard.index===n);
+  const notOtherShard=n=>scope.mode!=='shard'||scope.shard.index===n;
+  if(scope.mode==='shard'&&scope.shard.index>1)await applyShardHandoff(scope.shard.index-1);
+  const runTimberReuse=()=>require('./timber_reuse_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
+  const runCanvasContextMenu=()=>require('./canvas_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
+  if(process.env.GEOMETRY_TIMBER_REUSE_ONLY){
+    await runTimberReuse();
+  } else if(process.env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY){
+    await runCanvasContextMenu();
+  } else {
+  if (!process.env.GEOMETRY_PANEL_FILL_ONLY) {
+  if (!process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY) {
+  if (!process.env.GEOMETRY_ROOM_OUTLINE_ONLY && !process.env.GEOMETRY_ROOM_CANDIDATE_ONLY && !process.env.GEOMETRY_IDENTITY_LEDGER_ONLY) {
   if (!process.env.GEOMETRY_PARAMETERS_ONLY && !process.env.GEOMETRY_ASSEMBLY_ONLY && !process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY) {
-  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY) {
+  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY && !process.env.GEOMETRY_DEFINITION_IMPORT_ONLY && notOtherShard(1)) {
   if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY && !process.env.GEOMETRY_CDP_FROM_P31) {
   /* 清世界 + 建一個乾淨的測試場：一片游離面、一個空容器 */
   console.log('=== Setup. 確認重置隔離驗收專案 ===');
@@ -6227,7 +6360,13 @@ async function main() {
     /* 真實放置後核心 footprint 的 cross 範圍 = 帶的範圍 */
     pt48 = await openFace48();
     await click(pt48(2000, 1500).x, pt48(2000, 1500).y);
-    await sleep(400);
+    /* 放置包含多筆非同步指令；畫面靜穩不能代替核心完成，足跡仍按原值驗。 */
+    await cdp.makeSettle({waitForUI,eval_},{tag:'P52-5',timeoutMs:5000})(
+      '角材 3 放置交易已收尾且核心 references 已回傳幾何',
+      `(async()=>{const refs=await apiRequest('references');
+        if(refs.ok!==true)throw Error('P52-5 references 失敗: '+JSON.stringify(refs));
+        return !oc.busy&&!ReferenceWorkspace.history.group&&
+          (refs.timbers||[]).some(t=>t.id===3&&!!t.geometry);})()`);
     const g = await eval_(`(async()=>{ const refs = await apiRequest('references');
       const t = (refs.timbers || []).find(x => x.id === 3); return t && t.geometry; })()`);
     const fxLo = g && Math.min(g.origin[0], g.origin[0] + g.axes[1][0] * g.A);
@@ -6351,16 +6490,16 @@ async function main() {
     console.log('P53 wait for injected connection error');
     await waitForExpectedNavigation({evaluate:eval_, marker:navigationMarker, label:'P53 injected connection error',
       condition:`typeof connection !== 'undefined' && connection.phase === 'error'`});
-    const failedStart = await eval_(`({message:$('connectionMessage').textContent,empty:$('emptyState').hidden,count:$('objectCountBadge').textContent,inert:$('app').inert})`);
-    check('P53-1 初始 403 明示錯誤、未知數量、停用編輯', failedStart.message.includes('403') && failedStart.empty && failedStart.count === '—' && failedStart.inert, failedStart);
+    const failedStart = await eval_(`({message:$('connectionMessage').textContent,empty:$('emptyState').hidden,count:$('objectCountBadge').textContent,inert:$('app').inert,phase:connection.phase,error:connection.error})`);
+    check('P53-1 初始 403 明示錯誤、未知數量、停用編輯', failedStart.message.includes('403') && failedStart.empty && failedStart.count === '—' && failedStart.inert && failedStart.phase === 'error' && typeof failedStart.error === 'string' && failedStart.error.length > 0 && failedStart.error.includes('403'), failedStart);
     const offlineRequests = await eval_(`__g197Commands.length`);
     await key('p','KeyP',80);
     check('P53-2 失敗時快捷鍵不送建立指令', await eval_(`__g197Commands.length`) === offlineRequests);
     await eval_(`__g197Mode='';__g197Commands=[]`);
     await ctl('#connectionRetry');
     await until(`connection.phase === 'ready'`);
-    const recovered = await eval_(`({commands:__g197Commands.slice(),count:$('objectCountBadge').textContent,hidden:$('connectionNotice').hidden})`);
-    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden, recovered);
+    const recovered = await eval_(`({commands:__g197Commands.slice(),count:$('objectCountBadge').textContent,hidden:$('connectionNotice').hidden,error:connection.error})`);
+    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|dump-deidentified|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden && recovered.error === '', recovered);
     check('P53-4 重試前後世界逐字相同', typeof beforeConnection === 'string' && await eval_(`api('dump').then(r=>r.text)`) === beforeConnection);
     const cached = await eval_(`JSON.stringify([oc.faces,oc.surfs,oc.bmap])`);
     await eval_(`__g197Mode='partial';renderObjects()`);
@@ -6603,18 +6742,34 @@ async function main() {
     check('P61-8b 未就緒預覽的點按不觸發例外',excN===failedPdfExceptions);
     await ctl('#refClose');
     check('P61-9 PDF 讀取失敗保留原場景',await eval_(`api('dump').then(r=>r.text===${JSON.stringify(lastDump)})`));
-    check('P61-10 載入未送達時，重試連線保留原幾何與來源',await eval_(`(async()=>{
+    const uploadNotSentRecovery = await eval_(`(async()=>{
       const oldFetch=window.fetch.bind(window),before=(await api('dump')).text,ref=ReferenceWorkspace.active(1).id;
-      window.fetch=async(input,init)=>{if(input==='/upload/confirm')throw new TypeError('test upload disconnected');return oldFetch(input,init);};
-      let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
-      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===before&&ReferenceWorkspace.active(1).id===ref;
-    })()`));
-    check('P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源',await eval_(`(async()=>{
+      let confirmIntercepted=false;
+      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){confirmIntercepted=true;throw new TypeError('test upload disconnected');}return oldFetch(input,init);};
+      let blocked=false,importFailure=null;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';importFailure={name:e.name,message:e.message};}finally{window.fetch=oldFetch;}
+      const seed={phase:connection.phase,error:connection.error};
+      await recoverConnection();
+      const after=(await api('dump')).text,source=ReferenceWorkspace.active(1).id;
+      const proof={confirmIntercepted,blocked,importFailure,seed,phase:connection.phase,error:connection.error,beforeDump:before,afterDump:after,dumpMatches:after===before,sourceId:source,expectedSourceId:ref,sourceMatches:source===ref};
+      proof.passed=confirmIntercepted&&seed.phase==='error'&&typeof seed.error==='string'&&seed.error.length>0&&blocked&&connection.phase==='ready'&&connection.error===''&&proof.dumpMatches&&proof.sourceMatches;
+      return proof;
+    })()`);
+    console.log('GEO320_RECOVERY_PROOF '+JSON.stringify({case:'P61-10',...uploadNotSentRecovery}));
+    check('P61-10 載入未送達時，重試連線保留原幾何與來源',uploadNotSentRecovery.passed,uploadNotSentRecovery);
+    const uploadResponseLostRecovery = await eval_(`(async()=>{
       const oldFetch=window.fetch.bind(window);
-      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){await oldFetch(input,init);throw new TypeError('test response lost');}return oldFetch(input,init);};
-      let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
-      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===g198Dump&&ReferenceWorkspace.active(1).calibration.distanceMm===1600&&typeof curScene.path==='string'&&curScene.path.endsWith('.scene');
-    })()`));
+      let confirmIntercepted=false,confirmationResponseReceived=false,confirmationResponseOK=false,confirmationStatus=null;
+      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){confirmIntercepted=true;const response=await oldFetch(input,init);confirmationResponseReceived=true;confirmationResponseOK=response.ok;confirmationStatus=response.status;throw new TypeError('test response lost');}return oldFetch(input,init);};
+      let blocked=false,importFailure=null;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';importFailure={name:e.name,message:e.message};}finally{window.fetch=oldFetch;}
+      const seed={phase:connection.phase,error:connection.error};
+      await recoverConnection();
+      const after=(await api('dump')).text,distanceMm=ReferenceWorkspace.active(1).calibration.distanceMm,scenePath=curScene.path;
+      const proof={confirmIntercepted,confirmationResponseReceived,confirmationResponseOK,confirmationStatus,blocked,importFailure,seed,phase:connection.phase,error:connection.error,expectedDump:g198Dump,afterDump:after,dumpMatches:after===g198Dump,distanceMm,scenePath};
+      proof.passed=confirmIntercepted&&confirmationResponseReceived&&confirmationResponseOK&&seed.phase==='error'&&typeof seed.error==='string'&&seed.error.length>0&&blocked&&connection.phase==='ready'&&connection.error===''&&proof.dumpMatches&&distanceMm===1600&&typeof scenePath==='string'&&scenePath.endsWith('.scene');
+      return proof;
+    })()`);
+    console.log('GEO320_RECOVERY_PROOF '+JSON.stringify({case:'P61-11',...uploadResponseLostRecovery}));
+    check('P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源',uploadResponseLostRecovery.passed,uploadResponseLostRecovery);
     await eval_(`ReferenceWorkspace.openSource(g198PDF,1)`);
     await field('refTarget','new');
     await eval_(`(async()=>{
@@ -7114,45 +7269,73 @@ async function main() {
   }
 
   }
-  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY && notOtherShard(1))
     await require('./project_audit_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY && notOtherShard(1))
     await require('./engineering_workflow_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY && notOtherShard(1))
     await require('./marquee_test.js')({send, eval_, sleep, click, dblclick, drag, dragMod, pressDownMod, moveMod, waitForUI, exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
+  if (inSequence(1) || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./grid_system_test.js')({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
+  if (inSequence(1) || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./grid_rule_editor_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
+  if (inSequence(1) || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./grid_rule_lines_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  /* 第 1 個分片切點(P88 之後、P72 之前):完整模式與第 1 片在此核對交給第 2 片的瀏覽器儲存。 */
+  if (inSequence(1))
+    await verifyShardHandoff(1);
   if (process.env.GEOMETRY_INFINITE_FACE_ONLY)
     await require('./infinite_grid_face_test.js')({send,eval_,sleep,click,waitForUI});
-  if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (inSequence(2) || process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./composition_canvas_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_UIUX_FIX_ONLY)
+  if (inSequence(2) || process.env.GEOMETRY_COMPOSITION_ONLY)
+    await require('./grid_inspector_rename_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  if (inSequence(2) || process.env.GEOMETRY_UIUX_FIX_ONLY)
     await require('./uiux_review_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_UX_REFINEMENT_ONLY)
+  if (inSequence(2) || process.env.GEOMETRY_UX_REFINEMENT_ONLY)
     await require('./ux_refinement_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,expectBeforeUnload:()=>{expectedBeforeUnloadUntil=Date.now()+15000;},exceptionCount:()=>excN});
-  if (scope.mode==='full' || process.env.GEOMETRY_SELECTION_CURSOR_ONLY)
+  if (inSequence(2) || process.env.GEOMETRY_SELECTION_CURSOR_ONLY)
     await require('./selection_cursor_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
 
   }
-  if(scope.mode==='full'||process.env.GEOMETRY_PARAMETERS_ONLY)await require('./parameter_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_workflow_test.js')({send,eval_,sleep,click,dblclick,drag,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_context_entry_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_schedule_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_supports_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./source_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_PARAMETERS_ONLY)await require('./parameter_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_workflow_test.js')({send,eval_,sleep,click,dblclick,drag,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_context_entry_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_bay_repeat_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_schedule_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./cutting_plan_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_supports_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./source_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   }
-  if(scope.mode==='full'||process.env.GEOMETRY_ROOM_OUTLINE_ONLY)await require('./room_outline_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full')await require('./model_snapshot_schedule_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if(scope.mode==='full')await require('./model_snapshot_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_ROOM_OUTLINE_ONLY)await require('./room_outline_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_IDENTITY_LEDGER_ONLY)await require('./identity_ledger_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_ROOM_CANDIDATE_ONLY){
+    await require('./room_candidate_browser_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+    await require('./room_candidate_cold_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN,browserProfile:scope.browserProfile});
+  }
+  if(inSequence(2))await require('./model_snapshot_schedule_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  if(inSequence(2))await require('./model_snapshot_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(inSequence(2))await runCanvasContextMenu();
+  if(inSequence(2))await runTimberReuse();
+  }
+  } // PANEL_FILL_ONLY owns only its complete PF workflow.
+  if(inSequence(2)||process.env.GEOMETRY_PANEL_FILL_ONLY)
+    await require('./panel_fill_workflow_test.js')({send,eval_,sleep,click,dblclick,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY)
+    await require('./grid_card_entry_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  /* Last on purpose: its fresh reopen wipes origin storage, which would reset state later sections rely on.
+     It also stays last in the last canvas shard. */
+  if(inSequence(2)||process.env.GEOMETRY_DEFINITION_IMPORT_ONLY)await require('./definition_import_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  }
+  if(shardJournal){
+    shardJournal.end(scope.shard.index+'/'+scope.shard.count);
+    shardJournal.finish();
+  }
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
   const goldenCompare=evaluateSections();
   _log(`\n=== 結果:${passN} 通過斷言 / ${failN} 失敗斷言 / ${skipped.length} 略過群組 (${scope.mode}) ===`);
-  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,firstNetworkFailure:transportFailureTrace?.first()||null,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),goldenCompare,uncaughtBrowserExceptions:excN,coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
+  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),sectionOrder,goldenCompare,uncaughtBrowserExceptions:excN,unexpectedBrowserExceptions:unexpectedExcN,elapsedSeconds:Math.round((Date.now()-startedAt)/1000),...(Object.keys(shardHandoff).length?{handoff:shardHandoff}:{}),coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
   process.exit(failN > 0 ? 1 : 0);
 }
 async function fatal(e) {
@@ -7170,11 +7353,22 @@ async function fatal(e) {
     }
   } catch(captureError) {_log('FATAL_CAPTURE_FAILED:',captureError.message);}
   finally {
-    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,firstNetworkFailure:transportFailureTrace?.first()||null,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),currentSection,goldenCompare:'not compared (run did not complete)'}));
+    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),sectionOrder,currentSection,goldenCompare:'not compared (run did not complete)',uncaughtBrowserExceptions:excN,unexpectedBrowserExceptions:unexpectedExcN,elapsedSeconds:Math.round((Date.now()-startedAt)/1000),...(Object.keys(shardHandoff).length?{handoff:shardHandoff}:{})}));
     chrome?.kill();process.exit(1);
   }
 }
 if(require.main===module){
-  try {scope=runConfiguration();console.log=recordLog;(async()=>{await assertPortAvailable(PORT);chrome=startBrowser();chrome.on('error',fatal);_log('CDP_SCOPE '+JSON.stringify(scope));await main();})().catch(fatal);}
+  try {
+    scope=runConfiguration();
+    if(scope.mode==='shard'){
+      const shardEvidencePlan=canvasEvidence.loadPlan();
+      scope.evidencePlanSha256=shardEvidencePlan.sha256;
+      const id=scope.shard.index+'/'+scope.shard.count;
+      shardJournal=canvasEvidence.createJournal(shardEvidencePlan,id,event=>_log('CANVAS_SHARD_EVENT '+canvasEvidence.stable(event)));
+      shardJournal.begin(id);
+    }
+    console.log=recordLog;
+    (async()=>{await assertPortAvailable(PORT);chrome=startBrowser();chrome.on('error',fatal);_log('CDP_SCOPE '+JSON.stringify(scope));await main();})().catch(fatal);
+  }
   catch(error){_log('CDP preflight failed:',error.message);process.exitCode=1;}
 } else module.exports={runConfiguration,assertionVerdicts,evaluationValue,explicitVerdict,assertPortAvailable,verifyBrowserOwnership};

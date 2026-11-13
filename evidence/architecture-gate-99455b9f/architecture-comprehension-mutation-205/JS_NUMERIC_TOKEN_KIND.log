@@ -1,0 +1,18 @@
+test_javascript_operator_strings_are_not_numeric_coercion (__main__.ArchitectureContract.test_javascript_operator_strings_are_not_numeric_coercion) ... FAIL
+
+======================================================================
+FAIL: test_javascript_operator_strings_are_not_numeric_coercion (__main__.ArchitectureContract.test_javascript_operator_strings_are_not_numeric_coercion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1241, in test_javascript_operator_strings_are_not_numeric_coercion
+    self.rejects("JS_COMPUTED_KEY_UNSUPPORTED")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+----------------------------------------------------------------------
+Ran 1 test in 0.017s
+
+FAILED (failures=1)

@@ -1,0 +1,44 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_geo261_native_grid_rules",
+    "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load"
+  ],
+  "shell": false,
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T12:47:15.522506+00:00",
+  "started_ns": 1792327635522518916,
+  "timeout_seconds": 900.0,
+  "timed_out": false,
+  "interrupted": false,
+  "returncode": 1,
+  "launch_error": null,
+  "pid": 123405,
+  "ended_utc": "2026-10-18T12:47:53.381199+00:00",
+  "ended_ns": 1792327673381221998,
+  "seconds": 37.8587010809988,
+  "streams": {
+    "stdout": {
+      "device": 27,
+      "inode": 1454033,
+      "bytes": 0,
+      "mtime_ns": 1792327635522474621,
+      "ctime_ns": 1792327635522474621,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "stderr": {
+      "device": 27,
+      "inode": 1454034,
+      "bytes": 5615,
+      "mtime_ns": 1792327673355686800,
+      "ctime_ns": 1792327673355686800,
+      "sha256": "05e024e89b7959aee41a93fe2d052b38aaeb86d772361d939b0b862447901c0e",
+      "exists": true
+    }
+  }
+}

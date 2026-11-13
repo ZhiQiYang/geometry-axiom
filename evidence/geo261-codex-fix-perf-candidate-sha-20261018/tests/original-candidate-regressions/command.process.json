@@ -1,0 +1,50 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "tests/run_all.py",
+    "--only",
+    "py:test_geo261_candidate_cache",
+    "--only",
+    "py:test_geo261_native_candidate",
+    "--only",
+    "py:test_geo261_host_candidate",
+    "--only",
+    "py:test_geo261_candidate_product",
+    "--only",
+    "py:test_geo261_staged_candidate_graph"
+  ],
+  "shell": false,
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T12:17:22.540481+00:00",
+  "started_ns": 1792325842540501220,
+  "timeout_seconds": 1800.0,
+  "timed_out": false,
+  "interrupted": false,
+  "returncode": 0,
+  "launch_error": null,
+  "pid": 112731,
+  "ended_utc": "2026-10-18T12:17:58.745444+00:00",
+  "ended_ns": 1792325878745526342,
+  "seconds": 36.2050231860012,
+  "streams": {
+    "stdout": {
+      "device": 27,
+      "inode": 1449434,
+      "bytes": 7043,
+      "mtime_ns": 1792325878713260575,
+      "ctime_ns": 1792325878713260575,
+      "sha256": "39121181c80d012a556767c5ed9c2aa58319f46b8064dace5022923dc0f5ed23",
+      "exists": true
+    },
+    "stderr": {
+      "device": 27,
+      "inode": 1449435,
+      "bytes": 0,
+      "mtime_ns": 1792325842538912068,
+      "ctime_ns": 1792325842538912068,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    }
+  }
+}

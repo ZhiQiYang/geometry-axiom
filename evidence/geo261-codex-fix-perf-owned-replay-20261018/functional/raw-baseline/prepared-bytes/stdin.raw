@@ -1,0 +1,10 @@
+dump
+loadfile /workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/raw-fixtures/candidate-file-replay.scene
+dump
+load-prepare /workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/raw-fixtures/candidate-file-replay.scene
+dump
+load-confirm 1
+dump
+load-confirm 1
+line undo
+dump

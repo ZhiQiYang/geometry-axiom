@@ -1,0 +1,308 @@
+{
+  "kind": "original-pf2-host-regressions-and-pf3-referee",
+  "source": "a3aeef41adb1bc3bb5d0da0b941342387373a238",
+  "source_root": "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-closure-a3aeef41-v1",
+  "started_utc": "2026-10-16T03:38:56.612571+00:00",
+  "finished_utc": "2026-10-16T03:39:41.654532+00:00",
+  "recipe": {
+    "source": "a3aeef41adb1bc3bb5d0da0b941342387373a238",
+    "label": "pf3-regressions-a3aeef41-v1",
+    "modules": [
+      "tests.test_panel_fill_layout",
+      "tests.test_panel_fill_host"
+    ],
+    "module_counts": {
+      "tests.test_panel_fill_layout": 18,
+      "tests.test_panel_fill_host": 32
+    },
+    "expected_tests": 50,
+    "mutation_cases": 19,
+    "mutation_positive_tests_each": 20,
+    "original_source_sha256": {
+      "tests/test_panel_fill_layout.py": "f3898c73db7ead9c80528e8cf80001d2cd8e2b556de4d582a6f0fe70b74cb0c6",
+      "tests/test_panel_fill_host.py": "4ca444c39b5816f5ffefd968ee77ea11f105b797147d9ea4304bb170fd6584cd",
+      "tests/test_panel_fill_support.py": "fc4183f20270cb19c3207cec17b41f42825525c0a629be0d094ea467b5d90136",
+      "tests/pf3_mutation_check.py": "1a2a6083f82e11a725092bbbc1a8d11aa5b2945e8d34bf99d31ca68b734915b5"
+    },
+    "mutation_driver": "tests/pf3_mutation_check.py",
+    "mutation_targets": [
+      {
+        "id": "effective-merge",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "if(*count&&out[*count-1].line==line&&out[*count-1].range[1]==lo)",
+        "after": "if(false&&*count&&out[*count-1].line==line&&out[*count-1].range[1]==lo)",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_D43_stagger_band_identity_signed_and_T_point",
+        "requiredMarker": "D43_T_POINT"
+      },
+      {
+        "id": "unplaced",
+        "path": "geometry-core/panel_fill_support.inc",
+        "before": "!w->timbers[i].placed||w->anchors[i].placement_id!=host->id",
+        "after": "w->anchors[i].placement_id!=host->id",
+        "matchCount": 1,
+        "sourceSha256": "187943afe8da2caa2832d08fb4d304a49cdd18f1e8a67b37e3bf7f33c0487065",
+        "selection": "test_R43_unplaced_timbers_on_zero_id_host_do_not_count",
+        "requiredMarker": "PF3_UNPLACED"
+      },
+      {
+        "id": "two-sides",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "if(!present[0]||!present[1])",
+        "after": "if(!present[0]&&!present[1])",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_D43_holes_notches_and_obstacles_remove_only_one_sided_seams",
+        "requiredMarker": "D43_TWO_SIDES"
+      },
+      {
+        "id": "board-vertices",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "cuts[nc++]=pf_component(frag->loops[l].points[v],other);",
+        "after": "if(l==0)cuts[nc++]=pf_component(frag->loops[l].points[v],other);",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_PF23_original_algorithm_three_segments_and_same_input_equivalence",
+        "requiredMarker": "PF23_ORIGINAL"
+      },
+      {
+        "id": "footprint-vertices",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "cuts[nc++]=rects[r].lo[other];cuts[nc++]=rects[r].hi[other];",
+        "after": "/* removed footprint cuts */",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_PF23_E1_legal_five_actual_widths_and_threshold_only",
+        "requiredMarker": "PF23_LEGAL"
+      },
+      {
+        "id": "maximal-merge",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "if(last->seam==seam&&last->range[1]==lo&&last->left==left&&last->right==right)",
+        "after": "if(false&&last->seam==seam&&last->range[1]==lo&&last->left==left&&last->right==right)",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_PF24_E2_E3_legal_merge_identical_widths",
+        "requiredMarker": "PF24"
+      },
+      {
+        "id": "merge-colours",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "last->left==left&&last->right==right",
+        "after": "last->supported==(pf_support_enough(left,threshold)&&pf_support_enough(right,threshold))",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_PF23_E1_legal_five_actual_widths_and_threshold_only",
+        "requiredMarker": "PF23_LEGAL"
+      },
+      {
+        "id": "open-sample",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "y2=lo+hi;",
+        "after": "y2=2*lo;",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_PF23_E1_legal_five_actual_widths_and_threshold_only",
+        "requiredMarker": "PF23_LEGAL"
+      },
+      {
+        "id": "footprint-union",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "out[i].lo<=out[used-1].hi",
+        "after": "out[i].lo<out[used-1].hi",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_R43_union_continuity_and_ignore_isolated_cut_values",
+        "requiredMarker": "R43_UNION"
+      },
+      {
+        "id": "continuous-width",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "left&&un[i].lo<edge&&edge<=un[i].hi",
+        "after": "left&&un[i].lo<edge",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_R43_union_continuity_and_ignore_isolated_cut_values",
+        "requiredMarker": "R43_GAP"
+      },
+      {
+        "id": "host-identity",
+        "path": "geometry-core/panel_fill_support.inc",
+        "before": "!w->timbers[i].placed||w->anchors[i].placement_id!=host->id",
+        "after": "!w->timbers[i].placed",
+        "matchCount": 1,
+        "sourceSha256": "187943afe8da2caa2832d08fb4d304a49cdd18f1e8a67b37e3bf7f33c0487065",
+        "selection": "test_R43_no_host_and_other_coplanar_host_do_not_support",
+        "requiredMarker": "PF3_HOST_FILTER"
+      },
+      {
+        "id": "finish-reflection",
+        "path": "geometry-core/panel_fill_support.inc",
+        "before": "r->lo[1]=coord_min(finish->side*f.min_v,finish->side*f.max_v);",
+        "after": "r->lo[1]=f.min_v;",
+        "matchCount": 1,
+        "sourceSha256": "187943afe8da2caa2832d08fb4d304a49cdd18f1e8a67b37e3bf7f33c0487065",
+        "selection": "test_R43_negative_structure_side_and_vertical_frame_real_footprints",
+        "requiredMarker": "R43_FRAME"
+      },
+      {
+        "id": "finish-reflection",
+        "path": "geometry-core/panel_fill_support.inc",
+        "before": "r->hi[1]=coord_max(finish->side*f.min_v,finish->side*f.max_v);",
+        "after": "r->hi[1]=f.max_v;",
+        "matchCount": 1,
+        "sourceSha256": "187943afe8da2caa2832d08fb4d304a49cdd18f1e8a67b37e3bf7f33c0487065",
+        "selection": "test_R43_negative_structure_side_and_vertical_frame_real_footprints",
+        "requiredMarker": "R43_FRAME"
+      },
+      {
+        "id": "hidden-threshold",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "return d>x.num/x.den||(d==x.num/x.den&&x.num%x.den==0);",
+        "after": "return d>=8;",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_PF06_positive_rational_comparison_and_rename_reorder",
+        "requiredMarker": "PF06_RATIONAL"
+      },
+      {
+        "id": "rounded-threshold",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "return d>x.num/x.den||(d==x.num/x.den&&x.num%x.den==0);",
+        "after": "return d>=x.num/x.den;",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_PF06_positive_rational_comparison_and_rename_reorder",
+        "requiredMarker": "PF06_RATIONAL"
+      },
+      {
+        "id": "overflow-comparison",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "return d>x.num/x.den||(d==x.num/x.den&&x.num%x.den==0);",
+        "after": "return (uint64_t)d*(uint64_t)x.den>=(uint64_t)x.num;",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_PF06_extreme_rational_does_not_overflow_comparison",
+        "requiredMarker": "PF06_OVERFLOW"
+      },
+      {
+        "id": "odd-gap-edges",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "sl->coordinate-d->gap/2,sl->coordinate+(d->gap-d->gap/2)",
+        "after": "sl->coordinate,sl->coordinate",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_D43_positive_odd_gap_uses_board_edges_and_both_axes",
+        "requiredMarker": "D43_ODD_GAP"
+      },
+      {
+        "id": "band-range",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "if(sl->staggered&&(lo<sl->range[0]||hi>sl->range[1]))continue;",
+        "after": "/* removed band clipping */",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_D43_stagger_band_identity_signed_and_T_point",
+        "requiredMarker": "D43_NEGATIVE_BAND"
+      },
+      {
+        "id": "capacity-early",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "if(*count==WOOD_PANEL_SUPPORT_MAX)return (*status=WOOD_PANEL_SUPPORT_SEAM_LIMIT,false)",
+        "after": "if(*count==WOOD_PANEL_SUPPORT_MAX-1)return (*status=WOOD_PANEL_SUPPORT_SEAM_LIMIT,false)",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_PF13_capacity_N_N1_is_complete_or_explicit_rejection",
+        "requiredMarker": "PF3_CAPACITY_N"
+      },
+      {
+        "id": "capacity-truncate",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "if(*count==WOOD_PANEL_SUPPORT_MAX)return (*status=WOOD_PANEL_SUPPORT_SEAM_LIMIT,false);",
+        "after": "if(*count==WOOD_PANEL_SUPPORT_MAX)return true;",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_PF13_capacity_N_N1_is_complete_or_explicit_rejection",
+        "requiredMarker": "PF3_CAPACITY_N1"
+      },
+      {
+        "id": "capacity-truncate",
+        "path": "geometry-templates/woodworking/native/panel_support.c",
+        "before": "if(s->part_count==WOOD_PANEL_SUPPORT_MAX){status=WOOD_PANEL_SUPPORT_PART_LIMIT;goto done;}",
+        "after": "if(s->part_count==WOOD_PANEL_SUPPORT_MAX)continue;",
+        "matchCount": 1,
+        "sourceSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+        "selection": "test_PF13_capacity_N_N1_is_complete_or_explicit_rejection",
+        "requiredMarker": "PF3_CAPACITY_N1"
+      }
+    ],
+    "scope": "Original PF-2 layout and host regressions plus unchanged PF-3 referee baseline20/19 mutations/restored20. No duplicate separate support run, full aggregate or browser claim."
+  },
+  "commands": {
+    "build": [
+      "python3",
+      "-u",
+      "tests/binaries.py",
+      "build",
+      "bridge",
+      "pf3-algorithm"
+    ],
+    "status-before": [
+      "python3",
+      "-u",
+      "tests/binaries.py",
+      "status",
+      "bridge",
+      "pf3-algorithm"
+    ],
+    "status-after": [
+      "python3",
+      "-u",
+      "tests/binaries.py",
+      "status",
+      "bridge",
+      "pf3-algorithm"
+    ]
+  },
+  "exit_codes": {
+    "build": 1,
+    "status-before": 1,
+    "status-after": 1
+  },
+  "original_layout_host_pass": false,
+  "original_expected_tests": 50,
+  "mutation_referee_pass": false,
+  "mutation_summary": null,
+  "source_files": 15947,
+  "source_unchanged": true,
+  "source_before_sha256": "a0eea0b5dd80e7387215d3a344097d6757b793b3428f350abc4b0a34eed809ec",
+  "source_after_sha256": "a0eea0b5dd80e7387215d3a344097d6757b793b3428f350abc4b0a34eed809ec",
+  "runner_sha256_before": {
+    "run.py": "e6e235315ca73fdd32d8b2c3a0cb02e2ad131aef7553087421665d3d17b0d537",
+    "namespace.sh": "2750468e6d53338f51bb88e6c1830f094355eca6d301700a9753f8b05fbdd0b9",
+    "recipe.json": "c059ee775298d12d30365776e004538a1b3a24374aebc8ebeff0dd8afabbca06"
+  },
+  "runner_sha256_after": {
+    "run.py": "e6e235315ca73fdd32d8b2c3a0cb02e2ad131aef7553087421665d3d17b0d537",
+    "namespace.sh": "2750468e6d53338f51bb88e6c1830f094355eca6d301700a9753f8b05fbdd0b9",
+    "recipe.json": "c059ee775298d12d30365776e004538a1b3a24374aebc8ebeff0dd8afabbca06"
+  },
+  "runners_unchanged": true,
+  "registry_binary_artifacts": {
+    "bridge": {
+      "sha256": "50cd223854d18f7089128ecb3576b1eacdcf7c07f96c6187ac56ff4d2000d73a",
+      "bytes": 719512,
+      "sidecarSha256": "9fd65d8c5805ded04cc47cd1c942b4e26ffa0c004ccacf73442cc0988ae95e19"
+    }
+  },
+  "log_sha256": {
+    "build.log": "0c7695001454d67fdd037df3dc6a0d72a42fd3b5b457123280ba5a1f32f78307",
+    "status-after.log": "cabb593631186e3e9f450f73e4f28b10fa74a9defd9870b055b7ddd030524302",
+    "status-before.log": "cabb593631186e3e9f450f73e4f28b10fa74a9defd9870b055b7ddd030524302"
+  },
+  "shared_lock_holder": "pid=202 start=2026-10-16T03:36:01Z label= args=run WSL_CI_JOB_TAG=geo261-pf3-regressions-a3aeef41 bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/pf3-a3aeef41/namespace.sh\n",
+  "full_suite_executed": false,
+  "browser_executed": false,
+  "exit": 1
+}

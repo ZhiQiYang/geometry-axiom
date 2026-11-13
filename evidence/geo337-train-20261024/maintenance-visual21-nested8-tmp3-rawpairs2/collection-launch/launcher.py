@@ -1,0 +1,7 @@
+from pathlib import Path
+import hashlib,importlib.util,os,json,sys
+p=Path('/workspace/collect_visual_nested_tmp_stdout_alias_originals_20261024.py');assert hashlib.sha256(p.read_bytes()).hexdigest()=='42731aa4a5b39436ce7a7084acb5c3dd681e2dddbeadac2f2c1a1f32c85e1020'
+cap=Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py');assert hashlib.sha256(cap.read_bytes()).hexdigest()=='c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762'
+s=importlib.util.spec_from_file_location('capture',cap);c=importlib.util.module_from_spec(s);s.loader.exec_module(c)
+out=Path('/workspace/visual-nested-tmp-stdout-alias-originals-collection-launch-20261024');out.mkdir();r=c.Recorder(out,dict(os.environ,PYTHONDONTWRITEBYTECODE='1'),'2bbe54f19b2d19e8a816530f0c4edca950629a34');argv=[sys.executable,'-B',str(p)];free=os.statvfs('/workspace').f_bavail*os.statvfs('/workspace').f_frsize;c.dump(out/'REQUEST.json',dict(argv=argv,collector_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),static_peer='/workspace/train337-canvas-peer-resume/FOUR_SCOPE_ALIAS_COLLECTOR_STATIC_PEER.json',subject='historical maintenance only; every original source SHA remains inside PLAN',workspace_free=free));assert free>=32*1024*1024
+row,stdout,stderr=r.run(argv,cwd='/workspace',timeout=None,check=False,source_variant='exact221payload-excluded-original-metadata-collection');c.dump(out/'RESULT.json',row);print(json.dumps(dict(exit_code=row['actual_process_returncode'],stdout=stdout.decode(),stderr=stderr.decode())));sys.exit(row['actual_process_returncode'])

@@ -1,0 +1,1557 @@
+{
+  "schema": "geo261-topic-evidence-inventory/1",
+  "repository_prefix": "evidence/geo261-codex-fix-m11-live-anchor-20261018",
+  "status": "精確候選公開集合；尚未複製／commit／push，人工判讀見 results",
+  "public_count": 219,
+  "public_bytes": 2176619,
+  "inventory_itself": "本檔另行加入，不自指 hash",
+  "public_files": [
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/publication-v1/README.md",
+      "destination_relative": "README.md",
+      "bytes": 9530,
+      "sha256": "7849f1a0ef346a92d9ce0675f7ff928774e8304bdb653f971e761941792fd2a4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/after.binaries.json",
+      "destination_relative": "after-m11-freshness/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "e0e4b7b9f17aee4a1450d1e40845e63acdd405f6519153dc8aa2481af2880a55"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/after.binary-00.sidecar.json",
+      "destination_relative": "after-m11-freshness/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/after.binary-01.sidecar.json",
+      "destination_relative": "after-m11-freshness/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/after.binary-02.sidecar.json",
+      "destination_relative": "after-m11-freshness/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/artifact-00-after-M11.json",
+      "destination_relative": "after-m11-freshness/artifact-00-after-M11.json",
+      "bytes": 52252,
+      "sha256": "4a12c2c564df026cf2cb0f0b2f4023f552ef772324a4488bbf6097946a81a44b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/artifact-01-baseline.exe.fingerprint.json",
+      "destination_relative": "after-m11-freshness/artifact-01-baseline.exe.fingerprint.json",
+      "bytes": 357,
+      "sha256": "40c52788565f5bd66ba4e58e1b985f1809d2a723bc86cb6828e755152a14e47d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/artifact-02-_mut.exe.fingerprint.json",
+      "destination_relative": "after-m11-freshness/artifact-02-_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "bda5a1834734c9b2ae0b283aab1ecdc2f60683704161476e697a340c9e9ba026"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/before.binaries.json",
+      "destination_relative": "after-m11-freshness/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "cb761950756d91b06bd6678541915efdbd79aed7a25c16b4f766cab6a79dd46f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/before.binary-00.sidecar.json",
+      "destination_relative": "after-m11-freshness/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/before.binary-01.sidecar.json",
+      "destination_relative": "after-m11-freshness/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/before.binary-02.sidecar.json",
+      "destination_relative": "after-m11-freshness/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/command.process.json",
+      "destination_relative": "after-m11-freshness/command.process.json",
+      "bytes": 1177,
+      "sha256": "9544968a89c93b24f11594dc5ebe89734dfb8723c1497855c7f3664d9333da06"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/command.stderr",
+      "destination_relative": "after-m11-freshness/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/command.stdout",
+      "destination_relative": "after-m11-freshness/command.stdout",
+      "bytes": 407,
+      "sha256": "0ab51c58f64042c247900664a71b210c50b01796c1732c8b08ecd56c73e5a017"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/receipt.json",
+      "destination_relative": "after-m11-freshness/receipt.json",
+      "bytes": 18636,
+      "sha256": "799179c89a3eb0c628dec29fe809195cbc34b7f72832c78fe2b98a2b165f3733"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/suite-logs.manifest.json",
+      "destination_relative": "after-m11-freshness/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/tool-chrome.stdout",
+      "destination_relative": "after-m11-freshness/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/tool-chromium.stdout",
+      "destination_relative": "after-m11-freshness/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/tool-gcc.stdout",
+      "destination_relative": "after-m11-freshness/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/tool-node.stdout",
+      "destination_relative": "after-m11-freshness/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11-freshness/tool-python.stdout",
+      "destination_relative": "after-m11-freshness/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/after.binaries.json",
+      "destination_relative": "after-m11/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "86ae7b0b1cd5e84c75919c5234a92af9ba0586cc7e256be177034a51064d6115"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/after.binary-00.sidecar.json",
+      "destination_relative": "after-m11/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/after.binary-01.sidecar.json",
+      "destination_relative": "after-m11/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/after.binary-02.sidecar.json",
+      "destination_relative": "after-m11/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/artifact-00-after-M11.json",
+      "destination_relative": "after-m11/artifact-00-after-M11.json",
+      "bytes": 52252,
+      "sha256": "4a12c2c564df026cf2cb0f0b2f4023f552ef772324a4488bbf6097946a81a44b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/artifact-01-baseline.exe.fingerprint.json",
+      "destination_relative": "after-m11/artifact-01-baseline.exe.fingerprint.json",
+      "bytes": 357,
+      "sha256": "40c52788565f5bd66ba4e58e1b985f1809d2a723bc86cb6828e755152a14e47d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/artifact-02-_mut.exe.fingerprint.json",
+      "destination_relative": "after-m11/artifact-02-_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "bda5a1834734c9b2ae0b283aab1ecdc2f60683704161476e697a340c9e9ba026"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/before.binaries.json",
+      "destination_relative": "after-m11/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "3671997db1c129597b0e2ef2abdd504de08b1b3b75114e7a8866f9b6ce3e44a6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/before.binary-00.sidecar.json",
+      "destination_relative": "after-m11/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/before.binary-01.sidecar.json",
+      "destination_relative": "after-m11/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/before.binary-02.sidecar.json",
+      "destination_relative": "after-m11/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/command.process.json",
+      "destination_relative": "after-m11/command.process.json",
+      "bytes": 1034,
+      "sha256": "da118d1f9d6d0dec7fecfa0934b9d224b8fac2193a98d906b9fe81f7a8c6c70b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/command.stderr",
+      "destination_relative": "after-m11/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/command.stdout",
+      "destination_relative": "after-m11/command.stdout",
+      "bytes": 981,
+      "sha256": "94959380323ba58731d76f7efd61eb9a3593839b61d47f43fff59b721eebb22a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/receipt.json",
+      "destination_relative": "after-m11/receipt.json",
+      "bytes": 20221,
+      "sha256": "560f55639bca26561b162d347b2b24f531e7278d1a6167a4cc324a0a86f0660d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/suite-logs.manifest.json",
+      "destination_relative": "after-m11/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/tool-chrome.stdout",
+      "destination_relative": "after-m11/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/tool-chromium.stdout",
+      "destination_relative": "after-m11/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/tool-gcc.stdout",
+      "destination_relative": "after-m11/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/tool-node.stdout",
+      "destination_relative": "after-m11/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-m11/tool-python.stdout",
+      "destination_relative": "after-m11/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/after.binaries.json",
+      "destination_relative": "after-regressions/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "fc6e09166fcc418de72f6a368936fb3209a0a8065a94457c9a8ca4efc42f4b4b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/after.binary-00.sidecar.json",
+      "destination_relative": "after-regressions/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/after.binary-01.sidecar.json",
+      "destination_relative": "after-regressions/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/after.binary-02.sidecar.json",
+      "destination_relative": "after-regressions/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/before.binaries.json",
+      "destination_relative": "after-regressions/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "832f884dcc4d291f7928e1783ab715a953023a24e7bf8067d80ce9d2ddca4a01"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/before.binary-00.sidecar.json",
+      "destination_relative": "after-regressions/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/before.binary-01.sidecar.json",
+      "destination_relative": "after-regressions/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/before.binary-02.sidecar.json",
+      "destination_relative": "after-regressions/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/command.process.json",
+      "destination_relative": "after-regressions/command.process.json",
+      "bytes": 1155,
+      "sha256": "868bba730391bd68f3a39ef5515c0340359a3cfe050bfab2e31b4b870cf90509"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/command.stderr",
+      "destination_relative": "after-regressions/command.stderr",
+      "bytes": 9620,
+      "sha256": "ba7ff2500595e497e50d6271e56b0d5d229cef6b23dd5007c79a4782d2606a01"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/command.stdout",
+      "destination_relative": "after-regressions/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/receipt.json",
+      "destination_relative": "after-regressions/receipt.json",
+      "bytes": 13638,
+      "sha256": "a31bbc4d8499b89d649e84f4e84db5eb7eecfdd873dfc40d4b2ecb7f3994d130"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/suite-logs.manifest.json",
+      "destination_relative": "after-regressions/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/tool-chrome.stdout",
+      "destination_relative": "after-regressions/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/tool-chromium.stdout",
+      "destination_relative": "after-regressions/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/tool-gcc.stdout",
+      "destination_relative": "after-regressions/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/tool-node.stdout",
+      "destination_relative": "after-regressions/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/after-regressions/tool-python.stdout",
+      "destination_relative": "after-regressions/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/after.binaries.json",
+      "destination_relative": "before-m11-invalid/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "812298a0c5fcd9373d7fd4ef5919b17763c753d7f37a22c574a554ef91ab3a4e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/after.binary-00.sidecar.json",
+      "destination_relative": "before-m11-invalid/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/after.binary-01.sidecar.json",
+      "destination_relative": "before-m11-invalid/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/after.binary-02.sidecar.json",
+      "destination_relative": "before-m11-invalid/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/artifact-00-before-invalid.json",
+      "destination_relative": "before-m11-invalid/artifact-00-before-invalid.json",
+      "bytes": 712,
+      "sha256": "5312042d99d9daa7e8d01d07c68ad803170bfa92041af914e78a827e33c3a933"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/before.binaries.json",
+      "destination_relative": "before-m11-invalid/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "ef4cd66885d42431da0bd63a71c6870041e0ee7bbb7d4af40b1630a4b9200976"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/before.binary-00.sidecar.json",
+      "destination_relative": "before-m11-invalid/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/before.binary-01.sidecar.json",
+      "destination_relative": "before-m11-invalid/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/before.binary-02.sidecar.json",
+      "destination_relative": "before-m11-invalid/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/command.process.json",
+      "destination_relative": "before-m11-invalid/command.process.json",
+      "bytes": 1035,
+      "sha256": "e0897efd614a20927ab9566c8d662aac0c1fa741af53ffb7ecf7ead347ce2cac"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/command.stderr",
+      "destination_relative": "before-m11-invalid/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/command.stdout",
+      "destination_relative": "before-m11-invalid/command.stdout",
+      "bytes": 743,
+      "sha256": "9de14c8777c4b197acab38e6b50a5c60ae373bd2223f95fea406c1bcd916a6f7"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/receipt.json",
+      "destination_relative": "before-m11-invalid/receipt.json",
+      "bytes": 14917,
+      "sha256": "47cb38abdbf126eeaaa6515785ed2fb07aed0ce7a3c4570605a81024c4757aa5"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/suite-logs.manifest.json",
+      "destination_relative": "before-m11-invalid/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/tool-chrome.stdout",
+      "destination_relative": "before-m11-invalid/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/tool-chromium.stdout",
+      "destination_relative": "before-m11-invalid/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/tool-gcc.stdout",
+      "destination_relative": "before-m11-invalid/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/tool-node.stdout",
+      "destination_relative": "before-m11-invalid/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-m11-invalid/tool-python.stdout",
+      "destination_relative": "before-m11-invalid/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/after.binaries.json",
+      "destination_relative": "before-migration/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "10fe4125951564a30f75366edda9015679397eeeb9bf5c9bfa674b151afd66d1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/after.binary-00.sidecar.json",
+      "destination_relative": "before-migration/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/after.binary-01.sidecar.json",
+      "destination_relative": "before-migration/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/after.binary-02.sidecar.json",
+      "destination_relative": "before-migration/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/before.binaries.json",
+      "destination_relative": "before-migration/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "7ab67b276169ba5e7c6af6a52933e6057b60aaec7b914ed75fb4b1624a64bdf2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/before.binary-00.sidecar.json",
+      "destination_relative": "before-migration/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/before.binary-01.sidecar.json",
+      "destination_relative": "before-migration/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/before.binary-02.sidecar.json",
+      "destination_relative": "before-migration/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/command.process.json",
+      "destination_relative": "before-migration/command.process.json",
+      "bytes": 1107,
+      "sha256": "05f474014825b1be784d0fae3c7696c69f3247c0bd7e2892d233e82c915d9043"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/command.stderr",
+      "destination_relative": "before-migration/command.stderr",
+      "bytes": 1147,
+      "sha256": "141f102924fd57d13132aa683c40f836985d58e4c32202e0efa04b01fff20372"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/command.stdout",
+      "destination_relative": "before-migration/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/receipt.json",
+      "destination_relative": "before-migration/receipt.json",
+      "bytes": 13536,
+      "sha256": "61147f904195e06f85729141f5911eed9a1d2ad7128767b0a9e75b59ca076165"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/suite-logs.manifest.json",
+      "destination_relative": "before-migration/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/tool-chrome.stdout",
+      "destination_relative": "before-migration/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/tool-chromium.stdout",
+      "destination_relative": "before-migration/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/tool-gcc.stdout",
+      "destination_relative": "before-migration/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/tool-node.stdout",
+      "destination_relative": "before-migration/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/before-migration/tool-python.stdout",
+      "destination_relative": "before-migration/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/publication-v1/manual-ledger.json",
+      "destination_relative": "manual-ledger.json",
+      "bytes": 18619,
+      "sha256": "2aed321144eccc011510a4d2ce045793eec200ce1e57167c64f23bf1fbf0b1a9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/results/after-M11.json",
+      "destination_relative": "mutation-results/after-M11.json",
+      "bytes": 52252,
+      "sha256": "4a12c2c564df026cf2cb0f0b2f4023f552ef772324a4488bbf6097946a81a44b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/results/before-invalid.json",
+      "destination_relative": "mutation-results/before-invalid.json",
+      "bytes": 712,
+      "sha256": "5312042d99d9daa7e8d01d07c68ad803170bfa92041af914e78a827e33c3a933"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/results/withdrawn-invalid.json",
+      "destination_relative": "mutation-results/withdrawn-invalid.json",
+      "bytes": 712,
+      "sha256": "5312042d99d9daa7e8d01d07c68ad803170bfa92041af914e78a827e33c3a933"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/after.binaries.json",
+      "destination_relative": "oracle-baseline-raw/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "79b1c9d01d03b451cea0a96aa4f0caf1c4ca9a4ef74d990d78c98ee3ba345c80"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/after.binary-00.sidecar.json",
+      "destination_relative": "oracle-baseline-raw/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/after.binary-01.sidecar.json",
+      "destination_relative": "oracle-baseline-raw/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/after.binary-02.sidecar.json",
+      "destination_relative": "oracle-baseline-raw/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/artifact-01-baseline.exe.fingerprint.json",
+      "destination_relative": "oracle-baseline-raw/artifact-01-baseline.exe.fingerprint.json",
+      "bytes": 357,
+      "sha256": "40c52788565f5bd66ba4e58e1b985f1809d2a723bc86cb6828e755152a14e47d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/before.binaries.json",
+      "destination_relative": "oracle-baseline-raw/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "bd0cf4ab9009ceeecff5a52d8d5cf75d1d8d495e0da4b7b03280dc4b46fe1bd3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/before.binary-00.sidecar.json",
+      "destination_relative": "oracle-baseline-raw/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/before.binary-01.sidecar.json",
+      "destination_relative": "oracle-baseline-raw/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/before.binary-02.sidecar.json",
+      "destination_relative": "oracle-baseline-raw/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/command.process.json",
+      "destination_relative": "oracle-baseline-raw/command.process.json",
+      "bytes": 1127,
+      "sha256": "003bac4e798976880ee8ab884a4fe2db7a8737df5cbbe61a4814d798042073b7"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/command.stderr",
+      "destination_relative": "oracle-baseline-raw/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/command.stdout",
+      "destination_relative": "oracle-baseline-raw/command.stdout",
+      "bytes": 23579,
+      "sha256": "1546bd049327b16e55f4f466cd5d0b0f6e0c5091f509b0cacba1aaa525ca1891"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/receipt.json",
+      "destination_relative": "oracle-baseline-raw/receipt.json",
+      "bytes": 16763,
+      "sha256": "7d8ae63246890aa713a4ad47c1c0582a2abed03b6c80fdaa437190c59c5022f0"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/suite-logs.manifest.json",
+      "destination_relative": "oracle-baseline-raw/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/tool-chrome.stdout",
+      "destination_relative": "oracle-baseline-raw/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/tool-chromium.stdout",
+      "destination_relative": "oracle-baseline-raw/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/tool-gcc.stdout",
+      "destination_relative": "oracle-baseline-raw/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/tool-node.stdout",
+      "destination_relative": "oracle-baseline-raw/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-baseline-raw/tool-python.stdout",
+      "destination_relative": "oracle-baseline-raw/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/after.binaries.json",
+      "destination_relative": "oracle-mutant-raw/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "24e078fc2f4d01056094495f1ff5d4f9ad5be7b0a058fe500688c3a44e43fca0"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/after.binary-00.sidecar.json",
+      "destination_relative": "oracle-mutant-raw/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/after.binary-01.sidecar.json",
+      "destination_relative": "oracle-mutant-raw/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/after.binary-02.sidecar.json",
+      "destination_relative": "oracle-mutant-raw/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/artifact-01-_mut.exe.fingerprint.json",
+      "destination_relative": "oracle-mutant-raw/artifact-01-_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "bda5a1834734c9b2ae0b283aab1ecdc2f60683704161476e697a340c9e9ba026"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/before.binaries.json",
+      "destination_relative": "oracle-mutant-raw/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "fa3ce086c18ba9796e1d3f38258e029d666b45e02d6f5ae9f309211bbc234a6a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/before.binary-00.sidecar.json",
+      "destination_relative": "oracle-mutant-raw/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/before.binary-01.sidecar.json",
+      "destination_relative": "oracle-mutant-raw/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/before.binary-02.sidecar.json",
+      "destination_relative": "oracle-mutant-raw/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/command.process.json",
+      "destination_relative": "oracle-mutant-raw/command.process.json",
+      "bytes": 1116,
+      "sha256": "b11a9eed687e340b2b2164b774f41c2ab5bcd1838db8ff73cb76bbb8ba599e1a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/command.stderr",
+      "destination_relative": "oracle-mutant-raw/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/command.stdout",
+      "destination_relative": "oracle-mutant-raw/command.stdout",
+      "bytes": 27059,
+      "sha256": "31c4a2ed160f4db3e1a2ea8f461b3f9fb732d5b482e286905695272ad319986a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/receipt.json",
+      "destination_relative": "oracle-mutant-raw/receipt.json",
+      "bytes": 16680,
+      "sha256": "9e8b2207c6957395a515c34fbac017fd8f872d297c9561cdad62320f3be85d7f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/suite-logs.manifest.json",
+      "destination_relative": "oracle-mutant-raw/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/tool-chrome.stdout",
+      "destination_relative": "oracle-mutant-raw/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/tool-chromium.stdout",
+      "destination_relative": "oracle-mutant-raw/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/tool-gcc.stdout",
+      "destination_relative": "oracle-mutant-raw/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/tool-node.stdout",
+      "destination_relative": "oracle-mutant-raw/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/oracle-mutant-raw/tool-python.stdout",
+      "destination_relative": "oracle-mutant-raw/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/publication-v1/patches/fix.patch",
+      "destination_relative": "patches/fix.patch",
+      "bytes": 1632,
+      "sha256": "570103443cbf0802123b13463746157cf80fd8e624cb81a082659f3b1ac8cc2a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/publication-v1/patches/withdraw.patch",
+      "destination_relative": "patches/withdraw.patch",
+      "bytes": 1623,
+      "sha256": "77664561b35dbe04e82e5b4f0834c7784312e21c7140c93cfd98536321c6ff89"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/after.binaries.json",
+      "destination_relative": "restored-m11-freshness/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "d487419565f5e64dbf312434ec683113ba443a7fe7fb05a2cc3e721f75d99e29"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/after.binary-00.sidecar.json",
+      "destination_relative": "restored-m11-freshness/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/after.binary-01.sidecar.json",
+      "destination_relative": "restored-m11-freshness/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/after.binary-02.sidecar.json",
+      "destination_relative": "restored-m11-freshness/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/artifact-00-after-M11.json",
+      "destination_relative": "restored-m11-freshness/artifact-00-after-M11.json",
+      "bytes": 52252,
+      "sha256": "4a12c2c564df026cf2cb0f0b2f4023f552ef772324a4488bbf6097946a81a44b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/artifact-01-baseline.exe.fingerprint.json",
+      "destination_relative": "restored-m11-freshness/artifact-01-baseline.exe.fingerprint.json",
+      "bytes": 357,
+      "sha256": "40c52788565f5bd66ba4e58e1b985f1809d2a723bc86cb6828e755152a14e47d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/artifact-02-_mut.exe.fingerprint.json",
+      "destination_relative": "restored-m11-freshness/artifact-02-_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "bda5a1834734c9b2ae0b283aab1ecdc2f60683704161476e697a340c9e9ba026"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/before.binaries.json",
+      "destination_relative": "restored-m11-freshness/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "9ad41819d28e9f53ef61aec27ff1c2f2c318bcefb68574d97937a9701e304838"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/before.binary-00.sidecar.json",
+      "destination_relative": "restored-m11-freshness/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/before.binary-01.sidecar.json",
+      "destination_relative": "restored-m11-freshness/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/before.binary-02.sidecar.json",
+      "destination_relative": "restored-m11-freshness/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/command.process.json",
+      "destination_relative": "restored-m11-freshness/command.process.json",
+      "bytes": 1178,
+      "sha256": "8e9496cb31654b53a6d01734dc10857871085de69b3e75cfc720a24ea94844dd"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/command.stderr",
+      "destination_relative": "restored-m11-freshness/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/command.stdout",
+      "destination_relative": "restored-m11-freshness/command.stdout",
+      "bytes": 407,
+      "sha256": "0ab51c58f64042c247900664a71b210c50b01796c1732c8b08ecd56c73e5a017"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/receipt.json",
+      "destination_relative": "restored-m11-freshness/receipt.json",
+      "bytes": 18646,
+      "sha256": "0c0c5eec175b61cd95ab8b68369ad79b5ea29251c21de9a130a98c8a69000756"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/suite-logs.manifest.json",
+      "destination_relative": "restored-m11-freshness/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/tool-chrome.stdout",
+      "destination_relative": "restored-m11-freshness/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/tool-chromium.stdout",
+      "destination_relative": "restored-m11-freshness/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/tool-gcc.stdout",
+      "destination_relative": "restored-m11-freshness/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/tool-node.stdout",
+      "destination_relative": "restored-m11-freshness/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-m11-freshness/tool-python.stdout",
+      "destination_relative": "restored-m11-freshness/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/after.binaries.json",
+      "destination_relative": "restored-regressions/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "4c47411b703268bdfa3a9eed29b0abcf610b33ea46ba7065385751debe7d02e8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/after.binary-00.sidecar.json",
+      "destination_relative": "restored-regressions/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/after.binary-01.sidecar.json",
+      "destination_relative": "restored-regressions/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/after.binary-02.sidecar.json",
+      "destination_relative": "restored-regressions/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/before.binaries.json",
+      "destination_relative": "restored-regressions/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "2b65f889e113c9b4c71e785f9610b1fd718d7b016633d73ca93edc70444f5932"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/before.binary-00.sidecar.json",
+      "destination_relative": "restored-regressions/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/before.binary-01.sidecar.json",
+      "destination_relative": "restored-regressions/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/before.binary-02.sidecar.json",
+      "destination_relative": "restored-regressions/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/command.process.json",
+      "destination_relative": "restored-regressions/command.process.json",
+      "bytes": 1155,
+      "sha256": "01244eb925cdbbacadfbe3f6c703ad1d203015606d1771600ee29b62e5cfd632"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/command.stderr",
+      "destination_relative": "restored-regressions/command.stderr",
+      "bytes": 9620,
+      "sha256": "60b180dd89c25d07c3ec33ce5f500ac0992750e76373cc6bac60b15a12ecaaf5"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/command.stdout",
+      "destination_relative": "restored-regressions/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/receipt.json",
+      "destination_relative": "restored-regressions/receipt.json",
+      "bytes": 13647,
+      "sha256": "2d3d3464410c547b1a8165f82c1232e80d0ed44fa76eae903a6b5a0f461279c9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/suite-logs.manifest.json",
+      "destination_relative": "restored-regressions/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/tool-chrome.stdout",
+      "destination_relative": "restored-regressions/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/tool-chromium.stdout",
+      "destination_relative": "restored-regressions/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/tool-gcc.stdout",
+      "destination_relative": "restored-regressions/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/tool-node.stdout",
+      "destination_relative": "restored-regressions/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/restored-regressions/tool-python.stdout",
+      "destination_relative": "restored-regressions/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/publication-v1/results.json",
+      "destination_relative": "results.json",
+      "bytes": 81246,
+      "sha256": "9bd58047b83e1264ab5843b58f5d7658b771ce9ef003f86eca4a4d068acee056"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/after.binaries.json",
+      "destination_relative": "withdrawn-m11-invalid/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "453a9a3c0ecadda055b463b9f251c5f5ec0a496ed4b532e6f32161034b98d953"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/after.binary-00.sidecar.json",
+      "destination_relative": "withdrawn-m11-invalid/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/after.binary-01.sidecar.json",
+      "destination_relative": "withdrawn-m11-invalid/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/after.binary-02.sidecar.json",
+      "destination_relative": "withdrawn-m11-invalid/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/artifact-00-withdrawn-invalid.json",
+      "destination_relative": "withdrawn-m11-invalid/artifact-00-withdrawn-invalid.json",
+      "bytes": 712,
+      "sha256": "5312042d99d9daa7e8d01d07c68ad803170bfa92041af914e78a827e33c3a933"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/before.binaries.json",
+      "destination_relative": "withdrawn-m11-invalid/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "bf63fa0d7923bbc79f8ecc00511a6d62ef82863ca09257a2c3a5726ae03ab7e1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/before.binary-00.sidecar.json",
+      "destination_relative": "withdrawn-m11-invalid/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/before.binary-01.sidecar.json",
+      "destination_relative": "withdrawn-m11-invalid/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/before.binary-02.sidecar.json",
+      "destination_relative": "withdrawn-m11-invalid/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/command.process.json",
+      "destination_relative": "withdrawn-m11-invalid/command.process.json",
+      "bytes": 1034,
+      "sha256": "ea225f3543813cfdd7bbff01d1535980cfcf63aec16f76e1390c8e914c5723bf"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/command.stderr",
+      "destination_relative": "withdrawn-m11-invalid/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/command.stdout",
+      "destination_relative": "withdrawn-m11-invalid/command.stdout",
+      "bytes": 743,
+      "sha256": "9de14c8777c4b197acab38e6b50a5c60ae373bd2223f95fea406c1bcd916a6f7"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/receipt.json",
+      "destination_relative": "withdrawn-m11-invalid/receipt.json",
+      "bytes": 14940,
+      "sha256": "2ac7a3804ca90a7b2ec3c41cdd905cf0de3b67ec587fe5006f3d1bfa64a297ef"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/suite-logs.manifest.json",
+      "destination_relative": "withdrawn-m11-invalid/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/tool-chrome.stdout",
+      "destination_relative": "withdrawn-m11-invalid/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/tool-chromium.stdout",
+      "destination_relative": "withdrawn-m11-invalid/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/tool-gcc.stdout",
+      "destination_relative": "withdrawn-m11-invalid/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/tool-node.stdout",
+      "destination_relative": "withdrawn-m11-invalid/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-m11-invalid/tool-python.stdout",
+      "destination_relative": "withdrawn-m11-invalid/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/after.binaries.json",
+      "destination_relative": "withdrawn-migration/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "40ff2a00e6519625851a8e81091e0fe6a7722bae58d7a2cb4b49a78a315d0487"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/after.binary-00.sidecar.json",
+      "destination_relative": "withdrawn-migration/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/after.binary-01.sidecar.json",
+      "destination_relative": "withdrawn-migration/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/after.binary-02.sidecar.json",
+      "destination_relative": "withdrawn-migration/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/before.binaries.json",
+      "destination_relative": "withdrawn-migration/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "7c16c96b4ae44b782fba26a41f7dbde3288b611af7a397914d183a413f50e3f0"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/before.binary-00.sidecar.json",
+      "destination_relative": "withdrawn-migration/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/before.binary-01.sidecar.json",
+      "destination_relative": "withdrawn-migration/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/before.binary-02.sidecar.json",
+      "destination_relative": "withdrawn-migration/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/command.process.json",
+      "destination_relative": "withdrawn-migration/command.process.json",
+      "bytes": 1108,
+      "sha256": "79287a18caaedc479cc58093f372117b50636b1e667b4b08e97c7fe214ab0269"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/command.stderr",
+      "destination_relative": "withdrawn-migration/command.stderr",
+      "bytes": 1147,
+      "sha256": "b15bc1b82dbe9a475c3837f54e9e81a9928fd5fb21905c90f9fc6af8536ca99b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/command.stdout",
+      "destination_relative": "withdrawn-migration/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/receipt.json",
+      "destination_relative": "withdrawn-migration/receipt.json",
+      "bytes": 13546,
+      "sha256": "79a0bb91aa9fd041abb33932cc609a091b73428841db273e5e21eb1556333945"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/suite-logs.manifest.json",
+      "destination_relative": "withdrawn-migration/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/tool-chrome.stdout",
+      "destination_relative": "withdrawn-migration/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/tool-chromium.stdout",
+      "destination_relative": "withdrawn-migration/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/tool-gcc.stdout",
+      "destination_relative": "withdrawn-migration/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/tool-node.stdout",
+      "destination_relative": "withdrawn-migration/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/m11-live-anchor/withdrawn-migration/tool-python.stdout",
+      "destination_relative": "withdrawn-migration/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    }
+  ],
+  "omitted_recorded_identities": [
+    {
+      "relative_path": "before-migration/before.source.json",
+      "bytes": 1535224,
+      "sha256": "17f600ed07f9d41d80454369121e36cbbc7c32fe7c0f5d2947114668bd45b846",
+      "identity_source": "before-migration/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "before-migration/after.source.json",
+      "bytes": 1535224,
+      "sha256": "b67158cea7529978d60957ca6041b79f1c6a5a018df77aaa1d2323c802eb9d5a",
+      "identity_source": "before-migration/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "before-migration/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "before-migration/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "before-m11-invalid/before.source.json",
+      "bytes": 1535224,
+      "sha256": "7ea082e5f902a3d1c4701561cab5d99fae5b1576c97ce90acab56db55f315abd",
+      "identity_source": "before-m11-invalid/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "before-m11-invalid/after.source.json",
+      "bytes": 1535224,
+      "sha256": "9dec51e0b5d41748a00632eaa5d6feaade0305acdf130075e6a25c3ddeda6f2a",
+      "identity_source": "before-m11-invalid/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "before-m11-invalid/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "before-m11-invalid/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-regressions/before.source.json",
+      "bytes": 1535224,
+      "sha256": "3f92bf939f998bd8a3e41fd25a2e2fe6ae1aa7ba1e62fd517d7ce93c71971746",
+      "identity_source": "after-regressions/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-regressions/after.source.json",
+      "bytes": 1535224,
+      "sha256": "12e7537f394e933ce8c2d5a1cbf39a5eb03556da316436ab69c45f11fc0820d2",
+      "identity_source": "after-regressions/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-regressions/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "after-regressions/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-m11/before.source.json",
+      "bytes": 1535224,
+      "sha256": "56b9ff73a637628ec454ef2682ad1370d09bef757e40647b0119925c64e51dd6",
+      "identity_source": "after-m11/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-m11/after.source.json",
+      "bytes": 1535224,
+      "sha256": "8ec022e79141e385b6f986b4d7e27d9ff4e013e20057dfe41939cebe33ac5f9f",
+      "identity_source": "after-m11/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-m11/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "after-m11/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-m11-freshness/before.source.json",
+      "bytes": 1535224,
+      "sha256": "8ccde7f00beb5fd92f49bf968e221dff5ba0f23f2d59062bc3b9b39864244f6c",
+      "identity_source": "after-m11-freshness/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-m11-freshness/after.source.json",
+      "bytes": 1535224,
+      "sha256": "41f367544c5609223dc254a1e4f711b458b0b4b67c8301ed736a9ea751c8a41e",
+      "identity_source": "after-m11-freshness/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-m11-freshness/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "after-m11-freshness/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "oracle-baseline-raw/before.source.json",
+      "bytes": 1535224,
+      "sha256": "27e6bded0f64997054719f50a5972a0da9c5d2a933520894643861a8add82d89",
+      "identity_source": "oracle-baseline-raw/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "oracle-baseline-raw/after.source.json",
+      "bytes": 1535224,
+      "sha256": "238d8f08e5c6beceb48f9930d6f4e5a5bc8341b34c3007a125a275dfc4348cee",
+      "identity_source": "oracle-baseline-raw/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "oracle-baseline-raw/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "oracle-baseline-raw/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "oracle-mutant-raw/before.source.json",
+      "bytes": 1535224,
+      "sha256": "cfc645b2c130435229327fdf66d46689ab68840dc481e32d75fa5c0a41e76eb6",
+      "identity_source": "oracle-mutant-raw/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "oracle-mutant-raw/after.source.json",
+      "bytes": 1535224,
+      "sha256": "924c3fbfa41a0a9f11ec4b80405ae460e9e6b4185045e517768c0d13847caef5",
+      "identity_source": "oracle-mutant-raw/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "oracle-mutant-raw/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "oracle-mutant-raw/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "withdrawn-migration/before.source.json",
+      "bytes": 1535183,
+      "sha256": "77089de4e7a8db20bb6ab03bb84a1638758447c699773532fe0cca7527453181",
+      "identity_source": "withdrawn-migration/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "withdrawn-migration/after.source.json",
+      "bytes": 1535183,
+      "sha256": "bafc3a9c0f216961c0242991424235039487069829ddebd9c32eec78a28a4776",
+      "identity_source": "withdrawn-migration/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "withdrawn-migration/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "withdrawn-migration/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "withdrawn-m11-invalid/before.source.json",
+      "bytes": 1535183,
+      "sha256": "c9620e7dd172c3ea42f83a83f09ed403b4d9ebaf1aee497f8b59943b3f4ee862",
+      "identity_source": "withdrawn-m11-invalid/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "withdrawn-m11-invalid/after.source.json",
+      "bytes": 1535183,
+      "sha256": "dd7df2250017795d8d1be5cf6c7e5bfdcfebb8abaae235a9a84469dc01e28a8b",
+      "identity_source": "withdrawn-m11-invalid/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "withdrawn-m11-invalid/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "withdrawn-m11-invalid/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-regressions/before.source.json",
+      "bytes": 1535224,
+      "sha256": "25bafabcb1930de5ebd5877de5767c79699736df28631e29cc28608907145f98",
+      "identity_source": "restored-regressions/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-regressions/after.source.json",
+      "bytes": 1535224,
+      "sha256": "6f212fe8ae436fd061e2b0bf2b689ab8d58767f7da617254d0aaee8f062fbeaa",
+      "identity_source": "restored-regressions/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-regressions/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "restored-regressions/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-m11-freshness/before.source.json",
+      "bytes": 1535224,
+      "sha256": "729cf14cce310cbe060b7bb56d16a0287b4ba699f85ff8391b891b84318bd8fa",
+      "identity_source": "restored-m11-freshness/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-m11-freshness/after.source.json",
+      "bytes": 1535224,
+      "sha256": "9ed9abfc0fbe7de43abcb9b3deaf508394f8f407624d20809ba7f438025c064a",
+      "identity_source": "restored-m11-freshness/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-m11-freshness/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "restored-m11-freshness/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    }
+  ]
+}

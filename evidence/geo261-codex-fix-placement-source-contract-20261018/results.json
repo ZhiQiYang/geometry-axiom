@@ -1,0 +1,1439 @@
+{
+  "schema": "geo261-topic-evidence-results/1",
+  "status": "僅整理原件身份與人工判讀；不代表測試通過、突變成立或已發布",
+  "input_metadata": {
+    "schema": "geo261-topic-evidence-input/1",
+    "topic": "05 承載面來源測試契約遷移；預期／負控錨點過時",
+    "evidence_root": "/workspace/geo261-validation-20261018/fixes/placement-source-contract",
+    "repository_prefix": "evidence/geo261-codex-fix-placement-source-contract-20261018",
+    "branch": "codex/geo261-fix-placement-source-contract-20261018",
+    "base_sha": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+    "source_sha": "f7ce2d212be778b8ac8c66c9afea66bae2fca4e3",
+    "stages": [
+      {
+        "id": "before",
+        "directory": "before",
+        "expected_sha": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+        "claim_review": "reviewed",
+        "claim": {
+          "review_kind": "人工原log、固定Git、protocol核對；collector不判pass/kill",
+          "outer_child_seconds": 19.464623709998705,
+          "scope": "本題原3module共43methods；非PR全量",
+          "test_retraction_distinct_from_product_mutation": true,
+          "methods": 43,
+          "passed": 35,
+          "failures": 8,
+          "errors": 0,
+          "skipped": 0,
+          "suites": [
+            {
+              "name": "py:test_geo261_placement_sources",
+              "methods": 21,
+              "passed": 13,
+              "failed": 8,
+              "skipped": 0,
+              "unittest_seconds": 4.615,
+              "suite_json_seconds": 4.64,
+              "unittest_log": "before/suite-logs/py_test_geo261_placement_sources.unittest.log",
+              "failure_names": [
+                "test_actual_frame_rectangle_and_region_leaves_have_exact_typed_metadata (test_geo261_placement_sources.NativePlacementSources.test_actual_frame_rectangle_and_region_leaves_have_exact_typed_metadata)",
+                "test_binding_value_discard_control_fails_named_consumption_assertion (test_geo261_placement_sources.NativePlacementSources.test_binding_value_discard_control_fails_named_consumption_assertion)",
+                "test_declined_binding_uses_explicit_values_and_region_reference_edge (test_geo261_placement_sources.NativePlacementSources.test_declined_binding_uses_explicit_values_and_region_reference_edge)",
+                "test_empty_region_set_ordered_components_and_borrowed_holes_remain_stable (test_geo261_placement_sources.NativePlacementSources.test_empty_region_set_ordered_components_and_borrowed_holes_remain_stable)",
+                "test_exact_binary_keys_decode_full_uint32_and_preserve_failed_outputs (test_geo261_placement_sources.NativePlacementSources.test_exact_binary_keys_decode_full_uint32_and_preserve_failed_outputs)",
+                "test_region_reference_consumes_core_region_and_records_required_value_edge (test_geo261_placement_sources.NativePlacementSources.test_region_reference_consumes_core_region_and_records_required_value_edge)",
+                "test_same_geometry_without_region_edge_control_fails_named_edge_assertion (test_geo261_placement_sources.NativePlacementSources.test_same_geometry_without_region_edge_control_fails_named_edge_assertion)",
+                "test_every_negative_control_hits_exactly_one_live_expression (test_geo261_placement_sources.PlacementSourcesBoundary.test_every_negative_control_hits_exactly_one_live_expression) (control='binding-value')"
+              ],
+              "assertion_messages": [
+                "0 != 1 : ASSERT:explicit-leaves-have-no-upstream-edges",
+                "1 != 0 : Negative control must hit one real expression",
+                "0 != 1 : ASSERT:declined-binding-never-reads-upstream",
+                "0 != 1 : ASSERT:inline-set-borrows-its-own-store",
+                "0 != 1 : ASSERT:unknown-key-kind-rejected",
+                "0 != 1 : ASSERT:region-reference-has-two-nodes-one-value-edge",
+                "0 != 1 : ASSERT:region-reference-has-two-nodes-one-value-edge",
+                "1 != 0"
+              ]
+            },
+            {
+              "name": "py:test_geo261_placement_definition",
+              "methods": 15,
+              "passed": 15,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 3.97,
+              "suite_json_seconds": 4.0,
+              "unittest_log": "before/suite-logs/py_test_geo261_placement_definition.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            },
+            {
+              "name": "py:test_geo261_host_placement_definition",
+              "methods": 7,
+              "passed": 7,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 10.077,
+              "suite_json_seconds": 10.12,
+              "unittest_log": "before/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "after",
+        "directory": "after",
+        "expected_sha": "f7ce2d212be778b8ac8c66c9afea66bae2fca4e3",
+        "claim_review": "reviewed",
+        "claim": {
+          "review_kind": "人工原log、固定Git、protocol核對；collector不判pass/kill",
+          "outer_child_seconds": 17.990689025999018,
+          "scope": "本題原3module共43methods；非PR全量",
+          "test_retraction_distinct_from_product_mutation": true,
+          "methods": 43,
+          "passed": 43,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "suites": [
+            {
+              "name": "py:test_geo261_placement_sources",
+              "methods": 21,
+              "passed": 21,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 4.673,
+              "suite_json_seconds": 4.7,
+              "unittest_log": "after/suite-logs/py_test_geo261_placement_sources.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            },
+            {
+              "name": "py:test_geo261_placement_definition",
+              "methods": 15,
+              "passed": 15,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 3.735,
+              "suite_json_seconds": 3.76,
+              "unittest_log": "after/suite-logs/py_test_geo261_placement_definition.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            },
+            {
+              "name": "py:test_geo261_host_placement_definition",
+              "methods": 7,
+              "passed": 7,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 8.769,
+              "suite_json_seconds": 8.8,
+              "unittest_log": "after/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "withdrawn",
+        "directory": "withdrawn",
+        "expected_sha": "4ac088db19bfa296bb1634c1c4e3ea1603720dd2",
+        "claim_review": "reviewed",
+        "claim": {
+          "review_kind": "人工原log、固定Git、protocol核對；collector不判pass/kill",
+          "outer_child_seconds": 19.824949298003048,
+          "scope": "本題原3module共43methods；非PR全量",
+          "test_retraction_distinct_from_product_mutation": true,
+          "methods": 43,
+          "passed": 35,
+          "failures": 8,
+          "errors": 0,
+          "skipped": 0,
+          "suites": [
+            {
+              "name": "py:test_geo261_placement_sources",
+              "methods": 21,
+              "passed": 13,
+              "failed": 8,
+              "skipped": 0,
+              "unittest_seconds": 5.511,
+              "suite_json_seconds": 5.54,
+              "unittest_log": "withdrawn/suite-logs/py_test_geo261_placement_sources.unittest.log",
+              "failure_names": [
+                "test_actual_frame_rectangle_and_region_leaves_have_exact_typed_metadata (test_geo261_placement_sources.NativePlacementSources.test_actual_frame_rectangle_and_region_leaves_have_exact_typed_metadata)",
+                "test_binding_value_discard_control_fails_named_consumption_assertion (test_geo261_placement_sources.NativePlacementSources.test_binding_value_discard_control_fails_named_consumption_assertion)",
+                "test_declined_binding_uses_explicit_values_and_region_reference_edge (test_geo261_placement_sources.NativePlacementSources.test_declined_binding_uses_explicit_values_and_region_reference_edge)",
+                "test_empty_region_set_ordered_components_and_borrowed_holes_remain_stable (test_geo261_placement_sources.NativePlacementSources.test_empty_region_set_ordered_components_and_borrowed_holes_remain_stable)",
+                "test_exact_binary_keys_decode_full_uint32_and_preserve_failed_outputs (test_geo261_placement_sources.NativePlacementSources.test_exact_binary_keys_decode_full_uint32_and_preserve_failed_outputs)",
+                "test_region_reference_consumes_core_region_and_records_required_value_edge (test_geo261_placement_sources.NativePlacementSources.test_region_reference_consumes_core_region_and_records_required_value_edge)",
+                "test_same_geometry_without_region_edge_control_fails_named_edge_assertion (test_geo261_placement_sources.NativePlacementSources.test_same_geometry_without_region_edge_control_fails_named_edge_assertion)",
+                "test_every_negative_control_hits_exactly_one_live_expression (test_geo261_placement_sources.PlacementSourcesBoundary.test_every_negative_control_hits_exactly_one_live_expression) (control='binding-value')"
+              ],
+              "assertion_messages": [
+                "0 != 1 : ASSERT:explicit-leaves-have-no-upstream-edges",
+                "1 != 0 : Negative control must hit one real expression",
+                "0 != 1 : ASSERT:declined-binding-never-reads-upstream",
+                "0 != 1 : ASSERT:inline-set-borrows-its-own-store",
+                "0 != 1 : ASSERT:unknown-key-kind-rejected",
+                "0 != 1 : ASSERT:region-reference-has-two-nodes-one-value-edge",
+                "0 != 1 : ASSERT:region-reference-has-two-nodes-one-value-edge",
+                "1 != 0"
+              ]
+            },
+            {
+              "name": "py:test_geo261_placement_definition",
+              "methods": 15,
+              "passed": 15,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 4.218,
+              "suite_json_seconds": 4.25,
+              "unittest_log": "withdrawn/suite-logs/py_test_geo261_placement_definition.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            },
+            {
+              "name": "py:test_geo261_host_placement_definition",
+              "methods": 7,
+              "passed": 7,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 9.276,
+              "suite_json_seconds": 9.3,
+              "unittest_log": "withdrawn/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "restored",
+        "directory": "restored",
+        "expected_sha": "f7ce2d212be778b8ac8c66c9afea66bae2fca4e3",
+        "claim_review": "reviewed",
+        "claim": {
+          "review_kind": "人工原log、固定Git、protocol核對；collector不判pass/kill",
+          "outer_child_seconds": 14.346139667999523,
+          "scope": "本題原3module共43methods；非PR全量",
+          "test_retraction_distinct_from_product_mutation": true,
+          "methods": 43,
+          "passed": 43,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "suites": [],
+          "unittest_seconds": 14.188,
+          "protocol_seconds": 14.21373417200084,
+          "protocol_events": 29,
+          "native_exit1_controls": 5,
+          "protocol_review": "protocol-review.json",
+          "wrapper_difference": "3module同一unittest suite；不同於前三run_all分程序，只有placement run_case旁錄"
+        }
+      }
+    ],
+    "extra_files": [
+      {
+        "path": "publication/README.md",
+        "destination": "README.md",
+        "bytes": 9928,
+        "sha256": "7dc69132d3bb3d7bd86cb02fc408359f10c121d476efce815fd97c96881594bf"
+      },
+      {
+        "path": "publication/protocol-review.json",
+        "destination": "protocol-review.json",
+        "bytes": 33311,
+        "sha256": "2ce76cf9de9c677bcec0c78134fe677fcc6d62668a612bb2d53aec58eb5482f1"
+      },
+      {
+        "path": "publication/source-fix.patch",
+        "destination": "source-fix.patch",
+        "bytes": 15306,
+        "sha256": "6f66c0d5edb9ba471a33ce0bac41a2c54c391f20587f376c865305700892d716"
+      },
+      {
+        "path": "withdrawn-commit.patch",
+        "destination": "withdrawn-commit.patch",
+        "bytes": 15600,
+        "sha256": "f0278c7512a4444b4747052e50918240a6ec28b70d62a685f5a53bf88b18ab75"
+      },
+      {
+        "path": "protocol-restored/result.json",
+        "destination": "protocol-restored/result.json",
+        "bytes": 3576,
+        "sha256": "566fc097266b02acc21d9ca2fa92c106c4286d70bd16201954ff3c15bba12457"
+      },
+      {
+        "path": "protocol-restored/protocol.jsonl",
+        "destination": "protocol-restored/protocol.jsonl",
+        "bytes": 17291,
+        "sha256": "3e7511afd4c796284eed076ced420781ae4a8bc58ee92497d0b8a00faa1d29d0"
+      },
+      {
+        "path": "protocol-restored/unittest.stdout",
+        "destination": "protocol-restored/unittest.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "protocol-restored/unittest.stderr",
+        "destination": "protocol-restored/unittest.stderr",
+        "bytes": 9045,
+        "sha256": "8852800118c2bca74ce4528091536dbd0806f31194ae61470ae27c726fad40e6"
+      },
+      {
+        "path": "protocol-restored/working-tree.patch",
+        "destination": "protocol-restored/working-tree.patch",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "input_metadata_identity": {
+    "bytes": 13685,
+    "sha256": "f3a406d852626a9810451718932bdb5b894e1cf308f4d1b66a172e29f86b5345"
+  },
+  "stages": [
+    {
+      "id": "before",
+      "source_sha": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "-u",
+          "tests/run_all.py",
+          "--only",
+          "py:test_geo261_placement_sources",
+          "--only",
+          "py:test_geo261_placement_definition",
+          "--only",
+          "py:test_geo261_host_placement_definition"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T14:22:42.090768+00:00",
+        "started_ns": 1792333362090788661,
+        "timeout_seconds": 600.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 1,
+        "launch_error": null,
+        "pid": 165360,
+        "ended_utc": "2026-10-18T14:23:01.555394+00:00",
+        "ended_ns": 1792333381555413869,
+        "seconds": 19.464623709998705,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1460218,
+            "bytes": 8553,
+            "mtime_ns": 1792333381540043636,
+            "ctime_ns": 1792333381540043636,
+            "sha256": "ab71d47fe4c4dda3f04a1889e66bd8dde112536c6704ae086143872325f8fc1c",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1460219,
+            "bytes": 0,
+            "mtime_ns": 1792333362088964481,
+            "ctime_ns": 1792333362088964481,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": true,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [
+        {
+          "suite": "py:test_geo261_host_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_host_placement_definition.log"
+        },
+        {
+          "suite": "py:test_geo261_host_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_host_placement_definition.unittest.log"
+        },
+        {
+          "suite": "py:test_geo261_host_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_host_placement_definition.json"
+        },
+        {
+          "suite": "py:test_geo261_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_definition.log"
+        },
+        {
+          "suite": "py:test_geo261_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_definition.unittest.log"
+        },
+        {
+          "suite": "py:test_geo261_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_definition.json"
+        },
+        {
+          "suite": "py:test_geo261_placement_sources",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_sources.log"
+        },
+        {
+          "suite": "py:test_geo261_placement_sources",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_sources.unittest.log"
+        },
+        {
+          "suite": "py:test_geo261_placement_sources",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_sources.json"
+        }
+      ],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "review_kind": "人工原log、固定Git、protocol核對；collector不判pass/kill",
+          "outer_child_seconds": 19.464623709998705,
+          "scope": "本題原3module共43methods；非PR全量",
+          "test_retraction_distinct_from_product_mutation": true,
+          "methods": 43,
+          "passed": 35,
+          "failures": 8,
+          "errors": 0,
+          "skipped": 0,
+          "suites": [
+            {
+              "name": "py:test_geo261_placement_sources",
+              "methods": 21,
+              "passed": 13,
+              "failed": 8,
+              "skipped": 0,
+              "unittest_seconds": 4.615,
+              "suite_json_seconds": 4.64,
+              "unittest_log": "before/suite-logs/py_test_geo261_placement_sources.unittest.log",
+              "failure_names": [
+                "test_actual_frame_rectangle_and_region_leaves_have_exact_typed_metadata (test_geo261_placement_sources.NativePlacementSources.test_actual_frame_rectangle_and_region_leaves_have_exact_typed_metadata)",
+                "test_binding_value_discard_control_fails_named_consumption_assertion (test_geo261_placement_sources.NativePlacementSources.test_binding_value_discard_control_fails_named_consumption_assertion)",
+                "test_declined_binding_uses_explicit_values_and_region_reference_edge (test_geo261_placement_sources.NativePlacementSources.test_declined_binding_uses_explicit_values_and_region_reference_edge)",
+                "test_empty_region_set_ordered_components_and_borrowed_holes_remain_stable (test_geo261_placement_sources.NativePlacementSources.test_empty_region_set_ordered_components_and_borrowed_holes_remain_stable)",
+                "test_exact_binary_keys_decode_full_uint32_and_preserve_failed_outputs (test_geo261_placement_sources.NativePlacementSources.test_exact_binary_keys_decode_full_uint32_and_preserve_failed_outputs)",
+                "test_region_reference_consumes_core_region_and_records_required_value_edge (test_geo261_placement_sources.NativePlacementSources.test_region_reference_consumes_core_region_and_records_required_value_edge)",
+                "test_same_geometry_without_region_edge_control_fails_named_edge_assertion (test_geo261_placement_sources.NativePlacementSources.test_same_geometry_without_region_edge_control_fails_named_edge_assertion)",
+                "test_every_negative_control_hits_exactly_one_live_expression (test_geo261_placement_sources.PlacementSourcesBoundary.test_every_negative_control_hits_exactly_one_live_expression) (control='binding-value')"
+              ],
+              "assertion_messages": [
+                "0 != 1 : ASSERT:explicit-leaves-have-no-upstream-edges",
+                "1 != 0 : Negative control must hit one real expression",
+                "0 != 1 : ASSERT:declined-binding-never-reads-upstream",
+                "0 != 1 : ASSERT:inline-set-borrows-its-own-store",
+                "0 != 1 : ASSERT:unknown-key-kind-rejected",
+                "0 != 1 : ASSERT:region-reference-has-two-nodes-one-value-edge",
+                "0 != 1 : ASSERT:region-reference-has-two-nodes-one-value-edge",
+                "1 != 0"
+              ]
+            },
+            {
+              "name": "py:test_geo261_placement_definition",
+              "methods": 15,
+              "passed": 15,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 3.97,
+              "suite_json_seconds": 4.0,
+              "unittest_log": "before/suite-logs/py_test_geo261_placement_definition.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            },
+            {
+              "name": "py:test_geo261_host_placement_definition",
+              "methods": 7,
+              "passed": 7,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 10.077,
+              "suite_json_seconds": 10.12,
+              "unittest_log": "before/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            }
+          ]
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "before/command.process.json",
+          "bytes": 1208,
+          "sha256": "7dc5ce7666629d4f8cd2093a7599c7e804d156543c9fded0199176f8a73e54cf"
+        },
+        {
+          "relative_path": "before/command.stdout",
+          "bytes": 8553,
+          "sha256": "ab71d47fe4c4dda3f04a1889e66bd8dde112536c6704ae086143872325f8fc1c"
+        },
+        {
+          "relative_path": "before/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "before/receipt.json",
+          "bytes": 16474,
+          "sha256": "2fb729af9084f1a9b4a4f8997cec8a92c61e78cd342f02db8c1edff33ac61b3d"
+        },
+        {
+          "relative_path": "before/before.binaries.json",
+          "bytes": 3971,
+          "sha256": "90157773430769d7e49765df114fcfc94bce656b319b009a0667bcc7243e51c9"
+        },
+        {
+          "relative_path": "before/after.binaries.json",
+          "bytes": 3968,
+          "sha256": "7b710f33dd0016de4b1b7351be0de3dd725288756bc5cea97fd5e733e105f195"
+        },
+        {
+          "relative_path": "before/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "before/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "before/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "before/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "before/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "before/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "before/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+        },
+        {
+          "relative_path": "before/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "before/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "before/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+        },
+        {
+          "relative_path": "before/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "before/suite-logs.manifest.json",
+          "bytes": 8077,
+          "sha256": "0b3e1c6c5f06436e7532931fa1b7a7489ffdffe093b239ca184a935abc9802a2"
+        },
+        {
+          "relative_path": "before/suite-logs/py_test_geo261_host_placement_definition.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "before/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+          "bytes": 106,
+          "sha256": "3dc30a6e4a135b8593fbed84df14554b755737c48a6f3106fb4c119e36ef813b"
+        },
+        {
+          "relative_path": "before/suite-logs/py_test_geo261_host_placement_definition.json",
+          "bytes": 365,
+          "sha256": "715f79247b1ba2f7d134e714891494ba8d3cb390addc4ab4c308b33133647ec6"
+        },
+        {
+          "relative_path": "before/suite-logs/py_test_geo261_placement_definition.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "before/suite-logs/py_test_geo261_placement_definition.unittest.log",
+          "bytes": 114,
+          "sha256": "95d4bff86738cae51d7e7fe5d51ab145e7c5e1e31b2d914718ce99fef35a8568"
+        },
+        {
+          "relative_path": "before/suite-logs/py_test_geo261_placement_definition.json",
+          "bytes": 361,
+          "sha256": "dbf15b3a965d31e86ee95969d363901d748c8515964eece84e7e772de050b9a9"
+        },
+        {
+          "relative_path": "before/suite-logs/py_test_geo261_placement_sources.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "before/suite-logs/py_test_geo261_placement_sources.unittest.log",
+          "bytes": 6649,
+          "sha256": "adee34efcea369a0ca98aed3b69f9955751ebe5fae1a1147d1c7f96f6b3c45c6"
+        },
+        {
+          "relative_path": "before/suite-logs/py_test_geo261_placement_sources.json",
+          "bytes": 2378,
+          "sha256": "aa27652514c4df8c3b85efc69f13e14d8d011dfcd8e931c6f77b43fc7eb3cecd"
+        }
+      ]
+    },
+    {
+      "id": "after",
+      "source_sha": "f7ce2d212be778b8ac8c66c9afea66bae2fca4e3",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "-u",
+          "tests/run_all.py",
+          "--only",
+          "py:test_geo261_placement_sources",
+          "--only",
+          "py:test_geo261_placement_definition",
+          "--only",
+          "py:test_geo261_host_placement_definition"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T14:23:26.935381+00:00",
+        "started_ns": 1792333406935398617,
+        "timeout_seconds": 600.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 0,
+        "launch_error": null,
+        "pid": 166400,
+        "ended_utc": "2026-10-18T14:23:44.926068+00:00",
+        "ended_ns": 1792333424926089251,
+        "seconds": 17.990689025999018,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1460380,
+            "bytes": 6785,
+            "mtime_ns": 1792333424890068089,
+            "ctime_ns": 1792333424890068089,
+            "sha256": "17df453cfafe1946d41c47a9801241c1d8b6647cc1688699929470b8d59a7f2a",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1460381,
+            "bytes": 0,
+            "mtime_ns": 1792333406934267279,
+            "ctime_ns": 1792333406934267279,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": true,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [
+        {
+          "suite": "py:test_geo261_host_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_host_placement_definition.log"
+        },
+        {
+          "suite": "py:test_geo261_host_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_host_placement_definition.unittest.log"
+        },
+        {
+          "suite": "py:test_geo261_host_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_host_placement_definition.json"
+        },
+        {
+          "suite": "py:test_geo261_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_definition.log"
+        },
+        {
+          "suite": "py:test_geo261_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_definition.unittest.log"
+        },
+        {
+          "suite": "py:test_geo261_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_definition.json"
+        },
+        {
+          "suite": "py:test_geo261_placement_sources",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_sources.log"
+        },
+        {
+          "suite": "py:test_geo261_placement_sources",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_sources.unittest.log"
+        },
+        {
+          "suite": "py:test_geo261_placement_sources",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_sources.json"
+        }
+      ],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "review_kind": "人工原log、固定Git、protocol核對；collector不判pass/kill",
+          "outer_child_seconds": 17.990689025999018,
+          "scope": "本題原3module共43methods；非PR全量",
+          "test_retraction_distinct_from_product_mutation": true,
+          "methods": 43,
+          "passed": 43,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "suites": [
+            {
+              "name": "py:test_geo261_placement_sources",
+              "methods": 21,
+              "passed": 21,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 4.673,
+              "suite_json_seconds": 4.7,
+              "unittest_log": "after/suite-logs/py_test_geo261_placement_sources.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            },
+            {
+              "name": "py:test_geo261_placement_definition",
+              "methods": 15,
+              "passed": 15,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 3.735,
+              "suite_json_seconds": 3.76,
+              "unittest_log": "after/suite-logs/py_test_geo261_placement_definition.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            },
+            {
+              "name": "py:test_geo261_host_placement_definition",
+              "methods": 7,
+              "passed": 7,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 8.769,
+              "suite_json_seconds": 8.8,
+              "unittest_log": "after/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            }
+          ]
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "after/command.process.json",
+          "bytes": 1208,
+          "sha256": "62c2fe939e10a3eabdf6e9f2735408c23c7d9f402c484eccde49d49157b1bdaa"
+        },
+        {
+          "relative_path": "after/command.stdout",
+          "bytes": 6785,
+          "sha256": "17df453cfafe1946d41c47a9801241c1d8b6647cc1688699929470b8d59a7f2a"
+        },
+        {
+          "relative_path": "after/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "after/receipt.json",
+          "bytes": 16469,
+          "sha256": "6fb84fb015a2327c06a150b719a4c0f7bd2267d7b09ca6004e3926069795fd5e"
+        },
+        {
+          "relative_path": "after/before.binaries.json",
+          "bytes": 3971,
+          "sha256": "a801b592290b6391aa01be8828e74f2bb796a44cc8004a065b91043b77edd1f5"
+        },
+        {
+          "relative_path": "after/after.binaries.json",
+          "bytes": 3968,
+          "sha256": "7a098208aa6624117325ed6bc35423cc069e4873c6cec74a43c6d76b64e658b2"
+        },
+        {
+          "relative_path": "after/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "after/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "after/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "after/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "after/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "after/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "after/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+        },
+        {
+          "relative_path": "after/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "after/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "after/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+        },
+        {
+          "relative_path": "after/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "after/suite-logs.manifest.json",
+          "bytes": 8078,
+          "sha256": "9c9749821988e9f0d646b3225e6e8338915cce78bb537bb667543a22e95b77cd"
+        },
+        {
+          "relative_path": "after/suite-logs/py_test_geo261_host_placement_definition.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "after/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+          "bytes": 105,
+          "sha256": "29b86b174b5d11212292ec2be696fdfa66e3ad088f2bde66802963e0808f0031"
+        },
+        {
+          "relative_path": "after/suite-logs/py_test_geo261_host_placement_definition.json",
+          "bytes": 363,
+          "sha256": "eb9208d093b5a357e2e7e33947a490cb81cb6077590b9dea7b39afe0185fdcf1"
+        },
+        {
+          "relative_path": "after/suite-logs/py_test_geo261_placement_definition.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "after/suite-logs/py_test_geo261_placement_definition.unittest.log",
+          "bytes": 114,
+          "sha256": "d26fa11da767232fd0155af2c126a5b28d5afc09f21a0474fe7f8785f8b2f097"
+        },
+        {
+          "relative_path": "after/suite-logs/py_test_geo261_placement_definition.json",
+          "bytes": 362,
+          "sha256": "d059c2cf92bfc76aa171347fb34c797f86cf35b486cd0ceb6f21a1a4c72f827a"
+        },
+        {
+          "relative_path": "after/suite-logs/py_test_geo261_placement_sources.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "after/suite-logs/py_test_geo261_placement_sources.unittest.log",
+          "bytes": 120,
+          "sha256": "3945223908f06e43826dee2b6f888c90c96c816e12b210e50a12ca2f57073110"
+        },
+        {
+          "relative_path": "after/suite-logs/py_test_geo261_placement_sources.json",
+          "bytes": 358,
+          "sha256": "8a3508959c018ce0221c177f209bea2df02a09e4d2af6b40da910add4eb63923"
+        }
+      ]
+    },
+    {
+      "id": "withdrawn",
+      "source_sha": "4ac088db19bfa296bb1634c1c4e3ea1603720dd2",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "-u",
+          "tests/run_all.py",
+          "--only",
+          "py:test_geo261_placement_sources",
+          "--only",
+          "py:test_geo261_placement_definition",
+          "--only",
+          "py:test_geo261_host_placement_definition"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T14:24:30.954152+00:00",
+        "started_ns": 1792333470954173232,
+        "timeout_seconds": 600.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 1,
+        "launch_error": null,
+        "pid": 167738,
+        "ended_utc": "2026-10-18T14:24:50.779102+00:00",
+        "ended_ns": 1792333490779124428,
+        "seconds": 19.824949298003048,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1460451,
+            "bytes": 8553,
+            "mtime_ns": 1792333490727064684,
+            "ctime_ns": 1792333490727064684,
+            "sha256": "e7bc0d3553ad4aea63e07dc7e073d2cc78ed0bb49c83dc63de05926db0a9be00",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1460452,
+            "bytes": 0,
+            "mtime_ns": 1792333470952634257,
+            "ctime_ns": 1792333470952634257,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": true,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [
+        {
+          "suite": "py:test_geo261_host_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_host_placement_definition.log"
+        },
+        {
+          "suite": "py:test_geo261_host_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_host_placement_definition.unittest.log"
+        },
+        {
+          "suite": "py:test_geo261_host_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_host_placement_definition.json"
+        },
+        {
+          "suite": "py:test_geo261_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_definition.log"
+        },
+        {
+          "suite": "py:test_geo261_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_definition.unittest.log"
+        },
+        {
+          "suite": "py:test_geo261_placement_definition",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_definition.json"
+        },
+        {
+          "suite": "py:test_geo261_placement_sources",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_sources.log"
+        },
+        {
+          "suite": "py:test_geo261_placement_sources",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_sources.unittest.log"
+        },
+        {
+          "suite": "py:test_geo261_placement_sources",
+          "copied": true,
+          "own_stdout_announced_suite": true,
+          "copy": "suite-logs/py_test_geo261_placement_sources.json"
+        }
+      ],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "review_kind": "人工原log、固定Git、protocol核對；collector不判pass/kill",
+          "outer_child_seconds": 19.824949298003048,
+          "scope": "本題原3module共43methods；非PR全量",
+          "test_retraction_distinct_from_product_mutation": true,
+          "methods": 43,
+          "passed": 35,
+          "failures": 8,
+          "errors": 0,
+          "skipped": 0,
+          "suites": [
+            {
+              "name": "py:test_geo261_placement_sources",
+              "methods": 21,
+              "passed": 13,
+              "failed": 8,
+              "skipped": 0,
+              "unittest_seconds": 5.511,
+              "suite_json_seconds": 5.54,
+              "unittest_log": "withdrawn/suite-logs/py_test_geo261_placement_sources.unittest.log",
+              "failure_names": [
+                "test_actual_frame_rectangle_and_region_leaves_have_exact_typed_metadata (test_geo261_placement_sources.NativePlacementSources.test_actual_frame_rectangle_and_region_leaves_have_exact_typed_metadata)",
+                "test_binding_value_discard_control_fails_named_consumption_assertion (test_geo261_placement_sources.NativePlacementSources.test_binding_value_discard_control_fails_named_consumption_assertion)",
+                "test_declined_binding_uses_explicit_values_and_region_reference_edge (test_geo261_placement_sources.NativePlacementSources.test_declined_binding_uses_explicit_values_and_region_reference_edge)",
+                "test_empty_region_set_ordered_components_and_borrowed_holes_remain_stable (test_geo261_placement_sources.NativePlacementSources.test_empty_region_set_ordered_components_and_borrowed_holes_remain_stable)",
+                "test_exact_binary_keys_decode_full_uint32_and_preserve_failed_outputs (test_geo261_placement_sources.NativePlacementSources.test_exact_binary_keys_decode_full_uint32_and_preserve_failed_outputs)",
+                "test_region_reference_consumes_core_region_and_records_required_value_edge (test_geo261_placement_sources.NativePlacementSources.test_region_reference_consumes_core_region_and_records_required_value_edge)",
+                "test_same_geometry_without_region_edge_control_fails_named_edge_assertion (test_geo261_placement_sources.NativePlacementSources.test_same_geometry_without_region_edge_control_fails_named_edge_assertion)",
+                "test_every_negative_control_hits_exactly_one_live_expression (test_geo261_placement_sources.PlacementSourcesBoundary.test_every_negative_control_hits_exactly_one_live_expression) (control='binding-value')"
+              ],
+              "assertion_messages": [
+                "0 != 1 : ASSERT:explicit-leaves-have-no-upstream-edges",
+                "1 != 0 : Negative control must hit one real expression",
+                "0 != 1 : ASSERT:declined-binding-never-reads-upstream",
+                "0 != 1 : ASSERT:inline-set-borrows-its-own-store",
+                "0 != 1 : ASSERT:unknown-key-kind-rejected",
+                "0 != 1 : ASSERT:region-reference-has-two-nodes-one-value-edge",
+                "0 != 1 : ASSERT:region-reference-has-two-nodes-one-value-edge",
+                "1 != 0"
+              ]
+            },
+            {
+              "name": "py:test_geo261_placement_definition",
+              "methods": 15,
+              "passed": 15,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 4.218,
+              "suite_json_seconds": 4.25,
+              "unittest_log": "withdrawn/suite-logs/py_test_geo261_placement_definition.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            },
+            {
+              "name": "py:test_geo261_host_placement_definition",
+              "methods": 7,
+              "passed": 7,
+              "failed": 0,
+              "skipped": 0,
+              "unittest_seconds": 9.276,
+              "suite_json_seconds": 9.3,
+              "unittest_log": "withdrawn/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+              "failure_names": [],
+              "assertion_messages": []
+            }
+          ]
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "withdrawn/command.process.json",
+          "bytes": 1208,
+          "sha256": "64d2df7164f58dfabced0c34b6cb811ced00b875243cee329e0029df05e0dd8a"
+        },
+        {
+          "relative_path": "withdrawn/command.stdout",
+          "bytes": 8553,
+          "sha256": "e7bc0d3553ad4aea63e07dc7e073d2cc78ed0bb49c83dc63de05926db0a9be00"
+        },
+        {
+          "relative_path": "withdrawn/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "withdrawn/receipt.json",
+          "bytes": 16483,
+          "sha256": "7cb3b2c7bd988b7d6bbfb8d986395ee010ac433ff5692b789ae56d525684bf0b"
+        },
+        {
+          "relative_path": "withdrawn/before.binaries.json",
+          "bytes": 3971,
+          "sha256": "de68e5b838fd3fa26c39a9e2f6ad5d559a6d35aeb9eab19b3e3cf8af6c08d988"
+        },
+        {
+          "relative_path": "withdrawn/after.binaries.json",
+          "bytes": 3968,
+          "sha256": "441048b7141c194a16de4a73b4a949776db8ad1ae9541a1528e6fed43af59475"
+        },
+        {
+          "relative_path": "withdrawn/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "withdrawn/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "withdrawn/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "withdrawn/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "withdrawn/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "withdrawn/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "withdrawn/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+        },
+        {
+          "relative_path": "withdrawn/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "withdrawn/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "withdrawn/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+        },
+        {
+          "relative_path": "withdrawn/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs.manifest.json",
+          "bytes": 8078,
+          "sha256": "91dd1bdd9c0a93ed4f7a9020fb8c8d40f223796c4d0c8fd32e03a01dd772c403"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs/py_test_geo261_host_placement_definition.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs/py_test_geo261_host_placement_definition.unittest.log",
+          "bytes": 105,
+          "sha256": "b01cb0d2c95f9ad7b0a91cf10234a000cb97797c4823436032ea8e346984daac"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs/py_test_geo261_host_placement_definition.json",
+          "bytes": 363,
+          "sha256": "c7fde68759bd5d37cbbda6feb2de98afe3e596417048d3d559c1ae36e2524e87"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs/py_test_geo261_placement_definition.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs/py_test_geo261_placement_definition.unittest.log",
+          "bytes": 114,
+          "sha256": "1a31aebae0cb6ebd455552ee1e8ab945b6ba662ab8a69cdf031734f6a9a65803"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs/py_test_geo261_placement_definition.json",
+          "bytes": 362,
+          "sha256": "e570be2cc5090f28a569da13caf62c59495e10abd79d3008a80a9795a8c788e9"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs/py_test_geo261_placement_sources.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs/py_test_geo261_placement_sources.unittest.log",
+          "bytes": 6649,
+          "sha256": "9fba88f438cab3354f636fc2e118e2d77a3fab78fa138b9cf842cf67e687ed41"
+        },
+        {
+          "relative_path": "withdrawn/suite-logs/py_test_geo261_placement_sources.json",
+          "bytes": 2378,
+          "sha256": "a5153376cf79f4a3c769ac4c4efaf6e4a8b5bf2d4b5ba805338290cb6429a727"
+        }
+      ]
+    },
+    {
+      "id": "restored",
+      "source_sha": "f7ce2d212be778b8ac8c66c9afea66bae2fca4e3",
+      "process_original": {
+        "argv": [
+          "python3",
+          "-B",
+          "/workspace/geo261-validation-20261018/proposed-fixes/record_05_placement_sources_oracle.py",
+          "--checkout",
+          "/workspace/geometry-axiom",
+          "--expected-head",
+          "f7ce2d212be778b8ac8c66c9afea66bae2fca4e3",
+          "--stage",
+          "restored",
+          "--out",
+          "/workspace/geo261-validation-20261018/fixes/placement-source-contract/protocol-restored"
+        ],
+        "shell": false,
+        "cwd": "/workspace/geometry-axiom",
+        "started_utc": "2026-10-18T14:26:21.212564+00:00",
+        "started_ns": 1792333581212578435,
+        "timeout_seconds": 600.0,
+        "timed_out": false,
+        "interrupted": false,
+        "returncode": 0,
+        "launch_error": null,
+        "pid": 169065,
+        "ended_utc": "2026-10-18T14:26:35.558701+00:00",
+        "ended_ns": 1792333595558719559,
+        "seconds": 14.346139667999523,
+        "streams": {
+          "stdout": {
+            "device": 27,
+            "inode": 1460590,
+            "bytes": 0,
+            "mtime_ns": 1792333581212532596,
+            "ctime_ns": 1792333581212532596,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          },
+          "stderr": {
+            "device": 27,
+            "inode": 1460591,
+            "bytes": 0,
+            "mtime_ns": 1792333581212532596,
+            "ctime_ns": 1792333581212532596,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "exists": true
+          }
+        }
+      },
+      "receipt_observations": {
+        "source_stable": true,
+        "head_stable": true,
+        "status_and_diff_stable": true,
+        "run_all_logs_complete": null,
+        "stack_child_bytes": 16777216,
+        "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "suite_log_collection_observations": [],
+      "manual_review": {
+        "status": "reviewed",
+        "claim": {
+          "review_kind": "人工原log、固定Git、protocol核對；collector不判pass/kill",
+          "outer_child_seconds": 14.346139667999523,
+          "scope": "本題原3module共43methods；非PR全量",
+          "test_retraction_distinct_from_product_mutation": true,
+          "methods": 43,
+          "passed": 43,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "suites": [],
+          "unittest_seconds": 14.188,
+          "protocol_seconds": 14.21373417200084,
+          "protocol_events": 29,
+          "native_exit1_controls": 5,
+          "protocol_review": "protocol-review.json",
+          "wrapper_difference": "3module同一unittest suite；不同於前三run_all分程序，只有placement run_case旁錄"
+        },
+        "provenance": "人工提供；工具未判讀、未由 exit 推導 pass／kill"
+      },
+      "raw_evidence": [
+        {
+          "relative_path": "restored/command.process.json",
+          "bytes": 1357,
+          "sha256": "edea9c46569ab1d55f1df1cc54c64ec982812294a4eefbb9e997dd9323605403"
+        },
+        {
+          "relative_path": "restored/command.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "restored/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "restored/receipt.json",
+          "bytes": 13919,
+          "sha256": "fc5005d1ac83a52364d3aae1928f54e4e7208d45394dfbd4696e4d2b93c06eee"
+        },
+        {
+          "relative_path": "restored/before.binaries.json",
+          "bytes": 3971,
+          "sha256": "9ed92b545a53b0fdf590f90bf7efd392928446184f9f7c723518fece9619eca1"
+        },
+        {
+          "relative_path": "restored/after.binaries.json",
+          "bytes": 3968,
+          "sha256": "98f2392eff04c29cb6f7c42b4260c896fe495a32bd5e853fe802df664f63125b"
+        },
+        {
+          "relative_path": "restored/tool-gcc.stdout",
+          "bytes": 232,
+          "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+        },
+        {
+          "relative_path": "restored/tool-python.stdout",
+          "bytes": 15,
+          "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        {
+          "relative_path": "restored/tool-node.stdout",
+          "bytes": 9,
+          "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+        },
+        {
+          "relative_path": "restored/tool-chrome.stdout",
+          "bytes": 29,
+          "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+        },
+        {
+          "relative_path": "restored/tool-chromium.stdout",
+          "bytes": 61,
+          "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+        },
+        {
+          "relative_path": "restored/after.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "restored/after.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+        },
+        {
+          "relative_path": "restored/after.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "restored/before.binary-00.sidecar.json",
+          "bytes": 22632,
+          "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+        },
+        {
+          "relative_path": "restored/before.binary-01.sidecar.json",
+          "bytes": 22646,
+          "sha256": "218efaff16836361e768173a5c4187ec0383e2690c8e0c97481f7b136295fcf4"
+        },
+        {
+          "relative_path": "restored/before.binary-02.sidecar.json",
+          "bytes": 22658,
+          "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+        },
+        {
+          "relative_path": "restored/suite-logs.manifest.json",
+          "bytes": 3,
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        }
+      ]
+    }
+  ],
+  "automatic_test_verdict": null,
+  "limitations": [
+    "不解析 assertion、測試數或 pass/kill；claim 需人工核對原 log",
+    "source_stable 等欄位是原 receipt 觀測，不是工具自行重驗來源",
+    "未複製大型 source.json／recorder.py，僅轉錄原 receipt 身份",
+    "suite copied=false 或 run_all_logs_complete=false 原樣保留，不能當完整執行"
+  ]
+}

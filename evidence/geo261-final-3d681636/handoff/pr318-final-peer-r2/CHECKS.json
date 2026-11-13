@@ -1,0 +1,4942 @@
+{
+  "schema": "independent-geo318-existing-final-peer/1",
+  "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+  "original_public_evidence": "c3c823bf773efca2079a8b4e27b28a9ddcbaf360",
+  "final_handoff": "9c534879b05058d2d62d8082be76038605ef0268",
+  "final_prbody": "4e4e4f59cea41dbec018dd8779f2db190d320bd9",
+  "started_utc": "2026-10-23T15:17:12.420736+00:00",
+  "checks": [
+    {
+      "name": "Git exit0 ('ls-remote', '--heads')",
+      "passed": true
+    },
+    {
+      "name": "exact final source-evidence remote head",
+      "passed": true
+    },
+    {
+      "name": "exact final prbody remote head",
+      "passed": true
+    },
+    {
+      "name": "Git exit0 ('merge-base', '--is-ancestor')",
+      "passed": true
+    },
+    {
+      "name": "Git exit0 ('diff', '--name-only')",
+      "passed": true
+    },
+    {
+      "name": "original and final evidence preserve source",
+      "passed": true
+    },
+    {
+      "name": "Git exit0 ('show', 'c3c823bf773efca2079a8b4e27b28a9ddcbaf360:evidence/issue318-reading-a-20261023/formal-ae74e51b-round1/native7-oracle13-original-ae74e51b.tar.gz')",
+      "passed": true
+    },
+    {
+      "name": "Git exit0 ('show', 'c3c823bf773efca2079a8b4e27b28a9ddcbaf360:evidence/issue318-reading-a-20261023/formal-ae74e51b-round1/native7-oracle13-original-ae74e51b.tar.gz.inventory.json')",
+      "passed": true
+    },
+    {
+      "name": "original archive exact size/hash",
+      "passed": true
+    },
+    {
+      "name": "Git exit0 ('show', '9c534879b05058d2d62d8082be76038605ef0268:evidence/issue318-reading-a-20261023/formal-ae74e51b-round1/native7-oracle13-original-ae74e51b.tar.gz')",
+      "passed": true
+    },
+    {
+      "name": "final retains original archive exact bytes",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-baseline/original/current_geometry.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-baseline/original/geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-baseline/original/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-baseline/original/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-baseline/relocated/current_geometry.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-baseline/relocated/geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-baseline/relocated/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-baseline/relocated/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-baseline/source-manifest.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-withdrawn/original/current_geometry.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-withdrawn/original/geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-withdrawn/original/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-withdrawn/original/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-withdrawn/relocated/current_geometry.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-withdrawn/relocated/geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-withdrawn/relocated/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-withdrawn/relocated/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/artifacts/host-withdrawn/source-manifest.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/codec-client.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/exact-client.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/geo318-host-baseline/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/geo318-host-withdrawn/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-host/app_candidate.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-host/history.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/candidate.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/clip.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/codec.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/datums.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/document.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/enclosure.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/enclosure_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/exact.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/geometry.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/grid.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/grid_store.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/guides.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/linear.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/linear_definition_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/named_values.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/parameter_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/parameters.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/placement_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/placements.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/region_key_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/regions.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/source.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/version_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/versions.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/assembly.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/boundary_policy.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/contact_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/contact_world.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/contacts.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/cut_list.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/definition_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/derived_placement.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/engineering.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/engineering_operations.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/engineering_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/finish.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/finish_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-between-required-source.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-boundary-ends-client.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-collector-partial.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-contact-side.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-i19-refusal-code.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-partial-admission.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-real-rc-plane.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-real-rc-width.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-revalidate-partial.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-revalidate-still-collides.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-span-partial.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_application.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_cells.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_definition_codec.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_rules.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/member_declaration.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/member_reference.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/members.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/panel_layout.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/panel_support.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/section_profile.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/section_profile_sources.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/supports.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/world_validation.c",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/geo261-n1a-0etgjm01-build-log.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/compile-logs/retention.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/native-execution.jsonl",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-7/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-launch/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-launch/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/native-launch/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13-launch/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13-launch/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/oracle-13-launch/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/NATIVE_SUMMARY.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique formal/NATIVE_SUMMARY.md",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique tools/run_stage.py",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique tools/native_with_compile_log_retention.py",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique tools/launch_stage.py",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique tools/PLAN.md",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique tools/STAGES.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/REPORT.md",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique reader-actual-public-peer/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/01.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/01.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/02.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/02.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/03.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/03.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/04.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/04.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/AUTHORITY_READ.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/AUTHORITY_READ.md",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/REQUIRED_SECTIONS.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/SOURCE.json",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/main-決策佇列.md",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/pr333-FIELD-RULES.md",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique wood-authority/required-main-sections.md",
+      "passed": true
+    },
+    {
+      "name": "safe regular unique peer/REVIEW318_FORMAL_TOOLS_1f10c302.md",
+      "passed": true
+    },
+    {
+      "name": "253 complete inventory members",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-baseline/original/current_geometry.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-baseline/original/current_geometry.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-baseline/original/geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-baseline/original/geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-baseline/original/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-baseline/original/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-baseline/original/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-baseline/original/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-baseline/relocated/current_geometry.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-baseline/relocated/current_geometry.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-baseline/relocated/geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-baseline/relocated/geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-baseline/relocated/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-baseline/relocated/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-baseline/relocated/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-baseline/relocated/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-baseline/source-manifest.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-baseline/source-manifest.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-withdrawn/original/current_geometry.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-withdrawn/original/current_geometry.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-withdrawn/original/geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-withdrawn/original/geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-withdrawn/original/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-withdrawn/original/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-withdrawn/original/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-withdrawn/original/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-withdrawn/relocated/current_geometry.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-withdrawn/relocated/current_geometry.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-withdrawn/relocated/geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-withdrawn/relocated/geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-withdrawn/relocated/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-withdrawn/relocated/geometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-withdrawn/relocated/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-withdrawn/relocated/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/artifacts/host-withdrawn/source-manifest.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/artifacts/host-withdrawn/source-manifest.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/codec-client.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/codec-client.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/exact-client.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/exact-client.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/geo318-host-baseline/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/geo318-host-baseline/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/geo318-host-withdrawn/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/geo318-host-withdrawn/tests/geo318_host_boundary_ends_harness.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-host/app_candidate.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-host/app_candidate.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-host/history.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-host/history.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/candidate.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/candidate.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/clip.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/clip.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/codec.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/codec.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/datums.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/datums.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/document.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/document.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/enclosure.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/enclosure.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/enclosure_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/enclosure_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/exact.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/exact.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/geometry.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/geometry.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/grid.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/grid.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/grid_store.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/grid_store.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/guides.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/guides.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/linear.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/linear.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/linear_definition_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/linear_definition_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/named_values.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/named_values.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/parameter_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/parameter_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/parameters.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/parameters.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/placement_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/placement_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/placements.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/placements.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/region_key_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/region_key_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/regions.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/regions.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/source.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/source.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/version_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/version_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/versions.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-kernel/versions.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/assembly.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/assembly.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/boundary_policy.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/boundary_policy.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/contact_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/contact_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/contact_world.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/contact_world.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/contacts.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/contacts.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/cut_list.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/cut_list.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/definition_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/definition_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/derived_placement.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/derived_placement.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/engineering.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/engineering.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/engineering_operations.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/engineering_operations.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/engineering_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/engineering_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/finish.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/finish.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/finish_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/finish_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-between-required-source.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-between-required-source.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-boundary-ends-client.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-boundary-ends-client.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-collector-partial.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-collector-partial.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-contact-side.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-contact-side.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-i19-refusal-code.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-i19-refusal-code.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-partial-admission.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-partial-admission.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-real-rc-plane.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-real-rc-plane.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-real-rc-width.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-real-rc-width.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-revalidate-partial.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-revalidate-partial.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-revalidate-still-collides.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-revalidate-still-collides.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-span-partial.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/geo318-span-partial.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_application.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_application.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_cells.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_cells.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_definition_codec.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_definition_codec.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_rules.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_rules.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/grid_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/member_declaration.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/member_declaration.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/member_reference.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/member_reference.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/members.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/members.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/panel_layout.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/panel_layout.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/panel_support.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/panel_support.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/section_profile.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/section_profile.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/section_profile_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/section_profile_sources.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/supports.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/supports.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/world_validation.c",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01/compiled-source/isolated-woodworking/native/world_validation.c",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/geo261-n1a-0etgjm01-build-log.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/geo261-n1a-0etgjm01-build-log.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/compile-logs/retention.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/compile-logs/retention.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/native-execution.jsonl",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/native-execution.jsonl",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-7/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-7/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-launch/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-launch/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-launch/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-launch/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/native-launch/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/native-launch/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13-launch/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13-launch/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13-launch/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13-launch/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/oracle-13-launch/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/oracle-13-launch/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/NATIVE_SUMMARY.json",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/NATIVE_SUMMARY.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash formal/NATIVE_SUMMARY.md",
+      "passed": true
+    },
+    {
+      "name": "public formal matches actual original formal/NATIVE_SUMMARY.md",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash tools/run_stage.py",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash tools/native_with_compile_log_retention.py",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash tools/launch_stage.py",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash tools/PLAN.md",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash tools/STAGES.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/REPORT.md",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/REPORT.md",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash reader-actual-public-peer/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "public reader peer exact original reader-actual-public-peer/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/01.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/01.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/02.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/02.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/03.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/03.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/04.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/04.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/AUTHORITY_READ.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/AUTHORITY_READ.md",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/REQUIRED_SECTIONS.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/SOURCE.json",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/main-決策佇列.md",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/pr333-FIELD-RULES.md",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash wood-authority/required-main-sections.md",
+      "passed": true
+    },
+    {
+      "name": "public inventory bytes/hash peer/REVIEW318_FORMAL_TOOLS_1f10c302.md",
+      "passed": true
+    },
+    {
+      "name": "native-7 independent physical completeness vs inventory",
+      "passed": true
+    },
+    {
+      "name": "native-launch independent physical completeness vs inventory",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 independent physical completeness vs inventory",
+      "passed": true
+    },
+    {
+      "name": "oracle-13-launch independent physical completeness vs inventory",
+      "passed": true
+    },
+    {
+      "name": "frozen formal runner/retainer exact previously reviewed hashes",
+      "passed": true
+    },
+    {
+      "name": "original static-tool peer exact",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original receipt.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 terminal expected original exit",
+      "passed": true
+    },
+    {
+      "name": "native-7 two clean fixed source guards",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 all9 original commands captured",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved result exact subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved argv/SHA exact subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stdout bytes/hash subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stderr bytes/hash subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 stdin hash subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "native-7 command exit subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved result exact subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved argv/SHA exact subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stdout bytes/hash subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stderr bytes/hash subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 stdin hash subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "native-7 command exit subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved result exact subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved argv/SHA exact subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stdout bytes/hash subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stderr bytes/hash subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 stdin hash subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "native-7 command exit subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved result exact subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved argv/SHA exact subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stdout bytes/hash subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stderr bytes/hash subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 stdin hash subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "native-7 command exit subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved result exact subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved argv/SHA exact subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stdout bytes/hash subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stderr bytes/hash subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 stdin hash subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "native-7 command exit subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved result exact subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved argv/SHA exact subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stdout bytes/hash subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stderr bytes/hash subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 stdin hash subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "native-7 command exit subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved result exact subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved argv/SHA exact subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stdout bytes/hash subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stderr bytes/hash subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 stdin hash subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "native-7 command exit subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved result exact subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved argv/SHA exact subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stdout bytes/hash subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stderr bytes/hash subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 stdin hash subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "native-7 command exit subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved result exact subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "native-7 saved argv/SHA exact subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stdout bytes/hash subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 full stderr bytes/hash subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 stdin hash subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "native-7 command exit subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original reaper.jsonl",
+      "passed": true
+    },
+    {
+      "name": "native-7 original reaper terminal",
+      "passed": true
+    },
+    {
+      "name": "native-7 original reaper did not alter test argv",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "native-7 public original subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "native existing actual325 peer preserved and accepted",
+      "passed": true
+    },
+    {
+      "name": "native public Ran7 no skips",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original receipt.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 terminal expected original exit",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 two clean fixed source guards",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 all9 original commands captured",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved result exact subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved argv/SHA exact subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stdout bytes/hash subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stderr bytes/hash subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 stdin hash subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 command exit subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved result exact subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved argv/SHA exact subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stdout bytes/hash subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stderr bytes/hash subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 stdin hash subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 command exit subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved result exact subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved argv/SHA exact subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stdout bytes/hash subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stderr bytes/hash subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 stdin hash subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 command exit subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved result exact subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved argv/SHA exact subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stdout bytes/hash subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stderr bytes/hash subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 stdin hash subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 command exit subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved result exact subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved argv/SHA exact subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stdout bytes/hash subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stderr bytes/hash subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 stdin hash subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 command exit subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved result exact subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved argv/SHA exact subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stdout bytes/hash subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stderr bytes/hash subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 stdin hash subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 command exit subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved result exact subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved argv/SHA exact subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stdout bytes/hash subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stderr bytes/hash subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 stdin hash subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 command exit subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved result exact subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved argv/SHA exact subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stdout bytes/hash subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stderr bytes/hash subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 stdin hash subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 command exit subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved result exact subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 saved argv/SHA exact subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stdout bytes/hash subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 full stderr bytes/hash subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 stdin hash subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 command exit subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original reaper.jsonl",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 original reaper terminal",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 original reaper did not alter test argv",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle-13 public original subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "oracle original Ran13 no skips",
+      "passed": true
+    },
+    {
+      "name": "Git exit0 ('show', 'ae74e51bba1efef48949c077635966273a9e8990:tests/test_geo318_reading_a_oracle.py')",
+      "passed": true
+    },
+    {
+      "name": "all13 immutable AST methods actually observed once",
+      "passed": true
+    },
+    {
+      "name": "oracle executed test source same immutable source",
+      "passed": true
+    },
+    {
+      "name": "Git exit0 ('show', 'ae74e51bba1efef48949c077635966273a9e8990:geometry-core/framing-template/oracle/framing_oracle.py')",
+      "passed": true
+    },
+    {
+      "name": "oracle actual original source fingerprint",
+      "passed": true
+    },
+    {
+      "name": "Git exit0 ('show', 'ae74e51bba1efef48949c077635966273a9e8990:geometry-core/framing-template/oracle/reading_a_source_control.py')",
+      "passed": true
+    },
+    {
+      "name": "oracle exact source client normal assertion",
+      "passed": true
+    },
+    {
+      "name": "independent builder/checker both original proofs",
+      "passed": true
+    },
+    {
+      "name": "builder exact original source SHA",
+      "passed": true
+    },
+    {
+      "name": "builder true three0/1/0 original phases",
+      "passed": true
+    },
+    {
+      "name": "builder exact normal assertion kill",
+      "passed": true
+    },
+    {
+      "name": "builder restored original command and success streams",
+      "passed": true
+    },
+    {
+      "name": "builder true original executable/client/control argv baseline",
+      "passed": true
+    },
+    {
+      "name": "builder true original executable/client/control argv withdrawn",
+      "passed": true
+    },
+    {
+      "name": "builder true original executable/client/control argv restored",
+      "passed": true
+    },
+    {
+      "name": "builder original/restored source vs isolated mutant paths",
+      "passed": true
+    },
+    {
+      "name": "builder exact withdrawal anchor source once",
+      "passed": true
+    },
+    {
+      "name": "checker exact original source SHA",
+      "passed": true
+    },
+    {
+      "name": "checker true three0/1/0 original phases",
+      "passed": true
+    },
+    {
+      "name": "checker exact normal assertion kill",
+      "passed": true
+    },
+    {
+      "name": "checker restored original command and success streams",
+      "passed": true
+    },
+    {
+      "name": "checker true original executable/client/control argv baseline",
+      "passed": true
+    },
+    {
+      "name": "checker true original executable/client/control argv withdrawn",
+      "passed": true
+    },
+    {
+      "name": "checker true original executable/client/control argv restored",
+      "passed": true
+    },
+    {
+      "name": "checker original/restored source vs isolated mutant paths",
+      "passed": true
+    },
+    {
+      "name": "checker exact withdrawal anchor source once",
+      "passed": true
+    },
+    {
+      "name": "original test enforces original hash and exact withdrawal",
+      "passed": true
+    },
+    {
+      "name": "Git exit0 ('show', '9c534879b05058d2d62d8082be76038605ef0268:evidence/issue318-reading-a-20261023/CURRENT_STATE.json')",
+      "passed": true
+    },
+    {
+      "name": "Git exit0 ('show', '9c534879b05058d2d62d8082be76038605ef0268:evidence/issue318-reading-a-20261023/NEXT.md')",
+      "passed": true
+    },
+    {
+      "name": "Git exit0 ('show', '4e4e4f59cea41dbec018dd8779f2db190d320bd9:PR_BODY.md')",
+      "passed": true
+    },
+    {
+      "name": "current exact fixed product identity",
+      "passed": true
+    },
+    {
+      "name": "current true terminal/source/hash reader-generate",
+      "passed": true
+    },
+    {
+      "name": "current full original output hashes reader-generate",
+      "passed": true
+    },
+    {
+      "name": "current true terminal/source/hash reader-check",
+      "passed": true
+    },
+    {
+      "name": "current full original output hashes reader-check",
+      "passed": true
+    },
+    {
+      "name": "current true terminal/source/hash reader-unit",
+      "passed": true
+    },
+    {
+      "name": "current full original output hashes reader-unit",
+      "passed": true
+    },
+    {
+      "name": "current true terminal/source/hash native-7",
+      "passed": true
+    },
+    {
+      "name": "current full original output hashes native-7",
+      "passed": true
+    },
+    {
+      "name": "current true terminal/source/hash oracle-13",
+      "passed": true
+    },
+    {
+      "name": "current full original output hashes oracle-13",
+      "passed": true
+    },
+    {
+      "name": "current true terminal/source/hash oracle-mutants",
+      "passed": true
+    },
+    {
+      "name": "current full original output hashes oracle-mutants",
+      "passed": true
+    },
+    {
+      "name": "current true terminal/source/hash oracle-mutants-materialized-r2",
+      "passed": true
+    },
+    {
+      "name": "current full original output hashes oracle-mutants-materialized-r2",
+      "passed": true
+    },
+    {
+      "name": "current true terminal/source/hash oracle-quick",
+      "passed": true
+    },
+    {
+      "name": "current full original output hashes oracle-quick",
+      "passed": true
+    },
+    {
+      "name": "current true terminal/source/hash oracle-quick-materialized-r2",
+      "passed": true
+    },
+    {
+      "name": "current full original output hashes oracle-quick-materialized-r2",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 terminal expected original exit",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 two clean fixed source guards",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 all9 original commands captured",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved result exact subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved argv/SHA exact subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stdout bytes/hash subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stderr bytes/hash subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 stdin hash subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 command exit subcommands/000001",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved result exact subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved argv/SHA exact subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stdout bytes/hash subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stderr bytes/hash subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 stdin hash subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 command exit subcommands/000002",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved result exact subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved argv/SHA exact subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stdout bytes/hash subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stderr bytes/hash subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 stdin hash subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 command exit subcommands/000003",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved result exact subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved argv/SHA exact subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stdout bytes/hash subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stderr bytes/hash subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 stdin hash subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 command exit subcommands/000004",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved result exact subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved argv/SHA exact subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stdout bytes/hash subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stderr bytes/hash subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 stdin hash subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 command exit subcommands/000005",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved result exact subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved argv/SHA exact subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stdout bytes/hash subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stderr bytes/hash subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 stdin hash subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 command exit subcommands/000006",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved result exact subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved argv/SHA exact subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stdout bytes/hash subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stderr bytes/hash subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 stdin hash subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 command exit subcommands/000007",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved result exact subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved argv/SHA exact subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stdout bytes/hash subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stderr bytes/hash subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 stdin hash subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 command exit subcommands/000008",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved result exact subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 saved argv/SHA exact subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stdout bytes/hash subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 full stderr bytes/hash subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 stdin hash subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 command exit subcommands/000009",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 original reaper terminal",
+      "passed": true
+    },
+    {
+      "name": "oracle-quick-materialized-r2 original reaper did not alter test argv",
+      "passed": true
+    },
+    {
+      "name": "quick exactly3 true red excluding expected negative witnesses",
+      "passed": true
+    },
+    {
+      "name": "quick current exact3 red categories",
+      "passed": true
+    },
+    {
+      "name": "quick scan subitems green not overall pass",
+      "passed": true
+    },
+    {
+      "name": "quick true original subitem output matches current",
+      "passed": true
+    },
+    {
+      "name": "quick414 total wall distinguished from390scan",
+      "passed": true
+    },
+    {
+      "name": "not-run remains CLI/arch/golden/full sweep",
+      "passed": true
+    },
+    {
+      "name": "finalNEXT marks historical native summary and current authoritative",
+      "passed": true
+    },
+    {
+      "name": "PRbody fixed product and red/UNRUN explicit",
+      "passed": true
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "ls-remote",
+        "--heads",
+        "https://github.com/ZhiQiYang/geometry-axiom.git",
+        "refs/heads/codex/issue318-reading-a-20261023",
+        "refs/heads/codex/issue318-reading-a-20261023-prbody"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2",
+      "acceptance_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_variant": "independent-immutable-evidence-read-only",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792768632.4209378,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2/subcommands/000001",
+      "ended_epoch": 1792768632.8708,
+      "stdout_sha256": "6dc96f10211cb094df7b66d54cdf1e3247091a56bb47bc212837c63fbe9e650d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 179,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "merge-base",
+        "--is-ancestor",
+        "c3c823bf773efca2079a8b4e27b28a9ddcbaf360",
+        "9c534879b05058d2d62d8082be76038605ef0268"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2",
+      "acceptance_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_variant": "independent-immutable-evidence-read-only",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792768632.8714242,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2/subcommands/000002",
+      "ended_epoch": 1792768632.874903,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "diff",
+        "--name-only",
+        "ae74e51bba1efef48949c077635966273a9e8990",
+        "9c534879b05058d2d62d8082be76038605ef0268",
+        "--"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2",
+      "acceptance_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_variant": "independent-immutable-evidence-read-only",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792768632.8753183,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2/subcommands/000003",
+      "ended_epoch": 1792768632.8781886,
+      "stdout_sha256": "2d3dfe210505ea8f4363f9e3d7771995794ef8b75a4edfe985de6af6d2b371e9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1400,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "show",
+        "c3c823bf773efca2079a8b4e27b28a9ddcbaf360:evidence/issue318-reading-a-20261023/formal-ae74e51b-round1/native7-oracle13-original-ae74e51b.tar.gz"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2",
+      "acceptance_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_variant": "independent-immutable-evidence-read-only",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792768632.8785367,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2/subcommands/000004",
+      "ended_epoch": 1792768632.8843653,
+      "stdout_sha256": "b05dbead9bf4e5527d3500bcea3754319f5684c9f33b882662acd0b2649a5cc4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1115151,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "show",
+        "c3c823bf773efca2079a8b4e27b28a9ddcbaf360:evidence/issue318-reading-a-20261023/formal-ae74e51b-round1/native7-oracle13-original-ae74e51b.tar.gz.inventory.json"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2",
+      "acceptance_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_variant": "independent-immutable-evidence-read-only",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792768632.8856814,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2/subcommands/000005",
+      "ended_epoch": 1792768632.8887746,
+      "stdout_sha256": "38cdb706dc1f17a0a883aae0e2f1ce4caca1b7dd4449fd630a42e12f5b84ef78",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 50117,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "show",
+        "9c534879b05058d2d62d8082be76038605ef0268:evidence/issue318-reading-a-20261023/formal-ae74e51b-round1/native7-oracle13-original-ae74e51b.tar.gz"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2",
+      "acceptance_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_variant": "independent-immutable-evidence-read-only",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792768632.8902152,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2/subcommands/000006",
+      "ended_epoch": 1792768632.8968194,
+      "stdout_sha256": "b05dbead9bf4e5527d3500bcea3754319f5684c9f33b882662acd0b2649a5cc4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1115151,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "show",
+        "ae74e51bba1efef48949c077635966273a9e8990:tests/test_geo318_reading_a_oracle.py"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2",
+      "acceptance_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_variant": "independent-immutable-evidence-read-only",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792768632.9674518,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2/subcommands/000007",
+      "ended_epoch": 1792768632.9708645,
+      "stdout_sha256": "f87716dbbda5e2f3b54a92a21db248e68897fbc662a712253be6eb7fe4978c7d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 8682,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "show",
+        "ae74e51bba1efef48949c077635966273a9e8990:geometry-core/framing-template/oracle/framing_oracle.py"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2",
+      "acceptance_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_variant": "independent-immutable-evidence-read-only",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792768632.9740264,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2/subcommands/000008",
+      "ended_epoch": 1792768632.977738,
+      "stdout_sha256": "4c271933e123b296d6c9240f2ee4f4ae045f1dc59173b8c6aa9acd12e0cd4e01",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 138227,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "show",
+        "ae74e51bba1efef48949c077635966273a9e8990:geometry-core/framing-template/oracle/reading_a_source_control.py"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2",
+      "acceptance_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_variant": "independent-immutable-evidence-read-only",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792768632.9787278,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2/subcommands/000009",
+      "ended_epoch": 1792768632.9812834,
+      "stdout_sha256": "fe786d9f12cb664fe0188dc87803855449eaa86a8d115969e13bef5213fb3d95",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1221,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "show",
+        "9c534879b05058d2d62d8082be76038605ef0268:evidence/issue318-reading-a-20261023/CURRENT_STATE.json"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2",
+      "acceptance_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_variant": "independent-immutable-evidence-read-only",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792768632.9826076,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2/subcommands/000010",
+      "ended_epoch": 1792768632.9849827,
+      "stdout_sha256": "9d4bca8075e12b1cc4622531789dedfb479cfb0c1a2524dae792a74c0c968375",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 17249,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "show",
+        "9c534879b05058d2d62d8082be76038605ef0268:evidence/issue318-reading-a-20261023/NEXT.md"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2",
+      "acceptance_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_variant": "independent-immutable-evidence-read-only",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792768632.985758,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2/subcommands/000011",
+      "ended_epoch": 1792768632.9882722,
+      "stdout_sha256": "93174998a3207ea4742ffb8e97313224bcd9db1191f232900f76b6a553b0822d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 2520,
+      "stderr_bytes": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "show",
+        "4e4e4f59cea41dbec018dd8779f2db190d320bd9:PR_BODY.md"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2",
+      "acceptance_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "source_variant": "independent-immutable-evidence-read-only",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792768632.98875,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/workspace/kernel-no-wood-prep/review318-final-public-oracle13-9c534879-r2/subcommands/000012",
+      "ended_epoch": 1792768632.9914317,
+      "stdout_sha256": "620f3fa648f8726ef819954902e3838a091298018e7400d5f5216827b7472169",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 4797,
+      "stderr_bytes": 0
+    }
+  ],
+  "findings": [],
+  "subject_tests_builds_or_imports_executed": false,
+  "scope": "Existing native original/public package plus oracle13 original/public; final current matrix and quick terminal classification only, no rerun",
+  "archive_files": 253,
+  "archive_bytes": 1115151,
+  "original_native_methods": 7,
+  "native_public_accepted": true,
+  "native_actual_prior_checks": 325,
+  "oracle_methods": 13,
+  "oracle_controls": [
+    "builder",
+    "checker"
+  ],
+  "oracle_control_exits": [
+    0,
+    1,
+    0
+  ],
+  "oracle_original_and_public_accepted": true,
+  "quick_overall_exit": 1,
+  "quick_true_red_items": [
+    "rc_through_reflex",
+    "COLSTEP(3000)",
+    "FZ9"
+  ],
+  "final_current_matrix_accepted": true,
+  "cli_or_full_sweep_claim": false,
+  "mutant_source_retention": "Oracle temporary mutant files cleaned by original tests; exact immutable source+anchor and actual text streams retained; not claiming archived raw mutant files.",
+  "current_state_sha256": "9d4bca8075e12b1cc4622531789dedfb479cfb0c1a2524dae792a74c0c968375",
+  "next_sha256": "93174998a3207ea4742ffb8e97313224bcd9db1191f232900f76b6a553b0822d",
+  "body_sha256": "620f3fa648f8726ef819954902e3838a091298018e7400d5f5216827b7472169",
+  "exit_code": 0,
+  "check_count": 1093,
+  "ended_utc": "2026-10-23T15:17:12.994446+00:00"
+}

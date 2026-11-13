@@ -1,0 +1,20 @@
+start 2026-10-20T10:32:01Z
+af3178228d64aed7344bc73c056f87e9ee8460a1
+ M tests/geo261_source_index_harness.c
+ M tests/test_geo261_source_index.py
+== -Wall -Wextra warnings located in tests/geo261_source_index_harness.c (all lines)
+tests/geo261_source_index_harness.c:364:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+tests/geo261_source_index_harness.c:373:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+== matrix
+baseline                 | nodes=rc=0 | edges=rc=0 | edge-collisions=rc=0 | allocation=rc=0 | growth=rc=0 | statuses=rc=0
+never-node               | nodes=rc=1 ASSERT:duplicate-node | edges=rc=1 ASSERT:duplicate-edge | edge-collisions=rc=1 ASSERT:duplicate-edge | allocation=rc=1 ASSERT:retry-node | growth=rc=1 ASSERT:edge-duplicate-no-allocation | statuses=rc=-11
+never-edge               | nodes=rc=0 | edges=rc=1 ASSERT:duplicate-edge | edge-collisions=rc=1 ASSERT:duplicate-edge | allocation=rc=1 ASSERT:duplicate-edge | growth=rc=1 ASSERT:edge-duplicate-no-allocation | statuses=rc=0
+node-key-bytes-ignored   | nodes=rc=1 ASSERT:merged-node | edges=rc=1 ASSERT:duplicate-edge | edge-collisions=rc=1 ASSERT:edge-nodes-created | allocation=rc=1 ASSERT:necessary-allocation-memory | growth=rc=1 ASSERT:node-growth-memory | statuses=rc=1 ASSERT:provider-status
+node-probe-miss          | nodes=rc=1 ASSERT:duplicate-node | edges=rc=1 ASSERT:duplicate-edge | edge-collisions=rc=1 ASSERT:duplicate-edge | allocation=rc=1 ASSERT:retry-node | growth=rc=1 ASSERT:edge-duplicate-no-allocation | statuses=rc=1 ASSERT:cycle-preserved
+node-probe-hit           | nodes=rc=1 ASSERT:merged-node | edges=rc=1 ASSERT:duplicate-edge | edge-collisions=rc=1 ASSERT:edge-nodes-created | allocation=rc=1 ASSERT:necessary-allocation-memory | growth=rc=1 ASSERT:node-growth-memory | statuses=rc=1 ASSERT:provider-status
+edge-kind-ignored        | nodes=rc=0 | edges=rc=1 ASSERT:duplicate-edge | edge-collisions=rc=1 ASSERT:missing-edge | allocation=rc=1 ASSERT:duplicate-edge | growth=rc=0 | statuses=rc=0
+edge-probe-miss          | nodes=rc=0 | edges=rc=1 ASSERT:duplicate-edge | edge-collisions=rc=1 ASSERT:duplicate-edge | allocation=rc=1 ASSERT:duplicate-edge | growth=rc=0 | statuses=rc=0
+edge-probe-hit           | nodes=rc=0 | edges=rc=1 ASSERT:duplicate-edge | edge-collisions=rc=1 ASSERT:missing-edge | allocation=rc=1 ASSERT:duplicate-edge | growth=rc=0 | statuses=rc=0
+matrix rc=0
+end 2026-10-20T10:32:12Z
+wrapper rc=0
