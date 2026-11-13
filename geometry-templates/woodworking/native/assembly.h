@@ -54,11 +54,12 @@ typedef struct {
     bool complete;
 } AsmBinding;
 #define ASM_INSTANCE_MAX 16
+#define ASM_INSTANCE_RECORD_MAX 65536
 #define ASM_GENERATION_CAPABILITY "assembly-timber-generation/1"
 #define ASM_BAY_CAPABILITY "assembly-bay-repeat/1"
-/* R06 has its own 64-member scene limit; GEO-300 expands the host World only. */
-#define ASM_BAY_WORLD_MAX 64
-#define ASM_OWNER_MAX 48
+/* R06 storage, planning and the host share GEO-300's member capacity. */
+#define ASM_BAY_WORLD_MAX WOOD_MEMBER_CAPACITY
+#define ASM_OWNER_MAX WOOD_MEMBER_CAPACITY
 #define ASM_BAY_PRIMARY_MAX 12
 #define ASM_BAY_LINE_MAX 24
 #define ASM_BAY_OMIT_MAX 24
@@ -73,7 +74,7 @@ typedef struct { uint32_t line,left,right; } AsmBayCell;
 typedef struct { AsmIdentity identity; uint32_t timber; } AsmMapping;
 typedef struct {
     uint32_t id,binding_id,surface_id,rule_id,rule_version;
-    char name[ASM_NAME_MAX],rule_hash[65],content[ASM_RECORD_MAX];
+    char name[ASM_NAME_MAX],rule_hash[65],content[ASM_INSTANCE_RECORD_MAX];
     uint32_t member[3],timber[3],guide[3],ends[3][2];
     bool secondary[3];
     bool bay_repeat;
