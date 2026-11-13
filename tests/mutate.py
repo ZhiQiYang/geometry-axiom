@@ -1493,10 +1493,21 @@ def save_records(path, records):
     binaries._write_json_atomic(path, dict(sorted(records.items())))
 
 
+STALE_REGENERATE_HINT = (
+    "  重產:在 GitHub Actions 對該分支手動觸發「Mutation evidence」"
+    "(.github/workflows/mutation-evidence.yml,workflow_dispatch);全部成功後下載 "
+    "mutation-complete-evidence,把其中的帳本逐位元組原樣採入 tests/mutants_results.json"
+    "(不手改、不改雜湊),再跑 python tests/mutate.py --check。詳見 tests/MUTATION-EVIDENCE.md。")
+
+
 def print_stale(table, ids=None):
+    shown = 0
     for rid, rec in table.items():
         if rec is not None and rec.get("verdict") == "stale" and (ids is None or rid in ids):
             print(f"  STALE {rid}(原 {rec.get('stale_from')}):{rec.get('stale_why')}")
+            shown += 1
+    if shown:
+        print(STALE_REGENERATE_HINT)
 
 
 # ============================================================
