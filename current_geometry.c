@@ -8503,11 +8503,34 @@ static bool proj_cut_run(
 {
     SurfacePoint2 nv[POLY_MAX_VERTICES];
     EdgeFixity nf[POLY_MAX_VERTICES];
+    /* 容量取自 nv 本身;nf 元素數或環容量與它不一致即編譯失敗,
+     * 不讓傳入的 cap 與實際陣列長度脫鉤(MSVC 預設 C 模式無 _Static_assert)。 */
+    (void)sizeof(char[(sizeof nv / sizeof nv[0] == sizeof nf / sizeof nf[0] &&
+                       sizeof nv / sizeof nv[0] == POLY_MAX_VERTICES) ? 1 : -1]);
     return proj_cut_run_into(loop, flush, u0, v0, u1, v1,
-        nv, nf, POLY_MAX_VERTICES);
+        nv, nf, sizeof nv / sizeof nv[0]);
 }
 
-/* 對邊貼合拆分:覆蓋弧把環切成兩段,各段 + R 側邊封口成新環。 */
+/* 對邊貼合拆分:覆蓋弧把環切成兩段,各段 + R 側邊封口成新環。
+ *
+ * 容量(#392 審查 F1):本函式先寫 cur->v[cur->count] 再檢查,寫到索引 32
+ * 會落在 PolygonLoop2 結構內(蓋掉 count/fixity),ASan 看不到。不越界靠下面
+ * 的論證:任何時刻每片點數 <= n(= loop->count <= POLY_MAX_VERTICES),
+ * 所以最大寫入索引是 n-1。count 只增不減,證最終(或中途退出時)點數即可。
+ *  1. 每個原頂點只在處理自己那條邊時至多寫一次;弧內部頂點丟棄。額外點只有
+ *     每段弧在邊中段的進點 ent 與出點 ext,第三段弧在任何寫入前就被擋下。
+ *  2. 弧在頂點 w 結束(ext==e)時,w 的下一條邊不覆蓋(否則弧延續、不另起一段);
+ *     弧在邊中段結束時 e 落在 R 跨距外,下一條邊不在貼邊線上的覆蓋範圍,也不覆蓋。
+ *     所以下一段弧的起點頂點不是 w/e:兩段弧之間的未覆蓋鏈至少 2 個原頂點。
+ *     start 邊不覆蓋,繞回 start 的那條鏈同理至少 2 個(v[start] 與下一段弧起點)。
+ *  3. 兩段弧:一片 = 一條鏈 + 至多 2 個額外點(前弧 ext、後弧 ent),另一條鏈
+ *     至少 2 個原頂點不在本片,故 <= n-2+2 = n。第三段弧中途退出時,未寫入的
+ *     第三段弧起點再扣 1,仍 <= n。
+ *  4. 只有一段弧(分類為 SPLIT 但一段覆蓋弧,例如三邊貼):SPLIT 需兩條對邊
+ *     貼邊線各有覆蓋邊,兩邊不同,故弧至少 2 條邊、至少丟 1 個頂點;ent 至多
+ *     1 個進弧前那片、ext 至多 1 個進弧後那片,每片 <= n-1+1 = n。
+ * 見證:tests/test_core_integrity.c test_projection_split_loop_capacity
+ * (32 點梳形 4+32 恰到上限、單弧 31+1,以及網格掃描下的哨兵)。 */
 static bool proj_split_loop(
     const PolygonLoop2 *loop,
     const bool flush[4],
