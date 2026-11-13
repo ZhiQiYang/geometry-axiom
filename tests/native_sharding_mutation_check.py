@@ -38,9 +38,14 @@ workflow_replacements = {
 }
 evidence_modes = ('R348_DROP_LATEST_MEASURED_RUN', 'R348_REWRITE_RETAINED_MEASUREMENT',
                   'R348_LOWER_LATEST_MEASUREMENT')
+receipt_modes = ('R396_IGNORE_EXIT_ONLY_PROCESS_FAILURE', 'R396_ACCEPT_BOOLEAN_EXIT_CODE',
+                 'R396_ACCEPT_EXIT_ONLY_FAKE_COUNT')
+if mode in ('provenance-baseline', 'R396_ALLOW_DUPLICATE_LEGACY_COST',
+            'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST') or mode in receipt_modes:
+    target = 'test_unittest_runner.NativeShardCoverage.test_added_suite_provenance_rejects_named_mutations'
 if (mode in ('measured-baseline', 'R348_REVERT_MEASURED_PROFILE', 'R348_REMOVE_SCENARIO_SWAP',
              'R380_REVERT_SINGLE_PAIR_SWEEP', 'R380_DROP_ADDED_SUITE_EVIDENCE',
-             'R380_REMOVE_MULTISTART_SCREENING')
+             'R380_REMOVE_MULTISTART_SCREENING', 'R396_DROP_WORKSPACE_COSTS')
         or mode in workflow_replacements or mode in evidence_modes):
     target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
 if mode == 'R348_REVERT_MEASURED_PROFILE':
@@ -67,6 +72,47 @@ elif mode == 'R380_REMOVE_MULTISTART_SCREENING':
     native_shards._improve_scenarios = single_start
 elif mode == 'R380_DROP_ADDED_SUITE_EVIDENCE':
     native_shards.added_suite_costs = lambda: {}
+elif mode == 'R396_DROP_WORKSPACE_COSTS':
+    native_shards.added_receipt_costs = lambda: {}
+elif mode == 'R396_ALLOW_DUPLICATE_LEGACY_COST':
+    native_shards.added_suite_costs = lambda: {
+        **native_shards._legacy_added_suite_costs(), **native_shards.added_receipt_costs()}
+elif mode == 'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST':
+    import hashlib
+    native_shards.profile_digest = lambda: hashlib.sha256(
+        native_shards.TIMINGS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+if mode in receipt_modes or mode == 'R396_DROP_WORKSPACE_EXPECTED_ENTRIES':
+    original_receipt_read = pathlib.Path.read_text
+    def ignored_receipt_guard(path, *args, **kwargs):
+        value = original_receipt_read(path, *args, **kwargs)
+        if mode == 'R396_DROP_WORKSPACE_EXPECTED_ENTRIES':
+            if path.resolve() == run_all.EXPECTED_FILE.resolve():
+                data = json.loads(value)
+                for name in ('node:workspace_view_state', 'py:test_workspace_view_server',
+                             'py:test_workspace_view', 'node:workspace_context_menu_state'):
+                    data['suites'].pop(name)
+                value = json.dumps(data)
+        elif path.resolve() == native_shards.ADDED_RECEIPTS.resolve():
+            data = json.loads(value)
+            for source in data['runs']:
+                for shard in source['shards']:
+                    for entry in shard['observations']:
+                        row = entry['row']
+                        if row['counted']:
+                            continue
+                        if (mode == 'R396_IGNORE_EXIT_ONLY_PROCESS_FAILURE'
+                                and type(row['process_exit_code']) is int
+                                and row['process_exit_code'] == 1):
+                            row['process_exit_code'] = 0
+                        elif (mode == 'R396_ACCEPT_BOOLEAN_EXIT_CODE'
+                              and type(row['process_exit_code']) is bool):
+                            row['process_exit_code'] = int(row['process_exit_code'])
+                        elif mode == 'R396_ACCEPT_EXIT_ONLY_FAKE_COUNT':
+                            row['total'] = 0
+            value = json.dumps(data)
+        return value
+    pathlib.Path.read_text = ignored_receipt_guard
 if mode in workflow_replacements or mode in evidence_modes:
     # Mutate only this child's in-memory file read; never rewrite the checkout.
     original_read = pathlib.Path.read_text
@@ -94,7 +140,11 @@ suite = unittest.defaultTestLoader.loadTestsFromName(target)
 result = unittest.TextTestRunner(verbosity=2).run(suite)
 markers = ('R348_MEASURED_RECEIPT_BUDGET', 'R348_FOUR_NATIVE_WORKFLOW',
            'R348_RETAINED_MEASURED_EVIDENCE', 'R348_FOUR_SHARDS_COVER_FULL_REGISTRY',
-           'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+           'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS',
+           'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'R396_COMPLETE_EXPECTED_REGISTRY',
+           'R396_ADDED_RECEIPT_failed-child', 'R396_ADDED_RECEIPT_bool-exit',
+           'R396_ADDED_RECEIPT_fake-exit-only-count', 'R396_ADDED_RECEIPT_duplicate-legacy',
+           'R396_PROFILE_DIGEST_BINDS_ADDED_RECEIPTS')
 row = dict(tests=result.testsRun, failures=len(result.failures), errors=len(result.errors),
            skips=len(result.skipped), failure_ids=[case.id() for case,_ in result.failures],
            assertion_failure=all('AssertionError' in text for _,text in result.failures), removed=removed,
@@ -142,6 +192,13 @@ def main():
         'R348_REWRITE_RETAINED_MEASUREMENT': ('measured-baseline', 'R348_RETAINED_MEASURED_EVIDENCE'),
         'R348_LOWER_LATEST_MEASUREMENT': ('measured-baseline', 'R348_RETAINED_MEASURED_EVIDENCE'),
         'R348_FOUR_SHARD_DROP_ONE_SUITE': ('baseline', 'R348_FOUR_SHARDS_COVER_FULL_REGISTRY'),
+        'R396_DROP_WORKSPACE_COSTS': ('measured-baseline', 'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
+        'R396_DROP_WORKSPACE_EXPECTED_ENTRIES': ('baseline', 'R396_COMPLETE_EXPECTED_REGISTRY'),
+        'R396_IGNORE_EXIT_ONLY_PROCESS_FAILURE': ('provenance-baseline', 'R396_ADDED_RECEIPT_failed-child'),
+        'R396_ACCEPT_BOOLEAN_EXIT_CODE': ('provenance-baseline', 'R396_ADDED_RECEIPT_bool-exit'),
+        'R396_ACCEPT_EXIT_ONLY_FAKE_COUNT': ('provenance-baseline', 'R396_ADDED_RECEIPT_fake-exit-only-count'),
+        'R396_ALLOW_DUPLICATE_LEGACY_COST': ('provenance-baseline', 'R396_ADDED_RECEIPT_duplicate-legacy'),
+        'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST': ('provenance-baseline', 'R396_PROFILE_DIGEST_BINDS_ADDED_RECEIPTS'),
     }
     for mutation, (baseline, marker) in mutations.items():
         proof = []
@@ -157,8 +214,9 @@ def main():
             assert bool(row['failures']) == bool(expected), row
             if expected:
                 assert row['assertion_failure'] and marker in row['failure_markers'], row
-                method = ('test_partition_covers_actual_suite_registry_once' if baseline == 'baseline'
-                          else 'test_profile_balances_measured_work')
+                method = {'baseline': 'test_partition_covers_actual_suite_registry_once',
+                          'measured-baseline': 'test_profile_balances_measured_work',
+                          'provenance-baseline': 'test_added_suite_provenance_rejects_named_mutations'}[baseline]
                 assert all(name.startswith('test_unittest_runner.NativeShardCoverage.' + method)
                            for name in row['failure_ids']), row
             proof.append(dict(label=label, exit=result.returncode, **row))
