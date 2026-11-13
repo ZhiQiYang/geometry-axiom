@@ -11,7 +11,8 @@ R116 (geometry-web/timber_reuse_test.js)
   that.  Fix: settled() also requires getEvidenceState().blocked===false,
   which stays true until apiRequest releases its native operation.
   Injection GEOMETRY_R116_LATE_REPLY_BODY=1: the actual confirm reply's bytes
-  arrive 2 s after its headers.  Named withdrawal
+  are held after its headers until settled() has evaluated its configured
+  predicate while they were still held.  Named withdrawal
   GEOMETRY_R116_REVERT=R116_REVERT_NATIVE_SETTLE restores the old predicate.
 
 P90 (geometry-web/room_candidate_browser_test.js)
@@ -22,8 +23,17 @@ P90 (geometry-web/room_candidate_browser_test.js)
   Fix: wait for commitRoomDraft's final status line, and click Save only when
   the app reports no pending native operation.
   Injection GEOMETRY_P90_LATE_CANVAS_POS=1: the actual reply of that
-  canvas-pos write is delivered 1.5 s late.  Named withdrawal
+  canvas-pos write is held until the test has evaluated its configured wait
+  while the write was still pending.  Named withdrawal
   GEOMETRY_P90_REVERT=P90_REVERT_SAVE_READY restores the old waits.
+
+Determinism (review F3): no timer decides any outcome.  Each held reply is
+released by event order: the test first reaches the defect window (reply held,
+native operation provably unfinished, the old predicate already true), then
+asks its configured predicate once.  The reverted predicate accepts there, so
+the history oracle / Save run before the reply, every time; the fixed predicate
+refuses there, so the reply is released and the run proceeds as usual.  A slow
+or fast runner only changes how long each step takes, not their order.
 
 Usage (an isolated service must already be running):
   GEOMETRY_TEST_URL=http://127.0.0.1:18839/ GEOMETRY_FEEDBACK_DIR=/tmp/fb \\
@@ -73,9 +83,11 @@ def run(label, extra, port):
               'cases': tagged(lines, 'R116_CASE_RESULT'), 'diag': tagged(lines, 'R116_DIAG'),
               'late_body': tagged(lines, 'R116_LATE_REPLY_BODY'), 'late_canvas_pos': tagged(lines, 'P90_LATE_CANVAS_POS'),
               'save_traces': tagged(lines, 'P90_SAVE_TRACE'),
+              'p90_complete': any(line.startswith('P90 這段沒有新的未捕捉例外 ✓') for line in lines),
               'result': (tagged(lines, 'CDP_RESULT') or [{}])[-1]}
     summary = {k: result[k] for k in ('label', 'exit', 'seconds', 'failed', 'fatal', 'diag', 'late_body', 'late_canvas_pos')}
     summary['passedAssertions'] = result['result'].get('passedAssertions')
+    summary['p90Complete'] = result['p90_complete']
     print('CANVAS_FLAKE_RUN ' + json.dumps(summary, ensure_ascii=False), flush=True)
     return result
 
@@ -87,42 +99,49 @@ def r116(port, problems):
         problems.append('R116 fixed run is not green')
     if not any(c.get('id') == 'C09' and c.get('status') == 'pass' for c in fixed['cases']):
         problems.append('R116 fixed run has no passing C09')
-    if not any(x.get('phase') == 'delivered' and x.get('delayMs', 0) > 0 for x in fixed['late_body']):
-        problems.append('R116 fixed run did not prove the late reply body was applied')
+    if not any(x.get('releasedBy') == 'settle-predicate-false' and not x.get('acceptedWhileHeld') for x in fixed['late_body']):
+        problems.append('R116 fixed run did not prove settled() refused while the reply body was held')
 
     withdrawn = run('R116 withdrawn R116_REVERT_NATIVE_SETTLE', {**base, 'GEOMETRY_R116_REVERT': 'R116_REVERT_NATIVE_SETTLE'}, port + 1)
     case = next((c for c in withdrawn['cases'] if c.get('id') == 'C09'), {})
     first = case.get('firstFailure') or case
-    # The injected reply is still late when the case's cleanup runs, so the
-    # harness also reports that cleanup could not cancel the confirming form.
-    # Only that consequence is accepted; firstFailure must be the assertion.
-    if withdrawn['exit'] != 1 or any(f != 'R116 incomplete cases: C09/CLEANUP_FAILED' for f in withdrawn['fatal']):
+    # The held reply is released right after the history verdict, so cleanup
+    # drains normally and the only failure is the assertion itself.
+    if withdrawn['exit'] != 1 or withdrawn['fatal']:
         problems.append('R116 withdrawal did not end as a normal failing run')
     if [line.split()[1] for line in withdrawn['failed']] != [R116_ASSERTION]:
         problems.append('R116 withdrawal must fail exactly ' + R116_ASSERTION)
     if first.get('kind') != 'assertion' or first.get('assertion') != R116_ASSERTION:
         problems.append('R116 withdrawal first failure is not ' + R116_ASSERTION)
-    if not any(d.get('afterLen') == d.get('beforeLen') and d.get('newTail') == [] and d.get('evidenceBlocked') is True
+    if not any(d.get('afterUndo') == d.get('beforeUndo') and d.get('newEntries') == [] and d.get('lenOk') is False
+               and d.get('groupNull') is True and d.get('redoEmpty') is True and d.get('evidenceBlocked') is True
                for d in withdrawn['diag']):
         problems.append('R116 withdrawal diagnostic does not show the not-yet-observed history step')
-    if not any(x.get('phase') == 'late' for x in withdrawn['late_body']):
-        problems.append('R116 withdrawal did not check history while the reply body was still late')
+    if not any(x.get('phase') == 'late' and x.get('acceptedWhileHeld') is True for x in withdrawn['late_body']):
+        problems.append('R116 withdrawal did not check history while the reply body was still held')
 
 
 def p90(port, problems):
     base = {'GEOMETRY_ROOM_CANDIDATE_ONLY': '1', 'GEOMETRY_P90_LATE_CANVAS_POS': '1'}
     fixed = run('P90 fixed', base, port)
-    if fixed['exit'] != 0 or fixed['failed'] or fixed['fatal']:
+    # GEOMETRY_ROOM_CANDIDATE_ONLY also runs P358/R358 after P90.  Those are
+    # covered by the shard's own full sequence; this proof only judges P90, so
+    # an unrelated later section cannot turn this script into another flake.
+    if (any(line.startswith('P90 ') for line in fixed['failed']) or any('P90' in f for f in fixed['fatal'])
+            or not fixed['p90_complete']):
         problems.append('P90 fixed run is not green')
-    if not any(x.get('phase') == 'delivered' and str(x.get('command', '')).startswith('line canvas-pos boundary ')
-               for x in fixed['late_canvas_pos']):
-        problems.append('P90 fixed run did not prove the late canvas-pos reply was applied')
+    if not any(x.get('phase') == 'delivered' and x.get('acceptedWhileHeld') == [] and x.get('releasedBy') == 'room-confirmed'
+               and str(x.get('command', '')).startswith('line canvas-pos boundary ') for x in fixed['late_canvas_pos']):
+        problems.append('P90 fixed run did not prove its confirm wait refused while the canvas-pos reply was held')
 
     withdrawn = run('P90 withdrawn P90_REVERT_SAVE_READY', {**base, 'GEOMETRY_P90_REVERT': 'P90_REVERT_SAVE_READY'}, port + 1)
     if withdrawn['exit'] != 1 or withdrawn['failed']:
         problems.append('P90 withdrawal did not end as a failing run without other assertions')
     if withdrawn['fatal'] != [P90_WAIT]:
         problems.append('P90 withdrawal must stop exactly at the original save wait')
+    if not any(x.get('saveClickedWhileHeld') is True and 'room-confirmed' in x.get('acceptedWhileHeld', [])
+               for x in withdrawn['late_canvas_pos']):
+        problems.append('P90 withdrawal did not click Save while the canvas-pos reply was held')
     refused = [e for trace in withdrawn['save_traces'] for e in trace.get('events', [])
                if e.get('phase') == 'toast' and any(P90_REFUSAL in m for m in e.get('messages', []))]
     if not refused:

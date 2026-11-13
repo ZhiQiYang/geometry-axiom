@@ -94,19 +94,23 @@ function validateRegressionSwitches(env) {
   if (env.GEOMETRY_ROOM_CANDIDATE_ONLY !== '1') throw Error('P90 regression switches require GEOMETRY_ROOM_CANDIDATE_ONLY=1');
 }
 
-// Regression-only: deliver the actual reply of the first native
+// Regression-only: hold the actual reply of the first native
 // `line canvas-pos` (renderObjects placing the accepted room's new card)
-// late. The command itself has already completed natively.
-function installLateCanvasPos(delayMs) {
-  const original = window.fetch, state = window.__p90LateCanvasPos = {delayMs, phase: 'armed'};
+// until state.release() is called. The command itself has already completed
+// natively. Release is driven by the test's event order (heldUntil below),
+// never by a timer, so the outcome does not depend on runner speed.
+function installLateCanvasPos() {
+  const original = window.fetch, state = window.__p90LateCanvasPos = {phase: 'armed', acceptedWhileHeld: [], releasedBy: null};
+  let release;
+  const gate = new Promise(resolve => {release = resolve;});
+  state.release = by => {if (state.phase !== 'held') return; state.phase = 'delivered'; state.releasedBy = by; release();};
   window.fetch = async (...args) => {
     let command = '';
     try {command = JSON.parse(args[1]?.body || '{}').cmd || '';} catch (_) {}
     const response = await original.apply(window, args);
     if (state.phase !== 'armed' || !/^line canvas-pos boundary /.test(command)) return response;
     state.phase = 'held'; state.command = command;
-    await new Promise(resolve => setTimeout(resolve, delayMs));
-    state.phase = 'delivered';
+    await gate;
     return response;
   };
   state.restore = () => {window.fetch = original;};
@@ -128,7 +132,7 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
   const key = H.makeKey({send, sleep});
   const initialExceptions = exceptionCount();
   validateRegressionSwitches(process.env);
-  const lateCanvasPosMs = process.env.GEOMETRY_P90_LATE_CANVAS_POS === '1' ? 1500 : 0;
+  const holdCanvasPos = process.env.GEOMETRY_P90_LATE_CANVAS_POS === '1';
   const revertSaveReady = process.env.GEOMETRY_P90_REVERT === 'P90_REVERT_SAVE_READY';
   async function inputClick(x, y) { await click(x, y); await sleep(40); }
   const ctl = H.makeCtl({eval_, sleep, click: inputClick}, {attempts: 8, pollMs: 30, settleMs: 60, hitElement: true});
@@ -152,6 +156,18 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
   async function until(expression) {
     await waitForUI(expression, 20000);
     if (await read(expression) !== true) throw Error('Room-candidate wait ' + expression);
+  }
+  // Regression-only event order (GEOMETRY_P90_LATE_CANVAS_POS). Wait until the
+  // canvas-pos write is in flight and held (its native operation provably
+  // unfinished) and `base` holds, then ask the configured predicate once: if it
+  // already accepts, continue with the reply still held (the reverted waits do
+  // this, so Save is clicked while the write is pending, deterministically);
+  // otherwise release the reply and wait as usual (the fixed waits).
+  async function heldUntil(name, base, expression) {
+    if (!holdCanvasPos || !await read(`window.__p90LateCanvasPos?.phase==='armed'||window.__p90LateCanvasPos?.phase==='held'`)) return until(expression);
+    await until(`window.__p90LateCanvasPos.phase==='held'` + (base ? ' && ' + base : ''));
+    const verdict = await read(`(()=>{const s=window.__p90LateCanvasPos;if(s.phase!=='held')return 'not-held';if(${expression}){s.acceptedWhileHeld.push(${JSON.stringify(name)});return 'accepted-while-held';}s.release(${JSON.stringify(name)});return 'released';})()`);
+    if (verdict !== 'accepted-while-held') await until(expression);
   }
   async function facePoint(x, y) {
     const p = await read(`(()=>{const r=$('faceEditorSvg').getBoundingClientRect();return {x:r.left+fe.panX+${x}*fe.zoom,y:r.top+fe.panY+${y}*fe.zoom};})()`);
@@ -178,7 +194,9 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
     // save guard: 「原生操作結果尚未取得…」) and never retries. Click it only
     // when the app itself reports no pending native operation.
     // P90_REVERT_SAVE_READY is the named withdrawal for the regression proof.
-    if (!revertSaveReady) await until(`!ReferenceWorkspace.busy && !oc.busy && ReferenceWorkspace.getEvidenceState().blocked===false`);
+    if (!revertSaveReady) await heldUntil('save-ready', '', `!ReferenceWorkspace.busy && !oc.busy && ReferenceWorkspace.getEvidenceState().blocked===false`);
+    const held = holdCanvasPos && await read(`(()=>{const s=window.__p90LateCanvasPos;return s?{phase:s.phase,command:s.command,acceptedWhileHeld:s.acceptedWhileHeld,releasedBy:s.releasedBy,saveClickedWhileHeld:s.phase==='held'}:null;})()`);
+    if (held) console.log('P90_LATE_CANVAS_POS ' + JSON.stringify(held));
     await read(`(${installSaveProbe.toString()})();0`);
     try {
       await ctl('#projectBar [data-project-action="save"]');
@@ -240,17 +258,18 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
   await drawManual();
   await expectNativeDialog(async () => { await ctl('#faceDraftFinish'); }, {type: 'prompt', message: '新房間名稱', accept: true, promptText: '第一間'});
   await until(`!!$('roomConfirm')`);
-  if (lateCanvasPosMs) await read(`(${installLateCanvasPos.toString()})(${lateCanvasPosMs});0`);
+  if (holdCanvasPos) await read(`(${installLateCanvasPos.toString()})();0`);
   await ctl('#roomConfirm');
   // hasWork clears when the native room transaction returns; commitRoomDraft
   // then still renders (renderObjects may write `line canvas-pos` for the new
   // card) and refocuses. Its last step is this status line.
-  await until(`!RoomCollectionWorkspace.hasWork && (ReferenceWorkspace.readFeatureAttachment('source-rooms')?.rooms.length||0)===1` +
+  const confirmedBase = `!RoomCollectionWorkspace.hasWork && (ReferenceWorkspace.readFeatureAttachment('source-rooms')?.rooms.length||0)===1`;
+  await heldUntil('room-confirmed', confirmedBase, confirmedBase +
     (revertSaveReady ? '' : ` && document.getElementById('status').textContent.includes('已保存為獨立邊界')`));
   const accepted = await read(`(()=>{const rooms=ReferenceWorkspace.readFeatureAttachment('source-rooms').rooms;const room=rooms[0];return {boundary:room.boundaryRef.id,host:rooms.some(r=>r.boundaryRef.id===1)};})()`);
   check('確認後新邊界進入房間，目前描繪用面不進房間', accepted.boundary !== 1 && accepted.host === false && (await sceneText()).includes('boundary ' + accepted.boundary));
   const saved = await saveProject();
-  if (lateCanvasPosMs) console.log('P90_LATE_CANVAS_POS ' + JSON.stringify(await read(`(()=>{const s=window.__p90LateCanvasPos;s.restore();delete window.__p90LateCanvasPos;return {delayMs:s.delayMs,phase:s.phase,command:s.command};})()`)));
+  if (holdCanvasPos) await read(`(()=>{window.__p90LateCanvasPos.restore();delete window.__p90LateCanvasPos;})()`);
   await freshReopen(saved);
   const reopened = await read(`(()=>{const rooms=ReferenceWorkspace.readFeatureAttachment('source-rooms')?.rooms||[];const rows=ReferenceWorkspace.readFeatureAttachment('room-candidates')?.rows||[];return {boundary:rooms[0]?.boundaryRef.id||0,host:rooms.some(r=>r.boundaryRef.id===1),pending:rows.some(r=>r.status==='pending')};})()`);
   check('再重開後已接受房間仍在場景側附件，未接受候選仍未進場景', reopened.boundary === accepted.boundary && reopened.host === false && reopened.pending === true && (await sceneText()).includes('boundary ' + accepted.boundary));

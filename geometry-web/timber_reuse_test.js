@@ -36,7 +36,11 @@ const sha256=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 // GEOMETRY_TIMBER_REUSE_ONLY=1 and GEOMETRY_TIMBER_REUSE_CASE=C09; the normal
 // canvas sequence never sets them, so P116 counts and golden are unchanged.
 const REVERTS=Object.freeze(['R116_REVERT_NATIVE_SETTLE']);
-const LATE_REPLY_BODY_MS=process.env.GEOMETRY_R116_LATE_REPLY_BODY==='1'?2000:0;
+// GEOMETRY_R116_LATE_REPLY_BODY=1 holds the confirm reply body by event order,
+// not by time: it is released only after settled() has asked its own predicate
+// while the body was still held (see settled below). No timer is involved, so the
+// outcome does not depend on runner speed.
+const HOLD_REPLY_BODY=process.env.GEOMETRY_R116_LATE_REPLY_BODY==='1';
 const REVERT=process.env.GEOMETRY_R116_REVERT;
 function validateRegressionSwitches(env){
   const late=env.GEOMETRY_R116_LATE_REPLY_BODY,revert=env.GEOMETRY_R116_REVERT;
@@ -57,9 +61,9 @@ function installProbe(){
   const original=window.fetch,p=window.__r116={original,rows:[],events:[],pending:0,gate:null};
   const observe=e=>p.events.push({type:e.type,trusted:e.isTrusted,key:e.key,composing:e.isComposing,ctrl:e.ctrlKey,meta:e.metaKey,target:e.target?.id||e.target?.tagName});
   for(const type of ['contextmenu','keydown','keyup','compositionstart','compositionend'])document.addEventListener(type,observe,true);
-  p.arm=(pathname,command='',mode='hold',alter=null,lateBodyMs=0)=>{
+  p.arm=(pathname,command='',mode='hold',alter=null,holdBody=false)=>{
     if(p.gate)throw Error('R116 gate already armed');
-    let release;p.gate={pathname,command,mode,alter,lateBodyMs,phase:'armed',claims:0,promise:new Promise(r=>release=r),release:()=>release()};
+    let release;p.gate={pathname,command,mode,alter,holdBody,phase:'armed',claims:0,promise:new Promise(r=>release=r),release:()=>release()};
   };
   const wrapped=async(...args)=>{
     const url=new URL(typeof args[0]==='string'?args[0]:args[0].url,location.href);
@@ -83,14 +87,15 @@ function installProbe(){
           else if(gate.alter==='owner')timber.owner={kind:'assembly-instance',id:116};
           return new Response(JSON.stringify(changed),{status:response.status,headers:response.headers});
         }
-        if(gate.lateBodyMs>0){
+        if(gate.holdBody){
           // Regression-only (GEOMETRY_R116_LATE_REPLY_BODY): resolve fetch with
-          // the actual native reply's headers but deliver its unchanged bytes
-          // later, as a slow network body would. The application's own
-          // apiRequest still has to read and observe it after this wrapper's
-          // pending count has returned to zero.
-          const bytes=new Uint8Array(await response.arrayBuffer()),late=p.lateBody={delayMs:gate.lateBodyMs,phase:'late',command:row.command.split(' ')[0]};
-          const body=new ReadableStream({start(controller){setTimeout(()=>{late.phase='delivered';controller.enqueue(bytes);controller.close();},late.delayMs);}});
+          // the actual native reply's headers but hold its unchanged bytes until
+          // late.release() is called, as a slow network body would. The
+          // application's own apiRequest still has to read and observe it after
+          // this wrapper's pending count has returned to zero. Release is driven
+          // by the test's event order (settled()), never by a timer.
+          const bytes=new Uint8Array(await response.arrayBuffer()),late=p.lateBody={phase:'late',command:row.command.split(' ')[0],acceptedWhileHeld:false,releasedBy:null};
+          const body=new ReadableStream({start(controller){late.release=by=>{if(late.phase!=='late')return;late.phase='delivered';late.releasedBy=by;controller.enqueue(bytes);controller.close();};}});
           return new Response(body,{status:response.status,statusText:response.statusText,headers:response.headers});
         }
       }
@@ -131,10 +136,26 @@ module.exports=async function timberReuseTests({send,eval_,sleep,click,waitForUI
   // apiRequest has released that operation (nativePending), so a settled UI
   // includes the history step of every native write already sent.
   // R116_REVERT_NATIVE_SETTLE is a named withdrawal for the regression proof only.
-  const settleExpression=REVERT==='R116_REVERT_NATIVE_SETTLE'
-    ?"connection.phase==='ready'&&!oc.busy&&!ReferenceWorkspace.busy&&window.__r116?.pending===0"
-    :"connection.phase==='ready'&&!oc.busy&&!ReferenceWorkspace.busy&&window.__r116?.pending===0&&ReferenceWorkspace.getEvidenceState().blocked===false";
-  const settled=()=>wait('UI_SETTLED',settleExpression);
+  const baseSettleExpression="connection.phase==='ready'&&!oc.busy&&!ReferenceWorkspace.busy&&window.__r116?.pending===0";
+  const settleExpression=REVERT==='R116_REVERT_NATIVE_SETTLE'?baseSettleExpression
+    :baseSettleExpression+"&&ReferenceWorkspace.getEvidenceState().blocked===false";
+  // Regression-only event order (GEOMETRY_R116_LATE_REPLY_BODY). While the
+  // confirm reply body is held, the native operation is provably unfinished
+  // (apiRequest has not observed it). Ask the configured predicate exactly
+  // then: if it already reports settled, settled() returns with the body still
+  // held (the old, reverted predicate does this, so the history oracle is read
+  // before observe(), deterministically); if it does not, release the body and
+  // wait as usual (the fixed predicate). No timer decides either outcome.
+  const settledHeld=async()=>{
+    if(!await page(()=>!!window.__r116?.gate?.holdBody||window.__r116?.lateBody?.phase==='late'))return wait('UI_SETTLED',settleExpression);
+    await wait('UI_SETTLED_BASE_WHILE_HELD',"!!window.__r116?.lateBody&&("+baseSettleExpression+")");
+    const verdict=await page(expr=>{const late=window.__r116.lateBody;if(late.phase!=='late')return 'not-held';
+      if((0,eval)(expr)){late.acceptedWhileHeld=true;return 'accepted-while-held';}
+      late.release('settle-predicate-false');return 'released';},settleExpression);
+    if(verdict==='accepted-while-held')return;
+    await wait('UI_SETTLED',settleExpression);
+  };
+  const settled=()=>HOLD_REPLY_BODY?settledHeld():wait('UI_SETTLED',settleExpression);
   const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:14,pollMs:60,settleMs:70,missing:'R116 missing ',unreachable:(s,p)=>'R116 unreachable '+s+' '+JSON.stringify(p)});
   const fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:50});
   const choose=async(selector,value)=>{
@@ -488,16 +509,34 @@ module.exports=async function timberReuseTests({send,eval_,sleep,click,waitForUI
       check('C09_FINAL_RAW_FORM_GUARD',!(await rows(before.from)).some(r=>r.command.startsWith('timber-edit-confirm ')));
       await unchanged(before,'C09_SEALED_VISIBLE_INPUT',{noWrites:false});await cancel();await reopenBatchFromMenu([0,7]);await explicit('B',34);await preview('C09_DOUBLE_CONFIRM');
       const beforeDouble=await checkpoint(),point=await page(()=>{const n=document.getElementById('timberEditConfirm'),r=n.getBoundingClientRect();window.__r116OldConfirm=n;return{x:r.x+r.width/2,y:r.y+r.height/2};});
-      await page(ms=>window.__r116.arm('/api','timber-edit-confirm ','hold',null,ms),LATE_REPLY_BODY_MS);await ctl('#timberEditConfirm');await wait('C09_CONFIRM_ACTUALLY_HELD',"window.__r116.gate?.phase==='held'");
+      await page(hold=>window.__r116.arm('/api','timber-edit-confirm ','hold',null,hold),HOLD_REPLY_BODY);await ctl('#timberEditConfirm');await wait('C09_CONFIRM_ACTUALLY_HELD',"window.__r116.gate?.phase==='held'");
       for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,...point,button:'left',clickCount:1});
       await page(()=>window.__r116.gate.release());await settled();await page(()=>{window.__r116.gate=null;window.__r116OldConfirm.click();delete window.__r116OldConfirm;});await settled();
       check('C09_DOUBLE_AND_DETACHED_CONFIRM_ONCE',(await rows(beforeDouble.from)).filter(r=>r.command.startsWith('timber-edit-confirm ')).length===1);
-      // On failure, print what the oracle saw (no extra assertion; P116 count unchanged).
+      // On failure, print every sub-condition of the oracle (cdp_helpers.js
+      // makeHistoryOracle().single / isSingleHistoryStep) and the full
+      // getEvidenceState(), so a real CI failure tells which part failed. This
+      // second read happens right after the verdict; `verdictRead` is the
+      // oracle's own result. No extra assertion; the P116 count is unchanged.
       const oneHistory=await history.single(beforeDouble.pin);
-      if(!oneHistory)console.log('R116_DIAG '+JSON.stringify(await page(pin=>{const h=ReferenceWorkspace.history,b=window.__cdpHistoryPins.get(pin);return {beforeLen:b.undo.length,afterLen:h.undo.length,limit:h.limit,group:!!h.group,redo:h.redo.length,
-        newTail:h.undo.filter(e=>!b.undo.includes(e)).map(e=>({kind:e.kind,action:e.action})),dropped:b.undo.filter(e=>!h.undo.includes(e)).length,
-        evidenceBlocked:ReferenceWorkspace.getEvidenceState().blocked,rows:window.__r116.rows.slice(-6).map(r=>({path:r.path,command:r.command.split(' ')[0],ok:r.result?.ok,settled:r.settled}))};},beforeDouble.pin.pin)));
-      if(LATE_REPLY_BODY_MS)console.log('R116_LATE_REPLY_BODY '+JSON.stringify(await page(()=>window.__r116.lateBody||null)));
+      if(!oneHistory)console.log('R116_DIAG '+JSON.stringify(await page(pin=>{
+        const h=ReferenceWorkspace.history,b=window.__cdpHistoryPins.get(pin),limit=h.limit;
+        const retained=b.undo.slice(Math.max(0,b.undo.length+1-limit)),last=h.undo.at(-1),entry=e=>e?{kind:e.kind??null,action:e.action??null,label:e.label??null}:null;
+        let evidence;try{evidence=JSON.parse(JSON.stringify(ReferenceWorkspace.getEvidenceState()));}catch(e){evidence={error:String(e)};}
+        return {verdictRead:false,limitSame:h.limit===b.limit,frameSame:h.frame===b.frame,group:h.group===null?null:String(h.group?.label??h.group?.name??typeof h.group),groupNull:h.group===null,
+          redoLength:h.redo.length,redoEmpty:h.redo.length===0,beforeUndo:b.undo.length,afterUndo:h.undo.length,expectedUndo:Math.min(b.undo.length+1,limit),
+          lenOk:h.undo.length===Math.min(b.undo.length+1,limit)&&h.undo.length===retained.length+1,retainedOk:h.undo.slice(0,-1).every((e,i)=>e===retained[i]),lastNew:!!last&&!b.undo.includes(last),
+          newEntries:h.undo.filter(e=>!b.undo.includes(e)).map(entry),droppedEntries:b.undo.filter(e=>!h.undo.includes(e)).map(entry),beforeTail:b.undo.slice(-2).map(entry),afterTail:h.undo.slice(-2).map(entry),
+          evidenceState:evidence,evidenceBlocked:evidence.blocked,referenceBusy:ReferenceWorkspace.busy,ocBusy:!!oc.busy,connection:connection.phase,probePending:window.__r116.pending,
+          lateBody:window.__r116.lateBody?{phase:window.__r116.lateBody.phase,acceptedWhileHeld:window.__r116.lateBody.acceptedWhileHeld}:null,
+          rows:window.__r116.rows.slice(-6).map(r=>({path:r.path,command:r.command.split(' ')[0],ok:r.result?.ok,settled:r.settled}))};},beforeDouble.pin.pin)));
+      if(HOLD_REPLY_BODY){
+        // Report the event order, then let a still-held reply finish so the
+        // case's cleanup sees a drained native operation.
+        console.log('R116_LATE_REPLY_BODY '+JSON.stringify(await page(()=>{const l=window.__r116.lateBody;return l?{phase:l.phase,command:l.command,acceptedWhileHeld:l.acceptedWhileHeld,releasedBy:l.releasedBy}:null;})));
+        await page(()=>window.__r116.lateBody?.release('after-history-verdict'));
+        await wait('C09_HELD_REPLY_DRAINED',"window.__r116.lateBody?.phase==='delivered'&&("+baseSettleExpression+")&&ReferenceWorkspace.getEvidenceState().blocked===false");
+      }
       check('C09_DOUBLE_CONFIRM_ONE_HISTORY',oneHistory);
     },
     C10:async()=>{
