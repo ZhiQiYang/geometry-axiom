@@ -9,16 +9,33 @@ import re
 
 TIMINGS = Path(__file__).with_name('native_shard_timings.json')
 ADDED_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence.json')
+ADDED_R14_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence_r14.json')
+
+
+def _legacy_added_suite_costs():
+    return _added_evidence_costs(ADDED_EVIDENCE)
+
+
+def added_r14_suite_costs():
+    return _added_evidence_costs(ADDED_R14_EVIDENCE)
 
 
 def added_suite_costs():
-    """Keep later observed suites separate from the three immutable 315-suite runs.
+    legacy = _legacy_added_suite_costs()
+    r14 = added_r14_suite_costs()
+    if legacy.keys() & r14.keys():
+        raise ValueError('R379_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+    return {**legacy, **r14}
+
+
+def _added_evidence_costs(path):
+    """Keep later observed suites separate from retained immutable 315-suite runs.
 
     Each upper bound is a conservative planning weight, NOT a historical
     observed timing. The referenced CI job may have failed another suite; the
     named suite itself must have an explicitly passing receipt.
     """
-    data = json.loads(ADDED_EVIDENCE.read_text(encoding='utf-8'))
+    data = json.loads(path.read_text(encoding='utf-8'))
     if (set(data) != {'schema', 'source_run', 'source_head', 'source_checkout',
                       'note', 'observations'}
             or data['schema'] != 'native-shard-added-suite-evidence/1'
@@ -239,4 +256,5 @@ def partition_suites(suites, count, weights=None):
 def profile_digest():
     legacy = TIMINGS.read_bytes().replace(b'\r\n', b'\n')
     addition = ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')
-    return hashlib.sha256(legacy + b'\0' + addition).hexdigest()
+    r14 = ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')
+    return hashlib.sha256(legacy + b'\0' + addition + b'\0' + r14).hexdigest()

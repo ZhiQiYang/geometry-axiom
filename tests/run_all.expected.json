@@ -1149,7 +1149,7 @@
     },
     "py:test_unittest_runner": {
       "mode": "count",
-      "count": 13,
+      "count": 14,
       "unit": "test"
     },
     "py:test_wait_trace": {
@@ -1569,6 +1569,21 @@
       "mode": "count",
       "count": 11,
       "unit": "node test"
+    },
+    "node:r14_app": {
+      "mode": "count",
+      "count": 7,
+      "unit": "node test"
+    },
+    "node:r14_host": {
+      "mode": "count",
+      "count": 15,
+      "unit": "node test"
+    },
+    "py:test_r14_browser_receipt": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
     }
   }
 }
