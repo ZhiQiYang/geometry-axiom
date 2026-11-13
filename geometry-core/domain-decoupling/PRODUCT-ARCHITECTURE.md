@@ -1,6 +1,6 @@
 # Product architecture — GitHub 新來源收據
 
-來源 `5c49acb7d92d797bf777f743da183ccf22c82f71`；採入 main `8f82b207e87c086705a1d8b7a00e2f215c07cbcf`；Actions run `43423610279`。
+來源 `0f6f35121f347848d6565bf8bb991ef527905840`；採入 main `8f82b207e87c086705a1d8b7a00e2f215c07cbcf`；Actions run `43455467268`。
 
 這份衍生資料來自原 scanner CLI 與原兩支 unittest 的實際執行；三命令均 exit 0、零 skip。它只證明靜態依賴契約，不能替代演算法責任審查、原生／突變／瀏覽器或 SSOT 驗證。
 
