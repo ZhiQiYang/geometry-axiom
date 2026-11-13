@@ -120,6 +120,14 @@ module.exports=async function workspaceContextMenu(deps){
     if(mode==='space')await read(`enterFocus('space',9)`);
     else await ctl('#btnObj');
     await settle();
+    if(mode==='space'){
+      const tabs=await read(`(()=>{const tab=document.querySelector('[data-ss-tab="plan"]'),
+        pane=document.querySelector('[data-ss-pane="plan"]'),svg=$('spacePlanSvg'),r=svg?.getBoundingClientRect();
+        return {tabActive:!!tab?.classList.contains('active'),tabAriaSelected:tab?.getAttribute('aria-selected'),
+          paneHidden:pane?.hidden,svgRect:r?{x:r.x,y:r.y,width:r.width,height:r.height}:null,
+          focus:oc.focus,view3};})()`);
+      console.log('R11_FIXTURE_PLAN_BEFORE_VISIBLE '+JSON.stringify({id:active?.id,width,mode,tabs}));
+    }
     pre('FIXTURE_VISIBLE',await visible(mode==='space'?'#spacePlanSvg':'#cv'));
     await read('__r11menu.requests.length=0;__r11menu.events.length=0;void 0');
   }

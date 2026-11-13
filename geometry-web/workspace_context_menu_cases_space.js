@@ -82,6 +82,13 @@ module.exports=s=>{
       await viewport(1100,900);
       const expected=await read(`(()=>{const p=new DOMPoint(${anchor.x},${anchor.y}).matrixTransform($('spacePlanSvg').getScreenCTM().inverse());return {x:Math.round(p.x),y:Math.round(p.y)};})()`);
       await ctl(sp('column'));
+      const ctmProbe=await read(`(()=>{const m=$('spacePlanSvg').getScreenCTM(),
+        event=__r11menu.events.slice().reverse().find(e=>e.type==='contextmenu'&&e.trusted),
+        room=p=>{if(!p)return null;const q=new DOMPoint(p.x,p.y).matrixTransform(m.inverse());return {x:Math.round(q.x),y:Math.round(q.y)};};
+        return {rc:{x:$('rcX').value,y:$('rcY').value},trustedContextmenu:event?{x:event.x,y:event.y,trusted:event.trusted}:null,
+          originalAnchor:${JSON.stringify(anchor)},finalCtm:{a:m.a,b:m.b,c:m.c,d:m.d,e:m.e,f:m.f},
+          fromAnchor:room(${JSON.stringify(anchor)}),fromEvent:room(event)};})()`);
+      console.log('R11_W05_FINAL_CTM_PROBE '+JSON.stringify(ctmProbe));
       check('CREATE_USES_FINAL_CTM_AT_ACTION',await read(`$('rcX').value===${JSON.stringify(String(expected.x))}&&$('rcY').value===${JSON.stringify(String(expected.y))}`),{anchor,expected});
       await fill('#rcW','200');await fill('#rcD','250');const create=await checkpoint();await ctl('#rcSubmit');await settle();
       const added=(await query('objects')).columns.filter(o=>![71,83].includes(o.id));
