@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "3dbc18b20d829c230a72a6c2ae51d2cae5a76d56",
+  "sourceHead": "5c49acb7d92d797bf777f743da183ccf22c82f71",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43377762832",
+  "runId": "43423610279",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "96c4b0be379ecc05bd21f7c9d25f3e719747eaf10fc2185b1b0d842c1d16a3ae",
+      "stderrSha256": "dca444d19ee4fa9a1a7e3a5c18d6bb49098a03754345de3fd231139ae5fe64d8",
       "testsRun": 205
     },
     {
@@ -51,11 +51,11 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "228a3435bda9a12ce5548ab8281c2315b9448b669e74afddb63db572cd6cb89c",
+      "stderrSha256": "9fa25302285c25fdf4325afb8a904b13683cb1eda9f0059eb25c1b0169cf9056",
       "testsRun": 18
     }
   ],
-  "manifestLfSha256": "51bc2ba906e2672a4416bc51065739d1b234c12d5d08b80b10558d0ec225eddf",
+  "manifestLfSha256": "7abe8bd3351f3cd9bb3e855d6fafca66b9f7d84716be5fbc34b3606fae5f6245",
   "scannerLfSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "testScriptsLfSha256": {
     "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
@@ -63,7 +63,7 @@
   },
   "scanSha256": "388fcd4d9d3e2813773c017843b1e1c81e28e302e3cc6557cabf337a186ffc7c",
   "ownedCount": 358,
-  "exclusionCount": 293,
+  "exclusionCount": 294,
   "edgeCount": 839,
   "diagnosticCount": 0,
   "inputs": [
@@ -1524,6 +1524,10 @@
       "lfSha256": "23b9c782533e0e38f98e2a6d66631338bc612dacbf4c3b18ca537444db4e1ddb"
     },
     {
+      "path": "geometry-web/canvas_capture.js",
+      "lfSha256": "9624af465daaaee5398a93bc2ade06b99c003bb5a856457794a2cefb5950489b"
+    },
+    {
       "path": "geometry-web/canvas_context_menu_cases_a.js",
       "lfSha256": "730162d4bc4e2f5d38479bf839dea4b4c619a4494d658da330a1d33864671623"
     },
@@ -1577,7 +1581,7 @@
     },
     {
       "path": "geometry-web/cdp_test.js",
-      "lfSha256": "034debe271171165af7d6fc022e50744bfa38631bd857b044d21e157318a7611"
+      "lfSha256": "03bb8b8c7da18d1ef4d4356e264355e7c8e0a58da9131a2046a1a6900e882f20"
     },
     {
       "path": "geometry-web/composition_canvas_test.js",
@@ -2497,7 +2501,7 @@
     },
     {
       "path": "geometry-web/timber_reuse_test.js",
-      "lfSha256": "14851462d9ddcff40f90b90c68a9a5a21b1570230242f1f563947b9427271ce0"
+      "lfSha256": "54659c5ded0666d36d74d3b3fb2c3e1c691369bc6d25d0a3aed05d2001bceeb5"
     },
     {
       "path": "geometry-web/timber_schedule_test.js",
@@ -2549,7 +2553,7 @@
     },
     {
       "path": "geometry-web/view-context-menu.js",
-      "lfSha256": "92c5c081cfb2ad522082215d67b68155552c1d61d9ea139c4d3c460270e3b0ab"
+      "lfSha256": "1b835d15b93ad0807cdd3ab7656ed20d54bbe942a04fd09f58f23766722b0232"
     },
     {
       "path": "geometry-web/wait_trace.py",
@@ -2672,5 +2676,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "b2ad2f90181d405f708a3e69c89f2ad91d9b83fe780d10d30fa5747b28ae2dd2"
+  "inputLfClosureSha256": "4e4b0d5dd8fec2f71a100563746932487cd50652f8722997f91515eef581fd61"
 }
