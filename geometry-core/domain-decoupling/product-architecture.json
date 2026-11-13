@@ -2803,7 +2803,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "034debe271171165af7d6fc022e50744bfa38631bd857b044d21e157318a7611",
+      "sha256": "03bb8b8c7da18d1ef4d4356e264355e7c8e0a58da9131a2046a1a6900e882f20",
       "hashMode": "lf"
     },
     {
@@ -3945,6 +3945,12 @@
       "reason": "Dedicated R11 acceptance, state or mutation driver; invoked only by the test harness, never by product runtime.",
       "sha256": "aa0f693475268aca3ff2372f52fc67d1c7753f4d4a35c6f50cdb29b67bb86277",
       "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_capture.js",
+      "reason": "PR396 source-bound Canvas extension capture judge; invoked only by the CDP test driver, the one-shot CI collector and its guard tests, never by a product runtime entry point.",
+      "hashMode": "lf",
+      "sha256": "9624af465daaaee5398a93bc2ade06b99c003bb5a856457794a2cefb5950489b"
     }
   ],
   "htmlScriptRoutes": [

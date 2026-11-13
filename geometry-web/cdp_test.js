@@ -5,7 +5,8 @@ const net = require('net');
 const floor = require('./cdp_floor.js');
 const shards = require('./canvas_shards.js');
 const canvasEvidence = require('../tests/helpers/canvas_shards.js');
-let shardJournal=null;
+const canvasCapture = require('./canvas_capture.js');
+let shardJournal=null,captureEvidencePlan=null;
 const cdp = require('./cdp_helpers.js');
 const {createRetainedEvaluator} = require('./cdp_evaluation.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
@@ -16,7 +17,11 @@ const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGIN
 SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY','GEOMETRY_PANEL_FILL_ONLY','GEOMETRY_WORKSPACE_CONTEXT_MENU_ONLY');
 /* main() 以 inSequence(n)/notOtherShard(n) 把完整序列切成這麼多個連續區段;canvas_shards.json 的片數必須相同。 */
 const CANVAS_SHARDS=2;
+const isCanvasShard=value=>value.mode==='shard'||value.mode==='capture-shard';
 function runConfiguration(env = process.env) {
+  const capture=Object.hasOwn(env,'GEOMETRY_CDP_CAPTURE_P1161');
+  if(capture&&(env.GEOMETRY_CDP_CAPTURE_P1161!=='1'||env.GEOMETRY_CDP_SHARD===undefined))
+    throw Error('CAPTURE_CONFIGURATION: P1161 observation requires flag 1 and an original contiguous shard');
   if (!env.GEOMETRY_TEST_URL) throw Error('GEOMETRY_TEST_URL is required: use an explicitly isolated test service. No browser or reset was started.');
   const url = new URL(env.GEOMETRY_TEST_URL);
   if (!['http:','https:'].includes(url.protocol)) throw Error('GEOMETRY_TEST_URL must be an HTTP(S) test service');
@@ -64,7 +69,7 @@ function runConfiguration(env = process.env) {
       throw Object.assign(Error('CANVAS_RUNTIME_ENDPOINT: shards must use the isolated loopback runtime probe service'),{code:'CANVAS_RUNTIME_ENDPOINT'});
     const plan=shards.loadPlan(),shard=shards.parseShardSpec(env.GEOMETRY_CDP_SHARD,plan);
     if(shard.count!==CANVAS_SHARDS)throw Error('cdp_test.js gates exactly '+CANVAS_SHARDS+' canvas shards; canvas_shards.json declares '+shard.count);
-    return {mode:'shard',shard:{...shard,planSha256:shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)),goldenSha256:shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))},
+    return {mode:capture?'capture-shard':'shard',...(capture?{acceptance:false,extension:'P1161'}:{}),shard:{...shard,planSha256:shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)),goldenSha256:shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))},
       filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
   }
   return {mode:filters.length?'partial':'full',filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
@@ -168,7 +173,7 @@ const originalLog = console.log;
 // Shard receipts must survive the original immediate process.exit path. Keep
 // the original console behavior for full/partial; shard raw/journal is synced.
 const _log = (...args) => {
-  if(scope?.mode==='shard')fs.writeSync(1,require('node:util').format(...args)+'\n');
+  if(scope&&isCanvasShard(scope))fs.writeSync(1,require('node:util').format(...args)+'\n');
   else originalLog(...args);
 };
 function observeAssetNetwork(message) {
@@ -420,6 +425,11 @@ function evaluateSections() {
   const wantUpdate=process.env.GEOMETRY_CDP_UPDATE_GOLDEN;
   _log('CDP_SECTIONS '+Object.keys(actual.sections).length+' 段,合計 '+total+' 通過斷言');
   if(wantUpdate!==undefined && wantUpdate!=='1'){failN++;_log('[CDP FLOOR] GEOMETRY_CDP_UPDATE_GOLDEN 只接受 1');}
+  if(scope.mode==='capture-shard'){
+    if(wantUpdate!==undefined)throw Error('CAPTURE_CONFIGURATION: capture never writes golden');
+    canvasCapture.evaluateSections(captureEvidencePlan,scope.shard.index,actual.sections,sectionOrder);
+    return 'captured (shard '+scope.shard.index+'/'+scope.shard.count+')';
+  }
   if(scope.mode==='shard')return evaluateShardSections(actual,wantUpdate);
   if(scope.mode!=='full'){
     if(wantUpdate){failN++;_log('[CDP FLOOR] 部分模式不可更新 golden(golden 只記完整模式)');return 'update-refused (partial mode)';}
@@ -520,9 +530,9 @@ async function main() {
   if (!await eval_(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`))
     throw Error('Application did not finish loading: '+JSON.stringify(await eval_(`({state:document.readyState,url:location.href,api:typeof api,message:document.querySelector('#connectionMessage')?.textContent})`)));
   // 完整序列的區塊歸屬:完整模式全部執行,分片模式只執行本片的連續區段;部分模式維持原本的旗標條件。
-  const inSequence=n=>scope.mode==='full'||(scope.mode==='shard'&&scope.shard.index===n);
-  const notOtherShard=n=>scope.mode!=='shard'||scope.shard.index===n;
-  if(scope.mode==='shard'&&scope.shard.index>1)await applyShardHandoff(scope.shard.index-1);
+  const inSequence=n=>scope.mode==='full'||(['shard','capture-shard'].includes(scope.mode)&&scope.shard.index===n);
+  const notOtherShard=n=>!['shard','capture-shard'].includes(scope.mode)||scope.shard.index===n;
+  if(isCanvasShard(scope)&&scope.shard.index>1)await applyShardHandoff(scope.shard.index-1);
   const runTimberReuse=()=>require('./timber_reuse_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
   const runCanvasContextMenu=()=>require('./canvas_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
   const runWorkspaceContextMenu=()=>require('./workspace_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
@@ -7377,8 +7387,15 @@ if(require.main===module){
       shardJournal=canvasEvidence.createJournal(shardEvidencePlan,id,event=>_log('CANVAS_SHARD_EVENT '+canvasEvidence.stable(event)));
       shardJournal.begin(id);
     }
+    else if(scope.mode==='capture-shard'){
+      captureEvidencePlan=canvasCapture.loadPlan();
+      scope.evidencePlanSha256=captureEvidencePlan.sha256;
+      const id=scope.shard.index+'/'+scope.shard.count;
+      shardJournal=canvasEvidence.createJournal(captureEvidencePlan,id,event=>_log('CANVAS_SHARD_EVENT '+canvasEvidence.stable(event)));
+      shardJournal.begin(id);
+    }
     console.log=recordLog;
     (async()=>{await assertPortAvailable(PORT);chrome=startBrowser();chrome.on('error',fatal);_log('CDP_SCOPE '+JSON.stringify(scope));await main();})().catch(fatal);
   }
   catch(error){_log('CDP preflight failed:',error.message);process.exitCode=1;}
-} else module.exports={runConfiguration,assertionVerdicts,evaluationValue,explicitVerdict,assertPortAvailable,verifyBrowserOwnership};
+} else module.exports={runConfiguration,isCanvasShard,assertionVerdicts,evaluationValue,explicitVerdict,assertPortAvailable,verifyBrowserOwnership};

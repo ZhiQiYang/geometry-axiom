@@ -1,0 +1,273 @@
+name: PR396 Canvas capture
+
+on:
+  pull_request:
+    # Explicit measurement request only. Applying the resulting golden and ME
+    # later must not rerun a collector pinned to the old 95-section baseline.
+    types: [labeled]
+
+permissions:
+  contents: read
+  issues: read
+  actions: read
+
+concurrency:
+  # An unrelated label must not cancel an active measurement for this PR.
+  group: pr396-canvas-capture-${{ github.ref }}-${{ github.event.label.name }}
+  cancel-in-progress: true
+
+env:
+  EXPECTED_EXECUTION_SHA: ${{ github.sha }}
+  PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  prepare:
+    if: github.repository == 'ZhiQiYang/geometry-axiom' && github.event.pull_request.number == 396 && github.event.pull_request.head.repo.full_name == github.repository && github.event.label.name == 'pr396-canvas-capture' && contains(github.event.pull_request.labels.*.name, 'pr396-canvas-capture')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Prove capture guards and preserve the original strict validator
+        run: |
+          node --test --test-reporter=spec .github/scripts/test_pr396_canvas_capture*.js
+          python3 -B .github/scripts/test_pr396_canvas_capture.py
+          node --test --test-reporter=spec tests/test_canvas_shards.js
+          node .github/scripts/test_pr396_canvas_capture.js --mutation-proof --output "$RUNNER_TEMP/pr396-capture-tools/capture-judge-proof"
+          python3 -B .github/scripts/test_pr396_canvas_capture.py --mutation-proof --output "$RUNNER_TEMP/pr396-capture-tools/python-mutation-proof"
+          node .github/scripts/test_pr396_canvas_capture_wiring.js --mutation-proof --output "$RUNNER_TEMP/pr396-capture-tools/wiring-mutation-proof"
+      - name: Recover and hash-check the published generator and T
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          delivery="$RUNNER_TEMP/pr396-capture-tools"
+          mkdir -p "$delivery"
+          gh api repos/ZhiQiYang/geometry-axiom/issues/comments/6841504825 > "$delivery/source-comment.json"
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import re
+
+          out = Path(os.environ['RUNNER_TEMP']) / 'pr396-capture-tools'
+          comment = json.loads((out / 'source-comment.json').read_bytes())
+          if comment.get('id') != 6841504825:
+              raise SystemExit('PR396_WRONG_COMMENT')
+          files = {
+              'PR396-complete-canvas.py': ('python', 30532, '12c161dce158cdb9d8c360a56090beb3cfd8ebaf4a846e47c6e9c9cebd3b01cd'),
+              'PR396-canvas-T.patch': ('diff', 1773, '72182fc5a746bbb99b460c5e814e37d79b2d2bde744e33ccb75b9001af985027'),
+          }
+          checked = {}
+          for name, (language, size, digest) in files.items():
+              pattern = r'(?m)^### ' + re.escape(name) + r'\n\n```' + language + r'\n([\s\S]*?)^```[ \t]*$'
+              matches = re.findall(pattern, comment['body'])
+              if len(matches) != 1:
+                  raise SystemExit('PR396_CODE_BLOCK_COUNT:' + name)
+              raw = matches[0].encode('utf-8')
+              if len(raw) != size or hashlib.sha256(raw).hexdigest() != digest or b'\r' in raw:
+                  raise SystemExit('PR396_DELIVERY_HASH_MISMATCH:' + name)
+              checked[name] = raw
+          # Both files must match before either file is saved or executed.
+          for name, raw in checked.items():
+              (out / name).write_bytes(raw)
+          provenance = {
+              'schema': 'pr396-published-generator/1',
+              'comment_id': comment['id'],
+              'comment_updated_at': comment['updated_at'],
+              'run_id': os.environ['GITHUB_RUN_ID'],
+              'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'execution_sha': os.environ['EXPECTED_EXECUTION_SHA'],
+              'head_sha': os.environ['PR_HEAD_SHA'],
+              'files': {name: {'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()} for name, raw in checked.items()},
+          }
+          (out / 'provenance.json').write_text(json.dumps(provenance, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          PY
+      - name: Check the unchanged generator judge without launching a browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          delivery="$RUNNER_TEMP/pr396-capture-tools"
+          python3 "$delivery/PR396-complete-canvas.py" --repo "$GITHUB_WORKSPACE" --self-test > "$delivery/self-test.stdout" 2> "$delivery/self-test.stderr"
+          cat "$delivery/self-test.stdout"
+      - name: Preserve exact published generator provenance
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pr396-canvas-capture-tools
+          path: ${{ runner.temp }}/pr396-capture-tools/
+          if-no-files-found: error
+          retention-days: 14
+
+  capture:
+    name: PR396 capture (${{ matrix.shard }}/2)
+    needs: prepare
+    runs-on: ubuntu-latest
+    # The existing two contiguous canvas sections retain their 35-minute jobs.
+    # These are source observations, not a single-process full acceptance run.
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        shard: [1, 2]
+    env:
+      GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+      GEOMETRY_FEEDBACK_DIR: /tmp/pr396-canvas-capture-feedback
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+      GEOMETRY_CDP_PORT: '9333'
+      GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR: /tmp/geometry-grid-screens
+      GEOMETRY_DOCUMENT_SCREENSHOT_DIR: /tmp/geometry-document-screens
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Build current native executables
+        run: npm run build
+      - name: Restore cached CJK font package
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: ${{ runner.temp }}/cjk-font-debs
+          key: fonts-noto-cjk-noble-1:20230817+repack1-3
+      - name: Install Chinese fonts for visual verification
+        timeout-minutes: 8
+        # Cache hit: install the saved .deb without contacting the mirror.
+        # Cache miss: keep the existing apt download, then store fonts-noto-cjk*.deb.
+        # CJK remains mandatory; do not raise job timeouts.
+        run: |
+          set -euo pipefail
+          cache_dir="${{ runner.temp }}/cjk-font-debs"
+          mkdir -p "$cache_dir"
+          shopt -s nullglob
+          debs=("$cache_dir"/fonts-noto-cjk*.deb)
+          echo "CJK_CACHE_DIR=$cache_dir"
+          echo "CJK_DEB_COUNT=${#debs[@]}"
+          if [ "${#debs[@]}" -gt 0 ]; then
+            ls -la "${debs[@]}"
+            for deb in "${debs[@]}"; do
+              echo "CJK_DEB=$(basename "$deb") bytes=$(wc -c <"$deb")"
+            done
+            echo "CJK_INSTALL_BRANCH=cached-deb"
+            # Install only the local archives; dependency/configuration errors must fail.
+            # Keep the mirror guard, without an apt repair/fallback on a cache hit.
+            log="$(mktemp)"
+            sudo dpkg -i "${debs[@]}" 2>&1 | tee "$log"
+            if grep -E "https?://azure\.archive\.ubuntu\.com|Need to get .* of archives" "$log"; then
+              echo "CJK_CACHE_HIT_STILL_MIRRORED=1" >&2
+              echo "cache-hit path contacted apt mirror; see log above" >&2
+              exit 1
+            fi
+            echo "CJK_CACHE_HIT_STILL_MIRRORED=0"
+          else
+            echo "CJK_INSTALL_BRANCH=apt-miss"
+            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
+            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
+            cp /var/cache/apt/archives/fonts-noto-cjk*.deb "$cache_dir/"
+            ls -la "$cache_dir"/fonts-noto-cjk*.deb || true
+          fi
+          dpkg -s fonts-noto-cjk
+          # Collect stdout before grep -q so a closed pipe cannot mimic missing fonts.
+          cjk_fonts="$(fc-list :lang=zh)"
+          if ! grep -q . <<< "$cjk_fonts"; then
+            echo "fc-list :lang=zh found no fonts" >&2
+            exit 1
+          fi
+      - name: Run one complete canonical shard with P1161 capture enabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          test -x "$GEOMETRY_CHROME"
+          server_log="$RUNNER_TEMP/pr396-capture-server.log"
+          python3 -B -u geometry-web/start_local.py --port 18839 > "$server_log" 2>&1 &
+          server=$!
+          cleanup() {
+            original_status=$?
+            set +e
+            kill "$server" 2>/dev/null || true
+            wait "$server" 2>/dev/null || true
+            exit "$original_status"
+          }
+          trap cleanup EXIT
+          for attempt in $(seq 1 30); do
+            if ! kill -0 "$server" 2>/dev/null; then
+              cat "$server_log"
+              exit 1
+            fi
+            if python3 -B geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          python3 -B .github/scripts/pr396_canvas_capture.py run --shard '${{ matrix.shard }}/2' --repo "$GITHUB_WORKSPACE" --out "$RUNNER_TEMP/pr396-capture-${{ matrix.shard }}"
+      - name: Preserve capture raw records separately from strict canvas receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pr396-capture-${{ matrix.shard }}
+          path: ${{ runner.temp }}/pr396-capture-${{ matrix.shard }}/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Preserve runtime diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pr396-canvas-runtime-${{ matrix.shard }}
+          path: ${{ runner.temp }}/pr396-capture-server.log
+          if-no-files-found: ignore
+          retention-days: 14
+
+  collect:
+    name: PR396 capture provenance and candidate patches
+    needs: [prepare, capture]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PR396_CAPTURE_RESULT: ${{ needs.capture.result }}
+    steps:
+      - name: Preserve collector status even when a capture job failed
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/pr396-capture-diagnostics"
+          printf '%s\n' "$PR396_CAPTURE_RESULT" > "$RUNNER_TEMP/pr396-capture-diagnostics/capture-job-result.txt"
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: pr396-canvas-capture-tools
+          path: ${{ runner.temp }}/pr396-capture-tools
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: pr396-capture-*
+          path: ${{ runner.temp }}/pr396-capture-input
+          merge-multiple: false
+      - name: Verify both complete raw journals before generating candidate files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$PR396_CAPTURE_RESULT" = success
+          python3 -B .github/scripts/pr396_canvas_capture.py verify --repo "$GITHUB_WORKSPACE" --input "$RUNNER_TEMP/pr396-capture-input" --out "$RUNNER_TEMP/pr396-capture-output" --generator "$RUNNER_TEMP/pr396-capture-tools/PR396-complete-canvas.py"
+      - name: Preserve the verified candidate or failure diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pr396-canvas-capture-delivery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pr396-capture-output/
+            ${{ runner.temp }}/pr396-capture-diagnostics/
+          if-no-files-found: error
+          retention-days: 14
