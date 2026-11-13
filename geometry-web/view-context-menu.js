@@ -147,8 +147,12 @@
       event.preventDefault(); event.stopPropagation();
       if (event.button === 2) keyboardEntry = null;
       if (keyboardEntry) {
-        if (!keyboardEntry.handled) attempt(svg,keyboardEntry.target,'keyboard');
-        keyboardEntry.handled = true; return;
+        const pending = keyboardEntry;
+        if (!pending.handled) {
+          pending.handled = true;
+          attempt(svg,pending.target,'keyboard');
+        }
+        return;
       }
       attempt(svg,event.target,!event.clientX && !event.clientY && event.button !== 2 ? 'keyboard' : 'pointer',event.clientX,event.clientY);
     });

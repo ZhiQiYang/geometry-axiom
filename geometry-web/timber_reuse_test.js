@@ -266,7 +266,7 @@ module.exports=async function timberReuseTests({send,eval_,sleep,click,waitForUI
     const port=await new Promise((resolve,reject)=>{const socket=net.createServer();socket.once('error',reject);socket.listen(0,'127.0.0.1',()=>{const selected=socket.address().port;socket.close(error=>error?reject(error):resolve(selected));});});
     check('C07_NEW_USER_DATA_DIR_EMPTY',fs.readdirSync(profile).length===0&&path.resolve(profile)!==path.resolve(process.env.GEOMETRY_CHROME_PROFILE||'.'));
     fs.writeFileSync(receiptPath,JSON.stringify({...receipt,freshProfile:profile},null,2)+'\n');
-    const env={...process.env};for(const name of Object.keys(env))if(/^GEOMETRY_.*_(?:ONLY|CASE|CASES)$/.test(name)||name==='GEOMETRY_CDP_FROM_P31'||name==='GEOMETRY_CDP_UPDATE_GOLDEN'||name==='GEOMETRY_CDP_SHARD')delete env[name];
+    const env={...process.env};for(const name of Object.keys(env))if(/^GEOMETRY_.*_(?:ONLY|CASE|CASES)$/.test(name)||name==='GEOMETRY_CDP_FROM_P31'||name==='GEOMETRY_CDP_UPDATE_GOLDEN'||name==='GEOMETRY_CDP_SHARD'||name==='GEOMETRY_CDP_CAPTURE_P1161')delete env[name];
     Object.assign(env,{GEOMETRY_TIMBER_REUSE_ONLY:'1',GEOMETRY_TIMBER_REUSE_CASE:'C07',GEOMETRY_R116_FRESH_STAGE:'open',GEOMETRY_R116_FRESH_RECEIPT:receiptPath,GEOMETRY_CHROME_PROFILE:profile,GEOMETRY_CDP_PORT:String(port)});
     for(const pin of pins)await history.release(pin);pins.clear();await cancel();await page(()=>window.__r116.cleanup());
     let outcome,childText;
