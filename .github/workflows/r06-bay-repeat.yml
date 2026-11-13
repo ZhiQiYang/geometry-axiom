@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/r06-bay-repeat.yml'
+      - '.github/actions/install-cjk-fonts/**'
       - 'geometry-templates/woodworking/**'
       - 'geometry-web/assembly*'
       - 'geometry-web/cdp_bay_repeat_io.js'
@@ -63,54 +64,10 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '24'
-      - name: Restore cached CJK font package
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
-        with:
-          path: ${{ runner.temp }}/cjk-font-debs
-          key: fonts-noto-cjk-noble-1:20230817+repack1-3
       - name: Install Chinese fonts for actual browser rendering
+        # 原 8 分鐘時限保留在這一步（涵蓋快取還原＋安裝），不放寬。
         timeout-minutes: 8
-        # Cache hit: install the saved .deb without contacting the mirror.
-        # Cache miss: keep the existing apt download, then store fonts-noto-cjk*.deb.
-        # CJK remains mandatory; do not raise job timeouts.
-        run: |
-          set -euo pipefail
-          cache_dir="${{ runner.temp }}/cjk-font-debs"
-          mkdir -p "$cache_dir"
-          shopt -s nullglob
-          debs=("$cache_dir"/fonts-noto-cjk*.deb)
-          echo "CJK_CACHE_DIR=$cache_dir"
-          echo "CJK_DEB_COUNT=${#debs[@]}"
-          if [ "${#debs[@]}" -gt 0 ]; then
-            ls -la "${debs[@]}"
-            for deb in "${debs[@]}"; do
-              echo "CJK_DEB=$(basename "$deb") bytes=$(wc -c <"$deb")"
-            done
-            echo "CJK_INSTALL_BRANCH=cached-deb"
-            # Install only the local archives; dependency/configuration errors must fail.
-            # Keep the mirror guard, without an apt repair/fallback on a cache hit.
-            log="$(mktemp)"
-            sudo dpkg -i "${debs[@]}" 2>&1 | tee "$log"
-            if grep -E "https?://azure\.archive\.ubuntu\.com|Need to get .* of archives" "$log"; then
-              echo "CJK_CACHE_HIT_STILL_MIRRORED=1" >&2
-              echo "cache-hit path contacted apt mirror; see log above" >&2
-              exit 1
-            fi
-            echo "CJK_CACHE_HIT_STILL_MIRRORED=0"
-          else
-            echo "CJK_INSTALL_BRANCH=apt-miss"
-            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
-            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
-            cp /var/cache/apt/archives/fonts-noto-cjk*.deb "$cache_dir/"
-            ls -la "$cache_dir"/fonts-noto-cjk*.deb || true
-          fi
-          dpkg -s fonts-noto-cjk
-          # Collect stdout before grep -q so a closed pipe cannot mimic missing fonts.
-          cjk_fonts="$(fc-list :lang=zh)"
-          if ! grep -q . <<< "$cjk_fonts"; then
-            echo "fc-list :lang=zh found no fonts" >&2
-            exit 1
-          fi
+        uses: ./.github/actions/install-cjk-fonts
       - name: Warm up Chrome once before the timed browser harness
         # The CDP connect window in geometry-web/cdp_test.js (120 polls, about
         # 30 s) is the same one integration-tests.yml uses and is not changed.
