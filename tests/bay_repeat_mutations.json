@@ -36,16 +36,26 @@
     "br10:zero-reference-id": "test_br10_external_reference_zero_is_a_real_uint32_id",
     "br10:direct-self-support": "test_br10_direct_owned_support_is_self_support",
     "br10b:zero-generated": "test_br10b_all_omitted_line_is_preserved_and_legal",
-    "br11:owned-capacity": "test_br11_owned_capacity_rejects_56_without_partial_creation",
+    "br11:legacy56-accepted": "test_br11_former_owned_overflow_56_is_fully_accepted",
+    "br11:capacity116-valid": "test_br11_generates_116_members_with_cancel_history_and_fresh_replay",
+    "br11:capacity116-geometry": "test_br11_generates_116_members_with_cancel_history_and_fresh_replay",
+    "br11:capacity116-replay": "test_br11_generates_116_members_with_cancel_history_and_fresh_replay",
     "br11:instance-boundary-accepted": "test_br11_instance_count_accepts_16_and_rejects_17_atomically",
     "br11:instance-capacity": "test_br11_instance_count_accepts_16_and_rejects_17_atomically",
     "br11:primary-capacity": "test_br11_input_count_capacity_precedes_truncation",
     "br11:line-capacity": "test_br11_secondary_line_count_has_valid_24_and_overflow_25",
     "br11:omit-capacity": "test_br11_omit_count_has_valid_24_and_overflow_25",
     "br11:global-owned-capacity": "test_br11_owned_capacity_is_global_across_instances",
+    "br11:global49-accepted": "test_br11_owned_capacity_is_global_across_instances",
+    "br11:world512-accepted": "test_br11_owned_capacity_is_global_across_instances",
     "br11:record-boundary-accepted": "test_br11_instance_record_exact_byte_boundary",
     "br11:record-byte-capacity": "test_br11_instance_record_exact_byte_boundary",
-    "br11:world-capacity": "test_br11_world_capacity_includes_non_owned_timbers",
+    "br11:record-source-complete": "test_br11_instance_record_exact_byte_boundary",
+    "br11:record-field-complete": "test_br11_instance_record_exact_byte_boundary",
+    "br11:legacy65-accepted": "test_br11_former_world_boundary_64_and_65_are_fully_accepted",
+    "br11:mixed51-valid": "test_br11_mixed_repeat_and_legacy_owners_above_48_fresh_replay",
+    "br11:mixed51-replay": "test_br11_mixed_repeat_and_legacy_owners_above_48_fresh_replay",
+    "br11:legacy-record-raw-capacity": "test_br11_mixed_repeat_and_legacy_owners_above_48_fresh_replay",
     "br12:replay-mapping": "test_br12_fresh_native_replay_preserves_definitions_and_mapping",
     "br12:replay-accepted": "test_br12_fresh_native_replay_preserves_definitions_and_mapping",
     "br12:mixed-derived-host": "test_br12_repeat_with_unrelated_derived_host_replays",
@@ -156,6 +166,12 @@
     "r116-main:noop-scene-unchanged"
   ],
   "browserTags": [
+    "R06_BR11_CAPACITY116_VALID",
+    "R06_BR11_CAPACITY116_CANCEL",
+    "R06_BR11_CAPACITY116_COMMIT",
+    "R06_BR11_CAPACITY116_HISTORY",
+    "R06_BR11_CAPACITY116_SAVE",
+    "R06_BR11_CAPACITY116_COLD",
     "R06_BR12_ARCHIVE",
     "R06_BR12_ATOMIC_REJECT",
     "R06_BR12_COLD_ERRORS",
@@ -338,8 +354,8 @@
       "patches": [
         {
           "file": "geometry-core/assembly_generation.inc",
-          "before": "(void)user;char value[ASM_RECORD_MAX],text[ASM_RECORD_MAX];",
-          "after": "(void)user;bool prior_repeat=false;if(g_active_app_candidate)for(size_t prior=0;prior<g_active_app_candidate->before.wood.assembly.instance_count;++prior){const AsmInstance *previous=&g_active_app_candidate->before.wood.assembly.instances[prior];if(previous->id==a->id&&previous->bay_repeat)prior_repeat=true;}char value[ASM_RECORD_MAX],text[ASM_RECORD_MAX];"
+          "before": "(void)user;char value[ASM_INSTANCE_RECORD_MAX],text[ASM_INSTANCE_RECORD_MAX];",
+          "after": "(void)user;bool prior_repeat=false;if(g_active_app_candidate)for(size_t prior=0;prior<g_active_app_candidate->before.wood.assembly.instance_count;++prior){const AsmInstance *previous=&g_active_app_candidate->before.wood.assembly.instances[prior];if(previous->id==a->id&&previous->bay_repeat)prior_repeat=true;}char value[ASM_INSTANCE_RECORD_MAX],text[ASM_INSTANCE_RECORD_MAX];"
         },
         {
           "file": "geometry-core/assembly_generation.inc",
@@ -507,6 +523,90 @@
           "after": "plan->cell_end=report?report->cell_count:0;if(plan->count==a->primary_count)return wood_bay_bad(w,a->id,\"no secondary produced\");"
         }
       ]
+    },
+    {
+      "name": "r04_r06_restore_bay_world_64",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br11_former_world_boundary_64_and_65_are_fully_accepted",
+      "assertion": "br11:legacy65-accepted",
+      "covers": ["BR11"],
+      "patches": [{
+        "file": "geometry-templates/woodworking/native/assembly.h",
+        "before": "#define ASM_BAY_WORLD_MAX WOOD_MEMBER_CAPACITY",
+        "after": "#define ASM_BAY_WORLD_MAX 64"
+      }]
+    },
+    {
+      "name": "r04_r06_restore_owned_48",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br11_former_owned_overflow_56_is_fully_accepted",
+      "assertion": "br11:legacy56-accepted",
+      "covers": ["BR11"],
+      "patches": [{
+        "file": "geometry-templates/woodworking/native/assembly.h",
+        "before": "#define ASM_OWNER_MAX WOOD_MEMBER_CAPACITY",
+        "after": "#define ASM_OWNER_MAX 48"
+      }]
+    },
+    {
+      "name": "r04_r06_restore_instance_record_8192",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br11_generates_116_members_with_cancel_history_and_fresh_replay",
+      "assertion": "br11:capacity116-valid",
+      "covers": ["BR11"],
+      "patches": [{
+        "file": "geometry-templates/woodworking/native/assembly.h",
+        "before": "#define ASM_INSTANCE_RECORD_MAX 65536",
+        "after": "#define ASM_INSTANCE_RECORD_MAX 8192"
+      }]
+    },
+    {
+      "name": "r04_r06_restore_legacy_owned_loader_48",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br11_mixed_repeat_and_legacy_owners_above_48_fresh_replay",
+      "assertion": "br11:mixed51-replay",
+      "covers": ["BR11", "BR12"],
+      "patches": [{
+        "file": "geometry-core/assembly_generation.inc",
+        "before": "if(w->wood.assembly.owner_count>=ASM_OWNER_MAX||reference_timber_index(w,id)>=0)",
+        "after": "if(w->wood.assembly.owner_count==ASM_INSTANCE_MAX*3||reference_timber_index(w,id)>=0)"
+      }]
+    },
+    {
+      "name": "r04_r06_drop_legacy_raw_record_guard",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br11_mixed_repeat_and_legacy_owners_above_48_fresh_replay",
+      "assertion": "br11:legacy-record-raw-capacity",
+      "covers": ["BR11", "BR12"],
+      "patches": [{
+        "file": "geometry-core/assembly.inc",
+        "before": "if(g_assembly_record.used>=ASM_RECORD_MAX&&geo_json_member(&j,geo_json_member(&j,0,\"source\"),\"layout\")<0)",
+        "after": "if(false)"
+      }]
+    },
+    {
+      "name": "r04_r06_restore_source_field_8192",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br11_instance_record_exact_byte_boundary",
+      "assertion": "br11:record-field-complete",
+      "covers": ["BR11"],
+      "patches": [{
+        "file": "geometry-web/source-inspector-bridge.inc",
+        "before": "char value[ASM_INSTANCE_RECORD_MAX];",
+        "after": "char value[ASM_RECORD_MAX];"
+      }]
+    },
+    {
+      "name": "r04_r06_restore_source_text_32768",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br11_instance_record_exact_byte_boundary",
+      "assertion": "br11:record-source-complete",
+      "covers": ["BR11"],
+      "patches": [{
+        "file": "geometry-web/source-inspector-bridge.inc",
+        "before": "#define SI_TEXT_MAX (ASM_INSTANCE_RECORD_MAX+256)",
+        "after": "#define SI_TEXT_MAX 32768"
+      }]
     },
     {
       "name": "r06_br11_record_off_by_one",
