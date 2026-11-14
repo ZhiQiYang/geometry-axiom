@@ -27,10 +27,6 @@ static bool parameter_exact_status(GeoExactStatus status)
     default:return parameter_fail("I38 UNIT: invalid quantity unit");
     }
 }
-static bool parameter_mul(int64_t a,int64_t b,int64_t *r)
-{return parameter_exact_status(geo_integer_multiply(a,b,r));}
-static bool parameter_add(int64_t a,int64_t b,int64_t *r)
-{return parameter_exact_status(geo_integer_add(a,b,r));}
 static GeoQuantity parameter_normal(GeoQuantity value)
 {
     GeoQuantity result=value;
@@ -53,8 +49,6 @@ static int parameter_field_index(const World *w,uint32_t id,uint32_t field)
 {return geo_parameters_field_index(&w->geo.parameters,id,field);}
 static bool parameter_u32(GeoJson *j,int t,uint32_t *out)
 {int64_t v;if(!geo_json_integer(j,t,&v)||v<0||v>UINT32_MAX)return parameter_fail("I38 ID: expected uint32 identity");*out=(uint32_t)v;return true;}
-static bool parameter_integer(const char *s,int64_t *v)
-{if(!s||!parse_i64(s,v)||*v==INT64_MIN)return parameter_fail("UNSUPPORTED/PRECISION: exact integer must fit signed int64 magnitude");return true;}
 static bool parameter_ref_parse(const char *s,ParameterRef *r)
 {
     if(strncmp(s,"param:",6))return false;

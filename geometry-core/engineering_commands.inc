@@ -65,8 +65,6 @@ static bool eng_operation(World *w,GeoJson *j,int t)
 
 /* Native scene records contain only definitions. Values attached to bound
  * dimensions are sources and overrides, never copied evaluated dimensions. */
-static bool eng_dimension_read(World *w,GeoJson *j,int t,const EngTarget *target,Coord *cache)
-{WoodEngineeringContext context=app_eng_context(w);return wood_grid_dimension_read(&context,j,t,target,cache);}
 static bool eng_restore_grid(World *w,GeoJson *j,int t)
 {
     WoodGridContext context=app_grid_context(w);context.engineering=app_eng_context(w);
