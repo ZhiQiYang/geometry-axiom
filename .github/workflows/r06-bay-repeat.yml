@@ -68,6 +68,49 @@ jobs:
         # 原 8 分鐘時限保留在這一步（涵蓋快取還原＋安裝），不放寬。
         timeout-minutes: 8
         uses: ./.github/actions/install-cjk-fonts
+      - name: Warm up Chrome once before the timed browser harness
+        # The CDP connect window in geometry-web/cdp_test.js (120 polls, about
+        # 30 s) is the same one integration-tests.yml uses and is not changed.
+        # On #380 (run 43271055609 attempts 1 and 2) the very first Chrome
+        # launch on a fresh ubuntu-26.04 20261111 runner never printed
+        # "DevTools listening" inside that window; later launches in the same
+        # job took about 0.05 s. Pay the one-time cold start here, outside any
+        # assertion, so the baseline/mutant/restored runs start with a warm
+        # binary. A Chrome that cannot start at all still fails this step.
+        timeout-minutes: 3
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -x "$GEOMETRY_CHROME"
+          "$GEOMETRY_CHROME" --version
+          profile="$(mktemp -d "$RUNNER_TEMP/chrome-warmup-profile-XXXXXX")"
+          log="$RUNNER_TEMP/chrome-warmup.stderr"
+          start="$(date +%s%N)"
+          # Same launch flags as cdp_test.js; port 0 lets Chrome choose a free port.
+          "$GEOMETRY_CHROME" --headless=new --disable-gpu --no-first-run --remote-debugging-port=0 \
+            --window-size=1400,900 --user-data-dir="$profile" $GEOMETRY_CHROME_FLAGS about:blank 2> "$log" &
+          chrome=$!
+          ready=0
+          for attempt in $(seq 1 150); do
+            if grep -q "DevTools listening on ws://" "$log"; then ready=1; break; fi
+            if ! kill -0 "$chrome" 2>/dev/null; then break; fi
+            sleep 1
+          done
+          end="$(date +%s%N)"
+          cat "$log"
+          kill "$chrome" 2>/dev/null || true
+          wait "$chrome" 2>/dev/null || true
+          # Chrome children may still be writing Default/ after the parent exits.
+          # Retry only transient profile cleanup; a persistent error remains fatal.
+          cleanup=0
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            if rm -rf -- "$profile"; then cleanup=1; break; fi
+            sleep 0.2
+          done
+          test "$cleanup" = 1
+          echo "CHROME_WARMUP_READY=$ready"
+          echo "CHROME_WARMUP_MS=$(( (end - start) / 1000000 ))"
+          test "$ready" = 1
       - name: Reprove the cancelled-candidate mutation after the approved world-disposal change
         shell: bash
         run: |
