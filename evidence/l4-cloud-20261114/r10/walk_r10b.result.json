@@ -1,0 +1,259 @@
+{
+ "create": {
+  "previewStatus": "全部欄位有效，可建立卡片",
+  "afterStatus": "沒有未套用的修改。"
+ },
+ "paramsAfterCreate": [
+  {
+   "id": 1,
+   "name": "牆長",
+   "fields": [
+    {
+     "id": 1,
+     "name": "長度",
+     "value": {
+      "num": "3900",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  }
+ ],
+ "targets": [
+  [
+   "",
+   "請指定物件或參數欄位"
+  ],
+  [
+   "1:1",
+   "牆長.長度 · #1:1"
+  ],
+  [
+   "boundary:1",
+   "邊界 #1 · 邊界"
+  ]
+ ],
+ "linksAfterSave": [
+  {
+   "id": "1",
+   "text": ""
+  },
+  {
+   "id": "5cc6a679-fcaa-4e5b-9b7e-d483237a589b",
+   "status": "unchecked",
+   "model": "3900 mm",
+   "text": "牆長.長度 · #1:1 尚未核對 圖面標值 圖面標註 牆長 4000 · 4000 mm 現場量測 未記錄 正式模型值 3900 mm 定位原頁範圍定位目標 已核對圖面與欄位 採用"
+  }
+ ],
+ "messageAfterSave": "框選原 PDF 區域，手動記錄圖面與現場值；核對只更新此紀錄。",
+ "linksAfterReview": [
+  {
+   "id": "1",
+   "text": ""
+  },
+  {
+   "id": "5cc6a679-fcaa-4e5b-9b7e-d483237a589b",
+   "status": "confirmed-content",
+   "model": "3900 mm",
+   "text": "牆長.長度 · #1:1 已核對內容 圖面標值 圖面標註 牆長 4000 · 4000 mm 現場量測 未記錄 正式模型值 3900 mm 定位原頁範圍定位目標 已核對圖面與欄位 採用"
+  }
+ ],
+ "adoptVisible": true,
+ "afterAdoptStatus": [
+  "-: 有未保存的變更",
+  "-: 尚未檢查",
+  "paramStatus: 全部欄位有效，可套用"
+ ],
+ "afterAdoptButtons": [
+  "button#paramGridLessonOpen 圖解",
+  "input#paramName 牆長",
+  "button#paramAdd ＋ 欄位",
+  "button#paramExport 匯出參數包",
+  "button#paramDelete 預覽刪除卡片",
+  "button#paramImport 匯入參數包",
+  "select#paramSpec 選擇原規格主支1中線 · 500 mm",
+  "input#paramSpecValue ",
+  "button#paramSpecSave 預覽更新原規格",
+  "button#paramDiscard 還原未套用修改",
+  "button#paramPreview 重新試算",
+  "button#paramConfirm 確認套用"
+ ],
+ "paramInputAfterAdopt": [
+  "4000"
+ ],
+ "paramStatusAfterConfirm": "沒有未套用的修改。",
+ "paramsAfterAdopt": [
+  {
+   "id": 1,
+   "name": "牆長",
+   "fields": [
+    {
+     "id": 1,
+     "name": "長度",
+     "value": {
+      "num": "4000",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  }
+ ],
+ "linksAfterAdopt": [
+  {
+   "id": "1",
+   "text": ""
+  },
+  {
+   "id": "5cc6a679-fcaa-4e5b-9b7e-d483237a589b",
+   "status": "confirmed-content",
+   "model": "4000 mm",
+   "text": "牆長.長度 · #1:1 已核對內容 圖面標值 圖面標註 牆長 4000 · 4000 mm 現場量測 未記錄 正式模型值 4000 mm 定位原頁範圍定位目標 已核對圖面與欄位 採用"
+  }
+ ],
+ "parameterCardFound": 1,
+ "deleteButtons": [
+  "button#paramDelete 預覽刪除卡片",
+  "button#paramPreview 重新試算",
+  "button#paramConfirm 確認套用"
+ ],
+ "afterDeletePreview": {
+  "status": "試算完成，確認後整筆套用。",
+  "buttons": [
+   "button#paramGridLessonOpen 圖解",
+   "input#paramName 牆長",
+   "button#paramAdd ＋ 欄位",
+   "button#paramExport 匯出參數包",
+   "button#paramDelete 預覽刪除卡片",
+   "button 牆長.長度 · parameter-field:1:f1",
+   "button#paramImport 匯入參數包",
+   "select#paramSpec 選擇原規格主支1中線 · 500 mm",
+   "input#paramSpecValue ",
+   "button#paramSpecSave 預覽更新原規格",
+   "button#paramDiscard 還原未套用修改",
+   "button#paramPreview 重新試算",
+   "button#paramConfirm 確認套用"
+  ]
+ },
+ "paramsAfterDelete": [],
+ "linksAfterDelete": [
+  {
+   "id": "1",
+   "text": ""
+  },
+  {
+   "id": "5cc6a679-fcaa-4e5b-9b7e-d483237a589b",
+   "status": "target-missing",
+   "model": "無現行正式值",
+   "text": "參數 #1 · 欄位 #1 目標已不存在 圖面標值 圖面標註 牆長 4000 · 4000 mm 現場量測 未記錄 正式模型值 無現行正式值 定位原頁範圍定位目標 已核對圖面與欄位 請指定物件或參數欄位 邊界 #1 · 邊界 明選目標重新關聯"
+  }
+ ],
+ "recreate": {
+  "previewStatus": "全部欄位有效，可建立卡片",
+  "afterStatus": "沒有未套用的修改。"
+ },
+ "paramsAfterRecreate": [
+  {
+   "id": 1,
+   "name": "牆長",
+   "fields": [
+    {
+     "id": 1,
+     "name": "長度",
+     "value": {
+      "num": "4000",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  }
+ ],
+ "linksAfterRecreate": [
+  {
+   "id": "1",
+   "text": ""
+  },
+  {
+   "id": "5cc6a679-fcaa-4e5b-9b7e-d483237a589b",
+   "status": "target-replaced",
+   "model": "4000 mm",
+   "text": "牆長.長度 · #1:1 目標已刪除重建 圖面標值 圖面標註 牆長 4000 · 4000 mm 現場量測 未記錄 正式模型值 4000 mm 定位原頁範圍定位目標 已核對圖面與欄位 請指定物件或參數欄位 牆長.長度 · #1:1 邊界 #1 · 邊界 明選目標重新關聯"
+  }
+ ],
+ "rebindOptions": [
+  [
+   "",
+   "請指定物件或參數欄位"
+  ],
+  [
+   "1:1",
+   "牆長.長度 · #1:1"
+  ],
+  [
+   "boundary:1",
+   "邊界 #1 · 邊界"
+  ]
+ ],
+ "linksAfterRebind": [
+  {
+   "id": "1",
+   "text": ""
+  },
+  {
+   "id": "5cc6a679-fcaa-4e5b-9b7e-d483237a589b",
+   "status": "unchecked",
+   "model": "4000 mm",
+   "text": "牆長.長度 · #1:1 尚未核對 圖面標值 圖面標註 牆長 4000 · 4000 mm 現場量測 未記錄 正式模型值 4000 mm 定位原頁範圍定位目標 已核對圖面與欄位 採用"
+  }
+ ],
+ "linksAfterRereview": [
+  {
+   "id": "1",
+   "text": ""
+  },
+  {
+   "id": "5cc6a679-fcaa-4e5b-9b7e-d483237a589b",
+   "status": "confirmed-content",
+   "model": "4000 mm",
+   "text": "牆長.長度 · #1:1 已核對內容 圖面標值 圖面標註 牆長 4000 · 4000 mm 現場量測 未記錄 正式模型值 4000 mm 定位原頁範圍定位目標 已核對圖面與欄位 採用"
+  }
+ ],
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "paramsReopened": [
+  {
+   "id": 1,
+   "name": "牆長",
+   "fields": [
+    {
+     "id": 1,
+     "name": "長度",
+     "value": {
+      "num": "4000",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  }
+ ],
+ "linksReopened": [
+  {
+   "id": "1",
+   "text": ""
+  },
+  {
+   "id": "5cc6a679-fcaa-4e5b-9b7e-d483237a589b",
+   "status": "confirmed-content",
+   "model": "4000 mm",
+   "text": "牆長.長度 · #1:1 已核對內容 圖面標值 圖面標註 牆長 4000 · 4000 mm 現場量測 未記錄 正式模型值 4000 mm 定位原頁範圍定位目標 已核對圖面與欄位 採用"
+  }
+ ],
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}

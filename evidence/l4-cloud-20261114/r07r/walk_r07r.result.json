@@ -1,0 +1,51 @@
+{
+ "mmPerPxBefore": 10,
+ "afterPark": "已暫停。未接受的房間候選已寫入專案，重新開啟後仍在；來源取景 0, 0, 320, 200\n候選 1 · 待核對\n恢復核對\n排除\n候選 2 · 待核對\n恢復核對\n排除\n暫停候選，以便保存成果\n放棄剩餘候選",
+ "candidateButtonsBefore": 2,
+ "recoveryBeforeReload": {
+  "state": "ready",
+  "message": "已在本機保留本分頁的專案恢復資料；這不等於已保存成檔案。未套用的工具草稿與復原歷史不會保留。",
+  "name": "未命名專案"
+ },
+ "unsavedBadge": [
+  "有未保存的變更"
+ ],
+ "markerAfterReload": null,
+ "recoveryStates": [
+  {
+   "ms": 15,
+   "state": "pending",
+   "message": "尚未檢查本分頁的恢復資料。"
+  },
+  {
+   "ms": 741,
+   "state": "restored",
+   "message": "已核對同一服務及場景，恢復本分頁的專案、來源附件、空間模型與工程草稿。未套用的工具草稿及較早復原歷史無法恢復；檔案保存狀態維持原紀錄。"
+  },
+  {
+   "ms": 1366,
+   "state": "ready",
+   "message": "已在本機保留本分頁的專案恢復資料；這不等於已保存成檔案。未套用的工具草稿與復原歷史不會保留。"
+  }
+ ],
+ "recoveryAfterReload": {
+  "state": "ready",
+  "message": "已在本機保留本分頁的專案恢復資料；這不等於已保存成檔案。未套用的工具草稿與復原歷史不會保留。",
+  "name": "未命名專案"
+ },
+ "statusAfterReload": [
+  "-: 有未保存的變更"
+ ],
+ "mmPerPxAfter": 10,
+ "reloadedPane": "已暫停。未接受的房間候選已寫入專案，重新開啟後仍在；來源取景 0, 0, 320, 200\n候選 1 · 待核對\n恢復核對\n排除\n候選 2 · 待核對\n恢復核對\n排除\n暫停候選，以便保存成果\n放棄剩餘候選",
+ "candidateButtonsAfter": 2,
+ "afterAccept": [
+  "重新整理後第一間 邊界 2 · 已核對 目前房間 編輯外環 改名 解除列表關聯"
+ ],
+ "afterAcceptCandidates": "找到 2 個可核對區域；來源取景 0, 0, 320, 200\n候選 1 · 已建立\n選取核對\n候選 2 · 待核對\n選取核對\n排除\n暫停候選，以便保存成果\n放棄剩餘候選",
+ "errs": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+  "DIALOG ",
+  "DIALOG 新房間名稱"
+ ]
+}
