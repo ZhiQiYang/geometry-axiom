@@ -1,0 +1,132 @@
+{
+ "uModeChecked": true,
+ "uModeLabel": "面材＋縫",
+ "sourceImpact": "確認連動變更 建立無限網格「R14 面材七等分」 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 進階：完整指令 網格來源 · 1 網格系統 1 原：不存在 新：「R14 面材七等分」；主支方向未設定；u 無限面材 915＋縫 2 mm，起點 0 mm，間距 917 mm；v 無限重複：間距 400 mm，第 0 線 0 mm 候選來源 1：下一 ruleKey 1；0 項來源規則。 取消，保留原狀 確認套用",
+ "sourceAfter": [
+  {
+   "id": 1,
+   "u": {
+    "source": "repeat-panel",
+    "panel": 915,
+    "gap": 2,
+    "anchor": 0,
+    "anchorExplicit": true
+   },
+   "v": {
+    "source": "repeat",
+    "phase": 0,
+    "step": 400
+   },
+   "rules": [],
+   "nextRuleKey": 1
+  }
+ ],
+ "ruleNote": "按相鄰縫中心線之間的完整間距（面材＋縫）等分；1 等分不加內線。預覽檢查所有配置，確認才套用。",
+ "ruleImpact": "確認連動變更 來源 1 的共用子規則；確認才改全部配置 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 進階：完整指令 網格來源 · 1 網格系統 1 原：「R14 面材七等分」；主支方向未設定；u 無限面材 915＋縫 2 mm，起點 0 mm，間距 917 mm；v 無限重複：間距 400 mm，第 0 線 0 mm 新：「R14 面材七等分」；主支方向未設定；u 無限面材 915＋縫 2 mm，起點 0 mm，間距 917 mm；v 無限重複：間距 400 mm，第 0 線 0 mm 原來源 1：下一 ruleKey 1；0 項來源規則。 候選來源 1：下一 ruleKey 2；1 項來源規則。 來源 1／rule 1「面材七等分」：每個主格；u→ 7 等分，v↓ 2 等分。 每一主格為 14 個 131×200 mm 小格；1 等分不加內線。 取消，保留原狀 確認套用",
+ "ruleConfirmEnabled": true,
+ "afterCancel": [
+  {
+   "id": 1,
+   "u": {
+    "source": "repeat-panel",
+    "panel": 915,
+    "gap": 2,
+    "anchor": 0,
+    "anchorExplicit": true
+   },
+   "v": {
+    "source": "repeat",
+    "phase": 0,
+    "step": 400
+   },
+   "rules": [],
+   "nextRuleKey": 1
+  }
+ ],
+ "afterConfirm": [
+  {
+   "id": 1,
+   "u": {
+    "source": "repeat-panel",
+    "panel": 915,
+    "gap": 2,
+    "anchor": 0,
+    "anchorExplicit": true
+   },
+   "v": {
+    "source": "repeat",
+    "phase": 0,
+    "step": 400
+   },
+   "rules": [
+    {
+     "ruleKey": 1,
+     "name": "面材七等分",
+     "selector": {
+      "kind": "all-cells"
+     },
+     "divisions": [
+      7,
+      2
+     ]
+    }
+   ],
+   "nextRuleKey": 2
+  }
+ ],
+ "cellZeroPoint": {
+  "x": 796.8099975585938,
+  "y": 491.00001525878906
+ },
+ "subLines": 7,
+ "cellInfo": "cell (0, 0)",
+ "afterUndo": [
+  0
+ ],
+ "afterRedo": [
+  1
+ ],
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopened": [
+  {
+   "id": 1,
+   "u": {
+    "source": "repeat-panel",
+    "panel": 915,
+    "gap": 2,
+    "anchor": 0,
+    "anchorExplicit": true
+   },
+   "v": {
+    "source": "repeat",
+    "phase": 0,
+    "step": 400
+   },
+   "rules": [
+    {
+     "ruleKey": 1,
+     "name": "面材七等分",
+     "selector": {
+      "kind": "all-cells"
+     },
+     "divisions": [
+      7,
+      2
+     ]
+    }
+   ],
+   "nextRuleKey": 2
+  }
+ ],
+ "reopenCellZero": {
+  "x": 786.0179443359375,
+  "y": 515.5680084228516
+ },
+ "reopenSubLines": 7,
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}

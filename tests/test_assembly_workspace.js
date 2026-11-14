@@ -38,7 +38,7 @@ function fixture(options={}){
       if(cmd==='newid')return {ok:true,...ids};
       return {ok:true,specs:[]};}};
   let source=fs.readFileSync(process.env.GEOMETRY_TEST_ASSEMBLY_WORKSPACE||require.resolve('../geometry-web/assembly-workspace.js'),'utf8');
-  source=source.replace('return {open,close,flush,card,inspector,remove,','return {test:{setState:x=>s=x,getState:()=>s,confirm,diagram,preview,previewCopy,render,safe,changed,newDraft,newInstance},open,close,flush,card,inspector,remove,');
+  source=source.replace('return {open,close,flush,card,inspector,remove,','return {test:{setState:x=>s=x,getState:()=>s,confirm,diagram,preview,previewCopy,render,safe,changed,newDraft,newInstance,assertRepeatPreview},open,close,flush,card,inspector,remove,');
   vm.runInNewContext(source,env);const w=env.window.AssemblyWorkspace,t=w.test;
   const state={context:token(),generation:1,draft:copy(context().assemblyDrafts[0]),draftsRef:context().assemblyDrafts,read:{state:world},engineering:{parameters:[],materials:[],specs:[]},preview:{valid:true,token:'candidate-A'},rotation:0,zoom:1};t.setState(state);
   return {w,t,state,context,history,ref,calls,removed,gate,element,env,notify,notifyLocal:previousContextToken=>listeners.get('project-local-history')?.({detail:{previousContextToken,contextToken:token()}}),setResult:r=>result=r,setWorld:w=>world=w,captureWorld:()=>{state.read={revision:1,state:copy(world)};},setIds:v=>ids=v,failNextRead:()=>failRead=true};
@@ -549,6 +549,38 @@ test('surface-only reassignment names both placements in the visible geometry di
   const f=fixture(),before={surface:1,centerline:1000,length:1960,u:520,v:987,dir:'+u',side:'+n',A:27,B:33,origin:[520,987,2500],axes:[[1,0,0],[0,1,0],[0,0,1]]},after={...before,surface:2};
   const html=f.t.previewCopy({valid:true,before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},impact:{schema:'candidate-geometry/1',timbers:[{id:92,before,after}],guides:[]}});
   assert.match(html,/承載面 #1.* → 承載面 #2/);assert.match(html,/角材 #92（組構外）/);assert.doesNotMatch(html,/未變更角材/);
+});
+// 2026-11-13 cloud L4 walk, finding 6: a project that already holds a single-layout
+// (legacy) instance could not preview any repeated-bay instance, because its kept
+// timbers carry the native legacy identity {memberId} and the repeat-preview guard
+// only accepted primary/secondary identities.
+function repeatPreviewWithLegacy({legacyLayout='single',identity={memberId:1},owner=1}={}){
+  const legacy={value:{source:{id:1,name:'雙主支與端接副支',bindingId:1,...(legacyLayout==='single'?{}:{layout:legacyLayout}),members:[]}}};
+  const repeat={value:{source:{id:2,name:'角材組合・角材',bindingId:1,layout:'bay-repeat',surfaceId:1,primaries:[],secondaryLines:[],omit:[]}}};
+  return {valid:true,token:7,before:{rules:[],bindings:[],instances:[legacy]},after:{rules:[],bindings:[],instances:[legacy,repeat]},
+    bayCells:[{instanceId:2,line:1,left:1,right:2,status:'generated',timberId:92,violations:[]}],
+    impact:{schema:'candidate-geometry/1',guides:[],timbers:[
+      {id:1,change:'kept',owner:{instance:owner,identity}},
+      {id:92,change:'created',owner:{instance:2,identity:{secondary:{line:1,left:1,right:2}}}},
+      {id:93,change:'created',owner:{instance:2,identity:{primary:1}}}]}};
+}
+test('repeated-bay preview accepts kept timbers of an existing single-layout instance',()=>{
+  const f=fixture();
+  assert.doesNotThrow(()=>f.t.assertRepeatPreview(repeatPreviewWithLegacy()));
+  for(const id of [1,2,3]){const p=repeatPreviewWithLegacy({identity:{memberId:id}});assert.doesNotThrow(()=>f.t.assertRepeatPreview(p),'memberId '+id);}
+});
+test('legacy member identity is accepted only for a single-layout instance',()=>{
+  const f=fixture(),incomplete=/所屬角材身分不完整/;
+  for(const [label,options] of [
+    ['owner is a repeated-bay instance',{legacyLayout:'bay-repeat'}],
+    ['owner instance missing from both states',{owner:9}],
+    ['memberId not a positive id',{identity:{memberId:0}}],
+    ['empty identity',{identity:{}}],
+  ])assert.throws(()=>f.t.assertRepeatPreview(repeatPreviewWithLegacy(options)),incomplete,label);
+  const switched=repeatPreviewWithLegacy();switched.after.instances[0]={value:{...switched.after.instances[0].value,source:{...switched.after.instances[0].value.source,layout:'bay-repeat'}}};
+  assert.throws(()=>f.t.assertRepeatPreview(switched),incomplete,'same instance id is single before and repeated after');
+  const p=repeatPreviewWithLegacy();delete p.impact.timbers[0].change;
+  assert.throws(()=>f.t.assertRepeatPreview(p),/角材增刪身分結果/,'kept rows still need a change');
 });
 // 2026-11-07 cloud L4 walk: the preview "來源" row echoed the raw source record.
 test('instance source row names the picked references instead of the raw record',()=>{
