@@ -1,0 +1,238 @@
+{
+ "asmWire": [
+  {
+   "url": "/api",
+   "body": "{\"cmd\":\"assembly-read\"}",
+   "owners": []
+  },
+  {
+   "url": "/api",
+   "body": "{\"cmd\":\"assembly-read\"}",
+   "owners": []
+  },
+  {
+   "url": "/api",
+   "body": "{\"cmd\":\"assembly-read\"}",
+   "owners": []
+  },
+  {
+   "url": "/api",
+   "body": "{\"cmd\":\"assembly-read\"}",
+   "owners": []
+  },
+  {
+   "url": "/api",
+   "body": "{\"cmd\":\"assembly-read\"}",
+   "owners": []
+  },
+  {
+   "url": "/assembly/generate-preview",
+   "body": "{\"schema\":\"assembly-generation-transaction/1\",\"expectedRevision\":578,\"operations\":[{\"op\":\"create-instance\",\"expectedBind",
+   "owners": [
+    {
+     "id": 90,
+     "change": "kept",
+     "owner": null
+    },
+    {
+     "id": 91,
+     "change": "kept",
+     "owner": null
+    },
+    {
+     "id": 1,
+     "change": "kept",
+     "owner": {
+      "instance": 1,
+      "identity": {
+       "memberId": 1
+      }
+     }
+    },
+    {
+     "id": 2,
+     "change": "kept",
+     "owner": {
+      "instance": 1,
+      "identity": {
+       "memberId": 2
+      }
+     }
+    },
+    {
+     "id": 3,
+     "change": "kept",
+     "owner": {
+      "instance": 1,
+      "identity": {
+       "memberId": 3
+      }
+     }
+    },
+    {
+     "id": 92,
+     "change": "kept",
+     "owner": null
+    },
+    {
+     "id": 93,
+     "change": "kept",
+     "owner": null
+    },
+    {
+     "id": 4,
+     "change": "created",
+     "owner": {
+      "instance": 2,
+      "identity": {
+       "primary": 1
+      }
+     }
+    },
+    {
+     "id": 5,
+     "change": "created",
+     "owner": {
+      "instance": 2,
+      "identity": {
+       "primary": 2
+      }
+     }
+    },
+    {
+     "id": 6,
+     "change": "created",
+     "owner": {
+      "instance": 2,
+      "identity": {
+       "secondary": {
+        "line": 1,
+        "left": 1,
+        "right": 2
+       }
+      }
+     }
+    },
+    {
+     "id": 7,
+     "change": "created",
+     "owner": {
+      "instance": 2,
+      "identity": {
+       "secondary": {
+        "line": 2,
+        "left": 1,
+        "right": 2
+       }
+      }
+     }
+    }
+   ]
+  },
+  {
+   "url": "/api",
+   "body": "{\"cmd\":\"assembly-cancel 69\"}",
+   "owners": []
+  }
+ ],
+ "facesBefore": [
+  "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+  "placement 1 on boundary 1 origin 0 0 2500 u +x v +y"
+ ],
+ "thresholdOptions": [
+  ":請明選"
+ ],
+ "thresholdChosen": "1:1",
+ "pfPreview": "\":\"primary\",\"geometry\":{\"surface\":1,\"centerline\":500,\"length\":2960,\"u\":514,\"v\":20,\"dir\":\"+v\",\"side\":\"+n\",\"A\":27,\"B\":33,\"origin\":[514,20,2500],\"axes\":[[0,1,0],[-1,0,0],[0,0,1]]}}\t{\"id\":1,\"role\":\"primary\",\"geometry\":{\"surface\":1,\"centerline\":500,\"length\":2960,\"u\":514,\"v\":20,\"dir\":\"+v\",\"side\":\"+n\",\"A\":27,\"B\":33,\"origin\":[514,20,2500],\"axes\":[[0,1,0],[-1,0,0],[0,0,1]]}}\n#2\t{\"id\":2,\"role\":\"primary\",\"geometry\":{\"surface\":1,\"centerline\":2500,\"length\":2960,\"u\":2514,\"v\":20,\"dir\":\"+v\",\"side\":\"+n\",\"A\":27,\"B\":33,\"origin\":[2514,20,2500],\"axes\":[[0,1,0],[-1,0,0],[0,0,1]]}}\t{\"id\":2,\"role\":\"primary\",\"geometry\":{\"surface\":1,\"centerline\":2500,\"length\":2960,\"u\":2514,\"v\":20,\"dir\":\"+v\",\"side\":\"+n\",\"A\":27,\"B\":33,\"origin\":[2514,20,2500],\"axes\":[[0,1,0],[-1,0,0],[0,0,1]]}}\n#3\t{\"id\":3,\"role\":\"secondary\",\"geometry\":{\"surface\":1,\"centerline\":1500,\"length\":1973,\"u\":514,\"v\":1487,\"dir\":\"+u\",\"side\":\"+n\",\"A\":27,\"B\":33,\"origin\":[514,1487,2500],\"axes\":[[1,0,0],[0,1,0],[0,0,1]]}}\t{\"id\":3,\"role\":\"secondary\",\"geometry\":{\"surface\":1,\"centerline\":1500,\"length\":1973,\"u\":514,\"v\":1487,\"dir\":\"+u\",\"side\":\"+n\",\"A\":27,\"B\":33,\"origin\":[514,1487,2500],\"axes\":[[1,0,0],[0,1,0],[0,0,1]]}}\n查看原生完整前後資料與變更清單\nR06 衍生承載完成面 · 完成面 #1 · 原生框架與障礙\n鋪排 #1\n片數 1 · 裁片數 1 · 整片 1 · 厚 9 mm\n裁片完整 key\t面積 mm²\n[1,\"0\",\"0\",0]\t12000000\n有效板縫／支撐\nX 來源：參數 1／欄位 1\nseam\t區間\t左側實寬 mm\t右側實寬 mm\t有效 X mm\t判定\n完整板縫鍵、非板縫與障礙分層\n定義來源（與有效值分開）\n宿主 #2 · 原生 h／框架／完整邊鍵\n預覽\n確認一次變更\n取消／返回",
+ "host": [
+  {
+   "id": 2,
+   "fillId": 1,
+   "h": 33,
+   "derived": "{\"h\":33,\"frame\":{\"origin\":[6000,0,2509],\"U\":\"+X\",\"V\":\"+Y\",\"N\":\"+Z\"},\"components\":[{\"outline\":[[0,0],[4000,0],[4000,3000],[0,3000]],\"holes\":[],\"edges\":[{\"key\":[[\"e0\",0,1]],\"start\":[0,0],\"end\":[4000,0],\"fixity\":\"FIXED\"},{\"key\":[[\"e1\",0,1]],\"start\":[4000,0],\"end\":[4000,3000],\"fixity\":\"FIXED\"},{\"key\":[["
+  }
+ ],
+ "cmds": [
+  {
+   "c": "timber 92 20 33 role boundary",
+   "ok": true,
+   "error": null
+  },
+  {
+   "c": "place 92 on 2 at-face key-hex:5b5b226530222c302c315d5d +u +n",
+   "ok": true,
+   "error": null
+  },
+  {
+   "c": "timber 93 20 33 role boundary",
+   "ok": true,
+   "error": null
+  },
+  {
+   "c": "place 93 on 2 at-face key-hex:5b5b226532222c302c315d5d +u +n",
+   "ok": true,
+   "error": null
+  },
+  {
+   "c": "spec r06d_g1 1000",
+   "ok": true,
+   "error": null
+  },
+  {
+   "c": "guide 4 2 u spec:r06d_g1",
+   "ok": true,
+   "error": null
+  },
+  {
+   "c": "spec r06d_g2 2000",
+   "ok": true,
+   "error": null
+  },
+  {
+   "c": "guide 5 2 u spec:r06d_g2",
+   "ok": true,
+   "error": null
+  }
+ ],
+ "surfaceOptions": [
+  "0:請選擇",
+  "1:承載面 #1",
+  "2:承載面 #2"
+ ],
+ "primaryKeys": [
+  "1",
+  "2"
+ ],
+ "edgeOptions": [
+  ":請選擇",
+  "[[\"e1\",0,1]]:外輪廓來源鍵 [[\"e1\",0,1]]（沿 v）",
+  "[[\"e3\",0,1]]:外輪廓來源鍵 [[\"e3\",0,1]]（沿 v）"
+ ],
+ "cells": [],
+ "previewText": "",
+ "afterPreviewStatus": [
+  "-: 有未保存的變更",
+  "asmStatus: 原生服務的所屬角材身分不完整；草稿仍保留。"
+ ],
+ "alerts": [
+  "asmStatus: 原生服務的所屬角材身分不完整；草稿仍保留。"
+ ],
+ "formText": "生成角材實例\n名稱\n配置方式\n單一開間\n重複開間\n材料配置\n角材組合 · 規則第 1 版\n承載面\n請選擇\n承載面 #1\n承載面 #2\n主支 · 2 / 12\n主支 #1\n定位來源\n請選擇\n參考線\n主格線\n外輪廓邊\n與主支平行的外輪廓邊\n請選擇\n外輪廓來源鍵 [[\"e1\",0,1]]（沿 v）\n外輪廓來源鍵 [[\"e3\",0,1]]（沿 v）\n支撐角材一（無序）\n請選擇\n角材 #92 · 邊界材\n角材 #93 · 邊界材\n支撐角材二（無序）\n請選擇\n角材 #92 · 邊界材\n角材 #93 · 邊界材\n移除此主支\n主支 #2\n定位來源\n請選擇\n參考線\n主格線\n外輪廓邊\n與主支平行的外輪廓邊\n請選擇\n外輪廓來源鍵 [[\"e1\",0,1]]（沿 v）\n外輪廓來源鍵 [[\"e3\",0,1]]（沿 v）\n支撐角材一（無序）\n請選擇\n角材 #92 · 邊界材\n角材 #93 · 邊界材\n支撐角材二（無序）\n請選擇\n角材 #92 · 邊界材\n角材 #93 · 邊界材\n移除此主支\n加入主支\n副支線 · 2 / 24\n副支線 #1\n定位來源\n請選擇\n參考線\n主格線\n參考線\n請選擇\n參考線 #4 · spec:r06d_g1\n參考線 #5 · spec:r06d_g2\n移除此副支線\n副支線 #2\n定位來源\n請選擇\n參考線\n主格線\n參考線\n請選擇\n參考線 #4 · spec:r06d_g1\n參考線 #5 · spec:r06d_g2\n移除此副支線\n加入副支線\n加入主格線索引範圍\n刪除草稿",
+ "confirmEnabled": false,
+ "instances": [],
+ "timbersOnHost": 2,
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "cold": {
+  "sameScene": true,
+  "timbersOnHost": 2
+ },
+ "reopenedInstances": [
+  "雙主支與端接副支 角材 #1 · 2960 mm；角材 #2 · 2960 mm；角材 #3 · 1973 mm 編輯來源刪除實例"
+ ],
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}

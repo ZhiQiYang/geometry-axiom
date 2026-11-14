@@ -1,0 +1,58 @@
+{
+ "loadSecondsToDump512": 2.263,
+ "cardShown": false,
+ "loadStatus": [
+  "-: 尚未保存",
+  "-: 從空白處拖曳，框選物件"
+ ],
+ "before": {
+  "timbers": 512,
+  "places": 512
+ },
+ "cmds": [
+  {
+   "cmd": "timber 513 27 33 role secondary",
+   "replies": [
+    {
+     "cmd": "line timber 513 27 33 role secondary",
+     "ok": false,
+     "error": "line 41: 角材的數量超過上限",
+     "t": 1794517049534
+    },
+    {
+     "cmd": "dump",
+     "ok": true,
+     "error": null,
+     "t": 1794517049689
+    }
+   ]
+  },
+  {
+   "cmd": "place 513 on 1 at-face e3 between e3 e1 -v +n",
+   "replies": [
+    {
+     "cmd": "line place 513 on 1 at-face e3 between e3 e1 -v +n",
+     "ok": false,
+     "error": "line 42: I9: place 指的角材不存在",
+     "t": 1794517052094
+    }
+   ]
+  }
+ ],
+ "statusAfter": [
+  "-: 有未保存的變更",
+  "-: 從空白處拖曳，框選物件"
+ ],
+ "limitTextOnScreen": [],
+ "after": {
+  "timbers": 512,
+  "places": 512
+ },
+ "sceneUnchanged": true,
+ "rawDiffLines": [
+  "canvas-pos boundary 1 60 60"
+ ],
+ "errs": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
