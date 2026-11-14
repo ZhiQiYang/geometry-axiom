@@ -278,6 +278,85 @@ def assert_pair_preview(preview, change="created"):
         raise AssertionError("BOUNDARY_PAIR_PREVIEW_CONTRACT: %r" % (error,)) from None
 
 
+DOWNSTREAM_SCENE = pair_scene(extra=("timber 3 27 20 role boundary", "place 3 on 1 at-face e4 +u +n",
+                                      "guide 9 1 v timber:1:A", "timber 4 27 20 role primary",
+                                      "place 4 on 1 at-line guide 9 +v +n"))
+
+
+def _scene_file(text, name):
+    directory = Path(tempfile.mkdtemp(prefix="r17-scene-"))
+    path = directory / name
+    path.write_text(text, encoding="utf-8")
+    return path
+
+
+def bridge_replies(exe, commands):
+    """One bridge process, one JSON reply per command; a crash is setup failure, never a kill."""
+    run = subprocess.run([exe], input="\n".join(commands) + "\n", capture_output=True, text=True,
+                         encoding="utf-8", timeout=180)
+    if run.returncode < 0:
+        raise RuntimeError("bridge crashed (signal %d); not a semantic verdict" % -run.returncode)
+    replies = [json.loads(line) for line in run.stdout.splitlines() if line.strip()]
+    if len(replies) != len(commands):
+        raise RuntimeError("bridge dialogue incomplete: %r" % replies)
+    return replies
+
+
+def downstream_impact_run(exe):
+    replies = bridge_replies(exe, ["loadfile " + str(_scene_file(DOWNSTREAM_SCENE, "downstream.scene")),
+                                   "line preview timber 1 30 20 role boundary"])
+    if not replies[0].get("ok") or not replies[1].get("ok") or not replies[1].get("preview"):
+        raise RuntimeError("downstream preview setup failed: %r" % replies)
+    return replies[1]["preview"]
+
+
+def assert_downstream_impact(preview):
+    """Named I8a/D16a judge: a member section change lists every affected ordinary timber
+    with its role, authored source and real end contacts, not only moved geometry."""
+    try:
+        assert preview["valid"] is True, preview.get("violations")
+        impacts = {row["id"]: row for row in preview["timberImpacts"]}
+        assert {1, 2, 4} <= set(impacts), sorted(impacts)
+        row = impacts[4]
+        for side, centre, contact in (("before", 27, [14, 41]), ("after", 30, [17, 44])):
+            value = row[side]
+            assert value["role"] == "primary" and value["source"]["anchor"] == "at-line guide 9", value
+            assert value["boundaryPair"] is None and value["geometry"]["centerline"] == centre, value
+            ends = {(c["end"], c["kind"], c.get("timber")): c["contact"] for c in value["contacts"]}
+            assert ends == {("START", "timber", 1): contact, ("END", "timber", 3): contact}, ends
+        member = impacts[1]
+        assert member["before"]["boundaryPair"] == [1, 2] and member["before"]["source"]["anchor"] == "at-face e0", member
+        assert (member["before"]["A"], member["after"]["A"]) == (27, 30), member
+        peer = {(c["end"], c.get("timber")): c["contact"] for c in impacts[2]["after"]["contacts"] if c["kind"] == "timber"}
+        assert peer == {("START", 1): [13, 30]}, impacts[2]
+        return impacts
+    except (AssertionError, KeyError, TypeError) as error:
+        raise AssertionError("BOUNDARY_PAIR_DOWNSTREAM_IMPACT: %r" % (error,)) from None
+
+
+def guide_roundtrip_run(exe, field="A"):
+    scene = pair_scene(extra=("guide 9 1 v timber:1:%s" % field,))
+    first = bridge_replies(exe, ["loadfile " + str(_scene_file(scene, "guide.scene")), "dump"])
+    if not first[0].get("ok"):
+        raise RuntimeError("original guide scene refused: %r" % first[0])
+    text = first[1]["text"]
+    second = bridge_replies(exe, ["loadfile " + str(_scene_file(text, "dumped.scene")), "dump"])
+    return text, second[0], second[1].get("text")
+
+
+def assert_guide_roundtrip(result):
+    """Named R4/I9 judge: a guide on a member's A/B is written after the closed group and reloads idempotently."""
+    text, reloaded, again = result
+    lines = [line for line in text.splitlines() if not line.startswith("#")]
+    try:
+        guide = next(i for i, line in enumerate(lines) if line.startswith("guide 9 "))
+        assert lines.index("boundary-pair end") < guide, lines
+        assert reloaded.get("ok") is True, reloaded
+        assert again == text, (again, text)
+    except (AssertionError, StopIteration, ValueError) as error:
+        raise AssertionError("BOUNDARY_PAIR_GUIDE_ROUNDTRIP: %r" % (error,)) from None
+
+
 def placed_section(stdout):
     return stdout[stdout.index("=== 已放置的完整角材 ==="):stdout.index("=== SVG 三視圖 ===")]
 
@@ -438,6 +517,20 @@ class BoundaryPairNative(unittest.TestCase):
                 self.assertFalse(self.load(s, scene)["ok"])
                 self.assertEqual(before, s.command("dump")["text"], "a refused load keeps the old World")
 
+    def test_BP_downstream_preview_and_member_guide_round_trip(self):
+        bridge = _bridge.find_bridge()
+        impacts = assert_downstream_impact(downstream_impact_run(bridge))
+        self.assertEqual("changed", impacts[4]["change"])
+        for field in ("A", "B"):
+            with self.subTest(field=field):
+                assert_guide_roundtrip(guide_roundtrip_run(bridge, field))
+        # An ordinary single member keeps its original dependency order and round trip.
+        single = STEP_SURFACE + "\ntimber 2 27 20 role boundary\nplace 2 on 1 at-face e2 +u +n\nguide 9 1 v timber:2:A\n"
+        first = bridge_replies(bridge, ["loadfile " + str(_scene_file(single, "single.scene")), "dump"])
+        second = bridge_replies(bridge, ["loadfile " + str(_scene_file(first[1]["text"], "single2.scene")), "dump"])
+        self.assertTrue(second[0]["ok"], second[0])
+        self.assertEqual(first[1]["text"], second[1]["text"])
+
     def test_BP_named_withdrawals_fail_exact_assertions_then_restore(self):
         rectangle = "surface 1 origin 0 0 2500 u +x v +y outline 0,0 1000,0 1000,1000 0,1000"
         controls = (
@@ -496,6 +589,31 @@ class BoundaryPairNative(unittest.TestCase):
                 print("R17_BOUNDARY_PAIR_WITHDRAWAL " + json.dumps(dict(control=name, module=module, phases=phases),
                       ensure_ascii=False), flush=True)
 
+        scripted = (
+            ("pair-impacts", "geometry-web/reference_bridge.inc", "    json_timber_impacts();\n", "",
+             downstream_impact_run, assert_downstream_impact, "BOUNDARY_PAIR_DOWNSTREAM_IMPACT"),
+            ("pair-guide-order", "geometry-core/references.inc",
+             "        if (ti>=0 && !placed[ti] && boundary_pair_index(w,(uint32_t)id)>=0) return false;\n", "",
+             guide_roundtrip_run, assert_guide_roundtrip, "BOUNDARY_PAIR_GUIDE_ROUNDTRIP"),
+        )
+        bridge = _bridge.find_bridge()
+        for name, module, before, after, runner, verdict, assertion in scripted:
+            with self.subTest(control=name):
+                phases = []
+                verdict(runner(bridge))
+                phases.append(dict(phase="baseline", exit_code=0))
+                with tempfile.TemporaryDirectory(prefix="r17-withdraw-") as directory:
+                    exe = build_withdrawn(Path(directory), "geometry-web/web_bridge.c", module, before, after, "bridge")
+                    result = runner(exe)
+                    with self.assertRaises(AssertionError) as raised:
+                        verdict(result)
+                    self.assertIn(assertion, str(raised.exception))
+                    phases.append(dict(phase="withdrawn", exit_code=1, assertion=str(raised.exception).split(":")[0]))
+                verdict(runner(bridge))
+                phases.append(dict(phase="restored", exit_code=0))
+                print("R17_BOUNDARY_PAIR_WITHDRAWAL " + json.dumps(dict(control=name, module=module, phases=phases),
+                      ensure_ascii=False), flush=True)
+
 
 def preview_run_unchecked(exe):
     """Drive a withdrawn bridge directly (no registry freshness sidecar exists for it)."""
@@ -520,7 +638,8 @@ def _STEP_FILE():
 def build_withdrawn(directory, main, module, before, after, registry):
     """Relocate the main unit and one include file into TEMP; never edit the checkout."""
     variant = {}
-    for name in dict.fromkeys((main, module)):
+    # current_geometry.c is always relocated: bridge-side includes of core files go through it.
+    for name in dict.fromkeys((main, "current_geometry.c", module)):
         text = (ROOT / name).read_bytes().decode("utf-8").replace("\r\n", "\n")
         if name == module:
             if text.count(before) != 1:

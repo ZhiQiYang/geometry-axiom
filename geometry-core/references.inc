@@ -1123,6 +1123,9 @@ static bool reference_guide_ready(const World *w,size_t i,const bool *placed,uns
         char *end; unsigned long id=strtoul(p+7,&end,10);
         int ti=reference_timber_index(w,(uint32_t)id);
         if (ti>=0 && end[0]==':' && end[1]!='A' && end[1]!='B' && !placed[ti]) return false;
+        /* D16a/R4: a grouped member is declared inside its closed unit, so even an
+         * A/B dimension reference waits until the whole group has been written. */
+        if (ti>=0 && !placed[ti] && boundary_pair_index(w,(uint32_t)id)>=0) return false;
         p=end>p?end:p+7;
     }
     p=app_guide_expression(w,geo_guides_values(&w->geo.guide_lines)[i].id);
