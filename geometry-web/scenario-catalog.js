@@ -15,7 +15,6 @@
   function fail(code, message) { throw Object.assign(new Error(message), {code}); }
   const exact = (v, required, optional=[]) => v && typeof v === 'object' && !Array.isArray(v) &&
     required.every(k => Object.hasOwn(v,k)) && Object.keys(v).every(k => required.includes(k)||optional.includes(k));
-  const copy = v => JSON.parse(JSON.stringify(v));
   function canonical(v) {
     if (v===null||typeof v!=='object') return JSON.stringify(v);
     if (Array.isArray(v)) return '['+v.map(canonical).join(',')+']';
@@ -94,5 +93,5 @@
     }
     return value;
   }
-  return {SCHEMA,validate,validateRecord,canonical};
+  return {SCHEMA,validate,validateRecord,canonical,identifier,refKey,validObject,exact};
 });

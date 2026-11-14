@@ -93,11 +93,6 @@ static Vector3 vector_negate(Vector3 v)
     return geo_vector_negate(v);
 }
 
-static bool vector_equal(Vector3 a, Vector3 b)
-{
-    return geo_vector_equal(a,b);
-}
-
 /* ============================================================
  * 承載面的局部座標框架
  * ============================================================ */
@@ -1066,18 +1061,6 @@ static bool timber_place_a0_on_surface(
     }
     GeoRegionSetView domain={regions,count};
     return wood_member_place_a0(timber,&surface->frame,&domain,fixities,anchor,length_direction,depth_side);
-}
-
-/* 將角材局部座標轉成房間三維座標。 */
-static Point3 timber_local_to_room(
-    const Timber *timber,
-    Coord length_coordinate,
-    Coord a_coordinate,
-    Coord b_coordinate
-)
-{
-    GeoFrame frame={timber->origin,timber->axis_length,timber->axis_a,timber->axis_b};
-    return geo_frame_point(&frame,length_coordinate,a_coordinate,b_coordinate);
 }
 
 /* 從完整角材推導指定面的四個房間座標頂點。 */
@@ -8036,12 +8019,6 @@ typedef struct {
     ObstacleClass cls;
     Coord u_lo, v_lo, u_hi, v_hi;
 } FaceObstacle;
-
-/* 房間座標點在面框上的 uv。axis_u/axis_v 是單位軸向量。 */
-static SurfacePoint2 frame_project_uv(const SurfaceFrame *f, Point3 p)
-{
-    return geo_frame_project_uv(f,p);
-}
 
 /* AABB 八角投影到面框 uv 的包圍矩形。 */
 static void box_project_uv(
