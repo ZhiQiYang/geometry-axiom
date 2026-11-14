@@ -332,7 +332,7 @@ R19 的條文是 I19 例外三與 R6(d)(e)：`boundary` 固定段在它覆蓋那
 
 `errsA`／`errsB` 只有「新專案」的確認對話框。
 
-**合併後重跑**（main `9d551d58`，含 #406、#408、#411；#408 改過 `geometry-core/parameters.inc`、`engineering.inc`、`references.inc`，所以重跑而不是推定不受影響；`runtime_version.py --probe` version `769f46b6…1dce3`、`fresh:true`）：同一支腳本，撞名列、各次預覽的狀態與確認鈕、確認／復原／重做後的規格與配置、只匯入規則與冷開，除內部 revision 數字外逐欄相同（`r08c/walk_r08c.main-9d551d58.result.json`）。
+**合併後重跑**（main `9d551d58`，含 #406、#408、#411；#408 改過 `geometry-core/parameters.inc`、`engineering.inc`、`references.inc`，所以重跑而不是推定不受影響；`runtime_version.py --probe` version `769f46b6…1dce3`、`fresh:true`）：同一支腳本，撞名列、各次預覽的狀態與確認鈕、確認／復原／重做後的規格與配置、只匯入規則與冷開，除 7 個內部 `revision` 數字外逐欄相同（`r08c/walk_r08c.main-9d551d58.result.json`）。
 
 證據：`r08c/walk_r08c.result.json`、`r08c/r08c-source.gcanvas`、`r08c/r08c-target.gcanvas`、`r08c/R08c-*.jpg`。
 
@@ -397,7 +397,7 @@ R19 的條文是 I19 例外三與 R6(d)(e)：`boundary` 固定段在它覆蓋那
 
 伺服器同「R11 A 補核對」（main `d9649926` 乾淨工作樹，`fresh:true`）。
 
-**操作路徑**（`scripts/walk_r10c.js`，只用 UI；`page.evaluate` 只讀畫面、`dump` 與 `engineering-read`）：
+**操作路徑**（`scripts/walk_r10c.js`，只用 UI；`page.evaluate` 讀畫面、`dump` 與 `engineering-read`，另有兩個只動畫面狀態的輔助：進入面之前 `document.activeElement.blur()` 清焦點，再按 F 顯示全部；以 `summary.click()` 展開「紀錄」。兩者都不提交資料。腳本開頭註解寫「只讀」不精確，以這裡為準；腳本本身保留跑出證據時的原樣）：
 1. 新專案 → 範例 → 建立物件 → 參數「牆長」長度 `3900`；再建「牆高」高度 `=2400 mm + 100 mm`（算式，值 2500）。
 2. 進入面 1 → 底圖匯入 `issue54-public-rooms.pdf` → 套用 → 展開紀錄。
 3. 框選 → 目標「牆長.長度」→ 圖面標值 4000 mm、現場量測 401 cm → 保存 → 勾「已核對圖面與欄位」→ 採用來源選「現場量測」→「採用」→ 參數卡確認。
@@ -419,7 +419,7 @@ R19 的條文是 I19 例外三與 R6(d)(e)：`boundary` 固定段在它覆蓋那
 
 **附帶看到的**：算式欄位的證據仍顯示可按的「採用」，按下才說明不能採用；畫面上的拒絕訊息清楚，參數不變。
 
-**合併後重跑**（main `9d551d58`，含 #406、#408、#411；#408 改過 `geometry-core/parameters.inc`、`engineering.inc`、`references.inc`，所以重跑而不是推定不受影響；`runtime_version.py --probe` version `769f46b6…1dce3`、`fresh:true`）：同一支腳本，預填 4010、算式欄位的拒絕訊息、邊界改變後的「目標內容已變」與再核對、冷開的參數與三筆證據狀態，除內部 revision 數字外逐欄相同（`r10c/walk_r10c.main-9d551d58.result.json`）。
+**合併後重跑**（main `9d551d58`，含 #406、#408、#411；#408 改過 `geometry-core/parameters.inc`、`engineering.inc`、`references.inc`，所以重跑而不是推定不受影響；`runtime_version.py --probe` version `769f46b6…1dce3`、`fresh:true`）：同一支腳本，預填 4010、算式欄位的拒絕訊息、邊界改變後的「目標內容已變」與再核對、冷開的參數與三筆證據狀態，除 3 筆新建證據的 UUID（出現在 16 個欄位路徑）外逐欄相同（`r10c/walk_r10c.main-9d551d58.result.json`）。
 
 證據：`r10c/walk_r10c.result.json`、`r10c/r10c.gcanvas`、`r10c/R10c-*.jpg`。
 
@@ -448,7 +448,7 @@ R19 的條文是 I19 例外三與 R6(d)(e)：`boundary` 固定段在它覆蓋那
 
 `errs` 只有「新專案」確認框與兩次離開確認。
 
-**合併後重跑**（main `9d551d58`，含 #406、#408、#411；#408 改過 `geometry-core/parameters.inc`、`engineering.inc`、`references.inc`，所以重跑而不是推定不受影響；`runtime_version.py --probe` version `769f46b6…1dce3`、`fresh:true`）：同一支腳本，分頁 2 唯讀、新分頁 pending → empty → ready、重啟後 pending → mismatch 與各訊息，除內部 revision 數字外逐欄相同（`r07x/walk_r07x.main-9d551d58.result.json`）。
+**合併後重跑**（main `9d551d58`，含 #406、#408、#411；#408 改過 `geometry-core/parameters.inc`、`engineering.inc`、`references.inc`，所以重跑而不是推定不受影響；`runtime_version.py --probe` version `769f46b6…1dce3`、`fresh:true`）：同一支腳本，分頁 2 唯讀、新分頁 pending → empty → ready、重啟後 pending → mismatch 與各訊息，除 7 個輪詢經過毫秒（`ms`）與重啟收據（runtime version／pid／session）外逐欄相同；恢復狀態與訊息逐字相同（`r07x/walk_r07x.main-9d551d58.result.json`）。
 
 證據：`r07x/walk_r07x.result.json`、`r07x/R07x-*.jpg`。
 
