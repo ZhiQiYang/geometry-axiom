@@ -175,8 +175,8 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
     await key('Tab', 'Tab', 9);
     await sleep(80);
   }
-  async function until(expression) {
-    await waitForUI(expression, 20000);
+  async function until(expression, timeout = 20000) {
+    await waitForUI(expression, timeout);
     if (await read(expression) !== true) throw Error('Room-candidate wait ' + expression);
   }
   // Regression-only event order (GEOMETRY_P90_LATE_CANVAS_POS). Wait until the
@@ -185,11 +185,11 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
   // already accepts, continue with the reply still held (the reverted waits do
   // this, so Save is clicked while the write is pending, deterministically);
   // otherwise release the reply and wait as usual (the fixed waits).
-  async function heldUntil(name, base, expression) {
-    if (!holdCanvasPos || !await read(`window.__p90LateCanvasPos?.phase==='armed'||window.__p90LateCanvasPos?.phase==='held'`)) return until(expression);
-    await until(`window.__p90LateCanvasPos.phase==='held'` + (base ? ' && ' + base : ''));
+  async function heldUntil(name, base, expression, remaining = () => 20000) {
+    if (!holdCanvasPos || !await read(`window.__p90LateCanvasPos?.phase==='armed'||window.__p90LateCanvasPos?.phase==='held'`)) return until(expression, remaining());
+    await until(`window.__p90LateCanvasPos.phase==='held'` + (base ? ' && ' + base : ''), remaining());
     const verdict = await read(`(()=>{const s=window.__p90LateCanvasPos;if(s.phase!=='held')return 'not-held';if(${expression}){s.acceptedWhileHeld.push(${JSON.stringify(name)});return 'accepted-while-held';}s.release(${JSON.stringify(name)});return 'released';})()`);
-    if (verdict !== 'accepted-while-held') await until(expression);
+    if (verdict !== 'accepted-while-held') await until(expression, remaining());
   }
   async function facePoint(x, y) {
     const p = await read(`(()=>{const r=$('faceEditorSvg').getBoundingClientRect();return {x:r.left+fe.panX+${x}*fe.zoom,y:r.top+fe.panY+${y}*fe.zoom};})()`);
@@ -212,18 +212,28 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
     await until(`!!$('roomNew') && !!$('roomNewMethod')`);
   }
   async function saveProject() {
+    // Share the existing 20 s budget across readiness, held replies and capture.
+    const deadline = Date.now() + 20000;
+    const remaining = () => {
+      const ms = deadline - Date.now();
+      if (ms <= 0) throw Error('P90_SAVE_DEADLINE_EXHAUSTED');
+      return ms;
+    };
     // Save refuses while a native write is pending (reference-workspace.js
     // save guard: 「原生操作結果尚未取得…」) and never retries. Click it only
     // when the app itself reports no pending native operation.
     // P90_REVERT_SAVE_READY is the named withdrawal for the regression proof.
-    if (!revertSaveReady) await heldUntil('save-ready', '', `!ReferenceWorkspace.busy && !oc.busy && ReferenceWorkspace.getEvidenceState().blocked===false`);
+    if (!revertSaveReady) await heldUntil('save-ready', '', `!ReferenceWorkspace.busy && !oc.busy && ReferenceWorkspace.getEvidenceState().blocked===false`, remaining);
     const held = holdCanvasPos && await read(`(()=>{const s=window.__p90LateCanvasPos;return s?{phase:s.phase,command:s.command,acceptedWhileHeld:s.acceptedWhileHeld,releasedBy:s.releasedBy,saveClickedWhileHeld:s.phase==='held'}:null;})()`);
     if (held) console.log('P90_LATE_CANVAS_POS ' + JSON.stringify(held));
     await read(`(${installSaveProbe.toString()})();0`);
     try {
+      remaining();
       await ctl('#projectBar [data-project-action="save"]');
-      await until(`typeof window.__roomSave==='string' && !ReferenceWorkspace.busy`);
+      await until(`typeof window.__roomSave==='string' && !ReferenceWorkspace.busy`, remaining());
+      remaining();
       const encoded = await read(`window.__roomSave`);
+      remaining();
       const file = path.join(os.tmpdir(), 'geometry-room-candidate-' + Date.now() + '.gcanvas');
       fs.writeFileSync(file, Buffer.from(encoded, 'base64'));
       return file;
