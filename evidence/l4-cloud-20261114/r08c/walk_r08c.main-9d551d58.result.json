@@ -1,0 +1,266 @@
+{
+ "sourcePreview": "這次會更新「雙主支與端接副支」\n主支\n截面 27×33 → 40×30 mm\n主支 A 來源\n尺寸 27 → 40 mm；直接數值 → 尺寸「柱寬」\n主支 B 來源\n尺寸 33 → 30 mm；直接數值 → 尺寸「柱厚」\n副支\n沒有改\n接觸面與擺向\n沒有改\n來源\n「雙主支與端接副支」 · 配置 #1 · 規則 #1 第 1 版 · 單一開間 · 構件 3 支：#1 主支 沿參考線 #1（端點 角材 #90 → 角材 #91）；#2 主支 沿參考線 #2（端點 角材 #90 → 角材 #91）；#3 副支 沿參考線 #3\n構件 #1 → 角材 #1\n身分保留，幾何更新；承載面 #1，中心線 500 mm，長度 2960 mm，局部位置 514,20，世界位置 514,20,2500，擺向 +v/+n，A 27 / B 33，世界軸 0,1,0 / -1,0,0 / 0,0,1 → 承載面 #1，中心線 500 mm，長度 2960 mm，局部位置 520,20，世界位置 520,20,2500，擺向 +v/+n，A 40 / B 30，世界軸 0,1,0 / -1,0,0 / 0,0,1\n構件 #2 → 角材 #2\n身分保留，幾何更新；承載面 #1，中心線 2500 mm，長度 2960 mm，局部位置 2514,20，世界位置 2514,20,2500，擺向 +v/+n，A 27 / B 33，世界軸 0,1,0 / -1,0,0 / 0,0,1 → 承載面 #1，中心線 2500 mm，長度 2960 mm，局部位置 2520,20，世界位置 2520,20,2500，擺向 ",
+ "source": {
+  "revision": 27,
+  "specs": [
+   "position1=500",
+   "position2=2500",
+   "position3=1500",
+   "柱寬=40",
+   "柱厚=30"
+  ],
+  "rules": [
+   "1@1"
+  ],
+  "bindings": [
+   {
+    "id": 1,
+    "specRefs": [
+     "{\"kind\":\"spec\",\"name\":\"柱寬\"}",
+     "{\"kind\":\"spec\",\"name\":\"柱厚\"}"
+    ]
+   }
+  ]
+ },
+ "sourceSaved": "download",
+ "targetBefore": {
+  "revision": 31,
+  "specs": [
+   "position1=500",
+   "position2=2500",
+   "position3=1500",
+   "柱寬=50",
+   "柱厚=35"
+  ],
+  "rules": [
+   "1@1"
+  ],
+  "bindings": [
+   {
+    "id": 1,
+    "specRefs": []
+   }
+  ]
+ },
+ "existingOther": "position1",
+ "first": {
+  "status": "IMPORT_RENAME_REQUIRED 柱寬 撞名規格必須明示重新命名或沿用既有名稱；IMPORT_RENAME_REQUIRED 柱厚 撞名規格必須明示重新命名或沿用既有名稱",
+  "names": "柱寬\n重新命名\n沿用既有名稱\n柱厚\n重新命名\n沿用既有名稱",
+  "rows": [
+   "柱寬",
+   "柱厚"
+  ],
+  "closure": "這次預覽沒有閉包。",
+  "map": "",
+  "confirmEnabled": false
+ },
+ "onlyOne": {
+  "status": "IMPORT_RENAME_REQUIRED 柱寬 撞名規格必須明示重新命名或沿用既有名稱",
+  "names": "柱寬\n重新命名\n沿用既有名稱\n柱厚\n重新命名\n沿用既有名稱",
+  "rows": [
+   "柱寬",
+   "柱厚"
+  ],
+  "closure": "這次預覽沒有閉包。",
+  "map": "",
+  "confirmEnabled": false
+ },
+ "renameToExisting": {
+  "status": "IMPORT_RENAME_COLLISION position1 新名稱與既有、閉包或另一個新名稱相撞",
+  "names": "柱寬\n重新命名\n沿用既有名稱\n柱厚\n重新命名\n沿用既有名稱",
+  "rows": [
+   "柱寬",
+   "柱厚"
+  ],
+  "closure": "這次預覽沒有閉包。",
+  "map": "",
+  "confirmEnabled": false
+ },
+ "unchangedAfterRejected1": true,
+ "renameToOtherColliding": {
+  "status": "IMPORT_RENAME_COLLISION 柱厚 新名稱與既有、閉包或另一個新名稱相撞",
+  "names": "柱寬\n重新命名\n沿用既有名稱\n柱厚\n重新命名\n沿用既有名稱",
+  "rows": [
+   "柱寬",
+   "柱厚"
+  ],
+  "closure": "這次預覽沒有閉包。",
+  "map": "",
+  "confirmEnabled": false
+ },
+ "renameToSelf": {
+  "status": "IMPORT_RENAME_COLLISION 柱寬 新名稱與既有、閉包或另一個新名稱相撞",
+  "names": "柱寬\n重新命名\n沿用既有名稱\n柱厚\n重新命名\n沿用既有名稱",
+  "rows": [
+   "柱寬",
+   "柱厚"
+  ],
+  "closure": "這次預覽沒有閉包。",
+  "map": "",
+  "confirmEnabled": false
+ },
+ "unchangedAfterRejected": true,
+ "renameOk": {
+  "status": "預覽可以確認。",
+  "names": "柱寬\n重新命名\n沿用既有名稱\n柱厚\n重新命名\n沿用既有名稱",
+  "rows": [
+   "柱寬",
+   "柱厚"
+  ],
+  "closure": "閉包\n規則 1@1 → 2@1\n配置 1 → 2\n規格 柱寬 → 柱寬匯入（rename）\n規格 柱厚 → 柱厚（map-existing）",
+  "map": "配置 2 槽 1\t40\t35\n配置 2 槽 2\t27\t33",
+  "confirmEnabled": true
+ },
+ "afterConfirm": {
+  "revision": 32,
+  "specs": [
+   "position1=500",
+   "position2=2500",
+   "position3=1500",
+   "柱寬=50",
+   "柱厚=35",
+   "柱寬匯入=40"
+  ],
+  "rules": [
+   "1@1",
+   "2@1"
+  ],
+  "bindings": [
+   {
+    "id": 1,
+    "specRefs": []
+   },
+   {
+    "id": 2,
+    "specRefs": [
+     "{\"kind\":\"spec\",\"name\":\"柱寬匯入\"}",
+     "{\"kind\":\"spec\",\"name\":\"柱厚\"}"
+    ]
+   }
+  ]
+ },
+ "afterUndo": {
+  "revision": 33,
+  "specs": [
+   "position1=500",
+   "position2=2500",
+   "position3=1500",
+   "柱寬=50",
+   "柱厚=35"
+  ],
+  "rules": [
+   "1@1"
+  ],
+  "bindings": [
+   {
+    "id": 1,
+    "specRefs": []
+   }
+  ]
+ },
+ "afterRedo": {
+  "revision": 34,
+  "specs": [
+   "position1=500",
+   "position2=2500",
+   "position3=1500",
+   "柱寬=50",
+   "柱厚=35",
+   "柱寬匯入=40"
+  ],
+  "rules": [
+   "1@1",
+   "2@1"
+  ],
+  "bindings": [
+   {
+    "id": 1,
+    "specRefs": []
+   },
+   {
+    "id": 2,
+    "specRefs": [
+     "{\"kind\":\"spec\",\"name\":\"柱寬匯入\"}",
+     "{\"kind\":\"spec\",\"name\":\"柱厚\"}"
+    ]
+   }
+  ]
+ },
+ "ruleOptions": [
+  "1:1"
+ ],
+ "rulesOnly": {
+  "status": "預覽可以確認。",
+  "names": "",
+  "rows": [],
+  "closure": "閉包\n規則 1@1 → 3@1",
+  "map": "",
+  "confirmEnabled": true
+ },
+ "afterRulesOnly": {
+  "revision": 35,
+  "specs": [
+   "position1=500",
+   "position2=2500",
+   "position3=1500",
+   "柱寬=50",
+   "柱厚=35",
+   "柱寬匯入=40"
+  ],
+  "rules": [
+   "1@1",
+   "2@1",
+   "3@1"
+  ],
+  "bindings": [
+   {
+    "id": 1,
+    "specRefs": []
+   },
+   {
+    "id": 2,
+    "specRefs": [
+     "{\"kind\":\"spec\",\"name\":\"柱寬匯入\"}",
+     "{\"kind\":\"spec\",\"name\":\"柱厚\"}"
+    ]
+   }
+  ]
+ },
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。目前尚未保存的變更不會自動寫入檔案。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopened": {
+  "revision": 37,
+  "specs": [
+   "position1=500",
+   "position2=2500",
+   "position3=1500",
+   "柱寬=50",
+   "柱厚=35",
+   "柱寬匯入=40"
+  ],
+  "rules": [
+   "1@1",
+   "2@1",
+   "3@1"
+  ],
+  "bindings": [
+   {
+    "id": 1,
+    "specRefs": []
+   },
+   {
+    "id": 2,
+    "specRefs": [
+     "{\"kind\":\"spec\",\"name\":\"柱寬匯入\"}",
+     "{\"kind\":\"spec\",\"name\":\"柱厚\"}"
+    ]
+   }
+  ]
+ },
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
