@@ -178,7 +178,9 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
       check('R06_BR12_DRAFT_COLD_ERRORS 僅草稿冷開服務沒有未處理頁面例外',onlyCold.errors.length===0,onlyCold.errors);
     }finally{await onlyCold.close();}
     await danglingReference();await unsupportedTopology();
-    await upstreamPointer();await upstreamGrid();await derivedOutlineArchive();await legacyInstanceRepeat();
+    // legacyInstanceRepeat() re-imports its own fixture; it runs before derivedOutlineArchive(), whose
+    // fixture() resets the project again, so integratedArchive() still saves the derived panel-fill host.
+    await upstreamPointer();await upstreamGrid();await legacyInstanceRepeat();await derivedOutlineArchive();
     check('R06_NO_BROWSER_EXCEPTION 正式操作沒有新增未處理例外',exceptionCount()===errors);
     if(process.env.GEOMETRY_R06_MAIN_INTEGRATION==='1'){
       await integratedArchive();await fixture();
