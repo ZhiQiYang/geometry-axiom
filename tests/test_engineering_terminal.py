@@ -101,6 +101,19 @@ def project_panel_fill_reader(case, value):
     return projected
 
 
+def project_r14_rule_capability(case, value):
+    """Project only the approved /2 rule capability at its reviewed position."""
+    projected = json.loads(json.dumps(value))
+    capabilities = projected["engineering-read"]["state"]["capabilities"]
+    case.assertEqual(1, capabilities.count("grid-subdivision-rules/2"),
+                     "K1_R14_RULE_CAPABILITY_EXACTLY_ONCE")
+    at = capabilities.index("grid-subdivision-rules/2")
+    case.assertEqual(capabilities.index("grid-subdivision-rules/1") + 1, at,
+                     "K1_R14_RULE_CAPABILITY_ADJACENCY")
+    del capabilities[at]
+    return projected
+
+
 def project_r14_native_capability(case, value):
     """Project exactly the approved native-only addition; keep the old oracle."""
     projected = json.loads(json.dumps(value))
@@ -237,6 +250,7 @@ class EngineeringTerminal(unittest.TestCase):
 
         def compare(value):
             projected = project_panel_fill_reader(self, value)
+            projected = project_r14_rule_capability(self, projected)
             projected = project_identity_capability(self, without_terminal(projected))
             projected = project_r14_native_capability(self, projected)
             self.assertEqual(expected_json,
@@ -304,6 +318,20 @@ class EngineeringTerminal(unittest.TestCase):
                 else:
                     state["capabilities"].append("panel-fill/1")
                 with self.assertRaises(AssertionError, msg="K1_PF_READER_NEGATIVE_" + fault):
+                    compare(probe)
+
+        for fault in ("missing", "duplicate", "moved"):
+            with self.subTest(r14_rule_projection_negative=fault):
+                probe = json.loads(json.dumps(replies))
+                caps = probe["engineering-read"]["state"]["capabilities"]
+                at = caps.index("grid-subdivision-rules/2")
+                if fault == "missing":
+                    del caps[at]
+                elif fault == "duplicate":
+                    caps.append("grid-subdivision-rules/2")
+                else:
+                    caps[0], caps[at] = caps[at], caps[0]
+                with self.assertRaises(AssertionError, msg="K1_R14_RULE_NEGATIVE_" + fault):
                     compare(probe)
 
         for fault in ("missing", "duplicate", "moved", "unknown"):
