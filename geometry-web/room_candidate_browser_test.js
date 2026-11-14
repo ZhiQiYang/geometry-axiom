@@ -82,6 +82,28 @@ function installSaveProbe() {
   } catch(error) {cleanup();throw error;}
 }
 
+// #400 regression: hold the reply of the first native `line canvas-pos
+// boundary` (renderObjects placing the confirmed room's card) until the test
+// releases it. While held the native write is provably unfinished, so a Save
+// clicked then must be refused. Release is driven by the test's event order,
+// never by a timer.
+function installRoomSaveHold() {
+  const original = window.fetch, state = window.__p400Hold = {phase: 'armed', command: ''};
+  let release;
+  const gate = new Promise(resolve => {release = resolve;});
+  state.release = () => {if (state.phase === 'held') state.phase = 'delivered'; release();};
+  window.fetch = async (...args) => {
+    let command = '';
+    try {command = JSON.parse(args[1]?.body || '{}').cmd || '';} catch (_) {}
+    const response = await original.apply(window, args);
+    if (state.phase !== 'armed' || !/^line canvas-pos boundary /.test(command)) return response;
+    state.phase = 'held'; state.command = command;
+    await gate;
+    return response;
+  };
+  state.restore = () => {release(); window.fetch = original; delete window.__p400Hold;};
+}
+
 async function collectSaveTrace(read, log = console.log) {
   try {
     const trace = await read(`window.__roomSaveProbe.dispose()`);
@@ -171,12 +193,12 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
     }
     await read(`(async()=>{await renderObjects();await enterFocus('face',1);fiShowTab('underlay');})()`);
   }
-  async function drawManual() {
+  async function drawManual(points = [[400, 400], [1600, 400], [1600, 1200], [400, 1200]]) {
     await select('#roomNewMethod', 'manual');
     await ctl('#roomNew');
     await until(`RoomCollectionWorkspace.hasWork&&fe.tool==='redraw'`);
     await read(`$('faceSnapToggle').checked=false;0`);
-    for (const point of [[400, 400], [1600, 400], [1600, 1200], [400, 1200]]) await facePoint(...point);
+    for (const point of points) await facePoint(...point);
   }
 
   console.log('=== P90. 零房起步與房間候選跨次保存 ===');
@@ -210,6 +232,43 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
   await freshReopen(saved);
   const reopened = await read(`(()=>{const rooms=ReferenceWorkspace.readFeatureAttachment('source-rooms')?.rooms||[];const rows=ReferenceWorkspace.readFeatureAttachment('room-candidates')?.rows||[];return {boundary:rooms[0]?.boundaryRef.id||0,host:rooms.some(r=>r.boundaryRef.id===1),pending:rows.some(r=>r.status==='pending')};})()`);
   check('再重開後已接受房間仍在場景側附件，未接受候選仍未進場景', reopened.boundary === accepted.boundary && reopened.host === false && reopened.pending === true && (await sceneText()).includes('boundary ' + accepted.boundary));
+  // #400: confirm a room, then Save at once while the confirmation is still
+  // rendering. The refusal must stay visible: no file, so no "saved" status.
+  // The same-source room list lives on the accepted room's face.
+  await read(`(async()=>{await enterFocus('face',${accepted.boundary});fiShowTab('underlay');feFit(loopsBBox(oc.bmap[1]));renderFaceInspector();})()`);
+  await until(`!!$('roomNew') && !!$('roomNewMethod')`);
+  await drawManual([[1800, 400], [2600, 400], [2600, 1200], [1800, 1200]]);
+  await expectNativeDialog(async () => { await ctl('#faceDraftFinish'); }, {type: 'prompt', message: '新房間名稱', accept: true, promptText: '第二間'});
+  await until(`!!$('roomConfirm')`);
+  await read(`(${installRoomSaveHold.toString()})();0`);
+  let immediate;
+  try {
+    await ctl('#roomConfirm');
+    await until(`window.__p400Hold.phase==='held' && !RoomCollectionWorkspace.hasWork && !document.querySelector('dialog.reference-impact')`);
+    const held = await read(`({blocked:ReferenceWorkspace.getEvidenceState().blocked,referenceBusy:ReferenceWorkspace.busy,command:window.__p400Hold.command})`);
+    await read(`(${installSaveProbe.toString()})();0`);
+    try {
+      await ctl('#projectBar [data-project-action="save"]');
+      await until(`[...document.querySelectorAll('#toastRegion .toast')].some(t=>t.textContent.includes('原生操作結果尚未取得'))`);
+      await read(`window.__p400Hold.release();0`);
+      // commitRoomDraft's last step writes the only status naming the room's 獨立邊界.
+      await until(`window.__p400Hold.phase==='delivered' && /房間「第二間」.*獨立邊界/.test(document.getElementById('status').textContent)`);
+      immediate = await read(`({held:${JSON.stringify(held)},written:window.__roomSave!==null,status:document.getElementById('status').textContent,rooms:ReferenceWorkspace.readFeatureAttachment('source-rooms')?.rooms.length||0})`);
+    } finally {
+      await collectSaveTrace(read);
+    }
+  } finally {
+    await read(`window.__p400Hold?.restore();0`);
+  }
+  console.log('P400_IMMEDIATE_SAVE ' + JSON.stringify(immediate));
+  check('確認房間後立刻存檔：原生寫入未完成時照舊拒絕且未寫入檔案', immediate.held.blocked === true && immediate.written === false && immediate.rooms === 2, immediate);
+  check('確認房間後立刻存檔被拒：檔案未寫入時狀態列不得顯示已保存', immediate.written === false && !immediate.status.includes('已保存') && immediate.status.includes('專案尚未保存'), immediate);
+  await until(`ReferenceWorkspace.getEvidenceState().blocked===false && !ReferenceWorkspace.busy && !oc.busy`);
+  const retried = await saveProject();
+  await freshReopen(retried);
+  fs.rmSync(retried, {force: true});
+  const retriedRooms = await read(`(ReferenceWorkspace.readFeatureAttachment('source-rooms')?.rooms||[]).map(r=>r.name).sort().join(',')`);
+  check('拒絕後再保存一次即寫入，重開後兩間房都在', retriedRooms === '第一間,第二間', retriedRooms);
   check('這段沒有新的未捕捉例外', exceptionCount() === initialExceptions);
   fs.rmSync(parked, {force: true});
   fs.rmSync(saved, {force: true});
