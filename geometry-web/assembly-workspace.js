@@ -343,9 +343,17 @@ window.AssemblyWorkspace=(()=>{
       !['generated','omitted','failed'].includes(c.status)||(c.timberId!==null&&!positiveId(c.timberId))||!Array.isArray(c.violations))||
       new Set(cells.map(c=>c.instanceId+':'+cellKey(c))).size!==cells.length)
       throw Error('原生服務缺少完整逐線開間結果，請更新服務再預覽；草稿仍保留。');
+    // A single-layout (legacy) instance keeps the native member identity {memberId}.
+    // Accept it only for an instance that is single-layout in every state it appears in,
+    // so an existing legacy instance no longer blocks every repeated-bay preview.
+    const layouts=new Map();
+    for(const side of [p.before,p.after])for(const r of side?.instances||[]){const source=r?.value?.source;if(!source)continue;
+      if(!layouts.has(source.id))layouts.set(source.id,new Set());layouts.get(source.id).add(source.layout==='bay-repeat'?'bay-repeat':'single');}
+    const legacyMember=(owner,v)=>positiveId(v.memberId)&&v.primary==null&&v.secondary==null&&
+      layouts.get(owner.instance)?.size===1&&layouts.get(owner.instance).has('single');
     for(const row of p.impact.timbers){
       if(row.owner&&!['kept','moved','created','deleted'].includes(row.change))throw Error('原生服務缺少角材增刪身分結果，請更新服務再預覽；草稿仍保留。');
-      if(row.owner?.identity){const v=row.owner.identity;if(!positiveId(row.owner.instance)||!(positiveId(v.primary)&&!v.secondary||!v.primary&&positiveId(v.secondary?.line)&&positiveId(v.secondary?.left)&&positiveId(v.secondary?.right)))
+      if(row.owner?.identity){const v=row.owner.identity;if(!positiveId(row.owner.instance)||!(positiveId(v.primary)&&!v.secondary||!v.primary&&positiveId(v.secondary?.line)&&positiveId(v.secondary?.left)&&positiveId(v.secondary?.right)||legacyMember(row.owner,v)))
         throw Error('原生服務的所屬角材身分不完整；草稿仍保留。');}
     }
   }
