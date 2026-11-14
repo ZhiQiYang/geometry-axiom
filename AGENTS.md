@@ -163,6 +163,29 @@ heredoc 會把 `
 
 ` 這類跳脫序列吃掉,而 `current_geometry.c` 是統一 CRLF(見下方地雷)。
 
+## CI 與合流（現行做法索引，2026-11-14 整理）
+
+本節只整理目前實際在用的流程與文件位置，不新增規則；細節以所連文件為準。
+
+- **CI 組成**：`Geometry integration`（`.github/workflows/integration-tests.yml`）＝path scope、native 6 片加
+  `native complete coverage`、browser 矩陣（canvas 2 片加 `browser (canvas) complete coverage`、assembly、
+  documents、grid、space、timber）。只改文件或與瀏覽器 job 無關的測試時略過 browser
+  （`.github/scripts/ci_path_scope.py`，依 `決策佇列.md` 2026-10-13 🔒）。分片規劃見 `tests/NATIVE-SHARDING.md`。
+  R06、R11 另有依路徑觸發的瀏覽器突變 workflow。
+- **突變證據過期**：改到產品原始檔、`tests/` 頂層測試檔或根目錄 `*.scene`，native 的 `mutation:check` 會判過期。
+  在 PR 分支手動觸發 `Mutation evidence`（`.github/workflows/mutation-evidence.yml`），成功後把
+  `mutation-complete-evidence` 的 `mutants_results.json` 與 `pr357-architecture-refresh` 的架構檔**原樣**提交回分支，
+  先核對 `summary.json` 的 head、`ledger_sha256`，以及 survived／invalid／stale／blocked／unrun 全為 0。
+  說明與重驗方法見 `tests/MUTATION-EVIDENCE.md`。新鮮度依內容雜湊判斷：只把 main 併進來、沒動到上述檔案，證據不會過期。
+- **衍生檔衝突**：`tests/mutants_results.json`、`geometry-core/domain-decoupling/` 的架構檔、正典閱讀器 HTML
+  都是產生物。合流衝突時不要手動合併內容，改用新 head 重產（前兩項走 Mutation evidence，閱讀器走下方「正典重建與驗證」）。
+- **合併**：由本機 Claude 合併（使用者 2026-10-14 授權）。合併前要同時滿足下列條件——這些是 Claude 自訂的守門，
+  不是使用者原話：最新一則【ChatGPT 審查】結論為「可合併」，且正文寫著當下 head 與 main 的完整 SHA；
+  checks 全部通過，或只有 browser 依上面的路徑規則略過；該審查之後沒有新的阻擋留言；沒有 CHANGES_REQUESTED。
+  合併一律帶 `--match-head-commit <head>`，合併後在 PR 留合併紀錄。main 每前進一次，其餘 PR 都要對新 main 重新終審。
+- **使用者的電腦不跑重活**：測試、重建閱讀器、建工作樹等耗資源的工作交給雲端（grokbot、CI），
+  不在使用者的電腦上跑（使用者 2026-11-12：「不要占用我的電腦資源」）。需要那台電腦上的檔案或狀態，照上面「不問使用者技術問題」第 2 點處理。
+
 ## 已知地雷
 
 - **`surface N` 是「boundary N + placement N」合體一行**,所以它要的 id 必須在
