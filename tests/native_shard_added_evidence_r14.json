@@ -1,0 +1,33 @@
+{
+  "schema": "native-shard-added-suite-evidence/1",
+  "source_run": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43212357528",
+  "source_head": "eeb8616665d0e0944fc1a7cf4a4786e15872cbe6",
+  "source_checkout": "657b9a40fbeba818a7a8ed698b94e0f680c75f86",
+  "note": "CI job failed overall; each listed individual suite passed. Times are the one-decimal-second values printed in its original 2026-11-12 runner summary; planning upper bounds are conservative, not historical observations.",
+  "observations": [
+    {
+      "name": "node:r14_app",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43212357528/job/131162916639",
+      "discovered": 7,
+      "passed": 7,
+      "seconds_rounded": 0.1,
+      "planning_upper_ms": 2000
+    },
+    {
+      "name": "node:r14_host",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43212357528/job/131162916639",
+      "discovered": 15,
+      "passed": 15,
+      "seconds_rounded": 4.9,
+      "planning_upper_ms": 7000
+    },
+    {
+      "name": "py:test_r14_browser_receipt",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43212357528/job/131162916621",
+      "discovered": 10,
+      "passed": 10,
+      "seconds_rounded": 0.4,
+      "planning_upper_ms": 2000
+    }
+  ]
+}

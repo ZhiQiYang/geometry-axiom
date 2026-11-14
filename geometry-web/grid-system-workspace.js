@@ -344,6 +344,7 @@
     return `<div class="ig-axis" data-ig-axis="${a}" role="group" aria-labelledby="${p}Name"><button type="button" class="ig-axis-head" id="${p}Head" data-ig-pick-axis="${a}"><span class="ig-axis-name" id="${p}Name">${axisHeading(a)}</span><span class="ig-axis-sum"></span><span class="ig-role" hidden></span></button><div class="ig-axis-body"><div id="${p}Source" class="ig-segment" role="radiogroup" aria-label="${a} 排格方式">${modes}</div><div data-ig-mode="repeat" class="ig-pair">${field('step', d?.step ?? d?.effectiveStep ?? 600)}${field('phase', d?.phase ?? 0)}</div><div data-ig-mode="repeat-panel" class="ig-pair">${field('panel', d?.panel ?? d?.effectivePanel ?? 600)}${field('gap', d?.gap ?? 0)}${field('anchor', d?.anchor ?? 0)}</div><p data-ig-mode="repeat-panel" class="ig-note">格線位於縫中心；向正、負方向持續重複。</p><p data-ig-mode="none" class="ig-note">此軸不產生格線。</p><div data-ig-stagger><button type="button" class="ig-link" data-ig-add-stagger="${a}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>相鄰格子相位差</button><div data-ig-stagger-field class="ig-stagger" hidden>${field('stagger', d?.stagger ?? '')}<div class="ig-stagger-foot"><span>奇數格帶的格線位移；留空即不使用。</span><button type="button" class="ig-link ig-link-quiet" data-ig-remove-stagger="${a}">移除</button></div></div></div></div></div>`;
   }
   const ruleIds={name:'igRuleName',selector:'igRuleSelector',cellI:'igRuleCellI',cellJ:'igRuleCellJ',divisionsU:'igRuleU',divisionsV:'igRuleV'};
+  const panelRules=source=>axes.some(a=>source?.[a+'Definition']?.source==='repeat-panel');
   function ruleDraftValue(s){
     if(!s.ruleDraft)return null;
     return {...s.ruleDraft,rawForm:Object.fromEntries(F.ruleFields.map(field=>[field,rawField(s,ruleIds[field])]))};
@@ -352,8 +353,9 @@
     if(s.orphaned)return `草稿引用的${s.mode==='source'?'來源':'配置'} ${s.baseRef.id} 已遺失。原始輸入保留；可保存、返回或明確捨棄。`;
     if(!s.source)return '先確認建立網格來源，再在此來源新增規則。';
     if(s.source.mode!=='infinite')return '有限來源不支援來源子規則。';
-    if(axes.some(a=>s.source[a+'Definition']?.source!=='repeat'))return '來源子規則需要兩軸固定間距 REPEAT；面材＋縫或缺軸來源保持原狀。';
+    if(axes.some(a=>!['repeat','repeat-panel'].includes(s.source[a+'Definition']?.source)))return '來源子規則需要兩軸固定間距或面材＋縫；缺軸來源保持原狀。';
     if(axes.some(a=>s.source[a+'Definition']?.stagger!=null))return '有相鄰格子相位差的來源不支援子規則；來源保持原狀。';
+    if(panelRules(s.source)&&!s.capabilities?.includes('grid-subdivision-rules/2'))return '目前服務不支援面材分份（grid-subdivision-rules/2）；來源與原始輸入保持原狀。';
     return '';
   }
   function upgradeRuleDraft(s){
@@ -400,6 +402,7 @@
     if(!current(s)||!$('igRuleSection'))return;
     $('igRuleContext').textContent=s.source?`來源 ${s.source.id} · ${(s.source.bindings||[]).length} 個配置／${(s.source.applications||[]).length} 個套用；不是本面手動子格。${s.ruleDisplay?.note||''}`:'';
     const unsupported=ruleUnsupported(s);$('igRuleReason').textContent=unsupported;
+    $('igRuleNote').textContent=panelRules(s.source)?'按相鄰縫中心線之間的完整間距（面材＋縫）等分；1 等分不加內線。預覽檢查所有配置，確認才套用。':'1 等分不加內線；預覽檢查整除與所有配置，確認才套用。';
     if(!s.busy&&!s.initializing){$('igRuleAdd').disabled=!!unsupported;for(const button of $('igRuleList').querySelectorAll('button'))button.disabled=!!unsupported;}
     $('igRuleEditor').hidden=!s.ruleDraft;$('igRulePreview').hidden=!s.ruleDraft;
     $('igSaveSource').hidden=s.mode!=='source'||!!s.ruleDraft;if(!s.ruleDraft)return;
@@ -410,6 +413,11 @@
   }
   async function saveRule(s){
     requireOnlyDraft(s,'rule');if(!s.ruleDraft||!s.source)throw Error('請明選來源規則。');
+    if(panelRules(s.source)){
+      const host=await apiRequest('engineering-read');if(!current(s))return;
+      s.capabilities=host.ok&&Array.isArray(host.state?.capabilities)?host.state.capabilities:[];
+    }
+    const unsupported=ruleUnsupported(s);if(unsupported)throw Error(unsupported);
     if(sourceFormKey(sourceDraft(s))!==sourceFormKey(s.source))throw Error('網格來源仍有未確認輸入，請先確認來源變更，再編輯規則。');
     const rule=ruleDraftValue(s);await validateDraftPins(s);await stillSame(s);
     let command;
@@ -1225,6 +1233,10 @@
     }
     const surfaces=await apiRequest('surfaces');if(!ownsEntry())return;if(!surfaces.ok){toast(surfaces.error||'無法讀取承載面。');return;}
     const references=await apiRequest('references');if(!ownsEntry())return;if(!references.ok){toast(references.error||'無法讀取引用資料。');return;}
+    // Native /2 alone is not the complete host/ZIP contract. Older services
+    // keep the existing PANEL source editable, but its rule entry is read-only.
+    const host=panelRules(source)?await apiRequest('engineering-read'):null;if(!ownsEntry())return;
+    const capabilities=host?.ok&&Array.isArray(host.state?.capabilities)?host.state.capabilities:[];
     const latest=await apiRequest('objects');if(!ownsEntry())return;if(!latest.ok){toast(latest.error||'無法複核所選網格。');return;}
     if((source&&sourceKey(latest.gridSystems.find(g=>g.id===source.id))!==sourceKey(source))||
        (binding&&bindingKey(latest.gridBindings?.find(b=>b.id===binding.id))!==bindingKey(binding))){
@@ -1260,7 +1272,7 @@
     closePanels();
     state?.selectionAbort?.abort();state?.trial?.dispose();
     const mode=restored?.kind||(binding?'binding':options.mode||'source');
-    state={context,contextToken,source,binding,mode,pins,fullPins,draftSchema,orphaned:!!restored&&(collection.orphans.includes(restored.draftId)||restored.intent==='edit'&&(mode==='source'?!source:!binding)),ruleDraft:restored?.ruleDraft?copy(restored.ruleDraft):null,inputPins:new Map((restored?.inputRefs||[]).map(ref=>[pinKey(ref),copy(ref)])),rawOverrides:new Map(),restored:restored&&copy(restored),draftId:restored?.draftId||crypto.randomUUID(),
+    state={context,contextToken,source,binding,mode,pins,fullPins,draftSchema,capabilities,orphaned:!!restored&&(collection.orphans.includes(restored.draftId)||restored.intent==='edit'&&(mode==='source'?!source:!binding)),ruleDraft:restored?.ruleDraft?copy(restored.ruleDraft):null,inputPins:new Map((restored?.inputRefs||[]).map(ref=>[pinKey(ref),copy(ref)])),rawOverrides:new Map(),restored:restored&&copy(restored),draftId:restored?.draftId||crypto.randomUUID(),
       baseRef:restored?copy(restored.baseRef):mode==='source'?(source?pins.get('grid-system:'+source.id):null):(binding?pins.get('grid-binding:'+binding.id):null),
       systemRaw:restored?.rawForm.igSystem??String(source?.id??''),sources:objects.gridSystems||[],bindings:objects.gridBindings||[],boundaries:objects.faces.filter(b=>b.kind==='boundary'),surfaces:surfaces.surfaces,references,base:[0n,0n],camera:[-1800,-1200,2400,1600],vertices:[],boundarySerial:0,busy:false};
     dialog.dataset.draftId=state.draftId;
