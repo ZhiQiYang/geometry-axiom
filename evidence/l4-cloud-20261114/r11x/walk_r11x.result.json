@@ -1,0 +1,135 @@
+{
+ "s1_pfPreviewed": {
+  "timberLines": [
+   "timber 90 20 20 role boundary",
+   "timber 91 20 20 role boundary",
+   "timber 1 27 33 role primary",
+   "place 90 on 1 at-face e0 +u +n",
+   "place 91 on 1 at-face e2 +u +n",
+   "place 1 on 1 at-line guide 1 +v +n"
+  ],
+  "fills": 0,
+  "finish": 0,
+  "rev": 18,
+  "timberForm": false,
+  "timberConfirmVisible": false,
+  "pfVisible": true,
+  "pfStatus": "confirmable",
+  "pfConfirmInDom": true,
+  "params": 1,
+  "undo": true
+ },
+ "s2a_afterPasteMenu": {
+  "timberLines": [
+   "timber 90 20 20 role boundary",
+   "timber 91 20 20 role boundary",
+   "timber 1 27 33 role primary",
+   "place 90 on 1 at-face e0 +u +n",
+   "place 91 on 1 at-face e2 +u +n",
+   "place 1 on 1 at-line guide 1 +v +n"
+  ],
+  "fills": 0,
+  "finish": 0,
+  "rev": 18,
+  "timberForm": true,
+  "timberConfirmVisible": false,
+  "pfVisible": false,
+  "pfStatus": null,
+  "pfConfirmInDom": false,
+  "params": 1,
+  "undo": true
+ },
+ "s2_timberCandidate": {
+  "timberLines": [
+   "timber 90 20 20 role boundary",
+   "timber 91 20 20 role boundary",
+   "timber 1 27 33 role primary",
+   "place 90 on 1 at-face e0 +u +n",
+   "place 91 on 1 at-face e2 +u +n",
+   "place 1 on 1 at-line guide 1 +v +n"
+  ],
+  "fills": 0,
+  "finish": 0,
+  "rev": 18,
+  "timberForm": true,
+  "timberConfirmVisible": true,
+  "pfVisible": false,
+  "pfStatus": null,
+  "pfConfirmInDom": false,
+  "params": 1,
+  "undo": true
+ },
+ "timberFormText": "貼上角材\n來自 角材 1 · 定義與來源\nA：直接值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2\n承載面\n明選本面的放置\n放置 1 · 天花 z=2500\n沿著\n明選新定位引用\n外輪廓邊 1\n外輪廓邊 3\n角材 90 側面（須有唯一解）\n角材 91 側面（須有唯一解）\n角材 1 側面（須有唯一解）\n外輪廓邊 0(已有角材 90)\n外輪廓邊 2(已有角材 91)\n參考線 1 · 沿 v · u=500 mm(已有角材 1)\n選段引用式（可留空）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n已驗證完整候選；核對逐支來源與連動後確認。\n新角材\n原定義\n無此角材\n候選定義\n新角材（確認後配號）\nA：直接值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2 · +v\n放置 1 ",
+ "pfConfirmVisible": false,
+ "pfConfirmEnabled": false,
+ "s3_afterPfConfirm": {
+  "timberLines": [
+   "timber 90 20 20 role boundary",
+   "timber 91 20 20 role boundary",
+   "timber 1 27 33 role primary",
+   "place 90 on 1 at-face e0 +u +n",
+   "place 91 on 1 at-face e2 +u +n",
+   "place 1 on 1 at-line guide 1 +v +n"
+  ],
+  "fills": 0,
+  "finish": 0,
+  "rev": 18,
+  "timberForm": true,
+  "timberConfirmVisible": true,
+  "pfVisible": false,
+  "pfStatus": null,
+  "pfConfirmInDom": false,
+  "params": 1,
+  "undo": true
+ },
+ "statusAfter": [
+  "paramStatus: 沒有未套用的修改。",
+  "-: 有未保存的變更",
+  "timberEditStatus: 已驗證完整候選；核對逐支來源與連動後確認。",
+  "-: 尚未檢查"
+ ],
+ "pfStatusText": null,
+ "s3b_beforeUndo": {
+  "timberLines": [
+   "timber 90 20 20 role boundary",
+   "timber 91 20 20 role boundary",
+   "timber 1 27 33 role primary",
+   "place 90 on 1 at-face e0 +u +n",
+   "place 91 on 1 at-face e2 +u +n",
+   "place 1 on 1 at-line guide 1 +v +n"
+  ],
+  "fills": 0,
+  "finish": 0,
+  "rev": 18,
+  "timberForm": true,
+  "timberConfirmVisible": true,
+  "pfVisible": false,
+  "pfStatus": null,
+  "pfConfirmInDom": false,
+  "params": 1,
+  "undo": true
+ },
+ "s4_afterUndo": {
+  "timberLines": [
+   "timber 90 20 20 role boundary",
+   "timber 91 20 20 role boundary",
+   "timber 1 27 33 role primary",
+   "place 90 on 1 at-face e0 +u +n",
+   "place 91 on 1 at-face e2 +u +n",
+   "place 1 on 1 at-line guide 1 +v +n"
+  ],
+  "fills": 0,
+  "finish": 0,
+  "rev": 19,
+  "timberForm": false,
+  "timberConfirmVisible": false,
+  "pfVisible": false,
+  "pfStatus": null,
+  "pfConfirmInDom": false,
+  "params": 0,
+  "undo": true
+ },
+ "errs": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
