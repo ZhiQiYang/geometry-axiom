@@ -63,11 +63,6 @@ static bool grid_sample_indices_in(const ReferenceGrid *grids,size_t count,const
     return true;
 }
 
-static bool grid_is_valid_in(const ReferenceGrid *grids,size_t count,const ReferenceGrid *grid,
-    const PlacementSurface *p,const SpaceBoundarySurface *b,char *err,size_t cap)
-{WoodGridHost host;app_grid_host_value(p,b,&host);return wood_grid_valid_in(grids,count,grid,p?&host:NULL,err,cap);}
-
-
 static bool grid_query_stagger_segments(const ReferenceGrid *,const PlacementSurface *,
     const SpaceBoundarySurface *,const char *,int,GridQueryLine *,const Coord[4],bool,uint64_t *,char *,size_t);
 static size_t grid_line_segments(const ReferenceGrid *grids,size_t count,const ReferenceGrid *grid,

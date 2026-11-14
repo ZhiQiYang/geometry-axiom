@@ -388,12 +388,6 @@ static bool reference_eval_text(ReferenceEval *ctx,const GuideLine *g,const char
     return reference_linear_result(result,compiled.mode,expression,out);
 }
 
-static bool reference_eval_expression(ReferenceEval *ctx, const GuideLine *g, Coord *out)
-{
-    g_rule_reference_error[0]=0;
-    return reference_eval_text(ctx,g,app_guide_expression(ctx->world,g->id),out);
-}
-
 static bool reference_compute_datum(ReferenceEval *ctx,size_t i,GeoAxisPosition *out)
 {
     World *world=ctx->world;const GeoDatum *d=geo_datums_at(&world->geo.datum_planes,i);
