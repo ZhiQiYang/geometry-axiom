@@ -148,6 +148,33 @@ bool wood_member_reference_place(const WoodMemberReferenceContext *w,size_t ti)
     w->write(w->user,ti,&best,best_uv);return true;
 }
 
+bool wood_member_reference_pair_candidate(const WoodMemberReferenceContext *w,size_t ti)
+{
+    WoodMemberReferenceFact value;if(!w->member_at(w->user,ti,&value))return false;
+    WoodMember *t=&value.member;WoodMemberReference *a=&value.anchor;
+    WoodMemberPlacementFact p;
+    if(!w->placement(w->user,a->placement_id,&p))return w->issue(w->user,t->id,"I13","existing placement","placement missing");
+    if(p.derived||a->anchor_kind!=WOOD_ANCHOR_AT_EDGE||a->ref_is_timber||a->ref_hole>=0||a->ref_derived_key[0]||a->has_through||a->has_between)
+        return w->issue(w->user,t->id,"D16a","native outer e<i> at-face member without through/between","unsupported pair member source");
+    bool along=a->length_direction==GEO_DIRECTION_POS_V||a->length_direction==GEO_DIRECTION_NEG_V;
+    WoodMemberEdgeFact e;
+    if(w->edge(w->user,p.id,-1,a->ref_edge,&e)!=WOOD_MEMBER_EDGE_OK)return w->issue(w->user,t->id,"D16a/I13","existing outer edge","edge missing");
+    if((e.segment.start.u==e.segment.end.u)!=along)
+        return w->issue(w->user,t->id,"I13","edge parallel to length","at-face 邊必須平行於長度軸");
+    GeoCoord c=along?e.segment.start.u:e.segment.start.v;
+    GeoCoord inward=(along?e.outward.u:e.outward.v)*-1;
+    GeoCoord lo=inward>0?c:c-t->size_a,hi=lo+t->size_a;
+    GeoCoord e0=along?e.segment.start.v:e.segment.start.u,e1=along?e.segment.end.v:e.segment.end.u;
+    GeoCoord start=e0<e1?e0:e1,end=e0>e1?e0:e1;
+    if(end<=start)return w->issue(w->user,t->id,"D16a","positive outer edge interval","zero-length edge");
+    GeoRect2 rect=along?(GeoRect2){lo,start,hi,end}:(GeoRect2){start,lo,end,hi};
+    WoodMember probe=*t;probe.length=end-start;probe.placed=false;
+    GeoPoint2 uv=wood_member_anchor_corner(&p.frame,a->length_direction,a->depth_side,&rect);
+    if(!w->place(w->user,p.id,&probe,uv,a->length_direction,a->depth_side))
+        return w->issue(w->user,t->id,"D16a/I5","J_i=E_i footprint inside the effective region with FIXED ends","I5/I6 footprint outside effective region or FREE edge");
+    w->write(w->user,ti,&probe,uv);return true;
+}
+
 bool wood_member_reference_compute(const WoodMemberReferenceContext *w,size_t i,bool *needs_placement)
 {
     *needs_placement=false;

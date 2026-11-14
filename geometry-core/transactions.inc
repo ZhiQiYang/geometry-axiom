@@ -1,7 +1,8 @@
 /* I8/I8a: one atomic entry point shared by file parser, CLI, GDI and bridge. */
+static bool g_pair_internal;   /* D16a: set only while a boundary-pair route re-enters the parser */
 typedef struct {
     bool ready, valid;
-    bool engineering_batch, assembly_batch, profile_batch, finish_batch, definition_import, timber_batch;
+    bool engineering_batch, assembly_batch, profile_batch, finish_batch, definition_import, timber_batch, pair_batch;
     AsmDiagnostic assembly_diagnostic;
     uint64_t revision;
     uint32_t token;
@@ -528,7 +529,7 @@ static void reference_stage(AppWorldCandidate *transaction,char **tokens,int cou
     g_preview.transaction=transaction;
     g_preview.ready=true; g_preview.valid=valid; g_preview.token=++g_preview_serial;
     g_preview.assembly_diagnostic=(AsmDiagnostic){0};
-    g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.profile_batch=false; g_preview.finish_batch=false; g_preview.definition_import=false; g_preview.timber_batch=false; g_preview.revision=g_definition_revision;
+    g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.profile_batch=false; g_preview.finish_batch=false; g_preview.definition_import=false; g_preview.timber_batch=false; g_preview.pair_batch=false; g_preview.revision=g_definition_revision;
     g_preview.issue_count=g_reference_issue_count;
     memcpy(g_preview.issues,g_reference_issues,g_preview.issue_count*sizeof(ReferenceIssue));
     if (!valid && !g_preview.issue_count) {
@@ -650,13 +651,15 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     if (!strcmp(tokens[0],"cancel-preview")) {
         if (count!=1) return false;
         if(g_preview.ready&&g_preview.timber_batch){scene_error(path,line_no,"Timber cancellation requires its own token");return false;}
+        if(g_preview.ready&&g_preview.pair_batch&&!g_pair_internal){scene_error(path,line_no,"D16a: boundary-pair 預覽請用 boundary-pair cancel");return false;}
         g_preview.ready=false;
         if(g_preview.transaction)app_world_candidate_discard(g_preview.transaction);
         return true;
     }
     if (!strcmp(tokens[0],"confirm")) {
         uint32_t token;
-        if (count!=2 || !parse_u32(tokens[1],&token) || !g_preview.ready || token!=g_preview.token || !g_preview.valid || g_preview.engineering_batch || g_preview.definition_import) {
+        if (count!=2 || !parse_u32(tokens[1],&token) || !g_preview.ready || token!=g_preview.token || !g_preview.valid || g_preview.engineering_batch || g_preview.definition_import ||
+            (g_preview.pair_batch && !g_pair_internal)) {
             scene_error(path,line_no,"I8a: missing/invalid preview token; cannot apply"); return false;
         }
         /* Canvas layout does not invalidate geometry approval (D12/I14). */
@@ -852,8 +855,114 @@ static bool app_scene_file_flush(const char *path,World *world)
     for(size_t i=0;i<pending;++i)if(!app_scene_file_replay_line(frame,i,path,world))return false;
     return true;
 }
+/* D16a/R4: boundary-pair input frames. Interactive input belongs to the
+ * session; a scene file has its own frame for the duration of the parse.
+ * Body lines are only buffered here; `end` hands the closed package to the
+ * one commit record, as a preview (interactive) or a load-candidate unit. */
+static BoundaryPairInput g_pair_interactive,*g_pair_file_input;
+static BoundaryPairInput *boundary_pair_input(void){return g_parsing_scene_file?g_pair_file_input:&g_pair_interactive;}
+static bool boundary_pair_route_refuse(BoundaryPairInput *in,const char *path,int line_no,const char *message)
+{if(in)in->active=false;scene_error(path,line_no,message);return false;}
+static void boundary_pair_discard_preview(void)
+{g_preview.ready=false;if(g_preview.transaction)app_world_candidate_discard(g_preview.transaction);}
+static bool boundary_pair_internal_line(const char *path,int line_no,char **tokens,int count,World *world)
+{
+    bool saved=g_pair_internal;g_pair_internal=true;
+    bool ok=apply_scene_line(path,line_no,tokens,count,world);
+    g_pair_internal=saved;return ok;
+}
+/* Interactive end/delete stage a read-only preview; a refused candidate keeps no token. */
+static bool boundary_pair_stage(const char *path,int line_no,char **tokens,int count,World *world)
+{
+    uint32_t before=g_preview.token;bool before_ready=g_preview.ready;
+    bool ok=boundary_pair_internal_line(path,line_no,tokens,count,world);
+    bool staged=g_preview.ready&&(!before_ready||g_preview.token!=before);
+    if(!ok||!staged){if(staged)boundary_pair_discard_preview();if(ok)scene_error(path,line_no,"D16a: 無法建立 boundary-pair 預覽");return false;}
+    if(!g_preview.valid){
+        char reason[512];snprintf(reason,sizeof reason,"%s",g_scene_last_error[0]?g_scene_last_error:g_revalidate_error[0]?g_revalidate_error:"D16a: 候選不合法");
+        boundary_pair_discard_preview();scene_error(path,line_no,reason);return false;
+    }
+    g_preview.pair_batch=true;return true;
+}
+static bool boundary_pair_route(const char *path,int line_no,char *tokens[],int count,World *world,bool *handled)
+{
+    *handled=false;
+    if(g_pair_internal||!count)return true;
+    bool pair=!strcmp(tokens[0],"boundary-pair");
+    BoundaryPairInput *in=boundary_pair_input();
+    if(!in){if(!pair)return true;*handled=true;scene_error(path,line_no,"CAPACITY: boundary-pair input frame unavailable");return false;}
+    if(!in->active&&!pair){
+        /* D16a: a grouped member is never re-placed, re-roled or deleted alone. */
+        uint32_t id;bool member=false;const char *refusal=NULL;
+        if(!strcmp(tokens[0],"place")&&count>1&&parse_u32(tokens[1],&id)&&boundary_pair_index(world,id)>=0){member=true;
+            refusal="D16a: 已成組的 timber 不得單支重新 place；請以 boundary-pair begin … end 完整重宣告整組";}
+        else if(!strcmp(tokens[0],"delete")&&count==3&&!strcmp(tokens[1],"timber")&&parse_u32(tokens[2],&id)&&boundary_pair_index(world,id)>=0){member=true;
+            refusal="D16a: 已成組的 timber 不得單支刪除；請用 boundary-pair delete <a> <b> 整組刪除";}
+        else if(!strcmp(tokens[0],"timber")&&count>5&&parse_u32(tokens[1],&id)&&boundary_pair_index(world,id)>=0&&strcmp(tokens[5],"boundary")){member=true;
+            refusal="D16a: 已成組的 timber 不得改成其他角色";}
+        if(!member)return true;
+        *handled=true;scene_error(path,line_no,refusal);return false;
+    }
+    *handled=true;
+    if(in->active&&!g_parsing_scene_file&&in->revision!=g_definition_revision)
+        return boundary_pair_route_refuse(in,path,line_no,"D16a: 輸入期間 World 已改變；未完成的 boundary-pair 輸入已丟棄");
+    if(in->active){
+        if(!pair){
+            if(strcmp(tokens[0],"timber")&&strcmp(tokens[0],"place"))
+                return boundary_pair_route_refuse(in,path,line_no,"D16a/R4: boundary-pair 包內只接受 timber 與 place，不可混入其他命令（整包拒絕）");
+            if(in->count>=BOUNDARY_PAIR_RECORDS){in->overflow=true;return true;}
+            size_t used=0;char *line=in->lines[in->count];
+            for(int i=0;i<count;++i){size_t length=strlen(tokens[i]);
+                if(used+length+2>SCENE_MAX_LINE)return boundary_pair_route_refuse(in,path,line_no,"D16a: 包內記錄太長");
+                if(i)line[used++]=' ';memcpy(line+used,tokens[i],length);used+=length;}
+            line[used]='\0';in->line_numbers[in->count++]=line_no;return true;
+        }
+        if(count==2&&!strcmp(tokens[1],"end")){
+            in->active=false;const BoundaryPairInput *saved=g_pair_commit_input;g_pair_commit_input=in;bool ok;
+            if(g_parsing_scene_file){char *commit[2]={"boundary-pair","commit"};ok=boundary_pair_internal_line(path,line_no,commit,2,world);}
+            else{char *commit[3]={"preview","boundary-pair","commit"};ok=boundary_pair_stage(path,line_no,commit,3,world);}
+            g_pair_commit_input=saved;return ok;
+        }
+        if(count==2&&!strcmp(tokens[1],"cancel")&&!g_parsing_scene_file){in->active=false;return true;}
+        return boundary_pair_route_refuse(in,path,line_no,"D16a/R4: boundary-pair 不可嵌套或在包內使用其他子命令（輸入已丟棄）");
+    }
+    const char *verb=count>1?tokens[1]:"";uint32_t a,b;
+    if(!strcmp(verb,"begin")){
+        if(count!=4||!parse_u32(tokens[2],&a)||!parse_u32(tokens[3],&b))
+            return boundary_pair_route_refuse(NULL,path,line_no,"D16a: boundary-pair begin <timber-id-a> <timber-id-b>");
+        if(g_parsing_scene_file&&!g_pair_scene_required)
+            return boundary_pair_route_refuse(NULL,path,line_no,"I32: boundary-pair 語法需要先宣告 requires boundary-pair/1");
+        if(!g_parsing_scene_file&&g_preview.ready)
+            return boundary_pair_route_refuse(NULL,path,line_no,"D16a: 預覽尚未結束（確認或取消後才能 begin）");
+        memset(in,0,offsetof(BoundaryPairInput,lines));
+        in->active=true;in->ids[0]=a;in->ids[1]=b;in->begin_line=line_no;in->revision=g_definition_revision;return true;
+    }
+    if(!strcmp(verb,"end"))return boundary_pair_route_refuse(NULL,path,line_no,"D16a: 沒有進行中的 boundary-pair 輸入");
+    if(g_parsing_scene_file&&(!strcmp(verb,"confirm")||!strcmp(verb,"cancel")))
+        return boundary_pair_route_refuse(NULL,path,line_no,"D16a/R4: 場景檔不保存 token；confirm／cancel 只用於互動");
+    if(!strcmp(verb,"cancel")&&count==2){
+        if(g_preview.ready&&g_preview.pair_batch){boundary_pair_discard_preview();return true;}
+        return boundary_pair_route_refuse(NULL,path,line_no,"D16a: 沒有可取消的 boundary-pair 輸入或預覽");
+    }
+    if(!strcmp(verb,"confirm")&&count==3){
+        uint32_t token;
+        if(!parse_u32(tokens[2],&token)||!g_preview.ready||!g_preview.pair_batch||token!=g_preview.token)
+            return boundary_pair_route_refuse(NULL,path,line_no,"D16a: token 無效、已失效或不是 boundary-pair 預覽");
+        char *confirm[2]={"confirm",tokens[2]};return boundary_pair_internal_line(path,line_no,confirm,2,world);
+    }
+    if(!strcmp(verb,"delete")&&count==4&&parse_u32(tokens[2],&a)&&parse_u32(tokens[3],&b)){
+        if(!g_parsing_scene_file&&g_preview.ready)
+            return boundary_pair_route_refuse(NULL,path,line_no,"D16a: 預覽尚未結束（確認或取消後才能準備刪除）");
+        bool saved=g_pair_remove_armed;g_pair_remove_armed=true;bool ok;
+        if(g_parsing_scene_file){char *remove[4]={"boundary-pair","remove",tokens[2],tokens[3]};ok=boundary_pair_internal_line(path,line_no,remove,4,world);}
+        else{char *remove[5]={"preview","boundary-pair","remove",tokens[2],tokens[3]};ok=boundary_pair_stage(path,line_no,remove,5,world);}
+        g_pair_remove_armed=saved;return ok;
+    }
+    return boundary_pair_route_refuse(NULL,path,line_no,"D16a: boundary-pair begin <a> <b>|end|confirm <token>|cancel|delete <a> <b>");
+}
 static bool apply_scene_line(const char *path,int line_no,char *tokens[],int count,World *world)
 {
+    {bool handled;bool routed=boundary_pair_route(path,line_no,tokens,count,world,&handled);if(handled)return routed;}
     if(app_scene_file_line_eligible(world,tokens,count)){
         AppSceneFileReplay *frame=g_scene_file_replay;char text[APP_SCENE_DEFER_LINE];
         if(frame->checkpoint&&app_scene_file_defer_safe(world,tokens,count)&&app_scene_file_defer_text(tokens,count,text)){
