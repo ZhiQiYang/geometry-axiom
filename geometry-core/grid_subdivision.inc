@@ -9,8 +9,6 @@ static const GridSubdivisionRule *grid_rule_find(const GridSystem *s,uint32_t ke
 { return geo_grid_rule_find(s,key); }
 static bool grid_rules_valid(const GridSystem *s,char *err,size_t cap)
 { return wood_grid_rules_valid(s,err,cap); }
-static bool grid_rule_matches(const GridSubdivisionRule *r,const int64_t cell[2])
-{ return geo_grid_rule_matches(r,cell); }
 
 static bool grid_rule_ref_text(const char *text,GridRuleLineRef *r)
 {
@@ -24,11 +22,6 @@ static bool grid_rule_ref_text(const char *text,GridRuleLineRef *r)
         !parse_i64(parts[5],&r->cell[1]) || (strcmp(parts[6],"u") && strcmp(parts[6],"v")) ||
         !parse_u32(parts[7],&r->inner_index))return false;
     r->axis=!strcmp(parts[6],"u")?0:1;return true;
-}
-static bool grid_rule_used(const World *w,uint32_t sid,uint32_t key)
-{
-    WoodGridContext context=app_grid_context(w);
-    return wood_grid_rule_used(&context,sid,key);
 }
 static bool grid_rules_world_valid(const World *w,char *err,size_t cap)
 {

@@ -10,15 +10,9 @@
   const LIMITS = Object.freeze({scenarios:8, assets:256, assetBytes:128*MB, manifestBytes:8*MB,
     sceneBytes:16*MB, descriptorBytes:8*MB, expandedBytes:512*MB, archiveBytes:256*MB,
     nodes:1000000, depth:48, origins:25000, objects:25000});
-  const HASH = /^[a-f0-9]{64}$/, ID = /^[\w-]{1,100}$/;
-  const identifier=v=>typeof v==='string'&&ID.test(v);
-  const KINDS = new Set(['boundary','placement','space','column','beam','timber','grid','grid-system','grid-binding',
-    'parameter','assembly-rule','assembly-binding','material','method','application','datum','model',
-    'engineering-draft','assembly-draft','reference-page','grid-draft','spec','guide','assembly-instance',
-    'section-profile','profile-member','profile-run','panel-spec']);
+  const HASH = /^[a-f0-9]{64}$/;
+  const {canonical, identifier, refKey, validObject, exact} = Catalog;
   function fail(code, message) { throw Object.assign(new Error(message), {code}); }
-  const exact = (v, required, optional=[]) => v && typeof v === 'object' && !Array.isArray(v) &&
-    required.every(k => Object.hasOwn(v,k)) && Object.keys(v).every(k => required.includes(k)||optional.includes(k));
   const copy = v => JSON.parse(JSON.stringify(v));
   function boundedJSON(value, limits=LIMITS, byteLimit=limits.manifestBytes) {
     let nodes=0,bytes=0;
@@ -65,20 +59,7 @@
     walk(value,0);
     return value;
   }
-  function canonical(v) {
-    if (v===null||typeof v!=='object') return JSON.stringify(v);
-    if (Array.isArray(v)) return '['+v.map(canonical).join(',')+']';
-    return '{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canonical(v[k])).join(',')+'}';
-  }
   const freeze=v=> {if(v&&typeof v==='object') {for(const c of Object.values(v))freeze(c);Object.freeze(v);}return v;};
-  const refKey=v=>canonical([v.kind,v.id,v.version]);
-  function validObject(v) {
-    return exact(v,['kind','id','version'])&&KINDS.has(v.kind)&&
-      (typeof v.id==='string'&&v.id.length>0&&v.id.length<=100&&!/[\u0000-\u001f]/.test(v.id)||
-        Number.isSafeInteger(v.id)&&v.id>=0&&v.id<=4294967295)&&
-      (v.version===null||Number.isSafeInteger(v.version)&&v.version>0);
-  }
-  const validRef=v=>exact(v,['scenarioId','kind','id','version'])&&identifier(v.scenarioId)&&validObject({kind:v.kind,id:v.id,version:v.version});
   const crcTable=Uint32Array.from({length:256},(_,i)=>{for(let bit=0;bit<8;bit++)i=i&1?0xedb88320^(i>>>1):i>>>1;return i>>>0;});
   function crcUpdate(crc,bytes) {for(const byte of bytes)crc=crcTable[(crc^byte)&255]^(crc>>>8);return crc>>>0;}
   function binaryCopy(value) {
