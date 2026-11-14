@@ -1,0 +1,115 @@
+{
+ "deletePreview": "這次會刪除「雙主支與端接副支」與所屬角材\n來源\n「雙主支與端接副支」 · 配置 #1 · 規則 #1 第 1 版 · 單一開間 · 構件 3 支：#1 主支 沿參考線 #1（端點 角材 #90 → 角材 #91）；#2 主支 沿參考線 #2（端點 角材 #90 → 角材 #91）；#3 副支 沿參考線 #3\n構件 #1 → 角材 #1\n刪除身分；承載面 #1，中心線 500 mm，長度 2960 mm，局部位置 514,20，世界位置 514,20,2500，擺向 +v/+n，A 27 / B 33，世界軸 0,1,0 / -1,0,0 / 0,0,1 → 無\n構件 #2 → 角材 #2\n刪除",
+ "gridErrors": [],
+ "gridStatus": [
+  "正在讀取場景連線完成後即可編輯。\n  重新連線",
+  "已選 1 個物件",
+  "尚未檢查",
+  "有未保存的變更"
+ ],
+ "padCmdErrors": [],
+ "worldTimbers": 64,
+ "rangeLog": [
+  {
+   "target": "primary",
+   "start": "0",
+   "finish": "38",
+   "asmStatus": "此範圍超過主支 12 筆上限；未加入任何一筆。",
+   "alerts": [
+    "-: 尚未檢查",
+    "-: 有未保存的變更",
+    "asmStatus: 此範圍超過主支 12 筆上限；未加入任何一筆。"
+   ],
+   "errors": []
+  },
+  {
+   "target": "secondary",
+   "start": "0",
+   "finish": "1",
+   "asmStatus": "已明確加入 2 條副支線；請預覽檢查逐線開間。",
+   "alerts": [
+    "-: 尚未檢查",
+    "-: 有未保存的變更",
+    "asmStatus: 已明確加入 2 條副支線；請預覽檢查逐線開間。"
+   ],
+   "errors": []
+  }
+ ],
+ "formCounts": [
+  "主支 · 0 / 12",
+  "副支線 · 2 / 24"
+ ],
+ "beforePreview": {
+  "timber": 64,
+  "ownedTimber": 0,
+  "place": 64,
+  "ownedPlace": 0,
+  "worldTotal": 64
+ },
+ "previewSeconds": 3.632,
+ "cells": [],
+ "previewText": "這次還不能套用\n未變更角材\n#90、#91、#200、#201、#202、#203、#204、#205、#206、#207、#208、#209、#210、#211、#212、#213、#214、#215、#216、#217、#218、#219、#220、#221、#222、#223、#224、#225、#226、#227、#228、#229、#230、#231、#232、#233、#234、#235、#236、#237、#238、#239、#240、#241、#242、#243、#244、#245、#246、#247、#248、#249、#250、#251、#252、#253、#254、#255、#256、#257、#258、#259、#260、#261\n實例 #1 · INVALID · I69 · at least two primaries and one secondary line are required · 預期：complete, unique typed repeat inputs · 實際：at least two primaries and one secondary line are required\nI8 · candidate rejected · 預期：all world invariants pass · 實際：candidate rejected\n完整資料，給除錯對照",
+ "previewReasonLines": [
+  "這次還不能套用",
+  "未變更角材",
+  "#90、#91、#200、#201、#202、#203、#204、#205、#206、#207、#208、#209、#210、#211、#212、#213、#214、#215、#216、#217、#218、#219、#220、#221、#222、#223、#224、#225、#226、#227、#228、#229、#230、#231、#232、#233、#234、#235、#236、#237、#238、#239、#240、#241、#242、#243、#244、#245、#246、#247、#248、#249、#250、#251、#252、#253、#254、#255、#256、#257、#258、#259、#260、#261",
+  "實例 #1 · INVALID · I69 · at least two primaries and one secondary line are required · 預期：complete, unique typed repeat inputs · 實際：at least two primaries and one secondary line are required",
+  "I8 · candidate rejected · 預期：all world invariants pass · 實際：candidate rejected",
+  "完整資料，給除錯對照"
+ ],
+ "asmStatus": "尚不能套用，請依上列原因修正。",
+ "alertsAfterPreview": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "asmStatus: 尚不能套用，請依上列原因修正。"
+ ],
+ "confirmEnabled": false,
+ "afterPreviewBeforeConfirm": {
+  "timber": 64,
+  "ownedTimber": 0,
+  "place": 64,
+  "ownedPlace": 0,
+  "worldTotal": 64
+ },
+ "afterConfirm": {
+  "timber": 64,
+  "ownedTimber": 0,
+  "place": 64,
+  "ownedPlace": 0,
+  "worldTotal": 64
+ },
+ "asmStatusAfterConfirm": "尚不能套用，請依上列原因修正。",
+ "instanceButtons": [],
+ "timberCountFilters": [
+  "來源3",
+  "配置1",
+  "空間與構件0"
+ ],
+ "beforeSave": {
+  "timber": 64,
+  "ownedTimber": 0,
+  "place": 64,
+  "ownedPlace": 0,
+  "worldTotal": 64
+ },
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopenStatus": [
+  "-: 已保存",
+  "-: 從空白處拖曳，框選物件"
+ ],
+ "reopened": {
+  "timber": 64,
+  "ownedTimber": 0,
+  "place": 64,
+  "ownedPlace": 0,
+  "worldTotal": 64
+ },
+ "reopenedDumpEqualsSaved": true,
+ "reopenedInstances": [],
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}

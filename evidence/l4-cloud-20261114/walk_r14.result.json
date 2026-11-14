@@ -1,0 +1,268 @@
+{
+ "steps": [
+  {
+   "name": "source-preview",
+   "impact": "確認連動變更\n建立無限網格「R14 面材七等分」\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n進階：完整指令\n網格來源 · 1\n網格系統 1\n原：不存在\n新：「R14 面材七等分」；主支方向未設定；u 無限面材 915＋縫 2 mm，起點 0 mm，間距 917 mm；v 無限重複：間距 400 mm，第 0 線 0 mm\n候選來源 1：下一 ruleKey 1；0 項來源規則。\n取消，保留原狀\n確認套用",
+   "dumpUnchanged": true
+  },
+  {
+   "name": "source-confirmed",
+   "gridSystem": {
+    "kind": "grid-system",
+    "id": 1,
+    "name": "R14 面材七等分",
+    "mode": "infinite",
+    "mainAlong": null,
+    "uDefinition": {
+     "source": "repeat-panel",
+     "panel": 915,
+     "gap": 2,
+     "anchor": 0,
+     "anchorExplicit": true
+    },
+    "vDefinition": {
+     "source": "repeat",
+     "phase": 0,
+     "step": 400
+    },
+    "nextRuleKey": 1,
+    "rules": [],
+    "applications": [],
+    "bindings": [],
+    "cx": 60,
+    "cy": 60,
+    "hasPos": true
+   },
+   "faces": 0,
+   "ruleReason": "",
+   "ruleNote": "按相鄰縫中心線之間的完整間距（面材＋縫）等分；1 等分不加內線。預覽檢查所有配置，確認才套用。",
+   "status": "來源已套用目前場景；頂列保存完整專案。可選邊界建立配置。"
+  },
+  {
+   "name": "rule-preview-1",
+   "impact": "確認連動變更\n來源 1 的共用子規則；確認才改全部配置\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n進階：完整指令\n網格來源 · 1\n網格系統 1\n原：「R14 面材七等分」；主支方向未設定；u 無限面材 915＋縫 2 mm，起點 0 mm，間距 917 mm；v 無限重複：間距 400 mm，第 0 線 0 mm\n新：「R14 面材七等分」；主支方向未設定；u 無限面材 915＋縫 2 mm，起點 0 mm，間距 917 mm；v 無限重複：間距 400 mm，第 0 線 0 mm\n原來源 1：下一 ruleKey 1；0 項來源規則。\n候選來源 1：下一 ruleKey 2；1 項來源規則。\n來源 1／rule 1「面材七等分」：每個主格；u→ 7 等分，v↓ 2 等分。 每一主格為 14 個 131×200 mm 小格；1 等分不加內線。\n取消，保留原狀\n確認套用",
+   "has14cells": true,
+   "confirmEnabled": true,
+   "dumpUnchanged": true,
+   "hist": {
+    "undo": 10,
+    "redo": 0
+   },
+   "nextRuleKey": 1
+  },
+  {
+   "name": "rule-cancel",
+   "cancelLabel": "取消，保留原狀",
+   "dumpUnchanged": true,
+   "histBefore": {
+    "undo": 10,
+    "redo": 0
+   },
+   "histAfter": {
+    "undo": 10,
+    "redo": 0
+   },
+   "rules": 0,
+   "nextRuleKey": 1,
+   "revisionBefore": null,
+   "revisionAfter": null,
+   "editorStillOpen": true,
+   "ruleU": "7",
+   "ruleV": "2",
+   "status": "來源／配置原始輸入會隨專案保存，未確認前不改場景。"
+  },
+  {
+   "name": "rule-confirmed",
+   "previewSame": true,
+   "rule": {
+    "ruleKey": 1,
+    "name": "面材七等分",
+    "selector": {
+     "kind": "all-cells"
+    },
+    "divisions": [
+     7,
+     2
+    ]
+   },
+   "rules": 1,
+   "nextRuleKey": 2,
+   "revision": null,
+   "histBefore": {
+    "undo": 10,
+    "redo": 0
+   },
+   "histAfter": {
+    "undo": 11,
+    "redo": 0
+   },
+   "ruleList": "#1 面材七等分 · 每個主格 · u 7 / v 2 · 引用：0 參考線／0 角材\n編輯\n刪除",
+   "status": "變更已套用目前場景，可復原或重做；頂列保存完整專案。",
+   "query00": {
+    "bounds": [
+     916,
+     0,
+     1833,
+     400
+    ],
+    "lines": [
+     "u:1047",
+     "u:1178",
+     "u:1309",
+     "u:1440",
+     "u:1571",
+     "u:1702",
+     "v:200"
+    ]
+   },
+   "sceneRuleLines": [
+    "requires grid-subdivision-rules/2",
+    "grid-system 1 name-hex 52313420e99da2e69d90e4b883e7ad89e58886 main-along none u repeat-panel 915 gap 2 from 0 v repeat 0 400",
+    "grid-source-rule 1 key 1 name-hex e99da2e69d90e4b883e7ad89e58886 selector all-cells divide 7 2",
+    "grid-source-rule-highwater 1 next 2",
+    "canvas-pos grid-system 1 60 60"
+   ]
+  },
+  {
+   "name": "cell-0-0",
+   "clicked": true,
+   "infoCell": "cell (0, 0)",
+   "subLines": 7,
+   "titles": [
+    "來源 1／rule 1 · cell (0, 0) · u 子線 0；來源檢視未提供放置引用",
+    "來源 1／rule 1 · cell (0, 0) · u 子線 1；來源檢視未提供放置引用"
+   ]
+  },
+  {
+   "name": "undo",
+   "rules": 0,
+   "nextRuleKey": 1,
+   "dumpEqualsBeforeRule": true,
+   "hist": {
+    "undo": 10,
+    "redo": 1
+   },
+   "status": [
+    "-: 有未保存的變更",
+    "-: 已選 1 個物件",
+    "giStatus: 修改間距會一起預覽使用此來源的配置。",
+    "-: 尚未檢查"
+   ]
+  },
+  {
+   "name": "redo",
+   "rules": 1,
+   "ruleKey": 1,
+   "divisions": [
+    7,
+    2
+   ],
+   "nextRuleKey": 2,
+   "dumpEqualsAfterConfirm": true,
+   "hist": {
+    "undo": 11,
+    "redo": 0
+   },
+   "status": [
+    "-: 有未保存的變更",
+    "-: 已選 1 個物件",
+    "giStatus: 修改間距會一起預覽使用此來源的配置。",
+    "-: 尚未檢查"
+   ]
+  },
+  {
+   "name": "cold-open",
+   "dumpEqualsSaved": true,
+   "gridSystem": {
+    "kind": "grid-system",
+    "id": 1,
+    "name": "R14 面材七等分",
+    "mode": "infinite",
+    "mainAlong": null,
+    "uDefinition": {
+     "source": "repeat-panel",
+     "panel": 915,
+     "gap": 2,
+     "anchor": 0,
+     "anchorExplicit": true
+    },
+    "vDefinition": {
+     "source": "repeat",
+     "phase": 0,
+     "step": 400
+    },
+    "nextRuleKey": 2,
+    "rules": [
+     {
+      "ruleKey": 1,
+      "name": "面材七等分",
+      "selector": {
+       "kind": "all-cells"
+      },
+      "divisions": [
+       7,
+       2
+      ]
+     }
+    ],
+    "applications": [],
+    "bindings": [],
+    "cx": 60,
+    "cy": 60,
+    "hasPos": true
+   },
+   "query00": {
+    "bounds": [
+     916,
+     0,
+     1833,
+     400
+    ],
+    "lines": [
+     "u:1047",
+     "u:1178",
+     "u:1309",
+     "u:1440",
+     "u:1571",
+     "u:1702",
+     "v:200"
+    ]
+   },
+   "status": [
+    "-: 已保存",
+    "-: 從空白處拖曳，框選物件"
+   ]
+  },
+  {
+   "name": "cold-open-sublines",
+   "clicked": true,
+   "infoCell": "cell (0, 0)",
+   "subLines": 7,
+   "titles": [
+    "來源 1／rule 1 · cell (0, 0) · u 子線 0；來源檢視未提供放置引用",
+    "來源 1／rule 1 · cell (0, 0) · u 子線 1；來源檢視未提供放置引用"
+   ],
+   "ruleList": "#1 面材七等分 · 每個主格 · u 7 / v 2 · 引用：0 參考線／0 角材\n編輯\n刪除",
+   "ruleNote": "按相鄰縫中心線之間的完整間距（面材＋縫）等分；1 等分不加內線。預覽檢查所有配置，確認才套用。"
+  }
+ ],
+ "version": {
+  "schema": "geometry-runtime/1",
+  "version": "848035008e5adb15b9db9cd1019fdf4ff618568e7c119106746c03a09e43f7f7",
+  "fresh": true,
+  "root": "/home/user/geometry-axiom",
+  "pid": 688,
+  "session": "810c3ba8229f47e2b00b61e21b513af6"
+ },
+ "emptyStateText": "建立第一個領域物件\n先建立網格系統、面或空間。網格可獨立保存，之後再選擇要套用的承載面。\n建立網格系統",
+ "saved": "download",
+ "savedDump": "requires grid-subdivision-rules/2\ngrid-system 1 name-hex 52313420e99da2e69d90e4b883e7ad89e58886 main-along none u repeat-panel 915 gap 2 from 0 v repeat 0 400\ngrid-source-rule 1 key 1 name-hex e99da2e69d90e4b883e7ad89e58886 selector all-cells divide 7 2\ngrid-source-rule-highwater 1 next 2\ncanvas-pos grid-system 1 60 60\n",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "apiErrorsA": [],
+ "coldEmptyGrids": 0,
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
