@@ -1,0 +1,470 @@
+{
+ "spec": "角材寬",
+ "specCreate": {
+  "prefilled": "",
+  "typed": null,
+  "impact": null,
+  "status": [
+   "-: 有未保存的變更",
+   "-: 從空白處拖曳，框選物件",
+   "datum-feedback: 已儲存。所有引用已重新驗證。"
+  ]
+ },
+ "before": [
+  "spec 主支1中線 500",
+  "spec 角材寬 27",
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 27 33 role primary",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n"
+ ],
+ "defsBefore": {
+  "1": {
+   "A": {
+    "mode": "direct",
+    "value": 27
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 27,
+    "B": 33
+   }
+  }
+ },
+ "editFormOpened": true,
+ "sourceOptions": [
+  [
+   "",
+   "明選來源"
+  ],
+  [
+   "{\"kind\":\"spec\",\"name\":\"主支1中線\"}",
+   "具名尺寸 主支1中線"
+  ],
+  [
+   "{\"kind\":\"spec\",\"name\":\"角材寬\"}",
+   "具名尺寸 角材寬"
+  ]
+ ],
+ "sourceEditPreview": "修改角材欄位\n寬 A（沿面）\n原定義相同 · 保持原值\n定義方式\n明選定義方式\n直接值\n型別來源\n來源\n明選來源\n具名尺寸 主支1中線\n具名尺寸 角材寬\n物件覆寫\n沒有覆寫\n選擇覆寫來源\n明設覆寫值\n厚 B（出面）\n原定義相同 · 保持原值\n定義方式\n明選定義方式\n直接值\n型別來源\n直接值（mm）\n角色\n原定義相同 · 保持原值\n明選角色\n邊界材\n主支\n副支\n自訂\n自訂優先序\n原定義相同 · 保持原值\n延伸方向\n原定義相同 · 保持原值\n明選方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n所選角材的原定義與來源\n已驗證完整候選；核對逐支來源與連動後確認。\n角材 1\n原定義\n角材 1\nA：直接值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2 · +v\n放置 1 · at-line guide 1  · +n\n候選定義\n角材 1\nA：具名尺寸 角材寬\n{\"kind\":\"spec\",\"name\":\"角材寬\"}\n無物件覆寫有效值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2 · +v\n放置 1 · at-line guide 1  · +n\n完整連動影響\n確認套用\n取消",
+ "fullAfterSourceEdit": "requires engineering-spec/1\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec 主支1中線 500\nspec 角材寬 27\ntimber 90 20 20 role boundary\ntimber 91 20 20 role boundary\nengineering timber eyJBIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsia2luZCI6InNwZWMiLCJuYW1lIjoi6KeS5p2Q5a+sIn19LCJCIjozMywiaWQiOjEsInJvbGUiOiJwcmltYXJ5In0=\nguide 1 1 v spec:主支1中線\nplace 90 on 1 at-face e0 +u +n\n# R18 角材 90: onBoundary=true coversEdge=true boundaryEdge=0\nplace 91 on 1 at-face e2 +u +n\n# R18 角材 91: onBoundary=true coversEdge=true boundaryEdge=2\nplace 1 on 1 at-line guide 1 +v +n\n# R18 角材 1: onBoundary=false coversEdge=false boundaryEdge=-1\ncanvas-pos boundary 1 60 60\n",
+ "afterSourceEdit": [
+  "spec 主支1中線 500",
+  "spec 角材寬 27",
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":1,\"role\":\"primary\"}",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n"
+ ],
+ "defsAfterSourceEdit": {
+  "1": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 27,
+    "B": 33
+   }
+  }
+ },
+ "sourceEditStatus": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "-: 已選 1 支角材",
+  "-: 尚未檢查"
+ ],
+ "copyStatus": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "-: 已選 1 支角材",
+  "-: 尚未檢查"
+ ],
+ "pasteFormHead": "貼上角材\n來自 角材 1 · 定義與來源\nA：具名尺寸 角材寬\n{\"kind\":\"spec\",\"name\":\"角材寬\"}\n無物件覆寫有效值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2\n承載面\n明選本面的放置\n放置 1 · 天花 z=2500\n沿著\n明選新定位引用\n外輪廓邊 1\n外輪廓邊 3",
+ "pastePreview": "貼上角材\n來自 角材 1 · 定義與來源\nA：具名尺寸 角材寬\n{\"kind\":\"spec\",\"name\":\"角材寬\"}\n無物件覆寫有效值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2\n承載面\n明選本面的放置\n放置 1 · 天花 z=2500\n沿著\n明選新定位引用\n外輪廓邊 1\n外輪廓邊 3\n角材 90 側面（須有唯一解）\n角材 91 側面（須有唯一解）\n角材 1 側面（須有唯一解）\n外輪廓邊 0(已有角材 90)\n外輪廓邊 2(已有角材 91)\n參考線 1 · 沿 v · u=500 mm(已有角材 1)\n選段引用式（可留空）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n已驗證完整候選；核對逐支來源與連動後確認。\n新角材\n原定義\n無此角材\n候選定義\n新角材（確認後配號）\nA：具名尺寸 角材寬\n{\"kind\":\"spec\",\"name\":\"角材寬\"}\n無物件覆寫有效值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2 · +v\n放置 1 · at-face e1  · +n\n完整連動影響\n確認套用\n取消",
+ "afterPaste": [
+  "spec 主支1中線 500",
+  "spec 角材寬 27",
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":1,\"role\":\"primary\"}",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":92,\"role\":\"primary\"}",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n"
+ ],
+ "repeatFormHead": "重複建立角材\n來自 角材 92 · 定義與來源\nA：具名尺寸 角材寬\n{\"kind\":\"spec\",\"name\":\"角材寬\"}\n無物件覆寫有效值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2\n承載面\n明選本面的放置\n放置 1 · 天花 z=2500\n沿著\n明選新定位引用\n外輪廓邊 3\n角材 ",
+ "repeatPreview": "重複建立角材\n來自 角材 92 · 定義與來源\nA：具名尺寸 角材寬\n{\"kind\":\"spec\",\"name\":\"角材寬\"}\n無物件覆寫有效值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2\n承載面\n明選本面的放置\n放置 1 · 天花 z=2500\n沿著\n明選新定位引用\n外輪廓邊 3\n角材 90 側面（須有唯一解）\n角材 91 側面（須有唯一解）\n角材 1 側面（須有唯一解）\n角材 92 側面（須有唯一解）\n外輪廓邊 0(已有角材 90)\n外輪廓邊 1(已有角材 92)\n外輪廓邊 2(已有角材 91)\n參考線 1 · 沿 v · u=500 mm(已有角材 1)\n選段引用式（可留空）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n已驗證完整候選；核對逐支來源與連動後確認。\n新角材\n原定義\n無此角材\n候選定義\n新角材（確認後配號）\nA：具名尺寸 角材寬\n{\"kind\":\"spec\",\"name\":\"角材寬\"}\n無物件覆寫有效值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2 · +v\n放置 1 · at-face e3  · +n\n完整連動影響\n確認套用\n取消",
+ "afterRepeat": [
+  "spec 主支1中線 500",
+  "spec 角材寬 27",
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":1,\"role\":\"primary\"}",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":92,\"role\":\"primary\"}",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":93,\"role\":\"primary\"}",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "newIds": [
+  92,
+  93
+ ],
+ "defsAfterCreate": {
+  "1": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 27,
+    "B": 33
+   }
+  },
+  "92": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 27,
+    "B": 33
+   }
+  },
+  "93": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 27,
+    "B": 33
+   }
+  }
+ },
+ "definitionPanels": {
+  "92": "主支 · 角材 92 截面 27 × 33 mm · 長度 2960 mm 尺寸引用工程規格；修改來源或本物件覆寫時會一起檢查相關物件。 詳細資料 · 工程來源與定位 編輯工程來源與覆寫 刪除角材",
+  "93": "主支 · 角材 93 截面 27 × 33 mm · 長度 2960 mm 尺寸引用工程規格；修改來源或本物件覆寫時會一起檢查相關物件。 詳細資料 · 工程來源與定位 編輯工程來源與覆寫 刪除角材"
+ },
+ "afterUndo1": [
+  "spec 主支1中線 500",
+  "spec 角材寬 27",
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":1,\"role\":\"primary\"}",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":92,\"role\":\"primary\"}",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n"
+ ],
+ "afterUndo2": [
+  "spec 主支1中線 500",
+  "spec 角材寬 27",
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":1,\"role\":\"primary\"}",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n"
+ ],
+ "afterRedo1": [
+  "spec 主支1中線 500",
+  "spec 角材寬 27",
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":1,\"role\":\"primary\"}",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":92,\"role\":\"primary\"}",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n"
+ ],
+ "afterRedo2": [
+  "spec 主支1中線 500",
+  "spec 角材寬 27",
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":1,\"role\":\"primary\"}",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":92,\"role\":\"primary\"}",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":93,\"role\":\"primary\"}",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "defsAfterRedo": {
+  "1": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 27,
+    "B": 33
+   }
+  },
+  "92": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 27,
+    "B": 33
+   }
+  },
+  "93": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 27,
+    "B": 33
+   }
+  }
+ },
+ "specChange": {
+  "prefilled": "27",
+  "typed": null,
+  "impact": {
+   "enabled": true,
+   "text": "確認連動變更\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nspec 角材寬 30\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n90／面 1 · 身分保留\t10 → 10\t4000 → 4000\t保持原狀\n91／面 1 · 身分保留\t2990 → 2990\t4000 → 4000\t保持原狀\n1／面 1 · 身分保留，幾何更新\t500 → 500\t2960 → 2960\t[514, 20, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1] → [515, 20, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1]\n92／面 1 · 身分保留，幾何更新\t3986 → 3985\t2960 → 2960\t[4000, 20, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1] → [4000, 20, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1]\n93／面 1 · 身分保留，幾何更新\t13 → 15\t2960 → 2960\t[27, 20, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1] → [30, 20, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1]\n取消，保留原狀\n確認套用"
+  },
+  "status": [
+   "-: 尚未檢查",
+   "-: 有未保存的變更",
+   "-: 從空白處拖曳，框選角材",
+   "-: 尚未檢查",
+   "datum-feedback: 已儲存。所有引用已重新驗證。"
+  ]
+ },
+ "defsAfterSpecChange": {
+  "1": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 30,
+    "B": 33
+   }
+  },
+  "92": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 30,
+    "B": 33
+   }
+  },
+  "93": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 30,
+    "B": 33
+   }
+  }
+ },
+ "fullAfterSpecChange": "requires engineering-spec/1\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec 主支1中線 500\nspec 角材寬 30\ntimber 90 20 20 role boundary\ntimber 91 20 20 role boundary\nengineering timber eyJBIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsia2luZCI6InNwZWMiLCJuYW1lIjoi6KeS5p2Q5a+sIn19LCJCIjozMywiaWQiOjEsInJvbGUiOiJwcmltYXJ5In0=\nengineering timber eyJBIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsia2luZCI6InNwZWMiLCJuYW1lIjoi6KeS5p2Q5a+sIn19LCJCIjozMywiaWQiOjkyLCJyb2xlIjoicHJpbWFyeSJ9\nengineering timber eyJBIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsia2luZCI6InNwZWMiLCJuYW1lIjoi6KeS5p2Q5a+sIn19LCJCIjozMywiaWQiOjkzLCJyb2xlIjoicHJpbWFyeSJ9\nguide 1 1 v spec:主支1中線\nplace 90 on 1 at-face e0 +u +n\n# R18 角材 90: onBoundary=true coversEdge=true boundaryEdge=0\nplace 91 on 1 at-face e2 +u +n\n# R18 角材 91: onBoundary=true coversEdge=true boundaryEdge=2\nplace 1 on 1 at-line guide 1 +v +n\n# R18 角材 1: onBoundary=false coversEdge=false boundaryEdge=-1\nplace 92 on 1 at-face e1 +v +n\n# R18 角材 92: onBoundary=true coversEdge=false boundaryEdge=1\nplace 93 on 1 at-face e3 +v +n\n# R18 角材 93: onBoundary=true coversEdge=false boundaryEdge=3\ncanvas-pos boundary 1 60 60\n",
+ "autoFormOnMultiSelect": true,
+ "formAfterCancel": false,
+ "selectionAfterCancel": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "-: 已選 2 支角材"
+ ],
+ "multiMenu": [],
+ "batchMenuVisible": true,
+ "formAfterMenu": true,
+ "formTitleAfterMenu": "批改 2 支角材",
+ "afterBatch": [
+  "spec 主支1中線 500",
+  "spec 角材寬 30",
+  "timber 90 25 22 role boundary",
+  "timber 91 25 22 role boundary",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":1,\"role\":\"primary\"}",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":92,\"role\":\"primary\"}",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":93,\"role\":\"primary\"}",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "cold": [
+  "spec 主支1中線 500",
+  "spec 角材寬 30",
+  "timber 90 25 22 role boundary",
+  "timber 91 25 22 role boundary",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":1,\"role\":\"primary\"}",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":92,\"role\":\"primary\"}",
+  "engineering timber {\"A\":{\"override\":null,\"source\":{\"kind\":\"spec\",\"name\":\"角材寬\"}},\"B\":33,\"id\":93,\"role\":\"primary\"}",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "defsCold": {
+  "1": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 30,
+    "B": 33
+   }
+  },
+  "92": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 30,
+    "B": 33
+   }
+  },
+  "93": {
+   "A": {
+    "mode": "source",
+    "source": {
+     "kind": "spec",
+     "name": "角材寬"
+    },
+    "override": null
+   },
+   "B": {
+    "mode": "direct",
+    "value": 33
+   },
+   "effective": {
+    "A": 30,
+    "B": 33
+   }
+  }
+ },
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
