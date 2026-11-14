@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "a5b3f18f36f78078bd2ac1492acaebf486bdcaed",
+  "sourceHead": "87e15ceeb3d0c101cd2ed0d7878cd779a58f70d9",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43477927753",
+  "runId": "43556855644",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "c4e6baf4f90ced12df5859b13f4b0585db547c8e91c8b751b0c875648d7396d5",
+      "stderrSha256": "63f9e5e340014f326c31e14cfe9c4537d3460443307faa14252922ab4816ea46",
       "testsRun": 205
     },
     {
@@ -51,11 +51,11 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "e235211362d99dcc2faa13c4ffc9724e590fa4e3e0690995be2a823320ad122a",
+      "stderrSha256": "4ddfa183f9344b5c1656a89c15603cfb4dcce709aaf94ea0b16d0983a6ac4c64",
       "testsRun": 18
     }
   ],
-  "manifestLfSha256": "e5bbe3ed868a8cbbb9814bafaf55ea256efa47359cdf0f81a5fb023aec17bb21",
+  "manifestLfSha256": "15018eef60ccaf5178eea4beb52ea052cbcdaf9663f615082773264b359d1f7c",
   "scannerLfSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "testScriptsLfSha256": {
     "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
@@ -161,11 +161,11 @@
     },
     {
       "path": "geometry-app/native/history.c",
-      "lfSha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595"
+      "lfSha256": "dbcabf028badf205143597db53d32d9875c1e04456ba03129eb6804e9d6894e5"
     },
     {
       "path": "geometry-app/native/history.h",
-      "lfSha256": "b9a0b9b61a592bd857041ee4e984550ab9d7e8456d8c434a3f5002a59689e0e0"
+      "lfSha256": "6d1bbb0760dd433bb12c880e6f2ca8305014d0e3ebd8010ae8dd7eb04a7756b6"
     },
     {
       "path": "geometry-app/native/history_unity.inc",
@@ -1453,11 +1453,11 @@
     },
     {
       "path": "geometry-templates/woodworking/native/world_validation.c",
-      "lfSha256": "f24caaf3a93791921b00a9f76c6e66e4614b65bfadd45f2d0b457be0674e63c2"
+      "lfSha256": "7747d5b29b04b1ed9966d6dabb581cd5d58485425ce112eae20dd896376ff1cb"
     },
     {
       "path": "geometry-templates/woodworking/native/world_validation.h",
-      "lfSha256": "7ce7346bac28aca1f246098e06a889606dcf0a962c662e771660e60896842451"
+      "lfSha256": "1454bf2b3c6ecf76aa1b2064b9ea4ad5fb154bd4b3af353cb3042ff9de57f39a"
     },
     {
       "path": "geometry-web/app.js",
@@ -2289,7 +2289,7 @@
     },
     {
       "path": "geometry-web/reference-workspace.js",
-      "lfSha256": "1b1c47664e561f19621fcc5a4da1cacd5a5a50705a0123ea0228e4ef594149d6"
+      "lfSha256": "6a07059ecf99478831c698e1e70b1dfe44579fe36b7b35cfa3228c532e4cfcab"
     },
     {
       "path": "geometry-web/reference_bridge.inc",
@@ -2301,7 +2301,7 @@
     },
     {
       "path": "geometry-web/room-collection-workspace.js",
-      "lfSha256": "dd28ebe4ae87cd4321270bd0dfcc4d040b9032b0d428f50fee426028c49f82e4"
+      "lfSha256": "014709c6b9ec2a1c74368f4b38328418a96642855f5090df810fe6f2f9a698c7"
     },
     {
       "path": "geometry-web/room-collection.js",
@@ -2321,7 +2321,7 @@
     },
     {
       "path": "geometry-web/room_candidate_browser_test.js",
-      "lfSha256": "d730f7353e90b11546c1bc38005f4d2d956abb3763c43848bc1edf30474d7b6b"
+      "lfSha256": "896e4f7f4f89ff22b83fc8362aaef0d7916d17053f2fa6f4e87f5fd9834bfb45"
     },
     {
       "path": "geometry-web/room_candidate_cold_test.js",
@@ -2624,5 +2624,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "531a9bebc7d34ab415a9bd7f208718e6132010659fe264d89375486a42723479"
+  "inputLfClosureSha256": "1a4cbfb42675a7c59b135ebc4977108c5a4ca990c2b56902ac7d605b0097f3dd"
 }
