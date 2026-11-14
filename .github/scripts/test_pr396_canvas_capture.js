@@ -64,13 +64,16 @@ function contracts(){
     const {capture,plan}=fixture();
     const checked=capture.verify(plan,{receipts:['2/2','1/2'].map(id=>receipt(plan,id))});
     assert.equal(checked.acceptance,false);assert.equal(checked.P1161,12);assert.equal(checked.oldSectionCount,95);
-    assert.equal(checked.total,4832);assert.equal(checked.sections.P88,143);assert.equal(checked.sections.P353,355);
+    assert.equal(checked.total,4835);assert.equal(checked.oldTotal,4823);assert.equal(checked.sections.P90,11);
+    assert.equal(checked.sections.P88,143);assert.equal(checked.sections.P353,355);
     assert.equal(checked.sectionCount,96);
   });
   test('R396_CAPTURE_PINNED_BYTES rejects a different raw baseline digest',()=>{
-    const capture=implementation(),base=basePlan();base.sourceHashes['geometry-web/canvas_shards.json']='0'.repeat(64);
-    const {sha256,...body}=base;base.sha256=evidence.sha(evidence.stable(body));
-    rejects(()=>capture.buildPlan(base),'CAPTURE_BASELINE_BYTES');
+    for(const name of ['geometry-web/canvas_shards.json','geometry-web/cdp_sections.golden.json']){
+      const capture=implementation(),base=basePlan();base.sourceHashes[name]='0'.repeat(64);
+      const {sha256,...body}=base;base.sha256=evidence.sha(evidence.stable(body));
+      rejects(()=>capture.buildPlan(base),'CAPTURE_BASELINE_BYTES');
+    }
   });
   test('raw digest claims cannot hide changed baseline counts or order',()=>{
     const capture=implementation(),base=basePlan();base.golden.sections.P88=142;base.golden.total--;

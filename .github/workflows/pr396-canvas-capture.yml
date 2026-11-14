@@ -90,12 +90,13 @@ jobs:
           }
           (out / 'provenance.json').write_text(json.dumps(provenance, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
           PY
-      - name: Check the unchanged generator judge without launching a browser
+      - name: Check the pinned baseline rebase and original judges without a browser
         shell: bash
         run: |
           set -euo pipefail
           delivery="$RUNNER_TEMP/pr396-capture-tools"
-          python3 "$delivery/PR396-complete-canvas.py" --repo "$GITHUB_WORKSPACE" --self-test > "$delivery/self-test.stdout" 2> "$delivery/self-test.stderr"
+          python3 -B .github/scripts/test_pr396_canvas_capture_refresh.py --generator "$delivery/PR396-complete-canvas.py"
+          python3 -B .github/scripts/pr396_canvas_capture.py generator-self-test --repo "$GITHUB_WORKSPACE" --generator "$delivery/PR396-complete-canvas.py" > "$delivery/self-test.stdout" 2> "$delivery/self-test.stderr"
           cat "$delivery/self-test.stdout"
       - name: Preserve exact published generator provenance
         if: always()

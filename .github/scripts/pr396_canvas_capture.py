@@ -22,6 +22,29 @@ COMMAND = ["node", "geometry-web/cdp_test.js"]
 MAX_SECONDS = 35 * 60
 GENERATOR_BYTES = 30532
 GENERATOR_SHA = "12c161dce158cdb9d8c360a56090beb3cfd8ebaf4a846e47c6e9c9cebd3b01cd"
+# The published generator stays immutable. These fixed substitutions rebase
+# its frozen inputs onto f9f430f1 / main #402 (P90 8 -> 11), retaining every judge.
+# Never learn a new baseline from the checkout or from a failed capture.
+REBASED_GENERATOR_BYTES = 30590
+REBASED_GENERATOR_SHA = "2f070942be7fd6da66dbcdc42e7b671870d619044ebe121ab611c706df0cb67b"
+GENERATOR_REBASE = (
+    (b"BASE = '1d304b10ee4451f0557c9b96b28cf31d3f5bde80'",
+     b"BASE = 'f9f430f1c14b1f59bad49610758f99a3c4654aa2'", 1),
+    (b"GOLDEN: (1483, 'bca2a8425974094e0ab188a5d0c8ba180b05d2d662c90946db5d997515bfcc1b')",
+     b"GOLDEN: (1484, '47731559a71bc01ddb608f114707cda3c664b9d8742e37bd5061d464a028b6ef')", 1),
+    (b"TEST: (47302, 'ed53e4c69d0fd740e8b310b6bbca8035bde05bccf826de9dd08b759744997ec9')",
+     b"TEST: (47521, '7db9dc879d60a4ea52866fb244c51edf735c54aef05d39090bd36911e5e472c6')", 1),
+    (b"T_TEST_SHA = 'a04f83bbfbd25c354c9753db9da9d43b27444cdd5a4f5c37d99992577a5b30f9'",
+     b"T_TEST_SHA = '2fe8b3e732dedaee07862581c35c1aace69ebf32085e8d91b8cdb1f91921e3b8'", 1),
+    (b'4820',
+     b'4823', 10),
+    (b'4832',
+     b'4835', 1),
+    (b'const golden=pfExtension.projectGolden(context.golden);',
+     b'const golden=r400Extension.projectGolden(pfExtension.projectGolden(context.golden));', 1),
+    (b'const golden=pfExtension.projectGolden(beforeWorkspace);',
+     b'const golden=r400Extension.projectGolden(pfExtension.projectGolden(beforeWorkspace));', 1),
+)
 T_BYTES = 1773
 T_SHA = "72182fc5a746bbb99b460c5e814e37d79b2d2bde744e33ccb75b9001af985027"
 PATCH_NAMES = ("PR396-canvas-complete.patch", "PR396-canvas-T.patch", "PR396-canvas-P.patch")
@@ -283,6 +306,15 @@ def verify_manifest(receipt, expected, closure, original_plan, folder):
     return payload
 
 
+def rebase_generator(raw):
+    for old, new, count in GENERATOR_REBASE:
+        require(raw.count(old) == count, "CAPTURE_GENERATOR_REBASE_ANCHOR")
+        raw = raw.replace(old, new)
+    require(len(raw) == REBASED_GENERATOR_BYTES and hashlib.sha256(raw).hexdigest() == REBASED_GENERATOR_SHA,
+            "CAPTURE_GENERATOR_REBASE_CHANGED")
+    return raw
+
+
 def generator(path):
     raw = path.read_bytes()
     require(len(raw) == GENERATOR_BYTES and hashlib.sha256(raw).hexdigest() == GENERATOR_SHA,
@@ -290,7 +322,9 @@ def generator(path):
     t_path = path.with_name("PR396-canvas-T.patch")
     t_raw = t_path.read_bytes()
     require(len(t_raw) == T_BYTES and hashlib.sha256(t_raw).hexdigest() == T_SHA, "CAPTURE_T_CHANGED")
-    # Execute the exact bytes already hashed, not a second read of the path.
+    # Both published files are verified before the fixed, separately pinned rebase.
+    raw = rebase_generator(raw)
+    # Execute these exact verified bytes, not a second read of the path.
     module = ModuleType("pr396_original_generator")
     module.__file__ = str(path)
     exec(compile(raw, str(path), "exec"), module.__dict__)
@@ -380,8 +414,10 @@ def verify(artifacts, out, generator_path):
                     "basis": "two complete contiguous capture partitions with the existing handoff; not a full browser process",
                     **expected, "plan_sha256": original_plan["sha256"], "source": closure,
                     "P1161": verdict["P1161"], "capture": verdict, "shards": manifests,
-                    "generator": {"bytes": GENERATOR_BYTES, "sha256": GENERATOR_SHA}, **proof,
-                    "generation_note": "Original generator rendering and judges are reused; the new test helper comment identifies two capture partitions instead of one full process.",
+                    "generator": {"bytes": GENERATOR_BYTES, "sha256": GENERATOR_SHA,
+                                  "rebased": {"bytes": REBASED_GENERATOR_BYTES, "sha256": REBASED_GENERATOR_SHA,
+                                              "baseline_head": "f9f430f1c14b1f59bad49610758f99a3c4654aa2"}}, **proof,
+                    "generation_note": "The exact published generator and T are verified first; fixed, hash-pinned substitutions refresh only baseline inputs and P90 projection anchors. All original judges remain. The new helper comment identifies two capture partitions instead of one full process.",
                     "limits": ["Candidate counts only; final-head strict Canvas 1/2, 2/2 and complete coverage remain required."]}
         save(out / "manifest.json", manifest)
         for name, raw in patch_payloads.items():
@@ -399,14 +435,19 @@ def verify(artifacts, out, generator_path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=("run", "verify"))
+    parser.add_argument("mode", choices=("run", "verify", "generator-self-test"))
     parser.add_argument("--shard", choices=IDS)
     parser.add_argument("--input", type=Path)
-    parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--out", type=Path)
     parser.add_argument("--generator", type=Path)
     parser.add_argument("--repo", type=Path, default=ROOT)
     args = parser.parse_args()
     ROOT = args.repo.resolve()
+    if args.mode == "generator-self-test":
+        parser.error("generator-self-test requires --generator") if args.generator is None else None
+        tool, _, _ = generator(args.generator.resolve())
+        raise SystemExit(tool.self_test(ROOT))
+    parser.error("run/verify requires --out") if args.out is None else None
     if args.mode == "run":
         parser.error("run requires --shard") if args.shard is None else None
         run(args.shard, args.out.resolve())

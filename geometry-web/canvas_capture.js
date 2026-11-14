@@ -9,10 +9,10 @@ const PLAN='geometry-web/canvas_shards.json',GOLDEN='geometry-web/cdp_sections.g
 const SCHEMA='geometry-canvas-capture-plan/1',EXTENSION='P1161';
 const BASELINE=Object.freeze({
   planSha256:'865cf3e7e5754da8375f44cfbf7716fb5e5e08d7c4b0ee8921073ba474b36ff2',
-  goldenSha256:'bca2a8425974094e0ab188a5d0c8ba180b05d2d662c90946db5d997515bfcc1b',
+  goldenSha256:'47731559a71bc01ddb608f114707cda3c664b9d8742e37bd5061d464a028b6ef',
   planCanonical:'196954bb0d40fe985d9ef5799a60db6fb41a38eea9b52f105a25e8eadb84b9b7',
-  goldenCanonical:'c89cfc1ff3aba8421eb2436720efa14a250b4eb8691d28735942e9d33d5bdcf9',
-  oldSectionCount:95,total:4820,
+  goldenCanonical:'cdcde5d052ef4ca830ffe6b3881f1b65047770ea23cf087215c5581e7a31d7bf',
+  oldSectionCount:95,total:4823,
 });
 const CASE_IDS=Object.freeze(Array.from({length:12},(_,i)=>'W'+String(i+1).padStart(2,'0')));
 function check(ok,code,detail=''){
@@ -51,7 +51,8 @@ function buildPlan(basePlan){
 function loadPlan(root=path.resolve(__dirname,'..')){
   const basePlan=evidence.loadPlan(root);
   for(const relative of ['geometry-web/canvas_capture.js','.github/scripts/pr396_canvas_capture.py',
-    '.github/workflows/pr396-canvas-capture.yml','.github/scripts/test_pr396_canvas_capture.js']){
+    '.github/workflows/pr396-canvas-capture.yml','.github/scripts/test_pr396_canvas_capture.js',
+    '.github/scripts/test_pr396_canvas_capture_refresh.py']){
     const raw=fs.readFileSync(path.join(root,relative));
     basePlan.sourceHashes[relative]=numeric.lfSha256(raw);
   }
