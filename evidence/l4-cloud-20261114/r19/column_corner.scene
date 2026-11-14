@@ -1,0 +1,11 @@
+# R19 閱讀 A 探針：柱在左上牆角（輪廓缺角 u∈[0,400]、v∈[2600,3000]），主支貼柱面（格線 u=413，足跡 u∈[400,427]），短牆邊界材端點想頂主支側面
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 400,3000 400,2600 0,2600
+grid 1 on 1 u 413
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+timber 4 27 33 role boundary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 -u +n
+place 3 on 1 at-line grid 1 u 0 +v +n
+place 4 on 1 at-face e4 +u -n
