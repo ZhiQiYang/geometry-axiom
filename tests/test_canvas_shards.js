@@ -41,6 +41,21 @@ function red(receipts, pattern, ctx = context) {
 const moveSection = (r, name, from) => { r.sections[name] = from.sections[name]; r.sectionOrder.unshift(name); r.passedAssertions = sum(r.sections); };
 
 test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍是所在片的最後一段', () => {
+  const evidence = require('./helpers/canvas_shards.js');
+  const runner = fs.readFileSync(path.join(ROOT, 'geometry-web/cdp_test.js'), 'utf8');
+  const source = fs.readFileSync(path.join(ROOT, 'geometry-web/workspace_context_menu_test.js'), 'utf8');
+  const header = source.match(/console\.log\('(=== P1161\.[^'\n]+)'\)/)?.[1];
+  assert.ok(header, 'R396_REAL_P1161_HEADER');
+  assert.match(runner, /if\(inSequence\(2\)\)await runWorkspaceContextMenu\(\);/, 'R396_REAL_SHARD_2_DISPATCH');
+  const journal = evidence.createJournal(evidence.buildPlan(golden, plan), '2/2', () => {});
+  journal.begin('2/2');
+  for (const section of plan.shards[1].sections) {
+    journal.section(section, '=== ' + section + '. existing section ===');
+    if (section === 'P353') break;
+  }
+  assert.doesNotThrow(() => journal.section('P1161', header), 'R396_P1161_MUST_HAVE_OWNER');
+  assert.deepEqual(plan.shards.map(shard => shard.sections.filter(name => name === 'P1161')), [[], ['P1161']], 'R396_P1161_EXACTLY_ONE_OWNER');
+  assert.deepEqual(plan.shards[1].sections.slice(-3), ['P353', 'P1161', 'P359'], 'R396_P1161_EXECUTION_ORDER');
   assert.deepEqual(shards.validatePlan(plan, golden), [], 'R06_CANVAS_PLAN: every existing golden section must be assigned');
   assert.equal(COUNT, 2);
   const all = plan.shards.flatMap(s => s.sections);
