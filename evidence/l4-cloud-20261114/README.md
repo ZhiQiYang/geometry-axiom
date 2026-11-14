@@ -69,6 +69,8 @@
 - 修正後：`r06-after/walk_r06_legacy.result.json`、`r06-after/r06l.gcanvas`、`r06-after/R06L-*.jpg`。
 - 修正前那次跑的腳本，比 `scripts/walk_r06_legacy.js` 少了冷開後讀 `#asmStatus` 的一行，其餘相同。
 
+**合併後重跑**（main `d9649926`，#405 合併後；`runtime_version.py --probe` version `5a92fa38…69e0`、`fresh:true`）：同一支腳本，「驗證通過，確認後才會套用。」、2 格 generated、確認鈕可按；冷開後兩個實例都在（舊實例角材 1–3、重複開間實例角材 4–7）。證據：`r06-main/walk_r06_legacy.result.json`、`r06-main/r06l.gcanvas`、`r06-main/R06L-*.jpg`。
+
 ## R04 d：重複開間超過 64 支（main `724d0370`，含 #378）
 
 伺服器從 main `724d0370` 的乾淨工作樹啟動（`runtime_version.py --probe` 回 `fresh:true`，version `848035…f7f7`），不含 #405 的修正。
@@ -192,7 +194,7 @@ R19 的條文是 I19 例外三與 R6(d)(e)：`boundary` 固定段在它覆蓋那
 證據：`r09f/walk_r09f.result.json`、`r09f/walk_r09f.stale.json`、`r09f/r09f.gcanvas`、`r09f/R09f-*.jpg`。
 
 **操作中發現的問題**（這次沒有改產品碼；編號接續 11-13 的 1～8）：
-9. 「核對新舊差異」表把只有 JSON 鍵順序不同的列標成有變更。這次的 `projection`（`view`／`region` 順序對調）與「角材」（`kind`／`id` 順序對調）兩列內容相同，卻和真的變了的 `scene_hash` 一樣上色（`R09f-2-diff-preview.jpg`）。原因在 `geometry-web/model-update-app.js`：`json()` 直接 `JSON.stringify`，`table()` 以字串不相等判斷變更。使用者要逐列核對，誤標會讓人以為來源或角材被改了。
+9. 「核對新舊差異」表把只有 JSON 鍵順序不同的列標成有變更。這次的 `projection`（`view`／`region` 順序對調）與「角材」（`kind`／`id` 順序對調）兩列內容相同，卻和真的變了的 `scene_hash` 一樣上色（`R09f-2-diff-preview.jpg`）。原因在 `geometry-web/model-update-app.js`：`json()` 直接 `JSON.stringify`，`table()` 以字串不相等判斷變更。使用者要逐列核對，誤標會讓人以為來源或角材被改了。修正送審於 #405 之後的後續 PR（差異表改用鍵排序後的 JSON 顯示與比較）。
 
 **未核對**：
 - 來源在對話框之外被改的過期情形（另一分頁、外部檔案）：單一分頁 UI 走不到。
