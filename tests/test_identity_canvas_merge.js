@@ -47,12 +47,25 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
     else probe.sections.P90 = count;
     assert.throws(() => r400Extension.projectGolden(probe), /R400_P90_IMMEDIATE_SAVE_COUNT/);
   }
+  // R06 under-counted, missing or over-counted.
   for (const count of [undefined, 50, 54, 56]) {
     const probe = JSON.parse(JSON.stringify(rawGolden));
     if (count === undefined) delete probe.sections.R06;
     else probe.sections.R06 = count;
-    assert.throws(() => r06LegacyExtension.projectGolden(probe), /R06_LEGACY_R06_COUNT/);
+    assert.throws(() => r06LegacyExtension.projectGolden(probe), /R06_LEGACY_R06_COUNT/, 'R06_LEGACY_R06_PROBE_REJECTED '+count);
   }
+  // P77 changed or missing while R06 is right.
+  for (const count of [undefined, 133, 135, 139]) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (count === undefined) delete probe.sections.P77;
+    else probe.sections.P77 = count;
+    assert.throws(() => r06LegacyExtension.projectGolden(probe), /R06_LEGACY_P77_UNCHANGED/, 'R06_LEGACY_P77_PROBE_REJECTED '+count);
+  }
+  // The five assertions misattributed to P77 (P77 139, R06 50), as first committed on #405.
+  const misattributed = JSON.parse(JSON.stringify(rawGolden));
+  misattributed.sections.P77 = 139; misattributed.sections.R06 = 50;
+  assert.throws(() => r06LegacyExtension.projectGolden(misattributed), /R06_LEGACY_P77_UNCHANGED/, 'R06_LEGACY_MISATTRIBUTION_REJECTED');
+  assert.equal(rawGolden.sections.P77, r06LegacyExtension.P77_UNCHANGED, 'R06_LEGACY_RAW_P77_IS_MAIN');
 });
 
 test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
