@@ -13,17 +13,22 @@ void app_history_init(AppHistory *history, size_t snapshot_size, size_t capacity
     history->group_base = group_base;
 }
 
+/* Slot of the index-th oldest entry of one ring stack (index < capacity). */
+static unsigned char *app_history_slot(const AppHistory *history, unsigned char *stack, size_t head, size_t index)
+{
+    return stack + history->snapshot_size * ((head + index) % history->capacity);
+}
+
 void app_history_record(AppHistory *history, const void *document)
 {
     history->record_redo_count = history->redo_count;
     history->record_evicted = history->undo_count >= history->capacity;
     if (history->record_evicted) {
-        memcpy(history->evicted, history->undo, history->snapshot_size);
-        memmove(history->undo, history->undo + history->snapshot_size,
-            history->snapshot_size * (history->capacity - 1));
+        memcpy(history->evicted, app_history_slot(history, history->undo, history->undo_head, 0), history->snapshot_size);
+        history->undo_head = (history->undo_head + 1) % history->capacity;
         --history->undo_count;
     }
-    memcpy(history->undo + history->snapshot_size * history->undo_count++, document, history->snapshot_size);
+    memcpy(app_history_slot(history, history->undo, history->undo_head, history->undo_count++), document, history->snapshot_size);
     history->redo_count = 0;
 }
 
@@ -31,9 +36,8 @@ void app_history_unrecord(AppHistory *history)
 {
     if (history->undo_count > 0) --history->undo_count;
     if (history->record_evicted) {
-        memmove(history->undo + history->snapshot_size, history->undo,
-            history->snapshot_size * history->undo_count);
-        memcpy(history->undo, history->evicted, history->snapshot_size);
+        history->undo_head = (history->undo_head + history->capacity - 1) % history->capacity;
+        memcpy(app_history_slot(history, history->undo, history->undo_head, 0), history->evicted, history->snapshot_size);
         ++history->undo_count;
     }
     history->redo_count = history->record_redo_count;
@@ -44,6 +48,8 @@ void app_history_clear(AppHistory *history)
 {
     history->undo_count = 0;
     history->redo_count = 0;
+    history->undo_head = 0;
+    history->redo_head = 0;
     history->grouping = false;
     history->group_dirty = false;
 }
@@ -51,19 +57,18 @@ void app_history_clear(AppHistory *history)
 const void *app_history_peek_undo(const AppHistory *history)
 {
     if (!history->undo_count) return NULL;
-    return history->undo + history->snapshot_size * (history->undo_count - 1);
+    return app_history_slot(history, history->undo, history->undo_head, history->undo_count - 1);
 }
 
 bool app_history_undo(AppHistory *history, void *document, AppHistoryRestore restore, void *opaque)
 {
     if (history->undo_count == 0) return false;
     if (history->redo_count >= history->capacity) {
-        memmove(history->redo, history->redo + history->snapshot_size,
-            history->snapshot_size * (history->capacity - 1));
+        history->redo_head = (history->redo_head + 1) % history->capacity;
         --history->redo_count;
     }
-    memcpy(history->redo + history->snapshot_size * history->redo_count++, document, history->snapshot_size);
-    restore(document, history->undo + history->snapshot_size * --history->undo_count, opaque);
+    memcpy(app_history_slot(history, history->redo, history->redo_head, history->redo_count++), document, history->snapshot_size);
+    restore(document, app_history_slot(history, history->undo, history->undo_head, --history->undo_count), opaque);
     return true;
 }
 
@@ -71,12 +76,11 @@ bool app_history_redo(AppHistory *history, void *document, AppHistoryRestore res
 {
     if (history->redo_count == 0) return false;
     if (history->undo_count >= history->capacity) {
-        memmove(history->undo, history->undo + history->snapshot_size,
-            history->snapshot_size * (history->capacity - 1));
+        history->undo_head = (history->undo_head + 1) % history->capacity;
         --history->undo_count;
     }
-    memcpy(history->undo + history->snapshot_size * history->undo_count++, document, history->snapshot_size);
-    restore(document, history->redo + history->snapshot_size * --history->redo_count, opaque);
+    memcpy(app_history_slot(history, history->undo, history->undo_head, history->undo_count++), document, history->snapshot_size);
+    restore(document, app_history_slot(history, history->redo, history->redo_head, --history->redo_count), opaque);
     return true;
 }
 

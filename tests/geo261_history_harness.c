@@ -188,6 +188,84 @@ static int single_case(void)
     return 0;
 }
 
+/* GEO-381 ring wrap: 40 records into 32 slots leave the oldest entry at a
+ * non-zero head. Undo then holds values 8..39 and the document is value 40.
+ * Expected values are the pre-ring shifting stack's logical behaviour. */
+static void wrap_setup(Storage *s,Snapshot *document)
+{
+    init(s,32);*document=value(0);
+    for(unsigned i=1;i<=40;++i){app_history_record(&s->history,document);*document=value(i);}
+}
+
+/* Undo a few steps with head != 0, record a new branch, undo to the bottom. */
+static int wrap_branch_case(void)
+{
+    Storage s;Snapshot document;Restore r={0};wrap_setup(&s,&document);
+    for(unsigned i=40;i>35;--i)CHECK(app_history_undo(&s.history,&document,restore,&r),"wrap-branch-undo-present");
+    CHECK(is_value(&document,35)&&s.history.undo_count==27&&s.history.redo_count==5,"wrap-branch-setup");
+    app_history_record(&s.history,&document);document=value(100);
+    CHECK(s.history.undo_count==28&&s.history.redo_count==0,"wrap-branch-clears-redo");
+    for(unsigned i=36;i>8;--i){
+        CHECK(app_history_undo(&s.history,&document,restore,&r),"wrap-branch-undo-to-bottom-present");
+        CHECK(is_value(&document,i-1),"wrap-branch-undo-to-bottom");
+    }
+    CHECK(!app_history_undo(&s.history,&document,restore,&r)&&is_value(&document,8),"wrap-branch-bottom");
+    for(unsigned i=9;i<=35;++i)CHECK(app_history_redo(&s.history,&document,restore,&r)&&is_value(&document,i),"wrap-branch-redo-order");
+    CHECK(app_history_redo(&s.history,&document,restore,&r)&&is_value(&document,100),"wrap-branch-redo-new-branch");
+    CHECK(!app_history_redo(&s.history,&document,restore,&r),"wrap-branch-redo-end");
+    return 0;
+}
+
+/* A two-change group committed across the wrap point is one undo step. */
+static int wrap_group_case(void)
+{
+    Storage s;Snapshot document;Restore r={0};wrap_setup(&s,&document);
+    CHECK(app_history_group_begin(&s.history,&document),"wrap-group-begin");
+    document=value(101);app_history_group_mark_dirty(&s.history);
+    document=value(102);app_history_group_mark_dirty(&s.history);
+    CHECK(app_history_group_end(&s.history)&&s.history.undo_count==32,"wrap-group-end");
+    CHECK(app_history_undo(&s.history,&document,restore,&r)&&is_value(&document,40),"wrap-group-undo-one-step");
+    CHECK(app_history_redo(&s.history,&document,restore,&r)&&is_value(&document,102),"wrap-group-redo");
+    CHECK(app_history_undo(&s.history,&document,restore,&r)&&is_value(&document,40),"wrap-group-undo-after-redo");
+    for(unsigned i=40;i>9;--i)
+        CHECK(app_history_undo(&s.history,&document,restore,&r)&&is_value(&document,i-1),"wrap-group-older-steps");
+    CHECK(!app_history_undo(&s.history,&document,restore,&r)&&is_value(&document,9),"wrap-group-evicted-oldest");
+    return 0;
+}
+
+/* Clear with head != 0, then record and undo: no old entry may return. */
+static int wrap_clear_case(void)
+{
+    Storage s;Snapshot document;Restore r={0};wrap_setup(&s,&document);
+    CHECK(app_history_undo(&s.history,&document,restore,&r),"wrap-clear-redo-setup");
+    app_history_clear(&s.history);
+    CHECK(!s.history.undo_count&&!s.history.redo_count,"wrap-clear-counts");
+    app_history_record(&s.history,&document);document=value(103);
+    CHECK(app_history_undo(&s.history,&document,restore,&r)&&is_value(&document,39),"wrap-clear-undo-new-entry");
+    CHECK(!app_history_undo(&s.history,&document,restore,&r)&&is_value(&document,39),"wrap-clear-no-old-undo");
+    CHECK(app_history_redo(&s.history,&document,restore,&r)&&is_value(&document,103),"wrap-clear-redo");
+    CHECK(!app_history_redo(&s.history,&document,restore,&r),"wrap-clear-no-old-redo");
+    return 0;
+}
+
+/* A failed command after the wrap: the product records, restores the document
+ * from peek_undo and unrecords (the product failed-command path). */
+static int wrap_unrecord_case(void)
+{
+    Storage s;Snapshot document;Restore r={0};wrap_setup(&s,&document);
+    app_history_record(&s.history,&document);document=value(104);
+    CHECK(s.history.record_evicted,"wrap-unrecord-evicts");
+    document=*(const Snapshot*)app_history_peek_undo(&s.history);
+    app_history_unrecord(&s.history);
+    CHECK(is_value(&document,40)&&s.history.undo_count==32&&!s.history.redo_count,"wrap-unrecord-restored");
+    for(unsigned i=40;i>8;--i)
+        CHECK(app_history_undo(&s.history,&document,restore,&r)&&is_value(&document,i-1),"wrap-unrecord-undo-order");
+    CHECK(!app_history_undo(&s.history,&document,restore,&r)&&is_value(&document,8),"wrap-unrecord-keeps-oldest");
+    for(unsigned i=9;i<=40;++i)
+        CHECK(app_history_redo(&s.history,&document,restore,&r)&&is_value(&document,i),"wrap-unrecord-redo-order");
+    return 0;
+}
+
 int main(int argc,char **argv)
 {
     if(argc!=2)return 2;
@@ -199,5 +277,9 @@ int main(int argc,char **argv)
     if(!strcmp(argv[1],"callback"))return callback_case();
     if(!strcmp(argv[1],"clear"))return clear_case();
     if(!strcmp(argv[1],"single"))return single_case();
+    if(!strcmp(argv[1],"wrap-branch"))return wrap_branch_case();
+    if(!strcmp(argv[1],"wrap-group"))return wrap_group_case();
+    if(!strcmp(argv[1],"wrap-clear"))return wrap_clear_case();
+    if(!strcmp(argv[1],"wrap-unrecord"))return wrap_unrecord_case();
     return 2;
 }
