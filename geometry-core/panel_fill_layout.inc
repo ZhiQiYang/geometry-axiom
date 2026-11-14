@@ -18,8 +18,6 @@ static bool pf_values(const World *w,const PanelFill *p,PfLayout *d)
 {WoodFinishContext c=app_fs_context(w);return wood_pf_values(&c,p,d);}
 static GeoRegionView pf_region_view(const SpaceBoundarySurface *b,GeoLoop2View *holes)
 {return wood_pf_region_view(b,holes);}
-static int pf_point_order(SurfacePoint2 a,SurfacePoint2 b)
-{return wood_pf_point_order(a,b);}
 static bool pf_clip_status(GeoClipStatus status)
 {WoodFinishContext c=app_fs_error_context();return wood_pf_clip_status(&c,status);}
 static bool pf_clip(const World *w,PfLayout *d,PfTile *t)
