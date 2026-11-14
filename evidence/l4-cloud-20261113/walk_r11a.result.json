@@ -1,0 +1,154 @@
+{
+ "before": [
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 27 33 role primary",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n"
+ ],
+ "copyStatus": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "-: 已選 1 支角材",
+  "-: 尚未檢查"
+ ],
+ "pasteForm": "貼上角材\n來自 角材 1 · 定義與來源\nA：直接值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2\n承載面\n明選本面的放置\n放置 1 · 天花 z=2500\n沿著\n明選新定位引用\n外輪廓邊 1\n外輪廓邊 3\n角材 90 側面（須有唯一解）\n角材 91 側面（須有唯一解）\n角材 1 側面（須有唯一解）\n外輪廓邊 0(已有角材 90)\n外輪廓邊 2(已有角材 91)\n參考線 1 · 沿 v · u=500 mm(已有角材 1)\n選段引用式（可留空）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n明選承載面與新定位，再預覽完整影響。\n預覽變更\n取消",
+ "placementOptions": [
+  ":明選本面的放置",
+  "1:放置 1 · 天花 z=2500"
+ ],
+ "anchorOptions": [
+  ":明選新定位引用",
+  "at-face e1:外輪廓邊 1",
+  "at-face e3:外輪廓邊 3",
+  "at-face t90:角材 90 側面（須有唯一解）",
+  "at-face t91:角材 91 側面（須有唯一解）",
+  "at-face t1:角材 1 側面（須有唯一解）",
+  "at-face e0:外輪廓邊 0(已有角材 90)",
+  "at-face e2:外輪廓邊 2(已有角材 91)",
+  "at-line guide 1:參考線 1 · 沿 v · u=500 mm(已有角材 1)"
+ ],
+ "dirOptions": [
+  "+u:沿輪廓圖向右",
+  "-u:沿輪廓圖向左",
+  "+v:沿輪廓圖向下",
+  "-v:沿輪廓圖向上"
+ ],
+ "pastePreview1": "貼上角材\n來自 角材 1 · 定義與來源\nA：直接值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2\n承載面\n明選本面的放置\n放置 1 · 天花 z=2500\n沿著\n明選新定位引用\n外輪廓邊 1\n外輪廓邊 3\n角材 90 側面（須有唯一解）\n角材 91 側面（須有唯一解）\n角材 1 側面（須有唯一解）\n外輪廓邊 0(已有角材 90)\n外輪廓邊 2(已有角材 91)\n參考線 1 · 沿 v · u=500 mm(已有角材 1)\n選段引用式（可留空）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n已驗證完整候選；核對逐支來源與連動後確認。\n新角材\n原定義\n無此角材\n候選定義\n新角材（確認後配號）\nA：直接值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2 · +v\n放置 1 · at-face e1  · +n\n完整連動影響\n確認套用\n取消",
+ "zeroWritePreview": true,
+ "zeroWriteCancel": true,
+ "afterCancelFormGone": true,
+ "pastePreview2": "貼上角材\n來自 角材 1 · 定義與來源\nA：直接值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2\n承載面\n明選本面的放置\n放置 1 · 天花 z=2500\n沿著\n明選新定位引用\n外輪廓邊 1\n外輪廓邊 3\n角材 90 側面（須有唯一解）\n角材 91 側面（須有唯一解）\n角材 1 側面（須有唯一解）\n外輪廓邊 0(已有角材 90)\n外輪廓邊 2(已有角材 91)\n參考線 1 · 沿 v · u=500 mm(已有角材 1)\n選段引用式（可留空）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n已驗證完整候選；核對逐支來源與連動後確認。\n新角材\n原定義\n無此角材\n候選定義\n新角材（確認後配號）\nA：直接值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2 · +v\n放置 1 · at-face e1  · +n\n完整連動影響\n確認套用\n取消",
+ "afterPaste": [
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 27 33 role primary",
+  "timber 92 27 33 role primary",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n"
+ ],
+ "pasteStatus": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "-: 從空白處拖曳，框選角材",
+  "-: 尚未檢查"
+ ],
+ "repeatForm": "重複建立角材\n來自 角材 92 · 定義與來源\nA：直接值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2\n承載面\n明選本面的放置\n放置 1 · 天花 z=2500\n沿著\n明選新定位引用\n外輪廓邊 3\n角材 90 側面（須有唯一解）\n角材 91 側面（須有唯一解）\n角材 1 側面（須有唯一解）\n角材 92 側面（須有唯一解）\n外輪廓邊 0(已有角材 90)\n外輪廓邊 1(",
+ "repeatPreview": "重複建立角材\n來自 角材 92 · 定義與來源\nA：直接值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2\n承載面\n明選本面的放置\n放置 1 · 天花 z=2500\n沿著\n明選新定位引用\n外輪廓邊 3\n角材 90 側面（須有唯一解）\n角材 91 側面（須有唯一解）\n角材 1 側面（須有唯一解）\n角材 92 側面（須有唯一解）\n外輪廓邊 0(已有角材 90)\n外輪廓邊 1(已有角材 92)\n外輪廓邊 2(已有角材 91)\n參考線 1 · 沿 v · u=500 mm(已有角材 1)\n選段引用式（可留空）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n已驗證完整候選；核對逐支來源與連動後確認。\n新角材\n原定義\n無此角材\n候選定義\n新角材（確認後配號）\nA：直接值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2 · +v\n放置 1 · at-face e3  · +n\n完整連動影響\n確認套用\n取消",
+ "afterRepeat": [
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 27 33 role primary",
+  "timber 92 27 33 role primary",
+  "timber 93 27 33 role primary",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "selection": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "-: 已選 2 支角材",
+  "timberEditStatus: 保持各自原值；只勾選要變更的欄位。"
+ ],
+ "batchPreview": "批改 2 支角材\n寬 A（沿面）\n原定義相同 · 保持原值\n定義方式\n明選定義方式\n直接值\n型別來源\n直接值（mm）\n厚 B（出面）\n原定義相同 · 保持原值\n定義方式\n明選定義方式\n直接值\n型別來源\n直接值（mm）\n角色\n原定義相同 · 保持原值\n明選角色\n邊界材\n主支\n副支\n自訂\n自訂優先序\n原定義相同 · 保持原值\n延伸方向\n原定義相同 · 保持原值\n明選方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n所選角材的原定義與來源\n已驗證完整候選；核對逐支來源與連動後確認。\n角材 90\n原定義\n角材 90\nA：直接值 20 mm\nB：直接值 20 mm\n角色 boundary · 優先序 1 · +u\n放置 1 · at-face e0  · +n\n候選定義\n角材 90\nA：直接值 25 mm\nB：直接值 22 mm\n角色 boundary · 優先序 1 · +u\n放置 1 · at-face e0  · +n\n角材 91\n原定義\n角材 91\nA：直接值 20 mm\nB：直接值 20 mm\n角色 boundary · 優先序 1 · +u\n放置 1 · at-face e2  · +n\n候選定義\n角材 91\nA：直接值 25 mm\nB：直接值 22 mm\n角色 boundary · 優先序 1 · +u\n放置 1 · at-face e2  · +n\n完整連動影響\n確認套用\n取消",
+ "batchPreviewZeroWrite": true,
+ "batchCancelZeroWrite": true,
+ "afterBatchCancel": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "-: 已選 2 支角材"
+ ],
+ "menuTarget": {
+  "x": 670,
+  "y": 458.7643384375
+ },
+ "multiMenu": [],
+ "menuRouteUsed": true,
+ "afterBatch": [
+  "timber 90 25 22 role boundary",
+  "timber 91 25 22 role boundary",
+  "timber 1 27 33 role primary",
+  "timber 92 27 33 role primary",
+  "timber 93 27 33 role primary",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "batchStatus": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "-: 已選 2 支角材",
+  "timberEditStatus: 保持各自原值；只勾選要變更的欄位。"
+ ],
+ "afterUndo": [
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 27 33 role primary",
+  "timber 92 27 33 role primary",
+  "timber 93 27 33 role primary",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "afterRedo": [
+  "timber 90 25 22 role boundary",
+  "timber 91 25 22 role boundary",
+  "timber 1 27 33 role primary",
+  "timber 92 27 33 role primary",
+  "timber 93 27 33 role primary",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "cold": [
+  "timber 90 25 22 role boundary",
+  "timber 91 25 22 role boundary",
+  "timber 1 27 33 role primary",
+  "timber 92 27 33 role primary",
+  "timber 93 27 33 role primary",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
