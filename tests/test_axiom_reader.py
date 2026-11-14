@@ -100,6 +100,10 @@ def execute_safe_json(markup, value):
     return result.stdout
 
 
+# #386 主題 1:追溯列的 title 一旦帶「路徑:行號」,產品碼增減一行就得重建閱讀器。
+LINE_ANCHOR = re.compile(r'<code title="[^"]*:\d+[^"]*"')
+
+
 class CanonicalReader(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -485,6 +489,51 @@ class CanonicalReader(unittest.TestCase):
         self.assertEqual(self.html.count('<details class="trace-section">'), len(trace))
         self.assertEqual(self.html.count('class="badge-hub"'), sum(1 for t in trace.values() if t["hub"]))
 
+    def test_source_line_shift_keeps_reader_bytes(self):
+        # #386 主題 1:閱讀器只能錨在穩定識別(路徑+函式名)。產品原始檔在函式前多一行,
+        # 重建出來的正典必須逐位元組不變;否則每次改產品碼都得重建閱讀器。
+        matrix = reader.axiom_matrix
+        original = matrix.source_texts
+
+        def shifted(entry=None):
+            result = []
+            for path, text in original(entry):
+                newline = "\r\n" if "\r\n" in text else "\n"   # current_geometry.c 是統一 CRLF
+                result.append((path, newline + text))          # 檔首插一空行:每個函式都往下移一行
+            return result
+
+        ids = [c["id"] for c in self.state["clauses"]]
+        before = matrix.source_code_sites(ids)
+        with mock.patch.object(matrix, "source_texts", shifted):
+            after = matrix.source_code_sites(ids)
+            # 前提:位移真的發生且只動行號,否則這條測試什麼也沒驗。
+            self.assertTrue(any(before.values()))
+            self.assertEqual({c: [(p, f, n + 1) for p, f, n in s] for c, s in before.items()}, after)
+            regenerated = reader.rebuild(self.html, self.axiom, self.plain)
+        if regenerated != self.html:
+            at = next(i for i, (a, b) in enumerate(zip(self.html, regenerated + "\0")) if a != b)
+            self.fail("產品原始碼行號位移改動了閱讀器 bytes,首差 %d: %r → %r"
+                      % (at, self.html[at - 40:at + 40], regenerated[at - 40:at + 40]))
+        self.assertEqual(LINE_ANCHOR.findall(regenerated)[:3], [], "閱讀器追溯列不得內嵌原始碼行號")
+
+    def test_trace_titles_use_path_and_function_only(self):
+        # #386 主題 1:title 只寫「路徑 · 函式名」,同函式多處寫處數;追溯資訊一條都不能少。
+        ids = [c["id"] for c in self.state["clauses"]]
+        trace = reader.clause_trace(self.state["clauses"], {cid: [] for cid in ids})
+        self.assertEqual(LINE_ANCHOR.findall(self.html)[:3], [], "閱讀器追溯列不得內嵌原始碼行號")
+        for cid, t in trace.items():
+            markup = reader.trace_section(cid, t)
+            for fn in t["functions"][:6]:
+                counts = {}
+                for path, owner, _ in t["sites"]:
+                    if owner == fn:
+                        counts[path] = counts.get(path, 0) + 1
+                title = "; ".join(path + " · " + fn + ("（%d 處）" % n if n > 1 else "")
+                                  for path, n in counts.items())
+                self.assertIn('<code title="%s">%s</code>' % (reader.html.escape(title, quote=True),
+                                                             reader.html.escape(fn)), markup, cid)
+            self.assertIn(markup, self.html, cid)
+
     def check_i25a_relocated_implementation(self):
         # PR #375: the guard moved out of current_geometry.c; its trace must follow it.
         core = ROOT / "current_geometry.c"
@@ -554,7 +603,9 @@ class CanonicalReader(unittest.TestCase):
                 self.assertEqual(trace["I9"]["sites"], [])
                 self.assertEqual({p: p.read_bytes() for p in before}, before)
                 markup = reader.trace_section("I25a", trace["I25a"])
-                self.assertIn("nested/rules.inc:4", markup)
+                # #386 主題 1:滑鼠提示錨在「路徑 · 函式名」,同函式多處寫處數,不帶行號。
+                self.assertIn('<code title="nested/rules.inc · moved_rule（2 處）">moved_rule</code>', markup)
+                self.assertNotRegex(markup, r'title="[^"]*:\d', "閱讀器追溯列不得內嵌原始碼行號")
                 with mock.patch.object(matrix.sys, "argv", [matrix.__file__]), redirect_stdout(io.StringIO()) as out:
                     self.assertEqual(matrix.main(), 0)
                 self.assertIn("moved_rule", out.getvalue())
