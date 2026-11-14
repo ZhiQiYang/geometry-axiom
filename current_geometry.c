@@ -3206,6 +3206,46 @@ static uint32_t world_next_surface_id(const World *world)
     return 0;
 }
 
+#if defined(_WIN32) || defined(GEOMETRY_TEST_SCENE_LOAD_SNAPSHOT)
+/*
+ * #412：載入場景檔的「快照式載入」——失敗世界不動，成功則整步可 undo。
+ * 快照放堆積，不放堆疊：World 約 6.7 MiB，parse_scene_file 底下的
+ * apply-proj 等 handler 還會在堆疊上放一份 World 備份，兩份加上 GDI 視窗程序
+ * 的框就超過 /STACK:16777216。配置失敗時回 SCENE_LOAD_NO_MEMORY，世界與歷史都不動。
+ * GEOMETRY_SCENE_LOAD_ALLOC 只供測試注入配置失敗；產品碼一律是 malloc。
+ */
+#ifndef GEOMETRY_SCENE_LOAD_ALLOC
+#define GEOMETRY_SCENE_LOAD_ALLOC(size) malloc(size)
+#endif
+typedef enum {
+    SCENE_LOAD_OK,
+    SCENE_LOAD_PARSE_FAILED,
+    SCENE_LOAD_NO_MEMORY
+} SceneLoadResult;
+
+static SceneLoadResult scene_load_file_with_undo(World *world, const char *path)
+{
+    World *before = (World *)GEOMETRY_SCENE_LOAD_ALLOC(sizeof *before);
+    SceneLoadResult result;
+
+    if (before == NULL) {
+        return SCENE_LOAD_NO_MEMORY;
+    }
+    memcpy(before, world, sizeof *before);
+    memset(world, 0, sizeof *world);
+
+    if (parse_scene_file(path, world)) {
+        history_record(before);
+        result = SCENE_LOAD_OK;
+    } else {
+        memcpy(world, before, sizeof *world);   /* 解析失敗：還原，不留半殘世界 */
+        result = SCENE_LOAD_PARSE_FAILED;
+    }
+    free(before);
+    return result;
+}
+#endif
+
 /* ============================================================
  * 後端二：Windows 視窗（只靠作業系統自帶的 user32 / gdi32）
  *
@@ -3220,6 +3260,8 @@ static uint32_t world_next_surface_id(const World *world)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 static bool reference_gdi_confirm(HWND window, World *world);
+/* 定義在 identity_ledger.inc 的 include 之後（它才宣告 g_identity_include_marks）。 */
+static void world_dump_dsl_without_identity_marks(const World *world, FILE *f);
 #include <commdlg.h>
 
 #pragma comment(lib, "user32.lib")
@@ -3843,22 +3885,19 @@ static void interactive_apply_line(GdiApp *app, HWND window, const char *text);
  */
 static void gdi_load_scene_file(GdiApp *app, HWND window, const char *path, const char *name)
 {
-    /* 快照式載入：失敗世界不動，成功則整步可 undo。 */
-    World before = *app->world;
-    memset(app->world, 0, sizeof *app->world);
+    /* 快照式載入：失敗世界不動，成功則整步可 undo（快照在堆積，見 #412）。 */
+    SceneLoadResult result = scene_load_file_with_undo(app->world, path);
+    char msg[320];
 
-    if (parse_scene_file(path, app->world)) {
-        history_record(&before);
+    if (result == SCENE_LOAD_OK) {
         app_refresh(app, window);
-        char msg[320];
         snprintf(msg, sizeof msg, "✓ 已載入 %s", name);
-        gdi_set_status(app, msg);
+    } else if (result == SCENE_LOAD_NO_MEMORY) {
+        snprintf(msg, sizeof msg, "✗ 記憶體不足，未載入 %s（世界未變）", name);
     } else {
-        *app->world = before;   /* 解析失敗：還原，不留半殘世界 */
-        char msg[320];
         snprintf(msg, sizeof msg, "✗ %s", scene_last_error());
-        gdi_set_status(app, msg);
     }
+    gdi_set_status(app, msg);
 }
 
 /* 開檔對話框；OFN_NOCHANGEDIR 避免動到 path_beside_source 依賴的工作目錄。 */
@@ -4709,10 +4748,7 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                                         path, sizeof path, NULL, NULL) > 1) {
                     FILE *f = fopen(path, "wb");
                     if (f != NULL) {
-                        bool saved_marks = g_identity_include_marks;
-                        g_identity_include_marks = false;
-                        world_dump_dsl(app->world, f);
-                        g_identity_include_marks = saved_marks;
+                        world_dump_dsl_without_identity_marks(app->world, f);
                         fclose(f);
                         gdi_set_status(app, "✓ 已匯出 .scene");
                     } else {
@@ -7663,6 +7699,17 @@ static bool identity_accept_requires(const char *path, int line_no, World *world
 #include "geometry-core/derived_placements.inc"
 #include "geometry-core/panel_fill_support.inc"
 #include "geometry-app/native/identity_ledger.inc"
+
+#ifdef _WIN32
+/* GDI「匯出 .scene」：不帶身分標記的 DSL（原型在 Windows 後端開頭，#412）。 */
+static void world_dump_dsl_without_identity_marks(const World *world, FILE *f)
+{
+    bool saved_marks = g_identity_include_marks;
+    g_identity_include_marks = false;
+    world_dump_dsl(world, f);
+    g_identity_include_marks = saved_marks;
+}
+#endif
 
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
