@@ -332,6 +332,8 @@ R19 的條文是 I19 例外三與 R6(d)(e)：`boundary` 固定段在它覆蓋那
 
 `errsA`／`errsB` 只有「新專案」的確認對話框。
 
+**合併後重跑**（main `9d551d58`，含 #406、#408、#411；#408 改過 `geometry-core/parameters.inc`、`engineering.inc`、`references.inc`，所以重跑而不是推定不受影響；`runtime_version.py --probe` version `769f46b6…1dce3`、`fresh:true`）：同一支腳本，撞名列、各次預覽的狀態與確認鈕、確認／復原／重做後的規格與配置、只匯入規則與冷開，除內部 revision 數字外逐欄相同（`r08c/walk_r08c.main-9d551d58.result.json`）。
+
 證據：`r08c/walk_r08c.result.json`、`r08c/r08c-source.gcanvas`、`r08c/r08c-target.gcanvas`、`r08c/R08c-*.jpg`。
 
 **仍未核對**：規則本身引用撞名規格時只匯入規則（範例規則沒有引用規格，這次的「只匯入規則」只證明不相關的撞名不會擋下）、390 px、Windows 本機。
@@ -417,6 +419,8 @@ R19 的條文是 I19 例外三與 R6(d)(e)：`boundary` 固定段在它覆蓋那
 
 **附帶看到的**：算式欄位的證據仍顯示可按的「採用」，按下才說明不能採用；畫面上的拒絕訊息清楚，參數不變。
 
+**合併後重跑**（main `9d551d58`，含 #406、#408、#411；#408 改過 `geometry-core/parameters.inc`、`engineering.inc`、`references.inc`，所以重跑而不是推定不受影響；`runtime_version.py --probe` version `769f46b6…1dce3`、`fresh:true`）：同一支腳本，預填 4010、算式欄位的拒絕訊息、邊界改變後的「目標內容已變」與再核對、冷開的參數與三筆證據狀態，除內部 revision 數字外逐欄相同（`r10c/walk_r10c.main-9d551d58.result.json`）。
+
 證據：`r10c/walk_r10c.result.json`、`r10c/r10c.gcanvas`、`r10c/R10c-*.jpg`。
 
 **仍未核對**：證據目標被刪除後重建（邊界 #1 是證據所在的面，刪掉會連同底圖一起消失；這個場景的目標清單沒有角材）、`target-replaced`（同一 key 換了身分）的畫面、390 px、Windows 本機。
@@ -443,6 +447,8 @@ R19 的條文是 I19 例外三與 R6(d)(e)：`boundary` 固定段在它覆蓋那
 **判讀**：恢復資料是「每個分頁各一份」（鑰匙放在分頁的 `sessionStorage`，內容在 IndexedDB），而且綁定服務工作階段。所以：重新整理同一分頁會恢復（11-14 已核對）；關掉分頁後未保存的底圖與候選不會帶到新分頁，關閉前瀏覽器會先提示；服務重啟後不恢復並明講要開 `.gcanvas`；同時開兩個分頁時第二個唯讀。跨分頁、跨重啟要留下候選，要靠「保存成 .gcanvas」（11-07 已核對保存重開後候選仍在）。
 
 `errs` 只有「新專案」確認框與兩次離開確認。
+
+**合併後重跑**（main `9d551d58`，含 #406、#408、#411；#408 改過 `geometry-core/parameters.inc`、`engineering.inc`、`references.inc`，所以重跑而不是推定不受影響；`runtime_version.py --probe` version `769f46b6…1dce3`、`fresh:true`）：同一支腳本，分頁 2 唯讀、新分頁 pending → empty → ready、重啟後 pending → mismatch 與各訊息，除內部 revision 數字外逐欄相同（`r07x/walk_r07x.main-9d551d58.result.json`）。
 
 證據：`r07x/walk_r07x.result.json`、`r07x/R07x-*.jpg`。
 
