@@ -939,6 +939,10 @@ const RoomCollectionWorkspace = (() => {
     });
     if (instance !== operation) return false;
     if (!accepted) {activeBid = null; cleanDraft(); if (!lease) feSetTool("select"); renderFaceInspector(); return false;}
+    // #400: hasWork clears below, before rendering finishes; a Save clicked in
+    // that window is rightly refused (native write pending). Remember where the
+    // save outcomes stood so the final status cannot cover that refusal.
+    const saveMark = W().saveOutcome?.seq ?? 0;
     const room = await operation.confirm();
     if (instance !== operation) return false;
     activeBid = null; cleanDraft();
@@ -948,7 +952,11 @@ const RoomCollectionWorkspace = (() => {
     await prepareSharedPages(); if (!current()) return true;
     await enterFocus("face", room.boundaryId); if (!current()) return true;
     fiShowTab("underlay"); feSetTool("select");
-    setStatus("✓ 房間「" + name + "」已保存為獨立邊界 · 可復原"); return true;
+    const saveAfter = W().saveOutcome;
+    if (saveAfter && saveAfter.seq > saveMark && saveAfter.ok === false)
+      setStatus("⚠ 專案尚未保存：" + saveAfter.message + " 房間「" + name + "」已確認為獨立邊界 · 可復原；請再保存一次專案。");
+    else setStatus("✓ 房間「" + name + "」已保存為獨立邊界 · 可復原");
+    return true;
   }
   async function cancel() {
     if (currentDialog) {currentDialog.dispatchEvent(new Event("cancel", {cancelable: true})); return;}
