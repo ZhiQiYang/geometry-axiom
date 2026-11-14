@@ -1,0 +1,126 @@
+{
+ "setup1": {
+  "pane": "已暫停。未接受的房間候選已寫入專案，重新開啟後仍在；來源取景 0, 0, 320, 200\n候選 1 · 待核對\n恢復核對\n排除\n候選 2 · 待核對\n恢復核對\n排除\n暫停候選，以便保存成果\n放棄剩餘候選",
+  "states": [
+   {
+    "ms": 2,
+    "state": "ready",
+    "message": "已在本機保留本分頁的專案恢復資料；這不等於已保存成檔案。未套用的工具草稿與復原歷史不會保留。"
+   }
+  ]
+ },
+ "recovery1": {
+  "state": "ready",
+  "message": "已在本機保留本分頁的專案恢復資料；這不等於已保存成檔案。未套用的工具草稿與復原歷史不會保留。",
+  "name": "未命名專案"
+ },
+ "tab2States": [
+  {
+   "ms": 3,
+   "state": "readonly",
+   "message": "另一個分頁正在編輯這個服務的工作內容。本分頁僅供查看，未讀取或寫入專案恢復資料。請關閉原編輯分頁，再按「重新連接此工作」。"
+  }
+ ],
+ "tab2Recovery": {
+  "state": "readonly",
+  "message": "另一個分頁正在編輯這個服務的工作內容。本分頁僅供查看，未讀取或寫入專案恢復資料。請關閉原編輯分頁，再按「重新連接此工作」。",
+  "name": "未命名專案"
+ },
+ "tab2Status": [
+  "-: 另一分頁編輯中 · 唯讀"
+ ],
+ "tab2Buttons": [
+  "保存 [disabled]"
+ ],
+ "tab1AfterTab2": {
+  "state": "ready",
+  "message": "已在本機保留本分頁的專案恢復資料；這不等於已保存成檔案。未套用的工具草稿與復原歷史不會保留。",
+  "name": "未命名專案"
+ },
+ "tab1Closed": true,
+ "tab3States": [
+  {
+   "ms": 14,
+   "state": "pending",
+   "message": "尚未檢查本分頁的恢復資料。"
+  },
+  {
+   "ms": 167,
+   "state": "empty",
+   "message": "本分頁尚無恢復資料。服務上的既有幾何來源未知，不能據此推定已保存專案。"
+  },
+  {
+   "ms": 781,
+   "state": "ready",
+   "message": "已在本機保留本分頁的專案恢復資料；這不等於已保存成檔案。未套用的工具草稿與復原歷史不會保留。"
+  }
+ ],
+ "tab3Recovery": {
+  "state": "ready",
+  "message": "已在本機保留本分頁的專案恢復資料；這不等於已保存成檔案。未套用的工具草稿與復原歷史不會保留。",
+  "name": "未命名專案"
+ },
+ "tab3Status": [
+  "-: 尚未保存"
+ ],
+ "tab3Objects": [
+  "boundary:1"
+ ],
+ "tab3Dump": [
+  "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 27 33 role primary",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n"
+ ],
+ "tab3Underlay": null,
+ "tab3Candidates": null,
+ "tab3UnderlayPane": "參考描面\n1 選頁\n2 校準\n3 選房間／描外環\n參考頁與來源\n匯入 PDF／圖片\n參考資料會隨 .gcanvas 專案保存。純 .scene 只保存幾何。",
+ "setup3": {
+  "pane": "已暫停。未接受的房間候選已寫入專案，重新開啟後仍在；來源取景 0, 0, 320, 200\n候選 1 · 待核對\n恢復核對\n排除\n候選 2 · 待核對\n恢復核對\n排除\n暫停候選，以便保存成果\n放棄剩餘候選",
+  "states": [
+   {
+    "ms": 2,
+    "state": "ready",
+    "message": "已在本機保留本分頁的專案恢復資料；這不等於已保存成檔案。未套用的工具草稿與復原歷史不會保留。"
+   }
+  ]
+ },
+ "recovery3": {
+  "state": "ready",
+  "message": "已在本機保留本分頁的專案恢復資料；這不等於已保存成檔案。未套用的工具草稿與復原歷史不會保留。",
+  "name": "未命名專案"
+ },
+ "restart": "{\"schema\": \"geometry-runtime/1\", \"version\": \"5a92fa38448516fe4f02922ad20f0ebb8828d2036cb6983f4d48d1c104ae69e0\", \"fresh\": true, \"root\": \"/tmp/claude-0/-home-user-geometry-axiom/c161fbcc-185e-5abd-ba3d-eaec6a803bff/scratchpad/main-wt\", \"pid\": 13284, \"session\": \"02a9a2e171d6419e93d3616693e70a3d\"}",
+ "afterRestartStates": [
+  {
+   "ms": 14,
+   "state": "pending",
+   "message": "尚未檢查本分頁的恢復資料。"
+  },
+  {
+   "ms": 166,
+   "state": "mismatch",
+   "message": "先前專案與目前服務工作階段或場景不一致，未恢復附件、草稿及專案身份，也未覆寫目前場景。請開啟正確的 .gcanvas 檔案。"
+  }
+ ],
+ "afterRestartRecovery": {
+  "state": "mismatch",
+  "message": "先前專案與目前服務工作階段或場景不一致，未恢復附件、草稿及專案身份，也未覆寫目前場景。請開啟正確的 .gcanvas 檔案。",
+  "name": "未命名專案"
+ },
+ "afterRestartStatus": [
+  "-: 尚未保存"
+ ],
+ "afterRestartObjects": [
+  "boundary:1"
+ ],
+ "errs": [
+  "tab1 DIALOG confirm 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+  "tab1 DIALOG beforeunload ",
+  "tab3 DIALOG confirm 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+  "tab3 DIALOG beforeunload "
+ ]
+}
