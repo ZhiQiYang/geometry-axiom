@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "128d0eaca197641f86625661dcc3b36ad21d6c50",
+  "sourceHead": "8e1ad36c8bd1d12350fc23373df7a5478910960d",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43621367804",
+  "runId": "43643057088",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "3df6d9950ec89b372e597ee4adff6204a88e24de302f50f4f708e3e8cc38f521",
+      "stderrSha256": "63d855349db6962e696392ebaca792777d027c583efa4fd606209085fed9220d",
       "testsRun": 205
     },
     {
@@ -51,7 +51,7 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "da04c4a03b95fe04b9335d22861c92e29ba54549086b1b97d6cb14a032355f6c",
+      "stderrSha256": "27b26bf5cec3f2296df2ce3d3fe17437f8829c2ae35afc6cc5e06be91eecffc4",
       "testsRun": 18
     }
   ],
@@ -2065,7 +2065,7 @@
     },
     {
       "path": "geometry-web/model-update-app.js",
-      "lfSha256": "bc36d14f4e80dc44f295da8d7c09c62c8493bdc9798e5fd1051e3d98141b7f8d"
+      "lfSha256": "9659f13a0d031012e73dfb82c0e73f091ff850eeccd5e11ec107563b997db893"
     },
     {
       "path": "geometry-web/model-update.js",
@@ -2628,5 +2628,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "e8d3a5bb32b130ebcc6524abe4493e454993f7267eaa8b547083d77f12f2ddc4"
+  "inputLfClosureSha256": "8c898b5f0e6e863a1011417fae556adeb10012fcb598ef70880e14bb004f2126"
 }
