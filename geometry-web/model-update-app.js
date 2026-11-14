@@ -6,6 +6,11 @@
   const uint = value => Number.isSafeInteger(value) && value >= 0 && value <= 4294967295;
   const json = value => value === undefined ? '—' : JSON.stringify(value);
   const same = (a, b) => json(a) === json(b);
+  // Review cells compare and show key-sorted JSON: a saved record written with another
+  // key order is the same data and must not read as a change the user has to check.
+  const sortKeys = value => Array.isArray(value) ? value.map(sortKeys) : value && typeof value === 'object' ?
+    Object.fromEntries(Object.keys(value).sort().map(key => [key, sortKeys(value[key])])) : value;
+  const shown = value => value === undefined ? '—' : JSON.stringify(sortKeys(value));
   const packages = ['space', 'volume', 'clearance', 'walls', 'timbers'];
   const packageNames = {space:'空間邊界',volume:'空間實體',clearance:'扣除後淨空',walls:'材料牆',timbers:'角材結構'};
   const purposeNames = {boundary:'實際邊界','calculation-cap':'體積計算封口',none:'不建立',through:'上下貫通孔'};
@@ -473,7 +478,7 @@
   function table(title, rows, label = '項目') {
     return `<h4>${esc(title)}</h4><div class="mu-table-wrap"><table><thead><tr><th scope="col">${esc(label)}</th><th scope="col">舊模型</th><th scope="col">候選模型</th></tr></thead><tbody>${rows.map(([name,before,after,changed = before !== after]) => `<tr${changed ? ' class="mu-changed"' : ''}><th scope="row">${esc(name)}</th><td>${esc(before)}</td><td>${esc(after)}</td></tr>`).join('')}</tbody></table></div>`;
   }
-  function jsonRows(a, b) {return [...new Set([...Object.keys(a || {}),...Object.keys(b || {})])].map(key => [key,json(a?.[key]),json(b?.[key])]);}
+  function jsonRows(a, b) {return [...new Set([...Object.keys(a || {}),...Object.keys(b || {})])].map(key => [key,shown(a?.[key]),shown(b?.[key])]);}
   function fullDetail(label, value) {
     const detail = document.createElement('details'); detail.className = 'mu-details mu-json';
     const summary = document.createElement('summary'); summary.textContent = label;
@@ -492,15 +497,15 @@
   function renderReview(review) {
     const before = review.before, after = review.after;
     const sourceRows = before.input.mode === 'faces' ? before.input.uses.map((use,index) =>
-      ['承載面 '+(index+1),json(use),json(after.input.uses[index])]) : [['外環邊（從 1 起算）',json(before.input.settings.edges.map(n=>n+1)),json(after.input.settings.edges.map(n=>n+1))]];
+      ['承載面 '+(index+1),shown(use),shown(after.input.uses[index])]) : [['外環邊（從 1 起算）',shown(before.input.settings.edges.map(n=>n+1)),shown(after.input.settings.edges.map(n=>n+1))]];
     $('muDiff').innerHTML = table('來源與本次明選', [...jsonRows(before.source,after.source),...sourceRows,
-      ['角材',json(before.input.timbers || []),json(after.input.timbers || [])],['柱樑',json(before.input.obstacles),json(after.input.obstacles)]]) +
+      ['角材',shown(before.input.timbers || []),shown(after.input.timbers || [])],['柱樑',shown(before.input.obstacles),shown(after.input.obstacles)]]) +
       table('原設定與候選設定',jsonRows(before.input.settings,after.input.settings)) + table('完整結果摘要',jsonRows(before.result.summary,after.result.summary)) +
       table('實際角材幾何（各自列出，' + (session?.judged && globalThis.IdentityLedger ? IdentityLedger.continuitySummary({roots:session.judged}).text : '身分延續性未知') + '）',[['各交換包的完整角材',timberGeometry(before.result),timberGeometry(after.result)]]) +
       table('所有模型交換包',packages.map(kind => {
         const pin = review.diff.packages.find(item => item.kind === kind);
         const text = value => value ? `${value.derived?.status || '已建立'} · ${value.derived?.objects?.length || 0} 個物件` : '未建立';
-        const changed = !same(before.result[kind] || null,after.result[kind] || null);
+        const changed = shown(before.result[kind] || null) !== shown(after.result[kind] || null);
         return [`${packageNames[kind]}\n完整包：${changed ? '已變更' : '相同'}`,text(before.result[kind])+`\nmanifest SHA: ${pin?.before || '—'}`,text(after.result[kind])+`\nmanifest SHA: ${pin?.after || '—'}`,changed];
       }));
     $('muFullDetails').replaceChildren(fullDetail('完整差異 JSON（含所有交換包摘要）',review.diff),fullDetail('舊模型完整來源／輸入／結果 JSON',before),fullDetail('候選模型完整來源／輸入／結果 JSON',after));
