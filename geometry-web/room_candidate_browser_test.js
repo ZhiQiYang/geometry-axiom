@@ -138,8 +138,8 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
     await key('Tab', 'Tab', 9);
     await sleep(80);
   }
-  async function until(expression) {
-    await waitForUI(expression, 20000);
+  async function until(expression, timeout = 20000) {
+    await waitForUI(expression, timeout);
     if (await read(expression) !== true) throw Error('Room-candidate wait ' + expression);
   }
   async function facePoint(x, y) {
@@ -163,11 +163,22 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
     await until(`!!$('roomNew') && !!$('roomNewMethod')`);
   }
   async function saveProject() {
+    // Share the existing 20 s polling budget across readiness and capture.
+    const deadline = Date.now() + 20000;
+    const remaining = () => {
+      const ms = deadline - Date.now();
+      if (ms <= 0) throw Error('P90_SAVE_DEADLINE_EXHAUSTED');
+      return ms;
+    };
+    await until(`!ReferenceWorkspace.busy && !oc.busy && ReferenceWorkspace.getEvidenceState().blocked===false`, remaining());
     await read(`(${installSaveProbe.toString()})();0`);
     try {
+      remaining();
       await ctl('#projectBar [data-project-action="save"]');
-      await until(`typeof window.__roomSave==='string' && !ReferenceWorkspace.busy`);
+      await until(`typeof window.__roomSave==='string' && !ReferenceWorkspace.busy`, remaining());
+      remaining();
       const encoded = await read(`window.__roomSave`);
+      remaining();
       const file = path.join(os.tmpdir(), 'geometry-room-candidate-' + Date.now() + '.gcanvas');
       fs.writeFileSync(file, Buffer.from(encoded, 'base64'));
       return file;

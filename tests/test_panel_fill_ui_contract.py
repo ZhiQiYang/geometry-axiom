@@ -214,6 +214,12 @@ if (Number.isSafeInteger(r.state.panelFills[0].derived.tiles[0].fragments[0].are
                              "UI_READER_IDENTITY_AND_IMPORT_SUFFIX")
             del projected[at]
             del projected[-2:]
+            self.assertEqual(1, projected.count("grid-subdivision-rules/2"),
+                             "UI_READER_R14_CAPABILITY_EXACTLY_ONCE")
+            r14_at = projected.index("grid-subdivision-rules/2")
+            self.assertEqual(projected.index("grid-subdivision-rules/1") + 1, r14_at,
+                             "UI_READER_R14_CAPABILITY_ADJACENCY")
+            del projected[r14_at]
             self.assertEqual(original_capabilities, projected, "UI_READER_NO_FULL_PF_CLAIM")
 
         for response in [self.read(), self.command("engineering-read")["state"], candidate]:
@@ -222,15 +228,22 @@ if (Number.isSafeInteger(r.state.panelFills[0].derived.tiles[0].fragments[0].are
             self.assertEqual(original, response["capabilities"], "UI_READER_PROJECTION_IS_READONLY")
             self.assertEqual(expected_reader, response["panel_fill_reader"], "UI_READER_RECORD_CLOSURE")
             self.assertIn("panel-fill/1", response["required_capabilities"])
-            for fault in ("missing-r06", "missing-identity", "missing-import", "duplicate", "moved",
+            for fault in ("missing-r06", "missing-identity", "missing-import", "missing-r14",
+                          "duplicate", "duplicate-r14", "moved", "moved-r14",
                           "legacy-order", "unknown", "full-pf"):
                 probe = list(original)
                 if fault.startswith("missing-"):
                     name = {"missing-r06": "assembly-bay-repeat/1", "missing-identity": "identity-ledger/1",
-                            "missing-import": "definition-import/1"}[fault]
+                            "missing-import": "definition-import/1",
+                            "missing-r14": "grid-subdivision-rules/2"}[fault]
                     probe.remove(name)
                 elif fault == "duplicate":
                     probe.append("assembly-bay-repeat/1")
+                elif fault == "duplicate-r14":
+                    probe.append("grid-subdivision-rules/2")
+                elif fault == "moved-r14":
+                    probe.remove("grid-subdivision-rules/2")
+                    probe.insert(0, "grid-subdivision-rules/2")
                 elif fault == "moved":
                     probe.remove("assembly-bay-repeat/1")
                     probe.insert(0, "assembly-bay-repeat/1")
