@@ -524,8 +524,189 @@ static void test_projection_three_residual_components(void)
     }
 }
 
+/* Comb ring: bottom edge (0,0)-(1000,0), `teeth` 50-wide teeth on top;
+ * `step` adds one 2-vertex step at the left end.  4 + 4*teeth + 2*step vertices. */
+static PolygonLoop2 cut_capacity_comb(int teeth, bool step)
+{
+    PolygonLoop2 loop={0};
+    SurfacePoint2 *v=loop.v; size_t n=0; Coord x=1000;
+    v[n++]=(SurfacePoint2){0,0}; v[n++]=(SurfacePoint2){1000,0}; v[n++]=(SurfacePoint2){1000,100};
+    for (int t=0; t<teeth; ++t, x-=100) {
+        v[n++]=(SurfacePoint2){x-50,100}; v[n++]=(SurfacePoint2){x-50,150};
+        v[n++]=(SurfacePoint2){x-100,150}; v[n++]=(SurfacePoint2){x-100,100};
+    }
+    if (step) { v[n++]=(SurfacePoint2){100,100}; v[n++]=(SurfacePoint2){100,120}; v[n++]=(SurfacePoint2){0,120}; }
+    else v[n++]=(SurfacePoint2){0,100};
+    loop.count=n;
+    for (size_t i=0;i<n;++i) loop.fixity[i]=EDGE_FIXED;
+    return loop;
+}
+
+/* Fresh world: surface 1 with `ring` as its outline, then `obstacle`. */
+static void cut_capacity_scene(const PolygonLoop2 *ring, const char *obstacle)
+{
+    char line[1024]; int at=snprintf(line,sizeof line,"surface 1 origin 0 0 0 u +x v +y outline");
+    for (size_t i=0;i<ring->count;++i)
+        at+=snprintf(line+at,sizeof line-(size_t)at," %lld,%lld",(long long)ring->v[i].u,(long long)ring->v[i].v);
+    test_world=(World){0}; history_clear();
+    CHECK(command(line));
+    CHECK(command(obstacle));
+}
+
+static bool cut_capacity_overflow_is_refused(const PolygonLoop2 *original,
+    Coord u0, Coord v0, Coord u1, Coord v1)
+{
+    enum { SPARE=8 };
+    SurfacePoint2 nv[POLY_MAX_VERTICES+SPARE]; EdgeFixity nf[POLY_MAX_VERTICES+SPARE];
+    const SurfacePoint2 sentinel={-777777,-777777};
+    for (size_t i=0;i<POLY_MAX_VERTICES+SPARE;++i) { nv[i]=sentinel; nf[i]=EDGE_FREE; }
+    PolygonLoop2 loop=*original; bool flush[4];
+    for (int s=0;s<4;++s) flush[s]=side_flush_outline(&loop,s,u0,v0,u1,v1);
+    bool cut=proj_cut_run_into(&loop,flush,u0,v0,u1,v1,nv,nf,POLY_MAX_VERTICES);
+    bool sentinels_intact=true;
+    for (size_t i=POLY_MAX_VERTICES;i<POLY_MAX_VERTICES+SPARE;++i)
+        if (nv[i].u!=sentinel.u||nv[i].v!=sentinel.v||nf[i]!=EDGE_FREE) sentinels_intact=false;
+    bool no_write_past_ring_capacity=sentinels_intact;
+    CHECK(no_write_past_ring_capacity);
+    CHECK(!cut);
+    bool loop_unchanged=memcmp(&loop,original,sizeof loop)==0;
+    CHECK(loop_unchanged);
+    return !cut&&sentinels_intact&&loop_unchanged;
+}
+
+static void test_projection_cut_run_capacity(void)
+{
+    /* Legal boundary: 28 vertices + one mid-edge notch = exactly 32. */
+    PolygonLoop2 n28=cut_capacity_comb(6,false), n30=cut_capacity_comb(6,true), n32=cut_capacity_comb(7,false);
+    CHECK(n28.count==28 && n30.count==30 && n32.count==32);
+    CHECK(poly_loop_is_valid(&n28) && poly_loop_is_valid(&n30) && poly_loop_is_valid(&n32));
+    PolygonLoop2 loop=n28; bool flush[4];
+    for (int s=0;s<4;++s) flush[s]=side_flush_outline(&loop,s,450,0,550,50);
+    CHECK(proj_cut_run(&loop,flush,450,0,550,50));
+    CHECK(loop.count==POLY_MAX_VERTICES);
+    CHECK(proj_loop_area2(&loop)==proj_loop_area2(&n28)-2*100*50);
+    CHECK(loop.v[loop.count-4].u==450 && loop.v[loop.count-4].v==0);
+    CHECK(loop.v[loop.count-1].u==550 && loop.v[loop.count-1].v==0);
+
+    /* Mid-edge notch adds 4 (30 -> 34); corner cut over a vertex adds 2 (32 -> 34). */
+    CHECK(cut_capacity_overflow_is_refused(&n30,250,0,350,50));
+    CHECK(cut_capacity_overflow_is_refused(&n32,450,0,550,50));
+    CHECK(cut_capacity_overflow_is_refused(&n32,0,0,50,50));
+    loop=n30;
+    for (int s=0;s<4;++s) flush[s]=side_flush_outline(&loop,s,250,0,350,50);
+    CHECK(!proj_cut_run(&loop,flush,250,0,350,50));
+
+    /* Same input end to end: apply-proj is refused for the capacity reason
+     * (NOTCH path message) and the world is unchanged.  The positive control
+     * runs the same scene shape at the legal 28 -> 32 boundary and must be
+     * accepted, so the refusal cannot come from an unrelated gate. */
+    ObstacleClass cls; Coord c0,c1,c2,c3;
+    CHECK(classify_rect_outline(&n30,250,0,350,50,&cls,&c0,&c1,&c2,&c3)==1 && cls==OBSTACLE_NOTCH);
+    CHECK(classify_rect_outline(&n28,450,0,550,50,&cls,&c0,&c1,&c2,&c3)==1 && cls==OBSTACLE_NOTCH);
+    cut_capacity_scene(&n28,"column 1 at 450 0 size 100 50 z 0 100");
+    g_scene_last_error[0]='\0';
+    CHECK(command("apply-proj 1 c1"));
+    SpaceBoundarySurface applied;
+    CHECK(app_boundary_read(&test_world,1,&applied) && applied.outline.count==POLY_MAX_VERTICES);
+    cut_capacity_scene(&n30,"column 1 at 250 0 size 100 50 z 0 100");
+    saved_world=test_world;
+    g_scene_last_error[0]='\0';
+    CHECK(!command("apply-proj 1 c1"));
+    CHECK(strstr(scene_last_error(),"凹口切法退化(覆蓋弧不連續)")!=NULL);
+    CHECK(memcmp(&saved_world,&test_world,sizeof test_world)==0);
+
+    /* proj_clip_half keeps at most n vertices on a valid orthogonal ring:
+     * each strict crossing needs an out-run of >= 2 vertices.  32 stays 32. */
+    loop=n32;
+    CHECK(proj_clip_half(&loop,1,125,-1));
+    CHECK(loop.count==POLY_MAX_VERTICES);
+    CHECK(proj_loop_area2(&loop)==proj_loop_area2(&n32)-2*7*50*25);
+}
+
+/* proj_split_loop writes p1/p2 before checking (v[count] then count > 32).
+ * A write at v[POLY_MAX_VERTICES] would land inside PolygonLoop2 (on `count`
+ * and fixity[0..]), invisible to ASan.  The code comment above
+ * proj_split_loop argues every piece stays <= n; these sentinels pin it. */
+#define SPLIT_SENTINEL_BYTE 0xA5
+static bool split_piece_within(const PolygonLoop2 *p, size_t n)
+{
+    if (p->count>n) return false;
+    const unsigned char *v=(const unsigned char*)&p->v[p->count];
+    const unsigned char *f=(const unsigned char*)&p->fixity[p->count];
+    size_t rest=POLY_MAX_VERTICES-p->count;
+    for (size_t i=0;i<rest*sizeof p->v[0];++i) if (v[i]!=SPLIT_SENTINEL_BYTE) return false;
+    for (size_t i=0;i<rest*sizeof p->fixity[0];++i) if (f[i]!=SPLIT_SENTINEL_BYTE) return false;
+    return true;
+}
+
+/* Runs proj_split_loop on sentinel-filled pieces.  Returns -1 when the rect
+ * is not classified SPLIT, else whether the split succeeded; *within reports
+ * that both pieces kept count <= n and untouched sentinels past count. */
+static int split_with_sentinels(const PolygonLoop2 *ring,
+    Coord u0, Coord v0, Coord u1, Coord v1,
+    PolygonLoop2 *p1, PolygonLoop2 *p2, bool *within)
+{
+    ObstacleClass cls; Coord c0,c1,c2,c3; bool flush[4];
+    if (classify_rect_outline(ring,u0,v0,u1,v1,&cls,&c0,&c1,&c2,&c3)!=1 || cls!=OBSTACLE_SPLIT) return -1;
+    for (int s=0;s<4;++s) flush[s]=side_flush_outline(ring,s,c0,c1,c2,c3);
+    memset(p1,SPLIT_SENTINEL_BYTE,sizeof *p1); memset(p2,SPLIT_SENTINEL_BYTE,sizeof *p2);
+    bool ok=proj_split_loop(ring,flush,c0,c1,c2,c3,p1,p2);
+    *within=split_piece_within(p1,ring->count)&&split_piece_within(p2,ring->count);
+    return ok?1:0;
+}
+
+static PolygonLoop2 split_capacity_transpose(const PolygonLoop2 *ring)
+{
+    PolygonLoop2 t={0}; t.count=ring->count;
+    for (size_t i=0;i<ring->count;++i) {
+        t.v[i]=(SurfacePoint2){ring->v[ring->count-1-i].v,ring->v[ring->count-1-i].u};
+        t.fixity[i]=EDGE_FIXED;
+    }
+    return t;
+}
+
+static void test_projection_split_loop_capacity(void)
+{
+    /* Layout the sentinel relies on: v[] is followed by count, then fixity[]. */
+    CHECK(sizeof ((PolygonLoop2*)0)->v/sizeof ((PolygonLoop2*)0)->v[0]==POLY_MAX_VERTICES);
+    CHECK(offsetof(PolygonLoop2,count)==POLY_MAX_VERTICES*sizeof(SurfacePoint2));
+
+    PolygonLoop2 n32=cut_capacity_comb(7,false), p1, p2; bool within;
+    /* Legal maximum: a 32-vertex ring split into 4 + 32. */
+    CHECK(split_with_sentinels(&n32,0,20,1000,60,&p1,&p2,&within)==1);
+    CHECK(within && p1.count+p2.count==36 && (p1.count==POLY_MAX_VERTICES || p2.count==POLY_MAX_VERTICES));
+    CHECK(proj_loop_area2(&p1)+proj_loop_area2(&p2)==proj_loop_area2(&n32)-2*1000*40);
+    /* SPLIT with a single covered arc (left, right, bottom flush): refused, 31 + 1. */
+    CHECK(split_with_sentinels(&n32,0,0,1000,50,&p1,&p2,&within)==0);
+    CHECK(within && ((p1.count==31 && p2.count==1) || (p1.count==1 && p2.count==31)));
+
+    /* Every SPLIT rect on a grid over the 32-vertex comb and its transpose. */
+    PolygonLoop2 rings[2]={n32,split_capacity_transpose(&n32)};
+    CHECK(poly_loop_is_valid(&rings[1]));
+    size_t split_cases=0, accepted=0, max_piece=0; bool all_within=true;
+    for (int r=0;r<2;++r) {
+        for (Coord a=0;a<=1000;a+=25) for (Coord b=a+25;b<=1000;b+=25)
+        for (Coord c=0;c<=150;c+=10) for (Coord d=c+10;d<=150;d+=10) {
+            Coord u0=r?c:a, u1=r?d:b, v0=r?a:c, v1=r?b:d;
+            int got=split_with_sentinels(&rings[r],u0,v0,u1,v1,&p1,&p2,&within);
+            if (got<0) continue;
+            ++split_cases; if (got) ++accepted;
+            if (!within) all_within=false;
+            else {
+                if (p1.count>max_piece) max_piece=p1.count;
+                if (p2.count>max_piece) max_piece=p2.count;
+            }
+        }
+    }
+    CHECK(all_within);
+    CHECK(split_cases>1000 && accepted>100);
+    CHECK(max_piece==POLY_MAX_VERTICES);
+}
+
 int main(void)
 {
+    test_projection_split_loop_capacity();
+    test_projection_cut_run_capacity();
     test_projection_corner_contact_is_local();
     test_projection_three_residual_components();
     test_rect_outline_counterexamples();
