@@ -26,11 +26,12 @@ BAY = "assembly-bay-repeat/1"
 IDENTITY = "identity-ledger/1"
 AVAILABLE = frozenset(("engineering-spec/1", "parameters/1", "assembly-rule-authoring/1",
                        "assembly-timber-generation/1", BAY, "grid-subdivision-rules/1",
-                       "section-profile/1", "grid-card-reference/1", IDENTITY, "definition-import/1"))
+                       "grid-subdivision-rules/2", "section-profile/1", "grid-card-reference/1", IDENTITY, "definition-import/1"))
 
 
 class R363CapabilityBounds(unittest.TestCase):
     def test_full_bridge_union_and_model_boundary(self):
+        self.assertEqual(11, len(AVAILABLE), "R379_R363_EXACT_ELEVEN_CAPABILITIES")
         self.assertEqual(AVAILABLE, scenario_verify.BRIDGE_CAPABILITIES,
                          "R363_N01_VERIFIER_CAPABILITY_UNION")
         self.assertEqual(set(AVAILABLE), scenario_verify._capabilities(
@@ -41,7 +42,7 @@ class R363CapabilityBounds(unittest.TestCase):
                 scenario_verify._capabilities(invalid, ("native", "capabilities"),
                                               supported=scenario_verify.BRIDGE_CAPABILITIES)
             self.assertEqual("SCENARIO_CAPABILITY", rejected.exception.code)
-        for bridge_only in (BAY, IDENTITY, "definition-import/1", "grid-subdivision-rules/1"):
+        for bridge_only in (BAY, IDENTITY, "definition-import/1", "grid-subdivision-rules/1", "grid-subdivision-rules/2"):
             with self.subTest(model_capability=bridge_only), self.assertRaises(ModelError) as rejected:
                 scenario_verify._capabilities([bridge_only], ("models", "requiredCapabilities"))
             self.assertEqual("SCENARIO_CAPABILITY", rejected.exception.code,

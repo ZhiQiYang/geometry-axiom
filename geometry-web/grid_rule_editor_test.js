@@ -147,9 +147,14 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   await send('Page.setInterceptFileChooserDialog',{enabled:true});try{await ctl('#fileMenuBtn');await ctl('#btnOpenProject');const doc=await send('DOM.getDocument',{depth:0}),node=await send('DOM.querySelector',{nodeId:doc.result.root.nodeId,selector:'#projectFile'});await send('DOM.setFileInputFiles',{nodeId:node.result.nodeId,files:[mobile.file]});await settled();await wait(`oc.gridSystems.length===1`);}finally{await send('Page.setInterceptFileChooserDialog',{enabled:false});}
   await open(mobileSid);check('390px 真重開與續編保留非法 raw、key、高水位',(await dump())===mobileScene&&JSON.stringify(await raw())===JSON.stringify(mobileRaw)&&await read(`$('igRuleU').value==='1e'`));await ctl('#igRuleName');await shot('rule-editor-390-reopened');await discard();
   await send('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});
-  for(const [id,axes,reason] of [[901,'u repeat-panel 600 gap 0 from 0 v repeat 0 400','兩軸固定間距'],[902,'u repeat 0 600 v none','兩軸固定間距'],[903,'u repeat 0 600 v repeat 0 400 stagger 200','相鄰格子相位差']]){
-    await fixture(`grid-system ${id} name-hex 556e737570706f72746564 main-along none ${axes}`);await open(id,false);const frozen=await dump();
-    check(`不支援的來源 ${id} 明示原因並鎖住規則，不改其定義`,await read(`$('igRuleAdd').disabled&&$('igRuleReason').textContent.includes(${JSON.stringify(reason)})`)&&(await dump())===frozen);await leave();
+  for(const [id,axes,reason] of [[901,'u repeat-panel 600 gap 0 from 0 v repeat 0 400','grid-subdivision-rules/2'],[902,'u repeat 0 600 v none','兩軸固定間距'],[903,'u repeat 0 600 v repeat 0 400 stagger 200','相鄰格子相位差']]){
+    await fixture(`grid-system ${id} name-hex 556e737570706f72746564 main-along none ${axes}`);
+    // Preserve the original PANEL rejection as an actual /1-host boundary;
+    // the full /2 positive flow has its own P381 section and exact oracle.
+    if(id===901)await read(`window.__r14LegacyApi=apiRequest;apiRequest=async function(cmd,...args){const r=await window.__r14LegacyApi(cmd,...args);return cmd==='engineering-read'?{...r,state:{...r.state,capabilities:(r.state?.capabilities||[]).filter(c=>c!=='grid-subdivision-rules/2')}}:r;};void 0`);
+    try{await open(id,false);const frozen=await dump();
+      check(`不支援的來源 ${id} 明示原因並鎖住規則，不改其定義`,await read(`$('igRuleAdd').disabled&&$('igRuleReason').textContent.includes(${JSON.stringify(reason)})`)&&(await dump())===frozen);await leave();}
+    finally{if(id===901)await read(`apiRequest=window.__r14LegacyApi;delete window.__r14LegacyApi;void 0`);}
   }
   // Normal entry regression: preserve raw, delete its source through the card,
   // resume from the empty-state button, then Save/new context/open/discard.
