@@ -100,7 +100,14 @@ jobs:
           cat "$log"
           kill "$chrome" 2>/dev/null || true
           wait "$chrome" 2>/dev/null || true
-          rm -rf "$profile"
+          # Chrome children may still be writing Default/ after the parent exits.
+          # Retry only transient profile cleanup; a persistent error remains fatal.
+          cleanup=0
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            if rm -rf -- "$profile"; then cleanup=1; break; fi
+            sleep 0.2
+          done
+          test "$cleanup" = 1
           echo "CHROME_WARMUP_READY=$ready"
           echo "CHROME_WARMUP_MS=$(( (end - start) / 1000000 ))"
           test "$ready" = 1
