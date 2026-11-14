@@ -256,7 +256,9 @@ test('R06 integration keeps cutting highwater across repeat draft undo redo',asy
  assert.equal(h.step('undo'),true);value=h.frame.context.featureAttachments.find(r=>r.kind===Cutting.KIND).value;
  assert.equal(h.frame.context.assemblyDrafts[0].data.name,m.assemblyDrafts.records[0].data.name);assert.deepEqual(value,first);
  const golden=JSON.parse(fs.readFileSync(path.join(ROOT,'geometry-web/cdp_sections.golden.json'),'utf8'));
- assert.equal(golden.sections.R06,50,'KILLER[r06-353:keep-r06-golden]');
+ // R06 finding 6 (2026-11-14) adds exactly five R06 assertions; the projection checks that
+ // exact extension (and P77 = 134) before this original R06 = 50 baseline is compared.
+ assert.equal(require('./diagnostics/r06_legacy_canvas_extension.cjs').projectGolden(golden).sections.R06,50,'KILLER[r06-353:keep-r06-golden]');
  assert.equal(golden.sections.P353,355,'KILLER[r06-353:keep-p353-golden]');
  assert.equal(golden.total,Object.values(golden.sections).reduce((sum,n)=>sum+n,0),'KILLER[r06-353:golden-union-total]');
 });
