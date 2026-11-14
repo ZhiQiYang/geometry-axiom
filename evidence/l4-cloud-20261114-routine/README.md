@@ -6,6 +6,8 @@
 1. **R14** 面材分份 host／App 第一片（[#379](https://github.com/ZhiQiYang/geometry-axiom/pull/379)，merge `724d0370`）。
 2. **R04 d 重核**：重複開間解除 64 支上限（[#378](https://github.com/ZhiQiYang/geometry-axiom/pull/378)，merge `6f25a11c`）；11-13 當時世界已有 64 支時預覽全部「不能生成」。
 
+> 目錄名加 `-routine`：同日 PR #405 另有一批獨立執行的核對放在 `evidence/l4-cloud-20261114/`（伺服器 main `724d0370`，範圍不同）。兩批原件分開保存，互不覆寫。
+
 **界線：這是雲端實機操作，不是使用者驗收（L5）。** 沒有核對的範圍見「未核對」。
 
 ## 環境與方法
@@ -59,7 +61,7 @@ R04 d 的墊底 62 支照 11-13 經「進階指令」列輸入（App 的真實�
 `scripts/`：`lib.js`（11-13 原樣）、`walk_r14.js`、`walk_r04d.js`。執行方式（需先照上面啟動 18839 埠）：
 
 ```sh
-export OUT=evidence/l4-cloud-20261114 NODE_PATH=$(npm root -g)
+export OUT=evidence/l4-cloud-20261114-routine NODE_PATH=$(npm root -g)
 node $OUT/scripts/walk_r14.js
 node $OUT/scripts/walk_r04d.js                                   # 11-13 原步驟
 GRIDU="$(seq -s ' ' 300 300 3600)" GRIDV="$(seq -s ' ' 400 400 2800)" PFIN=11 SFIN=6 TAG=-12x7 node $OUT/scripts/walk_r04d.js
