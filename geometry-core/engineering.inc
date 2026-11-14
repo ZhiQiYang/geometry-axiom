@@ -27,18 +27,10 @@ static WoodEngineeringContext app_eng_context(const World *world)
 {World *w=(World *)world;WoodEngineeringContext c={&w->wood.engineering,w,g_engineering_error,sizeof g_engineering_error,app_eng_placement,app_eng_target,app_eng_named,app_eng_parameter,app_eng_owned,app_eng_write,app_eng_serializable};c.versions=app_eng_version_store(w);WoodEngineeringSources *sources=app_engineering_sources(w);if(sources)wood_engineering_sources_bind(sources,&c);return c;}
 static bool eng_fail(const char *text)
 {WoodEngineeringContext c={0};c.error=g_engineering_error;c.error_capacity=sizeof g_engineering_error;return wood_eng_fail(&c,text);}
-static bool eng_id(const char *s)
-{return wood_eng_id(s);}
 static bool eng_u32(const GeoJson *j,int t,uint32_t *out,bool positive)
 {return wood_eng_u32(j,t,out,positive);}
 static bool eng_coord(const GeoJson *j,int t,Coord *out,bool positive)
 {return wood_eng_coord(j,t,out,positive);}
-static bool eng_optional_text(const GeoJson *j,int obj,const char *key)
-{return wood_eng_optional_text(j,obj,key);}
-static bool eng_ref_parse(GeoJson *j,int t,EngVersionRef *r,bool optional)
-{return wood_eng_ref_parse(j,t,r,optional);}
-static bool eng_axis(const GeoJson *j,int t,int *axis)
-{return wood_eng_axis(j,t,axis);}
 static const EngMaterialVersion *eng_material(const World *w,const char *id,uint32_t version)
 {WoodEngineeringContext c=app_eng_context(w);return wood_eng_material(&c,id,version);}
 static const EngMethodVersion *eng_method(const World *w,const char *id,uint32_t version)
@@ -51,8 +43,6 @@ static EngApplication *eng_application(World *w,const char *id)
 {WoodEngineeringContext c=app_eng_context(w);return wood_eng_application(&c,id);}
 static bool eng_source_parse(GeoJson *j,int t,EngDimensionSource *s,bool allow_app)
 {WoodEngineeringContext c={0};c.error=g_engineering_error;c.error_capacity=sizeof g_engineering_error;return wood_eng_source_parse(&c,j,t,s,allow_app);}
-static bool eng_target_parse(GeoJson *j,int t,EngTarget *target)
-{WoodEngineeringContext c={0};c.error=g_engineering_error;c.error_capacity=sizeof g_engineering_error;return wood_eng_target_parse(&c,j,t,target);}
 static bool eng_same_target(const EngTarget *a,const EngTarget *b)
 {return wood_eng_same_target(a,b);}
 static EngBinding *eng_binding(World *w,const EngTarget *target)
