@@ -30,6 +30,18 @@ function projectWorkspaceGolden(value) {
   return old;
 }
 
+
+function verifyWorkspaceGoldenRebase() {
+  const beforeP1161 = projectWorkspaceGolden(golden);
+  assert.equal(beforeP1161.sections.R06, 55, 'R396_R06_PLUS_FIVE_RETAINED');
+  assert.equal(beforeP1161.total, 4828, 'R396_R06_PLUS_FIVE_95_TOTAL');
+  const raw = fs.readFileSync(shards.GOLDEN_PATH, 'utf8').replace(/\r\n/g, '\n');
+  const tampered = raw.replace('    "P360": 13,\n', '    "P360": 13, \n');
+  assert.notEqual(tampered, raw, 'R396_BYTE_PROBE_CHANGED');
+  assert.throws(() => projectWorkspaceGolden(golden, tampered),
+    /R396_R06_REBASED_GOLDEN_BYTES_UNCHANGED/, 'R396_BYTE_PIN_REJECTS_WHITESPACE_DRIFT');
+}
+
 function result(index, change = r => r) {
   const sections = shards.expectedSections(golden, plan, index), handoff = {};
   if (plan.boundaries[index - 1]) handoff.outgoing = {boundary: index, localStorage: clone(plan.boundaries[index - 1].localStorage), matched: true};
@@ -94,6 +106,7 @@ test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍�
 });
 
 test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 golden', () => {
+  verifyWorkspaceGoldenRebase();
   const verdict = shards.verifyComplete(complete(), context);
   assert.deepEqual(verdict.problems, []);
   assert.equal(verdict.passed, true);
