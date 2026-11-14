@@ -1818,7 +1818,19 @@ const ReferenceWorkspace = (() => {
     const url=URL.createObjectURL(new Blob([bytes],{type:"application/zip"})),a=document.createElement("a");
     a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);
   }
+  // #400: last project-save outcome. A rejection must stay visible to later
+  // asynchronous status writers (room confirmation finishing after the click),
+  // so they can tell the user the project was not saved instead of covering it.
+  let saveOutcome={seq:0,ok:null,message:""};
+  function noteSaveOutcome(ok,message){saveOutcome={seq:saveOutcome.seq+1,ok,message:String(message||"")};}
   async function save() {
+    let written;
+    try { written=await saveProjectFile(); }
+    catch (error) { noteSaveOutcome(false,error?.message||"保存失敗"); throw error; }
+    if (written) noteSaveOutcome(true,"");
+    return written;
+  }
+  async function saveProjectFile() {
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
     const roomCandidateWarning=flushRoomCandidates();
     const reportSave=message=>setStatus(roomCandidateWarning?message+" "+roomCandidateWarning:message);
@@ -1847,6 +1859,7 @@ const ReferenceWorkspace = (() => {
           reportSave(context()===c?"檔案已寫入；保存期間的新變更尚未保存，請再次保存。":"先前專案的檔案已寫入；目前專案的保存狀態未變更。");
         }}
       else {assertSnapshot(stamp);download(bytes,suggested);c.downloaded=true;if(roomCandidateWarning)c.dirty=true;c.provenance.lastDownloadAt=new Date().toISOString();reportSave("已產生專案下載；請確認下載完成後再關閉。");}
+      return true;
     } finally {busy=false;busyLabel="";busyShort="處理中";window.InfiniteGridWorkspace?.setProjectBusy(false);present();scheduleRecovery();}
   }
   function sameModelData(a, b) {
@@ -2259,5 +2272,5 @@ const ReferenceWorkspace = (() => {
     manifest,readScenarioProject,readScenarioCatalog,commitScenarioCatalog,adoptScenario,exportBytes,importBytes,openProject,uploadScene,recoverLoad,mayLeave,sync,save,escape,
     readScenarioEditorTicket,createScenarioEditorTicket,updateScenarioEditorTicket,markScenarioEditorRetiring,verifyScenarioEditorRetirement,clearScenarioEditorTicket,
     initializeScenarioProject,pauseScenarioProject,resumeScenarioProject,freezeScenarioProject,assertScenarioFrozen,releaseScenarioProject,finishScenarioEditor,
-    historyActionLabel:op=>history.actionLabel(op),get busy(){return busy;} };
+    historyActionLabel:op=>history.actionLabel(op),get busy(){return busy;},get saveOutcome(){return {...saveOutcome};} };
 })();
