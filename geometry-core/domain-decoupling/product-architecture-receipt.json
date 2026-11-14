@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "546635d08a137b7d8f6a75d55b06753f67b6aee4",
+  "sourceHead": "90eff50d79c552af439aeca792e68e352f48f095",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43576313951",
+  "runId": "43576300301",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -21,7 +21,7 @@
       "exitCode": 0,
       "stdout": "architecture-cli.stdout",
       "stderr": "architecture-cli.stderr",
-      "stdoutSha256": "f7d60bb9f833e6a662f0cf67017810c88daa405e48f7c36481a9483e0a29d450",
+      "stdoutSha256": "40a39e37011ce8703cbeedf2f5a524589ab7c4ec35183d72c837ace10cbd39ff",
       "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "181973826ffe52c8791d37c7dde9633def56ee42da9cbde9bc8c4cefdd0ecf62",
+      "stderrSha256": "385d051da7cdc9b07f21ec81a3dc3d3f89ecfd6357216d13dd54976e833f85ee",
       "testsRun": 205
     },
     {
@@ -51,7 +51,7 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "8f03dd64e349911b2fce25ff7ca6785e6f6ab9d6d9286c067bba99b4a900e023",
+      "stderrSha256": "2c06f1e973ef2a9d2b32312799aafde23982e974a2ac3a8d478f9a11a58a414d",
       "testsRun": 18
     }
   ],
@@ -61,7 +61,7 @@
     "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
     "tests/test_product_architecture.py": "ba001185b4fd58a5cec8045cff72c1cf9c899733c94f94f28f161db05564a9a0"
   },
-  "scanSha256": "f7d60bb9f833e6a662f0cf67017810c88daa405e48f7c36481a9483e0a29d450",
+  "scanSha256": "40a39e37011ce8703cbeedf2f5a524589ab7c4ec35183d72c837ace10cbd39ff",
   "ownedCount": 352,
   "exclusionCount": 288,
   "edgeCount": 833,
@@ -69,7 +69,7 @@
   "inputs": [
     {
       "path": "current_geometry.c",
-      "lfSha256": "af136ed78ff68c5173e24f9476ff7eea0be9b49e06c975b8c9e96fceb00fa8d9"
+      "lfSha256": "6277e4eb6d89a897e8bf41559e8ff01ae6f5e5271b35c2cca99163be16c5c9d2"
     },
     {
       "path": "geometry-app/application.js",
@@ -161,11 +161,11 @@
     },
     {
       "path": "geometry-app/native/history.c",
-      "lfSha256": "dbcabf028badf205143597db53d32d9875c1e04456ba03129eb6804e9d6894e5"
+      "lfSha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595"
     },
     {
       "path": "geometry-app/native/history.h",
-      "lfSha256": "6d1bbb0760dd433bb12c880e6f2ca8305014d0e3ebd8010ae8dd7eb04a7756b6"
+      "lfSha256": "b9a0b9b61a592bd857041ee4e984550ab9d7e8456d8c434a3f5002a59689e0e0"
     },
     {
       "path": "geometry-app/native/history_unity.inc",
@@ -1185,7 +1185,7 @@
     },
     {
       "path": "geometry-guide/公理層-閱讀器.html",
-      "lfSha256": "74356202913a97626368ff97aad314d696fa42c6b32d4d0d8951298872d3993f"
+      "lfSha256": "45f9ab176e81935534dfdd3441734dfc967838c483b9030235c8efa7ab10a7fe"
     },
     {
       "path": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
@@ -1453,11 +1453,11 @@
     },
     {
       "path": "geometry-templates/woodworking/native/world_validation.c",
-      "lfSha256": "7747d5b29b04b1ed9966d6dabb581cd5d58485425ce112eae20dd896376ff1cb"
+      "lfSha256": "f24caaf3a93791921b00a9f76c6e66e4614b65bfadd45f2d0b457be0674e63c2"
     },
     {
       "path": "geometry-templates/woodworking/native/world_validation.h",
-      "lfSha256": "1454bf2b3c6ecf76aa1b2064b9ea4ad5fb154bd4b3af353cb3042ff9de57f39a"
+      "lfSha256": "7ce7346bac28aca1f246098e06a889606dcf0a962c662e771660e60896842451"
     },
     {
       "path": "geometry-web/app.js",
@@ -2628,5 +2628,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "9bc226037265a2239164aff58874c85bcc62dc19e2a63b0a791830125cc94264"
+  "inputLfClosureSha256": "b71084aa2655e5f229caa0499c3aa7941082904ad2fc7bf68f29fd409bf2f401"
 }
