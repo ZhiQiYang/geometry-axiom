@@ -54,7 +54,11 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
   }
   async function fixture(mode='range'){
     await read(`(async()=>{AssemblyWorkspace.close();InfiniteGridWorkspace.close(true);resetSceneFocus();const r=await fetch('/examples/assembly-generation-v1.gcanvas');if(!r.ok)throw Error('R06 legacy setup fixture missing');await ReferenceWorkspace.importBytes(new Uint8Array(await r.arrayBuffer()),'R06 fixture.gcanvas');await setView3(false);await renderObjects();})()`);
-    await settle();await ctl('#btnNewAssembly');await ctl('[data-asm-binding="1"]');await ctl('#asmInstanceDelete1');await previewReady();await confirm();await ctl('#asmClose');
+    await settle();
+    // Keep the single-layout instance #1 (timbers 1-3, u 500..2500) and its guides;
+    // the repeated bays go to u 3000..3500 so nothing collides with it.
+    if(mode==='legacy'){await nativeFixture(['grid 1 on 1 u 3000 3500 v 1000 2000']);await settle();return;}
+    await ctl('#btnNewAssembly');await ctl('[data-asm-binding="1"]');await ctl('#asmInstanceDelete1');await previewReady();await confirm();await ctl('#asmClose');
     await nativeFixture(['spec position2 1500','guide 2 1 v spec:position2','spec position3 2500','guide 3 1 v spec:position3']);
     if(mode==='grid'){
       await nativeFixture(['grid-system 1 name-hex 523036 main-along none u repeat 500 1000 v repeat 1000 1000']);
@@ -174,7 +178,7 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
       check('R06_BR12_DRAFT_COLD_ERRORS 僅草稿冷開服務沒有未處理頁面例外',onlyCold.errors.length===0,onlyCold.errors);
     }finally{await onlyCold.close();}
     await danglingReference();await unsupportedTopology();
-    await upstreamPointer();await upstreamGrid();await derivedOutlineArchive();
+    await upstreamPointer();await upstreamGrid();await derivedOutlineArchive();await legacyInstanceRepeat();
     check('R06_NO_BROWSER_EXCEPTION 正式操作沒有新增未處理例外',exceptionCount()===errors);
     if(process.env.GEOMETRY_R06_MAIN_INTEGRATION==='1'){
       await integratedArchive();await fixture();
@@ -405,6 +409,29 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
     await read(`centerOnNode(${JSON.stringify(kind)},${id});void 0`);
     await wait(`(()=>{const r=document.querySelector('.ocard[data-kind="${kind}"][data-id="${id}"] .card-enter')?.getBoundingClientRect();return !!r&&r.width>0&&r.height>0;})()`);
     console.log('R06 canvas fixture after locating target',await targetState());
+  }
+  // 2026-11-13 cloud L4 walk, finding 6: a project that already holds a single-layout
+  // instance must still preview and confirm a repeated-bay instance. Its kept timbers
+  // carry the native legacy identity {memberId}. The wait below ends on either the
+  // rendered preview or the workspace error, so a regression fails a named check.
+  async function legacyInstanceRepeat(){
+    await fixture('legacy');
+    const legacyOf=instances=>instances.find(r=>r.value.source.id===1),before=legacyOf((await state()).instances);
+    check('R06_LEGACY_FIXTURE 舊式單一開間實例 #1 仍在場景',!!before&&before.value.source.layout!=='bay-repeat',before?.value?.source);
+    await newRepeat();await clearRows();await range('primary','0','1');await range('secondary','0','1');
+    const count=await generationCount();await ctl('#asmPreview');
+    await wait(`window.__r06PreviewLog.filter(x=>x.url==='/assembly/generate-preview').length>${count}&&(!!$('asmPreviewResult')?.textContent||!!$('asmStatus')?.classList.contains('asm-error'))`);
+    const p=await generation(),kept=(p?.impact?.timbers||[]).filter(t=>t.owner?.instance===1);
+    check('R06_LEGACY_NATIVE_KEPT 原生候選有效且舊實例角材以 memberId 身分保留',p?.valid===true&&kept.length===3&&
+      kept.every(t=>t.change==='kept'&&Number.isInteger(t.owner.identity?.memberId)&&t.owner.identity.memberId>0),{valid:p?.valid,kept});
+    const ui=await read(`({error:$('asmStatus')?.classList.contains('asm-error'),status:$('asmStatus')?.textContent,confirm:!!$('asmConfirm')&&!$('asmConfirm').disabled,
+      cells:[...document.querySelectorAll('#asmBayCells [data-bay-cell]')].map(e=>e.dataset.bayStatus)})`);
+    check('R06_LEGACY_PREVIEW_CONFIRMABLE 有舊式實例時重複開間預覽可確認',ui.error===false&&ui.confirm===true&&ui.cells.length===2&&ui.cells.every(c=>c==='generated'),ui);
+    await confirm();
+    const after=(await state()).instances;
+    check('R06_LEGACY_COMMIT 確認後舊實例原樣保留並新增重複開間實例',same(legacyOf(after),before)&&after.length===2&&
+      after.some(r=>r.value.source.id!==1&&r.value.source.layout==='bay-repeat'),after.map(r=>({id:r.value.source.id,layout:r.value.source.layout||'single'})));
+    await ctl('#asmClose');
   }
   async function upstreamPointer(){
     await fixture('pointer');const old=await createMixedDraft(false);await ctl('#asmClose');await fitCanvasCards('boundary',1);await ctl('.ocard[data-kind="boundary"][data-id="1"] .card-enter');
