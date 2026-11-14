@@ -163,6 +163,9 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
     await until(`!!$('roomNew') && !!$('roomNewMethod')`);
   }
   async function saveProject() {
+    // A room's metadata can appear before its final native write settles.
+    // Save correctly rejects during this window; wait before the click.
+    await until(`!ReferenceWorkspace.busy && !oc.busy && ReferenceWorkspace.getEvidenceState().blocked===false`);
     await read(`(${installSaveProbe.toString()})();0`);
     try {
       await ctl('#projectBar [data-project-action="save"]');
