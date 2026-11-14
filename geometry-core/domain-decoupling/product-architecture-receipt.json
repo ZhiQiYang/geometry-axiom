@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "8c49c6831cdfba17ba23bbe02a0503a95788f951",
+  "sourceHead": "687b493b2a12b804c3b5f22118273cd734e2b586",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43563239942",
+  "runId": "43576327532",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "d03c5440490eb3ffc87e0d980e9b06476792f082c8d1e45ba02c0717e789523e",
+      "stderrSha256": "2a02f80e09b77f9a6f204745f03d7b93323607135dd4375cc61fcb829d224548",
       "testsRun": 205
     },
     {
@@ -51,7 +51,7 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "36024d0ab3ab546f4a2d34c5071d28d0aa0c664a85f24894907d38dceadaa788",
+      "stderrSha256": "192fdad036dbc46e5bc0ed168e76bbe993659bf83ade139de904b20cee281033",
       "testsRun": 18
     }
   ],
@@ -1177,7 +1177,7 @@
     },
     {
       "path": "geometry-guide/sync_axiom_reader.py",
-      "lfSha256": "e8964fb38f56ae8e1e62fbee213fed96e31f615d697cab7a253081deadebe13e"
+      "lfSha256": "f7cdb11c13d9a867c6536944c6c9b12c7e6724de1c229fe4c727404055eb26a3"
     },
     {
       "path": "geometry-guide/witness.py",
@@ -1185,7 +1185,7 @@
     },
     {
       "path": "geometry-guide/公理層-閱讀器.html",
-      "lfSha256": "74356202913a97626368ff97aad314d696fa42c6b32d4d0d8951298872d3993f"
+      "lfSha256": "4f58dbb93bcb5db1540b843ae85fe55e726c6725a0b8a15440e5f9dd904b3a64"
     },
     {
       "path": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
@@ -2628,5 +2628,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "db3ef30a066a3e0e081de44f595a729680e76725fb2fec3cbf759906fecfeb3f"
+  "inputLfClosureSha256": "a89af03112513c426076a4c949aa4082b9feb091b7856a5a220219e31749c74a"
 }
