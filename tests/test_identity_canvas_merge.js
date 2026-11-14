@@ -22,7 +22,7 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
   // Merged #355 and #356: each owner's unchanged exact projection removes only
   // its own section (R02 P128, R11 P116); together they restore main exactly.
   // #400 adds exactly three P90 assertions; that projection restores P90 = 8.
-  // R06 finding 6 adds exactly five P77 assertions; that projection restores P77 = 134.
+  // R06 finding 6 adds exactly five R06 assertions; that projection restores R06 = 50.
   const golden = r06LegacyExtension.projectGolden(r400Extension.projectGolden(timberExtension.projectGolden(pfExtension.projectGolden(rawGolden))));
   for(const value of [undefined,0,380,382]){
     const probe=JSON.parse(JSON.stringify(rawGolden));
@@ -47,11 +47,11 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
     else probe.sections.P90 = count;
     assert.throws(() => r400Extension.projectGolden(probe), /R400_P90_IMMEDIATE_SAVE_COUNT/);
   }
-  for (const count of [undefined, 134, 138, 140]) {
+  for (const count of [undefined, 50, 54, 56]) {
     const probe = JSON.parse(JSON.stringify(rawGolden));
-    if (count === undefined) delete probe.sections.P77;
-    else probe.sections.P77 = count;
-    assert.throws(() => r06LegacyExtension.projectGolden(probe), /R06_LEGACY_P77_COUNT/);
+    if (count === undefined) delete probe.sections.R06;
+    else probe.sections.R06 = count;
+    assert.throws(() => r06LegacyExtension.projectGolden(probe), /R06_LEGACY_R06_COUNT/);
   }
 });
 

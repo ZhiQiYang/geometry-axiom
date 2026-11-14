@@ -72,7 +72,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(verdict.summary.total, context.golden.total);
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
-  // R06 finding 6 adds exactly five P77 assertions; project them out too.
+  // R06 finding 6 adds exactly five R06 assertions; project them out too.
   const golden=r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(context.golden)));
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
