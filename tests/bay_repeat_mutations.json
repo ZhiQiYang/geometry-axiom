@@ -214,7 +214,11 @@
     "R06_INT_SAVE",
     "R06_INT_COLD",
     "R06_INT_STRIPPED",
-    "R06_INT_ERRORS"
+    "R06_INT_ERRORS",
+    "R06_LEGACY_FIXTURE",
+    "R06_LEGACY_NATIVE_KEPT",
+    "R06_LEGACY_PREVIEW_CONFIRMABLE",
+    "R06_LEGACY_COMMIT"
   ],
   "nodeBaseline": [
     {
@@ -1217,6 +1221,22 @@
           "file": "geometry-web/reference-workspace.js",
           "before": "&& (!/^timber-edit-confirm /.test(cmd) || result.history_changed !== false) && !(cmd.startsWith(\"panel-fill-confirm \")",
           "after": "&& !(cmd.startsWith(\"panel-fill-confirm \")"
+        }
+      ]
+    },
+    {
+      "name": "r06_browser_legacy_member_identity_rejected",
+      "kind": "browser",
+      "test": "formal-cdp-assembly",
+      "assertion": "R06_LEGACY_PREVIEW_CONFIRMABLE",
+      "covers": [
+        "BR14"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/assembly-workspace.js",
+          "before": "||legacyMember(row.owner,v)))",
+          "after": "))"
         }
       ]
     }
