@@ -222,7 +222,7 @@ R19 的條文是 I19 例外三與 R6(d)(e)：`boundary` 固定段在它覆蓋那
 證據：`r09f/walk_r09f.result.json`、`r09f/walk_r09f.stale.json`、`r09f/r09f.gcanvas`、`r09f/R09f-*.jpg`。
 
 **操作中發現的問題**（這次沒有改產品碼；編號接續 11-13 的 1～8）：
-9. 「核對新舊差異」表把只有 JSON 鍵順序不同的列標成有變更。這次的 `projection`（`view`／`region` 順序對調）與「角材」（`kind`／`id` 順序對調）兩列內容相同，卻和真的變了的 `scene_hash` 一樣上色（`R09f-2-diff-preview.jpg`）。原因在 `geometry-web/model-update-app.js`：`json()` 直接 `JSON.stringify`，`table()` 以字串不相等判斷變更。使用者要逐列核對，誤標會讓人以為來源或角材被改了。修正送審於 #405 之後的後續 PR（差異表改用鍵排序後的 JSON 顯示與比較）。
+9. 「核對新舊差異」表把只有 JSON 鍵順序不同的列標成有變更。這次的 `projection`（`view`／`region` 順序對調）與「角材」（`kind`／`id` 順序對調）兩列內容相同，卻和真的變了的 `scene_hash` 一樣上色（`R09f-2-diff-preview.jpg`）。原因在 `geometry-web/model-update-app.js`：`json()` 直接 `JSON.stringify`，`table()` 以字串不相等判斷變更。使用者要逐列核對，誤標會讓人以為來源或角材被改了。修正已進 main（[#411](https://github.com/ZhiQiYang/geometry-axiom/pull/411) merge `9d551d58`；差異表改用鍵排序後的 JSON 顯示與比較），合併後在 main 重走見下方「發現 9 合併後重核」。
 
 **未核對**：
 - 來源在對話框之外被改的過期情形（另一分頁、外部檔案）：單一分頁 UI 走不到。
@@ -447,3 +447,17 @@ R19 的條文是 I19 例外三與 R6(d)(e)：`boundary` 固定段在它覆蓋那
 證據：`r07x/walk_r07x.result.json`、`r07x/R07x-*.jpg`。
 
 **仍未核對**：關掉整個瀏覽器（實體瀏覽器保留 IndexedDB、不保留分頁 `sessionStorage`，預期同 B，但雲端用的是無頭瀏覽器，沒有真的關掉重開設定檔）、瀏覽器「重新開啟已關閉的分頁」（會帶回 `sessionStorage`）、Windows 本機。
+
+## 發現 9 合併後重核：差異表不再把只有鍵順序不同的列標成變更（main `9d551d58`）
+
+伺服器從 main `9d551d58`（#411 合併後）的乾淨工作樹啟動（`runtime_version.py --probe` version `769f46b6…1dce3`、`fresh:true`）。
+
+**操作路徑**：同 R09a/F1b（`scripts/walk_r09g.js` 與 `walk_r09f.js` 相同，只多記差異表中帶 `mu-changed` 的列名與儲存格）。範例 → 面 1「以此面建立空間」→ 建立模型 → 進階指令把外環改成 4500 寬 → 3D 模型庫「修改模型」→「採用現行來源…」→ 明選放置面、四邊、三支角材 →「預覽新舊差異」。
+
+**結果：通過。**
+- 被標成變更的列：`scene_hash`、`clearance_mm3`、`timber_volume_mm3`、`volume_mm3`、`wall_volume_mm3`、「各交換包的完整角材」、五個交換包（空間邊界／空間實體／扣除後淨空／材料牆／角材結構「完整包：已變更」），共 11 列（全表 35 列）。
+- 修正前被誤標的 `projection` 與「角材」兩列**不再上色**；兩列現在都以鍵排序後的 JSON 顯示，舊模型與候選模型逐字相同（`{"kind":"space-boundary-plan","region":"interior","view":"top","wallSide":"outside"}`、`[{"id":90,"kind":"timber"},…]`）。
+- 「各交換包的完整角材」仍上色是真的變了：角材 #90、#91 世界尺寸 4000 × 20 × 20 → 4500 × 20 × 20 mm、材料體積 1600000 → 1800000 mm³；角材 #1 不變。
+- 其餘流程與 R09a/F1b 相同：取消零寫入、確認後同一模型 id、復原／重做、另存冷開逐字相同。`errsA`／`errsB` 只有「新專案」確認框。
+
+證據：`r09g/walk_r09g.result.json`（`firstChangedRows`、`firstChangedCells`）、`r09g/r09g.gcanvas`、`r09g/R09g-2-diff-preview.jpg`。
