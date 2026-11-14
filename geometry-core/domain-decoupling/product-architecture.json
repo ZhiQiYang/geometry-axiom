@@ -2767,7 +2767,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "e72367f82e5d329fcf578b776e0186e032619136758efb0a431a046b87fcb5aa",
+      "sha256": "feaaf5e897acf5910e6411c2b2d9b5a55d665cc119797167f149bb963d557bf6",
       "hashMode": "lf"
     },
     {
@@ -3211,7 +3211,7 @@
     {
       "path": "geometry-web/grid_rule_editor_test.js",
       "reason": "Dedicated acceptance/test driver grid_rule_editor_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "ba2ee897e05d862a44ec275c098626627a90bd83dedf6ca2c7f377a58729cc53",
+      "sha256": "d8736d3b7f33fe5a75b3c87da0b2f174e84d390f878fafcecac818c83110a113",
       "hashMode": "lf"
     },
     {
@@ -3481,7 +3481,7 @@
     {
       "path": "geometry-web/room_candidate_browser_test.js",
       "reason": "Dedicated acceptance/test driver room_candidate_browser_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "896e4f7f4f89ff22b83fc8362aaef0d7916d17053f2fa6f4e87f5fd9834bfb45",
+      "sha256": "73fdd349cf468cf2b34f816ad17e7fe80c8028e464694d78d2b4e53138ea8fe5",
       "hashMode": "lf"
     },
     {
@@ -3872,6 +3872,12 @@
       "path": "geometry-web/timber_reuse_test.js",
       "reason": "Dedicated R11 second-slice browser acceptance driver; loaded only by cdp_test.js, never by product runtime or served application entry points.",
       "sha256": "14851462d9ddcff40f90b90c68a9a5a21b1570230242f1f563947b9427271ce0",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/r14_panel_entry_test.js",
+      "reason": "Dedicated R14 first-slice browser acceptance driver; loaded only by cdp_test.js in the R14-only CI gate, never by product runtime or served application entry points.",
+      "sha256": "b03f2a813305eeb6df0af8279059d2510af68b5e357cc03b3d12e69c2fd84d75",
       "hashMode": "lf"
     }
   ],
