@@ -1,0 +1,72 @@
+{
+ "params": {
+  "PAD": 62,
+  "U": "300 600 900 1200 1500 1800 2100 2400 2700 3000 3300 3600",
+  "V": "300 600 900 1200 1500 1800 2100 2400 2700",
+  "PU": "11",
+  "PV": "8",
+  "EX": "geometry-web/examples/assembly-generation-v1.gcanvas"
+ },
+ "gridErrors": [],
+ "worldBefore": {
+  "free": 64,
+  "owned": 0,
+  "total": 64
+ },
+ "formPrimaries": 12,
+ "formLines": 9,
+ "previewMs": 11564,
+ "cellCount": 99,
+ "cellStatus": {
+  "generated": 99
+ },
+ "previewHeadline": "這次會生成「角材組合・角材」",
+ "previewNewIdentities": 111,
+ "previewCapacityLines": [],
+ "asmStatusAfterPreview": "驗證通過，確認後才會套用。",
+ "confirmEnabled": true,
+ "confirmMs": 11840,
+ "asmStatusAfterConfirm": "已套用，可使用畫布復原；請保存專案。",
+ "worldAfterConfirm": {
+  "free": 64,
+  "owned": 111,
+  "total": 175
+ },
+ "worldAfterUndo": {
+  "free": 64,
+  "owned": 0,
+  "total": 64
+ },
+ "undoMs": 116,
+ "worldAfterRedo": {
+  "free": 64,
+  "owned": 111,
+  "total": 175
+ },
+ "redoMs": 119,
+ "alerts": [
+  "-: 有未保存的變更",
+  "-: 尚未檢查"
+ ],
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopenLoadMs": 17907,
+ "reopenStatus": [
+  "-: 已保存",
+  "-: 從空白處拖曳，框選物件"
+ ],
+ "worldReopened": {
+  "free": 64,
+  "owned": 111,
+  "total": 175
+ },
+ "reopenedInstances": [
+  "角材組合・角材 主支 #1 → 角材 #1 · 2960 mm；主支 #2 → 角材 #2 · 2960 mm；主支 #3 → 角材 #3 · 2960 mm；主支 #4 → 角材 #4 · 2960 mm；主支 #5 → 角材 #5 · 2960 mm；主支 #6 → 角材 #6 · 2960 mm；主支 #7 → 角材 #7 · 2960 mm；主支 #8 → 角材 #8 · 2960 mm；"
+ ],
+ "reopenedAsmStatus": "",
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
