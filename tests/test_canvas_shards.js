@@ -20,13 +20,22 @@ const sum = sections => Object.values(sections).reduce((a, b) => a + b, 0);
 // P1161 is the only extension over the exact 95-section baseline.
 // Its exact count was observed in two complete capture partitions using the existing handoff.
 // This is a candidate count; final-head strict Canvas replay remains required.
-function projectWorkspaceGolden(value) {
+function projectWorkspaceGolden(value, rawSource = fs.readFileSync(shards.GOLDEN_PATH, 'utf8')) {
   assert.equal(value.sections.P1161, 510, 'R396_P1161_MEASURED_ASSERTION_COUNT');
+  assert.equal(value.sections.R06, 55, 'R396_R06_FIVE_ASSERTIONS_INCLUDED');
   const old = clone(value);delete old.sections.P1161;old.total -= 510;
-  const raw = fs.readFileSync(shards.GOLDEN_PATH, 'utf8').replace(/\r\n/g, '\n');
-  const projected = raw.replace('    "P1161": 510,\n', '').replace('  "total": 5333,\n', '  "total": 4823,\n');
-  assert.equal(shards.lfSha256(Buffer.from(projected)), '47731559a71bc01ddb608f114707cda3c664b9d8742e37bd5061d464a028b6ef', 'R396_95_OLD_GOLDEN_BYTES_UNCHANGED');
-  assert.equal(old.total, 4823, 'R396_OLD_TOTAL_UNCHANGED');
+  const raw = rawSource.replace(/\r\n/g, '\n');
+  const withoutP1161 = raw.replace('    "P1161": 510,\n', '');
+  assert.notEqual(withoutP1161, raw, 'R396_P1161_RAW_LINE_REQUIRED');
+  const projected = withoutP1161.replace('  "total": 5338,\n', '  "total": 4828,\n');
+  assert.notEqual(projected, withoutP1161, 'R396_R06_REBASED_TOTAL_LINE_REQUIRED');
+  assert.equal(shards.lfSha256(Buffer.from(projected)), 'ac98a30ec18b56a3249017d983483acda0d457f8111b64f46e5b0d8a37cd8b4b', 'R396_R06_REBASED_GOLDEN_BYTES_UNCHANGED');
+  const withoutR06Addition = projected.replace('    "R06": 55,\n', '    "R06": 50,\n');
+  assert.notEqual(withoutR06Addition, projected, 'R396_R06_FIVE_RAW_LINE_REQUIRED');
+  const historical = withoutR06Addition.replace('  "total": 4828,\n', '  "total": 4823,\n');
+  assert.notEqual(historical, withoutR06Addition, 'R396_HISTORIC_TOTAL_LINE_REQUIRED');
+  assert.equal(shards.lfSha256(Buffer.from(historical)), '47731559a71bc01ddb608f114707cda3c664b9d8742e37bd5061d464a028b6ef', 'R396_95_OLD_GOLDEN_BYTES_UNCHANGED');
+  assert.equal(old.total, 4828, 'R396_OLD_TOTAL_UNCHANGED');
   return old;
 }
 
