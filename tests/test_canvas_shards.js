@@ -16,6 +16,19 @@ const REAL = {planSha256: shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)), go
 const clone = value => JSON.parse(JSON.stringify(value));
 const sum = sections => Object.values(sections).reduce((a, b) => a + b, 0);
 
+// P1161 is the only extension over the exact 95-section baseline.
+// Its exact count was observed in two complete capture partitions using the existing handoff.
+// This is a candidate count; final-head strict Canvas replay remains required.
+function projectWorkspaceGolden(value) {
+  assert.equal(value.sections.P1161, 510, 'R396_P1161_MEASURED_ASSERTION_COUNT');
+  const old = clone(value);delete old.sections.P1161;old.total -= 510;
+  const raw = fs.readFileSync(shards.GOLDEN_PATH, 'utf8').replace(/\r\n/g, '\n');
+  const projected = raw.replace('    "P1161": 510,\n', '').replace('  "total": 5333,\n', '  "total": 4823,\n');
+  assert.equal(shards.lfSha256(Buffer.from(projected)), '47731559a71bc01ddb608f114707cda3c664b9d8742e37bd5061d464a028b6ef', 'R396_95_OLD_GOLDEN_BYTES_UNCHANGED');
+  assert.equal(old.total, 4823, 'R396_OLD_TOTAL_UNCHANGED');
+  return old;
+}
+
 function result(index, change = r => r) {
   const sections = shards.expectedSections(golden, plan, index), handoff = {};
   if (plan.boundaries[index - 1]) handoff.outgoing = {boundary: index, localStorage: clone(plan.boundaries[index - 1].localStorage), matched: true};
@@ -64,9 +77,9 @@ test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍�
   const owner = plan.shards.find(s => s.sections.includes('P359'));
   assert.equal(owner.sections.at(-1), 'P359');
   assert.equal(plan.shards[0].sections.includes('P353'), false, 'R369_P353_SHARD: P353 is not in shard 1');
-  assert.deepEqual(plan.shards[1].sections.slice(-2), ['P353', 'P359'], 'R369_P353_ORDER: P353 immediately precedes the storage-reset suite');
+  assert.deepEqual(plan.shards[1].sections.filter(name => name !== 'P1161').slice(-2), ['P353', 'P359'], 'R369_P353_ORDER: P353 immediately precedes the storage-reset suite');
   // Merged with #355: cdp_test.js dispatches P352, P116 (timber reuse), P128 (R02 panel fill), P353, P359.
-  assert.deepEqual(plan.shards[1].sections.slice(-5), ['P352', 'P116', 'P128', 'P353', 'P359'], 'R356_P116_ORDER: reuse runs once before the R02 panel-fill, card-entry and storage-reset suites');
+  assert.deepEqual(plan.shards[1].sections.filter(name => name !== 'P1161').slice(-5), ['P352', 'P116', 'P128', 'P353', 'P359'], 'R356_P116_ORDER: reuse runs once before the R02 panel-fill, card-entry and storage-reset suites');
   assert.equal(all.filter(name => name === 'P116').length, 1, 'R356_P116_ONE_OWNER');
   assert.equal(plan.shards[0].sections.includes('R06'), false, 'R06_CANVAS_PLAN: R06 belongs to shard 2');
   const repeatAt = plan.shards[1].sections.indexOf('R06');
@@ -86,7 +99,8 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(verdict.summary.total, context.golden.total);
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
-  const golden=r400Extension.projectGolden(pfExtension.projectGolden(context.golden));
+  const beforeWorkspace=projectWorkspaceGolden(context.golden);
+  const golden=r400Extension.projectGolden(pfExtension.projectGolden(beforeWorkspace));
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
   // #360 and R06 add independent sections. Keep the original 4002/91 contract
@@ -115,7 +129,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.deepEqual(Object.keys(golden.sections).sort(), [...Object.keys(mainSections), 'P116'].sort(), 'R356_ONLY_NEW_SECTION');
   assert.equal(golden.total, sum(mainSections) + golden.sections.P116, 'R356_COMPLETE_COUNT_UNION');
   assert.equal(Object.keys(golden.sections).length, 94);
-  assert.equal(Object.keys(context.golden.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
+  assert.equal(Object.keys(beforeWorkspace.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
   assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });
