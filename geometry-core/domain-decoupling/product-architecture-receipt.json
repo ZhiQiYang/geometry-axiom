@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "aa22aa8c61fb9074296450ea1f95d8486767f887",
+  "sourceHead": "5b58f2d706dba2e33b65e87b4aa9e08fb3ee9207",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43595341942",
+  "runId": "43604775320",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "0be0dd9a08c64f039ed474c4b4d8465c5a0059ca49e39f80ea6531977872f18b",
+      "stderrSha256": "9bdb63825dc76736e0aee1787037c4822963fd251f8b0afb8a27fa968f6756c9",
       "testsRun": 205
     },
     {
@@ -51,11 +51,11 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "fd1c1c9c4fc2894e937a1225cf71d3e1c2137ccf2498c240d7e08e901036dae0",
+      "stderrSha256": "e551214522fafe0a6c376f83d6941c10c17d2881f63652e866c317ec2e440977",
       "testsRun": 18
     }
   ],
-  "manifestLfSha256": "04a5841d92124bf339bc06dc6d9036f8eff7544695d4711867277e08aee89425",
+  "manifestLfSha256": "595722c360d6ba62db57fdf937999c67e4a153fb535b1a6d2615ae7393014937",
   "scannerLfSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "testScriptsLfSha256": {
     "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
@@ -1473,11 +1473,11 @@
     },
     {
       "path": "geometry-web/assembly-workspace.js",
-      "lfSha256": "08939166b7e76a2e2a3c5a52bf3cab5db0f62de637799db67dde00194eea2a7c"
+      "lfSha256": "0ac0b9b709c674e04a5393e8a85366107c8f5365cad8b4492ddb0ef072187720"
     },
     {
       "path": "geometry-web/assembly_bay_repeat_test.js",
-      "lfSha256": "dd92789e86581ce7d33b2c16e7ce84fc75b6b7b50bc5a53eb66d9f39ae50a3d7"
+      "lfSha256": "2aee1a0d481f5bca83f6b410aabc86c9cc2f12b90d475b1334efd52702491ba7"
     },
     {
       "path": "geometry-web/assembly_binding_source_browser_check.js",
@@ -2628,5 +2628,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "6b0cd7f75a1d06b6abd873d06c3eab1d856455a4ee66c361a5fbc2ef03a858cd"
+  "inputLfClosureSha256": "1dcc1b455ada15de9be5980fd8568b0f13091fb4b9204802486cf850f749aca5"
 }
