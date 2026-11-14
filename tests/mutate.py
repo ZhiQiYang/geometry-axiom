@@ -704,6 +704,23 @@ MUTANTS += [
 ]
 
 
+# R17 / #335 D16a boundary-pair/1 native slice: core mutations judged by the
+# run_tests.py fixtures _ax_d16a_pair_*.scene (positive, P1-A, capability).
+MUTANTS += [
+    dict(id="R17_BP01_CANDIDATE", desc="D16a/R6(f)：成組成員不走 J_i=E_i 候選、退回單支路徑，13 mm 正例須拒絕而轉紅",
+         file="geometry-core/references.inc",
+         old="if(boundary_pair_member(w,ti)>=0)return boundary_pair_candidate(evaluation,w,ti);", new=""),
+    dict(id="R17_BP02_JOINT_CHECK", desc="D16a/R6(f)：重驗不跑成組共同驗證，P1-A 不互頂反例須被接受而轉紅",
+         old="if(!boundary_pair_check_all(candidate))return false;", new="if(false)return false;"),
+    dict(id="R17_BP03_FACING", desc="D16a P1-A：拿掉恰一組相向端點與寬向正長度接觸判定，不互頂反例須被接受而轉紅",
+         file="geometry-core/references.inc",
+         old="if(facing!=1||overlap<=0){", new="if(false){"),
+    dict(id="R17_BP04_CAPABILITY", desc="I32：場景成組語法不再要求 requires boundary-pair/1，未宣告反例須被接受而轉紅",
+         file="geometry-core/transactions.inc",
+         old="if(g_parsing_scene_file&&!g_pair_scene_required)", new="if(false)"),
+]
+
+
 # #360 R09a: these are native product mutations, judged by actual g_world
 # transactions. The old JS settleKey probe is not evidence for these rows.
 R09A_REVIEW = "tests.test_identity_ledger_review.IdentityLedgerReview."

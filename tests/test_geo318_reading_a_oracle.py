@@ -250,6 +250,34 @@ def assert_pair_positive(run):
     return actual
 
 
+def assert_pair_preview(preview, change="created"):
+    """Named I8a/D16a preview contract: authored records, both members' sources,
+    roles and old/new intervals, and the real central contact."""
+    try:
+        pairs = preview["boundaryPairs"]
+        group = next(g for g in pairs if (g["first"], g["second"]) == (1, 2))
+        assert group["change"] == change and group["capability"] == "boundary-pair/1", group
+        if change == "removed":
+            assert group["after"] is None and [m["id"] for m in group["before"]["members"]] == [1, 2], group
+            assert preview["command"] == "boundary-pair delete 1 2", preview["command"]
+            return group
+        assert group["before"] is None, group
+        members = {m["id"]: m for m in group["after"]["members"]}
+        for member, edge, interval in ((1, "e0", [0, 500]), (2, "e2", [500, 1000])):
+            m = members[member]
+            assert m["role"] == "boundary" and (m["A"], m["B"]) == (27, 20), m
+            assert m["source"] == {"surface": 1, "kind": "at-face", "edge": edge, "dir": "+u", "side": "+n"}, m
+            assert m["interval"] == interval and m["cross"] == ([0, 27] if member == 1 else [13, 40]), m
+        assert group["after"]["contacts"] == [{"member": 1, "end": "END", "peer": 2, "peerEnd": "START",
+                                               "plane": 500, "contact": [13, 27]}], group["after"]["contacts"]
+        for line in PAIR_LINES:
+            assert line in preview["command"].split("\n"), preview["command"]
+        assert preview["command"].startswith("boundary-pair begin ") and preview["command"].endswith("boundary-pair end")
+        return group
+    except (AssertionError, KeyError, StopIteration, TypeError) as error:
+        raise AssertionError("BOUNDARY_PAIR_PREVIEW_CONTRACT: %r" % (error,)) from None
+
+
 def placed_section(stdout):
     return stdout[stdout.index("=== 已放置的完整角材 ==="):stdout.index("=== SVG 三視圖 ===")]
 
@@ -325,6 +353,11 @@ class BoundaryPairNative(unittest.TestCase):
         self.assertTrue(self.load(before, scene)["ok"])
         lines = [line for line in before.command("dump")["text"].splitlines() if not line.startswith("#")]
         self.assertLess(lines.index("place 3 on 1 at-face e4 +u +n"), lines.index("boundary-pair begin 1 2"))
+        state = session.command("engineering-read")["state"]
+        self.assertEqual(["boundary-pair/1"], [c for c in state["required_capabilities"] if c == "boundary-pair/1"])
+        self.assertNotIn("boundary-pair/1", state["capabilities"], "the native subset is not complete host support")
+        self.assertEqual(("boundary-pair/1", False, ["literal"]), (state["boundary_pair_native"]["capability"],
+                         state["boundary_pair_native"]["complete"], state["boundary_pair_native"]["memberDimensionSources"]))
         positive = run_core(self.core, text)
         actual = assert_pair_positive(positive)
         self.assertEqual({1: 500, 2: 500}, {k: actual[k]["L"] for k in (1, 2)})
@@ -348,6 +381,7 @@ class BoundaryPairNative(unittest.TestCase):
         self.assertTrue(ended["ok"], ended)
         self.assertFalse(ended["history_changed"])
         token = ended["preview"]["token"]
+        assert_pair_preview(ended["preview"])
         self.assertEqual(empty, s.command("dump")["text"], "preview does not publish")
         self.assertFalse(s.line("boundary-pair begin 1 2")["ok"], "a pending preview blocks a new begin")
         self.assertFalse(s.line("confirm %d" % token)["ok"], "generic confirm cannot take a pair token")
@@ -371,6 +405,7 @@ class BoundaryPairNative(unittest.TestCase):
         self.assertTrue(s.line("boundary-pair cancel")["ok"])
         self.assertEqual(paired, s.command("dump")["text"])
         prepared = s.line("boundary-pair delete 1 2")
+        assert_pair_preview(prepared["preview"], "removed")
         removed = s.line("boundary-pair confirm %d" % prepared["preview"]["token"])
         self.assertTrue(removed["ok"], removed)
         self.assertEqual(empty, s.command("dump")["text"])
@@ -410,9 +445,26 @@ class BoundaryPairNative(unittest.TestCase):
              "", pair_scene(), "BOUNDARY_PAIR_POSITIVE"),
             ("pair-validation", "current_geometry.c", "if(!boundary_pair_check_all(candidate))",
              "if(false)", pair_scene(surface=rectangle), "BOUNDARY_PAIR_P1A_REFUSED"),
+            ("pair-preview", "geometry-web/reference_bridge.inc", "    json_boundary_pair_preview();\n",
+             "", None, "BOUNDARY_PAIR_PREVIEW_CONTRACT"),
         )
 
+        def preview_run(exe):
+            session = _bridge.BridgeSession(exe) if exe else _bridge.BridgeSession()
+            try:
+                self.assertTrue(self.load(session, STEP_SURFACE + "\n")["ok"])
+                for line in ("boundary-pair begin 1 2", *PAIR_LINES):
+                    self.assertTrue(session.line(line)["ok"], line)
+                return session.line("boundary-pair end")
+            finally:
+                session.stop()
+
         def judge(name, run):
+            if name == "pair-preview":
+                if not run.get("ok"):
+                    raise RuntimeError("preview setup failed: %r" % run)
+                assert_pair_preview(run["preview"])
+                return
             if name == "pair-candidate":
                 assert_pair_positive(run)
                 return
@@ -424,26 +476,51 @@ class BoundaryPairNative(unittest.TestCase):
         for name, module, before, after, scene, assertion in controls:
             with self.subTest(control=name):
                 phases = []
-                judge(name, run_core(self.core, scene))
+                fresh = (lambda: preview_run(None)) if scene is None else (lambda: run_core(self.core, scene))
+                judge(name, fresh())
                 phases.append(dict(phase="baseline", exit_code=0))
                 with tempfile.TemporaryDirectory(prefix="r17-withdraw-") as directory:
-                    exe = build_withdrawn_core(Path(directory), module, before, after)
-                    run = run_core(exe, scene)
+                    if scene is None:
+                        exe = build_withdrawn(Path(directory), "geometry-web/web_bridge.c", module, before, after, "bridge")
+                        run = preview_run_unchecked(exe)
+                    else:
+                        exe = build_withdrawn(Path(directory), "current_geometry.c", module, before, after, "core")
+                        run = run_core(exe, scene)
                     with self.assertRaises(AssertionError) as raised:
                         judge(name, run)
                     self.assertIn(assertion, str(raised.exception))
-                    phases.append(dict(phase="withdrawn", exit_code=1, core_exit=run.returncode,
+                    phases.append(dict(phase="withdrawn", exit_code=1, core_exit=getattr(run, "returncode", 0),
                                        assertion=str(raised.exception).split(":")[0]))
-                judge(name, run_core(self.core, scene))
+                judge(name, fresh())
                 phases.append(dict(phase="restored", exit_code=0))
                 print("R17_BOUNDARY_PAIR_WITHDRAWAL " + json.dumps(dict(control=name, module=module, phases=phases),
                       ensure_ascii=False), flush=True)
 
 
-def build_withdrawn_core(directory, module, before, after):
-    """Relocate current_geometry.c and one include file into TEMP; never edit the checkout."""
+def preview_run_unchecked(exe):
+    """Drive a withdrawn bridge directly (no registry freshness sidecar exists for it)."""
+    lines = ["loadfile " + str(_STEP_FILE()), "line boundary-pair begin 1 2", *("line " + l for l in PAIR_LINES),
+             "line boundary-pair end"]
+    run = subprocess.run([exe], input="\n".join(lines) + "\n", capture_output=True, text=True, encoding="utf-8", timeout=120)
+    if run.returncode < 0:
+        raise RuntimeError("withdrawn bridge crashed (signal %d); not a kill" % -run.returncode)
+    replies = [json.loads(line) for line in run.stdout.splitlines() if line.strip()]
+    if len(replies) != len(lines) or not all(r.get("ok") for r in replies):
+        raise RuntimeError("withdrawn bridge setup failed: %r" % replies)
+    return replies[-1]
+
+
+def _STEP_FILE():
+    directory = Path(tempfile.mkdtemp(prefix="r17-step-"))
+    path = directory / "step.scene"
+    path.write_text(STEP_SURFACE + "\n", encoding="utf-8")
+    return path
+
+
+def build_withdrawn(directory, main, module, before, after, registry):
+    """Relocate the main unit and one include file into TEMP; never edit the checkout."""
     variant = {}
-    for name in ("current_geometry.c", module):
+    for name in dict.fromkeys((main, module)):
         text = (ROOT / name).read_bytes().decode("utf-8").replace("\r\n", "\n")
         if name == module:
             if text.count(before) != 1:
@@ -460,12 +537,12 @@ def build_withdrawn_core(directory, module, before, after):
         target = targets[origin.resolve()]
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(re.sub(r'^#include "([^"\n]+)"', relocate, text, flags=re.M), encoding="utf-8")
-    exe = directory / "core-withdrawn"
+    exe = directory / (registry + "-withdrawn")
     cc = os.environ.get("CC", "cc")
-    build = subprocess.run([cc, *binaries.BY_NAME["core"].posix_flags, str(targets[(ROOT / "current_geometry.c").resolve()]),
+    build = subprocess.run([cc, *binaries.BY_NAME[registry].posix_flags, str(targets[(ROOT / main).resolve()]),
                             "-o", str(exe), "-lm"], cwd=ROOT, capture_output=True, text=True, timeout=900)
     if build.returncode:
-        raise RuntimeError("withdrawn core did not compile (setup failure, not a kill): " + build.stderr[-2000:])
+        raise RuntimeError("withdrawn " + registry + " did not compile (setup failure, not a kill): " + build.stderr[-2000:])
     return str(exe)
 
 

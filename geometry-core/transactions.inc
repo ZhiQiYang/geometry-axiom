@@ -872,7 +872,7 @@ static bool boundary_pair_internal_line(const char *path,int line_no,char **toke
     g_pair_internal=saved;return ok;
 }
 /* Interactive end/delete stage a read-only preview; a refused candidate keeps no token. */
-static bool boundary_pair_stage(const char *path,int line_no,char **tokens,int count,World *world)
+static bool boundary_pair_stage(const char *path,int line_no,char **tokens,int count,World *world,const char *source)
 {
     uint32_t before=g_preview.token;bool before_ready=g_preview.ready;
     bool ok=boundary_pair_internal_line(path,line_no,tokens,count,world);
@@ -882,6 +882,8 @@ static bool boundary_pair_stage(const char *path,int line_no,char **tokens,int c
         char reason[512];snprintf(reason,sizeof reason,"%s",g_scene_last_error[0]?g_scene_last_error:g_revalidate_error[0]?g_revalidate_error:"D16a: 候選不合法");
         boundary_pair_discard_preview();scene_error(path,line_no,reason);return false;
     }
+    /* R4/I8a: the preview names the authored records, not the internal commit record. */
+    snprintf(g_preview.command,sizeof g_preview.command,"%s",source);
     g_preview.pair_batch=true;return true;
 }
 static bool boundary_pair_route(const char *path,int line_no,char *tokens[],int count,World *world,bool *handled)
@@ -920,7 +922,12 @@ static bool boundary_pair_route(const char *path,int line_no,char *tokens[],int 
         if(count==2&&!strcmp(tokens[1],"end")){
             in->active=false;const BoundaryPairInput *saved=g_pair_commit_input;g_pair_commit_input=in;bool ok;
             if(g_parsing_scene_file){char *commit[2]={"boundary-pair","commit"};ok=boundary_pair_internal_line(path,line_no,commit,2,world);}
-            else{char *commit[3]={"preview","boundary-pair","commit"};ok=boundary_pair_stage(path,line_no,commit,3,world);}
+            else{
+                char source[SCENE_MAX_LINE];size_t used=(size_t)snprintf(source,sizeof source,"boundary-pair begin %u %u",in->ids[0],in->ids[1]);
+                for(size_t k=0;k<in->count&&used<sizeof source;++k)used+=(size_t)snprintf(source+used,sizeof source-used,"\n%s",in->lines[k]);
+                if(used<sizeof source)snprintf(source+used,sizeof source-used,"\nboundary-pair end");
+                char *commit[3]={"preview","boundary-pair","commit"};ok=boundary_pair_stage(path,line_no,commit,3,world,source);
+            }
             g_pair_commit_input=saved;return ok;
         }
         if(count==2&&!strcmp(tokens[1],"cancel")&&!g_parsing_scene_file){in->active=false;return true;}
@@ -955,7 +962,8 @@ static bool boundary_pair_route(const char *path,int line_no,char *tokens[],int 
             return boundary_pair_route_refuse(NULL,path,line_no,"D16a: 預覽尚未結束（確認或取消後才能準備刪除）");
         bool saved=g_pair_remove_armed;g_pair_remove_armed=true;bool ok;
         if(g_parsing_scene_file){char *remove[4]={"boundary-pair","remove",tokens[2],tokens[3]};ok=boundary_pair_internal_line(path,line_no,remove,4,world);}
-        else{char *remove[5]={"preview","boundary-pair","remove",tokens[2],tokens[3]};ok=boundary_pair_stage(path,line_no,remove,5,world);}
+        else{char source[96];snprintf(source,sizeof source,"boundary-pair delete %u %u",a,b);
+            char *remove[5]={"preview","boundary-pair","remove",tokens[2],tokens[3]};ok=boundary_pair_stage(path,line_no,remove,5,world,source);}
         g_pair_remove_armed=saved;return ok;
     }
     return boundary_pair_route_refuse(NULL,path,line_no,"D16a: boundary-pair begin <a> <b>|end|confirm <token>|cancel|delete <a> <b>");

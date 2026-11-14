@@ -159,8 +159,8 @@ bool wood_member_reference_pair_candidate(const WoodMemberReferenceContext *w,si
     bool along=a->length_direction==GEO_DIRECTION_POS_V||a->length_direction==GEO_DIRECTION_NEG_V;
     WoodMemberEdgeFact e;
     if(w->edge(w->user,p.id,-1,a->ref_edge,&e)!=WOOD_MEMBER_EDGE_OK)return w->issue(w->user,t->id,"D16a/I13","existing outer edge","edge missing");
-    if((e.segment.start.u==e.segment.end.u)!=along)
-        return w->issue(w->user,t->id,"I13","edge parallel to length","at-face 邊必須平行於長度軸");
+    if(along!=(e.segment.start.u==e.segment.end.u))
+        return w->issue(w->user,t->id,"D16a/I13","edge parallel to length","at-face 邊必須平行於長度軸");
     GeoCoord c=along?e.segment.start.u:e.segment.start.v;
     GeoCoord inward=(along?e.outward.u:e.outward.v)*-1;
     GeoCoord lo=inward>0?c:c-t->size_a,hi=lo+t->size_a;
