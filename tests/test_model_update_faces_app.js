@@ -13,11 +13,15 @@ function engine(mode,payload={}) {
   const result=spawnSync(process.env.PYTHON||'python',['-m','tests._model_update_faces_native',mode],{cwd:ROOT,input:JSON.stringify(payload),encoding:'utf8',timeout:90000,maxBuffer:32*1024*1024});
   assert.equal(result.status,0,result.stderr||result.error?.message);const value=JSON.parse(result.stdout);assert.equal(value.status,undefined,JSON.stringify(value));return value;
 }
-function harness({inactive=false,unknown=false,replaced=false}={}) {
+function harness({inactive=false,unknown=false,replaced=false,reorder=false}={}) {
   const f=clone(nativeData||=engine('fixture')),dom=createDOM(),commits=[],calls=[];
   if(unknown)delete f.record.sourceIdentity;
   if(inactive)f.graph.identityLedger.active=false;
   if(replaced)f.graph.nodes.find(x=>x.key==='placement:3').incarnation='b'.repeat(32)+':3';
+  // reorder: same saved record with every object's keys in reverse order (a
+  // project written by another build); review rows must not treat order as change.
+  const reversed=value=>Array.isArray(value)?value.map(reversed):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).reverse().map(k=>[k,reversed(value[k])])):value;
+  if(reorder)f.record=reversed(f.record);
   let record=clone(f.record),context='project-one',frame='frame-one',revision=1,reads=0,identityChange=false;
   let realmClone=clone;
   const state=()=>({context,frame,revision,contextToken:'native-one',undo:null,redo:null,group:null,blocked:false});
@@ -68,6 +72,15 @@ test('R362_UI_FACES exposes all native orientations, preserves ordered slots, pr
   assert.equal(h.commits.length,1,'R362_UI_FACES_ONE_COMMIT');assert.equal(h.commits[0].id,h.f.record.id);
   assert.deepEqual(h.commits[0].input.uses,h.f.record.input.uses);assert.equal(h.commits[0].sourceIdentity.roots.length,8);
 });
+test('R09F_REVIEW_KEY_ORDER key order alone never marks a review row as changed',async()=>{
+  const changedRows=async options=>{const h=harness(options);await h.open();await h.click('muPreview');assert.equal(h.app.snapshot().phase,'review',h.element('muStatus').textContent);
+    const html=h.element('muDiff').innerHTML,rows=[...html.matchAll(/<tr( class="mu-changed")?><th scope="row">([^<]*)<\/th>/g)];
+    assert.ok(rows.length>10,'R09F_REVIEW_ROWS');return rows.filter(r=>r[1]).map(r=>r[2]).sort();};
+  const plain=await changedRows(),reordered=await changedRows({reorder:true});
+  assert.ok(!plain.includes('承載面 1'),'R09F_UNCHANGED_USE_NOT_FLAGGED');
+  // Row order follows each record's own keys; only which rows are flagged matters.
+  assert.deepEqual(reordered,plain,'R09F_REVIEW_KEY_ORDER');
+});
 test('R362_UI_UNKNOWN never prefills IDs and requires every explicit slot, rejecting duplicates',async()=>{
   const h=harness({unknown:true});await h.open();
   assert.equal(h.app.snapshot().phase,'selecting','R362_UI_UNKNOWN_BEGIN');
@@ -86,7 +99,7 @@ test('R362_UI_REPLACED use cannot be removed and needs a decision after the slot
   await h.select(index,3);assert.equal(h.element('muPreview').disabled,true,'R362_UI_REPLACED_DECISION');
   await h.check(h.element('muDialog').querySelector('[data-mu-retarget="placement:3"]'));
   assert.equal(h.element('muPreview').disabled,false);
-  await h.click('muPreview');assert.equal(h.app.snapshot().phase,'review');
+  await h.click('muPreview');assert.equal(h.app.snapshot().phase,'review',h.element('muStatus').textContent);
   await h.check(h.element('muConfirmed'));
   h.element('muDialog').querySelector('[data-mu-retarget="placement:3"]').checked=false;
   await h.click('muApply');assert.equal(h.app.snapshot().phase,'failed','R362_UI_DECISION_PIN');assert.equal(h.commits.length,0,'R362_UI_DECISION_PIN');
