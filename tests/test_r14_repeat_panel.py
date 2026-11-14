@@ -373,13 +373,13 @@ class R14RepeatPanelNative(unittest.TestCase):
                 self.assertEqual(before["rules"], self.owner()["rules"])
                 self.roundtrip()
 
-    def test_13_native_slice_capability_is_explicit_without_claiming_complete_host_support(self):
+    def test_13_host_capability_includes_panel_rules_without_changing_native_identity(self):
         state = self.command("engineering-read")["state"]
         self.assertEqual([
             "engineering-spec/1", "parameters/1", "assembly-rule-authoring/1",
-            "assembly-timber-generation/1", "assembly-bay-repeat/1", "grid-subdivision-rules/1",
+            "assembly-timber-generation/1", "assembly-bay-repeat/1", "grid-subdivision-rules/1", "grid-subdivision-rules/2",
             "section-profile/1", "grid-card-reference/1", "identity-ledger/1", "definition-import/1",
-        ], state["capabilities"], "R14_NATIVE_SLICE_PRESERVES_COMPLETE_HOST_CAPABILITIES")
+        ], state["capabilities"], "R14_COMPLETE_HOST_CAPABILITIES_INCLUDE_PANEL_RULES")
         self.assertEqual(["section-profile-native/1", "panel-fill-native/1", "grid-subdivision-native/2"],
                          state["native_capabilities"], "R14_NATIVE_CAPABILITY_EXPLICIT_AND_ORDERED")
         self.seed()

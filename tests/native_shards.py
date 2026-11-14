@@ -9,16 +9,33 @@ import re
 
 TIMINGS = Path(__file__).with_name('native_shard_timings.json')
 ADDED_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence.json')
+ADDED_R14_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence_r14.json')
+
+
+def _legacy_added_suite_costs():
+    return _added_evidence_costs(ADDED_EVIDENCE)
+
+
+def added_r14_suite_costs():
+    return _added_evidence_costs(ADDED_R14_EVIDENCE)
 
 
 def added_suite_costs():
-    """Keep later observed suites separate from the three immutable 315-suite runs.
+    legacy = _legacy_added_suite_costs()
+    r14 = added_r14_suite_costs()
+    if legacy.keys() & r14.keys():
+        raise ValueError('R379_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+    return {**legacy, **r14}
+
+
+def _added_evidence_costs(path):
+    """Keep later observed suites separate from retained immutable 315-suite runs.
 
     Each upper bound is a conservative planning weight, NOT a historical
     observed timing. The referenced CI job may have failed another suite; the
     named suite itself must have an explicitly passing receipt.
     """
-    data = json.loads(ADDED_EVIDENCE.read_text(encoding='utf-8'))
+    data = json.loads(path.read_text(encoding='utf-8'))
     if (set(data) != {'schema', 'source_run', 'source_head', 'source_checkout',
                       'note', 'observations'}
             or data['schema'] != 'native-shard-added-suite-evidence/1'
@@ -101,17 +118,21 @@ def _swap_scenarios(parts, loads, costs):
     def score(values):
         return tuple(sorted((ms for load in values for ms in load), reverse=True))
 
-    current = score(loads)
     for i in range(len(parts)):
         for j in range(i + 1, len(parts)):
+            # Unchanged shard loads are a common multiset on both sides.
+            # Removing it preserves the descending lexicographic comparison.
+            current = score((loads[i], loads[j]))
             for left in sorted(parts[i]):
                 for right in sorted(parts[j]):
-                    candidate = [load[:] for load in loads]
+                    a_load, b_load = loads[i][:], loads[j][:]
                     for r, (a, b) in enumerate(zip(costs[left], costs[right])):
-                        candidate[i][r] += b - a
-                        candidate[j][r] -= b - a
-                    improved = score(candidate)
+                        a_load[r] += b - a
+                        b_load[r] -= b - a
+                    improved = score((a_load, b_load))
                     if improved < current:
+                        candidate = [load[:] for load in loads]
+                        candidate[i], candidate[j] = a_load, b_load
                         parts[i].remove(left)
                         parts[i].add(right)
                         parts[j].remove(right)
@@ -139,13 +160,20 @@ def _exchange_scenarios(parts, loads, costs):
         for j in range(len(parts)):
             if i == j:
                 continue
+            pair_score = score((loads[i], loads[j]))
             for left, middle in combinations(candidates[i], 2):
                 combined = [a + b for a, b in zip(costs[left], costs[middle])]
                 for right in candidates[j]:
-                    candidate = [load[:] for load in loads]
+                    a_load, b_load = loads[i][:], loads[j][:]
                     for r, (a, b) in enumerate(zip(combined, costs[right])):
-                        candidate[i][r] += b - a
-                        candidate[j][r] += a - b
+                        a_load[r] += b - a
+                        b_load[r] += a - b
+                    if score((a_load, b_load)) >= pair_score:
+                        continue
+                    # Promising trials still compare the complete vector with
+                    # the best trial, which may involve different shard pairs.
+                    candidate = [load[:] for load in loads]
+                    candidate[i], candidate[j] = a_load, b_load
                     improved = score(candidate)
                     if improved < current:
                         current = improved
@@ -239,4 +267,5 @@ def partition_suites(suites, count, weights=None):
 def profile_digest():
     legacy = TIMINGS.read_bytes().replace(b'\r\n', b'\n')
     addition = ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')
-    return hashlib.sha256(legacy + b'\0' + addition).hexdigest()
+    r14 = ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')
+    return hashlib.sha256(legacy + b'\0' + addition + b'\0' + r14).hexdigest()
