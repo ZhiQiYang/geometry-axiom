@@ -79,7 +79,7 @@ function createJournal(plan,shardId,emit) {
       requireThat(typeof passed==='boolean','CANVAS_VERDICT');const ordinal=(counts[current]||0)+1;counts[current]=ordinal;
       event({type:'assertion',unit:active.id,section:current,ordinal,passed,label:String(label)});},
     finish(){requireThat(!active&&next===wanted.length,'CANVAS_MISSING_UNIT');
-      requireThat(same([...visited].sort(),Object.keys(projection(plan,shardId)).sort()),'CANVAS_MISSING_SECTION');return {eventCount:events.length};},
+      requireThat(same([...visited].sort(),wanted.flatMap(unit=>unit.sections).sort()),'CANVAS_MISSING_SECTION');return {eventCount:events.length};},
   };
 }
 

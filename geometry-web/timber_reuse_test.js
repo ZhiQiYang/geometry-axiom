@@ -266,7 +266,7 @@ module.exports=async function timberReuseTests({send,eval_,sleep,click,waitForUI
     const port=await new Promise((resolve,reject)=>{const socket=net.createServer();socket.once('error',reject);socket.listen(0,'127.0.0.1',()=>{const selected=socket.address().port;socket.close(error=>error?reject(error):resolve(selected));});});
     check('C07_NEW_USER_DATA_DIR_EMPTY',fs.readdirSync(profile).length===0&&path.resolve(profile)!==path.resolve(process.env.GEOMETRY_CHROME_PROFILE||'.'));
     fs.writeFileSync(receiptPath,JSON.stringify({...receipt,freshProfile:profile},null,2)+'\n');
-    const env={...process.env};for(const name of Object.keys(env))if(/^GEOMETRY_.*_(?:ONLY|CASE|CASES)$/.test(name)||name==='GEOMETRY_CDP_FROM_P31'||name==='GEOMETRY_CDP_UPDATE_GOLDEN'||name==='GEOMETRY_CDP_SHARD')delete env[name];
+    const env={...process.env};for(const name of Object.keys(env))if(/^GEOMETRY_.*_(?:ONLY|CASE|CASES)$/.test(name)||name==='GEOMETRY_CDP_FROM_P31'||name==='GEOMETRY_CDP_UPDATE_GOLDEN'||name==='GEOMETRY_CDP_SHARD'||name==='GEOMETRY_CDP_CAPTURE_P1161')delete env[name];
     Object.assign(env,{GEOMETRY_TIMBER_REUSE_ONLY:'1',GEOMETRY_TIMBER_REUSE_CASE:'C07',GEOMETRY_R116_FRESH_STAGE:'open',GEOMETRY_R116_FRESH_RECEIPT:receiptPath,GEOMETRY_CHROME_PROFILE:profile,GEOMETRY_CDP_PORT:String(port)});
     for(const pin of pins)await history.release(pin);pins.clear();await cancel();await page(()=>window.__r116.cleanup());
     let outcome,childText;
@@ -459,6 +459,9 @@ module.exports=async function timberReuseTests({send,eval_,sleep,click,waitForUI
       for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,...point,button:'left',clickCount:1});
       await page(()=>window.__r116.gate.release());await settled();await page(()=>{window.__r116.gate=null;window.__r116OldConfirm.click();delete window.__r116OldConfirm;});await settled();
       check('C09_DOUBLE_AND_DETACHED_CONFIRM_ONCE',(await rows(beforeDouble.from)).filter(r=>r.command.startsWith('timber-edit-confirm ')).length===1);
+      // Native confirm can be settled before the App has appended the history entry.
+      // Wait for the new entry identity; the original strict history.single oracle stays intact.
+      await wait('C09_CONFIRMED_HISTORY_VISIBLE',`(()=>{const h=ReferenceWorkspace.history,b=window.__cdpHistoryPins?.get(${JSON.stringify(beforeDouble.pin.pin)});return !!b&&h.undo.length===Math.min(b.undo.length+1,b.limit)&&!b.undo.includes(h.undo.at(-1));})()`);
       check('C09_DOUBLE_CONFIRM_ONE_HISTORY',await history.single(beforeDouble.pin));
     },
     C10:async()=>{

@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/r06-bay-repeat.yml'
+      - '.github/scripts/test_r06_native_baseline.py'
       - '.github/actions/install-cjk-fonts/**'
       - 'geometry-templates/woodworking/**'
       - 'geometry-web/assembly*'
@@ -117,6 +118,7 @@ jobs:
           ulimit -s 16384
           mkdir -p /tmp/r06-native-cancel-evidence
           git rev-parse HEAD > /tmp/r06-native-cancel-evidence/head-sha.txt
+          python3 -B .github/scripts/test_r06_native_baseline.py > /tmp/r06-native-cancel-evidence/partition-controls.stdout 2> /tmp/r06-native-cancel-evidence/partition-controls.stderr
           set +e
           python3 -u tests/bay_repeat_mutation_check.py --kind native --case r06_br13_confirm_cancelled_candidate --out /tmp/r06-native-cancel-evidence/mutations > /tmp/r06-native-cancel-evidence/runner.stdout 2> /tmp/r06-native-cancel-evidence/runner.stderr
           status=$?

@@ -10,6 +10,7 @@ const WEB = path.join(ROOT, 'geometry-web');
 const timberExtension = require('./diagnostics/r356_canvas_extension.cjs');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
+const workspaceExtension = require('./diagnostics/r396_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
 const file = name => path.join(WEB, name);
 const read = name => fs.readFileSync(file(name), 'utf8');
@@ -19,11 +20,42 @@ const MAIN_BOUNDARIES = [{"after":"P88","before":"P72","localStorage":{"geometry
 
 test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
   const rawGolden = JSON.parse(read('cdp_sections.golden.json'));
+  const rawPlan = JSON.parse(read('canvas_shards.json'));
+  const snapshot = JSON.stringify({golden: rawGolden, plan: rawPlan});
+  const projected = workspaceExtension.project(rawGolden, rawPlan);
+  const expectedGolden = JSON.parse(JSON.stringify(rawGolden));
+  delete expectedGolden.sections.P1161;
+  expectedGolden.total -= 510;
+  assert.deepEqual(projected.golden, expectedGolden, 'R396_R360_ONLY_P1161_GOLDEN_PROJECTED');
+  assert.deepEqual(Object.keys(projected.golden.sections), Object.keys(rawGolden.sections).filter(name => name !== 'P1161'),
+    'R396_R360_OLD_GOLDEN_KEY_ORDER');
+  assert.equal(JSON.stringify({golden: rawGolden, plan: rawPlan}), snapshot, 'R396_R360_PROJECTION_INPUTS_UNCHANGED');
+  for (const count of [undefined, 0, 509, 511, '510']) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (count === undefined) delete probe.sections.P1161;
+    else probe.sections.P1161 = count;
+    probe.total = rawGolden.total - 510 + (Number.isSafeInteger(count) ? count : 0);
+    assert.throws(() => workspaceExtension.project(probe, rawPlan), /R396_P1161_FROZEN_COUNT/,
+      'R396_R360_REJECT_P1161_COUNT:' + String(count));
+  }
+  for (const total of [undefined, rawGolden.total - 1, rawGolden.total + 1, String(rawGolden.total)]) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (total === undefined) delete probe.total;
+    else probe.total = total;
+    assert.throws(() => workspaceExtension.project(probe, rawPlan), /R396_P1161_TOTAL_CONSERVATION/,
+      'R396_R360_REJECT_P1161_TOTAL:' + String(total));
+  }
+  for (const [field, value, marker] of [
+    ['schema', 'other', /R396_P1161_GOLDEN_SCHEMA/], ['mode', 'partial', /R396_P1161_GOLDEN_FULL_MODE/]
+  ]) {
+    const probe = {...rawGolden, [field]: value};
+    assert.throws(() => workspaceExtension.project(probe, rawPlan), marker, 'R396_R360_REJECT_GOLDEN_' + field);
+  }
   // Merged #355 and #356: each owner's unchanged exact projection removes only
   // its own section (R02 P128, R11 P116); together they restore main exactly.
   // #400 adds exactly three P90 assertions; that projection restores P90 = 8.
   // R06 finding 6 adds exactly five R06 assertions; that projection restores R06 = 50.
-  const golden = r06LegacyExtension.projectGolden(r400Extension.projectGolden(timberExtension.projectGolden(pfExtension.projectGolden(rawGolden))));
+  const golden = r06LegacyExtension.projectGolden(r400Extension.projectGolden(timberExtension.projectGolden(pfExtension.projectGolden(projected.golden))));
   for(const value of [undefined,0,380,382]){
     const probe=JSON.parse(JSON.stringify(rawGolden));
     if(value===undefined)delete probe.sections.P128;else probe.sections.P128=value;
@@ -93,8 +125,49 @@ test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
     assert.deepEqual(timberMain, pfMain, 'R355_R356_SAME_MAIN_PLAN');
     const second = value.shards[1].sections, at = second.indexOf('P116');
     assert.deepEqual(second.slice(at - 1, at + 3), ['P352', 'P116', 'P128', 'P353'], 'R355_R356_MERGED_ORDER');
-    return timberMain;
+    // Keep the older owners' rejection markers before the P1161 projection.
+    return workspaceExtension.project(golden, timberMain).plan;
   };
+  const expectedPlan = JSON.parse(JSON.stringify(plan));
+  expectedPlan.shards[1].sections.splice(expectedPlan.shards[1].sections.indexOf('P1161'), 1);
+  const snapshot = JSON.stringify({golden, plan});
+  assert.deepEqual(workspaceExtension.project(golden, plan).plan, expectedPlan, 'R396_R360_ONLY_P1161_PLAN_PROJECTED');
+  assert.equal(JSON.stringify({golden, plan}), snapshot, 'R396_R360_PLAN_INPUTS_UNCHANGED');
+  for (const fault of ['duplicate-same', 'duplicate-cross', 'missing', 'first-shard']) {
+    const probe = JSON.parse(JSON.stringify(plan)), second = probe.shards[1].sections;
+    if (fault === 'duplicate-same') second.unshift('P1161');
+    else if (fault === 'duplicate-cross') probe.shards[0].sections.push('P1161');
+    else {
+      second.splice(second.indexOf('P1161'), 1);
+      if (fault === 'first-shard') probe.shards[0].sections.push('P1161');
+    }
+    assert.throws(() => workspaceExtension.project(golden, probe), /R396_P1161_EXACT_OWNER/,
+      'R396_R360_REJECT_P1161_OWNER:' + fault);
+  }
+  for (const index of [1, '2']) {
+    const probe = JSON.parse(JSON.stringify(plan));
+    probe.shards[1].index = index;
+    assert.throws(() => workspaceExtension.project(golden, probe), /R396_P1161_SHARD_INDICES/,
+      'R396_R360_REJECT_P1161_OWNER_INDEX:' + String(index));
+  }
+  for (const fault of ['before-P353', 'after-P359', 'triple-not-last']) {
+    const probe = JSON.parse(JSON.stringify(plan)), second = probe.shards[1].sections;
+    if (fault === 'triple-not-last') second.unshift(...second.splice(-3));
+    else {
+      second.splice(second.indexOf('P1161'), 1);
+      if (fault === 'before-P353') second.splice(second.indexOf('P353'), 0, 'P1161');
+      else second.push('P1161');
+    }
+    assert.throws(() => workspaceExtension.project(golden, probe), /R396_P1161_TERMINAL_ORDER/,
+      'R396_R360_REJECT_P1161_POSITION:' + fault);
+  }
+  const wrongSchema = {...plan, schema: 'other'};
+  assert.throws(() => workspaceExtension.project(golden, wrongSchema), /R396_P1161_PLAN_SCHEMA/,
+    'R396_R360_REJECT_PLAN_SCHEMA');
+  const thirdShard = JSON.parse(JSON.stringify(plan));
+  thirdShard.shards.push({index: 3, sections: []});
+  assert.throws(() => workspaceExtension.project(golden, thirdShard), /R396_P1161_TWO_SHARDS/,
+    'R396_R360_REJECT_THIRD_SHARD');
   assert.deepEqual(projectPlan(plan).shards.map(row => row.sections), expected, 'R360_R06_EXACT_SECOND_SHARD_POSITIONS');
   for (const fault of ['missing', 'duplicate', 'first-shard', 'moved']) {
     const probe = JSON.parse(JSON.stringify(plan)), second = probe.shards[1].sections, at = second.indexOf('P116');

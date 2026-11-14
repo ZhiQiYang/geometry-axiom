@@ -6,7 +6,9 @@
 
 Only disposable, byte-snapshotted sources are patched. Each kind first runs all
 its R06 oracles green, each mutant must fail its one declared assertion, and a
-restored build runs every oracle green again. Missing tools, compiler failures,
+restored build runs every oracle green again. Native baseline/restored runs keep
+every method in source order, isolating each contiguous BR11 capacity block in
+its own child with the unchanged per-child timeout. Missing tools, compiler failures,
 browser bootstrap failures, transport errors, skips, crashes and wrong first
 assertions are never kills. Browser cases use the registered cdp_test.js assembly
 scope, including the real download and fresh-process Open tests.
@@ -93,6 +95,15 @@ def native_child(argv):
     binary, destination, *names = argv
     sys.path.insert(0, str(ROOT))
     modules = {name.rsplit('.', 2)[0]: None for name in names}
+    class Recording(oracle.recording_result_class()):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.executed = []
+
+        def startTest(self, test):
+            self.executed.append(test.id())
+            super().startTest(test)
+
     result = None
     try:
         with ExitStack() as stack:
@@ -100,12 +111,12 @@ def native_child(argv):
                 module = modules[name] = importlib.import_module(name)
                 stack.enter_context(patch.object(module, 'find_bridge', return_value=binary))
                 getattr(module, 'REACHED', set()).clear()
-            runner = unittest.TextTestRunner(stream=sys.stderr, verbosity=2, resultclass=oracle.recording_result_class())
+            runner = unittest.TextTestRunner(stream=sys.stderr, verbosity=2, resultclass=Recording)
             result = runner.run(unittest.defaultTestLoader.loadTestsFromNames(names))
     finally:
         if result is not None:
             reached = sorted({tag for module in modules.values() for tag in getattr(module, 'REACHED', ())})
-            oracle.write(Path(destination), dict(selected=names, run=result.testsRun, **result.records,
+            oracle.write(Path(destination), dict(selected=names, executed=result.executed, run=result.testsRun, **result.records,
                                                 reached=reached, python=sys.version.split()[0]))
     return 0 if result is not None and result.wasSuccessful() else 1
 
@@ -116,6 +127,57 @@ def selected_native(root):
     if len(classes) != 1:
         raise ValueError('one BayRepeat class is required')
     return [PREFIX + n.name for n in classes[0].body if isinstance(n, ast.FunctionDef) and n.name.startswith('test_')]
+
+
+def native_baseline(root, directory, env, manifest, timeout, binary):
+    """Complete native coverage, in contiguous source-order children, never a case subset."""
+    expected = selected_native(root)
+    if not expected or any(not isinstance(name, str) or not name.startswith(PREFIX) for name in expected) or len(set(expected)) != len(expected):
+        raise ValueError('native baseline requires unique nonempty test identities')
+    if any(PREFIX + method not in expected for method in manifest['nativeTags'].values()):
+        raise ValueError('native tag owner is absent from the complete test selection')
+    parts = []
+    for name in expected:
+        capacity = name.startswith(PREFIX + 'test_br11_')
+        if not parts or parts[-1]['capacity'] != capacity:
+            parts.append(dict(capacity=capacity, selected=[]))
+        parts[-1]['selected'].append(name)
+    for index, part in enumerate(parts, 1):
+        part['id'] = 'part-%02d' % index
+        part['tags'] = [tag for tag, method in manifest['nativeTags'].items() if PREFIX + method in part['selected']]
+    oracle.write(directory / 'partitions.json', dict(schema='r06-native-baseline-partitions/1',
+                 selected=expected, timeoutSecondsPerChild=timeout, parts=parts))
+    children = []
+    fields = ('failures', 'errors', 'skipped', 'expectedFailures', 'unexpectedSuccesses')
+    for part in parts:
+        folder = directory / part['id']
+        names = part['selected']
+        observed = observation(folder, [sys.executable, '-B', str(root / SELF), '--native-child', binary,
+                                       str(folder / 'result.json'), *names], root, env, timeout)
+        result = observed.get('result')
+        shape = (type(observed.get('exit')) is int and observed['exit'] == 0 and observed.get('timeout') is False and
+                 isinstance(result, dict) and type(result.get('run')) is int and result['run'] == len(names) and
+                 result.get('selected') == names and result.get('executed') == names and
+                 all(isinstance(result.get(key), list) for key in fields) and isinstance(result.get('reached'), list) and
+                 all(isinstance(tag, str) for tag in result['reached']) and len(set(result['reached'])) == len(result['reached']))
+        verdict, reason = oracle.judge_pass(observed, names, part['tags']) if shape else ('fail', 'native-part-receipt-invalid')
+        child = dict(observed, part=part['id'], expectedSelected=names, expectedTags=part['tags'], verdict=verdict, reason=reason)
+        children.append(child)
+        oracle.write(folder / 'observation.json', child)
+        if verdict != 'pass':
+            return dict(exit=None, timeout=observed.get('timeout') is True, result=None,
+                        children=children, nativePartitionFailure=dict(part=part['id'], reason=reason))
+    result = dict(run=0, selected=[], executed=[], reached=[], **{key: [] for key in fields})
+    for child in children:
+        result['run'] += child['result']['run']
+        for key in ('selected', 'executed', 'reached', *fields):
+            result[key] += child['result'][key]
+    if result['selected'] != expected or result['executed'] != expected:
+        return dict(exit=None, timeout=False, result=None, children=children,
+                    nativePartitionFailure=dict(reason='native-partition-coverage'))
+    result['reached'] = sorted(set(result['reached']))
+    oracle.write(directory / 'result.json', result)
+    return dict(exit=0, timeout=False, result=result, children=children)
 
 
 def clean_environment():
@@ -325,7 +387,11 @@ def run_browser(root, directory, env, binary, timeout, manifest):
 def run_oracle(kind, root, directory, env, manifest, selected=None, timeout=120, binary=None):
     directory.mkdir(parents=True, exist_ok=True)
     if kind == 'native':
-        names = selected or selected_native(root)
+        if selected is None:
+            return native_baseline(root, directory, env, manifest, timeout, binary)
+        if not selected:
+            raise ValueError('an explicit native selection must not be empty')
+        names = selected
         return observation(directory, [sys.executable, '-B', str(root / SELF), '--native-child', binary,
                                         str(directory / 'result.json'), *names], root, env, timeout)
     if kind == 'browser':

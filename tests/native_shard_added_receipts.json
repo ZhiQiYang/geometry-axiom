@@ -1,0 +1,124 @@
+{
+  "schema": "native-shard-added-receipts/1",
+  "runs": [
+    {
+      "source_run": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43336972629",
+      "source_head": "1d304b10ee4451f0557c9b96b28cf31d3f5bde80",
+      "source_checkout": "500eecece499773d085a92952729ea8fcc7cebfc",
+      "note": "Original unmodified passing suite rows from the failed Geometry run. The expected_problem text records the missing census entries, not a failed child. Exit-only passed=1 is the runner success sentinel, not a counted test. Planning upper bounds are separate conservative costs, not historical timings. The original three 315-suite measured_runs and the earlier two added-suite observations remain unchanged.",
+      "shards": [
+        {
+          "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43336972629/job/131596120108",
+          "shard": [
+            2,
+            4
+          ],
+          "artifact_id": 13998980534,
+          "artifact_sha256": "a1edcba8c81a34060c4cdd8a3fbb3cdb738800dc7d28f057b1cab2546f60f2c1",
+          "receipt_file": "shard-2.json",
+          "receipt_sha256": "670c99f7a7e1bc86c6424b66549ae71c1a4b4642512cdf9fc5cedad6b29a49f6",
+          "observations": [
+            {
+              "row": {
+                "name": "py:test_workspace_view",
+                "counted": true,
+                "total": 10,
+                "passed": 10,
+                "failed": 0,
+                "skipped": 0,
+                "seconds": 2.3255774974823,
+                "ran": true,
+                "process_exit_code": 0,
+                "allowed_skips": 0,
+                "env_problem": false,
+                "crashed": false,
+                "expected_problem": "沒有登記在 run_all.expected.json（新 suite 必須明確登記預期數；--update-expected）"
+              },
+              "planning_upper_ms": 3000
+            },
+            {
+              "row": {
+                "name": "node:workspace_context_menu_state",
+                "counted": false,
+                "total": 0,
+                "passed": 1,
+                "failed": 0,
+                "skipped": 0,
+                "seconds": 0.05653810501098633,
+                "ran": true,
+                "process_exit_code": 0,
+                "allowed_skips": 0,
+                "env_problem": false,
+                "crashed": false,
+                "expected_problem": "沒有登記在 run_all.expected.json（新 suite 必須明確登記預期數；--update-expected）"
+              },
+              "planning_upper_ms": 1000
+            }
+          ]
+        },
+        {
+          "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43336972629/job/131596120030",
+          "shard": [
+            3,
+            4
+          ],
+          "artifact_id": 13999085822,
+          "artifact_sha256": "7b7aec229dbd553658dffa3603b1f1f00c7da91992ac95b17aa6ca986c8eda0f",
+          "receipt_file": "shard-3.json",
+          "receipt_sha256": "bb472637c9107cebf708053f9d3d44718666e9e23c1ce0dd4bd48d6df5f27824",
+          "observations": [
+            {
+              "row": {
+                "name": "py:test_workspace_view_server",
+                "counted": true,
+                "total": 2,
+                "passed": 2,
+                "failed": 0,
+                "skipped": 0,
+                "seconds": 0.765249490737915,
+                "ran": true,
+                "process_exit_code": 0,
+                "allowed_skips": 0,
+                "env_problem": false,
+                "crashed": false,
+                "expected_problem": "沒有登記在 run_all.expected.json（新 suite 必須明確登記預期數；--update-expected）"
+              },
+              "planning_upper_ms": 2000
+            }
+          ]
+        },
+        {
+          "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43336972629/job/131596119719",
+          "shard": [
+            4,
+            4
+          ],
+          "artifact_id": 13998618165,
+          "artifact_sha256": "dbbe45e488329c087e6c6c4e33889b8017bfb32c1fd852b30c2b5aa31fc55892",
+          "receipt_file": "shard-4.json",
+          "receipt_sha256": "4083aaf8aa36b308436abb7ec7c3ee7d9c41383847b67bccbd589bdbb69b4551",
+          "observations": [
+            {
+              "row": {
+                "name": "node:workspace_view_state",
+                "counted": true,
+                "total": 15,
+                "passed": 15,
+                "failed": 0,
+                "skipped": 0,
+                "seconds": 0.18236732482910156,
+                "ran": true,
+                "process_exit_code": 0,
+                "allowed_skips": 0,
+                "env_problem": false,
+                "crashed": false,
+                "expected_problem": "沒有登記在 run_all.expected.json（新 suite 必須明確登記預期數；--update-expected）"
+              },
+              "planning_upper_ms": 1000
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
