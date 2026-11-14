@@ -22,6 +22,3 @@ static bool app_grid_system_put(World *world,const GridSystem *system,int main_a
 
 static bool app_grid_system_redeclare(World *world,const GridSystem *system,int main_along,GeoGridStoreError *error)
 {WoodGridContext c={0};c.state=&world->wood.grid_applications;c.sources=&world->geo.grid_store;return wood_grid_source_redeclare(&c,system,main_along,error);}
-
-static bool app_grid_system_remove(World *world,uint32_t id)
-{WoodGridContext c={0};c.state=&world->wood.grid_applications;c.sources=&world->geo.grid_store;return wood_grid_source_remove(&c,id);}
