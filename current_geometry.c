@@ -2913,6 +2913,8 @@ static uint32_t reference_preview_token(void);
 static bool reference_preview_valid(void);
 static bool reference_rebuild(World *world);
 static bool reference_check_all(const World *w);
+static bool boundary_pair_check_all(World *w);
+static int boundary_pair_index(const World *w,uint32_t id);
 static bool reference_snap(World *world, uint32_t pid, GuideDirection dir, uint32_t exclude, Coord at, Coord radius, char *out);
 static bool apply_reference_guide(const char *, int, char **, int, World *);
 static bool apply_reference_move(const char *, int, char **, int, World *);
@@ -6357,6 +6359,8 @@ static bool world_revalidate_candidate(World *world,World *candidate)
         if (!rebuilt && rebuild_error[0]) set_revalidate_error(rebuild_error);
         return false;
     }
+    /* D16a/R6(f): joint member checks only after every value is complete. */
+    if(!boundary_pair_check_all(candidate))return false;
 
     if (!pf_support_rebuild(candidate)) {
         set_revalidate_error(g_engineering_error); return false;
@@ -7195,6 +7199,9 @@ static bool apply_timber_line(const char *path,int line_no,char *tokens[],int co
     uint32_t id;Coord size_a,size_b;
     if(!parse_u32(tokens[1],&id)||!parse_coord(tokens[2],&size_a)||!parse_coord(tokens[3],&size_b)){
         scene_error(path,line_no,"timber auto 需要：id A尺寸 B尺寸（都是整數）");return false;
+    }
+    if(role!=WOOD_MEMBER_ROLE_BOUNDARY&&boundary_pair_index(world,id)>=0){
+        scene_error(path,line_no,"D16a: 已成組的 timber 不得改成其他角色");return false;
     }
     if(!wood_member_declare(&context,id,size_a,size_b,role,priority,&error)){
         if(error)scene_error(path,line_no,error);return false;
@@ -9311,6 +9318,7 @@ static bool apply_delete_line(
     const PlacementSurface *derived=!strcmp(kind,"placement")?world_find_placement(world,id):NULL;
     if(derived&&derived->derived_fill_id){scene_error(path,line_no,"D4/I55: delete a derived placement through its atomic source transaction");return false;}
     if (!strcmp(kind,"timber") && assembly_owned(world,id)) { scene_error(path,line_no,"I42: delete the owning assembly instance"); return false; }
+    if (!strcmp(kind,"timber") && boundary_pair_index(world,id)>=0) { scene_error(path,line_no,"D16a: 已成組的 timber 不得單支刪除；請用 boundary-pair delete <a> <b> 整組刪除"); return false; }
     uint32_t finish_owner = fs_reference_owner(world, kind, id);
     if (finish_owner != 0) {
         char message[256];
@@ -9823,6 +9831,7 @@ static void world_dump_dsl(const World *world, FILE *out)
     if(world->wood.assembly.instance_count)fputs("requires assembly-timber-generation/1\n",out);
     if(world->wood.assembly.bay_required)fputs("requires assembly-bay-repeat/1\n",out);
     identity_dump_requires(world,out);
+    if(world->wood.boundary_pair_count) fputs("requires boundary-pair/1\n",out);
     if(!world->wood.finish_surfaces.host_count) reference_dump(world, out);
 
     for (size_t i = 0; i < geo_enclosures_count(&world->geo.enclosures); ++i) {
@@ -10112,6 +10121,7 @@ static const struct {
         apply_canvaspos_line
     },
     { "identity-ledger", 2, 2, false, "identity-ledger activate", apply_identity_ledger_line },
+    { "boundary-pair", 2, 4, true, "boundary-pair begin <a> <b>|end|confirm <token>|cancel|delete <a> <b>", apply_boundary_pair_line },
     { "identity", 4, 5, false, "identity boundary|placement|column|beam|timber|parameter id mark | identity parameter-field id field mark", apply_identity_line },
     { NULL, 0, 0, false, NULL, NULL }
 };
@@ -10171,6 +10181,14 @@ static bool parse_scene_file(const char *path, World *out_world)
         return false;
     }
 
+    BoundaryPairInput *pair_frame=calloc(1,sizeof *pair_frame),*pair_saved=g_pair_file_input;
+    if (pair_frame == NULL) {
+        fclose(in);
+        scene_error(path, 0, "CAPACITY: boundary-pair input frame unavailable");
+        return false;
+    }
+    g_pair_file_input = pair_frame;
+    g_pair_scene_required = false;
     g_parsing_scene_file = true;
     g_identity_requires_seen = false;
     identity_explicit_reset();
@@ -10271,6 +10289,12 @@ static bool parse_scene_file(const char *path, World *out_world)
     }
 
     fclose(in);
+    if (ok && pair_frame->active) {
+        scene_error(path, line_no, "D16a/R4: boundary-pair 包未結束（缺 boundary-pair end），整包拒絕");
+        ok = false;
+    }
+    g_pair_file_input = pair_saved;
+    free(pair_frame);
 
     /*
      * 沒放置的角材沒有位置，既印不出也畫不出，一定是場景檔漏了 place。

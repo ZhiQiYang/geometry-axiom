@@ -54,7 +54,7 @@ PY_NEEDS = {
     'test_r14_browser_receipt': [],
     'test_r14_repeat_panel': ['bridge'],
     'test_r363_native_merge': ['bridge'],
-    'test_geo318_reading_a_oracle': [],
+    'test_geo318_reading_a_oracle': ['core', 'bridge'],
     'test_geo318_reading_a_native': [],
     'test_geo314_stagger_commit': ['bridge'],
     'test_geo314_commit_paths': [],

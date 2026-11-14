@@ -114,6 +114,35 @@ def project_r14_rule_capability(case, value):
     return projected
 
 
+def project_r17_boundary_pair_native(case, value):
+    """Extract the R17 native-subset descriptor at its fixed first position.
+
+    #410 declares boundary-pair/1 as an incomplete native subset (I32), not as a
+    supported host capability. Its exact contract is fixed here; every other
+    field and its order still reaches the original comparison.
+    """
+    projected = json.loads(json.dumps(value))
+    state = projected["engineering-read"]["state"]
+    expected = {
+        "schema": "boundary-pair-native/1",
+        "capability": "boundary-pair/1",
+        "complete": False,
+        "supported": ["scene-package", "joint-evaluation", "preview-confirm-cancel", "group-delete", "dump-load-undo-redo"],
+        "memberDimensionSources": ["literal"],
+        "unsupported": ["engineering-dimension-source", "parameter-dimension-source", "host-app-entry"],
+    }
+    case.assertIn("boundary_pair_native", state, "K1_R17_PAIR_NATIVE_PRESENT")
+    case.assertEqual(json.dumps(expected, ensure_ascii=False, separators=(",", ":")),
+                     json.dumps(state["boundary_pair_native"], ensure_ascii=False, separators=(",", ":")),
+                     "K1_R17_PAIR_NATIVE_EXACT_CONTRACT")
+    keys = list(state)
+    case.assertEqual(["boundary_pair_native", "capabilities"], keys[keys.index("boundary_pair_native"):keys.index("boundary_pair_native") + 2],
+                     "K1_R17_PAIR_NATIVE_BEFORE_CAPABILITIES")
+    case.assertNotIn("boundary-pair/1", state["capabilities"], "K1_R17_PAIR_NOT_CLAIMED_AS_COMPLETE")
+    del state["boundary_pair_native"]
+    return projected
+
+
 def project_r14_native_capability(case, value):
     """Project exactly the approved native-only addition; keep the old oracle."""
     projected = json.loads(json.dumps(value))
@@ -253,6 +282,7 @@ class EngineeringTerminal(unittest.TestCase):
             projected = project_r14_rule_capability(self, projected)
             projected = project_identity_capability(self, without_terminal(projected))
             projected = project_r14_native_capability(self, projected)
+            projected = project_r17_boundary_pair_native(self, projected)
             self.assertEqual(expected_json,
                              json.dumps(projected, ensure_ascii=False, separators=(",", ":")),
                              "K1-a: non-terminal fields/order changed relative to the independently built baseline")

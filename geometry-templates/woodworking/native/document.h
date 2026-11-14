@@ -21,6 +21,13 @@ enum {
     WOOD_OBSTACLE_CAPACITY = 32
 };
 
+/* D16a boundary-pair/1: an unordered pair of two ordinary boundary members,
+ * stored canonically with the smaller timber id first. The relation and the
+ * members' sources are definitions; contacts and geometry stay derived. */
+typedef struct {
+    uint32_t first, second;
+} WoodBoundaryPair;
+
 typedef struct {
     WoodBoundaryPolicy boundary_policy[WOOD_DOCUMENT_BOUNDARY_CAPACITY];
     WoodPlacementPolicy placement_policy[WOOD_DOCUMENT_PLACEMENT_CAPACITY];
@@ -40,6 +47,9 @@ typedef struct {
     AssemblyState assembly;
     EngineeringState engineering;
     FinishSurfaceState finish_surfaces;
+
+    WoodBoundaryPair boundary_pairs[WOOD_MEMBER_CAPACITY / 2];
+    size_t boundary_pair_count;
 } WoodDocument;
 
 #endif

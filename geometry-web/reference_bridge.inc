@@ -126,6 +126,165 @@ static void json_candidate_geometry(const World *before,const World *after)
     json_candidate_timbers(before,after,true);
     fputs(",\"guides\":",stdout);json_candidate_guides(before,after);putchar('}');
 }
+/* I8a/D16a: every group in the old or new candidate, with each member's
+ * authored source, role, old/new interval and the actual central contact. */
+static bool json_pair_member_facts(const World *w,uint32_t id,SurfaceRegion2 *f,bool *along,bool *positive)
+{
+    int i=reference_timber_index(w,id);if(i<0||!w->wood.timbers[i].placed)return false;
+    const TimberAnchor *a=&w->wood.anchors[i];const PlacementSurface *p=world_find_placement(w,a->placement_id);
+    if(!p||!timber_a0_footprint_uv(p,&w->wood.timbers[i],a,f))return false;
+    *along=a->length_direction==SURFACE_DIRECTION_POS_V||a->length_direction==SURFACE_DIRECTION_NEG_V;
+    *positive=a->length_direction==SURFACE_DIRECTION_POS_U||a->length_direction==SURFACE_DIRECTION_POS_V;return true;
+}
+static void json_pair_member(const World *w,uint32_t id)
+{
+    int i=reference_timber_index(w,id);
+    if(i<0){fputs("null",stdout);return;}
+    const Timber *t=&w->wood.timbers[i];const TimberAnchor *a=&w->wood.anchors[i];
+    printf("{\"id\":%u,\"role\":\"%s\",\"A\":%lld,\"B\":%lld,\"source\":{\"surface\":%u,\"kind\":\"at-face\",\"edge\":\"e%d\",\"dir\":\"%s\",\"side\":\"%s\"},\"order\":%llu",
+        t->id,timber_role_name(t->role),(long long)t->size_a,(long long)t->size_b,a->placement_id,a->ref_edge,
+        length_dir_word(a->length_direction),depth_side_word(a->depth_side),(unsigned long long)a->order);
+    SurfaceRegion2 f;bool along,positive;
+    if(json_pair_member_facts(w,id,&f,&along,&positive))
+        printf(",\"interval\":[%lld,%lld],\"cross\":[%lld,%lld]",(long long)(along?f.min_v:f.min_u),(long long)(along?f.max_v:f.max_u),
+            (long long)(along?f.min_u:f.min_v),(long long)(along?f.max_u:f.max_v));
+    else fputs(",\"interval\":null,\"cross\":null",stdout);
+    fputs(",\"geometry\":",stdout);json_reference_geometry(w,i);putchar('}');
+}
+static void json_pair_contacts(const World *w,uint32_t first,uint32_t second)
+{
+    putchar('[');SurfaceRegion2 f[2];bool along[2],positive[2];
+    if(json_pair_member_facts(w,first,&f[0],&along[0],&positive[0])&&json_pair_member_facts(w,second,&f[1],&along[1],&positive[1])&&along[0]==along[1]){
+        uint32_t ids[2]={first,second};bool any=false;
+        for(int k=0;k<2;++k){int o=1-k;
+            Coord hi=along[k]?f[k].max_v:f[k].max_u,lo_other=along[o]?f[o].min_v:f[o].min_u;
+            if(hi!=lo_other)continue;
+            Coord c0=along[k]?f[k].min_u:f[k].min_v,c1=along[k]?f[k].max_u:f[k].max_v;
+            Coord d0=along[o]?f[o].min_u:f[o].min_v,d1=along[o]?f[o].max_u:f[o].max_v;
+            Coord lo=c0>d0?c0:d0,top=c1<d1?c1:d1;if(top<=lo)continue;
+            printf("%s{\"member\":%u,\"end\":\"%s\",\"peer\":%u,\"peerEnd\":\"%s\",\"plane\":%lld,\"contact\":[%lld,%lld]}",any?",":"",
+                ids[k],positive[k]?"END":"START",ids[o],positive[o]?"START":"END",(long long)hi,(long long)lo,(long long)top);any=true;
+        }
+    }
+    putchar(']');
+}
+static bool json_pair_equal(const World *a,const World *b,uint32_t id)
+{
+    int i=reference_timber_index(a,id),j=reference_timber_index(b,id);
+    if(i<0||j<0)return false;
+    const Timber *x=&a->wood.timbers[i],*y=&b->wood.timbers[j];const TimberAnchor *p=&a->wood.anchors[i],*q=&b->wood.anchors[j];
+    return x->size_a==y->size_a&&x->size_b==y->size_b&&x->role==y->role&&p->placement_id==q->placement_id&&p->ref_edge==q->ref_edge&&
+        p->length_direction==q->length_direction&&p->depth_side==q->depth_side&&p->order==q->order;
+}
+static void json_boundary_pair_preview(void)
+{
+    const World *before=&g_preview.transaction->before,*after=&g_preview.transaction->after;
+    fputs(",\"boundaryPairs\":[",stdout);bool first=true;
+    for(int pass=0;pass<2;++pass){const World *w=pass?after:before;
+        for(size_t i=0;i<w->wood.boundary_pair_count;++i){
+            uint32_t a=w->wood.boundary_pairs[i].first,b=w->wood.boundary_pairs[i].second;
+            int in_before=boundary_pair_index(before,a),in_after=boundary_pair_index(after,a);
+            bool old_pair=in_before>=0&&before->wood.boundary_pairs[in_before].second==b;
+            bool new_pair=in_after>=0&&after->wood.boundary_pairs[in_after].second==b;
+            if(pass&&old_pair)continue;
+            const char *change=!old_pair?"created":!new_pair?"removed":
+                json_pair_equal(before,after,a)&&json_pair_equal(before,after,b)?"unchanged":"redeclared";
+            printf("%s{\"first\":%u,\"second\":%u,\"capability\":\"boundary-pair/1\",\"change\":\"%s\",\"before\":",first?"":",",a,b,change);first=false;
+            if(old_pair){printf("{\"members\":[");json_pair_member(before,a);putchar(',');json_pair_member(before,b);fputs("],\"contacts\":",stdout);json_pair_contacts(before,a,b);putchar('}');}
+            else fputs("null",stdout);
+            fputs(",\"after\":",stdout);
+            if(new_pair){printf("{\"members\":[");json_pair_member(after,a);putchar(',');json_pair_member(after,b);fputs("],\"contacts\":",stdout);json_pair_contacts(after,a,b);putchar('}');}
+            else fputs("null",stdout);
+            putchar('}');
+        }
+    }
+    putchar(']');
+}
+/* I8a/D16a: every timber the candidate changes, with its own authored role,
+ * source and the actual end contacts, not only its moved geometry. */
+static void json_reference_timber_definition(const Timber *,const TimberAnchor *);
+typedef struct {int end;Coord at;int kind;uint32_t timber;int edge,hole,fixity;Coord lo,hi;} ImpactContact;
+enum { IMPACT_CONTACT_CAPACITY=64 };
+static int json_impact_contact_list(const World *w,int i,ImpactContact *out)
+{
+    const Timber *t=&w->wood.timbers[i];const TimberAnchor *a=&w->wood.anchors[i];
+    const PlacementSurface *p=world_find_placement(w,a->placement_id);SurfaceRegion2 f;
+    if(!t->placed||!p||!timber_a0_footprint_uv(p,t,a,&f))return -1;
+    bool along=a->length_direction==SURFACE_DIRECTION_POS_V||a->length_direction==SURFACE_DIRECTION_NEG_V;
+    bool positive=a->length_direction==SURFACE_DIRECTION_POS_U||a->length_direction==SURFACE_DIRECTION_POS_V;
+    SpaceBoundarySurface effective;
+    const SpaceBoundarySurface *b=placement_boundary_for_rect(p,placement_effective_boundary(p,world_placement_boundary(w,p),&effective),&f);
+    static StopFace faces[STOP_FACE_MAX];size_t n=collect_stop_faces(w,p,b,along,t,faces,STOP_FACE_MAX);
+    Coord lo=along?f.min_u:f.min_v,hi=along?f.max_u:f.max_v,ends[2]={along?f.min_v:f.min_u,along?f.max_v:f.max_u};
+    int count=0;
+    for(int k=0;k<2;++k)for(size_t j=0;j<n&&count<IMPACT_CONTACT_CAPACITY;++j){
+        const StopFace *face=&faces[j];if(face->fixed!=ends[k])continue;
+        Coord c0=face->lo>lo?face->lo:lo,c1=face->hi<hi?face->hi:hi;if(c1<=c0)continue;
+        ImpactContact c;memset(&c,0,sizeof c);c.end=(k==0)==positive?0:1;c.at=ends[k];c.kind=face->kind;
+        if(face->kind==WOOD_STOP_MEMBER_SIDE)c.timber=face->timber_id;else{c.edge=face->edge_index;c.hole=face->hole_index;c.fixity=face->fixity;}
+        c.lo=c0;c.hi=c1;out[count++]=c;
+    }
+    return count;
+}
+static void json_impact_contacts(const World *w,int i)
+{
+    ImpactContact list[IMPACT_CONTACT_CAPACITY];int n=json_impact_contact_list(w,i,list);
+    if(n<0){fputs("null",stdout);return;}
+    putchar('[');
+    for(int k=0;k<n;++k){const ImpactContact *c=&list[k];
+        printf("%s{\"end\":\"%s\",\"at\":%lld,\"kind\":\"%s\"",k?",":"",c->end?"END":"START",(long long)c->at,
+            c->kind==WOOD_STOP_MEMBER_SIDE?"timber":c->kind==WOOD_STOP_HOLE_EDGE?"hole-edge":"outline-edge");
+        if(c->kind==WOOD_STOP_MEMBER_SIDE)printf(",\"timber\":%u",c->timber);
+        else printf(",\"edge\":%d,\"hole\":%d,\"fixed\":%s",c->edge,c->hole,c->fixity?"true":"false");
+        printf(",\"contact\":[%lld,%lld]}",(long long)c->lo,(long long)c->hi);
+    }
+    putchar(']');
+}
+static bool json_impact_contacts_changed(const World *before,int old,const World *after,int now)
+{
+    ImpactContact x[IMPACT_CONTACT_CAPACITY],y[IMPACT_CONTACT_CAPACITY];
+    int n=json_impact_contact_list(before,old,x),m=json_impact_contact_list(after,now,y);
+    return n!=m||(n>0&&memcmp(x,y,(size_t)n*sizeof x[0]));
+}
+static void json_impact_side(const World *w,int i)
+{
+    if(i<0){fputs("null",stdout);return;}
+    const Timber *t=&w->wood.timbers[i];int pair=boundary_pair_index(w,t->id);
+    printf("{\"role\":\"%s\",\"A\":%lld,\"B\":%lld,\"source\":",timber_role_name(t->role),(long long)t->size_a,(long long)t->size_b);
+    json_reference_timber_definition(t,&w->wood.anchors[i]);
+    printf(",\"order\":%llu,\"boundaryPair\":",(unsigned long long)w->wood.anchors[i].order);
+    if(pair>=0)printf("[%u,%u]",w->wood.boundary_pairs[pair].first,w->wood.boundary_pairs[pair].second);else fputs("null",stdout);
+    fputs(",\"geometry\":",stdout);json_reference_geometry(w,i);
+    fputs(",\"contacts\":",stdout);json_impact_contacts(w,i);putchar('}');
+}
+static bool json_impact_changed(const World *before,int old,const World *after,int now)
+{
+    if(old<0||now<0)return old!=now;
+    const Timber *a=&before->wood.timbers[old],*b=&after->wood.timbers[now];
+    const TimberAnchor *p=&before->wood.anchors[old],*q=&after->wood.anchors[now];
+    return a->placed!=b->placed||a->length!=b->length||a->size_a!=b->size_a||a->size_b!=b->size_b||a->role!=b->role||a->cut_priority!=b->cut_priority||
+        memcmp(&a->origin,&b->origin,sizeof a->origin)||memcmp(&a->axis_length,&b->axis_length,sizeof a->axis_length)||
+        p->placement_id!=q->placement_id||p->anchor_kind!=q->anchor_kind||p->ref_edge!=q->ref_edge||p->ref_hole!=q->ref_hole||
+        p->ref_guide!=q->ref_guide||p->ref_timber!=q->ref_timber||p->ref_is_timber!=q->ref_is_timber||p->length_direction!=q->length_direction||
+        p->depth_side!=q->depth_side||p->order!=q->order||(boundary_pair_index(before,a->id)>=0)!=(boundary_pair_index(after,b->id)>=0)||
+        json_impact_contacts_changed(before,old,after,now);
+}
+static void json_timber_impacts(void)
+{
+    const World *before=&g_preview.transaction->before,*after=&g_preview.transaction->after;
+    if(!before->wood.boundary_pair_count&&!after->wood.boundary_pair_count)return;
+    fputs(",\"timberImpacts\":[",stdout);bool first=true;
+    for(int pass=0;pass<2;++pass){const World *w=pass?after:before;
+        for(size_t i=0;i<w->wood.timber_count;++i){uint32_t id=w->wood.timbers[i].id;
+            int old=reference_timber_index(before,id),now=reference_timber_index(after,id);
+            if(pass&&old>=0)continue;
+            if(!json_impact_changed(before,old,after,now))continue;
+            printf("%s{\"id\":%u,\"change\":\"%s\",\"before\":",first?"":",",id,old<0?"created":now<0?"deleted":"changed");first=false;
+            json_impact_side(before,old);fputs(",\"after\":",stdout);json_impact_side(after,now);putchar('}');
+        }
+    }
+    putchar(']');
+}
 static void json_reference_preview(void)
 {
     printf("{\"token\":%u,\"valid\":%s,\"command\":",g_preview.token,g_preview.valid?"true":"false");
@@ -159,6 +318,8 @@ static void json_reference_preview(void)
     json_grid_system_preview();
     json_grid_binding_preview();
     json_boundary_preview();
+    json_boundary_pair_preview();
+    json_timber_impacts();
     fputs(",\"assembly\":{\"before\":",stdout);json_assembly_state(&g_preview.transaction->before,false);
     fputs(",\"after\":",stdout);json_assembly_state(&g_preview.transaction->after,false);putchar('}');
     fputs(",\"bayCells\":",stdout);json_bay_cells();
