@@ -1,0 +1,30 @@
+{
+ "family": "single",
+ "n": 99,
+ "placements": 1,
+ "rooms": [
+  {
+   "surface": 1,
+   "timbers": 99,
+   "mains": 5,
+   "rows": 15,
+   "width": 5520,
+   "height": 5837,
+   "x0": 0
+  }
+ ],
+ "area_m2": 32.22,
+ "density_per_m2": 3.073,
+ "grid_command": "grid 1 on 1 u 916 1834 2752 3670 4588 v 363 730 1097 1464 1831 2198 2565 2932 3299 3666 4033 4400 4767 5134 5501",
+ "leaf": {
+  "id": 99,
+  "surface": 1,
+  "grid": 1,
+  "bay": 5,
+  "row": 14,
+  "timber": "timber 99 27 33 role secondary",
+  "place": "place 99 on 1 at-line grid 1 v 14 between t7 t9 +u +n",
+  "delete": "delete timber 99"
+ },
+ "scene_sha256": "a46fbc7bd53d098a202dfeb05636a7e2dc69c0274e2e18ac8f9c18ae86c1f6aa"
+}
