@@ -185,36 +185,57 @@ R06 以 `bf178770a0e10e996014ec0b6487e186db561c7f` 的純 CI 差異三向套用�
 
 官方說明：[required checks與最近七日成功條件](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)、[classic設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)、[rulesets設定](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/managing-rulesets-for-a-repository)、[多規則聚合](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)。最終合併判斷仍需最新來源全部正式CI、六份`seconds <1200`原收據、完整coverage及mutation freshness通過。
 
-## R396：四個工作區 suite 接入六片 main（2026-11-13）
+## R379 合入六片 main：保留兩份獨立來源與歷史預算（2026-11-13）
 
-本次整合的 parents 為 R11 head `07b8772c2ee98d981249c9b81a88ead129c69d4f` 與六片 main `1400a05c4b365103aad1aa1d81b692521cabb319`。原 `native_shard_timings.json` 現有四輪315套、`native_shard_added_evidence.json` 的R380兩套，以及 `native_shard_added_receipts.json` 的R396四套原件全部保留，不把新增 suite 寫成舊輪實跑，也不手改原始失敗狀態。`native_shards.py` 與 `run_all.expected.json` 的自動合併內容已足夠；本整合不改規劃演算法或現有321套 census。
+本節是 PR #379 head `290110d83270feb9ebbb824f7de77e74dd7e18ac` 合入 main
+`1400a05c4b365103aad1aa1d81b692521cabb319` 的 native 結構整合。正式配置仍是六片；
+原 `native_shard_timings.json` 的四輪量測、main 的 `native_shard_added_evidence.json`
+與其兩筆 R380 來源逐 byte 保留。新增 `native_shard_added_evidence_r14.json`，直接複製
+R379 head 原有的 1313-byte `/1` 證據，SHA-256
+`222909ccdb5aa6c3c581acc6bb9701401207616520febde589c62e59c1504257`。
 
-R396四套的原始來源為 [Geometry 43336972629](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43336972629)，head `1d304b10ee4451f0557c9b96b28cf31d3f5bde80`、實際checkout `500eecece499773d085a92952729ea8fcc7cebfc`，兩者tree同為 `0d81cbf4051a877b3907fd9f7eb42c0c673d8d24`。下列child自身通過；原shard因漏登expected或其他runner測試失敗而紅，不能將整片改記為成功。
+R14 來源為 [Geometry 43212357528](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43212357528)，
+source head `eeb8616665d0e0944fc1a7cf4a4786e15872cbe6`、checkout
+`657b9a40fbeba818a7a8ed698b94e0f680c75f86`；原 job 整體紅，但下列個別 suite 全通過。
+時間只有原日誌一位小數精度，上界是規劃餘量，不是改寫或補造歷史實測。
 
-| Suite | 原始片／job | 原始結果 | 原始秒數 | 規劃上界 ms |
-|---|---|---|---:|---:|
-| `py:test_workspace_view` | 2/4／131596120108 | counted，10/10，exit 0 | 2.3255774974823 | 3000 |
-| `node:workspace_context_menu_state` | 2/4／131596120108 | exit-only，total 0、passed 1，exit 0 | 0.05653810501098633 | 1000 |
-| `py:test_workspace_view_server` | 3/4／131596120030 | counted，2/2，exit 0 | 0.765249490737915 | 2000 |
-| `node:workspace_view_state` | 4/4／131596119719 | counted，15/15，exit 0 | 0.18236732482910156 | 1000 |
+| Suite | Source job | Passed / discovered | 原摘要秒數 | Planning upper ms |
+|---|---|---:|---:|---:|
+| `node:r14_app` | [131162916639](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43212357528/job/131162916639) | 7 / 7 | 0.1 | 2000 |
+| `node:r14_host` | [131162916639](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43212357528/job/131162916639) | 15 / 15 | 4.9 | 7000 |
+| `py:test_r14_browser_receipt` | [131162916621](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43212357528/job/131162916621) | 10 / 10 | 0.4 | 2000 |
 
-四個規劃上界合計7000ms，嚴格高於原始浮點秒數乘1000；不是重標歷史實測。exit-only的passed=1是既有runner成功旗標，沒有虛構discovered=1。新收據保存完整原row（含當時expected_problem）、run／head／checkout／job／artifact及原ZIP／JSON的SHA-256；其LF SHA-256維持 `55c6c00be8984fad5bf475993e55b1808fc67c96716a46d9630e9c411ea70ff4`。讀取仍要求真整數exit 0、實際執行、完整合法計數、零failure／skip／crash／環境問題，且拒絕新舊來源的同名覆寫。
+兩份 `/1` 各自走原欄位、來源、全通過及成本上界驗證，再合流為五套 added costs，
+跨來源重複名稱必須拒收。`profile_digest()` 為三份 LF bytes 以 NUL 分隔的 SHA-256，
+順序固定為 timings、R380 原證據、R14 原證據；六片收據因此同時綁定所有來源。
+`run_all.expected.json` 追加 R14 三套原有的 7／15／10 精確計數，並將新增獨立歷史測法後
+實得的 `py:test_unittest_runner` 計數由 13 更新為 14；其餘 main 既有 316 筆不變。
 
-現行六片以四輪315套與全部六個獨立added上界規劃，共321套，分配為 **1／55／71／65／65／64**，精確聯集、零重疊，片內保留registry順序。`profile_digest()`仍以三份LF來源加兩個NUL分隔符綁定全部成本，整合後為 `30056311c006ff25b7bdbfa0cd2fa611c1c1a2658d2f046f90eb2a85930c2095`。
+歷史回放分成兩個明確凍結的對象，使用同一份未改的規劃演算法：main 歷史 317 套
+是原 315 套加 R380 兩套；R379 歷史 318 套是原 315 套加 R14 三套。兩者都保留原
+兩輪三片 `+100000+30000 <1200000`，以及原三輪四片與逐套最大包絡
+`+120000+30000 <1200000`。這些歷史集合不冒充現行執行範圍；正式六片驗全部
+320 套、全部四輪情境及逐套最大包絡，同樣嚴格小於 1200000ms。每套恰好一次、
+反向 registry 決定性、片內原順序與真實收據 `seconds <1200` 皆保留。
 
-以下全部是整數毫秒成本回放除以1000，**不是合併後正式六片收據**。每輪各加全部六項added規劃上界。
+全部 R348、R380、R378 六片撤回保留；另恢復具名
+`R379_REVERT_SINGLE_START_ONE_SWEEP`。即使它與 R380 的單輪 pair sweep 對這組資料
+得到相同配置，仍分別保留各自 0／1／0 原收據，不把等價理由當成刪除證據的授權。
+新增 `R379_DROP_R14_SUITE_EVIDENCE`、`R379_DROP_R14_EXPECTED_ENTRIES`、
+`R379_ALLOW_DUPLICATE_SOURCE`、`R379_OMIT_R14_SOURCE_FROM_DIGEST`，每組要求指定的
+正常 AssertionError、0 error、0 skip；兩份來源各自原有五種 provenance 負控仍在。
+`test_r14_historical_budget` 獨立執行 R379 原 318 套的三／四片預算，並作為
+`R379_REVERT_SINGLE_START_ONE_SWEEP` 的直接 target；其他 main 具名撤回不用重算這份
+不同歷史範圍。所有斷言仍實際執行，未共用任何 baseline／withdrawn／restored 結果，
+完整 `py:test_unittest_runner` 為 14 項。
 
-| 成本情境 | 片1 | 片2 | 片3 | 片4 | 片5 | 片6 |
-|---|---:|---:|---:|---:|---:|---:|
-| 43162989157 | 348.065 | 472.213 | 572.465 | 566.106 | 538.347 | 567.998 |
-| 43150038015 | 688.444 | 375.369 | 554.144 | 566.941 | 487.455 | 478.971 |
-| 43177620127 | 755.187 | 467.946 | 532.158 | 546.494 | 520.377 | 502.044 |
-| 43271258668 | 701.108 | 573.599 | 573.599 | 573.600 | 573.600 | 573.600 |
-| 每suite四輪最大包絡 | 755.187 | 618.750 | 671.211 | 638.663 | 667.828 | 643.171 |
-| 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 768.750 | 821.211 | 788.663 | 817.828 | 793.171 |
+本片不改 workflow、35 分鐘 native timeout、5 分鐘 coverage timeout、60 秒撤回子程序
+限制或既有 golden；本機模型與撤回證據不能代替採入後六份正式 CI 原收據及 ME freshness。
 
-歷史兩輪三片仍固定原315名稱加R380兩項的317套，分配91／115／111，原100秒開銷＋30秒餘裕後最大1199.061秒。R396原三輪四片321套也保持33／97／96／95；原120秒開銷＋30秒餘裕後包絡為1042.699／1065.848／1077.510／1069.136秒。兩者的原預算斷言均保留，不因現行改六片而縮減歷史對象或放寬門檻。
+## R379：coverage 的固定工作量與來源簽出（2026-11-14 台北）
 
-合併衝突若把 `native_sharding_mutation_check.py` 整檔取main，普通13項測試原本仍會綠，但R396七組具名撤回消失。本次在既有provenance method加入七組原名稱／baseline／marker的保全斷言，保持13項；先只採T應以 `R396_NAMED_WITHDRAWALS_RETAINED` 正常AssertionError紅，再採P恢復原七組。R348／R380原15組、R378六片15組、R396原7組全部保留；另加 `R396_DROP_WORKSPACE_WITHDRAWAL`，只撤回其中一個原登錄，證明此保全斷言正常紅。每組均由原裁判要求0／1／0、指定AssertionError、零error／skip，不能以crash或timeout計kill。
+反證 runner 的35組名稱、每組獨立 baseline／withdrawn／restored 子程序、並行上限2及60秒子程序時限全部保留。規劃器仍按原次序枚舉每個候選、只接受嚴格改善、保留原多起點與固定交換輪數。效能修正只減少候選評分：兩個分片以外的負載在比較兩側完全相同；從降序多集合的字典序比較中消去共同部分，結果不變。pair swap 直接比較變動的兩片；two-for-one exchange 只以兩片排除不可能改善的候選，通過者仍與完整全域最佳向量比較。因此不改規劃目標、成本來源、同分處理、suite歸屬或片內順序。
 
-正式六片workflow、35分鐘native job、5分鐘coverage job、每個proof子程序60秒、收據嚴格 `0 <= seconds < 1200` 及原120／30秒預留完全不變。仍須在採入補丁並原樣採ME後，取得同一最新head／test-merge checkout的六份真收據、完整coverage及全部正式CI；Canvas P1161的完整golden取證另行處理，本節不能解除該阻擋。
+`tests/native_score_reference.py` 凍結修正前兩個 sweep；既有 `test_partition_is_deterministic` 以60組不同分片／情境／成本（每組兩個 sweep）比對完整歸屬與負載。另以平衡且所有候選皆應拒絕的夾具計算排序的純量輸入數，限制每個候選只處理兩個受影響分片；這是工作量斷言，不以機器快慢判斷。具名撤回 `R379_RESTORE_GLOBAL_SWAP_SCORING`／`R379_RESTORE_GLOBAL_EXCHANGE_SCORING` 分別還原舊 sweep，必須命中 `R379_NATIVE_SWAP_LOCAL_SCORE`／`R379_NATIVE_EXCHANGE_LOCAL_SCORE` 的正常 AssertionError，恢復後再綠。原 NativeShardCoverage 的13個方法（整檔另含 RunnerClassification 一個方法，共14個）、所有舊斷言、expected與量測原件不變。
+
+`native-complete` 的 checkout 使用 `filter: blob:none` 及 non-cone `/*`、`!/evidence/`；僅省略根目錄歷史證據封包，保留完整 `tests/`（含 `tests/evidence/`）、核心、網頁、原workflow及Git HEAD。沿用文件job已有的簽出方式，5分鐘時限與所有後續命令不變。`R379_RESTORE_FULL_COVERAGE_CHECKOUT` 只撤回本job的該設定，應使原coverage測試以 `R379_NATIVE_COVERAGE_SPARSE_CHECKOUT` 正常紅；不能順手改其他job。稀疏簽出須實際執行原35組反證、archive反證與六片原收據核對，不能僅以設定字串或舊job成功宣稱完成；新head仍需正式CI。

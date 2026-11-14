@@ -62,6 +62,11 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/evidence/
       - name: Prove real coverage test kills a removed suite
         run: python3 -B tests/native_sharding_mutation_check.py --output '${{ runner.temp }}/native-sharding-proof'
       - name: Prove archive capability guards with the original mutation judge
@@ -145,6 +150,8 @@ jobs:
             timeout: 10
           - suite: grid
             timeout: 15
+          - suite: r14-panel
+            timeout: 15
           - suite: space
             timeout: 15
           - suite: timber
@@ -158,6 +165,7 @@ jobs:
       GEOMETRY_CANVAS_SHARD: ${{ matrix.shard }}
       PYTHONDONTWRITEBYTECODE: '1'
       GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR: /tmp/geometry-grid-screens
+      GEOMETRY_R14_SCREENSHOT_DIR: /tmp/geometry-r14-screens
       GEOMETRY_DOCUMENT_SCREENSHOT_DIR: /tmp/geometry-document-screens
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -232,6 +240,12 @@ jobs:
           case "$GEOMETRY_BROWSER_SUITE" in
             assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;
             grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;
+            r14-panel)
+              receipt="$RUNNER_TEMP/r14-panel"
+              mkdir -p "$receipt"
+              GEOMETRY_CDP_PORT=9352 GEOMETRY_R14_PANEL_ONLY=1 node geometry-web/cdp_test.js 2>&1 | tee "$receipt/cdp.log"
+              browser_status=${PIPESTATUS[0]}
+              python3 -B .github/scripts/check_r14_browser_receipt.py --log "$receipt/cdp.log" --exit-code "$browser_status" --commit "$(git rev-parse HEAD)" --out "$receipt/verified.json" ;;
             canvas)
               receipt="$RUNNER_TEMP/canvas-shard-$GEOMETRY_CANVAS_SHARD"
               # Every fresh shard prepares the screenshot parent before its harness starts.
@@ -262,6 +276,16 @@ jobs:
           path: /tmp/geometry-wait-trace-artifact/
           if-no-files-found: error
           retention-days: 7
+      - name: Preserve R14 browser receipt and screenshots
+        if: always() && matrix.suite == 'r14-panel'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r14-panel-browser
+          path: |
+            ${{ runner.temp }}/r14-panel/
+            /tmp/geometry-r14-screens/
+          if-no-files-found: error
+          retention-days: 14
       - name: Preserve assembly authoring screenshots
         if: always() && matrix.suite == 'assembly'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

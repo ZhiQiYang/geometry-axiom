@@ -2803,7 +2803,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "03bb8b8c7da18d1ef4d4356e264355e7c8e0a58da9131a2046a1a6900e882f20",
+      "sha256": "feaaf5e897acf5910e6411c2b2d9b5a55d665cc119797167f149bb963d557bf6",
       "hashMode": "lf"
     },
     {
@@ -3247,7 +3247,7 @@
     {
       "path": "geometry-web/grid_rule_editor_test.js",
       "reason": "Dedicated acceptance/test driver grid_rule_editor_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "ba2ee897e05d862a44ec275c098626627a90bd83dedf6ca2c7f377a58729cc53",
+      "sha256": "d8736d3b7f33fe5a75b3c87da0b2f174e84d390f878fafcecac818c83110a113",
       "hashMode": "lf"
     },
     {
@@ -3951,6 +3951,12 @@
       "reason": "PR396 source-bound Canvas extension capture judge; invoked only by the CDP test driver, the one-shot CI collector and its guard tests, never by a product runtime entry point.",
       "hashMode": "lf",
       "sha256": "8db942bb87e2cbd132f176d6782318ce9c0a1f96d901d478ded2de39f89b6218"
+    },
+    {
+      "path": "geometry-web/r14_panel_entry_test.js",
+      "reason": "Dedicated R14 first-slice browser acceptance driver; loaded only by cdp_test.js in the R14-only CI gate, never by product runtime or served application entry points.",
+      "sha256": "b03f2a813305eeb6df0af8279059d2510af68b5e357cc03b3d12e69c2fd84d75",
+      "hashMode": "lf"
     }
   ],
   "htmlScriptRoutes": [

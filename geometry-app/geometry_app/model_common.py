@@ -8,6 +8,7 @@ ENGINEERING_CAPABILITY = "engineering-spec/1"
 PARAMETER_CAPABILITY = "parameters/1"
 GRID_CARD_CAPABILITY = "grid-card-reference/1"
 GRID_SUBDIVISION_CAPABILITY = "grid-subdivision-rules/1"
+GRID_SUBDIVISION_V2_CAPABILITY = "grid-subdivision-rules/2"
 SECTION_PROFILE_CAPABILITY = "section-profile/1"
 PANEL_FILL_CAPABILITY = "panel-fill/1"
 
@@ -18,7 +19,8 @@ def scene_required_capabilities(scene):
     The C parser remains authoritative. Detecting bindings as well as the marker
     prevents a stripped marker or a legacy adapter from flattening new sources.
     """
-    result = set()
+    result, declared = set(), set()
+    uses_subdivision = False
     for raw in scene.splitlines():
         tokens = raw.split("#", 1)[0].split()
         if not tokens:
@@ -29,8 +31,9 @@ def scene_required_capabilities(scene):
             if len(tokens) != 2:
                 raise ModelError("INVALID", "CAPABILITY_DECLARATION", "I32", "Expected one required capability")
             result.add(tokens[1])
+            declared.add(tokens[1])
         if tokens[0] in ("grid-source-rule", "grid-source-rule-highwater") or any("gridrule:" in token for token in tokens) or "at-line rule" in " ".join(tokens):
-            result.add(GRID_SUBDIVISION_CAPABILITY)
+            uses_subdivision = True
         if tokens[0] == "engineering" or any(token.startswith("eng:") for token in tokens):
             result.add(ENGINEERING_CAPABILITY)
         if tokens[0] == "owned":
@@ -43,6 +46,11 @@ def scene_required_capabilities(scene):
             result.add(PANEL_FILL_CAPABILITY)
         if tokens[0] == "parameters" or "param:" in " ".join(tokens):
             result.add(PARAMETER_CAPABILITY)
+    # /2 contains the /1 syntax. Do not invent a second required marker for a
+    # canonical /2 scene; explicit declarations remain independently required.
+    # Model producers still reject /2 via their narrower capability registry.
+    if uses_subdivision:
+        result.add(GRID_SUBDIVISION_V2_CAPABILITY if GRID_SUBDIVISION_V2_CAPABILITY in declared else GRID_SUBDIVISION_CAPABILITY)
     return result
 
 

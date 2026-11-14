@@ -238,8 +238,8 @@ function appendGridDefinitionImpact(dialog, preview) {
         line.textContent=`來源 ${row.id}／rule ${rule.ruleKey}「${rule.name}」：${scope}；u→ ${rule.divisions[0]} 等分，v↓ ${rule.divisions[1]} 等分。`;
         // Display arithmetic only after the native candidate accepted its
         // exact divisions. Never query live World as if it were pending data.
-        if (preview.valid && rule.divisions.every(n=>n>0) && [value.uDefinition,value.vDefinition].every(d=>d?.source==='repeat')) {
-          const sizes=[value.uDefinition,value.vDefinition].map((d,index)=>BigInt(d.step ?? d.effectiveStep)/BigInt(rule.divisions[index]));
+        if (preview.valid && rule.divisions.every(n=>n>0) && [value.uDefinition,value.vDefinition].every(d=>['repeat','repeat-panel'].includes(d?.source))) {
+          const sizes=[value.uDefinition,value.vDefinition].map((d,index)=>(d.source==='repeat-panel'?BigInt(d.panel ?? d.effectivePanel)+BigInt(d.gap):BigInt(d.step ?? d.effectiveStep))/BigInt(rule.divisions[index]));
           line.textContent+=` 每一主格為 ${rule.divisions[0]*rule.divisions[1]} 個 ${sizes[0]}×${sizes[1]} mm 小格；1 等分不加內線。`;
         }
         details.append(line);
