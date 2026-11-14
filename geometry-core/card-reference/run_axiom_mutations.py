@@ -35,11 +35,12 @@ MUTATIONS = (
     # adoption pair as pre-adoption must turn the era test red.  (The #260 adoption
     # added e744f531 and #318 added a00ba9e9 to the same set; the whole set is emptied here.)
     ('V05-card-adoption-treated-as-pre',
-     'CARD_REFERENCE_AXIOM_VERSIONS = (PRE_DECOUPLING_AXIOM_VERSIONS | PRE_ONE_AXIS_STAGGER_AXIOM_VERSIONS |\n                                 PRE_READING_A_AXIOM_VERSIONS | PRE_R14_AXIOM_VERSIONS | PRE_BOUNDARY_PAIR_AXIOM_VERSIONS)',
+     'CARD_REFERENCE_AXIOM_VERSIONS = (PRE_DECOUPLING_AXIOM_VERSIONS | PRE_ONE_AXIS_STAGGER_AXIOM_VERSIONS |\n                                 PRE_READING_A_AXIOM_VERSIONS | PRE_R14_AXIOM_VERSIONS | PRE_BOUNDARY_PAIR_AXIOM_VERSIONS | PRE_FLAT_TIMBER_AXIOM_VERSIONS)',
      'CARD_REFERENCE_AXIOM_VERSIONS = frozenset()',
      'test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild', 'CARD_AXIOM_ERA'),
 )
-SUITE_TESTS = 44
+# Full module census: 3 adapter + 33 engineering + 7 boundary-pair + 8 stagger.
+SUITE_TESTS = 51
 
 
 def run(directory, selected):
