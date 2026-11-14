@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "8c49c6831cdfba17ba23bbe02a0503a95788f951",
+  "sourceHead": "266064fe5d1cd8a0c859d2b19e49aad9d00e3ae5",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43563239942",
+  "runId": "43576443518",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "d03c5440490eb3ffc87e0d980e9b06476792f082c8d1e45ba02c0717e789523e",
+      "stderrSha256": "8473cbf8dec69d3ed30c18edb4a8633eb7701f1d109cc36a3d96f54e1ce7e1f3",
       "testsRun": 205
     },
     {
@@ -51,11 +51,11 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "36024d0ab3ab546f4a2d34c5071d28d0aa0c664a85f24894907d38dceadaa788",
+      "stderrSha256": "630dc347b48dd6c734b91b64c5e903cd6304ff5a914328db975a2282a0b2c9af",
       "testsRun": 18
     }
   ],
-  "manifestLfSha256": "036e5e8ff44bedfcac7c0dfc1fc9456bcc277ebb6b504d5a43cb65c9c6750e38",
+  "manifestLfSha256": "04a5841d92124bf339bc06dc6d9036f8eff7544695d4711867277e08aee89425",
   "scannerLfSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "testScriptsLfSha256": {
     "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
@@ -2325,7 +2325,7 @@
     },
     {
       "path": "geometry-web/room_candidate_browser_test.js",
-      "lfSha256": "73fdd349cf468cf2b34f816ad17e7fe80c8028e464694d78d2b4e53138ea8fe5"
+      "lfSha256": "e5afa947db03ab5a9e09502395c5316bf122f94fedca68fdfb881fba1660a5c5"
     },
     {
       "path": "geometry-web/room_candidate_cold_test.js",
@@ -2497,7 +2497,7 @@
     },
     {
       "path": "geometry-web/timber_reuse_test.js",
-      "lfSha256": "14851462d9ddcff40f90b90c68a9a5a21b1570230242f1f563947b9427271ce0"
+      "lfSha256": "4ec6598814f297e21625990fc910a772dbc8186fb8f5cc43f4fd356183b3138e"
     },
     {
       "path": "geometry-web/timber_schedule_test.js",
@@ -2628,5 +2628,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "db3ef30a066a3e0e081de44f595a729680e76725fb2fec3cbf759906fecfeb3f"
+  "inputLfClosureSha256": "6657d021a4fb98769e8ec07d87c955e322e69092087256b743259484a0cc383b"
 }
