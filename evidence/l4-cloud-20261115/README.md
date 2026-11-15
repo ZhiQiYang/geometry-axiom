@@ -7,7 +7,7 @@
 - **D13 同一份 PDF 連續描多個房間**（#77）
 - **R21 組構規則編輯器**（GEO-226、#24）
 
-四項的功能都走得通。過程中記下 5 個顯示面的發現（見文末），都不影響資料正確性。
+四項的功能都走得通。過程中記下 5 個顯示面的發現（見文末），都不影響資料正確性；其中 1～3 在同一張 PR 修正，4、5 沒有修。
 
 ## 環境與方法
 
@@ -138,6 +138,28 @@
 4. **組構規則：拒絕原因是英文核心原文。** 重複端點顯示 `ASSEMBLY_INVALID · I40/I41 · I40: joints 1 and 2 assign the same endpoint of member 2`；刪除使用中的版本顯示 `ASSEMBLY_INVALID · I40/I41 · I40: binding 1 refers to missing rule 1@1`；兩處下面都還有一列 `I8 · candidate rejected · 預期：all world invariants pass · 實際：candidate rejected`（`r21/screens/R21-2-duplicate-endpoint.jpg`、`R21-7-delete-used-version.jpg`）。
 5. **畫布上的網格來源卡沒寫相位差。** 卡片寫「v：無限重複 · 間距 600 mm，基準 0 mm」，沒有「相鄰格子相位差 300 mm」；確認對話框與精簡檢查器都有寫。
 
+### 發現 1～3 的修正
+
+同一張 PR 改 `geometry-web/parameters.js`（只改畫面文字的整理，不改核心、不改拒絕行為）：
+
+- 下游物件轉述參數錯誤時，先拆掉最前面的轉述者（`grid-system N u: `、`I74 grid-system N u parameter P field F: `、`datum N: `、`guide N: `）再認欄位與錯誤碼，並寫出是誰拒絕。非整數的情況連欄位名與算出的值一起寫。
+- 「仍被引用」的拒絕不再套用「找不到引用」，改寫「還有地方引用，不能刪除；請先改綁或解除引用」，下面列出直接使用處，狀態列寫「未刪除：還有地方引用。」
+- 已有具體原因時，不另外列出只寫 `candidate rejected` 的那一筆；只有它的時候寫「核心拒絕這次變更」。斷面區塊重複的那一列也不再出現。
+
+修正後重走（`scripts/verify_param_fix.js`，結果在 `fix/`；建置是 main `180d4500` 加上這個改動，還沒進 main）：
+
+| 情況 | 修正前 | 修正後 |
+|---|---|---|
+| 改板材.寬 1220（下游網格拒絕） | `grid-system 1 u: I38 GEOMETRY: [2:1 骨架.間距] must resolve to integer mm in D1 range (got 1220/3)`＋`candidate rejected` | 「網格來源 1 的 u 軸：骨架.間距 算出 1220/3 mm，不是整數 mm，幾何會拒絕」一列 |
+| 預覽刪除仍被引用的「板材」 | 「找不到引用」＋`candidate rejected`，狀態列「未套用：請修正欄位或引用。」 | 「還有地方引用，不能刪除；請先改綁或解除引用」＋「直接使用處：骨架.間距、骨架.半寬」，狀態列「未刪除：還有地方引用。」 |
+| 改骨架.間距自己成 板材.寬 ÷ 4 | 沒在畫面上走這一步；反向對照裡，未修改的版本對這種訊息不歸屬任何欄位（不會標紅） | 「間距」那一欄標紅，寫「網格來源 1 的 u 軸：骨架.間距 算出 915/4 mm，不是整數 mm，幾何會拒絕」，狀態列「請修正標紅的欄位」 |
+
+三種情況的「確認套用」都停用，場景的網格間距仍是 305。把間距改成 板材.寬 ÷ 5（183）時照常列出連動、可以確認。
+
+測試：`geometry-web/parameter_workflow_test.js` 的純函式區塊加 2 條斷言（P76 87 → 89，golden 合計 4828 → 4830）。這台容器跑不了完整的瀏覽器套件——未改動的 main 用 `GEOMETRY_PARAMETERS_ONLY=1` 也在同一個較早的步驟失敗——所以改在真實頁面上執行同一組表示式：修正後新舊 4 條都成立；換成未修改的 `parameters.js`，新增的 2 條不成立、既有的 2 條成立。完整的瀏覽器執行以 CI 為準。
+
+發現 4、5 這次沒有修。
+
 另外兩點不算缺陷：
 
 - D13 新增第二間時，畫面只框住目前這一間，要自己按「縮小」才看得到底圖上的另一間（這次按了 5 次）。
@@ -151,3 +173,4 @@
 - `d18/`：`walk_d18.result.json`、`walk_d18b.result.json`、`d18.gcanvas`、`screens/`。
 - `d13/`：`walk_d13.result.json`、`two-rooms.pdf`、`d13.gcanvas`、`screens/`。
 - `r21/`：`walk_r21.result.json`、`r21-draft.gcanvas`、`r21.gcanvas`、`screens/`。
+- `scripts/verify_param_fix.js`、`fix/`：發現 1～3 修正後的重走結果與三張截圖。
