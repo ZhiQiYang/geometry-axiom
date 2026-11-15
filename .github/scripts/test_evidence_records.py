@@ -379,10 +379,13 @@ class EvidenceRecordsTests(unittest.TestCase):
                 self.assertEqual(self.snapshot(), before)
 
     def test_cli_documents_explicit_artifact_alias(self):
-        process = subprocess.run([os.sys.executable, "-B", str(TOOL), "--help"],
-                                 capture_output=True, text=True, timeout=120)
-        self.assertEqual(process.returncode, 0, process.stderr)
-        self.assertIn("--artifact ARTIFACT_DIR", process.stdout)
+        with self.implementation() as value:
+            self.assertTrue(hasattr(value, "build_parser"), "R214_PARSE_ALIAS_MUST_BE_DIRECTLY_TESTABLE")
+            parser = value.build_parser()
+            for alias in ("--artifact-dir", "--artifact", "--artifacts"):
+                with self.subTest(alias=alias):
+                    args = parser.parse_args(("adopt", alias, str(self.root)))
+                    self.assertEqual(args.artifact_dir, self.root)
 
     def test_conflicting_green_object_does_not_override_explicit_ref(self):
         (self.root / "A.input").write_text("after\n", encoding="utf-8")
