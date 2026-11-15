@@ -89,6 +89,7 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     await settled();await page(()=>{window.__r335.rows.length=0;window.__r335.events.length=0;});
   };
   const openPair=async(label='C01')=>{
+    await ctl('#faceInspectorTabs [data-fi-tab="components"]');await settled();
     await ctl('#faceComponentSwitch [data-component-tab="timber"]');await settled();
     check(label+'_ENTRY_AVAILABLE',await visible('#tbPlacementMode'));
     await choose('#tbPlacementMode','boundary-pair');await settled();
@@ -227,7 +228,7 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     },
     C04:async()=>{
       if(process.env.GEOMETRY_R335_FRESH_STAGE==='open'){
-        const receipt=JSON.parse(fs.readFileSync(process.env.GEOMETRY_R335_FRESH_RECEIPT,'utf8'));need('C04_RECEIPT',receipt.schema==='r335-fresh-profile/1'&&receipt.file,receipt);
+        const receipt=JSON.parse(fs.readFileSync(process.env.GEOMETRY_R335_FRESH_RECEIPT,'utf8'));need('C04_RECEIPT',receipt.schema==='r335-fresh-profile/1'&&typeof receipt.file==='string'&&receipt.file.length>0,receipt);
         check('C04_SEPARATE_PROFILE',process.env.GEOMETRY_CHROME_PROFILE===receipt.freshProfile);check('C04_EMPTY_STORAGE_BEFORE_APP',await page(()=>!!window.__r335FreshStart&&Object.keys(window.__r335FreshStart).length===2&&window.__r335FreshStart.local.length===0&&window.__r335FreshStart.session.length===0));
         check('C04_SAVED_FILE_HASH',sha(fs.readFileSync(receipt.file))===receipt.fileSHA256);await openFile(receipt.file,receipt.projectId);
         check('C04_COLD_SCENE_EXACT',(await dump())===receipt.scene);const reopened=await pairRead();check('C04_COLD_GROUP_AND_SOURCES_EXACT',same(reopened.groups,receipt.groups),reopened.groups);
