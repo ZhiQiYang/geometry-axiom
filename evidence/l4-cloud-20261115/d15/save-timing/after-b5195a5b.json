@@ -1,7 +1,7 @@
 {
- "runtimeVersion": "4ae11dc6636fe61d1ec8a2aa3940666e4d5fdc2469c6a5d5b8513cc0e44802cd",
+ "runtimeVersion": "d0ccf2305cb7cd30bb71ac6b2ea264b0d4aae27f0147057033c553a73b5affc9",
  "root": "/tmp/claude-0/-home-user-geometry-axiom/c161fbcc-185e-5abd-ba3d-eaec6a803bff/scratchpad/walk-wt",
- "measuredAt": "2026-11-15T10:27:35.363Z",
+ "measuredAt": "2026-11-15T10:58:30.476Z",
  "caseIds": [
   "same-role-distinct-members",
   "one-local-joint-new-version",
@@ -17,39 +17,39 @@
    "saves": [
     {
      "scenariosAfter": 1,
-     "ms": 525
+     "ms": 472
     },
     {
      "scenariosAfter": 2,
-     "ms": 940
+     "ms": 957
     }
    ]
   },
   {
    "cases": 3,
-   "attachmentBytes": 33505,
+   "attachmentBytes": 33503,
    "saves": [
     {
      "scenariosAfter": 1,
-     "ms": 1448
+     "ms": 1409
     },
     {
      "scenariosAfter": 2,
-     "ms": 1874
+     "ms": 2383
     }
    ]
   },
   {
    "cases": 6,
-   "attachmentBytes": 52085,
+   "attachmentBytes": 52084,
    "saves": [
     {
      "scenariosAfter": 1,
-     "ms": 1661
+     "ms": 1727
     },
     {
      "scenariosAfter": 2,
-     "ms": 2609
+     "ms": 2627
     }
    ]
   }
@@ -61,21 +61,21 @@
    "saves": [
     {
      "scenariosAfter": 1,
-     "ms": 489,
+     "ms": 513,
      "calls": {
       "feature-attachments.validate": 13,
-      "project-store.projectFormat": 19,
-      "project-store.projectCapabilities": 31,
+      "project-store.projectFormat": 38,
+      "project-store.projectCapabilities": 254,
       "project-store.validate": 5
      }
     },
     {
      "scenariosAfter": 2,
-     "ms": 1002,
+     "ms": 948,
      "calls": {
       "feature-attachments.validate": 14,
-      "project-store.projectFormat": 23,
-      "project-store.projectCapabilities": 63,
+      "project-store.projectFormat": 46,
+      "project-store.projectCapabilities": 395,
       "project-store.validate": 8
      }
     }
@@ -83,31 +83,31 @@
   },
   {
    "cases": 3,
-   "attachmentBytes": 33503,
+   "attachmentBytes": 33505,
    "saves": [
     {
      "scenariosAfter": 1,
-     "ms": 1995,
+     "ms": 1908,
      "calls": {
       "rule-case-data.bounded": 1172,
       "rule-case-data.validate": 84,
       "feature-attachments.validate": 80,
       "feature-attachments.capabilities": 30,
-      "project-store.projectFormat": 12,
-      "project-store.projectCapabilities": 30,
+      "project-store.projectFormat": 24,
+      "project-store.projectCapabilities": 132,
       "project-store.validate": 4
      }
     },
     {
      "scenariosAfter": 2,
-     "ms": 4053,
+     "ms": 4332,
      "calls": {
       "rule-case-data.bounded": 2484,
       "rule-case-data.validate": 178,
       "feature-attachments.validate": 170,
       "feature-attachments.capabilities": 74,
-      "project-store.projectFormat": 23,
-      "project-store.projectCapabilities": 74,
+      "project-store.projectFormat": 46,
+      "project-store.projectCapabilities": 347,
       "project-store.validate": 8
      }
     }
@@ -115,31 +115,31 @@
   },
   {
    "cases": 6,
-   "attachmentBytes": 52085,
+   "attachmentBytes": 52073,
    "saves": [
     {
      "scenariosAfter": 1,
-     "ms": 3350,
+     "ms": 2633,
      "calls": {
-      "rule-case-data.bounded": 2155,
-      "rule-case-data.validate": 108,
-      "feature-attachments.validate": 103,
-      "feature-attachments.capabilities": 40,
-      "project-store.projectFormat": 16,
-      "project-store.projectCapabilities": 40,
-      "project-store.validate": 5
+      "rule-case-data.bounded": 1676,
+      "rule-case-data.validate": 84,
+      "feature-attachments.validate": 80,
+      "feature-attachments.capabilities": 30,
+      "project-store.projectFormat": 24,
+      "project-store.projectCapabilities": 132,
+      "project-store.validate": 4
      }
     },
     {
      "scenariosAfter": 2,
-     "ms": 4703,
+     "ms": 4306,
      "calls": {
       "rule-case-data.bounded": 3552,
       "rule-case-data.validate": 178,
       "feature-attachments.validate": 170,
       "feature-attachments.capabilities": 74,
-      "project-store.projectFormat": 23,
-      "project-store.projectCapabilities": 74,
+      "project-store.projectFormat": 46,
+      "project-store.projectCapabilities": 347,
       "project-store.validate": 8
      }
     }
