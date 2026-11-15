@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "f483c8163d51d02463ba099eda02268ad6eeaf8c",
+  "sourceHead": "445f7e156f7e97afcb087be8516b344f0a17620e",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43643054456",
+  "runId": "43643051437",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "9be6d33af567e13d3dacc591b40805fa7f8ea553fe91b6437eaac1bb9e3f7b08",
+      "stderrSha256": "e96be5572b92a69e06803090d0158a7c8985c38f2042b03a98ed9a196735c1c1",
       "testsRun": 205
     },
     {
@@ -51,11 +51,11 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "034b22e3f45730385729ee41f3299799858925bcbee9fe4e373f51eb5b76196e",
+      "stderrSha256": "6be1a61d096307fad0b9db4c8d343ff7bd79e8e220ffa2eff092f25d249f7a4b",
       "testsRun": 18
     }
   ],
-  "manifestLfSha256": "595722c360d6ba62db57fdf937999c67e4a153fb535b1a6d2615ae7393014937",
+  "manifestLfSha256": "24c2188ac6402518e5728733b72692ded92061e2b1ba34ba2aa9c70005adabaa",
   "scannerLfSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "testScriptsLfSha256": {
     "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
@@ -161,11 +161,11 @@
     },
     {
       "path": "geometry-app/native/history.c",
-      "lfSha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595"
+      "lfSha256": "dbcabf028badf205143597db53d32d9875c1e04456ba03129eb6804e9d6894e5"
     },
     {
       "path": "geometry-app/native/history.h",
-      "lfSha256": "b9a0b9b61a592bd857041ee4e984550ab9d7e8456d8c434a3f5002a59689e0e0"
+      "lfSha256": "6d1bbb0760dd433bb12c880e6f2ca8305014d0e3ebd8010ae8dd7eb04a7756b6"
     },
     {
       "path": "geometry-app/native/history_unity.inc",
@@ -1453,11 +1453,11 @@
     },
     {
       "path": "geometry-templates/woodworking/native/world_validation.c",
-      "lfSha256": "f24caaf3a93791921b00a9f76c6e66e4614b65bfadd45f2d0b457be0674e63c2"
+      "lfSha256": "7747d5b29b04b1ed9966d6dabb581cd5d58485425ce112eae20dd896376ff1cb"
     },
     {
       "path": "geometry-templates/woodworking/native/world_validation.h",
-      "lfSha256": "7ce7346bac28aca1f246098e06a889606dcf0a962c662e771660e60896842451"
+      "lfSha256": "1454bf2b3c6ecf76aa1b2064b9ea4ad5fb154bd4b3af353cb3042ff9de57f39a"
     },
     {
       "path": "geometry-web/app.js",
@@ -2325,7 +2325,7 @@
     },
     {
       "path": "geometry-web/room_candidate_browser_test.js",
-      "lfSha256": "e5afa947db03ab5a9e09502395c5316bf122f94fedca68fdfb881fba1660a5c5"
+      "lfSha256": "73fdd349cf468cf2b34f816ad17e7fe80c8028e464694d78d2b4e53138ea8fe5"
     },
     {
       "path": "geometry-web/room_candidate_cold_test.js",
@@ -2497,7 +2497,7 @@
     },
     {
       "path": "geometry-web/timber_reuse_test.js",
-      "lfSha256": "4ec6598814f297e21625990fc910a772dbc8186fb8f5cc43f4fd356183b3138e"
+      "lfSha256": "14851462d9ddcff40f90b90c68a9a5a21b1570230242f1f563947b9427271ce0"
     },
     {
       "path": "geometry-web/timber_schedule_test.js",
@@ -2628,5 +2628,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "11c7abf05d5146f0b6201887044d1e8a8ad06e70fabf78daf1ef0d2412fa5297"
+  "inputLfClosureSha256": "9407fee1729c64a87a5e61766040ab1a52059a7baaeaefe7cf46ad0854e27077"
 }
