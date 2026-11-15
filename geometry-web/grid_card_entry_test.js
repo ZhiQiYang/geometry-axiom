@@ -645,7 +645,32 @@ module.exports = async function gridCardEntryTests({
     const before = await query('engineering-read');
     const cursor = await page(() => window.__p353EngineeringTrace.calls.length);
     await ctl(unbindButton(mode));
-    await waitProduct('UNBIND_NATIVE_PREVIEW', 'window.__p353EngineeringTrace.calls.slice(' + cursor + ').some(row=>row.state!=="pending")');
+    try {
+      await waitProduct('UNBIND_NATIVE_PREVIEW', 'window.__p353EngineeringTrace.calls.slice(' + cursor + ').some(row=>row.state!=="pending")');
+    } catch (error) {
+      // Keep the original failure and capture a rejected entry's visible reason;
+      // a healthy operation that stopped before preview must never look like a pass.
+      try {
+        const diagnostics = await page((mode,start) => {
+          const calls = window.__p353ApiTrace?.calls || [];
+          const lastRead = [...calls].reverse().find(row => row.command === 'engineering-read' && row.state === 'fulfilled')?.result;
+          const button = document.getElementById('igCardUnbind'+(mode === 'parameter' ? 'Parameter' : 'Direct'));
+          return {mode,status:document.getElementById('igStatus')?.textContent,
+            stateDetail:document.getElementById('igStateDetail')?.textContent,
+            workspaceOpen:!!document.getElementById('infiniteGridWorkspace')?.open,
+            workspaceBusy:document.getElementById('infiniteGridWorkspace')?.classList.contains('ig-busy'),
+            button:{exists:!!button,disabled:button?.disabled,hasHandler:typeof button?.onclick === 'function'},
+            draftCount:ReferenceWorkspace.readGridDrafts().drafts.length,
+            engineeringRead:{ok:lastRead?.ok,revision:lastRead?.revision,keys:Object.keys(lastRead || {}),
+              stateKeys:Object.keys(lastRead?.state || {}),geometryKeys:Object.keys(lastRead?.state?.geometry || {})},
+            apiCalls:calls.slice(-8).map(row => ({command:row.command,state:row.state,ok:row.result?.ok,error:row.error || row.result?.error})),
+            previews:(window.__p353EngineeringTrace?.calls || []).slice(start).map(row => ({request:row.request,state:row.state,error:row.error}))};
+        },mode,cursor);
+        console.log('P353_UNBIND_DIAGNOSTIC '+JSON.stringify(diagnostics));
+        error.message += ' '+JSON.stringify(diagnostics);
+      } catch (diagnosticError) { error.message += ' (diagnostic read failed: '+diagnosticError.message+')'; }
+      throw error;
+    }
     const calls = await page(start => window.__p353EngineeringTrace.calls.slice(start),cursor);
     if (calls.some(row => row.state === 'rejected'))
       throw failure('exception','UNBIND_PREVIEW_REQUEST_REJECTED','Native unbind request rejected',calls);

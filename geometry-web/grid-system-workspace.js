@@ -1153,12 +1153,14 @@
     requireOnlyDraft(s,null);
     if(s.orphaned||s.rawError||ReferenceWorkspace.readGridDrafts().drafts.some(d=>d.draftId===s.draftId)||JSON.stringify(rawForm(s))!==s.initialRaw)
       throw Error('請先預覽並確認來源變更，或捨棄原始草稿，再解除整組引用。');
-    await stillSame(s);
     const read=await apiRequest('engineering-read');
     if(!current(s))return;
     if(!read.ok)throw Error(read.error||'無法讀取目前來源。');
     if(!['parameters/1','grid-card-reference/1'].every(cap=>read.state?.capabilities?.includes(cap)))throw Error('目前服務不支援整卡解除，請更新服務後重試。');
-    if(s.nativeChanged||sourceKey(read.state.geometry?.gridSystems?.find(row=>row.id===s.source.id))!==sourceKey(s.source))throw Error('來源已變更，請重新開啟工作區核對。');
+    // engineering-read supplies the revision/capabilities, not geometry.
+    // Read the source through objects after this revision; a later change is
+    // rejected by the native preview's expectedRevision check.
+    await stillSame(s);
     status('正在預覽整組解除，場景尚未改動…');
     const preview=await EngineeringAdapter.preview({expectedRevision:read.revision,
       operations:[{op:'unbind-grid-card-reference',id:s.source.id,mode}]});
