@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "c2f5881c15bd1d96deb3bedf4768e281a3168d49",
+  "sourceHead": "b7917b91b5f50c906f881207f7767370c5079e56",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43676814697",
+  "runId": "43686944337",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -21,7 +21,7 @@
       "exitCode": 0,
       "stdout": "architecture-cli.stdout",
       "stderr": "architecture-cli.stderr",
-      "stdoutSha256": "f92d4110d26c21a3048ce484365019266ad5294025f0bf053942e3e67ea47e88",
+      "stdoutSha256": "7b6357a8ad3cd952fd22845bec09848055da8009c6e90ffd933c943f52612114",
       "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "0be0dd9a08c64f039ed474c4b4d8465c5a0059ca49e39f80ea6531977872f18b",
+      "stderrSha256": "6de0d9d3f8de96a7615a492664e87eb95cc573ce75ac5262d25a1864955d78e0",
       "testsRun": 205
     },
     {
@@ -51,7 +51,7 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "c28c32b6903e28fadf82d6d27570ffb83487b81390f92b8956a49d28d2369dbf",
+      "stderrSha256": "052cfeb21d299bfa24405517e5e5b09ce5a304bf5e5c4f274a26d085a8e7ebd7",
       "testsRun": 18
     }
   ],
@@ -61,7 +61,7 @@
     "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
     "tests/test_product_architecture.py": "ba001185b4fd58a5cec8045cff72c1cf9c899733c94f94f28f161db05564a9a0"
   },
-  "scanSha256": "f92d4110d26c21a3048ce484365019266ad5294025f0bf053942e3e67ea47e88",
+  "scanSha256": "7b6357a8ad3cd952fd22845bec09848055da8009c6e90ffd933c943f52612114",
   "ownedCount": 352,
   "exclusionCount": 288,
   "edgeCount": 833,
@@ -69,7 +69,7 @@
   "inputs": [
     {
       "path": "current_geometry.c",
-      "lfSha256": "99034c82d8fc36a1893ace38510ae6736ddc8b56ba8ca341a0c73c42300396f5"
+      "lfSha256": "cb76f25a4d07de6eae2816ea44afd92b695ba3618ea5f8258bdb6922606eac61"
     },
     {
       "path": "geometry-app/application.js",
@@ -2628,5 +2628,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "1ee3ccac296db58f96372ede491c3595f76e4a9b1247e4c5512d32ea6a470a24"
+  "inputLfClosureSha256": "20bf121f3e1250c510ef8247974f41611726074b14dade52c380ba7a1f63c68e"
 }
