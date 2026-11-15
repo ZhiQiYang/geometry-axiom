@@ -1,0 +1,90 @@
+{
+  "schema": "geometry-parameters/1",
+  "cards": [
+    {
+      "id": 2,
+      "name": "骨架",
+      "nextFieldId": 4,
+      "fields": [
+        {
+          "id": 1,
+          "name": "間距",
+          "type": "dimension",
+          "expression": {
+            "left": {
+              "fieldId": 2,
+              "op": "ref",
+              "parameterId": 1
+            },
+            "op": "div",
+            "right": {
+              "den": "1",
+              "num": "3",
+              "op": "literal",
+              "unit": "1"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "name": "半寬",
+          "type": "dimension",
+          "expression": {
+            "left": {
+              "fieldId": 2,
+              "op": "ref",
+              "parameterId": 1
+            },
+            "op": "div",
+            "right": {
+              "den": "1",
+              "num": "2",
+              "op": "literal",
+              "unit": "1"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "name": "支數",
+          "type": "count",
+          "expression": {
+            "den": "1",
+            "num": "7",
+            "op": "literal",
+            "unit": "1"
+          }
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "板材",
+      "nextFieldId": 4,
+      "fields": [
+        {
+          "id": 2,
+          "name": "寬",
+          "type": "dimension",
+          "expression": {
+            "den": "1",
+            "num": "1200",
+            "op": "literal",
+            "unit": "mm"
+          }
+        },
+        {
+          "id": 3,
+          "name": "長",
+          "type": "dimension",
+          "expression": {
+            "den": "1",
+            "num": "1830",
+            "op": "literal",
+            "unit": "mm"
+          }
+        }
+      ]
+    }
+  ]
+}
