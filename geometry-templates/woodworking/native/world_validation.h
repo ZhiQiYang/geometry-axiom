@@ -20,6 +20,10 @@ typedef struct {
     size_t member_count,placement_count;
     bool (*member_at)(void *,size_t,WoodWorldMemberFact *);
     uint32_t (*placement_id)(void *,size_t);
+    /* Contract (GEO-381): within one wood_world_validate_members call,
+     * host(user,id,NULL,out) is a read-only lookup with no side effects whose
+     * answer depends only on id. W may therefore confirm a host once per
+     * member and skip repeated identical calls for the same id. */
     bool (*host)(void *,uint32_t,const GeoRect2 *,WoodGridHost *);
     bool (*footprint)(void *,size_t,uint32_t,GeoRect2 *);
     bool (*place)(void *,uint32_t,WoodMember *,GeoPoint2,int,int);
