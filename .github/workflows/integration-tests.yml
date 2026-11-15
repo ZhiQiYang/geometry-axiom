@@ -258,6 +258,13 @@ jobs:
             *) echo "Unknown browser suite"; exit 2 ;;
           esac
           status=$?
+          if [ "$GEOMETRY_BROWSER_SUITE" = canvas ] && [ "$GEOMETRY_CANVAS_SHARD" = 2 ]; then
+            # R116 C09 / P90 flake: late native reply must stay green, and both
+            # named withdrawals must fail as specified (same service, own ports).
+            python3 -B tests/canvas_flake_r116_p90_regression.py
+            regression=$?
+            if [ "$status" -eq 0 ] && [ "$regression" -ne 0 ]; then status=$regression; fi
+          fi
           cat /tmp/geometry-integration-server.log
           exit "$status"
       - name: Preserve canvas shard raw and source receipts
