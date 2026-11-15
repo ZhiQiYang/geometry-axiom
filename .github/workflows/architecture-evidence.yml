@@ -1,0 +1,43 @@
+name: Architecture evidence
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: architecture-evidence-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  architecture:
+    name: Original architecture commands and immutable repo bundle
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - name: Verify the architecture evidence adapter
+        run: python3 -B .github/scripts/test_evidence_architecture.py
+      - name: Run original scanner and architecture test commands
+        run: python3 -B .github/scripts/architecture_evidence.py --out "$RUNNER_TEMP/architecture-original"
+      - name: Package unchanged original evidence for repo adoption
+        run: python3 -B .github/scripts/evidence_architecture.py import --root . --artifact "$RUNNER_TEMP/architecture-original" --store "$RUNNER_TEMP/architecture-repo-evidence"
+      - name: Preserve original evidence and raw failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: architecture-original-evidence
+          path: ${{ runner.temp }}/architecture-original/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Preserve immutable repo bundle
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: architecture-repo-evidence
+          path: ${{ runner.temp }}/architecture-repo-evidence/
+          if-no-files-found: error
+          retention-days: 30
