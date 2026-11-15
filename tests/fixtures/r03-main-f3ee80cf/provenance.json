@@ -1,0 +1,30 @@
+{
+  "schema": "r03-previous-main-producer/1",
+  "producer_head": "f3ee80cf07a548089bfe705e50c93fc7632d8720",
+  "producer_axiom_revision": "42ac2f737828e04b301cbbfa97f7f57a18ceb050",
+  "producer_axiom_sha256": "41bb139fdb4767327e542eb96912437c8060c1ad84f044a7d2a30ecdb13ab4ad",
+  "method": "Unmodified producer build_package and verify_package with the native C adapter; no manifest restamping.",
+  "outputs": [
+    {
+      "name": "profile",
+      "bytes": 96374,
+      "sha256": "fb98aae35fd202bb35fe4e5cea13b2293a73e3dcfe6db44e5effdd01e0aeae80",
+      "input": "tests/fixtures/r17-main-343a8abe/profile.json",
+      "input_sha256": "fdb8bac718acb0534ec37fa30b4c86ec8a0336d430f9984bb9993ce65a0e84fb"
+    },
+    {
+      "name": "stagger",
+      "bytes": 8826,
+      "sha256": "b5009a1566eaa7a682c3a0d0bcb69def385a1e4cdbcb8c3fd418405184ac02c4",
+      "input": "tests/fixtures/r17-main-343a8abe/stagger.json",
+      "input_sha256": "aea91c046bee429c4b04fef724c3f27754949059bc1ef58c2f74f73a25fabf66"
+    },
+    {
+      "name": "card",
+      "bytes": 37934,
+      "sha256": "423bbaf561cea10a1cd8f393f6e9369efcb0a75ec985e299262ec21d90593938",
+      "input": "tests/fixtures/r17-main-343a8abe/card.json",
+      "input_sha256": "98a0b5b927ff56afe06d722ffd932ca193db9f81b1c24b8dce1d627f4e370952"
+    }
+  ]
+}
