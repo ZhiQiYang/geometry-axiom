@@ -6,8 +6,13 @@
   const STATUSES=['not-run','missing-capability','blocked','timeout','crashed','failed','passed','stale','unknown-runtime'];
   const encoder=new TextEncoder(),own=(v,k)=>Object.hasOwn(v,k),fail=()=>{throw new Error('規則案例的版本、欄位、來源或容量不合法。');};
   const check=ok=>{if(!ok)fail();}, obj=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
+  // Same number as encoder.encode(s).length, without allocating: a lone surrogate encodes as U+FFFD (3 bytes).
+  function utf8Length(s){let n=0;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);
+    if(c<0x80)n+=1;else if(c<0x800)n+=2;
+    else if(c>=0xd800&&c<=0xdbff&&s.charCodeAt(i+1)>=0xdc00&&s.charCodeAt(i+1)<=0xdfff){n+=4;i++;}
+    else n+=3;}return n;}
   function shape(v,required,optional=[]){check(obj(v)&&required.every(k=>own(v,k))&&Object.keys(v).every(k=>required.includes(k)||optional.includes(k)));}
-  const text=(v,max=96,min=1,controls=false)=>check(typeof v==='string'&&encoder.encode(v).length>=min&&encoder.encode(v).length<=max&&(controls||!/[\x00-\x1f\x7f-\x9f]/.test(v)));
+  const text=(v,max=96,min=1,controls=false)=>check(typeof v==='string'&&utf8Length(v)>=min&&utf8Length(v)<=max&&(controls||!/[\x00-\x1f\x7f-\x9f]/.test(v)));
   const uint=(v,min=0,max=4294967295)=>check(Number.isSafeInteger(v)&&v>=min&&v<=max);
   const num=(v,min,max)=>check(typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max);
   const hash=v=>check(typeof v==='string'&&/^[a-f0-9]{64}$/.test(v));
@@ -19,7 +24,7 @@
     while(stack.length){const f=stack.pop(),x=f.v;if(f.exit){seen.delete(x);continue;}
       check(++nodes<=maxNodes&&f.d<=maxDepth);
       if(x===null||typeof x==='boolean')bytes+=x===null?4:x?4:5;
-      else if(typeof x==='string'){check(!/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(x));bytes+=encoder.encode(JSON.stringify(x)).length;}
+      else if(typeof x==='string'){check(!/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(x));bytes+=utf8Length(JSON.stringify(x));}
       else if(typeof x==='number'){check(Number.isFinite(x)&&(!integer||Number.isSafeInteger(x)));bytes+=JSON.stringify(x).length;}
       else {check(obj(x)||Array.isArray(x));const proto=Object.getPrototypeOf(x),ctor=proto&&Object.getOwnPropertyDescriptor(proto,'constructor')?.value;
         check(proto===null||typeof ctor==='function'&&ctor.prototype===proto&&Function.prototype.toString.call(ctor)===Function.prototype.toString.call(Array.isArray(x)?Array:Object));
@@ -27,7 +32,7 @@
         const keys=Object.getOwnPropertyNames(x).filter(k=>!Array.isArray(x)||k!=='length');check(!Array.isArray(x)||keys.length===x.length);
         bytes+=2+Math.max(0,keys.length-1);
         for(let i=keys.length-1;i>=0;i--){const k=keys[i],d=Object.getOwnPropertyDescriptor(x,k);check(d.enumerable&&own(d,'value')&&(!Array.isArray(x)||k===String(i)));
-          if(!Array.isArray(x)){check(!['__proto__','constructor','prototype'].includes(k));bytes+=encoder.encode(JSON.stringify(k)).length+1;check(++nodes<=maxNodes);}stack.push({v:d.value,d:f.d+1});}
+          if(!Array.isArray(x)){check(!['__proto__','constructor','prototype'].includes(k));bytes+=utf8Length(JSON.stringify(k))+1;check(++nodes<=maxNodes);}stack.push({v:d.value,d:f.d+1});}
       }check(bytes<=maxBytes);
     }return bytes;
   }
