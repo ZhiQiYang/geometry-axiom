@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "a20b0997c428617adc08e72246f8d7634cf0536f",
+  "sourceHead": "5ab9b387192710dcb9908c2f9bdfab91a038bf22",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43688551032",
+  "runId": "43758684237",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "c4e6baf4f90ced12df5859b13f4b0585db547c8e91c8b751b0c875648d7396d5",
+      "stderrSha256": "a0b402ac26c65e2471df5e5d72fab85c3872826adb05776d8bf3aec9c329555e",
       "testsRun": 205
     },
     {
@@ -51,7 +51,7 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "8fbd71d1df1e0246bf9154fec7eb8b9f9a6ae986dc98628b464da596abe4ffa4",
+      "stderrSha256": "6b4070fcdd392bf0944eefde598165a692a504f6ca6d624c800fd6e02e3e6b9a",
       "testsRun": 18
     }
   ],
@@ -1237,7 +1237,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/assembly_sources.c",
-      "lfSha256": "71318f42d3d8334bcedc1e9d8c3eed331b8eed347ca3bc77726bea62aa78064a"
+      "lfSha256": "5021f647bc4416fdab5bff4ce0086f398291c8b9c39743c6eafc53a1cd9d5400"
     },
     {
       "path": "geometry-templates/woodworking/native/assembly_sources.h",
@@ -2628,5 +2628,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "cd1e9696ad25603c2ea63cd005fecd1cebb61d5602892ff2e1ab500f88c80ccd"
+  "inputLfClosureSha256": "2fa3babd8a599bc3a2af943ced1430f35c09d851737075afa6b9a638eeca57a6"
 }
