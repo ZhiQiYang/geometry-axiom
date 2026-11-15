@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "666ad30fc9eb4edfaacc35411ad9fcbe8cab8343",
+  "sourceHead": "a20b0997c428617adc08e72246f8d7634cf0536f",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43692210149",
+  "runId": "43688551032",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -21,7 +21,7 @@
       "exitCode": 0,
       "stdout": "architecture-cli.stdout",
       "stderr": "architecture-cli.stderr",
-      "stdoutSha256": "a2d83789a1da32ada6db042afdc9461dd61f6fa471f0b41047d3e7123045ed11",
+      "stdoutSha256": "b447a48b612923a89ff799f4651c17adc4a4c8e152f5084b1f19efaf00a120e3",
       "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "293ab6e17b4d7c4839d0809f1417c4f845c08452054d769feca7bef63e5ad4b0",
+      "stderrSha256": "c4e6baf4f90ced12df5859b13f4b0585db547c8e91c8b751b0c875648d7396d5",
       "testsRun": 205
     },
     {
@@ -51,25 +51,25 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "be408c850e38dbc4fa8a432f2f7f40515ae23b9d57b5093ebeea89970e3ee239",
+      "stderrSha256": "8fbd71d1df1e0246bf9154fec7eb8b9f9a6ae986dc98628b464da596abe4ffa4",
       "testsRun": 18
     }
   ],
-  "manifestLfSha256": "77f946be3ee8e77bc027052c0943aabb2d25b8cb571aefc3a256aeda2aed2b49",
+  "manifestLfSha256": "293f3e3228ad3cdd9eff6a6e398e37fc0c896a497a0feb5b3f78a4702fa16ff4",
   "scannerLfSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "testScriptsLfSha256": {
     "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
     "tests/test_product_architecture.py": "ba001185b4fd58a5cec8045cff72c1cf9c899733c94f94f28f161db05564a9a0"
   },
-  "scanSha256": "a2d83789a1da32ada6db042afdc9461dd61f6fa471f0b41047d3e7123045ed11",
-  "ownedCount": 358,
-  "exclusionCount": 295,
-  "edgeCount": 839,
+  "scanSha256": "b447a48b612923a89ff799f4651c17adc4a4c8e152f5084b1f19efaf00a120e3",
+  "ownedCount": 352,
+  "exclusionCount": 288,
+  "edgeCount": 833,
   "diagnosticCount": 0,
   "inputs": [
     {
       "path": "current_geometry.c",
-      "lfSha256": "c47c13954cf7461ac184b1a76e3c6b35036763d5fc748787f637d84e905ed0f6"
+      "lfSha256": "99034c82d8fc36a1893ace38510ae6736ddc8b56ba8ca341a0c73c42300396f5"
     },
     {
       "path": "geometry-app/application.js",
@@ -257,7 +257,7 @@
     },
     {
       "path": "geometry-core/card-reference/run_axiom_mutations.py",
-      "lfSha256": "ff07ce4d59c573d12213afc4f546b7ba9f186cdaf1fdaee240af6a7fc39e936b"
+      "lfSha256": "9b31dd0ca40f96a974e7cac46a732047e2b8730fcf6f7a5fe35aec6865a08b86"
     },
     {
       "path": "geometry-core/card-reference/run_mutations.py",
@@ -1029,7 +1029,7 @@
     },
     {
       "path": "geometry-core/modeling/__init__.py",
-      "lfSha256": "8691493dde052ef546cdec60953a4954034b6cf971f50beb76e8bda2b399c036"
+      "lfSha256": "222a37a421bfe2622a2da1fda40c4cfbe837184fead3e460a7fd43ab01dd817b"
     },
     {
       "path": "geometry-core/modeling/_host.py",
@@ -1185,7 +1185,7 @@
     },
     {
       "path": "geometry-guide/公理層-閱讀器.html",
-      "lfSha256": "780c60fbb52f632cbaf77b57eddabb7569fcdec36a4c0e3d0356a79804f6a172"
+      "lfSha256": "a5469c15ece827cbef6f0697aa1777e5d8facd3c2c74fcc230a88cce1d9b2c0e"
     },
     {
       "path": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
@@ -1461,7 +1461,7 @@
     },
     {
       "path": "geometry-web/app.js",
-      "lfSha256": "b8cfc2ffaa0b2f9b62c224880d00c93588e59b0228a06ed3353227b47448ed34"
+      "lfSha256": "e997662411230d219b235c1c8d237869f7e7adfabd62ed08cb1caa1f7b37e6ee"
     },
     {
       "path": "geometry-web/archive_wait_trace.py",
@@ -1524,10 +1524,6 @@
       "lfSha256": "23b9c782533e0e38f98e2a6d66631338bc612dacbf4c3b18ca537444db4e1ddb"
     },
     {
-      "path": "geometry-web/canvas_capture.js",
-      "lfSha256": "8db942bb87e2cbd132f176d6782318ce9c0a1f96d901d478ded2de39f89b6218"
-    },
-    {
       "path": "geometry-web/canvas_context_menu_cases_a.js",
       "lfSha256": "730162d4bc4e2f5d38479bf839dea4b4c619a4494d658da330a1d33864671623"
     },
@@ -1581,7 +1577,7 @@
     },
     {
       "path": "geometry-web/cdp_test.js",
-      "lfSha256": "aee783eb04708ba5f2af3c150a7f9cd643794284d9239dcc298a4c949b43952e"
+      "lfSha256": "feaaf5e897acf5910e6411c2b2d9b5a55d665cc119797167f149bb963d557bf6"
     },
     {
       "path": "geometry-web/composition_canvas_test.js",
@@ -2057,7 +2053,7 @@
     },
     {
       "path": "geometry-web/index.html",
-      "lfSha256": "8e064eded6ac1f8efaef4d946924f69489fa12099cf3ea141780c135e1fe46f8"
+      "lfSha256": "11b4bc9ad22cf9990a591574a1b46a268b7fcd2dc3afa3ed2cf79683b3121afe"
     },
     {
       "path": "geometry-web/infinite_grid_face_test.js",
@@ -2293,7 +2289,7 @@
     },
     {
       "path": "geometry-web/reference-ui.js",
-      "lfSha256": "cb4f2f7bf647e29dfcab04a70b6a0cab4cb8a88a3a26141723dbd7895e054da4"
+      "lfSha256": "49af6ed0ff7b31b6747401018613fdd8b421b19407071f7bf95f72d7c71d33c7"
     },
     {
       "path": "geometry-web/reference-workspace.js",
@@ -2425,7 +2421,7 @@
     },
     {
       "path": "geometry-web/serve.py",
-      "lfSha256": "f43a166cc0761f82e225e4e64168288c9672abab6d21c81c9a2398f3f638821f"
+      "lfSha256": "321b747cf5acd2eca13f1a2221c0816f38fa4ebd3045eb115572de123df2ea5f"
     },
     {
       "path": "geometry-web/source-inspector-app.js",
@@ -2454,10 +2450,6 @@
     {
       "path": "geometry-web/source_navigation_test.js",
       "lfSha256": "92b4b250a07d96878d665b6e710ff84410f69b3b11d3ce06b7408ba9a6e582a6"
-    },
-    {
-      "path": "geometry-web/space-context-menu.js",
-      "lfSha256": "f43da6bd6e0b8657b76ec822c59870b23914c1e8c07ffd67cad93d551340413a"
     },
     {
       "path": "geometry-web/space-short-height-acceptance.cjs",
@@ -2505,7 +2497,7 @@
     },
     {
       "path": "geometry-web/timber_reuse_test.js",
-      "lfSha256": "a24c730fde817df3fe689da22e77c8b038c6498fb0c9f781ee662ca427566ec8"
+      "lfSha256": "4ec6598814f297e21625990fc910a772dbc8186fb8f5cc43f4fd356183b3138e"
     },
     {
       "path": "geometry-web/timber_schedule_test.js",
@@ -2556,16 +2548,12 @@
       "lfSha256": "fe7930418e869791ce892567dbd0bc4698152b7e550b5cefa553992c56ddc325"
     },
     {
-      "path": "geometry-web/view-context-menu.js",
-      "lfSha256": "1b835d15b93ad0807cdd3ab7656ed20d54bbe942a04fd09f58f23766722b0232"
-    },
-    {
       "path": "geometry-web/wait_trace.py",
       "lfSha256": "7437bb119d41088a3481c91a1f0b2a6df1a8aced4cf72cd85156c9f2a20eb712"
     },
     {
       "path": "geometry-web/web_bridge.c",
-      "lfSha256": "3944fd8152255c87224d029e54f4ad2e0be31eac6a77a968a7106b54b0c02c6d"
+      "lfSha256": "89345a8f0f490c89a15d124804abb8fb156f35ae29c672cc9241ae5b1117e6fe"
     },
     {
       "path": "geometry-web/work-manager/adapter.py",
@@ -2628,48 +2616,8 @@
       "lfSha256": "00412889311ba4f7625fd59ed7da07ccfb88bb06650e67a464e11b71aa67a51d"
     },
     {
-      "path": "geometry-web/workspace-properties.js",
-      "lfSha256": "29a68e7e80f2f3cb677932cff3c07704dd85faefcd1dc8f0ada21fab1f272396"
-    },
-    {
       "path": "geometry-web/workspace-shell.js",
       "lfSha256": "780a26eb4e061069f8161bedd44665d2ed4ece9f695cefeffef7a7d855ec3b4c"
-    },
-    {
-      "path": "geometry-web/workspace-view.js",
-      "lfSha256": "7670b9669247b2dd7b42e083d88b52bb3f55bbc07e3c82b197c4c214727ecf77"
-    },
-    {
-      "path": "geometry-web/workspace_context_menu_cases_space.js",
-      "lfSha256": "bec1e7c018106e9cf43e2fe0686a9c4715b8f2b37e63eeb29bc1759615afd96f"
-    },
-    {
-      "path": "geometry-web/workspace_context_menu_cases_view.js",
-      "lfSha256": "801faf94870e523198adeb02a325d568be892b46d302c1074ca8fc64adae32cc"
-    },
-    {
-      "path": "geometry-web/workspace_context_menu_state_test.js",
-      "lfSha256": "0313163388ebaee7e6a7b727ba8d9fb7a10ec192abe9d8820f288d56a4e816fb"
-    },
-    {
-      "path": "geometry-web/workspace_context_menu_test.js",
-      "lfSha256": "aae38495d9203abbaaefbaf816377c2f5eafcfa4820ca2b594a6ae39a9313c0e"
-    },
-    {
-      "path": "geometry-web/workspace_view_bridge.inc",
-      "lfSha256": "92554d8030cc767fddafa352b4156b24327ae6ea1868be9e1f166121ef4ef64f"
-    },
-    {
-      "path": "geometry-web/workspace_view_state_mutations.js",
-      "lfSha256": "aa0f693475268aca3ff2372f52fc67d1c7753f4d4a35c6f50cdb29b67bb86277"
-    },
-    {
-      "path": "geometry-web/workspace_view_state_test.js",
-      "lfSha256": "af69cff7054cd425a00b4200ab3ce6664dd90399a98add85a985791495d3ff36"
-    },
-    {
-      "path": "geometry-web/workspace_view_transport.py",
-      "lfSha256": "7bfdbe9e842f7839644d9c54f03e8d5489b81996de5b48503e4cdbd9bb2ea0e3"
     },
     {
       "path": "tests/__init__.py",
@@ -2680,5 +2628,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "2a8fd8f8ded2c4e098b88cd371f84ba87a6a2030199747bae30d7a3564ea7cd1"
+  "inputLfClosureSha256": "cd1e9696ad25603c2ea63cd005fecd1cebb61d5602892ff2e1ab500f88c80ccd"
 }
