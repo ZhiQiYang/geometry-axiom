@@ -1,0 +1,38 @@
+{
+  "cwd": "/workspace/geometry-issue54-20261115",
+  "command": [
+    "node",
+    "--test",
+    "tests/test_room_outline.js",
+    "tests/test_room_outline_closeout.js",
+    "tests/test_room_outline_worker.js"
+  ],
+  "startedUtc": "2026-11-15T20:05:42.937244+00:00",
+  "head": {
+    "exit": 0,
+    "stdout": "c5b5a5f9bb9601c5e53b04764bb11d6e8872d905\n",
+    "stderr": ""
+  },
+  "statusBefore": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "exit": 0,
+  "endedUtc": "2026-11-15T20:05:43.531031+00:00",
+  "statusAfter": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "outputs": {
+    ".stdout": {
+      "bytes": 4381,
+      "sha256": "f2910073a8cfbf7583a16594eb20afbf1cdc3db7d6b7dd306f78b918676d0b43"
+    },
+    ".stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}
