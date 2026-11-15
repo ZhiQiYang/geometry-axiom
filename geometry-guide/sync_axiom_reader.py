@@ -1621,9 +1621,17 @@ def trace_section(cid: str, t: dict) -> str:
     """卡片底部的三向連結:原始碼 / 夾具 / 變異。內容全部由 axiom_matrix 推導,不手寫。"""
     rows = []
     if t["functions"]:
-        locations = {fn: "; ".join("%s:%d" % (path, line)
-                                  for path, owner, line in t["sites"] if owner == fn)
-                     for fn in t["functions"]}
+        # #386 主題 1:提示只寫穩定識別「路徑 · 函式名」,同檔多處寫處數。不內嵌行號——
+        # 行號一變(產品碼任一處增減一行)正典 bytes 就變,閱讀器得跟著重建。
+        # 精確行號仍在 axiom_matrix.source_code_sites() 的回傳值(t["sites"])裡,只是不寫進 HTML。
+        locations = {}
+        for fn in t["functions"]:
+            counts = {}
+            for path, owner, _ in t["sites"]:
+                if owner == fn:
+                    counts[path] = counts.get(path, 0) + 1
+            locations[fn] = "; ".join(path + " · " + fn + ("（%d 處）" % n if n > 1 else "")
+                                      for path, n in counts.items())
         rows.append("<div class=\"trace-row\"><b>原始碼</b>" + " ".join(
             '<code title="%s">%s</code>' % (html.escape(locations[fn], quote=True), html.escape(fn))
             for fn in t["functions"][:6])
