@@ -1,0 +1,258 @@
+{
+ "createStatus": "「面 1空間」已加入目前專案，尚未保存成檔案。請按「保存專案 .gcanvas」，之後可完整重開。",
+ "modelsCreated": [
+  {
+   "id": "3da61a4e-1650-4a39-8c74-f5d94909e174",
+   "name": "面 1空間",
+   "mode": "plan",
+   "placement": 1,
+   "edges": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "summary": {
+    "faces": 6,
+    "bbox": null
+   }
+  }
+ ],
+ "impactShown": true,
+ "impactText": "確認連動變更\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary 1 outline 0,0 4500,0 4500,3000 0,3000\n邊界與頂點 · 1\n面 1\n原：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n新：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n核對頂點座標與身分\n原頂點：外環頂點 1 · 未設 key · (0, 0) mm · 下一邊固定；外環頂點 2 · 未設 key · (4000, 0) mm · 下一邊固定；外環頂點 3 · 未設 key · (4000, 3000) mm · 下一邊固定；外環頂點 4 · 未設 key · (0, 3000) mm · 下一邊固定\n新頂點：外環頂點 1 · 未設 key · (0, 0) mm · 下一邊固定；外環頂點 2 · 未設 key · (4500, 0) mm · 下一邊固定；外環頂點 3 · 未設 key · (4500, 3000) mm · 下一邊固定；外環頂點 4 · 未設 key · (0, 3000) mm · 下一邊固定\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n90／面 1 · 身分保留，幾何更新\t10 → 10\t4000 → 4500\t[0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n91／面 1 · 身分保留，幾何更新\t2990 → 2990\t4000 → 4500\t[0, 2980, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, ",
+ "cmdStatus": [
+  "-: 有未保存的變更",
+  "-: 尚未檢查"
+ ],
+ "outlineAfterCmd": "boundary 1 outline 0,0 4500,0 4500,3000 0,3000",
+ "muIdentity": "物件延續已證明",
+ "firstPlacementOptions": [
+  [
+   "",
+   "請選擇現行放置面"
+  ],
+  [
+   "1",
+   "放置 #1 · 輪廓 #1 · z 2500 mm"
+  ]
+ ],
+ "firstChoices": [
+  "邊 1 (0, 0) → (4500, 0) · 4500 mm · FIXED ✓",
+  "邊 2 (4500, 0) → (4500, 3000) · 3000 mm · FIXED ✓",
+  "邊 3 (4500, 3000) → (0, 3000) · 4500 mm · FIXED ✓",
+  "邊 4 (0, 3000) → (0, 0) · 3000 mm · FIXED ✓",
+  "角材 #90 boundary · 放置 #1 · 4500 × 20 × 20 mm ✓",
+  "角材 #91 boundary · 放置 #1 · 4500 × 20 × 20 mm ✓",
+  "角材 #1 primary · 放置 #1 · 2960 × 27 × 33 mm ✓"
+ ],
+ "firstPhase": "review",
+ "firstDiff": "來源與本次明選\n項目\t舊模型\t候選模型\nkind\t\"scene\"\t\"scene\"\nplacement_id\t1\t1\nboundary_id\t1\t1\nscene_hash\t\"7563e96cc87f813654ae15977ba759a5d10d50b5d01cffa53aa58515db214f6e\"\t\"8e038a7466d6af886146a111a83461302f67931573c96c4661a8779f5d350595\"\nprojection\t{\"kind\":\"space-boundary-plan\",\"region\":\"interior\",\"view\":\"top\",\"wallSide\":\"outside\"}\t{\"kind\":\"space-boundary-plan\",\"region\":\"interior\",\"view\":\"top\",\"wallSide\":\"outside\"}\n外環邊（從 1 起算）\t[1,2,3,4]\t[1,2,3,4]\n角材\t[{\"id\":90,\"kind\":\"timber\"},{\"id\":91,\"kind\":\"timber\"},{\"id\":1,\"kind\":\"timber\"}]\t[{\"id\":90,\"kind\":\"timber\"},{\"id\":91,\"kind\":\"timber\"},{\"id\":1,\"kind\":\"timber\"}]\n柱樑\t[]\t[]\n原設定與候選設定\n項目\t舊模型\t候選模型\nbottom\t0\t0\nheight\t3000\t3000\nedges\t[0,1,2,3]\t[0,1,2,3]\nfloor\t\"boundary\"\t\"boundary\"\nceiling\t\"boundary\"\t\"boundary\"\nholes\t\"none\"\t\"none\"\nwall_thickness\t100\t100\n完整結果摘要\n項目\t舊模型\t候選模型\nbottom\t0\t0\nclearance_mm3\t\"36000000000\"\t\"40500000000\"\nclosed\ttrue\ttrue\nface_count\t6\t6\ngenerated_faces\t[{\"label\":\"外環第 1 邊\",\"orientation\":1,\"placement_id\":2,\"purpose\":\"boundary\"},{\"label\":\"外環第 2 邊\",\"orientation\":1,\"placement_id\":3,\"purpose\":\"boundary\"},{\"label\":\"外環第 3 邊\",\"orientation\":1,\"placement_id\":4,\"purpose\":\"boundary\"},{\"label\":\"外環第 4 邊\",\"orientation\":1,\"placement_id\":5,\"purpose\":\"boundary\"},{\"label\":\"底面\",\"orientation\":-1,\"placement_id\":6,\"purpose\":\"boundary\"},{\"label\":\"頂面\",\"orientation\":1,\"placement_id\":7,\"purpose\":\"boundary\"}]\t[{\"label\":\"外環第 1 邊\",\"orientation\":1,\"placement_id\":2,\"purpose\":\"boundary\"},{\"label\":\"外環第 2 邊\",\"orientation\":1,\"placement_id\":3,\"purpose\":\"boundary\"},{\"label\":\"外環第 3 ",
+ "firstChangedRows": [
+  "scene_hash",
+  "clearance_mm3",
+  "timber_volume_mm3",
+  "volume_mm3",
+  "wall_volume_mm3",
+  "各交換包的完整角材",
+  "空間邊界\n完整包：已變更",
+  "空間實體\n完整包：已變更",
+  "扣除後淨空\n完整包：已變更",
+  "材料牆\n完整包：已變更",
+  "角材結構\n完整包：已變更"
+ ],
+ "firstAllRows": 35,
+ "firstChangedCells": [
+  [
+   "scene_hash",
+   "\"7563e96cc87f813654ae15977ba759a5d10d50b5d01cffa53aa58515db214f6e\"",
+   "\"8e038a7466d6af886146a111a83461302f67931573c96c4661a8779f5d350595\""
+  ],
+  [
+   "clearance_mm3",
+   "\"36000000000\"",
+   "\"40500000000\""
+  ],
+  [
+   "timber_volume_mm3",
+   "\"5837360\"",
+   "\"6237360\""
+  ],
+  [
+   "volume_mm3",
+   "\"36000000000\"",
+   "\"40500000000\""
+  ],
+  [
+   "wall_volume_mm3",
+   "\"4320000000\"",
+   "\"4620000000\""
+  ],
+  [
+   "各交換包的完整角材",
+   "角材 #1：世界 x/y/z 尺寸 27 × 2960 × 33 mm；z 2500～2533 mm；材料體積 2637360 mm³\n角材 #90：世界 x/y/z 尺寸 4000 × 20 × 20 mm；z 2500～2520 mm；材料體積 1600000 mm³\n角材 #91：世界 x/y/z 尺寸 4000 × 20 × 20 mm；z 2500～2520 mm；材料體積 1600000 mm³",
+   "角材 #1：世界 x/y/z 尺寸 27 × 2960 × 33 mm；z 2500～2533 mm；材料體積 2637360 mm³\n角材 #90：世界 x/y/z 尺寸 4500 × 20 × 20 mm；z 2500～2520 mm；材料體積 1800000 mm³\n角材 #91：世界 x/y/z 尺寸 4500 × 20 × 20 mm；z 2500～2520 mm；材料體積 1800000 mm³"
+  ],
+  [
+   "空間邊界\n完整包：已變更",
+   "COMPLETE · 1 個物件\nmanifest SHA: 014575e4e3755a3b7b2fdc25d243d009c343fa5f730dc2de52c43aa7b25eaba6",
+   "COMPLETE · 1 個物件\nmanifest SHA: ad3ac22f664281a0a13cc26f394bc669ed5ad1f3408e1e41ac37274cf8f83552"
+  ],
+  [
+   "空間實體\n完整包：已變更",
+   "COMPLETE · 1 個物件\nmanifest SHA: 014575e4e3755a3b7b2fdc25d243d009c343fa5f730dc2de52c43aa7b25eaba6",
+   "COMPLETE · 1 個物件\nmanifest SHA: ad3ac22f664281a0a13cc26f394bc669ed5ad1f3408e1e41ac37274cf8f83552"
+  ],
+  [
+   "扣除後淨空\n完整包：已變更",
+   "COMPLETE · 1 個物件\nmanifest SHA: eeee0f088a6aa0d1c6284f82986cb02bd4f1fe8b6c6192aec10af27c0486a662",
+   "COMPLETE · 1 個物件\nmanifest SHA: 755a9c438e7ff86cde26272b37529392c65efdd2e5fd5a92aa0779beb7143a91"
+  ],
+  [
+   "材料牆\n完整包：已變更",
+   "COMPLETE · 1 個物件\nmanifest SHA: 92a7a37c7c462cc24645dcd1a7691e468568cdb407a4e2a6c2973a0ba7eb635e",
+   "COMPLETE · 1 個物件\nmanifest SHA: a5503a0678f05ea748e6978dedf08f34de55e9d0e69e79b4b0b51ed60be27edb"
+  ],
+  [
+   "角材結構\n完整包：已變更",
+   "COMPLETE · 3 個物件\nmanifest SHA: 9b7545fd1ca6bbe84447bb76a894e3730d5812396d2908adfe71bbe516f9f5e4",
+   "COMPLETE · 3 個物件\nmanifest SHA: 2d2d15747e481a6761a7814e11dc9a71f85aec0823b0117dca4a33f69cdb4e2c"
+  ]
+ ],
+ "firstStatus": "隔離候選已驗證。請核對完整新舊差異，再勾選確認。",
+ "cancelZeroWrite": true,
+ "dialogClosedAfterCancel": true,
+ "secondPlacementOptions": [
+  [
+   "",
+   "請選擇現行放置面"
+  ],
+  [
+   "1",
+   "放置 #1 · 輪廓 #1 · z 2500 mm"
+  ]
+ ],
+ "secondChoices": [
+  "邊 1 (0, 0) → (4500, 0) · 4500 mm · FIXED ✓",
+  "邊 2 (4500, 0) → (4500, 3000) · 3000 mm · FIXED ✓",
+  "邊 3 (4500, 3000) → (0, 3000) · 4500 mm · FIXED ✓",
+  "邊 4 (0, 3000) → (0, 0) · 3000 mm · FIXED ✓",
+  "角材 #90 boundary · 放置 #1 · 4500 × 20 × 20 mm ✓",
+  "角材 #91 boundary · 放置 #1 · 4500 × 20 × 20 mm ✓",
+  "角材 #1 primary · 放置 #1 · 2960 × 27 × 33 mm ✓"
+ ],
+ "secondPhase": "review",
+ "secondDiff": "來源與本次明選\n項目\t舊模型\t候選模型\nkind\t\"scene\"\t\"scene\"\nplacement_id\t1\t1\nboundary_id\t1\t1\nscene_hash\t\"7563e96cc87f813654ae15977ba759a5d10d50b5d01cffa53aa58515db214f6e\"\t\"8e038a7466d6af886146a111a83461302f67931573c96c4661a8779f5d350595\"\nprojection\t{\"kind\":\"space-boundary-plan\",\"region\":\"interior\",\"view\":\"top\",\"wallSide\":\"outside\"}\t{\"kind\":\"space-boundary-plan\",\"region\":\"interior\",\"view\":\"top\",\"wallSide\":\"outside\"}\n外環邊（從 1 起算）\t[1,2,3,4]\t[1,2,3,4]\n角材\t[{\"id\":90,\"kind\":\"timber\"},{\"id\":91,\"kind\":\"timber\"},{\"id\":1,\"kind\":\"timber\"}]\t[{\"id\":90,\"kind\":\"timber\"},{\"id\":91,\"kind\":\"timber\"},{\"id\":1,\"kind\":\"timber\"}]\n柱樑\t[]\t[]\n原設定與候選設定\n項目\t舊模型\t候選模型\nbottom\t0\t0\nheight\t3000\t3000\nedges\t[0,1,2,3]\t[0,1,2,3]\nfloor\t\"boundary\"\t\"boundary\"\nceiling\t\"boundary\"\t\"boundary\"\nholes\t\"none\"\t\"none\"\nwall_thickness\t100\t100\n完整結果摘要\n項目\t舊模型\t候選模型\nbottom\t0\t0\nclearance_mm3\t\"36000000000\"\t\"40500000000\"\nclosed\ttrue\ttrue\nface_count\t6\t6\ngenerated_faces\t[{\"label\":\"外環第 1 邊\",\"orientation\":1,\"placement_id\":2,\"purpose\":\"boundary\"},{\"label\":\"外環第 2 邊\",\"orientation\":1,\"placement_id\":3,\"purpose\":\"boundary\"},{\"label\":\"外環第 3 邊\",\"orientation\":1,\"placement_id\":4,\"purpose\":\"boundary\"},{\"label\":\"外環第 4 邊\",\"orientation\":1,\"placement_id\":5,\"purpose\":\"boundary\"},{\"label\":\"底面\",\"orientation\":-1,\"placement_id\":6,\"purpose\":\"boundary\"},{\"label\":\"頂面\",\"orientation\":1,\"placement_id\":7,\"purpose\":\"boundary\"}]\t[{\"label\":\"外環第 1 邊\",\"orientation\":1,\"placement_id\":2,\"purpose\":\"boundary\"},{\"label\":\"外環第 2 邊\",\"orientation\":1,\"placement_id\":3,\"purpose\":\"boundary\"},{\"label\":\"外環第 3 ",
+ "secondChangedRows": [
+  "scene_hash",
+  "clearance_mm3",
+  "timber_volume_mm3",
+  "volume_mm3",
+  "wall_volume_mm3",
+  "各交換包的完整角材",
+  "空間邊界\n完整包：已變更",
+  "空間實體\n完整包：已變更",
+  "扣除後淨空\n完整包：已變更",
+  "材料牆\n完整包：已變更",
+  "角材結構\n完整包：已變更"
+ ],
+ "secondAllRows": 35,
+ "secondChangedCells": [
+  [
+   "scene_hash",
+   "\"7563e96cc87f813654ae15977ba759a5d10d50b5d01cffa53aa58515db214f6e\"",
+   "\"8e038a7466d6af886146a111a83461302f67931573c96c4661a8779f5d350595\""
+  ],
+  [
+   "clearance_mm3",
+   "\"36000000000\"",
+   "\"40500000000\""
+  ],
+  [
+   "timber_volume_mm3",
+   "\"5837360\"",
+   "\"6237360\""
+  ],
+  [
+   "volume_mm3",
+   "\"36000000000\"",
+   "\"40500000000\""
+  ],
+  [
+   "wall_volume_mm3",
+   "\"4320000000\"",
+   "\"4620000000\""
+  ],
+  [
+   "各交換包的完整角材",
+   "角材 #1：世界 x/y/z 尺寸 27 × 2960 × 33 mm；z 2500～2533 mm；材料體積 2637360 mm³\n角材 #90：世界 x/y/z 尺寸 4000 × 20 × 20 mm；z 2500～2520 mm；材料體積 1600000 mm³\n角材 #91：世界 x/y/z 尺寸 4000 × 20 × 20 mm；z 2500～2520 mm；材料體積 1600000 mm³",
+   "角材 #1：世界 x/y/z 尺寸 27 × 2960 × 33 mm；z 2500～2533 mm；材料體積 2637360 mm³\n角材 #90：世界 x/y/z 尺寸 4500 × 20 × 20 mm；z 2500～2520 mm；材料體積 1800000 mm³\n角材 #91：世界 x/y/z 尺寸 4500 × 20 × 20 mm；z 2500～2520 mm；材料體積 1800000 mm³"
+  ],
+  [
+   "空間邊界\n完整包：已變更",
+   "COMPLETE · 1 個物件\nmanifest SHA: 014575e4e3755a3b7b2fdc25d243d009c343fa5f730dc2de52c43aa7b25eaba6",
+   "COMPLETE · 1 個物件\nmanifest SHA: ad3ac22f664281a0a13cc26f394bc669ed5ad1f3408e1e41ac37274cf8f83552"
+  ],
+  [
+   "空間實體\n完整包：已變更",
+   "COMPLETE · 1 個物件\nmanifest SHA: 014575e4e3755a3b7b2fdc25d243d009c343fa5f730dc2de52c43aa7b25eaba6",
+   "COMPLETE · 1 個物件\nmanifest SHA: ad3ac22f664281a0a13cc26f394bc669ed5ad1f3408e1e41ac37274cf8f83552"
+  ],
+  [
+   "扣除後淨空\n完整包：已變更",
+   "COMPLETE · 1 個物件\nmanifest SHA: eeee0f088a6aa0d1c6284f82986cb02bd4f1fe8b6c6192aec10af27c0486a662",
+   "COMPLETE · 1 個物件\nmanifest SHA: 755a9c438e7ff86cde26272b37529392c65efdd2e5fd5a92aa0779beb7143a91"
+  ],
+  [
+   "材料牆\n完整包：已變更",
+   "COMPLETE · 1 個物件\nmanifest SHA: 92a7a37c7c462cc24645dcd1a7691e468568cdb407a4e2a6c2973a0ba7eb635e",
+   "COMPLETE · 1 個物件\nmanifest SHA: a5503a0678f05ea748e6978dedf08f34de55e9d0e69e79b4b0b51ed60be27edb"
+  ],
+  [
+   "角材結構\n完整包：已變更",
+   "COMPLETE · 3 個物件\nmanifest SHA: 9b7545fd1ca6bbe84447bb76a894e3730d5812396d2908adfe71bbe516f9f5e4",
+   "COMPLETE · 3 個物件\nmanifest SHA: 2d2d15747e481a6761a7814e11dc9a71f85aec0823b0117dca4a33f69cdb4e2c"
+  ]
+ ],
+ "secondStatus": "隔離候選已驗證。請核對完整新舊差異，再勾選確認。",
+ "applyEnabledBeforeCheck": false,
+ "applyEnabledAfterCheck": true,
+ "applyStatus": [
+  "-: 有未保存的變更",
+  "-: 尚未檢查"
+ ],
+ "modelsAfterUpdate": [
+  {
+   "id": "3da61a4e-1650-4a39-8c74-f5d94909e174",
+   "name": "面 1空間",
+   "mode": "plan",
+   "placement": 1,
+   "edges": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "summary": {
+    "faces": 6,
+    "bbox": null
+   }
+  }
+ ],
+ "sameModelId": true,
+ "modelChanged": true,
+ "undoRestoresOld": true,
+ "outlineAfterUndo": "boundary 1 outline 0,0 4500,0 4500,3000 0,3000",
+ "redoRestoresNew": true,
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopenStatus": [
+  "-: 已保存",
+  "-: 從空白處拖曳，框選物件"
+ ],
+ "reopenedSame": true,
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
