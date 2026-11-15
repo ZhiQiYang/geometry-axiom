@@ -30,7 +30,7 @@ B 的改動前後各跑兩次，表內兩個數字就是那兩次。C、A 的「
 
 ## 結果有沒有變
 
-- B 改動前後另存的專案檔，`world.scene` 逐位元組相同（37,308 bytes，SHA-256 前 16 碼 `c42c252a69e5c431`）。專案檔本身的雜湊不同，是因為 `manifest.json` 每次有新的專案識別。檔案：`before/r04d-b.gcanvas`、`after/r04d-b.gcanvas`。
+- B 改動前後另存的專案檔，`world.scene` 逐位元組相同（37,308 bytes，SHA-256 前 16 碼 `c42c252a69e5c431`）。`manifest.json` 也逐位元組相同（340 bytes，`projectId` 都是 `assembly-generation-v1`）。兩個專案檔長度相同（37,870 bytes），整包只差 8 個位元組，都在兩個項目的 ZIP 時間欄位（00:36:48 與 00:45:36）：包裝的時間不同，所以整包的雜湊不同。檔案：`before/r04d-b.gcanvas`、`after/r04d-b.gcanvas`。
 - 每個情境的格數、狀態、角材數、復原／重做、冷開後角材數，改動後都和改動前（或 11-14 的紀錄）相同：B 是 99 格 generated、新增身分 111、「驗證通過，確認後才會套用。」、2 → 113 → 2 → 113 → 冷開 113。
 - 專案已有舊式單一開間實例時再加重複開間（R06 發現 6 的情境，`walk_r06_legacy.js`）：兩格 generated、確認鈕可按、冷開後兩個實例都在（`after/walk_r06_legacy.result.json`）。
 - 原生測試 `tests/test_assembly_bay_repeat.py` 55 條全過，同一台容器的執行時間從 2 分多鐘（11-14 量到 131～165 秒）降到 69 秒。
