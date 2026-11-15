@@ -9,7 +9,7 @@
 - **D17 規則試驗台與案例庫**（#49）
 - **D15 保存 A/B 兩個方案、比較後整體採用**（#46）
 
-前四項的功能都走得通；過程中記下 5 個顯示面的發現（見文末），都不影響資料正確性，其中 1～4 在同一張 PR 修正，5 沒有修。D17 有一個功能缺陷（發現 6）：兩個「預期拒絕」的案例跑不出結果，同一張 PR 修正。D15 走得通，但試改畫面有修改時瀏覽器會多跳一次「要離開網站嗎」，選留下會卡住（發現 7），同一張 PR 修正。
+前四項的功能都走得通；過程中記下 5 個顯示面的發現（見文末），都不影響資料正確性，1～5 都在同一張 PR 修正。D17 有一個功能缺陷（發現 6）：兩個「預期拒絕」的案例跑不出結果，同一張 PR 修正。D15 走得通，但試改畫面有修改時瀏覽器會多跳一次「要離開網站嗎」，選留下會卡住（發現 7），同一張 PR 修正。另有一個 main 上既有的效能問題（發現 8）：保留規則案例資料後，保存方案要十幾秒到一分多鐘，正式瀏覽器關卡在這一步逾時；同一張 PR 修正。
 
 ## 環境與方法
 
@@ -22,6 +22,8 @@
 - 這是雲端實機操作（L4），不是使用者驗收（L5）。實體手機、輸入法、系統選檔視窗（GEO-250）沒有做。
 
 腳本在 `scripts/`，各項的結果 JSON、截圖與另存的專案檔在同名子目錄。
+
+發現 5、8 的對照是併入 main `fd96b8bf`（#384）之後做的，用三個沒有未提交修改的工作樹：main `fd96b8bf7094bd57e74e3226aeba1f24a73b74fc`、修正前 `2a62073f45aa0b6e5e173ca8c7dd49e508859afc`（這張 PR 併入 main 之後、這兩個修正之前）、修正後 `d7f79eab058b5034cf83155d266cf66638299a7f`。每個結果檔都記有 head 或 runtime 版本；正式關卡的收據另記 tree、Node 與 Chromium 版本、指令、起訖與結束碼。
 
 ## R20 參數卡與參數面板
 
@@ -181,7 +183,7 @@
 
 ## 發現
 
-發現 1～5 都只影響畫面文字，資料與拒絕行為正確。發現 6、7 是功能缺陷。
+發現 1～5 都只影響畫面文字，資料與拒絕行為正確。發現 6、7 是功能缺陷。發現 8 是效能問題：結果正確，但慢到讓正式關卡逾時。
 
 1. **參數面板：下游物件拒絕時，原因顯示成英文核心原文。** 把板材.寬改成 1220 時，紅字是 `grid-system 1 u: I38 GEOMETRY: [2:1 骨架.間距] must resolve to integer mm in D1 range (got 1220/3)`（`r20/screens/R20-3-downstream-rejected.jpg`）。`parameters.js` 其實有 `I38 GEOMETRY` → 「不是整數 mm，幾何會拒絕」的對照，但只認訊息開頭的錯誤碼；網格轉述時前面多了 `grid-system 1 u: `，對照就失效。
 2. **參數面板：刪除仍被引用的卡，原因寫成「找不到引用」。** 核心訊息是 `I38 MISSING: parameter 1 is still referenced by parameter 2 field 1; parameter 2 field 2; …`，面板依錯誤碼顯示「找不到引用」，狀態列寫「未套用：請修正欄位或引用。」（`r20/screens/R20-5-delete-referenced.jpg`）。使用者看不出是「骨架.間距、骨架.半寬 還在用這張卡，所以不能刪」。
@@ -228,7 +230,25 @@
 
 測試：`tests/test_assembly_workspace.js` 加 2 條（節點測試，載入實際的工作區腳本）：一條逐句核對 12 種說法、表外訊息維持原樣、總結列的去留；一條經由實際的預覽流程渲染，核對清單只有一列、原文在除錯區。`node:tests-js` 774 → 776。把修正改壞三種方式（留著總結列、拿掉對照表、清單照舊列出全部）各跑一次，新測試都會失敗。
 
-發現 5 這次沒有修。
+### 發現 5 的修正
+
+同一張 PR（`geometry-web/app.js`，只改卡片文字）：
+
+- 提示文字的 u／v 兩行：該軸有相位差時在後面加「，相鄰格子相位差 N mm」。編輯來源時「舊 → 新」的對照行用同一個函式，也會跟著寫出來（這一處沒有在 App 上另外走）。
+- 卡面最後一行：有相位差時寫「Y 相鄰格子相位差 N mm」（或 X），沒有時照舊寫「格線向兩端無限延伸」。卡片第二行本來就寫「網格來源 · 無限延伸」。
+
+App 對照（`scripts/verify_grid_card.js`，開啟 D18 另存的 `d18/d18.gcanvas`，場景是 `v repeat 0 600 stagger 300`；結果在 `d18/card/`）：
+
+| | 提示文字的 v 那一行 | 卡面最後一行 |
+|---|---|---|
+| 修正前（`2a62073f`） | `v：無限重複 · 間距 600 mm，基準 0 mm` | `格線向兩端無限延伸` |
+| 修正後（`d7f79eab`） | `v：無限重複 · 間距 600 mm，基準 0 mm，相鄰格子相位差 300 mm` | `Y 相鄰格子相位差 300 mm` |
+
+兩次的 u 那一行都是 `u：無限重複 · 間距 300 mm（參數引用），基準 0 mm`，沒有多寫。截圖：`d18/card/before-card.jpg`、`after-card.jpg`。
+
+測試：
+- `geometry-web/grid_system_test.js` 的 P70 加 1 條（真實卡片的提示文字與卡面；沒有相位差的 u 軸不寫）。`cdp_sections.golden.json`：P70 121 → 122，合計 4830 → 4831。`tests/diagnostics/d18_grid_card_stagger_canvas_extension.cjs` 登記這 1 條，`test_canvas_shards.js`、`test_identity_canvas_merge.js` 接進投影鏈並加計數探針，這兩支 43/43。`product-architecture.json` 重算 `grid_system_test.js` 的 lf digest，`tests/test_product_architecture.py` 18 條通過。
+- **這一條沒有在本機的正式瀏覽器套件裡跑到。** 用 CI 的指令 `GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js` 在這台容器跑，main `fd96b8bf` 與修正後 `d7f79eab` 都在 94 項通過後停在既有的「P70 正式另存新檔已下載專案」（這台容器收不到 CDP 的下載檔），那一步在新增這一條之前（`d18/grid-group-local/`）。這一條以 CI 的 browser (canvas)／browser (grid) 為準。
 
 6. **規則案例：兩個「預期拒絕」的案例跑不出結果。**「尺寸引用拒絕計數型別」與「改名重排不改固定版本與既有配置」按「隔離執行所選案例」後，狀態寫「未取得可核對的本次結果。 Unknown or missing portable receipt fields」，案例停在「尚未執行」（`d17/before/`）。執行本身成功（原生核心確實拒絕了），失敗的是執行後的核對：`/rule-cases/workbench` 的 `assess` 回 400。原因是組構橋接的舊式 I8 總結列現在帶 `actual` 欄位（`{"timber":0,"clause":"I8","expected":…,"actual":"candidate rejected","message":…}`），而收據的可攜格式檢查只認 `clause、message、code、ref、timber、expected`。伺服器端（`rule_case_workbench_adapter.py`）與前端資料檢查（`rule-case-data.js`）是同一份限制。四個「預期接受」的案例沒有診斷列，所以不受影響。既有測試只測了「執行」，沒有把真實的拒絕收據再送去核對，所以沒抓到。
 
@@ -242,7 +262,7 @@
   - 前端檢查：歷史收據（沒有 `actual`）與加上 `actual` 的收據都通過；未知欄位、非文字、過長都被拒。把 `rule-case-data.js` 還原時這條失敗。
   - 伺服器端檢查：從節點測試直接執行出貨的 Python 檢查函式，餵真實的 I8 列（含 `actual`）、真實反例的型別診斷列、舊式不含 `actual` 的列，三筆都接受；多一個未知欄位、`actual` 不是文字、是 null、超過長度，四筆都回 `RECEIPT`。把 adapter 還原時這條失敗。
 - 另外寫過一條更完整的 Python 測試（真的原生執行兩個拒絕案例，再把收據送 `assess` 與 `import`）：修正後通過；adapter 還原時以「400 != 200 … Unknown or missing portable receipt fields」失敗，和 App 裡看到的一樣。它沒有留在這張 PR 裡：`tests/*.py` 整個屬於橋接突變的「裁判」範圍，動到任何一個檔，68 筆突變紀錄就全部過期，得再跑一次 `Mutation evidence`。改成上面那條不動 `tests/*.py` 的檢查後，`python3 tests/mutate.py --check` 維持新鮮（stale 0）。
-- 正式瀏覽器關卡 `tests/test_rule_case_app_browser.js`（CI 不自動跑）在修正後的工作樹跑到 27 項通過，六個案例的核對項都在其中；之後卡在另一個和這個修正無關的步驟（見下面的觀察）。
+- 正式瀏覽器關卡 `tests/test_rule_case_app_browser.js`（CI 不自動跑）在只修正這一項的工作樹跑到 27 項通過，六個案例的核對項都在其中；之後停在保存方案的 30 秒等待。那是 main 上既有的另一個問題（發現 8），同一張 PR 修正後 76 項全過；三組對照見「發現 8 的分診與修正」。
 
 7. **A/B 方案：試改畫面有修改時，離開會被瀏覽器多問一次，選留下就卡住。** 在隔離試改的畫面裡改過東西之後，按「取消試改」「保存試改」或「暫存並離開」，瀏覽器會跳自己的「要離開網站嗎？」。原因是主畫面結束試改時把內嵌的 iframe 導到別頁，而內嵌畫面裡各工作區的「未保存提醒」（`beforeunload`）照常攔下。如果在「取消試改」時選留下：對話框照樣關掉、試改也已取消，但 iframe 停在舊文件；下一次按「隔離試改右側方案」會停在「正在還原完整方案…」30 秒，然後顯示「方案畫布開啟逾時。這次試改已中斷…若要捨棄，請明確取消「方案B」。」（`d15/before/verify_scenario_leave.before.cancel-stay.json`）。正式的瀏覽器關卡對所有對話框一律按確定，所以沒有遇到。
 
@@ -267,9 +287,51 @@
 - `tests/test_scenario_editor_tickets.js` 加 2 條（36 → 38；`node:tests-js` 777 → 779）：主畫面三處導走 iframe 之前都先留記號、取消流程結束時記號已留、iframe 的 window 拿不到時不影響結束；內嵌這一側只在「試改畫面＋有記號」時讓提醒停下，其餘三種組合照舊，而且這個檔在 `index.html` 裡排在五個登記提醒的檔之前。把兩個檔各自還原，對應的那一條失敗。
 - 正式瀏覽器關卡 `tests/test_scenario_workflow_browser.js`（CI 不自動跑）：修正前後都是 34 項通過。
 
-另外三點不算缺陷：
+8. **保留規則案例資料後，保存方案很慢，正式瀏覽器關卡在這一步逾時。** 功能正常、沒有錯誤，但「保存目前為方案」從不到 1 秒變成十幾秒；已有一個方案時再保存要將近一分鐘。正式關卡 `tests/test_rule_case_app_browser.js` 在保留案例資料後保存方案那一步等 30 秒，逾時。這張 PR 先前的版本把它列在「不算缺陷」之下、沒有追原因；#417 審查（留言 6891351270）要求分診，結果如下。
 
-- 保留規則案例資料之後，「保存目前為方案」明顯變慢：沒有保留資料約 1 秒，保留一個案例約 6～7 秒，三個約 11 秒，六個約 18 秒（這台容器，當時背景同時在跑完整的非瀏覽器測試）。功能正常、沒有錯誤。正式關卡 `tests/test_rule_case_app_browser.js` 在這一步等 30 秒，兩次都在這裡逾時（前面 27 項含六個案例的核對都通過）；沒有進一步追時間花在哪。
+### 發現 8 的分診與修正
+
+**正式關卡，同一個指令、原本的逾時、沒有改測試**（`scripts/run_formal_gate.sh`；每次都從乾淨的工作樹重新建置並啟動伺服器，`GEOMETRY_REQUIRE_CLEAN=1`；stdout、stderr、建置與伺服器紀錄、收據在 `d17/formal-gate/`）：
+
+| 工作樹 | 結果 | 停在哪裡 |
+|---|---|---|
+| main `fd96b8bf` | 結束碼 1，8 項通過 | 第三個案例「尺寸引用拒絕計數型別」等不到「本次核對 · 通過」（30 秒）。這是發現 6：main 上兩個「預期拒絕」的案例跑不出結果，關卡走不到保存方案那一步。 |
+| 修正前 `2a62073f` | 結束碼 1，27 項通過 | 六個案例與保留、復原、重做都通過；保存方案的 30 秒等待逾時（第 65 行）。之後的 A/B 附件、ZIP 保存與冷開、無效附件拒絕與 390 px 一輪都沒有跑到。 |
+| 修正後 `d7f79eab` | 結束碼 0，76 項通過 | 1280 與 390 px 兩輪全部跑完，67 秒。 |
+
+所以這支關卡在 main 上本來就是紅的，原因是發現 6；發現 6 修好後才露出保存變慢。
+
+**變慢是 main 上既有的，不是這張 PR 造成的。** main 的關卡走不到那一步，所以另外直接量（`scripts/capture_timing.js`，用滑鼠操作：新專案 → 組構規則 → 規則案例 → 逐個執行並保留 → 專案資訊 → 保存目前為方案，連按兩次存兩個方案；結果在 `d15/save-timing/`）。main 上只能用四個「預期接受」的案例：
+
+| 工作樹 | 保留的案例 | 保存第 1 個方案 | 保存第 2 個方案 | 第 1 次保存裡案例資料被整份檢查的次數 |
+|---|---|---|---|---|
+| main `fd96b8bf` | 0 | 0.7 秒 | 1.2 秒 | — |
+| main `fd96b8bf` | 4 | 15.5 秒 | 51.3 秒 | 721 |
+| 修正前 `2a62073f` | 0 | 0.5 秒 | 0.9 秒 | — |
+| 修正前 `2a62073f` | 3 | 17.6 秒 | 48.8 秒 | 721 |
+| 修正前 `2a62073f` | 6 | 21.3 秒 | 70.3 秒 | 721 |
+| 修正後 `d7f79eab` | 0 | 0.5 秒 | 0.9 秒 | — |
+| 修正後 `d7f79eab` | 3 | 1.4 秒 | 1.9 秒 | 84 |
+| 修正後 `d7f79eab` | 6 | 1.7 秒 | 2.6 秒 | 108 |
+
+秒數是不開統計的那一趟；次數是另一趟用瀏覽器的函式呼叫統計數的（開統計時較慢，兩趟的數字分開記在結果檔）。只在這台容器量，各量一次。
+
+**原因**（`geometry-web/project-store.js`、`feature-attachments.js`，這張 PR 先前沒有改過這兩個檔）：三層重複互相相乘。`projectFormat` 每判斷一種格式就重算一次需要的能力（有規則案例時 7 次）；`projectCapabilities` 對方案目錄裡的每個方案，在六個判斷裡各重算一次；`Features.validate` 在同一次呼叫裡連續三次遇到同一份案例資料，每次都跑完整的案例檢查。節點測試直接數一次 `projectFormat` 的整份檢查次數（`scripts/count_validations.js`，`d15/save-timing/validation-counts.txt`），方案數 0／1／2／4：main 與修正前都是 21／147／273／525，修正後是 1／2／3／5。
+
+**修正**（同一張 PR；結果不變，只少做重複的工作，不放寬任何檢查）：
+
+- `project-store.js`：`projectFormat` 只算一次；`projectCapabilities` 對每個方案只算一次，六個判斷共用。兩者都是純函式。
+- `feature-attachments.js`：一次檢查呼叫內，同一份案例資料只跑一次完整檢查並記下位元組數。記錄隨那一次呼叫結束，不跨呼叫保留。
+- `rule-case-data.js`：計算 UTF-8 長度不再為每個字串配置位元組陣列，數值與 `TextEncoder` 相同。
+
+**結果有沒有變**：
+
+- 新舊實作對照（`scripts/differential_project_store.js`，舊 = `2a62073f` 的檔案、新 = `d7f79eab`）：倉庫裡 191 個 `.gcanvas` 加上修正後正式關卡產生的 2 個（含規則案例與方案目錄），逐檔比較解包、格式判斷（含清掉宣告能力後的最低格式）、驗證、附件驗證、附件能力、重新打包後的 manifest。193 個全部相同，其中 6 個新舊都拒絕（`d15/save-timing/differential.result.json`）。
+- `tests/test_rule_case_project_store.js` 加 3 條（`node:tests-js` 780 → 783）：判斷格式時每份附件只檢查一次（方案數 0、1、4）；不保留上一次的結論（通過之後才被改壞、一開始就壞、放在第二個方案裡的壞資料都照樣被拒）；位元組數等於實際 UTF-8 JSON 大小、名稱上限 96 位元組在 1～4 位元組字元下的邊界都正確。反向對照：還原 `project-store.js` 或 `feature-attachments.js`，第一條失敗；把長度算錯兩種方式，第三條失敗。
+
+沒核對的：很大的專案（大量房間來源、證據、模型）保存方案的時間沒有量；修正後同一次保存裡仍有 84～108 次整份檢查（來自不同的呼叫點），這次沒有再動。
+
+另外兩點不算缺陷：
 
 - D13 新增第二間時，畫面只框住目前這一間，要自己按「縮小」才看得到底圖上的另一間（這次按了 5 次）。
 - 腳本用中文檔名呼叫 Playwright 的 `setFiles` 時，這台容器不會觸發檔案欄位的 change 事件，改用英文檔名就正常。這是測試工具的問題，不是產品的；匯出的參數包因此存成 `r20-params.json`。
@@ -284,4 +346,7 @@
 - `r21/`：`walk_r21.result.json`、`r21-draft.gcanvas`、`r21.gcanvas`、`screens/`。
 - `scripts/verify_param_fix.js`、`scripts/verify_asm_fix.js`、`fix/`：發現 1～4 修正後的重走結果與五張截圖。
 - `scripts/walk_d15.js`、`scripts/verify_scenario_leave.js`、`d15/`：`walk_d15.result.json`（修正後）、四個 `verify_scenario_leave.after.*.json`、`d15.gcanvas`、`screens/`；`d15/before/` 是修正前的走查結果與四個離開方式的紀錄。
+- `scripts/run_formal_gate.sh`、`d17/formal-gate/`：正式關卡在 main、修正前、修正後三個工作樹的收據、stdout、stderr、建置與伺服器紀錄（發現 8）。
+- `scripts/capture_timing.js`、`scripts/count_validations.js`、`scripts/differential_project_store.js`、`d15/save-timing/`：保存方案的秒數與檢查次數、節點測試的檢查次數、新舊實作對照（發現 8）。
+- `scripts/verify_grid_card.js`、`d18/card/`：網格來源卡修正前後的文字與截圖；`d18/grid-group-local/`：本機跑 CI 網格瀏覽器組的兩份紀錄（發現 5）。
 - `scripts/walk_d17.js`、`d17/`：`walk_d17.result.json`（修正後）、`d17.gcanvas`、`screens/`；`d17/before/` 是修正前的結果、被拒的 `assess` 請求摘要與一張截圖。

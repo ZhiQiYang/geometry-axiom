@@ -1,0 +1,5 @@
+locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-rcw=result]').filter({ hasText: '本次核對 · 通過' }) to be visible[22m
+
+    at /tmp/claude-0/-home-user-geometry-axiom/c161fbcc-185e-5abd-ba3d-eaec6a803bff/scratchpad/base-wt/tests/test_rule_case_app_browser.js:37:192
