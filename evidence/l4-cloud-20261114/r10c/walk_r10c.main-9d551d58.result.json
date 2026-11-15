@@ -1,0 +1,497 @@
+{
+ "createLiteral": {
+  "previewStatus": "全部欄位有效，可建立卡片",
+  "afterStatus": "沒有未套用的修改。"
+ },
+ "createFormula": {
+  "previewStatus": "全部欄位有效，可建立卡片",
+  "afterStatus": "沒有未套用的修改。"
+ },
+ "paramsStart": [
+  {
+   "id": 1,
+   "name": "牆長",
+   "fields": [
+    {
+     "id": 1,
+     "name": "長度",
+     "value": {
+      "num": "3900",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "牆高",
+   "fields": [
+    {
+     "id": 1,
+     "name": "高度",
+     "value": {
+      "num": "2500",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  }
+ ],
+ "boundaryStart": [
+  "boundary 1 outline 0,0 4000,0 4000,3000 0,3000"
+ ],
+ "ev1": {
+  "targets": [
+   [
+    "",
+    "請指定物件或參數欄位"
+   ],
+   [
+    "1:1",
+    "牆長.長度 · #1:1"
+   ],
+   [
+    "2:1",
+    "牆高.高度 · #2:1"
+   ],
+   [
+    "boundary:1",
+    "邊界 #1 · 邊界"
+   ]
+  ],
+  "chosen": [
+   "1:1",
+   "牆長.長度 · #1:1"
+  ],
+  "message": "框選原 PDF 區域，手動記錄圖面與現場值；核對只更新此紀錄。"
+ },
+ "e1": {
+  "id": "ec1118a0-711e-413f-96b0-b812e96ad533",
+  "status": "unchecked",
+  "title": "牆長.長度 · #1:1",
+  "drawing": "圖面 牆長 4000 · 4000 mm",
+  "measurement": "現場捲尺 · 401 cm",
+  "model": "3900 mm",
+  "adoptChoices": [
+   "drawing",
+   "measurement"
+  ],
+  "adoptChoiceVisible": true,
+  "adopt": true
+ },
+ "e1Reviewed": {
+  "id": "ec1118a0-711e-413f-96b0-b812e96ad533",
+  "status": "confirmed-content",
+  "title": "牆長.長度 · #1:1",
+  "drawing": "圖面 牆長 4000 · 4000 mm",
+  "measurement": "現場捲尺 · 401 cm",
+  "model": "3900 mm",
+  "adoptChoices": [
+   "drawing",
+   "measurement"
+  ],
+  "adoptChoiceVisible": true,
+  "adopt": true
+ },
+ "adoptPrefill": {
+  "input": [
+   "4010"
+  ],
+  "status": "全部欄位有效，可套用",
+  "message": [
+   "-: 有未保存的變更",
+   "-: 尚未檢查",
+   "paramStatus: 全部欄位有效，可套用"
+  ]
+ },
+ "paramsAfterAdopt": [
+  {
+   "id": 1,
+   "name": "牆長",
+   "fields": [
+    {
+     "id": 1,
+     "name": "長度",
+     "value": {
+      "num": "4010",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "牆高",
+   "fields": [
+    {
+     "id": 1,
+     "name": "高度",
+     "value": {
+      "num": "2500",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  }
+ ],
+ "e1AfterAdopt": {
+  "id": "ec1118a0-711e-413f-96b0-b812e96ad533",
+  "status": "confirmed-content",
+  "title": "牆長.長度 · #1:1",
+  "drawing": "圖面 牆長 4000 · 4000 mm",
+  "measurement": "現場捲尺 · 401 cm",
+  "model": "4010 mm",
+  "adoptChoices": [
+   "drawing",
+   "measurement"
+  ],
+  "adoptChoiceVisible": true,
+  "adopt": true
+ },
+ "ev2": {
+  "targets": [
+   [
+    "",
+    "請指定物件或參數欄位"
+   ],
+   [
+    "2:1",
+    "牆高.高度 · #2:1"
+   ],
+   [
+    "1:1",
+    "牆長.長度 · #1:1"
+   ],
+   [
+    "boundary:1",
+    "邊界 #1 · 邊界"
+   ]
+  ],
+  "chosen": [
+   "2:1",
+   "牆高.高度 · #2:1"
+  ],
+  "message": "框選原 PDF 區域，手動記錄圖面與現場值；核對只更新此紀錄。"
+ },
+ "e2": {
+  "id": "10ab3fe6-6e1d-42b9-9c66-d6c6f6a46b9c",
+  "status": "unchecked",
+  "title": "牆高.高度 · #2:1",
+  "drawing": "圖面 牆高 2600 · 2600 mm",
+  "measurement": "未記錄",
+  "model": "2500 mm",
+  "adoptChoices": [
+   "drawing"
+  ],
+  "adoptChoiceVisible": false,
+  "adopt": true
+ },
+ "e2Reviewed": {
+  "id": "10ab3fe6-6e1d-42b9-9c66-d6c6f6a46b9c",
+  "status": "confirmed-content",
+  "title": "牆高.高度 · #2:1",
+  "drawing": "圖面 牆高 2600 · 2600 mm",
+  "measurement": "未記錄",
+  "model": "2500 mm",
+  "adoptChoices": [
+   "drawing"
+  ],
+  "adoptChoiceVisible": false,
+  "adopt": true
+ },
+ "paramsBeforeFormulaAdopt": [
+  {
+   "id": 1,
+   "name": "牆長",
+   "fields": [
+    {
+     "id": 1,
+     "name": "長度",
+     "value": {
+      "num": "4010",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "牆高",
+   "fields": [
+    {
+     "id": 1,
+     "name": "高度",
+     "value": {
+      "num": "2500",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  }
+ ],
+ "formulaAdoptMessage": "只能採用尺寸字面值。",
+ "formulaAdoptStatus": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "refRoomStatus: 先校準，選房間內空白處；候選須核對室內淨輪廓。",
+  "-: 尚未依此來源核對輪廓（原有矩形不代表重建完成）",
+  "-: 只能採用尺寸字面值。",
+  "-: 尚未檢查"
+ ],
+ "paramEditorOpenAfterFormula": false,
+ "paramsAfterFormulaAdopt": [
+  {
+   "id": 1,
+   "name": "牆長",
+   "fields": [
+    {
+     "id": 1,
+     "name": "長度",
+     "value": {
+      "num": "4010",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "牆高",
+   "fields": [
+    {
+     "id": 1,
+     "name": "高度",
+     "value": {
+      "num": "2500",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  }
+ ],
+ "ev3": {
+  "targets": [
+   [
+    "",
+    "請指定物件或參數欄位"
+   ],
+   [
+    "2:1",
+    "牆高.高度 · #2:1"
+   ],
+   [
+    "1:1",
+    "牆長.長度 · #1:1"
+   ],
+   [
+    "boundary:1",
+    "邊界 #1 · 邊界"
+   ]
+  ],
+  "chosen": [
+   "boundary:1",
+   "邊界 #1 · 邊界"
+  ],
+  "message": "框選原 PDF 區域，手動記錄圖面與現場值；核對只更新此紀錄。"
+ },
+ "e3": {
+  "id": "89d87a4d-03c4-4330-8a22-363cbb986245",
+  "status": "unchecked",
+  "title": "邊界 #1 · 邊界",
+  "drawing": "圖面 房間外框 · 4000 mm",
+  "measurement": "未記錄",
+  "model": "無現行正式值",
+  "adoptChoices": [],
+  "adoptChoiceVisible": false,
+  "adopt": false
+ },
+ "e3Reviewed": {
+  "id": "89d87a4d-03c4-4330-8a22-363cbb986245",
+  "status": "confirmed-content",
+  "title": "邊界 #1 · 邊界",
+  "drawing": "圖面 房間外框 · 4000 mm",
+  "measurement": "未記錄",
+  "model": "無現行正式值",
+  "adoptChoices": [],
+  "adoptChoiceVisible": false,
+  "adopt": false
+ },
+ "saved1": "download",
+ "boundaryImpact": {
+  "enabled": true,
+  "text": "確認連動變更\n\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n\nboundary 1 outline 0,0 4100,0 4100,3000 0,3000\n邊界與頂點 · 1\n面 1\n\n原：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n\n新：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n\n核對頂點座標與身分\n原頂點：外環頂點 1 · 未設 key · (0, 0) mm · 下一邊固定；外環頂點 2 · 未設 key · (4000, 0) mm · 下一邊固定；外環頂點 3 · 未設 key · (4000, 3000) mm · 下一邊固定；外環頂點 4 · 未設 key · (0, 3000) mm · 下一邊固定\n新頂點：外環頂點 1 · 未設 key · (0, 0) mm · 下一邊固定；外環頂點 2 · 未設 key · (4100, 0) mm · 下一邊固定；外環頂點 3 · 未設 key · (4100, 3000) mm · 下一邊固定；外環頂點 4 · 未設 key · (0, 3000) mm · 下一邊固定\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n90／面 1 · 身分保留，幾何更新\t10 → 10\t4000 → 4100\t[0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n91／面 1 · 身分保留，幾何更新\t2990 → 2990\t4000 → 4100\t[0, 2980, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [0, 2980, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n1／面 1 · 身分保留\t500 → 500\t2960 → 2960\t保持原狀\n取消，保留原狀\n確認套用"
+ },
+ "boundaryAfter": [
+  "boundary 1 outline 0,0 4100,0 4100,3000 0,3000"
+ ],
+ "linksAfterBoundaryEdit": [
+  {
+   "id": "ec1118a0-711e-413f-96b0-b812e96ad533",
+   "status": "confirmed-content",
+   "title": "牆長.長度 · #1:1",
+   "drawing": "圖面 牆長 4000 · 4000 mm",
+   "measurement": "現場捲尺 · 401 cm",
+   "model": "4010 mm",
+   "adoptChoices": [
+    "drawing",
+    "measurement"
+   ],
+   "adoptChoiceVisible": true,
+   "adopt": true
+  },
+  {
+   "id": "10ab3fe6-6e1d-42b9-9c66-d6c6f6a46b9c",
+   "status": "confirmed-content",
+   "title": "牆高.高度 · #2:1",
+   "drawing": "圖面 牆高 2600 · 2600 mm",
+   "measurement": "未記錄",
+   "model": "2500 mm",
+   "adoptChoices": [
+    "drawing"
+   ],
+   "adoptChoiceVisible": false,
+   "adopt": true
+  },
+  {
+   "id": "89d87a4d-03c4-4330-8a22-363cbb986245",
+   "status": "target-changed",
+   "title": "邊界 #1 · 邊界",
+   "drawing": "圖面 房間外框 · 4000 mm",
+   "measurement": "未記錄",
+   "model": "無現行正式值",
+   "adoptChoices": [],
+   "adoptChoiceVisible": false,
+   "adopt": false
+  }
+ ],
+ "linksAfterRereview": [
+  {
+   "id": "ec1118a0-711e-413f-96b0-b812e96ad533",
+   "status": "confirmed-content",
+   "title": "牆長.長度 · #1:1",
+   "drawing": "圖面 牆長 4000 · 4000 mm",
+   "measurement": "現場捲尺 · 401 cm",
+   "model": "4010 mm",
+   "adoptChoices": [
+    "drawing",
+    "measurement"
+   ],
+   "adoptChoiceVisible": true,
+   "adopt": true
+  },
+  {
+   "id": "10ab3fe6-6e1d-42b9-9c66-d6c6f6a46b9c",
+   "status": "confirmed-content",
+   "title": "牆高.高度 · #2:1",
+   "drawing": "圖面 牆高 2600 · 2600 mm",
+   "measurement": "未記錄",
+   "model": "2500 mm",
+   "adoptChoices": [
+    "drawing"
+   ],
+   "adoptChoiceVisible": false,
+   "adopt": true
+  },
+  {
+   "id": "89d87a4d-03c4-4330-8a22-363cbb986245",
+   "status": "confirmed-content",
+   "title": "邊界 #1 · 邊界",
+   "drawing": "圖面 房間外框 · 4000 mm",
+   "measurement": "未記錄",
+   "model": "無現行正式值",
+   "adoptChoices": [],
+   "adoptChoiceVisible": false,
+   "adopt": false
+  }
+ ],
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "paramsReopened": [
+  {
+   "id": 1,
+   "name": "牆長",
+   "fields": [
+    {
+     "id": 1,
+     "name": "長度",
+     "value": {
+      "num": "4010",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "牆高",
+   "fields": [
+    {
+     "id": 1,
+     "name": "高度",
+     "value": {
+      "num": "2500",
+      "den": "1",
+      "unit": "mm"
+     }
+    }
+   ]
+  }
+ ],
+ "boundaryReopened": [
+  "boundary 1 outline 0,0 4100,0 4100,3000 0,3000"
+ ],
+ "linksReopened": [
+  {
+   "id": "ec1118a0-711e-413f-96b0-b812e96ad533",
+   "status": "confirmed-content",
+   "title": "牆長.長度 · #1:1",
+   "drawing": "圖面 牆長 4000 · 4000 mm",
+   "measurement": "現場捲尺 · 401 cm",
+   "model": "4010 mm",
+   "adoptChoices": [
+    "drawing",
+    "measurement"
+   ],
+   "adoptChoiceVisible": true,
+   "adopt": true
+  },
+  {
+   "id": "10ab3fe6-6e1d-42b9-9c66-d6c6f6a46b9c",
+   "status": "confirmed-content",
+   "title": "牆高.高度 · #2:1",
+   "drawing": "圖面 牆高 2600 · 2600 mm",
+   "measurement": "未記錄",
+   "model": "2500 mm",
+   "adoptChoices": [
+    "drawing"
+   ],
+   "adoptChoiceVisible": false,
+   "adopt": true
+  },
+  {
+   "id": "89d87a4d-03c4-4330-8a22-363cbb986245",
+   "status": "confirmed-content",
+   "title": "邊界 #1 · 邊界",
+   "drawing": "圖面 房間外框 · 4000 mm",
+   "measurement": "未記錄",
+   "model": "無現行正式值",
+   "adoptChoices": [],
+   "adoptChoiceVisible": false,
+   "adopt": false
+  }
+ ],
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
