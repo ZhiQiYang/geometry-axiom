@@ -455,6 +455,9 @@ PF-6 依現行 D45／R45 包含固定外環邊材、邊界主支與板縫主副�
 
 ### GEO-262 — 網格系統直接引用整張參數卡（卡片級引用，2026-10-15）
 
+> **2026-11-16 R01 整組解除 UI 切片**：承接需求帳仍缺的解除入口，沿用 D64／I74／R60 與既有 `unbind-grid-card-reference`。從既有網格「長度來源」明選轉逐欄引用或當下直接值；原生預覽、取消、確認與單步復原／重做。尚有原始草稿時先處理草稿，不混入這筆解除。此片不改公理、核心、專案格式，也不實作「解除＋改軸模式」的混合候選。
+> **拿掉／合併（GEO-219）**：已有整卡來源時，移除「長度來源 → 逐軸設定」這個只會被拒絕的選項，改為同區收合的「解除整組引用」兩種明確動作；移除舊「解除尚未提供」提示。沿用既有影響對話框與一段來源說明，不增加常駐說明區。
+
 > **2026-10-19 狀態更新**：整卡條文 [#256](https://github.com/ZhiQiYang/geometry-axiom/pull/256) 已隨第 17 班 [#262](https://github.com/ZhiQiYang/geometry-axiom/pull/262) 進 main（2026-10-16，列車 merge `a898ad6e`，#256 的 merge `bbc59d40`）。後續誠實性與 #260 的措辭是否落地，隨 [#312](https://github.com/ZhiQiYang/geometry-axiom/pull/312) 而定。2026-10-19 `gh pr view 312 --json state,mergedAt` 回 state=OPEN、mergedAt=null，還沒進 main，所以 #253、#293、#294、#295、#309、#310、#260 仍列在本檔首節的「列車內的非 merged PR 與仍待落地項」。
 
 - **狀態**：公理差異提案中(雲端指定任務 18)；追蹤 [issue #249](https://github.com/ZhiQiYang/geometry-axiom/issues/249)。

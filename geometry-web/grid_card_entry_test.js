@@ -7,6 +7,7 @@
 const fs = require('fs'), os = require('os'), path = require('path');
 const {isDeepStrictEqual: same} = require('util');
 const cdp = require('./cdp_helpers.js');
+const {waitForExpectedNavigation} = require('./cdp_navigation.js');
 const P = require('./project-store.js'), zip = require('./vendor/fflate/umd/index.js');
 const CASE_IDS = Object.freeze([
   'entry', 'explicit_mapping', 'commit_cancel', 'swap', 'equal_swap', 'reopen',
@@ -19,7 +20,8 @@ const CASE_IDS = Object.freeze([
   'inspector_direct_control', 'inspector_parameter_control',
   'compat_raw_capability', 'compat_legacy_unchanged', 'compat_raw_rule_roundtrip',
   'compat_mixed_roundtrip', 'compat_reader_rejection_atomic',
-  'compat_historical_pins', 'compat_geo219_reduction'
+  'compat_historical_pins', 'compat_geo219_reduction',
+  'unbind_cancel', 'unbind_parameter', 'unbind_direct', 'unbind_stale'
 ]);
 function selectCases(value) {
   if (value === undefined) return [...CASE_IDS];
@@ -60,6 +62,7 @@ module.exports = async function gridCardEntryTests({
   const key = cdp.makeKey({send, sleep});
   const fill = cdp.makeFill({ctl, key, send, sleep}, {afterMs:50});
   const history = cdp.makeHistoryOracle(read, 'P353');
+  const shot = cdp.makeShot(send, ['GEOMETRY_GRID_CARD_ENTRY_SCREENSHOT_DIR','GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR']);
   let pins = [], nativeTokens = [], currentCase = null;
   const query = cmd => page(async command => {
     const result = await apiRequest(command);
@@ -186,6 +189,15 @@ module.exports = async function gridCardEntryTests({
           return result;
         } catch (error) { row.error = String(error); row.state = 'rejected'; throw error; }
       };
+      const engineering = window.__p353EngineeringTrace = {original:EngineeringAdapter.preview,calls:[]};
+      EngineeringAdapter.preview = async function(request) {
+        const row = {request:structuredClone(request),state:'pending'};
+        engineering.calls.push(row);
+        try {
+          const result = await engineering.original.call(this,request);
+          row.result = structuredClone(result); row.state = 'fulfilled'; return result;
+        } catch (error) { row.error = String(error); row.state = 'rejected'; throw error; }
+      };
     });
   };
   const openNew = async name => {
@@ -224,7 +236,8 @@ module.exports = async function gridCardEntryTests({
       // Only a completed, responsive application can produce a product timeout.
       // CDP/protocol errors and unfinished native requests are never mutation kills.
       if (!error.message.startsWith('UI condition timed out')) throw error;
-      const pending = await page(() => window.__p353ApiTrace?.calls.filter(row => row.state === 'pending') || []);
+      const pending = await page(() => [...(window.__p353ApiTrace?.calls || []),
+        ...(window.__p353EngineeringTrace?.calls || [])].filter(row => row.state === 'pending'));
       if (pending.length) throw failure('exception',code + '_PENDING_NATIVE','Native request did not complete',pending);
       await healthy(code);
       check(code, false, {timeout:true,expression});
@@ -603,7 +616,178 @@ module.exports = async function gridCardEntryTests({
     await openInspector(4);
     check('INSPECTOR_SAVED_BINDING_ENABLED', (await inspectorView()).bindingDisabled === false);
   };
+  const unbindParameter = (u = 12, v = 30) => {
+    const operation = parameter(10,u,v);
+    operation.value.fields.push({id:14,name:'unrelated gap',type:'dimension',input:'3'});
+    return operation;
+  };
+  const unbindFixture = async () => {
+    await fixture({source:true,mixed:true});
+    const operation = grid(4,10,3,8,true);
+    operation.value.u = 'repeat-panel card gap param:10:14 from -5';
+    operation.value.mainAlong = 'u';
+    await applyFixture([unbindParameter(),operation]);
+    await openSource(4);
+    check('UNBIND_ENTRY_EXPLICIT', await page(() =>
+      document.querySelector('#igCardUnbind > summary')?.textContent === '解除整組引用' &&
+      document.getElementById('igCardUnbindParameter')?.textContent === '改為逐欄引用' &&
+      document.getElementById('igCardUnbindDirect')?.textContent === '改為當下直接值' &&
+      document.querySelector('#igCard option[value=""]')?.disabled === true));
+    check('UNBIND_SAVED_WITHOUT_RAW_DRAFT', (await allRaw()).drafts.length === 0);
+    return source(4);
+  };
+  const unbindButton = mode => '#igCardUnbind' + (mode === 'parameter' ? 'Parameter' : 'Direct');
+  const openUnbind = async () => {
+    if (!await page(() => document.getElementById('igCardUnbind')?.open)) await ctl('#igCardUnbind > summary');
+  };
+  const unbindPreview = async mode => {
+    await openUnbind();
+    const before = await query('engineering-read');
+    const cursor = await page(() => window.__p353EngineeringTrace.calls.length);
+    await ctl(unbindButton(mode));
+    await waitProduct('UNBIND_NATIVE_PREVIEW', 'window.__p353EngineeringTrace.calls.slice(' + cursor + ').some(row=>row.state!=="pending")');
+    const calls = await page(start => window.__p353EngineeringTrace.calls.slice(start),cursor);
+    if (calls.some(row => row.state === 'rejected'))
+      throw failure('exception','UNBIND_PREVIEW_REQUEST_REJECTED','Native unbind request rejected',calls);
+    check('UNBIND_ONE_EXPLICIT_OPERATION', calls.length === 1 && same(calls[0].request,{
+      expectedRevision:before.revision,operations:[{op:'unbind-grid-card-reference',id:4,mode}]
+    }),calls);
+    check('UNBIND_VALID_CANDIDATE', calls[0].result?.valid === true,calls[0].result);
+    await waitProduct('UNBIND_IMPACT_VISIBLE', "!!document.querySelector('.reference-impact[open] #impact-confirm')");
+    check('UNBIND_IMPACT_VISIBLE', await visible('.reference-impact[open]'));
+    return calls[0].result;
+  };
+  const unbindPreserved = (before,after) => {
+    const clean = source => {
+      const result = structuredClone(source); delete result.cardReference;
+      for (const axis of ['u','v']) {
+        const d = result[axis+'Definition'], slot = d.source === 'repeat' ? 'step' : 'panel';
+        for (const key of [slot,slot+'Source',slot === 'step' ? 'effectiveStep' : 'effectivePanel']) delete d[key];
+        d.parameterRefs ||= {}; delete d.parameterRefs[slot];
+      }
+      return result;
+    };
+    return same(clean(before),clean(after));
+  };
+  const unboundIdentity = (g,mode,values = [12,30]) => !g.cardReference && ['u','v'].every((axis,index) => {
+    const d = g[axis+'Definition'], slot = d.source === 'repeat' ? 'step' : 'panel';
+    return d[slot] === values[index] && d[slot+'Source'] !== 'card' &&
+      (mode === 'parameter' ? same(d.parameterRefs?.[slot],{kind:'parameter',parameterId:10,fieldId:index ? 8 : 3}) :
+        !Object.hasOwn(d.parameterRefs || {},slot));
+  });
+  const unbindGuard = async code => {
+    await openUnbind();
+    const before = await dump(), drafts = await allRaw(), revision = (await query('engineering-read')).revision;
+    const pin = await pinHistory(), cursor = await page(() => window.__p353EngineeringTrace.calls.length);
+    for (const mode of ['parameter','direct']) {
+      if (await page(selector => !document.querySelector(selector).disabled,unbindButton(mode))) await ctl(unbindButton(mode));
+      await settled();
+      check(code, !await visible('.reference-impact[open]') &&
+        await page(start => window.__p353EngineeringTrace.calls.length === start,cursor) &&
+        (await dump()) === before && (await query('engineering-read')).revision === revision &&
+        same(await allRaw(),drafts) && await history.unchanged(pin));
+    }
+    await releasePin(pin);
+  };
+  const unbindCommitRoundtrip = async mode => {
+    const original = await unbindFixture(), before = await dump(), pin = await pinHistory();
+    if (mode === 'direct') {
+      await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+      await openUnbind();
+      await shot('grid-trial-p353-unbind-entry-mobile');
+    }
+    const preview = await unbindPreview(mode);
+    if (mode === 'direct') {
+      const captures = await page(() => [...document.querySelectorAll('[data-impact-card-capture]')].map(node => node.textContent));
+      check('UNBIND_DIRECT_CAPTURE_VALUES', preview.cardCaptures?.length === 1 &&
+        same(preview.cardCaptures[0].values,[12,30]) && captures.length === 1 &&
+        /12/.test(captures[0]) && /30/.test(captures[0]),{native:preview.cardCaptures,shown:captures});
+      check('UNBIND_MOBILE_NO_PAGE_OVERFLOW', await page(() => document.documentElement.scrollWidth <= innerWidth));
+      await shot('grid-trial-p353-unbind-direct-impact-mobile');
+    }
+    await confirm();
+    const after = await dump(), changed = await source(4);
+    check('UNBIND_NATIVE_SOURCE_IDENTITY', unboundIdentity(changed,mode),changed);
+    check('UNBIND_OTHER_FIELDS_PRESERVED', unbindPreserved(original,changed),{original,changed});
+    check('UNBIND_ONE_HISTORY_STEP', await history.single(pin) && (await allRaw()).drafts.length === 0);
+    await releasePin(pin); await leave();
+    await ctl('#btnUndo'); await settled();
+    check('UNBIND_UNDO_COMPLETE_SOURCE', (await dump()) === before && identity(await source(4),10,3,8) && (await allRaw()).drafts.length === 0);
+    await ctl('#btnRedo'); await settled();
+    check('UNBIND_REDO_COMPLETE_SOURCE', (await dump()) === after && unboundIdentity(await source(4),mode));
+    const saved = await saveFile();
+    check('UNBIND_SAVED_SOURCE_DEFINITION', saved.loaded.scene === after && !saved.loaded.scene.includes(' card-reference ') &&
+      saved.loaded.scene.includes('gap param:10:14'));
+    // Reload drops every in-page source/cache before the formal file chooser reopens the archive.
+    const marker = require('crypto').randomUUID();
+    const injected = await send('Page.addScriptToEvaluateOnNewDocument',{
+      source:'window.__cdpExpectedNavigationMarker='+JSON.stringify(marker)+';'
+    });
+    try {
+      await send('Page.reload',{ignoreCache:true});
+      await waitForExpectedNavigation({evaluate:eval_,marker,label:'P353 unbind cold reopen',timeout:30000,
+        condition:"typeof connection!=='undefined'&&connection.phase==='ready'&&typeof ReferenceWorkspace!=='undefined'"});
+    } finally { await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:injected.result.identifier}); }
+    await settled();
+    await openFile(saved.file,saved.loaded.manifest.projectId);
+    check('UNBIND_COLD_REOPEN_SOURCE', (await dump()) === after && unboundIdentity(await source(4),mode));
+    await openSource(4);
+    check('UNBIND_REOPENED_UI_SOURCE', await page(mode => {
+      const card = document.getElementById('igCard');
+      return card.value === '' && !document.getElementById('igCardUnbind') &&
+        document.getElementById('igUPanelSource').value === (mode === 'parameter' ? '10:3' : '') &&
+        document.getElementById('igVStepSource').value === (mode === 'parameter' ? '10:8' : '');
+    },mode));
+    await leave(); await applyFixture([unbindParameter(18,60)]);
+    check('UNBIND_LATER_PARAMETER_EDIT', unboundIdentity(await source(4),mode,mode === 'parameter' ? [18,60] : [12,30]));
+  };
   const cases = {
+    async unbind_cancel() {
+      await unbindFixture();
+      const before = await dump(), revision = (await query('engineering-read')).revision,
+        metadata = await page(() => ReferenceWorkspace.manifest()), pin = await pinHistory();
+      for (const mode of ['parameter','direct']) {
+        const candidate = await unbindPreview(mode), cursor = await page(() => window.__p353ApiTrace.calls.length);
+        await cancel();
+        const cancellations = await page((start,token) => window.__p353ApiTrace.calls.slice(start)
+          .filter(row => row.command === 'engineering-cancel '+token),cursor,candidate.token);
+        check('UNBIND_CANCEL_SAME_TOKEN', cancellations.length === 1 && cancellations[0].state === 'fulfilled' &&
+          cancellations[0].result?.ok === true && cancellations[0].result.cancelled === true,cancellations);
+        const retired = await query('engineering-cancel '+candidate.token);
+        check('UNBIND_CANCEL_TOKEN_RETIRED', retired.cancelled === false,retired);
+        check('UNBIND_CANCEL_ATOMIC', (await dump()) === before && (await query('engineering-read')).revision === revision &&
+          same(await page(() => ReferenceWorkspace.manifest()),metadata) && (await allRaw()).drafts.length === 0 &&
+          await history.unchanged(pin));
+      }
+      await releasePin(pin);
+      await fill('#igName','R01 pending source edit'); await unbindGuard('UNBIND_DIRTY_SOURCE_BLOCKED');
+      await fill('#igName','R01 existing 4');
+      check('UNBIND_RAW_GUARD_PRECONDITION', (await allRaw()).drafts.length === 1 &&
+        await page(() => document.getElementById('igSaveSource').disabled));
+      await unbindGuard('UNBIND_RETAINED_RAW_BLOCKED');
+      await discardRaw(); await openSource(4); await ctl('#igRuleAdd');
+      check('UNBIND_RULE_GUARD_PRECONDITION', !!(await raw())?.ruleDraft);
+      await unbindGuard('UNBIND_RULE_DRAFT_BLOCKED');
+    },
+    async unbind_parameter() { await unbindCommitRoundtrip('parameter'); },
+    async unbind_direct() { await unbindCommitRoundtrip('direct'); },
+    async unbind_stale() {
+      await unbindFixture(); await unbindPreview('direct');
+      const write = await query('line spec R01UnbindRace 1');
+      need('UNBIND_RACE_FIXTURE_COMMITTED', !write.preview,write);
+      const before = await dump(), revision = (await query('engineering-read')).revision,
+        metadata = await page(() => ReferenceWorkspace.manifest()), pin = await pinHistory();
+      const control = await page(() => {
+        const button = document.querySelector('.reference-impact[open] #impact-confirm');
+        return {exists:!!button,disabled:!!button?.disabled};
+      });
+      if (control.exists && !control.disabled) await confirm();
+      check('UNBIND_STALE_CONFIRM_ATOMIC', (await dump()) === before && (await query('engineering-read')).revision === revision &&
+        same(await page(() => ReferenceWorkspace.manifest()),metadata) && identity(await source(4),10,3,8) &&
+        (await allRaw()).drafts.length === 0 && await history.unchanged(pin),control);
+      if (await visible('.reference-impact[open]')) await cancel();
+      await releasePin(pin);
+    },
     async entry() {
       await fixture({board:true});
       await openNew('R01 visible entry');
@@ -1234,6 +1418,8 @@ module.exports = async function gridCardEntryTests({
     await page(() => {
       const trace = window.__p353ApiTrace;
       if (trace) {window.apiRequest = trace.original; delete window.__p353ApiTrace;}
+      const engineering = window.__p353EngineeringTrace;
+      if (engineering) {EngineeringAdapter.preview = engineering.original; delete window.__p353EngineeringTrace;}
       const picker = window.__p353SavePicker;
       if (picker) {
         if (picker.descriptor) Object.defineProperty(window,'showSaveFilePicker',picker.descriptor);

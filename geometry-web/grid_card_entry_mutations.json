@@ -38,10 +38,15 @@
     "compat_mixed_roundtrip",
     "compat_reader_rejection_atomic",
     "compat_historical_pins",
-    "compat_geo219_reduction"
+    "compat_geo219_reduction",
+    "unbind_cancel",
+    "unbind_parameter",
+    "unbind_direct",
+    "unbind_stale"
   ],
   "inputs": [
     "geometry-web/cdp_test.js",
+    "geometry-web/cdp_navigation.js",
     "geometry-web/grid_card_entry_test.js",
     "geometry-web/browser_mutation_check.py",
     "geometry-web/grid_card_entry_mutations.json",

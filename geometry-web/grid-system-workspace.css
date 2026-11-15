@@ -242,3 +242,5 @@
 .ig-settings .ig-card-note { margin: 0; font-size: 12px; line-height: 1.5; }
 .ig-settings .ig-card-note[data-tone=error] { color: var(--danger, #b42318); }
 .ig-settings .ig-card-locked input { background: var(--panel-muted, #f2f4f7); }
+.ig-settings #igCardUnbind summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-size: 12px; }
+.ig-settings #igCardUnbind .ig-rule-actions { padding-bottom: 6px; }

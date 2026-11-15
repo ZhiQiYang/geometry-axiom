@@ -1,5 +1,10 @@
 /* Reference editing and the mandatory I8a confirmation flow. */
-async function confirmReferenceImpact(preview) {
+async function confirmReferenceImpact(preview, {
+  confirm = token => apiRequest(`line confirm ${token}`),
+  cancel: cancelPreview = () => apiRequest('line cancel-preview'),
+  isCurrent = () => true
+} = {}) {
+  const token = preview.token;
   const repeat=(preview.timbers||[]).some(row=>row.owner?.identity)||
     ['before','after'].some(side=>preview.assembly?.[side]?.instances?.some(r=>r.value.source.layout==='bay-repeat'));
   const repeatComplete=!repeat||Array.isArray(preview.bayCells)&&(preview.timbers||[]).every(row=>!row.owner?.identity||['kept','moved','created','deleted'].includes(row.change));
@@ -11,7 +16,9 @@ async function confirmReferenceImpact(preview) {
   title.textContent = canApply ? '確認連動變更' : '變更無法套用';
   dialog.append(title);
   const note = document.createElement('p');
-  note.textContent = '目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。';
+  note.textContent = preview.gridCardUnbind
+    ? '目前場景尚未改動。以下核對兩軸長度來源、網格及其依賴的原／新結果；尺寸單位為 mm。確認後整組解除，可一次復原。'
+    : '目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。';
   dialog.append(note);
   const code = document.createElement('code'); code.textContent = preview.command;
   dialog.append(code);
@@ -100,10 +107,10 @@ async function confirmReferenceImpact(preview) {
     }
     dialog.append(guides);
   }
-  for (const issue of preview.violations) {
+  for (const issue of preview.violations || []) {
     const p = document.createElement('p'); p.className = 'impact-violation';
     const source=[issue.timber?'角材 '+issue.timber:'',issue.instanceId?'實例 #'+issue.instanceId:'',issue.primaryKey?'主支 #'+issue.primaryKey:'',issue.lineKey?'副支線 #'+issue.lineKey:''].filter(Boolean).join(' · ')||'場景';
-    p.textContent = `${source} · ${issue.code?issue.code+' · ':''}${issue.clause}\n預期：${issue.expected}\n實際：${issue.actual}`;
+    p.textContent = `${source} · ${issue.code?issue.code+' · ':''}${issue.clause || ''}\n預期：${issue.expected ?? '候選符合全部來源與幾何限制'}\n實際：${issue.actual ?? issue.message ?? '無合法結果'}`;
     dialog.append(p);
   }
   if(!repeatComplete){const p=document.createElement('p');p.className='impact-violation';p.textContent='原生服務缺少逐線開間或角材增刪身分結果；請更新服務後重新預覽。';dialog.append(p);}
@@ -120,13 +127,25 @@ async function confirmReferenceImpact(preview) {
       if (settled) return; settled = true;
       apply.disabled = true; cancel.disabled = true;
       try {
-        const result = approved
-          ? await apiRequest(`line confirm ${preview.token}`)
-          : await apiRequest('line cancel-preview');
+        let stale = false, staleError = '';
+        if (approved) {
+          try { stale = !await isCurrent(); }
+          catch (error) { stale = true; staleError = '無法核對目前來源：' + (error.message || String(error)) + '；'; }
+        }
+        const result = approved && !stale
+          ? await confirm(token)
+          : await cancelPreview(token);
         dialog.close(); dialog.remove();
-        resolve(approved ? result : {ok:false, error:'已取消；場景保持原狀'});
+        if (!result?.ok) {
+          resolve({...(result || {}), ok:false, error:result?.error || (approved && !stale ? '確認未成功，請重新預覽。' : '未能確認取消成功，請重新讀取目前場景。')});
+        } else resolve(approved && !stale ? result : {ok:false, error:stale ? staleError + '來源或專案已變更；本次預覽已取消，請重新預覽。' : '已取消；場景保持原狀'});
       } catch (error) {
-        dialog.close(); dialog.remove(); resolve({ok:false, error:error.message});
+        dialog.close(); dialog.remove();
+        // EngineeringAdapter attaches a real native receipt when only the
+        // subsequent presentation refresh failed. Never report that as a rollback.
+        resolve(error.engineeringConfirmation?.ok === true
+          ? {...error.engineeringConfirmation, engineeringConfirmation:error.engineeringConfirmation, refreshError:error.message}
+          : {ok:false, error:error.message || String(error)});
       }
     };
     cancel.onclick = () => finish(false);
@@ -134,6 +153,91 @@ async function confirmReferenceImpact(preview) {
     dialog.addEventListener('cancel', event => { event.preventDefault(); finish(false); });
     dialog.showModal(); cancel.focus();
   });
+}
+
+/* R01: a caller may pass only its one unbind-grid-card-reference candidate.
+   The transport does not echo operations; check the observable source delta
+   as well, and never turn this into a general engineering transaction editor. */
+async function confirmGridCardUnbindImpact(preview, {mode, gridSystemId, isCurrent = () => true} = {}) {
+  const token = preview?.token;
+  const cancel = token => EngineeringAdapter.cancel({token});
+  const fail = async message => {
+    try {
+      const result = await cancel(token);
+      if (!result?.ok) return {ok:false, error:message + '；取消預覽未成功：' + (result?.error || '服務未確認取消。')};
+    } catch (error) { return {ok:false, error:message + '；取消預覽未成功：' + (error.message || String(error))}; }
+    return {ok:false, error:message};
+  };
+  const stable = value => JSON.stringify(value, function (key, item) {
+    return item && typeof item === 'object' && !Array.isArray(item)
+      ? Object.fromEntries(Object.keys(item).sort().map(name => [name,item[name]])) : item;
+  });
+  const same = (a,b) => stable(a) === stable(b);
+  const clone = value => JSON.parse(JSON.stringify(value));
+  const rows = (key, select = row => row) => {
+    const old = new Map(preview.before[key].map(row => [row.id,row]));
+    const next = new Map(preview.after[key].map(row => [row.id,row]));
+    if (old.size !== preview.before[key].length || next.size !== preview.after[key].length) throw Error('預覽物件身分重複，請重新預覽。');
+    return [...new Set([...old.keys(),...next.keys()])].map(id => ({id,before:old.has(id)?select(old.get(id)):null,after:next.has(id)?select(next.get(id)):null}));
+  };
+  let shared;
+  try {
+    if (!['parameter','direct'].includes(mode) || !Number.isSafeInteger(gridSystemId) || gridSystemId < 0 || gridSystemId > 4294967295 ||
+        !preview || typeof preview.valid !== 'boolean' || !Array.isArray(preview.violations)) throw Error('整卡解除預覽不完整，請重新預覽。');
+    for (const side of ['before','after']) for (const key of ['gridSystems','grids','guides','timbers']) {
+      if (!Array.isArray(preview[side]?.[key])) throw Error('原生服務未提供完整的整卡解除影響，請重新預覽。');
+    }
+    const systems = rows('gridSystems'), target = systems.find(row => row.id === gridSystemId), reference = target?.before?.cardReference;
+    if (!reference || !target.after) throw Error('這個網格已沒有可整組解除的參數卡，請重新讀取來源。');
+    if (preview.valid) {
+      const expected = clone(target.before); delete expected.cardReference;
+      const values = ['u','v'].map(axis => {
+        const definition = expected[axis+'Definition'];
+        const slot = definition?.source === 'repeat' ? 'step' : definition?.source === 'repeat-panel' ? 'panel' : null;
+        if (!slot || definition[slot+'Source'] !== 'card') throw Error('整卡的兩軸長度來源不完整，不能解除。');
+        const effective = 'effective'+slot[0].toUpperCase()+slot.slice(1), value = definition[effective];
+        if (!Number.isSafeInteger(value) || value <= 0) throw Error('整卡長度不是合法直接整數，不能解除。');
+        delete definition[effective]; delete definition[slot+'Source']; definition[slot] = value;
+        if (mode === 'parameter') definition.parameterRefs = {...definition.parameterRefs,[slot]:{kind:'parameter',parameterId:reference.parameterId,fieldId:reference[axis+'FieldId']}};
+        return value;
+      });
+      if (!same(expected,target.after) || systems.some(row => row.id !== gridSystemId && !same(row.before,row.after)))
+        throw Error('預覽還包含整卡解除以外的網格來源變更，請單獨重新預覽解除。');
+      // An unbind preserves geometry. Do not invent absent gridBindings or
+      // claim to have inspected the unapplied binding clipping result.
+      for (const key of ['guides','timbers']) if (!same(preview.before[key],preview.after[key])) throw Error('解除預覽含有額外幾何變更，請單獨重新預覽解除。');
+      const gridGeometry = list => list.map(({uDefinition,vDefinition,...geometry}) => geometry);
+      if (!same(gridGeometry(preview.before.grids),gridGeometry(preview.after.grids))) throw Error('解除預覽含有額外網格幾何變更，請單獨重新預覽解除。');
+      for (const key of new Set([...Object.keys(preview.before),...Object.keys(preview.after)])) {
+        if (['geometry','gridSystems','grids','guides','timbers'].includes(key)) continue;
+        if (key === 'required_capabilities') {
+          const capability='grid-card-reference/1', before=preview.before[key], after=preview.after[key];
+          if (!Array.isArray(before) || !Array.isArray(after) || !same(before.filter(value=>value!==capability),after.filter(value=>value!==capability)) ||
+              !before.includes(capability) || after.includes(capability)!==preview.after.gridSystems.some(row=>row.cardReference))
+            throw Error('解除預覽的必要能力宣告不一致，請重新預覽。');
+          continue;
+        }
+        if (!same(preview.before[key],preview.after[key])) throw Error('預覽含有整卡解除以外的工程變更，請單獨重新預覽解除。');
+      }
+      const captures = preview.cardCaptures;
+      if (!Array.isArray(captures) || (mode === 'parameter' ? captures.length !== 0 : captures.length !== 1)) throw Error('原生服務未提供完整的整組解除取值紀錄。');
+      if (mode === 'direct') {
+        const capture = captures[0];
+        if (capture.gridSystemId !== gridSystemId || capture.parameterId !== reference.parameterId || capture.uFieldId !== reference.uFieldId || capture.vFieldId !== reference.vFieldId ||
+            capture.timing !== 'ordered-candidate-step' || !Number.isSafeInteger(capture.order) || capture.order < 1 || !same(capture.values,values)) throw Error('解除取值紀錄與這次兩軸來源不一致，請重新預覽。');
+      }
+    }
+    shared = {
+      token, valid:preview.valid, command:`網格系統 ${gridSystemId} · 整組解除 → ${mode === 'parameter' ? '兩個逐欄參數引用' : '當下直接整數'}`,
+      gridCardUnbind:{mode,gridSystemId}, gridSystems:systems,
+      grids:rows('grids'), guides:rows('guides'), timbers:rows('timbers',row => row.geometry),
+      parameters:preview.before.parameters, cardCaptures:preview.cardCaptures || [],
+      sectionProfiles:preview.sectionProfiles,
+      violations:preview.violations.map(issue => ({...issue,actual:issue.actual ?? issue.message}))
+    };
+  } catch (error) { return fail(error.message || String(error)); }
+  try { return await confirmReferenceImpact(shared, {confirm:token => EngineeringAdapter.confirm({token}), cancel, isCurrent}); }
+  catch (error) { return fail(error.message || String(error)); }
 }
 
 /* The same native candidate is shared by DSL, engineering and parameter edits.
@@ -207,17 +311,21 @@ function appendGridDefinitionImpact(dialog, preview) {
   function axis(d) {
     if(!d || d.source==='none')return '不設此軸';
     const stagger = d.stagger ? `，相鄰格子相位差 ${d.stagger} mm` : '';
+    const slotNames={step:'間距',panel:'面材',phase:'第 0 線',gap:'縫寬',anchor:'起點',stagger:'相位差'};
+    const references = Object.entries(d.parameterRefs || {}).map(([slot,ref]) => `${slotNames[slot] || slot} → 參數卡 #${ref.parameterId}／欄 #${ref.fieldId}`).join('；');
+    const parameterText = references ? `；逐欄來源 ${references}` : '';
     // R01: a whole parameter card supplies the length; stored rows expose the effective value.
     const card = key => d[key+'Source']==='card' ? '（整張參數卡）' : '';
-    if(d.source==='repeat')return `無限重複：間距 ${d.step ?? d.effectiveStep} mm${card('step')}，第 0 線 ${d.phase} mm${stagger}`;
-    if(d.source==='repeat-panel'){const panel=d.panel ?? d.effectivePanel;return `無限面材 ${panel}${card('panel')}＋縫 ${d.gap} mm，起點 ${d.anchor} mm，間距 ${panel+d.gap} mm${stagger}`;}
+    if(d.source==='repeat')return `無限重複：間距 ${d.step ?? d.effectiveStep} mm${card('step')}，第 0 線 ${d.phase} mm${stagger}${parameterText}`;
+    if(d.source==='repeat-panel'){const panel=d.panel ?? d.effectivePanel;return `無限面材 ${panel}${card('panel')}＋縫 ${d.gap} mm，起點 ${d.anchor} mm，間距 ${panel+d.gap} mm${stagger}${parameterText}`;}
     if(d.source==='explicit')return `舊版有限座標 [${(d.coordinates||[]).join(', ')}] mm`;
     if(d.source==='series')return `舊版有限等差：起點 ${d.start}、間距 ${d.step} mm，共 ${d.count} 條`;
     return `舊版有限面材 ${d.panel}＋縫 ${d.gap} mm，起點 ${d.anchor} mm`;
   }
   function cardText(r) {
     if(!r)return '';
-    const card=((typeof oc!=='undefined'&&oc.parameters)||[]).map(o=>o.card).find(c=>c?.id===r.parameterId),name=id=>card?.fields?.find(f=>f.id===id)?.name??`欄位 ${id}`;
+    const cards=preview.parameters || ((typeof oc!=='undefined'&&oc.parameters)||[]).map(o=>o.card);
+    const card=cards.find(c=>c?.id===r.parameterId),name=id=>card?.fields?.find(f=>f.id===id)?.name??`欄位 ${id}`;
     return `；長度來自整張參數卡「${card?.name??'#'+r.parameterId}」（卡 #${r.parameterId}；u = ${name(r.uFieldId)}（欄 #${r.uFieldId}）、v = ${name(r.vFieldId)}（欄 #${r.vFieldId}））`;
   }
   function source(g) {return g ? `「${g.name}」；${g.mainAlong ? '主支沿 '+g.mainAlong : '主支方向未設定'}；u ${axis(g.uDefinition)}；v ${axis(g.vDefinition)}${cardText(g.cardReference)}` : '不存在';}
@@ -243,6 +351,17 @@ function appendGridDefinitionImpact(dialog, preview) {
       item.append(details);
     }
   });
+  if (preview.gridCardUnbind) {
+    const result=textNode('p',preview.gridCardUnbind.mode==='parameter'
+      ? '解除後，兩軸分別引用原本的參數欄位，仍隨該欄位更新。'
+      : '解除後，兩軸保存下列原生取值；之後修改原參數卡，不會改變這兩個直接長度。');
+    result.dataset.impactUnbindMode=preview.gridCardUnbind.mode;dialog.append(result);
+    for (const capture of preview.cardCaptures || []) {
+      const row=textNode('p',`網格系統 ${capture.gridSystemId}：原參數卡 #${capture.parameterId}；u 欄 #${capture.uFieldId} → ${capture.values[0]} mm，v 欄 #${capture.vFieldId} → ${capture.values[1]} mm；取值時點：本次解除時（候選第 ${capture.order} 步）。`);
+      row.dataset.impactCardCapture=capture.gridSystemId;dialog.append(row);
+    }
+    if (preview.valid) dialog.append(textNode('p','本次解除的原生前後摘要中，網格幾何、參考線與角材幾何保持原狀。'));
+  }
   const loopName = l => l<0 ? '外環' : '孔 '+(l+1);
   const points = b => (b?.loops||[]).flatMap((l,li)=>(l.vertices||l.verts.map((uv,index)=>({uv,index,key:null}))).map(v=>({...v,loop:l.loop??li-1,fixity:l.fixity?.[v.index]})));
   const vertex = v => v ? `${loopName(v.loop)}頂點 ${v.index+1} · ${v.key==null?'未設 key':'key '+v.key} · (${v.uv.join(', ')}) mm · 下一邊${v.fixity?'固定':'自由'}` : '不存在';
