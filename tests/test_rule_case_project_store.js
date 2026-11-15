@@ -45,3 +45,15 @@ test('damaged case ownership cannot hide in an otherwise valid archive',async()=
   m.featureAttachments.records[0].value.definitions[1].sourcePins[0].sha256='0'.repeat(64);entries['manifest.json']=new TextEncoder().encode(JSON.stringify(m));
   await assert.rejects(P.unpack(zip.zipSync(entries),zip));
 });
+
+// 2026-11-15 cloud L4 (D17): the assembly bridge's legacy I8 row carries `actual`
+// next to `expected`; a real rejected receipt must remain portable.
+test('a rejected receipt keeps the native invariant detail with expected and actual, and nothing else',()=>{
+  const fs=require('node:fs'),receipt=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/rule_case_generic_immutable_receipt.json'),'utf8'));
+  const bundle=change=>{const r=structuredClone(receipt),row=r.actualDiagnostics.at(-1);assert.equal(row.clause,'I8');change?.(row);
+    return {schema:C.SCHEMA,definitions:structuredClone(templates),receipts:[{definition:structuredClone(templates.find(d=>d.caseId==='fixed-version-immutable')),receipt:r}]};};
+  assert.equal(Object.hasOwn(receipt.actualDiagnostics.at(-1),'actual'),false,'the stored historical row predates the field');
+  C.validate(bundle());
+  C.validate(bundle(row=>{row.actual='candidate rejected';}));
+  for(const change of [row=>{row.note='x';},row=>{row.actual=1;},row=>{row.actual=null;},row=>{row.actual='x'.repeat(4097);}])assert.throws(()=>C.validate(bundle(change)));
+});
