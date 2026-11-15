@@ -1167,7 +1167,7 @@
     if(!current(s)){await EngineeringAdapter.cancel({token:preview.token});return;}
     const done=await confirmGridCardUnbindImpact(preview,{mode,gridSystemId:s.source.id,isCurrent:()=>current(s)&&!s.nativeChanged});
     if(!current(s))return;
-    if(!done.ok){status(done.error||'未套用',true);return;}
+    if(!done.ok)throw Error(done.error||'未套用');
     await reopen(s);
   }
   async function saveSource(s) {

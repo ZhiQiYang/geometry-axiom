@@ -115,11 +115,13 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
 test('P420 uses a separate header after all unchanged P353 cases under the same dispatch', () => {
   const suite = require('../geometry-web/grid_card_entry_test.js');
   const source = fs.readFileSync(path.join(ROOT,'geometry-web/grid_card_entry_test.js'),'utf8');
-  const unbind = ['unbind_cancel','unbind_parameter','unbind_direct','unbind_stale'];
-  assert.equal(suite.caseIds.length, 38, 'R420_COMPLETE_CASE_SET');
-  assert.deepEqual(suite.caseIds.slice(-4), unbind, 'R420_UNBIND_AFTER_LEGACY_CASES');
+  const unbind = ['unbind_cancel','unbind_parameter','unbind_direct','unbind_stale',
+    'unbind_other_card','unbind_reject_gap_source','unbind_reject_direct_capture',
+    'unbind_reject_last_capability','unbind_reject_remaining_capability'];
+  assert.equal(suite.caseIds.length, 43, 'R420_COMPLETE_CASE_SET');
+  assert.deepEqual(suite.caseIds.slice(-9), unbind, 'R420_UNBIND_AFTER_LEGACY_CASES');
   assert.deepEqual(suite.caseIds.filter(id => suite.caseSection(id) === 'P420'), unbind, 'R420_EXACT_SECTION_OWNERSHIP');
-  assert.ok(suite.caseIds.slice(0,-4).every(id => suite.caseSection(id) === 'P353'), 'R420_LEGACY_CASES_STAY_P353');
+  assert.ok(suite.caseIds.slice(0,-9).every(id => suite.caseSection(id) === 'P353'), 'R420_LEGACY_CASES_STAY_P353');
   assert.throws(() => suite.caseSection('missing'), /Unknown grid-card case/);
   // Execute the actual loop's header block with inert cases. The same module
   // keeps its one cdp_test.js dispatch; only attribution changes at this boundary.

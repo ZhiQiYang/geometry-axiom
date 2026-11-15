@@ -42,7 +42,12 @@
     "unbind_cancel",
     "unbind_parameter",
     "unbind_direct",
-    "unbind_stale"
+    "unbind_stale",
+    "unbind_other_card",
+    "unbind_reject_gap_source",
+    "unbind_reject_direct_capture",
+    "unbind_reject_last_capability",
+    "unbind_reject_remaining_capability"
   ],
   "inputs": [
     "geometry-web/cdp_test.js",
@@ -326,8 +331,8 @@
         },
         {
           "file": "geometry-web/project-store.js",
-          "before": "needed.some(c => !manifest.requiredCapabilities?.includes(c))",
-          "after": "needed.some(c => c!==Features.GRID_CARD_CAPABILITY && !manifest.requiredCapabilities?.includes(c))"
+          "before": "needed.some(c => c !== IDENTITY_CAPABILITY && !manifest.requiredCapabilities?.includes(c))",
+          "after": "needed.some(c => c !== IDENTITY_CAPABILITY && c !== Features.GRID_CARD_CAPABILITY && !manifest.requiredCapabilities?.includes(c))"
         }
       ]
     },
@@ -358,6 +363,86 @@
           "after": "<div id=\"igDefStage\" class=\"ig-def-stage\"></div><p class=\"ig-def-hint\">點圖上的尺寸或卡片標題，對應的軸與欄位會反白。</p></div>"
         }
       ]
+    },
+    {
+      "id": "p420_unbind_raw_geometry_read",
+      "case": "unbind_parameter",
+      "assertions": ["UNBIND_ONE_EXPLICIT_OPERATION"],
+      "changes": [{
+        "file": "geometry-web/grid-system-workspace.js",
+        "before": "    await stillSame(s);\n    status('正在預覽整組解除，場景尚未改動…');",
+        "after": "    if(s.nativeChanged||sourceKey(read.state.geometry?.gridSystems?.find(row=>row.id===s.source.id))!==sourceKey(s.source))throw Error('來源已變更，請重新開啟工作區核對。');\n    status('正在預覽整組解除，場景尚未改動…');"
+      }]
+    },
+    {
+      "id": "p420_unbind_extra_operation",
+      "case": "unbind_parameter",
+      "assertions": ["UNBIND_ONE_EXPLICIT_OPERATION"],
+      "changes": [{
+        "file": "geometry-web/grid-system-workspace.js",
+        "before": "operations:[{op:'unbind-grid-card-reference',id:s.source.id,mode}]});",
+        "after": "operations:[{op:'unbind-grid-card-reference',id:s.source.id,mode},{op:'unbind-grid-card-reference',id:s.source.id,mode}]});"
+      }]
+    },
+    {
+      "id": "p420_unbind_wrong_cancel_token",
+      "case": "unbind_cancel",
+      "assertions": ["UNBIND_CANCEL_SAME_TOKEN"],
+      "changes": [{
+        "file": "geometry-web/reference-ui.js",
+        "before": "const cancel = token => EngineeringAdapter.cancel({token});",
+        "after": "const cancel = token => EngineeringAdapter.cancel({token:Number(token) === 4294967295 ? 1 : Number(token) + 1});"
+      }]
+    },
+    {
+      "id": "p420_unbind_skip_stale_guard",
+      "case": "unbind_stale",
+      "assertions": ["UNBIND_STALE_NO_CONFIRM"],
+      "changes": [{
+        "file": "geometry-web/grid-system-workspace.js",
+        "before": "isCurrent:()=>current(s)&&!s.nativeChanged",
+        "after": "isCurrent:()=>current(s)"
+      }]
+    },
+    {
+      "id": "p420_unbind_skip_source_guard",
+      "case": "unbind_reject_gap_source",
+      "assertions": ["UNBIND_GAP_SOURCE_REJECTED"],
+      "changes": [{
+        "file": "geometry-web/reference-ui.js",
+        "before": "!same(expected,target.after)",
+        "after": "false"
+      }]
+    },
+    {
+      "id": "p420_unbind_skip_capture_guard",
+      "case": "unbind_reject_direct_capture",
+      "assertions": ["UNBIND_DIRECT_CAPTURE_REJECTED"],
+      "changes": [{
+        "file": "geometry-web/reference-ui.js",
+        "before": "!same(capture.values,values)",
+        "after": "false"
+      }]
+    },
+    {
+      "id": "p420_unbind_skip_last_capability_guard",
+      "case": "unbind_reject_last_capability",
+      "assertions": ["UNBIND_LAST_CAPABILITY_REJECTED"],
+      "changes": [{
+        "file": "geometry-web/reference-ui.js",
+        "before": "after.includes(capability)!==preview.after.gridSystems.some(row=>row.cardReference)",
+        "after": "false"
+      }]
+    },
+    {
+      "id": "p420_unbind_skip_remaining_capability_guard",
+      "case": "unbind_reject_remaining_capability",
+      "assertions": ["UNBIND_REMAINING_CAPABILITY_REJECTED"],
+      "changes": [{
+        "file": "geometry-web/reference-ui.js",
+        "before": "after.includes(capability)!==preview.after.gridSystems.some(row=>row.cardReference)",
+        "after": "false"
+      }]
     }
   ]
 }
