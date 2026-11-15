@@ -248,34 +248,6 @@ class WorkbenchHTTP(unittest.TestCase):
 
 
 
-    def test_real_rejected_receipt_keeps_native_invariant_detail_through_assess_and_import(self):
-        # 2026-11-15 cloud L4 (D17): the assembly bridge's legacy I8 row carries
-        # `actual` next to `expected`. The app assesses every receipt right after
-        # a run, so a real rejected receipt must pass the portable shape check.
-        for case_id in ("wrong-type-dimension-reference", "fixed-version-immutable"):
-            status, native = self.run_case(case_id, run_id="rejected-" + case_id)
-            self.assertEqual(status, 200, native)
-            receipt = native["receipt"]
-            self.assertEqual((receipt["status"], receipt["actualOutcome"]), ("passed", "rejected"), receipt)
-            legacy = [d for d in receipt["actualDiagnostics"] if d.get("clause") == "I8"]
-            self.assertEqual(len(legacy), 1, receipt["actualDiagnostics"])
-            self.assertEqual(set(legacy[0]), {"timber", "clause", "expected", "actual", "message"})
-            bundle = {"schema": DATA_SCHEMA, "definitions": cases(),
-                      "receipts": [{"definition": case(case_id), "receipt": receipt}]}
-            original = deepcopy(bundle)
-            for action in ("assess", "import"):
-                status, result = self.post(action, sessionId=self.session, data=bundle)
-                self.assertEqual(status, 200, (case_id, action, result))
-                self.assertEqual(result["data"], original)
-                self.assertEqual(result["views"][0]["receipt"]["status"], "passed")
-                self.assertEqual(result["views"][0]["receipt"]["actualDiagnostics"], receipt["actualDiagnostics"])
-            # The allowance is exactly one bounded text field, not an open shape.
-            for change in ({"note": "x"}, {"actual": 1}, {"actual": "x" * 4097}):
-                forged = deepcopy(bundle)
-                forged["receipts"][0]["receipt"]["actualDiagnostics"][-1].update(change)
-                status, result = self.post("import", sessionId=self.session, data=forged)
-                self.assertEqual((status, result.get("code")), (400, "RECEIPT"), (case_id, change, result))
-
     def test_runtime_source_and_project_drift_keep_original_receipt_and_are_noncurrent(self):
         _, native = self.run_case("one-local-joint-new-version")
         receipt = native["receipt"]

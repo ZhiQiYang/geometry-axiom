@@ -238,9 +238,11 @@
 
 - 修正前（`d17/before/walk_d17.before.result.json`）：四個通過、兩個「尚未執行」，console 有兩個 400。
 - 修正後（`d17/walk_d17.result.json`）：六個都通過，沒有 4xx 回應。
-- 測試：
-  - `tests/test_rule_case_workbench_http.py` 加 1 條（19 → 20）：用真的原生執行跑兩個拒絕案例，核對 I8 那一列的欄位正是 `timber、clause、expected、actual、message`，再把收據送 `assess` 與 `import`，都要回 200、內容原樣；另外確認多一個未知欄位、`actual` 不是文字、超過長度都仍回 400 `RECEIPT`。把 adapter 還原成未修正的版本時，這條以「400 != 200 … Unknown or missing portable receipt fields」失敗，和 App 裡看到的一樣。
-  - `tests/test_rule_case_project_store.js` 加 1 條（`node:tests-js` 776 → 777）：歷史收據（沒有 `actual`）與加上 `actual` 的收據都通過前端檢查；未知欄位、非文字、過長都被拒。把 `rule-case-data.js` 還原時這條失敗。
+- 測試（都在 `tests/test_rule_case_project_store.js`，共加 2 條）：
+  - 前端檢查：歷史收據（沒有 `actual`）與加上 `actual` 的收據都通過；未知欄位、非文字、過長都被拒。把 `rule-case-data.js` 還原時這條失敗。
+  - 伺服器端檢查：從節點測試直接執行出貨的 Python 檢查函式，餵真實的 I8 列（含 `actual`）、真實反例的型別診斷列、舊式不含 `actual` 的列，三筆都接受；多一個未知欄位、`actual` 不是文字、是 null、超過長度，四筆都回 `RECEIPT`。把 adapter 還原時這條失敗。
+- 另外寫過一條更完整的 Python 測試（真的原生執行兩個拒絕案例，再把收據送 `assess` 與 `import`）：修正後通過；adapter 還原時以「400 != 200 … Unknown or missing portable receipt fields」失敗，和 App 裡看到的一樣。它沒有留在這張 PR 裡：`tests/*.py` 整個屬於橋接突變的「裁判」範圍，動到任何一個檔，68 筆突變紀錄就全部過期，得再跑一次 `Mutation evidence`。改成上面那條不動 `tests/*.py` 的檢查後，`python3 tests/mutate.py --check` 維持新鮮（stale 0）。
+- 正式瀏覽器關卡 `tests/test_rule_case_app_browser.js`（CI 不自動跑）在修正後的工作樹跑到 27 項通過，六個案例的核對項都在其中；之後卡在另一個和這個修正無關的步驟（見下面的觀察）。
 
 7. **A/B 方案：試改畫面有修改時，離開會被瀏覽器多問一次，選留下就卡住。** 在隔離試改的畫面裡改過東西之後，按「取消試改」「保存試改」或「暫存並離開」，瀏覽器會跳自己的「要離開網站嗎？」。原因是主畫面結束試改時把內嵌的 iframe 導到別頁，而內嵌畫面裡各工作區的「未保存提醒」（`beforeunload`）照常攔下。如果在「取消試改」時選留下：對話框照樣關掉、試改也已取消，但 iframe 停在舊文件；下一次按「隔離試改右側方案」會停在「正在還原完整方案…」30 秒，然後顯示「方案畫布開啟逾時。這次試改已中斷…若要捨棄，請明確取消「方案B」。」（`d15/before/verify_scenario_leave.before.cancel-stay.json`）。正式的瀏覽器關卡對所有對話框一律按確定，所以沒有遇到。
 

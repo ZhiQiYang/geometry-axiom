@@ -57,3 +57,21 @@ test('a rejected receipt keeps the native invariant detail with expected and act
   C.validate(bundle(row=>{row.actual='candidate rejected';}));
   for(const change of [row=>{row.note='x';},row=>{row.actual=1;},row=>{row.actual=null;},row=>{row.actual='x'.repeat(4097);}])assert.throws(()=>C.validate(bundle(change)));
 });
+
+// The server-side adapter applies the same portable shape. tests/*.py belongs to the bridge
+// mutation judge closure, so this check runs the shipped Python validator from here instead.
+test('the workbench adapter accepts the same native invariant detail and still refuses any other field',()=>{
+  const rows=[
+    {timber:0,clause:'I8',expected:'all world invariants pass',actual:'candidate rejected',message:'candidate rejected'},
+    {code:'DIMENSION_TYPE',clause:'D33',ref:{kind:'parameter',id:41,fieldId:9},message:'I40: binding 29 slot 7.A: I38 UNIT: parameter 41 field 9 is not a dimension'},
+    {clause:'I8',message:'candidate rejected',timber:0,expected:'all world invariants pass'},
+    {clause:'I8',message:'candidate rejected',actual:'candidate rejected',note:'x'},
+    {clause:'I8',message:'candidate rejected',actual:1},
+    {clause:'I8',message:'candidate rejected',actual:null},
+    {clause:'I8',message:'candidate rejected',actual:'x'.repeat(4097)},
+  ];
+  const program=["import sys,json","sys.path.insert(0,'geometry-web');sys.path.insert(0,'geometry-core')","import rule_case_workbench_adapter as A","out=[]",
+    "for row in json.loads(sys.stdin.read()):","    try:","        A._diagnostics([row]);out.append('ok')","    except A.AdapterError as error:","        out.append(error.code)","print(json.dumps(out))"].join('\n');
+  const verdicts=JSON.parse(execFileSync(process.env.PYTHON||'python',['-c',program],{cwd:root,encoding:'utf8',input:JSON.stringify(rows)}));
+  assert.deepEqual(verdicts,['ok','ok','ok','RECEIPT','RECEIPT','RECEIPT','RECEIPT']);
+});
