@@ -7,7 +7,7 @@
 - **D13 同一份 PDF 連續描多個房間**（#77）
 - **R21 組構規則編輯器**（GEO-226、#24）
 
-四項的功能都走得通。過程中記下 5 個顯示面的發現（見文末），都不影響資料正確性；其中 1～3 在同一張 PR 修正，4、5 沒有修。
+四項的功能都走得通。過程中記下 5 個顯示面的發現（見文末），都不影響資料正確性；其中 1～4 在同一張 PR 修正，5 沒有修。
 
 ## 環境與方法
 
@@ -136,7 +136,7 @@
 2. **參數面板：刪除仍被引用的卡，原因寫成「找不到引用」。** 核心訊息是 `I38 MISSING: parameter 1 is still referenced by parameter 2 field 1; parameter 2 field 2; …`，面板依錯誤碼顯示「找不到引用」，狀態列寫「未套用：請修正欄位或引用。」（`r20/screens/R20-5-delete-referenced.jpg`）。使用者看不出是「骨架.間距、骨架.半寬 還在用這張卡，所以不能刪」。
 3. **參數面板：每次被拒都多一列「candidate rejected」。** 核心回的第二筆違規只是「候選被拒」的總結，沒有新資訊，面板把它當成另一個原因列出來（發現 1、2 的截圖都看得到）。
 4. **組構規則：拒絕原因是英文核心原文。** 重複端點顯示 `ASSEMBLY_INVALID · I40/I41 · I40: joints 1 and 2 assign the same endpoint of member 2`；刪除使用中的版本顯示 `ASSEMBLY_INVALID · I40/I41 · I40: binding 1 refers to missing rule 1@1`；兩處下面都還有一列 `I8 · candidate rejected · 預期：all world invariants pass · 實際：candidate rejected`（`r21/screens/R21-2-duplicate-endpoint.jpg`、`R21-7-delete-used-version.jpg`）。
-5. **畫布上的網格來源卡沒寫相位差。** 卡片寫「v：無限重複 · 間距 600 mm，基準 0 mm」，沒有「相鄰格子相位差 300 mm」；確認對話框與精簡檢查器都有寫。
+5. **畫布上的網格來源卡看不出有相位差。** 卡面常駐的一行是「X 間距 305 · Y 間距 600 mm」；卡片的提示文字（SVG `title`）是「v：無限重複 · 間距 600 mm，基準 0 mm」。兩處都沒有「相鄰格子相位差 300 mm」；確認對話框與精簡檢查器都有寫。
 
 ### 發現 1～3 的修正
 
@@ -158,7 +158,26 @@
 
 測試：`geometry-web/parameter_workflow_test.js` 的純函式區塊加 2 條斷言（P76 87 → 89，golden 合計 4828 → 4830）。這台容器跑不了完整的瀏覽器套件——未改動的 main 用 `GEOMETRY_PARAMETERS_ONLY=1` 也在同一個較早的步驟失敗——所以改在真實頁面上執行同一組表示式：修正後新舊 4 條都成立；換成未修改的 `parameters.js`，新增的 2 條不成立、既有的 2 條成立。完整的瀏覽器執行以 CI 為準。
 
-發現 4、5 這次沒有修。
+### 發現 4 的修正
+
+同一張 PR 改 `geometry-web/assembly-workspace.js`（同樣只整理畫面文字）：
+
+- 編輯器裡走得到的 12 種規則／材料配置拒絕（重複端點、交接區域衝突、配置還需要某一版、接合缺構件或側面、槽位沒名稱、超過數量上限等）改寫成一句中文；沒列到的照原樣顯示代碼與原文。
+- 已有具體原因時不列只寫 `candidate rejected` 的那一筆；只有它的時候寫「核心拒絕這次變更，沒有附原因。」
+- 核心回報的原文完整收在預覽下方「完整資料，給除錯對照」的「核心回報的原因」。
+
+修正後重走（`scripts/verify_asm_fix.js`，結果在 `fix/`；建置同上，還沒進 main）：
+
+| 情況 | 修正前 | 修正後 |
+|---|---|---|
+| 第二個接合用了同一個構件端點 | `ASSEMBLY_INVALID · I40/I41 · I40: joints 1 and 2 assign the same endpoint of member 2`＋`I8 · candidate rejected · 預期：… · 實際：candidate rejected` | 「接合 #1 和接合 #2 都接在構件 #2 的同一端；一個端點只能有一個接合。」一列 |
+| 刪除仍被材料配置使用的第 1 版 | `ASSEMBLY_INVALID · I40/I41 · I40: binding 1 refers to missing rule 1@1`＋同一列總結 | 「材料配置 #1 還需要規則 #1 的第 1 版；這一版不能刪，或先把配置改用別的版本。」一列 |
+
+兩種情況的「確認套用」都停用，場景沒變。
+
+測試：`tests/test_assembly_workspace.js` 加 2 條（節點測試，載入實際的工作區腳本）：一條逐句核對 12 種說法、表外訊息維持原樣、總結列的去留；一條經由實際的預覽流程渲染，核對清單只有一列、原文在除錯區。`node:tests-js` 774 → 776。把修正改壞三種方式（留著總結列、拿掉對照表、清單照舊列出全部）各跑一次，新測試都會失敗。
+
+發現 5 這次沒有修。
 
 另外兩點不算缺陷：
 
@@ -173,4 +192,4 @@
 - `d18/`：`walk_d18.result.json`、`walk_d18b.result.json`、`d18.gcanvas`、`screens/`。
 - `d13/`：`walk_d13.result.json`、`two-rooms.pdf`、`d13.gcanvas`、`screens/`。
 - `r21/`：`walk_r21.result.json`、`r21-draft.gcanvas`、`r21.gcanvas`、`screens/`。
-- `scripts/verify_param_fix.js`、`fix/`：發現 1～3 修正後的重走結果與三張截圖。
+- `scripts/verify_param_fix.js`、`scripts/verify_asm_fix.js`、`fix/`：發現 1～4 修正後的重走結果與五張截圖。
