@@ -1,15 +1,15 @@
 'use strict';
 // #420 adds one independent section after the frozen P353 card-entry suite.
-// Complete four-case count: CI run 43758585174 / job 132948524196, PR head
-// b431a602915d70e661bc576d1684bbd46ee5fd11; executed GitHub merge
-// 206bd204a36b3a65b1f35f4bbea1956003e516ca. All 38 cases passed; raw P353
-// assertions 1..355 are unchanged, 356..423 are the four unbind cases.
-// The parent completed with process_exit=1 solely for the P353 floor mismatch (423/355).
-// This receipt establishes the additive count, not success for a later head.
+// Complete 43-case baseline: CI run 43763762744 / job 132964157706, source
+// a63ed964302c16c964a294baecd6155626116294, grid_card_entry_mutations.json.
+// Baseline exit 0: P353=355 unchanged, all nine P420 cases pass with 124
+// assertions. The later mutation loop ran out of disk; its partial controls
+// are not a passing mutation receipt. This establishes only the additive count;
+// the final head still requires both formal shards and their coverage verifier.
 const assert = require('node:assert/strict');
 const clone = value => JSON.parse(JSON.stringify(value));
 const P353_UNCHANGED = 355;
-const P420_ADDED = 68;
+const P420_ADDED = 124;
 
 function projectGolden(value) {
   assert.ok(Number.isSafeInteger(P420_ADDED) && P420_ADDED > 0, 'R420_MEASURED_ASSERTION_COUNT_REQUIRED');
