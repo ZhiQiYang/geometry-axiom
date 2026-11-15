@@ -265,25 +265,30 @@
       (manifest.models||[]).some(model=>records(model.input?.base_scene)||Object.values(model.result||{}).some(pkg=>records(pkg?.definitions?.base_scene)))||
       (manifest.scenarioCatalog?.scenarios||[]).some(s=>hasPanelFillDefinitions(s.snapshot.projectManifest,s.snapshot.worldScene));
   }
+  // Choosing a format asks for the same manifest's capabilities once per format test, and the capability
+  // computation asks again for every catalog scenario in six separate tests; each answer re-validates every
+  // feature attachment. One outermost synchronous call therefore keeps what it has already computed, keyed by
+  // manifest object and scene text. Nothing is kept once that call returns or throws.
+  let capabilityScope = null;
+  function scopedCapabilities(compute) { capabilityScope = new Map(); try { return compute(); } finally { capabilityScope = null; } }
   function projectFormat(manifest, scene = "") {
-    // One pass: every call re-validates all feature attachments, including each catalog scenario's.
-    const capabilities = projectCapabilities(manifest, scene);
-    if(capabilities.includes(BAY_REPEAT_CAPABILITY)) return BAY_REPEAT_FORMAT;
-    if(capabilities.includes(PANEL_FILL_CAPABILITY)) return PANEL_FILL_FORMAT;
-    if(capabilities.includes(Features.ROOM_CANDIDATE_CAPABILITY)) return ROOM_CANDIDATE_FORMAT;
-    if(capabilities.includes(CARD_CAPABILITY)) return CARD_FORMAT;
-    if(capabilities.some(capability=>format17Capabilities.includes(capability))) return GRID_DRAFTS_FORMAT;
-    if(capabilities.includes(SECTION_CAPABILITY)) return SECTION_FORMAT;
-    if(capabilities.includes(CASE_CAPABILITY)) return CASE_FORMAT;
+    if (!capabilityScope) return scopedCapabilities(() => projectFormat(manifest, scene));
+    if(projectCapabilities(manifest,scene).includes(BAY_REPEAT_CAPABILITY)) return BAY_REPEAT_FORMAT;
+    if(projectCapabilities(manifest,scene).includes(PANEL_FILL_CAPABILITY)) return PANEL_FILL_FORMAT;
+    if(projectCapabilities(manifest,scene).includes(Features.ROOM_CANDIDATE_CAPABILITY)) return ROOM_CANDIDATE_FORMAT;
+    if(projectCapabilities(manifest,scene).includes(CARD_CAPABILITY)) return CARD_FORMAT;
+    if(projectCapabilities(manifest,scene).some(capability=>format17Capabilities.includes(capability))) return GRID_DRAFTS_FORMAT;
+    if(projectCapabilities(manifest,scene).includes(SECTION_CAPABILITY)) return SECTION_FORMAT;
+    if(projectCapabilities(manifest,scene).includes(CASE_CAPABILITY)) return CASE_FORMAT;
     if (manifest.scenarioCatalog) return SCENARIO_FORMAT;
-    if (capabilities.includes(Features.GRID_RULE_SCHEMA)) return GRID_RULE_FORMAT;
+    if (projectCapabilities(manifest, scene).includes(Features.GRID_RULE_SCHEMA)) return GRID_RULE_FORMAT;
     if (manifest.featureAttachments && Features.evidenceLinks(manifest.featureAttachments)) return EVIDENCE_FORMAT;
-    if (capabilities.some(isSubdivisionCapability)) return SUBDIVISION_FORMAT;
+    if (projectCapabilities(manifest, scene).some(isSubdivisionCapability)) return SUBDIVISION_FORMAT;
     if (Object.hasOwn(manifest, "featureAttachments") && Features.validate(manifest.featureAttachments,true).records.length) return FEATURE_FORMAT;
     if (manifest.reconstructionReviews?.length) return OUTLINE_FORMAT;
-    if (capabilities.includes(GENERATION_CAPABILITY)) return GENERATION_FORMAT;
-    if (capabilities.includes(ASSEMBLY_CAPABILITY)) return ASSEMBLY_FORMAT;
-    if (capabilities.includes(PARAMETER_CAPABILITY)) return PARAMETER_FORMAT;
+    if (projectCapabilities(manifest, scene).includes(GENERATION_CAPABILITY)) return GENERATION_FORMAT;
+    if (projectCapabilities(manifest, scene).includes(ASSEMBLY_CAPABILITY)) return ASSEMBLY_FORMAT;
+    if (projectCapabilities(manifest, scene).includes(PARAMETER_CAPABILITY)) return PARAMETER_FORMAT;
     if ((manifest.requiredCapabilities || []).some(capability => capability !== IDENTITY_CAPABILITY) || manifest.engineeringDrafts?.records?.length ||
         engineeringSceneCapabilities(scene).length || manifest.models?.some(modelRequiresEngineering)) return ENGINEERING_FORMAT;
     if (manifest.models?.some(model => Object.hasOwn(model.input || {}, "timbers") || model.result?.schema === "geometry-space-preview/2")) return TIMBER_FORMAT;
@@ -458,17 +463,22 @@
     return [...supported, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_CARD_CAPABILITY, ...shared, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, Features.ROOM_CANDIDATE_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY];
   }
   function projectCapabilities(manifest, scene) {
+    if (!capabilityScope) return scopedCapabilities(() => projectCapabilities(manifest, scene));
+    const scenes = capabilityScope.get(manifest) || capabilityScope.set(manifest, new Map()).get(manifest);
+    if (!scenes.has(scene)) scenes.set(scene, requiredCapabilities(manifest, scene));
+    return [...scenes.get(scene)];
+  }
+  function requiredCapabilities(manifest, scene) {
     const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);
     if (manifest.scenarioCatalog) required.add(SCENARIO_CAPABILITY);
-    const scenarioCapabilities = manifest.scenarioCatalog?.scenarios.map(s => projectCapabilities(s.snapshot.projectManifest, s.snapshot.worldScene)) || [];
-    if (scenarioCapabilities.some(found => found.includes(PANEL_FILL_CAPABILITY)))
+    if (manifest.scenarioCatalog?.scenarios.some(s => projectCapabilities(s.snapshot.projectManifest, s.snapshot.worldScene).includes(PANEL_FILL_CAPABILITY)))
       for (const capability of [PANEL_FILL_CAPABILITY, ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY]) required.add(capability);
-    for(const found of scenarioCapabilities)for(const capability of found)if(format17Capabilities.includes(capability))required.add(capability);
-    if(scenarioCapabilities.some(found=>found.includes(Features.GRID_CARD_CAPABILITY)))required.add(Features.GRID_CARD_CAPABILITY);
-    if(scenarioCapabilities.some(found=>found.includes(CARD_CAPABILITY))){required.add(CARD_CAPABILITY);required.add(PARAMETER_CAPABILITY);}
-    if(scenarioCapabilities.some(found=>found.includes(BAY_REPEAT_CAPABILITY))){required.add(BAY_REPEAT_CAPABILITY);required.add(GENERATION_CAPABILITY);}
+    for(const scenario of manifest.scenarioCatalog?.scenarios||[])for(const capability of projectCapabilities(scenario.snapshot.projectManifest,scenario.snapshot.worldScene))if(format17Capabilities.includes(capability))required.add(capability);
+    if(manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(Features.GRID_CARD_CAPABILITY)))required.add(Features.GRID_CARD_CAPABILITY);
+    if(manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(CARD_CAPABILITY))){required.add(CARD_CAPABILITY);required.add(PARAMETER_CAPABILITY);}
+    if(manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(BAY_REPEAT_CAPABILITY))){required.add(BAY_REPEAT_CAPABILITY);required.add(GENERATION_CAPABILITY);}
     if (manifest.scenarioCatalog?.scenarios.some(s => sceneCapabilities(s.snapshot.worldScene).includes(SECTION_CAPABILITY))) required.add(SECTION_CAPABILITY);
-    if (scenarioCapabilities.some(found => found.includes(SUBDIVISION_V2_CAPABILITY))) required.add(SUBDIVISION_V2_CAPABILITY);
+    if (manifest.scenarioCatalog?.scenarios.some(s => projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(SUBDIVISION_V2_CAPABILITY))) required.add(SUBDIVISION_V2_CAPABILITY);
     if (hasCaseData(manifest)) required.add(CASE_CAPABILITY);
     if (Object.hasOwn(manifest, "featureAttachments")) for (const capability of Features.capabilities(manifest.featureAttachments)) required.add(capability);
     if (manifest.assemblyDrafts?.records?.length) required.add(ASSEMBLY_CAPABILITY);
