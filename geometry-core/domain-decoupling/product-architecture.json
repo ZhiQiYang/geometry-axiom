@@ -2149,6 +2149,24 @@
       "layer": "H",
       "language": "python",
       "purpose": "H-116-TIMBER/1 bounded UTF-8 JSON transport; service-owned temporary input files and native-authoritative read/preview operations"
+    },
+    {
+      "path": "geometry-web/boundary-pair-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "R17 literal boundary-pair App adapter; owns raw UI and native candidate receipts, never geometry evaluation"
+    },
+    {
+      "path": "geometry-web/boundary_pair_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "R17 bounded same-surface host transaction adapter; native allocation, owner identity and unchanged D16a candidate/validation/commit"
+    },
+    {
+      "path": "geometry-web/boundary_pair_transport.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "R17 bounded UTF-8 structured transport with host-owned temporary paths and exact native routing"
     }
   ],
   "exclusions": [
@@ -2767,7 +2785,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "feaaf5e897acf5910e6411c2b2d9b5a55d665cc119797167f149bb963d557bf6",
+      "sha256": "f79c69e367d7ad92014381d262dfd1155779f7ec0257126485be611c40766c7b",
       "hashMode": "lf"
     },
     {
@@ -3878,6 +3896,12 @@
       "path": "geometry-web/r14_panel_entry_test.js",
       "reason": "Dedicated R14 first-slice browser acceptance driver; loaded only by cdp_test.js in the R14-only CI gate, never by product runtime or served application entry points.",
       "sha256": "b03f2a813305eeb6df0af8279059d2510af68b5e357cc03b3d12e69c2fd84d75",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/boundary_pair_workflow_test.js",
+      "reason": "R17 P335 real-CDP acceptance driver; invoked only by cdp_test.js, never by product runtime or served application entry points.",
+      "sha256": "8864900aa7eb562392629ac3001071bbbf054f7f80dafd6ded55de43b9b07b10",
       "hashMode": "lf"
     }
   ],
@@ -5133,7 +5157,7 @@
       "driver": "geometry-web/scenario-workspace.js",
       "driverSha256": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
       "router": "geometry-web/serve.py",
-      "routerSha256": "321b747cf5acd2eca13f1a2221c0816f38fa4ebd3045eb115572de123df2ea5f",
+      "routerSha256": "8357540ecc10b68c6c497e859c89bbfdd82782bd10760416b24799f5c8b8c9c1",
       "receiver": "owner.frame",
       "queryValue": "context",
       "srcPrefix": "/?scenario=",

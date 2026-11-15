@@ -860,6 +860,12 @@ static bool app_scene_file_flush(const char *path,World *world)
  * Body lines are only buffered here; `end` hands the closed package to the
  * one commit record, as a preview (interactive) or a load-candidate unit. */
 static BoundaryPairInput g_pair_interactive,*g_pair_file_input;
+/* Optional synchronous, read-only host diagnostics. The observer runs while
+ * this failed candidate is alive; the native route still discards it and
+ * returns false immediately afterwards. CLI/file callers leave it unset. */
+typedef void (*BoundaryPairInvalidReport)(const char *message,void *context);
+static BoundaryPairInvalidReport g_pair_invalid_report;
+static void *g_pair_invalid_report_context;
 static BoundaryPairInput *boundary_pair_input(void){return g_parsing_scene_file?g_pair_file_input:&g_pair_interactive;}
 static bool boundary_pair_route_refuse(BoundaryPairInput *in,const char *path,int line_no,const char *message)
 {if(in)in->active=false;scene_error(path,line_no,message);return false;}
@@ -878,12 +884,13 @@ static bool boundary_pair_stage(const char *path,int line_no,char **tokens,int c
     bool ok=boundary_pair_internal_line(path,line_no,tokens,count,world);
     bool staged=g_preview.ready&&(!before_ready||g_preview.token!=before);
     if(!ok||!staged){if(staged)boundary_pair_discard_preview();if(ok)scene_error(path,line_no,"D16a: 無法建立 boundary-pair 預覽");return false;}
+    /* Both valid previews and read-only failure reports name the authored package. */
+    snprintf(g_preview.command,sizeof g_preview.command,"%s",source);
     if(!g_preview.valid){
         char reason[512];snprintf(reason,sizeof reason,"%s",g_scene_last_error[0]?g_scene_last_error:g_revalidate_error[0]?g_revalidate_error:"D16a: 候選不合法");
+        if(g_pair_invalid_report)g_pair_invalid_report(reason,g_pair_invalid_report_context);
         boundary_pair_discard_preview();scene_error(path,line_no,reason);return false;
     }
-    /* R4/I8a: the preview names the authored records, not the internal commit record. */
-    snprintf(g_preview.command,sizeof g_preview.command,"%s",source);
     g_preview.pair_batch=true;return true;
 }
 static bool boundary_pair_route(const char *path,int line_no,char *tokens[],int count,World *world,bool *handled)

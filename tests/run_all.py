@@ -51,6 +51,7 @@ EXPECTED_FILE = HERE / 'run_all.expected.json'
 # Every tests/test_*.py MUST appear here (value = native binaries it needs; [] is a deliberate "needs none").
 # A test file that is on disk but not listed makes run_all fail and name it.
 PY_NEEDS = {
+    'test_boundary_pair_host': ['bridge'],
     'test_r14_browser_receipt': [],
     'test_r14_repeat_panel': ['bridge'],
     'test_r363_native_merge': ['bridge'],
@@ -351,6 +352,9 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:boundary_pair_ui': 'tests/test_boundary_pair_ui.js',
+    'node:boundary_pair_project': 'tests/test_boundary_pair_project.js',
+    'node:boundary_pair_browser_scope': 'tests/test_boundary_pair_browser_scope.js',
     'node:r14_app': 'tests/test_r14_app.js',
     'node:cutting_summary': 'tests/test_cutting_summary.js',
     'node:r07_candidate_save_warning': 'tests/test_room_candidate_save_warning.js',

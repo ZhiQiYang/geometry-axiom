@@ -203,6 +203,9 @@ static void json_boundary_pair_preview(void)
 /* I8a/D16a: every timber the candidate changes, with its own authored role,
  * source and the actual end contacts, not only its moved geometry. */
 static void json_reference_timber_definition(const Timber *,const TimberAnchor *);
+static void reference_timber_placement_text(const TimberAnchor *,char *,size_t,char *,size_t);
+static void json_impact_dimensions(const World *,int);
+static bool json_impact_dimensions_changed(const World *,int,const World *,int);
 typedef struct {int end;Coord at;int kind;uint32_t timber;int edge,hole,fixity;Coord lo,hi;} ImpactContact;
 enum { IMPACT_CONTACT_CAPACITY=64 };
 static int json_impact_contact_list(const World *w,int i,ImpactContact *out)
@@ -246,14 +249,31 @@ static bool json_impact_contacts_changed(const World *before,int old,const World
     int n=json_impact_contact_list(before,old,x),m=json_impact_contact_list(after,now,y);
     return n!=m||(n>0&&memcmp(x,y,(size_t)n*sizeof x[0]));
 }
+static void json_impact_source(const World *w,int i)
+{
+    const Timber *t=&w->wood.timbers[i];const TimberAnchor *a=&w->wood.anchors[i];
+    char anchor[1100],selector[2200];reference_timber_placement_text(a,anchor,sizeof anchor,selector,sizeof selector);
+    /* Preserve the existing source keys; authored facts do not depend on a
+     * successful geometry result. The common definition reader stays unchanged. */
+    fputs("{\"anchor\":",stdout);js_string(anchor);fputs(",\"selector\":",stdout);js_string(selector);
+    printf(",\"priority\":%lld,\"surface\":%u,\"dir\":\"%s\",\"side\":\"%s\",\"dimensions\":",
+        (long long)t->cut_priority,a->placement_id,length_dir_word(a->length_direction),depth_side_word(a->depth_side));
+    json_impact_dimensions(w,i);putchar('}');
+}
 static void json_impact_side(const World *w,int i)
 {
     if(i<0){fputs("null",stdout);return;}
     const Timber *t=&w->wood.timbers[i];int pair=boundary_pair_index(w,t->id);
     printf("{\"role\":\"%s\",\"A\":%lld,\"B\":%lld,\"source\":",timber_role_name(t->role),(long long)t->size_a,(long long)t->size_b);
-    json_reference_timber_definition(t,&w->wood.anchors[i]);
+    json_impact_source(w,i);
     printf(",\"order\":%llu,\"boundaryPair\":",(unsigned long long)w->wood.anchors[i].order);
     if(pair>=0)printf("[%u,%u]",w->wood.boundary_pairs[pair].first,w->wood.boundary_pairs[pair].second);else fputs("null",stdout);
+    SurfaceRegion2 footprint;bool along,positive;
+    if(json_pair_member_facts(w,t->id,&footprint,&along,&positive))
+        printf(",\"interval\":[%lld,%lld],\"cross\":[%lld,%lld]",
+            (long long)(along?footprint.min_v:footprint.min_u),(long long)(along?footprint.max_v:footprint.max_u),
+            (long long)(along?footprint.min_u:footprint.min_v),(long long)(along?footprint.max_u:footprint.max_v));
+    else fputs(",\"interval\":null,\"cross\":null",stdout);
     fputs(",\"geometry\":",stdout);json_reference_geometry(w,i);
     fputs(",\"contacts\":",stdout);json_impact_contacts(w,i);putchar('}');
 }
@@ -267,7 +287,7 @@ static bool json_impact_changed(const World *before,int old,const World *after,i
         p->placement_id!=q->placement_id||p->anchor_kind!=q->anchor_kind||p->ref_edge!=q->ref_edge||p->ref_hole!=q->ref_hole||
         p->ref_guide!=q->ref_guide||p->ref_timber!=q->ref_timber||p->ref_is_timber!=q->ref_is_timber||p->length_direction!=q->length_direction||
         p->depth_side!=q->depth_side||p->order!=q->order||(boundary_pair_index(before,a->id)>=0)!=(boundary_pair_index(after,b->id)>=0)||
-        json_impact_contacts_changed(before,old,after,now);
+        json_impact_dimensions_changed(before,old,after,now)||json_impact_contacts_changed(before,old,after,now);
 }
 static void json_timber_impacts(void)
 {
@@ -278,16 +298,20 @@ static void json_timber_impacts(void)
         for(size_t i=0;i<w->wood.timber_count;++i){uint32_t id=w->wood.timbers[i].id;
             int old=reference_timber_index(before,id),now=reference_timber_index(after,id);
             if(pass&&old>=0)continue;
-            if(!json_impact_changed(before,old,after,now))continue;
-            printf("%s{\"id\":%u,\"change\":\"%s\",\"before\":",first?"":",",id,old<0?"created":now<0?"deleted":"changed");first=false;
+            bool changed=json_impact_changed(before,old,after,now);
+            /* I8a lists both members with every actual endpoint contact even
+             * when one member, or the complete redeclaration, is unchanged. */
+            if(!changed&&boundary_pair_index(before,id)<0&&boundary_pair_index(after,id)<0)continue;
+            printf("%s{\"id\":%u,\"change\":\"%s\",\"before\":",first?"":",",id,old<0?"created":now<0?"deleted":changed?"changed":"unchanged");first=false;
             json_impact_side(before,old);fputs(",\"after\":",stdout);json_impact_side(after,now);putchar('}');
         }
     }
     putchar(']');
 }
-static void json_reference_preview(void)
+static void json_reference_preview_payload(bool token_available)
 {
-    printf("{\"token\":%u,\"valid\":%s,\"command\":",g_preview.token,g_preview.valid?"true":"false");
+    if(token_available)printf("\"token\":%u",g_preview.token);else fputs("\"token\":null",stdout);
+    printf(",\"valid\":%s,\"command\":",g_preview.valid?"true":"false");
     js_string(g_preview.command);fputs(",\"timbers\":",stdout);
     json_candidate_timbers(&g_preview.transaction->before,&g_preview.transaction->after,true);
     fputs(",\"guides\":",stdout);json_candidate_guides(&g_preview.transaction->before,&g_preview.transaction->after);
@@ -332,7 +356,15 @@ static void json_reference_preview(void)
         fputs(",\"expected\":",stdout); js_string(e->expected);
         fputs(",\"actual\":",stdout); js_string(e->actual); putchar('}');
     }
-    fputs("]}",stdout);
+    putchar(']');
+}
+static void json_reference_preview_fields(void)
+{
+    json_reference_preview_payload(true);
+}
+static void json_reference_preview(void)
+{
+    putchar('{');json_reference_preview_fields();putchar('}');
 }
 static void cmd_reference_result(bool ok,uint32_t old_token,uint64_t before_revision)
 {
