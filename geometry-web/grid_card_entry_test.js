@@ -9,6 +9,7 @@ const {isDeepStrictEqual: same} = require('util');
 const cdp = require('./cdp_helpers.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
 const P = require('./project-store.js'), zip = require('./vendor/fflate/umd/index.js');
+const UNBIND_CASE_IDS = Object.freeze(['unbind_cancel', 'unbind_parameter', 'unbind_direct', 'unbind_stale']);
 const CASE_IDS = Object.freeze([
   'entry', 'explicit_mapping', 'commit_cancel', 'swap', 'equal_swap', 'reopen',
   'native_rejection', 'raw_roundtrip', 'archive_roundtrip', 'history',
@@ -20,9 +21,12 @@ const CASE_IDS = Object.freeze([
   'inspector_direct_control', 'inspector_parameter_control',
   'compat_raw_capability', 'compat_legacy_unchanged', 'compat_raw_rule_roundtrip',
   'compat_mixed_roundtrip', 'compat_reader_rejection_atomic',
-  'compat_historical_pins', 'compat_geo219_reduction',
-  'unbind_cancel', 'unbind_parameter', 'unbind_direct', 'unbind_stale'
+  'compat_historical_pins', 'compat_geo219_reduction', ...UNBIND_CASE_IDS
 ]);
+function caseSection(id) {
+  if (!CASE_IDS.includes(id)) throw Error('Unknown grid-card case: '+id);
+  return UNBIND_CASE_IDS.includes(id) ? 'P420' : 'P353';
+}
 function selectCases(value) {
   if (value === undefined) return [...CASE_IDS];
   if (typeof value !== 'string' || !value.trim()) throw Error('Empty GEOMETRY_GRID_CARD_ENTRY_CASE');
@@ -42,7 +46,6 @@ module.exports = async function gridCardEntryTests({
   if (process.env.GEOMETRY_GRID_CARD_ENTRY_CASE !== undefined && process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY !== '1')
     throw failure('precondition','CASE_FILTER_REQUIRES_ONLY','GEOMETRY_GRID_CARD_ENTRY_CASE requires GEOMETRY_GRID_CARD_ENTRY_ONLY=1');
   const selected = selectCases(process.env.GEOMETRY_GRID_CARD_ENTRY_CASE);
-  console.log('=== P353. R01 whole-card entry, identity, draft and project roundtrip ===');
   const read = cdp.makeRead(eval_);
   const page = (fn, ...args) => read('(' + fn.toString() + ')(' + args.map(arg => JSON.stringify(arg)).join(',') + ')');
   const wait = cdp.makeWait(waitForUI, 20000);
@@ -806,7 +809,9 @@ module.exports = async function gridCardEntryTests({
         const button = document.querySelector('.reference-impact[open] #impact-confirm');
         return {exists:!!button,disabled:!!button?.disabled};
       });
-      if (control.exists && !control.disabled) await confirm();
+      // This case exercises an actual click on the still-displayed stale candidate.
+      // Unexpected removal or disabling must fail CONFIRM_REACHABLE, not skip it.
+      await confirm();
       check('UNBIND_STALE_CONFIRM_ATOMIC', (await dump()) === before && (await query('engineering-read')).revision === revision &&
         same(await page(() => ReferenceWorkspace.manifest()),metadata) && identity(await source(4),10,3,8) &&
         (await allRaw()).drafts.length === 0 && await history.unchanged(pin),control);
@@ -1458,7 +1463,15 @@ module.exports = async function gridCardEntryTests({
     await settled();
   };
   const results = [];
+  let section = null;
   for (const id of selected) {
+    const nextSection = caseSection(id);
+    if (nextSection !== section) {
+      console.log(nextSection === 'P420'
+        ? '=== P420. R01 explicit whole-card unbind, native identity and project roundtrip ==='
+        : '=== P353. R01 whole-card entry, identity, draft and project roundtrip ===');
+      section = nextSection;
+    }
     currentCase = id;
     const baselineExceptions = exceptionCount();
     let result = {id,status:'pass',kind:null,assertion:null,error:null};
@@ -1500,3 +1513,4 @@ module.exports = async function gridCardEntryTests({
 };
 module.exports.caseIds = CASE_IDS;
 module.exports.selectCases = selectCases;
+module.exports.caseSection = caseSection;

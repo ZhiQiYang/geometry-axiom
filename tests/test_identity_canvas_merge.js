@@ -11,6 +11,7 @@ const timberExtension = require('./diagnostics/r356_canvas_extension.cjs');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
+const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');
 const file = name => path.join(WEB, name);
 const read = name => fs.readFileSync(file(name), 'utf8');
 const MAIN_GOLDEN = {"schema":"geometry-cdp-sections/1","mode":"full","total":4002,"sections":{"1":14,"2":3,"3":1,"4":1,"5":1,"6":1,"7":1,"8":0,"9":12,"10":0,"P89":19,"Setup":0,"P3":14,"P4":11,"P5":2,"P6":4,"P7":54,"P8":116,"P9":9,"P10":9,"P11":12,"P12":8,"P13":4,"P14":16,"P15":6,"P16":10,"P17":11,"P18":20,"P19":17,"BF2":5,"BF3":1,"BF4":9,"P20":10,"P21":4,"P22":45,"P32":34,"P33":9,"P34":7,"P35":14,"P36":2,"P37":19,"P38":13,"P39":8,"P40":4,"P41":3,"P42":12,"P43":12,"P44":19,"P45":2,"P46":7,"P47":9,"P48":14,"P49":17,"P50":33,"P51":13,"P52":43,"P53":28,"P57":56,"P62":38,"P63":18,"P64":24,"P65":5,"P66":4,"P68":36,"P69":160,"P67":96,"P70":121,"P71":9,"P78":23,"P87":60,"P88":143,"P72":52,"P72B":50,"P73":69,"P74":52,"P75":37,"P76":87,"P77":134,"P82":16,"P80":23,"P81":14,"P85":31,"P79":87,"P84":33,"P83":16,"P86":20,"P352":1313,"P359":24,"P90":8,"P358":16,"P353":355}};
@@ -23,7 +24,21 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
   // its own section (R02 P128, R11 P116); together they restore main exactly.
   // #400 adds exactly three P90 assertions; that projection restores P90 = 8.
   // R06 finding 6 adds exactly five R06 assertions; that projection restores R06 = 50.
-  const golden = r06LegacyExtension.projectGolden(r400Extension.projectGolden(timberExtension.projectGolden(pfExtension.projectGolden(rawGolden))));
+  // #420 owns a separate measured section; P353 and every older count stay fixed.
+  const beforeP420 = r420Extension.projectGolden(rawGolden);
+  const golden = r06LegacyExtension.projectGolden(r400Extension.projectGolden(timberExtension.projectGolden(pfExtension.projectGolden(beforeP420))));
+  for (const count of [undefined, 0, r420Extension.P420_ADDED - 1, r420Extension.P420_ADDED + 1]) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (count === undefined) delete probe.sections.P420;
+    else probe.sections.P420 = count;
+    probe.total = Object.values(probe.sections).reduce((sum, value) => sum + value, 0);
+    assert.throws(() => r420Extension.projectGolden(probe), /R420_P420_EXECUTED_ASSERTION_COUNT/,
+      'R420_BAD_COUNT_REJECTED ' + count);
+  }
+  const reassigned = JSON.parse(JSON.stringify(rawGolden));
+  reassigned.sections.P353 -= 1; reassigned.sections.P420 += 1;
+  assert.throws(() => r420Extension.projectGolden(reassigned), /R420_P353_UNCHANGED/,
+    'R420_CANNOT_REASSIGN_LEGACY_ASSERTIONS');
   for(const value of [undefined,0,380,382]){
     const probe=JSON.parse(JSON.stringify(rawGolden));
     if(value===undefined)delete probe.sections.P128;else probe.sections.P128=value;
@@ -74,6 +89,18 @@ test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
   const golden = JSON.parse(read('cdp_sections.golden.json'));
   const shards = require(file('canvas_shards.js'));
   assert.deepEqual(shards.validatePlan(plan, golden), [], 'R360_CANVAS_COMPLETE_PLAN');
+  const historicalPlan = r420Extension.projectPlan(plan);
+  for (const fault of ['missing', 'duplicate', 'first-shard', 'moved']) {
+    const probe = JSON.parse(JSON.stringify(plan)), second = probe.shards[1].sections, at = second.indexOf('P420');
+    if (fault === 'duplicate') second.push('P420');
+    else {
+      second.splice(at, 1);
+      if (fault === 'first-shard') probe.shards[0].sections.push('P420');
+      else if (fault === 'moved') second.unshift('P420');
+    }
+    assert.throws(() => r420Extension.projectPlan(probe), /R420_P420_/,
+      'R420_BAD_SECTION_PLACEMENT_REJECTED ' + fault);
+  }
   const expected = MAIN_SEQUENCES.map(sections => sections.slice());
   expected[1].splice(expected[1].indexOf('P84') + 1, 0, 'P360');
   expected[1].splice(expected[1].indexOf('P82') + 1, 0, 'R06');
@@ -95,9 +122,9 @@ test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
     assert.deepEqual(second.slice(at - 1, at + 3), ['P352', 'P116', 'P128', 'P353'], 'R355_R356_MERGED_ORDER');
     return timberMain;
   };
-  assert.deepEqual(projectPlan(plan).shards.map(row => row.sections), expected, 'R360_R06_EXACT_SECOND_SHARD_POSITIONS');
+  assert.deepEqual(projectPlan(historicalPlan).shards.map(row => row.sections), expected, 'R360_R06_EXACT_SECOND_SHARD_POSITIONS');
   for (const fault of ['missing', 'duplicate', 'first-shard', 'moved']) {
-    const probe = JSON.parse(JSON.stringify(plan)), second = probe.shards[1].sections, at = second.indexOf('P116');
+    const probe = JSON.parse(JSON.stringify(historicalPlan)), second = probe.shards[1].sections, at = second.indexOf('P116');
     if (fault === 'duplicate') second.push('P116');
     else {
       second.splice(at, 1);
@@ -107,13 +134,13 @@ test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
     assert.throws(() => projectPlan(probe), /R356_P116_/);
   }
   for(const fault of ['missing','duplicate','first-shard','moved']){
-    const probe=JSON.parse(JSON.stringify(plan)),second=probe.shards[1].sections,at=second.indexOf('P128');
+    const probe=JSON.parse(JSON.stringify(historicalPlan)),second=probe.shards[1].sections,at=second.indexOf('P128');
     if(fault==='duplicate')second.push('P128');
     else {second.splice(at,1);if(fault==='first-shard')probe.shards[0].sections.push('P128');
       else if(fault==='moved')second.unshift('P128');}
     assert.throws(()=>projectPlan(probe),/R355_CANVAS_P128_/);
   }
-  const swapped = JSON.parse(JSON.stringify(plan)), swappedSecond = swapped.shards[1].sections;
+  const swapped = JSON.parse(JSON.stringify(historicalPlan)), swappedSecond = swapped.shards[1].sections;
   swappedSecond.splice(swappedSecond.indexOf('P116'), 2, 'P128', 'P116');
   assert.throws(() => projectPlan(swapped), /R355_R356_MERGED_ORDER/);
   assert.deepEqual(plan.boundaries, MAIN_BOUNDARIES, 'R360_P88_HANDOFF_UNCHANGED');

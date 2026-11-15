@@ -8,6 +8,7 @@ const shards = require('../geometry-web/canvas_shards.js');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
+const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const plan = shards.loadPlan(), golden = shards.loadGolden();
@@ -49,10 +50,11 @@ test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍�
   assert.deepEqual([...all].sort(), Object.keys(golden.sections).sort());
   const owner = plan.shards.find(s => s.sections.includes('P359'));
   assert.equal(owner.sections.at(-1), 'P359');
+  const historicalPlan = r420Extension.projectPlan(plan);
   assert.equal(plan.shards[0].sections.includes('P353'), false, 'R369_P353_SHARD: P353 is not in shard 1');
-  assert.deepEqual(plan.shards[1].sections.slice(-2), ['P353', 'P359'], 'R369_P353_ORDER: P353 immediately precedes the storage-reset suite');
+  assert.deepEqual(historicalPlan.shards[1].sections.slice(-2), ['P353', 'P359'], 'R369_P353_ORDER: P353 immediately precedes the storage-reset suite');
   // Merged with #355: cdp_test.js dispatches P352, P116 (timber reuse), P128 (R02 panel fill), P353, P359.
-  assert.deepEqual(plan.shards[1].sections.slice(-5), ['P352', 'P116', 'P128', 'P353', 'P359'], 'R356_P116_ORDER: reuse runs once before the R02 panel-fill, card-entry and storage-reset suites');
+  assert.deepEqual(historicalPlan.shards[1].sections.slice(-5), ['P352', 'P116', 'P128', 'P353', 'P359'], 'R356_P116_ORDER: reuse runs once before the R02 panel-fill, card-entry and storage-reset suites');
   assert.equal(all.filter(name => name === 'P116').length, 1, 'R356_P116_ONE_OWNER');
   assert.equal(plan.shards[0].sections.includes('R06'), false, 'R06_CANVAS_PLAN: R06 belongs to shard 2');
   const repeatAt = plan.shards[1].sections.indexOf('R06');
@@ -73,7 +75,8 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
-  const golden=r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(context.golden)));
+  const beforeR420 = r420Extension.projectGolden(context.golden);
+  const golden=r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(beforeR420)));
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
   // #360 and R06 add independent sections. Keep the original 4002/91 contract
@@ -102,9 +105,38 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.deepEqual(Object.keys(golden.sections).sort(), [...Object.keys(mainSections), 'P116'].sort(), 'R356_ONLY_NEW_SECTION');
   assert.equal(golden.total, sum(mainSections) + golden.sections.P116, 'R356_COMPLETE_COUNT_UNION');
   assert.equal(Object.keys(golden.sections).length, 94);
-  assert.equal(Object.keys(context.golden.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
+  assert.equal(Object.keys(beforeR420.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
+  assert.equal(Object.keys(context.golden.sections).length, 96, 'R420_ONE_ADDITIVE_SECTION');
+  assert.equal(context.golden.total, beforeR420.total + r420Extension.P420_ADDED, 'R420_EXACT_COUNT_UNION');
   assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
+});
+
+test('P420 uses a separate header after all unchanged P353 cases under the same dispatch', () => {
+  const suite = require('../geometry-web/grid_card_entry_test.js');
+  const source = fs.readFileSync(path.join(ROOT,'geometry-web/grid_card_entry_test.js'),'utf8');
+  const unbind = ['unbind_cancel','unbind_parameter','unbind_direct','unbind_stale'];
+  assert.equal(suite.caseIds.length, 38, 'R420_COMPLETE_CASE_SET');
+  assert.deepEqual(suite.caseIds.slice(-4), unbind, 'R420_UNBIND_AFTER_LEGACY_CASES');
+  assert.deepEqual(suite.caseIds.filter(id => suite.caseSection(id) === 'P420'), unbind, 'R420_EXACT_SECTION_OWNERSHIP');
+  assert.ok(suite.caseIds.slice(0,-4).every(id => suite.caseSection(id) === 'P353'), 'R420_LEGACY_CASES_STAY_P353');
+  assert.throws(() => suite.caseSection('missing'), /Unknown grid-card case/);
+  // Execute the actual loop's header block with inert cases. The same module
+  // keeps its one cdp_test.js dispatch; only attribution changes at this boundary.
+  const header = /let section = null;\s+for \(const id of selected\) \{([\s\S]*?)\s+currentCase = id;/.exec(source);
+  assert.ok(header, 'R420_HEADER_BLOCK_PRESENT');
+  const emit = new Function('selected','caseSection','console','let section=null;for(const id of selected){'+header[1]+'}');
+  const sectionOf = require('../geometry-web/cdp_floor.js').sectionOf;
+  for (const [selected,expected] of [
+    [suite.caseIds,['P353','P420']],
+    [unbind,['P420']],
+    [['entry'],['P353']],
+    [['unbind_direct','entry','unbind_stale'],['P420','P353','P420']]
+  ]) {
+    const headers = [];
+    emit(selected,suite.caseSection,{log:message => headers.push(sectionOf(message))});
+    assert.deepEqual(headers,expected,'R420_ACTUAL_HEADER_SEQUENCE '+selected.join(','));
+  }
 });
 
 test('缺一片必紅', () => {

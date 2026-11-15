@@ -3829,7 +3829,7 @@
     {
       "path": "geometry-web/grid_card_entry_test.js",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
-      "sha256": "bd67a064f48e0aab62a850511dcdcf34f37b1c3fe2b9e8da803aabc74f1bbd60",
+      "sha256": "b5075a6d62b3da3e482d169a19fba54345b8dfc7e18a353ac8e157a40a36f04c",
       "hashMode": "lf"
     },
     {
@@ -3859,7 +3859,7 @@
     {
       "path": "geometry-web/canvas_shards.js",
       "reason": "Dedicated CI test driver canvas_shards.js: canvas browser-shard plan, cut-point storage handoff and complete-coverage receipt verifier, loaded only by cdp_test.js shard mode, the CI complete-coverage job and tests/test_canvas_shards.js; not loaded by product runtime or served application entry points.",
-      "sha256": "57cf679ead32795891c20b10f3a8aba263724bdcf58d1376010792b3c2d40d71",
+      "sha256": "9a3cb47e81fe933fcf1af90511b5c515b364dce1b0a10f3038d8ec5050afb7b9",
       "hashMode": "lf"
     },
     {
