@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "a20b0997c428617adc08e72246f8d7634cf0536f",
+  "sourceHead": "8ea138356075198e3c0646f175bba64ea2997620",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43688551032",
+  "runId": "43765541973",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "c4e6baf4f90ced12df5859b13f4b0585db547c8e91c8b751b0c875648d7396d5",
+      "stderrSha256": "4acf0e5290959d69277b579d78cd77667d558b0625e3fe9c0e90ec415779d392",
       "testsRun": 205
     },
     {
@@ -51,11 +51,11 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "8fbd71d1df1e0246bf9154fec7eb8b9f9a6ae986dc98628b464da596abe4ffa4",
+      "stderrSha256": "f95c2c8c04a6a7c13b344a821b55bb203ddb9e64d9d96f09801c92ea83fd9340",
       "testsRun": 18
     }
   ],
-  "manifestLfSha256": "293f3e3228ad3cdd9eff6a6e398e37fc0c896a497a0feb5b3f78a4702fa16ff4",
+  "manifestLfSha256": "a9664500b756eeabdc6109eacd3b34fd41b2fee1af84905f79741de821d96ffb",
   "scannerLfSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "testScriptsLfSha256": {
     "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
@@ -1517,7 +1517,7 @@
     },
     {
       "path": "geometry-web/browser_mutation_check.py",
-      "lfSha256": "7ad42d2ef3ad9e3b35dd463dbf0e963a6afc961c583cc4d7faca419b110015db"
+      "lfSha256": "a33550f5a6c3ea7ba79deffa1404da27f51cdee050fcf734c75990515b6235fe"
     },
     {
       "path": "geometry-web/canvas-context-menu.js",
@@ -1537,7 +1537,7 @@
     },
     {
       "path": "geometry-web/canvas_shards.js",
-      "lfSha256": "57cf679ead32795891c20b10f3a8aba263724bdcf58d1376010792b3c2d40d71"
+      "lfSha256": "9a3cb47e81fe933fcf1af90511b5c515b364dce1b0a10f3038d8ec5050afb7b9"
     },
     {
       "path": "geometry-web/canvas_test.js",
@@ -1981,7 +1981,7 @@
     },
     {
       "path": "geometry-web/grid-system-workspace.js",
-      "lfSha256": "9a7d8a52668227889af5c690d7d2c545f882204c0bb7f797030bb2890dff354b"
+      "lfSha256": "471bc182ab5677be617cba500ee6eb31c6f2d97de19876defd62e784abfcaec8"
     },
     {
       "path": "geometry-web/grid-trial.js",
@@ -1993,7 +1993,7 @@
     },
     {
       "path": "geometry-web/grid_card_entry_test.js",
-      "lfSha256": "2e1529c6ea88a77eb8d742e0efe7c7ecd130b385bc7d8e0a844b8cb7014f8fc0"
+      "lfSha256": "2e3cba93c44f514b4535321e985f04da942f4d4a247f414efbdad463b778310f"
     },
     {
       "path": "geometry-web/grid_definition_interaction_browser_test.py",
@@ -2289,7 +2289,7 @@
     },
     {
       "path": "geometry-web/reference-ui.js",
-      "lfSha256": "49af6ed0ff7b31b6747401018613fdd8b421b19407071f7bf95f72d7c71d33c7"
+      "lfSha256": "0b9c4b1c10fd2588e96c6179c598fa184641cf5c9e43aa64edbaefb82dcf315d"
     },
     {
       "path": "geometry-web/reference-workspace.js",
@@ -2628,5 +2628,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "cd1e9696ad25603c2ea63cd005fecd1cebb61d5602892ff2e1ab500f88c80ccd"
+  "inputLfClosureSha256": "0bb34c8b92c4a8b7eb5274c5700c7d7b3f5e50d095d13cd9ce285ce027ebb453"
 }
