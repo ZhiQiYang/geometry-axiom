@@ -27,11 +27,11 @@ STORE = Path(".github/evidence/mutations")
 SEED_PATH = "tests/mutants_results.json"
 FROZEN_SEED = {
     "schema": "geometry-mutation-record-seed/1",
-    "base": "11eddfdb4d7b1f76aedfe001e084a3840790bedc",
+    "base": "fd96b8bf7094bd57e74e3226aeba1f24a73b74fc",
     "path": SEED_PATH,
-    "blob": "ceaf8d2979b5e8868b6a36c395d37cfe42d9de2e",
+    "blob": "205b18792d436d5fb81613e199f8d9191dfdeece",
     "bytes": 13985837,
-    "sha256": "9e31f91a6221b8ff31a041ae6b30514185d245bcbc1f0dbbab7ea641d45b1a31",
+    "sha256": "0066e4c0f027edfddb0edd4a9d851596a33ff92e4b5abacffd09086bf8b01ad0",
 }
 GOOD = {"killed", "crashed", "equivalent", "retired"}
 COUNTERS = GOOD | {"survived", "invalid", "stale", "blocked", "unrun"}
@@ -419,14 +419,18 @@ def adopt(root, artifact_dir, store=None):
             "origin_binary_bytes_verified": True, "binary_bytes_reverified": False}
 
 
-def main():
+def build_parser():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=("init", "check", "materialize", "adopt"))
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--store", type=Path)
     parser.add_argument("--destination", type=Path)
     parser.add_argument("--artifact-dir", "--artifact", "--artifacts", dest="artifact_dir", type=Path)
-    args = parser.parse_args()
+    return parser
+
+
+def main():
+    args = build_parser().parse_args()
     try:
         if args.mode == "init":
             result = init_store(args.root, args.store)

@@ -33,11 +33,11 @@ LABELS = ("architecture-cli", "architecture-unit", "architecture-product")
 RAW_FILES = (RECEIPT, SCAN, REPORT, *(label + suffix for label in LABELS for suffix in (".stdout", ".stderr")))
 BUNDLE_SCHEMA = "geometry-architecture-bundle/1"
 CONTEXT_SCHEMA = "geometry-architecture-inputs/1"
-FROZEN_BASE = "11eddfdb4d7b1f76aedfe001e084a3840790bedc"
+FROZEN_BASE = "fd96b8bf7094bd57e74e3226aeba1f24a73b74fc"
 FROZEN = {
-    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md": "d02e0abdd34c222249dffe38ebc51fee25698252e870c6a1dd5afc31d6406fe0",
-    "geometry-core/domain-decoupling/product-architecture-receipt.json": "81a114839812f92c6ed706588b3078a44220098b6e5267ed57923a3934ce89be",
-    "geometry-core/domain-decoupling/product-architecture-scan.json": "f92d4110d26c21a3048ce484365019266ad5294025f0bf053942e3e67ea47e88",
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md": "101fbae76906febf0c7cc0e0cafea5b08a9e0e9bf988715ad35143be9b52b56e",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json": "e797bc2a2c4690e9fba8e445661d01acbaaa2cfdbbb5b4399515d609298b0fb5",
+    "geometry-core/domain-decoupling/product-architecture-scan.json": "b447a48b612923a89ff799f4651c17adc4a4c8e152f5084b1f19efaf00a120e3",
 }
 # Receipt v1 did not record its generator. Import therefore supports exactly the
 # reviewed, unchanged generator. A future generator needs an explicit migration,
