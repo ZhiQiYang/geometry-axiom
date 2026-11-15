@@ -11,6 +11,7 @@ const timberExtension = require('./diagnostics/r356_canvas_extension.cjs');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
+const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
 const file = name => path.join(WEB, name);
 const read = name => fs.readFileSync(file(name), 'utf8');
 const MAIN_GOLDEN = {"schema":"geometry-cdp-sections/1","mode":"full","total":4002,"sections":{"1":14,"2":3,"3":1,"4":1,"5":1,"6":1,"7":1,"8":0,"9":12,"10":0,"P89":19,"Setup":0,"P3":14,"P4":11,"P5":2,"P6":4,"P7":54,"P8":116,"P9":9,"P10":9,"P11":12,"P12":8,"P13":4,"P14":16,"P15":6,"P16":10,"P17":11,"P18":20,"P19":17,"BF2":5,"BF3":1,"BF4":9,"P20":10,"P21":4,"P22":45,"P32":34,"P33":9,"P34":7,"P35":14,"P36":2,"P37":19,"P38":13,"P39":8,"P40":4,"P41":3,"P42":12,"P43":12,"P44":19,"P45":2,"P46":7,"P47":9,"P48":14,"P49":17,"P50":33,"P51":13,"P52":43,"P53":28,"P57":56,"P62":38,"P63":18,"P64":24,"P65":5,"P66":4,"P68":36,"P69":160,"P67":96,"P70":121,"P71":9,"P78":23,"P87":60,"P88":143,"P72":52,"P72B":50,"P73":69,"P74":52,"P75":37,"P76":87,"P77":134,"P82":16,"P80":23,"P81":14,"P85":31,"P79":87,"P84":33,"P83":16,"P86":20,"P352":1313,"P359":24,"P90":8,"P358":16,"P353":355}};
@@ -18,7 +19,8 @@ const MAIN_SEQUENCES = [["Setup","1","2","3","4","5","6","7","8","9","P3","P4","
 const MAIN_BOUNDARIES = [{"after":"P88","before":"P72","localStorage":{"geometry-param-grid-lesson":{"kind":"param-grid-lesson-token"},"geometry-tool-lessons-v1":{"kind":"string-set","values":["canvas:pan","canvas:rect","canvas:select","engineering:first","face:grid","face:guide","face:hole","face:pan","face:redraw","face:select","face:timber","grid:infinite-first"]}}}];
 
 test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
-  const rawGolden = JSON.parse(read('cdp_sections.golden.json'));
+  // R17 P335 is projected out by its own exact oracle (count 192, P116→P335→P128).
+  const rawGolden = r335Extension.projectGolden(JSON.parse(read('cdp_sections.golden.json')));
   // Merged #355 and #356: each owner's unchanged exact projection removes only
   // its own section (R02 P128, R11 P116); together they restore main exactly.
   // #400 adds exactly three P90 assertions; that projection restores P90 = 8.
@@ -70,8 +72,8 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
 
 test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
   assert.ok(fs.existsSync(file('canvas_shards.json')), 'R360_CANVAS_SHARD_PLAN_REQUIRED');
-  const plan = JSON.parse(read('canvas_shards.json'));
-  const golden = JSON.parse(read('cdp_sections.golden.json'));
+  const plan = r335Extension.projectPlan(JSON.parse(read('canvas_shards.json')));
+  const golden = r335Extension.projectGolden(JSON.parse(read('cdp_sections.golden.json')));
   const shards = require(file('canvas_shards.js'));
   assert.deepEqual(shards.validatePlan(plan, golden), [], 'R360_CANVAS_COMPLETE_PLAN');
   const expected = MAIN_SEQUENCES.map(sections => sections.slice());

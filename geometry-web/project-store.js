@@ -67,7 +67,7 @@
     if (fullOk !== true) return {dirty:true, dirtyReason:"身分帳不完整，須先復原上一步才能保存", saved:false, downloaded:false};
     return {dirty:true, dirtyReason:String(project.dirtyReason || "") || "有未保存的變更", saved:false, downloaded:false};
   }
-  const SCENE_CAPABILITIES = [ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, SUBDIVISION_V2_CAPABILITY, SECTION_CAPABILITY, PANEL_FILL_CAPABILITY, CARD_CAPABILITY, BAY_REPEAT_CAPABILITY, BOUNDARY_PAIR_CAPABILITY, IDENTITY_CAPABILITY];
+  const SCENE_CAPABILITIES = [ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, SUBDIVISION_V2_CAPABILITY, BOUNDARY_PAIR_CAPABILITY, SECTION_CAPABILITY, PANEL_FILL_CAPABILITY, CARD_CAPABILITY, BAY_REPEAT_CAPABILITY, IDENTITY_CAPABILITY];
   const MAX_MANIFEST = 8 * 1024 * 1024, MAX_MODELS = 64;
   const MAX_PACKAGE = 256 * 1024 * 1024, MAX_EXPANDED = 512 * 1024 * 1024;
   const TYPES = new Set(["application/pdf", "image/png", "image/jpeg", "image/webp", "image/gif"]);
@@ -450,6 +450,10 @@
       fail("專案需要尚未支援的能力。");
     return capabilities;
   }
+  function readerCapabilitiesWithBoundaryPair(boundaryPairNative) {
+    return (nativeCapabilities,nativeProfiles,manifest,scene,recordProfile,options,panelFillReader) =>
+      readerCapabilities(nativeCapabilities,nativeProfiles,manifest,scene,recordProfile,options,panelFillReader,boundaryPairNative);
+  }
   function readerCapabilities(nativeCapabilities,nativeProfiles=[],manifest=null,scene=null,recordProfile=null,options={},panelFillReader=null,boundaryPairNative=null) {
     // Keep K1 options and #355's explicit scoped reader overload separate
     // from R06's finite native-profile list. Neither object is a profile list.
@@ -552,8 +556,8 @@
     if((boundaryPair||manifest.requiredCapabilities?.includes(BOUNDARY_PAIR_CAPABILITY))&&
        (!boundaryPair||manifest.format!==BOUNDARY_PAIR_FORMAT||!manifest.requiredCapabilities?.includes(BOUNDARY_PAIR_CAPABILITY)||scene!==null&&!boundaryPairRecords(scene).length))
       fail('互頂組須使用第 19 版格式並保留完整組定義及 boundary-pair/1 能力。');
-    if(manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate&&!panelFill&&!boundaryPair)
-      fail("第 19 版格式缺少重複開間、房間候選草稿、完成面鋪排或互頂組的對應資料及能力。");
+    if(manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate&&!panelFill)
+      if(!boundaryPair)fail("第 19 版格式缺少重複開間、房間候選草稿、完成面鋪排或互頂組的對應資料及能力。");
     if((panelFill||manifest.requiredCapabilities?.includes(PANEL_FILL_CAPABILITY))&&
        (!panelFill||manifest.format!==PANEL_FILL_FORMAT||
         scene!==null&&(!hasPanelFillDefinitions(manifest,scene)||repeat&&!hasRepeatDefinitions(manifest,scene))||
@@ -1135,7 +1139,8 @@
         this.pruneFaceProjections((bid, pid) => result.surfaces.some(s => s.id === pid && s.boundary === bid && s.u?.[2] === 0 && s.v?.[2] === 0));
         return;
       }
-      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |boundary-pair-confirm )/.test(command)) return;
+      if (!/^boundary-pair-confirm /.test(command))
+        if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return;
       const op = command.startsWith("line ") ? command.slice(5).trim().split(/\s+/)[0] : command.split(/\s+/)[0];
       if (result.preview) {
         // Candidate geometry remains native. Keep only the affected typed IDs
@@ -1226,7 +1231,7 @@
         (changedPlacement && pid === +changedPlacement[1] && (placed?.bid !== bid || !placed.horizontal))));
     }
   }
-  return { Features, BOUNDARY_PAIR_FORMAT, BOUNDARY_PAIR_CAPABILITY, assertBoundaryPairDefinitions, PANEL_FILL_FORMAT, PANEL_FILL_CAPABILITY, assertPanelFillDefinitions, CUTTING_FORMAT, CUTTING_CAPABILITY, CARD_FORMAT, CARD_CAPABILITY, ROOM_CANDIDATE_FORMAT, BAY_REPEAT_FORMAT, BAY_REPEAT_CAPABILITY, validateBayRepeatDraftData, GRID_DRAFTS_FORMAT, ScenarioCatalog, SECTION_FORMAT, SECTION_CAPABILITY, CASE_FORMAT, CASE_CAPABILITY, validateCaseHashes, SCENARIO_FORMAT, SCENARIO_CAPABILITY, formatPolicy, GRID_RULE_FORMAT, EVIDENCE_FORMAT, EVIDENCE_CAPABILITY, SUBDIVISION_FORMAT, SUBDIVISION_CAPABILITY, SUBDIVISION_V2_CAPABILITY, FEATURE_FORMAT, readerCapabilities, validateManifestCapabilities, OUTLINE_FORMAT, reviewBasis, outlineFingerprint, validateReconstructionReviews, GENERATION_FORMAT, GENERATION_CAPABILITY, ASSEMBLY_FORMAT, ASSEMBLY_CAPABILITY, ASSEMBLY_DRAFT_SCHEMA, validateAssemblyDraft, validateAssemblyDrafts, PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
+  return { Features, BOUNDARY_PAIR_FORMAT, BOUNDARY_PAIR_CAPABILITY, assertBoundaryPairDefinitions, readerCapabilitiesWithBoundaryPair, PANEL_FILL_FORMAT, PANEL_FILL_CAPABILITY, assertPanelFillDefinitions, CUTTING_FORMAT, CUTTING_CAPABILITY, CARD_FORMAT, CARD_CAPABILITY, ROOM_CANDIDATE_FORMAT, BAY_REPEAT_FORMAT, BAY_REPEAT_CAPABILITY, validateBayRepeatDraftData, GRID_DRAFTS_FORMAT, ScenarioCatalog, SECTION_FORMAT, SECTION_CAPABILITY, CASE_FORMAT, CASE_CAPABILITY, validateCaseHashes, SCENARIO_FORMAT, SCENARIO_CAPABILITY, formatPolicy, GRID_RULE_FORMAT, EVIDENCE_FORMAT, EVIDENCE_CAPABILITY, SUBDIVISION_FORMAT, SUBDIVISION_CAPABILITY, SUBDIVISION_V2_CAPABILITY, FEATURE_FORMAT, readerCapabilities, validateManifestCapabilities, OUTLINE_FORMAT, reviewBasis, outlineFingerprint, validateReconstructionReviews, GENERATION_FORMAT, GENERATION_CAPABILITY, ASSEMBLY_FORMAT, ASSEMBLY_CAPABILITY, ASSEMBLY_DRAFT_SCHEMA, validateAssemblyDraft, validateAssemblyDrafts, PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
     MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateModelPackage, assertManifestCapacity,
     validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, nativeReaderCapabilities, assertProjectCapabilities, sceneCapabilities, stripIdentityLedger, restoreAfterProbe,
     validateFaceProjection, validateFaceProjectionRefs, validateProjectObjectRefs, validateEvidenceTargets, supportedFormats, projectFormat, reference, pack, unpack, readForImport, ContextHistory };

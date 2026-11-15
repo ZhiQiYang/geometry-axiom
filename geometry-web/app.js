@@ -5061,7 +5061,7 @@ function faceReferenceOperation(bid,inputIds) {
     async verify(){if(!current())return false;const graph=await apiRequest('source-inspect');return current()&&graph.ok&&graph.revision===nativeRevision&&graph.sourceFingerprint===fingerprint;}};
 }
 async function fePlaceTimberFromForm(bid) {
-  if (window.BoundaryPairWorkspace?.active(bid)) return BoundaryPairWorkspace.preview();
+  if (globalThis.BoundaryPairWorkspace?.active(bid)) return BoundaryPairWorkspace.preview();
   if (globalThis.TimberEdit?.usingCreate(bid)) return TimberEdit.previewCreate();
   if (oc.busy) return false;
   const sid = feSid(bid);
@@ -5556,7 +5556,7 @@ function drawFaceEditor() {
      唯一側時回 null 不畫帶,不亂畫一側誤導。帶文字只標「橫向定位示意」——
      真正的長度/跨距由核心決定,帶不等於最終材料。 */
   window.BoundaryPairWorkspace?.draw(refRoot,el);
-  if (!window.BoundaryPairWorkspace?.active(e.bid) && (fe.tool === "timber" || fe.anchorPreview) && feSid(e.bid)) {
+  if ((fe.tool === "timber" || fe.anchorPreview) && feSid(e.bid) && !globalThis.BoundaryPairWorkspace?.active(e.bid)) {
     const hoverAnchor = fe.tool === "timber" ? fe.timberHoverAnchor : null;
     const anchorVal = hoverAnchor || $("tbAnchor")?.value;
     const info = anchorVal && ReferenceVisibility.anchorVisible(anchorVal) ? feAnchorLineInfo(e.bid, anchorVal) : null;

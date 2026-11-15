@@ -36,7 +36,8 @@ const ReferenceWorkspace = (() => {
     if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
   }
   function beginNativeOperation(command) {
-    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |boundary-pair-confirm )/.test(command)) return null;
+    if (!/^boundary-pair-confirm /.test(command))
+      if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
     return () => {if (!ended) {ended = true; nativePending--;}};
@@ -523,8 +524,10 @@ const ReferenceWorkspace = (() => {
     // R11 timber-edit, R17 boundary-pair and R02 panel-fill no-op confirmations suppress
     // their scene notification; existing import and other native observers
     // retain their refresh contract.
-    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |boundary-pair-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && (!/^(timber-edit-confirm|boundary-pair-confirm) /.test(cmd) || result.history_changed !== false) && !(cmd.startsWith("panel-fill-confirm ") && result.history_changed === false))notifySceneChange();
-    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm|boundary-pair-confirm) /.test(cmd) && result.history_changed !== false) dirty();
+    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && (!/^timber-edit-confirm /.test(cmd) || result.history_changed !== false) && !(cmd.startsWith("panel-fill-confirm ") && result.history_changed === false))notifySceneChange();
+    if(result.ok && !result.preview && /^boundary-pair-confirm /.test(cmd) && result.history_changed !== false)notifySceneChange();
+    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm) /.test(cmd) && result.history_changed !== false) dirty();
+    if (result.ok && /^boundary-pair-confirm /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
@@ -2070,7 +2073,7 @@ const ReferenceWorkspace = (() => {
          preparedNativeRevision!==null&&hostRecordProfile.revision!==preparedNativeRevision||
          nativeRevision!==null&&nativeRevision>hostRecordProfile.revision))
         throw new Error('原生來源在讀取衍生承載面能力期間已變更，請重新開啟專案。');
-      P.assertProjectCapabilities({...manifest,requiredCapabilities},P.readerCapabilities(candidate.capabilities,candidate.native_capabilities,manifest,candidate.final_scene,hostRecordProfile,{cutting:true},candidate.panel_fill_reader,candidate.boundary_pair_native));
+      P.assertProjectCapabilities({...manifest,requiredCapabilities},P.readerCapabilitiesWithBoundaryPair(candidate.boundary_pair_native)(candidate.capabilities,candidate.native_capabilities,manifest,candidate.final_scene,hostRecordProfile,{cutting:true},candidate.panel_fill_reader));
       P.validateProjectCapabilities(candidate.required_capabilities);
       const policy=P.formatPolicy(manifest.format);
       if (policy.engineeringCandidate) {
