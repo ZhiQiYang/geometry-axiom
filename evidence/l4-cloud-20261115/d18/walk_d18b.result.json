@@ -1,0 +1,84 @@
+{
+ "cardMap": {
+  "u": "寬 = 915（#2）",
+  "v": "長 = 1830（#3）",
+  "note": "兩軸長度由「板材」（#1）提供：u = 寬（#2，915）、v = 長（#3，1830）。第 0 線、縫寬、面材起點與相鄰格錯開仍逐軸設定。"
+ },
+ "createImpact": "確認連動變更 建立無限網格「D18 整卡」 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 進階：完整指令 網格來源 · 1 網格系統 1 原：不存在 新：「D18 整卡」；主支方向未設定；u 無限重複：間距 915 mm（整張參數卡），第 0 線 0 mm；v 無限重複：間距 1830 mm（整張參數卡），第 0 線 0 mm，相鄰格子相位差 915 mm；長度來自整張參數卡「板材」（卡 #1；u = 寬（欄 #2）、v = 長（欄 #3）） 候選來源 1：下一 ruleKey 1；0 項來源規則。 取消，保留原狀 確認套用",
+ "created": [
+  {
+   "name": "D18 整卡",
+   "cardReference": {
+    "parameterId": 1,
+    "uFieldId": 2,
+    "vFieldId": 3
+   },
+   "u": {
+    "source": "repeat",
+    "phase": 0,
+    "effectiveStep": 915,
+    "stepSource": "card"
+   },
+   "v": {
+    "source": "repeat",
+    "phase": 0,
+    "effectiveStep": 1830,
+    "stagger": 915,
+    "stepSource": "card"
+   }
+  }
+ ],
+ "inspectorText": "名稱 0 個配置使用此來源 · 格線向兩端無限延伸 X / u → 間距 mm 第 0 線座標 0 mm · 整張參數卡，於完整工作區改綁 Y / v ↓ 間距 mm 第 0 線座標 0 mm · 相鄰格子相位差 915 mm · 整張參數卡，於完整工作區改綁 固定規則，持續重複 主支方向：未設定；排法與基準可在完整工作區調整。 預覽變更",
+ "renameImpact": "確認連動變更 更新網格來源「D18 整卡改名」 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 進階：完整指令 網格來源 · 1 網格系統 1 原：「D18 整卡」；主支方向未設定；u 無限重複：間距 915 mm（整張參數卡），第 0 線 0 mm；v 無限重複：間距 1830 mm（整張參數卡），第 0 線 0 mm，相鄰格子相位差 915 mm；長度來自整張參數卡「板材」（卡 #1；u = 寬（欄 #2）、v = 長（欄 #3）） 新：「D18 整卡改名」；主支方向未設定；u 無限重複：間距 915 mm（整張參數卡），第 0 線 0 mm；v 無限重複：間距 1830 mm（整張參數卡），第 0 線 0 mm，相鄰格子相位差 915 mm；長度來自整張參數卡「板材」（卡 #1；u = 寬（欄 #2）、v = 長（欄 #3）） 原來源 1：下一 ruleKey 1；0 項來源規則。 候選來源 1：下一 ruleKey 1；0 項來源規則。 取消，保留原狀 確認套用",
+ "renamed": [
+  {
+   "name": "D18 整卡改名",
+   "cardReference": {
+    "parameterId": 1,
+    "uFieldId": 2,
+    "vFieldId": 3
+   },
+   "u": {
+    "source": "repeat",
+    "phase": 0,
+    "effectiveStep": 915,
+    "stepSource": "card"
+   },
+   "v": {
+    "source": "repeat",
+    "phase": 0,
+    "effectiveStep": 1830,
+    "stagger": 915,
+    "stepSource": "card"
+   }
+  }
+ ],
+ "undoName": [
+  "D18 整卡"
+ ],
+ "redo": [
+  {
+   "name": "D18 整卡改名",
+   "cardReference": {
+    "parameterId": 1,
+    "uFieldId": 2,
+    "vFieldId": 3
+   },
+   "u": {
+    "source": "repeat",
+    "phase": 0,
+    "effectiveStep": 915,
+    "stepSource": "card"
+   },
+   "v": {
+    "source": "repeat",
+    "phase": 0,
+    "effectiveStep": 1830,
+    "stagger": 915,
+    "stepSource": "card"
+   }
+  }
+ ],
+ "same": true,
+ "errs": []
+}
