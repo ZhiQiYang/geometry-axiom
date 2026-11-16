@@ -1,0 +1,317 @@
+{
+ "gridsStart": [],
+ "firstOpen": null,
+ "formA": {
+  "name": "草稿甲",
+  "uStep": "300",
+  "vStep": "600",
+  "vPhase": "0",
+  "vStagger": "",
+  "discardVisible": true,
+  "saveVisible": true,
+  "status": []
+ },
+ "afterDraftA": {
+  "grids": [],
+  "status": [
+   "-: 有未保存的變更",
+   "-: 從空白處拖曳，框選物件"
+  ]
+ },
+ "chooser1": {
+  "title": "繼續未完成草稿（1）",
+  "buttons": [
+   "草稿甲 · 未完成",
+   "建立新來源",
+   "取消"
+  ]
+ },
+ "blankForm": {
+  "name": "無限網格",
+  "uStep": "600",
+  "vStep": "400",
+  "vPhase": "0",
+  "vStagger": "",
+  "discardVisible": true,
+  "saveVisible": true,
+  "status": []
+ },
+ "formB": {
+  "name": "草稿乙",
+  "uStep": "450",
+  "vStep": "900",
+  "vPhase": "0",
+  "vStagger": "450",
+  "discardVisible": true,
+  "saveVisible": true,
+  "status": []
+ },
+ "chooser2": {
+  "title": "繼續未完成草稿（2）",
+  "buttons": [
+   "草稿甲 · 未完成",
+   "草稿乙 · 未完成",
+   "建立新來源",
+   "取消"
+  ]
+ },
+ "resumeA": {
+  "name": "草稿甲",
+  "uStep": "300",
+  "vStep": "600",
+  "vPhase": "0",
+  "vStagger": "",
+  "discardVisible": true,
+  "saveVisible": true,
+  "status": []
+ },
+ "chooser2b": {
+  "title": "繼續未完成草稿（2）",
+  "buttons": [
+   "草稿甲 · 未完成",
+   "草稿乙 · 未完成",
+   "建立新來源",
+   "取消"
+  ]
+ },
+ "resumeA2": {
+  "name": "草稿甲",
+  "uStep": "305",
+  "vStep": "600",
+  "vPhase": "0",
+  "vStagger": "",
+  "discardVisible": true,
+  "saveVisible": true,
+  "status": []
+ },
+ "chooser2c": {
+  "title": "繼續未完成草稿（2）",
+  "buttons": [
+   "草稿甲 · 未完成",
+   "草稿乙 · 未完成",
+   "建立新來源",
+   "取消"
+  ]
+ },
+ "resumeB": {
+  "name": "草稿乙",
+  "uStep": "450",
+  "vStep": "900",
+  "vPhase": "0",
+  "vStagger": "450",
+  "discardVisible": true,
+  "saveVisible": true,
+  "status": []
+ },
+ "chooserCancel": {
+  "title": "繼續未完成草稿（2）",
+  "buttons": [
+   "草稿甲 · 未完成",
+   "草稿乙 · 未完成",
+   "建立新來源",
+   "取消"
+  ]
+ },
+ "formAfterCancel": false,
+ "gridsBeforeSave": [],
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopenedChooser": {
+  "title": "繼續未完成草稿（2）",
+  "buttons": [
+   "草稿甲 · 未完成",
+   "草稿乙 · 未完成",
+   "建立新來源",
+   "取消"
+  ]
+ },
+ "reopenedB": {
+  "name": "草稿乙",
+  "uStep": "450",
+  "vStep": "900",
+  "vPhase": "0",
+  "vStagger": "450",
+  "discardVisible": true,
+  "saveVisible": true,
+  "status": []
+ },
+ "beforeComplete": {
+  "title": "繼續未完成草稿（2）",
+  "buttons": [
+   "草稿甲 · 未完成",
+   "草稿乙 · 未完成",
+   "建立新來源",
+   "取消"
+  ]
+ },
+ "reopenedA": {
+  "name": "草稿甲",
+  "uStep": "305",
+  "vStep": "600",
+  "vPhase": "0",
+  "vStagger": "",
+  "discardVisible": true,
+  "saveVisible": true,
+  "status": []
+ },
+ "saveImpact": "確認連動變更 建立無限網格「草稿甲」 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 進階：完整指令 網格來源 · 1 網格系統 1 原：不存在 新：「草稿甲」；主支方向未設定；u 無限重複：間距 305 mm，第 0 線 0 mm；v 無限重複：間距 600 mm，第 0 線 0 mm 候選來源 1：下一 ruleKey 1；0 項來源規則。 取消，保留原狀 確認套",
+ "afterSaveSource": {
+  "status": [
+   "-: 已選 1 個物件",
+   "giStatus: 修改間距會一起預覽使用此來源的配置。",
+   "-: 尚未檢查",
+   "-: 有未保存的變更",
+   "igTrialNote: 橙色是角材平面投影；紅邊表示超出試擺矩形。只檢查尺寸外觀，不驗證接合、可施工或結構安全；建立仍只保存網格。",
+   "igStatus: 來源已套用目前場景；頂列保存完整專案。可選邊界建立配置。"
+  ],
+  "formStillOpen": true
+ },
+ "gridsAfterComplete": [
+  {
+   "id": 1,
+   "name": "草稿甲",
+   "u": {
+    "source": "repeat",
+    "phase": 0,
+    "step": 305
+   },
+   "v": {
+    "source": "repeat",
+    "phase": 0,
+    "step": 600
+   }
+  }
+ ],
+ "chooserAfterComplete": {
+  "title": "繼續未完成草稿（1）",
+  "buttons": [
+   "草稿乙 · 未完成",
+   "建立新來源",
+   "取消"
+  ]
+ },
+ "discardButton": "捨棄原始草稿",
+ "discardQuestion": "捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。",
+ "afterKeep": {
+  "questionGone": true,
+  "form": {
+   "name": "草稿乙",
+   "uStep": "450",
+   "vStep": "900",
+   "vPhase": "0",
+   "vStagger": "450",
+   "discardVisible": true,
+   "saveVisible": true,
+   "status": []
+  }
+ },
+ "afterDiscard": {
+  "formOpen": false,
+  "status": [
+   "-: 有未保存的變更",
+   "-: 已選 1 個物件",
+   "giStatus: 修改間距會一起預覽使用此來源的配置。",
+   "-: 尚未檢查"
+  ]
+ },
+ "afterDiscardOpen": null,
+ "afterDiscardForm": {
+  "name": "無限網格",
+  "uStep": "600",
+  "vStep": "400",
+  "vPhase": "0",
+  "vStagger": "",
+  "discardVisible": true,
+  "saveVisible": true,
+  "status": []
+ },
+ "gridsEnd": [
+  {
+   "id": 1,
+   "name": "草稿甲",
+   "u": {
+    "source": "repeat",
+    "phase": 0,
+    "step": 305
+   },
+   "v": {
+    "source": "repeat",
+    "phase": 0,
+    "step": 600
+   }
+  }
+ ],
+ "finalOpen": {
+  "title": "繼續未完成草稿（1）",
+  "buttons": [
+   "無限網格 · 未完成",
+   "建立新來源",
+   "取消"
+  ]
+ },
+ "undo": [
+  {
+   "step": 0,
+   "grids": [
+    "草稿甲"
+   ],
+   "drafts": [
+    "無限網格"
+   ]
+  },
+  {
+   "step": 1,
+   "grids": [
+    "草稿甲"
+   ],
+   "drafts": []
+  },
+  {
+   "step": 2,
+   "grids": [
+    "草稿甲"
+   ],
+   "drafts": [
+    "草稿乙"
+   ]
+  },
+  {
+   "step": 3,
+   "grids": [],
+   "drafts": [
+    "草稿甲",
+    "草稿乙"
+   ]
+  }
+ ],
+ "redo": [
+  {
+   "step": 1,
+   "grids": [
+    "草稿甲"
+   ],
+   "drafts": [
+    "草稿乙"
+   ]
+  },
+  {
+   "step": 2,
+   "grids": [
+    "草稿甲"
+   ],
+   "drafts": []
+  },
+  {
+   "step": 3,
+   "grids": [
+    "草稿甲"
+   ],
+   "drafts": [
+    "無限網格"
+   ]
+  }
+ ],
+ "errsB": []
+}

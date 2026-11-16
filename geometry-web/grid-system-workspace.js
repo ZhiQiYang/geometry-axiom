@@ -110,6 +110,11 @@
       baseRef:s.baseRef,inputRefs:[...s.inputPins.values()].map(copy),rawForm:form,
       ...(s.draftSchema===F.GRID_RULE_SCHEMA?{ruleDraft:ruleDraftValue(s)}:{})};
   }
+  /* 這份輸入若存成新的草稿會超過份數上限，回傳給使用者看的說明；否則回傳 null。
+     已經存在的草稿(hasDraft)照常更新，不受上限影響。原本這種情況只顯示集合檢查的內部訊息。 */
+  function draftCapacityError(count,hasDraft,max){
+    return !hasDraft&&count>=max?`未完成的網格草稿已有 ${max} 份（上限），這份輸入沒有保存。請先完成或捨棄其中一份。`:null;
+  }
   function flush(s=state){
     if(!current(s)||s.busy)return;
     if(s.initializing)throw Error('網格原始輸入仍在還原，請待邊界讀取完成後保存。');
@@ -120,6 +125,7 @@
     for(const ref of owned?.inputRefs||[])if(ref.lost && s.inputPins.has(pinKey(ref)))s.inputPins.get(pinKey(ref)).lost=true;
     const form=rawForm(s),hasDraft=!!owned;
     if(!hasDraft&&!s.ruleDraft&&JSON.stringify(form)===s.initialRaw&&!!(s.mode==='source'?s.source:s.binding))return;
+    const full=draftCapacityError(ReferenceWorkspace.readGridDrafts().drafts.length,hasDraft,F.MAX_GRID_DRAFTS);if(full)throw Error(full);
     const value=rawValue(s);ReferenceWorkspace.setGridDraft(s.draftId,value,s.contextToken);s.rawError=null;return value;
   }
   function capture(s){if(!current(s)||s.initializing||s.busy)return;try{flush(s);}catch(error){s.rawError=error.message;}}

@@ -1,0 +1,51 @@
+name: Win32 build (mingw-w64)
+
+# #412：桌面版（GDI，_WIN32）的編譯與堆疊框守門。native 分片沒有 mingw-w64，
+# 那裡的 Win32Build412 是 run_all 具名允許的 skip；這裡裝 mingw 並以
+# GEOMETRY_REQUIRE_MINGW=1 必跑，找不到編譯器就紅，不會變成 skip。
+# 成本：一個 ubuntu runner；apt 安裝 gcc-mingw-w64-x86-64-posix 約數十秒，
+# 單檔 -O2 編譯約數十秒。只在可能影響 _WIN32 版的路徑變更時觸發。
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/win32-build.yml'
+      - 'current_geometry.c'
+      - 'geometry-core/**'
+      - 'geometry-app/native/**'
+      - 'geometry-templates/**/native/**'
+      - 'tests/test_gdi_contract.py'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: win32-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  win32-build:
+    name: win32 build (mingw-w64 _WIN32 + #412 stack frames)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/evidence/
+            !/tests/evidence/
+      - name: Install mingw-w64 x86_64 gcc
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends gcc-mingw-w64-x86-64-posix
+          x86_64-w64-mingw32-gcc --version | head -1
+      - name: Compile _WIN32 core and check GDI scene-load stack frames
+        env:
+          GEOMETRY_REQUIRE_MINGW: '1'
+        run: python3 -m unittest -v tests.test_gdi_contract.Win32Build412

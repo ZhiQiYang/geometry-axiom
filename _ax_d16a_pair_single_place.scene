@@ -1,0 +1,10 @@
+# D16a：已成組的 timber 不得單支重新 place。
+requires boundary-pair/1
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 500,0 500,13 1000,13 1000,1000 0,1000
+boundary-pair begin 1 2
+timber 1 27 20 role boundary
+timber 2 27 20 role boundary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 +u +n
+boundary-pair end
+place 1 on 1 at-face e0 +u +n

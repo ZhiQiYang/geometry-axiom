@@ -267,6 +267,12 @@ class LiveMutationAnchorMigration(unittest.TestCase):
         self.assertEqual(12, len(reading_a))
         added.update(reading_a)
         self.assertEqual(73, len(added))
+        # #410 R17 / D16a boundary-pair/1 native slice, killed by _ax_d16a_pair_*.scene.
+        r17 = {"R17_BP01_CANDIDATE": "geometry-core/references.inc", "R17_BP02_JOINT_CHECK": "current_geometry.c",
+               "R17_BP03_FACING": "geometry-core/references.inc", "R17_BP04_CAPABILITY": "geometry-core/transactions.inc"}
+        self.assertEqual(4, len(r17))
+        added.update(r17)
+        self.assertEqual(77, len(added))
         # #360 / D59-D61, I70-I72: the original 123 owners remain exact.
         # Independently enumerate all 15 official native additions and their
         # real bridge judges; N15/N16 are private fault probes, not ledger rows.

@@ -4801,6 +4801,11 @@ function feTimberAnchorLabel(bid, surf, anchorValue) {
   const hit = referenceAnchorEntries(bid, surf).find(x => x.value === anchorValue);
   return hit ? hit.label : anchorValue;
 }
+/* 圖層清單角材列的副標：定位引用的顯示名稱，和右欄「已選角材」同一個來源(timber.definition.anchor)。
+   回傳的是 HTML 片段(清單列用 innerHTML 組)，名稱要先跳脫。 */
+function feTimberLayerSub(bid, surf, timber) {
+  return `定位 ${ReferenceWorkspace.escape(feTimberAnchorLabel(bid, surf, timber?.definition?.anchor))}`;
+}
 /* 承載面主支軸推導(D17):同一面上所有 primary 的長度軸必須相同→該軸即主支軸;
    沒有 primary 時由 boundary 的垂直方向推(boundary ⊥ 主支軸);兩者皆無→未定義。
    custom/secondary 不定義主支軸。矛盾(primary 內部不一致、或 primary 與 boundary 推導
@@ -7034,6 +7039,14 @@ function feSyncPanelValues(panel, src) {
   for (const inp of panel.querySelectorAll("[data-fe-keep]"))
     if (inp !== act) inp.value = K[inp.dataset.feKeep] - (p[inp.dataset.feKeep] || 0);
 }
+/* 浮動列以中心定位。左上角的選取提示(#feSelectionSummary)畫在它上層，兩者重疊時浮動列的按鈕
+   會被蓋住、點不到；有重疊就把浮動列移到提示下方。座標都是面內視窗的 px；summary 為 null 表示沒有提示。 */
+function feBarClearOfSummary(bx, by, barWidth, barHeight, summary) {
+  if (!summary) return by;
+  const overlapX = bx + barWidth / 2 > summary.left && bx - barWidth / 2 < summary.right;
+  const overlapY = by + barHeight / 2 > summary.top && by - barHeight / 2 < summary.bottom;
+  return overlapX && overlapY ? summary.bottom + barHeight / 2 + 6 : by;
+}
 /* 依 pan/zoom 重新擺放操作列與面板(feApply 每次平移都會呼叫,只算位置不重建 DOM) */
 function fePlaceOverlays() {
   if (window.FaceContextMenu?.position()) return;
@@ -7042,7 +7055,9 @@ function fePlaceOverlays() {
   const r = vp.getBoundingClientRect(), a = feSelAnchor();
   if (!a) { bar.hidden = true; panel.hidden = true; return; }
   const bx = Math.max(150, Math.min(r.width - 150, a.x));
-  const by = Math.max(24, Math.min(r.height - 24, a.y));
+  const summary = $("feSelectionSummary"), sr = summary && !summary.hidden ? summary.getBoundingClientRect() : null;
+  const by = feBarClearOfSummary(bx, Math.max(24, Math.min(r.height - 24, a.y)), bar.offsetWidth, bar.offsetHeight,
+    sr && sr.width && sr.height ? { left: sr.left - r.left, right: sr.right - r.left, top: sr.top - r.top, bottom: sr.bottom - r.top } : null);
   bar.style.left = bx + "px"; bar.style.top = by + "px";
   if (!panel.hidden) {
     /* 面板放在操作列的右側(放不下就左側),與操作列同高——不蓋住畫布上的預覽矩形 */
@@ -7473,7 +7488,7 @@ function renderFaceLayers(projectionDraft = feProjectionDraft()) {
   if ((fe.timbers || []).length) {
     group("角材");
     for(const timber of fe.timbers){
-      const r=row(icon('timber'),`角材 ${timber.id}`,`定位 ${timber.anchor||'—'}`,()=>feDeleteTimber(timber.id));r.dataset.timberId=timber.id;
+      const r=row(icon('timber'),`角材 ${timber.id}`,feTimberLayerSub(e.bid,feSurf(e.bid),timber),()=>feDeleteTimber(timber.id));r.dataset.timberId=timber.id;
       r.classList.toggle('sel',feTimberSelected(timber.id));
       const pick=document.createElement('button');pick.type='button';pick.className='grid-layer-open';
       pick.append(r.querySelector('.face-layer-icon'),r.querySelector('.face-layer-copy'));r.prepend(pick);

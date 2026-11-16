@@ -1,0 +1,11 @@
+AssertionError [ERR_ASSERTION]: pdf-rectangle: unapplied invalid row cannot be reviewed
+    at check (/workspace/geometry-issue54-20261115/tests/diagnostics/room_manual_review.cjs:43:54)
+    at scenario (/workspace/geometry-issue54-20261115/tests/diagnostics/room_manual_review.cjs:198:5)
+    at async /workspace/geometry-issue54-20261115/tests/diagnostics/room_manual_review.cjs:277:71 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
