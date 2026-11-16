@@ -1,0 +1,21 @@
+{
+ "command": "GEOMETRY_TEST_URL=http://127.0.0.1:<port>/ GEOMETRY_RULE_CASE_APP_OUT=<temp dir> GEOMETRY_REQUIRE_CLEAN=1 node tests/test_rule_case_app_browser.js",
+ "label": "fixed-b5195a5b",
+ "head": "b5195a5bbee6458d89997c376679c89eb9a9917b",
+ "tree": "10a7b57749f79a60024c8ddfa242c546ec95ec60",
+ "uncommittedPaths": 0,
+ "runtime": {
+  "schema": "geometry-runtime/1",
+  "version": "d0ccf2305cb7cd30bb71ac6b2ea264b0d4aae27f0147057033c553a73b5affc9",
+  "fresh": true,
+  "root": "/tmp/claude-0/-home-user-geometry-axiom/c161fbcc-185e-5abd-ba3d-eaec6a803bff/scratchpad/walk-wt",
+  "pid": 30938,
+  "session": "176d0a8406be4f9982888b8581cf6672"
+ },
+ "node": "v22.23.4",
+ "chromium": "Google Chrome for Testing 153.0.8010.12 ",
+ "startedAt": "2026-11-15T10:57:08Z",
+ "seconds": 71,
+ "exitCode": 0,
+ "passLines": 76
+}

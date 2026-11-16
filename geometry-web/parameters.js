@@ -100,20 +100,41 @@ window.ParameterUI = (() => {
   const SECTION_SEPARATOR = ' -> ';
   const CODE_AT_START = /^(I3[89] [A-Z_]+|UNSUPPORTED\/[A-Z_]+)/;
   const messageSections = message => String(message).split(SECTION_SEPARATOR);
+  /* 下游物件轉述參數錯誤時，會在整句最前面加上自己是誰：grid_application.c 的 `grid-system N u: `、
+     `I74 grid-system N u parameter P field F: `，references.inc 的 `datum N: `、`guide N: `。
+     先拆掉這一段再認欄位與錯誤碼，並把它寫成「誰拒絕」。 */
+  const CONSUMER_AT_START = /^(?:I74 )?(?:grid-system (\d+) ([uv])(?: parameter \d+ field \d+)?|(datum|guide) (\d+)): /;
+  function splitConsumer(message) {
+    const text = String(message || ''), hit = CONSUMER_AT_START.exec(text);
+    if (!hit) return {consumer: '', text};
+    return {consumer: hit[1] ? `網格來源 ${hit[1]} 的 ${hit[2]} 軸` : `${hit[3] === 'datum' ? '基準面' : '參考線'} ${hit[4]}`, text: text.slice(hit[0].length)};
+  }
+  /* 刪除卡片或欄位時還有引用者（parameters.inc `parameter_retirements_valid`）。錯誤碼是 I38 MISSING，
+     但意思不是「找不到引用」，而是「還有人在用」。 */
+  const STILL_REFERENCED = /^I38 MISSING: parameter \d+ is still referenced by /;
+  const stillReferenced = message => STILL_REFERENCED.test(splitConsumer(message).text);
+  /* 核心在每次拒絕的最後補一筆只寫 `candidate rejected` 的總結。 */
+  const REJECTION_SUMMARY = 'candidate rejected';
+  const GEOMETRY_DETAIL = /^I38 GEOMETRY: \[\d+:\d+ (.+)\] must resolve to integer mm(?: in D1 range)? \(got (-?\d+)\/(\d+)\)$/;
   function errorCode(message) {
-    const sections = messageSections(message);
+    const sections = messageSections(splitConsumer(message).text);
     const found = CODE_AT_START.exec(sections[sections.length - 1].trim());
     return found ? found[1] : null;
   }
   function errorText(message) {
-    const text = String(message || '');
+    const {consumer, text} = splitConsumer(message);
+    const who = consumer ? consumer + '：' : '';
+    if (STILL_REFERENCED.test(text)) return '還有地方引用，不能刪除；請先改綁或解除引用';
+    if (text.trim() === REJECTION_SUMMARY) return '核心拒絕這次變更';
+    const detail = GEOMETRY_DETAIL.exec(text);
+    if (detail) return `${who}${detail[1]} 算出 ${detail[2]}${detail[3] === '1' ? '' : '/' + detail[3]} mm，${detail[3] === '1' ? '超出可用範圍，幾何會拒絕' : ERROR_TEXT['I38 GEOMETRY']}`;
     const code = errorCode(text);
-    if (code && ERROR_TEXT[code]) return ERROR_TEXT[code];
-    return text.trim() || '核心拒絕這次變更';
+    if (code && ERROR_TEXT[code]) return who + ERROR_TEXT[code];
+    return text.trim() ? who + text.trim() : '核心拒絕這次變更';
   }
   /* 這筆訊息路徑上最後一個屬於本卡的欄位 id；不屬於本卡、或路徑切歪時回傳 null。 */
   function ownField(message, card) {
-    const sections = messageSections(message);
+    const sections = messageSections(splitConsumer(message).text);
     let own = null;
     for (const [index, section] of sections.entries()) {
       if (section === '...') continue;
@@ -129,7 +150,10 @@ window.ParameterUI = (() => {
   }
   /* 歸屬到本卡欄位的那一筆顯示在該欄；其餘每一筆違規都留在 rest，由 #paramResult 逐筆列出，不丟資訊。 */
   function explainFailure(diagnostics, card) {
-    const items = (diagnostics || []).map(d => String(d?.message ?? d));
+    const all = (diagnostics || []).map(d => String(d?.message ?? d));
+    /* 已有具體原因時，總結那一筆沒有新資訊；只有它的時候才留著。 */
+    const specific = all.filter(message => message.trim() !== REJECTION_SUMMARY);
+    const items = specific.length ? specific : all;
     const attributed = items.findIndex(message => ownField(message, card) != null);
     const first = attributed >= 0 ? items[attributed] : (items[0] ?? '');
     return {
@@ -492,7 +516,8 @@ window.ParameterUI = (() => {
   }
   function failureHtml(s, p) {
     const failure = s.previewKind === 'put' && s.failure ? s.failure : explainFailure(p.diagnostics, {id: null, fields: []});
-    return failureMarkup(failure);
+    const uses = [failure.raw, ...failure.rest.map(item => item.raw)].some(stillReferenced) ? usage(s.card.id) : [];
+    return failureMarkup(failure) + (uses.length ? `<p class="param-note" data-param-still-used>直接使用處：${esc(uses.map(u => u.label).join('、'))}</p>` : '');
   }
   function impactHtml(s, p) {
     if (!p.valid) return IMPACT_TITLE + failureHtml(s, p);
@@ -518,10 +543,10 @@ window.ParameterUI = (() => {
     paintResults(s);
     $('paramResult').removeAttribute('data-stale');
     $('paramResult').innerHTML = impactHtml(s, p);
-    appendSectionProfileImpact($('paramResult'), p);
+    appendSectionProfileImpact($('paramResult'), p, p.valid ? null : p.diagnostics);
     $('paramConfirm').disabled = !p.valid;
     if (p.valid) status(s.previewKind !== 'put' ? '試算完成，確認後整筆套用。' : s.fresh ? '全部欄位有效，可建立卡片' : '全部欄位有效，可套用', false, 'ok');
-    else status(s.failure?.fieldId != null ? '請修正標紅的欄位' : '未套用：請修正欄位或引用。', true, 'error');
+    else status(s.failure?.fieldId != null ? '請修正標紅的欄位' : (p.diagnostics || []).some(d => stillReferenced(d?.message ?? d)) ? '未刪除：還有地方引用。' : '未套用：請修正欄位或引用。', true, 'error');
     refreshChipValues(s);
   }
   async function preview(s, quiet = false, operations = null) {
