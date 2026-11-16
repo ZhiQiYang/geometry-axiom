@@ -1,0 +1,117 @@
+{
+ "placesBefore": [
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e3 +v +n"
+ ],
+ "newTimber": 92,
+ "layerRows": [
+  "角材 90 定位 —",
+  "角材 91 定位 —",
+  "角材 1 定位 —",
+  "角材 92 定位 —"
+ ],
+ "scheduleRowDelete": {
+  "styleOnHover": {
+   "opacity": "0",
+   "pointerEvents": "none"
+  },
+  "impactDialog": false,
+  "deleted": false
+ },
+ "scheduleRowIdle": {
+  "opacity": "0",
+  "pointerEvents": "none"
+ },
+ "barFit": {
+  "zoom": "19%",
+  "bar": [
+   339,
+   124,
+   481,
+   160
+  ],
+  "summary": [
+   272,
+   68,
+   505,
+   130
+  ],
+  "overlapPx2": 852,
+  "buttons": [
+   {
+    "act": "edit",
+    "reachable": true,
+    "topIs": "SPAN"
+   },
+   {
+    "act": "delete",
+    "reachable": true,
+    "topIs": "SPAN"
+   }
+  ]
+ },
+ "barZoomed": {
+  "zoom": "28%",
+  "bar": [
+   339,
+   62,
+   481,
+   98
+  ],
+  "summary": [
+   272,
+   68,
+   505,
+   130
+  ],
+  "overlapPx2": 4260,
+  "buttons": [
+   {
+    "act": "edit",
+    "reachable": true,
+    "topIs": "SPAN"
+   },
+   {
+    "act": "delete",
+    "reachable": false,
+    "topIs": "fe"
+   }
+  ]
+ },
+ "barDeleteZoomed": {
+  "impactDialog": false,
+  "deleted": false,
+  "selectionCleared": true
+ },
+ "barTopEdge": {
+  "zoom": "19%",
+  "bar": [
+   599,
+   672,
+   741,
+   708
+  ],
+  "summary": [
+   272,
+   68,
+   505,
+   130
+  ],
+  "overlapPx2": 0,
+  "buttons": [
+   {
+    "act": "edit",
+    "reachable": true,
+    "topIs": "SPAN"
+   },
+   {
+    "act": "delete",
+    "reachable": true,
+    "topIs": "SPAN"
+   }
+  ]
+ },
+ "errs": []
+}

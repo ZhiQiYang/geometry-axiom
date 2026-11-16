@@ -1,0 +1,75 @@
+{
+  "schema": "geometry-browser-mutations/1",
+  "suite": "boundary-pair-335",
+  "scope": "GEOMETRY_BOUNDARY_PAIR_ONLY",
+  "caseFilter": "GEOMETRY_BOUNDARY_PAIR_CASE",
+  "resultPrefix": "R335_CASE_RESULT ",
+  "cases": ["C01", "C02", "C03", "C04", "C05", "C06"],
+  "inputs": [
+    "geometry-web/cdp_test.js",
+    "geometry-web/boundary_pair_workflow_test.js",
+    "geometry-web/boundary_pair_mutations.json",
+    "geometry-web/browser_mutation_check.py",
+    "geometry-web/boundary-pair-workspace.js",
+    "geometry-web/reference-ui.js",
+    "geometry-web/boundary_pair_bridge.inc",
+    "geometry-web/boundary_pair_transport.py"
+  ],
+  "mutations": [
+    {
+      "id": "R335-01-disconnect-preview-entry",
+      "case": "C01",
+      "assertions": ["C01_CANCEL_REPLY"],
+      "requirements": ["R17", "D16a", "App-entry"],
+      "changes": [{
+        "file": "geometry-web/boundary-pair-workspace.js",
+        "before": "    $('tbPairPreview').onclick=safe(()=>preview('upsert'));",
+        "after": "    $('tbPairPreview').onclick=safe(()=>report('withdrawal: preview entry disconnected'));"
+      }]
+    },
+    {
+      "id": "R335-02-omit-peer-record",
+      "case": "C01",
+      "assertions": ["C01_CANCEL_NATIVE_PREVIEW"],
+      "requirements": ["D16a", "R4", "R6(f)"],
+      "changes": [{
+        "file": "geometry-web/boundary-pair-workspace.js",
+        "before": "    const members=value.rows.map(row=>{",
+        "after": "    const members=value.rows.slice(0,1).map(row=>{"
+      }]
+    },
+    {
+      "id": "R335-03-disconnect-native-cancel",
+      "case": "C01",
+      "assertions": ["C01_CANCELLED_TOKEN_REJECTED"],
+      "requirements": ["R4", "I8a", "cancel"],
+      "changes": [{
+        "file": "geometry-web/boundary-pair-workspace.js",
+        "before": "    const result=await apiRequest(`boundary-pair-cancel ${value.preview.token} ${value.ownerKey}`);",
+        "after": "    const result={ok:true}; // withdrawal: leave the real native candidate alive"
+      }]
+    },
+    {
+      "id": "R335-04-hide-member-impact",
+      "case": "C01",
+      "assertions": ["C01_CANCEL_VISIBLE_BOTH_MEMBERS"],
+      "requirements": ["D16a", "I8a", "preview"],
+      "changes": [{
+        "file": "geometry-web/reference-ui.js",
+        "before": "  appendBoundaryPairImpact(dialog, preview);",
+        "after": "  /* withdrawal: omit the visible pair-member impact */"
+      }]
+    },
+    {
+      "id": "R335-05-disconnect-native-confirm",
+      "case": "C01",
+      "assertions": ["C01_CREATE_ONE_CONFIRM"],
+      "requirements": ["R4", "I8a", "confirm"],
+      "changes": [{
+        "file": "geometry-web/boundary-pair-workspace.js",
+        "before": "    const result=await apiRequest(`boundary-pair-confirm ${value.preview.token} ${value.ownerKey}`);",
+        "after": "    const result={ok:true,history_changed:true}; // withdrawal: no native confirmation"
+      }]
+    }
+  ]
+}
