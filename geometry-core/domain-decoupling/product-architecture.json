@@ -3521,15 +3521,21 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-web/profile_space_test.js",
+      "reason": "Dedicated Q38j acceptance/test driver profile_space_test.js; invoked only by space_model_test.js, not by product runtime or served application entry points.",
+      "sha256": "034dc5a6a2286068702aca11d615f785d505698089e308924fbd6a076be05ee4",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-web/space_model_test.js",
       "reason": "Dedicated acceptance/test driver space_model_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "9d837faf1a8b0c2b7b7d6c8f9eef52fee47414b6ef894e79976c5a1ef738b493",
+      "sha256": "6324e2372a8f9aaa0f812c624e246e3e4b788923763332e27d76ef4202bcac42",
       "hashMode": "lf"
     },
     {
       "path": "geometry-web/space_test_floor.js",
       "reason": "Dedicated acceptance/test driver space_test_floor.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "9fb7c364efe9037a1264b01ca7c4a38c40c9cad173238e05259e80ee4d8a35a2",
+      "sha256": "c2d04fd8c48992a443d2d7decdae25799eb8629ba4ec6a15ff4db7b5f761ce13",
       "hashMode": "lf"
     },
     {
@@ -5133,7 +5139,7 @@
       "driver": "geometry-web/scenario-workspace.js",
       "driverSha256": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
       "router": "geometry-web/serve.py",
-      "routerSha256": "321b747cf5acd2eca13f1a2221c0816f38fa4ebd3045eb115572de123df2ea5f",
+      "routerSha256": "2991f70056f01c12355503057e7708d7ac39804596bdb96111d850448fd03035",
       "receiver": "owner.frame",
       "queryValue": "context",
       "srcPrefix": "/?scenario=",

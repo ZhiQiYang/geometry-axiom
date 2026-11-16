@@ -6,13 +6,14 @@ const os = require('node:os');
 const path = require('node:path');
 const vm = require('node:vm');
 const {EXPECTED, FULL_SPACE_GROUPS, createGroupCensus} = require('../geometry-web/space_test_floor.js');
-const full = ['space-height-library', 'projection-lifecycle', 'projection-placement', 'font-layout', 'space-flow', 'projection-close'];
+const legacy = ['space-height-library', 'projection-lifecycle', 'projection-placement', 'font-layout', 'space-flow', 'projection-close'];
+const full = [...legacy, 'profile-space'];
 async function complete(census, name, count = EXPECTED[name]) {
   await census.run(name, async () => { for (let i = 0; i < count; i++) census.record(true); });
 }
 async function finish(census, names) { for (const name of ['setup', ...names, 'browser-health']) await complete(census, name); }
 
-test('independent census is frozen; default full space totals 242 without optional timber', async () => {
+test('independent census preserves the original 242 and adds exactly 60 R12 cases without optional timber', async () => {
   assert.ok(Object.isFrozen(EXPECTED));
   assert.ok(Object.isFrozen(FULL_SPACE_GROUPS));
   assert.deepEqual(FULL_SPACE_GROUPS, full);
@@ -23,7 +24,9 @@ test('independent census is frozen; default full space totals 242 without option
   assert.equal(report.completed, true);
   assert.equal(EXPECTED['space-height-library'], 112);
   assert.equal(EXPECTED['projection-close'], 14);
-  assert.equal(Object.values(report.groups).reduce((n, g) => n + g.passed, 0), 242);
+  assert.equal(['setup', ...legacy, 'browser-health'].reduce((n, name) => n + report.groups[name].passed, 0), 242);
+  assert.equal(EXPECTED['profile-space'], 60);
+  assert.equal(Object.values(report.groups).reduce((n, g) => n + g.passed, 0), 302);
   assert.equal(Object.hasOwn(report.groups, 'timber-material'), false);
 });
 test('omitting a whole expected group fails even if every executed assertion passes', async () => {
@@ -71,7 +74,7 @@ test('failed assertions and additional assertions both reject exact counts', asy
   assert.match(extra.report(true).completenessProblems.join('\n'), /got 20 passed/);
 });
 test('partial scopes require only their declared groups; timber and history counts remain distinct', async () => {
-  for (const names of [['space-flow'], ['projection-placement', 'font-layout'], ['font-layout'], ['timber-material', 'timber-source-guards', 'font-layout'], ['timber-source-guards'], ['timber-history-guard'], ['timber-material', 'timber-history-guard', 'font-layout']]) {
+  for (const names of [['space-flow'], ['projection-placement', 'font-layout'], ['font-layout'], ['timber-material', 'timber-source-guards', 'font-layout'], ['timber-source-guards'], ['timber-history-guard'], ['timber-material', 'timber-history-guard', 'font-layout'], ['profile-space']]) {
     const census = createGroupCensus(names);
     await finish(census, names);
     assert.equal(census.report(true).completed, true);
@@ -110,6 +113,7 @@ test('real configuration declares full scope separately from every existing part
     ['GEOMETRY_TIMBER_GUARDS_ONLY', ['timber-source-guards']],
     ['GEOMETRY_ASYNC_REPLY_ONLY', ['async-reply-ui']],
     ['GEOMETRY_SAVE_REOPEN_ONLY', ['save-reopen-grid']],
+    ['GEOMETRY_SPACE_PROFILE_ONLY', ['profile-space']],
   ]) {
     const scope = configuration({...env, [flag]: '1'});
     assert.equal(scope.mode, 'partial');

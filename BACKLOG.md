@@ -1,5 +1,13 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 2026-11-15 R12／Q38j(a/b/c) App 接線（ChatGPT 實作候選）
+
+- 固定基底 `11eddfdb4d7b1f76aedfe001e084a3840790bedc`。承接 issue #43 的既定 Q38j 契約，補齊 plan 明選同源已定位拉伸件、獨立 `/3` 材料包、一般 App 預覽／取消／確認、完整 `/20` 保存重開及 F1b 整筆採用現行來源；沿既有 native 斷面指令與 R39，不新增幾何求解器。逐檔／函式、DOM、資料與操作路徑見 [Q38J-APP.md](geometry-web/docs/Q38J-APP.md)。
+- **具體減項／合併（GEO-219）**：原角材「核對角材尺寸與世界高度」獨立 disclosure 改為共用「一併納入」中的普通清單；拉伸件與角材共用一個 disclosure。原 `#smShowTimbers` 改文案「角材與拉伸件」並承接兩類，沒有新增 visibility 開關。F1b 原角材 disclosure 合併為兩類材料的明選內容，沿原模型修改入口及 preview／confirm／cancel，不加全域按鈕或全域常駐說明區。
+- 保存保留 `/1`–`/19` 與 `/19` room-candidate／bay-repeat／panel-fill 各自守門。K3 covered roots 的延續證明保持，profile-run 只加內容追溯，延續未知；不放寬固定材料版本／來源關聯、faces 或原生能力限制。
+- 範圍外：faces＋profile、即時跟隨 World、依位置推定歸屬、碰撞／貼合／包含、交會扣重疊、斜接或料長續接、R13 reconstruction-data／C／D。公理層不改，原 R12 的規格 L1／斷面工作區 L3 不因 issue 補丁升級；具名實作 PR/head、merge SHA 與實際一般 App 核對分別才是本切片 L2／L3／L4 的依據。
+- 新 `profile-space` 的 source census 為 60；原 Space groups、canvas golden 與分片檔不改。真瀏覽器、完整整合 census、正式 Mutation evidence／衍生檔與 L4 仍待最終具名收據；source 接線或局部綠不冒充完整驗收。
+
 ## 任務 C：R03／R02 C0 from-fill 前置切片（ChatGPT 實作候選）
 
 - 基底 `7a2b16d4f16d6e208461cf8b3dda09cdf89a0386`。接通已採納 D10／D43／R41／R44 的活來源主格、真衍生宿主、候選重算與來源保存；逐支驗收以現有 framing oracle 為準。範圍與重現入口見 `geometry-core/panel-fill/C0-FROM-FILL-NATIVE.md`。

@@ -28,7 +28,33 @@
 
 `#spBuildModel` 使用真模型執行器，`#spModelCanvas` 重用 GeometryModelViewer。`#spTimbers/#spPanels/#spEnvelope` 各自切換呈現；包絡不计材料量，局部軸明標 u,v,w。`#spModelSummary` 核對構件身分、尺寸、方位及範圍。既有「3D 模型庫」的 `[data-sp-open-run]` 只列已定位拉伸件，唯讀專案仍可開啟 3D；編輯及交易控制禁用。未定位件在斷面工作區開啟。
 
-完整場景使用 `geometry-canvas/16` 與 `section-profile/1`。工作區不另存材料網格副本；重開依原生來源重建。`#spTeach` 是可關閉並記住的首次教學卡，沒有新增常駐工具列。
+原生斷面場景以 `geometry-canvas/16` 與 `section-profile/1` 承載，其他既有功能可要求更高格式。斷面工作區不另存材料網格副本；重開依原生來源重建。含 Q38j 保存空間模型時另走下節 `/20` 與完整模型驗證。`#spTeach` 是可關閉並記住的首次教學卡，沒有新增常駐工具列。
+
+## R12／Q38j 斷面拉伸併入空間（2026-11-15 實作候選）
+
+基底 `11eddfdb4d7b1f76aedfe001e084a3840790bedc`。產品與資料契約見 [Q38J-APP.md](Q38J-APP.md)；本節記 DOM 與 source census，真瀏覽器、完整整合及正式突變證據待最終收據，不表示已到 L4。
+
+| 既有／新增掛點 | 契約 |
+|---|---|
+| `#btnNewSectionProfile`、`#spProfileSelect/#spNewProfile/#spNewMember/#spNewRun` | 沿原一般建立入口準備斷面、構件與 run；本片不新增全域按鈕或另一斷面工作區 |
+| `[data-fp-build][data-fp-placement]`、`#smUseCurrent` | 沿原面屬性／工作區入口取得同版來源；候選以 profile-read revision、去身分 dump、context 及 history 夾讀核對 |
+| `#smTimberSettings` | 唯一「一併納入」details；角材與拉伸件共用。原 `#smTimberCandidateDetails` 保留 ID，但改為普通清單容器，不再有另一個角材 disclosure |
+| `#smProfileCandidates [data-sm-profile-run]` | 同一來源快照全部 world runs，依 id 排列，初始不勾選；顯示 run id、斷面名、長度、構件數及定位摘要。不得依宿主或位置自動選取 |
+| `#smProfileUnavailable` | 列已定位／未定位數；local run 不能選，不以缺席候選冒充零件不存在 |
+| `#smProfileReview/#smProfileReviewList/#smProfileVolume` | 列 run／構件數、逐構件材料量及獨立總量，標來源快照、包絡不計材料、未扣重疊；已選零構件 run 顯示數量及零材料量，不能寫成未納入 |
+| `#smShowTimbers` | 原 ID 改文案為「角材與拉伸件」，共同控制兩類 geometry；不顯示 profile reference 包絡，不改選擇或保存內容 |
+| `#smPreview/#smConfirmFaces/#smCreate/#smClose` | 沿原預覽／核對／建立／關閉；來源或設定改變使候選失效。取消不寫 World、模型或歷史；確認只增加一筆完整模型及一筆 local history |
+| `#smCurrentSourceUpdate`、`#muDialog` | 沿原模型「修改模型 → 採用現行來源…」入口，不增另一個模型更新工作區 |
+| `#muProfiles [data-mu-profile-run]`、`#muProfileCount/#muProfileUnavailable` | F1b 重新逐條明選；plan 的 `selection.profile_runs` 必填，`[]` 明確移除舊 runs。開啟另一模型清除前次候選；faces 不帶此欄 |
+| `#muIdentity/#muName` | covered 根延續證明與 run 延續未知分開呈現；勾選 run 當下就更新，不能把 profile-run 當 K3 pin，也不把原 covered 根一律抹成 unknown |
+| `#muPreview/#muDiff/#muFullDetails/#muConfirmed/#muApply/#muClose` | 顯示完整 source/input/summary、六類包與實際材料幾何差異；取消零寫入，確認前重新核源及真 producer，整筆替換同 model id，可一步復原／重做 |
+| `[data-source-untracked="profile-run:ID"]`、`[data-source-model-continuity]` | 來源檢查保留 profile 的內容新鮮度與延續未知；其他 covered 根仍依原 K3 判讀 |
+
+`/model/capabilities.space_preview_schemas` 須另含 `/3`，僅 `section-profile/1` 不足；建立與含 profile 的 F1b 都不能降級略過明選。完整專案／方案葉含 profile 模型時使用 `geometry-canvas/20`，保留 `/1`–`/19` 及 `/19` 各 owner／有限 native reader 守門。全部包由同一 input 來源推導，生成殼／牆可含設定宣告；只有 profile 包要求 `definitions.base_scene` 恰同來源快照與 `extensions:[]`。
+
+瀏覽器專項為 `space_model_test.js` 的 `profile-space` group，完整 Space 及 `GEOMETRY_SPACE_PROFILE_ONLY=1` 均呼叫 `profile_space_test.js`。其 `CASES` 與 `space_test_floor.js` 的 source census 為 **60 個不同具名斷言**，另保留 setup 2、browser-health 2。原 Space groups 的 expected 不改；完整成功必須每組恰合且 `completed:true`。`tests/test_profile_space_browser_contract.js` 只驗來源接線、語法與 census，不代表跑過瀏覽器。
+
+原 `geometry-web/cdp_sections.golden.json` 與 `geometry-web/canvas_shards.json` 本片保持不變；新組屬 Space，不新增 canvas P 段。這是來源清單與格式同步，尚須新候選的真執行、完整 census 與正式 evidence 核對，不能手填成功或用局部次數相加。
 
 ## #123 已採納介面切片（2026-10-09，來源對照；驗收另記）
 
@@ -195,9 +221,9 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 ## GEO-208 角材結構建模（目前合約）
 
 - `#timber-space-v1` 連線完成後自動開「角材骨架範例」，`#smTryTimberFrame` 可隨時載入。範例不改使用者世界。服務 `/model/capabilities` 宣告 `space_preview_schemas`；確認支援 `/2` 才顯示「角材結構建模版」。舊服務明示未啟用，納入角材的請求不降級送出。
-- `#smIncludeTimbers` 為建模選擇；`#smTimberCount`、`#smTimberCandidates` 顯示精確所選放置的角材與尺寸／世界高度。`#smTimberEmpty`、`#smBackToTimbers` 提供零支引導。候選與場景快照一致後才能採用。
-- `#smShowTimbers` 只控制真實角材 mesh 顯示；`#smShowRoof` 只作用於空間殼。`#smTimberVolume` 獨立列材料量，`#smTimberReview`／`#smTimberReviewList` 在建立前核對支數及高度。`#smExportKind` 的 `timbers` 選項匯出完整角材套件。
-- 新請求的 `input.timbers` 是非空 typed roots；省略時沿用 preview `/1`，有角材時為 `/2`，保存為 `geometry-canvas/4`。舊 `/1–3` 可讀且不補入角材；匯入在替換目前專案前完成五種套件驗證與保存輸入重建。
+- `#smIncludeTimbers` 為建模選擇；`#smTimberCount`、`#smTimberCandidates` 顯示精確所選放置的角材與尺寸／世界高度。`#smTimberEmpty`、`#smBackToTimbers` 提供零支引導。候選與場景快照一致後才能採用；Q38j 將清單併入唯一 `#smTimberSettings`「一併納入」。
+- `#smShowTimbers` 控制角材與拉伸件的真實 geometry mesh；`#smShowRoof` 只作用於空間殼。`#smTimberVolume` 仍只列角材材料量，`#smTimberReview`／`#smTimberReviewList` 在建立前核對支數及高度。`#smExportKind` 的 `timbers` 選項仍只匯出完整角材套件。
+- 新請求的 `input.timbers` 是非空 typed roots；沒有 profile 時，省略角材沿用 preview `/1`、有角材為 `/2`；有明選 profile 則為 `/3`，角材包仍須獨立驗證。`geometry-canvas/4` 是原角材格式，現行依內容選格式，含 profile 模型用 `/20`。舊 `/1–3` 可讀且不補入角材；匯入在替換目前專案前驗證全部明選套件與保存輸入重建，不以 `/2` 標籤決定是否驗角材。
 - 詳見 `TIMBER-IN-SPACE.md`；測試為 backend、project-store、model-viewer 及 `space_model_test.js`，`GEOMETRY_TIMBER_ONLY=1` 可單跑角材瀏覽器段。
 
 ## GEO-207 平面投影定義（版本及角材擴充見 GEO-208）
