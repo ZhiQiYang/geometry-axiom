@@ -292,6 +292,6 @@ test('the embedded side stands its leave guards down only for a marked host unlo
   // window-level beforeunload listeners run in registration order: this file must load before every guard.
   const html=fs.readFileSync(path.join(web,'index.html'),'utf8'),at=name=>{const i=html.indexOf('<script src="'+name+'"></script>');assert.ok(i>=0,name);return i;};
   const guards=fs.readdirSync(web).filter(name=>name.endsWith('.js')&&!/test|cdp_/.test(name)&&name!=='scenario-integration.js'&&/addEventListener\(\s*['"]beforeunload['"]/.test(fs.readFileSync(path.join(web,name),'utf8')));
-  assert.deepEqual(guards.sort(),['document-cases.js','parameters.js','reference-workspace.js','room-collection-workspace.js','section-profile-workspace.js']);
+  assert.deepEqual(guards.sort(),['boundary-pair-workspace.js','document-cases.js','parameters.js','reference-workspace.js','room-collection-workspace.js','section-profile-workspace.js']);
   for(const name of guards)assert.ok(at('scenario-integration.js')<at(name),name);
 });
