@@ -1,0 +1,66 @@
+{
+  "utc": "2026-11-15T21:36:39.481346+00:00",
+  "worktrees": [
+    {
+      "path": "/workspace/geometry-axiom",
+      "head": {
+        "exit": 0,
+        "stdout": "797575db351719290504b1bf64e7f0e632b9f152\n",
+        "stderr": ""
+      },
+      "branch": {
+        "exit": 0,
+        "stdout": "work\n",
+        "stderr": ""
+      },
+      "status": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "path": "/workspace/geometry-issue54-20261115",
+      "head": {
+        "exit": 0,
+        "stdout": "ae2d943817879c3096d7b23106c3f55122dea606\n",
+        "stderr": ""
+      },
+      "branch": {
+        "exit": 0,
+        "stdout": "codex/issue54-manual-correction-20261115\n",
+        "stderr": ""
+      },
+      "status": {
+        "exit": 0,
+        "stdout": "?? tests/evidence/r22-app-preflight-20261115/app-diagnostic-preflight.command.json\n?? tests/evidence/r22-app-preflight-20261115/app-diagnostic-preflight.stderr\n?? tests/evidence/r22-app-preflight-20261115/app-diagnostic-preflight.stdout\n?? tests/evidence/r22-app-preflight-20261115/app-diagnostic-syntax.command.json\n?? tests/evidence/r22-app-preflight-20261115/app-diagnostic-syntax.stderr\n?? tests/evidence/r22-app-preflight-20261115/app-diagnostic-syntax.stdout\n?? tests/evidence/r22-app-preflight-20261115/preflight.receipt.json\n",
+        "stderr": ""
+      }
+    }
+  ],
+  "ownAppOrServiceProcesses": [],
+  "allRegisteredWorktrees": {
+    "exit": 0,
+    "stdout": "worktree /workspace/geometry-axiom\nHEAD 797575db351719290504b1bf64e7f0e632b9f152\nbranch refs/heads/work\n\nworktree /workspace/geometry-issue54-20261115\nHEAD ae2d943817879c3096d7b23106c3f55122dea606\nbranch refs/heads/codex/issue54-manual-correction-20261115\n\n",
+    "stderr": ""
+  },
+  "productDiff": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "systemSandboxMetadata": {
+    "path": "/usr/lib/chromium/chrome-sandbox",
+    "uid": 65534,
+    "gid": 65534,
+    "mode": "0o4755"
+  },
+  "environmentChange": false,
+  "browserLaunched": false,
+  "serviceLaunched": false,
+  "historicalFailuresNotRetried": [
+    "PermissionError: [Errno 13] Permission denied: '/root/.cache/ms-playwright'",
+    "Chromium SUID sandbox helper not owned by root; earlier launch aborted"
+  ],
+  "note": "Metadata-only preservation check; no attempt to execute browser or read the denied cache."
+}
