@@ -117,8 +117,8 @@ def project_r14_rule_capability(case, value):
 def project_r17_boundary_pair_native(case, value):
     """Extract the R17 native-subset descriptor at its fixed first position.
 
-    #410 declares boundary-pair/1 as an incomplete native subset (I32), not as a
-    supported host capability. Its exact contract is fixed here; every other
+    R17 declares boundary-pair/1 as an incomplete literal subset (I32), with a
+    bounded host entry. Its exact contract is fixed here; every other
     field and its order still reaches the original comparison.
     """
     projected = json.loads(json.dumps(value))
@@ -127,9 +127,9 @@ def project_r17_boundary_pair_native(case, value):
         "schema": "boundary-pair-native/1",
         "capability": "boundary-pair/1",
         "complete": False,
-        "supported": ["scene-package", "joint-evaluation", "preview-confirm-cancel", "group-delete", "dump-load-undo-redo"],
+        "supported": ["scene-package", "joint-evaluation", "preview-confirm-cancel", "group-delete", "dump-load-undo-redo", "host-app-literal-entry"],
         "memberDimensionSources": ["literal"],
-        "unsupported": ["engineering-dimension-source", "parameter-dimension-source", "host-app-entry"],
+        "unsupported": ["engineering-dimension-source", "parameter-dimension-source"],
     }
     case.assertIn("boundary_pair_native", state, "K1_R17_PAIR_NATIVE_PRESENT")
     case.assertEqual(json.dumps(expected, ensure_ascii=False, separators=(",", ":")),

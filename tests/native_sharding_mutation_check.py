@@ -74,13 +74,13 @@ evidence_modes = ('R348_DROP_LATEST_MEASURED_RUN', 'R348_REWRITE_RETAINED_MEASUR
 if (mode in ('measured-baseline', 'R348_REVERT_MEASURED_PROFILE', 'R348_REMOVE_SCENARIO_SWAP',
              'R380_REVERT_SINGLE_PAIR_SWEEP', 'R380_DROP_ADDED_SUITE_EVIDENCE',
              'R380_REMOVE_MULTISTART_SCREENING',
-             'R379_DROP_R14_SUITE_EVIDENCE')
+             'R379_DROP_R14_SUITE_EVIDENCE', 'R17_DROP_SUITE_EVIDENCE')
         or mode in historical_workflow_replacements or mode in evidence_modes):
     target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
 if mode in ('r14-baseline', 'R379_REVERT_SINGLE_START_ONE_SWEEP'):
     target = 'test_unittest_runner.NativeShardCoverage.test_r14_historical_budget'
 if mode in ('provenance-baseline', 'R379_ALLOW_DUPLICATE_SOURCE',
-            'R379_OMIT_R14_SOURCE_FROM_DIGEST'):
+            'R379_OMIT_R14_SOURCE_FROM_DIGEST', 'R17_OMIT_SOURCE_FROM_DIGEST'):
     target = 'test_unittest_runner.NativeShardCoverage.test_added_suite_provenance_rejects_named_mutations'
 if mode == 'path-scope-baseline' or mode.startswith('R391_'):
     target = path_scope_target
@@ -136,6 +136,27 @@ elif mode == 'R379_DROP_R14_EXPECTED_ENTRIES':
             value = json.dumps(data)
         return value
     pathlib.Path.read_text = missing_r14_expected
+elif mode == 'R17_DROP_SUITE_EVIDENCE':
+    native_shards.added_suite_costs = lambda: {
+        **native_shards._legacy_added_suite_costs(), **native_shards.added_r14_suite_costs()}
+elif mode == 'R17_OMIT_SOURCE_FROM_DIGEST':
+    import hashlib
+    native_shards.profile_digest = lambda: hashlib.sha256(
+        native_shards.TIMINGS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+elif mode == 'R17_DROP_EXPECTED_ENTRIES':
+    original_expected_read = pathlib.Path.read_text
+    def missing_r17_expected(path, *args, **kwargs):
+        value = original_expected_read(path, *args, **kwargs)
+        if path.resolve() == run_all.EXPECTED_FILE.resolve():
+            data = json.loads(value)
+            for name in ('py:test_boundary_pair_host', 'node:boundary_pair_ui',
+                         'node:boundary_pair_project', 'node:boundary_pair_browser_scope'):
+                data['suites'].pop(name)
+            value = json.dumps(data)
+        return value
+    pathlib.Path.read_text = missing_r17_expected
 if mode in current_workflow_replacements or mode in evidence_modes:
     # Mutate only this child's in-memory file read; never rewrite the checkout.
     original_read = pathlib.Path.read_text
@@ -197,6 +218,8 @@ markers = ('R348_MEASURED_RECEIPT_BUDGET', 'R348_FOUR_NATIVE_WORKFLOW',
            'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'R379_COMPLETE_EXPECTED_REGISTRY',
            'R379_ADDED_SUITE_MUTATION_cross-source-duplicate',
            'R379_PROFILE_DIGEST_BINDS_R14_SOURCE',
+           'R17_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'R17_COMPLETE_EXPECTED_REGISTRY',
+           'R17_PROFILE_DIGEST_BINDS_R17_SOURCE',
            'R391_BROWSER_PATH_SCOPE_WIRING')
 row = dict(tests=result.testsRun, failures=len(result.failures), errors=len(result.errors),
            skips=len(result.skipped), failure_ids=[case.id() for case,_ in result.failures],
@@ -234,6 +257,9 @@ def main():
         'R379_DROP_R14_EXPECTED_ENTRIES': ('baseline', 'R379_COMPLETE_EXPECTED_REGISTRY'),
         'R379_ALLOW_DUPLICATE_SOURCE': ('provenance-baseline', 'R379_ADDED_SUITE_MUTATION_cross-source-duplicate'),
         'R379_OMIT_R14_SOURCE_FROM_DIGEST': ('provenance-baseline', 'R379_PROFILE_DIGEST_BINDS_R14_SOURCE'),
+        'R17_DROP_SUITE_EVIDENCE': ('measured-baseline', 'R17_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
+        'R17_DROP_EXPECTED_ENTRIES': ('baseline', 'R17_COMPLETE_EXPECTED_REGISTRY'),
+        'R17_OMIT_SOURCE_FROM_DIGEST': ('provenance-baseline', 'R17_PROFILE_DIGEST_BINDS_R17_SOURCE'),
         'R348_REVERT_MEASURED_PROFILE': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
         'R348_REMOVE_SCENARIO_SWAP': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
         'R380_REVERT_SINGLE_PAIR_SWEEP': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
