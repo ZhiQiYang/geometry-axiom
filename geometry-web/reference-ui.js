@@ -1,5 +1,9 @@
 /* Reference editing and the mandatory I8a confirmation flow. */
-async function confirmReferenceImpact(preview) {
+async function confirmReferenceImpact(preview, {current = () => true, ownsPreview = () => true} = {}) {
+  if (!current()) {
+    if (ownsPreview()) await apiRequest('line cancel-preview');
+    return {ok:false,error:'操作情境已變更，未確認連動變更'};
+  }
   const repeat=(preview.timbers||[]).some(row=>row.owner?.identity)||
     ['before','after'].some(side=>preview.assembly?.[side]?.instances?.some(r=>r.value.source.layout==='bay-repeat'));
   const repeatComplete=!repeat||Array.isArray(preview.bayCells)&&(preview.timbers||[]).every(row=>!row.owner?.identity||['kept','moved','created','deleted'].includes(row.change));
@@ -120,11 +124,11 @@ async function confirmReferenceImpact(preview) {
       if (settled) return; settled = true;
       apply.disabled = true; cancel.disabled = true;
       try {
-        const result = approved
-          ? await apiRequest(`line confirm ${preview.token}`)
-          : await apiRequest('line cancel-preview');
+        const allowed = approved && current();
+        const result = allowed ? await apiRequest(`line confirm ${preview.token}`)
+          : ownsPreview() ? await apiRequest('line cancel-preview') : {ok:false};
         dialog.close(); dialog.remove();
-        resolve(approved ? result : {ok:false, error:'已取消；場景保持原狀'});
+        resolve(allowed ? result : {ok:false, error:approved ? '操作情境已變更，未確認連動變更' : '已取消；場景保持原狀'});
       } catch (error) {
         dialog.close(); dialog.remove(); resolve({ok:false, error:error.message});
       }

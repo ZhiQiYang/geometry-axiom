@@ -1112,6 +1112,7 @@ static void cmd_host_gate_check(const char *arg)
 #include "assembly_bridge.inc"
 #include "source-inspector-bridge.inc"
 #include "timber_edit_bridge.inc"
+#include "workspace_view_bridge.inc"
 
 /* 視圖點已包含 frame 原點與構件尺寸；不能套用局部定義的單項上限。 */
 static bool view_coord_in_range(Coord value)
@@ -1194,6 +1195,12 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_source_inspect_file(arg);
         } else if (strcmp(line,"engineering-preview-source")==0 && arg) {
             cmd_engineering_preview_source(arg);
+        } else if (strcmp(line,"view-capabilities")==0 && !arg) {
+            cmd_workspace_view_capabilities();
+        } else if (strcmp(line,"view-read")==0 && arg) {
+            cmd_workspace_view_read(arg);
+        } else if (strcmp(line,"view-pick")==0 && arg) {
+            cmd_workspace_view_pick(arg);
         } else if (strcmp(line,"timber-edit-read")==0 && arg) {
             cmd_timber_edit_read(arg);
         } else if (strcmp(line,"timber-edit-preview")==0 && arg) {

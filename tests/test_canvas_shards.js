@@ -19,6 +19,50 @@ const REAL = {planSha256: shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)), go
 const clone = value => JSON.parse(JSON.stringify(value));
 const sum = sections => Object.values(sections).reduce((a, b) => a + b, 0);
 
+// P1161 is the only extension over main ee4519f3's exact 95-section baseline.
+// Its exact count was observed in two complete capture partitions using the existing handoff.
+// This is a candidate count; final-head strict Canvas replay remains required.
+function projectWorkspaceGolden(value, rawSource = fs.readFileSync(shards.GOLDEN_PATH, 'utf8')) {
+  assert.equal(value.sections.P1161, 510, 'R396_P1161_MEASURED_ASSERTION_COUNT');
+  assert.equal(value.sections.R06, 55, 'R396_R06_FIVE_ASSERTIONS_INCLUDED');
+  const old = clone(value);delete old.sections.P1161;old.total -= 510;
+  const raw = rawSource.replace(/\r\n/g, '\n');
+  const withoutP1161 = raw.replace('    "P1161": 510,\n', '');
+  assert.notEqual(withoutP1161, raw, 'R396_P1161_RAW_LINE_REQUIRED');
+  const projected = withoutP1161.replace('  "total": 5341,\n', '  "total": 4831,\n');
+  assert.notEqual(projected, withoutP1161, 'R396_R20_D18_REBASED_TOTAL_LINE_REQUIRED');
+  assert.equal(shards.lfSha256(Buffer.from(projected)), '9e6fc28a64a5522d5182897193c6d923634ce1b7a2b0454130b972dd6a99292b', 'R396_R20_D18_REBASED_GOLDEN_BYTES_UNCHANGED');
+  assert.deepEqual(JSON.parse(projected), old, 'R396_ONLY_P1161_GOLDEN_PROJECTED');
+  // #417 adds P76 +2 and P70 +1. Project just those exact bytes to recover
+  // the previous R396/R06 baseline; both older byte pins remain unchanged.
+  const withoutR20Addition = projected.replace('    "P76": 89,\n', '    "P76": 87,\n');
+  assert.notEqual(withoutR20Addition, projected, 'R396_R20_TWO_RAW_LINE_REQUIRED');
+  const withoutD18Addition = withoutR20Addition.replace('    "P70": 122,\n', '    "P70": 121,\n');
+  assert.notEqual(withoutD18Addition, withoutR20Addition, 'R396_D18_ONE_RAW_LINE_REQUIRED');
+  const beforeR20D18 = withoutD18Addition.replace('  "total": 4831,\n', '  "total": 4828,\n');
+  assert.notEqual(beforeR20D18, withoutD18Addition, 'R396_R20_D18_PREVIOUS_TOTAL_LINE_REQUIRED');
+  assert.equal(shards.lfSha256(Buffer.from(beforeR20D18)), 'ac98a30ec18b56a3249017d983483acda0d457f8111b64f46e5b0d8a37cd8b4b', 'R396_R06_REBASED_GOLDEN_BYTES_UNCHANGED');
+  const withoutR06Addition = beforeR20D18.replace('    "R06": 55,\n', '    "R06": 50,\n');
+  assert.notEqual(withoutR06Addition, beforeR20D18, 'R396_R06_FIVE_RAW_LINE_REQUIRED');
+  const historical = withoutR06Addition.replace('  "total": 4828,\n', '  "total": 4823,\n');
+  assert.notEqual(historical, withoutR06Addition, 'R396_HISTORIC_TOTAL_LINE_REQUIRED');
+  assert.equal(shards.lfSha256(Buffer.from(historical)), '47731559a71bc01ddb608f114707cda3c664b9d8742e37bd5061d464a028b6ef', 'R396_95_OLD_GOLDEN_BYTES_UNCHANGED');
+  assert.equal(old.total, 4831, 'R396_OLD_TOTAL_UNCHANGED');
+  return old;
+}
+
+
+function verifyWorkspaceGoldenRebase() {
+  const beforeP1161 = projectWorkspaceGolden(golden);
+  assert.equal(beforeP1161.sections.R06, 55, 'R396_R06_PLUS_FIVE_RETAINED');
+  assert.equal(beforeP1161.total, 4831, 'R396_R06_PLUS_FIVE_95_TOTAL');
+  const raw = fs.readFileSync(shards.GOLDEN_PATH, 'utf8').replace(/\r\n/g, '\n');
+  const tampered = raw.replace('    "P360": 13,\n', '    "P360": 13, \n');
+  assert.notEqual(tampered, raw, 'R396_BYTE_PROBE_CHANGED');
+  assert.throws(() => projectWorkspaceGolden(golden, tampered),
+    /R396_R20_D18_REBASED_GOLDEN_BYTES_UNCHANGED/, 'R396_BYTE_PIN_REJECTS_WHITESPACE_DRIFT');
+}
+
 function result(index, change = r => r) {
   const sections = shards.expectedSections(golden, plan, index), handoff = {};
   if (plan.boundaries[index - 1]) handoff.outgoing = {boundary: index, localStorage: clone(plan.boundaries[index - 1].localStorage), matched: true};
@@ -44,6 +88,21 @@ function red(receipts, pattern, ctx = context) {
 const moveSection = (r, name, from) => { r.sections[name] = from.sections[name]; r.sectionOrder.unshift(name); r.passedAssertions = sum(r.sections); };
 
 test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍是所在片的最後一段', () => {
+  const evidence = require('./helpers/canvas_shards.js');
+  const runner = fs.readFileSync(path.join(ROOT, 'geometry-web/cdp_test.js'), 'utf8');
+  const source = fs.readFileSync(path.join(ROOT, 'geometry-web/workspace_context_menu_test.js'), 'utf8');
+  const header = source.match(/console\.log\('(=== P1161\.[^'\n]+)'\)/)?.[1];
+  assert.ok(header, 'R396_REAL_P1161_HEADER');
+  assert.match(runner, /if\(inSequence\(2\)\)await runWorkspaceContextMenu\(\);/, 'R396_REAL_SHARD_2_DISPATCH');
+  const journal = evidence.createJournal(evidence.buildPlan(golden, plan), '2/2', () => {});
+  journal.begin('2/2');
+  for (const section of plan.shards[1].sections) {
+    journal.section(section, '=== ' + section + '. existing section ===');
+    if (section === 'P353') break;
+  }
+  assert.doesNotThrow(() => journal.section('P1161', header), 'R396_P1161_MUST_HAVE_OWNER');
+  assert.deepEqual(plan.shards.map(shard => shard.sections.filter(name => name === 'P1161')), [[], ['P1161']], 'R396_P1161_EXACTLY_ONE_OWNER');
+  assert.deepEqual(plan.shards[1].sections.slice(-3), ['P353', 'P1161', 'P359'], 'R396_P1161_EXECUTION_ORDER');
   assert.deepEqual(shards.validatePlan(plan, golden), [], 'R06_CANVAS_PLAN: every existing golden section must be assigned');
   assert.equal(COUNT, 2);
   const all = plan.shards.flatMap(s => s.sections);
@@ -52,9 +111,9 @@ test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍�
   const owner = plan.shards.find(s => s.sections.includes('P359'));
   assert.equal(owner.sections.at(-1), 'P359');
   assert.equal(plan.shards[0].sections.includes('P353'), false, 'R369_P353_SHARD: P353 is not in shard 1');
-  assert.deepEqual(plan.shards[1].sections.slice(-2), ['P353', 'P359'], 'R369_P353_ORDER: P353 immediately precedes the storage-reset suite');
+  assert.deepEqual(plan.shards[1].sections.filter(name => name !== 'P1161').slice(-2), ['P353', 'P359'], 'R369_P353_ORDER: P353 immediately precedes the storage-reset suite');
   // Merged with #355: cdp_test.js dispatches P352, P116 (timber reuse), P128 (R02 panel fill), P353, P359.
-  assert.deepEqual(plan.shards[1].sections.slice(-5), ['P352', 'P116', 'P128', 'P353', 'P359'], 'R356_P116_ORDER: reuse runs once before the R02 panel-fill, card-entry and storage-reset suites');
+  assert.deepEqual(plan.shards[1].sections.filter(name => name !== 'P1161').slice(-5), ['P352', 'P116', 'P128', 'P353', 'P359'], 'R356_P116_ORDER: reuse runs once before the R02 panel-fill, card-entry and storage-reset suites');
   assert.equal(all.filter(name => name === 'P116').length, 1, 'R356_P116_ONE_OWNER');
   assert.equal(plan.shards[0].sections.includes('R06'), false, 'R06_CANVAS_PLAN: R06 belongs to shard 2');
   const repeatAt = plan.shards[1].sections.indexOf('R06');
@@ -68,16 +127,18 @@ test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍�
 });
 
 test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 golden', () => {
+  verifyWorkspaceGoldenRebase();
   const verdict = shards.verifyComplete(complete(), context);
   assert.deepEqual(verdict.problems, []);
   assert.equal(verdict.passed, true);
   assert.equal(verdict.summary.total, context.golden.total);
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
+  const beforeWorkspace=projectWorkspaceGolden(context.golden);
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
   // R20 findings 1-3 add exactly two P76 assertions; project them out too.
   // D18 finding 5 adds exactly one P70 assertion; project it out too.
-  const golden=d18CardStaggerExtension.projectGolden(r20ReasonsExtension.projectGolden(r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(context.golden)))));
+  const golden=d18CardStaggerExtension.projectGolden(r20ReasonsExtension.projectGolden(r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(beforeWorkspace)))));
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
   // #360 and R06 add independent sections. Keep the original 4002/91 contract
@@ -106,7 +167,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.deepEqual(Object.keys(golden.sections).sort(), [...Object.keys(mainSections), 'P116'].sort(), 'R356_ONLY_NEW_SECTION');
   assert.equal(golden.total, sum(mainSections) + golden.sections.P116, 'R356_COMPLETE_COUNT_UNION');
   assert.equal(Object.keys(golden.sections).length, 94);
-  assert.equal(Object.keys(context.golden.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
+  assert.equal(Object.keys(beforeWorkspace.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
   assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });

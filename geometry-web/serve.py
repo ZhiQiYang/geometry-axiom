@@ -55,6 +55,8 @@ POST_MAX_BYTES = {
     "/engineering/preview": 1024 * 1024,
     "/timber-edit/read": 1024 * 1024,
     "/timber-edit/preview": 1024 * 1024,
+    "/view/read": 1024 * 1024,
+    "/view/pick": 1024 * 1024,
     "/engineering/validate-project": 1024 * 1024,
     "/engineering/read": 1024 * 1024,
     "/definition-import/read": 16 * 1024 * 1024,
@@ -200,7 +202,7 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("指令不得含換行或 NUL")
     if cmd.split(" ", 1)[0] == "identity-epoch":
         return err_json("配號區段只由宿主設定。")
-    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file ", "definition-import-read ", "definition-import-preview ", "timber-edit-read ", "timber-edit-preview "):
+    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file ", "definition-import-read ", "definition-import-preview ", "timber-edit-read ", "timber-edit-preview ", "view-read ", "view-pick "):
         if cmd.startswith(prefix):
             cmd = prefix + to_bridge_path(cmd[len(prefix):])
             break
@@ -603,7 +605,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 data = json.loads(body.decode('utf-8'))
                 readonly = isinstance(data, dict) and ('receipt' in data or
                            data.get('cmd', '').split(' ', 1)[0] in
-                           {'dump', 'dump-deidentified', 'identity-read', 'objects', 'surfaces', 'boundary', 'references', 'obstacles', 'render', 'pick', 'bhit', 'source-inspect'})
+                           {'dump', 'dump-deidentified', 'identity-read', 'objects', 'surfaces', 'boundary', 'references', 'obstacles', 'render', 'pick', 'bhit', 'source-inspect', 'view-capabilities'})
             except (ValueError, UnicodeDecodeError, AttributeError):
                 pass
         client_version = self.headers.get('X-Geometry-Version')
@@ -723,6 +725,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
             except ModelError as exc:
                 self._send(canonical_bytes(exc.as_dict()))
             return
+        if self.path in {"/view/read", "/view/pick"}:
+            from workspace_view_transport import file_request
+            try:
+                self._send(file_request(body, ask_bridge, pick=self.path.endswith('/pick')))
+            except OSError:
+                self._send(err_json('無法建立視圖資料暫存檔，專案未變更。'))
+            return
         if self.path in {"/timber-edit/read", "/timber-edit/preview"}:
             from timber_edit_transport import file_request
             try:
@@ -817,6 +826,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 data = json.loads(body.decode("utf-8"))
                 if not isinstance(data, dict) or not isinstance(data.get("ack", []), list):
                     raise ValueError("bad request")
+                raw_command = data.get("cmd")
+                if (isinstance(raw_command, str) and raw_command.split() and
+                        raw_command.split()[0] in {"view-read", "view-pick"}):
+                    self._send(err_json("視圖只接受 /view/read 或 /view/pick 的 JSON，不接受客戶端檔案路徑。"))
+                    return
                 if "receipt" in data:
                     self._send(recorded_api(data))
                     return

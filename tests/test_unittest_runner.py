@@ -6,6 +6,7 @@ import sys
 import tempfile
 import unittest
 import argparse
+import ast
 from collections import Counter
 import contextlib
 import io
@@ -116,6 +117,8 @@ class RunnerClassification(unittest.TestCase):
 
 R379_ADDED_SUITES = frozenset({'node:r14_app', 'node:r14_host', 'py:test_r14_browser_receipt'})
 R380_ADDED_SUITES = frozenset({'py:test_panel_fill_grid_source', 'node:panel_fill_grid_read_compat'})
+R396_ADDED_SUITES = frozenset({'node:workspace_view_state', 'py:test_workspace_view_server',
+                              'py:test_workspace_view', 'node:workspace_context_menu_state'})
 
 
 class BrowserPathScopeWiring(unittest.TestCase):
@@ -258,10 +261,17 @@ class NativeShardCoverage(unittest.TestCase):
             'py:test_r14_browser_receipt': {'mode': 'count', 'count': 10, 'unit': 'test'},
         }, {name: expected['suites'].get(name) for name in R379_ADDED_SUITES},
                          'R379_COMPLETE_EXPECTED_REGISTRY')
+        self.assertEqual({
+            'node:workspace_view_state': {'mode': 'count', 'count': 15, 'unit': 'node test'},
+            'py:test_workspace_view_server': {'mode': 'count', 'count': 2, 'unit': 'test'},
+            'py:test_workspace_view': {'mode': 'count', 'count': 10, 'unit': 'test'},
+            'node:workspace_context_menu_state': {'mode': 'exit-code-only'},
+        }, {name: expected['suites'].get(name) for name in R396_ADDED_SUITES},
+                         'R396_COMPLETE_EXPECTED_REGISTRY')
         parts = run_all.partition_suites(suites, 3)
         actual = Counter(s.name for part in parts for s in part)
         self.assertEqual(actual, Counter({name:1 for name in expected['suites']}),
-                         '分片必須完整涵蓋原套件清單，且每個suite恰好一次')
+                         '分片必須完整涵蓋原套件清單，且每個suite恰好一次；R396_COMPLETE_EXPECTED_REGISTRY')
         self.assertEqual(sum(map(len, parts)), len(suites))
         four = run_all.partition_suites(suites, 4)
         self.assertEqual(Counter(s.name for part in four for s in part),
@@ -369,21 +379,33 @@ class NativeShardCoverage(unittest.TestCase):
         # mutation proofs. It is historical coverage, not the current CI plan.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual(R380_ADDED_SUITES, set(added) - R379_ADDED_SUITES,
+        legacy_added = {row['name']: row['planning_upper_ms'] for row in json.loads(
+            native_shards.ADDED_EVIDENCE.read_text(encoding='utf-8'))['observations']}
+        self.assertEqual(R380_ADDED_SUITES, set(legacy_added),
                          'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
-        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES,
+        self.assertEqual({'py:test_panel_fill_grid_source': 65000,
+                          'node:panel_fill_grid_read_compat': 2000},
+                         {name: added.get(name) for name in legacy_added},
+                         'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        self.assertEqual(R380_ADDED_SUITES, set(added) - R379_ADDED_SUITES - R396_ADDED_SUITES,
+                         'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R396_ADDED_SUITES,
                          'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        self.assertEqual(R396_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES,
+                         'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual({s.name for s in suites}, historical_names | set(added),
                          'R348_MEASURED_PROFILE_COVERS_REGISTRY')
         self.assertEqual(315, len(historical_names),
                          'R348_HISTORICAL_315_UNCHANGED')
         # Main's historical 317-suite proof retains its original universe.
-        # R379's independent 318-suite proof has a separate test and mutation
-        # target below. The live six-shard proof still covers all 320 suites.
-        main_history = [s for s in suites if s.name not in R379_ADDED_SUITES]
+        # R379's 318-suite and R396's 321-suite proofs have independent
+        # tests below. The live six-shard proof covers all 324 suites.
+        main_history = [s for s in suites
+                        if s.name not in R379_ADDED_SUITES | R396_ADDED_SUITES]
         self.assertEqual(historical_names | R380_ADDED_SUITES,
                          {s.name for s in main_history}, 'R380_HISTORICAL_317_REGISTRY')
+        self.assertEqual(317, len(main_history), 'R380_HISTORICAL_317_UNCHANGED')
         with mock.patch.object(native_shards, 'measured_profiles', return_value=profiles[:2]):
             current_parts = partition_suites(main_history, 3)
         owners = {s.name: i for i, part in enumerate(current_parts) for s in part}
@@ -427,6 +449,8 @@ class NativeShardCoverage(unittest.TestCase):
                                  'R380_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
                 self.assertFalse(set(measured) & R379_ADDED_SUITES,
                                  'R379_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
+                self.assertFalse(set(measured) & R396_ADDED_SUITES,
+                                 'R396_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
                 self.assertEqual(set(measured) | set(added), {s.name for s in suites},
                                  'R348_MEASURED_PROFILE_COVERS_REGISTRY')
                 if run in runs[:2]:
@@ -449,7 +473,7 @@ class NativeShardCoverage(unittest.TestCase):
         self.assertLess(max(replay) + 120000 + 30000, 1200000,
                         'R348_MEASURED_RECEIPT_BUDGET: per-suite maximum across all runs')
         self._assert_four_native_workflow()
-        # The current plan uses every scenario plus independent R379/R380 upper
+        # The current plan uses every scenario plus independent R379/R380/R396 upper
         # bounds. Keep the strict 1200s ceiling, 120s overhead and 30s margin.
         _, _, matrix = self._native_workflow()
         six = partition_suites(suites, len(matrix))
@@ -470,7 +494,7 @@ class NativeShardCoverage(unittest.TestCase):
         # for unrelated main mutants, without sharing any 0/1/0 result.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES,
+        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R396_ADDED_SUITES,
                          'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual(315, len(historical_names), 'R348_HISTORICAL_315_UNCHANGED')
@@ -548,12 +572,147 @@ class NativeShardCoverage(unittest.TestCase):
                           'py:test_r14_browser_receipt': 2000},
                          {name: bounds.get(name) for name in R379_ADDED_SUITES},
                          'R379_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
-        self.assertEqual(R379_ADDED_SUITES | R380_ADDED_SUITES, set(bounds),
+        self.assertEqual(R379_ADDED_SUITES | R380_ADDED_SUITES | R396_ADDED_SUITES, set(bounds),
                          'R379_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
         source_bytes = [path.read_bytes().replace(b'\r\n', b'\n') for path in
-                        (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE, r14_path)]
+                        (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE,
+                         r14_path, native_shards.ADDED_RECEIPTS)]
         self.assertEqual(hashlib.sha256(b'\0'.join(source_bytes)).hexdigest(),
                          native_shards.profile_digest(), 'R379_PROFILE_DIGEST_BINDS_R14_SOURCE')
+
+    def test_workspace_historical_budget(self):
+        # Keep the PR's 321-suite/four-shard proof separate from R379's
+        # 318-suite history and the current 324-suite/six-shard plan.
+        profiles = native_shards.measured_profiles()
+        added = native_shards.added_suite_costs()
+        self.assertEqual(R396_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES,
+                         'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        historical_names = set(profiles[0]) - set(added)
+        self.assertEqual(315, len(historical_names), 'R348_HISTORICAL_315_UNCHANGED')
+        selected_names = historical_names | R380_ADDED_SUITES | R396_ADDED_SUITES
+        suites = [s for s in run_all.build_suites() if s.name in selected_names]
+        self.assertEqual(selected_names, {s.name for s in suites}, 'R396_HISTORICAL_321_REGISTRY')
+        self.assertEqual(321, len(suites), 'R396_HISTORICAL_321_REGISTRY')
+        _, _, matrix = self._native_workflow(
+            HISTORICAL_FOUR_NATIVE_WORKFLOW, 'R348_FOUR_NATIVE_WORKFLOW')
+        with mock.patch.object(native_shards, 'measured_profiles', return_value=profiles[:3]):
+            four = partition_suites(suites, len(matrix))
+        for measured in profiles[:3]:
+            replay = [sum(measured[s.name] for s in part) for part in four]
+            self.assertLess(max(replay) + 120000 + 30000, 1200000,
+                            'R348_MEASURED_RECEIPT_BUDGET: R396 historical four-shard run')
+        envelope = {s.name: max(measured[s.name] for measured in profiles[:3]) for s in suites}
+        replay = [sum(envelope[s.name] for s in part) for part in four]
+        self.assertLess(max(replay) + 120000 + 30000, 1200000,
+                        'R348_MEASURED_RECEIPT_BUDGET: R396 historical per-suite envelope')
+        self._assert_four_native_workflow()
+
+    def test_workspace_receipt_provenance_rejects_named_mutations(self):
+        bounds = native_shards.added_suite_costs()
+        self.assertEqual({'node:workspace_view_state': 1000,
+                          'py:test_workspace_view_server': 2000,
+                          'py:test_workspace_view': 3000,
+                          'node:workspace_context_menu_state': 1000},
+                         {name: bounds.get(name) for name in R396_ADDED_SUITES},
+                         'R396_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
+        receipt_path = native_shards.ADDED_RECEIPTS
+        receipt_bytes = receipt_path.read_bytes().replace(b'\r\n', b'\n')
+        self.assertEqual(hashlib.sha256(receipt_bytes).hexdigest(),
+                         '55c6c00be8984fad5bf475993e55b1808fc67c96716a46d9630e9c411ea70ff4',
+                         'R396_RETAINED_ADDED_RECEIPTS')
+        receipts = json.loads(receipt_bytes)
+        observed = {entry['row']['name']: entry['row']
+                    for source in receipts['runs'] for shard in source['shards']
+                    for entry in shard['observations']}
+        expected, error = run_all.load_expected()
+        self.assertFalse(error)
+        for name, row in observed.items():
+            # The original missing-census diagnosis remains in the evidence;
+            # this projection checks the new registration, never rewrites it.
+            validate_rows([name], [dict(row, expected_problem='')], expected['suites'])
+        modes = ('duplicate', 'duplicate-legacy', 'duplicate-r14', 'missing-job', 'wrong-run',
+                 'missing-receipt-hash',
+                 'understated-upper', 'failed-child', 'bool-exit', 'not-run',
+                 'skipped', 'crashed', 'env-problem', 'failed-count',
+                 'fake-exit-only-count', 'bool-counter', 'nan-time')
+        for mutation in modes:
+            with self.subTest(receipt_mutation=mutation):
+                mutant = json.loads(receipt_bytes)
+                source = mutant['runs'][0]
+                shard = source['shards'][0]
+                entry = shard['observations'][1]  # actual exit-only suite
+                row = entry['row']
+                if mutation == 'duplicate':
+                    shard['observations'].append(dict(entry))
+                elif mutation == 'duplicate-legacy':
+                    row['name'] = 'py:test_panel_fill_grid_source'
+                elif mutation == 'duplicate-r14':
+                    row['name'] = 'node:r14_app'
+                elif mutation == 'missing-job':
+                    shard['source_job'] = ''
+                elif mutation == 'wrong-run':
+                    source['source_run'] = source['source_run'].replace('43336972629', '43336972628')
+                elif mutation == 'missing-receipt-hash':
+                    shard['receipt_sha256'] = ''
+                elif mutation == 'understated-upper':
+                    entry['planning_upper_ms'] = 1
+                elif mutation == 'failed-child':
+                    row['process_exit_code'] = 1
+                elif mutation == 'bool-exit':
+                    row['process_exit_code'] = False
+                elif mutation == 'not-run':
+                    row['ran'] = False
+                elif mutation == 'skipped':
+                    row['skipped'] = row['allowed_skips'] = 1
+                elif mutation == 'crashed':
+                    row['crashed'] = True
+                elif mutation == 'env-problem':
+                    row['env_problem'] = True
+                elif mutation == 'failed-count':
+                    row['failed'] = 1
+                elif mutation == 'fake-exit-only-count':
+                    row['total'] = 1
+                elif mutation == 'bool-counter':
+                    row['passed'] = True
+                else:
+                    row['seconds'] = float('nan')
+                with tempfile.TemporaryDirectory(prefix='native-receipt-mutation-') as directory:
+                    test_path = Path(directory) / 'receipts.json'
+                    test_path.write_text(json.dumps(mutant), encoding='utf-8')
+                    with mock.patch.object(native_shards, 'ADDED_RECEIPTS', test_path):
+                        with self.assertRaisesRegex(ValueError, 'R396_',
+                                                    msg='R396_ADDED_RECEIPT_' + mutation):
+                            native_shards.added_suite_costs()
+        wanted_digest = hashlib.sha256(
+            native_shards.TIMINGS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+            native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+            native_shards.ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+            receipt_bytes).hexdigest()
+        self.assertEqual(wanted_digest, native_shards.profile_digest(),
+                         'R396_PROFILE_DIGEST_BINDS_ADDED_RECEIPTS')
+        # A conflict resolution must not silently drop the original R396
+        # withdrawals while leaving every ordinary unit test green.
+        proof_source = Path(__file__).with_name('native_sharding_mutation_check.py').read_text(
+            encoding='utf-8')
+        proof_main = next(node for node in ast.parse(proof_source).body
+                          if isinstance(node, ast.FunctionDef) and node.name == 'main')
+        catalogs = [node.value for node in ast.walk(proof_main)
+                    if isinstance(node, ast.Assign)
+                    and any(isinstance(target, ast.Name) and target.id == 'mutations'
+                            for target in node.targets)]
+        self.assertEqual(len(catalogs), 1, 'R396_NAMED_WITHDRAWALS_RETAINED')
+        catalog = ast.literal_eval(catalogs[0])
+        required = {
+            'R396_DROP_WORKSPACE_COSTS': ('measured-baseline', 'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
+            'R396_DROP_WORKSPACE_EXPECTED_ENTRIES': ('baseline', 'R396_COMPLETE_EXPECTED_REGISTRY'),
+            'R396_IGNORE_EXIT_ONLY_PROCESS_FAILURE': ('workspace-provenance-baseline', 'R396_ADDED_RECEIPT_failed-child'),
+            'R396_ACCEPT_BOOLEAN_EXIT_CODE': ('workspace-provenance-baseline', 'R396_ADDED_RECEIPT_bool-exit'),
+            'R396_ACCEPT_EXIT_ONLY_FAKE_COUNT': ('workspace-provenance-baseline', 'R396_ADDED_RECEIPT_fake-exit-only-count'),
+            'R396_ALLOW_DUPLICATE_LEGACY_COST': ('workspace-provenance-baseline', 'R396_ADDED_RECEIPT_duplicate-legacy'),
+            'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST': ('workspace-provenance-baseline', 'R396_PROFILE_DIGEST_BINDS_ADDED_RECEIPTS'),
+        }
+        self.assertEqual({name: catalog.get(name) for name in required}, required,
+                         'R396_NAMED_WITHDRAWALS_RETAINED')
 
     def test_invalid_shards_are_rejected(self):
         for value in ['0/2', '1/0', '4/3', '5/4', '7/6', 'a/2', '1/2/3', '-1/3']:

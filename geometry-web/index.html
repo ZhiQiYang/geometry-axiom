@@ -25,6 +25,9 @@
 <link rel="stylesheet" href="documents.css">
 <link rel="stylesheet" href="document-cases.css">
 <link rel="stylesheet" href="face-context-menu.css">
+<link rel="stylesheet" href="space-context-menu.css">
+<link rel="stylesheet" href="workspace-properties.css">
+<link rel="stylesheet" href="workspace-view.css">
 <link rel="stylesheet" href="scenario-workspace.css">
 </head>
 <body class="connection-blocked">
@@ -161,6 +164,8 @@
 
       <section id="v3Panel" class="sidebar-section v3-panel" hidden aria-label="三視圖視圖與圖層">
         <label class="v3-surf-label">工作面 <select id="workSurf"></select></label>
+        <details id="v3ViewSettings" class="v3-view-settings">
+        <summary>檢視設定</summary>
         <div class="section-label-row"><span class="section-label">視圖</span></div>
         <div class="v3-check-col">
           <label><input type="checkbox" data-v3-view="0" checked> 正面</label>
@@ -174,6 +179,12 @@
           <label><input type="checkbox" data-v3-layer="timber" checked> 角材</label>
           <label><input type="checkbox" data-v3-layer="rc" checked> 柱樑</label>
         </div>
+        <div class="v3-hidden-roots">
+          <p id="v3HiddenCount" role="status">已隱藏 0 項</p>
+          <ul id="v3HiddenRoots"></ul>
+          <button id="v3RestoreAll" class="btn" type="button" disabled>全部還原</button>
+        </div>
+        </details>
       </section>
 
       <footer class="canvas-library-footer">
@@ -725,6 +736,8 @@
 <script src="context-menu-shell.js"></script>
 <script src="face-context-menu.js"></script>
 <script src="canvas-context-menu.js"></script>
+<script src="space-context-menu.js"></script>
+<script src="workspace-view.js"></script>
 <script src="grid-trial.js"></script>
 <script src="grid-anchor-positions.js"></script>
 <script src="grid-system-workspace.js"></script>
@@ -745,6 +758,8 @@
 <script src="section-profile-workspace.js"></script>
 <script src="source-inspector.js"></script>
 <script src="source-inspector-app.js"></script>
+<script src="workspace-properties.js"></script>
+<script src="view-context-menu.js"></script>
 <script src="evidence-links-app.js"></script>
 <script src="identity-ledger.js"></script>
 <script src="model-update.js"></script>
