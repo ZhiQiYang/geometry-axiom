@@ -371,3 +371,27 @@ PR #419（需求帳 R17 host／App 第一片）新增四個 native suite。原�
 `run_all.expected.json` 只追加這四套由原 runner 實跑得到的 19／12／8／7，其餘既有 320 筆不變、不降低任何舊計數。這次沒有用 `--update-expected` 重寫整份檔：該旗標要求整次完整跑可信，而 `mutation:check`（exit-code-only）在突變帳本採入前必為 STALE，會被原 runner 拒絕；因此依原 runner 的 `{'mode','count','unit'}` 格式只插入四筆，並以原 runner 的完整嚴格比對確認全部 suite 計數相符。
 
 歷史回放範圍不變：main 歷史 317 套與 R379 歷史 318 套都排除 R17 四套；正式六片驗全部 324 套、全部四輪情境及逐套最大包絡，同樣嚴格小於 1200000ms。`py:test_unittest_runner` 只在既有 method 內加斷言，仍為 15 項。新增具名撤回 `R17_DROP_SUITE_EVIDENCE`、`R17_DROP_EXPECTED_ENTRIES`、`R17_OMIT_SOURCE_FROM_DIGEST`，各自要求指定的正常 AssertionError、0 error、0 skip（0／1／0）；R379 原有撤回的目標斷言與順序保留。新 head 仍需正式 CI 的六份原收據與 coverage 確認。
+
+## 第三班合併列車：R396 收據 × R17 第三份來源（#426＋#419＋#420，2026-11-16）
+
+固定 parents：#426 head `7881c0d4862fab1ac4a211c124bdd0a0b3093b0a`（main ＋ #396 ＋ #425）× #419 head `2a8b1d6c924d94b8746c7d7152433d5a1ff1fde8`，再併 #420 head `e487e778be57df6a61f677ededd461875d0f4b93`（#420 不新增 native suite）。上面兩節分別是 R396 與 R17 各自對 324 套的紀錄，原文保留；本節只記兩者合流後的實況。
+
+- 五份成本來源原件逐 byte 不變：`native_shard_timings.json`、`native_shard_added_evidence.json`（R380）、`native_shard_added_evidence_r14.json`（R14）、`native_shard_added_receipts.json`（R396）、`native_shard_added_evidence_r17.json`（R17）。沒有新增或改寫任何成本數字；本節的毫秒全部來自這五份既有 CI 實測／上界。
+- `added_suite_costs()`：先保留 R379 與 R396 原有的重名拒收，再要求 R17 不得與前三份任何一份重名（`R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES`），回傳四份聯集。
+- `profile_digest()`：五份 LF bytes 以四個 NUL 分隔，順序固定為 timings、R380、R14、R396 收據、R17，合流後為 `fae3c8f94e6ce33e4436784b604ddf5dab2fd52cab436f1c602c5303b1c3c983`。
+- 真實 `run_all.build_suites()` 與 expected 聯集皆為 **328 套**（320 ＋ R396 四套 ＋ R17 四套）；六片套數 **1／61／69／64／67／66**，每套恰好一次、零重疊、片內保留 registry 順序。
+- 歷史回放各自只排除不屬於自己的套件：main 317 套排除 R379／R396／R17；R379 318 套與 R396 321 套各排除另外兩方。`py:test_unittest_runner` 仍是 17 項，只在既有 method 內補上對方集合的排除與第五份來源的 digest。
+- 具名撤回：雙方的具名撤回全部保留，共 50 組（R396 側 47 組 ＋ R17 三組）。每組改寫成本或 digest 時都帶上其他來源，只拿掉自己指名的那一份，避免一個 marker 遮住另一個。
+
+以下是四輪 315 套實測加十三項 added 規劃上界的整數毫秒模型除以 1000，**不是合流後正式六片收據**：
+
+| 成本情境 | 片1 | 片2 | 片3 | 片4 | 片5 | 片6 |
+|---|---:|---:|---:|---:|---:|---:|
+| 43162989157 | 348.065 | 481.811 | 571.544 | 572.353 | 544.265 | 571.156 |
+| 43150038015 | 688.444 | 383.984 | 560.084 | 567.921 | 486.779 | 488.112 |
+| 43177620127 | 755.187 | 480.806 | 531.428 | 550.837 | 513.517 | 516.431 |
+| 43271258668 | 701.108 | 578.400 | 578.399 | 578.399 | 578.400 | 578.400 |
+| 每suite四輪最大包絡 | 755.187 | 628.267 | 671.742 | 639.959 | 669.310 | 654.345 |
+| 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 778.267 | 821.742 | 789.959 | 819.310 | 804.345 |
+
+六片 workflow、35 分鐘 native job、5 分鐘 coverage job、每個反證子程序 60 秒都不改；真收據仍須嚴格 `0 <= seconds < 1200`。合流後的正式六片收據與 complete coverage 以本分支 head 的正式 CI 為準。
