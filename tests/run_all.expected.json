@@ -8,7 +8,7 @@
     },
     "core:run_tests": {
       "mode": "count",
-      "count": 166,
+      "count": 170,
       "unit": "場景"
     },
     "mutation:check": {
@@ -80,6 +80,11 @@
     "py:test_binaries": {
       "mode": "count",
       "count": 36,
+      "unit": "test"
+    },
+    "py:test_boundary_pair_host": {
+      "mode": "count",
+      "count": 19,
       "unit": "test"
     },
     "py:test_bridge_integrity": {
@@ -184,7 +189,7 @@
     },
     "py:test_gdi_contract": {
       "mode": "count",
-      "count": 1,
+      "count": 5,
       "unit": "test"
     },
     "py:test_geo261_application_closure": {
@@ -759,7 +764,7 @@
     },
     "py:test_geo318_reading_a_oracle": {
       "mode": "count",
-      "count": 14,
+      "count": 21,
       "unit": "test"
     },
     "py:test_geometry_host_native": {
@@ -1174,7 +1179,7 @@
     },
     "node:tests-js": {
       "mode": "count",
-      "count": 774,
+      "count": 783,
       "unit": "node test"
     },
     "node:model_viewer": {
@@ -1204,6 +1209,21 @@
     },
     "node:cdp_confirmation_gate": {
       "mode": "exit-code-only"
+    },
+    "node:boundary_pair_ui": {
+      "mode": "count",
+      "count": 12,
+      "unit": "node test"
+    },
+    "node:boundary_pair_project": {
+      "mode": "count",
+      "count": 8,
+      "unit": "node test"
+    },
+    "node:boundary_pair_browser_scope": {
+      "mode": "count",
+      "count": 7,
+      "unit": "node test"
     },
     "node:cutting_summary": {
       "mode": "count",
@@ -1273,7 +1293,7 @@
     "node:grid_lesson_control_ownership": {
       "mode": "count",
       "unit": "node test",
-      "count": 13
+      "count": 15
     },
     "node:parameter_confirmation_settlement": {
       "mode": "count",
@@ -1282,7 +1302,7 @@
     },
     "node:face_reference_settlement": {
       "mode": "count",
-      "count": 18,
+      "count": 22,
       "unit": "node test"
     },
     "node:feature_attachments_vm": {

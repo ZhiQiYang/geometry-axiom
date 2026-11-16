@@ -1,0 +1,892 @@
+{
+ "before": [
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 27 33 role primary",
+  "guide 1 1 v spec:主支1中線",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n"
+ ],
+ "scheduleBefore": {
+  "rows": [
+   {
+    "id": 1,
+    "text": "角材 1 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 90,
+    "text": "角材 90 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 91,
+    "text": "角材 91 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   }
+  ],
+  "status": "承載面 1 · 3 支正式角材 · 材料／加工未設定者保持未知"
+ },
+ "anchorsBefore": [
+  "外輪廓邊 1",
+  "外輪廓邊 3",
+  "角材 90 側面（須有唯一解）",
+  "角材 91 側面（須有唯一解）",
+  "角材 1 側面（須有唯一解）",
+  "外輪廓邊 0(已有角材 90)",
+  "外輪廓邊 2(已有角材 91)",
+  "參考線 1 · 沿 v · u=500 mm(已有角材 1)"
+ ],
+ "formBeforePlace": [
+  [
+   "tbA",
+   "27"
+  ],
+  [
+   "tbB",
+   "33"
+  ],
+  [
+   "tbSide",
+   "+n"
+  ],
+  [
+   "tbDir",
+   "+v"
+  ],
+  [
+   "tbRole",
+   "primary"
+  ]
+ ],
+ "afterFormPlace": [
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 27 33 role primary",
+  "timber 92 27 33 role primary",
+  "guide 1 1 v spec:主支1中線",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n"
+ ],
+ "scheduleAfterFormPlace": {
+  "rows": [
+   {
+    "id": 1,
+    "text": "角材 1 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 90,
+    "text": "角材 90 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 91,
+    "text": "角材 91 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 92,
+    "text": "角材 92 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   }
+  ],
+  "status": "承載面 1 · 4 支正式角材 · 材料／加工未設定者保持未知"
+ },
+ "statusAfterFormPlace": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "-: 尚未檢查"
+ ],
+ "hoverHint": [
+  "選好定位引用後可直接放置；畫布點線也是快捷入口，點擊位置不作為尺寸輸入。"
+ ],
+ "afterClickPlace": [
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 27 33 role primary",
+  "timber 92 27 33 role primary",
+  "timber 93 27 33 role primary",
+  "guide 1 1 v spec:主支1中線",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "scheduleAfterClickPlace": {
+  "rows": [
+   {
+    "id": 1,
+    "text": "角材 1 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 90,
+    "text": "角材 90 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 91,
+    "text": "角材 91 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 92,
+    "text": "角材 92 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 93,
+    "text": "角材 93 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   }
+  ],
+  "status": "承載面 1 · 5 支正式角材 · 材料／加工未設定者保持未知"
+ },
+ "statusAfterClickPlace": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "-: 尚未檢查"
+ ],
+ "formAfterClickPlace": [
+  [
+   "tbAnchor",
+   "at-face e3"
+  ],
+  [
+   "tbDir",
+   "+v"
+  ],
+  [
+   "tbRole",
+   "primary"
+  ]
+ ],
+ "newIds": [
+  92,
+  93
+ ],
+ "clickOccupiedEdge": {
+  "dumpSame": true,
+  "status": [
+   "-: 尚未檢查",
+   "-: 有未保存的變更",
+   "-: 尚未檢查"
+  ],
+  "toasts": [
+   "外輪廓邊 3已被角材 93 占滿——請換定位引用(可用:角材 90 側面（須有唯一解）、角材 91 側面（須有唯一解）、角材 1 側面（須有唯一解）、角材 92 側面（須有唯一解）、角材 93 側面（須有唯一解）) line 23: R6/I5/I6 timber 94: 中線上沒有任何合法跨距"
+  ]
+ },
+ "rectClassBefore": "face-timber",
+ "canvasPick": {
+  "rectClass": "face-timber sel",
+  "selectedBlock": "主支 · 角材 1\n長度 2960 mm · 參考線 1 · 沿 v · u=500 mm\n寬 A（沿面）\n厚 B（出面）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n角色\n主支\n邊框材\n副支\n自訂角色\n定位引用\n— 需重選定位引用 —\n角材 90 側面（須有唯一解）\n角材 91 側面（須有唯一解）\n角材 1 側面（須有唯一解）\n角材 92 側面（須有唯一解）\n角材 93 側面（須有唯一解）\n外輪廓邊 0(已有角材 90)\n外輪廓邊 1(已有角材 92)\n外輪廓邊 2(已有角材 91)\n外輪廓邊 3(已有角材 93)\n參考線",
+  "rows": [
+   {
+    "id": 1,
+    "text": "角材 1 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": true,
+    "pressed": "true",
+    "deleteDisabled": false
+   },
+   {
+    "id": 90,
+    "text": "角材 90 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 91,
+    "text": "角材 91 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 92,
+    "text": "角材 92 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 93,
+    "text": "角材 93 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   }
+  ]
+ },
+ "editFormBefore": [
+  [
+   "tbEditA",
+   "27"
+  ],
+  [
+   "tbEditB",
+   "33"
+  ],
+  [
+   "tbEditDir",
+   "+v"
+  ],
+  [
+   "tbEditSide",
+   "+n"
+  ],
+  [
+   "tbEditRole",
+   "primary"
+  ],
+  [
+   "tbEditAnchor",
+   "at-line guide 1"
+  ]
+ ],
+ "editPreviewShown": true,
+ "editPreviewText": "修改角材欄位\n寬 A（沿面）\n原定義相同 · 保持原值\n定義方式\n明選定義方式\n直接值\n型別來源\n直接值（mm）\n厚 B（出面）\n原定義相同 · 保持原值\n定義方式\n明選定義方式\n直接值\n型別來源\n直接值（mm）\n角色\n原定義相同 · 保持原值\n明選角色\n邊界材\n主支\n副支\n自訂\n自訂優先序\n原定義相同 · 保持原值\n延伸方向\n原定義相同 · 保持原值\n明選方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n所選角材的原定義與來源\n已驗證完整候選；核對逐支來源與連動後確認。\n角材 1\n原定義\n角材 1\nA：直接值 27 mm\nB：直接值 33 mm\n角色 primary · 優先序 2 · +v\n放置 1 · at-line guide 1  · +n\n候選定義\n角材 1\nA：直接值 30 mm\nB：直接值 33 mm\n角色 primary · 優先序 2 · +v\n放置 1 · at-line guide 1  · +n\n完整連動影響\n確認套用\n取消",
+ "afterEdit": [
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 30 33 role primary",
+  "timber 92 27 33 role primary",
+  "timber 93 27 33 role primary",
+  "guide 1 1 v spec:主支1中線",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "scheduleAfterEdit": {
+  "rows": [
+   {
+    "id": 1,
+    "text": "角材 1 完成 L 2960 × A 30 × B 33 mm · +v+n",
+    "selected": true,
+    "pressed": "true",
+    "deleteDisabled": false
+   },
+   {
+    "id": 90,
+    "text": "角材 90 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 91,
+    "text": "角材 91 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 92,
+    "text": "角材 92 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 93,
+    "text": "角材 93 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   }
+  ],
+  "status": "承載面 1 · 5 支正式角材 · 材料／加工未設定者保持未知"
+ },
+ "statusAfterEdit": [
+  "-: 尚未檢查",
+  "-: 有未保存的變更",
+  "-: 已選 1 支角材",
+  "-: 尚未檢查"
+ ],
+ "selectedAfterEdit": "主支 · 角材 1\n長度 2960 mm · 參考線 1 · 沿 v · u=500 mm\n寬 A（沿面）\n厚 B（出面）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n角色\n主支\n邊框材\n副支\n自訂角色\n定位引用\n— 需重選定位引用 —\n角材 90 側面（須有唯一解）\n角材 91 側面（須有唯一解）\n角材 1 側面（須有唯一解）\n角材 92 側面（須有唯一解）\n角材 93 側面（須有唯一解）\n外輪廓邊 0(已有角材 90)\n外輪廓邊 1(已有角材 92)\n外輪廓邊 2(已有角材 91)\n外輪廓邊 3(已有角材 93)\n參考線",
+ "afterEditUndo": [
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 27 33 role primary",
+  "timber 92 27 33 role primary",
+  "timber 93 27 33 role primary",
+  "guide 1 1 v spec:主支1中線",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "scheduleAfterEditUndo": "角材 1 完成 L 2960 × A 27 × B 33 mm · +v+n",
+ "afterEditRedo": [
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 30 33 role primary",
+  "timber 92 27 33 role primary",
+  "timber 93 27 33 role primary",
+  "guide 1 1 v spec:主支1中線",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "scheduleAfterEditRedo": "角材 1 完成 L 2960 × A 30 × B 33 mm · +v+n",
+ "rect90Before": "face-timber",
+ "listPick": {
+  "rectClass90": "face-timber sel hover",
+  "rectClass1": "face-timber",
+  "selectedBlock": "邊框材 · 角材 90\n長度 4000 mm · 外輪廓邊 0\n寬 A（沿面）\n厚 B（出面）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n角色\n主支\n邊框材\n副支\n自訂角色\n定位引用\n— 需重選定位引用 —\n角材 90 側面（須有唯一解）\n角材 91 側面（須有唯一解）\n角材 1 側面（須有唯一解）\n角材 92 側面（須有唯一解）\n角材 93 側面（須有唯一解）\n外輪廓邊 0(已有角材 90)\n外輪廓邊 1(已有角材 92)\n外輪廓邊 2(已有角材 91)\n外輪廓邊 3(已有角材 93)\n參考線 1 · 沿 v · u=5",
+  "rows": [
+   {
+    "id": 1,
+    "text": "角材 1 完成 L 2960 × A 30 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 90,
+    "text": "角材 90 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": true,
+    "pressed": "true",
+    "deleteDisabled": false
+   },
+   {
+    "id": 91,
+    "text": "角材 91 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 92,
+    "text": "角材 92 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 93,
+    "text": "角材 93 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   }
+  ]
+ },
+ "sourceDetails": {
+  "open": true,
+  "text": "尺寸來源與端面 直接尺寸；材料未設定；起端：角材 90／B1；末端：角材 91／B0。定位：at-line guide 1。跨距：依 R6 自動推導。起端世界 mm [515,20,2500]；末端 [515,2980,2500]。材料／加工：未知或未設定。來源指紋 af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5"
+ },
+ "unitCm": {
+  "rows": [
+   {
+    "id": 1,
+    "text": "角材 1 完成 L 296 × A 3 × B 3.3 cm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 90,
+    "text": "角材 90 完成 L 400 × A 2 × B 2 cm · +u+n",
+    "selected": true,
+    "pressed": "true",
+    "deleteDisabled": false
+   },
+   {
+    "id": 91,
+    "text": "角材 91 完成 L 400 × A 2 × B 2 cm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 92,
+    "text": "角材 92 完成 L 296 × A 2.7 × B 3.3 cm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 93,
+    "text": "角材 93 完成 L 296 × A 2.7 × B 3.3 cm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   }
+  ],
+  "status": "承載面 1 · 5 支正式角材 · 材料／加工未設定者保持未知"
+ },
+ "orderLength": [
+  [
+   1,
+   "角材 1 完成 L 2960 × A 30 × B 33 mm · +v+n"
+  ],
+  [
+   92,
+   "角材 92 完成 L 2960 × A 27 × B 33 mm · +v+n"
+  ],
+  [
+   93,
+   "角材 93 完成 L 2960 × A 27 × B 33 mm · +v+n"
+  ],
+  [
+   90,
+   "角材 90 完成 L 4000 × A 20 × B 20 mm · +u+n"
+  ],
+  [
+   91,
+   "角材 91 完成 L 4000 × A 20 × B 20 mm · +u+n"
+  ]
+ ],
+ "orderId": [
+  1,
+  90,
+  91,
+  92,
+  93
+ ],
+ "csvAll": {
+  "suggested": "timbers-surface-1.csv",
+  "bytes": 5349,
+  "bom": true,
+  "lines": [
+   "\"kind\",\"timber_id\",\"surface_id\",\"role\",\"A_mm\",\"B_mm\",\"finished_length_mm\",\"direction\",\"depth_side\",\"dimension_source\",\"anchor\",\"span_selector\",\"start_world_mm\",\"finish_world_mm\",\"source_fingerprint\",\"material\",\"machining\",\"dimension_source_definitions\",\"assembly_instance_id\",\"assembly_member_id\",\"binding_id\",\"rule_id\",\"rule_version\",\"rule_fingerprint\",\"binding_fingerprint\",\"support_source_fingerprint\",\"start_support_provenance\",\"finish_support_provenance\"",
+   "\"timber\",\"1\",\"1\",\"primary\",\"30\",\"33\",\"2960\",\"'+v\",\"'+n\",\"直接尺寸；材料未設定\",\"at-line guide 1\",\"依 R6 自動推導\",\"[515,20,2500]\",\"[515,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":20,\"\"crossRange\"\":[485,515],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":90},\"\"localFace\"\":\"\"B1\"\",\"\"normalWorld\"\":[0,1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":20,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":2980,\"\"crossRange\"\":[485,515],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":91},\"\"localFace\"\":\"\"B0\"\",\"\"normalWorld\"\":[0,-1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":2980,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"90\",\"1\",\"boundary\",\"20\",\"20\",\"4000\",\"'+u\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e0\",\"依 R6 自動推導\",\"[0,0,2500]\",\"[4000,0,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":0,\"\"crossRange\"\":[0,20],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":3,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":0,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":4000,\"\"crossRange\"\":[0,20],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":1,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":4000,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"91\",\"1\",\"boundary\",\"20\",\"20\",\"4000\",\"'+u\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e2\",\"依 R6 自動推導\",\"[0,2980,2500]\",\"[4000,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":0,\"\"crossRange\"\":[2980,3000],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":3,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":0,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":4000,\"\"crossRange\"\":[2980,3000],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":1,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":4000,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"92\",\"1\",\"primary\",\"27\",\"33\",\"2960\",\"'+v\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e1\",\"依 R6 自動推導\",\"[4000,20,2500]\",\"[4000,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":20,\"\"crossRange\"\":[3973,4000],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":90},\"\"localFace\"\":\"\"B1\"\",\"\"normalWorld\"\":[0,1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":20,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":2980,\"\"crossRange\"\":[3973,4000],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":91},\"\"localFace\"\":\"\"B0\"\",\"\"normalWorld\"\":[0,-1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":2980,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"93\",\"1\",\"primary\",\"27\",\"33\",\"2960\",\"'+v\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e3\",\"依 R6 自動推導\",\"[27,20,2500]\",\"[27,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":20,\"\"crossRange\"\":[0,27],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":90},\"\"localFace\"\":\"\"B1\"\",\"\"normalWorld\"\":[0,1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":20,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":2980,\"\"crossRange\"\":[0,27],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":91},\"\"localFace\"\":\"\"B0\"\",\"\"normalWorld\"\":[0,-1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":2980,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\""
+  ]
+ },
+ "autoFormOnMultiSelect": true,
+ "multiPick": {
+  "rows": [
+   {
+    "id": 1,
+    "text": "角材 1 完成 L 2960 × A 30 × B 33 mm · +v+n",
+    "selected": true,
+    "pressed": "true",
+    "deleteDisabled": true
+   },
+   {
+    "id": 90,
+    "text": "角材 90 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": true,
+    "pressed": "true",
+    "deleteDisabled": true
+   },
+   {
+    "id": 91,
+    "text": "角材 91 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": true
+   },
+   {
+    "id": 92,
+    "text": "角材 92 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": true
+   },
+   {
+    "id": 93,
+    "text": "角材 93 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": true
+   }
+  ],
+  "selectedBlock": null
+ },
+ "scopeSelection": {
+  "rows": [
+   {
+    "id": 1,
+    "text": "角材 1 完成 L 2960 × A 30 × B 33 mm · +v+n",
+    "selected": true,
+    "pressed": "true",
+    "deleteDisabled": true
+   },
+   {
+    "id": 90,
+    "text": "角材 90 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": true,
+    "pressed": "true",
+    "deleteDisabled": true
+   }
+  ],
+  "status": "承載面 1 · 2 支正式角材 · 材料／加工未設定者保持未知"
+ },
+ "csvSelection": {
+  "suggested": "timbers-surface-1.csv",
+  "bytes": 2425,
+  "bom": true,
+  "lines": [
+   "\"kind\",\"timber_id\",\"surface_id\",\"role\",\"A_mm\",\"B_mm\",\"finished_length_mm\",\"direction\",\"depth_side\",\"dimension_source\",\"anchor\",\"span_selector\",\"start_world_mm\",\"finish_world_mm\",\"source_fingerprint\",\"material\",\"machining\",\"dimension_source_definitions\",\"assembly_instance_id\",\"assembly_member_id\",\"binding_id\",\"rule_id\",\"rule_version\",\"rule_fingerprint\",\"binding_fingerprint\",\"support_source_fingerprint\",\"start_support_provenance\",\"finish_support_provenance\"",
+   "\"timber\",\"1\",\"1\",\"primary\",\"30\",\"33\",\"2960\",\"'+v\",\"'+n\",\"直接尺寸；材料未設定\",\"at-line guide 1\",\"依 R6 自動推導\",\"[515,20,2500]\",\"[515,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":20,\"\"crossRange\"\":[485,515],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":90},\"\"localFace\"\":\"\"B1\"\",\"\"normalWorld\"\":[0,1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":20,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":2980,\"\"crossRange\"\":[485,515],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":91},\"\"localFace\"\":\"\"B0\"\",\"\"normalWorld\"\":[0,-1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":2980,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"90\",\"1\",\"boundary\",\"20\",\"20\",\"4000\",\"'+u\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e0\",\"依 R6 自動推導\",\"[0,0,2500]\",\"[4000,0,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":0,\"\"crossRange\"\":[0,20],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":3,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":0,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":4000,\"\"crossRange\"\":[0,20],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":1,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":4000,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\""
+  ]
+ },
+ "clearButtonUsed": true,
+ "afterClear": [],
+ "marquee": {
+  "rightPartial": {
+   "mode": "window",
+   "hint": "向右拖曳：完整框住才選取（藍色實線） · 放開套用選取"
+  },
+  "leftPartial": {
+   "mode": "crossing",
+   "hint": "向左拖曳：相交即選取（綠色虛線） · 放開套用選取"
+  },
+  "rightEnclose": {
+   "mode": "window",
+   "hint": "向右拖曳：完整框住才選取（藍色實線） · 放開套用選取"
+  },
+  "leftWide": {
+   "mode": "crossing",
+   "hint": "向左拖曳：相交即選取（綠色虛線） · 放開套用選取"
+  }
+ },
+ "summaryRightPartial": "從空白處拖曳，框選角材",
+ "formAfterMarquee": [
+  false,
+  false,
+  false,
+  true
+ ],
+ "marqueeRightPartial": [],
+ "summaryLeftPartial": "已選 1 支角材",
+ "marqueeLeftPartial": [
+  1
+ ],
+ "summaryRightEnclose": "已選 1 支角材",
+ "marqueeRightEnclose": [
+  1
+ ],
+ "summaryLeftWide": "已選 3 支角材",
+ "marqueeLeftWide": [
+  1,
+  92,
+  93
+ ],
+ "multiDeleteDisabled": [
+  [
+   1,
+   true
+  ],
+  [
+   90,
+   true
+  ],
+  [
+   91,
+   true
+  ],
+  [
+   92,
+   true
+  ],
+  [
+   93,
+   true
+  ]
+ ],
+ "deletePaths": {
+  "victim": 93,
+  "floatingBar": {
+   "actions": [
+    [
+     "edit",
+     "編輯…"
+    ],
+    [
+     "delete",
+     "刪除"
+    ]
+   ],
+   "picked": [
+    93
+   ],
+   "impact": {
+    "text": "確認連動變更 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 delete timber 93 角材／面／來源 中線：原 → 新 長度：原 → 新 世界位置／方向 90／面 1 · 身分保留 10 → 10 4000 → 4000 保持原狀 91／面 1 · 身分保留 2990 → 2990 4000 → 4000 保持原狀 1／面 1 · 身分保留 500 → 500 2960 → 2960 保持原狀 92／面 1 · 身分保留 3986 → ",
+    "enabled": true
+   },
+   "deleted": true,
+   "rows": [
+    1,
+    90,
+    91,
+    92
+   ],
+   "undoSame": true
+  },
+  "inspectorButton": {
+   "impact": {
+    "text": "確認連動變更 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 delete timber 93 角材／面／來源 中線：原 → 新 長度：原 → 新 世界位置／方向 90／面 1 · 身分保留 10 → 10 4000 → 4000 保持原狀 91／面 1 · 身分保留 2990 → 2990 4000 → 4000 保持原狀 1／面 1 · 身分保留 500 → 500 2960 → 2960 保持原狀 92／面 1 · 身分保留 3986 → ",
+    "enabled": true
+   },
+   "deleted": true,
+   "rows": [
+    1,
+    90,
+    91,
+    92
+   ],
+   "undoSame": true
+  },
+  "layerList": {
+   "style": {
+    "opacity": "1",
+    "pointerEvents": "auto"
+   },
+   "impact": {
+    "text": "確認連動變更 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 delete timber 93 角材／面／來源 中線：原 → 新 長度：原 → 新 世界位置／方向 90／面 1 · 身分保留 10 → 10 4000 → 4000 保持原狀 91／面 1 · 身分保留 2990 → 2990 4000 → 4000 保持原狀 1／面 1 · 身分保留 500 → 500 2960 → 2960 保持原狀 92／面 1 · 身分保留 3986 → ",
+    "enabled": true
+   },
+   "deleted": true,
+   "rows": [
+    1,
+    90,
+    91,
+    92
+   ],
+   "undoSame": true
+  },
+  "scheduleRowMouse": {
+   "styleOnHover": {
+    "opacity": "1",
+    "pointerEvents": "auto",
+    "x": 1345.65625,
+    "y": 758.359375,
+    "title": "刪除角材 93"
+   },
+   "impact": {
+    "text": "確認連動變更 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 delete timber 93 角材／面／來源 中線：原 → 新 長度：原 → 新 世界位置／方向 90／面 1 · 身分保留 10 → 10 4000 → 4000 保持原狀 91／面 1 · 身分保留 2990 → 2990 4000 → 4000 保持原狀 1／面 1 · 身分保留 500 → 500 2960 → 2960 保持原狀 92／面 1 · 身分保留 3986 → ",
+    "enabled": true
+   },
+   "deleted": true,
+   "rows": [
+    1,
+    90,
+    91,
+    92
+   ],
+   "rowSelectedInstead": false,
+   "undoSame": true
+  },
+  "scheduleRowKeyboard": {
+   "focus": {
+    "title": "刪除角材 93",
+    "opacity": "1"
+   },
+   "impact": {
+    "text": "確認連動變更 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 delete timber 93 角材／面／來源 中線：原 → 新 長度：原 → 新 世界位置／方向 90／面 1 · 身分保留 10 → 10 4000 → 4000 保持原狀 91／面 1 · 身分保留 2990 → 2990 4000 → 4000 保持原狀 1／面 1 · 身分保留 500 → 500 2960 → 2960 保持原狀 92／面 1 · 身分保留 3986 → ",
+    "enabled": true
+   },
+   "deleted": true,
+   "rows": [
+    1,
+    90,
+    91,
+    92
+   ],
+   "undoSame": true
+  }
+ },
+ "deleteKeySingle": {
+  "impact": null,
+  "deleted": false,
+  "rows": [
+   1,
+   90,
+   91,
+   92,
+   93
+  ],
+  "toasts": [],
+  "status": [
+   "-: 尚未檢查",
+   "-: 有未保存的變更",
+   "-: 已選 1 支角材",
+   "-: 尚未檢查"
+  ]
+ },
+ "deleteKeyMulti": {
+  "toasts": [
+   "本版不提供批次刪除；請單選要刪除的角材。"
+  ],
+  "dumpSame": true
+ },
+ "finalDump": [
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 30 33 role primary",
+  "timber 92 27 33 role primary",
+  "timber 93 27 33 role primary",
+  "guide 1 1 v spec:主支1中線",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "finalSchedule": {
+  "rows": [
+   {
+    "id": 1,
+    "text": "角材 1 完成 L 2960 × A 30 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 90,
+    "text": "角材 90 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 91,
+    "text": "角材 91 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 92,
+    "text": "角材 92 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 93,
+    "text": "角材 93 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   }
+  ],
+  "status": "承載面 1 · 5 支正式角材 · 材料／加工未設定者保持未知"
+ },
+ "csvFinal": {
+  "suggested": "timbers-surface-1.csv",
+  "bytes": 5349,
+  "bom": true,
+  "lines": [
+   "\"kind\",\"timber_id\",\"surface_id\",\"role\",\"A_mm\",\"B_mm\",\"finished_length_mm\",\"direction\",\"depth_side\",\"dimension_source\",\"anchor\",\"span_selector\",\"start_world_mm\",\"finish_world_mm\",\"source_fingerprint\",\"material\",\"machining\",\"dimension_source_definitions\",\"assembly_instance_id\",\"assembly_member_id\",\"binding_id\",\"rule_id\",\"rule_version\",\"rule_fingerprint\",\"binding_fingerprint\",\"support_source_fingerprint\",\"start_support_provenance\",\"finish_support_provenance\"",
+   "\"timber\",\"1\",\"1\",\"primary\",\"30\",\"33\",\"2960\",\"'+v\",\"'+n\",\"直接尺寸；材料未設定\",\"at-line guide 1\",\"依 R6 自動推導\",\"[515,20,2500]\",\"[515,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":20,\"\"crossRange\"\":[485,515],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":90},\"\"localFace\"\":\"\"B1\"\",\"\"normalWorld\"\":[0,1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":20,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":2980,\"\"crossRange\"\":[485,515],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":91},\"\"localFace\"\":\"\"B0\"\",\"\"normalWorld\"\":[0,-1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":2980,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"90\",\"1\",\"boundary\",\"20\",\"20\",\"4000\",\"'+u\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e0\",\"依 R6 自動推導\",\"[0,0,2500]\",\"[4000,0,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":0,\"\"crossRange\"\":[0,20],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":3,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":0,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":4000,\"\"crossRange\"\":[0,20],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":1,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":4000,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"91\",\"1\",\"boundary\",\"20\",\"20\",\"4000\",\"'+u\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e2\",\"依 R6 自動推導\",\"[0,2980,2500]\",\"[4000,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":0,\"\"crossRange\"\":[2980,3000],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":3,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":0,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":4000,\"\"crossRange\"\":[2980,3000],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":1,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":4000,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"92\",\"1\",\"primary\",\"27\",\"33\",\"2960\",\"'+v\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e1\",\"依 R6 自動推導\",\"[4000,20,2500]\",\"[4000,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":20,\"\"crossRange\"\":[3973,4000],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":90},\"\"localFace\"\":\"\"B1\"\",\"\"normalWorld\"\":[0,1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":20,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":2980,\"\"crossRange\"\":[3973,4000],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":91},\"\"localFace\"\":\"\"B0\"\",\"\"normalWorld\"\":[0,-1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":2980,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"93\",\"1\",\"primary\",\"27\",\"33\",\"2960\",\"'+v\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e3\",\"依 R6 自動推導\",\"[27,20,2500]\",\"[27,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":20,\"\"crossRange\"\":[0,27],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":90},\"\"localFace\"\":\"\"B1\"\",\"\"normalWorld\"\":[0,1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":20,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":2980,\"\"crossRange\"\":[0,27],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":91},\"\"localFace\"\":\"\"B0\"\",\"\"normalWorld\"\":[0,-1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":2980,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\""
+  ]
+ },
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopenedDump": [
+  "timber 90 20 20 role boundary",
+  "timber 91 20 20 role boundary",
+  "timber 1 30 33 role primary",
+  "timber 92 27 33 role primary",
+  "timber 93 27 33 role primary",
+  "guide 1 1 v spec:主支1中線",
+  "place 90 on 1 at-face e0 +u +n",
+  "place 91 on 1 at-face e2 +u +n",
+  "place 1 on 1 at-line guide 1 +v +n",
+  "place 92 on 1 at-face e1 +v +n",
+  "place 93 on 1 at-face e3 +v +n"
+ ],
+ "reopenedSchedule": {
+  "rows": [
+   {
+    "id": 1,
+    "text": "角材 1 完成 L 2960 × A 30 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 90,
+    "text": "角材 90 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 91,
+    "text": "角材 91 完成 L 4000 × A 20 × B 20 mm · +u+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 92,
+    "text": "角材 92 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   },
+   {
+    "id": 93,
+    "text": "角材 93 完成 L 2960 × A 27 × B 33 mm · +v+n",
+    "selected": false,
+    "pressed": "false",
+    "deleteDisabled": false
+   }
+  ],
+  "status": "承載面 1 · 5 支正式角材 · 材料／加工未設定者保持未知"
+ },
+ "csvReopened": {
+  "suggested": "timbers-surface-1.csv",
+  "bytes": 5349,
+  "bom": true,
+  "lines": [
+   "\"kind\",\"timber_id\",\"surface_id\",\"role\",\"A_mm\",\"B_mm\",\"finished_length_mm\",\"direction\",\"depth_side\",\"dimension_source\",\"anchor\",\"span_selector\",\"start_world_mm\",\"finish_world_mm\",\"source_fingerprint\",\"material\",\"machining\",\"dimension_source_definitions\",\"assembly_instance_id\",\"assembly_member_id\",\"binding_id\",\"rule_id\",\"rule_version\",\"rule_fingerprint\",\"binding_fingerprint\",\"support_source_fingerprint\",\"start_support_provenance\",\"finish_support_provenance\"",
+   "\"timber\",\"1\",\"1\",\"primary\",\"30\",\"33\",\"2960\",\"'+v\",\"'+n\",\"直接尺寸；材料未設定\",\"at-line guide 1\",\"依 R6 自動推導\",\"[515,20,2500]\",\"[515,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":20,\"\"crossRange\"\":[485,515],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":90},\"\"localFace\"\":\"\"B1\"\",\"\"normalWorld\"\":[0,1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":20,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":2980,\"\"crossRange\"\":[485,515],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":91},\"\"localFace\"\":\"\"B0\"\",\"\"normalWorld\"\":[0,-1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":2980,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"90\",\"1\",\"boundary\",\"20\",\"20\",\"4000\",\"'+u\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e0\",\"依 R6 自動推導\",\"[0,0,2500]\",\"[4000,0,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":0,\"\"crossRange\"\":[0,20],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":3,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":0,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":4000,\"\"crossRange\"\":[0,20],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":1,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":4000,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"91\",\"1\",\"boundary\",\"20\",\"20\",\"4000\",\"'+u\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e2\",\"依 R6 自動推導\",\"[0,2980,2500]\",\"[4000,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":0,\"\"crossRange\"\":[2980,3000],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":3,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":0,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":4000,\"\"crossRange\"\":[2980,3000],\"\"relation\"\":{\"\"kind\"\":\"\"outline-edge\"\",\"\"source\"\":{\"\"kind\"\":\"\"boundary\"\",\"\"id\"\":1},\"\"edgeIndex\"\":1,\"\"holeIndex\"\":null,\"\"localFace\"\":null,\"\"normalWorld\"\":null,\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"u\"\",\"\"at\"\":4000,\"\"range\"\":[0,3000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"92\",\"1\",\"primary\",\"27\",\"33\",\"2960\",\"'+v\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e1\",\"依 R6 自動推導\",\"[4000,20,2500]\",\"[4000,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":20,\"\"crossRange\"\":[3973,4000],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":90},\"\"localFace\"\":\"\"B1\"\",\"\"normalWorld\"\":[0,1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":20,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":2980,\"\"crossRange\"\":[3973,4000],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":91},\"\"localFace\"\":\"\"B0\"\",\"\"normalWorld\"\":[0,-1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":2980,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\"",
+   "\"timber\",\"93\",\"1\",\"primary\",\"27\",\"33\",\"2960\",\"'+v\",\"'+n\",\"直接尺寸；材料未設定\",\"at-face e3\",\"依 R6 自動推導\",\"[27,20,2500]\",\"[27,2980,2500]\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"未知／未設定\",\"未知／未設定\",\"[]\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"af2ec80411e060ee472c1ccc45865ed39036e24972073ac23e4b3eede11073c5\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":20,\"\"crossRange\"\":[0,27],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":90},\"\"localFace\"\":\"\"B1\"\",\"\"normalWorld\"\":[0,1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":20,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\",\"{\"\"status\"\":\"\"exact\"\",\"\"at\"\":2980,\"\"crossRange\"\":[0,27],\"\"relation\"\":{\"\"kind\"\":\"\"timber-face\"\",\"\"source\"\":{\"\"kind\"\":\"\"timber\"\",\"\"id\"\":91},\"\"localFace\"\":\"\"B0\"\",\"\"normalWorld\"\":[0,-1,0],\"\"owner\"\":null,\"\"surface\"\":1,\"\"stop\"\":{\"\"axis\"\":\"\"v\"\",\"\"at\"\":2980,\"\"range\"\":[0,4000],\"\"fixity\"\":\"\"fixed\"\"}}}\""
+  ]
+ },
+ "errsB": []
+}

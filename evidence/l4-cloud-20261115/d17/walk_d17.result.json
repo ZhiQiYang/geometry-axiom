@@ -1,0 +1,183 @@
+{
+ "asmBefore": {
+  "rules": 0,
+  "bindings": 0,
+  "instances": 0
+ },
+ "intro": "規則案例試驗台 關閉案例 選擇案例後，可在隔離環境執行。 同角色的不同構件分開引用 預期接受 · 尚未執行 新版本只改一",
+ "cases": [
+  {
+   "id": "same-role-distinct-members",
+   "text": "同角色的不同構件分開引用 預期接受 · 尚未執行",
+   "current": "true"
+  },
+  {
+   "id": "one-local-joint-new-version",
+   "text": "新版本只改一處接合 預期接受 · 尚未執行",
+   "current": "false"
+  },
+  {
+   "id": "wrong-type-dimension-reference",
+   "text": "尺寸引用拒絕計數型別 預期拒絕 · 尚未執行",
+   "current": "false"
+  },
+  {
+   "id": "legal-rule",
+   "text": "合法規則可獨立發布 預期接受 · 尚未執行",
+   "current": "false"
+  },
+  {
+   "id": "legal-incomplete-binding",
+   "text": "未選材料方向仍是合法未完成配置 預期接受 · 尚未執行",
+   "current": "false"
+  },
+  {
+   "id": "fixed-version-immutable",
+   "text": "改名重排不改固定版本與既有配置 預期拒絕 · 尚未執行",
+   "current": "false"
+  }
+ ],
+ "runs": [
+  {
+   "id": "same-role-distinct-members",
+   "listed": "同角色的不同構件分開引用 預期接受 · 本次 · 通過",
+   "result": "預期 接受 原生實際 接受 驗證狀態 本次核對 · 通過",
+   "status": [
+    "通過"
+   ]
+  },
+  {
+   "id": "one-local-joint-new-version",
+   "listed": "新版本只改一處接合 預期接受 · 本次 · 通過",
+   "result": "預期 接受 原生實際 接受 驗證狀態 本次核對 · 通過",
+   "status": [
+    "通過"
+   ]
+  },
+  {
+   "id": "wrong-type-dimension-reference",
+   "listed": "尺寸引用拒絕計數型別 預期拒絕 · 本次 · 通過",
+   "result": "預期 拒絕 原生實際 拒絕 驗證狀態 本次核對 · 通過",
+   "status": [
+    "通過"
+   ]
+  },
+  {
+   "id": "legal-rule",
+   "listed": "合法規則可獨立發布 預期接受 · 本次 · 通過",
+   "result": "預期 接受 原生實際 接受 驗證狀態 本次核對 · 通過",
+   "status": [
+    "通過"
+   ]
+  },
+  {
+   "id": "legal-incomplete-binding",
+   "listed": "未選材料方向仍是合法未完成配置 預期接受 · 本次 · 通過",
+   "result": "預期 接受 原生實際 接受 驗證狀態 本次核對 · 通過",
+   "status": [
+    "通過"
+   ]
+  },
+  {
+   "id": "fixed-version-immutable",
+   "listed": "改名重排不改固定版本與既有配置 預期拒絕 · 本次 · 通過",
+   "result": "預期 拒絕 原生實際 拒絕 驗證狀態 本次核對 · 通過",
+   "status": [
+    "通過"
+   ]
+  }
+ ],
+ "dumpAfterRuns": true,
+ "asmAfterRuns": {
+  "rules": 0,
+  "bindings": 0,
+  "instances": 0
+ },
+ "editControls": [
+  "input 同角色的不同構件分開引用",
+  "input 有限主副支接合",
+  "select *+u/-u/+v/-v"
+ ],
+ "afterEdit": {
+  "from": "+u",
+  "to": "-u",
+  "listed": "同角色的不同構件分開引用 預期接受 · 歷史未核信 · 已過期",
+  "result": "預期 接受 原生實際 接受 驗證狀態 歷史未核信 · 已過期",
+  "status": [
+   "案例修改已核對；先前結果保留為歷史。"
+  ]
+ },
+ "afterEditRun": {
+  "listed": "同角色的不同構件分開引用 預期接受 · 本次 · 驗證失敗",
+  "result": "預期 接受 原生實際 接受 驗證狀態 本次核對 · 驗證失敗",
+  "failedAssertions": 1,
+  "status": [
+   "驗證失敗"
+  ]
+ },
+ "afterRetain": {
+  "status": [
+   "案例與原始結果已保留，可一步復原。"
+  ],
+  "projectStatus": [
+   "-: 從空白處拖曳，框選物件",
+   "-: 有未保存的變更",
+   "-: 案例與原始結果已保留，可一步復原。"
+  ]
+ },
+ "afterReset": {
+  "select": "+u",
+  "listed": "同角色的不同構件分開引用 預期接受 · 歷史未核信 · 已過期",
+  "status": [
+   "案例與原始結果已保留；以下是歷史，重跑後取得本次結果。",
+   "已還原模板；請重新執行核對。"
+  ]
+ },
+ "dumpAfterAll": true,
+ "asmAfterAll": {
+  "rules": 0,
+  "bindings": 0,
+  "instances": 0
+ },
+ "saved": "download",
+ "badResponses": [],
+ "errsA": [],
+ "reopenedAsm": {
+  "rules": 0,
+  "bindings": 0,
+  "instances": 0
+ },
+ "reopenedCases": [
+  {
+   "id": "same-role-distinct-members",
+   "text": "同角色的不同構件分開引用 預期接受 · 歷史未核信 · 已過期",
+   "current": "true"
+  },
+  {
+   "id": "one-local-joint-new-version",
+   "text": "新版本只改一處接合 預期接受 · 歷史未核信 · 已過期",
+   "current": "false"
+  },
+  {
+   "id": "wrong-type-dimension-reference",
+   "text": "尺寸引用拒絕計數型別 預期拒絕 · 歷史未核信 · 已過期",
+   "current": "false"
+  },
+  {
+   "id": "legal-rule",
+   "text": "合法規則可獨立發布 預期接受 · 歷史未核信 · 已過期",
+   "current": "false"
+  },
+  {
+   "id": "legal-incomplete-binding",
+   "text": "未選材料方向仍是合法未完成配置 預期接受 · 歷史未核信 · 已過期",
+   "current": "false"
+  },
+  {
+   "id": "fixed-version-immutable",
+   "text": "改名重排不改固定版本與既有配置 預期拒絕 · 歷史未核信 · 已過期",
+   "current": "false"
+  }
+ ],
+ "errsB": []
+}

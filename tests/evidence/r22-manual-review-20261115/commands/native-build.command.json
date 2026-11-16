@@ -1,0 +1,38 @@
+{
+  "cwd": "/workspace/geometry-issue54-20261115",
+  "command": [
+    "python3",
+    "geometry-web/start_local.py",
+    "--build-only",
+    "--binary-dir",
+    "/tmp/issue54-20261115-native"
+  ],
+  "startedUtc": "2026-11-15T19:55:43.510445+00:00",
+  "head": {
+    "exit": 0,
+    "stdout": "fd96b8bf7094bd57e74e3226aeba1f24a73b74fc\n",
+    "stderr": ""
+  },
+  "statusBefore": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "exit": 0,
+  "endedUtc": "2026-11-15T19:56:39.880627+00:00",
+  "statusAfter": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "outputs": {
+    ".stdout": {
+      "bytes": 728,
+      "sha256": "381606a19a7394a9cad9154e958dc85dde5f8c386cd6cde07466e81d944dba3a"
+    },
+    ".stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

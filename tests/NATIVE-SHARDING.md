@@ -239,3 +239,20 @@ source head `eeb8616665d0e0944fc1a7cf4a4786e15872cbe6`、checkout
 `tests/native_score_reference.py` 凍結修正前兩個 sweep；既有 `test_partition_is_deterministic` 以60組不同分片／情境／成本（每組兩個 sweep）比對完整歸屬與負載。另以平衡且所有候選皆應拒絕的夾具計算排序的純量輸入數，限制每個候選只處理兩個受影響分片；這是工作量斷言，不以機器快慢判斷。具名撤回 `R379_RESTORE_GLOBAL_SWAP_SCORING`／`R379_RESTORE_GLOBAL_EXCHANGE_SCORING` 分別還原舊 sweep，必須命中 `R379_NATIVE_SWAP_LOCAL_SCORE`／`R379_NATIVE_EXCHANGE_LOCAL_SCORE` 的正常 AssertionError，恢復後再綠。原 NativeShardCoverage 的13個方法（整檔另含 RunnerClassification 一個方法，共14個）、所有舊斷言、expected與量測原件不變。
 
 `native-complete` 的 checkout 使用 `filter: blob:none` 及 non-cone `/*`、`!/evidence/`；僅省略根目錄歷史證據封包，保留完整 `tests/`（含 `tests/evidence/`）、核心、網頁、原workflow及Git HEAD。沿用文件job已有的簽出方式，5分鐘時限與所有後續命令不變。`R379_RESTORE_FULL_COVERAGE_CHECKOUT` 只撤回本job的該設定，應使原coverage測試以 `R379_NATIVE_COVERAGE_SPARSE_CHECKOUT` 正常紅；不能順手改其他job。稀疏簽出須實際執行原35組反證、archive反證與六片原收據核對，不能僅以設定字串或舊job成功宣稱完成；新head仍需正式CI。
+
+## R17 新套件的第三份獨立來源（PR #419，2026-11-16）
+
+PR #419（需求帳 R17 host／App 第一片）新增四個 native suite。原四輪 `measured_runs`、R380 與 R14 兩份 `/1` 追加證據逐 byte 不變；另新增 `native_shard_added_evidence_r17.json`，用同一個 `_added_evidence_costs()` 驗欄位、來源、全通過及成本上界，讀取時才與前兩份合流（現行 registry 324 套）。三份來源之間不得有重複名稱（`R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES`）。`profile_digest()` 改為四份 LF bytes 以 NUL 分隔的 SHA-256，順序固定為 timings、R380、R14、R17。
+
+來源是 [Geometry 43725356267](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267)，source head `735144edeb0cd5918b1e5c365dd6f63a63d9cd62`、實際 checkout `c5f0876e2c6185fdc00896489627b69e50040020`。native 2／3／5／6 片整體紅，原因正是這四套尚未登記在 expected／profile（2 片另有 `py:test_unittest_runner` 的兩項同因失敗）；下列個別 suite 自身全部通過。秒數取自原日誌的一位小數摘要，上界是規劃餘量，不是歷史實測。
+
+| Suite | Source job | Passed / discovered | 原摘要秒數 | Planning upper ms |
+|---|---|---:|---:|---:|
+| `py:test_boundary_pair_host` | [132845985362](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267/job/132845985362)（6/6） | 19 / 19 | 4.6 | 7000 |
+| `node:boundary_pair_ui` | [132845985393](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267/job/132845985393)（3/6） | 12 / 12 | 0.2 | 2000 |
+| `node:boundary_pair_project` | [132845985292](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267/job/132845985292)（5/6） | 8 / 8 | 0.1 | 2000 |
+| `node:boundary_pair_browser_scope` | [132845985322](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267/job/132845985322)（2/6） | 7 / 7 | 0.1 | 2000 |
+
+`run_all.expected.json` 只追加這四套由原 runner 實跑得到的 19／12／8／7，其餘既有 320 筆不變、不降低任何舊計數。這次沒有用 `--update-expected` 重寫整份檔：該旗標要求整次完整跑可信，而 `mutation:check`（exit-code-only）在突變帳本採入前必為 STALE，會被原 runner 拒絕；因此依原 runner 的 `{'mode','count','unit'}` 格式只插入四筆，並以原 runner 的完整嚴格比對確認全部 suite 計數相符。
+
+歷史回放範圍不變：main 歷史 317 套與 R379 歷史 318 套都排除 R17 四套；正式六片驗全部 324 套、全部四輪情境及逐套最大包絡，同樣嚴格小於 1200000ms。`py:test_unittest_runner` 只在既有 method 內加斷言，仍為 15 項。新增具名撤回 `R17_DROP_SUITE_EVIDENCE`、`R17_DROP_EXPECTED_ENTRIES`、`R17_OMIT_SOURCE_FROM_DIGEST`，各自要求指定的正常 AssertionError、0 error、0 skip（0／1／0）；R379 原有撤回的目標斷言與順序保留。新 head 仍需正式 CI 的六份原收據與 coverage 確認。

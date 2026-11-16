@@ -1,0 +1,372 @@
+{
+ "lessonVisible": true,
+ "lessonText": "參數 寬 長 1830 u→ 間距 v↓ 間距 1830 引用來源 寬 915 915 1220 915 1220 知道了",
+ "quickHint": "按 Enter 建立 2 欄：寬 915、長 1830",
+ "card1Fields": [
+  {
+   "id": "2",
+   "name": "寬",
+   "kind": "dimension",
+   "input": "915",
+   "shown": "= 915 mm",
+   "error": false
+  },
+  {
+   "id": "3",
+   "name": "長",
+   "kind": "dimension",
+   "input": "1830",
+   "shown": "= 1830 mm",
+   "error": false
+  }
+ ],
+ "card1Foot": {
+  "status": "全部欄位有效，可建立卡片",
+  "result": "套用後的影響 新卡片還沒有被引用。套用後，網格和角材的來源選單就能選用它。",
+  "confirm": {
+   "text": "建立參數卡",
+   "disabled": false
+  },
+  "badge": "草稿 · 未套用"
+ },
+ "draftCard": [
+  "ƒ 板材草稿寬915 mm長1830 mm"
+ ],
+ "card1After": {
+  "status": "沒有未套用的修改。",
+  "result": "套用後的影響 目前沒有物件引用這張卡。",
+  "confirm": {
+   "text": "確認套用",
+   "disabled": true
+  },
+  "badge": "已套用"
+ },
+ "chips": [
+  "板材.寬 915 mm",
+  "板材.長 1830 mm"
+ ],
+ "divZeroFields": [
+  {
+   "id": "1",
+   "name": "間距",
+   "kind": "dimension",
+   "input": "=⟦板材.寬 · #1:2⟧/3",
+   "shown": "待試算",
+   "error": false
+  },
+  {
+   "id": "2",
+   "name": "半寬",
+   "kind": "dimension",
+   "input": "=⟦板材.寬 · #1:2⟧/2",
+   "shown": "待試算",
+   "error": false
+  },
+  {
+   "id": "3",
+   "name": "支數",
+   "kind": "count",
+   "input": "=1/0",
+   "shown": "無效",
+   "error": true
+  }
+ ],
+ "divZeroFoot": {
+  "status": "請修正標紅的欄位",
+  "result": "套用後的影響 有欄位無法試算，修正後才會列出影響。 candidate rejected 核心原始訊息 斷面與拉伸的連動影響 · I43-I49 [2:3 骨架.支數] -> I38 DIV_ZERO: division by zero；預期：\"valid atomic transaction\"；實際：\"rejected input or upstream dependency\"",
+  "confirm": {
+   "text": "建立參數卡",
+   "disabled": true
+  },
+  "badge": "草稿 · 未套用"
+ },
+ "divZeroErrorLine": [
+  "除以零"
+ ],
+ "card2Fields": [
+  {
+   "id": "1",
+   "name": "間距",
+   "kind": "dimension",
+   "input": "=⟦板材.寬 · #1:2⟧/3",
+   "shown": "= 305 mm",
+   "error": false
+  },
+  {
+   "id": "2",
+   "name": "半寬",
+   "kind": "dimension",
+   "input": "=⟦板材.寬 · #1:2⟧/2",
+   "shown": "= 457.5 mm",
+   "error": false
+  },
+  {
+   "id": "3",
+   "name": "支數",
+   "kind": "count",
+   "input": "7",
+   "shown": "= 7",
+   "error": false
+  }
+ ],
+ "card2Foot": {
+  "status": "全部欄位有效，可建立卡片",
+  "result": "套用後的影響 新卡片還沒有被引用。套用後，網格和角材的來源選單就能選用它。",
+  "confirm": {
+   "text": "建立參數卡",
+   "disabled": false
+  },
+  "badge": "草稿 · 未套用"
+ },
+ "paramsAfterCreate": [
+  {
+   "id": 1,
+   "name": "板材",
+   "fields": [
+    {
+     "id": 2,
+     "name": "寬",
+     "type": "dimension",
+     "value": "915 mm"
+    },
+    {
+     "id": 3,
+     "name": "長",
+     "type": "dimension",
+     "value": "1830 mm"
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "骨架",
+   "fields": [
+    {
+     "id": 1,
+     "name": "間距",
+     "type": "dimension",
+     "value": "305 mm"
+    },
+    {
+     "id": 2,
+     "name": "半寬",
+     "type": "dimension",
+     "value": "915/2 mm"
+    },
+    {
+     "id": 3,
+     "name": "支數",
+     "type": "count",
+     "value": "7 1"
+    }
+   ]
+  }
+ ],
+ "stepSourceOptions": [
+  "直接輸入",
+  "板材.寬 · #1:2 · 915 mm",
+  "板材.長 · #1:3 · 1830 mm",
+  "骨架.間距 · #2:1 · 305 mm",
+  "骨架.半寬 · #2:2 · 457.5 mm"
+ ],
+ "uStepAfterRef": {
+  "value": "305",
+  "readOnly": true
+ },
+ "gridImpact": "確認連動變更 建立無限網格「R20 引用參數」 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 進階：完整指令 網格來源 · 1 網格系統 1 原：不存在 新：「R20 引用參數」；主支方向未設定；u 無限重複：間距 305 mm，第 0 線 0 mm；v 無限重複：間距 600 mm，第 0 線 0 mm，相鄰格子相位差 300 mm 候選來源 1：下一 ruleKey 1；0 項來源規則。 取消，保留原狀 確認套用",
+ "gridAfterCreate": [
+  {
+   "name": "R20 引用參數",
+   "uStep": 305,
+   "uRef": {
+    "kind": "parameter",
+    "parameterId": 2,
+    "fieldId": 1
+   },
+   "vStep": 600,
+   "vStagger": 300
+  }
+ ],
+ "gridCardText": "R20 引用參數網格來源 · 無限延伸R20 引用參數 u：無限重複 · 間距 305 mm（參數引用），基準 0 mm v：無限重複 · 間距 600 mm，基準 0 mm 卡片僅示意排法，沒有幾何範圍。X 間距 305 · Y 間距 600 mm格線向兩端無限延伸進入 ›",
+ "paramCardTexts": [
+  "830 mm1830 mm2 個欄位 · 2 處使用檢查 ›",
+  "57.5 mm支數支數773 個欄位 · 1 處使用檢查 ›"
+ ],
+ "editIdle": {
+  "status": "沒有未套用的修改。",
+  "result": "套用後的影響 直接使用處：骨架.間距、骨架.半寬",
+  "confirm": {
+   "text": "確認套用",
+   "disabled": true
+  },
+  "badge": "已套用"
+ },
+ "edit1220": {
+  "status": "未套用：請修正欄位或引用。",
+  "result": "套用後的影響 grid-system 1 u: I38 GEOMETRY: [2:1 骨架.間距] must resolve to integer mm in D1 range (got 1220/3) 核心原始訊息 candidate rejected 核心原始訊息 斷面與拉伸的連動影響 · I43-I49 grid-system 1 u: I38 GEOMETRY: [2:1 骨架.間距] must resolve to integer mm in D1 range (got 1220/3)；預期：\"valid atomic transaction\"；實際：\"rejected input or upstream dependency\"",
+  "confirm": {
+   "text": "確認套用",
+   "disabled": true
+  },
+  "badge": "有未套用修改"
+ },
+ "edit1220Shown": [
+  "grid-system 1 u: I38 GEOMETRY: [2:1 骨架.間距] must resolve to integer mm in D1 range (got 1220/3)",
+  "candidate rejected"
+ ],
+ "edit1200": {
+  "status": "全部欄位有效，可套用",
+  "result": "套用後的影響 板材.寬 915 mm → 1200 mm 骨架.間距 305 mm → 400 mm 骨架.半寬 457.5 mm → 600 mm 受影響物件：網格來源 1 直接使用處：骨架.間距、骨架.半寬",
+  "confirm": {
+   "text": "確認套用",
+   "disabled": false
+  },
+  "badge": "有未套用修改"
+ },
+ "afterConfirm": {
+  "foot": {
+   "status": "沒有未套用的修改。",
+   "result": "套用後的影響 直接使用處：骨架.間距、骨架.半寬",
+   "confirm": {
+    "text": "確認套用",
+    "disabled": true
+   },
+   "badge": "已套用"
+  },
+  "grid": [
+   {
+    "name": "R20 引用參數",
+    "uStep": 400,
+    "uRef": {
+     "kind": "parameter",
+     "parameterId": 2,
+     "fieldId": 1
+    },
+    "vStep": 600,
+    "vStagger": 300
+   }
+  ],
+  "values": [
+   "板材: 寬=1200 mm, 長=1830 mm",
+   "骨架: 間距=400 mm, 半寬=600 mm, 支數=7 1"
+  ]
+ },
+ "afterUndo": {
+  "grid": [
+   {
+    "name": "R20 引用參數",
+    "uStep": 305,
+    "uRef": {
+     "kind": "parameter",
+     "parameterId": 2,
+     "fieldId": 1
+    },
+    "vStep": 600,
+    "vStagger": 300
+   }
+  ],
+  "values": [
+   "板材: 寬=915 mm, 長=1830 mm",
+   "骨架: 間距=305 mm, 半寬=915/2 mm, 支數=7 1"
+  ]
+ },
+ "afterRedo": {
+  "grid": [
+   {
+    "name": "R20 引用參數",
+    "uStep": 400,
+    "uRef": {
+     "kind": "parameter",
+     "parameterId": 2,
+     "fieldId": 1
+    },
+    "vStep": 600,
+    "vStagger": 300
+   }
+  ],
+  "values": [
+   "板材: 寬=1200 mm, 長=1830 mm",
+   "骨架: 間距=400 mm, 半寬=600 mm, 支數=7 1"
+  ]
+ },
+ "usageText": "來源／影響與參數交換 尚無圖面證據；可從參考頁的來源紀錄框選並指定此目標。 匯出參數包 預覽刪除卡片 板材 · parameter:1 a2213f7c5db4cb64fb0c01c969cf407db7af2cd7c0455470904f9a3e5fc4a0e8 直接與間接來源 成員對應 · field 板材.寬 · parameter-field:1:f2定位 成員對應 · field 板材.長 · parameter-field:1:f3定位 修改可能涉及（未試算） 尺寸來源 · expression 骨架.間距 · parameter-field:2:f1定位 尺寸來源 · expression 骨架.半寬 · parameter-field:2:f2定位 成員對應 · field 骨架 · parameter:2定位 尺寸來源 · u.step R20 引用參數 · grid-system:1定位 求值支撐身分：僅依角材原生端點資料確認。檢視不重建模型。 重新檢查",
+ "deleteReferenced": {
+  "status": "未套用：請修正欄位或引用。",
+  "result": "套用後的影響 找不到引用 核心原始訊息 candidate rejected 核心原始訊息 斷面與拉伸的連動影響 · I43-I49 I38 MISSING: parameter 1 is still referenced by parameter 2 field 1; parameter 2 field 2; unbind or repoint them in the same complete candidate；預期：\"valid atomic transaction\"；實際：\"rejected input or upstream dependency\"",
+  "confirm": {
+   "text": "確認套用",
+   "disabled": true
+  },
+  "badge": "有未套用修改"
+ },
+ "deleteShown": [
+  "找不到引用",
+  "candidate rejected"
+ ],
+ "afterDeleteAttempt": [
+  "板材: 寬=1200 mm, 長=1830 mm",
+  "骨架: 間距=400 mm, 半寬=600 mm, 支數=7 1"
+ ],
+ "exportName": "download",
+ "exportPackage": {
+  "schema": "geometry-parameters/1",
+  "keys": [
+   "schema",
+   "cards"
+  ],
+  "cards": [
+   "骨架#2",
+   "板材#1"
+  ]
+ },
+ "saved": "download",
+ "errsA": [],
+ "reopened": {
+  "grid": [
+   {
+    "name": "R20 引用參數",
+    "uStep": 400,
+    "uRef": {
+     "kind": "parameter",
+     "parameterId": 2,
+     "fieldId": 1
+    },
+    "vStep": 600,
+    "vStagger": 300
+   }
+  ],
+  "values": [
+   "板材: 寬=1200 mm, 長=1830 mm",
+   "骨架: 間距=400 mm, 半寬=600 mm, 支數=7 1"
+  ]
+ },
+ "beforeImport": [],
+ "importPreview": {
+  "foot": {
+   "status": "試算完成，確認後整筆套用。",
+   "result": "套用後的影響 骨架.間距 新增 → 400 mm 骨架.半寬 新增 → 600 mm 骨架.支數 新增 → 7 板材.寬 新增 → 1200 mm 板材.長 新增 → 1830 mm 受影響物件：尚無幾何變更",
+   "confirm": {
+    "text": "建立參數卡",
+    "disabled": false
+   },
+   "badge": "草稿 · 未套用"
+  },
+  "dialog": null
+ },
+ "afterImport": [
+  "骨架: 間距=400 mm, 半寬=600 mm, 支數=7 1",
+  "板材: 寬=1200 mm, 長=1830 mm"
+ ],
+ "importStatus": [
+  "-: 有未保存的變更",
+  "-: 已選 1 個物件",
+  "-: 尚未檢查",
+  "paramStatus: 沒有未套用的修改。"
+ ],
+ "importUndo": [],
+ "importRedo": [
+  "骨架: 間距=400 mm, 半寬=600 mm, 支數=7 1",
+  "板材: 寬=1200 mm, 長=1830 mm"
+ ],
+ "errsB": []
+}

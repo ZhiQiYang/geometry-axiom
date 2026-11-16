@@ -1,0 +1,55 @@
+{
+ "duplicateEndpoint": {
+  "title": "這次還不能套用",
+  "reasons": [
+   "接合 #1 和接合 #2 都接在構件 #2 的同一端；一個端點只能有一個接合。"
+  ],
+  "detailsOpen": false,
+  "detailsHeadings": [
+   "核心回報的原因",
+   "變更前",
+   "變更後",
+   "完整幾何對照"
+  ],
+  "raw": "[ { \"code\": \"ASSEMBLY_INVALID\", \"clause\": \"I40/I41\", \"message\": \"I40: joints 1 and 2 assign the same endpoint of member 2\" }, { \"timber\": 0, \"clause\": \"I8\", \"expected\": \"all world invariants pass\", \"actual\": \"candidate rejected\", \"message\": \"candidate rejected\" } ]",
+  "status": "尚不能套用，請依上列原因修正。",
+  "confirmDisabled": true,
+  "world": {
+   "rules": [],
+   "bindings": []
+  }
+ },
+ "beforeDelete": {
+  "rules": [
+   "1:1"
+  ],
+  "bindings": [
+   1
+  ]
+ },
+ "deleteUsedVersion": {
+  "title": "這次還不能套用",
+  "reasons": [
+   "材料配置 #1 還需要規則 #1 的第 1 版；這一版不能刪，或先把配置改用別的版本。"
+  ],
+  "detailsOpen": false,
+  "detailsHeadings": [
+   "核心回報的原因",
+   "變更前",
+   "變更後",
+   "完整幾何對照"
+  ],
+  "raw": "[ { \"code\": \"ASSEMBLY_INVALID\", \"clause\": \"I40/I41\", \"message\": \"I40: binding 1 refers to missing rule 1@1\" }, { \"timber\": 0, \"clause\": \"I8\", \"expected\": \"all world invariants pass\", \"actual\": \"candidate rejected\", \"message\": \"candidate rejected\" } ]",
+  "status": "尚不能套用，請依上列原因修正。",
+  "confirmDisabled": true,
+  "world": {
+   "rules": [
+    "1:1"
+   ],
+   "bindings": [
+    1
+   ]
+  }
+ },
+ "errs": []
+}

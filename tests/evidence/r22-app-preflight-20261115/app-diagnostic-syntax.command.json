@@ -1,0 +1,36 @@
+{
+  "cwd": "/workspace/geometry-issue54-20261115",
+  "command": [
+    "node",
+    "--check",
+    "tests/diagnostics/r22_app_manual_review.cjs"
+  ],
+  "startedUtc": "2026-11-15T21:35:27.922009+00:00",
+  "head": {
+    "exit": 0,
+    "stdout": "ae2d943817879c3096d7b23106c3f55122dea606\n",
+    "stderr": ""
+  },
+  "statusBefore": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "exit": 0,
+  "endedUtc": "2026-11-15T21:35:28.142289+00:00",
+  "statusAfter": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "outputs": {
+    ".stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    ".stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

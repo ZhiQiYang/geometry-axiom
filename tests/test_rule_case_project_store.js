@@ -45,3 +45,65 @@ test('damaged case ownership cannot hide in an otherwise valid archive',async()=
   m.featureAttachments.records[0].value.definitions[1].sourcePins[0].sha256='0'.repeat(64);entries['manifest.json']=new TextEncoder().encode(JSON.stringify(m));
   await assert.rejects(P.unpack(zip.zipSync(entries),zip));
 });
+
+// 2026-11-15 cloud L4 (D17): the assembly bridge's legacy I8 row carries `actual`
+// next to `expected`; a real rejected receipt must remain portable.
+test('a rejected receipt keeps the native invariant detail with expected and actual, and nothing else',()=>{
+  const fs=require('node:fs'),receipt=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/rule_case_generic_immutable_receipt.json'),'utf8'));
+  const bundle=change=>{const r=structuredClone(receipt),row=r.actualDiagnostics.at(-1);assert.equal(row.clause,'I8');change?.(row);
+    return {schema:C.SCHEMA,definitions:structuredClone(templates),receipts:[{definition:structuredClone(templates.find(d=>d.caseId==='fixed-version-immutable')),receipt:r}]};};
+  assert.equal(Object.hasOwn(receipt.actualDiagnostics.at(-1),'actual'),false,'the stored historical row predates the field');
+  C.validate(bundle());
+  C.validate(bundle(row=>{row.actual='candidate rejected';}));
+  for(const change of [row=>{row.note='x';},row=>{row.actual=1;},row=>{row.actual=null;},row=>{row.actual='x'.repeat(4097);}])assert.throws(()=>C.validate(bundle(change)));
+});
+
+// The server-side adapter applies the same portable shape. tests/*.py belongs to the bridge
+// mutation judge closure, so this check runs the shipped Python validator from here instead.
+test('the workbench adapter accepts the same native invariant detail and still refuses any other field',()=>{
+  const rows=[
+    {timber:0,clause:'I8',expected:'all world invariants pass',actual:'candidate rejected',message:'candidate rejected'},
+    {code:'DIMENSION_TYPE',clause:'D33',ref:{kind:'parameter',id:41,fieldId:9},message:'I40: binding 29 slot 7.A: I38 UNIT: parameter 41 field 9 is not a dimension'},
+    {clause:'I8',message:'candidate rejected',timber:0,expected:'all world invariants pass'},
+    {clause:'I8',message:'candidate rejected',actual:'candidate rejected',note:'x'},
+    {clause:'I8',message:'candidate rejected',actual:1},
+    {clause:'I8',message:'candidate rejected',actual:null},
+    {clause:'I8',message:'candidate rejected',actual:'x'.repeat(4097)},
+  ];
+  const program=["import sys,json","sys.path.insert(0,'geometry-web');sys.path.insert(0,'geometry-core')","import rule_case_workbench_adapter as A","out=[]",
+    "for row in json.loads(sys.stdin.read()):","    try:","        A._diagnostics([row]);out.append('ok')","    except A.AdapterError as error:","        out.append(error.code)","print(json.dumps(out))"].join('\n');
+  const verdicts=JSON.parse(execFileSync(process.env.PYTHON||'python',['-c',program],{cwd:root,encoding:'utf8',input:JSON.stringify(rows)}));
+  assert.deepEqual(verdicts,['ok','ok','ok','RECEIPT','RECEIPT','RECEIPT','RECEIPT']);
+});
+
+// Saving a scenario with retained cases took many seconds: the same attachment was validated
+// hundreds of times (once per format test, times six per catalog scenario, times three per call).
+test('choosing the format checks each attachment once, however many scenarios the catalog holds',()=>{
+  const realCapabilities=P.Features.capabilities,realValidate=C.validate;let capabilityPasses=0,casePasses=0;
+  P.Features.capabilities=envelope=>{capabilityPasses++;return realCapabilities(envelope);};C.validate=value=>{casePasses++;return realValidate(value);};
+  try{
+    for(const scenarios of [0,1,4]){
+      const m=manifest();if(scenarios)m.scenarioCatalog={scenarios:Array.from({length:scenarios},()=>({snapshot:{projectManifest:manifest(),worldScene:'reset\n'}}))};
+      capabilityPasses=casePasses=0;assert.equal(P.projectFormat(m,'reset\n'),P.CASE_FORMAT);
+      assert.deepEqual([capabilityPasses,casePasses],[1+scenarios,1+scenarios]);
+    }
+    const envelope=manifest().featureAttachments;casePasses=0;P.Features.validate(envelope);assert.equal(casePasses,1);
+    casePasses=0;P.Features.validateRecord(envelope.records[0]);assert.equal(casePasses,1);
+  }finally{P.Features.capabilities=realCapabilities;C.validate=realValidate;}
+});
+test('no verdict is kept between calls: data changed after it passed is refused, and so is data broken from the start',()=>{
+  const envelope=manifest().featureAttachments;assert.equal(P.Features.validate(envelope),envelope);
+  envelope.records[0].value.definitions[0].label='';
+  assert.throws(()=>P.Features.validate(envelope));assert.throws(()=>P.Features.validateRecord(envelope.records[0]));assert.throws(()=>P.Features.capabilities(envelope));
+  const broken=manifest();broken.featureAttachments.records[0].value.extra='hidden';assert.throws(()=>P.projectFormat(broken,'reset\n'));
+  const nested=manifest();nested.scenarioCatalog={scenarios:[{snapshot:{projectManifest:manifest(),worldScene:'reset\n'}},{snapshot:{projectManifest:broken,worldScene:'reset\n'}}]};
+  assert.throws(()=>P.projectFormat(nested,'reset\n'));
+});
+test('byte counts equal the real UTF-8 JSON size for one- to four-byte characters, and labels stop at 96 bytes',()=>{
+  for(const s of ['plain','"quote\\ and \u0001 control','é'.repeat(7),'語'.repeat(9),'😀'.repeat(5),'a語😀é\n'])assert.equal(C.bounded(s),Buffer.byteLength(JSON.stringify(s)));
+  const whole=data();whole.definitions[0].label='柱與樑 😀 é';assert.equal(C.bounded(whole),Buffer.byteLength(JSON.stringify(whole)));
+  for(const [unit,fits] of [['a',96],['é',48],['語',32],['😀',24]]){
+    const ok=data();ok.definitions[0].label=unit.repeat(fits);assert.doesNotThrow(()=>C.validate(ok));
+    const over=data();over.definitions[0].label=unit.repeat(fits)+'a';assert.throws(()=>C.validate(over));
+  }
+});
