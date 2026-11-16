@@ -1,0 +1,94 @@
+{
+ "worldStart": {
+  "parameters": [],
+  "boundaries": 1
+ },
+ "entryLabel": "保存、試改與比較方案",
+ "dialogStart": "完整候選方案 關閉 保存目前專案為基準，建立副本再隔離試改。每份方案的對位、草稿與模型各自保留。 0 / 8 份完整快照 方案名稱 保存目前為方案 複製基準 建立獨立副本 左側方案 右側方案 隔離試改右側方案 比較完整定義 整體採用右側方案",
+ "afterCapture": {
+  "names": [
+   "方案A · 第 1 份"
+  ],
+  "status": "已保存完整專案、原圖、草稿及模型。"
+ },
+ "afterFork": {
+  "names": [
+   "方案A · 第 1 份",
+   "方案B · 第 2 份"
+  ],
+  "status": "已建立獨立副本。選取右側方案並隔離試改。",
+  "adoptDisabled": true
+ },
+ "trialUrl": "/?scenario=0975075a44a240e3897170a37fbb8a54",
+ "trialTitle": "隔離試改：方案B 暫存並離開 取消試改 保存試改",
+ "cancelTrialCards": [
+  "試改板材"
+ ],
+ "afterCancelTrial": {
+  "status": "已建立獨立副本。選取右側方案並隔離試改。",
+  "mainWorld": {
+   "parameters": [],
+   "boundaries": 1
+  }
+ },
+ "compareAfterCancel": {
+  "status": "已核對完整定義；整體採用可一步復原。",
+  "text": "完整候選方案 關閉 保存目前專案為基準，建立副本再隔離試改。每份方案的對位、草稿與模型各自保留。 2 / 8 份完整快照 方案名稱 保存目前為方案 複製基準 方案A · 第 1 份 方案B · 第 2 份 建立獨立副本 左側方案 方案A · 第 1 份 方案B · 第 2 份 右側方案 方案A · 第 1 份 方案B · 第 2 份 隔離試改右側方案 比較完整定義 整體採用右側方案 已核對完整定義；整體採用可一步復原。 定義比較；幾何與料長尚未求值。可證明複製關係 7 組；未匹配 0 / 0 個物件，實物身分未知。 兩份完整定義相同。"
+ },
+ "secondTrialStartCards": [],
+ "savedTrialCards": [
+  "試改板材"
+ ],
+ "afterSaveTrial": {
+  "status": "已保存試改；基準的資料與草稿未變更，請重新比較。",
+  "mainWorld": {
+   "parameters": [],
+   "boundaries": 1
+  }
+ },
+ "compare": {
+  "status": "已核對完整定義；整體採用可一步復原。",
+  "text": "完整候選方案 關閉 保存目前專案為基準，建立副本再隔離試改。每份方案的對位、草稿與模型各自保留。 2 / 8 份完整快照 方案名稱 保存目前為方案 複製基準 方案A · 第 1 份 方案B · 第 2 份 建立獨立副本 左側方案 方案A · 第 1 份 方案B · 第 2 份 右側方案 方案A · 第 1 份 方案B · 第 2 份 隔離試改右側方案 比較完整定義 整體採用右側方案 已核對完整定義；整體採用可一步復原。 定義比較；幾何與料長尚未求值。可證明複製關係 0 組；未匹配 7 / 8 個物件，實物身分未知。 模型與參數定義 方案A 這份方案沒有參數定義。 完整原生最終定義 方案B 試改板材 寬 915 mm 長 1830 mm 完整原生最終定義 projectManifest.format projectManifest.requiredCapabilities 資料校驗 所需功能",
+  "adoptDisabled": false
+ },
+ "afterAdopt": {
+  "status": "已整體採用，可復原／重做到完整原方案。",
+  "mainWorld": {
+   "parameters": [
+    "試改板材"
+   ],
+   "boundaries": 1
+  },
+  "scenarios": 2
+ },
+ "afterUndo": {
+  "parameters": [],
+  "boundaries": 1
+ },
+ "afterRedo": {
+  "parameters": [
+   "試改板材"
+  ],
+  "boundaries": 1
+ },
+ "saved": "download",
+ "errsA": [],
+ "dialogs": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+  "DIALOG 整體採用右側方案？World、原圖、草稿與模型一起替換，可一步復原。"
+ ],
+ "reopened": {
+  "world": {
+   "parameters": [
+    "試改板材"
+   ],
+   "boundaries": 1
+  },
+  "scenarios": 2
+ },
+ "reopenedNames": [
+  "方案A · 第 1 份",
+  "方案B · 第 2 份"
+ ],
+ "errsB": []
+}
