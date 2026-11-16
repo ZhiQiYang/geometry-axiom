@@ -332,9 +332,35 @@ window.AssemblyWorkspace=(()=>{
     }
     return parts.join(' · ');
   }
+  /* 核心拒絕規則或材料配置時的原文（assembly.c 的 I40 訊息）→ 畫面上的說法。
+     只列在編輯器裡走得到的情況；沒列到的照原樣顯示。原文一律留在預覽下方的「完整資料」。 */
+  const REASONS=[
+    [/^I40: joints (\d+) and (\d+) assign the same endpoint of member (\d+)$/,m=>`接合 #${m[1]} 和接合 #${m[2]} 都接在構件 #${m[3]} 的同一端；一個端點只能有一個接合。`],
+    [/^I40: joints (\d+) and (\d+) conflict at scope (.+)$/,m=>`接合 #${m[1]} 和接合 #${m[2]} 在交接區域「${m[3]}」互相衝突。`],
+    [/^I40: binding (\d+) refers to missing rule (\d+)@(\d+)$/,m=>`材料配置 #${m[1]} 還需要規則 #${m[2]} 的第 ${m[3]} 版；這一版不能刪，或先把配置改用別的版本。`],
+    [/^I40: joint (\d+) needs distinct existing members$/,m=>`接合 #${m[1]} 的終止構件和目標構件要是兩個不同的構件。`],
+    [/^I40: joint (\d+) needs kind and stable junction scope$/,m=>`接合 #${m[1]} 要選接合方式，並填交接區域識別。`],
+    [/^I40: joint (\d+) has missing target or invalid local side\/direction$/,m=>`接合 #${m[1]} 的目標構件、側面或走向還沒選對。`],
+    [/^I40: joint (\d+) has invalid endpoint definition$/,m=>`接合 #${m[1]} 的終止端還沒選對。`],
+    [/^I40: joint (\d+) needs one continuous and two distinct split members$/,m=>`接合 #${m[1]}（正交分段）要有一支連續構件和兩支不同的分段構件。`],
+    [/^I40: member (\d+) refers to a missing slot$/,m=>`構件 #${m[1]} 指到不存在的槽位。`],
+    [/^I40: slot (\d+) needs a name; unknown fields are rejected$/,m=>`槽位 #${m[1]} 要有名稱。`],
+    [/^I40\/CAPACITY: rule \d+ needs 1\.\.8 unique slots, 1\.\.12 unique members and 1\.\.16 unique joints$/,()=>'一條規則要有 1～8 個槽位、1～12 個構件、1～16 個接合，編號不能重複。'],
+    [/^I40: binding (\d+) must explicitly map every fixed rule slot$/,m=>`材料配置 #${m[1]} 要逐一對應規則的每個槽位。`]
+  ];
+  /* 核心在每次拒絕的最後補一筆只寫 candidate rejected 的總結。 */
+  const REJECTION_SUMMARY='candidate rejected';
+  const isSummary=v=>String(v?.message??'').trim()===REJECTION_SUMMARY;
+  /* 已有具體原因時不列總結那一筆；只有它的時候才留著。 */
+  function shownViolations(p){
+    const all=p.violations||[],specific=all.filter(v=>!isSummary(v));
+    return specific.length?specific:all;
+  }
   function violationWords(v){
     const source=[v.instanceId?`實例 #${v.instanceId}`:'',v.primaryKey?`主支 #${v.primaryKey}`:'',v.lineKey?`副支線 #${v.lineKey}`:''].filter(Boolean).join(' · '),
       detail=value=>value==null?'':typeof value==='string'?value:JSON.stringify(value);
+    if(isSummary(v))return [source,'核心拒絕這次變更，沒有附原因。'].filter(Boolean).join(' · ');
+    for(const [pattern,words] of REASONS){const hit=pattern.exec(String(v.message??''));if(hit)return [source,words(hit)].filter(Boolean).join(' · ');}
     return [source,v.code,v.clause,v.message,v.expected==null?'':'預期：'+detail(v.expected),v.actual==null?'':'實際：'+detail(v.actual)].filter(Boolean).join(' · ')||'驗證拒絕';
   }
   function assertRepeatPreview(p){
@@ -471,7 +497,7 @@ window.AssemblyWorkspace=(()=>{
     if(p.impact?.schema!=='candidate-geometry/1'||!Array.isArray(p.impact.timbers)||!Array.isArray(p.impact.guides)){await command('assembly-cancel '+p.token);throw Error('原生服務缺少完整幾何預覽，請更新服務再預覽；草稿仍保留。');}
     if(repeat){try{assertRepeatPreview(p);}catch(error){await command('assembly-cancel '+p.token);throw error;}}
     x.preview=p;$('asmConfirm').disabled=!p.valid;
-    $('asmPreviewResult').innerHTML=`${previewCopy(p)}${renderRepeatCells(p)}<ul>${(p.violations||[]).map(v=>`<li>${esc(violationWords(v))}</li>`).join('')}</ul><details><summary>完整資料，給除錯對照</summary><h5>變更前</h5><pre>${esc(JSON.stringify(p.before,null,2))}</pre><h5>變更後</h5><pre>${esc(JSON.stringify(p.after,null,2))}</pre><h5>完整幾何對照</h5><pre>${esc(JSON.stringify(p.impact,null,2))}</pre></details>`;bindRepeatCells(p);syncFooter();report(p.valid?'驗證通過，確認後才會套用。':'尚不能套用，請依上列原因修正。',!p.valid);
+    $('asmPreviewResult').innerHTML=`${previewCopy(p)}${renderRepeatCells(p)}<ul>${shownViolations(p).map(v=>`<li>${esc(violationWords(v))}</li>`).join('')}</ul><details><summary>完整資料，給除錯對照</summary>${(p.violations||[]).length?`<h5>核心回報的原因</h5><pre>${esc(JSON.stringify(p.violations,null,2))}</pre>`:''}<h5>變更前</h5><pre>${esc(JSON.stringify(p.before,null,2))}</pre><h5>變更後</h5><pre>${esc(JSON.stringify(p.after,null,2))}</pre><h5>完整幾何對照</h5><pre>${esc(JSON.stringify(p.impact,null,2))}</pre></details>`;bindRepeatCells(p);syncFooter();report(p.valid?'驗證通過，確認後才會套用。':'尚不能套用，請依上列原因修正。',!p.valid);
   }
   async function confirm(){
     const x=s;if(!current(x)||!x.preview?.valid||x.confirming)return;ReferenceWorkspace.assertEditable();flush();
