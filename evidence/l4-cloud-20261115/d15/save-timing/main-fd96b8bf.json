@@ -1,0 +1,101 @@
+{
+ "runtimeVersion": "07ade6f6c69a1423c4da949930d6e9d48ee3fa45139338e0997d4b129b7872da",
+ "root": "/tmp/claude-0/-home-user-geometry-axiom/c161fbcc-185e-5abd-ba3d-eaec6a803bff/scratchpad/base-wt",
+ "measuredAt": "2026-11-15T10:16:39.715Z",
+ "caseIds": [
+  "same-role-distinct-members",
+  "one-local-joint-new-version",
+  "legal-rule",
+  "legal-incomplete-binding"
+ ],
+ "timing": [
+  {
+   "cases": 0,
+   "attachmentBytes": 0,
+   "saves": [
+    {
+     "scenariosAfter": 1,
+     "ms": 675
+    },
+    {
+     "scenariosAfter": 2,
+     "ms": 1170
+    }
+   ]
+  },
+  {
+   "cases": 4,
+   "attachmentBytes": 36048,
+   "saves": [
+    {
+     "scenariosAfter": 1,
+     "ms": 15506
+    },
+    {
+     "scenariosAfter": 2,
+     "ms": 51349
+    }
+   ]
+  }
+ ],
+ "counting": [
+  {
+   "cases": 0,
+   "attachmentBytes": 0,
+   "saves": [
+    {
+     "scenariosAfter": 1,
+     "ms": 541,
+     "calls": {
+      "feature-attachments.validate": 9,
+      "project-store.projectFormat": 12,
+      "project-store.projectCapabilities": 231,
+      "project-store.validate": 4
+     }
+    },
+    {
+     "scenariosAfter": 2,
+     "ms": 981,
+     "calls": {
+      "feature-attachments.validate": 14,
+      "project-store.projectFormat": 23,
+      "project-store.projectCapabilities": 772,
+      "project-store.validate": 8
+     }
+    }
+   ]
+  },
+  {
+   "cases": 4,
+   "attachmentBytes": 36045,
+   "saves": [
+    {
+     "scenariosAfter": 1,
+     "ms": 18754,
+     "calls": {
+      "rule-case-data.bounded": 11293,
+      "rule-case-data.validate": 721,
+      "feature-attachments.validate": 239,
+      "feature-attachments.capabilities": 189,
+      "project-store.projectFormat": 12,
+      "project-store.projectCapabilities": 189,
+      "project-store.validate": 4
+     }
+    },
+    {
+     "scenariosAfter": 2,
+     "ms": 63676,
+     "calls": {
+      "rule-case-data.bounded": 38143,
+      "rule-case-data.validate": 2435,
+      "feature-attachments.validate": 809,
+      "feature-attachments.capabilities": 713,
+      "project-store.projectFormat": 23,
+      "project-store.projectCapabilities": 713,
+      "project-store.validate": 8
+     }
+    }
+   ]
+  }
+ ]
+}

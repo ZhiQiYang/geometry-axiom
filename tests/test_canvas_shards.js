@@ -8,6 +8,8 @@ const shards = require('../geometry-web/canvas_shards.js');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
+const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
+const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
 const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -75,8 +77,11 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
+  // R20 findings 1-3 add exactly two P76 assertions; project them out too.
+  // D18 finding 5 adds exactly one P70 assertion; project it out too.
+  // #420 owns the separate P420 section; project it out first (P353 stays 355).
   const beforeR420 = r420Extension.projectGolden(context.golden);
-  const golden=r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(beforeR420)));
+  const golden=d18CardStaggerExtension.projectGolden(r20ReasonsExtension.projectGolden(r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(beforeR420)))));
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
   // #360 and R06 add independent sections. Keep the original 4002/91 contract

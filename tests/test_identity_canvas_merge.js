@@ -11,6 +11,8 @@ const timberExtension = require('./diagnostics/r356_canvas_extension.cjs');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
+const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
+const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
 const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');
 const file = name => path.join(WEB, name);
 const read = name => fs.readFileSync(file(name), 'utf8');
@@ -24,9 +26,11 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
   // its own section (R02 P128, R11 P116); together they restore main exactly.
   // #400 adds exactly three P90 assertions; that projection restores P90 = 8.
   // R06 finding 6 adds exactly five R06 assertions; that projection restores R06 = 50.
+  // R20 findings 1-3 add exactly two P76 assertions; that projection restores P76 = 87.
+  // D18 finding 5 adds exactly one P70 assertion; that projection restores P70 = 121.
   // #420 owns a separate measured section; P353 and every older count stay fixed.
   const beforeP420 = r420Extension.projectGolden(rawGolden);
-  const golden = r06LegacyExtension.projectGolden(r400Extension.projectGolden(timberExtension.projectGolden(pfExtension.projectGolden(beforeP420))));
+  const golden = d18CardStaggerExtension.projectGolden(r20ReasonsExtension.projectGolden(r06LegacyExtension.projectGolden(r400Extension.projectGolden(timberExtension.projectGolden(pfExtension.projectGolden(beforeP420))))));
   for (const count of [undefined, 0, r420Extension.P420_ADDED - 1, r420Extension.P420_ADDED + 1]) {
     const probe = JSON.parse(JSON.stringify(rawGolden));
     if (count === undefined) delete probe.sections.P420;
@@ -81,6 +85,24 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
   misattributed.sections.P77 = 139; misattributed.sections.R06 = 50;
   assert.throws(() => r06LegacyExtension.projectGolden(misattributed), /R06_LEGACY_P77_UNCHANGED/, 'R06_LEGACY_MISATTRIBUTION_REJECTED');
   assert.equal(rawGolden.sections.P77, r06LegacyExtension.P77_UNCHANGED, 'R06_LEGACY_RAW_P77_IS_MAIN');
+  // P76 under-counted, missing or over-counted.
+  for (const count of [undefined, 87, 88, 90]) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (count === undefined) delete probe.sections.P76;
+    else probe.sections.P76 = count;
+    assert.throws(() => r20ReasonsExtension.projectGolden(probe), /R20_REASONS_P76_COUNT/, 'R20_REASONS_P76_PROBE_REJECTED '+count);
+  }
+  assert.equal(rawGolden.sections.P76, r20ReasonsExtension.P76_BEFORE + r20ReasonsExtension.P76_ADDED, 'R20_REASONS_RAW_P76');
+  assert.equal(golden.sections.P76, MAIN_GOLDEN.sections.P76, 'R20_REASONS_PROJECTION_RESTORES_MAIN_P76');
+  // P70 under-counted, missing or over-counted.
+  for (const count of [undefined, 120, 121, 123]) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (count === undefined) delete probe.sections.P70;
+    else probe.sections.P70 = count;
+    assert.throws(() => d18CardStaggerExtension.projectGolden(probe), /D18_CARD_STAGGER_P70_COUNT/, 'D18_CARD_STAGGER_P70_PROBE_REJECTED '+count);
+  }
+  assert.equal(rawGolden.sections.P70, d18CardStaggerExtension.P70_BEFORE + d18CardStaggerExtension.P70_ADDED, 'D18_CARD_STAGGER_RAW_P70');
+  assert.equal(golden.sections.P70, MAIN_GOLDEN.sections.P70, 'D18_CARD_STAGGER_PROJECTION_RESTORES_MAIN_P70');
 });
 
 test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {

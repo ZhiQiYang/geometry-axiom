@@ -292,6 +292,9 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   await close();await ctl('#btnZoom');await ctl(card('grid-system',staggered));
   const inspector=await read(`({text:document.querySelector('#giVStep')?.closest('label')?.innerText||'',extra:!!$('giUStagger')||!!$('giVStagger')})`);
   check('底部檢查器沿用第 0 線那一行帶出相位差，不加輸入欄',inspector.text.includes('第 0 線座標 0 mm')&&inspector.text.includes('相鄰格子相位差 400 mm')&&!inspector.extra,inspector);
+  // 2026-11-15 D18 walk finding 5: the canvas card itself said nothing about the stagger.
+  const cardFace=await read(`(()=>{const g=document.querySelector('${card('grid-system',staggered)}');return g?{title:g.querySelector('title').textContent.split('\\n'),lines:[...g.querySelectorAll('.ocard-body text')].map(t=>t.textContent)}:null;})()`);
+  check('畫布上的來源卡在提示文字與卡面寫出相位差，沒有相位差的那一軸不寫',!!cardFace&&cardFace.title.includes('v：無限重複 · 間距 1830 mm，基準 0 mm，相鄰格子相位差 400 mm')&&cardFace.title.includes('u：無限重複 · 間距 2000 mm，基準 0 mm')&&cardFace.lines.includes('Y 相鄰格子相位差 400 mm')&&!cardFace.lines.includes('格線向兩端無限延伸'),cardFace);
 
   // The lesson is shared DOM. A successful grid confirmation replaces its
   // editor owner, then the same lesson moves to the parameter canvas. Exercise

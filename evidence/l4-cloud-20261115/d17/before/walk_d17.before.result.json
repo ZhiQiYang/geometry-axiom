@@ -1,0 +1,118 @@
+{
+ "note": "修正前。建置是 main 180d4500 加上同一張 PR 前面兩個只改畫面文字的提交(86928ec45),規則案例相關的檔案與 main 相同。",
+ "runs": [
+  {
+   "id": "same-role-distinct-members",
+   "listed": "同角色的不同構件分開引用 預期接受 · 本次 · 通過",
+   "result": "預期 接受 原生實際 接受 驗證狀態 本次核對 · 通過",
+   "status": [
+    "通過"
+   ]
+  },
+  {
+   "id": "one-local-joint-new-version",
+   "listed": "新版本只改一處接合 預期接受 · 本次 · 通過",
+   "result": "預期 接受 原生實際 接受 驗證狀態 本次核對 · 通過",
+   "status": [
+    "通過"
+   ]
+  },
+  {
+   "id": "wrong-type-dimension-reference",
+   "listed": "尺寸引用拒絕計數型別 預期拒絕 · 尚未執行",
+   "result": "預期 拒絕 原生實際 未取得原生觀察 驗證狀態 尚未執行",
+   "status": [
+    "未取得可核對的本次結果。 Unknown or missing portable receipt fields"
+   ]
+  },
+  {
+   "id": "legal-rule",
+   "listed": "合法規則可獨立發布 預期接受 · 本次 · 通過",
+   "result": "預期 接受 原生實際 接受 驗證狀態 本次核對 · 通過",
+   "status": [
+    "通過"
+   ]
+  },
+  {
+   "id": "legal-incomplete-binding",
+   "listed": "未選材料方向仍是合法未完成配置 預期接受 · 本次 · 通過",
+   "result": "預期 接受 原生實際 接受 驗證狀態 本次核對 · 通過",
+   "status": [
+    "通過"
+   ]
+  },
+  {
+   "id": "fixed-version-immutable",
+   "listed": "改名重排不改固定版本與既有配置 預期拒絕 · 尚未執行",
+   "result": "預期 拒絕 原生實際 未取得原生觀察 驗證狀態 尚未執行",
+   "status": [
+    "未取得可核對的本次結果。 Unknown or missing portable receipt fields"
+   ]
+  }
+ ],
+ "consoleErrors": [
+  "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+  "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+  "Failed to load resource: the server responded with a status of 409 (Conflict)"
+ ],
+ "reopenedCases": [
+  {
+   "id": "same-role-distinct-members",
+   "text": "同角色的不同構件分開引用 預期接受 · 歷史未核信 · 已過期",
+   "current": "true"
+  },
+  {
+   "id": "one-local-joint-new-version",
+   "text": "新版本只改一處接合 預期接受 · 歷史未核信 · 已過期",
+   "current": "false"
+  },
+  {
+   "id": "wrong-type-dimension-reference",
+   "text": "尺寸引用拒絕計數型別 預期拒絕 · 尚未執行",
+   "current": "false"
+  },
+  {
+   "id": "legal-rule",
+   "text": "合法規則可獨立發布 預期接受 · 歷史未核信 · 已過期",
+   "current": "false"
+  },
+  {
+   "id": "legal-incomplete-binding",
+   "text": "未選材料方向仍是合法未完成配置 預期接受 · 歷史未核信 · 已過期",
+   "current": "false"
+  },
+  {
+   "id": "fixed-version-immutable",
+   "text": "改名重排不改固定版本與既有配置 預期拒絕 · 尚未執行",
+   "current": "false"
+  }
+ ],
+ "assessRequest": {
+  "action": "assess",
+  "status": 400,
+  "response": {
+   "ok": false,
+   "code": "RECEIPT",
+   "error": "Unknown or missing portable receipt fields"
+  },
+  "actualDiagnosticsSent": [
+   {
+    "code": "DIMENSION_TYPE",
+    "clause": "D33",
+    "ref": {
+     "kind": "parameter",
+     "id": 41,
+     "fieldId": 9
+    },
+    "message": "I40: binding 29 slot 7.A: I38 UNIT: parameter 41 field 9 is not a dimension"
+   },
+   {
+    "timber": 0,
+    "clause": "I8",
+    "expected": "all world invariants pass",
+    "actual": "candidate rejected",
+    "message": "candidate rejected"
+   }
+  ]
+ }
+}
