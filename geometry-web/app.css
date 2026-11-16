@@ -2505,8 +2505,8 @@ body.v3-mode .sidebar-left { overflow-y: auto; }
 .face-layer-del { margin-left: 8px; min-width: 32px; min-height: 32px; color: var(--muted); border: 1px solid var(--border); }
 @media (hover: hover) and (pointer: fine) {
   .face-layer-del { opacity: 0; pointer-events: none; }
-  :is(.face-layer-row, .fl-row, .space-boundary-button):hover .face-layer-del,
-  :is(.face-layer-row, .fl-row, .space-boundary-button):focus-within .face-layer-del,
+  :is(.face-layer-row, .fl-row, .space-boundary-button, .timber-schedule-row):hover .face-layer-del,
+  :is(.face-layer-row, .fl-row, .space-boundary-button, .timber-schedule-row):focus-within .face-layer-del,
   .face-layer-del:focus-visible { opacity: 1; pointer-events: auto; }
 }
 .ws-kbd-hints, .edge-mm, .ib-sub, .fixity-btn.seg:not(.on), .fe-ob-note, .fl-group { color: var(--muted); }

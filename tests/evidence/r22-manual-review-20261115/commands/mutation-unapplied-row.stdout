@@ -1,0 +1,8 @@
+PASS pdf-rectangle: acquired ordered ring
+PASS pdf-rectangle: provenance method
+PASS pdf-rectangle: acquisition preserves complete native scene
+PASS pdf-rectangle: Save rejects live candidate
+PASS pdf-rectangle: candidate absent from manifest
+PASS pdf-rectangle: explicit review permits beforeCommit
+FAIL pdf-rectangle: unapplied invalid row cannot be reviewed
+{"result":"failed","assertions":7,"out":"/tmp/issue54-20261115-mut-row"}

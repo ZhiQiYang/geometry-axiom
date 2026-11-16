@@ -1,0 +1,41 @@
+{
+  "cwd": "/workspace/geometry-issue54-20261115",
+  "command": [
+    "python3",
+    "tests/diagnostics/run_room_manual_review.py",
+    "--bridge",
+    "/tmp/issue54-20261115-native/bridge",
+    "--out",
+    "/tmp/issue54-20261115-mut-row",
+    "--mutation",
+    "allow-unapplied-row"
+  ],
+  "startedUtc": "2026-11-15T20:05:42.985559+00:00",
+  "head": {
+    "exit": 0,
+    "stdout": "c5b5a5f9bb9601c5e53b04764bb11d6e8872d905\n",
+    "stderr": ""
+  },
+  "statusBefore": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "exit": 1,
+  "endedUtc": "2026-11-15T20:05:43.727365+00:00",
+  "statusAfter": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "outputs": {
+    ".stdout": {
+      "bytes": 434,
+      "sha256": "77b6c2d3858c2d644e193f050239aace4c3ac78a6aacc170a35d188409059a6d"
+    },
+    ".stderr": {
+      "bytes": 513,
+      "sha256": "9cee8d2bfa45ab9abcad5c16e827585e7b7ce37ba853c10903529c1ea484eef2"
+    }
+  }
+}
