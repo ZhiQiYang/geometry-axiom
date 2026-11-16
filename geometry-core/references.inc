@@ -606,8 +606,26 @@ static WoodMemberReferenceContext app_member_reference_context(AppMemberReferenc
         .span=app_member_reference_span,.primary_axis=app_member_reference_primary,.end_faces=app_member_reference_end,.boundary_role=app_member_reference_boundary,
         .place=app_member_reference_place,.write=app_member_reference_write,.issue=app_member_reference_issue,.issue_count=app_member_reference_issue_count,.first_error=app_member_reference_first_error};
 }
+/* D16a boundary-pair/1: membership is read from the World definition. */
+static int boundary_pair_index(const World *w,uint32_t id)
+{
+    for(size_t i=0;i<w->wood.boundary_pair_count;++i)
+        if(w->wood.boundary_pairs[i].first==id||w->wood.boundary_pairs[i].second==id)return (int)i;
+    return -1;
+}
+static int boundary_pair_member(const World *w,size_t ti)
+{return ti<w->wood.timber_count?boundary_pair_index(w,w->wood.timbers[ti].id):-1;}
+/* R6(f): each member's value comes from its own outer edge and section only. */
+static bool boundary_pair_candidate(ReferenceEval *evaluation,World *w,size_t ti)
+{
+    AppMemberPlacementScratch scratch;AppMemberReferenceContext c={0};c.evaluation=evaluation;c.world=w;c.geometry=&scratch;
+    WoodMemberReferenceContext context=app_member_reference_context(&c);ReferenceEval *previous=g_reference_active;
+    g_reference_active=evaluation;bool ok=wood_member_reference_pair_candidate(&context,ti);g_reference_active=previous;
+    return ok&&(!evaluation||!evaluation->source_failure);
+}
 static bool reference_place_geometry(ReferenceEval *evaluation,World *w,size_t ti)
 {
+    if(boundary_pair_member(w,ti)>=0)return boundary_pair_candidate(evaluation,w,ti);
     AppMemberPlacementScratch scratch;AppMemberReferenceContext c={0};c.evaluation=evaluation;c.world=w;c.geometry=&scratch;
     WoodMemberReferenceContext context=app_member_reference_context(&c);ReferenceEval *previous=g_reference_active;
     g_reference_active=evaluation;bool ok=wood_member_reference_place(&context,ti);g_reference_active=previous;
@@ -690,6 +708,115 @@ static bool reference_check_all(const World *w)
         }
     }
     return ok;
+}
+
+/* D16a structural closure shared by the package commit and every full
+ * revalidation: two ordinary boundary members on one native surface, each
+ * at-face on a different FIXED outer edge e<i>, same axis and depth side. */
+static bool boundary_pair_structure(const World *w,uint32_t first,uint32_t second,char *err,size_t cap)
+{
+    if(first==second){snprintf(err,cap,"D16a: boundary-pair 需要兩支不同 id 的 timber");return false;}
+    uint32_t ids[2]={first,second};int index[2];
+    for(int k=0;k<2;++k){
+        index[k]=reference_timber_index(w,ids[k]);
+        if(index[k]<0){snprintf(err,cap,"D16a: boundary-pair %u %u 成員閉包不全（timber %u 不存在）",first,second,ids[k]);return false;}
+        const Timber *t=&w->wood.timbers[index[k]];
+        if(t->role!=TIMBER_ROLE_BOUNDARY){snprintf(err,cap,"D16a: timber %u 須為普通 boundary（成組後不得改成其他角色）",ids[k]);return false;}
+        if(assembly_owned(w,ids[k])){snprintf(err,cap,"D16a/I42: timber %u 由組構擁有，不得成組",ids[k]);return false;}
+        if(eng_object_bound(w,1,ids[k])){snprintf(err,cap,"D16a: timber %u 有工程尺寸來源；本原生片尚未支援成組保存該來源，拒絕而不降級",ids[k]);return false;}
+        size_t memberships=0;
+        for(size_t i=0;i<w->wood.boundary_pair_count;++i)
+            if(w->wood.boundary_pairs[i].first==ids[k]||w->wood.boundary_pairs[i].second==ids[k])++memberships;
+        if(memberships>1){snprintf(err,cap,"D16a: timber %u 不得同時屬於另一組",ids[k]);return false;}
+    }
+    const TimberAnchor *a[2]={&w->wood.anchors[index[0]],&w->wood.anchors[index[1]]};
+    for(int k=0;k<2;++k){
+        if(a[k]->anchor_kind!=ANCHOR_AT_EDGE||a[k]->ref_is_timber||a[k]->ref_hole>=0||a[k]->ref_derived_key[0]){
+            snprintf(err,cap,"D16a: timber %u 須 at-face 引用一般外環 e<i>（不收孔邊、參考線、角材面或衍生邊）",ids[k]);return false;}
+        if(a[k]->has_through||a[k]->has_between){snprintf(err,cap,"D16a: timber %u 的成組 place 不含 through／between",ids[k]);return false;}
+    }
+    if(a[0]->placement_id!=a[1]->placement_id){snprintf(err,cap,"D16a: 兩成員須位於同一承載面");return false;}
+    if(a[0]->ref_edge==a[1]->ref_edge){snprintf(err,cap,"D16a: 兩成員須引用兩條不同的外輪廓邊（同為 e%d）",a[0]->ref_edge);return false;}
+    if(a[0]->depth_side!=a[1]->depth_side){snprintf(err,cap,"D16a: 兩成員深度側須相同");return false;}
+    bool along[2];
+    for(int k=0;k<2;++k)along[k]=a[k]->length_direction==SURFACE_DIRECTION_POS_V||a[k]->length_direction==SURFACE_DIRECTION_NEG_V;
+    if(along[0]!=along[1]){snprintf(err,cap,"D16a: 兩成員長軸須同向或反向平行");return false;}
+    PlacementSurface placement;SpaceBoundarySurface region;const SpaceBoundarySurface *view=NULL;
+    if(!app_reference_host_read(w,a[0]->placement_id,&placement,&region,&view)){
+        snprintf(err,cap,"I9/D16a: place 指的承載面 %u 不存在（包外來源須已存在，不准前向引用）",a[0]->placement_id);return false;}
+    if(placement.derived_fill_id||!view){snprintf(err,cap,"D16a: 成組只收原生承載面的外輪廓邊");return false;}
+    for(int k=0;k<2;++k){
+        if(a[k]->ref_edge<0||(size_t)a[k]->ref_edge>=view->outline.count){snprintf(err,cap,"D16a/I13: timber %u 引用的外輪廓邊 e%d 不存在",ids[k],a[k]->ref_edge);return false;}
+        if(view->outline.fixity[a[k]->ref_edge]!=EDGE_FIXED){snprintf(err,cap,"D16a: timber %u 引用的 e%d 不是 FIXED 邊",ids[k],a[k]->ref_edge);return false;}
+    }
+    return true;
+}
+static bool boundary_pair_fail(uint32_t id,const char *clause,const char *expected,const char *actual)
+{
+    reference_issue(id,clause,expected,actual);
+    char message[512];snprintf(message,sizeof message,"%s: %s",clause,actual);set_revalidate_error(message);return false;
+}
+/* R6(f)/I19/D11: after both member values are complete, each member is checked
+ * with the peer's complete candidate as an ordinary occupant, excluding itself
+ * and every object placed after the group (World placement order). */
+static bool boundary_pair_check_all(World *w)
+{
+    if(!w->wood.boundary_pair_count)return true;
+    World *scratch=malloc(sizeof *scratch);
+    if(!scratch){set_revalidate_error("CAPACITY: boundary-pair scratch unavailable");return false;}
+    bool ok=true;
+    for(size_t pi=0;ok&&pi<w->wood.boundary_pair_count;++pi){
+        uint32_t ids[2]={w->wood.boundary_pairs[pi].first,w->wood.boundary_pairs[pi].second};char err[512]="";
+        if(!boundary_pair_structure(w,ids[0],ids[1],err,sizeof err)){ok=boundary_pair_fail(ids[0],"D16a","valid boundary-pair closure",err);break;}
+        int index[2]={reference_timber_index(w,ids[0]),reference_timber_index(w,ids[1])};
+        PlacementSurface placement;SpaceBoundarySurface region;const SpaceBoundarySurface *view=NULL;
+        if(!app_reference_host_read(w,w->wood.anchors[index[0]].placement_id,&placement,&region,&view)){ok=boundary_pair_fail(ids[0],"D16a","existing host","host missing");break;}
+        bool along=w->wood.anchors[index[0]].length_direction==SURFACE_DIRECTION_POS_V||w->wood.anchors[index[0]].length_direction==SURFACE_DIRECTION_NEG_V;
+        GeoRect2 f[2];Coord span[2][2],cross[2][2],edge[2][2];
+        for(int k=0;k<2;++k){
+            const Timber *t=&w->wood.timbers[index[k]];const TimberAnchor *a=&w->wood.anchors[index[k]];GeoSegment2 segment;
+            if(!t->placed||!timber_a0_footprint_uv(&placement,t,a,&f[k])||!loop_get_edge_segment(&view->outline,(size_t)a->ref_edge,&segment)){
+                ok=boundary_pair_fail(ids[k],"D16a/R6(f)","complete member candidate","member candidate unavailable");break;}
+            span[k][0]=along?f[k].min_v:f[k].min_u;span[k][1]=along?f[k].max_v:f[k].max_u;
+            cross[k][0]=along?f[k].min_u:f[k].min_v;cross[k][1]=along?f[k].max_u:f[k].max_v;
+            Coord e0=along?segment.start.v:segment.start.u,e1=along?segment.end.v:segment.end.u;
+            edge[k][0]=e0<e1?e0:e1;edge[k][1]=e0>e1?e0:e1;
+            if(span[k][0]!=edge[k][0]||span[k][1]!=edge[k][1]){
+                snprintf(err,sizeof err,"J_i [%lld,%lld] != E_i [%lld,%lld]",(long long)span[k][0],(long long)span[k][1],(long long)edge[k][0],(long long)edge[k][1]);
+                ok=boundary_pair_fail(ids[k],"D16a/R6(f)","J_i equals the whole referenced edge interval E_i",err);break;}
+        }
+        if(!ok)break;
+        int facing=(span[0][1]==span[1][0])+(span[1][1]==span[0][0]);
+        Coord overlap=(cross[0][1]<cross[1][1]?cross[0][1]:cross[1][1])-(cross[0][0]>cross[1][0]?cross[0][0]:cross[1][0]);
+        if(facing!=1||overlap<=0){
+            snprintf(err,sizeof err,"timber %u [%lld,%lld] 與 timber %u [%lld,%lld] 沒有恰一組相向端點同座標且寬向正長度接觸（寬向交集 %lld mm）；P1-A：不互頂即整筆拒絕",
+                ids[0],(long long)span[0][0],(long long)span[0][1],ids[1],(long long)span[1][0],(long long)span[1][1],(long long)(overlap>0?overlap:0));
+            ok=boundary_pair_fail(ids[0],"D16a","two real end faces with opposite normals, one plane and positive contact",err);break;
+        }
+        uint64_t order=w->wood.anchors[index[0]].order;
+        for(int k=0;ok&&k<2;++k){
+            memcpy(scratch,w,sizeof *scratch);
+            for(size_t i=0;i<scratch->wood.timber_count;++i)
+                if(scratch->wood.timbers[i].placed&&scratch->wood.anchors[i].order>order)scratch->wood.timbers[i].placed=false;
+            Timber *self=&scratch->wood.timbers[index[k]];self->placed=false;
+            const SpaceBoundarySurface *selected=placement_boundary_for_rect(&placement,view,&f[k]);
+            Coord start=0,end=0;
+            SpanStatus status=resolve_auto_span(scratch,&placement,view,along,cross[k][0],cross[k][1],true,edge[k][0],edge[k][1],
+                false,0,NULL,NULL,&start,&end,err,sizeof err,self);
+            if(status!=SPAN_OK){ok=boundary_pair_fail(ids[k],"D16a/R6(f)","one legal interval containing E_i with supported ends",err[0]?err:"no legal interval");break;}
+            if(start!=edge[k][0]||end!=edge[k][1]){
+                snprintf(err,sizeof err,"含 E_i 的合法區間 [%lld,%lld] 不等於 J_i [%lld,%lld]（不硬裁、不換段、不反覆試長度）",
+                    (long long)start,(long long)end,(long long)edge[k][0],(long long)edge[k][1]);
+                ok=boundary_pair_fail(ids[k],"D16a/R6(f)","legal interval equals J_i",err);break;
+            }
+            if(!surface_primary_axis_check(scratch,placement.id,self,along,err,sizeof err)){ok=boundary_pair_fail(ids[k],"D16a/D17/I21","length axis consistent with same-face roles",err);break;}
+            if(!app_reference_end_faces(scratch,&placement,selected,self,along,start,end,cross[k][0],cross[k][1],err,sizeof err)){
+                ok=boundary_pair_fail(ids[k],"D16a/I19/I22","end supports by the boundary fixed-end exception or full-width stops",err);break;}
+            if(!timber_boundary_role_check(&placement,selected,self,along,start,end,cross[k][0],cross[k][1],err,sizeof err)){
+                ok=boundary_pair_fail(ids[k],"D16a/I20/R18","full fixed-edge coverage for boundary",err);break;}
+        }
+    }
+    free(scratch);return ok;
 }
 
 static void reference_sources_owned_free(void *opaque)
@@ -803,7 +930,8 @@ static bool apply_reference_move(const char *p,int n,char **tokens,int count,Wor
     }
     scene_error(p,n,"I9: move guide does not exist");return false;
 }
-static bool apply_reference_place(const char *p,int n,char **tokens,int count,World *w)
+/* Parse one place record into an anchor without changing the World. */
+static bool reference_place_parse(const char *p,int n,char **tokens,int count,World *w,TimberAnchor *out,int *out_index)
 {
     uint32_t id,pid; int i=5;
     if (count<8 || !parse_u32(tokens[1],&id) || strcmp(tokens[2],"on") || !parse_u32(tokens[3],&pid)) return false;
@@ -858,9 +986,118 @@ static bool apply_reference_place(const char *p,int n,char **tokens,int count,Wo
         !lookup_keyword(tokens[i+1],DEPTH_SIDE_WORDS,&a.depth_side)) {
         scene_error(p,n,"place 缺少長度方向與深度側，或有多餘欄位"); return false;
     }
+    *out=a;*out_index=ti;return true;
+}
+static bool apply_reference_place(const char *p,int n,char **tokens,int count,World *w)
+{
+    uint32_t id;
+    if (count>=2 && parse_u32(tokens[1],&id) && boundary_pair_index(w,id)>=0) {
+        scene_error(p,n,"D16a: 已成組的 timber 不得單支重新 place；請以 boundary-pair begin … end 完整重宣告整組"); return false;
+    }
+    TimberAnchor a;int ti;
+    if (!reference_place_parse(p,n,tokens,count,w,&a,&ti)) return false;
     a.order=w->wood.timbers[ti].placed?w->wood.anchors[ti].order:++w->app.next_order;
     w->wood.anchors[ti]=a; w->wood.timbers[ti].placed=true;
     return reference_checked(p,n,w);
+}
+
+/* D16a/R4: one closed boundary-pair package. The parser (transactions.inc)
+ * buffers exactly the body lines; only this commit applies them, as one
+ * definition unit, on the caller's candidate World. */
+enum { BOUNDARY_PAIR_RECORDS=4 };
+typedef struct {
+    bool active,overflow;uint32_t ids[2];int begin_line;uint64_t revision;size_t count;
+    char lines[BOUNDARY_PAIR_RECORDS][SCENE_MAX_LINE];int line_numbers[BOUNDARY_PAIR_RECORDS];
+} BoundaryPairInput;
+static const BoundaryPairInput *g_pair_commit_input;
+static bool g_pair_remove_armed,g_pair_scene_required;
+static bool boundary_pair_refuse(const char *p,int n,const char *message)
+{scene_error(p,n,message);return false;}
+static bool boundary_pair_declare(World *w,char **t,int count,char *err,size_t cap)
+{
+    uint32_t id;Coord a,b;
+    if(count!=6||strcmp(t[4],"role")||!parse_u32(t[1],&id)||!parse_coord(t[2],&a)||!parse_coord(t[3],&b)){
+        snprintf(err,cap,"D16a: 包內 timber 須為完整定義 timber id A尺寸 B尺寸 role boundary");return false;}
+    if(strcmp(t[5],"boundary")){snprintf(err,cap,"D16a: timber %u 須為普通 boundary（role %s 不可成組）",id,t[5]);return false;}
+    WoodMember updated;
+    if(!wood_member_construct(id,0,a,b,true,WOOD_MEMBER_ROLE_BOUNDARY,0,&updated)){snprintf(err,cap,"角材的長度與 A/B 尺寸都要大於 0");return false;}
+    int ti=reference_timber_index(w,id);
+    if(ti>=0){updated.placed=w->wood.timbers[ti].placed;w->wood.timbers[ti]=updated;return true;}
+    if(w->wood.timber_count>=WORLD_MAX_TIMBERS){snprintf(err,cap,"CAPACITY: timber capacity exceeded");return false;}
+    w->wood.timbers[w->wood.timber_count]=updated;memset(&w->wood.anchors[w->wood.timber_count],0,sizeof w->wood.anchors[0]);
+    ++w->wood.timber_count;return true;
+}
+static bool apply_boundary_pair_commit(const char *p,int n,World *w,const BoundaryPairInput *in)
+{
+    char err[512]="",text[BOUNDARY_PAIR_RECORDS][SCENE_MAX_LINE];char *tokens[BOUNDARY_PAIR_RECORDS][SCENE_MAX_TOKENS];
+    int counts[BOUNDARY_PAIR_RECORDS];
+    uint32_t first=in->ids[0]<in->ids[1]?in->ids[0]:in->ids[1],second=in->ids[0]<in->ids[1]?in->ids[1]:in->ids[0];
+    if(first==second)return boundary_pair_refuse(p,in->begin_line,"D16a: boundary-pair begin 需要兩個不同的 timber id");
+    if(in->overflow||in->count!=BOUNDARY_PAIR_RECORDS)
+        return boundary_pair_refuse(p,n,"D16a/R4: 包內須恰有兩份 timber 與兩份 place（缺件或多件）");
+    int timber_at[2]={-1,-1},place_at[2]={-1,-1};
+    for(size_t k=0;k<in->count;++k){
+        memcpy(text[k],in->lines[k],strlen(in->lines[k])+1);
+        counts[k]=split_tokens(text[k],tokens[k],SCENE_MAX_TOKENS);
+        uint32_t id;
+        if(counts[k]<2||!parse_u32(tokens[k][1],&id)||(id!=first&&id!=second))
+            return boundary_pair_refuse(p,in->line_numbers[k],"D16a/R4: 包內記錄只能指名 begin 的兩個成員");
+        int slot=id==first?0:1;int *at=!strcmp(tokens[k][0],"timber")?timber_at:!strcmp(tokens[k][0],"place")?place_at:NULL;
+        if(!at)return boundary_pair_refuse(p,in->line_numbers[k],"D16a/R4: 包內只接受 timber 與 place，不可混入其他命令");
+        if(at[slot]>=0)return boundary_pair_refuse(p,in->line_numbers[k],"D16a/R4: 包內同一成員的記錄重複");
+        at[slot]=(int)k;
+    }
+    for(int slot=0;slot<2;++slot)if(timber_at[slot]<0||place_at[slot]<0)
+        return boundary_pair_refuse(p,n,"D16a/R4: 包內須恰有兩份 timber 與各一份 place（缺件）");
+    int existing=boundary_pair_index(w,first),other=boundary_pair_index(w,second);
+    bool redeclare=existing>=0&&existing==other&&w->wood.boundary_pairs[existing].first==first&&w->wood.boundary_pairs[existing].second==second;
+    if(!redeclare&&(existing>=0||other>=0))return boundary_pair_refuse(p,in->begin_line,"D16a: 成員已屬另一組；首版不拆組、不換組");
+    if(!redeclare&&(reference_timber_index(w,first)>=0||reference_timber_index(w,second)>=0))
+        return boundary_pair_refuse(p,in->begin_line,"D16a: 首版新建須兩個 id 都未使用；既有組的完整重宣告只接受原成員");
+    if(assembly_owned(w,first)||assembly_owned(w,second))return boundary_pair_refuse(p,in->begin_line,"D16a/I42: 成員不得由組構擁有");
+    uint64_t order=redeclare?w->wood.anchors[reference_timber_index(w,first)].order:++w->app.next_order;
+    for(int slot=0;slot<2;++slot)
+        if(!boundary_pair_declare(w,tokens[timber_at[slot]],counts[timber_at[slot]],err,sizeof err))
+            return boundary_pair_refuse(p,in->line_numbers[timber_at[slot]],err);
+    for(int slot=0;slot<2;++slot){
+        size_t k=(size_t)place_at[slot];TimberAnchor a;int ti;
+        if(!reference_place_parse(p,in->line_numbers[k],tokens[k],counts[k],w,&a,&ti)){
+            if(!g_scene_last_error[0])scene_error(p,in->line_numbers[k],"D16a: 包內 place 記錄無法解析");return false;}
+        if(a.has_through||a.has_between)return boundary_pair_refuse(p,in->line_numbers[k],"D16a/R4: 包內 place 不含 through／between");
+        a.order=order;w->wood.anchors[ti]=a;w->wood.timbers[ti].placed=true;
+    }
+    if(!redeclare){
+        if(w->wood.boundary_pair_count>=sizeof w->wood.boundary_pairs/sizeof w->wood.boundary_pairs[0])
+            return boundary_pair_refuse(p,in->begin_line,"CAPACITY: boundary-pair capacity exceeded");
+        w->wood.boundary_pairs[w->wood.boundary_pair_count++]=(WoodBoundaryPair){first,second};
+    }
+    if(!boundary_pair_structure(w,first,second,err,sizeof err))return boundary_pair_refuse(p,n,err);
+    return reference_checked(p,n,w);
+}
+static bool apply_boundary_pair_remove(const char *p,int n,World *w,uint32_t a,uint32_t b)
+{
+    uint32_t first=a<b?a:b,second=a<b?b:a;int pi=boundary_pair_index(w,first);
+    if(pi<0||w->wood.boundary_pairs[pi].first!=first||w->wood.boundary_pairs[pi].second!=second)
+        return boundary_pair_refuse(p,n,"D16a: boundary-pair delete 須明示同一組的兩個 timber id");
+    memmove(&w->wood.boundary_pairs[pi],&w->wood.boundary_pairs[pi+1],(w->wood.boundary_pair_count-(size_t)pi-1)*sizeof w->wood.boundary_pairs[0]);
+    --w->wood.boundary_pair_count;
+    uint32_t ids[2]={first,second};
+    for(int k=0;k<2;++k){
+        int ti=reference_timber_index(w,ids[k]);if(ti<0)return boundary_pair_refuse(p,n,"D16a: 成員閉包不全");
+        identity_note_key(APP_IDENTITY_TIMBER,ids[k],0);
+        memmove(&w->wood.timbers[ti],&w->wood.timbers[ti+1],(w->wood.timber_count-(size_t)ti-1)*sizeof w->wood.timbers[0]);
+        memmove(&w->wood.anchors[ti],&w->wood.anchors[ti+1],(w->wood.timber_count-(size_t)ti-1)*sizeof w->wood.anchors[0]);
+        --w->wood.timber_count;
+    }
+    return reference_checked(p,n,w);
+}
+static bool apply_boundary_pair_line(const char *p,int n,char **tokens,int count,World *w)
+{
+    if(count==2&&!strcmp(tokens[1],"commit")&&g_pair_commit_input)return apply_boundary_pair_commit(p,n,w,g_pair_commit_input);
+    uint32_t a,b;
+    if(count==4&&!strcmp(tokens[1],"remove")&&g_pair_remove_armed&&parse_u32(tokens[2],&a)&&parse_u32(tokens[3],&b))
+        return apply_boundary_pair_remove(p,n,w,a,b);
+    return boundary_pair_refuse(p,n,"D16a: boundary-pair begin <a> <b>|end|confirm <token>|cancel|delete <a> <b>");
 }
 
 /* D9/R4: emit declarations first, then reference nodes in evaluation order. */
@@ -886,6 +1123,9 @@ static bool reference_guide_ready(const World *w,size_t i,const bool *placed,uns
         char *end; unsigned long id=strtoul(p+7,&end,10);
         int ti=reference_timber_index(w,(uint32_t)id);
         if (ti>=0 && end[0]==':' && end[1]!='A' && end[1]!='B' && !placed[ti]) return false;
+        /* D16a/R4: a grouped member is declared inside its closed unit, so even an
+         * A/B dimension reference waits until the whole group has been written. */
+        if (ti>=0 && !placed[ti] && boundary_pair_index(w,(uint32_t)id)>=0) return false;
         p=end>p?end:p+7;
     }
     p=app_guide_expression(w,geo_guides_values(&w->geo.guide_lines)[i].id);
@@ -897,6 +1137,7 @@ static bool reference_guide_ready(const World *w,size_t i,const bool *placed,uns
     }
     return true;
 }
+static void reference_dump_place(const World *,FILE *,size_t,bool);
 static void reference_dump(const World *w,FILE *out)
 {
     bool gd[WORLD_MAX_GUIDES]={0},placed[WORLD_MAX_TIMBERS]={0};
@@ -904,6 +1145,7 @@ static void reference_dump(const World *w,FILE *out)
         fprintf(out,"datum %u %c %s\n",geo_datums_at(&w->geo.datum_planes,i)->id,"xyz"[geo_datums_at(&w->geo.datum_planes,i)->axis],app_datum_expression(w,geo_datums_at(&w->geo.datum_planes,i)->id));
     for (size_t i=0;i<w->wood.timber_count;++i) {
         const Timber *t=&w->wood.timbers[i];
+        if (boundary_pair_index(w,t->id)>=0) continue;
         if (engineering_dump_timber(w,t,out)) continue;
         assembly_owned_prefix(w,t->id,"timber",out);
         fprintf(out,"timber %u %lld %lld role %s",t->id,(long long)t->size_a,(long long)t->size_b,timber_role_name(t->role));
@@ -915,7 +1157,30 @@ static void reference_dump(const World *w,FILE *out)
         size_t at=w->wood.timber_count; uint64_t order=UINT64_MAX;
         for (size_t i=0;i<w->wood.timber_count;++i) if (w->wood.timbers[i].placed && !placed[i] && w->wood.anchors[i].order<order) { at=i; order=w->wood.anchors[i].order; }
         if (at==w->wood.timber_count) break;
+        int pair=boundary_pair_index(w,w->wood.timbers[at].id);
+        if (pair>=0) {
+            /* R4: the whole group once, in its World position; records by id. */
+            const WoodBoundaryPair *g=&w->wood.boundary_pairs[pair];size_t members[2];
+            members[0]=(size_t)reference_timber_index(w,g->first);members[1]=(size_t)reference_timber_index(w,g->second);
+            fprintf(out,"boundary-pair begin %u %u\n",g->first,g->second);
+            for (int k=0;k<2;++k) {
+                const Timber *m=&w->wood.timbers[members[k]];
+                fprintf(out,"timber %u %lld %lld role %s\n",m->id,(long long)m->size_a,(long long)m->size_b,timber_role_name(m->role));
+            }
+            for (int k=0;k<2;++k) reference_dump_place(w,out,members[k],false);
+            fputs("boundary-pair end\n",out);
+            for (int k=0;k<2;++k) { reference_dump_place(w,out,members[k],true); placed[members[k]]=true; }
+            continue;
+        }
+        reference_dump_place(w,out,at,false);reference_dump_place(w,out,at,true);
+        placed[at]=true;
+    }
+}
+static void reference_dump_place(const World *w,FILE *out,size_t at,bool comment)
+{
+    {
         const Timber *t=&w->wood.timbers[at]; const TimberAnchor *a=&w->wood.anchors[at];
+        if (!comment) {
         assembly_owned_prefix(w,t->id,"place",out);
         fprintf(out,"place %u on %u ",t->id,a->placement_id);
         if (a->anchor_kind==ANCHOR_AT_LINE) fprintf(out,"at-line guide %u",a->ref_guide);
@@ -933,6 +1198,8 @@ static void reference_dump(const World *w,FILE *out)
         if (a->has_between) { fputs(" between ",out); reference_face_format(out,&a->between[0]); fputc(' ',out); reference_face_format(out,&a->between[1]); }
         const char *dirs[]={"+u","-u","+v","-v"};
         fprintf(out," %s %s\n",dirs[a->length_direction],a->depth_side==SURFACE_DEPTH_POSITIVE_NORMAL?"+n":"-n");
+        return;
+        }
         const PlacementSurface *p=world_find_placement(w,a->placement_id); SurfaceRegion2 f; bool on=false,covers=false; int edge=-1;
         bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
         SpaceBoundarySurface effective;
@@ -942,7 +1209,6 @@ static void reference_dump(const World *w,FILE *out)
             for(size_t c=0;c<p->component_count;++c)if(selected==&p->components[c]&&edge>=0)found=dp_edge_key(w,p,c,-1,(size_t)edge,key,sizeof key);
             fprintf(out,"# R18 角材 %u: onBoundary=%s coversEdge=%s boundaryEdge=%s\n",t->id,on?"true":"false",covers?"true":"false",found?key:"null");
         }else fprintf(out,"# R18 角材 %u: onBoundary=%s coversEdge=%s boundaryEdge=%d\n",t->id,on?"true":"false",covers?"true":"false",edge);
-        placed[at]=true;
     }
 }
 

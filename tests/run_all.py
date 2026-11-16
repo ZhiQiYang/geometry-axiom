@@ -51,10 +51,11 @@ EXPECTED_FILE = HERE / 'run_all.expected.json'
 # Every tests/test_*.py MUST appear here (value = native binaries it needs; [] is a deliberate "needs none").
 # A test file that is on disk but not listed makes run_all fail and name it.
 PY_NEEDS = {
+    'test_boundary_pair_host': ['bridge'],
     'test_r14_browser_receipt': [],
     'test_r14_repeat_panel': ['bridge'],
     'test_r363_native_merge': ['bridge'],
-    'test_geo318_reading_a_oracle': [],
+    'test_geo318_reading_a_oracle': ['core', 'bridge'],
     'test_geo318_reading_a_native': [],
     'test_geo314_stagger_commit': ['bridge'],
     'test_geo314_commit_paths': [],
@@ -352,6 +353,9 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:boundary_pair_ui': 'tests/test_boundary_pair_ui.js',
+    'node:boundary_pair_project': 'tests/test_boundary_pair_project.js',
+    'node:boundary_pair_browser_scope': 'tests/test_boundary_pair_browser_scope.js',
     'node:r14_app': 'tests/test_r14_app.js',
     'node:cutting_summary': 'tests/test_cutting_summary.js',
     'node:r07_candidate_save_warning': 'tests/test_room_candidate_save_warning.js',
@@ -552,6 +556,26 @@ ALLOWED_SKIPS = [
      'reason': 'requires POSIX process groups and /proc',
      'platforms': ('nt',),
      'why': '程序群組與 /proc 是 POSIX／Linux 才有的東西，Windows 上不存在；Linux／WSL／CI 照常真的執行'},
+    {'suite': 'py:test_gdi_contract',
+     'test': 'test_gdi_contract.GdiSceneLoadStack412.test_apply_proj_scene_loads_under_project_16mib_stack',
+     'reason': 'requires POSIX setrlimit for the 16 MiB stack replay',
+     'platforms': ('nt',),
+     'why': '#412 以 setrlimit 固定 16 MiB 堆疊重放 GDI 載入形狀；Windows 無 setrlimit，Linux／WSL／CI 照常真的執行'},
+    {'suite': 'py:test_gdi_contract',
+     'test': 'test_gdi_contract.GdiSceneLoadStack412.test_failed_parse_leaves_world_and_history_untouched',
+     'reason': 'requires POSIX setrlimit for the 16 MiB stack replay',
+     'platforms': ('nt',),
+     'why': '#412 以 setrlimit 固定 16 MiB 堆疊重放 GDI 載入形狀；Windows 無 setrlimit，Linux／WSL／CI 照常真的執行'},
+    {'suite': 'py:test_gdi_contract',
+     'test': 'test_gdi_contract.GdiSceneLoadStack412.test_snapshot_allocation_failure_is_reported_and_world_untouched',
+     'reason': 'requires POSIX setrlimit for the 16 MiB stack replay',
+     'platforms': ('nt',),
+     'why': '#412 以 setrlimit 固定 16 MiB 堆疊重放 GDI 載入形狀；Windows 無 setrlimit，Linux／WSL／CI 照常真的執行'},
+    {'suite': 'py:test_gdi_contract',
+     'test': 'test_gdi_contract.Win32Build412.test_win32_build_compiles_and_scene_load_keeps_world_off_stack',
+     'reason': 'requires mingw-w64 x86_64 gcc for the _WIN32 build check',
+     'platforms': ('posix', 'nt'),
+     'why': '#412 _WIN32 編譯與堆疊框守門需 mingw-w64；native 分片不裝，改由 win32-build workflow 以 GEOMETRY_REQUIRE_MINGW=1 必跑'},
 ]
 SAC_FACES = ['橋接器連線中斷', 'WinError 4551', 'BASE_COMPILER', 'UNSUPPORTED', '應用程式控制原則', 'Smart App Control']
 UNIT = {'integrity': 'C 檢查點', 'run_tests': '場景', 'unittest': 'test', 'node-test': 'node test', 'node-canvas': '斷言'}

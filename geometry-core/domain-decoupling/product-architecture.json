@@ -2149,6 +2149,24 @@
       "layer": "H",
       "language": "python",
       "purpose": "H-116-TIMBER/1 bounded UTF-8 JSON transport; service-owned temporary input files and native-authoritative read/preview operations"
+    },
+    {
+      "path": "geometry-web/boundary-pair-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "R17 literal boundary-pair App adapter; owns raw UI and native candidate receipts, never geometry evaluation"
+    },
+    {
+      "path": "geometry-web/boundary_pair_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "R17 bounded same-surface host transaction adapter; native allocation, owner identity and unchanged D16a candidate/validation/commit"
+    },
+    {
+      "path": "geometry-web/boundary_pair_transport.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "R17 bounded UTF-8 structured transport with host-owned temporary paths and exact native routing"
     }
   ],
   "exclusions": [
@@ -2767,7 +2785,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "7b790172b42b5fb31f9dceadaf46751d444a4400ce7516a0c586dbe4715bb232",
+      "sha256": "eaf155052a482460c1a6a5b47298a332ec076a26b444e857b506071690dc22d7",
       "hashMode": "lf"
     },
     {
@@ -3223,7 +3241,7 @@
     {
       "path": "geometry-web/grid_system_test.js",
       "reason": "Dedicated acceptance/test driver grid_system_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "f6802f13bc59fbc2058eef4138074bb88af51f07666c635d429da8f43789670f",
+      "sha256": "8fcb48275268c8e40b5f37aa07ba4e734a94c6c2bf501bbbf27ffe39dfe063b6",
       "hashMode": "lf"
     },
     {
@@ -3295,7 +3313,7 @@
     {
       "path": "geometry-web/parameter_workflow_test.js",
       "reason": "Dedicated acceptance/test driver parameter_workflow_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "485ce2315da52b1c918b745099ea5e7affc465635584b8d8f2a85b2418dbe011",
+      "sha256": "ac5be8eb723a0569dfe41c6e44b0dfc8179fadc4c865b29dc1de97bef0c71a20",
       "hashMode": "lf"
     },
     {
@@ -3691,7 +3709,7 @@
     {
       "path": "geometry-core/card-reference/run_axiom_mutations.py",
       "reason": "Dedicated GEO-262 axiom-version mutation runner run_axiom_mutations.py; test tooling, not a product-loaded module.",
-      "sha256": "ff07ce4d59c573d12213afc4f546b7ba9f186cdaf1fdaee240af6a7fc39e936b",
+      "sha256": "9b31dd0ca40f96a974e7cac46a732047e2b8730fcf6f7a5fe35aec6865a08b86",
       "hashMode": "lf"
     },
     {
@@ -3884,6 +3902,12 @@
       "path": "geometry-web/r14_panel_entry_test.js",
       "reason": "Dedicated R14 first-slice browser acceptance driver; loaded only by cdp_test.js in the R14-only CI gate, never by product runtime or served application entry points.",
       "sha256": "b03f2a813305eeb6df0af8279059d2510af68b5e357cc03b3d12e69c2fd84d75",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/boundary_pair_workflow_test.js",
+      "reason": "R17 P335 real-CDP acceptance driver; invoked only by cdp_test.js, never by product runtime or served application entry points.",
+      "sha256": "e74db88d701a5e39830790926c4ef9c939e99620bce88108283e59b15a31da50",
       "hashMode": "lf"
     }
   ],
@@ -5137,9 +5161,9 @@
       "source": "geometry-web/index.html",
       "elementId": "scenarioEditorFrame",
       "driver": "geometry-web/scenario-workspace.js",
-      "driverSha256": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
+      "driverSha256": "c78502ee1454e2bf6d3a5d5ac0a5dad6ac80907df3e5ffdd33391cdd5a9d83ce",
       "router": "geometry-web/serve.py",
-      "routerSha256": "321b747cf5acd2eca13f1a2221c0816f38fa4ebd3045eb115572de123df2ea5f",
+      "routerSha256": "8357540ecc10b68c6c497e859c89bbfdd82782bd10760416b24799f5c8b8c9c1",
       "receiver": "owner.frame",
       "queryValue": "context",
       "srcPrefix": "/?scenario=",

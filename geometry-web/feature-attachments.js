@@ -103,9 +103,16 @@
   function lifecycleReserve(value) {
     return (value?.rooms || []).reduce((bytes,room) => bytes + "needs-reassociation".length - room.reviewState.length,0);
   }
+  // One validation call meets the same rule-case value up to three times: envelope bytes, record bytes,
+  // record schema. Nothing can change it between those synchronous passes, so it is checked once per call.
+  // The memo is created by that call and never outlives it.
+  function caseBytes(item, checked) {
+    if (!checked.has(item)) {Cases.validate(item);checked.set(item,Cases.bounded(item));}
+    return checked.get(item);
+  }
   // Reject values that JSON.stringify would silently change, and bound traversal
   // before serializing or copying caller-owned data.
-  function boundedJSON(value, roomEnvelope = false, markingBytes = 0) {
+  function boundedJSON(value, roomEnvelope = false, markingBytes = 0, checkedCases = new Map()) {
     const maxNodes = roomEnvelope ? 600000 : 4096, maxArray = roomEnvelope ? 10000 : 128;
     const ownValue = (node,key) => node !== null && typeof node === "object" ? Object.getOwnPropertyDescriptor(node,key)?.value : undefined;
     const historyRecord = node => ownValue(node,"kind") === ROOM_KIND && [ROOM_HISTORY_SCHEMA,ROOM_DISPLAY_SCHEMA].includes(ownValue(node,"schema")) &&
@@ -125,7 +132,7 @@
       const record = path.length===1 && path[0]==="value" ? value :
         path.length===3 && path[0]==="records" && Number.isInteger(path[1]) && path[2]==="value" ? ownValue(ownValue(value,"records"),path[1]) : null;
       if(roomEnvelope && ownValue(record,"kind")===CASE_KIND && ownValue(record,"schema")===CASE_SCHEMA){
-        Cases.validate(item);charge(Cases.bounded(item));return;
+        charge(caseBytes(item,checkedCases));return;
       }
       if (++count > maxNodes || depth > 12) fail("功能附件過大或巢狀過深。");
       if (item === null) {charge(4);return;}
@@ -306,8 +313,8 @@
     }
     return validateGridDrafts({schema:GRID_DRAFTS_SCHEMA,drafts:[...drafts].sort((a,b)=>a.draftId<b.draftId?-1:a.draftId>b.draftId?1:0),orphans:[...orphans].sort()},stored);
   }
-  function validateRecord(record, stored = false) {
-    const bytes = boundedJSON(record, true,stored?MAX_GRID_DRAFTS*(20*12+103):0);
+  function validateRecord(record, stored = false, checkedCases = new Map()) {
+    const bytes = boundedJSON(record, true,stored?MAX_GRID_DRAFTS*(20*12+103):0,checkedCases);
     if (!keys(record, ["kind", "schema", "value"]))
       fail("功能附件種類或版本不支援。");
     if (record.kind === GRID_KIND && record.schema === GRID_DRAFTS_SCHEMA) {
@@ -325,7 +332,7 @@
     } else if (record.kind === Cutting.KIND && record.schema === Cutting.SCHEMA) {
       boundedJSON(record);Cutting.validate(record.value);
     } else if (record.kind === CASE_KIND && record.schema === CASE_SCHEMA) {
-      Cases.validate(record.value);
+      caseBytes(record.value,checkedCases);
     } else if (record.kind === Evidence.KIND && (record.schema === Evidence.SCHEMA || record.schema === Evidence.SCHEMA_V2)) {
       if (record.value?.schema !== record.schema) fail("證據附件版本不一致。");
       Evidence.validate(record.value);
@@ -337,12 +344,13 @@
     return record;
   }
   function validate(envelope, stored = false) {
-    const bytes = boundedJSON(envelope, true,stored?MAX_GRID_DRAFTS*(20*12+103)+256:0);
+    const checkedCases = new Map();
+    const bytes = boundedJSON(envelope, true,stored?MAX_GRID_DRAFTS*(20*12+103)+256:0,checkedCases);
     if (!keys(envelope, ["schema", "records"]) || envelope.schema !== SCHEMA || !Array.isArray(envelope.records) || envelope.records.length > MAX_ATTACHMENT_RECORDS)
       fail("功能附件版本或清單不支援。");
     const kinds = new Set();
     for (const record of envelope.records) {
-      validateRecord(record,stored);
+      validateRecord(record,stored,checkedCases);
       if (record.kind === GRID_KIND && record.schema !== GRID_DRAFTS_SCHEMA) boundedJSON({schema:SCHEMA, records:[record]});
       if (kinds.has(record.kind)) fail("功能附件種類重複。");
       kinds.add(record.kind);

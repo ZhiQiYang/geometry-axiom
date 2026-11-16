@@ -36,7 +36,8 @@ const ReferenceWorkspace = (() => {
     if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
   }
   function beginNativeOperation(command) {
-    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return null;
+    if (!/^boundary-pair-confirm /.test(command))
+      if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
     return () => {if (!ended) {ended = true; nativePending--;}};
@@ -100,9 +101,9 @@ const ReferenceWorkspace = (() => {
     assertTimberPreview(owner);const key=featureTokenKey(token);if(key===null)throw new Error('角材候選識別不完整。');owner.token=key;
   }
   function assertTimberPreviewToken(token){assertTimberPreview(timberPreview,token);}
-  function beginTimberConfirmation(token){
+  function beginTimberConfirmation(token,command='timber-edit-confirm '+featureTokenKey(token)){
     assertTimberPreviewToken(token);
-    assemblyConfirmation={...timberPreview,timberCommand:'timber-edit-confirm '+featureTokenKey(token)};
+    assemblyConfirmation={...timberPreview,timberCommand:command};
     timberPreview=null;schedulePresentation();return assemblyConfirmation;
   }
   function finishTimberPreview(owner){if(owner&&timberPreview===owner){timberPreview=null;schedulePresentation();}}
@@ -520,11 +521,13 @@ const ReferenceWorkspace = (() => {
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
     if (result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
       dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
-    // Only the R11 timber-edit and R02 panel-fill no-op confirmations suppress
+    // R11 timber-edit, R17 boundary-pair and R02 panel-fill no-op confirmations suppress
     // their scene notification; existing import and other native observers
     // retain their refresh contract.
     if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && (!/^timber-edit-confirm /.test(cmd) || result.history_changed !== false) && !(cmd.startsWith("panel-fill-confirm ") && result.history_changed === false))notifySceneChange();
+    if(result.ok && !result.preview && /^boundary-pair-confirm /.test(cmd) && result.history_changed !== false)notifySceneChange();
     if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm) /.test(cmd) && result.history_changed !== false) dirty();
+    if (result.ok && /^boundary-pair-confirm /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
@@ -1441,6 +1444,7 @@ const ReferenceWorkspace = (() => {
     return JSON.parse(JSON.stringify(data));
   }
   function assertSaveReady(transactionOwner=null) {
+    if(window.BoundaryPairWorkspace?.hasWork)throw new Error('互頂輸入或候選尚未保存；請先確認或取消，再保存專案。');
     if(nativePending>0)throw new Error("原生操作結果尚未取得，請等候完成後再保存或凍結試改。");
     if(window.RoomCollectionWorkspace?.hasWork)throw new Error("房間草稿尚未確認。請確認、取消或恢復結果，再保存專案。");
     if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
@@ -2069,7 +2073,7 @@ const ReferenceWorkspace = (() => {
          preparedNativeRevision!==null&&hostRecordProfile.revision!==preparedNativeRevision||
          nativeRevision!==null&&nativeRevision>hostRecordProfile.revision))
         throw new Error('原生來源在讀取衍生承載面能力期間已變更，請重新開啟專案。');
-      P.assertProjectCapabilities({...manifest,requiredCapabilities},P.readerCapabilities(candidate.capabilities,candidate.native_capabilities,manifest,candidate.final_scene,hostRecordProfile,{cutting:true},candidate.panel_fill_reader));
+      P.assertProjectCapabilities({...manifest,requiredCapabilities},P.readerCapabilitiesWithBoundaryPair(candidate.boundary_pair_native)(candidate.capabilities,candidate.native_capabilities,manifest,candidate.final_scene,hostRecordProfile,{cutting:true},candidate.panel_fill_reader));
       P.validateProjectCapabilities(candidate.required_capabilities);
       const policy=P.formatPolicy(manifest.format);
       if (policy.engineeringCandidate) {
@@ -2085,6 +2089,7 @@ const ReferenceWorkspace = (() => {
         if(!sameModelData([...candidate.required_capabilities].sort(),P.sceneCapabilities(finalScene)))
           throw new Error("工程場景能力與保存來源不一致，未變更目前專案。");
         if(manifest.requiredCapabilities?.includes(P.PANEL_FILL_CAPABILITY))P.assertPanelFillDefinitions(text,finalScene);
+        if(requiredCapabilities.includes(P.BOUNDARY_PAIR_CAPABILITY))P.assertBoundaryPairDefinitions(text,finalScene);
       }
       return token;
     } catch(error) {

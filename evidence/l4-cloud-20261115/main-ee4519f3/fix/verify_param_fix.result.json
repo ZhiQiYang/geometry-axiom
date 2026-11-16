@@ -1,0 +1,68 @@
+{
+ "downstream": {
+  "errors": [
+   "網格來源 1 的 u 軸：骨架.間距 算出 1220/3 mm，不是整數 mm，幾何會拒絕"
+  ],
+  "notes": [],
+  "sectionHeading": [
+   "套用後的影響"
+  ],
+  "fieldErrors": [],
+  "redFields": [],
+  "status": "未套用：請修正欄位或引用。",
+  "confirmDisabled": true
+ },
+ "deleteReferenced": {
+  "errors": [
+   "還有地方引用，不能刪除；請先改綁或解除引用"
+  ],
+  "notes": [
+   "直接使用處：骨架.間距、骨架.半寬"
+  ],
+  "sectionHeading": [
+   "套用後的影響"
+  ],
+  "fieldErrors": [],
+  "redFields": [],
+  "status": "未刪除：還有地方引用。",
+  "confirmDisabled": true
+ },
+ "editing": "骨架",
+ "ownBefore": "=(⟦板材.寬 · #1:2⟧ ÷ 3)",
+ "ownField": {
+  "errors": [],
+  "notes": [
+   "有欄位無法試算，修正後才會列出影響。"
+  ],
+  "sectionHeading": [
+   "套用後的影響"
+  ],
+  "fieldErrors": [
+   "網格來源 1 的 u 軸：骨架.間距 算出 915/4 mm，不是整數 mm，幾何會拒絕"
+  ],
+  "redFields": [
+   "間距"
+  ],
+  "status": "請修正標紅的欄位",
+  "confirmDisabled": true
+ },
+ "validAgain": {
+  "errors": [],
+  "notes": [
+   "受影響物件：網格來源 1",
+   "直接使用處：引用參數 · u step"
+  ],
+  "sectionHeading": [
+   "套用後的影響"
+  ],
+  "fieldErrors": [],
+  "redFields": [],
+  "status": "全部欄位有效，可套用",
+  "confirmDisabled": false,
+  "result": "套用後的影響 骨架.間距 305 mm → 183 mm 受影響物件：網格來源 1 直接使用處：引用參數 · u step"
+ },
+ "world": [
+  305
+ ],
+ "errs": []
+}

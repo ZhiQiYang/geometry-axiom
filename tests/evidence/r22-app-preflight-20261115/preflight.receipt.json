@@ -1,0 +1,61 @@
+{
+  "protocol": "r22-real-app-manual-review/1",
+  "startedUtc": "2026-11-15T21:35:28.135Z",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "/workspace/geometry-issue54-20261115/tests/diagnostics/r22_app_manual_review.cjs",
+    "/tmp/r22-app-20261115-preflight",
+    "--preflight-only"
+  ],
+  "head": "ae2d943817879c3096d7b23106c3f55122dea606",
+  "worktree": "",
+  "state": "not_started",
+  "appAssertions": 0,
+  "browserLaunchAttempts": 0,
+  "browserPlugin": "not available in the preparing environment",
+  "scenarios": [
+    "pdf-rectangle",
+    "image-rectangle",
+    "pdf-l",
+    "image-l",
+    "pdf-notch",
+    "image-notch"
+  ],
+  "boundaries": {
+    "privatePDF": false,
+    "physicalPhone": false,
+    "physicalIME": false,
+    "osPicker": false,
+    "humanTiming": false,
+    "screenshots": "synthetic inputs only"
+  },
+  "sourceHashes": {
+    "tests/diagnostics/r22_app_manual_review.cjs": "25741c60233ab47e00413da80e24da6b04e7867e5caeb9bf6475bee6220f53c7",
+    "tests/room_outline_fixture.js": "f6984e3e4f381995471aa8796c86518914cb3a546c23dfb6d068fe9780f73f46",
+    "geometry-web/app.js": "e997662411230d219b235c1c8d237869f7e7adfabd62ed08cb1caa1f7b37e6ee",
+    "geometry-web/room-outline-workspace.js": "e436c66c18b9c4476ef3cbf89dfe2899dc36ab3dbb0d18093644accc1ba7b0a8",
+    "geometry-web/room-outline.js": "7333c1031ba54a2f61a079fcdb009a2751fe1cc484a01944a32ffdd56490e403",
+    "geometry-web/reference-workspace.js": "6a07059ecf99478831c698e1e70b1dfe44579fe36b7b35cfa3228c532e4cfcab",
+    "geometry-web/project-store.js": "67dbb045e595cf11a911d1b6bad68ac78cb905ce088595677743dc958026950f",
+    "geometry-web/start_local.py": "31137d9635da7c62d34a72d1f4cadcf60e2240f33aff418ddba28bea55c5ce29"
+  },
+  "checks": [],
+  "services": [],
+  "browserErrors": [],
+  "dialogs": [],
+  "playwright": {
+    "module": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.js",
+    "executable": "/home/agent/.cache/ms-playwright/chromium-1234/chrome-linux64/chrome",
+    "chromiumSandbox": true,
+    "extraArgs": []
+  },
+  "preflight": {
+    "utc": "2026-11-15T21:35:28.676Z",
+    "blockers": [
+      "ENOENT: browser executable unavailable: /home/agent/.cache/ms-playwright/chromium-1234/chrome-linux64/chrome"
+    ]
+  },
+  "endedUtc": "2026-11-15T21:35:28.677Z",
+  "exit": 2,
+  "headAtEnd": "ae2d943817879c3096d7b23106c3f55122dea606"
+}

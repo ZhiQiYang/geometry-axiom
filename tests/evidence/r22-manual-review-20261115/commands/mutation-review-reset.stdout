@@ -1,0 +1,14 @@
+PASS pdf-rectangle: acquired ordered ring
+PASS pdf-rectangle: provenance method
+PASS pdf-rectangle: acquisition preserves complete native scene
+PASS pdf-rectangle: Save rejects live candidate
+PASS pdf-rectangle: candidate absent from manifest
+PASS pdf-rectangle: explicit review permits beforeCommit
+PASS pdf-rectangle: unapplied invalid row cannot be reviewed
+PASS pdf-rectangle: invalid row blocks commit
+PASS pdf-rectangle: fractional dimension is not rounded
+PASS pdf-rectangle: dimension changes exact candidate edge
+PASS pdf-rectangle: one entered dimension marker
+PASS pdf-rectangle: editing leaves native and cached geometry unchanged
+FAIL pdf-rectangle: applying vertices clears acknowledgement
+{"result":"failed","assertions":13,"out":"/tmp/issue54-20261115-mut-reset"}

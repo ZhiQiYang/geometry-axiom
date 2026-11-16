@@ -147,8 +147,8 @@ def _diagnostics(value):
     for item in value:
         # Preserve both typed authoring diagnostics and the native legacy I8
         # invariant detail. Human text never creates a typed reference.
-        _shape(item, ("clause", "message"), ("code", "ref", "timber", "expected"))
-        for key in ("clause", "message", "code", "expected"):
+        _shape(item, ("clause", "message"), ("code", "ref", "timber", "expected", "actual"))
+        for key in ("clause", "message", "code", "expected", "actual"):
             if key in item:
                 _text(item[key], 64 if key in {"clause", "code"} else 4096)
         if "timber" in item:

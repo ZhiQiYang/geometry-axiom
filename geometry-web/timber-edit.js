@@ -35,6 +35,7 @@
   const selectionCurrent = stamp => stamp.selection === JSON.stringify(selectedIds()) && stamp.selected === JSON.stringify(fe.sel) && stamp.tool === fe.tool;
   const live = value => form === value && current(value.stamp) && !value.closed;
   function writeReason() {
+    if(window.BoundaryPairWorkspace?.hasWork)return '互頂輸入或候選尚未保存；請先確認或取消，再修改或重用單支角材';
     if (connection.phase !== 'ready' || oc.busy) return '請先等候目前操作或重新連線';
     try { ReferenceWorkspace.assertEditable(); }
     catch (error) { return error.message; }
@@ -312,6 +313,7 @@
   }
   function start(mode) {
     const reason = writeReason(); if (reason) throw Error(reason);
+    window.BoundaryPairWorkspace?.beforeSingleEntry();
     if (form) close(false);
     closedSelection=null;
     const value = {mode,stamp:snapshot(),ids:selectedIds(),generation:0,busy:false,closed:false,opener:$('faceEditorViewport')};
@@ -357,11 +359,13 @@
   }
   const cloneRecipe = value => ({...value,definition:clone(value.definition),effective:clone(value.effective)});
   function renderInspector(pane) {
+    if(window.BoundaryPairWorkspace?.hasWork)return false;
     if (form && !live(form) && !form.confirming) close(false);
     if (form?.confirming && (!sameOwner(form.stamp) || !selectionCurrent(form.stamp))) return false;
     if (form?.mode === 'batch') {if(!form.node || !pane.contains(form.node))renderBatch(form);return true;}
     if (form?.mode === 'create' && form.node && pane.contains(form.node)) return true;
     if (fe.timberSelection.size > 1 && !form && !(closedSelection && current(closedSelection))) {
+      window.BoundaryPairWorkspace?.beforeSingleEntry();
       const value = {mode:'batch',stamp:snapshot(),ids:selectedIds(),generation:0,busy:true,closed:false,opener:$('faceEditorViewport')};
       form=value;renderBatch(value);loadBatch(value);return true;
     }

@@ -1,0 +1,351 @@
+{
+ "quickHint": "按 Enter 建立 2 欄：W 27、H 33",
+ "param": [
+  {
+   "id": 1,
+   "name": "角材",
+   "fields": [
+    {
+     "id": 2,
+     "name": "W",
+     "type": "dimension",
+     "value": "27 mm"
+    },
+    {
+     "id": 3,
+     "name": "H",
+     "type": "dimension",
+     "value": "33 mm"
+    }
+   ]
+  }
+ ],
+ "emptyNav": [
+  "新增規則",
+  "規則案例"
+ ],
+ "diagramText": [
+  "這裡定義誰抵住誰；尺寸在材料配置，確認後才寫進場景。知道了",
+  "副支的起點抵住主支的左側；局部走向 v。規則示意，非施工尺寸。"
+ ],
+ "joint2Defaults": {
+  "scope": "junction-2",
+  "term": "構件 #2 · 副支",
+  "end": "起點",
+  "target": "構件 #1 · 主支"
+ },
+ "duplicateEndpoint": {
+  "status": "尚不能套用，請依上列原因修正。",
+  "error": true,
+  "confirm": "disabled",
+  "reasons": "這次還不能套用 正式內容不會改變。 接合 #1 和接合 #2 都接在構件 #2 的同一端；一個端點只能有一個接合。",
+  "world": {
+   "rules": [],
+   "bindings": []
+  }
+ },
+ "draftsBeforeSave": [
+  "角料 T 接 · 規則"
+ ],
+ "savedDraft": "download",
+ "navWithDraft": [
+  "角料 T 接 · 規則",
+  "新增規則",
+  "規則案例"
+ ],
+ "publishPreview": {
+  "status": "驗證通過，確認後才會套用。",
+  "error": false,
+  "confirm": "enabled",
+  "text": "這次會發布「角料 T 接」第 1 版 發布「角料 T 接」第 1 版 新增"
+ },
+ "afterCancelPreview": 0,
+ "published": {
+  "status": "已套用，可使用畫布復原；請保存專案。",
+  "error": false,
+  "confirm": "hidden",
+  "asm": {
+   "rules": [
+    {
+     "id": 1,
+     "version": 1,
+     "name": "角料 T 接",
+     "slots": [
+      "1:主支",
+      "2:副支"
+     ],
+     "members": 2,
+     "joints": [
+      "左接合:end-to-side:2.start→1.-u/v"
+     ]
+    }
+   ],
+   "bindings": []
+  },
+  "drafts": []
+ },
+ "ruleActions": [
+  "編輯為下一版",
+  "複製成新規則",
+  "建立材料配置",
+  "刪除此版本"
+ ],
+ "sourceOptions": [
+  "尚未選擇",
+  "直接輸入 mm",
+  "角材.W",
+  "角材.H"
+ ],
+ "pick1A": "角材.W",
+ "pick1B": "角材.H",
+ "incompletePreview": {
+  "status": "驗證通過，確認後才會套用。",
+  "error": false,
+  "confirm": "enabled",
+  "text": "這次會改「27×33 角材」 新增配置「27×33 角材」 新增"
+ },
+ "afterIncomplete": {
+  "status": "已套用，可使用畫布復原；請保存專案。",
+  "error": false,
+  "confirm": "hidden",
+  "asm": [
+   {
+    "id": 1,
+    "name": "27×33 角材",
+    "rule": "{\"id\":1,\"version\":1}",
+    "complete": false,
+    "slots": "[{\"A\":{\"fieldId\":2,\"kind\":\"parameter\",\"parameterId\":1},\"B\":{\"fieldId\":3,\"kind\":\"parameter\",\"parameterId\":1},\"contactFace\":\"A\",\"orientation\":\"A\",\"slotId\":1},{\"A\":null,\"B\":null,\"contactFace\":null,\"orientation\":null,\"slotId\":2}]",
+    "effective": [
+     "1:A=27,B=33",
+     "2:A=—,B=—"
+    ]
+   }
+  ],
+  "nav": [
+   "新增規則",
+   "規則案例",
+   "角料 T 接 · 第 1 版",
+   "27×33 角材 · 未完成"
+  ]
+ },
+ "bindingView": "材料配置 27×33 角材 · 未完成 27×33 角材 用「角料 T 接」第 1 版。還有尺寸或方向沒選。 編輯材料配置 刪除配置 主支 截面 27 × 33 mm 接觸面是 A 面，A 沿局部 u 副支 A 未設定 / B 未設定 mm 接觸面尚未選擇，擺向尚未選擇 角材實例 依來源生成角材",
+ "completePreview": {
+  "status": "驗證通過，確認後才會套用。",
+  "error": false,
+  "confirm": "enabled",
+  "text": "這次會改「27×33 角材」 主支 沒有改 副支 截面 未設定×未設定 → 27×33 mm 副支 A 來源 尺寸 未設定 → 27 mm；尚未選擇 → 直接數值 副支 B 來源 尺寸 未設定 → 33 mm；尚未選擇 → 直接數值 副支的接觸面與擺向 接觸面尚未選擇，擺向尚未選擇 → 接觸面是 B 面，B 沿局部 u"
+ },
+ "afterComplete": {
+  "status": "已套用，可使用畫布復原；請保存專案。",
+  "error": false,
+  "confirm": "hidden",
+  "asm": [
+   {
+    "id": 1,
+    "name": "27×33 角材",
+    "rule": "{\"id\":1,\"version\":1}",
+    "complete": true,
+    "slots": "[{\"A\":{\"fieldId\":2,\"kind\":\"parameter\",\"parameterId\":1},\"B\":{\"fieldId\":3,\"kind\":\"parameter\",\"parameterId\":1},\"contactFace\":\"A\",\"orientation\":\"A\",\"slotId\":1},{\"A\":{\"kind\":\"literal\",\"value\":27},\"B\":{\"kind\":\"literal\",\"value\":33},\"contactFace\":\"B\",\"orientation\":\"B\",\"slotId\":2}]",
+    "effective": [
+     "1:A=27,B=33",
+     "2:A=27,B=33"
+    ]
+   }
+  ]
+ },
+ "nextVersionTitle": "規則草稿 · 第 2 版",
+ "deleteUsedSlot": {
+  "disabled": false,
+  "status": "槽位 #2 仍被構件 #2 使用。",
+  "slotStillThere": 1
+ },
+ "v2Preview": {
+  "status": "驗證通過，確認後才會套用。",
+  "error": false,
+  "confirm": "enabled",
+  "text": "這次會發布「角料 T 接」第 2 版 發布「角料 T 接」第 2 版 新增"
+ },
+ "afterV2": {
+  "status": "已套用，可使用畫布復原；請保存專案。",
+  "error": false,
+  "confirm": "hidden",
+  "asm": {
+   "rules": [
+    {
+     "id": 1,
+     "version": 1,
+     "name": "角料 T 接",
+     "slots": [
+      "1:主支",
+      "2:副支"
+     ],
+     "members": 2,
+     "joints": [
+      "左接合:end-to-side:2.start→1.-u/v"
+     ]
+    },
+    {
+     "id": 1,
+     "version": 2,
+     "name": "角料 T 接",
+     "slots": [
+      "1:主料",
+      "2:副支"
+     ],
+     "members": 2,
+     "joints": [
+      "左接合:end-to-side:2.start→1.-u/v"
+     ]
+    }
+   ],
+   "bindings": [
+    {
+     "id": 1,
+     "name": "27×33 角材",
+     "rule": "{\"id\":1,\"version\":1}",
+     "complete": true,
+     "slots": "[{\"A\":{\"fieldId\":2,\"kind\":\"parameter\",\"parameterId\":1},\"B\":{\"fieldId\":3,\"kind\":\"parameter\",\"parameterId\":1},\"contactFace\":\"A\",\"orientation\":\"A\",\"slotId\":1},{\"A\":{\"kind\":\"literal\",\"value\":27},\"B\":{\"kind\":\"literal\",\"value\":33},\"contactFace\":\"B\",\"orientation\":\"B\",\"slotId\":2}]",
+     "effective": [
+      "1:A=27,B=33",
+      "2:A=27,B=33"
+     ]
+    }
+   ]
+  },
+  "nav": [
+   "新增規則",
+   "規則案例",
+   "角料 T 接 · 第 1 版",
+   "角料 T 接 · 第 2 版",
+   "27×33 角材 · 完整"
+  ]
+ },
+ "deleteUsedVersion": {
+  "status": "尚不能套用，請依上列原因修正。",
+  "error": true,
+  "confirm": "disabled",
+  "text": "這次還不能套用 刪除「角料 T 接」第 1 版 移除 材料配置 #1 還需要規則 #1 的第 1 版；這一版不能刪，或先把配置改用別的版本。",
+  "rules": [
+   "1:1",
+   "1:2"
+  ]
+ },
+ "paramImpact": "套用後的影響 角材.W 27 mm → 30 mm 組構配置 1 槽位 1.A 27 → 30 mm 受影響物件：尚無幾何變更 直接使用處：組構配置 1 · 槽位 1.A、組構配置 1 · 槽位 1.B",
+ "afterParam": [
+  [
+   "1:A=30,B=33",
+   "2:A=27,B=33"
+  ]
+ ],
+ "afterUndo": [
+  [
+   "1:A=27,B=33",
+   "2:A=27,B=33"
+  ]
+ ],
+ "afterRedo": [
+  [
+   "1:A=30,B=33",
+   "2:A=27,B=33"
+  ]
+ ],
+ "canvasCards": [
+  "parameter#1:ƒ 角材ƒ 角材WW30 mm30 mmHH33 mm33 mm2 個欄位 · 2 處使用檢查 ›",
+  "assembly-rule#1:角料 T 接角料 T 接組構規則 #1 v2局部接合 · 固定版本進入 ›",
+  "assembly-binding#1:27×33 角材27×33 角材材料配置 #1配置完整進入 ›"
+ ],
+ "saved": "download",
+ "errsA": [],
+ "reopened": {
+  "rules": [
+   {
+    "id": 1,
+    "version": 1,
+    "name": "角料 T 接",
+    "slots": [
+     "1:主支",
+     "2:副支"
+    ],
+    "members": 2,
+    "joints": [
+     "左接合:end-to-side:2.start→1.-u/v"
+    ]
+   },
+   {
+    "id": 1,
+    "version": 2,
+    "name": "角料 T 接",
+    "slots": [
+     "1:主料",
+     "2:副支"
+    ],
+    "members": 2,
+    "joints": [
+     "左接合:end-to-side:2.start→1.-u/v"
+    ]
+   }
+  ],
+  "bindings": [
+   {
+    "id": 1,
+    "name": "27×33 角材",
+    "rule": "{\"id\":1,\"version\":1}",
+    "complete": true,
+    "slots": "[{\"A\":{\"fieldId\":2,\"kind\":\"parameter\",\"parameterId\":1},\"B\":{\"fieldId\":3,\"kind\":\"parameter\",\"parameterId\":1},\"contactFace\":\"A\",\"orientation\":\"A\",\"slotId\":1},{\"A\":{\"kind\":\"literal\",\"value\":27},\"B\":{\"kind\":\"literal\",\"value\":33},\"contactFace\":\"B\",\"orientation\":\"B\",\"slotId\":2}]",
+    "effective": [
+     "1:A=30,B=33",
+     "2:A=27,B=33"
+    ]
+   }
+  ]
+ },
+ "reopenedNav": [
+  "新增規則",
+  "規則案例",
+  "角料 T 接 · 第 1 版",
+  "角料 T 接 · 第 2 版",
+  "27×33 角材 · 完整"
+ ],
+ "reopenedBindingView": "27×33 角材 用「角料 T 接」第 1 版。 編輯材料配置 刪除配置 主支 截面 30 × 33 mm 接觸面是 A 面，A 沿局部 u 副支 截面 27 × 33 mm 接觸面是 B 面，B 沿局部 u 角材實例 依來源生成角材",
+ "draftFile": {
+  "asm": {
+   "rules": [],
+   "bindings": []
+  },
+  "nav": [
+   "角料 T 接 · 規則",
+   "新增規則",
+   "規則案例"
+  ],
+  "form": {
+   "name": "角料 T 接",
+   "slot1": "主支",
+   "slot2": "副支",
+   "scope": "左接合",
+   "side": "左側",
+   "dir": "沿 v",
+   "joints": 1
+  },
+  "preview": {
+   "status": "驗證通過，確認後才會套用。",
+   "error": false,
+   "confirm": "enabled"
+  },
+  "published": [
+   {
+    "id": 1,
+    "version": 1,
+    "name": "角料 T 接",
+    "slots": [
+     "1:主支",
+     "2:副支"
+    ],
+    "members": 2,
+    "joints": [
+     "左接合:end-to-side:2.start→1.-u/v"
+    ]
+   }
+  ]
+ },
+ "errsB": []
+}
