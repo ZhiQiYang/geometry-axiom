@@ -1,0 +1,36 @@
+// 發現 4 修正後重走:重複端點的接合、刪除仍被材料配置使用的版本
+const C = require('./common.js'), L = C.L;
+const fs = require('fs');
+const OUT = process.env.OUT;
+const shown = p => p.evaluate(() => { const r = document.getElementById('asmPreviewResult'); return { title: r.querySelector('h4,h3,strong')?.innerText || null, reasons: [...r.querySelectorAll(':scope > ul > li')].map(e => e.innerText), detailsOpen: r.querySelector('details')?.open, detailsHeadings: [...r.querySelectorAll('details h5')].map(e => e.textContent), raw: r.querySelector('details pre')?.textContent.replace(/\s+/g, ' ').slice(0, 400), status: document.getElementById('asmStatus').innerText, confirmDisabled: document.getElementById('asmConfirm').disabled }; });
+const world = p => p.evaluate(async () => { const a = (await apiRequest('engineering-read')).state.assembly; return { rules: a.rules.map(r => r.value.id + ':' + r.value.version), bindings: a.bindings.map(b => b.value.id) }; });
+const pick = async (p, sel, re) => { const o = (await p.$$eval(sel + ' option', os => os.map(o => [o.value, o.textContent.trim()]))).find(o => re.test(o[1])); await p.selectOption(sel, o[0]); await p.waitForTimeout(250); };
+(async () => {
+  const r = {};
+  const { b, p, errs } = await L.start();
+  await L.newProject(p);
+  await p.click('#btnCreateObject'); await p.waitForTimeout(300); await p.click('#btnNewAssembly'); await p.waitForTimeout(1200); await C.gotIt(p);
+  await p.click('#asmNewRule'); await p.waitForTimeout(600);
+  await p.fill('#asmName', '角料 T 接');
+  await p.click('#asmAddSlot'); await p.waitForTimeout(300); await p.fill('#asmSlot1', '主支'); await p.click('#asmAddMember'); await p.waitForTimeout(300);
+  await p.click('#asmAddSlot'); await p.waitForTimeout(300); await p.fill('#asmSlot2', '副支'); await p.click('#asmAddMember'); await p.waitForTimeout(300);
+  await p.click('#asmAddJoint'); await p.waitForTimeout(500);
+  await p.fill('#asmScope1', '左接合'); await p.selectOption('#asmSide1', { label: '左側' }); await p.selectOption('#asmDir1', { label: '沿 v' }); await p.waitForTimeout(300);
+  await p.click('#asmAddJoint'); await p.waitForTimeout(500);
+  await pick(p, '#asmTerm2', /構件 #2/); await pick(p, '#asmTarget2', /構件 #1/); await pick(p, '#asmEnd2', /起點/);
+  await p.click('#asmPreview'); await p.waitForTimeout(2000);
+  r.duplicateEndpoint = { ...(await shown(p)), world: await world(p) };
+  await p.screenshot({ path: `${OUT}/fix-4-duplicate-endpoint.jpg`, type: 'jpeg', quality: 70 });
+  await p.click('#asmJointDelete2'); await p.waitForTimeout(500);
+  await p.click('#asmPreview'); await p.waitForTimeout(2000); await p.click('#asmConfirm'); await p.waitForTimeout(2000);
+  await p.click('[data-asm-rule="1:1"]'); await p.waitForTimeout(600); await p.click('#asmBind'); await p.waitForTimeout(800);
+  await p.fill('#asmName', '配置'); await p.click('#asmPreview'); await p.waitForTimeout(2000); await p.click('#asmConfirm'); await p.waitForTimeout(2000);
+  r.beforeDelete = await world(p);
+  await p.click('[data-asm-rule="1:1"]'); await p.waitForTimeout(600); await p.click('#asmDeletePublished'); await p.waitForTimeout(2000);
+  r.deleteUsedVersion = { ...(await shown(p)), world: await world(p) };
+  await p.screenshot({ path: `${OUT}/fix-5-delete-used-version.jpg`, type: 'jpeg', quality: 70 });
+  r.errs = errs.filter(e => !e.startsWith('DIALOG'));
+  fs.writeFileSync(`${OUT}/verify_asm_fix.result.json`, JSON.stringify(r, null, 1));
+  console.log(JSON.stringify(r, null, 1));
+  await b.close();
+})().catch(e => { console.error('FATAL', e.message.slice(0, 900)); process.exit(1); });

@@ -92,6 +92,10 @@ window.ScenarioWorkspace = (() => {
     if($('scenarioPauseEdit'))$('scenarioPauseEdit').disabled=!owner.ready||owner.recovered||owner.finishing||owner.cancelled||owner.ticket.phase!=='active';
     $('scenarioCancelEdit').disabled=!!owner.critical||!!owner.cancelling;
     $('scenarioCancelEdit').textContent=owner.ticket.phase==='retiring'?'重試結束':'取消試改';}
+  /* 主畫面明確結束、暫存或重開試改時，先告訴內嵌畫面這次離開是主畫面要的。否則內嵌畫面有未保存修改時，
+     瀏覽器會再跳一次「要離開網站嗎」；使用者選留下，iframe 就停在舊文件，下一次試改開不起來。
+     內嵌畫面那一側的對應在 scenario-integration.js 開頭。 */
+  function hostUnloads(owner){try{owner.frame.contentWindow.scenarioHostUnloading=true;}catch{}}
   function showEditor(ticket,guard,recovered=false){const owner={ticket,id:ticket.scenarioId,guard,frame:$('scenarioEditorFrame'),recovered,ready:false};
     edit=owner;owner.frame.inert=true;$('scenarioEditorTitle').textContent='隔離試改：'+ticket.label;
     editorControls(owner);if(!editor.open)editor.showModal();return owner;}
@@ -107,7 +111,7 @@ window.ScenarioWorkspace = (() => {
       const result=await editorRequest({...ticket.request,action:'close'});
       if(result.state!=='retired')throw new Error('尚未確認方案已結束，原請求仍保留。');
       await W.clearScenarioEditorTicket(ticket);
-      if(edit===owner){owner.guard.cancel();edit=null;editor.close();owner.frame.src='about:blank';owner.frame.inert=true;}
+      if(edit===owner){owner.guard.cancel();edit=null;editor.close();hostUnloads(owner);owner.frame.src='about:blank';owner.frame.inert=true;}
     })();try{return await owner.retiring;}finally{owner.retiring=null;}
   }
   async function closeEdit(){const old=edit;if(!old||old.critical)return;if(old.cancelling)return old.cancelling;
@@ -131,7 +135,7 @@ window.ScenarioWorkspace = (() => {
     const cancel=()=>finish(new Error('方案編輯已取消。')),timer=setTimeout(()=>finish(new Error('方案畫布開啟逾時。')),30000);
     function finish(error){if(settled)return;settled=true;clearTimeout(timer);owner.frame.onload=null;owner.frame.onerror=null;owner.guard.signal.removeEventListener('abort',cancel);error?reject(error):resolve();}
     owner.frame.onload=()=>finish();owner.frame.onerror=()=>finish(new Error('方案畫布無法開啟。'));
-    if(owner.guard.signal.aborted)return cancel();owner.guard.signal.addEventListener('abort',cancel,{once:true});owner.frame.src='/?scenario='+context;
+    if(owner.guard.signal.aborted)return cancel();owner.guard.signal.addEventListener('abort',cancel,{once:true});hostUnloads(owner);owner.frame.src='/?scenario='+context;
   });}
   async function startEdit(){if(edit){if(!editor.open)editor.showModal();return;}const guard=lease();
     const pending=await W.readScenarioEditorTicket();guard();
@@ -209,7 +213,7 @@ window.ScenarioWorkspace = (() => {
     try{owner.guard();await childRequest(owner,'scenario-pause',{ticket:owner.ticket});owner.guard();
       // Keep native B and the exact ticket. Closing the frame releases its
       // browser leases; no release-freeze or close/create request is sent.
-      owner.guard.cancel();edit=null;owner.frame.src='about:blank';editor.close();
+      owner.guard.cancel();edit=null;hostUnloads(owner);owner.frame.src='about:blank';editor.close();
       message('已暫存完整試改；再次選「隔離試改」可核對並續接。');
     }catch(error){retained(owner,error);}
     finally{owner.finishing=false;editorControls(owner);}
