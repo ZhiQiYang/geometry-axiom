@@ -1,5 +1,9 @@
 """Returned W assembly definitions control policy, values and write targets.
 
+A repeated-bay record is the one place where a decode is kept (issue 381):
+only while K returns the same bytes, and with its binding and rule requested
+again. The bay cases and their controls below pin each of those conditions.
+
 Portable checks never build. Native fixtures and exact named negative controls
 are dispatched only by the serialized validation lane.
 """
@@ -16,10 +20,23 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from tests.test_geo261_native_kernel import native
 from tests.test_geo261_assembly_sources import fixture as original_fixture
-from tests.test_geo261_wood_assembly import canonical, record
+from tests.test_geo261_wood_assembly import canonical, digest, record, rule
 from tests.test_geo261_parameter_definition_sources import definition
 
 MODULE = ROOT / "geometry-templates/woodworking/native"
+
+
+def bay_record(first=1):
+    """Repeated-bay instance 5 on the fixture's rule and binding: primaries on
+    guides 1 and 2 between timbers 90 and 91, one secondary line on guide 3."""
+    ends = {"start": {"kind": "timber", "id": 90}, "finish": {"kind": "timber", "id": 91}}
+    return {"source": {"id": 5, "name": "repeat", "bindingId": 9,
+                       "rule": {"id": 8, "version": 1, "fingerprint": digest(rule())},
+                       "surfaceId": 1, "layout": "bay-repeat",
+                       "primaries": [{"key": key, "at": {"kind": "guide", "id": key}, "ends": deepcopy(ends)} for key in (1, 2)],
+                       "secondaryLines": [{"key": 1, "at": {"kind": "guide", "id": 3}}]},
+            "mapping": [{"primary": 1, "timberId": first}, {"primary": 2, "timberId": 2},
+                        {"secondary": {"line": 1, "left": 1, "right": 2}, "timberId": 3}]}
 
 
 def fixture():
@@ -50,7 +67,13 @@ def fixture():
                    "between": [91, 90], "direction": 2, "role": 1, "timberId": 4},
         **{"generated" + str(member): {"instance": deepcopy(generated_instance), "memberId": member}
            for member in (11, 37, 89)},
+        # Two returned records for the same identity; equal length on purpose,
+        # so only the bytes tell them apart.
+        "bay": bay_record(),
+        "bayGeneratedA": {"identity": {"primary": 1}, "instance": bay_record(4)},
+        "bayGeneratedB": {"identity": {"primary": 1}, "instance": bay_record(5)},
     }
+    assert len(canonical(value["authority"]["bayGeneratedA"])) == len(canonical(value["authority"]["bayGeneratedB"]))
     return value
 
 
@@ -73,6 +96,15 @@ CONTROLS = (
     ("canonical-validation", "wood_assembly_read_json", "strlen(canonical)!=value->as.definition.content_size||memcmp(canonical,text,value->as.definition.content_size)", "false", "malformed", "malformed-returned-definition-is-atomic"),
     ("width-bound", "wood_assembly_generated_read", "geo_coord_in_range(d.width)", "true", "malformed", "returned-result-rejects-overflow-atomically"),
     ("depth-bound", "wood_assembly_generated_read", "geo_coord_in_range(d.depth)", "true", "malformed", "returned-result-rejects-overflow-atomically"),
+    # Issue 381: the kept decode of a repeated-bay record. Each condition that
+    # lets the kept instance stand in for a decode has its own oracle.
+    ("bay-returned-bytes", "wood_assembly_bay_returned_again", "!memcmp(r->returned,value->as.definition.content,r->returned_size)", "true", "bay", "returned-bay-definition-controls-ownership"),
+    ("bay-returned-size", "wood_assembly_bay_returned_again", "value->as.definition.content_size==r->returned_size", "true", "bay", "oversized-returned-bay-definition-is-rejected"),
+    ("bay-returned-schema", "wood_assembly_bay_returned_again", '!strcmp(value->as.definition.schema,"wood.assembly.bay-generated/1")', "true", "bay", "wrong-schema-returned-bay-definition-is-rejected"),
+    ("bay-kept-index", "wood_assembly_bay_record", "*index=r->returned_index;", "*index=0;", "bay", "bay-record-is-definition-only-ownership"),
+    ("bay-reuse-sources", "wood_assembly_bay_record", "if(!wood_assembly_instance_sources(s,r->instance.binding_id,r->instance.rule_id,r->instance.rule_version))return false;", "", "bayreuse", "reused-bay-record-requests-binding-and-rule-again"),
+    ("bay-reuse-fixed-rule", "wood_assembly_bay_record", "wood_assembly_bay_sources_fixed(s,&r->instance)", "true", "bayreuse", "reused-bay-record-requires-the-fixed-rule"),
+    ("bay-reuse", "wood_assembly_bay_returned_again", "r->returned&&", "false&&", "bayreuse", "unchanged-returned-bay-definition-is-not-parsed-again"),
 )
 
 
@@ -84,6 +116,15 @@ class AssemblyDefinitionAuthorityBoundary(unittest.TestCase):
         self.assertNotIn("r->generated", definition(text, "wood_assembly_sources_generated"))
         self.assertNotIn("r->binding", definition(text, "wood_assembly_binding_hook"))
         self.assertNotIn("loaded", text)
+        # Issue 381, user decision 2026-11-15 (option A): one decode may be kept,
+        # for the repeated-bay record, and only against the bytes K returns. K is
+        # asked first on every use; no other record kind keeps a decode.
+        record = definition(text, "wood_assembly_bay_record")
+        self.assertLess(record.index("wood_assembly_bay_get("), record.index("wood_assembly_bay_returned_again("))
+        self.assertLess(record.index("wood_assembly_instance_sources("), record.index("*out=&r->instance;return true;"))
+        keepers = ("wood_assembly_bay_returned_again", "wood_assembly_bay_keep_returned", "wood_assembly_bay_record", "wood_assembly_sources_destroy")
+        self.assertEqual(sum(definition(text, name).count("->returned") for name in keepers), text.count("->returned"))
+        self.assertEqual(1, text.count("wood_assembly_bay_returned_again(r,&value)"))
         self.assertIn("s->context.state=s->shadow", text)
         for hook in ("source_version_field", "source_version_definition", "source_application"):
             self.assertIn("e->" + hook + "!=a->" + hook, definition(text, "wood_assembly_sources_bind"))
@@ -153,8 +194,10 @@ class AssemblyDefinitionAuthority(unittest.TestCase):
     def test_returned_binding_and_instance_check_results_are_consumed(self): self.case("check")
     def test_malformed_returned_definitions_leave_outputs_and_authoring_unchanged(self): self.case("malformed")
     def test_dormant_definitions_do_not_evaluate_quantities_or_geometry(self): self.case("dormant")
+    def test_returned_bay_definition_controls_ownership_and_is_requested_every_time(self): self.case("bay")
+    def test_unchanged_returned_bay_definition_is_reused_under_its_binding_and_rule(self): self.case("bayreuse")
 
-    def test_thirteen_controls_require_exact_named_failures(self):
+    def test_twenty_controls_require_exact_named_failures(self):
         build = native()
         original = self.directory / "assembly_sources.c"
         original_bytes = original.read_bytes()

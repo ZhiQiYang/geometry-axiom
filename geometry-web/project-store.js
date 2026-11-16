@@ -298,7 +298,14 @@
       (manifest.models||[]).some(model=>records(model.input?.base_scene)||Object.values(model.result||{}).some(pkg=>records(pkg?.definitions?.base_scene)))||
       (manifest.scenarioCatalog?.scenarios||[]).some(s=>hasPanelFillDefinitions(s.snapshot.projectManifest,s.snapshot.worldScene));
   }
+  // Choosing a format asks for the same manifest's capabilities once per format test, and the capability
+  // computation asks again for every catalog scenario in six separate tests; each answer re-validates every
+  // feature attachment. One outermost synchronous call therefore keeps what it has already computed, keyed by
+  // manifest object and scene text. Nothing is kept once that call returns or throws.
+  let capabilityScope = null;
+  function scopedCapabilities(compute) { capabilityScope = new Map(); try { return compute(); } finally { capabilityScope = null; } }
   function projectFormat(manifest, scene = "") {
+    if (!capabilityScope) return scopedCapabilities(() => projectFormat(manifest, scene));
     if(projectCapabilities(manifest,scene).includes(BOUNDARY_PAIR_CAPABILITY)) return BOUNDARY_PAIR_FORMAT;
     if(projectCapabilities(manifest,scene).includes(BAY_REPEAT_CAPABILITY)) return BAY_REPEAT_FORMAT;
     if(projectCapabilities(manifest,scene).includes(PANEL_FILL_CAPABILITY)) return PANEL_FILL_FORMAT;
@@ -504,6 +511,12 @@
     return [...supported, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_CARD_CAPABILITY, ...shared, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, Features.ROOM_CANDIDATE_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY];
   }
   function projectCapabilities(manifest, scene) {
+    if (!capabilityScope) return scopedCapabilities(() => projectCapabilities(manifest, scene));
+    const scenes = capabilityScope.get(manifest) || capabilityScope.set(manifest, new Map()).get(manifest);
+    if (!scenes.has(scene)) scenes.set(scene, requiredCapabilities(manifest, scene));
+    return [...scenes.get(scene)];
+  }
+  function requiredCapabilities(manifest, scene) {
     const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);
     if (manifest.scenarioCatalog) required.add(SCENARIO_CAPABILITY);
     if (manifest.scenarioCatalog?.scenarios.some(s => projectCapabilities(s.snapshot.projectManifest, s.snapshot.worldScene).includes(PANEL_FILL_CAPABILITY)))

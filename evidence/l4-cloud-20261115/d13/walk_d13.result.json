@@ -1,0 +1,205 @@
+{
+ "boundariesBefore": [
+  "boundary 1 outline 0,0 4000,0 4000,3000 0,3000"
+ ],
+ "mmPerUnit": 9.999999175200658,
+ "zeroOptions": [
+  "把目前面設為第一個房間",
+  "人工描繪第一個房間",
+  "取得同頁候選"
+ ],
+ "AButton": "開始",
+ "AZoomOuts": 0,
+ "ADraft": 4,
+ "AConfirmDisabled": false,
+ "AReviewDialog": "確認新增「客廳」 建立共享來源（目前基準）與第一個房間；目前描繪用面保留、不關聯。 邊界與頂點 · 1 面 2 原：不存在 新：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分 核對頂點座標與身分 原頂點：不存在 新頂點：外環頂點 1 · 未設 key · (400, 400) mm · 下一邊固定；外環頂點 2 · 未設 key · (2000, 400) mm · 下一邊固定；外環頂點 3 · 未設 key · (2000, 1600) mm · 下一邊固定；外環頂點 4 · 未設 key · (400, 1600) mm · 下一邊固定 boundary 2 outline 400,400 2000,400 2000,1600 400,1600 取消，保留原狀確認套用",
+ "afterCancel": {
+  "rooms": null,
+  "boundaries": [
+   "boundary 1 outline 0,0 4000,0 4000,3000 0,3000"
+  ]
+ },
+ "afterA": {
+  "rooms": {
+   "planes": [
+    {
+     "id": "4c699b30-5406-4a0c-9472-57be6f795145",
+     "sourceId": "863167014167",
+     "page": 1,
+     "mmPerUnit": null
+    }
+   ],
+   "rooms": [
+    {
+     "id": "df33c485-3f10-4d0d-b6a6-6ed2f4d9bdae",
+     "name": "客廳",
+     "boundary": 2,
+     "state": "confirmed"
+    }
+   ]
+  },
+  "boundaries": [
+   "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "boundary 2 outline 400,400 2000,400 2000,1600 400,1600"
+  ],
+  "focus": {
+   "focus": {
+    "t": "face",
+    "id": 2
+   },
+   "mmPerPx": 9.999999175200658
+  },
+  "status": [
+   "-: 尚未檢查",
+   "-: 有未保存的變更",
+   "-: 明選新增或編輯房間",
+   "-: 尚未檢查"
+  ]
+ },
+ "listAfterA": [
+  "客廳 邊界 2 · 已核對 目前房間 編輯外環 改名 解除列表關聯"
+ ],
+ "secondOptions": [
+  "人工描繪",
+  "取得同頁候選"
+ ],
+ "BButton": "新增房間",
+ "BZoomOuts": 5,
+ "BDraft": 4,
+ "BConfirmDisabled": false,
+ "afterB": {
+  "rooms": {
+   "planes": [
+    {
+     "id": "4c699b30-5406-4a0c-9472-57be6f795145",
+     "sourceId": "863167014167",
+     "page": 1,
+     "mmPerUnit": null
+    }
+   ],
+   "rooms": [
+    {
+     "id": "df33c485-3f10-4d0d-b6a6-6ed2f4d9bdae",
+     "name": "客廳",
+     "boundary": 2,
+     "state": "confirmed"
+    },
+    {
+     "id": "98d720fa-1924-4633-9cd5-18eb8c3b8693",
+     "name": "臥室",
+     "boundary": 3,
+     "state": "confirmed"
+    }
+   ]
+  },
+  "boundaries": [
+   "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "boundary 2 outline 400,400 2000,400 2000,1600 400,1600",
+   "boundary 3 outline 2400,400 3800,400 3800,1600 2400,1600"
+  ],
+  "focus": {
+   "focus": {
+    "t": "face",
+    "id": 3
+   },
+   "mmPerPx": 9.999999175200658
+  },
+  "status": [
+   "-: 尚未檢查",
+   "-: 有未保存的變更",
+   "-: 明選新增或編輯房間",
+   "-: 尚未檢查"
+  ]
+ },
+ "listAfterB": [
+  "客廳 邊界 2 · 已核對 查看 編輯外環 改名 解除列表關聯",
+  "臥室 邊界 3 · 已核對 目前房間 編輯外環 改名 解除列表關聯"
+ ],
+ "afterUndo": {
+  "rooms": [
+   "客廳→邊界2·confirmed"
+  ],
+  "boundaries": [
+   "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "boundary 2 outline 400,400 2000,400 2000,1600 400,1600"
+  ],
+  "focus": {
+   "focus": {
+    "t": "face",
+    "id": 2
+   },
+   "mmPerPx": 9.999999175200658
+  }
+ },
+ "afterRedo": {
+  "rooms": [
+   "客廳→邊界2·confirmed",
+   "臥室→邊界3·confirmed"
+  ],
+  "boundaries": [
+   "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "boundary 2 outline 400,400 2000,400 2000,1600 400,1600",
+   "boundary 3 outline 2400,400 3800,400 3800,1600 2400,1600"
+  ],
+  "focus": {
+   "focus": {
+    "t": "face",
+    "id": 2
+   },
+   "mmPerPx": 9.999999175200658
+  }
+ },
+ "otherCount": 1,
+ "afterOpenOther": {
+  "focus": {
+   "t": "face",
+   "id": 3
+  },
+  "mmPerPx": 9.999999175200658
+ },
+ "saved": "download",
+ "errsA": [],
+ "reopened": {
+  "rooms": {
+   "planes": [
+    {
+     "id": "4c699b30-5406-4a0c-9472-57be6f795145",
+     "sourceId": "863167014167",
+     "page": 1,
+     "mmPerUnit": null
+    }
+   ],
+   "rooms": [
+    {
+     "id": "df33c485-3f10-4d0d-b6a6-6ed2f4d9bdae",
+     "name": "客廳",
+     "boundary": 2,
+     "state": "confirmed"
+    },
+    {
+     "id": "98d720fa-1924-4633-9cd5-18eb8c3b8693",
+     "name": "臥室",
+     "boundary": 3,
+     "state": "confirmed"
+    }
+   ]
+  },
+  "boundaries": [
+   "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "boundary 2 outline 400,400 2000,400 2000,1600 400,1600",
+   "boundary 3 outline 2400,400 3800,400 3800,1600 2400,1600"
+  ]
+ },
+ "reopenedFocus": {
+  "focus": {
+   "t": "face",
+   "id": 3
+  },
+  "mmPerPx": 9.999999175200658
+ },
+ "reopenedList": [
+  "客廳 邊界 2 · 已核對 查看 編輯外環 改名 解除列表關聯",
+  "臥室 邊界 3 · 已核對 目前房間 編輯外環 改名 解除列表關聯"
+ ],
+ "errsB": []
+}

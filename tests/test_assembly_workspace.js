@@ -38,7 +38,7 @@ function fixture(options={}){
       if(cmd==='newid')return {ok:true,...ids};
       return {ok:true,specs:[]};}};
   let source=fs.readFileSync(process.env.GEOMETRY_TEST_ASSEMBLY_WORKSPACE||require.resolve('../geometry-web/assembly-workspace.js'),'utf8');
-  source=source.replace('return {open,close,flush,card,inspector,remove,','return {test:{setState:x=>s=x,getState:()=>s,confirm,diagram,preview,previewCopy,render,safe,changed,newDraft,newInstance,assertRepeatPreview},open,close,flush,card,inspector,remove,');
+  source=source.replace('return {open,close,flush,card,inspector,remove,','return {test:{setState:x=>s=x,getState:()=>s,confirm,diagram,preview,previewCopy,render,safe,changed,newDraft,newInstance,assertRepeatPreview,violationWords,shownViolations},open,close,flush,card,inspector,remove,');
   vm.runInNewContext(source,env);const w=env.window.AssemblyWorkspace,t=w.test;
   const state={context:token(),generation:1,draft:copy(context().assemblyDrafts[0]),draftsRef:context().assemblyDrafts,read:{state:world},engineering:{parameters:[],materials:[],specs:[]},preview:{valid:true,token:'candidate-A'},rotation:0,zoom:1};t.setState(state);
   return {w,t,state,context,history,ref,calls,removed,gate,element,env,notify,notifyLocal:previousContextToken=>listeners.get('project-local-history')?.({detail:{previousContextToken,contextToken:token()}}),setResult:r=>result=r,setWorld:w=>world=w,captureWorld:()=>{state.read={revision:1,state:copy(world)};},setIds:v=>ids=v,failNextRead:()=>failRead=true};
@@ -626,4 +626,46 @@ test('source names are escaped and identical names do not hide distinct identiti
   const f=fixture();f.state.engineering.parameters=[7,8].map(id=>({id,name:'<img src=x onerror="bad">',fields:[{id:2,name:'A & "B"'}]}));
   const text=diff(f,{kind:'parameter',parameterId:7,fieldId:2},{kind:'parameter',parameterId:8,fieldId:2});
   assert.ok(text.includes('#7'));assert.ok(text.includes('#8'));assert.ok(text.includes('&lt;img'));assert.ok(text.includes('&amp;'));assert.ok(text.includes('&quot;'));assert.ok(!text.includes('<img'));
+});
+
+// 2026-11-15 R21 cloud L4 finding 4.
+const refusal=message=>({code:'ASSEMBLY_INVALID',clause:'I40/I41',message});
+const refusalSummary=()=>({timber:0,clause:'I8',expected:'all world invariants pass',message:'candidate rejected'});
+test('known rule and binding refusals read as sentences; the bare rejection summary is listed only when it is alone',()=>{
+  const f=fixture(),shown=violations=>Array.from(f.t.shownViolations({violations}),f.t.violationWords);
+  assert.deepEqual(shown([refusal('I40: joints 1 and 2 assign the same endpoint of member 2'),refusalSummary()]),['接合 #1 和接合 #2 都接在構件 #2 的同一端；一個端點只能有一個接合。']);
+  assert.deepEqual(shown([refusal('I40: binding 1 refers to missing rule 1@1'),refusalSummary()]),['材料配置 #1 還需要規則 #1 的第 1 版；這一版不能刪，或先把配置改用別的版本。']);
+  // A message outside the table keeps its code, clause and raw text.
+  assert.deepEqual(shown([refusal('I41: rule 1@1 fingerprint mismatch'),refusalSummary()]),['ASSEMBLY_INVALID · I40/I41 · I41: rule 1@1 fingerprint mismatch']);
+  assert.deepEqual(shown([refusalSummary()]),['核心拒絕這次變更，沒有附原因。']);
+  assert.deepEqual(shown([]),[]);
+  for(const [message,words] of [
+    ['I40: joints 3 and 4 conflict at scope 左接合','接合 #3 和接合 #4 在交接區域「左接合」互相衝突。'],
+    ['I40: joint 5 needs distinct existing members','接合 #5 的終止構件和目標構件要是兩個不同的構件。'],
+    ['I40: joint 5 needs kind and stable junction scope','接合 #5 要選接合方式，並填交接區域識別。'],
+    ['I40: joint 5 has missing target or invalid local side/direction','接合 #5 的目標構件、側面或走向還沒選對。'],
+    ['I40: joint 5 has invalid endpoint definition','接合 #5 的終止端還沒選對。'],
+    ['I40: joint 5 needs one continuous and two distinct split members','接合 #5（正交分段）要有一支連續構件和兩支不同的分段構件。'],
+    ['I40: member 6 refers to a missing slot','構件 #6 指到不存在的槽位。'],
+    ['I40: slot 7 needs a name; unknown fields are rejected','槽位 #7 要有名稱。'],
+    ['I40/CAPACITY: rule 1 needs 1..8 unique slots, 1..12 unique members and 1..16 unique joints','一條規則要有 1～8 個槽位、1～12 個構件、1～16 個接合，編號不能重複。'],
+    ['I40: binding 8 must explicitly map every fixed rule slot','材料配置 #8 要逐一對應規則的每個槽位。'],
+  ])assert.equal(f.t.violationWords(refusal(message)),words,message);
+  // A near miss is not rewritten, and an instance's own source labels stay in front.
+  assert.equal(f.t.violationWords(refusal('I40: joints 1 and 2 assign the same endpoint of member 2 again')),'ASSEMBLY_INVALID · I40/I41 · I40: joints 1 and 2 assign the same endpoint of member 2 again');
+  assert.equal(f.t.violationWords({instanceId:2,primaryKey:3,...refusal('I40: member 4 refers to a missing slot')}),'實例 #2 · 主支 #3 · 構件 #4 指到不存在的槽位。');
+  assert.equal(f.t.violationWords({instanceId:2,...refusalSummary()}),'實例 #2 · 核心拒絕這次變更，沒有附原因。');
+});
+test('a refused preview lists the readable reason once and keeps the raw native violations in the debug details',async()=>{
+  const f=fixture();f.state.draft=copy(draft());f.context().assemblyDrafts[0]=copy(f.state.draft);
+  f.env.checkApiSession=()=>{};
+  const violations=[refusal('I40: joints 1 and 2 assign the same endpoint of member 2'),refusalSummary()];
+  f.env.fetch=async()=>({ok:true,json:async()=>({ok:true,preview:{token:'refused',valid:false,impact:{schema:'candidate-geometry/1',timbers:[],guides:[]},before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations}})});
+  await f.t.preview();
+  const html=f.element('asmPreviewResult').innerHTML,list=html.slice(html.indexOf('<ul>'),html.indexOf('</ul>'));
+  assert.equal(list,'<ul><li>接合 #1 和接合 #2 都接在構件 #2 的同一端；一個端點只能有一個接合。</li>');
+  assert.ok(html.includes('<h5>核心回報的原因</h5>'));
+  assert.ok(html.includes('I40: joints 1 and 2 assign the same endpoint of member 2'));
+  assert.ok(html.includes('candidate rejected'));
+  assert.equal(f.element('asmConfirm').disabled,true);
 });
