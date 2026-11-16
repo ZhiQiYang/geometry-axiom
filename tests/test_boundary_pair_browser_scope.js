@@ -5,6 +5,15 @@ const test=require('node:test'),assert=require('node:assert/strict'),path=requir
 const driver=require('../geometry-web/cdp_test.js'),plugin=require('../geometry-web/boundary_pair_workflow_test.js');
 const shards=require('../geometry-web/canvas_shards.js'),evidence=require('./helpers/canvas_shards.js');
 const extension=require('./diagnostics/r335_canvas_extension.cjs');
+// Train 3 (#426 + #419 + #420): #396's P1161 and #420's P420 are independent
+// sections. Strip them first (P420 by its exact count and tail position, P1161
+// by #396's own oracle) so the R335 checks below judge the same 96-section input.
+const train3=require('./diagnostics/train3_canvas_tail.cjs'),workspace=require('./diagnostics/r396_canvas_extension.cjs');
+const train3Inputs=()=>{
+  const rawPlan=shards.loadPlan(),rawGolden=shards.loadGolden();
+  assert.deepEqual(shards.validatePlan(rawPlan,rawGolden),[],'TRAIN3_RAW_PLAN_COMPLETE');
+  return workspace.project(train3.withoutGolden(rawGolden,'P420'),train3.withoutPlan(rawPlan,'P420'));
+};
 const base={GEOMETRY_TEST_URL:'http://127.0.0.1:48991/',GEOMETRY_FEEDBACK_DIR:path.join(os.tmpdir(),'r335-scope')};
 const only={...base,GEOMETRY_BOUNDARY_PAIR_ONLY:'1'};
 test('R335_SCOPE new entry is explicit partial mode and every declared case is selected by default',()=>{
@@ -29,14 +38,14 @@ test('R335_COLD stage requires the exact C04 case and saved receipt',()=>{
     assert.throws(()=>driver.runConfiguration({...child,...delta}),/fresh-profile stage/);
 });
 test('R335_EXTENSION preserves all old sections and handoff while adding exactly one independent section',()=>{
-  const plan=shards.loadPlan(),golden=shards.loadGolden(),oldPlan=extension.projectPlan(plan),oldGolden=extension.projectGolden(golden);
+  const {plan,golden}=train3Inputs(),oldPlan=extension.projectPlan(plan),oldGolden=extension.projectGolden(golden);
   assert.deepEqual(shards.validatePlan(plan,golden),[]);assert.deepEqual(shards.validatePlan(oldPlan,oldGolden),[]);
   assert.equal(Object.keys(oldGolden.sections).length,95);assert.equal(Object.keys(golden.sections).length,96);
   assert.deepEqual(oldPlan.boundaries,plan.boundaries);assert.deepEqual(oldPlan.shards[0],plan.shards[0]);
   assert.equal(oldPlan.shards[1].sections.at(-1),'P359');assert.equal(golden.total-oldGolden.total,extension.COUNT);
 });
 test('R335_EXTENSION rejects count drift, duplicate ownership and a changed execution position',()=>{
-  const plan=shards.loadPlan(),golden=shards.loadGolden();
+  const {plan,golden}=train3Inputs();
   assert.throws(()=>extension.projectGolden({...golden,sections:{...golden.sections,P335:extension.COUNT-1}}),/R335_EXACT_EXPECTED_COUNT/);
   const duplicate=structuredClone(plan);duplicate.shards[0].sections.push('P335');assert.throws(()=>extension.projectPlan(duplicate),/R335_EXACT_OWNER/);
   const moved=structuredClone(plan),sections=moved.shards[1].sections;sections.splice(sections.indexOf('P335'),1);sections.push('P335');assert.throws(()=>extension.projectPlan(moved),/R335_EXACT_NEIGHBORS/);
