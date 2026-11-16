@@ -71,6 +71,38 @@ test('PF_SAVE_CANDIDATE_DEFINITION_COMPARE rejects silently changed/dropped reco
   assert.throws(()=>P.assertPanelFillDefinitions(scene,scene.replace('derived-placement 0','derived-placement 9')),/候選定義/);
   assert.throws(()=>P.assertPanelFillDefinitions(scene,scene+definitions[0]+'\n'),/候選定義/);
 });
+// C0's canonical D10 source syntax, using the already tested zero-id host.
+// These are archive admission tests; native closure and fresh-browser replay
+// remain separately exercised by the real C0 and PF-4A browser suites.
+const fromFillGrid='grid 11 on 0 from-fill 1 main-along v';
+const fromFillScene=scene+fromFillGrid+'\n';
+for(const [name,replacement] of [
+  ['dropped',''],
+  ['changed fill',fromFillGrid.replace('from-fill 1','from-fill 2')],
+  ['replaced by coordinates','grid 11 on 0 u explicit 101 204 v explicit 101 204'],
+  ['changed host',fromFillGrid.replace('on 0','on 10')],
+  ['changed main axis',fromFillGrid.replace('main-along v','main-along u')]
+])test('PF4A_SAVE_FROM_FILL_CLOSURE rejects '+name,()=>{
+  assert.throws(()=>P.assertPanelFillDefinitions(fromFillScene,fromFillScene.replace(fromFillGrid,replacement)),
+    /候選定義/,'PF4A_SAVE_FROM_FILL_CLOSURE: preserve the authored D10 source, host and preference');
+});
+test('PF4A_SAVE_FROM_FILL_IDENTITY keeps /19 and the exact three-record reader without broad scene equality',async()=>{
+  const loaded=await P.unpack(await pack(fromFillScene),zip);
+  assert.equal(loaded.scene,fromFillScene);
+  assert.equal(loaded.manifest.format,'geometry-canvas/19');
+  assert.deepEqual(loaded.manifest.requiredCapabilities,capabilities);
+  P.assertProjectCapabilities(loaded.manifest,P.readerCapabilities(nativeCapabilities,scopedReader));
+  P.assertPanelFillDefinitions(fromFillScene,fromFillScene.split('\n').reverse().map(l=>'  '+l+'  # retained\r').join('\n'));
+  assert.throws(()=>P.assertPanelFillDefinitions(fromFillScene,fromFillScene+fromFillGrid+'\n'),/候選定義/);
+  // A default main preference may be absent in an old canonical scene. Its
+  // original source line is still preserved; this guard does not infer values.
+  const noPreference=fromFillScene.replace(' main-along v','');
+  P.assertPanelFillDefinitions(noPreference,noPreference);
+  assert.throws(()=>P.assertPanelFillDefinitions(noPreference,scene),/候選定義/);
+  const legacy='grid 21 on 0 u panel 100 gap 3 from 0 v explicit 50 150\n';
+  P.assertPanelFillDefinitions(scene+legacy,scene+legacy.replace('50 150','60 160'));
+  P.assertPanelFillDefinitions(fromFillScene+legacy,fromFillScene+legacy.replace('50 150','60 160'));
+});
 function workspace(options={}){
   const calls=[],events=[],messages=[],elements=new Map();
   const element=id=>{if(!elements.has(id))elements.set(id,{textContent:'',dataset:{},classList:{toggle(){}},style:{},setAttribute(){},removeAttribute(){},querySelector:()=>null});return elements.get(id);};
