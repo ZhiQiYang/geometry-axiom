@@ -8,6 +8,8 @@ const shards = require('../geometry-web/canvas_shards.js');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
+const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
+const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const plan = shards.loadPlan(), golden = shards.loadGolden();
@@ -17,7 +19,7 @@ const REAL = {planSha256: shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)), go
 const clone = value => JSON.parse(JSON.stringify(value));
 const sum = sections => Object.values(sections).reduce((a, b) => a + b, 0);
 
-// P1161 is the only extension over the exact 95-section baseline.
+// P1161 is the only extension over main ee4519f3's exact 95-section baseline.
 // Its exact count was observed in two complete capture partitions using the existing handoff.
 // This is a candidate count; final-head strict Canvas replay remains required.
 function projectWorkspaceGolden(value, rawSource = fs.readFileSync(shards.GOLDEN_PATH, 'utf8')) {
@@ -27,15 +29,25 @@ function projectWorkspaceGolden(value, rawSource = fs.readFileSync(shards.GOLDEN
   const raw = rawSource.replace(/\r\n/g, '\n');
   const withoutP1161 = raw.replace('    "P1161": 510,\n', '');
   assert.notEqual(withoutP1161, raw, 'R396_P1161_RAW_LINE_REQUIRED');
-  const projected = withoutP1161.replace('  "total": 5338,\n', '  "total": 4828,\n');
-  assert.notEqual(projected, withoutP1161, 'R396_R06_REBASED_TOTAL_LINE_REQUIRED');
-  assert.equal(shards.lfSha256(Buffer.from(projected)), 'ac98a30ec18b56a3249017d983483acda0d457f8111b64f46e5b0d8a37cd8b4b', 'R396_R06_REBASED_GOLDEN_BYTES_UNCHANGED');
-  const withoutR06Addition = projected.replace('    "R06": 55,\n', '    "R06": 50,\n');
-  assert.notEqual(withoutR06Addition, projected, 'R396_R06_FIVE_RAW_LINE_REQUIRED');
+  const projected = withoutP1161.replace('  "total": 5341,\n', '  "total": 4831,\n');
+  assert.notEqual(projected, withoutP1161, 'R396_R20_D18_REBASED_TOTAL_LINE_REQUIRED');
+  assert.equal(shards.lfSha256(Buffer.from(projected)), '9e6fc28a64a5522d5182897193c6d923634ce1b7a2b0454130b972dd6a99292b', 'R396_R20_D18_REBASED_GOLDEN_BYTES_UNCHANGED');
+  assert.deepEqual(JSON.parse(projected), old, 'R396_ONLY_P1161_GOLDEN_PROJECTED');
+  // #417 adds P76 +2 and P70 +1. Project just those exact bytes to recover
+  // the previous R396/R06 baseline; both older byte pins remain unchanged.
+  const withoutR20Addition = projected.replace('    "P76": 89,\n', '    "P76": 87,\n');
+  assert.notEqual(withoutR20Addition, projected, 'R396_R20_TWO_RAW_LINE_REQUIRED');
+  const withoutD18Addition = withoutR20Addition.replace('    "P70": 122,\n', '    "P70": 121,\n');
+  assert.notEqual(withoutD18Addition, withoutR20Addition, 'R396_D18_ONE_RAW_LINE_REQUIRED');
+  const beforeR20D18 = withoutD18Addition.replace('  "total": 4831,\n', '  "total": 4828,\n');
+  assert.notEqual(beforeR20D18, withoutD18Addition, 'R396_R20_D18_PREVIOUS_TOTAL_LINE_REQUIRED');
+  assert.equal(shards.lfSha256(Buffer.from(beforeR20D18)), 'ac98a30ec18b56a3249017d983483acda0d457f8111b64f46e5b0d8a37cd8b4b', 'R396_R06_REBASED_GOLDEN_BYTES_UNCHANGED');
+  const withoutR06Addition = beforeR20D18.replace('    "R06": 55,\n', '    "R06": 50,\n');
+  assert.notEqual(withoutR06Addition, beforeR20D18, 'R396_R06_FIVE_RAW_LINE_REQUIRED');
   const historical = withoutR06Addition.replace('  "total": 4828,\n', '  "total": 4823,\n');
   assert.notEqual(historical, withoutR06Addition, 'R396_HISTORIC_TOTAL_LINE_REQUIRED');
   assert.equal(shards.lfSha256(Buffer.from(historical)), '47731559a71bc01ddb608f114707cda3c664b9d8742e37bd5061d464a028b6ef', 'R396_95_OLD_GOLDEN_BYTES_UNCHANGED');
-  assert.equal(old.total, 4828, 'R396_OLD_TOTAL_UNCHANGED');
+  assert.equal(old.total, 4831, 'R396_OLD_TOTAL_UNCHANGED');
   return old;
 }
 
@@ -43,12 +55,12 @@ function projectWorkspaceGolden(value, rawSource = fs.readFileSync(shards.GOLDEN
 function verifyWorkspaceGoldenRebase() {
   const beforeP1161 = projectWorkspaceGolden(golden);
   assert.equal(beforeP1161.sections.R06, 55, 'R396_R06_PLUS_FIVE_RETAINED');
-  assert.equal(beforeP1161.total, 4828, 'R396_R06_PLUS_FIVE_95_TOTAL');
+  assert.equal(beforeP1161.total, 4831, 'R396_R06_PLUS_FIVE_95_TOTAL');
   const raw = fs.readFileSync(shards.GOLDEN_PATH, 'utf8').replace(/\r\n/g, '\n');
   const tampered = raw.replace('    "P360": 13,\n', '    "P360": 13, \n');
   assert.notEqual(tampered, raw, 'R396_BYTE_PROBE_CHANGED');
   assert.throws(() => projectWorkspaceGolden(golden, tampered),
-    /R396_R06_REBASED_GOLDEN_BYTES_UNCHANGED/, 'R396_BYTE_PIN_REJECTS_WHITESPACE_DRIFT');
+    /R396_R20_D18_REBASED_GOLDEN_BYTES_UNCHANGED/, 'R396_BYTE_PIN_REJECTS_WHITESPACE_DRIFT');
 }
 
 function result(index, change = r => r) {
@@ -124,7 +136,9 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   // historical per-section oracles below.
   const beforeWorkspace=projectWorkspaceGolden(context.golden);
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
-  const golden=r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(beforeWorkspace)));
+  // R20 findings 1-3 add exactly two P76 assertions; project them out too.
+  // D18 finding 5 adds exactly one P70 assertion; project it out too.
+  const golden=d18CardStaggerExtension.projectGolden(r20ReasonsExtension.projectGolden(r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(beforeWorkspace)))));
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
   // #360 and R06 add independent sections. Keep the original 4002/91 contract

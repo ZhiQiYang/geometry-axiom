@@ -262,3 +262,36 @@ test('child release can settle an export whose reply is still pending without lo
   await until(()=>f.events.includes('owner:freeze'));const releasing=f.message({type:'scenario-release',requestId:'release',freezeId:'owned'});gate.resolve();await Promise.all([exporting,releasing]);
   assert.equal(f.frozen,false);assert.equal(f.events.filter(e=>e==='owner:freeze').length,1);assert.equal(f.events.filter(e=>e==='owner:release').length,1);
 });
+
+// 2026-11-15 cloud L4 (D15) finding 7: after an edit inside the embedded editor,
+// Cancel/Finish/Pause navigated the iframe and its own unsaved-work guards raised
+// the browser's leave prompt; choosing "stay" left a stale document and the next
+// trial timed out.
+test('every host-driven unload marks the embedded document before the frame navigates',async()=>{
+  const writes=[...code.matchAll(/(.{0,19})(?:owner|old)\.frame\.src=/g)].map(m=>m[1]);
+  assert.equal(writes.length,3,'cancel/finish retirement, pause and (re)open are the only frame navigations');
+  for(const before of writes)assert.equal(before,'hostUnloads(owner);');
+  const f=fixture({},{ticket:ticket()});assert.equal(f.frame.contentWindow.scenarioHostUnloading,undefined);
+  await f.start();await f.cancel();
+  assert.equal(f.events.at(-1),'frame:about:blank');assert.equal(f.frame.contentWindow.scenarioHostUnloading,true);
+  // A frame without a reachable window must not break retirement.
+  const g=fixture({},{ticket:ticket()});Object.defineProperty(g.frame,'contentWindow',{get(){throw new Error('detached');}});
+  await g.start();await g.cancel();assert.equal(g.events.at(-1),'frame:about:blank');assert.equal(g.store.ticket,null);
+});
+test('the embedded side stands its leave guards down only for a marked host unload, and registers first',()=>{
+  const path=require('node:path'),web=path.dirname(require.resolve('../geometry-web/scenario-integration.js')),registered=[];
+  const window={addEventListener:(type,fn,options)=>registered.push({type,fn,options})};
+  vm.runInNewContext(fs.readFileSync(path.join(web,'scenario-integration.js'),'utf8'),{window,GeometryProject:{},GeometryScenarioSnapshots:{},TextEncoder,WeakMap,structuredClone,fetch:()=>{},AbortSignal});
+  assert.equal(registered.length,1);assert.equal(registered[0].type,'beforeunload');
+  const stopped=state=>{Object.assign(window,{GeometryNativeContext:undefined,scenarioHostUnloading:undefined},state);let count=0;
+    registered[0].fn({stopImmediatePropagation(){count++;},preventDefault(){assert.fail('the guard itself never prompts');}});return count;};
+  assert.equal(stopped({GeometryNativeContext:{scenario:'B'},scenarioHostUnloading:true}),1);
+  assert.equal(stopped({GeometryNativeContext:{scenario:'B'}}),0,'the user closing or reloading the tab still reaches the guards');
+  assert.equal(stopped({scenarioHostUnloading:true}),0,'the main canvas is never affected');
+  assert.equal(stopped({}),0);
+  // window-level beforeunload listeners run in registration order: this file must load before every guard.
+  const html=fs.readFileSync(path.join(web,'index.html'),'utf8'),at=name=>{const i=html.indexOf('<script src="'+name+'"></script>');assert.ok(i>=0,name);return i;};
+  const guards=fs.readdirSync(web).filter(name=>name.endsWith('.js')&&!/test|cdp_/.test(name)&&name!=='scenario-integration.js'&&/addEventListener\(\s*['"]beforeunload['"]/.test(fs.readFileSync(path.join(web,name),'utf8')));
+  assert.deepEqual(guards.sort(),['document-cases.js','parameters.js','reference-workspace.js','room-collection-workspace.js','section-profile-workspace.js']);
+  for(const name of guards)assert.ok(at('scenario-integration.js')<at(name),name);
+});

@@ -8454,10 +8454,11 @@ const GridSystemEditor = (() => {
   const signature = o => JSON.stringify([ocSeq,definitionKey(o),o?.applications,oc.surfs.map(s=>[s.id,s.boundary])]);
   const current = s => active === s && s.root.isConnected && s.context === ReferenceWorkspace.context();
   const get = (s,id) => s.root.querySelector("#"+id);
+  const staggerNote = d => d?.stagger ? `，相鄰格子相位差 ${d.stagger} mm` : "";
   function summary(d) {
     if (!d || d.source === "none") return "未設定";
-    if (d.source === "repeat") return `無限重複 · 間距 ${axisLength(d,'step')} mm${lengthSource(d,'step')}，基準 ${d.phase} mm`;
-    if (d.source === "repeat-panel") return `無限面材 ${axisLength(d,'panel')}＋縫 ${d.gap} mm${lengthSource(d,'panel')}，從 ${d.anchor} mm 起算`;
+    if (d.source === "repeat") return `無限重複 · 間距 ${axisLength(d,'step')} mm${lengthSource(d,'step')}，基準 ${d.phase} mm${staggerNote(d)}`;
+    if (d.source === "repeat-panel") return `無限面材 ${axisLength(d,'panel')}＋縫 ${d.gap} mm${lengthSource(d,'panel')}，從 ${d.anchor} mm 起算${staggerNote(d)}`;
     if (d.source === "explicit") return `座標 ${(d.coordinates || []).join("、")} mm`;
     if (d.source === "series") return `從 ${d.start} mm，每 ${axisLength(d,'step')} mm，共 ${d.count} 條`;
     return `面材 ${axisLength(d,'panel')}＋縫 ${d.gap} mm，從 ${d.anchor} mm 起算`;
@@ -8513,7 +8514,7 @@ const GridSystemEditor = (() => {
     const body=el("g",{class:"ocard-body"},g);sketch(body,o,14,58,OC_W-28,OC_H-109);
     const pitch=d=>d?.source === "repeat" ? `${axisLength(d,'step')}` : d?.source === "repeat-panel" ? `${axisLength(d,'panel')+d.gap}` : "—";
     el("text",{x:14,y:OC_H-30,"font-size":12.5,fill:"#6d8197"},body).textContent=o.mode === "infinite" ? `X 間距 ${pitch(o.uDefinition)} · Y 間距 ${pitch(o.vDefinition)} mm` : "舊版有限排法 · 保留原義";
-    el("text",{x:14,y:OC_H-11,"font-size":12,fill:"#687487"},body).textContent=o.mode === "infinite" ? "格線向兩端無限延伸" : o.mainAlong ? `主支沿 ${o.mainAlong} · 可重複套用` : "角色未設定 · 可重複套用";
+    el("text",{x:14,y:OC_H-11,"font-size":12,fill:"#687487"},body).textContent=o.mode === "infinite" ? (axes.filter(a=>o[a+"Definition"]?.stagger).map(a=>`${a === "u" ? "X" : "Y"} 相鄰格子相位差 ${o[a+"Definition"].stagger} mm`).join(" · ") || "格線向兩端無限延伸") : o.mainAlong ? `主支沿 ${o.mainAlong} · 可重複套用` : "角色未設定 · 可重複套用";
     return g;
   }
   function appliedHTML(g) {

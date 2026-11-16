@@ -358,6 +358,24 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   const elided=await explain(['[5:1 a.b] -> ... -> [5:3 a.d] -> I38 UNIT: unit mismatch']);
   const arrowName=await explain(['[7:1 甲 -> [5:2 乙.z] -> I38 DIV_ZERO: division by zero']);
   check('欄位歸屬只認分節開頭、錯誤碼只取根因段；名稱含 ` -> ` 寧可不歸屬',nested.fieldId===null&&trap.fieldId===2&&trap.short==='除以零'&&elided.fieldId===3&&elided.short==='單位不合'&&arrowName.fieldId===null,{nested,trap,elided,arrowName});
+  /* 2026-11-15 實機核對發現 1～3：下游物件轉述、刪除仍被引用、只有總結的那一筆。 */
+  const GOT='must resolve to integer mm in D1 range (got 1220/3)',SUMMARY='candidate rejected';
+  const relayedOwn=await explain(['grid-system 3 u: I38 GEOMETRY: [5:2 板.寬] '+GOT,SUMMARY]);
+  const relayedOther=await explain(['grid-system 3 u: I38 GEOMETRY: [7:1 骨.距] '+GOT,SUMMARY]);
+  const wholeCard=await explain(['I74 grid-system 2 v parameter 5 field 3: [5:3 板.長] -> I38 DIV_ZERO: division by zero']);
+  const guide=await explain(['guide 4: I38 UNIT: unit mismatch']),datum=await explain(['datum 6: I38 UNIT: unit mismatch']);
+  const outOfRange=await explain(['grid-system 3 v: I38 GEOMETRY: [7:1 骨.距] must resolve to integer mm in D1 range (got 5000000000/1)']);
+  check('下游物件轉述的參數錯誤：拆掉轉述者再認欄位與錯誤碼，寫出是誰拒絕、算出多少',
+    relayedOwn.fieldId===2&&relayedOwn.short==='網格來源 3 的 u 軸：板.寬 算出 1220/3 mm，不是整數 mm，幾何會拒絕'&&relayedOwn.rest===0&&
+    relayedOther.fieldId===null&&relayedOther.rest===1&&relayedOther.markup.includes('網格來源 3 的 u 軸：骨.距 算出 1220/3 mm，不是整數 mm，幾何會拒絕')&&
+    wholeCard.fieldId===3&&wholeCard.short==='網格來源 2 的 v 軸：除以零'&&guide.markup.includes('參考線 4：單位不合')&&datum.markup.includes('基準面 6：單位不合')&&
+    outOfRange.markup.includes('網格來源 3 的 v 軸：骨.距 算出 5000000000 mm，超出可用範圍，幾何會拒絕'),{relayedOwn,relayedOther,wholeCard,guide,datum,outOfRange});
+  const stillUsed=await explain(['I38 MISSING: parameter 5 is still referenced by parameter 7 field 1; grid-system 3 u step; unbind or repoint them in the same complete candidate',SUMMARY]);
+  const missing=await explain(['[5:2 板.寬] -> I38 MISSING: parameter 9 field 1 does not exist']);
+  const summaryOnly=await explain([SUMMARY]);
+  check('刪除仍被引用寫「還有地方引用」不寫「找不到引用」；已有具體原因時不另列 candidate rejected，只有它時寫核心拒絕',
+    stillUsed.fieldId===null&&stillUsed.rest===1&&stillUsed.markup.includes('還有地方引用，不能刪除；請先改綁或解除引用')&&!stillUsed.markup.includes('找不到引用')&&!stillUsed.markup.includes(SUMMARY)&&
+    missing.fieldId===2&&missing.short==='找不到引用'&&summaryOnly.rest===1&&summaryOnly.markup.startsWith('核心拒絕這次變更'),{stillUsed,missing,summaryOnly});
   await require('./parameter_confirmation_test.js')({send,eval_,sleep,click,waitForUI,check});
   await require('./parameter_preview_ownership_test.js')({send,eval_,sleep,click,waitForUI,check});
   check('無未捕捉瀏覽器例外',exceptionCount()===errors);
