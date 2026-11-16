@@ -354,3 +354,20 @@ R379原provenance目標繼續保留，兩個omit-digest撤回各自只漏自己�
 本整合不更改任何golden段。product-architecture path聯集及LF來源hash、三份衍生證據由grokbot
 在最終合流來源上機械重產並原樣採入；此處不手修帳本。最終仍須同一head／test-merge來源的
 六份正式native收據、完整coverage、browser/canvas與mutation freshness通過。
+
+## R17 新套件的第三份獨立來源（PR #419，2026-11-16）
+
+PR #419（需求帳 R17 host／App 第一片）新增四個 native suite。原四輪 `measured_runs`、R380 與 R14 兩份 `/1` 追加證據逐 byte 不變；另新增 `native_shard_added_evidence_r17.json`，用同一個 `_added_evidence_costs()` 驗欄位、來源、全通過及成本上界，讀取時才與前兩份合流（現行 registry 324 套）。三份來源之間不得有重複名稱（`R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES`）。`profile_digest()` 改為四份 LF bytes 以 NUL 分隔的 SHA-256，順序固定為 timings、R380、R14、R17。
+
+來源是 [Geometry 43725356267](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267)，source head `735144edeb0cd5918b1e5c365dd6f63a63d9cd62`、實際 checkout `c5f0876e2c6185fdc00896489627b69e50040020`。native 2／3／5／6 片整體紅，原因正是這四套尚未登記在 expected／profile（2 片另有 `py:test_unittest_runner` 的兩項同因失敗）；下列個別 suite 自身全部通過。秒數取自原日誌的一位小數摘要，上界是規劃餘量，不是歷史實測。
+
+| Suite | Source job | Passed / discovered | 原摘要秒數 | Planning upper ms |
+|---|---|---:|---:|---:|
+| `py:test_boundary_pair_host` | [132845985362](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267/job/132845985362)（6/6） | 19 / 19 | 4.6 | 7000 |
+| `node:boundary_pair_ui` | [132845985393](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267/job/132845985393)（3/6） | 12 / 12 | 0.2 | 2000 |
+| `node:boundary_pair_project` | [132845985292](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267/job/132845985292)（5/6） | 8 / 8 | 0.1 | 2000 |
+| `node:boundary_pair_browser_scope` | [132845985322](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267/job/132845985322)（2/6） | 7 / 7 | 0.1 | 2000 |
+
+`run_all.expected.json` 只追加這四套由原 runner 實跑得到的 19／12／8／7，其餘既有 320 筆不變、不降低任何舊計數。這次沒有用 `--update-expected` 重寫整份檔：該旗標要求整次完整跑可信，而 `mutation:check`（exit-code-only）在突變帳本採入前必為 STALE，會被原 runner 拒絕；因此依原 runner 的 `{'mode','count','unit'}` 格式只插入四筆，並以原 runner 的完整嚴格比對確認全部 suite 計數相符。
+
+歷史回放範圍不變：main 歷史 317 套與 R379 歷史 318 套都排除 R17 四套；正式六片驗全部 324 套、全部四輪情境及逐套最大包絡，同樣嚴格小於 1200000ms。`py:test_unittest_runner` 只在既有 method 內加斷言，仍為 15 項。新增具名撤回 `R17_DROP_SUITE_EVIDENCE`、`R17_DROP_EXPECTED_ENTRIES`、`R17_OMIT_SOURCE_FROM_DIGEST`，各自要求指定的正常 AssertionError、0 error、0 skip（0／1／0）；R379 原有撤回的目標斷言與順序保留。新 head 仍需正式 CI 的六份原收據與 coverage 確認。

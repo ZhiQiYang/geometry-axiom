@@ -2592,3 +2592,16 @@ body.v3-mode .sidebar-left { overflow-y: auto; }
   body.canvas-composition #fileMenuBtn { width: 44px; min-width: 44px; }
   .workspace-project-status { position: absolute; top: 40px; left: 59px; max-width: 72px; }
 }
+/* The paired mode replaces the single-timber form in the same inspector. */
+#tbBoundaryPair[hidden], #tbSinglePlacement[hidden] { display: none; }
+#tbBoundaryPair fieldset { min-width: 0; margin: 12px 0; padding: 10px; border: 1px solid var(--border, #ccd2d9); border-radius: 8px; }
+#tbBoundaryPair legend { padding: 0 4px; font-weight: 600; }
+#tbBoundaryPair .place-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+#tbBoundaryPair .place-form label:first-child { grid-column: 1 / -1; }
+#tbBoundaryPair input, #tbBoundaryPair select { min-width: 0; width: 100%; }
+.tb-pair-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.fe-pair-edge { stroke: #176fbe; stroke-width: 5; vector-effect: non-scaling-stroke; pointer-events: none; }
+.fe-pair-edge[data-pair-slot="2"] { stroke: #9a4dba; }
+.impact-boundary-pairs section { padding: 8px 0; border-bottom: 1px solid #ccd2d9; }
+.impact-boundary-pairs p, .impact-boundary-pairs pre { overflow-wrap: anywhere; white-space: pre-wrap; }
+.impact-pair-contacts { padding-left: 22px; }

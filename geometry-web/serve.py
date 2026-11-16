@@ -57,6 +57,10 @@ POST_MAX_BYTES = {
     "/timber-edit/preview": 1024 * 1024,
     "/view/read": 1024 * 1024,
     "/view/pick": 1024 * 1024,
+    "/boundary-pair/read": 1024 * 1024,
+    "/boundary-pair/preview": 1024 * 1024,
+    "/boundary-pair/confirm": 1024,
+    "/boundary-pair/cancel": 1024,
     "/engineering/validate-project": 1024 * 1024,
     "/engineering/read": 1024 * 1024,
     "/definition-import/read": 16 * 1024 * 1024,
@@ -202,7 +206,7 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("指令不得含換行或 NUL")
     if cmd.split(" ", 1)[0] == "identity-epoch":
         return err_json("配號區段只由宿主設定。")
-    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file ", "definition-import-read ", "definition-import-preview ", "timber-edit-read ", "timber-edit-preview ", "view-read ", "view-pick "):
+    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file ", "definition-import-read ", "definition-import-preview ", "timber-edit-read ", "timber-edit-preview ", "view-read ", "view-pick ", "boundary-pair-read ", "boundary-pair-preview "):
         if cmd.startswith(prefix):
             cmd = prefix + to_bridge_path(cmd[len(prefix):])
             break
@@ -255,7 +259,7 @@ def err_json(msg: str) -> bytes:
                       ensure_ascii=False).encode("utf-8")
 
 
-def recorded_api(data):
+def recorded_api(data, execute=None):
     """Recover a lost response without running a world-changing command again.
 
     Clients acknowledge received results on their next request. A lookup arriving
@@ -263,11 +267,13 @@ def recorded_api(data):
     Unacknowledged results are bounded; capacity failure never reaches the core.
     Sealed ids live in their own id-only set with a separate bound: an ack never
     clears one, nothing evicts one, and they never use the result capacity.
+    A server-owned adapter may provide an execution callback and bind its exact
+    body digest as cmd. The public JSON protocol cannot supply that callback.
     """
     native = current_native_context()
     request_id = data.get("receipt", data.get("requestId"))
     if request_id is None:
-        return ask_bridge(data["cmd"])
+        return execute() if execute is not None else ask_bridge(data["cmd"])
     if (not isinstance(request_id, str) or not re.fullmatch(r"[a-f0-9-]{36}", request_id)
             or data.get("session") != native.session):
         return err_json("操作結果無法確認：服務已重啟或請求識別不合法。")
@@ -291,7 +297,7 @@ def recorded_api(data):
                     native.api_sealed.add(request_id)
                     cached = (None, err_json("操作未送達，場景未變更；請重新操作。"))
                 else:
-                    cached = (data["cmd"], ask_bridge(data["cmd"]))
+                    cached = (data["cmd"], execute() if execute is not None else ask_bridge(data["cmd"]))
                     native.api_receipts[request_id] = cached
             elif "receipt" not in data and cached[0] != data["cmd"]:
                 return err_json("同一操作識別不得用於不同指令。")
@@ -731,6 +737,24 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send(file_request(body, ask_bridge, pick=self.path.endswith('/pick')))
             except OSError:
                 self._send(err_json('無法建立視圖資料暫存檔，專案未變更。'))
+            return
+        if self.path in {"/boundary-pair/read", "/boundary-pair/preview", "/boundary-pair/confirm", "/boundary-pair/cancel"}:
+            from boundary_pair_transport import request
+            try:
+                mode = self.path.rsplit('/', 1)[-1]
+                request_id = self.headers.get('X-Geometry-Request-Id')
+                session = self.headers.get('X-Geometry-Session')
+                if mode == 'preview' and (request_id is not None or session is not None):
+                    if request_id is None or session is None:
+                        self._send(err_json('成組預覽回執需要請求識別及服務 session。'))
+                        return
+                    receipt = {'cmd': 'boundary-pair-preview:' + hashlib.sha256(body).hexdigest(),
+                               'requestId': request_id, 'session': session}
+                    self._send(recorded_api(receipt, execute=lambda: request(body, ask_bridge, mode='preview')))
+                else:
+                    self._send(request(body, ask_bridge, mode=mode))
+            except OSError:
+                self._send(err_json('無法建立成組資料暫存檔，專案未變更。'))
             return
         if self.path in {"/timber-edit/read", "/timber-edit/preview"}:
             from timber_edit_transport import file_request

@@ -12,6 +12,7 @@ const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const workspaceExtension = require('./diagnostics/r396_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
+const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
 const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
 const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
 const file = name => path.join(WEB, name);
@@ -21,8 +22,10 @@ const MAIN_SEQUENCES = [["Setup","1","2","3","4","5","6","7","8","9","P3","P4","
 const MAIN_BOUNDARIES = [{"after":"P88","before":"P72","localStorage":{"geometry-param-grid-lesson":{"kind":"param-grid-lesson-token"},"geometry-tool-lessons-v1":{"kind":"string-set","values":["canvas:pan","canvas:rect","canvas:select","engineering:first","face:grid","face:guide","face:hole","face:pan","face:redraw","face:select","face:timber","grid:infinite-first"]}}}];
 
 test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
-  const rawGolden = JSON.parse(read('cdp_sections.golden.json'));
-  const rawPlan = JSON.parse(read('canvas_shards.json'));
+  // R17 P335 is projected out by its own exact oracle (count 192, P116→P335→P128).
+  // Train 3 (#426 + #419): the R396 P1161 projection then runs on those projected inputs.
+  const rawGolden = r335Extension.projectGolden(JSON.parse(read('cdp_sections.golden.json')));
+  const rawPlan = r335Extension.projectPlan(JSON.parse(read('canvas_shards.json')));
   const snapshot = JSON.stringify({golden: rawGolden, plan: rawPlan});
   const projected = workspaceExtension.project(rawGolden, rawPlan);
   const expectedGolden = JSON.parse(JSON.stringify(rawGolden));
@@ -124,8 +127,8 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
 
 test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
   assert.ok(fs.existsSync(file('canvas_shards.json')), 'R360_CANVAS_SHARD_PLAN_REQUIRED');
-  const plan = JSON.parse(read('canvas_shards.json'));
-  const golden = JSON.parse(read('cdp_sections.golden.json'));
+  const plan = r335Extension.projectPlan(JSON.parse(read('canvas_shards.json')));
+  const golden = r335Extension.projectGolden(JSON.parse(read('cdp_sections.golden.json')));
   const shards = require(file('canvas_shards.js'));
   assert.deepEqual(shards.validatePlan(plan, golden), [], 'R360_CANVAS_COMPLETE_PLAN');
   const expected = MAIN_SEQUENCES.map(sections => sections.slice());

@@ -1,5 +1,6 @@
 /* Reference editing and the mandatory I8a confirmation flow. */
-async function confirmReferenceImpact(preview, {current = () => true, ownsPreview = () => true} = {}) {
+async function confirmReferenceImpact(preview, adapter = null) {
+  const {current = () => true, ownsPreview = () => true} = adapter || {};
   if (!current()) {
     if (ownsPreview()) await apiRequest('line cancel-preview');
     return {ok:false,error:'操作情境已變更，未確認連動變更'};
@@ -7,7 +8,8 @@ async function confirmReferenceImpact(preview, {current = () => true, ownsPrevie
   const repeat=(preview.timbers||[]).some(row=>row.owner?.identity)||
     ['before','after'].some(side=>preview.assembly?.[side]?.instances?.some(r=>r.value.source.layout==='bay-repeat'));
   const repeatComplete=!repeat||Array.isArray(preview.bayCells)&&(preview.timbers||[]).every(row=>!row.owner?.identity||['kept','moved','created','deleted'].includes(row.change));
-  const canApply=preview.valid&&repeatComplete;
+  const pairComplete=boundaryPairImpactComplete(preview,adapter?.boundaryPair===true);
+  const canApply=preview.valid&&repeatComplete&&pairComplete;
   const dialog = document.createElement('dialog');
   dialog.className = 'reference-impact';
   dialog.setAttribute('aria-labelledby', 'impact-title');
@@ -21,6 +23,7 @@ async function confirmReferenceImpact(preview, {current = () => true, ownsPrevie
   dialog.append(code);
   appendGridDefinitionImpact(dialog, preview);
   appendSectionProfileImpact(dialog, preview, preview.violations);
+  appendBoundaryPairImpact(dialog, preview);
   const assemblyChanges=document.createElement('ul');
   for(const binding of preview.assembly?.after?.bindings||[]){const before=preview.assembly.before.bindings.find(b=>b.value.id===binding.value.id);
     for(const slot of binding.effective)for(const axis of ['A','B']){const a=before?.effective.find(v=>v.slotId===slot.slotId)?.[axis]?.value,b=slot[axis]?.value;
@@ -98,7 +101,7 @@ async function confirmReferenceImpact(preview, {current = () => true, ownsPrevie
     for (const row of changes) {
       const li = document.createElement('li');
       li.dataset.impactGuide = row.id;
-      const describe = g => g ? `面 ${g.surface}：${g.axis === 'u' ? 'v' : 'u'}=${g.off}，世界 [${g.worldPoint.join(', ')}]，方向 [${g.worldDirection.join(', ')}]，可見 ${g.segments.length} 段：${g.segments.map(s => `(${s[0].join(', ')}) → (${s[1].join(', ')})`).join('；') || '無可見線段'}` : '無唯一合法結果';
+      const describe = g => g ? `來源 ${g.source === 'datum' ? '房間基準 datum '+g.datum : g.source === 'local' ? '局部參照 local' : '未確認'}；來源式 ${g.expression === '' ? '（空）' : g.expression ?? '未確認'}；面 ${g.surface}：${g.axis === 'u' ? 'v' : 'u'}=${g.off}，世界 [${g.worldPoint.join(', ')}]，方向 [${g.worldDirection.join(', ')}]，可見 ${g.segments.length} 段：${g.segments.map(s => `(${s[0].join(', ')}) → (${s[1].join(', ')})`).join('；') || '無可見線段'}` : '無唯一合法結果';
       li.textContent = `參考線 ${row.id}｜${describe(row.before)} → ${describe(row.after)}`;
       guides.append(li);
     }
@@ -111,8 +114,10 @@ async function confirmReferenceImpact(preview, {current = () => true, ownsPrevie
     dialog.append(p);
   }
   if(!repeatComplete){const p=document.createElement('p');p.className='impact-violation';p.textContent='原生服務缺少逐線開間或角材增刪身分結果；請更新服務後重新預覽。';dialog.append(p);}
+  if(!pairComplete){const p=document.createElement('p');p.className='impact-violation';p.textContent='互頂組的來源、區間或接觸資料不完整；未開放確認，請更新服務後重新預覽。';dialog.append(p);}
   const actions = document.createElement('div'); actions.className = 'impact-actions';
   const cancel = document.createElement('button'); cancel.type = 'button'; cancel.className = 'btn';
+  cancel.id = 'impact-cancel';
   cancel.textContent = canApply ? '取消，保留原狀' : '返回修改';
   const apply = document.createElement('button'); apply.type = 'button'; apply.className = 'btn primary';
   apply.textContent = '確認套用'; apply.disabled = !canApply; apply.id = 'impact-confirm';
@@ -125,7 +130,8 @@ async function confirmReferenceImpact(preview, {current = () => true, ownsPrevie
       apply.disabled = true; cancel.disabled = true;
       try {
         const allowed = approved && current();
-        const result = allowed ? await apiRequest(`line confirm ${preview.token}`)
+        const result = typeof adapter?.confirm === 'function' ? await (allowed ? adapter.confirm() : adapter.cancel()) : allowed
+          ? await apiRequest(`line confirm ${preview.token}`)
           : ownsPreview() ? await apiRequest('line cancel-preview') : {ok:false};
         dialog.close(); dialog.remove();
         resolve(allowed ? result : {ok:false, error:approved ? '操作情境已變更，未確認連動變更' : '已取消；場景保持原狀'});
@@ -138,6 +144,73 @@ async function confirmReferenceImpact(preview, {current = () => true, ownsPrevie
     dialog.addEventListener('cancel', event => { event.preventDefault(); finish(false); });
     dialog.showModal(); cancel.focus();
   });
+}
+
+/* Display native facts, including source-only and contact-only changes. A
+   generic upstream preview can contain pairs too; only the caller's adapter
+   chooses the confirmation route. No interval/contact is recomputed here. */
+function boundaryPairImpactComplete(preview,required=false) {
+  if (!preview.boundaryPairs?.length) return !required;
+  const side = value => value === null || value && typeof value.role === 'string' && value.source &&
+    Object.hasOwn(value,'geometry') && Object.hasOwn(value,'interval') && Object.hasOwn(value,'cross');
+  const impactSide = value => side(value) && (value === null || Number.isInteger(value.source.surface) &&
+    typeof value.source.dir === 'string' && typeof value.source.side === 'string' &&
+    value.source.dimensions?.A && value.source.dimensions?.B);
+  return Array.isArray(preview.timberImpacts) && preview.boundaryPairs.every(pair =>
+    [pair.first,pair.second].every(id=>preview.timberImpacts.some(row=>row.id===id))&&
+    [pair.before,pair.after].every(value => value === null || value && Array.isArray(value.members) &&
+      value.members.length === 2 && value.members.every(side) && Array.isArray(value.contacts))) &&
+    preview.timberImpacts.every(row => [row.before,row.after].every(value => impactSide(value) &&
+      (value === null || Array.isArray(value.contacts) || value.contacts === null)));
+}
+function appendBoundaryPairImpact(container, preview) {
+  if (!preview.boundaryPairs?.length) return;
+  const section=document.createElement('section');section.className='impact-boundary-pairs';
+  const title=document.createElement('h3');title.textContent='互頂組與下游的完整影響';section.append(title);
+  const fmt=value=>value == null ? '不存在或無合法結果' : JSON.stringify(value);
+  const roles={boundary:'壁邊材',primary:'主支',secondary:'副支',custom:'自訂'};
+  const add=(parent,text)=>{const p=document.createElement('p');p.textContent=text;parent.append(p);};
+  const describe=value=>{
+    if(!value)return '不存在';
+    const source=value.source,geometry=value.geometry;
+    return `${roles[value.role]||value.role}（${value.role}）；截面 A ${value.A} × B ${value.B} mm；`+
+      `來源 ${source.anchor || [source.kind,source.edge].filter(Boolean).join(' ')}；承載面 ${source.surface ?? geometry?.surface ?? '未確認'}；`+
+      `方向 ${source.dir ?? geometry?.dir ?? '未確認'}、深度側 ${source.side ?? geometry?.side ?? '未確認'}；`+
+      `選段 ${source.selector || '完整固定段'}；${source.dimensions ? '截面來源 '+fmt(source.dimensions)+'；' : ''}長軸區間 ${fmt(value.interval)}，寬向 ${fmt(value.cross)}；`+
+      (geometry ? `中線 ${geometry.centerline}，長度 ${geometry.length}；世界原點 ${fmt(geometry.origin)}，長／A／B 軸 ${fmt(geometry.axes)}` : '無合法幾何結果');
+  };
+  const contacts=(parent,items,label,central=false)=>{
+    const list=document.createElement('ul');list.className='impact-pair-contacts';
+    if(!items?.length){const li=document.createElement('li');li.textContent=`${label}：${items === null ? '無合法結果' : '無接觸記錄'}`;list.append(li);}
+    for(const contact of items || []){
+      const li=document.createElement('li');
+      li.textContent=central ? `${label}：角材 ${contact.member} ${contact.end} ↔ 角材 ${contact.peer} ${contact.peerEnd}；平面 ${contact.plane}；實際接觸 ${fmt(contact.contact)} mm` :
+        `${label}：${contact.end} @ ${contact.at}；${contact.kind === 'timber' ? '角材 '+contact.timber : contact.kind === 'hole-edge' ? '孔 '+contact.hole+' 邊 e'+contact.edge : '外輪廓邊 e'+contact.edge}；實際接觸 ${fmt(contact.contact)} mm${contact.fixed === undefined ? '' : contact.fixed ? '；FIXED' : '；FREE'}`;
+      list.append(li);
+    }
+    parent.append(list);
+  };
+  for(const pair of preview.boundaryPairs){
+    const block=document.createElement('section');block.dataset.impactPair=`${pair.first}:${pair.second}`;
+    const heading=document.createElement('h4');heading.textContent=`互頂組 ${pair.first}＋${pair.second} · ${{created:'新增',redeclared:'同組重宣告',removed:'整組刪除',unchanged:'組關係保留'}[pair.change]||pair.change}`;block.append(heading);
+    for(const id of [pair.first,pair.second]){
+      const row=document.createElement('div');row.dataset.impactPairMember=id;
+      add(row,`角材 ${id} 原：${describe(pair.before?.members.find(member=>member.id===id))}`);
+      add(row,`角材 ${id} 新：${describe(pair.after?.members.find(member=>member.id===id))}`);block.append(row);
+    }
+    contacts(block,pair.before?.contacts,'原中央接觸',true);contacts(block,pair.after?.contacts,'新中央接觸',true);
+    section.append(block);
+  }
+  for(const impact of preview.timberImpacts || []){
+    const block=document.createElement('section');block.dataset.impactTimberDetail=impact.id;
+    const heading=document.createElement('h4');heading.textContent=`角材 ${impact.id} · ${impact.after?.boundaryPair || impact.before?.boundaryPair ? '組員' : '受影響下游／共享約束對象'}`;block.append(heading);
+    add(block,'原：'+describe(impact.before));add(block,'新：'+describe(impact.after));
+    contacts(block,impact.before?.contacts,'原端面接觸');contacts(block,impact.after?.contacts,'新端面接觸');
+    const detail=document.createElement('details'),summary=document.createElement('summary'),code=document.createElement('pre');
+    summary.textContent='完整來源定義';code.textContent=JSON.stringify({before:impact.before?.source ?? null,after:impact.after?.source ?? null},null,2);
+    detail.append(summary,code);block.append(detail);section.append(block);
+  }
+  container.append(section);
 }
 
 /* The same native candidate is shared by DSL, engineering and parameter edits.

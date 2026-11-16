@@ -14,7 +14,7 @@ const {createTransportFailureTrace,installClientTransportTrace} = require('./tra
 let transportFailureTrace;
 const SCOPE_FLAGS = ['GEOMETRY_TIMBER_REUSE_ONLY','GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_ROOM_CANDIDATE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_DEFINITION_IMPORT_ONLY','GEOMETRY_CDP_FROM_P31','GEOMETRY_IDENTITY_LEDGER_ONLY'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
-SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY','GEOMETRY_PANEL_FILL_ONLY','GEOMETRY_R14_PANEL_ONLY','GEOMETRY_WORKSPACE_CONTEXT_MENU_ONLY');
+SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY','GEOMETRY_PANEL_FILL_ONLY','GEOMETRY_R14_PANEL_ONLY','GEOMETRY_WORKSPACE_CONTEXT_MENU_ONLY','GEOMETRY_BOUNDARY_PAIR_ONLY');
 /* main() 以 inSequence(n)/notOtherShard(n) 把完整序列切成這麼多個連續區段;canvas_shards.json 的片數必須相同。 */
 const CANVAS_SHARDS=2;
 const isCanvasShard=value=>value.mode==='shard'||value.mode==='capture-shard';
@@ -44,6 +44,11 @@ function runConfiguration(env = process.env) {
     if(env.GEOMETRY_WORKSPACE_CONTEXT_MENU_ONLY!=='1')throw Error('GEOMETRY_WORKSPACE_CONTEXT_MENU_CASES requires ONLY=1');
     require('./workspace_context_menu_test.js').selectCases(env.GEOMETRY_WORKSPACE_CONTEXT_MENU_CASES);
   }
+  if(env.GEOMETRY_BOUNDARY_PAIR_CASE!==undefined){
+    if(env.GEOMETRY_BOUNDARY_PAIR_ONLY!=='1')throw Error('GEOMETRY_BOUNDARY_PAIR_CASE requires GEOMETRY_BOUNDARY_PAIR_ONLY=1');
+    require('./boundary_pair_workflow_test.js').selectCases(env.GEOMETRY_BOUNDARY_PAIR_CASE);
+  }
+  if(env.GEOMETRY_R335_FRESH_STAGE!==undefined && (env.GEOMETRY_R335_FRESH_STAGE!=='open' || env.GEOMETRY_BOUNDARY_PAIR_ONLY!=='1' || env.GEOMETRY_BOUNDARY_PAIR_CASE!=='C04' || !env.GEOMETRY_R335_FRESH_RECEIPT))throw Error('Boundary-pair fresh-profile stage requires ONLY C04 and its saved receipt');
   if(Object.hasOwn(env,'GEOMETRY_GRID_CARD_ENTRY_CASE')){
     if(env.GEOMETRY_GRID_CARD_ENTRY_ONLY!=='1')throw Error('GEOMETRY_GRID_CARD_ENTRY_CASE requires GEOMETRY_GRID_CARD_ENTRY_ONLY=1; full mode must run all card-entry cases');
     require('./grid_card_entry_test.js').selectCases(env.GEOMETRY_GRID_CARD_ENTRY_CASE);
@@ -496,6 +501,10 @@ async function main() {
     await send('Page.addScriptToEvaluateOnNewDocument',{source:"window.__r116FreshStart={local:Object.keys(localStorage),session:Object.keys(sessionStorage)};"});
     setTimeout(()=>fatal(Error('R116 fresh-profile child timed out')),120000).unref();
   }
+  if(process.env.GEOMETRY_R335_FRESH_STAGE==='open'){
+    await send('Page.addScriptToEvaluateOnNewDocument',{source:"window.__r335FreshStart={local:Object.keys(localStorage),session:Object.keys(sessionStorage)};"});
+    setTimeout(()=>fatal(Error('R335 fresh-profile child timed out')),120000).unref();
+  }
   await send('Runtime.addBinding',{name:'__geometryCdpTransportFailure'});
   await send('Page.addScriptToEvaluateOnNewDocument',{source:`(()=>{
     const install=${installClientTransportTrace.toString()};
@@ -534,9 +543,12 @@ async function main() {
   const notOtherShard=n=>!['shard','capture-shard'].includes(scope.mode)||scope.shard.index===n;
   if(isCanvasShard(scope)&&scope.shard.index>1)await applyShardHandoff(scope.shard.index-1);
   const runTimberReuse=()=>require('./timber_reuse_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
+  const runBoundaryPair=()=>require('./boundary_pair_workflow_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   const runCanvasContextMenu=()=>require('./canvas_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
   const runWorkspaceContextMenu=()=>require('./workspace_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
-  if(process.env.GEOMETRY_TIMBER_REUSE_ONLY){
+  if(process.env.GEOMETRY_BOUNDARY_PAIR_ONLY){
+    await runBoundaryPair();
+  } else if(process.env.GEOMETRY_TIMBER_REUSE_ONLY){
     await runTimberReuse();
   } else if(process.env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY){
     await runCanvasContextMenu();
@@ -7338,6 +7350,7 @@ async function main() {
   if(inSequence(2))await require('./model_snapshot_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if(inSequence(2))await runCanvasContextMenu();
   if(inSequence(2))await runTimberReuse();
+  if(inSequence(2))await runBoundaryPair();
   }
   } // PANEL_FILL_ONLY owns only its complete PF workflow.
   if(inSequence(2)||process.env.GEOMETRY_PANEL_FILL_ONLY)

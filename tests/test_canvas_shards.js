@@ -8,11 +8,13 @@ const shards = require('../geometry-web/canvas_shards.js');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
+const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
 const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
 const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const plan = shards.loadPlan(), golden = shards.loadGolden();
+const beforeR335 = {plan:r335Extension.projectPlan(plan),golden:r335Extension.projectGolden(golden)};
 const COUNT = plan.shards.length;
 const COMMIT = 'a'.repeat(40);
 const REAL = {planSha256: shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)), goldenSha256: shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))};
@@ -22,7 +24,21 @@ const sum = sections => Object.values(sections).reduce((a, b) => a + b, 0);
 // P1161 is the only extension over main ee4519f3's exact 95-section baseline.
 // Its exact count was observed in two complete capture partitions using the existing handoff.
 // This is a candidate count; final-head strict Canvas replay remains required.
-function projectWorkspaceGolden(value, rawSource = fs.readFileSync(shards.GOLDEN_PATH, 'utf8')) {
+// Train 3 (#426 + #419): R17's P335 is an independent addition. Project exactly its
+// raw line and its 192 assertions out of the committed golden bytes first, so
+// every R396 byte pin below is checked against the same bytes as before.
+function projectR335Raw(rawSource) {
+  const raw = rawSource.replace(/\r\n/g, '\n');
+  const parsed = JSON.parse(raw);
+  assert.equal(parsed.sections.P335, 192, 'TRAIN3_P335_EXACT_COUNT');
+  const withoutP335 = raw.replace('    "P335": 192,\n', '');
+  assert.notEqual(withoutP335, raw, 'TRAIN3_P335_RAW_LINE_REQUIRED');
+  const rebased = withoutP335.replace('  "total": ' + parsed.total + ',\n', '  "total": ' + (parsed.total - 192) + ',\n');
+  assert.notEqual(rebased, withoutP335, 'TRAIN3_P335_TOTAL_LINE_REQUIRED');
+  assert.deepEqual(JSON.parse(rebased), r335Extension.projectGolden(parsed), 'TRAIN3_ONLY_P335_PROJECTED');
+  return rebased;
+}
+function projectWorkspaceGolden(value, rawSource = projectR335Raw(fs.readFileSync(shards.GOLDEN_PATH, 'utf8'))) {
   assert.equal(value.sections.P1161, 510, 'R396_P1161_MEASURED_ASSERTION_COUNT');
   assert.equal(value.sections.R06, 55, 'R396_R06_FIVE_ASSERTIONS_INCLUDED');
   const old = clone(value);delete old.sections.P1161;old.total -= 510;
@@ -53,13 +69,13 @@ function projectWorkspaceGolden(value, rawSource = fs.readFileSync(shards.GOLDEN
 
 
 function verifyWorkspaceGoldenRebase() {
-  const beforeP1161 = projectWorkspaceGolden(golden);
+  const beforeP1161 = projectWorkspaceGolden(beforeR335.golden);
   assert.equal(beforeP1161.sections.R06, 55, 'R396_R06_PLUS_FIVE_RETAINED');
   assert.equal(beforeP1161.total, 4831, 'R396_R06_PLUS_FIVE_95_TOTAL');
-  const raw = fs.readFileSync(shards.GOLDEN_PATH, 'utf8').replace(/\r\n/g, '\n');
+  const raw = projectR335Raw(fs.readFileSync(shards.GOLDEN_PATH, 'utf8'));
   const tampered = raw.replace('    "P360": 13,\n', '    "P360": 13, \n');
   assert.notEqual(tampered, raw, 'R396_BYTE_PROBE_CHANGED');
-  assert.throws(() => projectWorkspaceGolden(golden, tampered),
+  assert.throws(() => projectWorkspaceGolden(beforeR335.golden, tampered),
     /R396_R20_D18_REBASED_GOLDEN_BYTES_UNCHANGED/, 'R396_BYTE_PIN_REJECTS_WHITESPACE_DRIFT');
 }
 
@@ -88,21 +104,24 @@ function red(receipts, pattern, ctx = context) {
 const moveSection = (r, name, from) => { r.sections[name] = from.sections[name]; r.sectionOrder.unshift(name); r.passedAssertions = sum(r.sections); };
 
 test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍是所在片的最後一段', () => {
+  // Train 3 (#426 + #419): the R396 P1161 owner checks run on the committed plan;
+  // the historical assertions below then run on the plan with R17's P335 projected out.
   const evidence = require('./helpers/canvas_shards.js');
   const runner = fs.readFileSync(path.join(ROOT, 'geometry-web/cdp_test.js'), 'utf8');
   const source = fs.readFileSync(path.join(ROOT, 'geometry-web/workspace_context_menu_test.js'), 'utf8');
   const header = source.match(/console\.log\('(=== P1161\.[^'\n]+)'\)/)?.[1];
   assert.ok(header, 'R396_REAL_P1161_HEADER');
   assert.match(runner, /if\(inSequence\(2\)\)await runWorkspaceContextMenu\(\);/, 'R396_REAL_SHARD_2_DISPATCH');
-  const journal = evidence.createJournal(evidence.buildPlan(golden, plan), '2/2', () => {});
+  const journal = evidence.createJournal(evidence.buildPlan(context.golden, context.plan), '2/2', () => {});
   journal.begin('2/2');
-  for (const section of plan.shards[1].sections) {
+  for (const section of context.plan.shards[1].sections) {
     journal.section(section, '=== ' + section + '. existing section ===');
     if (section === 'P353') break;
   }
   assert.doesNotThrow(() => journal.section('P1161', header), 'R396_P1161_MUST_HAVE_OWNER');
-  assert.deepEqual(plan.shards.map(shard => shard.sections.filter(name => name === 'P1161')), [[], ['P1161']], 'R396_P1161_EXACTLY_ONE_OWNER');
-  assert.deepEqual(plan.shards[1].sections.slice(-3), ['P353', 'P1161', 'P359'], 'R396_P1161_EXECUTION_ORDER');
+  assert.deepEqual(context.plan.shards.map(shard => shard.sections.filter(name => name === 'P1161')), [[], ['P1161']], 'R396_P1161_EXACTLY_ONE_OWNER');
+  assert.deepEqual(context.plan.shards[1].sections.slice(-3), ['P353', 'P1161', 'P359'], 'R396_P1161_EXECUTION_ORDER');
+  const {plan,golden}=beforeR335;
   assert.deepEqual(shards.validatePlan(plan, golden), [], 'R06_CANVAS_PLAN: every existing golden section must be assigned');
   assert.equal(COUNT, 2);
   const all = plan.shards.flatMap(s => s.sections);
@@ -134,7 +153,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(verdict.summary.total, context.golden.total);
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
-  const beforeWorkspace=projectWorkspaceGolden(context.golden);
+  const beforeWorkspace=projectWorkspaceGolden(r335Extension.projectGolden(context.golden));
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
   // R20 findings 1-3 add exactly two P76 assertions; project them out too.
   // D18 finding 5 adds exactly one P70 assertion; project it out too.
