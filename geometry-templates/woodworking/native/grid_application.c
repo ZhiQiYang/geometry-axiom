@@ -108,6 +108,28 @@ bool wood_grid_apply_fill(WoodGridContext *c,const WoodGridApplication *definiti
     c->state->items[slot]=g;if(slot==c->state->count)++c->state->count;return true;
 invalid:return wood_grid_error(error,cap,"D10: from-fill requires an available main grid identity on its fill's derived host");
 }
+bool wood_grid_create_fill(WoodGridContext *c,uint32_t fill_id,uint32_t host_id,int main_along,uint32_t *id,char *error,size_t cap)
+{
+    WoodGridHost host;
+    if(!c||!c->state||!id||!fill_id||main_along<0||main_along>2||!c->host||
+       !c->host(c->user,host_id,&host)||host.derived_fill_id!=fill_id||
+       !c->fill_definition||!c->fill_definition(c->user,fill_id))
+        return wood_grid_error(error,cap,"D10/R44: create-from-fill-grid needs this fill's existing derived host and source");
+    for(size_t i=0;i<c->state->count;++i){const WoodGridApplication *old=&c->state->items[i];
+        if(old->is_subgrid||old->placement_id!=host_id)continue;
+        if(!old->from_fill||old->from_binding||old->from_system||old->fill_id!=fill_id||old->main_along!=main_along)
+            return wood_grid_error(error,cap,"D10/I55: create-from-fill-grid cannot replace an existing main grid or change its source or mainAlong");
+        *id=old->id;return true; /* PF4A_CREATE_NOOP: preserve the authored definition. */
+    }
+    if(c->state->count>=WOOD_GRID_MAX)
+        return wood_grid_error(error,cap,"I33 CAPACITY: main grids and subgrids are limited to %u",(unsigned)WOOD_GRID_MAX);
+    /* At most WOOD_GRID_MAX identities are occupied. This candidate-local
+     * search neither consumes a formal id nor asks the UI to invent one. */
+    uint32_t fresh=1;while(wood_grid_find(c->state,fresh))++fresh;
+    WoodGridApplication g={0};g.id=fresh;g.placement_id=host_id;g.fill_id=fill_id;g.main_along=main_along;
+    if(!wood_grid_apply_fill(c,&g,error,cap))return false;
+    *id=fresh;return true;
+}
 bool wood_grid_prepare_child(const WoodGridContext *c,WoodGridApplication *g,bool lattice,unsigned du,unsigned dv,char *error,size_t cap)
 {
     const WoodGridApplication *old=wood_grid_find(c->state,g->id),*parent=wood_grid_find(c->state,g->parent_id);

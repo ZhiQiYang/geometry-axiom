@@ -6,6 +6,7 @@ const assert = require('node:assert/strict');
 const fs = require('fs'), os = require('os'), path = require('path');
 const shards = require('../geometry-web/canvas_shards.js');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
+const pf4aExtension = require('./diagnostics/pf4a_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
 
@@ -51,9 +52,10 @@ test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍�
   assert.equal(owner.sections.at(-1), 'P359');
   assert.equal(plan.shards[0].sections.includes('P353'), false, 'R369_P353_SHARD: P353 is not in shard 1');
   assert.deepEqual(plan.shards[1].sections.slice(-2), ['P353', 'P359'], 'R369_P353_ORDER: P353 immediately precedes the storage-reset suite');
-  // Merged with #355: cdp_test.js dispatches P352, P116 (timber reuse), P128 (R02 panel fill), P353, P359.
-  assert.deepEqual(plan.shards[1].sections.slice(-5), ['P352', 'P116', 'P128', 'P353', 'P359'], 'R356_P116_ORDER: reuse runs once before the R02 panel-fill, card-entry and storage-reset suites');
+  // PF-4A adds one independent section after the unchanged P128 workflow.
+  assert.deepEqual(plan.shards[1].sections.slice(-6), ['P352', 'P116', 'P128', 'P1284', 'P353', 'P359'], 'R356_P116_ORDER: reuse runs once before the R02 panel-fill, live-grid, card-entry and storage-reset suites');
   assert.equal(all.filter(name => name === 'P116').length, 1, 'R356_P116_ONE_OWNER');
+  assert.equal(all.filter(name => name === 'P1284').length, 1, 'PF4A_ONE_OWNER');
   assert.equal(plan.shards[0].sections.includes('R06'), false, 'R06_CANVAS_PLAN: R06 belongs to shard 2');
   const repeatAt = plan.shards[1].sections.indexOf('R06');
   assert.ok(repeatAt > 0, 'R06_CANVAS_PLAN: R06 must appear once after P82');
@@ -73,7 +75,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
-  const golden=r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(context.golden)));
+  const golden=r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(pf4aExtension.projectGolden(context.golden))));
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
   // #360 and R06 add independent sections. Keep the original 4002/91 contract
@@ -102,7 +104,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.deepEqual(Object.keys(golden.sections).sort(), [...Object.keys(mainSections), 'P116'].sort(), 'R356_ONLY_NEW_SECTION');
   assert.equal(golden.total, sum(mainSections) + golden.sections.P116, 'R356_COMPLETE_COUNT_UNION');
   assert.equal(Object.keys(golden.sections).length, 94);
-  assert.equal(Object.keys(context.golden.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
+  assert.equal(Object.keys(context.golden.sections).length, 96, 'PF4A_MERGED_SECTIONS: unchanged 95 plus P1284');
   assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });

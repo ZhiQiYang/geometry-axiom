@@ -90,6 +90,32 @@ static bool fs_delete(World *w,uint32_t id)
 {WoodFinishContext c=app_fs_context(w);return wood_fs_delete(&c,id);}
 static bool fs_operation(World *w,GeoJson *j,int t)
 {WoodFinishContext c=app_fs_context(w);return wood_fs_operation(&c,j,t);}
+/* H decodes the action and pins its prerequisite to the caller's formal
+ * before World. W owns create/no-op/source policy in the same candidate. */
+static bool fs_create_fill_grid(World *candidate,const World *before,GeoJson *j,int t)
+{
+    uint32_t fill_id,host_id,grid_id;char main_word[8];int main_along=0;
+    int value=geo_json_member(j,t,"value"),main=geo_json_member(j,value,"mainAlong");
+    if(!geo_json_keys(j,t,"op,value","")||!geo_json_keys(j,value,"fillId,hostId,mainAlong","")||
+       !wood_eng_u32(j,geo_json_member(j,value,"fillId"),&fill_id,true)||
+       !wood_eng_u32(j,geo_json_member(j,value,"hostId"),&host_id,false))
+        return fs_error("D10/I55: create-from-fill-grid value needs only fillId, hostId and mainAlong");
+    if(!geo_json_is_null(j,main)){
+        if(!geo_json_string(j,main,main_word,sizeof main_word)||(strcmp(main_word,"u")&&strcmp(main_word,"v")))
+            return fs_error("D10: create-from-fill-grid mainAlong must be u, v or null");
+        main_along=!strcmp(main_word,"u")?1:2;
+    }
+    const PlacementSurface *host=before?world_find_placement(before,host_id):NULL;
+    WoodFinishContext source=app_fs_context(before?before:candidate);
+    if(!before||!host||host->derived_fill_id!=fill_id||!wood_pf_find(&source,fill_id))
+        return fs_error("D10/R44: create-from-fill-grid requires an existing formal fill and its derived host; create the host with an explicit h first");
+    WoodGridContext grid=app_grid_context(candidate);char error[512]="";
+    if(!wood_grid_create_fill(&grid,fill_id,host_id,main_along,&grid_id,error,sizeof error)){
+        if(strstr(error,"CAPACITY"))return fs_capacity_error("%s",error);
+        return fs_error("%s",error);
+    }
+    return true;
+}
 /* ---- scene records (I56 / R4) ---- */
 static const char *fs_axis_word(Vector3 axis)
 {

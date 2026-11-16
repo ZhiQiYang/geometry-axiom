@@ -2767,7 +2767,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "feaaf5e897acf5910e6411c2b2d9b5a55d665cc119797167f149bb963d557bf6",
+      "sha256": "7b790172b42b5fb31f9dceadaf46751d444a4400ce7516a0c586dbe4715bb232",
       "hashMode": "lf"
     },
     {
@@ -3865,7 +3865,13 @@
     {
       "path": "geometry-web/panel_fill_workflow_test.js",
       "reason": "Dedicated UI-1 CDP acceptance driver; invoked by cdp_test.js, never by a product runtime entry point.",
-      "sha256": "7a3a0f5b32670ac590ce1d89314dbc08562147a7c7f6493d6a78486b9b387375",
+      "sha256": "db33ed38673fc783bdf8d2acf6fa47f3a873b742793e277cf9da3280f7c37d36",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/panel_fill_grid_workflow_test.js",
+      "reason": "Dedicated PF-4A CDP acceptance driver; invoked only by cdp_test.js, never by product runtime or served application entry points.",
+      "sha256": "41353523f38d9337e26f8bcf9173b04edea309aa50b4f446c5f2d23a82d72c6e",
       "hashMode": "lf"
     },
     {
