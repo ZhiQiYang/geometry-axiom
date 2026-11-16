@@ -1,14 +1,14 @@
 # Product architecture — GitHub 新來源收據
 
-來源 `c2f5881c15bd1d96deb3bedf4768e281a3168d49`；採入 main `8f82b207e87c086705a1d8b7a00e2f215c07cbcf`；Actions run `43676814697`。
+來源 `9517d2beafe591f95042dba776588b718dded2c1`；採入 main `8f82b207e87c086705a1d8b7a00e2f215c07cbcf`；Actions run `43801763544`。
 
 這份衍生資料來自原 scanner CLI 與原兩支 unittest 的實際執行；三命令均 exit 0、零 skip。它只證明靜態依賴契約，不能替代演算法責任審查、原生／突變／瀏覽器或 SSOT 驗證。
 
-本次 640 inputs、352 owned、288 exclusions、833 edges、0 diagnostics；architecture-unit=205、architecture-product=18。完整命令、原始輸出與雜湊在同 artifact。
+本次 644 inputs、355 owned、289 exclusions、836 edges、0 diagnostics；architecture-unit=205、architecture-product=18。完整命令、原始輸出與雜湊在同 artifact。
 
 | Layer | Sources |
 |---|---:|
-| H | 208 |
+| H | 211 |
 | K | 70 |
 | W | 68 |
 | vendor | 6 |

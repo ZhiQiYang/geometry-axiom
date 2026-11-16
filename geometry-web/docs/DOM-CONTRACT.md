@@ -1,5 +1,18 @@
 # DOM 合約(測試依賴清單)
 
+## R17 host／App 第一片：兩支互頂（P335）
+
+- 沿面內「角材 T／新增角材」入口，`#tbPlacementMode` 在 `single` 與 `boundary-pair` 間切換；`#tbSinglePlacement` 與 `#tbBoundaryPair` 互斥顯示。沒有新增常駐工具列鈕、候選工作區或保存列。pair 模式合併原單支的位置／截面／角色說明，只有一段固定說明；GEO-219 減項見 BACKLOG。
+- `#tbBoundaryPair` 內兩列 `[data-boundary-pair-member="1"|"2"]`，各含 `[data-field="anchor"|"A"|"B"|"dir"|"side"]`；ID 為 `tbPair1Anchor/A/B/Dir/Side` 與 `tbPair2…`。外邊選單 value 是 `e<i>`，只列同一原生承載面的普通外輪廓 FIXED 邊；軸向讀原生 `surfaces.outerEdges`，固定性讀邊界資料，不由 JS 建立另一套幾何裁判。兩支都是 boundary；不提供角色、priority、through／between 或解除成組。
+- `#tbPairPick1/#tbPairPick2` 指定下一次點邊的槽位。pair 模式下點外環只填槽並高亮 `.fe-pair-edge`；第二點也不能送出定義。孔邊、來源線、FREE／衍生邊均不變更槽位。正負延伸方向與深度側分開；點擊位置不改 `+n/-n`。
+- `#tbPairOperation` 顯示新增或同組重宣告，`#tbPairStatus` 是有界狀態／拒絕原因。`#tbPairPreview` 才準備完整原生候選；`#tbPairCancel` 放棄本入口草稿／本入口持有的候選。新 id 由原生配號，兩列是無序成員，不以輸入順序決定接頭。
+- 選中任一既有組員，`#tbSelected` 顯示兩個 id，`#tbPairEdit` 開同組完整重宣告，`#tbSelDelete` 與左欄 ✕、畫布 Delete／右鍵刪除同走整組預覽。表單另有 `#tbPairDelete`。不得走舊單支 delete→timber→place，也不得以 history group 模擬候選原子性；重宣告保留原 id／World 次序，整組刪除不連坐刪除下游。
+- 共用 `.reference-impact` 顯示原生 `boundaryPairs` 與 `timberImpacts`。`[data-impact-pair="a:b"]`、`[data-impact-pair-member="id"]`、`[data-impact-timber-detail="id"]` 列兩成員／全部受影響下游的來源、角色、截面、舊新區間／姿態與實際端面接觸；`.impact-violation` 逐條列哪支、條文、預期／實際。`#impact-confirm` 僅在完整且零違規候選可用，`#impact-cancel` 返回原表單。一般上游預覽仍走原 adapter；不能用 `boundaryPairs` 是否存在猜測確認命令種類。
+- `/boundary-pair/read` 與 `/boundary-pair/preview` 分別使用 `boundary-pair-read/1`、`boundary-pair-transaction/1`。preview 固定原生 revision／contextKey，操作只收 create、redeclare、delete。`/api` 的 `boundary-pair-confirm <token> <ownerKey>`／`boundary-pair-cancel <token> <ownerKey>` 沿現行回執機制，不重送未知確認。候選的工作世代／session／owner 與同一原生 token 必須相符；已有角材候選時拒絕新預覽，不取消他人的候選。
+- 取消／缺件／違規／過期都零寫入；有變更的確認恰一筆歷史，原樣重宣告零筆。復原／重做還原整組。未提交輸入只在本頁記憶體，保存及切換會明示尚未保存並要求先確認或取消；冷開不能復活 token。
+- 已確認組沿 `.scene` 的 `requires boundary-pair/1` 與完整 begin…end 保存，`.gcanvas` 使用既有 `/19` 共享封套及明確 required capability。只承接 #410 的 literal 尺寸子集；以 `boundary_pair_native.complete=false`／`host-app-literal-entry` 有限描述驗讀，不把完整能力加入原生支援清單。工程／參數組員仍拒絕，不能降級成兩次普通 place。
+- 真瀏覽器段 `P335` 由 `boundary_pair_workflow_test.js` 經 `cdp_test.js` 執行，可用 `GEOMETRY_BOUNDARY_PAIR_ONLY=1` 單跑；分片接線位於實際來源 `geometry-web/canvas_shards.json`。正式 `geometry-web/cdp_sections.golden.json` 必須由同版完整 capture 產生；2026-11-15 已以 `GEOMETRY_CDP_UPDATE_GOLDEN=1` 的完整模式實跑（5020／0、completed）寫入 `P335=192`，原 95 段計數逐段不變。不能把預期斷言數手填成執行產物；既有段、計數、時限及斷言不變。
+
 ## 2026-10-09 收尾核收更新（各 scope 分列）
 
 完整候選 SHA f3b8285729b42cd22451c98cba1e2ec4514517f3，核對時 clean；各 scope 的受測版本、執行身分及原始證據見[收尾總索引](../../tests/evidence/cloud-takeover-20261009/UI-CLOSEOUT.md)。

@@ -6,8 +6,13 @@
   const STATUSES=['not-run','missing-capability','blocked','timeout','crashed','failed','passed','stale','unknown-runtime'];
   const encoder=new TextEncoder(),own=(v,k)=>Object.hasOwn(v,k),fail=()=>{throw new Error('規則案例的版本、欄位、來源或容量不合法。');};
   const check=ok=>{if(!ok)fail();}, obj=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
+  // Same number as encoder.encode(s).length, without allocating: a lone surrogate encodes as U+FFFD (3 bytes).
+  function utf8Length(s){let n=0;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);
+    if(c<0x80)n+=1;else if(c<0x800)n+=2;
+    else if(c>=0xd800&&c<=0xdbff&&s.charCodeAt(i+1)>=0xdc00&&s.charCodeAt(i+1)<=0xdfff){n+=4;i++;}
+    else n+=3;}return n;}
   function shape(v,required,optional=[]){check(obj(v)&&required.every(k=>own(v,k))&&Object.keys(v).every(k=>required.includes(k)||optional.includes(k)));}
-  const text=(v,max=96,min=1,controls=false)=>check(typeof v==='string'&&encoder.encode(v).length>=min&&encoder.encode(v).length<=max&&(controls||!/[\x00-\x1f\x7f-\x9f]/.test(v)));
+  const text=(v,max=96,min=1,controls=false)=>check(typeof v==='string'&&utf8Length(v)>=min&&utf8Length(v)<=max&&(controls||!/[\x00-\x1f\x7f-\x9f]/.test(v)));
   const uint=(v,min=0,max=4294967295)=>check(Number.isSafeInteger(v)&&v>=min&&v<=max);
   const num=(v,min,max)=>check(typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max);
   const hash=v=>check(typeof v==='string'&&/^[a-f0-9]{64}$/.test(v));
@@ -19,7 +24,7 @@
     while(stack.length){const f=stack.pop(),x=f.v;if(f.exit){seen.delete(x);continue;}
       check(++nodes<=maxNodes&&f.d<=maxDepth);
       if(x===null||typeof x==='boolean')bytes+=x===null?4:x?4:5;
-      else if(typeof x==='string'){check(!/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(x));bytes+=encoder.encode(JSON.stringify(x)).length;}
+      else if(typeof x==='string'){check(!/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(x));bytes+=utf8Length(JSON.stringify(x));}
       else if(typeof x==='number'){check(Number.isFinite(x)&&(!integer||Number.isSafeInteger(x)));bytes+=JSON.stringify(x).length;}
       else {check(obj(x)||Array.isArray(x));const proto=Object.getPrototypeOf(x),ctor=proto&&Object.getOwnPropertyDescriptor(proto,'constructor')?.value;
         check(proto===null||typeof ctor==='function'&&ctor.prototype===proto&&Function.prototype.toString.call(ctor)===Function.prototype.toString.call(Array.isArray(x)?Array:Object));
@@ -27,7 +32,7 @@
         const keys=Object.getOwnPropertyNames(x).filter(k=>!Array.isArray(x)||k!=='length');check(!Array.isArray(x)||keys.length===x.length);
         bytes+=2+Math.max(0,keys.length-1);
         for(let i=keys.length-1;i>=0;i--){const k=keys[i],d=Object.getOwnPropertyDescriptor(x,k);check(d.enumerable&&own(d,'value')&&(!Array.isArray(x)||k===String(i)));
-          if(!Array.isArray(x)){check(!['__proto__','constructor','prototype'].includes(k));bytes+=encoder.encode(JSON.stringify(k)).length+1;check(++nodes<=maxNodes);}stack.push({v:d.value,d:f.d+1});}
+          if(!Array.isArray(x)){check(!['__proto__','constructor','prototype'].includes(k));bytes+=utf8Length(JSON.stringify(k))+1;check(++nodes<=maxNodes);}stack.push({v:d.value,d:f.d+1});}
       }check(bytes<=maxBytes);
     }return bytes;
   }
@@ -110,7 +115,7 @@
   function definition(v){bounded(v,65536,4096,16,true);shape(v,['schema','caseId','label','input','sourcePins','requiredCapabilities','expect','assertions']);check(v.schema==='rule-case/1');ident(v.caseId);text(v.label);shape(v.input,['setup','transaction']);array(v.input.setup,32);array(v.input.transaction,32,1);[...v.input.setup,...v.input.transaction].forEach(operation);
     array(v.sourcePins,32);const seen=new Set();for(const p of v.sourcePins){shape(p,['ref','sha256']);ref(p.ref);hash(p.sha256);const k=canonical(p.ref);check(!seen.has(k));seen.add(k);}caps(v.requiredCapabilities);expected(v.expect);array(v.assertions,32,1);v.assertions.forEach(assertion);closure(v);return v;
   }
-  function diagnostics(v){array(v,256);for(const d of v){shape(d,['clause','message'],['code','ref','timber','expected']);for(const k of ['clause','message','code','expected'])if(own(d,k))text(d[k],['clause','code'].includes(k)?64:4096,0,true);if(own(d,'ref'))ref(d.ref,false,true);if(own(d,'timber'))uint(d.timber);}}
+  function diagnostics(v){array(v,256);for(const d of v){shape(d,['clause','message'],['code','ref','timber','expected','actual']);for(const k of ['clause','message','code','expected','actual'])if(own(d,k))text(d[k],['clause','code'].includes(k)?64:4096,0,true);if(own(d,'ref'))ref(d.ref,false,true);if(own(d,'timber'))uint(d.timber);}}
   function observed(v){shape(v,['capabilities','rules','bindings','instances'],['limits']);caps(v.capabilities,32);array(v.instances,0);
     if(own(v,'limits')){shape(v.limits,['instances','ownedTimbers','worldTimbers','instanceRecordBytes','bayPrimaries','baySecondaryLines','bayOmit']);Object.values(v.limits).forEach(limit=>uint(limit,1));}
     for(const kind of ['rules','bindings']){array(v[kind],64);for(const r of v[kind]){shape(r,['value','fingerprint',...(kind==='bindings'?['complete','effective']:[])]);hash(r.fingerprint);operation({op:kind==='rules'?'publish-rule':'create-binding',value:r.value});if(kind==='bindings'){check(typeof r.complete==='boolean');array(r.effective,8);for(const s of r.effective){shape(s,['slotId','A','B']);uint(s.slotId);for(const axis of ['A','B'])if(s[axis]!==null){shape(s[axis],['value','path']);num(s[axis].value,-1e8,1e8);text(s[axis].path,2047,0,true);}}}}}

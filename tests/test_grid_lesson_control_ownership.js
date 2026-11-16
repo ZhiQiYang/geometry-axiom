@@ -212,3 +212,29 @@ test('orphan restrictions keep raw mutations locked and Discard available withou
     assert.deepEqual(h.attachment,raw);assert.equal(owner.input.value,' Raw 001 ');assert.match(h.dialog.querySelectorAll('#igTitle')[0].textContent,/已遺失/);
   }
 });
+
+/* ---- 草稿份數上限的說明（2026-11-16 雲端實機核對 D14 的發現 13）----
+ * 執行出貨的 draftCapacityError 本文，並核對 flush 在寫入草稿之前呼叫它。
+ * 真的累積到上限時畫面顯示什麼，由核對紀錄（evidence/l4-cloud-20261116）的瀏覽器腳本另外量。 */
+{
+  const start=source.indexOf('  function draftCapacityError('),end=source.indexOf('  function flush(s=state){');
+  const message='未完成的網格草稿已有 16 份（上限），這份輸入沒有保存。請先完成或捨棄其中一份。';
+  test('草稿滿了時，新的草稿得到看得懂的說明；既有草稿與未滿時不擋',()=>{
+    assert.ok(start>0&&end>start,'draftCapacityError 定義在 flush 之前');
+    const capacityError=vm.runInNewContext('('+source.slice(start,end).trim()+')');
+    assert.equal(capacityError(16,false,16),message);
+    assert.equal(capacityError(17,false,16),message);
+    assert.equal(capacityError(15,false,16),null);
+    assert.equal(capacityError(0,false,16),null);
+    assert.equal(capacityError(16,true,16),null,'已經存在的草稿照常更新');
+    assert.equal(capacityError(3,false,3),'未完成的網格草稿已有 3 份（上限），這份輸入沒有保存。請先完成或捨棄其中一份。');
+  });
+  test('寫入草稿之前先檢查份數上限，上限取自共用的常數',()=>{
+    const body=source.slice(end,source.indexOf('  function capture(s)'));
+    const check=body.indexOf('const full=draftCapacityError(ReferenceWorkspace.readGridDrafts().drafts.length,hasDraft,F.MAX_GRID_DRAFTS);if(full)throw Error(full);');
+    const write=body.indexOf('ReferenceWorkspace.setGridDraft(s.draftId,value,s.contextToken)');
+    assert.ok(check>0,'flush 呼叫 draftCapacityError');
+    assert.ok(write>check,'檢查在寫入之前');
+    assert.equal(P.Features.MAX_GRID_DRAFTS,16);
+  });
+}
