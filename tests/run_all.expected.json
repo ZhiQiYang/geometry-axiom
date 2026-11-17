@@ -1154,7 +1154,7 @@
     },
     "py:test_unittest_runner": {
       "mode": "count",
-      "count": 15,
+      "count": 17,
       "unit": "test"
     },
     "py:test_wait_trace": {
@@ -1402,7 +1402,7 @@
     },
     "node:canvas_shards": {
       "mode": "count",
-      "count": 39,
+      "count": 40,
       "unit": "node test"
     },
     "node:identity_canvas_merge": {
@@ -1639,6 +1639,24 @@
       "mode": "count",
       "count": 3,
       "unit": "node test"
+    },
+    "node:workspace_view_state": {
+      "mode": "count",
+      "count": 15,
+      "unit": "node test"
+    },
+    "py:test_workspace_view_server": {
+      "mode": "count",
+      "count": 2,
+      "unit": "test"
+    },
+    "py:test_workspace_view": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "node:workspace_context_menu_state": {
+      "mode": "exit-code-only"
     }
   }
 }

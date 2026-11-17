@@ -1092,6 +1092,7 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 ## GEO-215 無限網格與配置
 
 - `#infiniteGridWorkspace` 為完整編輯工作區；建立新來源或配置時使用它，主畫布已選物件的常用修改另見上方 2026-09-28 就地編輯契約。`#igGridView` 可平移、縮放與拾取 cell；攝影機不寫入模型。`#igDensity` 明示抽樣。
+- R01 整卡解除：已保存整卡來源的 `#igCardRef` 內有收合的 `#igCardUnbind`；`#igCardUnbindParameter`／`#igCardUnbindDirect` 明選轉逐欄引用／當下直接值。尚有原始草稿或來源已變更時拒絕，不隱含提交草稿。兩者只送一項原生 `unbind-grid-card-reference`，使用 `.reference-impact`／`#impact-confirm`，確認與取消均帶本次 engineering token。`[data-impact-card-capture]` 顯示原生 direct 捕捉來源、兩軸值與取值步驟。既有整卡時停用 `#igCard` 的空來源選項；解除確認後才可逐軸編輯。取消不改場景、metadata 或 history。
 - `#igName`、`#igMainAlong`（GEO-222 起為 `role=radiogroup` 的分段選擇，內含 `input[name=igMainAlong][value=none|u|v]`，元素本身仍可讀寫 `.value`）與 `#igUSource`／`#igVSource` 定義來源（2a 起兩者與 `#igMainAlong` 一樣是 `role=radiogroup` 的分段選擇，內含 `input[name=igUSource|igVSource][value=repeat|repeat-panel|none]`，元素本身仍可讀寫 `.value`，未知的還原值照舊保留並要求明選）；`#igSaveSource` 預覽後確認。只新增 repeat／repeat-panel／none，沒有條數。
 - GEO-229：`#igUStagger`／`#igVStagger` 是「相鄰格子相位差 mm」。空白或 0 不寫入 stagger。非零時工作區把該軸畫成停在另一軸格子邊界的段，段帶 `data-ig-segment-band`。底部檢查器不加輸入欄；非零時既有「第 0 線座標」那一行帶出數字。不新增工作區或常駐說明。有相位差的主格上 `#subgridNew` 停用。
 - `#igNewBinding` 選邊界建立配置。`#igBoundaryView` 與 `#igVertex` 選實際外環或孔環頂點；`#igCellI`／`#igCellJ` 使用十進位字串及 BigInt，`[data-ig-anchor]` 選 cell 內九宮位置。`#igSaveBinding` 保存明確引用。
