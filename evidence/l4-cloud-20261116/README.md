@@ -163,9 +163,37 @@ D14 是在 main `a7738e36` 的乾淨工作樹走的（`d14/runtime-probe.main.js
 
 修正在合併前是 L2；合併後要在 main 重走才算 L4。
 
+## 合併後在 main 重走（2026-11-16）
+
+#423 隨合併列車 #424 於 2026-11-16 05:03 UTC 進 main，main 是 `07e6ce0ee8af2e5bc16ef8706e7380ca4d6fd791`。合併前四項修正都只到 L2；這一節是在合併後的 main 上重走的結果，檔案在 `main-07e6ce0e/`。
+
+- 工作樹：main `07e6ce0e` 的乾淨 checkout（跑完 `git status --short` 是 0 行）；`npm run build` → `start_local.py`，`runtime_version.py --probe` 回 version `a2f0ac0277c15e68082760253a2eda25b84314c24828ef7ca405c01d42a74293`、`fresh:true`（`main-07e6ce0e/runtime-probe.json`）。這個 main 另外含同一班列車的 #410（R17 原生第一片）與 #413，所以 version 和合併前不同。
+- 腳本是本目錄 `scripts/` 的四支，沒有改，用同樣的方式執行。結束碼都是 0，結果檔裡的頁面錯誤與主控台錯誤清單都是空的。
+
+| 項目 | 腳本 | 在 main `07e6ce0e` 的結果 |
+|---|---|---|
+| 發現 10（料單列的 ✕） | `verify_timber_rows.js` | 滑鼠移到列上看得到、點得到；點了跳連動確認，確認後刪除，Ctrl+Z 復原。滑鼠不在列上時仍是透明 |
+| 發現 11（圖層清單的定位） | 同上 | 「定位 外輪廓邊 0」「定位 外輪廓邊 2」「定位 參考線 1 · 沿 v · u=500 mm」「定位 外輪廓邊 3」 |
+| 發現 12（浮動列被選取提示蓋住） | 同上 | 顯示全部與放大三段時重疊都是 0；放大後「編輯…」「刪除」都點得到，按「刪除」跳連動確認、刪除、可復原 |
+| 發現 13（草稿滿額時的說明） | `verify_grid_draft_capacity.js` | 第 17 份的表單寫「未完成的網格草稿已有 16 份（上限），這份輸入沒有保存。請先完成或捨棄其中一份。」；返回後仍是 16 份、沒有第 17 份；既有草稿可續編並改名 |
+
+逐欄和合併前「修正後」的結果比：
+
+| 結果檔 | 比對 |
+|---|---|
+| `verify_timber_rows` | 68 欄全部相同 |
+| `verify_grid_draft_capacity` | 57 欄有 48 欄不同，都是十六份草稿在選擇框裡的先後（先後本來就不固定，見 D14） |
+| `walk_d16.js`（D04＋D16 整條） | 556 欄全部相同 |
+| `walk_d14.js`（D14 整條） | 170 欄有 14 欄不同，都是兩份草稿的先後 |
+
+`main-07e6ce0e/` 只放結果檔、建置版本與 `fix/` 的五張截圖；D04、D16、D14 走查的畫面和上面 `d16/screens/`、`d14/screens/` 是同樣的步驟，沒有重複存。
+
+沒有做的仍然沒有做：各項「沒核對的」所列的範圍、390 px、Windows 本機、實體手機與輸入法。這是雲端實機操作（L4），不是使用者驗收（L5）。
+
 ## 檔案
 
 - `scripts/walk_d16.js`：D04 與 D16 的走查；`scripts/verify_timber_rows.js`：發現 10～12 的前後對照。
 - `d16/`：`walk_d16.result.json`（main）、`d16.gcanvas`、三個 CSV、`screens/`、`runtime-probe.main.json`；`d16/fixed/walk_d16.result.json` 是修正後的版本重跑的結果。
 - `fix/`：`verify_timber_rows.before.result.json`、`verify_timber_rows.after.result.json`、前後各四張截圖、`runtime-probe.after.json`；發現 13 是 `verify_grid_draft_capacity.before.result.json`、`verify_grid_draft_capacity.after.result.json`、前後各一張截圖、`runtime-probe.capacity-after.json`。
 - `scripts/walk_d14.js`、`scripts/verify_grid_draft_capacity.js`、`d14/`：`walk_d14.result.json`（main）、`d14.gcanvas`（帶兩份草稿的專案檔）、`screens/`、`runtime-probe.main.json`；`d14/fixed/` 是修正後重跑的結果。
+- `main-07e6ce0e/`：#423 合併後在 main `07e6ce0e` 重走的結果（見「合併後在 main 重走」）。

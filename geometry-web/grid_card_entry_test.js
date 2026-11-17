@@ -7,7 +7,13 @@
 const fs = require('fs'), os = require('os'), path = require('path');
 const {isDeepStrictEqual: same} = require('util');
 const cdp = require('./cdp_helpers.js');
+const {waitForExpectedNavigation} = require('./cdp_navigation.js');
 const P = require('./project-store.js'), zip = require('./vendor/fflate/umd/index.js');
+const UNBIND_CASE_IDS = Object.freeze([
+  'unbind_cancel', 'unbind_parameter', 'unbind_direct', 'unbind_stale',
+  'unbind_other_card', 'unbind_reject_gap_source', 'unbind_reject_direct_capture',
+  'unbind_reject_last_capability', 'unbind_reject_remaining_capability'
+]);
 const CASE_IDS = Object.freeze([
   'entry', 'explicit_mapping', 'commit_cancel', 'swap', 'equal_swap', 'reopen',
   'native_rejection', 'raw_roundtrip', 'archive_roundtrip', 'history',
@@ -19,8 +25,12 @@ const CASE_IDS = Object.freeze([
   'inspector_direct_control', 'inspector_parameter_control',
   'compat_raw_capability', 'compat_legacy_unchanged', 'compat_raw_rule_roundtrip',
   'compat_mixed_roundtrip', 'compat_reader_rejection_atomic',
-  'compat_historical_pins', 'compat_geo219_reduction'
+  'compat_historical_pins', 'compat_geo219_reduction', ...UNBIND_CASE_IDS
 ]);
+function caseSection(id) {
+  if (!CASE_IDS.includes(id)) throw Error('Unknown grid-card case: '+id);
+  return UNBIND_CASE_IDS.includes(id) ? 'P420' : 'P353';
+}
 function selectCases(value) {
   if (value === undefined) return [...CASE_IDS];
   if (typeof value !== 'string' || !value.trim()) throw Error('Empty GEOMETRY_GRID_CARD_ENTRY_CASE');
@@ -40,7 +50,6 @@ module.exports = async function gridCardEntryTests({
   if (process.env.GEOMETRY_GRID_CARD_ENTRY_CASE !== undefined && process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY !== '1')
     throw failure('precondition','CASE_FILTER_REQUIRES_ONLY','GEOMETRY_GRID_CARD_ENTRY_CASE requires GEOMETRY_GRID_CARD_ENTRY_ONLY=1');
   const selected = selectCases(process.env.GEOMETRY_GRID_CARD_ENTRY_CASE);
-  console.log('=== P353. R01 whole-card entry, identity, draft and project roundtrip ===');
   const read = cdp.makeRead(eval_);
   const page = (fn, ...args) => read('(' + fn.toString() + ')(' + args.map(arg => JSON.stringify(arg)).join(',') + ')');
   const wait = cdp.makeWait(waitForUI, 20000);
@@ -60,6 +69,7 @@ module.exports = async function gridCardEntryTests({
   const key = cdp.makeKey({send, sleep});
   const fill = cdp.makeFill({ctl, key, send, sleep}, {afterMs:50});
   const history = cdp.makeHistoryOracle(read, 'P353');
+  const shot = cdp.makeShot(send, ['GEOMETRY_GRID_CARD_ENTRY_SCREENSHOT_DIR','GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR']);
   let pins = [], nativeTokens = [], currentCase = null;
   const query = cmd => page(async command => {
     const result = await apiRequest(command);
@@ -186,6 +196,15 @@ module.exports = async function gridCardEntryTests({
           return result;
         } catch (error) { row.error = String(error); row.state = 'rejected'; throw error; }
       };
+      const engineering = window.__p353EngineeringTrace = {original:EngineeringAdapter.preview,calls:[]};
+      EngineeringAdapter.preview = async function(request) {
+        const row = {request:structuredClone(request),state:'pending'};
+        engineering.calls.push(row);
+        try {
+          const result = await engineering.original.call(this,request);
+          row.result = structuredClone(result); row.state = 'fulfilled'; return result;
+        } catch (error) { row.error = String(error); row.state = 'rejected'; throw error; }
+      };
     });
   };
   const openNew = async name => {
@@ -224,7 +243,8 @@ module.exports = async function gridCardEntryTests({
       // Only a completed, responsive application can produce a product timeout.
       // CDP/protocol errors and unfinished native requests are never mutation kills.
       if (!error.message.startsWith('UI condition timed out')) throw error;
-      const pending = await page(() => window.__p353ApiTrace?.calls.filter(row => row.state === 'pending') || []);
+      const pending = await page(() => [...(window.__p353ApiTrace?.calls || []),
+        ...(window.__p353EngineeringTrace?.calls || [])].filter(row => row.state === 'pending'));
       if (pending.length) throw failure('exception',code + '_PENDING_NATIVE','Native request did not complete',pending);
       await healthy(code);
       check(code, false, {timeout:true,expression});
@@ -603,7 +623,339 @@ module.exports = async function gridCardEntryTests({
     await openInspector(4);
     check('INSPECTOR_SAVED_BINDING_ENABLED', (await inspectorView()).bindingDisabled === false);
   };
+  const unbindParameter = (u = 12, v = 30) => {
+    const operation = parameter(10,u,v);
+    operation.value.fields.push({id:14,name:'unrelated gap',type:'dimension',input:'3'});
+    return operation;
+  };
+  const unbindFixture = async ({secondCard = false} = {}) => {
+    await fixture({source:true,mixed:true});
+    const operation = grid(4,10,3,8,true);
+    operation.value.u = 'repeat-panel card gap param:10:14 from -5';
+    operation.value.mainAlong = 'u';
+    await applyFixture([unbindParameter(),operation,...(secondCard ? [grid(5,20)] : [])]);
+    await openSource(4);
+    check('UNBIND_ENTRY_EXPLICIT', await page(() =>
+      document.querySelector('#igCardUnbind > summary')?.textContent === '解除整組引用' &&
+      document.getElementById('igCardUnbindParameter')?.textContent === '改為逐欄引用' &&
+      document.getElementById('igCardUnbindDirect')?.textContent === '改為當下直接值' &&
+      document.querySelector('#igCard option[value=""]')?.disabled === true));
+    check('UNBIND_SAVED_WITHOUT_RAW_DRAFT', (await allRaw()).drafts.length === 0);
+    return source(4);
+  };
+  const unbindButton = mode => '#igCardUnbind' + (mode === 'parameter' ? 'Parameter' : 'Direct');
+  const openUnbind = async () => {
+    if (!await page(() => document.getElementById('igCardUnbind')?.open)) await ctl('#igCardUnbind > summary');
+  };
+  const unbindIdle = "!document.getElementById('infiniteGridWorkspace')?.classList.contains('ig-busy')&&!oc.busy&&!ReferenceWorkspace.busy";
+  const unbindOutcome = "!!document.querySelector('.reference-impact[open] #impact-confirm')||(" + unbindIdle + ')';
+  const unbindRequest = async mode => {
+    await openUnbind();
+    const before = await query('engineering-read');
+    const cursor = await page(() => window.__p353EngineeringTrace.calls.length);
+    const statusBefore = await page(() => (document.getElementById('igDraftNote') || document.getElementById('igStatus'))?.textContent);
+    await ctl(unbindButton(mode));
+    try {
+      // A healthy entry may explicitly reject before preview. Observe that
+      // terminal state and let the operation assertion diagnose zero calls.
+      await waitProduct('UNBIND_NATIVE_PREVIEW',
+        'window.__p353EngineeringTrace.calls.slice(' + cursor + ').some(row=>row.state!=="pending")||(' +
+        unbindIdle + '&&(document.getElementById("igDraftNote")||document.getElementById("igStatus"))?.textContent!==' + JSON.stringify(statusBefore) + ')');
+    } catch (error) {
+      // Keep the original failure and capture a rejected entry's visible reason;
+      // a healthy operation that stopped before preview must never look like a pass.
+      try {
+        const diagnostics = await page((mode,start) => {
+          const calls = window.__p353ApiTrace?.calls || [];
+          const lastRead = [...calls].reverse().find(row => row.command === 'engineering-read' && row.state === 'fulfilled')?.result;
+          const button = document.getElementById('igCardUnbind'+(mode === 'parameter' ? 'Parameter' : 'Direct'));
+          return {mode,status:document.getElementById('igStatus')?.textContent,
+            stateDetail:document.getElementById('igStateDetail')?.textContent,draftNote:document.getElementById('igDraftNote')?.textContent,
+            workspaceOpen:!!document.getElementById('infiniteGridWorkspace')?.open,
+            workspaceBusy:document.getElementById('infiniteGridWorkspace')?.classList.contains('ig-busy'),
+            button:{exists:!!button,disabled:button?.disabled,hasHandler:typeof button?.onclick === 'function'},
+            draftCount:ReferenceWorkspace.readGridDrafts().drafts.length,
+            engineeringRead:{ok:lastRead?.ok,revision:lastRead?.revision,keys:Object.keys(lastRead || {}),
+              stateKeys:Object.keys(lastRead?.state || {}),geometryKeys:Object.keys(lastRead?.state?.geometry || {})},
+            apiCalls:calls.slice(-8).map(row => ({command:row.command,state:row.state,ok:row.result?.ok,error:row.error || row.result?.error})),
+            previews:(window.__p353EngineeringTrace?.calls || []).slice(start).map(row => ({request:row.request,state:row.state,error:row.error}))};
+        },mode,cursor);
+        console.log('P353_UNBIND_DIAGNOSTIC '+JSON.stringify(diagnostics));
+        error.message += ' '+JSON.stringify(diagnostics);
+      } catch (diagnosticError) { error.message += ' (diagnostic read failed: '+diagnosticError.message+')'; }
+      throw error;
+    }
+    const calls = await page(start => window.__p353EngineeringTrace.calls.slice(start),cursor);
+    for (const call of calls) if (call.result?.token) nativeTokens.push(call.result.token);
+    check('UNBIND_ONE_EXPLICIT_OPERATION', calls.length === 1 && same(calls[0].request,{
+      expectedRevision:before.revision,operations:[{op:'unbind-grid-card-reference',id:4,mode}]
+    }),calls);
+    if (calls.some(row => row.state === 'rejected'))
+      throw failure('exception','UNBIND_PREVIEW_REQUEST_REJECTED','Native unbind request rejected',calls);
+    check('UNBIND_VALID_CANDIDATE', calls[0].result?.valid === true,calls[0].result);
+    return calls[0].result;
+  };
+  const unbindPreview = async mode => {
+    const candidate = await unbindRequest(mode);
+    // A completed helper rejection is an observed result, not a timeout kill.
+    await waitProduct('UNBIND_IMPACT_VISIBLE', unbindOutcome);
+    check('UNBIND_IMPACT_VISIBLE', await visible('.reference-impact[open]'));
+    return candidate;
+  };
+  const unbindPreserved = (before,after) => {
+    const clean = source => {
+      const result = structuredClone(source); delete result.cardReference;
+      for (const axis of ['u','v']) {
+        const d = result[axis+'Definition'], slot = d.source === 'repeat' ? 'step' : 'panel';
+        for (const key of [slot,slot+'Source',slot === 'step' ? 'effectiveStep' : 'effectivePanel']) delete d[key];
+        d.parameterRefs ||= {}; delete d.parameterRefs[slot];
+      }
+      return result;
+    };
+    return same(clean(before),clean(after));
+  };
+  const unboundIdentity = (g,mode,values = [12,30]) => !g.cardReference && ['u','v'].every((axis,index) => {
+    const d = g[axis+'Definition'], slot = d.source === 'repeat' ? 'step' : 'panel';
+    return d[slot] === values[index] && d[slot+'Source'] !== 'card' &&
+      (mode === 'parameter' ? same(d.parameterRefs?.[slot],{kind:'parameter',parameterId:10,fieldId:index ? 8 : 3}) :
+        !Object.hasOwn(d.parameterRefs || {},slot));
+  });
+  const installUnbindFault = async kind => page(kind => {
+    if (window.__p420UnbindFault) throw Error('Unbind fault injection leaked from another case');
+    const fault = window.__p420UnbindFault = {kind,original:EngineeringAdapter.preview,
+      originalHelper:window.confirmGridCardUnbindImpact,hits:[],helperCalls:[]};
+    EngineeringAdapter.preview = async function(request) {
+      // Keep the real UI request, fetch, native candidate and adapter
+      // normalization. Change exactly one returned field before the UI guard.
+      const native = await fault.original.call(this,request);
+      if (!request.operations?.some(operation => operation.op === 'unbind-grid-card-reference')) return native;
+      if (fault.hits.length || native.valid !== true) throw Error('Fault requires one real valid unbind candidate');
+      const delivered = structuredClone(native), target = delivered.after.gridSystems.find(row => row.id === 4);
+      const capability = 'grid-card-reference/1', capabilities = delivered.after.required_capabilities;
+      if (!target || target.cardReference || !Array.isArray(capabilities)) throw Error('Malformed native unbind fixture');
+      if (kind === 'gap-source') {
+        if (!target.uDefinition.parameterRefs?.gap) throw Error('Native gap source is missing');
+        delete target.uDefinition.parameterRefs.gap;
+      } else if (kind === 'direct-capture') {
+        if (delivered.cardCaptures?.length !== 1 || delivered.cardCaptures[0].values?.length !== 2)
+          throw Error('Native direct capture is missing');
+        delivered.cardCaptures[0].values[0] += 1;
+      } else if (kind === 'last-capability') {
+        if (capabilities.includes(capability) || delivered.after.gridSystems.some(row => row.cardReference))
+          throw Error('Last-card fixture still has a card reference');
+        capabilities.push(capability);
+      } else if (kind === 'remaining-capability') {
+        if (!capabilities.includes(capability) || !delivered.after.gridSystems.some(row => row.id !== 4 && row.cardReference))
+          throw Error('Second-card fixture or capability is missing');
+        delivered.after.required_capabilities = capabilities.filter(value => value !== capability);
+      } else throw Error('Unknown unbind fault: ' + kind);
+      fault.hits.push({request:structuredClone(request),native:structuredClone(native),delivered:structuredClone(delivered)});
+      return delivered;
+    };
+    window.confirmGridCardUnbindImpact = async function(preview,context) {
+      // Observe the real helper's receipt without changing its arguments or
+      // return value; the workspace must also preserve its visible reason.
+      const row = {preview:structuredClone(preview),state:'pending'};
+      fault.helperCalls.push(row);
+      try {
+        const result = await fault.originalHelper.call(this,preview,context);
+        row.result = structuredClone(result); row.state = 'fulfilled'; return result;
+      } catch (error) { row.error = String(error); row.state = 'rejected'; throw error; }
+    };
+  },kind);
+  const unbindRejectCandidate = async ({kind,mode,secondCard = false,code,message}) => {
+    await unbindFixture({secondCard});
+    const before = await dump(), revision = (await query('engineering-read')).revision,
+      metadata = await page(() => ReferenceWorkspace.manifest()), drafts = await allRaw(), pin = await pinHistory();
+    await installUnbindFault(kind);
+    const cursor = await page(() => window.__p353ApiTrace.calls.length), candidate = await unbindRequest(mode);
+    await waitProduct(code + '_FINISHED', unbindOutcome);
+    await healthy(code);
+    const fault = await page(() => ({kind:window.__p420UnbindFault.kind,hits:window.__p420UnbindFault.hits,
+      helperCalls:window.__p420UnbindFault.helperCalls}));
+    check(code + '_NATIVE_BOUNDARY', fault.kind === kind && fault.hits.length === 1 &&
+      same(fault.hits[0].native,candidate) && candidate.valid === true &&
+      unboundIdentity(candidate.after.gridSystems.find(row => row.id === 4),mode) &&
+      fault.helperCalls.length === 1 && same(fault.helperCalls[0].preview,fault.hits[0].delivered),fault);
+    // Removing the product guard opens a real confirmation. Fail here before
+    // waiting for any cancellation, so only this named refusal is a kill.
+    check(code + '_REJECTED', !await visible('.reference-impact[open]') &&
+      fault.helperCalls[0].state === 'fulfilled' && fault.helperCalls[0].result?.ok === false &&
+      fault.helperCalls[0].result.error === message &&
+      await page(expected => (document.getElementById('igDraftNote') || document.getElementById('igStatus'))?.textContent === expected,message),
+      fault.helperCalls);
+    const calls = await page(start => window.__p353ApiTrace.calls.slice(start),cursor);
+    check(code + '_NO_CONFIRM', !calls.some(row => row.command.startsWith('engineering-confirm ')),calls);
+    const cancellations = calls.filter(row => row.command.startsWith('engineering-cancel '));
+    check(code + '_SAME_TOKEN_CANCEL', cancellations.length === 1 &&
+      cancellations[0].command === 'engineering-cancel ' + candidate.token &&
+      cancellations[0].state === 'fulfilled' && cancellations[0].result?.ok === true &&
+      cancellations[0].result.cancelled === true,cancellations);
+    check(code + '_ATOMIC', (await dump()) === before && (await query('engineering-read')).revision === revision &&
+      same(await page(() => ReferenceWorkspace.manifest()),metadata) && same(await allRaw(),drafts) &&
+      await history.unchanged(pin));
+    await releasePin(pin);
+  };
+  const unbindGuard = async code => {
+    await openUnbind();
+    const before = await dump(), drafts = await allRaw(), revision = (await query('engineering-read')).revision;
+    const pin = await pinHistory(), cursor = await page(() => window.__p353EngineeringTrace.calls.length);
+    for (const mode of ['parameter','direct']) {
+      if (await page(selector => !document.querySelector(selector).disabled,unbindButton(mode))) await ctl(unbindButton(mode));
+      await settled();
+      check(code, !await visible('.reference-impact[open]') &&
+        await page(start => window.__p353EngineeringTrace.calls.length === start,cursor) &&
+        (await dump()) === before && (await query('engineering-read')).revision === revision &&
+        same(await allRaw(),drafts) && await history.unchanged(pin));
+    }
+    await releasePin(pin);
+  };
+  const unbindCommitRoundtrip = async mode => {
+    const original = await unbindFixture(), before = await dump(), pin = await pinHistory();
+    if (mode === 'direct') {
+      await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+      await openUnbind();
+      await shot('grid-trial-p353-unbind-entry-mobile');
+    }
+    const preview = await unbindPreview(mode);
+    if (mode === 'direct') {
+      const captures = await page(() => [...document.querySelectorAll('[data-impact-card-capture]')].map(node => node.textContent));
+      check('UNBIND_DIRECT_CAPTURE_VALUES', preview.cardCaptures?.length === 1 &&
+        same(preview.cardCaptures[0].values,[12,30]) && captures.length === 1 &&
+        /12/.test(captures[0]) && /30/.test(captures[0]),{native:preview.cardCaptures,shown:captures});
+      check('UNBIND_MOBILE_NO_PAGE_OVERFLOW', await page(() => document.documentElement.scrollWidth <= innerWidth));
+      await shot('grid-trial-p353-unbind-direct-impact-mobile');
+    }
+    await confirm();
+    const after = await dump(), changed = await source(4);
+    check('UNBIND_NATIVE_SOURCE_IDENTITY', unboundIdentity(changed,mode),changed);
+    check('UNBIND_OTHER_FIELDS_PRESERVED', unbindPreserved(original,changed),{original,changed});
+    check('UNBIND_ONE_HISTORY_STEP', await history.single(pin) && (await allRaw()).drafts.length === 0);
+    await releasePin(pin); await leave();
+    await ctl('#btnUndo'); await settled();
+    check('UNBIND_UNDO_COMPLETE_SOURCE', (await dump()) === before && identity(await source(4),10,3,8) && (await allRaw()).drafts.length === 0);
+    await ctl('#btnRedo'); await settled();
+    check('UNBIND_REDO_COMPLETE_SOURCE', (await dump()) === after && unboundIdentity(await source(4),mode));
+    const saved = await saveFile();
+    check('UNBIND_SAVED_SOURCE_DEFINITION', saved.loaded.scene === after && !saved.loaded.scene.includes(' card-reference ') &&
+      saved.loaded.scene.includes('gap param:10:14'));
+    // Reload drops every in-page source/cache before the formal file chooser reopens the archive.
+    const marker = require('crypto').randomUUID();
+    const injected = await send('Page.addScriptToEvaluateOnNewDocument',{
+      source:'window.__cdpExpectedNavigationMarker='+JSON.stringify(marker)+';'
+    });
+    try {
+      await send('Page.reload',{ignoreCache:true});
+      await waitForExpectedNavigation({evaluate:eval_,marker,label:'P353 unbind cold reopen',timeout:30000,
+        condition:"typeof connection!=='undefined'&&connection.phase==='ready'&&typeof ReferenceWorkspace!=='undefined'"});
+    } finally { await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:injected.result.identifier}); }
+    await settled();
+    await openFile(saved.file,saved.loaded.manifest.projectId);
+    check('UNBIND_COLD_REOPEN_SOURCE', (await dump()) === after && unboundIdentity(await source(4),mode));
+    await openSource(4);
+    check('UNBIND_REOPENED_UI_SOURCE', await page(mode => {
+      const card = document.getElementById('igCard');
+      return card.value === '' && !document.getElementById('igCardUnbind') &&
+        document.getElementById('igUPanelSource').value === (mode === 'parameter' ? '10:3' : '') &&
+        document.getElementById('igVStepSource').value === (mode === 'parameter' ? '10:8' : '');
+    },mode));
+    await leave(); await applyFixture([unbindParameter(18,60)]);
+    check('UNBIND_LATER_PARAMETER_EDIT', unboundIdentity(await source(4),mode,mode === 'parameter' ? [18,60] : [12,30]));
+  };
   const cases = {
+    async unbind_cancel() {
+      await unbindFixture();
+      const before = await dump(), revision = (await query('engineering-read')).revision,
+        metadata = await page(() => ReferenceWorkspace.manifest()), pin = await pinHistory();
+      for (const mode of ['parameter','direct']) {
+        const candidate = await unbindPreview(mode), cursor = await page(() => window.__p353ApiTrace.calls.length);
+        await cancel();
+        const cancellations = await page((start,token) => window.__p353ApiTrace.calls.slice(start)
+          .filter(row => row.command === 'engineering-cancel '+token),cursor,candidate.token);
+        check('UNBIND_CANCEL_SAME_TOKEN', cancellations.length === 1 && cancellations[0].state === 'fulfilled' &&
+          cancellations[0].result?.ok === true && cancellations[0].result.cancelled === true,cancellations);
+        const retired = await query('engineering-cancel '+candidate.token);
+        check('UNBIND_CANCEL_TOKEN_RETIRED', retired.cancelled === false,retired);
+        check('UNBIND_CANCEL_ATOMIC', (await dump()) === before && (await query('engineering-read')).revision === revision &&
+          same(await page(() => ReferenceWorkspace.manifest()),metadata) && (await allRaw()).drafts.length === 0 &&
+          await history.unchanged(pin));
+      }
+      await releasePin(pin);
+      await fill('#igName','R01 pending source edit'); await unbindGuard('UNBIND_DIRTY_SOURCE_BLOCKED');
+      await fill('#igName','R01 existing 4');
+      check('UNBIND_RAW_GUARD_PRECONDITION', (await allRaw()).drafts.length === 1 &&
+        await page(() => document.getElementById('igSaveSource').disabled));
+      await unbindGuard('UNBIND_RETAINED_RAW_BLOCKED');
+      await discardRaw(); await openSource(4); await ctl('#igRuleAdd');
+      check('UNBIND_RULE_GUARD_PRECONDITION', !!(await raw())?.ruleDraft);
+      await unbindGuard('UNBIND_RULE_DRAFT_BLOCKED');
+    },
+    async unbind_parameter() { await unbindCommitRoundtrip('parameter'); },
+    async unbind_direct() { await unbindCommitRoundtrip('direct'); },
+    async unbind_stale() {
+      await unbindFixture(); const candidate = await unbindPreview('direct');
+      const write = await query('line spec R01UnbindRace 1');
+      need('UNBIND_RACE_FIXTURE_COMMITTED', !write.preview,write);
+      const before = await dump(), revision = (await query('engineering-read')).revision,
+        metadata = await page(() => ReferenceWorkspace.manifest()), pin = await pinHistory();
+      const control = await page(() => {
+        const button = document.querySelector('.reference-impact[open] #impact-confirm');
+        return {exists:!!button,disabled:!!button?.disabled};
+      });
+      // This case exercises an actual click on the still-displayed stale candidate.
+      // Unexpected removal or disabling must fail CONFIRM_REACHABLE, not skip it.
+      const cursor = await page(() => window.__p353ApiTrace.calls.length);
+      await confirm();
+      const calls = await page(start => window.__p353ApiTrace.calls.slice(start),cursor);
+      check('UNBIND_STALE_NO_CONFIRM', !calls.some(row => row.command.startsWith('engineering-confirm ')),calls);
+      const cancellations = calls.filter(row => row.command.startsWith('engineering-cancel '));
+      check('UNBIND_STALE_SAME_TOKEN_CANCEL', cancellations.length === 1 &&
+        cancellations[0].command === 'engineering-cancel ' + candidate.token &&
+        cancellations[0].state === 'fulfilled' && cancellations[0].result?.ok === true &&
+        cancellations[0].result.cancelled === true,cancellations);
+      check('UNBIND_STALE_CONFIRM_ATOMIC', (await dump()) === before && (await query('engineering-read')).revision === revision &&
+        same(await page(() => ReferenceWorkspace.manifest()),metadata) && identity(await source(4),10,3,8) &&
+        (await allRaw()).drafts.length === 0 && await history.unchanged(pin),control);
+      if (await visible('.reference-impact[open]')) await cancel();
+      await releasePin(pin);
+    },
+    async unbind_other_card() {
+      await unbindFixture({secondCard:true});
+      const other = await source(5);
+      for (const mode of ['parameter','direct']) {
+        if (mode === 'direct') await openSource(4);
+        const pin = await pinHistory(), candidate = await unbindPreview(mode);
+        check('UNBIND_OTHER_CARD_NATIVE_CAPABILITY',
+          candidate.before.required_capabilities.includes('grid-card-reference/1') &&
+          candidate.after.required_capabilities.includes('grid-card-reference/1') &&
+          same(candidate.after.gridSystems.find(row => row.id === 5),other) &&
+          unboundIdentity(candidate.after.gridSystems.find(row => row.id === 4),mode),candidate.after);
+        await confirm();
+        check('UNBIND_OTHER_CARD_COMMIT_IDENTITY', unboundIdentity(await source(4),mode) &&
+          same(await source(5),other) && identity(await source(5),20,3,8) &&
+          (await dump()).includes('requires grid-card-reference/1'));
+        check('UNBIND_OTHER_CARD_ONE_HISTORY_STEP', await history.single(pin) && (await allRaw()).drafts.length === 0);
+        await releasePin(pin); await leave();
+        await ctl('#btnUndo'); await settled();
+        check('UNBIND_OTHER_CARD_UNDO_RESTORES_BOTH', identity(await source(4),10,3,8) && same(await source(5),other));
+      }
+    },
+    async unbind_reject_gap_source() {
+      await unbindRejectCandidate({kind:'gap-source',mode:'parameter',code:'UNBIND_GAP_SOURCE',
+        message:'預覽還包含整卡解除以外的網格來源變更，請單獨重新預覽解除。'});
+    },
+    async unbind_reject_direct_capture() {
+      await unbindRejectCandidate({kind:'direct-capture',mode:'direct',code:'UNBIND_DIRECT_CAPTURE',
+        message:'解除取值紀錄與這次兩軸來源不一致，請重新預覽。'});
+    },
+    async unbind_reject_last_capability() {
+      await unbindRejectCandidate({kind:'last-capability',mode:'parameter',code:'UNBIND_LAST_CAPABILITY',
+        message:'解除預覽的必要能力宣告不一致，請重新預覽。'});
+    },
+    async unbind_reject_remaining_capability() {
+      await unbindRejectCandidate({kind:'remaining-capability',mode:'direct',secondCard:true,code:'UNBIND_REMAINING_CAPABILITY',
+        message:'解除預覽的必要能力宣告不一致，請重新預覽。'});
+    },
     async entry() {
       await fixture({board:true});
       await openNew('R01 visible entry');
@@ -1232,8 +1584,15 @@ module.exports = async function gridCardEntryTests({
     for (const pin of pins) await history.release(pin);
     pins = [];
     await page(() => {
+      const fault = window.__p420UnbindFault;
+      if (fault) {
+        EngineeringAdapter.preview = fault.original; window.confirmGridCardUnbindImpact = fault.originalHelper;
+        delete window.__p420UnbindFault;
+      }
       const trace = window.__p353ApiTrace;
       if (trace) {window.apiRequest = trace.original; delete window.__p353ApiTrace;}
+      const engineering = window.__p353EngineeringTrace;
+      if (engineering) {EngineeringAdapter.preview = engineering.original; delete window.__p353EngineeringTrace;}
       const picker = window.__p353SavePicker;
       if (picker) {
         if (picker.descriptor) Object.defineProperty(window,'showSaveFilePicker',picker.descriptor);
@@ -1247,7 +1606,15 @@ module.exports = async function gridCardEntryTests({
     await settled();
   };
   const results = [];
+  let section = null;
   for (const id of selected) {
+    const nextSection = caseSection(id);
+    if (nextSection !== section) {
+      console.log(nextSection === 'P420'
+        ? '=== P420. R01 explicit whole-card unbind, native identity and project roundtrip ==='
+        : '=== P353. R01 whole-card entry, identity, draft and project roundtrip ===');
+      section = nextSection;
+    }
     currentCase = id;
     const baselineExceptions = exceptionCount();
     let result = {id,status:'pass',kind:null,assertion:null,error:null};
@@ -1289,3 +1656,4 @@ module.exports = async function gridCardEntryTests({
 };
 module.exports.caseIds = CASE_IDS;
 module.exports.selectCases = selectCases;
+module.exports.caseSection = caseSection;
