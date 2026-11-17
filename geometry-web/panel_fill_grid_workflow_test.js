@@ -96,7 +96,7 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   check('PF4_NOOP existing exact definition has zero request zero revision and zero history',same(await snapshot(),noopBefore)&&await history.unchanged(noopHistory)&&(await records()).filter(r=>r.url==='/panel-fill/preview').length===previewCount&&same(projectPin,await read(`({dirty:ReferenceWorkspace.context().dirty,undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length,nativeRevision:ReferenceWorkspace.getEvidenceState().nativeRevision})`)));
   check('PF4_SCOPE complete false and remaining PF actions stay unavailable',(await official()).complete===false&&await read(`!document.querySelector('[data-pf-action="suggest-timbers"],[data-pf-action="export-grid-snapshot"]')&&document.querySelector('.pf-source-preparation').textContent.includes('獨立網格快照')`));
   const out=process.env.GEOMETRY_PANEL_FILL_ARTIFACT_DIR||path.join(os.tmpdir(),'geometry-tests','panel-fill-grid-ui');fs.mkdirSync(out,{recursive:true});
-  const screenshot=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(out,'PF4A-confirmed.png'),Buffer.from(screenshot.data,'base64'));
+  const screenshot=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(out,'PF4A-confirmed.png'),Buffer.from(screenshot.result.data,'base64'));
   await ctl(action('close'));
   await saveAndReopen({send,read,ctl,wait,check,out,gridId});
   check('PF4_NO_UNEXPECTED_EXCEPTION no uncaught browser exception in this slice',exceptionCount()===initialExceptions,{before:initialExceptions,after:exceptionCount()});
