@@ -1,0 +1,20 @@
+/* #116 B: reuse the original RC controls as the one side form. */
+.sp-context-menu { --fcm-tone: var(--space); }
+.sp-context-menu .fcm-type { color: var(--space); background: var(--space-soft); }
+#spacePlanSvg [data-sp-kind]:focus { outline: none; }
+#spacePlanSvg [data-sp-kind]:focus > rect { stroke: var(--space); stroke-width: 3; vector-effect: non-scaling-stroke; }
+#rcDialog.sp-rc-panel {
+  position: fixed; z-index: 161; margin: 0; transform: none;
+  min-width: 0; border-radius: 13px; overflow-y: auto; box-shadow: var(--shadow-md);
+}
+#rcDialog.sp-rc-panel .dialog-header { padding: 13px 14px 10px; }
+#rcDialog.sp-rc-panel .dialog-header h2 { font-size: 16px; }
+#rcDialog.sp-rc-panel .dialog-eyebrow { color: var(--space); }
+#rcDialog.sp-rc-panel .dialog-body { padding: 0 14px 12px; }
+#rcDialog.sp-rc-panel .dialog-footer { padding: 10px 14px; }
+#rcDialog.sp-rc-panel .place-form { grid-template-columns: repeat(2, minmax(0,1fr)); }
+#rcDialog.sp-rc-panel input, #rcDialog.sp-rc-panel select { min-width: 0; max-width: 100%; }
+#rcDialog.sp-rc-panel #spaceSizeTools { max-width: 100%; margin: 0 0 10px; }
+#rcDialog.sp-rc-panel .space-plan-tools { flex-wrap: wrap; margin: 0; }
+#rcDialog.sp-rc-panel #rcHint { margin-top: 9px; font-size: 12px; }
+#rcDialog.sp-rc-panel [hidden] { display: none !important; }

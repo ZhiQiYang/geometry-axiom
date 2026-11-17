@@ -152,9 +152,9 @@ jobs:
             echo "chrome-sandbox-helper: $(stat -c '%a %U:%G %n' /opt/google/chrome/chrome-sandbox 2>&1 || true)"
             echo "userns-restriction: $(sysctl -n kernel.apparmor_restrict_unprivileged_userns 2>&1 || true)"
           } | tee "$E/versions.txt"
-      - name: Provide disk space for the runner's nine full-repository snapshots
-        # browser_mutation_check.py copies every tracked file once for the baseline
-        # and once per mutation, keeping all copies until it exits.
+      - name: Provide disk space for source snapshots and browser evidence
+        # The runner retains the baseline plus one mutation source copy at a time.
+        # Keep ten tracked-size units as headroom for browser profiles and evidence.
         shell: bash
         run: |
           set -euo pipefail
