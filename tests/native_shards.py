@@ -13,6 +13,7 @@ ADDED_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence.json')
 ADDED_R14_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence_r14.json')
 ADDED_RECEIPTS = Path(__file__).with_name('native_shard_added_receipts.json')
 ADDED_R17_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence_r17.json')
+ADDED_PF4A_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence_pf4a.json')
 
 
 def _legacy_added_suite_costs():
@@ -27,6 +28,10 @@ def added_r17_suite_costs():
     return _added_evidence_costs(ADDED_R17_EVIDENCE)
 
 
+def added_pf4a_suite_costs():
+    return _added_evidence_costs(ADDED_PF4A_EVIDENCE)
+
+
 def added_suite_costs():
     legacy = _legacy_added_suite_costs()
     r14 = added_r14_suite_costs()
@@ -38,7 +43,10 @@ def added_suite_costs():
     r17 = added_r17_suite_costs()
     if (legacy.keys() | r14.keys() | receipts.keys()) & r17.keys():
         raise ValueError('R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-    return {**legacy, **r14, **receipts, **r17}
+    pf4a = added_pf4a_suite_costs()
+    if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys()) & pf4a.keys():
+        raise ValueError('PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+    return {**legacy, **r14, **receipts, **r17, **pf4a}
 
 
 def _added_evidence_costs(path):
@@ -361,4 +369,5 @@ def profile_digest():
     r14 = ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')
     receipts = ADDED_RECEIPTS.read_bytes().replace(b'\r\n', b'\n')
     r17 = ADDED_R17_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')
-    return hashlib.sha256(b'\0'.join((legacy, addition, r14, receipts, r17))).hexdigest()
+    pf4a = ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')
+    return hashlib.sha256(b'\0'.join((legacy, addition, r14, receipts, r17, pf4a))).hexdigest()

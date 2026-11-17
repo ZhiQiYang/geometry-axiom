@@ -395,3 +395,33 @@ PR #419（需求帳 R17 host／App 第一片）新增四個 native suite。原�
 | 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 778.267 | 821.742 | 789.959 | 819.310 | 804.345 |
 
 六片 workflow、35 分鐘 native job、5 分鐘 coverage job、每個反證子程序 60 秒都不改；真收據仍須嚴格 `0 <= seconds < 1200`。合流後的正式六片收據與 complete coverage 以本分支 head 的正式 CI 為準。
+
+## PF-4A 新套件的第四份獨立來源（PR #429，2026-11-17）
+
+PR #429（需求帳 R02 PF-4A）新增兩個 native suite：`py:test_panel_fill_grid_transaction`、`node:panel_fill_grid_ui`。上述五份成本來源逐 byte 不變；另新增 `native_shard_added_evidence_pf4a.json`，沿 R17 做法用同一個 `_added_evidence_costs()` 驗欄位、來源、全通過及成本上界，讀取時才合流（現行 registry **330 套**）。不得與前四份任何一份重名（`PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES`）。`profile_digest()` 改為六份 LF bytes 以 NUL 分隔，順序固定為 timings、R380、R14、R396 收據、R17、PF-4A，值為 `6d4f3930ba7957f131813528473597f7fdc4142e4d48a83deb959beef62f11ca`。
+
+來源：Geometry [44014636612](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44014636612)，PR head `ba9d4fa3424a947ffd2fc6a8904029c497f76a6e`，實際 checkout `d7c314b2bd9f37be14fe630fc2da09fcdf3b4443`（pull/429/merge，parent 為 main `0c796e30` 與該 head）。該次 native 4/6、5/6 整體失敗，原因是兩個新 suite 尚未登記（另有舊帳本 stale 與兩個既有計數漂移）；兩個 suite 本身均 13/13 通過。
+
+| suite | job | 發現／通過 | 原摘要秒數 | 規劃上界 |
+|---|---|---:|---:|---:|
+| `py:test_panel_fill_grid_transaction` | 133809508770 | 13／13 | 6.4 | 10000 ms |
+| `node:panel_fill_grid_ui` | 133809508659 | 13／13 | 0.1 | 2000 ms |
+
+上界是保守規劃值，不是觀測值。同一 suite 在較早的 run 44004069347（head `4e108857`，job 133774968143）摘要為 5.2 秒；本來源採 exact-head 的 6.4 秒。
+
+歷史回放範圍不變：main 317 套、R379 318 套、R396 321 套都排除 PF-4A 兩套；正式六片驗全部 330 套、四輪情境與逐套最大包絡，同樣嚴格小於 1200000ms。`py:test_unittest_runner` 仍是 17 項，只在既有 method 內加斷言：`PF4A_COMPLETE_EXPECTED_REGISTRY`（兩套各 13）、`PF4A_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS`、`PF4A_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS`、`PF4A_SOURCE_IDENTITY`、`PF4A_SOURCE_OBSERVATIONS`、`PF4A_ADDED_SUITE_OBSERVED_UPPER_BOUNDS`、`PF4A_PROFILE_DIGEST_BINDS_PF4A_SOURCE`，以及 duplicate／missing-job／understated-upper（6400ms＝觀測值，不得通過）／unverified-source／failed-suite／missing-suite 與三份 cross-source duplicate 的拒收。
+
+新增具名撤回 6 組（共 56 組）：`PF4A_DROP_SUITE_EVIDENCE`、`PF4A_DROP_ONE_SUITE`、`PF4A_DROP_EXPECTED_ENTRIES`、`PF4A_OMIT_SOURCE_FROM_DIGEST`、`PF4A_TAMPER_SOURCE_IDENTITY`、`PF4A_ACCEPT_UNVALIDATED_EVIDENCE`。既有改寫成本聯集或 digest 的撤回（R379／R396／R17）都補帶 PF-4A 來源，仍只拿掉自己指名的那一份。
+
+以下是四輪 315 套實測加十五項 added 規劃上界的整數毫秒模型除以 1000，**不是正式六片收據**。六片套數 **1／58／74／64／66／67**（transaction 在片 2、grid UI 在片 6）：
+
+| 成本情境 | 片1 | 片2 | 片3 | 片4 | 片5 | 片6 |
+|---|---:|---:|---:|---:|---:|---:|
+| 43162989157 | 348.065 | 465.603 | 579.495 | 568.789 | 563.625 | 575.617 |
+| 43150038015 | 688.444 | 385.938 | 561.618 | 559.076 | 501.668 | 490.580 |
+| 43177620127 | 755.187 | 466.403 | 529.599 | 559.655 | 531.100 | 518.262 |
+| 43271258668 | 701.108 | 580.800 | 580.800 | 580.799 | 580.799 | 580.800 |
+| 每suite四輪最大包絡 | 755.187 | 620.003 | 670.955 | 647.853 | 685.560 | 651.252 |
+| 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 770.003 | 820.955 | 797.853 | 835.560 | 801.252 |
+
+本機（Linux，Python 3.11）實跑：`test_profile_balances_measured_work`、`test_added_suite_provenance_rejects_named_mutations`、R14／R396 歷史回放及 receipt／path-scope 相關方法全部通過；56 組具名撤回中，以非 registry baseline 為對照的 41 組逐一 0／1／0（正常 AssertionError、0 error、0 skip、指定 marker）。其餘 15 組（含 `PF4A_DROP_EXPECTED_ENTRIES` 與原 drop-one-suite）以 `test_partition_covers_actual_suite_registry_once` 為對照，該方法在 `run_all.expected.json` 由完整跑 `--update-expected` 登記新 suite 之前必紅（`PF4A_COMPLETE_EXPECTED_REGISTRY`），須在採入新突變帳本、產生 expected 之後由正式 CI 證明。時限、六片 workflow 與預算都不改。
