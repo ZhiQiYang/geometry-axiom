@@ -132,6 +132,48 @@ test('Q08 a valid but different verification reply cannot substitute profile sou
   unchanged(h,before);
 });
 
+test('Q08 profile replay binds the exact raw and canonical source receipt before committing',async()=>{
+  for(const options of [{},{profiles:false},{profiles:false,timbers:false}]) {
+    const value=model(options),h=workspace(value);
+    await assert.doesNotReject(()=>h.w.importBytes(archive(value)),'R430_REPLAY_SOURCE_SNAPSHOT_VALID');
+    assert.deepEqual(clone(h.w.getSpaceModels()),[value],'R430_REPLAY_SOURCE_SNAPSHOT_PRESERVED');
+  }
+  const value=model(),differentRaw=model(),edits=[];
+  differentRaw.input.base_scene=differentRaw.input.base_scene.replace(/^section-profile run (.+)$/gm,(line,encoded)=>{
+    const run=JSON.parse(Buffer.from(encoded,'base64').toString('utf8'));
+    if(run.id!==differentRaw.input.profile_runs[0].id)return line;
+    edits.push({id:run.id,before:run.length.value,after:run.length.value+10});
+    run.length.value+=10;
+    return 'section-profile run '+Buffer.from(JSON.stringify(run)).toString('base64');
+  });
+  assert.deepEqual(edits,[{id:1,before:2400,after:2410}],'R430_REPLAY_DISTINCT_RAW_GEOMETRY');
+  differentRaw.result.source_snapshot.input_sha256=await P.sha(new TextEncoder().encode(differentRaw.input.base_scene));
+  await assert.doesNotReject(()=>P.validateSpaceModelHashes(differentRaw),'R430_REPLAY_SELF_CONSISTENT_HASHES');
+  assert.notEqual(differentRaw.result.source_snapshot.input_sha256,value.result.source_snapshot.input_sha256);
+  // Hashes cannot prove that raw run 2410 produced the valid saved 2400 packages.
+  // A replay reply for that other raw source must not stand in for this request.
+  const negatives=[['different raw geometry',differentRaw,clone(value.result)]];
+  for(const [label,change] of [
+    ['missing',reply=>{delete reply.source_snapshot;}],
+    ['null',reply=>{reply.source_snapshot=null;}],
+    ['wrong raw hash',reply=>{reply.source_snapshot.input_sha256='a'.repeat(64);}],
+    ['wrong canonical source',reply=>{reply.source_snapshot.canonical_scene=reply.source_snapshot.canonical_scene.replace('4000,0','4100,0');}],
+    ['unknown schema',reply=>{reply.source_snapshot.schema='geometry-space-source/9';}],
+    ['extra field',reply=>{reply.source_snapshot.extra=true;}]
+  ]) {
+    const reply=clone(value.result);change(reply);negatives.push([label,value,reply]);
+  }
+  const legacy=model({profiles:false}),unexpected=clone(legacy.result);
+  unexpected.source_snapshot=clone(value.result.source_snapshot);
+  negatives.push(['unexpected legacy receipt',legacy,unexpected]);
+  for(const [label,saved,replayed] of negatives) {
+    const h=workspace(saved,{replay:()=>replayed}),before=seed(h.w);
+    await assert.rejects(()=>h.w.importBytes(archive(saved)),/來源快照收據/,'R430_REPLAY_SOURCE_SNAPSHOT_REPLY: '+label);
+    assert.equal(h.calls.filter(call=>call.url==='/model/space-replay').length,1);
+    unchanged(h,before);
+  }
+});
+
 test('Q09 failed profile verification HTTP response never reaches scene preparation',async()=>{
   const value=model(),h=workspace(value,{httpFailure:(url,body)=>url==='/model/verify'&&rootKind(body)==='profile-run'}),before=seed(h.w);
   await assert.rejects(()=>h.w.importBytes(archive(value)),/HTTP 503/,'Q38JB_REPLAY_HTTP');
