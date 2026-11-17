@@ -12,6 +12,7 @@ const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
 const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
+const pf4aExtension = require('./diagnostics/pf4a_canvas_extension.cjs');
 const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
 const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
 const file = name => path.join(WEB, name);
@@ -22,7 +23,8 @@ const MAIN_BOUNDARIES = [{"after":"P88","before":"P72","localStorage":{"geometry
 
 test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
   // R17 P335 is projected out by its own exact oracle (count 192, P116→P335→P128).
-  const rawGolden = r335Extension.projectGolden(JSON.parse(read('cdp_sections.golden.json')));
+  // PF-4A P1284 is projected out first by its own exact helper (measured count, P128→P1284→P353).
+  const rawGolden = r335Extension.projectGolden(pf4aExtension.projectGolden(JSON.parse(read('cdp_sections.golden.json'))));
   // Merged #355 and #356: each owner's unchanged exact projection removes only
   // its own section (R02 P128, R11 P116); together they restore main exactly.
   // #400 adds exactly three P90 assertions; that projection restores P90 = 8.
@@ -94,8 +96,8 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
 
 test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
   assert.ok(fs.existsSync(file('canvas_shards.json')), 'R360_CANVAS_SHARD_PLAN_REQUIRED');
-  const plan = r335Extension.projectPlan(JSON.parse(read('canvas_shards.json')));
-  const golden = r335Extension.projectGolden(JSON.parse(read('cdp_sections.golden.json')));
+  const plan = r335Extension.projectPlan(pf4aExtension.projectPlan(JSON.parse(read('canvas_shards.json'))));
+  const golden = r335Extension.projectGolden(pf4aExtension.projectGolden(JSON.parse(read('cdp_sections.golden.json'))));
   const shards = require(file('canvas_shards.js'));
   assert.deepEqual(shards.validatePlan(plan, golden), [], 'R360_CANVAS_COMPLETE_PLAN');
   const expected = MAIN_SEQUENCES.map(sections => sections.slice());

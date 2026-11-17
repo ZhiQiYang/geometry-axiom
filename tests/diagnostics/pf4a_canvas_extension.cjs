@@ -13,4 +13,13 @@ function projectGolden(value){
   delete projected.sections.P1284;projected.total-=count;
   return projected;
 }
-module.exports={projectGolden};
+// Merge with main (R17 P335 and older owners): the historical exact plan
+// oracles also need P1284 projected out of the plan, at its one exact place.
+function projectPlan(value){
+  assert.equal(value.shards.length,2,'PF4A_TWO_SHARDS');
+  assert.deepEqual(value.shards.map(shard=>shard.sections.filter(name=>name==='P1284')),[[],['P1284']],'PF4A_EXACT_OWNER');
+  const at=value.shards[1].sections.indexOf('P1284');
+  assert.deepEqual(value.shards[1].sections.slice(at-1,at+2),['P128','P1284','P353'],'PF4A_EXACT_NEIGHBORS');
+  const projected=JSON.parse(JSON.stringify(value));projected.shards[1].sections.splice(at,1);return projected;
+}
+module.exports={projectGolden,projectPlan};
