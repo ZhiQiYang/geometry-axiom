@@ -1899,6 +1899,9 @@ const ReferenceWorkspace = (() => {
     const rebuilt = await response.json(), original = model.result;
     if (rebuilt.ok !== true || rebuilt.schema !== original.schema || rebuilt.source_sha256 !== original.source_sha256)
       throw new Error("空間模型「"+model.name+"」的來源設定無法重建，未變更目前專案。");
+    if (Object.hasOwn(rebuilt, "source_snapshot") !== Object.hasOwn(original, "source_snapshot") ||
+        !sameModelData(rebuilt.source_snapshot, original.source_snapshot))
+      throw new Error("空間模型「"+model.name+"」的來源快照收據與保存輸入不一致，未變更目前專案。");
     for (const key of packageKeys) {
       if ((rebuilt[key] === null) !== (original[key] === null) || (original[key] !== null &&
           ["definitions", "request", "derived"].some(field => !sameModelData(rebuilt[key]?.[field], original[key][field]))))

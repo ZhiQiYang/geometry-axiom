@@ -107,6 +107,11 @@ CASES = [
     ('Q38JB_K3_UNTRACKED_ROOTS', SOURCE,
      "return (record?.input?.profile_runs||[]).map(ref=>({kind:'profile-run',id:ref.id}));", 'return [];',
      VIEW_JUDGE, 'Q38JB_K3_ROOTS:', 'Q38JB_K3_UNTRACKED'),
+    ('R430_REPLAY_SOURCE_SNAPSHOT_REPLY', REPLAY,
+     'if (Object.hasOwn(rebuilt, "source_snapshot") !== Object.hasOwn(original, "source_snapshot") ||\n        !sameModelData(rebuilt.source_snapshot, original.source_snapshot))',
+     'if (false)', REPLAY_JUDGE,
+     'Q08 profile replay binds the exact raw and canonical source receipt before committing',
+     'R430_REPLAY_SOURCE_SNAPSHOT_REPLY: different raw geometry'),
 ]
 HOOK = r"""'use strict';
 const fs=require('node:fs'),path=require('node:path'),Module=require('node:module');
