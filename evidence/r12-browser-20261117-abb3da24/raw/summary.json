@@ -1,0 +1,137 @@
+{
+  "schema": "r12-browser-withdrawals/1",
+  "startedAt": "2026-11-17T06:37:23.385635+00:00",
+  "status": "passed",
+  "sourceCommit": "abb3da24c870a405f3b0c7a2fea8e4d902a18d4f",
+  "officialMutationLedgerWritten": false,
+  "goldenWritten": false,
+  "anchors": [
+    {
+      "id": "R12-B01-visible-space-entry",
+      "file": "geometry-web/app.js",
+      "assertion": "R12_SPACE_ENTRY",
+      "before_sha256": "77f0ffcaffef2d448e8718db7bdc8752f48a36bdcbde043310db9b5a946da402",
+      "after_sha256": "2bcada6dbee964356a0f2dbfe3fcc762fe6a0d9f2ef7b51fc68b24a31e81bf18"
+    },
+    {
+      "id": "R12-B02-source-renders-candidates",
+      "file": "geometry-web/space-workspace.js",
+      "assertion": "R12_ALL_WORLD_CANDIDATES",
+      "before_sha256": "eeebaa4f23951e4ff343e39a0a45f9eb1b5db8659003293e9c068a4c507994f5",
+      "after_sha256": "eb597b6da2c5dfaaec468cfc6c6760b22aef7bfe880a85e8db4fed5192713d73"
+    },
+    {
+      "id": "R12-B03-no-default-selection",
+      "file": "geometry-web/space-workspace.js",
+      "assertion": "R12_EXPLICIT_SELECTION",
+      "before_sha256": "eeebaa4f23951e4ff343e39a0a45f9eb1b5db8659003293e9c068a4c507994f5",
+      "after_sha256": "e3d2ccb64d645580aec25d140cb3401eb1a7629319ef47e3350ddc8b2c41a15d"
+    },
+    {
+      "id": "R12-B04-shared-material-switch",
+      "file": "geometry-web/model-viewer.js",
+      "assertion": "R12_SHARED_MATERIAL_SWITCH",
+      "before_sha256": "fc4d0a77fc02a8242546b7e22c2d70c97bdbac33497972a2c7fe5097c9355a6c",
+      "after_sha256": "dc8d5bdc5cd076c8ebcb0a8cd06c4d5e8c27ef0a7af743b06d005a437e64339a"
+    },
+    {
+      "id": "R12-B05-overlap-notice",
+      "file": "geometry-web/space-workspace.js",
+      "assertion": "R12_MATERIAL_NOTICE",
+      "before_sha256": "eeebaa4f23951e4ff343e39a0a45f9eb1b5db8659003293e9c068a4c507994f5",
+      "after_sha256": "71ce01347fb2bb0a47c553d744531f155284bd80fbf718d35e1b61c87db1c720"
+    },
+    {
+      "id": "R12-B06-update-candidate-entry",
+      "file": "geometry-web/model-update-app.js",
+      "assertion": "R12_UPDATE_EXPLICIT_CANDIDATES",
+      "before_sha256": "6cd06a8caecb379807a106a06099c41dbc06c42562800235fac1213948bb6b84",
+      "after_sha256": "98017d1e1c0dfab9af0dce76ff99d682e7967ddbccbd170f800066512bc5aacf"
+    }
+  ],
+  "cases": [
+    {
+      "id": "R12-B01-visible-space-entry",
+      "namedAssertion": "R12_SPACE_ENTRY",
+      "status": "killed",
+      "restored": "green",
+      "exitCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "id": "R12-B02-source-renders-candidates",
+      "namedAssertion": "R12_ALL_WORLD_CANDIDATES",
+      "status": "killed",
+      "restored": "green",
+      "exitCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "id": "R12-B03-no-default-selection",
+      "namedAssertion": "R12_EXPLICIT_SELECTION",
+      "status": "killed",
+      "restored": "green",
+      "exitCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "id": "R12-B04-shared-material-switch",
+      "namedAssertion": "R12_SHARED_MATERIAL_SWITCH",
+      "status": "killed",
+      "restored": "green",
+      "exitCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "id": "R12-B05-overlap-notice",
+      "namedAssertion": "R12_MATERIAL_NOTICE",
+      "status": "killed",
+      "restored": "green",
+      "exitCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "id": "R12-B06-update-candidate-entry",
+      "namedAssertion": "R12_UPDATE_EXPLICIT_CANDIDATES",
+      "status": "killed",
+      "restored": "green",
+      "exitCodes": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "withdrawalsRequested": true,
+  "sourceManifestSha256": "68611dc136ef58fd5ce2916042512ddd44f4c56b63e8fcb474670462a3804c76",
+  "sparseArchives": {
+    "count": 0,
+    "manifestSha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "prefixes": [
+      "evidence/",
+      "tests/evidence/",
+      "tests/release-evidence/"
+    ],
+    "scope": "Absent skip-worktree historical receipts only; not runtime/native/browser source."
+  },
+  "baseline": {
+    "exitCode": 0,
+    "status": "green"
+  },
+  "endedAt": "2026-11-17T07:01:41.232440+00:00"
+}
