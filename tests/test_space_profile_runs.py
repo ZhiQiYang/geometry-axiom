@@ -140,6 +140,35 @@ class SpaceProfileRuns(unittest.TestCase):
         self.assertEqual(result["summary"]["profile_material_volume_mm3"], "9088200", "Q38JA_OVERLAP")
         self.assertIs(result["summary"]["profile_overlap_checked"], False, "Q38JA_OVERLAP")
 
+    def test_r430_native_source_receipt_keeps_raw_snapshot_and_canonical_source(self):
+        data = f1(timber=True)
+        canonical = load_base(data["base_scene"], executable=self.base)["base_scene"]
+        data["base_scene"] = "# R430 editor annotation\n" + canonical + "canvas-pos boundary 1 60 60\n"
+        result = self.preview(data)
+        self.assertTrue("source_snapshot" in result, "R430_NATIVE_SOURCE_RECEIPT")
+        receipt = result["source_snapshot"]
+        self.assertEqual(receipt, {"schema": "geometry-space-source/1",
+                                  "input_sha256": hashlib.sha256(data["base_scene"].encode()).hexdigest(),
+                                  "canonical_scene": canonical}, "R430_NATIVE_SOURCE_RECEIPT")
+        self.assertNotEqual(data["base_scene"], canonical, "R430_RAW_IS_NOT_CANONICAL")
+        self.assertEqual(result["source_sha256"], hashlib.sha256(canonical.encode()).hexdigest(), "R430_CANONICAL_HASH")
+        for key in ("profile_runs", "timbers"):
+            self.assertEqual(result[key]["definitions"]["base_scene"], canonical, "R430_ONE_NATIVE_SOURCE")
+        for key in ("space", "volume", "clearance", "walls"):
+            lines = result[key]["definitions"]["base_scene"].splitlines()
+            self.assertTrue(all(lines.count(line) == 1 for line in canonical.splitlines()), "R430_ONE_NATIVE_SOURCE")
+        self.assertEqual(sm.replay_stored(data, result, base_executable=self.base), result)
+        # Even a metadata-only change denotes a different saved input snapshot.
+        changed = deepcopy(data)
+        changed["base_scene"] = changed["base_scene"].replace("60 60", "61 60")
+        with self.assertRaises(ModelError, msg="R430_RAW_REPLAY_BINDING") as caught:
+            sm.replay_stored(changed, result, base_executable=self.base)
+        self.assertEqual(caught.exception.code, "SPACE_STORED_REPLAY", "R430_RAW_REPLAY_BINDING")
+        forged = deepcopy(result)
+        forged["source_snapshot"]["canonical_scene"] = canonical.replace("4000,0", "4100,0")
+        with self.assertRaises(ModelError, msg="R430_CANONICAL_REPLAY_BINDING"):
+            sm.replay_stored(data, forged, base_executable=self.base)
+
     def test_q02_q17_omitted_selection_keeps_schema1_and_existing_packages_exact(self):
         plain = self.preview(f1(ids=None))
         included = self.preview(f1())
@@ -314,6 +343,16 @@ class SpaceProfileRuns(unittest.TestCase):
         with self.assertRaises(ModelError, msg="Q38JA_SCENARIO_PROFILE_REPLAY") as caught:
             scenario_verify._model(record, self.base, 0)
         self.assertEqual(caught.exception.code, "SCENARIO_MODEL_REPLAY", "Q38JA_SCENARIO_PROFILE_REPLAY")
+        self.assertEqual(canonical_bytes(record), before)
+
+    def test_r430_scenario_replay_rejects_forged_source_receipt(self):
+        data = f1()
+        record = saved_record(data, self.preview(data))
+        record["result"]["source_snapshot"]["input_sha256"] = "a" * 64
+        before = canonical_bytes(record)
+        with self.assertRaises(ModelError, msg="R430_SCENARIO_SOURCE_RECEIPT") as caught:
+            scenario_verify._model(record, self.base, 0)
+        self.assertEqual(caught.exception.code, "SCENARIO_MODEL_REPLAY", "R430_SCENARIO_SOURCE_RECEIPT")
         self.assertEqual(canonical_bytes(record), before)
 
     def test_q08f_schema3_scenario_still_verifies_original_timber_package(self):

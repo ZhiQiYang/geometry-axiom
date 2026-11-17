@@ -13,7 +13,7 @@ const encoder=new TextEncoder(),decode=bytes=>JSON.parse(new TextDecoder().decod
 const material=record=>record.result.profile_runs.derived.objects.find(object=>object.role==='geometry');
 const envelope=record=>record.result.profile_runs.derived.objects.find(object=>object.role==='reference');
 const profileSummary=['profile_run_count','profile_member_count','profile_material_volume_mm3','profile_overlap_checked'];
-function withoutProfiles(record){const value=clone(record);delete value.input.profile_runs;delete value.result.profile_runs;for(const field of profileSummary)delete value.result.summary[field];value.result.schema=value.input.timbers?'geometry-space-preview/2':'geometry-space-preview/1';return value;}
+function withoutProfiles(record){const value=clone(record);delete value.input.profile_runs;delete value.result.profile_runs;delete value.result.source_snapshot;for(const field of profileSummary)delete value.result.summary[field];value.result.schema=value.input.timbers?'geometry-space-preview/2':'geometry-space-preview/1';return value;}
 function profileOnly(){const value=model();delete value.input.timbers;delete value.result.timbers;delete value.result.summary.timber_count;delete value.result.summary.timber_volume_mm3;return value;}
 async function bytes(record=model()){return P.pack('',manifest([record]),new Map(),zip);}
 async function archiveChanged(change){const files=zip.unzipSync(await bytes());const m=decode(files['manifest.json']);await change(m,files);files['manifest.json']=encoder.encode(JSON.stringify(m));return zip.zipSync(files);}
@@ -53,6 +53,33 @@ function nativeVariants(){
   return JSON.parse(run.stdout);
 }
 
+test('R430 raw editor snapshot is accepted only with its native canonical source',async()=>{
+  const script=[
+    'import json,os,sys',
+    'sys.path[:0]=[".","geometry-web","geometry-core"]',
+    'from start_local import ensure_stack',
+    'ensure_stack()',
+    'from tests.test_space_profile_runs import f1,saved_record',
+    'from space_modeling import preview',
+    'data=f1(timber=True)',
+    'data["base_scene"]="# R430 editor annotation\\n"+data["base_scene"]+"canvas-pos boundary 1 60 60\\n"',
+    'print(json.dumps(saved_record(data,preview(data,base_executable=os.environ.get("GEOMETRY_MODEL_BASE")))))'
+  ].join('\n');
+  const run=spawnSync(process.env.PYTHON||'python',['-c',script],{cwd:root,encoding:'utf8',maxBuffer:16*1024*1024,timeout:60000});
+  assert.equal(run.status,0,'R430_NATIVE_SOURCE_BUILD: '+(run.stderr||run.error?.message));
+  const record=JSON.parse(run.stdout),raw=record.input.base_scene;
+  assert.notEqual(raw,record.result.profile_runs.definitions.base_scene,'R430_RAW_IS_NOT_CANONICAL');
+  assert.doesNotThrow(()=>P.validateSpaceModel(record),'R430_RAW_SOURCE_ACCEPTED');
+  assert.deepEqual((await P.unpack(await bytes(record),zip)).manifest.models,[record],'R430_RAW_SOURCE_ROUNDTRIP');
+  assert.equal(record.input.base_scene,raw,'R430_RAW_SOURCE_PRESERVED');
+  const changed=clone(record);changed.input.base_scene=raw.replace('60 60','61 60');
+  await assert.rejects(()=>bytes(changed),/完整性檢查/,'R430_RAW_HASH_BOUND');
+  for(const key of ['timbers','space','volume','clearance','walls']) {
+    const mixed=clone(record);mixed.result[key].definitions.base_scene=mixed.result[key].definitions.base_scene.replace('4000,0','4100,0');
+    assert.throws(()=>P.validateSpaceModel(mixed),/來源快照/,'R430_ALL_PACKAGE_SOURCE_BOUND:'+key);
+  }
+});
+
 test('Q38JB native profile and timber packages roundtrip in the dedicated format',async()=>{
   const record=model(),before=JSON.stringify(record);
   assert.doesNotThrow(()=>P.validateSpaceModel(record),'Q38JB_IMPLEMENTATION');
@@ -69,6 +96,17 @@ test('Q38JB native profile and timber packages roundtrip in the dedicated format
   assert.deepEqual(P.supportedFormats,Array.from({length:20},(_,i)=>'geometry-canvas/'+(i+1)),'Q38JB_MAIN_19_FORMAT_SET');
   assert.deepEqual(P.formatPolicy('geometry-canvas/19'),{modelCollections:true,engineeringCandidate:true,canonicalScene:true});
   assert.throws(()=>P.formatPolicy('geometry-canvas/21'),/版本不支援/);
+});
+
+test('R430 source receipt hashes are checked before a model can be committed',async()=>{
+  assert.equal(typeof P.validateSpaceModelHashes,'function','R430_PRECOMMIT_HASH_API');
+  await assert.doesNotReject(()=>P.validateSpaceModelHashes(model()),'R430_SOURCE_HASHES_VALID');
+  const raw= model();raw.input.base_scene='# a different saved snapshot\n'+raw.input.base_scene;
+  await assert.rejects(()=>P.validateSpaceModelHashes(raw),/完整性檢查/,'R430_RAW_HASH_BOUND');
+  const canonical=model();canonical.source.scene_hash='a'.repeat(64);canonical.result.source_sha256=canonical.source.scene_hash;
+  await assert.rejects(()=>P.validateSpaceModelHashes(canonical),/完整性檢查/,'R430_CANONICAL_HASH_BOUND');
+  const receipt=model();receipt.result.source_snapshot.input_sha256='a'.repeat(64);
+  await assert.rejects(()=>P.validateSpaceModelHashes(receipt),/完整性檢查/,'R430_RECEIPT_HASH_BOUND');
 });
 
 test('Q38JB native zero identities empty profiles and sorted multiple roots remain valid',async()=>{
@@ -93,9 +131,13 @@ test('Q38JB native zero identities empty profiles and sorted multiple roots rema
 });
 
 test('Q38JB old reader rejects new format and new reader preserves legacy archives',async()=>{
-  const old=spawnSync('git',['show','11eddfdb4d7b1f76aedfe001e084a3840790bedc:geometry-web/project-store.js'],{cwd:root,encoding:'utf8',maxBuffer:1024*1024});
-  assert.equal(old.status,0,'Q38JB_OLD_READER_SOURCE: '+old.stderr);
-  const legacy=loadStore(old.stdout);
+  // Frozen git blob 54dda4471ee497cd95bc4f0146625b2b337c423a from
+  // 11eddfdb4d7b1f76aedfe001e084a3840790bedc; no checkout history is required.
+  const old=fs.readFileSync(path.join(__dirname,'fixtures/project-store.11eddfdb.js'));
+  assert.equal(old.length,102204,'Q38JB_OLD_READER_SOURCE_BYTES');
+  assert.equal(require('node:crypto').createHash('sha256').update(old).digest('hex'),
+    '67dbb045e595cf11a911d1b6bad68ac78cb905ce088595677743dc958026950f','Q38JB_OLD_READER_SOURCE_SHA256');
+  const legacy=loadStore(old.toString('utf8'));
   const currentBytes=await bytes();
   await assert.rejects(()=>legacy.unpack(currentBytes,zip),/版本不支援/,'Q38JB_OLD_READER');
   const plain=withoutProfiles(model()),plainArchive=await P.unpack(await bytes(plain),zip);

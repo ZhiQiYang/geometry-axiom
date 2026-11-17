@@ -104,8 +104,10 @@ class SpaceProfileUpdate(unittest.TestCase):
         self.assertEqual(result["schema"], "geometry-space-preview/3", "Q38JC_ADD")
         self.assertEqual(result["summary"]["profile_material_volume_mm3"], "6415200", "Q38JC_ADD")
         self.assertEqual(replacement["input"]["profile_runs"], data["selection"]["profile_runs"])
-        self.assertEqual(result["profile_runs"]["definitions"]["base_scene"], replacement["input"]["base_scene"], "Q38JC_FULL_SOURCE")
-        self.assertEqual(result["source_sha256"], hashlib.sha256(replacement["input"]["base_scene"].encode()).hexdigest())
+        self.assertEqual(replacement["input"]["base_scene"], data["current_scene"], "Q38JC_FULL_SOURCE")
+        canonical_source = load_base(data["current_scene"], executable=self.base)["base_scene"]
+        self.assertEqual(result["profile_runs"]["definitions"]["base_scene"], canonical_source, "Q38JC_FULL_SOURCE")
+        self.assertEqual(result["source_sha256"], hashlib.sha256(canonical_source.encode()).hexdigest())
         expected_packages = ["space", "volume", "clearance", "walls", "timbers", "profile_runs"]
         self.assertEqual([row["kind"] for row in candidate["diff"]["packages"]], expected_packages, "Q38JC_DIFF_PACKAGES")
         for key in expected_packages:
@@ -127,6 +129,19 @@ class SpaceProfileUpdate(unittest.TestCase):
         self.assertEqual(replacement["result"]["schema"], "geometry-space-preview/2", "Q38JC_REMOVE")
         self.assertEqual(replacement["result"]["timbers"], self.old["result"]["timbers"])
         self.assertFalse(any(key.startswith("profile_") for key in replacement["result"]["summary"]))
+
+    def test_r430_update_preserves_the_selected_raw_source_and_native_canonical_receipt(self):
+        data = self.request()
+        canonical = load_base(data["current_scene"], executable=self.base)["base_scene"]
+        data["current_scene"] = "# R430 selected World version\n" + canonical + "canvas-pos boundary 1 60 60\n"
+        candidate = self.prepare(data, "R430_UPDATE_RAW_SOURCE")
+        replacement = candidate["record"]
+        self.assertEqual(replacement["input"]["base_scene"], data["current_scene"], "R430_UPDATE_RAW_SOURCE")
+        self.assertEqual(candidate["current_scene_sha256"], hashlib.sha256(data["current_scene"].encode()).hexdigest())
+        receipt = replacement["result"]["source_snapshot"]
+        self.assertEqual(receipt["input_sha256"], candidate["current_scene_sha256"], "R430_UPDATE_SOURCE_HASH")
+        self.assertEqual(receipt["canonical_scene"], canonical, "R430_UPDATE_CANONICAL_SOURCE")
+        self.assertEqual(replacement["result"]["profile_runs"]["definitions"]["base_scene"], canonical)
 
     def test_q21_selection_is_required_typed_unique_and_never_inferred(self):
         missing = self.request(); del missing["selection"]["profile_runs"]
