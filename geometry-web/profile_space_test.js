@@ -154,8 +154,13 @@ function profileSpaceRegression(h) {
   const sectionConfirm=async()=>{await h.click('#spConfirm');await sectionReady();};
   const sectionAccept=async()=>{await sectionPreview();await sectionConfirm();};
   const openSection=async()=>{await h.click('#btnNewSectionProfile');await h.wait(`$('sectionProfileWorkspace').open`,'R12 ordinary section workspace');};
+  // #smTabSetup/#smTabPreview are the <=720px mobile tabs (space-workspace.css hides .sm-mobile-tabs above that width).
+  const setupTab=async()=>{if(await read(`innerWidth<=720`))await h.click('#smTabSetup');};
+  const previewTab=async()=>{if(await read(`innerWidth<=720`))await h.click('#smTabPreview');};
+  // In face editing the ordinary visible history controls are #faceUndoButton/#faceRedoButton (same doUndoRedo as #btnUndo/#btnRedo).
+  const historyClick=async verb=>h.click(await read(`!!oc.edit`)?(verb==='undo'?'#faceUndoButton':'#faceRedoButton'):(verb==='undo'?'#btnUndo':'#btnRedo'));
   const setupFields=async()=>{
-    await h.click('#smTabSetup');await h.input('#smBottom','0');await h.input('#smHeight','2700');
+    await setupTab();await h.input('#smBottom','0');await h.input('#smHeight','2700');
   };
   const openFace=async()=>{
     if(!await read(`!!oc.edit&&oc.edit.bid===1`)){
@@ -174,7 +179,7 @@ function profileSpaceRegression(h) {
     await h.wait(`SpaceModelWorkspace.snapshot().phase==='preview'&&!$('smPreview').disabled`,'R12 profile space preview');
   };
   const updateOpen=async id=>{
-    await h.click('#btnSpaceModels');await h.click('[data-sm-edit-height="'+id+'"]');
+    await openLibrary();await h.click('[data-sm-edit-height="'+id+'"]');
     await h.click('#smCurrentSourceUpdate');await h.wait(`ModelUpdateApp.snapshot().phase==='selecting'`,'R12 source update selection');
   };
   const chooseUpdate=async()=>{
@@ -188,6 +193,8 @@ function profileSpaceRegression(h) {
   const backToCanvas=async()=>{
     await closeSpace();if(await read(`!!oc.edit`))await h.click('#workspaceBackButton');await idle();
   };
+  // #btnSpaceModels is the object-canvas library entry; face editing covers it, so return to the canvas first.
+  const openLibrary=async()=>{await backToCanvas();await h.click('#btnSpaceModels');};
   const openFile=async file=>{
     await h.send('Page.setInterceptFileChooserDialog',{enabled:true});
     try{
@@ -215,7 +222,9 @@ function profileSpaceRegression(h) {
     }
   };
   const reload=async()=>{
-    await h.send('Page.reload');await h.wait(`typeof api==='function'&&connection.phase==='ready'&&window.SpaceModelWorkspace`,'R12 cold page ready');
+    // Page.reload returns before navigation; mark the old document so readiness cannot be read from it.
+    await read(`window.__r12OldDocument=true;void 0`);
+    await h.send('Page.reload');await h.wait(`!window.__r12OldDocument&&document.readyState==='complete'&&typeof api==='function'&&connection.phase==='ready'&&!!window.SpaceModelWorkspace`,'R12 cold page ready');
     await E('init');
   };
 
@@ -261,7 +270,7 @@ function profileSpaceRegression(h) {
       check('R12_UNLOCATED_NOTICE',/未定位 1 條/.test(actualUi.unavailable),actualUi.unavailable);
       check('R12_SHARED_CONTROLS',actualUi.sharedCount===1&&actualUi.sharedLabel.includes('一併納入')&&actualUi.timberChecked&&actualUi.showLabel.includes('角材與拉伸件'),actualUi);
       for(const width of [1400,690,390]){
-        await h.viewport(width,width===390?844:900);await h.click('#smTabSetup');
+        await h.viewport(width,width===390?844:900);await setupTab();
         if(!await read(`$('smTimberSettings').open`))await h.click('#smTimberSettings > summary');
         const layout=await E('layout');
         check('R12_LAYOUT_'+width,layout.documentWidth<=width+1&&layout.scrollWidth<=layout.clientWidth+1&&layout.left>=-1&&layout.right<=width+1&&layout.targets.length===2&&layout.targets.every(x=>x>=44),layout);
@@ -269,7 +278,7 @@ function profileSpaceRegression(h) {
       await h.viewport(1400,900);await h.projectionDialog('top');await setupFields();await preview();
       const baseline=(await E('last','/model/space-preview')).result;
       check('R12_NO_PROFILE_LEGACY_RESULT',baseline.schema==='geometry-space-preview/2'&&!Object.hasOwn(baseline,'profile_runs')&&baseline.summary.timber_count===1);
-      await h.click('#smTabSetup');await read(`document.querySelector('[data-sm-profile-run="0"]').focus();void 0`);await h.key(' ','Space',32);
+      await setupTab();await read(`document.querySelector('[data-sm-profile-run="0"]').focus();void 0`);await h.key(' ','Space',32);
       check('R12_KEYBOARD_SELECTION',same((await ui()).candidates.filter(r=>r.checked).map(r=>r.id),[0]));
       await preview();let produced=await E('last','/model/space-preview');
       check('R12_PROFILE_REQUEST',same(produced.input.profile_runs,[{kind:'profile-run',id:0}])&&produced.result.schema==='geometry-space-preview/3'&&produced.result.summary.timber_count===1,produced.input);
@@ -278,10 +287,10 @@ function profileSpaceRegression(h) {
       check('R12_Q01_EXACT_ORACLE',material.length===3&&material.every((o,i)=>o.root.id===0&&same(o.member_path,[i])&&same(o.section_profile.bounds_mm,bounds[i])&&o.section_profile.material_volume_mm3==='2138400')&&envelope.length===1&&envelope[0].section_profile.material_volume_mm3==='0'&&produced.result.summary.profile_material_volume_mm3==='6415200',material);
       check('R12_NO_MIXED_QUANTITY',['space','volume','clearance','walls','timbers'].every(k=>same(produced.result[k],baseline[k]))&&Object.keys(baseline.summary).every(k=>same(produced.result.summary[k],baseline.summary[k])));
       actualUi=await ui();check('R12_MATERIAL_NOTICE',actualUi.members.includes('2138400')&&actualUi.volume==='6415200'&&/未扣.*重疊/.test(actualUi.review)&&produced.result.summary.profile_overlap_checked===false,actualUi);
-      await h.click('#smTabPreview');await h.checked('#smShowSpace',false);await h.checked('#smShowWalls',false);await h.checked('#smShowTimbers',true);
+      await previewTab();await h.checked('#smShowSpace',false);await h.checked('#smShowWalls',false);await h.checked('#smShowTimbers',true);
       const visible=(await ui()).snapshot.viewer;await h.checked('#smShowTimbers',false);const hidden=(await ui()).snapshot.viewer;await h.checked('#smShowTimbers',true);
       check('R12_SHARED_MATERIAL_SWITCH',visible.objectCount===4&&hidden.objectCount===0&&(await ui()).snapshot.viewer.objectCount===4,{visible,hidden});
-      await h.click('#smTabSetup');await h.checked('#smConfirmFaces',true);await h.checked(run(2),true);actualUi=await ui();
+      await setupTab();await h.checked('#smConfirmFaces',true);await h.checked(run(2),true);actualUi=await ui();
       check('R12_SELECTION_INVALIDATES',actualUi.snapshot.stale&&actualUi.createDisabled&&!actualUi.confirm,actualUi);
       await preview();produced=await E('last','/model/space-preview');
       check('R12_OVERLAP_EXACT_TOTAL',produced.result.summary.profile_material_volume_mm3==='9088200'&&produced.result.summary.profile_member_count===6&&produced.result.summary.profile_overlap_checked===false&&/未扣.*重疊/.test((await ui()).review),produced.result.summary);
@@ -291,10 +300,10 @@ function profileSpaceRegression(h) {
       const createBefore=await state(),createPin=await history.capture();await h.checked('#smConfirmFaces',true);await h.click('#smCreate');
       await h.wait(`!!SpaceModelWorkspace.snapshot().createdId`,'R12 model commit');let saved=await state(),old=saved.models.at(-1);
       check('R12_MODEL_ONE_HISTORY',saved.models.length===createBefore.models.length+1&&saved.world===createBefore.world&&old.result.schema==='geometry-space-preview/3'&&same(old.input.profile_runs,[{kind:'profile-run',id:0}])&&await history.single(createPin));await history.release(createPin);
-      await closeSpace();await h.click('#btnUndo');await idle();
+      await closeSpace();await historyClick('undo');await idle();
       check('R12_MODEL_UNDO',same((await state()).models,createBefore.models)&&(await state()).world===saved.world);
-      await h.click('#btnRedo');await idle();check('R12_MODEL_REDO',same((await state()).models,saved.models)&&(await state()).world===saved.world);
-      await h.click('#btnSpaceModels');const card=await read(`document.querySelector('[data-sm-open-model="'+${JSON.stringify(old.id)}+'"]')?.closest('.sm-model-card')?.textContent||''`);
+      await historyClick('redo');await idle();check('R12_MODEL_REDO',same((await state()).models,saved.models)&&(await state()).world===saved.world);
+      await openLibrary();const card=await read(`document.querySelector('[data-sm-open-model="'+${JSON.stringify(old.id)}+'"]')?.closest('.sm-model-card')?.textContent||''`);
       check('R12_LIBRARY_SNAPSHOT_LABEL',/拉伸件 1 條.*來源快照/.test(card)&&await read(`document.querySelectorAll('[data-sp-open-run]').length===2`),card);
       await backToCanvas();await openSection();await h.click('[data-sp-run="0"]');await h.input('#spLengthValue','2000');await sectionAccept();
       check('R12_LIVE_SOURCE_SNAPSHOT_UNCHANGED',same((await state()).models,saved.models)&&(await sections()).runs.find(r=>r.value.id===0).length===2000);
@@ -304,7 +313,7 @@ function profileSpaceRegression(h) {
       await h.select('#spHostFace',topValue);await h.select('#spDirection','+v');await h.select('#spUp','+Z');await h.input('#spP','1000');await h.input('#spQ','2000');await sectionAccept();
       const copied=(await sections()).runs.find(r=>r.value.id===3);
       check('R12_SAVED_TOP_VALUES',copied.value.placement.host.kind==='space-wall-values'&&same(copied.members.map(m=>m.bounds),bounds)&&same((await state()).models,saved.models),copied);
-      await h.click('#spClose');await h.click('#btnSpaceModels');await h.click('[data-sm-edit-height="'+old.id+'"]');
+      await h.click('#spClose');await openLibrary();await h.click('[data-sm-edit-height="'+old.id+'"]');
       check('R12_UPDATE_ENTRY',await E('visible','#smCurrentSourceUpdate'));
       await h.click('#smCurrentSourceUpdate');await h.wait(`ModelUpdateApp.snapshot().phase==='selecting'`,'R12 update source');await chooseUpdate();
       let updateUi=await E('updateUi');
@@ -314,25 +323,25 @@ function profileSpaceRegression(h) {
       check('R12_UPDATE_TYPED_SELECTION',same(update.input.selection.profile_runs,[{kind:'profile-run',id:3}])&&candidate.result.schema==='geometry-space-preview/3'&&candidate.result.summary.profile_material_volume_mm3==='6415200');
       const diff=update.result.diff.packages.find(r=>r.kind==='profile_runs');
       check('R12_UPDATE_PACKAGE_DIFF',typeof diff?.before==='string'&&typeof diff?.after==='string'&&diff.before!==diff.after&&(await E('updateUi')).review.includes('斷面拉伸件'),diff);
-      const source=await read(`apiRequest('dump-deidentified').then(r=>{if(!r.ok)throw Error(r.error);return r.text;})()`),sourceLines=source.split('\n').filter(Boolean);
+      const source=await read(`apiRequest('dump-deidentified').then(r=>{if(!r.ok)throw Error(r.error);return r.text;})`),sourceLines=source.split('\n').filter(Boolean);
       check('R12_UPDATE_SINGLE_SOURCE',candidate.id===old.id&&candidate.input.base_scene===source&&candidate.input.base_scene!==old.input.base_scene&&candidate.result.profile_runs.definitions.base_scene===source&&['space','volume','clearance','walls','timbers','profile_runs'].every(k=>{const lines=new Set(candidate.result[k].definitions.base_scene.split('\n'));return sourceLines.every(line=>lines.has(line));})&&(!candidate.sourceIdentity||candidate.sourceIdentity.roots.every(r=>r.kind!=='profile-run')));
       check('R12_UPDATE_PREVIEW_ZERO_WRITE',same(await state(),updateBefore)&&await history.unchanged(updatePin));
       await h.click('#muClose');check('R12_UPDATE_CANCEL_ZERO_WRITE',same(await state(),updateBefore)&&await history.unchanged(updatePin));await history.release(updatePin);
       await updateOpen(old.id);await chooseUpdate();await h.checked(updateRun(3),true);await updatePreview();candidate=(await E('last','/model/update-preview')).result.record;
       const commitPin=await history.capture();await updateConfirm();saved=await state();
       check('R12_UPDATE_ONE_HISTORY',same(saved.models,[candidate])&&saved.world===updateBefore.world&&await history.single(commitPin));await history.release(commitPin);
-      await closeSpace();await h.click('#btnUndo');await idle();check('R12_UPDATE_UNDO',same((await state()).models,[old])&&(await state()).world===saved.world);
-      await h.click('#btnRedo');await idle();check('R12_UPDATE_REDO',same((await state()).models,saved.models)&&(await state()).world===saved.world);
+      await closeSpace();await historyClick('undo');await idle();check('R12_UPDATE_UNDO',same((await state()).models,[old])&&(await state()).world===saved.world);
+      await historyClick('redo');await idle();check('R12_UPDATE_REDO',same((await state()).models,saved.models)&&(await state()).world===saved.world);
       await updateOpen(old.id);await chooseUpdate();await updatePreview();update=await E('last','/model/update-preview');
       const removed=update.result.record,removedDiff=update.result.diff.packages.find(r=>r.kind==='profile_runs');
       check('R12_UPDATE_EMPTY_REMOVAL',same(update.input.selection.profile_runs,[])&&!Object.hasOwn(removed.input,'profile_runs')&&!Object.hasOwn(removed.result,'profile_runs')&&removed.result.schema==='geometry-space-preview/2'&&!Object.keys(removed.result.summary).some(k=>k.startsWith('profile_'))&&typeof removedDiff?.before==='string'&&removedDiff.after===null&&same(removed.result.timbers,candidate.result.timbers),removedDiff);
       const removePin=await history.capture();await updateConfirm();check('R12_UPDATE_REMOVE_ONE_HISTORY',same((await state()).models,[removed])&&await history.single(removePin));await history.release(removePin);
-      await closeSpace();await h.click('#btnUndo');await idle();check('R12_UPDATE_REMOVE_UNDO',same((await state()).models,[candidate])&&(await state()).world===saved.world);
-      await h.click('#btnSpaceModels');await h.click('[data-sm-edit-height="'+old.id+'"]');const heightBefore=await state(),heightPin=await history.capture();
+      await closeSpace();await historyClick('undo');await idle();check('R12_UPDATE_REMOVE_UNDO',same((await state()).models,[candidate])&&(await state()).world===saved.world);
+      await openLibrary();await h.click('[data-sm-edit-height="'+old.id+'"]');const heightBefore=await state(),heightPin=await history.capture();
       await h.input('#smEditHeight','3200');await preview();produced=await E('last','/model/space-preview');
       check('R12_HEIGHT_SNAPSHOT_STABLE',produced.result.summary.top===3200&&same(produced.result.profile_runs,candidate.result.profile_runs)&&produced.input.base_scene===candidate.input.base_scene);
       await h.click('#smCancelHeightEdit');check('R12_HEIGHT_CANCEL_ZERO_WRITE',same(await state(),heightBefore)&&await history.unchanged(heightPin));await history.release(heightPin);
-      await backToCanvas();await h.click('#scenarioOpen');await h.input('#scenarioName','R12 已納入斷面');await h.click('#scenarioCapture');
+      await backToCanvas();await h.click('#projectInfoButton');await h.click('#scenarioOpen');await h.input('#scenarioName','R12 已納入斷面');await h.click('#scenarioCapture');
       await h.wait(`!$('scenarioCapture').disabled&&/已保存完整/.test($('scenarioStatus').textContent)`,'R12 full scenario capture');
       const catalog=await E('catalog');check('R12_SCENARIO_CAPTURE',catalog.catalog.scenarios.length===1&&catalog.catalog.scenarios[0].label==='R12 已納入斷面');
       await h.click('#scenarioDialog [data-scenario-close]');const archived=await state();archive=await save();const bytes=fs.readFileSync(archive),files=zip.unzipSync(bytes),manifest=JSON.parse(Buffer.from(files['manifest.json']).toString('utf8'));
