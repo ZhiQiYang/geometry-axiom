@@ -26,6 +26,9 @@ WRITE_PROFILE = '        if selection["profile_runs"]:\n            inputs["prof
 CANONICAL_BOUNDARY = ('    if (not face_mode and selected["boundary_id"] is None and\n'
                       '            (record["input"].get("profile_runs") or inputs.get("profile_runs") or record["source"]["boundary_id"] is None)):')
 CASES = [
+    ("R430_UPDATE_RAW_SOURCE_WITHDRAWAL", UPDATE,
+     'inputs["base_scene"] = data["current_scene"]', 'inputs["base_scene"] = new_base["base_scene"]',
+     "test_r430_update_preserves_the_selected_raw_source_and_native_canonical_receipt", "R430_UPDATE_RAW_SOURCE"),
     ("Q38JC01-remove-selected-profile-output", UPDATE, WRITE_PROFILE,
      '        if False:\n            inputs["profile_runs"] = deepcopy(selection["profile_runs"])',
      "test_q20_add_copied_run_rebuilds_every_package_from_one_current_source", "Q38JC_ADD"),

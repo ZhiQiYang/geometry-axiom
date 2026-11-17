@@ -2,6 +2,8 @@
 
 日期：2026-11-15。固定基底：`11eddfdb4d7b1f76aedfe001e084a3840790bedc`。
 
+2026-11-17 的 #430 修補基底為 `d1738db971b05311efa4289443c73942273c8a37`（已普通 merge main `0c796e308da770041dfb41111562d594a389671a`）。以下單一來源契約已更正 raw dump 與原生 canonical 場景混用的錯誤；本次修補不提高層級，正式瀏覽器與 ME 收據另核。
+
 本文描述相對該基底的實作候選，承接 [issue #43 設計](https://github.com/ZhiQiYang/geometry-axiom/issues/43#issuecomment-6436056651)與[接線缺口巡檢](https://github.com/ZhiQiYang/geometry-axiom/issues/43#issuecomment-6877835952)。驗收以 [公理層.md](../../公理層.md) D63、I73、R59、R40 及既有 D35–D40／I43–I51／R36–R39 為準，不修改條文。
 
 此處的來源契約、測試清單與 source census 不代表已取得瀏覽器完成收據。最終真瀏覽器、完整整合 census、正式 mutation evidence 及 L4 實機核對仍須分別記錄；不得以舊 a／b／c 補丁的結果改綁本候選。
@@ -60,7 +62,7 @@
 
 producer 以 run id 升冪發一次 `role=geometry,target=solid-set,allow_partial=false` 的 R39 請求。任何所選 run 不完整，整個模型建立或更新失敗；不得保留半套結果。
 
-有 profile 時回應 `geometry-space-preview/3`，新增獨立 `result.profile_runs` 與以下 summary 欄位：
+有 profile 時回應 `geometry-space-preview/3`，新增獨立 `result.profile_runs`、下述 `source_snapshot` 收據與以下 summary 欄位：
 
 | 欄位 | 語意 |
 |---|---|
@@ -71,7 +73,11 @@ producer 以 run id 升冪發一次 `role=geometry,target=solid-set,allow_partia
 
 同一 `/3` 可以同時有 `timbers` 與 `profile_runs`，兩個選用包獨立驗證。沒有 profile 而有 timbers 仍為 `/2`；兩者都沒有仍為 `/1`。舊五類包及其摘要語意不改。
 
-**單一來源是由同一份 `input.base_scene` 推導，不是要求六包的 `definitions.base_scene` 字串完全相同。** 空間殼、體積、淨空及材料牆的定義含依設定生成的宣告；原角材包沿其既有契約。只有新增的 `profile_runs` 包要求 `definitions.base_scene === input.base_scene` 且 `extensions:[]`，不能拼入其他 World 版本的定義或網格。
+`input.base_scene` 保留當次明選的去身分來源原文，包括註解與畫布展示位置。producer 僅透過原 `load_base` 取得 canonical 場景，並在 `/3` 的 `result.source_snapshot` 保存封閉欄位 `{schema:"geometry-space-source/1",input_sha256,canonical_scene}`。`input_sha256` 是原文 UTF-8 的 SHA-256；`result.source_sha256` 與 `source.scene_hash` 仍是原生 canonical 場景的 SHA-256。這兩個雜湊分別識別原文與幾何來源，不能互換。
+
+`profile_runs.definitions.base_scene` 及同模型角材包須與 `canonical_scene` 完全相等，profile 的 `extensions` 須為空。空間殼、體積、淨空及材料牆會增添設定宣告，且原生會重新排序；同步守門要求原生 canonical 的每個非空完整行在各包恰出現一次，沒有在 JavaScript 刪除原始輸入的註解或 `canvas-pos`。此行檢查只證包間結構一致；I31 原生重播仍須從保存原文重建收據、完整 definitions/request/derived 及摘要，排除自填雜湊或額外定義造成的偽造。
+
+一般建立與修改牆高在寫歷史前呼叫 `validateSpaceModelHashes`，驗原文、canonical 及 profile 包雜湊；非同步驗證後重新核對原 owner、設定、來源版本與歷史。整筆更新另核對候選的原文等於此次 `current_scene`，且收據的 input hash 等於候選已驗證的 `current_scene_sha256`。pack/unpack 與方案葉也重驗，不能把錯接來源留到保存時才拒絕。既有 `/1`、`/2` 不增添此 `/3` 欄位。
 
 每個 run 恰有一個 reference 包絡，`member_id:null`、空 member path、材料量為 `"0"`。每個 geometry 成員保留 `(run_id,member_id)`、world 座標、方位、三個正整數尺寸、範圍、精確材料量與原生 face provenance。run id 或 member id 相同不表示與目前 World 物件延續。
 
@@ -114,7 +120,7 @@ producer 的 candidate/1 幾何收據與既有 K3 candidate/2 身分收據保留
 profile 保存核對來源 snapshot hash、package definitions hash、geometry hash、typed roots、schema、摘要及幾何 metadata。三條獨立重放是：
 
 1. `space_modeling.replay_stored`：按保存輸入重新推導並比對完整結果。
-2. `scenario_verify._model`：核對方案葉中的模型及同源選用包，保留合法 K3 sourceIdentity。
+2. `scenario_verify._model`：核對方案葉中的模型、原文／canonical 收據及同源選用包，保留合法 K3 sourceIdentity。
 3. `ReferenceWorkspace.verifyStoredModel`：完整專案匯入時逐包 native verify，核返回 definitions/request/derived，再呼完整 space replay；全部通過後才替換目前專案。
 
 任一驗證失敗都保留目前 World、非空專案、來源附件及歷史。source.boundary_id 的新 profile 規則為具名正整數或真正內含矩形的 `null`，不能用 `0` 或 `null` 冒充具名邊界。
@@ -126,6 +132,8 @@ profile 保存核對來源 snapshot hash、package definitions hash、geometry h
 GEO-219 的具體減項：原角材獨立「核對角材尺寸與世界高度」disclosure 改為同一「一併納入」內的普通清單，與新增 run 共用一個 disclosure；保留角材清單 ID。原 `#smShowTimbers` 合併承接角材與拉伸件，沒有第二個 visibility 開關。F1b 原角材 disclosure 改為兩類材料共用的「一併納入」，保留原 preview／confirm／cancel 和單一模型修改入口。
 
 ## 8. 驗收與證據狀態
+
+下表是 2026-11-15 原始候選的歷史交付記錄，不改綁為 2026-11-17 的 #430 修補收據。#430 的修補另以該 PR 留言所附的固定來源、逐案原件與完整補丁身分核對；原始及修補後的測試數有增加。雲端啟動前的 `socket() EPERM` 不屬於產品紅，也不能作為瀏覽器通過；本修補仍須在正式 runner 補齊 space／timber 及六個 browser 撤回。
 
 | 層次 | 必須取得的證據 | 本文件狀態 |
 |---|---|---|

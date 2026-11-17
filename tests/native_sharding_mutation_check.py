@@ -80,7 +80,8 @@ if mode in ('workspace-provenance-baseline', 'R396_ALLOW_DUPLICATE_LEGACY_COST',
 if (mode in ('measured-baseline', 'R348_REVERT_MEASURED_PROFILE', 'R348_REMOVE_SCENARIO_SWAP',
              'R380_REVERT_SINGLE_PAIR_SWEEP', 'R380_DROP_ADDED_SUITE_EVIDENCE',
              'R380_REMOVE_MULTISTART_SCREENING',
-             'R379_DROP_R14_SUITE_EVIDENCE', 'R396_DROP_WORKSPACE_COSTS', 'R17_DROP_SUITE_EVIDENCE')
+             'R379_DROP_R14_SUITE_EVIDENCE', 'R396_DROP_WORKSPACE_COSTS', 'R17_DROP_SUITE_EVIDENCE',
+             'R12_DROP_SUITE_EVIDENCE')
         or mode in historical_workflow_replacements or mode in evidence_modes):
     target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
 if mode in ('r14-baseline', 'R379_REVERT_SINGLE_START_ONE_SWEEP'):
@@ -90,6 +91,9 @@ if mode in ('provenance-baseline', 'R379_ALLOW_DUPLICATE_SOURCE',
     target = 'test_unittest_runner.NativeShardCoverage.test_added_suite_provenance_rejects_named_mutations'
 if mode == 'path-scope-baseline' or mode.startswith('R391_'):
     target = path_scope_target
+if mode in ('r12-provenance-baseline', 'R12_OMIT_SOURCE_FROM_DIGEST', 'R12_ACCEPT_FAILED_CHILD',
+            'R12_ALLOW_DUPLICATE_SOURCE', 'R12_RESTORE_PRE_REPAIR_COSTS'):
+    target = 'test_unittest_runner.NativeShardCoverage.test_r12_receipt_provenance_rejects_named_mutations'
 if mode == 'R348_REVERT_MEASURED_PROFILE':
     original = native_shards.partition_suites
     def legacy(suites, count, weights=None):
@@ -130,7 +134,8 @@ elif mode == 'R379_ALLOW_DUPLICATE_SOURCE':
         receipts = native_shards.added_receipt_costs()
         if (legacy.keys() | r14.keys()) & receipts.keys():
             raise ValueError('R396_ADDED_RECEIPT_DUPLICATE_LEGACY_SUITE')
-        return {**legacy, **r14, **receipts, **native_shards.added_r17_suite_costs()}
+        return {**legacy, **r14, **receipts, **native_shards.added_r17_suite_costs(),
+                **native_shards.added_r12_suite_costs()}
     native_shards.added_suite_costs = duplicate_r14_source
 elif mode == 'R379_OMIT_R14_SOURCE_FROM_DIGEST':
     import hashlib
@@ -138,7 +143,8 @@ elif mode == 'R379_OMIT_R14_SOURCE_FROM_DIGEST':
         native_shards.TIMINGS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
-        native_shards.ADDED_R17_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+        native_shards.ADDED_R17_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R396_DROP_WORKSPACE_COSTS':
     native_shards.added_receipt_costs = lambda: {}
 elif mode == 'R396_ALLOW_DUPLICATE_LEGACY_COST':
@@ -150,7 +156,8 @@ elif mode == 'R396_ALLOW_DUPLICATE_LEGACY_COST':
             raise ValueError('R379_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
         if r14.keys() & receipts.keys():
             raise ValueError('R396_ADDED_RECEIPT_DUPLICATE_R14_SUITE')
-        return {**legacy, **r14, **receipts, **native_shards.added_r17_suite_costs()}
+        return {**legacy, **r14, **receipts, **native_shards.added_r17_suite_costs(),
+                **native_shards.added_r12_suite_costs()}
     native_shards.added_suite_costs = duplicate_workspace_legacy_source
 elif mode == 'R396_ALLOW_DUPLICATE_R14_COST':
     def duplicate_workspace_r14_source():
@@ -161,7 +168,8 @@ elif mode == 'R396_ALLOW_DUPLICATE_R14_COST':
             raise ValueError('R379_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
         if legacy.keys() & receipts.keys():
             raise ValueError('R396_ADDED_RECEIPT_DUPLICATE_LEGACY_SUITE')
-        return {**legacy, **r14, **receipts, **native_shards.added_r17_suite_costs()}
+        return {**legacy, **r14, **receipts, **native_shards.added_r17_suite_costs(),
+                **native_shards.added_r12_suite_costs()}
     native_shards.added_suite_costs = duplicate_workspace_r14_source
 elif mode == 'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST':
     import hashlib
@@ -169,7 +177,8 @@ elif mode == 'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST':
         native_shards.TIMINGS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
-        native_shards.ADDED_R17_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+        native_shards.ADDED_R17_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R379_DROP_R14_EXPECTED_ENTRIES':
     original_expected_read = pathlib.Path.read_text
     def missing_r14_expected(path, *args, **kwargs):
@@ -226,14 +235,15 @@ elif mode == 'R396_DROP_WORKSPACE_WITHDRAWAL':
 elif mode == 'R17_DROP_SUITE_EVIDENCE':
     native_shards.added_suite_costs = lambda: {
         **native_shards._legacy_added_suite_costs(), **native_shards.added_r14_suite_costs(),
-        **native_shards.added_receipt_costs()}
+        **native_shards.added_receipt_costs(), **native_shards.added_r12_suite_costs()}
 elif mode == 'R17_OMIT_SOURCE_FROM_DIGEST':
     import hashlib
     native_shards.profile_digest = lambda: hashlib.sha256(
         native_shards.TIMINGS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
-        native_shards.ADDED_RECEIPTS.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+        native_shards.ADDED_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R17_DROP_EXPECTED_ENTRIES':
     original_expected_read = pathlib.Path.read_text
     def missing_r17_expected(path, *args, **kwargs):
@@ -246,6 +256,65 @@ elif mode == 'R17_DROP_EXPECTED_ENTRIES':
             value = json.dumps(data)
         return value
     pathlib.Path.read_text = missing_r17_expected
+elif mode == 'R12_DROP_SUITE_EVIDENCE':
+    native_shards.added_r12_suite_costs = lambda: {}
+elif mode == 'R12_RESTORE_PRE_REPAIR_COSTS':
+    original_r12_costs = native_shards.added_r12_suite_costs
+    def pre_repair_r12_costs():
+        costs = original_r12_costs()
+        costs.update({'py:test_space_profile_runs': 100000,
+                      'py:test_space_profile_update': 150000})
+        return costs
+    native_shards.added_r12_suite_costs = pre_repair_r12_costs
+elif mode == 'R12_OMIT_SOURCE_FROM_DIGEST':
+    import hashlib
+    native_shards.profile_digest = lambda: hashlib.sha256(b'\0'.join(
+        path.read_bytes().replace(b'\r\n', b'\n') for path in
+        (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE, native_shards.ADDED_R14_EVIDENCE,
+         native_shards.ADDED_RECEIPTS, native_shards.ADDED_R17_EVIDENCE))).hexdigest()
+elif mode == 'R12_ALLOW_DUPLICATE_SOURCE':
+    def duplicate_r12_source():
+        legacy = native_shards._legacy_added_suite_costs()
+        r14 = native_shards.added_r14_suite_costs()
+        receipts = native_shards.added_receipt_costs()
+        if legacy.keys() & r14.keys():
+            raise ValueError('R379_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        if (legacy.keys() | r14.keys()) & receipts.keys():
+            raise ValueError('R396_ADDED_RECEIPT_DUPLICATE_LEGACY_SUITE')
+        r17 = native_shards.added_r17_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys()) & r17.keys():
+            raise ValueError('R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        return {**legacy, **r14, **receipts, **r17, **native_shards.added_r12_suite_costs()}
+    native_shards.added_suite_costs = duplicate_r12_source
+elif mode == 'R12_ACCEPT_FAILED_CHILD':
+    original_r12_read = pathlib.Path.read_text
+    def accept_failed_r12_child(path, *args, **kwargs):
+        value = original_r12_read(path, *args, **kwargs)
+        if path.resolve() == native_shards.ADDED_R12_RECEIPTS.resolve():
+            data = json.loads(value)
+            for source in data['runs']:
+                for shard in source['shards']:
+                    for entry in shard['observations']:
+                        row = entry['row']
+                        if type(row['process_exit_code']) is int and row['process_exit_code'] == 1:
+                            row['process_exit_code'] = 0
+            value = json.dumps(data)
+        return value
+    pathlib.Path.read_text = accept_failed_r12_child
+elif mode == 'R12_DROP_EXPECTED_ENTRIES':
+    original_r12_expected_read = pathlib.Path.read_text
+    def missing_r12_expected(path, *args, **kwargs):
+        value = original_r12_expected_read(path, *args, **kwargs)
+        if path.resolve() == run_all.EXPECTED_FILE.resolve():
+            data = json.loads(value)
+            for name in ('py:test_space_profile_runs', 'py:test_space_profile_update',
+                         'py:test_r12_browser_evidence', 'node:space_profile_ui',
+                         'node:space_profile_view', 'node:space_profile_update_ui',
+                         'node:profile_space_browser_contract'):
+                data['suites'].pop(name)
+            value = json.dumps(data)
+        return value
+    pathlib.Path.read_text = missing_r12_expected
 if mode in current_workflow_replacements or mode in evidence_modes:
     # Mutate only this child's in-memory file read; never rewrite the checkout.
     original_read = pathlib.Path.read_text
@@ -314,6 +383,9 @@ markers = ('R348_MEASURED_RECEIPT_BUDGET', 'R348_FOUR_NATIVE_WORKFLOW',
            'R396_ADDED_RECEIPT_duplicate-r14',
            'R17_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'R17_COMPLETE_EXPECTED_REGISTRY',
            'R17_PROFILE_DIGEST_BINDS_R17_SOURCE',
+           'R12_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'R12_COMPLETE_EXPECTED_REGISTRY',
+           'R12_PROFILE_DIGEST_BINDS_ORIGINAL_RECEIPTS', 'R12_ADDED_RECEIPT_failed-child',
+           'R12_ADDED_RECEIPT_cross-source-duplicate', 'R12_ADDED_SUITE_PLANNING_UPPER_BOUNDS',
            'R391_BROWSER_PATH_SCOPE_WIRING')
 row = dict(tests=result.testsRun, failures=len(result.failures), errors=len(result.errors),
            skips=len(result.skipped), failure_ids=[case.id() for case,_ in result.failures],
@@ -354,6 +426,12 @@ def main():
         'R17_DROP_SUITE_EVIDENCE': ('measured-baseline', 'R17_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
         'R17_DROP_EXPECTED_ENTRIES': ('baseline', 'R17_COMPLETE_EXPECTED_REGISTRY'),
         'R17_OMIT_SOURCE_FROM_DIGEST': ('provenance-baseline', 'R17_PROFILE_DIGEST_BINDS_R17_SOURCE'),
+        'R12_DROP_SUITE_EVIDENCE': ('measured-baseline', 'R12_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
+        'R12_DROP_EXPECTED_ENTRIES': ('baseline', 'R12_COMPLETE_EXPECTED_REGISTRY'),
+        'R12_OMIT_SOURCE_FROM_DIGEST': ('r12-provenance-baseline', 'R12_PROFILE_DIGEST_BINDS_ORIGINAL_RECEIPTS'),
+        'R12_ACCEPT_FAILED_CHILD': ('r12-provenance-baseline', 'R12_ADDED_RECEIPT_failed-child'),
+        'R12_ALLOW_DUPLICATE_SOURCE': ('r12-provenance-baseline', 'R12_ADDED_RECEIPT_cross-source-duplicate'),
+        'R12_RESTORE_PRE_REPAIR_COSTS': ('r12-provenance-baseline', 'R12_ADDED_SUITE_PLANNING_UPPER_BOUNDS'),
         'R348_REVERT_MEASURED_PROFILE': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
         'R348_REMOVE_SCENARIO_SWAP': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
         'R380_REVERT_SINGLE_PAIR_SWEEP': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
@@ -420,6 +498,8 @@ def main():
                            'workspace-provenance-baseline': ('NativeShardCoverage.'
                                                              'test_workspace_receipt_provenance_rejects_named_mutations'),
                            'r14-baseline': 'NativeShardCoverage.test_r14_historical_budget',
+                           'r12-provenance-baseline': ('NativeShardCoverage.'
+                                                     'test_r12_receipt_provenance_rejects_named_mutations'),
                            'path-scope-baseline': ('BrowserPathScopeWiring.'
                                                    'test_browser_jobs_skip_only_on_explicit_path_scope_false')}
                 assert all(name.startswith('test_unittest_runner.' + methods[baseline])

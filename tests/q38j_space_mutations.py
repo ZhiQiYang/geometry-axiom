@@ -23,6 +23,19 @@ UPDATE = "geometry-web/model_update.py"
 JUDGE = "tests/test_space_profile_runs.py"
 CALL = '    profile_runs = _profile_runs(data["profile_runs"], base, options) if "profile_runs" in data else None'
 CASES = [
+    ("R430_NATIVE_SOURCE_RECEIPT_WITHDRAWAL", SM,
+     'result["source_snapshot"] = {', 'result["withdrawn_source_snapshot"] = {',
+     "test_r430_native_source_receipt_keeps_raw_snapshot_and_canonical_source", "R430_NATIVE_SOURCE_RECEIPT"),
+    ("R430_NATIVE_CANONICAL_SOURCE", SM,
+     '"canonical_scene": base["base_scene"],', '"canonical_scene": data["base_scene"],',
+     "test_r430_native_source_receipt_keeps_raw_snapshot_and_canonical_source", "R430_NATIVE_SOURCE_RECEIPT"),
+    ("R430_NATIVE_RAW_HASH", SM,
+     '"input_sha256": hashlib.sha256(data["base_scene"].encode("utf-8")).hexdigest(),',
+     '"input_sha256": hashlib.sha256(base["base_scene"].encode("utf-8")).hexdigest(),',
+     "test_r430_native_source_receipt_keeps_raw_snapshot_and_canonical_source", "R430_NATIVE_SOURCE_RECEIPT"),
+    ("R430_SCENARIO_SOURCE_RECEIPT", SCENARIO,
+     'if "profile_runs" in inputs and canonical_bytes(saved["source_snapshot"]) != canonical_bytes(rebuilt["source_snapshot"]):',
+     'if False:', "test_r430_scenario_replay_rejects_forged_source_receipt", "R430_SCENARIO_SOURCE_RECEIPT"),
     ("Q38JA01-remove-profile-producer", SM, CALL, '    profile_runs = None',
      "test_q01_exact_native_members_reference_and_material_summary", "Q38JA_IMPLEMENTATION"),
     ("Q38JA02-count-envelope-as-material", SM,

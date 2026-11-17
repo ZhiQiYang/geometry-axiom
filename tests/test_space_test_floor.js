@@ -133,3 +133,24 @@ test('real configuration keeps rejecting ambiguous filters, invalid flags and un
   assert.throws(() => configuration({...env, GEOMETRY_TIMBER_HISTORY_ONLY: '1'}), /requires/);
   assert.throws(() => configuration({...env, GEOMETRY_SPACE_FLOW_ONLY: '1', GEOMETRY_TIMBER_HISTORY_ONLY: '1'}), /requires/);
 });
+
+test('R430 timber driver uses the shipped candidate disclosure without changing its census', () => {
+  // Static cross-file wiring only: this finite DOM makes no layout or input claim.
+  const {document} = require('./_model_update_dom.js').createDOM();
+  const workspace = fs.readFileSync(path.join(__dirname, '../geometry-web/space-workspace.js'), 'utf8');
+  const template = workspace.match(/dialog\.innerHTML = `([\s\S]*?)`;/);
+  assert.ok(template, 'R430_TIMBER_WORKSPACE_TEMPLATE');
+  document.body.innerHTML = template[1];
+  const start = source.indexOf('async function timberRegression() {');
+  const end = source.indexOf('  const ownCandidates=', start);
+  assert.ok(start >= 0 && end > start, 'R430_TIMBER_DRIVER_START');
+  const disclosures = [...source.slice(start, end).matchAll(/await click\('([^']+ > summary)'\);/g)];
+  assert.equal(disclosures.length, 1, 'R430_TIMBER_ONE_DISCLOSURE_ACTION');
+  const [selector] = disclosures[0][1].split(' > ');
+  const owner = document.body.querySelector(selector);
+  const summary = owner?.children.find(child => child.tagName === 'SUMMARY');
+  assert.ok(owner?.tagName === 'DETAILS' && summary, 'R430_TIMBER_LIVE_DISCLOSURE');
+  assert.ok(owner.descendants().includes(document.getElementById('smTimberCandidates')), 'R430_TIMBER_DISCLOSURE_OWNS_CANDIDATES');
+  assert.equal(EXPECTED['timber-material'], 48);
+  assert.equal(EXPECTED['timber-source-guards'], 8);
+});

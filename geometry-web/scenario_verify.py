@@ -463,6 +463,8 @@ def _model(record, base, index):
     if (saved["schema"] != rebuilt["schema"] or saved["source_sha256"] != rebuilt["source_sha256"] or
             source["scene_hash"] != rebuilt["source_sha256"]):
         _fail("SCENARIO_MODEL_REPLAY", "Saved model source or schema differs from independent replay.", path=path)
+    if "profile_runs" in inputs and canonical_bytes(saved["source_snapshot"]) != canonical_bytes(rebuilt["source_snapshot"]):
+        _fail("SCENARIO_MODEL_REPLAY", "Saved raw/canonical source receipt differs from independent replay.", path=path)
     for key in ("space", "volume", "clearance", "walls", *(("timbers",) if "timbers" in inputs else ()),
                 *(("profile_runs",) if "profile_runs" in inputs else ())):
         original, replayed = saved[key], rebuilt[key]

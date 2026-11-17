@@ -821,6 +821,14 @@ window.SpaceModelWorkspace = (() => {
         assertEditableRecord();
         if(seq!==state.sequence||revision!==state.revision||state.previewRevision!==revision)throw new Error("牆高已改變，請更新預覽後再保存。");
         const record={...copy(state.editing.record),input:copy(state.input),result:copy(state.result)};
+        if(record.input.profile_runs) {
+          const editing=state.editing,source=state.source,owner=creationOwner();
+          await GeometryProject.validateSpaceModelHashes(record);
+          assertCreationOwner(owner,owner.evidence.nativeRevision);
+          if(seq!==state.sequence||revision!==state.revision||state.previewRevision!==revision||state.source!==source||state.editing!==editing)
+            throw new Error("設定、預覽或原模型已改變，未更新模型；請重新預覽。");
+          assertEditableRecord();
+        }
         state.committingId=record.id;
         try { ReferenceWorkspace.updateSpaceModel(record.id,record); } finally { state.committingId=null; }
         openRecord(record.id); setTab("setup");
@@ -836,6 +844,7 @@ window.SpaceModelWorkspace = (() => {
       assertPlanProjection();
       const record={id:crypto.randomUUID(),name:$("smModelName").value.trim()||"未命名空間",created_at:new Date().toISOString(),source:{kind:state.source.kind,placement_id:state.source.placement_id,boundary_id:state.source.boundary_id,scene_hash:state.result.source_sha256,...(state.input.mode==="plan"?{projection:copy(state.source.projection)}:{})},input:copy(state.input),result:copy(state.result)};
       await attachSourceIdentity(record,owner,pin);
+      if(record.input.profile_runs)await GeometryProject.validateSpaceModelHashes(record);
       assertCreationOwner(owner,pin?.revision??null);
       if(seq!==state.sequence||revision!==state.revision||state.previewRevision!==revision||state.source!==source)throw new Error("設定或預覽已改變，未建立模型；請重新預覽。");
       assertSourceHistory();assertPlanProjection();

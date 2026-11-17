@@ -16,7 +16,7 @@ const packageKeys = ['space','volume','clearance','walls','timbers','profile_run
 function model({profiles=true,timbers=true}={}) {
   const value = clone(fixture.model);
   if (!profiles) {
-    delete value.input.profile_runs; delete value.result.profile_runs;
+    delete value.input.profile_runs; delete value.result.profile_runs; delete value.result.source_snapshot;
     for (const key of ['profile_run_count','profile_member_count','profile_material_volume_mm3','profile_overlap_checked']) delete value.result.summary[key];
   }
   if (!timbers) {

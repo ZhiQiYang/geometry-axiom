@@ -107,7 +107,7 @@ def main():
     # Freeze a conservative superset of require/VM/fixture dependencies. The
     # source guards must notice changes in transitive validators, not merely
     # the directly mutated module. No execution claim comes from these hashes.
-    closure = {str(p.relative_to(ROOT)) for directory in ('geometry-web', 'geometry-app', 'geometry-templates')
+    closure = {str(p.relative_to(ROOT)) for directory in ('geometry-web', 'geometry-app', 'geometry-templates', 'geometry-core')
                for p in (ROOT / directory).rglob('*.js') if 'node_modules' not in p.parts}
     closure |= {str(p.relative_to(ROOT)) for p in (ROOT / 'tests').glob('*.js')}
     closure |= {str(p.relative_to(ROOT)) for p in (ROOT / 'tests/fixtures').rglob('*') if p.is_file()}

@@ -569,6 +569,14 @@ def _preview(data, *, base_executable=None, max_cells=200000, historical_walls=F
         summary.update(timber_count=len(data["timbers"]), timber_volume_mm3=_volume(timbers))
     if profile_runs is not None:
         result.update(schema="geometry-space-preview/3", profile_runs=profile_runs)
+        # D63: preserve the exact selected input separately from the native
+        # canonical source shared by every derived package. Never approximate
+        # load_base's normalization in the browser by deleting arbitrary lines.
+        result["source_snapshot"] = {
+            "schema": "geometry-space-source/1",
+            "input_sha256": hashlib.sha256(data["base_scene"].encode("utf-8")).hexdigest(),
+            "canonical_scene": base["base_scene"],
+        }
         members = [obj for obj in profile_runs["derived"]["objects"] if obj["role"] == "geometry"]
         summary.update(profile_run_count=len(data["profile_runs"]), profile_member_count=len(members),
                        profile_material_volume_mm3=str(sum(int(obj["section_profile"]["material_volume_mm3"]) for obj in members)),

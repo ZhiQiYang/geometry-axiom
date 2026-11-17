@@ -497,6 +497,10 @@ def prepare_update(data, *, base_executable=None, bridge_executable=None, max_ce
             inputs["timbers"] = deepcopy(selection["timbers"])
         if selection["profile_runs"]:
             inputs["profile_runs"] = deepcopy(selection["profile_runs"])
+            # Keep the selected snapshot bytes, including editor metadata.
+            # space_modeling normalizes this once through the native adapter
+            # and binds the resulting canonical source in source_snapshot.
+            inputs["base_scene"] = data["current_scene"]
     old_graph = _graph(record["input"]["base_scene"], bridge)
     new_graph = _graph(data["current_scene"], bridge)
     old_fixed, old_associations = _protected(old_graph, record["input"])

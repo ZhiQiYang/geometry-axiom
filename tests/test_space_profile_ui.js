@@ -35,7 +35,7 @@ function nativeRead() {
   ]}};
 }
 function harness({schemas=['geometry-space-preview/1','geometry-space-preview/2','geometry-space-preview/3']}={}) {
-  const elements=new Map(),selected=[],requests=[],saved=[],messages=[],calls=[],pending=[];
+  const elements=new Map(),selected=[],requests=[],saved=[],records=[],messages=[],calls=[],pending=[];
   const sourceRead=nativeRead(), history={frame:{ids:new Map([[1,'face-1']])},undo:[],redo:[],group:null};
   let context={id:'source-project'}, scene=fixture.scene, rendered=0;
   class Element {
@@ -59,26 +59,30 @@ function harness({schemas=['geometry-space-preview/1','geometry-space-preview/2'
   const source={kind:'scene',base_scene:scene,context_id:context.id,placement_id:1,boundary_id:1,face_key:'face-1',projection,
     profileRevision:11,profileRuns:[],profileUnavailable:1,timbers:plain(fixture.model.input.timbers),loops:[{verts:[[0,0],[4000,0],[4000,5000],[0,5000]]}]};
   const state={source,sequence:1,revision:1,previewRevision:1,phase:'ready',input:null,result:null,editing:null,readonly:false,createdId:null,controller:new AbortController()};
-  const ReferenceWorkspace={history,context:()=>context,getFaceProjection:()=>projection,addSpaceModel:record=>saved.push(plain(record)),updateSpaceModel:(id,record)=>saved.push(plain(record)),
+  const ReferenceWorkspace={history,context:()=>context,getSpaceModels:()=>records,getFaceProjection:()=>projection,addSpaceModel:record=>saved.push(plain(record)),updateSpaceModel:(id,record)=>saved.push(plain(record)),
     getModelOperationState:()=>({context,frame:history.frame,revision:1,contextToken:'fixture',undo:history.undo.at(-1),redo:history.redo.at(-1),group:history.group,blocked:false}),
     getEvidenceState:()=>({contextToken:'fixture',revision:1,session:'fixture',nativeRevision:sourceRead.revision,undo:history.undo.at(-1),redo:history.redo.at(-1),blocked:false})};
   // Cross the finite VM seam as JSON; the real strict reader still validates
   // every field. Browser production objects share one JavaScript realm.
-  const sandbox={$,state,dialog,ReferenceWorkspace,GeometryProject:{...GeometryProject,validateSpaceModel:record=>GeometryProject.validateSpaceModel(plain(record))},IdentityLedger,SourceInspector,copy:plain,console,crypto:{randomUUID:()=> 'new-space'},Date,Intl,
+  async function admitted(command) {
+    calls.push(command);const hold=pending.find(item=>item.command===command&&!item.used);
+    if(hold){hold.used=true;hold.entered.resolve();await hold.release.promise;}
+  }
+  const sandbox={$,state,dialog,ReferenceWorkspace,GeometryProject:{...GeometryProject,validateSpaceModel:record=>GeometryProject.validateSpaceModel(plain(record)),
+    validateSpaceModelHashes:async record=>{await admitted('validate-space-model-hashes');return GeometryProject.validateSpaceModelHashes(plain(record));}},IdentityLedger,SourceInspector,copy:plain,console,crypto:{randomUUID:()=> 'new-space'},Date,Intl,
     esc:value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),
     capabilitiesPromise:null,supportsTimbers:null,supportsProfileRuns:null,supportsEngineering:false,draft:null,
     document:{querySelectorAll:()=>[]},window:{},connection:{phase:'ready'},
     oc:{edit:{bid:1},surfs:[{id:1,boundary:1,origin:[0,0,0],u:[1,0,0],v:[0,1,0]}]},
     feSurf:()=>sandbox.oc.surfs[0],show:()=>true,restoreDraft:()=>false,validProjection:()=>true,setTab(){},updateActions(){},
-    assertPlanProjection(){},assertEditableRecord(){},onlyProjectionChanged:()=>false,openRecord(){},refresh(){},drawResult(){},
+    assertPlanProjection(){},onlyProjectionChanged:()=>false,openRecord(){},refresh(){},drawResult(){},
     message:(text,kind)=>messages.push({text,kind}),
     renderSource:value=>{state.source=value;state.phase='ready';rendered++;},
     startSource:()=>{state.source=null;state.phase='loading';return ++state.sequence;},
     fetch:async()=>({ok:true,json:async()=>({space_preview_schemas:schemas,capabilities:['section-profile/1']})}),
   };
   async function deliver(command,body){
-    calls.push(command);const hold=pending.find(item=>item.command===command&&!item.used);
-    if(hold){hold.used=true;hold.entered.resolve();await hold.release.promise;}
+    await admitted(command);
     if(command==='section-profile-read')return plain(sourceRead);
     if(command==='dump-deidentified')return {ok:true,text:scene,revision:sourceRead.revision,definition_sha256:fixture.model.result.source_sha256};
     if(command==='identity-read')return {ok:true,active:false};
@@ -90,13 +94,14 @@ function harness({schemas=['geometry-space-preview/1','geometry-space-preview/2'
   }
   sandbox.api=command=>deliver(command);sandbox.request=(command,body)=>deliver(command,body);
   const functions=['contextId','sourceHistoryToken','sameSourceHistory','faceKey','assertSourceHistory','profileReadRevision','sourceProfileRuns','renderProfileCandidates','checkProfileSource',
-    'sourceTimbers','openCurrentFace','readInteger','makeInput','metric','wallRequirementMissing','assertWallRequirement','renderResult','preview','creationOwner','assertCreationOwner','creationPin','attachSourceIdentity','create','cancelSourceLoad','stale','invalidateLiveSource','probeCapabilities','requireTimberCapability','requireProfileRunCapability'];
+    'sourceTimbers','openCurrentFace','readInteger','makeInput','metric','wallRequirementMissing','assertWallRequirement','renderResult','preview','creationOwner','assertCreationOwner','creationPin','attachSourceIdentity','create','assertEditableRecord','cancelSourceLoad','stale','invalidateLiveSource','probeCapabilities','requireTimberCapability','requireProfileRunCapability'];
   vm.createContext(sandbox);
   vm.runInContext(functions.map(shipped).join('\n'),sandbox,{filename:'space-workspace.production-functions.js'});
   source.history_token=sandbox.sourceHistoryToken();source.profileRuns=plain(sandbox.sourceProfileRuns(sourceRead).candidates);
-  return {sandbox,state,$,sourceRead,history,source,selected,requests,saved,messages,calls,
+  return {sandbox,state,$,sourceRead,history,source,selected,requests,saved,records,messages,calls,
     get rendered(){return rendered;},
     choose(...ids){selected.splice(0,selected.length,...ids.map(id=>({dataset:{smProfileRun:String(id)}})));},
+    editSaved(){records.push(plain(fixture.model));state.editing={record:plain(fixture.model),context_id:context.id};$('smEditHeight').value=String(fixture.model.input.settings.height);},
     changeSource(){sourceRead.revision++;},changeScene(){scene+='\n# changed';},replaceProject(){context={id:'other-project'};},
     hold(command){const item={command,used:false,entered:deferred(),release:deferred()};pending.push(item);return {entered:item.entered.promise,release:()=>item.release.resolve()};},
   };
@@ -178,7 +183,7 @@ check('Q38JB-UI14 complete explicit input and native package are saved together'
   assert.deepEqual(h.saved[0].input.profile_runs,[{kind:'profile-run',id:1}]);assert.deepEqual(h.saved[0].result.profile_runs,fixture.model.result.profile_runs);
 });
 check('Q38JB-UI15 wall height editing uses saved source and selected list without live reread',async()=>{
-  const h=harness();h.state.editing={record:plain(fixture.model)};h.changeSource();h.changeScene();h.$('smEditHeight').value='3100';
+  const h=harness();h.editSaved();h.changeSource();h.changeScene();h.$('smEditHeight').value='3100';
   await h.sandbox.preview();assert.equal(h.state.phase,'preview');
   assert.equal(h.requests[0].base_scene,fixture.model.input.base_scene,'Q38JB-UI15 saved source retained');
   assert.deepEqual(h.requests[0].profile_runs,fixture.model.input.profile_runs);assert.equal(h.requests[0].settings.height,3100);
@@ -217,4 +222,67 @@ check('Q38JB-UI19 admitted source renders its selectable profile controls throug
   assert.doesNotMatch(controls,/\schecked(?:[\s=>])/,'Q38JB-UI19 newly admitted profile controls remain unselected');
   assert.match(h.$('smProfileUnavailable').textContent,/未定位 1 條/,'Q38JB-UI19 admitted source explains unavailable local run');
   assert.equal(h.requests.length,0,'Q38JB-UI19 source admission does not manufacture a preview');
+});
+
+check('R430-UI20 new model verifies raw source and receipt before writing history',async()=>{
+  for(const [label,corrupt] of [
+    ['raw source',h=>{h.state.input.base_scene+='\n# another raw source';}],
+    ['input receipt',h=>{h.state.result.source_snapshot.input_sha256='0'.repeat(64);}],
+    ['package receipt',h=>{h.state.result.profile_runs.manifest.geometry_sha256='0'.repeat(64);}],
+  ]){
+    const h=harness();h.choose(1);await h.sandbox.preview();corrupt(h);await h.sandbox.create();
+    assert.equal(h.saved.length,0,'R430_CREATE_SOURCE_HASH_GUARD: '+label);
+    assert.match(h.messages.at(-1).text,/來源快照|完整性/);assert.equal(h.state.previewRevision,-1);
+  }
+});
+check('R430-UI21 height edit verifies raw source and receipt before replacing the saved model',async()=>{
+  for(const [label,corrupt] of [
+    ['raw source',h=>{h.state.input.base_scene+='\n# another raw source';}],
+    ['input receipt',h=>{h.state.result.source_snapshot.input_sha256='0'.repeat(64);}],
+    ['package receipt',h=>{h.state.result.profile_runs.manifest.geometry_sha256='0'.repeat(64);}],
+  ]){
+    const h=harness();h.editSaved();const before=JSON.stringify(h.records);await h.sandbox.preview();corrupt(h);await h.sandbox.create();
+    assert.equal(h.saved.length,0,'R430_EDIT_SOURCE_HASH_GUARD: '+label);
+    assert.equal(JSON.stringify(h.records),before,'R430_EDIT_ORIGINAL_RECORD_UNCHANGED');
+    assert.match(h.messages.at(-1).text,/來源快照|完整性/);
+  }
+});
+check('R430-UI22 new model rechecks every owner after the asynchronous source hash',async()=>{
+  for(const [label,change] of [
+    ['context',h=>h.replaceProject()],['history',h=>h.history.undo.push({})],['native revision',h=>h.changeSource()],
+    ['settings',h=>h.sandbox.stale()],['cancel',h=>h.sandbox.cancelSourceLoad()],
+    ['preview',h=>{h.state.previewRevision=-1;}],['source',h=>{h.state.source={...h.state.source};}],
+  ]){
+    const h=harness();h.choose(1);await h.sandbox.preview();const hold=h.hold('validate-space-model-hashes'),operation=h.sandbox.create();
+    assert.equal(await Promise.race([hold.entered.then(()=>true),operation.then(()=>false)]),true,'R430_CREATE_HASH_CHECK_REQUIRED');
+    change(h);hold.release();await operation;
+    assert.equal(h.saved.length,0,'R430_CREATE_HASH_AWAIT_OWNER: '+label);
+  }
+});
+check('R430-UI23 height edit rechecks owners and original record after the asynchronous source hash',async()=>{
+  for(const [label,change] of [
+    ['context',h=>h.replaceProject()],['history',h=>h.history.undo.push({})],['native revision',h=>h.changeSource()],
+    ['settings',h=>h.sandbox.stale()],['cancel',h=>h.sandbox.cancelSourceLoad()],
+    ['preview',h=>{h.state.previewRevision=-1;}],['source',h=>{h.state.source={...h.state.source};}],
+    ['edit owner',h=>{h.state.editing={...h.state.editing};}],['saved record',h=>{h.records[0].name+=' changed';}],
+  ]){
+    const h=harness();h.editSaved();await h.sandbox.preview();const hold=h.hold('validate-space-model-hashes'),operation=h.sandbox.create();
+    assert.equal(await Promise.race([hold.entered.then(()=>true),operation.then(()=>false)]),true,'R430_EDIT_HASH_CHECK_REQUIRED');
+    change(h);hold.release();await operation;
+    assert.equal(h.saved.length,0,'R430_EDIT_HASH_AWAIT_OWNER: '+label);
+  }
+});
+check('R430-UI24 a verified saved-source height edit writes once without a live-source reread',async()=>{
+  const h=harness();h.editSaved();h.changeSource();h.changeScene();await h.sandbox.preview();await h.sandbox.create();
+  assert.equal(h.saved.length,1,'R430_EDIT_HASH_VALID_WRITE: '+JSON.stringify(h.messages));
+  assert.equal(h.saved[0].id,fixture.model.id);assert.equal(h.saved[0].input.base_scene,fixture.model.input.base_scene);
+  assert.equal(h.calls.filter(call=>call==='validate-space-model-hashes').length,1,'R430_EDIT_HASH_VERIFIED_ONCE');
+  assert.equal(h.calls.filter(call=>call==='section-profile-read'||call==='dump-deidentified').length,0,'R430_EDIT_SAVED_SOURCE_NO_LIVE_READ');
+});
+check('R430-UI25 legacy models do not acquire the profile-only hash step',async()=>{
+  const h=harness();await h.sandbox.preview();
+  h.state.result.schema='geometry-space-preview/2';delete h.state.result.profile_runs;delete h.state.result.source_snapshot;
+  for(const key of ['profile_run_count','profile_member_count','profile_material_volume_mm3','profile_overlap_checked'])delete h.state.result.summary[key];
+  h.sandbox.GeometryProject.validateSpaceModelHashes=()=>assert.fail('R430_LEGACY_NO_PROFILE_HASH_STEP');
+  await h.sandbox.create();assert.equal(h.saved.length,1,'R430_LEGACY_CREATE_UNCHANGED: '+JSON.stringify(h.messages));
 });

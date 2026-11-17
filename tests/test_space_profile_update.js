@@ -12,7 +12,7 @@ const P=require(path.join(ROOT,'geometry-web/project-store.js'));
 const fixture=JSON.parse(fs.readFileSync(path.join(ROOT,'tests/fixtures/q38j-b-native-model.json'),'utf8'));
 const clone=value=>JSON.parse(JSON.stringify(value)),hash=value=>crypto.createHash('sha256').update(value).digest('hex'),pin=value=>hash(M.canonical(value));
 const PACKAGES=['space','volume','clearance','walls','timbers','profile_runs'];
-function withoutRuns(value){const record=clone(value);delete record.input.profile_runs;delete record.result.profile_runs;for(const key of ['profile_run_count','profile_member_count','profile_material_volume_mm3','profile_overlap_checked'])delete record.result.summary[key];record.result.schema='geometry-space-preview/2';return record;}
+function withoutRuns(value){const record=clone(value);delete record.input.profile_runs;delete record.result.profile_runs;delete record.result.source_snapshot;for(const key of ['profile_run_count','profile_member_count','profile_material_volume_mm3','profile_overlap_checked'])delete record.result.summary[key];record.result.schema='geometry-space-preview/2';return record;}
 const selected=ids=>({placement_id:1,boundary_id:1,edges:[0,1,2,3],obstacles:[],timbers:[{kind:'timber',id:0}],profile_runs:ids.map(id=>({kind:'profile-run',id})),projection:null});
 function receipt(request,after){
   const before=request.record,pair=(a,b)=>({before:clone(a),after:clone(b)});
@@ -66,6 +66,17 @@ test('Q38JC controller rejects a coherent producer receipt that silently drops s
   const h=harness({after:withoutRuns(fixture.model)});h.update.begin(fixture.model.id);
   await assert.rejects(()=>h.update.prepare(selected([1])),/候選內容/,'Q38JC_SELECTION_MATCH');
   assert.equal(h.commits.length,0);assert.deepEqual(h.history.frame.context.models,[h.before]);
+});
+test('R430 controller binds the complete profile candidate to the selected raw source',async()=>{
+  for(const [marker,change] of [
+    ['R430_UPDATE_RAW_BINDING',record=>{record.input.base_scene='# foreign editor snapshot\n'+record.input.base_scene;}],
+    ['R430_UPDATE_RECEIPT_BINDING',record=>{record.result.source_snapshot.input_sha256='a'.repeat(64);}],
+    ['R430_UPDATE_CANONICAL_BINDING',record=>{record.source.scene_hash='a'.repeat(64);record.result.source_sha256=record.source.scene_hash;}]
+  ]) {
+    const after=clone(fixture.model);change(after);const h=harness({after});h.update.begin(fixture.model.id);
+    await assert.rejects(()=>h.update.prepare(selected([1])),/候選.*來源/ ,marker);
+    assert.equal(h.commits.length,0,marker);assert.deepEqual(h.history.frame.context.models,[h.before],marker);
+  }
 });
 test('Q38JC controller cancels a late selected-profile receipt without any record change',async()=>{
   const hold=deferred(),entered=deferred(),h=harness({produce:async request=>{entered.resolve();await hold.promise;return receipt(request,fixture.model);}});

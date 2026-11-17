@@ -133,6 +133,10 @@
         throw Error('原生執行版本未知，不能確認模型更新。');
       host.validateRecord(candidate.record);
       const next = candidate.record, old = op.record;
+      if (next.input.profile_runs && (next.input.base_scene !== source.scene ||
+          next.result.source_snapshot.input_sha256 !== candidate.current_scene_sha256 ||
+          await digest(next.result.source_snapshot.canonical_scene) !== next.result.source_sha256))
+        throw Error('候選來源快照與此次明選來源不一致，未更新模型。');
       const chosen = request.selection, faces = old.input.mode === 'faces';
       const boundaryId = chosen.boundary_id === 0 && next.source.boundary_id === null && (old.input.profile_runs?.length || next.input.profile_runs?.length || old.source.boundary_id === null) ? null : chosen.boundary_id;
       const sameMode = next.input.mode === old.input.mode && faces === (chosen.mode === 'faces');

@@ -679,6 +679,11 @@
   }
   function validateProfileRunModel(record) {
     const {input, source, result} = record, pkg = result.profile_runs, refs = input.profile_runs;
+    const snapshot = result.source_snapshot;
+    if (!keys(snapshot, ["schema", "input_sha256", "canonical_scene"]) ||
+        snapshot.schema !== "geometry-space-source/1" || !hashRE.test(snapshot.input_sha256) ||
+        !str(snapshot.canonical_scene, MAX_MANIFEST) || !snapshot.canonical_scene.endsWith("\n") ||
+        snapshot.canonical_scene.includes("\r")) fail("拉伸件模型缺少原生來源快照收據。");
     if (input.mode !== "plan" || !Array.isArray(refs) || !refs.length || refs.length > 512 ||
         !refs.every(ref => keys(ref, ["kind", "id"]) && ref.kind === "profile-run" && uint(ref.id)) ||
         new Set(refs.map(ref => ref.id)).size !== refs.length)
@@ -694,9 +699,20 @@
     const sorted = refs.map(ref => ref.id).sort((a,b) => a-b), ids = new Set(sorted), request = pkg.request;
     if (request.role !== "geometry" || request.target !== "solid-set" || request.allow_partial !== false ||
         request.roots.length !== sorted.length || request.roots.some((ref,index) => ref.kind !== "profile-run" || ref.id !== sorted[index]) ||
-        pkg.definitions.base_scene !== input.base_scene || pkg.definitions.extensions.length || pkg.derived.status !== "COMPLETE" ||
+        pkg.definitions.base_scene !== snapshot.canonical_scene || pkg.definitions.extensions.length || pkg.derived.status !== "COMPLETE" ||
         !pkg.manifest.capabilities.includes(SECTION_CAPABILITY))
       fail("拉伸件套件須完整輸出同一來源快照的明選清單，並保留原生能力。");
+    if (result.timbers && result.timbers.definitions.base_scene !== snapshot.canonical_scene)
+      fail("角材與拉伸件須使用同一來源快照。");
+    // Native canonicalization reorders generated boundaries and placements.
+    // Compare complete native lines, never normalize or strip the raw input.
+    // The I31 native replay additionally rebuilds all definitions and geometry.
+    const sourceLines = snapshot.canonical_scene.split("\n").filter(Boolean);
+    for (const key of ["space", "volume", "clearance", "walls"]) if (result[key]) {
+      const counts = new Map();
+      for (const line of result[key].definitions.base_scene.split("\n")) counts.set(line, (counts.get(line) || 0) + 1);
+      if (sourceLines.some(line => counts.get(line) !== 1)) fail("全部交換包須保留同一來源快照的完整定義。");
+    }
     const envelopes = new Map(sorted.map(id => [id,0])), members = new Set(), profileIds = new Map();
     let volume = 0n;
     const integerPoint = point => Array.isArray(point) && point.length === 3 && point.every(n => Number.isSafeInteger(n) && finite(n,-1e8,1e8));
@@ -821,7 +837,7 @@
       if (i.mode !== "plan" || !positiveId(s.boundary_id) || s.placement_id !== i.placement_id) fail("空間模型的平面投影來源不一致。");
       validateFaceProjectionRefs([{bid:s.boundary_id,placement_id:s.placement_id}], i.base_scene);
     }
-    if (!keys(r, ["schema", "space", "volume", "clearance", "walls", "summary", "source_sha256", ...(withTimbers ? ["timbers"] : []), ...(withProfileRuns ? ["profile_runs"] : [])], ["ok", "diagnostics"]) ||
+    if (!keys(r, ["schema", "space", "volume", "clearance", "walls", "summary", "source_sha256", ...(withTimbers ? ["timbers"] : []), ...(withProfileRuns ? ["profile_runs", "source_snapshot"] : [])], ["ok", "diagnostics"]) ||
         r.schema !== (withProfileRuns ? "geometry-space-preview/3" : withTimbers ? "geometry-space-preview/2" : "geometry-space-preview/1") ||
         !object(r.summary) || !hashRE.test(r.source_sha256) || (Object.hasOwn(r, "ok") && r.ok !== true) ||
         (Object.hasOwn(r, "diagnostics") && !Array.isArray(r.diagnostics))) fail("空間預覽紀錄不合法。");
@@ -998,12 +1014,19 @@
   async function validateProfileRunHashes(manifest) {
     for (const record of manifest.models || []) if (modelHasProfileRuns(record)) {
       const pkg=record.result.profile_runs, encode=value=>new TextEncoder().encode(ScenarioCatalog.canonical(value));
-      if (await sha(new TextEncoder().encode(record.input.base_scene)) !== record.source.scene_hash ||
+      const snapshot=record.result.source_snapshot;
+      if (await sha(new TextEncoder().encode(record.input.base_scene)) !== snapshot.input_sha256 ||
+          await sha(new TextEncoder().encode(snapshot.canonical_scene)) !== record.source.scene_hash ||
           await sha(encode(pkg.definitions)) !== pkg.manifest.source_sha256 ||
           await sha(encode(pkg.derived)) !== pkg.manifest.geometry_sha256)
         fail("拉伸件模型的來源快照或套件完整性檢查失敗。");
     }
     for (const scenario of manifest.scenarioCatalog?.scenarios || []) await validateProfileRunHashes(scenario.snapshot.projectManifest);
+  }
+  async function validateSpaceModelHashes(record) {
+    validateSpaceModel(record);
+    await validateProfileRunHashes({models:[record]});
+    return record;
   }
   function reviewBasis(p) {
     return JSON.stringify([p.sourceId,p.id,p.page,p.imgW,p.imgH,p.crop,p.mmPerPx,p.x,p.y,p.rot,p.calibration]);
@@ -1344,7 +1367,7 @@
     }
   }
   return { Features, PROFILE_RUN_FORMAT, validateProfileRunModel, BOUNDARY_PAIR_FORMAT, BOUNDARY_PAIR_CAPABILITY, assertBoundaryPairDefinitions, readerCapabilitiesWithBoundaryPair, PANEL_FILL_FORMAT, PANEL_FILL_CAPABILITY, assertPanelFillDefinitions, CUTTING_FORMAT, CUTTING_CAPABILITY, CARD_FORMAT, CARD_CAPABILITY, ROOM_CANDIDATE_FORMAT, BAY_REPEAT_FORMAT, BAY_REPEAT_CAPABILITY, validateBayRepeatDraftData, GRID_DRAFTS_FORMAT, ScenarioCatalog, SECTION_FORMAT, SECTION_CAPABILITY, CASE_FORMAT, CASE_CAPABILITY, validateCaseHashes, SCENARIO_FORMAT, SCENARIO_CAPABILITY, formatPolicy, GRID_RULE_FORMAT, EVIDENCE_FORMAT, EVIDENCE_CAPABILITY, SUBDIVISION_FORMAT, SUBDIVISION_CAPABILITY, SUBDIVISION_V2_CAPABILITY, FEATURE_FORMAT, readerCapabilities, validateManifestCapabilities, OUTLINE_FORMAT, reviewBasis, outlineFingerprint, validateReconstructionReviews, GENERATION_FORMAT, GENERATION_CAPABILITY, ASSEMBLY_FORMAT, ASSEMBLY_CAPABILITY, ASSEMBLY_DRAFT_SCHEMA, validateAssemblyDraft, validateAssemblyDrafts, PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
-    MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateModelPackage, assertManifestCapacity,
+    MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateSpaceModelHashes, validateModelPackage, assertManifestCapacity,
     validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, nativeReaderCapabilities, assertProjectCapabilities, sceneCapabilities, stripIdentityLedger, restoreAfterProbe,
     validateFaceProjection, validateFaceProjectionRefs, validateProjectObjectRefs, validateEvidenceTargets, supportedFormats, projectFormat, reference, pack, unpack, readForImport, ContextHistory };
 });

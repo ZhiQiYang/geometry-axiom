@@ -11,7 +11,7 @@ integration changes are distinguished below.
 
 固定基底 `11eddfdb4d7b1f76aedfe001e084a3840790bedc`。Q38j-c 沿原模型修改入口加入明選拉伸件；完整產品、保存、K3、範圍與 L4 路徑見 [Q38J-APP.md](Q38J-APP.md)。下方有日期的 PR99／初次 owner 交付段落保留歷史來源，不代表當前入口尚未載入，也不把舊測試數字當本輪收據。
 
-plan selection 新增必填 `profile_runs`，明示 `[]` 才移除原模型全部 run；faces 維持既有 use 數、順序、朝向及用途，不納入 timbers／profile。各包由同一 `input.base_scene` 推導；生成的殼／牆可含設定宣告，只有 profile 包要求 `definitions.base_scene` 恰同該來源且 `extensions:[]`。`/3` producer 能力須另核，不能只憑 `section-profile/1` 放行。完整專案含 profile 模型使用 `/20`，仍保留 `/1`–`/19` 及其守門。
+plan selection 新增必填 `profile_runs`，明示 `[]` 才移除原模型全部 run；faces 維持既有 use 數、順序、朝向及用途，不納入 timbers／profile。有 profile 的候選保存此次 `current_scene` 原文於 `input.base_scene`；原生 `load_base` 的 canonical 場景及原文 hash 另放在 `result.source_snapshot`，詳細欄位與確認前守門見 [Q38J-APP.md §3](Q38J-APP.md#3-精確輸入結果及單一來源)。各包由該同一原生來源推導；生成的殼／牆可含設定宣告，profile／角材包的 `definitions.base_scene` 等於 canonical 場景，profile 的 `extensions:[]`。`/3` producer 能力須另核，不能只憑 `section-profile/1` 放行。完整專案含 profile 模型使用 `/20`，仍保留 `/1`–`/19` 及其守門。
 
 K3 covered 根與 candidate/2 身分收據沿現行主線保留，不將所有根一律標 unknown；profile-run 只進內容追溯、不進身分 pin，文字分別顯示已追蹤根判讀與拉伸件延續未知。材料固定版本／逐根關聯與原有 source／context／history／late reply 守門不放寬。真瀏覽器、完整 census、正式 mutation evidence 與 L4 仍待本候選最終收據。
 

@@ -3577,13 +3577,13 @@
     {
       "path": "geometry-web/profile_space_test.js",
       "reason": "Dedicated Q38j acceptance/test driver profile_space_test.js; invoked only by space_model_test.js, not by product runtime or served application entry points.",
-      "sha256": "174df012ed1976c39cbeb92cbe173ce00109c8a396d5f222bf1795fae46424b6",
+      "sha256": "f9592e081250a646339a026743e16a2d00a88685e42ff546b857905a1d3c72c7",
       "hashMode": "lf"
     },
     {
       "path": "geometry-web/space_model_test.js",
       "reason": "Dedicated acceptance/test driver space_model_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "6324e2372a8f9aaa0f812c624e246e3e4b788923763332e27d76ef4202bcac42",
+      "sha256": "3de012b26d894b6cd99326f04f2c67fc8fde2454af730d9f8a3cc7753e97dc5c",
       "hashMode": "lf"
     },
     {
@@ -3745,7 +3745,7 @@
     {
       "path": "geometry-core/card-reference/run_archive_mutations.py",
       "reason": "Dedicated GEO-262 archive mutation runner run_archive_mutations.py; test tooling, not a product-loaded module.",
-      "sha256": "bc8f61e13ccf1f47b409ba0d3682422e73ded3bbf2c2e16c63bfb0cc86249ae0",
+      "sha256": "ec5fbb8587f811d76c1292ee31e4684273fc56b429f54ead5f6301cc2b160073",
       "hashMode": "lf"
     },
     {

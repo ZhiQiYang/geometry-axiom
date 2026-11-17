@@ -121,6 +121,10 @@ R396_ADDED_SUITES = frozenset({'node:workspace_view_state', 'py:test_workspace_v
                               'py:test_workspace_view', 'node:workspace_context_menu_state'})
 R17_ADDED_SUITES = frozenset({'py:test_boundary_pair_host', 'node:boundary_pair_ui',
                               'node:boundary_pair_project', 'node:boundary_pair_browser_scope'})
+R12_ADDED_SUITES = frozenset({'py:test_space_profile_runs', 'py:test_space_profile_update',
+                              'py:test_r12_browser_evidence', 'node:space_profile_ui',
+                              'node:space_profile_view', 'node:space_profile_update_ui',
+                              'node:profile_space_browser_contract'})
 
 
 class BrowserPathScopeWiring(unittest.TestCase):
@@ -277,6 +281,8 @@ class NativeShardCoverage(unittest.TestCase):
             'node:boundary_pair_browser_scope': {'mode': 'count', 'count': 7, 'unit': 'node test'},
         }, {name: expected['suites'].get(name) for name in R17_ADDED_SUITES},
                          'R17_COMPLETE_EXPECTED_REGISTRY')
+        self.assertEqual(R12_ADDED_SUITES, R12_ADDED_SUITES & expected['suites'].keys(),
+                         'R12_COMPLETE_EXPECTED_REGISTRY')
         parts = run_all.partition_suites(suites, 3)
         actual = Counter(s.name for part in parts for s in part)
         self.assertEqual(actual, Counter({name:1 for name in expected['suites']}),
@@ -378,8 +384,17 @@ class NativeShardCoverage(unittest.TestCase):
 
     def test_profile_balances_measured_work(self):
         suites = run_all.build_suites()
-        weights = timing_weights()
-        parts = partition_suites(suites, 3, weights)
+        # Keep even max(weights.values()) at the historical 129900ms bound;
+        # R12's 300000ms costs belong only to the current six-shard proof.
+        weights = {name: ms for name, ms in timing_weights().items()
+                   if name not in R12_ADDED_SUITES}
+        self.assertEqual(129900, max(weights.values()), 'R12_HISTORICAL_BALANCE_BOUND_UNCHANGED')
+        # The retired three-shard relative-weight guard retains the exact
+        # pre-R12 registry. Current capacity below covers all suites on six
+        # shards with the receipt-backed R12 planning costs, never 1000ms guesses.
+        pre_r12_suites = [s for s in suites if s.name not in R12_ADDED_SUITES]
+        self.assertEqual(328, len(pre_r12_suites), 'R12_PREVIOUS_328_REGISTRY_RETAINED')
+        parts = partition_suites(pre_r12_suites, 3, weights)
         loads = [sum(weights.get(s.name, 1000) for s in part) for part in parts]
         self.assertLess(max(loads), 600000, '固定main實測配置應低於每片10分鐘，留建置與新套件餘量')
         self.assertLessEqual(max(loads)-min(loads), max(weights.values()))
@@ -396,14 +411,16 @@ class NativeShardCoverage(unittest.TestCase):
                           'node:panel_fill_grid_read_compat': 2000},
                          {name: added.get(name) for name in legacy_added},
                          'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
-        self.assertEqual(R380_ADDED_SUITES, set(added) - R379_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES,
+        self.assertEqual(R380_ADDED_SUITES, set(added) - R379_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES,
                          'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
-        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES,
+        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES,
                          'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
-        self.assertEqual(R396_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES,
+        self.assertEqual(R396_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES,
                          'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
-        self.assertEqual(R17_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R396_ADDED_SUITES,
+        self.assertEqual(R17_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R396_ADDED_SUITES - R12_ADDED_SUITES,
                          'R17_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        self.assertEqual(R12_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES,
+                         'R12_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual({s.name for s in suites}, historical_names | set(added),
                          'R348_MEASURED_PROFILE_COVERS_REGISTRY')
@@ -412,9 +429,9 @@ class NativeShardCoverage(unittest.TestCase):
         # Main's historical 317-suite proof retains its original universe.
         # R379's 318-suite and R396's 321-suite proofs have independent
         # tests below; R17's four suites are likewise outside main's history.
-        # The live six-shard proof covers all 328 suites (train 3: 320 + R396 4 + R17 4).
+        # The live six-shard proof covers all 335 suites, including R12's seven.
         main_history = [s for s in suites
-                        if s.name not in R379_ADDED_SUITES | R396_ADDED_SUITES | R17_ADDED_SUITES]
+                        if s.name not in R379_ADDED_SUITES | R396_ADDED_SUITES | R17_ADDED_SUITES | R12_ADDED_SUITES]
         self.assertEqual(historical_names | R380_ADDED_SUITES,
                          {s.name for s in main_history}, 'R380_HISTORICAL_317_REGISTRY')
         self.assertEqual(317, len(main_history), 'R380_HISTORICAL_317_UNCHANGED')
@@ -427,7 +444,7 @@ class NativeShardCoverage(unittest.TestCase):
         current_weights = dict(weights)
         current_weights.update({name: row['planning_weight_ms']
                                 for name, row in profile.get('supplemental', {}).items()})
-        historical_parts = partition_suites(suites, 3, current_weights)
+        historical_parts = partition_suites(pre_r12_suites, 3, current_weights)
         current_loads = [sum(current_weights.get(s.name, 1000) for s in p) for p in historical_parts]
         self.assertLess(max(current_loads), 650000, 'R348_SHARD_SUPPLEMENTAL_PROFILE_CEILING')
         # Preserve both original measurements and the original 100s + 30s
@@ -465,6 +482,8 @@ class NativeShardCoverage(unittest.TestCase):
                                  'R396_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
                 self.assertFalse(set(measured) & R17_ADDED_SUITES,
                                  'R17_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
+                self.assertFalse(set(measured) & R12_ADDED_SUITES,
+                                 'R12_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
                 self.assertEqual(set(measured) | set(added), {s.name for s in suites},
                                  'R348_MEASURED_PROFILE_COVERS_REGISTRY')
                 if run in runs[:2]:
@@ -508,7 +527,7 @@ class NativeShardCoverage(unittest.TestCase):
         # for unrelated main mutants, without sharing any 0/1/0 result.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES,
+        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES,
                          'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual(315, len(historical_names), 'R348_HISTORICAL_315_UNCHANGED')
@@ -586,7 +605,7 @@ class NativeShardCoverage(unittest.TestCase):
                           'py:test_r14_browser_receipt': 2000},
                          {name: bounds.get(name) for name in R379_ADDED_SUITES},
                          'R379_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
-        self.assertEqual(R379_ADDED_SUITES | R380_ADDED_SUITES | R396_ADDED_SUITES | R17_ADDED_SUITES, set(bounds),
+        self.assertEqual(R379_ADDED_SUITES | R380_ADDED_SUITES | R396_ADDED_SUITES | R17_ADDED_SUITES | R12_ADDED_SUITES, set(bounds),
                          'R379_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
         # R17 (PR #419) is a third independent /1 source. It passes the same
         # field, provenance, all-passed and margin checks, and must not repeat a
@@ -639,7 +658,8 @@ class NativeShardCoverage(unittest.TestCase):
                     self.assertNotEqual(native_shards.profile_digest(), digest, marker)
         source_bytes = [path.read_bytes().replace(b'\r\n', b'\n') for path in
                         (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE,
-                         r14_path, native_shards.ADDED_RECEIPTS, r17_path)]
+                         r14_path, native_shards.ADDED_RECEIPTS, r17_path,
+                         native_shards.ADDED_R12_RECEIPTS)]
         self.assertEqual(hashlib.sha256(b'\0'.join(source_bytes)).hexdigest(),
                          digest, 'R379_PROFILE_DIGEST_BINDS_R14_SOURCE')
 
@@ -648,7 +668,7 @@ class NativeShardCoverage(unittest.TestCase):
         # 318-suite history and the current 324-suite/six-shard plan.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual(R396_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES,
+        self.assertEqual(R396_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES,
                          'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual(315, len(historical_names), 'R348_HISTORICAL_315_UNCHANGED')
@@ -751,7 +771,8 @@ class NativeShardCoverage(unittest.TestCase):
             native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
             native_shards.ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
             receipt_bytes + b'\0' +
-            native_shards.ADDED_R17_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+            native_shards.ADDED_R17_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+            native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
         self.assertEqual(wanted_digest, native_shards.profile_digest(),
                          'R396_PROFILE_DIGEST_BINDS_ADDED_RECEIPTS')
         # A conflict resolution must not silently drop the original R396
@@ -777,6 +798,63 @@ class NativeShardCoverage(unittest.TestCase):
         }
         self.assertEqual({name: catalog.get(name) for name in required}, required,
                          'R396_NAMED_WITHDRAWALS_RETAINED')
+
+    def test_r12_receipt_provenance_rejects_named_mutations(self):
+        path = Path(__file__).with_name('native_shard_added_receipts_r12.json')
+        self.assertEqual(getattr(native_shards, 'ADDED_R12_RECEIPTS', None), path,
+                         'R12_INDEPENDENT_RECEIPT_SOURCE_REQUIRED')
+        raw = path.read_bytes().replace(b'\r\n', b'\n')
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),
+                         'cac85f68a1eba8f5ceac2a55f740cf25b03eb54840eca93dca79d8e9d3de07cf',
+                         'R12_RETAINED_ORIGINAL_CI_RECEIPTS')
+        original = json.loads(raw)
+        rows = [entry['row'] for shard in original['runs'][0]['shards']
+                for entry in shard['observations']]
+        self.assertEqual({row['name'] for row in rows}, R12_ADDED_SUITES,
+                         'R12_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        bounds = native_shards.added_r12_suite_costs()
+        wanted = {name: 1000 for name in R12_ADDED_SUITES}
+        wanted.update({'py:test_space_profile_runs': 300000,
+                       'py:test_space_profile_update': 300000})
+        self.assertEqual(bounds, wanted, 'R12_ADDED_SUITE_PLANNING_UPPER_BOUNDS')
+        for mutation in ('duplicate', 'missing-job', 'understated-upper',
+                         'failed-child', 'bool-exit', 'not-run', 'failed-count'):
+            with self.subTest(receipt_mutation=mutation):
+                mutant = json.loads(raw)
+                shard = mutant['runs'][0]['shards'][0]
+                entry = shard['observations'][0]
+                row = entry['row']
+                if mutation == 'duplicate':
+                    shard['observations'].append(dict(entry))
+                elif mutation == 'missing-job':
+                    shard['source_job'] = ''
+                elif mutation == 'understated-upper':
+                    entry['planning_upper_ms'] = 1
+                elif mutation == 'failed-child':
+                    row['process_exit_code'] = 1
+                elif mutation == 'bool-exit':
+                    row['process_exit_code'] = False
+                elif mutation == 'not-run':
+                    row['ran'] = False
+                else:
+                    row['failed'] = 1
+                with tempfile.TemporaryDirectory(prefix='native-r12-receipt-') as directory:
+                    changed = Path(directory) / path.name
+                    changed.write_text(json.dumps(mutant), encoding='utf-8')
+                    with mock.patch.object(native_shards, 'ADDED_R12_RECEIPTS', changed):
+                        with self.assertRaises(ValueError, msg='R12_ADDED_RECEIPT_' + mutation):
+                            native_shards.added_r12_suite_costs()
+        with mock.patch.object(native_shards, 'ADDED_R12_RECEIPTS', native_shards.ADDED_RECEIPTS):
+            with self.assertRaisesRegex(ValueError, 'R12_NEW_SUITE_UNIQUE_ACROSS_SOURCES',
+                                        msg='R12_ADDED_RECEIPT_cross-source-duplicate'):
+                native_shards.added_suite_costs()
+        digest = native_shards.profile_digest()
+        with tempfile.TemporaryDirectory(prefix='native-r12-digest-') as directory:
+            changed = Path(directory) / path.name
+            changed.write_bytes(path.read_bytes() + b' ')
+            with mock.patch.object(native_shards, 'ADDED_R12_RECEIPTS', changed):
+                self.assertNotEqual(native_shards.profile_digest(), digest,
+                                    'R12_PROFILE_DIGEST_BINDS_ORIGINAL_RECEIPTS')
 
     def test_invalid_shards_are_rejected(self):
         for value in ['0/2', '1/0', '4/3', '5/4', '7/6', 'a/2', '1/2/3', '-1/3']:

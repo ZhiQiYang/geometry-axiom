@@ -1055,7 +1055,12 @@ async function timberRegression() {
   await openFaceModel();
   await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'own timber source loaded');
   check('GEO208 own source preserves legal placement zero and defaults to its one timber', await evaluate(`document.querySelector('#smSourceSelect').value==='0' && document.querySelector('#smIncludeTimbers').checked && !document.querySelector('#smIncludeTimbers').disabled && document.querySelector('#smTimberCount').textContent==='1'`));
-  await click('#smTimberCandidateDetails > summary');
+  // Q38j merges the candidate list into the one visible inclusion disclosure.
+  // Exercise the real pointer/keyboard entry, then inspect the unchanged list.
+  await click('#smTimberSettings > summary');
+  await wait(`!document.querySelector('#smTimberSettings').open && document.activeElement===document.querySelector('#smTimberSettings > summary')`, 'timber inclusion disclosure closed by pointer');
+  await key('Enter', 'Enter', 13);
+  await wait(`document.querySelector('#smTimberSettings').open && document.querySelector('#smTimberCandidates').getBoundingClientRect().height>0`, 'timber candidates opened by keyboard');
   const ownCandidates=await evaluate(`document.querySelector('#smTimberCandidates').textContent`);
   check('GEO208 candidate identifies timber zero with real dimensions and world z range', /#0/.test(ownCandidates)&&/2500|2,500/.test(ownCandidates)&&/2533|2,533/.test(ownCandidates)&&/27/.test(ownCandidates)&&/33/.test(ownCandidates),ownCandidates);
   await select('#smSourceSelect','2');
