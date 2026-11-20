@@ -1,0 +1,183 @@
+{
+  "schema": "r12-browser-run/1",
+  "label": "R12-B01-visible-space-entry",
+  "startedAt": "2026-11-17T06:41:26.218778+00:00",
+  "cwd": "/tmp/r12-browser-source-7692a_pf/repo",
+  "command": [
+    "node",
+    "geometry-web/space_model_test.js"
+  ],
+  "timeoutSeconds": 2100,
+  "chrome": "/usr/bin/google-chrome",
+  "sandboxFlagsAdded": [],
+  "url": "http://127.0.0.1:54751/",
+  "binaryHashes": {
+    "bridge": "af188152b34f68ee4fd3bc9fd8b2b8c92e26ac5a22b527bbefc328ae91c62428",
+    "model-base": "e36f1abd9a4ab11d2e7c6e653b9d5bbb311b363825a648587adbd1332e9ddef7"
+  },
+  "exitCode": 1,
+  "timedOut": false,
+  "runtimeUnchanged": true,
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "da1ef0720b0f268334315a45b440def035fcb544274837545c0dc9970cac4f9d",
+    "fresh": true,
+    "root": "/tmp/r12-browser-source-7692a_pf/repo",
+    "pid": 2860,
+    "session": "3d76cb3866124cef8cb0df2118e64004"
+  },
+  "result": {
+    "url": "http://127.0.0.1:54751/",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_SPACE_PROFILE_ONLY"
+      ],
+      "included": [
+        "profile-space"
+      ],
+      "omitted": [
+        "space-height-library",
+        "projection-lifecycle",
+        "projection-placement",
+        "font-layout",
+        "space-flow",
+        "projection-close",
+        "timber-material",
+        "timber-source-guards"
+      ],
+      "url": "http://127.0.0.1:54751/",
+      "feedbackDirectory": "/tmp/r12-browser-resources-h81zsdjd/feedback"
+    },
+    "completed": false,
+    "groups": {
+      "setup": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      },
+      "profile-space": {
+        "expected": 60,
+        "passed": 8,
+        "failed": 1,
+        "completed": false
+      },
+      "browser-health": {
+        "expected": 2,
+        "passed": 0,
+        "failed": 0,
+        "completed": false
+      }
+    },
+    "completenessProblems": [
+      "Space run did not finish",
+      "Group profile-space did not complete",
+      "Group profile-space: expected 60 passed assertions, got 8 passed / 1 failed",
+      "Group browser-health did not complete",
+      "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+    ],
+    "passed": 10,
+    "failed": 3,
+    "exceptions": [],
+    "consoleErrors": [],
+    "coverage": "Trusted pointer/keyboard controls with programmatic fixture setup, state observation and failure injection; counts are assertions, not end-to-end scenarios.",
+    "results": [
+      {
+        "name": "server serves the intended space-model release",
+        "ok": true,
+        "group": "setup"
+      },
+      {
+        "name": "current release explicitly supports timber preview and engineering sources",
+        "ok": true,
+        "group": "setup"
+      },
+      {
+        "name": "R12_SECTION_ENTRY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SECTION_PREVIEW_ZERO_WRITE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SECTION_OUTLINE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SECTION_MEMBERS",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RUN_PREVIEW_ZERO_WRITE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RUN_ONE_HISTORY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RUN_WORLD_BOUNDS",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RUN_LOCAL_AND_CORNER",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SPACE_ENTRY",
+        "ok": false,
+        "group": "profile-space"
+      },
+      {
+        "name": "complete browser flow",
+        "ok": false,
+        "detail": "Error: R12_SPACE_ENTRY undefined\n    at check (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/profile_space_test.js:145:64)\n    at /tmp/r12-browser-source-7692a_pf/repo/geometry-web/profile_space_test.js:265:7\n    at async Object.run (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/space_test_floor.js:35:9)\n    at async run (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/space_model_test.js:1264:5)"
+      },
+      {
+        "name": "space group completeness",
+        "ok": false,
+        "detail": [
+          "Space run did not finish",
+          "Group profile-space did not complete",
+          "Group profile-space: expected 60 passed assertions, got 8 passed / 1 failed",
+          "Group browser-health did not complete",
+          "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+        ]
+      }
+    ]
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "da1ef0720b0f268334315a45b440def035fcb544274837545c0dc9970cac4f9d",
+    "fresh": true,
+    "root": "/tmp/r12-browser-source-7692a_pf/repo",
+    "pid": 2860,
+    "session": "3d76cb3866124cef8cb0df2118e64004"
+  },
+  "endedAt": "2026-11-17T06:41:48.083973+00:00",
+  "elapsedSeconds": 21.861490752999998,
+  "logs": {
+    "service.log": {
+      "bytes": 124,
+      "sha256": "ce46e1946cede645bc5e16cf56f47a2930a72d8b53e69df837aed0beb2c8dbde"
+    },
+    "stdout.log": {
+      "bytes": 2846,
+      "sha256": "fc306bceed71a45740ac798ce4575c8291acf2aa75882c4cbf462cb9342dfaee"
+    },
+    "stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

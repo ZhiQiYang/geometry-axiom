@@ -3,8 +3,17 @@
 User accepted item 3 of the eight decisions: explicitly select current sources,
 review an isolated candidate, replace the same model's complete record with one
 undo. This supersedes Q32's earlier pending status only for that finite scope.
-No durable incarnation ledger, new axiom, automatic update or version upgrade is
-introduced. F1a is already delivered and is not repeated here.
+The original F1b foundation introduced no durable incarnation ledger, new axiom,
+automatic update or version upgrade. F1a is not repeated here; current Q38j
+integration changes are distinguished below.
+
+## 2026-11-15 Q38j 現行接線候選
+
+固定基底 `11eddfdb4d7b1f76aedfe001e084a3840790bedc`。Q38j-c 沿原模型修改入口加入明選拉伸件；完整產品、保存、K3、範圍與 L4 路徑見 [Q38J-APP.md](Q38J-APP.md)。下方有日期的 PR99／初次 owner 交付段落保留歷史來源，不代表當前入口尚未載入，也不把舊測試數字當本輪收據。
+
+plan selection 新增必填 `profile_runs`，明示 `[]` 才移除原模型全部 run；faces 維持既有 use 數、順序、朝向及用途，不納入 timbers／profile。有 profile 的候選保存此次 `current_scene` 原文於 `input.base_scene`；原生 `load_base` 的 canonical 場景及原文 hash 另放在 `result.source_snapshot`，詳細欄位與確認前守門見 [Q38J-APP.md §3](Q38J-APP.md#3-精確輸入結果及單一來源)。各包由該同一原生來源推導；生成的殼／牆可含設定宣告，profile／角材包的 `definitions.base_scene` 等於 canonical 場景，profile 的 `extensions:[]`。`/3` producer 能力須另核，不能只憑 `section-profile/1` 放行。完整專案含 profile 模型使用 `/20`，仍保留 `/1`–`/19` 及其守門。
+
+K3 covered 根與 candidate/2 身分收據沿現行主線保留，不將所有根一律標 unknown；profile-run 只進內容追溯、不進身分 pin，文字分別顯示已追蹤根判讀與拉伸件延續未知。材料固定版本／逐根關聯與原有 source／context／history／late reply 守門不放寬。真瀏覽器、完整 census、正式 mutation evidence 與 L4 仍待本候選最終收據。
 
 ## Delivery boundary
 
@@ -52,19 +61,19 @@ this handoff. Shared format/schema/project-store/ContextHistory and
 The companion `MODEL-UPDATE-INTEGRATION.patch` is reviewable wiring for that
 owner; it is not applied to shared files on this producer branch.
 
-## Producer boundary
+## Producer boundary（含 Q38j plan 擴充）
 
 `model_update.prepare_update(data, *, base_executable=None,
 bridge_executable=None, max_cells=200000)` accepts exactly:
 
 ```text
 {record: completeSavedModel, current_scene: completeCurrentDump,
- selection: {placement_id, boundary_id, edges, obstacles, timbers, projection}}
+ selection: {placement_id, boundary_id, edges, obstacles, timbers, profile_runs, projection}}
 ```
 
 Every selection field is required. Placement IDs may be zero. Edge indexes are
 explicit picks on the new outline, never a mapping inferred from old indexes.
-Timbers and obstacles are typed, explicitly selected lists including empty
+Timbers, profile runs and obstacles are typed, explicitly selected lists including empty
 lists. Projection is the selected source's existing typed projection or null.
 Models containing timbers require a positive, matching named boundary under
 the existing strict saved-model schema. Embedded rectangles (`boundary_id:0`)
@@ -72,8 +81,13 @@ remain selectable only without timbers; the UI explains that limit and exposes
 no timber choices. Both invalid old timber metadata (`null`/`0`) and current
 embedded-rectangle timber selection fail with `UPDATE_TIMBER_BOUNDARY` before
 candidate creation. No shared schema is relaxed.
+
+新增 profile 模型的保存來源只接受真正 embedded rect 的 `source.boundary_id:null`，或與來源放置相符的具名正整數 boundary；不可把 reserved 0 當具名邊界。UI 的 embedded 選擇值仍為 0，由 native 來源核對後正規化；沒有 profile 的舊紀錄相容維持原規則。
+
 The original height, bottom, floor/ceiling/holes purpose and thickness are
 preserved; only the explicit new source references and edges change.
+
+既有 faces 的封閉選擇另外為 `{mode:"faces",uses:[{placement_id}],obstacles}`；use 數與舊紀錄相同，第 i 項保持舊 orientation／purpose，重複拒絕。本片不擴成 faces＋timbers 或 faces＋profile。
 
 The old result must replay exactly with the actual native adapter. The whole
 current source is parsed in fresh native processes. The producer reuses
@@ -85,9 +99,11 @@ not affect the selected closure. The guard also compares fixed fields and
 explicit root associations, preventing A/B or two-root version swaps with an
 unchanged global set. Endpoint support comes only from the existing native
 exact support projection. Unknown support or a different protected root
-without explicit correspondence is unsupported. Faces, assembly-owned/assembly-capability
+without explicit correspondence is unsupported. Assembly-owned/assembly-capability
 sources, unknown capabilities, incomplete graphs, missing binaries and failed
 native execution remain unsupported.
+
+profile 根的固定材料閉包亦受原 `UPDATE_FIXED_VERSION`／`UPDATE_FIXED_ASSOCIATION` 守門；明選加入或移除不構成豁免。
 
 The receipt is transient `geometry-model-update-candidate/1`:
 
@@ -96,7 +112,7 @@ The receipt is transient `geometry-model-update-candidate/1`:
  current_scene_sha256, selection, record:completeReplacement, diff,
  runtime:{base_binary_sha256,bridge_binary_sha256,producer_sha256,axiom_sha256}}
 diff = {source,input,settings,summary: {before,after},
- packages:[{kind,before,after} /* exactly space/volume/clearance/walls/timbers */]}
+ packages:[{kind,before,after} /* exactly space/volume/clearance/walls/timbers/profile_runs */]}
 ```
 
 Each package pin is SHA-256 of canonical JSON of its whole manifest, or null
@@ -153,18 +169,22 @@ record replacement perform zero writes. Existing updateSpaceModel performs one
 complete replacement and one ContextHistory local undo.
 
 Existing pack/unpack and import's true producer replay provide saved-model
-verification on reopen; no new project format or persistent receipt is needed.
-The UI never guesses identity continuity; even identical content stays unknown
-and requires explicit selection.
+verification on reopen. The transient update receipt is not persisted; a saved
+Q38j profile model uses the `/20` envelope described above.
+The UI never guesses identity continuity from equal content. Current K3 proofs
+remain valid for covered roots; profile-run continuity remains unknown and its
+selection is always explicit.
 
 ## UI wiring and verification
 
-The new adapter exports `ModelUpdateApp.open(modelId)` and `close()`; its source
-picker starts blank. The wiring patch uses the existing model-edit action for
+The adapter exports `ModelUpdateApp.open(modelId)` and `close()`; its source
+picker permits existing K3-proved covered-root prefill, while profile runs start
+unselected. The existing wiring uses the model-edit action for
 height editing or current-source updating, preserving one top-level edit
 action. Its height editor summary and separate help paragraph become one
 paragraph. The patch records this reduction in BACKLOG for the integration
-owner. No new permanent global help area is added.
+owner. Q38j combines the former timber disclosure and the run choices into one
+「一併納入」 section; no new permanent global help area is added.
 
 The browser harness distinguishes direct module acceptance (injects missing
 modules and opens directly) from `GEOMETRY_MODEL_UPDATE_ENTRY=owner` acceptance
@@ -187,6 +207,8 @@ GEOMETRY_MODEL_BASE=/tmp/geometry-tests/model-base GEOMETRY_TEST_BRIDGE=/tmp/geo
 ```
 
 The final evidence packet records actual commands, counts, exit codes and
-remaining limits. Production integration requires the shared owner to apply
-the wiring patch. This draft does not merge, deploy, close #44 or claim the
-whole proposal delivered. Physical phone/OS file picker acceptance is separate.
+remaining limits. The historical foundation required the owner wiring patch;
+current owner integration must be tested from the actual tree, without applying
+that obsolete patch wholesale. This document does not merge, deploy, close #44
+or claim the whole proposal delivered. Physical phone/OS file picker acceptance
+is separate.
