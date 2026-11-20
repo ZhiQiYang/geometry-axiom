@@ -1,0 +1,325 @@
+{
+  "schema": "r12-browser-run/1",
+  "label": "R12-B06-update-candidate-entry",
+  "startedAt": "2026-11-17T06:57:57.345031+00:00",
+  "cwd": "/tmp/r12-browser-source-7692a_pf/repo",
+  "command": [
+    "node",
+    "geometry-web/space_model_test.js"
+  ],
+  "timeoutSeconds": 2100,
+  "chrome": "/usr/bin/google-chrome",
+  "sandboxFlagsAdded": [],
+  "url": "http://127.0.0.1:54261/",
+  "binaryHashes": {
+    "bridge": "af188152b34f68ee4fd3bc9fd8b2b8c92e26ac5a22b527bbefc328ae91c62428",
+    "model-base": "e36f1abd9a4ab11d2e7c6e653b9d5bbb311b363825a648587adbd1332e9ddef7"
+  },
+  "exitCode": 1,
+  "timedOut": false,
+  "runtimeUnchanged": true,
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "176a8294e29c3088b0b32a2b6bc71fba99a50a79810741d0ddc5ad406362cb1b",
+    "fresh": true,
+    "root": "/tmp/r12-browser-source-7692a_pf/repo",
+    "pid": 16352,
+    "session": "b63fd45313084f648895c15fcfd7623a"
+  },
+  "result": {
+    "url": "http://127.0.0.1:54261/",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_SPACE_PROFILE_ONLY"
+      ],
+      "included": [
+        "profile-space"
+      ],
+      "omitted": [
+        "space-height-library",
+        "projection-lifecycle",
+        "projection-placement",
+        "font-layout",
+        "space-flow",
+        "projection-close",
+        "timber-material",
+        "timber-source-guards"
+      ],
+      "url": "http://127.0.0.1:54261/",
+      "feedbackDirectory": "/tmp/r12-browser-resources-padaf95u/feedback"
+    },
+    "completed": false,
+    "groups": {
+      "setup": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      },
+      "profile-space": {
+        "expected": 60,
+        "passed": 33,
+        "failed": 1,
+        "completed": false
+      },
+      "browser-health": {
+        "expected": 2,
+        "passed": 0,
+        "failed": 0,
+        "completed": false
+      }
+    },
+    "completenessProblems": [
+      "Space run did not finish",
+      "Group profile-space did not complete",
+      "Group profile-space: expected 60 passed assertions, got 33 passed / 1 failed",
+      "Group browser-health did not complete",
+      "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+    ],
+    "passed": 35,
+    "failed": 3,
+    "exceptions": [],
+    "consoleErrors": [],
+    "coverage": "Trusted pointer/keyboard controls with programmatic fixture setup, state observation and failure injection; counts are assertions, not end-to-end scenarios.",
+    "results": [
+      {
+        "name": "server serves the intended space-model release",
+        "ok": true,
+        "group": "setup"
+      },
+      {
+        "name": "current release explicitly supports timber preview and engineering sources",
+        "ok": true,
+        "group": "setup"
+      },
+      {
+        "name": "R12_SECTION_ENTRY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SECTION_PREVIEW_ZERO_WRITE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SECTION_OUTLINE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SECTION_MEMBERS",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RUN_PREVIEW_ZERO_WRITE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RUN_ONE_HISTORY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RUN_WORLD_BOUNDS",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RUN_LOCAL_AND_CORNER",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SPACE_ENTRY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_ALL_WORLD_CANDIDATES",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_EXPLICIT_SELECTION",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UNLOCATED_NOTICE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SHARED_CONTROLS",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_LAYOUT_1400",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_LAYOUT_690",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_LAYOUT_390",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_NO_PROFILE_LEGACY_RESULT",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_KEYBOARD_SELECTION",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_PROFILE_REQUEST",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_Q01_EXACT_ORACLE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_NO_MIXED_QUANTITY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_MATERIAL_NOTICE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SHARED_MATERIAL_SWITCH",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SELECTION_INVALIDATES",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_OVERLAP_EXACT_TOTAL",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_CANCEL_ZERO_WRITE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_MODEL_ONE_HISTORY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_MODEL_UNDO",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_MODEL_REDO",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_LIBRARY_SNAPSHOT_LABEL",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_LIVE_SOURCE_SNAPSHOT_UNCHANGED",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SAVED_TOP_VALUES",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_ENTRY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_EXPLICIT_CANDIDATES",
+        "ok": false,
+        "group": "profile-space",
+        "detail": {
+          "snapshot": {
+            "open": true,
+            "phase": "selecting",
+            "modelId": "e5b874e1-08f7-4669-a6e2-eb935e82158d",
+            "busy": false,
+            "placementId": 1,
+            "reviewId": null
+          },
+          "profiles": [],
+          "unavailable": "已定位 3 條，均需逐條明選。未定位 1 條，不能納入。",
+          "count": "0 / 3 條",
+          "review": "",
+          "applyDisabled": true,
+          "confirmed": false,
+          "reviewHidden": true
+        }
+      },
+      {
+        "name": "complete browser flow",
+        "ok": false,
+        "detail": "Error: R12_UPDATE_EXPLICIT_CANDIDATES {\"snapshot\":{\"open\":true,\"phase\":\"selecting\",\"modelId\":\"e5b874e1-08f7-4669-a6e2-eb935e82158d\",\"busy\":false,\"placementId\":1,\"reviewId\":null},\"profiles\":[],\"unavailable\":\"已定位 3 條，均需逐條明選。未定位 1 條，不能納入。\",\"count\":\"0 / 3 條\",\"review\":\"\",\"applyDisabled\":true,\"confirmed\":false,\"reviewHidden\":true}\n    at check (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/profile_space_test.js:145:64)\n    at /tmp/r12-browser-source-7692a_pf/repo/geometry-web/profile_space_test.js:320:7\n    at async Object.run (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/space_test_floor.js:35:9)\n    at async run (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/space_model_test.js:1264:5)"
+      },
+      {
+        "name": "space group completeness",
+        "ok": false,
+        "detail": [
+          "Space run did not finish",
+          "Group profile-space did not complete",
+          "Group profile-space: expected 60 passed assertions, got 33 passed / 1 failed",
+          "Group browser-health did not complete",
+          "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+        ]
+      }
+    ]
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "176a8294e29c3088b0b32a2b6bc71fba99a50a79810741d0ddc5ad406362cb1b",
+    "fresh": true,
+    "root": "/tmp/r12-browser-source-7692a_pf/repo",
+    "pid": 16352,
+    "session": "b63fd45313084f648895c15fcfd7623a"
+  },
+  "endedAt": "2026-11-17T06:58:45.813875+00:00",
+  "elapsedSeconds": 48.46685191200004,
+  "logs": {
+    "service.log": {
+      "bytes": 124,
+      "sha256": "c1d36cc8678f9dccfdacff770dffcddda9bf5be343484edb8fd7691ddee7084e"
+    },
+    "stdout.log": {
+      "bytes": 4242,
+      "sha256": "73935a5105b7b10ae2d3e75efe8352e6456f30e196fd97d24e2419259376d720"
+    },
+    "stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

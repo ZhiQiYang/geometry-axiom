@@ -4070,7 +4070,7 @@
     {
       "source": "geometry-web/project-store.js",
       "target": "geometry-web/identity-ledger.js",
-      "line": 705
+      "line": 807
     },
     {
       "source": "geometry-web/project-store.js",
@@ -4195,21 +4195,16 @@
     {
       "source": "geometry-web/scenario_verify.py",
       "target": "geometry-app/geometry_app/__init__.py",
-      "line": 26
+      "line": 27
     },
     {
       "source": "geometry-web/scenario_verify.py",
       "target": "geometry-app/geometry_app/model_native.py",
-      "line": 26
+      "line": 27
     },
     {
       "source": "geometry-web/scenario_verify.py",
       "target": "geometry-app/geometry_app/source_closure.py",
-      "line": 26
-    },
-    {
-      "source": "geometry-web/scenario_verify.py",
-      "target": "geometry-core/modeling/__init__.py",
       "line": 27
     },
     {
@@ -4224,13 +4219,23 @@
     },
     {
       "source": "geometry-web/scenario_verify.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 30
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
       "target": "geometry-core/modeling/base.py",
-      "line": 28
+      "line": 29
     },
     {
       "source": "geometry-web/scenario_verify.py",
       "target": "geometry-core/modeling/common.py",
-      "line": 29
+      "line": 30
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
+      "target": "geometry-web/model_update.py",
+      "line": 26
     },
     {
       "source": "geometry-web/scenario_verify.py",
@@ -4240,12 +4245,12 @@
     {
       "source": "geometry-web/scenario_verify.py",
       "target": "tests/__init__.py",
-      "line": 34
+      "line": 35
     },
     {
       "source": "geometry-web/scenario_verify.py",
       "target": "tests/binaries.py",
-      "line": 34
+      "line": 35
     },
     {
       "source": "geometry-web/section_profile_bridge.inc",
@@ -4440,7 +4445,7 @@
     {
       "source": "geometry-web/source-inspector.js",
       "target": "geometry-web/identity-ledger.js",
-      "line": 125
+      "line": 132
     },
     {
       "source": "geometry-web/source-plane.js",

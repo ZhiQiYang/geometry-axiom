@@ -395,3 +395,58 @@ PR #419（需求帳 R17 host／App 第一片）新增四個 native suite。原�
 | 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 778.267 | 821.742 | 789.959 | 819.310 | 804.345 |
 
 六片 workflow、35 分鐘 native job、5 分鐘 coverage job、每個反證子程序 60 秒都不改；真收據仍須嚴格 `0 <= seconds < 1200`。合流後的正式六片收據與 complete coverage 以本分支 head 的正式 CI 為準。
+
+## R12／Q38j 七套的獨立原收據（PR #430，2026-11-17）
+
+修補基底 `d1738db971b05311efa4289443c73942273c8a37` 已普通 merge main
+`0c796e308da770041dfb41111562d594a389671a`。新增的
+`native_shard_added_receipts_r12.json` 從正式 [Geometry 44006220200](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44006220200)
+原始 `native-shard-*` ZIP 生成：source head 是 `e078f29165c5c757b6528329562989f83d9bd824`，
+實際 test-merge checkout 是 `35aee48b458fc07b093457e42fac74f491468cdb`，不改標成修補後 head。
+ZIP 的 bytes／GitHub digest、各 receipt SHA-256 已逐份核對；每個 `row` 原樣保留原 runner 的
+真退出碼、計數、浮點秒數及其他欄位。整次 run 是 failure；native 3／4／5／6 片因其他 suite
+失敗，2 片成功；下列七個子程序本身均實跑通過，不能據此宣稱整片或產品驗收成功。
+
+| Suite | Source job（片） | Passed / discovered | 原收據秒數（本表六位小數） | 規劃上界 ms |
+|---|---|---:|---:|---:|
+| `py:test_r12_browser_evidence` | 133782119528（2/6） | 4 / 4 | 0.165649 | 1000 |
+| `node:space_profile_view` | 133782119730（3/6） | 16 / 16 | 0.140283 | 1000 |
+| `py:test_space_profile_runs` | 133782119532（4/6） | 21 / 21 | 76.274915 | 300000 |
+| `node:profile_space_browser_contract` | 133782119532（4/6） | 3 / 3 | 0.145499 | 1000 |
+| `py:test_space_profile_update` | 133782119694（5/6） | 12 / 12 | 118.892360 | 300000 |
+| `node:space_profile_ui` | 133782119694（5/6） | 19 / 19 | 0.334957 | 1000 |
+| `node:space_profile_update_ui` | 133782119651（6/6） | 12 / 12 | 0.225253 | 1000 |
+
+上界是另列的保守規劃成本，不是時限或實測耗時。修補新增回歸後，本地完整 runs 為
+23／23、197.87 秒，update 為 13／13、219.05 秒，均零 skip／failure；當時另有原生負控
+並行，不能稱為空閒主機或正式 CI 上界。已知新套件成本超過先前 100000／150000ms 規劃，
+所以兩者明示提高至 300000ms；沒有把舊官方 21／12 案的秒數改標成新觀測，也沒有把單案時間
+相加冒充完整套件。這兩份本地完整 runner report 的 SHA-256 依序為
+`bb6aab7dda5e259da65028f56cdcf1dfd8dbd5d912ab327c245cd8fb1a00ae93`、
+`55515e5233c5caeac0f4de7b8bbe9b0ee48f86eef88e58fcc580fe7d135bd73c`，原件隨補丁交付。
+歷史四輪的 1260 筆、原 224 筆
+權重與既有 R380／R14／R396／R17 來源逐 byte 不變。原 `_added_receipt_costs()` 的所有驗證
+共用到新來源：成功必須是整數退出碼 0、實跑、計數守恆、零失敗／skip／crash／環境錯誤，
+且成本上界嚴格高於原秒數；跨來源同名拒收。`profile_digest()` 再綁第六份 LF bytes，順序為
+timings、R380、R14、R396、R17、R12，以 NUL 分隔。新來源自身 SHA-256 為
+`cac85f68a1eba8f5ceac2a55f740cf25b03eb54840eca93dca79d8e9d3de07cf`。
+
+原三片 `<600000`／`<650000` 相對權重斷言是歷史回放，固定 R12 加入前的 328 套 registry，
+其權重集合也固定在同一來源，原 `max(weights.values())` 的 129900ms 不均衡界線不被 R12 的
+300000ms 調高；沒有改任何上限。317／318／321 套的歷史預算亦保持各自原集合。當前六片則完整核對 **335 套**
+（328＋R12 七套），四輪情境及逐套最大包絡全部含 R12 原收據與明示規劃成本，不以預設 1000ms 代替
+兩個昂貴 native suite。當前六片套數為 **1／66／64／67／67／70**；包絡加原 120 秒開銷及
+30 秒餘裕依序為 **905.187／893.403／894.101／906.641／979.657／944.821 秒**，均嚴格低於
+1200 秒。這是成本模型回放，正式容量仍須修補後 head 的六份原收據與 complete coverage。
+
+新增的回歸先在未接來源的程式上以 `R12_INDEPENDENT_RECEIPT_SOURCE_REQUIRED` 正常
+AssertionError 紅；原先完整量測缺七名的 `R348_MEASURED_PROFILE_COVERS_REGISTRY` 紅亦保留原件。
+新增一個 provenance method 後，`py:test_unittest_runner` 為 18 項。原 50 個具名撤回全部保留，
+各自的成本／digest 撤回也保留 R12 來源；追加 `R12_DROP_SUITE_EVIDENCE`、
+`R12_DROP_EXPECTED_ENTRIES`、`R12_OMIT_SOURCE_FROM_DIGEST`、`R12_ACCEPT_FAILED_CHILD`、
+`R12_ALLOW_DUPLICATE_SOURCE`。規劃成本上調另先以舊 100000／150000ms 成本得到
+`R12_ADDED_SUITE_PLANNING_UPPER_BOUNDS` 正常 AssertionError 紅，再追加
+`R12_RESTORE_PRE_REPAIR_COSTS`，只撤回這兩個規劃成本。共 56 個具名撤回由原反證 runner
+各取 baseline／withdrawn／restored，要求指定
+正常 AssertionError 的 **0／1／0**、零 error／skip。35／5 分鐘 workflow 時限、每子程序 60 秒、
+並行上限 2 與真收據 `<1200` 全部不變。

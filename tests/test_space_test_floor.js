@@ -6,13 +6,14 @@ const os = require('node:os');
 const path = require('node:path');
 const vm = require('node:vm');
 const {EXPECTED, FULL_SPACE_GROUPS, createGroupCensus} = require('../geometry-web/space_test_floor.js');
-const full = ['space-height-library', 'projection-lifecycle', 'projection-placement', 'font-layout', 'space-flow', 'projection-close'];
+const legacy = ['space-height-library', 'projection-lifecycle', 'projection-placement', 'font-layout', 'space-flow', 'projection-close'];
+const full = [...legacy, 'profile-space'];
 async function complete(census, name, count = EXPECTED[name]) {
   await census.run(name, async () => { for (let i = 0; i < count; i++) census.record(true); });
 }
 async function finish(census, names) { for (const name of ['setup', ...names, 'browser-health']) await complete(census, name); }
 
-test('independent census is frozen; default full space totals 242 without optional timber', async () => {
+test('independent census preserves the original 242 and adds exactly 60 R12 cases without optional timber', async () => {
   assert.ok(Object.isFrozen(EXPECTED));
   assert.ok(Object.isFrozen(FULL_SPACE_GROUPS));
   assert.deepEqual(FULL_SPACE_GROUPS, full);
@@ -23,7 +24,9 @@ test('independent census is frozen; default full space totals 242 without option
   assert.equal(report.completed, true);
   assert.equal(EXPECTED['space-height-library'], 112);
   assert.equal(EXPECTED['projection-close'], 14);
-  assert.equal(Object.values(report.groups).reduce((n, g) => n + g.passed, 0), 242);
+  assert.equal(['setup', ...legacy, 'browser-health'].reduce((n, name) => n + report.groups[name].passed, 0), 242);
+  assert.equal(EXPECTED['profile-space'], 60);
+  assert.equal(Object.values(report.groups).reduce((n, g) => n + g.passed, 0), 302);
   assert.equal(Object.hasOwn(report.groups, 'timber-material'), false);
 });
 test('omitting a whole expected group fails even if every executed assertion passes', async () => {
@@ -71,7 +74,7 @@ test('failed assertions and additional assertions both reject exact counts', asy
   assert.match(extra.report(true).completenessProblems.join('\n'), /got 20 passed/);
 });
 test('partial scopes require only their declared groups; timber and history counts remain distinct', async () => {
-  for (const names of [['space-flow'], ['projection-placement', 'font-layout'], ['font-layout'], ['timber-material', 'timber-source-guards', 'font-layout'], ['timber-source-guards'], ['timber-history-guard'], ['timber-material', 'timber-history-guard', 'font-layout']]) {
+  for (const names of [['space-flow'], ['projection-placement', 'font-layout'], ['font-layout'], ['timber-material', 'timber-source-guards', 'font-layout'], ['timber-source-guards'], ['timber-history-guard'], ['timber-material', 'timber-history-guard', 'font-layout'], ['profile-space']]) {
     const census = createGroupCensus(names);
     await finish(census, names);
     assert.equal(census.report(true).completed, true);
@@ -110,6 +113,7 @@ test('real configuration declares full scope separately from every existing part
     ['GEOMETRY_TIMBER_GUARDS_ONLY', ['timber-source-guards']],
     ['GEOMETRY_ASYNC_REPLY_ONLY', ['async-reply-ui']],
     ['GEOMETRY_SAVE_REOPEN_ONLY', ['save-reopen-grid']],
+    ['GEOMETRY_SPACE_PROFILE_ONLY', ['profile-space']],
   ]) {
     const scope = configuration({...env, [flag]: '1'});
     assert.equal(scope.mode, 'partial');
@@ -128,4 +132,25 @@ test('real configuration keeps rejecting ambiguous filters, invalid flags and un
   assert.throws(() => configuration({...env, GEOMETRY_SPACE_STYLE_ONLY: '0'}), /only 1/);
   assert.throws(() => configuration({...env, GEOMETRY_TIMBER_HISTORY_ONLY: '1'}), /requires/);
   assert.throws(() => configuration({...env, GEOMETRY_SPACE_FLOW_ONLY: '1', GEOMETRY_TIMBER_HISTORY_ONLY: '1'}), /requires/);
+});
+
+test('R430 timber driver uses the shipped candidate disclosure without changing its census', () => {
+  // Static cross-file wiring only: this finite DOM makes no layout or input claim.
+  const {document} = require('./_model_update_dom.js').createDOM();
+  const workspace = fs.readFileSync(path.join(__dirname, '../geometry-web/space-workspace.js'), 'utf8');
+  const template = workspace.match(/dialog\.innerHTML = `([\s\S]*?)`;/);
+  assert.ok(template, 'R430_TIMBER_WORKSPACE_TEMPLATE');
+  document.body.innerHTML = template[1];
+  const start = source.indexOf('async function timberRegression() {');
+  const end = source.indexOf('  const ownCandidates=', start);
+  assert.ok(start >= 0 && end > start, 'R430_TIMBER_DRIVER_START');
+  const disclosures = [...source.slice(start, end).matchAll(/await click\('([^']+ > summary)'\);/g)];
+  assert.equal(disclosures.length, 1, 'R430_TIMBER_ONE_DISCLOSURE_ACTION');
+  const [selector] = disclosures[0][1].split(' > ');
+  const owner = document.body.querySelector(selector);
+  const summary = owner?.children.find(child => child.tagName === 'SUMMARY');
+  assert.ok(owner?.tagName === 'DETAILS' && summary, 'R430_TIMBER_LIVE_DISCLOSURE');
+  assert.ok(owner.descendants().includes(document.getElementById('smTimberCandidates')), 'R430_TIMBER_DISCLOSURE_OWNS_CANDIDATES');
+  assert.equal(EXPECTED['timber-material'], 48);
+  assert.equal(EXPECTED['timber-source-guards'], 8);
 });

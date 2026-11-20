@@ -26,7 +26,7 @@ MAX_SCENE_BYTES = 1024 * 1024
 MAX_INPUT_BYTES = 8 * 1024 * 1024
 MAX_GRAPH_BYTES = 16 * 1024 * 1024
 BRIDGE_TIMEOUT = 20
-PACKAGES = ("space", "volume", "clearance", "walls", "timbers")
+PACKAGES = ("space", "volume", "clearance", "walls", "timbers", "profile_runs")
 PROTECTED = frozenset(("material", "method", "assembly-rule"))
 HASH = re.compile(r"[a-f0-9]{64}\Z")
 IDENTIFIER = re.compile(r"[A-Za-z0-9_-]{1,100}\Z")
@@ -97,7 +97,7 @@ def _selection(value):
             seen.add(use['placement_id'])
         _references(value['obstacles'], ('column', 'beam'), ('selection', 'obstacles'))
         return
-    _keys(value, ("placement_id", "boundary_id", "edges", "obstacles", "timbers", "projection"), path=("selection",))
+    _keys(value, ("placement_id", "boundary_id", "edges", "obstacles", "timbers", "profile_runs", "projection"), path=("selection",))
     for name in ("placement_id", "boundary_id"):
         _uid(value[name], ("selection", name))
     edges = value["edges"]
@@ -107,6 +107,7 @@ def _selection(value):
         _fail("UPDATE_EDGES", "請明選非空、無重複的整數輪廓邊清單。", path=("selection", "edges"))
     _references(value["obstacles"], ("column", "beam"), ("selection", "obstacles"))
     _references(value["timbers"], ("timber",), ("selection", "timbers"))
+    _references(value["profile_runs"], ("profile-run",), ("selection", "profile_runs"))
     if value["timbers"] and value["boundary_id"] == 0:
         _fail("UPDATE_TIMBER_BOUNDARY", "納入角材必須明選有正式邊界輪廓的放置面；內含矩形目前不支援保存角材模型。",
               status="UNSUPPORTED", clause="I32", path=("selection", "boundary_id"))
@@ -174,7 +175,7 @@ def _record(record):
     if type(inputs) is not dict or inputs.get("mode") not in ('plan', 'faces'):
         _fail("UPDATE_SCOPE", "第一版來源更新只支援普通單一平面模型。", status="UNSUPPORTED", clause="I32", path=("record", "input"))
     if inputs['mode'] == 'faces':
-        if any(name in inputs for name in ('timbers', 'settings', 'placement_id')) or 'projection' in source:
+        if any(name in inputs for name in ('timbers', 'profile_runs', 'settings', 'placement_id')) or 'projection' in source:
             _fail('UPDATE_SCOPE', '多承載面更新不支援角材或平面設定。', status='UNSUPPORTED', clause='I32')
         _keys(inputs, ('mode', 'base_scene', 'uses', 'obstacles'), path=('record', 'input'))
         for name in ('placement_id', 'boundary_id'):
@@ -192,7 +193,7 @@ def _record(record):
         _references(inputs['obstacles'], ('column', 'beam'), ('record', 'input', 'obstacles'))
         _source_identity(record)
         return
-    _keys(inputs, ("mode", "base_scene", "obstacles", "placement_id", "settings"), ("timbers",), path=("record", "input"))
+    _keys(inputs, ("mode", "base_scene", "obstacles", "placement_id", "settings"), ("timbers", "profile_runs"), path=("record", "input"))
     _uid(source["placement_id"], ("record", "source", "placement_id"))
     if source["boundary_id"] is not None:
         _uid(source["boundary_id"], ("record", "source", "boundary_id"))
@@ -204,6 +205,8 @@ def _record(record):
             _fail("UPDATE_PROJECTION", "舊模型投影缺少既有邊界。", path=("record", "source"))
     _scene(inputs["base_scene"], ("record", "input", "base_scene"))
     _references(inputs["obstacles"], ("column", "beam"), ("record", "input", "obstacles"))
+    if "profile_runs" in inputs:
+        _references(inputs["profile_runs"], ("profile-run",), ("record", "input", "profile_runs"), nonempty=True)
     if "timbers" in inputs:
         _references(inputs["timbers"], ("timber",), ("record", "input", "timbers"), nonempty=True)
         if not source["boundary_id"]:
@@ -351,7 +354,8 @@ def _protected(graph, inputs):
              else ["placement:" + str(inputs["placement_id"])])
     placement_labels = {root: 'selected-use:' + str(index) if face_mode else 'selected-placement'
                         for index, root in enumerate(roots)}
-    roots.extend(reference["kind"] + ":" + str(reference["id"]) for reference in [*inputs["obstacles"], *inputs.get("timbers", [])])
+    roots.extend(reference["kind"] + ":" + str(reference["id"]) for reference in
+                 [*inputs["obstacles"], *inputs.get("timbers", []), *inputs.get("profile_runs", [])])
     protected, associations = set(), {}
     for root in roots:
         pending, seen, fixed, reverse = [root], set(), set(), {}
@@ -428,6 +432,7 @@ def _placement(base, placement, boundary, projection, path):
         _fail("UPDATE_SOURCE", "明選承載面不存在，或沒有引用明選邊界。", path=path, clause="D4")
     if projection is not None and (boundary == 0 or selected["n"][:2] != [0, 0] or abs(selected["n"][2]) != 1):
         _fail("UPDATE_PROJECTION", "明選平面投影與承載面不一致。", path=path, clause="D4")
+    return selected
 
 
 def _diff(before, after):
@@ -464,8 +469,11 @@ def prepare_update(data, *, base_executable=None, bridge_executable=None, max_ce
         _fail('UPDATE_FACES', '多承載面更新必須保留原數量及順序。')
     old_base = load_base(record["input"]["base_scene"], executable=base)
     if not face_mode:
-        _placement(old_base, record["source"]["placement_id"], record["source"]["boundary_id"],
-                   record["source"].get("projection"), ("record", "source"))
+        old_selected = _placement(old_base, record["source"]["placement_id"], record["source"]["boundary_id"],
+                                  record["source"].get("projection"), ("record", "source"))
+        if "profile_runs" in record["input"] and record["source"]["boundary_id"] != old_selected["boundary_id"]:
+            _fail("UPDATE_SOURCE", "舊拉伸件模型的來源邊界與原生快照不一致。",
+                  path=("record", "source", "boundary_id"), clause="D4")
     try:
         replay = space_modeling.replay_stored(record["input"], record["result"],
                                              base_executable=base, max_cells=max_cells)
@@ -481,12 +489,18 @@ def prepare_update(data, *, base_executable=None, bridge_executable=None, max_ce
                   'uses':[{**deepcopy(old), 'placement_id':selected['placement_id']}
                           for old,selected in zip(record['input']['uses'],selection['uses'])]}
     else:
-        _placement(new_base, selection["placement_id"], selection["boundary_id"], selection["projection"], ("selection",))
+        selected = _placement(new_base, selection["placement_id"], selection["boundary_id"], selection["projection"], ("selection",))
         inputs = {"mode": "plan", "base_scene": new_base["base_scene"], "placement_id": selection["placement_id"],
                   "settings": deepcopy(record["input"]["settings"]), "obstacles": deepcopy(selection["obstacles"])}
         inputs["settings"]["edges"] = deepcopy(selection["edges"])
         if selection["timbers"]:
             inputs["timbers"] = deepcopy(selection["timbers"])
+        if selection["profile_runs"]:
+            inputs["profile_runs"] = deepcopy(selection["profile_runs"])
+            # Keep the selected snapshot bytes, including editor metadata.
+            # space_modeling normalizes this once through the native adapter
+            # and binds the resulting canonical source in source_snapshot.
+            inputs["base_scene"] = data["current_scene"]
     old_graph = _graph(record["input"]["base_scene"], bridge)
     new_graph = _graph(data["current_scene"], bridge)
     old_fixed, old_associations = _protected(old_graph, record["input"])
@@ -496,6 +510,9 @@ def prepare_update(data, *, base_executable=None, bridge_executable=None, max_ce
     result = space_modeling.preview(inputs, base_executable=base, max_cells=max_cells)
     source = {"kind": "scene", "placement_id": None if face_mode else selection["placement_id"], "boundary_id": None if face_mode else selection["boundary_id"],
               "scene_hash": result["source_sha256"]}
+    if (not face_mode and selected["boundary_id"] is None and
+            (record["input"].get("profile_runs") or inputs.get("profile_runs") or record["source"]["boundary_id"] is None)):
+        source["boundary_id"] = None
     if not face_mode and selection["projection"] is not None:
         source["projection"] = deepcopy(selection["projection"])
     replacement = {"id": record["id"], "name": record["name"], "created_at": record["created_at"],
