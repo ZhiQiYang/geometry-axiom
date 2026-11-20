@@ -533,7 +533,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self._send(json.dumps({"profile": PROFILE, "capabilities": CAPABILITIES,
                                    "executor": "C scene validation + Python exact integer modeling",
                                    "release": "engineering-spec-v1-20260928",
-                                   "space_preview_schemas": ["geometry-space-preview/1", "geometry-space-preview/2"],
+                                   "space_preview_schemas": ["geometry-space-preview/1", "geometry-space-preview/2", "geometry-space-preview/3"],
                                    "max_cells": 200000}).encode("utf-8"))
         else:
             self.send_error(404)

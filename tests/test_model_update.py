@@ -60,7 +60,7 @@ class ModelUpdate(unittest.TestCase):
     def request(self, current=None, *, record=None, placement=1, boundary=1, timber=0):
         return {"record": deepcopy(record or self.old), "current_scene": current or scene(a=29),
                 "selection": {"placement_id": placement, "boundary_id": boundary, "edges": [0, 1, 2, 3],
-                              "obstacles": [], "timbers": [{"kind": "timber", "id": timber}], "projection": None}}
+                              "obstacles": [], "timbers": [{"kind": "timber", "id": timber}], "profile_runs": [], "projection": None}}
 
     def prepare(self, data, **options):
         return update.prepare_update(data, **{**self.native, **options})
@@ -106,7 +106,10 @@ class ModelUpdate(unittest.TestCase):
             for side, target in (("before", self.old), ("after", record)):
                 package = target["result"].get(row["kind"])
                 self.assertEqual(row[side], digest(package["manifest"]) if package else None)
-        self.assertNotEqual(diff["packages"][-1]["before"], diff["packages"][-1]["after"])
+        timber_diff = next(row for row in diff["packages"] if row["kind"] == "timbers")
+        self.assertNotEqual(timber_diff["before"], timber_diff["after"])
+        self.assertEqual(next(row for row in diff["packages"] if row["kind"] == "profile_runs"),
+                         {"kind": "profile_runs", "before": None, "after": None})
         runtime = candidate["runtime"]
         self.assertEqual(runtime["base_binary_sha256"], hashlib.sha256(Path(self.base).read_bytes()).hexdigest())
         self.assertEqual(runtime["bridge_binary_sha256"], hashlib.sha256(Path(self.bridge).read_bytes()).hexdigest())
@@ -145,7 +148,7 @@ class ModelUpdate(unittest.TestCase):
         self.assertEqual(same["record"], self.old)
 
     def test_no_selection_field_is_inferred_from_old_record(self):
-        for field in ("placement_id", "boundary_id", "edges", "obstacles", "timbers", "projection"):
+        for field in ("placement_id", "boundary_id", "edges", "obstacles", "timbers", "profile_runs", "projection"):
             data = self.request()
             del data["selection"][field]
             self.failure(data, "UPDATE_SHAPE")
@@ -261,11 +264,17 @@ class ModelUpdate(unittest.TestCase):
         old = self.record(source, timbers=False)
         data = self.request(source, record=old, placement=0, boundary=0)
         data["selection"]["timbers"] = []
+        # Preserve the legacy saved sentinel contract, alongside the native
+        # null-boundary contract used by new profile snapshots below.
+        data["record"]["source"]["boundary_id"] = 0
         candidate = self.prepare(data)
         self.assertEqual(candidate["record"]["source"]["boundary_id"], 0)
         self.assertNotIn("timbers", candidate["record"]["input"])
         self.assertNotIn("timbers", candidate["record"]["result"])
         self.assertEqual(candidate["identity"], "unknown")
+        data["record"]["source"]["boundary_id"] = None
+        canonical = self.prepare(data)
+        self.assertIsNone(canonical["record"]["source"]["boundary_id"])
 
     def test_faces_assembly_owned_unknown_capability_and_unplaced_sources_reject(self):
         data = self.request(); data["record"]["input"]["mode"] = "faces"

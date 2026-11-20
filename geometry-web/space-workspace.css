@@ -81,3 +81,10 @@
 
 /* Keep the three instruction groups, including the guide body, at 12px. */
 .sm-guide,.sm-guide p,.sm-help,.sm-view-direction{font-size:12px}
+
+/* Q38j reuses the inclusion disclosure and visibility switch for both kinds. */
+.sm-timber-settings>summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:12px;font-weight:650}
+.sm-profile-candidates{display:grid;gap:6px;margin-top:10px;min-width:0}
+.sm-profile-choice{min-height:44px;border-top:1px solid var(--sm-line);padding:8px 0;overflow-wrap:anywhere}
+.sm-profile-choice strong{font-size:12px;font-weight:600}
+.sm-profile-choice span{min-width:0}

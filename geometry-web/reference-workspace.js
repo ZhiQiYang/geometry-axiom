@@ -1872,18 +1872,25 @@ const ReferenceWorkspace = (() => {
     return JSON.stringify(ordered(a)) === JSON.stringify(ordered(b));
   }
   async function verifyStoredModel(model) {
-    const packageKeys = ["space", "volume", "clearance", "walls", ...(model.result.schema === "geometry-space-preview/2" ? ["timbers"] : [])];
+    // Optional materials are independent: /3 may contain both kinds. A schema
+    // label must never suppress verification of an explicitly saved package.
+    const materialKeys = ["timbers", "profile_runs"].filter(key => Object.hasOwn(model.input, key));
+    const packageKeys = ["space", "volume", "clearance", "walls", ...materialKeys];
     for (const key of packageKeys) {
       const pkg = model.result[key]; if (pkg === null) continue;
       const response = await fetch("/model/verify", {method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify(pkg),signal:AbortSignal.timeout(30000)});
       if (!response.ok) throw new Error("空間模型驗證服務失敗（HTTP "+response.status+"），未變更目前專案。");
       const verified = await response.json();
-      try { P.validateModelPackage(verified); }
+      try { P.validateModelPackage(verified, {profileRuns:key === "profile_runs"}); }
       catch (_) { throw new Error("空間模型「"+model.name+"」驗證失敗："+(verified.error || verified.message || verified.code || verified.diagnostics?.[0]?.message || "模型內容或版本不一致")+"。未變更目前專案。"); }
+      if (["definitions", "request", "derived"].some(field => !sameModelData(verified[field], pkg[field])))
+        throw new Error("空間模型「"+model.name+"」的驗證回覆與保存套件不一致，未變更目前專案。");
     }
-    if (model.result.timbers && await P.sha(new TextEncoder().encode(model.result.timbers.definitions.base_scene)) !== model.result.source_sha256)
-      throw new Error("空間模型「"+model.name+"」的角材來源摘要不一致，未變更目前專案。");
+    for (const key of materialKeys) {
+      if (await P.sha(new TextEncoder().encode(model.result[key].definitions.base_scene)) !== model.result.source_sha256)
+        throw new Error("空間模型「"+model.name+"」的"+(key === "timbers" ? "角材" : "拉伸件")+"來源摘要不一致，未變更目前專案。");
+    }
     // A valid mesh alone cannot establish that the displayed height/settings describe
     // that mesh. Replay the saved declarations, never the current canvas world.
     const response = await fetch("/model/space-replay", {method:"POST",headers:{"Content-Type":"application/json"},
@@ -1892,6 +1899,9 @@ const ReferenceWorkspace = (() => {
     const rebuilt = await response.json(), original = model.result;
     if (rebuilt.ok !== true || rebuilt.schema !== original.schema || rebuilt.source_sha256 !== original.source_sha256)
       throw new Error("空間模型「"+model.name+"」的來源設定無法重建，未變更目前專案。");
+    if (Object.hasOwn(rebuilt, "source_snapshot") !== Object.hasOwn(original, "source_snapshot") ||
+        !sameModelData(rebuilt.source_snapshot, original.source_snapshot))
+      throw new Error("空間模型「"+model.name+"」的來源快照收據與保存輸入不一致，未變更目前專案。");
     for (const key of packageKeys) {
       if ((rebuilt[key] === null) !== (original[key] === null) || (original[key] !== null &&
           ["definitions", "request", "derived"].some(field => !sameModelData(rebuilt[key]?.[field], original[key][field]))))

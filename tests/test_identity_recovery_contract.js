@@ -172,7 +172,7 @@ test('L12 model source owner reads a deidentified sourcePin from the live native
     read:async command=>{calls.push(command);return b.ok(command);}};
   vm.runInNewContext(code+'\nglobalThis.pinRead=readPinnedSource;',env);
   // The shipped open() sets current.before from controller.begin(id).
-  const current={before:{input:{mode:'plan'}},sequence:1,surface:{id:1},projection:null,sourcePin:{scene:bare,revision:graph.revision,fingerprint:graph.sourceFingerprint}};
+  const current={before:{input:{mode:'plan'}},sequence:1,surface:{id:1},projection:null,profileRevision:graph.revision,sourcePin:{scene:bare,revision:graph.revision,fingerprint:graph.sourceFingerprint}};
   let result;
   await assert.doesNotReject(async()=>{result=await env.pinRead(current,{signal:new AbortController().signal});},
     'R362_STACK_L12_CURRENT_RECORD');

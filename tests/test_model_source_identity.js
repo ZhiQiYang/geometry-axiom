@@ -250,7 +250,7 @@ function updateHarness(extra = {}) {
   let revision = 1;
   const source = {scene:text, revision:7};
   const commits = [];
-  const selection = {placement_id:1, boundary_id:1, edges:[0,1,2,3], obstacles:[], timbers:[], projection:null};
+  const selection = {placement_id:1, boundary_id:1, edges:[0,1,2,3], obstacles:[], timbers:[], profile_runs:[], projection:null};
   const produce = request => {
     const after = JSON.parse(JSON.stringify(request.record));
     after.input.base_scene = request.current_scene;
@@ -265,7 +265,7 @@ function updateHarness(extra = {}) {
       selection:JSON.parse(JSON.stringify(request.selection)), record:after,
       diff:{source:pair(request.record.source, after.source), input:pair(request.record.input, after.input),
         settings:pair(request.record.input.settings, after.input.settings), summary:pair(request.record.result.summary, after.result.summary),
-        packages:['space','volume','clearance','walls','timbers'].map(kind => ({kind,
+        packages:['space','volume','clearance','walls','timbers','profile_runs'].map(kind => ({kind,
           before:request.record.result[kind] ? pinOf(request.record.result[kind].manifest) : null,
           after:after.result[kind] ? pinOf(after.result[kind].manifest) : null}))},
       runtime:{base_binary_sha256:hash, bridge_binary_sha256:hash, producer_sha256:hash, axiom_sha256:hash}};

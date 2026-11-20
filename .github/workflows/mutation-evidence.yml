@@ -8,6 +8,8 @@ on:
       - .github/scripts/mutation_evidence.py
       - tests/MUTATION-EVIDENCE.md
       - .github/scripts/architecture_evidence.py
+      - .github/scripts/evidence_*.py
+      - .github/scripts/test_evidence_*.py
 
 permissions:
   contents: read
@@ -28,12 +30,22 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Run original scanner and architecture test commands
         run: python3 .github/scripts/architecture_evidence.py --out "$RUNNER_TEMP/pr357-architecture"
+      - name: Package unchanged original architecture evidence for repo adoption
+        run: python3 -B .github/scripts/evidence_architecture.py import --root . --artifact "$RUNNER_TEMP/pr357-architecture" --store "$RUNNER_TEMP/architecture-repo-evidence"
       - name: Preserve fresh derived architecture evidence and raw failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: pr357-architecture-refresh
           path: ${{ runner.temp }}/pr357-architecture/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Preserve immutable architecture repo bundle
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: architecture-repo-evidence
+          path: ${{ runner.temp }}/architecture-repo-evidence/
           if-no-files-found: error
           retention-days: 30
 

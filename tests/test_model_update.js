@@ -25,11 +25,11 @@ const deferred = () => {
   return {promise, resolve, reject};
 };
 const turn = () => new Promise(resolve => setImmediate(resolve));
-const PACKAGES = ['space', 'volume', 'clearance', 'walls', 'timbers'];
+const PACKAGES = ['space', 'volume', 'clearance', 'walls', 'timbers', 'profile_runs'];
 const runtime = () => ({base_binary_sha256:hash('base'), bridge_binary_sha256:hash('bridge'),
   producer_sha256:hash('producer'), axiom_sha256:hash('axiom')});
 const projection = () => ({kind:'space-boundary-plan', view:'top', region:'interior', wallSide:'outside'});
-const selection = () => ({placement_id:2, boundary_id:2, edges:[0,1,2,3], obstacles:[], timbers:[], projection:null});
+const selection = () => ({placement_id:2, boundary_id:2, edges:[0,1,2,3], obstacles:[], timbers:[], profile_runs:[], projection:null});
 
 function model() {
   const scene = 'boundary 1 outline 0,0 100,0 100,100 0,100\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\n';
@@ -144,7 +144,8 @@ test('review includes old/new complete source input settings summary and package
   assert.deepEqual(result.selection.edges,[0,1,2,3]);
   assert.deepEqual(reviewed.before,f.initial[0]);
   assert.deepEqual(reviewed.diff,receipt(result).diff);
-  assert.equal(reviewed.diff.packages.length,5);
+  assert.equal(reviewed.diff.packages.length,6);
+  assert.deepEqual(reviewed.diff.packages[5],{kind:'profile_runs',before:null,after:null});
   assert.notEqual(reviewed.diff.packages[0].before,reviewed.diff.packages[0].after);
   reviewed.after.name='forged caller edit';reviewed.diff.settings.before.height=99;
   assert.equal(f.update.getReview().after.name,f.initial[0].name);
@@ -357,7 +358,7 @@ const PYTHON = [
   '        source={"mode":"plan","base_scene":load_base(scene)["base_scene"],"placement_id":1,"obstacles":[],"timbers":[{"kind":"timber","id":10}],"settings":{"bottom":0,"height":3000,"edges":[0,1,2,3],"floor":"boundary","ceiling":"boundary","holes":"none","wall_thickness":100}}',
   '        preview=sm.preview(source)',
   '        record={"id":"native-old27","name":"27 到 29 完整紀錄","created_at":"2026-10-04T00:00:00.000Z","source":{"kind":"scene","placement_id":1,"boundary_id":1,"scene_hash":preview["source_sha256"]},"input":source,"result":preview}',
-  '        result={"record":record,"scene":source["base_scene"].replace("timber 10 27 33", "timber 10 29 33"),"selection":{"placement_id":1,"boundary_id":1,"edges":[0,1,2,3],"obstacles":[],"timbers":[{"kind":"timber","id":10}],"projection":None}}',
+  '        result={"record":record,"scene":source["base_scene"].replace("timber 10 27 33", "timber 10 29 33"),"selection":{"placement_id":1,"boundary_id":1,"edges":[0,1,2,3],"obstacles":[],"timbers":[{"kind":"timber","id":10}],"profile_runs":[],"projection":None}}',
   '    elif sys.argv[1]=="inline-fixture":',
   '        scene="placement 0 origin 0 0 2500 u +x v +y rect 0 0 4000 3000\\n"',
   '        if data.get("timbers",True): scene+="timber 10 27 33 role boundary\\nplace 10 on 0 at-face e0 +u +n\\n"',
@@ -365,7 +366,7 @@ const PYTHON = [
   '        if data.get("timbers",True): source["timbers"]=[{"kind":"timber","id":10}]',
   '        preview=sm.preview(source)',
   '        record={"id":"native-inline-rectangle","name":"嵌入矩形保存契約","created_at":"2026-10-04T00:00:00.000Z","source":{"kind":"scene","placement_id":0,"boundary_id":0,"scene_hash":preview["source_sha256"]},"input":source,"result":preview}',
-  '        result={"record":record,"scene":source["base_scene"],"selection":{"placement_id":0,"boundary_id":0,"edges":[0,1,2,3],"obstacles":[],"timbers":source.get("timbers",[]),"projection":None}}',
+  '        result={"record":record,"scene":source["base_scene"],"selection":{"placement_id":0,"boundary_id":0,"edges":[0,1,2,3],"obstacles":[],"timbers":source.get("timbers",[]),"profile_runs":[],"projection":None}}',
   '    elif sys.argv[1]=="unchecked-support":',
   '        import os,subprocess,tempfile',
   '        from pathlib import Path',
