@@ -483,6 +483,25 @@ class NativeRegistryContract(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'EXACT_COST_COVERAGE'):
             registry.timing_profile(self.root)
 
+    def test_fragments_check_out_as_lf_on_every_platform(self):
+        """Review 7056059753 problem B: readers reject CR, so autocrlf must not apply."""
+        lf = ('tests/suites.d/py__test_serve.json', 'tests/native-costs.d/py__test_serve.json',
+              'tests/registry-layout.json', registry.LEGACY.as_posix(), registry.EXECUTION_CATALOG.as_posix(),
+              (registry.AMENDMENTS / 'py__example.json').as_posix(), 'geometry-web/cdp_sections.d/P50.json',
+              'geometry-web/canvas_sections/P999.js',
+              'geometry-core/domain-decoupling/product-architecture.d/example.json')
+        raw = ((registry.SOURCES / 'example.json').as_posix(), 'geometry-web/canvas-registry/legacy.json')
+        output = subprocess.run(['git', '-C', str(ROOT), 'check-attr', 'text', 'eol', '--', *lf, *raw],
+                                capture_output=True, text=True, check=True).stdout
+        attributes = {}
+        for line in output.splitlines():
+            path, name, value = line.rsplit(': ', 2)
+            attributes.setdefault(path, {})[name] = value
+        for path in lf:
+            self.assertEqual(attributes[path], {'text': 'set', 'eol': 'lf'}, path)
+        for path in raw:
+            self.assertEqual(attributes[path]['text'], 'unset', path)
+
     def ci_fixture(self, *, pending=False, ordinal=1):
         """Synthetic API/archive fixture, never a claim about a real CI run."""
         name = 'py:test_r386_ci_fixture'
@@ -706,8 +725,8 @@ def main():
         return 0
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(NativeRegistryContract)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
-    if result.testsRun != 21 or result.skipped:
-        raise AssertionError('R386_NATIVE_CONTRACT_EXACT_21_NO_SKIP')
+    if result.testsRun != 22 or result.skipped:
+        raise AssertionError('R386_NATIVE_CONTRACT_EXACT_22_NO_SKIP')
     return 0 if result.wasSuccessful() else 1
 
 

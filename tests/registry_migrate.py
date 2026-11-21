@@ -492,7 +492,7 @@ def check(root, trusted=None):
 
 def self_test(root):
     commands = (
-        ([sys.executable, '-B', 'tests/diagnostics/native_registry_contract_check.py'], 21),
+        ([sys.executable, '-B', 'tests/diagnostics/native_registry_contract_check.py'], 22),
         (['node', '--test', '--test-reporter=tap', 'tests/diagnostics/canvas_registry_contract_check.cjs'], 1),
         ([sys.executable, '-B', 'tests/diagnostics/architecture_registry_contract_check.py'], 35),
         ([sys.executable, '-B', 'tests/diagnostics/registry_migration_contract_check.py'], 19),
