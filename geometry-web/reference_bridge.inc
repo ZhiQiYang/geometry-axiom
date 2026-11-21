@@ -574,7 +574,7 @@ static void cmd_grid_preview(const char *command)
     if (!draft) { fputs("{\"ok\":false,\"error\":\"預覽記憶體不足\"}\n",stdout); return; }
     *draft=g_world;
     g_scene_last_error[0]='\0';
-    bool ok=subgrid?apply_subgrid_line("preview",0,tokens,count,draft):apply_grid_line("preview",0,tokens,count,draft);
+    bool ok=subgrid?apply_subgrid_line_with_snapshot("preview",0,tokens,count,draft):apply_grid_line("preview",0,tokens,count,draft);
     uint32_t id=0;
     if (ok && !parse_u32(tokens[1],&id)) ok=false;
     ReferenceGrid *grid=ok?world_find_grid_mut(draft,id):NULL;

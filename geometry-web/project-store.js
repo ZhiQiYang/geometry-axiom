@@ -314,6 +314,7 @@
   function projectFormat(manifest, scene = "") {
     if (!capabilityScope) return scopedCapabilities(() => projectFormat(manifest, scene));
     if (hasProfileRunModels(manifest)) return PROFILE_RUN_FORMAT;
+    if(projectCapabilities(manifest,scene).includes(Features.Framing.CAPABILITY)) return ROOM_CANDIDATE_FORMAT;
     if(projectCapabilities(manifest,scene).includes(BOUNDARY_PAIR_CAPABILITY)) return BOUNDARY_PAIR_FORMAT;
     if(projectCapabilities(manifest,scene).includes(BAY_REPEAT_CAPABILITY)) return BAY_REPEAT_FORMAT;
     if(projectCapabilities(manifest,scene).includes(PANEL_FILL_CAPABILITY)) return PANEL_FILL_FORMAT;
@@ -456,7 +457,7 @@
   }
   // Editor capabilities are checked by this reader, never advertised as native
   // scene or model-producer capabilities.
-  const manifestCapabilities = [...new Set([...SCENE_CAPABILITIES, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_CARD_CAPABILITY, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, Features.ROOM_CANDIDATE_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY])];
+  const manifestCapabilities = [...new Set([...SCENE_CAPABILITIES, Features.Framing.CAPABILITY, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_CARD_CAPABILITY, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, Features.ROOM_CANDIDATE_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY])];
   function validateManifestCapabilities(capabilities) {
     // /1 and /2 share one active grid-draft kind; capacity follows the finite registry.
     if (!Array.isArray(capabilities) || capabilities.length > manifestCapabilities.length || new Set(capabilities).size !== capabilities.length ||
@@ -516,7 +517,7 @@
        ['finish-surface','panel-fill','derived-placement'].every(record=>recordProfile.supportedRecords.includes(record))&&
        [ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY].every(c=>supported.includes(c))&&!supported.includes(PANEL_FILL_CAPABILITY))
       supported.push(PANEL_FILL_CAPABILITY);
-    return [...supported, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_CARD_CAPABILITY, ...shared, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, Features.ROOM_CANDIDATE_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY];
+    return [...supported, Features.Framing.CAPABILITY, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_CARD_CAPABILITY, ...shared, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, Features.ROOM_CANDIDATE_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY];
   }
   function projectCapabilities(manifest, scene) {
     if (!capabilityScope) return scopedCapabilities(() => projectCapabilities(manifest, scene));
@@ -528,6 +529,7 @@
     const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);
     if (hasProfileRunModels(manifest)) required.add(SECTION_CAPABILITY);
     if (manifest.scenarioCatalog) required.add(SCENARIO_CAPABILITY);
+    if(manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(Features.Framing.CAPABILITY)))required.add(Features.Framing.CAPABILITY);
     if (manifest.scenarioCatalog?.scenarios.some(s => projectCapabilities(s.snapshot.projectManifest, s.snapshot.worldScene).includes(PANEL_FILL_CAPABILITY)))
       for (const capability of [PANEL_FILL_CAPABILITY, ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY]) required.add(capability);
     for(const scenario of manifest.scenarioCatalog?.scenarios||[])for(const capability of projectCapabilities(scenario.snapshot.projectManifest,scenario.snapshot.worldScene))if(format17Capabilities.includes(capability))required.add(capability);
@@ -577,12 +579,16 @@
     const declaresRoomCandidate = !!manifest.requiredCapabilities?.includes(Features.ROOM_CANDIDATE_CAPABILITY);
     if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate && ![ROOM_CANDIDATE_FORMAT, PROFILE_RUN_FORMAT].includes(manifest.format))
       fail("房間候選草稿須使用第 19 版格式並保留 room-candidate-drafts/1 能力。");
+    const hasFraming = !!manifest.featureAttachments?.records?.some(record=>record.kind===Features.Framing.KIND)||
+      !!manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(Features.Framing.CAPABILITY));
+    if(hasFraming!==!!manifest.requiredCapabilities?.includes(Features.Framing.CAPABILITY)||hasFraming&&![ROOM_CANDIDATE_FORMAT,PROFILE_RUN_FORMAT].includes(manifest.format))
+      fail('模板配方須使用第 19 版格式並保留 framing-template-recipes/1 能力。');
     const panelFill=scene===null?manifest.requiredCapabilities?.includes(PANEL_FILL_CAPABILITY):needed.includes(PANEL_FILL_CAPABILITY);
     const boundaryPair=scene===null?manifest.requiredCapabilities?.includes(BOUNDARY_PAIR_CAPABILITY):needed.includes(BOUNDARY_PAIR_CAPABILITY);
     if((boundaryPair||manifest.requiredCapabilities?.includes(BOUNDARY_PAIR_CAPABILITY))&&
        (!boundaryPair||![BOUNDARY_PAIR_FORMAT,PROFILE_RUN_FORMAT].includes(manifest.format)||!manifest.requiredCapabilities?.includes(BOUNDARY_PAIR_CAPABILITY)||scene!==null&&!boundaryPairRecords(scene).length))
       fail('互頂組須使用第 19 版格式並保留完整組定義及 boundary-pair/1 能力。');
-    if(manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate&&!panelFill)
+    if(manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate&&!panelFill&&!hasFraming)
       if(!boundaryPair)fail("第 19 版格式缺少重複開間、房間候選草稿、完成面鋪排或互頂組的對應資料及能力。");
     if((panelFill||manifest.requiredCapabilities?.includes(PANEL_FILL_CAPABILITY))&&
        (!panelFill||![PANEL_FILL_FORMAT, PROFILE_RUN_FORMAT].includes(manifest.format)||
@@ -1276,7 +1282,7 @@
         this.pruneFaceProjections((bid, pid) => result.surfaces.some(s => s.id === pid && s.boundary === bid && s.u?.[2] === 0 && s.v?.[2] === 0));
         return;
       }
-      if (!/^boundary-pair-confirm /.test(command))
+      if (!/^(boundary-pair|framing-template)-confirm /.test(command))
         if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return;
       const op = command.startsWith("line ") ? command.slice(5).trim().split(/\s+/)[0] : command.split(/\s+/)[0];
       if (result.preview) {

@@ -113,10 +113,13 @@ window.EngineeringWorkspace = (() => {
     }else if(state.section==='grid')state.section=state.previousSection||'apply';
     state.preview=null;state.intent=null;
     if (options.placementId != null) { state.activePlacement=options.placementId;if(state.mode!=='grid')state.section='apply';state.inlineKind=null; }
+    if (state.mode!=='grid' && options.section==='materials') state.section='materials';
     // Also covers closing while the initial read is still pending.
     draftBaseline=draftContent();
     dialog.dataset.mode=state.mode||'standard';
     $('ewTitle').textContent=state.mode==='grid'?'材料規格排格':'工程規格';
+    $('ewClose').textContent=options.returnLabel||'返回畫布';
+    $('ewClose').setAttribute('aria-label',options.returnLabel||'返回畫布');
     dialog.querySelector('.ew-nav').hidden=state.mode==='grid';
     if (!dialog.open)dialog.showModal();
     placeStudioLesson($('ewWorkspaceLesson'), 'engineering:first', '這裡改面材與角材來源；預覽確認後才影響用到它的物件。');

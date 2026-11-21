@@ -14,10 +14,12 @@ const workspaceExtension = require('./diagnostics/r396_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
 const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
 const pf4aExtension = require('./diagnostics/pf4a_canvas_extension.cjs');
+const r03Extension = require('./diagnostics/r03_framing_canvas_extension.cjs');
 // PF-4A (#128) P1284 is projected out first by its own exact helper (measured count, P128→P1284→P353).
 // R386: census() is the current legacy projection (or the mutation runner's isolated aggregate fixture).
-const committedGolden = () => pf4aExtension.projectGolden(census().golden);
-const committedPlan = () => pf4aExtension.projectPlan(census().plan);
+// R03 (#205) P205 follows P1284 in the merged plan, so its exact helper runs before PF-4A's.
+const committedGolden = () => pf4aExtension.projectGolden(r03Extension.projectGolden(census().golden));
+const committedPlan = () => pf4aExtension.projectPlan(r03Extension.projectPlan(census().plan));
 const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
 const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
 const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');

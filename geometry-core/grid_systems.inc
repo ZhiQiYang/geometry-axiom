@@ -183,7 +183,7 @@ static bool grid_system_read_axis(char **t,int count,int *at,GridAxisDef *a,int 
     }
     return true;
 }
-static bool apply_grid_system_line(const char *path,int line_no,char **t,int count,World *w)
+static bool apply_grid_system_line(const char *path,int line_no,char **t,int count,World *w,WorldSnapshot *snapshot)
 {
     /* main-along is the W source role, not a K grid-system field (GEO-261). */
     GridSystem s={0}; s.next_rule_key=1; int main_along=0,i=6; g_grid_stagger_error[0]=0; g_grid_definition_error[0]=0;
@@ -219,8 +219,10 @@ static bool apply_grid_system_line(const char *path,int line_no,char **t,int cou
         else grid_definition_error("definition","has invalid name or axis values");
         goto invalid;
     }
-    World candidate=*w; GeoGridStoreError detail;
-    if(!app_grid_system_redeclare(&candidate,&s,main_along,&detail)){
+    World *candidate=world_snapshot_take(snapshot,w);
+    if(!candidate){scene_error(path,line_no,WORLD_SNAPSHOT_UNAVAILABLE);return false;}
+    GeoGridStoreError detail;
+    if(!app_grid_system_redeclare(candidate,&s,main_along,&detail)){
         if(detail.status==GEO_GRID_STORE_SPACE_CHANGE){scene_error(path,line_no,"D29/I37: legacy-finite and infinite identities cannot be converted implicitly");return false;}
         if(detail.status==GEO_GRID_STORE_CAPACITY){scene_error(path,line_no,"I37: grid-system capacity is 16");return false;}
         goto invalid;
@@ -228,8 +230,8 @@ static bool apply_grid_system_line(const char *path,int line_no,char **t,int cou
     /* I74: a redeclaration keeps (or explicitly replaces) the whole card source. */
     const GridSystem *previous=world_find_grid_system(w,s.id);
     if(previous && previous->card_reference.set && !s.card_reference.set){scene_error(path,line_no,"I74 CONTROLLED_TOKEN_REJECT: explicitly unbind the whole card reference first");return false;}
-    reference_capture_trial(&candidate);
-    if (!app_world_revalidate_staged(w,&candidate)) {
+    reference_capture_trial(candidate);
+    if (!app_world_revalidate_staged(w,candidate)) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I37: grid-system dependencies invalid; unchanged"); return false;
     }
      return true;
@@ -238,8 +240,9 @@ invalid:
     scene_error(path,line_no,g_grid_stagger_error[0]?g_grid_stagger_error:g_grid_definition_error[0]?g_grid_definition_error:
         "D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range"); return false;
 }
+WORLD_SNAPSHOT_HANDLER(apply_grid_system_line);
 
-static bool apply_grid_system_application(const char *path,int line_no,char **t,int count,World *w)
+static bool apply_grid_system_application(const char *path,int line_no,char **t,int count,World *w,WorldSnapshot *snapshot)
 {
     ReferenceGrid g={0};
     if (count!=9 || !parse_u32(t[1],&g.id) || strcmp(t[2],"on") || !parse_u32(t[3],&g.placement_id) ||
@@ -247,19 +250,22 @@ static bool apply_grid_system_application(const char *path,int line_no,char **t,
         !parse_coord(t[7],&g.system_origin[0]) || !parse_coord(t[8],&g.system_origin[1])) {
         scene_error(path,line_no,"D29: grid id on surface from-system id origin u v"); return false;
     }
-    World candidate=*w;WoodGridContext context=app_grid_context(&candidate);char error[256]="";
+    World *candidate=world_snapshot_take(snapshot,w);
+    if(!candidate){scene_error(path,line_no,WORLD_SNAPSHOT_UNAVAILABLE);return false;}
+    WoodGridContext context=app_grid_context(candidate);char error[256]="";
     if(!wood_grid_apply_system(&context,&g,error,sizeof error)){scene_error(path,line_no,error);return false;}
-    reference_capture_trial(&candidate);
+    reference_capture_trial(candidate);
     /* grid-preview calls this parser directly; retain the same I23 baseline. */
     const World *previous_baseline=g_subgrid_before;
     if (!previous_baseline) g_subgrid_before=w;
-    bool valid=app_world_revalidate_staged(w,&candidate);
+    bool valid=app_world_revalidate_staged(w,candidate);
     g_subgrid_before=previous_baseline;
     if (!valid) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I37: application or dependent geometry invalid; unchanged"); return false;
     }
      return true;
 }
+WORLD_SNAPSHOT_HANDLER(apply_grid_system_application);
 
 static void grid_systems_dump(const World *w,FILE *out)
 {
