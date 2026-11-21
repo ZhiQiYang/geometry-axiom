@@ -6,7 +6,7 @@
 })(globalThis, () => {
   'use strict';
   const HASH = /^[a-f0-9]{64}$/;
-  const PACKAGES = ['space', 'volume', 'clearance', 'walls', 'timbers'];
+  const PACKAGES = ['space', 'volume', 'clearance', 'walls', 'timbers', 'profile_runs'];
   const clone = value => JSON.parse(JSON.stringify(value));
   const own = (value, required) => value && typeof value === 'object' && !Array.isArray(value) &&
     Object.keys(value).length === required.length && required.every(key => Object.hasOwn(value, key));
@@ -32,15 +32,15 @@
       canonical(s);
       return clone(s);
     }
-    if (!own(s, ['placement_id', 'boundary_id', 'edges', 'obstacles', 'timbers', 'projection']) ||
+    if (!own(s, ['placement_id', 'boundary_id', 'edges', 'obstacles', 'timbers', 'profile_runs', 'projection']) ||
         !uint(s.placement_id) || !uint(s.boundary_id) ||
         !Array.isArray(s.edges) || !s.edges.length || s.edges.length > 512 || !s.edges.every(uint) ||
         new Set(s.edges).size !== s.edges.length) throw Error('請明選現行來源放置面與各個邊，不能沿用舊編號推測。');
-    for (const [key, kinds] of [['obstacles', ['column', 'beam']], ['timbers', ['timber']]]) {
+    for (const [key, kinds] of [['obstacles', ['column', 'beam']], ['timbers', ['timber']], ['profile_runs', ['profile-run']]]) {
       if (!Array.isArray(s[key]) || s[key].length > 512 ||
           !s[key].every(ref => own(ref, ['kind', 'id']) && kinds.includes(ref.kind) && uint(ref.id)) ||
           new Set(s[key].map(ref => ref.kind + ':' + ref.id)).size !== s[key].length)
-        throw Error('請明選完整的角材與柱樑清單；沒有時須明確傳空清單。');
+        throw Error('請明選完整的角材、拉伸件與柱樑清單；沒有時須明確傳空清單。');
     }
     if (s.projection !== null && (!own(s.projection, ['kind', 'view', 'region', 'wallSide']) ||
         s.projection.kind !== 'space-boundary-plan' || !['top', 'bottom'].includes(s.projection.view) ||
@@ -90,7 +90,7 @@
         if (!record) throw Error('找不到要更新的模型。');
         host.validateRecord(record);
         if (!['plan', 'faces'].includes(record.input.mode)) throw Error('本版只支援普通單一平面或多承載面模型更新。');
-        if (record.input.mode === 'faces' && (Object.hasOwn(record.input, 'timbers') || record.result.summary.source_placement !== null ||
+        if (record.input.mode === 'faces' && (Object.hasOwn(record.input, 'timbers') || Object.hasOwn(record.input, 'profile_runs') || record.result.summary.source_placement !== null ||
             record.result.summary.source_z !== null || record.result.summary.bottom !== null || record.result.summary.top !== null ||
             record.result.summary.generated_faces.length !== 0))
           throw Error('這份紀錄仍含普通單一平面結果或角材，不能當成多承載面模型更新。');
@@ -133,17 +133,23 @@
         throw Error('原生執行版本未知，不能確認模型更新。');
       host.validateRecord(candidate.record);
       const next = candidate.record, old = op.record;
+      if (next.input.profile_runs && (next.input.base_scene !== source.scene ||
+          next.result.source_snapshot.input_sha256 !== candidate.current_scene_sha256 ||
+          await digest(next.result.source_snapshot.canonical_scene) !== next.result.source_sha256))
+        throw Error('候選來源快照與此次明選來源不一致，未更新模型。');
       const chosen = request.selection, faces = old.input.mode === 'faces';
+      const boundaryId = chosen.boundary_id === 0 && next.source.boundary_id === null && (old.input.profile_runs?.length || next.input.profile_runs?.length || old.source.boundary_id === null) ? null : chosen.boundary_id;
       const sameMode = next.input.mode === old.input.mode && faces === (chosen.mode === 'faces');
       const sourceMatches = faces ? next.source.placement_id === null && next.source.boundary_id === null &&
-        !Object.hasOwn(next.source, 'projection') && !Object.hasOwn(next.input, 'timbers') &&
+        !Object.hasOwn(next.source, 'projection') && !Object.hasOwn(next.input, 'timbers') && !Object.hasOwn(next.input, 'profile_runs') &&
         chosen.uses.length === old.input.uses.length && next.input.uses.length === old.input.uses.length &&
         next.input.uses.every((use, index) => use.placement_id === chosen.uses[index].placement_id &&
           use.orientation === old.input.uses[index].orientation && use.purpose === old.input.uses[index].purpose) :
         next.input.placement_id === chosen.placement_id && next.source.placement_id === chosen.placement_id &&
-        next.source.boundary_id === chosen.boundary_id &&
+        next.source.boundary_id === boundaryId &&
         same({...next.input.settings, edges: old.input.settings.edges}, old.input.settings) &&
         same(next.input.settings.edges, chosen.edges) && same(next.input.timbers || [], chosen.timbers) &&
+        same(next.input.profile_runs || [], chosen.profile_runs) &&
         same(next.source.projection || null, chosen.projection);
       if (next.id !== old.id || next.name !== old.name || next.created_at !== old.created_at ||
           Object.hasOwn(next, 'sourceIdentity') ||

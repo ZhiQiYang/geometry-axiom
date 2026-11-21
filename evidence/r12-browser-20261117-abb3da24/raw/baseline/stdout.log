@@ -1,0 +1,67 @@
+SPACE_SCOPE {"mode":"partial","filters":["GEOMETRY_SPACE_PROFILE_ONLY"],"included":["profile-space"],"omitted":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","projection-close","timber-material","timber-source-guards"],"url":"http://127.0.0.1:35541/","feedbackDirectory":"/tmp/r12-browser-resources-91xhx9oa/feedback"}
+PASS server serves the intended space-model release
+PASS current release explicitly supports timber preview and engineering sources
+PASS R12_SECTION_ENTRY
+PASS R12_SECTION_PREVIEW_ZERO_WRITE
+PASS R12_SECTION_OUTLINE
+PASS R12_SECTION_MEMBERS
+PASS R12_RUN_PREVIEW_ZERO_WRITE
+PASS R12_RUN_ONE_HISTORY
+PASS R12_RUN_WORLD_BOUNDS
+PASS R12_RUN_LOCAL_AND_CORNER
+PASS R12_SPACE_ENTRY
+PASS R12_ALL_WORLD_CANDIDATES
+PASS R12_EXPLICIT_SELECTION
+PASS R12_UNLOCATED_NOTICE
+PASS R12_SHARED_CONTROLS
+PASS R12_LAYOUT_1400
+PASS R12_LAYOUT_690
+PASS R12_LAYOUT_390
+PASS R12_NO_PROFILE_LEGACY_RESULT
+PASS R12_KEYBOARD_SELECTION
+PASS R12_PROFILE_REQUEST
+PASS R12_Q01_EXACT_ORACLE
+PASS R12_NO_MIXED_QUANTITY
+PASS R12_MATERIAL_NOTICE
+PASS R12_SHARED_MATERIAL_SWITCH
+PASS R12_SELECTION_INVALIDATES
+PASS R12_OVERLAP_EXACT_TOTAL
+PASS R12_CANCEL_ZERO_WRITE
+PASS R12_MODEL_ONE_HISTORY
+PASS R12_MODEL_UNDO
+PASS R12_MODEL_REDO
+PASS R12_LIBRARY_SNAPSHOT_LABEL
+PASS R12_LIVE_SOURCE_SNAPSHOT_UNCHANGED
+PASS R12_SAVED_TOP_VALUES
+PASS R12_UPDATE_ENTRY
+PASS R12_UPDATE_EXPLICIT_CANDIDATES
+PASS R12_UPDATE_TYPED_SELECTION
+PASS R12_UPDATE_PACKAGE_DIFF
+PASS R12_UPDATE_SINGLE_SOURCE
+PASS R12_UPDATE_PREVIEW_ZERO_WRITE
+PASS R12_UPDATE_CANCEL_ZERO_WRITE
+PASS R12_UPDATE_ONE_HISTORY
+PASS R12_UPDATE_UNDO
+PASS R12_UPDATE_REDO
+PASS R12_UPDATE_EMPTY_REMOVAL
+PASS R12_UPDATE_REMOVE_ONE_HISTORY
+PASS R12_UPDATE_REMOVE_UNDO
+PASS R12_HEIGHT_SNAPSHOT_STABLE
+PASS R12_HEIGHT_CANCEL_ZERO_WRITE
+PASS R12_SCENARIO_CAPTURE
+PASS R12_SAVE_FORMAT
+PASS R12_SAVE_NATIVE_SOURCE
+PASS R12_SAVE_MODEL_PACKAGES
+PASS R12_COLD_NEW_EMPTY
+PASS R12_COLD_PAGE_SESSION
+PASS R12_COLD_OPEN_EXACT
+PASS R12_COLD_SCENARIO_EXACT
+PASS R12_SOURCE_REVISION_RACE
+PASS R12_LATE_PREVIEW_SETTINGS
+PASS R12_CAPABILITY_GUARD
+PASS R12_RESTORED_OPEN_EXACT
+PASS R12_NO_BROWSER_EXCEPTIONS
+PASS no uncaught browser exceptions
+PASS no browser console errors
+SPACE_RESULT {"schema":"geometry-space-result/1","scope":{"mode":"partial","filters":["GEOMETRY_SPACE_PROFILE_ONLY"],"included":["profile-space"],"omitted":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","projection-close","timber-material","timber-source-guards"],"url":"http://127.0.0.1:35541/","feedbackDirectory":"/tmp/r12-browser-resources-91xhx9oa/feedback"},"completed":true,"groups":{"setup":{"expected":2,"passed":2,"failed":0,"completed":true},"profile-space":{"expected":60,"passed":60,"failed":0,"completed":true},"browser-health":{"expected":2,"passed":2,"failed":0,"completed":true}},"completenessProblems":[],"passed":64,"failed":0,"exceptions":[],"consoleErrors":[]}
+RESULT 64 passed / 0 failed; completed: true; scope: partial; omitted groups: space-height-library,projection-lifecycle,projection-placement,font-layout,space-flow,projection-close,timber-material,timber-source-guards; artifacts: /tmp/claude-0/-home-user-geometry-axiom/e67f085c-2806-57ae-8fce-a53201b04285/scratchpad/ev/browser4/baseline/browser

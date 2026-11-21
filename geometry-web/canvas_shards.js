@@ -3,7 +3,9 @@
    - cdp_test.js 以 GEOMETRY_CDP_SHARD=i/n 只跑第 i 片（完整模式的一個連續區段），本片逐段與 golden 嚴格比對。
    - 彙總 job 以 `node geometry-web/canvas_shards.js verify` 核對各片原始收據：片數恰好、段落不重不漏、
      逐段計數與 golden 完全相等、total 相等、每片零失敗零未預期例外、交接相同。
-   golden（cdp_sections.golden.json）的數字只由完整模式產生，本模組從不改寫它。 */
+   golden 自動更新器仍僅接受完整模式；具名加法擴充可採入實跑的完整父序列計數，
+   須以獨立段及精確投影保住全部既有計數，且新 head 仍須通過正式分片與彙總。
+   本模組從不改寫 golden（cdp_sections.golden.json）。 */
 'use strict';
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const floor = require('./cdp_floor.js');

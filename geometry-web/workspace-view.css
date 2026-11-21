@@ -1,0 +1,12 @@
+/* #116: reuse the original view/layer inputs in one on-demand disclosure. */
+.v3-view-settings { width:100%; min-width:0; }
+.v3-view-settings > summary { cursor:pointer; font-weight:600; padding:10px 0; }
+.v3-view-settings .section-label-row { margin-top:10px; }
+.v3-hidden-roots { border-top:1px solid var(--line,#dedfe5); margin-top:12px; padding-top:8px; }
+.v3-hidden-roots p { margin:4px 0 8px; font-size:12px; }
+#v3HiddenRoots { list-style:none; padding:0; margin:0 0 8px; }
+#v3HiddenRoots li { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:5px 0; }
+#v3HiddenRoots span { overflow-wrap:anywhere; }
+#cv [data-owner-kind]:focus-visible, #spaceProjSvg [data-owner-kind]:focus-visible {
+  outline:2px solid var(--accent,#6366f1); outline-offset:3px;
+}

@@ -211,7 +211,7 @@ class BridgeServerTests(unittest.TestCase):
                 capabilities = json.load(response)
             self.assertEqual(capabilities["release"], "engineering-spec-v1-20260928")
             self.assertEqual(capabilities["space_preview_schemas"],
-                             ["geometry-space-preview/1", "geometry-space-preview/2"])
+                             ["geometry-space-preview/1", "geometry-space-preview/2", "geometry-space-preview/3"])
             self.assertEqual(self.process.stdin.getvalue(), b"")
 
     def test_runtime_identity_and_assets_are_from_the_same_snapshot(self):

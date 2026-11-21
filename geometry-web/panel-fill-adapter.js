@@ -1,7 +1,7 @@
 /* UI-1 transport. Native definitions and exact derived records are authoritative. */
 "use strict";
 (function (root) {
-  const ACTIONS = Object.freeze(['read','edit-definitions','read-layout','read-support']);
+  const ACTIONS = Object.freeze(['read','edit-definitions','read-layout','read-support','create-from-fill-grid']);
   const clone = value => JSON.parse(JSON.stringify(value));
   const canonical = value => JSON.stringify(value, (_, v) => v && typeof v === 'object' && !Array.isArray(v)
     ? Object.keys(v).sort().reduce((out,key)=>(out[key]=v[key],out),{}) : v);
@@ -36,6 +36,8 @@
       (value.pattern==='straight'?!('stagger' in value):value.stagger&&['u','v'].includes(value.stagger.axis)&&(d1(value.stagger.value)||parameter(value.stagger.value))), '鋪排定義');
     if(kind==='host')wire(id(value.id)&&positiveId(value.fillId)&&
       (d1(value.h)||value.h&&(['literal','spec','parameter','material'].includes(value.h.kind))), '宿主定義');
+    if(kind==='grid')wire(id(value.id)&&id(value.hostId)&&positiveId(value.fillId)&&
+      [null,'u','v'].includes(value.mainAlong), '來源主格定義');
   }
   function validateState(state,contract,stage){
     unique(state.finishSurfaces,r=>r.id,'完成面');unique(state.panelFills,r=>r.definition?.id,'鋪排');unique(state.derivedPlacements,r=>r.definition?.id,'宿主');
@@ -84,6 +86,18 @@
       for(const c of d.components){wire(region(c)&&Array.isArray(c.edges),'宿主分量');
         for(const e of c.edges)wire(Array.isArray(e.key)&&e.key.length>0&&e.key.every(k=>Array.isArray(k)&&k.length===3&&typeof k[0]==='string'&&id(k[1])&&positiveId(k[2]))&&tuple(e.start,2)&&tuple(e.end,2)&&['FREE','FIXED'].includes(e.fixity),'宿主完整邊 key');}
     }
+    if(contract.supportedActions.includes('create-from-fill-grid')){
+      unique(state.fillGrids,r=>r.id,'來源主格');unique(state.fillGrids,r=>r.definition?.hostId,'宿主主格');
+      for(const r of state.fillGrids){
+        const g=r.definition;definitionShape(g,'grid');
+        wire(r.id===g.id&&hosts.get(g.hostId)?.definition.fillId===g.fillId&&fills.has(g.fillId),'來源主格宿主／鋪排閉包');
+        if(failed(r,'fill-grid',g.id))continue;
+        const d=r.derived,finish=finishes.get(fills.get(g.fillId).definition.finishSurfaceId);
+        wire(d.indexSpace==='lattice'&&d.bandIndexSpace==='panel-row'&&[-1,1].includes(d.side)&&d.side===finish.structureSide&&
+          [null,'u','v'].includes(d.staggerAxis)&&integerText(d.staggerDelta),'來源主格索引與結構側');
+        wire(d.axes&&['u','v'].every(axis=>{const a=d.axes[axis];return a&&integerText(a.baseCoordinate)&&integerText(a.pitch)&&integerText(a.baseIndex)&&BigInt(a.pitch)!==0n;}),'來源主格精確軸值');
+      }
+    }
   }
   function contract(reply, preview=false) {
     const c=reply?.uiContract;
@@ -95,24 +109,29 @@
         !c.scope || !['finishSurfaceIds','fillIds'].every(k=>Array.isArray(c.scope[k]) &&
           c.scope[k].every(id) && new Set(c.scope[k]).size===c.scope[k].length))
       throw new Error('目前服務未提供相容、完整的完成面 UI 契約；此片功能不可用。');
-    for(const e of c.errors)wire(e&&['finish-surface','panel-fill','derived-placement','transaction'].includes(e.recordType)&&
+    for(const e of c.errors)wire(e&&['finish-surface','panel-fill','derived-placement','fill-grid','transaction'].includes(e.recordType)&&
       (e.id===null||id(e.id))&&['state','before','after'].includes(e.stage)&&typeof e.code==='string'&&typeof e.message==='string','具型別診斷');
-    const seenFinish=new Set(),seenFill=new Set();
+    const grids=c.supportedActions.includes('create-from-fill-grid');
+    if(grids)wire(Array.isArray(c.scope.fillGridIds)&&c.scope.fillGridIds.every(id)&&new Set(c.scope.fillGridIds).size===c.scope.fillGridIds.length,'來源主格 scope');
+    const seenFinish=new Set(),seenFill=new Set(),seenGrids=new Set();
     for (const key of preview ? ['before','after'] : ['state']) {
       const state=c[key];
       if (!state || !['finishSurfaces','panelFills','derivedPlacements'].every(k=>Array.isArray(state[k])))
         throw new Error('完成面回覆缺少完整定義或原生派生資料。');
+      if(grids)wire(Array.isArray(state.fillGrids),'來源主格集合');
       if (state.finishSurfaces.some(r=>!id(r.id)||!c.scope.finishSurfaceIds.includes(r.id)) ||
           state.panelFills.some(r=>!id(r.definition?.id)||!c.scope.fillIds.includes(r.definition.id)))
         throw new Error('完成面回覆的來源範圍不一致。');
       for(const record of state.finishSurfaces)seenFinish.add(record.id);
       for(const record of state.panelFills)seenFill.add(record.definition.id);
+      if(grids)for(const record of state.fillGrids){wire(id(record.id)&&c.scope.fillGridIds.includes(record.id),'來源主格範圍');seenGrids.add(record.id);}
       if(c.completeForScope && (c.errors.length || [...state.finishSurfaces,...state.panelFills,...state.derivedPlacements]
         .some(r=>r.derived?.error))) throw new Error('原生完整性旗標與內層錯誤不一致，禁止確認。');
       validateState(state,c,key);
     }
     if(c.scope.finishSurfaceIds.some(i=>!seenFinish.has(i))||c.scope.fillIds.some(i=>!seenFill.has(i)))
       throw new Error('完成面契約宣告的範圍缺少原生紀錄。');
+    if(grids)wire(c.scope.fillGridIds.every(i=>seenGrids.has(i)),'來源主格 scope 缺少原生紀錄');
     return c;
   }
   function requestScope(candidate,snapshot,operations){
@@ -121,7 +140,16 @@
     const keys={finishSurfaces:'finish',panelFills:'fill',derivedPlacements:'host'},expected={};
     for(const [key,kind] of Object.entries(keys))expected[key]=new Map(snapshot[key].map(r=>[kind==='finish'?r.id:r.definition.id,definition(r,kind)]));
     const kinds={'finish-surface':'finishSurfaces','panel-fill':'panelFills','derived-placement':'derivedPlacements'};
+    const expectedGrids=new Map((snapshot.fillGrids||[]).map(r=>[r.id,clone(r.definition)]));
     for(const op of operations){
+      if(op.op==='create-from-fill-grid'){
+        const v=op.value,host=snapshot.derivedPlacements.find(r=>r.definition.id===v.hostId);
+        wire(host?.definition.fillId===v.fillId&&snapshot.panelFills.some(r=>r.definition.id===v.fillId),'主格須引用正式宿主與鋪排');
+        const records=(candidate.after.fillGrids||[]).filter(r=>r.definition.hostId===v.hostId);
+        wire(records.length===1&&records[0].definition.fillId===v.fillId&&records[0].definition.mainAlong===v.mainAlong,'主格候選不符本次建立來源');
+        const g=records[0];wire(!expectedGrids.has(g.id)||canonical(expectedGrids.get(g.id))===canonical(g.definition),'主格不得替換既有定義');
+        expectedGrids.set(g.id,clone(g.definition));continue;
+      }
       const match=/^(put|delete)-(finish-surface|panel-fill|derived-placement)$/.exec(op.op||'');wire(match,'未知本片操作');
       const values=expected[kinds[match[2]]];if(match[1]==='put')values.set(op.value.id,clone(op.value));else values.delete(op.id);
     }
@@ -129,14 +157,26 @@
       const actual=new Map(candidate.after[key].map(r=>[kind==='finish'?r.id:r.definition.id,definition(r,kind)]));
       wire(actual.size===expected[key].size&&[...expected[key]].every(([recordId,value])=>sameDefinition(actual.get(recordId),value,kind)), '預覽 after 不符本次 '+key+' 操作範圍');
     }
+    const actualGrids=new Map((candidate.after.fillGrids||[]).map(r=>[r.id,r.definition]));
+    wire(actualGrids.size===expectedGrids.size&&[...expectedGrids].every(([recordId,value])=>canonical(actualGrids.get(recordId))===canonical(value)), '預覽 after 不符本次來源主格操作範圍'); // PF4_REQUEST_SCOPE
   }
   function impactContract(candidate){
     wire(Array.isArray(candidate.changes)&&candidate.changes.every(change=>change&&id(change.id)&&
-      ['finish-surface','panel-fill','derived-placement'].includes(change.record??'finish-surface')&&
+      ['finish-surface','panel-fill','derived-placement','fill-grid'].includes(change.record??'finish-surface')&&
       ['created','modified','deleted','derived'].includes(change.change)), '原生變更清單');
     if(candidate.before.derivedPlacements.length||candidate.after.derivedPlacements.length)
       wire(candidate.dependencies&&['before','after'].every(stage=>candidate.dependencies[stage]&&
         Array.isArray(candidate.dependencies[stage].geometry?.timbers)), '宿主下游影響缺少原生前後依賴');
+    if(candidate.before.fillGrids?.length||candidate.after.fillGrids?.length)
+      wire(candidate.dependencies&&['before','after'].every(stage=>['grids','guides','timbers'].every(key=>
+        Array.isArray(candidate.dependencies[stage]?.geometry?.[key]))), '來源主格下游影響缺少原生前後依賴'); // PF4_DEPENDENCY_SCOPE
+    for(const stage of ['before','after'])for(const record of candidate[stage].fillGrids||[]){
+      const definition=record.definition,rows=candidate.dependencies?.[stage]?.geometry?.grids?.filter(g=>g.id===record.id)||[],g=rows[0];
+      wire(rows.length===1&&g.surface===definition.hostId&&g.fillId===definition.fillId&&g.kind==='main'&&
+        g.indexSpace==='lattice'&&g.mainAlong===definition.mainAlong&&['u','v'].every(axis=>{
+          const source=g[axis+'Definition'];return source?.mode==='from-fill'&&source.fillId===definition.fillId&&source.axis===axis;
+        }), '來源主格下游依賴缺少一致的來源身分'); // PF4_DEPENDENCY_GRID_IDENTITY
+    }
   }
   function definition(record, kind) {
     if (!record) return null;
@@ -207,6 +247,7 @@
     }
     async preview(operations) {
       this.assertCurrent();if(!this.contract.supportedActions.includes('edit-definitions'))throw new Error('目前服務不支援編輯完成面定義。');
+      if(operations.some(op=>op.op==='create-from-fill-grid')&&!this.contract.supportedActions.includes('create-from-fill-grid'))throw new Error('目前服務尚未提供來源主格建立能力。');
       this.changed();if(!operations.length){this.dirty=false;this.reason='定義沒有變更；不建立候選，也不新增歷史。';this.emit();return null;}
       const generation=this.generation;this.phase='previewing';this.reason='原生正在計算候選；尚未套用。';this.emit();
       let result;
@@ -218,6 +259,8 @@
         if(!result||typeof result.valid!=='boolean')throw new Error('原生預覽資料不完整。');
         if(!this.current(generation)){if(result.token)await apiRequest('panel-fill-cancel '+token(result.token));return null;}
         const c=contract(result,true);if(c.revision!==String(this.revision))throw new Error('預覽來源版本已變更。');
+        if(operations.some(op=>op.op==='create-from-fill-grid')||this.snapshot.fillGrids?.length)
+          wire(c.supportedActions.includes('create-from-fill-grid'),'來源主格候選缺少必要能力'); // PF4_CREATE_CANDIDATE_CAPABILITY
         requestScope({...result,before:c.before,after:c.after},this.snapshot,operations);
         impactContract({...result,before:c.before,after:c.after});
         const required=['edit-definitions','read-layout','read-support'];

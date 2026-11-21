@@ -6,9 +6,9 @@
 
 ## 原配置與歷史證據
 
-目前配置為六個native矩陣job，每個`timeout-minutes: 35`保持，各片收據仍須嚴格小於1200秒。2026-11-02依P-186授權建立的三片為歷史安排；R348在2026-11-12的慢runner收據超時後，先改為下方的完整三輪／四片規劃；本次另保留#378完整第四輪、#380追加套件證據，改為六片配置，正式CI驗收另核對。原始main `405f8c5e1a637a16cbe47470faf5ae1fa02b8676` 的[GitHub native job](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40185639126/job/124015759512)量測繼續保留；不延長期限、不豁免失敗。
+目前配置為六個native矩陣job，每個`timeout-minutes: 35`保持，各片收據仍須嚴格小於1200秒。2026-11-02依P-186授權建立的三片為歷史安排；R348在2026-11-12的慢runner收據超時後，先改為下方的完整三輪／四片規劃；後續保留#378完整第四輪，並合流R380兩套、R379三套、R396四套獨立來源；最新六片324套配置見本文末節，正式CI驗收另核對。原始main `405f8c5e1a637a16cbe47470faf5ae1fa02b8676` 的[GitHub native job](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40185639126/job/124015759512)量測繼續保留；不延長期限、不豁免失敗。
 
-`native_shard_timings.json`保留完整來源SHA／run／job／原log SHA256及原main的224個suite實測毫秒；這224筆是上述main來源的量測，不改造為其他分支的套件數。初版按耗時遞減、名稱破同分，指派至目前累計最小的片（再以片號破同分）；此規則仍供明確傳入`weights`的呼叫使用。正式預設沿用R348情境分配器，輸入完整四輪量測與#380兩套獨立觀測上界。片內保留原完整runner的順序；未量測新suite仍用1000ms且必分到某片，但當前預算測試要求量測集合完整覆蓋registry，新增套件須同步補齊量測。配置不依本機cache、即時耗時、亂數或Python hash seed。
+`native_shard_timings.json`保留完整來源SHA／run／job／原log SHA256及原main的224個suite實測毫秒；這224筆是上述main來源的量測，不改造為其他分支的套件數。初版按耗時遞減、名稱破同分，指派至目前累計最小的片（再以片號破同分）；此規則仍供明確傳入`weights`的呼叫使用。正式預設沿用R348情境分配器及R379等價計分修正，輸入完整四輪量測與R380／R379／R396共九套獨立觀測上界。片內保留原完整runner的順序；未量測新suite仍用1000ms且必分到某片，但當前預算測試要求量測集合完整覆蓋registry，新增套件須同步補齊量測。配置不依本機cache、即時耗時、亂數或Python hash seed。
 
 ```sh
 python3 tests/run_all.py --build --shard 1/6 --report /tmp/native/shard-1.json
@@ -22,7 +22,7 @@ python3 tests/native_shard_receipts.py --input /tmp/native --parts 6 --output /t
 
 上述六個runner命令由不同GitHub job執行。單一片只代表該片，不能獨自宣稱完整驗收。`native complete coverage`下載六份原始收據，核對同一完整checkout SHA、耗時表／expected雜湊、計畫與實跑套件清單；每列必實跑、無fail／crash／環境問題、數量等於原expected、計數守恆。各片suite聯集必須等於原完整registry，且彼此不重疊。六份收據缺一、重複、漏列、來源不同、片內耗時達20分鐘均拒絕。GitHub各job由setup至complete的時間另外直接由Actions API核對，不把suite時間冒稱全部job時間。
 
-分片本身保留各checkout拆分前的完整suite清單，不增減suite。224個suite及「只有runner案例1改12」是原main基底的實測範例；其他PR以各自完整registry／expected及全部分片實跑聯集為準，不能固定宣稱224個。#380已將`py:test_unittest_runner`增為13項；本次只在既有method內增加斷言，仍13項；各分支另有自身功能與驗證案例的expected變動，仍須逐項通過原嚴格數量核對。`check_registry`仍在每片執行；selected suite逐列嚴格比數量，另以完整universe檢查expected中已不存在的suite。`mutation:check`保留原套件、原指令、原退出碼及嚴格度，恰在某一片執行；不因分片跳過它。
+分片本身保留各checkout拆分前的完整suite清單，不增減suite。224個suite及「只有runner案例1改12」是原main基底的實測範例；其他PR以各自完整registry／expected及全部分片實跑聯集為準，不能固定宣稱224個。R396與R379本次合流的`py:test_unittest_runner`整檔實跑為17項，expected由指定main的15更新為17；下方13／14項等記錄屬各自歷史版本；各分支另有自身功能與驗證案例的expected變動，仍須逐項通過原嚴格數量核對。`check_registry`仍在每片執行；selected suite逐列嚴格比數量，另以完整universe檢查expected中已不存在的suite。`mutation:check`保留原套件、原指令、原退出碼及嚴格度，恰在某一片執行；不因分片跳過它。
 
 每列另保留真實子程序`process_exit_code`，彙總必須收到整數0；缺失、布林、非0、未啟動或逾時的空值均拒絕。帳本inventory沿用原本的零斷言計數，不能偽造為一個通過斷言；其餘僅退出碼腳本保留原通過計數1。負控制同時驗證原runner記錄真實退出碼與彙總拒收偽綠列。這項修正來自首輪真CI彙總誤拒inventory的實際紅燈；不是放寬原mutation檢查。
 
@@ -246,6 +246,121 @@ source head `eeb8616665d0e0944fc1a7cf4a4786e15872cbe6`、checkout
 
 `native-complete` 的 checkout 使用 `filter: blob:none` 及 non-cone `/*`、`!/evidence/`；僅省略根目錄歷史證據封包，保留完整 `tests/`（含 `tests/evidence/`）、核心、網頁、原workflow及Git HEAD。沿用文件job已有的簽出方式，5分鐘時限與所有後續命令不變。`R379_RESTORE_FULL_COVERAGE_CHECKOUT` 只撤回本job的該設定，應使原coverage測試以 `R379_NATIVE_COVERAGE_SPARSE_CHECKOUT` 正常紅；不能順手改其他job。稀疏簽出須實際執行原35組反證、archive反證與六片原收據核對，不能僅以設定字串或舊job成功宣稱完成；新head仍需正式CI。
 
+下節保留R396較早合入六片main的原始來源、數值與撤回紀錄；其中321套、三來源digest及當時P1161狀態均屬該歷史版本，最新整合以最後一節為準。
+
+## R396：四個工作區 suite 接入六片 main（2026-11-13）
+
+本次整合的 parents 為 R11 head `07b8772c2ee98d981249c9b81a88ead129c69d4f` 與六片 main `1400a05c4b365103aad1aa1d81b692521cabb319`。原 `native_shard_timings.json` 現有四輪315套、`native_shard_added_evidence.json` 的R380兩套，以及 `native_shard_added_receipts.json` 的R396四套原件全部保留，不把新增 suite 寫成舊輪實跑，也不手改原始失敗狀態。`native_shards.py` 與 `run_all.expected.json` 的自動合併內容已足夠；本整合不改規劃演算法或現有321套 census。
+
+R396四套的原始來源為 [Geometry 43336972629](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43336972629)，head `1d304b10ee4451f0557c9b96b28cf31d3f5bde80`、實際checkout `500eecece499773d085a92952729ea8fcc7cebfc`，兩者tree同為 `0d81cbf4051a877b3907fd9f7eb42c0c673d8d24`。下列child自身通過；原shard因漏登expected或其他runner測試失敗而紅，不能將整片改記為成功。
+
+| Suite | 原始片／job | 原始結果 | 原始秒數 | 規劃上界 ms |
+|---|---|---|---:|---:|
+| `py:test_workspace_view` | 2/4／131596120108 | counted，10/10，exit 0 | 2.3255774974823 | 3000 |
+| `node:workspace_context_menu_state` | 2/4／131596120108 | exit-only，total 0、passed 1，exit 0 | 0.05653810501098633 | 1000 |
+| `py:test_workspace_view_server` | 3/4／131596120030 | counted，2/2，exit 0 | 0.765249490737915 | 2000 |
+| `node:workspace_view_state` | 4/4／131596119719 | counted，15/15，exit 0 | 0.18236732482910156 | 1000 |
+
+四個規劃上界合計7000ms，嚴格高於原始浮點秒數乘1000；不是重標歷史實測。exit-only的passed=1是既有runner成功旗標，沒有虛構discovered=1。新收據保存完整原row（含當時expected_problem）、run／head／checkout／job／artifact及原ZIP／JSON的SHA-256；其LF SHA-256維持 `55c6c00be8984fad5bf475993e55b1808fc67c96716a46d9630e9c411ea70ff4`。讀取仍要求真整數exit 0、實際執行、完整合法計數、零failure／skip／crash／環境問題，且拒絕新舊來源的同名覆寫。
+
+現行六片以四輪315套與全部六個獨立added上界規劃，共321套，分配為 **1／55／71／65／65／64**，精確聯集、零重疊，片內保留registry順序。`profile_digest()`仍以三份LF來源加兩個NUL分隔符綁定全部成本，整合後為 `30056311c006ff25b7bdbfa0cd2fa611c1c1a2658d2f046f90eb2a85930c2095`。
+
+以下全部是整數毫秒成本回放除以1000，**不是合併後正式六片收據**。每輪各加全部六項added規劃上界。
+
+| 成本情境 | 片1 | 片2 | 片3 | 片4 | 片5 | 片6 |
+|---|---:|---:|---:|---:|---:|---:|
+| 43162989157 | 348.065 | 472.213 | 572.465 | 566.106 | 538.347 | 567.998 |
+| 43150038015 | 688.444 | 375.369 | 554.144 | 566.941 | 487.455 | 478.971 |
+| 43177620127 | 755.187 | 467.946 | 532.158 | 546.494 | 520.377 | 502.044 |
+| 43271258668 | 701.108 | 573.599 | 573.599 | 573.600 | 573.600 | 573.600 |
+| 每suite四輪最大包絡 | 755.187 | 618.750 | 671.211 | 638.663 | 667.828 | 643.171 |
+| 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 768.750 | 821.211 | 788.663 | 817.828 | 793.171 |
+
+歷史兩輪三片仍固定原315名稱加R380兩項的317套，分配91／115／111，原100秒開銷＋30秒餘裕後最大1199.061秒。R396原三輪四片321套也保持33／97／96／95；原120秒開銷＋30秒餘裕後包絡為1042.699／1065.848／1077.510／1069.136秒。兩者的原預算斷言均保留，不因現行改六片而縮減歷史對象或放寬門檻。
+
+合併衝突若把 `native_sharding_mutation_check.py` 整檔取main，普通13項測試原本仍會綠，但R396七組具名撤回消失。本次在既有provenance method加入七組原名稱／baseline／marker的保全斷言，保持13項；先只採T應以 `R396_NAMED_WITHDRAWALS_RETAINED` 正常AssertionError紅，再採P恢復原七組。R348／R380原15組、R378六片15組、R396原7組全部保留；另加 `R396_DROP_WORKSPACE_WITHDRAWAL`，只撤回其中一個原登錄，證明此保全斷言正常紅。每組均由原裁判要求0／1／0、指定AssertionError、零error／skip，不能以crash或timeout計kill。
+
+正式六片workflow、35分鐘native job、5分鐘coverage job、每個proof子程序60秒、收據嚴格 `0 <= seconds < 1200` 及原120／30秒預留完全不變。仍須在採入補丁並原樣採ME後，取得同一最新head／test-merge checkout的六份真收據、完整coverage及全部正式CI；Canvas P1161的完整golden取證另行處理，本節不能解除該阻擋。
+
+## R396 × 已合併R379：四來源、324套與雙方撤回聯集（2026-11-14）
+
+本次固定兩個parents：PR `25d3c38bd525d8ba94a00c8237207b37522d2ec1` × main
+`724d0370bbace543357ab06d1ce3efc54d6f5581`；merge base為
+`6bdd67fea5187e61ae4c3b5101c682b9db9d6dae`。先做正常合併，保留所有無衝突的雙方內容；
+六個交付檔案以指定main原件為before，再套T測試差異及P整合差異。
+這不是新的正式merge commit或CI收據。
+
+四份來源原件完全不改，沒有將新suite回填成任一輪315套歷史實跑：
+
+| tests/來源 | Bytes | SHA-256 |
+|---|---:|---|
+| `native_shard_timings.json` | 82779 | `d6daa376fbcef3d0248b76f1c37486b1aefd7bb718422bbff235d9ced39c9052` |
+| `native_shard_added_evidence.json` | 1339 | `c04d1975e25e0be292c501e1093a7f742dd9572cd4b5b6f63b9c30d609ae1b04` |
+| `native_shard_added_evidence_r14.json` | 1313 | `222909ccdb5aa6c3c581acc6bb9701401207616520febde589c62e59c1504257` |
+| `native_shard_added_receipts.json` | 4987 | `55c6c00be8984fad5bf475993e55b1808fc67c96716a46d9630e9c411ea70ff4` |
+
+`added_suite_costs()`保留原兩種schema的完整來源、計數、退出碼及成本上界檢查。
+R380與R14之間、以及這兩者與R396收據之間的同名suite都拒收，不能以dict後值覆蓋前值。
+`profile_digest()`順序固定為上表四份LF bytes，以三個NUL分隔：
+`cbee86e10891e40a84e7b04fbf705ad43925d5408e66662945011c41eb8fe8f1`。
+main的local-score最佳化、完整參考實作等價檢查及工作量上界全部保留；PR的receipt驗證函式原樣保留。
+
+### 歷史對象與現行分配
+
+317套是315＋R380兩套；318套是315＋R14三套；321套是315＋R380兩套＋R396四套。
+它們各自按原來源與原片數回放，不因新main加入R14而改寫R396的歷史對象。
+317／318各自的前兩輪三片仍驗`+100000+30000 <1200000`與H7／reader分離；
+317／318／321各自的前三輪四片與逐套最大包絡仍驗`+120000+30000 <1200000`。
+原224筆scalar `<600000`及supplemental `<650000`也保留。
+
+| 歷史對象 | 每片套數 | 各輪加原預留後最大秒數 | 逐套包絡加150秒，各片 |
+|---|---|---|---|
+| 317套／前兩輪三片 | 91／115／111 | 1198.947／1199.061 | 原歷史無此包絡斷言 |
+| 318套／前兩輪三片 | 91／113／114 | 1184.069／1184.366 | 原歷史無此包絡斷言 |
+| 317套／前三輪四片 | 32／94／98／93 | 1008.321／961.477／1008.321 | 1040.442／1062.659／1077.684／1067.408 |
+| 318套／前三輪四片 | 6／104／105／103 | 994.827／966.486／994.830 | 1024.865／1052.000／1049.430／1065.898 |
+| 321套／前三輪四片 | 33／97／96／95 | 1009.944／964.041／1009.944 | 1042.699／1065.848／1077.510／1069.136 |
+
+合流後真實`run_all.build_suites()`與expected聯集皆為324套；六片套數
+**1／56／74／63／65／65**，每套恰好一次、零重疊、片內保留registry順序。
+以下為四輪315套成本各加九套added規劃上界後的整數毫秒模型除以1000，並非新head實跑：
+
+| 成本情境 | 片1 | 片2 | 片3 | 片4 | 片5 | 片6 |
+|---|---:|---:|---:|---:|---:|---:|
+| 43162989157 | 348.065 | 486.456 | 575.368 | 571.550 | 539.033 | 555.722 |
+| 43150038015 | 688.444 | 405.432 | 551.242 | 564.616 | 477.861 | 474.729 |
+| 43177620127 | 755.187 | 483.806 | 531.656 | 551.129 | 520.225 | 493.203 |
+| 43271258668 | 701.108 | 575.800 | 575.800 | 575.799 | 575.800 | 575.799 |
+| 每suite四輪最大包絡 | 755.187 | 630.877 | 670.432 | 638.459 | 670.156 | 640.699 |
+| 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 780.877 | 820.432 | 788.459 | 820.156 | 790.699 |
+
+### 先紅回歸，再完整具名撤回
+
+只套T、保留這六個檔案的main before時，真實合流registry的兩個測試正常紅：
+`R396_COMPLETE_EXPECTED_REGISTRY`與`R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS`，
+2 tests／2 failures／0 errors／0 skips。套P後，完整`py:test_unittest_runner`實跑
+17/17，沒有skip或import error；expected只追加PR四套並將該suite的15改17，main其餘列原值不變。
+
+雙方helper的具名聯集為46組，全部保留；新增`R396_ALLOW_DUPLICATE_R14_COST`，共47組。
+原移除一個suite的覆蓋反證另保留。每組繼續獨立跑baseline／withdrawn／restored，
+要求實際0／1／0、指定測試與正常AssertionError、零error／skip，不共用結果、不以逾時作kill。
+R379五組及R396原七組、`R396_DROP_WORKSPACE_WITHDRAWAL`自驗均保留原名。
+R396的receipt負控移至獨立的`test_workspace_receipt_provenance_rejects_named_mutations`，
+其baseline標籤改為`workspace-provenance-baseline`；七組catalog保全斷言同步要求這個精確目標。
+R379原provenance目標繼續保留，兩個omit-digest撤回各自只漏自己的來源，避免一個marker遮住另一個。
+跨來源重複撤回也只拿掉具名的那一個交集檢查，其餘來源驗證繼續生效。
+
+`geometry-web/cdp_test.js`同時保留`WORKSPACE_CONTEXT_MENU_ONLY`、`R14_PANEL_ONLY`及
+兩個main分支，PR既有capture／P1161相關改動也保留。局部驗證直接呼叫原
+`runConfiguration()`：兩種scope各自為partial，非法值、同時兩種scope、scope混shard皆拒絕；
+移除任一新增scope各自正常AssertionError。這不是實際瀏覽器產品路徑收據。
+
+六片workflow、35分鐘native job、5分鐘coverage job、每個反證子程序60秒與並行上限2都不改；
+真收據仍嚴格`0 <= seconds <1200`，原120／30秒規劃預留不改。P1161 golden採既有PR原件，
+本整合不更改任何golden段。product-architecture path聯集及LF來源hash、三份衍生證據由grokbot
+在最終合流來源上機械重產並原樣採入；此處不手修帳本。最終仍須同一head／test-merge來源的
+六份正式native收據、完整coverage、browser/canvas與mutation freshness通過。
+
 ## R17 新套件的第三份獨立來源（PR #419，2026-11-16）
 
 PR #419（需求帳 R17 host／App 第一片）新增四個 native suite。原四輪 `measured_runs`、R380 與 R14 兩份 `/1` 追加證據逐 byte 不變；另新增 `native_shard_added_evidence_r17.json`，用同一個 `_added_evidence_costs()` 驗欄位、來源、全通過及成本上界，讀取時才與前兩份合流（現行 registry 324 套）。三份來源之間不得有重複名稱（`R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES`）。`profile_digest()` 改為四份 LF bytes 以 NUL 分隔的 SHA-256，順序固定為 timings、R380、R14、R17。
@@ -262,3 +377,169 @@ PR #419（需求帳 R17 host／App 第一片）新增四個 native suite。原�
 `run_all.expected.json` 只追加這四套由原 runner 實跑得到的 19／12／8／7，其餘既有 320 筆不變、不降低任何舊計數。這次沒有用 `--update-expected` 重寫整份檔：該旗標要求整次完整跑可信，而 `mutation:check`（exit-code-only）在突變帳本採入前必為 STALE，會被原 runner 拒絕；因此依原 runner 的 `{'mode','count','unit'}` 格式只插入四筆，並以原 runner 的完整嚴格比對確認全部 suite 計數相符。
 
 歷史回放範圍不變：main 歷史 317 套與 R379 歷史 318 套都排除 R17 四套；正式六片驗全部 324 套、全部四輪情境及逐套最大包絡，同樣嚴格小於 1200000ms。`py:test_unittest_runner` 只在既有 method 內加斷言，仍為 15 項。新增具名撤回 `R17_DROP_SUITE_EVIDENCE`、`R17_DROP_EXPECTED_ENTRIES`、`R17_OMIT_SOURCE_FROM_DIGEST`，各自要求指定的正常 AssertionError、0 error、0 skip（0／1／0）；R379 原有撤回的目標斷言與順序保留。新 head 仍需正式 CI 的六份原收據與 coverage 確認。
+
+## 第三班合併列車：R396 收據 × R17 第三份來源（#426＋#419＋#420，2026-11-16）
+
+固定 parents：#426 head `7881c0d4862fab1ac4a211c124bdd0a0b3093b0a`（main ＋ #396 ＋ #425）× #419 head `2a8b1d6c924d94b8746c7d7152433d5a1ff1fde8`，再併 #420 head `e487e778be57df6a61f677ededd461875d0f4b93`（#420 不新增 native suite）。上面兩節分別是 R396 與 R17 各自對 324 套的紀錄，原文保留；本節只記兩者合流後的實況。
+
+- 五份成本來源原件逐 byte 不變：`native_shard_timings.json`、`native_shard_added_evidence.json`（R380）、`native_shard_added_evidence_r14.json`（R14）、`native_shard_added_receipts.json`（R396）、`native_shard_added_evidence_r17.json`（R17）。沒有新增或改寫任何成本數字；本節的毫秒全部來自這五份既有 CI 實測／上界。
+- `added_suite_costs()`：先保留 R379 與 R396 原有的重名拒收，再要求 R17 不得與前三份任何一份重名（`R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES`），回傳四份聯集。
+- `profile_digest()`：五份 LF bytes 以四個 NUL 分隔，順序固定為 timings、R380、R14、R396 收據、R17，合流後為 `fae3c8f94e6ce33e4436784b604ddf5dab2fd52cab436f1c602c5303b1c3c983`。
+- 真實 `run_all.build_suites()` 與 expected 聯集皆為 **328 套**（320 ＋ R396 四套 ＋ R17 四套）；六片套數 **1／61／69／64／67／66**，每套恰好一次、零重疊、片內保留 registry 順序。
+- 歷史回放各自只排除不屬於自己的套件：main 317 套排除 R379／R396／R17；R379 318 套與 R396 321 套各排除另外兩方。`py:test_unittest_runner` 仍是 17 項，只在既有 method 內補上對方集合的排除與第五份來源的 digest。
+- 具名撤回：雙方的具名撤回全部保留，共 50 組（R396 側 47 組 ＋ R17 三組）。每組改寫成本或 digest 時都帶上其他來源，只拿掉自己指名的那一份，避免一個 marker 遮住另一個。
+
+以下是四輪 315 套實測加十三項 added 規劃上界的整數毫秒模型除以 1000，**不是合流後正式六片收據**：
+
+| 成本情境 | 片1 | 片2 | 片3 | 片4 | 片5 | 片6 |
+|---|---:|---:|---:|---:|---:|---:|
+| 43162989157 | 348.065 | 481.811 | 571.544 | 572.353 | 544.265 | 571.156 |
+| 43150038015 | 688.444 | 383.984 | 560.084 | 567.921 | 486.779 | 488.112 |
+| 43177620127 | 755.187 | 480.806 | 531.428 | 550.837 | 513.517 | 516.431 |
+| 43271258668 | 701.108 | 578.400 | 578.399 | 578.399 | 578.400 | 578.400 |
+| 每suite四輪最大包絡 | 755.187 | 628.267 | 671.742 | 639.959 | 669.310 | 654.345 |
+| 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 778.267 | 821.742 | 789.959 | 819.310 | 804.345 |
+
+六片 workflow、35 分鐘 native job、5 分鐘 coverage job、每個反證子程序 60 秒都不改；真收據仍須嚴格 `0 <= seconds < 1200`。合流後的正式六片收據與 complete coverage 以本分支 head 的正式 CI 為準。
+
+## R12／Q38j 七套的獨立原收據（PR #430，2026-11-17）
+
+> 本節保留 R12 合流前分支的來源、模型與驗證紀錄；當前兩組聯集以文末「R12 與 PF-4A 合流」為準。
+
+修補基底 `d1738db971b05311efa4289443c73942273c8a37` 已普通 merge main
+`0c796e308da770041dfb41111562d594a389671a`。新增的
+`native_shard_added_receipts_r12.json` 從正式 [Geometry 44006220200](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44006220200)
+原始 `native-shard-*` ZIP 生成：source head 是 `e078f29165c5c757b6528329562989f83d9bd824`，
+實際 test-merge checkout 是 `35aee48b458fc07b093457e42fac74f491468cdb`，不改標成修補後 head。
+ZIP 的 bytes／GitHub digest、各 receipt SHA-256 已逐份核對；每個 `row` 原樣保留原 runner 的
+真退出碼、計數、浮點秒數及其他欄位。整次 run 是 failure；native 3／4／5／6 片因其他 suite
+失敗，2 片成功；下列七個子程序本身均實跑通過，不能據此宣稱整片或產品驗收成功。
+
+| Suite | Source job（片） | Passed / discovered | 原收據秒數（本表六位小數） | 規劃上界 ms |
+|---|---|---:|---:|---:|
+| `py:test_r12_browser_evidence` | 133782119528（2/6） | 4 / 4 | 0.165649 | 1000 |
+| `node:space_profile_view` | 133782119730（3/6） | 16 / 16 | 0.140283 | 1000 |
+| `py:test_space_profile_runs` | 133782119532（4/6） | 21 / 21 | 76.274915 | 300000 |
+| `node:profile_space_browser_contract` | 133782119532（4/6） | 3 / 3 | 0.145499 | 1000 |
+| `py:test_space_profile_update` | 133782119694（5/6） | 12 / 12 | 118.892360 | 300000 |
+| `node:space_profile_ui` | 133782119694（5/6） | 19 / 19 | 0.334957 | 1000 |
+| `node:space_profile_update_ui` | 133782119651（6/6） | 12 / 12 | 0.225253 | 1000 |
+
+上界是另列的保守規劃成本，不是時限或實測耗時。修補新增回歸後，本地完整 runs 為
+23／23、197.87 秒，update 為 13／13、219.05 秒，均零 skip／failure；當時另有原生負控
+並行，不能稱為空閒主機或正式 CI 上界。已知新套件成本超過先前 100000／150000ms 規劃，
+所以兩者明示提高至 300000ms；沒有把舊官方 21／12 案的秒數改標成新觀測，也沒有把單案時間
+相加冒充完整套件。這兩份本地完整 runner report 的 SHA-256 依序為
+`bb6aab7dda5e259da65028f56cdcf1dfd8dbd5d912ab327c245cd8fb1a00ae93`、
+`55515e5233c5caeac0f4de7b8bbe9b0ee48f86eef88e58fcc580fe7d135bd73c`，原件隨補丁交付。
+歷史四輪的 1260 筆、原 224 筆
+權重與既有 R380／R14／R396／R17 來源逐 byte 不變。原 `_added_receipt_costs()` 的所有驗證
+共用到新來源：成功必須是整數退出碼 0、實跑、計數守恆、零失敗／skip／crash／環境錯誤，
+且成本上界嚴格高於原秒數；跨來源同名拒收。`profile_digest()` 再綁第六份 LF bytes，順序為
+timings、R380、R14、R396、R17、R12，以 NUL 分隔。新來源自身 SHA-256 為
+`cac85f68a1eba8f5ceac2a55f740cf25b03eb54840eca93dca79d8e9d3de07cf`。
+
+原三片 `<600000`／`<650000` 相對權重斷言是歷史回放，固定 R12 加入前的 328 套 registry，
+其權重集合也固定在同一來源，原 `max(weights.values())` 的 129900ms 不均衡界線不被 R12 的
+300000ms 調高；沒有改任何上限。317／318／321 套的歷史預算亦保持各自原集合。當前六片則完整核對 **335 套**
+（328＋R12 七套），四輪情境及逐套最大包絡全部含 R12 原收據與明示規劃成本，不以預設 1000ms 代替
+兩個昂貴 native suite。當前六片套數為 **1／66／64／67／67／70**；包絡加原 120 秒開銷及
+30 秒餘裕依序為 **905.187／893.403／894.101／906.641／979.657／944.821 秒**，均嚴格低於
+1200 秒。這是成本模型回放，正式容量仍須修補後 head 的六份原收據與 complete coverage。
+
+新增的回歸先在未接來源的程式上以 `R12_INDEPENDENT_RECEIPT_SOURCE_REQUIRED` 正常
+AssertionError 紅；原先完整量測缺七名的 `R348_MEASURED_PROFILE_COVERS_REGISTRY` 紅亦保留原件。
+新增一個 provenance method 後，`py:test_unittest_runner` 為 18 項。原 50 個具名撤回全部保留，
+各自的成本／digest 撤回也保留 R12 來源；追加 `R12_DROP_SUITE_EVIDENCE`、
+`R12_DROP_EXPECTED_ENTRIES`、`R12_OMIT_SOURCE_FROM_DIGEST`、`R12_ACCEPT_FAILED_CHILD`、
+`R12_ALLOW_DUPLICATE_SOURCE`。規劃成本上調另先以舊 100000／150000ms 成本得到
+`R12_ADDED_SUITE_PLANNING_UPPER_BOUNDS` 正常 AssertionError 紅，再追加
+`R12_RESTORE_PRE_REPAIR_COSTS`，只撤回這兩個規劃成本。共 56 個具名撤回由原反證 runner
+各取 baseline／withdrawn／restored，要求指定
+正常 AssertionError 的 **0／1／0**、零 error／skip。35／5 分鐘 workflow 時限、每子程序 60 秒、
+並行上限 2 與真收據 `<1200` 全部不變。
+
+## PF-4A 新套件的第四份獨立來源（PR #429，2026-11-17）
+
+> 本節保留 PF-4A 合流前分支的來源、模型與驗證紀錄；當前兩組聯集以文末「R12 與 PF-4A 合流」為準。
+
+PR #429（需求帳 R02 PF-4A）新增兩個 native suite：`py:test_panel_fill_grid_transaction`、`node:panel_fill_grid_ui`。上述五份成本來源逐 byte 不變；另新增 `native_shard_added_evidence_pf4a.json`，沿 R17 做法用同一個 `_added_evidence_costs()` 驗欄位、來源、全通過及成本上界，讀取時才合流（現行 registry **330 套**）。不得與前四份任何一份重名（`PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES`）。`profile_digest()` 改為六份 LF bytes 以 NUL 分隔，順序固定為 timings、R380、R14、R396 收據、R17、PF-4A，值為 `6d4f3930ba7957f131813528473597f7fdc4142e4d48a83deb959beef62f11ca`。
+
+來源：Geometry [44014636612](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44014636612)，PR head `ba9d4fa3424a947ffd2fc6a8904029c497f76a6e`，實際 checkout `d7c314b2bd9f37be14fe630fc2da09fcdf3b4443`（pull/429/merge，parent 為 main `0c796e30` 與該 head）。該次 native 4/6、5/6 整體失敗，原因是兩個新 suite 尚未登記（另有舊帳本 stale 與兩個既有計數漂移）；兩個 suite 本身均 13/13 通過。
+
+| suite | job | 發現／通過 | 原摘要秒數 | 規劃上界 |
+|---|---|---:|---:|---:|
+| `py:test_panel_fill_grid_transaction` | 133809508770 | 13／13 | 6.4 | 10000 ms |
+| `node:panel_fill_grid_ui` | 133809508659 | 13／13 | 0.1 | 2000 ms |
+
+上界是保守規劃值，不是觀測值。同一 suite 在較早的 run 44004069347（head `4e108857`，job 133774968143）摘要為 5.2 秒；本來源採 exact-head 的 6.4 秒。
+
+歷史回放範圍不變：main 317 套、R379 318 套、R396 321 套都排除 PF-4A 兩套；正式六片驗全部 330 套、四輪情境與逐套最大包絡，同樣嚴格小於 1200000ms。`py:test_unittest_runner` 仍是 17 項，只在既有 method 內加斷言：`PF4A_COMPLETE_EXPECTED_REGISTRY`（兩套各 13）、`PF4A_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS`、`PF4A_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS`、`PF4A_SOURCE_IDENTITY`、`PF4A_SOURCE_OBSERVATIONS`、`PF4A_ADDED_SUITE_OBSERVED_UPPER_BOUNDS`、`PF4A_PROFILE_DIGEST_BINDS_PF4A_SOURCE`，以及 duplicate／missing-job／understated-upper（6400ms＝觀測值，不得通過）／unverified-source／failed-suite／missing-suite 與三份 cross-source duplicate 的拒收。
+
+新增具名撤回 6 組（共 56 組）：`PF4A_DROP_SUITE_EVIDENCE`、`PF4A_DROP_ONE_SUITE`、`PF4A_DROP_EXPECTED_ENTRIES`、`PF4A_OMIT_SOURCE_FROM_DIGEST`、`PF4A_TAMPER_SOURCE_IDENTITY`、`PF4A_ACCEPT_UNVALIDATED_EVIDENCE`。既有改寫成本聯集或 digest 的撤回（R379／R396／R17）都補帶 PF-4A 來源，仍只拿掉自己指名的那一份。
+
+以下是四輪 315 套實測加十五項 added 規劃上界的整數毫秒模型除以 1000，**不是正式六片收據**。六片套數 **1／58／74／64／66／67**（transaction 在片 2、grid UI 在片 6）：
+
+| 成本情境 | 片1 | 片2 | 片3 | 片4 | 片5 | 片6 |
+|---|---:|---:|---:|---:|---:|---:|
+| 43162989157 | 348.065 | 465.603 | 579.495 | 568.789 | 563.625 | 575.617 |
+| 43150038015 | 688.444 | 385.938 | 561.618 | 559.076 | 501.668 | 490.580 |
+| 43177620127 | 755.187 | 466.403 | 529.599 | 559.655 | 531.100 | 518.262 |
+| 43271258668 | 701.108 | 580.800 | 580.800 | 580.799 | 580.799 | 580.800 |
+| 每suite四輪最大包絡 | 755.187 | 620.003 | 670.955 | 647.853 | 685.560 | 651.252 |
+| 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 770.003 | 820.955 | 797.853 | 835.560 | 801.252 |
+
+本機（Linux，Python 3.11）實跑：`test_profile_balances_measured_work`、`test_added_suite_provenance_rejects_named_mutations`、R14／R396 歷史回放及 receipt／path-scope 相關方法全部通過；56 組具名撤回中，以非 registry baseline 為對照的 41 組逐一 0／1／0（正常 AssertionError、0 error、0 skip、指定 marker）。其餘 15 組（含 `PF4A_DROP_EXPECTED_ENTRIES` 與原 drop-one-suite）以 `test_partition_covers_actual_suite_registry_once` 為對照，該方法在 `run_all.expected.json` 由完整跑 `--update-expected` 登記新 suite 之前必紅（`PF4A_COMPLETE_EXPECTED_REGISTRY`），須在採入新突變帳本、產生 expected 之後由正式 CI 證明。時限、六片 workflow 與預算都不改。
+
+
+## R12 與 PF-4A 合流（PR #429，2026-11-20）
+
+合流輸入固定為 PR head `59a54e75ffb335b29f44a937457043923601b834` 與 main
+`f5be8dd8c57173fdbdb008c5a6bcf6fc14ef79ef`，共同基底為
+`0c796e308da770041dfb41111562d594a389671a`。前兩節各自的 330／335 套、六份
+來源與 56 組撤回屬合流前歷史，不改寫成這次執行的新收據。
+
+七份來源的原 bytes 全部保留；載入與 digest 的次序固定為
+timings、R380、R14、R396 receipts、R17、R12、PF-4A。`profile_digest()` 仍只將
+各份 LF bytes 以 NUL 分隔後取 SHA-256，合流值為
+`de99f76d348b98ed99f3dc707015d75c9c48e42928d7ba2a60974c691b134793`。
+R12 沿用 `_added_receipt_costs()`，PF-4A 沿用 `_added_evidence_costs()`；不因格式
+不同而略過驗證。後加入的 PF-4A 必須同時與 R12 及全部舊來源驗重，聯集不得覆寫同名套件。
+
+當前完整 registry 是 **337 套＝315 套凍結歷史＋22 套獨立 added**，六片套數為
+**1／66／64／67／67／72**。PF-4A transaction 屬片 3，grid UI 屬片 5。
+下表以原整數毫秒模型除以 1000，**不是新的正式六片執行收據**：
+
+| 成本情境 | 片1 | 片2 | 片3 | 片4 | 片5 | 片6 |
+|---|---:|---:|---:|---:|---:|---:|
+| 43162989157 | 348.065 | 588.330 | 690.312 | 687.761 | 693.902 | 697.824 |
+| 43150038015 | 688.444 | 519.991 | 680.893 | 671.639 | 569.887 | 661.470 |
+| 43177620127 | 755.187 | 565.788 | 691.409 | 695.765 | 596.831 | 660.226 |
+| 43271258668 | 701.108 | 701.799 | 701.800 | 701.799 | 701.800 | 701.800 |
+| 每 suite 四輪最大包絡 | 755.187 | 746.012 | 742.669 | 764.316 | 827.941 | 799.685 |
+| 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 896.012 | 892.669 | 914.316 | 977.941 | 949.685 |
+
+315／317／318／321 套的歷史集合與預算保持不變。R12 原有的三片相對權重回放
+仍固定 **328 套**；其 registry 與 weights 都排除 R12 和 PF-4A，保持原
+`129900`、`600000`、`650000` 斷言。不能把自動合流後的 330 改稱原 328 套歷史，
+也不能把新增 suite 塞入舊量測。`py:test_unittest_runner` 仍為 main 的 **18 項**。
+
+新增雙向重名回歸：保留各自合法 JSON 格式，只把 PF-4A observation 的名稱改成 R12
+套件，或把 R12 row 的名稱改成 PF-4A 套件；先證明兩個 loader 各自接受，再要求聯集
+以 `PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES` 拒絕。不能用不同 schema 的檔案互換，
+讓較早的格式錯誤冒充唯一性守門。新增具名撤回 `PF4A_ALLOW_R12_DUPLICATE` 只移除
+PF-4A 驗重集合內的 R12，須由 `PF4A_ADDED_SUITE_MUTATION_cross-r12-duplicate`
+正常 AssertionError 打紅。
+
+兩側原 56 組撤回的聯集為 62 組，加上上述新撤回共 **63 組**，每組原 baseline／marker
+保留。任何撤掉單一來源或 digest 的舊控制仍保留另一組來源；duplicate 控制只撤自己
+指名的唯一性檢查。原入口前置的 baseline／drop-one-suite／restored 也保持。
+完整 registry 尚缺 PF-4A expected 時，包括兩個 `*_DROP_EXPECTED_ENTRIES` 在內的
+16 組不可取得有效綠對照；不得手填 expected、換弱 baseline，或把這種前置紅算成 kill。
+其餘 47 組可用原 `PROGRAM` 與未改判定的 `prove()` 做明示局部的 0／1／0 檢查；
+局部結果不代替完整入口的 63 組與 native complete coverage。
+
+合流來源定稿後，正式 ME／架構原件採入沿已合併 #418 的 repo store 流程，固定歷史
+四檔不覆寫。expected 仍須由完整原 `run_all.py --build --update-expected` 產生；
+之後原 `native_sharding_mutation_check.py` 必須完整通過。原 35／5 分鐘 workflow、
+每個反證子程序 60 秒、並行上限 2、真收據與模型 `<1200` 秒全部不變。

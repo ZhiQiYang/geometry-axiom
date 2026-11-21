@@ -150,7 +150,7 @@ class IdentityContentContract(unittest.TestCase):
         request = {"record": deepcopy(self.record), "current_scene": self.deidentified,
                    "selection": {"placement_id": 1, "boundary_id": 1, "edges": [0, 1, 2, 3],
                                  "obstacles": [], "timbers": [{"kind": "timber", "id": 5}],
-                                 "projection": None}}
+                                 "profile_runs": [], "projection": None}}
         seen = []
         native_graph = model_update._graph
         def capture(text, program):
