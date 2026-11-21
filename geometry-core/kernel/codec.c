@@ -321,6 +321,22 @@ static void geo_json_write_string(GeoJsonWriter *w,const char *s) {
     geo_json_write(w,"\"",1);
     while(p<n && w->ok) {
         unsigned char c=(unsigned char)s[p];
+        /* R381_ASCII_RUN_BEGIN: batch only a fitting, non-overlapping ASCII run.
+         * Keep the scalar path for short buffers and aliases, including every
+         * byte left behind on failure. Address differences avoid range overflow
+         * on the supported flat-address native/Wasm targets. */
+        uintptr_t source=(uintptr_t)s,output=(uintptr_t)w->out;
+        int separate=source<=output ? output-source>n : source-output>=w->capacity;
+        if(separate && n-p<w->capacity-w->used && c>=0x20 && c<0x80 && c!='"' && c!='\\') {
+            size_t end=p+1;
+            while(end<n) {
+                unsigned char next=(unsigned char)s[end];
+                if(next<0x20 || next>=0x80 || next=='"' || next=='\\')break;
+                ++end;
+            }
+            geo_json_write(w,s+p,end-p);p=end;continue;
+        }
+        /* R381_ASCII_RUN_END */
         const char *escape=NULL;
         if(c=='"')escape="\\\"";
         else if(c=='\\')escape="\\\\";
