@@ -665,8 +665,9 @@ def main():
         'R391_DROP_BROWSER_NEEDS_PATH_SCOPE': ('path-scope-baseline', 'R391_BROWSER_PATH_SCOPE_WIRING'),
         'R391_DROP_CANVAS_SKIPPED_BRANCH': ('path-scope-baseline', 'R391_BROWSER_PATH_SCOPE_WIRING'),
     }
-    if args.r03:
-        mutations = {
+    # Merge with main (#427 R396_NAMED_WITHDRAWALS_RETAINED): keep main's single
+    # `mutations` catalog; the independent --r03 proof selects its own catalog below.
+    r03_mutations = {
             'R03_DROP_SUITE_EVIDENCE': ('measured-baseline', 'R03_NEW_SUITES_HAVE_SOURCE_BOUND_WORKSPACE_RECEIPTS'),
             'R03_DROP_EXPECTED_ENTRIES': ('baseline', 'R03_COMPLETE_EXPECTED_REGISTRY'),
             'R03_IGNORE_SOURCE_PIN': ('r03-provenance-baseline', 'R03_CI_GUARD_SOURCE_PIN'),
@@ -724,7 +725,7 @@ def main():
     # Bound concurrency to two; retain a separate real 0/1/0 for every name
     # without extending the native coverage job's existing five-minute limit.
     with ThreadPoolExecutor(max_workers=2) as pool:
-        timing_proofs = dict(pool.map(prove, mutations.items()))
+        timing_proofs = dict(pool.map(prove, (r03_mutations if args.r03 else mutations).items()))
     receipt = dict(passed=True, baseline_mutant_restored_exit=[r['exit'] for r in rows], rows=rows,
                    timing_proofs=timing_proofs)
     (args.output/'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
