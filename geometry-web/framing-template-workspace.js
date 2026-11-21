@@ -29,7 +29,7 @@ window.FramingWorkspace=(()=>{
   const option=(value,label,current)=>`<option value="${esc(value)}"${String(value)===String(current)?' selected':''}>${esc(label)}</option>`;
   function sourceSelect(name,label,items,value,disabled=false){return `<label>${esc(label)}<select data-ft-field="${name}"${disabled?' disabled':''}>${option('','請明選',value)}${items.map(([id,text])=>option(id,text,value)).join('')}</select></label>`;}
   function display(){if(!active)return;const pane=document.querySelector('#faceInspectorContent [data-fi-pane="prop"]');if(pane)render(pane,active.session.boundaryId,true);}
-  function draft(){return F.create(crypto.randomUUID(),'平釘天花');}
+  function draft(version=1){return F.create(crypto.randomUUID(),version===2?'平釘天花（固定治具）':'平釘天花',{...F.DEFAULTS},{corner:'min-min',lengthAlong:'v'},version);}
   function isSaved(v){return !!v.session.currentRecipe&&!v.dirty&&JSON.stringify(v.recipe)===JSON.stringify(v.session.currentRecipe);}
   function results(v){
     const p=v.session.candidate;if(!p?.members)return '';
@@ -42,10 +42,10 @@ window.FramingWorkspace=(()=>{
     const previous=pane.querySelector('[data-ft-workspace]');if(!force&&previous===v.region)return true;
     const focused=previous?.contains(document.activeElement)?document.activeElement:null,focusKey=focused?.dataset.ftField||focused?.dataset.ftAction,focusAction=!!focused?.dataset.ftAction,selection=focused?.tagName==='INPUT'?[focused.selectionStart,focused.selectionEnd]:null;
     const s=v.session,r=v.recipe,readonly=!F.availability(r).canGenerate,busy=s.pending,locked=busy||readonly||s.retired,available=!!s.readResult&&!s.retired&&!['stale','unknown'].includes(s.phase);
-    const numeric=[['panelWidth','板寬 width'],['panelLength','板長 length'],['gap','板縫'],['timberWidth','角材寬 A'],['timberDepth','角材厚 B'],['maxSecondarySpacing','副支最大間距 M']];
+    const numeric=[['panelWidth','板寬 width'],['panelLength','板長 length'],['gap','板縫'],['timberWidth','角材寬 A'],['timberDepth','角材厚 B'],['maxSecondarySpacing',s.template.version===2?'固定治具步距 M':'副支最大間距 M']];
     pane.innerHTML=`<section class="pf-workspace ft-workspace" data-ft-workspace="${bid}" aria-labelledby="ftTitle"><div class="pf-heading"><h2 id="ftTitle" tabindex="-1">平釘天花骨架</h2><button type="button" data-ft-action="close"${['previewing','confirming','cancelling','unknown'].includes(s.phase)?' disabled':''}>返回面設定</button></div>
-      <label>面內工作<select data-face-product-mode${busy||v.dirty?' disabled':''}><option value="finish">完成面與鋪排</option><option value="framing" selected>平釘天花骨架（矩形第一片）</option></select></label>
-      <section class="ft-scope" aria-label="第一片範圍"><strong>矩形第一片：無孔、無柱，邊界明設 RC。</strong><p>從起鋪牆整片開始，裁切只在對牆；主支整支連續。副支每條板端縫重新起算，採上界公式。與既有模板規則不相容的尺寸或排法會明確拒絕，不能確認。</p><p>例如既有 3700 mm 案例需要退縫，本片回報規則衝突。現在不搜尋其他角或方向；請自行明選後重新預覽。</p></section>
+      <label>面內工作<select data-face-product-mode${busy||v.dirty?' disabled':''}><option value="finish">完成面與鋪排</option>${option('framing','平釘天花骨架（矩形第一片）',s.template.version===2?'framing-fixed':'framing')}${option('framing-fixed','平釘天花骨架（政策 A 固定治具）',s.template.version===2?'framing-fixed':'framing')}</select></label>
+      ${s.template.version===2?'<section class="ft-scope" aria-label="第二片範圍"><strong>政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。</strong><p>副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。</p><p>需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。</p></section>':'<section class="ft-scope" aria-label="第一片範圍"><strong>矩形第一片：無孔、無柱，邊界明設 RC。</strong><p>從起鋪牆整片開始，裁切只在對牆；主支整支連續。副支每條板端縫重新起算，採上界公式。與既有模板規則不相容的尺寸或排法會明確拒絕，不能確認。</p><p>例如既有 3700 mm 案例需要退縫，本片回報規則衝突。現在不搜尋其他角或方向；請自行明選後重新預覽。</p></section>'}
       <p class="pf-status" data-ft-status="${s.phase}" role="status" aria-live="polite">${esc(readonly?F.availability(r).reason:s.reason)}</p>
       <fieldset${busy?' disabled':''}><legend>1 · 保存配方意圖（獨立一筆歷史）</legend>${sourceSelect('recipe','專案配方',s.recipes.map(r=>[r.id,r.name+' · '+r.template.id+'/'+r.template.version]),s.currentRecipe?.id||'')}<div class="ft-recipe-actions"><button type="button" data-ft-action="new">新增配方</button><button type="button" data-ft-action="copy"${readonly?' disabled':''}>複製為新配方</button><button type="button" data-ft-action="delete"${!s.currentRecipe?' disabled':''}>刪除所選配方</button></div>
       <fieldset${readonly?' disabled':''}><legend>配方預設</legend><label>配方名稱<input data-ft-field="name" maxlength="160" value="${esc(r.name)}"></label><div class="pf-fields">${numeric.map(([key,label])=>`<label>${label}（mm）<input data-ft-field="defaults.${key}" type="number" step="1" min="${key==='gap'?0:1}" value="${esc(r.defaults[key])}"></label>`).join('')}
@@ -57,18 +57,24 @@ window.FramingWorkspace=(()=>{
     region.addEventListener('input',event=>change(v,event));region.addEventListener('change',event=>change(v,event));
     region.addEventListener('click',event=>{const button=event.target.closest('[data-ft-action]');if(button&&!button.disabled){event.preventDefault();act(v,button.dataset.ftAction);}});
     region.addEventListener('keydown',event=>{if(event.isComposing||event.keyCode===229)return;if(event.key==='Escape'){event.preventDefault();event.stopPropagation();act(v,'cancel');}if(event.key==='Enter'&&event.target.matches('input,select'))event.preventDefault();});
-    region.querySelector('[data-face-product-mode]').addEventListener('change',event=>{if(event.target.value==='finish'&&close())window.PanelFillWorkspace.open(bid,v.trigger);});
+    region.querySelector('[data-face-product-mode]').addEventListener('change',event=>{const mode=event.target.value;if(mode==='finish'&&close())window.PanelFillWorkspace.open(bid,v.trigger);else if(['framing','framing-fixed'].includes(mode)&&close())open(bid,v.trigger,mode==='framing-fixed'?2:1);});
     let focus=focusKey?region.querySelector(`[data-ft-${focusAction?'action':'field'}="${focusKey}"]`):region.querySelector('#ftTitle');
     if(focus?.disabled||focus?.closest('fieldset[disabled]'))focus=region.querySelector('#ftTitle');focus?.focus({preventScroll:true});if(selection&&focus?.setSelectionRange&&selection[0]!==null)try{focus.setSelectionRange(...selection);}catch(_){}return true;
   }
   function change(v,event){
     if(v!==active||v.session.pending)return;const el=event.target,key=el.dataset.ftField;if(!key)return;if(event.type==='input'&&el.tagName==='SELECT')return;if(event.type==='change'&&el.tagName==='INPUT'&&el.type!=='checkbox')return;
-    if(key==='recipe'){if(!el.value)return;try{v.recipe=v.session.select(el.value);v.dirty=false;v.sources=emptySources();display();}catch(error){v.session.reason=error.message;display();}return;}
+    if(key==='recipe'){if(el.value)selectRecipe(v,el.value);return;}
     if(['on','panel','threshold','materials'].includes(key)){v.sources[key]=key==='materials'?el.checked:el.value;v.session.selectedSource=null;return;}
     if(!F.availability(v.recipe).canGenerate)return;
     if(key.startsWith('defaults.'))v.recipe.defaults[key.slice(9)]=el.value;else if(key==='corner'||key==='lengthAlong')v.recipe.preference[key]=el.value;else v.recipe.name=el.value;
     v.dirty=true;v.session.reason='配方預設尚未保存；先保存配方，再預覽本次骨架。';
     const status=v.region?.querySelector('[data-ft-status]');if(status)status.textContent=v.session.reason;v.region?.querySelector('[data-ft-action="preview"]')?.setAttribute('disabled','');
+  }
+  async function selectRecipe(v,id){
+    try{const selected=v.session.recipes.find(r=>r.id===id);if(!selected)throw Error('所選配方已不存在，請重新讀取。');
+      if(F.availability(selected).canGenerate&&selected.template.version!==v.session.template.version){const pending=v.session.open(selected.template);display();await pending;if(active!==v)return;}
+      v.recipe=v.session.select(id);v.dirty=false;v.sources=emptySources();display();
+    }catch(error){if(active===v){v.session.reason=error.message;display();}}
   }
   function validatedRecipe(v){const r=clone(v.recipe);for(const key of Object.keys(F.DEFAULTS)){const raw=String(r.defaults[key]);if(!/^\d+$/.test(raw)||!Number.isSafeInteger(Number(raw)))throw Error('尺寸須明設整數 mm。');r.defaults[key]=Number(raw);}return F.validateRecipe(r);}
   function takeSources(v){if(v.sources.on===''||!v.sources.materials||!v.sources.panel||!v.sources.threshold)throw Error('請明選放置框架、固定板材、承接門檻，並確認 RC／角材語意。');const panel=JSON.parse(v.sources.panel),[parameterId,fieldId]=v.sources.threshold.split(':').map(Number);v.session.selectSource(Number(v.sources.on),{boundary:'rc',timber:'literal'},{panel:{id:panel[0],version:panel[1]},threshold:{parameterId,fieldId}});}
@@ -77,7 +83,7 @@ window.FramingWorkspace=(()=>{
     const before=oc.navigationSequence,pending=enterFocus('face',owner.bid),focus=oc.focus,nav=oc.navigationSequence;await pending;
     if(!owns(owner)||nav!==before+1||oc.navigationSequence!==nav||oc.focus!==focus||focus?.id!==owner.bid)return;
     fiShowTab('prop');if(innerWidth<=900)openPanel('right',document.getElementById('workspaceToggleRight'));
-    const okay=await open(owner.bid,null);if(!okay||!active||!owns(owner))return;
+    const okay=await open(owner.bid,null,v.session.template.version);if(!okay||!active||!owns(owner))return;
     const next=active;next.recipe=clone(v.recipe);next.dirty=v.dirty;const saved=next.session.recipes.find(r=>r.id===v.session.currentRecipe?.id);if(saved)next.session.select(saved.id);
     next.sources=emptySources();next.session.reason='已返回骨架並重讀來源；配方輸入保留，請重新明選本次框架、板材與 X。';display();
   }
@@ -91,11 +97,11 @@ window.FramingWorkspace=(()=>{
     if(v!==active)return;const s=v.session;
     try{
       if(action==='close'){close();return;}
-      if(action==='cancel'){await s.cancel();if(active!==v)return;v.sources=emptySources();v.dirty=false;v.recipe=s.currentRecipe?clone(s.currentRecipe):draft();display();return;}
+      if(action==='cancel'){await s.cancel();if(active!==v)return;v.sources=emptySources();v.dirty=false;v.recipe=s.currentRecipe?clone(s.currentRecipe):draft(s.template.version);display();return;}
       if(action==='materials'||action==='threshold'){await prepareSource(v,action);return;}
       if(action==='reload'){await s.open();v.sources=emptySources();const saved=s.recipes.find(r=>r.id===v.recipe.id);if(saved)s.select(saved.id);display();return;}
-      if(action==='new'||action==='copy'){s.assertIdle();const r=action==='new'?draft():validatedRecipe(v);if(action==='copy'){F.assertGeneratable(r);r.id=crypto.randomUUID();r.name+=' 副本';}s.currentRecipe=null;v.recipe=r;v.sources=emptySources();v.dirty=true;display();return;}
-      if(action==='delete'){s.remove(s.currentRecipe.id);v.recipe=draft();v.sources=emptySources();v.dirty=false;display();return;}
+      if(action==='new'||action==='copy'){s.assertIdle();const r=action==='new'?draft(s.template.version):validatedRecipe(v);if(action==='copy'){F.assertGeneratable(r);r.id=crypto.randomUUID();r.name+=' 副本';}s.currentRecipe=null;v.recipe=r;v.sources=emptySources();v.dirty=true;display();return;}
+      if(action==='delete'){s.remove(s.currentRecipe.id);v.recipe=draft(s.template.version);v.sources=emptySources();v.dirty=false;display();return;}
       if(action==='save'){v.recipe=s.save(validatedRecipe(v));v.dirty=false;v.sources=emptySources();display();ReferenceWorkspace.present();return;}
       if(action==='preview'){if(!isSaved(v))throw Error('配方仍有未保存內容。');takeSources(v);const pending=s.preview();display();await pending;}
       if(action==='confirm'){const pending=s.confirm();display();const result=await pending;if(result.ok&&s.phase==='committed'){
@@ -106,7 +112,7 @@ window.FramingWorkspace=(()=>{
       if(active===v)display();ReferenceWorkspace.present();
     }catch(error){if(active===v){s.reason=(s.phase==='committed'?'骨架已確認，但畫面重新讀取未完成；請重新讀取來源。':'')+error.message;display();}}
   }
-  async function open(bid,trigger){if(active&&!close())return false;const s=new Session({host:ReferenceWorkspace,transport,boundaryId:Number(bid)}),v={session:s,recipe:draft(),sources:emptySources(),dirty:false,trigger};active=v;display();try{const pending=s.open();display();await pending;if(active!==v||s.retired)return false;const recipes=s.recipes;if(recipes.length){v.recipe=s.select(recipes[0].id);}display();return true;}catch(error){if(active===v){s.reason=error.message;display();}return false;}}
+  async function open(bid,trigger,version=1){if(active&&!close())return false;const template=F.TEMPLATES.find(t=>t.version===version);if(!template)return false;const s=new Session({host:ReferenceWorkspace,transport,boundaryId:Number(bid),template}),v={session:s,recipe:draft(version),sources:emptySources(),dirty:false,trigger};active=v;display();try{const pending=s.open();display();await pending;if(active!==v||s.retired)return false;const recipes=s.recipes,selected=recipes.find(r=>r.template.id===template.id&&r.template.version===version)||(version===1?recipes.find(r=>!F.availability(r).canGenerate):null);if(selected){v.recipe=s.select(selected.id);}display();return true;}catch(error){if(active===v){s.reason=error.message;display();}return false;}}
   function close(){const v=active;if(!v)return true;const s=v.session;if(s.pending){s.reason='請先按取消本次生成；結果未明時須先重新連線核對原回執。';display();return false;}active=null;renderFaceInspector();const entry=document.querySelector(`[data-face-settings="${s.boundaryId}"]`);(entry||(v.trigger?.isConnected?v.trigger:null))?.focus({preventScroll:true});ReferenceWorkspace.present();return true;}
   function invalidate(reason){if(active){active.session.invalidate(reason);display();}}
   function retireContext(){const v=active;if(!v)return;active=null;v.session.retire();if(v.session.pending)retired.add(v.session);}

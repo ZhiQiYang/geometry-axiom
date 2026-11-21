@@ -25,6 +25,9 @@ FAULTS = [
     ('R03_HOST_COLD_OPEN_SEARCH', 'FT_H11_COLD_OPEN_NO_SEARCH',
      'this.collection=clone(value); // FT_H11_COLD_OPEN_NO_SEARCH: restoration has no native request.',
      "this.collection=clone(value); this.transport.post('/framing-template/preview',{schema:'framing-template-generate/1'});"),
+    ('R03A_HOST_COLD_OPEN_SEARCH', 'R03A_HOST_COLD_OPEN_NO_SEARCH',
+     'this.collection=clone(value); // FT_H11_COLD_OPEN_NO_SEARCH: restoration has no native request.',
+     "this.collection=clone(value); this.transport.post('/framing-template/preview',{schema:'framing-template-generate/1'});"),
 ]
 
 
@@ -34,7 +37,7 @@ def sha(raw):
 
 def run(source, marker):
     env = {**os.environ, 'GEOMETRY_TEST_FRAMING_SESSION': str(source)}
-    command = ['node', '--test', '--test-name-pattern=^' + marker, str(JUDGE)]
+    command = ['node', '--test', '--test-reporter=spec', '--test-name-pattern=^' + marker, str(JUDGE)]
     try:
         result = subprocess.run(command, cwd=ROOT, env=env, capture_output=True, text=True, timeout=30)
         return {'command': command, 'exit': result.returncode, 'stdout': result.stdout, 'stderr': result.stderr}
