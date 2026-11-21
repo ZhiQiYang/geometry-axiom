@@ -2073,6 +2073,12 @@
       "purpose": "Application/runtime/protocol or workspace host workspace guidance; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-web/workspace-height.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "R16 host layout coordinator for U123-H:A normal canvas height and reachable workspace controls; adjusts drawable viewport layout without changing geometry models or history"
+    },
+    {
       "path": "geometry-web/workspace-shell.js",
       "layer": "H",
       "language": "javascript",

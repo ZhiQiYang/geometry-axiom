@@ -332,6 +332,7 @@ const sharedFileMenu = $("fileMenu");
 const sharedProjectSave = mainTopActions.querySelector(".project-save");
 const sharedProjectBar = $("projectBar");
 function syncHeaderControls() {
+  window.WorkspaceHeight?.sync();
   if (sharedProjectBar.closest('.workspace-project-header')) return;
   const target = $("objectWorkspace").hidden ? mainTopActions : $("workspaceProjectActions");
   target.append(sharedFileMenu, sharedProjectBar);
@@ -3161,7 +3162,11 @@ function feRefreshLatticeViewport() {
   let note=$("feLatticeDensity");
   const messages=fe.grids.filter(g=>g.indexSpace==="lattice").flatMap(g=>g._viewportError ? [`網格 ${g.id}：${g._viewportError}`] :
     ["u","v"].filter(a=>BigInt(g.query?.axes?.[a]?.stride || "1")>1n).map(a=>`網格 ${g.id} ${a} 每 ${g.query.axes[a].stride} 條顯示一條`));
-  if(messages.length && !note){note=document.createElement("p");note.id="feLatticeDensity";note.setAttribute("role","status");note.style.cssText="position:absolute;top:8px;left:12px;max-width:calc(100% - 24px);padding:6px 10px;background:var(--panel,#fff);border-radius:6px;z-index:3;pointer-events:none;font-size:12px";viewport.append(note);}
+  if(messages.length && !note){
+    note=document.createElement("p");note.id="feLatticeDensity";note.className="fe-lattice-density";note.setAttribute("role","status");
+    const dock=document.getElementById('faceCanvasDock');
+    if(dock)dock.insertBefore(note,dock.querySelector('.face-canvas-controls'));else viewport.append(note);
+  }
   if(note){note.hidden=!messages.length;note.textContent=messages.join("；")+"。放大可顯示更多真實格線。";}
 }
 
@@ -3438,6 +3443,7 @@ async function openFaceWorkspace(bid) {
   $("objectWorkspace").hidden = false;
   $("faceWorkspaceLayout").hidden = false;
   $("spaceWorkspaceLayout").hidden = true;
+  window.WorkspaceHeight?.sync();
   $("faceWorkspaceTools").hidden = false;
   $("spaceWorkspaceTools").hidden = true;
   $("workspaceFitButton").hidden = false;
@@ -3508,6 +3514,7 @@ async function openSpaceWorkspace(sid) {
   $("objectWorkspace").hidden = false;
   $("faceWorkspaceLayout").hidden = true;
   $("spaceWorkspaceLayout").hidden = false;
+  window.WorkspaceHeight?.sync();
   $("faceWorkspaceTools").hidden = true;
   $("spaceWorkspaceTools").hidden = false;
   syncSpaceStageTools();
@@ -9880,7 +9887,11 @@ function keepObjectVisible(o) {
   if (!rect.width || !rect.height) return;
   const left=box.x*oc.zoom+oc.panX,top=box.y*oc.zoom+oc.panY;
   const width=box.w*oc.zoom,height=(oc.zoom < OC_COMPACT_ZOOM ? 40 : box.h)*oc.zoom;
-  const bottomMargin=Math.min(72,Math.max(margin,(rect.height-height)/2));
+  const controls=document.querySelector('.canvas-controls[aria-label="縮放控制"]');
+  const controlInset=controls ? rect.bottom-controls.getBoundingClientRect().top+8 : 72;
+  // Retain the established selected-card/zoom-row separation after docking.
+  // Camera panning is presentation only; card coordinates and history stay put.
+  const bottomMargin=Math.min(Math.max(margin,rect.height-height-margin),Math.max(margin,controlInset));
   const topMargin=rect.height >= height+80+bottomMargin ? 80 : margin;
   if (left < margin) oc.panX += margin-left;
   else if(left+width > rect.width-margin) oc.panX -= Math.min(left-margin,left+width-rect.width+margin);
