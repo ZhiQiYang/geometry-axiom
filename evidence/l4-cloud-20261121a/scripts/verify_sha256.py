@@ -10,8 +10,9 @@
 3. 每一個出現都必須歸到下列其中一類，否則算失敗（不靜默略過）：
    a. 綁定檔案的欄位（FILE_KEYS）：解析出它指的檔案，值必須等於該檔原始位元組的 SHA-256。
    b. 值恰好等於目錄內某個檔案的原始位元組 SHA-256（例如 README 引述的指紋）。
-   c. 已知「不是本目錄檔案指紋」的欄位（NON_FILE_KEYS，各附理由），或同一個值在目錄內
-      以這類欄位出現過（README 引述 runtime version 之類）。
+   c. 已知「不是本目錄檔案指紋」的欄位（NON_FILE_KEYS，各附理由）；字串值裡緊接在 NON_FILE_CONTEXT
+      欄位名後面的值（例如畫面文字擷取的 scene_hash）；或同一個值在目錄內以這類欄位出現過
+      （README 引述 runtime version 之類）。
    d. 已知測試向量（KNOWN_VECTORS）。
 4. `savedSha256Correction.wrongValue` 另外核對：它必須恰等於「把該檔先做 UTF-8 解碼（無效位元組
    換成 U+FFFD）再雜湊」的結果，也就是舊 `sha(String(Buffer))` 的錯值；且不得等於原始位元組雜湊。
@@ -56,6 +57,22 @@ NON_FILE_KEYS = {
     'geometry_sha256': 'App 匯出模型內記的幾何雜湊，不是本目錄檔案',
     'source_sha256': 'App 匯出模型內記的來源雜湊，不是本目錄檔案',
 }
+
+# 依前文辨識的非檔案雜湊：值所在字串裡、緊接在它前面的欄位名（畫面文字擷取裡的表格沒有 JSON 結構可用）
+NON_FILE_CONTEXT = {
+    'scene_hash': 'App 預覽表顯示的 scene_hash（場景內容雜湊），擷自畫面文字，不是本目錄檔案',
+}
+# 欄位名後可接 JSON 的 `":"` 或畫面表格的 `"`；表格一列是「欄位名"舊值""新值"」，所以可跳過同列前一格
+CONTEXT_TAIL = r'"?\s*[:=]?\s*"?(?:[0-9a-f]{64}"\s*"?)?$'
+
+
+def context_key(text, start):
+    window = text[max(0, start - 120):start]
+    for name in NON_FILE_CONTEXT:
+        if re.search(re.escape(name) + CONTEXT_TAIL, window):
+            return name
+    return None
+
 
 KNOWN_VECTORS = {hashlib.sha256(b'abc').hexdigest(): 'sha256("abc") 測試向量'}
 
@@ -126,6 +143,8 @@ def verify(root):
                     rows.append(('OK', where, v, f'= sha256(raw {", ".join(by_hash[v])})'))
                 elif key in NON_FILE_KEYS:
                     rows.append(('NONFILE', where, v, NON_FILE_KEYS[key])); nonfile_values.add(v)
+                elif context_key(val, m.start()) in NON_FILE_CONTEXT:
+                    rows.append(('NONFILE', where, v, NON_FILE_CONTEXT[context_key(val, m.start())])); nonfile_values.add(v)
                 elif v in KNOWN_VECTORS:
                     rows.append(('NONFILE', where, v, KNOWN_VECTORS[v]))
                 else:
