@@ -1,0 +1,11 @@
+{
+ "assertion": "L4_GCANVAS_RAW_SHA256",
+ "mutant": "ui.js sha(): update(String(s))",
+ "baselineExit": 0,
+ "withdrawnExit": 1,
+ "withdrawnNamedAssertionFailure": true,
+ "restoredExit": 0,
+ "uiJsSha256": "1d4e078b3e51b217990d97c9682dafe744b98045e6234d382a08b57c3742b15b",
+ "node": "v22.23.5",
+ "passed": true
+}

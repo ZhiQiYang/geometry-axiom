@@ -16,7 +16,7 @@
 - `runtime_version.py --probe 18851`：version `e6574fc2a0e58f94b62563fe0d9be08d1dd75f929396b76559bbc350f170e61b`、`fresh:true`（`main-1b1c6674/runtime-probe.json`）。
 - 瀏覽器：Google Chrome for Testing 153.0.8010.12（`/usr/bin/google-chrome`，headless、`--no-sandbox`），由 Playwright 1.63.0 驅動，視窗 1400×900。Node v22.23.5。
 - 輸入只有滑鼠與鍵盤：按鈕與核取方塊用滑鼠點；下拉選單先用滑鼠點一下取得焦點，再用方向鍵移到目標值（`scripts/ui.js` 的 `pick`）；數字與文字欄三擊選取後用鍵盤打字、Tab 離開；畫布用滑鼠點與滾輪縮放；復原／重做用面內的按鈕。
-- `page.evaluate` 只用來：讀畫面文字與元素位置、把面內 mm 換成螢幕座標再用滑鼠點、唯讀查詢（`dump`、`engineering-read`、`identity-read`、`panel-fill-read`）、讀 `ReferenceWorkspace.history` 的長度與末筆。沒有用 bridge 指令或 JS 改任何狀態。
+- 場景與專案狀態的變更只經滑鼠與鍵盤。`page.evaluate` 只用來：讀畫面文字與元素位置、把面內 mm 換成螢幕座標再用滑鼠點、唯讀查詢（`dump`、`engineering-read`、`identity-read`、`panel-fill-read`）、讀 `ReferenceWorkspace.history` 的長度與末筆。唯一改到瀏覽器屬性的是下一條的 `noPickers`；沒有用 bridge 指令改場景。
 - 存檔時把 `showSaveFilePicker`／`showOpenFilePicker` 設成 `undefined`，走下載與檔案欄位的後備路徑（同 11-13 以來各次核對）。冷開用另一個全新的瀏覽器（新 profile），經「檔案 → 開啟專案…」開檔。
 
 重現：
@@ -103,9 +103,19 @@ LC_ALL=C.UTF-8 APP_URL=http://localhost:18851/ OUT=<輸出目錄> node walk_pf4a
    - 預期：整句中文（其餘拒絕訊息都是中文）。
    - 實際：「預期」那一句是原生的英文原文。拒絕本身正確（不能確認、零寫入）。
 
+## 更正：`.gcanvas` 指紋（ChatGPT 審查 [7056073464](https://github.com/ZhiQiYang/geometry-axiom/pull/435#issuecomment-7056073464)）
+
+第一版的兩份結果 JSON 裡，`savedSha256` 不是 `.gcanvas` 原始位元組的雜湊：`scripts/ui.js` 的 `sha()` 先做 `String(Buffer)`（UTF-8 解碼，ZIP 裡的無效位元組變成替代字元）再雜湊。操作與各項核對不受影響，只有這個欄位錯。
+
+- 先加具名回歸 `scripts/test_ui_sha.js`（`L4_GCANVAS_RAW_SHA256`：含 `0xff 0x80 0x00` 的 Buffer 必須等於 `crypto.update(Buffer)`，`sha('abc')` 不變），在舊版上 AssertionError 失敗；再把 `sha()` 改成 Buffer 直接雜湊，轉綠。
+- 具名撤回 `scripts/withdraw_ui_sha.sh`：baseline 0／把 `sha()` 改回 `String(s)` 後指定 assertion 失敗 exit 1／還原 0。收據 `main-1b1c6674/ui-sha-withdraw.receipt.json`（`passed:true`）。
+- 兩份 `savedSha256` 依提交的 `.gcanvas` 原始位元組重算：`r17.gcanvas` `22a857d8a2280a817d09c0fa183c06ace0a616fec431ff84ecbbd1201deec7d3`（960 B），`pf4a.gcanvas` `75f7a00f6f98329b32392937f841af217450ad4c24e21ff293c60ea0135427f8`（2782 B）。舊的錯值留在同檔 `savedSha256Correction.wrongValue`，並核對過它恰是 `sha256(String(Buffer))`。`.gcanvas` 本身與其他欄位沒有改，也沒有重跑 App 操作。
+- `checkpoint()` 的 `sceneSha`、`identitySha` 雜湊的是字串，不受這個問題影響。
+
 ## 檔案
 
 - `main-1b1c6674/runtime-probe.json`：服務的 runtime probe。
+- `main-1b1c6674/ui-sha-withdraw.receipt.json`：指紋回歸的具名撤回收據。
 - `main-1b1c6674/r17/`：`walk_r17.result.json`（每步與每項核對）、`walk_r17.log`、`r17.gcanvas`（另存的專案，SHA-256 見結果 JSON）、`screens/R17-*.jpg`。
 - `main-1b1c6674/pf4a/`：`walk_pf4a.result.json`、`walk_pf4a.log`、`pf4a.gcanvas`、`screens/PF4A-*.jpg`。
-- `scripts/`：`lib.js`（開頁、存檔、開檔、唯讀查詢；改自 11-14 的 `lib1113.js`）、`ui.js`（滑鼠鍵盤輸入與唯讀檢查點）、`walk_r17.js`、`walk_pf4a.js`、兩份 R17 夾具 `.scene`、`serve-wt.sh`。
+- `scripts/`：`lib.js`（開頁、存檔、開檔、唯讀查詢；改自 11-14 的 `lib1113.js`）、`ui.js`（滑鼠鍵盤輸入與唯讀檢查點）、`test_ui_sha.js`／`withdraw_ui_sha.sh`（指紋回歸與具名撤回）、`walk_r17.js`、`walk_pf4a.js`、兩份 R17 夾具 `.scene`、`serve-wt.sh`。

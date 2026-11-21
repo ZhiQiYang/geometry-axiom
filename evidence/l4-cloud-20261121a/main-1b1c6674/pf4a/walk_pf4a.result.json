@@ -439,7 +439,12 @@
   "parameter:1 ƒ 鋪排承接門檻ƒ 鋪排承接門檻XX8 mm8 mm1 個欄位 · 0 處使用檢查 ›"
  ],
  "savedName": "未命名專案.gcanvas",
- "savedSha256": "ac7659b6e055b303c0e6d86f477bf9f3e09a76e4973251e9323f2e163c690700",
+ "savedSha256": "75f7a00f6f98329b32392937f841af217450ad4c24e21ff293c60ea0135427f8",
+ "savedSha256Correction": {
+  "wrongValue": "ac7659b6e055b303c0e6d86f477bf9f3e09a76e4973251e9323f2e163c690700",
+  "cause": "ui.js sha() hashed String(Buffer) (UTF-8 decoded) instead of raw bytes; recomputed from the committed .gcanvas bytes (L4_GCANVAS_RAW_SHA256)",
+  "bytes": 2782
+ },
  "errsMain": [
   "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
  ],

@@ -1,6 +1,7 @@
 // 只用滑鼠與鍵盤的輸入輔助，以及唯讀的檢查點。
 const crypto = require('crypto');
-const sha = s => crypto.createHash('sha256').update(String(s)).digest('hex');
+// Buffer 直接雜湊原始位元組；字串照 UTF-8（L4_GCANVAS_RAW_SHA256，見 test_ui_sha.js）
+const sha = s => crypto.createHash('sha256').update(Buffer.isBuffer(s) ? s : String(s)).digest('hex');
 exports.sha = sha;
 
 // 下拉選單：滑鼠點一下取得焦點（Escape 收起原生清單），再用方向鍵移到目標值。
