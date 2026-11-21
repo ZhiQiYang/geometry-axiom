@@ -5,12 +5,15 @@ const test=require('node:test'),assert=require('node:assert/strict'),path=requir
 const driver=require('../geometry-web/cdp_test.js'),plugin=require('../geometry-web/boundary_pair_workflow_test.js');
 const shards=require('../geometry-web/canvas_shards.js'),evidence=require('./helpers/canvas_shards.js');
 const extension=require('./diagnostics/r335_canvas_extension.cjs');
+const pf4aExtension=require('./diagnostics/pf4a_canvas_extension.cjs');
 // Train 3 (#426 + #419 + #420): #396's P1161 and #420's P420 are independent
 // sections. Strip them first (P420 by its exact count and tail position, P1161
 // by #396's own oracle) so the R335 checks below judge the same 96-section input.
 const train3=require('./diagnostics/train3_canvas_tail.cjs'),workspace=require('./diagnostics/r396_canvas_extension.cjs');
 const train3Inputs=()=>{
-  const rawPlan=shards.loadPlan(),rawGolden=shards.loadGolden();
+  // PF-4A (#128) P1284 is a later independent section; project it out exactly first.
+  assert.deepEqual(shards.validatePlan(shards.loadPlan(),shards.loadGolden()),[],'PF4A_RAW_PLAN_COMPLETE');
+  const rawPlan=pf4aExtension.projectPlan(shards.loadPlan()),rawGolden=pf4aExtension.projectGolden(shards.loadGolden());
   assert.deepEqual(shards.validatePlan(rawPlan,rawGolden),[],'TRAIN3_RAW_PLAN_COMPLETE');
   return workspace.project(train3.withoutGolden(rawGolden,'P420'),train3.withoutPlan(rawPlan,'P420'));
 };

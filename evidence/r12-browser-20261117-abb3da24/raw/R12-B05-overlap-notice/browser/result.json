@@ -1,0 +1,357 @@
+{
+  "url": "http://127.0.0.1:55269/",
+  "scope": {
+    "mode": "partial",
+    "filters": [
+      "GEOMETRY_SPACE_PROFILE_ONLY"
+    ],
+    "included": [
+      "profile-space"
+    ],
+    "omitted": [
+      "space-height-library",
+      "projection-lifecycle",
+      "projection-placement",
+      "font-layout",
+      "space-flow",
+      "projection-close",
+      "timber-material",
+      "timber-source-guards"
+    ],
+    "url": "http://127.0.0.1:55269/",
+    "feedbackDirectory": "/tmp/r12-browser-resources-7sjqpy_p/feedback"
+  },
+  "completed": false,
+  "groups": {
+    "setup": {
+      "expected": 2,
+      "passed": 2,
+      "failed": 0,
+      "completed": true
+    },
+    "profile-space": {
+      "expected": 60,
+      "passed": 21,
+      "failed": 1,
+      "completed": false
+    },
+    "browser-health": {
+      "expected": 2,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    }
+  },
+  "completenessProblems": [
+    "Space run did not finish",
+    "Group profile-space did not complete",
+    "Group profile-space: expected 60 passed assertions, got 21 passed / 1 failed",
+    "Group browser-health did not complete",
+    "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+  ],
+  "passed": 23,
+  "failed": 3,
+  "exceptions": [],
+  "consoleErrors": [],
+  "coverage": "Trusted pointer/keyboard controls with programmatic fixture setup, state observation and failure injection; counts are assertions, not end-to-end scenarios.",
+  "results": [
+    {
+      "name": "server serves the intended space-model release",
+      "ok": true,
+      "group": "setup"
+    },
+    {
+      "name": "current release explicitly supports timber preview and engineering sources",
+      "ok": true,
+      "group": "setup"
+    },
+    {
+      "name": "R12_SECTION_ENTRY",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_SECTION_PREVIEW_ZERO_WRITE",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_SECTION_OUTLINE",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_SECTION_MEMBERS",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_RUN_PREVIEW_ZERO_WRITE",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_RUN_ONE_HISTORY",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_RUN_WORLD_BOUNDS",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_RUN_LOCAL_AND_CORNER",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_SPACE_ENTRY",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_ALL_WORLD_CANDIDATES",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_EXPLICIT_SELECTION",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_UNLOCATED_NOTICE",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_SHARED_CONTROLS",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_LAYOUT_1400",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_LAYOUT_690",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_LAYOUT_390",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_NO_PROFILE_LEGACY_RESULT",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_KEYBOARD_SELECTION",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_PROFILE_REQUEST",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_Q01_EXACT_ORACLE",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_NO_MIXED_QUANTITY",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_MATERIAL_NOTICE",
+      "ok": false,
+      "group": "profile-space",
+      "detail": {
+        "snapshot": {
+          "phase": "preview",
+          "sourceKind": "scene",
+          "resultSummary": {
+            "bottom": 0,
+            "clearance_mm3": "54000000000",
+            "closed": true,
+            "face_count": 6,
+            "generated_faces": [
+              {
+                "label": "外環第 1 邊",
+                "orientation": 1,
+                "placement_id": 2,
+                "purpose": "boundary"
+              },
+              {
+                "label": "外環第 2 邊",
+                "orientation": 1,
+                "placement_id": 3,
+                "purpose": "boundary"
+              },
+              {
+                "label": "外環第 3 邊",
+                "orientation": 1,
+                "placement_id": 4,
+                "purpose": "boundary"
+              },
+              {
+                "label": "外環第 4 邊",
+                "orientation": 1,
+                "placement_id": 5,
+                "purpose": "boundary"
+              },
+              {
+                "label": "底面",
+                "orientation": -1,
+                "placement_id": 6,
+                "purpose": "boundary"
+              },
+              {
+                "label": "頂面",
+                "orientation": 1,
+                "placement_id": 7,
+                "purpose": "boundary"
+              }
+            ],
+            "missing": [],
+            "profile_material_volume_mm3": "6415200",
+            "profile_member_count": 3,
+            "profile_overlap_checked": false,
+            "profile_run_count": 1,
+            "source_placement": 1,
+            "source_z": 0,
+            "timber_count": 1,
+            "timber_volume_mm3": "3564000",
+            "top": 2700,
+            "volume_mm3": "54000000000",
+            "wall_diagnostics": [],
+            "wall_volume_mm3": "4968000000"
+          },
+          "createdId": null,
+          "editingId": null,
+          "supportsTimbers": true,
+          "supportsProfileRuns": true,
+          "timberCandidates": [
+            {
+              "id": 0,
+              "role": "boundary",
+              "A": 27,
+              "B": 33,
+              "length": 4000,
+              "placement_id": 1,
+              "z_min": 0,
+              "z_max": 33
+            }
+          ],
+          "profileRunCandidates": [
+            {
+              "id": 0,
+              "profileId": 0,
+              "profileName": "Q38j L 形斷面",
+              "length": 2400,
+              "memberCount": 3,
+              "placement": "進階世界框架"
+            },
+            {
+              "id": 2,
+              "profileId": 0,
+              "profileName": "Q38j L 形斷面",
+              "length": 1000,
+              "memberCount": 3,
+              "placement": "進階世界框架"
+            }
+          ],
+          "profileUnavailable": 1,
+          "stale": false,
+          "previewRevision": 6,
+          "inputRevision": 6,
+          "viewer": {
+            "objectCount": 6,
+            "triangleCount": 130,
+            "bounds": {
+              "min": [
+                -100,
+                -100,
+                0
+              ],
+              "max": [
+                4100,
+                5100,
+                2700
+              ]
+            },
+            "labels": [
+              "空間邊界",
+              "材料牆",
+              "角材結構",
+              "斷面拉伸件",
+              "斷面拉伸件",
+              "斷面拉伸件"
+            ],
+            "view": "iso",
+            "yaw": -0.7853981633974483,
+            "pitch": 0.6154797086703873,
+            "zoom": 1,
+            "pan": {
+              "x": 0,
+              "y": 0
+            },
+            "width": 980,
+            "height": 472.71875,
+            "destroyed": false,
+            "selection": null
+          }
+        },
+        "candidates": [
+          {
+            "id": 0,
+            "checked": true,
+            "disabled": false,
+            "text": "拉伸件 #0 · Q38j L 形斷面L 2400 mm · 3 個構件 · 進階世界框架"
+          },
+          {
+            "id": 2,
+            "checked": false,
+            "disabled": false,
+            "text": "拉伸件 #2 · Q38j L 形斷面L 1000 mm · 3 個構件 · 進階世界框架"
+          }
+        ],
+        "unavailable": "已定位拉伸件 2 條，均需逐條明選。未定位 1 條，沒有世界位置，不能納入。",
+        "review": "本次納入 1 條拉伸件，共 3 個構件；材料量 6415200 mm³。不含角材與牆；參考包絡不計材料，原位置不隨牆高改變。未檢查碰撞、貼合或包含。",
+        "members": "拉伸件 #0 · 構件 #0世界 x/y/z：1000～1027、2000～4400、2667～2700 mm材料量 2138400 mm³ · 來源快照拉伸件 #0 · 構件 #1世界 x/y/z：1373～1400、2000～4400、2667～2700 mm材料量 2138400 mm³ · 來源快照拉伸件 #0 · 構件 #2世界 x/y/z：1000～1033、2000～4400、2450～2477 mm材料量 2138400 mm³ · 來源快照",
+        "volume": "6415200",
+        "createDisabled": true,
+        "confirm": false,
+        "status": "預覽已完成。核對面清單並勾選確認後，即可建立空間。",
+        "timberChecked": true,
+        "sharedCount": 1,
+        "sharedLabel": "一併納入",
+        "showLabel": "角材與拉伸件"
+      }
+    },
+    {
+      "name": "complete browser flow",
+      "ok": false,
+      "detail": "Error: R12_MATERIAL_NOTICE {\"snapshot\":{\"phase\":\"preview\",\"sourceKind\":\"scene\",\"resultSummary\":{\"bottom\":0,\"clearance_mm3\":\"54000000000\",\"closed\":true,\"face_count\":6,\"generated_faces\":[{\"label\":\"外環第 1 邊\",\"orientation\":1,\"placement_id\":2,\"purpose\":\"boundary\"},{\"label\":\"外環第 2 邊\",\"orientation\":1,\"placement_id\":3,\"purpose\":\"boundary\"},{\"label\":\"外環第 3 邊\",\"orientation\":1,\"placement_id\":4,\"purpose\":\"boundary\"},{\"label\":\"外環第 4 邊\",\"orientation\":1,\"placement_id\":5,\"purpose\":\"boundary\"},{\"label\":\"底面\",\"orientation\":-1,\"placement_id\":6,\"purpose\":\"boundary\"},{\"label\":\"頂面\",\"orientation\":1,\"placement_id\":7,\"purpose\":\"boundary\"}],\"missing\":[],\"profile_material_volume_mm3\":\"6415200\",\"profile_member_count\":3,\"profile_overlap_checked\":false,\"profile_run_count\":1,\"source_placement\":1,\"source_z\":0,\"timber_count\":1,\"timber_volume_mm3\":\"3564000\",\"top\":2700,\"volume_mm3\":\"54000000000\",\"wall_diagnostics\":[],\"wall_volume_mm3\":\"4968000000\"},\"createdId\":null,\"editingId\":null,\"supportsTimbers\":true,\"supportsProfileRuns\":true,\"timberCandidates\":[{\"id\":0,\"role\":\"boundary\",\"A\":27,\"B\":33,\"length\":4000,\"placement_id\":1,\"z_min\":0,\"z_max\":33}],\"profileRunCandidates\":[{\"id\":0,\"profileId\":0,\"profileName\":\"Q38j L 形斷面\",\"length\":2400,\"memberCount\":3,\"placement\":\"進階世界框架\"},{\"id\":2,\"profileId\":0,\"profileName\":\"Q38j L 形斷面\",\"length\":1000,\"memberCount\":3,\"placement\":\"進階世界框架\"}],\"profileUnavailable\":1,\"stale\":false,\"previewRevision\":6,\"inputRevision\":6,\"viewer\":{\"objectCount\":6,\"triangleCount\":130,\"bounds\":{\"min\":[-100,-100,0],\"max\":[4100,5100,2700]},\"labels\":[\"空間邊界\",\"材料牆\",\"角材結構\",\"斷面拉伸件\",\"斷面拉伸件\",\"斷面拉伸件\"],\"view\":\"iso\",\"yaw\":-0.7853981633974483,\"pitch\":0.6154797086703873,\"zoom\":1,\"pan\":{\"x\":0,\"y\":0},\"width\":980,\"height\":472.71875,\"destroyed\":false,\"selection\":null}},\"candidates\":[{\"id\":0,\"checked\":true,\"disabled\":false,\"text\":\"拉伸件 #0 · Q38j L 形斷面L 2400 mm · 3 個構件 · 進階世界框架\"},{\"id\":2,\"checked\":false,\"disabled\":false,\"text\":\"拉伸件 #2 · Q38j L 形斷面L 1000 mm · 3 個構件 · 進階世界框架\"}],\"unavailable\":\"已定位拉伸件 2 條，均需逐條明選。未定位 1 條，沒有世界位置，不能納入。\",\"review\":\"本次納入 1 條拉伸件，共 3 個構件；材料量 6415200 mm³。不含角材與牆；參考包絡不計材料，原位置不隨牆高改變。未檢查碰撞、貼合或包含。\",\"members\":\"拉伸件 #0 · 構件 #0世界 x/y/z：1000～1027、2000～4400、2667～2700 mm材料量 2138400 mm³ · 來源快照拉伸件 #0 · 構件 #1世界 x/y/z：1373～1400、2000～4400、2667～2700 mm材料量 2138400 mm³ · 來源快照拉伸件 #0 · 構件 #2世界 x/y/z：1000～1033、2000～4400、2450～2477 mm材料量 2138400 mm³ · 來源快照\",\"volume\":\"6415200\",\"createDisabled\":true,\"confirm\":false,\"status\":\"預覽已完成。核對面清單並勾選確認後，即可建立空間。\",\"timberChecked\":true,\"sharedCount\":1,\"sharedLabel\":\"一併納入\",\"showLabel\":\"角材與拉伸件\"}\n    at check (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/profile_space_test.js:145:64)\n    at /tmp/r12-browser-source-7692a_pf/repo/geometry-web/profile_space_test.js:289:27\n    at async Object.run (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/space_test_floor.js:35:9)\n    at async run (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/space_model_test.js:1264:5)"
+    },
+    {
+      "name": "space group completeness",
+      "ok": false,
+      "detail": [
+        "Space run did not finish",
+        "Group profile-space did not complete",
+        "Group profile-space: expected 60 passed assertions, got 21 passed / 1 failed",
+        "Group browser-health did not complete",
+        "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+      ]
+    }
+  ]
+}

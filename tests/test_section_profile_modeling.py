@@ -216,7 +216,7 @@ class SectionProfileModeling(unittest.TestCase):
                         "source": {"kind": "scene", "placement_id": 7, "boundary_id": 7, "scene_hash": result["source_sha256"]},
                         "input": inputs, "result": result}
         candidate = model_update.prepare_update({"record": record_value, "current_scene": current_scene,
-            "selection": {"placement_id": 7, "boundary_id": 7, "edges": [0, 1, 2, 3], "obstacles": [], "timbers": [], "projection": None}},
+            "selection": {"placement_id": 7, "boundary_id": 7, "edges": [0, 1, 2, 3], "obstacles": [], "timbers": [], "profile_runs": [], "projection": None}},
             base_executable=self.base, bridge_executable=_bridge.find_bridge())
         self.assertEqual(candidate["record"]["result"]["summary"]["volume_mm3"], "36000000000")
         preserved = load_base(candidate["record"]["input"]["base_scene"], executable=self.base)

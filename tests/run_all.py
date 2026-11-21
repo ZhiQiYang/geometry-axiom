@@ -51,6 +51,9 @@ EXPECTED_FILE = HERE / 'run_all.expected.json'
 # Every tests/test_*.py MUST appear here (value = native binaries it needs; [] is a deliberate "needs none").
 # A test file that is on disk but not listed makes run_all fail and name it.
 PY_NEEDS = {
+    'test_space_profile_runs': ['model-base'],
+    'test_space_profile_update': ['model-base', 'bridge'],
+    'test_r12_browser_evidence': [],
     'test_boundary_pair_host': ['bridge'],
     'test_r14_browser_receipt': [],
     'test_r14_repeat_panel': ['bridge'],
@@ -76,6 +79,7 @@ PY_NEEDS = {
     'test_panel_fill_layout': ['bridge'],
     'test_panel_fill_host': ['bridge'],
     'test_panel_fill_grid_source': ['bridge'],
+    'test_panel_fill_grid_transaction': ['bridge'],
     'test_panel_fill_support': ['bridge', 'pf3-algorithm'],
     'test_section_profile_modeling': ['bridge', 'model-base'],
     'test_section_profile_mutation_check': [],
@@ -299,6 +303,9 @@ PY_BROWSER_GATES = {
     'test_issue123_create_feedback_browser': 'Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite',
 }
 NODE_TEST_FILES = [
+    'tests/test_space_profile_store.js',
+    'tests/test_space_profile_replay.js',
+    'tests/test_space_profile_update.js',
     'tests/test_assembly_bay_projection.js',
     'tests/test_grid_inspector_stagger.cjs',
     'tests/test_transport_failure_trace.js',
@@ -354,6 +361,10 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:space_profile_ui': 'tests/test_space_profile_ui.js',
+    'node:space_profile_view': 'tests/test_space_profile_view.js',
+    'node:space_profile_update_ui': 'tests/test_space_profile_update_ui.js',
+    'node:profile_space_browser_contract': 'tests/test_profile_space_browser_contract.js',
     'node:boundary_pair_ui': 'tests/test_boundary_pair_ui.js',
     'node:boundary_pair_project': 'tests/test_boundary_pair_project.js',
     'node:boundary_pair_browser_scope': 'tests/test_boundary_pair_browser_scope.js',
@@ -397,6 +408,7 @@ NODE_PURE_TEST_FILES = {
     'node:canvas_shards': 'tests/test_canvas_shards.js',
     'node:timber_edit_ui': 'tests/test_timber_edit_ui.js',
     'node:panel_fill_ui_contract': 'tests/test_panel_fill_ui_contract.js',
+    'node:panel_fill_grid_ui': 'tests/test_panel_fill_grid_ui.js',
     'node:panel_fill_grid_read_compat': 'tests/test_panel_fill_grid_read_compat.js',
     'node:identity_canvas_merge': 'tests/test_identity_canvas_merge.js',
     'node:background_grid_viewport': 'tests/test_background_grid_viewport.js',

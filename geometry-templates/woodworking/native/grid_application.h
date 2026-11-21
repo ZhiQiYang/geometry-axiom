@@ -106,6 +106,9 @@ bool wood_grid_direct_check(const WoodGridContext *,const WoodGridApplication *,
 bool wood_grid_apply_system(WoodGridContext *,const WoodGridApplication *,char *,size_t);
 bool wood_grid_apply_binding(WoodGridContext *,const WoodGridApplication *,char *,size_t);
 bool wood_grid_apply_fill(WoodGridContext *,const WoodGridApplication *,char *,size_t);
+/* PF4-A is create-only: an identical source/host/preference reuses the main
+ * grid; an incompatible existing main grid is never replaced or edited. */
+bool wood_grid_create_fill(WoodGridContext *,uint32_t,uint32_t,int,uint32_t *,char *,size_t);
 bool wood_grid_prepare_child(const WoodGridContext *,WoodGridApplication *,bool,unsigned,unsigned,char *,size_t);
 bool wood_grid_child_check(const WoodGridContext *,const WoodGridApplication *,char *,size_t);
 bool wood_grid_systems_rebuild(WoodGridContext *,char *,size_t);

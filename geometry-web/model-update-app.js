@@ -11,8 +11,8 @@
   const sortKeys = value => Array.isArray(value) ? value.map(sortKeys) : value && typeof value === 'object' ?
     Object.fromEntries(Object.keys(value).sort().map(key => [key, sortKeys(value[key])])) : value;
   const shown = value => value === undefined ? '—' : JSON.stringify(sortKeys(value));
-  const packages = ['space', 'volume', 'clearance', 'walls', 'timbers'];
-  const packageNames = {space:'空間邊界',volume:'空間實體',clearance:'扣除後淨空',walls:'材料牆',timbers:'角材結構'};
+  const packages = ['space', 'volume', 'clearance', 'walls', 'timbers', 'profile_runs'];
+  const packageNames = {space:'空間邊界',volume:'空間實體',clearance:'扣除後淨空',walls:'材料牆',timbers:'角材結構',profile_runs:'斷面拉伸件'};
   const purposeNames = {boundary:'實際邊界','calculation-cap':'體積計算封口',none:'不建立',through:'上下貫通孔'};
   const embeddedTimberWarning = '內含矩形沒有正式邊界來源，本版不可納入角材；如需角材，請明選有輪廓的放置面。';
   let dialog, session = null, serial = 0, timer = null;
@@ -59,17 +59,43 @@
   }
   function sourcePin(graph, dump) {
     if (graph.schema !== 'source-inspector/1' || graph.live !== true || graph.complete !== true || !Number.isSafeInteger(graph.revision) || graph.revision < 0 ||
-        !/^[a-f0-9]{64}$/.test(graph.sourceFingerprint) || typeof dump.text !== 'string') throw Error('來源資料不完整，不能預覽或確認更新。');
+        !/^[a-f0-9]{64}$/.test(graph.sourceFingerprint) || typeof dump.text !== 'string' ||
+        dump.revision !== graph.revision || dump.definition_sha256 !== graph.sourceFingerprint) throw Error('來源資料不完整，不能預覽或確認更新。');
     return {scene:dump.text,revision:graph.revision,fingerprint:graph.sourceFingerprint};
+  }
+  function profileSource(read) {
+    if (!read?.ok || !Number.isSafeInteger(read.revision) || read.revision < 0 ||
+        !Array.isArray(read.state?.runs) || !Array.isArray(read.state?.profiles))
+      throw Error('斷面拉伸件來源不完整，請重新開啟並明選現行來源。');
+    const profiles = new Map(read.state.profiles.map(profile => [profile.value?.id,profile.value?.name]));
+    const seen = new Set(), candidates = []; let unavailable = 0;
+    for (const run of read.state.runs) {
+      const value = run.value, id = value?.id;
+      if (!uint(id) || seen.has(id) || !['world','local'].includes(run.coordinateSpace))
+        throw Error('斷面拉伸件清單不完整，不能可靠選擇。');
+      seen.add(id);
+      if (run.coordinateSpace === 'local') {unavailable++; continue;}
+      if (!profiles.has(value.profileId) || !Number.isSafeInteger(run.length) || run.length <= 0 ||
+          !Array.isArray(run.members) || !['advanced','simple'].includes(value.placement?.kind))
+        throw Error(`拉伸件 #${id} 的來源資料不完整，請返回斷面工作區檢查。`);
+      const placement = value.placement;
+      candidates.push({id,profileName:profiles.get(value.profileId)||'未命名斷面',length:run.length,memberCount:run.members.length,
+        placement:placement.kind === 'advanced' ? '進階世界框架' : placement.host?.kind === 'space-wall-values' ?
+          `${placement.host.sourceDescription}（取值，不隨空間變動）` : `簡易承載面 #${placement.host?.placementId}`});
+    }
+    return {revision:read.revision,candidates:candidates.sort((a,b)=>a.id-b.id),unavailable};
   }
   async function readPinnedSource(current, {signal}) {
     guard(current);
     const sequence = current.sequence;
     if (signal.aborted) throw new DOMException('已取消', 'AbortError');
-    const graph = await read('source-inspect', current, sequence), dump = await read('dump-deidentified', current, sequence);
+    const graph = await read('source-inspect', current, sequence), profilesBefore = await read('section-profile-read', current, sequence);
+    const dump = await read('dump-deidentified', current, sequence), profilesAfter = await read('section-profile-read', current, sequence);
     const checked = await read('source-inspect', current, sequence), pin = sourcePin(graph, dump);
     if (signal.aborted) throw new DOMException('已取消', 'AbortError');
     if (!same(pin, sourcePin(checked, dump)) || !same(pin, current.sourcePin)) throw Error('現行來源已變更，請關閉後重新明選來源。');
+    if (profileSource(profilesBefore).revision !== current.profileRevision || profileSource(profilesAfter).revision !== current.profileRevision || current.profileRevision !== pin.revision)
+      throw Error('斷面拉伸件來源已變更，請關閉後重新明選來源。');
     const surface = current.surface;
     if (current.before.input.mode === 'plan' && (!surface || !same(projectionFor(surface), current.projection)))
       throw Error('現行來源的投影用途已變更，請重新明選來源。');
@@ -113,6 +139,15 @@
         response.identityLedger.active !== true) throw Error('來源版本或身分帳已變更，請重新開啟並預覽。');
     return SourceInspector.index(response);
   }
+  async function requireProfileSpaceCapability(current, signal) {
+    const response=await fetch('/model/capabilities',{cache:'no-store',signal});
+    if(!response.ok)throw Error('無法核對拉伸件併入空間的服務能力，未更新模型。');
+    const capabilities=await response.json();
+    guard(current);
+    if(signal.aborted)throw new DOMException('已取消','AbortError');
+    if(!Array.isArray(capabilities.space_preview_schemas)||!capabilities.space_preview_schemas.includes('geometry-space-preview/3'))
+      throw Error('目前服務尚未宣告拉伸件空間模型 /3 能力，未送出更新。');
+  }
   function createController(current) {
     const identityHooks = current.ledgerActive && globalThis.IdentityLedger ? {
       async inspectIdentity(next) {
@@ -143,6 +178,7 @@
       readSource:options => readPinnedSource(current, options),
       ...identityHooks,
       async produce(data, {signal}) {
+        if(data.record.input.profile_runs||data.selection.profile_runs?.length)await requireProfileSpaceCapability(current,signal);
         const response = await fetch('/model/update-preview', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),signal});
         const result = await response.json();
         if (!response.ok || result.ok !== true) throw Error(result.error || result.diagnostics?.[0]?.message || '隔離候選驗證失敗，未更新模型。');
@@ -159,7 +195,7 @@
       <div class="mu-body"><p class="mu-warning" id="muIdentity">來源身分連續性未知（unknown）。請明選現行來源；相同名稱或編號不代表同一物件。</p><button id="muActivate" class="mu-button" type="button" hidden>啟用物件身分追蹤</button>
       <section aria-labelledby="muSourceTitle"><h3 id="muSourceTitle">1. 明選現行來源</h3><label id="muPlacementField" class="mu-field">現行放置面<select id="muPlacement" disabled><option value="">請選擇現行放置面</option></select></label><p id="muSourceInfo" class="mu-note">正在讀取目前專案…</p>
         <fieldset id="muChoices" disabled hidden><legend>本次明選內容</legend><div id="muFaceChoices" hidden></div><div id="muPlanChoices"><p id="muProjection" class="mu-note"></p><div id="muOutline" class="mu-outline"></div><h4>形成空間邊界的外環邊</h4><p class="mu-note">逐邊勾選；邊編號只屬於這次現行輪廓。</p><div id="muEdges" class="mu-choices"></div>
-          <details class="mu-details" open><summary>角材 <span id="muTimberCount"></span></summary><div id="muTimbers" class="mu-choices"></div></details>
+          <details class="mu-details" open><summary>一併納入</summary><p class="mu-note">本次重新明選；未勾選即不納入，原模型中的對應內容也會移除。</p><h4>角材 <span id="muTimberCount"></span></h4><div id="muTimbers" class="mu-choices"></div><h4>斷面拉伸件 <span id="muProfileCount"></span></h4><p id="muProfileUnavailable" class="mu-note"></p><div id="muProfiles" class="mu-choices"></div></details>
           </div>
           <details class="mu-details"><summary>淨空計算的柱樑 <span id="muObstacleCount"></span></summary><div id="muObstacles" class="mu-choices"></div></details>
         </fieldset></section>
@@ -181,7 +217,7 @@
         event.preventDefault(); event.stopPropagation(); message('本次候選尚未更新。請先確認更新，或取消後保存原專案。', 'warning');
       }
     });
-    for (const name of ['space-models-changed','face-projections-changed','geometry-definition-changed','project-info-changed']) {
+    for (const name of ['space-models-changed','face-projections-changed','geometry-definition-changed','project-info-changed','section-profile-library-changed']) {
       window.addEventListener(name, () => checkSession());
     }
   }
@@ -257,9 +293,7 @@
       }).join('');
       $('muChoices').append(box);
     }
-    const summary = IdentityLedger.continuitySummary({roots:judged});
-    $('muIdentity').textContent = summary.text + (summary.listed?.length ? '：' + summary.listed.join('、') : '');
-    $('muName').textContent = current.before.name + ' · ' + summary.text;
+    refreshIdentitySummary(current);
     $('muConfirmed').checked = false;
     counts();
   }
@@ -285,7 +319,7 @@
     session = current;
     $('muPlacement').innerHTML = '<option value="">請選擇現行放置面</option>'; $('muPlacement').value = '';
     $('muChoices').hidden = true; $('muChoices').disabled = true; $('muReview').hidden = true; $('muConfirmed').checked = false;
-    $('muFaceChoices').replaceChildren(); $('muEdges').replaceChildren(); $('muTimbers').replaceChildren(); $('muObstacles').replaceChildren();
+    $('muFaceChoices').replaceChildren(); $('muEdges').replaceChildren(); $('muTimbers').replaceChildren(); $('muProfiles').replaceChildren(); $('muProfileUnavailable').textContent=''; $('muObstacles').replaceChildren();
     dialog.querySelector('#muDecisions')?.remove();
     $('muDiff').replaceChildren(); $('muFullDetails').replaceChildren(); $('muOutline').replaceChildren();
     $('muSavedSettings').replaceChildren(); $('muName').textContent = ''; $('muSourceInfo').textContent = '正在讀取目前專案…';
@@ -302,10 +336,14 @@
       const faces = current.before.input.mode === 'faces';
       $('muPlacementField').hidden = faces; $('muPlanChoices').hidden = faces; $('muFaceChoices').hidden = !faces;
       $('muName').textContent = current.before.name + ' · 來源身分連續性 unknown'; savedSettings(current.before);
-      const sequence = current.sequence, graph = await read('source-inspect', current, sequence), dump = await read('dump-deidentified', current, sequence);
+      const sequence = current.sequence, graph = await read('source-inspect', current, sequence), profilesBefore = await read('section-profile-read', current, sequence);
+      const dump = await read('dump-deidentified', current, sequence);
       const surfaces = await read('surfaces', current, sequence), objects = await read('objects', current, sequence);
-      const checkedDump = await read('dump-deidentified', current, sequence), checkedGraph = await read('source-inspect', current, sequence);
+      const checkedDump = await read('dump-deidentified', current, sequence), profilesAfter = await read('section-profile-read', current, sequence), checkedGraph = await read('source-inspect', current, sequence);
       if (!same(sourcePin(graph,dump), sourcePin(checkedGraph,checkedDump))) throw Error('讀取期間來源已改變。請重新開啟並明選現行來源。');
+      const profiles = profileSource(profilesAfter);
+      if (profileSource(profilesBefore).revision !== profiles.revision || profiles.revision !== graph.revision) throw Error('讀取期間斷面拉伸件已改變。請重新開啟並明選現行來源。');
+      current.profileRuns = profiles.candidates; current.profileUnavailable = profiles.unavailable; current.profileRevision = profiles.revision;
       current.graph = SourceInspector.index(graph); current.sourcePin = sourcePin(graph,dump); current.objects = objects;
       if (graph.identityLedger?.schema !== 'identity-ledger/1' || graph.identityLedger.active !== current.ledgerActive)
         throw Error('讀取期間身分帳已變更。請重新開啟並預覽。');
@@ -321,7 +359,7 @@
         return;
       }
       $('muPlacement').innerHTML += current.surfaces.map(surface => `<option value="${surface.id}">放置 #${surface.id} · ${surface.boundary === 0 ? '內含矩形' : `輪廓 #${surface.boundary}`} · z ${esc(surface.origin?.[2])} mm</option>`).join('');
-      $('muSourceInfo').textContent = current.surfaces.length ? '請指定本次要採用的放置面，再逐邊選取。角材與柱樑可保留空清單。' : '目前沒有可選的水平放置面。';
+      $('muSourceInfo').textContent = current.surfaces.length ? '請指定本次要採用的放置面，再逐邊選取。角材、拉伸件與柱樑可保留空清單。' : '目前沒有可選的水平放置面。';
       current.busy = false; actions(); message(current.surfaces.length ? '尚未選擇現行來源。' : '請取消更新，先在畫布建立水平放置面。', current.surfaces.length ? '' : 'warning');
       const placement = prefilledPlacement(current);
       if (placement != null) {$('muPlacement').value = String(placement); await choosePlacement();}
@@ -354,6 +392,8 @@
       } else loops = (await read('boundary ' + surface.boundary, current, sequence)).loops;
       const references = await read('references', current, sequence), graph = await read('source-inspect', current, sequence), dump = await read('dump-deidentified', current, sequence);
       if (!same(sourcePin(graph,dump),current.sourcePin)) throw Error('來源已變更，請重新開啟並明選現行來源。');
+      const profiles = profileSource(await read('section-profile-read', current, sequence));
+      if (profiles.revision !== current.profileRevision) throw Error('斷面拉伸件來源已變更，請重新開啟並明選現行來源。');
       if (!Array.isArray(loops) || !loops.length || loops.some(loop => !Array.isArray(loop.verts) || loop.verts.length < 3 || loop.verts.some(p => !Array.isArray(p) || p.length !== 2 || !p.every(Number.isSafeInteger)))) throw Error('現行輪廓資料不完整。');
       if (!Array.isArray(references.timbers) || references.sourceFingerprint !== current.sourcePin.fingerprint) throw Error('角材與來源版本不一致，請重新選擇。');
       current.surface = surface; current.loops = loops; current.projection = clone(projectionFor(surface));
@@ -364,7 +404,7 @@
       }
       current.obstacles = obstacleChoices(current);
       renderChoices(current); current.busy = false; actions();
-      message(current.before.source.projection && !validProjection(current.projection) ? '原模型有投影用途；現行來源尚未明定。請取消更新，在既有投影設定完成後再開啟。' : '已明選現行放置面。請逐邊勾選，核對角材與柱樑後預覽。', current.before.source.projection && !validProjection(current.projection) ? 'warning' : '');
+      message(current.before.source.projection && !validProjection(current.projection) ? '原模型有投影用途；現行來源尚未明定。請取消更新，在既有投影設定完成後再開啟。' : '已明選現行放置面。請逐邊勾選，核對角材、拉伸件與柱樑後預覽。', current.before.source.projection && !validProjection(current.projection) ? 'warning' : '');
     } catch (error) {if (error.name !== 'AbortError') invalidate(current,error);}
   }
   function renderChoices(current) {
@@ -379,6 +419,8 @@
       return `<label class="mu-choice"><input type="checkbox" data-mu-edge="${index}"><span>邊 ${index+1}<small>(${point.join(', ')}) → (${end.join(', ')}) · ${length} mm · ${fixity}</small></span></label>`;
     }).join('');
     $('muTimbers').innerHTML = surface.boundary <= 0 ? `<p class="mu-note">${embeddedTimberWarning}</p>` : current.timbers.length ? current.timbers.map(item => `<label class="mu-choice"><input type="checkbox" data-mu-timber="${item.id}"><span>角材 #${item.id}<small>${esc(item.role || '未指定角色')} · 放置 #${surface.id} · ${esc(item.geometry.length)} × ${esc(item.geometry.A)} × ${esc(item.geometry.B)} mm</small></span></label><span data-mu-proof="timber:${item.id}" hidden>身分延續已證明（可改選）</span>`).join('') : '<p class="mu-note">此放置面没有可選角材；本次清單為空。</p>';
+    $('muProfiles').innerHTML = current.profileRuns.map(run => `<label class="mu-choice"><input type="checkbox" data-mu-profile-run="${run.id}"><span>拉伸件 #${run.id} · ${esc(run.profileName)}<small>L ${run.length} mm · ${run.memberCount} 個構件 · ${esc(run.placement)}</small></span></label>`).join('');
+    $('muProfileUnavailable').textContent = `已定位 ${current.profileRuns.length} 條，均需逐條明選。未定位 ${current.profileUnavailable} 條，不能納入。`;
     $('muObstacles').innerHTML = current.obstacles.length ? current.obstacles.map(item => `<label class="mu-choice"><input type="checkbox" data-mu-obstacle="${esc(item.kind)}" value="${item.id}"><span>${item.kind === 'column' ? '柱' : '樑'} #${item.id}<small>世界範圍 ${esc(json(item.box))} mm</small></span></label>`).join('') : '<p class="mu-note">目前沒有可選柱樑；本次清單為空。</p>';
     counts(); renderOutline(current); applyIdentityChoice(current);
   }
@@ -414,12 +456,13 @@
   }
   function counts() {
     $('muTimberCount').textContent = session?.surface?.boundary === 0 ? '本版不可納入' : `${dialog.querySelectorAll('[data-mu-timber]:checked').length} / ${session?.timbers?.length || 0} 支`;
+    $('muProfileCount').textContent = `${dialog.querySelectorAll('[data-mu-profile-run]:checked').length} / ${session?.profileRuns?.length || 0} 條`;
     $('muObstacleCount').textContent = `${dialog.querySelectorAll('[data-mu-obstacle]:checked').length} / ${session?.obstacles?.length || 0} 個`;
   }
   function selectionChanged() {
     const current = session; if (!current || current.invalid) return;
     if (current.busy) {current.controller?.cancel(); current.committing = false; invalidate(current,Error('處理期間明選內容已變更，本次候選已取消。')); return;}
-    try {clearReview(current); counts(); actions(); message('明選內容已變更。請重新預覽並核對差異。');} catch (error) {invalidate(current,error);}
+    try {clearReview(current); counts(); refreshIdentitySummary(current); actions(); message('明選內容已變更。請重新預覽並核對差異。');} catch (error) {invalidate(current,error);}
   }
   function selection() {
     const current = session;
@@ -432,11 +475,13 @@
       return ModelUpdate.selectionValid({mode:'faces',uses:selected.map(input => ({placement_id:Number(input.value)})),obstacles});
     }
     const timbers = [...dialog.querySelectorAll('[data-mu-timber]:checked')].map(input => ({kind:'timber',id:Number(input.dataset.muTimber)}));
+    const profile_runs = [...dialog.querySelectorAll('[data-mu-profile-run]:checked')].map(input => ({kind:'profile-run',id:Number(input.dataset.muProfileRun)})).sort((a,b)=>a.id-b.id);
+    if (profile_runs.some(ref => !current.profileRuns.some(run => run.id === ref.id))) throw Error('拉伸件選擇已失效，請重新明選現行來源。');
     if (current.surface.boundary <= 0 && timbers.length) throw Error(embeddedTimberWarning);
     return {placement_id:current.surface.id,boundary_id:current.surface.boundary,
       edges:[...dialog.querySelectorAll('[data-mu-edge]:checked')].map(input => Number(input.dataset.muEdge)),
       obstacles,
-      timbers,projection:clone(current.projection)};
+      timbers,profile_runs,projection:clone(current.projection)};
   }
   function guardSelection(current) {
     if (current.selectionSignature && ((current.before.input.mode === 'plan' &&
@@ -494,14 +539,45 @@
       return `角材 #${item.root.id}：世界 x/y/z 尺寸 ${highs.map((n,axis)=>n-lows[axis]).join(' × ')} mm；z ${lows[2]}～${highs[2]} mm；材料體積 ${item.volume_mm3} mm³`;
     }).join('\n');
   }
+  function profileIdentityText(summary, hasProfiles) {
+    if (!hasProfiles) return summary.text;
+    return summary.token === 'proved' ? '已追蹤根延續已證明；拉伸件延續未知' : summary.text + '；拉伸件延續未知';
+  }
+  function refreshIdentitySummary(current) {
+    const hasProfiles=!!current.before?.input?.profile_runs?.length||dialog.querySelectorAll('[data-mu-profile-run]:checked').length>0;
+    if(!current.judged&&!hasProfiles&&!current.profileIdentityShown)return;
+    const summary=current.judged&&globalThis.IdentityLedger?IdentityLedger.continuitySummary({roots:current.judged}):{token:'unknown',text:'物件延續性未知',listed:[]};
+    const text=profileIdentityText(summary,hasProfiles);
+    $('muIdentity').textContent=text+(summary.listed?.length?'：'+summary.listed.join('、'):'');
+    $('muName').textContent=current.before.name+' · '+text;
+    current.profileIdentityShown=hasProfiles;
+    if(!current.judged&&!hasProfiles)showIdentity(current);
+  }
+  function profileGeometry(result) {
+    if (!result.profile_runs) return '未納入';
+    const members = (result.profile_runs?.derived?.objects || []).filter(item => item.role === 'geometry');
+    if (!members.length) return `已納入 ${result.summary.profile_run_count} 條拉伸件，零構件；參考包絡不計材料量。未檢查碰撞、貼合或包含。`;
+    return members.map(item => {
+      const vertices = item.vertices_mm;
+      const bounds = [0,1,2].map(axis => `${Math.min(...vertices.map(point=>point[axis]))}～${Math.max(...vertices.map(point=>point[axis]))}`);
+      return `拉伸件 #${item.root.id}／構件 #${item.member_path[0]}：世界 x/y/z ${bounds.join('、')} mm；材料體積 ${item.section_profile.material_volume_mm3} mm³`;
+    }).join('\n') + '\n未扣拉伸件間重疊；未檢查碰撞、貼合或包含。';
+  }
   function renderReview(review) {
     const before = review.before, after = review.after;
+    if (session && (before.input.profile_runs || after.input.profile_runs)) {
+      const summary = session.judged && globalThis.IdentityLedger ? IdentityLedger.continuitySummary({roots:session.judged}) : {token:'unknown',text:'物件延續性未知',listed:[]};
+      const text = profileIdentityText(summary, true);
+      $('muIdentity').textContent = text + (summary.listed?.length ? '：' + summary.listed.join('、') : '');
+      $('muName').textContent = before.name + ' · ' + text;
+    }
     const sourceRows = before.input.mode === 'faces' ? before.input.uses.map((use,index) =>
       ['承載面 '+(index+1),shown(use),shown(after.input.uses[index])]) : [['外環邊（從 1 起算）',shown(before.input.settings.edges.map(n=>n+1)),shown(after.input.settings.edges.map(n=>n+1))]];
     $('muDiff').innerHTML = table('來源與本次明選', [...jsonRows(before.source,after.source),...sourceRows,
-      ['角材',shown(before.input.timbers || []),shown(after.input.timbers || [])],['柱樑',shown(before.input.obstacles),shown(after.input.obstacles)]]) +
+      ['角材',shown(before.input.timbers || []),shown(after.input.timbers || [])],['斷面拉伸件',shown(before.input.profile_runs || []),shown(after.input.profile_runs || [])],['柱樑',shown(before.input.obstacles),shown(after.input.obstacles)]]) +
       table('原設定與候選設定',jsonRows(before.input.settings,after.input.settings)) + table('完整結果摘要',jsonRows(before.result.summary,after.result.summary)) +
       table('實際角材幾何（各自列出，' + (session?.judged && globalThis.IdentityLedger ? IdentityLedger.continuitySummary({roots:session.judged}).text : '身分延續性未知') + '）',[['各交換包的完整角材',timberGeometry(before.result),timberGeometry(after.result)]]) +
+      table('實際拉伸件幾何（來源快照，延續未知）',[['逐構件位置與獨立材料量',profileGeometry(before.result),profileGeometry(after.result)]]) +
       table('所有模型交換包',packages.map(kind => {
         const pin = review.diff.packages.find(item => item.kind === kind);
         const text = value => value ? `${value.derived?.status || '已建立'} · ${value.derived?.objects?.length || 0} 個物件` : '未建立';

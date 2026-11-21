@@ -151,7 +151,7 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,expectN
     check('UI04_D44_INSUFFICIENT_SAVABLE 不足標紅仍可確認合法試排',await read(`!document.querySelector('[data-pf-action="confirm"]').disabled`));
   }
   await checkSupportPicture(fillResult);
-  check('UI14 分片能力不改全域complete',(await official()).complete===false&&same(candidate.uiContract.supportedActions,['read','edit-definitions','read-layout','read-support'])&&await read(`document.querySelector('.pf-source-preparation').textContent.includes('PF-6')&&document.querySelector('.pf-source-preparation').textContent.includes('PF-4')&&document.querySelector('.pf-source-preparation').textContent.includes('PF-5')&&!document.querySelector('[data-pf-action="suggest-timbers"],[data-pf-action="from-fill-grid"]')`));
+  check('UI14 分片能力不改全域complete',(await official()).complete===false&&same(candidate.uiContract.supportedActions,['read','edit-definitions','read-layout','read-support','create-from-fill-grid'])&&await read(`document.querySelector('.pf-source-preparation').textContent.includes('PF-6')&&document.querySelector('.pf-source-preparation').textContent.includes('PF-4')&&document.querySelector('.pf-source-preparation').textContent.includes('PF-5')&&!document.querySelector('[data-pf-action="suggest-timbers"],[data-pf-action="export-grid-snapshot"]')`));
   const first=await commit({drop:true});
   const currentPlacementIds=await read(`apiRequest('surfaces').then(r=>r.surfaces.map(s=>s.id).sort((a,b)=>a-b))`);
   check('UI02 未放置D3真建立PF-H且不暗建D4原放置',first.state.finishSurfaces.length===1&&first.state.derivedPlacements.length===1&&

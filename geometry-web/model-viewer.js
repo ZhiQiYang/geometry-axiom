@@ -83,6 +83,9 @@
     }
     if(visibility.walls!==false)for(const object of result.walls?.derived?.objects||[])objects.push({...object,color:'#ced9db',opacity:0.96,label:'材料牆'});
     if(visibility.timbers!==false)for(const object of result.timbers?.derived?.objects||[])objects.push({...object,color:'#bd843d',opacity:1,label:'角材結構'});
+    // Q38j shares the existing material switch; reference envelopes remain in
+    // the saved package but never enter display bounds, drawing or picking.
+    if(visibility.timbers!==false)for(const object of result.profile_runs?.derived?.objects||[])if(object.role==='geometry')objects.push({...object,color:'#ab865f',opacity:1,label:'斷面拉伸件'});
     return objects;
   }
 

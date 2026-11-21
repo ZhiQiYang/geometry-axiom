@@ -1,0 +1,426 @@
+{
+  "schema": "r12-browser-run/1",
+  "label": "R12-B06-update-candidate-entry-restored",
+  "startedAt": "2026-11-17T06:58:45.815305+00:00",
+  "cwd": "/tmp/r12-browser-source-7692a_pf/repo",
+  "command": [
+    "node",
+    "geometry-web/space_model_test.js"
+  ],
+  "timeoutSeconds": 2100,
+  "chrome": "/usr/bin/google-chrome",
+  "sandboxFlagsAdded": [],
+  "url": "http://127.0.0.1:44973/",
+  "binaryHashes": {
+    "bridge": "af188152b34f68ee4fd3bc9fd8b2b8c92e26ac5a22b527bbefc328ae91c62428",
+    "model-base": "e36f1abd9a4ab11d2e7c6e653b9d5bbb311b363825a648587adbd1332e9ddef7"
+  },
+  "exitCode": 0,
+  "timedOut": false,
+  "runtimeUnchanged": true,
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "c5198b28a239140f33d69b3f818abf00c9ea5ffa7b428bf21cf8f4fe8d528654",
+    "fresh": true,
+    "root": "/tmp/r12-browser-source-7692a_pf/repo",
+    "pid": 17067,
+    "session": "beff43110531471db3c131b060691ae2"
+  },
+  "result": {
+    "url": "http://127.0.0.1:44973/",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_SPACE_PROFILE_ONLY"
+      ],
+      "included": [
+        "profile-space"
+      ],
+      "omitted": [
+        "space-height-library",
+        "projection-lifecycle",
+        "projection-placement",
+        "font-layout",
+        "space-flow",
+        "projection-close",
+        "timber-material",
+        "timber-source-guards"
+      ],
+      "url": "http://127.0.0.1:44973/",
+      "feedbackDirectory": "/tmp/r12-browser-resources-56ueh8gd/feedback"
+    },
+    "completed": true,
+    "groups": {
+      "setup": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      },
+      "profile-space": {
+        "expected": 60,
+        "passed": 60,
+        "failed": 0,
+        "completed": true
+      },
+      "browser-health": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      }
+    },
+    "completenessProblems": [],
+    "passed": 64,
+    "failed": 0,
+    "exceptions": [],
+    "consoleErrors": [],
+    "coverage": "Trusted pointer/keyboard controls with programmatic fixture setup, state observation and failure injection; counts are assertions, not end-to-end scenarios.",
+    "results": [
+      {
+        "name": "server serves the intended space-model release",
+        "ok": true,
+        "group": "setup"
+      },
+      {
+        "name": "current release explicitly supports timber preview and engineering sources",
+        "ok": true,
+        "group": "setup"
+      },
+      {
+        "name": "R12_SECTION_ENTRY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SECTION_PREVIEW_ZERO_WRITE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SECTION_OUTLINE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SECTION_MEMBERS",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RUN_PREVIEW_ZERO_WRITE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RUN_ONE_HISTORY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RUN_WORLD_BOUNDS",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RUN_LOCAL_AND_CORNER",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SPACE_ENTRY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_ALL_WORLD_CANDIDATES",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_EXPLICIT_SELECTION",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UNLOCATED_NOTICE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SHARED_CONTROLS",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_LAYOUT_1400",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_LAYOUT_690",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_LAYOUT_390",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_NO_PROFILE_LEGACY_RESULT",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_KEYBOARD_SELECTION",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_PROFILE_REQUEST",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_Q01_EXACT_ORACLE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_NO_MIXED_QUANTITY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_MATERIAL_NOTICE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SHARED_MATERIAL_SWITCH",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SELECTION_INVALIDATES",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_OVERLAP_EXACT_TOTAL",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_CANCEL_ZERO_WRITE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_MODEL_ONE_HISTORY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_MODEL_UNDO",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_MODEL_REDO",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_LIBRARY_SNAPSHOT_LABEL",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_LIVE_SOURCE_SNAPSHOT_UNCHANGED",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SAVED_TOP_VALUES",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_ENTRY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_EXPLICIT_CANDIDATES",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_TYPED_SELECTION",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_PACKAGE_DIFF",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_SINGLE_SOURCE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_PREVIEW_ZERO_WRITE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_CANCEL_ZERO_WRITE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_ONE_HISTORY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_UNDO",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_REDO",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_EMPTY_REMOVAL",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_REMOVE_ONE_HISTORY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_UPDATE_REMOVE_UNDO",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_HEIGHT_SNAPSHOT_STABLE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_HEIGHT_CANCEL_ZERO_WRITE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SCENARIO_CAPTURE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SAVE_FORMAT",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SAVE_NATIVE_SOURCE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SAVE_MODEL_PACKAGES",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_COLD_NEW_EMPTY",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_COLD_PAGE_SESSION",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_COLD_OPEN_EXACT",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_COLD_SCENARIO_EXACT",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_SOURCE_REVISION_RACE",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_LATE_PREVIEW_SETTINGS",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_CAPABILITY_GUARD",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_RESTORED_OPEN_EXACT",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "R12_NO_BROWSER_EXCEPTIONS",
+        "ok": true,
+        "group": "profile-space"
+      },
+      {
+        "name": "no uncaught browser exceptions",
+        "ok": true,
+        "group": "browser-health"
+      },
+      {
+        "name": "no browser console errors",
+        "ok": true,
+        "group": "browser-health"
+      }
+    ]
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "c5198b28a239140f33d69b3f818abf00c9ea5ffa7b428bf21cf8f4fe8d528654",
+    "fresh": true,
+    "root": "/tmp/r12-browser-source-7692a_pf/repo",
+    "pid": 17067,
+    "session": "beff43110531471db3c131b060691ae2"
+  },
+  "endedAt": "2026-11-17T07:01:31.108342+00:00",
+  "elapsedSeconds": 165.29102493999994,
+  "logs": {
+    "service.log": {
+      "bytes": 124,
+      "sha256": "a3a9d14e2e716904ea22430d20a3f20e225209dabc7648559d99b97014fefed3"
+    },
+    "stdout.log": {
+      "bytes": 3343,
+      "sha256": "de2abce9c4017887f215a8d16358464399c31e2494a1c1830de8d2039667e993"
+    },
+    "stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

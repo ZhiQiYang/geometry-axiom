@@ -13,6 +13,10 @@ const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const workspaceExtension = require('./diagnostics/r396_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
 const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
+const pf4aExtension = require('./diagnostics/pf4a_canvas_extension.cjs');
+// PF-4A (#128) P1284 is projected out first by its own exact helper (measured count, P128→P1284→P353).
+const committedGolden = () => pf4aExtension.projectGolden(JSON.parse(read('cdp_sections.golden.json')));
+const committedPlan = () => pf4aExtension.projectPlan(JSON.parse(read('canvas_shards.json')));
 const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
 const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
 const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');
@@ -26,9 +30,9 @@ const MAIN_BOUNDARIES = [{"after":"P88","before":"P72","localStorage":{"geometry
 test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
   // R17 P335 is projected out by its own exact oracle (count 192, P116→P335→P128).
   // Train 3 (#426 + #419): the R396 P1161 projection then runs on those projected inputs.
-  const rawGolden = r335Extension.projectGolden(JSON.parse(read('cdp_sections.golden.json')));
+  const rawGolden = r335Extension.projectGolden(committedGolden());
   // Train 3 (#420): the real tail is P353→P420→P1161→P359; R396's judge sees it without P420.
-  const rawPlan = train3Tail.withoutPlan(r335Extension.projectPlan(JSON.parse(read('canvas_shards.json'))), 'P420');
+  const rawPlan = train3Tail.withoutPlan(r335Extension.projectPlan(committedPlan()), 'P420');
   const snapshot = JSON.stringify({golden: rawGolden, plan: rawPlan});
   const projected = workspaceExtension.project(rawGolden, rawPlan);
   const expectedGolden = JSON.parse(JSON.stringify(rawGolden));
@@ -144,8 +148,8 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
 
 test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
   assert.ok(fs.existsSync(file('canvas_shards.json')), 'R360_CANVAS_SHARD_PLAN_REQUIRED');
-  const fullPlan = r335Extension.projectPlan(JSON.parse(read('canvas_shards.json')));
-  const fullGolden = r335Extension.projectGolden(JSON.parse(read('cdp_sections.golden.json')));
+  const fullPlan = r335Extension.projectPlan(committedPlan());
+  const fullGolden = r335Extension.projectGolden(committedGolden());
   // Train 3 (#426 + #419 + #420): the real second-shard tail is P353→P420→P1161→P359.
   // The R360/R396 judges below see it with only P420 stripped; R420's judge sees it
   // with only P1161 stripped. train3_canvas_tail.cjs checks the exact tail and counts.

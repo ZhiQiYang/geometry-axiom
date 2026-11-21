@@ -1,5 +1,13 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 2026-11-15 R12／Q38j(a/b/c) App 接線（ChatGPT 實作候選）
+
+- 固定基底 `11eddfdb4d7b1f76aedfe001e084a3840790bedc`。承接 issue #43 的既定 Q38j 契約，補齊 plan 明選同源已定位拉伸件、獨立 `/3` 材料包、一般 App 預覽／取消／確認、完整 `/20` 保存重開及 F1b 整筆採用現行來源；沿既有 native 斷面指令與 R39，不新增幾何求解器。逐檔／函式、DOM、資料與操作路徑見 [Q38J-APP.md](geometry-web/docs/Q38J-APP.md)。
+- **具體減項／合併（GEO-219）**：原角材「核對角材尺寸與世界高度」獨立 disclosure 改為共用「一併納入」中的普通清單；拉伸件與角材共用一個 disclosure。原 `#smShowTimbers` 改文案「角材與拉伸件」並承接兩類，沒有新增 visibility 開關。F1b 原角材 disclosure 合併為兩類材料的明選內容，沿原模型修改入口及 preview／confirm／cancel，不加全域按鈕或全域常駐說明區。
+- 保存保留 `/1`–`/19` 與 `/19` room-candidate／bay-repeat／panel-fill 各自守門。K3 covered roots 的延續證明保持，profile-run 只加內容追溯，延續未知；不放寬固定材料版本／來源關聯、faces 或原生能力限制。
+- 範圍外：faces＋profile、即時跟隨 World、依位置推定歸屬、碰撞／貼合／包含、交會扣重疊、斜接或料長續接、R13 reconstruction-data／C／D。公理層不改，原 R12 的規格 L1／斷面工作區 L3 不因 issue 補丁升級；具名實作 PR/head、merge SHA 與實際一般 App 核對分別才是本切片 L2／L3／L4 的依據。
+- 新 `profile-space` 的 source census 為 60；原 Space groups、canvas golden 與分片檔不改。真瀏覽器、完整整合 census、正式 Mutation evidence／衍生檔與 L4 仍待最終具名收據；source 接線或局部綠不冒充完整驗收。
+
 ## 2026-11-15 R17 host／App 第一片（ChatGPT 實作候選）
 
 - 基底為未合併 PR #410 的 `923a36bea12b6ce3b16cc3398143f847fd6e3d84`。接通 D16a／I8／I8a／R6(f) 的字面截面互頂組入口、整組重宣告／刪除、單次確認歷史與完整專案保存；公理層不改。工程／參數尺寸來源仍是後續切片，不凍結成數值冒充已支援。
@@ -391,6 +399,14 @@
 可見 UI 依 [#128 本契約](https://github.com/ZhiQiYang/geometry-axiom/issues/128#issuecomment-6435620807)，以現有面屬性檢查器承接，合併原投影設定入口為「面設定…」，投影與完成面獨立共存；完成面／鋪排共用一份設定、結果及確認列。減項為原入口與重複屬性／確認區合併，常駐說明最多三塊，不新增全域 PF 按鈕。來源準備須明示獨立確認。先完成 PF1–3＋PF-H 的可見流程、正式保存、回執、完整性與 #347 同源整合驗收，再依 PF-6 → PF-4 → PF-5 逐片擴充；每片均附資料流、實際 bridge／擬介面與撤入口接線必紅驗收。採納前維持未定，不先實作成既成事實。
 
 PF-6 依現行 D45／R45 包含固定外環邊材、邊界主支與板縫主副支，明選集合在同一候選全量驗證並一次提交；舊 Q45／Q46 原文保留，連至已採納修訂。PF-2／PF-3 原生交付不等於可見結果或正式保存流程完成。
+
+#### GEO-255／PF-4A 更新（2026-11-15，實作候選，未升級需求層級）
+
+基準 main `11eddfdb4d7b1f76aedfe001e084a3840790bedc` 已含 #355 UI-1 與 #380 C0 from-fill。依本次任務重切工程相依：先交「既有正式 fill／真宿主上的 live 主格 App 建立及來源修改閉環」，再交 PF-6 的無提交 builder／明選集合與外層組合、PF-4B D29 值快照、PF-5 空間整合。這是對上列歷史 PF-6 → PF-4 → PF-5 次序的明示調整；既有 live 底座已可獨立驗收，不改 SSOT、UI 方向 A 或 R03 產品須待 PF 前置的守門。
+
+- **拿掉／合併（GEO-219）**：主格控制併入現有宿主設定，取代整片 PF-4 不可用的舊說明；有主格時以既有來源摘要取代建立勾選。共用原預覽／確認／取消列及原生影響區，不另設頂層入口或第四塊常駐操作說明。
+- **範圍**：create-only 原生操作由 W 判同來源／偏好與容量，H 解碼並固定正式 before 宿主，bridge 仍走原 batch 與完整世界重驗。PF-6 wrapper 的 tempKey／idMap、無 token 的 action NO_OP 與組合 append 不在此片；沿已採入 UI-1 協議的 native NO_OP 不改 revision／history。PF-4B、PF-5、PF-6 仍未交付，`complete:false` 保留。
+- **驗收與層級**：見 `geometry-core/panel-fill/PF4A-NATIVE.md` 與 issue #128 交付原件。只有實作補丁及定向收據不能升 L2；有實作 PR 後為 L2，進 main 後 L3，同源 App 一般入口實跑後才是本片 L4。既有 R02 L4 範圍不回退，也不擴大。
 
 ### GEO-256 — Q38 斷面拉伸剩餘切片（2026-10-15，Q38j 條文／相容性已落地；新產品切片未完成）
 
