@@ -68,6 +68,10 @@ def make_fixture(root, destination):
     paths.update(run_all.REQUIRED_OWNER_GATES)
     paths.update(run_all.REQUIRED_BROWSER_GATES)
     paths.update('tests/' + stem + '.py' for stem in run_all.PY_BROWSER_GATES)
+    # main #438: the R03 workspace source's original stdout/receipt/child files
+    # stay at their tests/ paths and are re-validated on every registry read.
+    paths.update(path.relative_to(root).as_posix()
+                 for path in (root / 'tests/native_shard_evidence').rglob('*') if path.is_file())
     for rel in sorted(paths):
         target = destination / rel
         target.parent.mkdir(parents=True, exist_ok=True)
