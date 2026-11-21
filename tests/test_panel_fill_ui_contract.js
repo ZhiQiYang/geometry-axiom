@@ -118,7 +118,9 @@ test('UI04 native host and timber impact is visible with exact before/after and 
   const html=W._test.impact({before,after,changes:[{record:'derived-placement',id:0,change:'modified'}],dependencies});
   assert.match(html,/data-pf-impact/);assert.match(html,/派生宿主 #0・定義修改/);assert.match(html,/既有角材/);assert.match(html,/#7/);
   assert.match(html,/data-pf-impact-before/);assert.match(html,/data-pf-impact-after/);assert.match(html,/data-pf-dependencies-before/);assert.match(html,/data-pf-dependencies-after/);
-  assert.match(html,/39/);assert.match(html,/40/);assert.match(html,/&quot;h&quot;:30/);assert.match(html,/&quot;h&quot;:31/);
+  assert.match(html,/39/);assert.match(html,/40/);
+  const native=key=>JSON.parse(html.match(new RegExp('<pre data-pf-impact-'+key+'>([\\s\\S]*?)<\\/pre>'))[1].replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&'));
+  assert.deepEqual(native('before'),before);assert.deepEqual(native('after'),after);
 });
 test('UI04 host preview cannot confirm when native downstream before/after is missing',async()=>{
   const {c,A,state}=populated();state.derivedPlacements.push({id:0,definition:{id:0,fillId:1,h:30},derived:{h:'30',frame:{origin:['0','0','39'],U:'+X',V:'+Y',N:'+Z'},components:[]}});
