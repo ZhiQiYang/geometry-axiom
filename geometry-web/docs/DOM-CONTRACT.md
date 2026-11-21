@@ -1078,6 +1078,7 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `.ew-nav [data-ew-section]` 切換套用、材料、做法與工程包；`#ewPreview` 建立核心候選，`#ewReviewed` 核對完整影響，`#ewConfirm` 確認单次交易。`#ewCancelPreview` 保留表單但取消候選。
 - GEO-218 統一由 `#projectBar [data-project-action="save"]` 的原使用者手勢直接呼叫完整專案保存；未發布表單經 ReferenceWorkspace 草稿 API 保存，與原生 World 分開。單純表單輸入不造成核心 undo 步驟。
 - 已有來源的網格用 `.engineering-grid-details` 顯示有效值；角材 `#tbSelected` 改由工程入口編輯來源，避免舊表單的刪除／重宣告把來源換成字面量。`references.engineeringSources` 為唯一綁定判準。
+- 本面覆寫欄先顯示未提交的明示草稿；沒有該欄草稿且保留覆寫時，從最新原生 application 顯示 literal 數值、spec 名稱或材料版本身分。顯示不建立草稿、不展平材料來源；首次實際改值才建立同欄 mode/value。確認後、關閉重開與新瀏覽器 profile 開檔都須反映目前覆寫；未編輯預覽仍為零項變更。獨立 `d09_override_display_browser.cjs` 核 390／1400 px、取消零寫入、一次確認／復原／重做及真保存開檔；既有 P69 另加強兩個原斷言，計數不變。
 - `#guide-editor` 保留 LOCAL 引用式；DATUM 只能從共用基準管理器修改。`.reference-impact [data-impact-guide]` 顯示全部可見段前後端點；忙碌中的 I8a 確認／取消仍允許真指標操作。
 - `engineering_workflow_test.js` 與 `project_audit_test.js` 使用正式畫布及 native bridge 驗證；模擬視窗不代替實體觸控驗證。
 
