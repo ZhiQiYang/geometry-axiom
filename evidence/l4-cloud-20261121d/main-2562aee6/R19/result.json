@@ -1,0 +1,1111 @@
+{
+  "main": "2562aee65c9f21a9ffdfd684100102d764bc2eb4",
+  "viewport": [
+    1400,
+    900
+  ],
+  "steps": [
+    {
+      "action": "開啟獨立 App 的一般物件畫布，核對起始場景",
+      "screenshot": "01-initial.png",
+      "sha256": "ee21e8cbab67bdce6e9eaf89a243e6805e3f0abf39dabc064eff3346a501fcbd",
+      "state": {
+        "projectLabel": "未命名專案.gcanvas\n尚未保存\n保存",
+        "spaceIds": [],
+        "columns": [],
+        "focus": null,
+        "outer": null,
+        "projection": [],
+        "faceTimbers": [],
+        "feedback": "",
+        "surfaceIds": [
+          1
+        ],
+        "selectedInputs": []
+      }
+    },
+    {
+      "action": "建立物件 → 知道尺寸 → 六面盒，輸入寬深 1000、高 2500、含地板",
+      "screenshot": "02-room-input.png",
+      "sha256": "ab32fe99886be31987e92559baf0dc5dfcc256a0feda83b52feb7cbff8a55c20",
+      "state": {
+        "projectLabel": "未命名專案.gcanvas\n尚未保存\n保存",
+        "spaceIds": [],
+        "columns": [],
+        "focus": null,
+        "outer": null,
+        "projection": [],
+        "faceTimbers": [],
+        "feedback": "",
+        "surfaceIds": [
+          1
+        ],
+        "selectedInputs": []
+      }
+    },
+    {
+      "action": "建立六面盒空間",
+      "screenshot": "03-room-created.png",
+      "sha256": "ae5992bcbec7048f04c8cf3dc429d3dd9368dc912d3601217510f14776b3ad6e",
+      "state": {
+        "projectLabel": "未命名專案.gcanvas\n有未保存的變更\n保存",
+        "spaceIds": [
+          1
+        ],
+        "columns": [],
+        "focus": null,
+        "outer": null,
+        "projection": [],
+        "faceTimbers": [],
+        "feedback": "",
+        "surfaceIds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "selectedInputs": []
+      }
+    },
+    {
+      "action": "建立物件 → 柱，輸入足跡、連結空間",
+      "screenshot": "04-column-input.png",
+      "sha256": "ad07f95b628191cad5dc301a4a4a9ce9c246a0eee6b8941a84c53cacffecc649",
+      "state": {
+        "projectLabel": "未命名專案.gcanvas\n有未保存的變更\n保存",
+        "spaceIds": [
+          1
+        ],
+        "columns": [],
+        "focus": null,
+        "outer": null,
+        "projection": [],
+        "faceTimbers": [],
+        "feedback": "",
+        "surfaceIds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "selectedInputs": []
+      }
+    },
+    {
+      "action": "建立空間所屬 RC 柱，足跡 500×13 mm，緊貼右下角的兩面牆",
+      "screenshot": "05-column-created.png",
+      "sha256": "4dd9a361212f411814ead7da486d8dfb62588937dc2b1050625623c90536a285",
+      "state": {
+        "projectLabel": "未命名專案.gcanvas\n有未保存的變更\n保存",
+        "spaceIds": [
+          1
+        ],
+        "columns": [
+          {
+            "kind": "column",
+            "id": 1,
+            "space": 1,
+            "box": [
+              500,
+              0,
+              0,
+              1000,
+              13,
+              2500
+            ],
+            "cx": -715,
+            "cy": -160,
+            "hasPos": true
+          }
+        ],
+        "focus": null,
+        "outer": null,
+        "projection": [],
+        "faceTimbers": [],
+        "feedback": "六面盒空間 1（6 面含地板）",
+        "surfaceIds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "selectedInputs": []
+      }
+    },
+    {
+      "action": "連按兩下天花邊界，進入面內工作區",
+      "screenshot": "06-ceiling.png",
+      "sha256": "94489049c1823f7750af935ed377f57856fbd087f7e047b32e5ec2655a790f6d",
+      "state": {
+        "projectLabel": "有未保存的變更\n保存",
+        "spaceIds": [
+          1
+        ],
+        "columns": [
+          {
+            "kind": "column",
+            "id": 1,
+            "space": 1,
+            "box": [
+              500,
+              0,
+              0,
+              1000,
+              13,
+              2500
+            ],
+            "cx": -715,
+            "cy": -160,
+            "hasPos": true
+          }
+        ],
+        "focus": 2,
+        "outer": [
+          [
+            0,
+            0
+          ],
+          [
+            1000,
+            0
+          ],
+          [
+            1000,
+            1000
+          ],
+          [
+            0,
+            1000
+          ]
+        ],
+        "projection": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "corner",
+            "rect": [
+              500,
+              0,
+              1000,
+              13
+            ]
+          }
+        ],
+        "faceTimbers": [],
+        "form": "",
+        "feedback": "",
+        "surfaceIds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "selectedInputs": []
+      }
+    },
+    {
+      "action": "形狀 → 查看柱投影的切角分類",
+      "screenshot": "07-column-projection.png",
+      "sha256": "511594f924c0f120366de95cfde9d80c9d2b28ca101e04d324286118a82f5842",
+      "state": {
+        "projectLabel": "有未保存的變更\n保存",
+        "spaceIds": [
+          1
+        ],
+        "columns": [
+          {
+            "kind": "column",
+            "id": 1,
+            "space": 1,
+            "box": [
+              500,
+              0,
+              0,
+              1000,
+              13,
+              2500
+            ],
+            "cx": -715,
+            "cy": -160,
+            "hasPos": true
+          }
+        ],
+        "focus": 2,
+        "outer": [
+          [
+            0,
+            0
+          ],
+          [
+            1000,
+            0
+          ],
+          [
+            1000,
+            1000
+          ],
+          [
+            0,
+            1000
+          ]
+        ],
+        "projection": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "corner",
+            "rect": [
+              500,
+              0,
+              1000,
+              13
+            ]
+          }
+        ],
+        "faceTimbers": [],
+        "form": "",
+        "feedback": "",
+        "surfaceIds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "selectedInputs": []
+      }
+    },
+    {
+      "action": "套用柱投影，確認角落的六頂點外環",
+      "screenshot": "08-column-cut.png",
+      "sha256": "6c99a84011e690d985b054b47751734b18f99e258518142ecf01b31ea7bb9077",
+      "state": {
+        "projectLabel": "有未保存的變更\n保存",
+        "spaceIds": [
+          1
+        ],
+        "columns": [
+          {
+            "kind": "column",
+            "id": 1,
+            "space": 1,
+            "box": [
+              500,
+              0,
+              0,
+              1000,
+              13,
+              2500
+            ],
+            "cx": -715,
+            "cy": -160,
+            "hasPos": true
+          }
+        ],
+        "focus": 2,
+        "outer": [
+          [
+            1000,
+            1000
+          ],
+          [
+            0,
+            1000
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            500,
+            0
+          ],
+          [
+            500,
+            13
+          ],
+          [
+            1000,
+            13
+          ]
+        ],
+        "projection": [],
+        "faceTimbers": [],
+        "form": "",
+        "feedback": "apply-proj 2 c1",
+        "surfaceIds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "selectedInputs": []
+      }
+    },
+    {
+      "action": "構件 → 角材 → 兩支互頂壁邊材，選低邊及高邊，各 A27 B20，+u、+n",
+      "screenshot": "09-pair-input.png",
+      "sha256": "60845599961b18ee665ab8aef11d0ef24b211f6ff52f8c91b12f07a321eda929",
+      "state": {
+        "projectLabel": "有未保存的變更\n保存",
+        "spaceIds": [
+          1
+        ],
+        "columns": [
+          {
+            "kind": "column",
+            "id": 1,
+            "space": 1,
+            "box": [
+              500,
+              0,
+              0,
+              1000,
+              13,
+              2500
+            ],
+            "cx": -715,
+            "cy": -160,
+            "hasPos": true
+          }
+        ],
+        "focus": 2,
+        "outer": [
+          [
+            1000,
+            1000
+          ],
+          [
+            0,
+            1000
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            500,
+            0
+          ],
+          [
+            500,
+            13
+          ],
+          [
+            1000,
+            13
+          ]
+        ],
+        "projection": [],
+        "faceTimbers": [],
+        "form": "新增兩支互頂壁邊材\n\n依序選兩條固定外邊與截面；兩支沿各自整條邊放置。先預覽兩支與下游，確認才整筆套用。\n\n壁邊材 1\n固定外邊\n請選一條固定外邊\n外邊 e0 · 沿 u\n外邊 e1 · 沿 v\n外邊 e2 · 沿 u\n外邊 e3 · 沿 v\n外邊 e4 · 沿 u\n外邊 e5 · 沿 v\n寬 A（沿面）\n厚 B（出面）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n點畫布選第 1 條邊\n壁邊材 2\n固定外邊\n請選一條固定外邊\n外邊 e0 · 沿 u\n外邊 e1 · 沿 v\n外邊 e2 · 沿 u\n外邊 e3 · 沿 v\n外邊 e4 · 沿 u\n外邊 e5 · 沿 v\n寬 A（沿面）\n厚 B（出面）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n點畫布選第 2 條邊\n\n輸入尚未保存；預覽確認後才寫入場景。\n\n預覽兩支互頂\n取消互頂輸入",
+        "feedback": "",
+        "surfaceIds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "selectedInputs": [
+          [
+            "tbPair1Anchor",
+            "e2"
+          ],
+          [
+            "tbPair1A",
+            "27"
+          ],
+          [
+            "tbPair1B",
+            "20"
+          ],
+          [
+            "tbPair1Dir",
+            "+u"
+          ],
+          [
+            "tbPair1Side",
+            "+n"
+          ],
+          [
+            "tbPair2Anchor",
+            "e4"
+          ],
+          [
+            "tbPair2A",
+            "27"
+          ],
+          [
+            "tbPair2B",
+            "20"
+          ],
+          [
+            "tbPair2Dir",
+            "+u"
+          ],
+          [
+            "tbPair2Side",
+            "+n"
+          ]
+        ]
+      }
+    },
+    {
+      "action": "預覽兩支互頂，核對接觸與長度",
+      "screenshot": "10-preview.png",
+      "sha256": "e91deb34d77e535c110dbd9e314f418498e4cc01ddc88084b6dcf4ae6b48e0cb",
+      "state": {
+        "projectLabel": "有未保存的變更\n保存",
+        "spaceIds": [
+          1
+        ],
+        "columns": [
+          {
+            "kind": "column",
+            "id": 1,
+            "space": 1,
+            "box": [
+              500,
+              0,
+              0,
+              1000,
+              13,
+              2500
+            ],
+            "cx": -715,
+            "cy": -160,
+            "hasPos": true
+          }
+        ],
+        "focus": 2,
+        "outer": [
+          [
+            1000,
+            1000
+          ],
+          [
+            0,
+            1000
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            500,
+            0
+          ],
+          [
+            500,
+            13
+          ],
+          [
+            1000,
+            13
+          ]
+        ],
+        "projection": [],
+        "faceTimbers": [],
+        "dialog": "確認連動變更\n\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n\nboundary-pair begin 4 5 timber 4 27 20 role boundary timber 5 27 20 role boundary place 4 on 2 at-face e2 +u +n place 5 on 2 at-face e4 +u +n boundary-pair end\n互頂組與下游的完整影響\n互頂組 4＋5 · 新增\n\n角材 4 原：不存在\n\n角材 4 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 2；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n\n角材 5 原：不存在\n\n角材 5 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e4；承載面 2；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n\n原中央接觸：無接觸記錄\n新中央接觸：角材 4 END ↔ 角材 5 START；平面 500；實際接觸 [13,27] mm\n角材 4 · 組員\n\n原：不存在\n\n新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 2；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n\n原端面接觸：無接觸記錄\n新端面接觸：START @ 0；外輪廓邊 e1；實際接觸 [0,27] mm；FIXED\n新端面接觸：END @ 500；外輪廓邊 e3；實際接觸 [0,13] mm；FIXED\n新端面接觸：END @ 500；角材 5；實際接觸 [13,27] mm\n完整來源定義\n角材 5 · 組員\n\n原：不存在\n\n新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e4；承載面 2；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n\n原端面接觸：無接觸記錄\n新端面接觸：START @ 500；角材 4；實際接觸 [13,27] mm\n新端面接觸：END @ 1000；外輪廓邊 e5；實際接觸 [13,40] mm；FIXED\n完整來源定義\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n1／面 1 · 身分保留\t13 → 13\t4000 → 4000\t保持原狀\n2／面 1 · 身分保留\t2986 → 2986\t4000 → 4000\t保持原狀\n3／面 1 · 身分保留\t500 → 500\t2946 → 2946\t保持原狀\n4／面 2 · 新增身分\t尚未存在 → 13\t尚未存在 → 500\t不存在 → [0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n5／面 2 · 新增身分\t尚未存在 → 26\t尚未存在 → 500\t不存在 → [500, 13, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n取消，保留原狀\n確認套用",
+        "form": "新增兩支互頂壁邊材\n\n依序選兩條固定外邊與截面；兩支沿各自整條邊放置。先預覽兩支與下游，確認才整筆套用。\n\n壁邊材 1\n固定外邊\n請選一條固定外邊\n外邊 e0 · 沿 u\n外邊 e1 · 沿 v\n外邊 e2 · 沿 u\n外邊 e3 · 沿 v\n外邊 e4 · 沿 u\n外邊 e5 · 沿 v\n寬 A（沿面）\n厚 B（出面）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n點畫布選第 1 條邊\n壁邊材 2\n固定外邊\n請選一條固定外邊\n外邊 e0 · 沿 u\n外邊 e1 · 沿 v\n外邊 e2 · 沿 u\n外邊 e3 · 沿 v\n外邊 e4 · 沿 u\n外邊 e5 · 沿 v\n寬 A（沿面）\n厚 B（出面）\n延伸方向\n沿輪廓圖向右\n沿輪廓圖向左\n沿輪廓圖向下\n沿輪廓圖向上\n厚度朝\n朝上（+Z，+n）\n朝下（−Z，−n）\n點畫布選第 2 條邊\n\n輸入尚未保存；預覽確認後才寫入場景。\n\n預覽兩支互頂\n取消互頂輸入",
+        "feedback": "",
+        "surfaceIds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "selectedInputs": [
+          [
+            "tbPair1Anchor",
+            "e2"
+          ],
+          [
+            "tbPair1A",
+            "27"
+          ],
+          [
+            "tbPair1B",
+            "20"
+          ],
+          [
+            "tbPair1Dir",
+            "+u"
+          ],
+          [
+            "tbPair1Side",
+            "+n"
+          ],
+          [
+            "tbPair2Anchor",
+            "e4"
+          ],
+          [
+            "tbPair2A",
+            "27"
+          ],
+          [
+            "tbPair2B",
+            "20"
+          ],
+          [
+            "tbPair2Dir",
+            "+u"
+          ],
+          [
+            "tbPair2Side",
+            "+n"
+          ]
+        ]
+      }
+    },
+    {
+      "action": "確認套用，核對兩支壁邊材同時存在",
+      "screenshot": "11-placed.png",
+      "sha256": "d7f01e1a77a9f21ca55de815416549779a980b2007d49c7f795113c7ddf8c8eb",
+      "state": {
+        "projectLabel": "有未保存的變更\n保存",
+        "spaceIds": [
+          1
+        ],
+        "columns": [
+          {
+            "kind": "column",
+            "id": 1,
+            "space": 1,
+            "box": [
+              500,
+              0,
+              0,
+              1000,
+              13,
+              2500
+            ],
+            "cx": -715,
+            "cy": -160,
+            "hasPos": true
+          }
+        ],
+        "focus": 2,
+        "outer": [
+          [
+            1000,
+            1000
+          ],
+          [
+            0,
+            1000
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            500,
+            0
+          ],
+          [
+            500,
+            13
+          ],
+          [
+            1000,
+            13
+          ]
+        ],
+        "projection": [],
+        "faceTimbers": [
+          {
+            "id": 4,
+            "role": "boundary",
+            "definition": {
+              "anchor": "at-face e2",
+              "selector": "",
+              "priority": 1
+            },
+            "surface": 2,
+            "centerline": 13,
+            "length": 500,
+            "u": 0,
+            "v": 0,
+            "dir": "+u",
+            "side": "+n",
+            "A": 27,
+            "B": 20,
+            "origin": [
+              0,
+              0,
+              2500
+            ],
+            "axes": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ],
+            "L": 500,
+            "engineeringSources": []
+          },
+          {
+            "id": 5,
+            "role": "boundary",
+            "definition": {
+              "anchor": "at-face e4",
+              "selector": "",
+              "priority": 1
+            },
+            "surface": 2,
+            "centerline": 26,
+            "length": 500,
+            "u": 500,
+            "v": 13,
+            "dir": "+u",
+            "side": "+n",
+            "A": 27,
+            "B": 20,
+            "origin": [
+              500,
+              13,
+              2500
+            ],
+            "axes": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ],
+            "L": 500,
+            "engineeringSources": []
+          }
+        ],
+        "form": "",
+        "feedback": "互頂組已整筆套用，可一步復原。",
+        "surfaceIds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "selectedInputs": []
+      }
+    },
+    {
+      "action": "按 Ctrl+Z 一次，兩支同時移除",
+      "screenshot": "12-undone.png",
+      "sha256": "cd865d96d5b4ee67316bb3f1b129b6df50dc4e9cf45c00127edf42d109731861",
+      "state": {
+        "projectLabel": "有未保存的變更\n保存",
+        "spaceIds": [
+          1
+        ],
+        "columns": [
+          {
+            "kind": "column",
+            "id": 1,
+            "space": 1,
+            "box": [
+              500,
+              0,
+              0,
+              1000,
+              13,
+              2500
+            ],
+            "cx": -715,
+            "cy": -160,
+            "hasPos": true
+          }
+        ],
+        "focus": 2,
+        "outer": [
+          [
+            1000,
+            1000
+          ],
+          [
+            0,
+            1000
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            500,
+            0
+          ],
+          [
+            500,
+            13
+          ],
+          [
+            1000,
+            13
+          ]
+        ],
+        "projection": [],
+        "faceTimbers": [],
+        "form": "",
+        "feedback": "互頂組已整筆套用，可一步復原。\n已復原",
+        "surfaceIds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "selectedInputs": []
+      }
+    },
+    {
+      "action": "按 Ctrl+Y 一次，兩支同時回復",
+      "screenshot": "13-redone.png",
+      "sha256": "39edf06e0782cc509030d526b6ee02e417c879d33094e011003d85054b103cbe",
+      "state": {
+        "projectLabel": "有未保存的變更\n保存",
+        "spaceIds": [
+          1
+        ],
+        "columns": [
+          {
+            "kind": "column",
+            "id": 1,
+            "space": 1,
+            "box": [
+              500,
+              0,
+              0,
+              1000,
+              13,
+              2500
+            ],
+            "cx": -715,
+            "cy": -160,
+            "hasPos": true
+          }
+        ],
+        "focus": 2,
+        "outer": [
+          [
+            1000,
+            1000
+          ],
+          [
+            0,
+            1000
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            500,
+            0
+          ],
+          [
+            500,
+            13
+          ],
+          [
+            1000,
+            13
+          ]
+        ],
+        "projection": [],
+        "faceTimbers": [
+          {
+            "id": 4,
+            "role": "boundary",
+            "definition": {
+              "anchor": "at-face e2",
+              "selector": "",
+              "priority": 1
+            },
+            "surface": 2,
+            "centerline": 13,
+            "length": 500,
+            "u": 0,
+            "v": 0,
+            "dir": "+u",
+            "side": "+n",
+            "A": 27,
+            "B": 20,
+            "origin": [
+              0,
+              0,
+              2500
+            ],
+            "axes": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ],
+            "L": 500,
+            "engineeringSources": []
+          },
+          {
+            "id": 5,
+            "role": "boundary",
+            "definition": {
+              "anchor": "at-face e4",
+              "selector": "",
+              "priority": 1
+            },
+            "surface": 2,
+            "centerline": 26,
+            "length": 500,
+            "u": 500,
+            "v": 13,
+            "dir": "+u",
+            "side": "+n",
+            "A": 27,
+            "B": 20,
+            "origin": [
+              500,
+              13,
+              2500
+            ],
+            "axes": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ],
+            "L": 500,
+            "engineeringSources": []
+          }
+        ],
+        "form": "",
+        "feedback": "互頂組已整筆套用，可一步復原。\n已復原\n已重做",
+        "surfaceIds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "selectedInputs": []
+      }
+    }
+  ],
+  "observed": [
+    {
+      "preview": {
+        "ok": true,
+        "valid": true,
+        "groups": [
+          {
+            "first": 4,
+            "second": 5,
+            "capability": "boundary-pair/1",
+            "change": "created",
+            "before": null,
+            "after": {
+              "members": [
+                {
+                  "id": 4,
+                  "role": "boundary",
+                  "A": 27,
+                  "B": 20,
+                  "source": {
+                    "surface": 2,
+                    "kind": "at-face",
+                    "edge": "e2",
+                    "dir": "+u",
+                    "side": "+n"
+                  },
+                  "order": 4,
+                  "interval": [
+                    0,
+                    500
+                  ],
+                  "cross": [
+                    0,
+                    27
+                  ],
+                  "geometry": {
+                    "surface": 2,
+                    "centerline": 13,
+                    "length": 500,
+                    "u": 0,
+                    "v": 0,
+                    "dir": "+u",
+                    "side": "+n",
+                    "A": 27,
+                    "B": 20,
+                    "origin": [
+                      0,
+                      0,
+                      2500
+                    ],
+                    "axes": [
+                      [
+                        1,
+                        0,
+                        0
+                      ],
+                      [
+                        0,
+                        1,
+                        0
+                      ],
+                      [
+                        0,
+                        0,
+                        1
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "id": 5,
+                  "role": "boundary",
+                  "A": 27,
+                  "B": 20,
+                  "source": {
+                    "surface": 2,
+                    "kind": "at-face",
+                    "edge": "e4",
+                    "dir": "+u",
+                    "side": "+n"
+                  },
+                  "order": 4,
+                  "interval": [
+                    500,
+                    1000
+                  ],
+                  "cross": [
+                    13,
+                    40
+                  ],
+                  "geometry": {
+                    "surface": 2,
+                    "centerline": 26,
+                    "length": 500,
+                    "u": 500,
+                    "v": 13,
+                    "dir": "+u",
+                    "side": "+n",
+                    "A": 27,
+                    "B": 20,
+                    "origin": [
+                      500,
+                      13,
+                      2500
+                    ],
+                    "axes": [
+                      [
+                        1,
+                        0,
+                        0
+                      ],
+                      [
+                        0,
+                        1,
+                        0
+                      ],
+                      [
+                        0,
+                        0,
+                        1
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "contacts": [
+                {
+                  "member": 4,
+                  "end": "END",
+                  "peer": 5,
+                  "peerEnd": "START",
+                  "plane": 500,
+                  "contact": [
+                    13,
+                    27
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "passed": true
+}

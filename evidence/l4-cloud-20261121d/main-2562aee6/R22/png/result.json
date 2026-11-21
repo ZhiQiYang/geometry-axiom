@@ -1,0 +1,2092 @@
+{
+  "scope": "png",
+  "main": "2562aee65c9f21a9ffdfd684100102d764bc2eb4",
+  "app": "http://127.0.0.1:18851",
+  "node": "v24.15.0",
+  "started": "2026-11-21T04:28:16.512Z",
+  "input": {
+    "name": "connected.png",
+    "sha256": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c"
+  },
+  "steps": [
+    {
+      "action": "#fileMenuBtn",
+      "file": "01-file.jpg",
+      "sha256": "a80bfc63a51d4a4ece5d39ebff8d1bb415f8d39aafc23b49fdf6a9242a1cde6a",
+      "state": {
+        "faceId": 1,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": "#exampleMenuBtn",
+      "file": "02-examples.jpg",
+      "sha256": "e789915c4f4b81a73ad5929e69955b29f632168210f8b201e12eff5748ed8cea",
+      "state": {
+        "faceId": 1,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": "#btnEx",
+      "file": "03-load-example.jpg",
+      "sha256": "361824359a4dce8cac75d52473921a847d386a18772e0247ad4997b6e4a1974e",
+      "state": {
+        "faceId": 1,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": ".ocard[data-kind=\"boundary\"][data-id=\"1\"]",
+      "file": "04-face-card.jpg",
+      "sha256": "f9d92cd9b2e5755f926b5caebbd20df8483b548c94d8c1c966751a26dd563786",
+      "state": {
+        "faceId": 1,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": ".ocard[data-kind=\"boundary\"][data-id=\"1\"] .card-enter",
+      "file": "05-enter-face.jpg",
+      "sha256": "9438421878f4010b634044d7cdff328bc49a4acec845d7d060908fdbe39cdfed",
+      "state": {
+        "faceId": 1,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": "[data-fi-tab=\"underlay\"]",
+      "file": "06-underlay.jpg",
+      "sha256": "1a4638534ad5fcd1dd4bbba0d986a34d71e270223c34b92c054de236447741f9",
+      "state": {
+        "faceId": 1,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": "按「匯入 PDF／圖片」，於檔案選擇器以鍵盤選取磁碟原件",
+      "file": "07-import.jpg",
+      "sha256": "7b69db6b79a42732351ab6f8dd8178fab19acaca6a9ed24f1b09f49ecc0be5e9",
+      "state": {
+        "faceId": 1,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": "目標選「建立描繪用面」",
+      "file": "08-new-tracing-face.jpg",
+      "sha256": "230d45767b0635ab27cb23464f7a0c6cc68d5499fbb28f34b73a70d84d3a556a",
+      "state": {
+        "faceId": 1,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": "#refApply",
+      "file": "09-attach.jpg",
+      "sha256": "64e8e292ffed344a13aeffd0c926e8bef5cd3628011cbd5f0cbe52831498ac6a",
+      "state": {
+        "faceId": 1,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": "核對參考頁與目前面",
+      "file": "10-attached.jpg",
+      "sha256": "5c1b4daa9c8d136635d7d0c4ac07ab6848d579b599a87505760036aed01582d2",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 14.285714285714286,
+          "calibration": null
+        },
+        "candidate": null,
+        "status": "",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "#ulCalibStart",
+      "file": "11-calibrate-start.jpg",
+      "sha256": "2ace0cda02136ba9278662f83739e939885a29ea654a4f5a47391032ead82980",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 14.285714285714286,
+          "calibration": null
+        },
+        "candidate": null,
+        "status": "",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "校準點 A (30,30)",
+      "file": "12-calibrate-a.jpg",
+      "sha256": "085fa571e57960af2797caf6916ba4d2e91cf0fda0596b287a7631f3f5d92f8a",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 14.285714285714286,
+          "calibration": null
+        },
+        "candidate": null,
+        "status": "",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "校準點 B (230,30)",
+      "file": "13-calibrate-b.jpg",
+      "sha256": "536574c96085a68e09816718142344985bb7c740dda96701afa7ee755f075892",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 14.285714285714286,
+          "calibration": null
+        },
+        "candidate": null,
+        "status": "",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "輸入已知距離 2000 mm",
+      "file": "14-calibrate-length.jpg",
+      "sha256": "71a97a62071c46c6128c9b62fac8b9f8f931039627742c85433312dfe0de719c",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 14.285714285714286,
+          "calibration": null
+        },
+        "candidate": null,
+        "status": "",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "#ulCalibApply",
+      "file": "15-calibrate-apply.jpg",
+      "sha256": "11dacd0c83d4ee468e36656d887d771be97c2000d68ff1d77555ddabc2843983",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "搜尋來源取景範圍，不受既有外環裁切。選房間取得候選，核對後替換目前面的外環；也可選人工描繪。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "#refFit",
+      "file": "16-fit.jpg",
+      "sha256": "3a32f67f87f5231eb1ad0be6d55dc46940e48de283a9dbf51cfea0481ce2fe06",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "搜尋來源取景範圍，不受既有外環裁切。選房間取得候選，核對後替換目前面的外環；也可選人工描繪。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "#refRoomPick",
+      "file": "17-choose-room.jpg",
+      "sha256": "bd31b2e4771a0a8043ae742c997f864ad5b87a913e9449c4d2b63d3f2b4e4116",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "點房間內空白處，或拖框限縮來源取景內的搜尋範圍；不受既有外環裁切，框選不會建立矩形。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "點房間內 (70,70)",
+      "file": "18-pick-candidate.jpg",
+      "sha256": "eaa781b5f47039587ed0ba9e9fed0a924d14ec78df39b991fb5b3b404afb689b",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "image-lines",
+          "sourcePoints": [
+            [
+              228,
+              90
+            ],
+            [
+              232,
+              90
+            ],
+            [
+              232,
+              72
+            ],
+            [
+              268,
+              72
+            ],
+            [
+              268,
+              148
+            ],
+            [
+              232,
+              148
+            ],
+            [
+              232,
+              110
+            ],
+            [
+              228,
+              110
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ],
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ]
+          ],
+          "points": [
+            [
+              2280,
+              900
+            ],
+            [
+              2320,
+              900
+            ],
+            [
+              2320,
+              720
+            ],
+            [
+              2680,
+              720
+            ],
+            [
+              2680,
+              1480
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              2320,
+              1100
+            ],
+            [
+              2280,
+              1100
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ],
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ]
+          ],
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "warnings": [
+            "影像暗線不是精確量測；薄線、文字與弧線可能被排除，需逐邊核對室內淨範圍。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": false
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · 影像暗線內緣推估\n\n確認將替換目前面 #2 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n影像暗線不是精確量測；薄線、文字與弧線可能被排除，需逐邊核對室內淨範圍。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 40 mm\n邊 2：擬提交 180 mm\n邊 3：擬提交 360 mm\n邊 4：擬提交 760 mm\n邊 5：擬提交 360 mm\n邊 6：擬提交 380 mm\n邊 7：擬提交 40 mm\n邊 8：擬提交 380 mm\n邊 9：擬提交 1960 mm\n邊 10：擬提交 1160 mm\n邊 11：擬提交 1960 mm\n邊 12：擬提交 580 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": true
+      }
+    },
+    {
+      "action": "#refRoomVertical",
+      "file": "19-vertical.jpg",
+      "sha256": "c1886b7cba28a6c51759f51cc53caa12d400d817327d6b03d1ad68309c0673fc",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "依兩端明確畫出垂直分隔；不會寫入正式面。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "從 (230,70) 拖至 (230,150)，畫出門洞分隔",
+      "file": "20-barrier.jpg",
+      "sha256": "955aeb3e455d4a27cad9177580ed466b2d5691f1426999a35e495527f34064bd",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已加入人工分隔（僅供候選搜尋）；再點目標房間重取候選。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "#refRoomPick",
+      "file": "21-choose-room.jpg",
+      "sha256": "0383897ae3da1533de689b269a0862b152a5a83decf8fb24f908c717933c5b16",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "點房間內空白處，或拖框限縮來源取景內的搜尋範圍；不受既有外環裁切，框選不會建立矩形。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "點房間內 (70,70)",
+      "file": "22-pick-candidate.jpg",
+      "sha256": "5a0b4b17aff15cd6523ba01b2e76a156403168bc2bc1dc7eb4d14d6b6f585a1b",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "image-lines",
+          "sourcePoints": [
+            [
+              228,
+              90
+            ],
+            [
+              229.99899010240708,
+              90
+            ],
+            [
+              229.99899010240708,
+              110
+            ],
+            [
+              228,
+              110
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ],
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ]
+          ],
+          "points": [
+            [
+              2280,
+              900
+            ],
+            [
+              2300,
+              900
+            ],
+            [
+              2300,
+              1100
+            ],
+            [
+              2280,
+              1100
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ],
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ]
+          ],
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "warnings": [
+            "影像暗線不是精確量測；薄線、文字與弧線可能被排除，需逐邊核對室內淨範圍。",
+            "使用人工分隔，請核對門洞與相鄰房間的連通關係；分隔不代表實際牆體。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": false
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · 影像暗線內緣推估\n\n確認將替換目前面 #2 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0106 mm。圖上標註尺寸不會自動入值。\n\n影像暗線不是精確量測；薄線、文字與弧線可能被排除，需逐邊核對室內淨範圍。\n使用人工分隔，請核對門洞與相鄰房間的連通關係；分隔不代表實際牆體。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 20 mm\n邊 2：擬提交 200 mm\n邊 3：擬提交 20 mm\n邊 4：擬提交 380 mm\n邊 5：擬提交 1960 mm\n邊 6：擬提交 1160 mm\n邊 7：擬提交 1960 mm\n邊 8：擬提交 580 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": true
+      }
+    },
+    {
+      "action": "#refRoomReviewed",
+      "file": "23-review.jpg",
+      "sha256": "604660a762894719fc1f6c2775656ab8d383998eb3990649d47d04a431f101a9",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "image-lines",
+          "sourcePoints": [
+            [
+              228,
+              90
+            ],
+            [
+              229.99899010240708,
+              90
+            ],
+            [
+              229.99899010240708,
+              110
+            ],
+            [
+              228,
+              110
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ],
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ]
+          ],
+          "points": [
+            [
+              2280,
+              900
+            ],
+            [
+              2300,
+              900
+            ],
+            [
+              2300,
+              1100
+            ],
+            [
+              2280,
+              1100
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ],
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ]
+          ],
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "warnings": [
+            "影像暗線不是精確量測；薄線、文字與弧線可能被排除，需逐邊核對室內淨範圍。",
+            "使用人工分隔，請核對門洞與相鄰房間的連通關係；分隔不代表實際牆體。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": true
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · 影像暗線內緣推估\n\n確認將替換目前面 #2 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0106 mm。圖上標註尺寸不會自動入值。\n\n影像暗線不是精確量測；薄線、文字與弧線可能被排除，需逐邊核對室內淨範圍。\n使用人工分隔，請核對門洞與相鄰房間的連通關係；分隔不代表實際牆體。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 20 mm\n邊 2：擬提交 200 mm\n邊 3：擬提交 20 mm\n邊 4：擬提交 380 mm\n邊 5：擬提交 1960 mm\n邊 6：擬提交 1160 mm\n邊 7：擬提交 1960 mm\n邊 8：擬提交 580 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false
+      }
+    },
+    {
+      "action": "#refRoomConfirm",
+      "file": "24-confirm.jpg",
+      "sha256": "ac0bfdb5e074a96a46d4e3a88df2beed34a54ef2162b493357d25738f09e1c83",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "image-lines",
+          "sourcePoints": [
+            [
+              228,
+              90
+            ],
+            [
+              229.99899010240708,
+              90
+            ],
+            [
+              229.99899010240708,
+              110
+            ],
+            [
+              228,
+              110
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ],
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ]
+          ],
+          "points": [
+            [
+              2280,
+              900
+            ],
+            [
+              2300,
+              900
+            ],
+            [
+              2300,
+              1100
+            ],
+            [
+              2280,
+              1100
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ],
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ]
+          ],
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "warnings": [
+            "影像暗線不是精確量測；薄線、文字與弧線可能被排除，需逐邊核對室內淨範圍。",
+            "使用人工分隔，請核對門洞與相鄰房間的連通關係；分隔不代表實際牆體。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": true
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · 影像暗線內緣推估\n\n確認將替換目前面 #2 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0106 mm。圖上標註尺寸不會自動入值。\n\n影像暗線不是精確量測；薄線、文字與弧線可能被排除，需逐邊核對室內淨範圍。\n使用人工分隔，請核對門洞與相鄰房間的連通關係；分隔不代表實際牆體。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 20 mm\n邊 2：擬提交 200 mm\n邊 3：擬提交 20 mm\n邊 4：擬提交 380 mm\n邊 5：擬提交 1960 mm\n邊 6：擬提交 1160 mm\n邊 7：擬提交 1960 mm\n邊 8：擬提交 580 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false
+      }
+    },
+    {
+      "action": "確認正式外環與核對狀態",
+      "file": "25-confirmed.jpg",
+      "sha256": "f895cfd1108e9c8a39f5284509e27163e9f5ac75bd1a992548ae5ed7a567372f",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            2280,
+            900
+          ],
+          [
+            2300,
+            900
+          ],
+          [
+            2300,
+            1100
+          ],
+          [
+            2280,
+            1100
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ],
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed"
+      }
+    },
+    {
+      "action": "#faceUndoButton",
+      "file": "26-undo.jpg",
+      "sha256": "f895cfd1108e9c8a39f5284509e27163e9f5ac75bd1a992548ae5ed7a567372f",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            2280,
+            900
+          ],
+          [
+            2300,
+            900
+          ],
+          [
+            2300,
+            1100
+          ],
+          [
+            2280,
+            1100
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ],
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed"
+      }
+    },
+    {
+      "action": "復原後核對原外環",
+      "file": "27-undo-result.jpg",
+      "sha256": "839f18d2eee7aec4305f5bf1e9528b20d35a1d102872eb9418af89c73b13d3a4",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "#faceRedoButton",
+      "file": "28-redo.jpg",
+      "sha256": "0cd9bcf01e609e918348729110ab5aa167af17ed8d4e0f6f275c082f7986cfec",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "重做後核對正式外環",
+      "file": "29-redo-result.jpg",
+      "sha256": "02b0948e0df086e2643f1427cb0d0a123a0aa7104d284e90ffd1940915208854",
+      "state": {
+        "faceId": 2,
+        "outline": [
+          [
+            2280,
+            900
+          ],
+          [
+            2300,
+            900
+          ],
+          [
+            2300,
+            1100
+          ],
+          [
+            2280,
+            1100
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ],
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ]
+        ],
+        "source": {
+          "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000003299197626
+              ],
+              [
+                230.00003629117398,
+                30.000003299197626
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed"
+      }
+    }
+  ],
+  "assertions": [
+    {
+      "label": "獨立頁籤以範例原外環起步，無先前底圖或候選",
+      "pass": true,
+      "actual": {
+        "faceId": 1,
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "label": "PNG 選取獨立新描繪面",
+      "pass": true,
+      "actual": "new"
+    },
+    {
+      "label": "校準前不能選房間",
+      "pass": true,
+      "actual": {
+        "sourceId": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c",
+        "page": 1,
+        "crop": [
+          0,
+          0,
+          280,
+          190
+        ],
+        "mmPerPx": 14.285714285714286,
+        "calibration": null
+      }
+    },
+    {
+      "label": "200 頁面單位約為 2000 mm",
+      "pass": true,
+      "actual": 9.999998020481812
+    },
+    {
+      "label": "PNG 暗線初取包含相鄰兩房",
+      "pass": true,
+      "actual": {
+        "method": "image-lines",
+        "sourcePoints": [
+          [
+            228,
+            90
+          ],
+          [
+            232,
+            90
+          ],
+          [
+            232,
+            72
+          ],
+          [
+            268,
+            72
+          ],
+          [
+            268,
+            148
+          ],
+          [
+            232,
+            148
+          ],
+          [
+            232,
+            110
+          ],
+          [
+            228,
+            110
+          ],
+          [
+            228,
+            148
+          ],
+          [
+            32,
+            148
+          ],
+          [
+            32,
+            32
+          ],
+          [
+            228,
+            32
+          ]
+        ],
+        "points": [
+          [
+            2280,
+            900
+          ],
+          [
+            2320,
+            900
+          ],
+          [
+            2320,
+            720
+          ],
+          [
+            2680,
+            720
+          ],
+          [
+            2680,
+            1480
+          ],
+          [
+            2320,
+            1480
+          ],
+          [
+            2320,
+            1100
+          ],
+          [
+            2280,
+            1100
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ],
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ]
+        ],
+        "crop": [
+          0,
+          0,
+          280,
+          190
+        ],
+        "warnings": [
+          "影像暗線不是精確量測；薄線、文字與弧線可能被排除，需逐邊核對室內淨範圍。",
+          "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+        ],
+        "dimensions": [],
+        "reviewed": false
+      }
+    },
+    {
+      "label": "分隔只影響搜尋",
+      "pass": true,
+      "actual": "已加入人工分隔（僅供候選搜尋）；再點目標房間重取候選。"
+    },
+    {
+      "label": "分隔後只取主房且提醒人工核對",
+      "pass": true,
+      "actual": {
+        "method": "image-lines",
+        "sourcePoints": [
+          [
+            228,
+            90
+          ],
+          [
+            229.99899010240708,
+            90
+          ],
+          [
+            229.99899010240708,
+            110
+          ],
+          [
+            228,
+            110
+          ],
+          [
+            228,
+            148
+          ],
+          [
+            32,
+            148
+          ],
+          [
+            32,
+            32
+          ],
+          [
+            228,
+            32
+          ]
+        ],
+        "points": [
+          [
+            2280,
+            900
+          ],
+          [
+            2300,
+            900
+          ],
+          [
+            2300,
+            1100
+          ],
+          [
+            2280,
+            1100
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ],
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ]
+        ],
+        "crop": [
+          0,
+          0,
+          280,
+          190
+        ],
+        "warnings": [
+          "影像暗線不是精確量測；薄線、文字與弧線可能被排除，需逐邊核對室內淨範圍。",
+          "使用人工分隔，請核對門洞與相鄰房間的連通關係；分隔不代表實際牆體。",
+          "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+        ],
+        "dimensions": [],
+        "reviewed": false
+      }
+    },
+    {
+      "label": "正式外環逐頂點等於候選",
+      "pass": true,
+      "actual": [
+        [
+          2280,
+          900
+        ],
+        [
+          2300,
+          900
+        ],
+        [
+          2300,
+          1100
+        ],
+        [
+          2280,
+          1100
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ],
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ]
+      ]
+    },
+    {
+      "label": "復原還原原外環",
+      "pass": true,
+      "actual": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ]
+    },
+    {
+      "label": "重做恢復候選",
+      "pass": true,
+      "actual": [
+        [
+          2280,
+          900
+        ],
+        [
+          2300,
+          900
+        ],
+        [
+          2300,
+          1100
+        ],
+        [
+          2280,
+          1100
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ],
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ]
+      ]
+    }
+  ],
+  "chromium": "157.0.8103.79",
+  "result": "pass",
+  "finished": "2026-11-21T04:28:35.962Z"
+}
