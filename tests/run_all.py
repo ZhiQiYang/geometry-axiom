@@ -658,19 +658,29 @@ def check_registry(*, allow_pending=False):
         registered_js = (set(NODE_TEST_FILES) | {NODE_SCRIPT_FILE} | set(NODE_DOCUMENT_SCRIPT_FILES.values()) |
                          set(NODE_PURE_TEST_FILES.values()) | set(NODE_MODEL_TEST_FILES.values()) |
                          set(NODE_NATIVE_TEST_FILES.values()))
+    fragments = native_registry.active(ROOT)
+    # After migration the tables above are an inert bootstrap snapshot: point
+    # agents at the real source instead of back to PY_NEEDS / NODE_* tables.
+    new_suite_hint = ('沒有登記在 tests/suites.d（用 `python3 tests/native_registry.py --init-suite '
+                      '<名稱> --kind <unittest|node-test|python-script|node-script> --file <檔>` 新增片段，'
+                      '詳見 tests/FRAGMENTED-REGISTRIES.md；改 run_all.py 的舊表沒有作用）')
     disk_py = {p.stem for p in HERE.glob('test_*.py')}
     for stem in sorted(disk_py - registered_py - set(PY_BROWSER_GATES)):
-        problems.append('tests/%s.py 沒有登記在 run_all.py 的 PY_NEEDS（沒有二進位需求也要明確登記成 []）；未登記的檔不會被跑' % stem)
+        problems.append('tests/%s.py %s；未登記的檔不會被跑' % (stem, new_suite_hint) if fragments else
+                        'tests/%s.py 沒有登記在 run_all.py 的 PY_NEEDS（沒有二進位需求也要明確登記成 []）；未登記的檔不會被跑' % stem)
     # Registry files that are runner entrypoints, rather than test_*.py suites,
     # are checked by load_registry's file existence guard.
     for stem in sorted(({s for s in registered_py if s.startswith('test_')} | set(PY_BROWSER_GATES)) - disk_py):
-        problems.append('PY_NEEDS 登記了 %s，但 tests/%s.py 不存在' % (stem, stem))
+        problems.append(('tests/suites.d 登記了 %s，但 tests/%s.py 不存在' if fragments else
+                         'PY_NEEDS 登記了 %s，但 tests/%s.py 不存在') % (stem, stem))
     disk_js = {'tests/' + p.name for pattern in ('*.js', '*.cjs', '*.mjs') for p in HERE.glob(pattern)}
     known = registered_js | set(NODE_EXCLUDED)
     for rel in sorted(disk_js - known):
-        problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_PURE_TEST_FILES／NODE_MODEL_TEST_FILES／NODE_NATIVE_TEST_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
+        problems.append('%s %s；未登記的檔不會被跑' % (rel, new_suite_hint) if fragments else
+                        '%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_PURE_TEST_FILES／NODE_MODEL_TEST_FILES／NODE_NATIVE_TEST_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
     for rel in sorted(known - disk_js):
-        problems.append('run_all.py 登記了 %s，但該檔不存在' % rel)
+        problems.append(('%s 登記在 tests/suites.d 或 run_all.py 的 NODE_EXCLUDED，但該檔不存在' if fragments else
+                         'run_all.py 登記了 %s，但該檔不存在') % rel)
     for rel in REQUIRED_OWNER_GATES:
         if not (ROOT / rel).is_file():
             problems.append('必要正式整合驗證入口不存在：%s' % rel)

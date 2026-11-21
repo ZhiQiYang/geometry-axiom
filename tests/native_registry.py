@@ -26,6 +26,19 @@ SUITES = Path('tests/suites.d')
 COSTS = Path('tests/native-costs.d')
 SOURCES = Path('tests/registry-evidence/native')
 LEGACY = Path('tests/registry-evidence/native-legacy.json')
+# Review 7056059753 problem A: every pre-migration suite's execution declaration
+# (kind, cmd, files, expected mode/count/unit, needs, timeout, env, label, order)
+# is sealed here. It is never appended to; first adoption is re-derived from the
+# trusted base's original run_all.py tables, later bases compare Git bytes.
+EXECUTION_CATALOG = Path('tests/registry-evidence/native-legacy-execution.json')
+EXECUTION_SCHEMA = 'geometry-native-legacy-execution/1'
+# A reviewed, per-suite contract amendment is the only way an existing suite's
+# declaration may change. It may not change kind/cmd/files/env/order/mode/unit.
+AMENDMENTS = Path('tests/registry-evidence/native-amendments')
+AMENDMENT_SCHEMA = 'geometry-native-legacy-amendment/1'
+DECLARATION_FIELDS = ('order', 'execution', 'files', 'expected')
+BUILTIN_KINDS = {'c:integrity': 'integrity', 'core:run_tests': 'run_tests', 'mutation:check': 'mutation-check'}
+MUTATION_CHECK_CMD = ['{python}', '{root}/tests/mutate.py', '--check']
 MARKER = Path('tests/registry-layout.json')
 SCHEMA = 'geometry-native-suite/1'
 COST_SCHEMA = 'geometry-native-cost/1'
@@ -69,9 +82,9 @@ def active(root):
     root = Path(root)
     if (root / 'tests/.registry-migration-pending').exists():
         raise ValueError('R386_INTERRUPTED_MIGRATION: recover the pending transaction first')
-    for relative in (MARKER, SUITES, COSTS, SOURCES, LEGACY):
+    for relative in (MARKER, SUITES, COSTS, SOURCES, LEGACY, EXECUTION_CATALOG, AMENDMENTS):
         _safe_path(root, root / relative)
-    return any((root / p).exists() for p in (MARKER, SUITES, COSTS, SOURCES, LEGACY))
+    return any((root / p).exists() for p in (MARKER, SUITES, COSTS, SOURCES, LEGACY, EXECUTION_CATALOG))
 
 
 def _read(path):
@@ -150,6 +163,8 @@ def load_registry(root, *, allow_pending=False):
     paths = _paths(root, SUITES)
     if not paths:
         raise ValueError('R386_NATIVE_SUITE_FRAGMENTS_REQUIRED')
+    sealed = _execution_catalog(root)['suites']
+    amendments = _amendments(root, sealed)
     records, names, orders, owners = [], set(), set(), {}
     for path in paths:
         row = _read(path)
@@ -199,12 +214,171 @@ def load_registry(root, *, allow_pending=False):
                    and row['expected'] == {'mode': 'pending-ci-census'})
         if not pending and not _expected(row['expected'], execution['kind']):
             raise ValueError('R386_NATIVE_EXACT_EXPECTED: ' + name)
+        _check_sealed_declaration(row, sealed, amendments)
+        _check_execution_binding(row)
         names.add(name)
         orders.add(order)
         records.append(row)
     if not BUILTINS <= names:
         raise ValueError('R386_NATIVE_BUILTIN_COVERAGE: ' + repr(sorted(BUILTINS - names)))
+    if not sealed.keys() <= names:
+        # Retiring an existing suite is not a silent data edit either.
+        raise ValueError('R386_NATIVE_LEGACY_EXECUTION_PIN: sealed suites missing (COVERAGE) %r'
+                         % sorted(sealed.keys() - names))
     return sorted(records, key=lambda row: (row['order'], row['name']))
+
+
+def declaration(row):
+    return {field: row[field] for field in DECLARATION_FIELDS}
+
+
+def declaration_sha256(value):
+    return _sha(canonical_bytes(value))
+
+
+def _check_sealed_declaration(row, sealed, amendments):
+    name = row['name']
+    if name not in sealed:
+        if not row['order'].startswith('new/'):
+            raise ValueError('R386_NATIVE_LEGACY_EXECUTION_PIN: %s claims a legacy order but is not sealed' % name)
+        return
+    wanted = amendments[name]['after'] if name in amendments else sealed[name]
+    if declaration(row) != wanted:
+        changed = sorted(field for field in DECLARATION_FIELDS if row[field] != wanted[field])
+        raise ValueError('R386_NATIVE_LEGACY_EXECUTION_PIN: %s differs from its sealed%s declaration in %s; '
+                         'an existing suite changes only through `native_registry.py --amend-suite`'
+                         % (name, ' amended' if name in amendments else '', ','.join(changed)))
+
+
+def _check_execution_binding(row):
+    """Every kind must execute the file it claims; new suites get no free-form cmd."""
+    name, execution, files = row['name'], row['execution'], row['files']
+    kind, cmd = execution['kind'], execution['cmd']
+    node = kind.startswith('node-')
+    ok = (name.startswith('py:') == (kind == 'unittest')
+          and name.startswith('node:') == node
+          and (not node or execution['needs_node'] is True)
+          and (BUILTIN_KINDS.get(name, kind) == kind)
+          and (kind not in BUILTIN_KINDS.values() or BUILTIN_KINDS.get(name) == kind))
+    if kind == 'python-script':
+        ok = ok and len(files) == 1 and cmd[:2] == ['{python}', '{root}/' + files[0]]
+    elif kind in ('node-script', 'node-canvas'):
+        ok = ok and len(files) == 1 and cmd[0] == files[0]
+    elif kind == 'mutation-check':
+        ok = ok and cmd == MUTATION_CHECK_CMD and files == ['tests/mutate.py']
+    elif kind in ('integrity', 'run_tests'):
+        ok = ok and cmd is None
+    if not ok:
+        raise ValueError('R386_NATIVE_EXECUTION_FILE_BINDING: ' + name)
+
+
+def _declaration_shape(value):
+    return (type(value) is dict and set(value) == set(DECLARATION_FIELDS)
+            and type(value['order']) is str and type(value['execution']) is dict
+            and type(value['files']) is list and type(value['expected']) is dict)
+
+
+def _execution_catalog(root):
+    root = Path(root)
+    path = root / EXECUTION_CATALOG
+    _safe_path(root, path)
+    if not path.is_file():
+        raise ValueError('R386_NATIVE_LEGACY_EXECUTION_CATALOG_REQUIRED: ' + EXECUTION_CATALOG.as_posix())
+    catalog = _read(path)
+    if (type(catalog) is not dict or set(catalog) != {'schema', 'base_sha', 'suites'}
+            or catalog['schema'] != EXECUTION_SCHEMA
+            or not re.fullmatch(r'[a-f0-9]{40}', str(catalog['base_sha']))
+            or type(catalog['suites']) is not dict or not catalog['suites']
+            or any(not _declaration_shape(v) or not re.fullmatch(r'legacy/[0-9]{6}', v['order'])
+                   for v in catalog['suites'].values())
+            or len({v['order'] for v in catalog['suites'].values()}) != len(catalog['suites'])
+            or canonical_bytes(catalog) != path.read_bytes()):
+        raise ValueError('R386_NATIVE_LEGACY_EXECUTION_CATALOG_SHAPE')
+    for name in catalog['suites']:
+        key(name)
+    return catalog
+
+
+def amendment_allowed(before, after):
+    """Fields a reviewed amendment may change; everything that decides *what runs* is frozen."""
+    problems = []
+    if before == after:
+        problems.append('no-op')
+    if not _declaration_shape(after):
+        return ['shape']
+    for field in ('order', 'files'):
+        if before[field] != after[field]:
+            problems.append(field)
+    b, a = before['execution'], after['execution']
+    if set(b) != set(a):
+        problems.append('execution')
+    else:
+        for field in sorted(set(b) - {'needs', 'timeout', 'label'}):
+            if b[field] != a[field]:
+                problems.append('execution.' + field)
+        if type(a['needs']) is not list or not set(b['needs']) <= set(a['needs']):
+            problems.append('execution.needs (may only add)')
+    eb, ea = before['expected'], after['expected']
+    if set(eb) != set(ea) or eb.get('mode') != ea.get('mode') or eb.get('unit') != ea.get('unit'):
+        problems.append('expected.mode/unit')
+    return problems
+
+
+def _amendments(root, sealed):
+    root = Path(root)
+    folder = root / AMENDMENTS
+    _safe_path(root, folder)
+    if not folder.exists():
+        return {}
+    result = {}
+    for path in _paths(root, AMENDMENTS):
+        row = _read(path)
+        if (type(row) is not dict or set(row) != {'schema', 'name', 'before_sha256', 'after', 'reason'}
+                or row['schema'] != AMENDMENT_SCHEMA or type(row['name']) is not str
+                or path.name != key(row['name']) + '.json' or row['name'] in result
+                or type(row['reason']) is not str or len(row['reason'].strip()) < 10):
+            raise ValueError('R386_NATIVE_AMENDMENT_SHAPE: ' + str(path))
+        name = row['name']
+        if name not in sealed or row['before_sha256'] != declaration_sha256(sealed[name]):
+            raise ValueError('R386_NATIVE_AMENDMENT_BEFORE_MUST_BE_SEALED: ' + name)
+        problems = amendment_allowed(sealed[name], row['after'])
+        if problems:
+            raise ValueError('R386_NATIVE_AMENDMENT_FIELD: %s %s' % (name, ','.join(problems)))
+        result[name] = row
+    return result
+
+
+def amend_suite(root, *, name, reason):
+    """Record a reviewed change of one existing suite (e.g. a real count increase).
+
+    The fragment is edited first; this writes tests/registry-evidence/
+    native-amendments/<key>.json binding sealed-before -> current-after. The
+    actual count is still enforced by every run; kind/cmd/files cannot change.
+    """
+    root = Path(root)
+    sealed = _execution_catalog(root)['suites']
+    if name not in sealed:
+        raise ValueError('R386_NATIVE_AMEND_EXISTING_SUITE_ONLY: new suites use --init-suite')
+    current = _read(root / SUITES / (key(name) + '.json'))
+    after = declaration(current)
+    problems = amendment_allowed(sealed[name], after)
+    if problems:
+        raise ValueError('R386_NATIVE_AMENDMENT_FIELD: %s %s' % (name, ','.join(problems)))
+    record = {'schema': AMENDMENT_SCHEMA, 'name': name, 'before_sha256': declaration_sha256(sealed[name]),
+              'after': after, 'reason': reason}
+    path = root / AMENDMENTS / (key(name) + '.json')
+    previous = path.read_bytes() if path.exists() else None
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(canonical_bytes(record))
+    try:
+        load_registry(root, allow_pending=True)
+    except Exception:
+        if previous is None:
+            path.unlink()
+        else:
+            path.write_bytes(previous)
+        raise
+    return {'path': path.relative_to(root).as_posix(), 'sha256': _sha(path.read_bytes()), 'acceptance': False}
 
 
 def expected(root, *, allow_pending=False):
@@ -227,7 +401,8 @@ def init_suite(root, *, name, file, kind, needs=()):
     """
     root = Path(root)
     records = load_registry(root, allow_pending=True)
-    if name in {row['name'] for row in records} or kind not in ('unittest', 'node-test'):
+    if (name in {row['name'] for row in records} or name in _execution_catalog(root)['suites']
+            or kind not in ('unittest', 'node-test', 'python-script', 'node-script')):
         raise ValueError('R386_NATIVE_INIT_NEW_COUNTED_SUITE_ONLY')
     if not _relative(file) or not (root / file).is_file() or not file.startswith('tests/'):
         raise ValueError('R386_NATIVE_INIT_FILE_REQUIRED')
@@ -237,14 +412,23 @@ def init_suite(root, *, name, file, kind, needs=()):
         if name != 'py:' + Path(file).stem or not file.endswith('.py'):
             raise ValueError('R386_NATIVE_INIT_PYTHON_IDENTITY')
         cmd, timeout = ['{python}', '{root}/tests/_unittest_runner.py', '{root}/' + file], 1200
+    elif kind == 'python-script':
+        # An exit-code-only script cannot be a py: suite (py: means counted unittest).
+        if name.startswith(('py:', 'node:')) or not file.endswith('.py'):
+            raise ValueError('R386_NATIVE_INIT_SCRIPT_IDENTITY')
+        cmd, timeout = ['{python}', '{root}/' + file], 300
     else:
         if not name.startswith('node:') or Path(file).suffix not in ('.js', '.cjs', '.mjs'):
             raise ValueError('R386_NATIVE_INIT_NODE_IDENTITY')
-        cmd, timeout = ['--test', '--test-reporter=spec', file], 300
+        cmd = ['--test', '--test-reporter=spec', file] if kind == 'node-test' else [file]
+        timeout = 300
+    # Exit-code-only kinds have no count to discover; they still need a real
+    # CI measurement (cost receipt) before formal runs accept them.
+    expected_entry = ({'mode': 'exit-code-only'} if kind in EXIT_ONLY else {'mode': 'pending-ci-census'})
     record = {'schema': SCHEMA, 'name': name, 'order': 'new/' + key(name), 'files': [file],
               'execution': {'kind': kind, 'cmd': cmd, 'needs': list(needs), 'timeout': timeout,
-                            'needs_node': kind == 'node-test', 'extra_env': {}, 'label': file},
-              'expected': {'mode': 'pending-ci-census'}}
+                            'needs_node': kind.startswith('node-'), 'extra_env': {}, 'label': file},
+              'expected': expected_entry}
     path = root / SUITES / (key(name) + '.json')
     if path.exists():
         raise ValueError('R386_NATIVE_INIT_REFUSES_OVERWRITE')
@@ -501,11 +685,92 @@ def _verify_legacy_catalog(root, trusted_ref):
     if before is not None:
         if before != (root / LEGACY).read_bytes():
             raise ValueError('R386_NATIVE_LEGACY_CATALOG_IS_IMMUTABLE')
-        return {'source': 'trusted-base-catalog-blob', 'sha': trusted_ref}
+        return {'source': 'trusted-base-catalog-blob', 'sha': trusted_ref,
+                'execution': verify_legacy_execution(root, trusted_ref)}
     original, _ = _legacy_base_sources(root, trusted_ref)
     if catalog['sources'] != original['sources']:
         raise ValueError('R386_NATIVE_LEGACY_NOT_IN_TRUSTED_BASE')
-    return {'source': 'trusted-base-original-files', 'sha': trusted_ref}
+    return {'source': 'trusted-base-original-files', 'sha': trusted_ref,
+            'execution': verify_legacy_execution(root, trusted_ref)}
+
+
+def verify_legacy_execution(root, trusted_ref):
+    """Authenticate the sealed execution catalog against the trusted base.
+
+    If the base already has the catalog, its Git bytes must be identical
+    (never appended). Otherwise this is first adoption: the base must still be
+    in the pre-migration format, and its own run_all.py/run_all.expected.json
+    are executed in an isolated extract to re-derive every declaration.
+    """
+    root = Path(root)
+    catalog = _execution_catalog(root)
+    if not re.fullmatch(r'[a-f0-9]{40}', trusted_ref or ''):
+        raise ValueError('R386_NATIVE_LEGACY_REQUIRES_EXPLICIT_TRUSTED_BASE')
+    try:
+        before = _git_bytes(root, trusted_ref, EXECUTION_CATALOG.as_posix())
+    except ValueError:
+        before = None
+    if before is not None:
+        if before != (root / EXECUTION_CATALOG).read_bytes():
+            raise ValueError('R386_NATIVE_LEGACY_EXECUTION_CATALOG_IS_IMMUTABLE')
+        return {'source': 'trusted-base-catalog-blob', 'sha': trusted_ref,
+                'suites': len(catalog['suites'])}
+    derived = legacy_execution_from_git(root, trusted_ref, catalog)
+    if derived != catalog['suites']:
+        diff = sorted(n for n in derived.keys() | catalog['suites'].keys()
+                      if derived.get(n) != catalog['suites'].get(n))
+        raise ValueError('R386_NATIVE_LEGACY_EXECUTION_NOT_IN_TRUSTED_BASE: %d differ, first %r'
+                         % (len(diff), diff[:5]))
+    return {'source': 'trusted-base-original-run_all', 'sha': trusted_ref, 'suites': len(derived)}
+
+
+_DERIVED = {}
+
+
+def legacy_execution_from_git(root, sha, hint=None):
+    """Re-run the base's own legacy build_suites()/load_expected() from Git objects.
+
+    Only top-level tests/ files plus paths a declaration mentions are
+    extracted; a path the base references but that is not extracted changes
+    the derived files/cmd and therefore fails closed, never open.
+    """
+    root = Path(root)
+    gitdir = subprocess.run(['git', '-C', str(root), 'rev-parse', '--absolute-git-dir'],
+                            capture_output=True, text=True, timeout=30, check=False).stdout.strip()
+    cache = (gitdir, sha, canonical_bytes(hint) if hint else b'')
+    if cache in _DERIVED:
+        return _DERIVED[cache]
+    listing = subprocess.run(['git', '-C', str(root), 'ls-tree', '-r', '--name-only', '-z', sha],
+                             capture_output=True, timeout=60, check=False)
+    if listing.returncode:
+        raise ValueError('R386_NATIVE_LEGACY_BASE_GIT_TREE_REQUIRED')
+    names = set(listing.stdout.decode('utf-8').split('\0')) - {''}
+    if 'tests/run_all.expected.json' not in names or MARKER.as_posix() in names:
+        raise ValueError('R386_NATIVE_LEGACY_EXECUTION_BASE_FORMAT: base %s is neither sealed nor pre-migration' % sha)
+    wanted = {n for n in names if n.startswith('tests/') and n.count('/') == 1}
+    for entry in (hint or {}).get('suites', {}).values():
+        wanted.update(entry['files'])
+        for arg in entry['execution']['cmd'] or ():
+            wanted.add(arg[len('{root}/'):] if arg.startswith('{root}/') else arg)
+    wanted &= names
+    import tarfile
+    import tempfile
+    with tempfile.TemporaryDirectory(prefix='r386-legacy-execution-') as temporary:
+        base = Path(temporary) / 'base'
+        base.mkdir()
+        archive = subprocess.run(['git', '-C', str(root), 'archive', '--format=tar', sha, '--', *sorted(wanted)],
+                                 capture_output=True, timeout=120, check=False)
+        if archive.returncode:
+            raise ValueError('R386_NATIVE_LEGACY_BASE_ARCHIVE: ' + archive.stderr.decode('utf-8', 'replace')[-500:])
+        with tarfile.open(fileobj=io.BytesIO(archive.stdout)) as bundle:
+            for member in bundle.getmembers():
+                if not (member.isfile() or member.isdir()) or not _relative(member.name):
+                    raise ValueError('R386_NATIVE_LEGACY_BASE_ARCHIVE_MEMBER: ' + member.name)
+            bundle.extractall(base)
+        records = _records_from_export(_legacy_export(base), base.resolve())
+    result = {row['name']: declaration(row) for row in records}
+    _DERIVED[cache] = result
+    return result
 
 
 def _receipt_original(data):
@@ -830,7 +1095,8 @@ def source_digest(root):
     root = Path(root)
     load_registry(root)
     profile = timing_profile(root)
-    paths = sorted([root / LEGACY, *(root / SUITES).glob('*.json'), *(root / COSTS).glob('*.json'),
+    paths = sorted([root / LEGACY, root / EXECUTION_CATALOG, *(root / AMENDMENTS).glob('*.json'),
+                    *(root / SUITES).glob('*.json'), *(root / COSTS).glob('*.json'),
                     *(root / SOURCES / (h + '.json') for h in profile['sources'])])
     digest = hashlib.sha256()
     for path in paths:
@@ -865,6 +1131,37 @@ def _legacy_export(root):
     return json.loads(result.stdout)
 
 
+def _records_from_export(export, root):
+    """Normalize the legacy runner's real Suite objects into fragments (pure)."""
+    root = Path(root)
+    records = []
+    for index, original in enumerate(export['suites']):
+        suite = dict(original)
+        name = suite.pop('name')
+        cmd = suite['cmd']
+        files = []
+        if cmd is not None:
+            normalized = []
+            for arg in cmd:
+                if arg == sys.executable:
+                    normalized.append('{python}')
+                elif arg.startswith(str(root) + '/'):
+                    normalized.append('{root}/' + Path(arg).relative_to(root).as_posix())
+                else:
+                    normalized.append(arg)
+                target = Path(arg) if Path(arg).is_absolute() else root / arg
+                if (target.is_file() and target.suffix in ('.py', '.js', '.cjs', '.mjs')
+                        and target.is_relative_to(root) and target.name != '_unittest_runner.py'):
+                    files.append(target.relative_to(root).as_posix())
+            suite['cmd'] = normalized
+        if not files:
+            files = [suite['label'].split()[0]]
+        records.append({'schema': SCHEMA, 'name': name, 'order': 'legacy/%06d' % index,
+                        'execution': suite, 'files': sorted(set(files)),
+                        'expected': export['expected']['suites'][name]})
+    return records
+
+
 def migrate(root, out_root, *, base_sha=None):
     """Copy canonical fragments and byte-identical evidence; never edit root.
 
@@ -876,10 +1173,11 @@ def migrate(root, out_root, *, base_sha=None):
     if active(root):
         load_registry(root)
         timing_profile(root)
-        for folder in (SUITES, COSTS, SOURCES):
+        for folder in (SUITES, COSTS, SOURCES) + ((AMENDMENTS,) if (root / AMENDMENTS).exists() else ()):
             for path in _paths(root, folder):
                 payloads[path.relative_to(root).as_posix()] = path.read_bytes()
         payloads[LEGACY.as_posix()] = (root / LEGACY).read_bytes()
+        payloads[EXECUTION_CATALOG.as_posix()] = (root / EXECUTION_CATALOG).read_bytes()
     else:
         # Do not let the legacy reader silently accept duplicate JSON keys.
         _read(root / 'tests/run_all.expected.json')
@@ -902,28 +1200,12 @@ def migrate(root, out_root, *, base_sha=None):
         if cost_sources.keys() != expected_entries.keys():
             raise ValueError('R386_NATIVE_MIGRATION_REAL_COST_COVERAGE: missing=%r extra=%r' %
                 (sorted(expected_entries.keys() - cost_sources.keys()), sorted(cost_sources.keys() - expected_entries.keys())))
-        for index, suite in enumerate(suites):
-            name = suite.pop('name')
-            cmd = suite['cmd']
-            files = []
-            if cmd is not None:
-                normalized = []
-                for arg in cmd:
-                    if arg == sys.executable:
-                        normalized.append('{python}')
-                    elif arg.startswith(str(root) + '/'):
-                        normalized.append('{root}/' + Path(arg).relative_to(root).as_posix())
-                    else:
-                        normalized.append(arg)
-                    target = Path(arg) if Path(arg).is_absolute() else root / arg
-                    if (target.is_file() and target.suffix in ('.py', '.js', '.cjs', '.mjs')
-                            and target.is_relative_to(root) and target.name != '_unittest_runner.py'):
-                        files.append(target.relative_to(root).as_posix())
-                suite['cmd'] = normalized
-            if not files:
-                files = [suite['label'].split()[0]]
-            record = {'schema': SCHEMA, 'name': name, 'order': 'legacy/%06d' % index,
-                      'execution': suite, 'files': sorted(set(files)), 'expected': expected_entries[name]}
+        records = _records_from_export(export, root)
+        payloads[EXECUTION_CATALOG.as_posix()] = canonical_bytes({
+            'schema': EXECUTION_SCHEMA, 'base_sha': base_sha,
+            'suites': {record['name']: declaration(record) for record in records}})
+        for record in records:
+            name = record['name']
             payloads[(SUITES / (key(name) + '.json')).as_posix()] = canonical_bytes(record)
             kind, digest = cost_sources[name]
             cost = {'schema': COST_SCHEMA, 'name': name, 'kind': kind, 'source_sha256': digest}
@@ -943,10 +1225,13 @@ def main():
     parser.add_argument('--out', type=Path)
     action = parser.add_mutually_exclusive_group()
     action.add_argument('--init-suite', metavar='NAME')
+    action.add_argument('--amend-suite', metavar='NAME',
+                        help='after editing an EXISTING suite fragment, record the reviewed amendment')
     action.add_argument('--import-suite', metavar='NAME')
     action.add_argument('--verify-ci', action='store_true')
     parser.add_argument('--file')
-    parser.add_argument('--kind', choices=('unittest', 'node-test'))
+    parser.add_argument('--kind', choices=('unittest', 'node-test', 'python-script', 'node-script'))
+    parser.add_argument('--reason', help='--amend-suite: why the existing contract legitimately changed')
     parser.add_argument('--needs', action='append', default=[])
     parser.add_argument('--run-id', type=int)
     parser.add_argument('--job-id', type=int)
@@ -960,6 +1245,10 @@ def main():
         if not args.file or not args.kind:
             parser.error('--init-suite requires --file and --kind')
         result = init_suite(args.root, name=args.init_suite, file=args.file, kind=args.kind, needs=args.needs)
+    elif args.amend_suite:
+        if not args.reason:
+            parser.error('--amend-suite requires --reason')
+        result = amend_suite(args.root, name=args.amend_suite, reason=args.reason)
     elif args.verify_ci:
         result = {'ci_source_verification': verify_ci_sources(args.root, trusted_ref=args.trusted_base)}
     else:

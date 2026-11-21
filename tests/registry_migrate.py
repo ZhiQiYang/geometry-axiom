@@ -29,8 +29,11 @@ SCHEMA = 'geometry-test-registry-migration/1'
 PENDING = 'tests/.registry-migration-pending'
 ARCHITECTURE = 'geometry-core/domain-decoupling/product-architecture.json'
 NATIVE_CATALOG = 'tests/registry-evidence/native-legacy.json'
+# Sealed pre-migration execution declarations (review 7056059753 problem A).
+NATIVE_EXECUTION_CATALOG = 'tests/registry-evidence/native-legacy-execution.json'
 FRAGMENT_ROOTS = (
     'tests/suites.d', 'tests/native-costs.d', 'tests/registry-evidence/native',
+    'tests/registry-evidence/native-amendments',
     'geometry-web/cdp_sections.d', 'geometry-web/canvas-registry',
     'geometry-core/domain-decoupling/product-architecture.d',
 )
@@ -151,6 +154,7 @@ def source_paths(root):
         'geometry-web/canvas_shards.json', 'geometry-web/cdp_sections.golden.json',
         'geometry-web/canvas_shards.js', 'geometry-web/cdp_test.js',
         'geometry-core/card-reference/run_mutations.py', MARKER, NATIVE_CATALOG,
+        NATIVE_EXECUTION_CATALOG,
     }
     names.update(p.relative_to(root).as_posix()
                  for pattern in ('native_shard_added_evidence*.json', 'native_shard_added_receipts*.json')
@@ -238,7 +242,7 @@ def make_plan(root, base_sha):
                 continue
             rel = path.relative_to(stage).as_posix()
             require(any(rel.startswith(directory + '/') for directory in FRAGMENT_ROOTS)
-                    or rel in (ARCHITECTURE, NATIVE_CATALOG),
+                    or rel in (ARCHITECTURE, NATIVE_CATALOG, NATIVE_EXECUTION_CATALOG),
                     'R386_COMPONENT_OUTPUT_OUTSIDE_REGISTRY: ' + rel)
             raw = path.read_bytes()
             if path.suffix == '.json':
@@ -488,7 +492,7 @@ def check(root, trusted=None):
 
 def self_test(root):
     commands = (
-        ([sys.executable, '-B', 'tests/diagnostics/native_registry_contract_check.py'], 18),
+        ([sys.executable, '-B', 'tests/diagnostics/native_registry_contract_check.py'], 21),
         (['node', '--test', '--test-reporter=tap', 'tests/diagnostics/canvas_registry_contract_check.cjs'], 1),
         ([sys.executable, '-B', 'tests/diagnostics/architecture_registry_contract_check.py'], 35),
         ([sys.executable, '-B', 'tests/diagnostics/registry_migration_contract_check.py'], 19),

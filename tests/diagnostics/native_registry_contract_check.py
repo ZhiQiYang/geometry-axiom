@@ -37,7 +37,8 @@ WITHDRAWALS = ('R386_NATIVE_DROP_FRAGMENT', 'R386_NATIVE_COUNT_MISMATCH',
                # data-only edits that must not silently weaken a legacy suite.
                'R386_NATIVE_E5_UNITTEST_TO_EMPTY_SCRIPT', 'R386_NATIVE_E4_NODE_SCRIPT_EMPTY_CMD',
                'R386_NATIVE_NODE_TEST_TO_EXIT_ONLY', 'R386_NATIVE_SCRIPT_EXTRA_ARGS',
-               'R386_NATIVE_LEGACY_ORDER_ESCAPE')
+               'R386_NATIVE_LEGACY_ORDER_ESCAPE', 'R386_NATIVE_SEALED_CATALOG_REWRITE',
+               'R386_NATIVE_AMENDMENT_LEGALIZES_EMPTY_RUN')
 # A named withdrawal is only "red" when it fails at its designated assertion;
 # a different failure exits 3 so 0/1/0 cannot be produced by an unrelated error.
 WITHDRAWAL_MARKERS = {
@@ -46,7 +47,16 @@ WITHDRAWAL_MARKERS = {
     'R386_NATIVE_NODE_TEST_TO_EXIT_ONLY': 'R386_NATIVE_LEGACY_EXECUTION_PIN',
     'R386_NATIVE_SCRIPT_EXTRA_ARGS': 'R386_NATIVE_LEGACY_EXECUTION_PIN',
     'R386_NATIVE_LEGACY_ORDER_ESCAPE': 'R386_NATIVE_LEGACY_EXECUTION_PIN',
+    # Rewriting the sealed catalog together with the fragment only fails
+    # against the trusted base's original run_all.py tables.
+    'R386_NATIVE_SEALED_CATALOG_REWRITE': 'R386_NATIVE_LEGACY_EXECUTION_NOT_IN_TRUSTED_BASE',
+    # The amendment door must not reopen the hole it replaces.
+    'R386_NATIVE_AMENDMENT_LEGALIZES_EMPTY_RUN': 'R386_NATIVE_AMENDMENT_FIELD',
 }
+
+
+def amend(root, name, reason='fixture: reviewed legitimate change of an existing suite'):
+    return registry.amend_suite(root, name=name, reason=reason)
 
 
 def make_fixture(root, destination):
@@ -97,6 +107,9 @@ def withdraw(root, name):
         row = json.loads(path.read_bytes())
         row['expected']['count'] += 1
         path.write_bytes(registry.canonical_bytes(row))
+        # Even a reviewed amendment of the count is still checked against the
+        # real run by the original runner guard; it is not a way to set counts.
+        amend(root, 'py:test_unittest_runner')
     elif name == 'R386_NATIVE_COST_WITHOUT_RECEIPT':
         path = root / registry.COSTS / 'py__test_unittest_runner.json'
         row = json.loads(path.read_bytes())
@@ -105,7 +118,8 @@ def withdraw(root, name):
     elif name == 'R386_NATIVE_STALE_SUITE_SOURCE':
         path = root / 'tests/test_r386_ci_fixture.py'
         path.write_bytes(path.read_bytes() + b'# changed after real named observation\n')
-    elif name in ('R386_NATIVE_E5_UNITTEST_TO_EMPTY_SCRIPT', 'R386_NATIVE_LEGACY_ORDER_ESCAPE'):
+    elif name in ('R386_NATIVE_E5_UNITTEST_TO_EMPTY_SCRIPT', 'R386_NATIVE_LEGACY_ORDER_ESCAPE',
+                  'R386_NATIVE_AMENDMENT_LEGALIZES_EMPTY_RUN'):
         # Review E5 verbatim: 53 real tests become `python -c pass`.
         path = root / registry.SUITES / 'py__test_serve.json'
         row = json.loads(path.read_bytes())
@@ -116,20 +130,35 @@ def withdraw(root, name):
             # Same empty run, relabelled as a "new" suite to dodge a legacy-only pin.
             row['order'] = 'new/py__test_serve'
         path.write_bytes(registry.canonical_bytes(row))
+        if name == 'R386_NATIVE_AMENDMENT_LEGALIZES_EMPTY_RUN':
+            sealed = json.loads((root / registry.EXECUTION_CATALOG).read_bytes())['suites']['py:test_serve']
+            folder = root / registry.AMENDMENTS
+            folder.mkdir(parents=True, exist_ok=True)
+            (folder / 'py__test_serve.json').write_bytes(registry.canonical_bytes({
+                'schema': registry.AMENDMENT_SCHEMA, 'name': 'py:test_serve',
+                'before_sha256': registry.declaration_sha256(sealed),
+                'after': registry.declaration(row), 'reason': 'hand-written amendment hiding an empty run'}))
     elif name == 'R386_NATIVE_E4_NODE_SCRIPT_EMPTY_CMD':
         # Review E4 verbatim: the node script no longer runs its file.
         path = root / registry.SUITES / 'node__document_format.json'
         row = json.loads(path.read_bytes())
         row['execution']['cmd'] = ['-e', '0']
         path.write_bytes(registry.canonical_bytes(row))
-    elif name == 'R386_NATIVE_NODE_TEST_TO_EXIT_ONLY':
+    elif name in ('R386_NATIVE_NODE_TEST_TO_EXIT_ONLY', 'R386_NATIVE_SEALED_CATALOG_REWRITE'):
         # Still runs the real file, but its 14-test count is no longer verified.
+        # Structurally valid for a node-script, so only the seal can catch it.
         path = root / registry.SUITES / 'node__anchor_band_clip.json'
         row = json.loads(path.read_bytes())
         row['execution']['kind'] = 'node-script'
         row['execution']['cmd'] = list(row['files'])
         row['expected'] = {'mode': 'exit-code-only'}
         path.write_bytes(registry.canonical_bytes(row))
+        if name == 'R386_NATIVE_SEALED_CATALOG_REWRITE':
+            # ...and rewrite the sealed catalog consistently with it.
+            catalog_path = root / registry.EXECUTION_CATALOG
+            catalog = json.loads(catalog_path.read_bytes())
+            catalog['suites'][row['name']] = registry.declaration(row)
+            catalog_path.write_bytes(registry.canonical_bytes(catalog))
     elif name == 'R386_NATIVE_SCRIPT_EXTRA_ARGS':
         # The right script, given an argument that only prints usage.
         path = root / registry.SUITES / 'oracle__framing-selftest.json'
@@ -323,10 +352,14 @@ class NativeRegistryContract(unittest.TestCase):
         row = json.loads(self.path().read_bytes())
         row['execution']['label'] += ' fixture'
         self.write(self.path(), row)
+        with self.assertRaisesRegex(ValueError, 'LEGACY_EXECUTION_PIN'):
+            registry.source_digest(self.root)
+        amend(self.root, 'py:test_unittest_runner')
         second = registry.source_digest(self.root)
         self.assertNotEqual(first, second)
         row['expected']['count'] += 1
         self.write(self.path(), row)
+        amend(self.root, 'py:test_unittest_runner')
         self.assertNotEqual(second, registry.source_digest(self.root))
 
     def test_two_new_suites_touch_distinct_files_and_require_independent_costs(self):
@@ -355,6 +388,100 @@ class NativeRegistryContract(unittest.TestCase):
                                 capture_output=True, text=True, timeout=20)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn('Ran 2 tests', result.stderr)
+
+    def test_existing_suite_execution_is_sealed_against_trusted_base(self):
+        """Review 7056059753 problem A: data-only edits cannot weaken a legacy suite."""
+        base = registry._execution_catalog(self.root)['base_sha']
+        self.assertEqual(registry.verify_legacy_execution(self.root, base)['source'], 'trusted-base-original-run_all')
+        for withdrawal in ('R386_NATIVE_E5_UNITTEST_TO_EMPTY_SCRIPT', 'R386_NATIVE_E4_NODE_SCRIPT_EMPTY_CMD',
+                           'R386_NATIVE_NODE_TEST_TO_EXIT_ONLY', 'R386_NATIVE_SCRIPT_EXTRA_ARGS',
+                           'R386_NATIVE_LEGACY_ORDER_ESCAPE'):
+            root = self.base / (self._testMethodName + withdrawal)
+            shutil.copytree(self.template, root)
+            withdraw(root, withdrawal)
+            with self.assertRaisesRegex(ValueError, 'R386_NATIVE_LEGACY_EXECUTION_PIN'):
+                registry.load_registry(root)
+        withdraw(self.root, 'R386_NATIVE_SEALED_CATALOG_REWRITE')
+        registry.load_registry(self.root)  # self-consistent data passes offline ...
+        with self.assertRaisesRegex(ValueError, 'LEGACY_EXECUTION_NOT_IN_TRUSTED_BASE'):
+            registry.verify_legacy_execution(self.root, base)  # ... but not against the trusted base
+        with mock.patch.object(registry, '_git_bytes', return_value=b'{"sealed":"elsewhere"}\n'):
+            with self.assertRaisesRegex(ValueError, 'LEGACY_EXECUTION_CATALOG_IS_IMMUTABLE'):
+                registry.verify_legacy_execution(self.root, base)
+        with self.assertRaisesRegex(ValueError, 'LEGACY_REQUIRES_EXPLICIT_TRUSTED_BASE'):
+            registry.verify_legacy_execution(self.root, None)
+        (self.root / registry.EXECUTION_CATALOG).unlink()
+        with self.assertRaisesRegex(ValueError, 'LEGACY_EXECUTION_CATALOG_REQUIRED'):
+            registry.load_registry(self.root)
+
+    def test_legitimate_count_and_needs_change_goes_through_named_amendment(self):
+        """#437-style change: py:test_gdi_contract count 5->10 and needs gdi->+core,bridge,model-base."""
+        name = 'py:test_gdi_contract'
+        path = self.path(name)
+        row = json.loads(path.read_bytes())
+        row['expected']['count'] += 5
+        row['execution']['needs'] = sorted(set(row['execution']['needs']) | {'core', 'bridge', 'model-base'})
+        self.write(path, row)
+        with self.assertRaisesRegex(ValueError, 'LEGACY_EXECUTION_PIN'):
+            registry.load_registry(self.root)
+        with self.assertRaisesRegex(ValueError, 'AMEND_EXISTING_SUITE_ONLY'):
+            registry.amend_suite(self.root, name='py:test_not_sealed', reason='only existing suites')
+        result = amend(self.root, name)
+        self.assertIs(result['acceptance'], False)
+        records = {r['name']: r for r in registry.load_registry(self.root)}
+        self.assertEqual(records[name]['expected']['count'], row['expected']['count'])
+        registry.verify_legacy_execution(self.root, registry._execution_catalog(self.root)['base_sha'])
+        # Amendments may only add needs and may never touch what is executed.
+        for field, value in (('needs', []), ('kind', 'python-script'), ('cmd', ['{python}', '-c', 'pass']),
+                             ('extra_env', {'GEOMETRY_SKIP': '1'})):
+            changed = copy.deepcopy(row)
+            changed['execution'][field] = value
+            self.write(path, changed)
+            with self.assertRaisesRegex(ValueError, 'AMENDMENT_FIELD'):
+                amend(self.root, name)
+        changed = copy.deepcopy(row)
+        changed['expected'] = {'mode': 'exit-code-only'}
+        self.write(path, changed)
+        with self.assertRaisesRegex(ValueError, 'AMENDMENT_FIELD'):
+            amend(self.root, name)
+        self.write(path, row)
+        registry.load_registry(self.root)
+        amendment = self.root / registry.AMENDMENTS / (registry.key(name) + '.json')
+        forged = json.loads(amendment.read_bytes())
+        forged['before_sha256'] = '0' * 64
+        self.write(amendment, forged)
+        with self.assertRaisesRegex(ValueError, 'AMENDMENT_BEFORE_MUST_BE_SEALED'):
+            registry.load_registry(self.root)
+
+    def test_new_script_suites_are_bound_to_their_own_file(self):
+        for kind, name, file, cmd in (
+                ('python-script', 'script:r386_fixture', 'tests/r386_fixture_script.py',
+                 ['{python}', '{root}/tests/r386_fixture_script.py']),
+                ('node-script', 'node:r386_fixture_script', 'tests/r386_fixture_script.js',
+                 ['tests/r386_fixture_script.js'])):
+            (self.root / file).write_text('// fixture\n' if file.endswith('.js') else '# fixture\n')
+            registry.init_suite(self.root, name=name, file=file, kind=kind)
+            row = json.loads(self.path(name).read_bytes())
+            self.assertEqual(row['execution']['cmd'], cmd)
+            self.assertEqual(row['expected'], {'mode': 'exit-code-only'})
+            self.assertEqual(row['order'], 'new/' + registry.key(name))
+            registry.load_registry(self.root)
+            for bad in (['{python}', '-c', 'pass'] if kind == 'python-script' else ['-e', '0'],):
+                row['execution']['cmd'] = bad
+                self.write(self.path(name), row)
+                with self.assertRaisesRegex(ValueError, 'EXECUTION_FILE_BINDING'):
+                    registry.load_registry(self.root)
+            row['execution']['cmd'] = cmd
+            self.write(self.path(name), row)
+        (self.root / 'tests/r386_other_script.py').write_text('# fixture\n')
+        with self.assertRaisesRegex(ValueError, 'INIT_SCRIPT_IDENTITY'):
+            registry.init_suite(self.root, name='py:test_r386_script', file='tests/r386_other_script.py',
+                                kind='python-script')
+        with self.assertRaisesRegex(ValueError, 'INIT_NEW_COUNTED_SUITE_ONLY'):
+            registry.init_suite(self.root, name='py:test_serve', file='tests/test_serve.py', kind='unittest')
+        # Still not runnable formally: a new suite needs its own CI cost receipt.
+        with self.assertRaisesRegex(ValueError, 'EXACT_COST_COVERAGE'):
+            registry.timing_profile(self.root)
 
     def ci_fixture(self, *, pending=False, ordinal=1):
         """Synthetic API/archive fixture, never a claim about a real CI run."""
@@ -548,6 +675,9 @@ def named_probe(name, control_for=None):
             withdraw(root, name)
         try:
             validate_fixture(root, observed)
+            # The fixture shares the real Git objects; its sealed catalog must
+            # still be re-derivable from the migration base's original tables.
+            registry.verify_legacy_execution(root, registry._execution_catalog(root)['base_sha'])
             if (name or control_for) == 'R386_NATIVE_TWO_SHARDS_OVERLAP':
                 suites = [SimpleNamespace(name='a'), SimpleNamespace(name='b')]
                 parts = [[suites[0]], suites if name else [suites[1]]]
@@ -576,8 +706,8 @@ def main():
         return 0
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(NativeRegistryContract)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
-    if result.testsRun != 18 or result.skipped:
-        raise AssertionError('R386_NATIVE_CONTRACT_EXACT_18_NO_SKIP')
+    if result.testsRun != 21 or result.skipped:
+        raise AssertionError('R386_NATIVE_CONTRACT_EXACT_21_NO_SKIP')
     return 0 if result.wasSuccessful() else 1
 
 
