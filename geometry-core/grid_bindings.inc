@@ -13,9 +13,11 @@ static bool grid_bindings_rebuild(World *w,char *err,size_t cap)
 {WoodGridContext c=app_grid_context(w);return wood_grid_bindings_rebuild(&c,err,cap);}
 
 
-static bool apply_grid_binding_line(const char *path,int line_no,char **t,int count,World *w)
+static bool apply_grid_binding_line(const char *path,int line_no,char **t,int count,World *w,WorldSnapshot *snapshot)
 {
-    GridBinding binding={0};int at=6;World candidate=*w;char detail[256]="";
+    GridBinding binding={0};int at=6;World *candidate=world_snapshot_take(snapshot,w);
+    if(!candidate){scene_error(path,line_no,WORLD_SNAPSHOT_UNAVAILABLE);return false;}
+    char detail[256]="";
     if(count<16 || !parse_u32(t[1],&binding.id) || strcmp(t[2],"on-boundary") ||
         !parse_u32(t[3],&binding.boundary_id) || strcmp(t[4],"from-system") || !parse_u32(t[5],&binding.system_id))goto invalid;
     if(!strcmp(t[at],"vertex-key")){
@@ -30,12 +32,12 @@ static bool apply_grid_binding_line(const char *path,int line_no,char **t,int co
             ++loop;at+=2;
         }else goto invalid;
         if(at+2>=count || !parse_u32(t[at],&index) || strcmp(t[at+1],"geometry-hash"))goto invalid;
-        const SpaceBoundarySurface *b=world_find_boundary(&candidate,binding.boundary_id);
+        const SpaceBoundarySurface *b=world_find_boundary(candidate,binding.boundary_id);
         if(!b || !boundary_geometry_hash_matches(b,t[at+2])){
             scene_error(path,line_no,"D30: STALE_GEOMETRY; select a vertex on the current boundary");return false;
         }
-        if(!boundary_keys_initialize(&candidate,binding.boundary_id))goto invalid;
-        const BoundaryVertexKeys *keys=world_find_vertex_keys(&candidate,binding.boundary_id);
+        if(!boundary_keys_initialize(candidate,binding.boundary_id))goto invalid;
+        const BoundaryVertexKeys *keys=world_find_vertex_keys(candidate,binding.boundary_id);
         if(loop>=keys->loop_count || index>=keys->counts[loop])goto invalid;
         binding.vertex_key=keys->keys[loop][index];at+=3;
     }else goto invalid;
@@ -63,28 +65,32 @@ static bool apply_grid_binding_line(const char *path,int line_no,char **t,int co
         binding.anchor_num[a]=n;binding.anchor_den[a]=d;
     }
     if(!geo_grid_binding_normalize(&binding))goto invalid;
-    if(!geo_grid_bindings_put(&candidate.geo.grid_store,&binding)){scene_error(path,line_no,"I37: grid-binding capacity is 32");return false;}
-    reference_capture_trial(&candidate);
-    if(!app_world_revalidate_staged(w,&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
+    if(!geo_grid_bindings_put(&candidate->geo.grid_store,&binding)){scene_error(path,line_no,"I37: grid-binding capacity is 32");return false;}
+    reference_capture_trial(candidate);
+    if(!app_world_revalidate_staged(w,candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
     return true;
 invalid:
     scene_error(path,line_no,detail[0]?detail:"D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration");return false;
 }
+WORLD_SNAPSHOT_HANDLER(apply_grid_binding_line);
 
-static bool apply_grid_binding_application(const char *path,int line_no,char **t,int count,World *w)
+static bool apply_grid_binding_application(const char *path,int line_no,char **t,int count,World *w,WorldSnapshot *snapshot)
 {
     ReferenceGrid g={0};
     if(count!=6 || !parse_u32(t[1],&g.id) || strcmp(t[2],"on") || !parse_u32(t[3],&g.placement_id) ||
         strcmp(t[4],"from-binding") || !parse_u32(t[5],&g.binding_id))goto invalid;
-    World candidate=*w;WoodGridContext context=app_grid_context(&candidate);char error[256]="";
+    World *candidate=world_snapshot_take(snapshot,w);
+    if(!candidate){scene_error(path,line_no,WORLD_SNAPSHOT_UNAVAILABLE);return false;}
+    WoodGridContext context=app_grid_context(candidate);char error[256]="";
     if(!wood_grid_apply_binding(&context,&g,error,sizeof error)){scene_error(path,line_no,error);return false;}
     const World *baseline=g_subgrid_before;if(!baseline)g_subgrid_before=w;
-    reference_capture_trial(&candidate);bool ok=app_world_revalidate_staged(w,&candidate);g_subgrid_before=baseline;
+    reference_capture_trial(candidate);bool ok=app_world_revalidate_staged(w,candidate);g_subgrid_before=baseline;
     if(!ok){scene_error(path,line_no,g_revalidate_error);return false;}
     return true;
 invalid:
     scene_error(path,line_no,"D30/I37: from-binding requires an available lattice grid identity and the binding's boundary placement");return false;
 }
+WORLD_SNAPSHOT_HANDLER(apply_grid_binding_application);
 
 static void grid_bindings_dump(const World *w,FILE *out)
 {
@@ -95,7 +101,7 @@ static void grid_bindings_dump(const World *w,FILE *out)
     }
 }
 
-static bool apply_grid_fill_application(const char *path,int line_no,char **t,int count,World *w)
+static bool apply_grid_fill_application(const char *path,int line_no,char **t,int count,World *w,WorldSnapshot *snapshot)
 {
     ReferenceGrid g={0};
     if((count!=6&&count!=8)||!parse_u32(t[1],&g.id)||strcmp(t[2],"on")||!parse_u32(t[3],&g.placement_id)||
@@ -106,15 +112,18 @@ static bool apply_grid_fill_application(const char *path,int line_no,char **t,in
         if(!strcmp(t[7],"u"))g.main_along=1;else if(!strcmp(t[7],"v"))g.main_along=2;
         else if(!strcmp(t[7],"none"))g.main_along=0;else goto invalid;
     }
-    World candidate=*w;WoodGridContext context=app_grid_context(&candidate);char error[256]="";
+    World *candidate=world_snapshot_take(snapshot,w);
+    if(!candidate){scene_error(path,line_no,WORLD_SNAPSHOT_UNAVAILABLE);return false;}
+    WoodGridContext context=app_grid_context(candidate);char error[256]="";
     if(!wood_grid_apply_fill(&context,&g,error,sizeof error)){scene_error(path,line_no,error);return false;}
     const World *baseline=g_subgrid_before;if(!baseline)g_subgrid_before=w;
-    reference_capture_trial(&candidate);bool ok=app_world_revalidate_staged(w,&candidate);g_subgrid_before=baseline;
+    reference_capture_trial(candidate);bool ok=app_world_revalidate_staged(w,candidate);g_subgrid_before=baseline;
     if(!ok){scene_error(path,line_no,g_revalidate_error);return false;}
     return true;
 invalid:
     scene_error(path,line_no,"D10: grid G on P from-fill F [main-along u|v|none] requires a live fill source");return false;
 }
+WORLD_SNAPSHOT_HANDLER(apply_grid_fill_application);
 
 /* D10b / R22: one segment per other-axis cell. Unstaggered lines do not enter here. */
 static bool grid_query_stagger_segments(const ReferenceGrid *g,const PlacementSurface *p,

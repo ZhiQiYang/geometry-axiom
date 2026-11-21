@@ -17,14 +17,21 @@ static Coord grid_axis_phase(const GridAxisDef *a)
 static bool grid_lattice_coord(const ReferenceGrid *g,int axis,int64_t k,Coord *out)
 { return wood_grid_lattice_coord(g,axis,k,out); }
 
+/* #412: the lattice lines alone (index, coordinate), without GridQueryAxis segment storage. */
+static GeoGridStatus grid_lattice_lines(const ReferenceGrid *g,int axis,Coord lo,Coord hi,
+    size_t limit,bool sample,bool stagger_window,GeoLatticeLine lines[GRID_MAX_LINES],GeoLatticeWindow *result)
+{
+    *result=(GeoLatticeWindow){.lines=lines,.capacity=GRID_MAX_LINES};
+    return stagger_window?wood_grid_query_window(g,axis,lo,hi,limit,sample,result):
+        wood_grid_lattice_window(g,axis,lo,hi,limit,sample,result);
+}
 static bool grid_lattice_window(const ReferenceGrid *g,int axis,Coord lo,Coord hi,
     size_t limit,bool sample,bool stagger_window,GridQueryAxis *out,char *err,size_t cap)
 {
     memset(out,0,sizeof *out);out->stride=1;
     if(!g||axis<0||axis>1||limit>GRID_MAX_LINES)goto invalid;
-    GeoLatticeLine lines[GRID_MAX_LINES];GeoLatticeWindow result={.lines=lines,.capacity=GRID_MAX_LINES};
-    GeoGridStatus status=stagger_window?wood_grid_query_window(g,axis,lo,hi,limit,sample,&result):
-        wood_grid_lattice_window(g,axis,lo,hi,limit,sample,&result);
+    GeoLatticeLine lines[GRID_MAX_LINES];GeoLatticeWindow result;
+    GeoGridStatus status=grid_lattice_lines(g,axis,lo,hi,limit,sample,stagger_window,lines,&result);
     out->defined=result.defined;out->first=result.first;out->last=result.last;
     out->total=result.total;out->stride=result.stride;out->count=result.count;
     for(size_t i=0;i<result.count;++i){out->lines[i].index=lines[i].index;out->lines[i].coordinate=lines[i].coordinate;}

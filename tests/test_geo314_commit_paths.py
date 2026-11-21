@@ -291,7 +291,7 @@ class Geo314CommitPaths(unittest.TestCase):
         source = compact(masked(self.body("geometry-core/grid_bindings.inc",
                                           "apply_grid_fill_application")))
         enter = "if(!baseline)g_subgrid_before=w;"
-        validate = "app_world_revalidate_staged(w,&candidate)"
+        validate = "app_world_revalidate_staged(w,candidate)"   # #412: the candidate is a heap snapshot pointer
         restore = "g_subgrid_before=baseline;"
         for token in (enter, validate, restore):
             self.assertIn(token, source, "R03_C0_I24_BASELINE_REQUIRED")

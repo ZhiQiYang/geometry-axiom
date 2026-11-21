@@ -66,7 +66,7 @@ static bool grid_rule_line(const World *w,const GridRuleLineRef *ref,SurfaceId p
     return wood_grid_rule_line(&context,ref,pid,coordinate,scope,err,cap);
 }
 
-static bool apply_grid_source_rule(const char *path,int line_no,char **t,int count,World *w)
+static bool apply_grid_source_rule(const char *path,int line_no,char **t,int count,World *w,WorldSnapshot *snapshot)
 {
     if(g_parsing_scene_file)g_rule_scene_encountered=true;
     uint32_t sid,key=0;int at=3;bool create=false,remove=false;GridSubdivisionRule r={0};char err[256]="";
@@ -94,16 +94,19 @@ static bool apply_grid_source_rule(const char *path,int line_no,char **t,int cou
         if(at+3!=count || strcmp(t[at],"divide") || !parse_u32(t[at+1],&u) || !parse_u32(t[at+2],&v))goto invalid;
         r.divisions[0]=u;r.divisions[1]=v;
     }
-    World candidate=*w;WoodGridContext trial=app_grid_context(&candidate);r.key=key;
+    World *candidate=world_snapshot_take(snapshot,w);
+    if(!candidate){scene_error(path,line_no,WORLD_SNAPSHOT_UNAVAILABLE);return false;}
+    WoodGridContext trial=app_grid_context(candidate);r.key=key;
     if(!wood_grid_rule_edit(&trial,sid,&r,create,remove,g_parsing_scene_file,err,sizeof err)){
         if(!*err)goto invalid;scene_error(path,line_no,err);return false;
     }
-    reference_capture_trial(&candidate);
-    if(!app_world_revalidate_staged(w,&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
+    reference_capture_trial(candidate);
+    if(!app_world_revalidate_staged(w,candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
     return true;
 invalid:
     scene_error(path,line_no,"I25a: RULE_SYNTAX requires integer divisions and valid source selector/name");return false;
 }
+WORLD_SNAPSHOT_HANDLER(apply_grid_source_rule);
 static bool apply_grid_source_rule_highwater(const char *path,int line_no,char **t,int count,World *w)
 {
     if(g_parsing_scene_file)g_rule_scene_encountered=true;

@@ -48,12 +48,13 @@ static bool grid_sample_indices_in(const ReferenceGrid *grids,size_t count,const
     *out_count=0;
     if (!grid || !p || grid->placement_id!=p->id || axis<0 || axis>1 || !indices || !coords) return false;
     if ((grid->from_binding || grid->from_fill) && !grid->is_subgrid) {
-        SurfaceRegion2 bounds; GridQueryAxis result;
+        /* #412: only index/coordinate are read; GridQueryAxis (≈5.8 MiB of segments) stays off the stack. */
+        SurfaceRegion2 bounds; GeoLatticeLine lines[GRID_MAX_LINES]; GeoLatticeWindow result;
         if (!placement_local_bounds(p,b,&bounds) ||
-            !grid_lattice_window(grid,axis,axis?bounds.min_v:bounds.min_u,
-                axis?bounds.max_v:bounds.max_u,GRID_MAX_LINES,true,grid->from_fill,&result,NULL,0)) return false;
+            grid_lattice_lines(grid,axis,axis?bounds.min_v:bounds.min_u,
+                axis?bounds.max_v:bounds.max_u,GRID_MAX_LINES,true,grid->from_fill,lines,&result)!=GEO_GRID_OK) return false;
         for (size_t i=0;i<result.count;++i) {
-            indices[i]=result.lines[i].index; coords[i]=result.lines[i].coordinate;
+            indices[i]=lines[i].index; coords[i]=lines[i].coordinate;
         }
         *out_count=result.count;
         return true;
