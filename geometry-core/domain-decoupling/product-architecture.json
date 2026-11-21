@@ -2203,6 +2203,42 @@
       "layer": "H",
       "language": "python",
       "purpose": "R17 bounded UTF-8 structured transport with host-owned temporary paths and exact native routing"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/flat_ceiling.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "R03 pure flat-ceiling template policy over explicit integer facts; emits a complete bounded plan without World writes, oracle imports or core-to-woodworking dependencies"
+    },
+    {
+      "path": "geometry-web/framing_template_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "R03 native host composes W plan with actual finish/fill/derived/from-fill/D7 definitions in one sealed AppWorldCandidate; owns current-source and token receipts"
+    },
+    {
+      "path": "geometry-web/framing_template_transport.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "R03 bounded JSON HTTP-to-native transport with private temporary input files; delegates all geometry and validation to the native candidate"
+    },
+    {
+      "path": "geometry-web/framing-recipes.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "FT1 project-attachment intent schema and immutable template compatibility; no generated geometry, World identity or template replay on load"
+    },
+    {
+      "path": "geometry-web/framing-template-session.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "R03 host session coordinates saved recipe, explicit current source selection, owned native preview and exact receipt reconciliation without replaying writes"
+    },
+    {
+      "path": "geometry-web/framing-template-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "R03 existing face inspector mode and native candidate display; uses project attachment history and existing material/parameter editors"
     }
   ],
   "exclusions": [
@@ -2821,7 +2857,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "216e56268971e4222c9204600966b5417ef22cf1c25f5f5d9c97a301b229fc70",
+      "sha256": "a4781e2e645fd07ed14b2bdf4259c83eb31431e4a76e242300ba32b56fd18ef9",
       "hashMode": "lf"
     },
     {
@@ -3992,6 +4028,18 @@
       "path": "geometry-web/boundary_pair_workflow_test.js",
       "reason": "R17 P335 real-CDP acceptance driver; invoked only by cdp_test.js, never by product runtime or served application entry points.",
       "sha256": "e74db88d701a5e39830790926c4ef9c939e99620bce88108283e59b15a31da50",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/framing_template_workflow_test.js",
+      "reason": "R03 P205 browser acceptance driver loaded only by cdp_test.js; tests actual DOM, native receipts, archive download and cold open, never a product runtime dependency",
+      "sha256": "2827245bbfd6208d01c4ebccee91ca9cb2fd9d8ce46cc08ee0c1ec62bfaee291",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/generate_framing_template_golden.js",
+      "reason": "R03 P205 dedicated browser golden generator; requires an actual complete CDP run and preserves every pre-existing golden section, never product-loaded",
+      "sha256": "26a31d9010eb4e68f7c80afb031f61b7c265106292b816cf926e34bd03c0cb79",
       "hashMode": "lf"
     }
   ],
@@ -5167,7 +5215,20 @@
       "sectionKey",
       "kerf",
       "minRemnant",
-      "allowance"
+      "allowance",
+      "WOOD_FLAT_LINES",
+      "WOOD_FLAT_MEMBERS",
+      "WOOD_FLAT_POLICY",
+      "WOOD_FLAT_POLICY_DESCRIPTOR",
+      "WoodFlatMember",
+      "WoodFlatParameters",
+      "WoodFlatPlan",
+      "wood_flat_add",
+      "wood_flat_add_ab",
+      "wood_flat_build",
+      "wood_flat_fail",
+      "wood_flat_member_order",
+      "wood_flat_width_enough"
     ],
     "forbiddenStrings": [
       "calcium-silicate-6",
@@ -5224,7 +5285,13 @@
       "woodworking.material-version/1",
       "woodworking.method-version/1",
       "woodworking.version-metadata/1",
-      "woodworking/1"
+      "woodworking/1",
+      "flat-ceiling",
+      "framing-template-recipes/1",
+      "framing-template-generate/1",
+      "framing-template-preview/1",
+      "framing-template-read/1",
+      "framing-template-read-result/1"
     ],
     "forbiddenModules": {
       "c": [
@@ -5247,7 +5314,7 @@
       "driver": "geometry-web/scenario-workspace.js",
       "driverSha256": "c78502ee1454e2bf6d3a5d5ac0a5dad6ac80907df3e5ffdd33391cdd5a9d83ce",
       "router": "geometry-web/serve.py",
-      "routerSha256": "7f47bb039a83551a675404db10dcb3003d1b502c52b2a11e6c4a203b73680d37",
+      "routerSha256": "751b98128e9ac089d39b0e6e01263174ab33ba36aea9f0a74048b85fd4f521aa",
       "receiver": "owner.frame",
       "queryValue": "context",
       "srcPrefix": "/?scenario=",
