@@ -36,7 +36,8 @@ const ReferenceWorkspace = (() => {
     if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
   }
   function beginNativeOperation(command) {
-    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return null;
+    if (!/^boundary-pair-confirm /.test(command))
+      if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
     return () => {if (!ended) {ended = true; nativePending--;}};
@@ -100,9 +101,9 @@ const ReferenceWorkspace = (() => {
     assertTimberPreview(owner);const key=featureTokenKey(token);if(key===null)throw new Error('角材候選識別不完整。');owner.token=key;
   }
   function assertTimberPreviewToken(token){assertTimberPreview(timberPreview,token);}
-  function beginTimberConfirmation(token){
+  function beginTimberConfirmation(token,command='timber-edit-confirm '+featureTokenKey(token)){
     assertTimberPreviewToken(token);
-    assemblyConfirmation={...timberPreview,timberCommand:'timber-edit-confirm '+featureTokenKey(token)};
+    assemblyConfirmation={...timberPreview,timberCommand:command};
     timberPreview=null;schedulePresentation();return assemblyConfirmation;
   }
   function finishTimberPreview(owner){if(owner&&timberPreview===owner){timberPreview=null;schedulePresentation();}}
@@ -520,11 +521,13 @@ const ReferenceWorkspace = (() => {
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
     if (result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
       dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
-    // Only the R11 timber-edit and R02 panel-fill no-op confirmations suppress
+    // R11 timber-edit, R17 boundary-pair and R02 panel-fill no-op confirmations suppress
     // their scene notification; existing import and other native observers
     // retain their refresh contract.
     if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && (!/^timber-edit-confirm /.test(cmd) || result.history_changed !== false) && !(cmd.startsWith("panel-fill-confirm ") && result.history_changed === false))notifySceneChange();
+    if(result.ok && !result.preview && /^boundary-pair-confirm /.test(cmd) && result.history_changed !== false)notifySceneChange();
     if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm) /.test(cmd) && result.history_changed !== false) dirty();
+    if (result.ok && /^boundary-pair-confirm /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
@@ -1441,6 +1444,7 @@ const ReferenceWorkspace = (() => {
     return JSON.parse(JSON.stringify(data));
   }
   function assertSaveReady(transactionOwner=null) {
+    if(window.BoundaryPairWorkspace?.hasWork)throw new Error('互頂輸入或候選尚未保存；請先確認或取消，再保存專案。');
     if(nativePending>0)throw new Error("原生操作結果尚未取得，請等候完成後再保存或凍結試改。");
     if(window.RoomCollectionWorkspace?.hasWork)throw new Error("房間草稿尚未確認。請確認、取消或恢復結果，再保存專案。");
     if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
@@ -1868,18 +1872,25 @@ const ReferenceWorkspace = (() => {
     return JSON.stringify(ordered(a)) === JSON.stringify(ordered(b));
   }
   async function verifyStoredModel(model) {
-    const packageKeys = ["space", "volume", "clearance", "walls", ...(model.result.schema === "geometry-space-preview/2" ? ["timbers"] : [])];
+    // Optional materials are independent: /3 may contain both kinds. A schema
+    // label must never suppress verification of an explicitly saved package.
+    const materialKeys = ["timbers", "profile_runs"].filter(key => Object.hasOwn(model.input, key));
+    const packageKeys = ["space", "volume", "clearance", "walls", ...materialKeys];
     for (const key of packageKeys) {
       const pkg = model.result[key]; if (pkg === null) continue;
       const response = await fetch("/model/verify", {method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify(pkg),signal:AbortSignal.timeout(30000)});
       if (!response.ok) throw new Error("空間模型驗證服務失敗（HTTP "+response.status+"），未變更目前專案。");
       const verified = await response.json();
-      try { P.validateModelPackage(verified); }
+      try { P.validateModelPackage(verified, {profileRuns:key === "profile_runs"}); }
       catch (_) { throw new Error("空間模型「"+model.name+"」驗證失敗："+(verified.error || verified.message || verified.code || verified.diagnostics?.[0]?.message || "模型內容或版本不一致")+"。未變更目前專案。"); }
+      if (["definitions", "request", "derived"].some(field => !sameModelData(verified[field], pkg[field])))
+        throw new Error("空間模型「"+model.name+"」的驗證回覆與保存套件不一致，未變更目前專案。");
     }
-    if (model.result.timbers && await P.sha(new TextEncoder().encode(model.result.timbers.definitions.base_scene)) !== model.result.source_sha256)
-      throw new Error("空間模型「"+model.name+"」的角材來源摘要不一致，未變更目前專案。");
+    for (const key of materialKeys) {
+      if (await P.sha(new TextEncoder().encode(model.result[key].definitions.base_scene)) !== model.result.source_sha256)
+        throw new Error("空間模型「"+model.name+"」的"+(key === "timbers" ? "角材" : "拉伸件")+"來源摘要不一致，未變更目前專案。");
+    }
     // A valid mesh alone cannot establish that the displayed height/settings describe
     // that mesh. Replay the saved declarations, never the current canvas world.
     const response = await fetch("/model/space-replay", {method:"POST",headers:{"Content-Type":"application/json"},
@@ -1888,6 +1899,9 @@ const ReferenceWorkspace = (() => {
     const rebuilt = await response.json(), original = model.result;
     if (rebuilt.ok !== true || rebuilt.schema !== original.schema || rebuilt.source_sha256 !== original.source_sha256)
       throw new Error("空間模型「"+model.name+"」的來源設定無法重建，未變更目前專案。");
+    if (Object.hasOwn(rebuilt, "source_snapshot") !== Object.hasOwn(original, "source_snapshot") ||
+        !sameModelData(rebuilt.source_snapshot, original.source_snapshot))
+      throw new Error("空間模型「"+model.name+"」的來源快照收據與保存輸入不一致，未變更目前專案。");
     for (const key of packageKeys) {
       if ((rebuilt[key] === null) !== (original[key] === null) || (original[key] !== null &&
           ["definitions", "request", "derived"].some(field => !sameModelData(rebuilt[key]?.[field], original[key][field]))))
@@ -2069,7 +2083,7 @@ const ReferenceWorkspace = (() => {
          preparedNativeRevision!==null&&hostRecordProfile.revision!==preparedNativeRevision||
          nativeRevision!==null&&nativeRevision>hostRecordProfile.revision))
         throw new Error('原生來源在讀取衍生承載面能力期間已變更，請重新開啟專案。');
-      P.assertProjectCapabilities({...manifest,requiredCapabilities},P.readerCapabilities(candidate.capabilities,candidate.native_capabilities,manifest,candidate.final_scene,hostRecordProfile,{cutting:true},candidate.panel_fill_reader));
+      P.assertProjectCapabilities({...manifest,requiredCapabilities},P.readerCapabilitiesWithBoundaryPair(candidate.boundary_pair_native)(candidate.capabilities,candidate.native_capabilities,manifest,candidate.final_scene,hostRecordProfile,{cutting:true},candidate.panel_fill_reader));
       P.validateProjectCapabilities(candidate.required_capabilities);
       const policy=P.formatPolicy(manifest.format);
       if (policy.engineeringCandidate) {
@@ -2085,6 +2099,7 @@ const ReferenceWorkspace = (() => {
         if(!sameModelData([...candidate.required_capabilities].sort(),P.sceneCapabilities(finalScene)))
           throw new Error("工程場景能力與保存來源不一致，未變更目前專案。");
         if(manifest.requiredCapabilities?.includes(P.PANEL_FILL_CAPABILITY))P.assertPanelFillDefinitions(text,finalScene);
+        if(requiredCapabilities.includes(P.BOUNDARY_PAIR_CAPABILITY))P.assertBoundaryPairDefinitions(text,finalScene);
       }
       return token;
     } catch(error) {

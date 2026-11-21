@@ -20,12 +20,13 @@
 |projection-close|舊 close 在新 open 讀來源中／顯示後兩個時序，各六個 check；一般取消與 Escape 各一|14|
 |font-layout|固定 check 8；fontCheck 六次各一；header width 1382/1160/900/680/600 各一|19|
 |space-flow|固定 check 21；兩個 viewport 迴圈各兩次；draft 9；inline guards 四種 action 各一，direction 額外一|39|
+|profile-space|`profile_space_test.js` 明列 60 個唯一 case；固定 check 57，1400／690／390px 的版面 check 各一|60|
 |timber-material|固定 check 42；六種 tamper 各一|48|
 |timber-source-guards|history 前段 5；其後 source／reload／context 各一|8|
 |timber-history-guard|既有 HISTORY_ONLY 前段，原提前返回仍保留|5|
 |browser-health|uncaught exceptions 與 console errors 各一|2|
 
-預設 **full-space-suite = 242**：原五個 space 功能群組 224，加 projection-close 14、setup／health 4。原 228 的全部斷言及五群數量保留；新增 close 回歸不是既有正式紅燈的豁免。
+R12 加入前的 **full-space-suite = 242**：原五個 space 功能群組 224，加 projection-close 14、setup／health 4。原 228 的全部斷言及五群數量保留；新增 close 回歸不是既有正式紅燈的豁免。本次加入獨立 `profile-space` 60，預設完整集合為 **302**；原六個功能群組與 setup／health 的 242 項均不變。這是來源盤點，不表示實跑已通過。
 它原本就不含 timber-material／timber-source-guards，不新增這些執行責任。
 
 #159 的正式回歸重用 first create 的真 native producer 模型；1400×900 與 390×844 各 11 個獨立 `check`，合計 22。逐項為原 Undo／Redo／Save DOM 身分、44px 實際 hit target 與無溢出、庫內移除的一步 history、Undo 完整模型原值、Undo 焦點保留、真 Ctrl+Y、真 Ctrl+Z、真 Tab 至 Redo、Enter 啟動及 disabled 後轉可用 Undo、再次鍵盤復原、原 Save 節點和控制不被替換。兩個 viewport 迴圈後另有單次 4 個 `check`：真「使用目前面」讀取唯一 surface 101 並輸入 raw height 3210 後，有效 builder 禁止庫內 Undo／Redo／移除與快捷鍵，保留 draft／source／model；返回畫布 Undo 撤銷原模型建立而不改 world；來源 history 過期後重新進庫仍可 Redo 且保留 raw；庫內 Redo 完整恢復 first model、world 與 raw 3210。每輪最後復原移除，末段復原建立模型的原 undo 步；後續既有 core edit 正常清除剩餘 redo，原本混合 native／metadata 的 undo 次序不變。模型完整 JSON、所有 raw 設定、來源 dump 與 native revision 同時核對。新增合計 26 檢查只屬預設 height/library 群；跨專案 lease 的延遲回覆拒絕另由獨立 guard 瀏覽器驗收，不能把此群說成已覆蓋。
@@ -38,6 +39,7 @@
 |SPACE_STYLE_ONLY|font-layout|23|
 |PROJECTION_PLACEMENT_ONLY|projection-placement、font-layout|59|
 |PROJECTION_CLOSE_ONLY|projection-close|18|
+|SPACE_PROFILE_ONLY|profile-space|64|
 |TIMBER_ONLY|timber-material、timber-source-guards、font-layout|79|
 |TIMBER_ONLY + TIMBER_HISTORY_ONLY|timber-material、timber-history-guard、font-layout|76|
 |TIMBER_GUARDS_ONLY|timber-source-guards|12|
@@ -46,6 +48,27 @@
 partial 的 completed:true 只表示它宣告的 included 群组完成，仍明列 filters／omitted，不能當全量。
 本腳本目前沒有平台 skip 分支；沒有新增自動豁免。`tests/run_all.py` 原具名平台 skip 規則維持。
 手機尺寸模擬、stubbed save handle 與 TEMP download 仍不代表實體 iOS 或 OS chooser 驗證。
+
+## R12／Q38j 的一般入口與證據範圍
+
+補丁基底 `11eddfdb4d7b1f76aedfe001e084a3840790bedc`。`profile-space` 從一般新增物件選單建立斷面、三個構件及拉伸件，再由物件清單進面、面屬性的「建立空間」選取來源。原生指令只準備既有平面與角材；新增的斷面、構件、拉伸件、逐條選擇、確認、歷史、方案與檔案操作均走產品控制。
+
+60 項涵蓋 Q01 精確世界範圍與材料量、未定位排除、不預勾選、共同角材／拉伸件開關、不扣交疊提示、三種視窗尺寸、取消零寫入、一次確認一步歷史、Undo／Redo、保存空間頂面取值、F1b 明選與整筆來源快照更新、空清單移除、改高保留快照、方案保存、第 20 版專案下載與重新載入，以及真來源讀取和預覽延後回覆的過期守門。冷開測試先用一般入口建立空專案、重載頁面，再用一般「開啟專案」檔案控制讀入真下載檔；不宣稱服務重啟、原生 OS 選檔器、實體裝置或 L4 人工驗收。
+
+`tests/test_profile_space_browser_contract.js` 只核對頁內程式語法、具名 case 清單及新舊群組盤點。`tests/test_r12_browser_evidence.py` 核對證據分類器與凍結來源完整性。這兩個純 Node／Python gate 都不能代替真瀏覽器成功收據。
+
+```sh
+node --test tests/test_space_test_floor.js tests/test_profile_space_browser_contract.js
+python3 -m unittest discover -s tests -p test_r12_browser_evidence.py
+python3 tests/r12_browser_evidence.py --preflight
+python3 tests/r12_browser_evidence.py --out /tmp/r12-profile-browser-evidence --withdrawals
+```
+
+最後一行須使用未存在、位於 repo 之外的輸出目錄，並以 `GEOMETRY_CHROME` 指定已安裝的瀏覽器。runner 凍結來源清單與每檔 bytes／SHA-256，用原 `tests/binaries.py` 重建原生程式，每次執行各自啟動服務與瀏覽器，核對前後 `/runtime`。它不新增 sandbox 旗標、不修改既有時限；先取得完整 64 項 partial 綠燈，才逐一撤回六個具名接線並要求對應斷言紅、還原後完整綠燈。啟動失敗、缺少報告、逾時、非具名失敗或來源過期一律阻擋，不能記作 killed 或 0／1／0。
+
+若 checkout 將 `evidence/`、`tests/evidence/` 或 `tests/release-evidence/` 歷史收據設為 sparse，缺少的 skip-worktree 項目以完整 index blob 清單另存 `sparse-archives.json`，不列入已複製來源。這三個目錄不是本群 runtime、native registry 或 browser harness 的來源。其他缺檔，包括被設為 sparse 的應用或測試程式，仍在啟動前拒絕；不以略過缺檔冒稱完整副本。
+
+本群未新增 canvas 正常段，`geometry-web/cdp_sections.golden.json` 與 `geometry-web/canvas_shards.json` 保持原件；沒有手填 golden 或從失敗輸出重設段計數。partial 成功仍不能代替原完整 space suite 與完整 canvas 執行；真瀏覽器的執行狀態及產物需在交付證據另外列明。
 
 ## 可重跑的公開反例與驗證
 

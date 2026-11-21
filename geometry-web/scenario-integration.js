@@ -1,5 +1,12 @@
 /* Finite, shared adapters for the formal reader and A/B workspace. */
 "use strict";
+/* 隔離試改的內嵌畫面：主畫面已表明要結束這次試改（scenario-workspace.js 的 hostUnloads）時，各工作區的
+   未保存提醒不再用瀏覽器的「要離開網站嗎」攔一次。window 上的 beforeunload 監聽依登記順序執行，所以要在
+   reference-workspace.js 等登記提醒之前先登記；這個檔是它們之前載入的。使用者自己關分頁或重新整理時
+   沒有這個記號，提醒照舊。 */
+window.addEventListener?.("beforeunload", event => {
+  if (window.GeometryNativeContext && window.scenarioHostUnloading) event.stopImmediatePropagation();
+});
 window.ScenarioIntegration = (() => {
   const P=GeometryProject, S=GeometryScenarioSnapshots, encoder=new TextEncoder();
   const finalScenes=new WeakMap();

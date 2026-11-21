@@ -1,0 +1,149 @@
+{
+ "runtimeVersion": "5a9f4e1a4d53a6aea8d119730cd35d8897406754d32a92ffee85802051d17aa5",
+ "root": "/tmp/claude-0/-home-user-geometry-axiom/c161fbcc-185e-5abd-ba3d-eaec6a803bff/scratchpad/head-wt",
+ "measuredAt": "2026-11-15T10:20:05.195Z",
+ "caseIds": [
+  "same-role-distinct-members",
+  "one-local-joint-new-version",
+  "wrong-type-dimension-reference",
+  "legal-rule",
+  "legal-incomplete-binding",
+  "fixed-version-immutable"
+ ],
+ "timing": [
+  {
+   "cases": 0,
+   "attachmentBytes": 0,
+   "saves": [
+    {
+     "scenariosAfter": 1,
+     "ms": 521
+    },
+    {
+     "scenariosAfter": 2,
+     "ms": 872
+    }
+   ]
+  },
+  {
+   "cases": 3,
+   "attachmentBytes": 33505,
+   "saves": [
+    {
+     "scenariosAfter": 1,
+     "ms": 17577
+    },
+    {
+     "scenariosAfter": 2,
+     "ms": 48812
+    }
+   ]
+  },
+  {
+   "cases": 6,
+   "attachmentBytes": 52084,
+   "saves": [
+    {
+     "scenariosAfter": 1,
+     "ms": 21322
+    },
+    {
+     "scenariosAfter": 2,
+     "ms": 70298
+    }
+   ]
+  }
+ ],
+ "counting": [
+  {
+   "cases": 0,
+   "attachmentBytes": 0,
+   "saves": [
+    {
+     "scenariosAfter": 1,
+     "ms": 553,
+     "calls": {
+      "feature-attachments.validate": 9,
+      "project-store.projectFormat": 12,
+      "project-store.projectCapabilities": 231,
+      "project-store.validate": 4
+     }
+    },
+    {
+     "scenariosAfter": 2,
+     "ms": 1001,
+     "calls": {
+      "feature-attachments.validate": 14,
+      "project-store.projectFormat": 23,
+      "project-store.projectCapabilities": 772,
+      "project-store.validate": 8
+     }
+    }
+   ]
+  },
+  {
+   "cases": 3,
+   "attachmentBytes": 33505,
+   "saves": [
+    {
+     "scenariosAfter": 1,
+     "ms": 20198,
+     "calls": {
+      "rule-case-data.bounded": 9851,
+      "rule-case-data.validate": 721,
+      "feature-attachments.validate": 239,
+      "feature-attachments.capabilities": 189,
+      "project-store.projectFormat": 12,
+      "project-store.projectCapabilities": 189,
+      "project-store.validate": 4
+     }
+    },
+    {
+     "scenariosAfter": 2,
+     "ms": 63102,
+     "calls": {
+      "rule-case-data.bounded": 33273,
+      "rule-case-data.validate": 2435,
+      "feature-attachments.validate": 809,
+      "feature-attachments.capabilities": 713,
+      "project-store.projectFormat": 23,
+      "project-store.projectCapabilities": 713,
+      "project-store.validate": 8
+     }
+    }
+   ]
+  },
+  {
+   "cases": 6,
+   "attachmentBytes": 52084,
+   "saves": [
+    {
+     "scenariosAfter": 1,
+     "ms": 27534,
+     "calls": {
+      "rule-case-data.bounded": 14177,
+      "rule-case-data.validate": 721,
+      "feature-attachments.validate": 239,
+      "feature-attachments.capabilities": 189,
+      "project-store.projectFormat": 12,
+      "project-store.projectCapabilities": 189,
+      "project-store.validate": 4
+     }
+    },
+    {
+     "scenariosAfter": 2,
+     "ms": 90286,
+     "calls": {
+      "rule-case-data.bounded": 47883,
+      "rule-case-data.validate": 2435,
+      "feature-attachments.validate": 809,
+      "feature-attachments.capabilities": 713,
+      "project-store.projectFormat": 23,
+      "project-store.projectCapabilities": 713,
+      "project-store.validate": 8
+     }
+    }
+   ]
+  }
+ ]
+}

@@ -10,7 +10,17 @@ const WEB = path.join(ROOT, 'geometry-web');
 const timberExtension = require('./diagnostics/r356_canvas_extension.cjs');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
+const workspaceExtension = require('./diagnostics/r396_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
+const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
+const pf4aExtension = require('./diagnostics/pf4a_canvas_extension.cjs');
+// PF-4A (#128) P1284 is projected out first by its own exact helper (measured count, P128→P1284→P353).
+const committedGolden = () => pf4aExtension.projectGolden(JSON.parse(read('cdp_sections.golden.json')));
+const committedPlan = () => pf4aExtension.projectPlan(JSON.parse(read('canvas_shards.json')));
+const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
+const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
+const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');
+const train3Tail = require('./diagnostics/train3_canvas_tail.cjs');
 const file = name => path.join(WEB, name);
 const read = name => fs.readFileSync(file(name), 'utf8');
 const MAIN_GOLDEN = {"schema":"geometry-cdp-sections/1","mode":"full","total":4002,"sections":{"1":14,"2":3,"3":1,"4":1,"5":1,"6":1,"7":1,"8":0,"9":12,"10":0,"P89":19,"Setup":0,"P3":14,"P4":11,"P5":2,"P6":4,"P7":54,"P8":116,"P9":9,"P10":9,"P11":12,"P12":8,"P13":4,"P14":16,"P15":6,"P16":10,"P17":11,"P18":20,"P19":17,"BF2":5,"BF3":1,"BF4":9,"P20":10,"P21":4,"P22":45,"P32":34,"P33":9,"P34":7,"P35":14,"P36":2,"P37":19,"P38":13,"P39":8,"P40":4,"P41":3,"P42":12,"P43":12,"P44":19,"P45":2,"P46":7,"P47":9,"P48":14,"P49":17,"P50":33,"P51":13,"P52":43,"P53":28,"P57":56,"P62":38,"P63":18,"P64":24,"P65":5,"P66":4,"P68":36,"P69":160,"P67":96,"P70":121,"P71":9,"P78":23,"P87":60,"P88":143,"P72":52,"P72B":50,"P73":69,"P74":52,"P75":37,"P76":87,"P77":134,"P82":16,"P80":23,"P81":14,"P85":31,"P79":87,"P84":33,"P83":16,"P86":20,"P352":1313,"P359":24,"P90":8,"P358":16,"P353":355}};
@@ -18,12 +28,62 @@ const MAIN_SEQUENCES = [["Setup","1","2","3","4","5","6","7","8","9","P3","P4","
 const MAIN_BOUNDARIES = [{"after":"P88","before":"P72","localStorage":{"geometry-param-grid-lesson":{"kind":"param-grid-lesson-token"},"geometry-tool-lessons-v1":{"kind":"string-set","values":["canvas:pan","canvas:rect","canvas:select","engineering:first","face:grid","face:guide","face:hole","face:pan","face:redraw","face:select","face:timber","grid:infinite-first"]}}}];
 
 test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
-  const rawGolden = JSON.parse(read('cdp_sections.golden.json'));
+  // R17 P335 is projected out by its own exact oracle (count 192, P116→P335→P128).
+  // Train 3 (#426 + #419): the R396 P1161 projection then runs on those projected inputs.
+  const rawGolden = r335Extension.projectGolden(committedGolden());
+  // Train 3 (#420): the real tail is P353→P420→P1161→P359; R396's judge sees it without P420.
+  const rawPlan = train3Tail.withoutPlan(r335Extension.projectPlan(committedPlan()), 'P420');
+  const snapshot = JSON.stringify({golden: rawGolden, plan: rawPlan});
+  const projected = workspaceExtension.project(rawGolden, rawPlan);
+  const expectedGolden = JSON.parse(JSON.stringify(rawGolden));
+  delete expectedGolden.sections.P1161;
+  expectedGolden.total -= 510;
+  assert.deepEqual(projected.golden, expectedGolden, 'R396_R360_ONLY_P1161_GOLDEN_PROJECTED');
+  assert.deepEqual(Object.keys(projected.golden.sections), Object.keys(rawGolden.sections).filter(name => name !== 'P1161'),
+    'R396_R360_OLD_GOLDEN_KEY_ORDER');
+  assert.equal(JSON.stringify({golden: rawGolden, plan: rawPlan}), snapshot, 'R396_R360_PROJECTION_INPUTS_UNCHANGED');
+  for (const count of [undefined, 0, 509, 511, '510']) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (count === undefined) delete probe.sections.P1161;
+    else probe.sections.P1161 = count;
+    probe.total = rawGolden.total - 510 + (Number.isSafeInteger(count) ? count : 0);
+    assert.throws(() => workspaceExtension.project(probe, rawPlan), /R396_P1161_FROZEN_COUNT/,
+      'R396_R360_REJECT_P1161_COUNT:' + String(count));
+  }
+  for (const total of [undefined, rawGolden.total - 1, rawGolden.total + 1, String(rawGolden.total)]) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (total === undefined) delete probe.total;
+    else probe.total = total;
+    assert.throws(() => workspaceExtension.project(probe, rawPlan), /R396_P1161_TOTAL_CONSERVATION/,
+      'R396_R360_REJECT_P1161_TOTAL:' + String(total));
+  }
+  for (const [field, value, marker] of [
+    ['schema', 'other', /R396_P1161_GOLDEN_SCHEMA/], ['mode', 'partial', /R396_P1161_GOLDEN_FULL_MODE/]
+  ]) {
+    const probe = {...rawGolden, [field]: value};
+    assert.throws(() => workspaceExtension.project(probe, rawPlan), marker, 'R396_R360_REJECT_GOLDEN_' + field);
+  }
   // Merged #355 and #356: each owner's unchanged exact projection removes only
   // its own section (R02 P128, R11 P116); together they restore main exactly.
   // #400 adds exactly three P90 assertions; that projection restores P90 = 8.
   // R06 finding 6 adds exactly five R06 assertions; that projection restores R06 = 50.
-  const golden = r06LegacyExtension.projectGolden(r400Extension.projectGolden(timberExtension.projectGolden(pfExtension.projectGolden(rawGolden))));
+  // R20 findings 1-3 add exactly two P76 assertions; that projection restores P76 = 87.
+  // D18 finding 5 adds exactly one P70 assertion; that projection restores P70 = 121.
+  // #420 owns a separate measured section; P353 and every older count stay fixed.
+  const beforeP420 = r420Extension.projectGolden(projected.golden);
+  const golden = d18CardStaggerExtension.projectGolden(r20ReasonsExtension.projectGolden(r06LegacyExtension.projectGolden(r400Extension.projectGolden(timberExtension.projectGolden(pfExtension.projectGolden(beforeP420))))));
+  for (const count of [undefined, 0, r420Extension.P420_ADDED - 1, r420Extension.P420_ADDED + 1]) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (count === undefined) delete probe.sections.P420;
+    else probe.sections.P420 = count;
+    probe.total = Object.values(probe.sections).reduce((sum, value) => sum + value, 0);
+    assert.throws(() => r420Extension.projectGolden(probe), /R420_P420_EXECUTED_ASSERTION_COUNT/,
+      'R420_BAD_COUNT_REJECTED ' + count);
+  }
+  const reassigned = JSON.parse(JSON.stringify(rawGolden));
+  reassigned.sections.P353 -= 1; reassigned.sections.P420 += 1;
+  assert.throws(() => r420Extension.projectGolden(reassigned), /R420_P353_UNCHANGED/,
+    'R420_CANNOT_REASSIGN_LEGACY_ASSERTIONS');
   for(const value of [undefined,0,380,382]){
     const probe=JSON.parse(JSON.stringify(rawGolden));
     if(value===undefined)delete probe.sections.P128;else probe.sections.P128=value;
@@ -66,14 +126,52 @@ test('R360_CANVAS_MAIN_BASELINE_AND_OWN_SECTION', () => {
   misattributed.sections.P77 = 139; misattributed.sections.R06 = 50;
   assert.throws(() => r06LegacyExtension.projectGolden(misattributed), /R06_LEGACY_P77_UNCHANGED/, 'R06_LEGACY_MISATTRIBUTION_REJECTED');
   assert.equal(rawGolden.sections.P77, r06LegacyExtension.P77_UNCHANGED, 'R06_LEGACY_RAW_P77_IS_MAIN');
+  // P76 under-counted, missing or over-counted.
+  for (const count of [undefined, 87, 88, 90]) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (count === undefined) delete probe.sections.P76;
+    else probe.sections.P76 = count;
+    assert.throws(() => r20ReasonsExtension.projectGolden(probe), /R20_REASONS_P76_COUNT/, 'R20_REASONS_P76_PROBE_REJECTED '+count);
+  }
+  assert.equal(rawGolden.sections.P76, r20ReasonsExtension.P76_BEFORE + r20ReasonsExtension.P76_ADDED, 'R20_REASONS_RAW_P76');
+  assert.equal(golden.sections.P76, MAIN_GOLDEN.sections.P76, 'R20_REASONS_PROJECTION_RESTORES_MAIN_P76');
+  // P70 under-counted, missing or over-counted.
+  for (const count of [undefined, 120, 121, 123]) {
+    const probe = JSON.parse(JSON.stringify(rawGolden));
+    if (count === undefined) delete probe.sections.P70;
+    else probe.sections.P70 = count;
+    assert.throws(() => d18CardStaggerExtension.projectGolden(probe), /D18_CARD_STAGGER_P70_COUNT/, 'D18_CARD_STAGGER_P70_PROBE_REJECTED '+count);
+  }
+  assert.equal(rawGolden.sections.P70, d18CardStaggerExtension.P70_BEFORE + d18CardStaggerExtension.P70_ADDED, 'D18_CARD_STAGGER_RAW_P70');
+  assert.equal(golden.sections.P70, MAIN_GOLDEN.sections.P70, 'D18_CARD_STAGGER_PROJECTION_RESTORES_MAIN_P70');
 });
 
 test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
   assert.ok(fs.existsSync(file('canvas_shards.json')), 'R360_CANVAS_SHARD_PLAN_REQUIRED');
-  const plan = JSON.parse(read('canvas_shards.json'));
-  const golden = JSON.parse(read('cdp_sections.golden.json'));
+  const fullPlan = r335Extension.projectPlan(committedPlan());
+  const fullGolden = r335Extension.projectGolden(committedGolden());
+  // Train 3 (#426 + #419 + #420): the real second-shard tail is P353→P420→P1161→P359.
+  // The R360/R396 judges below see it with only P420 stripped; R420's judge sees it
+  // with only P1161 stripped. train3_canvas_tail.cjs checks the exact tail and counts.
+  const plan = train3Tail.withoutPlan(fullPlan, 'P420');
+  const golden = train3Tail.withoutGolden(fullGolden, 'P420');
   const shards = require(file('canvas_shards.js'));
+  assert.deepEqual(shards.validatePlan(fullPlan, fullGolden), [], 'TRAIN3_CANVAS_COMPLETE_PLAN');
   assert.deepEqual(shards.validatePlan(plan, golden), [], 'R360_CANVAS_COMPLETE_PLAN');
+  const r420Base = train3Tail.withoutPlan(fullPlan, 'P1161');
+  const historicalPlan = r420Extension.projectPlan(r420Base);
+  assert.deepEqual(historicalPlan, workspaceExtension.project(golden, plan).plan, 'TRAIN3_R420_AND_R396_PROJECT_TO_THE_SAME_BASE_PLAN');
+  for (const fault of ['missing', 'duplicate', 'first-shard', 'moved']) {
+    const probe = JSON.parse(JSON.stringify(r420Base)), second = probe.shards[1].sections, at = second.indexOf('P420');
+    if (fault === 'duplicate') second.push('P420');
+    else {
+      second.splice(at, 1);
+      if (fault === 'first-shard') probe.shards[0].sections.push('P420');
+      else if (fault === 'moved') second.unshift('P420');
+    }
+    assert.throws(() => r420Extension.projectPlan(probe), /R420_P420_/,
+      'R420_BAD_SECTION_PLACEMENT_REJECTED ' + fault);
+  }
   const expected = MAIN_SEQUENCES.map(sections => sections.slice());
   expected[1].splice(expected[1].indexOf('P84') + 1, 0, 'P360');
   expected[1].splice(expected[1].indexOf('P82') + 1, 0, 'R06');
@@ -93,8 +191,49 @@ test('R360_CANVAS_PLAN_AND_ACTUAL_GATE', () => {
     assert.deepEqual(timberMain, pfMain, 'R355_R356_SAME_MAIN_PLAN');
     const second = value.shards[1].sections, at = second.indexOf('P116');
     assert.deepEqual(second.slice(at - 1, at + 3), ['P352', 'P116', 'P128', 'P353'], 'R355_R356_MERGED_ORDER');
-    return timberMain;
+    // Keep the older owners' rejection markers before the P1161 projection.
+    return workspaceExtension.project(golden, timberMain).plan;
   };
+  const expectedPlan = JSON.parse(JSON.stringify(plan));
+  expectedPlan.shards[1].sections.splice(expectedPlan.shards[1].sections.indexOf('P1161'), 1);
+  const snapshot = JSON.stringify({golden, plan});
+  assert.deepEqual(workspaceExtension.project(golden, plan).plan, expectedPlan, 'R396_R360_ONLY_P1161_PLAN_PROJECTED');
+  assert.equal(JSON.stringify({golden, plan}), snapshot, 'R396_R360_PLAN_INPUTS_UNCHANGED');
+  for (const fault of ['duplicate-same', 'duplicate-cross', 'missing', 'first-shard']) {
+    const probe = JSON.parse(JSON.stringify(plan)), second = probe.shards[1].sections;
+    if (fault === 'duplicate-same') second.unshift('P1161');
+    else if (fault === 'duplicate-cross') probe.shards[0].sections.push('P1161');
+    else {
+      second.splice(second.indexOf('P1161'), 1);
+      if (fault === 'first-shard') probe.shards[0].sections.push('P1161');
+    }
+    assert.throws(() => workspaceExtension.project(golden, probe), /R396_P1161_EXACT_OWNER/,
+      'R396_R360_REJECT_P1161_OWNER:' + fault);
+  }
+  for (const index of [1, '2']) {
+    const probe = JSON.parse(JSON.stringify(plan));
+    probe.shards[1].index = index;
+    assert.throws(() => workspaceExtension.project(golden, probe), /R396_P1161_SHARD_INDICES/,
+      'R396_R360_REJECT_P1161_OWNER_INDEX:' + String(index));
+  }
+  for (const fault of ['before-P353', 'after-P359', 'triple-not-last']) {
+    const probe = JSON.parse(JSON.stringify(plan)), second = probe.shards[1].sections;
+    if (fault === 'triple-not-last') second.unshift(...second.splice(-3));
+    else {
+      second.splice(second.indexOf('P1161'), 1);
+      if (fault === 'before-P353') second.splice(second.indexOf('P353'), 0, 'P1161');
+      else second.push('P1161');
+    }
+    assert.throws(() => workspaceExtension.project(golden, probe), /R396_P1161_TERMINAL_ORDER/,
+      'R396_R360_REJECT_P1161_POSITION:' + fault);
+  }
+  const wrongSchema = {...plan, schema: 'other'};
+  assert.throws(() => workspaceExtension.project(golden, wrongSchema), /R396_P1161_PLAN_SCHEMA/,
+    'R396_R360_REJECT_PLAN_SCHEMA');
+  const thirdShard = JSON.parse(JSON.stringify(plan));
+  thirdShard.shards.push({index: 3, sections: []});
+  assert.throws(() => workspaceExtension.project(golden, thirdShard), /R396_P1161_TWO_SHARDS/,
+    'R396_R360_REJECT_THIRD_SHARD');
   assert.deepEqual(projectPlan(plan).shards.map(row => row.sections), expected, 'R360_R06_EXACT_SECOND_SHARD_POSITIONS');
   for (const fault of ['missing', 'duplicate', 'first-shard', 'moved']) {
     const probe = JSON.parse(JSON.stringify(plan)), second = probe.shards[1].sections, at = second.indexOf('P116');

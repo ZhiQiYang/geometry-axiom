@@ -1112,6 +1112,8 @@ static void cmd_host_gate_check(const char *arg)
 #include "assembly_bridge.inc"
 #include "source-inspector-bridge.inc"
 #include "timber_edit_bridge.inc"
+#include "workspace_view_bridge.inc"
+#include "boundary_pair_bridge.inc"
 
 /* 視圖點已包含 frame 原點與構件尺寸；不能套用局部定義的單項上限。 */
 static bool view_coord_in_range(Coord value)
@@ -1194,6 +1196,12 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_source_inspect_file(arg);
         } else if (strcmp(line,"engineering-preview-source")==0 && arg) {
             cmd_engineering_preview_source(arg);
+        } else if (strcmp(line,"view-capabilities")==0 && !arg) {
+            cmd_workspace_view_capabilities();
+        } else if (strcmp(line,"view-read")==0 && arg) {
+            cmd_workspace_view_read(arg);
+        } else if (strcmp(line,"view-pick")==0 && arg) {
+            cmd_workspace_view_pick(arg);
         } else if (strcmp(line,"timber-edit-read")==0 && arg) {
             cmd_timber_edit_read(arg);
         } else if (strcmp(line,"timber-edit-preview")==0 && arg) {
@@ -1202,6 +1210,14 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_timber_edit_confirm(arg);
         } else if (strcmp(line,"timber-edit-cancel")==0) {
             cmd_timber_edit_cancel(arg);
+        } else if (strcmp(line,"boundary-pair-read")==0 && arg) {
+            cmd_boundary_pair_read(arg);
+        } else if (strcmp(line,"boundary-pair-preview")==0 && arg) {
+            cmd_boundary_pair_preview(arg);
+        } else if (strcmp(line,"boundary-pair-confirm")==0) {
+            cmd_boundary_pair_token(arg,false);
+        } else if (strcmp(line,"boundary-pair-cancel")==0) {
+            cmd_boundary_pair_token(arg,true);
         } else if (strcmp(line,"engineering-read")==0 && !arg) {
             cmd_engineering_read();
         } else if (strcmp(line,"engineering-preview")==0 && arg) {

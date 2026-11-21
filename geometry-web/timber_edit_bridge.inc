@@ -104,11 +104,11 @@ static const char *timber_edit_eligibility(const World *w,uint32_t boundary,uint
     if(index<0)return "The selected timber no longer exists";
     const Timber *t=&w->wood.timbers[index];const TimberAnchor *a=&w->wood.anchors[index];
     if(assembly_owned(w,id))return "I42: edit the owning assembly; ordinary timber reuse and batch edits are unavailable";
+    if(boundary_pair_index(w,id)>=0)return "D16a: use the complete boundary-pair editor; this ordinary timber adapter cannot preview a complete group";
     if(!t->placed||!t->auto_length)return "Only ordinary placed D7 timbers are supported";
     const PlacementSurface *p=world_find_placement(w,a->placement_id);
     if(!p||p->boundary_id!=boundary)return "Every selected timber must be on the selected face";
-    /* This base World has no #335 group records. Reject unsupported definitions,
-     * rather than accepting a client-supplied ownership/group eligibility flag. */
+    /* Eligibility comes from World, never a client-supplied ownership/group flag. */
     if(t->role<TIMBER_ROLE_BOUNDARY||t->role>TIMBER_ROLE_CUSTOM||a->span_mode!=SPAN_AUTO||
         (a->anchor_kind!=ANCHOR_AT_LINE&&a->anchor_kind!=ANCHOR_AT_GRID&&a->anchor_kind!=ANCHOR_AT_RULE&&a->anchor_kind!=ANCHOR_AT_EDGE)||
         a->length_direction<0||a->length_direction>3||
@@ -135,6 +135,29 @@ static void timber_edit_json_dimension(const TimberEditDimension *dimension)
     if(dimension->has_override){eng_source_json(&dimension->override_value,source,sizeof source);fputs(source,stdout);}else fputs("null",stdout);
     putchar('}');
 }
+/* I8a impacts reuse the same complete typed definition, including overrides.
+ * Reading these records does not resolve dimensions or alter candidate state. */
+static void json_impact_dimensions(const World *w,int index)
+{
+    TimberEditDefinition definition;timber_edit_get_definition(w,index,&definition);
+    fputs("{\"A\":",stdout);timber_edit_json_dimension(&definition.dimensions[0]);
+    fputs(",\"B\":",stdout);timber_edit_json_dimension(&definition.dimensions[1]);putchar('}');
+}
+static bool json_impact_dimensions_changed(const World *before,int old,const World *after,int now)
+{
+    TimberEditDefinition a,b;timber_edit_get_definition(before,old,&a);timber_edit_get_definition(after,now,&b);
+    for(int field=0;field<2;++field){
+        const TimberEditDimension *x=&a.dimensions[field],*y=&b.dimensions[field];
+        if(x->sourced!=y->sourced)return true;
+        if(!x->sourced){if(x->direct!=y->direct)return true;continue;}
+        char left[640],right[640];
+        if(!eng_source_json(&x->source,left,sizeof left)||!eng_source_json(&y->source,right,sizeof right)||strcmp(left,right)||
+            x->has_override!=y->has_override)return true;
+        if(x->has_override&&(!eng_source_json(&x->override_value,left,sizeof left)||
+            !eng_source_json(&y->override_value,right,sizeof right)||strcmp(left,right)))return true;
+    }
+    return false;
+}
 static void timber_edit_json_row(const World *w,uint32_t boundary,uint32_t id,bool private_id)
 {
     int index=reference_timber_index(w,id);if(index<0){fputs("null",stdout);return;}
@@ -144,7 +167,9 @@ static void timber_edit_json_row(const World *w,uint32_t boundary,uint32_t id,bo
     if(private_id)fputs("{\"handle\":\"new:0\"",stdout);else printf("{\"id\":%u",id);
     printf(",\"eligible\":%s,\"reason\":",reason?"false":"true");if(reason)js_string(reason);else fputs("null",stdout);
     fputs(",\"owner\":",stdout);json_schedule_support_owner(w,id);
-    printf(",\"groups\":[],\"groupsKnown\":true,\"placed\":%s,\"placementOrder\":\"%llu\",\"definition\":{\"A\":",t->placed?"true":"false",(unsigned long long)a->order);
+    fputs(",\"groups\":[",stdout);int pair=boundary_pair_index(w,id);
+    if(pair>=0)printf("{\"kind\":\"boundary-pair\",\"first\":%u,\"second\":%u}",w->wood.boundary_pairs[pair].first,w->wood.boundary_pairs[pair].second);
+    printf("],\"groupsKnown\":true,\"placed\":%s,\"placementOrder\":\"%llu\",\"definition\":{\"A\":",t->placed?"true":"false",(unsigned long long)a->order);
     timber_edit_json_dimension(&definition.dimensions[0]);fputs(",\"B\":",stdout);timber_edit_json_dimension(&definition.dimensions[1]);
     fputs(",\"role\":",stdout);js_string(timber_role_name(t->role));printf(",\"priority\":%lld,\"priorityText\":",(long long)t->cut_priority);
     timber_edit_json_priority(t->cut_priority);printf(",\"placement\":{\"on\":%u,\"anchor\":",a->placement_id);
@@ -358,6 +383,7 @@ static void cmd_timber_edit_preview(const char *path)
 {
     identity_drop_serials();
     if(g_history.grouping){eng_bridge_error("HISTORY_GROUP","Finish the existing history group first");return;}
+    if((g_preview.ready&&g_preview.pair_batch)||g_pair_interactive.active){eng_bridge_error("PENDING","Finish or cancel the existing boundary-pair operation first");return;}
     GeoJson j;char *text;if(!timber_edit_document(path,&j,&text))return;
     TimberEditCall call={0};char schema[40];uint64_t revision;int operations=geo_json_member(&j,0,"operations");
     if(!geo_json_keys(&j,0,"schema,expectedRevision,boundaryId,operations","")||!geo_json_string(&j,geo_json_member(&j,0,"schema"),schema,sizeof schema)||strcmp(schema,"timber-edit-transaction/1")||

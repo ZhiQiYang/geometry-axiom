@@ -12,7 +12,13 @@ const OUTPUT = path.resolve(process.argv[2]);
 const NAMES = [
   'R362_SPACE_FACES_ACTION has one model action and no single wall-height action',
   'R362_SPACE_FACES_DISPATCH delegates the clicked row to the existing model-update owner',
-  'R362_SPACE_PLAN_ACTION preserves the existing saved-source wall-height entry'
+  'R362_SPACE_PLAN_ACTION preserves the existing saved-source wall-height entry',
+  'activation keeps a current scene source usable for the next step',
+  'anything beyond the single activation step leaves the source stale',
+  'an activation that records no history step keeps the source as it was',
+  'activation at the undo-history capacity still keeps the source current',
+  'at capacity, a second step around the activation still leaves the source stale',
+  'a source that was already stale is not re-pinned by activation'
 ];
 const CASES = [
   {id:'R362_SPACE_M01_FACES_HEIGHT_ALIAS', test:NAMES[0], oracle:'R362_SPACE_FACES_NO_HEIGHT_ACTION',
@@ -41,13 +47,13 @@ function run(row, phase) {
     assert.equal(matches.length, 1, row.id + ' ' + phase + ' one ' + name + ' summary');
     assert.equal(Number(matches[0][1]), value, row.id + ' ' + phase + ' exact ' + name);
   };
-  count('tests',3); count('skipped',0); count('cancelled',0); count('todo',0);
+  count('tests',9); count('skipped',0); count('cancelled',0); count('todo',0);
   const results = [...log.matchAll(/^(ok|not ok) \d+ - (.+)$/gm)];
   assert.deepEqual(results.map(match => match[2]), NAMES, row.id + ' complete test names/order');
   const failures = [...log.matchAll(/^[ \t]*not ok \d+ - (.+)$/gm)];
   assert.ok(!/SyntaxError|ReferenceError|MODULE_NOT_FOUND|ENOENT|ERR_TEST_FAILURE/.test(log), row.id + ' infrastructure is not a kill');
   if (phase === 'mutant') {
-    assert.equal(r.status, 1, row.id + ' mutant exit'); count('pass',2); count('fail',1);
+    assert.equal(r.status, 1, row.id + ' mutant exit'); count('pass',8); count('fail',1);
     assert.deepEqual(failures.map(match => match[1]), [row.test], row.id + ' only the specified test may fail');
     const at = results.findIndex(match => match[1] === 'not ok');
     assert.ok(at >= 0, row.id + ' specified failure must be top-level');
@@ -56,7 +62,7 @@ function run(row, phase) {
     assert.ok(diagnostic.includes(row.oracle), row.id + ' exact oracle: ' + row.oracle);
     assert.equal((log.match(/code:\s*['"]?ERR_ASSERTION['"]?/g) || []).length, 1, row.id + ' no other assertion failure');
   } else {
-    assert.equal(r.status, 0, row.id + ' ' + phase + ': ' + log); count('pass',3); count('fail',0);
+    assert.equal(r.status, 0, row.id + ' ' + phase + ': ' + log); count('pass',9); count('fail',0);
     assert.deepEqual(failures, [], row.id + ' ' + phase + ' no hidden failures');
   }
   return {exit:r.status,sourceSha256:hash(fs.readFileSync(candidate)),logSha256:hash(log),log};

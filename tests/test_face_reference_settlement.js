@@ -132,3 +132,115 @@ test('a presentation retired during a held successful read receives no late rend
   try{await h.entered;h.retire();}finally{h.release();}await pending;
   assert.equal(h.loads,1);assert.deepEqual(h.paints,[]);assert.equal(h.oc.edit.bid,2);assert.equal(h.oc.busy,false);
 });
+
+/* ---- 面內角材列的三個顯示面回歸（2026-11-16 雲端實機核對 D04／D16 的發現 10～12）----
+ * 執行 app.js 裡實際的函式本文（從原始碼取出、在 vm 裡跑）並核對 app.css 的規則文字；不跑瀏覽器、不跑原生幾何。
+ * 滑鼠實際點得到與否由核對紀錄（evidence/l4-cloud-20261116）的瀏覽器腳本另外量。 */
+{
+  const web = path.join(__dirname, '..', 'geometry-web');
+  const app = fs.readFileSync(path.join(web, 'app.js'), 'utf8'), css = fs.readFileSync(path.join(web, 'app.css'), 'utf8');
+
+  /* 取出一個頂層 function 的完整本文（以大括號配對；這幾個函式裡沒有不成對的括號字元）。 */
+  function source(name) {
+    const start = app.indexOf(`\nfunction ${name}(`);
+    assert.notEqual(start, -1, `${name} 不在 app.js`);
+    assert.equal(app.indexOf(`\nfunction ${name}(`, start + 1), -1, `${name} 定義了不只一次`);
+    let depth = 0;
+    for (let i = app.indexOf('{', start); i < app.length; i++) {
+      if (app[i] === '{') depth++;
+      else if (app[i] === '}' && --depth === 0) return app.slice(start + 1, i + 1);
+    }
+    assert.fail(`${name} 的括號沒有配對`);
+  }
+  function load(names, globals) {
+    const context = vm.createContext({ ...globals });
+    vm.runInContext(names.map(source).join('\n') + `\nthis.api={${names.join(',')}};`, context);
+    return context.api;
+  }
+  const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  test('料單列與圖層列一樣，滑鼠移上去或鍵盤聚焦時才露出刪除鈕', () => {
+    const block = css.match(/@media \(hover: hover\) and \(pointer: fine\) \{\s*\.face-layer-del \{ opacity: 0; pointer-events: none; \}([\s\S]*?)\n\}/);
+    assert.ok(block, '找不到「可懸停的裝置上先隱藏刪除鈕」那一段');
+    const reveal = block[1].match(/:is\(([^)]*)\):(hover|focus-within) \.face-layer-del/g) || [];
+    assert.equal(reveal.length, 2, '露出規則應該有 :hover 與 :focus-within 兩條');
+    for (const rule of reveal) {
+      const rows = rule.match(/:is\(([^)]*)\)/)[1].split(',').map(s => s.trim());
+      for (const row of ['.face-layer-row', '.fl-row', '.space-boundary-button', '.timber-schedule-row'])
+        assert.ok(rows.includes(row), `${rule} 沒有包含 ${row}`);
+    }
+    assert.match(block[1], /\.face-layer-del:focus-visible \{ opacity: 1; pointer-events: auto; \}/);
+    // 料單列確實帶著這顆鈕（否則上面的規則沒有對象）
+    assert.match(app, /r\.className = "timber-schedule-row"/);
+    assert.match(app, /del\.className = "face-layer-del"; del\.title = `刪除角材 \$\{t2\.id\}`/);
+  });
+
+  test('圖層清單的角材列寫出定位引用的名稱，取自 timber.definition.anchor', () => {
+    const entries = [
+      { value: 'at-face e0', label: '外輪廓邊 0', occupied: 90 },
+      { value: 'at-line guide 1', label: '參考線 1 · 沿 v · u=500 mm', occupied: 1 },
+      { value: 'at-line guide 2', label: '參考線 2 · <主支>&"中線"', occupied: null },
+    ];
+    const seen = [];
+    const { feTimberLayerSub } = load(['feTimberAnchorLabel', 'feTimberLayerSub'], {
+      referenceAnchorEntries: (bid, surf) => { seen.push([bid, surf]); return entries; },
+      ReferenceWorkspace: { escape },
+    });
+    assert.equal(feTimberLayerSub(7, 3, { id: 90, definition: { anchor: 'at-face e0' } }), '定位 外輪廓邊 0');
+    assert.equal(feTimberLayerSub(7, 3, { id: 1, definition: { anchor: 'at-line guide 1' } }), '定位 參考線 1 · 沿 v · u=500 mm');
+    assert.deepEqual(seen, [[7, 3], [7, 3]], '要用這一面與它的承載面查名稱');
+    // 清單列用 innerHTML 組：名稱裡的符號要跳脫
+    assert.equal(feTimberLayerSub(7, 3, { id: 2, definition: { anchor: 'at-line guide 2' } }), '定位 參考線 2 · &lt;主支&gt;&amp;&quot;中線&quot;');
+    // 對照表裡沒有的引用式照原文顯示（同樣跳脫）；沒有定義時才是「—」
+    assert.equal(feTimberLayerSub(7, 3, { id: 3, definition: { anchor: 'at-face t<9>' } }), '定位 at-face t&lt;9&gt;');
+    assert.equal(feTimberLayerSub(7, 3, { id: 4 }), '定位 —');
+    assert.equal(feTimberLayerSub(7, 3, { id: 5, definition: { anchor: '' } }), '定位 —');
+    // 清單真的用這個函式，而且不再讀角材列上不存在的 anchor 欄位
+    assert.match(app, /row\(icon\('timber'\),`角材 \$\{timber\.id\}`,feTimberLayerSub\(e\.bid,feSurf\(e\.bid\),timber\),/);
+    assert.doesNotMatch(app, /timber\.anchor\s*\|\|/);
+  });
+
+  test('浮動列和左上角的選取提示重疊時移到提示下方，沒有重疊時不動', () => {
+    const { feBarClearOfSummary } = load(['feBarClearOfSummary'], {});
+    const summary = { left: 12, right: 245, top: 12, bottom: 74 }, W = 142, H = 36;
+    // 放大後：浮動列被夾在視窗上緣（中心 y=24），整條在提示底下 → 移到提示下方 6 px
+    assert.equal(feBarClearOfSummary(150, 24, W, H, summary), 74 + H / 2 + 6);
+    // 顯示全部時只壓到幾個像素也算重疊
+    assert.equal(feBarClearOfSummary(150, 86, W, H, summary), 98);
+    // 移過之後不再重疊，再算一次位置不變
+    assert.equal(feBarClearOfSummary(150, 98, W, H, summary), 98);
+    // 水平方向沒有碰到提示（提示右緣 245；浮動列左緣 = 中心 - 71）
+    assert.equal(feBarClearOfSummary(245 + 71, 24, W, H, summary), 24);
+    assert.equal(feBarClearOfSummary(245 + 70, 24, W, H, summary), 98);
+    // 垂直方向剛好貼齊不算重疊
+    assert.equal(feBarClearOfSummary(150, 74 + H / 2, W, H, summary), 74 + H / 2);
+    // 沒有提示（隱藏或不在畫面上）時不動
+    assert.equal(feBarClearOfSummary(150, 24, W, H, null), 24);
+  });
+
+  test('擺放浮動列時先夾在視窗內，再避開選取提示；提示不可見時不避', () => {
+    const calls = [], style = {};
+    const viewport = { getBoundingClientRect: () => ({ left: 260, top: 56, width: 820, height: 812 }) };
+    const bar = { hidden: false, style, offsetWidth: 142, offsetHeight: 36 };
+    const summaryBox = { left: 272, right: 505, top: 68, bottom: 130, width: 233, height: 62 };
+    const summary = { hidden: false, getBoundingClientRect: () => summaryBox };
+    const elements = { feActionBar: bar, feOpPanel: { hidden: true }, faceEditorViewport: viewport, feSelectionSummary: summary };
+    let anchor = { x: 42, y: -300 };
+    const { fePlaceOverlays } = load(['fePlaceOverlays'], {
+      window: {}, $: id => elements[id], feSelAnchor: () => anchor, Math,
+      feBarClearOfSummary: (...args) => { calls.push(args); return 777; },
+    });
+    fePlaceOverlays();
+    // x 夾在 150；y 先夾在 24；提示換成視窗內座標
+    assert.deepEqual(JSON.parse(JSON.stringify(calls)), [[150, 24, 142, 36, { left: 12, right: 245, top: 12, bottom: 74 }]]);
+    assert.deepEqual({ ...style }, { left: '150px', top: '777px' });
+    // 提示被隱藏、或不在版面上（寬高為 0）時傳 null
+    calls.length = 0; summary.hidden = true; fePlaceOverlays();
+    assert.equal(calls[0][4], null);
+    calls.length = 0; summary.hidden = false; Object.assign(summaryBox, { width: 0, height: 0 }); fePlaceOverlays();
+    assert.equal(calls[0][4], null);
+    // 沒有選取錨點時整條收起來，不去算位置
+    calls.length = 0; anchor = null; fePlaceOverlays();
+    assert.equal(calls.length, 0); assert.equal(bar.hidden, true);
+  });
+}

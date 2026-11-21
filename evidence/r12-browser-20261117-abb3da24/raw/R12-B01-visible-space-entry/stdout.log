@@ -1,0 +1,16 @@
+SPACE_SCOPE {"mode":"partial","filters":["GEOMETRY_SPACE_PROFILE_ONLY"],"included":["profile-space"],"omitted":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","projection-close","timber-material","timber-source-guards"],"url":"http://127.0.0.1:54751/","feedbackDirectory":"/tmp/r12-browser-resources-h81zsdjd/feedback"}
+PASS server serves the intended space-model release
+PASS current release explicitly supports timber preview and engineering sources
+PASS R12_SECTION_ENTRY
+PASS R12_SECTION_PREVIEW_ZERO_WRITE
+PASS R12_SECTION_OUTLINE
+PASS R12_SECTION_MEMBERS
+PASS R12_RUN_PREVIEW_ZERO_WRITE
+PASS R12_RUN_ONE_HISTORY
+PASS R12_RUN_WORLD_BOUNDS
+PASS R12_RUN_LOCAL_AND_CORNER
+FAIL R12_SPACE_ENTRY
+FAIL complete browser flow "Error: R12_SPACE_ENTRY undefined\n    at check (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/profile_space_test.js:145:64)\n    at /tmp/r12-browser-source-7692a_pf/repo/geometry-web/profile_space_test.js:265:7\n    at async Object.run (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/space_test_floor.js:35:9)\n    at async run (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/space_model_test.js:1264:5)"
+FAIL space group completeness ["Space run did not finish","Group profile-space did not complete","Group profile-space: expected 60 passed assertions, got 8 passed / 1 failed","Group browser-health did not complete","Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"]
+SPACE_RESULT {"schema":"geometry-space-result/1","scope":{"mode":"partial","filters":["GEOMETRY_SPACE_PROFILE_ONLY"],"included":["profile-space"],"omitted":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","projection-close","timber-material","timber-source-guards"],"url":"http://127.0.0.1:54751/","feedbackDirectory":"/tmp/r12-browser-resources-h81zsdjd/feedback"},"completed":false,"groups":{"setup":{"expected":2,"passed":2,"failed":0,"completed":true},"profile-space":{"expected":60,"passed":8,"failed":1,"completed":false},"browser-health":{"expected":2,"passed":0,"failed":0,"completed":false}},"completenessProblems":["Space run did not finish","Group profile-space did not complete","Group profile-space: expected 60 passed assertions, got 8 passed / 1 failed","Group browser-health did not complete","Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"],"passed":10,"failed":3,"exceptions":[],"consoleErrors":[]}
+RESULT 10 passed / 3 failed; completed: false; scope: partial; omitted groups: space-height-library,projection-lifecycle,projection-placement,font-layout,space-flow,projection-close,timber-material,timber-source-guards; artifacts: /tmp/claude-0/-home-user-geometry-axiom/e67f085c-2806-57ae-8fce-a53201b04285/scratchpad/ev/browser4/R12-B01-visible-space-entry/browser

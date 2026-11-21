@@ -1,0 +1,55 @@
+const L = require('./lib.js');
+exports.L = L;
+exports.fields = p => p.$$eval('#paramFields [data-param-field]', rows => rows.map(r => ({ id: r.dataset.paramField, name: r.querySelector('[data-name]').value, kind: r.querySelector('[data-type]')?.value, input: r.querySelector('[data-input]').value, shown: (r.querySelector('.param-result, .param-value, [data-result]')?.innerText || r.innerText.replace(/\s+/g, ' ').slice(0, 80)).trim(), error: r.classList.contains('is-error') })));
+exports.foot = p => p.evaluate(() => ({ status: document.getElementById('paramStatus')?.innerText.trim(), result: document.getElementById('paramResult')?.innerText.replace(/\s+/g,' ').trim().slice(0,900), confirm: { text: document.getElementById('paramConfirm')?.innerText, disabled: document.getElementById('paramConfirm')?.disabled }, badge: document.querySelector('.param-badge')?.innerText }));
+exports.row = (p, i) => p.locator('#paramFields [data-param-field]').nth(i);
+exports.gotIt = async p => { const k = p.getByRole('button', { name: '知道了' }); for (let i = 0; i < 3; i++) if (await k.first().isVisible().catch(()=>false)) await k.first().click().catch(()=>{}); };
+exports.newParam = async p => { await p.click('#btnCreateObject'); await p.waitForTimeout(300); await p.click('#btnNewParameter'); await p.waitForTimeout(1000); await exports.gotIt(p); };
+exports.params = p => p.evaluate(async () => (await apiRequest('objects')).parameters.map(x => ({ id: x.id, name: x.name, fields: x.card.fields.map(f => ({ id: f.id, name: f.name, type: f.type, value: f.value.num + (f.value.den === '1' ? '' : '/' + f.value.den) + ' ' + f.value.unit })) })));
+exports.grids = p => p.evaluate(async () => ((await apiRequest('objects')).gridSystems || []).map(g => ({ id: g.id, name: g.name, u: g.uDefinition, v: g.vDefinition, mainAlong: g.mainAlong })));
+exports.impact = p => p.evaluate(() => document.querySelector('.reference-impact[open]')?.innerText.replace(/\s+/g, ' ').slice(0, 1200) || null);
+// 兩張卡:板材(寬 915、長 1830)、骨架(間距=板材.寬/3、半寬=板材.寬/2、支數 7)
+exports.twoCards = async (p, r = {}) => {
+  const { row, fields, foot } = exports;
+  await exports.newParam(p);
+  await p.fill('#paramName', '板材'); await p.fill('#paramQuick', '(915,1830)'); await p.waitForTimeout(300);
+  r.quickHint = await p.textContent('#paramQuickHint').catch(() => null);
+  await p.press('#paramQuick', 'Enter'); await p.waitForTimeout(1200);
+  r.card1Fields = await fields(p); r.card1Foot = await foot(p);
+  r.draftCard = await p.$$eval('.parameter-card.is-draft', es => es.map(e => e.textContent.replace(/\s+/g, ' ').trim()));
+  await p.click('#paramConfirm'); await p.waitForTimeout(1500);
+  r.card1After = await foot(p);
+  await exports.newParam(p);
+  await p.fill('#paramName', '骨架');
+  await row(p, 0).locator('[data-name]').fill('間距');
+  await row(p, 0).locator('[data-input]').click(); await p.waitForTimeout(300);
+  r.chips = await p.$$eval('.param-chip', es => es.filter(e => e.offsetParent).map(e => e.innerText.replace(/\s+/g, ' ')));
+  await row(p, 0).locator('[data-input]').fill('');
+  await p.locator('.param-chip:visible', { hasText: '板材.寬' }).first().click(); await p.waitForTimeout(300);
+  await row(p, 0).locator('[data-input]').press('End'); await row(p, 0).locator('[data-input]').type('/3'); await p.waitForTimeout(300);
+  await p.click('#paramAdd'); await p.waitForTimeout(400);
+  await row(p, 1).locator('[data-name]').fill('半寬');
+  await row(p, 1).locator('[data-input]').click(); await row(p, 1).locator('[data-input]').fill('');
+  await p.locator('.param-chip:visible', { hasText: '板材.寬' }).first().click(); await p.waitForTimeout(300);
+  await row(p, 1).locator('[data-input]').press('End'); await row(p, 1).locator('[data-input]').type('/2'); await p.waitForTimeout(300);
+  await p.click('#paramAdd'); await p.waitForTimeout(400);
+  await row(p, 2).locator('[data-name]').fill('支數');
+  await row(p, 2).locator('[data-type]').selectOption('count');
+  await row(p, 2).locator('[data-input]').fill('=1/0'); await p.waitForTimeout(1500);
+  r.divZeroFields = await fields(p); r.divZeroFoot = await foot(p);
+  r.divZeroErrorLine = await p.$$eval('[data-error]', es => es.map(e => e.querySelector('p')?.innerText));
+  if (r.shot) await r.shot('R20-1-div-zero');
+  await row(p, 2).locator('[data-input]').fill('7'); await p.waitForTimeout(1500);
+  r.card2Fields = await fields(p); r.card2Foot = await foot(p);
+  await p.click('#paramConfirm'); await p.waitForTimeout(1500);
+  r.paramsAfterCreate = await exports.params(p);
+  return r;
+};
+// 畫布上的卡片可能被平移到視窗外:先「縮放至全部」再用滑鼠點卡片中心
+exports.clickCard = async (p, kind, id, dbl = false) => {
+  await p.click('#btnZoom').catch(() => {}); await p.waitForTimeout(500);
+  const box = await p.evaluate(([kind, id]) => { const e = document.querySelector(`.ocard[data-kind="${kind}"][data-id="${id}"]`); if (!e) return null; const r = e.getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + Math.min(18, r.height / 2), w: r.width, h: r.height }; }, [kind, id]);
+  if (!box) return null;
+  if (dbl) await p.mouse.dblclick(box.x, box.y); else await p.mouse.click(box.x, box.y);
+  await p.waitForTimeout(900); return box;
+};

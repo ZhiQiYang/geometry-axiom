@@ -1,0 +1,132 @@
+{
+ "before": [
+  {
+   "name": "R20 引用參數",
+   "uStep": 400,
+   "uRef": {
+    "kind": "parameter",
+    "parameterId": 2,
+    "fieldId": 1
+   },
+   "vStep": 600,
+   "vStagger": 300
+  }
+ ],
+ "cardBox": {
+  "x": 747.3593444824219,
+  "y": 618.8214416503906,
+  "w": 147.99114990234375,
+  "h": 22.76788330078125
+ },
+ "inspector": {
+  "name": "R20 引用參數",
+  "uStep": "400",
+  "uReadOnly": true,
+  "vStep": "600",
+  "text": "網格來源 R20 引用參數 完整工作區 建立配置 名稱 0 個配置使用此來源 · 格線向兩端無限延伸 X / u → 間距 mm 第 0 線座標 0 mm · 引用參數，於完整工作區改綁 Y / v ↓ 間距 mm 第 0 線座標 0 mm · 相鄰格子相位差 300 mm 固定規則，持續重複 主支方向：未設定；排法與基準可在完整工作區調整。 預覽變更 修改間距會一起預覽使用此來源的配置。 刪除來源"
+ },
+ "impact": "確認連動變更 更新網格來源「D18 改過名稱」 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 進階：完整指令 網格來源 · 1 網格系統 1 原：「R20 引用參數」；主支方向未設定；u 無限重複：間距 400 mm，第 0 線 0 mm；v 無限重複：間距 600 mm，第 0 線 0 mm，相鄰格子相位差 300 mm 新：「D18 改過名稱」；主支方向未設定；u 無限重複：間距 400 mm，第 0 線 0 mm；v 無限重複：間距 600 mm，第 0 線 0 mm，相鄰格子相位差 300 mm 原來源 1：下一 ruleKey 1；0 項來源規則。 候選來源 1：下一 ruleKey 1；0 項來源規則。 取消，保留原狀 確認套用",
+ "afterCancel": [
+  {
+   "name": "R20 引用參數",
+   "uStep": 400,
+   "uRef": {
+    "kind": "parameter",
+    "parameterId": 2,
+    "fieldId": 1
+   },
+   "vStep": 600,
+   "vStagger": 300
+  }
+ ],
+ "inspectorAfterCancel": {
+  "name": "D18 改過名稱",
+  "uStep": "400",
+  "uReadOnly": true,
+  "vStep": "600",
+  "text": "網格來源 R20 引用參數 完整工作區 建立配置 名稱 0 個配置使用此來源 · 格線向兩端無限延伸 X / u → 間距 mm 第 0 線座標 0 mm · 引用參數，於完整工作區改綁 Y / v ↓ 間距 mm 第 0 線座標 0 mm · 相鄰格子相位差 300 mm 固定規則，持續重複 主支方向：未設定；排法與基準可在完整工作區調整。 預覽變更 已取消；場景保持原狀 刪除來源"
+ },
+ "afterConfirm": [
+  {
+   "name": "D18 改過名稱",
+   "uStep": 400,
+   "uRef": {
+    "kind": "parameter",
+    "parameterId": 2,
+    "fieldId": 1
+   },
+   "vStep": 600,
+   "vStagger": 300
+  }
+ ],
+ "status": [
+  "-: 有未保存的變更",
+  "-: 已選 1 個物件",
+  "giStatus: 變更已保存。可使用復原或重做。",
+  "-: 尚未檢查"
+ ],
+ "cardText": "D18 改過名稱網格來源 · 無限延伸D18 改過名稱 u：無限重複 · 間距 400 mm（參數引用），基準 0 mm v：無限重複 · 間距 600 mm，基準 0 mm，相鄰格子相位差 300 mm 卡片僅示意排法，沒有幾何範圍。X 間距 400 · Y 間距 600 mm",
+ "afterUndo": [
+  {
+   "name": "R20 引用參數",
+   "uStep": 400,
+   "uRef": {
+    "kind": "parameter",
+    "parameterId": 2,
+    "fieldId": 1
+   },
+   "vStep": 600,
+   "vStagger": 300
+  }
+ ],
+ "afterRedo": [
+  {
+   "name": "D18 改過名稱",
+   "uStep": 400,
+   "uRef": {
+    "kind": "parameter",
+    "parameterId": 2,
+    "fieldId": 1
+   },
+   "vStep": 600,
+   "vStagger": 300
+  }
+ ],
+ "upstreamPreview": "套用後的影響 板材.寬 1200 mm → 900 mm 骨架.間距 400 mm → 300 mm 骨架.半寬 600 mm → 450 mm 受影響物件：網格來源 1 直接使用處：骨架.間距、骨架.半寬",
+ "afterUpstream": [
+  {
+   "name": "D18 改過名稱",
+   "uStep": 300,
+   "uRef": {
+    "kind": "parameter",
+    "parameterId": 2,
+    "fieldId": 1
+   },
+   "vStep": 600,
+   "vStagger": 300
+  }
+ ],
+ "saved": "download",
+ "errsA": [],
+ "reopened": [
+  {
+   "name": "D18 改過名稱",
+   "uStep": 300,
+   "uRef": {
+    "kind": "parameter",
+    "parameterId": 2,
+    "fieldId": 1
+   },
+   "vStep": 600,
+   "vStagger": 300
+  }
+ ],
+ "reopenedInspector": {
+  "name": "D18 改過名稱",
+  "uStep": "300",
+  "uReadOnly": true,
+  "vStep": "600",
+  "text": "網格來源 D18 改過名稱 完整工作區 建立配置 名稱 0 個配置使用此來源 · 格線向兩端無限延伸 X / u → 間距 mm 第 0 線座標 0 mm · 引用參數，於完整工作區改綁 Y / v ↓ 間距 mm 第 0 線座標 0 mm · 相鄰格子相位差 300 mm 固定規則，持續重複 主支方向：未設定；排法與基準可在完整工作區調整。 預覽變更 修改間距會一起預覽使用此來源的配置。 刪除來源"
+ },
+ "errsB": []
+}
