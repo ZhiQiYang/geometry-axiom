@@ -185,7 +185,17 @@
   const interrupt = () => { const g = gesture; if (g) { cancel(); finish(g); } };
   window.addEventListener('blur',interrupt);
   window.addEventListener('resize',cancel);
-  for (const type of ['wheel','scroll']) window.addEventListener(type,cancel,{capture:true,passive:true});
+  function scrollOrWheel(event) {
+    const g = gesture;
+    if (!g || g.phase === 'cancelled') return;
+    // Opening a sheet can scroll/focus the sheet itself. That is not a
+    // viewport interruption and must not dismiss the menu during the hold.
+    const sheet = document.getElementById('canvasCtxMenu');
+    if (g.phase === 'menu' && sheet?.contains(event.target)) return;
+    cancel();
+  }
+  for (const type of ['wheel','scroll'])
+    window.addEventListener(type,scrollOrWheel,{capture:true,passive:true});
   document.addEventListener('visibilitychange',() => { if (document.hidden) interrupt(); });
   for (const type of ['geometry-definition-changed','project-info-changed','project-local-history'])
     window.addEventListener(type,sync);
