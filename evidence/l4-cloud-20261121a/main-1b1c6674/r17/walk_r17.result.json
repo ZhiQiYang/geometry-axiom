@@ -1,0 +1,1351 @@
+{
+ "steps": [
+  {
+   "name": "1-open-step-scene",
+   "scene": "boundary 1 outline 0,0 500,0 500,13 1000,13 1000,1000 0,1000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\ncanvas-pos boundary 1 60 60\n"
+  },
+  {
+   "name": "3-canvas-pick-e2",
+   "clickedPx": {
+    "x": 840.0000000000002,
+    "y": 105.14666525000001
+   },
+   "anchor2": "e2",
+   "status": "第 2 支已選 e2；尚未提交，請核對兩列後按預覽。"
+  },
+  {
+   "name": "4-preview",
+   "text": "確認連動變更\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary-pair begin 1 2 timber 1 27 20 role boundary timber 2 27 20 role boundary place 1 on 1 at-face e0 +u +n place 2 on 1 at-face e2 +u +n boundary-pair end\n互頂組與下游的完整影響\n互頂組 1＋2 · 新增\n角材 1 原：不存在\n角材 1 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 2 原：不存在\n角材 2 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原中央接觸：無接觸記錄\n新中央接觸：角材 1 END ↔ 角材 2 START；平面 500；實際接觸 [13,27] mm\n角材 1 · 組員\n原：不存在\n新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原端面接觸：無接觸記錄\n新端面接觸：START @ 0；外輪廓邊 e5；實際接觸 [0,27] mm；FIXED\n新端面接觸：END @ 500；外輪廓邊 e1；實際接觸 [0,13] mm；FIXED\n新端面接觸：END @ 500；角材 2；實際接觸 [13,27] mm\n完整來源定義\n角材 2 · 組員\n原：不存在\n新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原端面接觸：無接觸記錄\n新端面接觸：START @ 500；角材 1；實際接觸 [13,27] mm\n新端面接觸：END @ 1000；外輪廓邊 e3；實際接觸 [13,40] mm；FIXED\n完整來源定義\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n1／面 1 · 新增身分\t尚未存在 → 13\t尚未存在 → 500\t不存在 → [0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n2／面 1 · 新增身分\t尚未存在 → 26\t尚未存在 → 500\t不存在 → [500, 13, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n取消，保留原狀\n確認套用",
+   "nodes": [
+    {
+     "pair": "1:2",
+     "member": null,
+     "text": "互頂組 1＋2 · 新增角材 1 原：不存在角材 1 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]角材 2 原：不存在角材 2 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]原中央接觸：無接觸記錄新中央接觸：角材 1 END ↔ 角"
+    },
+    {
+     "pair": null,
+     "member": "1",
+     "text": "角材 1 原：不存在角材 1 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]"
+    },
+    {
+     "pair": null,
+     "member": "2",
+     "text": "角材 2 原：不存在角材 2 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]"
+    }
+   ]
+  },
+  {
+   "name": "5a-cancel",
+   "status": "已取消；場景保持原狀",
+   "formStillOpen": true
+  },
+  {
+   "name": "5b-confirm",
+   "timberLines": [
+    "requires boundary-pair/1",
+    "boundary-pair begin 1 2",
+    "timber 1 27 20 role boundary",
+    "timber 2 27 20 role boundary",
+    "place 1 on 1 at-face e0 +u +n",
+    "place 2 on 1 at-face e2 +u +n",
+    "boundary-pair end"
+   ],
+   "undoDelta": 1,
+   "redo": 0,
+   "revision": [
+    "62",
+    "63"
+   ]
+  },
+  {
+   "name": "6-select-member",
+   "selected": "互頂組 1＋2兩支壁邊材是一筆操作；編輯保留原成員身分，刪除須整組預覽。編輯互頂組 整組刪除…"
+  },
+  {
+   "name": "6a-edit-loaded",
+   "op": "編輯互頂組 1＋2",
+   "a1": "e0",
+   "a2": "e2"
+  },
+  {
+   "name": "6b-unchanged-redeclare-preview",
+   "dialog": true,
+   "text": "確認連動變更\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary-pair begin 1 2 timber 1 27 20 role boundary timber 2 27 20 role boundary place 1 on 1 at-face e0 +u +n place 2 on 1 at-face e2 +u +n boundary-pair end\n互頂組與下游的完整影響\n互頂組 1＋2 · 組關係保留\n角材 1 原：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 1 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 2 原：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 2 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原中央接觸：角材 1 END ↔ 角材 2 START；平面 500；實際接觸 [13,27] mm\n新中央接觸：角材 1 END ↔ 角材 2 START；平面 500；實際接觸 [13,27] mm\n角材 1 · 組員\n原：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原端面接觸：START @ 0；外輪廓邊 e5；實際接觸 [0,27] mm；FIXED\n原端面接觸：END @ 500；外輪廓邊 e1；實際接觸 [0,13] mm；FIXED\n原端面接觸：END @ 500；角材 2；實際接觸 [13,27] mm\n新端面接觸：START @ 0；外輪廓邊 e5；實際接觸 [0,27] mm；FIXED\n新端面接觸：END @ 500；外輪廓邊 e1；實際接觸 [0,13] mm；FIXED\n新端面接觸：END @ 500；角材 2；實際接觸 [13,27] mm\n完整來源定義\n角材 2 · 組員\n原：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原端面接觸：START @ 500；角材 1；實際接觸 [13,27] mm\n原端面接觸：END @ 1000；外輪廓邊 e3；實際接觸 [13,40] mm；FIXED\n新端面接觸：START @ 500；角材 1；實際接觸 [13,27] mm\n新端面接觸：END @ 1000；外輪廓邊 e3；實際接觸 [13,40] mm；FIXED\n完整來源定義\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n1／面 1 · 身分保留\t13 → 13\t500 → 500\t保持原狀\n2／面 1 · 身分保留\t26 → 26\t500 → 500\t保持原狀\n取消，保留原狀\n確認套用",
+   "status": "尚未提交；兩支角色固定為壁邊材。"
+  },
+  {
+   "name": "6c-section-preview",
+   "text": "確認連動變更\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary-pair begin 1 2 timber 1 27 21 role boundary timber 2 27 21 role boundary place 1 on 1 at-face e0 +u +n place 2 on 1 at-face e2 +u +n boundary-pair end\n互頂組與下游的完整影響\n互頂組 1＋2 · 同組重宣告\n角材 1 原：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 1 新：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 2 原：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 2 新：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原中央接觸：角材 1 END ↔ 角材 2 START；平面 500；實際接觸 [13,27] mm\n新中央接觸：角材 1 END ↔ 角材 2 START；平面 500；實際接觸 [13,27] mm\n角材 1 · 組員\n原：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n新：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":21}}；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原端面接觸：START @ 0；外輪廓邊 e5；實際接觸 [0,27] mm；FIXED\n原端面接觸：END @ 500；外輪廓邊 e1；實際接觸 [0,13] mm；FIXED\n原端面接觸：END @ 500；角材 2；實際接觸 [13,27] mm\n新端面接觸：START @ 0；外輪廓邊 e5；實際接觸 [0,27] mm；FIXED\n新端面接觸：END @ 500；外輪廓邊 e1；實際接觸 [0,13] mm；FIXED\n新端面接觸：END @ 500；角材 2；實際接觸 [13,27] mm\n完整來源定義\n角材 2 · 組員\n原：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n新：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":21}}；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原端面接觸：START @ 500；角材 1；實際接觸 [13,27] mm\n原端面接觸：END @ 1000；外輪廓邊 e3；實際接觸 [13,40] mm；FIXED\n新端面接觸：START @ 500；角材 1；實際接觸 [13,27] mm\n新端面接觸：END @ 1000；外輪廓邊 e3；實際接觸 [13,40] mm；FIXED\n完整來源定義\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n1／面 1 · 身分保留，幾何更新\t13 → 13\t500 → 500\t[0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n2／面 1 · 身分保留，幾何更新\t26 → 26\t500 → 500\t[500, 13, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [500, 13, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n取消，保留原狀\n確認套用"
+  },
+  {
+   "name": "6d-delete-preview",
+   "text": "確認連動變更\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary-pair delete 1 2\n互頂組與下游的完整影響\n互頂組 1＋2 · 整組刪除\n角材 1 原：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 1 新：不存在\n角材 2 原：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 2 新：不存在\n原中央接觸：角材 1 END ↔ 角材 2 START；平面 500；實際接觸 [13,27] mm\n新中央接觸：無接觸記錄\n角材 1 · 組員\n原：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":21}}；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n新：不存在\n原端面接觸：START @ 0；外輪廓邊 e5；實際接觸 [0,27] mm；FIXED\n原端面接觸：END @ 500；外輪廓邊 e1；實際接觸 [0,13] mm；FIXED\n原端面接觸：END @ 500；角材 2；實際接觸 [13,27] mm\n新端面接觸：無接觸記錄\n完整來源定義\n角材 2 · 組員\n原：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":21}}；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n新：不存在\n原端面接觸：START @ 500；角材 1；實際接觸 [13,27] mm\n原端面接觸：END @ 1000；外輪廓邊 e3；實際接觸 [13,40] mm；FIXED\n新端面接觸：無接觸記錄\n完整來源定義\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n1／面 1 · 刪除身分\t13 → 已刪除\t500 → 已刪除\t[0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → 已刪除\n2／面 1 · 刪除身分\t26 → 已刪除\t500 → 已刪除\t[500, 13, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → 已刪除\n取消，保留原狀\n確認套用"
+  },
+  {
+   "name": "8a-missing-second-member",
+   "dialog": false,
+   "status": "請選齊兩條固定外邊，並填寫兩支的正整數截面 A／B。"
+  },
+  {
+   "name": "8b-p1a-rect",
+   "dialog": true,
+   "text": "變更無法套用\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary-pair begin 1 2 timber 1 27 20 role boundary timber 2 27 20 role boundary place 1 on 1 at-face e0 +u +n place 2 on 1 at-face e2 +u +n boundary-pair end\n互頂組與下游的完整影響\n互頂組 1＋2 · 新增\n角材 1 原：不存在\n角材 1 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,1000]，寬向 [0,27]；中線 13，長度 1000；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 2 原：不存在\n角材 2 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,1000]，寬向 [973,1000]；中線 986，長度 1000；世界原點 [0,973,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原中央接觸：無接觸記錄\n新中央接觸：無接觸記錄\n角材 1 · 組員\n原：不存在\n新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [0,1000]，寬向 [0,27]；中線 13，長度 1000；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原端面接觸：無接觸記錄\n新端面接觸：START @ 0；外輪廓邊 e3；實際接觸 [0,27] mm；FIXED\n新端面接觸：END @ 1000；外輪廓邊 e1；實際接觸 [0,27] mm；FIXED\n完整來源定義\n角材 2 · 組員\n原：不存在\n新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [0,1000]，寬向 [973,1000]；中線 986，長度 1000；世界原點 [0,973,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原端面接觸：無接觸記錄\n新端面接觸：START @ 0；外輪廓邊 e3；實際接觸 [973,1000] mm；FIXED\n新端面接觸：END @ 1000；外輪廓邊 e1；實際接觸 [973,1000] mm；FIXED\n完整來源定義\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n1／面 1 · 新增身分\t尚未存在 → 13\t尚未存在 → 1000\t不存在 → [0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n2／面 1 · 新增身分\t尚未存在 → 986\t尚未存在 → 1000\t不存在 → [0, 973, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n角材 1 · D16a\n預期：two real end faces with opposite normals, one plane and positive contact\n實際：timber 1 [0,1000] 與 timber 2 [0,1000] 沒有恰一組相向端點同座標且寬向正長度接觸（寬向交集 0 mm）；P1-A：不互頂即整筆拒絕\n返回修改\n確認套用",
+   "confirmDisabled": true,
+   "status": "輸入尚未保存；預覽確認後才寫入場景。"
+  }
+ ],
+ "checks": {
+  "ENTRY_VISIBLE": {
+   "ok": true,
+   "detail": "新增兩支互頂壁邊材"
+  },
+  "NO_FORMAL_TIMBER_BEFORE_PREVIEW": {
+   "ok": true,
+   "detail": {}
+  },
+  "PREVIEW_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  },
+  "CANCEL_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  },
+  "CONFIRM_ONE_HISTORY": {
+   "ok": true,
+   "detail": {
+    "base": 2,
+    "after": 3
+   }
+  },
+  "CONFIRM_TWO_MEMBERS_GROUP": {
+   "ok": true,
+   "detail": [
+    "requires boundary-pair/1",
+    "boundary-pair begin 1 2",
+    "timber 1 27 20 role boundary",
+    "timber 2 27 20 role boundary",
+    "place 1 on 1 at-face e0 +u +n",
+    "place 2 on 1 at-face e2 +u +n",
+    "boundary-pair end"
+   ]
+  },
+  "PREVIEW2_SAME_AS_PREVIEW1": {
+   "ok": true,
+   "detail": null
+  },
+  "UNDO_REMOVES_BOTH": {
+   "ok": true,
+   "detail": []
+  },
+  "REDO_RESTORES_BOTH": {
+   "ok": true,
+   "detail": [
+    "requires boundary-pair/1",
+    "boundary-pair begin 1 2",
+    "timber 1 27 20 role boundary",
+    "timber 2 27 20 role boundary",
+    "place 1 on 1 at-face e0 +u +n",
+    "place 2 on 1 at-face e2 +u +n",
+    "boundary-pair end"
+   ]
+  },
+  "UNCHANGED_REDECLARE_NO_HISTORY": {
+   "ok": true,
+   "detail": {}
+  },
+  "SECTION_CHANGE_ONE_HISTORY": {
+   "ok": true,
+   "detail": [
+    "requires boundary-pair/1",
+    "boundary-pair begin 1 2",
+    "timber 1 27 21 role boundary",
+    "timber 2 27 21 role boundary",
+    "place 1 on 1 at-face e0 +u +n",
+    "place 2 on 1 at-face e2 +u +n",
+    "boundary-pair end"
+   ]
+  },
+  "DELETE_CANCEL_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  },
+  "DELETE_ONE_HISTORY_BOTH_GONE": {
+   "ok": true,
+   "detail": []
+  },
+  "UNDO_DELETE_EXACT": {
+   "ok": true,
+   "detail": [
+    "requires boundary-pair/1",
+    "boundary-pair begin 1 2",
+    "timber 1 27 21 role boundary",
+    "timber 2 27 21 role boundary",
+    "place 1 on 1 at-face e0 +u +n",
+    "place 2 on 1 at-face e2 +u +n",
+    "boundary-pair end"
+   ]
+  },
+  "COLD_SCENE_EXACT": {
+   "ok": true,
+   "detail": {
+    "before": [
+     "requires boundary-pair/1",
+     "boundary-pair begin 1 2",
+     "timber 1 27 21 role boundary",
+     "timber 2 27 21 role boundary",
+     "place 1 on 1 at-face e0 +u +n",
+     "place 2 on 1 at-face e2 +u +n",
+     "boundary-pair end"
+    ],
+    "cold": [
+     "requires boundary-pair/1",
+     "boundary-pair begin 1 2",
+     "timber 1 27 21 role boundary",
+     "timber 2 27 21 role boundary",
+     "place 1 on 1 at-face e0 +u +n",
+     "place 2 on 1 at-face e2 +u +n",
+     "boundary-pair end"
+    ]
+   }
+  },
+  "COLD_GROUP_VISIBLE": {
+   "ok": true,
+   "detail": "互頂組 1＋2兩支壁邊材是一筆操作；編輯保留原成員身分，刪除須整組預覽。編輯互頂組 整組刪除…"
+  },
+  "FLOAT_BAR_PROBE_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  },
+  "MISSING_MEMBER_NO_WRITE": {
+   "ok": true,
+   "detail": null
+  },
+  "P1A_REFUSED_NAMES_D16A": {
+   "ok": true,
+   "detail": {
+    "dialog": true,
+    "text": "變更無法套用\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary-pair begin 1 2 timber 1 27 20 role boundary timber 2 27 20 role boundary place 1 on 1 at-face e0 +u +n place 2 on 1 at-face e2 +u +n boundary-pair end\n互頂組與下游的完整影響\n互頂組 1＋2 · 新增\n角材 1 原：不存在\n角材 1 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,1000]，寬向 [0,27]；中線 13，長度 1000；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 2 原：不存在\n角材 2 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,1000]，寬向 [973,1000]；中線 986，長度 1000；世界原點 [0,973,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原中央接觸：無接觸記錄\n新中央接觸：無接觸記錄\n角材 1 · 組員\n原：不存在\n新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [0,1000]，寬向 [0,27]；中線 13，長度 1000；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原端面接觸：無接觸記錄\n新端面接觸：START @ 0；外輪廓邊 e3；實際接觸 [0,27] mm；FIXED\n新端面接觸：END @ 1000；外輪廓邊 e1；實際接觸 [0,27] mm；FIXED\n完整來源定義\n角材 2 · 組員\n原：不存在\n新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":20}}；長軸區間 [0,1000]，寬向 [973,1000]；中線 986，長度 1000；世界原點 [0,973,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n原端面接觸：無接觸記錄\n新端面接觸：START @ 0；外輪廓邊 e3；實際接觸 [973,1000] mm；FIXED\n新端面接觸：END @ 1000；外輪廓邊 e1；實際接觸 [973,1000] mm；FIXED\n完整來源定義\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n1／面 1 · 新增身分\t尚未存在 → 13\t尚未存在 → 1000\t不存在 → [0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n2／面 1 · 新增身分\t尚未存在 → 986\t尚未存在 → 1000\t不存在 → [0, 973, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n角材 1 · D16a\n預期：two real end faces with opposite normals, one plane and positive contact\n實際：timber 1 [0,1000] 與 timber 2 [0,1000] 沒有恰一組相向端點同座標且寬向正長度接觸（寬向交集 0 mm）；P1-A：不互頂即整筆拒絕\n返回修改\n確認套用",
+    "confirmDisabled": true,
+    "status": "輸入尚未保存；預覽確認後才寫入場景。"
+   }
+  },
+  "P1A_NO_WRITE": {
+   "ok": true,
+   "detail": null
+  }
+ },
+ "browser": "153.0.8010.12",
+ "pickZoom": null,
+ "memberIds": [
+  1,
+  2
+ ],
+ "savedName": "未命名專案.gcanvas",
+ "savedSha256": "8f3ca88db770dadd95089dba92583e3bda5a2cf1e692ceaaffed0f69025daf55",
+ "errsMain": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "api": [
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222220597
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222220857
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"objects\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222220926
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"surfaces\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222220930
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222221542
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222222459
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222222735
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"objects\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222222808
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"surfaces\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222222809
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222222813
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"line canvas-pos boundary 1 60 60\",\"requestId\":\"006d75db-1749-4fcd-bf55-c156ed8e5555\",\"session\":\"b9deb7a7c8a74847abcc3e00bbe87e11\",\"ack\":[]}",
+   "ok": true,
+   "err": null,
+   "t": 1795222222869
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222223478
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222225688
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"obstacles 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222225693
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"references\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222225698
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222225702
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"source-inspect\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222225734
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222225751
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222227479
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222227516
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222227521
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222235420
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222235456
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222235460
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222235542
+  },
+  {
+   "path": "/boundary-pair/preview",
+   "req": "{\"schema\":\"boundary-pair-transaction/1\",\"boundaryId\":1,\"contextKey\":\"d49807d3ec8a188b8aacad0a18c3c5a6a984eadd036cbc0538102308a0c444c4\",\"expectedRevision\":\"62\",\"",
+   "ok": true,
+   "err": null,
+   "t": 1795222235627
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222236222
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222236252
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222236256
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary-pair-cancel 24 a532e46f6ba1db95ed1d6195a6a1e188e5d606d6cdbf081807bd695e090da1c0\",\"requestId\":\"d1ec0b87-55a6-453f-87de-d337c3f37c9a\",\"session\":\"",
+   "ok": true,
+   "err": null,
+   "t": 1795222236356
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222237270
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222237306
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222237312
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222237386
+  },
+  {
+   "path": "/boundary-pair/preview",
+   "req": "{\"schema\":\"boundary-pair-transaction/1\",\"boundaryId\":1,\"contextKey\":\"d49807d3ec8a188b8aacad0a18c3c5a6a984eadd036cbc0538102308a0c444c4\",\"expectedRevision\":\"62\",\"",
+   "ok": true,
+   "err": null,
+   "t": 1795222237461
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary-pair-confirm 25 cb38b0511898d105a493c4fed99cdd671b5b7eec155b700cced02325a8a4fad7\",\"requestId\":\"b1d6de56-1e55-4e3c-b301-d1d2c57d6774\",\"session\":",
+   "ok": true,
+   "err": null,
+   "t": 1795222238105
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222238119
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"obstacles 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222238125
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"references\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222238130
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222238138
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"section-profile-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222238142
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"source-inspect\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222238186
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222238209
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222238715
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239597
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239638
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239644
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"line undo\",\"requestId\":\"bbb7c671-a2e2-489b-ac6d-94e603b6e8a9\",\"session\":\"b9deb7a7c8a74847abcc3e00bbe87e11\",\"ack\":[\"b1d6de56-1e55-4e3c-b301-d1d2c57d6774\"",
+   "ok": true,
+   "err": null,
+   "t": 1795222239767
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"objects\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239775
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"surfaces\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239779
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239790
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239797
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239799
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"obstacles 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239817
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"section-profile-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239822
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"references\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239822
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239836
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"source-inspect\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222239865
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222240332
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222240951
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222240983
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222240988
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"line redo\",\"requestId\":\"afff49af-03c0-43f0-a8a1-d4f922bedc8e\",\"session\":\"b9deb7a7c8a74847abcc3e00bbe87e11\",\"ack\":[\"bbb7c671-a2e2-489b-ac6d-94e603b6e8a9\"",
+   "ok": true,
+   "err": null,
+   "t": 1795222241095
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"objects\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222241103
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"surfaces\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222241114
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222241120
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222241120
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222241126
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"obstacles 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222241129
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"section-profile-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222241131
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"references\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222241132
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222241136
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"source-inspect\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222241179
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222241665
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222242281
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222242316
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222242322
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222245390
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222246193
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222246224
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222246228
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222246303
+  },
+  {
+   "path": "/boundary-pair/preview",
+   "req": "{\"schema\":\"boundary-pair-transaction/1\",\"boundaryId\":1,\"contextKey\":\"d49807d3ec8a188b8aacad0a18c3c5a6a984eadd036cbc0538102308a0c444c4\",\"expectedRevision\":\"65\",\"",
+   "ok": true,
+   "err": null,
+   "t": 1795222246375
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary-pair-confirm 26 758bbbe0de45e9fe059410a56eeaa65987a141e1a82159ac545d23abccc49e38\",\"requestId\":\"ba80ba4c-43ef-44de-ae2f-36418fa09cb2\",\"session\":",
+   "ok": true,
+   "err": null,
+   "t": 1795222247074
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222247079
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"obstacles 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222247080
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"references\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222247085
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222247089
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"source-inspect\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222247127
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222247179
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222247668
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222248520
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222248550
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222248555
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222249274
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222250506
+  },
+  {
+   "path": "/boundary-pair/preview",
+   "req": "{\"schema\":\"boundary-pair-transaction/1\",\"boundaryId\":1,\"contextKey\":\"d49807d3ec8a188b8aacad0a18c3c5a6a984eadd036cbc0538102308a0c444c4\",\"expectedRevision\":\"65\",\"",
+   "ok": true,
+   "err": null,
+   "t": 1795222250573
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary-pair-confirm 27 f7b6966adc03b72a39f8dede8367f37501ec7a089e2a4a01693ef3c4ec18ee62\",\"requestId\":\"9f38de88-0435-4c94-be56-6d7ea0c79db2\",\"session\":",
+   "ok": true,
+   "err": null,
+   "t": 1795222251297
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222251302
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"obstacles 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222251305
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"section-profile-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222251309
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"references\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222251311
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222251322
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"source-inspect\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222251352
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222251385
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222251889
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222252737
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222252769
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222252773
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222253497
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222254309
+  },
+  {
+   "path": "/boundary-pair/preview",
+   "req": "{\"schema\":\"boundary-pair-transaction/1\",\"boundaryId\":1,\"contextKey\":\"d49807d3ec8a188b8aacad0a18c3c5a6a984eadd036cbc0538102308a0c444c4\",\"expectedRevision\":\"66\",\"",
+   "ok": true,
+   "err": null,
+   "t": 1795222254379
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary-pair-cancel 28 c3d6529919a42516ce684fa1a5f01055c6db52e846b436285d8b5c1263244e84\",\"requestId\":\"3bd8ee92-851b-4d94-8e9e-b1b5c41c5c25\",\"session\":\"",
+   "ok": true,
+   "err": null,
+   "t": 1795222255065
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222255940
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222255968
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222255974
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222256044
+  },
+  {
+   "path": "/boundary-pair/preview",
+   "req": "{\"schema\":\"boundary-pair-transaction/1\",\"boundaryId\":1,\"contextKey\":\"d49807d3ec8a188b8aacad0a18c3c5a6a984eadd036cbc0538102308a0c444c4\",\"expectedRevision\":\"66\",\"",
+   "ok": true,
+   "err": null,
+   "t": 1795222256094
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary-pair-confirm 29 6b9bf5e09994997f1bcef23b6731e46b9e6d3419e81a21cd4e963a675f494d22\",\"requestId\":\"d731aa17-1066-4948-af79-800da90e8739\",\"session\":",
+   "ok": true,
+   "err": null,
+   "t": 1795222256774
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222256779
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"obstacles 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222256784
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"section-profile-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222256787
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"references\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222256788
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222256790
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"source-inspect\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222256813
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222256838
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222257367
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258262
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258295
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258307
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"line undo\",\"requestId\":\"77e96abd-f5c2-423c-9c9d-2c69851bf6d8\",\"session\":\"b9deb7a7c8a74847abcc3e00bbe87e11\",\"ack\":[\"d731aa17-1066-4948-af79-800da90e8739\"",
+   "ok": true,
+   "err": null,
+   "t": 1795222258410
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"objects\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258415
+  },
+  {
+   "path": "/boundary-pair/read",
+   "req": "{\"schema\":\"boundary-pair-read/1\",\"boundaryId\":1}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258421
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"surfaces\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258422
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258435
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"boundary 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258442
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"section-profile-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258445
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"obstacles 1\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258445
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"references\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258459
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258461
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"source-inspect\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258494
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222258982
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222259560
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222259596
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222259601
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222259609
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222259644
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"identity-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222259649
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"engineering-read\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222259720
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222260003
+  },
+  {
+   "path": "/api",
+   "req": "{\"cmd\":\"dump\"}",
+   "ok": true,
+   "err": null,
+   "t": 1795222260609
+  }
+ ],
+ "coldSubTabAfterSelect": [
+  "guide"
+ ],
+ "coldGroupVisibleBeforeSubTab": false,
+ "float_edit": {
+  "visible": true,
+  "dialog": false,
+  "dialogText": "",
+  "pairForm": true,
+  "pairOp": "編輯互頂組 1＋2",
+  "single": false,
+  "status": [
+   "-: 尚未檢查",
+   "-: 已保存",
+   "-: 已選 1 支角材",
+   "tbPairStatus: 尚未提交；兩支角色固定為壁邊材。",
+   "-: 尚未檢查"
+  ]
+ },
+ "float_delete": {
+  "visible": true,
+  "dialog": true,
+  "dialogText": "確認連動變更\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary-pair delete 1 2\n互頂組與下游的完整影響\n互頂組 1＋2 · 整組刪除\n角材 1 原：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 1 新：不存在\n角材 2 原：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 2 新：不存在\n原中央接觸：角材 1 END ↔ 角材 2 START；平面 500；實際接觸 [13,27] mm\n新中央接觸：無接觸記錄\n角材 1 · 組員\n原：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":21}}；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n新：不存在\n原端面接觸：START @ 0；外輪廓邊 e5；實際接觸 [0,27] mm；FIXED\n原端面接觸：END @ 500；外輪廓邊 e1；實際接觸 [0,13] mm；FIXED\n原端面接觸：END @ 500；角材 2；實際接觸 [13,27] mm\n新端面接觸：無接觸記錄\n完整來源定義\n角材 2 · 組員\n原：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；截面來源 {\"A\":{\"mode\":\"direct\",\"value\":27},\"B\":{\"mode\":\"direct\",\"value\":21}}；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n新：不存在\n原端面接觸：START @ 500；角材 1；實際接觸 [13,27] mm\n原端面接觸：END @ 1000；外輪廓邊 e3；實際接觸 [13,40] mm；FIXED\n新端面接觸：無接觸記錄\n完整來源定義\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n1／面 1 · 刪除身分\t13 → 已刪除\t500 → 已刪除\t[0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → 已刪除\n2／面 1 · 刪除身分\t26 → 已刪除\t500 → 已刪除\t[500, 13, 2500] · 長/A/B軸 [1, 0, 0] /",
+  "pairForm": true,
+  "pairOp": "編輯互頂組 1＋2",
+  "single": false,
+  "status": [
+   "-: 尚未檢查",
+   "-: 已保存",
+   "-: 已選 1 支角材",
+   "tbPairStatus: 尚未提交；兩支角色固定為壁邊材。",
+   "-: 尚未檢查"
+  ]
+ },
+ "coldScene": "boundary 1 outline 0,0 500,0 500,13 1000,13 1000,1000 0,1000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nrequires boundary-pair/1\nboundary-pair begin 1 2\ntimber 1 27 21 role boundary\ntimber 2 27 21 role boundary\nplace 1 on 1 at-face e0 +u +n\nplace 2 on 1 at-face e2 +u +n\nboundary-pair end\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2\ncanvas-pos boundary 1 60 60\n",
+ "errsCold": [],
+ "errsRect": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "summary": {
+  "pass": 20,
+  "fail": []
+ }
+}
