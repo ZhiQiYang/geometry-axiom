@@ -718,7 +718,7 @@ window.ParameterUI = (() => {
         </details>
       </div>
       <footer class="param-footer">
-        ${sourcePreparation?.parameterId===c.id?'<p class="param-note">這是鋪排門檻的獨立來源操作；確認後可復原。取消鋪排不會撤銷此參數卡。</p><button type="button" class="btn" id="paramReturnToPanelFill">返回原面鋪排（重新讀取）</button>':''}
+          ${sourcePreparation?.parameterId===c.id?(sourcePreparation.proposal==='framing-template-threshold'?'<p class="param-note">這是骨架承接門檻的獨立來源操作；確認後可復原。取消骨架生成不會撤銷此參數卡。</p><button type="button" class="btn" id="paramReturnToPanelFill">返回原面骨架（重新讀取）</button>':'<p class="param-note">這是鋪排門檻的獨立來源操作；確認後可復原。取消鋪排不會撤銷此參數卡。</p><button type="button" class="btn" id="paramReturnToPanelFill">返回原面鋪排（重新讀取）</button>'):''}
         <p id="paramStatus" role="status" data-tone="wait"><span class="param-dot" aria-hidden="true"></span><span data-status-text></span></p>
         <div class="param-actions">
           <button type="button" class="btn" id="paramDiscard">${s.fresh ? '捨棄草稿' : '還原未套用修改'}</button>
@@ -939,7 +939,7 @@ window.ParameterUI = (() => {
     if(!mayLeave())return;
     const context=ReferenceWorkspace.context(),request=++createRequest;
     let navigation=oc.navigationSequence,focus=oc.focus;
-    const preparation=options.proposal==='panel-fill-threshold'?options:null;
+    const preparation=['panel-fill-threshold','framing-template-threshold'].includes(options.proposal)?options:null;
     const owns=()=>request===createRequest&&oc.navigationSequence===navigation&&oc.focus===focus&&context===ReferenceWorkspace.context()&&(!preparation||preparation.isCurrent());
     const support=await apiRequest('engineering-read');
     if(!owns())return;

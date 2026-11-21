@@ -59,6 +59,8 @@ POST_MAX_BYTES = {
     "/boundary-pair/preview": 1024 * 1024,
     "/boundary-pair/confirm": 1024,
     "/boundary-pair/cancel": 1024,
+    "/framing-template/read": 1024 * 1024,
+    "/framing-template/preview": 1024 * 1024,
     "/engineering/validate-project": 1024 * 1024,
     "/engineering/read": 1024 * 1024,
     "/definition-import/read": 16 * 1024 * 1024,
@@ -204,7 +206,7 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("指令不得含換行或 NUL")
     if cmd.split(" ", 1)[0] == "identity-epoch":
         return err_json("配號區段只由宿主設定。")
-    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file ", "definition-import-read ", "definition-import-preview ", "timber-edit-read ", "timber-edit-preview ", "boundary-pair-read ", "boundary-pair-preview "):
+    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file ", "definition-import-read ", "definition-import-preview ", "timber-edit-read ", "timber-edit-preview ", "boundary-pair-read ", "boundary-pair-preview ", "framing-template-read ", "framing-template-preview "):
         if cmd.startswith(prefix):
             cmd = prefix + to_bridge_path(cmd[len(prefix):])
             break
@@ -728,6 +730,24 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send(err_json(str(exc)))
             except ModelError as exc:
                 self._send(canonical_bytes(exc.as_dict()))
+            return
+        if self.path in {"/framing-template/read", "/framing-template/preview"}:
+            from framing_template_transport import request
+            try:
+                mode = self.path.rsplit('/', 1)[-1]
+                request_id = self.headers.get('X-Geometry-Request-Id')
+                session = self.headers.get('X-Geometry-Session')
+                if mode == 'preview' and (request_id is not None or session is not None):
+                    if request_id is None or session is None:
+                        self._send(err_json('骨架預覽回執需要請求識別及服務 session。'))
+                        return
+                    receipt = {'cmd': 'framing-template-preview:' + hashlib.sha256(body).hexdigest(),
+                               'requestId': request_id, 'session': session}
+                    self._send(recorded_api(receipt, execute=lambda: request(body, ask_bridge, mode='preview')))
+                else:
+                    self._send(request(body, ask_bridge, mode=mode))
+            except OSError:
+                self._send(err_json('無法建立骨架資料暫存檔，專案未變更。'))
             return
         if self.path in {"/boundary-pair/read", "/boundary-pair/preview", "/boundary-pair/confirm", "/boundary-pair/cancel"}:
             from boundary_pair_transport import request

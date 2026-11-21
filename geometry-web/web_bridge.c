@@ -1113,6 +1113,7 @@ static void cmd_host_gate_check(const char *arg)
 #include "source-inspector-bridge.inc"
 #include "timber_edit_bridge.inc"
 #include "boundary_pair_bridge.inc"
+#include "framing_template_bridge.inc"
 
 /* 視圖點已包含 frame 原點與構件尺寸；不能套用局部定義的單項上限。 */
 static bool view_coord_in_range(Coord value)
@@ -1203,6 +1204,14 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_timber_edit_confirm(arg);
         } else if (strcmp(line,"timber-edit-cancel")==0) {
             cmd_timber_edit_cancel(arg);
+        } else if (strcmp(line,"framing-template-read")==0 && arg) {
+            cmd_framing_template_read(arg);
+        } else if (strcmp(line,"framing-template-preview")==0 && arg) {
+            cmd_framing_template_preview(arg);
+        } else if (strcmp(line,"framing-template-confirm")==0) {
+            cmd_framing_template_token(arg,false);
+        } else if (strcmp(line,"framing-template-cancel")==0) {
+            cmd_framing_template_token(arg,true);
         } else if (strcmp(line,"boundary-pair-read")==0 && arg) {
             cmd_boundary_pair_read(arg);
         } else if (strcmp(line,"boundary-pair-preview")==0 && arg) {

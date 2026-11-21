@@ -1,0 +1,20 @@
+✔ FT_H09 save recipe separately; preview never writes World or history (37.055096ms)
+✔ FT_H10_CANCEL_NO_WRITE cancel uses exact candidate owner and writes nothing (10.218582ms)
+✔ FT_H11_COLD_OPEN_NO_SEARCH actual ZIP restore keeps intent and ordinary World without generation (22.232863ms)
+✔ FT_H12 current source and material semantics require explicit selection each generation (6.487058ms)
+✔ FT_H13 context or revision changes invalidate a candidate before confirm (6.276306ms)
+✔ FT_H14 policy conflict is explicit and cannot confirm or write (6.482483ms)
+✔ FT_H15 unavailable recipe stays readable and cannot silently change generator (7.728507ms)
+✔ FT_H16 late preview after source revision change cancels its exact native token (7.30735ms)
+✔ FT_H17 uncertain confirmation is never resent and only matching receipt settles it (5.628867ms)
+✔ FT_H19 panel and X are explicit live sources, not hidden literals or automatic versions (6.269566ms)
+✔ FT_H20 missing definition chain, changed source or incomplete support cannot be confirmed (42.283024ms)
+✔ FT_H21 unknown preview settles only its receipt and cancels exact owner without retry (6.76424ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 288.095818
