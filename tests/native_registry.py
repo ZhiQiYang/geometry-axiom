@@ -48,6 +48,12 @@ BUILTINS = frozenset(('c:integrity', 'core:run_tests', 'mutation:check',
 KINDS = frozenset(('integrity', 'run_tests', 'mutation-check', 'python-script',
                    'unittest', 'node-test', 'node-script', 'node-canvas'))
 EXIT_ONLY = frozenset(('mutation-check', 'python-script', 'node-script'))
+# main #438 (R03): a workspace-measured historical source. Its top-level JSON is
+# retained content-addressed like every other historical source; the original
+# stdout/receipt/child artifacts it names stay at their original paths below
+# tests/ and are authenticated by main's own validator, never re-labelled as CI.
+WORKSPACE_SCHEMA = 'native-shard-workspace-suite-evidence/2'
+HISTORICAL_KINDS = ('historical-timings', 'historical-added', 'historical-receipts', 'historical-workspace')
 
 
 def canonical_bytes(value):
@@ -499,6 +505,70 @@ def _added(data):
     return result
 
 
+_WORKSPACE_MODULE = None
+
+
+def _workspace_module():
+    """main's own R03 validator (tests/native_shard_workspace.py), loaded by path."""
+    global _WORKSPACE_MODULE
+    if _WORKSPACE_MODULE is None:
+        import importlib.util
+        path = Path(__file__).resolve().with_name('native_shard_workspace.py')
+        spec = importlib.util.spec_from_file_location('native_shard_workspace', path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        _WORKSPACE_MODULE = module
+    return _WORKSPACE_MODULE
+
+
+def _added_workspace(raw, artifact_bytes):
+    """Return the planning bounds of an R03 workspace source after full validation.
+
+    `raw` is the exact top-level JSON; `artifact_bytes(rel)` returns the bytes of
+    an artifact named relative to tests/ (from the working tree or a Git base).
+    Everything is copied into an isolated directory and judged by main's
+    unmodified native_shard_workspace.load(); nothing is normalised or skipped.
+    """
+    import tempfile
+    workspace = _workspace_module()
+    data = json.loads(raw, object_pairs_hook=_unique_keys)
+    if type(data) is not dict or data.get('schema') != WORKSPACE_SCHEMA:
+        raise ValueError('R386_NATIVE_WORKSPACE_SCHEMA')
+    try:
+        descriptors = [data['source']['manifest']]
+        for entry in data['observations']:
+            descriptors.extend((entry['stdout'], entry['receipt']))
+            descriptors.extend(entry[key] for key in ('child_report', 'child_log') if entry[key] is not None)
+        paths = [item['path'] for item in descriptors]
+    except (KeyError, TypeError) as exc:
+        raise ValueError('R386_NATIVE_WORKSPACE_SHAPE') from exc
+    with tempfile.TemporaryDirectory(prefix='geometry-native-workspace-') as temporary:
+        directory = Path(temporary)
+        for relative in paths:
+            if not workspace.safe_path(relative):
+                raise ValueError('R386_NATIVE_WORKSPACE_ARTIFACT_PATH')
+            target = directory / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(artifact_bytes(relative))
+        top = directory / 'evidence.json'
+        top.write_bytes(raw)
+        _, bounds = workspace.load(top)
+    return bounds
+
+
+def _tree_artifact(root):
+    root = Path(root)
+
+    def read(relative):
+        path = root / 'tests' / relative
+        _safe_path(root, path)
+        try:
+            return path.read_bytes()
+        except OSError as exc:
+            raise ValueError('R386_NATIVE_WORKSPACE_ARTIFACT_REQUIRED: ' + relative) from exc
+    return read
+
+
 def _added_receipts(data):
     """Use source-bound, passing child rows without relabeling a failed CI job.
 
@@ -631,6 +701,9 @@ def _legacy_base_sources(root, base_sha):
             kind, suites = 'historical-timings', sorted(profiles[0])
         elif re.fullmatch(r'tests/native_shard_added_receipts[A-Za-z0-9_]*\.json', path):
             kind, suites = 'historical-receipts', sorted(_added_receipts(data))
+        elif type(data) is dict and data.get('schema') == WORKSPACE_SCHEMA:
+            kind, suites = 'historical-workspace', sorted(_added_workspace(
+                raw, lambda relative: _git_bytes(root, base_sha, 'tests/' + relative)))
         else:
             kind, suites = 'historical-added', sorted(_added(data))
         if names & set(suites):
@@ -653,7 +726,7 @@ def _legacy_catalog(root):
     paths, names, hashes = set(), set(), set()
     for source in catalog['sources']:
         if (type(source) is not dict or set(source) != {'path', 'sha256', 'kind', 'suites'}
-                or source['kind'] not in ('historical-timings', 'historical-added', 'historical-receipts')
+                or source['kind'] not in HISTORICAL_KINDS
                 or source['path'] in paths or not re.fullmatch(
                     r'tests/native_shard_(?:timings|added_receipts[A-Za-z0-9_]*|added_evidence[A-Za-z0-9_]*)\.json', str(source['path']))
                 or not re.fullmatch(r'[a-f0-9]{64}', str(source['sha256']))
@@ -664,6 +737,9 @@ def _legacy_catalog(root):
         data = _source(root, source['sha256'])
         suites = (sorted(_historical(data)[1][0]) if source['kind'] == 'historical-timings'
                   else sorted(_added_receipts(data)) if source['kind'] == 'historical-receipts'
+                  else sorted(_added_workspace((root / SOURCES / (source['sha256'] + '.json')).read_bytes(),
+                                               _tree_artifact(root)))
+                  if source['kind'] == 'historical-workspace'
                   else sorted(_added(data)))
         if suites != source['suites']:
             raise ValueError('R386_NATIVE_LEGACY_CATALOG_REAL_OBSERVATIONS')
@@ -1027,6 +1103,7 @@ def timing_profile(root):
         raise ValueError('R386_NATIVE_EXACT_COST_COVERAGE: missing=%r extra=%r' %
                          (sorted(registry.keys() - records.keys()), sorted(records.keys() - registry.keys())))
     sources = {path.stem: _source(root, path.stem) for path in _paths(root, SOURCES)}
+    workspace_bounds = {}
     for source_hash, data in sources.items():
         schema = data.get('schema')
         if schema == 'native-ci-timings/1':
@@ -1041,6 +1118,11 @@ def timing_profile(root):
             if source_hash not in allowed_legacy:
                 raise ValueError('R386_NATIVE_NEW_SOURCE_CANNOT_CLAIM_LEGACY')
             _added_receipts(data)
+        elif schema == WORKSPACE_SCHEMA:
+            if source_hash not in allowed_legacy:
+                raise ValueError('R386_NATIVE_NEW_SOURCE_CANNOT_CLAIM_LEGACY')
+            workspace_bounds[source_hash] = _added_workspace(
+                (root / SOURCES / (source_hash + '.json')).read_bytes(), _tree_artifact(root))
         elif schema == 'geometry-native-ci-receipt/1':
             _receipt_original(data)
         else:
@@ -1072,6 +1154,11 @@ def timing_profile(root):
             added[name] = bounds[name]
         elif row['kind'] == 'historical-receipts':
             bounds = _added_receipts(sources[row['source_sha256']])
+            if name not in bounds or 'planning_upper_ms' in row:
+                raise ValueError('R386_NATIVE_ADDED_NAMED_OBSERVATION: ' + name)
+            added[name] = bounds[name]
+        elif row['kind'] == 'historical-workspace':
+            bounds = workspace_bounds.get(row['source_sha256'], {})
             if name not in bounds or 'planning_upper_ms' in row:
                 raise ValueError('R386_NATIVE_ADDED_NAMED_OBSERVATION: ' + name)
             added[name] = bounds[name]

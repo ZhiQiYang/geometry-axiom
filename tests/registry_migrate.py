@@ -154,11 +154,19 @@ def source_paths(root):
         'geometry-web/canvas_shards.json', 'geometry-web/cdp_sections.golden.json',
         'geometry-web/canvas_shards.js', 'geometry-web/cdp_test.js',
         'geometry-core/card-reference/run_mutations.py', MARKER, NATIVE_CATALOG,
-        NATIVE_EXECUTION_CATALOG,
+        NATIVE_EXECUTION_CATALOG, 'tests/native_shard_workspace.py',
     }
     names.update(p.relative_to(root).as_posix()
                  for pattern in ('native_shard_added_evidence*.json', 'native_shard_added_receipts*.json')
                  for p in (root / 'tests').glob(pattern))
+    # main #438: R03 workspace originals named by native_shard_added_evidence_r03.json.
+    evidence = root / 'tests/native_shard_evidence'
+    require(not evidence.is_symlink(), 'R386_SYMLINK_NOT_ALLOWED: tests/native_shard_evidence')
+    if evidence.exists():
+        for path in sorted(evidence.rglob('*')):
+            require(not path.is_symlink(), 'R386_SYMLINK_NOT_ALLOWED: ' + str(path))
+            if path.is_file():
+                names.add(path.relative_to(root).as_posix())
     for directory in (*FRAGMENT_ROOTS, 'tests/registry-source-reviews'):
         folder = root / directory
         require(not folder.is_symlink(), 'R386_SYMLINK_NOT_ALLOWED: ' + directory)
