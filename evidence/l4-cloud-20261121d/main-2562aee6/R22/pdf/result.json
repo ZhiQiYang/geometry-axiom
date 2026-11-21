@@ -1,0 +1,4650 @@
+{
+  "scope": "pdf",
+  "main": "2562aee65c9f21a9ffdfd684100102d764bc2eb4",
+  "app": "http://127.0.0.1:18851",
+  "node": "v24.15.0",
+  "started": "2026-11-21T04:26:21.574Z",
+  "input": {
+    "name": "issue54-public-rooms.pdf",
+    "sha256": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5"
+  },
+  "steps": [
+    {
+      "action": "#fileMenuBtn",
+      "file": "01-file.jpg",
+      "sha256": "a80bfc63a51d4a4ece5d39ebff8d1bb415f8d39aafc23b49fdf6a9242a1cde6a",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": "#exampleMenuBtn",
+      "file": "02-examples.jpg",
+      "sha256": "e789915c4f4b81a73ad5929e69955b29f632168210f8b201e12eff5748ed8cea",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": "#btnEx",
+      "file": "03-load-example.jpg",
+      "sha256": "ed11d89efc1dccbd6087261b270c38ec98f3f5d7aef2c6f7225a3b946a15e9ad",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": ".ocard[data-kind=\"boundary\"][data-id=\"1\"]",
+      "file": "04-face-card.jpg",
+      "sha256": "8c726f01b8b8db4220483c3f53209419cc77bdfaa2d769d78d450c169f527f9e",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": ".ocard[data-kind=\"boundary\"][data-id=\"1\"] .card-enter",
+      "file": "05-enter-face.jpg",
+      "sha256": "6edebc6987f5202c4fcc520fc01d8e6f1fee13e00c32474f622b20ee94a7b3e8",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": "[data-fi-tab=\"underlay\"]",
+      "file": "06-underlay.jpg",
+      "sha256": "fa6ea75c015510756d985b41c548fe7b0ab1b5ec0932f9c8a3f76ef08bc79cd0",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": "按「匯入 PDF／圖片」，於檔案選擇器以鍵盤選取磁碟原件",
+      "file": "07-import.jpg",
+      "sha256": "8ab0cadaa6040c64820c88b916ec78ba3df27b9942311c8ab969d11b906a64f5",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "action": "#refApply",
+      "file": "08-attach.jpg",
+      "sha256": "ae803361d061b95c1bffbfadb54e82b0a265a3e49740f1958a0a4c47e61add3d",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 14.285714285714286,
+          "calibration": null
+        },
+        "candidate": null,
+        "status": "",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "核對參考頁已附至面 1",
+      "file": "09-attached.jpg",
+      "sha256": "86e16ba78f95959dc089ddcb8f424bf585bce4ab78da8d210ae67fcaa7b4d113",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 14.285714285714286,
+          "calibration": null
+        },
+        "candidate": null,
+        "status": "",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "#ulCalibStart",
+      "file": "10-calibrate-start.jpg",
+      "sha256": "039e2cabf3f16687792f55c3ebecc7397c206acd5f8bb8886a1058cf56654f99",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 14.285714285714286,
+          "calibration": null
+        },
+        "candidate": null,
+        "status": "",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "校準點 A (30,30)",
+      "file": "11-calibrate-a.jpg",
+      "sha256": "c4616dd9c1f2e6e202b57325b63ee75426fc9c83a96b62c3e3e7006d2214c13c",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 14.285714285714286,
+          "calibration": null
+        },
+        "candidate": null,
+        "status": "",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "校準點 B (230,30)",
+      "file": "12-calibrate-b.jpg",
+      "sha256": "71a5120e904efb492a922a8f879c8452310c8de7354dc6ffc8726f6255a9b83b",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 14.285714285714286,
+          "calibration": null
+        },
+        "candidate": null,
+        "status": "",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "輸入已知距離 2000 mm",
+      "file": "13-calibrate-length.jpg",
+      "sha256": "9dac04cc09ade77c7130d7ef0ba9ded5adfdc595c2c70539b34f453641852b94",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 14.285714285714286,
+          "calibration": null
+        },
+        "candidate": null,
+        "status": "",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "#ulCalibApply",
+      "file": "14-calibrate-apply.jpg",
+      "sha256": "f3d19f12dc0e3f610b531fbdd1caf6819ac33a23841d7aa273306ed49ab59ff1",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "搜尋來源取景範圍，不受既有外環裁切。選房間取得候選，核對後替換目前面的外環；也可選人工描繪。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "#refFit",
+      "file": "15-fit.jpg",
+      "sha256": "a48685aa2885af495055b3d6ce258a50671b1c659947a8546856c0aaf1b0c3af",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "搜尋來源取景範圍，不受既有外環裁切。選房間取得候選，核對後替換目前面的外環；也可選人工描繪。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "#refRoomPick",
+      "file": "16-choose-room.jpg",
+      "sha256": "1ec9532179ed78c97ac5888532b0167637e217a409787d7e697e152e3ea703e4",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "點房間內空白處，或拖框限縮來源取景內的搜尋範圍；不受既有外環裁切，框選不會建立矩形。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "點房間內 (70,70)",
+      "file": "17-pick-candidate.jpg",
+      "sha256": "f310c2ef471da77c6b635a78096d6a16f7510f3be25c080e5225db7784445bcf",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": false
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 1960 mm\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1960 mm\n邊 4：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": true
+      }
+    },
+    {
+      "action": "#refRoomPick",
+      "file": "18-choose-room.jpg",
+      "sha256": "4d71707285b6154eb7607d7202c5fe95c51e16d072fe1da7e02556e9b5ed357c",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "點房間內空白處，或拖框限縮來源取景內的搜尋範圍；不受既有外環裁切，框選不會建立矩形。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "從 (20,20) 拖到 (250,165)",
+      "file": "19-box-candidate.jpg",
+      "sha256": "60dc7e4403e2f41cceffddff39b9eb21ccf29c4aee7be5579e4f16943638eea0",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": false
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 1960 mm\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1960 mm\n邊 4：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": true
+      }
+    },
+    {
+      "action": "#refRoomReviewed",
+      "file": "20-review.jpg",
+      "sha256": "012c0896825aaf87adfb9c98a93382f4d8f3af1ad56a92791673d386f9757d3a",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": true
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 1960 mm\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1960 mm\n邊 4：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false
+      }
+    },
+    {
+      "action": "#refRoomConfirm",
+      "file": "21-confirm.jpg",
+      "sha256": "f5e40a8fe78077d741abfe87823996f65844ec3ca1a0a46b047a5d22ff1e6bf0",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": true
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 1960 mm\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1960 mm\n邊 4：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false,
+        "impact": "確認連動變更\n\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n\nboundary 1 outline 320,320 2280,320 2280,1480 320,1480\n邊界與頂點 · 1\n面 1\n\n原：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n\n新：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n\n核對頂點座標與身分\n原頂點：外環頂點 1 · 未設 key · (0, 0) mm · 下一邊固定；外環頂點 2 · 未設 key · (4000, 0) mm · 下一邊固定；外環頂點 3 · 未設 key · (4000, 3000) mm · 下一邊固定；外環頂點 4 · 未設 key · (0, 3000) mm · 下一邊固定\n新頂點：外環頂點 1 · 未設 key · (320, 320) mm · 下一邊固定；外環頂點 2 · 未設 key · (2280, 320) mm · 下一邊固定；外環頂點 3 · 未設 key · (2280, 1480) mm · 下一邊固定；外環頂點 4 · 未設 key · (320, 1480) mm · 下一邊固定\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n90／面 1 · 身分保留，幾何更新\t10 → 330\t4000 → 1960\t[0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [320, 320, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n91／面 1 · 身分保留，幾何更新\t2990 → 1470\t4000 → 1960\t[0, 2980, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [320, 1460, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n1／面 1 · 身分保留，幾何更新\t500 → 500\t2960 → 1120\t[514, 20, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1] → [514, 340, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1]\n參考線 1｜來源 局部參照 local；來源式 spec:主支1中線；面 1：u=500，世界 [500, 0, 2500]，方向 [0, 1, 0]，可見 1 段：(500, 0) → (500, 3000) → 來源 局部參照 local；來源式 spec:主支1中線；面 1：u=500，世界 [500, 0, 2500]，方向 [0, 1, 0]，可見 1 段：(500, 320) → (500, 1480)\n取消，保留原狀\n確認套用"
+      }
+    },
+    {
+      "action": "核對連動變更",
+      "file": "22-impact.jpg",
+      "sha256": "0f43842814ffb22859dbb0f88412ea70ffa274593ca1151b91cb17fed502c917",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": true
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 1960 mm\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1960 mm\n邊 4：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false,
+        "impact": "確認連動變更\n\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n\nboundary 1 outline 320,320 2280,320 2280,1480 320,1480\n邊界與頂點 · 1\n面 1\n\n原：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n\n新：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n\n核對頂點座標與身分\n原頂點：外環頂點 1 · 未設 key · (0, 0) mm · 下一邊固定；外環頂點 2 · 未設 key · (4000, 0) mm · 下一邊固定；外環頂點 3 · 未設 key · (4000, 3000) mm · 下一邊固定；外環頂點 4 · 未設 key · (0, 3000) mm · 下一邊固定\n新頂點：外環頂點 1 · 未設 key · (320, 320) mm · 下一邊固定；外環頂點 2 · 未設 key · (2280, 320) mm · 下一邊固定；外環頂點 3 · 未設 key · (2280, 1480) mm · 下一邊固定；外環頂點 4 · 未設 key · (320, 1480) mm · 下一邊固定\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n90／面 1 · 身分保留，幾何更新\t10 → 330\t4000 → 1960\t[0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [320, 320, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n91／面 1 · 身分保留，幾何更新\t2990 → 1470\t4000 → 1960\t[0, 2980, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [320, 1460, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n1／面 1 · 身分保留，幾何更新\t500 → 500\t2960 → 1120\t[514, 20, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1] → [514, 340, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1]\n參考線 1｜來源 局部參照 local；來源式 spec:主支1中線；面 1：u=500，世界 [500, 0, 2500]，方向 [0, 1, 0]，可見 1 段：(500, 0) → (500, 3000) → 來源 局部參照 local；來源式 spec:主支1中線；面 1：u=500，世界 [500, 0, 2500]，方向 [0, 1, 0]，可見 1 段：(500, 320) → (500, 1480)\n取消，保留原狀\n確認套用"
+      }
+    },
+    {
+      "action": "apply-impact",
+      "file": "23-apply-impact.jpg",
+      "sha256": "da405ee5bc03090e1a99838819eda4beab5103ff96651ed79970ddf46d9f0a14",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": true
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 1960 mm\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1960 mm\n邊 4：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false
+      }
+    },
+    {
+      "action": "確認正式外環與核對狀態",
+      "file": "24-confirmed.jpg",
+      "sha256": "b3457336d17187c0c6f64a2558d6a9ab5761458022f76741d278d6e624faaf06",
+      "state": {
+        "outline": [
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed"
+      }
+    },
+    {
+      "action": "#faceUndoButton",
+      "file": "25-undo.jpg",
+      "sha256": "b3457336d17187c0c6f64a2558d6a9ab5761458022f76741d278d6e624faaf06",
+      "state": {
+        "outline": [
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed"
+      }
+    },
+    {
+      "action": "復原後核對原外環",
+      "file": "26-undo-result.jpg",
+      "sha256": "257391c02aca4f46f402512241052b76a572b2ad929db32ea173d9b439c6783e",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "#faceRedoButton",
+      "file": "27-redo.jpg",
+      "sha256": "7c321d4b4162bbd4383bc27ba3eddf8cd8c5b70eed993f59b70d21e01149793b",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "重做後核對正式外環",
+      "file": "28-redo-result.jpg",
+      "sha256": "3b85ab03638d5fc35b86964b5b3991c6ca7f1b38dc46bff3f155066e3eb61a60",
+      "state": {
+        "outline": [
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed"
+      }
+    },
+    {
+      "action": "#faceUndoButton",
+      "file": "29-return-to-original.jpg",
+      "sha256": "309aa97bf11dd1bdc94a5039fa491fcf0ea205f91654f431796d8f2887618c52",
+      "state": {
+        "outline": [
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed"
+      }
+    },
+    {
+      "action": "#refRoomPick",
+      "file": "30-choose-room.jpg",
+      "sha256": "b4841f813673ba3620d7888ccf4d51da70a43c54af5e78fcc655dbea29415fd9",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "點房間內空白處，或拖框限縮來源取景內的搜尋範圍；不受既有外環裁切，框選不會建立矩形。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "從 (20,20) 拖到 (250,165)",
+      "file": "31-box-candidate.jpg",
+      "sha256": "fd448860003144a8485f2a4f41ace49bd23022b9a0571b9560e5714d62b06bfb",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": false
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 1960 mm\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1960 mm\n邊 4：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": true
+      }
+    },
+    {
+      "action": "#refRoomReviewed",
+      "file": "32-review-before-edit.jpg",
+      "sha256": "13e5e7e6fa4fd254d2c4d279d5cfb43f265889e7381fa37c7adaed269464d477",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": true
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 1960 mm\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1960 mm\n邊 4：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false
+      }
+    },
+    {
+      "action": "在「局部補點／凹口與頂點修正」輸入 8 點",
+      "file": "33-edit-vertices.jpg",
+      "sha256": "1823a81c21f5a00bf657eb5331f286e68368b1f12114c9c809ffd32541358502",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": true
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 1960 mm\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1960 mm\n邊 4：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n沿外環順序輸入 u,v（mm）；可插入凹口與補邊更新候選頂點\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false
+      }
+    },
+    {
+      "action": "#refRoomApplyVertices",
+      "file": "34-update-vertices.jpg",
+      "sha256": "4caaf2e323b80d76a2e747c2048c72ebba2ecead28f129f852e77d33b82c4b22",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              1960,
+              1480
+            ],
+            [
+              1960,
+              1300
+            ],
+            [
+              1540,
+              1300
+            ],
+            [
+              1540,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": false
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 1960 mm\n邊 2：擬提交 1160 mm\n邊 3：擬提交 320 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 420 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 1220 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": true
+      }
+    },
+    {
+      "action": "第一邊實際輸入 2000 mm，按 Enter",
+      "file": "35-edit-edge.jpg",
+      "sha256": "234911515e41d869b8b2b8cd9b0f9789bb90ef56b5f578869ecbe520d13a6823",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              1960,
+              1480
+            ],
+            [
+              1960,
+              1300
+            ],
+            [
+              1540,
+              1300
+            ],
+            [
+              1540,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [
+            {
+              "edge": 0,
+              "length": 2000,
+              "kind": "user-confirmed-mm"
+            }
+          ],
+          "reviewed": false
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 2000 mm（人工核對入值）\n邊 2：擬提交 1160 mm\n邊 3：擬提交 360 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 420 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 1220 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": true
+      }
+    },
+    {
+      "action": "#refRoomReviewed",
+      "file": "36-review.jpg",
+      "sha256": "e6fc7265d32fc3819f9cdf176c71202b13b8f4149422b0276176ee47d3c74fe6",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              1960,
+              1480
+            ],
+            [
+              1960,
+              1300
+            ],
+            [
+              1540,
+              1300
+            ],
+            [
+              1540,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [
+            {
+              "edge": 0,
+              "length": 2000,
+              "kind": "user-confirmed-mm"
+            }
+          ],
+          "reviewed": true
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 2000 mm（人工核對入值）\n邊 2：擬提交 1160 mm\n邊 3：擬提交 360 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 420 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 1220 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false
+      }
+    },
+    {
+      "action": "#refRoomConfirm",
+      "file": "37-confirm.jpg",
+      "sha256": "7a361de23cdc90c6acb0bda519620794e4b9d6c8d13ca896e6cb48751a5e9c22",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              1960,
+              1480
+            ],
+            [
+              1960,
+              1300
+            ],
+            [
+              1540,
+              1300
+            ],
+            [
+              1540,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [
+            {
+              "edge": 0,
+              "length": 2000,
+              "kind": "user-confirmed-mm"
+            }
+          ],
+          "reviewed": true
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 2000 mm（人工核對入值）\n邊 2：擬提交 1160 mm\n邊 3：擬提交 360 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 420 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 1220 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false
+      }
+    },
+    {
+      "action": "核對連動變更",
+      "file": "38-impact.jpg",
+      "sha256": "b5bb33fd5a7a1efc0013717278f82213bc8524278d04e860c9b8b968261a358f",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              1960,
+              1480
+            ],
+            [
+              1960,
+              1300
+            ],
+            [
+              1540,
+              1300
+            ],
+            [
+              1540,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [
+            {
+              "edge": 0,
+              "length": 2000,
+              "kind": "user-confirmed-mm"
+            }
+          ],
+          "reviewed": true
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 2000 mm（人工核對入值）\n邊 2：擬提交 1160 mm\n邊 3：擬提交 360 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 420 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 1220 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false,
+        "impact": "變更無法套用\n\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n\nboundary 1 outline 320,320 2320,320 2320,1480 1960,1480 1960,1300 1540,1300 1540,1480 320,1480\n邊界與頂點 · 1\n面 1\n\n原：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n\n新：用途未設定；8 個外環頂點、0 個孔；尚未保存頂點身分\n\n核對頂點座標與身分\n原頂點：外環頂點 1 · 未設 key · (0, 0) mm · 下一邊固定；外環頂點 2 · 未設 key · (4000, 0) mm · 下一邊固定；外環頂點 3 · 未設 key · (4000, 3000) mm · 下一邊固定；外環頂點 4 · 未設 key · (0, 3000) mm · 下一邊固定\n新頂點：外環頂點 1 · 未設 key · (320, 320) mm · 下一邊固定；外環頂點 2 · 未設 key · (2320, 320) mm · 下一邊固定；外環頂點 3 · 未設 key · (2320, 1480) mm · 下一邊固定；外環頂點 4 · 未設 key · (1960, 1480) mm · 下一邊固定；外環頂點 5 · 未設 key · (1960, 1300) mm · 下一邊固定；外環頂點 6 · 未設 key · (1540, 1300) mm · 下一邊固定；外環頂點 7 · 未設 key · (1540, 1480) mm · 下一邊固定；外環頂點 8 · 未設 key · (320, 1480) mm · 下一邊固定\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n90／面 1 · 身分保留，幾何更新\t10 → 330\t4000 → 2000\t[0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [320, 320, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n91／面 1 · 身分保留，幾何更新\t2990 → 1470\t4000 → 360\t[0, 2980, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [1960, 1460, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n1／面 1 · 身分保留，幾何更新\t500 → 無合法結果\t2960 → 無合法結果\t[514, 20, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1] → 無合法結果\n參考線 1｜來源 局部參照 local；來源式 spec:主支1中線；面 1：u=500，世界 [500, 0, 2500]，方向 [0, 1, 0]，可見 1 段：(500, 0) → (500, 3000) → 來源 局部參照 local；來源式 spec:主支1中線；面 1：u=500，世界 [500, 0, 2500]，方向 [0, 1, 0]，可見 1 段：(500, 320) → (500, 1480)\n\n角材 1 · I19/I22\n預期：each stop has strictly higher cut priority, subject to boundary exceptions\n實際：V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC\n\n返回修改\n確認套用"
+      }
+    },
+    {
+      "action": "return-to-edit",
+      "file": "39-return-to-edit.jpg",
+      "sha256": "ad22acfd86c5f38699bdb6e4be48b2852dd087bd853424c7f58eb1071151fb77",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              1960,
+              1480
+            ],
+            [
+              1960,
+              1300
+            ],
+            [
+              1540,
+              1300
+            ],
+            [
+              1540,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [
+            {
+              "edge": 0,
+              "length": 2000,
+              "kind": "user-confirmed-mm"
+            }
+          ],
+          "reviewed": false
+        },
+        "status": "確認已取消或核心拒絕；原面保留，候選仍可修正。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 2000 mm（人工核對入值）\n邊 2：擬提交 1160 mm\n邊 3：擬提交 360 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 420 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 1220 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": true
+      }
+    },
+    {
+      "action": "將凹口移至左側以保留既有角材擋面",
+      "file": "40-move-notch.jpg",
+      "sha256": "1cb54a1354b6ea73620d8512c8497c9e15dcf600fbb7d558b859469f7ef6baf4",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              1960,
+              1480
+            ],
+            [
+              1960,
+              1300
+            ],
+            [
+              1540,
+              1300
+            ],
+            [
+              1540,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [
+            {
+              "edge": 0,
+              "length": 2000,
+              "kind": "user-confirmed-mm"
+            }
+          ],
+          "reviewed": false
+        },
+        "status": "確認已取消或核心拒絕；原面保留，候選仍可修正。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 2000 mm（人工核對入值）\n邊 2：擬提交 1160 mm\n邊 3：擬提交 360 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 420 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 1220 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n沿外環順序輸入 u,v（mm）；可插入凹口與補邊更新候選頂點\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": true
+      }
+    },
+    {
+      "action": "#refRoomApplyVertices",
+      "file": "41-apply-revised-notch.jpg",
+      "sha256": "6e8bc06fabce12ba173052c77172fcd64bd9e94f80ead33fefde280edd8e8556",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              440,
+              1480
+            ],
+            [
+              440,
+              1300
+            ],
+            [
+              390,
+              1300
+            ],
+            [
+              390,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": false
+        },
+        "status": "確認已取消或核心拒絕；原面保留，候選仍可修正。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 2000 mm\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1880 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 50 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 70 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": true
+      }
+    },
+    {
+      "action": "逐邊欄輸入第一邊 2000 mm 再按 Enter",
+      "file": "42-confirm-edge-length.jpg",
+      "sha256": "34989d5146ea3986415953b5fb51d154d39417ef46d32644c7ea91723901ae99",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              440,
+              1480
+            ],
+            [
+              440,
+              1300
+            ],
+            [
+              390,
+              1300
+            ],
+            [
+              390,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [
+            {
+              "edge": 0,
+              "length": 2000,
+              "kind": "user-confirmed-mm"
+            }
+          ],
+          "reviewed": false
+        },
+        "status": "確認已取消或核心拒絕；原面保留，候選仍可修正。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 2000 mm（人工核對入值）\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1880 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 50 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 70 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": true
+      }
+    },
+    {
+      "action": "#refRoomReviewed",
+      "file": "43-review.jpg",
+      "sha256": "75a1e60a156a7915949b0233a0e4bab6d5c88b915736fdcedaad673d23aa08f5",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              440,
+              1480
+            ],
+            [
+              440,
+              1300
+            ],
+            [
+              390,
+              1300
+            ],
+            [
+              390,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [
+            {
+              "edge": 0,
+              "length": 2000,
+              "kind": "user-confirmed-mm"
+            }
+          ],
+          "reviewed": true
+        },
+        "status": "確認已取消或核心拒絕；原面保留，候選仍可修正。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 2000 mm（人工核對入值）\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1880 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 50 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 70 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false
+      }
+    },
+    {
+      "action": "#refRoomConfirm",
+      "file": "44-confirm.jpg",
+      "sha256": "2a972bcf41b205a5c3d11b7102847bd08298ab13bed135ca837118ada904b515",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              440,
+              1480
+            ],
+            [
+              440,
+              1300
+            ],
+            [
+              390,
+              1300
+            ],
+            [
+              390,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [
+            {
+              "edge": 0,
+              "length": 2000,
+              "kind": "user-confirmed-mm"
+            }
+          ],
+          "reviewed": true
+        },
+        "status": "確認已取消或核心拒絕；原面保留，候選仍可修正。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 2000 mm（人工核對入值）\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1880 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 50 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 70 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false
+      }
+    },
+    {
+      "action": "核對連動變更",
+      "file": "45-impact.jpg",
+      "sha256": "1d4e4f726815914df1c5bcfee499c092579aeb426aaca4ef01b5cfcc02b893ac",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              440,
+              1480
+            ],
+            [
+              440,
+              1300
+            ],
+            [
+              390,
+              1300
+            ],
+            [
+              390,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [
+            {
+              "edge": 0,
+              "length": 2000,
+              "kind": "user-confirmed-mm"
+            }
+          ],
+          "reviewed": true
+        },
+        "status": "確認已取消或核心拒絕；原面保留，候選仍可修正。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 2000 mm（人工核對入值）\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1880 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 50 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 70 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false,
+        "impact": "確認連動變更\n\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n\nboundary 1 outline 320,320 2320,320 2320,1480 440,1480 440,1300 390,1300 390,1480 320,1480\n邊界與頂點 · 1\n面 1\n\n原：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n\n新：用途未設定；8 個外環頂點、0 個孔；尚未保存頂點身分\n\n核對頂點座標與身分\n原頂點：外環頂點 1 · 未設 key · (0, 0) mm · 下一邊固定；外環頂點 2 · 未設 key · (4000, 0) mm · 下一邊固定；外環頂點 3 · 未設 key · (4000, 3000) mm · 下一邊固定；外環頂點 4 · 未設 key · (0, 3000) mm · 下一邊固定\n新頂點：外環頂點 1 · 未設 key · (320, 320) mm · 下一邊固定；外環頂點 2 · 未設 key · (2320, 320) mm · 下一邊固定；外環頂點 3 · 未設 key · (2320, 1480) mm · 下一邊固定；外環頂點 4 · 未設 key · (440, 1480) mm · 下一邊固定；外環頂點 5 · 未設 key · (440, 1300) mm · 下一邊固定；外環頂點 6 · 未設 key · (390, 1300) mm · 下一邊固定；外環頂點 7 · 未設 key · (390, 1480) mm · 下一邊固定；外環頂點 8 · 未設 key · (320, 1480) mm · 下一邊固定\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n90／面 1 · 身分保留，幾何更新\t10 → 330\t4000 → 2000\t[0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [320, 320, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n91／面 1 · 身分保留，幾何更新\t2990 → 1470\t4000 → 1880\t[0, 2980, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [440, 1460, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n1／面 1 · 身分保留，幾何更新\t500 → 500\t2960 → 1120\t[514, 20, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1] → [514, 340, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1]\n參考線 1｜來源 局部參照 local；來源式 spec:主支1中線；面 1：u=500，世界 [500, 0, 2500]，方向 [0, 1, 0]，可見 1 段：(500, 0) → (500, 3000) → 來源 局部參照 local；來源式 spec:主支1中線；面 1：u=500，世界 [500, 0, 2500]，方向 [0, 1, 0]，可見 1 段：(500, 320) → (500, 1480)\n取消，保留原狀\n確認套用"
+      }
+    },
+    {
+      "action": "apply-impact",
+      "file": "46-apply-impact.jpg",
+      "sha256": "97e14d61f520222f969b2d953beda16b959c926c6bd5e56e073f9075bf99d0cc",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2320,
+              1480
+            ],
+            [
+              440,
+              1480
+            ],
+            [
+              440,
+              1300
+            ],
+            [
+              390,
+              1300
+            ],
+            [
+              390,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [
+            {
+              "edge": 0,
+              "length": 2000,
+              "kind": "user-confirmed-mm"
+            }
+          ],
+          "reviewed": true
+        },
+        "status": "確認已取消或核心拒絕；原面保留，候選仍可修正。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 2000 mm（人工核對入值）\n邊 2：擬提交 1160 mm\n邊 3：擬提交 1880 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 50 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 70 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": false,
+        "impact": "確認連動變更\n\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n\nboundary 1 outline 320,320 2320,320 2320,1480 440,1480 440,1300 390,1300 390,1480 320,1480\n邊界與頂點 · 1\n面 1\n\n原：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n\n新：用途未設定；8 個外環頂點、0 個孔；尚未保存頂點身分\n\n核對頂點座標與身分\n原頂點：外環頂點 1 · 未設 key · (0, 0) mm · 下一邊固定；外環頂點 2 · 未設 key · (4000, 0) mm · 下一邊固定；外環頂點 3 · 未設 key · (4000, 3000) mm · 下一邊固定；外環頂點 4 · 未設 key · (0, 3000) mm · 下一邊固定\n新頂點：外環頂點 1 · 未設 key · (320, 320) mm · 下一邊固定；外環頂點 2 · 未設 key · (2320, 320) mm · 下一邊固定；外環頂點 3 · 未設 key · (2320, 1480) mm · 下一邊固定；外環頂點 4 · 未設 key · (440, 1480) mm · 下一邊固定；外環頂點 5 · 未設 key · (440, 1300) mm · 下一邊固定；外環頂點 6 · 未設 key · (390, 1300) mm · 下一邊固定；外環頂點 7 · 未設 key · (390, 1480) mm · 下一邊固定；外環頂點 8 · 未設 key · (320, 1480) mm · 下一邊固定\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n90／面 1 · 身分保留，幾何更新\t10 → 330\t4000 → 2000\t[0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [320, 320, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n91／面 1 · 身分保留，幾何更新\t2990 → 1470\t4000 → 1880\t[0, 2980, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [440, 1460, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n1／面 1 · 身分保留，幾何更新\t500 → 500\t2960 → 1120\t[514, 20, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1] → [514, 340, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1]\n參考線 1｜來源 局部參照 local；來源式 spec:主支1中線；面 1：u=500，世界 [500, 0, 2500]，方向 [0, 1, 0]，可見 1 段：(500, 0) → (500, 3000) → 來源 局部參照 local；來源式 spec:主支1中線；面 1：u=500，世界 [500, 0, 2500]，方向 [0, 1, 0]，可見 1 段：(500, 320) → (500, 1480)\n取消，保留原狀\n確認套用"
+      }
+    },
+    {
+      "action": "確認正式外環與核對狀態",
+      "file": "47-confirmed.jpg",
+      "sha256": "169da498d97de8e370b315c53796cdf622b6efbd62b2527d86c68635b77835f1",
+      "state": {
+        "outline": [
+          [
+            320,
+            320
+          ],
+          [
+            2320,
+            320
+          ],
+          [
+            2320,
+            1480
+          ],
+          [
+            440,
+            1480
+          ],
+          [
+            440,
+            1300
+          ],
+          [
+            390,
+            1300
+          ],
+          [
+            390,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed"
+      }
+    },
+    {
+      "action": "#faceUndoButton",
+      "file": "48-undo.jpg",
+      "sha256": "3c42ea49ce9dde420346b3c9f29acdbff83d59f5b85efb24b3a9b20bf3e56ede",
+      "state": {
+        "outline": [
+          [
+            320,
+            320
+          ],
+          [
+            2320,
+            320
+          ],
+          [
+            2320,
+            1480
+          ],
+          [
+            440,
+            1480
+          ],
+          [
+            440,
+            1300
+          ],
+          [
+            390,
+            1300
+          ],
+          [
+            390,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed"
+      }
+    },
+    {
+      "action": "復原後核對原外環",
+      "file": "49-undo-result.jpg",
+      "sha256": "2f5c2623954a95f3c49e30550c4dad40b1e2c574a98845c1e6d5725ff614d107",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "#faceRedoButton",
+      "file": "50-redo.jpg",
+      "sha256": "abe90d8ff48d91200595c1d7c2070f83d7afb75609367ec3351622463ed36552",
+      "state": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "unreviewed"
+      }
+    },
+    {
+      "action": "重做後核對正式外環",
+      "file": "51-redo-result.jpg",
+      "sha256": "64f47bc6ecbe788b3b4ef19683c54fae5ae90dc27391498cbccfb14958ae3567",
+      "state": {
+        "outline": [
+          [
+            320,
+            320
+          ],
+          [
+            2320,
+            320
+          ],
+          [
+            2320,
+            1480
+          ],
+          [
+            440,
+            1480
+          ],
+          [
+            440,
+            1300
+          ],
+          [
+            390,
+            1300
+          ],
+          [
+            390,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": null,
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed"
+      }
+    }
+  ],
+  "assertions": [
+    {
+      "label": "獨立頁籤以範例原外環起步，無先前底圖或候選",
+      "pass": true,
+      "actual": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": null,
+        "candidate": null,
+        "reviewState": null
+      }
+    },
+    {
+      "label": "校準前不能選房間",
+      "pass": true,
+      "actual": {
+        "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+        "page": 1,
+        "crop": [
+          0,
+          0,
+          280,
+          190
+        ],
+        "mmPerPx": 14.285714285714286,
+        "calibration": null
+      }
+    },
+    {
+      "label": "200 頁面單位約為 2000 mm",
+      "pass": true,
+      "actual": 9.999998020481812
+    },
+    {
+      "label": "PDF 點取使用向量",
+      "pass": true,
+      "actual": {
+        "method": "pdf-vector",
+        "sourcePoints": [
+          [
+            32,
+            32
+          ],
+          [
+            228,
+            32
+          ],
+          [
+            228,
+            148
+          ],
+          [
+            32,
+            148
+          ]
+        ],
+        "points": [
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "crop": [
+          0,
+          0,
+          280,
+          190
+        ],
+        "warnings": [
+          "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+          "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+        ],
+        "dimensions": [],
+        "reviewed": false
+      }
+    },
+    {
+      "label": "框選限縮範圍但取得真實四邊內緣",
+      "pass": true,
+      "actual": {
+        "method": "pdf-vector",
+        "sourcePoints": [
+          [
+            32,
+            32
+          ],
+          [
+            228,
+            32
+          ],
+          [
+            228,
+            148
+          ],
+          [
+            32,
+            148
+          ]
+        ],
+        "points": [
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "crop": [
+          20.000001649598826,
+          20.000005361196166,
+          230.0000016495988,
+          145.0000032991976
+        ],
+        "warnings": [
+          "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+          "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+        ],
+        "dimensions": [],
+        "reviewed": false
+      }
+    },
+    {
+      "label": "框選尚未寫入",
+      "pass": true,
+      "actual": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ]
+    },
+    {
+      "label": "連動確認前外環維持原狀",
+      "pass": true,
+      "actual": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ]
+    },
+    {
+      "label": "正式外環逐頂點等於候選",
+      "pass": true,
+      "actual": [
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ]
+    },
+    {
+      "label": "復原還原原外環",
+      "pass": true,
+      "actual": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ]
+    },
+    {
+      "label": "重做恢復候選",
+      "pass": true,
+      "actual": [
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ]
+    },
+    {
+      "label": "重新取得可編輯的同一內緣",
+      "pass": true,
+      "actual": [
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ]
+    },
+    {
+      "label": "套用凹口清除舊核對且未改動正式面",
+      "pass": true,
+      "actual": {
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "source": {
+          "sourceId": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5",
+          "page": 1,
+          "crop": [
+            0,
+            0,
+            280,
+            190
+          ],
+          "mmPerPx": 9.999998020481812,
+          "calibration": {
+            "points": [
+              [
+                29.99999670080236,
+                30.000009794492975
+              ],
+              [
+                230.00003629117398,
+                30.000009794492975
+              ]
+            ],
+            "distanceMm": 2000,
+            "inputValue": 2000,
+            "inputUnit": "mm"
+          }
+        },
+        "candidate": {
+          "method": "pdf-vector",
+          "sourcePoints": [
+            [
+              32,
+              32
+            ],
+            [
+              228,
+              32
+            ],
+            [
+              228,
+              148
+            ],
+            [
+              32,
+              148
+            ]
+          ],
+          "points": [
+            [
+              320,
+              320
+            ],
+            [
+              2280,
+              320
+            ],
+            [
+              2280,
+              1480
+            ],
+            [
+              1960,
+              1480
+            ],
+            [
+              1960,
+              1300
+            ],
+            [
+              1540,
+              1300
+            ],
+            [
+              1540,
+              1480
+            ],
+            [
+              320,
+              1480
+            ]
+          ],
+          "crop": [
+            20.000001649598826,
+            20.000005361196166,
+            230.0000016495988,
+            145.0000032991976
+          ],
+          "warnings": [
+            "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+            "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+          ],
+          "dimensions": [],
+          "reviewed": false
+        },
+        "status": "候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。",
+        "reviewState": "candidate",
+        "visibleCandidate": "待核對候選 · PDF 原始向量內緣推估\n\n確認將替換目前面 #1 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 0.0005 mm。圖上標註尺寸不會自動入值。\n\n已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。\n此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。\n邊 1：擬提交 1960 mm\n邊 2：擬提交 1160 mm\n邊 3：擬提交 320 mm\n邊 4：擬提交 180 mm\n邊 5：擬提交 420 mm\n邊 6：擬提交 180 mm\n邊 7：擬提交 1220 mm\n邊 8：擬提交 1160 mm\n進階：指定單邊尺寸\n局部補點／凹口與頂點修正\n 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告\n確認替換外環，交核心驗證\n取消候選",
+        "confirmDisabled": true
+      }
+    },
+    {
+      "label": "人工尺寸記錄與八點凹口均保留",
+      "pass": true,
+      "actual": {
+        "method": "pdf-vector",
+        "sourcePoints": [
+          [
+            32,
+            32
+          ],
+          [
+            228,
+            32
+          ],
+          [
+            228,
+            148
+          ],
+          [
+            32,
+            148
+          ]
+        ],
+        "points": [
+          [
+            320,
+            320
+          ],
+          [
+            2320,
+            320
+          ],
+          [
+            2320,
+            1480
+          ],
+          [
+            1960,
+            1480
+          ],
+          [
+            1960,
+            1300
+          ],
+          [
+            1540,
+            1300
+          ],
+          [
+            1540,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "crop": [
+          20.000001649598826,
+          20.000005361196166,
+          230.0000016495988,
+          145.0000032991976
+        ],
+        "warnings": [
+          "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+          "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+        ],
+        "dimensions": [
+          {
+            "edge": 0,
+            "length": 2000,
+            "kind": "user-confirmed-mm"
+          }
+        ],
+        "reviewed": false
+      }
+    },
+    {
+      "label": "連動確認前外環維持原狀",
+      "pass": true,
+      "actual": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ]
+    },
+    {
+      "label": "現有角材端點失去擋面時核心拒絕變更",
+      "pass": true,
+      "actual": "變更無法套用\n\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n\nboundary 1 outline 320,320 2320,320 2320,1480 1960,1480 1960,1300 1540,1300 1540,1480 320,1480\n邊界與頂點 · 1\n面 1\n\n原：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n\n新：用途未設定；8 個外環頂點、0 個孔；尚未保存頂點身分\n\n核對頂點座標與身分\n原頂點：外環頂點 1 · 未設 key · (0, 0) mm · 下一邊固定；外環頂點 2 · 未設 key · (4000, 0) mm · 下一邊固定；外環頂點 3 · 未設 key · (4000, 3000) mm · 下一邊固定；外環頂點 4 · 未設 key · (0, 3000) mm · 下一邊固定\n新頂點：外環頂點 1 · 未設 key · (320, 320) mm · 下一邊固定；外環頂點 2 · 未設 key · (2320, 320) mm · 下一邊固定；外環頂點 3 · 未設 key · (2320, 1480) mm · 下一邊固定；外環頂點 4 · 未設 key · (1960, 1480) mm · 下一邊固定；外環頂點 5 · 未設 key · (1960, 1300) mm · 下一邊固定；外環頂點 6 · 未設 key · (1540, 1300) mm · 下一邊固定；外環頂點 7 · 未設 key · (1540, 1480) mm · 下一邊固定；外環頂點 8 · 未設 key · (320, 1480) mm · 下一邊固定\n角材／面／來源\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n90／面 1 · 身分保留，幾何更新\t10 → 330\t4000 → 2000\t[0, 0, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [320, 320, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n91／面 1 · 身分保留，幾何更新\t2990 → 1470\t4000 → 360\t[0, 2980, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1] → [1960, 1460, 2500] · 長/A/B軸 [1, 0, 0] / [0, 1, 0] / [0, 0, 1]\n1／面 1 · 身分保留，幾何更新\t500 → 無合法結果\t2960 → 無合法結果\t[514, 20, 2500] · 長/A/B軸 [0, 1, 0] / [-1, 0, 0] / [0, 0, 1] → 無合法結果\n參考線 1｜來源 局部參照 local；來源式 spec:主支1中線；面 1：u=500，世界 [500, 0, 2500]，方向 [0, 1, 0]，可見 1 段：(500, 0) → (500, 3000) → 來源 局部參照 local；來源式 spec:主支1中線；面 1：u=500，世界 [500, 0, 2500]，方向 [0, 1, 0]，可見 1 段：(500, 320) → (500, 1480)\n\n角材 1 · I19/I22\n預期：each stop has strictly higher cut priority, subject to boundary exceptions\n實際：V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC\n\n返回修改\n確認套用"
+    },
+    {
+      "label": "修正後的候選含八個指定頂點",
+      "pass": true,
+      "actual": [
+        [
+          320,
+          320
+        ],
+        [
+          2320,
+          320
+        ],
+        [
+          2320,
+          1480
+        ],
+        [
+          440,
+          1480
+        ],
+        [
+          440,
+          1300
+        ],
+        [
+          390,
+          1300
+        ],
+        [
+          390,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ]
+    },
+    {
+      "label": "連動確認前外環維持原狀",
+      "pass": true,
+      "actual": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ]
+    },
+    {
+      "label": "正式外環逐頂點等於候選",
+      "pass": true,
+      "actual": [
+        [
+          320,
+          320
+        ],
+        [
+          2320,
+          320
+        ],
+        [
+          2320,
+          1480
+        ],
+        [
+          440,
+          1480
+        ],
+        [
+          440,
+          1300
+        ],
+        [
+          390,
+          1300
+        ],
+        [
+          390,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ]
+    },
+    {
+      "label": "復原還原原外環",
+      "pass": true,
+      "actual": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ]
+    },
+    {
+      "label": "重做恢復候選",
+      "pass": true,
+      "actual": [
+        [
+          320,
+          320
+        ],
+        [
+          2320,
+          320
+        ],
+        [
+          2320,
+          1480
+        ],
+        [
+          440,
+          1480
+        ],
+        [
+          440,
+          1300
+        ],
+        [
+          390,
+          1300
+        ],
+        [
+          390,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ]
+    }
+  ],
+  "chromium": "157.0.8103.79",
+  "result": "pass",
+  "finished": "2026-11-21T04:26:54.177Z"
+}
