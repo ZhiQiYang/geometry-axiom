@@ -1,0 +1,46 @@
+name: PF-6 T 功能斷言見證
+on:
+  push:
+    branches:
+      - codex/r02-pf6-witness-20261121
+permissions:
+  contents: read
+jobs:
+  baseline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 1e1d08c156bc212468f56d377a9ef05e501c2954
+          persist-credentials: false
+      - name: 驗 T 提交與建置指紋
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          test "$(git rev-parse HEAD)" = 1e1d08c156bc212468f56d377a9ef05e501c2954
+          test "$(git rev-parse HEAD^{tree})" = e5ed38f8017855d162ead60e7cc70fa702f3055f
+          echo '417b0dc1b68abdb42d8d467a4ec1b637b5091224065f2038555690e966b89ae8  tests/test_panel_fill_builder.py' | sha256sum --check
+          python3 -B tests/binaries.py build bridge
+      - name: 核對 26 個方法的原生功能斷言失敗
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          set +e
+          python3 -B -m unittest -v tests.test_panel_fill_builder > "$RUNNER_TEMP/pf6-t.log" 2>&1
+          status=$?
+          set -e
+          cat "$RUNNER_TEMP/pf6-t.log"
+          echo "PF6_T_EXIT=$status"
+          test "$status" -eq 1
+          grep -Eq '^Ran 26 tests? in ' "$RUNNER_TEMP/pf6-t.log"
+          grep -Fx 'FAILED (failures=38)' "$RUNNER_TEMP/pf6-t.log"
+          test "$(grep -Ec '^AssertionError: .*PF6_NATIVE_BUILDER_CAPABILITY' "$RUNNER_TEMP/pf6-t.log")" = 38
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pf6-t-raw
+          path: ${{ runner.temp }}/pf6-t.log
+          if-no-files-found: error
