@@ -2,11 +2,12 @@ name: R16 畫布高度原件驗證
 on:
   push:
     branches: [codex/r16-u123h-witness-20261121]
+    paths: [.github/workflows/r16-height-witness.yml]
 permissions:
   contents: read
 jobs:
   height:
-    name: P1231 真實 Chrome (T)
+    name: P1231 真實 Chrome (P)
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
@@ -16,13 +17,13 @@ jobs:
       GEOMETRY_CHROME_FLAGS: --no-sandbox
       GEOMETRY_CDP_PORT: '9371'
       PYTHONDONTWRITEBYTECODE: '1'
-      SOURCE_SHA: 2a3060301af6b5f15174eda6cfb57dd560490978
-      EXPECTED_TREE: a5610784a86ee99645cebad93dc5ea70d113974e
-      R16_PHASE: T
+      SOURCE_SHA: 38a86e71c03815b595fdb135d9d7cd62b9ba0500
+      EXPECTED_TREE: e51336901efb0adf58b7b48daebd83f560845e9b
+      R16_PHASE: P
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 2a3060301af6b5f15174eda6cfb57dd560490978
+          ref: 38a86e71c03815b595fdb135d9d7cd62b9ba0500
           persist-credentials: false
       - name: 核對來源、工具與回報目錄
         shell: bash
@@ -94,7 +95,79 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: r16-height-T-2a3060301af6b5f15174eda6cfb57dd560490978
+          name: r16-height-P-38a86e71c03815b595fdb135d9d7cd62b9ba0500
           path: ${{ runner.temp }}/r16/
+          if-no-files-found: error
+          retention-days: 14
+  withdrawals:
+    name: 七組產品撤回與原登錄守門
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 38a86e71c03815b595fdb135d9d7cd62b9ba0500
+          persist-credentials: false
+          fetch-depth: 0
+          filter: blob:none
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: 核對完整來源與診斷腳本
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "38a86e71c03815b595fdb135d9d7cd62b9ba0500"
+          test "$(git rev-parse HEAD^{tree})" = "e51336901efb0adf58b7b48daebd83f560845e9b"
+          mkdir -p "$RUNNER_TEMP/r16-withdraw"
+          python3 -B tests/diagnostics/r16_height_mutations.py --preflight | tee "$RUNNER_TEMP/r16-withdraw/preflight.json"
+          node tests/diagnostics/r16_canvas_golden.cjs --self-test | tee "$RUNNER_TEMP/r16-withdraw/golden-selftest.log"
+      - name: 建置原生工具並取得本次執行檔位置
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          python3 -u geometry-web/start_local.py --build-only 2>&1 | tee "$RUNNER_TEMP/r16-withdraw/build.log"
+          python3 - <<'PY'
+          import json, os, pathlib
+          line=next(s for s in (pathlib.Path(os.environ['RUNNER_TEMP'])/'r16-withdraw/build.log').read_text().splitlines() if s.startswith('LOCAL_RUNTIME '))
+          bins=json.loads(line[len('LOCAL_RUNTIME '):])['executables']
+          with open(os.environ['GITHUB_ENV'],'a') as f:
+              for name, key in [('R16_BRIDGE','bridge'),('R16_MODEL','model-base')]:
+                  assert os.access(bins[key],os.X_OK)
+                  print(f'{name}={bins[key]}',file=f)
+          PY
+      - name: 安裝中文字型
+        timeout-minutes: 8
+        uses: ./.github/actions/install-cjk-fonts
+      - name: 執行七項原生瀏覽器撤回
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          snapshot="$RUNNER_TEMP/r16-tmp"
+          if [ "$(df -B1 --output=avail /mnt | tail -1)" -gt "$(df -B1 --output=avail "$RUNNER_TEMP" | tail -1)" ]; then
+            snapshot=/mnt/r16-snapshots
+            sudo install -d -o "$(id -u)" -g "$(id -g)" "$snapshot"
+          fi
+          mkdir -p "$snapshot"
+          out="$RUNNER_TEMP/r16-withdraw"
+          set +e
+          TMPDIR="$snapshot" python3 -B tests/diagnostics/r16_height_mutations.py --bridge "$R16_BRIDGE" --model-base "$R16_MODEL" --output-dir "$out/proof" > "$out/runner.stdout" 2> "$out/runner.stderr"
+          status=$?
+          set -e
+          printf '%s\n' "$status" > "$out/exit-code.txt"
+          cat "$out/runner.stdout" "$out/runner.stderr"
+          exit "$status"
+      - name: 保存七項原始執行、原始登錄守門與來源
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r16-withdrawals-38a86e71c03815b595fdb135d9d7cd62b9ba0500
+          path: ${{ runner.temp }}/r16-withdraw/
           if-no-files-found: error
           retention-days: 14
