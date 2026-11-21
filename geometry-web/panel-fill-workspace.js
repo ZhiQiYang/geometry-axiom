@@ -145,11 +145,71 @@ window.PanelFillWorkspace = (() => {
   }
   function exact(value) {return typeof value==='object'?JSON.stringify(value):String(value??'未提供');}
   const table=(headers,rows)=>`<div class="pf-table-scroll"><table><thead><tr>${headers.map(h=>'<th scope="col">'+esc(h)+'</th>').join('')}</tr></thead><tbody>${rows.map(row=>'<tr>'+row.map(v=>'<td>'+esc(exact(v))+'</td>').join('')+'</tr>').join('')}</tbody></table></div>`;
+  // Presentation only: retain every native leaf and its original path. Decimal
+  // strings and signed indices never pass through Number or geometry helpers.
+  const fieldNames={id:'編號',name:'名稱',hostId:'宿主編號',fillId:'鋪排編號',finishSurfaceId:'完成面編號',boundaryId:'邊界編號',
+    mainAlong:'主支偏好',definition:'定義來源',derived:'原生有效值',indexSpace:'格線索引空間',bandIndexSpace:'列索引空間',
+    side:'結構側',fillSide:'結構側',structureSide:'結構側',staggerAxis:'交丁軸',staggerDelta:'交丁量（mm）',
+    axes:'各軸',u:'u 軸',v:'v 軸',U:'U 軸向',V:'V 軸向',N:'N 軸向',baseCoordinate:'基準座標（mm）',pitch:'節距（mm）',baseIndex:'基準索引 k',
+    frame:'框架',origin:'原點（mm）',obstacles:'明選障礙',panel:'固定面材',version:'版本',lengthAlong:'面材長邊軸向',
+    gap:'板縫（mm）',pattern:'鋪排方式',stagger:'交丁設定',axis:'軸向',value:'值',threshold:'支撐門檻來源',parameterId:'參數編號',fieldId:'欄位編號',h:'角材層厚（mm）',
+    kind:'種類',mode:'模式',field:'來源欄位',surface:'宿主編號',bindingId:'配置編號',evaluatedFill:'鋪排有效值',sourceSystem:'來源系統',
+    parentId:'父格編號',cell:'所屬格單元',divisions:'分割數',bounds:'可見範圍（mm）',geometryMode:'幾何列舉方式',geometryExact:'完整幾何列舉',
+    query:'原生查詢',ok:'查詢成功',exact:'完整列舉',rect:'查詢範圍（mm）',defined:'已有定義',firstIndex:'首索引 k',lastIndex:'末索引 k',total:'總數',stride:'抽樣步幅',
+    lines:'格線',index:'格線索引 k',coordinate:'座標（mm）',segments:'可見線段（mm）',a:'起點',b:'終點',
+    uDefinition:'u 軸來源',vDefinition:'v 軸來源',indices:'格線索引',lattice:'週期基準',role:'角色',priority:'優先序',
+    dependencies:'下游依賴',children:'子格',guides:'參考線',timbers:'角材',off:'位置（mm）',source:'引用來源',band:'面材列索引 band',
+    seamOverrides:'明示縫中心',center:'中心座標（mm）',k:'格線索引 k',bands:'面材列範圍',lo:'下界',hi:'上界'};
+  function displayScalar(value,key) {
+    if(value===null)return '未設定';if(value===undefined)return '未提供';
+    if(typeof value==='boolean')return value?'是':'否';
+    if(key==='mainAlong'&&['u','v'].includes(value))return '沿 '+value;
+    const words={indexSpace:{lattice:'帶符號格線索引 k'},bandIndexSpace:{'panel-row':'面材列索引 band'},
+      pattern:{straight:'正排',stagger:'交丁'},kind:{main:'主格',literal:'明設值',parameter:'參數引用',material:'材料引用',spec:'具名尺寸'},
+      mode:{'from-fill':'跟隨鋪排',sample:'抽樣',exact:'完整'},geometryMode:{sample:'抽樣',exact:'完整'},role:{primary:'主支',secondary:'次支'}};
+    return Object.hasOwn(words,key)&&Object.hasOwn(words[key],value)?words[key][value]:String(value);
+  }
+  function nativeFields(record) {
+    const fields=new Map();
+    function visit(value,parts,labels) {
+      const key=parts.at(-1),name=parts.join('.');
+      if(value!==null&&typeof value==='object'&&Object.keys(value).length){
+        if(Array.isArray(value)&&value.every(v=>v===null||typeof v!=='object')){
+          fields.set(name,{label:labels.join(' · '),value:value.map(v=>displayScalar(v,key)).join('、')});return;
+        }
+        for(const [child,item] of Object.entries(value)){
+          const label=Array.isArray(value)?'第 '+(Number(child)+1)+' 筆':child==='value'&&['h','gap','stagger'].includes(parts[0])?'值（mm）':Object.hasOwn(fieldNames,child)?fieldNames[child]:child;
+          visit(item,[...parts,child],[...labels,label]);
+        }
+        return;
+      }
+      fields.set(name,{label:labels.join(' · '),value:value&&typeof value==='object'?'無項目':displayScalar(value,key)});
+    }
+    if(record!==null&&record!==undefined)for(const [key,value] of Object.entries(record))visit(value,[key],[Object.hasOwn(fieldNames,key)?fieldNames[key]:key]);
+    return fields;
+  }
+  function readableTable(title,states,attributes='') {
+    const columns=states.map(nativeFields),keys=[...new Set(columns.flatMap(c=>[...c.keys()]))];
+    const headers=states.length===2?['欄位','確認前','候選後']:['欄位','原生值'];
+    const rows=keys.map(key=>`<tr data-pf-field-path="${esc(key)}"><th scope="row">${esc(columns.find(c=>c.has(key)).get(key).label)}</th>${columns.map((c,i)=>'<td>'+esc(states[i]===null||states[i]===undefined?'不存在':c.get(key)?.value??'未提供')+'</td>').join('')}</tr>`).join('');
+    return `<article class="pf-record-card" ${attributes}><table class="pf-readable-table" data-pf-columns="${headers.length}"><caption>${esc(title)}</caption><thead><tr>${headers.map(h=>'<th scope="col">'+h+'</th>').join('')}</tr></thead><tbody>${rows||'<tr><th scope="row">存在狀態</th>'+states.map(s=>'<td>'+(s==null?'不存在':'無欄位')+'</td>').join('')+'</tr>'}</tbody></table></article>`;
+  }
+  function gridDisplayRecord(record) {
+    if(!record)return record;
+    const pick=(value,keys)=>Object.fromEntries(keys.filter(k=>Object.hasOwn(value,k)).map(k=>[k,value[k]]));
+    const result=pick(record,['id','surface','fillId','mainAlong','indexSpace','bandIndexSpace','fillSide','geometryMode','geometryExact']);
+    if(record.evaluatedFill)result.evaluatedFill=pick(record.evaluatedFill,['staggerAxis','staggerDelta']);
+    if(record.lattice)result.lattice=Object.fromEntries(Object.entries(record.lattice).map(([axis,value])=>[axis,pick(value,['baseCoordinate','pitch','baseIndex'])]));
+    // The primary comparison is about the live source and exact axis basis.
+    // Sampled lines/segments/query metadata stay in the complete native
+    // before/after JSON below; sampling is never presented as full geometry.
+    return result;
+  }
   function impact(candidate) {
     const kinds={'finish-surface':['完成面','finishSurfaces'],'panel-fill':['鋪排','panelFills'],'derived-placement':['派生宿主','derivedPlacements'],'fill-grid':['來源主格','fillGrids']};
     const changes={created:'新增',modified:'定義修改',deleted:'刪除',derived:'原生派生結果變動'};
     const record=(state,key,id)=>list(state?.[key]).find(r=>(r.definition?.id??r.id)===id);
-    const definition=r=>{if(!r)return '不存在';if(r.definition)return r.definition;const {derived,...value}=r;return value;};
+    const definition=r=>{if(!r)return null;if(r.definition)return r.definition;const {derived,...value}=r;return value;};
     const rows=list(candidate.changes).map(change=>{
       const kind=change.record??'finish-surface',entry=kinds[kind],key=entry?.[1];
       return [`${entry?.[0]??kind} #${change.id}`,changes[change.change]??change.change,
@@ -160,14 +220,14 @@ window.PanelFillWorkspace = (() => {
     const timberIds=[...new Set([...beforeTimbers,...afterTimbers].map(t=>t.id))];
     const beforeHosts=list(candidate.before?.derivedPlacements),afterHosts=list(candidate.after?.derivedPlacements);
     const hostIds=[...new Set([...beforeHosts,...afterHosts].map(h=>h.definition.id))];
-    const dependencyRows=key=>{const before=list(dependencies?.before?.geometry?.[key]),after=list(dependencies?.after?.geometry?.[key]);
-      return [...new Set([...before,...after].map(r=>r.id))].map(id=>['#'+id,before.find(r=>r.id===id)??'不存在',after.find(r=>r.id===id)??'不存在']);};
+    const dependencyTables=(key,label)=>{const before=list(dependencies?.before?.geometry?.[key]),after=list(dependencies?.after?.geometry?.[key]);
+      return [...new Set([...before,...after].map(r=>r.id))].map(id=>readableTable(label+' #'+id,[before.find(r=>r.id===id),after.find(r=>r.id===id)].map(r=>key==='grids'?gridDisplayRecord(r):r))).join('')||'<p>沒有'+label+'紀錄。</p>';};
     return `<section class="pf-impact" data-pf-impact aria-label="確認前後的原生變更與下游影響"><h4>確認前後影響（尚未套用）</h4>
       <p data-pf-native-changes>原生列出 ${rows.length} 筆變更：${rows.map(r=>esc(r[0]+'・'+r[1])).join('、')||'沒有變更紀錄'}。</p>
-      ${table(['變更對象','原生判定','確認前定義','候選定義'],rows)}
+      <section data-pf-definition-impact>${rows.map((r,i)=>readableTable(r[0]+' · '+r[1],[r[2],r[3]],`data-pf-record="${esc((candidate.changes[i].record??'finish-surface')+':'+candidate.changes[i].id)}"`)).join('')}</section>
       ${list(candidate.before?.fillGrids).length||list(candidate.after?.fillGrids).length?`<section data-pf-grid-impact><h5>主格與引用的參考線</h5>
-        ${table(['主格','確認前原生紀錄','候選原生紀錄'],dependencyRows('grids'))}
-        <div data-pf-guide-impact>${table(['參考線','確認前原生紀錄','候選原生紀錄'],dependencyRows('guides'))}</div></section>`:''}
+        ${dependencyTables('grids','主格')}
+        <div data-pf-guide-impact>${dependencyTables('guides','參考線')}</div></section>`:''}
       ${hostIds.length?`<section data-pf-dependency-impact aria-label="宿主與既有角材前後影響"><h5>宿主與既有角材</h5>
         <p>宿主 ${hostIds.map(id=>'#'+id).join('、')}；原生回覆的下游角材 ${timberIds.length} 支${timberIds.length?'（'+timberIds.map(id=>'#'+id).join('、')+'）':''}。以下保留確認前後紀錄，未變更的紀錄也列出。</p>
         ${table(['宿主','確認前原生結果','候選原生結果'],hostIds.map(id=>['#'+id,record(candidate.before,'derivedPlacements',id)?.derived??'不存在',record(candidate.after,'derivedPlacements',id)?.derived??'不存在']))}
@@ -209,7 +269,7 @@ window.PanelFillWorkspace = (() => {
       ${state.derivedPlacements.filter(h=>fillIds.has(h.definition.fillId)).map(h=>`<details><summary>宿主 #${h.definition.id} · ${h.derived?.error?'錯誤':'原生 h／框架／完整邊鍵'}</summary>${table(['欄位','精確原生值'],[['h 來源',h.definition.h],['h 有效值',h.derived?.h],['frame',h.derived?.frame],['components／完整邊鍵',h.derived?.components],...(h.derived?.error?[['錯誤',h.derived.error]]:[])])}</details>`).join('')}
       ${list(state.fillGrids).filter(g=>fillIds.has(g.definition.fillId)).map(g=>`<details data-pf-grid-result="${g.id}"><summary>來源主格 #${g.id} · 跟隨鋪排 #${g.definition.fillId}</summary>
         <p>定義來源與下方原生有效值分開保存；修改來源鋪排需重新預覽，取消不改正式主格。</p>
-        ${table(['欄位','精確原生值'],[['定義來源',g.definition],['索引空間',g.derived?.indexSpace],['列索引空間',g.derived?.bandIndexSpace],['結構側',g.derived?.side],['交丁軸',g.derived?.staggerAxis],['交丁量',g.derived?.staggerDelta],['u 軸',g.derived?.axes?.u],['v 軸',g.derived?.axes?.v]])}</details>`).join('')}</section>`;
+        ${readableTable('主格定義與有效值',[{definition:g.definition,derived:g.derived}])}</details>`).join('')}</section>`;
   }
   function display() {
     if(!active)return;const pane=document.querySelector('#faceInspectorContent [data-fi-pane="prop"]');if(pane)render(pane,active.boundaryId,true);

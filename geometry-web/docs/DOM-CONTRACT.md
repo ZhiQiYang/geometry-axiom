@@ -1208,6 +1208,7 @@ DSL、工程規格、參數卡及斷面工作區沿同一 `appendSectionProfileI
 - `[data-pf-grid-setup]` 只在原生宣告 `create-from-fill-grid`、目前選取正式 fill 與正式宿主時出現。尚未建立主格時，`[data-pf-field="createGrid"]` 明勾建立；`[data-pf-field="gridMainAlong"]` 必須明選 `u`／`v`／`none`，空值不能預覽。`none` 傳為 JSON `null`，不暗設偏好。前端不配置 grid id、不傳展開座標。
 - 已有同來源主格時，`[data-pf-grid-existing]` 取代建立勾選，顯示原生 id 與跟隨來源的語意。此入口只建立，不改既有主格的來源或偏好。同一定義不送新的表單候選；原生 repeated-create 仍由既有 batch 協議回 `history_changed:false`。
 - 沿用 `[data-pf-action="preview"|"confirm"|"cancel"]`。`[data-pf-native-changes]` 增列 `fill-grid`；`[data-pf-grid-impact]` 與 `[data-pf-guide-impact]` 列出原生前後主格／參考線紀錄，既有宿主與角材影響列仍完整呈現。缺能力、來源閉包或前後依賴的候選不能確認。
+- `[data-pf-definition-impact]` 按變更對象列出欄位／確認前／候選後；主格、參考線與 `[data-pf-grid-result]` 使用同一份唯讀欄位呈現。`[data-pf-field-path]` 保留原生欄位路徑，尺寸標示 mm、索引明列帶符號 k 與 band；精確十進位字串不轉 Number。主格主表只比較來源、主支、索引空間、結構側、交丁、兩軸基準及原生抽樣／完整狀態；query、抽樣格線與可見線段保留在既有折疊原件。三欄表頭固定為短詞且不直排，390／1400 px 視窗皆須以實際屬性欄寬核對。原 `[data-pf-impact-full]` 仍逐字值保留五份完整 before／after／changes／dependencies JSON，不以顯示表取代原生收據。這是既有表格的呈現替換，沒有新增入口或常駐說明。
 - `[data-pf-grid-result="gridId"]` 將定義來源與有效值分開：fill／host／mainAlong 是保存定義，signed lattice k、panel-row band、side、stagger 與兩軸精確十進位字串是原生求值。來源修改仍走同一份完整預覽；取消不修改主格或其引用。
 - 面內復原／重做使用 `#faceUndoButton`／`#faceRedoButton`；面內工作區遮住背景控制，不能以背景 `#btnUndo`／`#btnRedo` 冒稱一般入口。正式保存／重開沿原 `.gcanvas` 專案入口。
 - `panel_fill_grid_workflow_test.js` 為 `cdp_test.js` 的 **P1284** 外掛，緊接既有 **P128**、先於 P353／P359；P359 仍是最後一段。新段需由原 full CDP 實跑產生 golden，再連同 `geometry-web/canvas_shards.json` 的唯一歸屬核對。既有 P128=381 及其餘每段計數不得更改；未取得新段完整收據前，不得宣告 canvas 通過。
