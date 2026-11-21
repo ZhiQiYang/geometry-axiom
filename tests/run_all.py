@@ -416,6 +416,7 @@ NODE_PURE_TEST_FILES = {
     'node:anchor_band_clip': 'tests/test_anchor_band_clip.js',
     'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
     'node:face_paint_scheduler': 'tests/test_face_paint_scheduler.js',
+    'node:face_length_overlay': 'tests/test_face_length_overlay.js',
     'node:room_candidate_draft': 'tests/test_room_candidate_draft.js',
     'node:room_candidate_native_pins': 'tests/test_room_candidate_native_pins.js',
     'node:room_candidate_cold_contract': 'tests/test_room_candidate_cold_contract.cjs',
