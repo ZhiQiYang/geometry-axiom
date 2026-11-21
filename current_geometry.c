@@ -2881,8 +2881,8 @@ static bool boundary_keys_reconcile(World *,const World *,char *,size_t);
 static bool boundary_keys_initialize(World *,uint32_t);
 static void boundary_geometry_hash(const SpaceBoundarySurface *,char [65]);
 static bool grid_bindings_rebuild(World *,char *,size_t);
-static bool apply_grid_binding_application(const char *,int,char **,int,World *);
-static bool apply_grid_fill_application(const char *,int,char **,int,World *);
+static bool apply_grid_binding_application_with_snapshot(const char *,int,char **,int,World *);
+static bool apply_grid_fill_application_with_snapshot(const char *,int,char **,int,World *);
 static bool grid_systems_rebuild(World *,char *,size_t);
 static bool eng_object_bound(const World *,int,uint32_t);
 static uint64_t g_definition_revision;
@@ -6259,6 +6259,66 @@ static bool surface_primary_axis_check(
 static bool world_revalidate(World *world);
 static const ReferenceGrid *world_find_grid(const World *world, uint32_t id);
 
+/*
+ * #412：整份 World（約 6.7 MiB）不放在任何堆疊框。修前 17 處場景指令在框裡放一份
+ * World 當回滾備份或暫存候選，再加上全量重驗的呼叫鏈，就超過 Linux 預設的 8 MiB。
+ *
+ * 這些 handler 一律向這裡借堆積快照：函式本身多收一個 WorldSnapshot *，定義之後的
+ * WORLD_SNAPSHOT_HANDLER(name) 產生 name_with_snapshot，分派表與其他呼叫者都呼叫它。
+ * 它持有一格 WorldSnapshot、呼叫 name，等 name 從任一條路徑返回後只歸還一次。
+ * name 在原本複製 World 的同一個時點取快照；取不到就回報 WORLD_SNAPSHOT_UNAVAILABLE
+ * 並返回，這時還沒有改動世界，呼叫端依既有規則也不留歷史。
+ *
+ * 巢狀呼叫各自持有自己的一格，不共用緩衝。歸還的緩衝最多留 WORLD_SNAPSHOT_CACHE
+ * 份給下一行重用：同時活著的快照份數與修前堆疊上的 World 份數相同，重用則省掉逐行
+ * 重新配置與缺頁。單執行緒產品；快取不跨執行緒。
+ * GEOMETRY_WORLD_SNAPSHOT_ALLOC 只供測試注入配置失敗；產品碼一律是 malloc。
+ */
+#ifndef GEOMETRY_WORLD_SNAPSHOT_ALLOC
+#define GEOMETRY_WORLD_SNAPSHOT_ALLOC(size) malloc(size)
+#endif
+#define WORLD_SNAPSHOT_CACHE 2
+#define WORLD_SNAPSHOT_UNAVAILABLE "CAPACITY: World snapshot unavailable (World unchanged)"
+/* Defines `name##_with_snapshot`, the scene-handler entry that lends `name` one snapshot slot.
+ * Used as `WORLD_SNAPSHOT_HANDLER(name);` — the trailing prototype takes the semicolon. */
+#define WORLD_SNAPSHOT_HANDLER(name) \
+    static bool name##_with_snapshot(const char *path, int line_no, char **tokens, int count, World *world) \
+    { \
+        WorldSnapshot snapshot = { NULL }; \
+        bool ok = name(path, line_no, tokens, count, world, &snapshot); \
+        world_snapshot_release(&snapshot); \
+        return ok; \
+    } \
+    static bool name##_with_snapshot(const char *, int, char **, int, World *)
+
+typedef struct { World *copy; } WorldSnapshot;
+static World *g_world_snapshot_cache[WORLD_SNAPSHOT_CACHE];
+static size_t g_world_snapshot_cached;
+
+/* Copies source into the slot's heap buffer. NULL: nothing was allocated or changed. */
+static World *world_snapshot_take(WorldSnapshot *slot, const World *source)
+{
+    World *copy = slot->copy;
+    if (copy == NULL) {
+        copy = g_world_snapshot_cached > 0
+            ? g_world_snapshot_cache[--g_world_snapshot_cached]
+            : (World *)GEOMETRY_WORLD_SNAPSHOT_ALLOC(sizeof *copy);
+        if (copy == NULL) return NULL;
+        slot->copy = copy;
+    }
+    memcpy(copy, source, sizeof *copy);
+    return copy;
+}
+
+static void world_snapshot_release(WorldSnapshot *slot)
+{
+    World *copy = slot->copy;
+    slot->copy = NULL;
+    if (copy == NULL) return;
+    if (g_world_snapshot_cached < WORLD_SNAPSHOT_CACHE) g_world_snapshot_cache[g_world_snapshot_cached++] = copy;
+    else free(copy);
+}
+
 static bool world_replace_object(
     World *world,
     void *slot,
@@ -6940,7 +7000,8 @@ static bool apply_placement_line(
     int line_no,
     char *tokens[],
     int count,
-    World *world
+    World *world,
+    WorldSnapshot *snapshot
 )
 {
     uint32_t id;
@@ -6990,15 +7051,17 @@ static bool apply_placement_line(
         return false;
     }
 
-    World backup = *world;
-    if(!app_placement_stage(world,&candidate)){*world=backup;return false;}
+    World *backup = world_snapshot_take(snapshot, world);
+    if (backup == NULL) { scene_error(path, line_no, WORLD_SNAPSHOT_UNAVAILABLE); return false; }
+    if(!app_placement_stage(world,&candidate)){*world=*backup;return false;}
     if (!world_revalidate(world)) {
-        *world = backup;
+        *world = *backup;
         scene_error(path, line_no, "新增承載面後有物件失效（已回滾）");
         return false;
     }
     return true;
 }
+WORLD_SNAPSHOT_HANDLER(apply_placement_line);
 
 /* ---- surface 合體簡寫 ----
  *
@@ -7015,7 +7078,8 @@ static bool apply_surface_combined_line(
     int line_no,
     char *tokens[],
     int count,
-    World *world
+    World *world,
+    WorldSnapshot *snapshot
 )
 {
     uint32_t id;
@@ -7087,10 +7151,11 @@ static bool apply_surface_combined_line(
             return false;
         }
 
-        World backup = *world;
-        if(!app_placement_stage(world,&candidate)){*world=backup;return false;}
+        World *backup = world_snapshot_take(snapshot, world);
+        if (backup == NULL) { scene_error(path, line_no, WORLD_SNAPSHOT_UNAVAILABLE); return false; }
+        if(!app_placement_stage(world,&candidate)){*world=*backup;return false;}
         if (!world_revalidate(world)) {
-            *world = backup;
+            *world = *backup;
             scene_error(path, line_no, "新增承載面後有物件失效（已回滾）");
             return false;
         }
@@ -7202,14 +7267,15 @@ static bool apply_surface_combined_line(
     }
 
     /* 借用 world_replace_object 的交易語意：分兩步，第二步失敗要還原第一步。 */
-    World backup = *world;
+    World *backup = world_snapshot_take(snapshot, world);
+    if (backup == NULL) { scene_error(path, line_no, WORLD_SNAPSHOT_UNAVAILABLE); return false; }
 
     if(!app_boundary_stage(world,&boundary)||!app_placement_stage(world,&placement)){
-        *world=backup;return false;
+        *world=*backup;return false;
     }
 
     if (!world_revalidate(world)) {
-        *world = backup;
+        *world = *backup;
         scene_error(path, line_no,
             "重宣告後有物件失效（參考線/角材/空間沒全過）");
         return false;
@@ -7217,6 +7283,7 @@ static bool apply_surface_combined_line(
 
     return true;
 }
+WORLD_SNAPSHOT_HANDLER(apply_surface_combined_line);
 
 /* guide <id> <承載面id> <u|v> <offset>：offset 合法範圍由承載面決定。 */
 static bool apply_guide_line(const char *p, int n, char **t, int c, World *w)
@@ -7371,11 +7438,11 @@ static bool apply_grid_line(
 )
 {
     if (count>4 && !strcmp(tokens[4],"from-fill"))
-        return apply_grid_fill_application(path,line_no,tokens,count,world);
+        return apply_grid_fill_application_with_snapshot(path,line_no,tokens,count,world);
     if (count>4 && !strcmp(tokens[4],"from-binding"))
-        return apply_grid_binding_application(path,line_no,tokens,count,world);
+        return apply_grid_binding_application_with_snapshot(path,line_no,tokens,count,world);
     if (count>4 && !strcmp(tokens[4],"from-system"))
-        return apply_grid_system_application(path,line_no,tokens,count,world);
+        return apply_grid_system_application_with_snapshot(path,line_no,tokens,count,world);
     uint32_t grid_id;
 
     if (!parse_u32(tokens[1], &grid_id)) {
@@ -7778,7 +7845,8 @@ static bool apply_column_line(
     int line_no,
     char *tokens[],
     int count,
-    World *world
+    World *world,
+    WorldSnapshot *snapshot
 )
 {
     uint32_t id, space_id = 0;
@@ -7855,7 +7923,8 @@ static bool apply_column_line(
         return false;
     }
 
-    World backup = *world;
+    World *backup = world_snapshot_take(snapshot, world);
+    if (backup == NULL) { scene_error(path, line_no, WORLD_SNAPSHOT_UNAVAILABLE); return false; }
     RcColumn col = {
         .id = id, .space_id = space_id,
         .x_lo = x, .x_hi = x + w,
@@ -7877,20 +7946,22 @@ static bool apply_column_line(
 
 revalidate:
     if (!world_revalidate(world)) {
-        *world = backup;
+        *world = *backup;
         scene_error(path, line_no,
             "柱宣告後有物件失效（足跡越界/柱-柱重疊/空間不存在）");
         return false;
     }
     return true;
 }
+WORLD_SNAPSHOT_HANDLER(apply_column_line);
 
 static bool apply_beam_line(
     const char *path,
     int line_no,
     char *tokens[],
     int count,
-    World *world
+    World *world,
+    WorldSnapshot *snapshot
 )
 {
     uint32_t id, space_id = 0;
@@ -7976,7 +8047,8 @@ static bool apply_beam_line(
         return false;
     }
     /* 中心線對齊:c±w/2,奇數多的 1mm 在 +側(I13 慣例) */
-    World backup = *world;
+    World *backup = world_snapshot_take(snapshot, world);
+    if (backup == NULL) { scene_error(path, line_no, WORLD_SNAPSHOT_UNAVAILABLE); return false; }
     RcBeam bm = { .id = id, .space_id = space_id, .axis = axis };
     if (axis == 0) {
         bm.x_lo = a;          bm.x_hi = b;
@@ -8002,13 +8074,14 @@ static bool apply_beam_line(
 
 revalidate:
     if (!world_revalidate(world)) {
-        *world = backup;
+        *world = *backup;
         scene_error(path, line_no,
             "樑宣告後有物件失效（足跡越界/空間不存在）");
         return false;
     }
     return true;
 }
+WORLD_SNAPSHOT_HANDLER(apply_beam_line);
 
 /* ============================================================
  * 面障礙物推導（R7/R8/R9）
@@ -9188,7 +9261,8 @@ static bool apply_applyproj_line(
     int line_no,
     char *tokens[],
     int count,
-    World *world
+    World *world,
+    WorldSnapshot *snapshot
 )
 {
     if (count < 3) {
@@ -9243,7 +9317,8 @@ static bool apply_applyproj_line(
         return false;
     }
 
-    World backup = *world;
+    World *backup = world_snapshot_take(snapshot, world);
+    if (backup == NULL) { scene_error(path, line_no, WORLD_SNAPSHOT_UNAVAILABLE); return false; }
     FaceObstacle items[64];
     size_t n = world_face_obstacles(world, b, items, 64);
     if (n == SIZE_MAX) {
@@ -9286,13 +9361,13 @@ static bool apply_applyproj_line(
                             &pc, &t0, &t1, &t2, &t3);
                 }
                 if (contact < 0) {
-                    *world = backup;
+                    *world = *backup;
                     scene_error(path, line_no, RECT_CONTACT_ERROR);
                     return false;
                 }
                 if (contact == 0) continue;
                 if (tb != NULL) {
-                    *world = backup;
+                    *world = *backup;
                     scene_error(path, line_no,
                         "投影項橫跨拆分線，無法歸屬單一面片");
                     return false;
@@ -9300,7 +9375,7 @@ static bool apply_applyproj_line(
                 tb = pb[j]; tpl = pp[j];
             }
             if (tb == NULL) {
-                *world = backup;
+                *world = *backup;
                 scene_error(path, line_no,
                     "投影項不與任何面片接觸");
                 return false;
@@ -9308,10 +9383,10 @@ static bool apply_applyproj_line(
             uint32_t new_bid = 0;
             if (!proj_apply_one(world, tb, tpl, &items[i], cut_strip,
                     &new_bid, path, line_no)) {
-                *world = backup;
+                *world = *backup;
                 return false;
             }
-            if(!app_boundary_stage(world,tb)){*world=backup;return false;}
+            if(!app_boundary_stage(world,tb)){*world=*backup;return false;}
             ++applied;
             if (new_bid != 0 && np < 32) {
                 pb[np] = NULL; pp[np] = NULL;
@@ -9331,34 +9406,36 @@ static bool apply_applyproj_line(
             }
         }
         if (!matched) {
-            *world = backup;
+            *world = *backup;
             scene_error(path, line_no,
                 "apply-proj 的項目在此面上不存在（整筆拒絕）");
             return false;
         }
     }
     if (applied == 0) {
-        *world = backup;
+        *world = *backup;
         scene_error(path, line_no, "這些 id 在此面上沒有可套用的投影");
         return false;
     }
 
     /* Every edited fragment is staged in this candidate before revalidation. */
     if (!world_revalidate(world)) {
-        *world = backup;
+        *world = *backup;
         scene_error(path, line_no,
             "套用投影後有物件失效（輪廓退化/空間成員衝突）");
         return false;
     }
     return true;
 }
+WORLD_SNAPSHOT_HANDLER(apply_applyproj_line);
 
 static bool apply_delete_line(
     const char *path,
     int line_no,
     char *tokens[],
     int count,
-    World *world
+    World *world,
+    WorldSnapshot *snapshot
 )
 {
     (void)count;
@@ -9384,7 +9461,8 @@ static bool apply_delete_line(
         scene_error(path, line_no, message);
         return false;
     }
-    World backup = *world;
+    World *backup = world_snapshot_take(snapshot, world);
+    if (backup == NULL) { scene_error(path, line_no, WORLD_SNAPSHOT_UNAVAILABLE); return false; }
 
     if (strcmp(kind, "boundary") == 0) {
         size_t bi = SIZE_MAX;
@@ -9408,7 +9486,7 @@ static bool apply_delete_line(
         }
         (void)geo_region_keys_remove(&world->geo.region_data,id);
         identity_note_key(APP_IDENTITY_BOUNDARY, id, 0);
-        if(!app_boundary_remove(world,id)){*world=backup;return false;}
+        if(!app_boundary_remove(world,id)){*world=*backup;return false;}
         /* 空間成員是參照：剔除後用剩下的成員重建空間。 */
         for(size_t index=0;index<geo_enclosures_count(&world->geo.enclosures);++index){
             Space definition=*geo_enclosures_at(&world->geo.enclosures,index);
@@ -9433,11 +9511,11 @@ static bool apply_delete_line(
                 snprintf(message, sizeof message,
                          "剔除成員後空間 %" PRIu32 " 無法重建：%s",
                          sp->id, why);
-                *world = backup;
+                *world = *backup;
                 scene_error(path, line_no, message);
                 return false;
             }
-            if(!geo_enclosures_stage(&world->geo.enclosures,&rebuild)){*world=backup;return false;}
+            if(!geo_enclosures_stage(&world->geo.enclosures,&rebuild)){*world=*backup;return false;}
         }
         world_drop_canvas_pos(world, CANVAS_POS_BOUNDARY, id);
     } else if (strcmp(kind, "placement") == 0) {
@@ -9473,7 +9551,7 @@ static bool apply_delete_line(
             }
         }
         identity_note_key(APP_IDENTITY_PLACEMENT, id, 0);
-        if(!app_placement_remove(world,id)){*world=backup;return false;}
+        if(!app_placement_remove(world,id)){*world=*backup;return false;}
         world_drop_canvas_pos(world, CANVAS_POS_PLACEMENT, id);
     } else if (strcmp(kind, "datum") == 0) {
         size_t di = SIZE_MAX;
@@ -9532,7 +9610,7 @@ static bool apply_delete_line(
             scene_error(path, line_no, "這個空間不存在");
             return false;
         }
-        if(!geo_enclosures_remove(&world->geo.enclosures,id)){*world=backup;return false;}
+        if(!geo_enclosures_remove(&world->geo.enclosures,id)){*world=*backup;return false;}
         world_drop_canvas_pos(world, CANVAS_POS_SPACE, id);
         /* I17：刪空間 → 柱樑變游離，不跟著刪。 */
         for (size_t i = 0; i < world->wood.column_count; ++i) {
@@ -9583,19 +9661,21 @@ static bool apply_delete_line(
 
     engineering_drop_owned(world,kind,id);
     if (!world_revalidate(world)) {
-        *world = backup;
+        *world = *backup;
         scene_error(path, line_no, "刪除後 World 失效，已回滾");
         return false;
     }
     return true;
 }
+WORLD_SNAPSHOT_HANDLER(apply_delete_line);
 
 static bool apply_space_line(
     const char *path,
     int line_no,
     char *tokens[],
     int count,
-    World *world
+    World *world,
+    WorldSnapshot *snapshot
 )
 {
     uint32_t space_id;
@@ -9655,9 +9735,10 @@ static bool apply_space_line(
     }
 
     if(geo_enclosures_find(&world->geo.enclosures,space_id)){
-        World backup=*world;
+        World *backup = world_snapshot_take(snapshot, world);
+        if (backup == NULL) { scene_error(path, line_no, WORLD_SNAPSHOT_UNAVAILABLE); return false; }
         if(!geo_enclosures_stage(&world->geo.enclosures,&candidate)||!world_revalidate(world)){
-            *world=backup;
+            *world=*backup;
             scene_error(path,line_no,"重宣告空間後 World 失效");
             return false;
         }
@@ -9669,6 +9750,7 @@ static bool apply_space_line(
     }
     return geo_enclosures_stage(&world->geo.enclosures,&candidate);
 }
+WORLD_SNAPSHOT_HANDLER(apply_space_line);
 
 
 static bool apply_reset_line(
@@ -10065,12 +10147,12 @@ static const struct {
     const char *usage;
     bool (*apply)(const char *path, int line_no, char *tokens[], int count, World *world);
 } SCENE_COMMANDS[] = {
-    { "grid-binding", 15, SCENE_MAX_TOKENS, false, "grid-binding id on-boundary id from-system id vertex-key key cell i j anchor nu du nv dv", apply_grid_binding_line },
-    { "boundary-vertex-keys", 7, SCENE_MAX_TOKENS, false, "boundary-vertex-keys id outer keys [hole keys] next-key n", apply_boundary_keys_line },
-    { "boundary-keyed", 9, SCENE_MAX_TOKENS, false, "boundary-keyed id geometry-hash hash outline key:u,v ...", apply_boundary_keyed_line },
-    { "grid-source-rule", 4, 16, false, "grid-source-rule SID create|key K name-hex HEX selector all-cells|cell I J divide U V", apply_grid_source_rule },
+    { "grid-binding", 15, SCENE_MAX_TOKENS, false, "grid-binding id on-boundary id from-system id vertex-key key cell i j anchor nu du nv dv", apply_grid_binding_line_with_snapshot },
+    { "boundary-vertex-keys", 7, SCENE_MAX_TOKENS, false, "boundary-vertex-keys id outer keys [hole keys] next-key n", apply_boundary_keys_line_with_snapshot },
+    { "boundary-keyed", 9, SCENE_MAX_TOKENS, false, "boundary-keyed id geometry-hash hash outline key:u,v ...", apply_boundary_keyed_line_with_snapshot },
+    { "grid-source-rule", 4, 16, false, "grid-source-rule SID create|key K name-hex HEX selector all-cells|cell I J divide U V", apply_grid_source_rule_with_snapshot },
     { "grid-source-rule-highwater", 4, 4, false, "grid-source-rule-highwater SID next K|exhausted (file only)", apply_grid_source_rule_highwater },
-    { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line },
+    { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line_with_snapshot },
     { "owned", 5, 32, false, "owned instance member|bay-primary|bay-secondary native-arguments", apply_assembly_owned_line },
     { "section-profile", 3, 3, false, "section-profile profile|member|run base64-json (atomic scene only)", apply_section_profile_line },
     { "panel-fill", 4, 4, false, "panel-fill id definition-hex HEX (atomic scene only)", apply_panel_fill_line },
@@ -10080,7 +10162,7 @@ static const struct {
     { "parameters", 2, 3, false, "parameters begin|card|field|end", apply_parameters_line },
     { "requires", 2, 2, false, "requires engineering-spec/1", apply_requires_line },
     { "engineering", 3, 3, false, "engineering kind base64-json", apply_engineering_line },
-    { "subgrid", 12, 16, true, "subgrid id parent id cell u lo hi v lo hi divisions u n v n", apply_subgrid_line },
+    { "subgrid", 12, 16, true, "subgrid id parent id cell u lo hi v lo hi divisions u n v n", apply_subgrid_line_with_snapshot },
     { "spec", 3, 3, false, "spec 名稱 整數mm", apply_spec_line },
     {
         "boundary", 6, SCENE_MAX_TOKENS, false,
@@ -10093,17 +10175,17 @@ static const struct {
         "placement", 10, SCENE_MAX_TOKENS, false,
         "placement id [on boundary 邊id] origin x y z u 軸 v 軸 "
         "[rect min_u min_v max_u max_v]",
-        apply_placement_line
+        apply_placement_line_with_snapshot
     },
     {
         "surface", 10, SCENE_MAX_TOKENS, false,
         "surface id origin x y z u 軸 v 軸 (rect ... | outline u,v ...)",
-        apply_surface_combined_line
+        apply_surface_combined_line_with_snapshot
     },
     {
         "space", 2, 4 + SPACE_MAX_MEMBERS, false,
         "space id [boundary 面id 面id ...]（無成員 = 空容器）",
-        apply_space_line
+        apply_space_line_with_snapshot
     },
     {
         "datum", 4, SCENE_MAX_TOKENS, false,
@@ -10148,23 +10230,23 @@ static const struct {
     {
         "column", 8, 13, false,
         "column id [in 空間id] at x y size w d [z z0 z1]",
-        apply_column_line
+        apply_column_line_with_snapshot
     },
     {
         "beam", 15, 19, false,
         "beam id [in 空間id] along x|y from a to b at c "
         "width w depth d [top z]",
-        apply_beam_line
+        apply_beam_line_with_snapshot
     },
     {
         "apply-proj", 3, 36, false,
         "apply-proj 邊界面id 項目id… [cut-strip]",
-        apply_applyproj_line
+        apply_applyproj_line_with_snapshot
     },
     {
         "delete", 3, 3, false,
         "delete boundary|placement|guide|grid|grid-system|timber|space|column|beam id",
-        apply_delete_line
+        apply_delete_line_with_snapshot
     },
     {
         "reset", 1, 1, false,

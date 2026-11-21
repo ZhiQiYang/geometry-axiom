@@ -15,7 +15,7 @@ static bool subgrid_divisions_parse(const char *token,uint32_t *value,uint32_t i
     return false;
 }
 
-static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,World *world)
+static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,World *world,WorldSnapshot *snapshot)
 {
     ReferenceGrid candidate={0}; uint32_t du,dv; char detail[256]="";
     bool header=count>=5 && parse_u32(t[1],&candidate.id) && !strcmp(t[2],"parent") &&
@@ -55,16 +55,18 @@ static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,W
             return false;
         }
     } else {
-        World backup=*world;
+        World *backup = world_snapshot_take(snapshot, world);
+        if (backup == NULL) { scene_error(path, line_no, WORLD_SNAPSHOT_UNAVAILABLE); return false; }
         world->wood.grid_applications.items[world->wood.grid_applications.count++]=candidate;
         if (!world_revalidate(world)) {
-            *world=backup;
+            *world=*backup;
             scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I25：新子格不合法，已回滾");
             return false;
         }
     }
     return true;
 }
+WORLD_SNAPSHOT_HANDLER(apply_subgrid_line);
 
 static bool grid_guide_references(const World *world,const GuideLine *guide,uint32_t id)
 {
