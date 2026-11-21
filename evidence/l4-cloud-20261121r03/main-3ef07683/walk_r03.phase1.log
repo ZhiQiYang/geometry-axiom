@@ -1,0 +1,27 @@
+STEP 1-rect {"lines":["boundary 1 outline 122,194 3862,194 3862,2194 122,2194","placement 1 on boundary 1 origin 0 0 2500 u +x v +y"]}
+PASS RECT_3740x2000_PLACED 
+STEP 2-entry {"workspaces":1,"ws":"1","scope":"矩形第一片：無孔、無柱，邊界明設 RC。從起鋪牆整片開始，裁切只在對牆；主支整支連續。副支每條板端縫重新起算，採上界公式。與既有模板規則不相容的尺寸或排法會明確拒絕，不能確認。例如既有 3700 mm 案例需要退縫，本片回報規則衝突。現在不搜尋其他角或方向；請自行明選後重新預覽。","sources":["","",""],"materials":false,"onOptions":["請明選","放置面 1 · 原點 0, 0, 2500 · u +x／v +y"],"panelOptions":["請明選"],"thresholdOptions":["請明選"],"previewDisabled":true,"confirmDisabled":true,"framingTab":false}
+PASS ENTRY_SINGLE_WORKSPACE 
+PASS SCOPE_TEXT 
+PASS SOURCES_BLANK 
+STEP 3-material {"status":"已返回骨架並重讀來源；配方輸入保留，請重新明選本次框架、板材與 X。","phase":"ready","panelOptions":["請明選","L4 R03 面材 915×1830 · v1 · 915 × 1830 × 6 mm"]}
+PASS MATERIAL_SOURCE_RETURN 
+STEP 4-threshold {"status":"已返回骨架並重讀來源；配方輸入保留，請重新明選本次框架、板材與 X。","phase":"ready","thresholdOptions":["請明選","鋪排承接門檻／X · 8/1 mm"],"sources":["","",""]}
+PASS THRESHOLD_SOURCE_RETURN 
+STEP 3-4-sources-history {"undoDelta":2,"engRevision":["15","17"]}
+STEP 5-save-recipe {"status":"配方已保存為一筆專案紀錄，尚未新增骨架。","undoDelta":1,"lastKind":"local","recipe":{"schema":"framing-template-recipes/1","recipes":[{"id":"c3cf6023-5f08-4dd9-aede-f2ff997debef","name":"L4 R03 3740×2000 平釘天花","template":{"id":"flat-ceiling","version":1,"policyFingerprint":"21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"},"defaults":{"panelWidth":915,"panelLength":1830,"gap":2,"timberWidt
+PASS SAVE_RECIPE_INTENT_ONLY 
+STEP 6-preview {"head":"候選 33 支 · 確認前未寫入","members":33,"status":"整組候選已通過原生驗證；確認才寫入一筆歷史。","confirmDisabled":false,"requests":[{"path":"/framing-template/preview","cmd":null,"t":1795274015066}]}
+PASS PREVIEW_ZERO_WRITE 
+PASS PREVIEW_TABLE_MATCHES_DIAGRAM 
+STEP 7-cancel {"status":"本次生成已取消，配方與場景保持取消前原狀。","requests":[{"path":"/framing-template/preview","cmd":null,"t":1795274015066},{"path":"/api","cmd":"framing-template-cancel","t":1795274017193}],"resultsShown":false}
+PASS CANCEL_ZERO_WRITE 
+PASS CANCEL_SENT_NO_CONFIRM 
+PASS PREVIEW2_SAME_AS_PREVIEW1 
+STEP 8-confirm {"status":"骨架已整筆確認為一般正式物件；配方不擁有物件，冷開不重新搜尋。","undoDelta":1,"redo":0,"revision":["17","18"],"confirmRequests":1,"addedLines":113,"timberLines":33,"recipeUnchanged":true}
+PASS CONFIRM_ONE_HISTORY 
+PASS CONFIRM_LIVE_DEFINITIONS 
+PASS UNDO_ONE_STEP_KEEPS_RECIPE 
+PASS REDO_SAME_COMMIT 
+STEP 10-save {"savedName":"未命名專案.gcanvas","bytes":8942,"sha256":"697bd7c76c4f84235229434224ff857deafe1b431a934f9268acf5d936d91b28","sceneSha":"c942f1aa570c13b724c0b42007ef7745b66b1e343c53941c0f35526b2bc1a8bb","dirty":true,"generatorInvocations":2}
+SUMMARY {"pass":16,"fail":[]}

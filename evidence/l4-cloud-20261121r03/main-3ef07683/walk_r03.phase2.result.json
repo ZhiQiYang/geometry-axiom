@@ -1,0 +1,1431 @@
+{
+ "phase": "2",
+ "steps": [
+  {
+   "name": "11-cold-open",
+   "sceneSha": "c942f1aa570c13b724c0b42007ef7745b66b1e343c53941c0f35526b2bc1a8bb",
+   "recipeSha": "05dde17d3a57b4ed3d5a4d8bc0f364bebcbb5502f10fbe8fef90b9f7a082c430",
+   "openRequests": [],
+   "generatorInvocations": 0,
+   "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "e29f1f48f44e7ba5dbac6773f80239257ce9cfab852537ecd204b72adca4b77f",
+    "fresh": true,
+    "root": "/tmp/claude-0/-home-user-geometry-axiom/29a53dbd-9d44-57e9-88f6-aafc9658ec57/scratchpad/wt-main",
+    "pid": 3901,
+    "session": "1a30083e7af048c5989a30591a95b709"
+   }
+  },
+  {
+   "name": "11b-cold-form",
+   "form": {
+    "recipe": "L4 R03 3740×2000 平釘天花 · flat-ceiling/1",
+    "name": "L4 R03 3740×2000 平釘天花",
+    "corner": "min-min",
+    "lengthAlong": "v",
+    "sources": [
+     "",
+     "",
+     ""
+    ]
+   }
+  },
+  {
+   "name": "12-3700-reject",
+   "status": "POLICY_RULE_CONFLICT：此起鋪需要退最後板縫，會裁切不在對牆的板；未套用舊 oracle 退縫",
+   "phase": "rejected",
+   "confirmDisabled": true,
+   "results": false,
+   "requests": [
+    {
+     "path": "/framing-template/preview",
+     "cmd": null,
+     "t": 1795274095685
+    }
+   ],
+   "form": {
+    "recipe": "L4 R03 3740×2000 平釘天花 · flat-ceiling/1",
+    "corner": "min-min",
+    "lengthAlong": "v",
+    "gap": "2"
+   }
+  }
+ ],
+ "checks": {
+  "FRESH_CONTEXT": {
+   "ok": true,
+   "detail": {
+    "recipe": null,
+    "freshScene": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec 主支中線 500\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\nguide 1 1 v spec:主支中線\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\nplace 2 on 1 at-face e2 +u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2\nplace 3 on 1 at-line guide 1 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=-1\n",
+    "runtime": {
+     "schema": "geometry-runtime/1",
+     "version": "e29f1f48f44e7ba5dbac6773f80239257ce9cfab852537ecd204b72adca4b77f",
+     "fresh": true,
+     "root": "/tmp/claude-0/-home-user-geometry-axiom/29a53dbd-9d44-57e9-88f6-aafc9658ec57/scratchpad/wt-main",
+     "pid": 3901,
+     "session": "1a30083e7af048c5989a30591a95b709"
+    }
+   }
+  },
+  "COLD_SCENE_EXACT": {
+   "ok": true,
+   "detail": {
+    "before": "c942f1aa570c13b724c0b42007ef7745b66b1e343c53941c0f35526b2bc1a8bb",
+    "cold": "c942f1aa570c13b724c0b42007ef7745b66b1e343c53941c0f35526b2bc1a8bb"
+   }
+  },
+  "COLD_RECIPE_EXACT": {
+   "ok": true,
+   "detail": {
+    "before": {
+     "schema": "framing-template-recipes/1",
+     "recipes": [
+      {
+       "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+       "name": "L4 R03 3740×2000 平釘天花",
+       "template": {
+        "id": "flat-ceiling",
+        "version": 1,
+        "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+       },
+       "defaults": {
+        "panelWidth": 915,
+        "panelLength": 1830,
+        "gap": 2,
+        "timberWidth": 27,
+        "timberDepth": 33,
+        "maxSecondarySpacing": 367
+       },
+       "preference": {
+        "corner": "min-min",
+        "lengthAlong": "v"
+       },
+       "sourceSlots": [
+        "boundary",
+        "frame",
+        "material-semantics",
+        "panel-version",
+        "support-threshold"
+       ],
+       "sourceHints": []
+      }
+     ]
+    },
+    "cold": {
+     "schema": "framing-template-recipes/1",
+     "recipes": [
+      {
+       "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+       "name": "L4 R03 3740×2000 平釘天花",
+       "template": {
+        "id": "flat-ceiling",
+        "version": 1,
+        "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+       },
+       "defaults": {
+        "panelWidth": 915,
+        "panelLength": 1830,
+        "gap": 2,
+        "timberWidth": 27,
+        "timberDepth": 33,
+        "maxSecondarySpacing": 367
+       },
+       "preference": {
+        "corner": "min-min",
+        "lengthAlong": "v"
+       },
+       "sourceSlots": [
+        "boundary",
+        "frame",
+        "material-semantics",
+        "panel-version",
+        "support-threshold"
+       ],
+       "sourceHints": []
+      }
+     ]
+    }
+   }
+  },
+  "COLD_NO_SEARCH": {
+   "ok": true,
+   "detail": {
+    "openReqs": [],
+    "generatorInvocations": 0
+   }
+  },
+  "COLD_FORM_SHOWS_RECIPE_SOURCES_BLANK": {
+   "ok": true,
+   "detail": {
+    "form": {
+     "recipe": "L4 R03 3740×2000 平釘天花 · flat-ceiling/1",
+     "name": "L4 R03 3740×2000 平釘天花",
+     "corner": "min-min",
+     "lengthAlong": "v",
+     "sources": [
+      "",
+      "",
+      ""
+     ]
+    },
+    "diff": {}
+   }
+  },
+  "COLD_FORM_NO_GENERATION": {
+   "ok": true,
+   "detail": [
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "t": 1795274043124
+    },
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "t": 1795274047738
+    },
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "t": 1795274093627
+    },
+    {
+     "path": "/framing-template/preview",
+     "cmd": null,
+     "t": 1795274095685
+    }
+   ]
+  },
+  "RECT_3700x2000_PLACED": {
+   "ok": true,
+   "detail": [
+    "boundary 2 outline 420,120 4120,120 4120,2120 420,2120",
+    "placement 3 on boundary 2 origin 0 0 2500 u +x v +y"
+   ]
+  },
+  "ON_OPTIONS_ONLY_FACE2_PLACEMENT": {
+   "ok": true,
+   "detail": [
+    [
+     "",
+     "請明選"
+    ],
+    [
+     "3",
+     "放置面 3 · 原點 0, 0, 2500 · u +x／v +y"
+    ]
+   ]
+  },
+  "CONFLICT_3700_POLICY_RULE_CONFLICT": {
+   "ok": true,
+   "detail": {
+    "status": "POLICY_RULE_CONFLICT：此起鋪需要退最後板縫，會裁切不在對牆的板；未套用舊 oracle 退縫",
+    "phase": "rejected",
+    "confirmDisabled": true,
+    "results": false,
+    "requests": [
+     {
+      "path": "/framing-template/preview",
+      "cmd": null,
+      "t": 1795274095685
+     }
+    ],
+    "form": {
+     "recipe": "L4 R03 3740×2000 平釘天花 · flat-ceiling/1",
+     "corner": "min-min",
+     "lengthAlong": "v",
+     "gap": "2"
+    }
+   }
+  },
+  "CONFLICT_3700_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  },
+  "CONFLICT_3700_CANCEL_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  }
+ },
+ "browser": "153.0.8010.12",
+ "runtime": {
+  "schema": "geometry-runtime/1",
+  "version": "e29f1f48f44e7ba5dbac6773f80239257ce9cfab852537ecd204b72adca4b77f",
+  "fresh": true,
+  "root": "/tmp/claude-0/-home-user-geometry-axiom/29a53dbd-9d44-57e9-88f6-aafc9658ec57/scratchpad/wt-main",
+  "pid": 3901,
+  "session": "1a30083e7af048c5989a30591a95b709"
+ },
+ "coldGeneratorInvocations": 0,
+ "coldForm": {
+  "recipe": "L4 R03 3740×2000 平釘天花 · flat-ceiling/1",
+  "name": "L4 R03 3740×2000 平釘天花",
+  "corner": "min-min",
+  "lengthAlong": "v",
+  "sources": [
+   "",
+   "",
+   ""
+  ]
+ },
+ "secondRectStart": {
+  "x": 698,
+  "y": 176
+ },
+ "face2Lines": [
+  "boundary 2 outline 420,120 4120,120 4120,2120 420,2120",
+  "placement 3 on boundary 2 origin 0 0 2500 u +x v +y"
+ ],
+ "outline2": [
+  [
+   420,
+   120
+  ],
+  [
+   4120,
+   120
+  ],
+  [
+   4120,
+   2120
+  ],
+  [
+   420,
+   2120
+  ]
+ ],
+ "form3700": {
+  "recipe": "L4 R03 3740×2000 平釘天花 · flat-ceiling/1",
+  "corner": "min-min",
+  "lengthAlong": "v",
+  "gap": "2"
+ },
+ "onOptions3700": [
+  [
+   "",
+   "請明選"
+  ],
+  [
+   "3",
+   "放置面 3 · 原點 0, 0, 2500 · u +x／v +y"
+  ]
+ ],
+ "reject3700": {
+  "status": "POLICY_RULE_CONFLICT：此起鋪需要退最後板縫，會裁切不在對牆的板；未套用舊 oracle 退縫",
+  "phase": "rejected",
+  "confirmDisabled": true,
+  "results": false,
+  "requests": [
+   {
+    "path": "/framing-template/preview",
+    "cmd": null,
+    "t": 1795274095685
+   }
+  ],
+  "form": {
+   "recipe": "L4 R03 3740×2000 平釘天花 · flat-ceiling/1",
+   "corner": "min-min",
+   "lengthAlong": "v",
+   "gap": "2"
+  }
+ },
+ "checkpoints": {
+  "fresh": {
+   "sceneSha": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+   "revision": "10",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 0,
+   "redo": 0,
+   "frame": {
+    "context": {
+     "id": "5950c61e-4f9b-4903-a939-30c24df2dcde",
+     "name": "未命名專案",
+     "sources": {},
+     "groups": {},
+     "models": [],
+     "modelsDirty": false,
+     "reconstructionReviews": {},
+     "faceProjections": {},
+     "faceProjectionsDirty": false,
+     "engineeringDrafts": [],
+     "assemblyDrafts": [],
+     "featureAttachments": [],
+     "scenarioCatalog": null,
+     "pending": {},
+     "dirty": false,
+     "provenance": {
+      "kind": "server",
+      "label": "服務目前保留的場景（來源未確認）",
+      "openedAt": null,
+      "lastSavedAt": null,
+      "lastDownloadAt": null
+     }
+    },
+    "ids": {}
+   },
+   "lastUndoSha": null,
+   "dirty": false,
+   "recipe": null,
+   "pfRevision": 10,
+   "ids": {
+    "boundary": 2,
+    "placement": 2,
+    "surfaces": [
+     2
+    ],
+    "timber": 4
+   },
+   "project": {
+    "dirty": false,
+    "name": null
+   },
+   "recipeSha": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+   "idsSha": "f74bdd0783b5300dc44a3a0d2d62ae83c862c364b67c1d5a596f91c84606569a",
+   "sceneLines": 13
+  },
+  "cold": {
+   "sceneSha": "c942f1aa570c13b724c0b42007ef7745b66b1e343c53941c0f35526b2bc1a8bb",
+   "revision": "11",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 1,
+   "redo": 0,
+   "frame": {
+    "context": {
+     "id": "060af5b2-a890-4c48-9b74-f2728950afc2",
+     "name": "未命名專案",
+     "sources": {},
+     "groups": {},
+     "models": [],
+     "modelsDirty": false,
+     "reconstructionReviews": {},
+     "faceProjections": {},
+     "faceProjectionsDirty": false,
+     "engineeringDrafts": [
+      {
+       "id": "engineering-workspace-application",
+       "kind": "application",
+       "base_ref": null,
+       "data": {
+        "form": {
+         "method": null,
+         "targets": {
+          "1": {
+           "placement_id": 1,
+           "gridAction": "create",
+           "gridId": null,
+           "longAxis": "inherit",
+           "mainAlong": "inherit",
+           "anchors": {
+            "u": {
+             "mode": "lower",
+             "value": ""
+            },
+            "v": {
+             "mode": "lower",
+             "value": ""
+            }
+           },
+           "preserveOverrides": true,
+           "overrides": {},
+           "timberIds": [],
+           "objectOverrides": {},
+           "objectSources": {}
+          }
+         }
+        },
+        "ui": {
+         "section": "materials",
+         "inlineKind": null,
+         "activePlacement": 1,
+         "importText": ""
+        }
+       },
+       "updated_at": "2026-11-21T15:13:10.243Z"
+      }
+     ],
+     "assemblyDrafts": [],
+     "featureAttachments": [
+      {
+       "kind": "framing-template-recipes",
+       "schema": "framing-template-recipes/1",
+       "value": {
+        "schema": "framing-template-recipes/1",
+        "recipes": [
+         {
+          "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+          "name": "L4 R03 3740×2000 平釘天花",
+          "template": {
+           "id": "flat-ceiling",
+           "version": 1,
+           "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+          },
+          "defaults": {
+           "panelWidth": 915,
+           "panelLength": 1830,
+           "gap": 2,
+           "timberWidth": 27,
+           "timberDepth": 33,
+           "maxSecondarySpacing": 367
+          },
+          "preference": {
+           "corner": "min-min",
+           "lengthAlong": "v"
+          },
+          "sourceSlots": [
+           "boundary",
+           "frame",
+           "material-semantics",
+           "panel-version",
+           "support-threshold"
+          ],
+          "sourceHints": []
+         }
+        ]
+       }
+      }
+     ],
+     "scenarioCatalog": null,
+     "pending": {},
+     "dirty": false,
+     "provenance": {
+      "kind": "file",
+      "label": "專案檔案「r03.gcanvas」",
+      "openedAt": "2026-11-21T15:13:58.387Z",
+      "lastSavedAt": null,
+      "lastDownloadAt": null
+     },
+     "saved": true
+    },
+    "ids": {}
+   },
+   "lastUndoSha": "6e4eeb59b0e4940cd0431346e9774a06c5de05961b6f7581dfef01d81676f4a0",
+   "dirty": false,
+   "recipe": {
+    "schema": "framing-template-recipes/1",
+    "recipes": [
+     {
+      "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+      "name": "L4 R03 3740×2000 平釘天花",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 1,
+       "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+      },
+      "defaults": {
+       "panelWidth": 915,
+       "panelLength": 1830,
+       "gap": 2,
+       "timberWidth": 27,
+       "timberDepth": 33,
+       "maxSecondarySpacing": 367
+      },
+      "preference": {
+       "corner": "min-min",
+       "lengthAlong": "v"
+      },
+      "sourceSlots": [
+       "boundary",
+       "frame",
+       "material-semantics",
+       "panel-version",
+       "support-threshold"
+      ],
+      "sourceHints": []
+     }
+    ]
+   },
+   "pfRevision": 11,
+   "ids": {
+    "boundary": 2,
+    "placement": 3,
+    "surfaces": [
+     3
+    ],
+    "timber": 34
+   },
+   "project": {
+    "dirty": false,
+    "name": null
+   },
+   "recipeSha": "05dde17d3a57b4ed3d5a4d8bc0f364bebcbb5502f10fbe8fef90b9f7a082c430",
+   "idsSha": "45f8e22bc91bf4390d28b7dd7470d6de19301b9fb652b40067be094936a03755",
+   "sceneLines": 124
+  },
+  "coldAfterForm": {
+   "sceneSha": "c942f1aa570c13b724c0b42007ef7745b66b1e343c53941c0f35526b2bc1a8bb",
+   "revision": "11",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 1,
+   "redo": 0,
+   "frame": {
+    "context": {
+     "id": "060af5b2-a890-4c48-9b74-f2728950afc2",
+     "name": "未命名專案",
+     "sources": {},
+     "groups": {},
+     "models": [],
+     "modelsDirty": false,
+     "reconstructionReviews": {},
+     "faceProjections": {},
+     "faceProjectionsDirty": false,
+     "engineeringDrafts": [
+      {
+       "id": "engineering-workspace-application",
+       "kind": "application",
+       "base_ref": null,
+       "data": {
+        "form": {
+         "method": null,
+         "targets": {
+          "1": {
+           "placement_id": 1,
+           "gridAction": "create",
+           "gridId": null,
+           "longAxis": "inherit",
+           "mainAlong": "inherit",
+           "anchors": {
+            "u": {
+             "mode": "lower",
+             "value": ""
+            },
+            "v": {
+             "mode": "lower",
+             "value": ""
+            }
+           },
+           "preserveOverrides": true,
+           "overrides": {},
+           "timberIds": [],
+           "objectOverrides": {},
+           "objectSources": {}
+          }
+         }
+        },
+        "ui": {
+         "section": "materials",
+         "inlineKind": null,
+         "activePlacement": 1,
+         "importText": ""
+        }
+       },
+       "updated_at": "2026-11-21T15:13:10.243Z"
+      }
+     ],
+     "assemblyDrafts": [],
+     "featureAttachments": [
+      {
+       "kind": "framing-template-recipes",
+       "schema": "framing-template-recipes/1",
+       "value": {
+        "schema": "framing-template-recipes/1",
+        "recipes": [
+         {
+          "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+          "name": "L4 R03 3740×2000 平釘天花",
+          "template": {
+           "id": "flat-ceiling",
+           "version": 1,
+           "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+          },
+          "defaults": {
+           "panelWidth": 915,
+           "panelLength": 1830,
+           "gap": 2,
+           "timberWidth": 27,
+           "timberDepth": 33,
+           "maxSecondarySpacing": 367
+          },
+          "preference": {
+           "corner": "min-min",
+           "lengthAlong": "v"
+          },
+          "sourceSlots": [
+           "boundary",
+           "frame",
+           "material-semantics",
+           "panel-version",
+           "support-threshold"
+          ],
+          "sourceHints": []
+         }
+        ]
+       }
+      }
+     ],
+     "scenarioCatalog": null,
+     "pending": {},
+     "dirty": false,
+     "provenance": {
+      "kind": "file",
+      "label": "專案檔案「r03.gcanvas」",
+      "openedAt": "2026-11-21T15:13:58.387Z",
+      "lastSavedAt": null,
+      "lastDownloadAt": null
+     },
+     "saved": true
+    },
+    "ids": {}
+   },
+   "lastUndoSha": "6e4eeb59b0e4940cd0431346e9774a06c5de05961b6f7581dfef01d81676f4a0",
+   "dirty": false,
+   "recipe": {
+    "schema": "framing-template-recipes/1",
+    "recipes": [
+     {
+      "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+      "name": "L4 R03 3740×2000 平釘天花",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 1,
+       "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+      },
+      "defaults": {
+       "panelWidth": 915,
+       "panelLength": 1830,
+       "gap": 2,
+       "timberWidth": 27,
+       "timberDepth": 33,
+       "maxSecondarySpacing": 367
+      },
+      "preference": {
+       "corner": "min-min",
+       "lengthAlong": "v"
+      },
+      "sourceSlots": [
+       "boundary",
+       "frame",
+       "material-semantics",
+       "panel-version",
+       "support-threshold"
+      ],
+      "sourceHints": []
+     }
+    ]
+   },
+   "pfRevision": 11,
+   "ids": {
+    "boundary": 2,
+    "placement": 3,
+    "surfaces": [
+     3
+    ],
+    "timber": 34
+   },
+   "project": {
+    "dirty": false,
+    "name": null
+   },
+   "recipeSha": "05dde17d3a57b4ed3d5a4d8bc0f364bebcbb5502f10fbe8fef90b9f7a082c430",
+   "idsSha": "45f8e22bc91bf4390d28b7dd7470d6de19301b9fb652b40067be094936a03755",
+   "sceneLines": 124
+  },
+  "s3700": {
+   "sceneSha": "50ee7902414003359285bff838b7369e212ad3fc664c74195881c628a8de1ece",
+   "revision": "15",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 5,
+   "redo": 0,
+   "frame": {
+    "context": {
+     "id": "060af5b2-a890-4c48-9b74-f2728950afc2",
+     "name": "未命名專案",
+     "sources": {},
+     "groups": {},
+     "models": [],
+     "modelsDirty": false,
+     "reconstructionReviews": {},
+     "faceProjections": {},
+     "faceProjectionsDirty": false,
+     "engineeringDrafts": [
+      {
+       "id": "engineering-workspace-application",
+       "kind": "application",
+       "base_ref": null,
+       "data": {
+        "form": {
+         "method": null,
+         "targets": {
+          "1": {
+           "placement_id": 1,
+           "gridAction": "create",
+           "gridId": null,
+           "longAxis": "inherit",
+           "mainAlong": "inherit",
+           "anchors": {
+            "u": {
+             "mode": "lower",
+             "value": ""
+            },
+            "v": {
+             "mode": "lower",
+             "value": ""
+            }
+           },
+           "preserveOverrides": true,
+           "overrides": {},
+           "timberIds": [],
+           "objectOverrides": {},
+           "objectSources": {}
+          }
+         }
+        },
+        "ui": {
+         "section": "materials",
+         "inlineKind": null,
+         "activePlacement": 1,
+         "importText": ""
+        }
+       },
+       "updated_at": "2026-11-21T15:13:10.243Z"
+      }
+     ],
+     "assemblyDrafts": [],
+     "featureAttachments": [
+      {
+       "kind": "framing-template-recipes",
+       "schema": "framing-template-recipes/1",
+       "value": {
+        "schema": "framing-template-recipes/1",
+        "recipes": [
+         {
+          "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+          "name": "L4 R03 3740×2000 平釘天花",
+          "template": {
+           "id": "flat-ceiling",
+           "version": 1,
+           "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+          },
+          "defaults": {
+           "panelWidth": 915,
+           "panelLength": 1830,
+           "gap": 2,
+           "timberWidth": 27,
+           "timberDepth": 33,
+           "maxSecondarySpacing": 367
+          },
+          "preference": {
+           "corner": "min-min",
+           "lengthAlong": "v"
+          },
+          "sourceSlots": [
+           "boundary",
+           "frame",
+           "material-semantics",
+           "panel-version",
+           "support-threshold"
+          ],
+          "sourceHints": []
+         }
+        ]
+       }
+      }
+     ],
+     "scenarioCatalog": null,
+     "pending": {},
+     "dirty": true,
+     "provenance": {
+      "kind": "file",
+      "label": "專案檔案「r03.gcanvas」",
+      "openedAt": "2026-11-21T15:13:58.387Z",
+      "lastSavedAt": null,
+      "lastDownloadAt": null
+     },
+     "saved": true,
+     "dirtyReason": "",
+     "downloaded": false
+    },
+    "ids": {}
+   },
+   "lastUndoSha": "8af66d1cdbec149b77b0e8fcee8b81a21f1cd7b495889d751be417cff04db0a4",
+   "dirty": true,
+   "recipe": {
+    "schema": "framing-template-recipes/1",
+    "recipes": [
+     {
+      "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+      "name": "L4 R03 3740×2000 平釘天花",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 1,
+       "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+      },
+      "defaults": {
+       "panelWidth": 915,
+       "panelLength": 1830,
+       "gap": 2,
+       "timberWidth": 27,
+       "timberDepth": 33,
+       "maxSecondarySpacing": 367
+      },
+      "preference": {
+       "corner": "min-min",
+       "lengthAlong": "v"
+      },
+      "sourceSlots": [
+       "boundary",
+       "frame",
+       "material-semantics",
+       "panel-version",
+       "support-threshold"
+      ],
+      "sourceHints": []
+     }
+    ]
+   },
+   "pfRevision": 15,
+   "ids": {
+    "boundary": 3,
+    "placement": 4,
+    "surfaces": [
+     4
+    ],
+    "timber": 34
+   },
+   "project": {
+    "dirty": true,
+    "name": null
+   },
+   "recipeSha": "05dde17d3a57b4ed3d5a4d8bc0f364bebcbb5502f10fbe8fef90b9f7a082c430",
+   "idsSha": "1d5140a39f51327c437785efbad5c6d90d491741e56938a1b5551097007edf76",
+   "sceneLines": 127
+  },
+  "b3700": {
+   "sceneSha": "50ee7902414003359285bff838b7369e212ad3fc664c74195881c628a8de1ece",
+   "revision": "15",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 5,
+   "redo": 0,
+   "frame": {
+    "context": {
+     "id": "060af5b2-a890-4c48-9b74-f2728950afc2",
+     "name": "未命名專案",
+     "sources": {},
+     "groups": {},
+     "models": [],
+     "modelsDirty": false,
+     "reconstructionReviews": {},
+     "faceProjections": {},
+     "faceProjectionsDirty": false,
+     "engineeringDrafts": [
+      {
+       "id": "engineering-workspace-application",
+       "kind": "application",
+       "base_ref": null,
+       "data": {
+        "form": {
+         "method": null,
+         "targets": {
+          "1": {
+           "placement_id": 1,
+           "gridAction": "create",
+           "gridId": null,
+           "longAxis": "inherit",
+           "mainAlong": "inherit",
+           "anchors": {
+            "u": {
+             "mode": "lower",
+             "value": ""
+            },
+            "v": {
+             "mode": "lower",
+             "value": ""
+            }
+           },
+           "preserveOverrides": true,
+           "overrides": {},
+           "timberIds": [],
+           "objectOverrides": {},
+           "objectSources": {}
+          }
+         }
+        },
+        "ui": {
+         "section": "materials",
+         "inlineKind": null,
+         "activePlacement": 1,
+         "importText": ""
+        }
+       },
+       "updated_at": "2026-11-21T15:13:10.243Z"
+      }
+     ],
+     "assemblyDrafts": [],
+     "featureAttachments": [
+      {
+       "kind": "framing-template-recipes",
+       "schema": "framing-template-recipes/1",
+       "value": {
+        "schema": "framing-template-recipes/1",
+        "recipes": [
+         {
+          "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+          "name": "L4 R03 3740×2000 平釘天花",
+          "template": {
+           "id": "flat-ceiling",
+           "version": 1,
+           "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+          },
+          "defaults": {
+           "panelWidth": 915,
+           "panelLength": 1830,
+           "gap": 2,
+           "timberWidth": 27,
+           "timberDepth": 33,
+           "maxSecondarySpacing": 367
+          },
+          "preference": {
+           "corner": "min-min",
+           "lengthAlong": "v"
+          },
+          "sourceSlots": [
+           "boundary",
+           "frame",
+           "material-semantics",
+           "panel-version",
+           "support-threshold"
+          ],
+          "sourceHints": []
+         }
+        ]
+       }
+      }
+     ],
+     "scenarioCatalog": null,
+     "pending": {},
+     "dirty": true,
+     "provenance": {
+      "kind": "file",
+      "label": "專案檔案「r03.gcanvas」",
+      "openedAt": "2026-11-21T15:13:58.387Z",
+      "lastSavedAt": null,
+      "lastDownloadAt": null
+     },
+     "saved": true,
+     "dirtyReason": "",
+     "downloaded": false
+    },
+    "ids": {}
+   },
+   "lastUndoSha": "8af66d1cdbec149b77b0e8fcee8b81a21f1cd7b495889d751be417cff04db0a4",
+   "dirty": true,
+   "recipe": {
+    "schema": "framing-template-recipes/1",
+    "recipes": [
+     {
+      "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+      "name": "L4 R03 3740×2000 平釘天花",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 1,
+       "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+      },
+      "defaults": {
+       "panelWidth": 915,
+       "panelLength": 1830,
+       "gap": 2,
+       "timberWidth": 27,
+       "timberDepth": 33,
+       "maxSecondarySpacing": 367
+      },
+      "preference": {
+       "corner": "min-min",
+       "lengthAlong": "v"
+      },
+      "sourceSlots": [
+       "boundary",
+       "frame",
+       "material-semantics",
+       "panel-version",
+       "support-threshold"
+      ],
+      "sourceHints": []
+     }
+    ]
+   },
+   "pfRevision": 15,
+   "ids": {
+    "boundary": 3,
+    "placement": 4,
+    "surfaces": [
+     4
+    ],
+    "timber": 34
+   },
+   "project": {
+    "dirty": true,
+    "name": null
+   },
+   "recipeSha": "05dde17d3a57b4ed3d5a4d8bc0f364bebcbb5502f10fbe8fef90b9f7a082c430",
+   "idsSha": "1d5140a39f51327c437785efbad5c6d90d491741e56938a1b5551097007edf76",
+   "sceneLines": 127
+  },
+  "a3700": {
+   "sceneSha": "50ee7902414003359285bff838b7369e212ad3fc664c74195881c628a8de1ece",
+   "revision": "15",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 5,
+   "redo": 0,
+   "frame": {
+    "context": {
+     "id": "060af5b2-a890-4c48-9b74-f2728950afc2",
+     "name": "未命名專案",
+     "sources": {},
+     "groups": {},
+     "models": [],
+     "modelsDirty": false,
+     "reconstructionReviews": {},
+     "faceProjections": {},
+     "faceProjectionsDirty": false,
+     "engineeringDrafts": [
+      {
+       "id": "engineering-workspace-application",
+       "kind": "application",
+       "base_ref": null,
+       "data": {
+        "form": {
+         "method": null,
+         "targets": {
+          "1": {
+           "placement_id": 1,
+           "gridAction": "create",
+           "gridId": null,
+           "longAxis": "inherit",
+           "mainAlong": "inherit",
+           "anchors": {
+            "u": {
+             "mode": "lower",
+             "value": ""
+            },
+            "v": {
+             "mode": "lower",
+             "value": ""
+            }
+           },
+           "preserveOverrides": true,
+           "overrides": {},
+           "timberIds": [],
+           "objectOverrides": {},
+           "objectSources": {}
+          }
+         }
+        },
+        "ui": {
+         "section": "materials",
+         "inlineKind": null,
+         "activePlacement": 1,
+         "importText": ""
+        }
+       },
+       "updated_at": "2026-11-21T15:13:10.243Z"
+      }
+     ],
+     "assemblyDrafts": [],
+     "featureAttachments": [
+      {
+       "kind": "framing-template-recipes",
+       "schema": "framing-template-recipes/1",
+       "value": {
+        "schema": "framing-template-recipes/1",
+        "recipes": [
+         {
+          "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+          "name": "L4 R03 3740×2000 平釘天花",
+          "template": {
+           "id": "flat-ceiling",
+           "version": 1,
+           "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+          },
+          "defaults": {
+           "panelWidth": 915,
+           "panelLength": 1830,
+           "gap": 2,
+           "timberWidth": 27,
+           "timberDepth": 33,
+           "maxSecondarySpacing": 367
+          },
+          "preference": {
+           "corner": "min-min",
+           "lengthAlong": "v"
+          },
+          "sourceSlots": [
+           "boundary",
+           "frame",
+           "material-semantics",
+           "panel-version",
+           "support-threshold"
+          ],
+          "sourceHints": []
+         }
+        ]
+       }
+      }
+     ],
+     "scenarioCatalog": null,
+     "pending": {},
+     "dirty": true,
+     "provenance": {
+      "kind": "file",
+      "label": "專案檔案「r03.gcanvas」",
+      "openedAt": "2026-11-21T15:13:58.387Z",
+      "lastSavedAt": null,
+      "lastDownloadAt": null
+     },
+     "saved": true,
+     "dirtyReason": "",
+     "downloaded": false
+    },
+    "ids": {}
+   },
+   "lastUndoSha": "8af66d1cdbec149b77b0e8fcee8b81a21f1cd7b495889d751be417cff04db0a4",
+   "dirty": true,
+   "recipe": {
+    "schema": "framing-template-recipes/1",
+    "recipes": [
+     {
+      "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+      "name": "L4 R03 3740×2000 平釘天花",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 1,
+       "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+      },
+      "defaults": {
+       "panelWidth": 915,
+       "panelLength": 1830,
+       "gap": 2,
+       "timberWidth": 27,
+       "timberDepth": 33,
+       "maxSecondarySpacing": 367
+      },
+      "preference": {
+       "corner": "min-min",
+       "lengthAlong": "v"
+      },
+      "sourceSlots": [
+       "boundary",
+       "frame",
+       "material-semantics",
+       "panel-version",
+       "support-threshold"
+      ],
+      "sourceHints": []
+     }
+    ]
+   },
+   "pfRevision": 15,
+   "ids": {
+    "boundary": 3,
+    "placement": 4,
+    "surfaces": [
+     4
+    ],
+    "timber": 34
+   },
+   "project": {
+    "dirty": true,
+    "name": null
+   },
+   "recipeSha": "05dde17d3a57b4ed3d5a4d8bc0f364bebcbb5502f10fbe8fef90b9f7a082c430",
+   "idsSha": "1d5140a39f51327c437785efbad5c6d90d491741e56938a1b5551097007edf76",
+   "sceneLines": 127
+  },
+  "c3700": {
+   "sceneSha": "50ee7902414003359285bff838b7369e212ad3fc664c74195881c628a8de1ece",
+   "revision": "15",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 5,
+   "redo": 0,
+   "frame": {
+    "context": {
+     "id": "060af5b2-a890-4c48-9b74-f2728950afc2",
+     "name": "未命名專案",
+     "sources": {},
+     "groups": {},
+     "models": [],
+     "modelsDirty": false,
+     "reconstructionReviews": {},
+     "faceProjections": {},
+     "faceProjectionsDirty": false,
+     "engineeringDrafts": [
+      {
+       "id": "engineering-workspace-application",
+       "kind": "application",
+       "base_ref": null,
+       "data": {
+        "form": {
+         "method": null,
+         "targets": {
+          "1": {
+           "placement_id": 1,
+           "gridAction": "create",
+           "gridId": null,
+           "longAxis": "inherit",
+           "mainAlong": "inherit",
+           "anchors": {
+            "u": {
+             "mode": "lower",
+             "value": ""
+            },
+            "v": {
+             "mode": "lower",
+             "value": ""
+            }
+           },
+           "preserveOverrides": true,
+           "overrides": {},
+           "timberIds": [],
+           "objectOverrides": {},
+           "objectSources": {}
+          }
+         }
+        },
+        "ui": {
+         "section": "materials",
+         "inlineKind": null,
+         "activePlacement": 1,
+         "importText": ""
+        }
+       },
+       "updated_at": "2026-11-21T15:13:10.243Z"
+      }
+     ],
+     "assemblyDrafts": [],
+     "featureAttachments": [
+      {
+       "kind": "framing-template-recipes",
+       "schema": "framing-template-recipes/1",
+       "value": {
+        "schema": "framing-template-recipes/1",
+        "recipes": [
+         {
+          "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+          "name": "L4 R03 3740×2000 平釘天花",
+          "template": {
+           "id": "flat-ceiling",
+           "version": 1,
+           "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+          },
+          "defaults": {
+           "panelWidth": 915,
+           "panelLength": 1830,
+           "gap": 2,
+           "timberWidth": 27,
+           "timberDepth": 33,
+           "maxSecondarySpacing": 367
+          },
+          "preference": {
+           "corner": "min-min",
+           "lengthAlong": "v"
+          },
+          "sourceSlots": [
+           "boundary",
+           "frame",
+           "material-semantics",
+           "panel-version",
+           "support-threshold"
+          ],
+          "sourceHints": []
+         }
+        ]
+       }
+      }
+     ],
+     "scenarioCatalog": null,
+     "pending": {},
+     "dirty": true,
+     "provenance": {
+      "kind": "file",
+      "label": "專案檔案「r03.gcanvas」",
+      "openedAt": "2026-11-21T15:13:58.387Z",
+      "lastSavedAt": null,
+      "lastDownloadAt": null
+     },
+     "saved": true,
+     "dirtyReason": "",
+     "downloaded": false
+    },
+    "ids": {}
+   },
+   "lastUndoSha": "8af66d1cdbec149b77b0e8fcee8b81a21f1cd7b495889d751be417cff04db0a4",
+   "dirty": true,
+   "recipe": {
+    "schema": "framing-template-recipes/1",
+    "recipes": [
+     {
+      "id": "c3cf6023-5f08-4dd9-aede-f2ff997debef",
+      "name": "L4 R03 3740×2000 平釘天花",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 1,
+       "policyFingerprint": "21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83"
+      },
+      "defaults": {
+       "panelWidth": 915,
+       "panelLength": 1830,
+       "gap": 2,
+       "timberWidth": 27,
+       "timberDepth": 33,
+       "maxSecondarySpacing": 367
+      },
+      "preference": {
+       "corner": "min-min",
+       "lengthAlong": "v"
+      },
+      "sourceSlots": [
+       "boundary",
+       "frame",
+       "material-semantics",
+       "panel-version",
+       "support-threshold"
+      ],
+      "sourceHints": []
+     }
+    ]
+   },
+   "pfRevision": 15,
+   "ids": {
+    "boundary": 3,
+    "placement": 4,
+    "surfaces": [
+     4
+    ],
+    "timber": 34
+   },
+   "project": {
+    "dirty": true,
+    "name": null
+   },
+   "recipeSha": "05dde17d3a57b4ed3d5a4d8bc0f364bebcbb5502f10fbe8fef90b9f7a082c430",
+   "idsSha": "1d5140a39f51327c437785efbad5c6d90d491741e56938a1b5551097007edf76",
+   "sceneLines": 127
+  }
+ },
+ "coldScene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IumLquaOkuaJv+aOpemWgOaquyIsIm5leHRGaWVsZElkIjoyfQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiJYIiwidHlwZSI6MCwiZXhwcmVzc2lvbiI6eyJkZW4iOiIxIiwibnVtIjoiOCIsIm9wIjoibGl0ZXJhbCIsInVuaXQiOiJtbSJ9fQ==\nparameters end\nrequires engineering-spec/1\nengineering material eyJmaW5nZXJwcmludCI6ImFiNDA3NWU0NTg1ZTE5MTE4YzRlNWVjMjhmNzM3YTZjYjE3M2M0NTBjYTdiNmRhNzQwYWZmN2JkYjE1MDY2ZTEiLCJ2YWx1ZSI6eyJicmFuZCI6bnVsbCwiaWQiOiJtYXRlcmlhbC03NDJiNGJiMi0xNDFkLTRmYjUtODA3ZS00ZjJhNGVjZmJmMDUiLCJraW5kIjoicGFuZWwiLCJsZW5ndGgiOjE4MzAsIm1vZGVsIjpudWxsLCJuYW1lIjoiTDQgUjAzIOmdouadkCA5MTXDlzE4MzAiLCJub3RlcyI6bnVsbCwidGhpY2tuZXNzIjoiNiIsInZlcnNpb24iOjEsIndpZHRoIjo5MTV9fQ==\nboundary 1 outline 122,194 3862,194 3862,2194 122,2194\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec r03_mark_1_0 -1468\nspec r03_mark_2_0 -1101\nspec r03_mark_3_0 -734\nspec r03_mark_4_0 -367\nrequires panel-fill/1\nfinish-surface 1 on boundary 1 origin 0 0 2500 u +x v +y n +z side +n name-hex 523033206365696c696e67\npanel-fill 1 definition-hex 7b2266696e697368537572666163654964223a312c22676170223a322c226964223a312c226c656e677468416c6f6e67223a2276222c226f726967696e223a5b3132322c3139345d2c2270616e656c223a7b226964223a226d6174657269616c2d37343262346262322d313431642d346662352d383037652d346632613465636662663035222c2276657273696f6e223a317d2c227061747465726e223a227374726169676874222c227468726573686f6c64223a7b226669656c644964223a312c22706172616d657465724964223a317d7d\nderived-placement 2 definition-hex 7b2266696c6c4964223a312c2268223a33332c226964223a327d\ngrid 1 on 2 from-fill 1 main-along v\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\ntimber 4 27 33 role primary\ntimber 5 27 33 role primary\ntimber 6 27 33 role primary\ntimber 7 27 33 role primary\ntimber 8 27 33 role primary\ntimber 9 27 33 role secondary\ntimber 10 27 33 role secondary\ntimber 11 27 33 role secondary\ntimber 12 27 33 role secondary\ntimber 13 27 33 role secondary\ntimber 14 27 33 role secondary\ntimber 15 27 33 role secondary\ntimber 16 27 33 role secondary\ntimber 17 27 33 role secondary\ntimber 18 27 33 role secondary\ntimber 19 27 33 role secondary\ntimber 20 27 33 role secondary\ntimber 21 27 33 role secondary\ntimber 22 27 33 role secondary\ntimber 23 27 33 role secondary\ntimber 24 27 33 role secondary\ntimber 25 27 33 role secondary\ntimber 26 27 33 role secondary\ntimber 27 27 33 role secondary\ntimber 28 27 33 role secondary\ntimber 29 27 33 role secondary\ntimber 30 27 33 role secondary\ntimber 31 27 33 role secondary\ntimber 32 27 33 role secondary\ntimber 33 27 33 role secondary\nguide 1 2 u grid:1:v:0+spec:r03_mark_1_0\nguide 2 2 u grid:1:v:0+spec:r03_mark_2_0\nguide 3 2 u grid:1:v:0+spec:r03_mark_3_0\nguide 4 2 u grid:1:v:0+spec:r03_mark_4_0\nplace 1 on 2 at-face key-hex:5b5b226530222c302c315d5d between key-hex:5b5b226533222c302c315d5d key-hex:5b5b226531222c302c315d5d +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=[[\"e0\",0,1]]\nplace 2 on 2 at-face key-hex:5b5b226532222c302c315d5d between key-hex:5b5b226533222c302c315d5d key-hex:5b5b226531222c302c315d5d -u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=[[\"e2\",0,1]]\nplace 3 on 2 at-line grid 1 u 0 between t1 t2 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=null\nplace 4 on 2 at-line grid 1 u 1 between t1 t2 +v +n\n# R18 角材 4: onBoundary=false coversEdge=false boundaryEdge=null\nplace 5 on 2 at-line grid 1 u 2 between t1 t2 +v +n\n# R18 角材 5: onBoundary=false coversEdge=false boundaryEdge=null\nplace 6 on 2 at-line grid 1 u 3 between t1 t2 +v +n\n# R18 角材 6: onBoundary=false coversEdge=false boundaryEdge=null\nplace 7 on 2 at-face key-hex:5b5b226533222c302c315d5d between t1 t2 -v +n\n# R18 角材 7: onBoundary=true coversEdge=false boundaryEdge=[[\"e3\",0,1]]\nplace 8 on 2 at-face key-hex:5b5b226531222c302c315d5d between t1 t2 +v +n\n# R18 角材 8: onBoundary=true coversEdge=false boundaryEdge=[[\"e1\",0,1]]\nplace 9 on 2 at-line guide 1 between t7 t3 +u +n\n# R18 角材 9: onBoundary=false coversEdge=false boundaryEdge=null\nplace 10 on 2 at-line guide 2 between t7 t3 +u +n\n# R18 角材 10: onBoundary=false coversEdge=false boundaryEdge=null\nplace 11 on 2 at-line guide 3 between t7 t3 +u +n\n# R18 角材 11: onBoundary=false coversEdge=false boundaryEdge=null\nplace 12 on 2 at-line guide 4 between t7 t3 +u +n\n# R18 角材 12: onBoundary=false coversEdge=false boundaryEdge=null\nplace 13 on 2 at-line guide 1 between t3 t4 +u +n\n# R18 角材 13: onBoundary=false coversEdge=false boundaryEdge=null\nplace 14 on 2 at-line guide 2 between t3 t4 +u +n\n# R18 角材 14: onBoundary=false coversEdge=false boundaryEdge=null\nplace 15 on 2 at-line guide 3 between t3 t4 +u +n\n# R18 角材 15: onBoundary=false coversEdge=false boundaryEdge=null\nplace 16 on 2 at-line guide 4 between t3 t4 +u +n\n# R18 角材 16: onBoundary=false coversEdge=false boundaryEdge=null\nplace 17 on 2 at-line guide 1 between t4 t5 +u +n\n# R18 角材 17: onBoundary=false coversEdge=false boundaryEdge=null\nplace 18 on 2 at-line guide 2 between t4 t5 +u +n\n# R18 角材 18: onBoundary=false coversEdge=false boundaryEdge=null\nplace 19 on 2 at-line guide 3 between t4 t5 +u +n\n# R18 角材 19: onBoundary=false coversEdge=false boundaryEdge=null\nplace 20 on 2 at-line guide 4 between t4 t5 +u +n\n# R18 角材 20: onBoundary=false coversEdge=false boundaryEdge=null\nplace 21 on 2 at-line guide 1 between t5 t6 +u +n\n# R18 角材 21: onBoundary=false coversEdge=false boundaryEdge=null\nplace 22 on 2 at-line guide 2 between t5 t6 +u +n\n# R18 角材 22: onBoundary=false coversEdge=false boundaryEdge=null\nplace 23 on 2 at-line guide 3 between t5 t6 +u +n\n# R18 角材 23: onBoundary=false coversEdge=false boundaryEdge=null\nplace 24 on 2 at-line guide 4 between t5 t6 +u +n\n# R18 角材 24: onBoundary=false coversEdge=false boundaryEdge=null\nplace 25 on 2 at-line guide 1 between t6 t8 +u +n\n# R18 角材 25: onBoundary=false coversEdge=false boundaryEdge=null\nplace 26 on 2 at-line guide 2 between t6 t8 +u +n\n# R18 角材 26: onBoundary=false coversEdge=false boundaryEdge=null\nplace 27 on 2 at-line guide 3 between t6 t8 +u +n\n# R18 角材 27: onBoundary=false coversEdge=false boundaryEdge=null\nplace 28 on 2 at-line guide 4 between t6 t8 +u +n\n# R18 角材 28: onBoundary=false coversEdge=false boundaryEdge=null\nplace 29 on 2 at-line grid 1 v 0 between t7 t3 +u +n\n# R18 角材 29: onBoundary=false coversEdge=false boundaryEdge=null\nplace 30 on 2 at-line grid 1 v 0 between t3 t4 +u +n\n# R18 角材 30: onBoundary=false coversEdge=false boundaryEdge=null\nplace 31 on 2 at-line grid 1 v 0 between t4 t5 +u +n\n# R18 角材 31: onBoundary=false coversEdge=false boundaryEdge=null\nplace 32 on 2 at-line grid 1 v 0 between t5 t6 +u +n\n# R18 角材 32: onBoundary=false coversEdge=false boundaryEdge=null\nplace 33 on 2 at-line grid 1 v 0 between t6 t8 +u +n\n# R18 角材 33: onBoundary=false coversEdge=false boundaryEdge=null\ncanvas-pos boundary 1 122 194\ncanvas-pos parameter 1 60 660\ncanvas-pos placement 2 -101 1022\n",
+ "network": [
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "t": 1795274043124
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "t": 1795274047738
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "t": 1795274093627
+  },
+  {
+   "path": "/framing-template/preview",
+   "cmd": null,
+   "t": 1795274095685
+  }
+ ],
+ "errs": [],
+ "summary": {
+  "pass": 11,
+  "fail": []
+ }
+}
