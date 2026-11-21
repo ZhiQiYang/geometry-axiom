@@ -15,10 +15,11 @@ const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cj
 const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
 const pf4aExtension = require('./diagnostics/pf4a_canvas_extension.cjs');
 const r03Extension = require('./diagnostics/r03_framing_canvas_extension.cjs');
+const r03aExtension = require('./diagnostics/r03a_framing_canvas_extension.cjs');
 // PF-4A (#128) P1284 is projected out first by its own exact helper (measured count, P128→P1284→P353).
 // R03 (#205) P205 follows P1284 in the merged plan, so its exact helper runs before PF-4A's.
-const committedGolden = () => pf4aExtension.projectGolden(r03Extension.projectGolden(JSON.parse(read('cdp_sections.golden.json'))));
-const committedPlan = () => pf4aExtension.projectPlan(r03Extension.projectPlan(JSON.parse(read('canvas_shards.json'))));
+const committedGolden = () => pf4aExtension.projectGolden(r03Extension.projectGolden(r03aExtension.projectGolden(JSON.parse(read('cdp_sections.golden.json')))));
+const committedPlan = () => pf4aExtension.projectPlan(r03Extension.projectPlan(r03aExtension.projectPlan(JSON.parse(read('canvas_shards.json')))));
 const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
 const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
 const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');

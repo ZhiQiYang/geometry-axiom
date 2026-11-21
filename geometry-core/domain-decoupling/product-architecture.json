@@ -2211,6 +2211,12 @@
       "purpose": "R03 pure flat-ceiling template policy over explicit integer facts; emits a complete bounded plan without World writes, oracle imports or core-to-woodworking dependencies"
     },
     {
+      "path": "geometry-templates/woodworking/native/flat_ceiling_jig.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Immutable flat-ceiling/2 fixed-jig policy over explicit integer facts; retains v1 and delegates complete native legality to the existing host candidate"
+    },
+    {
       "path": "geometry-web/framing_template_bridge.inc",
       "layer": "H",
       "language": "c",
@@ -2857,7 +2863,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "a4781e2e645fd07ed14b2bdf4259c83eb31431e4a76e242300ba32b56fd18ef9",
+      "sha256": "7c03dc0fb57167f077c4384d5507083eb74cb78033baf3440c58340ad2a8d84a",
       "hashMode": "lf"
     },
     {
@@ -4040,6 +4046,18 @@
       "path": "geometry-web/generate_framing_template_golden.js",
       "reason": "R03 P205 dedicated browser golden generator; requires an actual complete CDP run and preserves every pre-existing golden section, never product-loaded",
       "sha256": "26a31d9010eb4e68f7c80afb031f61b7c265106292b816cf926e34bd03c0cb79",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/framing_template_jig_workflow_test.js",
+      "reason": "R03 P2052 browser acceptance driver, loaded only by cdp_test.js; exercises the ordinary face entry, immutable version, native candidate, real archive and fresh service/browser without serving product geometry",
+      "sha256": "cb3627507b34687868fb194d5078dd355459433b3d7a3fd39906c4447a6f6513",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/generate_framing_jig_golden.js",
+      "reason": "Dedicated P2052 evidence producer invoking the unchanged complete CDP mode; accepts actual zero-failure output and appends only that observed section while retaining every earlier LF byte and count",
+      "sha256": "627e92fcb1fc9838e4796096358bd41627d3b4052aeed86e07436b1faa19ed1f",
       "hashMode": "lf"
     }
   ],
@@ -5291,7 +5309,9 @@
       "framing-template-generate/1",
       "framing-template-preview/1",
       "framing-template-read/1",
-      "framing-template-read-result/1"
+      "framing-template-read-result/1",
+      "framing-template-read/2",
+      "framing-template-read-result/2"
     ],
     "forbiddenModules": {
       "c": [

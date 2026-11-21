@@ -8,6 +8,7 @@ import unittest
 import argparse
 import ast
 from collections import Counter
+from copy import deepcopy
 import contextlib
 import io
 import json
@@ -292,12 +293,24 @@ class NativeShardCoverage(unittest.TestCase):
             'node:panel_fill_grid_ui': {'mode': 'count', 'count': 13, 'unit': 'node test'},
         }, {name: expected['suites'].get(name) for name in PF4A_ADDED_SUITES},
                          'PF4A_COMPLETE_EXPECTED_REGISTRY')
+        # R03 second slice adds 7 native, 10 Session and 4 browser-contract
+        # tests to the same suites. Project only those explicit additions;
+        # the original 15/9/12/4 census assertion and its named kill stay live.
+        # The expected file itself must still come from run_all's full census.
+        r03_before_jig = deepcopy({name: expected['suites'].get(name)
+                                  for name in R03_ADDED_SUITES})
+        for name, added in (('py:test_framing_template', 7),
+                            ('node:framing_template_session', 10),
+                            ('node:framing_template_browser_scope', 4)):
+            entry = r03_before_jig.get(name)
+            if isinstance(entry, dict) and type(entry.get('count')) is int:
+                entry['count'] -= added
         self.assertEqual({
             'py:test_framing_template': {'mode': 'count', 'count': 15, 'unit': 'test'},
             'node:framing_recipe_project_store': {'mode': 'count', 'count': 9, 'unit': 'node test'},
             'node:framing_template_session': {'mode': 'count', 'count': 12, 'unit': 'node test'},
             'node:framing_template_browser_scope': {'mode': 'count', 'count': 4, 'unit': 'node test'},
-        }, {name: expected['suites'].get(name) for name in R03_ADDED_SUITES},
+        }, r03_before_jig,
                          'R03_COMPLETE_EXPECTED_REGISTRY')
         parts = run_all.partition_suites(suites, 3)
         actual = Counter(s.name for part in parts for s in part)
