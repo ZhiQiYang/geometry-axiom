@@ -70,3 +70,12 @@ exports.trackApi = p => {
   return log;
 };
 exports.writeJson = (file, obj) => fs.writeFileSync(file, JSON.stringify(obj, null, 1) + '\n');
+// 用滑鼠滾輪捲動目標所在的捲動區，直到目標頂端進入視窗（只為截圖；不改狀態）
+exports.wheelTo = async (p, sel, maxSteps = 40) => {
+  for (let i = 0; i < maxSteps; i++) {
+    const r = await p.evaluate(s => { const n = document.querySelector(s); if (!n) return null; const b = n.getBoundingClientRect(); return { top: b.top, x: b.left + Math.min(40, b.width / 2) }; }, sel);
+    if (!r) return false; if (r.top > 60 && r.top < 500) return true;
+    await p.mouse.move(Math.max(5, r.x), 450); await p.mouse.wheel(0, r.top > 500 ? 300 : -300); await p.waitForTimeout(120);
+  }
+  return false;
+};
