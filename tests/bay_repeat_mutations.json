@@ -1088,8 +1088,8 @@
       "patches": [
         {
           "file": "geometry-web/project-store.js",
-          "before": "if(manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate&&!panelFill)",
-          "after": "if(false&&manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate&&!panelFill)"
+          "before": "if(manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate&&!panelFill&&!hasFraming)",
+          "after": "if(false&&manifest.format===BAY_REPEAT_FORMAT&&!repeat&&!hasRoomCandidate&&!panelFill&&!hasFraming)"
         }
       ]
     },
