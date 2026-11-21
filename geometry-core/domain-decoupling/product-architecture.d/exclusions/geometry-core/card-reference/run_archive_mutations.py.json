@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/card-reference/run_archive_mutations.py",
+    "reason": "Dedicated GEO-262 archive mutation runner run_archive_mutations.py; test tooling, not a product-loaded module.",
+    "sha256": "ec5fbb8587f811d76c1292ee31e4684273fc56b429f54ead5f6301cc2b160073"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

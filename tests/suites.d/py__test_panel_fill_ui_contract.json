@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_panel_fill_ui_contract.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_panel_fill_ui_contract.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 9,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_panel_fill_ui_contract.py"
+  ],
+  "name": "py:test_panel_fill_ui_contract",
+  "order": "legacy/000198",
+  "schema": "geometry-native-suite/1"
+}

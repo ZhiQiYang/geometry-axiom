@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_evidence_adoption_native.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_evidence_adoption_native.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": true,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 7,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_evidence_adoption_native.py"
+  ],
+  "name": "py:test_evidence_adoption_native",
+  "order": "legacy/000035",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/framing-template/core-probe/scene_reader.py",
+    "reason": "Dedicated framing-template core-probe verifier scene_reader.py: independently recomputes every member footprint from the scene text (deliberately not importing gen_scenes) for the probe tests; standard library only; test tooling, not a product-loaded module or current product entry point.",
+    "sha256": "f43c8d7e9bb5c1b6afdb6e35a05e1536764f9e09a774c718454e6929e024b022"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

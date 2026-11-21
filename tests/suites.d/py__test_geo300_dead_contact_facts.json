@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geo300_dead_contact_facts.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geo300_dead_contact_facts.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 9,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geo300_dead_contact_facts.py"
+  ],
+  "name": "py:test_geo300_dead_contact_facts",
+  "order": "legacy/000143",
+  "schema": "geometry-native-suite/1"
+}

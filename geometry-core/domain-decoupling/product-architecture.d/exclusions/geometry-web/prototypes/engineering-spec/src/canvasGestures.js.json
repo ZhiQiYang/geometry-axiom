@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/prototypes/engineering-spec/src/canvasGestures.js",
+    "reason": "Separate engineering-spec UI prototype canvasGestures.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+    "sha256": "c234507b00bc5d07fbf3c8f14e3442b6b7538dbe110e8c9c422eb9fa2a7a8e0d"
+  },
+  "schema": "geometry-architecture-entry/1"
+}
