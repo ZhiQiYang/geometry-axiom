@@ -1,0 +1,5 @@
+# R12 L4 核對用場景：一片 4000×5000 的面與一支邊框角材（與 profile_space_test.js 的 fixture 相同）
+boundary 1 outline 0,0 4000,0 4000,5000 0,5000
+placement 1 on boundary 1 origin 0 0 0 u +x v +y
+timber 0 27 33 role boundary
+place 0 on 1 at-face e0 +u +n

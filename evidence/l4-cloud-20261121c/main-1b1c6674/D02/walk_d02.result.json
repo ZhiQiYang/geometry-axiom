@@ -1,0 +1,173 @@
+{
+ "steps": [
+  {
+   "name": "01-new-project",
+   "outline": null,
+   "dumpLen": 0,
+   "inFace": false
+  },
+  {
+   "name": "02-placeholder-redraw",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "dumpLen": 77,
+   "inFace": true,
+   "draftNotice": "\n            外環草稿 · 0 個頂點 · 尚未套用\n            已建立預設矩形。逐點畫外環，再點起點或「完成外環」套用。尺寸與面積屬於原面；返回會保留此面。\n            完成外環放棄草稿\n        "
+  },
+  {
+   "name": "03-keyboard-draft-preview",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "dumpLen": 77,
+   "inFace": true,
+   "draftNotice": " 外環草稿 · 5 個頂點 · 尚未套用 已建立預設矩形。逐點畫外環，再點起點或「完成外環」套用。尺寸與面積屬於原面；返回會保留此面。 完成外環放棄草稿 "
+  },
+  {
+   "name": "04-cancel-draft",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "dumpLen": 77,
+   "inFace": true
+  },
+  {
+   "name": "05-confirm-keyboard-L",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,1500 1500,1500 1500,3000 0,3000",
+   "dumpLen": 97,
+   "inFace": true,
+   "toasts": [
+    "尚未檢查",
+    "工具：選取",
+    "有未保存的變更",
+    "尚未檢查",
+    "boundary 1 outline 0,0 4000,0 4000,1500 1500,1500 1500,3000 0,3000"
+   ]
+  },
+  {
+   "name": "06-mouse-draft-5pts",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,1500 1500,1500 1500,3000 0,3000",
+   "dumpLen": 97,
+   "inFace": true,
+   "draftNotice": " 外環草稿 · 5 個頂點 · 尚未套用 原輪廓仍保留。逐點畫外環，再點起點或「完成外環」套用。尺寸與面積屬於原面；返回會保留此面。 完成外環放棄草稿 "
+  },
+  {
+   "name": "07-enter-auto-corner",
+   "outline": "boundary 1 outline 0,0 3000,0 3000,2000 1500,2000 1500,3000 0,3000",
+   "dumpLen": 97,
+   "inFace": true,
+   "toasts": [
+    "尚未檢查",
+    "工具：選取",
+    "有未保存的變更",
+    "尚未檢查",
+    "boundary 1 outline 0,0 3000,0 3000,2000 1500,2000 1500,3000 0,3000"
+   ]
+  },
+  {
+   "name": "08-undo1",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,1500 1500,1500 1500,3000 0,3000",
+   "dumpLen": 97,
+   "inFace": true,
+   "toasts": [
+    "尚未檢查",
+    "✓ 已復原",
+    "有未保存的變更",
+    "尚未檢查",
+    "已復原"
+   ]
+  },
+  {
+   "name": "09-undo2",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "dumpLen": 77,
+   "inFace": true,
+   "toasts": [
+    "尚未檢查",
+    "✓ 已復原",
+    "有未保存的變更",
+    "尚未檢查",
+    "已復原"
+   ]
+  },
+  {
+   "name": "10-redo1",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,1500 1500,1500 1500,3000 0,3000",
+   "dumpLen": 97,
+   "inFace": true
+  },
+  {
+   "name": "11-redo2",
+   "outline": "boundary 1 outline 0,0 3000,0 3000,2000 1500,2000 1500,3000 0,3000",
+   "dumpLen": 97,
+   "inFace": true
+  }
+ ],
+ "draftWritesNothing": true,
+ "cancelZeroWrite": true,
+ "clicked": [
+  [
+   0,
+   0
+  ],
+  [
+   3000,
+   0
+  ],
+  [
+   3000,
+   2000
+  ],
+  [
+   1500,
+   2000
+  ],
+  [
+   1500,
+   3000
+  ]
+ ],
+ "mouseDraftWritesNothing": true,
+ "history": {
+  "undo1EqualsKeyboardL": true,
+  "undo2EqualsPlaceholder": true,
+  "redo1EqualsKeyboardL": true,
+  "redo2EqualsMouse": true
+ },
+ "esc": [
+  {
+   "before": {
+    "notice": " 外環草稿 · 2 個頂點 · 尚未套用 原輪廓仍保留。逐點畫外環，再點起點或「完成外環」套用。尺寸與面積屬於原面；返回會保留此面。 完成外環放棄草稿 ",
+    "inFace": true,
+    "tool": " 收合選單 篩選 顯示類型 全部顯示 來源1 配置0 空間與構件0 "
+   }
+  },
+  {
+   "after1": {
+    "notice": " 外環草稿 · 2 個頂點 · 尚未套用 原輪廓仍保留。逐點畫外環，再點起點或「完成外環」套用。尺寸與面積屬於原面；返回會保留此面。 完成外環放棄草稿 ",
+    "inFace": true,
+    "tool": " 收合選單 篩選 顯示類型 全部顯示 來源1 配置0 空間與構件0 "
+   }
+  },
+  {
+   "after2": {
+    "notice": " 外環草稿 · 0 個頂點 · 尚未套用 原輪廓仍保留。逐點畫外環，再點起點或「完成外環」套用。尺寸與面積屬於原面；返回會保留此面。 完成外環放棄草稿 ",
+    "inFace": true,
+    "tool": " 收合選單 篩選 顯示類型 全部顯示 來源1 配置0 空間與構件0 "
+   }
+  },
+  {
+   "after3": {
+    "notice": " 外環草稿 · 0 個頂點 · 尚未套用 原輪廓仍保留。逐點畫外環，再點起點或「完成外環」套用。尺寸與面積屬於原面；返回會保留此面。 完成外環放棄草稿 ",
+    "inFace": false,
+    "tool": " 收合選單 篩選 顯示類型 全部顯示 來源1 配置0 空間與構件0 "
+   }
+  }
+ ],
+ "escSceneUnchanged": true,
+ "cardVisible": true,
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopenOutline": "boundary 1 outline 0,0 3000,0 3000,2000 1500,2000 1500,3000 0,3000",
+ "reopenEqual": true,
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}

@@ -1,0 +1,26 @@
+{
+  "sourceHead": "2562aee65c9f21a9ffdfd684100102d764bc2eb4",
+  "root": "D:\\geometry-axiom",
+  "binaries": [
+    {
+      "name": "core",
+      "path": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\l4-21d-2562aee6\\win32-target\\core.exe",
+      "sha256": "ea2c9269786aa6e7c25716f502be62fd3640b9b811590a12393d80825c5b37f4",
+      "stackReserveBytes": 16777216
+    },
+    {
+      "name": "bridge",
+      "path": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\l4-21d-2562aee6\\win32-target\\bridge.exe",
+      "sha256": "7388c9250d87f4a4d35d5bb1872136555c6fd6c519eaeb756a0f6a02018ce44d",
+      "stackReserveBytes": 16777216
+    },
+    {
+      "name": "model-base",
+      "path": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\l4-21d-2562aee6\\win32-target\\model-base.exe",
+      "sha256": "03eaa7fbd4f89d55ad7ac7f0e842712cb3af9761ca18b616c65f75b6ac055ae7",
+      "stackReserveBytes": 16777216
+    }
+  ],
+  "bridgeCompilerCommand": "cl /nologo /utf-8 /O2 /W3 /Fe:\"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\l4-21d-2562aee6\\win32-target\\bridge.exe\" /Fo:\"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\l4-21d-2562aee6\\win32-target\\obj\\bridge\\web_bridge.obj\" \"D:\\geometry-axiom\\geometry-web\\web_bridge.c\" /link /STACK:16777216 user32.lib gdi32.lib comdlg32.lib",
+  "bridgeSourceReceipt": "bridge-build-raw-files.json"
+}
