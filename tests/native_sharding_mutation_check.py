@@ -218,7 +218,11 @@ elif mode == 'R379_ALLOW_DUPLICATE_SOURCE':
         pf4a = native_shards.added_pf4a_suite_costs()
         if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys()) & pf4a.keys():
             raise ValueError('PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a}
+        # Merge with R03: keep the later seventh source unchanged.
+        r03 = native_shards.added_r03_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys()) & r03.keys():
+            raise ValueError('R03_CI_UNIQUE_ACROSS_SOURCES')
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03}
     native_shards.added_suite_costs = duplicate_r14_source
 elif mode == 'R379_OMIT_R14_SOURCE_FROM_DIGEST':
     import hashlib
@@ -249,7 +253,11 @@ elif mode == 'R396_ALLOW_DUPLICATE_LEGACY_COST':
         pf4a = native_shards.added_pf4a_suite_costs()
         if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys()) & pf4a.keys():
             raise ValueError('PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a}
+        # Merge with R03: keep the later seventh source unchanged.
+        r03 = native_shards.added_r03_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys()) & r03.keys():
+            raise ValueError('R03_CI_UNIQUE_ACROSS_SOURCES')
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03}
     native_shards.added_suite_costs = duplicate_workspace_legacy_source
 elif mode == 'R396_ALLOW_DUPLICATE_R14_COST':
     def duplicate_workspace_r14_source():
@@ -269,7 +277,11 @@ elif mode == 'R396_ALLOW_DUPLICATE_R14_COST':
         pf4a = native_shards.added_pf4a_suite_costs()
         if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys()) & pf4a.keys():
             raise ValueError('PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a}
+        # Merge with R03: keep the later seventh source unchanged.
+        r03 = native_shards.added_r03_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys()) & r03.keys():
+            raise ValueError('R03_CI_UNIQUE_ACROSS_SOURCES')
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03}
     native_shards.added_suite_costs = duplicate_workspace_r14_source
 elif mode == 'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST':
     import hashlib
@@ -389,7 +401,11 @@ elif mode == 'R12_ALLOW_DUPLICATE_SOURCE':
         pf4a = native_shards.added_pf4a_suite_costs()
         if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys()) & pf4a.keys():
             raise ValueError('PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a}
+        # Merge with R03: keep the later seventh source unchanged.
+        r03 = native_shards.added_r03_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys()) & r03.keys():
+            raise ValueError('R03_CI_UNIQUE_ACROSS_SOURCES')
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03}
     native_shards.added_suite_costs = duplicate_r12_source
 elif mode == 'R12_ACCEPT_FAILED_CHILD':
     original_r12_read = pathlib.Path.read_text
@@ -438,7 +454,12 @@ elif mode == 'PF4A_ALLOW_R12_DUPLICATE':
         pf4a = native_shards.added_pf4a_suite_costs()
         if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys()) & pf4a.keys():
             raise ValueError('PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a}
+        # Merge with R03: keep the later seventh source unchanged; only the
+        # PF-4A x R12 duplicate check above is withdrawn.
+        r03 = native_shards.added_r03_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys()) & r03.keys():
+            raise ValueError('R03_CI_UNIQUE_ACROSS_SOURCES')
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03}
     native_shards.added_suite_costs = duplicate_pf4a_r12_source
 elif mode == 'PF4A_DROP_SUITE_EVIDENCE':
     native_shards.added_pf4a_suite_costs = lambda: {}
