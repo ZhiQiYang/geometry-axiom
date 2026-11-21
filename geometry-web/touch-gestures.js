@@ -4,12 +4,12 @@
 (function () {
   'use strict';
   const HOLD_MS = 500, RING_MS = 150, MOVE_PX = 8;
-  let adapter = null, gesture = null, compatibilityPoint = null;
+  let adapter = null, gesture = null, consumedTouchSequence = false;
   const consumed = new Set(), expectedRelease = new Set();
   const stop = event => { event.preventDefault(); event.stopImmediatePropagation(); };
   const point = event => ({x:event.clientX,y:event.clientY});
   const remember = event => {
-    const id = event.pointerId; compatibilityPoint = point(event);
+    const id = event.pointerId; consumedTouchSequence = true;
     consumed.add(id);
     if (consumed.size > 64) consumed.delete(consumed.values().next().value);
   };
@@ -92,11 +92,11 @@
       // pending touch operation before that input establishes a new selection.
       cancel(); return;
     }
-    // Pointer IDs are reusable. A new touch on the menu/native controls must
-    // not inherit the preceding canvas sequence's suppressed compatibility click.
+    // Each new touch DOWN retires the preceding sequence, including a new
+    // touch on the sheet or native controls. Its own click remains usable.
     if (!gesture?.points.has(event.pointerId)) {
       consumed.delete(event.pointerId); expectedRelease.delete(event.pointerId);
-      compatibilityPoint = null;
+      consumedTouchSequence = false;
     }
     if (gesture) {
       const g = gesture; stop(event); remember(event);
@@ -137,7 +137,7 @@
   function up(event) {
     const g = gesture;
     if (!g || event.pointerType !== 'touch' || !g.points.has(event.pointerId)) return;
-    stop(event); compatibilityPoint = point(event); sync();
+    stop(event); consumedTouchSequence = true; sync();
     const phase = g.phase;
     g.points.delete(event.pointerId);
     if (phase === 'multi' && g.pair.includes(event.pointerId)) g.phase = 'draining';
@@ -159,10 +159,12 @@
     if (!g.points.size) finish(g);
   }
   function compatibility(event) {
-    const owned = consumed.has(event.pointerId) ||
-      (event.sourceCapabilities?.firesTouchEvents && (adapter?.contains(event) ||
-        compatibilityPoint && event.clientX === compatibilityPoint.x && event.clientY === compatibilityPoint.y));
-    if (owned && (event.pointerType === 'touch' || event.sourceCapabilities?.firesTouchEvents)) stop(event);
+    // The browser may retarget this sequence's compatibility click to a
+    // newly opened sheet, with another pointer ID and adjusted coordinates.
+    // Ownership follows the consumed touch until the next touch DOWN.
+    const fromTouch = event.pointerType === 'touch' || event.sourceCapabilities?.firesTouchEvents;
+    const owned = consumed.has(event.pointerId) || consumedTouchSequence;
+    if (fromTouch && owned) stop(event);
   }
   // Registered before app.js: its document-capture double click and later
   // window shortcuts cannot start a tool before touch arbitration completes.
