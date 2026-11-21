@@ -1,0 +1,71 @@
+{
+ "steps": [
+  {
+   "name": "01-face-4000x3000",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "dumpLen": 77
+  },
+  {
+   "name": "02-notch-preview",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "dumpLen": 77
+  },
+  {
+   "name": "03-notch-cancel",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "dumpLen": 77
+  },
+  {
+   "name": "04-notch-applied",
+   "outline": "boundary 1 outline 0,0 1500,0 1500,500 2500,500 2500,0 4000,0 4000,3000 0,3000",
+   "dumpLen": 109,
+   "toasts": [
+    "尚未檢查",
+    "✓ boundary 1 outline 0,0 1500,0 1500,500 2500,500 2500,0 4000,0 4000,3000 0,3000",
+    "有未保存的變更",
+    "尚未檢查",
+    "boundary 1 outline 0,0 1500,0 1500,500 2500,500 2500,0 4000,0 4000,3000 0,3000"
+   ]
+  },
+  {
+   "name": "06-corner-applied",
+   "outline": "boundary 1 outline 0,0 1500,0 1500,500 2500,500 2500,0 4000,0 4000,2400 3400,2400 3400,3000 0,3000",
+   "dumpLen": 129
+  },
+  {
+   "name": "08-push-applied",
+   "outline": "boundary 1 outline 0,0 1500,0 1500,500 2500,500 2500,0 4500,0 4500,2400 3400,2400 3400,3000 0,3000",
+   "dumpLen": 129
+  }
+ ],
+ "notchPanel": "凹口上邊 · 長 4000 · 全深 3000從左置中從右距離寬 w深 d留底取消 Esc套用 Enter",
+ "ghost": 1,
+ "notchPreviewZeroWrite": true,
+ "notchCancelZeroWrite": true,
+ "ghostAfterCancel": 0,
+ "ctxMenu": [
+  "op:corner:切角",
+  "create:在此建立",
+  "view:檢視",
+  "props:在右欄編輯"
+ ],
+ "cornerPanel": "切角凸角 · 鄰邊 4000 × 3000 切 u 邊 a留 u 邊切 v 邊 b留 v 邊切掉與留下連動,填哪一邊都可以。取消 Esc套用 Enter",
+ "pushPanel": "推拉右邊 · 長 2400往內往外距離整條邊平移,相鄰邊自動伸縮。取消 Esc套用 Enter",
+ "history": {
+  "u1EqNotchCorner": true,
+  "u2EqNotch": true,
+  "u3EqRect": true,
+  "y1EqNotch": true,
+  "y2EqCorner": true,
+  "y3EqPush": true
+ },
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopenOutline": "boundary 1 outline 0,0 1500,0 1500,500 2500,500 2500,0 4500,0 4500,2400 3400,2400 3400,3000 0,3000",
+ "reopenEqual": true,
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}

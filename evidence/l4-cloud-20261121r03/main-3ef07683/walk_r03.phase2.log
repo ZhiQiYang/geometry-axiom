@@ -1,0 +1,15 @@
+PASS FRESH_CONTEXT 
+STEP 11-cold-open {"sceneSha":"c942f1aa570c13b724c0b42007ef7745b66b1e343c53941c0f35526b2bc1a8bb","recipeSha":"05dde17d3a57b4ed3d5a4d8bc0f364bebcbb5502f10fbe8fef90b9f7a082c430","openRequests":[],"generatorInvocations":0,"runtime":{"schema":"geometry-runtime/1","version":"e29f1f48f44e7ba5dbac6773f80239257ce9cfab852537ecd204b72adca4b77f","fresh":true,"root":"/tmp/claude-0/-home-user-geometry-axiom/29a53dbd-9d44-57e9-8
+PASS COLD_SCENE_EXACT 
+PASS COLD_RECIPE_EXACT 
+PASS COLD_NO_SEARCH 
+STEP 11b-cold-form {"form":{"recipe":"L4 R03 3740×2000 平釘天花 · flat-ceiling/1","name":"L4 R03 3740×2000 平釘天花","corner":"min-min","lengthAlong":"v","sources":["","",""]}}
+PASS COLD_FORM_SHOWS_RECIPE_SOURCES_BLANK 
+PASS COLD_FORM_NO_GENERATION 
+PASS RECT_3700x2000_PLACED 
+PASS ON_OPTIONS_ONLY_FACE2_PLACEMENT 
+STEP 12-3700-reject {"status":"POLICY_RULE_CONFLICT：此起鋪需要退最後板縫，會裁切不在對牆的板；未套用舊 oracle 退縫","phase":"rejected","confirmDisabled":true,"results":false,"requests":[{"path":"/framing-template/preview","cmd":null,"t":1795274095685}],"form":{"recipe":"L4 R03 3740×2000 平釘天花 · flat-ceiling/1","corner":"min-min","lengthAlong":"v","gap":"2"}}
+PASS CONFLICT_3700_POLICY_RULE_CONFLICT 
+PASS CONFLICT_3700_ZERO_WRITE 
+PASS CONFLICT_3700_CANCEL_ZERO_WRITE 
+SUMMARY {"pass":11,"fail":[]}

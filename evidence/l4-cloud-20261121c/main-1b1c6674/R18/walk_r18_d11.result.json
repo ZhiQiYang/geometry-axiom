@@ -1,0 +1,144 @@
+{
+ "steps": [
+  {
+   "name": "01-new",
+   "dumpLen": 0,
+   "gridLines": [],
+   "grids": []
+  },
+  {
+   "name": "04-both-axes-rejected",
+   "dumpLen": 0,
+   "gridLines": [],
+   "grids": []
+  },
+  {
+   "name": "05-one-axis-preview",
+   "dumpLen": 0,
+   "gridLines": [],
+   "grids": []
+  },
+  {
+   "name": "06-cancel",
+   "dumpLen": 0,
+   "gridLines": [],
+   "grids": []
+  },
+  {
+   "name": "07-confirmed",
+   "dumpLen": 137,
+   "gridLines": [
+    "grid-system 1 name-hex e4baa4e4b881e6b8ace8a9a6 main-along none u repeat 0 600 stagger 300 v repeat 0 400"
+   ],
+   "grids": [
+    {
+     "id": 1,
+     "name": "交丁測試",
+     "u": {
+      "source": "repeat",
+      "phase": 0,
+      "step": 600,
+      "stagger": 300
+     },
+     "v": {
+      "source": "repeat",
+      "phase": 0,
+      "step": 400
+     }
+    }
+   ]
+  },
+  {
+   "name": "09-undo",
+   "dumpLen": 0,
+   "gridLines": [],
+   "grids": []
+  },
+  {
+   "name": "10-redo",
+   "dumpLen": 137,
+   "gridLines": [
+    "grid-system 1 name-hex e4baa4e4b881e6b8ace8a9a6 main-along none u repeat 0 600 stagger 300 v repeat 0 400"
+   ],
+   "grids": [
+    {
+     "id": 1,
+     "name": "交丁測試",
+     "u": {
+      "source": "repeat",
+      "phase": 0,
+      "step": 600,
+      "stagger": 300
+     },
+     "v": {
+      "source": "repeat",
+      "phase": 0,
+      "step": 400
+     }
+    }
+   ]
+  }
+ ],
+ "d11StaggerButtons": [
+  "u:相鄰格子相位差",
+  "v:相鄰格子相位差"
+ ],
+ "bothAxes": {
+  "dialogs": [
+   "變更無法套用 建立無限網格「交丁測試」 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 進階：完整指令 網格來源 · 1 網格系統 1 原：不存在 新：「交丁測試」；主支方向未設定；u 無限重複：間距 600 mm，第 0 線 0 mm，相鄰格子相位差 300 mm；v 無限重複：間距 400 mm，第 0 線 0 mm，相鄰格子相位差 200 mm 候選來源 1：下一 ruleKey 1；0 項來源規則。 場景 · I8 預期：all world invariants pass 實際：line 48: I24: 網格系統 1 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger 返回修改 確認套用"
+  ],
+  "headings": [
+   "建立無限網格",
+   "進階矩形與角材試擺試擺中",
+   "格資訊",
+   "變更無法套用",
+   "進階：完整指令",
+   "網格來源 · 1"
+  ],
+  "hasSectionHeading": false,
+  "confirmEnabled": false
+ },
+ "rejectZeroWrite": true,
+ "oneAxisPreview": [
+  "確認連動變更 建立無限網格「交丁測試」 目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。 進階：完整指令 網格來源 · 1 網格系統 1 原：不存在 新：「交丁測試」；主支方向未設定；u 無限重複：間距 600 mm，第 0 線 0 mm，相鄰格子相位差 300 mm；v 無限重複：間距 400 mm，第 0 線 0 mm 候選來源 1：下一 ruleKey 1；0 項來源規則。 取消，保留原狀 確認套用"
+ ],
+ "previewZeroWrite": true,
+ "cancelZeroWrite": true,
+ "status": "來源已套用目前場景；頂列保存完整專案。可選邊界建立配置。",
+ "cardText": [
+  "交丁測試網格來源 · 無限延伸交丁測試 u：無限重複 · 間距 600 mm，基準 0 mm，相鄰格子相位差 300 mm v：無限重複 · 間距 400 mm，基準 0 mm 卡片僅示意排法，沒有幾何範圍。X 間距 600 · Y 間距 400 mmX 相鄰格子相位差 300 mm進入 ›"
+ ],
+ "cardTitle": [
+  null
+ ],
+ "undoEqualsEmpty": true,
+ "redoEqualsConfirmed": true,
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopenEqual": true,
+ "reopenGrids": [
+  {
+   "id": 1,
+   "name": "交丁測試",
+   "u": {
+    "source": "repeat",
+    "phase": 0,
+    "step": 600,
+    "stagger": 300
+   },
+   "v": {
+    "source": "repeat",
+    "phase": 0,
+    "step": 400
+   }
+  }
+ ],
+ "reopenCard": [
+  "交丁測試網格來源 · 無限延伸交丁測試 u：無限重複 · 間距 600 mm，基準 0 mm，相鄰格子相位差 300 mm v：無限重複 · 間距 400 mm，基準 0 mm 卡片僅示意排法，沒有幾何範圍。X 間距 600 · Y 間距 400 mmX 相鄰格子相位差 300 mm進入 ›"
+ ],
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}

@@ -1,0 +1,379 @@
+{
+  "steps": [
+    {
+      "name": "scene-loaded",
+      "columns": [
+        "column 71 in 9 at 500 500 size 300 400 z 0 2500",
+        "column 83 in 9 at 2700 2200 size 250 300 z 0 2450"
+      ],
+      "beam": "beam 91 in 9 along x from 1200 to 3200 at 1500 width 201 depth 450 top 2400",
+      "hist": {
+        "undo": 2,
+        "redo": 0,
+        "group": null
+      }
+    },
+    {
+      "name": "plan-column-menu",
+      "menu": {
+        "title": "",
+        "items": [
+          "size:改尺寸…",
+          "delete:刪除",
+          "size:改尺寸…",
+          "duplicate:重複",
+          "delete:刪除"
+        ],
+        "sub": [],
+        "text": "柱 71300 × 400 · 空間 9改尺寸…刪除改尺寸…重複刪除↑ ↓ 選擇 · Enter 執行 · Esc 關閉"
+      }
+    },
+    {
+      "name": "plan-blank-menu",
+      "menu": {
+        "title": "",
+        "items": [
+          "column:在此放柱",
+          "beam:從此拖樑",
+          "column:在此放柱",
+          "beam:從此拖樑",
+          "view:檢視"
+        ],
+        "sub": [],
+        "text": "空間平面圖右鍵位置 · 執行時依目前視圖定位在此放柱從此拖樑在此放柱從此拖樑檢視 ↑ ↓ 選擇 · Enter 執行 · Esc 關閉"
+      }
+    },
+    {
+      "name": "menus-zero-write",
+      "unchanged": true
+    },
+    {
+      "name": "size-cancel",
+      "formOriginal": {
+        "w": "300",
+        "d": "400"
+      },
+      "unchanged": true,
+      "formHidden": true
+    },
+    {
+      "name": "size-confirm",
+      "before": "column 71 in 9 at 500 500 size 300 400 z 0 2500",
+      "after": "column 71 in 9 at 500 500 size 340 420 z 0 2500",
+      "onlyColumn71Changed": true,
+      "histBefore": {
+        "undo": 2,
+        "redo": 0,
+        "group": null
+      },
+      "histAfter": {
+        "undo": 3,
+        "redo": 0,
+        "group": null
+      },
+      "oneStep": true
+    },
+    {
+      "name": "size-undo",
+      "backToBefore": true
+    },
+    {
+      "name": "size-redo",
+      "backToConfirmed": true
+    },
+    {
+      "name": "duplicate-escape",
+      "unchanged": true
+    },
+    {
+      "name": "duplicate-form",
+      "form": "rcX=1000 rcY=2000 rcW=340 rcD=420 rcZ0=0 rcZ1=2500 rcSpace=9",
+      "unchangedBeforeSubmit": true
+    },
+    {
+      "name": "duplicate-confirm",
+      "columns": [
+        {
+          "id": 71,
+          "box": [
+            500,
+            500,
+            0,
+            840,
+            920,
+            2500
+          ],
+          "space": 9
+        },
+        {
+          "id": 83,
+          "box": [
+            2700,
+            2200,
+            0,
+            2950,
+            2500,
+            2450
+          ],
+          "space": 9
+        },
+        {
+          "id": 84,
+          "box": [
+            1000,
+            2000,
+            0,
+            1340,
+            2420,
+            2500
+          ],
+          "space": 9
+        }
+      ],
+      "oneStep": true,
+      "original71Same": true
+    },
+    {
+      "name": "duplicate-undo",
+      "backToBefore": true
+    },
+    {
+      "name": "duplicate-redo",
+      "backToConfirmed": true
+    },
+    {
+      "name": "beam-menu",
+      "menu": {
+        "title": "",
+        "items": [
+          "size:改尺寸…",
+          "delete:刪除",
+          "size:改尺寸…",
+          "duplicate:重複",
+          "delete:刪除"
+        ],
+        "sub": [],
+        "text": "樑 912000 × 201 · 空間 9改尺寸…刪除改尺寸…重複刪除↑ ↓ 選擇 · Enter 執行 · Esc 關閉"
+      }
+    },
+    {
+      "name": "beam-delete-dialogs",
+      "dialogs": []
+    },
+    {
+      "name": "beam-delete",
+      "beamGone": true,
+      "columnsKept": true,
+      "oneStep": true
+    },
+    {
+      "name": "beam-delete-undo",
+      "backToBefore": true
+    },
+    {
+      "name": "beam-delete-redo",
+      "backToDeleted": true
+    },
+    {
+      "name": "create-column-form",
+      "form": "rcX=3497 rcY=795 rcSpace=9"
+    },
+    {
+      "name": "create-column-cancel",
+      "unchanged": true
+    },
+    {
+      "name": "cold-reopen",
+      "dumpSame": true,
+      "column71": "column 71 in 9 at 500 500 size 340 420 z 0 2500",
+      "beam91": null
+    },
+    {
+      "name": "view-blank-menu",
+      "menu": {
+        "title": "",
+        "items": [
+          "align:對齊視角",
+          "three:恢復三視圖",
+          "show-all:顯示已隱藏物件"
+        ],
+        "sub": [],
+        "text": "三視圖檢視設定對齊視角恢復三視圖顯示已隱藏物件↑ ↓ 選擇 · Enter 執行 · Esc 關閉"
+      }
+    },
+    {
+      "name": "view-align-submenu",
+      "menu": {
+        "title": "",
+        "items": [
+          "align:對齊視角",
+          "three:恢復三視圖",
+          "show-all:顯示已隱藏物件"
+        ],
+        "sub": [
+          "front:前視",
+          "side:側視",
+          "top:俯視",
+          "bottom:仰視",
+          "three:恢復三視圖"
+        ],
+        "text": "三視圖檢視設定對齊視角恢復三視圖顯示已隱藏物件↑ ↓ 選擇 · Enter 執行 · Esc 關閉前視側視俯視仰視恢復三視圖"
+      }
+    },
+    {
+      "name": "view-top",
+      "views": [
+        {
+          "id": "top",
+          "right": [
+            1,
+            0,
+            0
+          ],
+          "down": [
+            0,
+            -1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "view-top-column-menu",
+      "menu": {
+        "title": "",
+        "items": [
+          "open:在面內工作區開啟 [停用]",
+          "align:對齊視角",
+          "hide:在三視圖隱藏",
+          "props:屬性"
+        ],
+        "sub": [],
+        "text": "柱 71三視圖在面內工作區開啟對齊視角在三視圖隱藏屬性↑ ↓ 選擇 · Enter 執行 · Esc 關閉"
+      },
+      "target": {
+        "root": {
+          "kind": "column",
+          "id": 71
+        },
+        "placementId": null,
+        "boundaryId": null,
+        "memberFace": null
+      }
+    },
+    {
+      "name": "view-column-props",
+      "props": {
+        "hidden": false,
+        "readonly": "true",
+        "kind": "column",
+        "id": "71",
+        "inputs": 0,
+        "text": "柱 71柱id71狀態空間 9 的障礙物box500, 500, 0, 840, 920, 2500尺寸與歸屬所屬空間空間 9寬 × 深340 × 420 mm足跡 x / y500 / 500 mmz0 / z10 / 2500 mm目前為唯讀屬性。編輯"
+      }
+    },
+    {
+      "name": "view-hide-column",
+      "ops71": 0
+    },
+    {
+      "name": "view-blank-after-hide",
+      "menu": {
+        "title": "",
+        "items": [
+          "align:對齊視角",
+          "three:恢復三視圖",
+          "show-all:顯示已隱藏物件"
+        ],
+        "sub": [],
+        "text": "三視圖檢視設定對齊視角恢復三視圖顯示已隱藏物件↑ ↓ 選擇 · Enter 執行 · Esc 關閉"
+      }
+    },
+    {
+      "name": "view-restore-column",
+      "ops71": 2
+    },
+    {
+      "name": "view-zero-write-so-far",
+      "unchanged": true
+    },
+    {
+      "name": "view-front-face-menu",
+      "menu": {
+        "title": "",
+        "items": [
+          "open:在面內工作區開啟",
+          "align:對齊視角",
+          "hide:在三視圖隱藏",
+          "props:屬性"
+        ],
+        "sub": [],
+        "text": "面 71三視圖在面內工作區開啟對齊視角在三視圖隱藏屬性↑ ↓ 選擇 · Enter 執行 · Esc 關閉"
+      },
+      "target": {
+        "root": {
+          "kind": "boundary",
+          "id": 71
+        },
+        "placementId": 71,
+        "boundaryId": 71,
+        "memberFace": null
+      }
+    },
+    {
+      "name": "view-open-face",
+      "focus": {
+        "t": "face",
+        "id": 71,
+        "bid": 71,
+        "workspaceVisible": true
+      },
+      "unchanged": true
+    },
+    {
+      "name": "space-projection-menu",
+      "menu": {
+        "title": "",
+        "items": [
+          "open:在面內工作區開啟",
+          "align:對齊視角",
+          "hide:在三視圖隱藏",
+          "props:屬性"
+        ],
+        "sub": [],
+        "text": "面 71三視圖在面內工作區開啟對齊視角在三視圖隱藏屬性↑ ↓ 選擇 · Enter 執行 · Esc 關閉"
+      },
+      "target": {
+        "root": {
+          "kind": "boundary",
+          "id": 71
+        },
+        "placementId": 71,
+        "boundaryId": 71,
+        "memberFace": null
+      }
+    },
+    {
+      "name": "space-projection-zero-write",
+      "unchanged": true
+    }
+  ],
+  "saved": "download",
+  "errsA": [
+    "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+  ],
+  "errsB": [
+    "Error: <path> attribute d: Expected number, \"….2-6 9.2-6 9.2-6Z\".",
+    "Error: <path> attribute d: Expected number, \"….2-6 9.2-6 9.2-6Z\".",
+    "Error: <path> attribute d: Expected number, \"….2-6 9.2-6 9.2-6Z\".",
+    "Error: <path> attribute d: Expected number, \"….2-6 9.2-6 9.2-6Z\".",
+    "Error: <path> attribute d: Expected number, \"….2-6 9.2-6 9.2-6Z\".",
+    "Error: <path> attribute d: Expected number, \"….2-6 9.2-6 9.2-6Z\"."
+  ],
+  "errsC": [
+    "Error: <path> attribute d: Expected number, \"….2-6 9.2-6 9.2-6Z\"."
+  ],
+  "dumps": {
+    "finalPlan": "boundary 71 outline 0,0 4000,0 4000,3000 0,3000\nboundary 72 outline 0,0 3000,0 3000,4000 0,4000\nplacement 71 on boundary 71 origin 0 0 2600 u +x v +y\nplacement 72 on boundary 72 origin 0 0 0 u +y v +x\nspace 9 boundary 71 72\ncolumn 71 in 9 at 500 500 size 340 420 z 0 2500\ncolumn 83 in 9 at 2700 2200 size 250 300 z 0 2450\ncolumn 84 in 9 at 1000 2000 size 340 420 z 0 2500\ncanvas-pos boundary 71 60 60\ncanvas-pos boundary 72 440 60\ncanvas-pos space 9 60 360\ncanvas-pos column 71 440 360\ncanvas-pos column 83 60 660\ncanvas-pos column 84 -426 -100\n"
+  }
+}
