@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PR 433 touch repair: exact old-head red, then two real-CDP 0/1/0 proofs.
+"""PR 433 touch repair: old-head red, two product and one fixture CDP 0/1/0 proofs.
 
 This diagnostic imports the original canvas_touch_regression.py unchanged.
 Its snapshot, native build, runtime probe, Chrome execution, 300 s budgets,
@@ -18,6 +18,7 @@ import argparse
 import copy
 import importlib.util
 import json
+import math
 import os
 from pathlib import Path
 import subprocess
@@ -30,12 +31,21 @@ PRODUCT = 'geometry-web/touch-gestures.js'
 DRIVER = 'tests/canvas_touch_regression.py'
 RELEASE = 'R433_RELEASE_PRESERVES_MENU'
 DELETE = 'TOUCH_DELETE_COMPLETED'
+BLANK = 'R433_BLANK_TOUCH_TARGET'
+TOUCH_TEST = 'geometry-web/canvas_touch_test.js'
+CASES = ['LONG_PRESS', 'BLANK_EQUIVALENCE', 'SHEET_KEYBOARD', 'SHORT_VIEWPORT',
+         'DISABLED_REASON', 'VIEW_ACTION_FOCUS', 'TAP', 'DOUBLE_TAP', 'DRAG',
+         'CARD_SECOND_TOUCH', 'TWO_FINGERS', 'RECT_CANCEL', 'CANCEL', 'ESCAPE',
+         'STALE_OWNER', 'STALE_NODE']
 MUTATIONS = (
-    ('R433_WITHDRAW_TOUCH_CLICK_OWNERSHIP', RELEASE,
+    ('R433_WITHDRAW_TOUCH_CLICK_OWNERSHIP', 'product', PRODUCT, RELEASE,
      b'    const owned = consumed.has(event.pointerId) || consumedTouchSequence;',
      b'    const owned = consumed.has(event.pointerId);'),
-    ('R433_WITHDRAW_NEW_TOUCH_RESET', DELETE,
+    ('R433_WITHDRAW_NEW_TOUCH_RESET', 'product', PRODUCT, DELETE,
      b'      consumedTouchSequence = false;\n', b''),
+    ('R433_WITHDRAW_TOUCH_BLANK_FIXTURE', 'fixture', TOUCH_TEST, BLANK,
+     b'    const candidate = await prepareBlank();',
+     b'    const candidate = await reportedGutterPoint();'),
 )
 
 
@@ -66,16 +76,91 @@ def touch_click(event, action):
             and (event.get('pointerType') == 'touch' or event.get('firesTouchEvents') is True))
 
 
+def finite_number(value):
+    return type(value) in (int, float) and math.isfinite(value)
+
+
+def mouse_blank(point):
+    geometry = point.get('geometry', {})
+    return (finite_number(point.get('x')) and finite_number(point.get('y'))
+            and geometry.get('inside') is True and geometry.get('card') is None
+            and geometry.get('control') is False)
+
+
+def release_witness(detail, events):
+    """Require the observed target AND coordinate mismatch that bypassed old P."""
+    mark = detail.get('releaseMark')
+    if type(mark) is not int or not 0 <= mark <= len(events):
+        return False
+    point, mouse = detail.get('point', {}), detail.get('mouseDown', {})
+    bounds = point.get('cardBounds', {})
+    if not (mouse_blank(point) and all(finite_number(bounds.get(key)) for key in ('left', 'right', 'top', 'bottom'))
+            and 0 < bounds['left'] - point['x'] <= 10
+            and bounds['top'] < point['y'] < bounds['bottom']
+            and mouse.get('type') == 'pointerdown' and mouse.get('pointerType') == 'mouse'
+            and mouse.get('trusted') is True and mouse.get('card') is None
+            and mouse.get('control') is False):
+        return False
+    down = next((e for e in events[:mark] if e.get('type') == 'pointerdown'
+                 and e.get('pointerType') == 'touch' and e.get('trusted') is True), {})
+    up = next((e for e in events[mark:] if e.get('type') == 'pointerup'
+               and e.get('pointerType') == 'touch' and e.get('trusted') is True), {})
+    click = next((e for e in events[mark:] if touch_click(e, 'open')), {})
+    if not (type(down.get('pointerId')) is int and up.get('pointerId') == down['pointerId']
+            and type(click.get('pointerId')) is int and click['pointerId'] != up['pointerId']
+            and click.get('canvas') is False
+            and all(finite_number(event.get(key)) for event in (up, click) for key in ('x', 'y'))
+            and (click['x'] != up['x'] or click['y'] != up['y'])):
+        return False
+    return ordered(events[:mark], (
+        lambda e: e is down and e.get('card') == 'boundary:43',
+        lambda e: e.get('type') == 'touchstart' and e.get('trusted') is True
+                  and e.get('touches') == 1 and e.get('card') == 'boundary:43',
+    )) and ordered(events[mark:], (
+        lambda e: e is up,
+        lambda e: e.get('type') == 'touchend' and e.get('trusted') is True,
+        lambda e: e is click,
+    ))
+
+
+def blank_witness(detail):
+    """A fixture withdrawal must expose a real mouse/touch target mismatch."""
+    point, probes = detail.get('point', {}), detail.get('probes', [])
+    if not mouse_blank(point) or len(probes) != 1:
+        return False
+    probe = probes[0]
+    down, start = probe.get('down', {}), probe.get('start', {})
+    pointercancel, cancel = probe.get('pointercancel', {}), probe.get('cancel', {})
+    if not (probe.get('point') == point and probe.get('trusted') is True
+            and down.get('type') == 'pointerdown' and down.get('pointerType') == 'touch'
+            and down.get('trusted') is True and down.get('card') == 'boundary:43'
+            and down.get('canvas') is True and down.get('control') is False
+            and type(down.get('pointerId')) is int
+            and start.get('type') == 'touchstart' and start.get('trusted') is True
+            and start.get('touches') == 1 and start.get('card') == 'boundary:43'
+            and start.get('canvas') is True and start.get('control') is False
+            and pointercancel.get('type') == 'pointercancel' and pointercancel.get('pointerType') == 'touch'
+            and pointercancel.get('trusted') is True and pointercancel.get('pointerId') == down['pointerId']
+            and cancel.get('type') == 'touchcancel' and cancel.get('trusted') is True):
+        return False
+    return ordered(probe.get('events', []), (
+        lambda e: e == down, lambda e: e == start,
+        lambda e: e == pointercancel, lambda e: e == cancel,
+    ))
+
+
 def repair_red(row, marker):
-    """Only the specified normal product assertion and trusted input are red."""
+    """Only the specified normal assertion with its causal trusted input is red."""
     try:
-        if (marker not in {RELEASE, DELETE} or row.get('status') != 'assertions'
+        expected_case = 'BLANK_EQUIVALENCE' if marker == BLANK else 'LONG_PRESS'
+        passed_cases = ['LONG_PRESS'] if marker == BLANK else []
+        if (marker not in {RELEASE, DELETE, BLANK} or row.get('status') != 'assertions'
                 or row.get('exit') != 1 or row.get('sourceUnchanged') is not True
                 or row.get('runtime', {}).get('fresh') is not True
                 or row.get('fatal') != [] or len(row.get('cdp', [])) != 1
-                or len(row.get('touch', [])) != 1 or len(row.get('cases', [])) != 1):
+                or len(row.get('touch', [])) != 1 or len(row.get('cases', [])) != len(passed_cases) + 1):
             return False
-        cdp, touch, case = row['cdp'][0], row['touch'][0], row['cases'][0]
+        cdp, touch, case = row['cdp'][0], row['touch'][0], row['cases'][-1]
         failure = touch.get('firstFailure') or {}
         if not (cdp.get('completed') is True and cdp.get('unexpectedBrowserExceptions') == 0
                 and cdp.get('scope', {}).get('mode') == 'partial'
@@ -86,30 +171,24 @@ def repair_red(row, marker):
                 and cdp.get('sectionsFailed') == {'P1162': 1}
                 and touch.get('input') == 'Input.dispatchTouchEvent'
                 and touch.get('scope') == 'object-canvas'
-                and touch.get('completed') is False and touch.get('failed') == ['LONG_PRESS']
-                and touch.get('passed') == [] and len(touch.get('expectedCases', [])) == 16
+                and touch.get('completed') is False and touch.get('failed') == [expected_case]
+                and touch.get('passed') == passed_cases and touch.get('expectedCases') == CASES
                 and failure.get('assertion') == marker and failure.get('kind') == 'assertion'
-                and case.get('id') == 'LONG_PRESS' and case.get('status') == 'fail'
+                and case.get('id') == expected_case and case.get('status') == 'fail'
                 and case.get('assertions', {}).get('failed') == 1
                 and case.get('firstFailure') == failure
+                and all(prior.get('id') == name and prior.get('status') == 'pass'
+                        and prior.get('assertions', {}).get('failed') == 0
+                        for prior, name in zip(row['cases'][:-1], passed_cases))
                 and len(row.get('failed', [])) == 1
                 and row['failed'][0].startswith('P1162 ' + marker + ' ✗')):
             return False
         detail = failure.get('detail', {})
         events = detail.get('state', {}).get('events', [])
         if marker == RELEASE:
-            mark = detail.get('releaseMark')
-            if type(mark) is not int or not 0 <= mark <= len(events):
-                return False
-            return ordered(events[:mark], (
-                lambda e: e.get('type') == 'pointerdown' and e.get('pointerType') == 'touch'
-                          and e.get('trusted') is True and e.get('card') == 'boundary:43',
-                lambda e: e.get('type') == 'touchstart' and e.get('trusted') is True
-                          and e.get('touches') == 1 and e.get('card') == 'boundary:43',
-            )) and ordered(events[mark:], (
-                lambda e: e.get('type') == 'touchend' and e.get('trusted') is True,
-                lambda e: touch_click(e, 'open'),
-            ))
+            return release_witness(detail, events)
+        if marker == BLANK:
+            return blank_witness(detail)
         return ordered(events, (
             lambda e: e.get('type') == 'pointerdown' and e.get('pointerType') == 'touch'
                       and e.get('trusted') is True and e.get('card') == 'boundary:41',
@@ -141,30 +220,43 @@ def identity(original, raw):
 
 def predicate_selftest(original):
     """Synthetic predicate checks only; never a Chrome or mutation receipt."""
-    cases = ['LONG_PRESS', 'BLANK_EQUIVALENCE', 'SHEET_KEYBOARD', 'SHORT_VIEWPORT',
-             'DISABLED_REASON', 'VIEW_ACTION_FOCUS', 'TAP', 'DOUBLE_TAP', 'DRAG',
-             'CARD_SECOND_TOUCH', 'TWO_FINGERS', 'RECT_CANCEL', 'CANCEL', 'ESCAPE',
-             'STALE_OWNER', 'STALE_NODE']
-
     def example(marker):
+        point = {'x': 78, 'y': 673.6,
+                 'geometry': {'inside': True, 'card': None, 'control': False, 'target': 'DIV'},
+                 'cardBounds': {'left': 80, 'right': 380, 'top': 496, 'bottom': 736}}
         events = [
-            {'type': 'pointerdown', 'pointerType': 'touch', 'trusted': True,
-             'card': 'boundary:43' if marker == RELEASE else 'boundary:41'},
-            {'type': 'touchstart', 'trusted': True, 'touches': 1,
-             'card': 'boundary:43' if marker == RELEASE else 'boundary:41'},
+            {'type': 'pointerdown', 'pointerType': 'touch', 'trusted': True, 'pointerId': 7,
+             'x': 78, 'y': 673.6, 'canvas': True, 'control': False,
+             'card': 'boundary:41' if marker == DELETE else 'boundary:43'},
+            {'type': 'touchstart', 'trusted': True, 'touches': 1, 'canvas': True, 'control': False,
+             'card': 'boundary:41' if marker == DELETE else 'boundary:43'},
         ]
-        if marker == DELETE:
+        if marker == BLANK:
             events += [
-                {'type': 'pointerdown', 'pointerType': 'touch', 'trusted': True, 'action': 'delete'},
-                {'type': 'touchstart', 'trusted': True, 'touches': 1, 'action': 'delete'},
+                {'type': 'pointercancel', 'pointerType': 'touch', 'trusted': True, 'pointerId': 7},
+                {'type': 'touchcancel', 'trusted': True, 'touches': 0},
             ]
-        events += [
-            {'type': 'touchend', 'trusted': True},
-            {'type': 'click', 'trusted': True, 'pointerType': 'touch',
-             'action': 'open' if marker == RELEASE else 'delete', 'pointerId': -1, 'x': 83, 'y': 673},
-        ]
-        failure = {'assertion': marker, 'kind': 'assertion',
-                   'detail': {'state': {'events': events}, 'releaseMark': 2}}
+            detail = {'point': point, 'probes': [{'point': point, 'trusted': True,
+                      'down': events[0], 'start': events[1], 'pointercancel': events[2],
+                      'cancel': events[3], 'events': events}]}
+        else:
+            if marker == DELETE:
+                events += [
+                    {'type': 'pointerdown', 'pointerType': 'touch', 'trusted': True, 'action': 'delete'},
+                    {'type': 'touchstart', 'trusted': True, 'touches': 1, 'action': 'delete'},
+                ]
+            events += [
+                {'type': 'pointerup', 'pointerType': 'touch', 'trusted': True, 'pointerId': 7, 'x': 78, 'y': 673.6},
+                {'type': 'touchend', 'trusted': True},
+                {'type': 'click', 'trusted': True, 'pointerType': 'touch', 'canvas': False,
+                 'action': 'open' if marker == RELEASE else 'delete', 'pointerId': -1, 'x': 83, 'y': 673},
+            ]
+            detail = {'state': {'events': events}, 'releaseMark': 2, 'point': point,
+                      'mouseDown': {'type': 'pointerdown', 'pointerType': 'mouse', 'trusted': True,
+                                    'x': 78, 'y': 673.6, 'card': None, 'control': False}}
+        failure = {'assertion': marker, 'kind': 'assertion', 'detail': detail}
+        previous = ['LONG_PRESS'] if marker == BLANK else []
+        failed_case = 'BLANK_EQUIVALENCE' if marker == BLANK else 'LONG_PRESS'
         return {
             'status': 'assertions', 'exit': 1, 'sourceUnchanged': True, 'runtime': {'fresh': True},
             'fatal': [], 'failed': ['P1162 ' + marker + ' ✗'],
@@ -174,14 +266,22 @@ def predicate_selftest(original):
                      'goldenCompare': 'not compared (partial mode)', 'failedAssertions': 1,
                      'sections': {'P1162': 1}, 'sectionsFailed': {'P1162': 1}}],
             'touch': [{'input': 'Input.dispatchTouchEvent', 'scope': 'object-canvas',
-                       'completed': False, 'failed': ['LONG_PRESS'], 'passed': [],
-                       'expectedCases': cases, 'firstFailure': failure}],
-            'cases': [{'id': 'LONG_PRESS', 'status': 'fail',
-                       'assertions': {'passed': 1, 'failed': 1}, 'firstFailure': failure}],
+                       'completed': False, 'failed': [failed_case], 'passed': previous,
+                       'expectedCases': CASES, 'firstFailure': failure}],
+            'cases': [{'id': name, 'status': 'pass', 'assertions': {'passed': 1, 'failed': 0}}
+                      for name in previous] + [{'id': failed_case, 'status': 'fail',
+                      'assertions': {'passed': 1, 'failed': 1}, 'firstFailure': failure}],
         }
 
+    def details(row):
+        return row['touch'][0]['firstFailure']['detail']
+
+    def observed(row):
+        detail = details(row)
+        return detail['probes'][0]['events'] if 'probes' in detail else detail['state']['events']
+
     passed = []
-    for marker in (RELEASE, DELETE):
+    for marker in (RELEASE, DELETE, BLANK):
         good = example(marker)
         assert repair_red(good, marker), marker
         passed.append(marker + ': accepts required trusted assertion')
@@ -196,22 +296,52 @@ def predicate_selftest(original):
             ('incomplete CDP', lambda r: r['cdp'][0].update(completed=False)),
             ('browser exception', lambda r: r['cdp'][0].update(unexpectedBrowserExceptions=1)),
             ('wrong scope', lambda r: r['cdp'][0].update(scope={'mode': 'full'})),
-            ('different case', lambda r: r['touch'][0].update(failed=['BLANK_EQUIVALENCE'])),
+            ('different case', lambda r: r['touch'][0].update(failed=['STALE_NODE'])),
+            ('missing required cases', lambda r: r['touch'][0].update(expectedCases=CASES[:-1])),
             ('other assertion', lambda r: r['touch'][0]['firstFailure'].update(assertion='CONTROL_REACHABLE')),
             ('non assertion', lambda r: r['touch'][0]['firstFailure'].update(kind='infrastructure')),
-            ('untrusted events', lambda r: [e.update(trusted=False) for e in r['touch'][0]['firstFailure']['detail']['state']['events']]),
-            ('no input', lambda r: r['touch'][0]['firstFailure']['detail']['state'].update(events=[])),
-            ('wrong click action', lambda r: r['touch'][0]['firstFailure']['detail']['state']['events'][-1].update(action='home')),
-            ('non touch click', lambda r: r['touch'][0]['firstFailure']['detail']['state']['events'][-1].update(pointerType='mouse', firesTouchEvents=False)),
-            ('no touch end', lambda r: r['touch'][0]['firstFailure']['detail']['state']['events'].pop(-2)),
+            ('untrusted events', lambda r: [e.update(trusted=False) for e in observed(r)]),
+            ('no input', lambda r: observed(r).clear()),
         ]
+        if marker != BLANK:
+            variants += [
+                ('wrong click action', lambda r: observed(r)[-1].update(action='home')),
+                ('non touch click', lambda r: observed(r)[-1].update(pointerType='mouse', firesTouchEvents=False)),
+                ('no touch end', lambda r: observed(r).pop(-2)),
+            ]
+        if marker == RELEASE:
+            variants += [
+                ('card-interior mouse fixture', lambda r: details(r)['point']['geometry'].update(card='boundary:43')),
+                ('raw point inside card bounds', lambda r: details(r)['point']['cardBounds'].update(left=78)),
+                ('untrusted mouse', lambda r: details(r)['mouseDown'].update(trusted=False)),
+                ('mouse actually hit card', lambda r: details(r)['mouseDown'].update(card='boundary:43')),
+                ('same UP and click coordinates', lambda r: observed(r)[-1].update(x=78, y=673.6)),
+                ('click remains in canvas', lambda r: observed(r)[-1].update(canvas=True)),
+                ('same UP and click pointer ID', lambda r: observed(r)[-1].update(pointerId=7)),
+                ('missing click pointer ID', lambda r: observed(r)[-1].pop('pointerId')),
+                ('missing UP', lambda r: observed(r).pop(2)),
+                ('wrong UP pointer ID', lambda r: observed(r)[2].update(pointerId=9)),
+                ('nonfinite click coordinate', lambda r: observed(r)[-1].update(x=float('nan'))),
+            ]
+        if marker == BLANK:
+            variants += [
+                ('unpassed earlier case', lambda r: r['touch'][0].update(passed=[])),
+                ('failed earlier case', lambda r: r['cases'][0].update(status='fail')),
+                ('geometry was not blank', lambda r: details(r)['point']['geometry'].update(card='boundary:43')),
+                ('touch was also blank', lambda r: observed(r)[0].update(card=None)),
+                ('inconsistent start target', lambda r: observed(r)[1].update(card='boundary:42')),
+                ('missing pointercancel', lambda r: observed(r).pop(2)),
+                ('untrusted cancellation', lambda r: observed(r)[-1].update(trusted=False)),
+                ('wrong cancellation pointer ID', lambda r: observed(r)[2].update(pointerId=9)),
+                ('more than one probe', lambda r: details(r)['probes'].append(details(r)['probes'][0])),
+            ]
         for label, alter in variants:
             bad = copy.deepcopy(good)
             alter(bad)
             assert not repair_red(bad, marker), marker + ': ' + label
             passed.append(marker + ': rejects ' + label)
         if marker == RELEASE:
-            for invalid_mark in (True, '2', 0, 4, 5):
+            for invalid_mark in (True, '2', 0, 3, 4, 5):
                 bad = copy.deepcopy(good)
                 bad['touch'][0]['firstFailure']['detail']['releaseMark'] = invalid_mark
                 assert not repair_red(bad, marker), 'invalid release boundary: ' + repr(invalid_mark)
@@ -219,11 +349,14 @@ def predicate_selftest(original):
     green = example(RELEASE)
     green.update(exit=0, failed=[])
     green['cdp'][0].update(failedAssertions=0, sectionsFailed={})
-    green['touch'][0].update(completed=True, failed=[], passed=cases, firstFailure=None)
+    green['touch'][0].update(completed=True, failed=[], passed=CASES, firstFailure=None)
     assert original.green(green)
-    green['touch'][0]['passed'] = cases[:-1]
+    green['touch'][0]['passed'] = CASES[:-1]
     assert not original.green(green)
     passed += ['original green accepts 16 synthetic cases', 'original green rejects 15 synthetic cases']
+    for name, _kind, path, _marker, anchor, _replacement in MUTATIONS:
+        assert (ROOT / path).read_bytes().count(anchor) == 1, name + ': unique source anchor'
+        passed.append(name + ': unique source anchor (not executed)')
     print('R433_TOUCH_PREDICATE_SELFTEST ' + json.dumps(
         {'synthetic': True, 'chromeStarted': False, 'checks': len(passed), 'status': 'pass',
          'cases': passed}, ensure_ascii=False))
@@ -254,7 +387,7 @@ def main():
     checkout_before = original.fingerprint(ROOT)
     original.save(out / 'checkout-before.json', checkout_before)
     report = {
-        'schema': 'geometry-r433-touch-repair/1', 'base': BASE, 'status': 'blocked',
+        'schema': 'geometry-r433-touch-repair/2', 'base': BASE, 'status': 'blocked',
         'originalDriver': identity(original, old_driver), 'runs': [], 'proofs': [], 'problems': [],
         'candidateHead': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
         'testOverlay': {name: identity(original, (ROOT / name).read_bytes()) for name in original.TEST_OVERLAY},
@@ -275,18 +408,18 @@ def main():
                              for name in original.TEST_OVERLAY), 'Baseline must use the identical T harness')
         baseline = run('before', before_root)
         original.require(repair_red(baseline, RELEASE), 'Exact old head did not reach ' + RELEASE)
-        for name, marker, anchor, replacement in MUTATIONS:
+        for name, kind, path, marker, anchor, replacement in MUTATIONS:
             phases = {}
             for phase in ('fixed-before', 'withdrawn', 'restored'):
                 source = out / ('source-' + name + '-' + phase)
                 original.candidate(source)
                 phases[phase] = source
-            target = phases['withdrawn'] / PRODUCT
+            target = phases['withdrawn'] / path
             data = target.read_bytes()
             original.require(data.count(anchor) == 1, name + ': withdrawal anchor must occur exactly once')
             changed = data.replace(anchor, replacement, 1)
             target.write_bytes(changed)
-            proof = {'name': name, 'firstFailure': marker, 'path': PRODUCT,
+            proof = {'name': name, 'kind': kind, 'firstFailure': marker, 'path': path,
                      'anchor': anchor.decode(), 'replacement': replacement.decode(),
                      'before': identity(original, data), 'after': identity(original, changed),
                      'status': 'blocked'}
@@ -295,7 +428,7 @@ def main():
             original.require(fixed['sourceUnchanged'] and original.green(fixed),
                              name + ': candidate must pass the original complete 16-case green predicate')
             withdrawn = run(name + '-withdrawn', phases['withdrawn'])
-            original.require(repair_red(withdrawn, marker), name + ': not the specified trusted product assertion')
+            original.require(repair_red(withdrawn, marker), name + ': not the specified trusted ' + kind + ' assertion')
             restored = run(name + '-restored', phases['restored'])
             original.require(restored['sourceUnchanged'] and original.green(restored),
                              name + ': restored candidate must pass the original complete 16-case green predicate')
