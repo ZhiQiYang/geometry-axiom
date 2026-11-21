@@ -32,7 +32,21 @@ import run_all
 
 WITHDRAWALS = ('R386_NATIVE_DROP_FRAGMENT', 'R386_NATIVE_COUNT_MISMATCH',
                'R386_NATIVE_TWO_SHARDS_OVERLAP', 'R386_NATIVE_COST_WITHOUT_RECEIPT',
-               'R386_NATIVE_STALE_SUITE_SOURCE')
+               'R386_NATIVE_STALE_SUITE_SOURCE',
+               # Review 7056059753 E5/E4 and three similar empty-run rewrites:
+               # data-only edits that must not silently weaken a legacy suite.
+               'R386_NATIVE_E5_UNITTEST_TO_EMPTY_SCRIPT', 'R386_NATIVE_E4_NODE_SCRIPT_EMPTY_CMD',
+               'R386_NATIVE_NODE_TEST_TO_EXIT_ONLY', 'R386_NATIVE_SCRIPT_EXTRA_ARGS',
+               'R386_NATIVE_LEGACY_ORDER_ESCAPE')
+# A named withdrawal is only "red" when it fails at its designated assertion;
+# a different failure exits 3 so 0/1/0 cannot be produced by an unrelated error.
+WITHDRAWAL_MARKERS = {
+    'R386_NATIVE_E5_UNITTEST_TO_EMPTY_SCRIPT': 'R386_NATIVE_LEGACY_EXECUTION_PIN',
+    'R386_NATIVE_E4_NODE_SCRIPT_EMPTY_CMD': 'R386_NATIVE_LEGACY_EXECUTION_PIN',
+    'R386_NATIVE_NODE_TEST_TO_EXIT_ONLY': 'R386_NATIVE_LEGACY_EXECUTION_PIN',
+    'R386_NATIVE_SCRIPT_EXTRA_ARGS': 'R386_NATIVE_LEGACY_EXECUTION_PIN',
+    'R386_NATIVE_LEGACY_ORDER_ESCAPE': 'R386_NATIVE_LEGACY_EXECUTION_PIN',
+}
 
 
 def make_fixture(root, destination):
@@ -91,6 +105,37 @@ def withdraw(root, name):
     elif name == 'R386_NATIVE_STALE_SUITE_SOURCE':
         path = root / 'tests/test_r386_ci_fixture.py'
         path.write_bytes(path.read_bytes() + b'# changed after real named observation\n')
+    elif name in ('R386_NATIVE_E5_UNITTEST_TO_EMPTY_SCRIPT', 'R386_NATIVE_LEGACY_ORDER_ESCAPE'):
+        # Review E5 verbatim: 53 real tests become `python -c pass`.
+        path = root / registry.SUITES / 'py__test_serve.json'
+        row = json.loads(path.read_bytes())
+        row['execution']['kind'] = 'python-script'
+        row['execution']['cmd'] = ['{python}', '-c', 'pass']
+        row['expected'] = {'mode': 'exit-code-only'}
+        if name == 'R386_NATIVE_LEGACY_ORDER_ESCAPE':
+            # Same empty run, relabelled as a "new" suite to dodge a legacy-only pin.
+            row['order'] = 'new/py__test_serve'
+        path.write_bytes(registry.canonical_bytes(row))
+    elif name == 'R386_NATIVE_E4_NODE_SCRIPT_EMPTY_CMD':
+        # Review E4 verbatim: the node script no longer runs its file.
+        path = root / registry.SUITES / 'node__document_format.json'
+        row = json.loads(path.read_bytes())
+        row['execution']['cmd'] = ['-e', '0']
+        path.write_bytes(registry.canonical_bytes(row))
+    elif name == 'R386_NATIVE_NODE_TEST_TO_EXIT_ONLY':
+        # Still runs the real file, but its 14-test count is no longer verified.
+        path = root / registry.SUITES / 'node__anchor_band_clip.json'
+        row = json.loads(path.read_bytes())
+        row['execution']['kind'] = 'node-script'
+        row['execution']['cmd'] = list(row['files'])
+        row['expected'] = {'mode': 'exit-code-only'}
+        path.write_bytes(registry.canonical_bytes(row))
+    elif name == 'R386_NATIVE_SCRIPT_EXTRA_ARGS':
+        # The right script, given an argument that only prints usage.
+        path = root / registry.SUITES / 'oracle__framing-selftest.json'
+        row = json.loads(path.read_bytes())
+        row['execution']['cmd'].append('--help')
+        path.write_bytes(registry.canonical_bytes(row))
     elif name != 'R386_NATIVE_TWO_SHARDS_OVERLAP':
         raise ValueError(name)
 
@@ -519,7 +564,14 @@ def main():
     parser.add_argument('--probe-for', choices=WITHDRAWALS)
     args = parser.parse_args()
     if args.probe or args.withdraw or args.probe_for:
-        named_probe(args.withdraw, args.probe_for)
+        marker = WITHDRAWAL_MARKERS.get(args.withdraw)
+        try:
+            named_probe(args.withdraw, args.probe_for)
+        except AssertionError as exc:
+            if marker and marker not in str(exc):
+                print('R386_NATIVE_WITHDRAWAL_WRONG_ASSERTION: expected %s, got %s' % (marker, exc))
+                return 3
+            raise
         print('R386 native registry named control passed')
         return 0
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(NativeRegistryContract)
