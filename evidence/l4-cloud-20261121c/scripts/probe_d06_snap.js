@@ -1,5 +1,5 @@
-// D06 發現 5 的重現：同一個 L 形，最後一邊用 PDF 閉合運算子 h 畫（two-page.pdf）或用明寫 l 畫（two-page-explicit.pdf），
-// 照描時點在六個角上（點擊位置相同），吸附開／關各一次，比較得到的外環。只用 UI；page.evaluate 只讀與換算座標。
+// D06 21c-5：用相同的六個預定點位照描兩份不同的輪廓，吸附開／關各一次。expected 記錄這六個點位。
+// two-page.pdf 有五個頂點，two-page-explicit.pdf 有六個。操作走 UI，page.evaluate 只讀與換算座標。
 const L = require('./lib.js');
 const r = {};
 const srcPt = (p, x, y) => p.evaluate(([x, y]) => { const q = feUlImgToMm(ReferenceWorkspace.active(oc.focus.id), x, y), svg = document.getElementById('faceEditorSvg'), root = document.getElementById('faceEditorRoot'), s = svg.createSVGPoint(); s.x = q[0]; s.y = q[1]; const t = s.matrixTransform(root.getScreenCTM()); return { x: t.x, y: t.y }; }, [x, y]);

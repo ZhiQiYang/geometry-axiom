@@ -1,4 +1,4 @@
-# D06 發現 5 對照組：同 make_two_page_pdf.py，只把第 2 頁 L 形最後一邊從閉合運算子 h 改成明寫 l。
+# D06 原始 explicit-l 對照檔。第 2 頁明寫 60 200 l 再以 60 40 l 回起點，比 two-page.pdf 多一個角點。
 import sys
 p1 = b"""0 0 0 RG 2 w
 40 60 160 120 re S
