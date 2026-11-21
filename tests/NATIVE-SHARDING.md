@@ -1,5 +1,71 @@
 # 非瀏覽器CI確定性分片（2026-11-02）
 
+## R03 新 suite 的獨立工作樹量測（基底 fa83e6ad）
+
+R03 本片的完整基底是 `fa83e6ad8444c569b9f2f5e91f2de9a5622a92cb`。新增
+`py:test_framing_template`、`node:framing_recipe_project_store`、
+`node:framing_template_session`、`node:framing_template_browser_scope`，全部獨立列入 registry／expected 與六片聯集；
+不併入舊 Node aggregate，也不改歷史 315 套實跑、317／318 套回歸或原 main 的 324 套宇宙。
+
+這四套在交付補丁時還沒有 GitHub job。`native_shard_added_evidence_r03.json` 因此使用
+獨立 `native-shard-workspace-suite-evidence/2`，明寫 `kind: workspace`；不偽造
+`source_run`、job、artifact id 或 head commit。三份原 GitHub `/1` 來源與它們的嚴格驗證
+完全保留。工作樹原件由下列指令機械產生：
+
+```sh
+python3 -B tests/generate_r03_shard_costs.py --base fa83e6ad8444c569b9f2f5e91f2de9a5622a92cb --build
+```
+
+產生器只跑正式 registry 的四個新 child，透過原 `run_all.run_suite` 取得真退出碼、
+發現數、通過／失敗／skip 與單調時鐘耗時。所有列均須通過，量測前後來源與原生二進位
+指紋必須相同，才發布成本資料。來源清單保留完整 native 編譯閉包、測試與 runner、
+oracle／golden、JS owner／動態讀取 fixture 的 raw bytes／SHA-256，以及 bridge 原件
+SHA-256、編譯命令與來源指紋。每列原 stdout 和原 runner row 留在
+`tests/native_shard_evidence/r03/`；這些是產生器原件，勿手填或修收據。
+真 HTTP 的 runtime 來源由正式 `runtime_version.source_files` 列舉，包含公理層、
+app／template 模組與明列的公開附件；同樣納入量測前後比對，並未修改這些原件。
+Python child 的 stdout 可以原樣為空，但該原件必須存在且 hash 相符；另保留並交叉核對
+`_unittest_runner` 直接產生的原 JSON 與原 `.unittest.log`，不以二次摘要替代原始發現數。
+
+收據同時記 CPU 型號、`nproc`、cgroup `cpu.max`、作業系統及 Python／Node 版本。
+量到的 `seconds` 與 `planning_upper_ms` 分欄：規劃值至少為實測三倍向上取整秒再加一秒，
+原生最低 60 秒，Node 最低 5 秒。這些是保守排程權重，沒有改任何 child timeout 或正式
+CI 收據 1200 秒上限，也不是對所有 CPU／配額組合的保證。
+
+新增來源 validator 逐一拒絕：缺來源／stdout、原件 hash 不符、來源閉包或 native
+fingerprint 不符、失敗 child、布林退出碼、非有限耗時、假計數、未留餘裕、重複 suite、
+原 row 不符與把本機來源改稱 GitHub。現有 `profile_digest()` 同時綁定新頂層資料、
+來源清單、逐列原 stdout／JSON；六片彙總使用的指紋不會漏掉這份來源。
+
+現行 default coverage 反證保留原 41 個具名撤回及起始覆蓋三步，共 126 個 child；
+每個 child 的 60 秒上限、兩個 workers 與 workflow 五分鐘上限均不變。本片的額外
+19 組具名反證獨立執行，不暗加到該 job 的既有時間預算：
+
+```sh
+python3 -B tests/native_sharding_mutation_check.py --r03 --output /tmp/r03-native-sharding-proof
+```
+
+每個新反證使用實際 `test_unittest_runner` 方法，分別跑正常／單點撤回／還原，要求
+0／1／0、指定 AssertionError、0 errors／0 skips；來源 pin、stdout、count、原生來源、
+原 row、runner 欄位、來源種類、跨來源重複、expected、成本聯集與 digest 各有指定 marker。
+另以兩組撤回守住原 main 的 324 套精確集合，以及原 600000／650000 毫秒三片相對權重
+回歸的歷史宇宙；不降低新 suite 成本以把新工作量塞入該舊規劃。
+嚴格 validator 的所有負例也在新增的 `test_r03_workspace_cost_provenance` 中，由正常
+native suite 跑，不因完整 0／1／0 另有指令而略過正式 CI 守門。
+
+容量修訂只消除分配器 score 的重複 Python 列舉：兩片的 load vector 直接相加，
+多片使用 `chain.from_iterable`，仍以相同的 `tuple(sorted(..., reverse=True))`
+比較全部值。回傳型別、ties、嚴格 `<`、候選遍歷順序、交換次數與 break 邊界不變。
+沒有快取來源或驗證結果，每次原件／來源／指紋檢查照跑；所有既有 41 組及新增 19 組
+具名撤回保留。等價性另以舊／新 score 逐值對照和歷史 317／318／324、現行 328
+套的完整 assignment 對照證明，不能用此純計算證據冒稱正式 CI job 已完成。
+
+這份本機量測只補足新 suite 的排程成本來源。正式容量仍須由採用後同一最新 head 的
+六片原收據、native complete coverage 與其餘必要 checks 判定。若未取得正式 CI，
+回報必須明寫未驗；不能用本表或本機 0／1／0 宣稱 Geometry 已綠。
+
+以下保留各歷史版本的原紀錄與當時範圍，不能把舊計數當成當前 registry。
+
 目前配置為六個native矩陣job，每個`timeout-minutes: 35`保持，各片收據仍須嚴格小於1200秒。2026-11-02依P-186授權建立的三片為歷史安排；R348在2026-11-12的慢runner收據超時後，先改為下方的完整三輪／四片規劃；後續保留#378完整第四輪，並合流R380兩套、R379三套、R396四套獨立來源；最新六片324套配置見本文末節，正式CI驗收另核對。原始main `405f8c5e1a637a16cbe47470faf5ae1fa02b8676` 的[GitHub native job](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40185639126/job/124015759512)量測繼續保留；不延長期限、不豁免失敗。
 
 `native_shard_timings.json`保留完整來源SHA／run／job／原log SHA256及原main的224個suite實測毫秒；這224筆是上述main來源的量測，不改造為其他分支的套件數。初版按耗時遞減、名稱破同分，指派至目前累計最小的片（再以片號破同分）；此規則仍供明確傳入`weights`的呼叫使用。正式預設沿用R348情境分配器及R379等價計分修正，輸入完整四輪量測與R380／R379／R396共九套獨立觀測上界。片內保留原完整runner的順序；未量測新suite仍用1000ms且必分到某片，但當前預算測試要求量測集合完整覆蓋registry，新增套件須同步補齊量測。配置不依本機cache、即時耗時、亂數或Python hash seed。

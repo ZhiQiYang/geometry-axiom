@@ -28,7 +28,7 @@ window.FaceProjection = (() => {
       (all.length > 1 ? `<p>此面有 ${all.length} 個放置；目前顯示放置 #${s.id}。可在設定中切換，各自保存定義。</p>` : "") +
       (faceWorkspace ? `<button type="button" class="btn wide" data-face-settings="${bid}" aria-expanded="false" aria-controls="faceSettingsChoices">面設定…</button>` +
         `<div id="faceSettingsChoices" hidden><button type="button" class="btn wide" data-fp-edit="${bid}" ${attrs}>${def ? "修改投影定義" : "設定平面投影"}</button>` +
-        `<button type="button" class="btn wide" data-panel-fill-open="${bid}">完成面與鋪排…</button></div>` :
+        `<button type="button" class="btn wide" data-panel-fill-open="${bid}">完成面／骨架…</button></div>` :
         `<button type="button" class="btn wide" data-fp-edit="${bid}" ${attrs}>${def ? "修改投影定義" : "設定平面投影"}</button>`) +
       (def && valid ? `<button type="button" class="primary-button" data-fp-build="${bid}" ${attrs}>依此平面建立空間</button>` :
         /* GEO-219: the face toolbar entries moved into this inspector. Every
@@ -561,6 +561,11 @@ async function recoverApiResults() {
     }
     if (current && /^(boundary-pair-preview|boundary-pair-cancel) /.test(cmd))
       await window.BoundaryPairWorkspace?.settleRecovered(cmd,result);
+    if (current && /^(framing-template-preview|framing-template-confirm|framing-template-cancel) /.test(cmd)) {
+      if (cmd.startsWith('framing-template-confirm ') && result.ok && result.history_changed !== false)
+        window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
+      await window.FramingWorkspace?.settleRecovered(cmd,result);
+    }
     if (current && cmd.startsWith("panel-fill-confirm ")) {
       window.PanelFillWorkspace?.reconcileReceipt(result,cmd);
       if (result.ok && result.history_changed !== false)
@@ -647,6 +652,7 @@ function showConnectionState() {
 function connectionFailed(message) {
   connection.phase = "error"; connection.error = message;
   window.PanelFillWorkspace?.invalidate("連線已中斷；舊預覽失效。若正在確認，保留原回執，禁止重送。");
+  window.FramingWorkspace?.invalidate("連線已中斷；舊預覽失效，確認或取消僅核對原回執，禁止重送。");
   showConnectionState();
 }
 async function recoverConnection() {
@@ -729,8 +735,8 @@ async function apiRequest(cmd, roomLease = null) {
     }
     catch (error) { return {ok:false,error:error.message}; }
   }
-  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |boundary-pair-confirm )/.test(cmd)) {
-    try { if (cmd.startsWith('boundary-pair-confirm ')) ReferenceWorkspace.assertTimberPreviewToken(cmd.split(' ')[1]);
+  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |boundary-pair-confirm |framing-template-confirm )/.test(cmd)) {
+    try { if (/^(boundary-pair|framing-template)-confirm /.test(cmd)) ReferenceWorkspace.assertTimberPreviewToken(cmd.split(' ')[1]);
       else if (cmd.startsWith('timber-edit-confirm ')) ReferenceWorkspace.assertTimberPreviewToken(cmd.slice(20));
       else if (roomLease) RoomCollectionWorkspace.assertTransaction(roomLease); else { ReferenceWorkspace.assertAssemblyIdle(); if (!rollback) ReferenceWorkspace.assertEditable?.(); } }
     catch (error) { return {ok:false,error:error.message}; }
@@ -738,7 +744,8 @@ async function apiRequest(cmd, roomLease = null) {
   if (rollback && pendingApiResults.size) return { ok: false, transport: true, error: "操作結果尚未確認，重新連線後再回復。" };
   const recoveredRoomCancel = roomLease && cmd === "line cancel-preview" && connection.phase === "loading" && pendingApiResults.size === 0;
   const recoveredPairCancel = connection.phase === 'loading' && window.BoundaryPairWorkspace?.isRecoveryCancel(cmd);
-  if (!rollback && !recoveredRoomCancel && !recoveredPairCancel && (connection.phase === "error" || (connection.phase === "loading" &&
+  const recoveredFramingCancel = connection.phase === 'loading' && window.FramingWorkspace?.isRecoveryCancel(cmd);
+  if (!rollback && !recoveredRoomCancel && !recoveredPairCancel && !recoveredFramingCancel && (connection.phase === "error" || (connection.phase === "loading" &&
       !/^(objects|surfaces|boundary|references|obstacles|render|pick|bhit|dump-deidentified|identity-read|dump)(\s|$)/.test(cmd))))
     return { ok: false, transport: true, error: connection.error || "場景尚未讀取完成" };
   const localHistory = ReferenceWorkspace.tryLocalHistory?.(cmd);
@@ -749,7 +756,7 @@ async function apiRequest(cmd, roomLease = null) {
   try {
   return roomNativeResult = await (async () => {
   const t0 = performance.now();
-  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |timber-edit-cancel |boundary-pair-confirm |boundary-pair-cancel )/.test(cmd) ? crypto.randomUUID() : null;
+  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |timber-edit-cancel |boundary-pair-confirm |boundary-pair-cancel |framing-template-confirm |framing-template-cancel )/.test(cmd) ? crypto.randomUUID() : null;
   const ack = [...acknowledgedApiResults];
   let confirmation = null;
   const featureToken=cmd.match(/^line confirm (\S+)$/)?.[1];
@@ -764,9 +771,9 @@ async function apiRequest(cmd, roomLease = null) {
     try{confirmation=ReferenceWorkspace.beginEvidenceConfirmation(evidenceToken);}catch(error){return {ok:false,error:error.message};}
     if(confirmation)pendingAssemblyConfirmations.set(requestId,confirmation);
   }
-  if (/^(assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm|boundary-pair-confirm) /.test(cmd)) {
+  if (/^(assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm|boundary-pair-confirm|framing-template-confirm) /.test(cmd)) {
     if (!requestId) return {ok:false,error:"請先確認服務連線，再確認組構變更。"};
-    try { confirmation = cmd.startsWith('boundary-pair-confirm ') ? ReferenceWorkspace.beginTimberConfirmation(cmd.split(' ')[1],cmd) :
+    try { confirmation = /^(boundary-pair|framing-template)-confirm /.test(cmd) ? ReferenceWorkspace.beginTimberConfirmation(cmd.split(' ')[1],cmd) :
       cmd.startsWith('timber-edit-confirm ') ? ReferenceWorkspace.beginTimberConfirmation(cmd.slice(20)) : ReferenceWorkspace.beginAssemblyConfirmation(); }
     catch (error) { return {ok:false,error:error.message}; }
     // Keep this lease through an unknown response, including workspace closure.
@@ -818,7 +825,7 @@ async function apiRequest(cmd, roomLease = null) {
   if (current) ReferenceWorkspace.observe(cmd, res);
   if (confirmation) { ReferenceWorkspace.finishAssemblyConfirmation(confirmation); pendingAssemblyConfirmations.delete(requestId); }
   if (current && res.ok && !res.preview && res.history_changed !== false &&
-      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |boundary-pair-confirm )/.test(cmd) &&
+      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |boundary-pair-confirm |framing-template-confirm )/.test(cmd) &&
       !/^line\s+(?:$|#|preview\b|cancel-preview\b|history-(?:begin|end)\b|canvas\b)/.test(cmd))
     window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
   window.fbRecord?.("api", { cmd: String(cmd).slice(0, 500), ok: res.ok !== false, error: res.error,
@@ -2031,6 +2038,7 @@ function markSceneItem() {
 function resetSceneFocus() {
   window.TimberEdit?.invalidate();
   window.PanelFillWorkspace?.retireContext();
+  window.FramingWorkspace?.retireContext();
   ++oc.navigationSequence;
   hoverPickScheduler.cancel();
   clearCanvasSelections();
@@ -2903,7 +2911,7 @@ function drawCrumb() {
 async function enterFocus(t, id, options = {}) {
   if (window.RoomCollectionWorkspace?.hasWork && oc.focus && (oc.focus.t !== t || oc.focus.id !== id)) throw new Error("請先完成或取消目前房間草稿。");
   if (!window.DraftGate.ask()) return;
-  if (window.PanelFillWorkspace?.close() === false) return;
+  if (window.PanelFillWorkspace?.close() === false || window.FramingWorkspace?.close() === false) return;
   const navigation = ++oc.navigationSequence;
   const matchesTarget = oc.sel?.kind === (t === "space" ? "space" : "boundary") && oc.sel.id === id;
   clearCanvasSelections({keepSingleObject:matchesTarget});
@@ -2947,7 +2955,7 @@ async function enterFocus(t, id, options = {}) {
 }
 
 async function leaveFocus() {
-  if (window.PanelFillWorkspace?.close() === false) return null;
+  if (window.PanelFillWorkspace?.close() === false || window.FramingWorkspace?.close() === false) return null;
   if (window.RoomCollectionWorkspace?.hasWork && (RoomCollectionWorkspace.busy || RoomCollectionWorkspace.dialogOpen)) {
     toast("請先確認、取消或恢復目前房間交易，再返回。"); return null;
   }
@@ -2979,6 +2987,7 @@ async function leaveFocus() {
  * loops and authored face features. Only a project replacement resets them. */
 function finishFocusExit(next) {
   window.PanelFillWorkspace?.close();
+  window.FramingWorkspace?.close();
   window.RoomOutlineWorkspace?.reset();
   clearCanvasSelections({keepSingleObject:true});
   GridEditor.clear();
@@ -3252,7 +3261,7 @@ const ReferenceVisibility = (() => {
 
 /* B2:檢視器分頁切換(#faceInspectorTabs ↔ [data-fi-pane]) */
 function fiShowTab(name) {
-  if (name !== "prop" && window.PanelFillWorkspace?.close() === false) return;
+  if (name !== "prop" && (window.PanelFillWorkspace?.close() === false || window.FramingWorkspace?.close() === false)) return;
   const timberFormClosed=window.TimberEdit?.tabChanged(name);
   const leavingUnderlay = fe.fiTab === "underlay" && name !== "underlay";
   // Grid rulers and cell picking belong to the grid section. Leaving it must
@@ -8813,6 +8822,11 @@ function renderFaceInspector() {
   const pane = $("faceInspectorContent");
   if (!e || !pane) return;
   if (e.contextId !== ReferenceWorkspace.context().id) { resetSceneFocus(); return; }
+  if (window.FramingWorkspace?.activeFor(e.bid)) {
+    GridEditor.clear();
+    pane.querySelector('.face-placement-flow')?.setAttribute('hidden','');
+    window.FramingWorkspace.render(pane,e.bid);return;
+  }
   if (window.PanelFillWorkspace?.activeFor(e.bid)) {
     GridEditor.clear();
     pane.querySelector('.face-placement-flow')?.setAttribute('hidden','');
