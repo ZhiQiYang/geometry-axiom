@@ -9,6 +9,8 @@
  * responsive setup and save-flow regression. Native save handles are stubbed;
  * the real Save action still packs the project, while downloads stay in RUN_DIR.
  * GEOMETRY_PROJECTION_CLOSE_ONLY=1 isolates the native close callback races.
+ * GEOMETRY_SPACE_PROFILE_ONLY=1 isolates the ordinary R12/Q38j section-to-space,
+ * whole-source update, scenario, downloaded-project and cold-page reopen flow.
  */
 'use strict';
 const { spawn } = require('child_process');
@@ -18,6 +20,7 @@ const path = require('path');
 const { installConfirmationDumpGate } = require('./cdp_confirmation_gate.js');
 const { asyncReplyUiRegression } = require('./async_reply_ui_test.js');
 const { saveReopenGridRegression } = require('./save_reopen_synthetic_test.js');
+const { profileSpaceRegression } = require('./profile_space_test.js');
 const { createRetainedEvaluator } = require('./cdp_evaluation.js');
 const { FULL_SPACE_GROUPS, createGroupCensus } = require('./space_test_floor.js');
 const { installProjectionCloseProbe, projectionCloseRegression } = require('./projection_close_probe.js');
@@ -76,15 +79,15 @@ function spaceRunConfiguration(env = process.env) {
   if(!env.GEOMETRY_FEEDBACK_DIR||!path.isAbsolute(env.GEOMETRY_FEEDBACK_DIR))throw Error('GEOMETRY_FEEDBACK_DIR must name the isolated server feedback directory under TEMP');
   const relative=path.relative(os.tmpdir(),path.resolve(env.GEOMETRY_FEEDBACK_DIR));
   if(!relative||relative==='..'||relative.startsWith('..'+path.sep)||path.isAbsolute(relative))throw Error('GEOMETRY_FEEDBACK_DIR must be a dedicated directory under TEMP');
-  const names=['GEOMETRY_SPACE_FLOW_ONLY','GEOMETRY_TIMBER_ONLY','GEOMETRY_TIMBER_GUARDS_ONLY','GEOMETRY_SPACE_STYLE_ONLY','GEOMETRY_PROJECTION_PLACEMENT_ONLY','GEOMETRY_PROJECTION_CLOSE_ONLY','GEOMETRY_ASYNC_REPLY_ONLY','GEOMETRY_SAVE_REOPEN_ONLY'];
+  const names=['GEOMETRY_SPACE_FLOW_ONLY','GEOMETRY_TIMBER_ONLY','GEOMETRY_TIMBER_GUARDS_ONLY','GEOMETRY_SPACE_STYLE_ONLY','GEOMETRY_PROJECTION_PLACEMENT_ONLY','GEOMETRY_PROJECTION_CLOSE_ONLY','GEOMETRY_ASYNC_REPLY_ONLY','GEOMETRY_SAVE_REOPEN_ONLY','GEOMETRY_SPACE_PROFILE_ONLY'];
   const filters=names.filter(name=>env[name]);
   if([...filters,...(env.GEOMETRY_TIMBER_HISTORY_ONLY?['GEOMETRY_TIMBER_HISTORY_ONLY']:[])].some(name=>env[name]!=='1'))throw Error('Scope flags accept only 1; remove a flag to disable it');
   if(filters.length>1)throw Error('Choose only one primary space test filter; combined filters silently omit suites');
   if(env.GEOMETRY_TIMBER_HISTORY_ONLY&&!filters.some(name=>name==='GEOMETRY_TIMBER_ONLY'||name==='GEOMETRY_TIMBER_GUARDS_ONLY'))throw Error('GEOMETRY_TIMBER_HISTORY_ONLY requires TIMBER_ONLY or TIMBER_GUARDS_ONLY');
   const guard=env.GEOMETRY_TIMBER_HISTORY_ONLY?'timber-history-guard':'timber-source-guards';
-  const mapping={GEOMETRY_SPACE_FLOW_ONLY:['space-flow'],GEOMETRY_TIMBER_ONLY:['timber-material',guard,'font-layout'],GEOMETRY_TIMBER_GUARDS_ONLY:[guard],GEOMETRY_SPACE_STYLE_ONLY:['font-layout'],GEOMETRY_PROJECTION_PLACEMENT_ONLY:['projection-placement','font-layout'],GEOMETRY_PROJECTION_CLOSE_ONLY:['projection-close'],GEOMETRY_ASYNC_REPLY_ONLY:['async-reply-ui'],GEOMETRY_SAVE_REOPEN_ONLY:['save-reopen-grid']};
-  const included=filters.length?mapping[filters[0]]:['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','projection-close'];
-  const all=['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','projection-close','timber-material','timber-source-guards'];
+  const mapping={GEOMETRY_SPACE_FLOW_ONLY:['space-flow'],GEOMETRY_TIMBER_ONLY:['timber-material',guard,'font-layout'],GEOMETRY_TIMBER_GUARDS_ONLY:[guard],GEOMETRY_SPACE_STYLE_ONLY:['font-layout'],GEOMETRY_PROJECTION_PLACEMENT_ONLY:['projection-placement','font-layout'],GEOMETRY_PROJECTION_CLOSE_ONLY:['projection-close'],GEOMETRY_ASYNC_REPLY_ONLY:['async-reply-ui'],GEOMETRY_SAVE_REOPEN_ONLY:['save-reopen-grid'],GEOMETRY_SPACE_PROFILE_ONLY:['profile-space']};
+  const included=filters.length?mapping[filters[0]]:['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','projection-close','profile-space'];
+  const all=['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','projection-close','profile-space','timber-material','timber-source-guards'];
   return {mode:filters.length?'partial':'full-space-suite',filters:[...filters,...(env.GEOMETRY_TIMBER_HISTORY_ONLY?['GEOMETRY_TIMBER_HISTORY_ONLY']:[])],included,omitted:all.filter(name=>!included.includes(name)),url:target.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
 }
 const SCOPE=spaceRunConfiguration();
@@ -210,6 +213,8 @@ async function viewport(width, height) {
 const snapshot = () => evaluate('SpaceModelWorkspace.snapshot()');
 const models = () => evaluate('ReferenceWorkspace.getSpaceModels()');
 const scene = () => evaluate(`(async()=>{const r=await api('dump');if(!r.ok)throw Error(r.error);return r.text;})()`);
+const runProfileSpace = profileSpaceRegression({check,evaluate,click,viewport,wait,settle,key,send,select,input,checked,
+  setup,projectionDialog,runDirectory:RUN_DIR,exceptionCount:()=>exceptions.length});
 // Measure the largest connected area of drawn geometry. Legend letters and axis
 // marks are separate small components; cropping a percentage off a short canvas
 // would truncate a correctly fitted model and impose an artificial height cap.
@@ -1050,7 +1055,12 @@ async function timberRegression() {
   await openFaceModel();
   await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'own timber source loaded');
   check('GEO208 own source preserves legal placement zero and defaults to its one timber', await evaluate(`document.querySelector('#smSourceSelect').value==='0' && document.querySelector('#smIncludeTimbers').checked && !document.querySelector('#smIncludeTimbers').disabled && document.querySelector('#smTimberCount').textContent==='1'`));
-  await click('#smTimberCandidateDetails > summary');
+  // Q38j merges the candidate list into the one visible inclusion disclosure.
+  // Exercise the real pointer/keyboard entry, then inspect the unchanged list.
+  await click('#smTimberSettings > summary');
+  await wait(`!document.querySelector('#smTimberSettings').open && document.activeElement===document.querySelector('#smTimberSettings > summary')`, 'timber inclusion disclosure closed by pointer');
+  await key('Enter', 'Enter', 13);
+  await wait(`document.querySelector('#smTimberSettings').open && document.querySelector('#smTimberCandidates').getBoundingClientRect().height>0`, 'timber candidates opened by keyboard');
   const ownCandidates=await evaluate(`document.querySelector('#smTimberCandidates').textContent`);
   check('GEO208 candidate identifies timber zero with real dimensions and world z range', /#0/.test(ownCandidates)&&/2500|2,500/.test(ownCandidates)&&/2533|2,533/.test(ownCandidates)&&/27/.test(ownCandidates)&&/33/.test(ownCandidates),ownCandidates);
   await select('#smSourceSelect','2');
@@ -1248,6 +1258,10 @@ async function run() {
       check, evaluate, click, viewport, wait, settle, key, send, select, input, scene,
       downloadDir: path.join(RUN_DIR, 'downloads')
     }));
+    return;
+  }
+  if (process.env.GEOMETRY_SPACE_PROFILE_ONLY) {
+    await runGroup('profile-space', runProfileSpace);
     return;
   }
   if (process.env.GEOMETRY_SPACE_FLOW_ONLY) {
@@ -1533,6 +1547,7 @@ async function run() {
   await runGroup('projection-placement', projectionPlacementRegression);
   await runGroup('font-layout', fontLayoutRegression);
   await runGroup('space-flow', spaceFlowRegression);
+  await runGroup('profile-space', runProfileSpace);
 }
 
 async function browserHealth() {

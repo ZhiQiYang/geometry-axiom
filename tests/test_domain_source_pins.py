@@ -156,7 +156,7 @@ class DomainSourcePins(unittest.TestCase):
                   "input": {"mode": "plan", "base_scene": "", "placement_id": 1, "obstacles": [], "settings": {}},
                   "result": result}
         data = {"record": record, "current_scene": "", "selection": {"placement_id": 1, "boundary_id": 1,
-                "edges": [0], "obstacles": [], "timbers": [], "projection": None}}
+                "edges": [0], "obstacles": [], "timbers": [], "profile_runs": [], "projection": None}}
         before = canonical_bytes(data)
         base = {"base_scene": "", "placements": [{"id": 1, "boundary_id": 1}]}
         def changed(*args, **kwargs):
@@ -190,9 +190,15 @@ class DomainSourcePins(unittest.TestCase):
                     self.reloaded_sources()
 
     def test_scenario_keeps_relative_path_lf_pair_digest(self):
-        names = sorted((*DOMAINS, *NATIVE, WEB[1], WEB[2], "tests/binaries.py"))
+        names = sorted((*DOMAINS, *NATIVE, WEB[0], WEB[1], WEB[2], "tests/binaries.py"))
         expected = hashlib.sha256(canonical_bytes([[name, sha(self.root / name)] for name in names])).hexdigest()
         self.assertEqual(expected, verifier._validator_pins()["validator_sha256"])
+        original = self.change_same_stat(WEB[0])
+        try:
+            self.assertNotEqual(expected, verifier._validator_pins()["validator_sha256"],
+                                "scenario replay must pin its shared model identity validator")
+        finally:
+            self.restore(WEB[0], original)
         for name in names:
             path = self.root / name
             path.write_bytes(path.read_bytes().replace(b"\n", b"\r\n"))

@@ -108,6 +108,10 @@
     "R06_BAY_SOURCE_GRAPH",
     "R06_BAY_SOURCE_ROW",
     "R06_BAY_SUPPORT_IDENTITY",
+    "R06_LEGACY_GOLDEN_FULL_MODE",
+    "R06_LEGACY_GOLDEN_SCHEMA",
+    "R06_LEGACY_P77_UNCHANGED",
+    "R06_LEGACY_R06_COUNT",
     "R06_PF_MARKER_ONLY_REJECT",
     "R06_SINGLE_CSV_BYTES",
     "r06-353:card-source-identity",
@@ -1067,8 +1071,8 @@
       "patches": [
         {
           "file": "geometry-web/project-store.js",
-          "before": "if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate && manifest.format !== ROOM_CANDIDATE_FORMAT)",
-          "after": "if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate !== (manifest.format === ROOM_CANDIDATE_FORMAT))"
+          "before": "if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate && ![ROOM_CANDIDATE_FORMAT, PROFILE_RUN_FORMAT].includes(manifest.format))",
+          "after": "if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate && ![ROOM_CANDIDATE_FORMAT, PROFILE_RUN_FORMAT].includes(manifest.format) || !hasRoomCandidate && manifest.format === ROOM_CANDIDATE_FORMAT)"
         }
       ]
     },

@@ -6,6 +6,7 @@ import sys
 import tempfile
 import unittest
 import argparse
+import ast
 from collections import Counter
 import contextlib
 import io
@@ -117,8 +118,15 @@ class RunnerClassification(unittest.TestCase):
 
 R379_ADDED_SUITES = frozenset({'node:r14_app', 'node:r14_host', 'py:test_r14_browser_receipt'})
 R380_ADDED_SUITES = frozenset({'py:test_panel_fill_grid_source', 'node:panel_fill_grid_read_compat'})
+R396_ADDED_SUITES = frozenset({'node:workspace_view_state', 'py:test_workspace_view_server',
+                              'py:test_workspace_view', 'node:workspace_context_menu_state'})
 R17_ADDED_SUITES = frozenset({'py:test_boundary_pair_host', 'node:boundary_pair_ui',
                               'node:boundary_pair_project', 'node:boundary_pair_browser_scope'})
+R12_ADDED_SUITES = frozenset({'py:test_space_profile_runs', 'py:test_space_profile_update',
+                              'py:test_r12_browser_evidence', 'node:space_profile_ui',
+                              'node:space_profile_view', 'node:space_profile_update_ui',
+                              'node:profile_space_browser_contract'})
+PF4A_ADDED_SUITES = frozenset({'py:test_panel_fill_grid_transaction', 'node:panel_fill_grid_ui'})
 R03_ADDED_SUITES = frozenset({'py:test_framing_template', 'node:framing_recipe_project_store',
                             'node:framing_template_session', 'node:framing_template_browser_scope'})
 
@@ -264,12 +272,26 @@ class NativeShardCoverage(unittest.TestCase):
         }, {name: expected['suites'].get(name) for name in R379_ADDED_SUITES},
                          'R379_COMPLETE_EXPECTED_REGISTRY')
         self.assertEqual({
+            'node:workspace_view_state': {'mode': 'count', 'count': 15, 'unit': 'node test'},
+            'py:test_workspace_view_server': {'mode': 'count', 'count': 2, 'unit': 'test'},
+            'py:test_workspace_view': {'mode': 'count', 'count': 10, 'unit': 'test'},
+            'node:workspace_context_menu_state': {'mode': 'exit-code-only'},
+        }, {name: expected['suites'].get(name) for name in R396_ADDED_SUITES},
+                         'R396_COMPLETE_EXPECTED_REGISTRY')
+        self.assertEqual({
             'py:test_boundary_pair_host': {'mode': 'count', 'count': 19, 'unit': 'test'},
             'node:boundary_pair_ui': {'mode': 'count', 'count': 12, 'unit': 'node test'},
             'node:boundary_pair_project': {'mode': 'count', 'count': 8, 'unit': 'node test'},
             'node:boundary_pair_browser_scope': {'mode': 'count', 'count': 7, 'unit': 'node test'},
         }, {name: expected['suites'].get(name) for name in R17_ADDED_SUITES},
                          'R17_COMPLETE_EXPECTED_REGISTRY')
+        self.assertEqual(R12_ADDED_SUITES, R12_ADDED_SUITES & expected['suites'].keys(),
+                         'R12_COMPLETE_EXPECTED_REGISTRY')
+        self.assertEqual({
+            'py:test_panel_fill_grid_transaction': {'mode': 'count', 'count': 13, 'unit': 'test'},
+            'node:panel_fill_grid_ui': {'mode': 'count', 'count': 13, 'unit': 'node test'},
+        }, {name: expected['suites'].get(name) for name in PF4A_ADDED_SUITES},
+                         'PF4A_COMPLETE_EXPECTED_REGISTRY')
         self.assertEqual({
             'py:test_framing_template': {'mode': 'count', 'count': 15, 'unit': 'test'},
             'node:framing_recipe_project_store': {'mode': 'count', 'count': 9, 'unit': 'node test'},
@@ -280,7 +302,7 @@ class NativeShardCoverage(unittest.TestCase):
         parts = run_all.partition_suites(suites, 3)
         actual = Counter(s.name for part in parts for s in part)
         self.assertEqual(actual, Counter({name:1 for name in expected['suites']}),
-                         '分片必須完整涵蓋原套件清單，且每個suite恰好一次')
+                         '分片必須完整涵蓋原套件清單，且每個suite恰好一次；R396_COMPLETE_EXPECTED_REGISTRY')
         self.assertEqual(sum(map(len, parts)), len(suites))
         four = run_all.partition_suites(suites, 4)
         self.assertEqual(Counter(s.name for part in four for s in part),
@@ -378,15 +400,26 @@ class NativeShardCoverage(unittest.TestCase):
 
     def test_profile_balances_measured_work(self):
         suites = run_all.build_suites()
-        weights = timing_weights()
-        # These scalar-weight ceilings belong to base main's 324-suite
-        # universe. Preserve its exact scope and thresholds; the full current
-        # registry is proved below against all six-shard scenarios.
-        prior_suites = [s for s in suites if s.name not in R03_ADDED_SUITES]
+        # Keep even max(weights.values()) at the historical 129900ms bound;
+        # R12's 300000ms costs belong only to the current six-shard proof.
+        # Merge (R03 × main): R03's four suites are likewise outside this history.
+        weights = {name: ms for name, ms in timing_weights().items()
+                   if name not in R12_ADDED_SUITES | PF4A_ADDED_SUITES | R03_ADDED_SUITES}
+        self.assertEqual(129900, max(weights.values()), 'R12_HISTORICAL_BALANCE_BOUND_UNCHANGED')
+        # The retired three-shard relative-weight guard retains the exact
+        # pre-R12/PF-4A registry. Current capacity below covers all suites on six
+        # shards with the receipt-backed R12 planning costs, never 1000ms guesses.
+        pre_r12_suites = [s for s in suites
+                          if s.name not in R12_ADDED_SUITES | PF4A_ADDED_SUITES | R03_ADDED_SUITES]
+        self.assertEqual(328, len(pre_r12_suites), 'R12_PREVIOUS_328_REGISTRY_RETAINED')
+        # R03's base main (fa83e6ad) universe is the 324 suites before R03,
+        # #427's R396 four, R12 and PF-4A; preserve that exact scope as well.
+        prior_suites = [s for s in suites if s.name not in
+                        R03_ADDED_SUITES | R396_ADDED_SUITES | R12_ADDED_SUITES | PF4A_ADDED_SUITES]
         self.assertEqual(len(prior_suites), 324, 'R03_PRIOR_324_REGISTRY_UNCHANGED')
-        parts = partition_suites(prior_suites, 3, weights)
+        parts = partition_suites(pre_r12_suites, 3, weights)
         self.assertEqual(Counter(s.name for part in parts for s in part),
-                         Counter(s.name for s in prior_suites), 'R03_HISTORICAL_WEIGHT_UNIVERSE')
+                         Counter(s.name for s in pre_r12_suites), 'R03_HISTORICAL_WEIGHT_UNIVERSE')
         loads = [sum(weights.get(s.name, 1000) for s in part) for part in parts]
         self.assertLess(max(loads), 600000, '固定main實測配置應低於每片10分鐘，留建置與新套件餘量')
         self.assertLessEqual(max(loads)-min(loads), max(weights.values()))
@@ -395,13 +428,27 @@ class NativeShardCoverage(unittest.TestCase):
         # mutation proofs. It is historical coverage, not the current CI plan.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual(R380_ADDED_SUITES, set(added) - R379_ADDED_SUITES - R17_ADDED_SUITES - R03_ADDED_SUITES,
+        legacy_added = {row['name']: row['planning_upper_ms'] for row in json.loads(
+            native_shards.ADDED_EVIDENCE.read_text(encoding='utf-8'))['observations']}
+        self.assertEqual(R380_ADDED_SUITES, set(legacy_added),
                          'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
-        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R17_ADDED_SUITES - R03_ADDED_SUITES,
+        self.assertEqual({'py:test_panel_fill_grid_source': 65000,
+                          'node:panel_fill_grid_read_compat': 2000},
+                         {name: added.get(name) for name in legacy_added},
+                         'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        self.assertEqual(R380_ADDED_SUITES, set(added) - R379_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
+                         'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
                          'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
-        self.assertEqual(R17_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R03_ADDED_SUITES,
+        self.assertEqual(R396_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
+                         'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        self.assertEqual(R17_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R396_ADDED_SUITES - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
                          'R17_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
-        self.assertEqual(R03_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES,
+        self.assertEqual(R12_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
+                         'R12_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        self.assertEqual(PF4A_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES - R03_ADDED_SUITES,
+                         'PF4A_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        self.assertEqual(R03_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES - PF4A_ADDED_SUITES,
                          'R03_NEW_SUITES_HAVE_SOURCE_BOUND_WORKSPACE_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual({s.name for s in suites}, historical_names | set(added),
@@ -409,11 +456,15 @@ class NativeShardCoverage(unittest.TestCase):
         self.assertEqual(315, len(historical_names),
                          'R348_HISTORICAL_315_UNCHANGED')
         # Main's historical 317-suite proof retains its original universe.
-        # R379's independent 318-suite proof has a separate test and mutation
-        # target below. The live six-shard proof covers the complete registry.
-        main_history = [s for s in suites if s.name not in R379_ADDED_SUITES | R17_ADDED_SUITES | R03_ADDED_SUITES]
+        # R379's 318-suite and R396's 321-suite proofs have independent
+        # tests below; R17's four suites are likewise outside main's history.
+        # The live six-shard proof covers all 337 suites, including R12's seven
+        # and PF-4A's two plus R03's four; no new source belongs to historical replays.
+        main_history = [s for s in suites
+                        if s.name not in R379_ADDED_SUITES | R396_ADDED_SUITES | R17_ADDED_SUITES | R12_ADDED_SUITES | PF4A_ADDED_SUITES | R03_ADDED_SUITES]
         self.assertEqual(historical_names | R380_ADDED_SUITES,
                          {s.name for s in main_history}, 'R380_HISTORICAL_317_REGISTRY')
+        self.assertEqual(317, len(main_history), 'R380_HISTORICAL_317_UNCHANGED')
         with mock.patch.object(native_shards, 'measured_profiles', return_value=profiles[:2]):
             current_parts = partition_suites(main_history, 3)
         owners = {s.name: i for i, part in enumerate(current_parts) for s in part}
@@ -423,9 +474,9 @@ class NativeShardCoverage(unittest.TestCase):
         current_weights = dict(weights)
         current_weights.update({name: row['planning_weight_ms']
                                 for name, row in profile.get('supplemental', {}).items()})
-        historical_parts = partition_suites(prior_suites, 3, current_weights)
+        historical_parts = partition_suites(pre_r12_suites, 3, current_weights)
         self.assertEqual(Counter(s.name for part in historical_parts for s in part),
-                         Counter(s.name for s in prior_suites), 'R03_HISTORICAL_WEIGHT_UNIVERSE')
+                         Counter(s.name for s in pre_r12_suites), 'R03_HISTORICAL_WEIGHT_UNIVERSE')
         current_loads = [sum(current_weights.get(s.name, 1000) for s in p) for p in historical_parts]
         self.assertLess(max(current_loads), 650000, 'R348_SHARD_SUPPLEMENTAL_PROFILE_CEILING')
         # Preserve both original measurements and the original 100s + 30s
@@ -459,8 +510,14 @@ class NativeShardCoverage(unittest.TestCase):
                                  'R380_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
                 self.assertFalse(set(measured) & R379_ADDED_SUITES,
                                  'R379_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
+                self.assertFalse(set(measured) & R396_ADDED_SUITES,
+                                 'R396_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
                 self.assertFalse(set(measured) & R17_ADDED_SUITES,
                                  'R17_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
+                self.assertFalse(set(measured) & R12_ADDED_SUITES,
+                                 'R12_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
+                self.assertFalse(set(measured) & PF4A_ADDED_SUITES,
+                                 'PF4A_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
                 self.assertFalse(set(measured) & R03_ADDED_SUITES,
                                  'R03_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
                 self.assertEqual(set(measured) | set(added), {s.name for s in suites},
@@ -485,7 +542,7 @@ class NativeShardCoverage(unittest.TestCase):
         self.assertLess(max(replay) + 120000 + 30000, 1200000,
                         'R348_MEASURED_RECEIPT_BUDGET: per-suite maximum across all runs')
         self._assert_four_native_workflow()
-        # The current plan uses every scenario plus independent R379/R380 upper
+        # The current plan uses every scenario plus independent R379/R380/R396 upper
         # bounds. Keep the strict 1200s ceiling, 120s overhead and 30s margin.
         _, _, matrix = self._native_workflow()
         six = partition_suites(suites, len(matrix))
@@ -506,7 +563,7 @@ class NativeShardCoverage(unittest.TestCase):
         # for unrelated main mutants, without sharing any 0/1/0 result.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R17_ADDED_SUITES - R03_ADDED_SUITES,
+        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R396_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
                          'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual(315, len(historical_names), 'R348_HISTORICAL_315_UNCHANGED')
@@ -584,7 +641,7 @@ class NativeShardCoverage(unittest.TestCase):
                           'py:test_r14_browser_receipt': 2000},
                          {name: bounds.get(name) for name in R379_ADDED_SUITES},
                          'R379_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
-        self.assertEqual(R379_ADDED_SUITES | R380_ADDED_SUITES | R17_ADDED_SUITES | R03_ADDED_SUITES, set(bounds),
+        self.assertEqual(R379_ADDED_SUITES | R380_ADDED_SUITES | R396_ADDED_SUITES | R17_ADDED_SUITES | R12_ADDED_SUITES | PF4A_ADDED_SUITES | R03_ADDED_SUITES, set(bounds),
                          'R379_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
         # R17 (PR #419) is a third independent /1 source. It passes the same
         # field, provenance, all-passed and margin checks, and must not repeat a
@@ -625,21 +682,301 @@ class NativeShardCoverage(unittest.TestCase):
                           'node:boundary_pair_project': 2000, 'node:boundary_pair_browser_scope': 2000},
                          {name: bounds.get(name) for name in R17_ADDED_SUITES},
                          'R17_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
+        # PF-4A (PR #429) is a fourth independent /1 source, from the first
+        # exact-head CI run whose two new suites passed but were unregistered.
+        # Same field, provenance, all-passed and margin checks; no repeats.
+        pf4a_path = Path(__file__).with_name('native_shard_added_evidence_pf4a.json')
+        self.assertTrue(pf4a_path.is_file(), 'PF4A_INDEPENDENT_SOURCE_FILE_REQUIRED')
+        self.assertEqual(native_shards.ADDED_PF4A_EVIDENCE, pf4a_path)
+        original = json.loads(pf4a_path.read_text(encoding='utf-8'))
+        self.assertEqual((original['source_run'], original['source_head'], original['source_checkout']),
+                         ('https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44014636612',
+                          'ba9d4fa3424a947ffd2fc6a8904029c497f76a6e',
+                          'd7c314b2bd9f37be14fe630fc2da09fcdf3b4443'), 'PF4A_SOURCE_IDENTITY')
+        self.assertEqual({row['name']: (row['source_job'].rsplit('/', 1)[-1], row['discovered'],
+                                        row['passed'], row['seconds_rounded'])
+                          for row in original['observations']},
+                         {'py:test_panel_fill_grid_transaction': ('133809508770', 13, 13, 6.4),
+                          'node:panel_fill_grid_ui': ('133809508659', 13, 13, 0.1)},
+                         'PF4A_SOURCE_OBSERVATIONS')
+        for mutation in ('duplicate', 'missing-job', 'understated-upper',
+                         'unverified-source', 'failed-suite', 'missing-suite'):
+            with self.subTest(source='PF4A', mutation=mutation):
+                mutant = json.loads(json.dumps(original))
+                if mutation == 'duplicate':
+                    mutant['observations'].append(dict(mutant['observations'][0]))
+                elif mutation == 'missing-job':
+                    mutant['observations'][0]['source_job'] = ''
+                elif mutation == 'understated-upper':
+                    mutant['observations'][0]['planning_upper_ms'] = 6400
+                elif mutation == 'unverified-source':
+                    mutant['source_run'] = 'unverified'
+                elif mutation == 'failed-suite':
+                    mutant['observations'][0]['passed'] = 12
+                else:
+                    mutant['observations'] = []
+                with tempfile.TemporaryDirectory(prefix='native-added-mutation-') as directory:
+                    test_path = Path(directory) / 'added.json'
+                    test_path.write_text(json.dumps(mutant), encoding='utf-8')
+                    with mock.patch.object(native_shards, 'ADDED_PF4A_EVIDENCE', test_path):
+                        with self.assertRaises(ValueError, msg='PF4A_ADDED_SUITE_MUTATION_' + mutation):
+                            native_shards.added_suite_costs()
+        for attribute in ('ADDED_EVIDENCE', 'ADDED_R14_EVIDENCE', 'ADDED_R17_EVIDENCE'):
+            with tempfile.TemporaryDirectory(prefix='native-added-cross-source-') as directory:
+                duplicate = Path(directory) / 'duplicate.json'
+                duplicate.write_bytes(getattr(native_shards, attribute).read_bytes())
+                with mock.patch.object(native_shards, 'ADDED_PF4A_EVIDENCE', duplicate):
+                    with self.assertRaises(ValueError,
+                                           msg='PF4A_ADDED_SUITE_MUTATION_cross-source-duplicate ' + attribute):
+                        native_shards.added_suite_costs()
+        # Keep the PF-4A schema valid: a receipt-format file would be rejected
+        # before the cross-source guard, so merely swapping file paths is not proof.
+        mutant = json.loads(json.dumps(original))
+        mutant['observations'][0]['name'] = 'py:test_space_profile_runs'
+        with tempfile.TemporaryDirectory(prefix='native-pf4a-r12-duplicate-') as directory:
+            changed = Path(directory) / pf4a_path.name
+            changed.write_text(json.dumps(mutant), encoding='utf-8')
+            with mock.patch.object(native_shards, 'ADDED_PF4A_EVIDENCE', changed):
+                self.assertEqual(native_shards.added_pf4a_suite_costs()['py:test_space_profile_runs'],
+                                 mutant['observations'][0]['planning_upper_ms'],
+                                 'PF4A_R12_DUPLICATE_FIXTURE_VALID')
+                self.assertIn('py:test_space_profile_runs', native_shards.added_r12_suite_costs(),
+                              'PF4A_R12_DUPLICATE_FIXTURE_VALID')
+                with self.assertRaisesRegex(ValueError, 'PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES',
+                                            msg='PF4A_ADDED_SUITE_MUTATION_cross-r12-duplicate'):
+                    native_shards.added_suite_costs()
+        self.assertEqual({'py:test_panel_fill_grid_transaction': 10000, 'node:panel_fill_grid_ui': 2000},
+                         {name: bounds.get(name) for name in PF4A_ADDED_SUITES},
+                         'PF4A_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
         # Each independent source must actually change the digest that six
         # shard receipts bind; check R14 first, then R17, then the exact bytes.
         digest = native_shards.profile_digest()
         for attribute, path, marker in (('ADDED_R14_EVIDENCE', r14_path, 'R379_PROFILE_DIGEST_BINDS_R14_SOURCE'),
-                                        ('ADDED_R17_EVIDENCE', r17_path, 'R17_PROFILE_DIGEST_BINDS_R17_SOURCE')):
+                                        ('ADDED_R17_EVIDENCE', r17_path, 'R17_PROFILE_DIGEST_BINDS_R17_SOURCE'),
+                                        ('ADDED_PF4A_EVIDENCE', pf4a_path, 'PF4A_PROFILE_DIGEST_BINDS_PF4A_SOURCE')):
             with tempfile.TemporaryDirectory(prefix='native-digest-source-') as directory:
                 changed = Path(directory) / path.name
                 changed.write_bytes(path.read_bytes() + b' ')
                 with mock.patch.object(native_shards, attribute, changed):
                     self.assertNotEqual(native_shards.profile_digest(), digest, marker)
         source_bytes = [path.read_bytes().replace(b'\r\n', b'\n') for path in
-                        (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE, r14_path, r17_path)]
+                        (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE,
+                         r14_path, native_shards.ADDED_RECEIPTS, r17_path,
+                         native_shards.ADDED_R12_RECEIPTS, pf4a_path)]
         source_bytes.append(native_shards.native_shard_workspace.material(native_shards.ADDED_R03_EVIDENCE))
         self.assertEqual(hashlib.sha256(b'\0'.join(source_bytes)).hexdigest(),
                          digest, 'R379_PROFILE_DIGEST_BINDS_R14_SOURCE')
+
+    def test_workspace_historical_budget(self):
+        # Keep the PR's 321-suite/four-shard proof separate from R379's
+        # 318-suite history and the current 324-suite/six-shard plan.
+        profiles = native_shards.measured_profiles()
+        added = native_shards.added_suite_costs()
+        self.assertEqual(R396_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
+                         'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        historical_names = set(profiles[0]) - set(added)
+        self.assertEqual(315, len(historical_names), 'R348_HISTORICAL_315_UNCHANGED')
+        selected_names = historical_names | R380_ADDED_SUITES | R396_ADDED_SUITES
+        suites = [s for s in run_all.build_suites() if s.name in selected_names]
+        self.assertEqual(selected_names, {s.name for s in suites}, 'R396_HISTORICAL_321_REGISTRY')
+        self.assertEqual(321, len(suites), 'R396_HISTORICAL_321_REGISTRY')
+        _, _, matrix = self._native_workflow(
+            HISTORICAL_FOUR_NATIVE_WORKFLOW, 'R348_FOUR_NATIVE_WORKFLOW')
+        with mock.patch.object(native_shards, 'measured_profiles', return_value=profiles[:3]):
+            four = partition_suites(suites, len(matrix))
+        for measured in profiles[:3]:
+            replay = [sum(measured[s.name] for s in part) for part in four]
+            self.assertLess(max(replay) + 120000 + 30000, 1200000,
+                            'R348_MEASURED_RECEIPT_BUDGET: R396 historical four-shard run')
+        envelope = {s.name: max(measured[s.name] for measured in profiles[:3]) for s in suites}
+        replay = [sum(envelope[s.name] for s in part) for part in four]
+        self.assertLess(max(replay) + 120000 + 30000, 1200000,
+                        'R348_MEASURED_RECEIPT_BUDGET: R396 historical per-suite envelope')
+        self._assert_four_native_workflow()
+
+    def test_workspace_receipt_provenance_rejects_named_mutations(self):
+        bounds = native_shards.added_suite_costs()
+        self.assertEqual({'node:workspace_view_state': 1000,
+                          'py:test_workspace_view_server': 2000,
+                          'py:test_workspace_view': 3000,
+                          'node:workspace_context_menu_state': 1000},
+                         {name: bounds.get(name) for name in R396_ADDED_SUITES},
+                         'R396_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
+        receipt_path = native_shards.ADDED_RECEIPTS
+        receipt_bytes = receipt_path.read_bytes().replace(b'\r\n', b'\n')
+        self.assertEqual(hashlib.sha256(receipt_bytes).hexdigest(),
+                         '55c6c00be8984fad5bf475993e55b1808fc67c96716a46d9630e9c411ea70ff4',
+                         'R396_RETAINED_ADDED_RECEIPTS')
+        receipts = json.loads(receipt_bytes)
+        observed = {entry['row']['name']: entry['row']
+                    for source in receipts['runs'] for shard in source['shards']
+                    for entry in shard['observations']}
+        expected, error = run_all.load_expected()
+        self.assertFalse(error)
+        for name, row in observed.items():
+            # The original missing-census diagnosis remains in the evidence;
+            # this projection checks the new registration, never rewrites it.
+            validate_rows([name], [dict(row, expected_problem='')], expected['suites'])
+        modes = ('duplicate', 'duplicate-legacy', 'duplicate-r14', 'missing-job', 'wrong-run',
+                 'missing-receipt-hash',
+                 'understated-upper', 'failed-child', 'bool-exit', 'not-run',
+                 'skipped', 'crashed', 'env-problem', 'failed-count',
+                 'fake-exit-only-count', 'bool-counter', 'nan-time')
+        for mutation in modes:
+            with self.subTest(receipt_mutation=mutation):
+                mutant = json.loads(receipt_bytes)
+                source = mutant['runs'][0]
+                shard = source['shards'][0]
+                entry = shard['observations'][1]  # actual exit-only suite
+                row = entry['row']
+                if mutation == 'duplicate':
+                    shard['observations'].append(dict(entry))
+                elif mutation == 'duplicate-legacy':
+                    row['name'] = 'py:test_panel_fill_grid_source'
+                elif mutation == 'duplicate-r14':
+                    row['name'] = 'node:r14_app'
+                elif mutation == 'missing-job':
+                    shard['source_job'] = ''
+                elif mutation == 'wrong-run':
+                    source['source_run'] = source['source_run'].replace('43336972629', '43336972628')
+                elif mutation == 'missing-receipt-hash':
+                    shard['receipt_sha256'] = ''
+                elif mutation == 'understated-upper':
+                    entry['planning_upper_ms'] = 1
+                elif mutation == 'failed-child':
+                    row['process_exit_code'] = 1
+                elif mutation == 'bool-exit':
+                    row['process_exit_code'] = False
+                elif mutation == 'not-run':
+                    row['ran'] = False
+                elif mutation == 'skipped':
+                    row['skipped'] = row['allowed_skips'] = 1
+                elif mutation == 'crashed':
+                    row['crashed'] = True
+                elif mutation == 'env-problem':
+                    row['env_problem'] = True
+                elif mutation == 'failed-count':
+                    row['failed'] = 1
+                elif mutation == 'fake-exit-only-count':
+                    row['total'] = 1
+                elif mutation == 'bool-counter':
+                    row['passed'] = True
+                else:
+                    row['seconds'] = float('nan')
+                with tempfile.TemporaryDirectory(prefix='native-receipt-mutation-') as directory:
+                    test_path = Path(directory) / 'receipts.json'
+                    test_path.write_text(json.dumps(mutant), encoding='utf-8')
+                    with mock.patch.object(native_shards, 'ADDED_RECEIPTS', test_path):
+                        with self.assertRaisesRegex(ValueError, 'R396_',
+                                                    msg='R396_ADDED_RECEIPT_' + mutation):
+                            native_shards.added_suite_costs()
+        wanted_digest = hashlib.sha256(
+            native_shards.TIMINGS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+            native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+            native_shards.ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+            receipt_bytes + b'\0' +
+            native_shards.ADDED_R17_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+            native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+            native_shards.ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+        self.assertEqual(wanted_digest, native_shards.profile_digest(),
+                         'R396_PROFILE_DIGEST_BINDS_ADDED_RECEIPTS')
+        # A conflict resolution must not silently drop the original R396
+        # withdrawals while leaving every ordinary unit test green.
+        proof_source = Path(__file__).with_name('native_sharding_mutation_check.py').read_text(
+            encoding='utf-8')
+        proof_main = next(node for node in ast.parse(proof_source).body
+                          if isinstance(node, ast.FunctionDef) and node.name == 'main')
+        catalogs = [node.value for node in ast.walk(proof_main)
+                    if isinstance(node, ast.Assign)
+                    and any(isinstance(target, ast.Name) and target.id == 'mutations'
+                            for target in node.targets)]
+        self.assertEqual(len(catalogs), 1, 'R396_NAMED_WITHDRAWALS_RETAINED')
+        catalog = ast.literal_eval(catalogs[0])
+        required = {
+            'R396_DROP_WORKSPACE_COSTS': ('measured-baseline', 'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
+            'R396_DROP_WORKSPACE_EXPECTED_ENTRIES': ('baseline', 'R396_COMPLETE_EXPECTED_REGISTRY'),
+            'R396_IGNORE_EXIT_ONLY_PROCESS_FAILURE': ('workspace-provenance-baseline', 'R396_ADDED_RECEIPT_failed-child'),
+            'R396_ACCEPT_BOOLEAN_EXIT_CODE': ('workspace-provenance-baseline', 'R396_ADDED_RECEIPT_bool-exit'),
+            'R396_ACCEPT_EXIT_ONLY_FAKE_COUNT': ('workspace-provenance-baseline', 'R396_ADDED_RECEIPT_fake-exit-only-count'),
+            'R396_ALLOW_DUPLICATE_LEGACY_COST': ('workspace-provenance-baseline', 'R396_ADDED_RECEIPT_duplicate-legacy'),
+            'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST': ('workspace-provenance-baseline', 'R396_PROFILE_DIGEST_BINDS_ADDED_RECEIPTS'),
+        }
+        self.assertEqual({name: catalog.get(name) for name in required}, required,
+                         'R396_NAMED_WITHDRAWALS_RETAINED')
+
+    def test_r12_receipt_provenance_rejects_named_mutations(self):
+        path = Path(__file__).with_name('native_shard_added_receipts_r12.json')
+        self.assertEqual(getattr(native_shards, 'ADDED_R12_RECEIPTS', None), path,
+                         'R12_INDEPENDENT_RECEIPT_SOURCE_REQUIRED')
+        raw = path.read_bytes().replace(b'\r\n', b'\n')
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),
+                         'cac85f68a1eba8f5ceac2a55f740cf25b03eb54840eca93dca79d8e9d3de07cf',
+                         'R12_RETAINED_ORIGINAL_CI_RECEIPTS')
+        original = json.loads(raw)
+        rows = [entry['row'] for shard in original['runs'][0]['shards']
+                for entry in shard['observations']]
+        self.assertEqual({row['name'] for row in rows}, R12_ADDED_SUITES,
+                         'R12_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        bounds = native_shards.added_r12_suite_costs()
+        wanted = {name: 1000 for name in R12_ADDED_SUITES}
+        wanted.update({'py:test_space_profile_runs': 300000,
+                       'py:test_space_profile_update': 300000})
+        self.assertEqual(bounds, wanted, 'R12_ADDED_SUITE_PLANNING_UPPER_BOUNDS')
+        for mutation in ('duplicate', 'missing-job', 'understated-upper',
+                         'failed-child', 'bool-exit', 'not-run', 'failed-count'):
+            with self.subTest(receipt_mutation=mutation):
+                mutant = json.loads(raw)
+                shard = mutant['runs'][0]['shards'][0]
+                entry = shard['observations'][0]
+                row = entry['row']
+                if mutation == 'duplicate':
+                    shard['observations'].append(dict(entry))
+                elif mutation == 'missing-job':
+                    shard['source_job'] = ''
+                elif mutation == 'understated-upper':
+                    entry['planning_upper_ms'] = 1
+                elif mutation == 'failed-child':
+                    row['process_exit_code'] = 1
+                elif mutation == 'bool-exit':
+                    row['process_exit_code'] = False
+                elif mutation == 'not-run':
+                    row['ran'] = False
+                else:
+                    row['failed'] = 1
+                with tempfile.TemporaryDirectory(prefix='native-r12-receipt-') as directory:
+                    changed = Path(directory) / path.name
+                    changed.write_text(json.dumps(mutant), encoding='utf-8')
+                    with mock.patch.object(native_shards, 'ADDED_R12_RECEIPTS', changed):
+                        with self.assertRaises(ValueError, msg='R12_ADDED_RECEIPT_' + mutation):
+                            native_shards.added_r12_suite_costs()
+        with mock.patch.object(native_shards, 'ADDED_R12_RECEIPTS', native_shards.ADDED_RECEIPTS):
+            with self.assertRaisesRegex(ValueError, 'R12_NEW_SUITE_UNIQUE_ACROSS_SOURCES',
+                                        msg='R12_ADDED_RECEIPT_cross-source-duplicate'):
+                native_shards.added_suite_costs()
+        # The reciprocal collision must also reach the uniqueness guard with
+        # a valid R12 receipt; the later PF-4A source owns the duplicate marker.
+        mutant = json.loads(raw)
+        entry = mutant['runs'][0]['shards'][0]['observations'][0]
+        entry['row']['name'] = 'py:test_panel_fill_grid_transaction'
+        with tempfile.TemporaryDirectory(prefix='native-r12-pf4a-duplicate-') as directory:
+            changed = Path(directory) / path.name
+            changed.write_text(json.dumps(mutant), encoding='utf-8')
+            with mock.patch.object(native_shards, 'ADDED_R12_RECEIPTS', changed):
+                self.assertEqual(
+                    native_shards.added_r12_suite_costs()['py:test_panel_fill_grid_transaction'],
+                    entry['planning_upper_ms'], 'R12_PF4A_DUPLICATE_FIXTURE_VALID')
+                self.assertIn('py:test_panel_fill_grid_transaction', native_shards.added_pf4a_suite_costs(),
+                              'R12_PF4A_DUPLICATE_FIXTURE_VALID')
+                with self.assertRaisesRegex(ValueError, 'PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES',
+                                            msg='R12_ADDED_RECEIPT_cross-pf4a-duplicate'):
+                    native_shards.added_suite_costs()
+        digest = native_shards.profile_digest()
+        with tempfile.TemporaryDirectory(prefix='native-r12-digest-') as directory:
+            changed = Path(directory) / path.name
+            changed.write_bytes(path.read_bytes() + b' ')
+            with mock.patch.object(native_shards, 'ADDED_R12_RECEIPTS', changed):
+                self.assertNotEqual(native_shards.profile_digest(), digest,
+                                    'R12_PROFILE_DIGEST_BINDS_ORIGINAL_RECEIPTS')
 
     def test_r03_workspace_cost_provenance(self):
         self.assertTrue(hasattr(native_shards, 'ADDED_R03_EVIDENCE'), 'R03_CI_GUARD_SOURCE_REQUIRED')
@@ -652,7 +989,9 @@ class NativeShardCoverage(unittest.TestCase):
         # This former main universe is immutable: its 324 suites are still
         # covered, independently of the complete current six-shard universe.
         suites = run_all.build_suites()
-        former = {s.name for s in suites} - R03_ADDED_SUITES
+        # Merge with main: #427 (R396), #430 (R12) and #429 (PF-4A) entered main
+        # after R03's base fa83e6ad, so they are outside that former universe.
+        former = {s.name for s in suites} - R03_ADDED_SUITES - R396_ADDED_SUITES - R12_ADDED_SUITES - PF4A_ADDED_SUITES
         prior_added = R379_ADDED_SUITES | R380_ADDED_SUITES | R17_ADDED_SUITES
         historical = set(native_shards.measured_profiles()[0]) - set(native_shards.added_suite_costs())
         self.assertEqual(former, historical | prior_added, 'R03_PRIOR_324_REGISTRY_UNCHANGED')
@@ -782,14 +1121,17 @@ class NativeShardCoverage(unittest.TestCase):
                 with context:
                     W.costs(changed)
         for source in (native_shards._legacy_added_suite_costs, native_shards.added_r14_suite_costs,
-                       native_shards.added_r17_suite_costs):
+                       native_shards.added_receipt_costs, native_shards.added_r17_suite_costs,
+                       native_shards.added_r12_suite_costs, native_shards.added_pf4a_suite_costs):
             with mock.patch.object(native_shards, 'added_r03_suite_costs', return_value=source()):
                 with self.assertRaisesRegex(ValueError, 'R03_CI_UNIQUE_ACROSS_SOURCES',
                                             msg='R03_CI_GUARD_CROSS_SOURCE'):
                     native_shards.added_suite_costs()
         source_bytes = [p.read_bytes().replace(b'\r\n', b'\n') for p in
                         (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE,
-                         native_shards.ADDED_R14_EVIDENCE, native_shards.ADDED_R17_EVIDENCE)]
+                         native_shards.ADDED_R14_EVIDENCE, native_shards.ADDED_RECEIPTS,
+                         native_shards.ADDED_R17_EVIDENCE, native_shards.ADDED_R12_RECEIPTS,
+                         native_shards.ADDED_PF4A_EVIDENCE)]
         source_bytes.append(W.material(path))
         self.assertEqual(native_shards.profile_digest(), hashlib.sha256(b'\0'.join(source_bytes)).hexdigest(),
                          'R03_CI_GUARD_PROFILE_DIGEST')

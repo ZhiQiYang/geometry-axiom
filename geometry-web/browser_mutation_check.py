@@ -471,6 +471,8 @@ def main():
                     row['status'] = 'killed'
                 elif 'reason' not in row:
                     row['reason'] = 'No completed, named assertion failure; environment/fixture/timeouts do not kill.'
+                # Logs and receipts live in output; only this finished source copy is temporary.
+                shutil.rmtree(work)
             statuses = [x['status'] for x in report['mutations']]
             report['status'] = 'passed' if all(x == 'killed' for x in statuses) else 'blocked' if 'blocked' in statuses else 'failed'
             exit_code = 0 if report['status'] == 'passed' else 2 if report['status'] == 'blocked' else 1

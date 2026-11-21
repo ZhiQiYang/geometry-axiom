@@ -33,7 +33,8 @@ function harness({inactive=false,unknown=false,replaced=false,reorder=false}={})
       calls.push(command);
       if(command==='identity-read')return{ok:true,active:!inactive};
       if(command==='source-inspect'){reads++;const graph=clone(f.graph);if(identityChange&&reads>=7)graph.revision++;return graph;}
-      if(command==='dump-deidentified')return{ok:true,text:f.scene};
+      if(command==='dump-deidentified')return{ok:true,text:f.scene,revision:f.graph.revision,definition_sha256:f.graph.sourceFingerprint};
+      if(command==='section-profile-read')return{ok:true,revision:f.graph.revision,state:{profiles:[],runs:[]}};
       if(command==='surfaces')return{ok:true,surfaces:clone(f.surfaces)};
       if(command==='objects')return clone(f.objects);
       if(command==='line identity-ledger activate'){revision++;return{ok:true};}

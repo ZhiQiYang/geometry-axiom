@@ -51,6 +51,9 @@ EXPECTED_FILE = HERE / 'run_all.expected.json'
 # Every tests/test_*.py MUST appear here (value = native binaries it needs; [] is a deliberate "needs none").
 # A test file that is on disk but not listed makes run_all fail and name it.
 PY_NEEDS = {
+    'test_space_profile_runs': ['model-base'],
+    'test_space_profile_update': ['model-base', 'bridge'],
+    'test_r12_browser_evidence': [],
     'test_framing_template': ['bridge'],
     'test_boundary_pair_host': ['bridge'],
     'test_r14_browser_receipt': [],
@@ -77,6 +80,7 @@ PY_NEEDS = {
     'test_panel_fill_layout': ['bridge'],
     'test_panel_fill_host': ['bridge'],
     'test_panel_fill_grid_source': ['bridge'],
+    'test_panel_fill_grid_transaction': ['bridge'],
     'test_panel_fill_support': ['bridge', 'pf3-algorithm'],
     'test_section_profile_modeling': ['bridge', 'model-base'],
     'test_section_profile_mutation_check': [],
@@ -87,6 +91,8 @@ PY_NEEDS = {
     'test_axiom_reader': [],
     'test_binaries': [],
     'test_bridge_integrity': ['bridge'],
+    'test_workspace_view': ['bridge'],
+    'test_workspace_view_server': [],
     'test_cli_args': ['core'],
     'test_datum_contract': ['bridge'],
     'test_definition_import': ['bridge'],
@@ -298,6 +304,9 @@ PY_BROWSER_GATES = {
     'test_issue123_create_feedback_browser': 'Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite',
 }
 NODE_TEST_FILES = [
+    'tests/test_space_profile_store.js',
+    'tests/test_space_profile_replay.js',
+    'tests/test_space_profile_update.js',
     'tests/test_assembly_bay_projection.js',
     'tests/test_grid_inspector_stagger.cjs',
     'tests/test_transport_failure_trace.js',
@@ -353,6 +362,10 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:space_profile_ui': 'tests/test_space_profile_ui.js',
+    'node:space_profile_view': 'tests/test_space_profile_view.js',
+    'node:space_profile_update_ui': 'tests/test_space_profile_update_ui.js',
+    'node:profile_space_browser_contract': 'tests/test_profile_space_browser_contract.js',
     'node:framing_recipe_project_store': 'tests/test_framing_recipe_project_store.js',
     'node:framing_template_session': 'tests/test_framing_template_session.js',
     'node:framing_template_browser_scope': 'tests/test_framing_template_browser_scope.js',
@@ -399,6 +412,7 @@ NODE_PURE_TEST_FILES = {
     'node:canvas_shards': 'tests/test_canvas_shards.js',
     'node:timber_edit_ui': 'tests/test_timber_edit_ui.js',
     'node:panel_fill_ui_contract': 'tests/test_panel_fill_ui_contract.js',
+    'node:panel_fill_grid_ui': 'tests/test_panel_fill_grid_ui.js',
     'node:panel_fill_grid_read_compat': 'tests/test_panel_fill_grid_read_compat.js',
     'node:identity_canvas_merge': 'tests/test_identity_canvas_merge.js',
     'node:background_grid_viewport': 'tests/test_background_grid_viewport.js',
@@ -675,6 +689,10 @@ def build_suites():
         Suite('node:model_viewer', 'node-script', [NODE_SCRIPT_FILE], [], 300, needs_node=True, label=NODE_SCRIPT_FILE),
         Suite('node:polydraft', 'node-test', ['--test', '--test-reporter=spec', 'geometry-web/polydraft_test.js'],
               ['core'], 900, needs_node=True, label='geometry-web/polydraft_test.js'),
+        Suite('node:workspace_view_state', 'node-test', ['--test', '--test-reporter=spec', 'geometry-web/workspace_view_state_test.js'],
+              [], 300, needs_node=True, label='geometry-web/workspace_view_state_test.js (mock transport; not browser evidence)'),
+        Suite('node:workspace_context_menu_state', 'node-script', ['geometry-web/workspace_context_menu_state_test.js'],
+              [], 300, needs_node=True, label='geometry-web/workspace_context_menu_state_test.js (VM state; not browser evidence)'),
         Suite('node:canvas_direct', 'node-canvas', ['geometry-web/canvas_test.js', 'direct'], ['bridge'], 900,
               needs_node=True, label='geometry-web/canvas_test.js direct'),
     ]

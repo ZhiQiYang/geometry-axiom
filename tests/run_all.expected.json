@@ -92,6 +92,11 @@
       "count": 24,
       "unit": "test"
     },
+    "py:test_canvas_evidence": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
     "py:test_cli_args": {
       "mode": "count",
       "count": 6,
@@ -144,8 +149,8 @@
     },
     "py:test_engineering_model_compatibility": {
       "mode": "count",
-      "unit": "test",
-      "count": 51
+      "count": 51,
+      "unit": "test"
     },
     "py:test_engineering_model_sources": {
       "mode": "count",
@@ -159,8 +164,8 @@
     },
     "py:test_engineering_transport": {
       "mode": "count",
-      "unit": "test",
-      "count": 7
+      "count": 7,
+      "unit": "test"
     },
     "py:test_evidence_adoption_mutations": {
       "mode": "count",
@@ -572,6 +577,16 @@
       "count": 7,
       "unit": "test"
     },
+    "py:test_geo261_timber_capacity": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_geo261_timber_capacity_host": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
     "py:test_geo261_version_activation": {
       "mode": "count",
       "count": 10,
@@ -752,16 +767,6 @@
       "count": 7,
       "unit": "test"
     },
-    "py:test_geo261_timber_capacity": {
-      "mode": "count",
-      "count": 7,
-      "unit": "test"
-    },
-    "py:test_geo261_timber_capacity_host": {
-      "mode": "count",
-      "count": 10,
-      "unit": "test"
-    },
     "py:test_geo318_reading_a_oracle": {
       "mode": "count",
       "count": 21,
@@ -839,8 +844,8 @@
     },
     "py:test_grid_system_contract": {
       "mode": "count",
-      "unit": "test",
-      "count": 15
+      "count": 15,
+      "unit": "test"
     },
     "py:test_grid_trial_contract": {
       "mode": "count",
@@ -860,7 +865,7 @@
     "py:test_identity_definition_import_merge": {
       "mode": "count",
       "count": 5,
-      "unit": "unittest methods"
+      "unit": "test"
     },
     "py:test_identity_host_gate_shape": {
       "mode": "count",
@@ -949,23 +954,38 @@
     },
     "py:test_panel_fill_finish_surface": {
       "mode": "count",
-      "unit": "test",
-      "count": 22
+      "count": 22,
+      "unit": "test"
+    },
+    "py:test_panel_fill_grid_source": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_panel_fill_grid_transaction": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
     },
     "py:test_panel_fill_host": {
       "mode": "count",
-      "unit": "test",
-      "count": 32
+      "count": 32,
+      "unit": "test"
     },
     "py:test_panel_fill_layout": {
       "mode": "count",
-      "unit": "test",
-      "count": 18
+      "count": 18,
+      "unit": "test"
     },
     "py:test_panel_fill_support": {
       "mode": "count",
-      "unit": "test",
-      "count": 20
+      "count": 20,
+      "unit": "test"
+    },
+    "py:test_panel_fill_ui_contract": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
     },
     "py:test_parameter_netzero": {
       "mode": "count",
@@ -1015,6 +1035,16 @@
     "py:test_product_architecture": {
       "mode": "count",
       "count": 18,
+      "unit": "test"
+    },
+    "py:test_r12_browser_evidence": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_r14_browser_receipt": {
+      "mode": "count",
+      "count": 10,
       "unit": "test"
     },
     "py:test_r14_repeat_panel": {
@@ -1104,13 +1134,13 @@
     },
     "py:test_section_profile_modeling": {
       "mode": "count",
-      "unit": "test",
-      "count": 20
+      "count": 20,
+      "unit": "test"
     },
     "py:test_section_profile_mutation_check": {
       "mode": "count",
-      "unit": "test",
-      "count": 30
+      "count": 30,
+      "unit": "test"
     },
     "py:test_section_profile_native": {
       "mode": "count",
@@ -1119,8 +1149,8 @@
     },
     "py:test_serve": {
       "mode": "count",
-      "unit": "test",
-      "count": 53
+      "count": 53,
+      "unit": "test"
     },
     "py:test_source_closure_memo": {
       "mode": "count",
@@ -1139,12 +1169,27 @@
     },
     "py:test_space_modeling": {
       "mode": "count",
-      "unit": "test",
-      "count": 40
+      "count": 40,
+      "unit": "test"
+    },
+    "py:test_space_profile_runs": {
+      "mode": "count",
+      "count": 23,
+      "unit": "test"
+    },
+    "py:test_space_profile_update": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
     },
     "py:test_subgrid_contract": {
       "mode": "count",
       "count": 31,
+      "unit": "test"
+    },
+    "py:test_timber_edit": {
+      "mode": "count",
+      "count": 19,
       "unit": "test"
     },
     "py:test_timber_support_projection": {
@@ -1154,7 +1199,7 @@
     },
     "py:test_unittest_runner": {
       "mode": "count",
-      "count": 16,
+      "count": 19,
       "unit": "test"
     },
     "py:test_wait_trace": {
@@ -1172,6 +1217,16 @@
       "count": 6,
       "unit": "test"
     },
+    "py:test_workspace_view": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "py:test_workspace_view_server": {
+      "mode": "count",
+      "count": 2,
+      "unit": "test"
+    },
     "py:test_zero_room_native": {
       "mode": "count",
       "count": 1,
@@ -1179,7 +1234,7 @@
     },
     "node:tests-js": {
       "mode": "count",
-      "count": 783,
+      "count": 832,
       "unit": "node test"
     },
     "node:model_viewer": {
@@ -1189,6 +1244,14 @@
       "mode": "count",
       "count": 75,
       "unit": "node test"
+    },
+    "node:workspace_view_state": {
+      "mode": "count",
+      "count": 15,
+      "unit": "node test"
+    },
+    "node:workspace_context_menu_state": {
+      "mode": "exit-code-only"
     },
     "node:canvas_direct": {
       "mode": "count",
@@ -1210,6 +1273,26 @@
     "node:cdp_confirmation_gate": {
       "mode": "exit-code-only"
     },
+    "node:space_profile_ui": {
+      "mode": "count",
+      "count": 25,
+      "unit": "node test"
+    },
+    "node:space_profile_view": {
+      "mode": "count",
+      "count": 16,
+      "unit": "node test"
+    },
+    "node:space_profile_update_ui": {
+      "mode": "count",
+      "count": 12,
+      "unit": "node test"
+    },
+    "node:profile_space_browser_contract": {
+      "mode": "count",
+      "count": 3,
+      "unit": "node test"
+    },
     "node:boundary_pair_ui": {
       "mode": "count",
       "count": 12,
@@ -1221,6 +1304,11 @@
       "unit": "node test"
     },
     "node:boundary_pair_browser_scope": {
+      "mode": "count",
+      "count": 7,
+      "unit": "node test"
+    },
+    "node:r14_app": {
       "mode": "count",
       "count": 7,
       "unit": "node test"
@@ -1275,6 +1363,11 @@
       "count": 11,
       "unit": "node test"
     },
+    "node:connection_recovery": {
+      "mode": "count",
+      "count": 9,
+      "unit": "node test"
+    },
     "node:draw_annotation": {
       "mode": "count",
       "count": 7,
@@ -1292,8 +1385,8 @@
     },
     "node:grid_lesson_control_ownership": {
       "mode": "count",
-      "unit": "node test",
-      "count": 15
+      "count": 15,
+      "unit": "node test"
     },
     "node:parameter_confirmation_settlement": {
       "mode": "count",
@@ -1312,8 +1405,8 @@
     },
     "node:face_projection_lifecycle": {
       "mode": "count",
-      "unit": "node test",
-      "count": 14
+      "count": 14,
+      "unit": "node test"
     },
     "node:workspace_shell_history": {
       "mode": "count",
@@ -1327,7 +1420,7 @@
     },
     "node:space_test_floor": {
       "mode": "count",
-      "count": 10,
+      "count": 11,
       "unit": "node test"
     },
     "node:space_library_actions": {
@@ -1387,8 +1480,8 @@
     },
     "node:cdp_settle": {
       "mode": "count",
-      "unit": "node test",
-      "count": 10
+      "count": 10,
+      "unit": "node test"
     },
     "node:cdp_card_position": {
       "mode": "count",
@@ -1402,7 +1495,27 @@
     },
     "node:canvas_shards": {
       "mode": "count",
-      "count": 39,
+      "count": 41,
+      "unit": "node test"
+    },
+    "node:timber_edit_ui": {
+      "mode": "count",
+      "count": 6,
+      "unit": "node test"
+    },
+    "node:panel_fill_ui_contract": {
+      "mode": "count",
+      "count": 21,
+      "unit": "node test"
+    },
+    "node:panel_fill_grid_ui": {
+      "mode": "count",
+      "count": 13,
+      "unit": "node test"
+    },
+    "node:panel_fill_grid_read_compat": {
+      "mode": "count",
+      "count": 11,
       "unit": "node test"
     },
     "node:identity_canvas_merge": {
@@ -1418,11 +1531,6 @@
     "node:anchor_band_clip": {
       "mode": "count",
       "count": 14,
-      "unit": "node test"
-    },
-    "node:connection_recovery": {
-      "mode": "count",
-      "count": 9,
       "unit": "node test"
     },
     "node:hover_pick_scheduler": {
@@ -1518,7 +1626,7 @@
     "node:model_creation_identity_pin": {
       "mode": "count",
       "count": 9,
-      "unit": "test"
+      "unit": "node test"
     },
     "node:r363_project_store_merge": {
       "mode": "count",
@@ -1538,12 +1646,17 @@
     "node:model_update_faces_review": {
       "mode": "count",
       "count": 5,
-      "unit": "test"
+      "unit": "node test"
     },
     "node:model_update_faces_app": {
       "mode": "count",
       "count": 7,
-      "unit": "test"
+      "unit": "node test"
+    },
+    "node:r14_host": {
+      "mode": "count",
+      "count": 15,
+      "unit": "node test"
     },
     "node:identity_context_history": {
       "mode": "count",
@@ -1554,56 +1667,6 @@
       "mode": "count",
       "count": 9,
       "unit": "node test"
-    },
-    "py:test_canvas_evidence": {
-      "mode": "count",
-      "count": 12,
-      "unit": "test"
-    },
-    "node:timber_edit_ui": {
-      "mode": "count",
-      "count": 6,
-      "unit": "node test"
-    },
-    "py:test_timber_edit": {
-      "mode": "count",
-      "count": 19,
-      "unit": "test"
-    },
-    "py:test_panel_fill_ui_contract": {
-      "mode": "count",
-      "count": 9,
-      "unit": "test"
-    },
-    "node:panel_fill_ui_contract": {
-      "mode": "count",
-      "count": 21,
-      "unit": "node test"
-    },
-    "py:test_panel_fill_grid_source": {
-      "mode": "count",
-      "count": 13,
-      "unit": "test"
-    },
-    "node:panel_fill_grid_read_compat": {
-      "mode": "count",
-      "count": 11,
-      "unit": "node test"
-    },
-    "node:r14_app": {
-      "mode": "count",
-      "count": 7,
-      "unit": "node test"
-    },
-    "node:r14_host": {
-      "mode": "count",
-      "count": 15,
-      "unit": "node test"
-    },
-    "py:test_r14_browser_receipt": {
-      "mode": "count",
-      "count": 10,
-      "unit": "test"
     },
     "node:framing_recipe_project_store": {
       "mode": "count",

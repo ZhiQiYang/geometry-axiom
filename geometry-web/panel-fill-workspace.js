@@ -13,6 +13,7 @@ window.PanelFillWorkspace = (() => {
   const finishRecords=s=>s.snapshot.finishSurfaces.filter(r=>r.boundaryId===s.boundaryId);
   const fillRecords=(s,id)=>s.snapshot.panelFills.filter(r=>r.definition.finishSurfaceId===id);
   const hostRecords=(s,id)=>s.snapshot.derivedPlacements.filter(r=>r.definition.fillId===id);
+  const gridRecords=(s,id)=>list(s.snapshot.fillGrids).filter(r=>r.definition.hostId===id);
   const parameters=s=>list(s.sources?.parameters).flatMap(p=>list(p.fields).filter(f=>f.type==='dimension').map(f=>({
     key:p.id+':'+f.id,label:`${p.name} / ${f.name}（${p.id}:${f.id}）`,parameterId:p.id,fieldId:f.id,value:f.value})));
   function sourceDraft(value,host=false) {
@@ -60,7 +61,9 @@ window.PanelFillWorkspace = (() => {
   }
   function selectHost(s,idValue) {
     const record=hostRecords(s,s.draft.fillId).find(r=>String(r.definition.id)===idValue),value=record?.definition;
-    s.selection.host=value?.id??null;Object.assign(s.draft,{host:!!value,hostId:value?.id??s.ids.placement,h:sourceDraft(value?.h,true),remove:null});
+    const grid=value?gridRecords(s,value.id)[0]:null;
+    s.selection.host=value?.id??null;Object.assign(s.draft,{host:!!value,hostId:value?.id??s.ids.placement,h:sourceDraft(value?.h,true),remove:null,
+      createGrid:false,gridMainAlong:grid?(grid.definition.mainAlong??'none'):''});
   }
   function operations(s) {
     const d=s.draft,ops=[],defs=s.snapshot;
@@ -87,12 +90,22 @@ window.PanelFillWorkspace = (() => {
         if(A.canonical(host)!==A.canonical(previous))ops.push({op:'put-derived-placement',value:host});}
       else if(s.selection.host!==null)throw new Error('已有宿主請使用「刪除宿主候選」，不可暗中移除。');
     }else if(s.selection.fill!==null)throw new Error('已有鋪排請使用「刪除鋪排候選」，不可暗中移除。');
+    if(d.createGrid){
+      if(!s.contract?.supportedActions.includes('create-from-fill-grid'))throw new Error('目前服務尚未提供來源主格建立能力。');
+      if(!d.fill||!d.host||s.selection.fill===null||s.selection.host===null)throw new Error('請先確認正式鋪排與派生宿主，再建立來源主格。');
+      if(!['u','v','none'].includes(d.gridMainAlong))throw new Error('請明選來源主格的主支偏好，或明選未設定。');
+      const value={fillId:d.fillId,hostId:d.hostId,mainAlong:d.gridMainAlong==='none'?null:d.gridMainAlong};
+      const existing=gridRecords(s,d.hostId)[0]?.definition;
+      if(existing){
+        if(existing.fillId!==value.fillId||existing.mainAlong!==value.mainAlong)throw new Error('宿主已有不同來源或主支偏好的主格；本次建立不替換既有定義。');
+      }else ops.push({op:'create-from-fill-grid',value}); // PF4_CREATE_FORM_WIRE
+    }
     return ops;
   }
   const input=(label,key,value,attrs='')=>`<label>${esc(label)}<input data-pf-field="${key}" value="${esc(value)}" ${attrs}></label>`;
   const select=(label,key,value,options)=>`<label>${esc(label)}<select data-pf-field="${key}">${options.map(([v,t])=>`<option value="${esc(v)}"${String(v)===String(value)?' selected':''}>${esc(t)}</option>`).join('')}</select></label>`;
   const options=(items,label)=>[['','請明選'],...items.map(item=>[item.key,label?label(item):item.label])];
-  function sourceFields(s,label,key,d,host=false) {
+  function sourceFields(s,label,key,d,host=false,extension='') {
     const kinds=[['literal','明設整數 mm'],['parameter','尺寸參數欄位'],...(host?[['spec','具名尺寸'],['material','固定角材版本 B']]:[])];
     let value;
     if(d.kind==='literal')value=input('明設值',key+'.value',d.value,'inputmode="numeric"');
@@ -100,7 +113,7 @@ window.PanelFillWorkspace = (() => {
     else if(d.kind==='spec')value=select('具名尺寸',key+'.value',d.value,[['','請明選'],...list(s.sources.specs).map(r=>[r.name,r.name+' = '+r.value+' mm'])]);
     else value=select('固定材料版本',key+'.value',d.value,[['','請明選'],...list(s.sources.materials).map(material).filter(r=>r.kind==='timber').map(r=>[ref(r),`${r.name} · ${r.id} v${r.version} · B=${r.B}`])]);
     let typed;try{typed=sourceValue(d,host);}catch(_){typed={kind:d.kind,input:d.value};}
-    return `<fieldset class="pf-source"><legend>${esc(label)}</legend>${select('來源種類',key+'.kind',d.kind,kinds)}${value}<output data-pf-source="${key}">定義來源：${esc(JSON.stringify(typed))}</output></fieldset>`;
+    return `<fieldset class="pf-source"><legend>${esc(label)}</legend>${select('來源種類',key+'.kind',d.kind,kinds)}${value}<output data-pf-source="${key}">定義來源：${esc(JSON.stringify(typed))}</output>${extension}</fieldset>`;
   }
   function form(s) {
     const d=s.draft,axes=[['','請明選'],...['+X','-X','+Y','-Y','+Z','-Z'].map(a=>[a,a])];
@@ -108,6 +121,10 @@ window.PanelFillWorkspace = (() => {
     const obstacleOptions=[...list(s.objects.columns).map(r=>({ref:'c'+r.id,name:r.name||'柱 '+r.id})),...list(s.objects.beams).map(r=>({ref:'b'+r.id,name:r.name||'樑 '+r.id}))];
     for(const value of d.obstacles)if(!obstacleOptions.some(r=>r.ref===value))obstacleOptions.push({ref:value,name:value+'（目前來源不存在）'});
     const disabled=['loading','confirming','unknown'].includes(s.phase)||s.retired;
+    const gridControls=s.contract?.supportedActions.includes('create-from-fill-grid')&&s.selection.fill!==null&&s.selection.host!==null?`<div data-pf-grid-setup>
+      ${gridRecords(s,d.hostId).length?`<p data-pf-grid-existing>來源主格 #${gridRecords(s,d.hostId)[0].id} 已引用此鋪排；有效值隨來源重算。本入口不替換其來源或主支偏好。</p>`:
+        `<label class="pf-toggle"><input type="checkbox" data-pf-field="createGrid"${d.createGrid?' checked':''}>建立跟隨此鋪排的主格</label>
+        ${d.createGrid?select('主支偏好（不改變格線幾何）','gridMainAlong',d.gridMainAlong,[['','請明選'],['u','沿 u'],['v','沿 v'],['none','未設定']]):''}`}</div>`:'';
     return `<fieldset class="pf-form"${disabled?' disabled':''}><legend>本面定義</legend>
       ${select('完成面','selectFinish',s.selection.finish??'new',[...finishes.map(r=>[r.id,`${r.name} · #${r.id}`]),['new','新增完成面']])}
       ${d.remove?`<p class="pf-warning">待刪除 ${esc(d.remove[0])} #${esc(d.remove[1])}。預覽會檢查全部依賴，確認前正式資料保持不變。</p><button type="button" data-pf-action="restore-edit">返回編輯</button>`:`
@@ -123,13 +140,13 @@ window.PanelFillWorkspace = (() => {
       ${s.selection.fill!==null?'<button type="button" data-pf-action="delete-fill">刪除此鋪排候選</button>':''}
       ${select('宿主定義','selectHost',s.selection.host??'new',[...hosts.map(r=>[r.definition.id,'宿主 #'+r.definition.id]),['new','新增宿主']])}
       <label class="pf-toggle"><input type="checkbox" data-pf-field="host"${d.host?' checked':''}>設定派生宿主（PF-H）</label>
-      ${d.host?sourceFields(s,'角材層厚 h（不暗設為 0）','h',d.h,true):''}
+      ${d.host?sourceFields(s,'宿主與主格：角材層厚 h（不暗設為 0）','h',d.h,true,gridControls):''}
       ${s.selection.host!==null?'<button type="button" data-pf-action="delete-host">刪除此宿主候選</button>':''}</fieldset>`:''}`}</fieldset>`;
   }
   function exact(value) {return typeof value==='object'?JSON.stringify(value):String(value??'未提供');}
   const table=(headers,rows)=>`<div class="pf-table-scroll"><table><thead><tr>${headers.map(h=>'<th scope="col">'+esc(h)+'</th>').join('')}</tr></thead><tbody>${rows.map(row=>'<tr>'+row.map(v=>'<td>'+esc(exact(v))+'</td>').join('')+'</tr>').join('')}</tbody></table></div>`;
   function impact(candidate) {
-    const kinds={'finish-surface':['完成面','finishSurfaces'],'panel-fill':['鋪排','panelFills'],'derived-placement':['派生宿主','derivedPlacements']};
+    const kinds={'finish-surface':['完成面','finishSurfaces'],'panel-fill':['鋪排','panelFills'],'derived-placement':['派生宿主','derivedPlacements'],'fill-grid':['來源主格','fillGrids']};
     const changes={created:'新增',modified:'定義修改',deleted:'刪除',derived:'原生派生結果變動'};
     const record=(state,key,id)=>list(state?.[key]).find(r=>(r.definition?.id??r.id)===id);
     const definition=r=>{if(!r)return '不存在';if(r.definition)return r.definition;const {derived,...value}=r;return value;};
@@ -143,9 +160,14 @@ window.PanelFillWorkspace = (() => {
     const timberIds=[...new Set([...beforeTimbers,...afterTimbers].map(t=>t.id))];
     const beforeHosts=list(candidate.before?.derivedPlacements),afterHosts=list(candidate.after?.derivedPlacements);
     const hostIds=[...new Set([...beforeHosts,...afterHosts].map(h=>h.definition.id))];
+    const dependencyRows=key=>{const before=list(dependencies?.before?.geometry?.[key]),after=list(dependencies?.after?.geometry?.[key]);
+      return [...new Set([...before,...after].map(r=>r.id))].map(id=>['#'+id,before.find(r=>r.id===id)??'不存在',after.find(r=>r.id===id)??'不存在']);};
     return `<section class="pf-impact" data-pf-impact aria-label="確認前後的原生變更與下游影響"><h4>確認前後影響（尚未套用）</h4>
       <p data-pf-native-changes>原生列出 ${rows.length} 筆變更：${rows.map(r=>esc(r[0]+'・'+r[1])).join('、')||'沒有變更紀錄'}。</p>
       ${table(['變更對象','原生判定','確認前定義','候選定義'],rows)}
+      ${list(candidate.before?.fillGrids).length||list(candidate.after?.fillGrids).length?`<section data-pf-grid-impact><h5>主格與引用的參考線</h5>
+        ${table(['主格','確認前原生紀錄','候選原生紀錄'],dependencyRows('grids'))}
+        <div data-pf-guide-impact>${table(['參考線','確認前原生紀錄','候選原生紀錄'],dependencyRows('guides'))}</div></section>`:''}
       ${hostIds.length?`<section data-pf-dependency-impact aria-label="宿主與既有角材前後影響"><h5>宿主與既有角材</h5>
         <p>宿主 ${hostIds.map(id=>'#'+id).join('、')}；原生回覆的下游角材 ${timberIds.length} 支${timberIds.length?'（'+timberIds.map(id=>'#'+id).join('、')+'）':''}。以下保留確認前後紀錄，未變更的紀錄也列出。</p>
         ${table(['宿主','確認前原生結果','候選原生結果'],hostIds.map(id=>['#'+id,record(candidate.before,'derivedPlacements',id)?.derived??'不存在',record(candidate.after,'derivedPlacements',id)?.derived??'不存在']))}
@@ -184,7 +206,10 @@ window.PanelFillWorkspace = (() => {
       ${s.candidate?impact(s.candidate):''}
       ${finishes.map(f=>`<details><summary>${esc(f.name)} · 完成面 #${f.id} · ${f.derived?.error?'錯誤':'原生框架與障礙'}</summary>${table(['欄位','精確原生值'],[['frame',f.frame],['結構側',f.structureSide],['明選障礙',f.obstacles],['region',f.derived?.region],['障礙判定',f.derived?.obstacles],...(f.derived?.error?[['錯誤',f.derived.error]]:[])])}</details>`).join('')}
       ${fills.map(f=>{const d=f.derived;return `<article data-pf-fill-result="${f.definition.id}"><h4>鋪排 #${f.definition.id}</h4>${d?.error?'<p role="alert">原生錯誤：'+esc(d.error)+'</p>':`${picture(f)}<p>片數 ${esc(d.tileCount)} · 裁片數 ${esc(d.fragmentCount)} · 整片 ${esc(d.wholeCount)} · 厚 ${esc(d.thickness)} mm</p>${table(['裁片完整 key','面積 mm²'],list(d.tiles).flatMap(t=>list(t.fragments).map(p=>[p.key,p.area])))}<h5>有效板縫／支撐</h5><p>X 來源：參數 ${esc(f.definition.threshold.parameterId)}／欄位 ${esc(f.definition.threshold.fieldId)}</p>${table(['seam','區間','左側實寬 mm','右側實寬 mm','有效 X mm','判定'],list(d.support).map(p=>[p.seam,p.range,p.left,p.right,d.threshold?d.threshold.num+'/'+d.threshold.den:'未提供',p.supported?'支撐足夠':'支撐不足（可保存）']))}<details><summary>完整板縫鍵、非板縫與障礙分層</summary>${table(['類型','精確原生值'],[['有效板縫',d.effectiveSeams],['非板縫（不是支撐不足）',d.nonSeams],['非板縫原因',d.nonSeamReason],['障礙分層',d.obstacles]])}</details>`}<details><summary>定義來源（與有效值分開）</summary><pre>${esc(JSON.stringify(f.definition,null,2))}</pre></details></article>`;}).join('')}
-      ${state.derivedPlacements.filter(h=>fillIds.has(h.definition.fillId)).map(h=>`<details><summary>宿主 #${h.definition.id} · ${h.derived?.error?'錯誤':'原生 h／框架／完整邊鍵'}</summary>${table(['欄位','精確原生值'],[['h 來源',h.definition.h],['h 有效值',h.derived?.h],['frame',h.derived?.frame],['components／完整邊鍵',h.derived?.components],...(h.derived?.error?[['錯誤',h.derived.error]]:[])])}</details>`).join('')}</section>`;
+      ${state.derivedPlacements.filter(h=>fillIds.has(h.definition.fillId)).map(h=>`<details><summary>宿主 #${h.definition.id} · ${h.derived?.error?'錯誤':'原生 h／框架／完整邊鍵'}</summary>${table(['欄位','精確原生值'],[['h 來源',h.definition.h],['h 有效值',h.derived?.h],['frame',h.derived?.frame],['components／完整邊鍵',h.derived?.components],...(h.derived?.error?[['錯誤',h.derived.error]]:[])])}</details>`).join('')}
+      ${list(state.fillGrids).filter(g=>fillIds.has(g.definition.fillId)).map(g=>`<details data-pf-grid-result="${g.id}"><summary>來源主格 #${g.id} · 跟隨鋪排 #${g.definition.fillId}</summary>
+        <p>定義來源與下方原生有效值分開保存；修改來源鋪排需重新預覽，取消不改正式主格。</p>
+        ${table(['欄位','精確原生值'],[['定義來源',g.definition],['索引空間',g.derived?.indexSpace],['列索引空間',g.derived?.bandIndexSpace],['結構側',g.derived?.side],['交丁軸',g.derived?.staggerAxis],['交丁量',g.derived?.staggerDelta],['u 軸',g.derived?.axes?.u],['v 軸',g.derived?.axes?.v]])}</details>`).join('')}</section>`;
   }
   function display() {
     if(!active)return;const pane=document.querySelector('#faceInspectorContent [data-fi-pane="prop"]');if(pane)render(pane,active.boundaryId,true);
@@ -201,7 +226,7 @@ window.PanelFillWorkspace = (() => {
       <label>面內工作<select data-face-product-mode${s.dirty||['loading','previewing','confirmable','confirming','unknown'].includes(s.phase)?' disabled':''}><option value="finish">完成面與鋪排</option><option value="framing">平釘天花骨架（矩形第一片）</option></select></label>
       <p class="pf-status" data-pf-status="${s.phase}" role="status" aria-live="polite">${esc(s.reason)}</p>
       ${s.draft?form(s):''}
-      <details class="pf-source-preparation"><summary>來源與本片能力</summary><p>材料與尺寸參數須先在既有工程規格獨立確認。取消本次鋪排不會撤回先前已正式確認的來源。</p><button type="button" data-pf-action="sources"${['confirming','unknown'].includes(s.phase)?' disabled':''}>前往既有工程規格準備來源</button><p>本片：完成面、鋪排、板縫支撐與派生宿主（PF1–3＋PF-H）。PF-6 角材建議、PF-4 主格轉接、PF-5 空間流程尚未提供，沒有可執行動作。整體 complete:false。</p><p>服務支援：${esc(s.contract?.supportedActions.join('、')??'尚未取得相容契約')}；範圍完整：${s.contract?String(s.contract.completeForScope):'未知'}。</p></details>
+      <details class="pf-source-preparation"><summary>來源與本片能力</summary><p>材料與尺寸參數須先在既有工程規格獨立確認。取消本次鋪排不會撤回先前已正式確認的來源。</p><button type="button" data-pf-action="sources"${['confirming','unknown'].includes(s.phase)?' disabled':''}>前往既有工程規格準備來源</button><p>本片：完成面、鋪排、板縫支撐與派生宿主（PF1–3＋PF-H）${s.contract?.supportedActions.includes('create-from-fill-grid')?'，以及既有宿主的跟隨鋪排主格（PF-4A）':''}。PF-6 角材建議、PF-4 獨立網格快照、PF-5 空間流程尚未提供，沒有可執行動作。整體 complete:false。</p><p>服務支援：${esc(s.contract?.supportedActions.join('、')??'尚未取得相容契約')}；範圍完整：${s.contract?String(s.contract.completeForScope):'未知'}。</p></details>
       ${s.draft?results(s):''}
       ${(s.candidate?.violations?.length||s.candidate?.uiContract.errors.length)?`<section class="pf-diagnostics" role="alert"><h3>原生診斷</h3><pre>${esc(JSON.stringify({violations:s.candidate?.violations,errors:s.candidate?.uiContract.errors},null,2))}</pre></section>`:''}
       <div class="pf-actions"><button type="button" data-pf-action="preview"${!s.draft||s.retired||['loading','previewing','confirming','unknown'].includes(s.phase)?' disabled':''}>預覽</button><button type="button" data-pf-action="confirm"${s.phase!=='confirmable'||s.retired?' disabled':''}>確認一次變更</button><button type="button" data-pf-action="cancel"${['confirming','unknown'].includes(s.phase)?' disabled':''}>取消／返回</button></div></section>`;
@@ -247,7 +272,7 @@ window.PanelFillWorkspace = (() => {
     else {const parts=key.split('.');let target=s.draft;for(const p of parts.slice(0,-1))target=target[p];
       target[parts.at(-1)]=el.type==='checkbox'?el.checked:el.value;
       if(parts.at(-1)==='kind'){target.value='';target.original=undefined;}}
-    if(key?.startsWith('select')||['fill','host','pattern'].includes(key)||key?.endsWith('.kind')){
+    if(key?.startsWith('select')||['fill','host','pattern','createGrid'].includes(key)||key?.endsWith('.kind')){
       display();document.querySelector(`[data-pf-field="${key}"]`)?.focus({preventScroll:true});
     }else{
       const region=el.closest('[data-pf-workspace]');region.querySelector('[data-pf-action="confirm"]').disabled=true;

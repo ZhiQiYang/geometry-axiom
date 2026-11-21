@@ -1112,6 +1112,7 @@ static void cmd_host_gate_check(const char *arg)
 #include "assembly_bridge.inc"
 #include "source-inspector-bridge.inc"
 #include "timber_edit_bridge.inc"
+#include "workspace_view_bridge.inc"
 #include "boundary_pair_bridge.inc"
 #include "framing_template_bridge.inc"
 
@@ -1196,6 +1197,12 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_source_inspect_file(arg);
         } else if (strcmp(line,"engineering-preview-source")==0 && arg) {
             cmd_engineering_preview_source(arg);
+        } else if (strcmp(line,"view-capabilities")==0 && !arg) {
+            cmd_workspace_view_capabilities();
+        } else if (strcmp(line,"view-read")==0 && arg) {
+            cmd_workspace_view_read(arg);
+        } else if (strcmp(line,"view-pick")==0 && arg) {
+            cmd_workspace_view_pick(arg);
         } else if (strcmp(line,"timber-edit-read")==0 && arg) {
             cmd_timber_edit_read(arg);
         } else if (strcmp(line,"timber-edit-preview")==0 && arg) {

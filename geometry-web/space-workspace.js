@@ -42,18 +42,18 @@ window.SpaceModelWorkspace = (() => {
       <section class="sm-stage" aria-label="三維模型預覽"><div class="sm-stage-head"><div><p class="sm-eyebrow">模型預覽</p><h2 id="smPreviewTitle">讓平面，成為空間。</h2></div><span id="smResultBadge" class="sm-badge">尚未選取來源</span></div>
         <div class="sm-canvas-wrap"><canvas id="smCanvas" aria-label="空間三維預覽；拖曳旋轉，滾輪縮放"></canvas><div id="smWelcome" class="sm-welcome"><div class="sm-wire-cube" aria-hidden="true">◇</div><h2>先用現成範例，走一次完整流程</h2><p>輪廓、牆高與牆厚已填好。<br>預覽完成後，確認各面並按「建立空間」。</p><button id="smWelcomeTry" class="sm-button sm-primary" type="button">開始試用 4 × 3 m 房間 →</button><small>範例獨立預覽，不會改動畫布裡的面。</small></div></div>
         <div class="sm-view-tools"><div class="sm-view-segment" role="group" aria-label="預覽角度"><button data-sm-view="iso" class="active" aria-pressed="true" type="button">立體</button><button data-sm-view="top" aria-pressed="false" type="button" title="由上往下，沿 −Z 看">俯視</button><button data-sm-view="bottom" aria-pressed="false" type="button" title="由下往上，沿 +Z 看">仰視</button><button data-sm-view="front" aria-pressed="false" type="button">正視</button><button id="smFit" type="button">置中</button></div><span class="sm-gesture">拖曳旋轉 · 滾輪縮放 · Shift 拖曳平移</span></div>
-        <p id="smViewDirection" class="sm-view-direction">立體檢視；切換視角不改動模型幾何。</p><div class="sm-display-options"><label><input id="smShowSpace" type="checkbox" checked>空間邊界</label><label><input id="smShowWalls" type="checkbox" checked>材料牆</label><label><input id="smShowTimbers" type="checkbox" checked>角材結構</label><label><input id="smShowRoof" type="checkbox">顯示頂面</label><small>頂面僅在檢視中隱藏，幾何仍保留。</small></div>
+        <p id="smViewDirection" class="sm-view-direction">立體檢視；切換視角不改動模型幾何。</p><div class="sm-display-options"><label><input id="smShowSpace" type="checkbox" checked>空間邊界</label><label><input id="smShowWalls" type="checkbox" checked>材料牆</label><label><input id="smShowTimbers" type="checkbox" checked>角材與拉伸件</label><label><input id="smShowRoof" type="checkbox">顯示頂面</label><small>頂面僅在檢視中隱藏，幾何仍保留。</small></div>
         <div class="sm-metrics"><div><span>空間體積</span><strong id="smVolume">—</strong><small>尚未扣除障礙物</small></div><div><span>扣除後淨空</span><strong id="smClearance">—</strong><small>只扣除明確選取的柱樑</small></div><div><span>材料牆體積</span><strong id="smWallVolume">—</strong><small>依指定厚度與外側方向</small></div><div><span>角材體積合計</span><strong id="smTimberVolume">—</strong><small>各支材料量，非布林聯集</small></div></div><button id="smMobileNext" class="sm-button sm-primary sm-mobile-next" type="button">下一步：設定與建立 →</button>
       </section>
       <aside class="sm-setup" aria-label="空間建模設定"><div class="sm-setup-scroll">
-        <details class="sm-guide" open><summary>第一次使用？照這 3 步就能完成</summary><ol><li>點上方「試用角材骨架範例」，直接載入 z=2500、角材厚 33 mm、牆高 3000 mm 的模型。</li><li>查看 3D 預覽；可用「角材結構」開關獨立檢視。修改牆高、角材納入或邊界後，按「更新預覽」。</li><li>勾選核對面清單，按「建立空間」，再「保存專案」。之後從「已建立空間」重開。</li></ol><p>要用自己的圖：在畫布開啟一個已放置的面，再點面工具列的「建立空間」。先「設定平面投影」，明定俯視／仰視、輪廓內為淨空、牆在外側。圖面 z 是位置；牆底須另外填寫，牆高預設 3000 mm，可事後修改。</p></details>
+        <details class="sm-guide" open><summary>第一次使用？照這 3 步就能完成</summary><ol><li>點上方「試用角材骨架範例」，直接載入 z=2500、角材厚 33 mm、牆高 3000 mm 的模型。</li><li>查看 3D 預覽；可用「角材與拉伸件」開關獨立檢視。修改牆高、角材納入或邊界後，按「更新預覽」。</li><li>勾選核對面清單，按「建立空間」，再「保存專案」。之後從「已建立空間」重開。</li></ol><p>要用自己的圖：在畫布開啟一個已放置的面，再點面工具列的「建立空間」。先「設定平面投影」，明定俯視／仰視、輪廓內為淨空、牆在外側。圖面 z 是位置；牆底須另外填寫，牆高預設 3000 mm，可事後修改。</p></details>
         <section class="sm-section"><div class="sm-section-heading"><span>01</span><h2>來源與建模方式</h2></div><div id="smSourceSummary" class="sm-source-summary">尚未選擇來源，先試範例或使用目前面。</div><p id="smIdentityNote" class="sm-help" hidden></p><button id="smActivateIdentity" class="sm-button" type="button" hidden>啟用物件身分追蹤</button><section id="smProjectionCallout" class="sm-projection-callout" hidden><div id="smProjectionSummary"></div><button id="smSetProjection" class="sm-button" type="button">設定平面投影</button></section><label class="sm-field">建模方式<select id="smMode"><option value="plan">由平面輪廓建立空間</option><option value="faces">組合已有的放置面</option></select></label><label id="smSourceSelectWrap" class="sm-field" hidden>來源放置面<select id="smSourceSelect"></select></label><label class="sm-field">空間名稱<input id="smModelName" maxlength="100" placeholder="例如：客廳空間" autocomplete="off"></label></section>
         <section id="smHeightEditPanel" class="sm-section sm-height-editor" hidden><div class="sm-section-heading"><span>02</span><h2>修改已建立空間</h2></div><p id="smHeightEditSummary" class="sm-help"></p><label class="sm-field">新牆高 <span>mm</span><input id="smEditHeight" type="number" min="1" step="1" inputmode="numeric" aria-describedby="smHeightEditSummary"></label><button id="smCurrentSourceUpdate" class="sm-button" type="button">採用現行來源…</button><button id="smCancelHeightEdit" class="sm-button" type="button">取消修改，保留原模型</button></section><fieldset id="smSettings" disabled><div id="smPlanSettings">
-          <section class="sm-section"><div class="sm-section-heading"><span>02</span><h2>高度與空間邊界</h2></div><div class="sm-field-pair"><label class="sm-field">牆底標高 <span>mm</span><input id="smBottom" type="number" step="1" inputmode="numeric" placeholder="請明確填寫" aria-describedby="smBottomHelp"></label><label class="sm-field">牆高 <span>mm</span><input id="smHeight" type="number" min="1" step="1" inputmode="numeric" value="3000" placeholder="預設 3000"></label></div><p id="smBottomHelp" class="sm-help">牆底標高是牆開始的位置；若從 z=0 起請填 0，不能以圖面 z 代替。</p><p class="sm-help">牆高預設 3000 mm，建立前可改，建立後可從「已建立空間 → 修改模型」調整。牆頂 = 牆底 + 牆高；圖面 z 不代替牆底。</p><div id="smPlanOutline" class="sm-plan-outline" aria-label="來源輪廓及邊編號"></div><p id="smOutlineViewHelp" class="sm-help"></p><div class="sm-field-label">哪些外環邊形成空間邊界？</div><p class="sm-help">逐邊勾選，未勾選處保持開放。FREE 邊初始不選，請依實際用途決定。</p><div id="smEdges" class="sm-edge-list"></div><div class="sm-field-pair"><label class="sm-field">底面用途<select id="smFloor"><option value="boundary">實際邊界</option><option value="calculation-cap">僅作體積計算封口</option><option value="none">不建立</option></select></label><label class="sm-field">頂面用途<select id="smCeiling"><option value="boundary">實際邊界</option><option value="calculation-cap">僅作體積計算封口</option><option value="none">不建立</option></select></label></div><section id="smTimberSettings" class="sm-timber-settings"><label class="sm-check"><input id="smIncludeTimbers" type="checkbox" disabled><span>一併納入此面角材（<b id="smTimberCount">0</b> 支）</span></label><p class="sm-help">沿用各支已放置角材的真實尺寸、位置與方向；修改牆高不會搬移或拉伸角材。只納入這個放置面的角材。</p><details id="smTimberCandidateDetails" hidden><summary>核對角材尺寸與世界高度</summary><ul id="smTimberCandidates" class="sm-timber-list"></ul></details><div id="smTimberEmpty" class="sm-help">此放置面沒有已放置角材。可先建立空間，或返回面內工作區，在「構件 → 角材」完成放置再重新使用目前面。</div><button id="smBackToTimbers" class="sm-button" type="button">返回面內放置角材</button></section><div id="smHolesWrap" hidden><label class="sm-field">平面孔洞的用途<select id="smHoles"><option value="none">尚未指定（請先確認用途）</option><option value="through">形成上下貫通孔</option></select></label><p class="sm-help">孔洞不自動當成門窗或柱。選擇貫通孔會明確生成孔邊內壁。</p></div></section>
+          <section class="sm-section"><div class="sm-section-heading"><span>02</span><h2>高度與空間邊界</h2></div><div class="sm-field-pair"><label class="sm-field">牆底標高 <span>mm</span><input id="smBottom" type="number" step="1" inputmode="numeric" placeholder="請明確填寫" aria-describedby="smBottomHelp"></label><label class="sm-field">牆高 <span>mm</span><input id="smHeight" type="number" min="1" step="1" inputmode="numeric" value="3000" placeholder="預設 3000"></label></div><p id="smBottomHelp" class="sm-help">牆底標高是牆開始的位置；若從 z=0 起請填 0，不能以圖面 z 代替。</p><p class="sm-help">牆高預設 3000 mm，建立前可改，建立後可從「已建立空間 → 修改模型」調整。牆頂 = 牆底 + 牆高；圖面 z 不代替牆底。</p><div id="smPlanOutline" class="sm-plan-outline" aria-label="來源輪廓及邊編號"></div><p id="smOutlineViewHelp" class="sm-help"></p><div class="sm-field-label">哪些外環邊形成空間邊界？</div><p class="sm-help">逐邊勾選，未勾選處保持開放。FREE 邊初始不選，請依實際用途決定。</p><div id="smEdges" class="sm-edge-list"></div><div class="sm-field-pair"><label class="sm-field">底面用途<select id="smFloor"><option value="boundary">實際邊界</option><option value="calculation-cap">僅作體積計算封口</option><option value="none">不建立</option></select></label><label class="sm-field">頂面用途<select id="smCeiling"><option value="boundary">實際邊界</option><option value="calculation-cap">僅作體積計算封口</option><option value="none">不建立</option></select></label></div><details id="smTimberSettings" class="sm-timber-settings" open><summary>一併納入</summary><label class="sm-check"><input id="smIncludeTimbers" type="checkbox" disabled><span>一併納入此面角材（<b id="smTimberCount">0</b> 支）</span></label><p class="sm-help">沿用各支已放置角材的真實尺寸、位置與方向；修改牆高不會搬移或拉伸角材。只納入這個放置面的角材。</p><div id="smTimberCandidateDetails" hidden><ul id="smTimberCandidates" class="sm-timber-list"></ul></div><div id="smTimberEmpty" class="sm-help">此放置面沒有已放置角材。可先建立空間，或返回面內工作區，在「構件 → 角材」完成放置再重新使用目前面。</div><button id="smBackToTimbers" class="sm-button" type="button">返回面內放置角材</button><div id="smProfileCandidates" class="sm-profile-candidates"></div><p id="smProfileUnavailable" class="sm-help"></p></details><div id="smHolesWrap" hidden><label class="sm-field">平面孔洞的用途<select id="smHoles"><option value="none">尚未指定（請先確認用途）</option><option value="through">形成上下貫通孔</option></select></label><p class="sm-help">孔洞不自動當成門窗或柱。選擇貫通孔會明確生成孔邊內壁。</p></div></section>
           <section class="sm-section"><div class="sm-section-heading"><span>03</span><h2>材料牆 <small>選用</small></h2></div><label class="sm-check"><input id="smWallsEnabled" type="checkbox" checked><span>同時建立有厚度的牆</span></label><label class="sm-field">牆厚 <span>mm</span><input id="smThickness" type="number" value="100" min="1" step="1" inputmode="numeric"></label><p class="sm-help">朝空間外側加厚，採方角接合，保留輪廓內的淨尺寸。100 mm 是可修改的工作預設。</p></section>
         </div><section id="smFaceSettings" class="sm-section" hidden><div class="sm-section-heading"><span>02</span><h2>明確選取空間的各個面</h2></div><p class="sm-help">只使用下方勾選的已有放置面。方向是相對該面法向的正負；封閉空間的方向須朝外。</p><div id="smFaceUses"></div></section>
         <details class="sm-obstacles"><summary>納入淨空計算的柱樑 <span id="smObstacleCount">0</span></summary><p class="sm-help">只扣除明確選取且幾何完整的障礙物，不自動加入附近物件。</p><div id="smObstacles"></div></details></fieldset>
-        <section id="smPreviewDetails" class="sm-section" hidden><div class="sm-section-heading"><span>04</span><h2>核對預覽結果</h2></div><p id="smPreviewDescription" class="sm-help"></p><ul id="smGeneratedFaces" class="sm-face-summary"></ul><div id="smTimberReview" class="sm-timber-review"></div><div id="smTimberReviewList" class="sm-timber-list" hidden></div><div id="smMissing" class="sm-missing" hidden></div><label class="sm-check sm-confirm"><input id="smConfirmFaces" type="checkbox"><span>我已核對以上各面、朝向與用途</span></label><p class="sm-help">建立時保存這次的明確定義。牆高可事後修改；來源面的修改不會自動套入，可由「修改模型」明選現行來源並核對新舊差異。</p></section>
+        <section id="smPreviewDetails" class="sm-section" hidden><div class="sm-section-heading"><span>04</span><h2>核對預覽結果</h2></div><p id="smPreviewDescription" class="sm-help"></p><ul id="smGeneratedFaces" class="sm-face-summary"></ul><div id="smTimberReview" class="sm-timber-review"></div><div id="smTimberReviewList" class="sm-timber-list" hidden></div><div id="smProfileReview" class="sm-timber-review" hidden></div><div id="smProfileReviewList" class="sm-timber-list" hidden></div><div id="smMissing" class="sm-missing" hidden></div><label class="sm-check sm-confirm"><input id="smConfirmFaces" type="checkbox"><span>我已核對以上各面、朝向與用途</span></label><p class="sm-help">建立時保存這次的明確定義。牆高可事後修改；來源面的修改不會自動套入，可由「修改模型」明選現行來源並核對新舊差異。</p></section>
       </div><footer class="sm-setup-footer"><div id="smStatus" class="sm-status" role="status" aria-live="polite">選一個範例即可開始，無須先畫圖。</div><button id="smReviewJump" class="sm-review-jump" type="button" hidden>查看面清單並確認 ↓</button><div class="sm-footer-actions"><button id="smPreview" class="sm-button" type="button" disabled>更新預覽</button><button id="smCreate" class="sm-button sm-primary" type="button" disabled>建立空間</button></div><div id="smCreatedActions" hidden><button id="smEditHeightButton" class="sm-button sm-edit-height-button" type="button" hidden>修改模型</button><div class="sm-export"><select id="smExportKind" aria-label="要匯出的模型"><option value="space">空間邊界</option><option value="volume">空間實體</option><option value="clearance">扣除後淨空</option><option value="walls">材料牆</option><option value="timbers">角材結構</option></select><button id="smExport" class="sm-button" type="button">匯出 .model.json</button></div><p>保存後可由「檔案 → 開啟 .gcanvas 專案」還原全部模型。</p></div></footer></aside>
     </div>
     <section id="smLibraryPanel" class="sm-library-panel" hidden><header><div><p class="sm-eyebrow">專案空間</p><h2>3D 模型庫</h2><p>模型保存在目前專案中；保存 .gcanvas 後可再次開啟。</p></div><button id="smBackToBuild" class="sm-button" type="button">返回建模</button></header><div id="smLibraryList"></div></section>`;
@@ -76,7 +76,7 @@ window.SpaceModelWorkspace = (() => {
     const inline=document.createElement('div');inline.id='smInlineProjection';
     inline.innerHTML='<label class="sm-field">原圖觀看方向<select id="smProjectionView"><option value="top">俯視（從 +Z 往下看）</option><option value="bottom">仰視（從 −Z 往上看）</option></select></label><p id="smProjectionHelp" class="sm-help"></p><button id="smConfirmProjection" class="sm-button sm-primary" type="button">確認用途與觀看方向</button>';
     $('smProjectionCallout').insertBefore(inline,$('smSetProjection'));
-    const common=$('smPlanSettings').firstElementChild;common.id='smCommonSettings';common.querySelector('h2').textContent='高度、材料與角材';
+    const common=$('smPlanSettings').firstElementChild;common.id='smCommonSettings';common.querySelector('h2').textContent='高度、材料與納入內容';
     const bottomShortcut=document.createElement('button');bottomShortcut.id='smBottomZero';bottomShortcut.className='sm-button sm-bottom-shortcut';bottomShortcut.type='button';bottomShortcut.textContent='牆底設為 0 mm';
     common.insertBefore(bottomShortcut,$('smBottomHelp'));
     $('smBottomHelp').textContent='牆底需另外指定；圖面 z 是原面的位置。牆頂＝牆底＋牆高。';
@@ -89,12 +89,12 @@ window.SpaceModelWorkspace = (() => {
     const material=$('smWallsEnabled').closest('.sm-section');material.classList.add('sm-material-common');material.querySelector('.sm-section-heading').remove();
     material.querySelector('.sm-help').textContent='材料牆向外增加，保留室內淨尺寸；牆厚可修改。';
     const timber=$('smTimberSettings'),holes=$('smHolesWrap');
-    timber.querySelector('.sm-help').textContent='保留角材原尺寸、方向及高度；修改牆高不搬移角材。';
+    timber.querySelector('.sm-help').textContent='角材沿用此面；拉伸件逐條明選同一來源的已定位內容。保留原尺寸、方向及位置，修改牆高不搬移。';
     const boundarySummary=document.createElement('p');boundarySummary.id='smBoundarySummary';boundarySummary.className='sm-boundary-summary';
     const boundaryWarning=document.createElement('p');boundaryWarning.id='smBoundaryWarning';boundaryWarning.className='sm-missing';boundaryWarning.hidden=true;
     common.append(material,timber,boundarySummary,boundaryWarning,holes,boundary);
     const guide=dialog.querySelector('.sm-guide');guide.open=false;guide.querySelector('summary').textContent='操作說明與幾何定義';
-    guide.querySelector('ol').innerHTML='<li>使用自己的面時，在這裡確認平面投影用途與俯視／仰視；或從上方選現成範例。</li><li>指定牆底，牆高預設 3000 mm、材料牆厚 100 mm。可修改設定及角材納入，再按「更新預覽」。</li><li>核對預覽及各面用途，在建立按鈕旁勾選確認、按「建立空間」，最後使用頂列的「保存」保存專案。</li>';
+    guide.querySelector('ol').innerHTML='<li>使用自己的面時，在這裡確認平面投影用途與俯視／仰視；或從上方選現成範例。</li><li>指定牆底，牆高預設 3000 mm、材料牆厚 100 mm。可修改設定及納入清單，再按「更新預覽」。</li><li>核對預覽及各面用途，在建立按鈕旁勾選確認、按「建立空間」，最後使用頂列的「保存」保存專案。</li>';
     guide.querySelector('p').textContent='圖面 z 是原面位置，不代替牆底或牆高。輪廓內代表室內淨空，材料牆向外加厚；FREE 邊及孔洞需明確核對。需要逐邊、底頂用途或另一種建模方式時，可展開對應設定。';
     dialog.querySelector('.sm-setup-scroll').append(guide);
     const review=$('smPreviewDetails'),heading=review.querySelector('.sm-section-heading'),details=document.createElement('details');details.id='smReviewFaces';details.className='sm-advanced sm-review-faces';
@@ -107,13 +107,14 @@ window.SpaceModelWorkspace = (() => {
     const saveNotice=document.createElement('p');saveNotice.id='smSaveNotice';saveNotice.className='sm-save-notice';saveNotice.textContent='已加入目前專案。還需要保存 .gcanvas 檔案，才能在下次開啟。';$('smCreatedActions').prepend(saveNotice);
   }
   organizeSetup();
-  let capabilitiesPromise=null, supportsTimbers=null, supportsEngineering=false;
+  let capabilitiesPromise=null, supportsTimbers=null, supportsProfileRuns=null, supportsEngineering=false;
   function probeCapabilities() {
     if(capabilitiesPromise)return capabilitiesPromise;
     capabilitiesPromise=fetch("/model/capabilities",{cache:"no-store"}).then(async response=>{if(!response.ok)throw new Error("服務版本無法確認");return response.json();}).then(data=>{
       supportsEngineering=data.release==='engineering-spec-v1-20260928' && Array.isArray(data.capabilities) && data.capabilities.includes('engineering-spec/1');
-      supportsTimbers=Array.isArray(data.space_preview_schemas)&&data.space_preview_schemas.includes("geometry-space-preview/2");return supportsTimbers;
-    }).catch(()=>{supportsTimbers=false;return false;}).then(supported=>{
+      supportsTimbers=Array.isArray(data.space_preview_schemas)&&data.space_preview_schemas.includes("geometry-space-preview/2");
+      supportsProfileRuns=Array.isArray(data.space_preview_schemas)&&data.space_preview_schemas.includes("geometry-space-preview/3");return supportsTimbers;
+    }).catch(()=>{supportsTimbers=false;supportsProfileRuns=false;return false;}).then(supported=>{
       const label=supportsEngineering?'工程規格版 2026.09.28':supported?"角材結構建模版":"服務待更新：角材功能未啟用";
       $("smVersion").textContent=supported?'':label;$("smVersion").hidden=supported;
       for(const badge of document.querySelectorAll(".space-model-release")){badge.textContent=supported?'空間建模':label;badge.title=label;}
@@ -123,6 +124,11 @@ window.SpaceModelWorkspace = (() => {
     return capabilitiesPromise;
   }
   async function requireTimberCapability() {if(!await probeCapabilities())throw new Error("目前服務尚未啟用角材結構建模。請使用本次交付的網址或啟動腳本開啟新版；若只要建立空間，可明確取消「一併納入此面角材」後再預覽。");}
+
+  async function requireProfileRunCapability() {
+    await probeCapabilities();
+    if(!supportsProfileRuns)throw new Error("目前服務尚未啟用拉伸件併入空間。請使用新版服務再預覽；這次明選清單不會自動略過。");
+  }
 
   function message(text, kind = "") { $("smStatus").textContent = text; $("smStatus").dataset.kind = kind; }
   function contextId() { return ReferenceWorkspace.context().id; }
@@ -136,7 +142,7 @@ window.SpaceModelWorkspace = (() => {
     if(source.context_id!==contextId()||source.face_key!==faceKey(source.boundary_id)||!sameSourceHistory(source.history_token)){draft=null;return;}
     const controls=[...dialog.querySelectorAll('#smSettings input,#smSettings select,#smMode,#smModelName,#smProjectionView')];
     draft={context_id:source.context_id,face_key:source.face_key,history_token:source.history_token,signature:sourceSignature(source),base_scene:source.base_scene,
-      controls:controls.map(el=>({selector:el.id?'#'+el.id:el.dataset.smEdge!=null?`[data-sm-edge="${el.dataset.smEdge}"]`:el.dataset.smObstacle?`[data-sm-obstacle="${el.dataset.smObstacle}"][value="${el.value}"]`:el.dataset.smFace!=null?`[data-sm-face="${el.dataset.smFace}"]`:el.dataset.smOrientation!=null?`[data-sm-orientation="${el.dataset.smOrientation}"]`:el.dataset.smPurpose!=null?`[data-sm-purpose="${el.dataset.smPurpose}"]`:null,value:el.value,checked:el.checked})).filter(item=>item.selector)};
+      controls:controls.map(el=>({selector:el.id?'#'+el.id:el.dataset.smProfileRun!=null?`[data-sm-profile-run="${el.dataset.smProfileRun}"]`:el.dataset.smEdge!=null?`[data-sm-edge="${el.dataset.smEdge}"]`:el.dataset.smObstacle?`[data-sm-obstacle="${el.dataset.smObstacle}"][value="${el.value}"]`:el.dataset.smFace!=null?`[data-sm-face="${el.dataset.smFace}"]`:el.dataset.smOrientation!=null?`[data-sm-orientation="${el.dataset.smOrientation}"]`:el.dataset.smPurpose!=null?`[data-sm-purpose="${el.dataset.smPurpose}"]`:null,value:el.value,checked:el.checked})).filter(item=>item.selector)};
   }
   function restoreDraft(source) {
     if(!draft)return false;
@@ -156,7 +162,7 @@ window.SpaceModelWorkspace = (() => {
     const previous=entry.faceProjections?.get(entry.ids.get(source.boundary_id))?.find(item=>item.placement_id===source.placement_id)?.projection||null;
     return JSON.stringify(previous)===JSON.stringify(source.projection);
   }
-  function assertSourceHistory() {if(!state.editing&&state.source?.kind==="scene"&&!sameSourceHistory(state.source.history_token))throw new Error("來源讀取後已有編輯、復原或重做。請重新「使用目前面」取得一致的來源與角材，再更新預覽。");}
+  function assertSourceHistory() {if(!state.editing&&state.source?.kind==="scene"&&!sameSourceHistory(state.source.history_token))throw new Error("來源讀取後已有編輯、復原或重做。請重新「使用目前面」取得一致的來源與納入清單，再更新預覽。");}
   // Other face tools may need to reveal the underlying placement editor.
   // Closing owns presentation only; saved models and the core scene stay intact.
   function cancelSourceLoad() {
@@ -286,11 +292,13 @@ window.SpaceModelWorkspace = (() => {
     if (recorded && (line.history_changed !== true || !h || h.frame !== token.frame || h.group !== token.group || h.redo.length ||
       h.undo.length !== Math.min(pin.undoLength + 1, limit) || h.undo.at(-2) !== token.undo)) return false;
     const next = sourceHistoryToken();
-    let dump;
-    try { dump = await api("dump-deidentified"); } catch (_) { return false; }
+    let dump, profiles;
+    try { dump = await api("dump-deidentified"); profiles = await api("section-profile-read"); } catch (_) { return false; }
     if (state.source !== source || source.context_id !== contextId() || source.face_key !== faceKey(source.boundary_id) ||
-      !sameSourceHistory(next) || !dump?.ok || dump.text !== source.base_scene) return false;
+      !sameSourceHistory(next) || !dump?.ok || dump.text !== source.base_scene ||
+      !profiles?.ok || profiles.revision !== line.revision || dump.revision !== line.revision) return false;
     if (recorded) source.history_token = next;
+    source.profileRevision = profiles.revision;
     return true;
   }
   async function activateIdentity() {
@@ -501,6 +509,41 @@ window.SpaceModelWorkspace = (() => {
     $("smTimberEmpty").hidden=!!candidates.length;$("smBackToTimbers").hidden=!!candidates.length||source.kind!=="scene";$("smTimberCandidateDetails").hidden=!candidates.length;
     $("smTimberCandidates").innerHTML=candidates.map(t=>`<li data-sm-timber="${esc(t.id)}"><strong>角材 #${esc(t.id)} · ${esc(timberRole(t.role))}</strong><span>放置面 #${esc(t.placement_id)} · A×B ${esc(t.A)}×${esc(t.B)} mm · 長 ${esc(t.length)} mm</span><small>世界 z：${esc(t.z_min)}～${esc(t.z_max)} mm</small></li>`).join("");
   }
+  function profileReadRevision(read) {
+    if(!read?.ok||!Number.isSafeInteger(read.revision)||read.revision<0||!Array.isArray(read.state?.runs)||!Array.isArray(read.state?.profiles))throw new Error("無法讀取同版斷面拉伸件，請重新使用目前面。");
+    return read.revision;
+  }
+  function sourceProfileRuns(read) {
+    profileReadRevision(read);
+    const profiles=new Map(read.state.profiles.map(p=>[p.value?.id,p.value?.name]));
+    const seen=new Set(),candidates=[];let unavailable=0;
+    for(const run of read.state.runs) {
+      const value=run.value,id=value?.id;
+      if(!Number.isInteger(id)||id<0||id>4294967295||seen.has(id)||!["world","local"].includes(run.coordinateSpace))throw new Error("拉伸件清單不完整，請重新使用目前面。");
+      seen.add(id);
+      if(run.coordinateSpace!=="world"){unavailable++;continue;}
+      if(!profiles.has(value.profileId)||!Number.isSafeInteger(run.length)||run.length<=0||!Array.isArray(run.members)||!["advanced","simple"].includes(value.placement?.kind))throw new Error(`拉伸件 #${id} 的來源資料不完整，請返回斷面工作區檢查。`);
+      const placement=value.placement;
+      candidates.push({id,profileId:value.profileId,profileName:profiles.get(value.profileId)||"未命名斷面",length:run.length,memberCount:run.members.length,
+        placement:placement.kind==="advanced"?"進階世界框架":placement.host?.kind==="space-wall-values"?`${placement.host.sourceDescription}（取值，不隨空間變動）`:`簡易承載面 #${placement.host?.placementId}`});
+    }
+    return {candidates:candidates.sort((a,b)=>a.id-b.id),unavailable};
+  }
+  function renderProfileCandidates(source) {
+    const candidates=source.profileRuns||[];
+    $("smProfileCandidates").innerHTML=candidates.map(run=>`<label class="sm-check sm-profile-choice"><input type="checkbox" data-sm-profile-run="${esc(run.id)}"><span><strong>拉伸件 #${esc(run.id)} · ${esc(run.profileName)}</strong><small>L ${esc(run.length)} mm · ${esc(run.memberCount)} 個構件 · ${esc(run.placement)}</small></span></label>`).join("");
+    $("smProfileUnavailable").textContent=`已定位拉伸件 ${candidates.length} 條，均需逐條明選。未定位 ${source.profileUnavailable||0} 條，沒有世界位置，不能納入。`;
+  }
+  async function checkProfileSource(source,sequence) {
+    const before=await api("section-profile-read");
+    if(sequence!==state.sequence)return false;
+    const dump=await api("dump-deidentified");
+    if(sequence!==state.sequence)return false;
+    const after=await api("section-profile-read");
+    if(sequence!==state.sequence)return false;
+    if(source.context_id!==contextId()||state.source!==source||!sameSourceHistory(source.history_token)||!dump.ok||dump.text!==source.base_scene||dump.revision!==source.profileRevision||profileReadRevision(before)!==source.profileRevision||profileReadRevision(after)!==source.profileRevision)throw new Error("來源面、角材或拉伸件已變更。請重新「使用目前面」取得同一版本，再更新預覽。");
+    return true;
+  }
   function renderOutline(loops) {
     const verts = loops?.[0]?.verts || []; if (!verts.length) { $("smPlanOutline").innerHTML = ""; return; }
     const source=state.source,def=source?.projection;
@@ -524,7 +567,7 @@ window.SpaceModelWorkspace = (() => {
     $("smBottom").value = settings.bottom ?? ""; $("smHeight").value = settings.height ?? DEFAULT_WALL_HEIGHT;
     $("smThickness").value = settings.wall_thickness ?? 100; $("smWallsEnabled").checked = settings.wall_thickness !== null;
     $("smFloor").value = settings.floor || "boundary"; $("smCeiling").value = settings.ceiling || "boundary"; $("smHoles").value = settings.holes || "none";
-    renderTimberCandidates(source);
+    renderTimberCandidates(source);renderProfileCandidates(source);
     $("smEdges").innerHTML = verts.map((p,i) => { const q=verts[(i+1)%verts.length],free=isFree(loops[0].fixity?.[i]),selected=Array.isArray(settings.edges)?settings.edges.includes(i):!free; return `<label class="sm-edge"><input type="checkbox" data-sm-edge="${i}" ${selected?"checked":""}><span>邊 ${i+1}</span><small>${Math.abs(q[0]-p[0])+Math.abs(q[1]-p[1])} mm${free?" · FREE":""}</small></label>`; }).join("");
     renderOutline(loops); $("smHolesWrap").hidden = loops.length < 2; $("smSettings").disabled = false;
     $("smPreviewTitle").textContent = source.name; $("smResultBadge").textContent = "待預覽"; $("smResultBadge").dataset.state = "";
@@ -562,7 +605,9 @@ window.SpaceModelWorkspace = (() => {
       const bid=oc.edit?.bid??(oc.sel?.kind==="face"?oc.sel.id:null);
       const selectedSurface=placementId!=null?oc.surfs.find(s=>s.id===Number(placementId)):bid!=null?feSurf(bid):oc.surfs.length===1?oc.surfs[0]:null;
       if(!selectedSurface) throw new Error("請先返回畫布，開啟要使用的面並完成放置，再由屬性欄建立空間。");
-      const dump=await api("dump-deidentified");
+      const profileBefore=await api("section-profile-read");
+      if(seq!==state.sequence)return;
+      const profileRevision=profileReadRevision(profileBefore),dump=await api("dump-deidentified");
       if(seq!==state.sequence)return;
       if(sourceContextId!==contextId())throw new Error("讀取期間專案已切換。請在目前專案重新選取來源面。");
       if(!dump.ok||typeof dump.text!=="string")throw new Error(dump.error||"無法讀取來源場景。");
@@ -581,8 +626,11 @@ window.SpaceModelWorkspace = (() => {
       const timbers=sourceTimbers(references,surface.id),checkedDump=await api("dump-deidentified");
       if(seq!==state.sequence)return;
       if(sourceContextId!==contextId())throw new Error("讀取角材期間專案已切換，請重新選取來源面。");
-      if(!checkedDump.ok||checkedDump.text!==dump.text||!sameSourceHistory(historyToken))throw new Error("讀取期間來源面或角材已改變，請重新「使用目前面」，以免混用不同版本的資料。");
-      renderSource({kind:"scene",name:"面 #"+surface.boundary,base_scene:dump.text,placement_id:surface.id,boundary_id:surface.boundary,face_key:faceKey(surface.boundary),source_z:surface.origin?.[2],frame:{origin:copy(surface.origin),u:copy(surface.u),v:copy(surface.v)},projection:ReferenceWorkspace.getFaceProjection?.(surface.boundary,surface.id)||null,timbers,history_token:historyToken,loops:boundary.loops,context_id:sourceContextId});
+      const profileAfter=await api("section-profile-read");
+      if(seq!==state.sequence)return;
+      if(sourceContextId!==contextId()||!checkedDump.ok||checkedDump.text!==dump.text||!sameSourceHistory(historyToken)||dump.revision!==profileRevision||checkedDump.revision!==profileRevision||profileReadRevision(profileAfter)!==profileRevision)throw new Error("讀取期間來源面、角材或拉伸件已改變，請重新「使用目前面」，以免混用不同版本的資料。");
+      const profileSelection=sourceProfileRuns(profileAfter);
+      renderSource({kind:"scene",name:"面 #"+surface.boundary,base_scene:dump.text,placement_id:surface.id,boundary_id:surface.boundary,face_key:faceKey(surface.boundary),source_z:surface.origin?.[2],frame:{origin:copy(surface.origin),u:copy(surface.u),v:copy(surface.v)},projection:ReferenceWorkspace.getFaceProjection?.(surface.boundary,surface.id)||null,timbers,profileRuns:profileSelection.candidates,profileUnavailable:profileSelection.unavailable,profileRevision,history_token:historyToken,loops:boundary.loops,context_id:sourceContextId});
       const restored=restoreDraft(state.source);
       setTab("setup");dialog.querySelector('.sm-setup-scroll').scrollTop=0;
       message(restored?"已保留這個來源的未完成設定。請更新預覽並重新核對，再建立空間。":validProjection(state.source.projection)?"設定牆底後即可預覽。若從 z=0 起，可按「牆底設為 0 mm」；牆高與牆厚可修改。":"在這裡確認平面投影用途與觀看方向，再指定牆底，即可預覽空間。");
@@ -634,12 +682,13 @@ window.SpaceModelWorkspace = (() => {
         if(!await mutate([line])) {if(active())message('方向對齊未套用；原放置保持不變。','warning');return;}
         if(!active()||source.context_id!==contextId()||source.face_key!==faceKey(source.boundary_id))return;
         await renderObjects();if(!active())return;
-        const token=sourceHistoryToken(),updated=await api('surfaces'),references=await api('references'),nextDump=await api('dump-deidentified');
+        const token=sourceHistoryToken(),profilesBefore=await api('section-profile-read'),updated=await api('surfaces'),references=await api('references'),nextDump=await api('dump-deidentified'),profilesAfter=await api('section-profile-read');
         if(!active())return;
         const placed=updated.ok&&updated.surfaces?.find(s=>s.id===source.placement_id&&s.boundary===source.boundary_id);
-        if(!sameSourceHistory(token)||!nextDump.ok||!placed||JSON.stringify({origin:placed.origin,u:placed.u,v:placed.v})!==JSON.stringify(candidate))throw new Error('對齊後來源又有變更，請重新「使用目前面」核對。');
+        if(!sameSourceHistory(token)||!nextDump.ok||!placed||JSON.stringify({origin:placed.origin,u:placed.u,v:placed.v})!==JSON.stringify(candidate)||nextDump.revision!==profileReadRevision(profilesBefore)||profileReadRevision(profilesBefore)!==profileReadRevision(profilesAfter))throw new Error('對齊後來源又有變更，請重新「使用目前面」核對。');
         source.base_scene=nextDump.text;source.frame=candidate;source.history_token=token;source.timbers=sourceTimbers(references,source.placement_id);
         const includeTimbers=$('smIncludeTimbers').checked;renderTimberCandidates(source);$('smIncludeTimbers').checked=includeTimbers;
+        const profiles=sourceProfileRuns(profilesAfter);source.profileRuns=profiles.candidates;source.profileUnavailable=profiles.unavailable;source.profileRevision=profilesAfter.revision;renderProfileCandidates(source);
         state.result=null;state.input=null;state.phase='ready';state.previewRevision=-1;state.viewer?.setObjects([]);$('smResultBadge').textContent='方向已對齊，待預覽';
         $('smPreviewDetails').hidden=true;$('smGeneratedFaces').innerHTML='';
         for(const id of ['smVolume','smClearance','smWallVolume','smTimberVolume'])$(id).textContent='—';
@@ -676,6 +725,12 @@ window.SpaceModelWorkspace = (() => {
     assertSourceHistory();
     assertPlanProjection();
     const input={base_scene:state.source.base_scene,mode:$("smMode").value,obstacles:[...dialog.querySelectorAll("[data-sm-obstacle]:checked")].map(e=>({kind:e.dataset.smObstacle,id:Number(e.value)}))};
+    const selectedRuns=[...dialog.querySelectorAll("[data-sm-profile-run]:checked")].map(el=>Number(el.dataset.smProfileRun));
+    if(selectedRuns.length) {
+      if(input.mode!=="plan")throw new Error("拉伸件只支援由平面輪廓建立空間；請明確取消納入，或切回平面方式。");
+      if(selectedRuns.some(id=>!state.source.profileRuns?.some(run=>run.id===id)))throw new Error("拉伸件選擇已失效，請重新使用目前面。");
+      input.profile_runs=selectedRuns.sort((a,b)=>a-b).map(id=>({kind:"profile-run",id}));
+    }
     if(input.mode==="faces") { input.uses=[...dialog.querySelectorAll("[data-sm-face]:checked")].map(e=>({placement_id:Number(e.dataset.smFace),orientation:Number(dialog.querySelector(`[data-sm-orientation="${e.dataset.smFace}"]`).value),purpose:dialog.querySelector(`[data-sm-purpose="${e.dataset.smFace}"]`).value})); if(!input.uses.length)throw new Error("請至少選取一個已放置的面，並核對方向及用途。"); }
     else {input.placement_id=state.source.placement_id; input.settings={bottom:readInteger("smBottom","牆底標高"),height:readInteger("smHeight","牆高",true),edges:[...dialog.querySelectorAll("[data-sm-edge]:checked")].map(e=>Number(e.dataset.smEdge)),floor:$("smFloor").value,ceiling:$("smCeiling").value,holes:$("smHoles").value,wall_thickness:$("smWallsEnabled").checked?readInteger("smThickness","牆厚",true):null};if((state.source.loops?.length||0)>1&&input.settings.holes==='none'){setTab('setup');$('smHoles').scrollIntoView({block:'center'});$('smHoles').focus();throw new Error('此平面含有孔洞，請明確指定「平面孔洞的用途」，不會自動猜成門窗或柱。');}if($("smIncludeTimbers").checked&&(state.source.timbers||[]).length)input.timbers=state.source.timbers.map(t=>({kind:"timber",id:t.id}));}
     return input;
@@ -703,13 +758,18 @@ window.SpaceModelWorkspace = (() => {
       $('smTimberReview').after(list);
       list.innerHTML='<ul>'+timberObjects.map(o=>{const zs=o.vertices_mm.map(p=>p[2]),lo=Math.min(...zs),hi=Math.max(...zs);return `<li><strong>角材 #${esc(o.root?.id)}</strong><span>世界 z：${esc(lo)}～${esc(hi)} mm${typeof s.top==="number"&&hi>s.top?" · 高於空間牆頂，保留原位置":""}</span></li>`;}).join("")+'</ul>';
     }
+    const runCount=s.profile_run_count||0;
+    $("smProfileReview").hidden=!runCount;$("smProfileReviewList").hidden=!runCount;
+    $("smProfileReview").innerHTML=runCount?`本次納入 ${esc(runCount)} 條拉伸件，共 ${esc(s.profile_member_count)} 個構件；材料量 <strong id="smProfileVolume">${esc(s.profile_material_volume_mm3)}</strong> mm³。未扣拉伸件間重疊，不含角材與牆；參考包絡不計材料，原位置不隨牆高改變。未檢查碰撞、貼合或包含。`:"";
+    const members=result.profile_runs?.derived?.objects?.filter(object=>object.role==="geometry")||[];
+    $("smProfileReviewList").innerHTML=runCount?(members.length?'<ul>'+members.map(object=>`<li><strong>拉伸件 #${esc(object.root.id)} · 構件 #${esc(object.member_path[0])}</strong><span>世界 x/y/z：${[0,1,2].map(axis=>`${esc(object.section_profile.bounds_mm[0][axis])}～${esc(object.section_profile.bounds_mm[1][axis])}`).join('、')} mm</span><span>材料量 ${esc(object.section_profile.material_volume_mm3)} mm³ · 來源快照</span></li>`).join("")+'</ul>':'零構件；保留已明選拉伸件，參考包絡不計材料量。'):"";
     $("smResultBadge").textContent=wallMissing?"材料牆缺失 · 未滿足建模要求":s.closed?"已封閉 · 可計算體積":"開放空間 · 體積未定"; $("smResultBadge").dataset.state=wallMissing?"stale":s.closed?"complete":"open";
     $("smPreviewDetails").hidden=false;
     $("smPreviewDescription").textContent=`共 ${s.face_count} 個面${typeof s.bottom==="number"?`，牆底 ${s.bottom} mm、牆頂 ${s.top} mm`:""}。${s.closed?"邊界已封閉。空間體積、扣除後淨空與材料量分別呈現。":"可建立部分空間；尚未封閉，因此沒有確定的內部體積。"}`;
     const purposes=(s.generated_faces||[]).reduce((totals,face)=>{totals[face.purpose]=(totals[face.purpose]||0)+1;return totals;},{});
     const purposeSummary=[purposes.boundary?`${purposes.boundary} 面實際邊界`:null,purposes['calculation-cap']?`${purposes['calculation-cap']} 面計算封口`:null].filter(Boolean).join('、');
     const wallSummary=wallMissing?'要求的材料牆未完整產生':result.walls?`材料牆 ${state.input?.settings?.wall_thickness} mm`:s.wall_diagnostics?.length?'材料牆未能建立':'未建立材料牆';
-    $('smCommitSummary').textContent=`${s.closed?'封閉空間':'開放空間，體積未定'} · ${s.face_count} 個面${typeof s.bottom==='number'?` · z ${s.bottom}～${s.top} mm`:''}。${purposeSummary?purposeSummary+'。':''}${wallSummary}；角材 ${count} 支。`;
+    $('smCommitSummary').textContent=`${s.closed?'封閉空間':'開放空間，體積未定'} · ${s.face_count} 個面${typeof s.bottom==='number'?` · z ${s.bottom}～${s.top} mm`:''}。${purposeSummary?purposeSummary+'。':''}${wallSummary}；角材 ${count} 支${runCount?`，拉伸件 ${runCount} 條 · 來源快照`:""}。`;
     $('smReviewFaces').open=false;
     $("smGeneratedFaces").innerHTML=(s.generated_faces||[]).map(f=>`<li><strong>${esc(f.label||"放置面 #"+f.placement_id)}</strong><span>#${f.placement_id} · ${f.orientation===-1?"−1":"+1"} · ${f.purpose==="calculation-cap"?"僅作體積計算封口":"實際邊界"}</span></li>`).join("");
     const missing=[...(s.missing||[]),...(s.wall_diagnostics||[]).map(d=>typeof d==="string"?d:d.message||d.code||"材料牆尚未確定"),...(wallMissing?['此保存模型要求材料牆，但結果未完整包含材料牆。原記錄保留；不能把它當成已完成材料的模型。']:[])];
@@ -730,28 +790,22 @@ window.SpaceModelWorkspace = (() => {
     const seq=state.sequence,revision=state.revision,source=state.source,sourceContextId=contextId(); state.phase="previewing"; state.createdId=null; $("smConfirmFaces").checked=false; updateActions(); message("正在推導各面、檢查封閉狀態與材料幾何…");
     try {
       if(input.timbers)await requireTimberCapability();
+      if(input.profile_runs)await requireProfileRunCapability();
       if(seq!==state.sequence)return;
       if(sourceContextId!==contextId())throw new Error("目前專案已切換，請重新選取來源。");
       assertSourceHistory();
-      if(!state.editing&&source.kind==="scene") {
-        const dump=await api("dump-deidentified");
-        if(seq!==state.sequence)return;
-        if(sourceContextId!==contextId()||!dump.ok||dump.text!==source.base_scene)throw new Error("來源面或角材已變更。請重新「使用目前面」取得最新來源，再更新預覽。");
-      }
+      if(!state.editing&&source.kind==="scene"&&!await checkProfileSource(source,seq))return;
       const result=await request("/model/space-preview",input);
       if(seq!==state.sequence)return;
       if(sourceContextId!==contextId())throw new Error("目前專案已切換，請重新選取來源。");
-      if(!state.editing&&source.kind==="scene") {
-        const dump=await api("dump-deidentified");
-        if(seq!==state.sequence)return;
-        if(sourceContextId!==contextId()||!dump.ok||dump.text!==source.base_scene)throw new Error("預覽期間來源面或角材已變更。請重新「使用目前面」，這次過期預覽不能建立。");
-      }
+      if(!state.editing&&source.kind==="scene"&&!await checkProfileSource(source,seq))return;
       if(revision!==state.revision){state.phase="ready";message("計算途中設定已變更，請重新更新預覽。","warning");return;}
       assertSourceHistory();
       assertPlanProjection();
       if(!result.summary||!result.space)throw new Error("預覽回應缺少空間或摘要，無法建立。");
       assertWallRequirement(input,result);
       if(input.timbers&&(!result.timbers||result.summary.timber_count!==input.timbers.length))throw new Error("指定角材未完整產生，這次預覽不能建立。請查看來源角材，或明確取消納入後重試。");
+      if(input.profile_runs&&(result.schema!=="geometry-space-preview/3"||!result.profile_runs||result.summary.profile_run_count!==input.profile_runs.length))throw new Error("指定拉伸件未完整產生，這次預覽不能建立。請核對全部明選內容後重試。");
       state.result=result; state.input=input; state.previewRevision=revision; state.phase="preview"; renderResult(result);
       message(state.editing?"新牆高的預覽已完成，原模型仍保持不變。核對面清單並勾選確認後，按「更新空間」。":result.summary.closed?"預覽已完成。核對面清單並勾選確認後，即可建立空間。":"這是合法的開放空間。體積尚未確定；核對面清單後仍可建立。",!result.summary.closed?"warning":"success");
     } catch(e) {if(e.name!=="AbortError"&&seq===state.sequence){state.phase="error";state.previewRevision=-1;$("smResultBadge").textContent="預覽未完成";$("smResultBadge").dataset.state="stale";message(e.message,"error");}}
@@ -767,12 +821,21 @@ window.SpaceModelWorkspace = (() => {
         assertEditableRecord();
         if(seq!==state.sequence||revision!==state.revision||state.previewRevision!==revision)throw new Error("牆高已改變，請更新預覽後再保存。");
         const record={...copy(state.editing.record),input:copy(state.input),result:copy(state.result)};
+        if(record.input.profile_runs) {
+          const editing=state.editing,source=state.source,owner=creationOwner();
+          await GeometryProject.validateSpaceModelHashes(record);
+          assertCreationOwner(owner,owner.evidence.nativeRevision);
+          if(seq!==state.sequence||revision!==state.revision||state.previewRevision!==revision||state.source!==source||state.editing!==editing)
+            throw new Error("設定、預覽或原模型已改變，未更新模型；請重新預覽。");
+          assertEditableRecord();
+        }
         state.committingId=record.id;
         try { ReferenceWorkspace.updateSpaceModel(record.id,record); } finally { state.committingId=null; }
         openRecord(record.id); setTab("setup");
         message(`「${record.name}」牆高已更新為 ${record.input.settings.height} mm。可復原這次修改；請保存專案。`,"success");
         return;
       }
+      if(state.input.profile_runs&&state.source.kind==="scene"&&!await checkProfileSource(state.source,seq))return;
       const source=state.source,owner=creationOwner();let pin=null;
       if(source.kind==="scene") {pin=creationPin(await api("dump-deidentified"),source.base_scene);assertCreationOwner(owner,pin.revision);}
       if(seq!==state.sequence||revision!==state.revision)throw new Error("設定已改變，請更新預覽後再建立。");
@@ -781,6 +844,7 @@ window.SpaceModelWorkspace = (() => {
       assertPlanProjection();
       const record={id:crypto.randomUUID(),name:$("smModelName").value.trim()||"未命名空間",created_at:new Date().toISOString(),source:{kind:state.source.kind,placement_id:state.source.placement_id,boundary_id:state.source.boundary_id,scene_hash:state.result.source_sha256,...(state.input.mode==="plan"?{projection:copy(state.source.projection)}:{})},input:copy(state.input),result:copy(state.result)};
       await attachSourceIdentity(record,owner,pin);
+      if(record.input.profile_runs)await GeometryProject.validateSpaceModelHashes(record);
       assertCreationOwner(owner,pin?.revision??null);
       if(seq!==state.sequence||revision!==state.revision||state.previewRevision!==revision||state.source!==source)throw new Error("設定或預覽已改變，未建立模型；請重新預覽。");
       assertSourceHistory();assertPlanProjection();
@@ -809,7 +873,7 @@ window.SpaceModelWorkspace = (() => {
   }
   function libraryList() {
     const models = ReferenceWorkspace.getSpaceModels?.() || [];
-    $("smLibraryList").innerHTML=models.length?models.map(m=>`<article class="sm-model-card"><div class="sm-model-symbol" aria-hidden="true">▱</div><div><h3>${esc(m.name)}</h3><p>${wallRequirementMissing(m.input,m.result)?"材料牆缺失 · 未滿足要求":m.result.summary.closed?"封閉空間":"開放空間"} · ${m.result.summary.face_count} 個面 · ${esc(metric(m.result.summary.volume_mm3))} · 角材 ${esc(m.result.summary.timber_count||0)} 支</p><small>${esc(new Date(m.created_at).toLocaleString("zh-TW"))} · 來源${m.source.kind==="example"?"範例":"面 #"+m.source.boundary_id}</small></div><div class="sm-model-actions"><button class="sm-button" data-sm-open-model="${esc(m.id)}" type="button">開啟 3D</button><button class="sm-button" ${m.input.mode==="plan"?"data-sm-edit-height":"data-sm-edit-model"}="${esc(m.id)}" type="button">修改模型</button><button class="sm-button sm-danger" data-sm-remove-model="${esc(m.id)}" type="button">移除</button></div></article>`).join(""):"";
+    $("smLibraryList").innerHTML=models.length?models.map(m=>`<article class="sm-model-card"><div class="sm-model-symbol" aria-hidden="true">▱</div><div><h3>${esc(m.name)}</h3><p>${wallRequirementMissing(m.input,m.result)?"材料牆缺失 · 未滿足要求":m.result.summary.closed?"封閉空間":"開放空間"} · ${m.result.summary.face_count} 個面 · ${esc(metric(m.result.summary.volume_mm3))} · 角材 ${esc(m.result.summary.timber_count||0)} 支${m.input.profile_runs?` · 拉伸件 ${m.input.profile_runs.length} 條 · 來源快照`:""}</p><small>${esc(new Date(m.created_at).toLocaleString("zh-TW"))} · 來源${m.source.kind==="example"?"範例":"面 #"+m.source.boundary_id}</small></div><div class="sm-model-actions"><button class="sm-button" data-sm-open-model="${esc(m.id)}" type="button">開啟 3D</button><button class="sm-button" ${m.input.mode==="plan"?"data-sm-edit-height":"data-sm-edit-model"}="${esc(m.id)}" type="button">修改模型</button><button class="sm-button sm-danger" data-sm-remove-model="${esc(m.id)}" type="button">移除</button></div></article>`).join(""):"";
     sectionProfileLibraryList();
   }
   function openLibrary(){void window.SectionProfileWorkspace?.refreshLibrary();clearSnapshotNavigation();if(state.editing)cancelHeightEdit();if(!show(openLibrary))return;libraryList();$("smLibraryPanel").hidden=false;$("smMain").hidden=true;libraryLease=captureLibraryLease();dialog.classList.add("sm-in-library");WorkspaceShell.refresh(dialog);syncLibraryActions();window.dispatchEvent(new Event('space-model-view-changed'));}
@@ -825,7 +889,7 @@ window.SpaceModelWorkspace = (() => {
     state.source={kind:record.source.kind,name:record.name,base_scene:input.base_scene,placement_id:record.source.placement_id,boundary_id:record.source.boundary_id,source_z:s.source_z,projection:record.source.projection?copy(record.source.projection):null,context_id:contextId()};
     state.result=copy(record.result);state.input=copy(input);state.previewRevision=state.revision;state.createdId=id;state.recordSignature=JSON.stringify(record);state.phase="created";state.readonly=true;
     savedContext=ctx;
-    $("smPreviewTitle").textContent=record.name;$("smModelName").value=record.name;$("smSourceSummary").innerHTML=`<strong>${esc(record.name)}</strong><span>已建立的空間 · ${s.face_count} 個面 · 角材 ${s.timber_count||0} 支${input.mode==="plan"?` · 牆高 ${esc(input.settings.height)} mm`:""}</span><small>${input.mode==="plan"?"可用「修改牆高」更新此模型。輪廓沿用保存的定義，不會自動讀取畫布的新變更。":"這是保存的各面定義。可從「已建立空間」的「修改模型」明選現行來源，保留面數、順序、朝向與用途。"}</small>`;
+    $("smPreviewTitle").textContent=record.name;$("smModelName").value=record.name;$("smSourceSummary").innerHTML=`<strong>${esc(record.name)}</strong><span>已建立的空間 · ${s.face_count} 個面 · 角材 ${s.timber_count||0} 支${input.profile_runs?` · 拉伸件 ${input.profile_runs.length} 條 · 來源快照`:""}${input.mode==="plan"?` · 牆高 ${esc(input.settings.height)} mm`:""}</span><small>${input.mode==="plan"?"可用「修改牆高」更新此模型。輪廓沿用保存的定義，不會自動讀取畫布的新變更。":"這是保存的各面定義。可從「已建立空間」的「修改模型」明選現行來源，保留面數、順序、朝向與用途。"}</small>`;
     $("smMode").value=input.mode;$("smSourceSelectWrap").hidden=true;$("smSettings").disabled=true;$("smConfirmFaces").checked=true;toggleMode(false);renderResult(state.result);updateActions();$("smPreview").disabled=true;setTab("preview");message(wallRequirementMissing(input,state.result)?"此保存模型的材料牆缺失，未滿足原建模要求。原記錄保留；可查看已有邊界，修改仍須完整通過預覽。":"已開啟保存的模型。可旋轉查看、匯出模型或保存專案。",wallRequirementMissing(input,state.result)?"warning":"success");
     window.dispatchEvent(new Event('space-model-view-changed'));
   }
@@ -872,6 +936,13 @@ window.SpaceModelWorkspace = (() => {
     if(state.createdId && !(ReferenceWorkspace.getSpaceModels?.()||[]).some(m=>m.id===state.createdId)){clearSnapshotNavigation();state.viewer?.setObjects([]);state.result=null;state.createdId=null;state.previewRevision=-1;state.phase="stale";message("這個模型已移除或復原。請重新選取來源再建立。","warning");updateActions();}
     if(state.source&&state.source.context_id!==contextId()&&state.previewRevision===state.revision){state.previewRevision=-1;message("目前專案已切換。請重新選擇來源，以免使用上個專案的預覽。","warning");updateActions();}
   }
+  function invalidateLiveSource(force=false) {
+    const source=state.source;
+    if(!source||source.kind!=="scene"||state.readonly||state.editing||state.createdId||state.projectionPending||state.phase==="stale")return;
+    if(!force&&source.context_id===contextId()&&(sameSourceHistory(source.history_token)||onlyProjectionChanged(source)))return;
+    state.controller?.abort();state.sequence++;state.previewRevision=-1;state.phase="stale";$("smConfirmFaces").checked=false;
+    message("來源或歷史已變更。請重新「使用目前面」，核對納入清單後再預覽。","warning");updateActions();
+  }
   function exportModel(){const pack=state.result?.[$("smExportKind").value];if(!pack){message("這個結果尚未確定，沒有可匯出的模型。","warning");return;}const a=document.createElement("a"),url=URL.createObjectURL(new Blob([JSON.stringify(pack,null,2)],{type:"application/json"}));a.href=url;a.download=($("smModelName").value.trim()||"空間").replace(/[\\/:*?"<>|]/g,"_")+"-"+$("smExportKind").value+".model.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);message("模型下載已開始；.model.json 保留完整定義與推導資料。","success");}
   $("smActivateIdentity").onclick=()=>{void activateIdentity();};
   $("smClose").onclick=close;$("smTryTimberFrame").onclick=()=>openExample("timber-frame"); $("smTryRectangle").onclick=()=>openExample();$("smTryLShape").onclick=()=>openExample("l-shape");$("smWelcomeTry").onclick=()=>openExample();$("smUseCurrent").onclick=()=>openCurrentFace();$("smLibrary").onclick=openLibrary;$("smBackToBuild").onclick=buildView;
@@ -897,7 +968,9 @@ window.SpaceModelWorkspace = (() => {
   window.addEventListener("space-models-changed",refresh);
   window.addEventListener("face-projections-changed",projectionChanged);
   $("btnSpaceModelTrial")?.addEventListener("click",()=>openExample());$("btnSpaceModels")?.addEventListener("click",openLibrary);
+  window.addEventListener("project-info-changed",()=>invalidateLiveSource());
+  window.addEventListener("geometry-definition-changed",()=>invalidateLiveSource(true));
   probeCapabilities();
   if(["#space-model-v1","#timber-space-v1"].includes(location.hash)) { const deadline=Date.now()+30000; const autoOpen=()=>{if(connection.phase==="ready")openExample(location.hash==="#timber-space-v1"?"timber-frame":"rectangle");else if(Date.now()<deadline)setTimeout(autoOpen,150);};setTimeout(autoOpen,0); }
-  return {openCurrentFace,openLibrary,openExample,close,refresh,snapshotRecord,authorizeSnapshotSchedule,selectSnapshotTimber,snapshot:()=>({phase:state.phase,sourceKind:state.source?.kind||null,resultSummary:state.result?copy(state.result.summary):null,createdId:state.createdId,editingId:state.editing?.record.id||null,supportsTimbers,timberCandidates:copy(state.source?.timbers||[]),stale:state.previewRevision!==state.revision,previewRevision:state.previewRevision,inputRevision:state.revision,viewer:state.viewer?.getState()||null})};
+  return {openCurrentFace,openLibrary,openExample,close,refresh,snapshotRecord,authorizeSnapshotSchedule,selectSnapshotTimber,snapshot:()=>({phase:state.phase,sourceKind:state.source?.kind||null,resultSummary:state.result?copy(state.result.summary):null,createdId:state.createdId,editingId:state.editing?.record.id||null,supportsTimbers,supportsProfileRuns,timberCandidates:copy(state.source?.timbers||[]),profileRunCandidates:copy(state.source?.profileRuns||[]),profileUnavailable:state.source?.profileUnavailable||0,stale:state.previewRevision!==state.revision,previewRevision:state.previewRevision,inputRevision:state.revision,viewer:state.viewer?.getState()||null})};
 })();

@@ -28,8 +28,8 @@ class PanelFillUiContract(unittest.TestCase):
     def contract(self, response, complete=True):
         ui = response["uiContract"]
         self.assertEqual("panel-fill-workspace/1", ui["schema"], "UI_WIRE_SCHEMA")
-        self.assertEqual(["read", "edit-definitions", "read-layout", "read-support"],
-                         ui["supportedActions"], "UI_WIRE_ACTIONS: no PF-4/5/6 promises")
+        self.assertEqual(["read", "edit-definitions", "read-layout", "read-support", "create-from-fill-grid"],
+                         ui["supportedActions"], "UI_WIRE_ACTIONS: PF4A live create only; no snapshot/PF-5/PF-6 promises")
         self.assertEqual(str(response["revision"]), ui["revision"], "UI_WIRE_REVISION_EXACT")
         self.assertIs(ui["completeForScope"], complete, "UI_WIRE_COMPLETENESS")
         if complete:
@@ -43,7 +43,7 @@ class PanelFillUiContract(unittest.TestCase):
         read = self.read()
         ui = self.contract(read)
         self.assertIs(read["complete"], False, "UI_WIRE_GLOBAL_INCOMPLETE")
-        self.assertEqual({"finishSurfaceIds": [1], "fillIds": [1]}, ui["scope"])
+        self.assertEqual({"finishSurfaceIds": [1], "fillIds": [1], "fillGridIds": []}, ui["scope"])
         self.assertEqual("pending", read["layerJudgement"]["status"])
         self.assertEqual([], ui["state"]["derivedPlacements"])
         self.assertEqual(before, self.snapshot(), "UI_WIRE_READ_IS_READONLY")
@@ -78,7 +78,7 @@ class PanelFillUiContract(unittest.TestCase):
         ])
         self.assertIs(preview["valid"], True)
         ui = self.contract(preview)
-        self.assertEqual({"finishSurfaceIds": [1, 2], "fillIds": [1, 2]}, ui["scope"],
+        self.assertEqual({"finishSurfaceIds": [1, 2], "fillIds": [1, 2], "fillGridIds": []}, ui["scope"],
                          "UI_WIRE_SCOPE_UNION: deletion is part of this candidate")
         self.assertEqual([1], [x["id"] for x in ui["before"]["finishSurfaces"]])
         self.assertEqual([2], [x["id"] for x in ui["after"]["finishSurfaces"]])
