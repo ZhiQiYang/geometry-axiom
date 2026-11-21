@@ -57,7 +57,7 @@ test('PDF DrawOPS use viewport plus CTM; curves are excluded without orthogonali
   assert.throws(()=>R.pdfObstacles({fnArray:new Array(200001)},OPS,{transform:[1,0,0,1,0,0]}),/過多/);
 });
 
-const snapOPS={save:10,restore:11,transform:12,constructPath:91,stroke:20,closeStroke:21,setDash:6,beginText:30,endText:31,clip:32,setGState:33,setStrokeRGBColor:34,setTextRenderingMode:35,beginMarkedContent:69,beginMarkedContentProps:70,endMarkedContent:71,beginGroup:76,endGroup:77,beginAnnotation:80,endAnnotation:81};
+const snapOPS={save:10,restore:11,transform:12,constructPath:91,stroke:20,closeStroke:21,fillStroke:24,eoFillStroke:25,closeFillStroke:26,closeEOFillStroke:27,setDash:6,beginText:30,endText:31,clip:32,setGState:33,setStrokeRGBColor:34,setTextRenderingMode:35,beginMarkedContent:69,beginMarkedContentProps:70,endMarkedContent:71,beginGroup:76,endGroup:77,beginAnnotation:80,endAnnotation:81};
 const snapPath=(points,closed=false)=>[0,...points[0],...points.slice(1).flatMap(p=>[1,...p]),...(closed?[4]:[])];
 const snapList=paths=>({fnArray:paths.map(()=>91),argsArray:paths.map(p=>[20,[new Float32Array(p)]])});
 test('manual PDF snap keeps original path endpoints, CTM and viewport; no text, curves, dashed or clipped paths',()=>{
@@ -76,6 +76,52 @@ test('manual PDF snap keeps original path endpoints, CTM and viewport; no text, 
   for(const mode of [4,5,6,7]) {
     const clipped=R.pdfSnapFeatures({fnArray:[10,30,35,31,91,11,91],argsArray:[[],[],[mode],[],paint,[],paint]},snapOPS,viewport);
     assert.equal(clipped.segments.length,4,`glyph clip mode ${mode} persists beyond endText and ends at restore`);
+  }
+  // P432: closePath resets the current point to the subpath start. Its next
+  // line is an open continuation, not another edge of the closed contour.
+  const records=(points,closed,part=1,op=0)=>{
+    const vertices=closed?[...points,points[0]]:points;
+    return vertices.slice(1).map((b,j)=>({a:vertices[j],b,closed,path:`${op}:${part}`,id:`${op}:${part}:${j}`}));
+  };
+  const extract=(data,paintOp=snapOPS.stroke,view=viewport)=>R.pdfSnapFeatures({fnArray:[91],argsArray:[[paintOp,[new Float32Array(data)]]]},snapOPS,view).segments;
+  const square=[[3,5],[27,5],[27,35],[3,35]],squareRecords=records(square,true);
+  assert.deepEqual(features.segments,records([[22,5],[22,53],[112,53],[112,5]],true,1,2),'P432_CLOSE_PATH_BASE_FEATURES');
+  const unchanged=[
+    [snapPath(square),snapOPS.stroke,records(square,false)],
+    [path,snapOPS.stroke,squareRecords],
+    [[...path,4],snapOPS.stroke,squareRecords],
+    [[...path,...snapPath([[80,90],[110,90]])],snapOPS.stroke,[...squareRecords,...records([[80,90],[110,90]],false,3)]],
+    [[0,3,5,4],snapOPS.stroke,[]],
+    [[4,1,3,5],snapOPS.stroke,[]],
+    [[0,3,5,1,27,5,2,31,15,31,25,27,35,4],snapOPS.stroke,[]],
+  ];
+  for(const paintOp of [snapOPS.closeStroke,snapOPS.closeFillStroke,snapOPS.closeEOFillStroke]) {
+    // s/b/b* on a normal contour and on the singleton left after an h must
+    // neither create zero-length targets nor lose/duplicate any source edge.
+    unchanged.push([snapPath(square),paintOp,squareRecords],[path,paintOp,squareRecords],[[0,3,5],paintOp,[]],[[0,3,5,4],paintOp,[]]);
+  }
+  for(const [data,paintOp,expected] of unchanged)assert.deepEqual(extract(data,paintOp),expected,'P432_CLOSE_PATH_BASE_FEATURES');
+  // D06's original "60 200 h" omitted the l. A valid h and an explicit return
+  // line describe the same L; the malformed source must not gain a fake corner.
+  const l=[[60,40],[300,40],[300,140],[220,140],[220,200],[60,200]],page={transform:[1,0,0,-1,0,220]};
+  const topDown=l.map(([x,y])=>[x,220-y]),snapOpts={map:p=>p.map(n=>n*10),zoom:.09};
+  const validH=extract(snapPath(l,true),snapOPS.stroke,page),explicitL=extract(snapPath([...l,l[0]]),snapOPS.stroke,page);
+  assert.deepEqual(validH,records(topDown,true),'P432_D06_VALID_H_SOURCE');
+  assert.deepEqual(explicitL,records([...topDown,topDown[0]],false),'P432_D06_EXPLICIT_L_SOURCE');
+  for(const segments of [validH,explicitL])for(const point of [[600,1800],[600,200]])assert.deepEqual(R.nearestSnap({segments},point,snapOpts).point,point,'P432_D06_VALID_ENDPOINTS');
+  const missingL=extract(snapPath(l.slice(0,-1),true),snapOPS.stroke,page);
+  assert.deepEqual(missingL,records(topDown.slice(0,-1),true),'P432_D06_MISSING_LINE_GEOMETRY');
+  assert.deepEqual(R.nearestSnap({segments:missingL},[600,1800],snapOpts).point,[600,1800],'P432_D06_START_ENDPOINT_EXISTS');
+  assert.equal(R.nearestSnap({segments:missingL},[600,200],snapOpts),null,'P432_D06_NO_INVENTED_ENDPOINT');
+
+  const continuation=[3,55],continued=records([square[0],continuation],false,2);
+  assert.deepEqual(extract([...path,1,...continuation]),[...squareRecords,...continued],'P432_CLOSE_PATH_CONTINUATION');
+  assert.deepEqual(extract([...path,4,1,...continuation]),[...squareRecords,...records([square[0],continuation],false,3)],'P432_CLOSE_PATH_REPEAT_CONTINUATION');
+  // A move starts a new subpath even when h has retained a current point.
+  assert.deepEqual(extract([...path,...snapPath([[80,90],[110,90]])]),[...squareRecords,...records([[80,90],[110,90]],false,3)],'P432_CLOSE_PATH_MOVE_REPLACES_CURRENT');
+  for(const curve of [[2,31,15,31,25,27,35],[3,31,25,27,35]]) {
+    const data=[0,3,5,1,27,5,...curve,4,1,...continuation];
+    assert.deepEqual(extract(data),continued,'P432_CLOSE_PATH_CURVE_STAYS_EXCLUDED');
   }
 });
 test('PDF endpoints use an 8px radial tolerance, crop and exact draft axis; grid cannot steal targets',()=>{
