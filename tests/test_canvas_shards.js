@@ -12,6 +12,7 @@ const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cj
 const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
 const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
 const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
+const r03Extension = require('./diagnostics/r03_framing_canvas_extension.cjs');
 const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');
 const train3Tail = require('./diagnostics/train3_canvas_tail.cjs');
 const workspaceExtension = require('./diagnostics/r396_canvas_extension.cjs');
@@ -21,8 +22,23 @@ const ROOT = path.resolve(__dirname, '..');
 // P353. Project exactly it (plan position and raw golden line) out first, so every
 // main oracle below judges the same plan, golden and raw bytes it was written for.
 const plan = shards.loadPlan(), golden = shards.loadGolden();
-const rawPlan = plan, rawGolden = golden;
-const pf4aBase = {plan: pf4aExtension.projectPlan(plan), golden: pf4aExtension.projectGolden(golden)};
+// R03 (#205): P205 is a later independent measured section after P1284 and before
+// P353 (cdp_test.js: P128 -> P1284 -> P205 -> P353). Project exactly it out first, so
+// the PF-4A and every older oracle below judge the same 99-section input as on main.
+const r03Base = {plan: r03Extension.projectPlan(plan), golden: r03Extension.projectGolden(golden)};
+function projectR03Raw(rawSource) {
+  const raw = String(rawSource).replace(/\r\n/g, '\n');
+  const parsed = JSON.parse(raw), count = parsed.sections.P205;
+  let withoutLine = raw.replace('    "P205": ' + count + ',\n', '');
+  if (withoutLine === raw) withoutLine = raw.replace(/,\n    "P205": \d+\n/, '\n');
+  assert.notEqual(withoutLine, raw, 'R03_P205_RAW_LINE_REQUIRED');
+  const rebased = withoutLine.replace('  "total": ' + parsed.total + ',\n', '  "total": ' + (parsed.total - count) + ',\n');
+  assert.notEqual(rebased, withoutLine, 'R03_TOTAL_LINE_REQUIRED');
+  assert.deepEqual(JSON.parse(rebased), r03Extension.projectGolden(parsed), 'R03_ONLY_P205_PROJECTED');
+  return rebased;
+}
+const rawPlan = r03Base.plan, rawGolden = r03Base.golden;
+const pf4aBase = {plan: pf4aExtension.projectPlan(rawPlan), golden: pf4aExtension.projectGolden(rawGolden)};
 function projectPf4aRaw(rawSource) {
   const raw = String(rawSource).replace(/\r\n/g, '\n');
   const parsed = JSON.parse(raw), count = parsed.sections.P1284;
@@ -62,7 +78,7 @@ function projectR335Raw(rawSource) {
   assert.deepEqual(JSON.parse(rebased), r420Extension.projectGolden(r335Extension.projectGolden(parsed)), 'TRAIN3_ONLY_P335_P420_PROJECTED');
   return rebased;
 }
-function projectWorkspaceGolden(value, rawSource = projectR335Raw(projectPf4aRaw(fs.readFileSync(shards.GOLDEN_PATH, 'utf8')))) {
+function projectWorkspaceGolden(value, rawSource = projectR335Raw(projectPf4aRaw(projectR03Raw(fs.readFileSync(shards.GOLDEN_PATH, 'utf8'))))) {
   assert.equal(value.sections.P1161, 510, 'R396_P1161_MEASURED_ASSERTION_COUNT');
   assert.equal(value.sections.R06, 55, 'R396_R06_FIVE_ASSERTIONS_INCLUDED');
   const old = clone(value);delete old.sections.P1161;old.total -= 510;
@@ -96,7 +112,7 @@ function verifyWorkspaceGoldenRebase() {
   const beforeP1161 = projectWorkspaceGolden(r420Extension.projectGolden(beforeR335.golden));
   assert.equal(beforeP1161.sections.R06, 55, 'R396_R06_PLUS_FIVE_RETAINED');
   assert.equal(beforeP1161.total, 4831, 'R396_R06_PLUS_FIVE_95_TOTAL');
-  const raw = projectR335Raw(projectPf4aRaw(fs.readFileSync(shards.GOLDEN_PATH, 'utf8')));
+  const raw = projectR335Raw(projectPf4aRaw(projectR03Raw(fs.readFileSync(shards.GOLDEN_PATH, 'utf8'))));
   const tampered = raw.replace('    "P360": 13,\n', '    "P360": 13, \n');
   assert.notEqual(tampered, raw, 'R396_BYTE_PROBE_CHANGED');
   assert.throws(() => projectWorkspaceGolden(r420Extension.projectGolden(beforeR335.golden), tampered),
@@ -182,7 +198,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(verdict.summary.total, context.golden.total);
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
-  const beforeR420 = r420Extension.projectGolden(pf4aExtension.projectGolden(context.golden));
+  const beforeR420 = r420Extension.projectGolden(pf4aExtension.projectGolden(r03Extension.projectGolden(context.golden)));
   const beforeWorkspace=projectWorkspaceGolden(r335Extension.projectGolden(beforeR420));
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
   // R20 findings 1-3 add exactly two P76 assertions; project them out too.
@@ -219,7 +235,8 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(Object.keys(beforeWorkspace.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
   assert.equal(Object.keys(pf4aBase.golden.sections).length, 98, 'R420_ONE_ADDITIVE_SECTION: train 3 also keeps P335 and P1161');
   assert.equal(pf4aBase.golden.total, beforeR420.total + r420Extension.P420_ADDED, 'R420_EXACT_COUNT_UNION');
-  assert.equal(context.golden.total, pf4aBase.golden.total + context.golden.sections.P1284, 'PF4A_EXACT_COUNT_UNION_IN_VERDICT');
+  assert.equal(rawGolden.total, pf4aBase.golden.total + rawGolden.sections.P1284, 'PF4A_EXACT_COUNT_UNION_IN_VERDICT');
+  assert.equal(context.golden.total, rawGolden.total + context.golden.sections.P205, 'R03_EXACT_COUNT_UNION_IN_VERDICT');
   assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });

@@ -19,6 +19,7 @@ INPUTS = [
     "geometry-web/scenario-catalog.js", "geometry-web/source-plane.js",
     "geometry-web/evidence-links.js", "geometry-web/rule-case-data.js",
     "geometry-web/room-candidate-draft.js", "geometry-web/cutting-settings.js",
+    "geometry-web/framing-recipes.js",
     "geometry-app/application.js", "geometry-templates/woodworking/frontend.js",
     "geometry-templates/woodworking/cutting.js", "geometry-core/interval-allocation.js",
     "geometry-web/reference-display.js", "geometry-web/scenario-snapshots.js",
