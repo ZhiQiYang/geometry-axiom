@@ -3387,6 +3387,7 @@ function feApply(keepFit = false) {
   if (zl) zl.textContent = Math.round(fe.zoom * 100) + "%";
   feUpdateBackgroundGrid();
   fePlaceOverlays();
+  feLenShow();
 }
 /* B4:縮放變動後要重選格距 → transform + 重繪 */
 function feApplyZoom(keepFit = false) { feApply(keepFit); drawFaceEditor(); }
@@ -4481,6 +4482,7 @@ function cxRender(h, x, y, alt, shift) {
   }
   if (h.markHTML !== marks) { h.marks.innerHTML = marks; h.markHTML = marks; }
   if (h.glyphHTML !== glyph) { h.cur.innerHTML = glyph; h.glyphHTML = glyph; }
+  if (h === cxUI.fe) feLenShow();
 }
 function cxMove(key, ev) {
   const h = cxUI[key];
@@ -6428,8 +6430,37 @@ function feLenShow() {
   const c = d.cur || d.pts[d.pts.length - 1];
   inp.hidden = false;
   inp.value = fe.lenBuf;
-  inp.style.left = (c[0] * fe.zoom + fe.panX + 12) + "px";
-  inp.style.top = (c[1] * fe.zoom + fe.panY - 30) + "px";
+  /* The typed value is a readonly mirror, not another source of geometry.
+     Keep its original cursor anchor where possible, but reserve its complete
+     painted rectangle beside the first-use lesson and the real cursor glyph.
+     Raising z-index would cover the lesson; hiding it would lose first-use help. */
+  const viewport = $("faceEditorViewport").getBoundingClientRect();
+  const size = inp.getBoundingClientRect();
+  if (!viewport.width || !viewport.height) return;
+  const gap = 8, desired = { left:c[0] * fe.zoom + fe.panX + 12, top:c[1] * fe.zoom + fe.panY - 30 };
+  const maxLeft = Math.max(0, viewport.width - size.width - gap);
+  const maxTop = Math.max(0, viewport.height - size.height - gap);
+  const bound = (value, maximum) => Math.max(Math.min(gap, maximum), Math.min(value, maximum));
+  const blockers = [];
+  for (const node of $("faceEditorViewport").querySelectorAll('#faceCanvasHint, .cx-layer[data-cx-host="fe"] .cx-cur, .face-canvas-controls, .face-coordinate-readout, #feSelectionSummary')) {
+    const style = getComputedStyle(node), r = node.getBoundingClientRect();
+    if (node.hidden || style.display === "none" || style.visibility === "hidden" || !r.width || !r.height) continue;
+    blockers.push({left:r.left-viewport.left, right:r.right-viewport.left, top:r.top-viewport.top, bottom:r.bottom-viewport.top});
+  }
+  const xs = [desired.left, gap, maxLeft], ys = [desired.top, gap, maxTop];
+  for (const r of blockers) {
+    xs.push(r.left-size.width-gap, r.right+gap);
+    ys.push(r.top-size.height-gap, r.bottom+gap);
+  }
+  let position = {left:bound(desired.left,maxLeft), top:bound(desired.top,maxTop)}, distance = Infinity;
+  for (const x of xs) for (const y of ys) {
+    const left = bound(x,maxLeft), top = bound(y,maxTop);
+    if (blockers.some(r => left < r.right+gap && left+size.width > r.left-gap && top < r.bottom+gap && top+size.height > r.top-gap)) continue;
+    const score = (left-desired.left)**2 + (top-desired.top)**2;
+    if (score < distance) { position = {left,top}; distance = score; }
+  }
+  inp.style.left = position.left + "px";
+  inp.style.top = position.top + "px";
 }
 
 /* diff#12(§8):Enter 把 typed 套成目前段長(軸向取游標側)，取代舊版 feRedrawApplyLen
