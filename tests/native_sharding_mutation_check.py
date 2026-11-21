@@ -148,20 +148,22 @@ if mode == 'r03-provenance-baseline' or mode.startswith('R03_'):
              native_shards.ADDED_PF4A_EVIDENCE))).hexdigest()
     elif mode == 'R03_DROP_SUITE_EVIDENCE':
         target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
+        # R386 (same as R12/PF-4A above): the registry would otherwise mask the
+        # dropped historical source; remove exactly those suites from the guard.
+        drop_added_suites(native_shards.added_r03_suite_costs())
         native_shards.added_r03_suite_costs = lambda: {}
     elif mode == 'R03_DROP_EXPECTED_ENTRIES':
         target = 'test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once'
-        original_expected_read = pathlib.Path.read_text
-        def missing_r03_expected(path, *args, **kwargs):
-            value = original_expected_read(path, *args, **kwargs)
-            if path.resolve() == run_all.EXPECTED_FILE.resolve():
-                data = json.loads(value)
-                for name in ('py:test_framing_template', 'node:framing_recipe_project_store',
-                             'node:framing_template_session', 'node:framing_template_browser_scope'):
-                    data['suites'].pop(name)
-                value = json.dumps(data)
-            return value
-        pathlib.Path.read_text = missing_r03_expected
+        # R386: the retired run_all.expected.json is no longer read; intercept
+        # run_all.load_expected exactly like R17/R12/PF-4A's withdrawals.
+        original_expected = run_all.load_expected
+        def missing_r03_expected():
+            data, error = original_expected()
+            for name in ('py:test_framing_template', 'node:framing_recipe_project_store',
+                         'node:framing_template_session', 'node:framing_template_browser_scope'):
+                data['suites'].pop(name)
+            return data, error
+        run_all.load_expected = missing_r03_expected
     elif mode == 'R03_CONTAMINATE_HISTORICAL_UNIVERSE':
         target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
         original_partition = native_shards.partition_suites
