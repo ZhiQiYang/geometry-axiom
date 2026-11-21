@@ -1,0 +1,146 @@
+{
+ "steps": [
+  {
+   "name": "01-face",
+   "dumpLen": 532,
+   "gridLines": [],
+   "status": "選擇主支方向，再輸入格線位置。尚未填入格線資料。"
+  },
+  {
+   "name": "02-main-draft-preview",
+   "dumpLen": 532,
+   "gridLines": [],
+   "status": "草稿預覽 · u 3 條 · v 1 條 · 主支 2：3 條 · 副支 3：1 條。尚未套用。",
+   "previewLines": 0
+  },
+  {
+   "name": "03-main-reset",
+   "dumpLen": 532,
+   "gridLines": [],
+   "status": "尚未填入格線資料。請在至少一軸輸入座標，或設定等差間距／面材與縫。 請先選擇主支橫向或直向。"
+  },
+  {
+   "name": "04-main-created",
+   "dumpLen": 593,
+   "gridLines": [
+    "grid 1 on 1 main-along v u 1000 2000 3000",
+    "grid 1 on 1 v 1500"
+   ],
+   "status": "已套用 · u 3 條 · v 1 條。沒有待套用的變更。",
+   "toasts": [
+    "尚未檢查",
+    "網格已套用。專案保存狀態請見上方。",
+    "有未保存的變更",
+    "已套用 · u 3 條 · v 1 條。沒有待套用的變更。",
+    "尚未檢查"
+   ]
+  },
+  {
+   "name": "05-subgrid-draft-preview",
+   "dumpLen": 593,
+   "gridLines": [
+    "grid 1 on 1 main-along v u 1000 2000 3000",
+    "grid 1 on 1 v 1500"
+   ],
+   "status": "草稿預覽 · u 1 條 · v 1 條 · 全部副支 3。尚未套用。"
+  },
+  {
+   "name": "06-subgrid-cancel",
+   "dumpLen": 593,
+   "gridLines": [
+    "grid 1 on 1 main-along v u 1000 2000 3000",
+    "grid 1 on 1 v 1500"
+   ],
+   "status": "已套用 · u 3 條 · v 1 條。沒有待套用的變更。"
+  },
+  {
+   "name": "07-subgrid-created",
+   "dumpLen": 661,
+   "gridLines": [
+    "grid 1 on 1 main-along v u 1000 2000 3000",
+    "grid 1 on 1 v 1500",
+    "subgrid 2 parent 1 cell u min line:0 v line:0 max divisions u 2 v 2"
+   ],
+   "status": "已套用，沒有待套用的子格變更。"
+  },
+  {
+   "name": "08-undo1",
+   "dumpLen": 593,
+   "gridLines": [
+    "grid 1 on 1 main-along v u 1000 2000 3000",
+    "grid 1 on 1 v 1500"
+   ],
+   "status": "已套用 · u 3 條 · v 1 條。沒有待套用的變更。"
+  },
+  {
+   "name": "09-undo2",
+   "dumpLen": 532,
+   "gridLines": [],
+   "status": "選擇主支方向，再輸入格線位置。尚未填入格線資料。"
+  },
+  {
+   "name": "10-redo1",
+   "dumpLen": 593,
+   "gridLines": [
+    "grid 1 on 1 main-along v u 1000 2000 3000",
+    "grid 1 on 1 v 1500"
+   ],
+   "status": "已套用 · u 3 條 · v 1 條。沒有待套用的變更。"
+  },
+  {
+   "name": "11-redo2",
+   "dumpLen": 661,
+   "gridLines": [
+    "grid 1 on 1 main-along v u 1000 2000 3000",
+    "grid 1 on 1 v 1500",
+    "subgrid 2 parent 1 cell u min line:0 v line:0 max divisions u 2 v 2"
+   ],
+   "status": "已套用，沒有待套用的子格變更。"
+  }
+ ],
+ "mainDraftZeroWrite": true,
+ "mainResetZeroWrite": true,
+ "mainImpact": false,
+ "mainDiff": [
+  "grid 1 on 1 main-along v u 1000 2000 3000",
+  "grid 1 on 1 v 1500"
+ ],
+ "subgridNewEnabled": true,
+ "cellChoices": [
+  " 選一格，或在畫布點選",
+  "min|line:0|min|line:0 u 0–1000 · v 0–1500 mm",
+  "min|line:0|line:0|max u 0–1000 · v 1500–3000 mm",
+  "line:0|line:1|min|line:0 u 1000–2000 · v 0–1500 mm",
+  "line:0|line:1|line:0|max u 1000–2000 · v 1500–3000 mm",
+  "line:1|line:2|min|line:0 u 2000–3000 · v 0–1500 mm",
+  "line:1|line:2|line:0|max u 2000–3000 · v 1500–3000 mm",
+  "line:2|max|min|line:0 u 3000–4000 · v 0–1500 mm",
+  "line:2|max|line:0|max u 3000–4000 · v 1500–3000 mm"
+ ],
+ "subScope": "父格 u 0–1000 · v 1500–3000 mm。子線裁切到格內的有效面；孔內不顯示。",
+ "subSpacing": "u 間距 500 mm · 1 條；v 間距 750 mm · 1 條",
+ "subDraftZeroWrite": true,
+ "subCancelZeroWrite": true,
+ "subImpact": false,
+ "subDiff": [
+  "subgrid 2 parent 1 cell u min line:0 v line:0 max divisions u 2 v 2"
+ ],
+ "layerRows": [
+  "main:主網格 1 主支沿 v · u×3 v×1 · 0 支角材引用 ✕",
+  "subgrid:子網格 2 · 主格 1 局部等分 · 副支 3 · u×1 v×1 · 0 支角材引用 ✕"
+ ],
+ "history": {
+  "u1EqMain": true,
+  "u2EqFace": true,
+  "y1EqMain": true,
+  "y2EqSub": true
+ },
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopenEqual": true,
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
