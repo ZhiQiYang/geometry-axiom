@@ -80,6 +80,7 @@ PY_NEEDS = {
     'test_panel_fill_host': ['bridge'],
     'test_panel_fill_grid_source': ['bridge'],
     'test_panel_fill_grid_transaction': ['bridge'],
+    'test_panel_fill_builder': ['bridge'],
     'test_panel_fill_support': ['bridge', 'pf3-algorithm'],
     'test_section_profile_modeling': ['bridge', 'model-base'],
     'test_section_profile_mutation_check': [],
