@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/framing-template/core-probe/mutation_check.py",
+    "reason": "Dedicated framing-template core-probe mutation harness mutation_check.py: copies core-probe and the golden to a temporary directory, applies one mutation at a time and requires test_gen_scenes.py to turn red; pure Python, no native core and no WSL; test tooling, not a product-loaded module or current product entry point.",
+    "sha256": "2c4d05e713b63677b2b8333ee388c0c61f9130d4dc8836c1a571b656f052f421"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

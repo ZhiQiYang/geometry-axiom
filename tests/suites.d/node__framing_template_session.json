@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_framing_template_session.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_framing_template_session.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 12,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_framing_template_session.js"
+  ],
+  "name": "node:framing_template_session",
+  "order": "legacy/000264",
+  "schema": "geometry-native-suite/1"
+}

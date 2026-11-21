@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_draw_annotation.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_draw_annotation.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 7,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_draw_annotation.js"
+  ],
+  "name": "node:draw_annotation",
+  "order": "legacy/000281",
+  "schema": "geometry-native-suite/1"
+}

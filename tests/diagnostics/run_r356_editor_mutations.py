@@ -51,7 +51,7 @@ SOURCE_FILES = (
     "geometry-web/context-menu-shell.js", "geometry-web/cdp_test.js",
     "geometry-web/timber_reuse_test.js", "geometry-web/cdp_helpers.js",
     "geometry-web/cdp_floor.js", "geometry-web/canvas_shards.js",
-    "geometry-web/canvas_shards.json", "geometry-web/cdp_sections.golden.json",
+    "geometry-web/canvas_registry.js",
     "geometry-web/transport_failure_trace.js", "geometry-web/start_local.py",
     "geometry-web/runtime_version.py", "tests/binaries.py", EXTRACTOR, SELF,
 )
@@ -352,7 +352,10 @@ def main():
     require(not args.mutation or len(args.mutation) == len(chosen), "duplicate mutation selections are refused")
     # This file is only fingerprinted. It is never opened for writing or updated.
     ledger = "tests/mutants_results.json"
-    names = (*SOURCE_FILES, ledger)
+    registry_sources = json.loads(subprocess.check_output([
+        args.node, "-e", "process.stdout.write(JSON.stringify(require('./geometry-web/canvas_registry.js').load(process.cwd()).sourceFiles));"
+    ], cwd=ROOT, text=True))
+    names = tuple(dict.fromkeys((*SOURCE_FILES, *registry_sources, ledger)))
     before_all = fingerprints(names)
     report = {"schema": "r356-editor-routing-mutations/1", "root": str(ROOT),
               "head": git("rev-parse", "HEAD"), "baseSources": before_all,

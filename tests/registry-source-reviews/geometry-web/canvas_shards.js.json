@@ -1,0 +1,17 @@
+{
+  "after": {
+    "hashMode": "lf",
+    "path": "geometry-web/canvas_shards.js",
+    "reason": "Dedicated CI test driver canvas_shards.js: canvas browser-shard plan, cut-point storage handoff and complete-coverage receipt verifier, loaded only by cdp_test.js shard mode, the CI complete-coverage job and tests/test_canvas_shards.js; not loaded by product runtime or served application entry points.",
+    "sha256": "94e8e74570fbf6c98715f990a1db2ce100a628e9be13985b4b56b7bef636a29a"
+  },
+  "before": {
+    "hashMode": "lf",
+    "path": "geometry-web/canvas_shards.js",
+    "reason": "Dedicated CI test driver canvas_shards.js: canvas browser-shard plan, cut-point storage handoff and complete-coverage receipt verifier, loaded only by cdp_test.js shard mode, the CI complete-coverage job and tests/test_canvas_shards.js; not loaded by product runtime or served application entry points.",
+    "sha256": "9a3cb47e81fe933fcf1af90511b5c515b364dce1b0a10f3038d8ec5050afb7b9"
+  },
+  "path": "geometry-web/canvas_shards.js",
+  "schema": "geometry-registry-source-review/1",
+  "sourceLfBytes": 21158
+}

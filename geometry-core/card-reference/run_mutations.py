@@ -27,8 +27,13 @@ from mutations import MUTATIONS
 
 
 def registered_test_count():
-    """Number of GridCardReference tests registered in tests/run_all.expected.json."""
-    suite=json.loads((ROOT/'tests/run_all.expected.json').read_text(encoding='utf-8'))['suites']['py:test_grid_card_reference']
+    """Exact count from the active registry (legacy only before migration)."""
+    sys.path.insert(0, str(ROOT / 'tests'))
+    import run_all
+    expected, error = run_all.load_expected()
+    if error:
+        raise RuntimeError(error)
+    suite = expected['suites']['py:test_grid_card_reference']
     if suite.get('mode')!='count' or suite.get('unit')!='test': raise RuntimeError('py:test_grid_card_reference is not a test count')
     return suite['count']
 

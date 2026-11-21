@@ -1,0 +1,58 @@
+name: Canvas section measurement
+
+on:
+  workflow_dispatch:
+    inputs:
+      section:
+        description: Declared independent section ID (capture only; acceptance remains false)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+      GEOMETRY_FEEDBACK_DIR: /tmp/geometry-section-measure-feedback
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+      PYTHONDONTWRITEBYTECODE: '1'
+      SECTION_ID: ${{ inputs.section }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Build current native executables
+        run: npm run build
+      - name: Install Chinese fonts
+        timeout-minutes: 8
+        uses: ./.github/actions/install-cjk-fonts
+      - name: Capture actual module count and elapsed time
+        shell: bash
+        run: |
+          ulimit -s 16384
+          test -x "$GEOMETRY_CHROME"
+          python3 -u geometry-web/start_local.py --port 18839 > "$RUNNER_TEMP/section-server.log" 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if ! kill -0 "$server" 2>/dev/null; then cat "$RUNNER_TEMP/section-server.log"; exit 1; fi
+            if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          python3 -B .github/scripts/canvas_section_measure.py --section "$SECTION_ID" --out "$RUNNER_TEMP/canvas-section-measure"
+      - name: Preserve original measurement (never acceptance)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: canvas-section-${{ inputs.section }}
+          path: ${{ runner.temp }}/canvas-section-measure/
+          if-no-files-found: error
+          retention-days: 14

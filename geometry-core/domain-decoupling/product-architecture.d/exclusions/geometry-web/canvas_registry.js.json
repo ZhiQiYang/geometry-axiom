@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/canvas_registry.js",
+    "reason": "Dedicated CI test driver canvas_registry.js: deterministic canvas section registry and source-closure loader used by cdp_test.js, canvas_shards.js and registry tests; not loaded by product runtime or served application entry points.",
+    "sha256": "1fb7dde7f4ffc9528f176750e2172ee9b917fc6789488658f1b6e121fb23d822"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

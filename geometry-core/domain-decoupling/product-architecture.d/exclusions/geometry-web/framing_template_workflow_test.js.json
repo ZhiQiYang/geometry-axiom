@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/framing_template_workflow_test.js",
+    "reason": "R03 P205 browser acceptance driver loaded only by cdp_test.js; tests actual DOM, native receipts, archive download and cold open, never a product runtime dependency",
+    "sha256": "2827245bbfd6208d01c4ebccee91ca9cb2fd9d8ce46cc08ee0c1ec62bfaee291"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

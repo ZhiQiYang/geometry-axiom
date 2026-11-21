@@ -1,0 +1,17 @@
+{
+  "after": {
+    "hashMode": "lf",
+    "path": "geometry-core/card-reference/run_mutations.py",
+    "reason": "Dedicated GEO-262 native mutation runner run_mutations.py; test tooling, not a product-loaded module.",
+    "sha256": "f431a0f7d6a8f49c9a00f305608dc49347e9d7a4e0b099707edd5630c868d8f5"
+  },
+  "before": {
+    "hashMode": "lf",
+    "path": "geometry-core/card-reference/run_mutations.py",
+    "reason": "Dedicated GEO-262 native mutation runner run_mutations.py; test tooling, not a product-loaded module.",
+    "sha256": "d3282011a7648ef0eb8704517cd49c51a76ae75155f1870e0273f023e189165e"
+  },
+  "path": "geometry-core/card-reference/run_mutations.py",
+  "schema": "geometry-registry-source-review/1",
+  "sourceLfBytes": 8902
+}

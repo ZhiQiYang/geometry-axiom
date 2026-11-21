@@ -1,0 +1,22 @@
+{
+  "execution": {
+    "cmd": [
+      "tests/test_document_cases.js"
+    ],
+    "extra_env": {},
+    "kind": "node-script",
+    "label": "tests/test_document_cases.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "exit-code-only"
+  },
+  "files": [
+    "tests/test_document_cases.js"
+  ],
+  "name": "node:document_cases",
+  "order": "legacy/000256",
+  "schema": "geometry-native-suite/1"
+}
