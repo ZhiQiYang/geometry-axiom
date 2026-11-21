@@ -398,6 +398,8 @@ PR #419（需求帳 R17 host／App 第一片）新增四個 native suite。原�
 
 ## R12／Q38j 七套的獨立原收據（PR #430，2026-11-17）
 
+> 本節保留 R12 合流前分支的來源、模型與驗證紀錄；當前兩組聯集以文末「R12 與 PF-4A 合流」為準。
+
 修補基底 `d1738db971b05311efa4289443c73942273c8a37` 已普通 merge main
 `0c796e308da770041dfb41111562d594a389671a`。新增的
 `native_shard_added_receipts_r12.json` 從正式 [Geometry 44006220200](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44006220200)
@@ -450,3 +452,88 @@ AssertionError 紅；原先完整量測缺七名的 `R348_MEASURED_PROFILE_COVER
 各取 baseline／withdrawn／restored，要求指定
 正常 AssertionError 的 **0／1／0**、零 error／skip。35／5 分鐘 workflow 時限、每子程序 60 秒、
 並行上限 2 與真收據 `<1200` 全部不變。
+
+## PF-4A 新套件的第四份獨立來源（PR #429，2026-11-17）
+
+> 本節保留 PF-4A 合流前分支的來源、模型與驗證紀錄；當前兩組聯集以文末「R12 與 PF-4A 合流」為準。
+
+PR #429（需求帳 R02 PF-4A）新增兩個 native suite：`py:test_panel_fill_grid_transaction`、`node:panel_fill_grid_ui`。上述五份成本來源逐 byte 不變；另新增 `native_shard_added_evidence_pf4a.json`，沿 R17 做法用同一個 `_added_evidence_costs()` 驗欄位、來源、全通過及成本上界，讀取時才合流（現行 registry **330 套**）。不得與前四份任何一份重名（`PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES`）。`profile_digest()` 改為六份 LF bytes 以 NUL 分隔，順序固定為 timings、R380、R14、R396 收據、R17、PF-4A，值為 `6d4f3930ba7957f131813528473597f7fdc4142e4d48a83deb959beef62f11ca`。
+
+來源：Geometry [44014636612](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44014636612)，PR head `ba9d4fa3424a947ffd2fc6a8904029c497f76a6e`，實際 checkout `d7c314b2bd9f37be14fe630fc2da09fcdf3b4443`（pull/429/merge，parent 為 main `0c796e30` 與該 head）。該次 native 4/6、5/6 整體失敗，原因是兩個新 suite 尚未登記（另有舊帳本 stale 與兩個既有計數漂移）；兩個 suite 本身均 13/13 通過。
+
+| suite | job | 發現／通過 | 原摘要秒數 | 規劃上界 |
+|---|---|---:|---:|---:|
+| `py:test_panel_fill_grid_transaction` | 133809508770 | 13／13 | 6.4 | 10000 ms |
+| `node:panel_fill_grid_ui` | 133809508659 | 13／13 | 0.1 | 2000 ms |
+
+上界是保守規劃值，不是觀測值。同一 suite 在較早的 run 44004069347（head `4e108857`，job 133774968143）摘要為 5.2 秒；本來源採 exact-head 的 6.4 秒。
+
+歷史回放範圍不變：main 317 套、R379 318 套、R396 321 套都排除 PF-4A 兩套；正式六片驗全部 330 套、四輪情境與逐套最大包絡，同樣嚴格小於 1200000ms。`py:test_unittest_runner` 仍是 17 項，只在既有 method 內加斷言：`PF4A_COMPLETE_EXPECTED_REGISTRY`（兩套各 13）、`PF4A_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS`、`PF4A_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS`、`PF4A_SOURCE_IDENTITY`、`PF4A_SOURCE_OBSERVATIONS`、`PF4A_ADDED_SUITE_OBSERVED_UPPER_BOUNDS`、`PF4A_PROFILE_DIGEST_BINDS_PF4A_SOURCE`，以及 duplicate／missing-job／understated-upper（6400ms＝觀測值，不得通過）／unverified-source／failed-suite／missing-suite 與三份 cross-source duplicate 的拒收。
+
+新增具名撤回 6 組（共 56 組）：`PF4A_DROP_SUITE_EVIDENCE`、`PF4A_DROP_ONE_SUITE`、`PF4A_DROP_EXPECTED_ENTRIES`、`PF4A_OMIT_SOURCE_FROM_DIGEST`、`PF4A_TAMPER_SOURCE_IDENTITY`、`PF4A_ACCEPT_UNVALIDATED_EVIDENCE`。既有改寫成本聯集或 digest 的撤回（R379／R396／R17）都補帶 PF-4A 來源，仍只拿掉自己指名的那一份。
+
+以下是四輪 315 套實測加十五項 added 規劃上界的整數毫秒模型除以 1000，**不是正式六片收據**。六片套數 **1／58／74／64／66／67**（transaction 在片 2、grid UI 在片 6）：
+
+| 成本情境 | 片1 | 片2 | 片3 | 片4 | 片5 | 片6 |
+|---|---:|---:|---:|---:|---:|---:|
+| 43162989157 | 348.065 | 465.603 | 579.495 | 568.789 | 563.625 | 575.617 |
+| 43150038015 | 688.444 | 385.938 | 561.618 | 559.076 | 501.668 | 490.580 |
+| 43177620127 | 755.187 | 466.403 | 529.599 | 559.655 | 531.100 | 518.262 |
+| 43271258668 | 701.108 | 580.800 | 580.800 | 580.799 | 580.799 | 580.800 |
+| 每suite四輪最大包絡 | 755.187 | 620.003 | 670.955 | 647.853 | 685.560 | 651.252 |
+| 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 770.003 | 820.955 | 797.853 | 835.560 | 801.252 |
+
+本機（Linux，Python 3.11）實跑：`test_profile_balances_measured_work`、`test_added_suite_provenance_rejects_named_mutations`、R14／R396 歷史回放及 receipt／path-scope 相關方法全部通過；56 組具名撤回中，以非 registry baseline 為對照的 41 組逐一 0／1／0（正常 AssertionError、0 error、0 skip、指定 marker）。其餘 15 組（含 `PF4A_DROP_EXPECTED_ENTRIES` 與原 drop-one-suite）以 `test_partition_covers_actual_suite_registry_once` 為對照，該方法在 `run_all.expected.json` 由完整跑 `--update-expected` 登記新 suite 之前必紅（`PF4A_COMPLETE_EXPECTED_REGISTRY`），須在採入新突變帳本、產生 expected 之後由正式 CI 證明。時限、六片 workflow 與預算都不改。
+
+
+## R12 與 PF-4A 合流（PR #429，2026-11-20）
+
+合流輸入固定為 PR head `59a54e75ffb335b29f44a937457043923601b834` 與 main
+`f5be8dd8c57173fdbdb008c5a6bcf6fc14ef79ef`，共同基底為
+`0c796e308da770041dfb41111562d594a389671a`。前兩節各自的 330／335 套、六份
+來源與 56 組撤回屬合流前歷史，不改寫成這次執行的新收據。
+
+七份來源的原 bytes 全部保留；載入與 digest 的次序固定為
+timings、R380、R14、R396 receipts、R17、R12、PF-4A。`profile_digest()` 仍只將
+各份 LF bytes 以 NUL 分隔後取 SHA-256，合流值為
+`de99f76d348b98ed99f3dc707015d75c9c48e42928d7ba2a60974c691b134793`。
+R12 沿用 `_added_receipt_costs()`，PF-4A 沿用 `_added_evidence_costs()`；不因格式
+不同而略過驗證。後加入的 PF-4A 必須同時與 R12 及全部舊來源驗重，聯集不得覆寫同名套件。
+
+當前完整 registry 是 **337 套＝315 套凍結歷史＋22 套獨立 added**，六片套數為
+**1／66／64／67／67／72**。PF-4A transaction 屬片 3，grid UI 屬片 5。
+下表以原整數毫秒模型除以 1000，**不是新的正式六片執行收據**：
+
+| 成本情境 | 片1 | 片2 | 片3 | 片4 | 片5 | 片6 |
+|---|---:|---:|---:|---:|---:|---:|
+| 43162989157 | 348.065 | 588.330 | 690.312 | 687.761 | 693.902 | 697.824 |
+| 43150038015 | 688.444 | 519.991 | 680.893 | 671.639 | 569.887 | 661.470 |
+| 43177620127 | 755.187 | 565.788 | 691.409 | 695.765 | 596.831 | 660.226 |
+| 43271258668 | 701.108 | 701.799 | 701.800 | 701.799 | 701.800 | 701.800 |
+| 每 suite 四輪最大包絡 | 755.187 | 746.012 | 742.669 | 764.316 | 827.941 | 799.685 |
+| 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 896.012 | 892.669 | 914.316 | 977.941 | 949.685 |
+
+315／317／318／321 套的歷史集合與預算保持不變。R12 原有的三片相對權重回放
+仍固定 **328 套**；其 registry 與 weights 都排除 R12 和 PF-4A，保持原
+`129900`、`600000`、`650000` 斷言。不能把自動合流後的 330 改稱原 328 套歷史，
+也不能把新增 suite 塞入舊量測。`py:test_unittest_runner` 仍為 main 的 **18 項**。
+
+新增雙向重名回歸：保留各自合法 JSON 格式，只把 PF-4A observation 的名稱改成 R12
+套件，或把 R12 row 的名稱改成 PF-4A 套件；先證明兩個 loader 各自接受，再要求聯集
+以 `PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES` 拒絕。不能用不同 schema 的檔案互換，
+讓較早的格式錯誤冒充唯一性守門。新增具名撤回 `PF4A_ALLOW_R12_DUPLICATE` 只移除
+PF-4A 驗重集合內的 R12，須由 `PF4A_ADDED_SUITE_MUTATION_cross-r12-duplicate`
+正常 AssertionError 打紅。
+
+兩側原 56 組撤回的聯集為 62 組，加上上述新撤回共 **63 組**，每組原 baseline／marker
+保留。任何撤掉單一來源或 digest 的舊控制仍保留另一組來源；duplicate 控制只撤自己
+指名的唯一性檢查。原入口前置的 baseline／drop-one-suite／restored 也保持。
+完整 registry 尚缺 PF-4A expected 時，包括兩個 `*_DROP_EXPECTED_ENTRIES` 在內的
+16 組不可取得有效綠對照；不得手填 expected、換弱 baseline，或把這種前置紅算成 kill。
+其餘 47 組可用原 `PROGRAM` 與未改判定的 `prove()` 做明示局部的 0／1／0 檢查；
+局部結果不代替完整入口的 63 組與 native complete coverage。
+
+合流來源定稿後，正式 ME／架構原件採入沿已合併 #418 的 repo store 流程，固定歷史
+四檔不覆寫。expected 仍須由完整原 `run_all.py --build --update-expected` 產生；
+之後原 `native_sharding_mutation_check.py` 必須完整通過。原 35／5 分鐘 workflow、
+每個反證子程序 60 秒、並行上限 2、真收據與模型 `<1200` 秒全部不變。

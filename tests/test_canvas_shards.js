@@ -6,6 +6,7 @@ const assert = require('node:assert/strict');
 const fs = require('fs'), os = require('os'), path = require('path');
 const shards = require('../geometry-web/canvas_shards.js');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
+const pf4aExtension = require('./diagnostics/pf4a_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
 const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
@@ -16,9 +17,24 @@ const train3Tail = require('./diagnostics/train3_canvas_tail.cjs');
 const workspaceExtension = require('./diagnostics/r396_canvas_extension.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
+// PF-4A (#128): P1284 is an independent measured section after P128 and before
+// P353. Project exactly it (plan position and raw golden line) out first, so every
+// main oracle below judges the same plan, golden and raw bytes it was written for.
 const plan = shards.loadPlan(), golden = shards.loadGolden();
-const beforeR335 = {plan:r335Extension.projectPlan(plan),golden:r335Extension.projectGolden(golden)};
-const withoutP420 = {plan:train3Tail.withoutPlan(plan, 'P420'), golden:train3Tail.withoutGolden(golden, 'P420')};
+const rawPlan = plan, rawGolden = golden;
+const pf4aBase = {plan: pf4aExtension.projectPlan(plan), golden: pf4aExtension.projectGolden(golden)};
+function projectPf4aRaw(rawSource) {
+  const raw = String(rawSource).replace(/\r\n/g, '\n');
+  const parsed = JSON.parse(raw), count = parsed.sections.P1284;
+  const withoutLine = raw.replace('    "P420": 124,\n    "P1284": ' + count + '\n', '    "P420": 124\n');
+  assert.notEqual(withoutLine, raw, 'PF4A_P1284_RAW_LAST_LINE_REQUIRED');
+  const rebased = withoutLine.replace('  "total": ' + parsed.total + ',\n', '  "total": ' + (parsed.total - count) + ',\n');
+  assert.notEqual(rebased, withoutLine, 'PF4A_TOTAL_LINE_REQUIRED');
+  assert.deepEqual(JSON.parse(rebased), pf4aExtension.projectGolden(parsed), 'PF4A_ONLY_P1284_PROJECTED');
+  return rebased;
+}
+const beforeR335 = {plan:r335Extension.projectPlan(pf4aBase.plan),golden:r335Extension.projectGolden(pf4aBase.golden)};
+const withoutP420 = {plan:train3Tail.withoutPlan(pf4aBase.plan, 'P420'), golden:train3Tail.withoutGolden(pf4aBase.golden, 'P420')};
 const COUNT = plan.shards.length;
 const COMMIT = 'a'.repeat(40);
 const REAL = {planSha256: shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)), goldenSha256: shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))};
@@ -46,7 +62,7 @@ function projectR335Raw(rawSource) {
   assert.deepEqual(JSON.parse(rebased), r420Extension.projectGolden(r335Extension.projectGolden(parsed)), 'TRAIN3_ONLY_P335_P420_PROJECTED');
   return rebased;
 }
-function projectWorkspaceGolden(value, rawSource = projectR335Raw(fs.readFileSync(shards.GOLDEN_PATH, 'utf8'))) {
+function projectWorkspaceGolden(value, rawSource = projectR335Raw(projectPf4aRaw(fs.readFileSync(shards.GOLDEN_PATH, 'utf8')))) {
   assert.equal(value.sections.P1161, 510, 'R396_P1161_MEASURED_ASSERTION_COUNT');
   assert.equal(value.sections.R06, 55, 'R396_R06_FIVE_ASSERTIONS_INCLUDED');
   const old = clone(value);delete old.sections.P1161;old.total -= 510;
@@ -80,7 +96,7 @@ function verifyWorkspaceGoldenRebase() {
   const beforeP1161 = projectWorkspaceGolden(r420Extension.projectGolden(beforeR335.golden));
   assert.equal(beforeP1161.sections.R06, 55, 'R396_R06_PLUS_FIVE_RETAINED');
   assert.equal(beforeP1161.total, 4831, 'R396_R06_PLUS_FIVE_95_TOTAL');
-  const raw = projectR335Raw(fs.readFileSync(shards.GOLDEN_PATH, 'utf8'));
+  const raw = projectR335Raw(projectPf4aRaw(fs.readFileSync(shards.GOLDEN_PATH, 'utf8')));
   const tampered = raw.replace('    "P360": 13,\n', '    "P360": 13, \n');
   assert.notEqual(tampered, raw, 'R396_BYTE_PROBE_CHANGED');
   assert.throws(() => projectWorkspaceGolden(r420Extension.projectGolden(beforeR335.golden), tampered),
@@ -166,7 +182,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(verdict.summary.total, context.golden.total);
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
-  const beforeR420 = r420Extension.projectGolden(context.golden);
+  const beforeR420 = r420Extension.projectGolden(pf4aExtension.projectGolden(context.golden));
   const beforeWorkspace=projectWorkspaceGolden(r335Extension.projectGolden(beforeR420));
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
   // R20 findings 1-3 add exactly two P76 assertions; project them out too.
@@ -201,8 +217,9 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(golden.total, sum(mainSections) + golden.sections.P116, 'R356_COMPLETE_COUNT_UNION');
   assert.equal(Object.keys(golden.sections).length, 94);
   assert.equal(Object.keys(beforeWorkspace.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
-  assert.equal(Object.keys(context.golden.sections).length, 98, 'R420_ONE_ADDITIVE_SECTION: train 3 also keeps P335 and P1161');
-  assert.equal(context.golden.total, beforeR420.total + r420Extension.P420_ADDED, 'R420_EXACT_COUNT_UNION');
+  assert.equal(Object.keys(pf4aBase.golden.sections).length, 98, 'R420_ONE_ADDITIVE_SECTION: train 3 also keeps P335 and P1161');
+  assert.equal(pf4aBase.golden.total, beforeR420.total + r420Extension.P420_ADDED, 'R420_EXACT_COUNT_UNION');
+  assert.equal(context.golden.total, pf4aBase.golden.total + context.golden.sections.P1284, 'PF4A_EXACT_COUNT_UNION_IN_VERDICT');
   assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });
@@ -790,4 +807,21 @@ test('original harness full/partial configuration still performs no browser work
 test('a different CDP result schema cannot reuse a valid current assertion journal',()=>{
   const evidencePlan=fixturePlan(),trace=fixtureShard(evidencePlan,'1/2');trace.result.schema='other';
   rejects('CANVAS_RESULT_SCHEMA',()=>S.verifyTrace(evidencePlan,'1/2',trace.events,trace.result));
+});
+
+test('PF4A_CANVAS_PLAN: P1284 is one measured section between P128 and P353 in the real merged plan', () => {
+  assert.deepEqual(shards.validatePlan(rawPlan, rawGolden), [], 'PF4A_RAW_PLAN_COMPLETE');
+  const all = rawPlan.shards.flatMap(shard => shard.sections);
+  assert.equal(all.filter(name => name === 'P1284').length, 1, 'PF4A_ONE_OWNER');
+  // PF-4A adds one independent section after the unchanged P128 workflow; judged
+  // without the other independent owners (R17 P335, train 3 P420/P1161).
+  const others = new Set(['P335', 'P420', 'P1161']), pf4aView = clone(rawPlan);
+  for (const row of pf4aView.shards) row.sections = row.sections.filter(name => !others.has(name));
+  assert.deepEqual(pf4aView.shards[1].sections.slice(-6), ['P352', 'P116', 'P128', 'P1284', 'P353', 'P359'], 'R356_P116_ORDER: reuse runs once before the R02 panel-fill, live-grid, card-entry and storage-reset suites');
+  assert.ok(Number.isSafeInteger(rawGolden.sections.P1284) && rawGolden.sections.P1284 > 0, 'PF4A_FULL_BROWSER_RECEIPT_REQUIRED');
+  assert.equal(Object.keys(rawGolden.sections).length, Object.keys(pf4aBase.golden.sections).length + 1, 'PF4A_MERGED_SECTIONS: unchanged sections plus P1284');
+  assert.equal(Object.keys(rawGolden.sections).length, 99, 'PF4A_TRAIN3_MERGED_SECTIONS: main 98 plus P1284');
+  assert.equal(rawGolden.total, pf4aBase.golden.total + rawGolden.sections.P1284, 'PF4A_EXACT_COUNT_UNION');
+  const real = {planSha256: shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)), goldenSha256: shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))};
+  assert.deepEqual(real, REAL, 'PF4A_RECEIPTS_BIND_THE_REAL_FILES');
 });

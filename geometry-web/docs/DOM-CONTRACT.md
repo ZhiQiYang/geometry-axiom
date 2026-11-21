@@ -1199,3 +1199,16 @@ DSL、工程規格、參數卡及斷面工作區沿同一 `appendSectionProfileI
 `#gridRuleFocusKey`、`#gridRuleCellI`、`#gridRuleCellJ` 保留原始 signed 字串及焦點；`#gridRuleExact[data-rule-exact]` 完整查詢真正 cell，`[data-rule-focus-status]` 回報完成、零可見或 native 拒絕。由該按鈕發起的鍵盤查詢，在原生 disabled 與檢查器重建後，只有同一 editor、query generation、raw tuple 且使用者未另行操作時才以 `preventScroll` 還原按鈕焦點；切換欄位、點其他位置、按鍵或離開畫面後不搶回焦點。遲到 exact 回應須仍擁有同一 editor、query generation 與 raw tuple；sampling 重繪沿用 inspector 保存規律。
 
 既有 `#tbAnchor`／`#refGuideSource` 使用含 applied grid、system、rule、signed cell、axis、inner index 的完整 RuleLineRef。來源與配置只讀視圖的 `[data-ig-source-rule]`／`[data-ig-result-rule]` 保持 `data-ig-rule-ref="none"`，不製造可放置引用。角材需手動截面及角色，`newid` 與 native 準備跨 await 都受共用 operation lease 防護。
+
+## #128 PF-4A：既有宿主的鋪排來源主格
+
+入口沿既有物件面 → 屬性 `[data-fi-tab="prop"]` → `[data-face-settings]` → `[data-panel-fill-open]`，唯一表單仍是 `[data-pf-workspace]`。主格控制併入原宿主設定；沒有第二份確認列、全域 PF 按鈕或新的頂層分頁。GEO-219 減項見 BACKLOG GEO-255 的 PF-4A 更新。
+
+- `[data-pf-grid-setup]` 只在原生宣告 `create-from-fill-grid`、目前選取正式 fill 與正式宿主時出現。尚未建立主格時，`[data-pf-field="createGrid"]` 明勾建立；`[data-pf-field="gridMainAlong"]` 必須明選 `u`／`v`／`none`，空值不能預覽。`none` 傳為 JSON `null`，不暗設偏好。前端不配置 grid id、不傳展開座標。
+- 已有同來源主格時，`[data-pf-grid-existing]` 取代建立勾選，顯示原生 id 與跟隨來源的語意。此入口只建立，不改既有主格的來源或偏好。同一定義不送新的表單候選；原生 repeated-create 仍由既有 batch 協議回 `history_changed:false`。
+- 沿用 `[data-pf-action="preview"|"confirm"|"cancel"]`。`[data-pf-native-changes]` 增列 `fill-grid`；`[data-pf-grid-impact]` 與 `[data-pf-guide-impact]` 列出原生前後主格／參考線紀錄，既有宿主與角材影響列仍完整呈現。缺能力、來源閉包或前後依賴的候選不能確認。
+- `[data-pf-grid-result="gridId"]` 將定義來源與有效值分開：fill／host／mainAlong 是保存定義，signed lattice k、panel-row band、side、stagger 與兩軸精確十進位字串是原生求值。來源修改仍走同一份完整預覽；取消不修改主格或其引用。
+- 面內復原／重做使用 `#faceUndoButton`／`#faceRedoButton`；面內工作區遮住背景控制，不能以背景 `#btnUndo`／`#btnRedo` 冒稱一般入口。正式保存／重開沿原 `.gcanvas` 專案入口。
+- `panel_fill_grid_workflow_test.js` 為 `cdp_test.js` 的 **P1284** 外掛，緊接既有 **P128**、先於 P353／P359；P359 仍是最後一段。新段需由原 full CDP 實跑產生 golden，再連同 `geometry-web/canvas_shards.json` 的唯一歸屬核對。既有 P128=381 及其餘每段計數不得更改；未取得新段完整收據前，不得宣告 canvas 通過。
+
+本片沒有 PF-4 的 D29 獨立值快照、PF-6 R45 建議集合／外層可組合 builder、PF-5 空間整合。全域 `complete:false` 保留；段計數、原生／Node 測試均不是 L4 實機核對的替代品。

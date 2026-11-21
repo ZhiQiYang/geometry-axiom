@@ -81,13 +81,15 @@ if (mode in ('measured-baseline', 'R348_REVERT_MEASURED_PROFILE', 'R348_REMOVE_S
              'R380_REVERT_SINGLE_PAIR_SWEEP', 'R380_DROP_ADDED_SUITE_EVIDENCE',
              'R380_REMOVE_MULTISTART_SCREENING',
              'R379_DROP_R14_SUITE_EVIDENCE', 'R396_DROP_WORKSPACE_COSTS', 'R17_DROP_SUITE_EVIDENCE',
-             'R12_DROP_SUITE_EVIDENCE')
+             'R12_DROP_SUITE_EVIDENCE', 'PF4A_DROP_SUITE_EVIDENCE', 'PF4A_DROP_ONE_SUITE')
         or mode in historical_workflow_replacements or mode in evidence_modes):
     target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
 if mode in ('r14-baseline', 'R379_REVERT_SINGLE_START_ONE_SWEEP'):
     target = 'test_unittest_runner.NativeShardCoverage.test_r14_historical_budget'
 if mode in ('provenance-baseline', 'R379_ALLOW_DUPLICATE_SOURCE',
-            'R379_OMIT_R14_SOURCE_FROM_DIGEST', 'R17_OMIT_SOURCE_FROM_DIGEST'):
+            'R379_OMIT_R14_SOURCE_FROM_DIGEST', 'R17_OMIT_SOURCE_FROM_DIGEST',
+            'PF4A_OMIT_SOURCE_FROM_DIGEST', 'PF4A_TAMPER_SOURCE_IDENTITY',
+            'PF4A_ACCEPT_UNVALIDATED_EVIDENCE', 'PF4A_ALLOW_R12_DUPLICATE'):
     target = 'test_unittest_runner.NativeShardCoverage.test_added_suite_provenance_rejects_named_mutations'
 if mode == 'path-scope-baseline' or mode.startswith('R391_'):
     target = path_scope_target
@@ -134,8 +136,16 @@ elif mode == 'R379_ALLOW_DUPLICATE_SOURCE':
         receipts = native_shards.added_receipt_costs()
         if (legacy.keys() | r14.keys()) & receipts.keys():
             raise ValueError('R396_ADDED_RECEIPT_DUPLICATE_LEGACY_SUITE')
-        return {**legacy, **r14, **receipts, **native_shards.added_r17_suite_costs(),
-                **native_shards.added_r12_suite_costs()}
+        r17 = native_shards.added_r17_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys()) & r17.keys():
+            raise ValueError('R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        r12 = native_shards.added_r12_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys()) & r12.keys():
+            raise ValueError('R12_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        pf4a = native_shards.added_pf4a_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys()) & pf4a.keys():
+            raise ValueError('PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a}
     native_shards.added_suite_costs = duplicate_r14_source
 elif mode == 'R379_OMIT_R14_SOURCE_FROM_DIGEST':
     import hashlib
@@ -144,7 +154,8 @@ elif mode == 'R379_OMIT_R14_SOURCE_FROM_DIGEST':
         native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_R17_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
-        native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+        native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R396_DROP_WORKSPACE_COSTS':
     native_shards.added_receipt_costs = lambda: {}
 elif mode == 'R396_ALLOW_DUPLICATE_LEGACY_COST':
@@ -156,8 +167,16 @@ elif mode == 'R396_ALLOW_DUPLICATE_LEGACY_COST':
             raise ValueError('R379_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
         if r14.keys() & receipts.keys():
             raise ValueError('R396_ADDED_RECEIPT_DUPLICATE_R14_SUITE')
-        return {**legacy, **r14, **receipts, **native_shards.added_r17_suite_costs(),
-                **native_shards.added_r12_suite_costs()}
+        r17 = native_shards.added_r17_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys()) & r17.keys():
+            raise ValueError('R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        r12 = native_shards.added_r12_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys()) & r12.keys():
+            raise ValueError('R12_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        pf4a = native_shards.added_pf4a_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys()) & pf4a.keys():
+            raise ValueError('PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a}
     native_shards.added_suite_costs = duplicate_workspace_legacy_source
 elif mode == 'R396_ALLOW_DUPLICATE_R14_COST':
     def duplicate_workspace_r14_source():
@@ -168,8 +187,16 @@ elif mode == 'R396_ALLOW_DUPLICATE_R14_COST':
             raise ValueError('R379_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
         if legacy.keys() & receipts.keys():
             raise ValueError('R396_ADDED_RECEIPT_DUPLICATE_LEGACY_SUITE')
-        return {**legacy, **r14, **receipts, **native_shards.added_r17_suite_costs(),
-                **native_shards.added_r12_suite_costs()}
+        r17 = native_shards.added_r17_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys()) & r17.keys():
+            raise ValueError('R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        r12 = native_shards.added_r12_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys()) & r12.keys():
+            raise ValueError('R12_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        pf4a = native_shards.added_pf4a_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys()) & pf4a.keys():
+            raise ValueError('PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a}
     native_shards.added_suite_costs = duplicate_workspace_r14_source
 elif mode == 'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST':
     import hashlib
@@ -178,7 +205,8 @@ elif mode == 'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST':
         native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_R17_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
-        native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+        native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R379_DROP_R14_EXPECTED_ENTRIES':
     original_expected_read = pathlib.Path.read_text
     def missing_r14_expected(path, *args, **kwargs):
@@ -233,9 +261,7 @@ elif mode == 'R396_DROP_WORKSPACE_WITHDRAWAL':
         return value
     pathlib.Path.read_text = dropped_catalog_entry
 elif mode == 'R17_DROP_SUITE_EVIDENCE':
-    native_shards.added_suite_costs = lambda: {
-        **native_shards._legacy_added_suite_costs(), **native_shards.added_r14_suite_costs(),
-        **native_shards.added_receipt_costs(), **native_shards.added_r12_suite_costs()}
+    native_shards.added_r17_suite_costs = lambda: {}
 elif mode == 'R17_OMIT_SOURCE_FROM_DIGEST':
     import hashlib
     native_shards.profile_digest = lambda: hashlib.sha256(
@@ -243,7 +269,8 @@ elif mode == 'R17_OMIT_SOURCE_FROM_DIGEST':
         native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
-        native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+        native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R17_DROP_EXPECTED_ENTRIES':
     original_expected_read = pathlib.Path.read_text
     def missing_r17_expected(path, *args, **kwargs):
@@ -271,7 +298,8 @@ elif mode == 'R12_OMIT_SOURCE_FROM_DIGEST':
     native_shards.profile_digest = lambda: hashlib.sha256(b'\0'.join(
         path.read_bytes().replace(b'\r\n', b'\n') for path in
         (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE, native_shards.ADDED_R14_EVIDENCE,
-         native_shards.ADDED_RECEIPTS, native_shards.ADDED_R17_EVIDENCE))).hexdigest()
+         native_shards.ADDED_RECEIPTS, native_shards.ADDED_R17_EVIDENCE,
+         native_shards.ADDED_PF4A_EVIDENCE))).hexdigest()
 elif mode == 'R12_ALLOW_DUPLICATE_SOURCE':
     def duplicate_r12_source():
         legacy = native_shards._legacy_added_suite_costs()
@@ -284,7 +312,11 @@ elif mode == 'R12_ALLOW_DUPLICATE_SOURCE':
         r17 = native_shards.added_r17_suite_costs()
         if (legacy.keys() | r14.keys() | receipts.keys()) & r17.keys():
             raise ValueError('R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        return {**legacy, **r14, **receipts, **r17, **native_shards.added_r12_suite_costs()}
+        r12 = native_shards.added_r12_suite_costs()
+        pf4a = native_shards.added_pf4a_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys()) & pf4a.keys():
+            raise ValueError('PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a}
     native_shards.added_suite_costs = duplicate_r12_source
 elif mode == 'R12_ACCEPT_FAILED_CHILD':
     original_r12_read = pathlib.Path.read_text
@@ -315,6 +347,71 @@ elif mode == 'R12_DROP_EXPECTED_ENTRIES':
             value = json.dumps(data)
         return value
     pathlib.Path.read_text = missing_r12_expected
+elif mode == 'PF4A_ALLOW_R12_DUPLICATE':
+    def duplicate_pf4a_r12_source():
+        legacy = native_shards._legacy_added_suite_costs()
+        r14 = native_shards.added_r14_suite_costs()
+        receipts = native_shards.added_receipt_costs()
+        if legacy.keys() & r14.keys():
+            raise ValueError('R379_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        if (legacy.keys() | r14.keys()) & receipts.keys():
+            raise ValueError('R396_ADDED_RECEIPT_DUPLICATE_LEGACY_SUITE')
+        r17 = native_shards.added_r17_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys()) & r17.keys():
+            raise ValueError('R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        r12 = native_shards.added_r12_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys()) & r12.keys():
+            raise ValueError('R12_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        pf4a = native_shards.added_pf4a_suite_costs()
+        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys()) & pf4a.keys():
+            raise ValueError('PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a}
+    native_shards.added_suite_costs = duplicate_pf4a_r12_source
+elif mode == 'PF4A_DROP_SUITE_EVIDENCE':
+    native_shards.added_pf4a_suite_costs = lambda: {}
+elif mode in ('PF4A_DROP_ONE_SUITE', 'PF4A_TAMPER_SOURCE_IDENTITY'):
+    # Mutate only this child's in-memory read of the PF-4A source file.
+    original_pf4a_read = pathlib.Path.read_text
+    def mutated_pf4a_read(path, *args, **kwargs):
+        value = original_pf4a_read(path, *args, **kwargs)
+        if path.resolve() == native_shards.ADDED_PF4A_EVIDENCE.resolve():
+            data = json.loads(value)
+            if mode == 'PF4A_DROP_ONE_SUITE':
+                data['observations'] = [row for row in data['observations']
+                                        if row['name'] != 'node:panel_fill_grid_ui']
+            else:
+                data['source_head'] = '0' * 40
+            value = json.dumps(data)
+        return value
+    pathlib.Path.read_text = mutated_pf4a_read
+elif mode == 'PF4A_OMIT_SOURCE_FROM_DIGEST':
+    import hashlib
+    native_shards.profile_digest = lambda: hashlib.sha256(
+        native_shards.TIMINGS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_R17_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
+        native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+elif mode == 'PF4A_ACCEPT_UNVALIDATED_EVIDENCE':
+    # Withdraw only PF-4A's use of the shared validator: understated upper
+    # bounds, failed suites, unverified sources etc. would then be accepted.
+    def unvalidated_pf4a():
+        data = json.loads(native_shards.ADDED_PF4A_EVIDENCE.read_text(encoding='utf-8'))
+        return {row['name']: row['planning_upper_ms'] for row in data.get('observations', [])
+                if type(row) is dict and 'name' in row and 'planning_upper_ms' in row}
+    native_shards.added_pf4a_suite_costs = unvalidated_pf4a
+elif mode == 'PF4A_DROP_EXPECTED_ENTRIES':
+    original_expected_read = pathlib.Path.read_text
+    def missing_pf4a_expected(path, *args, **kwargs):
+        value = original_expected_read(path, *args, **kwargs)
+        if path.resolve() == run_all.EXPECTED_FILE.resolve():
+            data = json.loads(value)
+            for name in ('py:test_panel_fill_grid_transaction', 'node:panel_fill_grid_ui'):
+                data['suites'].pop(name)
+            value = json.dumps(data)
+        return value
+    pathlib.Path.read_text = missing_pf4a_expected
 if mode in current_workflow_replacements or mode in evidence_modes:
     # Mutate only this child's in-memory file read; never rewrite the checkout.
     original_read = pathlib.Path.read_text
@@ -386,6 +483,9 @@ markers = ('R348_MEASURED_RECEIPT_BUDGET', 'R348_FOUR_NATIVE_WORKFLOW',
            'R12_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'R12_COMPLETE_EXPECTED_REGISTRY',
            'R12_PROFILE_DIGEST_BINDS_ORIGINAL_RECEIPTS', 'R12_ADDED_RECEIPT_failed-child',
            'R12_ADDED_RECEIPT_cross-source-duplicate', 'R12_ADDED_SUITE_PLANNING_UPPER_BOUNDS',
+           'PF4A_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'PF4A_COMPLETE_EXPECTED_REGISTRY',
+           'PF4A_PROFILE_DIGEST_BINDS_PF4A_SOURCE', 'PF4A_SOURCE_IDENTITY',
+           'PF4A_ADDED_SUITE_MUTATION_', 'PF4A_ADDED_SUITE_MUTATION_cross-r12-duplicate',
            'R391_BROWSER_PATH_SCOPE_WIRING')
 row = dict(tests=result.testsRun, failures=len(result.failures), errors=len(result.errors),
            skips=len(result.skipped), failure_ids=[case.id() for case,_ in result.failures],
@@ -432,6 +532,13 @@ def main():
         'R12_ACCEPT_FAILED_CHILD': ('r12-provenance-baseline', 'R12_ADDED_RECEIPT_failed-child'),
         'R12_ALLOW_DUPLICATE_SOURCE': ('r12-provenance-baseline', 'R12_ADDED_RECEIPT_cross-source-duplicate'),
         'R12_RESTORE_PRE_REPAIR_COSTS': ('r12-provenance-baseline', 'R12_ADDED_SUITE_PLANNING_UPPER_BOUNDS'),
+        'PF4A_ALLOW_R12_DUPLICATE': ('provenance-baseline', 'PF4A_ADDED_SUITE_MUTATION_cross-r12-duplicate'),
+        'PF4A_DROP_SUITE_EVIDENCE': ('measured-baseline', 'PF4A_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
+        'PF4A_DROP_ONE_SUITE': ('measured-baseline', 'PF4A_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
+        'PF4A_DROP_EXPECTED_ENTRIES': ('baseline', 'PF4A_COMPLETE_EXPECTED_REGISTRY'),
+        'PF4A_OMIT_SOURCE_FROM_DIGEST': ('provenance-baseline', 'PF4A_PROFILE_DIGEST_BINDS_PF4A_SOURCE'),
+        'PF4A_TAMPER_SOURCE_IDENTITY': ('provenance-baseline', 'PF4A_SOURCE_IDENTITY'),
+        'PF4A_ACCEPT_UNVALIDATED_EVIDENCE': ('provenance-baseline', 'PF4A_ADDED_SUITE_MUTATION_'),
         'R348_REVERT_MEASURED_PROFILE': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
         'R348_REMOVE_SCENARIO_SWAP': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
         'R380_REVERT_SINGLE_PAIR_SWEEP': ('measured-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),

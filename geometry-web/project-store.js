@@ -251,10 +251,12 @@
   }
   function assertPanelFillDefinitions(scene, canonicalScene) {
     // Native owns source resolution and geometry. The archive reader only
-    // ensures that its isolated candidate did not drop or rewrite PF records.
+    // ensures that its isolated candidate did not drop or rewrite PF records
+    // or a D10 live grid's authored fill/host/main preference. from-fill is
+    // still an existing grid record, not a fourth PF definition-reader kind.
     const records = text => text.replace(/\r\n/g, "\n").split("\n")
       .map(line => line.split("#", 1)[0].trim().replace(/\s+/g, " "))
-      .filter(line => /^(?:finish-surface|panel-fill|derived-placement)(?:\s|$)/.test(line)).sort();
+      .filter(line => /^(?:finish-surface|panel-fill|derived-placement)(?:\s|$)/.test(line) || /^grid \d+ on \d+ from-fill(?:\s|$)/.test(line)).sort();
     if (JSON.stringify(records(scene)) !== JSON.stringify(records(canonicalScene)))
       fail("完成面與鋪排的原生候選定義與保存來源不一致，未變更目前專案。");
   }

@@ -7355,6 +7355,8 @@ async function main() {
   } // PANEL_FILL_ONLY owns only its complete PF workflow.
   if(inSequence(2)||process.env.GEOMETRY_PANEL_FILL_ONLY)
     await require('./panel_fill_workflow_test.js')({send,eval_,sleep,click,dblclick,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  if(inSequence(2)||process.env.GEOMETRY_PANEL_FILL_ONLY)
+    await require('./panel_fill_grid_workflow_test.js')({send,eval_,sleep,click,dblclick,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if(inSequence(2)||process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY)
     await require('./grid_card_entry_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if(inSequence(2))await runWorkspaceContextMenu();
