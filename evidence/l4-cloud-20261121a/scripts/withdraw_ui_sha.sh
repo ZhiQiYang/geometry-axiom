@@ -4,7 +4,7 @@
 set -u; here=$(cd "$(dirname "$0")" && pwd); out=$1; tmp=$(mktemp -d)
 run() { node "$here/test_ui_sha.js" "$1" > "$tmp/$2.out" 2>&1; echo $?; }
 b=$(run "$here/ui.js" baseline)
-sed "s/update(Buffer.isBuffer(s) ? s : String(s))/update(String(s))/" "$here/ui.js" > "$tmp/ui.js"
+sed "s/update(s)/update(String(s))/" "$here/ui.js" > "$tmp/ui.js"
 grep -q "update(String(s))" "$tmp/ui.js" || { echo "mutant not applied"; exit 2; }
 w=$(run "$tmp/ui.js" withdrawn)
 r=$(run "$here/ui.js" restored)
