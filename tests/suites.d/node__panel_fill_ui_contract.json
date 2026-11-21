@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_panel_fill_ui_contract.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_panel_fill_ui_contract.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 21,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_panel_fill_ui_contract.js"
+  ],
+  "name": "node:panel_fill_ui_contract",
+  "order": "legacy/000308",
+  "schema": "geometry-native-suite/1"
+}

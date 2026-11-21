@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_rectangular_template.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_rectangular_template.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 13,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_rectangular_template.py"
+  ],
+  "name": "py:test_rectangular_template",
+  "order": "legacy/000216",
+  "schema": "geometry-native-suite/1"
+}

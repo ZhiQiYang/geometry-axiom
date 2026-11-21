@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_engineering_core.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_engineering_core.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 18,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_engineering_core.py"
+  ],
+  "name": "py:test_engineering_core",
+  "order": "legacy/000028",
+  "schema": "geometry-native-suite/1"
+}

@@ -9,6 +9,7 @@
 'use strict';
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const floor = require('./cdp_floor.js');
+const registry = require('./canvas_registry.js');
 
 const PLAN_SCHEMA = 'geometry-cdp-shards/1';
 const RUN_SCHEMA = 'geometry-canvas-shard-run/1';
@@ -27,8 +28,12 @@ function lfSha256(bytes) {
   return crypto.createHash('sha256').update(Buffer.from(text, 'latin1')).digest('hex');
 }
 function readJson(file) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
-function loadPlan(file = PLAN_PATH) { return readJson(file); }
-function loadGolden(file = GOLDEN_PATH) { return readJson(file); }
+function loadPlan(file) { return file === undefined ? registry.loadPlan() : readJson(file); }
+function loadGolden(file) { return file === undefined ? registry.loadGolden() : readJson(file); }
+function sourceDigests(root = path.resolve(__dirname, '..')) {
+  const current = registry.load(root);
+  return {planSha256: current.planSha256, goldenSha256: current.goldenSha256};
+}
 /* 鍵排序後的 JSON：比對用，不受物件鍵插入順序影響。 */
 function canonical(value) {
   if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
@@ -281,7 +286,7 @@ function main(argv) {
   if (command !== 'verify' || !options.input || !options.output || !/^[0-9a-f]{40}$/.test(options.commit || ''))
     throw Error('Usage: canvas_shards.js verify --input DIR --output FILE --commit <40-hex SHA>');
   const plan = loadPlan(), golden = loadGolden();
-  const context = {plan, golden, commit: options.commit, planSha256: lfSha256(fs.readFileSync(PLAN_PATH)), goldenSha256: lfSha256(fs.readFileSync(GOLDEN_PATH))};
+  const context = {plan, golden, commit: options.commit, ...sourceDigests()};
   let receipts = [];
   const early = [];
   try { receipts = readReceipts(options.input); } catch (error) { early.push('讀不到分片收據目錄：' + error.message); }
@@ -299,7 +304,7 @@ function main(argv) {
 }
 
 module.exports = {PLAN_SCHEMA, RUN_SCHEMA, RESULT_SCHEMA, SUMMARY_SCHEMA, PLAN_PATH, GOLDEN_PATH, TOOL_LESSONS, PARAM_LESSON,
-  SNAPSHOT_EXPRESSION, lfSha256, loadPlan, loadGolden, canonical, parseShardSpec, validateStorageRules, validatePlan,
+  SNAPSHOT_EXPRESSION, lfSha256, loadPlan, loadGolden, sourceDigests, canonical, parseShardSpec, validateStorageRules, validatePlan,
   expectedSections, applyExpression, normalizeStorage, materializeStorage, compareStorage, resultLines,
   verifyShardReceipt, verifyComplete, readReceipts, main};
 

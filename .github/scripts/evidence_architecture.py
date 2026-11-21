@@ -40,9 +40,24 @@ FROZEN = {
     "geometry-core/domain-decoupling/product-architecture-scan.json": "b447a48b612923a89ff799f4651c17adc4a4c8e152f5084b1f19efaf00a120e3",
 }
 # Receipt v1 did not record its generator. Import therefore supports exactly the
-# reviewed, unchanged generator. A future generator needs an explicit migration,
-# not an envelope that silently attaches a new generator hash to old output.
+# reviewed generator versions listed here. A future generator needs an explicit
+# migration, not an envelope that silently attaches a new generator hash to old
+# output. Each version is part of the input key (generatorLfSha256), so a bundle
+# from one version never certifies another; adoption always needs a fresh
+# original run of the three unchanged commands.
 GENERATOR_LF_SHA256 = "9899d18b3fb80a750308e2342d8309ca7a2470ec5aab4f977bc3213690b07b5b"
+REVIEWED_GENERATORS = {
+    # #418 original: hashes only the root manifest bytes.
+    GENERATOR_LF_SHA256: "architecture-generator/1",
+    # R386 (#386 P): hashes the complete manifest input closure (root + every
+    # storage fragment); receipt v1 fields and the three commands are unchanged.
+    "f177bcca7912e1042ced72a60230ff7689176965733d180bcf7a11f521df3561": "architecture-generator/2-manifest-closure",
+}
+# R386 adapter: the manifest is the root file plus its storage fragments. The
+# key binds every fragment path, length and LF bytes through the scanner's own
+# manifest_input_bytes(); an unfragmented manifest keeps its original root-only
+# LF hash, so existing #418 bundles keep their exact input keys.
+MANIFEST_STORAGE_PROTOCOL = "geometry-architecture-manifest-closure/1"
 ADOPTED_MAIN = "8f82b207e87c086705a1d8b7a00e2f215c07cbcf"
 HEX40 = re.compile(r"[0-9a-f]{40}\Z")
 HEX64 = re.compile(r"[0-9a-f]{64}\Z")
@@ -116,6 +131,26 @@ def frozen_baseline(root):
                 relative + ": frozen committed bytes differ from " + FROZEN_BASE)
 
 
+def manifest_closure(root, scanner_module):
+    """Return (LF closure bytes, relative paths) for the root manifest and fragments.
+
+    Every closure member is read as a regular, non-symlink file inside the root.
+    A scanner without the fragment API can only read the root file itself.
+    """
+    root_path = root / MANIFEST
+    if not hasattr(scanner_module, "manifest_input_paths"):
+        return read_regular(root_path, "INVENTORY").replace(b"\r\n", b"\n"), [MANIFEST]
+    relative = []
+    for item in scanner_module.manifest_input_paths(root_path):
+        item = Path(item).absolute()
+        require(item.resolve().is_relative_to(root), "INVENTORY", "manifest input outside root: " + str(item))
+        read_regular(item, "INVENTORY")
+        relative.append(item.relative_to(root.absolute()).as_posix())
+    require(relative and relative[0] == MANIFEST and len(set(relative)) == len(relative),
+            "INVENTORY", "manifest closure must start at the root manifest and be unique")
+    return scanner_module.manifest_input_bytes(root_path), relative
+
+
 def _current_context(root):
     """Run the original complete inventory before computing the cache key."""
     root = Path(root).resolve()
@@ -129,7 +164,7 @@ def _current_context(root):
     sys.modules[name] = module
     try:
         spec.loader.exec_module(module)
-        manifest_raw = read_regular(root / MANIFEST, "INVENTORY").replace(b"\r\n", b"\n")
+        manifest_raw, manifest_paths = manifest_closure(root, module)
         manifest = module.load_manifest(root / MANIFEST)
         scanner = module.Scanner(root, manifest)
         scanner.validate_manifest()
@@ -151,11 +186,15 @@ def _current_context(root):
         "ownedCount": len(manifest["sources"]),
         "exclusionCount": len(manifest["exclusions"]),
     }
-    return context, manifest, scanner.result.to_dict()
+    return context, manifest, scanner.result.to_dict(), manifest_paths
 
 
 def current_context(root):
     return _current_context(Path(root).resolve())[0]
+
+
+def manifest_input_paths(root):
+    return _current_context(Path(root).resolve())[3]
 
 
 def expected_commands():
@@ -293,10 +332,10 @@ def import_artifact(root, artifact, store=DEFAULT_STORE):
     head = git(root, "rev-parse", "HEAD").decode("ascii").strip()
     clean = subprocess.run(["git", "diff", "--quiet", "HEAD", "--"], cwd=root)
     require(clean.returncode == 0, "DIRTY", "import requires the clean original execution checkout")
-    context, manifest, inventory = _current_context(root)
-    require(context["generatorLfSha256"] == GENERATOR_LF_SHA256, "GENERATOR",
-            "receipt v1 import requires the reviewed original generator")
-    tracked = [MANIFEST, SCANNER, GENERATOR, *TESTS, *(entry["path"] for entry in context["inputs"])]
+    context, manifest, inventory, manifest_paths = _current_context(root)
+    require(context["generatorLfSha256"] in REVIEWED_GENERATORS, "GENERATOR",
+            "receipt v1 import requires a reviewed generator version")
+    tracked = [*manifest_paths, SCANNER, GENERATOR, *TESTS, *(entry["path"] for entry in context["inputs"])]
     git(root, "ls-files", "--error-unmatch", "--", *tracked)
     raw = read_artifact(Path(artifact))
     receipt, _ = validate_artifact(raw, context, manifest, inventory)
@@ -334,7 +373,7 @@ def import_artifact(root, artifact, store=DEFAULT_STORE):
 
 def check_store(root, store=DEFAULT_STORE, materialize=None):
     root = Path(root).resolve()
-    context, manifest, inventory = _current_context(root)
+    context, manifest, inventory, _ = _current_context(root)
     key = digest(canonical(context))
     directory = store_path(root, store) / key
     require(directory.is_dir() and not directory.is_symlink(), "STALE",

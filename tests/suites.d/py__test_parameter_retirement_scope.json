@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_parameter_retirement_scope.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_parameter_retirement_scope.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 6,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_parameter_retirement_scope.py"
+  ],
+  "name": "py:test_parameter_retirement_scope",
+  "order": "legacy/000200",
+  "schema": "geometry-native-suite/1"
+}

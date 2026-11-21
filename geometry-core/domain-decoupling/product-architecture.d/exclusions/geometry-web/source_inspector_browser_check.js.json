@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/source_inspector_browser_check.js",
+    "reason": "Dedicated acceptance/test driver source_inspector_browser_check.js; invoked by test harnesses, not by product runtime or served application entry points.",
+    "sha256": "154e9486ddfdedc6702c427924e2cd8762f044b8981dd51599c41eee823f131d"
+  },
+  "schema": "geometry-architecture-entry/1"
+}
