@@ -134,7 +134,7 @@ static bool boundary_keys_reconcile(World *candidate,const World *before,char *e
 static bool boundary_keys_same(const BoundaryVertexKeys *a,const BoundaryVertexKeys *b)
 {return geo_region_keys_same(a,b);}
 
-static bool apply_boundary_keys_line(const char *path,int line_no,char **tokens,int count,World *world)
+static bool apply_boundary_keys_line(const char *path,int line_no,char **tokens,int count,World *world,WorldSnapshot *snapshot)
 {
     uint32_t id;
     if (count<7 || !parse_u32(tokens[1],&id) || !id || strcmp(tokens[2],"outer")) {
@@ -175,17 +175,19 @@ static bool apply_boundary_keys_line(const char *path,int line_no,char **tokens,
     if (geo_region_keys_count(&world->geo.region_data)>=WORLD_MAX_BOUNDARIES) {
         scene_error(path,line_no,"D30: too many boundary identity tables"); return false;
     }
-    World candidate=*world;
-    if(!geo_region_keys_put(&candidate.geo.region_data,&keys))return false;
-    if (!app_world_revalidate_staged(world,&candidate)) {
+    World *candidate=world_snapshot_take(snapshot,world);
+    if(!candidate){scene_error(path,line_no,WORLD_SNAPSHOT_UNAVAILABLE);return false;}
+    if(!geo_region_keys_put(&candidate->geo.region_data,&keys))return false;
+    if (!app_world_revalidate_staged(world,candidate)) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:
             "I37: boundary vertex identity replay failed world validation"); return false;
     }
 
     return true;
 }
+WORLD_SNAPSHOT_HANDLER(apply_boundary_keys_line);
 
-static bool apply_boundary_keyed_line(const char *path,int line_no,char **tokens,int count,World *world)
+static bool apply_boundary_keyed_line(const char *path,int line_no,char **tokens,int count,World *world,WorldSnapshot *snapshot)
 {
     uint32_t id;
     if (count<9 || count>SCENE_MAX_TOKENS || !parse_u32(tokens[1],&id) || !id ||
@@ -260,14 +262,15 @@ static bool apply_boundary_keyed_line(const char *path,int line_no,char **tokens
     if (!old && geo_region_keys_count(&world->geo.region_data)>=WORLD_MAX_BOUNDARIES) {
         scene_error(path,line_no,"D30: too many boundary identity tables"); return false;
     }
-    World candidate=*world;
-    if(!app_boundary_stage(&candidate,&replacement))return false;
-    if(!geo_region_keys_put(&candidate.geo.region_data,&keys))return false;
+    World *candidate=world_snapshot_take(snapshot,world);
+    if(!candidate){scene_error(path,line_no,WORLD_SNAPSHOT_UNAVAILABLE);return false;}
+    if(!app_boundary_stage(candidate,&replacement))return false;
+    if(!geo_region_keys_put(&candidate->geo.region_data,&keys))return false;
     bool previous_keyed=g_boundary_keyed_update;
     uint32_t previous_keyed_id=g_boundary_keyed_id;
     const World *previous_baseline=g_subgrid_before;
     g_boundary_keyed_update=true; g_boundary_keyed_id=id; g_subgrid_before=world;
-    bool ok=app_world_revalidate_staged(world,&candidate);
+    bool ok=app_world_revalidate_staged(world,candidate);
     g_boundary_keyed_update=previous_keyed; g_boundary_keyed_id=previous_keyed_id; g_subgrid_before=previous_baseline;
     if (!ok) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:
@@ -276,6 +279,7 @@ static bool apply_boundary_keyed_line(const char *path,int line_no,char **tokens
 
     return true;
 }
+WORLD_SNAPSHOT_HANDLER(apply_boundary_keyed_line);
 
 static void boundary_keys_dump(const World *w,FILE *out)
 {

@@ -68,6 +68,9 @@ PUBLISH_SITES = (
     # R11: both reuse and batch edits confirm into the existing World (R56),
     # not a D61 replacement. The route contracts below retain its I24 baseline.
     ("geometry-web/timber_edit_bridge.inc", "cmd_timber_edit_confirm", 1, "submission"),
+    # R03: one confirmed generation adds ordinary definitions to the existing
+    # World (I8/R56); cancellation never publishes and this is not D61 replay.
+    ("geometry-web/framing_template_bridge.inc", "cmd_framing_template_token", 1, "submission"),
     ("geometry-web/web_bridge.c", "app_replace_world", 1, "replacement"),
     ("geometry-web/web_bridge.c", "cmd_loadfile", 1, "replacement"),
     ("geometry-web/scene-import-bridge.inc", "cmd_load_confirm", 1, "replacement"),
@@ -93,6 +96,9 @@ REVALIDATE_SITES = (
     ("geometry-web/engineering_bridge.inc", "app_batch_candidate_apply", 1),
     ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", 1),
     ("geometry-web/timber_edit_bridge.inc", "timber_edit_evaluate", 1),
+    # R03 validates the candidate's derived host before from-fill, then the
+    # complete generated membership. Both retain the same pre-submission W.
+    ("geometry-web/framing_template_bridge.inc", "framing_template_evaluate", 2),
     ("geometry-web/web_bridge.c", "app_replace_evaluate", 1),
 )
 STAGED_SITES = (
@@ -126,6 +132,10 @@ BASELINE_ASSIGNMENTS = (
     ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", "previous"),
     ("geometry-web/timber_edit_bridge.inc", "timber_edit_evaluate", "call->before"),
     ("geometry-web/timber_edit_bridge.inc", "timber_edit_evaluate", "previous"),
+    # Capture transaction->before for I24; every success/failure exits through
+    # done and restores the caller's baseline, never the replay NULL bypass.
+    ("geometry-web/framing_template_bridge.inc", "framing_template_evaluate", "c->before"),
+    ("geometry-web/framing_template_bridge.inc", "framing_template_evaluate", "previous"),
     ("geometry-web/web_bridge.c", "app_scene_load_evaluate", "NULL"),
     ("geometry-web/web_bridge.c", "app_scene_load_evaluate", "previous"),
     ("geometry-web/source-inspector-bridge.inc", "cmd_source_inspect_file", "NULL"),
@@ -281,17 +291,34 @@ class Geo314CommitPaths(unittest.TestCase):
                       "R356_G314_INVALID_CANDIDATE_IS_DISCARDED")
         self.assertIn("return;", rejected, "R356_G314_INVALID_CANDIDATE_CANNOT_PUBLISH")
 
+        path = "geometry-web/framing_template_bridge.inc"
+        self.assertEqual(["submission"], [classification for source, function, _, classification in PUBLISH_SITES
+                         if (source, function) == (path, "cmd_framing_template_token")],
+                         "R03_G314_FRAMING_IS_SUBMISSION")
+        confirm = compact(masked(self.body(path, "cmd_framing_template_token")))
+        revalidate = "if(before==UINT64_MAX||!app_world_candidate_revalidate(g_preview.transaction,&g_world)){"
+        publish = "if(!app_world_candidate_publish(g_preview.transaction,&g_world,true)){"
+        self.assertIn(revalidate, confirm, "R03_G314_CONFIRM_REVALIDATES_RETAINED_CANDIDATE")
+        self.assertIn(publish, confirm, "R03_G314_CONFIRM_PRESERVES_CANVAS_ON_PUBLICATION")
+        self.assertLess(confirm.index(revalidate), confirm.index(publish),
+                        "R03_G314_REVALIDATION_PRECEDES_PUBLICATION")
+
     def test_revalidation_and_staged_routes_are_an_exact_reviewed_inventory(self):
         self.assertEqual(self.reviewed_inventory(REVALIDATE_SITES, "I24 revalidation inventory"),
                          self.inventory("world_revalidate"), "I24 world validation route changed")
         self.assertEqual(self.reviewed_inventory(STAGED_SITES, "I24 staged inventory"),
                          self.inventory("app_world_revalidate_staged"), "I24 staged validation route changed")
+        body = compact(masked(self.body("geometry-web/framing_template_bridge.inc", "framing_template_evaluate")))
+        self.assertIn("if(!(ok=world_revalidate(w)))gotodone;", body,
+                      "R03_G314_DERIVED_HOST_REVALIDATION_REQUIRED")
+        self.assertIn("if(ok)ok=world_revalidate(w);", body,
+                      "R03_G314_COMPLETE_REVALIDATION_REQUIRED")
 
     def test_r03_from_fill_restores_reviewed_staged_baseline(self):
         source = compact(masked(self.body("geometry-core/grid_bindings.inc",
                                           "apply_grid_fill_application")))
         enter = "if(!baseline)g_subgrid_before=w;"
-        validate = "app_world_revalidate_staged(w,&candidate)"
+        validate = "app_world_revalidate_staged(w,candidate)"   # #412: the candidate is a heap snapshot pointer
         restore = "g_subgrid_before=baseline;"
         for token in (enter, validate, restore):
             self.assertIn(token, source, "R03_C0_I24_BASELINE_REQUIRED")
@@ -325,6 +352,24 @@ class Geo314CommitPaths(unittest.TestCase):
         self.assertNotIn("return", body[body.index(enter):body.index(leave)],
                          "R356_G314_BASELINE_ALWAYS_RESTORED")
         self.assertNotRegex(body, r"\bg_parsing_scene_file=", "R356_G314_TIMBER_CANNOT_BORROW_REPLAY_BYPASS")
+
+        path = "geometry-web/framing_template_bridge.inc"
+        preview = compact(masked(self.body(path, "cmd_framing_template_preview")))
+        capture = "c->before=&transaction->before;"
+        evaluate = "app_world_candidate_evaluate(transaction,framing_template_evaluate,c)"
+        self.assertIn(capture, preview, "R03_G314_PREVIEW_RETAINS_PRE_SUBMISSION_WORLD")
+        self.assertIn(evaluate, preview, "R03_G314_PREVIEW_USES_REVIEWED_EVALUATOR")
+        self.assertLess(preview.index(capture), preview.index(evaluate),
+                        "R03_G314_BASELINE_CAPTURE_PRECEDES_EVALUATION")
+        body = compact(masked(self.body(path, "framing_template_evaluate")))
+        enter, leave = "g_subgrid_before=c->before;", "g_subgrid_before=previous;"
+        validations = [match.start() for match in re.finditer(r"\bworld_revalidate\(w\)", body)]
+        self.assertEqual(2, len(validations), "R03_G314_BASELINE_HAS_BOTH_VALIDATIONS")
+        self.assertTrue(all(body.index(enter) < at < body.index(leave) for at in validations),
+                        "R03_G314_BASELINE_COVERS_BOTH_VALIDATIONS")
+        self.assertNotIn("return", body[body.index(enter):body.index(leave)],
+                         "R03_G314_BASELINE_ALWAYS_RESTORED")
+        self.assertNotRegex(body, r"\bg_parsing_scene_file=", "R03_G314_CANNOT_BORROW_REPLAY_BYPASS")
 
     def test_single_submission_guard_runs_after_axis_validation_before_bindings(self):
         body = masked(self.body("current_geometry.c", "world_revalidate_candidate"))

@@ -36,7 +36,7 @@ const ReferenceWorkspace = (() => {
     if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
   }
   function beginNativeOperation(command) {
-    if (!/^boundary-pair-confirm /.test(command))
+    if (!/^(boundary-pair|framing-template)-confirm /.test(command))
       if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
@@ -248,7 +248,7 @@ const ReferenceWorkspace = (() => {
     if(scenarioContext())return;
     if(recoveryWriting){recoveryAgain=true;return;}
     if(busy || oc.busy || history.group || pendingLoad || preparingSceneLoad || assemblyConfirmation || sceneTransaction){scheduleRecovery();return;}
-    if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || window.PanelFillWorkspace?.pending || window.WorkspaceShell?.saveState().blocked){
+    if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || (window.PanelFillWorkspace?.pending || window.FramingWorkspace?.pending) || window.WorkspaceShell?.saveState().blocked){
       recoveryMessage("draft","本次外環、校準或工作區草稿尚未套用；恢復資料只保留上次完成的工作內容。");return;
     }
     recoveryWriting=true;
@@ -426,7 +426,7 @@ const ReferenceWorkspace = (() => {
     const short = busy ? busyShort : contextConflict || editorLease==="readonly" || editorLease==="unavailable" ? "唯讀" : fe.draft?.pts?.length || fe.ulCalib?.pts?.length ? "有草稿" : c.downloaded ? "已下載" : c.dirty || !c.saved ? "未保存" : "已保存";
     document.querySelectorAll("[data-project-name]").forEach(el => { const name = c.name + ".gcanvas"; if (el.textContent !== name) { el.textContent = name; el.title = name; } });
     document.querySelectorAll("[data-project-status]").forEach(el => { if (el.textContent !== state) el.textContent = state; el.dataset.statusShort = short; el.title = state; el.setAttribute("aria-label", state); });
-    document.querySelectorAll('[data-project-action="save"]').forEach(el => { el.disabled = busy || getProjectInfo().editingBlocked || !!window.PanelFillWorkspace?.pending || !!window.WorkspaceShell?.saveState().blocked; });
+    document.querySelectorAll('[data-project-action="save"]').forEach(el => { el.disabled = busy || getProjectInfo().editingBlocked || !!(window.PanelFillWorkspace?.pending || window.FramingWorkspace?.pending) || !!window.WorkspaceShell?.saveState().blocked; });
     const p = oc.edit && active(oc.edit.bid), source = p && c.sources.get(p.sourceId);
     const summary = document.getElementById("faceReferenceSummary");
     if (summary) {
@@ -525,9 +525,9 @@ const ReferenceWorkspace = (() => {
     // their scene notification; existing import and other native observers
     // retain their refresh contract.
     if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && (!/^timber-edit-confirm /.test(cmd) || result.history_changed !== false) && !(cmd.startsWith("panel-fill-confirm ") && result.history_changed === false))notifySceneChange();
-    if(result.ok && !result.preview && /^boundary-pair-confirm /.test(cmd) && result.history_changed !== false)notifySceneChange();
+    if(result.ok && !result.preview && /^(boundary-pair|framing-template)-confirm /.test(cmd) && result.history_changed !== false)notifySceneChange();
     if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm) /.test(cmd) && result.history_changed !== false) dirty();
-    if (result.ok && /^boundary-pair-confirm /.test(cmd) && result.history_changed !== false) dirty();
+    if (result.ok && /^(boundary-pair|framing-template)-confirm /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
@@ -693,7 +693,7 @@ const ReferenceWorkspace = (() => {
     if(kind===P.Features.Cutting.KIND)P.Features.Cutting.transition(previous,value);
     if (sameModelData(previous, value)) return previous;
     const next = structuredClone(proposal);
-    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.Cutting.KIND ? "裁切設定" : kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : kind === P.Features.ROOM_CANDIDATE_KIND ? (value === null ? "捨棄房間候選草稿" : "編輯房間候選草稿") : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
+    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.Framing.KIND ? (value === null ? "刪除模板配方" : "保存模板配方") : kind === P.Features.Cutting.KIND ? "裁切設定" : kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : kind === P.Features.ROOM_CANDIDATE_KIND ? (value === null ? "捨棄房間候選草稿" : "編輯房間候選草稿") : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
     if (kind === E.KIND) window.dispatchEvent(new CustomEvent("evidence-links-changed"));
     return readFeatureAttachment(kind);
@@ -1450,6 +1450,7 @@ const ReferenceWorkspace = (() => {
     if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
     if(window.ParameterUI?.pending)throw new Error("參數草稿尚未套用。請先確認或捨棄草稿，再保存專案。");
     if(window.PanelFillWorkspace?.pending)throw new Error("完成面與鋪排草稿尚未確認。請先確認或取消，再保存專案。");
+    if(window.FramingWorkspace?.pending)throw new Error("平釘天花骨架草稿尚未確認。請先保存配方、確認或取消生成，再保存專案。");
     if(window.SectionProfileWorkspace?.hasWork)throw new Error("斷面修改尚未套用。請先確認或取消，再保存專案。");
     assertEditable(transactionOwner);
     if (oc.busy || fe.ulDrag || history.group || pendingLoad) throw new Error("請先完成目前的操作再保存。");
@@ -1914,6 +1915,7 @@ const ReferenceWorkspace = (() => {
   async function openProject(readBytes,name="匯入專案",onOpened=null,options={}) {
     assertWritableLease(); assertRoomDraftIdle();
     if(window.PanelFillWorkspace?.pending)throw new Error("請先確認或取消完成面與鋪排草稿，再開啟專案。");
+    if(window.FramingWorkspace?.pending)throw new Error("請先確認或取消平釘天花骨架草稿，再開啟專案。");
     if (busy || oc.busy || history.group || pendingLoad) throw new Error("請先完成目前的操作再開啟專案。");
     const stamp={context:context(),frame:history.frame,revision:revision(context())};
     const assertCurrent=()=>{
@@ -2211,6 +2213,7 @@ const ReferenceWorkspace = (() => {
   }
   function mayLeave() {
     if (window.PanelFillWorkspace?.pending) {toast("請先確認或取消完成面與鋪排草稿，再切換專案。"); return false;}
+    if (window.FramingWorkspace?.pending) {toast("請先確認或取消平釘天花骨架草稿，再切換專案。"); return false;}
     if (window.RoomCollectionWorkspace?.hasWork) {toast("請先完成、取消或恢復目前房間草稿，再切換專案。"); return false;}
     if (window.RoomCollectionWorkspace?.hasUnacceptedCandidates && !window.confirm("未接受的房間候選只留在本分頁，離開後無法恢復。要離開嗎？")) return false;
     if (window.SectionProfileWorkspace?.hasWork) {toast("請先確認或取消斷面修改，再切換專案。"); return false;}
