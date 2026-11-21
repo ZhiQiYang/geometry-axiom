@@ -11,10 +11,12 @@ const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cj
 const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
 const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
 const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
+const r03Extension = require('./diagnostics/r03_framing_canvas_extension.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const plan = shards.loadPlan(), golden = shards.loadGolden();
-const beforeR335 = {plan:r335Extension.projectPlan(plan),golden:r335Extension.projectGolden(golden)};
+const beforeR03 = {plan:r03Extension.projectPlan(plan),golden:r03Extension.projectGolden(golden)};
+const beforeR335 = {plan:r335Extension.projectPlan(beforeR03.plan),golden:r335Extension.projectGolden(beforeR03.golden)};
 const COUNT = plan.shards.length;
 const COMMIT = 'a'.repeat(40);
 const REAL = {planSha256: shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)), goldenSha256: shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))};
@@ -80,7 +82,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
   // R20 findings 1-3 add exactly two P76 assertions; project them out too.
   // D18 finding 5 adds exactly one P70 assertion; project it out too.
-  const golden=d18CardStaggerExtension.projectGolden(r20ReasonsExtension.projectGolden(r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(r335Extension.projectGolden(context.golden))))));
+  const golden=d18CardStaggerExtension.projectGolden(r20ReasonsExtension.projectGolden(r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(r335Extension.projectGolden(r03Extension.projectGolden(context.golden)))))));
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
   // #360 and R06 add independent sections. Keep the original 4002/91 contract

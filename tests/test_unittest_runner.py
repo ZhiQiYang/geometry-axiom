@@ -13,6 +13,7 @@ import json
 import hashlib
 import re
 import random
+import shutil
 from types import SimpleNamespace
 from unittest import mock
 
@@ -118,6 +119,8 @@ R379_ADDED_SUITES = frozenset({'node:r14_app', 'node:r14_host', 'py:test_r14_bro
 R380_ADDED_SUITES = frozenset({'py:test_panel_fill_grid_source', 'node:panel_fill_grid_read_compat'})
 R17_ADDED_SUITES = frozenset({'py:test_boundary_pair_host', 'node:boundary_pair_ui',
                               'node:boundary_pair_project', 'node:boundary_pair_browser_scope'})
+R03_ADDED_SUITES = frozenset({'py:test_framing_template', 'node:framing_recipe_project_store',
+                            'node:framing_template_session', 'node:framing_template_browser_scope'})
 
 
 class BrowserPathScopeWiring(unittest.TestCase):
@@ -267,6 +270,13 @@ class NativeShardCoverage(unittest.TestCase):
             'node:boundary_pair_browser_scope': {'mode': 'count', 'count': 7, 'unit': 'node test'},
         }, {name: expected['suites'].get(name) for name in R17_ADDED_SUITES},
                          'R17_COMPLETE_EXPECTED_REGISTRY')
+        self.assertEqual({
+            'py:test_framing_template': {'mode': 'count', 'count': 15, 'unit': 'test'},
+            'node:framing_recipe_project_store': {'mode': 'count', 'count': 9, 'unit': 'node test'},
+            'node:framing_template_session': {'mode': 'count', 'count': 12, 'unit': 'node test'},
+            'node:framing_template_browser_scope': {'mode': 'count', 'count': 4, 'unit': 'node test'},
+        }, {name: expected['suites'].get(name) for name in R03_ADDED_SUITES},
+                         'R03_COMPLETE_EXPECTED_REGISTRY')
         parts = run_all.partition_suites(suites, 3)
         actual = Counter(s.name for part in parts for s in part)
         self.assertEqual(actual, Counter({name:1 for name in expected['suites']}),
@@ -369,7 +379,14 @@ class NativeShardCoverage(unittest.TestCase):
     def test_profile_balances_measured_work(self):
         suites = run_all.build_suites()
         weights = timing_weights()
-        parts = partition_suites(suites, 3, weights)
+        # These scalar-weight ceilings belong to base main's 324-suite
+        # universe. Preserve its exact scope and thresholds; the full current
+        # registry is proved below against all six-shard scenarios.
+        prior_suites = [s for s in suites if s.name not in R03_ADDED_SUITES]
+        self.assertEqual(len(prior_suites), 324, 'R03_PRIOR_324_REGISTRY_UNCHANGED')
+        parts = partition_suites(prior_suites, 3, weights)
+        self.assertEqual(Counter(s.name for part in parts for s in part),
+                         Counter(s.name for s in prior_suites), 'R03_HISTORICAL_WEIGHT_UNIVERSE')
         loads = [sum(weights.get(s.name, 1000) for s in part) for part in parts]
         self.assertLess(max(loads), 600000, '固定main實測配置應低於每片10分鐘，留建置與新套件餘量')
         self.assertLessEqual(max(loads)-min(loads), max(weights.values()))
@@ -378,12 +395,14 @@ class NativeShardCoverage(unittest.TestCase):
         # mutation proofs. It is historical coverage, not the current CI plan.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual(R380_ADDED_SUITES, set(added) - R379_ADDED_SUITES - R17_ADDED_SUITES,
+        self.assertEqual(R380_ADDED_SUITES, set(added) - R379_ADDED_SUITES - R17_ADDED_SUITES - R03_ADDED_SUITES,
                          'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
-        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R17_ADDED_SUITES,
+        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R17_ADDED_SUITES - R03_ADDED_SUITES,
                          'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
-        self.assertEqual(R17_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES,
+        self.assertEqual(R17_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R03_ADDED_SUITES,
                          'R17_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        self.assertEqual(R03_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES,
+                         'R03_NEW_SUITES_HAVE_SOURCE_BOUND_WORKSPACE_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual({s.name for s in suites}, historical_names | set(added),
                          'R348_MEASURED_PROFILE_COVERS_REGISTRY')
@@ -391,8 +410,8 @@ class NativeShardCoverage(unittest.TestCase):
                          'R348_HISTORICAL_315_UNCHANGED')
         # Main's historical 317-suite proof retains its original universe.
         # R379's independent 318-suite proof has a separate test and mutation
-        # target below. The live six-shard proof still covers all 320 suites.
-        main_history = [s for s in suites if s.name not in R379_ADDED_SUITES | R17_ADDED_SUITES]
+        # target below. The live six-shard proof covers the complete registry.
+        main_history = [s for s in suites if s.name not in R379_ADDED_SUITES | R17_ADDED_SUITES | R03_ADDED_SUITES]
         self.assertEqual(historical_names | R380_ADDED_SUITES,
                          {s.name for s in main_history}, 'R380_HISTORICAL_317_REGISTRY')
         with mock.patch.object(native_shards, 'measured_profiles', return_value=profiles[:2]):
@@ -404,7 +423,9 @@ class NativeShardCoverage(unittest.TestCase):
         current_weights = dict(weights)
         current_weights.update({name: row['planning_weight_ms']
                                 for name, row in profile.get('supplemental', {}).items()})
-        historical_parts = partition_suites(suites, 3, current_weights)
+        historical_parts = partition_suites(prior_suites, 3, current_weights)
+        self.assertEqual(Counter(s.name for part in historical_parts for s in part),
+                         Counter(s.name for s in prior_suites), 'R03_HISTORICAL_WEIGHT_UNIVERSE')
         current_loads = [sum(current_weights.get(s.name, 1000) for s in p) for p in historical_parts]
         self.assertLess(max(current_loads), 650000, 'R348_SHARD_SUPPLEMENTAL_PROFILE_CEILING')
         # Preserve both original measurements and the original 100s + 30s
@@ -440,6 +461,8 @@ class NativeShardCoverage(unittest.TestCase):
                                  'R379_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
                 self.assertFalse(set(measured) & R17_ADDED_SUITES,
                                  'R17_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
+                self.assertFalse(set(measured) & R03_ADDED_SUITES,
+                                 'R03_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS')
                 self.assertEqual(set(measured) | set(added), {s.name for s in suites},
                                  'R348_MEASURED_PROFILE_COVERS_REGISTRY')
                 if run in runs[:2]:
@@ -483,7 +506,7 @@ class NativeShardCoverage(unittest.TestCase):
         # for unrelated main mutants, without sharing any 0/1/0 result.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R17_ADDED_SUITES,
+        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R17_ADDED_SUITES - R03_ADDED_SUITES,
                          'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual(315, len(historical_names), 'R348_HISTORICAL_315_UNCHANGED')
@@ -561,7 +584,7 @@ class NativeShardCoverage(unittest.TestCase):
                           'py:test_r14_browser_receipt': 2000},
                          {name: bounds.get(name) for name in R379_ADDED_SUITES},
                          'R379_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
-        self.assertEqual(R379_ADDED_SUITES | R380_ADDED_SUITES | R17_ADDED_SUITES, set(bounds),
+        self.assertEqual(R379_ADDED_SUITES | R380_ADDED_SUITES | R17_ADDED_SUITES | R03_ADDED_SUITES, set(bounds),
                          'R379_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
         # R17 (PR #419) is a third independent /1 source. It passes the same
         # field, provenance, all-passed and margin checks, and must not repeat a
@@ -614,8 +637,162 @@ class NativeShardCoverage(unittest.TestCase):
                     self.assertNotEqual(native_shards.profile_digest(), digest, marker)
         source_bytes = [path.read_bytes().replace(b'\r\n', b'\n') for path in
                         (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE, r14_path, r17_path)]
+        source_bytes.append(native_shards.native_shard_workspace.material(native_shards.ADDED_R03_EVIDENCE))
         self.assertEqual(hashlib.sha256(b'\0'.join(source_bytes)).hexdigest(),
                          digest, 'R379_PROFILE_DIGEST_BINDS_R14_SOURCE')
+
+    def test_r03_workspace_cost_provenance(self):
+        self.assertTrue(hasattr(native_shards, 'ADDED_R03_EVIDENCE'), 'R03_CI_GUARD_SOURCE_REQUIRED')
+        path = native_shards.ADDED_R03_EVIDENCE
+        self.assertTrue(path.is_file(), 'R03_CI_GUARD_SOURCE_REQUIRED')
+        import native_shard_workspace as W
+        original, bounds = W.load(path)
+        self.assertEqual(set(bounds), R03_ADDED_SUITES, 'R03_CI_GUARD_SOURCE_REQUIRED')
+        self.assertEqual(original['source']['kind'], 'workspace', 'R03_CI_GUARD_SOURCE_REQUIRED')
+        # This former main universe is immutable: its 324 suites are still
+        # covered, independently of the complete current six-shard universe.
+        suites = run_all.build_suites()
+        former = {s.name for s in suites} - R03_ADDED_SUITES
+        prior_added = R379_ADDED_SUITES | R380_ADDED_SUITES | R17_ADDED_SUITES
+        historical = set(native_shards.measured_profiles()[0]) - set(native_shards.added_suite_costs())
+        self.assertEqual(former, historical | prior_added, 'R03_PRIOR_324_REGISTRY_UNCHANGED')
+        self.assertEqual(len(former), 324, 'R03_PRIOR_324_REGISTRY_UNCHANGED')
+
+        def encode(value):
+            return (json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + '\n').encode('utf-8')
+
+        def pin(directory, record, value):
+            payload = encode(value)
+            (directory / record['path']).write_bytes(payload)
+            record.update(bytes=len(payload), sha256=hashlib.sha256(payload).hexdigest())
+
+        cases = (
+            ('source-pin', 'R03_CI_ARTIFACT_SHA256:source', 'R03_CI_GUARD_SOURCE_PIN'),
+            ('missing-stdout', 'R03_CI_ARTIFACT_EXISTS:stdout', 'R03_CI_GUARD_STDOUT'),
+            ('stdout-pin', 'R03_CI_ARTIFACT_SHA256:stdout', 'R03_CI_GUARD_STDOUT'),
+            ('failed-child', 'R03_CI_ROW_PASS', 'R03_CI_GUARD_PASS'),
+            ('bool-exit', 'R03_CI_ROW_PASS', 'R03_CI_GUARD_PASS'),
+            ('bad-count', 'R03_CI_ROW_COUNT', 'R03_CI_GUARD_COUNT'),
+            ('fake-exit-only-count', 'R03_CI_ROW_COUNT', 'R03_CI_GUARD_COUNT'),
+            ('bool-time', 'R03_CI_ROW_TIME', 'R03_CI_GUARD_TIME'),
+            ('nan-time', None, 'R03_CI_GUARD_TIME'),
+            ('understated-upper', 'R03_CI_PLANNING_MARGIN', 'R03_CI_GUARD_MARGIN'),
+            ('duplicate', 'R03_CI_DUPLICATE_OBSERVATION', 'R03_CI_GUARD_DUPLICATE'),
+            ('fake-ci', 'R03_CI_WORKSPACE_SOURCE', 'R03_CI_GUARD_SOURCE_REQUIRED'),
+            ('missing-native-source', 'R03_CI_BINARY_SOURCE_PIN', 'R03_CI_GUARD_BINARY_SOURCE'),
+            ('missing-runtime-source', 'R03_CI_SOURCE_CLOSURE', 'R03_CI_GUARD_RUNTIME_SOURCE'),
+            ('wrong-binary-fingerprint', 'R03_CI_BINARY_FINGERPRINT', 'R03_CI_GUARD_BINARY_SOURCE'),
+            ('mismatched-row', 'R03_CI_ORIGINAL_ROW_BINDING', 'R03_CI_GUARD_ORIGINAL_ROW'),
+            ('bool-nproc', 'R03_CI_RUNNER_IDENTITY', 'R03_CI_GUARD_RUNNER'),
+            ('missing-child-report', 'R03_CI_ARTIFACT_EXISTS:child-report', 'R03_CI_GUARD_CHILD_REPORT'),
+            ('missing-child-log', 'R03_CI_ARTIFACT_EXISTS:child-log', 'R03_CI_GUARD_CHILD_REPORT'),
+            ('child-count-drift', 'R03_CI_CHILD_REPORT', 'R03_CI_GUARD_CHILD_REPORT'),
+        )
+        for mutation, error, marker in cases:
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(prefix='r03-cost-guard-') as directory:
+                directory = Path(directory)
+                data = json.loads(json.dumps(original))
+                descriptions = [data['source']['manifest']]
+                for entry in data['observations']:
+                    descriptions += [entry['stdout'], entry['receipt']]
+                    descriptions += [entry[key] for key in ('child_report', 'child_log') if entry[key] is not None]
+                for record in descriptions:
+                    target = directory / record['path']
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(path.parent / record['path'], target)
+                entry = data['observations'][0]
+                row = entry['row']
+                if mutation == 'source-pin':
+                    record = data['source']['manifest']
+                    target = directory / record['path']
+                    manifest = json.loads(target.read_text())
+                    item = next(item for item in manifest['files'] if item['path'] == 'geometry-web/framing-recipes.js')
+                    value = item['sha256']
+                    changed = ('0' if value[0] != '0' else '1') + value[1:]
+                    target.write_bytes(target.read_bytes().replace(value.encode(), changed.encode(), 1))
+                elif mutation == 'missing-stdout':
+                    (directory / entry['stdout']['path']).unlink()
+                elif mutation == 'stdout-pin':
+                    node = next(observation for observation in data['observations']
+                                if observation['row']['name'].startswith('node:'))
+                    target = directory / node['stdout']['path']
+                    raw = target.read_bytes()
+                    target.write_bytes(bytes([raw[0] ^ 1]) + raw[1:])
+                elif mutation == 'failed-child': row['process_exit_code'] = 1
+                elif mutation == 'bool-exit': row['process_exit_code'] = False
+                elif mutation == 'bad-count': row['total'] += 1
+                elif mutation == 'fake-exit-only-count': row['counted'] = False
+                elif mutation == 'bool-time': row['seconds'] = True
+                elif mutation == 'nan-time': row['seconds'] = float('nan')
+                elif mutation == 'understated-upper': entry['planning_upper_ms'] = int(row['seconds'] * 1000)
+                elif mutation == 'duplicate':
+                    duplicate = json.loads(json.dumps(entry))
+                    for key in ('stdout', 'receipt', 'child_report', 'child_log'):
+                        if duplicate[key] is None:
+                            continue
+                        old_path = directory / duplicate[key]['path']
+                        duplicate[key]['path'] += '.duplicate'
+                        shutil.copyfile(old_path, directory / duplicate[key]['path'])
+                    data['observations'].append(duplicate)
+                elif mutation == 'fake-ci': data['source']['kind'] = 'github-actions'
+                elif mutation in ('missing-native-source', 'missing-runtime-source', 'wrong-binary-fingerprint'):
+                    manifest = json.loads((directory / data['source']['manifest']['path']).read_text())
+                    if mutation == 'missing-native-source':
+                        manifest['files'] = [item for item in manifest['files'] if item['path'] != 'current_geometry.c']
+                    elif mutation == 'missing-runtime-source':
+                        manifest['files'] = [item for item in manifest['files'] if item['path'] != '公理層.md']
+                    else:
+                        manifest['binary']['fingerprint'] = '0' * 64
+                    pin(directory, data['source']['manifest'], manifest)
+                    for observation in data['observations']:
+                        receipt = json.loads((directory / observation['receipt']['path']).read_text())
+                        receipt['source_manifest_sha256'] = data['source']['manifest']['sha256']
+                        pin(directory, observation['receipt'], receipt)
+                elif mutation == 'mismatched-row':
+                    receipt = json.loads((directory / entry['receipt']['path']).read_text())
+                    receipt['row']['passed'] = 0
+                    pin(directory, entry['receipt'], receipt)
+                elif mutation == 'bool-nproc': data['source']['runner']['nproc'] = True
+                elif mutation in ('missing-child-report', 'missing-child-log'):
+                    key = 'child_report' if mutation == 'missing-child-report' else 'child_log'
+                    (directory / entry[key]['path']).unlink()
+                elif mutation == 'child-count-drift':
+                    child = json.loads((directory / entry['child_report']['path']).read_text())
+                    child['total'] += 1
+                    pin(directory, entry['child_report'], child)
+                    receipt = json.loads((directory / entry['receipt']['path']).read_text())
+                    receipt['child_report_sha256'] = entry['child_report']['sha256']
+                    pin(directory, entry['receipt'], receipt)
+                if mutation in ('failed-child', 'bool-exit', 'bad-count', 'fake-exit-only-count', 'bool-time', 'nan-time'):
+                    # Re-pin the original row deliberately: the row guard,
+                    # not an unrelated stale artifact hash, must kill it.
+                    receipt = json.loads((directory / entry['receipt']['path']).read_text())
+                    receipt['row'] = row
+                    child = json.loads((directory / entry['child_report']['path']).read_text())
+                    for key in ('total', 'passed', 'failed', 'skipped'):
+                        child[key] = row[key]
+                    child['run'] = row['total']
+                    pin(directory, entry['child_report'], child)
+                    receipt['child_report_sha256'] = entry['child_report']['sha256']
+                    pin(directory, entry['receipt'], receipt)
+                changed = directory / path.name
+                changed.write_bytes(encode(data))
+                context = (self.assertRaisesRegex(ValueError, error, msg=marker) if error
+                           else self.assertRaises(ValueError, msg=marker))
+                with context:
+                    W.costs(changed)
+        for source in (native_shards._legacy_added_suite_costs, native_shards.added_r14_suite_costs,
+                       native_shards.added_r17_suite_costs):
+            with mock.patch.object(native_shards, 'added_r03_suite_costs', return_value=source()):
+                with self.assertRaisesRegex(ValueError, 'R03_CI_UNIQUE_ACROSS_SOURCES',
+                                            msg='R03_CI_GUARD_CROSS_SOURCE'):
+                    native_shards.added_suite_costs()
+        source_bytes = [p.read_bytes().replace(b'\r\n', b'\n') for p in
+                        (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE,
+                         native_shards.ADDED_R14_EVIDENCE, native_shards.ADDED_R17_EVIDENCE)]
+        source_bytes.append(W.material(path))
+        self.assertEqual(native_shards.profile_digest(), hashlib.sha256(b'\0'.join(source_bytes)).hexdigest(),
+                         'R03_CI_GUARD_PROFILE_DIGEST')
 
     def test_invalid_shards_are_rejected(self):
         for value in ['0/2', '1/0', '4/3', '5/4', '7/6', 'a/2', '1/2/3', '-1/3']:

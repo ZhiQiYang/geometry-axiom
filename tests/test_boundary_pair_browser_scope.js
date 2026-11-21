@@ -5,6 +5,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),path=requir
 const driver=require('../geometry-web/cdp_test.js'),plugin=require('../geometry-web/boundary_pair_workflow_test.js');
 const shards=require('../geometry-web/canvas_shards.js'),evidence=require('./helpers/canvas_shards.js');
 const extension=require('./diagnostics/r335_canvas_extension.cjs');
+const r03Extension=require('./diagnostics/r03_framing_canvas_extension.cjs');
 const base={GEOMETRY_TEST_URL:'http://127.0.0.1:48991/',GEOMETRY_FEEDBACK_DIR:path.join(os.tmpdir(),'r335-scope')};
 const only={...base,GEOMETRY_BOUNDARY_PAIR_ONLY:'1'};
 test('R335_SCOPE new entry is explicit partial mode and every declared case is selected by default',()=>{
@@ -29,7 +30,7 @@ test('R335_COLD stage requires the exact C04 case and saved receipt',()=>{
     assert.throws(()=>driver.runConfiguration({...child,...delta}),/fresh-profile stage/);
 });
 test('R335_EXTENSION preserves all old sections and handoff while adding exactly one independent section',()=>{
-  const plan=shards.loadPlan(),golden=shards.loadGolden(),oldPlan=extension.projectPlan(plan),oldGolden=extension.projectGolden(golden);
+  const plan=r03Extension.projectPlan(shards.loadPlan()),golden=r03Extension.projectGolden(shards.loadGolden()),oldPlan=extension.projectPlan(plan),oldGolden=extension.projectGolden(golden);
   assert.deepEqual(shards.validatePlan(plan,golden),[]);assert.deepEqual(shards.validatePlan(oldPlan,oldGolden),[]);
   assert.equal(Object.keys(oldGolden.sections).length,95);assert.equal(Object.keys(golden.sections).length,96);
   assert.deepEqual(oldPlan.boundaries,plan.boundaries);assert.deepEqual(oldPlan.shards[0],plan.shards[0]);

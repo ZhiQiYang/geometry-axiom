@@ -84,6 +84,75 @@ if mode in ('provenance-baseline', 'R379_ALLOW_DUPLICATE_SOURCE',
     target = 'test_unittest_runner.NativeShardCoverage.test_added_suite_provenance_rejects_named_mutations'
 if mode == 'path-scope-baseline' or mode.startswith('R391_'):
     target = path_scope_target
+if mode == 'r03-provenance-baseline' or mode.startswith('R03_'):
+    target = 'test_unittest_runner.NativeShardCoverage.test_r03_workspace_cost_provenance'
+    import native_shard_workspace as workspace
+    removed_guards = {
+        'R03_IGNORE_SOURCE_PIN': ('R03_CI_ARTIFACT_SHA256:source',),
+        'R03_IGNORE_FAILED_CHILD': ('R03_CI_ROW_PASS',),
+        'R03_IGNORE_COUNT_MODE': ('R03_CI_ROW_COUNT',),
+        'R03_IGNORE_OBSERVED_TIME': ('R03_CI_ROW_TIME',),
+        'R03_IGNORE_PLANNING_MARGIN': ('R03_CI_PLANNING_MARGIN',),
+        'R03_ALLOW_DUPLICATE_ROW': ('R03_CI_DUPLICATE_OBSERVATION',),
+        'R03_IGNORE_BINARY_SOURCE': ('R03_CI_BINARY_SOURCE_PIN', 'R03_CI_BINARY_FINGERPRINT'),
+        'R03_IGNORE_RUNTIME_SOURCE': ('R03_CI_SOURCE_CLOSURE',),
+        'R03_IGNORE_ORIGINAL_ROW': ('R03_CI_ORIGINAL_ROW_BINDING',),
+        'R03_IGNORE_RUNNER_IDENTITY': ('R03_CI_RUNNER_IDENTITY',),
+        'R03_RELABEL_WORKSPACE_AS_CI': ('R03_CI_WORKSPACE_SOURCE',),
+    }
+    if mode in removed_guards:
+        original_require = workspace.require
+        def withdrawn_require(condition, marker):
+            if marker not in removed_guards[mode]:
+                original_require(condition, marker)
+        workspace.require = withdrawn_require
+    elif mode == 'R03_DROP_STDOUT_VALIDATION':
+        workspace.validate_stdout = lambda record, directory: None
+    elif mode == 'R03_DROP_CHILD_REPORT_VALIDATION':
+        workspace.validate_child = lambda entry, directory: None
+    elif mode == 'R03_ALLOW_CROSS_SOURCE_DUPLICATE':
+        from unittest import mock
+        original_added = native_shards.added_suite_costs
+        def duplicate_workspace():
+            addition = native_shards.added_r03_suite_costs()
+            with mock.patch.object(native_shards, 'added_r03_suite_costs', return_value={}):
+                original = original_added()
+            return {**original, **addition}
+        native_shards.added_suite_costs = duplicate_workspace
+    elif mode == 'R03_OMIT_SOURCE_FROM_DIGEST':
+        import hashlib
+        native_shards.profile_digest = lambda: hashlib.sha256(b'\0'.join(
+            path.read_bytes().replace(b'\r\n', b'\n') for path in
+            (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE,
+             native_shards.ADDED_R14_EVIDENCE, native_shards.ADDED_R17_EVIDENCE))).hexdigest()
+    elif mode == 'R03_DROP_SUITE_EVIDENCE':
+        target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
+        native_shards.added_r03_suite_costs = lambda: {}
+    elif mode == 'R03_DROP_EXPECTED_ENTRIES':
+        target = 'test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once'
+        original_expected_read = pathlib.Path.read_text
+        def missing_r03_expected(path, *args, **kwargs):
+            value = original_expected_read(path, *args, **kwargs)
+            if path.resolve() == run_all.EXPECTED_FILE.resolve():
+                data = json.loads(value)
+                for name in ('py:test_framing_template', 'node:framing_recipe_project_store',
+                             'node:framing_template_session', 'node:framing_template_browser_scope'):
+                    data['suites'].pop(name)
+                value = json.dumps(data)
+            return value
+        pathlib.Path.read_text = missing_r03_expected
+    elif mode == 'R03_CONTAMINATE_HISTORICAL_UNIVERSE':
+        target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
+        original_partition = native_shards.partition_suites
+        def contaminated(suites, count, weights=None):
+            suites = list(suites)
+            if weights is not None and count == 3 and len(suites) == 324:
+                suites.append(next(s for s in run_all.build_suites() if s.name == 'py:test_framing_template'))
+            return original_partition(suites, count, weights)
+        native_shards.partition_suites = contaminated
+    elif mode == 'R03_DROP_PRIOR_SUITE':
+        original_registry = run_all.build_suites
+        run_all.build_suites = lambda: [s for s in original_registry() if s.name != 'py:test_boundary_pair_host']
 if mode == 'R348_REVERT_MEASURED_PROFILE':
     original = native_shards.partition_suites
     def legacy(suites, count, weights=None):
@@ -220,7 +289,14 @@ markers = ('R348_MEASURED_RECEIPT_BUDGET', 'R348_FOUR_NATIVE_WORKFLOW',
            'R379_PROFILE_DIGEST_BINDS_R14_SOURCE',
            'R17_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'R17_COMPLETE_EXPECTED_REGISTRY',
            'R17_PROFILE_DIGEST_BINDS_R17_SOURCE',
-           'R391_BROWSER_PATH_SCOPE_WIRING')
+           'R391_BROWSER_PATH_SCOPE_WIRING',
+           'R03_NEW_SUITES_HAVE_SOURCE_BOUND_WORKSPACE_RECEIPTS', 'R03_COMPLETE_EXPECTED_REGISTRY',
+           'R03_CI_GUARD_SOURCE_PIN', 'R03_CI_GUARD_STDOUT', 'R03_CI_GUARD_PASS',
+           'R03_CI_GUARD_COUNT', 'R03_CI_GUARD_TIME', 'R03_CI_GUARD_MARGIN',
+           'R03_CI_GUARD_DUPLICATE', 'R03_CI_GUARD_BINARY_SOURCE', 'R03_CI_GUARD_ORIGINAL_ROW',
+           'R03_CI_GUARD_RUNNER', 'R03_CI_GUARD_SOURCE_REQUIRED', 'R03_CI_GUARD_CROSS_SOURCE',
+           'R03_CI_GUARD_PROFILE_DIGEST', 'R03_PRIOR_324_REGISTRY_UNCHANGED',
+           'R03_HISTORICAL_WEIGHT_UNIVERSE', 'R03_CI_GUARD_CHILD_REPORT', 'R03_CI_GUARD_RUNTIME_SOURCE')
 row = dict(tests=result.testsRun, failures=len(result.failures), errors=len(result.errors),
            skips=len(result.skipped), failure_ids=[case.id() for case,_ in result.failures],
            assertion_failure=all('AssertionError' in text for _,text in result.failures), removed=removed,
@@ -235,11 +311,14 @@ raise SystemExit(0 if result.wasSuccessful() else 1)
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--r03', action='store_true',
+                        help='run the independent R03 workspace-provenance proof; leave the existing coverage job unchanged')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     rows = []
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', PYTHONIOENCODING='utf-8')
-    for label, mode, expected in [('baseline','baseline',0), ('removed','drop-one-suite',1), ('restored','baseline',0)]:
+    initial = [] if args.r03 else [('baseline','baseline',0), ('removed','drop-one-suite',1), ('restored','baseline',0)]
+    for label, mode, expected in initial:
         report, log = args.output/(label+'.json'), args.output/(label+'.log')
         with log.open('wb') as stream:
             result = subprocess.run([sys.executable, '-B', '-c', PROGRAM, mode, str(report.resolve())],
@@ -294,6 +373,28 @@ def main():
         'R391_DROP_BROWSER_NEEDS_PATH_SCOPE': ('path-scope-baseline', 'R391_BROWSER_PATH_SCOPE_WIRING'),
         'R391_DROP_CANVAS_SKIPPED_BRANCH': ('path-scope-baseline', 'R391_BROWSER_PATH_SCOPE_WIRING'),
     }
+    if args.r03:
+        mutations = {
+            'R03_DROP_SUITE_EVIDENCE': ('measured-baseline', 'R03_NEW_SUITES_HAVE_SOURCE_BOUND_WORKSPACE_RECEIPTS'),
+            'R03_DROP_EXPECTED_ENTRIES': ('baseline', 'R03_COMPLETE_EXPECTED_REGISTRY'),
+            'R03_IGNORE_SOURCE_PIN': ('r03-provenance-baseline', 'R03_CI_GUARD_SOURCE_PIN'),
+            'R03_DROP_STDOUT_VALIDATION': ('r03-provenance-baseline', 'R03_CI_GUARD_STDOUT'),
+            'R03_DROP_CHILD_REPORT_VALIDATION': ('r03-provenance-baseline', 'R03_CI_GUARD_CHILD_REPORT'),
+            'R03_IGNORE_FAILED_CHILD': ('r03-provenance-baseline', 'R03_CI_GUARD_PASS'),
+            'R03_IGNORE_COUNT_MODE': ('r03-provenance-baseline', 'R03_CI_GUARD_COUNT'),
+            'R03_IGNORE_OBSERVED_TIME': ('r03-provenance-baseline', 'R03_CI_GUARD_TIME'),
+            'R03_IGNORE_PLANNING_MARGIN': ('r03-provenance-baseline', 'R03_CI_GUARD_MARGIN'),
+            'R03_ALLOW_DUPLICATE_ROW': ('r03-provenance-baseline', 'R03_CI_GUARD_DUPLICATE'),
+            'R03_IGNORE_BINARY_SOURCE': ('r03-provenance-baseline', 'R03_CI_GUARD_BINARY_SOURCE'),
+            'R03_IGNORE_RUNTIME_SOURCE': ('r03-provenance-baseline', 'R03_CI_GUARD_RUNTIME_SOURCE'),
+            'R03_IGNORE_ORIGINAL_ROW': ('r03-provenance-baseline', 'R03_CI_GUARD_ORIGINAL_ROW'),
+            'R03_IGNORE_RUNNER_IDENTITY': ('r03-provenance-baseline', 'R03_CI_GUARD_RUNNER'),
+            'R03_RELABEL_WORKSPACE_AS_CI': ('r03-provenance-baseline', 'R03_CI_GUARD_SOURCE_REQUIRED'),
+            'R03_ALLOW_CROSS_SOURCE_DUPLICATE': ('r03-provenance-baseline', 'R03_CI_GUARD_CROSS_SOURCE'),
+            'R03_OMIT_SOURCE_FROM_DIGEST': ('r03-provenance-baseline', 'R03_CI_GUARD_PROFILE_DIGEST'),
+            'R03_CONTAMINATE_HISTORICAL_UNIVERSE': ('measured-baseline', 'R03_HISTORICAL_WEIGHT_UNIVERSE'),
+            'R03_DROP_PRIOR_SUITE': ('r03-provenance-baseline', 'R03_PRIOR_324_REGISTRY_UNCHANGED'),
+        }
     def prove(item):
         mutation, (baseline, marker) = item
         proof = []
@@ -316,7 +417,9 @@ def main():
                                                    'test_added_suite_provenance_rejects_named_mutations'),
                            'r14-baseline': 'NativeShardCoverage.test_r14_historical_budget',
                            'path-scope-baseline': ('BrowserPathScopeWiring.'
-                                                   'test_browser_jobs_skip_only_on_explicit_path_scope_false')}
+                                                   'test_browser_jobs_skip_only_on_explicit_path_scope_false'),
+                           'r03-provenance-baseline': ('NativeShardCoverage.'
+                                                       'test_r03_workspace_cost_provenance')}
                 assert all(name.startswith('test_unittest_runner.' + methods[baseline])
                            for name in row['failure_ids']), row
             proof.append(dict(label=label, exit=result.returncode, **row))
