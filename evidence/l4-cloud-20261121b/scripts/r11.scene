@@ -1,0 +1,7 @@
+# R11 L4 核對用場景（與 workspace_context_menu_test.js 的 FIXTURE 相同；面與柱刻意同號 71）
+surface 71 origin 0 0 2600 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+surface 72 origin 0 0 0 u +y v +x outline 0,0 3000,0 3000,4000 0,4000
+space 9 boundary 71 72
+column 71 in 9 at 500 500 size 300 400 z 0 2500
+column 83 in 9 at 2700 2200 size 250 300 z 0 2450
+beam 91 in 9 along x from 1200 to 3200 at 1500 width 201 depth 450 top 2400

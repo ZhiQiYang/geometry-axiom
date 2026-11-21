@@ -1,0 +1,25 @@
+STEP 2-fill-and-host {"status":"已確認；正式定義已重新讀取。此確認只新增一筆共用歷史。","fills":[{"finishSurfaceId":1,"gap":3,"id":1,"lengthAlong":"v","origin":[0,0],"panel":{"id":"material-2d264acb-63c4-42ac-91a3-1ff1de1a0081","version":1},"pattern":"straight","threshold":{"fieldId":1,"parameterId":1}}],"hosts":[{"fillId":1,"h":30,"id":1}],"grids":0,"revision":95}
+PASS PREP_FILL_AND_HOST_FORMAL 
+PASS GRID_ENTRY_VISIBLE 
+STEP 3-grid-preview {"status":"候選尚未套用；請核對原生結果後確認。","impact":"主格與引用的參考線\n主格\t確認前原生紀錄\t候選原生紀錄\n#1\t不存在\t{\"id\":1,\"surface\":1,\"bindingId\":null,\"indexSpace\":\"lattice\",\"fillId\":1,\"fillSide\":1,\"bandIndexSpace\":\"panel-row\",\"evaluatedFill\":{\"side\":1,\"staggerAxis\":null,\"staggerDelta\":0,\"bandIndexSpace\":\"panel-row\"},\"sourceSystem\":null,\"origin\":[0,0],\"kind\":\"main\",\"parentId\":null,\"cell\":null,\"divisions\":null,\"bounds\":{\"u\":[172,572],\"v\":[194,494]},\"mainAlong\":\"u\",\"geometry
+PASS PREVIEW_ZERO_WRITE 
+PASS PREVIEW_SHOWS_SOURCE_GRID 
+STEP 3-cancel {"status":null,"inFace":true}
+PASS CANCEL_ZERO_WRITE 
+PASS PREVIEW2_SAME_AS_PREVIEW1 
+STEP 4-confirm {"status":"已確認；正式定義已重新讀取。此確認只新增一筆共用歷史。","gridLines":["grid 1 on 1 from-fill 1 main-along u"],"grids":[{"id":1,"definition":{"id":1,"hostId":1,"fillId":1,"mainAlong":"u"},"derived":{"indexSpace":"lattice","bandIndexSpace":"panel-row","side":1,"staggerAxis":null,"staggerDelta":"0","axes":{"u":{"baseCoordinate":"101","pitch":"103","baseIndex":"0"},"v":{"baseCoordinate":"201","pitch":"203","baseIndex":"0"}}}}],"undoDelta":1,"revision":[95,96]}
+PASS CONFIRM_ONE_HISTORY 
+PASS CONFIRM_LIVE_FROM_FILL 
+PASS UNDO_ONE_STEP 
+PASS REDO_SAME_GRID 
+STEP 4-noop {"status":"定義沒有變更；不建立候選，也不新增歷史。","statusAttr":"editing","form":{"createGridChecked":null,"mainAlong":null,"gridSetup":"來源主格 #1 已引用此鋪排；有效值隨來源重算。本入口不替換其來源或主支偏好。"}}
+PASS NOOP_ZERO_WRITE 
+STEP 5-source-edit-preview {"impact":"主格與引用的參考線\n主格\t確認前原生紀錄\t候選原生紀錄\n#1\t{\"id\":1,\"surface\":1,\"bindingId\":null,\"indexSpace\":\"lattice\",\"fillId\":1,\"fillSide\":1,\"bandIndexSpace\":\"panel-row\",\"evaluatedFill\":{\"side\":1,\"staggerAxis\":null,\"staggerDelta\":0,\"bandIndexSpace\":\"panel-row\"},\"sourceSystem\":null,\"origin\":[0,0],\"kind\":\"main\",\"parentId\":null,\"cell\":null,\"divisions\":null,\"bounds\":{\"u\":[172,572],\"v\":[194,494]},\"mainAlong\":\"u\",\"geometryMode\":\"sample\",\"geometryExact\"
+PASS SOURCE_EDIT_CANCEL_ZERO_WRITE 
+STEP 5-source-edit-confirm {"fills":[{"finishSurfaceId":1,"gap":3,"id":1,"lengthAlong":"v","origin":[10,0],"panel":{"id":"material-2d264acb-63c4-42ac-91a3-1ff1de1a0081","version":1},"pattern":"straight","threshold":{"fieldId":1,"parameterId":1}}],"grids":[{"id":1,"definition":{"id":1,"hostId":1,"fillId":1,"mainAlong":"u"},"derived":{"indexSpace":"lattice","bandIndexSpace":"panel-row","side":1,"staggerAxis":null,"staggerDelta":"0","axes":{"u":{"baseCoordinate":"111","pitch":"103","baseIndex":"0"},"v":{"baseCoordinate":"201
+PASS SOURCE_EDIT_ONE_HISTORY_SAME_GRID_ID 
+PASS SOURCE_EDIT_GRID_FOLLOWS 
+PASS COLD_SCENE_EXACT 
+PASS COLD_GRID_SOURCE_EXACT 
+STEP 6-cold-open {"gridSetup":"來源主格 #1 已引用此鋪排；有效值隨來源重算。本入口不替換其來源或主支偏好。","fillOrigin0":"10"}
+SUMMARY {"pass":16,"fail":[]}

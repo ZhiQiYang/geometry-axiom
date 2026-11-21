@@ -1,0 +1,142 @@
+{
+ "w1400": {
+  "topbarCanvas": 56,
+  "createButton": "#btnCreateObject",
+  "menuItems": [
+   {
+    "text": "網格系統",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "矩形邊界",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "多邊形邊界",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "ƒ",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "⋈",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "⌞",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "空間",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "柱",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "樑",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "知道尺寸 → 六面盒",
+    "hittable": true,
+    "onScreen": true
+   }
+  ],
+  "afterPoly": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+  "inFace": true,
+  "topbarFace": 56,
+  "shapeMenu": [
+   "凹口",
+   "外凸",
+   "推拉",
+   "切角"
+  ],
+  "shapeMenuClosed": true,
+  "toolBeforeR": "select",
+  "toolAfterR": "hole",
+  "toolAfterV": "select",
+  "errs": []
+ },
+ "w390": {
+  "topbarCanvas": 96,
+  "createButton": "#mobileCreateObject",
+  "menuItems": [
+   {
+    "text": "網格系統",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "矩形邊界",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "多邊形邊界",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "ƒ",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "⋈",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "⌞",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "空間",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "柱",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "樑",
+    "hittable": true,
+    "onScreen": true
+   },
+   {
+    "text": "知道尺寸 → 六面盒",
+    "hittable": true,
+    "onScreen": true
+   }
+  ],
+  "afterPoly": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+  "inFace": true,
+  "topbarFace": 96,
+  "shapeMenu": [
+   "凹口",
+   "外凸",
+   "推拉",
+   "切角"
+  ],
+  "shapeMenuClosed": true,
+  "toolBeforeR": "select",
+  "toolAfterR": "hole",
+  "toolAfterV": "select",
+  "errs": []
+ }
+}

@@ -1,0 +1,632 @@
+{
+  "steps": [
+    {
+      "name": "scene-loaded",
+      "world": "boundary 1 outline 0,0 4000,0 4000,5000 0,5000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ntimber 0 27 33 role boundary\nplace 0 on 1 at-face e0 +u +n\n# R18 角材 0: onBoundary=true coversEdge=true boundaryEdge=0\ncanvas-pos boundary 1 60 60\n",
+      "hist": {
+        "undo": 2,
+        "redo": 0,
+        "group": null
+      }
+    },
+    {
+      "name": "section-preview",
+      "zeroWrite": true,
+      "impact": "變更影響 斷面與拉伸的連動影響 斷面 #0：不存在或無合法結果 → 輪廓 [[0,0],[400,0],[400,60],[60,60],[60,250],[0,250]]"
+    },
+    {
+      "name": "section-confirm",
+      "outline": [
+        [
+          0,
+          0
+        ],
+        [
+          400,
+          0
+        ],
+        [
+          400,
+          60
+        ],
+        [
+          60,
+          60
+        ],
+        [
+          60,
+          250
+        ],
+        [
+          0,
+          250
+        ]
+      ],
+      "hist": {
+        "undo": 3,
+        "redo": 0,
+        "group": null
+      }
+    },
+    {
+      "name": "section-members",
+      "rects": [
+        [
+          0,
+          0,
+          27,
+          33
+        ],
+        [
+          373,
+          0,
+          400,
+          33
+        ],
+        [
+          0,
+          223,
+          33,
+          250
+        ]
+      ]
+    },
+    {
+      "name": "run0-preview",
+      "zeroWrite": true
+    },
+    {
+      "name": "run0-confirm",
+      "oneStep": true,
+      "bounds": [
+        [
+          [
+            1000,
+            2000,
+            2667
+          ],
+          [
+            1027,
+            4400,
+            2700
+          ]
+        ],
+        [
+          [
+            1373,
+            2000,
+            2667
+          ],
+          [
+            1400,
+            4400,
+            2700
+          ]
+        ],
+        [
+          [
+            1000,
+            2000,
+            2450
+          ],
+          [
+            1033,
+            4400,
+            2477
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "runs",
+      "runs": [
+        [
+          0,
+          "world",
+          2400
+        ],
+        [
+          1,
+          "local",
+          1000
+        ],
+        [
+          2,
+          "world",
+          1000
+        ]
+      ]
+    },
+    {
+      "name": "space-entry",
+      "ui": {
+        "phase": "ready",
+        "stale": true,
+        "candidates": [
+          {
+            "id": 0,
+            "checked": false,
+            "disabled": false,
+            "text": "拉伸件 #0 · Q38j L 形斷面L 2400 mm · 3 個構件 · 進階世界框架"
+          },
+          {
+            "id": 2,
+            "checked": false,
+            "disabled": false,
+            "text": "拉伸件 #2 · Q38j L 形斷面L 1000 mm · 3 個構件 · 進階世界框架"
+          }
+        ],
+        "unavailable": "已定位拉伸件 2 條，均需逐條明選。未定位 1 條，沒有世界位置，不能納入。",
+        "review": "",
+        "members": "",
+        "createDisabled": true,
+        "status": "在這裡確認平面投影用途與觀看方向，再指定牆底，即可預覽空間。"
+      }
+    },
+    {
+      "name": "layout-690",
+      "width": 690,
+      "documentWidth": 690,
+      "scroll": 690,
+      "client": 690,
+      "left": 0,
+      "right": 690,
+      "targets": [
+        55,
+        55
+      ]
+    },
+    {
+      "name": "layout-390",
+      "width": 390,
+      "documentWidth": 390,
+      "scroll": 390,
+      "client": 390,
+      "left": 0,
+      "right": 390,
+      "targets": [
+        55,
+        55
+      ]
+    },
+    {
+      "name": "preview-no-run",
+      "ui": {
+        "phase": "preview",
+        "stale": false,
+        "candidates": [
+          {
+            "id": 0,
+            "checked": false,
+            "disabled": false,
+            "text": "拉伸件 #0 · Q38j L 形斷面L 2400 mm · 3 個構件 · 進階世界框架"
+          },
+          {
+            "id": 2,
+            "checked": false,
+            "disabled": false,
+            "text": "拉伸件 #2 · Q38j L 形斷面L 1000 mm · 3 個構件 · 進階世界框架"
+          }
+        ],
+        "unavailable": "已定位拉伸件 2 條，均需逐條明選。未定位 1 條，沒有世界位置，不能納入。",
+        "review": "",
+        "members": "",
+        "createDisabled": true,
+        "status": "預覽已完成。核對面清單並勾選確認後，即可建立空間。"
+      }
+    },
+    {
+      "name": "preview-run0",
+      "ui": {
+        "phase": "preview",
+        "stale": false,
+        "candidates": [
+          {
+            "id": 0,
+            "checked": true,
+            "disabled": false,
+            "text": "拉伸件 #0 · Q38j L 形斷面L 2400 mm · 3 個構件 · 進階世界框架"
+          },
+          {
+            "id": 2,
+            "checked": false,
+            "disabled": false,
+            "text": "拉伸件 #2 · Q38j L 形斷面L 1000 mm · 3 個構件 · 進階世界框架"
+          }
+        ],
+        "unavailable": "已定位拉伸件 2 條，均需逐條明選。未定位 1 條，沒有世界位置，不能納入。",
+        "review": "本次納入 1 條拉伸件，共 3 個構件；材料量 6415200 mm³。未扣拉伸件間重疊，不含角材與牆；參考包絡不計材料，原位置不隨牆高改變。未檢查碰撞、貼合或包含。",
+        "members": "拉伸件 #0 · 構件 #0世界 x/y/z：1000～1027、2000～4400、2667～2700 mm材料量 2138400 mm³ · 來源快照拉伸件 #0 · 構件 #1世界 x/y/z：1373～1400、2000～4400、2667～2700 mm材料量 2138400 mm³ · 來源快照拉伸件 #0 · 構件 #2世界 x/y/z：1000～1033、2000～4400、2450～2477 mm材料量 2138400 mm³ · 來源快照",
+        "volume": "6415200",
+        "createDisabled": true,
+        "status": "預覽已完成。核對面清單並勾選確認後，即可建立空間。"
+      }
+    },
+    {
+      "name": "selection-invalidates",
+      "ui": {
+        "phase": "preview",
+        "stale": true,
+        "candidates": [
+          {
+            "id": 0,
+            "checked": true,
+            "disabled": false,
+            "text": "拉伸件 #0 · Q38j L 形斷面L 2400 mm · 3 個構件 · 進階世界框架"
+          },
+          {
+            "id": 2,
+            "checked": true,
+            "disabled": false,
+            "text": "拉伸件 #2 · Q38j L 形斷面L 1000 mm · 3 個構件 · 進階世界框架"
+          }
+        ],
+        "unavailable": "已定位拉伸件 2 條，均需逐條明選。未定位 1 條，沒有世界位置，不能納入。",
+        "review": "本次納入 1 條拉伸件，共 3 個構件；材料量 6415200 mm³。未扣拉伸件間重疊，不含角材與牆；參考包絡不計材料，原位置不隨牆高改變。未檢查碰撞、貼合或包含。",
+        "members": "拉伸件 #0 · 構件 #0世界 x/y/z：1000～1027、2000～4400、2667～2700 mm材料量 2138400 mm³ · 來源快照拉伸件 #0 · 構件 #1世界 x/y/z：1373～1400、2000～4400、2667～2700 mm材料量 2138400 mm³ · 來源快照拉伸件 #0 · 構件 #2世界 x/y/z：1000～1033、2000～4400、2450～2477 mm材料量 2138400 mm³ · 來源快照",
+        "volume": "6415200",
+        "createDisabled": true,
+        "status": "設定已變更。3D 仍是上次預覽，請按「更新預覽」後再建立。"
+      }
+    },
+    {
+      "name": "preview-run0-run2",
+      "ui": {
+        "phase": "preview",
+        "stale": false,
+        "candidates": [
+          {
+            "id": 0,
+            "checked": true,
+            "disabled": false,
+            "text": "拉伸件 #0 · Q38j L 形斷面L 2400 mm · 3 個構件 · 進階世界框架"
+          },
+          {
+            "id": 2,
+            "checked": true,
+            "disabled": false,
+            "text": "拉伸件 #2 · Q38j L 形斷面L 1000 mm · 3 個構件 · 進階世界框架"
+          }
+        ],
+        "unavailable": "已定位拉伸件 2 條，均需逐條明選。未定位 1 條，沒有世界位置，不能納入。",
+        "review": "本次納入 2 條拉伸件，共 6 個構件；材料量 9088200 mm³。未扣拉伸件間重疊，不含角材與牆；參考包絡不計材料，原位置不隨牆高改變。未檢查碰撞、貼合或包含。",
+        "members": "拉伸件 #0 · 構件 #0世界 x/y/z：1000～1027、2000～4400、2667～2700 mm材料量 2138400 mm³ · 來源快照拉伸件 #0 · 構件 #1世界 x/y/z：1373～1400、2000～4400、2667～2700 mm材料量 2138400 mm³ · 來源快照拉伸件 #0 · 構件 #2世界 x/y/z：1000～1033、2000～4400、2450～2477 mm材料量 2138400 mm³ · 來源快照拉伸件 #2 · 構件 #0世界 x/y/z：1000～2000、2000～2027、2667～2700 mm材料量 891000 mm³ · 來源快照拉伸件 #2 · 構件 #1世界 x/y/z：1000～2000、1627～1654、2667～2700 mm材料量 891000 mm³ · 來源快照拉伸件 #2 · 構件 #2世界 x/y/z：1000～2000、1994～2027、2450～2477 mm材料量 891000 mm³ · 來源快照",
+        "volume": "9088200",
+        "createDisabled": true,
+        "status": "預覽已完成。核對面清單並勾選確認後，即可建立空間。"
+      }
+    },
+    {
+      "name": "cancel",
+      "zeroWrite": true
+    },
+    {
+      "name": "create",
+      "oneStep": true,
+      "worldSame": true,
+      "modelsBefore": 0,
+      "model": {
+        "id": "820039c2-ba5f-4ccf-94e1-abf24a906457",
+        "schema": "geometry-space-preview/3",
+        "profileRuns": [
+          {
+            "kind": "profile-run",
+            "id": 0
+          }
+        ],
+        "top": 2700,
+        "profileVolume": "6415200",
+        "profileMembers": 3,
+        "profilePkgHash": "70073f777b6f0f7576a68e76a860f39e621123e95a1e916eb9f567c8a9ac4cd2"
+      }
+    },
+    {
+      "name": "create-undo",
+      "modelsBack": true
+    },
+    {
+      "name": "create-redo",
+      "modelsAgain": true
+    },
+    {
+      "name": "library-card",
+      "text": "▱面 1空間封閉空間 · 6 個面 · 54 m³ · 角材 1 支 · 拉伸件 1 條 · 來源快照2026/11/21 上午12:58:08 · 來源面 #1開啟 3D修改模型移除來源／影響尚未檢查"
+    },
+    {
+      "name": "live-run-edit",
+      "modelUnchanged": true,
+      "run0Length": 2000
+    },
+    {
+      "name": "height-preview",
+      "zeroWrite": true,
+      "ui": {
+        "phase": "preview",
+        "stale": false,
+        "candidates": [
+          {
+            "id": 0,
+            "checked": true,
+            "disabled": false,
+            "text": "拉伸件 #0 · Q38j L 形斷面L 2400 mm · 3 個構件 · 進階世界框架"
+          },
+          {
+            "id": 2,
+            "checked": false,
+            "disabled": false,
+            "text": "拉伸件 #2 · Q38j L 形斷面L 1000 mm · 3 個構件 · 進階世界框架"
+          }
+        ],
+        "unavailable": "已定位拉伸件 2 條，均需逐條明選。未定位 1 條，沒有世界位置，不能納入。",
+        "review": "本次納入 1 條拉伸件，共 3 個構件；材料量 6415200 mm³。未扣拉伸件間重疊，不含角材與牆；參考包絡不計材料，原位置不隨牆高改變。未檢查碰撞、貼合或包含。",
+        "members": "拉伸件 #0 · 構件 #0世界 x/y/z：1000～1027、2000～4400、2667～2700 mm材料量 2138400 mm³ · 來源快照拉伸件 #0 · 構件 #1世界 x/y/z：1373～1400、2000～4400、2667～2700 mm材料量 2138400 mm³ · 來源快照拉伸件 #0 · 構件 #2世界 x/y/z：1000～1033、2000～4400、2450～2477 mm材料量 2138400 mm³ · 來源快照",
+        "volume": "6415200",
+        "createDisabled": true,
+        "status": "新牆高的預覽已完成，原模型仍保持不變。核對面清單並勾選確認後，按「更新空間」。"
+      }
+    },
+    {
+      "name": "height-cancel",
+      "zeroWrite": true
+    },
+    {
+      "name": "height-confirm",
+      "button": "更新空間",
+      "oneStep": true,
+      "before": {
+        "id": "820039c2-ba5f-4ccf-94e1-abf24a906457",
+        "schema": "geometry-space-preview/3",
+        "profileRuns": [
+          {
+            "kind": "profile-run",
+            "id": 0
+          }
+        ],
+        "top": 2700,
+        "profileVolume": "6415200",
+        "profileMembers": 3,
+        "profilePkgHash": "70073f777b6f0f7576a68e76a860f39e621123e95a1e916eb9f567c8a9ac4cd2"
+      },
+      "after": {
+        "id": "820039c2-ba5f-4ccf-94e1-abf24a906457",
+        "schema": "geometry-space-preview/3",
+        "profileRuns": [
+          {
+            "kind": "profile-run",
+            "id": 0
+          }
+        ],
+        "top": 3200,
+        "profileVolume": "6415200",
+        "profileMembers": 3,
+        "profilePkgHash": "70073f777b6f0f7576a68e76a860f39e621123e95a1e916eb9f567c8a9ac4cd2"
+      },
+      "runPackageUnchanged": true,
+      "modelCount": 1
+    },
+    {
+      "name": "height-undo",
+      "modelsBack": true
+    },
+    {
+      "name": "saved-top-run",
+      "topOptions": [
+        "5"
+      ],
+      "host": "space-wall-values",
+      "bounds": [
+        [
+          [
+            1000,
+            2000,
+            2667
+          ],
+          [
+            1027,
+            4400,
+            2700
+          ]
+        ],
+        [
+          [
+            1373,
+            2000,
+            2667
+          ],
+          [
+            1400,
+            4400,
+            2700
+          ]
+        ],
+        [
+          [
+            1000,
+            2000,
+            2450
+          ],
+          [
+            1033,
+            4400,
+            2477
+          ]
+        ]
+      ],
+      "modelUnchanged": true
+    },
+    {
+      "name": "update-candidates",
+      "ui": {
+        "phase": "selecting",
+        "profiles": [
+          {
+            "id": 0,
+            "checked": false
+          },
+          {
+            "id": 2,
+            "checked": false
+          },
+          {
+            "id": 3,
+            "checked": false
+          }
+        ],
+        "unavailable": "已定位 3 條，均需逐條明選。未定位 1 條，不能納入。",
+        "count": "0 / 3 條",
+        "review": ""
+      }
+    },
+    {
+      "name": "update-preview",
+      "zeroWrite": true,
+      "ui": {
+        "phase": "review",
+        "profiles": [
+          {
+            "id": 0,
+            "checked": false
+          },
+          {
+            "id": 2,
+            "checked": false
+          },
+          {
+            "id": 3,
+            "checked": true
+          }
+        ],
+        "unavailable": "已定位 3 條，均需逐條明選。未定位 1 條，不能納入。",
+        "count": "1 / 3 條",
+        "review": "來源與本次明選項目舊模型候選模型kind\"scene\"\"scene\"placement_id11boundary_id11scene_hash\"acc93f414c05a2f9aae690bd518d7759ab3778b00a3e3bb44d681150aa64407d\"\"4472df9a58d11842167521d007dd3c8eb49063974c58f05ffc160014dbd6849d\"projection{\"kind\":\"space-boundary-plan\",\"region\":\"interior\",\"view\":\"top\",\"wallSide\":\"outside\"}{\"kind\":\"space-boundary-plan\",\"region\":\"interior\",\"view\":\"top\",\"wallSide\":\"outside\"}外環邊（從 1 起算）[1,2,3,4][1,2,3,4]角材[{\"id\":0,\"kind\":\"timber\"}][{\"id\":0,\"kind\":\"timber\"}]斷面拉伸件[{\"id\":0,\"kind\":\"profile-run\"}][{\"id\":3,\"kind\":\"profile-run\"}]柱樑[][]原設定與候選設定項目舊模型候選模型bottom00height27002700edges[0,1,2,3][0,1,2,3]floor\"boundary\"\"boundary\"ceiling\"boundary\"\"boundary\"holes\"none\"\"none\"wall_thickness100100完整結果摘要項目舊模型候選模型bottom00clearance_mm3\"54000000000\"\"54000000000\"closedtruetrueface_count66generated_faces[{\"label\":\"外環第 1 邊\",\"orientation\":1,\"placement_id\":2,\"purpose\":\"boundary\"},{\"label\":\"外環第 2 邊\",\"orientation\":1"
+      }
+    },
+    {
+      "name": "update-cancel",
+      "zeroWrite": true
+    },
+    {
+      "name": "update-confirm",
+      "oneStep": true,
+      "worldSame": true,
+      "model": {
+        "id": "820039c2-ba5f-4ccf-94e1-abf24a906457",
+        "schema": "geometry-space-preview/3",
+        "profileRuns": [
+          {
+            "id": 3,
+            "kind": "profile-run"
+          }
+        ],
+        "top": 2700,
+        "profileVolume": "6415200",
+        "profileMembers": 3,
+        "profilePkgHash": "63f485757ffa1903812cd8482389b3cbb4650a6e7fa45901df91fec3518ecd81"
+      }
+    },
+    {
+      "name": "update-undo",
+      "modelsBack": true
+    },
+    {
+      "name": "update-redo",
+      "modelsAgain": true
+    },
+    {
+      "name": "update-empty-preview",
+      "ui": {
+        "phase": "review",
+        "profiles": [
+          {
+            "id": 0,
+            "checked": false
+          },
+          {
+            "id": 2,
+            "checked": false
+          },
+          {
+            "id": 3,
+            "checked": false
+          }
+        ],
+        "unavailable": "已定位 3 條，均需逐條明選。未定位 1 條，不能納入。",
+        "count": "0 / 3 條",
+        "review": "來源與本次明選項目舊模型候選模型boundary_id11kind\"scene\"\"scene\"placement_id11projection{\"kind\":\"space-boundary-plan\",\"region\":\"interior\",\"view\":\"top\",\"wallSide\":\"outside\"}{\"kind\":\"space-boundary-plan\",\"region\":\"interior\",\"view\":\"top\",\"wallSide\":\"outside\"}scene_hash\"4472df9a58d11842167521d007dd3c8eb49063974c58f05ffc160014dbd6849d\"\"4472df9a58d11842167521d007dd3c8eb49063974c58f05ffc160014dbd6849d\"外環邊（從 1 起算）[1,2,3,4][1,2,3,4]角材[{\"id\":0,\"kind\":\"timber\"}][{\"id\":0,\"kind\":\"timber\"}]斷面拉伸件[{\"id\":3,\"kind\":\"profile-run\"}][]柱樑[][]原設定與候選設定項目舊模型候選模型bottom00ceiling\"boundary\"\"boundary\"edges[0,1,2,3][0,1,2,3]floor\"boundary\"\"boundary\"height27002700holes\"none\"\"none\"wall_thickness100100完整結果摘要項目舊模型候選模型bottom00clearance_mm3\"54000000000\"\"54000000000\"closedtruetrueface_count66generated_faces[{\"label\":\"外環第 1 邊\",\"orientation\":1,\"placement_id\":2,\"purpose\":\"boundary\"},{\"label\":\"外環第 2 邊\",\"orientation\":1,\"placement_id\":3,\"purpose\":\""
+      }
+    },
+    {
+      "name": "update-empty-confirm",
+      "oneStep": true,
+      "model": {
+        "id": "820039c2-ba5f-4ccf-94e1-abf24a906457",
+        "schema": "geometry-space-preview/2",
+        "profileRuns": null,
+        "top": 2700,
+        "profileVolume": null,
+        "profileMembers": null,
+        "profilePkgHash": null
+      }
+    },
+    {
+      "name": "update-empty-undo",
+      "modelsBack": true
+    },
+    {
+      "name": "cold-reopen",
+      "worldSame": true,
+      "modelsSame": true,
+      "models": [
+        {
+          "id": "820039c2-ba5f-4ccf-94e1-abf24a906457",
+          "schema": "geometry-space-preview/3",
+          "profileRuns": [
+            {
+              "id": 3,
+              "kind": "profile-run"
+            }
+          ],
+          "top": 2700,
+          "profileVolume": "6415200",
+          "profileMembers": 3,
+          "profilePkgHash": "63f485757ffa1903812cd8482389b3cbb4650a6e7fa45901df91fec3518ecd81"
+        }
+      ],
+      "sectionsRuns": [
+        [
+          0,
+          "world",
+          2000
+        ],
+        [
+          1,
+          "local",
+          1000
+        ],
+        [
+          2,
+          "world",
+          1000
+        ],
+        [
+          3,
+          "world",
+          2400
+        ]
+      ]
+    },
+    {
+      "name": "tampered-open",
+      "currentKept": true,
+      "projectIdSame": true,
+      "statusBar": "未能完成開啟專案：拉伸件清單、構件數、材料量或未扣重疊註記不一致。",
+      "dialogs": []
+    }
+  ],
+  "savedAs": "download",
+  "errsA": [
+    "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+  ],
+  "coldOpenModelMs": 5828,
+  "errsB": []
+}
