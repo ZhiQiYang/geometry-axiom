@@ -20,13 +20,19 @@ const CASES = ['LONG_PRESS', 'BLANK_EQUIVALENCE', 'SHEET_KEYBOARD', 'SHORT_VIEWP
 // pointer at window capture. This observer never prevents or dispatches events.
 function installEarlyObserver() {
   const p = window.__p1162Early = {events:[],enabled:false};
-  const types = ['pointerdown','pointermove','pointerup','pointercancel','touchstart','touchmove','touchend','touchcancel','contextmenu','click','keydown'];
+  const types = ['pointerdown','pointermove','pointerup','pointercancel','touchstart','touchmove','touchend','touchcancel','mousedown','mouseup','contextmenu','click','keydown'];
   const observe = event => {
     if (!p.enabled) return;
     const card = event.target?.closest?.('.ocard');
     p.events.push({type:event.type, trusted:event.isTrusted, at:performance.now(), timestamp:event.timeStamp,
       pointerType:event.pointerType, pointerId:event.pointerId, key:event.key,
       x:event.clientX, y:event.clientY, touches:event.touches?.length,
+      firesTouchEvents:event.sourceCapabilities?.firesTouchEvents ?? null,
+      changedTouches:event.changedTouches ? [...event.changedTouches].map(touch=>({
+        id:touch.identifier,x:touch.clientX,y:touch.clientY,
+        target:touch.target?.id || touch.target?.tagName})) : null,
+      canvas:event.target===document.getElementById('canvasViewport') || !!event.target?.closest?.('#ocv'),
+      control:!!event.target?.closest?.('button,input,select,textarea,a,[role="button"],[contenteditable],.card-enter,.selection-summary,.workspace-guidance,.minimap-shell,.canvas-controls,#canvasDrawToolbar,#ocSelectionSummary,#emptyState,#paramGridLesson'),
       target:event.target?.id || event.target?.tagName,
       action:event.target?.closest?.('[data-oc-act]')?.dataset.ocAct,
       card:card ? card.dataset.kind + ':' + card.dataset.id : null});
@@ -142,11 +148,35 @@ module.exports = async function canvasTouch({send, eval_, waitForUI, exceptionCo
     check('CONTROL_REACHABLE', !!result && result.width > 0 && result.height > 0 && !result.disabled, {selector,result});
     return result;
   }
+  const blankTouchTarget = event => event?.trusted === true && event.canvas === true && !event.card && !event.control;
   async function blank() {
-    const result = await read(`(()=>{const vp=$('canvasViewport'),r=vp.getBoundingClientRect();
+    const candidates = await read(`(()=>{const vp=$('canvasViewport'),r=vp.getBoundingClientRect(),points=[];
       for(const v of [.8,.6,.4,.2])for(const u of [.8,.6,.4,.2]){const x=r.left+r.width*u,y=r.top+r.height*v,h=document.elementFromPoint(x,y);
-        if(h&&vp.contains(h)&&!h.closest('.ocard,button,input,select,textarea,[role="button"],.minimap-shell,.canvas-controls,#canvasDrawToolbar,#ocSelectionSummary,#emptyState,#paramGridLesson'))return {x,y};}return null;})()`);
-    check('BLANK_REACHABLE', !!result, result); return result;
+        if(h&&vp.contains(h)&&!h.closest('.ocard,button,input,select,textarea,[role="button"],.minimap-shell,.canvas-controls,#canvasDrawToolbar,#ocSelectionSummary,#emptyState,#paramGridLesson'))points.push({x,y});}return points;})()`);
+    const before = await checkpoint(), probes = [];
+    let result = null;
+    // Mouse geometry supplies candidates; only a trusted touch DOWN can
+    // establish a blank touch target. Cancel every probe before any hold.
+    // Keep assertions outside this bounded search so its golden count is fixed.
+    for (const candidate of candidates) {
+      const mark = await read('__p1162.events.length');
+      await touch('touchStart', [candidate]);
+      const started = await read('__p1162.events.slice(' + mark + ')');
+      await touch('touchCancel');
+      const events = await read('__p1162.events.slice(' + mark + ')');
+      const down = started.find(event=>event.type==='pointerdown' && event.pointerType==='touch');
+      const start = started.find(event=>event.type==='touchstart');
+      const cancel = events.find(event=>event.type==='touchcancel');
+      const trusted = down?.trusted===true && start?.trusted===true && start.touches===1 && cancel?.trusted===true;
+      probes.push({point:candidate,down,start,cancel,trusted});
+      if (trusted && blankTouchTarget(down) && blankTouchTarget(start)) {
+        result = {...candidate,expectedBlank:true}; break;
+      }
+    }
+    await settled('BLANK_PROBES_SETTLED');
+    await unchanged(before,'BLANK_PROBES_NO_ACTION');
+    check('BLANK_PROBES_TRUSTED', probes.length>0 && probes.every(probe=>probe.trusted), probes);
+    check('BLANK_REACHABLE', !!result, {result,probes}); return result;
   }
   async function query(command) {
     const response = await read(`apiRequest(${JSON.stringify(command)})`);
@@ -193,6 +223,12 @@ module.exports = async function canvasTouch({send, eval_, waitForUI, exceptionCo
   async function hold(point) {
     await read('__p1162.clearGesture();void 0');
     await touch('touchStart', [point]);
+    if (point.expectedBlank) {
+      const observed = await read(`({down:__p1162.events.find(event=>event.type==='pointerdown' && event.pointerType==='touch'),
+        start:__p1162.events.find(event=>event.type==='touchstart')})`);
+      check('BLANK_HOLD_TRUSTED_TOUCH_TARGET', blankTouchTarget(observed.down) && blankTouchTarget(observed.start),
+        {point,observed});
+    }
     // A Chromium-generated native contextmenu is not proof of the touch adapter.
     // The existing menu must have selected its touch sheet presentation.
     await until('LONG_PRESS_OPENS_MENU', `!$('canvasCtxMenu').hidden && $('canvasCtxMenu').classList.contains('fcm-sheet')`);
@@ -219,6 +255,10 @@ module.exports = async function canvasTouch({send, eval_, waitForUI, exceptionCo
     check('RING_BEFORE_MENU', observation.ring.at < observation.menu.at && observation.ring.hidden === 'true', observation);
     check('TOUCH_SEARCH_NOT_AUTOFOCUSED', await read(`document.activeElement!==$('canvasCtxMenu').querySelector('input')`));
     const touchModel = await model();
+    // Observe the real sheet without scrolling while a finger is held. The
+    // later camera-only fixture puts a card under this same action position.
+    const releasePoint = await read(`(()=>{const r=document.querySelector(${JSON.stringify(action('open'))})?.getBoundingClientRect();
+      return r ? {x:Math.floor(r.left+r.width/2)+.25,y:Math.floor(r.top+r.height/2)+.25} : null;})()`);
     await touch('touchEnd'); await frames();
     check('RELEASE_PRESERVES_MENU', await read(`!$('canvasCtxMenu').hidden && $('canvasCtxMenu').classList.contains('fcm-sheet')`));
     check('TRUSTED_TOUCH_END', await read(`__p1162.events.some(e=>e.type==='touchend'&&e.trusted)`));
@@ -253,6 +293,43 @@ module.exports = async function canvasTouch({send, eval_, waitForUI, exceptionCo
     check('TOUCH_MOUSE_NATIVE_COMMANDS_EQUAL', same(touchWrites, mouseWrites), {touchWrites,mouseWrites});
     check('TOUCH_MOUSE_NATIVE_WORLD_EQUAL', touchResult === mouseResult, {touchResult,mouseResult});
     check('MOUSE_DELETE_ONE_HISTORY', await history.single(mouseBefore.pin));
+    await releaseOverSheetAction(releasePoint);
+  }
+  async function releaseOverSheetAction(p) {
+    await fixture(390,844);
+    check('R433_RELEASE_POINT_OBSERVED', !!p && Number.isFinite(p.x) && Number.isFinite(p.y), p);
+    const initial = await point(card(43));
+    // Fixture preparation uses only the existing camera. No handler, target,
+    // menu layout, native response or gesture clock is replaced.
+    await read(`oc.panX+=${p.x-initial.x};oc.panY+=${p.y-initial.y};ocApply();void 0`);
+    await frames();
+    const hit = await read(`(()=>{const e=document.elementFromPoint(${p.x},${p.y}),c=e?.closest('.ocard');
+      return {card:c ? c.dataset.kind+':'+c.dataset.id : null,
+        control:!!e?.closest('button,input,select,textarea,a,[role="button"],[contenteditable],.card-enter')};})()`);
+    check('R433_RELEASE_CARD_FIXTURE', hit.card==='boundary:43' && !hit.control, {point:p,hit});
+    const before = await checkpoint();
+    await hold(p);
+    const held = await state();
+    check('R433_RELEASE_TRUSTED_DOWN', held.events.some(e=>e.type==='pointerdown' && e.pointerType==='touch' && e.trusted && e.card==='boundary:43') &&
+      held.events.some(e=>e.type==='touchstart' && e.trusted && e.touches===1 && e.card==='boundary:43'), {point:p,state:held});
+    const covered = await read(`document.elementFromPoint(${p.x},${p.y})?.closest('[data-oc-act]')?.dataset.ocAct`);
+    check('R433_RELEASE_OVER_OPEN', covered==='open' && held.focus===null, {point:p,covered,state:held});
+    const releaseMark = await read('__p1162.events.length');
+    await touch('touchEnd'); await frames();
+    await until('R433_RELEASE_COMPATIBILITY_OBSERVED', `__p1162.events.slice(${releaseMark}).some(e=>e.type==='click' && e.trusted && e.action==='open' &&
+      (e.pointerType==='touch' || e.firesTouchEvents===true))`);
+    const released = await state();
+    check('R433_RELEASE_TRUSTED_END', released.events.slice(releaseMark).some(e=>e.type==='touchend' && e.trusted), {state:released});
+    check('R433_RELEASE_PRESERVES_MENU', !released.menu.hidden && released.menu.sheet && released.focus===null,
+      {point:p,releaseMark,state:released});
+    await unchanged(before,'R433_RELEASE_NO_ACTION',false);
+    // The consumed sequence must not claim the next independent sheet touch.
+    const mark = await read('__p1162.events.length');
+    await tap(await point(action('open')));
+    await until('R433_NEW_SHEET_TOUCH_OPENS_TARGET', `oc.focus?.t==='face' && oc.focus?.id===43 && oc.edit?.bid===43 &&
+      !ocObjectOpening && __p1162.pending===0 && $('canvasCtxMenu').hidden`);
+    check('R433_NEW_SHEET_TRUSTED_DOWN', await read(`__p1162.events.slice(${mark}).some(e=>e.type==='pointerdown' && e.pointerType==='touch' && e.trusted && e.action==='open')`));
+    await unchanged(before,'R433_NEW_SHEET_VIEW_ONLY',false);
   }
   async function blankEquivalence() {
     await fixture(390,844); const p = await blank(), before = await checkpoint();
