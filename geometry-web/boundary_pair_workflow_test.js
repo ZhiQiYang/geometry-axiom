@@ -212,7 +212,11 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
       check('C02_BOTH_END_CONTACT_REPORTS',diagnostic.timberImpacts.length===2&&diagnostic.timberImpacts.every(row=>row.before===null&&row.after?.role==='boundary'&&same(row.after.interval,[0,1000])&&row.after.source?.anchor&&row.after.contacts?.length===2&&same(row.after.contacts.map(c=>c.end),['START','END'])),diagnostic.timberImpacts);
       await wait('C02_DIAGNOSTIC_DIALOG_VISIBLE','!!document.querySelector(".reference-impact[open] #impact-confirm")');
       check('C02_VISIBLE_INVALID_MEMBERS',await page(ids=>ids.every(id=>!!document.querySelector('.reference-impact[open] [data-impact-pair-member="'+id+'"]')),members.map(m=>m.id)));
-      check('C02_P1_A_NAMES_D16A',String(refused.error).includes('D16a')&&diagnostic.violations.some(v=>v.clause==='D16a'&&v.expected&&String(v.actual).includes('P1-A'))&&await page(()=>[...document.querySelectorAll('.reference-impact[open] .impact-violation')].some(n=>n.textContent.includes('D16a')&&n.textContent.includes('P1-A'))),diagnostic.violations);
+      const p1a=diagnostic.violations.find(v=>v.clause==='D16a'&&String(v.actual).includes('P1-A'));
+      check('C02_P1_A_NAMES_D16A',String(refused.error).includes('D16a')&&
+        p1a?.expected==='two real end faces with opposite normals, one plane and positive contact'&&
+        await page(issue=>[...document.querySelectorAll('.reference-impact[open] .impact-violation')].some(n=>
+          n.textContent===`角材 ${issue.timber} · D16a\n預期：兩個真實端面須法向相反、位於同一平面，且有正長度接觸。\n實際：${issue.actual}`),p1a),diagnostic.violations);
       check('C02_P1_A_NO_CONFIRM',await page(()=>document.querySelector('.reference-impact[open] #impact-confirm')?.disabled===true));
       await cancelDialog();check('C02_REFUSAL_LEAVES_FORM_EDITABLE',await page(()=>!document.getElementById('tbPairPreview').disabled&&!document.getElementById('tbPair2Anchor').disabled));
       await unchanged(before,'C02_P1_A_ATOMIC');check('C02_NO_GROUP_PUBLISHED',(await pairRead()).groups.length===0);
