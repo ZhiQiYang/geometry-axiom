@@ -274,12 +274,304 @@ def kernel_only_native():
 
 
 class KernelCodec(existing_codec.EngineeringJson):
+    """R381 extends the existing quote acceptance with actual K writer work.
+
+    The scalar oracle is the exact string writer at 11eddfdb. All other bytes
+    come from the current product; instrumentation adds only a call counter.
+    No product counter, wall-time budget or source/decode cache is introduced.
+    """
     @classmethod
     def setUpClass(cls):
         build = kernel_only_native()
         cls.work = build.work
         cls.exe = build.codec
         cls.compiler_output = "K-only independent compilation; isolated public source closure"
+
+    BASE_STRING_WRITER = r'''static void geo_json_write_string(GeoJsonWriter *w,const char *s) {
+    size_t p=0,n=strlen(s);
+    static const char hex[]="0123456789abcdef";
+    geo_json_write(w,"\"",1);
+    while(p<n && w->ok) {
+        unsigned char c=(unsigned char)s[p];
+        const char *escape=NULL;
+        if(c=='"')escape="\\\"";
+        else if(c=='\\')escape="\\\\";
+        else if(c=='\b')escape="\\b";
+        else if(c=='\f')escape="\\f";
+        else if(c=='\n')escape="\\n";
+        else if(c=='\r')escape="\\r";
+        else if(c=='\t')escape="\\t";
+        if(escape){geo_json_write(w,escape,2);p++;}
+        else if(c<0x20) {
+            char buf[6]={'\\','u','0','0',hex[c>>4],hex[c&15]};geo_json_write(w,buf,6);p++;
+        } else {
+            size_t k=geo_utf8_scalar((const unsigned char*)s+p,n-p);
+            if(!k){w->ok=0;break;}
+            geo_json_write(w,s+p,k);p+=k;
+        }
+    }
+    geo_json_write(w,"\"",1);
+}
+'''
+    WRITE_ENTRY = "static void geo_json_write(GeoJsonWriter *w,const char *text,size_t n) {\n"
+    COUNTED_ENTRY = "static size_t r381_json_write_calls;\n" + WRITE_ENTRY + "    ++r381_json_write_calls;\n"
+    COUNTER_API = ("\nvoid r381_json_write_reset(void){r381_json_write_calls=0;}\n"
+                   "size_t r381_json_write_count(void){return r381_json_write_calls;}\n")
+    ASCII_GUARD_REVERTS = (
+        ("R381_JSON_ASCII_ALIAS_GUARD_REVERT",
+         "if(separate && n-p<w->capacity-w->used &&",
+         "if(1 && n-p<w->capacity-w->used &&"),
+        ("R381_JSON_ASCII_CAPACITY_GUARD_REVERT",
+         "separate && n-p<w->capacity-w->used &&",
+         "separate && 1 &&"),
+        ("R381_JSON_ASCII_UTF8_GUARD_REVERT",
+         "c>=0x20 && c<0x80 &&", "c>=0x20 && 1 &&"),
+    )
+    HARNESS = r'''
+#include "codec.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#ifdef _WIN32
+#include <io.h>
+#include <fcntl.h>
+#endif
+void r381_json_write_reset(void);
+size_t r381_json_write_count(void);
+int main(int argc,char **argv) {
+    if(argc!=5)return 70;
+#ifdef _WIN32
+    _setmode(_fileno(stdout),_O_BINARY);
+#endif
+    FILE *f=fopen(argv[2],"rb");if(!f)return 71;
+    if(fseek(f,0,SEEK_END))return 72;
+    long raw=ftell(f);if(raw<0)return 72;rewind(f);
+    size_t n=(size_t)raw;char *data=malloc(n+1);if(!data)return 73;
+    if(fread(data,1,n,f)!=n)return 74;fclose(f);data[n]=0;
+    int canonical=!strcmp(argv[1],"canonical");
+    if(!canonical&&strcmp(argv[1],"quote"))return 75;
+    long alias=strtol(argv[4],NULL,10);if(alias < -1||alias>64||canonical&&alias>=0)return 76;
+    GeoJson j;if(canonical&&!geo_json_parse_n(&j,data,n))return 77;
+    const char *cursor=argv[3];
+    while(*cursor){
+        char *end;size_t capacity=(size_t)strtoul(cursor,&end,10);
+        if(end==cursor||(*end&&*end!=',')||capacity>1048576)return 78;
+        size_t span=capacity;
+        if(alias>=0&&(size_t)alias+n+1>span)span=(size_t)alias+n+1;
+        size_t size=span+32;unsigned char *buffer=malloc(size);if(!buffer)return 79;
+        memset(buffer,0xa5,size);char *out=(char*)buffer+16;const char *input=data;
+        if(alias>=0){memcpy(out+alias,data,n+1);input=out+alias;}
+        r381_json_write_reset();
+        int ok=canonical?geo_json_canonical(&j,0,out,capacity):geo_json_quote(input,out,capacity);
+        printf("{\"ok\":%d,\"writes\":%zu,\"capacity\":%zu,\"buffer\":\"",ok,r381_json_write_count(),capacity);
+        for(size_t i=0;i<size;++i)printf("%02x",(unsigned)buffer[i]);
+        puts("\"}");free(buffer);cursor=*end?end+1:end;
+    }
+    if(canonical)geo_json_free(&j);free(data);return 0;
+}
+'''
+
+    @classmethod
+    def setup_ascii_work(cls):
+        build = kernel_only_native()
+        cls.work = build.work
+        cls.source = (ROOT / "geometry-core/kernel/codec.c").read_text(encoding="utf-8")
+        start = cls.source.index("static void geo_json_write_string(")
+        end = cls.source.index("int geo_json_quote(", start)
+        cls.scalar_source = cls.source[:start] + cls.BASE_STRING_WRITER + cls.source[end:]
+        # With the run branch removed, the entire production file, not only its
+        # successful outputs, must match the scalar reference transformation.
+        cls.has_ascii_run = "/* R381_ASCII_RUN_BEGIN:" in cls.source
+        if cls.has_ascii_run:
+            begin = cls.source.index("/* R381_ASCII_RUN_BEGIN:")
+            finish = cls.source.index("/* R381_ASCII_RUN_END */", begin)
+            if cls.source.count("/* R381_ASCII_RUN_BEGIN:") != 1 or cls.source.count("/* R381_ASCII_RUN_END */") != 1:
+                raise AssertionError("R381_JSON_ASCII_RUN_REVERT must have one exact product branch")
+            begin = cls.source.rfind("\n", 0, begin) + 1
+            finish = cls.source.index("\n", finish) + 1
+            if cls.source[:begin] + cls.source[finish:] != cls.scalar_source:
+                raise AssertionError("R381_JSON_ASCII_RUN_REVERT must preserve every other product byte")
+        elif cls.source != cls.scalar_source:
+            raise AssertionError("R381 scalar reference differs from the fixed base string writer")
+        client_path = cls.work / "r381-json-ascii-client.c"
+        client_path.write_text(cls.HARNESS, encoding="utf-8")
+        client = build.compile(client_path, "r381-json-ascii-client")
+        cls.executables = {}
+        variants = [("actual", cls.source), ("R381_JSON_ASCII_RUN_REVERT", cls.scalar_source)]
+        if cls.has_ascii_run:
+            for label, before, after in cls.ASCII_GUARD_REVERTS:
+                if cls.source.count(before) != 1:
+                    raise AssertionError(label + " must change one actual product guard")
+                changed = cls.source.replace(before, after)
+                if changed.count(after) != 1 or changed.replace(after, before) != cls.source:
+                    raise AssertionError(label + " must preserve every other product byte")
+                variants.append((label, changed))
+        for label, source in variants:
+            if source.count(cls.WRITE_ENTRY) != 1:
+                raise AssertionError("R381 counter must hit one real geo_json_write entry")
+            counted = source.replace(cls.WRITE_ENTRY, cls.COUNTED_ENTRY) + cls.COUNTER_API
+            if counted[:-len(cls.COUNTER_API)].replace(cls.COUNTED_ENTRY, cls.WRITE_ENTRY) != source:
+                raise AssertionError("R381 counter must preserve every other product byte")
+            path = cls.work / ("r381-json-" + label + ".c")
+            path.write_text(counted, encoding="utf-8")
+            obj = build.compile(path, "r381-json-" + label)
+            cls.executables[label] = build.link("r381-json-" + label, [client, obj])
+
+    def codec_rows(self, executable, mode, data, capacities, alias=-1):
+        path = self.work / "r381-json-input.bin"
+        path.write_bytes(data)
+        result = subprocess.run([str(executable), mode, str(path), ",".join(map(str, capacities)), str(alias)],
+                                capture_output=True, timeout=10)
+        self.assertEqual(0, result.returncode, "R381 codec harness failed: " + result.stderr.decode(errors="replace"))
+        self.assertEqual(b"", result.stderr)
+        rows = [json.loads(line) for line in result.stdout.splitlines()]
+        self.assertEqual(list(capacities), [row["capacity"] for row in rows])
+        return rows
+
+    def check_quote_and_canonical_retain_every_buffer_byte(self):
+        valid = ["", "plain ASCII", "\x7f" * 31,
+                 "a" * 37 + "\n\"\\" + "b" * 19 + "é中😀" + "c" * 29,
+                 "".join(chr(i) for i in range(1, 128)),
+                 "left" + "\u0080\u07ff\u0800\ud7ff\ue000\uffff\U00010000\U0010ffff" + "right"]
+        cases = []
+        for value in valid:
+            expected = json.dumps(value, ensure_ascii=False).encode("utf-8")
+            cases.append(("quote", value.encode("utf-8"), expected))
+            for escaped in (False, True):
+                cases.append(("canonical", json.dumps(value, ensure_ascii=escaped).encode("utf-8"), expected))
+        nested = {"plain-key": ["a" * 37, "é中😀", "\n\"\\"], "z": {"\x7f": -2**63}, "a": True}
+        cases.append(("canonical", json.dumps(nested, ensure_ascii=False).encode("utf-8"),
+                      json.dumps(nested, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")))
+        invalid = [b"\x80", b"\xc0\xaf", b"\xe0\x80\xaf", b"\xed\xa0\x80", b"\xf0\x80\x80\xaf",
+                   b"\xf4\x90\x80\x80", b"\xf5\x80\x80\x80", b"\xe2\x82", b"\xf0\x90\x80"]
+        cases += [("quote", b"ASCII-prefix-" + bad + b"-tail", None) for bad in invalid]
+        for mode, data, expected in cases:
+            capacities = range((len(expected) if expected is not None else len(data) * 6) + 3)
+            with self.subTest(mode=mode, data=data):
+                actual = self.codec_rows(self.executables["actual"], mode, data, capacities)
+                scalar = self.codec_rows(self.executables["R381_JSON_ASCII_RUN_REVERT"], mode, data, capacities)
+                self.assertEqual([{k: v for k, v in row.items() if k != "writes"} for row in scalar],
+                                 [{k: v for k, v in row.items() if k != "writes"} for row in actual],
+                                 "R381_JSON_ASCII_FULL_BUFFER")
+                for row in actual:
+                    raw = bytes.fromhex(row["buffer"])
+                    self.assertEqual(b"\xa5" * 16, raw[:16], "R381_JSON_ASCII_LEFT_CANARY")
+                    self.assertEqual(b"\xa5" * 16, raw[-16:], "R381_JSON_ASCII_RIGHT_CANARY")
+                    self.assertEqual(int(expected is not None and row["capacity"] > len(expected)), row["ok"])
+                    if row["ok"]:
+                        self.assertEqual(expected + b"\0", raw[16:16 + len(expected) + 1])
+        # Public quote accepts pointer arguments without a non-alias contract.
+        # Retain the scalar behavior even when expansion overwrites later input.
+        for data in (b"A" * 37, b"left\n\"\\right-" + "é中😀".encode("utf-8"), b"prefix-\xe2\x82"):
+            for alias in (0, 1, 2, 4, 16):
+                capacities = range(len(data) * 2 + 10)
+                with self.subTest(alias=alias, data=data):
+                    actual = self.codec_rows(self.executables["actual"], "quote", data, capacities, alias)
+                    scalar = self.codec_rows(self.executables["R381_JSON_ASCII_RUN_REVERT"], "quote", data, capacities, alias)
+                    self.assertEqual([{k: v for k, v in row.items() if k != "writes"} for row in scalar],
+                                     [{k: v for k, v in row.items() if k != "writes"} for row in actual],
+                                     "R381_JSON_ASCII_ALIAS_FULL_BUFFER")
+                    for before, after in zip(scalar, actual):
+                        # Sharing an allocation does not imply overlapping byte
+                        # ranges: input starts at out+alias, output ends at capacity.
+                        if after["capacity"] > alias:
+                            self.assertEqual(before, after, "R381_JSON_ASCII_ALIAS_SCALAR_WORK")
+
+    def assert_ascii_alias_guard(self, executable, scalar_executable):
+        # Overlapping memcpy can appear to work on a particular libc. Retaining
+        # the exact scalar work proves the fast path did not attempt that copy.
+        data = b"a" * 64
+        actual = self.codec_rows(executable, "quote", data, [len(data) + 3], alias=4)
+        scalar = self.codec_rows(scalar_executable, "quote", data, [len(data) + 3], alias=4)
+        self.assertEqual(scalar, actual, "R381_JSON_ASCII_ALIAS_SCALAR_WORK")
+
+    def assert_ascii_capacity_guard(self, executable, scalar_executable):
+        data = b"a" * 64
+        actual = self.codec_rows(executable, "quote", data, [4])
+        scalar = self.codec_rows(scalar_executable, "quote", data, [4])
+        self.assertEqual([{k: v for k, v in row.items() if k != "writes"} for row in scalar],
+                         [{k: v for k, v in row.items() if k != "writes"} for row in actual],
+                         "R381_JSON_ASCII_CAPACITY_FULL_BUFFER")
+
+    def assert_ascii_utf8_guard(self, executable, scalar_executable):
+        data = b"ASCII-prefix-\xc0\xaf-tail"
+        actual = self.codec_rows(executable, "quote", data, [len(data) + 3])
+        scalar = self.codec_rows(scalar_executable, "quote", data, [len(data) + 3])
+        self.assertEqual([{k: v for k, v in row.items() if k != "writes"} for row in scalar],
+                         [{k: v for k, v in row.items() if k != "writes"} for row in actual],
+                         "R381_JSON_ASCII_UTF8_FULL_BUFFER")
+
+    def assert_ascii_write_work(self, executable):
+        for value, budget in (("a" * 64, 3), ("b" * 4096, 3), ("\x7f" * 64, 3),
+                              ("a" * 64 + "\n" + "中" + "b" * 64, 6)):
+            expected = json.dumps(value, ensure_ascii=False).encode("utf-8")
+            for mode, data in (("quote", value.encode("utf-8")), ("canonical", expected)):
+                row = self.codec_rows(executable, mode, data, [len(expected) + 1])[0]
+                self.assertEqual(1, row["ok"])
+                raw = bytes.fromhex(row["buffer"])
+                self.assertEqual(expected + b"\0", raw[16:-16])
+                self.assertLessEqual(row["writes"], budget,
+                    "R381_JSON_ASCII_WRITE_WORK mode=%s input_bytes=%d writes=%d budget=%d" %
+                    (mode, len(data), row["writes"], budget))
+
+    def check_ascii_run_work_is_bounded_by_runs(self):
+        self.assert_ascii_write_work(self.executables["actual"])
+
+    def check_named_ascii_run_revert_is_normal_assertion_0_1_0(self):
+        self.assertTrue(self.has_ascii_run, "R381_JSON_ASCII_RUN_REVERT requires the product run branch")
+        code = ("from pathlib import Path; import sys; "
+                "from tests.test_geo261_native_kernel import KernelCodec; "
+                "case=KernelCodec(); case.work=Path(sys.argv[1]); "
+                "case.assert_ascii_write_work(Path(sys.argv[2]))")
+        for phase, label, expected in (("baseline", "actual", 0),
+                                       ("R381_JSON_ASCII_RUN_REVERT", "R381_JSON_ASCII_RUN_REVERT", 1),
+                                       ("restored", "actual", 0)):
+            run = subprocess.run([sys.executable, "-c", code, str(self.work), str(self.executables[label])],
+                                 cwd=ROOT, capture_output=True, timeout=20)
+            self.assertEqual(expected, run.returncode, phase + ": " + run.stderr.decode(errors="replace"))
+            if expected:
+                self.assertIn(b"AssertionError:", run.stderr)
+                self.assertIn(b"R381_JSON_ASCII_WRITE_WORK", run.stderr)
+            else:
+                self.assertEqual(b"", run.stderr)
+            print("R381_JSON_ASCII_RUN_REVERT phase=%s exit=%d" % (phase, run.returncode))
+
+    def check_named_ascii_guard_reverts_are_normal_assertion_0_1_0(self):
+        self.assertTrue(self.has_ascii_run, "R381 ASCII guard reverts require the product run branch")
+        code = ("from pathlib import Path; import sys; "
+                "from tests.test_geo261_native_kernel import KernelCodec; "
+                "case=KernelCodec(); case.work=Path(sys.argv[1]); "
+                "getattr(case,sys.argv[2])(Path(sys.argv[3]),Path(sys.argv[4]))")
+        controls = (
+            ("R381_JSON_ASCII_ALIAS_GUARD_REVERT", "assert_ascii_alias_guard", "R381_JSON_ASCII_ALIAS_SCALAR_WORK"),
+            ("R381_JSON_ASCII_CAPACITY_GUARD_REVERT", "assert_ascii_capacity_guard", "R381_JSON_ASCII_CAPACITY_FULL_BUFFER"),
+            ("R381_JSON_ASCII_UTF8_GUARD_REVERT", "assert_ascii_utf8_guard", "R381_JSON_ASCII_UTF8_FULL_BUFFER"),
+        )
+        for name, method, marker in controls:
+            for phase, label, expected in (("baseline", "actual", 0),
+                                           (name, name, 1),
+                                           ("restored", "actual", 0)):
+                run = subprocess.run([sys.executable, "-c", code, str(self.work), method,
+                                      str(self.executables[label]),
+                                      str(self.executables["R381_JSON_ASCII_RUN_REVERT"])],
+                                     cwd=ROOT, capture_output=True, timeout=20)
+                self.assertEqual(expected, run.returncode, phase + ": " + run.stderr.decode(errors="replace"))
+                if expected:
+                    self.assertIn(b"AssertionError:", run.stderr)
+                    self.assertIn(marker.encode("ascii"), run.stderr)
+                else:
+                    self.assertEqual(b"", run.stderr)
+                print("%s phase=%s exit=%d" % (name, phase, run.returncode))
+
+    def test_quote_matches_canonical_strings(self):
+        # Retain the original independent Python/UTF-8 assertions and extend
+        # this same quote acceptance; the discovered suite remains 13 tests.
+        super().test_quote_matches_canonical_strings()
+        self.setup_ascii_work()
+        self.check_quote_and_canonical_retain_every_buffer_byte()
+        self.check_ascii_run_work_is_bounded_by_runs()
+        self.check_named_ascii_run_revert_is_normal_assertion_0_1_0()
+        self.check_named_ascii_guard_reverts_are_normal_assertion_0_1_0()
 
 
 def exact_call(exe, operation, a, b=None):
