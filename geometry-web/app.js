@@ -622,6 +622,7 @@ function showConnectionState() {
   for (const id of ["app", "objectWorkspace"]) $(id).inert = blocked;
   syncConnectionCanvasView(focused);
   window.CanvasContextMenu?.connectionChanged();
+  window.CanvasTouchGestures?.cancel();
   window.TimberEdit?.connectionChanged();
   document.body.classList.toggle("connection-blocked", blocked);
   $("connectionTitle").textContent = connection.phase === "error" ? "無法連線，編輯已暫停" : "正在讀取場景";
@@ -9293,7 +9294,9 @@ function renderCanvasModeHint() {
         kbdEl = mh.querySelector(".hint-kbd");
   if (!toolEl || !ctxEl || !kbdEl) return;
   toolEl.textContent = mode === "pan" ? "平移" : "矩形";
-  ctxEl.textContent = mode === "pan" ? "拖曳畫布移動視角；縮放後可用「全圖」找回物件。" : "在畫布上拖出範圍建立游離面";
+  ctxEl.textContent = mode === "pan" ? (touchCanvasUI()
+    ? "拖曳畫布移動視角；雙指可平移／縮放。縮放後可用「全圖」找回物件。"
+    : "拖曳畫布移動視角；縮放後可用「全圖」找回物件。") : "在畫布上拖出範圍建立游離面";
   kbdEl.textContent = "";
   window.WorkspaceGuidance?.apply(mh, { key: `canvas:${mode}`, eligible, dynamic: !!pendingSlot, parent: $("canvasDrawToolbar") });
 }
@@ -9436,15 +9439,15 @@ function selectionMultiHTML(items, face = false) {
     (!face&&items.some(s=>s.kind==='parameter')?'<button type="button" class="btn" id="parameterSelectionExport">匯出所選參數及引用卡片</button>':'') +
     `<p class="multi-selection-note">目前多選供查看選取範圍，尚不支援整組移動、編輯或刪除。請點選單一物件後再操作。</p></section>`;
 }
-function cancelCanvasMarquee() {
+function cancelCanvasMarquee(releasePointer = true) {
   const m = canvasMarquee; canvasMarquee = null;
   if (m) fe.lastPD = null;
   document.querySelectorAll(".selection-marquee").forEach(n => n.remove());
-  if (m?.capture.hasPointerCapture(m.pointerId)) m.capture.releasePointerCapture(m.pointerId);
+  if (releasePointer && m?.capture.hasPointerCapture(m.pointerId)) m.capture.releasePointerCapture(m.pointerId);
   if (m) renderSelectionSummary();
   return !!m;
 }
-function startCanvasMarquee(scope, event) {
+function startCanvasMarquee(scope, event, capturePointer = true) {
   cancelCanvasMarquee();
   const face = scope === "fe", capture = face ? $("faceEditorViewport") : ocv;
   const point = face ? fePoint(event) : ocToCanvas(event);
@@ -9456,7 +9459,7 @@ function startCanvasMarquee(scope, event) {
   canvasMarquee = {scope,capture,pointerId:event.pointerId,point,end:point,cx:event.clientX,cy:event.clientY,moved:false,additive:event.shiftKey,
     candidates,context:ReferenceWorkspace.context().id,edit:oc.edit,history:ReferenceWorkspace.history.undo.at(-1),
     previous:face ? [...fe.timberSelection] : oc.selection.map(s => ({...s}))};
-  capture.setPointerCapture(event.pointerId);
+  if (capturePointer) capture.setPointerCapture(event.pointerId);
 }
 function moveCanvasMarquee(event) {
   const m = canvasMarquee; if (!m || m.pointerId !== event.pointerId) return false;
@@ -9502,6 +9505,7 @@ function finishCanvasMarquee(event) {
   return true;
 }
 function clearCanvasSelections({keepSingleObject = false, keepSingleTimber = false} = {}) {
+  window.CanvasTouchGestures?.cancel();
   ocCardClick = null;
   oc.gridSystemCreating=false;
   /* Navigation keeps the existing single card (notably a newly created face).
@@ -9963,8 +9967,8 @@ async function deleteObject(kind, id) {
 /* The first click can place the new inspector under the pointer. Like the
    face editor, recognize the second down by time/position and stable identity,
    before either the new panel or a blank canvas can consume it. */
-function canvasCardClickEligible(e) {
-  return !e.defaultPrevented && e.isPrimary !== false && e.button === 0 &&
+function canvasCardClickEligible(e, touch = false) {
+  return (!e.defaultPrevented || touch) && e.isPrimary !== false && e.button === 0 &&
     !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey &&
     oc.on && !oc.focus && !view3 && !oc.busy && !ocObjectOpening &&
     oc.tool === "select" && !oc.spacePan && !oc.pan && !oc.drawTool && !canvasMarquee &&
@@ -9988,16 +9992,16 @@ async function openCanvasObject(kind, id) {
     await enterFocus(kind === "space" ? "space" : "face",id);
   } finally { ocObjectOpening = false; }
 }
-document.addEventListener("pointerdown", e => {
+function canvasCardDoubleDown(e, {touch = false, card = null, time = performance.now()} = {}) {
   const first = ocCardClick;
   ocCardClick = null; ocConsumedClick = null;
-  if (!first || !canvasCardClickEligible(e)) return;
-  const inRegion = e.target.closest?.("#ocv,#app .sidebar-right") || e.target === $("canvasViewport");
-  const hitCard = e.target.closest?.("#ocv .ocard");
+  if (!first || !canvasCardClickEligible(e, touch)) return false;
+  const inRegion = touch || e.target.closest?.("#ocv,#app .sidebar-right") || e.target === $("canvasViewport");
+  const hitCard = touch ? card : e.target.closest?.("#ocv .ocard");
   if (hitCard && (hitCard.dataset.kind !== first.kind || Number(hitCard.dataset.id) !== first.id)) return;
   const sameSelection = oc.selection.length === 1 && oc.sel?.kind === first.kind && oc.sel.id === first.id;
   const samePoint = Math.abs(e.clientX-first.x) <= 6 && Math.abs(e.clientY-first.y) <= 6;
-  const rect = first.viewport, now = performance.now();
+  const rect = first.viewport, now = time;
   if (!inRegion || !sameSelection || !samePoint || now-first.time > 450 ||
       first.context !== ReferenceWorkspace.context().id || first.pointerType !== e.pointerType ||
       e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom ||
@@ -10005,7 +10009,9 @@ document.addEventListener("pointerdown", e => {
   e.preventDefault(); e.stopImmediatePropagation();
   ocConsumedClick = {pointerId:e.pointerId,x:e.clientX,y:e.clientY,expires:now+2000};
   openCanvasObject(first.kind,first.id).catch(error => toast(error.message || "無法開啟物件"));
-}, true);
+  return true;
+}
+document.addEventListener("pointerdown", canvasCardDoubleDown, true);
 for (const type of ["pointerup","click","dblclick"]) document.addEventListener(type, e => {
   const consumed = ocConsumedClick;
   if (!consumed || performance.now() > consumed.expires || e.button !== 0) return;
@@ -10016,37 +10022,39 @@ for (const type of ["pointerup","click","dblclick"]) document.addEventListener(t
 document.addEventListener("pointercancel", () => { ocCardClick = null; ocConsumedClick = null; }, true);
 document.addEventListener("keydown", () => { ocCardClick = null; }, true);
 document.addEventListener("wheel", () => { ocCardClick = null; }, {capture:true,passive:true});
-ocv.addEventListener("pointerdown", e => {
+function ocPointerDown(e, {capturePointer = true, touch = false, cardTarget = null,
+  scrollPlace = false, time = performance.now()} = {}) {
   if (!oc.on) return;
   if (e.button === 1) {                       /* 中鍵平移 */
     e.preventDefault();
-    ocv.setPointerCapture(e.pointerId);
+    if (capturePointer) ocv.setPointerCapture(e.pointerId);
     oc.pan = { sx: e.clientX, sy: e.clientY, px: oc.panX, py: oc.panY };
     ocCursor();
     return;
   }
   if (oc.busy || e.button !== 0) return;
   const pt = ocToCanvas(e);
-  ocv.setPointerCapture(e.pointerId);
+  if (capturePointer) ocv.setPointerCapture(e.pointerId);
 
   if (oc.drawTool) { objDrawDown(pt); return; }
 
-  const card = (oc.tool === "pan" || oc.spacePan) ? null : e.target.closest(".ocard");
+  const card = (oc.tool === "pan" || oc.spacePan) ? null : touch ? cardTarget : e.target.closest(".ocard");
   if (card) {
     oc.card = { el: card, kind: card.dataset.kind, id: +card.dataset.id,
                 pointerId:e.pointerId,
                 sx: pt.x, sy: pt.y, moved: false,
-                click:canvasCardClickEligible(e) ? {x:e.clientX,y:e.clientY,time:performance.now(),
+                click:canvasCardClickEligible(e, touch) ? {x:e.clientX,y:e.clientY,time,
                   context:ReferenceWorkspace.context().id,pointerType:e.pointerType,viewport:ocv.getBoundingClientRect()} : null,
                 additive:e.shiftKey, blocked: e.shiftKey || oc.selection.length > 1,
-                scrollPlace: !!e.target.closest('[data-insp-scroll="place"]') };
+                scrollPlace: touch ? scrollPlace : !!e.target.closest('[data-insp-scroll="place"]') };
   } else if (oc.tool === "pan" || oc.spacePan) {
     oc.pan = { sx: e.clientX, sy: e.clientY, px: oc.panX, py: oc.panY };
     ocCursor();
-  } else startCanvasMarquee("oc", e);
-});
+  } else startCanvasMarquee("oc", e, capturePointer);
+}
+ocv.addEventListener("pointerdown", ocPointerDown);
 
-ocv.addEventListener("pointermove", e => {
+function ocPointerMove(e) {
   if (!oc.on) return;
   if (moveCanvasMarquee(e)) return;
   const pt = ocToCanvas(e);
@@ -10073,9 +10081,10 @@ ocv.addEventListener("pointermove", e => {
     return;
   }
   if (oc.drawTool === "rect" && oc.rect) { drawObjects(); drawRectPreview(pt); }
-});
+}
+ocv.addEventListener("pointermove", ocPointerMove);
 
-ocv.addEventListener("pointerup", async e => {
+async function ocPointerUp(e, {touch = false} = {}) {
   if (!oc.on) return;
   if (finishCanvasMarquee(e)) return;
   const pt = ocToCanvas(e);
@@ -10102,7 +10111,7 @@ ocv.addEventListener("pointerup", async e => {
          游離徽章 → 順帶捲檢視器到放置區 */
       if (c.scrollPlace) oc.inspScroll = "place";
       selectObject(c.kind === "space" ? "space" : c.kind, c.id, c.additive);
-      if (c.click && canvasCardClickEligible(e) && oc.selection.length === 1 && oc.sel?.kind === c.kind && oc.sel.id === c.id)
+      if (c.click && canvasCardClickEligible(e, touch) && oc.selection.length === 1 && oc.sel?.kind === c.kind && oc.sel.id === c.id)
         ocCardClick = {...c.click,kind:c.kind,id:c.id};
     }
     return;
@@ -10118,7 +10127,8 @@ ocv.addEventListener("pointerup", async e => {
     await objEmitFace([[x0, y0], [x1, y0], [x1, y1], [x0, y1]]);
     oc.drawTool = null; drawObjects(); ocCursor();
   }
-});
+}
+ocv.addEventListener("pointerup", ocPointerUp);
 
 function drawRectPreview(pt) {
   const x0 = Math.min(oc.rect.x, pt.x), y0 = Math.min(oc.rect.y, pt.y);
@@ -10191,6 +10201,7 @@ function ocCursor() {
 }
 function setOcTool(t) {
   if (t !== "select" && !window.DraftGate.ask()) return;
+  window.CanvasTouchGestures?.cancel();
   cancelCanvasMarquee();
   closePanels();
   if (t !== "rect") pendingSlot = null;
@@ -10946,6 +10957,106 @@ $("btnHole2").addEventListener("click", () => {
     oc.drawTool = oc.drawTool === "hole" ? null : "hole";
     setStatus(oc.drawTool === "hole" ? "在邊界內拖出矩形孔" : "");
   }
+});
+
+/* R11 first slice: ready object canvas only. Face tools and space/view adapters keep
+   their own pointer paths; a future slice must supply their own rollback. */
+function objectTouchOwner() {
+  const project = ReferenceWorkspace.getProjectState(), rect = ocv.getBoundingClientRect();
+  return {context:ReferenceWorkspace.context(),frame:ReferenceWorkspace.history.frame,
+    session:connection.session,phase:connection.phase,navigation:oc.navigationSequence,
+    projectId:project.id,contextToken:project.contextToken,revision:project.revision,
+    nativeRevision:ReferenceWorkspace.getEvidenceState().nativeRevision,
+    tool:oc.tool,drawTool:oc.drawTool,viewport:[rect.left,rect.top,rect.width,rect.height].join(',')};
+}
+function objectTouchCurrent(pin) {
+  if (!oc.on || oc.focus || view3 || ocv.closest('[hidden]') || document.querySelector('dialog[open]') ||
+      ['box6Dialog','memberDialog','shapeDialog','rcDialog'].some(id => !$(id).hidden)) return false;
+  const now = objectTouchOwner();
+  if (!Object.keys(pin.owner).every(key => now[key] === pin.owner[key])) return false;
+  if (!pin.target) return true;
+  const object = ocFind(pin.target.kind,pin.target.id);
+  return !!object && JSON.stringify(object) === pin.definition &&
+    (pin.target.kind !== 'boundary' || ReferenceWorkspace.history.frame.ids.get(pin.target.id) === pin.incarnation);
+}
+window.CanvasTouchGestures.attach({
+  surface:ocv,
+  contains:event => oc.on && !oc.focus && !view3 &&
+    (event.target === $('canvasViewport') || !!event.target.closest?.('#ocv')),
+  eligible(event) {
+    return connection.phase === 'ready' && this.contains(event) && event.button === 0 && !oc.card && !oc.pan && !canvasMarquee &&
+      !event.target.closest?.('button,input,textarea,select,a,[contenteditable],.card-enter,.selection-summary,.workspace-guidance') &&
+      !document.querySelector('dialog[open]') &&
+      ['box6Dialog','memberDialog','shapeDialog','rcDialog'].every(id => $(id).hidden);
+  },
+  captureDown(event) {
+    const card = event.target.closest?.('#ocv .ocard');
+    const target = card ? {kind:card.dataset.kind,id:Number(card.dataset.id)} : null;
+    const object = target && ocFind(target.kind,target.id);
+    if (target && !object) return null;
+    return {owner:objectTouchOwner(),target,definition:object && JSON.stringify(object),
+      incarnation:target?.kind === 'boundary' ? ReferenceWorkspace.history.frame.ids.get(target.id) : null,
+      rectBefore:oc.rect,singleEligible:!oc.busy,time:performance.now(),scrollPlace:!!event.target.closest?.('[data-insp-scroll="place"]'),
+      menu:oc.tool === 'select' && !oc.drawTool && connection.phase === 'ready'
+        ? window.CanvasContextMenu?.captureTouchTarget(event.target,event.clientX,event.clientY) : null};
+  },
+  current:objectTouchCurrent,
+  beginSingle(pin,event,drag) {
+    if (!pin.singleEligible || oc.busy || connection.phase !== 'ready' || !objectTouchCurrent(pin)) return false;
+    const card = pin.target && [...oroot.querySelectorAll('.ocard')].find(node =>
+      node.dataset.kind === pin.target.kind && Number(node.dataset.id) === pin.target.id);
+    if (pin.target && !card) return false;
+    if (!drag && canvasCardDoubleDown(event,{touch:true,card,time:pin.time})) { pin.double = true; return true; }
+    if (drag) { ocCardClick = null; ocConsumedClick = null; }
+    ocPointerDown(event,{capturePointer:false,touch:true,cardTarget:card,scrollPlace:pin.scrollPlace,time:pin.time});
+    pin.card = oc.card; pin.pan = oc.pan; pin.rect = oc.rect; pin.marquee = canvasMarquee;
+    return true;
+  },
+  moveSingle(pin,event) {
+    if (oc.busy || !objectTouchCurrent(pin)) { window.CanvasTouchGestures.cancel(); return; }
+    ocPointerMove(event);
+  },
+  endSingle(pin,event) {
+    if (pin.double) return;
+    if (oc.busy || !objectTouchCurrent(pin)) { this.cancelSingle(pin); return; }
+    return ocPointerUp(event,{touch:true});
+  },
+  cancelSingle(pin) {
+    ocCardClick = null; ocConsumedClick = null;
+    const current = objectTouchCurrent(pin);
+    // Touch owns the capture for the whole sequence, including the following
+    // two-finger phase. A marquee rollback must not release that ownership.
+    if (pin.marquee && canvasMarquee === pin.marquee) cancelCanvasMarquee(false);
+    if (pin.card && oc.card === pin.card) {
+      const card = oc.card; oc.card = null;
+      // A keyboard selection may change navigation while this same card's
+      // uncommitted transform is still ours. Restore that preview without
+      // restoring the user's newer selection or touching another world.
+      const sameWorld = pin.owner.context === ReferenceWorkspace.context() &&
+        pin.owner.frame === ReferenceWorkspace.history.frame && pin.owner.session === connection.session;
+      const candidate = sameWorld && ocFind(card.kind,card.id);
+      const object = candidate && JSON.stringify(candidate) === pin.definition &&
+        (card.kind !== 'boundary' || ReferenceWorkspace.history.frame.ids.get(card.id) === pin.incarnation) ? candidate : null;
+      if (object) card.el.setAttribute('transform',`translate(${object.cx},${object.cy})`);
+      refreshGridRelations();
+    }
+    if (pin.pan && oc.pan === pin.pan) oc.pan = null;
+    if (pin.rect && pin.rect !== pin.rectBefore && oc.rect === pin.rect) {
+      oc.rect = current ? pin.rectBefore : null;
+      if (current) drawObjects();
+    }
+    ocCursor();
+  },
+  openMenu(pin) {
+    ocCardClick = null; ocConsumedClick = null;
+    return !!pin.menu && !!window.CanvasContextMenu?.openTouch(pin.menu);
+  },
+  closeMenu:() => window.CanvasContextMenu?.hide(),
+  clearPresentation:() => cxHide('oc'),
+  localPoint:(x,y) => { const r = ocv.getBoundingClientRect(); return {x:x-r.left,y:y-r.top}; },
+  getCamera:() => ({x:oc.panX,y:oc.panY,zoom:oc.zoom}),
+  setCamera(camera) { oc.panX = camera.x; oc.panY = camera.y; oc.zoom = camera.zoom; ocApply(); },
+  onError:error => toast(error.message || '觸控操作未完成')
 });
 
 /* ---- 啟動 ---- */
