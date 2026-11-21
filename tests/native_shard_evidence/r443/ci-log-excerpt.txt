@@ -1,0 +1,15 @@
+R443 cost source excerpt. Lines copied verbatim (timestamps included) from the GitHub
+Actions job logs of Geometry integration run 44933704476, retrieved through the GitHub
+job-log API on 2026-11-21. This is a text excerpt, not the native-shard-* artifact ZIP;
+the ZIPs (ids/digests below, as reported by the GitHub artifacts API) were not fetchable
+from the cloud session. native_shard_added_evidence_r443.json is the validated source.
+
+== native (2/6) job 136935653730, artifact native-shard-2 id 14719325967 sha256:372739704c24b9b669a1898b491ff1531fb9c147a10b246131e3997db43ec4eb
+2026-11-21T18:07:28.5246791Z HEAD is now at 55f1a911 Merge d6a653017d5434c5bb430a8c23366354e414cfde into 3ef07683b76837fd08f8737ac5f515a3e46d6b6b
+2026-11-21T18:08:47.6261529Z 分片2/6：69／完整343個suite；完整登記檢查仍執行
+2026-11-21T18:19:14.2255207Z [65/69] node:face_length_overlay …
+2026-11-21T18:19:16.1352018Z node:face_length_overlay                             7     7     0     0    0.1  預期數不符：沒有登記在 run_all.expected.json（新 suite 必須明確登記預期數；--update-expected）
+
+== native (3/6) job 136935653696, artifact native-shard-3 id 14718652716 sha256:0bf1a024fc71061712717e4df541b98d44282fc12b1f8e666d4a6920b2bcb683
+2026-11-21T18:14:26.8223130Z node:engineering_override_display                    7     7     0     0    0.1  預期數不符：沒有登記在 run_all.expected.json（新 suite 必須明確登記預期數；--update-expected）
+2026-11-21T18:14:26.8248551Z   node:engineering_override_display：沒有登記在 run_all.expected.json（新 suite 必須明確登記預期數；--update-expected）

@@ -1,0 +1,25 @@
+{
+  "schema": "native-shard-added-suite-evidence/1",
+  "source_run": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44933704476",
+  "source_head": "d6a653017d5434c5bb430a8c23366354e414cfde",
+  "source_checkout": "55f1a911335cbd83dfbc34358c05614721599f25",
+  "note": "PR #443 (L4 findings: D02 face_length_overlay, D09 engineering_override_display) Geometry integration on head d6a65301; the actual checkout is the pull/443/merge commit 55f1a911 over main 3ef07683, and head 14d0c525 later only merged main 4c86b1e3 (需求帳.md, .gitignore, evidence/). Native 2/6 (job 136935653730, artifact native-shard-2 14719325967, GitHub digest sha256:372739704c24b9b669a1898b491ff1531fb9c147a10b246131e3997db43ec4eb) and native 3/6 (job 136935653696, artifact native-shard-3 14718652716, sha256:0bf1a024fc71061712717e4df541b98d44282fc12b1f8e666d4a6920b2bcb683) failed overall because these two new suites were not yet registered in run_all.expected.json / the shard profile (2/6 also had the test_unittest_runner registry guards and the merge-induced panel_fill_grid_ui fixture failure); each listed suite itself passed 7/7 with zero skips. Times are the one-decimal-second values printed in the original runner summaries (log lines retained in native_shard_evidence/r443/ci-log-excerpt.txt). The artifact ZIPs could not be fetched from the cloud session (blob host refused by its egress proxy), so the R12 receipt format was not used. Planning upper bounds 2000 ms follow the R17/PF-4A node suites; they are conservative planning values, not historical observations.",
+  "observations": [
+    {
+      "name": "node:face_length_overlay",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44933704476/job/136935653730",
+      "discovered": 7,
+      "passed": 7,
+      "seconds_rounded": 0.1,
+      "planning_upper_ms": 2000
+    },
+    {
+      "name": "node:engineering_override_display",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44933704476/job/136935653696",
+      "discovered": 7,
+      "passed": 7,
+      "seconds_rounded": 0.1,
+      "planning_upper_ms": 2000
+    }
+  ]
+}
