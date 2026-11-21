@@ -1,0 +1,27 @@
+{
+  "execution": {
+    "cmd": [
+      "geometry-web/canvas_test.js",
+      "direct"
+    ],
+    "extra_env": {},
+    "kind": "node-canvas",
+    "label": "geometry-web/canvas_test.js direct",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": true,
+    "timeout": 900
+  },
+  "expected": {
+    "count": 408,
+    "mode": "count",
+    "unit": "斷言"
+  },
+  "files": [
+    "geometry-web/canvas_test.js"
+  ],
+  "name": "node:canvas_direct",
+  "order": "legacy/000253",
+  "schema": "geometry-native-suite/1"
+}

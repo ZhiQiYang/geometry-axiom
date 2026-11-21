@@ -1,0 +1,31 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_gdi_contract.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_gdi_contract.py",
+    "needs": [
+      "gdi",
+      "core",
+      "bridge",
+      "model-base"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 10,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_gdi_contract.py"
+  ],
+  "name": "py:test_gdi_contract",
+  "order": "legacy/000040",
+  "schema": "geometry-native-suite/1"
+}

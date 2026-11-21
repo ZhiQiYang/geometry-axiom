@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": null,
+    "extra_env": {},
+    "kind": "run_tests",
+    "label": "tests/run_tests.py <core>",
+    "needs": [
+      "core"
+    ],
+    "needs_node": false,
+    "timeout": 900
+  },
+  "expected": {
+    "count": 170,
+    "mode": "count",
+    "unit": "場景"
+  },
+  "files": [
+    "tests/run_tests.py"
+  ],
+  "name": "core:run_tests",
+  "order": "legacy/000001",
+  "schema": "geometry-native-suite/1"
+}

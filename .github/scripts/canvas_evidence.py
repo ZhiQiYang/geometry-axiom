@@ -61,6 +61,7 @@ def plan():
     raw = subprocess.check_output(["node", HELPER, "plan"], cwd=ROOT)
     current = read_json(raw)
     require(current.get("shards") == list(IDS), "CANVAS_SHARD_PLAN_CHANGED")
+    require(not current.get("numericPlan", {}).get("registryCandidate"), "R386_CANVAS_CANDIDATE_NOT_ACCEPTANCE")
     return current
 
 
@@ -185,6 +186,8 @@ def verify_manifest(receipt, expected, original_plan, folder):
             and runtime.get("version") == expected["runtime_version"] == receipt.get("runtime_version"), "CANVAS_RUNTIME_SOURCE_CHANGED")
     events, result = trace((folder / "stdout.log").read_bytes())
     require(result.get("schema") == "geometry-cdp-result/1", "CANVAS_RESULT_SCHEMA")
+    require(result.get("scope", {}).get("acceptance") is not False
+            and "placementCandidateSha256" not in result.get("scope", {}), "R386_CANVAS_CANDIDATE_NOT_ACCEPTANCE")
     require(result.get("scope", {}).get("url") == environment["GEOMETRY_TEST_URL"]
             and result.get("scope", {}).get("feedbackDirectory") == environment.get("GEOMETRY_FEEDBACK_DIR"), "CANVAS_RUNTIME_SCOPE_CHANGED")
     require(receipt.get("scope") == result.get("scope") and receipt.get("sections") == result.get("sections")

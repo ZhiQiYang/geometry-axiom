@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_r363_workspace_merge.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_r363_workspace_merge.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 7,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_r363_workspace_merge.js"
+  ],
+  "name": "node:r363_workspace_merge",
+  "order": "legacy/000334",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/panel_fill_grid_workflow_test.js",
+    "reason": "Dedicated PF-4A CDP acceptance driver; invoked only by cdp_test.js, never by product runtime or served application entry points.",
+    "sha256": "03caa862a9e6815b33706f8a5fe21c3f1c1de356d36d31becbae4a2bc643f888"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

@@ -18,3 +18,21 @@ tests/mutants_results.json -text diff
 geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md -text diff
 geometry-core/domain-decoupling/product-architecture-receipt.json -text diff
 geometry-core/domain-decoupling/product-architecture-scan.json -text diff
+
+# R386 (review 7056059753 problem B): fragment readers hash raw bytes and
+# native_registry._read rejects CR. A Windows core.autocrlf checkout must not
+# turn every fragment into CRLF and make run_all.py refuse the whole registry.
+# Authored fragments: normalized text, always LF in the work tree.
+tests/suites.d/** text eol=lf
+tests/native-costs.d/** text eol=lf
+tests/registry-layout.json text eol=lf
+tests/registry-evidence/*.json text eol=lf
+tests/registry-evidence/native-amendments/** text eol=lf
+tests/registry-source-reviews/** text eol=lf
+geometry-web/cdp_sections.d/** text eol=lf
+geometry-web/canvas_sections/** text eol=lf
+geometry-core/domain-decoupling/product-architecture.json text eol=lf
+geometry-core/domain-decoupling/product-architecture.d/** text eol=lf
+# Content-addressed / sealed originals: never converted, byte-for-byte.
+tests/registry-evidence/native/** -text diff
+geometry-web/canvas-registry/** -text diff

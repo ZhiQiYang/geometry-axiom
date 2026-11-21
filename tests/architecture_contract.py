@@ -70,6 +70,7 @@ from __future__ import annotations
 import argparse
 import ast
 from collections import deque
+from copy import deepcopy
 from dataclasses import asdict, dataclass, field
 import hashlib
 from html.parser import HTMLParser
@@ -1497,14 +1498,288 @@ def scan(root, manifest):
     return Scanner(root, manifest).run()
 
 
-def load_manifest(path):
+FRAGMENT_SCHEMA = "geometry-architecture-fragments/1"
+FRAGMENT_ENTRY_SCHEMA = "geometry-architecture-entry/1"
+FRAGMENT_DIRECTORY = "product-architecture.d"
+FRAGMENT_COLLECTIONS = ("sources", "exclusions", "htmlScriptRoutes", "javascriptImportRoutes",
+                        "htmlEmbedRoutes", "trustedVendorBundles")
+FRAGMENT_CONFIG_REQUIRED = {"schema", "sourceRoots", "searchRoots", "policy"}
+FRAGMENT_CONFIG_OPTIONAL = {"sourceFiles"}
+
+
+def _manifest_json(path):
+    """Keep duplicate-key rejection for the root and every individual fragment."""
     def unique(pairs):
         result = {}
         for key, value in pairs:
             require(key not in result, "MANIFEST_DUPLICATE_KEY", str(path), 1, f"duplicate JSON key {key!r}")
             result[key] = value
         return result
-    return json.loads(Path(path).read_text(encoding="utf-8"), object_pairs_hook=unique)
+    return json.loads(Path(path).read_bytes().decode("utf-8"), object_pairs_hook=unique)
+
+
+def _fragment_identity(collection, entry):
+    """Return a deterministic filename and the identity the scanner must own once."""
+    require(collection in FRAGMENT_COLLECTIONS and isinstance(entry, dict),
+            "FRAGMENT_COLLECTION", "<manifest>", 1, "unknown fragment collection or non-object entry")
+    if collection in {"sources", "exclusions"}:
+        relative = portable_path(entry.get("path"), collection)
+        require(not any(ord(char) < 32 or ord(char) == 127 for char in relative),
+                "ROOT_ESCAPE", collection, 1, "control characters are not portable paths")
+        return collection + "/" + relative + ".json", ("inventory", relative.casefold())
+    keys = {"htmlScriptRoutes": ("source", "src"),
+            "javascriptImportRoutes": ("source", "specifier"),
+            "htmlEmbedRoutes": ("source", "elementId"),
+            "trustedVendorBundles": ("id",)}[collection]
+    identity = tuple(entry.get(key) for key in keys)
+    require(all(isinstance(value, str) and value for value in identity),
+            "FRAGMENT_IDENTITY", collection, 1, "route/trust entry has no exact identity")
+    digest = hashlib.sha256(json.dumps(identity, ensure_ascii=False, separators=(",", ":")).encode("utf-8")).hexdigest()
+    return collection + "/" + digest + ".json", (collection, *identity)
+
+
+def _fragment_manifest(path):
+    """Read a closed set of regular files; expansion never changes Scanner policy."""
+    path = Path(path).absolute()
+    require(not path.is_symlink(), "FRAGMENT_SYMLINK", str(path), 1, "manifest aliases are forbidden")
+    require(path.is_file(), "FRAGMENT_FILE", str(path), 1, "manifest must be a regular file")
+    data = _manifest_json(path)
+    if not isinstance(data, dict) or data.get("schema") != FRAGMENT_SCHEMA:
+        return data, [path]
+    exact_keys(data, {"schema", "fragments", "config"}, str(path))
+    require(data["fragments"] == FRAGMENT_DIRECTORY, "FRAGMENT_DIRECTORY", str(path), 1,
+            "the fragment directory has one fixed relative spelling")
+    config = data["config"]
+    exact_keys(config, FRAGMENT_CONFIG_REQUIRED, str(path), FRAGMENT_CONFIG_OPTIONAL)
+    require(config["schema"] == SCHEMA, "MANIFEST_SCHEMA", str(path), 1, "unknown expanded scanner schema")
+    directory = path.parent / FRAGMENT_DIRECTORY
+    require(not directory.is_symlink(), "FRAGMENT_SYMLINK", str(directory), 1, "fragment directory aliases are forbidden")
+    require(directory.is_dir(), "FRAGMENT_DIRECTORY", str(directory), 1, "fragment directory is missing")
+    result = dict(config)
+    result.update({name: [] for name in FRAGMENT_COLLECTIONS})
+    inputs, identities = [path], set()
+    for current, directories, files in os.walk(directory, followlinks=False):
+        directories.sort()
+        for name in sorted(directories + files):
+            item = Path(current) / name
+            require(not item.is_symlink(), "FRAGMENT_SYMLINK", str(item), 1, "fragment aliases are forbidden")
+        for name in sorted(files):
+            item = Path(current) / name
+            require(item.is_file() and item.suffix == ".json", "FRAGMENT_FILE", str(item), 1,
+                    "every fragment input must be a regular JSON file")
+            row = _manifest_json(item)
+            exact_keys(row, {"schema", "collection", "entry"}, str(item))
+            require(row["schema"] == FRAGMENT_ENTRY_SCHEMA, "FRAGMENT_SCHEMA", str(item), 1,
+                    "unknown architecture fragment schema")
+            expected, identity = _fragment_identity(row["collection"], row["entry"])
+            require(item.relative_to(directory).as_posix() == expected, "FRAGMENT_NAME", str(item), 1,
+                    "fragment filename differs from the complete entry identity")
+            require(identity not in identities, "FRAGMENT_IDENTITY", str(item), 1,
+                    "duplicate or case-colliding source/exclusion/route identity")
+            identities.add(identity)
+            result[row["collection"]].append(row["entry"])
+            inputs.append(item)
+    for collection in FRAGMENT_COLLECTIONS:
+        result[collection].sort(key=lambda entry: _fragment_identity(collection, entry)[0])
+    return result, [path, *sorted(inputs[1:], key=lambda item: item.relative_to(path.parent).as_posix())]
+
+
+def load_manifest(path):
+    """Expand storage fragments into the same strict logical scanner manifest."""
+    return _fragment_manifest(path)[0]
+
+
+def manifest_input_paths(path):
+    """Return the entire manifest input closure for clean-tree and provenance gates."""
+    return _fragment_manifest(path)[1]
+
+
+def manifest_input_bytes(path):
+    """Keep old LF hashes; bind root, paths and exact LF fragment bytes after migration.
+
+    The existing receipt's manifestLfSha256 hashes these bytes. Its scanner hash
+    also pins this expansion implementation. No source/route digest is inferred
+    or repaired here, and no derived evidence is written.
+    """
+    paths = manifest_input_paths(path)
+    if len(paths) == 1:
+        return paths[0].read_bytes().replace(b"\r\n", b"\n")
+    base = paths[0].parent
+    rows = []
+    for item in paths:
+        raw = item.read_bytes().replace(b"\r\n", b"\n")
+        rows.append({"path": item.relative_to(base).as_posix(), "bytes": len(raw),
+                     "sha256": hashlib.sha256(raw).hexdigest()})
+    closure = {"schema": "geometry-architecture-manifest-closure/1", "files": rows}
+    return (json.dumps(closure, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+
+
+def fragment_manifest_files(manifest, manifest_name="product-architecture.json"):
+    """Plan a deterministic migration as relative-path -> LF bytes; never write.
+
+    The caller validates Scanner against the real source tree, stages these
+    files, checks the expanded scan again, then publishes the migration once.
+    Independent source additions affect only their own fragment files.
+    """
+    exact_keys(manifest, FRAGMENT_CONFIG_REQUIRED | {"sources", "exclusions"}, "<manifest>",
+               FRAGMENT_CONFIG_OPTIONAL | set(FRAGMENT_COLLECTIONS[2:]))
+    require(manifest["schema"] == SCHEMA, "MANIFEST_SCHEMA", "<manifest>", 1, "unknown scanner schema")
+    portable_path(manifest_name, "manifest_name")
+    require("/" not in manifest_name, "FRAGMENT_NAME", manifest_name, 1, "manifest_name must be a filename")
+    config = {key: value for key, value in manifest.items() if key not in FRAGMENT_COLLECTIONS}
+    root = {"schema": FRAGMENT_SCHEMA, "fragments": FRAGMENT_DIRECTORY, "config": config}
+
+    def encode(value):
+        return (json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8")
+
+    output, identities = {manifest_name: encode(root)}, set()
+    for collection in FRAGMENT_COLLECTIONS:
+        entries = manifest.get(collection, [])
+        require(isinstance(entries, list), "MANIFEST_SCHEMA", collection, 1, "manifest collection must be a list")
+        for entry in entries:
+            relative, identity = _fragment_identity(collection, entry)
+            require(identity not in identities, "FRAGMENT_IDENTITY", relative, 1,
+                    "duplicate or case-colliding source/exclusion/route identity")
+            identities.add(identity)
+            output[FRAGMENT_DIRECTORY + "/" + relative] = encode(
+                {"schema": FRAGMENT_ENTRY_SCHEMA, "collection": collection, "entry": entry})
+    return dict(sorted(output.items()))
+
+
+SOURCE_REVIEW_SCHEMA = "geometry-registry-source-review/1"
+SOURCE_REVIEW_DIRECTORY = "tests/registry-source-reviews"
+SOURCE_REVIEW_PATHS = ("geometry-web/canvas_registry.js", "geometry-web/canvas_shards.js",
+                       "geometry-web/cdp_test.js", "geometry-core/card-reference/run_mutations.py")
+NEW_REGISTRY_EXCLUSION_REASON = (
+    "Dedicated CI test driver canvas_registry.js: deterministic canvas section registry "
+    "and source-closure loader used by cdp_test.js, canvas_shards.js and registry tests; "
+    "not loaded by product runtime or served application entry points."
+)
+
+
+def _review_regular(root, relative):
+    portable_path(relative, "source review")
+    current = Path(root).resolve()
+    for part in PurePosixPath(relative).parts:
+        current /= part
+        require(not current.is_symlink(), "SOURCE_REVIEW_SYMLINK", relative, 1,
+                "reviewed source and receipt aliases are forbidden")
+    require(current.is_file(), "SOURCE_REVIEW_FILE", relative, 1, "reviewed source/receipt must exist")
+    return current
+
+
+def source_review_files(before_manifest, after_root, paths=SOURCE_REVIEW_PATHS):
+    """Plan reviewed initial-loader registrations; callers explicitly save/review.
+
+    This does not infer an exemption from a filename or refresh an arbitrary
+    digest. Only the four source files changed by the reviewed R386 loaders
+    patch are permitted; source bytes and complete before/after entries are
+    bound in each separate receipt. Later additions register their own source
+    fragments through the ordinary review process.
+    """
+    require(isinstance(paths, (tuple, list)) and len(paths) == len(set(paths))
+            and set(paths) <= set(SOURCE_REVIEW_PATHS), "SOURCE_REVIEW_SCOPE", "<manifest>", 1,
+            "source review is restricted to the initial R386 registry loader files")
+    owned = {entry["path"] for entry in before_manifest["sources"]}
+    excluded = {entry["path"]: entry for entry in before_manifest["exclusions"]}
+    output = {}
+    for relative in sorted(paths):
+        require(relative not in owned, "SOURCE_REVIEW_SCOPE", relative, 1,
+                "an owned product source cannot become a registry exclusion")
+        previous = excluded.get(relative)
+        require(previous is not None or relative == "geometry-web/canvas_registry.js",
+                "SOURCE_REVIEW_BEFORE", relative, 1, "existing loader needs its reviewed original exclusion")
+        if previous is not None:
+            exact_keys(previous, {"path", "reason", "sha256", "hashMode"}, relative)
+            require(previous["hashMode"] == "lf", "SOURCE_REVIEW_BEFORE", relative, 1,
+                    "an existing raw pin must not silently become an LF pin")
+        raw = _review_regular(after_root, relative).read_bytes().replace(b"\r\n", b"\n")
+        updated = deepcopy(previous) if previous is not None else {
+            "path": relative, "reason": NEW_REGISTRY_EXCLUSION_REASON, "hashMode": "lf"}
+        updated["sha256"] = hashlib.sha256(raw).hexdigest()
+        row = {"schema": SOURCE_REVIEW_SCHEMA, "path": relative,
+               "before": previous, "after": updated, "sourceLfBytes": len(raw)}
+        name = SOURCE_REVIEW_DIRECTORY + "/" + relative + ".json"
+        output[name] = (json.dumps(row, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
+    return output
+
+
+def apply_reviewed_source_updates(manifest, root):
+    """Apply only exact reviewed initial-loader entries, preserving all other pins."""
+    root = Path(root).resolve()
+    directory = root / SOURCE_REVIEW_DIRECTORY
+    result, report = deepcopy(manifest), []
+    cursor = root
+    for part in PurePosixPath(SOURCE_REVIEW_DIRECTORY).parts:
+        cursor /= part
+        require(not cursor.is_symlink(), "SOURCE_REVIEW_SYMLINK", SOURCE_REVIEW_DIRECTORY, 1,
+                "source review directory ancestors must not be aliased")
+    if not directory.exists():
+        return result, report
+    require(not directory.is_symlink() and directory.is_dir(), "SOURCE_REVIEW_SYMLINK",
+            SOURCE_REVIEW_DIRECTORY, 1, "source review directory must not be aliased")
+    owned = {entry["path"] for entry in result["sources"]}
+    excluded = {entry["path"]: entry for entry in result["exclusions"]}
+    seen = set()
+    for current, directories, files in os.walk(directory, followlinks=False):
+        directories.sort()
+        for name in sorted(directories + files):
+            require(not (Path(current) / name).is_symlink(), "SOURCE_REVIEW_SYMLINK", name, 1,
+                    "source review directory/file aliases are forbidden")
+        for name in sorted(files):
+            receipt = Path(current) / name
+            relative_receipt = receipt.relative_to(root).as_posix()
+            _review_regular(root, relative_receipt)
+            require(receipt.suffix == ".json", "SOURCE_REVIEW_FILE", relative_receipt, 1,
+                    "all review files must be exact JSON receipts")
+            row = _manifest_json(receipt)
+            exact_keys(row, {"schema", "path", "before", "after", "sourceLfBytes"}, relative_receipt)
+            relative = row["path"]
+            require(row["schema"] == SOURCE_REVIEW_SCHEMA and isinstance(relative, str)
+                    and relative in SOURCE_REVIEW_PATHS and relative not in owned,
+                    "SOURCE_REVIEW_SCOPE", relative_receipt, 1, "unreviewed file or owned-source conversion")
+            require(relative_receipt == SOURCE_REVIEW_DIRECTORY + "/" + relative + ".json"
+                    and relative not in seen, "SOURCE_REVIEW_SCOPE", relative_receipt, 1,
+                    "source review filename or identity differs")
+            seen.add(relative)
+            after = row["after"]
+            exact_keys(after, {"path", "reason", "sha256", "hashMode"}, relative_receipt)
+            require(after["path"] == relative and after["hashMode"] == "lf"
+                    and isinstance(after["reason"], str) and after["reason"].strip()
+                    and isinstance(after["sha256"], str) and re.fullmatch(r"[0-9a-f]{64}", after["sha256"])
+                    and type(row["sourceLfBytes"]) is int and row["sourceLfBytes"] >= 0,
+                    "SOURCE_REVIEW_AFTER", relative_receipt, 1, "invalid reviewed after entry")
+            if row["before"] is not None:
+                exact_keys(row["before"], {"path", "reason", "sha256", "hashMode"}, relative_receipt)
+                require(row["before"]["path"] == relative and row["before"]["hashMode"] == "lf"
+                        and isinstance(row["before"]["reason"], str) and row["before"]["reason"].strip()
+                        and isinstance(row["before"]["sha256"], str)
+                        and re.fullmatch(r"[0-9a-f]{64}", row["before"]["sha256"]),
+                        "SOURCE_REVIEW_BEFORE", relative_receipt, 1, "invalid reviewed before entry")
+            raw = _review_regular(root, relative).read_bytes().replace(b"\r\n", b"\n")
+            actual = hashlib.sha256(raw).hexdigest()
+            previous = excluded.get(relative)
+            if previous is not None and previous.get("hashMode") == "lf" and previous.get("sha256") == actual:
+                report.append({"path": relative, "action": "already-current", "sha256": actual})
+                continue
+            require(previous == row["before"], "SOURCE_REVIEW_BEFORE", relative, 1,
+                    "current manifest entry differs from the reviewed before entry")
+            require((previous is not None and after["reason"] == previous["reason"])
+                    or (previous is None and relative == "geometry-web/canvas_registry.js"
+                        and after["reason"] == NEW_REGISTRY_EXCLUSION_REASON),
+                    "SOURCE_REVIEW_SCOPE", relative, 1, "review cannot change a source classification or reason")
+            require(actual == after["sha256"] and len(raw) == row["sourceLfBytes"],
+                    "SOURCE_REVIEW_AFTER", relative, 1,
+                    "source bytes differ from the reviewed loader patch; re-review this source")
+            if previous is None:
+                result["exclusions"].append(deepcopy(after))
+            else:
+                previous.clear()
+                previous.update(deepcopy(after))
+            report.append({"path": relative, "action": "add" if previous is None else "update",
+                           "beforeSha256": row["before"]["sha256"] if row["before"] is not None else None,
+                           "afterSha256": actual, "sourceLfBytes": len(raw)})
+    return result, report
 
 
 def main():

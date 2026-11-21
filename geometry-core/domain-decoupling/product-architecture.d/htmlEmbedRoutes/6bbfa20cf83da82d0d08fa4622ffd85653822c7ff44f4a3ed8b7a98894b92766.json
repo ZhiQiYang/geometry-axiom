@@ -1,0 +1,19 @@
+{
+  "collection": "htmlEmbedRoutes",
+  "entry": {
+    "driver": "geometry-web/scenario-workspace.js",
+    "driverSha256": "c78502ee1454e2bf6d3a5d5ac0a5dad6ac80907df3e5ffdd33391cdd5a9d83ce",
+    "elementId": "scenarioEditorFrame",
+    "loadCount": 1,
+    "purpose": "Audited scenario editor: exact frame binding and src assignments; serve.py urlsplit/query selection serves the same root index document. Host driver/router digests require re-review on change.",
+    "queryValue": "context",
+    "receiver": "owner.frame",
+    "resetCount": 2,
+    "router": "geometry-web/serve.py",
+    "routerSha256": "751b98128e9ac089d39b0e6e01263174ab33ba36aea9f0a74048b85fd4f521aa",
+    "source": "geometry-web/index.html",
+    "srcPrefix": "/?scenario=",
+    "target": "geometry-web/index.html"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

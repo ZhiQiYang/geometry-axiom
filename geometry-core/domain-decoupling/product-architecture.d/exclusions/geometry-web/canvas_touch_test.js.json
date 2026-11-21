@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/canvas_touch_test.js",
+    "reason": "R11 觸控第一片的真 CDP 驗收與唯讀早期事件觀測；由 cdp_test.js 載入，不由產品頁面載入。",
+    "sha256": "a805a1ad7b263de76ed760c6d03ada5024253570d168ee3cbb96166c6fa432bf"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

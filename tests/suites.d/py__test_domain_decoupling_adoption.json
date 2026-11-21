@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_domain_decoupling_adoption.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_domain_decoupling_adoption.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 20,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_domain_decoupling_adoption.py"
+  ],
+  "name": "py:test_domain_decoupling_adoption",
+  "order": "legacy/000024",
+  "schema": "geometry-native-suite/1"
+}

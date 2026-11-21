@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_identity_context_history.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_identity_context_history.js",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 3,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_identity_context_history.js"
+  ],
+  "name": "node:identity_context_history",
+  "order": "legacy/000339",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,5 +1,9 @@
 # 非瀏覽器CI確定性分片（2026-11-02）
 
+## R386 後續來源格式
+
+完成片段遷移後，套件宣告／精確計數改讀 `suites.d/`，新成本改讀 `native-costs.d/` 與 `registry-evidence/native/`；下文四份歷史原件及其原值保留。正式六片拒絕缺成本，不以歷史 scalar replay 的 1000 ms 預設替新 suite 補值。新增流程、真 CI census／成本匯入、來源到期承繼、確定性遷移及與單次建置補丁的關係見 [FRAGMENTED-REGISTRIES.md](FRAGMENTED-REGISTRIES.md)。
+
 ## R03 新 suite 的獨立工作樹量測（基底 fa83e6ad）
 
 R03 本片的完整基底是 `fa83e6ad8444c569b9f2f5e91f2de9a5622a92cb`。新增
@@ -65,6 +69,8 @@ native suite 跑，不因完整 0／1／0 另有指令而略過正式 CI 守門�
 回報必須明寫未驗；不能用本表或本機 0／1／0 宣稱 Geometry 已綠。
 
 以下保留各歷史版本的原紀錄與當時範圍，不能把舊計數當成當前 registry。
+
+## 原配置與歷史證據
 
 目前配置為六個native矩陣job，每個`timeout-minutes: 35`保持，各片收據仍須嚴格小於1200秒。2026-11-02依P-186授權建立的三片為歷史安排；R348在2026-11-12的慢runner收據超時後，先改為下方的完整三輪／四片規劃；後續保留#378完整第四輪，並合流R380兩套、R379三套、R396四套獨立來源；最新六片324套配置見本文末節，正式CI驗收另核對。原始main `405f8c5e1a637a16cbe47470faf5ae1fa02b8676` 的[GitHub native job](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40185639126/job/124015759512)量測繼續保留；不延長期限、不豁免失敗。
 

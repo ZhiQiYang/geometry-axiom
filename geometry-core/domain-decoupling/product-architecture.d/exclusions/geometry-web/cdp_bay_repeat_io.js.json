@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/cdp_bay_repeat_io.js",
+    "reason": "R06 formal CDP archive I/O test helper; owns download, fresh browser profile and isolated native service only during acceptance tests; never loaded by product entry points.",
+    "sha256": "1f1ae69a212cf669f509fdeaee43d0f763e97185b2ebe2f2496b6358ef9ed8f3"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

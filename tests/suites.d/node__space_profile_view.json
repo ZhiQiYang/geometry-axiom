@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_space_profile_view.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_space_profile_view.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 16,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_space_profile_view.js"
+  ],
+  "name": "node:space_profile_view",
+  "order": "legacy/000260",
+  "schema": "geometry-native-suite/1"
+}

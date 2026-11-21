@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_domain_decoupling_proposal.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_domain_decoupling_proposal.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 29,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_domain_decoupling_proposal.py"
+  ],
+  "name": "py:test_domain_decoupling_proposal",
+  "order": "legacy/000026",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/work-manager/test_review_regressions.py",
+    "reason": "Dedicated acceptance/test driver test_review_regressions.py; invoked by test harnesses, not by product runtime or served application entry points.",
+    "sha256": "a37fc4e4c249a8cf05be35bc5872026b19f7b3ba8b51215c8bd3313f4e1e2c3f"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

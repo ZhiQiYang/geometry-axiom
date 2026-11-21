@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_room_candidate_draft.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_room_candidate_draft.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 7,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_room_candidate_draft.js"
+  ],
+  "name": "node:room_candidate_draft",
+  "order": "legacy/000316",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "native-shard-added-suite-evidence/1",
+  "source_run": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267",
+  "source_head": "735144edeb0cd5918b1e5c365dd6f63a63d9cd62",
+  "source_checkout": "c5f0876e2c6185fdc00896489627b69e50040020",
+  "note": "PR #419 Geometry integration; native 2/3/5/6 jobs failed overall only because these new suites were not yet registered in run_all.expected.json / the shard profile; each listed individual suite passed. Times are the one-decimal-second values printed in the original 2026-11-15 runner summaries; planning upper bounds are conservative, not historical observations.",
+  "observations": [
+    {
+      "name": "py:test_boundary_pair_host",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267/job/132845985362",
+      "discovered": 19,
+      "passed": 19,
+      "seconds_rounded": 4.6,
+      "planning_upper_ms": 7000
+    },
+    {
+      "name": "node:boundary_pair_ui",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267/job/132845985393",
+      "discovered": 12,
+      "passed": 12,
+      "seconds_rounded": 0.2,
+      "planning_upper_ms": 2000
+    },
+    {
+      "name": "node:boundary_pair_project",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267/job/132845985292",
+      "discovered": 8,
+      "passed": 8,
+      "seconds_rounded": 0.1,
+      "planning_upper_ms": 2000
+    },
+    {
+      "name": "node:boundary_pair_browser_scope",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43725356267/job/132845985322",
+      "discovered": 7,
+      "passed": 7,
+      "seconds_rounded": 0.1,
+      "planning_upper_ms": 2000
+    }
+  ]
+}
