@@ -434,7 +434,7 @@ def _legacy_base_sources(root, base_sha):
         raise ValueError('R386_NATIVE_LEGACY_BASE_GIT_TREE_REQUIRED')
     paths = [path for path in result.stdout.splitlines()
              if path == 'tests/native_shard_timings.json'
-             or path == 'tests/native_shard_added_receipts.json'
+             or re.fullmatch(r'tests/native_shard_added_receipts[A-Za-z0-9_]*\.json', path)
              or re.fullmatch(r'tests/native_shard_added_evidence[A-Za-z0-9_]*\.json', path)]
     if 'tests/native_shard_timings.json' not in paths:
         raise ValueError('R386_NATIVE_LEGACY_TIMINGS_ORIGINAL_REQUIRED')
@@ -445,7 +445,7 @@ def _legacy_base_sources(root, base_sha):
         if path.endswith('/native_shard_timings.json'):
             _, profiles = _historical(data)
             kind, suites = 'historical-timings', sorted(profiles[0])
-        elif path.endswith('/native_shard_added_receipts.json'):
+        elif re.fullmatch(r'tests/native_shard_added_receipts[A-Za-z0-9_]*\.json', path):
             kind, suites = 'historical-receipts', sorted(_added_receipts(data))
         else:
             kind, suites = 'historical-added', sorted(_added(data))
@@ -471,7 +471,7 @@ def _legacy_catalog(root):
         if (type(source) is not dict or set(source) != {'path', 'sha256', 'kind', 'suites'}
                 or source['kind'] not in ('historical-timings', 'historical-added', 'historical-receipts')
                 or source['path'] in paths or not re.fullmatch(
-                    r'tests/native_shard_(?:timings|added_receipts|added_evidence[A-Za-z0-9_]*)\.json', str(source['path']))
+                    r'tests/native_shard_(?:timings|added_receipts[A-Za-z0-9_]*|added_evidence[A-Za-z0-9_]*)\.json', str(source['path']))
                 or not re.fullmatch(r'[a-f0-9]{64}', str(source['sha256']))
                 or source['sha256'] in hashes or type(source['suites']) is not list
                 or not source['suites'] or source['suites'] != sorted(set(source['suites']))

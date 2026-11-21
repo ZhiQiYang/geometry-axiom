@@ -153,7 +153,8 @@ def source_paths(root):
         'geometry-core/card-reference/run_mutations.py', MARKER, NATIVE_CATALOG,
     }
     names.update(p.relative_to(root).as_posix()
-                 for p in (root / 'tests').glob('native_shard_added_evidence*.json'))
+                 for pattern in ('native_shard_added_evidence*.json', 'native_shard_added_receipts*.json')
+                 for p in (root / 'tests').glob(pattern))
     for directory in (*FRAGMENT_ROOTS, 'tests/registry-source-reviews'):
         folder = root / directory
         require(not folder.is_symlink(), 'R386_SYMLINK_NOT_ALLOWED: ' + directory)
