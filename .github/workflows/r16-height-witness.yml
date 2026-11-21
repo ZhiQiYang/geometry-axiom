@@ -1,0 +1,100 @@
+name: R16 畫布高度原件驗證
+on:
+  push:
+    branches: [codex/r16-u123h-witness-20261121]
+permissions:
+  contents: read
+jobs:
+  height:
+    name: P1231 真實 Chrome (T)
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+      GEOMETRY_FEEDBACK_DIR: /tmp/geometry-r16-feedback
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+      GEOMETRY_CDP_PORT: '9371'
+      PYTHONDONTWRITEBYTECODE: '1'
+      SOURCE_SHA: 2a3060301af6b5f15174eda6cfb57dd560490978
+      EXPECTED_TREE: a5610784a86ee99645cebad93dc5ea70d113974e
+      R16_PHASE: T
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 2a3060301af6b5f15174eda6cfb57dd560490978
+          persist-credentials: false
+      - name: 核對來源、工具與回報目錄
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_TREE"
+          mkdir -p "$RUNNER_TEMP/r16" "$GEOMETRY_FEEDBACK_DIR" /tmp/geometry-tests
+          python3 -B geometry-web/feedback_cli.py list > "$RUNNER_TEMP/r16/feedback-before.log"
+          git show -s --format='%H %T %P' HEAD > "$RUNNER_TEMP/r16/source.txt"
+          "$GEOMETRY_CHROME" --version | tee "$RUNNER_TEMP/r16/chrome.txt"
+      - name: 建置本次來源的 bridge 與 model-base
+        run: npm run build
+      - name: 安裝正式 CI 的中文字型
+        timeout-minutes: 8
+        uses: ./.github/actions/install-cjk-fonts
+      - name: 啟動隔離服務並執行原本的 P1231
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          receipts="$RUNNER_TEMP/r16"
+          python3 -u geometry-web/start_local.py --port 18839 > "$receipts/server.log" 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true; wait "$server" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            kill -0 "$server"
+            if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          python3 geometry-web/runtime_version.py --probe 18839 | tee "$receipts/runtime.json"
+          set +e
+          GEOMETRY_WORKSPACE_HEIGHT_ONLY=1 timeout 900s node geometry-web/cdp_test.js > "$receipts/cdp.stdout" 2> "$receipts/cdp.stderr"
+          status=$?
+          set -e
+          printf '%s\n' "$status" > "$receipts/exit-code.txt"
+          tail -n 12 "$receipts/cdp.stdout"
+          cat "$receipts/cdp.stderr"
+          exit "$status"
+      - name: 分辨產品斷言與啟動失敗並彙整尺寸
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib
+          out = pathlib.Path(os.environ['RUNNER_TEMP']) / 'r16'
+          status = int((out/'exit-code.txt').read_text().strip())
+          rows = (out/'cdp.stdout').read_text().splitlines()
+          def records(name):
+              return [json.loads(line[len(name)+1:]) for line in rows if line.startswith(name+' ')]
+          footer, suite = records('CDP_RESULT'), records('P1231_SUITE_RESULT')
+          layout, controls = records('P1231_LAYOUT'), records('P1231_CONTROLS')
+          detail = dict(source=os.environ['SOURCE_SHA'], tree=os.environ['EXPECTED_TREE'], phase=os.environ['R16_PHASE'], childExit=status, footer=footer, suite=suite, layouts=layout, controls=controls, restore=records('P1231_TEACHING_RESTORED'), lengths=records('P1231_21C1'))
+          (out/'measurements.json').write_text(json.dumps(detail,ensure_ascii=False,indent=2)+'\n')
+          print('childExit', status, 'layouts', len(layout), 'controlGroups',len(controls),'P1231',suite)
+          assert len(suite)==len(footer)==len(detail['restore'])==1
+          assert footer[0]['completed'] is True and suite[0]['case']=='P1231'
+          assert footer[0]['sections'].get('P1231',0)>0 and layout
+          if os.environ['R16_PHASE']=='T':
+              assert status==1 and footer[0]['failedAssertions']>0 and suite[0]['status']=='failed'
+              assert any(f['kind']=='assertion' and f['name'] in {'R123H_HEIGHT','R123H_UNOBSCURED','R123H_CONTROLS','R123H_DOCK_SCROLL','R123H_TOUCH_TARGETS','R123H_LAYOUT_VIEWPORT'} for f in suite[0]['failures'])
+          else:
+              assert status==0 and footer[0]['failedAssertions']==0 and suite[0]['status']=='passed' and suite[0]['failures']==[]
+              assert {(r['requested']['width'],r['requested']['height']) for r in layout}=={(390,844),(768,1024),(1400,900),(560,844),(561,844)}
+              assert all(not r['observation']['obstructions'] and r['observation']['clipped']['height']>=r['minimum'] for r in layout)
+              assert controls and all(c['exists'] and c['reachable'] for r in controls for c in r['controls'])
+          PY
+      - name: 保存原始輸出、退出碼與量測
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r16-height-T-2a3060301af6b5f15174eda6cfb57dd560490978
+          path: ${{ runner.temp }}/r16/
+          if-no-files-found: error
+          retention-days: 14
