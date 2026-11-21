@@ -242,7 +242,12 @@
   2
  ],
  "savedName": "未命名專案.gcanvas",
- "savedSha256": "8f3ca88db770dadd95089dba92583e3bda5a2cf1e692ceaaffed0f69025daf55",
+ "savedSha256": "22a857d8a2280a817d09c0fa183c06ace0a616fec431ff84ecbbd1201deec7d3",
+ "savedSha256Correction": {
+  "wrongValue": "8f3ca88db770dadd95089dba92583e3bda5a2cf1e692ceaaffed0f69025daf55",
+  "cause": "ui.js sha() hashed String(Buffer) (UTF-8 decoded) instead of raw bytes; recomputed from the committed .gcanvas bytes (L4_GCANVAS_RAW_SHA256)",
+  "bytes": 960
+ },
  "errsMain": [
   "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
  ],
