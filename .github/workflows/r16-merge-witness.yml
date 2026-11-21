@@ -1,0 +1,81 @@
+name: R16 普通合流衝突原件
+on:
+  push:
+    branches: [codex/r16-u123h-witness-20261121]
+    paths: [.github/workflows/r16-merge-witness.yml]
+permissions:
+  contents: read
+jobs:
+  merge:
+    name: 固定 P 與 main 的普通合流
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SOURCE: 38a86e71c03815b595fdb135d9d7cd62b9ba0500
+      MAIN: 3ef07683b76837fd08f8737ac5f515a3e46d6b6b
+      BASE: 1b1c66749786c238042e3ba1c3917b1ad33b31bc
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 38a86e71c03815b595fdb135d9d7cd62b9ba0500
+          persist-credentials: false
+      - name: 取指定 ancestry 並核對共同祖先
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=256 --filter=blob:none origin "$SOURCE" "$MAIN"
+          test "$(git rev-parse HEAD)" = "$SOURCE"
+          test "$(git merge-base "$SOURCE" "$MAIN")" = "$BASE"
+          test "$(git rev-parse HEAD^{tree})" = e51336901efb0adf58b7b48daebd83f560845e9b
+          mkdir -p "$RUNNER_TEMP/r16-merge"
+          git show -s --format='%H %T %P' "$SOURCE" "$MAIN" "$BASE" > "$RUNNER_TEMP/r16-merge/inputs.txt"
+      - name: 執行一般合流並保留原退出碼（預期衝突）
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/r16-merge"
+          set +e
+          git -c user.name=Codex -c user.email=codex@users.noreply.github.com merge --no-commit --no-ff "$MAIN" > "$out/merge.stdout" 2> "$out/merge.stderr"
+          status=$?
+          set -e
+          printf '%s\n' "$status" > "$out/merge.exit"
+          cat "$out/merge.stdout" "$out/merge.stderr"
+          exit "$status"
+      - name: 驗證未產生 commit 並保存每個衝突的雙方原始 bytes
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/r16-merge"
+          test "$(cat "$out/merge.exit")" = 1
+          test "$(git rev-parse HEAD)" = "$SOURCE"
+          test "$(git rev-parse MERGE_HEAD)" = "$MAIN"
+          git ls-files -u > "$out/index-stages.txt"
+          git diff --cc --binary > "$out/conflict.diff"
+          git status --porcelain=v2 --untracked-files=no > "$out/status.txt"
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['RUNNER_TEMP'])/'r16-merge'
+          def git(*args): return subprocess.check_output(['git',*args])
+          paths=[s.decode() for s in git('diff','--name-only','--diff-filter=U','-z').split(b'\0') if s]
+          entries={p:{} for p in paths}
+          for row in git('ls-files','-u','-z').split(b'\0'):
+              if not row:continue
+              meta,name=row.split(b'\t',1);mode,blob,stage=meta.decode().split();name=name.decode()
+              raw=git('cat-file','blob',blob)
+              assert git('rev-parse',':'+stage+':'+name).decode().strip()==blob
+              target=out/('stage-'+stage)/name
+              target.parent.mkdir(parents=True,exist_ok=True)
+              target.write_bytes(raw)
+              entries[name][stage]={'blob':blob,'mode':mode,'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+          report={'base':os.environ['BASE'],'p':os.environ['SOURCE'],'main':os.environ['MAIN'],'headAfter':git('rev-parse','HEAD').decode().strip(),'mergeHead':git('rev-parse','MERGE_HEAD').decode().strip(),'mergeExit':int((out/'merge.exit').read_text()),'conflictCount':len(paths),'conflicts':entries}
+          (out/'manifest.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+          print(json.dumps(report,ensure_ascii=False))
+          assert len(paths)==5, paths
+          PY
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r16-ordinary-merge-38a86e71-3ef07683
+          path: ${{ runner.temp }}/r16-merge/
+          if-no-files-found: error
+          retention-days: 14
