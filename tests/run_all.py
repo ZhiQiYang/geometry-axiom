@@ -382,6 +382,7 @@ NODE_PURE_TEST_FILES = {
     'node:connection_recovery': 'tests/test_connection_recovery.js',
     'node:draw_annotation': 'tests/test_draw_annotation.js',
     'node:woodworking_frontend': 'tests/test_woodworking_frontend.js',
+    'node:engineering_override_display': 'tests/test_engineering_override_display.js',
     'node:grid_inspector_command': 'tests/test_grid_inspector_command.js',
     'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
     'node:parameter_confirmation_settlement': 'tests/test_parameter_confirmation_settlement.js',
