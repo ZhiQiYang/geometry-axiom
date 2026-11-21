@@ -88,7 +88,12 @@ def mouse_blank(point):
 
 
 def release_witness(detail, events):
-    """Require the observed target AND coordinate mismatch that bypassed old P."""
+    """Witness retargeting from trusted input; click IDs do not prove ownership.
+
+    Chrome 153 can retain the touch pointer ID on its compatibility click.
+    Accepting that observation does not establish an old-product failure: the
+    exact-old-head run must still fail RELEASE through repair_red below.
+    """
     mark = detail.get('releaseMark')
     if type(mark) is not int or not 0 <= mark <= len(events):
         return False
@@ -101,24 +106,45 @@ def release_witness(detail, events):
             and mouse.get('trusted') is True and mouse.get('card') is None
             and mouse.get('control') is False):
         return False
-    down = next((e for e in events[:mark] if e.get('type') == 'pointerdown'
-                 and e.get('pointerType') == 'touch' and e.get('trusted') is True), {})
+    down_index = next((i for i, e in enumerate(events[:mark]) if e.get('type') == 'pointerdown'
+                       and e.get('pointerType') == 'touch' and e.get('trusted') is True), -1)
+    down = events[down_index] if down_index >= 0 else {}
+    start_index = next((i for i, e in enumerate(events[:mark])
+                        if e.get('type') == 'touchstart' and e.get('trusted') is True), -1)
+    start = events[start_index] if start_index >= 0 else {}
     up = next((e for e in events[mark:] if e.get('type') == 'pointerup'
                and e.get('pointerType') == 'touch' and e.get('trusted') is True), {})
-    click = next((e for e in events[mark:] if touch_click(e, 'open')), {})
-    if not (type(down.get('pointerId')) is int and up.get('pointerId') == down['pointerId']
-            and type(click.get('pointerId')) is int and click['pointerId'] != up['pointerId']
-            and click.get('canvas') is False
+    end = next((e for e in events[mark:] if e.get('type') == 'touchend' and e.get('trusted') is True), {})
+    click_index = next((i for i, e in enumerate(events[mark:], mark) if touch_click(e, 'open')), -1)
+    click = events[click_index] if click_index >= 0 else {}
+    start_contacts, end_contacts = start.get('changedTouches'), end.get('changedTouches')
+    if not (type(down.get('pointerId')) is int and type(up.get('pointerId')) is int
+            and up['pointerId'] == down['pointerId']
+            and type(start.get('touches')) is int and start['touches'] == 1
+            and type(end.get('touches')) is int and end['touches'] == 0
+            and isinstance(start_contacts, list) and len(start_contacts) == 1
+            and isinstance(end_contacts, list) and len(end_contacts) == 1
+            and isinstance(start_contacts[0], dict) and isinstance(end_contacts[0], dict)
+            and type(start_contacts[0].get('id')) is int and type(end_contacts[0].get('id')) is int
+            and start_contacts[0]['id'] == end_contacts[0]['id']
+            and click.get('canvas') is False and click.get('control') is True
             and all(finite_number(event.get(key)) for event in (up, click) for key in ('x', 'y'))
             and (click['x'] != up['x'] or click['y'] != up['y'])):
         return False
+    # A later independent touch retires the consumed sequence. Its click must
+    # never be misattributed to the earlier release, even when an ID is reused.
+    if any(e.get('type') == 'pointerdown' and e.get('pointerType') == 'touch'
+           for e in events[down_index + 1:click_index]):
+        return False
+    if any(e.get('type') == 'touchstart' and i != start_index
+           for i, e in enumerate(events[down_index + 1:click_index], down_index + 1)):
+        return False
     return ordered(events[:mark], (
         lambda e: e is down and e.get('card') == 'boundary:43',
-        lambda e: e.get('type') == 'touchstart' and e.get('trusted') is True
-                  and e.get('touches') == 1 and e.get('card') == 'boundary:43',
+        lambda e: e is start and e.get('card') == 'boundary:43',
     )) and ordered(events[mark:], (
         lambda e: e is up,
-        lambda e: e.get('type') == 'touchend' and e.get('trusted') is True,
+        lambda e: e is end,
         lambda e: e is click,
     ))
 
@@ -229,7 +255,7 @@ def predicate_selftest(original):
              'x': 78, 'y': 673.6, 'canvas': True, 'control': False,
              'card': 'boundary:41' if marker == DELETE else 'boundary:43'},
             {'type': 'touchstart', 'trusted': True, 'touches': 1, 'canvas': True, 'control': False,
-             'card': 'boundary:41' if marker == DELETE else 'boundary:43'},
+             'card': 'boundary:41' if marker == DELETE else 'boundary:43', 'changedTouches': [{'id': 1}]},
         ]
         if marker == BLANK:
             events += [
@@ -247,9 +273,10 @@ def predicate_selftest(original):
                 ]
             events += [
                 {'type': 'pointerup', 'pointerType': 'touch', 'trusted': True, 'pointerId': 7, 'x': 78, 'y': 673.6},
-                {'type': 'touchend', 'trusted': True},
+                {'type': 'touchend', 'trusted': True, 'touches': 0, 'changedTouches': [{'id': 1}]},
                 {'type': 'click', 'trusted': True, 'pointerType': 'touch', 'canvas': False,
-                 'action': 'open' if marker == RELEASE else 'delete', 'pointerId': -1, 'x': 83, 'y': 673},
+                 'control': True, 'firesTouchEvents': True,
+                 'action': 'open' if marker == RELEASE else 'delete', 'pointerId': 7, 'x': 83, 'y': 673},
             ]
             detail = {'state': {'events': events}, 'releaseMark': 2, 'point': point,
                       'mouseDown': {'type': 'pointerdown', 'pointerType': 'mouse', 'trusted': True,
@@ -317,8 +344,17 @@ def predicate_selftest(original):
                 ('mouse actually hit card', lambda r: details(r)['mouseDown'].update(card='boundary:43')),
                 ('same UP and click coordinates', lambda r: observed(r)[-1].update(x=78, y=673.6)),
                 ('click remains in canvas', lambda r: observed(r)[-1].update(canvas=True)),
-                ('same UP and click pointer ID', lambda r: observed(r)[-1].update(pointerId=7)),
-                ('missing click pointer ID', lambda r: observed(r)[-1].pop('pointerId')),
+                ('click does not hit control', lambda r: observed(r)[-1].update(control=False)),
+                ('new touch DOWN during release', lambda r: observed(r).insert(3, copy.deepcopy(observed(r)[0]))),
+                ('untrusted touch DOWN during release', lambda r: observed(r).insert(3, dict(observed(r)[0], trusted=False))),
+                ('extra touchstart during release', lambda r: observed(r).insert(3, copy.deepcopy(observed(r)[1]))),
+                ('touch remains at end', lambda r: observed(r)[3].update(touches=1)),
+                ('missing start contact', lambda r: observed(r)[1].pop('changedTouches')),
+                ('missing end contact', lambda r: observed(r)[3].pop('changedTouches')),
+                ('two start contacts', lambda r: observed(r)[1]['changedTouches'].append({'id': 2})),
+                ('two end contacts', lambda r: observed(r)[3]['changedTouches'].append({'id': 2})),
+                ('different end contact', lambda r: observed(r)[3]['changedTouches'][0].update(id=2)),
+                ('missing start identifier', lambda r: observed(r)[1]['changedTouches'][0].pop('id')),
                 ('missing UP', lambda r: observed(r).pop(2)),
                 ('wrong UP pointer ID', lambda r: observed(r)[2].update(pointerId=9)),
                 ('nonfinite click coordinate', lambda r: observed(r)[-1].update(x=float('nan'))),
@@ -341,6 +377,15 @@ def predicate_selftest(original):
             assert not repair_red(bad, marker), marker + ': ' + label
             passed.append(marker + ': rejects ' + label)
         if marker == RELEASE:
+            for click_id in (107, None):
+                alternate = copy.deepcopy(good)
+                click = observed(alternate)[-1]
+                if click_id is None:
+                    click.pop('pointerId')
+                else:
+                    click['pointerId'] = click_id
+                assert repair_red(alternate, marker), 'click pointer ID is observation only: ' + repr(click_id)
+                passed.append(marker + ': accepts observed click pointer ID ' + repr(click_id))
             for invalid_mark in (True, '2', 0, 3, 4, 5):
                 bad = copy.deepcopy(good)
                 bad['touch'][0]['firstFailure']['detail']['releaseMark'] = invalid_mark

@@ -19,24 +19,34 @@ const CASES = ['LONG_PRESS', 'BLANK_EQUIVALENCE', 'SHEET_KEYBOARD', 'SHORT_VIEWP
 // A document listener installed later cannot observe a correctly consumed touch
 // pointer at window capture. This observer never prevents or dispatches events.
 function installEarlyObserver() {
-  const p = window.__p1162Early = {events:[],enabled:false};
-  const types = ['pointerdown','pointermove','pointerup','pointercancel','touchstart','touchmove','touchend','touchcancel','mousedown','mouseup','contextmenu','click','keydown'];
+  const p = window.__p1162Early = {events:[],enabled:false,eventRows:new WeakMap(),eventRefs:new WeakMap()};
+  const types = p.types = ['pointerdown','pointermove','pointerup','pointercancel','touchstart','touchmove','touchend','touchcancel',
+    'mousedown','mouseup','contextmenu','click','keydown','scroll','resize','lostpointercapture'];
+  // Keep the actual Event until a later CDP read, after dispatch has returned.
+  // An early-listener microtask can run before subsequent product listeners;
+  // it cannot establish the final preventDefault/stopImmediatePropagation result.
+  p.snapshot = () => p.events.map(row => ({...row,defaultPrevented:p.eventRefs.get(row).defaultPrevented}));
+  p.clear = () => { p.events.length = 0; p.eventRows = new WeakMap(); p.eventRefs = new WeakMap(); };
   const observe = event => {
     if (!p.enabled) return;
     const card = event.target?.closest?.('.ocard');
-    p.events.push({type:event.type, trusted:event.isTrusted, at:performance.now(), timestamp:event.timeStamp,
-      pointerType:event.pointerType, pointerId:event.pointerId, key:event.key,
+    const row = {type:event.type, trusted:event.isTrusted, at:performance.now(), timestamp:event.timeStamp,
+      pointerType:event.pointerType, pointerId:event.pointerId, isPrimary:event.isPrimary, key:event.key,
       button:event.button, buttons:event.buttons,
       x:event.clientX, y:event.clientY, touches:event.touches?.length,
+      earlyDefaultPrevented:event.defaultPrevented,lateWindowCapture:false,
       firesTouchEvents:event.sourceCapabilities?.firesTouchEvents ?? null,
       changedTouches:event.changedTouches ? [...event.changedTouches].map(touch=>({
         id:touch.identifier,x:touch.clientX,y:touch.clientY,
         target:touch.target?.id || touch.target?.tagName})) : null,
       canvas:event.target===document.getElementById('canvasViewport') || !!event.target?.closest?.('#ocv'),
       control:!!event.target?.closest?.('button,input,select,textarea,a,[role="button"],[contenteditable],.card-enter,.selection-summary,.workspace-guidance,.minimap-shell,.canvas-controls,#canvasDrawToolbar,#ocSelectionSummary,#emptyState,#paramGridLesson'),
-      target:event.target?.id || event.target?.tagName,
+      target:event.target===window ? 'window' : event.target===document ? 'document' : event.target?.id || event.target?.tagName,
       action:event.target?.closest?.('[data-oc-act]')?.dataset.ocAct,
-      card:card ? card.dataset.kind + ':' + card.dataset.id : null});
+      card:card ? card.dataset.kind + ':' + card.dataset.id : null};
+    if (['pointerdown','pointerup','pointercancel','scroll','resize','lostpointercapture'].includes(event.type))
+      row.preDispatch = window.__p1162?.inputState?.() ?? null;
+    p.eventRows.set(event,row); p.eventRefs.set(row,event); p.events.push(row);
   };
   for (const type of types) window.addEventListener(type, observe, true);
 }
@@ -44,8 +54,32 @@ function installEarlyObserver() {
 function installProbe() {
   if (window.__p1162 || !window.__p1162Early) throw Error('P1162 early observation is missing or probe already installed');
   const early = window.__p1162Early;
-  early.events.length = 0; early.enabled = true;
+  early.clear(); early.enabled = true;
   const p = window.__p1162 = {events:early.events, requests:[], pending:0, rings:[], menus:[]};
+  // Registered after the product's window-capture listeners. A stopped event
+  // remains in the early record but cannot reach this independent observer.
+  const lateObserve = event => {
+    const row = early.eventRows.get(event);
+    if (!early.enabled || !row) return;
+    row.lateWindowCapture = true; row.lateWindowCaptureAt = performance.now();
+    row.lateDefaultPrevented = event.defaultPrevented;
+  };
+  for (const type of early.types) window.addEventListener(type,lateObserve,true);
+  p.snapshot = early.snapshot;
+  const identities = new WeakMap(); let nextIdentity = 0;
+  p.owner = () => typeof objectTouchOwner !== 'function' ? null : Object.fromEntries(Object.entries(objectTouchOwner()).map(([key,value]) => {
+    if (value !== null && (typeof value === 'object' || typeof value === 'function')) {
+      if (!identities.has(value)) identities.set(value,++nextIdentity);
+      return [key,{identity:identities.get(value)}];
+    }
+    return [key,value];
+  }));
+  p.inputState = () => typeof oc === 'undefined' ? null : ({owner:p.owner(),on:oc.on,focus:oc.focus?{...oc.focus}:null,
+    selection:oc.selection.map(item=>({kind:item.kind,id:item.id})),sel:oc.sel?{...oc.sel}:null,
+    tool:oc.tool,drawTool:oc.drawTool,card:!!oc.card,pan:!!oc.pan,marquee:!!canvasMarquee,
+    view3:!!view3,hidden:!!ocv.closest('[hidden]'),
+    dialogs:[...document.querySelectorAll('dialog[open]')].map(e=>e.id||e.tagName).concat(
+      ['box6Dialog','memberDialog','shapeDialog','rcDialog'].filter(id=>!$(id).hidden))});
   const original = window.fetch;
   let ringShown = false, menuShown = false;
   const observer = new MutationObserver(() => {
@@ -74,12 +108,13 @@ function installProbe() {
     } finally { row.settled = true; p.pending--; }
   };
   window.fetch = wrapped;
-  p.clear = () => { p.events.length = p.requests.length = p.rings.length = p.menus.length = 0; };
-  p.clearGesture = () => { p.events.length = p.rings.length = p.menus.length = 0; };
+  p.clear = () => { early.clear(); p.requests.length = p.rings.length = p.menus.length = 0; };
+  p.clearGesture = () => { early.clear(); p.rings.length = p.menus.length = 0; };
   p.cleanup = () => {
     observer.disconnect();
+    for (const type of early.types) window.removeEventListener(type,lateObserve,true);
     if (window.fetch === wrapped) window.fetch = original;
-    early.enabled = false; early.events.length = 0;
+    early.enabled = false; early.clear();
     delete window.__p1162;
   };
 }
@@ -102,11 +137,19 @@ module.exports = async function canvasTouch({send, eval_, waitForUI, exceptionCo
     }
   }
   async function state() {
-    return read(`({selection:oc.selection,sel:oc.sel,focus:oc.focus,drawTool:oc.drawTool,
+    return read(`(()=>{const r=ocv.getBoundingClientRect();return {
+      selection:oc.selection,sel:oc.sel,focus:oc.focus,tool:oc.tool,drawTool:oc.drawTool,
+      card:oc.card?{kind:oc.card.kind,id:oc.card.id,pointerId:oc.card.pointerId,moved:oc.card.moved,blocked:oc.card.blocked}:null,
+      pan:oc.pan?{sx:oc.pan.sx,sy:oc.pan.sy,px:oc.pan.px,py:oc.pan.py}:null,marquee:!!canvasMarquee,
+      dialogs:[...document.querySelectorAll('dialog[open]')].map(e=>e.id||e.tagName).concat(
+        ['box6Dialog','memberDialog','shapeDialog','rcDialog'].filter(id=>!$(id).hidden)),
+      owner:__p1162.owner(),viewport:{left:r.left,top:r.top,width:r.width,height:r.height,
+        scrollX,scrollY,visual:window.visualViewport?{left:visualViewport.offsetLeft,top:visualViewport.offsetTop,
+          width:visualViewport.width,height:visualViewport.height,scale:visualViewport.scale}:null},
       rect:oc.rect,camera:{x:oc.panX,y:oc.panY,z:oc.zoom},
       menu:{hidden:$('canvasCtxMenu').hidden,sheet:$('canvasCtxMenu').classList.contains('fcm-sheet')},
       active:document.activeElement?.outerHTML?.slice(0,400),
-      events:__p1162.events,requests:__p1162.requests,rings:__p1162.rings,menus:__p1162.menus})`);
+      events:__p1162.snapshot(),requests:__p1162.requests,rings:__p1162.rings,menus:__p1162.menus};})()`);
   }
   async function until(name, expression) {
     try { await waitForUI(expression, 15000); }
@@ -141,6 +184,9 @@ module.exports = async function canvasTouch({send, eval_, waitForUI, exceptionCo
   const action = id => '#canvasCtxMenu [data-oc-act="'+id+'"]';
   async function point(selector) {
     await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'nearest',inline:'nearest'});void 0`);
+    // Finish the fixture's own scroll before DOWN. A real scroll during a hold
+    // must still cancel the product gesture; no cancellation guard is bypassed.
+    await frames();
     const result = await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)}),r=e?.getBoundingClientRect();if(!r)return null;
       const points=e.matches('.ocard')?[[.22,.36],[.5,.5],[.2,.2]]:[[.5,.5]];
       for(const [u,v]of points){const x=r.left+r.width*u,y=r.top+r.height*v;
@@ -376,14 +422,35 @@ module.exports = async function canvasTouch({send, eval_, waitForUI, exceptionCo
     check('R433_RELEASE_TRUSTED_END', released.events.slice(releaseMark).some(e=>e.type==='touchend' && e.trusted), {state:released});
     const tail = released.events.slice(releaseMark);
     const up = tail.find(e=>e.type==='pointerup' && e.pointerType==='touch' && e.trusted);
+    const end = tail.find(e=>e.type==='touchend' && e.trusted);
     const click = tail.find(e=>e.type==='click' && e.trusted && e.action==='open' && (e.pointerType==='touch' || e.firesTouchEvents===true));
     const down = held.events.find(e=>e.type==='pointerdown' && e.pointerType==='touch' && e.trusted);
-    const causal = {point:p,mouseDown,down,up,click};
-    check('R433_RELEASE_RETARGETED_CLICK', !!up && !!click && up.pointerId===down?.pointerId &&
-      click.pointerId!==up.pointerId && click.canvas===false && Number.isFinite(up.x) && Number.isFinite(up.y) &&
+    const start = held.events.find(e=>e.type==='touchstart' && e.trusted);
+    const downIndex = held.events.indexOf(down), startIndex = held.events.indexOf(start);
+    const upIndex = releaseMark+tail.indexOf(up), endIndex = releaseMark+tail.indexOf(end), clickIndex = releaseMark+tail.indexOf(click);
+    const noNewTouch = released.events.slice(downIndex+1,clickIndex).every((e,index)=>
+      !(e.type==='pointerdown' && e.pointerType==='touch') &&
+      (e.type!=='touchstart' || downIndex+1+index===startIndex));
+    const causal = {point:p,mouseDown,down,start,up,end,click,downIndex,startIndex,upIndex,endIndex,clickIndex,noNewTouch};
+    // The same native contact owns DOWN/UP. Chromium may reuse that pointerId
+    // for its touch-origin click; target drift, trusted ordering and the lack
+    // of a new DOWN establish the compatibility sequence independently of it.
+    check('R433_RELEASE_RETARGETED_CLICK', !!down && !!start && !!up && !!end && !!click &&
+      Number.isInteger(down.pointerId) && up.pointerId===down.pointerId && downIndex>=0 && startIndex>downIndex &&
+      upIndex>startIndex && endIndex>upIndex && clickIndex>endIndex && noNewTouch &&
+      start.touches===1 && end.touches===0 && start.changedTouches?.length===1 && end.changedTouches?.length===1 &&
+      Number.isInteger(start.changedTouches[0].id) &&
+      start.changedTouches[0].id===end.changedTouches[0].id &&
+      click.canvas===false && click.control===true && Number.isFinite(up.x) && Number.isFinite(up.y) &&
       Number.isFinite(click.x) && Number.isFinite(click.y) && (click.x!==up.x || click.y!==up.y), causal);
     check('R433_RELEASE_PRESERVES_MENU', !released.menu.hidden && released.menu.sheet && released.focus===null,
       {point:p,mouseDown,releaseMark,state:released});
+    // Keep the behavioral failure above first for the named withdrawal. These
+    // receipts are sampled after dispatch; they also prove the late observer
+    // really received the preceding unconsumed mouse input.
+    check('R433_RELEASE_CONSUMED_AT_WINDOW', mouseDown.lateWindowCapture===true &&
+      up.defaultPrevented===true && up.lateWindowCapture===false &&
+      click.defaultPrevented===true && click.lateWindowCapture===false, causal);
     await unchanged(before,'R433_RELEASE_NO_ACTION',false);
     // The consumed sequence must not claim the next independent sheet touch.
     const mark = await read('__p1162.events.length');
@@ -440,7 +507,14 @@ module.exports = async function canvasTouch({send, eval_, waitForUI, exceptionCo
     await fixture(390,844);
     // Existing selection API creates the multi-selection fixture; entry/action
     // remain actual touch input, never a shell or gesture-state injection.
-    await read(`ocSetSelection([{kind:'boundary',id:41},{kind:'boundary',id:42}]);void 0`);
+    check('R433_MULTI_SELECTION_ACCEPTED', await read(`ocSetSelection([{kind:'boundary',id:41},{kind:'boundary',id:42}])`));
+    await settled('R433_MULTI_SELECTION_SETTLED');
+    const prepared = await state();
+    // null is the existing single-selection slot's valid value for a multi-
+    // selection. Keep the exact two members and every long-press assertion.
+    check('R433_MULTI_SELECTION_READY', same(prepared.selection,[{kind:'boundary',id:41},{kind:'boundary',id:42}]) &&
+      prepared.sel===null && prepared.focus===null && prepared.tool==='select' && !prepared.drawTool &&
+      prepared.card===null && prepared.pan===null && !prepared.marquee && prepared.dialogs.length===0, prepared);
     const before=await checkpoint(); await hold(await point(card(41))); await touch('touchEnd');
     const reason=await read(`document.querySelector(${JSON.stringify(action('delete'))})?.getAttribute('title')`);
     check('MULTI_DELETE_DISABLED_WITH_REASON', await read(`document.querySelector(${JSON.stringify(action('delete'))})?.getAttribute('aria-disabled')==='true'`) && typeof reason==='string' && reason.length>0,{reason});
