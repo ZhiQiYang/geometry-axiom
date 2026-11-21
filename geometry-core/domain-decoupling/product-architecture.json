@@ -1467,6 +1467,12 @@
       "purpose": "Application/runtime/protocol or workspace host cursor v2; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-web/touch-gestures.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "R11 物件畫布觸控事件仲裁與相機呈現；分類後沿宿主既有操作及選單，不定義幾何或原生提交政策"
+    },
+    {
       "path": "geometry-web/definition-import.js",
       "layer": "H",
       "language": "javascript",
@@ -2857,7 +2863,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "a4781e2e645fd07ed14b2bdf4259c83eb31431e4a76e242300ba32b56fd18ef9",
+      "sha256": "8fe463531018530dd3711e1b4f3074f23c64e102fea28bee4f9ae5a09050cc1b",
       "hashMode": "lf"
     },
     {
@@ -3890,6 +3896,12 @@
       "path": "geometry-web/canvas_context_menu_test.js",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
       "sha256": "7381c6f60c04d395970b9357eafb8c9eabeef4257ed829467d2b82b0357567b5",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_touch_test.js",
+      "reason": "R11 觸控第一片的真 CDP 驗收與唯讀早期事件觀測；由 cdp_test.js 載入，不由產品頁面載入。",
+      "sha256": "a805a1ad7b263de76ed760c6d03ada5024253570d168ee3cbb96166c6fa432bf",
       "hashMode": "lf"
     },
     {
