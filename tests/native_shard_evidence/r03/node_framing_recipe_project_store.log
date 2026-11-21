@@ -1,0 +1,17 @@
+✔ FT_H01 recipe owner is registered as project-only capability (6.200105ms)
+✔ FT_H02 recipe rejects output caches and runtime or identity claims (2.198062ms)
+✔ FT_H03 known policy mismatch rejects; unknown generator is preserved readonly (2.831535ms)
+✔ FT_H04 bounded collection, unique ids, literal defaults and slots reject invalid values (4.727765ms)
+✔ FT_H05 actual ZIP roundtrip preserves recipe plus World, without output lists (27.553762ms)
+✔ FT_H06 malformed or unsupported archive rejects before host replacement (21.988035ms)
+✔ FT_H07 archive keeps an unknown generator exactly, without upgrading it (10.152211ms)
+✔ FT_H08 recipe edits are one local history and leave native World untouched (13.419482ms)
+✔ FT_H18 length is a declared field, square or swapped dimensions keep chosen axis (0.755471ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 221.342915

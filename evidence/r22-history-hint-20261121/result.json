@@ -1,0 +1,1098 @@
+{
+  "purpose": "R22 單房輪廓確認、復原與重做",
+  "viewport": [
+    1400,
+    900
+  ],
+  "imageDigest": "SHA-256 of original captured JPEG bytes",
+  "readback": "以原生選檔和 App 滑鼠鍵盤操作，待交易與正式外環更新後，如區段收合以真點擊展開。每一階段核對右側提示、獨立核對標籤與左側來源卡的實際可見性，並讀取 App 已載入的正式外環與畫布上 SVG 外環的逐點座標。",
+  "controls": {
+    "candidate": "#refRoomReviewed 是候選核對勾選框，選取後才能按 #refRoomConfirm。",
+    "manual": "#refConfirmChecked 是來源人工註記按鈕，本次操作從未點按；它在 unreviewed 時出現。"
+  },
+  "prior": {
+    "pr": 440,
+    "link": "https://github.com/ZhiQiYang/geometry-axiom/pull/440",
+    "checkout": "2562aee65c9f21a9ffdfd684100102d764bc2eb4",
+    "method": "重讀原先收據與圖片驗 SHA-256。舊收據未記錄獨立核對段的可見性。"
+  },
+  "runs": {
+    "pdf": {
+      "checkout": "2cb36f5ae9174830b5c032f7160379e3edbde8c4",
+      "runtimeVersion": "90112ac3a6deddae1fa30f3ce6f121ba3ca25542049f4da00c3fdbac500f73e7",
+      "fresh": true,
+      "sourceSha256": {
+        "geometry-web/room-outline-workspace.js": "589a969a4618c690a2443b06a052ccf15c53e2a192a26cf4286314a42293c7c1",
+        "geometry-web/reference-workspace.js": "44928e6cf8c71bbf9e96e54c63dcc61dc6df6ca04d1f5bff0408b5e1a86559e4",
+        "geometry-web/app.js": "77f0ffcaffef2d448e8718db7bdc8752f48a36bdcbde043310db9b5a946da402"
+      },
+      "driverSha256": "d4fbdd2e6e9522069f674e119dc534b704e2d4e215889f62949262e765424f51",
+      "oracleSha256": "978ae1ee93c67f5a1daecdca7c878016f662176041261bd1f0a6cb1e7011b4fa",
+      "node": "v24.15.0",
+      "chromium": "157.0.8103.79",
+      "started": "2026-11-21T07:46:39.653Z",
+      "finished": "2026-11-21T07:47:09.427Z",
+      "input": {
+        "name": "issue54-public-rooms.pdf",
+        "sha256": "3efff5b5e11c1d8c3064efca00043d2299ce38e234a7cbec6b107f1d44ddb8d5"
+      },
+      "assertions": 74,
+      "rawSteps": 51,
+      "rawReceiptSha256": "4cc2ce2dcef8d6f1759cf89bc9d49cf63c000f00044db4080176cad6240088ff"
+    },
+    "png": {
+      "checkout": "2cb36f5ae9174830b5c032f7160379e3edbde8c4",
+      "runtimeVersion": "90112ac3a6deddae1fa30f3ce6f121ba3ca25542049f4da00c3fdbac500f73e7",
+      "fresh": true,
+      "sourceSha256": {
+        "geometry-web/room-outline-workspace.js": "589a969a4618c690a2443b06a052ccf15c53e2a192a26cf4286314a42293c7c1",
+        "geometry-web/reference-workspace.js": "44928e6cf8c71bbf9e96e54c63dcc61dc6df6ca04d1f5bff0408b5e1a86559e4",
+        "geometry-web/app.js": "77f0ffcaffef2d448e8718db7bdc8752f48a36bdcbde043310db9b5a946da402"
+      },
+      "driverSha256": "d4fbdd2e6e9522069f674e119dc534b704e2d4e215889f62949262e765424f51",
+      "oracleSha256": "978ae1ee93c67f5a1daecdca7c878016f662176041261bd1f0a6cb1e7011b4fa",
+      "node": "v24.15.0",
+      "chromium": "157.0.8103.79",
+      "started": "2026-11-21T07:47:11.368Z",
+      "finished": "2026-11-21T07:47:28.985Z",
+      "input": {
+        "name": "connected.png",
+        "sha256": "988671ddea0850235ccacb779a4dc7e4e6b0a90b71b9f3a8dc3143419aa6c45c"
+      },
+      "assertions": 36,
+      "rawSteps": 29,
+      "rawReceiptSha256": "094f6b6e91971a28af351f6d8e3fc2a1aee4b34274dfc78969a58226427e2e62"
+    }
+  },
+  "cases": [
+    {
+      "route": "pdf-box",
+      "phase": "confirm",
+      "screenshot": "pdf-box-confirm.jpg",
+      "sha256": "f810922e9afd41469e434812f0b8c4159b5ec4f62f361188d5066b938803bb1b",
+      "faceId": 1,
+      "status": "已確認來源輪廓。",
+      "statusVisible": true,
+      "reviewState": "confirmed",
+      "domState": "confirmed",
+      "reviewLabel": "已依此來源核對輪廓",
+      "reviewVisible": true,
+      "sourceCard": "已校準",
+      "sourceCardVisible": true,
+      "reviewCheckboxPresent": false,
+      "reviewCheckboxChecked": null,
+      "manualRecordButtonVisible": false,
+      "outline": [
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ],
+      "svgOutline": [
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ],
+      "assertions": {
+        "右側提示符合核對狀態": true,
+        "來源核對狀態": true,
+        "正式外環逐點逐位符合固定座標": true,
+        "畫布 SVG 正式外環逐頂點符合固定座標": true,
+        "右側提示在可見範圍": true,
+        "核對段可見，標籤與文字一致": true,
+        "來源卡可見且幾何核對標示正確": true,
+        "確認後無候選勾選框，人工註記按鈕依核對狀態顯示": true
+      },
+      "prior": {
+        "file": "pdf/24-confirmed.jpg",
+        "sha256": "b3457336d17187c0c6f64a2558d6a9ab5761458022f76741d278d6e624faaf06",
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed",
+        "outline": [
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "assertions": {
+          "右側提示符合核對狀態": true,
+          "來源核對狀態": true,
+          "正式外環逐點逐位符合固定座標": true
+        }
+      }
+    },
+    {
+      "route": "pdf-box",
+      "phase": "undo",
+      "screenshot": "pdf-box-undo.jpg",
+      "sha256": "edcb2edec66f5a5449c88875928fda041c80b2cd2e987bb4629d79e1162a013e",
+      "faceId": 1,
+      "status": "尚未核對來源輪廓。搜尋來源取景範圍，不受既有外環裁切。選房間取得候選，核對後替換目前面的外環；也可選人工描繪。",
+      "statusVisible": true,
+      "reviewState": "unreviewed",
+      "domState": "unreviewed",
+      "reviewLabel": "尚未依此來源核對輪廓（原有矩形不代表重建完成）",
+      "reviewVisible": true,
+      "sourceCard": "已校準 · 幾何待核對",
+      "sourceCardVisible": true,
+      "reviewCheckboxPresent": false,
+      "reviewCheckboxChecked": null,
+      "manualRecordButtonVisible": true,
+      "outline": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ],
+      "svgOutline": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ],
+      "assertions": {
+        "右側提示符合核對狀態": true,
+        "來源核對狀態": true,
+        "正式外環逐點逐位符合固定座標": true,
+        "畫布 SVG 正式外環逐頂點符合固定座標": true,
+        "右側提示在可見範圍": true,
+        "核對段可見，標籤與文字一致": true,
+        "來源卡可見且幾何核對標示正確": true,
+        "確認後無候選勾選框，人工註記按鈕依核對狀態顯示": true
+      },
+      "prior": {
+        "file": "pdf/26-undo-result.jpg",
+        "sha256": "257391c02aca4f46f402512241052b76a572b2ad929db32ea173d9b439c6783e",
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "unreviewed",
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "assertions": {
+          "右側提示符合核對狀態": false,
+          "來源核對狀態": true,
+          "正式外環逐點逐位符合固定座標": true
+        }
+      }
+    },
+    {
+      "route": "pdf-box",
+      "phase": "redo",
+      "screenshot": "pdf-box-redo.jpg",
+      "sha256": "84bd4ee73f7b8eee2c0162935fba212e618ea4b1bf08d5a3eec67900ca7ac048",
+      "faceId": 1,
+      "status": "已確認來源輪廓。",
+      "statusVisible": true,
+      "reviewState": "confirmed",
+      "domState": "confirmed",
+      "reviewLabel": "已依此來源核對輪廓",
+      "reviewVisible": true,
+      "sourceCard": "已校準",
+      "sourceCardVisible": true,
+      "reviewCheckboxPresent": false,
+      "reviewCheckboxChecked": null,
+      "manualRecordButtonVisible": false,
+      "outline": [
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ],
+      "svgOutline": [
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ],
+      "assertions": {
+        "右側提示符合核對狀態": true,
+        "來源核對狀態": true,
+        "正式外環逐點逐位符合固定座標": true,
+        "畫布 SVG 正式外環逐頂點符合固定座標": true,
+        "右側提示在可見範圍": true,
+        "核對段可見，標籤與文字一致": true,
+        "來源卡可見且幾何核對標示正確": true,
+        "確認後無候選勾選框，人工註記按鈕依核對狀態顯示": true
+      },
+      "prior": {
+        "file": "pdf/28-redo-result.jpg",
+        "sha256": "3b85ab03638d5fc35b86964b5b3991c6ca7f1b38dc46bff3f155066e3eb61a60",
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed",
+        "outline": [
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "assertions": {
+          "右側提示符合核對狀態": true,
+          "來源核對狀態": true,
+          "正式外環逐點逐位符合固定座標": true
+        }
+      }
+    },
+    {
+      "route": "pdf-correction",
+      "phase": "confirm",
+      "screenshot": "pdf-correction-confirm.jpg",
+      "sha256": "451557b76491e51500c7561cf57b71ee5eaf0a26ad7973966b13a724a14bfc98",
+      "faceId": 1,
+      "status": "已確認來源輪廓。",
+      "statusVisible": true,
+      "reviewState": "confirmed",
+      "domState": "confirmed",
+      "reviewLabel": "已依此來源核對輪廓",
+      "reviewVisible": true,
+      "sourceCard": "已校準",
+      "sourceCardVisible": true,
+      "reviewCheckboxPresent": false,
+      "reviewCheckboxChecked": null,
+      "manualRecordButtonVisible": false,
+      "outline": [
+        [
+          320,
+          320
+        ],
+        [
+          2320,
+          320
+        ],
+        [
+          2320,
+          1480
+        ],
+        [
+          440,
+          1480
+        ],
+        [
+          440,
+          1300
+        ],
+        [
+          390,
+          1300
+        ],
+        [
+          390,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ],
+      "svgOutline": [
+        [
+          320,
+          320
+        ],
+        [
+          2320,
+          320
+        ],
+        [
+          2320,
+          1480
+        ],
+        [
+          440,
+          1480
+        ],
+        [
+          440,
+          1300
+        ],
+        [
+          390,
+          1300
+        ],
+        [
+          390,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ],
+      "assertions": {
+        "右側提示符合核對狀態": true,
+        "來源核對狀態": true,
+        "正式外環逐點逐位符合固定座標": true,
+        "畫布 SVG 正式外環逐頂點符合固定座標": true,
+        "右側提示在可見範圍": true,
+        "核對段可見，標籤與文字一致": true,
+        "來源卡可見且幾何核對標示正確": true,
+        "確認後無候選勾選框，人工註記按鈕依核對狀態顯示": true
+      },
+      "prior": {
+        "file": "pdf/47-confirmed.jpg",
+        "sha256": "169da498d97de8e370b315c53796cdf622b6efbd62b2527d86c68635b77835f1",
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed",
+        "outline": [
+          [
+            320,
+            320
+          ],
+          [
+            2320,
+            320
+          ],
+          [
+            2320,
+            1480
+          ],
+          [
+            440,
+            1480
+          ],
+          [
+            440,
+            1300
+          ],
+          [
+            390,
+            1300
+          ],
+          [
+            390,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "assertions": {
+          "右側提示符合核對狀態": true,
+          "來源核對狀態": true,
+          "正式外環逐點逐位符合固定座標": true
+        }
+      }
+    },
+    {
+      "route": "pdf-correction",
+      "phase": "undo",
+      "screenshot": "pdf-correction-undo.jpg",
+      "sha256": "22b13ed7e1ffa5dc51cfb151ceac41f4d04505749b46f0fb1d6c4eab2d1a6522",
+      "faceId": 1,
+      "status": "尚未核對來源輪廓。搜尋來源取景範圍，不受既有外環裁切。選房間取得候選，核對後替換目前面的外環；也可選人工描繪。",
+      "statusVisible": true,
+      "reviewState": "unreviewed",
+      "domState": "unreviewed",
+      "reviewLabel": "尚未依此來源核對輪廓（原有矩形不代表重建完成）",
+      "reviewVisible": true,
+      "sourceCard": "已校準 · 幾何待核對",
+      "sourceCardVisible": true,
+      "reviewCheckboxPresent": false,
+      "reviewCheckboxChecked": null,
+      "manualRecordButtonVisible": true,
+      "outline": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ],
+      "svgOutline": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ],
+      "assertions": {
+        "右側提示符合核對狀態": true,
+        "來源核對狀態": true,
+        "正式外環逐點逐位符合固定座標": true,
+        "畫布 SVG 正式外環逐頂點符合固定座標": true,
+        "右側提示在可見範圍": true,
+        "核對段可見，標籤與文字一致": true,
+        "來源卡可見且幾何核對標示正確": true,
+        "確認後無候選勾選框，人工註記按鈕依核對狀態顯示": true
+      },
+      "prior": {
+        "file": "pdf/49-undo-result.jpg",
+        "sha256": "2f5c2623954a95f3c49e30550c4dad40b1e2c574a98845c1e6d5725ff614d107",
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "unreviewed",
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "assertions": {
+          "右側提示符合核對狀態": false,
+          "來源核對狀態": true,
+          "正式外環逐點逐位符合固定座標": true
+        }
+      }
+    },
+    {
+      "route": "pdf-correction",
+      "phase": "redo",
+      "screenshot": "pdf-correction-redo.jpg",
+      "sha256": "5dda1231832b4c3a1760e21952075b29ca42dc5be34f731ec32e6d0930c1f281",
+      "faceId": 1,
+      "status": "已確認來源輪廓。",
+      "statusVisible": true,
+      "reviewState": "confirmed",
+      "domState": "confirmed",
+      "reviewLabel": "已依此來源核對輪廓",
+      "reviewVisible": true,
+      "sourceCard": "已校準",
+      "sourceCardVisible": true,
+      "reviewCheckboxPresent": false,
+      "reviewCheckboxChecked": null,
+      "manualRecordButtonVisible": false,
+      "outline": [
+        [
+          320,
+          320
+        ],
+        [
+          2320,
+          320
+        ],
+        [
+          2320,
+          1480
+        ],
+        [
+          440,
+          1480
+        ],
+        [
+          440,
+          1300
+        ],
+        [
+          390,
+          1300
+        ],
+        [
+          390,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ],
+      "svgOutline": [
+        [
+          320,
+          320
+        ],
+        [
+          2320,
+          320
+        ],
+        [
+          2320,
+          1480
+        ],
+        [
+          440,
+          1480
+        ],
+        [
+          440,
+          1300
+        ],
+        [
+          390,
+          1300
+        ],
+        [
+          390,
+          1480
+        ],
+        [
+          320,
+          1480
+        ]
+      ],
+      "assertions": {
+        "右側提示符合核對狀態": true,
+        "來源核對狀態": true,
+        "正式外環逐點逐位符合固定座標": true,
+        "畫布 SVG 正式外環逐頂點符合固定座標": true,
+        "右側提示在可見範圍": true,
+        "核對段可見，標籤與文字一致": true,
+        "來源卡可見且幾何核對標示正確": true,
+        "確認後無候選勾選框，人工註記按鈕依核對狀態顯示": true
+      },
+      "prior": {
+        "file": "pdf/51-redo-result.jpg",
+        "sha256": "64f47bc6ecbe788b3b4ef19683c54fae5ae90dc27391498cbccfb14958ae3567",
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed",
+        "outline": [
+          [
+            320,
+            320
+          ],
+          [
+            2320,
+            320
+          ],
+          [
+            2320,
+            1480
+          ],
+          [
+            440,
+            1480
+          ],
+          [
+            440,
+            1300
+          ],
+          [
+            390,
+            1300
+          ],
+          [
+            390,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ],
+        "assertions": {
+          "右側提示符合核對狀態": true,
+          "來源核對狀態": true,
+          "正式外環逐點逐位符合固定座標": true
+        }
+      }
+    },
+    {
+      "route": "png-separation",
+      "phase": "confirm",
+      "screenshot": "png-separation-confirm.jpg",
+      "sha256": "e8e2af760e27a2e362d305505d59f872f82c3c1a83dcfcaf28a4d449858af5ad",
+      "faceId": 2,
+      "status": "已確認來源輪廓。",
+      "statusVisible": true,
+      "reviewState": "confirmed",
+      "domState": "confirmed",
+      "reviewLabel": "已依此來源核對輪廓",
+      "reviewVisible": true,
+      "sourceCard": "已校準",
+      "sourceCardVisible": true,
+      "reviewCheckboxPresent": false,
+      "reviewCheckboxChecked": null,
+      "manualRecordButtonVisible": false,
+      "outline": [
+        [
+          2280,
+          900
+        ],
+        [
+          2300,
+          900
+        ],
+        [
+          2300,
+          1100
+        ],
+        [
+          2280,
+          1100
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ],
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ]
+      ],
+      "svgOutline": [
+        [
+          2280,
+          900
+        ],
+        [
+          2300,
+          900
+        ],
+        [
+          2300,
+          1100
+        ],
+        [
+          2280,
+          1100
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ],
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ]
+      ],
+      "assertions": {
+        "右側提示符合核對狀態": true,
+        "來源核對狀態": true,
+        "正式外環逐點逐位符合固定座標": true,
+        "畫布 SVG 正式外環逐頂點符合固定座標": true,
+        "右側提示在可見範圍": true,
+        "核對段可見，標籤與文字一致": true,
+        "來源卡可見且幾何核對標示正確": true,
+        "確認後無候選勾選框，人工註記按鈕依核對狀態顯示": true
+      },
+      "prior": {
+        "file": "png/25-confirmed.jpg",
+        "sha256": "f895cfd1108e9c8a39f5284509e27163e9f5ac75bd1a992548ae5ed7a567372f",
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed",
+        "outline": [
+          [
+            2280,
+            900
+          ],
+          [
+            2300,
+            900
+          ],
+          [
+            2300,
+            1100
+          ],
+          [
+            2280,
+            1100
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ],
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ]
+        ],
+        "assertions": {
+          "右側提示符合核對狀態": true,
+          "來源核對狀態": true,
+          "正式外環逐點逐位符合固定座標": true
+        }
+      }
+    },
+    {
+      "route": "png-separation",
+      "phase": "undo",
+      "screenshot": "png-separation-undo.jpg",
+      "sha256": "3eb22de2155e90a1af1fd34bed292cad7f8deebd5545322d28b1f2a6b54012d2",
+      "faceId": 2,
+      "status": "尚未核對來源輪廓。搜尋來源取景範圍，不受既有外環裁切。選房間取得候選，核對後替換目前面的外環；也可選人工描繪。",
+      "statusVisible": true,
+      "reviewState": "unreviewed",
+      "domState": "unreviewed",
+      "reviewLabel": "尚未依此來源核對輪廓（原有矩形不代表重建完成）",
+      "reviewVisible": true,
+      "sourceCard": "已校準 · 幾何待核對",
+      "sourceCardVisible": true,
+      "reviewCheckboxPresent": false,
+      "reviewCheckboxChecked": null,
+      "manualRecordButtonVisible": true,
+      "outline": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ],
+      "svgOutline": [
+        [
+          0,
+          0
+        ],
+        [
+          4000,
+          0
+        ],
+        [
+          4000,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ],
+      "assertions": {
+        "右側提示符合核對狀態": true,
+        "來源核對狀態": true,
+        "正式外環逐點逐位符合固定座標": true,
+        "畫布 SVG 正式外環逐頂點符合固定座標": true,
+        "右側提示在可見範圍": true,
+        "核對段可見，標籤與文字一致": true,
+        "來源卡可見且幾何核對標示正確": true,
+        "確認後無候選勾選框，人工註記按鈕依核對狀態顯示": true
+      },
+      "prior": {
+        "file": "png/27-undo-result.jpg",
+        "sha256": "839f18d2eee7aec4305f5bf1e9528b20d35a1d102872eb9418af89c73b13d3a4",
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "unreviewed",
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "assertions": {
+          "右側提示符合核對狀態": false,
+          "來源核對狀態": true,
+          "正式外環逐點逐位符合固定座標": true
+        }
+      }
+    },
+    {
+      "route": "png-separation",
+      "phase": "redo",
+      "screenshot": "png-separation-redo.jpg",
+      "sha256": "65626de94485d43b20f0a3ef59725f9b8f92a6123075ca0fce190a7e5b642dea",
+      "faceId": 2,
+      "status": "已確認來源輪廓。",
+      "statusVisible": true,
+      "reviewState": "confirmed",
+      "domState": "confirmed",
+      "reviewLabel": "已依此來源核對輪廓",
+      "reviewVisible": true,
+      "sourceCard": "已校準",
+      "sourceCardVisible": true,
+      "reviewCheckboxPresent": false,
+      "reviewCheckboxChecked": null,
+      "manualRecordButtonVisible": false,
+      "outline": [
+        [
+          2280,
+          900
+        ],
+        [
+          2300,
+          900
+        ],
+        [
+          2300,
+          1100
+        ],
+        [
+          2280,
+          1100
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ],
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ]
+      ],
+      "svgOutline": [
+        [
+          2280,
+          900
+        ],
+        [
+          2300,
+          900
+        ],
+        [
+          2300,
+          1100
+        ],
+        [
+          2280,
+          1100
+        ],
+        [
+          2280,
+          1480
+        ],
+        [
+          320,
+          1480
+        ],
+        [
+          320,
+          320
+        ],
+        [
+          2280,
+          320
+        ]
+      ],
+      "assertions": {
+        "右側提示符合核對狀態": true,
+        "來源核對狀態": true,
+        "正式外環逐點逐位符合固定座標": true,
+        "畫布 SVG 正式外環逐頂點符合固定座標": true,
+        "右側提示在可見範圍": true,
+        "核對段可見，標籤與文字一致": true,
+        "來源卡可見且幾何核對標示正確": true,
+        "確認後無候選勾選框，人工註記按鈕依核對狀態顯示": true
+      },
+      "prior": {
+        "file": "png/29-redo-result.jpg",
+        "sha256": "02b0948e0df086e2643f1427cb0d0a123a0aa7104d284e90ffd1940915208854",
+        "status": "已確認來源輪廓，可復原／重做及保存專案。",
+        "reviewState": "confirmed",
+        "outline": [
+          [
+            2280,
+            900
+          ],
+          [
+            2300,
+            900
+          ],
+          [
+            2300,
+            1100
+          ],
+          [
+            2280,
+            1100
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ],
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ]
+        ],
+        "assertions": {
+          "右側提示符合核對狀態": true,
+          "來源核對狀態": true,
+          "正式外環逐點逐位符合固定座標": true
+        }
+      }
+    }
+  ]
+}

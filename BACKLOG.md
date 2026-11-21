@@ -4967,3 +4967,10 @@ UI 減項（GEO-219）：規則線資訊併入既有 GridEditor 的來源／局�
 - 以原始 ReferenceWorkspace stamp / frame / native revision / runtime 接短命 immutable binding；每 native context 獨立有限高水位与 late cancel tombstone，不能改 A/B editor allocator。關閉案例只撤銷其 adapter；不關 live native 或 AssemblyWorkspace 候選。保存沿共同 detached prepare 與同步 guarded metadata commit，完整 root/A/B manifest 容量與房間 lifecycle 預留均先驗；no-op 零 history，取消／晚到零寫入。
 - **拿掉／合併（GEO-219）**：移除預設組構內容重複的「新增規則後，依序建立槽位、構件與局部接合」常駐說明，沿用既有工作區首課；案例輸入、作者預期、實際結果與歷史明細合併同一按需面板，沒有新增頂層工作區。
 - 這是實作 checkpoint，完整 current-head aggregate／桌面及390px terminal 尚待完成；不宣稱 #49 完成，不借用 #137／#143 的舊 full receipts。產品／測試 source 可獨立審查，原始公開證據拒絕包維持 hold。
+
+## #205 R03 第一個木工模板產品片（2026-11-17，待採入補丁）
+
+- 基底 `fa83e6ad8444c569b9f2f5e91f2de9a5622a92cb`。依 D⟨FT1⟩／I⟨FT1⟩／R⟨FT1⟩，明示保存配方只提交專案附件；本次重新明選來源後，完整候選包含真完成面、鋪排、衍生宿主、活 from-fill 及一般角材，確認一次生成歷史。取消／過期／失敗零寫入；保存冷開只重建正式定義，不重新搜尋模板。
+- 首片限矩形無孔障礙，依候選計算規則相容性，沒有房間尺寸白名單。現行 oracle 的固定治具、退縫及遇柱規則與本次任務的逐格 ceil／只裁對牆／連續主支摘要有實際差異；不同結果明確拒絕確認，兩套都成立的既有 F3-X／F4-Y 排法才作共同正例。沒有改公理、oracle、原 golden 或已鎖定決定；完整規則版本選項另列 #205。
+- **拿掉／合併（GEO-219）**：把面設定中原「完成面與鋪排…」改為單一「完成面／骨架…」入口；先選用途，手動鋪排與配方生成共用同一個面設定位置，模板輸入取代手動逐件操作。來源、預覽結果與錯誤放在同一按需區域，不另增頂層工具列、第二個面設定入口或常駐教學區。配方保存與骨架確認依條文保持兩種不同交易。
+- 補丁與本地 native／Node 證據只代表實作候選。沒有實作 PR 前，需求帳的產品層級仍為 L1；L2 要有實作 PR 與精確 head，L3 要合入 main，L4 要雲端 Claude 在確切版本實走 App 的取消、一次確認、Undo／Redo、另存與全新程序冷開。瀏覽器測試與 golden 產生器交雲端執行，衍生帳本及架構報表由原工具／CI 重產。
