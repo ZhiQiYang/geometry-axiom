@@ -159,7 +159,7 @@ static void cmd_grid_trial_query(const char *command)
     if (!draft || !axes) { free(draft); free(axes); json_grid_query_error("試擺記憶體不足"); putchar('\n'); return; }
     draft->geo.parameters=g_world.geo.parameters;
     g_scene_last_error[0]='\0';
-    bool ok=apply_grid_system_line("trial",0,tokens+5,count-5,draft);
+    bool ok=apply_grid_system_line_with_snapshot("trial",0,tokens+5,count-5,draft);
     const GridSystem *source=ok?world_find_grid_system(draft,id):NULL;
     if (!source || !grid_system_is_infinite(source)) json_grid_query_error(ok?"試擺只接受無限網格來源":scene_last_error());
     else if (grid_query(draft,"system",id,rect,GRID_MAX_LINES,false,axes,error,sizeof error)) json_grid_query_result(axes,rect,false);

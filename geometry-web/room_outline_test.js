@@ -174,7 +174,7 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   await key('Escape','Escape',27);await until(`!$('smWorkspace').open`);await ctl('[data-fi-tab="underlay"]');
   const savedNative=JSON.stringify(await nativePoints());
   await ctl('#ulCalibStart');await sourcePoint(30,30);await sourcePoint(230,30);await fill('#ulCalibDist',2200);await ctl('#ulCalibApply');
-  check('recalibration requests review without scaling confirmed native geometry',JSON.stringify(await nativePoints())===savedNative&&await read(`ReferenceWorkspace.reconstructionState(1)==='recheck'&&Math.abs(ReferenceWorkspace.active(1).mmPerPx-11)<.001`));
+  check('recalibration requests review without scaling confirmed native geometry',JSON.stringify(await nativePoints())===savedNative&&await read(`ReferenceWorkspace.reconstructionState(1)==='recheck'&&$('refRoomStatus').innerText.includes('請重新核對')&&Math.abs(ReferenceWorkspace.active(1).mmPerPx-11)<.001`));
   await propose();
   await ctl('#refRoomVertices');const vertexText=await read(`$('refRoomVertices').value`);await key('a','KeyA',65,2);
   await send('Input.dispatchKeyEvent',{type:'keyDown',key:'3',code:'Digit3',windowsVirtualKeyCode:51,text:'3'});await send('Input.dispatchKeyEvent',{type:'keyUp',key:'3',code:'Digit3',windowsVirtualKeyCode:51});
@@ -238,9 +238,9 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   }finally{await read(`window.__roomUndoGate.restore();window.__roomUndoGate.release();`);}
   await until(historyReady('unreviewed'));
   console.log('P79_HISTORY_TIMELINE',JSON.stringify({phase:'undo-ready',ready:await read(historyReady('unreviewed'))}));
-  check('actual undo restores original rectangle and source review state',prematureRedoRejected&&await read(`api('dump').then(r=>r.text)`)===enlargedOriginal);
+  check('actual undo restores original rectangle and its visible unreviewed hint',prematureRedoRejected&&await read(`api('dump').then(r=>r.text)`)===enlargedOriginal&&await read(`$('refOutlineDetails').open&&$('refRoomStatus').innerText.includes('尚未核對來源輪廓')`));
   await key('y','KeyY',89,2);await until(historyReady('confirmed'));
-  check('actual redo restores calibrated room and its source-bound receipt',normalized(await nativePoints())===normalized(enlargedExpected));
+  check('actual redo restores calibrated room and its visible confirmed hint',normalized(await nativePoints())===normalized(enlargedExpected)&&await read(`$('refOutlineDetails').open&&$('refRoomStatus').innerText.includes('已確認來源輪廓')`));
   const enlargedBytes=await read(`ReferenceWorkspace.exportBytes().then(b=>Array.from(b))`),enlargedMarker='enlarged-room-'+Date.now();
   await send('Page.addScriptToEvaluateOnNewDocument',{source:`window.__cdpExpectedNavigationMarker=${JSON.stringify(enlargedMarker)}`});await send('Page.reload',{ignoreCache:true});
   await require('./cdp_navigation.js').waitForExpectedNavigation({evaluate:read,marker:enlargedMarker,condition:`typeof api==='function'&&typeof connection==='object'&&connection.phase==='ready'`,label:'P79 calibrated room reopen',timeout:20000});

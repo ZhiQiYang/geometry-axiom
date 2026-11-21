@@ -30,7 +30,10 @@ GENERIC_SOURCE_INDEX_KERNEL_HEAD = "81b6c388f8b73e9aaf885b1d948e5f306b77bafd"
 # (K tree 51813f9e522af06cb80e44d736b6b20ac2329349, #375). GEO-300 (#348) then
 # adds the depend-hint API in source.c/source.h; against the R14 tree only those
 # two files differ. Pin the complete resulting K tree, every file, byte and mode.
-REVIEWED_KERNEL_TREE = "981b515a8058dcecea6fd83c4df39abc00376bd4"
+# R381 on 11eddfdb4d7b1f76aedfe001e084a3840790bedc batches fitting ASCII
+# writes in codec.c only. Parsing, source requests and ordered graph evidence
+# remain unchanged; the full K tree still includes every file, byte and mode.
+REVIEWED_KERNEL_TREE = "f0ceb5f778e97c5af86e642a77bdbcf75af49fbb"
 
 
 def _ensure_pinned_commits(*shas):
@@ -288,7 +291,7 @@ class Geo314CommitPaths(unittest.TestCase):
         source = compact(masked(self.body("geometry-core/grid_bindings.inc",
                                           "apply_grid_fill_application")))
         enter = "if(!baseline)g_subgrid_before=w;"
-        validate = "app_world_revalidate_staged(w,&candidate)"
+        validate = "app_world_revalidate_staged(w,candidate)"   # #412: the candidate is a heap snapshot pointer
         restore = "g_subgrid_before=baseline;"
         for token in (enter, validate, restore):
             self.assertIn(token, source, "R03_C0_I24_BASELINE_REQUIRED")
