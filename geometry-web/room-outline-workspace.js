@@ -177,8 +177,17 @@ const RoomOutlineWorkspace=(()=>{
   function paneHTML(bid,collection=false) {
     const p=W.active(bid);if(!p)return '';
     const pdf=W.context().sources.get(p.sourceId)?.meta.type==='application/pdf',o=options||{mode:'auto',minWidth:pdf?1:2,minLength:pdf?8:24};
-    const needsOutline=p.calibration&&W.reconstructionState(bid)!=='confirmed';
-    let html=`<details id="refOutlineDetails" class="ref-section"${collection||needsOutline||draft||picking||message?' open':''}><summary>${collection?'同頁候選核對':'房間輪廓候選與人工修正'}</summary><p id="refRoomStatus" role="status">${esc(message||(collection?'分析目前來源取景；逐一明選核對並建立獨立房間。':p.calibration?'搜尋來源取景範圍，不受既有外環裁切。選房間取得候選，核對後替換目前面的外環；也可選人工描繪。':'先校準，選房間內空白處；候選須核對室內淨輪廓。'))}</p><button id="refFit" type="button" class="btn">顯示取景範圍</button>`;
+    const reviewState=W.reconstructionState(bid);
+    const needsOutline=p.calibration&&reviewState!=='confirmed';
+    let status=message;
+    if(!status){
+      if(collection)status='分析目前來源取景；逐一明選核對並建立獨立房間。';
+      else if(!p.calibration)status='先校準，選房間內空白處；候選須核對室內淨輪廓。';
+      else if(reviewState==='confirmed')status='已確認來源輪廓。';
+      else if(reviewState==='recheck')status='來源或輪廓已變更，請重新核對。';
+      else status='尚未核對來源輪廓。搜尋來源取景範圍，不受既有外環裁切。選房間取得候選，核對後替換目前面的外環；也可選人工描繪。';
+    }
+    let html=`<details id="refOutlineDetails" class="ref-section"${collection||needsOutline||draft||picking||message?' open':''}><summary>${collection?'同頁候選核對':'房間輪廓候選與人工修正'}</summary><p id="refRoomStatus" role="status">${esc(status)}</p><button id="refFit" type="button" class="btn">顯示取景範圍</button>`;
     if(!collection)html+=W.reconstructionStatusHTML(bid);
     html+=`<label class="ib-row">取得方式<select id="refRoomMethod"><option value="auto"${o.mode==='auto'?' selected':''}>${pdf?'PDF 原始向量優先':'本地影像輔助'}</option><option value="image"${o.mode==='image'?' selected':''}>本地影像輔助</option><option value="manual"${o.mode==='manual'?' selected':''}>人工逐點描繪</option></select></label><div class="place-form"><label>線寬至少（${pdf?'頁面單位':'原圖 px'}）<input id="refRoomMinWidth" type="number" min="0.01" step="any" value="${o.minWidth}"></label><label>最短線（${pdf?'頁面單位':'原圖 px'}）<input id="refRoomMinLength" type="number" min="1" step="any" value="${o.minLength}"></label></div>${collection?'':`<button id="refRoomPick" class="btn" type="button"${p.calibration?'':' disabled'}>在圖上選房間／框選重取</button>`}`;
     html+=`<details class="ref-section"><summary>缺口與連通房間：明確分隔後重取</summary><div class="ref-actions"><button id="refRoomHorizontal" class="btn" type="button">畫水平分隔</button><button id="refRoomVertical" class="btn" type="button">畫垂直分隔</button><button id="refRoomClearBarriers" class="btn" type="button">清除分隔（${barriers.length}）</button></div></details>`;
@@ -242,7 +251,7 @@ const RoomOutlineWorkspace=(()=>{
     s.committing=false;
     if(!ok){s.reviewed=false;message='確認已取消或核心拒絕；原面保留，候選仍可修正。';refresh();return;}
     if(sourceCurrent(s))W.markReconstructionReviewed(s.bid,{method:s.method,warnings:s.warnings,local:false,expectedBasis:s.basis});
-    reset(false);message='已確認來源輪廓，可復原／重做及保存專案。';refresh();
+    reset(false);refresh();
   }
   function draw(root) {
     window.RoomCollectionWorkspace?.drawCandidates(root);

@@ -1,0 +1,75 @@
+--- a/walk.cjs
++++ b/walk.cjs
+@@ -11,2 +11,5 @@
+-const main='2562aee65c9f21a9ffdfd684100102d764bc2eb4';
+-const app=process.env.R22_URL || 'http://127.0.0.1:18851';
++const {checks}=require('./history-oracle.cjs');
++const git=(...args)=>execFileSync('git',args,{encoding:'utf8'}).trim();
++const main=git('rev-parse','HEAD');
++const app=process.env.R22_URL;
++assert.ok(app,'Set R22_URL to the dedicated fixed-version server');
+@@ -20 +23,4 @@
+-const r={scope:kind,main,app,node:process.version,started:new Date().toISOString(),input:{name:path.basename(input),sha256:hash(input)},steps:[],assertions:[]};
++const probe=JSON.parse(execFileSync('python',[path.join(repo,'geometry-web/runtime_version.py'),'--probe',new URL(app).port],{encoding:'utf8'}));
++assert.ok(probe.fresh && path.resolve(probe.root).toLowerCase()===path.resolve(repo).toLowerCase(),'Require a fresh probe from this worktree');
++const productFiles=['geometry-web/room-outline-workspace.js','geometry-web/reference-workspace.js','geometry-web/app.js'];
++const r={scope:kind,checkout:main,app,probe,sourceSha256:Object.fromEntries(productFiles.map(name=>[name,hash(path.join(repo,name))])),driverSha256:hash(__filename),oracleSha256:hash(path.join(__dirname,'history-oracle.cjs')),node:process.version,started:new Date().toISOString(),input:{name:path.basename(input),sha256:hash(input)},steps:[],assertions:[],history:[]};
+@@ -27,0 +34,9 @@
++    const review=document.querySelector('#refOutlineDetails [data-reconstruction-state]'), label=review?.querySelector('p');
++    const card=document.querySelector('.reference-source small');
++    const polygon=document.querySelector('#faceEditorRoot > polygon[stroke="#2f8f7b"]');
++    const visible=e=>!!e&&e.checkVisibility()&&e.getClientRects().length>0;
++    const onScreen=e=>{
++      if(!visible(e))return false;
++      const b=e.getBoundingClientRect(), at=document.elementFromPoint(b.x+b.width/2,b.y+b.height/2);
++      return !!at && (at===e || e.contains(at));
++    };
+@@ -29,0 +45 @@
++      svgOutline:polygon?Array.from(polygon.points,v=>[v.x,v.y]):null,
+@@ -32,0 +49,5 @@
++      statusVisible:onScreen(el('refRoomStatus')),domState:review?.dataset.reconstructionState,
++      reviewLabel:label?.innerText,reviewVisible:onScreen(label),
++      sourceCard:card?.innerText,sourceCardVisible:onScreen(card),
++      reviewCheckboxPresent:!!el('refRoomReviewed'),reviewCheckboxChecked:el('refRoomReviewed')?.checked??null,
++      manualRecordButtonVisible:visible(el('refConfirmChecked')),
+@@ -78,0 +100,18 @@
++async function recordHistory(route,phase,description){
++  // The impact dialog can close before the App replaces its inspector DOM.
++  // Reacquire visible locators after that redraw, then open the native disclosure.
++  await p.locator('dialog.reference-impact[open]').waitFor({state:'hidden'});
++  for(let i=0;i<4;i++) {
++    await pause(180);
++    await openParents('#refRoomStatus');
++    const readback=await snapshot();
++    if(readback.statusVisible&&readback.reviewVisible)break;
++    if(!readback.reviewVisible)await p.locator('#refOutlineDetails [data-reconstruction-state] > p').click({timeout:2000}).catch(()=>{});
++  }
++  const state=await step(phase+'-result',description);
++  const assertions=checks(route,phase,state);
++  r.history.push({route,phase,file:r.steps.at(-1).file,assertions,state});
++  for(const [name,ok] of Object.entries(assertions))
++    r.assertions.push({label:route+' '+phase+' '+name,pass:!!ok});
++  return state;
++}
+@@ -139 +178,3 @@
+-  await click('review','#refRoomReviewed');
++  check('核對候選前：勾選框尚未勾選，正式替換按鈕停用',!await p.locator('#refRoomReviewed').isChecked()&&await p.locator('#refRoomConfirm').isDisabled());
++  const reviewed=await click('review','#refRoomReviewed');
++  check('使用候選勾選框後：可確認替換',reviewed.reviewCheckboxPresent&&reviewed.reviewCheckboxChecked&&!reviewed.confirmDisabled);
+@@ -154 +195,2 @@
+-  const s=await step('confirmed','確認正式外環與核對狀態');
++  const route=kind==='png'?'png-separation':candidate.length===4?'pdf-box':'pdf-correction';
++  const s=await recordHistory(route,'confirm','確認正式外環與畫面提示');
+@@ -157 +199,2 @@
+-  const back=await step('undo-result','復原後核對原外環');
++  await waitSettled('unreviewed');
++  const back=await recordHistory(route,'undo','復原後核對原外環與畫面提示');
+@@ -160 +203 @@
+-  const again=await step('redo-result','重做後核對正式外環');
++  const again=await recordHistory(route,'redo','重做後核對正式外環與畫面提示');
+@@ -207 +250,4 @@
+-  try{const original=await setup();if(kind==='pdf')await pdfWalk(original);else await pngWalk(original);r.result='pass';}
++  try{const original=await setup();if(kind==='pdf')await pdfWalk(original);else await pngWalk(original);
++    assert.equal(r.history.length,kind==='pdf'?6:3);
++    const failed=r.assertions.filter(a=>!a.pass).map(a=>a.label);
++    assert.deepEqual(failed,[]);r.result='pass';}
