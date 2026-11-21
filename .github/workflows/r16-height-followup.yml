@@ -1,0 +1,91 @@
+name: R16 獨立 profile 補測
+on:
+  push:
+    branches: [codex/r16-u123h-witness-20261121]
+    paths: [.github/workflows/r16-height-followup.yml, .github/scripts/r16-layout-followup.cjs]
+permissions:
+  contents: read
+env:
+  SOURCE_SHA: 38a86e71c03815b595fdb135d9d7cd62b9ba0500
+  EXPECTED_TREE: e51336901efb0adf58b7b48daebd83f560845e9b
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  survey:
+    name: Chrome 直接量測六工作區與既有控制
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+      GEOMETRY_FEEDBACK_DIR: /tmp/r16-observe-feedback
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      KINDS: 'space-plan space-projection three-view full-grid 3d'
+      R16_OBSERVATIONS: /tmp/r16-followup
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 38a86e71c03815b595fdb135d9d7cd62b9ba0500
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: 取本輪觀測腳本與核對兩個來源
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_TREE"
+          git fetch --no-tags --depth=1 --filter=blob:none origin "$GITHUB_SHA"
+          git show "$GITHUB_SHA:.github/scripts/r16-layout-followup.cjs" > "$RUNNER_TEMP/observer.cjs"
+          node --check "$RUNNER_TEMP/observer.cjs"
+          mkdir -p "$R16_OBSERVATIONS" "$GEOMETRY_FEEDBACK_DIR"
+          sha256sum "$RUNNER_TEMP/observer.cjs" geometry-web/workspace_height_test.js > "$R16_OBSERVATIONS/sources.sha256"
+          git show -s --format='%H %T %P' HEAD > "$R16_OBSERVATIONS/source.txt"
+          "$GEOMETRY_CHROME" --version | tee "$R16_OBSERVATIONS/chrome.txt"
+      - run: npm run build
+      - uses: ./.github/actions/install-cjk-fonts
+        timeout-minutes: 8
+      - name: 以原 section 探針獨立量測三種大小，保留每一筆失敗
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          jobroot="$R16_OBSERVATIONS"
+          run_workspace() (
+            kind="$1"; port="$2"
+            export GEOMETRY_TEST_URL="http://127.0.0.1:$port/"
+            export GEOMETRY_FEEDBACK_DIR="/tmp/r16-followup-feedback-$kind"
+            export R16_OBSERVATIONS="$jobroot/$kind"
+            mkdir -p "$GEOMETRY_FEEDBACK_DIR" "$R16_OBSERVATIONS"
+            python3 -u geometry-web/start_local.py --port "$port" > "$R16_OBSERVATIONS/server.log" 2>&1 &
+            server=$!
+            trap 'kill "$server" 2>/dev/null || true; wait "$server" 2>/dev/null || true' EXIT
+            for attempt in $(seq 1 30); do
+              kill -0 "$server"
+              if python3 geometry-web/runtime_version.py --probe "$port" >/dev/null 2>&1; then break; fi
+              sleep 1
+            done
+            python3 geometry-web/runtime_version.py --probe "$port" > "$R16_OBSERVATIONS/runtime.json" || exit 2
+            timeout -k 5s 145s node "$RUNNER_TEMP/observer.cjs" "$kind"
+          )
+          port=18900
+          for kind in $KINDS; do
+            port=$((port+1))
+            set +e
+            run_workspace "$kind" "$port"
+            status=$?
+            set -e
+            printf '%s %s\n' "$kind" "$status" >> "$jobroot/child-exits.txt"
+          done
+          overall=0
+          test "$overall" = 0
+          python3 - <<'PY'
+          import os,pathlib
+          lines=(pathlib.Path(os.environ['R16_OBSERVATIONS'])/'child-exits.txt').read_text().splitlines()
+          assert len(lines)==len(os.environ['KINDS'].split()) and all(x.endswith(' 0') for x in lines),lines
+          PY
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r16-followup-observations-38a86e71c03815b595fdb135d9d7cd62b9ba0500
+          path: /tmp/r16-followup/
+          if-no-files-found: error
+          retention-days: 14
