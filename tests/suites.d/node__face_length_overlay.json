@@ -13,7 +13,9 @@
     "timeout": 300
   },
   "expected": {
-    "mode": "pending-ci-census"
+    "count": 7,
+    "mode": "count",
+    "unit": "node test"
   },
   "files": [
     "tests/test_face_length_overlay.js"
