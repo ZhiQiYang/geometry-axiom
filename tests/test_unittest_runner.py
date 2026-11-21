@@ -889,7 +889,9 @@ class NativeShardCoverage(unittest.TestCase):
             receipt_bytes + b'\0' +
             native_shards.ADDED_R17_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
             native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
-            native_shards.ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+            native_shards.ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')
+            + ((b'\0' + native_registry.source_digest(run_all.ROOT).encode('ascii'))
+               if native_registry.active(run_all.ROOT) else b'')).hexdigest()
         self.assertEqual(wanted_digest, native_shards.profile_digest(),
                          'R396_PROFILE_DIGEST_BINDS_ADDED_RECEIPTS')
         # A conflict resolution must not silently drop the original R396
