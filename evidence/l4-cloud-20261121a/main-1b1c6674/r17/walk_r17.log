@@ -1,0 +1,33 @@
+STEP 1-open-step-scene {"scene":"boundary 1 outline 0,0 500,0 500,13 1000,13 1000,1000 0,1000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\ncanvas-pos boundary 1 60 60\n"}
+PASS ENTRY_VISIBLE 
+STEP 3-canvas-pick-e2 {"clickedPx":{"x":840.0000000000002,"y":105.14666525000001},"anchor2":"e2","status":"第 2 支已選 e2；尚未提交，請核對兩列後按預覽。"}
+PASS NO_FORMAL_TIMBER_BEFORE_PREVIEW 
+STEP 4-preview {"text":"確認連動變更\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary-pair begin 1 2 timber 1 27 20 role boundary timber 2 27 20 role boundary place 1 on 1 at-face e0 +u +n place 2 on 1 at-face e2 +u +n boundary-pair end\n互頂組與下游的完整影響\n互頂組 1＋2 · 新增\n角材 1 原：不存在\n角材 1 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 2 原：不存在\n角材 2 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A
+PASS PREVIEW_ZERO_WRITE 
+PASS CANCEL_ZERO_WRITE 
+STEP 5a-cancel {"status":"已取消；場景保持原狀","formStillOpen":true}
+STEP 5b-confirm {"timberLines":["requires boundary-pair/1","boundary-pair begin 1 2","timber 1 27 20 role boundary","timber 2 27 20 role boundary","place 1 on 1 at-face e0 +u +n","place 2 on 1 at-face e2 +u +n","boundary-pair end"],"undoDelta":1,"redo":0,"revision":["62","63"]}
+PASS CONFIRM_ONE_HISTORY 
+PASS CONFIRM_TWO_MEMBERS_GROUP 
+PASS PREVIEW2_SAME_AS_PREVIEW1 
+PASS UNDO_REMOVES_BOTH 
+PASS REDO_RESTORES_BOTH 
+STEP 6-select-member {"selected":"互頂組 1＋2兩支壁邊材是一筆操作；編輯保留原成員身分，刪除須整組預覽。編輯互頂組 整組刪除…"}
+STEP 6a-edit-loaded {"op":"編輯互頂組 1＋2","a1":"e0","a2":"e2"}
+STEP 6b-unchanged-redeclare-preview {"dialog":true,"text":"確認連動變更\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary-pair begin 1 2 timber 1 27 20 role boundary timber 2 27 20 role boundary place 1 on 1 at-face e0 +u +n place 2 on 1 at-face e2 +u +n boundary-pair end\n互頂組與下游的完整影響\n互頂組 1＋2 · 組關係保留\n角材 1 原：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 1 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],
+PASS UNCHANGED_REDECLARE_NO_HISTORY 
+STEP 6c-section-preview {"text":"確認連動變更\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary-pair begin 1 2 timber 1 27 21 role boundary timber 2 27 21 role boundary place 1 on 1 at-face e0 +u +n place 2 on 1 at-face e2 +u +n boundary-pair end\n互頂組與下游的完整影響\n互頂組 1＋2 · 同組重宣告\n角材 1 原：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 1 新：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1
+PASS SECTION_CHANGE_ONE_HISTORY 
+STEP 6d-delete-preview {"text":"確認連動變更\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary-pair delete 1 2\n互頂組與下游的完整影響\n互頂組 1＋2 · 整組刪除\n角材 1 原：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,500]，寬向 [0,27]；中線 13，長度 500；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 1 新：不存在\n角材 2 原：壁邊材（boundary）；截面 A 27 × B 21 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [500,1000]，寬向 [13,40]；中線 26，長度 500；世界原點 [500,13,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 2 新：不存在\n原中央接觸：角材 1 END ↔ 角材 2 START；平面 500；實際接觸 [13,27] mm\n新中央接觸：無接觸記錄\n角材 1 · 組員\n原：壁邊材（boundary）；截面 A 27 ×
+PASS DELETE_CANCEL_ZERO_WRITE 
+PASS DELETE_ONE_HISTORY_BOTH_GONE 
+PASS UNDO_DELETE_EXACT 
+PASS COLD_SCENE_EXACT 
+PASS COLD_GROUP_VISIBLE 
+PASS FLOAT_BAR_PROBE_ZERO_WRITE 
+STEP 8a-missing-second-member {"dialog":false,"status":"請選齊兩條固定外邊，並填寫兩支的正整數截面 A／B。"}
+PASS MISSING_MEMBER_NO_WRITE 
+STEP 8b-p1a-rect {"dialog":true,"text":"變更無法套用\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\nboundary-pair begin 1 2 timber 1 27 20 role boundary timber 2 27 20 role boundary place 1 on 1 at-face e0 +u +n place 2 on 1 at-face e2 +u +n boundary-pair end\n互頂組與下游的完整影響\n互頂組 1＋2 · 新增\n角材 1 原：不存在\n角材 1 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e0；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,1000]，寬向 [0,27]；中線 13，長度 1000；世界原點 [0,0,2500]，長／A／B 軸 [[1,0,0],[0,1,0],[0,0,1]]\n角材 2 原：不存在\n角材 2 新：壁邊材（boundary）；截面 A 27 × B 20 mm；來源 at-face e2；承載面 1；方向 +u、深度側 +n；選段 完整固定段；長軸區間 [0,1000]，寬向 [973,1000]；中線 986，長度 1000；世界原
+PASS P1A_REFUSED_NAMES_D16A 
+PASS P1A_NO_WRITE 
+SUMMARY {"pass":20,"fail":[]}
