@@ -18,7 +18,7 @@ jobs:
       GEOMETRY_TEST_URL: http://127.0.0.1:18839/
       GEOMETRY_FEEDBACK_DIR: /tmp/r16-observe-feedback
       GEOMETRY_CHROME: /usr/bin/google-chrome
-      R16_OBSERVATIONS: ${{ runner.temp }}/r16-direct
+      R16_OBSERVATIONS: /tmp/r16-direct
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -61,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: r16-direct-observations-38a86e71c03815b595fdb135d9d7cd62b9ba0500
-          path: ${{ runner.temp }}/r16-direct/
+          path: /tmp/r16-direct/
           if-no-files-found: error
           retention-days: 14
   architecture:
