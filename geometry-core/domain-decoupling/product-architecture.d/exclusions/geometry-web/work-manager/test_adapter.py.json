@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/work-manager/test_adapter.py",
+    "reason": "Dedicated acceptance/test driver test_adapter.py; invoked by test harnesses, not by product runtime or served application entry points.",
+    "sha256": "bec2bad85c879a892bb5ebdf32d405a31d63d00b9ac04d5e02c2a14768373b54"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/boundary_pair_workflow_test.js",
+    "reason": "R17 P335 real-CDP acceptance driver; invoked only by cdp_test.js, never by product runtime or served application entry points.",
+    "sha256": "9391cbd735a7fa6878cbed9a01b17a93e297fa3b872836cdc5af258444f83386"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

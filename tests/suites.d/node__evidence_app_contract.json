@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_evidence_app_contract.cjs"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_evidence_app_contract.cjs",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 6,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_evidence_app_contract.cjs"
+  ],
+  "name": "node:evidence_app_contract",
+  "order": "legacy/000326",
+  "schema": "geometry-native-suite/1"
+}

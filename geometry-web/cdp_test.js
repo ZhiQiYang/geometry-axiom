@@ -4,6 +4,7 @@ const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
 const floor = require('./cdp_floor.js');
 const shards = require('./canvas_shards.js');
+const canvasRegistry = require('./canvas_registry.js');
 const canvasEvidence = require('../tests/helpers/canvas_shards.js');
 const canvasCapture = require('./canvas_capture.js');
 let shardJournal=null,captureEvidencePlan=null;
@@ -14,7 +15,7 @@ const {createTransportFailureTrace,installClientTransportTrace} = require('./tra
 let transportFailureTrace;
 const SCOPE_FLAGS = ['GEOMETRY_TIMBER_REUSE_ONLY','GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_ROOM_CANDIDATE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_DEFINITION_IMPORT_ONLY','GEOMETRY_CDP_FROM_P31','GEOMETRY_IDENTITY_LEDGER_ONLY'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
-SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY','GEOMETRY_PANEL_FILL_ONLY','GEOMETRY_R14_PANEL_ONLY','GEOMETRY_WORKSPACE_CONTEXT_MENU_ONLY','GEOMETRY_BOUNDARY_PAIR_ONLY','GEOMETRY_FRAMING_TEMPLATE_ONLY');
+SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY','GEOMETRY_PANEL_FILL_ONLY','GEOMETRY_R14_PANEL_ONLY','GEOMETRY_WORKSPACE_CONTEXT_MENU_ONLY','GEOMETRY_BOUNDARY_PAIR_ONLY','GEOMETRY_FRAMING_TEMPLATE_ONLY','GEOMETRY_CANVAS_MODULE_ONLY');
 /* main() 以 inSequence(n)/notOtherShard(n) 把完整序列切成這麼多個連續區段;canvas_shards.json 的片數必須相同。 */
 const CANVAS_SHARDS=2;
 const isCanvasShard=value=>value.mode==='shard'||value.mode==='capture-shard';
@@ -35,6 +36,11 @@ function runConfiguration(env = process.env) {
   if(filters.length>1)throw Error('Choose only one CDP scope flag; combined filters can silently omit every suite');
   if(modifiers.length>1)throw Error('Choose only one engineering workflow modifier');
   if(modifiers.length && env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY!=='1')throw Error('Engineering modifiers require GEOMETRY_ENGINEERING_WORKFLOW_ONLY=1');
+  if(env.GEOMETRY_CANVAS_MODULE!==undefined&&env.GEOMETRY_CANVAS_MODULE_ONLY!=='1')throw Error('GEOMETRY_CANVAS_MODULE requires GEOMETRY_CANVAS_MODULE_ONLY=1');
+  if(env.GEOMETRY_CANVAS_MODULE_ONLY==='1'){
+    const registry=canvasRegistry.load(path.resolve(__dirname,'..'),{allowCandidates:true});
+    if(!registry.extensions.some(row=>row.id===env.GEOMETRY_CANVAS_MODULE))throw Error('R386_CANVAS_MODULE_UNKNOWN: select a declared independent module');
+  }
   if(env.GEOMETRY_TIMBER_REUSE_CASE!==undefined){
     if(env.GEOMETRY_TIMBER_REUSE_ONLY!=='1')throw Error('GEOMETRY_TIMBER_REUSE_CASE requires ONLY=1');
     require('./timber_reuse_test.js').selectCases(env.GEOMETRY_TIMBER_REUSE_CASE);
@@ -74,10 +80,14 @@ function runConfiguration(env = process.env) {
       throw Object.assign(Error('CANVAS_RUNTIME_ENDPOINT: shards must use the isolated loopback runtime probe service'),{code:'CANVAS_RUNTIME_ENDPOINT'});
     const plan=shards.loadPlan(),shard=shards.parseShardSpec(env.GEOMETRY_CDP_SHARD,plan);
     if(shard.count!==CANVAS_SHARDS)throw Error('cdp_test.js gates exactly '+CANVAS_SHARDS+' canvas shards; canvas_shards.json declares '+shard.count);
-    return {mode:capture?'capture-shard':'shard',...(capture?{acceptance:false,extension:'P1161'}:{}),shard:{...shard,planSha256:shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)),goldenSha256:shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))},
+    return {mode:capture?'capture-shard':'shard',...(capture?{acceptance:false,extension:'P1161'}:{}),shard:{...shard,...shards.sourceDigests()},
+      ...(plan.registryCandidate?{acceptance:false,placementCandidateSha256:canvasRegistry.sha(canvasRegistry.encode(plan.registryCandidate))}:{}),
       filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
   }
-  return {mode:filters.length?'partial':'full',filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
+  const plan=!filters.length?shards.loadPlan():null;
+  return {mode:filters.length?'partial':'full',filters,modifiers,...(env.GEOMETRY_CANVAS_MODULE_ONLY==='1'?{module:env.GEOMETRY_CANVAS_MODULE,acceptance:false}:{}),
+    ...(plan?.registryCandidate?{acceptance:false,placementCandidateSha256:canvasRegistry.sha(canvasRegistry.encode(plan.registryCandidate))}:{}),
+    url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
 }
 // Legacy checks log a verdict as a separate argument. Never scan arbitrary
 // diagnostics or page console strings for checkmark characters.
@@ -166,7 +176,8 @@ let currentSection=floor.NO_SECTION;
 const sectionPass={}, sectionFail={};
 /* 各段第一次出現的實際順序(物件鍵會把 "1"…"10" 排到最前,不能拿來證明連續區段)。 */
 const sectionOrder=[];
-const touchSection=name=>{if(!sectionOrder.includes(name))sectionOrder.push(name);};
+const sectionTimer=canvasRegistry.createSectionTimer();
+const touchSection=name=>{sectionTimer.enter(name);if(!sectionOrder.includes(name))sectionOrder.push(name);};
 /* 分片切點的瀏覽器儲存交接:outgoing 是本片結束時核對的,incoming 是本片開頭套用的。 */
 const shardHandoff={};
 const startedAt=Date.now();
@@ -406,12 +417,12 @@ async function rightClick(x, y) {
 /* 每段斷言數地板:完整模式與 golden 嚴格比對(差異 → failN 增加);分片模式只與 golden 中
    本片的段落嚴格比對,且實跑順序必須等於 canvas_shards.json;部分模式只印不比。
    GEOMETRY_CDP_UPDATE_GOLDEN=1 才會重寫 golden(僅完整模式、且本次零失敗)。 */
-const GOLDEN_PATH=path.join(__dirname,'cdp_sections.golden.json');
+const GOLDEN_PATH='cdp_sections.d (deterministic aggregate)';
 function evaluateShardSections(actual,wantUpdate) {
   const label=scope.shard.index+'/'+scope.shard.count;
   if(wantUpdate){failN++;_log('[CDP FLOOR] 分片模式不可更新 golden(golden 只記完整模式)');return 'update-refused (shard mode)';}
   let golden,plan;
-  try {golden=JSON.parse(fs.readFileSync(GOLDEN_PATH,'utf8'));plan=shards.loadPlan();}
+  try {golden=shards.loadGolden();plan=shards.loadPlan();}
   catch(error){failN++;_log('[CDP FLOOR] 讀不到 golden 或分片計畫:'+error.message);return 'golden or shard plan unreadable';}
   const problems=[...floor.validateGolden(golden),...shards.validatePlan(plan,golden)];
   if(problems.length){failN++;for(const problem of problems)_log('[CDP FLOOR] golden／分片計畫格式錯誤:'+problem);return 'golden or shard plan invalid';}
@@ -443,18 +454,26 @@ function evaluateSections() {
   }
   if(wantUpdate==='1'){
     if(failN>0){_log('[CDP FLOOR] 本次有失敗斷言,不更新 golden');return 'update-refused (failures)';}
-    fs.writeFileSync(GOLDEN_PATH,JSON.stringify(floor.buildGolden(actual.sections),null,2)+'\n');
-    _log('[CDP FLOOR] 已重寫 '+GOLDEN_PATH+'(請檢視 git diff 後再提交)');
-    return 'golden updated';
+    const registry=canvasRegistry.load(path.resolve(__dirname,'..'));
+    const legacy={sections:Object.fromEntries(registry.baseline.ids.map(id=>[id,actual.sections[id]]))};
+    const drift=floor.compare(registry.baseline.golden,legacy);
+    if(drift.length){failN++;_log('[CDP FLOOR] 不得以 capture 改寫既有段計數:'+JSON.stringify(drift));return 'update-refused (legacy count drift)';}
+    const candidate=path.join(os.tmpdir(),'geometry-cdp-golden-candidate-'+process.pid+'.json');
+    fs.writeFileSync(candidate,JSON.stringify({schema:'geometry-canvas-golden-candidate/1',capture_verified:true,acceptance:false,
+      golden:floor.buildGolden(actual.sections),sectionOrder,sectionElapsedMs:sectionTimer.finish()},null,2)+'\n');
+    _log('[CDP FLOOR] 候選原件寫入 '+candidate+'；正式片段須經官方 CI artifact 導入且逐段核驗');
+    return 'golden candidate captured (not accepted)';
   }
   let golden;
-  try {golden=JSON.parse(fs.readFileSync(GOLDEN_PATH,'utf8'));}
+  try {golden=shards.loadGolden();}
   catch(error){failN++;_log('[CDP FLOOR] 讀不到 golden '+GOLDEN_PATH+':'+error.message+'(以 GEOMETRY_CDP_UPDATE_GOLDEN=1 建立)');return 'golden unreadable';}
   const problems=floor.validateGolden(golden);
   if(problems.length){failN++;for(const problem of problems)_log('[CDP FLOOR] golden 格式錯誤:'+problem);return 'golden invalid';}
   const diffs=floor.compare(golden,actual);
   for(const diff of diffs){failN++;_log('[CDP FLOOR]',diff.message);}
   if(diffs.length)return 'mismatch ('+diffs.length+')';
+  const planned=shards.loadPlan().shards.flatMap(row=>row.sections);
+  if(JSON.stringify(sectionOrder)!==JSON.stringify(planned)){failN++;_log('[CDP FLOOR] 完整模式實際順序與片段計畫不同:'+JSON.stringify(sectionOrder));return 'mismatch (full sequence)';}
   _log('[CDP FLOOR] 與 golden 逐段相符('+Object.keys(golden.sections).length+' 段)');
   return 'matched';
 }
@@ -546,7 +565,9 @@ async function main() {
   const runBoundaryPair=()=>require('./boundary_pair_workflow_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   const runCanvasContextMenu=()=>require('./canvas_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
   const runWorkspaceContextMenu=()=>require('./workspace_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
-  if(process.env.GEOMETRY_BOUNDARY_PAIR_ONLY){
+  if(process.env.GEOMETRY_CANVAS_MODULE_ONLY){
+    await canvasRegistry.dispatch(path.resolve(__dirname,'..'),scope,{send,eval_,sleep,click,dblclick,drag,dragMod,pressDownMod,moveMod,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN,makeCheck:bodyCheck},{allowCandidates:true});
+  } else if(process.env.GEOMETRY_BOUNDARY_PAIR_ONLY){
     await runBoundaryPair();
   } else if(process.env.GEOMETRY_TIMBER_REUSE_ONLY){
     await runTimberReuse();
@@ -7316,6 +7337,7 @@ async function main() {
   if (inSequence(1) || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./grid_rule_lines_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   /* 第 1 個分片切點(P88 之後、P72 之前):完整模式與第 1 片在此核對交給第 2 片的瀏覽器儲存。 */
+  if(inSequence(1))await canvasRegistry.dispatch(path.resolve(__dirname,'..'),scope,{send,eval_,sleep,click,dblclick,drag,dragMod,pressDownMod,moveMod,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN,makeCheck:bodyCheck},{slot:1});
   if (inSequence(1))
     await verifyShardHandoff(1);
   if (process.env.GEOMETRY_INFINITE_FACE_ONLY)
@@ -7364,6 +7386,9 @@ async function main() {
   if(inSequence(2)||process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY)
     await require('./grid_card_entry_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if(inSequence(2))await runWorkspaceContextMenu();
+  /* R386: independently owned modules have one explicit, deterministic slot.
+     P359 remains last; legacy sections, their assertions and waits are intact. */
+  if(inSequence(2))await canvasRegistry.dispatch(path.resolve(__dirname,'..'),scope,{send,eval_,sleep,click,dblclick,drag,dragMod,pressDownMod,moveMod,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN,makeCheck:bodyCheck});
   /* Last on purpose: its fresh reopen wipes origin storage, which would reset state later sections rely on.
      It also stays last in the last canvas shard. */
   if(inSequence(2)||process.env.GEOMETRY_DEFINITION_IMPORT_ONLY)await require('./definition_import_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
@@ -7376,7 +7401,7 @@ async function main() {
   if(passN+failN===0){failN++;_log('No assertions executed');}
   const goldenCompare=evaluateSections();
   _log(`\n=== 結果:${passN} 通過斷言 / ${failN} 失敗斷言 / ${skipped.length} 略過群組 (${scope.mode}) ===`);
-  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),sectionOrder,goldenCompare,uncaughtBrowserExceptions:excN,unexpectedBrowserExceptions:unexpectedExcN,elapsedSeconds:Math.round((Date.now()-startedAt)/1000),...(Object.keys(shardHandoff).length?{handoff:shardHandoff}:{}),coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
+  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),sectionOrder,sectionElapsedMs:sectionTimer.finish(),goldenCompare,uncaughtBrowserExceptions:excN,unexpectedBrowserExceptions:unexpectedExcN,elapsedSeconds:Math.round((Date.now()-startedAt)/1000),...(Object.keys(shardHandoff).length?{handoff:shardHandoff}:{}),coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
   process.exit(failN > 0 ? 1 : 0);
 }
 async function fatal(e) {
@@ -7394,7 +7419,7 @@ async function fatal(e) {
     }
   } catch(captureError) {_log('FATAL_CAPTURE_FAILED:',captureError.message);}
   finally {
-    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),sectionOrder,currentSection,goldenCompare:'not compared (run did not complete)',uncaughtBrowserExceptions:excN,unexpectedBrowserExceptions:unexpectedExcN,elapsedSeconds:Math.round((Date.now()-startedAt)/1000),...(Object.keys(shardHandoff).length?{handoff:shardHandoff}:{})}));
+    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,apiTransportFailures:transportFailureTrace?.apiFailures()||[],apiTransportTraceComplete:transportFailureTrace?.apiComplete()===true,firstNetworkFailure:transportFailureTrace?.first()||null,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),sectionOrder,sectionElapsedMs:sectionTimer.finish(),currentSection,goldenCompare:'not compared (run did not complete)',uncaughtBrowserExceptions:excN,unexpectedBrowserExceptions:unexpectedExcN,elapsedSeconds:Math.round((Date.now()-startedAt)/1000),...(Object.keys(shardHandoff).length?{handoff:shardHandoff}:{})}));
     chrome?.kill();process.exit(1);
   }
 }

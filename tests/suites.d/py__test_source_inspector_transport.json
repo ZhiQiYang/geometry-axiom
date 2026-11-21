@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_source_inspector_transport.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_source_inspector_transport.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 2,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_source_inspector_transport.py"
+  ],
+  "name": "py:test_source_inspector_transport",
+  "order": "legacy/000234",
+  "schema": "geometry-native-suite/1"
+}

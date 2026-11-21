@@ -5,6 +5,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('fs'), os = require('os'), path = require('path');
 const shards = require('../geometry-web/canvas_shards.js');
+const registry = require('../geometry-web/canvas_registry.js');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const pf4aExtension = require('./diagnostics/pf4a_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
@@ -22,10 +23,14 @@ const ROOT = path.resolve(__dirname, '..');
 // P353. Project exactly it (plan position and raw golden line) out first, so every
 // main oracle below judges the same plan, golden and raw bytes it was written for.
 const plan = shards.loadPlan(), golden = shards.loadGolden();
+// R386: the retired aggregate files are judged through the current legacy
+// projection; its golden encoding is byte-identical to the former file.
+const legacy = registry.legacyView(ROOT);
+const LEGACY_GOLDEN_RAW = registry.encode(legacy.golden);
 // R03 (#205): P205 is a later independent measured section after P1284 and before
 // P353 (cdp_test.js: P128 -> P1284 -> P205 -> P353). Project exactly it out first, so
 // the PF-4A and every older oracle below judge the same 99-section input as on main.
-const r03Base = {plan: r03Extension.projectPlan(plan), golden: r03Extension.projectGolden(golden)};
+const r03Base = {plan: r03Extension.projectPlan(legacy.plan), golden: r03Extension.projectGolden(legacy.golden)};
 function projectR03Raw(rawSource) {
   const raw = String(rawSource).replace(/\r\n/g, '\n');
   const parsed = JSON.parse(raw), count = parsed.sections.P205;
@@ -53,7 +58,7 @@ const beforeR335 = {plan:r335Extension.projectPlan(pf4aBase.plan),golden:r335Ext
 const withoutP420 = {plan:train3Tail.withoutPlan(pf4aBase.plan, 'P420'), golden:train3Tail.withoutGolden(pf4aBase.golden, 'P420')};
 const COUNT = plan.shards.length;
 const COMMIT = 'a'.repeat(40);
-const REAL = {planSha256: shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)), goldenSha256: shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))};
+const REAL = shards.sourceDigests();
 const clone = value => JSON.parse(JSON.stringify(value));
 const sum = sections => Object.values(sections).reduce((a, b) => a + b, 0);
 
@@ -78,7 +83,7 @@ function projectR335Raw(rawSource) {
   assert.deepEqual(JSON.parse(rebased), r420Extension.projectGolden(r335Extension.projectGolden(parsed)), 'TRAIN3_ONLY_P335_P420_PROJECTED');
   return rebased;
 }
-function projectWorkspaceGolden(value, rawSource = projectR335Raw(projectPf4aRaw(projectR03Raw(fs.readFileSync(shards.GOLDEN_PATH, 'utf8'))))) {
+function projectWorkspaceGolden(value, rawSource = projectR335Raw(projectPf4aRaw(projectR03Raw(LEGACY_GOLDEN_RAW)))) {
   assert.equal(value.sections.P1161, 510, 'R396_P1161_MEASURED_ASSERTION_COUNT');
   assert.equal(value.sections.R06, 55, 'R396_R06_FIVE_ASSERTIONS_INCLUDED');
   const old = clone(value);delete old.sections.P1161;old.total -= 510;
@@ -112,7 +117,7 @@ function verifyWorkspaceGoldenRebase() {
   const beforeP1161 = projectWorkspaceGolden(r420Extension.projectGolden(beforeR335.golden));
   assert.equal(beforeP1161.sections.R06, 55, 'R396_R06_PLUS_FIVE_RETAINED');
   assert.equal(beforeP1161.total, 4831, 'R396_R06_PLUS_FIVE_95_TOTAL');
-  const raw = projectR335Raw(projectPf4aRaw(projectR03Raw(fs.readFileSync(shards.GOLDEN_PATH, 'utf8'))));
+  const raw = projectR335Raw(projectPf4aRaw(projectR03Raw(LEGACY_GOLDEN_RAW)));
   const tampered = raw.replace('    "P360": 13,\n', '    "P360": 13, \n');
   assert.notEqual(tampered, raw, 'R396_BYTE_PROBE_CHANGED');
   assert.throws(() => projectWorkspaceGolden(r420Extension.projectGolden(beforeR335.golden), tampered),
@@ -346,7 +351,9 @@ test('執行時的計畫或 golden 與彙總 checkout 不同必紅；golden 多�
   assert.match(shards.validatePlan(plan, grown).join('\n'), /golden 的段 P999 沒有排進任何一片/);
   red(complete(), /分片計畫：golden 的段 P999/, {...context, golden: grown});
   // R369-DIGEST: exact source bytes, not a copied expected hash.
-  const architecture = JSON.parse(fs.readFileSync(path.join(ROOT, 'geometry-core/domain-decoupling/product-architecture.json'), 'utf8'));
+  const architecture = JSON.parse(require('node:child_process').execFileSync(process.env.PYTHON || 'python3', [
+    '-B', '-c', 'import json,sys; sys.path.insert(0,"tests"); from architecture_contract import load_manifest; print(json.dumps(load_manifest("geometry-core/domain-decoupling/product-architecture.json")))',
+  ], {cwd: ROOT, encoding: 'utf8'}));
   for (const relative of ['geometry-web/cdp_test.js', 'geometry-web/parameter_workflow_test.js',
     'geometry-web/canvas_shards.js', 'geometry-web/grid_card_entry_test.js']) {
     const entry = architecture.exclusions.find(row => row.path === relative);
@@ -527,10 +534,10 @@ test('workflow：canvas 兩片並行、每片仍 35 分鐘，彙總核對收據�
   for (const line of footers) {
     const emitted=[];
     new Function('_log','scope','transportFailureTrace','passN','failN','skipped','sectionPass','sectionFail',
-      'sectionOrder','goldenCompare','excN','unexpectedExcN','startedAt','shardHandoff','currentSection','e',line)(
+      'sectionOrder','goldenCompare','excN','unexpectedExcN','startedAt','shardHandoff','currentSection','e','sectionTimer',line)(
       value=>emitted.push(JSON.parse(value.slice('CDP_RESULT '.length))),{mode:'partial'},
       {apiFirst:()=>first,apiFailures:()=>failureList,apiComplete:()=>true,first:()=>null},
-      50,0,[],{R06:50},{},order,'matched',1,0,Date.now(),handoff,'R06',{message:'controlled-fixture'});
+      50,0,[],{R06:50},{},order,'matched',1,0,Date.now(),handoff,'R06',{message:'controlled-fixture'},{finish:()=>({R06:1})});
     assert.equal(emitted.length,1,'R06_CANVAS_TRACE');
     assert.deepEqual(emitted[0].firstTransportFailure,first,'R06_CANVAS_TRACE');
     assert.deepEqual(emitted[0].apiTransportFailures,failureList,'R06_CANVAS_TRACE: preserve the complete R06 API trace');
@@ -630,10 +637,12 @@ test('current numeric plan partitions every current key exactly once without fix
   const second=evidencePlan.units.find(unit=>unit.id==='2/2').sections;
   assert.deepEqual(second.slice(second.indexOf('P83'),second.indexOf('P86')+1),['P83','P86']);
   assert.deepEqual(second.slice(second.indexOf('R06')-1,second.indexOf('R06')+2),['P82','R06','P80']);
-  for(const relative of ['geometry-web/canvas_shards.json','geometry-web/canvas_shards.js',
+  assert.equal(evidencePlan.sourceHashes['geometry-web/canvas_shards.json'],REAL.planSha256,'R367_AGGREGATE_PLAN_DIGEST');
+  assert.equal(evidencePlan.sourceHashes['geometry-web/cdp_sections.golden.json'],REAL.goldenSha256,'R367_AGGREGATE_GOLDEN_DIGEST');
+  for(const relative of [...registry.load(ROOT).sourceFiles,'geometry-web/canvas_shards.js',
     'geometry-web/grid_card_entry_test.js','geometry-web/identity_ledger_browser_test.js',
     'geometry-web/cutting_plan_test.js','geometry-web/assembly_bay_repeat_test.js']) {
-    assert.equal(evidencePlan.sourceHashes[relative],shards.lfSha256(fs.readFileSync(path.join(ROOT,relative))),
+    assert.equal(evidencePlan.sourceHashes[relative],relative.endsWith('.zip')?registry.sha(fs.readFileSync(path.join(ROOT,relative))):shards.lfSha256(fs.readFileSync(path.join(ROOT,relative))),
       'R367_SOURCE_CLOSURE: '+relative);
   }
 });
@@ -839,6 +848,6 @@ test('PF4A_CANVAS_PLAN: P1284 is one measured section between P128 and P353 in t
   assert.equal(Object.keys(rawGolden.sections).length, Object.keys(pf4aBase.golden.sections).length + 1, 'PF4A_MERGED_SECTIONS: unchanged sections plus P1284');
   assert.equal(Object.keys(rawGolden.sections).length, 99, 'PF4A_TRAIN3_MERGED_SECTIONS: main 98 plus P1284');
   assert.equal(rawGolden.total, pf4aBase.golden.total + rawGolden.sections.P1284, 'PF4A_EXACT_COUNT_UNION');
-  const real = {planSha256: shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)), goldenSha256: shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))};
+  const real = shards.sourceDigests();
   assert.deepEqual(real, REAL, 'PF4A_RECEIPTS_BIND_THE_REAL_FILES');
 });

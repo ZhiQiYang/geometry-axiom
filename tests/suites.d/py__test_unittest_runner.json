@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_unittest_runner.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_unittest_runner.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 19,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_unittest_runner.py"
+  ],
+  "name": "py:test_unittest_runner",
+  "order": "legacy/000241",
+  "schema": "geometry-native-suite/1"
+}

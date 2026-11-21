@@ -1,0 +1,25 @@
+{
+  "schema": "native-shard-added-suite-evidence/1",
+  "source_run": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43231596387",
+  "source_head": "a4ea8327bd4a7c0b4089a89ea6d0f270a8f01659",
+  "source_checkout": "2b9d0eea17155c2d857447466aa4a9abce649036",
+  "note": "Both listed suites passed. The exact-head CI job failed overall because their expected entries were missing. Times are the original one-decimal-second runner summary; planning upper bounds are conservative, not historical observations. The earlier run 43212366533/job/131162945568 reported 35.5s and 0.1s; its full source log remains in the evidence bundle, but this later 61.9s receipt supersedes it for planning. None of the three original 315-suite measured_runs is changed.",
+  "observations": [
+    {
+      "name": "py:test_panel_fill_grid_source",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43231596387/job/131228034964",
+      "discovered": 13,
+      "passed": 13,
+      "seconds_rounded": 61.9,
+      "planning_upper_ms": 65000
+    },
+    {
+      "name": "node:panel_fill_grid_read_compat",
+      "source_job": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/43231596387/job/131228034964",
+      "discovered": 11,
+      "passed": 11,
+      "seconds_rounded": 0.1,
+      "planning_upper_ms": 2000
+    }
+  ]
+}

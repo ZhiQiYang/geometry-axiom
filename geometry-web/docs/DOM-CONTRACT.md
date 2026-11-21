@@ -12,7 +12,7 @@
 - `/boundary-pair/read` 與 `/boundary-pair/preview` 分別使用 `boundary-pair-read/1`、`boundary-pair-transaction/1`。preview 固定原生 revision／contextKey，操作只收 create、redeclare、delete。`/api` 的 `boundary-pair-confirm <token> <ownerKey>`／`boundary-pair-cancel <token> <ownerKey>` 沿現行回執機制，不重送未知確認。候選的工作世代／session／owner 與同一原生 token 必須相符；已有角材候選時拒絕新預覽，不取消他人的候選。
 - 取消／缺件／違規／過期都零寫入；有變更的確認恰一筆歷史，原樣重宣告零筆。復原／重做還原整組。未提交輸入只在本頁記憶體，保存及切換會明示尚未保存並要求先確認或取消；冷開不能復活 token。
 - 已確認組沿 `.scene` 的 `requires boundary-pair/1` 與完整 begin…end 保存，`.gcanvas` 使用既有 `/19` 共享封套及明確 required capability。只承接 #410 的 literal 尺寸子集；以 `boundary_pair_native.complete=false`／`host-app-literal-entry` 有限描述驗讀，不把完整能力加入原生支援清單。工程／參數組員仍拒絕，不能降級成兩次普通 place。
-- 真瀏覽器段 `P335` 由 `boundary_pair_workflow_test.js` 經 `cdp_test.js` 執行，可用 `GEOMETRY_BOUNDARY_PAIR_ONLY=1` 單跑；分片接線位於實際來源 `geometry-web/canvas_shards.json`。正式 `geometry-web/cdp_sections.golden.json` 必須由同版完整 capture 產生；2026-11-15 已以 `GEOMETRY_CDP_UPDATE_GOLDEN=1` 的完整模式實跑（5020／0、completed）寫入 `P335=192`，原 95 段計數逐段不變。不能把預期斷言數手填成執行產物；既有段、計數、時限及斷言不變。
+- 真瀏覽器段 `P335` 由 `boundary_pair_workflow_test.js` 經 `cdp_test.js` 執行，可用 `GEOMETRY_BOUNDARY_PAIR_ONLY=1` 單跑。R386 遷移後，分片／計數來源是 `geometry-web/cdp_sections.d/P335.json`，兩片 plan 與 golden 由 `canvas_registry.js` 確定性組合；原 `canvas_shards.json`／`cdp_sections.golden.json` bytes 封存於 `canvas-registry/legacy.*`，原逐段斷言與 pin 保留。2026-11-15 的歷史完整 capture 為 5020／0、completed，寫入 `P335=192` 並保持當時其餘 95 段計數；不把這個歷史總數當作目前全套計數。新段須由真 capture 匯入，不能手填執行產物；既有段、時限及斷言不變。遷移與新段流程見 `tests/FRAGMENTED-REGISTRIES.md`。
 
 ## 2026-10-09 收尾核收更新（各 scope 分列）
 

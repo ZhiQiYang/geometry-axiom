@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_boundary_pair_host.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_boundary_pair_host.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 19,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_boundary_pair_host.py"
+  ],
+  "name": "py:test_boundary_pair_host",
+  "order": "legacy/000017",
+  "schema": "geometry-native-suite/1"
+}

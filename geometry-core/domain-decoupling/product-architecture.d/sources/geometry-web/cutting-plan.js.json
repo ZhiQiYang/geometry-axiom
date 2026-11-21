@@ -1,0 +1,10 @@
+{
+  "collection": "sources",
+  "entry": {
+    "language": "javascript",
+    "layer": "H",
+    "path": "geometry-web/cutting-plan.js",
+    "purpose": "H 原生來源與既有 timber-schedule 料單的唯讀轉接，建立明確需求後委派固定 W 求值；保留公開回傳包裝與 CSV bytes，無配料或 FFD 政策"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

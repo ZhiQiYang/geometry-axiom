@@ -13,6 +13,14 @@ sys.path.insert(0, str(pathlib.Path('tests').resolve()))
 import run_all
 import native_shards
 mode, output = sys.argv[1:]
+def drop_added_suites(names):
+    # R386: after fragment migration the effective costs come from the
+    # registry; dropping one historical source must also remove exactly those
+    # suites from the costs the guard sees, as the base modes already do.
+    names = set(names)
+    effective = native_shards.added_suite_costs
+    native_shards.added_suite_costs = lambda: {
+        name: ms for name, ms in effective().items() if name not in names}
 removed = []
 target = 'test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once'
 if mode in ('drop-one-suite', 'R348_FOUR_SHARD_DROP_ONE_SUITE', 'R378_SIX_SHARD_DROP_ONE_SUITE'):
@@ -140,20 +148,22 @@ if mode == 'r03-provenance-baseline' or mode.startswith('R03_'):
              native_shards.ADDED_PF4A_EVIDENCE))).hexdigest()
     elif mode == 'R03_DROP_SUITE_EVIDENCE':
         target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
+        # R386 (same as R12/PF-4A above): the registry would otherwise mask the
+        # dropped historical source; remove exactly those suites from the guard.
+        drop_added_suites(native_shards.added_r03_suite_costs())
         native_shards.added_r03_suite_costs = lambda: {}
     elif mode == 'R03_DROP_EXPECTED_ENTRIES':
         target = 'test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once'
-        original_expected_read = pathlib.Path.read_text
-        def missing_r03_expected(path, *args, **kwargs):
-            value = original_expected_read(path, *args, **kwargs)
-            if path.resolve() == run_all.EXPECTED_FILE.resolve():
-                data = json.loads(value)
-                for name in ('py:test_framing_template', 'node:framing_recipe_project_store',
-                             'node:framing_template_session', 'node:framing_template_browser_scope'):
-                    data['suites'].pop(name)
-                value = json.dumps(data)
-            return value
-        pathlib.Path.read_text = missing_r03_expected
+        # R386: the retired run_all.expected.json is no longer read; intercept
+        # run_all.load_expected exactly like R17/R12/PF-4A's withdrawals.
+        original_expected = run_all.load_expected
+        def missing_r03_expected():
+            data, error = original_expected()
+            for name in ('py:test_framing_template', 'node:framing_recipe_project_store',
+                         'node:framing_template_session', 'node:framing_template_browser_scope'):
+                data['suites'].pop(name)
+            return data, error
+        run_all.load_expected = missing_r03_expected
     elif mode == 'R03_CONTAMINATE_HISTORICAL_UNIVERSE':
         target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
         original_partition = native_shards.partition_suites
@@ -201,6 +211,7 @@ elif mode == 'R379_REVERT_SINGLE_START_ONE_SWEEP':
         return {name: i for i, part in enumerate(parts) for name in part}
     native_shards._scenario_owners = original_owners
 elif mode == 'R379_DROP_R14_SUITE_EVIDENCE':
+    drop_added_suites(native_shards.added_r14_suite_costs())
     native_shards.added_r14_suite_costs = lambda: {}
 elif mode == 'R379_ALLOW_DUPLICATE_SOURCE':
     def duplicate_r14_source():
@@ -222,11 +233,7 @@ elif mode == 'R379_ALLOW_DUPLICATE_SOURCE':
         r03 = native_shards.added_r03_suite_costs()
         if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys()) & r03.keys():
             raise ValueError('R03_CI_UNIQUE_ACROSS_SOURCES')
-        # Merge with R443: keep the eighth source and its uniqueness guard unchanged.
-        r443 = native_shards.added_r443_suite_costs()
-        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys() | r03.keys()) & r443.keys():
-            raise ValueError('R443_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03, **r443}
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03}
     native_shards.added_suite_costs = duplicate_r14_source
 elif mode == 'R379_OMIT_R14_SOURCE_FROM_DIGEST':
     import hashlib
@@ -238,6 +245,7 @@ elif mode == 'R379_OMIT_R14_SOURCE_FROM_DIGEST':
         native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R396_DROP_WORKSPACE_COSTS':
+    drop_added_suites(native_shards.added_receipt_costs())
     native_shards.added_receipt_costs = lambda: {}
 elif mode == 'R396_ALLOW_DUPLICATE_LEGACY_COST':
     def duplicate_workspace_legacy_source():
@@ -261,11 +269,7 @@ elif mode == 'R396_ALLOW_DUPLICATE_LEGACY_COST':
         r03 = native_shards.added_r03_suite_costs()
         if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys()) & r03.keys():
             raise ValueError('R03_CI_UNIQUE_ACROSS_SOURCES')
-        # Merge with R443: keep the eighth source and its uniqueness guard unchanged.
-        r443 = native_shards.added_r443_suite_costs()
-        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys() | r03.keys()) & r443.keys():
-            raise ValueError('R443_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03, **r443}
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03}
     native_shards.added_suite_costs = duplicate_workspace_legacy_source
 elif mode == 'R396_ALLOW_DUPLICATE_R14_COST':
     def duplicate_workspace_r14_source():
@@ -289,11 +293,7 @@ elif mode == 'R396_ALLOW_DUPLICATE_R14_COST':
         r03 = native_shards.added_r03_suite_costs()
         if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys()) & r03.keys():
             raise ValueError('R03_CI_UNIQUE_ACROSS_SOURCES')
-        # Merge with R443: keep the eighth source and its uniqueness guard unchanged.
-        r443 = native_shards.added_r443_suite_costs()
-        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys() | r03.keys()) & r443.keys():
-            raise ValueError('R443_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03, **r443}
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03}
     native_shards.added_suite_costs = duplicate_workspace_r14_source
 elif mode == 'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST':
     import hashlib
@@ -305,28 +305,27 @@ elif mode == 'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST':
         native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R379_DROP_R14_EXPECTED_ENTRIES':
-    original_expected_read = pathlib.Path.read_text
-    def missing_r14_expected(path, *args, **kwargs):
-        value = original_expected_read(path, *args, **kwargs)
-        if path.resolve() == run_all.EXPECTED_FILE.resolve():
-            data = json.loads(value)
-            for name in ('node:r14_app', 'node:r14_host', 'py:test_r14_browser_receipt'):
-                data['suites'].pop(name)
-            value = json.dumps(data)
-        return value
-    pathlib.Path.read_text = missing_r14_expected
-if mode in receipt_modes or mode == 'R396_DROP_WORKSPACE_EXPECTED_ENTRIES':
+    original_expected = run_all.load_expected
+    def missing_r14_expected():
+        data, error = original_expected()
+        for name in ('node:r14_app', 'node:r14_host', 'py:test_r14_browser_receipt'):
+            data['suites'].pop(name)
+        return data, error
+    run_all.load_expected = missing_r14_expected
+if mode == 'R396_DROP_WORKSPACE_EXPECTED_ENTRIES':
+    original_expected = run_all.load_expected
+    def missing_workspace_expected():
+        data, error = original_expected()
+        for name in ('node:workspace_view_state', 'py:test_workspace_view_server',
+                     'py:test_workspace_view', 'node:workspace_context_menu_state'):
+            data['suites'].pop(name)
+        return data, error
+    run_all.load_expected = missing_workspace_expected
+elif mode in receipt_modes:
     original_receipt_read = pathlib.Path.read_text
     def ignored_receipt_guard(path, *args, **kwargs):
         value = original_receipt_read(path, *args, **kwargs)
-        if mode == 'R396_DROP_WORKSPACE_EXPECTED_ENTRIES':
-            if path.resolve() == run_all.EXPECTED_FILE.resolve():
-                data = json.loads(value)
-                for name in ('node:workspace_view_state', 'py:test_workspace_view_server',
-                             'py:test_workspace_view', 'node:workspace_context_menu_state'):
-                    data['suites'].pop(name)
-                value = json.dumps(data)
-        elif path.resolve() == native_shards.ADDED_RECEIPTS.resolve():
+        if path.resolve() == native_shards.ADDED_RECEIPTS.resolve():
             data = json.loads(value)
             for source in data['runs']:
                 for shard in source['shards']:
@@ -358,6 +357,7 @@ elif mode == 'R396_DROP_WORKSPACE_WITHDRAWAL':
         return value
     pathlib.Path.read_text = dropped_catalog_entry
 elif mode == 'R17_DROP_SUITE_EVIDENCE':
+    drop_added_suites(native_shards.added_r17_suite_costs())
     native_shards.added_r17_suite_costs = lambda: {}
 elif mode == 'R17_OMIT_SOURCE_FROM_DIGEST':
     import hashlib
@@ -369,18 +369,16 @@ elif mode == 'R17_OMIT_SOURCE_FROM_DIGEST':
         native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R17_DROP_EXPECTED_ENTRIES':
-    original_expected_read = pathlib.Path.read_text
-    def missing_r17_expected(path, *args, **kwargs):
-        value = original_expected_read(path, *args, **kwargs)
-        if path.resolve() == run_all.EXPECTED_FILE.resolve():
-            data = json.loads(value)
-            for name in ('py:test_boundary_pair_host', 'node:boundary_pair_ui',
-                         'node:boundary_pair_project', 'node:boundary_pair_browser_scope'):
-                data['suites'].pop(name)
-            value = json.dumps(data)
-        return value
-    pathlib.Path.read_text = missing_r17_expected
+    original_expected = run_all.load_expected
+    def missing_r17_expected():
+        data, error = original_expected()
+        for name in ('py:test_boundary_pair_host', 'node:boundary_pair_ui',
+                     'node:boundary_pair_project', 'node:boundary_pair_browser_scope'):
+            data['suites'].pop(name)
+        return data, error
+    run_all.load_expected = missing_r17_expected
 elif mode == 'R12_DROP_SUITE_EVIDENCE':
+    drop_added_suites(native_shards.added_r12_suite_costs())
     native_shards.added_r12_suite_costs = lambda: {}
 elif mode == 'R12_RESTORE_PRE_REPAIR_COSTS':
     original_r12_costs = native_shards.added_r12_suite_costs
@@ -417,11 +415,7 @@ elif mode == 'R12_ALLOW_DUPLICATE_SOURCE':
         r03 = native_shards.added_r03_suite_costs()
         if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys()) & r03.keys():
             raise ValueError('R03_CI_UNIQUE_ACROSS_SOURCES')
-        # Merge with R443: keep the eighth source and its uniqueness guard unchanged.
-        r443 = native_shards.added_r443_suite_costs()
-        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys() | r03.keys()) & r443.keys():
-            raise ValueError('R443_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03, **r443}
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03}
     native_shards.added_suite_costs = duplicate_r12_source
 elif mode == 'R12_ACCEPT_FAILED_CHILD':
     original_r12_read = pathlib.Path.read_text
@@ -439,19 +433,16 @@ elif mode == 'R12_ACCEPT_FAILED_CHILD':
         return value
     pathlib.Path.read_text = accept_failed_r12_child
 elif mode == 'R12_DROP_EXPECTED_ENTRIES':
-    original_r12_expected_read = pathlib.Path.read_text
-    def missing_r12_expected(path, *args, **kwargs):
-        value = original_r12_expected_read(path, *args, **kwargs)
-        if path.resolve() == run_all.EXPECTED_FILE.resolve():
-            data = json.loads(value)
-            for name in ('py:test_space_profile_runs', 'py:test_space_profile_update',
+    original_expected = run_all.load_expected
+    def missing_r12_expected():
+        data, error = original_expected()
+        for name in ('py:test_space_profile_runs', 'py:test_space_profile_update',
                          'py:test_r12_browser_evidence', 'node:space_profile_ui',
                          'node:space_profile_view', 'node:space_profile_update_ui',
                          'node:profile_space_browser_contract'):
-                data['suites'].pop(name)
-            value = json.dumps(data)
-        return value
-    pathlib.Path.read_text = missing_r12_expected
+            data['suites'].pop(name)
+        return data, error
+    run_all.load_expected = missing_r12_expected
 elif mode == 'PF4A_ALLOW_R12_DUPLICATE':
     def duplicate_pf4a_r12_source():
         legacy = native_shards._legacy_added_suite_costs()
@@ -475,15 +466,14 @@ elif mode == 'PF4A_ALLOW_R12_DUPLICATE':
         r03 = native_shards.added_r03_suite_costs()
         if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys()) & r03.keys():
             raise ValueError('R03_CI_UNIQUE_ACROSS_SOURCES')
-        # Merge with R443: keep the eighth source and its uniqueness guard unchanged.
-        r443 = native_shards.added_r443_suite_costs()
-        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys() | r03.keys()) & r443.keys():
-            raise ValueError('R443_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03, **r443}
+        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03}
     native_shards.added_suite_costs = duplicate_pf4a_r12_source
 elif mode == 'PF4A_DROP_SUITE_EVIDENCE':
+    drop_added_suites(native_shards.added_pf4a_suite_costs())
     native_shards.added_pf4a_suite_costs = lambda: {}
 elif mode in ('PF4A_DROP_ONE_SUITE', 'PF4A_TAMPER_SOURCE_IDENTITY'):
+    if mode == 'PF4A_DROP_ONE_SUITE':
+        drop_added_suites(['node:panel_fill_grid_ui'])
     # Mutate only this child's in-memory read of the PF-4A source file.
     original_pf4a_read = pathlib.Path.read_text
     def mutated_pf4a_read(path, *args, **kwargs):
@@ -516,97 +506,13 @@ elif mode == 'PF4A_ACCEPT_UNVALIDATED_EVIDENCE':
                 if type(row) is dict and 'name' in row and 'planning_upper_ms' in row}
     native_shards.added_pf4a_suite_costs = unvalidated_pf4a
 elif mode == 'PF4A_DROP_EXPECTED_ENTRIES':
-    original_expected_read = pathlib.Path.read_text
-    def missing_pf4a_expected(path, *args, **kwargs):
-        value = original_expected_read(path, *args, **kwargs)
-        if path.resolve() == run_all.EXPECTED_FILE.resolve():
-            data = json.loads(value)
-            for name in ('py:test_panel_fill_grid_transaction', 'node:panel_fill_grid_ui'):
-                data['suites'].pop(name)
-            value = json.dumps(data)
-        return value
-    pathlib.Path.read_text = missing_pf4a_expected
-# PR #443: an independent eighth source and a new registry layer. Each
-# withdrawal removes exactly one guard; the old 328/324 universes stay exact.
-r443_partition = 'test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once'
-r443_profile = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
-r443_provenance = 'test_unittest_runner.NativeShardCoverage.test_added_suite_provenance_rejects_named_mutations'
-r443_r03 = 'test_unittest_runner.NativeShardCoverage.test_r03_workspace_cost_provenance'
-r443_targets = {'r443-partition-baseline': r443_partition, 'r443-measured-baseline': r443_profile,
-                'r443-provenance-baseline': r443_provenance, 'r443-r03-baseline': r443_r03,
-                'R443_DROP_EXPECTED_ENTRY': r443_partition,
-                'R443_DROP_SUITE_EVIDENCE': r443_profile, 'R443_ADMIT_INTO_R12_328': r443_profile,
-                'R443_DROP_R12_328_SUITE': r443_profile,
-                'R443_OMIT_SOURCE_FROM_DIGEST': r443_provenance, 'R443_ALLOW_DUPLICATE_SOURCE': r443_provenance,
-                'R443_TAMPER_SOURCE_IDENTITY': r443_provenance, 'R443_ACCEPT_UNVALIDATED_EVIDENCE': r443_provenance,
-                'R443_ADMIT_INTO_R03_324': r443_r03, 'R443_DROP_R03_324_SUITE': r443_r03}
-if mode in r443_targets:
-    target = r443_targets[mode]
-if mode == 'R443_DROP_EXPECTED_ENTRY':
-    # (a) Withdraw one new suite's registration only; the other stays registered.
-    original_r443_expected_read = pathlib.Path.read_text
-    def missing_r443_expected(path, *args, **kwargs):
-        value = original_r443_expected_read(path, *args, **kwargs)
-        if path.resolve() == run_all.EXPECTED_FILE.resolve():
-            data = json.loads(value)
-            data['suites'].pop('node:face_length_overlay')
-            value = json.dumps(data)
-        return value
-    pathlib.Path.read_text = missing_r443_expected
-elif mode == 'R443_DROP_SUITE_EVIDENCE':
-    native_shards.added_r443_suite_costs = lambda: {}
-elif mode == 'R443_OMIT_SOURCE_FROM_DIGEST':
-    import hashlib
-    native_shards.profile_digest = lambda: hashlib.sha256(b'\0'.join(
-        [path.read_bytes().replace(b'\r\n', b'\n') for path in
-         (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE, native_shards.ADDED_R14_EVIDENCE,
-          native_shards.ADDED_RECEIPTS, native_shards.ADDED_R17_EVIDENCE,
-          native_shards.ADDED_R12_RECEIPTS, native_shards.ADDED_PF4A_EVIDENCE)]
-        + [native_shards.native_shard_workspace.material(native_shards.ADDED_R03_EVIDENCE)])).hexdigest()
-elif mode == 'R443_ALLOW_DUPLICATE_SOURCE':
-    def duplicate_r443_source():
-        legacy = native_shards._legacy_added_suite_costs()
-        r14 = native_shards.added_r14_suite_costs()
-        receipts = native_shards.added_receipt_costs()
-        if legacy.keys() & r14.keys():
-            raise ValueError('R379_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        if (legacy.keys() | r14.keys()) & receipts.keys():
-            raise ValueError('R396_ADDED_RECEIPT_DUPLICATE_LEGACY_SUITE')
-        r17 = native_shards.added_r17_suite_costs()
-        if (legacy.keys() | r14.keys() | receipts.keys()) & r17.keys():
-            raise ValueError('R17_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        r12 = native_shards.added_r12_suite_costs()
-        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys()) & r12.keys():
-            raise ValueError('R12_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        pf4a = native_shards.added_pf4a_suite_costs()
-        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys()) & pf4a.keys():
-            raise ValueError('PF4A_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-        r03 = native_shards.added_r03_suite_costs()
-        if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys()) & r03.keys():
-            raise ValueError('R03_CI_UNIQUE_ACROSS_SOURCES')
-        r443 = native_shards.added_r443_suite_costs()  # only R443's uniqueness check is withdrawn
-        return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03, **r443}
-    native_shards.added_suite_costs = duplicate_r443_source
-elif mode == 'R443_TAMPER_SOURCE_IDENTITY':
-    original_r443_read = pathlib.Path.read_text
-    def tampered_r443_read(path, *args, **kwargs):
-        value = original_r443_read(path, *args, **kwargs)
-        if path.resolve() == native_shards.ADDED_R443_EVIDENCE.resolve():
-            data = json.loads(value)
-            data['source_head'] = '0' * 40
-            value = json.dumps(data)
-        return value
-    pathlib.Path.read_text = tampered_r443_read
-elif mode == 'R443_ACCEPT_UNVALIDATED_EVIDENCE':
-    def unvalidated_r443():
-        data = json.loads(native_shards.ADDED_R443_EVIDENCE.read_text(encoding='utf-8'))
-        return {row['name']: row['planning_upper_ms'] for row in data.get('observations', [])
-                if type(row) is dict and 'name' in row and 'planning_upper_ms' in row}
-    native_shards.added_r443_suite_costs = unvalidated_r443
-elif mode in ('R443_DROP_R12_328_SUITE', 'R443_DROP_R03_324_SUITE'):
-    # (c) Remove one long-standing suite that belongs to both frozen universes.
-    original_r443_registry = run_all.build_suites
-    run_all.build_suites = lambda: [s for s in original_r443_registry() if s.name != 'node:cdp_settle']
+    original_expected = run_all.load_expected
+    def missing_pf4a_expected():
+        data, error = original_expected()
+        for name in ('py:test_panel_fill_grid_transaction', 'node:panel_fill_grid_ui'):
+            data['suites'].pop(name)
+        return data, error
+    run_all.load_expected = missing_pf4a_expected
 if mode in current_workflow_replacements or mode in evidence_modes:
     # Mutate only this child's in-memory file read; never rewrite the checkout.
     original_read = pathlib.Path.read_text
@@ -649,8 +555,6 @@ if mode in ('receipt-baseline', 'R378_RELAX_RECEIPT_LIMIT', 'R378_ACCEPT_RECEIPT
         exec(compile(source.replace(anchor, replacement), str(source_path), 'exec'),
              native_shard_receipts.__dict__)
 import test_unittest_runner
-if mode in ('R443_ADMIT_INTO_R12_328', 'R443_ADMIT_INTO_R03_324'):
-    test_unittest_runner.R443_ADDED_SUITES = frozenset()
 if mode in historical_workflow_replacements:
     # Preserve every old four-shard mutation against the frozen four-shard
     # fixture; six-shard wiring mutations above operate on the live workflow.
@@ -690,10 +594,7 @@ markers = ('R348_MEASURED_RECEIPT_BUDGET', 'R348_FOUR_NATIVE_WORKFLOW',
            'R03_CI_GUARD_DUPLICATE', 'R03_CI_GUARD_BINARY_SOURCE', 'R03_CI_GUARD_ORIGINAL_ROW',
            'R03_CI_GUARD_RUNNER', 'R03_CI_GUARD_SOURCE_REQUIRED', 'R03_CI_GUARD_CROSS_SOURCE',
            'R03_CI_GUARD_PROFILE_DIGEST', 'R03_PRIOR_324_REGISTRY_UNCHANGED',
-           'R03_HISTORICAL_WEIGHT_UNIVERSE', 'R03_CI_GUARD_CHILD_REPORT', 'R03_CI_GUARD_RUNTIME_SOURCE',
-           'R443_COMPLETE_EXPECTED_REGISTRY', 'R443_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS',
-           'R443_PROFILE_DIGEST_BINDS_R443_SOURCE', 'R443_ADDED_SUITE_MUTATION_cross-source-duplicate',
-           'R443_SOURCE_IDENTITY', 'R443_ADDED_SUITE_MUTATION_', 'R12_PREVIOUS_328_REGISTRY_RETAINED')
+           'R03_HISTORICAL_WEIGHT_UNIVERSE', 'R03_CI_GUARD_CHILD_REPORT', 'R03_CI_GUARD_RUNTIME_SOURCE')
 row = dict(tests=result.testsRun, failures=len(result.failures), errors=len(result.errors),
            skips=len(result.skipped), failure_ids=[case.id() for case,_ in result.failures],
            assertion_failure=all('AssertionError' in text for _,text in result.failures), removed=removed,
@@ -710,15 +611,11 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--r03', action='store_true',
                         help='run the independent R03 workspace-provenance proof; leave the existing coverage job unchanged')
-    parser.add_argument('--r443', action='store_true',
-                        help='run the independent PR #443 source/layer proof; leave the existing coverage job unchanged')
     args = parser.parse_args()
-    if args.r03 and args.r443:
-        parser.error('--r03 and --r443 are independent proofs; run them separately')
     args.output.mkdir(parents=True, exist_ok=False)
     rows = []
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', PYTHONIOENCODING='utf-8')
-    initial = [] if args.r03 or args.r443 else [('baseline','baseline',0), ('removed','drop-one-suite',1), ('restored','baseline',0)]
+    initial = [] if args.r03 else [('baseline','baseline',0), ('removed','drop-one-suite',1), ('restored','baseline',0)]
     for label, mode, expected in initial:
         report, log = args.output/(label+'.json'), args.output/(label+'.log')
         with log.open('wb') as stream:
@@ -819,20 +716,6 @@ def main():
             'R03_CONTAMINATE_HISTORICAL_UNIVERSE': ('measured-baseline', 'R03_HISTORICAL_WEIGHT_UNIVERSE'),
             'R03_DROP_PRIOR_SUITE': ('r03-provenance-baseline', 'R03_PRIOR_324_REGISTRY_UNCHANGED'),
         }
-    # PR #443: (a) one registration withdrawn, (b) the new layer admitted into
-    # the frozen 328/324 universes, (c) an old suite removed from both.
-    r443_mutations = {
-            'R443_DROP_EXPECTED_ENTRY': ('r443-partition-baseline', 'R443_COMPLETE_EXPECTED_REGISTRY'),
-            'R443_ADMIT_INTO_R12_328': ('r443-measured-baseline', 'R12_PREVIOUS_328_REGISTRY_RETAINED'),
-            'R443_ADMIT_INTO_R03_324': ('r443-r03-baseline', 'R03_PRIOR_324_REGISTRY_UNCHANGED'),
-            'R443_DROP_R12_328_SUITE': ('r443-measured-baseline', 'R12_PREVIOUS_328_REGISTRY_RETAINED'),
-            'R443_DROP_R03_324_SUITE': ('r443-r03-baseline', 'R03_PRIOR_324_REGISTRY_UNCHANGED'),
-            'R443_DROP_SUITE_EVIDENCE': ('r443-measured-baseline', 'R443_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
-            'R443_OMIT_SOURCE_FROM_DIGEST': ('r443-provenance-baseline', 'R443_PROFILE_DIGEST_BINDS_R443_SOURCE'),
-            'R443_ALLOW_DUPLICATE_SOURCE': ('r443-provenance-baseline', 'R443_ADDED_SUITE_MUTATION_cross-source-duplicate'),
-            'R443_TAMPER_SOURCE_IDENTITY': ('r443-provenance-baseline', 'R443_SOURCE_IDENTITY'),
-            'R443_ACCEPT_UNVALIDATED_EVIDENCE': ('r443-provenance-baseline', 'R443_ADDED_SUITE_MUTATION_'),
-        }
     def prove(item):
         mutation, (baseline, marker) = item
         proof = []
@@ -861,12 +744,7 @@ def main():
                            'path-scope-baseline': ('BrowserPathScopeWiring.'
                                                    'test_browser_jobs_skip_only_on_explicit_path_scope_false'),
                            'r03-provenance-baseline': ('NativeShardCoverage.'
-                                                       'test_r03_workspace_cost_provenance'),
-                           'r443-partition-baseline': 'NativeShardCoverage.test_partition_covers_actual_suite_registry_once',
-                           'r443-measured-baseline': 'NativeShardCoverage.test_profile_balances_measured_work',
-                           'r443-provenance-baseline': ('NativeShardCoverage.'
-                                                        'test_added_suite_provenance_rejects_named_mutations'),
-                           'r443-r03-baseline': 'NativeShardCoverage.test_r03_workspace_cost_provenance'}
+                                                       'test_r03_workspace_cost_provenance')}
                 assert all(name.startswith('test_unittest_runner.' + methods[baseline])
                            for name in row['failure_ids']), row
             proof.append(dict(label=label, exit=result.returncode, **row))
@@ -875,8 +753,7 @@ def main():
     # Bound concurrency to two; retain a separate real 0/1/0 for every name
     # without extending the native coverage job's existing five-minute limit.
     with ThreadPoolExecutor(max_workers=2) as pool:
-        catalog = r03_mutations if args.r03 else r443_mutations if args.r443 else mutations
-        timing_proofs = dict(pool.map(prove, catalog.items()))
+        timing_proofs = dict(pool.map(prove, (r03_mutations if args.r03 else mutations).items()))
     receipt = dict(passed=True, baseline_mutant_restored_exit=[r['exit'] for r in rows], rows=rows,
                    timing_proofs=timing_proofs)
     (args.output/'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')

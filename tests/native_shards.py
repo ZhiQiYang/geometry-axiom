@@ -7,6 +7,7 @@ import json
 import math
 from pathlib import Path
 import re
+import native_registry
 import native_shard_workspace
 
 TIMINGS = Path(__file__).with_name('native_shard_timings.json')
@@ -17,7 +18,6 @@ ADDED_R17_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence_r17.j
 ADDED_R12_RECEIPTS = Path(__file__).with_name('native_shard_added_receipts_r12.json')
 ADDED_PF4A_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence_pf4a.json')
 ADDED_R03_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence_r03.json')
-ADDED_R443_EVIDENCE = Path(__file__).with_name('native_shard_added_evidence_r443.json')
 
 
 def _legacy_added_suite_costs():
@@ -44,10 +44,6 @@ def added_r03_suite_costs():
     return native_shard_workspace.costs(ADDED_R03_EVIDENCE)
 
 
-def added_r443_suite_costs():
-    return _added_evidence_costs(ADDED_R443_EVIDENCE)
-
-
 def added_suite_costs():
     legacy = _legacy_added_suite_costs()
     r14 = added_r14_suite_costs()
@@ -68,10 +64,14 @@ def added_suite_costs():
     r03 = added_r03_suite_costs()
     if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys()) & r03.keys():
         raise ValueError('R03_CI_UNIQUE_ACROSS_SOURCES')
-    r443 = added_r443_suite_costs()
-    if (legacy.keys() | r14.keys() | receipts.keys() | r17.keys() | r12.keys() | pf4a.keys() | r03.keys()) & r443.keys():
-        raise ValueError('R443_NEW_SUITE_UNIQUE_ACROSS_SOURCES')
-    return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03, **r443}
+    historical = {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03}
+    root = Path(__file__).resolve().parents[1]
+    if native_registry.active(root):
+        added = native_registry.timing_profile(root)['added']
+        if any(added.get(name) != ms for name, ms in historical.items()):
+            raise ValueError('R386_NATIVE_RETAIN_HISTORICAL_ADDED_OBSERVATIONS')
+        return added
+    return historical
 
 
 def _added_evidence_costs(path):
@@ -358,7 +358,10 @@ def _greedy_scenarios(costs, count, colocated=()):
 
 
 def _scenario_owners(suites, count, profiles):
-    costs = {s.name: [p.get(s.name, 1000) for p in profiles] for s in suites}
+    missing = sorted({s.name for s in suites if any(s.name not in p for p in profiles)})
+    if missing:
+        raise ValueError('R386_NATIVE_NO_UNMEASURED_COST: ' + ', '.join(missing))
+    costs = {s.name: [p[s.name] for p in profiles] for s in suites}
     parts, loads = _greedy_scenarios(costs, count)
     _improve_scenarios(parts, loads, costs)
     return {name: i for i, part in enumerate(parts) for name in part}
@@ -381,7 +384,9 @@ def partition_suites(suites, count, weights=None):
     if weights is None:
         owners = _scenario_owners(suites, count, measured_profiles())
     else:
-        # Explicit weights retain the original scalar LPT API and its history.
+        # Historical scalar replay only: its original 224-entry table and
+        # default remain frozen for the old budget regressions. The production
+        # six-shard scenario route above never invents a missing suite's cost.
         costs = {s.name: weights.get(s.name, 1000) for s in suites}
         loads, owners = [0] * count, {}
         for suite in sorted(suites, key=lambda s: (-costs[s.name], s.name)):
@@ -403,5 +408,8 @@ def profile_digest():
     r12 = ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n')
     pf4a = ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')
     r03 = native_shard_workspace.material(ADDED_R03_EVIDENCE)
-    r443 = ADDED_R443_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')
-    return hashlib.sha256(b'\0'.join((legacy, addition, r14, receipts, r17, r12, pf4a, r03, r443))).hexdigest()
+    raw = b'\0'.join((legacy, addition, r14, receipts, r17, r12, pf4a, r03))
+    root = Path(__file__).resolve().parents[1]
+    if native_registry.active(root):
+        raw += b'\0' + native_registry.source_digest(root).encode('ascii')
+    return hashlib.sha256(raw).hexdigest()

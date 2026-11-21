@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/prototypes/engineering-spec/tests/catalog.test.mjs",
+    "reason": "Separate engineering-spec UI prototype catalog.test.mjs; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+    "sha256": "08e478c8ff6f17bd2a80fc8ae7c2bf3ad51d1f1b39df6d612deecb6f8e055340"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

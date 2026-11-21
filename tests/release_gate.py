@@ -167,6 +167,8 @@ def inspect_result(log, kind, root, expected_url=None):
     valid_modes = {"full", "partial"} if kind == "cdp" else {"full-space-suite", "partial"}
     if row.get("schema") != expected_schema or row.get("completed") is not True or mode not in valid_modes:
         problems.append("canonical result is incomplete or has an unknown schema/scope")
+    if isinstance(scope, dict) and scope.get("acceptance") is False:
+        problems.append("candidate capture explicitly disallows release acceptance")
     if expected_url is not None and (not isinstance(scope, dict) or scope.get("url") != expected_url):
         problems.append("canonical command used a different service URL")
     passed_key, failed_key = ("passedAssertions", "failedAssertions") if kind == "cdp" else ("passed", "failed")
@@ -176,7 +178,20 @@ def inspect_result(log, kind, root, expected_url=None):
         if row.get("skipped") != [] or row.get("sectionsFailed"):
             problems.append("CDP contains skips or failed sections")
         if mode == "full":
-            golden = json.loads((root / "geometry-web/cdp_sections.golden.json").read_text(encoding="utf-8"))
+            migration_markers = ("geometry-web/canvas-registry", "geometry-web/cdp_sections.d",
+                                 "geometry-web/canvas_sections", "tests/registry-layout.json",
+                                 "tests/.registry-migration-pending")
+            if any((root / name).exists() or (root / name).is_symlink() for name in migration_markers):
+                # The active census is derived from every current fragment;
+                # the archived monolith is an immutable migration pin only.
+                declared = subprocess.run(["node", str(root / "geometry-web/canvas_registry.js"),
+                                           "golden", "--root", str(root)], capture_output=True,
+                                          text=True, timeout=10, check=True)
+                golden = json.loads(declared.stdout)
+            else:
+                # Retain support for actual historical, pre-migration receipts
+                # and the isolated old-format unit fixtures.
+                golden = json.loads((root / "geometry-web/cdp_sections.golden.json").read_text(encoding="utf-8"))
             if (row.get("goldenCompare") != "matched" or scope.get("filters") != []
                     or scope.get("modifiers") != [] or row.get("sections") != golden["sections"]
                     or row.get("passedAssertions") != golden["total"]):

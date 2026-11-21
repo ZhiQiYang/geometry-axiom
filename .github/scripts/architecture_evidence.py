@@ -61,8 +61,12 @@ def run(out):
     if scan.get("ok") is not True or scan.get("diagnostics") != []:
         raise RuntimeError("原 scanner 未回報零 diagnostics")
     (out / "product-architecture-scan.json").write_bytes(scan_bytes)
-    manifest_bytes = (ROOT / MANIFEST).read_bytes().replace(b"\r\n", b"\n")
-    manifest = json.loads(manifest_bytes)
+    # The original scanner owns both legacy and fragmented manifest parsing.
+    # Hash the complete declared input set, not only the stable root wrapper.
+    sys.path.insert(0, str(ROOT / "tests"))
+    from architecture_contract import load_manifest, manifest_input_bytes
+    manifest_bytes = manifest_input_bytes(ROOT / MANIFEST)
+    manifest = load_manifest(ROOT / MANIFEST)
     inputs = []
     for entry in manifest["sources"] + manifest["exclusions"]:
         path = entry["path"]

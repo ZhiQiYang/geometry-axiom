@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_room_candidate_transaction_review.cjs"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_room_candidate_transaction_review.cjs",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 11,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_room_candidate_transaction_review.cjs"
+  ],
+  "name": "node:room_candidate_transaction_review",
+  "order": "legacy/000319",
+  "schema": "geometry-native-suite/1"
+}

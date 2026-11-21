@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_boundary_pair_browser_scope.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_boundary_pair_browser_scope.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 7,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_boundary_pair_browser_scope.js"
+  ],
+  "name": "node:boundary_pair_browser_scope",
+  "order": "legacy/000268",
+  "schema": "geometry-native-suite/1"
+}

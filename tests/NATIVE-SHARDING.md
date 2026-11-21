@@ -1,5 +1,9 @@
 # 非瀏覽器CI確定性分片（2026-11-02）
 
+## R386 後續來源格式
+
+完成片段遷移後，套件宣告／精確計數改讀 `suites.d/`，新成本改讀 `native-costs.d/` 與 `registry-evidence/native/`；下文四份歷史原件及其原值保留。正式六片拒絕缺成本，不以歷史 scalar replay 的 1000 ms 預設替新 suite 補值。新增流程、真 CI census／成本匯入、來源到期承繼、確定性遷移及與單次建置補丁的關係見 [FRAGMENTED-REGISTRIES.md](FRAGMENTED-REGISTRIES.md)。
+
 ## R03 新 suite 的獨立工作樹量測（基底 fa83e6ad）
 
 R03 本片的完整基底是 `fa83e6ad8444c569b9f2f5e91f2de9a5622a92cb`。新增
@@ -65,6 +69,8 @@ native suite 跑，不因完整 0／1／0 另有指令而略過正式 CI 守門�
 回報必須明寫未驗；不能用本表或本機 0／1／0 宣稱 Geometry 已綠。
 
 以下保留各歷史版本的原紀錄與當時範圍，不能把舊計數當成當前 registry。
+
+## 原配置與歷史證據
 
 目前配置為六個native矩陣job，每個`timeout-minutes: 35`保持，各片收據仍須嚴格小於1200秒。2026-11-02依P-186授權建立的三片為歷史安排；R348在2026-11-12的慢runner收據超時後，先改為下方的完整三輪／四片規劃；後續保留#378完整第四輪，並合流R380兩套、R379三套、R396四套獨立來源；最新六片324套配置見本文末節，正式CI驗收另核對。原始main `405f8c5e1a637a16cbe47470faf5ae1fa02b8676` 的[GitHub native job](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40185639126/job/124015759512)量測繼續保留；不延長期限、不豁免失敗。
 
@@ -604,75 +610,20 @@ PF-4A 驗重集合內的 R12，須由 `PF4A_ADDED_SUITE_MUTATION_cross-r12-dupli
 之後原 `native_sharding_mutation_check.py` 必須完整通過。原 35／5 分鐘 workflow、
 每個反證子程序 60 秒、並行上限 2、真收據與模型 `<1200` 秒全部不變。
 
-## L4 實機發現修正的兩個新 suite：第八份獨立來源與新一層（PR #443，2026-11-21）
+## L4 實機發現修正的兩個新 suite（PR #443，2026-11-21；併入 #434 後改為片段）
 
-PR #443 head `14d0c525abf80caf4356d665f68f1be3db191e73`（已併 main
-`4c86b1e3044c90add52674ec53823c73a086361e`）的真實 `run_all.build_suites()` 為 343 套，對 main 的
-341 套，集合差恰為 `node:face_length_overlay`（D02）與 `node:engineering_override_display`（D09）。
-兩套在程式中記為 `R443_ADDED_SUITES`，是 R12／PF-4A／R03 之後獨立的一層，不併入任何歷史宇宙。
+PR #443 新增 `node:face_length_overlay`（D02，`tests/test_face_length_overlay.js`）與
+`node:engineering_override_display`（D09，`tests/test_engineering_override_display.js`）兩套 node --test 套件。
+舊單檔格式下曾以第八份 `/1` 來源 `native_shard_added_evidence_r443.json`（取自 CI 原 log 摘錄）、
+`run_all.expected.json` 兩筆與 `R443_ADDED_SUITES` 守門登記（提交 `bb460d89`／`5a182a90`，Git 歷史可考）。
 
-**來源**：`native_shard_added_evidence_r443.json`，照 R17／PF-4A 的 `/1` 格式，用同一個 `_added_evidence_costs()` 驗證。
-來源是正式 [Geometry 44933704476](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44933704476)，source head
-`d6a653017d5434c5bb430a8c23366354e414cfde`，實際 checkout `55f1a911335cbd83dfbc34358c05614721599f25`
-（pull/443/merge，parent 為 main `3ef07683` 與該 head）。native 2／3 片整體紅，原因是兩套尚未登記；
-2 片另有 `py:test_unittest_runner` 的登錄守門，以及下述 `node:panel_fill_grid_ui` 的合流夾具失敗。
-兩套本身都通過，零 skip。
+併入 main `e0db7e478f15df4a90ea130ad17d74406db75586`（#434）後依 `tests/FRAGMENTED-REGISTRIES.md`「新增 native 套件」改為：
 
-| Suite | Source job（片） | Passed / discovered | 原摘要秒數 | Planning upper ms |
-|---|---|---:|---:|---:|
-| `node:face_length_overlay` | [136935653730](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44933704476/job/136935653730)（2/6） | 7 / 7 | 0.1 | 2000 |
-| `node:engineering_override_display` | [136935653696](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44933704476/job/136935653696)（3/6） | 7 / 7 | 0.1 | 2000 |
+- 宣告：`python3 -B tests/native_registry.py --init-suite <名稱> --kind node-test --file <檔>` 產生
+  `tests/suites.d/node__face_length_overlay.json`、`tests/suites.d/node__engineering_override_display.json`，
+  order 為 `new/…`，不進封存的 `native-legacy-execution.json`。
+- 計數與成本：只接受 `Native suite measurement` 官方 artifact 由 `--import-suite` 導入。舊 `/1` 摘錄不是官方 artifact ZIP，
+  也不在 `native-legacy.json` 具名的歷史來源內，不能沿用；舊單檔、`R443_ADDED_SUITES` 與舊格式撤回一併移除，不做雙重登記。
+- 歷史 328／324／317 集合：沿用 main 的定義（由已知層與歷史量測推得），新 `new/` 套件自動在外；舊斷言與具名撤回不變。
 
-R12 用的是原 `native-shard-*` ZIP 的 receipt 格式；這次 ZIP 所在的 blob 主機被雲端代理拒絕，取不到，所以沒有沿用。
-artifact id 與 GitHub 回報的 digest 記在來源 note。兩個 job 的原 log 列原樣留在
-`native_shard_evidence/r443/ci-log-excerpt.txt`；這份是文字摘錄，不是 ZIP。上界是規劃權重，不是時限或觀測值。
-
-**合流**：`added_suite_costs()` 在前七份來源之後加入 R443，並與前七份全部驗重
-（`R443_NEW_SUITE_UNIQUE_ACROSS_SOURCES`）。`profile_digest()` 的第九段是 R443 的 LF bytes，順序為
-timings、R380、R14、R396 receipts、R17、R12、PF-4A、R03 material、R443；值為
-`73aecbf4a4846918c54d6d09113add76543d1c3c333d3a60e64cfdf948424f9a`。前七份來源原件逐 byte 不變。
-
-**歷史分層**：舊集合的定義與斷言都不放寬。
-
-- R12 的三片相對權重回放仍精確固定 **328 套**（`R12_PREVIOUS_328_REGISTRY_RETAINED`），權重仍以 129900ms 為界。
-- R03 基底的前宇宙仍精確 **324 套**，等於 315 套凍結歷史加 R379／R380／R17（`R03_PRIOR_324_REGISTRY_UNCHANGED`）。
-- main 317、R379 318、R396 321 套的回放各自不變。
-- 兩套新增 suite 都被明確排除在上述集合之外，也不得出現在四輪舊量測中（`R443_NEW_SUITES_NOT_FORGED_IN_OLD_RUNS`）。
-- 新增守門 `R443_NEW_LAYER_REGISTERED`、`R443_LAYERS_DISJOINT`、`R443_CURRENT_343_REGISTRY_LAYERS`，
-  明寫當前 registry 是 328＋R12 七套＋PF-4A 兩套＋R03 四套＋R443 兩套＝343，各層互斥。
-
-**expected**：由完整 `run_all.py --build --update-expected` 產生，兩套各 `{'mode':'count','count':7,'unit':'node test'}`
-（`R443_COMPLETE_EXPECTED_REGISTRY`）；其餘既有 341 筆不變。`py:test_unittest_runner` 只在既有 method 內加斷言，仍為 19 項。
-
-當前六片套數為 **1／67／67／67／70／71**：face length 在片 2，engineering override 在片 3。
-下表是原整數毫秒模型除以 1000，**不是新的正式六片收據**：
-
-| 成本情境 | 片1 | 片2 | 片3 | 片4 | 片5 | 片6 |
-|---|---:|---:|---:|---:|---:|---:|
-| 43162989157 | 348.065 | 618.817 | 702.854 | 700.474 | 710.202 | 704.782 |
-| 43150038015 | 688.444 | 522.537 | 674.479 | 687.029 | 600.735 | 698.100 |
-| 43177620127 | 755.187 | 607.126 | 693.487 | 683.159 | 616.102 | 689.145 |
-| 43271258668 | 701.108 | 717.600 | 717.600 | 717.599 | 717.600 | 717.599 |
-| 每 suite 四輪最大包絡 | 755.187 | 769.638 | 750.683 | 762.959 | 849.943 | 826.400 |
-| 包絡＋120秒開銷＋30秒餘裕 | 905.187 | 919.638 | 900.683 | 912.959 | 999.943 | 976.400 |
-
-**具名撤回**：預設目錄原有的撤回全部保留。其中五組內嵌重寫成本聯集的撤回補帶 R443 來源與其驗重，仍只撤自己指名的那一份。
-本片另有十組，走獨立入口，不加進 coverage job 的 5 分鐘預算：
-
-```sh
-python3 -B tests/native_sharding_mutation_check.py --r443 --output /tmp/r443-native-sharding-proof
-```
-
-十組如下，每組 baseline／withdrawn／restored 要求 0／1／0，且失敗必須是指定的正常 AssertionError、0 error、0 skip：
-
-- (a) 只撤一套登記：`R443_DROP_EXPECTED_ENTRY` → `R443_COMPLETE_EXPECTED_REGISTRY`
-- (b) 把新一層塞進舊集合：`R443_ADMIT_INTO_R12_328` → `R12_PREVIOUS_328_REGISTRY_RETAINED`；`R443_ADMIT_INTO_R03_324` → `R03_PRIOR_324_REGISTRY_UNCHANGED`
-- (c) 從兩個舊集合拿掉既有的 `node:cdp_settle`：`R443_DROP_R12_328_SUITE` 與 `R443_DROP_R03_324_SUITE`，各紅在同一對守門
-- 來源本身：`R443_DROP_SUITE_EVIDENCE`、`R443_OMIT_SOURCE_FROM_DIGEST`、`R443_ALLOW_DUPLICATE_SOURCE`、`R443_TAMPER_SOURCE_IDENTITY`、`R443_ACCEPT_UNVALIDATED_EVIDENCE`
-
-**合流夾具**：同一輪 2 片的 `node:panel_fill_grid_ui` 12/13，失敗的是 `PF4_NATIVE_IMPACT`，錯誤為 TypeError。
-原因是 88007200 合流 main 的 R03 面內工作選單後，PF4A 的最小 DOM sink 回 null。修法只讓 sink 對 `[data-face-product-mode]`
-回傳可掛監聽的物件，不改產品碼。
-
-#434 的 registry 片段格式尚未合併，本節沿用現行單檔 `run_all.expected.json`。35／5 分鐘 workflow、每個反證子程序 60 秒、
-並行上限 2、真收據與模型 `<1200` 秒全部不變。正式容量仍以新 head 的六份原收據與 native complete coverage 為準。
+35／5 分鐘 workflow、每個反證子程序 60 秒、並行上限 2、真收據與模型 `<1200` 秒全部不變。

@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/canvas_test.js",
+    "reason": "Dedicated acceptance/test driver canvas_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+    "sha256": "6d097c3031fe2e49ad5f324b08ef631aed6faa2e2333304b089c88cc19b4f569"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

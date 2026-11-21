@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_workspace_view_server.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_workspace_view_server.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 2,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_workspace_view_server.py"
+  ],
+  "name": "py:test_workspace_view_server",
+  "order": "legacy/000246",
+  "schema": "geometry-native-suite/1"
+}

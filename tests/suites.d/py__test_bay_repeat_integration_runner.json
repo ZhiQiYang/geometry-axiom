@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_bay_repeat_integration_runner.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_bay_repeat_integration_runner.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 1,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_bay_repeat_integration_runner.py"
+  ],
+  "name": "py:test_bay_repeat_integration_runner",
+  "order": "legacy/000014",
+  "schema": "geometry-native-suite/1"
+}
