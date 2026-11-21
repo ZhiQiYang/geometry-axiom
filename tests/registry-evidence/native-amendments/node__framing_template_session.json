@@ -1,0 +1,30 @@
+{
+  "after": {
+    "execution": {
+      "cmd": [
+        "--test",
+        "--test-reporter=spec",
+        "tests/test_framing_template_session.js"
+      ],
+      "extra_env": {},
+      "kind": "node-test",
+      "label": "tests/test_framing_template_session.js",
+      "needs": [],
+      "needs_node": true,
+      "timeout": 300
+    },
+    "expected": {
+      "count": 22,
+      "mode": "count",
+      "unit": "node test"
+    },
+    "files": [
+      "tests/test_framing_template_session.js"
+    ],
+    "order": "legacy/000264"
+  },
+  "before_sha256": "a0fec34e147733cde933aa5d48653fcf44e1d517ac388257f75fdfab0f3a1cff",
+  "name": "node:framing_template_session",
+  "reason": "#445 R03A 固定治具第二片：session host 新增 10 項（12→22）",
+  "schema": "geometry-native-legacy-amendment/1"
+}

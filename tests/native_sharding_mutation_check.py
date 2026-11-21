@@ -13,6 +13,14 @@ sys.path.insert(0, str(pathlib.Path('tests').resolve()))
 import run_all
 import native_shards
 mode, output = sys.argv[1:]
+def drop_added_suites(names):
+    # R386: after fragment migration the effective costs come from the
+    # registry; dropping one historical source must also remove exactly those
+    # suites from the costs the guard sees, as the base modes already do.
+    names = set(names)
+    effective = native_shards.added_suite_costs
+    native_shards.added_suite_costs = lambda: {
+        name: ms for name, ms in effective().items() if name not in names}
 removed = []
 target = 'test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once'
 if mode in ('drop-one-suite', 'R348_FOUR_SHARD_DROP_ONE_SUITE', 'R378_SIX_SHARD_DROP_ONE_SUITE'):
@@ -140,20 +148,22 @@ if mode == 'r03-provenance-baseline' or mode.startswith('R03_'):
              native_shards.ADDED_PF4A_EVIDENCE))).hexdigest()
     elif mode == 'R03_DROP_SUITE_EVIDENCE':
         target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
+        # R386 (same as R12/PF-4A above): the registry would otherwise mask the
+        # dropped historical source; remove exactly those suites from the guard.
+        drop_added_suites(native_shards.added_r03_suite_costs())
         native_shards.added_r03_suite_costs = lambda: {}
     elif mode == 'R03_DROP_EXPECTED_ENTRIES':
         target = 'test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once'
-        original_expected_read = pathlib.Path.read_text
-        def missing_r03_expected(path, *args, **kwargs):
-            value = original_expected_read(path, *args, **kwargs)
-            if path.resolve() == run_all.EXPECTED_FILE.resolve():
-                data = json.loads(value)
-                for name in ('py:test_framing_template', 'node:framing_recipe_project_store',
-                             'node:framing_template_session', 'node:framing_template_browser_scope'):
-                    data['suites'].pop(name)
-                value = json.dumps(data)
-            return value
-        pathlib.Path.read_text = missing_r03_expected
+        # R386: the retired run_all.expected.json is no longer read; intercept
+        # run_all.load_expected exactly like R17/R12/PF-4A's withdrawals.
+        original_expected = run_all.load_expected
+        def missing_r03_expected():
+            data, error = original_expected()
+            for name in ('py:test_framing_template', 'node:framing_recipe_project_store',
+                         'node:framing_template_session', 'node:framing_template_browser_scope'):
+                data['suites'].pop(name)
+            return data, error
+        run_all.load_expected = missing_r03_expected
     elif mode == 'R03_CONTAMINATE_HISTORICAL_UNIVERSE':
         target = 'test_unittest_runner.NativeShardCoverage.test_profile_balances_measured_work'
         original_partition = native_shards.partition_suites
@@ -201,6 +211,7 @@ elif mode == 'R379_REVERT_SINGLE_START_ONE_SWEEP':
         return {name: i for i, part in enumerate(parts) for name in part}
     native_shards._scenario_owners = original_owners
 elif mode == 'R379_DROP_R14_SUITE_EVIDENCE':
+    drop_added_suites(native_shards.added_r14_suite_costs())
     native_shards.added_r14_suite_costs = lambda: {}
 elif mode == 'R379_ALLOW_DUPLICATE_SOURCE':
     def duplicate_r14_source():
@@ -234,6 +245,7 @@ elif mode == 'R379_OMIT_R14_SOURCE_FROM_DIGEST':
         native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R396_DROP_WORKSPACE_COSTS':
+    drop_added_suites(native_shards.added_receipt_costs())
     native_shards.added_receipt_costs = lambda: {}
 elif mode == 'R396_ALLOW_DUPLICATE_LEGACY_COST':
     def duplicate_workspace_legacy_source():
@@ -293,28 +305,27 @@ elif mode == 'R396_OMIT_ADDED_RECEIPTS_FROM_DIGEST':
         native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R379_DROP_R14_EXPECTED_ENTRIES':
-    original_expected_read = pathlib.Path.read_text
-    def missing_r14_expected(path, *args, **kwargs):
-        value = original_expected_read(path, *args, **kwargs)
-        if path.resolve() == run_all.EXPECTED_FILE.resolve():
-            data = json.loads(value)
-            for name in ('node:r14_app', 'node:r14_host', 'py:test_r14_browser_receipt'):
-                data['suites'].pop(name)
-            value = json.dumps(data)
-        return value
-    pathlib.Path.read_text = missing_r14_expected
-if mode in receipt_modes or mode == 'R396_DROP_WORKSPACE_EXPECTED_ENTRIES':
+    original_expected = run_all.load_expected
+    def missing_r14_expected():
+        data, error = original_expected()
+        for name in ('node:r14_app', 'node:r14_host', 'py:test_r14_browser_receipt'):
+            data['suites'].pop(name)
+        return data, error
+    run_all.load_expected = missing_r14_expected
+if mode == 'R396_DROP_WORKSPACE_EXPECTED_ENTRIES':
+    original_expected = run_all.load_expected
+    def missing_workspace_expected():
+        data, error = original_expected()
+        for name in ('node:workspace_view_state', 'py:test_workspace_view_server',
+                     'py:test_workspace_view', 'node:workspace_context_menu_state'):
+            data['suites'].pop(name)
+        return data, error
+    run_all.load_expected = missing_workspace_expected
+elif mode in receipt_modes:
     original_receipt_read = pathlib.Path.read_text
     def ignored_receipt_guard(path, *args, **kwargs):
         value = original_receipt_read(path, *args, **kwargs)
-        if mode == 'R396_DROP_WORKSPACE_EXPECTED_ENTRIES':
-            if path.resolve() == run_all.EXPECTED_FILE.resolve():
-                data = json.loads(value)
-                for name in ('node:workspace_view_state', 'py:test_workspace_view_server',
-                             'py:test_workspace_view', 'node:workspace_context_menu_state'):
-                    data['suites'].pop(name)
-                value = json.dumps(data)
-        elif path.resolve() == native_shards.ADDED_RECEIPTS.resolve():
+        if path.resolve() == native_shards.ADDED_RECEIPTS.resolve():
             data = json.loads(value)
             for source in data['runs']:
                 for shard in source['shards']:
@@ -346,6 +357,7 @@ elif mode == 'R396_DROP_WORKSPACE_WITHDRAWAL':
         return value
     pathlib.Path.read_text = dropped_catalog_entry
 elif mode == 'R17_DROP_SUITE_EVIDENCE':
+    drop_added_suites(native_shards.added_r17_suite_costs())
     native_shards.added_r17_suite_costs = lambda: {}
 elif mode == 'R17_OMIT_SOURCE_FROM_DIGEST':
     import hashlib
@@ -357,18 +369,16 @@ elif mode == 'R17_OMIT_SOURCE_FROM_DIGEST':
         native_shards.ADDED_R12_RECEIPTS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_PF4A_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R17_DROP_EXPECTED_ENTRIES':
-    original_expected_read = pathlib.Path.read_text
-    def missing_r17_expected(path, *args, **kwargs):
-        value = original_expected_read(path, *args, **kwargs)
-        if path.resolve() == run_all.EXPECTED_FILE.resolve():
-            data = json.loads(value)
-            for name in ('py:test_boundary_pair_host', 'node:boundary_pair_ui',
-                         'node:boundary_pair_project', 'node:boundary_pair_browser_scope'):
-                data['suites'].pop(name)
-            value = json.dumps(data)
-        return value
-    pathlib.Path.read_text = missing_r17_expected
+    original_expected = run_all.load_expected
+    def missing_r17_expected():
+        data, error = original_expected()
+        for name in ('py:test_boundary_pair_host', 'node:boundary_pair_ui',
+                     'node:boundary_pair_project', 'node:boundary_pair_browser_scope'):
+            data['suites'].pop(name)
+        return data, error
+    run_all.load_expected = missing_r17_expected
 elif mode == 'R12_DROP_SUITE_EVIDENCE':
+    drop_added_suites(native_shards.added_r12_suite_costs())
     native_shards.added_r12_suite_costs = lambda: {}
 elif mode == 'R12_RESTORE_PRE_REPAIR_COSTS':
     original_r12_costs = native_shards.added_r12_suite_costs
@@ -423,19 +433,16 @@ elif mode == 'R12_ACCEPT_FAILED_CHILD':
         return value
     pathlib.Path.read_text = accept_failed_r12_child
 elif mode == 'R12_DROP_EXPECTED_ENTRIES':
-    original_r12_expected_read = pathlib.Path.read_text
-    def missing_r12_expected(path, *args, **kwargs):
-        value = original_r12_expected_read(path, *args, **kwargs)
-        if path.resolve() == run_all.EXPECTED_FILE.resolve():
-            data = json.loads(value)
-            for name in ('py:test_space_profile_runs', 'py:test_space_profile_update',
+    original_expected = run_all.load_expected
+    def missing_r12_expected():
+        data, error = original_expected()
+        for name in ('py:test_space_profile_runs', 'py:test_space_profile_update',
                          'py:test_r12_browser_evidence', 'node:space_profile_ui',
                          'node:space_profile_view', 'node:space_profile_update_ui',
                          'node:profile_space_browser_contract'):
-                data['suites'].pop(name)
-            value = json.dumps(data)
-        return value
-    pathlib.Path.read_text = missing_r12_expected
+            data['suites'].pop(name)
+        return data, error
+    run_all.load_expected = missing_r12_expected
 elif mode == 'PF4A_ALLOW_R12_DUPLICATE':
     def duplicate_pf4a_r12_source():
         legacy = native_shards._legacy_added_suite_costs()
@@ -462,8 +469,11 @@ elif mode == 'PF4A_ALLOW_R12_DUPLICATE':
         return {**legacy, **r14, **receipts, **r17, **r12, **pf4a, **r03}
     native_shards.added_suite_costs = duplicate_pf4a_r12_source
 elif mode == 'PF4A_DROP_SUITE_EVIDENCE':
+    drop_added_suites(native_shards.added_pf4a_suite_costs())
     native_shards.added_pf4a_suite_costs = lambda: {}
 elif mode in ('PF4A_DROP_ONE_SUITE', 'PF4A_TAMPER_SOURCE_IDENTITY'):
+    if mode == 'PF4A_DROP_ONE_SUITE':
+        drop_added_suites(['node:panel_fill_grid_ui'])
     # Mutate only this child's in-memory read of the PF-4A source file.
     original_pf4a_read = pathlib.Path.read_text
     def mutated_pf4a_read(path, *args, **kwargs):
@@ -496,16 +506,13 @@ elif mode == 'PF4A_ACCEPT_UNVALIDATED_EVIDENCE':
                 if type(row) is dict and 'name' in row and 'planning_upper_ms' in row}
     native_shards.added_pf4a_suite_costs = unvalidated_pf4a
 elif mode == 'PF4A_DROP_EXPECTED_ENTRIES':
-    original_expected_read = pathlib.Path.read_text
-    def missing_pf4a_expected(path, *args, **kwargs):
-        value = original_expected_read(path, *args, **kwargs)
-        if path.resolve() == run_all.EXPECTED_FILE.resolve():
-            data = json.loads(value)
-            for name in ('py:test_panel_fill_grid_transaction', 'node:panel_fill_grid_ui'):
-                data['suites'].pop(name)
-            value = json.dumps(data)
-        return value
-    pathlib.Path.read_text = missing_pf4a_expected
+    original_expected = run_all.load_expected
+    def missing_pf4a_expected():
+        data, error = original_expected()
+        for name in ('py:test_panel_fill_grid_transaction', 'node:panel_fill_grid_ui'):
+            data['suites'].pop(name)
+        return data, error
+    run_all.load_expected = missing_pf4a_expected
 if mode in current_workflow_replacements or mode in evidence_modes:
     # Mutate only this child's in-memory file read; never rewrite the checkout.
     original_read = pathlib.Path.read_text

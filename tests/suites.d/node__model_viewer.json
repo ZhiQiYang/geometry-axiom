@@ -1,0 +1,22 @@
+{
+  "execution": {
+    "cmd": [
+      "tests/test_model_viewer.cjs"
+    ],
+    "extra_env": {},
+    "kind": "node-script",
+    "label": "tests/test_model_viewer.cjs",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "exit-code-only"
+  },
+  "files": [
+    "tests/test_model_viewer.cjs"
+  ],
+  "name": "node:model_viewer",
+  "order": "legacy/000249",
+  "schema": "geometry-native-suite/1"
+}

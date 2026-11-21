@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_cutting_project_store.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_cutting_project_store.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 12,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_cutting_project_store.js"
+  ],
+  "name": "node:cutting_project_store",
+  "order": "legacy/000278",
+  "schema": "geometry-native-suite/1"
+}

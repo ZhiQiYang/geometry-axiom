@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_infinite_grid_contract.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_infinite_grid_contract.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 25,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_infinite_grid_contract.py"
+  ],
+  "name": "py:test_infinite_grid_contract",
+  "order": "legacy/000180",
+  "schema": "geometry-native-suite/1"
+}

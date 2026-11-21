@@ -1,0 +1,133 @@
+name: Canvas module two-slot proof
+
+on:
+  workflow_dispatch:
+    inputs:
+      section:
+        description: Measured independent module ID (proof only; acceptance remains false)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  SECTION_ID: ${{ inputs.section }}
+  EXPECTED_EXECUTION_SHA: ${{ github.sha }}
+  PR_HEAD_SHA: ${{ github.sha }}
+  PYTHONDONTWRITEBYTECODE: '1'
+  GEOMETRY_CHROME: /usr/bin/google-chrome
+  GEOMETRY_CHROME_FLAGS: --no-sandbox
+
+jobs:
+  capture:
+    name: slot ${{ matrix.unit }} (${{ matrix.scope }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        unit: [1, 2]
+        scope: [full, shard1, shard2]
+    env:
+      GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+      GEOMETRY_FEEDBACK_DIR: /tmp/geometry-slot-proof-feedback
+      SLOT_UNIT: ${{ matrix.unit }}
+      SLOT_SCOPE: ${{ matrix.scope }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Build current native executables
+        run: npm run build
+      - name: Install Chinese fonts
+        timeout-minutes: 8
+        uses: ./.github/actions/install-cjk-fonts
+      - name: Capture the unchanged full or shard harness at this candidate slot
+        shell: bash
+        run: |
+          ulimit -s 16384
+          test -x "$GEOMETRY_CHROME"
+          python3 -u geometry-web/start_local.py --port 18839 > "$RUNNER_TEMP/slot-server.log" 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if ! kill -0 "$server" 2>/dev/null; then cat "$RUNNER_TEMP/slot-server.log"; exit 1; fi
+            if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          python3 -B .github/scripts/canvas_slot_proof.py run --section "$SECTION_ID" --unit "$SLOT_UNIT" --scope "$SLOT_SCOPE" --out "$RUNNER_TEMP/canvas-slot-capture"
+      - name: Preserve exact raw capture
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: canvas-slot-${{ inputs.section }}-${{ github.run_attempt }}-slot${{ matrix.unit }}-${{ matrix.scope }}
+          path: ${{ runner.temp }}/canvas-slot-capture/
+          if-no-files-found: error
+          retention-days: 14
+
+  mutations:
+    name: slot wrapper real-browser withdrawals
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Run two browser tests in each baseline, withdrawal and restoration
+        shell: bash
+        run: |
+          test -x "$GEOMETRY_CHROME"
+          python3 -B .github/scripts/canvas_slot_proof.py mutations --section "$SECTION_ID" --out "$RUNNER_TEMP/canvas-slot-mutations"
+      - name: Preserve exact withdrawal logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: canvas-slot-${{ inputs.section }}-${{ github.run_attempt }}-mutations
+          path: ${{ runner.temp }}/canvas-slot-mutations/
+          if-no-files-found: error
+          retention-days: 14
+
+  complete:
+    name: complete two-slot source-bound proof
+    needs: [capture, mutations]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: canvas-slot-${{ inputs.section }}-${{ github.run_attempt }}-*
+          path: ${{ runner.temp }}/canvas-slot-inputs/
+      - name: Require both jobs, all six original captures and named withdrawals
+        env:
+          CAPTURE_RESULT: ${{ needs.capture.result }}
+          MUTATION_RESULT: ${{ needs.mutations.result }}
+        shell: bash
+        run: |
+          test "$CAPTURE_RESULT" = success
+          test "$MUTATION_RESULT" = success
+          python3 -B .github/scripts/canvas_slot_proof.py assemble --section "$SECTION_ID" --artifacts "$RUNNER_TEMP/canvas-slot-inputs" --out "$RUNNER_TEMP/canvas-slot-proof"
+      - name: Publish the verified capture package (acceptance remains false)
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: canvas-slot-proof-${{ inputs.section }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/canvas-slot-proof/
+          if-no-files-found: error
+          retention-days: 14

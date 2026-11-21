@@ -1,0 +1,32 @@
+{
+  "after": {
+    "execution": {
+      "cmd": [
+        "{python}",
+        "{root}/tests/_unittest_runner.py",
+        "{root}/tests/test_framing_template.py"
+      ],
+      "extra_env": {},
+      "kind": "unittest",
+      "label": "tests/test_framing_template.py",
+      "needs": [
+        "bridge"
+      ],
+      "needs_node": false,
+      "timeout": 1200
+    },
+    "expected": {
+      "count": 22,
+      "mode": "count",
+      "unit": "test"
+    },
+    "files": [
+      "tests/test_framing_template.py"
+    ],
+    "order": "legacy/000039"
+  },
+  "before_sha256": "9e90494d56173da263ad04ba464622efe50660b027cf1c0095202081814ed60e",
+  "name": "py:test_framing_template",
+  "reason": "#445 R03A 固定治具第二片：FramingTemplatePolicyA 新增 7 項（15→22）",
+  "schema": "geometry-native-legacy-amendment/1"
+}

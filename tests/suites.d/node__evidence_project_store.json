@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_evidence_project_store.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_evidence_project_store.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 8,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_evidence_project_store.js"
+  ],
+  "name": "node:evidence_project_store",
+  "order": "legacy/000330",
+  "schema": "geometry-native-suite/1"
+}

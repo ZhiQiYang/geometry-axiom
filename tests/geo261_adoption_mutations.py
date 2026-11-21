@@ -155,6 +155,16 @@ def check_registration(snapshots, expected_tests):
     required = {"mode": "count", "count": expected_tests, "unit": "test"}
     check(expected == required,
           f"expected-count registration differs: expected {required!r}, found {expected!r}")
+    fragment_key = 'suiteDeclaration:' + SUITE_NAME.replace(':', '__') + '.json'
+    if fragment_key in snapshots:
+        declaration = json.loads(snapshots[fragment_key])
+        check(declaration['name'] == SUITE_NAME and declaration['expected'] == required,
+              'adoption fragment identity/count must match the assembled expected census')
+        execution = declaration['execution']
+        check(execution['kind'] == 'unittest' and execution['needs'] == []
+              and declaration['files'] == ['tests/' + REGISTRY_NAME + '.py'],
+              'adoption gate must remain a deliberate native-binary-free unittest suite')
+        return {'checked': True, 'expectedManifest': expected, 'nativeBinaryNeeds': execution['needs']}
     assignments = []
     for node in ast.parse(snapshots["aggregateRunner"].decode("utf-8")).body:
         if (isinstance(node, ast.Assign)
@@ -165,6 +175,25 @@ def check_registration(snapshots, expected_tests):
     check(REGISTRY_NAME in registry and registry[REGISTRY_NAME] == [],
           "adoption gate must be registered as a deliberate native-binary-free suite")
     return {"checked": True, "expectedManifest": expected, "nativeBinaryNeeds": registry[REGISTRY_NAME]}
+
+
+def snapshot_inputs(root):
+    """Keep exact fragment bytes in the closure and a canonical expected view."""
+    paths = dict(INPUTS)
+    sys.path.insert(0, str(root / 'tests'))
+    import native_registry
+    fragmented = native_registry.active(root)
+    if fragmented:
+        paths.pop('expected')
+        for path in native_registry._paths(root, native_registry.SUITES):
+            paths['suiteDeclaration:' + path.name] = path.relative_to(root).as_posix()
+        paths['registryLoader'] = 'tests/native_registry.py'
+        paths['registryLayout'] = 'tests/registry-layout.json'
+    snapshots = {name: (root / relative).read_bytes() for name, relative in paths.items()}
+    if fragmented:
+        paths['expected'] = '@assembled:tests/suites.d'
+        snapshots['expected'] = native_registry.expected_bytes(root)
+    return paths, snapshots
 
 
 def run_suite(python, target, root, out, name, timeout):
@@ -219,11 +248,11 @@ def main():
         parser.error("--out must be outside the repository; repository writes are forbidden")
     if out.exists() and (not out.is_dir() or any(out.iterdir())):
         parser.error("--out must be a new or empty directory; existing evidence is never overwritten")
-    for relative in INPUTS.values():
-        if not (root / relative).is_file():
-            parser.error(f"required input missing: {root / relative}")
+    try:
+        input_paths, snapshots = snapshot_inputs(root)
+    except (OSError, ValueError) as error:
+        parser.error(f"required input missing or invalid: {error}")
     out.mkdir(parents=True, exist_ok=True)
-    snapshots = {name: (root / relative).read_bytes() for name, relative in INPUTS.items()}
     report = {
         "schema": "geo261-adoption-mutation-evidence/1",
         "createdAt": datetime.now(timezone.utc).isoformat(),
@@ -240,7 +269,7 @@ def main():
             "reason": "explicit --skip-registration: PREFLIGHT ONLY" if args.skip_registration else "not checked yet",
         },
         "hashNormalization": "lfSha256 replaces CRLF with LF only; raw SHA-256 and byte counts are also retained.",
-        "inputFilesBefore": {name: {"path": INPUTS[name], **fingerprint(data)} for name, data in snapshots.items()},
+        "inputFilesBefore": {name: {"path": input_paths[name], **fingerprint(data)} for name, data in snapshots.items()},
         "repositoryPolicy": "Read-only inputs. No approval answer or fixture is rewritten; Python bytecode writes disabled.",
         "temporaryPolicy": "Only AST guard statements in TEMP adoption-test copies are removed; proposal helper copied unchanged.",
         "temporaryCopiesDeleted": False,
@@ -311,13 +340,19 @@ def main():
         report["temporaryCopiesDeleted"] = temp_root is None or not temp_root.exists()
         after = {}
         unchanged = {}
+        try:
+            current_paths, current_snapshots = snapshot_inputs(root)
+        except (OSError, ValueError) as error:
+            current_paths, current_snapshots = {}, {}
+            report['inputReadFailure'] = f'{type(error).__name__}: {error}'
+        unchanged['registryInputClosure'] = current_paths == input_paths
         for name, original in snapshots.items():
             try:
-                current = (root / INPUTS[name]).read_bytes()
-                after[name] = {"path": INPUTS[name], **fingerprint(current)}
+                current = current_snapshots[name]
+                after[name] = {"path": input_paths[name], **fingerprint(current)}
                 unchanged[name] = current == original
-            except OSError as error:
-                after[name] = {"path": INPUTS[name], "readError": f"{type(error).__name__}: {error}"}
+            except KeyError as error:
+                after[name] = {"path": input_paths[name], "readError": f"{type(error).__name__}: {error}"}
                 unchanged[name] = False
         report["inputFilesAfter"] = after
         report["inputsUnchanged"] = unchanged

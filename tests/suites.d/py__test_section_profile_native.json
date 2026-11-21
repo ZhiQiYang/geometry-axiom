@@ -1,0 +1,29 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_section_profile_native.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_section_profile_native.py",
+    "needs": [
+      "bridge",
+      "model-base"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 30,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_section_profile_native.py"
+  ],
+  "name": "py:test_section_profile_native",
+  "order": "legacy/000230",
+  "schema": "geometry-native-suite/1"
+}

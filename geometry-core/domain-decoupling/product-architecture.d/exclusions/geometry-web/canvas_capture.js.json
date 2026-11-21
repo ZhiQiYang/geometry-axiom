@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/canvas_capture.js",
+    "reason": "PR396 source-bound Canvas extension capture judge; invoked only by the CDP test driver, the one-shot CI collector and its guard tests, never by a product runtime entry point.",
+    "sha256": "8db942bb87e2cbd132f176d6782318ce9c0a1f96d901d478ded2de39f89b6218"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

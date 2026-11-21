@@ -3,8 +3,11 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const {spawnSync}=require('node:child_process');
 const ROOT=path.resolve(__dirname,'../..'), TEST=path.join(ROOT,'tests/test_identity_canvas_merge.js');
-const FILES=['canvas_shards.js','canvas_shards.json','cdp_floor.js','cdp_test.js','cdp_sections.golden.json','identity_ledger_browser_test.js'];
+const FILES=['canvas_shards.js','canvas_registry.js','cdp_floor.js','cdp_test.js','identity_ledger_browser_test.js'];
 const original=Object.fromEntries(FILES.map(name=>[name,fs.readFileSync(path.join(ROOT,'geometry-web',name),'utf8')]));
+const legacy=require('../../geometry-web/canvas_registry.js').legacyView(ROOT);
+original['canvas_shards.json']=JSON.stringify(legacy.plan,null,2)+'\n';
+original['cdp_sections.golden.json']=JSON.stringify(legacy.golden,null,2)+'\n';
 const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'r360-canvas-contract-'));
 fs.mkdirSync(path.join(temporary,'geometry-web'));
 function restore(){for(const [name,body] of Object.entries(original))fs.writeFileSync(path.join(temporary,'geometry-web',name),body);}

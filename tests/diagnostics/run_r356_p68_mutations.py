@@ -42,7 +42,7 @@ HELPER = "tests/diagnostics/run_r356_editor_mutations.py"
 spec = importlib.util.spec_from_file_location("r356_p68_helpers", ROOT / HELPER)
 helper = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(helper)
-require, digest, fingerprints = helper.require, helper.digest, helper.fingerprints
+require, digest = helper.require, helper.digest
 write_json, git = helper.write_json, helper.git
 P68_ASSERTION = "P68 邊界定位：只改A/B保留同ID及完整定位定義"
 PRIORITY_GUARD = "      if(input.Role==='custom' && (input.Role!==old.definition.role || priorityEdited)){"
@@ -70,7 +70,27 @@ MUTATIONS = (
 )
 SOURCE_FILES = tuple(dict.fromkeys((*helper.SOURCE_FILES, SELF, HELPER,
     "geometry-web/project_audit_test.js", "geometry-web/serve.py",
-    "tests/test_timber_edit_ui.js", "tests/run_all.expected.json", "tests/mutants_results.json")))
+    "tests/test_timber_edit_ui.js", "tests/mutants_results.json")))
+
+
+def fingerprints(names):
+    # Re-enumerate on every phase boundary: deleting/adding a fragment must not
+    # disappear behind the initial source list. Keep the canonical expected
+    # value as a virtual aggregate and pin every actual source that defines it.
+    registry_sources = json.loads(subprocess.check_output([
+        "node", "-e", "process.stdout.write(JSON.stringify(require('./geometry-web/canvas_registry.js').load(process.cwd()).sourceFiles));"
+    ], cwd=ROOT, text=True))
+    native = helper.module_at("r356_p68_native_registry", "tests/native_registry.py")
+    native_sources = ["tests/native_registry.py"]
+    if native.active(ROOT):
+        expected = native.expected_bytes(ROOT)
+        native_sources.extend(str(p.relative_to(ROOT)) for p in sorted((ROOT / native.SUITES).glob("*.json")))
+        native_sources.append(str(native.MARKER))
+    else:
+        expected = (ROOT / "tests/run_all.expected.json").read_bytes()
+    result = helper.fingerprints(tuple(dict.fromkeys((*names, *registry_sources, *native_sources))))
+    result["tests/run_all.expected.json"] = digest(expected)
+    return result
 
 
 def environment(temporary, folder, browser):

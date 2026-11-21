@@ -4,6 +4,7 @@
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const floor=require('../../geometry-web/cdp_floor.js');
 const numeric=require('../../geometry-web/canvas_shards.js');
+const registry=require('../../geometry-web/canvas_registry.js');
 const PLAN='geometry-web/canvas_shards.json',GOLDEN='geometry-web/cdp_sections.golden.json';
 const shardIds=plan=>plan.shards.map(shard=>shard.index+'/'+plan.shards.length);
 function requireThat(ok,code,detail='') {
@@ -34,14 +35,15 @@ function buildPlan(golden,numericPlan,sourceHashes={}) {
 }
 
 function loadPlan(root=path.resolve(__dirname,'../..')) {
+  const current=registry.load(root);
   const hashes={},texts=new Map();
   function visit(relative) {
     relative=relative.split(path.sep).join('/');
     requireThat(!relative.startsWith('../')&&!path.isAbsolute(relative),'CANVAS_SOURCE_PATH',relative);
     if(texts.has(relative))return;
     const raw=fs.readFileSync(path.join(root,relative)),text=raw.toString('utf8').replace(/\r\n/g,'\n');
-    hashes[relative]=sha(text);texts.set(relative,text);
-    if(!relative.endsWith('.js'))return;
+    hashes[relative]=sha(relative.endsWith('.zip')?raw:text);texts.set(relative,text);
+    if(!/\.(?:js|cjs|mjs)$/.test(relative))return;
     for(const match of text.matchAll(/\brequire\(\s*(['"])(\.[^'"\n]+)\1\s*\)/g)){
       let target=path.posix.normalize(path.posix.join(path.posix.dirname(relative),match[2]));
       if(!path.posix.extname(target))target+='.js';
@@ -49,9 +51,17 @@ function loadPlan(root=path.resolve(__dirname,'../..')) {
     }
   }
   for(const relative of ['tests/helpers/canvas_shards.js','geometry-web/cdp_test.js',
-      'geometry-web/canvas_shards.js',PLAN,GOLDEN,'.github/scripts/canvas_evidence.py',
+      'geometry-web/canvas_shards.js','.github/scripts/canvas_evidence.py',
       '.github/workflows/integration-tests.yml'])visit(relative);
-  return buildPlan(JSON.parse(texts.get(GOLDEN)),JSON.parse(texts.get(PLAN)),hashes);
+  // Dynamic modules and their per-section contracts are part of the same
+  // source-bound closure; static require scanning alone cannot discover them.
+  for(const relative of current.sourceFiles)visit(relative);
+  // The parser supplements the historical literal-require traversal with
+  // .cjs/.mjs/JSON dependencies and static imports, without executing modules.
+  for(const relative of Object.keys(registry.sourceClosure(root,
+      ['tests/helpers/canvas_shards.js','geometry-web/cdp_test.js']).files))visit(relative);
+  hashes[PLAN]=current.planSha256;hashes[GOLDEN]=current.goldenSha256;
+  return buildPlan(current.golden,current.plan,hashes);
 }
 function unitsFor(plan,shardId) {
   requireThat(plan.shards.includes(shardId),'CANVAS_FAKE_SCOPE','unknown shard');

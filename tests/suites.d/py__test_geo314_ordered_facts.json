@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geo314_ordered_facts.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geo314_ordered_facts.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 14,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geo314_ordered_facts.py"
+  ],
+  "name": "py:test_geo314_ordered_facts",
+  "order": "legacy/000152",
+  "schema": "geometry-native-suite/1"
+}
