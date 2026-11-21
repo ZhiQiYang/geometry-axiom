@@ -787,6 +787,28 @@ MUTANTS += [
 ]
 
 
+# #128 PF-6N: actual product withdrawals, judged by the native builder bridge.
+# The directed runner reads these definitions; there is no second mutant table.
+PF6_JUDGE = "tests.test_panel_fill_builder.PanelFillBuilder."
+MUTANTS += [
+    dict(id="PF6_PARTIAL_SUCCESS_WRITES", desc="R45/I8：吞掉最後一個外層步驟失敗，合法前置＋R45＋後置前綴不得成為可確認候選", binary="bridge",
+         file="geometry-web/panel_fill_builder_bridge.inc",
+         old="if(!call->suggesting)for(size_t i=p->pre_count;i<p->pre_count+p->post_count&&ok;++i)\n        if(!pf6_outer_operation(candidate,call->before,&p->operations[i],setup.host_id,setup.host_present,&call->created[i]))ok=false;",
+         new="if(!call->suggesting)for(size_t i=p->pre_count;i<p->pre_count+p->post_count&&ok;++i)\n        if(!pf6_outer_operation(candidate,call->before,&p->operations[i],setup.host_id,setup.host_present,&call->created[i])){ /* mutation: swallow failed last step */ }",
+         tests=[PF6_JUDGE + "test_PF6_last_outer_failure_never_publishes_successful_prefix"]),
+    dict(id="PF6_UNSELECTED_CREATES", desc="D45/R45：撤掉空明選的零寫入，未選 R45 卻建立 host/grid 須紅", binary="bridge",
+         file="geometry-app/native/panel_fill_builder.inc",
+         old="if(!suggestions&&!selected_count)return true; /* PF6_EMPTY_SELECTION_ZERO_WRITE */",
+         new="/* mutation: empty selection still prepares host and grid */",
+         tests=[PF6_JUDGE + "test_PF6_empty_explicit_selection_creates_nothing"]),
+    dict(id="PF6_OMIT_DEPENDENT_REVALIDATION", desc="I8/I24/I53：外層後置略過完整重驗，既有料件 B≠h 的候選不得有效", binary="bridge",
+         file="geometry-web/panel_fill_builder_bridge.inc",
+         old='if(!world_revalidate(candidate))return eng_fail(g_revalidate_error[0]?g_revalidate_error:"I8: PF-6 complete candidate rejected");',
+         new="/* mutation: skip full existing-and-new dependency revalidation */",
+         tests=[PF6_JUDGE + "test_PF6_post_edit_revalidates_existing_dependent_timber"]),
+]
+
+
 def run_cmd(cmd, cwd, timeout=120):
     return subprocess.run(cmd, cwd=cwd, capture_output=True,
                           text=True, encoding="utf-8", errors="replace",

@@ -36,7 +36,7 @@ static void json_engineering_capabilities(const World *w)
     fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"assembly-bay-repeat/1\",\"grid-subdivision-rules/1\",\"grid-subdivision-rules/2\",\"section-profile/1\",\"grid-card-reference/1\",\"identity-ledger/1\",\"definition-import/1\"],\"required_capabilities\":[",stdout);
     for(size_t i=0;i<sizeof required/sizeof required[0];++i)if(required[i].used){if(!first)putchar(',');first=false;js_string(required[i].name);}
     putchar(']');
-    fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\",\"grid-subdivision-native/2\"]",stdout);
+    fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\",\"grid-subdivision-native/2\",\"panel-fill-builder-native/1\"]",stdout);
     fputs(",\"panel_fill_reader\":{\"schema\":\"panel-fill-definition-reader/1\",\"capability\":\"" FS_CAPABILITY "\","
           "\"supportedRecords\":[\"finish-surface\",\"panel-fill\",\"derived-placement\"],\"complete\":false}",stdout);
 }
@@ -218,7 +218,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
 }
 static bool batch_token_kind(int kind)
 {
-    return g_preview.engineering_batch && !g_preview.timber_batch && (kind==3?g_preview.finish_batch:kind==2?g_preview.profile_batch:kind==1?g_preview.assembly_batch:!g_preview.assembly_batch&&!g_preview.profile_batch&&!g_preview.finish_batch);
+    return g_preview.engineering_batch && !g_preview.timber_batch && !g_preview.pf6_batch && (kind==3?g_preview.finish_batch:kind==2?g_preview.profile_batch:kind==1?g_preview.assembly_batch:!g_preview.assembly_batch&&!g_preview.profile_batch&&!g_preview.finish_batch);
 }
 static void batch_confirm(const char *arg,int kind,const char *token_message,const char *stale_message)
 {

@@ -2203,6 +2203,24 @@
       "layer": "H",
       "language": "python",
       "purpose": "R17 bounded UTF-8 structured transport with host-owned temporary paths and exact native routing"
+    },
+    {
+      "path": "geometry-app/native/panel_fill_builder.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "PF-6 native composable adapter over the caller-owned candidate; supplies same-candidate facts to W and revalidates ordinary D7 definitions without publication"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/r45_builder.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "R45 deterministic suggestion enumeration, complete R41 source order, seam intersections and same-line span deduplication over immutable facts"
+    },
+    {
+      "path": "geometry-web/panel_fill_builder_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "PF-6 native CLI owner: explicit selection, closed pre/post operations, candidate disclosure and one atomic confirmation through the common transaction"
     }
   ],
   "exclusions": [
@@ -5167,7 +5185,38 @@
       "sectionKey",
       "kerf",
       "minRemnant",
-      "allowance"
+      "allowance",
+      "GEOMETRY_WOODWORKING_R45_BUILDER_H",
+      "WOOD_R45_BOUNDARY",
+      "WOOD_R45_CANDIDATE_MAX",
+      "WOOD_R45_COVERED_EDGE",
+      "WOOD_R45_EDGE_PART_MAX",
+      "WOOD_R45_EDGE_PRIMARY",
+      "WOOD_R45_FREE_EDGE",
+      "WOOD_R45_HOLE_EDGE",
+      "WOOD_R45_KEY_BYTES",
+      "WOOD_R45_SEAM_PRIMARY",
+      "WOOD_R45_SEAM_SECONDARY",
+      "WoodR45Candidate",
+      "WoodR45EdgeFact",
+      "WoodR45Plan",
+      "wood_r45_append",
+      "wood_r45_coord_order",
+      "wood_r45_coordinate_rank",
+      "wood_r45_edge_order",
+      "wood_r45_enumerate",
+      "wood_r45_error",
+      "wood_r45_key",
+      "wood_r45_line_component",
+      "wood_r45_max",
+      "wood_r45_min",
+      "wood_r45_order",
+      "wood_r45_plan_free",
+      "wood_r45_same_line",
+      "wood_r45_same_span",
+      "wood_r45_source_order",
+      "wood_r45_unique_coordinates",
+      "wood_r45_unsigned"
     ],
     "forbiddenStrings": [
       "calcium-silicate-6",

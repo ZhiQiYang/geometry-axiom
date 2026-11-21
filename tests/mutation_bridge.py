@@ -111,6 +111,13 @@ RESTORED += ["tests.test_identity_definition_import_merge.IdentityDefinitionImpo
     "test_undo_of_import_does_not_reuse_its_serials_on_a_new_branch",
 ]]
 
+# #128 PF-6N: the same semantic judges run before withdrawal and after restore.
+RESTORED += ["tests.test_panel_fill_builder.PanelFillBuilder." + name for name in [
+    "test_PF6_last_outer_failure_never_publishes_successful_prefix",
+    "test_PF6_empty_explicit_selection_creates_nothing",
+    "test_PF6_post_edit_revalidates_existing_dependent_timber",
+]]
+
 
 def sha(data):
     return hashlib.sha256(data).hexdigest()

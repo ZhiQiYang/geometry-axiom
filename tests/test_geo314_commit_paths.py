@@ -65,6 +65,8 @@ PUBLISH_SITES = (
     # R11: both reuse and batch edits confirm into the existing World (R56),
     # not a D61 replacement. The route contracts below retain its I24 baseline.
     ("geometry-web/timber_edit_bridge.inc", "cmd_timber_edit_confirm", 1, "submission"),
+    # PF-6: pre/R45/post are one submission against the original before World.
+    ("geometry-web/panel_fill_builder_bridge.inc", "cmd_pf6_confirm", 1, "submission"),
     ("geometry-web/web_bridge.c", "app_replace_world", 1, "replacement"),
     ("geometry-web/web_bridge.c", "cmd_loadfile", 1, "replacement"),
     ("geometry-web/scene-import-bridge.inc", "cmd_load_confirm", 1, "replacement"),
@@ -90,6 +92,8 @@ REVALIDATE_SITES = (
     ("geometry-web/engineering_bridge.inc", "app_batch_candidate_apply", 1),
     ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", 1),
     ("geometry-web/timber_edit_bridge.inc", "timber_edit_evaluate", 1),
+    ("geometry-app/native/panel_fill_builder.inc", "pf6_validate", 1),
+    ("geometry-web/panel_fill_builder_bridge.inc", "pf6_outer_validate", 1),
     ("geometry-web/web_bridge.c", "app_replace_evaluate", 1),
 )
 STAGED_SITES = (
@@ -123,6 +127,12 @@ BASELINE_ASSIGNMENTS = (
     ("geometry-web/definition_import_bridge.inc", "di_apply_candidate", "previous"),
     ("geometry-web/timber_edit_bridge.inc", "timber_edit_evaluate", "call->before"),
     ("geometry-web/timber_edit_bridge.inc", "timber_edit_evaluate", "previous"),
+    ("geometry-app/native/panel_fill_builder.inc", "pf6_prepare", "candidate"),
+    ("geometry-app/native/panel_fill_builder.inc", "pf6_prepare", "previous"),
+    ("geometry-app/native/panel_fill_builder.inc", "pf6_build", "candidate"),
+    ("geometry-app/native/panel_fill_builder.inc", "pf6_build", "previous"),
+    ("geometry-web/panel_fill_builder_bridge.inc", "pf6_outer_evaluate", "call->before"),
+    ("geometry-web/panel_fill_builder_bridge.inc", "pf6_outer_evaluate", "previous"),
     ("geometry-web/web_bridge.c", "app_scene_load_evaluate", "NULL"),
     ("geometry-web/web_bridge.c", "app_scene_load_evaluate", "previous"),
     ("geometry-web/source-inspector-bridge.inc", "cmd_source_inspect_file", "NULL"),
