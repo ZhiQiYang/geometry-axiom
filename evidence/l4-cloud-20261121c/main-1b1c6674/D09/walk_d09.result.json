@@ -1,0 +1,86 @@
+{
+ "steps": [
+  {
+   "name": "01-example-workspace",
+   "dumpLen": 6016,
+   "applicationOverrides": {},
+   "gridLines": [],
+   "status": "已讀取目前工程。草稿與預覽不會改變已套用的定義。"
+  },
+  {
+   "name": "03-preview",
+   "dumpLen": 6016,
+   "applicationOverrides": {},
+   "gridLines": [],
+   "status": "預覽檢查通過。請核對完整影響，再確認套用。"
+  },
+  {
+   "name": "04-cancel-preview",
+   "dumpLen": 6016,
+   "applicationOverrides": {},
+   "gridLines": [],
+   "status": "已返回修改，尚未套用這次變更。請重新預覽。"
+  },
+  {
+   "name": "05-confirmed",
+   "dumpLen": 6060,
+   "applicationOverrides": {
+    "gap": {
+     "kind": "literal",
+     "value": 4
+    }
+   },
+   "gridLines": [],
+   "status": "已套用到目前工程。按「保存專案」後，才會寫入專案檔案。"
+  },
+  {
+   "name": "06-undo",
+   "dumpLen": 6016,
+   "applicationOverrides": {},
+   "gridLines": []
+  },
+  {
+   "name": "07-redo",
+   "dumpLen": 6060,
+   "applicationOverrides": {
+    "gap": {
+     "kind": "literal",
+     "value": 4
+    }
+   },
+   "gridLines": []
+  }
+ ],
+ "workspaceOpen": true,
+ "tabs": [
+  "套用至面",
+  "材料規格",
+  "工程做法",
+  "匯入／匯出"
+ ],
+ "review": "核對這次變更核對 1 個面 · 1 個網格 · 0 支角材。目前工程尚未改動。網格 · 1目前所在面面 1 · 放置 #1主支方向沿 vu 軸排格面材 915 mm ＋ 縫 3 mm；起算 0 mmv 軸排格面材 1830 mm ＋ 縫 3 mm；起算 0 mm實際格線u 4 條 · v 1 條套用後所在面面 1 · 放置 #1主支方向沿 vu 軸排格面材 915 mm ＋ 縫 4 mm；起算 0 mmv 軸排格面材 1830 mm ＋ 縫 4 mm；起算 0 mm實際格線u 4 條 · v 1 條完整定義、識別與核心幾何識別1surface1bindingId未設定indexSpaceordinalsourceSystem未設定原點00種類mainparentId未設定cell未設定divisions未設定boundsu 軸04000v 軸03000主支方向vgeometryModeexactgeometryExacttrueu 軸916183427523670u 軸定義來源panel面材915縫寬 mm3起算點0anchorExplicittruev 軸1831v 軸定義來源panel面材1830縫寬 mm3起算點0anchorExplicittruelines軸向uindex0coordinate916角色primary優先序2核心線段91609163000軸向uindex1coordinate1834角色primary優先序2核心線段1834018343000軸向uindex2coordinate2752角色primary優先序2核心線段2752027523000軸向uindex3coordinate3670角色primary優先序2核心線段3670036703000軸向vindex0coordinate1831角色secondary優先序3核心線段0183140001831dependencieschildren參考線角材識別1surface1bindingId未設定indexSpaceordinalsourceSystem未設定原點00種類mainparen",
+ "confirmDisabledBeforeCheck": true,
+ "previewZeroWrite": true,
+ "cancelZeroWrite": true,
+ "gapModeAfterCancel": "literal",
+ "confirmEnabledAfterCheck": true,
+ "confirmDiffCount": 1,
+ "undoEqualsBefore": true,
+ "redoEqualsConfirmed": true,
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopenEqual": true,
+ "reopenOverrides": {
+  "gap": {
+   "kind": "literal",
+   "value": 4
+  }
+ },
+ "reopenGapMode": "inherit",
+ "reopenGapValue": null,
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
