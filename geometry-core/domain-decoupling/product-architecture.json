@@ -2767,7 +2767,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "feaaf5e897acf5910e6411c2b2d9b5a55d665cc119797167f149bb963d557bf6",
+      "sha256": "dd7e996dd0fd112945459f28df231cd6dd03471b8e6f13d1ae2d4a66e5e26e50",
       "hashMode": "lf"
     },
     {
@@ -3794,6 +3794,12 @@
       "path": "geometry-web/canvas_context_menu_test.js",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
       "sha256": "7381c6f60c04d395970b9357eafb8c9eabeef4257ed829467d2b82b0357567b5",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_touch_test.js",
+      "reason": "R11 觸控第一片的真 CDP 驗收與唯讀早期事件觀測；由 cdp_test.js 載入，不由產品頁面載入。",
+      "sha256": "1d178f1d6b7b94f9d8c7452cf0823e08ff30fec1562e7cd714e51942de1f535a",
       "hashMode": "lf"
     },
     {
