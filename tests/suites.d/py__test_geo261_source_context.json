@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geo261_source_context.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geo261_source_context.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 8,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geo261_source_context.py"
+  ],
+  "name": "py:test_geo261_source_context",
+  "order": "legacy/000112",
+  "schema": "geometry-native-suite/1"
+}

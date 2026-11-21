@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/cutting_plan_test.js",
+    "reason": "P89 真瀏覽器裁切驗收外掛，由 cdp_test.js 載入；不是產品 runtime 模組。",
+    "sha256": "a648eb206e8e4a80775f6cbdd6fae97ed7e277bcbb00431b0a543a161be2b833"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

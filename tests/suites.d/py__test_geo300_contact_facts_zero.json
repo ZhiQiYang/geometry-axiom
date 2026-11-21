@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geo300_contact_facts_zero.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geo300_contact_facts_zero.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 6,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geo300_contact_facts_zero.py"
+  ],
+  "name": "py:test_geo300_contact_facts_zero",
+  "order": "legacy/000139",
+  "schema": "geometry-native-suite/1"
+}

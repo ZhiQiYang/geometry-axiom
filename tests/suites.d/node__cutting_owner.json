@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_cutting_owner.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_cutting_owner.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 3,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_cutting_owner.js"
+  ],
+  "name": "node:cutting_owner",
+  "order": "legacy/000272",
+  "schema": "geometry-native-suite/1"
+}

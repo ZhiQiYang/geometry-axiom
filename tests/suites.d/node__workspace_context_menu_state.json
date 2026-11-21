@@ -1,0 +1,22 @@
+{
+  "execution": {
+    "cmd": [
+      "geometry-web/workspace_context_menu_state_test.js"
+    ],
+    "extra_env": {},
+    "kind": "node-script",
+    "label": "geometry-web/workspace_context_menu_state_test.js (VM state; not browser evidence)",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "exit-code-only"
+  },
+  "files": [
+    "geometry-web/workspace_context_menu_state_test.js"
+  ],
+  "name": "node:workspace_context_menu_state",
+  "order": "legacy/000251",
+  "schema": "geometry-native-suite/1"
+}

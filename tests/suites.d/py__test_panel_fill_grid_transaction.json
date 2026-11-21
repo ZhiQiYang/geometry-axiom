@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_panel_fill_grid_transaction.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_panel_fill_grid_transaction.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 13,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_panel_fill_grid_transaction.py"
+  ],
+  "name": "py:test_panel_fill_grid_transaction",
+  "order": "legacy/000193",
+  "schema": "geometry-native-suite/1"
+}

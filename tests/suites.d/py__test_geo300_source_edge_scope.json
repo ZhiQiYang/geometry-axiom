@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geo300_source_edge_scope.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geo300_source_edge_scope.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 17,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geo300_source_edge_scope.py"
+  ],
+  "name": "py:test_geo300_source_edge_scope",
+  "order": "legacy/000146",
+  "schema": "geometry-native-suite/1"
+}

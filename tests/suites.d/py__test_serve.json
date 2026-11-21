@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_serve.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_serve.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 53,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_serve.py"
+  ],
+  "name": "py:test_serve",
+  "order": "legacy/000230",
+  "schema": "geometry-native-suite/1"
+}

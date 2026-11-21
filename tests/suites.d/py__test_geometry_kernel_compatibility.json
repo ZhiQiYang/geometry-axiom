@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geometry_kernel_compatibility.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geometry_kernel_compatibility.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 1,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geometry_kernel_compatibility.py"
+  ],
+  "name": "py:test_geometry_kernel_compatibility",
+  "order": "legacy/000158",
+  "schema": "geometry-native-suite/1"
+}

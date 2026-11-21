@@ -1,0 +1,22 @@
+{
+  "execution": {
+    "cmd": [
+      "tests/test_pr353_display_regressions.js"
+    ],
+    "extra_env": {},
+    "kind": "node-script",
+    "label": "tests/test_pr353_display_regressions.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "exit-code-only"
+  },
+  "files": [
+    "tests/test_pr353_display_regressions.js"
+  ],
+  "name": "node:pr353_display_regressions",
+  "order": "legacy/000253",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "geometry-web/workspace_view_state_test.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "geometry-web/workspace_view_state_test.js (mock transport; not browser evidence)",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 15,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "geometry-web/workspace_view_state_test.js"
+  ],
+  "name": "node:workspace_view_state",
+  "order": "legacy/000250",
+  "schema": "geometry-native-suite/1"
+}

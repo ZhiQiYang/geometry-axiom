@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_product_architecture.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_product_architecture.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 18,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_product_architecture.py"
+  ],
+  "name": "py:test_product_architecture",
+  "order": "legacy/000207",
+  "schema": "geometry-native-suite/1"
+}

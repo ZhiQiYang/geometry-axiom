@@ -1,0 +1,29 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_scenario_verify.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_scenario_verify.py",
+    "needs": [
+      "bridge",
+      "model-base"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 37,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_scenario_verify.py"
+  ],
+  "name": "py:test_scenario_verify",
+  "order": "legacy/000225",
+  "schema": "geometry-native-suite/1"
+}

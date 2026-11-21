@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_history_operation.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_history_operation.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 4,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_history_operation.js"
+  ],
+  "name": "node:history_operation",
+  "order": "legacy/000289",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geo261_wood_derived_placement.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geo261_wood_derived_placement.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 14,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geo261_wood_derived_placement.py"
+  ],
+  "name": "py:test_geo261_wood_derived_placement",
+  "order": "legacy/000124",
+  "schema": "geometry-native-suite/1"
+}

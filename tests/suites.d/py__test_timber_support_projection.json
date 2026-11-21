@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_timber_support_projection.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_timber_support_projection.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 13,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_timber_support_projection.py"
+  ],
+  "name": "py:test_timber_support_projection",
+  "order": "legacy/000239",
+  "schema": "geometry-native-suite/1"
+}

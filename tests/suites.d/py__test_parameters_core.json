@@ -1,0 +1,29 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_parameters_core.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_parameters_core.py",
+    "needs": [
+      "bridge",
+      "model-base"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 40,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_parameters_core.py"
+  ],
+  "name": "py:test_parameters_core",
+  "order": "legacy/000201",
+  "schema": "geometry-native-suite/1"
+}

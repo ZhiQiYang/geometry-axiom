@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_model_identity_review.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_model_identity_review.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 6,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_model_identity_review.js"
+  ],
+  "name": "node:model_identity_review",
+  "order": "legacy/000293",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geo261_model_vertex_ledger.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geo261_model_vertex_ledger.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 7,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geo261_model_vertex_ledger.py"
+  ],
+  "name": "py:test_geo261_model_vertex_ledger",
+  "order": "legacy/000082",
+  "schema": "geometry-native-suite/1"
+}

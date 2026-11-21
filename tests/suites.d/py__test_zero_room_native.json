@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_zero_room_native.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_zero_room_native.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 1,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_zero_room_native.py"
+  ],
+  "name": "py:test_zero_room_native",
+  "order": "legacy/000246",
+  "schema": "geometry-native-suite/1"
+}

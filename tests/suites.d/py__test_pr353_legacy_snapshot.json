@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_pr353_legacy_snapshot.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_pr353_legacy_snapshot.py",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 7,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_pr353_legacy_snapshot.py"
+  ],
+  "name": "py:test_pr353_legacy_snapshot",
+  "order": "legacy/000206",
+  "schema": "geometry-native-suite/1"
+}

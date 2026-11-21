@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geo300_host_depend_hint.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geo300_host_depend_hint.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 5,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geo300_host_depend_hint.py"
+  ],
+  "name": "py:test_geo300_host_depend_hint",
+  "order": "legacy/000144",
+  "schema": "geometry-native-suite/1"
+}

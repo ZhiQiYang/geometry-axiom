@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_hover_pick_scheduler.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_hover_pick_scheduler.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 19,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_hover_pick_scheduler.js"
+  ],
+  "name": "node:hover_pick_scheduler",
+  "order": "legacy/000310",
+  "schema": "geometry-native-suite/1"
+}

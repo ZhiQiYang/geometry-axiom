@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_definition_import.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_definition_import.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 9,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_definition_import.js"
+  ],
+  "name": "node:definition_import",
+  "order": "legacy/000297",
+  "schema": "geometry-native-suite/1"
+}

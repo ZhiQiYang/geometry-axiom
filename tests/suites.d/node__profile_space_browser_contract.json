@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_profile_space_browser_contract.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_profile_space_browser_contract.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 3,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_profile_space_browser_contract.js"
+  ],
+  "name": "node:profile_space_browser_contract",
+  "order": "legacy/000261",
+  "schema": "geometry-native-suite/1"
+}

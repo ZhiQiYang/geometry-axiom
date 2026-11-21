@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_binaries.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_binaries.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 36,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_binaries.py"
+  ],
+  "name": "py:test_binaries",
+  "order": "legacy/000016",
+  "schema": "geometry-native-suite/1"
+}

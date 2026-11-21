@@ -1,0 +1,29 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_model_update_faces_review.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_model_update_faces_review.js",
+    "needs": [
+      "bridge",
+      "model-base"
+    ],
+    "needs_node": true,
+    "timeout": 900
+  },
+  "expected": {
+    "count": 5,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_model_update_faces_review.js"
+  ],
+  "name": "node:model_update_faces_review",
+  "order": "legacy/000332",
+  "schema": "geometry-native-suite/1"
+}

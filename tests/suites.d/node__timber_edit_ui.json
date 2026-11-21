@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_timber_edit_ui.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_timber_edit_ui.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 6,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_timber_edit_ui.js"
+  ],
+  "name": "node:timber_edit_ui",
+  "order": "legacy/000303",
+  "schema": "geometry-native-suite/1"
+}

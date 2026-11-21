@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_cdp_evaluation.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_cdp_evaluation.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 9,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_cdp_evaluation.js"
+  ],
+  "name": "node:cdp_evaluation",
+  "order": "legacy/000298",
+  "schema": "geometry-native-suite/1"
+}

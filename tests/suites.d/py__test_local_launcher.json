@@ -1,0 +1,30 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_local_launcher.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_local_launcher.py",
+    "needs": [
+      "core",
+      "bridge",
+      "model-base"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 17,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_local_launcher.py"
+  ],
+  "name": "py:test_local_launcher",
+  "order": "legacy/000183",
+  "schema": "geometry-native-suite/1"
+}

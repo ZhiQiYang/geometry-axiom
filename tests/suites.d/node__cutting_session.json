@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_cutting_session.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_cutting_session.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 11,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_cutting_session.js"
+  ],
+  "name": "node:cutting_session",
+  "order": "legacy/000275",
+  "schema": "geometry-native-suite/1"
+}

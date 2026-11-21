@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geo261_enclosure_sources.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geo261_enclosure_sources.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 13,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geo261_enclosure_sources.py"
+  ],
+  "name": "py:test_geo261_enclosure_sources",
+  "order": "legacy/000059",
+  "schema": "geometry-native-suite/1"
+}

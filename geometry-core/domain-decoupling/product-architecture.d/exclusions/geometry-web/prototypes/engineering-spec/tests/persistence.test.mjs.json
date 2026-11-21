@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/prototypes/engineering-spec/tests/persistence.test.mjs",
+    "reason": "Separate engineering-spec UI prototype persistence.test.mjs; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+    "sha256": "39c4b1cf88b271d1003a59746edd826fb8b436713b5692d8e9f7b0d724ffa517"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

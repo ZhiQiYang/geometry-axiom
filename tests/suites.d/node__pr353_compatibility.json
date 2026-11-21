@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_pr353_compatibility.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_pr353_compatibility.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 10,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_pr353_compatibility.js"
+  ],
+  "name": "node:pr353_compatibility",
+  "order": "legacy/000269",
+  "schema": "geometry-native-suite/1"
+}

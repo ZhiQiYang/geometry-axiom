@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_evidence_adoption_app.cjs"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_evidence_adoption_app.cjs",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 10,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_evidence_adoption_app.cjs"
+  ],
+  "name": "node:evidence_adoption_app",
+  "order": "legacy/000323",
+  "schema": "geometry-native-suite/1"
+}

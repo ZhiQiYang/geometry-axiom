@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geo261_wood_supports.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geo261_wood_supports.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 13,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geo261_wood_supports.py"
+  ],
+  "name": "py:test_geo261_wood_supports",
+  "order": "legacy/000136",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,29 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_modeling_transport.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_modeling_transport.py",
+    "needs": [
+      "bridge",
+      "model-base"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 3,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_modeling_transport.py"
+  ],
+  "name": "py:test_modeling_transport",
+  "order": "legacy/000188",
+  "schema": "geometry-native-suite/1"
+}

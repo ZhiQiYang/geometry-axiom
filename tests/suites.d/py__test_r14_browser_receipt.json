@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_r14_browser_receipt.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_r14_browser_receipt.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 10,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_r14_browser_receipt.py"
+  ],
+  "name": "py:test_r14_browser_receipt",
+  "order": "legacy/000209",
+  "schema": "geometry-native-suite/1"
+}

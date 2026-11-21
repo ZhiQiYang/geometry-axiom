@@ -1,0 +1,22 @@
+{
+  "execution": {
+    "cmd": [
+      "tests/test_cdp_confirmation_gate.js"
+    ],
+    "extra_env": {},
+    "kind": "node-script",
+    "label": "tests/test_cdp_confirmation_gate.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "exit-code-only"
+  },
+  "files": [
+    "tests/test_cdp_confirmation_gate.js"
+  ],
+  "name": "node:cdp_confirmation_gate",
+  "order": "legacy/000257",
+  "schema": "geometry-native-suite/1"
+}

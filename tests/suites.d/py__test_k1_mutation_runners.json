@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_k1_mutation_runners.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_k1_mutation_runners.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 4,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_k1_mutation_runners.py"
+  ],
+  "name": "py:test_k1_mutation_runners",
+  "order": "legacy/000180",
+  "schema": "geometry-native-suite/1"
+}

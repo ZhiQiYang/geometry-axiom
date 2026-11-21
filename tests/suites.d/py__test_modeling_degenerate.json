@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_modeling_degenerate.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_modeling_degenerate.py",
+    "needs": [
+      "model-base"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 24,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_modeling_degenerate.py"
+  ],
+  "name": "py:test_modeling_degenerate",
+  "order": "legacy/000186",
+  "schema": "geometry-native-suite/1"
+}

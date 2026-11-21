@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "geometry-web/polydraft_test.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "geometry-web/polydraft_test.js",
+    "needs": [
+      "core"
+    ],
+    "needs_node": true,
+    "timeout": 900
+  },
+  "expected": {
+    "count": 75,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "geometry-web/polydraft_test.js"
+  ],
+  "name": "node:polydraft",
+  "order": "legacy/000249",
+  "schema": "geometry-native-suite/1"
+}

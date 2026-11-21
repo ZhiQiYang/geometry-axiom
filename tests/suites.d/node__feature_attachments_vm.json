@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_feature_attachments_vm.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_feature_attachments_vm.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 1,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_feature_attachments_vm.js"
+  ],
+  "name": "node:feature_attachments_vm",
+  "order": "legacy/000283",
+  "schema": "geometry-native-suite/1"
+}

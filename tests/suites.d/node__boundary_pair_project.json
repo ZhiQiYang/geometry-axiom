@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_boundary_pair_project.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_boundary_pair_project.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 8,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_boundary_pair_project.js"
+  ],
+  "name": "node:boundary_pair_project",
+  "order": "legacy/000263",
+  "schema": "geometry-native-suite/1"
+}
