@@ -110,7 +110,7 @@ const DRIVER_SECTIONS=Object.freeze({
     builtins:Object.freeze(['child_process','crypto','fs','net','os','path','util']),
     vendor:Object.freeze({'geometry-web/vendor/fflate/umd/index.js':Object.freeze(['worker_threads'])}),
     processProperties:Object.freeze(['env','kill','platform']),
-    outputs:Object.freeze({saved:/^saved-[0-9]+\.gcanvas$/,cold:/^cold-[0-9]+\.json$/,
+    outputs:Object.freeze({saved:/^saved-[0-9]+\.gcanvas$/,cold:/^cold-[0-9]+\.json$/,coldFinal:/^cold-final-[0-9]+\.json$/,
       fixed:Object.freeze(['unknown-v2-generator.gcanvas','wrong-v2-policy.gcanvas'])}),
     artifactEnv:'GEOMETRY_FRAMING_JIG_ARTIFACT_DIR',
   }),
@@ -273,9 +273,13 @@ function verifyDriverMeasurement(members,row,identity){
   requireThat(packages.length===1&&folders.length===1,'R386_CANVAS_DRIVER_COLD_OPEN','package/folder');
   const names=outputs.map(name=>name.slice(folders[0].length+1)),pkg=packages[0];
   const saved=names.filter(name=>entry.outputs.saved.test(name)),cold=names.filter(name=>entry.outputs.cold.test(name));
-  requireThat(saved.length===1&&cold.length===1&&same(names.filter(name=>!saved.includes(name)&&!cold.includes(name)).sort(),[...entry.outputs.fixed]),
+  const final=names.filter(name=>entry.outputs.coldFinal.test(name)),known=[...saved,...cold,...final];
+  requireThat(saved.length===1&&cold.length===1&&final.length===1&&same(names.filter(name=>!known.includes(name)).sort(),[...entry.outputs.fixed]),
     'R386_CANVAS_DRIVER_COLD_OPEN','outputs');
   const archive=members[folders[0]+'/'+saved[0]],info=parseJson(members[folders[0]+'/'+cold[0]],'cold');
+  const closing=parseJson(members[folders[0]+'/'+final[0]],'cold-final');
+  requireThat(same(closing.info,info)&&closing.end?.pid===info.service?.pid&&closing.end?.session===info.service?.session&&
+    Array.isArray(closing.errors)&&closing.errors.length===0,'R386_CANVAS_DRIVER_COLD_OPEN','close');
   requireThat(pkg.sha256===sha(archive)&&pkg.bytes===archive.length&&Number.isSafeInteger(pkg.browserPid)&&pkg.browserPid>0&&
     pkg.nativeService?.pid!==pkg.sourceService?.pid&&pkg.nativeService?.session!==pkg.sourceService?.session&&
     pkg.nativeService?.fresh===true&&pkg.nativeService?.version===pkg.sourceService?.version&&typeof pkg.profile==='string'&&pkg.profile&&

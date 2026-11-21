@@ -190,6 +190,7 @@ async function driverContract(R){
         goldenCompare:'not compared (partial mode)',unexpectedBrowserExceptions:0};
       const state={lines,pkg,cold,result,saved};mutate(state);
       members[folder+'saved-1.gcanvas']=state.saved;members[folder+'cold-2.json']=Buffer.from(JSON.stringify(state.cold,null,2)+'\n');
+      members[folder+'cold-final-2.json']=Buffer.from(JSON.stringify({info:state.cold,end:state.cold.service,errors:[]},null,2)+'\n');
       members[folder+'wrong-v2-policy.gcanvas']=Buffer.from('wrong');members[folder+'unknown-v2-generator.gcanvas']=Buffer.from('unknown');
       members['stdout.log']=Buffer.from([...state.lines,'R03A_BROWSER_PACKAGE '+JSON.stringify(state.pkg),
         'R03A_BROWSER_SCOPE '+JSON.stringify({schema:'framing-template-jig-browser-scope/1',assertions:28}),'CDP_RESULT '+JSON.stringify(state.result),''].join('\n'));

@@ -3,7 +3,7 @@
     "hashMode": "lf",
     "path": "geometry-web/canvas_registry.js",
     "reason": "Dedicated CI test driver canvas_registry.js: deterministic canvas section registry and source-closure loader used by cdp_test.js, canvas_shards.js and registry tests; not loaded by product runtime or served application entry points.",
-    "sha256": "860efc93dcc5b47dcc04453ab9a774ddc0c76938a5c9bbb1554d6b876e2c72ea"
+    "sha256": "1881b7d71099a780477850048b7daedac6487bc2dcd5073f0cee9286fb6991a4"
   },
   "before": {
     "hashMode": "lf",
@@ -13,5 +13,5 @@
   },
   "path": "geometry-web/canvas_registry.js",
   "schema": "geometry-registry-source-review/1",
-  "sourceLfBytes": 88045
+  "sourceLfBytes": 88483
 }
