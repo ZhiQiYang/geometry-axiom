@@ -14,9 +14,11 @@ const workspaceExtension = require('./diagnostics/r396_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
 const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
 const pf4aExtension = require('./diagnostics/pf4a_canvas_extension.cjs');
+const r16Extension = require('./diagnostics/r16_canvas_extension.cjs');
 // PF-4A (#128) P1284 is projected out first by its own exact helper (measured count, P128→P1284→P353).
-const committedGolden = () => pf4aExtension.projectGolden(JSON.parse(read('cdp_sections.golden.json')));
-const committedPlan = () => pf4aExtension.projectPlan(JSON.parse(read('canvas_shards.json')));
+// R16 adds only P1231 outside that historical input; every older oracle stays exact.
+const committedGolden = () => pf4aExtension.projectGolden(r16Extension.projectGolden(JSON.parse(read('cdp_sections.golden.json'))));
+const committedPlan = () => pf4aExtension.projectPlan(r16Extension.projectPlan(JSON.parse(read('canvas_shards.json'))));
 const r20ReasonsExtension = require('./diagnostics/r20_param_reasons_canvas_extension.cjs');
 const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_canvas_extension.cjs');
 const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');

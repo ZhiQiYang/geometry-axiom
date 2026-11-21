@@ -75,7 +75,7 @@ S2 接續：`#igBoundarySection/#igBoundaryView` 是右側 `#igBindingForm` 第 
 
 本節記錄本輪已接上的有界切片，優先於下方較早的頂列、三視圖欄寬及料單位置紀錄。f980 是歷史文件／執行基底，之後的產品修正已提交；目前 source 契約與各份完整受測 SHA／dirty／actual 執行身分／原 log 收據分列，不再把當時未提交修正當成目前尚未接線。DOM／CSS／事件 source 已接線與真瀏覽器核收分列，也不代表 #123 的 43 項全部完成。原設計 ZIP 未在本輪核收，像素及稿件衝突對照仍為 unknown。
 
-- 頂列：主畫布與 `#objectWorkspace` 桌面為 56px；寬度 ≤560px 為 96px 兩列。面／空間的 `.workspace-tools-row` 在桌面中欄，返回及標題在左，原 `.workspace-history-tools` 已移入右 `.object-workspace-actions`，與檔案／原專案保存節點共用操作群；窄螢幕工具改到第二列並可水平捲動，歷史 DOM／CSS 仍位於右操作群，可達性須由同版正常 pointer／Tab 證明。這是同 node／原 ID 的移位；正常 pointer／Tab、焦點及實際位置待同版瀏覽器核收。大型工程／網格／3D 工作區沿用同一 `#projectBar`，不增加獨立專案列；原返回節點在 DOM／Tab 順序先於專案操作。原 #123 的面畫布至少 viewport−88px 下限與 ≤560px 的 96px 頂列要求，仍須依原句及既有 oracle 核對寬度適用範圍並實測；本輪未自行降低下限。控制可達、焦點與返回路徑也須真瀏覽器量測。
+- 頂列：主畫布與 `#objectWorkspace` 桌面為 56px；寬度 ≤560px 為 96px 兩列。面／空間的 `.workspace-tools-row` 在桌面中欄，返回及標題在左，原 `.workspace-history-tools` 已移入右 `.object-workspace-actions`，與檔案／原專案保存節點共用操作群；窄螢幕工具改到第二列並可水平捲動，歷史 DOM／CSS 仍位於右操作群，可達性須由同版正常 pointer／Tab 證明。這是同 node／原 ID 的移位；正常 pointer／Tab、焦點及實際位置待同版瀏覽器核收。大型工程／網格／3D 工作區沿用同一 `#projectBar`，不增加獨立專案列；原返回節點在 DOM／Tab 順序先於專案操作。U123-H:A 已明訂正常態寬度 >560px 的可用畫布高度至少 V−88px，≤560px 至少 V−128px（96px 頂列＋32px 狀態列）；V、遮蔽與例外的當期契約見下節。控制可達、焦點與返回路徑仍須真瀏覽器量測。
 - 主要按鈕：主畫布／面內／網格保存／3D 的主要操作共用 `--accent`，3D 的 `--sm-primary` 引用它；hover 共用 `--accent-strong`。四處 computed background 相等是驗收條件，不能由 CSS 字串一致宣稱已實測。
 - 面內構件：`#faceComponentSwitch [data-component-tab]` 是同一構件頁的子分段，值為 `guide`、`timber` 或 `grid`，預設參考線；`aria-selected` 與 `#faceInspectorContent[data-component-focus]` 同步，未選的 `[data-component-section]` 整段隱藏。三種表單保留在同一檢查器，切換或重繪須保留未提交 raw／焦點，不能把隱藏當作提交或捨棄。原 `fiShowTab('guide'|'timber'|'grid')` 路由不變。
 - 角材料單：`#faceTimberSchedule` 位於構件→角材；範圍／單位／排序／CSV 與來源細節從左欄移入此處。左欄角材列保留定位、選取／hover 與刪除，沒有第二份料單。原柱樑投影 `.fe-ob-check`、`#feApplyCard`／`#feCutStrip`／`#feApplyProj` 已移到右 Shape 的 `#faceProjectionEditor`，左鬼影列只負責圖層及開啟編輯；原顯示控制保留。本輪已提交 source 以 `faceProjectionDrafts` WeakMap 按 edit 分開保存 typed item 勾選／cut，`renderFaceInspector()` 在多選分支之前擷取，右表單暫時不在 DOM 時由同 edit cache 取回；新 owner 不借舊值。`feApplyProj()` 在 native 回覆後核對 presentation owner、原 work／drag／panHold 及 tool／draft 身分，載入後再守門，舊回覆不能清掉新操作或手勢。這些接線仍須跨多選／重繪、新工作區與新手勢回歸；乾淨 f980 曾有多選提前 return 的保全缺口，該歷史限制不沿用為目前 source 未修。非 strip 初始預選、strip／cut 初始不選、原 apply-proj 完整交易都維持。S3 的明確工具去重已在本文件「最後採納合併」接線；真 pointer／Tab／跨重繪保全仍依各自同版收據核收，不由靜態接線宣稱全部完成。
@@ -85,6 +85,82 @@ S2 接續：`#igBoundarySection/#igBoundaryView` 是右側 `#igBindingForm` 第 
 - 3D 建模：`#smClose` 在左並保留返回畫布動作；歡迎區只常顯示 `#smWelcomeTry` 主要範例，原三個範例 ID 搬入 `#smOtherExamples` disclosure。唯一三步 trail 保留編號，移除各節重複編號。沒有結果時收起 `.sm-view-tools`、`#smViewDirection`、`.sm-display-options` 與 `.sm-metrics`；真預覽／已保存結果才顯示，設定變更仍標舊預覽並禁止未重新核對的建立。保留既有 ≤900px 短高度版面及 #119 完整性診斷，不以排版修正代替真預覽／建立／保存重開。
 
 新增實際掛點是 `#faceComponentSwitch`、`[data-component-tab]`、`#faceTimberSchedule`、`#spacePlanMetrics`、`[data-plan-grid]`、`data-plan-grid-step`、`.v3-annotation-layer` 及 `#smOtherExamples`；採納規格中的 `spacePlanReadout` 等提議名稱不冒充現行 DOM。既有 DOM ID、幾何來源、預覽／確認／取消、保存與 Undo/Redo 契約不變。正式整合閘門及本輪實跑結果另記，局部 source／probe 不代替完整 CDP／Space。
+
+### R16 U123-H:A 正常態畫布高度（2026-11-21，來源契約；實測另記）
+
+承接 [U123-H:A 決策](https://github.com/ZhiQiYang/geometry-axiom/issues/123#issuecomment-6436164902)，
+不再把 560px 分界列為未決。原決策的面內高度規則依本片任務套到下列六種實際繪圖 surface；
+這是本片驗收範圍，不表示 [原 43 項](https://github.com/ZhiQiYang/geometry-axiom/issues/123#issuecomment-6436064467)
+已全部完成。
+
+| layout viewport 寬度／正常態 | 最低可用高度 | 本片固定尺寸的預期 |
+|---|---|---|
+| >560px | V−88px | 768×1024：936px；1400×900：812px |
+| ≤560px，無額外明示任務帶 | V−128px | 390×844：716px |
+
+V 是該次量測固定的瀏覽器 **layout viewport** 高度。記錄 `innerWidth`、`innerHeight`、
+`visualViewport.width/height`（不存在時明記 null）、DPR 及鍵盤狀態；不能改用 visual viewport、
+畫布父層高度、縮放後的圖紙尺寸或 SVG viewBox 作分母。560px 屬手機列，561px 屬桌面列，
+邊界案例也要測。CSS 小數像素的記錄精度不構成降低高度下限的容差。
+
+| 本片 surface | 實際繪圖節點／宿主 | 原 #123 分類的關係 |
+|---|---|---|
+| 主畫布 | `#ocv`／`#canvasViewport` | 跨工作區共同入口，與其餘 surface 用同一高度契約 |
+| 面內 | `#faceEditorSvg`／`#faceEditorViewport` | B |
+| 空間平面圖 | `#spacePlanSvg`／`[data-ss-pane="plan"]` | C |
+| 三視圖／投影 | 全域 `#cv`／`#canvasViewport`；空間舞台 `#spaceProjSvg`／`#spaceProjWrap` | D，兩個既有入口分別記錄 |
+| 完整網格 | `#igGridView`／`.ig-canvas` | E |
+| 3D 模型 | `#smCanvas`／`.sm-canvas-wrap` | F |
+
+原六分類中的 G 是簡式網格檢查器，沒有另一個全頁畫布；它沿用開啟所在宿主的繪圖高度，
+另外驗自己的控制可達性，不新增第七個工作區。3D 歡迎頁／模型庫不是已顯示模型的繪圖案例；
+高度用既有正常路徑取得的真預覽或已保存模型量測，歡迎、設定及模型庫入口仍須可達。
+
+**正常態與可用區。** 由既有入口進入目前繪圖 surface，沒有開啟選單、對話框、側邊抽屜、
+軟鍵盤或明示繪製任務帶時，必須符合上表。實際 SVG／canvas 的 viewport 與 layout viewport、
+各層 overflow 裁切取交集，才能得到可見繪圖範圍；外層 wrapper 的 bbox 不能冒充畫布。
+可用高度以實際繪圖 viewport 的未遮蔽矩形量測，不用極窄空白直線或面積除以寬度換算高度。
+教學卡、浮動工具、回報鈕、選單、footer 等非繪圖 UI 覆蓋的區域不算可用；幾何本身、格線、
+尺寸與選取標記仍是繪圖內容。首次可關教學若與正常畫布同時顯示，不能只在測試內預先關閉它
+就宣稱該狀態未遮蔽。重新排版不能改 World、來源、ID、未提交 raw、相機的幾何語意或歷史。
+
+**例外與控制可達。** 軟鍵盤、對話框／抽屜及明示繪製任務帶各自驗可達性；關閉後恢復正常態
+下限，不把例外狀態當成一般畫布的較低標準。既有返回、保存、Undo/Redo、縮放／fit、工作區
+工具與表單不得為了高度被刪除、永久隱藏、移出可捲動範圍或丟失原 handler。控制可由既有入口
+及容器正常捲動到可見位置，正常 pointer 命中點的 `elementFromPoint` 必須落在該控制或其子節點，
+Tab 可到達並以原 Enter／Space 行為操作；不以 `force` click、直接 DOM `.click()`、CSS 強制顯示
+或合成焦點當作使用者可達證明。可達性與畫布高度分開斷言，不能用其中一項取代另一項。
+
+**21c-1 防退步案例。** 保留 [#428 的已知發現](https://github.com/ZhiQiYang/geometry-axiom/issues/428#issuecomment-7056971357)
+所用的正常「重畫外環」路徑：首訪教學仍開啟時開始一段、鍵入段長，檢查 `#feLenInput` 的文字區與
+中心點不被教學卡、游標尺寸標籤或其他 UI 蓋住，關閉教學後再驗一次，數值與既有鍵盤行為不變。
+這是繪製任務態的可達性案例，不拿它縮減正常態高度；基底已有遮蔽時要單獨記錄基線失敗與修復，
+不能冒稱是本片新增回歸，也不能只確認 raw 值正確就稱可見。
+
+三尺寸各 surface、560／561 邊界、控制可達及具名撤回結果均須附完整受測 SHA、實際 viewport、
+bbox／裁切／遮蔽記錄與原始 log。新增瀏覽器碼、來源守門或 golden 產生器本身只代表已交付驗證碼；
+真瀏覽器由雲端執行，未取得原件前不宣稱本片 L4，也不改寫下方各歷史執行的受測範圍。
+
+本片實際 DOM 排版：主畫布／全域三視圖的 `#mainCanvasDock` 在繪圖區左側，面內的
+`#faceCanvasDock` 與空間的 `#spaceCanvasDock` 在右側；三者保留 156px 實體控制欄，
+不把工具覆蓋的像素算成畫布。原控制節點及直接 handler 保留，dock 的 pointer／wheel
+不向繪圖 viewport 冒泡；原生捲動仍可用。`#viewToolbar` 搬入原專案頂列，不再另占畫布
+上方一列。`#fbButton` 保持在原 `#fbRoot`、不進入 `#app`，依當前 dock 的實際矩形定位於
+其頂部預留區，保住原回報錄製排除與快照 owner。簡式網格展開底部表單屬本片控制可達案例，
+不能拿此片正常態量測宣稱該展開狀態也具有完整高度。
+
+`#igHeightDock` 移入原 `#igWorkspaceLesson`、`#igViewNote`、`.ig-zoombar`、
+`#igDensity`；`.ig-main` 為該 156px 側欄保留實體寬度，原 `.ig-canvas` 仍為 column-flex 子項，
+既有修改其 `flex` 的真高度 resize 守門繼續有效。手機仍先預覽、向下捲到設定；原 footer
+保持 `.ig-inspector` owner，固定在右控制欄底端，保住 P73 的首屏主動作斷言。既有 resize
+observer 記錄 footer 真高度，控制欄與設定捲動留出相應空間，不覆蓋畫布或遮掉原控制。
+`#smHeightDock` 與 `#smMain/#smLibraryPanel` 並列，容納原來源入口、步驟及
+`#smHeightView` 中的歡迎／視角／顯示／量測節點；沒有新增按鈕或自動關閉教學。原手機分頁是
+dock 的直接子節點，不隨設定態的 stage 隱藏，仍可切回預覽；模型庫維持原分頁隱藏規則，
+原「使用目前面」與「返回建模」仍可用。兩者正常 canvas 使用
+V−56px／V−96px，因而高於本節最低界線；原 3D desktop 設定欄與手機設定切換保持。
+CDP 段、golden 的真執行產生方式，以及 #434 合入前後的登錄路徑見
+[R16-HEIGHT-REGISTRY-HANDOFF.md](R16-HEIGHT-REGISTRY-HANDOFF.md)。
 
 
 本輪已核收的具名歷史執行：乾淨 `f98078dc150c22960cbe2d212afb3ded61954bb9` 的原六組（colors／headers／components／v3／grid-mobile／model）完整 194 通過／0 失敗、exit 0；範圍只是六組，不能冒稱全部 43 項、完整 CDP 或完整 Space。原始收據／log：`/workspace/scratch/geometry-ui-verification/ui123-f98078dc-gate/receipt.json`、`command.log`（SHA256 `abc33da78fce6c0f5356f7ddd3f0d7c47076d2404f1441e73d45057ef5f0381f`）。同版 #54 是 208 通過／1 失敗、exit 1、completed:false：第九個 `image-notch-mobile` 的正常 New 被抽屜 close 攔截，後段負例未到，不能稱完整 #54。其原 log 在 `room54-f98078dc-gate/command.log`（SHA256 `50780d76645fc18ad070a8aaa95daeaecb4f4ed446e16e8996110b186ed0e483`）。六份 `room-direct-row-dimensions/1` 測量的 PDF／image 矩形、L、缺口均為候選 12／14／16 對原手動 16／20／24 操作；各同校準來源、camera、disclosures、snap、review／起始場景與精確終點，成本定義排除匯入／校準及 Save/New/Open，不把機器等待當人類工時，且不替代未完成的後段驗收。

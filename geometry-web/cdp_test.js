@@ -15,6 +15,7 @@ let transportFailureTrace;
 const SCOPE_FLAGS = ['GEOMETRY_TIMBER_REUSE_ONLY','GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_ROOM_CANDIDATE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_DEFINITION_IMPORT_ONLY','GEOMETRY_CDP_FROM_P31','GEOMETRY_IDENTITY_LEDGER_ONLY'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 SCOPE_FLAGS.push('GEOMETRY_GRID_CARD_ENTRY_ONLY','GEOMETRY_PANEL_FILL_ONLY','GEOMETRY_R14_PANEL_ONLY','GEOMETRY_WORKSPACE_CONTEXT_MENU_ONLY','GEOMETRY_BOUNDARY_PAIR_ONLY');
+SCOPE_FLAGS.push('GEOMETRY_WORKSPACE_HEIGHT_ONLY');
 /* main() 以 inSequence(n)/notOtherShard(n) 把完整序列切成這麼多個連續區段;canvas_shards.json 的片數必須相同。 */
 const CANVAS_SHARDS=2;
 const isCanvasShard=value=>value.mode==='shard'||value.mode==='capture-shard';
@@ -546,7 +547,10 @@ async function main() {
   const runBoundaryPair=()=>require('./boundary_pair_workflow_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   const runCanvasContextMenu=()=>require('./canvas_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
   const runWorkspaceContextMenu=()=>require('./workspace_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
-  if(process.env.GEOMETRY_BOUNDARY_PAIR_ONLY){
+  const runWorkspaceHeight=()=>require('./workspace_height_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN,makeCheck:bodyCheck});
+  if(process.env.GEOMETRY_WORKSPACE_HEIGHT_ONLY){
+    await runWorkspaceHeight();
+  } else if(process.env.GEOMETRY_BOUNDARY_PAIR_ONLY){
     await runBoundaryPair();
   } else if(process.env.GEOMETRY_TIMBER_REUSE_ONLY){
     await runTimberReuse();
@@ -7360,6 +7364,7 @@ async function main() {
   if(inSequence(2)||process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY)
     await require('./grid_card_entry_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if(inSequence(2))await runWorkspaceContextMenu();
+  if(inSequence(2))await runWorkspaceHeight();
   /* Last on purpose: its fresh reopen wipes origin storage, which would reset state later sections rely on.
      It also stays last in the last canvas shard. */
   if(inSequence(2)||process.env.GEOMETRY_DEFINITION_IMPORT_ONLY)await require('./definition_import_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});

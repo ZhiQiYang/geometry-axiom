@@ -15,16 +15,19 @@ const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_can
 const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');
 const train3Tail = require('./diagnostics/train3_canvas_tail.cjs');
 const workspaceExtension = require('./diagnostics/r396_canvas_extension.cjs');
+const r16Extension = require('./diagnostics/r16_canvas_extension.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 // PF-4A (#128): P1284 is an independent measured section after P128 and before
 // P353. Project exactly it (plan position and raw golden line) out first, so every
 // main oracle below judges the same plan, golden and raw bytes it was written for.
 const plan = shards.loadPlan(), golden = shards.loadGolden();
-const rawPlan = plan, rawGolden = golden;
-const pf4aBase = {plan: pf4aExtension.projectPlan(plan), golden: pf4aExtension.projectGolden(golden)};
+// Full receipt checks below keep the actual plan/golden. Historical tests see
+// only the exact R16 projection; no older expected count or byte pin changes.
+const rawPlan = r16Extension.projectPlan(plan), rawGolden = r16Extension.projectGolden(golden);
+const pf4aBase = {plan: pf4aExtension.projectPlan(rawPlan), golden: pf4aExtension.projectGolden(rawGolden)};
 function projectPf4aRaw(rawSource) {
-  const raw = String(rawSource).replace(/\r\n/g, '\n');
+  const raw = r16Extension.projectRaw(rawSource);
   const parsed = JSON.parse(raw), count = parsed.sections.P1284;
   const withoutLine = raw.replace('    "P420": 124,\n    "P1284": ' + count + '\n', '    "P420": 124\n');
   assert.notEqual(withoutLine, raw, 'PF4A_P1284_RAW_LAST_LINE_REQUIRED');
@@ -128,6 +131,16 @@ function red(receipts, pattern, ctx = context) {
 const moveSection = (r, name, from) => { r.sections[name] = from.sections[name]; r.sectionOrder.unshift(name); r.passedAssertions = sum(r.sections); };
 
 test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍是所在片的最後一段', () => {
+  const actualPlan = context.plan, actualGolden = context.golden;
+  assert.deepEqual(shards.validatePlan(actualPlan, actualGolden), [], 'R16_ACTUAL_PLAN_COMPLETE');
+  assert.equal(Object.keys(actualGolden.sections).length, Object.keys(rawGolden.sections).length + 1, 'R16_EXACT_SECTION_UNION');
+  assert.equal(actualGolden.total, rawGolden.total + actualGolden.sections.P1231, 'R16_EXACT_COUNT_UNION');
+  const missing = clone(actualPlan); missing.shards[1].sections = missing.shards[1].sections.filter(name => name !== 'P1231');
+  assert.throws(() => r16Extension.projectPlan(missing), /R16_EXACT_OWNER/, 'R16_MISSING_SECTION_REJECTED');
+  const duplicate = clone(actualPlan); duplicate.shards[0].sections.push('P1231');
+  assert.throws(() => r16Extension.projectPlan(duplicate), /R16_EXACT_OWNER/, 'R16_DUPLICATE_OWNER_REJECTED');
+  const changed = clone(actualGolden); changed.sections.P1284++; changed.total++;
+  assert.throws(() => r16Extension.projectGolden(changed), /R16_LEGACY_GOLDEN_BYTES/, 'R16_LEGACY_COUNT_DRIFT_REJECTED');
   // Train 3 (#426 + #419 + #420): the R396 P1161 owner checks run on the committed plan
   // with only #420's P420 stripped (exact tail and count checked by train3_canvas_tail.cjs);
   // the historical assertions below then run on the plan with R17's P335 projected out.
@@ -182,7 +195,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(verdict.summary.total, context.golden.total);
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
-  const beforeR420 = r420Extension.projectGolden(pf4aExtension.projectGolden(context.golden));
+  const beforeR420 = r420Extension.projectGolden(pf4aExtension.projectGolden(r16Extension.projectGolden(context.golden)));
   const beforeWorkspace=projectWorkspaceGolden(r335Extension.projectGolden(beforeR420));
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
   // R20 findings 1-3 add exactly two P76 assertions; project them out too.
@@ -219,7 +232,8 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(Object.keys(beforeWorkspace.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
   assert.equal(Object.keys(pf4aBase.golden.sections).length, 98, 'R420_ONE_ADDITIVE_SECTION: train 3 also keeps P335 and P1161');
   assert.equal(pf4aBase.golden.total, beforeR420.total + r420Extension.P420_ADDED, 'R420_EXACT_COUNT_UNION');
-  assert.equal(context.golden.total, pf4aBase.golden.total + context.golden.sections.P1284, 'PF4A_EXACT_COUNT_UNION_IN_VERDICT');
+  assert.equal(rawGolden.total, pf4aBase.golden.total + rawGolden.sections.P1284, 'PF4A_EXACT_COUNT_UNION_IN_VERDICT');
+  assert.equal(context.golden.total, rawGolden.total + context.golden.sections.P1231, 'R16_EXACT_COUNT_UNION_IN_VERDICT');
   assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });

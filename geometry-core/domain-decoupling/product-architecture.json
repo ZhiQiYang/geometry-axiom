@@ -2821,7 +2821,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "216e56268971e4222c9204600966b5417ef22cf1c25f5f5d9c97a301b229fc70",
+      "sha256": "929a46db2e52bedb6bf69ea07657310f9955c10267e2dc61b8370cfc039c33f8",
       "hashMode": "lf"
     },
     {
@@ -3992,6 +3992,12 @@
       "path": "geometry-web/boundary_pair_workflow_test.js",
       "reason": "R17 P335 real-CDP acceptance driver; invoked only by cdp_test.js, never by product runtime or served application entry points.",
       "sha256": "e74db88d701a5e39830790926c4ef9c939e99620bce88108283e59b15a31da50",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/workspace_height_test.js",
+      "reason": "R16 P1231 real-CDP height and control reachability acceptance driver; invoked only by cdp_test.js, never by product runtime or served application entry points.",
+      "sha256": "d212a41d6ce516703b2996211d118626542ef663250efb84dfbc16a8dd135489",
       "hashMode": "lf"
     }
   ],
